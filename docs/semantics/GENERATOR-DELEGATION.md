@@ -150,6 +150,14 @@ this call preserves parked history and returns before body entry. Its separate
 current snapshot can retire after receiver close; returned array aliases and
 embedded cells keep their owners. See the
 [repeated THROW review](../../coverage/semantics/generator-repeated-pending-owning-throw-review.json).
+Pending SEND can take the same early return through a direct or native-linked
+receiver while its owning copied return is parked. Actual receiver initialization
+clears, independently of the physical middle bit; the parked frame/site stay
+unchanged. SEND captures the dereferenced current before normal ignored-argument
+cleanup. After row COW, the used snapshot and copied return retain two old-array
+counts with one element edge, while the raw reference cache follows the new row.
+Receiver retirement can leave the used cache as its sole owner. See the
+[parked SEND review](../../coverage/semantics/generator-parked-pending-owning-send-review.json).
 Actual parked body entry and wider owning continuations remain open.
 Pending `send` through native shared links can now buffer a paused child's yield
 result when it is assigned directly to a simple CV. When a direct or forwarded

@@ -111,6 +111,13 @@ close keeps the same transfer and finally omission after either receiver order.
 A sole-middle snapshot destructor replaces the second supplied exception after
 ordinary ancestor cleanup, independently of the retained return. See the
 [repeated THROW review](../../coverage/semantics/generator-repeated-pending-owning-throw-review.json).
+Pending SEND likewise leaves the owning copied return and parked frame intact
+while clearing only the selected receiver initialization bit. Its current copy
+precedes normal ignored-argument cleanup, including alias retirement; a used cache
+can outlive all Generators and retire after caller delivery. Close retains the
+same copied-return count and skips the parked middle finally. Returned cells
+remain mutable after close. See the
+[parked SEND review](../../coverage/semantics/generator-parked-pending-owning-send-review.json).
 A live used-yield input stays in place at the pending THROW step. Physical leaf
 close retains its count before retiring the parked frame; the payload runs only
 in the request object-store pass. It is neither released before caller catch nor

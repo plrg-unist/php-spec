@@ -1,0 +1,85 @@
+{
+  "milestone": "Iterator34: pending SEND before dispatch at a parked owning Generator return",
+  "status": "Independently validated and reviewed; exact single-parent composition for canonical integration",
+  "independent_reviewer": "iterator_review_15",
+  "base": "5a011788f88cbb5ae01cc9eaa58182f9610d9484",
+  "native_baseline_cut": "5a393c4c85a27b4620a462f119faf01cd6943b1f",
+  "source_state_strict_cut": "507bd59049a36668853085b3fe7188278aa41e04",
+  "tested_runtime": "a01d3883602222acec37555958c542e4d7b858ca",
+  "modules": 406,
+  "scope": "Literal one-argument pending SEND at an already parked owning simple-CV assigned yield-from COMPLETE, directly or through finite native links. Only the selected receiver must still need initialization. No buffered input, other owning continuation/HELD, acquired producer, loop/startpack/borrowed API, active GC or body entry.",
+  "semantics": [
+    "A separate owning-only helper authenticates literal SEND/source/arity/flags, actual selected receiver initialization and the exact parked return receipt. Only PARKED is cleared in a borrowed validation view of the finite native path. The real frame/site/return stay unchanged; existing result/resumed/complete rules clear only the receiver bit and return current.",
+    "Old scalar parked returns remain refused even when the earlier detached-SEND helper is positive. The ordinary scalar/owning paths, pending THROW and parked NEXT/body refusal remain unchanged. No root/layout/collector or close algorithm is added.",
+    "SEND captures current before normal ignored-argument cleanup and receiver release. Real row COW separates old snapshot/COMPLETE counts from the live raw cache without multiplying element edges. A used cache can outlive all Generators; returned embedded cells remain mutable after existing close retains the copied return."
+  ],
+  "source_authority": [
+    "Pinned Zend/zend_generators.c::Generator::send finds the physical root, whose YIELD_FROM send_target is NULL, then zend_generator_resume tests DO_INIT on orig_generator before dispatch. The early return neither executes HANDLE_EXCEPTION nor clears its parked opline/history.",
+    "RETURN_COPY_DEREF precedes VM argument and receiver cleanup. Upper-then-middle and middle-then-upper native histories distinguish selected initialization from physical middle initialization; normal destructor COW/alias-drop and late cell writes distinguish the owners. No engine bug or intentional divergence is classified."
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS64; source34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL/caches off/encountered determinism",
+    "environment": "profile.json/PHP-n/LC_ALL=C/TZ=UTC/PHP_SPEC_SCRIPT_ENCODING unset. Serial CPU5 native+baseline and CPU4 model leases with explicit handoffs, full reap/release. Exact commands/exits/raw outputs remain in reports."
+  },
+  "runtime_sha256": {
+    "spec/semantics/280-generators.watsup": "e6ddc8142e50d8ce6bf9fd58265b484a6647c023833a09b6a1d407f02641540d",
+    "spec/semantics/289-generator-delegation.watsup": "4cea0709674d70aad0e319a89dd963d649b70d111410cc26695ae4f15ba6d0d5"
+  },
+  "reports": {
+    "native_author": ".tools/generator-parked-pending-owning-send-native-0u4dnkrj/report.json",
+    "native_peer": ".tools/generator-parked-pending-owning-send-review-native-yrye5wmc/report.json",
+    "unchanged_baseline": ".tools/generator-parked-pending-owning-send-baseline-n1b4_6vd/report.json",
+    "fixture_elaboration": ".tools/generator-parked-pending-owning-send-state-elab-a0hgg3vf/report.json",
+    "strict406": ".tools/generator-parked-pending-owning-send-author-sl-sv71fg8r/report.json",
+    "source_author": ".tools/generator-parked-pending-owning-send-source-zuuw_i8o/report.json",
+    "source_peer": ".tools/generator-parked-pending-owning-send-review-source-8z3tc_dz/report.json",
+    "state_author182": ".tools/fiber-state-review-lqhc2u4j/report.json",
+    "state_author120": ".tools/fiber-state-review-xvad2ebb/report.json",
+    "state_peer210": ".tools/fiber-state-review-cs082yz4/report.json",
+    "state_peer134": ".tools/fiber-state-review-wzhrz__t/report.json"
+  },
+  "native_and_baseline": {
+    "originals": 4,
+    "model_agreements": 0,
+    "baseline": "Unchanged3803 source reuses exact0u4d native tuple without PHP replay. First ancestor THROW succeeds; parked middle SEND reaches public Unsupported Generator force-close at request end after14 OUTPUT chunks P|O|U|M|C|L|H|T|CATCH|1|1|S|. Model1/empty stderr/no timeout/null diagnostic+exit_status; zero agreement."
+  },
+  "source_agreements": {
+    "normal": 4,
+    "php_error": 0,
+    "native_replayed": false
+  },
+  "reached_states": {
+    "new_premises": 646,
+    "author": 302,
+    "independent": 344,
+    "local_checks": 626,
+    "generic_reachability": 20,
+    "checks": [
+      "Real direct-middle GEN_ARGS preserves parked frame/site/return1, clears only initialization and queues argument then middle. One cache snapshot changes cache1 to2; the caught Exception stays only in its two globals. Scalar, cleared-receiver, source/tail/flag/HELD/duplicate controls keep excluded domains refused.",
+      "Real normal OP_EXIT after argument-driven alias retirement has a retired direct receiver and child, used cacheD1 in VALUE, retained return-array1 and no pending Throwable. Actual EXIT transfers D to RESULT without changing the heap; caller delivery precedes D destruction.",
+      "Reverse-history ancestor SEND snapshots before actual argument-dtor COW. At OP_EXIT both receiver and physical middle are nonpending, but the middle stays parked. COMPLETE+usedRV own oldarray2 with one A edge; rawHCELL follows newarray1. Actual EXIT preserves the heap/frame and nonpending further SEND stays refused.",
+      "Real post-close returned-cell WRITE preserves retained array1/HCELL2, queues only oldR retirement, leaves newC through the cell and has null unused OP.VALUE. Full native R-before-WRITE/CNEW-after-E ending passes."
+    ],
+    "budgets": "Four separate groups SL120s, seek4000/full ending4000; public+heap validity, zero-budget identity and whole/split equality. All rawtrue/empty stderr/exit0/no timeout/HEAD+inputs stable."
+  },
+  "elaboration_and_strict": "Four-fixture elaboration60s has unique EOF/all four headers/zero execution credit. Strict406 SL120s returns true with caches off and encountered determinism.",
+  "failures_and_retries": "None; all eleven report roles pass first attempts. No historical campaign or GC source credit is renewed.",
+  "remaining": "Parked NEXT, nonpending SEND/body entry, nonowning/input/loop or wider parked SEND, exceptional ignored-argument cleanup and waiting-result GC remain open. No new portability/rebuild, whole-core, interaction-tree or BOLA claim.",
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/generator-parked-pending-owning-send-34/private.tar.gz",
+    "bytes": 1859440,
+    "sha256": "324e0ca892cdb862dc38b9d870a793d30faa46f0f39b2314f1235792d472edf5",
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-parked-pending-owning-send-34/manifest.json",
+    "recovery": "Restore private branch/cut and extract private.tar.gz at its root; provision existing local tools. Reports retain exact commands/exits/raw paths; wrappers accept --native-report. Bulky artifacts remain outside Git."
+  },
+  "composition": {
+    "parent": "f3d014d14b061703aaa36b872def6e70eb36f740",
+    "parent_modules": 406,
+    "private_publication": "002bcf97a9c462da226ed92195f43454e027ec60",
+    "runtime": "Only280/289 tested private bytes; all other incoming runtime/schema/default/root/ordered manifest/pipeline bytes preserved.",
+    "interaction_review": "INI/weak-comparison/compound arithmetic, property-coalesce/RV and lossy-float literal-key string selectors are absent; literal debts stay empty. No joined actor, accepted replay or renewed private credit."
+  }
+}

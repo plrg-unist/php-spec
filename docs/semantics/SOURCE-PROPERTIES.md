@@ -672,8 +672,25 @@ refusals and budgets beginning before PREP. Separate source and state cuts retai
 the original binding failures, duplicate-discard failure and fixture binding failure
 at zero credit. No generic coalesce, ownership, destruction or GC rule changes.
 The transfer is generic for known BYVAL values; validated result histories are
-zero, null and ordinary Payload. Other values/lifetimes, untyped Isset, reference Get,
-broader local-destructor/reentry and no-Get coalesce combinations remain partial.
+zero, null and ordinary Payload. Untyped Isset remains excluded from the getter-present
+route; reference Get, wider values and local-destructor/reentry lifetimes remain partial.
+
+The same external CV/literal inherited-private `??` source now admits no-Get
+objects with the existing typed-bool or absent-return `__isset(string)` signature.
+GET is optional metadata, without a fake method target. Both booleans deliver
+quiet NULL; an ordinary live INSTANCE RV makes the decision true. Its separate
+receiver-owning continuation caches NULL while ordinary RV disposal runs with
+IN_ISSET and IN_GET inactive. Only afterward does receiver release precede the
+ordinary fallback. Sole RV destruction sees a live receiver through WeakReference;
+held RV destruction runs later and sees the retired receiver. A supplied RV-D
+Exception cancels fallback, preserving the same catch and destination 42.
+[Four originals and 640 focused premises](../../coverage/semantics/magic-coalesce-no-get-review.json)
+check actual compiled-local guard exit, saved NULL/SOURCE cleanup receipts, owner
+counts, weak visibility and PREP budget resumption. Booltrue is a derived bridge.
+The getter-present route has a static optional-record compatibility bridge, with
+no renewed earlier execution credit. Other RV kinds, false owning RVs, reference
+returns, wider receiver/property forms, aliases, cycles and reentry remain partial;
+generic coalesce, destruction, roots and GC rules are unchanged.
 
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.

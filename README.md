@@ -34,17 +34,19 @@ request, including on throw. Different-reference retargeting also tracks the new
 cell's missing owner until it is balanced. Primitive cells may carry ordinary
 live instance-property type sources: singleton copies shed their
 constraint while the original stays typed; shared copies retain it. Untyped
-reference cells may also hold flat runtime arrays of direct null/bool/int/float values. Wrapper
-debt stays separate from child-table COW, including deletion and throw cleanup.
+reference cells may also hold flat runtime arrays of DIRECT null/bool/int/float
+values or validated byte strings. Wrapper debt stays separate from child-table
+COW, including deletion and throw cleanup.
 Retargeting a flat-array wrapper to an ordinary scalar preserves its acquired
 count, cancelling debt first or retaining the old wrapper and its child.
 Ordinary unwrapped CVs may switch between null/bool/int/float and flat runtime
-arrays of those direct values during the handler. Separate table counts preserve
-old array owners and omitted new-array owners; inverse retargeting cancels them before cleanup. Initial scalar
-and array plans remain distinct, while same-table transfer and restored COW keep
+arrays with DIRECT null/bool/int/float or validated string leaves during the
+handler. Separate table counts preserve old array owners and omitted new-array
+owners; inverse retargeting cancels them before cleanup. Initial scalar and
+array plans remain distinct, while same-table transfer and restored COW keep
 ordinary values distinct from PHP reference wrappers.
-Unsafe deficit retirement and wider domains remain Unsupported. Duplicate
-replacement and later items stay ordered.
+Direct string CV/cell payloads, unsafe deficit retirement and wider domains remain
+Unsupported. Duplicate replacement and later items stay ordered.
 
 [Destructuring key warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 now retain captured arrays or source reference cells through handlers, including
@@ -1168,7 +1170,14 @@ without entering the body, even if the physical middle was already initialized.
 Distinct or reused exceptions, current snapshots and return cells keep their
 separate lifetimes; actual parked body entry remains Unsupported. See the
 [repeated THROW review](coverage/semantics/generator-repeated-pending-owning-throw-review.json).
-Parked next/send and wider repeated-THROW leaves remain open.
+A pending `send` can also return the current cache before entering that parked
+owning continuation. Only its selected receiver clears initialization; the source
+site, physical frame and copied return stay parked. Snapshot capture precedes
+normal ignored-argument cleanup, including row COW or Generator-alias retirement.
+The used cache and mutable returned cells retain their separate lifetimes. See the
+[parked SEND review](coverage/semantics/generator-parked-pending-owning-send-review.json).
+Parked next, nonpending body entry and wider parked SEND/repeated-THROW leaves
+remain open.
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller
 catch. The independent current copy can still trigger a replacement exception. See the
@@ -3414,7 +3423,14 @@ evaluates the fallback after receiver release. An owning getter result survives
 that release; a supplied getter Exception preserves the same catch and destination.
 [Five originals and 604 focused premises](coverage/semantics/magic-coalesce-review.json)
 cover guard changes, actual local cleanup, sole result ownership and budgets.
-Wider receivers, no-Get combinations and reentrant lifetimes remain partial.
+Wider receivers and reentrant lifetimes remain partial.
+
+Selected no-Get private-property `??` now calls typed-bool or absent-return
+`__isset(string)`. An ordinary object RV is disposed while the captured receiver
+remains live and both magic guards are inactive; a held RV disposes later, after
+receiver release and fallback. Supplied RV-destructor throws preserve the same
+catch and destination 42. [Four originals and 640 focused premises](coverage/semantics/magic-coalesce-no-get-review.json)
+cover these paths. Other results, aliases and reentry remain partial.
 
 Inherited private writes now invoke a public `__set(string $name, $incoming): void`
 for selected external CV/literal assignments. The setter receives integer `7`,
