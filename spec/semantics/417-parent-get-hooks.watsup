@@ -174,3 +174,15 @@ def $parent_hook_entered(S, pcallcontext?, eps, pparenthookcall) = false
 def $parent_hook_entered(S, pcallcontext?, pframe*, pparenthookcall) = false -- otherwise
 
 def $call_selected_valid(S, PARENT_HOOK_TARGET pparenthookcall, (porigin)) = (porigin = pparenthookcall.SITE /\ ($parent_hook_pending(S, pparenthookcall) \/ $parent_hook_entered(S, S.CURRENT, S.FRAMES, pparenthookcall)))
+
+;; Trace names use the captured lexical parent even after receiver retirement.
+def $trace_context_function(S, pcallcontext) = $hook_name(ppropertydesc.NAME)
+  -- if pcallcontext.TARGET = PARENT_HOOK_TARGET pparenthookcall
+  -- if $class_at(S.CLASSES, pparenthookcall.CLASS) = (pclassdesc)
+  -- if $hook_property_at(pclassdesc.PROPERTIES, pparenthookcall.PROPERTY) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = pparenthookcall.PROPERTY
+def $trace_context_class(S, pcallcontext) = (pclassdesc.NAME)
+  -- if pcallcontext.TARGET = PARENT_HOOK_TARGET pparenthookcall
+  -- if $class_at(S.CLASSES, pparenthookcall.CLASS) = (pclassdesc)
+def $trace_context_type(S, pcallcontext) = ($ptascii("->"))
+  -- if pcallcontext.TARGET = PARENT_HOOK_TARGET pparenthookcall

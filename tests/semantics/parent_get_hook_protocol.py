@@ -260,7 +260,7 @@ def main():
     profile_file = HERE / 'profile.json'
     profile = json.loads(profile_file.read_bytes())
     assert data['native_profile'] == profile and data['native_gate_completed']
-    assert [case['id'] for case in data['cases']] == ['selection', 'owning', 'throwing', 'outside', 'wrong-property']
+    assert [case['id'] for case in data['cases']] == ['selection', 'owning', 'throwing', 'outside', 'wrong-property', 'trace']
     selected = [case for case in data['cases'] if case['id'] in ('selection', 'owning', 'throwing')]
     assert len(selected) == 3
     if args.case:
@@ -323,6 +323,10 @@ def main():
                      'ptbytes_before_child = $ptascii(' + json.dumps(parent_output + ('' if name == 'throwing' else 'A|')) + ')',
                      'ptbytes_final = $ptascii(' + json.dumps(output) + ')']
             reached = setup + COMMON
+            if name == 'selection':
+                reached += ['$trace_context_function(S_enter,pcallcontext_parent) = $ptascii("$value::get")',
+                            '$trace_context_class(S_enter,pcallcontext_parent) = ($ptascii("ParentGetParent108"))',
+                            '$trace_context_type(S_enter,pcallcontext_parent) = ($ptascii("->"))']
             if name == 'throwing':
                 reached += THROW + CHILD + CATCH
             else:
@@ -336,7 +340,7 @@ def main():
             reached += FINISH + [f'pparenthookcall.LINE = {case["call_line"]}']
             derived = DERIVED if name == 'selection' else []
             if name == 'selection':
-                for control in data['cases'][3:]:
+                for control in [case for case in data['cases'] if case['id'] in ('outside', 'wrong-property')]:
                     control_source = HERE / control['source_file']
                     control_dir = directory / control['id']
                     control_dir.mkdir()
