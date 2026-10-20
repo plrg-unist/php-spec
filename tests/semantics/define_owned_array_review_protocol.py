@@ -152,7 +152,7 @@ def checks(initial, stdout):
         '$heap_graph(S_missing) = $heap_graph(S)',
         'pconfigcall_object = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,1,KNOWN (POBJECT n_object))]',
         '$dynamic_owned_define_header(S,pconfigcall_object)',
-        '~$dynamic_owned_define_valid(S,pconfigcall_object)',
+        '$dynamic_owned_define_valid(S,pconfigcall_object)',
         '~$dynamic_array_call_valid(S,pconfigcall_object)',
         *flags(),
         'S_pause = $drive_steps(S,0)', 'S_pause = S[.COMPLETION = BUDGET]',

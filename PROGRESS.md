@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained DEFINE Closure calls now publish direct POBJECT values through the
+existing classifier under omitted/raw-false flags. Ordinary INSTANCE row/query
+identity and cached stdClass child/table COW survive source and callee retirement.
+Normal rejected INSTANCE argument cleanup runs its destructor with the callee
+held. A supplied Exception's raw object arguments instead outlive the callee;
+after Exception/trace retirement, final raw views release the object normally
+with no pending Exception and the callee gone.
+
+Three source agreements pass at `ec1f3cc57`/407; 811 focused premises
+(323+184 author,304 independent) and four budget identities pass first attempts
+at `371b8a2a0`/407. Two fresh-job expectations were corrected during static review
+before execution: the published pointer transfers to its new row, leaving only
+the callee to release. Existing other object classes compose structurally without
+new producer credit. Primitive/ARRAY, flag/name/receipt/root/global/default and
+paused-boundary policies stay exact; wider owning call domains remain partial.
+[Owned object review](coverage/semantics/define-owned-object-review.json).
+
 Ownerless positional `ini_set(NULL, array)` now resumes Deprecated handlers for
 one key0 ALIAS element backed by a live allocated untyped reference cell with a
 quiet primitive value. The saved array keeps its shape across current-container

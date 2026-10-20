@@ -2072,6 +2072,13 @@ destructors can observe it alive before false delivery. Supplied exceptions
 preserve the raw argument trace through candidate cleanup.
 [Owned array call review](coverage/semantics/define-owned-array-review.json).
 
+Owned DEFINE calls also publish direct objects through the existing value
+classifier. Rows and queries share the captured instance or cached stdClass
+after the callee dies. Normal rejected INSTANCE argument cleanup runs its
+destructor before callee release; a throwing duplicate's raw trace instead
+retains the object after callee death until its raw argument views retire.
+[Owned object call review](coverage/semantics/define-owned-object-review.json).
+
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
 children while cast/query arrays retain COW. A private duplicate copy can keep
