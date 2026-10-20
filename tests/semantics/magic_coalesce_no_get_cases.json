@@ -1,0 +1,76 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "false",
+      "source_file": "magic-coalesce-no-get-false.php",
+      "source": "<?php\nclass CoalesceParent106 {\n    private int $value = 1;\n    public function __isset(string $name): bool {\n        global $child, $held;\n        echo 'I|';\n        $child = null;\n        return false;\n    }\n    public function __destruct() {\n        global $fallback;\n        echo 'D|';\n        $fallback = 99;\n    }\n}\nclass CoalesceChild106 extends CoalesceParent106 {}\nfunction fallback106() {\n    global $fallback;\n    echo 'R|';\n    return $fallback;\n}\n$error = new Exception('supplied');\n$held = null;\n$throws = false;\n$fallback = 7;\n$child = new CoalesceChild106();\n$weak = WeakReference::create($child);\n$result = 42;\necho 'F:';\ntry {\n    $result = $child->value ?? fallback106();\n} catch (Exception $caught) {\n    echo $caught === $error ? 'C' : '!', '|';\n}\necho $result, '|';\necho 'F|';\n$held = null;\n$child = null;\necho 'E|';\n",
+      "source_sha256": "4b8a56e326e2508a31fe8c968a5a32df526116cd9bc634646551d4735e50a00c",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106/.tools/magic-coalesce-no-get-probes-106/false.php",
+      "stdout_base64": "RjpJfER8Unw5OXxGfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106/.tools/magic-coalesce-no-get-probes-106/native-first",
+      "native_raw_sha256": "274f56ccd567ecdfae8decab2913e784a61c89d51df30d7e1a100b652bc9e623",
+      "coalesce_line": 31
+    },
+    {
+      "id": "normal",
+      "source_file": "magic-coalesce-no-get-normal.php",
+      "source": "<?php\nclass CoalescePayload106 {\n    public function __destruct() {\n        global $weak, $throws, $error;\n        echo 'V|';\n        echo $weak->get() === null ? 'Z' : 'L', '|';\n        if ($throws) { throw $error; }\n        echo 'v|';\n    }\n}\nclass CoalesceParent106 {\n    private int $value = 1;\n    public function __isset(string $name) {\n        global $child, $held;\n        echo 'I|';\n        $child = null;\n        return new CoalescePayload106();\n    }\n    public function __destruct() {\n        global $fallback;\n        echo 'D|';\n        $fallback = 99;\n    }\n}\nclass CoalesceChild106 extends CoalesceParent106 {}\nfunction fallback106() {\n    global $fallback;\n    echo 'R|';\n    return $fallback;\n}\n$error = new Exception('supplied');\n$held = null;\n$throws = false;\n$fallback = 7;\n$child = new CoalesceChild106();\n$weak = WeakReference::create($child);\n$result = 42;\necho 'N:';\ntry {\n    $result = $child->value ?? fallback106();\n} catch (Exception $caught) {\n    echo $caught === $error ? 'C' : '!', '|';\n}\necho $result, '|';\necho 'F|';\n$held = null;\n$child = null;\necho 'E|';\n",
+      "source_sha256": "04776ec1c90d332eeffad2cd6737e5fe3b91d090d8424e85c2381224a2dc7370",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106/.tools/magic-coalesce-no-get-probes-106/normal.php",
+      "stdout_base64": "TjpJfFZ8THx2fER8Unw5OXxGfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106/.tools/magic-coalesce-no-get-probes-106/native-first",
+      "native_raw_sha256": "fe371ad12bbf4d02588d8714d8f140e43c544720292457869b603798b161fa25",
+      "coalesce_line": 40
+    },
+    {
+      "id": "held",
+      "source_file": "magic-coalesce-no-get-held.php",
+      "source": "<?php\nclass CoalescePayload106 {\n    public function __destruct() {\n        global $weak, $throws, $error;\n        echo 'V|';\n        echo $weak->get() === null ? 'Z' : 'L', '|';\n        if ($throws) { throw $error; }\n        echo 'v|';\n    }\n}\nclass CoalesceParent106 {\n    private int $value = 1;\n    public function __isset(string $name) {\n        global $child, $held;\n        echo 'I|';\n        $child = null;\n        $rv = new CoalescePayload106();\n        $held = $rv;\n        return $rv;\n    }\n    public function __destruct() {\n        global $fallback;\n        echo 'D|';\n        $fallback = 99;\n    }\n}\nclass CoalesceChild106 extends CoalesceParent106 {}\nfunction fallback106() {\n    global $fallback;\n    echo 'R|';\n    return $fallback;\n}\n$error = new Exception('supplied');\n$held = null;\n$throws = false;\n$fallback = 7;\n$child = new CoalesceChild106();\n$weak = WeakReference::create($child);\n$result = 42;\necho 'H:';\ntry {\n    $result = $child->value ?? fallback106();\n} catch (Exception $caught) {\n    echo $caught === $error ? 'C' : '!', '|';\n}\necho $result, '|';\necho 'F|';\n$held = null;\n$child = null;\necho 'E|';\n",
+      "source_sha256": "48c5437c0908483f6a7f28ade1fdf46e5ba0fb5575a3cf4461c64e8fec957ede",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106/.tools/magic-coalesce-no-get-probes-106/held.php",
+      "stdout_base64": "SDpJfER8Unw5OXxGfFZ8Wnx2fEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106/.tools/magic-coalesce-no-get-probes-106/native-first",
+      "native_raw_sha256": "1465890982e873adf7ff066ee8cc6b55f7c750e0b8685963d90e256d1554d8ff",
+      "coalesce_line": 42
+    },
+    {
+      "id": "throwing",
+      "source_file": "magic-coalesce-no-get-throwing.php",
+      "source": "<?php\nclass CoalescePayload106 {\n    public function __destruct() {\n        global $weak, $throws, $error;\n        echo 'V|';\n        echo $weak->get() === null ? 'Z' : 'L', '|';\n        if ($throws) { throw $error; }\n        echo 'v|';\n    }\n}\nclass CoalesceParent106 {\n    private int $value = 1;\n    public function __isset(string $name) {\n        global $child, $held;\n        echo 'I|';\n        $child = null;\n        return new CoalescePayload106();\n    }\n    public function __destruct() {\n        global $fallback;\n        echo 'D|';\n        $fallback = 99;\n    }\n}\nclass CoalesceChild106 extends CoalesceParent106 {}\nfunction fallback106() {\n    global $fallback;\n    echo 'R|';\n    return $fallback;\n}\n$error = new Exception('supplied');\n$held = null;\n$throws = true;\n$fallback = 7;\n$child = new CoalesceChild106();\n$weak = WeakReference::create($child);\n$result = 42;\necho 'X:';\ntry {\n    $result = $child->value ?? fallback106();\n} catch (Exception $caught) {\n    echo $caught === $error ? 'C' : '!', '|';\n}\necho $result, '|';\necho 'F|';\n$held = null;\n$child = null;\necho 'E|';\n",
+      "source_sha256": "82c053e3a0b17389de03b66ef207cc253cbd68fb9396c3b8eb01ece5dfe9b640",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106/.tools/magic-coalesce-no-get-probes-106/throwing.php",
+      "stdout_base64": "WDpJfFZ8THxEfEN8NDJ8RnxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106/.tools/magic-coalesce-no-get-probes-106/native-first",
+      "native_raw_sha256": "022da6e42fb821af80856c840e203ee9374f91f7fd44eb028eb5e9e4a916667b",
+      "coalesce_line": 40
+    }
+  ]
+}
