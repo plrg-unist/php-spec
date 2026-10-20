@@ -59,7 +59,7 @@ def conditions(name, program, path, stdout):
         '~$array_float_array_key_source(S[.CODE = eps], ' + args + ')',
         '~$array_float_array_key_source(S, n_a, n_old, poperand, phpType13*, $(z + 1), n_bits, i)',
         '~$array_float_array_key_source(S, n_a, n_old, REFERENCE (|S.STORE|), phpType13*, z, n_bits, i)',
-        'S_scalar = S[.STORE[n_capture] = DEFINED (PINT 9)]',
+        'S_scalar = S[.STORE[n_capture] = DEFINED (PSTRING eps)]',
         '$array_float_array_key_plan(S_scalar) = eps', '$array_float_key_plan(S_scalar) = eps',
         '$heap_owners($heap_graph(S), HCELL n_capture) = 2',
         '$heap_owners($heap_graph(S), HARRAY n_old) = ' + ('3' if thrown else '2'),
