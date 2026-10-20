@@ -7,6 +7,27 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Selected-reference `^=` now protects leading fractional RHS text before its
+Warning. A supplied throw skips the later precision diagnostic and store,
+retaining the same Exception, callback write `88` and outer `100`. Normal return keeps
+the original `"5.5tail"` precision message and long `5` after rewriting the old RHS
+to `7` and retiring its last alias; the third callback writes old target `66`, then
+cached `12 XOR 5` stores integer `9` through its surviving alias. Current names
+and replacements remain separate. Two originals pass at `6544ab0d0`/407 and
+200+250 focused premises at `727fd5cb6`/407 in the
+[protected XOR text ledger](coverage/semantics/xorassign-selected-rhs-warning-review.json).
+The original peer fixture syntax failure retains zero credit; only the corrected
+peer fixture recompiles while the accepted author compiler output is retained.
+Initial strict scalar references, fractional LEFT/quiet PINT RHS and two-notice
+leading fractional text bound the slice. Other conversions and owning lifetimes
+remain partial; numeric, formatting and generic-unwind bodies stay unchanged.
+OP12, COMP88 and Source47 low-initial-precision callbacks remain paused.
+
+Composed over `4105d1eb2`/407, preserving incoming state, task and
+ordered-manifest paths. Source2/state450 retain their private407 cuts;
+independently reviewed absent incoming selectors require no joined execution
+or renewed credit.
+
 Retained DEFINE Closure callees now accept existing bounded array snapshots
 under omitted/raw-false flags. Named capture, canonical DIRECT copies, nested
 aliases and query COW preserve the earlier array and shared object identity after
@@ -111,24 +132,8 @@ INI/missing-read and ordinary typed-ref selectors have no producer here.
 Source4/strict407/state529 keep private cuts and compile failure0, without
 joined execution, accepted replay or renewed credit.
 
-Selected-reference `>>=` now captures LEFT before Deprecated and reads the rebound
-count afterward. Cached `-12` with count `64` stores integer `-1` through the old
-target alias despite current LEFT `77`; old count `2` would give `-3`, and a reread
-positive LEFT would give `0`. Current count `-1` instead raises `ArithmeticError`
-at line 25 before a compound store, preserving callback `88` and outer `100`.
-Old aliases and replacements retain separate owners and write-through at EOF.
-Two originals pass at `6d2b58e98`/407 and 195+163 focused premises at
-`dfebbc42b`/407 in the
+Earlier selected-reference `>>=` retains source2/state358 in the
 [selected shift ledger](coverage/semantics/shiftassign-selected-warning-review.json).
-Initial strict scalar references, fractional LEFT/quiet PINT count and surviving
-target aliases bound this slice. Other conversions/operators/owning lifetimes
-remain partial; numeric and generic-unwind bodies stay unchanged. OP12, COMP88
-and Source47 low-initial-precision callbacks remain paused.
-
-Composed over `7e64f4847`/407, preserving incoming state, task and
-ordered-manifest paths. Source2/state358 retain their private407 cuts;
-independently reviewed absent incoming selectors require no joined execution
-or renewed credit.
 
 Direct missing instance calls now preserve named string keys and mixed send
 order through inherited public `__call(string,array)`. Earlier main-CV send `7`

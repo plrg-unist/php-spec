@@ -1091,6 +1091,14 @@ Success detaches late aliases; negative counts error before storage. Five exact
 originals and 629 focused SL premises pass in the
 [quiet float shift ledger](coverage/semantics/shiftassign-quiet-float-review.json).
 
+Selected-reference `^=` now also protects leading fractional RHS text across
+Warning and string-precision Deprecated. The original `"5.5tail"` message and
+cached integer survive rewriting and retiring that old RHS; `12 XOR 5` stores `9`
+through the old target alias. A supplied Warning throw instead skips precision
+and storage. Two originals and 450 focused premises pass in the
+[protected XOR text ledger](coverage/semantics/xorassign-selected-rhs-warning-review.json).
+Other conversions, producers and owning lifetimes remain partial.
+
 Selected-reference `^=` now keeps both old referents and the numeric path through
 a Deprecated callback. Captured `12` XOR old RHS `5` stores integer `9` through the
 old target alias despite current names `77`/`7`. Changing both old values to bad
