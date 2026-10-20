@@ -29,7 +29,7 @@ def checks(program, path, name):
     owning = values[start:start + 4]
     assert all('perrorread_nonnull' in condition for condition in owning)
     primitive = [condition.replace('perrorread_nonnull', 'perrorread_primitive')
-                 .replace('KNOWN (POBJECT 0)', 'KNOWN (PINT 1)').lstrip('~')
+                 .replace('KNOWN PUNDEFINED', 'KNOWN (PINT 1)').lstrip('~')
                  for condition in owning]
     return front + owning + primitive
 
