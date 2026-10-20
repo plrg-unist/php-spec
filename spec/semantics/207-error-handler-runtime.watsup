@@ -30,6 +30,7 @@ dec $spaceship_read_scalar(pvalue) : bool
 dec $spaceship_read_operand(pstate, poperand) : bool
 dec $spaceship_read_other(pstate, perrorread) : bool
 dec $spaceship_read_array_entries(pentry*) : bool
+dec $spaceship_read_array_value(pstate, pvalue) : bool
 dec $spaceship_read_array_operand(pstate, poperand) : bool
 dec $spaceship_read_array(pstate, perrorread) : bool
 dec $spaceship_read_again(pstate, perrorread) : bool
@@ -433,24 +434,34 @@ def $spaceship_read_other(S, perrorread) = $spaceship_read_operand(S, perrorread
 def $spaceship_read_other(S, perrorread) = $spaceship_read_scalar(pvalue)
   -- if perrorread.ORIGINAL = BINARY_RIGHT SPACESHIP (KNOWN pvalue) z
 def $spaceship_read_other(S, perrorread) = true -- otherwise
-;; Live flat tables may enter or resume through the opposing direct CV.
-;; NULL comparison only observes the table's current emptiness.
+;; Live flat tables may enter or resume through a direct CV or captured value.
+;; Saved TASK/RESULT/BASE roots retain captured tables across the callback.
 def $spaceship_read_array_entries(eps) = true
 def $spaceship_read_array_entries((ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = ($spaceship_read_scalar(pvalue) /\ $spaceship_read_array_entries(pentry_tail*))
 def $spaceship_read_array_entries(pentry*) = false -- otherwise
-def $spaceship_read_array_operand(S, VARIABLE n* z) = true
-  -- if ~$environment_blocked(S, n*)
-  -- if $lookup(S.ENV, n*) = (n_cell)
-  -- if S.STORE[n_cell] = DEFINED (PARRAY n_array)
+def $spaceship_read_array_value(S, PARRAY n_array) = true
   -- if (HARRAY n_array) <- S.ALLOCATIONS
   -- if $(n_array < |S.ARRAYS|)
   -- if $spaceship_read_array_entries(S.ARRAYS[n_array].ITEMS)
+def $spaceship_read_array_value(S, pvalue) = false -- otherwise
+def $spaceship_read_array_operand(S, VARIABLE n* z) = $spaceship_read_array_value(S, pvalue)
+  -- if ~$environment_blocked(S, n*)
+  -- if $lookup(S.ENV, n*) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
 def $spaceship_read_array_operand(S, poperand) = false -- otherwise
 def $spaceship_read_array(S, perrorread) = $spaceship_read_array_operand(S, VARIABLE n_left* z_left)
   -- if $spaceship_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
   -- if perrorread.TASK = BINARY_RIGHT SPACESHIP (VARIABLE n_left* z_left) z
 def $spaceship_read_array(S, perrorread) = $spaceship_read_array_operand(S, perrorread.INPUT)
   -- if perrorread.ORIGINAL = BINARY_RIGHT SPACESHIP (VARIABLE n* z_origin) z
+  -- if perrorread.INPUT = VARIABLE n_right* z_right
+  -- if $error_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
+def $spaceship_read_array(S, perrorread) = $spaceship_read_array_value(S, pvalue)
+  -- if perrorread.ORIGINAL = BINARY_RIGHT SPACESHIP (VARIABLE n* z_origin) z
+  -- if perrorread.INPUT = KNOWN pvalue
+  -- if $error_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
+def $spaceship_read_array(S, perrorread) = $spaceship_read_array_value(S, pvalue)
+  -- if perrorread.ORIGINAL = BINARY_RIGHT SPACESHIP (KNOWN pvalue) z
   -- if $error_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
 def $spaceship_read_array(S, perrorread) = false -- otherwise
 ;; Only a frozen first-left read can fetch a missing right CV next. The

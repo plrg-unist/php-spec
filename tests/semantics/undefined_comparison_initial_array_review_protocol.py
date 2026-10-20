@@ -141,6 +141,11 @@ def checks(program, path, name):
             '$lookup(S_done.ENV,$ptascii("replacement")) = (n_current)',
             'S_done.STORE[n_current] = DEFINED (PINT 6)',
             '$heap_owners($heap_prune($heap_graph(S_done)),HCELL n_current) = 2',
-            '$error_read_plan(S[.RESULT = KNOWN (PARRAY n_initial)]) = eps',
+            'S_captured = S[.RESULT = KNOWN (PARRAY n_initial)]',
+            '$error_read_plan(S_captured) = (perrorread_captured)',
+            '$error_read_valid(S_captured,perrorread_captured)',
+            '$spaceship_read_array(S_captured,perrorread_captured)',
+            'perrorread_captured.RESULT = KNOWN (PARRAY n_initial)',
+            '$task_nodes(ERROR_READ_RESULT perrorread_captured) = [HARRAY n_initial]',
         ]
     return values

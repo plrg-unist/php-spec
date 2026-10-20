@@ -140,8 +140,7 @@ again after the first read, including one removed by the first handler.
 All seven comparisons permit a live flat primitive array at the opposing CV on entry or return, including
 reference rebinding and COW. Both-missing/shared-name entries retain physical order.
 Current arrays compare by emptiness against frozen NULL; rebound scalars keep
-their ordinary rules. Captured-array ingress and
-nested/reference/object entries remain partial; the
+their ordinary rules. Nested/reference/object entries remain partial; the
 [spaceship](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
 and [Boolean array resume reviews](../../coverage/semantics/undefined-scalar-compare-array-resume-review.json)
 record resume bounds, certificates, roots and discard. The Boolean extension
@@ -149,6 +148,11 @@ keeps physical order, current alias/COW ownership and known-NULL second records.
 The [initial-array extension](../../coverage/semantics/undefined-comparison-initial-array-review.json)
 widens only four entry premises: saved reads add no initial-table owner, and
 existing quiet-removal, unread-retry, scalar/array resume and discard stay exact.
+At `<=>` only, captured allocated flat DIRECT primitive tables now enter through
+two exact saved-read shapes. Existing TASK/RESULT/BASE roots retain snapshots
+through callback COW and source removal, then release the saved owner on compare or throw;
+see the [captured-array review](../../coverage/semantics/undefined-spaceship-captured-array-review.json).
+Boolean captured-array ingress stays excluded.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.
 [The equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json)

@@ -83,6 +83,39 @@ def $magic_method_arguments_source(S, porigin, (NArg ABSENT expression (BOOLEAN 
   -- if $call_argument_origin(S, (porigin), n) = (porigin_argument)
 def $magic_method_arguments_source(S, porigin, phpType7*, n) = false -- otherwise
 
+;; Direct named calls retain source order and names without binding those names
+;; to __call's own two parameters. Static/scoped callers keep the old admission.
+dec $magic_named_keys(phpType7*, nat, bool, preqbytes*) : (pkey*)?
+def $magic_named_keys(eps, n, b, preqbytes_seen*) = (eps)
+def $magic_named_keys((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7_tail*, n, false, preqbytes_seen*) = ((KINT n) :: pkey_tail*)
+  -- if $magic_named_keys(phpType7_tail*, $(n + 1), false, preqbytes_seen*) = (pkey_tail*)
+def $magic_named_keys((NArg (NIdentifier (BYTES text_name) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7_tail*, n, b, preqbytes_seen*) = ((KSTRING preqbytes) :: pkey_tail*)
+  -- if preqbytes = $base64(text_name)
+  -- if ~(preqbytes <- preqbytes_seen*)
+  -- if $magic_named_keys(phpType7_tail*, n, true, preqbytes_seen* ++ [preqbytes]) = (pkey_tail*)
+def $magic_named_keys(phpType7*, n, b, preqbytes_seen*) = eps -- otherwise
+dec $magic_named_sources(pstate, porigin, phpType7*, nat) : bool
+def $magic_named_sources(S, porigin, eps, n) = true
+def $magic_named_sources(S, porigin, (NArg phpType3_name expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7_tail*, n) = ($magic_method_argument_source(S, porigin_argument, n, expression) /\ $magic_named_sources(S, porigin, phpType7_tail*, $(n + 1)))
+  -- if $call_argument_origin(S, (porigin), n) = (porigin_argument)
+def $magic_named_sources(S, porigin, phpType7*, n) = false -- otherwise
+dec $magic_named_source(pstate, pmagicmethodcall) : bool
+def $magic_named_source(S, pmagicmethodcall) = true
+  -- if $origin_node(S.SOURCES, pmagicmethodcall.SITE) = (NExprMethodCall (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if pmagicmethodcall.ARGUMENTS = phpType7*
+  -- if $named_present(pmagicmethodcall.ARGUMENTS)
+  -- if $magic_named_keys(pmagicmethodcall.ARGUMENTS, 0, false, eps) = (pkey*)
+  -- if $magic_named_sources(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, 0)
+def $magic_named_source(S, pmagicmethodcall) = false -- otherwise
+dec $magic_named_capture_argument(pstate, phpType7) : bool
+def $magic_named_capture_argument(S, NArg (NIdentifier (BYTES text_name) metadata_name) (NExprVariable (BYTES text) metadata) (BOOLEAN false) (BOOLEAN false) metadata_arg) = true
+  -- if $lookup(S.ENV, $base64(text)) = (n)
+  -- if $(n < |S.STORE|) /\ (HCELL n) <- S.ALLOCATIONS /\ ~(n <- S.REFCELLS)
+  -- if S.STORE[n] = DEFINED (PINT i)
+def $magic_named_capture_argument(S, NArg (NIdentifier (BYTES text_name) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg) = true
+  -- if ~$call_reference_variable(expression)
+def $magic_named_capture_argument(S, phpType7) = false -- otherwise
+
 ;; This history proves the selected source without rereading the receiver CV
 ;; or later argument values. Arguments may legitimately mutate either one.
 dec $magic_method_scoped_source(pstate, pmagicmethodcall) : bool
@@ -119,7 +152,7 @@ dec $magic_method_descriptor(pstate, pmagicmethodcall) : bool
 def $magic_method_descriptor(S, pmagicmethodcall) = true
   -- if $magic_method_call_source(S, pmagicmethodcall)
   -- if |pmagicmethodcall.ARGUMENTS| <- [1,2]
-  -- if $magic_method_arguments_source(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, 0)
+  -- if $magic_method_arguments_source(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, 0) \/ $magic_named_source(S, pmagicmethodcall)
   -- if $(pmagicmethodcall.OBJECT < |S.OBJECTS|)
   -- if S.OBJECTS[pmagicmethodcall.OBJECT] = INSTANCE pmagicmethodcall.CLASS
   -- if $class_at(S.CLASSES, pmagicmethodcall.CLASS) = (pclassdesc)
@@ -153,7 +186,7 @@ def $magic_method_capture(S, pmagicmethodcall) = true
   -- if $origin_node(S.SOURCES, pmagicmethodcall.SITE) = (NExprMethodCall (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 phpType6 metadata)
   -- if S_read = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
   -- if S_read.COMPLETION = NORMAL /\ S_read.RESULT = KNOWN (POBJECT pmagicmethodcall.OBJECT)
-  -- if $magic_method_argument_capture(S, pmagicmethodcall.ARGUMENTS[0])
+  -- if $magic_method_argument_capture(S, pmagicmethodcall.ARGUMENTS[0]) \/ ($magic_named_source(S, pmagicmethodcall) /\ $magic_named_capture_argument(S, pmagicmethodcall.ARGUMENTS[0]))
 def $magic_method_capture(S, pmagicmethodcall) = true
   -- if $magic_method_caller(S, pmagicmethodcall)
   -- if $magic_method_scoped_source(S, pmagicmethodcall)
@@ -173,7 +206,12 @@ def $magic_method_plan(S, n, ptbytes, phpType7*, z) = (pmagicmethodcall)
   -- if $magic_method_capture(S, pmagicmethodcall)
 def $magic_method_plan(S, n, ptbytes, phpType7*, z) = eps -- otherwise
 dec $magic_method_start(pstate, nat, ptbytes, phpType7*, int) : pstate
-def $magic_method_start(S, n, ptbytes, phpType7*, z) = S[.TODO = (CALL_ARGS (MAGIC_METHOD_SEND_TARGET pmagicmethodcall) phpType7* 0 eps (pmagicmethodcall.SITE) z) :: METHOD_RESULT :: pmagicmethodcall.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+dec $magic_method_first_task(pmagicmethodcall) : ptask
+def $magic_method_first_task(pmagicmethodcall) = MAGIC_METHOD_NAMED_ARGS pmagicmethodcall 0 eps
+  -- if $named_present(pmagicmethodcall.ARGUMENTS)
+def $magic_method_first_task(pmagicmethodcall) = CALL_ARGS (MAGIC_METHOD_SEND_TARGET pmagicmethodcall) pmagicmethodcall.ARGUMENTS 0 eps (pmagicmethodcall.SITE) pmagicmethodcall.LINE
+  -- if ~$named_present(pmagicmethodcall.ARGUMENTS)
+def $magic_method_start(S, n, ptbytes, phpType7*, z) = S[.TODO = $magic_method_first_task(pmagicmethodcall) :: METHOD_RESULT :: pmagicmethodcall.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $magic_method_plan(S, n, ptbytes, phpType7*, z) = (pmagicmethodcall)
 def $magic_method_start(S, n, ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "magic method source or argument mode"]
   -- if $magic_method_plan(S, n, ptbytes, phpType7*, z) = eps
@@ -197,6 +235,8 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = $magic_method_start(S_r
 dec $magic_method_raw_task(ptask, pmagicmethodcall) : bool
 def $magic_method_raw_task(CALL_ARGS (MAGIC_METHOD_SEND_TARGET pmagicmethodcall) phpType7* n poperand* (porigin) z, pmagicmethodcall) = (porigin = pmagicmethodcall.SITE /\ z = pmagicmethodcall.LINE)
 def $magic_method_raw_task(CALL_SEND (MAGIC_METHOD_SEND_TARGET pmagicmethodcall) phpType7* n poperand* (porigin) z, pmagicmethodcall) = (porigin = pmagicmethodcall.SITE /\ z = pmagicmethodcall.LINE)
+def $magic_method_raw_task(MAGIC_METHOD_NAMED_ARGS pmagicmethodcall n poperand*, pmagicmethodcall) = true
+def $magic_method_raw_task(MAGIC_METHOD_NAMED_SEND pmagicmethodcall n poperand*, pmagicmethodcall) = true
 def $magic_method_raw_task(ptask, pmagicmethodcall) = false -- otherwise
 dec $magic_method_raw_suffix(ptask*, pmagicmethodcall) : bool
 def $magic_method_raw_suffix(eps, pmagicmethodcall) = false
@@ -299,3 +339,163 @@ def $magic_method_target(pcalltarget) = false -- otherwise
 def $named_call_shape(S, MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*, (porigin)) = {SLOTS ([NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN PNULL)]), NAMED eps}
   -- if porigin = pmagicmethodcall.SITE
   -- if $magic_method_pending(S, pmagicmethodcall, n, pvalue*) \/ $magic_method_entered(S, S.CURRENT, S.FRAMES, pmagicmethodcall, n, pvalue*)
+
+;; Named sends are collected by their original argument index. Their names do
+;; not enter the ordinary user-function named-parameter binder.
+dec $magic_named_raw_valid(pstate, pmagicmethodcall, nat, poperand*, bool) : bool
+def $magic_named_raw_valid(S, pmagicmethodcall, n, poperand*, false) = true
+  -- if $magic_named_source(S, pmagicmethodcall)
+  -- if $magic_method_caller(S, pmagicmethodcall)
+  -- if n = |poperand*| /\ $(n <= |pmagicmethodcall.ARGUMENTS|)
+  -- if $call_sent_operands_valid(S, MAGIC_METHOD_SEND_TARGET pmagicmethodcall, 0, poperand*)
+  -- if $source_operand_suffix(S.TODO, MAGIC_METHOD_NAMED_ARGS pmagicmethodcall n poperand*, METHOD_RESULT :: pmagicmethodcall.TAIL)
+def $magic_named_raw_valid(S, pmagicmethodcall, n, poperand*, true) = true
+  -- if $magic_named_source(S, pmagicmethodcall)
+  -- if $magic_method_caller(S, pmagicmethodcall)
+  -- if n = |poperand*| /\ $(n < |pmagicmethodcall.ARGUMENTS|)
+  -- if $call_sent_operands_valid(S, MAGIC_METHOD_SEND_TARGET pmagicmethodcall, 0, poperand*)
+  -- if $source_operand_suffix(S.TODO, MAGIC_METHOD_NAMED_SEND pmagicmethodcall n poperand*, METHOD_RESULT :: pmagicmethodcall.TAIL)
+def $magic_named_raw_valid(S, pmagicmethodcall, n, poperand*, b) = false -- otherwise
+dec $magic_named_send_operand(pstate, pmagicmethodcall, nat) : pstate
+def $magic_named_send_operand(S, pmagicmethodcall, n) = $call_send_parameter(S, MAGIC_METHOD_SEND_TARGET pmagicmethodcall, n, expression, (pmagicmethodcall.SITE), (porigin_argument), z)
+  -- if $(n < |pmagicmethodcall.ARGUMENTS|)
+  -- if pmagicmethodcall.ARGUMENTS[n] = NArg phpType3_name expression (BOOLEAN false) (BOOLEAN false) metadata
+  -- if $call_argument_origin(S, (pmagicmethodcall.SITE), n) = (porigin_argument)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin_argument)], eps, expression)
+rule PhpStep/magic-named-next: S ~> S[.TODO = [$at_task($call_argument_origin(S, (pmagicmethodcall.SITE), n), $call_argument_task(S, MAGIC_METHOD_SEND_TARGET pmagicmethodcall, n, expression, (pmagicmethodcall.SITE))), MAGIC_METHOD_NAMED_SEND pmagicmethodcall n poperand*] ++ ptask_tail*]
+  -- if S.TODO = (MAGIC_METHOD_NAMED_ARGS pmagicmethodcall n poperand*) :: ptask_tail*
+  -- if $magic_named_raw_valid(S, pmagicmethodcall, n, poperand*, false)
+  -- if $(n < |pmagicmethodcall.ARGUMENTS|)
+  -- if pmagicmethodcall.ARGUMENTS[n] = NArg phpType3_name expression (BOOLEAN false) (BOOLEAN false) metadata
+rule PhpStep/magic-named-send: S ~> S_value[.TODO = (MAGIC_METHOD_NAMED_ARGS pmagicmethodcall $(n + 1) (poperand* ++ [S_value.RESULT])) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (MAGIC_METHOD_NAMED_SEND pmagicmethodcall n poperand*) :: ptask_tail*
+  -- if $magic_named_raw_valid(S, pmagicmethodcall, n, poperand*, true)
+  -- if S_value = $magic_named_send_operand(S, pmagicmethodcall, n)
+  -- if S_value.COMPLETION = NORMAL
+rule PhpStep/magic-named-send-abrupt: S ~> S_value
+  -- if S.TODO = (MAGIC_METHOD_NAMED_SEND pmagicmethodcall n poperand*) :: ptask_tail*
+  -- if $magic_named_raw_valid(S, pmagicmethodcall, n, poperand*, true)
+  -- if S_value = $magic_named_send_operand(S, pmagicmethodcall, n)
+  -- if S_value.COMPLETION =/= NORMAL
+
+dec $magic_named_positional(pkey*) : bool
+def $magic_named_positional(eps) = false
+def $magic_named_positional((KINT i) :: pkey_tail*) = true
+def $magic_named_positional((KSTRING preqbytes) :: pkey_tail*) = $magic_named_positional(pkey_tail*)
+dec $magic_named_tables(pkey*, pvalue*, parray, parray) : (parray, parray)
+def $magic_named_tables(eps, eps, parray_arguments, parray_named) = (parray_arguments, parray_named)
+def $magic_named_tables((KINT i) :: pkey_tail*, pvalue :: pvalue_tail*, parray_arguments, parray_named) = $magic_named_tables(pkey_tail*, pvalue_tail*, $array_insert(parray_arguments, KINT i, DIRECT pvalue), parray_named)
+def $magic_named_tables((KSTRING preqbytes) :: pkey_tail*, pvalue :: pvalue_tail*, parray_arguments, parray_named) = $magic_named_tables(pkey_tail*, pvalue_tail*, $array_insert(parray_arguments, KSTRING preqbytes, DIRECT pvalue), $array_insert(parray_named, KSTRING preqbytes, DIRECT pvalue))
+dec $magic_named_parameter_array(pstate, pkey*, parray) : pstate
+def $magic_named_parameter_array(S, pkey*, parray) = S
+  -- if ~$magic_named_positional(pkey*)
+def $magic_named_parameter_array(S, pkey*, parray) = $allocate_array(S, parray)
+  -- if $magic_named_positional(pkey*)
+dec $magic_named_pack(pstate, pmagicmethodcall, poperand*) : pstate
+def $magic_named_pack(S, pmagicmethodcall, poperand*) = S_arguments[.TODO = [(CALL_ARGS (MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*) eps 2 ([KNOWN (PSTRING pmagicmethodcall.NAME), KNOWN (PARRAY n_arguments)]) (pmagicmethodcall.SITE) pmagicmethodcall.LINE), MAGIC_METHOD_NAMED_RESULT pmagicmethodcall n_arguments n_named pvalue*, METHOD_RESULT] ++ pmagicmethodcall.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $magic_named_raw_valid(S, pmagicmethodcall, |pmagicmethodcall.ARGUMENTS|, poperand*, false)
+  -- if $magic_named_keys(pmagicmethodcall.ARGUMENTS, 0, false, eps) = (pkey*)
+  -- if $magic_method_values(S, poperand*) = (pvalue*)
+  -- if (parray_arguments, parray_named) = $magic_named_tables(pkey*, pvalue*, $array_empty(), $array_empty())
+  -- if S_named = $allocate_array(S, parray_named)
+  -- if S_named.RESULT = KNOWN (PARRAY n_named)
+  -- if S_arguments = $magic_named_parameter_array(S_named, pkey*, parray_arguments)
+  -- if S_arguments.RESULT = KNOWN (PARRAY n_arguments)
+def $magic_named_pack(S, pmagicmethodcall, poperand*) = S[.COMPLETION = UNSUPPORTED "named magic method send continuation"] -- otherwise
+rule PhpStep/magic-named-pack: S ~> $magic_named_pack(S, pmagicmethodcall, poperand*)
+  -- if S.TODO = (MAGIC_METHOD_NAMED_ARGS pmagicmethodcall n poperand*) :: ptask_tail*
+  -- if $magic_named_raw_valid(S, pmagicmethodcall, n, poperand*, false)
+  -- if n = |pmagicmethodcall.ARGUMENTS|
+
+;; Source/sent identities outlive the parameter array, buffer and payload.
+;; Only the pending/live buffer checks below demand an allocation or image.
+dec $magic_named_history(pstate, pmagicmethodcall, nat, nat, pvalue*) : bool
+def $magic_named_history(S, pmagicmethodcall, n_arguments, n_named, pvalue*) = true
+  -- if $magic_method_descriptor(S, pmagicmethodcall)
+  -- if $magic_named_source(S, pmagicmethodcall)
+  -- if |pvalue*| = |pmagicmethodcall.ARGUMENTS|
+  -- if $magic_named_keys(pmagicmethodcall.ARGUMENTS, 0, false, eps) = (pkey*)
+  -- if $(n_arguments < |S.ARRAYS|) /\ $(n_named < |S.ARRAYS|)
+  -- if (~$magic_named_positional(pkey*) /\ n_arguments = n_named) \/ ($magic_named_positional(pkey*) /\ n_arguments = $(n_named + 1))
+def $magic_named_history(S, pmagicmethodcall, n_arguments, n_named, pvalue*) = false -- otherwise
+dec $magic_named_buffer(pstate, pmagicmethodcall, nat, nat, pvalue*) : bool
+def $magic_named_buffer(S, pmagicmethodcall, n_arguments, n_named, pvalue*) = true
+  -- if $magic_named_history(S, pmagicmethodcall, n_arguments, n_named, pvalue*)
+  -- if $magic_named_keys(pmagicmethodcall.ARGUMENTS, 0, false, eps) = (pkey*)
+  -- if (parray_arguments, parray_named) = $magic_named_tables(pkey*, pvalue*, $array_empty(), $array_empty())
+  -- if (HARRAY n_named) <- S.ALLOCATIONS
+  -- if S.ARRAYS[n_named] = parray_named
+def $magic_named_buffer(S, pmagicmethodcall, n_arguments, n_named, pvalue*) = false -- otherwise
+dec $magic_named_pending(pstate, pmagicmethodcall, nat, nat, pvalue*) : bool
+def $magic_named_pending(S, pmagicmethodcall, n_arguments, n_named, pvalue*) = true
+  -- if S.TODO = (CALL_ARGS (MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*) eps 2 ([KNOWN (PSTRING pmagicmethodcall.NAME), KNOWN (PARRAY n_arguments)]) (pmagicmethodcall.SITE) pmagicmethodcall.LINE) :: (MAGIC_METHOD_NAMED_RESULT pmagicmethodcall n_arguments n_named pvalue*) :: METHOD_RESULT :: pmagicmethodcall.TAIL
+  -- if $magic_method_caller(S, pmagicmethodcall)
+  -- if $magic_named_buffer(S, pmagicmethodcall, n_arguments, n_named, pvalue*)
+  -- if $magic_method_values(S, (KNOWN pvalue)*) = (pvalue*)
+  -- if $magic_named_keys(pmagicmethodcall.ARGUMENTS, 0, false, eps) = (pkey*)
+  -- if (parray_arguments, parray_named) = $magic_named_tables(pkey*, pvalue*, $array_empty(), $array_empty())
+  -- if (HARRAY n_arguments) <- S.ALLOCATIONS
+  -- if S.ARRAYS[n_arguments] = parray_arguments
+def $magic_named_pending(S, pmagicmethodcall, n_arguments, n_named, pvalue*) = false -- otherwise
+dec $magic_named_frame(pstate, pcallcontext, pframe, pframe*, pmagicmethodcall, nat, nat, pvalue*) : bool
+def $magic_named_frame(S, pcallcontext, pframe, pframe_tail*, pmagicmethodcall, n_arguments, n_named, pvalue*) = true
+  -- if pcallcontext.TARGET = MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*
+  -- if pcallcontext.FUNCTION = pmagicmethodcall.METHOD /\ pcallcontext.INSTANCE = eps
+  -- if pcallcontext.RECEIVER = (pmagicmethodcall.OBJECT) /\ pcallcontext.CALLED_CLASS = (pmagicmethodcall.CLASS)
+  -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, METHOD_TARGET pmagicmethodcall.OBJECT pmagicmethodcall.METHOD)
+  -- if pcallcontext.CALLSITE = (pmagicmethodcall.SITE) /\ pcallcontext.LINE = pmagicmethodcall.LINE
+  -- if pcallcontext.ARGC = 2 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
+  -- if $magic_named_history(S, pmagicmethodcall, n_arguments, n_named, pvalue*)
+  -- if pframe.ORIGIN = (pmagicmethodcall.SITE)
+  -- if $source_operand_suffix(pframe.TODO, MAGIC_METHOD_NAMED_RESULT pmagicmethodcall n_arguments n_named pvalue*, METHOD_RESULT :: pmagicmethodcall.TAIL)
+  -- if $magic_method_caller($constant_frame_view(S, pframe, pframe_tail*), pmagicmethodcall)
+def $magic_named_frame(S, pcallcontext, pframe, pframe_tail*, pmagicmethodcall, n_arguments, n_named, pvalue*) = false -- otherwise
+dec $magic_named_entered(pstate, pcallcontext?, pframe*, pmagicmethodcall, nat, nat, pvalue*) : bool
+def $magic_named_entered(S, (pcallcontext), pframe :: pframe_tail*, pmagicmethodcall, n_arguments, n_named, pvalue*) = $magic_named_frame(S, pcallcontext, pframe, pframe_tail*, pmagicmethodcall, n_arguments, n_named, pvalue*)
+  -- if pcallcontext.TARGET = MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*
+def $magic_named_entered(S, (pcallcontext), pframe :: pframe_tail*, pmagicmethodcall, n_arguments, n_named, pvalue*) = $magic_named_entered(S, pframe.CONTEXT, pframe_tail*, pmagicmethodcall, n_arguments, n_named, pvalue*)
+  -- if pcallcontext.TARGET =/= MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*
+def $magic_named_entered(S, eps, pframe :: pframe_tail*, pmagicmethodcall, n_arguments, n_named, pvalue*) = $magic_named_entered(S, pframe.CONTEXT, pframe_tail*, pmagicmethodcall, n_arguments, n_named, pvalue*)
+def $magic_named_entered(S, pcallcontext?, eps, pmagicmethodcall, n_arguments, n_named, pvalue*) = false
+
+;; The marker retains the original extra_named_params array and This through
+;; compiled-local cleanup. The entered context borrows that receiver hold.
+def $target_nodes(MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*) = eps
+def $target_instance(MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*) = eps
+def $target_receiver(S, MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*) = (pmagicmethodcall.OBJECT)
+def $target_lexical_class(S, MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*) = $target_lexical_class(S, METHOD_TARGET pmagicmethodcall.OBJECT pmagicmethodcall.METHOD)
+def $target_called_class(S, MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*) = (pmagicmethodcall.CLASS)
+def $call_receiver_roots(pcallcontext) = eps
+  -- if pcallcontext.TARGET = MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*
+def $target_function(S, MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*) = (pfunction)
+  -- if $magic_named_pending(S, pmagicmethodcall, n_arguments, n_named, pvalue*) \/ $magic_named_entered(S, S.CURRENT, S.FRAMES, pmagicmethodcall, n_arguments, n_named, pvalue*)
+  -- if $target_function(S, METHOD_TARGET pmagicmethodcall.OBJECT pmagicmethodcall.METHOD) = (pfunction)
+def $call_selected_valid(S, MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*, (porigin)) = (porigin = pmagicmethodcall.SITE /\ ($magic_named_pending(S, pmagicmethodcall, n_arguments, n_named, pvalue*) \/ $magic_named_entered(S, S.CURRENT, S.FRAMES, pmagicmethodcall, n_arguments, n_named, pvalue*)))
+def $magic_method_pending_site(S, porigin) = true
+  -- if S.TODO = (CALL_ARGS (MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*) eps 2 poperand* (porigin) z) :: ptask_tail*
+def $call_arguments_valid(S, (porigin), 2, eps, poperand_name :: poperand_array :: eps, 0) = true
+  -- if S.TODO = (CALL_ARGS (MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*) eps 2 (poperand_name :: poperand_array :: eps) (porigin) z) :: ptask_tail*
+  -- if poperand_name = KNOWN (PSTRING pmagicmethodcall.NAME) /\ poperand_array = KNOWN (PARRAY n_arguments)
+  -- if $magic_named_pending(S, pmagicmethodcall, n_arguments, n_named, pvalue*)
+def $magic_method_target(MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*) = true
+def $named_call_valid(S, MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*, (porigin)) = true
+  -- if porigin = pmagicmethodcall.SITE
+  -- if $magic_named_pending(S, pmagicmethodcall, n_arguments, n_named, pvalue*) \/ $magic_named_entered(S, S.CURRENT, S.FRAMES, pmagicmethodcall, n_arguments, n_named, pvalue*)
+  -- if $target_function(S, METHOD_TARGET pmagicmethodcall.OBJECT pmagicmethodcall.METHOD) = (pfunction)
+  -- if ~$named_source_valid(pfunction.SIGNATURE.PARAMETERS, pmagicmethodcall.ARGUMENTS, 0, false, {SLOTS eps, NAMED eps})
+def $named_call_shape(S, MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*, (porigin)) = {SLOTS ([NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN PNULL)]), NAMED eps}
+  -- if porigin = pmagicmethodcall.SITE
+  -- if $magic_named_pending(S, pmagicmethodcall, n_arguments, n_named, pvalue*) \/ $magic_named_entered(S, S.CURRENT, S.FRAMES, pmagicmethodcall, n_arguments, n_named, pvalue*)
+
+dec $magic_named_result_valid(pstate, pmagicmethodcall, nat, nat, pvalue*) : bool
+def $magic_named_result_valid(S, pmagicmethodcall, n_arguments, n_named, pvalue*) = ($magic_method_caller(S, pmagicmethodcall) /\ $magic_named_buffer(S, pmagicmethodcall, n_arguments, n_named, pvalue*) /\ $source_operand_suffix(S.TODO, MAGIC_METHOD_NAMED_RESULT pmagicmethodcall n_arguments n_named pvalue*, METHOD_RESULT :: pmagicmethodcall.TAIL))
+rule PhpStep/magic-named-result: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (MAGIC_METHOD_NAMED_RESULT pmagicmethodcall n_arguments n_named pvalue*) :: ptask_tail*
+  -- if $magic_named_result_valid(S, pmagicmethodcall, n_arguments, n_named, pvalue*)
+def $task_nodes(MAGIC_METHOD_NAMED_ARGS pmagicmethodcall n poperand*) = $operands_roots(poperand*) ++ [HOBJECT pmagicmethodcall.OBJECT]
+def $task_nodes(MAGIC_METHOD_NAMED_SEND pmagicmethodcall n poperand*) = $operands_roots(poperand*) ++ [HOBJECT pmagicmethodcall.OBJECT]
+def $task_nodes(MAGIC_METHOD_NAMED_RESULT pmagicmethodcall n_arguments n_named pvalue*) = [HARRAY n_named, HOBJECT pmagicmethodcall.OBJECT]
+def $call_task_valid(S, MAGIC_METHOD_NAMED_ARGS pmagicmethodcall n poperand*) = $magic_named_raw_valid(S, pmagicmethodcall, n, poperand*, false)
+def $call_task_valid(S, MAGIC_METHOD_NAMED_SEND pmagicmethodcall n poperand*) = $magic_named_raw_valid(S, pmagicmethodcall, n, poperand*, true)
+def $call_task_valid(S, MAGIC_METHOD_NAMED_RESULT pmagicmethodcall n_arguments n_named pvalue*) = $magic_named_result_valid(S, pmagicmethodcall, n_arguments, n_named, pvalue*)
+def $destructor_return_discarded((MAGIC_METHOD_NAMED_RESULT pmagicmethodcall n_arguments n_named pvalue*) :: ptask_tail*) = $destructor_return_discarded(ptask_tail*)

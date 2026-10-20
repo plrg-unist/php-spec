@@ -939,3 +939,30 @@ exact, without old replay. A pending-unpack flag was corrected during static rev
 before any actor. Additional arguments/packs, materialized tables, wider properties,
 other object kinds, PIPE and sole-owner lifetimes remain partial. Original reference
 forms have no new source agreement; paused boundaries remain untouched.
+
+The [rejected getter Closure value increment](../../coverage/semantics/ini-set-null-getter-closure-value-review.json)
+adds a separate ownerless positional NULL2 arm for a retained exact bare
+`INTRINSICCLOSURE INTRINSIC_INI_GET`. Bounds, allocation and exact body kind
+authenticate the live value; no property record or invented creation receipt is
+needed. Existing invocation/source checks authenticate the selected string callee
+and written arguments: option facts permit NULL, while value facts must be unknown
+(`compiled_read` EPS). Actual partial states witness the earlier capture rather
+than rereading current CVs. The edge-free getter is an owning HOBJECT argument,
+not the INI_SET receiver, and is never invoked during rejection.
+
+Returning Deprecated handling reaches the existing parameter2 TypeError with
+converted-empty API option and the same getter despite live value0. Supplied
+Exception preserves rawNULL/the old getter and cancels rejection. Strict reception
+rejects parameter1 after V effects with handler0. Real getter→string setter→same
+getter calls distinguish retained callable identity from the rebound live fields.
+Four originals and all1,374 premises (326+353+278 author,417 independent) pass
+first attempt at `487f3e446`/`f99899555`/407. Initial `d741939d6` native4/baseline0
+and affected checks use CPU4; nine stable/reaped reports PASS, only Deprecated11/17
+is expected and workers are quiet. Native E/I establishes empty API option and
+getter identity. Peer native has no trace traversal; actual state proves the
+partial root-free NULL capture, completed getter root, handler/API two-frame raw
+argument edge, existing idempotent buffering and exact restoration/discard.
+Only23 additive172 lines change; quiet-value/148 allocation/finish body/trace/root/
+discard/GC and historical tests remain exact, without replay. Other callable kinds,
+retained setter receivers, named/unpacked/PIPE forms and sole-owner lifetimes remain
+partial; no paused Stringable or owned-NUL path is exercised.

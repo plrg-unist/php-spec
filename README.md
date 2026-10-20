@@ -24,6 +24,8 @@ This covers bounded spaceship operands and distinct direct-CV
 `==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
 The defined counterpart may already be a live flat primitive array at entry;
 its current scalar/array binding supplies the counterpart, with ordinary COW.
+At `<=>`, a computed flat primitive array keeps its captured table through
+handler writes, COW and supplied-throw cleanup.
 Both-missing pairs, including one missing name twice, can resume if the first
 handler defines the later scalar or flat array. `$x == $x` can then be false and `$x > $x`
 true. Greater operators check source right first. All seven comparison operators
@@ -412,6 +414,16 @@ wrapper option; both retain the same updated object. Four source comparisons and
 strict ordinary versus weak explicit calls, precise discard and retained-setter reuse.
 Additional arguments/packs, materialized tables, wider properties, other object
 kinds, PIPE and sole-owner lifetimes remain partial.
+
+[Rejected getter Closure INI values](coverage/semantics/ini-set-null-getter-closure-value-review.json)
+now retain an exact bare `ini_get` Closure as the second value of an ownerless
+positional NULL-option call. Returning handlers convert the option to empty before
+the value TypeError; supplied throw preserves raw NULL and the captured getter and
+cancels rejection. The value is never invoked during reception. Four source
+comparisons and 1,374 state premises cover earlier callee/option/value capture,
+owning trace edges, strict option priority, precise discard and real getter reuse
+before and after setter recovery. Other callable kinds, retained setter receivers,
+named/unpacked forms and sole-owner lifetimes remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -1059,6 +1071,15 @@ cached LEFT `-12`, `2.0` stores `-48`/`-3`; `64.0` stores right-shift `-1`.
 Success detaches late aliases; negative counts error before storage. Five exact
 originals and 629 focused SL premises pass in the
 [quiet float shift ledger](coverage/semantics/shiftassign-quiet-float-review.json).
+
+Selected-reference `^=` now keeps both old referents and the numeric path through
+a Deprecated callback. Captured `12` XOR old RHS `5` stores integer `9` through the
+old target alias despite current names `77`/`7`. Changing both old values to bad
+strings instead raises `TypeError`; it does not retry bytewise XOR or store.
+Two originals and 362 focused premises pass in the
+[selected XOR ledger](coverage/semantics/xorassign-selected-warning-review.json).
+Other conversions, operators, producers and owning lifetimes remain partial.
+
 For initially plain variables, numeric `&=`, `|=` and `^=` now keep their fractional
 left conversion through deprecation handlers, then read the live quiet integer RHS.
 Success detaches late aliases; supplied throw preserves callback writes and the
@@ -4394,6 +4415,15 @@ array. Early sends survive argument mutation; array/payload cleanup precedes
 receiver release and cached result or supplied-exception delivery.
 [Four source agreements and 355 focused premises](coverage/semantics/magic-call-review.json)
 cover these paths and public-method bypass. Wider magic call forms remain partial.
+
+Direct missing instance calls also preserve named string keys and mixed send order.
+An earlier scalar send stays `7` when a later argument changes its source CV to `99`.
+Named-only calls share the argument table with a retained buffer: `unset($arguments)`
+leaves its Payload alive through `A`, then buffer cleanup precedes receiver cleanup
+and cached `7` delivery or the same supplied throw with destination `42` unchanged.
+[Three source agreements and 559 focused premises](coverage/semantics/magic-named-call-review.json)
+bind separate cuts. Static/scoped named, unpacked/reference sends and wider
+argument/ownership forms remain partial.
 
 External literal missing static calls also invoke inherited public
 `__callStatic(string,array)`, retaining lexical Parent/called Child and early sends

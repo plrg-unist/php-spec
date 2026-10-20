@@ -685,6 +685,22 @@ covering actual atomic commit/error, original bindings, cells/owners and budgets
 Wider initial forms, conversions, unsafe targets and lifecycle remain partial;
 pure projections establish refusals only, and older threshold cuts are not renewed.
 
+Selected-reference `^=` now dereferences both operands and chooses numeric
+specialization before converting fractional LEFT. Captured `12` survives the
+Deprecated callback; selected old RHS `5`, rather than rebound current name `7`,
+produces integer `9` through the surviving old target alias. Current LEFT `77`
+and replacement bindings remain separate. If the handler instead changes both
+old values to nonnumeric strings, `TypeError` reports `string ^ string` at line 25
+without retrying bytewise XOR, replacing the old string or changing outer `100`.
+Two originals and 199+163 focused premises cover real fresh/entered callbacks,
+source/selection controls, returned LEFT history, raw store or THROWN versus fresh
+indexed Error, owners, EOF and zero/one-step cuts in the
+[selected XOR ledger](../../coverage/semantics/xorassign-selected-warning-review.json).
+Initial untyped scalar references, fitting fractional LEFT and quiet PINT RHS,
+later quiet PINT or failed nonowning scalar RHS conversion and surviving aliases
+bound the slice. Other conversions, operators, producers and owning lifetimes
+remain partial; generic unwind and numeric algorithms keep their earlier cuts.
+
 For distinct initially plain CVs, numeric `&=`, `|=` and `^=` keep a fractional
 LEFT conversion before deprecation and read the live quiet integer RHS afterward.
 Captured12/live5 stores4/13/9 despite callback target99 and initial RHS3, detaching
@@ -695,7 +711,7 @@ Five exact originals and 575 author plus 117 independent SL premises pass in the
 [bitwise-assignment ledger](../../coverage/semantics/bitassign-warning-review.json).
 All three AST/operation pairs have separate source authority from modulo/shifts.
 Fresh cache/source/op/line guards, actual cells/owners and budgets are covered;
-pure projections establish refusals only. Initial references/copies, warning or
+pure projections establish refusals only. Other initial references/copies, warning or
 noninteger RHS, unsafe targets and wider lifecycle remain partial. Initial float
 LEFT/quiet integer RHS bypasses Zend's separate two-string specialization.
 

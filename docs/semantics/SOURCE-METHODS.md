@@ -12,7 +12,7 @@ these are bounded observations, not complete class semantics.
 [Source trait composition](SOURCE-TRAITS.md) imports method bodies into distinct
 using-class and alias identities, preserving source provenance and inherited cells.
 
-Selected missing literal instance calls now invoke an inherited public
+The earlier positional slice invokes an inherited public
 `__call(string $name, array $arguments)` without a return declaration. The receiver
 is selected before one or two positional int/leaf-instance sends. Those sends are
 then moved into a real packed array; only the resulting name/array pair undergoes
@@ -25,10 +25,25 @@ payload before releasing the selected receiver, then delivers the cached scalar
 result or the same supplied Throwable. Four original-source agreements and
 355 focused premises (334 reached + 21 derived) bind separate tested cuts in the
 [magic-call review](../../coverage/semantics/magic-call-review.json).
-Inaccessible and other scoped instance magic positives, dynamic/first-class forms,
-named/unpacked/reference sends, exported arrays and wider ownership remain open.
+At that historical cut, inaccessible and other scoped instance magic positives,
+dynamic/first-class forms, named/unpacked/reference sends, exported arrays and
+wider ownership remained open.
 Needed out-of-family calls are explicitly Unsupported; ordinary declared methods,
 constructor-special dispatch and existing callable API refusals keep their routes.
+
+Direct literal missing calls now also preserve one or two positional/named
+int/leaf-instance sends in original key order. Names bypass the handler's own
+parameter-name binder; an earlier main CV send stays `7` after a later argument
+changes that same cell to `99` and clears the receiver CV. Named-only calls share
+one table between the parameter and retained named buffer, with two table owners
+but one Payload edge. Explicit parameter unset leaves the buffer alive through
+the body; after compiled locals, buffer disposal precedes selected receiver
+release and cached result or same-error catch with destination `42`.
+[Three source agreements and 559 focused premises](../../coverage/semantics/magic-named-call-review.json)
+retain separate cuts and original recorder/fixture failures. The positional,
+static and scoped helper paths remain compatible by inspection; no old application
+credit is renewed. Static/scoped named calls, references/unpacking, wider producers
+and exported-array lifetimes remain partial.
 
 External literal `Child::missing(...)` now also invokes inherited public static
 `__callStatic(string,array)` without a return declaration. Module415 reuses the

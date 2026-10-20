@@ -1,0 +1,79 @@
+{
+  "scope": "Direct literal missing instance calls with one or two nonreference nonunpacked positional/named sends; retained named-table ownership, early CV snapshot, cached return and supplied Payload destructor throw.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_observations_accepted": true,
+  "native_revision": "af64fe78f5685a6c364943fcb9f647e5a8659de1",
+  "native_classification": "Original report ee02fdfe remains overall false after its compiler-fatal forecast omitted the trace. All four retained raw tuples were independently accepted with repaired template 5fec905b, without native replay.",
+  "cases": [
+    {
+      "id": "selection",
+      "role": "agreement",
+      "status": "normal",
+      "source_file": "magic-named-call-selection.php",
+      "source": "<?php\nclass MagicNamedParent114 {\n    public function __call(string $name, array $arguments) {\n        echo 'C|', $name, '|', __CLASS__, '|', static::class, '|';\n        foreach ($arguments as $key => $value) { echo $key, ':', $value, '|'; }\n        unset($key, $value);\n        echo 'c|';\n        return $arguments[0];\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass MagicNamedChild114 extends MagicNamedParent114 {}\nfunction mutate114() {\n    global $first, $child;\n    echo 'M|';\n    $first = 99;\n    $child = null;\n    return 2;\n}\necho 'N:';\n$first = 7;\n$child = new MagicNamedChild114();\n$result = $child->MiSs($first, name: mutate114());\necho 'A|', $result, '/', $first, '|';\necho 'E|';\n",
+      "source_sha256": "8dd3f5dd0efcf86610f72e8bd054c04c5a452116a414ac6697f8adb4a6a2aede",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-named-call-private-114/.tools/magic-named-call-probes-114/selection.php",
+      "stdout_base64": "TjpNfEN8TWlTc3xNYWdpY05hbWVkUGFyZW50MTE0fE1hZ2ljTmFtZWRDaGlsZDExNHwwOjd8bmFtZToyfGN8RHxBfDcvOTl8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "retained-native-first",
+      "native_raw_sha256": "0b7d499ce4e7fbb39d8ec369babd8a9e55275ba018e69b710bdecf03a5672354"
+    },
+    {
+      "id": "owning",
+      "role": "agreement",
+      "status": "normal",
+      "source_file": "magic-named-call-owning.php",
+      "source": "<?php\nclass MagicNamedPayload114 {\n    public function __destruct() { global $rhs; echo 'V|'; $rhs = 99; }\n}\nclass MagicNamedOwner114 {\n    public function __call(string $name, array $arguments) {\n        global $child, $rhs;\n        echo 'C|';\n        $child = null;\n        foreach ($arguments as $key => $value) { echo $key, '|'; }\n        unset($key, $value);\n        $cached = $rhs;\n        unset($arguments);\n        echo 'A|';\n        return $cached;\n    }\n    public function __destruct() { echo 'D|'; }\n}\necho 'O:';\n$rhs = 7;\n$child = new MagicNamedOwner114();\n$result = $child->MiSs(second: new MagicNamedPayload114(), first: 7);\necho 'R|', $result, '/', $rhs, '|';\necho 'E|';\n",
+      "source_sha256": "71f3024f12e51eb137a0bdd6ee26ed23bc28967457897b852df267eba3155b97",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-named-call-private-114/.tools/magic-named-call-probes-114/owning.php",
+      "stdout_base64": "TzpDfHNlY29uZHxmaXJzdHxBfFZ8RHxSfDcvOTl8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "retained-native-first",
+      "native_raw_sha256": "ea400ba0650aa4fc3b47a0555c4181526eb4750a3e2a6fcf90d9b5d862868ccc"
+    },
+    {
+      "id": "throwing",
+      "role": "agreement",
+      "status": "normal",
+      "source_file": "magic-named-call-throwing.php",
+      "source": "<?php\nclass MagicNamedPayload114 {\n    public function __destruct() { global $rhs, $error; echo 'V|'; $rhs = 99; throw $error; }\n}\nclass MagicNamedOwner114 {\n    public function __call(string $name, array $arguments) {\n        global $child, $rhs;\n        echo 'C|';\n        $child = null;\n        foreach ($arguments as $key => $value) { echo $key, '|'; }\n        unset($key, $value);\n        $cached = $rhs;\n        unset($arguments);\n        echo 'A|';\n        return $cached;\n    }\n    public function __destruct() { echo 'D|'; }\n}\necho 'X:';\n$error = new Exception('chosen');\n$rhs = 7;\n$result = 42;\n$child = new MagicNamedOwner114();\ntry {\n    $result = $child->MiSs(second: new MagicNamedPayload114(), first: 7);\n    echo 'R|';\n} catch (Exception $caught) {\n    if ($caught === $error) { echo 'C|'; }\n    echo $result, '/', $rhs, '|';\n} finally { echo 'F|'; }\necho 'E|';\n",
+      "source_sha256": "d5c8ada2b5ed750a7a3800cddc0ffef4f2e83fcdb48651ecfdbb14b1ef5543e1",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-named-call-private-114/.tools/magic-named-call-probes-114/throwing.php",
+      "stdout_base64": "WDpDfHNlY29uZHxmaXJzdHxBfFZ8RHxDfDQyLzk5fEZ8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "retained-native-first",
+      "native_raw_sha256": "aeb5af393b09fe53e47a3faeed0eaed97c29feffd07c0e108c4ad52f25d1077f"
+    },
+    {
+      "id": "compile-order",
+      "role": "compile-control",
+      "status": "static_rejection",
+      "source_file": "magic-named-call-compile-order.php",
+      "source": "<?php\nclass MagicNamedCompile114 {\n    public function __call(string $name, array $arguments) { echo 'C|'; return 0; }\n}\nfunction effect114() { echo 'Q|'; return 7; }\necho 'NEVER|';\n$child = new MagicNamedCompile114();\n$child->missing(name: effect114(), effect114());\n",
+      "source_sha256": "9704f6ae3946e5aef6e024681fc2b854698f1fda6a0de0fe5ce6b47ef624b580",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-named-call-private-114/.tools/magic-named-call-probes-114/compile-order.php",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgcG9zaXRpb25hbCBhcmd1bWVudCBhZnRlciBuYW1lZCBhcmd1bWVudCBpbiB7RklMRX0gb24gbGluZSA4ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_group": "retained-native-first",
+      "native_raw_sha256": "2ec88517ae403233bc2dcf699f28a4c032cb6b0bd0c0741ab00f1bb8ccbadb14"
+    }
+  ]
+}

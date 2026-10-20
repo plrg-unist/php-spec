@@ -7,6 +7,100 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct missing instance calls now preserve named string keys and mixed send
+order through inherited public `__call(string,array)`. Earlier main-CV send `7`
+survives a later argument's mutation of that same cell to `99` and receiver-CV
+clearing. Named-only parameter/buffer sharing has two table owners and one
+Payload edge; explicit `unset($arguments)` leaves the Payload alive through `A`.
+After compiled locals, the buffer releases before the borrowed receiver, preserving
+cached `7` or the same supplied throw with destination `42` unchanged.
+
+Three sources pass at `7772c5121`/407. Unique 559 focused premises (536 reached
++ 23 derived) retain selection 195 at `4c8943a6a` and corrected owning 179/throwing
+185 at `2c4ea4154`. The genuine baseline has three consumer Unsupported results
+and one preexisting compiler-control agreement. Four retained native tuples are
+accepted under the corrected fatal-trace template; the original recorder failure
+and stale-STORE fixture failure retain zero credit. Runtime changes only modules
+30 and 414; shared positional/static/scoped helpers and generic binding/cleanup
+stay compatible without replay. Static/scoped named, unpacked/reference sends
+and wider argument/lifetime forms remain partial.
+[Named magic-call review](coverage/semantics/magic-named-call-review.json).
+
+Composed over `47f1fc251`/407 with tested module 414 and all six tests
+private-exact. Module 30 preserves incoming selected-call OWNER and operator tags
+beside the named target/task variants; ordered 407 and other runtime/default/root
+bytes remain incoming-exact. Unproduced INI/DEFINE, reference-return, Generator,
+missing-read and array/operator-warning selectors require no joined execution.
+Source3/state559 retain their separate cuts without accepted replay.
+
+Ownerless positional `ini_set(NULL, value)` now retains a live exact bare
+`ini_get` Closure value across argument and handler rewrites. Returning handling
+converts the option to empty before parameter2 TypeError; supplied Exception keeps
+raw NULL/the same getter and cancels rejection. Strict calls reject parameter1
+after value effects with handler0. The value is not called during reception;
+actual getter calls before and after original string-setter recovery still work.
+
+Four exact source comparisons and 1,374 state premises (326+353+278+417) pass
+first attempt at `487f3e446`/`f99899555`/407. Initial `d741939d6` native4/baseline0
+and later packets use CPU4; nine stable/reaped reports PASS without failures or
+retries, expected Deprecated11/17 only and quiet workers. Only23 additive172 lines
+change: a live exact-kind predicate, positional admission and existing TypeError2
+delegation. Quiet-value/Closure allocation/trace/root/discard/GC and historical
+tests stay exact, without old replay. Native empty-option/getter-identity evidence
+differs from state-only captured HOBJECT/two-frame owning trace/full discard.
+Other Closure kinds, retained setter receivers, named/packed/PIPE forms and
+sole-owner lifetimes remain partial; paused boundaries are untouched.
+[Rejected getter Closure INI review](coverage/semantics/ini-set-null-getter-closure-value-review.json).
+
+Composed over `259ce8ac1`/407 with module172/four tests private-exact and every
+other runtime/schema/ordered-manifest byte parent-exact. Incoming missing-read
+array comparisons, by-reference destructor returns, Generator SEND, selected XOR
+conversion and lossy-float-key reference-debt selectors have no producer here.
+Source4/state1,374 retain private407 cuts without joined execution or renewed credit.
+
+Captured allocated flat DIRECT primitive arrays now survive missing `<=>`
+reads in either orientation. Literal, runtime constructor, assignment and
+ordinary by-value return snapshots preserve their earlier table through handler
+writes, COW and source removal. Existing TASK/RESULT/BASE roots retain and
+transfer that owner, then release it after comparison or supplied throw; otherwise
+unowned tables prune before catch. Two SPACE-only record arms and a factored value guard
+preserve Boolean domains, source certificates, resume/discard and state fields.
+
+Eight source agreements plus two Boolean/nested controls and 629 strict-SL
+premises/five groups (270 author + 359 independent) pass first attempts at
+`147f5eac2`/407, including raw temporary retirement, aliases/NEXT history,
+false/default, chosen Exception/caller41/finally and budgets. Separate affected
+57/one group and one old captured selector renew no historical credit. Initial
+native2+4 and genuine unchanged ingress refusal retain `b7ce3dd97`/407.
+Captured Boolean arrays, nested/reference/object entries and wider producers
+remain partial; paused COMP88 is untouched.
+[Captured-array review](coverage/semantics/undefined-spaceship-captured-array-review.json).
+
+Composed over `9a2899271`/407 with tested207 and all 11 publication tests
+preserved. Incoming XOR compound, reference-return destructor, Generator SEND,
+INI_SET and float-key literal-reference selectors have no producer here;
+runtime constructors use implicit keys and retained/debt histories stay empty.
+Arrays, pools, ownership, schema/defaults and the ordered manifest stay parent-exact.
+Private source/state and affected cuts retain `147f5eac2`/407 without replay.
+
+Selected-reference `^=` now preserves both old referents and numeric specialization
+before LEFT Deprecated. Captured `12` XOR old RHS `5` stores integer `9` through the
+old target alias despite current names `77`/`7`; changing both old values to bad
+strings instead raises `TypeError` at line 25, preserving old strings and outer
+`100` without a bytewise retry. Aliases and replacements retain separate owners.
+Two originals pass at `95ef0f3a4`/407 and 199+163 focused premises at
+`48604a942`/407 in the
+[selected XOR ledger](coverage/semantics/xorassign-selected-warning-review.json).
+Initial scalar references, fractional LEFT/quiet PINT RHS and safe surviving
+aliases bound this slice. Other conversions/operators/owning lifetimes remain
+partial; numeric and generic-unwind bodies stay unchanged. OP12, COMP88 and
+Source47 low-initial-precision callbacks remain paused.
+
+Composed over `d977b28fe`/407, preserving incoming state, task and
+ordered-manifest paths. Source2/state362 retain their private407 cuts;
+independently reviewed absent incoming selectors require no joined execution
+or renewed credit.
+
 Normal unparked pending ancestor SEND now preserves its actual closed-child
 refresh release before ignored argument, unused current result and receiver.
 The tested child/copy return has two array owners but one element-edge set until
@@ -105,45 +199,8 @@ unset and float-key/debt selectors are unproduced. Private source/state cuts and
 eight raw roots, including zero-credit failures/observations, retain their
 identities without an integration actor or accepted replay.
 
-Selected-reference `%=` now captures a fresh fractional RHS after the first
-Deprecated and before the second. Captured `0.5` still raises `Modulo by zero` at
-line 25 despite current and original RHS values of `5`, preserving old target
-`88` and outer `100`. Captured `5.5` still stores integer `2` through the old target
-alias after its fresh RHS cell retires; current target name `77` stays separate.
-Two originals pass at `885d94362`/407 and 190+174 focused premises at
-`d9fa496cb`/407 in the
+Earlier selected-reference `%=` RHS conversion retains source2/state364 in the
 [RHS conversion ledger](coverage/semantics/modassign-selected-rhs-warning-review.json).
-Initial quiet-PINT entry and numeric/unwind/write bodies stay unchanged. Fitting
-fractional values, named handlers and a safe surviving old target bound the slice;
-other producers, constraints and owning lifetimes remain partial. OP12, COMP88
-and Source47 low-initial-precision NaN-name callbacks remain paused.
-
-Composed over `af64fe78f`/407, preserving incoming state, task and
-ordered-manifest paths. Source2/state364 retain their private407 cuts;
-independently reviewed absent incoming selectors require no joined execution
-or renewed credit.
-
-Cached ordinary public declared-only clones now enter the existing public
-zero-argument `__clone():void` path. Actual callback foreach reads fresh copy
-locators; singleton int wrappers unwrap in the copy while held aliases share
-updates and retain the clone-only constraint after source unset. The borrowed
-source may retire inside the callback; supplied throw destroys the failed copy
-and last Payload before the same catch, leaving the destination `42` unchanged.
-
-Four exact sources pass at `d2cea26dd`/407 and 659 focused premises (651 reached
-+ 8 derived) pass at `23f1e50f5`/407. All semantic actors pass first attempt;
-four genuine baselines remain cached-clone Unsupported/zero agreement. Fast
-native affinity is 0/4; baseline/source/state masks and full argv are complete.
-Only the callback exclusion in module 150 changes; existing 300 call/window/throw
-and slot/type-source/foreach/GC rules stay exact. Earlier 110 cuts remain historical.
-Dynamic/readonly/intrinsic/update and wider callback/lifetime forms remain partial.
-[Cached clone callback review](coverage/semantics/cached-clone-callback-review.json).
-
-Composed over `9fa0a1a29`/407 with tested module 150 and the six tests
-private-exact; all other incoming runtime, state/default/root and ordered-manifest
-bytes remain preserved. Incoming reference-return, Generator, missing-read,
-bitwise-warning and array-debt selectors are absent from these clone histories.
-Source4/focused659 retain their private cuts without joined execution or replay.
 
 Direct and selected string `ini_set` calls now retain table-free STDINSTANCE
 values from one two-item numeric, named or mixed unpack pack. Historical snapshots
@@ -1894,6 +1951,13 @@ Strings, typed outer cells, coercion/backing records, HCELL debt, deeper/indebte
 children, unsafe/effective-zero retirement, active GC and request-end debt remain
 partial. Paused LIST/owned-NUL and active unrelated producers stay untouched.
 [Wrapped mixed-CV review](coverage/semantics/array-literal-float-wrapped-mixed-cv-review.json).
+
+Composed over `24f391ce1`/407 with accepted413 and all eight owned test paths
+unchanged. Every other runtime/schema and ordered manifest byte preserves the
+parent. Incoming captured-array comparisons, selected XOR, packed INI and named
+magic-call selectors are absent; their new tasks/targets remain unproduced.
+Source4/strict407/state1115 and genuine baseline0 retain private cuts without
+joined execution, accepted replay or renewed historical credit.
 
 Earlier wrapped ARRAY-CV capture retains native/genuine `50a044f12`, source4/
 strict407 `225e36cc5` and state1146 `82786a2e5`, integrated as `6145a5ae5`.
