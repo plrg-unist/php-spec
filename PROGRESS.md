@@ -26,6 +26,15 @@ No producer, child/root, receipt, invocation, flag/name or global/default change
 Source85 missing-CV INI_SET and paused boundaries remain disjoint.
 [Intrinsic Closure VALUE review](coverage/semantics/define-intrinsic-closure-review.json).
 
+Composed over b7adf553b/409: tested module 400 and 17 scripts stay private-exact.
+Ten incoming runtime paths and ordered manifest remain parent-exact.
+INI_SET missing SEND and missing-CV spaceship arrays have no producer here.
+Clone, by-reference return/finally, Generator SEND, float cast/self +=,
+and NULL-key returned ARRAY branches stay outside these initialized DEFINE originals.
+Three new module 30 task variants add no pstate/heap field or root-policy change.
+Reached/projected/budget/FOLD.MEMORY states need no field lift; original 409
+source/state cuts retain their credit without joined execution or accepted replay.
+
 All seven missing-CV comparison array shapes now admit ALIAS entries whose live
 allocated reference cell holds a defined primitive. Captured containers retain
 their entries while shared cell writes stay visible across COW copies. Singleton
