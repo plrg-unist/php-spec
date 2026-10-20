@@ -741,12 +741,12 @@ def $array_null_key_slot(S, n_capture, REFERENCE n_cell) = (pvalue)
   -- if n_capture = n_cell
   -- if $call_reference_operand_valid(S, REFERENCE n_cell)
   -- if S.STORE[n_cell] = DEFINED pvalue
-  -- if $propref_at(S.PROPREFS, n_cell) = eps
   -- if $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
   -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps
   -- if ~(n_cell <- S.LITERALREFDEBTS)
   -- if H_live = $heap_prune($heap_graph(S)[.DEBTS = eps])
   -- if (HCELL n_cell) <- H_live.NODES
+  -- if $literal_reference_cell(S, n_cell, H_live.NODES)
   -- if $array_null_key_payload(S, pvalue, H_live.NODES)
 def $array_null_key_slot(S, n_capture, poperand) = eps -- otherwise
 
@@ -774,6 +774,7 @@ def $array_null_key_ready(S, n, n_capture, poperand, pvalue) = true
   ;; Throw discard has popped the marker; its snapshot argument still owns the
   ;; allocated value even when that value has no remaining root in this S yet.
   -- if $array_null_key_payload(S, pvalue, S.ALLOCATIONS)
+  -- if $propref_at(S.PROPREFS, n_capture) = eps \/ $literal_reference_cell(S[.STORE[n_capture] = DEFINED pvalue], n_capture, S.ALLOCATIONS)
 def $array_null_key_ready(S, n, n_capture, poperand, pvalue) = false -- otherwise
 dec $array_null_key_restore(pstate, nat, pvalue) : pstate
 def $array_null_key_restore(S, n_capture, pvalue) = S[.STORE[n_capture] = DEFINED pvalue]
