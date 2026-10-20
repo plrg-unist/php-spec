@@ -228,7 +228,7 @@ $clone_cached_table($(n_source + 1),n_copy,S_front.ARRAYS[n_table_source].ITEMS,
 ~$clone_cached_slots([pobjectprops_source.SLOTS[0][.DECL = eps]])
 S_wrong_cache = S_copy[.ARRAYS = $array_replace(S_copy.ARRAYS,n_table_copy,S_copy.ARRAYS[n_table_copy][.ITEMS = S_front.ARRAYS[n_table_source].ITEMS])]
 ~$object_tables_valid(S_wrong_cache)
-S_oob = S_front[.OBJECTTABLES = [{OBJECT n_source,TABLE |S_front.ARRAYS|}]]
+S_oob = S_front[.OBJECTTABLES = [{OBJECT n_source,TABLE (|S_front.ARRAYS|)}]]
 ~$clone_cached_ready(S_oob,n_source)
 S_refused = $clone_plain(S_oob,n_source)
 S_refused.COMPLETION = UNSUPPORTED "cached ordinary property-table cloning"
