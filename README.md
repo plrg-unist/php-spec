@@ -1210,8 +1210,12 @@ site, physical frame and copied return stay parked. Snapshot capture precedes
 normal ignored-argument cleanup, including row COW or Generator-alias retirement.
 The used cache and mutable returned cells retain their separate lifetimes. See the
 [parked SEND review](coverage/semantics/generator-parked-pending-owning-send-review.json).
-Parked next, nonpending body entry and wider parked SEND/repeated-THROW leaves
-remain open.
+Pending `next()` at that parked owning return also clears only the selected
+receiver initialization bit. It returns NULL without copying current, so a sole
+receiver's cache destructor can run before caller delivery. A later explicit
+getter has its own copy. See the
+[parked NEXT review](coverage/semantics/generator-parked-pending-owning-next-review.json).
+Nonpending body entry, wider parked API leaves and waiting-result GC remain open.
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller
 catch. The independent current copy can still trigger a replacement exception. See the

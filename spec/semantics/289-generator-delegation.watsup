@@ -143,6 +143,21 @@ def $generator_pending_parked_send(S, pgeneratorop) = true
   -- if $generator_input_count(S.GENERATORINPUTS, n_leaf) = 0
 def $generator_pending_parked_send(S, pgeneratorop) = false -- otherwise
 
+;; NEXT takes the same initialization-only return but copies no current value.
+def $generator_pending_parked_next(S, pgeneratorop) = true
+  -- if pgeneratorop.NAME = "next" /\ pgeneratorop.ARGUMENTS = eps /\ ~pgeneratorop.ADVANCE
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if $generator_operation_valid(S, pgeneratorop)
+  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS eps 2
+  -- if $generator_pending_resume(S, pgeneratorop)
+  -- if n_leaf = $generator_from_leaf(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1))
+  -- if $generator_return_parked_waiting(S, n_leaf)
+  -- if S.OBJECTS[n_leaf] = GENERATOR pgenerator
+  -- if S_view = $generator_set(S, n_leaf, pgenerator[.PARKED = eps])
+  -- if $generator_pending_return_leaf(S_view, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1)) = (n_leaf)
+  -- if $generator_input_count(S.GENERATORINPUTS, n_leaf) = 0
+def $generator_pending_parked_next(S, pgeneratorop) = false -- otherwise
+
 def $generator_pending_return_leaf(S, n, 0) = eps
 def $generator_pending_return_leaf(S, n, n_depth) = (n)
   -- if $(n_depth > 0)

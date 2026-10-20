@@ -7,6 +7,35 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pending literal zero-argument NEXT now returns before dispatch at an already
+parked owning simple-CV copied return, directly or through finite native links.
+Only the selected receiver clears initialization; the physical frame/site and
+copied return stay parked. NULL adds no current snapshot. A sole receiver's cache
+can therefore run before caller delivery without chaining an older globally kept
+Exception. Real row COW leaves the copied return as the old-array owner, and
+returned cells remain mutable after close. Nonpending/body entry, wider parked
+NEXT and waiting-result GC stay open.
+[Parked NEXT review](coverage/semantics/generator-parked-pending-owning-next-review.json).
+
+Four originals and 672 new premises (320 author +352 independent;652 local +20
+generic) pass first attempts at a7b3a6a61/406 with runtime c510e2662: only280+4
+and289+15 add admission. Real direct/ancestor GEN_ARGS, storage-cache callback
+and late shared-cell WRITE fronts check source/receiver/history, no-copy owners,
+excluded scalar/nonpending paths, public/heap validity, budgets and full endings.
+Strict406/four-fixture elaboration pass at the same cut; elaboration earns zero
+execution credit. Native4 and genuine unchanged public force-close Unsupported
+retain e290191b4/406 with zero model agreement. No failures/retries, historical
+renewal or GC credit; all actors reaped and CPU2 released. Publication removes
+unused Python fixture scaffolding with exact expanded CASES/stages/checks/events
+unchanged; accepted cuts are retained without replay.
+
+Composed over `d4682e6bf2`/406 with tested280/289 bytes unchanged;
+all other runtime/schema/default/root/ordered-manifest/pipeline bytes remain
+parent-exact. Independent source-selector review found no concrete interaction
+with incoming changes. Source4/state672/strict406 retain their a7b3a6a61 cut;
+the unused Python cleanup preserves expanded tests, and composition adds no
+execution credit. No joined actor or accepted replay was needed.
+
 Bare unscoped REAL and live METHOD Closures now publish through dynamic-only
 `PVOBJECT` authority, retaining lexical aliases, per-Closure statics and receiver
 identity through direct/query/array copies. Invalid static cells, busy captures,
@@ -163,7 +192,7 @@ owning simple-CV copied return, directly or through finite native links. Only th
 selected receiver clears initialization; its physical middle/frame/site and return
 stay parked. Snapshot capture precedes normal ignored-argument COW and Generator
 alias retirement. Used caches and mutable returned cells retain separate owners.
-Parked NEXT, nonpending/body entry, wider parked SEND and GC remain open.
+At that cut, parked NEXT, nonpending/body entry, wider parked SEND and GC remained open.
 [Parked SEND review](coverage/semantics/generator-parked-pending-owning-send-review.json).
 
 Four originals and 646 new premises (302 author +344 independent;626 local +20
