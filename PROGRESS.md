@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+All six Boolean comparisons now retain captured allocated flat DIRECT primitive
+arrays across missing-CV Warnings, including both source orientations, literal,
+runtime constructor, assignment and by-value return snapshots. Array-only source
+certificates check the missing direct CV and both compiled expressions; an explicit
+known-array scalar rejection prevents bypassing liveness/flatness. Existing
+TASK/RESULT/BASE owners, shapes, restore/discard and state fields stay unchanged.
+
+Ten source agreements plus two primitive/nested controls and 664 strict-SL
+premises/five groups (297 author + 367 independent) pass first attempts at
+`b7d462154`/407. Raw Boolean results, snapshot-versus-current COW/NEXT effects,
+saved-owner retirement before catch, default/throw and budgets are checked.
+Separate affected 145/three groups and one old selector renew no historical credit.
+Initial native2+4 and genuine unchanged ingress refusal retain `259ce8ac1`/407.
+Captured primitives at Boolean Warning reads, nonflat/reference/object arrays and wider producers
+remain partial; paused COMP88 is untouched.
+[Boolean captured-array review](coverage/semantics/undefined-scalar-compare-captured-array-review.json).
+
 Captured allocated flat DIRECT primitive arrays now survive missing `<=>`
 reads in either orientation. Literal, runtime constructor, assignment and
 ordinary by-value return snapshots preserve their earlier table through handler

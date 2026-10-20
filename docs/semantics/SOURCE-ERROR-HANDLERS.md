@@ -148,11 +148,17 @@ keeps physical order, current alias/COW ownership and known-NULL second records.
 The [initial-array extension](../../coverage/semantics/undefined-comparison-initial-array-review.json)
 widens only four entry premises: saved reads add no initial-table owner, and
 existing quiet-removal, unread-retry, scalar/array resume and discard stay exact.
-At `<=>` only, captured allocated flat DIRECT primitive tables now enter through
+At `<=>`, captured allocated flat DIRECT primitive tables enter through
 two exact saved-read shapes. Existing TASK/RESULT/BASE roots retain snapshots
 through callback COW and source removal, then release the saved owner on compare or throw;
 see the [captured-array review](../../coverage/semantics/undefined-spaceship-captured-array-review.json).
-Boolean captured-array ingress stays excluded.
+The six Boolean operators now admit captured flat arrays with array-only source
+certificates checking the missing direct CV and both compiled expressions. Their
+scalar default explicitly rejects known arrays, so liveness/flatness cannot be
+bypassed. Saved owners and generic restore/discard are unchanged; the
+[Boolean captured-array review](../../coverage/semantics/undefined-scalar-compare-captured-array-review.json)
+records source, COW and abrupt-release checks. Captured primitives at Boolean Warning reads and
+nonflat arrays remain partial.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.
 [The equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json)

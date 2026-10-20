@@ -16,7 +16,7 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
-[Scalar comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
+[Comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.
 When any of the seven operators resumes, a handler-created flat primitive array
 follows its current CV/reference binding; emptiness determines comparison against frozen NULL.
@@ -24,7 +24,7 @@ This covers bounded spaceship operands and distinct direct-CV
 `==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
 The defined counterpart may already be a live flat primitive array at entry;
 its current scalar/array binding supplies the counterpart, with ordinary COW.
-At `<=>`, a computed flat primitive array keeps its captured table through
+At all seven comparisons, a computed flat primitive array keeps its captured table through
 handler writes, COW and supplied-throw cleanup.
 Both-missing pairs, including one missing name twice, can resume if the first
 handler defines the later scalar or flat array. `$x == $x` can then be false and `$x > $x`
