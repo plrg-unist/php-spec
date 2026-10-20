@@ -24,6 +24,14 @@ Executed class-born omitted/false cases are distinct from structural valid bindi
 clone and inherited-flag composition; wider domains and core remain partial.
 [Scoped REAL define review](coverage/semantics/define-scoped-runtime-closure-review.json).
 
+Composed over `d2699d5ae`/407 with exact tested400+12/−1 and complete
+incoming runtime/manifest/inventory prefixes preserved. Parent-get hooks,
+`/=` warnings, missing comparisons, INI, reference/finally, Generator and
+lossy-float literal-key selectors are unselected; raw ALIAS pruning remains true
+and retained/debt lists stay empty. The new target/task alternatives require no
+state/graph lift. Source3/state762 retain their private406 cuts without joined
+execution, accepted replay or renewed historical credit.
+
 An initially missing direct CV twice at `==`/`!=`/`<`/`<=` now enters one Warning
 and compares frozen first NULL with the handler-defined current scalar/reference.
 `$x == $x` can be false; `$x != $x` and `$x < $x` can be true. Two premise edits
