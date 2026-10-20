@@ -155,16 +155,20 @@ The [string-alias review](../../coverage/semantics/array-literal-float-string-al
 extends only embedded leaf admission: shared string references propagate byte
 writes, singleton copies detach, and earlier string snapshots stay unchanged.
 Global primitive-cell and direct string CV/cell bounds stay exact.
-Embedded null/bool/int/float ALIAS leaves may also carry validated ordinary
-instance-property type sources. Each source object and actual property alias
-must remain live; for debt-bearing payloads they must survive logical pruning
-alongside the leaf. Type metadata adds no owner. Shared copies retain typed
+Embedded null/bool/int/float or validated byte-string ALIAS leaves may also
+carry validated ordinary instance-property type sources. Each source object
+and actual property alias must remain live; for debt-bearing payloads they must
+survive logical pruning alongside the leaf. Type metadata adds no owner. Shared copies retain typed
 rejection/coercion. Explicit property unset removes that source, permitting
 singleton unwrapping when only its table entry remains, even while the object stays
 rooted. Int-property witnesses, multiple sources and supplied throws are in the
 [typed-leaf review](../../coverage/semantics/array-literal-float-typed-alias-leaf-review.json).
-Typed string/array/object leaves, static/hooked/queued or retired sources and
+Typed array/object leaves, static/hooked/queued or retired sources and
 coercion/backing records remain outside this extension.
+The [typed string-leaf review](../../coverage/semantics/array-literal-float-typed-string-alias-leaf-review.json)
+checks shared byte writes and weak integer-to-string coercion, rejected array
+writes, fixed snapshots and singleton byte COW after explicit property unset.
+Global direct string CV/CELL retarget bounds remain unchanged.
 The source basis is pinned `Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT`,
 `Zend/zend_hash.c::zend_array_dup_value`, and
 `Zend/zend_operators.h::zend_dval_to_lval_safe`, with string writes from

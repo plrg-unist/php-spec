@@ -1,0 +1,75 @@
+{
+  "scope": "Public virtual implicit-int Parent/Child setter; one positional named noarg by-value producer argument and borrowed This; bounded native/error/compiler controls.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "native_revision": "9a3c31b66f89749a9817f1cc449da416b1a8d747",
+  "native_report_sha256": "74d0e1acfccb5371d0ba65b4e89dc24db45bf8fc8d49b600a33c6e364bd20d8e",
+  "cases": [
+    {
+      "id": "selection",
+      "source_file": "parent-set-hook-selection.php",
+      "source": "<?php\nclass ParentSetParent109 {\n    private int $secret = 41;\n    public int $value {\n        set {\n            echo 'P|', __CLASS__, '|', static::class, '|';\n            $this->secret = $value;\n            echo $this->secret, '|';\n        }\n    }\n    public function __destruct() { echo 'D', $this->secret, '|'; }\n}\nclass ParentSetChild109 extends ParentSetParent109 {\n    private int $secret = 99;\n    public int $value {\n        set {\n            echo 'C|';\n            $inner = parent::$value::set(mutate109());\n            if ($inner === null) { echo 'Z|'; }\n            echo $this->secret, '|', $value, '|A|';\n        }\n    }\n}\nclass ParentSetGrand109 extends ParentSetChild109 {}\nfunction mutate109() { global $child, $rhs; echo 'M|'; $child = null; $rhs = 99; return 7; }\n$rhs = 7;\n$child = new ParentSetGrand109();\n$result = 42;\necho 'N:B|';\n$result = ($child->value = 20);\necho $result, '|', $rhs, '|E|';\n",
+      "source_sha256": "61df58913e4575fd47f9a5271e84a208602f4cb7f95da4313658abbc571f9185",
+      "original_source": "/home/user/workspace/php-spec/.tools/parent-set-hook-private-109/.tools/parent-set-hook-probes-109/selection.php",
+      "stdout_base64": "TjpCfEN8TXxQfFBhcmVudFNldFBhcmVudDEwOXxQYXJlbnRTZXRHcmFuZDEwOXw3fFp8OTl8MjB8QXxEN3wyMHw5OXxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "call_line": 18,
+      "native_raw_sha256": "62f2ff1b7595690ac4134f320936b8655c887e37377150e2f071991ba08249c0",
+      "status": "normal"
+    },
+    {
+      "id": "throwing",
+      "source_file": "parent-set-hook-throwing.php",
+      "source": "<?php\nclass ParentSetParent109 {\n    private int $secret = 41;\n    public int $value {\n        set {\n            global $error;\n            echo 'P|';\n            $this->secret = $value;\n            throw $error;\n        }\n    }\n    public function __destruct() { echo 'D', $this->secret, '|'; }\n}\nclass ParentSetChild109 extends ParentSetParent109 {\n    public int $value {\n        set { echo 'C|'; parent::$value::set(mutate109()); echo 'A|'; }\n    }\n}\nclass ParentSetGrand109 extends ParentSetChild109 {}\nfunction mutate109() { global $child, $rhs; echo 'M|'; $child = null; $rhs = 99; return 7; }\n$error = new Exception('supplied');\n$rhs = 7;\n$child = new ParentSetGrand109();\n$result = 42;\necho 'X:B|';\ntry { $result = ($child->value = 20); }\ncatch (Exception $caught) { if ($caught === $error) { echo 'C|'; } }\necho $result, '|', $rhs, '|E|';\n",
+      "source_sha256": "cba6ea99fb8c2dbfe2f025be5561db35fd1cb71a72770dba72441a8545384d7d",
+      "original_source": "/home/user/workspace/php-spec/.tools/parent-set-hook-private-109/.tools/parent-set-hook-probes-109/throwing.php",
+      "stdout_base64": "WDpCfEN8TXxQfEQ3fEN8NDJ8OTl8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "call_line": 16,
+      "native_raw_sha256": "91b7e328ca0544bb0585f7e40a3ee2c4ad3dee05495db15886430c734b40c265",
+      "status": "normal"
+    },
+    {
+      "id": "invalid",
+      "source_file": "parent-set-hook-invalid.php",
+      "source": "<?php\nclass ParentSetParent109 {\n    private int $secret = 41;\n    public int $value {\n        set { echo 'P|'; $this->secret = $value; }\n    }\n    public function __destruct() { echo 'D', $this->secret, '|'; }\n}\nclass ParentSetChild109 extends ParentSetParent109 {\n    public int $value {\n        set { echo 'C|'; parent::$value::set(mutate109()); echo 'A|'; }\n    }\n}\nclass ParentSetGrand109 extends ParentSetChild109 {}\nfunction mutate109() { global $child, $rhs; echo 'M|'; $child = null; $rhs = 99; return ['bad']; }\n$rhs = 7;\n$child = new ParentSetGrand109();\n$result = 42;\necho 'T:B|';\ntry { $result = ($child->value = 20); }\ncatch (TypeError $caught) {\n    echo 'C|';\n    $trace = $caught->getTrace();\n    $frame = $trace[0];\n    echo $frame['function'], '|', $frame['class'] ?? 'none', '|', $frame['type'] ?? 'none', '|';\n}\necho $result, '|', $rhs, '|E|';\n",
+      "source_sha256": "82ee540703300cfe069ead4d1e31399a5dc065d3faeebdf1209ae2f5c2edf3c4",
+      "original_source": "/home/user/workspace/php-spec/.tools/parent-set-hook-private-109/.tools/parent-set-hook-probes-109/invalid.php",
+      "stdout_base64": "VDpCfEN8TXxENDF8Q3wkdmFsdWU6OnNldHxQYXJlbnRTZXRQYXJlbnQxMDl8LT58NDJ8OTl8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "call_line": 11,
+      "native_raw_sha256": "b64e3e4c047cf7f74dd97beafc2a3be6a3b4c1159dfb90e3705d36544e6184ce",
+      "status": "normal"
+    },
+    {
+      "id": "wrong-kind",
+      "source_file": "parent-set-hook-wrong-kind.php",
+      "source": "<?php\nclass ParentSetParent109 {\n    public int $value { set {} }\n}\nclass ParentSetChild109 extends ParentSetParent109 {\n    public int $value {\n        set { parent::$value::get(); }\n    }\n}\necho 'NEVER|';\n",
+      "source_sha256": "cb2d29bc89cb3de9d3677df6e001130cb69a0f480d9128c2c604efef40e9b1aa",
+      "original_source": "/home/user/workspace/php-spec/.tools/parent-set-hook-private-109/.tools/parent-set-hook-probes-109/wrong-kind.php",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IE11c3Qgbm90IHVzZSBwYXJlbnQ6OiR2YWx1ZTo6Z2V0KCkgaW4gYSBkaWZmZXJlbnQgcHJvcGVydHkgaG9vayAoc2V0KSBpbiB7RklMRX0gb24gbGluZSA3ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "call_line": 7,
+      "native_raw_sha256": "71eaebd76ee8d57a0be04107fa9d720cec49b10b876043b265b122083ae4a6dc",
+      "status": "static_rejection"
+    }
+  ]
+}

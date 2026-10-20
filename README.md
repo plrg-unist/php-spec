@@ -47,8 +47,8 @@ handler. Separate table counts preserve old array owners and omitted new-array
 owners; inverse retargeting cancels them before cleanup. Initial scalar and
 array plans remain distinct, while same-table transfer and restored COW keep
 ordinary values distinct from PHP reference wrappers.
-These flat tables also admit untyped reference leaves holding null/bool/int/float
-or validated byte strings, and null/bool/int/float leaves with validated ordinary
+These flat tables also admit reference leaves holding null/bool/int/float
+or validated byte strings, either untyped or constrained by validated ordinary
 instance-property type sources. Debt-bearing payloads require every source object
 to survive logical pruning. Shared copies keep typed rejection/coercion; explicit property
 unset removes its constraint before singleton copying. Child-table copies preserve
@@ -301,6 +301,13 @@ of direct quiet primitive leaves. Returning handlers reach the value TypeError
 with an empty option and the earlier array; throwing handlers retain raw NULL and
 cancel before value rejection. Four originals and 844 state premises cover COW,
 strict option priority and normal recovery. Wider values/forms remain partial.
+
+[Named NULL INI options with rejected array values](coverage/semantics/ini-set-named-null-array-value-review.json)
+now retain an earlier array across reversed value/option evaluation and later COW.
+Returning handlers reach the value TypeError with an empty option; a supplied
+throw keeps raw NULL and cancels rejection. Four source comparisons and 995 state
+premises cover named/mixed source authentication, ownership, strict option
+priority and recovery. Owned/packed array values and wider leaves remain partial.
 
 [NULL INI options with retained stdClass values](coverage/semantics/ini-set-null-stdclass-value-review.json)
 now resume handlers for direct/selected positional calls with table-free objects
@@ -754,6 +761,13 @@ cover strict `2.4`, Error priority, aliases and default Warning bytes in the
 [DIV repair ledger](coverage/semantics/div-repair-review.json).
 Owning/constrained/expired cells and wider operands remain partial.
 
+Selected-reference `-=` now retains both converted numbers through their
+Warnings. Cached `12.5 - 5.5` writes strict float `7.0` through the old target alias
+after current-name rebinding and RHS retirement. A supplied second throw cancels
+compound and outer stores. Two originals and 382 focused premises pass in the
+[compound subtraction ledger](coverage/semantics/subassign-warning-review.json).
+Other operands, unsafe targets and wider lifetimes remain partial.
+
 Selected-reference `/=` now captures both numbers before their respective
 Warnings. Cached `12.5 / 5` writes strict float `2.5` through the old target alias
 despite current-name rebinding. A second supplied throw cancels storage; a captured
@@ -846,6 +860,15 @@ outer assignment stays unchanged. Three exact originals and 407 focused SL
 premises cover signed infinity, target storage and pending ownership in the
 [power-assignment ledger](coverage/semantics/powerassign-warning-review.json).
 Wider operands, targets, callbacks and lifecycle paths remain partial.
+
+Quiet selected-reference `**=` now writes captured infinity through the old
+target alias even after current-name rebinding and a supplied deprecation-handler
+throw. The same Exception resumes after the store; the outer assignment stays
+unchanged. A signed-zero/default case delivers `-INF` after old RHS retirement.
+Two originals and 334 focused premises pass in the
+[selected power-assignment ledger](coverage/semantics/powerassign-selected-warning-review.json).
+Other operands, unsafe targets and wider lifetimes remain partial.
+
 Plain-CV `%=` now keeps the first converted long through a fractional-float
 deprecation, then reads the live quiet integer RHS. Normal return stores the
 remainder; a supplied throw or live zero leaves the target and late alias intact.
@@ -1265,6 +1288,12 @@ With one owning buffered simple-CV input at a parked child, pending `next()`
 likewise returns NULL without copying current or changing that input. Closing
 orphans its count; row COW and shared-cell writes preserve its separate lifetime.
 See the [buffered NEXT review](coverage/semantics/generator-parked-pending-buffered-next-review.json).
+A first pending `send` at that parked used yield can overwrite its sole owning
+LIVE input with another owning value. The old count becomes orphaned, the new
+count stays LIVE until close, and the captured current has an independent
+lifetime through COW and receiver retirement. Embedded old-input cells and new
+direct object copies remain distinct after rebinding; see the
+[buffered SEND review](coverage/semantics/generator-parked-pending-buffered-send-review.json).
 Nonpending body entry, wider parked API leaves and waiting-result GC remain open.
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller
@@ -1752,6 +1781,12 @@ Canonical array/query copies share these objects;
 an unpinned method receiver retires only after the last Closure owner is released.
 [Runtime Closure define review](coverage/semantics/define-runtime-closure-review.json).
 [Scoped REAL define review](coverage/semantics/define-scoped-runtime-closure-review.json).
+
+Bare named-function Closure values also publish under live function authority.
+Distinct first-class objects and direct calls share request static cells without
+Closure child edges. Retiring all Closures leaves a function-static child alive
+until an explicit later direct-function clear releases it.
+[Named Closure define review](coverage/semantics/define-runtime-named-closure-review.json).
 
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
@@ -3358,6 +3393,14 @@ and wrong-property calls fail compilation before output. Six unique source
 agreements and 377 focused checks retain separate tested cuts in the
 [parent get-hook review](coverage/semantics/parent-get-hook-review.json).
 Other parent-hook shapes remain partial.
+
+Public virtual implicit `int` setters also admit `parent::$value::set(f())`
+from the matching Child setter. The borrowed call retains lexical Parent/called
+Grand through argument effects, returns `NULL`, and leaves the outer assignment's
+literal value 20 intact. Parent throws and bad-argument TypeError cancel that
+assignment; real TypeError traces name the Parent setter. Four source agreements
+and 459 focused checks are recorded in the
+[parent set-hook review](coverage/semantics/parent-set-hook-review.json).
 
 A direct trait’s public body-backed `int` getter also imports into a parentless
 using class. Its code and `__METHOD__` spelling remain the trait’s; lexical/private

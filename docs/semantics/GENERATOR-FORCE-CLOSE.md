@@ -62,6 +62,13 @@ history, then runs its destructor in the normal request object-store pass. It
 does not retain the child or API receiver. The [shared-send review](../../coverage/semantics/generator-pending-shared-send-review.json)
 checks both close orders arising from real local aliases and a payload/cache
 alias whose sole remaining owner is this count.
+The first pending SEND overwrite of one parked owning input uses this same
+lifecycle: the old record is orphaned before the new LIVE record is installed,
+and close preserves both counts. A used current snapshot can outlive every
+Generator and retire only after caller delivery. An old input cell and a new
+direct object copy retain different values after rebinding, with request-store
+destruction following native handle order rather than input-record order. See the
+[buffered SEND review](../../coverage/semantics/generator-parked-pending-buffered-send-review.json).
 
 Non-pending `throw` into the paused used-yield child follows exception cleanup
 instead: it releases the buffered slot before catch search, without orphaning

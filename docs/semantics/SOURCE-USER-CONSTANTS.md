@@ -593,7 +593,7 @@ use no-constructor classes and omitted/false flags; inherited flag delegates
 compose through the classifier without extra source credit.
 [Runtime object define review](../../coverage/semantics/define-runtime-object-review.json).
 
-Bare runtime REAL and METHOD Closures also use dynamic-only `PVOBJECT` authority.
+Bare runtime REAL, METHOD and NAMED Closures also use dynamic-only `PVOBJECT` authority.
 REAL values require completed capture, valid static cells and scope completeness.
 Their selected scope must either be absent with no binding, pass the existing
 class-scope row validator with no binding, or pass the existing binding-source
@@ -605,7 +605,7 @@ fence; global/default policies stay unchanged. Lexical aliases, per-Closure
 statics and method receivers remain shared through canonical copies. When a
 private duplicate array is the last Closure owner, its retirement can run the
 receiver destructor before catch while the raw trace still observes a cleared
-source alias. The originals execute ordinary unscoped lexical and bound method
+source alias. The REAL/METHOD originals execute ordinary unscoped lexical and bound method
 Closures with omitted/false flags; structurally valid clones and inherited flag
 delegates receive no additional execution credit.
 [Runtime Closure define review](../../coverage/semantics/define-runtime-closure-review.json).
@@ -621,6 +621,17 @@ clones and inherited flag delegates retain structural support. Selected binding
 validation preserves genuine prior bound values while refusing malformed
 presence-only projections; no producer history or certificate is fabricated.
 [Scoped REAL define review](../../coverage/semantics/define-scoped-runtime-closure-review.json).
+
+Bare NAMED user-function Closure values also use dynamic-only PVOBJECT
+publication under live function/name-map authority, with no scope, binding or
+callable certificate. Distinct first-class objects and direct calls share the
+function's request STATIC cells, which are independent roots and never Closure
+child edges. Canonical/query copies share the Closure pointer while preserving
+array COW and append history. Retiring the last Closure leaves function statics
+alive; an explicit later direct-function clear can destroy their held child.
+Only ordinary first-class-function omitted/false originals receive new execution
+credit; coherent clones and inherited flag delegates retain structural support.
+[Named Closure define review](../../coverage/semantics/define-runtime-named-closure-review.json).
 
 Ordinary `stdClass` values also use dynamic-only `PVOBJECT` authority when their
 selected property record and optional cached table validate, including live

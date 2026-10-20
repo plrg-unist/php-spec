@@ -496,6 +496,17 @@ def $config_ini_rejected_stdclass(S, n_object) = true
   -- if $stdclass_slots_valid(S, ppropertyslot*)
   -- if $config_ini_rejected_slots(S, ppropertyslot*)
 def $config_ini_rejected_stdclass(S, n_object) = false -- otherwise
+dec $config_ini_named_array_argument(pstate, pconfigcall, nat, nat) : bool
+def $config_ini_named_array_argument(S, pconfigcall, n_array, n_index) = true
+  -- if $intrinsic_argument(S, pconfigcall.SITE, n_index) = ((expression, false, preqbytes_name?, porigin_argument, z))
+  -- if $config_destination(pconfigcall.KIND, preqbytes_name?, n_index) = (0)
+  -- if $compiled_read(S, porigin_argument) = eps \/ $compiled_read(S, porigin_argument) = (PNULL)
+def $config_ini_named_array_argument(S, pconfigcall, n_array, n_index) = true
+  -- if $intrinsic_argument(S, pconfigcall.SITE, n_index) = ((expression, false, preqbytes_name?, porigin_argument, z))
+  -- if $config_destination(pconfigcall.KIND, preqbytes_name?, n_index) = (1)
+  -- if $(n_array < |S.ARRAYS|)
+  -- if $config_ini_pack_known(S, S.ARRAYS[n_array].ITEMS, $compiled_read(S, porigin_argument))
+def $config_ini_named_array_argument(S, pconfigcall, n_array, n_index) = false -- otherwise
 dec $config_ini_null_valid(pstate, pconfigcall) : bool
 def $config_ini_null_valid(S, pconfigcall) = true
   -- if $config_invoke_valid(S, pconfigcall)
@@ -585,6 +596,17 @@ def $config_ini_null_valid(S, pconfigcall) = true
   -- if $compiled_read(S, porigin_option) = eps \/ $compiled_read(S, porigin_option) = (PNULL)
   -- if $intrinsic_argument(S, pconfigcall.SITE, 1) = ((expression_value, false, eps, porigin_value, z_value))
   -- if $compiled_read(S, porigin_value) = eps
+  -- if ~$config_strict(S, pconfigcall)
+def $config_ini_null_valid(S, pconfigcall) = true
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if pconfigcall.INDEX = 2 /\ pconfigcall.NAMED
+  -- if ~$pipe_site(S, pconfigcall.SITE)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN (PARRAY n_array))]
+  -- if $config_ini_rejected_array(S, n_array)
+  -- if $config_ini_named_array_argument(S, pconfigcall, n_array, 0)
+  -- if $config_ini_named_array_argument(S, pconfigcall, n_array, 1)
   -- if ~$config_strict(S, pconfigcall)
 def $config_ini_null_valid(S, pconfigcall) = false -- otherwise
 dec $config_ini_unary_finish(pstate, pconfigcall, preqbytes) : pstate

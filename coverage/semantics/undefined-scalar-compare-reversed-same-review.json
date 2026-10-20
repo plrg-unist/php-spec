@@ -107,5 +107,12 @@
     "python3 tests/semantics/undefined_scalar_compare_reversed_same_state.py --output .tools/comp104-state-new",
     "python3 tests/semantics/undefined_scalar_compare_reversed_same_review_state.py --output .tools/comp104-peer-state-new",
     "python3 tests/semantics/undefined_scalar_compare_reversed_same_maintenance.py --output .tools/comp104-maint-state-new"
-  ]
+  ],
+  "integration": {
+    "parent": "9b8e50d5abef545b2664496e29acf5913640197a",
+    "modules": 407,
+    "preservation": "Only tested207 changes under spec/pipeline; all other incoming schema/task/field/default/ordered-manifest paths are exact. All13 publication tests and the complete incoming checkpoint body are preserved.",
+    "interaction_review": "Compound SUBASSIGN/selected POWER, parent setter hooks, named INI/DEFINE, Generator buffered SEND and typed float-key PROPREF retention require absent producers. New task tags are unused; retained/debt lists remain empty, including the empty-array control.",
+    "evidence": "Source9+1/state589 retain7a1; affected46/2/one selector retain9e8 and pre-worker setup failure0. No joined execution, accepted replay or historical credit renewal."
+  }
 }

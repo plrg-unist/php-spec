@@ -1,0 +1,90 @@
+{
+  "milestone": "Iterator37: first parked SEND overwrite with owning inputs",
+  "status": "composed-accepted",
+  "scope": "One pending literal SEND through finite native Generator links to a parked PAUSED simple-CV used yield, exactly one old owning LIVE input and one new owning argument. Before initialization-only return, old input becomes orphaned without decrement and new input becomes LIVE. Physical frame/PARKED stay exact; current snapshot, raw reference cache and both request-late inputs retain separate owners through COW and close.",
+  "implementation": {
+    "paths": {
+      "spec/semantics/280-generators.watsup": "c1d947a0524c2cc706b72507345e520b1429e7e4a2bf17090dbe50b067c71599",
+      "spec/semantics/289-generator-delegation.watsup": "12767df15850593216c3d4de4c366d17f675694d95411959725017a7341bba1a"
+    },
+    "change": "280+4/289+20: separately authenticated parked buffered SEND and input_send resume arm. Existing input registry, eager cleanup, current copy and close algorithms supply ownership; no fields, roots or collector changes."
+  },
+  "tested_revisions": {
+    "native_and_unchanged_baseline": "dee143c999b18f71f819096523563b5e652c0288",
+    "source4_and_strict406": "1458b305fe4159c8ea648000668eb890eb57ac1f",
+    "elaboration4_and_state790": "c010f4e37e154b87711c45533bf042c853b0986d",
+    "bridge": "State/Makefile commit preserves runtime/source bytes. Maintained peer wrapper carries only the exact validated case-specific bound and truthful budget metadata; expanded CASES/source/stages/checks/Events remain identical, with zero-model singleton/default dispatch proof in archive."
+  },
+  "validation": {
+    "native": 4,
+    "unchanged_baseline": "Genuine public force-close Unsupported after 17 exact OUTPUT chunks, reused original/native tuple; zero agreement.",
+    "sources": "Four unique normal agreements, exact stdout/stderr/exit0.",
+    "states": {
+      "author": [
+        234,
+        151
+      ],
+      "peer": [
+        248,
+        157
+      ],
+      "total": 790,
+      "local": 770,
+      "generic": 20
+    },
+    "compiler": "Strict406 and four-fixture elaboration pass; elaboration earns zero execution credit.",
+    "failure": "One exclusive peer248 process hit its 120s limit: empty stdout/stderr, no interpreted false premise, zero credit. Unchanged source/formulas pass in 118.988s under 240s; only that case keeps 240s as reliability margin, not a demonstrated runtime above 120s. Previously unrun peer157 passes at 120s. No semantic or fixture correction, source/author replay, historical renewal or GC credit."
+  },
+  "commands": {
+    "native": [
+      "taskset -c 2 python3 .tools/native.py",
+      "taskset -c 2 python3 .tools/review-native.py"
+    ],
+    "baseline": "taskset -c 2 python3 .tools/baseline.py --native-report <native-author report>",
+    "strict": "taskset -c 2 python3 .tools/strict.py",
+    "source": "taskset -c 2 python3 <author or peer source wrapper> --native-report <matching retained report>",
+    "elaboration": "taskset -c 5 python3 .tools/state-elab.py",
+    "state": "taskset -c 5 python3 <author or peer state wrapper> --case <one exact report selection>; accepted248 uses .tools/peer248-retry.py at 240s, now bridged to maintained wrapper."
+  },
+  "environment": {
+    "php_source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "mode": "SL, caches off, encountered determinism checks",
+    "locale": "LC_ALL=C TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset; serial exclusive assigned CPU",
+    "caps": "Native 8s; source 100/120s and 100000 steps; strict 120s; elaboration 60s; state seek/finish 4000/4000, process 120s except peer248 at 240s.",
+    "exits": "Accepted wrappers/models0 with empty stderr/no timeout; baseline model1 and original timeout-9 retained separately."
+  },
+  "reports": {
+    "native-author2": ".tools/generator-parked-pending-buffered-send-native-pafzbdcs/report.json",
+    "native-peer2": ".tools/generator-parked-pending-buffered-send-review-native-33wevuun/report.json",
+    "unchanged-baseline": ".tools/generator-parked-pending-buffered-send-baseline-g0wx1ghx/report.json",
+    "strict406": ".tools/generator-parked-pending-buffered-send-author-sl-1fwtj99b/report.json",
+    "source-author2": ".tools/generator-parked-pending-buffered-send-source-dujfklv0/report.json",
+    "source-peer2": ".tools/generator-parked-pending-buffered-send-review-source-w43zw496/report.json",
+    "elaboration4": ".tools/generator-parked-pending-buffered-send-state-elab-nt06nd7y/report.json",
+    "state-author234": ".tools/fiber-state-review-1z3nbb88/report.json",
+    "state-author151": ".tools/fiber-state-review-ci8vttuc/report.json",
+    "state-peer248-timeout0": ".tools/fiber-state-review-1r1bpknj/report.json",
+    "state-peer248": ".tools/fiber-state-review-0dobc8a5/report.json",
+    "state-peer157": ".tools/fiber-state-review-ueok74jq/report.json"
+  },
+  "evidence": {
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-parked-pending-buffered-send-37/private.tar.gz",
+      "bytes": 2101800,
+      "sha256": "93f1742729491f804296ccb087caece4cd54e6e22faa8b29efca68d540154902"
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-parked-pending-buffered-send-37/manifest.json",
+    "recovery": "Archive restores twelve raw report directories, eleven ignored inputs including tested peer/retry/dispatcher bridge, six current tests, nine runtime files and six support snapshots. Manifest holds report/status/revision and input hashes. Retain private/composed branches for tracked cuts; local reused binaries establish no new build/portability claim."
+  },
+  "remaining": "Previous orphans/multiple existing inputs, nonowning inputs/arguments, nonpending body entry, loop/HELD/other suspended owners and explicit collection are outside this validated slice. Full core PHP and foundational verification remain incomplete.",
+  "composition": {
+    "parent": "ba94b5eafc3975186fd993fd22f74b4060213bec",
+    "private_publication": "bd5ab5c884d0a3bd1324d84ad2fd212c4b4ee937",
+    "runtime": "Tested modules280/289 exact; all other incoming runtime/schema/default/root/ordered manifest/pipeline bytes preserved.",
+    "validation": "Actual source selectors independently reviewed disjoint; original private cuts, timeout0 and exact case-bound bridge retain identities. No joined actor or accepted replay."
+  }
+}

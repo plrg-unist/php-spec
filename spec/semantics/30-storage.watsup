@@ -375,6 +375,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | ARITHMETIC_ADDASSIGN_CV_RIGHT_WARNING pintegeroperation pvalue pnumber pvalue pnumber nat
   | ARITHMETIC_DIV_CONVERT pintegeroperation parithmeticphase | ARITHMETIC_DIV_WARNING pintegeroperation parithmeticphase pvalue pnumber nat
   | ARITHMETIC_DIVASSIGN_CONVERT pintegeroperation parithmeticphase | ARITHMETIC_DIVASSIGN_WARNING pintegeroperation parithmeticphase pvalue pnumber nat
+  | ARITHMETIC_SUBASSIGN_CONVERT pintegeroperation parithmeticphase | ARITHMETIC_SUBASSIGN_WARNING pintegeroperation parithmeticphase pvalue pnumber nat
   | SUBMUL_CONVERT pintegeroperation parithmeticphase | SUBMUL_WARNING pintegeroperation parithmeticphase pvalue pnumber nat
   | POWER_CONVERT pintegeroperation parithmeticphase | POWER_CONVERSION_WARNING pintegeroperation parithmeticphase pvalue pnumber nat
   | POWER_CONVERSION_DEPRECATED pintegeroperation pnumber pnumber nat
@@ -388,6 +389,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | CONCATASSIGN_ARRAY_WARNING porigin poperand poperand pvalue int nat
   | POWER_WARNING pintegeroperation pnumber pnumber nat
   | POWER_ASSIGN_WARNING pintegeroperation nat pnumber pnumber nat nat?
+  | POWER_ASSIGN_SELECTED_WARNING pintegeroperation nat pnumber pnumber nat nat?
   | MOD_ASSIGN_WARNING pintegeroperation nat nat nat int nat
   | MOD_ASSIGN_RIGHT_WARNING pintegeroperation nat nat int nat int nat
   | MOD_ASSIGN_BOTH_LEFT pintegeroperation nat nat nat int nat

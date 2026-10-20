@@ -22,6 +22,108 @@ Genuine `788b01efd` ingress baseline stays zero. First-callback owning values,
 already checked defined counterparts removed later and wider producers remain partial.
 [Reversed shared-CV review](coverage/semantics/undefined-scalar-compare-reversed-same-review.json).
 
+Composed over `9b8e50d5a`/407 with tested module207 and publication tests
+preserved. Incoming compound-arithmetic tasks, parent setter hooks, INI/DEFINE,
+Generator SEND and typed float-key property retention have no producer here;
+new task tags stay unused and retained/debt lists stay empty. Source9+1/state589
+retain7a1; corrected affected46/2/one selector retain9e8 and setup failure0,
+without joined execution, accepted replay or renewed historical credit.
+
+Selected-reference `-=` now retains both numbers through conversion Warnings.
+Cached `12.5 - 5.5` writes strict float `7.0` through the old target alias after
+both current-name rebindings and old RHS retirement. A supplied second-handler
+Exception cancels compound and outer stores, preserving callback value `88`, current
+replacement `77` and outer result `100`.
+Two originals pass at `ee582af8b`/407 and 382 focused premises at `1f037ee80`/407.
+[Compound subtraction ledger](coverage/semantics/subassign-warning-review.json).
+Initial leading LEFT/quiet RHS scalar refs and a surviving old-target alias bound
+this slice; wider operands/targets/lifetimes remain partial, OP12 paused.
+
+Composed over `607d2bc66`/407, preserving incoming state, task and
+manifest paths. Source2/state382 retain their private407 cuts; independently
+reviewed absent incoming selectors require no joined execution or renewed credit.
+
+A first pending SEND now overwrites one owning LIVE input at a parked simple-CV
+used yield with a new owning argument. The old count becomes orphaned without
+decrement; the new count becomes LIVE before receiver initialization and current
+capture. The physical child/frame stay parked. Used snapshots, raw-row COW and
+old embedded-cell/new direct-object inputs retain distinct owners through close
+and request-store destruction.
+[Buffered SEND review](coverage/semantics/generator-parked-pending-buffered-send-review.json).
+
+Four source agreements and strict406 pass at 1458b305fe. Four-fixture elaboration
+and 790 new premises (385 author +405 independent;770 local +20 generic) pass
+at c010f4e37/406. One exclusive peer 120s timeout remains zero; the unchanged full
+fixture passes in 118.988s under 240. Only that case now uses the validated 240s
+margin; the other three retain 120. Source/stage/check/Event formulas and runtime
+bytes stay exact across this wrapper-only bridge. Native4 and genuine unchanged
+force-close Unsupported retain dee143c999, zero agreement. All actors reaped and
+CPU5 released; no semantic correction, source/historical renewal or GC credit.
+Previous orphans/multiple records, nonowning arguments, nonpending body entry and
+wider suspended owners remain outside this admission; explicit collection is
+unvalidated here. Historical campaigns retain their original cuts.
+
+Composed over `ba94b5eafc`/407 with tested modules 280/289 and source/state
+formulas unchanged; the peer248-only 240s wrapper bound is the validated bridge.
+All other incoming runtime/schema/default/root/ordered-manifest/pipeline bytes
+remain parent-exact. Source-selector review found no interaction with ordinary
+typed-reference histories, parent hooks, DEFINE, comparison/arithmetic warnings
+or float-key debt producers, absent here. Private cuts and timeout0 retain their
+identities; no joined execution or accepted replay was needed.
+
+Bare NAMED user-function Closure VALUES now publish under live function/name-map
+authority with absent scope/binding/certificate guards. Distinct first-class
+objects and direct calls share request-static counters, independently of Closure
+owners. Canonical/query COW retains the same pointer and source/append history.
+A private duplicate copy can retire the last FCC while its function-static child
+stays alive; an explicit later direct-function clear runs D41 before delivery.
+
+Three originals pass at `6973dea00`/407; 690 focused premises (248+131+311),
+including two zero-budget identities, pass at `23a4ba4e8`/407. All first attempts
+pass without failures, retries or accepted/historical replay. Sole400+7 reuses
+live function authority and existing dynamic-only PVOBJECT query/tree delegates;
+request STATICS roots and zero NAMED child edges are unchanged. Global/default
+policies stay exact. Ordinary omitted/false originals are distinct from structural
+clone/inherited-flag composition; wider domains and core remain partial.
+[Named Closure define review](coverage/semantics/define-runtime-named-closure-review.json).
+
+Composed over `562080a9f`/407 with exact tested400+7 and complete incoming
+runtime/manifest/inventory prefixes preserved. By-ref/finally, INI, missing loose
+comparisons, power assignment and typed-property literal-key debt selectors are
+unselected. Raw static/source cells have no property-reference source; retained/
+debt lists stay empty. No state/graph/module lift is needed. Source3/state690
+retain their private407 cuts without joined execution, accepted replay or renewed
+historical credit.
+
+Direct/selected named and mixed `ini_set` calls now retain a flat quiet-primitive
+array value captured before a later NULL-option argument and alias COW. Returning
+Deprecated handling reaches parameter2 TypeError with converted empty option;
+supplied throw preserves rawNULL, the earlier array, Exception identity/result99
+and callback writes before normal setter recovery. Strict mode completes argument
+effects before rejecting parameter1 without entering the handler.
+
+Author3 source comparisons retain `9441427317`; the smaller independent source
+passes at `c84b49c413`, common runtime `4a0c2ce147`/406. All995 state premises
+(614+381) pass at the latter cut. Initial `f45bd2c849` CPU2 native4/baseline0,
+CPU4 author checks and final CPU2 peer/state checks remain distinct. Three earlier
+peer CLI45 timeouts and two cumulative200/400-step cost localizations retain zero
+agreement credit; a smaller top-level peer preserves owning capture, COW, throw
+identity and recovery within the same caps. Fifteen actor reports retain twelve
+PASS and three timeouts; two diagnostic records remain zero credit. Expected
+Deprecated24 is the only PHPstderr. Only22 additive172 lines change; existing
+finish/trace/roots/discard/GC and historical tests stay exact. Owned/packed arrays
+and wider leaves/forms remain partial; paused paths are untouched.
+[Named NULL array INI review](coverage/semantics/ini-set-named-null-array-value-review.json).
+
+Composed over `553943078`/407 with module172/four tests private-exact and every
+other runtime/schema/ordered manifest parent-exact, including new417. Incoming
+DEFINE-value, magic parent-get, Generator, reference/finally, arithmetic-assignment
+and array-literal debt selectors have no producer here. Source4/995 and the three
+timeouts/two localizations0 retain private cuts without joined execution.
+
+Earlier selected-reference `**=` Deprecated continuations retain source2/state334
+in the [selected power ledger](coverage/semantics/powerassign-selected-warning-review.json).
+
 The same missing direct CV twice at `==`/`!=`/`<`/`<=` now traverses its
 second Warning when the first handler leaves or removes that name. Two captured
 NULLs yield true/false/false/true despite second-handler writes/references;
@@ -90,19 +192,8 @@ here; new target/task variants stay unused and debt lists stay empty.
 Source7+3/state491 and affected38/2/one selector retain their private406
 cuts without joined execution or renewed historical credit.
 
-Selected-reference `/=` now stages both numeric holders before their Warnings.
-Cached float `2.5` writes the old target despite current-name rebindings; a second
-supplied throw cancels stores, and cached zero still errors after RHS repair and
-retirement. The surviving old target alias, callback writes and outer100 remain
-on both failure paths.
-Three originals pass at `fb9388492`/406 and 554 focused premises at `6364a6c16`/406.
-[Compound DIV ledger](coverage/semantics/divassign-warning-review.json).
-Initial leading-LEFT/quiet-RHS scalar references and a surviving old-target alias
-bound this slice; wider operands/targets/lifetimes remain partial, OP12 paused.
-
-Composed over `219e1b868`/407, preserving incoming state, task and
-manifest paths. Source3/state554 retain their private406 cuts; independently
-reviewed absent incoming selectors require no joined execution or renewed credit.
+Earlier selected-reference `/=` Warning continuations retain source3/state554
+in the [compound DIV ledger](coverage/semantics/divassign-warning-review.json).
 
 Pending zero-argument NEXT now also returns before dispatch through native links
 to a parked simple-CV used yield with one owning LIVE input. Only the selected
@@ -110,7 +201,8 @@ receiver initializes; the input and physical child/frame remain unchanged. NULL
 adds no current snapshot. Close orphans the input while cache storage cleanup
 runs before queued ancestor finally blocks. Real row COW leaves the old array
 with the input alone, and embedded input cells remain mutable after close.
-SEND overwrite, nonpending/body entry, wider inputs/owners/loops and GC stay open.
+At that cut, SEND overwrite, nonpending/body entry, wider inputs/owners/loops
+and GC stayed open.
 [Buffered NEXT review](coverage/semantics/generator-parked-pending-buffered-next-review.json).
 
 Four source agreements and strict406 pass at 3a95fa9a3; 735 new premises
@@ -1029,36 +1121,39 @@ joined actor, accepted replay or renewed execution credit.
 The earlier nonowning-copy arithmetic route retains source10/state767 in its
 [review ledger](coverage/semantics/copied-arithmetic-warning-review.json).
 
-Real zero-argument `parent::$value::get()` now selects the lexical parent's
-public virtual hook while borrowing This from the active Child hook. A Grandchild
-keeps called scope, Parent's private 41 wins over Child's 99, and clearing the
-receiver CV leaves only the outer hook's owner. Scalar/owning returns survive
-receiver cleanup; a supplied Parent throw skips Child continuation and preserves
-catch/destination 42. Real Throwable traces retain `$value::get`, Parent and `->`.
-Outside-hook and wrong-property calls fail compilation before application output.
+Public virtual implicit `int` Child setters now call the lexical root Parent
+setter through naked `parent::$value::set(f())`. The parent target borrows This;
+the outer setter marker retains it when the argument callback clears the global
+receiver. Parent receives 7 while Child retains 20, with private secret 7 versus
+99 and Grand called scope. The parent call returns NULL; the outer assignment
+still yields its literal 20. A supplied Parent throw or an array-argument
+TypeError cancels Child continuation/commit, preserves destination 42 and
+releases the receiver before catch. Fresh TypeError traces name the Parent setter.
+Wrong-kind get-from-set rejects compilation before output.
 
-Five exact source agreements retain `6ae47c032`/407; the fresh trace agreement
-retains `fae53b024`/407. Unique focused 377 = 366 reached + 11 derived: selection 139
-at `fae53b024`, owning 128/throwing 110 at `20023579d`. The initial 374 checks remain
-a separate accepted cut, not trace-field coverage. Genuine baselines preserve
-three PHP Error mismatches, an incorrectly executed outside-hook file and an
-inherited-hook Unsupported, plus the later trace-field mismatch; all earn zero.
-The native fatal-template failure and two pre-execution elaboration failures stay
-zero. Native short-child affinity is qualified; accepted workers are stable/reaped.
-[Parent get-hook review](coverage/semantics/parent-get-hook-review.json).
+Four exact source agreements pass at `be38e926a`/407. Focused 459 = 445 reached +
+14 derived pass in three histories at `f7fde2808`/407, including real argument
+callback/projection, typed reception, private/called scope, NULL-versus-20 receipt,
+receiver cleanup, supplied identity, compiler control and budget resumption.
+Four native originals and the genuine four compiler Unsupported observations retain `9a3c31b66`;
+baseline agreement stays zero. Native affinity is partial 1/4 with full captured
+argv; model/state workers have complete affinity and are stable/reaped. No
+semantic failure, retry or historical replay occurred.
+[Parent set-hook review](coverage/semantics/parent-set-hook-review.json).
 
-Module 417 and narrow 30/141/142 gates add the borrowed target and source/caller
-certificate; generic call, body, return and cleanup rules remain. Only naked
-literal get calls in ordinary public virtual statement hooks are admitted.
-Wrapped syntax stays ordinary static-property dispatch; backing/plain-parent
-trampolines, set/ref/FCC/arguments, traits and wider callers remain partial.
+Modules 403/382 add only the authenticated public virtual implicit-int root/Child
+source/link edge; 417 reuses its borrowed target/record and ordinary argument,
+receive, return and cleanup machinery. Get compatibility is structural, with
+CLASS108's evidence retained at its original cuts. Backing/asymmetric or wider
+setter hierarchies/types, explicit parameters, other argument/result producers
+and wider lifetime/reentry remain partial. No generic cleanup/root/GC change.
 
-Composed over `00f8245f8`/406, retaining all incoming manifest entries and adding
-417. Incoming ref-return history, INI/DEFINE, missing-CV comparison, Generator,
-arithmetic-warning and float-key typed-ALIAS literal selectors have no producer
-here. Existing debt fields remain empty; selected hook/call/type/cleanup paths
-are unchanged incoming. Source5+1/state139+128+110 retain their private cuts;
-no joined actor or accepted replay was needed.
+Composed over `d2bae8d5eb`/407, preserving the incoming manifest and all
+other incoming runtime/schema/default/root bytes. Incoming reference-return histories,
+INI/DEFINE, missing-CV comparisons, arithmetic Warnings and typed-ALIAS/float-key
+literal selectors are absent; the bad argument is a DIRECT primitive array.
+Four source agreements at be38 and 459 focused premises at f7 retain their
+tested cuts; no joined actor or accepted replay was needed.
 
 Retained propertyless Stringable `define` names now receive captured NULL flags
 with primitive candidates in admitted user-global/class-name domains. One module400
@@ -1232,33 +1327,41 @@ and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
 Flat runtime tables in lossy-float literal-key callbacks now admit embedded
-null/bool/int/float ALIAS leaves with validated ordinary instance-property type
-sources. The existing primitive-property rules enforce rejection/coercion; shared
-leaf copies retain their constraint. Explicit property unset removes its source
-before releasing the alias, allowing a later singleton copy to unwrap while the
-object remains rooted. For debt-bearing payloads, each source object must survive
-logical pruning alongside the leaf; positive leaf counts alone do not suffice.
+string ALIAS leaves with validated ordinary instance-property type sources.
+Canonical bytes and authenticated carriers use existing validation; nonempty,
+unique type sources, live property aliases, coercion/backing exclusions and
+logical-pruned source-object liveness remain unchanged. Global primitive-cell
+and direct string CV/CELL retarget gates stay exact. Strings add no heap edges.
 
-Four fresh natives and the genuine unchanged Unsupported baseline retain
-`4843da9fd`/406. Strict406 and source4 pass at `5be36f8e9`. Focused state1033
-(1020 Boolean +13 raw; 436 author +597 independent) passes first executions at
-`cdc59a8d9`. No source/state failures or retries; the genuine baseline stays zero
-after its first diagnostic. Sibling writes
-distinguish table COW from leaf sharing, and both HARRAY and wrapper-CELL producers
-balance before teardown. Only413 leaf eligibility and source-object liveness change;
-source/error authentication, tasks, fields, count/prune algorithms and driver stay
-exact. Fresh witnesses use ordinary public int properties without user methods,
-hooks, inheritance or destructors. Typed strings/arrays/objects, indebted leaves,
-static/hooked/queued or retired sources, coercion/backing records, recursive or
-pooled/immutable tables, effective-zero, active collection and request-end debt
-remain Unsupported. Paused LIST/owned-NUL and active class/lifecycle work are
-untouched. [Typed-leaf review](coverage/semantics/array-literal-float-typed-alias-leaf-review.json).
+Four fresh natives and the genuine unchanged after-first-diagnostic Unsupported
+retain `0aa97f4f8`/406. Strict406 and source4 pass at `aa868e93a`. Focused state1021
+(1008 Boolean +13 raw; 411 author +610 independent) passes at `63543393c`.
+An initial author fixture parser failure at
+`e7cbbcf46` retains zero credit. The sole constructor-index grouping correction
+affects only a negative fixture; only corrected author and previously unrun peer
+fronts executed, without source/native/strict replay. Weak123 coercion,
+array rejection and shared N23→NY3 byte writes keep new/N23 snapshots fixed.
+Explicit property unset instead permits singleton Xew/New/NYw copies. DIRECT
+sibling writes separate table COW from shared leaf writes; dual-source reference
+payloads cover deletion and supplied throw before inverse balancing/cleanup.
+Only413 typed-leaf eligibility changes; source/error authentication, tasks, fields,
+ownership/prune algorithms and driver stay exact. Fresh witnesses use ordinary public string
+properties without methods/hooks/inheritance/destructors. Typed arrays/objects,
+indebted leaves, wider type-source lifetimes, coercion/backing records,
+recursive/pooled/immutable tables, effective-zero, active collection and request-end
+debt remain Unsupported. Paused LIST/owned-NUL and active class/lifecycle work
+are untouched. [Typed string-leaf review](coverage/semantics/array-literal-float-typed-string-alias-leaf-review.json).
 
-Composed over `56a525b51`/406 with accepted413 and six tests unchanged;
+Composed over `788b01efd`/407 with accepted413 and six tests unchanged;
 every other parent runtime and ordered manifest byte is preserved. Incoming
-missing-CV, DEFINE/INI, compound-warning, reference-return/finally and Generator
-selectors have no producer here. Source4/state1033 and the genuine baseline0
-retain their private cuts without joined execution or renewed agreement credit.
+parent-get hooks, missing loose comparisons, INI/Closure DEFINE, compound-warning
+and reference-return/finally selectors have no producer here. Source4/strict406/
+state1021 and baseline/parser failures0 retain their private cuts without joined
+execution or renewed agreement credit.
+
+Earlier primitive typed ALIAS leaves retain source4/strict406 at `5be36f8e9` and
+state1033 at `cdc59a8d9`, integrated as `00f8245f8`; baseline0 and first-pass
+results remain in the [typed-leaf ledger](coverage/semantics/array-literal-float-typed-alias-leaf-review.json).
 
 Earlier untyped string ALIAS leaves retain source4/strict406 at `b893408e6` and
 state1034 at `38b3ae5f6`, integrated as `5d8476935`; its genuine baseline remains

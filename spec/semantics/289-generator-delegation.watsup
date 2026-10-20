@@ -144,6 +144,26 @@ def $generator_pending_parked_send(S, pgeneratorop) = true
   -- if $generator_input_count(S.GENERATORINPUTS, n_leaf) = 0
 def $generator_pending_parked_send(S, pgeneratorop) = false -- otherwise
 
+;; A first parked overwrite preserves the old count and installs a new LIVE
+;; input before the receiver's initialization-only return and current copy.
+def $generator_pending_parked_buffered_send(S, pgeneratorop) = true
+  -- if pgeneratorop.NAME = "send" /\ ~pgeneratorop.ADVANCE
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if $generator_operation_valid(S, pgeneratorop)
+  -- if pgeneratorop.ARGUMENTS = [pvalue]
+  -- if $call_reference_operand_valid(S, KNOWN pvalue) /\ $value_nodes(pvalue) =/= eps
+  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* 2
+  -- if |phpType7*| = 1 /\ $generator_arguments_supported(phpType7*)
+  -- if $generator_pending_resume(S, pgeneratorop)
+  -- if n_leaf = $generator_from_leaf(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1))
+  -- if $generator_object(S, n_leaf)
+  -- if S.OBJECTS[n_leaf] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_PAUSED /\ pgenerator.PARKED =/= eps
+  -- if $generator_parked_valid(S, pgenerator)
+  -- if S_view = $generator_set(S, n_leaf, pgenerator[.PARKED = eps])
+  -- if $generator_buffered_next_leaf(S_view, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1)) = (n_leaf)
+def $generator_pending_parked_buffered_send(S, pgeneratorop) = false -- otherwise
+
 ;; NEXT takes the same initialization-only return but copies no current value.
 def $generator_pending_parked_next(S, pgeneratorop) = true
   -- if pgeneratorop.NAME = "next" /\ pgeneratorop.ARGUMENTS = eps /\ ~pgeneratorop.ADVANCE

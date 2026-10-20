@@ -31,6 +31,7 @@ dec $generator_resume_root(pstate, pgeneratorop) : bool
 dec $generator_pending_resume(pstate, pgeneratorop) : bool
 dec $generator_pending_detached_send(pstate, pgeneratorop) : bool
 dec $generator_pending_parked_send(pstate, pgeneratorop) : bool
+dec $generator_pending_parked_buffered_send(pstate, pgeneratorop) : bool
 dec $generator_pending_parked_next(pstate, pgeneratorop) : bool
 dec $generator_pending_unused_send(pstate, pgeneratorop) : bool
 dec $generator_unused_send_leaf(pstate, nat, nat) : nat?
@@ -347,6 +348,8 @@ def $generator_resume(S, pgeneratorop) = $generator_pending_throw(S, pgeneratoro
   -- if $generator_pending_throw_ready(S, pgeneratorop)
 def $generator_resume(S, pgeneratorop) = $generator_complete($generator_result($generator_resumed(S, pgeneratorop), pgeneratorop), pgeneratorop)
   -- if $generator_pending_parked_send(S, pgeneratorop)
+def $generator_resume(S, pgeneratorop) = $generator_complete($generator_result($generator_resumed($generator_input_send(S, pgeneratorop), pgeneratorop), pgeneratorop), pgeneratorop)
+  -- if $generator_pending_parked_buffered_send(S, pgeneratorop)
 def $generator_resume(S, pgeneratorop) = $generator_complete($generator_result($generator_resumed(S, pgeneratorop), pgeneratorop), pgeneratorop)
   -- if $generator_pending_parked_next(S, pgeneratorop)
 def $generator_resume(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Generator pending initialization send or throw"]
@@ -361,6 +364,7 @@ def $generator_resume(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Generator 
   -- if $generator_parked(S, pgeneratorop.OBJECT, |S.OBJECTS|)
   -- if ~$generator_pending_throw_ready(S, pgeneratorop)
   -- if ~$generator_pending_parked_send(S, pgeneratorop)
+  -- if ~$generator_pending_parked_buffered_send(S, pgeneratorop)
   -- if ~$generator_pending_parked_next(S, pgeneratorop)
 def $generator_resume(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Generator buffered send throw"]
   -- if ~$generator_pending_resume(S, pgeneratorop)
