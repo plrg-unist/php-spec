@@ -303,6 +303,13 @@ with an empty option and the earlier array; throwing handlers retain raw NULL an
 cancel before value rejection. Four originals and 844 state premises cover COW,
 strict option priority and normal recovery. Wider values/forms remain partial.
 
+[Named NULL INI options with rejected array values](coverage/semantics/ini-set-named-null-array-value-review.json)
+now retain an earlier array across reversed value/option evaluation and later COW.
+Returning handlers reach the value TypeError with an empty option; a supplied
+throw keeps raw NULL and cancels rejection. Four source comparisons and 995 state
+premises cover named/mixed source authentication, ownership, strict option
+priority and recovery. Owned/packed array values and wider leaves remain partial.
+
 [NULL INI options with retained stdClass values](coverage/semantics/ini-set-null-stdclass-value-review.json)
 now resume handlers for direct/selected positional calls with table-free objects
 whose properties hold direct quiet primitives. Returning handlers reach parameter2

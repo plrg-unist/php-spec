@@ -7,6 +7,32 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct/selected named and mixed `ini_set` calls now retain a flat quiet-primitive
+array value captured before a later NULL-option argument and alias COW. Returning
+Deprecated handling reaches parameter2 TypeError with converted empty option;
+supplied throw preserves rawNULL, the earlier array, Exception identity/result99
+and callback writes before normal setter recovery. Strict mode completes argument
+effects before rejecting parameter1 without entering the handler.
+
+Author3 source comparisons retain `9441427317`; the smaller independent source
+passes at `c84b49c413`, common runtime `4a0c2ce147`/406. All995 state premises
+(614+381) pass at the latter cut. Initial `f45bd2c849` CPU2 native4/baseline0,
+CPU4 author checks and final CPU2 peer/state checks remain distinct. Three earlier
+peer CLI45 timeouts and two cumulative200/400-step cost localizations retain zero
+agreement credit; a smaller top-level peer preserves owning capture, COW, throw
+identity and recovery within the same caps. Fifteen actor reports retain twelve
+PASS and three timeouts; two diagnostic records remain zero credit. Expected
+Deprecated24 is the only PHPstderr. Only22 additive172 lines change; existing
+finish/trace/roots/discard/GC and historical tests stay exact. Owned/packed arrays
+and wider leaves/forms remain partial; paused paths are untouched.
+[Named NULL array INI review](coverage/semantics/ini-set-named-null-array-value-review.json).
+
+Composed over `553943078`/407 with module172/four tests private-exact and every
+other runtime/schema/ordered manifest parent-exact, including new417. Incoming
+DEFINE-value, magic parent-get, Generator, reference/finally, arithmetic-assignment
+and array-literal debt selectors have no producer here. Source4/995 and the three
+timeouts/two localizations0 retain private cuts without joined execution.
+
 Quiet selected-reference `**=` now commits captured infinity through the old
 target alias even when the Deprecated handler rebinds both current names and
 throws. The same supplied Exception resumes after the `+INF` store; the outer
