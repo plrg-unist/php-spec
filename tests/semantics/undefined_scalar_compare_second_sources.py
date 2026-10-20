@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Native-first second-Warning spaceship missing-CV warnings."""
+"""Native-first forward scalar comparison second-Warning continuations."""
 from pathlib import Path
 
 import global_constant_sources as family

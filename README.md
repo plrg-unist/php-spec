@@ -22,7 +22,8 @@ This covers bounded spaceship operands and distinct direct-CV
 `==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
 Both-missing pairs, including the same missing variable twice at `<=>`,
 can resume if the first handler defines the later scalar; greater operators
-warn right first. `<=>` also stages a second Warning if the later CV stays
+warn right first. `<=>` and distinct forward `==`/`!=`/`<`/`<=` pairs also stage
+a second Warning if the later CV stays
 missing, freezing both NULLs despite writes from the second handler.
 Wider warning paths remain partial.
 

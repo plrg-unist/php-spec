@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Distinct direct CVs at `==`/`!=`/`<`/`<=` now traverse the second Warning
+when right stays missing or is removed by the first handler. Two captured NULLs
+preserve Boolean true/false/false/true despite late references or scalar writes;
+no third Warning occurs. Default report order and second supplied Exception
+identity/destination/finally pass. One guarded restore and a NULL-only source arm
+authenticate both compiled CVs and the RHS diagnostic line; no fields, tasks, roots
+or discard change. Eight source agreements plus two controls and 681 strict-SL
+premises/four groups (342 author + 339 independent) pass first attempts at
+`e40fab3d8`/406. Separate affected 104 premises/three groups and one old95 selector
+preserve forward/reversed/SPACE boundaries without historical renewal. Genuine
+`69b6a809a` baseline stays zero; no failures or retries. Reversed second-Warning
+chains, ordinary same-CV, owning operands and wider producers remain partial.
+[Forward second-Warning review](coverage/semantics/undefined-scalar-compare-second-review.json).
+
 A frozen-left `<=>` now stages a second Warning when its later direct CV stays
 missing, including a removed scalar RHS or the same missing name twice. Both
 NULLs stay frozen despite second-handler writes/reference binding; a still absent

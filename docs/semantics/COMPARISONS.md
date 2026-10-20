@@ -36,8 +36,8 @@ and a defined scalar counterpart. The missing value stays null while the opposin
 wrapper follows callback writes, late reference creation and rebinding. A missing
 right name can remain undefined throughout the callback. False handlers preserve
 default Warning order; throws preserve destination/catch/finally. The opposing CV
-must remain defined and scalar on return; removal or an owning value stops
-Unsupported without another warning. The
+must remain scalar on return, except for the forward second-Warning paths below;
+other removed or owning values stop Unsupported. The
 [missing-left review](../../coverage/semantics/undefined-scalar-compare-review.json)
 and [missing-right review](../../coverage/semantics/undefined-scalar-compare-right-review.json)
 and [not-equal/less-or-equal review](../../coverage/semantics/undefined-scalar-compare-ne-le-review.json)
@@ -45,7 +45,7 @@ and [greater review](../../coverage/semantics/undefined-scalar-compare-gt-ge-rev
 record the separate cuts. Zend evaluates `>`/`>=` source expressions left to right,
 then reverses physical comparison operands. The single-missing/scalar-throughout
 bound makes these source-oriented records valid; removed-right native probes
-confirm one Warning without admitting that wider path. Their second-Warning chains,
+confirm one Warning without admitting that wider path. Reversed second-Warning chains,
 owning/removed counterparts and wider producers remain partial. Earlier spaceship cuts remain in the
 [scalar warning review](../../coverage/semantics/undefined-spaceship-review.json).
 
@@ -55,8 +55,8 @@ defines current right. Reversed `>`/`>=` warn for source right first and freeze 
 NULL while the handler defines current left. The first name may remain undefined.
 A supplied throw suppresses the second Warning while retaining destination,
 Exception identity and finally; `zval_undefined_cv` checks the pending exception
-before reporting. Returning ordinary comparisons with the opposing name still
-missing remains explicit Unsupported before the second-Warning chain.
+before reporting. Reversed comparisons with the opposing name still missing
+remain explicit Unsupported before the second-Warning chain.
 The spaceship path uses the same left-frozen record and entry-only predicate.
 Owning counterparts and removed-left spaceship operands
 and wider producers remain partial. The
@@ -72,15 +72,21 @@ The other six operators with the same missing CV remain partial. The
 [same-variable review](../../coverage/semantics/undefined-spaceship-same-review.json)
 records this entry extension and its separate source/state cut.
 
-If a frozen-left `<=>` read resumes with its later direct CV still missing,
+If a frozen-left `<=>` or distinct forward `==`/`!=`/`<`/`<=` read resumes with
+its later direct CV still missing,
 the driver now dispatches the second Warning and freezes its NULL too. This
 includes a scalar right CV removed by the first handler and the same name twice.
-Second-handler writes or reference binding cannot change the comparison result 0;
+Second-handler writes or reference binding cannot change the two captured NULLs:
+`<=>` returns 0 and the four forward Boolean operators return true, false, false, true.
 leaving the name missing causes no third Warning. False handlers preserve each
 default Warning's order, and a second supplied throw preserves destination and
 catch/finally. The existing right-frozen removed-left refusal stays separate.
 [Second-Warning review](../../coverage/semantics/undefined-spaceship-second-review.json)
 records fresh source/state checks and only the affected historical controls.
+The [forward review](../../coverage/semantics/undefined-scalar-compare-second-review.json)
+adds a NULL-only source certificate for the second read, requiring both compiled
+distinct direct CVs and the actual RHS diagnostic line. Ordinary literal/captured-left,
+same-CV and reversed producers remain separate.
 
 Array comparison first handles identical container identity, then recursion on
 the left operand, element counts, and exact normalized key lookup in left

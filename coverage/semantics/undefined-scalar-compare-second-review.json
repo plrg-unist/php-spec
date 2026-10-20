@@ -1,0 +1,98 @@
+{
+  "milestone": "COMP100 forward comparison second missing-CV Warning",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "Distinct direct CVs at ==, !=, < and <=. A first-left missing read may resume with right still missing or removed by its handler. The second Warning freezes NULL too, yielding true,false,false,true for NULL/NULL.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "0f2d21e30",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "28db3dd0fd57a007f2c7ab75043a0d103d0545ed068d2cf9a7c2992b1d74f68e"
+  },
+  "modules": 406,
+  "engine_basis": "ZEND_IS_EQUAL/NOT_EQUAL/SMALLER/SMALLER_OR_EQUAL fetch both raw CV pointers, then their helpers test OP1 UNDEF followed by current OP2 UNDEF. Each missing check yields language-level NULL for the pending comparison; callback initialization cannot change that result. Pending exceptions suppress further reporting.",
+  "implementation": "One pure forward read-again helper permits restoration only for the exact first-left-frozen record with distinct CV names and current missing right INPUT. A narrow known-PNULL-left source arm authenticates both compiled direct CVs, distinct names and the RHS diagnostic line. Existing driver stages the second read. Reversed/right-frozen and same-CV ordinary paths stay excluded; no global binary-source widening, fields, tasks, roots or discard change.",
+  "behavior": [
+    "Distinct initially missing CVs, scalar RHS unset, and late fresh/target references preserve two NULL results with Boolean true,false,false,true. No-init second handlers cause no third Warning. False handlers retain two ordered default reports; second supplied Exception preserves destination41, identity and finally.",
+    "Four strict-SL groups retain actual source-reached dispatch/returns, two complete raw restores and Boolean comparison. Fresh/target owners, source/read-line/operator/shape controls, non-NULL known-left and absent-CODE refusals, opposite-side exclusion and zero/split budgets pass.",
+    "Affected inherited forward controls now restore; reversed controls retain prior refusal. SPACE adapters inherit their existing restore without redundant transformations. Only focused affected checks run, with no old full-body replay or historical credit renewal."
+  ],
+  "baseline": {
+    "revision": "69b6a809ad3631bfdac1c0a93ea0a8deea30d7b7",
+    "report": "initial/initial-report.json",
+    "sha256": "fe2bf83505dcd0cec27ec89e86db552cb459679df2ddfcd928e725fff89354fb",
+    "native": "Two exact EQ/LESS originals emit left then right H at line10 with expected true/false observers1; empty stderr.",
+    "model": "Genuine unchanged EQ emits first H:1:1::10; then Unsupported/scalar comparison warning changed right operand.",
+    "agreement_credit": 0
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "25043bab74bed5cfe30af3142aae557d55b0d37fcdd8759e489155c324d0e958",
+      "revision": "e40fab3d8b98e25645290ec3a57d09d2fe2d588c",
+      "agreements": 4,
+      "unsupported_controls": 2
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "8817f85ff5901ffd46463210382236afb8e9f779055d19722c0f15154f2178ba",
+      "revision": "e40fab3d8b98e25645290ec3a57d09d2fe2d588c",
+      "agreements": 4,
+      "unsupported_controls": 0
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "38c419fccfca422d86b75d47678ea22b343c665b90b77add45e2d6a3209320dc",
+      "revision": "e40fab3d8b98e25645290ec3a57d09d2fe2d588c",
+      "premises": 342,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "be9d30c714a9f3d849c127a0571fd25b5a6dd3e2705f359f01af8e3d33a0735f",
+      "revision": "e40fab3d8b98e25645290ec3a57d09d2fe2d588c",
+      "premises": 339,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 8,
+    "unsupported_source_controls": 2,
+    "state_groups": 4,
+    "state_premises": 681
+  },
+  "maintenance": {
+    "state": {
+      "report": "maintenance-state/report.json",
+      "sha256": "693bd67e90d4285f1528563189cc9fa3f9168dd8e4f52000c80c1e4a5c01823a",
+      "revision": "e40fab3d8b98e25645290ec3a57d09d2fe2d588c",
+      "premises": 104,
+      "groups": 3
+    },
+    "source_selectors": [
+      {
+        "report": "maintenance-source/model-peer-both-missing-right-remains-missing-report.json",
+        "sha256": "e09687e7776d9d775b95e09c877a7bffba77b1ae190d68c10d6ed11ede0c5307",
+        "revision": "e40fab3d8b98e25645290ec3a57d09d2fe2d588c"
+      }
+    ],
+    "historical_agreement_renewal": 0,
+    "scope": "Three source-reached EQ/GREATER/SPACE fronts check only affected continuation/refusal/invoke controls; one old95 still-missing refusal selector receives an affected native/model check. Prior cuts remain historical."
+  },
+  "failures": [],
+  "remaining": [
+    "Reversed second-Warning chains, ordinary same-CV forms, owning comparison values, right-frozen removed-left paths and wider source/lifetime forms remain partial.",
+    "All gates pass first attempts at e40fab3d8/406. Only the new wrapper docstring changes after that cut; runtime, source bytes and fixture logic stay exact. Paused COMP88 and OP58 arithmetic remain excluded."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-100",
+  "artifact_manifest_sha256": "b9d4f86f4ce5712fddf16432e74d1f8bc977759d1c2980c3b7d017458c1886df",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_scalar_compare_second_sources.py --phase native --output .tools/comp100-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_second_sources.py --phase model --output .tools/comp100-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_second_state.py --output .tools/comp100-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_second_review_state.py --output .tools/comp100-peer-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_second_maintenance.py --output .tools/comp100-maint-state-new"
+  ]
+}
