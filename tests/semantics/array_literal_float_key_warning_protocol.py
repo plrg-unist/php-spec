@@ -90,7 +90,7 @@ def conditions(name, program, path, stdout):
                    '$lookup(S.ENV, $ptascii("value")) = (n_value_cell)',
                    f'S.STORE[n_value_cell] = DEFINED (PINT {7 if duplicate else 20})',
                    '~(n_value_cell <- S.REFCELLS)', '$task_nodes(' + marker + ') = [HARRAY n_builder]',
-                   '$array_float_key_plan(S[.REFCELLS = S.REFCELLS ++ [n_value_cell]]) = eps',
+                   '$array_float_key_plan(S[.REFCELLS = S.REFCELLS ++ [n_value_cell]][.STORE[n_value_cell] = DEFINED (PSTRING eps)]) = eps',
                    '$array_float_key_plan(S[.STORE[n_value_cell] = DEFINED (PARRAY n_builder)]) = eps']
         if duplicate:
             checks += ['$lookup(S.ENV, $ptascii("q")) = (n_q)', '$lookup(S.ENV, $ptascii("old")) = (n_q)',

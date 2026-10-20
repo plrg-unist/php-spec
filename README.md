@@ -57,11 +57,12 @@ array plans remain distinct. A by-value array CV may become an untyped reference
 during the handler, inserting a shared ALIAS with separate old-table and new-CELL
 count biases. A reciprocal reference-element callback can instead insert an
 ordinary array value, cancelling both biases before normal copying and cleanup.
-Initially wrapped untyped array CVs instead keep their captured CELL payload
-locator: rebinding the name cannot redirect insertion, while writes through a
-surviving outside alias supply the DIRECT array value. Table counts balance
-through reciprocal payload changes; the borrowed CELL adds no owner and must
-remain live. Scalar/string completion and wider outer sources remain partial.
+Initially wrapped untyped scalar/array CVs keep their captured CELL payload
+slot: rebinding the name cannot redirect insertion, while a surviving outside
+alias supplies the DIRECT null/bool/int/float or bounded array value. Primitive
+capture owns only the builder; array capture also owns the old table. The borrowed
+CELL adds no owner and must remain live. Reciprocal payload changes balance table
+counts before COW and cleanup; strings and wider outer sources remain partial.
 These bounded tables also admit reference leaves holding null/bool/int/float
 or validated byte strings, either untyped or constrained by validated ordinary
 instance-property type sources. Debt-bearing payloads require every source object
@@ -413,6 +414,16 @@ wrapper option; both retain the same updated object. Four source comparisons and
 strict ordinary versus weak explicit calls, precise discard and retained-setter reuse.
 Additional arguments/packs, materialized tables, wider properties, other object
 kinds, PIPE and sole-owner lifetimes remain partial.
+
+[Rejected getter Closure INI values](coverage/semantics/ini-set-null-getter-closure-value-review.json)
+now retain an exact bare `ini_get` Closure as the second value of an ownerless
+positional NULL-option call. Returning handlers convert the option to empty before
+the value TypeError; supplied throw preserves raw NULL and the captured getter and
+cancels rejection. The value is never invoked during reception. Four source
+comparisons and 1,374 state premises cover earlier callee/option/value capture,
+owning trace edges, strict option priority, precise discard and real getter reuse
+before and after setter recovery. Other callable kinds, retained setter receivers,
+named/unpacked forms and sole-owner lifetimes remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -1039,6 +1050,15 @@ LEFT `12`, RHS `5.0` stores `2` and detaches alias `99`; signed zero raises
 `DivisionByZeroError` before storage.
 Three exact originals and 364 focused SL premises pass in the
 [quiet float modulo ledger](coverage/semantics/modassign-quiet-float-review.json).
+
+Selected-reference `>>=` now keeps the captured LEFT and reads the rebound count
+after Deprecated. Cached `-12` with current count `64` stores integer `-1` through
+the old alias despite current LEFT `77`; current count `-1` instead raises
+`ArithmeticError` before storage, preserving callback `88` and outer `100`.
+Two originals and 358 focused premises pass in the
+[selected shift ledger](coverage/semantics/shiftassign-selected-warning-review.json).
+Other conversions, operators, producers and owning lifetimes remain partial.
+
 For initially plain variables, `<<=` and `>>=` now retain a fractional left
 conversion through deprecation handlers, then read the live quiet integer count.
 Success detaches a late target alias; supplied throw or a negative count preserves
@@ -1450,6 +1470,11 @@ Its first refresh may release a closed child before argument, result and receive
 cleanup. Assigned copies survive receiver retirement; row COW and equal-cache
 arguments preserve separate owners. See the
 [normal SEND review](coverage/semantics/generator-unused-detached-send-review.json).
+At a normal owning return, pre-refreshed direct pending SEND drops its unused
+copy before receiver finally. A raw-row write retires the old element before
+`J-END`; an assigned copy survives until the caller drops it. Clearing an aliased
+object current can throw during finally and skip its remaining output. See the
+[direct SEND review](coverage/semantics/generator-unused-direct-detached-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit
@@ -4404,6 +4429,15 @@ array. Early sends survive argument mutation; array/payload cleanup precedes
 receiver release and cached result or supplied-exception delivery.
 [Four source agreements and 355 focused premises](coverage/semantics/magic-call-review.json)
 cover these paths and public-method bypass. Wider magic call forms remain partial.
+
+Direct missing instance calls also preserve named string keys and mixed send order.
+An earlier scalar send stays `7` when a later argument changes its source CV to `99`.
+Named-only calls share the argument table with a retained buffer: `unset($arguments)`
+leaves its Payload alive through `A`, then buffer cleanup precedes receiver cleanup
+and cached `7` delivery or the same supplied throw with destination `42` unchanged.
+[Three source agreements and 559 focused premises](coverage/semantics/magic-named-call-review.json)
+bind separate cuts. Static/scoped named, unpacked/reference sends and wider
+argument/ownership forms remain partial.
 
 External literal missing static calls also invoke inherited public
 `__callStatic(string,array)`, retaining lexical Parent/called Child and early sends

@@ -101,8 +101,14 @@ can authenticate a retired locator without permitting a stale read. The
 checks unchanged-payload transfer, reciprocal table-bias cancellation, direct-copy
 COW, deletion and supplied throw. Multiple aliases to one CELL add no payload-table
 owners: an independent ordinary table CV keeps an entry-independent HARRAY deficit
-positive. Initial scalar/string cells, nonarray completion and wider sources stay
-outside this admission.
+positive. The
+[wrapped mixed-CV ledger](../../coverage/semantics/array-literal-float-wrapped-mixed-cv-review.json)
+adds initial primitive slots and DIRECT null/bool/int/float completion. BORROWED
+ROOT in the scalar marker adds no CELL or payload-table root; array capture keeps
+only its acquired table owner. Primitive-to-array debt and array-to-primitive
+retention cancel through reciprocal captured-slot writes. Later alias writes leave
+DIRECT primitive snapshots fixed, and balanced tables regain ordinary COW.
+Strings, typed outer cells and unsafe lifetimes remain outside this admission.
 String leaves use canonical bytes or existing valid carriers; they add no modeled
 heap edges or user destructors. Ordinary string-offset writes preserve independent
 snapshots while table/CELL aliases share bytes. Singleton reference entries

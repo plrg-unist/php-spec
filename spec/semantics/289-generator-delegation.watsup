@@ -249,12 +249,11 @@ def $eager_task_inputs(S, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue])) = $v
   -- if pgeneratorop.ARGUMENTS = eps
   -- if $generator_pending_detached_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_shared_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_unused_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_parked_send(S, pgeneratorop[.ARGUMENTS = [pvalue]])
 
-;; A normal ancestor SEND may first detach one closed child. Authenticate that
-;; actual removed edge before scheduling argument, unused result and receiver.
+;; A refreshed normal owning SEND can use its direct or ancestor receiver.
+;; Only an ancestor may first detach the authenticated closed-child prefix.
 def $generator_unused_send_refresh(S, S, pgeneratorop, eps) = true
   -- if $generator_pending_detached_send(S, pgeneratorop)
-  -- if $generator_pending_return_leaf(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1)) = (n_leaf)
-  -- if n_leaf =/= pgeneratorop.OBJECT
+  -- if $generator_pending_return_leaf(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1)) =/= eps
 def $generator_unused_send_refresh(S, S_refreshed, pgeneratorop, [HOBJECT n_child]) = true
   -- if $generator_pending_detached_send(S, pgeneratorop)
   -- if S_refreshed = $generator_from_refresh(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1))

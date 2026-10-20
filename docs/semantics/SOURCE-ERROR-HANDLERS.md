@@ -326,7 +326,7 @@ or cancels debt. The same updates apply to supplied-throw cleanup. These two
 initial plans remain disjoint, and captured runtime-array temporaries incur no
 debt. The [mixed-CV ledger](../../coverage/semantics/array-literal-float-mixed-cv-review.json)
 records balanced cycles and entry-independent deletion/throw deficits. Initial
-wrapped scalar/string CVs, wider tables and unsafe debt retirement remain Unsupported.
+wrapped string CVs, wider tables and unsafe debt retirement remain Unsupported.
 An initially ordinary array CV can become an untyped wrapper during conversion,
 so even a by-value item may insert ALIAS rather than DIRECT. Its retained old
 HARRAY owner and omitted new-CELL owner survive deletion or builder retirement.
@@ -344,13 +344,23 @@ DIRECT array value. The acquired old table remains owned; the captured CELL adds
 no root. Source authentication reconstructs the actual VARIABLE spelling/line and
 can survive locator retirement, while readiness requires an allocated marked
 receipt-free CELL without CELL debt and a bounded array payload in the same
-logical-pruned live set. Missing outside ownership, nonarray completion and the
+logical-pruned live set. Missing outside ownership, strings/objects and the
 active builder refuse explicitly. Deletion/throw preserves the HARRAY deficit;
 a separate ordinary table owner keeps it positive until the reciprocal slot
 retarget balances both table biases. The
 [wrapped array-CV ledger](../../coverage/semantics/array-literal-float-wrapped-array-cv-review.json)
 separates fresh stable/cycle/deletion/throw witnesses from the unchanged initial
 scalar/ordinary gates and graph/count/prune/driver algorithms.
+Initial wrapped primitives now earn BORROWED ROOT in the existing scalar marker.
+Only the builder is rooted; the captured CELL must remain live independently.
+A separate completion helper reads primitive or bounded-array payloads from that
+slot, leaving global input/value/live classifiers exact. ARRAY capture can also
+complete as a DIRECT primitive. Opposite captured-slot cycles cancel table debt
+or retained counts through normal and throw cleanup, while source metadata can
+still authenticate a retired locator before readiness refuses. The
+[wrapped mixed-CV ledger](../../coverage/semantics/array-literal-float-wrapped-mixed-cv-review.json)
+records fresh bool/int/float/NULL and table-copy witnesses; strings, typed outer
+cells and unsafe lifetimes remain excluded.
 String leaves validate canonical bytes or existing carrier records. Their table
 and wrapper counts stay separate from copied string bytes: debt-time writes may
 share a table while a string snapshot stays unchanged. Singleton reference

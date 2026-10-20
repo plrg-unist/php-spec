@@ -1,0 +1,87 @@
+{
+  "scope": "Ownerless positional two-argument INI_SET with rawNULL option and retained exact bare INTRINSICCLOSURE INTRINSIC_INI_GET VALUE. INDEX2/PACKSeps/notNAMED/nonPIPE/effectiveweak; retained CV/helper value source facts must be unknown (compiled_read EPS). The value is rejected without invocation.",
+  "status": "integrated",
+  "reviewer": "/root/source_review_35",
+  "parent": "6b58a1a15fc2f14b505d62ebda905f0bd1058e69",
+  "initial_revision": "d741939d66054cc17742d7344941cd17b5032e2b",
+  "semantic_revision": "f99899555b939ed90ea48730fb02d0d5e893ab28",
+  "tested_revision": "487f3e4463910f1f8da21cfef4f9e1f744dcab6b",
+  "modules": 407,
+  "semantic_files": {
+    "spec/semantics/172-file-context-intrinsics.watsup": "0560d70e09bd2d99c697d19372c2e5ef605db9bbc18f2eb0e3ca79f58f78647e"
+  },
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "primary": "Pinned basic_functions.c PHP_FUNCTION(ini_set) receives the string option, then Z_PARAM_ZVAL receives new_value and the following Z_TYPE>IS_STRING body guard rejects OBJECT parameter2; no value invocation or Stringable conversion occurs. Returning NULL Deprecated handling converts API option to empty; supplied throw cancels rejection. Module148 intrinsic_firstclass allocates the exact bare INI_GET object without property records; it has no child edges.",
+  "semantics": "Only23 additive172 lines: bounds/allocation/exact INI_GET predicate, separate ownerless unpack-free positional NULL2 admission using existing written source-fact authentication, and existing empty-option TypeError2 delegation. Invocation validity authenticates the callee; the unpack-free source shape/destination helper authenticates written arguments. Actual pre-V states witness original callee/rawNULL/getter capture, not a current-CV reread or reconstructed history. Quiet-value/148 allocation/finish body/trace/root/discard/GC/schema/400 and old tests remain exact.",
+  "accepted": [
+    "Source4 accepted/program/normal model raws exactly equal actual native stdout/PHPstderr/PHPexit0 at487f3e446/runtimef99899555/407. Default and true-return calls reach parameter2 TypeError; native E/I proves converted-empty option and original getter identity after livevalue0. Selected V and false/default handling preserve earlier callee/rawNULL/getter despite livecallee/option/value rewrites, then actual getter8/string setter8-to11/same getter11 work. Strict completes V before parameter1 TypeError/handler0 and getter9/string setter9-to11/same getter11.",
+    "Author957=326+353+278 and independent peer417 total1374 strict SL premises pass at487f3e446/commonf99899555/407. Actual selected receipt OWNEREPS/rawNULL partial has no argument root before V; completed SENT owns the captured getter despite livevalue0. Returning/strict TypeErrors have one API frame at top level; the supplied Exception has handler/API two frames with actual argument edges. Exact one-buffer restoration/discard, source/kind/allocation/owner/phase/carrier controls and budget identities pass.",
+    "Peer native observes same supplied Exception I99/effect1/warn1/aliasS/sibling3059 then actual getter10/original string setter10-to12/same getter12. It does not traverse native traces. The reached rawNULL/getter owning-edge/full-discard proof is state-only; the VALUE Closure is never invoked during rejection.",
+    "Nine concise reports PASS on first execution with stable inputs and HEAD, quiet worker stderr, complete reap/no timeout/interruption/group survivor. Four SL stdout streams are exactly true LF with empty stderr/exit0. Only default Deprecated11 and selected Deprecated17 occur; strict/peer PHPstderr is quiet. No fixture correction, failure or retry."
+  ],
+  "baseline_zero_credit": "At clean source-onlyd741939d66054cc17742d7344941cd17b5032e2b/unchanged6b58a1a15/407, captured-selected-null-getter-before-value-and-callee-rebinding is accepted/program Unsupported: error-handler ingress requires a producer continuation after B|V|, CLI1/nullPHPexit/quiet worker15.456s, zero agreement. Native author3+peer1 precede runtime/protocol edits.",
+  "compatibility": "Exact getter kind excludes STDINSTANCE, bound/user/other intrinsic Closure bodies. Prior STD malformed-kind INI_SET, ARRAY and pack controls remain outside the new arm; no historical fixture repair or actor. Primitive sibling DEFINE3059 uses existing ownerless publication, distinct from retained DEFINE callee/owning VALUE work. No Stringable/userclass/cast/clone/ref/last-owner or paused path execution; no engine bug or intentional divergence identified.",
+  "execution": "Initial and affected packets CPU4, LC_ALL=C TZ=UTC INT+kill5 AS3221225472, serial fail-first/full reap. Native15/CLI45-host60/freshSL90 unchanged. Models18.524-to26.624s; SL26.722-to43.314s. CPU4 fully released before independent final evidence read.",
+  "command_prefix": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s <cap>s prlimit --as=3221225472 -- taskset -c <cpu> python3 <step>",
+  "commands": [
+    {
+      "revision": "d741939d66054cc17742d7344941cd17b5032e2b",
+      "cpu": 4,
+      "caps": [
+        90,
+        90,
+        90
+      ],
+      "steps": [
+        "tests/semantics/ini_set_null_getter_closure_value_sources.py --phase native --output .tools/ini-set-null-getter-closure-value-native-79",
+        "tests/semantics/ini_set_null_getter_closure_value_review_sources.py --phase native --output .tools/ini-set-null-getter-closure-value-review-79",
+        "tests/semantics/ini_set_null_getter_closure_value_sources.py --phase baseline --case captured-selected-null-getter-before-value-and-callee-rebinding --output .tools/ini-set-null-getter-closure-value-native-79"
+      ]
+    },
+    {
+      "revision": "487f3e4463910f1f8da21cfef4f9e1f744dcab6b",
+      "cpu": 4,
+      "caps": [
+        240,
+        90,
+        90,
+        360,
+        90,
+        120
+      ],
+      "steps": [
+        "tests/semantics/ini_set_null_getter_closure_value_sources.py --phase model --output .tools/ini-set-null-getter-closure-value-native-79",
+        "tests/semantics/ini_set_null_getter_closure_value_review_sources.py --phase model --output .tools/ini-set-null-getter-closure-value-review-79",
+        "tests/semantics/ini_set_null_getter_closure_value_protocol.py --phase prepare --sources .tools/ini-set-null-getter-closure-value-native-79 --output .tools/ini-set-null-getter-closure-value-public-79",
+        "tests/semantics/ini_set_null_getter_closure_value_protocol.py --phase check --sources .tools/ini-set-null-getter-closure-value-native-79 --output .tools/ini-set-null-getter-closure-value-public-79",
+        "tests/semantics/ini_set_null_getter_closure_value_review_protocol.py --phase prepare --sources .tools/ini-set-null-getter-closure-value-review-79 --output .tools/ini-set-null-getter-closure-value-review-public-79",
+        "tests/semantics/ini_set_null_getter_closure_value_review_protocol.py --phase check --sources .tools/ini-set-null-getter-closure-value-review-79 --output .tools/ini-set-null-getter-closure-value-review-public-79"
+      ]
+    }
+  ],
+  "raw_root": ".tools/ini-set-null-getter-closure-value-evidence-79",
+  "report_sha256": {
+    "author/public/check-report.json": "16d303ffd76bf115fe82b7c83281f9393ecb52c071dc413b10d4942b13e610bb",
+    "author/public/prepare-report.json": "5c251fa28cf824889b627c039567a2e39846f716e53dad54e495a4f474928cf0",
+    "author/review/model-report.json": "49a0a34a26da640bb9257db01f91ecc7e6ca6f4036bcda25d741ed908aa397be",
+    "author/review/native-report.json": "08f1d236fb8737da810c3148a3cc89ce0837f5d232bddd220e276e62dfc760bb",
+    "author/review-public/check-report.json": "496040f07428c2c80a1edd0a10276b03d71f95733067e5980e801d213a42e024",
+    "author/review-public/prepare-report.json": "3275e7eae13072f823ef535cae2f670a492503eb5bd059be974119f728ee65d1",
+    "author/sources/baseline-report.json": "09eb2ffbdbd1beb80bbfa16cee08ce3c8bc329ed1bc7b3baa1ff16e9b3828b71",
+    "author/sources/model-report.json": "c5d6c430b60db0d279572f9fc3d50dc22a61e61445b511f0fa856dfb84bc784c",
+    "author/sources/native-report.json": "b14585ac63a61db06c3c14784a7e1098488cfd304fd68e71d4ea056b34c8ce5e"
+  },
+  "recovery": "After independent ACCEPT/RAW STOP and focused users[], four roots moved once to author/{sources,review,public,review-public}; nine concise reports hashed once. Restore original paths and revision for source/cwd identity; reports retain exact inputs/commands/exits. No raw/hash renewal.",
+  "remaining": "Retained INI_SET receivers, named/mixed/unpacked/PIPE reception of getter Closure VALUES, other intrinsic/bound/user Closure kinds, owning callable children and sole-owner lifetimes remain partial. This does not close full PHP core or establish equivalence/BOLA freedom; paused boundaries remain untouched.",
+  "composition": {
+    "parent": "259ce8ac1d7ad8f712552225d51da49ac67e2a66",
+    "private_publication": "a7bb7afa51d105f5f1cbf10d4c73e9423f8f8849",
+    "ordered_modules": 407,
+    "seams": "Parent172/148/368/301/state/schema/ordered407 are private-base exact; selected receipt OWNER EPS already exists in the private base and requires no field lift. Preserve all seven incoming runtime paths. New207 captured-array spaceship/missing-read selectors have no source producer (defined variables/strict identities). New270 by-reference-return destructor INSTANCE/global-holder throw,289 detached/unused Generator SEND,30/55/404 selected XOR float conversion/compound tasks and413 lossy-float-key captured-reference/debt selectors are absent. Only exact intrinsic getter/Throwable objects, quiet integer increments and direct primitive sibling DEFINE3059 are used. Own172/four tests remain private-exact; every other runtime/schema/manifest byte stays actual-parent exact.",
+    "evidence": "Source4/state1374 retain tested487f3e446/runtimef99899555/407; initiald741939d6 native4/baseline0 and nine reports stay unchanged. No joined actor, semantic rerun or renewed credit."
+  }
+}

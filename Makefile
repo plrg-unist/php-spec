@@ -421,6 +421,10 @@ test-semantics: build
 	python3 tests/semantics/generator_unused_detached_send_state.py
 	python3 tests/semantics/generator_unused_detached_send_review_sources.py
 	python3 tests/semantics/generator_unused_detached_send_review_state.py
+	python3 tests/semantics/generator_unused_direct_detached_send_sources.py
+	python3 tests/semantics/generator_unused_direct_detached_send_state.py
+	python3 tests/semantics/generator_unused_direct_detached_send_review_sources.py
+	python3 tests/semantics/generator_unused_direct_detached_send_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -1085,6 +1089,8 @@ test-semantics: build
 	python3 tests/semantics/magic_setter_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_call_cases.json
 	python3 tests/semantics/magic_call_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_named_call_cases.json
+	python3 tests/semantics/magic_named_call_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_static_call_cases.json
 	python3 tests/semantics/magic_static_call_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_scoped_call_cases.json

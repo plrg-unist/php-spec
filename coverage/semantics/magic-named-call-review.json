@@ -1,0 +1,146 @@
+{
+  "scope": "Direct literal missing instance calls with one or two nonreference/nonunpacked positional/named int or leaf-INSTANCE sends, using the existing public parentless-owner __call(string,array) signature. Source keys/order, earlier main-CV snapshot, named-table sharing and buffer-before-receiver cleanup.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_compile.c zend_compile_args preserves send order and rejects positional-after-named before application effects. Names on a missing call are trampoline array keys, not __call parameter bindings.",
+      "Zend/zend_vm_def.h ZEND_CALL_TRAMPOLINE transfers extra_named_params to a named-only array with an added table owner, or appends its string buckets to a separate mixed parameter array. Shared table owners do not duplicate element edges.",
+      "Zend/zend_vm_def.h zend_leave_helper releases compiled locals, then extra_named_params, then This. Explicit unset(arguments) therefore leaves Payload alive through A; buffer disposal protects cached7 and a supplied Payload-D error before receiver release.",
+      "Zend/zend.c fatal_error_backtraces/E_FATAL_ERRORS and main/main.c php_error_cb render the compile-fatal trace suffix under the pinned profile; the original native recorder forecast omitted that suffix."
+    ],
+    "divergence": "No engine bug or intentional divergence identified."
+  },
+  "implementation": {
+    "files": {
+      "spec/semantics/30-storage.watsup": "d1fdd86fef6d01086330bd8b567dbddab101006b551649126f985ed64e76742a",
+      "spec/semantics/414-magic-method-calls.watsup": "add9c2350c18b7b6e46a9a631fa8fbfed72db5b4c25c7252b753f0cabb955a50"
+    },
+    "basis": "Local source-authenticated named raw sends preserve original indexes/keys and known values, then form the ordinary two handler arguments. A result marker owns the original named table before the receiver; the entered target borrows This. Named-only parameter and buffer share one table; mixed calls allocate a separate combined parameter array. History survives parameter/table/Payload retirement, while pending/live checks require actual images. The marker is transparent to unused-return detection. Existing positional arguments_source/argument_capture/values/array/array_insert bodies and shared static/scoped routes stay pointwise; no shared86/105 binder,79/257/270 cleanup, pstate fields/syntax schema/manifest or generic GC change."
+  },
+  "validation": {
+    "native": {
+      "revision": "af64fe78f5685a6c364943fcb9f647e5a8659de1",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-named-call-private-114/.tools/magic-named-call-probes-114/native-first/report.json",
+        "sha256": "ee02fdfee684f863393d92c43225623f266eec4df5ed2c8c4f376f4a4217febc"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-named-call-private-114/.tools/magic-named-call-probes-114/affinity-native-first.json",
+        "sha256": "2e82113d77a25b26f5b37274b52aac3c865363a25edf0f3c67a2b2d3052334b5"
+      },
+      "accepted_case_ids": [
+        "selection",
+        "owning",
+        "throwing",
+        "compile-order"
+      ],
+      "result": "Retained first three exact normal quiet0 tuples74/32/35 and the same stdout-empty exit255 compile-fatal tuple with trace are independently accepted under repaired template5fec905b. Original report remains completed=false: first3 completedtrue, control forecastfalse, overall recorder failure0. No native replay. Fast affinity partial2/4 has CPU3 masks but empty argv; no full native argv claim."
+    },
+    "baseline": {
+      "revision": "af64fe78f5685a6c364943fcb9f647e5a8659de1",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-named-call-private-114/.tools/magic-named-call-probes-114/accepted-current-baseline-repair1/report.json",
+        "sha256": "bb5b6216153548bb5c13aa1caaa24950ef42812ba264166c4af0c93a13f0674c"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-named-call-private-114/.tools/magic-named-call-probes-114/affinity-accepted-current-baseline-repair1.json",
+        "sha256": "cc7e05da4fdb6ba16eace69b0dfce78ffaeb5a5a0df454f534f80903096f9467"
+      },
+      "result": "Three checked Unsupported magic method source or argument mode, CLI1/semantic exitNone/quiet stderr, prefixesN:/O:/X: before argument effects, plus one exact static_rejection255 compiler-control agreement. Complete4 CPU5/full argv/stable/reaped. Repaired driver authenticates immutable native sources/raw tuples/original failure before observing the unrun baseline; control agreement1 is preexisting."
+    },
+    "source": {
+      "revision": "7772c51215c2a7f15b3b09d5c634d763b9609dc9",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-named-call-private-114/.tools/magic-named-call-probes-114/changed-model-iene_s0s/report.json",
+        "sha256": "f196d957006c4d6001665fc09e152089fed631865e0d5700c4aa3867f37ded09"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-named-call-private-114/.tools/magic-named-call-probes-114/affinity-changed-source-114.json",
+        "sha256": "6378261d7c42270688be9527218670aae4d673b47f86cfe4bd36f6c5b60c9f93"
+      },
+      "result": "Only three newly admitted positives: exact normal native agreements74/32/35, quiet0/all stability, complete3 CPU5/full7 argv/start matches/reaped. Compile control is not replayed."
+    },
+    "focused_first": {
+      "revision": "4c8943a6a3f74ca4f3fde5dc36e59871b9e22d18",
+      "prepared": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-named-call-private-114/.tools/magic-named-call-protocol-bswcypq1/PREPARED.json",
+        "sha256": "7ba4cc37d2de49a459beb80a705e2cdd00e333a67455a0ec22f0e4e25a14ad60"
+      },
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-named-call-private-114/.tools/magic-named-call-protocol-l28wfbzr/report.json",
+        "sha256": "d00b16e67961d166b7d9bb6587b813e9d6b4afe5c1353a2c5c9212c56366ed4d"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-named-call-private-114/.tools/magic-named-call-probes-114/affinity-state-114.json",
+        "sha256": "db8f2d6ac77f56b95f75352d6ccd0aca9fbd61b1361d96dc1739837e17e9481b"
+      },
+      "accepted_case_ids": [
+        "selection"
+      ],
+      "result": "Selection195 =172 reached+23 derived stricttrue. Owning178 quiet Booleanfalse from stale STORE expectation; throwing184 unrun. Original enclosing557 report remains overallfalse/owning failure0. All actual4 quiet workers stable/reaped, CPU5/full410 argv; observer intentionally stopped after fail-first, partial4/6."
+    },
+    "focused_affected": {
+      "revision": "2c4ea4154d0f842c804cf9a41866a0f761c35581",
+      "prepared": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-named-call-private-114/.tools/magic-named-call-protocol-2mbcmouu/PREPARED.json",
+        "sha256": "1a3bfd5eec598265291baea2f6357528d79fb035e64fee1179074604ef1d8631"
+      },
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-named-call-private-114/.tools/magic-named-call-protocol-a8adbrch/report.json",
+        "sha256": "4fd9143eb959d2384389b29c8546ed06f63229f46bbeb708cf9dfae503965957"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-named-call-private-114/.tools/magic-named-call-probes-114/affinity-state-114-repair1.json",
+        "sha256": "607782a78cce705ab59f3ee042e3b67c6274eacb70d237cced791e72e870842b"
+      },
+      "accepted_case_ids": [
+        "owning",
+        "throwing"
+      ],
+      "result": "Corrected owning179 plus previously unrun throwing185 exact stricttrue,364 reached/apps2. Sole assertion replacement: current ENV arguments absent and original HCELL retired, instead of UNDEFINED in historical STORE. Buffer1/Payloadedge1/full guards/cache7/pending error remain exact; no runtime edit or fixture weakening. Four quiet0 workers/all stability/complete4 CPU3/full410 argv/start matches/reaped."
+    },
+    "combined": "Unique559 =536 reached+23 derived across retained selection195 and corrected179+185; three accepted applications at their distinct revisions. Actual mutate RETURN_UNWIND2, independent key/table metadata, named-only two table owners/one Payload edge, explicit argument unset/A, borrowed receiver, normal marker SOURCE/cached7 and same-error pending update, catch42, full guards, small key/caller/buffer controls and zero/resume. Transparent unused-return true/used false checks are derived only.",
+    "classification": "Preserve native fatal-template forecast failure and original owning Booleanfalse with zero credit. One preparation command mistyped the expected revision and refused before output/worker/application creation; corrected preparation passed0 applications. No interpreter failure, diagnostic, source retry, compile-control replay or historical99/100/107 replay."
+  },
+  "reproduction": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-named-call-private-114",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "profile": "tests/semantics/profile.json",
+    "caps": "Serial native45/model60/outer75/100000steps; focused AL90 then strictSL90/cachefalse/dettrue/fail-first/full reap. Checked preparation invokes zero applications.",
+    "native": "Ready python3 -u .tools/magic-named-call-probes-114/watch-affinity.py native-first native 3; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u .tools/magic-named-call-probes-114/run.py native --revision af64fe78f5685a6c364943fcb9f647e5a8659de1",
+    "baseline": "Ready python3 -u .tools/magic-named-call-probes-114/watch-affinity.py accepted-current-baseline-repair1 model 5; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u .tools/magic-named-call-probes-114/run-repair1.py baseline --revision af64fe78f5685a6c364943fcb9f647e5a8659de1",
+    "source": "Ready python3 -u .tools/magic-named-call-probes-114/capture-candidate-affinity.py 5 changed-model- 3 changed-source-114; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u .tools/magic-named-call-probes-114/run-repair1.py changed --revision 7772c51215c2a7f15b3b09d5c634d763b9609dc9",
+    "focused_first": "Ready python3 -u .tools/magic-named-call-probes-114/watch-state-affinity.py 5; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u tests/semantics/magic_named_call_protocol.py --revision 4c8943a6a3f74ca4f3fde5dc36e59871b9e22d18",
+    "focused_affected": "Ready python3 -u .tools/magic-named-call-probes-114/watch-state-affinity-repair1.py 3; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u tests/semantics/magic_named_call_protocol.py --case owning --case throwing --revision 2c4ea4154d0f842c804cf9a41866a0f761c35581",
+    "recovery": "Ignored originals, both gate drivers, raw fixtures and reports remain at their original paths. Recover versioned runtime/tests from recorded tested commits; reused tools establish no fresh rebuild claim."
+  },
+  "tools": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    ".tools/magic-named-call-probes-114/run.py": "a61b954890b3c1f7c75d75e19dbb6e530129486b74ba0648bada4ddf054b98bd",
+    ".tools/magic-named-call-probes-114/run-repair1.py": "e875e9fb6cb0ddcd40fe65a67d9e406c7ebf3d3efe9b40b757c3166ae7b6bd11",
+    ".tools/magic-named-call-probes-114/cases.json": "338e947cbda4b24b38fb4ddcb77767cc6fe84be9c1a19a5f8148cc774b667afa",
+    ".tools/magic-named-call-probes-114/cases-repair1.json": "5fec905bbb85491d7ee3a8cf0144b27977b9a2d3e580e6d4f8586f6981cdbda5"
+  },
+  "limits": "Existing admitted public __call(string,array) without return declaration, parentless magic owner and one/two finite int/leaf-instance sends only. Inheritance/signature, positional send, foreach, array COW/type reception and generic lifecycle machinery are consumed, not broadly expanded. Named-only unset/these Payload histories are the positive ownership evidence; unused owning-return transparency is a derived bridge only. Static/scoped named, inaccessible/dynamic/FCC/API magic, unpack/reference sends, wider producers/arity, exported arrays and broader callback/GC histories remain partial.",
+  "review": {
+    "status": "accepted; independently reviewed",
+    "reviewer": "/root/class_review_84",
+    "semantic": "Independent native/genuine, source3, unique focused559 and concise publication accepted; original failures remain zero. Actual-parent preservation is checked separately before integration."
+  },
+  "composition": {
+    "incoming_parent": "47f1fc2517d5b0e28cd5e4f99cee73fdc83d1d72",
+    "publication_head": "7972ee0139e7a5e08839bd03370a7f55624fc9ef",
+    "incoming_modules": 407,
+    "result_modules": 407,
+    "basis": "Module414 and six tests remain publication-exact. Module30 is the independent insertion union of the named target/tasks with incoming selectedcall.OWNER and operator tags; SELECTEDCALLS stays empty in these sources. Other incoming runtime/default/root and ordered-manifest bytes stay exact. Incoming172 INI,199/400 DEFINE,207 missing comparisons,270 ref-return holder retirement,289 Generator,413 lossy-float array and55/404 selected MOD/XOR warning selectors are unproduced.",
+    "validation": "Actual-parent introduced-tail and exact candidate preservation independently reviewed before FF. Source3 at7772 and state559 at4c8943+2c4ea retain tested private407 cuts; no joined execution, accepted replay or historical credit renewal."
+  }
+}
