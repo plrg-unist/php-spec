@@ -100,6 +100,7 @@ dec $arithmetic_addassign_cv_plan(pstate) : (pintegeroperation, pvalue, pnumber)
 dec $arithmetic_divassign_plan(pstate) : pintegeroperation?
 dec $concatassign_array_plan(pstate) : ptask?
 dec $powerassign_warning_plan(pstate) : ptask?
+dec $powerassign_selected_warning_plan(pstate) : ptask?
 dec $modassign_warning_plan(pstate) : ptask?
 dec $modassign_right_warning_plan(pstate) : ptask?
 dec $modassign_both_warning_plan(pstate) : ptask?
@@ -119,6 +120,7 @@ rule PhpStep/compound-apply: S ~> S_updated[.HELD = S.HELD]
   -- if $arithmetic_divassign_plan(S) = eps
   -- if $concatassign_array_plan(S) = eps
   -- if $powerassign_warning_plan(S) = eps
+  -- if $powerassign_selected_warning_plan(S) = eps
   -- if $modassign_warning_plan(S) = eps
   -- if $modassign_right_warning_plan(S) = eps
   -- if $modassign_both_warning_plan(S) = eps

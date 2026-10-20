@@ -40,7 +40,7 @@ def checks(program, path, name):
         result += [
             record + ' = perrorread[.ORIGINAL = BINARY_RIGHT ' + op + ' (VARIABLE ($ptascii("x")) z_left) perrorread.LINE][.TASK = BINARY_RIGHT ' + op + ' (KNOWN PNULL) perrorread.LINE]',
             '$error_read_state_shape(S,' + record + '.ORIGINAL,' + record + '.INPUT,' + record + '.BASE) = (' + record + ')',
-            '~$scalar_compare_missing_pair(S,' + record + ')',
+            ('~$error_read_valid(S,' if op == 'EQUAL' else '~$scalar_compare_missing_pair(S,') + record + ')',
         ]
     if plain:
         result += ['$scalar_compare_missing_pair(S_removed,perrorread)']

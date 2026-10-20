@@ -104,6 +104,11 @@ The mixed global-cell/object return-history proof is in
 501,562 bytes under `.tools/m120/`, six reports with original source
 packets, accepted state snapshots and runtime patch, SHA-256 `ad1387df1535f45c813b05c52be87aa2574d867a6d7eb0d6b6d2131dc189ecea`.
 
+The repeated global-alias return-history proof is in
+`../php-spec-evidence-archive/lifecycle-aliased-owning-121/manifest.json`:
+489,309 bytes under `.tools/m121/`, six reports with original packets,
+accepted state snapshots and the two-guard runtime patch, SHA-256 `2fd91a9f24363656f5feae940e70fac9fb5e9ef52212ac57e3abfee77ea346fb`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the
