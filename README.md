@@ -964,6 +964,14 @@ Two originals and 264 focused premises pass in the
 [unary-reference ledger](coverage/semantics/unary-reference-warning-review.json).
 Wider producers, constrained/owning cells and callback lifetimes remain partial.
 
+NaN modulo now finishes safe conversion's precision notice before propagating
+a supplied Exception from its range Warning handler. Mask `2` still defaults the
+Deprecated; mask `8194` runs neither a second body nor default. Neither reads the
+now-zero divisor. The normal control reads its divisor only after both callbacks.
+Three originals and 340 focused premises pass in the
+[pending modulo ledger](coverage/semantics/mod-nan-pending-review.json), fixing
+an original NORMAL stderr disagreement. Other operators and producers remain partial.
+
 Range-only bitwise NOT now resumes named Warning handlers for plain float CVs.
 The original `2^63` float survives source removal and produces `PHP_INT_MAX`
 after signed wrapping and complement. An infinity handler's supplied Exception

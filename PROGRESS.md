@@ -7,6 +7,26 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+NaN modulo now reports its remaining safe-conversion notice before propagating
+a first-Warning supplied Exception. Mask `2` defaults precision Deprecated at line 25;
+mask `8194` suppresses its body/default. Both preserve the same Exception from line 20,
+callback writes `99`/`0`, and outer `100`, without reading the zero divisor.
+The unchanged normal control waits for both notices before reading current RHS `5`,
+then saved NaN-derived zero gives integer `0` despite current LEFT `88`. Three originals pass
+at `831b79878`/408 and 165+175 focused premises at `13e01efdf`/408 in the
+[pending modulo ledger](coverage/semantics/mod-nan-pending-review.json).
+The genuine baseline has NORMAL status and omits the default Deprecated on stderr.
+Only module 30/404 pending-discard handling changes; its task preserves one Throwable
+owner before restoring the same search. Eligible-pending suppression is source-only;
+normal conversion, numeric, formatting and generic unwind bodies stay unchanged.
+Other operators/producers/lifetimes remain partial; paused OP12/COMP88/Source47
+and property/clone/array/Generator selectors remain untouched.
+
+Composed over `7ba8ef89f`/408, preserving incoming state, task and
+ordered-manifest paths. Source3/state340 retain their private408 cuts;
+independently reviewed absent incoming selectors require no joined execution
+or renewed credit.
+
 Direct pending SEND without a getter now refreshes one allocated closed child
 whose normal simple-CV return owns no heap node. Child cache-edge release comes
 before normal argument cleanup, unused current-copy retirement and receiver
@@ -63,24 +83,8 @@ paths. New foreign task variants and ordered408 remain parent-exact, without
 state-field changes. Source/state and affected checks retain their accepted407
 cut without joined execution, accepted replay or renewed credit.
 
-Range-only bitwise NOT now stages one Warning for plain float CVs. Finite
-`2^63` keeps its original double through the callback, then signed wrapping and
-complement yield `PHP_INT_MAX` after source `99` is removed. Infinity's supplied
-Exception instead cancels complement/delivery and preserves callback write `99`
-and outer `100`; neither original emits Deprecated. Two originals pass at
-`f114178d2`/408 and 116+124 focused premises at `b46e89b12`/408 in the
+Earlier range-only bitwise NOT retains source2/state240 in the
 [range BITNOT ledger](coverage/semantics/bitnot-range-warning-review.json).
-Fresh snapshots authenticate the CV; returned scalar history survives source
-owner zero. The model may compute the pure wrapped long early; Zend saves the
-double before Warning and performs finite slow wrapping afterward. Old precision,
-NaN, numeric, formatting and unwind bodies remain exact. Other producers,
-reference/owning operands and broader lifecycles remain partial. OP12, COMP88 and
-Source47 low-initial-precision paths remain paused; property selectors stay exact.
-
-Composed over `aa101b821`/408, preserving incoming state, task and
-ordered-manifest paths. Source2/state240 retain their private408 cuts;
-independently reviewed absent incoming selectors require no joined execution
-or renewed credit.
 
 Retained intrinsic `ini_set` receivers now resume NULL-option handling for the
 same one-entry key0 ALIAS ARRAY with a live untyped quiet primitive cell. The
