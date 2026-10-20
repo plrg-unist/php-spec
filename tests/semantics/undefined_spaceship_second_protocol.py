@@ -144,6 +144,6 @@ def checks(program, path, name):
             '~$spaceship_read_other(S_right_missing,perrorread_right)',
             '~$spaceship_read_again(S_right_missing,perrorread_right)',
             'PhpStep: S_right_missing ~> S_right_refused',
-            'S_right_refused = S_right_missing[.TODO = eps][.COMPLETION = UNSUPPORTED "spaceship warning changed opposing scalar"]',
+            'S_right_refused = S_right_missing[.TODO = (BINARY_RIGHT SPACESHIP (KNOWN PNULL) 10) :: ptask_tail*][.RESULT = perrorread_right.RESULT][.BASE = perrorread_right.BASE]',
         ]
     return values

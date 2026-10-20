@@ -75,8 +75,8 @@ def checks(program, path, name):
             'S_array_refused = S_array[.TODO = eps][.COMPLETION = UNSUPPORTED "spaceship warning changed opposing scalar"]',
             'S_missing = S_resume[.STORE = $set_cell(S_resume.STORE,n_left,UNDEFINED)]',
             '$error_read_valid(S_missing,perrorread)', '~$spaceship_read_other(S_missing,perrorread)',
-            'PhpStep: S_missing ~> S_missing_refused',
-            'S_missing_refused = S_missing[.TODO = eps][.COMPLETION = UNSUPPORTED "spaceship warning changed opposing scalar"]',
+            'PhpStep: S_missing ~> S_missing_restored',
+            'S_missing_restored = S_missing[.TODO = (BINARY_RIGHT SPACESHIP (KNOWN PNULL) ' + str(line) + ') :: ptask_tail*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]',
         ]
     else:
         values += [
