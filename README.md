@@ -37,9 +37,14 @@ Wider warning paths remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
-remain live, while runtime array temporaries retain their own tables. Reference
-elements transfer a stable cell normally; retargeting preserves the acquired
-count, cancelling existing debt before retaining unmatched old owners for the
+remain live, while runtime array temporaries retain their own tables.
+Ordinary statically named no-argument functions returning arrays by value also
+keep their returned table fixed through handler writes to producer globals,
+including globals that hold references. The owning temporary transfers into the
+literal without a count bias; entry deletion and supplied throw retire its last
+owner normally. By-reference returns and wider call producers remain partial.
+Reference elements transfer a stable cell normally; retargeting preserves the
+acquired count, cancelling existing debt before retaining unmatched old owners for the
 request, including on throw. Different-reference retargeting also tracks the new
 cell's missing owner until it is balanced. Cells holding null/bool/int/float or
 bounded arrays may carry ordinary live instance-property type sources: physically

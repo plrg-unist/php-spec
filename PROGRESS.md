@@ -2036,47 +2036,38 @@ GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no root
 and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
-Captured by-value primitive/ARRAY slots now admit existing validated ordinary
-instance-property type sources accepting the current payload. Readiness requires
-every source object in the same logical-pruned live set as the allocated marked
-CELL and bounded payload, even before debt. Nonempty unique source receipts,
-no queued/hooks/coercion/backing records and no HCELL debt retain the existing
-bounds. BORROWED ROOT/scalar and REFERENCE/ARRAY markers still own no captured
-CELL; type metadata adds no owner, while real properties contribute CELL edges.
+Owning ARRAY returns from ordinary statically named no-argument by-value
+functions now enter float-key literal handlers. The checked nonconstant value
+occurrence must resolve without fallback to an active ordinary function with
+BYREF false. Current producer globals are irrelevant after the return: handler
+writes, reference writes and unsetting/recreating a global cannot redirect the
+captured KNOWN table. Existing mutable/nonpool and object-free readiness bounds,
+builder refusal, task/frame ownership and all count/prune/driver rules stay exact.
+The owner transfers into a DIRECT entry without literal debt or retention.
 
-Four fresh natives and the genuine unchanged pre-handler Unsupported retain
-`6bce238f1`/407 with comparison credit0. Strict407/source4 pass at `f8a2747c0`;
-focused1272 (571 author +701 independent; 1257 Boolean +15 raw) passes at
-`dcd055f88`. All post-change first executions pass with quiet stderr, no failures,
-corrections, retries or timeouts, and full reap. Source models use180/outer210 and
-focused fixtures SL180. One-source primitive2→ARRAY B→weak44 and ARRAY A→weak44→A
-cycles preserve invalid-string rejection and numeric-string→INT coercion, while
-current q rebindREF99 cannot redirect DIRECT insertion. Copy66/shared77 and
-old-A88/hold+balance2/copy99 distinguish table bias from typed alias writes.
-Deletion keeps an independent B-table owner, then safe final-property unset with
-outside alive permits inverseNULL. Dual-source supplied throw retains constraints
-through weak44; later outside77 leaves DIRECT balanceNULL/44 fixed. All native
-biases cancel before cleanup; actual source liveness, node retirement and zero/
-split-budget checks pass.
+Four fresh natives retain `ac7e55c32`/407. The genuine unchanged model completes
+the maker (`M:1;`) before its pre-handler Unsupported; natural comparison stays0.
+Strict407/source4 pass at `f551dd093`; focused756 (383 author +373 independent;
+749 Boolean +7 raw) passes at `c24bbde576`. The original author fixture at
+`970bd386c` stopped before semantics on first-class constructor-list grouping,
+retaining zero credit with its second front unrun. A one-line grouping correction
+changes no premise or domain; only the affected author packet and then previously
+unrun peer packet execute. Source models use180/outer210 and focused fixtures
+SL180. Successful actors are quiet, without timeout/interruption, and fully reaped;
+runtime, source and accepted observations require no correction or replay. Fresh
+runtime DIRECT-integer arrays distinguish old2/7 from producer44/88 or replacement
+33/8, independent copied55 and a fresh second maker call. Independent sole-owner
+returns check entry deletion and supplied-throw retirement, same Throwable,
+destination99 and cancelled later7. No inverse bias cycle or historical fixture
+maintenance is needed. By-reference returns, call arguments, fallback/dynamic/
+method/Closure producers, owning objects and unsafe/GC boundaries remain partial;
+paused LIST/owned-NUL paths are untouched.
+[Owning return-value review](coverage/semantics/array-literal-float-return-array-value-review.json).
 
-The sole413 change reuses existing literal_reference_cell validation; ordinary/A19
-input/value/live classifiers, global plain_cell, type/write helpers, marker roots
-and graph/count/prune/driver algorithms stay exact. No historical fixture or
-source replay is needed: earlier empty-source negatives remain invalid. Fresh
-witnesses use public int|array properties, PINT payloads and runtime DIRECT-integer
-tables; broader accepting descriptors compose existing validation without a new
-public-only/type-specific gate or fresh all-types claim. Direct strings/objects,
-wider source kinds, deeper/indebted children, unsafe/effective-zero retirement,
-active GC and request-end debt remain partial; paused LIST/owned-NUL and unrelated
-active producers stay untouched.
-[Typed captured-CV review](coverage/semantics/array-literal-float-typed-wrapped-mixed-cv-review.json).
-
-Composed over `b3eeb315b`/407 with accepted413 and all six owned test paths
-unchanged. Every other runtime/schema and ordered manifest byte preserves the
-parent. Incoming missing comparisons, parked SEND, INI/DEFINE, object-reference
-retirement history and selected shift/XOR warning selectors are absent; their
-new tags/tasks remain unproduced. Source4/strict407/state1272 and genuine baseline0
-retain private cuts without joined execution, accepted or historical replay.
+Earlier typed captured-CV sources retain native/genuine `6bce238f1`, source4/
+strict407 `f8a2747c0` and state1272 `dcd055f88`, integrated as `e0d5c204d`.
+Their genuine pre-handler baseline0 and first-pass original cuts remain in the
+[typed captured-CV ledger](coverage/semantics/array-literal-float-typed-wrapped-mixed-cv-review.json).
 
 Earlier wrapped primitive/ARRAY capture retains native/genuine `0e29621d7`,
 source4/strict407 `68c7306a4` and state1115 `aaaa46b06`, integrated as `7e64f4847`.

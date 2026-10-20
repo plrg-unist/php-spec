@@ -369,6 +369,15 @@ checks fresh public int|array coercion/rejection, safe source detach and indepen
 DIRECT copies through normal/deletion/throw cycles. Type/write helpers and all
 marker roots remain exact; direct strings, wider sources and unsafe lifetimes
 stay excluded.
+An ARRAY returned by an ordinary no-argument named function also survives the
+float-key callback as a frozen owning value. Authentication uses its checked
+nonconstant call occurrence, compiled name without fallback, active user function
+and by-value signature; current producer globals do not participate. The existing
+KNOWN task/frame owner transfers directly to the literal, with no count bias.
+The [return-value ledger](../../coverage/semantics/array-literal-float-return-array-value-review.json)
+checks global/reference sources, COW, sole-owner entry deletion and supplied throw.
+By-reference returns, arguments and wider call producers remain outside this arm;
+existing mutable/nonpool, builder and object-free readiness guards stay exact.
 String leaves validate canonical bytes or existing carrier records. Their table
 and wrapper counts stay separate from copied string bytes: debt-time writes may
 share a table while a string snapshot stays unchanged. Singleton reference
