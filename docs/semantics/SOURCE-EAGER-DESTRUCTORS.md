@@ -112,8 +112,18 @@ local/caller identity and message observers, cleared NULL/Notice17 and detached
 aliases. Valid null-cell/unequal-live-ID controls, original-false/source receipt and
 saved-owner refusals accompany exact parent/NULL public states and whole/split
 ending. The sole declaration moves314→270 for the earlier use; its definition,
-history/finish/root rules stay unchanged. Other bodies, writes/callbacks and
-deeper reentry remain open.
+history/finish/root rules stay unchanged. M119 replaces the exact-three source
+tail and exact11-task cleared suffix with recursive validators. Every remaining
+computed object keeps its cursor/LINE, lexical restore link, distinct live ID,
+finite normal class and sole task owner; at least two outer owners remain.
+The structural suffix preserves its initial cleared NULL, terminal function and
+exact source/LINE Notice. Source1 and368/6 at `0c1f7dea2` prove four simultaneous
+owners, D→E supplied throw/local catch, retained C/B/A tasks, same outside object,
+Notice22/freshNULL/detachment and three exact raw/public states. Missing owner
+and mirrored farthest-LINE refusals, malformed restores/Notice/duplicate IDs and
+constructed former-three-slot subcuts accompany full whole/split equality.
+First-throw body, pending, SOURCE/finish/root and storage/GC rules are unchanged.
+Mixed/reference histories, other bodies, writes/callbacks and deeper reentry remain open.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same

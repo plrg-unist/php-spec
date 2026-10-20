@@ -885,42 +885,39 @@ joined actor, accepted replay or renewed execution credit.
 The earlier mixed CV/selected-reference arithmetic route retains source9/state858
 in its [review ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 
-M118 preserves a supplied global Throwable through finite nested-destructor
-return replay. The new exact body imports one ordinary global, echoes a literal,
-and throws that same compiled CV. Its real request-table cell must hold the
-exact live pending object; no new constructor or D-origin metadata is invented.
-The same outside Exception reaches the local catch and separate caller identity/
-message observer, then cleared C gives one Notice17 and a fresh detached NULL.
-Existing class checks and old body arms, saved scopes, owning B/A tasks,
-SOURCE/replay, roots, release/storage, GC and state/task schema remain unchanged.
+M119 validates owning computed-return histories recursively instead of requiring
+exactly three slots. Every remaining object keeps an authentic source/LINE,
+lexical restore link, distinct identity, live old operand, finite echo-only class
+and sole task owner; at least two outer owners remain required. The consumed-NULL
+suffix likewise checks every owner/restore link and its exact old-source Notice.
+Existing finite first-throw bodies, supplied identity, SOURCE/finish, roots,
+ownership/release/storage, GC and task/state schema stay unchanged.
 
-Native1 and the genuine wrong-ending baseline retain `c162060e5`/406; separate
-84 Boolean/one raw diagnosis proves stable given-cell/outside-record identity and
-lost history. Source1 and 428 Boolean/four raw checks pass at `3018f824d`/406
-(author168/2, independent260/2). Nulling the given cell still leaves a live valid
-pending Throwable but refuses history. Constructed unequal live IDs with the
-same record/property values isolate exact identity, including a mirrored wrong
-pending receipt. Source-flag, borrowed/physical receipt and saved-owner controls,
-exact parent/cleared-C public steps, same caught/global object, Notice/aliases
-and full whole/split endings pass.
+One fresh four-owner source and 368 Boolean/six raw checks pass at
+`0c1f7dea2`/406 (author143/3, independent225/3). Four simultaneous sole-owning
+returns precede nested D→E cleanup; the same outside supplied Exception reaches
+the local catch and caller observer, then cleared D gives one Notice22 and a
+fresh detached NULL while C/B/A retire. Missing nearest/middle/farthest owners refuse with valid
+heaps; mirrored outer LINE, broken restore/Notice and duplicate-ID controls
+refuse. Three raw/public states and full whole/split endings agree. Constructed
+two-remaining and old11-task subcuts preserve the former three-slot grammar;
+historical sources are not replayed.
 
-One affected-source initialization failure remains zero: the CV guard declaration
-followed its new270 use. Moving only that declaration from314 to270 fixes loading;
-its definition is unchanged. Only the affected source retries; native, baseline,
-diagnosis and earlier accepted cases are not replayed. State actors use strict45,
-author180/peer240 caps and finish quiet/stable/reaped. Fresh supplied coverage is
-builtin Exception in the finite nested body; intervening writes/callbacks, other
-bodies, deeper reentry, properties, larger/mixed histories, GC and wider consumers
-remain open.
+Native1 and the wrong-ending baseline retain `3744afa83`/406. Separate94/2
+diagnosis proves supported supplied throw selection but fixed-arity history loss.
+Its first pre-state binding failure remains zero; only adjacent assertion order
+changes for the affected retry. Accepted model actors finish quiet/stable/reaped
+with strict45 and author240/peer300 caps. Fresh source coverage is four owning objects;
+mixed/reference histories, other bodies, deeper reentry, properties, GC and wider
+consumers remain open.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
-Composed over `172648814`/406 after reviewing incoming INI/DEFINE, missing-CV
-spaceship (including same-CV), compound-ADD Warning/RHS failure, parked Generator
-SEND, property-coalesce/RV
-and float-key array string-leaf selectors, all unproduced here. Only270/314
-differ and byte-match tested3018; every other parent runtime/task/default/root
-and ordered406 manifest path stays exact. Native/source/diagnosis/state retain
-their private cuts without a joined actor or accepted replay.
+Composed over `76461b4d4`/406 after pointwise review of incoming INI,
+missing-CV spaceship, compound-ADD failure, DEFINE value/Closure and flat-array
+ALIAS-leaf selectors, all unproduced here. Literal retention/debt lists stay
+empty. Only156/270 differ and byte-match tested0c1f; every other parent runtime,
+task/default/root and ordered406 manifest stays exact. Native/source/diagnosis
+and368/6 retain their private cuts without joined execution or accepted replay.
 
 Retained propertyless Stringable `define` names now accept captured boolean true
 with primitive candidates and non-NUL global/class-like results. One module400
@@ -11263,8 +11260,10 @@ and 514/12 at9aa, same local catch and cleared-C NULL/Notice16 recovery. M116
 adds one nested C→D destructor path with source1 and454/9 atbf107. M117 adds
 literal Exception constructor-kind correlation, source1 and385/4 at1c871. M118
 adds one stable supplied-global Throwable body, source1 and428/4 at3018, preserving
-outside identity/message, local catch/NULL/Notice17 and remaining owners. Other
-interposed/pending histories, deeper reentry or larger/mixed owners, GC and
+outside identity/message, local catch/NULL/Notice17 and remaining owners. M119
+adds recursive owning-source/suffix validation, fresh four-owner source1 and368/6
+at0c1f with exact catch/Notice22/detachment. Other interposed/pending histories,
+mixed/reference owners, deeper reentry, GC and
 wider typed consumers remain open core obligations for permanent lifecycle/control work.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are

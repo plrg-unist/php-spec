@@ -4349,23 +4349,18 @@ credit is unchanged. An unused destructor declaration now also preserves the
 no-instance, echo-only interposed scalar history. Fresh control/treatment sources
 agree with PHP; separate 463/8 state checks cover its shared-cell RELEASE/EXIT
 pauses, required literal history despite an unchanged heap, engine TypeError catch,
-one line7 Notice and detached aliases. Three simultaneously owning computed
-object returns also pass a fresh source comparison and 347/7 reached checks at
-`f305be84b`: normal C/B/A retirement, saved-caller owners, source-region refusals
-and selected-reference aliases. This requires no runtime change. A direct
-TypeError from the first computed object's destructor now preserves its local
-catch while the other two returns still own their objects. One fresh comparison
-and 514/12 checks at `9aa2136d9` prove cleared-NULL recovery, one Notice and detached
-caller aliases. One nested destructor now follows the same path: C creates
-and releases D, whose TypeError reaches that local catch. A fresh comparison and
-454/9 checks at `bf107b70c` prove nested saved scopes, remaining owners and detached
-NULL recovery. Literal builtin Exception now follows that finite path too:
-source1 and 385/4 checks at `1c87142fd` bind its pending kind to the compiled
-constructor, reject a valid wrong-kind Throwable and preserve Notice17/detached
-NULL recovery. A stable global supplied Exception now also retains its outside
-identity/message through that nested path, local catch and detached NULL result:
-source1 and 428/4 checks at `3018f824d`. Other bodies, intervening writes, deeper
-reentry, GC and broader consumers remain open.
+one line7 Notice and detached aliases. Owning computed-return histories with at least three pending slots now
+preserve first-retirement direct or nested destructor throws while at least two
+outer return slots stay live. Finite literal builtin
+TypeError/Exception and stable global supplied-Throwable bodies retain their
+source and identity; cleared NULL recovery keeps the Notice and detached caller
+reference. Recursive source/suffix validation checks every remaining owner and
+restore link. A fresh four-owner supplied-Exception source and 368/6 checks at
+`0c1f7dea2` cover missing-owner/metadata refusals, exact public pauses and complete
+alias endings. Earlier three-owner evidence keeps its recorded cuts in the
+[review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+Mixed/reference histories, other bodies, deeper reentry, GC and wider consumers
+remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;
