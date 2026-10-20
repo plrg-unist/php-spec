@@ -4553,3 +4553,80 @@ rule PhpStep/mod-nan-pending-throw: S ~> S[.TODO = (THROW_SEARCH n_exception) ::
 
 def $task_nodes(MOD_NAN_PENDING pintegeroperation pintegerconversion n_stage n_exception) = $instance_roots((n_exception))
 def $call_task_valid(S, MOD_NAN_PENDING pintegeroperation pintegerconversion n_stage n_exception) = $mod_nan_pending_valid(S, pintegeroperation, pintegerconversion, n_stage, n_exception)
+
+;; Numeric ZEND_CAST borrows a plain CV. The class message is formatted before
+;; Warning, then the getter returns1/1.0 without reading the object again.
+dec $object_numeric_cast_operator(pcnode) : pcast?
+def $object_numeric_cast_operator(NExprCastInt expression metadata) = (CASTINT)
+def $object_numeric_cast_operator(NExprCastDouble expression metadata) = (CASTFLOAT)
+def $object_numeric_cast_operator(pcnode) = eps -- otherwise
+dec $object_numeric_cast_message(pcast) : ptbytes
+def $object_numeric_cast_message(CASTINT) = $ptascii("Object of class stdClass could not be converted to int")
+def $object_numeric_cast_message(CASTFLOAT) = $ptascii("Object of class stdClass could not be converted to float")
+dec $object_numeric_cast_result(pcast) : pvalue
+def $object_numeric_cast_result(CASTINT) = PINT 1
+def $object_numeric_cast_result(CASTFLOAT) = PFLOAT 4607182418800017408
+
+dec $object_numeric_cast_source(pstate, porigin, pcast, poperand, int) : bool
+def $object_numeric_cast_source(S, porigin, pcast, poperand, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $object_numeric_cast_operator(pcnode) = (pcast)
+  -- if poperand = VARIABLE ptbytes z_input
+  -- if $integer_operand_source(S, porigin, [PCFIELD 0], poperand)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 0]) = (z)
+def $object_numeric_cast_source(S, porigin, pcast, poperand, z) = false -- otherwise
+
+dec $object_numeric_cast_snapshot(pstate, poperand) : bool
+def $object_numeric_cast_snapshot(S, VARIABLE ptbytes z) = true
+  -- if ~$foreach_released_name(S, ptbytes)
+  -- if $integer_pointer_select(S, VARIABLE ptbytes z) = (INTEGER_CV ptbytes)
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes) = (POBJECT n)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = STDINSTANCE
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+  -- if ppropertyslot* = eps
+  -- if $object_table_at(S.OBJECTTABLES, n) = eps
+def $object_numeric_cast_snapshot(S, poperand) = false -- otherwise
+
+def $object_numeric_cast_plan(S) = (porigin, pcast, poperand, z)
+  -- if S.TODO = (CAST_RESULT pcast z) :: ptask_tail*
+  -- if $error_handler_eligible(S, 2)
+  -- if $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if poperand = S.RESULT
+  -- if $object_numeric_cast_source(S, porigin, pcast, poperand, z)
+  -- if $object_numeric_cast_snapshot(S, poperand)
+def $object_numeric_cast_plan(S) = eps -- otherwise
+
+dec $object_numeric_cast_warning_valid(pstate, porigin, pcast, poperand, int, nat) : bool
+def $object_numeric_cast_warning_valid(S, porigin, pcast, poperand, z, n) = ($object_numeric_cast_source(S, porigin, pcast, poperand, z) /\ $(n <= 1) /\ (n = 1 \/ $object_numeric_cast_snapshot(S, poperand)))
+
+rule PhpStep/object-numeric-cast-begin: S ~> S[.TODO = (OBJECT_NUMERIC_CAST_WARNING porigin pcast poperand z 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $object_numeric_cast_plan(S) = (porigin, pcast, poperand, z)
+rule PhpStep/object-numeric-cast-dispatch: S ~> $error_dispatch(S, 2, $object_numeric_cast_message(pcast), z, DIAGNOSTIC "Warning" $object_numeric_cast_message(pcast) z, OBJECT_NUMERIC_CAST_WARNING porigin pcast poperand z 1)
+  -- if S.TODO = (OBJECT_NUMERIC_CAST_WARNING porigin pcast poperand z 0) :: ptask_tail*
+  -- if $object_numeric_cast_warning_valid(S, porigin, pcast, poperand, z, 0)
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/object-numeric-cast-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "object numeric cast owning warning callback"]
+  -- if S.TODO = (OBJECT_NUMERIC_CAST_WARNING porigin pcast poperand z 0) :: ptask_tail*
+  -- if $object_numeric_cast_warning_valid(S, porigin, pcast, poperand, z, 0)
+  -- if $error_handler_eligible(S, 2)
+  -- if ~$arithmetic_add_named(S)
+rule PhpStep/object-numeric-cast-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN $object_numeric_cast_result(pcast)][.BASE = BASE_VALUE (KNOWN $object_numeric_cast_result(pcast))]
+  -- if S.TODO = (OBJECT_NUMERIC_CAST_WARNING porigin pcast poperand z 1) :: ptask_tail*
+  -- if $object_numeric_cast_warning_valid(S, porigin, pcast, poperand, z, 1)
+
+def $task_nodes(OBJECT_NUMERIC_CAST_WARNING porigin pcast poperand z n) = eps
+def $call_task_valid(S, OBJECT_NUMERIC_CAST_WARNING porigin pcast poperand z n) = $object_numeric_cast_warning_valid(S, porigin, pcast, poperand, z, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = OBJECT_NUMERIC_CAST_WARNING porigin pcast poperand z 1
+  -- if $object_numeric_cast_warning_valid(S, porigin, pcast, poperand, z, 1)
+  -- if perrorcall.TARGET =/= eps \/ $object_numeric_cast_snapshot(S, poperand)
+  -- if perrorcall.SITE = porigin
+  -- if perrorcall.LINE = z
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $object_numeric_cast_message(pcast)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE z

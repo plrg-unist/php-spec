@@ -7,6 +7,26 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Borrowed empty `stdClass` numeric casts now resume named Warning handlers.
+Replacing/removing the sole source retires the object inside the callback, where
+WeakReference already returns null. Float conversion still delivers strict `1.0`;
+an integer-cast supplied Exception preserves callback write `99` and outer `100`.
+Two originals pass at `a5ab776a9`/408 and 134+138 focused premises at
+`f9c868965`/408 in the
+[object numeric-cast ledger](coverage/semantics/object-numeric-cast-warning-review.json).
+Fresh class/CV/source snapshots authenticate dispatch; entered/returned history
+survives object retirement. The descriptor stores no object ID/value and adds no
+owner. Only modules 30/58/404 change; WeakReference/GC, numeric and generic unwind
+bodies stay unchanged. Other classes/producers/reference operands, owning
+replacements and wider lifetimes remain partial; no normal-int/throwing-float
+witness is claimed. Paused OP12/COMP88/Source47 and active property/clone/array/
+Generator selectors remain untouched.
+
+Composed over `4a687d9aa`/408, preserving incoming state, task and
+ordered-manifest paths. Source2/state272 retain their private408 cuts;
+independently reviewed absent incoming selectors require no joined execution
+or renewed credit.
+
 All seven missing-CV comparisons now accept live ordinary non-Stringable
 object counterparts, initially defined or callback-created, including stdClass.
 The current CV/reference binding supplies the counterpart against frozen NULL;
@@ -113,25 +133,8 @@ NULL-key array and bitnot/modulo Warning selectors have no producer here.
 Source4 and focused 477 retain their tested cuts without joined execution,
 accepted replay or renewed historical clone credit.
 
-NaN modulo now reports its remaining safe-conversion notice before propagating
-a first-Warning supplied Exception. Mask `2` defaults precision Deprecated at line 25;
-mask `8194` suppresses its body/default. Both preserve the same Exception from line 20,
-callback writes `99`/`0`, and outer `100`, without reading the zero divisor.
-The unchanged normal control waits for both notices before reading current RHS `5`,
-then saved NaN-derived zero gives integer `0` despite current LEFT `88`. Three originals pass
-at `831b79878`/408 and 165+175 focused premises at `13e01efdf`/408 in the
-[pending modulo ledger](coverage/semantics/mod-nan-pending-review.json).
-The genuine baseline has NORMAL status and omits the default Deprecated on stderr.
-Only module 30/404 pending-discard handling changes; its task preserves one Throwable
-owner before restoring the same search. Eligible-pending suppression is source-only;
-normal conversion, numeric, formatting and generic unwind bodies stay unchanged.
-Other operators/producers/lifetimes remain partial; paused OP12/COMP88/Source47
-and property/clone/array/Generator selectors remain untouched.
-
-Composed over `7ba8ef89f`/408, preserving incoming state, task and
-ordered-manifest paths. Source3/state340 retain their private408 cuts;
-independently reviewed absent incoming selectors require no joined execution
-or renewed credit.
+Earlier pending NaN modulo retains source3/state340 and its original NORMAL
+stderr mismatch in the [pending modulo ledger](coverage/semantics/mod-nan-pending-review.json).
 
 Direct pending SEND without a getter now refreshes one allocated closed child
 whose normal simple-CV return owns no heap node. Child cache-edge release comes

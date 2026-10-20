@@ -983,6 +983,14 @@ Two originals and 264 focused premises pass in the
 [unary-reference ledger](coverage/semantics/unary-reference-warning-review.json).
 Wider producers, constrained/owning cells and callback lifetimes remain partial.
 
+Explicit numeric casts of an empty `stdClass` now resume named Warning handlers.
+The plain source CV is borrowed: replacing or removing its last object owner makes
+`WeakReference::get()` return null inside the callback. Float conversion still
+delivers strict `1.0`; an integer-cast handler's supplied Exception cancels delivery.
+Two originals and 272 focused premises pass in the
+[object numeric-cast ledger](coverage/semantics/object-numeric-cast-warning-review.json).
+Other classes, operand producers and lifetimes remain partial.
+
 NaN modulo now finishes safe conversion's precision notice before propagating
 a supplied Exception from its range Warning handler. Mask `2` still defaults the
 Deprecated; mask `8194` runs neither a second body nor default. Neither reads the
