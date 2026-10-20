@@ -7,7 +7,6 @@ from undefined_scalar_compare_second_reversed_cases import CASES
 
 family.CASES = CASES
 family.UNSUPPORTED = {
-    'second-reversed-same-name-boundary': ('error-handler ingress requires a producer continuation', b'B|'),
     'second-reversed-removed-right-boundary': ('scalar comparison warning changed right operand', b'B|H|'),
 }
 family.BASELINE = ('scalar comparison warning changed left operand', b'H:1::1:10;')
