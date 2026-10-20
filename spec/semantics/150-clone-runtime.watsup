@@ -53,7 +53,7 @@ def $clone_cached_ready(S, n_source) = true
   -- if pobjectprops.MATERIALIZED /\ $clone_cached_slots(pobjectprops.SLOTS)
   -- if $object_tables_valid(S)
   -- if S.GC.ACTIVE = eps
-  -- if ~$clone_callback_value(S, POBJECT n_source) /\ ~$clone_readonly_updates(S, n_source)
+  -- if ~$clone_readonly_updates(S, n_source)
   -- if $clone_cached_table(n_source, |S.OBJECTS|, S.ARRAYS[n_table].ITEMS, $array_empty()) =/= eps
 def $clone_cached_ready(S, n_source) = false -- otherwise
 def $clone_plain(S, n_source) = $clone_slots(S_new, n, pobjectprops.SLOTS)
