@@ -1944,43 +1944,45 @@ joined actor, accepted replay or renewed execution credit.
 The earlier mixed CV/selected-reference arithmetic route retains source9/state858
 in its [review ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 
-M126 admits a finite Holder destructor that imports one ordinary global,
-echoes a literal and throws that supplied object during D's holder=NULL write.
-D may include one literal marker after the write and before its own supplied
-throw. Initial guards require a live throwing Holder to select the same object
-as D; the post-store NULL arm needs no retired Holder facts. Only module 270 gains 32
-lines. The old four-statement D and normal/empty Holder arms stay exact; a
-three-statement gate bounds delegation before any clear/throw recursion.
-SOURCE/history representation, pending/finish/roots,138/359/writer/156 and
-Iterator39's generic hook stay unchanged.
+M127 preserves a finite Holder destructor's supplied throw when it differs from
+D's planned object. A new nonowning, nonexecutable SOURCE history tag retains
+the actual pre-clear Holder class beside the original false queue. The emitted
+D NULL-write/global cell binds that class at capture; its static plain object
+property and finite public destructor image remain valid after the object retires.
+Pending may match D's planned operand or the retained Holder's own emitted global,
+preserving held-Holder possibilities. Same-ID/normal/PNULL legacy capture stays
+exact. Only modules 30/270 change; existing storage/type-source detach, typed writer,
+root policies,156 and Iterator39's hook remain unchanged.
 
-Two fresh originals and 399 Boolean/5 raw checks pass at `982a7919d`/407
-(author188/2, independent211/3). The control reaches H;DA; while the throwing
-Holder skips DA. Both recover the same Exception in the local catch, Notice15,
-fresh detached NULL/prior b7, W/NQ and right-property replacement. Exact restored
-D pending receipt, property-source transfer and shared-cell release match full
-wrapped zero/one states; both source rows persist until the actual slot transfer.
-Whole/split states agree. Initial private-method and two-live unequal-ID controls
-are helper-only fences; the latter keeps the real D source admitted.
+One original and 374 Boolean/4 raw checks pass at `a5cc86c953`/407
+(author163/2, independent211/2). The caught object is other, not given; both
+outside records/messages survive, Previous is NULL and DA is skipped. Local
+catch/Notice15/fresh detached NULL/prior b7, W/NQ/right replacement and whole/split
+states agree. Exact capture, restored-D pending and holder-free clear/parent
+states match public budgets. Mirrored wrong class and third-live pending IDs
+refuse with valid heap/live operands; a post-free private property image refuses.
+Same-ID legacy and held owner2 checks are constructed, with no fresh held-source
+credit. Cleanup/H/noDA/typed writes already agreed in the unchanged baseline;
+this repairs history admission and pending authority.
 
-Native 2, two NORMAL wrong-ending baselines and separate 152/3 diagnosis retain
-`c25376531`/407. The baseline already matched H/DA suppression, cleanup and typed
-writes; body admission lost the return history. Original diagnosis failure 0 from
-cross-case AST wildcard reuse is preserved; only that fixture retries after a
-suffix-only binder correction. Affected source 2 preserves every original packet
-and native tuple. Accepted actors are quiet, stable and fully reaped; no source
-or focused retry/accepted replay occurs. Bounds are source180/strict45/author420/
-peer600. Different propagated IDs, wider Holder bodies/writes/types, fewer outer
-slots, broader reentry and GC remain partial.
+Native1, one NORMAL wrong-ending baseline and separate 122/2 diagnosis retain
+`d977b28fe`/407. Original parser failure b732 remains0; only two literal-path
+parentheses change before diagnosis. Original source attempt0c6b at8c341 fails
+in the decoder's nested optional return, with no completed model result or
+agreement. Explicit typed optional bindings repeat only that source at a5cc.
+Accepted actors are quiet, stable and fully reaped; state checks pass first
+attempt. Bounds are source180/strict45/author420/peer720. Wider Holder bodies,
+writes/types/constructors, fewer outer slots, broader reentry and GC remain partial.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
-Composed over `6145a5ae5`/407 matching tested module 270 byte for byte; every other spec
-path/ordered manifest parent-exact. Incoming clone, INI/config/argument
-introspection, missing/loose-comparison Warning, Generator, DEFINE, selected
-modulo conversion and float-key array selectors have no producer. SELECTEDCALLS
-and literal debt lists stay empty, so the optional selected-owner field and new
-MOD task are uninstantiated. No pstate/default/root field changes. Source 2 and
-399/5 retain private 982a/407 without joined execution or renewed credit.
+M127 composes over actual parent `cd98ca4a59`/407. Module270 stays byte-exact
+tested `a5cc`; module30 adds only the nonowning history alternative beside the
+incoming task/target variants. Every other spec path and the ordered manifest
+remain parent-exact. Incoming INI/config/DEFINE, missing/loose comparisons,
+Generator, named magic calls, selected XOR/right-shift and float-key array/debt
+selectors have no producer here. Existing getMessage/getPrevious and declared
+destructors retain their routes. Private source1/374+4 and earlier cuts keep
+their tested revisions; composition adds no joined execution credit.
 
 Retained propertyless Stringable `define` names now accept captured boolean true
 with primitive candidates and non-NUL global/class-like results. One module400
@@ -12395,8 +12397,11 @@ right-property identity. M125 admits a normal literal-echo Holder destructor,
 source1 and361/5 at842b, preserving both sources during callback and the same
 pending replay afterward. M126 adds same-ID supplied Holder throw with a D-after
 marker control, source 2 and 399/5 at 982a, preserving abrupt pending/storage and
-local replay. Different propagated IDs, wider Holder bodies/writes/types,
-fewer outer slots, interposed histories, deeper reentry and GC remain open.
+local replay. M127 retains the actual cleared Holder class and either finite
+supplied operand, source 1 and 374/4 at a5cc, preserving distinct caught identity,
+Previous NULL and nonowning authority after retirement. Wider Holder bodies,
+writes/types/constructors, fewer outer slots, interposed histories, deeper reentry
+and GC remain open.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
 integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV

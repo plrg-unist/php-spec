@@ -131,31 +131,41 @@ object|string, and an allocated object referent. The clear-holder image retains
 its own source and object-only type. Source metadata owns no edge; actual ALIAS/
 global edges own the cell. Earlier M121–M124 cuts remain in the ledger.
 
-M126 retains empty/normal literal-echo Holder methods and adds one finite
-public nonstatic/nonabstract destructor: zero arguments, by-value, no return
-annotation/attributes,
-exact global/echo/throw-CV body. A three-statement AST gate precedes delegation
-to the existing supplied-throw parser. Initial live-Holder admission correlates
-its emitted global value with D's supplied object; NULL after the write bypasses
-retired Holder facts. D's disjoint five-statement arm adds one literal echo after
-the authenticated NULL write; its old four-statement arm stays exact. Existing
-OUTPUTBUFFERS=eps excludes echo callbacks. All class/property/shared-cell/table/
-key bounds, propertyless C/D class guards, SOURCE/history representation, pending/
-finish/roots,138/359/writer/156/schema and Iterator39's hook stay unchanged.
+Finite Holder destructors retain the public/nonstatic/nonabstract, zero-argument,
+by-value, no-return-annotation/attribute bounds and exact global/literal-echo/throw
+emitted-CV body. The exact three-statement gate prevents recursive delegation;
+D retains its four-statement NULL-write body or the disjoint five-statement form
+with a literal marker after the write. OUTPUTBUFFERS=eps and all existing
+class/property/shared-cell/table/key guards remain.
 
-Source 2 and 399 Boolean/5 raw at `982a7919d`/407 distinguish control H;DA from
-throwing H/noDA. Both preserve same supplied catch, Notice15, fresh detached NULL/
-b7, W/NQ/right replacement and whole/split ending. The actual restored-D raw
-step moves the Holder exception into the existing clear-operation receipt.
-Both property sources remain through callback completion; real slot transfer
-removes only Left's type source. The Left slot stays PROP_UNSET until later free;
-its HCELL job decrements ownership separately. Complete wrapped/public states agree.
-Private-method and two-live equal-message unequal-ID controls are helper-only;
-the latter retains the actual D site and refuses only the constructed mismatched
-expected-origin call. Native 2/baseline 0/152+3 diagnosis keep c253/407. The original
-cross-case AST-binder fixture failure remains0; only diagnosis retries. No accepted
-source/focused replay is added. Different propagated IDs and wider Holder bodies,
-writes, types, reentry and GC remain partial.
+M127 adds `REF_RETURN_RETIRE_HOLDER_HISTORY`, a SOURCE-only nonowning class origin
+beside the original false queue. The authenticated C-to-D method selector and
+D's real emitted NULL assignment bind the current global cell's INSTANCE class
+at capture. Its reusable static image keeps the old plain public/nonstatic/
+nonreadonly object property, SETVISIBILITYeps/nohook and finite destructor bounds.
+Current POBJECT must match that class; PNULL after the write needs no retired
+object, slot or allocation. Pending must match D's authenticated operand or the
+retained Holder method's own emitted global. This preserves the held possibility
+without borrowing D provenance for the actual Holder throw. Legacy same-ID,
+normal and initially NULL capture stays exact. Both tags own zero nodes and
+cannot execute. Common queue/source/replay checks remain;138/359/writer,156,
+root policies and Iterator39's generic hook are unchanged.
+
+Source1 and 374 Boolean/4 raw at `a5cc86c953`/407 preserve different outside
+Exception identities/messages, actual other catch, Previous NULL, H/noDA,
+Notice15/fresh detached NULL/prior b7, W/NQ/right replacement and whole/split.
+Exact capture, abrupt restored-D receipt and holder-free clear/parent states
+match public zero/one budgets. Mirrored wrong class and third-live pending IDs
+refuse with heap/live operands valid; private retained property metadata refuses
+after retirement. Same-ID and held owner2 controls are constructed, not extra
+PHP sources or general fabricated-history validation.
+Native1/baseline0/122+2 diagnosis keep d977/407. Parser failure b732 remains0;
+two literal-path parentheses correct only that fixture. First source attempt0c6b
+at8c341 fails in the new decoder's optional tuple representation; typed optional
+bindings correct it before affected source1 at a5cc. No completed result/agreement
+comes from that failed attempt. Focused actors pass first attempt at420/720;
+source180 and strict45 remain bounded. Existing cleanup/H/noDA/typed writes already
+matched the baseline. Wider bodies/writes/types/constructors, reentry and GC remain partial.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same

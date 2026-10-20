@@ -4766,22 +4766,23 @@ agree with PHP; separate 463/8 state checks cover its shared-cell RELEASE/EXIT
 pauses, required literal history despite an unchanged heap, engine TypeError catch,
 one line7 Notice and detached aliases.
 Owning-return histories with at least three pending slots preserve finite
-first-retirement destructor throws, supplied-object identity, cleared NULL and
-detached caller references. Ordinary global references may alias across pending
-slots; each keeps its own source/owner/restore authority and cleanup count. A
-nonempty unique property-source list now authenticates every plain public ALIAS
-and declaration of type `object` or `object|string`, with a live object referent.
-Computed objects retain distinct sole owners. A finite D destructor can clear
-an object-only Holder, then echo a literal marker before its supplied throw.
-The Holder may echo normally or throw that same supplied object. Two originals
-and 399 Boolean/5 raw checks at `982a7919d` distinguish H;DA from H without DA,
-then preserve local catch/Notice15/fresh detached NULL as two property sources
-become one. String assignment succeeds; NULL still fails against the surviving
-union. Valid replacement preserves the old copy and detached r/prior b. Existing
-storage, pending and typed writer rules stay unchanged. Earlier cuts remain in
-the [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-Different propagated IDs, wider Holder bodies/writes, source kinds/types/values,
-fewer than two remaining slots, broader reentry and GC remain open.
+first-retirement destructor throws and detached caller references. Global
+reference slots keep lexical authority even when they share one cell; plain
+public `object`/`object|string` property sources retain their actual ALIAS and
+declaration. A finite D destructor can clear an object-only Holder before its
+planned supplied throw. The Holder may echo or throw a different supplied object;
+a nonowning class certificate retains its own throw authority after retirement.
+The finite pending set also preserves D's planned operand for held Holders.
+One original and 374 Boolean/4 raw checks at `a5cc86c953` preserve caught other,
+separate given/messages, Previous NULL, skipped DA, local catch/Notice15/fresh
+NULL and detached r/prior b. Existing cleanup and typed writes already matched:
+string becomes legal after Left retires, remaining Right rejects NULL and valid
+replacement keeps the old copy separate. Constructed held/same-ID and malformed
+certificate/third-live controls have their stated state scope. Earlier cuts and
+original parser/decoder failures remain in the
+[review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+Wider Holder bodies/writes/types/constructors, fewer than two remaining slots,
+broader reentry and GC remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;
