@@ -363,8 +363,8 @@ inverse balancing and cleanup. The
 [typed array-leaf ledger](../../coverage/semantics/array-literal-float-typed-array-alias-leaf-review.json)
 adds public array-property witnesses with scalar rejection and nested child COW,
 including source removal by explicit property unset. Other accepted property
-descriptors compose existing type-source validation. Global outer typed-array
-CELL admission, deeper owning children and indebted descendants stay out.
+descriptors compose existing type-source validation. Deeper owning children and
+indebted descendants stay out.
 DIRECT child-array entries share the same bounded child eligibility, with no
 embedded leaf CELL: children are mutable nonpool tables of DIRECT
 null/bool/int/float or validated byte strings, without outgoing owner edges or
@@ -374,6 +374,17 @@ logical pruning and preserves duplicate edges. The
 checks independent child COW, repeated-child owner multiplicity, deletion and
 supplied throw while outer table/wrapper biases cancel before cleanup. No new
 recursive eligibility, source authentication or ownership algorithm is introduced.
+Outer array-valued reference cells also retain ordinary validated property type
+sources accepting the bounded payload. The actual payload and every source
+object use the same logical-pruned live set for debt safety. Physical count1
+copies unwrap to DIRECT values, permitting scalar replacement and independent
+payload COW while the original property remains typed; restored shared copies
+keep the ALIAS and its type constraint. Explicit source removal is tested with an
+extra alias through inverse balancing, avoiding effective-zero retirement. The
+[typed outer-array ledger](../../coverage/semantics/array-literal-float-typed-array-ref-review.json)
+records public array-property witnesses, including deletion, dual-source supplied
+throw and initial typed-old capture. Other accepting descriptors compose existing
+validation; global primitive/string gates, type writers and count/prune rules stay exact.
 
 Missing-key module409 retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,

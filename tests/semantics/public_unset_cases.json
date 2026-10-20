@@ -1,0 +1,78 @@
+{
+  "scope": "Declared public int UNSET: INITIAL bypass, guarded recursion and repopulation, CV-null receiver lifetime, supplied throw, and compiled-local destructor reentry. Existing inherited string:void __unset source.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_observations_accepted": true,
+  "native_revision": "b2fb2dc8b89fa789642a29dfcd1794d8901c00a2",
+  "native_report": {
+    "path": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-probes-112/native-first/report.json",
+    "sha256": "f049282271d7dd5bb91c20df445aaa94869510db89a5d3405a0c004468d59e8d"
+  },
+  "cases": [
+    {
+      "id": "initial",
+      "source_file": "public-unset-initial.php",
+      "source": "<?php\nclass PublicUnsetParent112 {\n    public int $value;\n    public function __unset(string $name): void {\n        echo 'U|';\n        unset($this->value);\n        $this->value = 7;\n        echo 'u|';\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass PublicUnsetChild112 extends PublicUnsetParent112 {}\n$child = new PublicUnsetChild112();\necho 'I:';\nunset($child->value);\necho 'B|';\nunset($child->value);\necho $child->value, '|';\nunset($child->value);\necho 'C|';\nunset($child->value);\necho $child->value, '|';\nunset($child);\necho 'E|';\n",
+      "source_sha256": "be3d311da3b65a0b5ff656adbf25102ee34d1d7bc7dea5595bd52cc38213d344",
+      "original_source": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-probes-112/initial.php",
+      "stdout_base64": "STpCfFV8dXw3fEN8VXx1fDd8RHxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "aadfbab9de021bf454335344841f5f80e537406bec7aecdcf4d74490b73064e2",
+      "first_unset_line": 15,
+      "value_unset_line": 19
+    },
+    {
+      "id": "normal",
+      "source_file": "public-unset-normal.php",
+      "source": "<?php\nclass PublicUnsetParent112 {\n    public int $value = 41;\n    public function __unset(string $name): void {\n        global $child;\n        echo 'U|';\n        $child = null;\n        echo 'u|';\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass PublicUnsetChild112 extends PublicUnsetParent112 {}\n$child = new PublicUnsetChild112();\nunset($child->value);\necho 'N:';\nunset($child->value);\necho 'A|';\nunset($child);\necho 'E|';\n",
+      "source_sha256": "5b5844e48f6690a8cece0cb9df28930376ff00d95396b8326b8556a283ac3cfa",
+      "original_source": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-probes-112/normal.php",
+      "stdout_base64": "TjpVfHV8RHxBfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "bd5a271b3310be5d5cb5e53e40e40bab527e0ef4cda66863b39be84a6b3d2b84",
+      "first_unset_line": 14,
+      "value_unset_line": null
+    },
+    {
+      "id": "throwing",
+      "source_file": "public-unset-throwing.php",
+      "source": "<?php\nclass PublicUnsetParent112 {\n    public int $value = 41;\n    public function __unset(string $name): void {\n        global $child, $error;\n        echo 'U|';\n        $child = null;\n        throw $error;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass PublicUnsetChild112 extends PublicUnsetParent112 {}\n$error = new Exception('same112');\n$child = new PublicUnsetChild112();\nunset($child->value);\n$after = 42;\necho 'X:';\ntry { unset($child->value); $after = 7; echo 'A|'; }\ncatch (Exception $caught) { if ($caught === $error) { echo 'C|'; } echo $after, '|'; }\necho 'F|';\nunset($child, $caught, $error);\necho 'E|';\n",
+      "source_sha256": "ca43c3e76797a5a3c59dc26a1a548c21e66470b4f9f1ed8b6b56c526384a17a6",
+      "original_source": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-probes-112/throwing.php",
+      "stdout_base64": "WDpVfER8Q3w0MnxGfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "34b19781017ff8694ce58386747c1bdf5e55a2af7ee7145c6865b982749da960",
+      "first_unset_line": 15,
+      "value_unset_line": null
+    },
+    {
+      "id": "cleanup",
+      "source_file": "public-unset-cleanup.php",
+      "source": "<?php\nclass PublicUnsetProbe112 {\n    public function __destruct() {\n        global $child;\n        echo 'V|';\n        unset($child->value);\n        echo 'v|';\n    }\n}\nclass PublicUnsetParent112 {\n    public int $value;\n    public function __unset(string $name): void {\n        global $make;\n        echo 'U|';\n        if ($make) { $make = false; $local = new PublicUnsetProbe112(); }\n        echo 'u|';\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass PublicUnsetChild112 extends PublicUnsetParent112 {}\n$make = true;\n$child = new PublicUnsetChild112();\nunset($child->value);\necho 'L:';\nunset($child->value);\necho 'A|';\nunset($child->value);\necho 'B|';\nunset($child, $make);\necho 'E|';\n",
+      "source_sha256": "c2673ac1ceb2078fd095bec52b8dbceea0a43ea3f0c63461e86f639970da9367",
+      "original_source": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-probes-112/cleanup.php",
+      "stdout_base64": "TDpVfHV8Vnx2fEF8VXx1fEJ8RHxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "d6d14380b2bb05f7eef23eb68bb2a0e00d716427f1b19f3eb57996357dc8b466",
+      "first_unset_line": 23,
+      "value_unset_line": null
+    }
+  ]
+}

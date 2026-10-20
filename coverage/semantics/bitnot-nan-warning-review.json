@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "milestone": "OP67 NaN bitwise NOT notice ordering with a pending Exception",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Direct plain non-reference CV bitwise NOT on NaN, initially eligible named Warning handler, unchanged precision14 profile. Safe conversion emits range Warning then precision Deprecated before checking the pending Exception. Normal completion uses cached zero despite source retirement; pending completion suppresses complement/result delivery. Other producers, handlers and nonfinite/range cases remain partial.",
+  "runtime_revision": "e6b244d309e430952fbcb26dce748033071feb98",
+  "helper_revision": "88967f4329db832f24ee45fd9a7bbfa1860fe658",
+  "private_modules": 407,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "631d5ab09599e75c10fe4847387866cba1052f0e79883fe18a588d863059dea9",
+    "spec/semantics/58-ordinary-expressions.watsup": "7d5ab890a35ae3ed1bf3e801429aaa8c6b6cb711bf47d604c1968743680be786",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "204bef314355a52bb80fec84ab3dda369f311e5a4e7a456bae7d52253bba2291"
+  },
+  "engine_basis": [
+    "Pinned zend_dval_to_lval_safe first calls zend_dval_to_lval: nonfinite input emits range Warning and returns zero. For NaN the 64-bit ZEND_DOUBLE_FITS_LONG ordered comparisons are both false, making its negated predicate true; incompatible NaN then emits precision Deprecated, even after the first callback throws. bitwise_not_function checks EG(exception) only after the safe conversion and cancels complement on pending exception.",
+    "zend_error_zstr_at sends an ineligible second level directly to default reporting. With an eligible level and existing EG(exception), zend_call_function returns SUCCESS with retval still UNDEF, so neither the second user body nor default callback runs. This is not a failed call. Both numeric diagnostic formatters explicitly use %.*H,-1, independent of live CONFIG precision.",
+    "Separate BITNOT_NAN_WARNING reuses pbitnotwarning and unchanged plain-CV snapshot; source/compiled operand line and NaN-to-zero/two-notice history are authenticated. Fresh stage0 reads the actual CV; stages1/2 retain history without source-cell membership/value reread. New-tag-specific discard temporarily replaces THROW_SEARCH with one pending instance_root, finishes or suppresses the remaining notice, then restores the same THROW_SEARCH without complement or outer delivery. Normal stage2 delivers long_not(0).",
+    "Only30 task tag,58 forward declaration/two generic EPS guards and appended404 rules change. Old finite bitnot, float_long, integer_float_notices/formatting, generic dispatch/default/unwind, CONFIG and module400 remain exact. Pending ineligible default reuses existing error_dispatch trace clearing; eligible suppression clears the same nonfatal trace cache without event or body. Paused Source47 low-initial-precision DEFINE-name callbacks are not selected or edited."
+  ],
+  "contract": [
+    "Author mask2 first range handler writes x99 and throws supplied Exception20. The remaining ineligible precision Deprecated defaults before catch; sameException/noPrevious/line20/calls1 and outer100 survive. Mask8194 repeats the same first throw but suppresses the remaining eligible handler body and default. Both are exact source agreements; only the mask2 pending-default path has a focused traversal.",
+    "Independent peer mask8194 handles range Warning by writing x99/returning true, then handles precision Deprecated by unsetting x/returning false. Default Deprecated occurs once; cached zero still complements to strict int-1 despite source owner1-to0/unallocated/getterEPS. Result/EOF prove absence/calls2/int-1 without undefined reads. The bitwise operator adds no source-cell write; callback writes and unset are explicit.",
+    "Focused158/139 inherits exact bitnot/arithmetic/integer HELPERS. Actual initialized entry, fresh/entered range and normal precision callbacks, author-only source/type/metadata/refusal controls, pending Exception root2 and same-identity restoration, raw whole-state begin/default/throw or complement versus driven pruning, default counts/owners/EOF and zero/one-step cuts are checked. Each fixture follows one reached source-to-EOF path, with no redundant full-entry replay. NaN payload bits are model facts, not native bit observations."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-67/source-e6b244d30-author-two/report.json",
+        "sha256": "ba407af6c7e6e6227df1b567dc595c1ea8721c1a8902ae145dc91e934bdbf05d",
+        "revision": "e6b244d309e430952fbcb26dce748033071feb98",
+        "agreements": 2
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-67/review-model-e6b244d30-review-one/report.json",
+        "sha256": "db1bccabb3f518a8c8a0fc017a80b43173544bc1cbd8e506754209662da0fe94",
+        "revision": "e6b244d309e430952fbcb26dce748033071feb98",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-67/state-88967f432-two/report.json",
+        "sha256": "28f7e428de1be7a9d93d6699bcf77354069a637db50b957d36542dfb9c00e257",
+        "revision": "88967f4329db832f24ee45fd9a7bbfa1860fe658",
+        "modules": 407,
+        "cases": [
+          "bitnot-nan-pending-ineligible-precision",
+          "bitnot-nan-retired-default-deprecated"
+        ],
+        "conditions": [
+          158,
+          139
+        ],
+        "total": 297
+      }
+    ],
+    "total_source_agreements": 3,
+    "total_focused_state_conditions": 297
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-67/baseline-9307b2ba4-ineligible-pending/report.json",
+      "sha256": "99f289b0e6b8c5edade88388f2ad2d217a9002bce83d664a3e0d43f2b675d634",
+      "result": "Actual frontend accepted/checked program/Unsupported BEFORE H1, empty semantic stdout but one already-emitted default Deprecated25 in semantic stderr; producer-continuation reason/model1/agreement0/wrapperfalse. No override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-67/native-9307b2ba4-author-two/report.json",
+        "sha256": "a34e83ba8ff954abf960ecfbe0653d8274ba1573674da87f61c78427bc708308"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-67/native-9307b2ba4-review-one/report.json",
+        "sha256": "fe706c1f1ad8ddd0e432cf51f2e32326919414a620cab310669fdfedc286631c"
+      }
+    ],
+    "initial_focused_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-67/state-afc59fcd4-two/report.json",
+      "sha256": "1a20e4d56bc678a03f67d709b11bd96a09f65171d77268f40826132a660a801a",
+      "result": "Actual first full-SL author elaboration failed before semantic execution: empty iteration in new test-only diagnostic counter catch-all, exit1/6.84s/no timeout/reaped. Independent peer unrun. Original record retained zero; sole event-tail binder correction leaves runtime/source/native exact."
+    },
+    "counter_tail_corrected_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-67/state-fc5846630-two/report.json",
+      "sha256": "064fb35f456323bc7a1881d23313491e416cbd385e756083b59eb4fa31a53ee8",
+      "result": "Second author full-SL fixture rejected before semantic execution: non-pure recursive diagnostic-counter premises alongside otherwise, exit1/7.16s/no timeout/reaped. Peer unrun. Replaced test counter with maintained scalar classifier plus disjoint eps/cons fold; runtime/source/native remain exact."
+    },
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-67/state-prep-afc59fcd4-two/report.json",
+        "sha256": "980989ea87468f71c7d22d7df50e6a6dead690cb0dda868ff1bf35056488078a",
+        "result": "Original retained-source checked preparation, zero application/native agreement; workers0/reaped. Original author fixture later failed full-SL elaboration; peer unrun."
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-67/state-prep-fc5846630-two/report.json",
+        "sha256": "e5ccf60d34dbb43cfbd26cd83313baaa9ca960c3fff26c95ab230bc7e335f745",
+        "result": "Tail-binder-corrected retained-source preparation, zero application/native agreement; workers0/reaped. Author later failed algorithmic fixture transformation before execution; peer unrun."
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-67/state-prep-88967f432-two/report.json",
+        "sha256": "e3ebd7abda75c6d631370b699d4a9dae24935e66bf657dc2dcf96899718ac607",
+        "result": "Actual author full407 struct succeeded (exit0/9.80s/empty stderr) but preparer falsely expected empty parentheses after printed main; original marker-false report retained zero. Author compilation is reused after independent anchored-main verification, peer static initially unrun."
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-67/state-prep-88967f432-two/resumed-report.json",
+        "sha256": "0937f3172221ab0ab1eafa906e147cce1e69bdec6f95cb45504de84c86728409",
+        "result": "Retained source3 authenticated before focused2; checked frontend/adapter and full407 static struct only, zero native/application replay. Author compiler output retained after marker correction, only unrun peer compiled; workers/processes0/reaped."
+      }
+    ],
+    "standalone_syntax": "Two standalone undefined-pstate diagnostics, zero semantic credit."
+  },
+  "required_follow_on": [
+    "Initial direct plain-CV NaN and named by-value Warning handlers bound this slice. Reference/copy/dimension/property and owning producers/handlers, other range/nonfinite conversions, registry mutations and broader lifecycle traces remain partial; undriven guard projections do not establish excluded executions. No new float conversion/formatting algorithm is claimed.",
+    "Earlier finite bitnot/modulo/arithmetic evidence retains original cuts without renewed credit. Shared formatting/CONFIG/module400 and paused Source47 low-initial-precision NaN DEFINE-name callback tests stay exact. OP12 and COMP88 remain paused; no engine bug or intentional divergence is claimed."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-67",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/genuine CPU5 and affected source CPU5 are distinct grants/cuts; focused CPU5. Native30/modelCLI60-process90, checked prep30/full407 SL120 per group. Author mask2 and peer each have one original default Deprecated25; source-only author8194 stderr empty. Retained-source preparation performs no native/application replay.",
+    "record": "Restore matching Git cuts/local tools in a fresh directory. Retained original paths/native streams authenticate focused fixtures; external evidence is not a runtime dependency. Copied local tools add no rebuild/portability claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "commands": [
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 tests/semantics/bitnot_nan_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 tests/semantics/bitnot_nan_warning_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-67/state-prep-88967f432-two/resume-static.py",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-67/state-88967f432-two/run-state.py"
+    ]
+  },
+  "composition": {
+    "parent": "3a5990daecea68af35b89feb1825af37b21871d9",
+    "private_publication": "961209286f0b31fe83addda81d2f12151a1a4ffb",
+    "modules": 407,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "631d5ab09599e75c10fe4847387866cba1052f0e79883fe18a588d863059dea9",
+      "spec/semantics/58-ordinary-expressions.watsup": "7d5ab890a35ae3ed1bf3e801429aaa8c6b6cb711bf47d604c1968743680be786",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "204bef314355a52bb80fec84ab3dda369f311e5a4e7a456bae7d52253bba2291"
+    },
+    "other_incoming_paths_preserved": 70,
+    "gate": "Independent actual-parent review CLEAR at3a5990daecea68af35b89feb1825af37b21871d9/407. Base1d8b2d55e\u2192parent has seven runtime paths172/207/270/289/400/406/413 only. Named INI_SET NULL/unpack, missing SPACESHIP reads, reference-return/property retirement, Generator cleanup, FROMCALLABLEFACTORY DEFINE, property unset/destructor and typed-property reference-literal producers are absent from these direct plain-CV NaN BITNOT_RESULT/by-value named h/native Exception/Throwable-getter sources. Peer unset($x) is ordinary CV; internal Throwable trace arrays produce no literal-array selector. No shared fields/defaults/general roots or ordered407-manifest change;30/58/404 remain parent-base exact. Preserve complete incoming paths, shared formatting/CONFIG/module400 and all paused Source47 low-initial-precision DEFINE-name tests. Source3/state297 retain private407 cuts without joined execution or renewed credit."
+  }
+}

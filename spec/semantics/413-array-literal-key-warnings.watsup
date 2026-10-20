@@ -340,6 +340,16 @@ def $literal_reference_cell(S, n, pnode_live*) = true
   -- if ppropref.SOURCES =/= eps
   -- if $propref_unique_sources(ppropref.SOURCES)
   -- if $literal_reference_property_sources(S, n, ppropref.SOURCES, pnode_live*)
+def $literal_reference_cell(S, n, pnode_live*) = true
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED (PARRAY n_payload)
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if $propref_at(S.PROPREFS, n) = (ppropref)
+  -- if ppropref.SOURCES =/= eps
+  -- if $propref_unique_sources(ppropref.SOURCES)
+  -- if $literal_reference_flat_array(S, n_payload, pnode_live*)
+  -- if $literal_reference_property_sources(S, n, ppropref.SOURCES, pnode_live*)
 def $literal_reference_cell(S, n, pnode_live*) = false -- otherwise
 
 def $literal_reference_property_sources(S, n, eps, pnode_live*) = true

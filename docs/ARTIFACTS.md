@@ -127,6 +127,12 @@ The partial property-source return-history proof is in
 diagnostic failure, corrected/accepted snapshots and exact270 patch,
 SHA-256 `e65400aad708e13d816d830c3d48c5c19c6c694269b30e400837b9bea4e2af0e`.
 
+The normal holder-destructor return-history proof is in
+`../php-spec-evidence-archive/lifecycle-holder-destructor-125/manifest.json`:
+587,291 bytes under `.tools/m125/`, six reports with original
+packets, accepted snapshots, both bounded worker transports and exact270 patch,
+SHA-256 `eec0237203109c5115cac3bf3c2271efb914137478a271dcb1010ac61b0a0da6`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

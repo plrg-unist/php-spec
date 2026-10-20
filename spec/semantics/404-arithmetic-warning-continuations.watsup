@@ -3952,3 +3952,95 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 8192
   -- if $integer_float_notices([PRECISIONLOSS], n_bits) = [(8192, perrorcall.MESSAGE)]
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pintegeroperation.LINE
+
+
+;; NaN safe integer conversion reports RANGEWARNING then PRECISIONLOSS before
+;; bitwise_not_function checks EG(exception). A pending exception suppresses an
+;; eligible second user body/default, while an ineligible level still defaults.
+dec $bitnot_nan_source_valid(pstate, pbitnotwarning) : bool
+def $bitnot_nan_source_valid(S, pbitnotwarning) = true
+  -- if S.ORIGIN = (pbitnotwarning.SITE)
+  -- if $origin_node(S.SOURCES, pbitnotwarning.SITE) = (NExprBitwiseNot expression metadata)
+  -- if pbitnotwarning.INPUT = VARIABLE ptbytes z
+  -- if $integer_operand_source(S, pbitnotwarning.SITE, [PCFIELD 0], pbitnotwarning.INPUT)
+  -- if $code_expression_at_source(S, pbitnotwarning.SITE, [PCFIELD 0]) = (pbitnotwarning.LINE)
+  -- if $(pbitnotwarning.BITS < 18446744073709551616)
+  -- if $float_long(pbitnotwarning.BITS, true) = (pbitnotwarning.VALUE, [RANGEWARNING, PRECISIONLOSS])
+def $bitnot_nan_source_valid(S, pbitnotwarning) = false -- otherwise
+
+def $bitnot_nan_warning_plan(S) = (pbitnotwarning)
+  -- if $error_handler_eligible(S, 2)
+  -- if $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (BITNOT_RESULT z) :: ptask_tail*
+  -- if S.RESULT = VARIABLE ptbytes z_input
+  -- if $integer_pointer_select(S, S.RESULT) = (INTEGER_CV ptbytes)
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes) = (PFLOAT n_bits)
+  -- if $(n_bits < 18446744073709551616)
+  -- if $float_long(n_bits, true) = (i, [RANGEWARNING, PRECISIONLOSS])
+  -- if pbitnotwarning = {SITE porigin, LINE z, INPUT S.RESULT, BITS n_bits, VALUE i}
+  -- if $bitnot_nan_source_valid(S, pbitnotwarning)
+def $bitnot_nan_warning_plan(S) = eps -- otherwise
+
+dec $bitnot_nan_warning_valid(pstate, pbitnotwarning, nat, nat?) : bool
+def $bitnot_nan_warning_valid(S, pbitnotwarning, n, n_pending?) = ($bitnot_nan_source_valid(S, pbitnotwarning) /\ $(n <= 2) /\ ($(n > 0) \/ $bitnot_snapshot(S, pbitnotwarning)) /\ $destructor_pending_valid(S, n_pending?) /\ (n_pending? = eps \/ $(n > 0)))
+
+rule PhpStep/bitnot-nan-warning-begin: S ~> S[.TODO = (BITNOT_NAN_WARNING pbitnotwarning 0 eps) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $bitnot_nan_warning_plan(S) = (pbitnotwarning)
+rule PhpStep/bitnot-nan-range-dispatch: S ~> $error_dispatch(S, 2, n_message*, pbitnotwarning.LINE, DIAGNOSTIC "Warning" n_message* pbitnotwarning.LINE, BITNOT_NAN_WARNING pbitnotwarning 1 eps)
+  -- if S.TODO = (BITNOT_NAN_WARNING pbitnotwarning 0 eps) :: ptask_tail*
+  -- if $bitnot_nan_warning_valid(S, pbitnotwarning, 0, eps)
+  -- if $integer_float_notices([RANGEWARNING], pbitnotwarning.BITS) = [(2, n_message*)]
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/bitnot-nan-range-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "bitwise NOT NaN owning range callback"]
+  -- if S.TODO = (BITNOT_NAN_WARNING pbitnotwarning 0 eps) :: ptask_tail*
+  -- if $bitnot_nan_warning_valid(S, pbitnotwarning, 0, eps)
+  -- if $error_handler_eligible(S, 2) /\ ~$arithmetic_add_named(S)
+rule PhpStep/bitnot-nan-precision-dispatch: S ~> $error_dispatch(S, 8192, n_message*, pbitnotwarning.LINE, DIAGNOSTIC "Deprecated" n_message* pbitnotwarning.LINE, BITNOT_NAN_WARNING pbitnotwarning 2 eps)
+  -- if S.TODO = (BITNOT_NAN_WARNING pbitnotwarning 1 eps) :: ptask_tail*
+  -- if $bitnot_nan_warning_valid(S, pbitnotwarning, 1, eps)
+  -- if $integer_float_notices([PRECISIONLOSS], pbitnotwarning.BITS) = [(8192, n_message*)]
+  -- if ~$error_handler_eligible(S, 8192) \/ $arithmetic_add_named(S)
+rule PhpStep/bitnot-nan-precision-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "bitwise NOT NaN owning precision callback"]
+  -- if S.TODO = (BITNOT_NAN_WARNING pbitnotwarning 1 eps) :: ptask_tail*
+  -- if $bitnot_nan_warning_valid(S, pbitnotwarning, 1, eps)
+  -- if $error_handler_eligible(S, 8192) /\ ~$arithmetic_add_named(S)
+rule PhpStep/bitnot-nan-pending-precision-default: S ~> $error_dispatch(S, 8192, n_message*, pbitnotwarning.LINE, DIAGNOSTIC "Deprecated" n_message* pbitnotwarning.LINE, BITNOT_NAN_WARNING pbitnotwarning 2 (n_exception))
+  -- if S.TODO = (BITNOT_NAN_WARNING pbitnotwarning 1 (n_exception)) :: ptask_tail*
+  -- if $bitnot_nan_warning_valid(S, pbitnotwarning, 1, (n_exception))
+  -- if ~$error_handler_eligible(S, 8192)
+  -- if $integer_float_notices([PRECISIONLOSS], pbitnotwarning.BITS) = [(8192, n_message*)]
+rule PhpStep/bitnot-nan-pending-precision-suppressed: S ~> S[.TODO = (BITNOT_NAN_WARNING pbitnotwarning 2 (n_exception)) :: ptask_tail*][.ERRORFATALTRACE = eps]
+  -- if S.TODO = (BITNOT_NAN_WARNING pbitnotwarning 1 (n_exception)) :: ptask_tail*
+  -- if $bitnot_nan_warning_valid(S, pbitnotwarning, 1, (n_exception))
+  -- if $error_handler_eligible(S, 8192)
+rule PhpStep/bitnot-nan-warning-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT $long_not(pbitnotwarning.VALUE))]
+  -- if S.TODO = (BITNOT_NAN_WARNING pbitnotwarning 2 eps) :: ptask_tail*
+  -- if $bitnot_nan_warning_valid(S, pbitnotwarning, 2, eps)
+rule PhpStep/bitnot-nan-warning-throw: S ~> S[.TODO = (THROW_SEARCH n_exception) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (BITNOT_NAN_WARNING pbitnotwarning 2 (n_exception)) :: ptask_tail*
+  -- if $bitnot_nan_warning_valid(S, pbitnotwarning, 2, (n_exception))
+
+def $error_read_discard(S, BITNOT_NAN_WARNING pbitnotwarning n eps) = S[.TODO = (BITNOT_NAN_WARNING pbitnotwarning n (n_exception)) :: ptask_tail*]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
+  -- if $(n > 0)
+  -- if $bitnot_nan_warning_valid(S, pbitnotwarning, n, eps)
+def $task_nodes(BITNOT_NAN_WARNING pbitnotwarning n n_pending?) = $instance_roots(n_pending?)
+def $call_task_valid(S, BITNOT_NAN_WARNING pbitnotwarning n n_pending?) = $bitnot_nan_warning_valid(S, pbitnotwarning, n, n_pending?)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = BITNOT_NAN_WARNING pbitnotwarning 1 eps
+  -- if $bitnot_nan_warning_valid(S, pbitnotwarning, 1, eps)
+  -- if perrorcall.TARGET =/= eps \/ $bitnot_snapshot(S, pbitnotwarning)
+  -- if perrorcall.SITE = pbitnotwarning.SITE /\ perrorcall.LINE = pbitnotwarning.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if $integer_float_notices([RANGEWARNING], pbitnotwarning.BITS) = [(2, perrorcall.MESSAGE)]
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pbitnotwarning.LINE
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = BITNOT_NAN_WARNING pbitnotwarning 2 eps
+  -- if $bitnot_nan_warning_valid(S, pbitnotwarning, 2, eps)
+  -- if perrorcall.SITE = pbitnotwarning.SITE /\ perrorcall.LINE = pbitnotwarning.LINE
+  -- if perrorcall.LEVEL = 8192
+  -- if $integer_float_notices([PRECISIONLOSS], pbitnotwarning.BITS) = [(8192, perrorcall.MESSAGE)]
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pbitnotwarning.LINE

@@ -37,12 +37,12 @@ remain live, while runtime array temporaries retain their own tables. Reference
 elements transfer a stable cell normally; retargeting preserves the acquired
 count, cancelling existing debt before retaining unmatched old owners for the
 request, including on throw. Different-reference retargeting also tracks the new
-cell's missing owner until it is balanced. Primitive cells may carry ordinary
-live instance-property type sources: singleton copies shed their
-constraint while the original stays typed; shared copies retain it. Untyped
-reference cells may also hold flat runtime arrays of DIRECT null/bool/int/float
-values or validated byte strings. Wrapper debt stays separate from child-table
-COW, including deletion and throw cleanup.
+cell's missing owner until it is balanced. Cells holding null/bool/int/float or
+bounded arrays may carry ordinary live instance-property type sources: physically
+singleton copies shed their constraint while the original stays typed; shared
+copies retain it. Reference cells may also hold flat runtime arrays of DIRECT
+null/bool/int/float values or validated byte strings. Wrapper debt stays separate
+from child-table COW, including deletion and throw cleanup.
 Retargeting a flat-array wrapper to an ordinary scalar preserves its acquired
 count, cancelling debt first or retaining the old wrapper and its child.
 Ordinary unwrapped CVs may switch between null/bool/int/float and flat runtime
@@ -370,6 +370,15 @@ NULL explicit wrapper option; supplied throw cancels rejection. Four source
 comparisons and 1,280 state premises cover ownership transfer, literal contents,
 strict priority, trace edges and retained-setter recovery. Additional arguments
 or packs, wider value leaves, PIPE and sole-owner lifetimes remain partial.
+
+[Direct and selected packed INI array values](coverage/semantics/ini-set-unpack-null-array-value-review.json)
+now use the same NULL-option continuation without a Closure owner. String callee
+selection precedes later pack effects; the earlier inner array survives outer
+retirement, live name/value replacement and COW. Returning handlers reach
+converted-empty value TypeError, while supplied throw preserves raw NULL and
+cancels rejection. Four source comparisons and 1,182 state premises cover literal
+authority, selected-call metadata, owning trace edges, strict priority and recovery.
+Additional arguments/packs, wider value leaves and PIPE remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -852,6 +861,14 @@ delivery, while normal unary minus retains float zero with native output `-0`.
 Two originals and 264 focused premises pass in the
 [unary-reference ledger](coverage/semantics/unary-reference-warning-review.json).
 Wider producers, constrained/owning cells and callback lifetimes remain partial.
+
+NaN bitwise NOT now finishes range Warning and precision Deprecated before
+checking a pending Exception. A first-handler throw still permits an ineligible
+second level to default; an eligible second level runs neither body nor default.
+Two returning callbacks can remove the source CV while cached zero still gives
+integer `-1`. Three originals and 297 focused premises pass in the
+[NaN BITNOT ledger](coverage/semantics/bitnot-nan-warning-review.json).
+Wider producers/handlers remain partial; paused NaN-name conversion is untouched.
 
 Bitwise NOT now retains the converted long through named deprecation handlers
 for finite in-range fractional floats in defined non-reference CVs. Three exact originals
@@ -3626,6 +3643,14 @@ skips the callback; the callback retains Parent lexical scope and Child called
 scope, removes Parent's private slot and sets `seen=13`.
 One original and one state/212 checks cover selection, reception and receiver
 cleanup; [magic unset review](coverage/semantics/magic-unset-review.json).
+
+Declared public int properties now invoke that unsetter only after becoming UNSET;
+INITIAL bypasses it; initialized VALUE deletes ordinarily. Same-name recursion is
+suppressed through compiled-local destructor cleanup, with guard reset before
+receiver destruction. CV-null return and supplied throw retain the selected
+receiver; four originals and 579 focused premises cover this bounded extension.
+[Public unset review](coverage/semantics/public-unset-review.json).
+
 A selected inherited `__isset(string $name): bool` now handles terminal `isset`
 of a direct CV/literal private property. Initialized public and typed-uninitialized
 slots bypass it; actual true/false results preserve short circuiting and storage.
@@ -4628,15 +4653,16 @@ slots; each keeps its own source/owner/restore authority and cleanup count. A
 nonempty unique property-source list now authenticates every plain public ALIAS
 and declaration of type `object` or `object|string`, with a live object referent.
 Computed objects retain distinct sole owners. A finite destructor can clear one
-safe object-only Holder before throwing the supplied Exception. One source and
-506 Boolean/6 raw checks at `d9bbdebfc` preserve local catch/Notice15/fresh detached
-NULL while two sources become one. String assignment then succeeds; NULL still
-fails against the surviving union without changing its property. Valid object
-replacement preserves the old copy and detached r/prior b. Existing storage and
-typed writer rules stay unchanged. Earlier cuts remain in the
+object-only Holder before throwing the supplied Exception. The Holder may now run
+one public zero-argument literal-echo destructor first. One source and 361 Boolean/5
+raw checks at `842b2dc27` preserve both property sources through this callback,
+then local catch/Notice15/fresh detached NULL while two sources become one. String
+assignment succeeds; NULL still fails against the surviving union. Valid replacement
+preserves the old copy and detached r/prior b. Existing storage and typed writer
+rules stay unchanged. Earlier cuts remain in the
 [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-Fresh source coverage is two-to-one. Other source kinds/types/values, callback-bearing
-holders, fewer than two remaining slots, broader bodies/reentry and GC remain open.
+Wider Holder methods/writes/throws, source kinds/types/values, fewer than two remaining
+slots, broader bodies/reentry and GC remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

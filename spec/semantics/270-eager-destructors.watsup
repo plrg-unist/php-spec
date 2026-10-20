@@ -1597,6 +1597,17 @@ def $ref_return_retire_property_cell(S, n_cell) = true
   -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
 def $ref_return_retire_property_cell(S, n_cell) = false -- otherwise
 dec $weakmap_key_maps(pstate, pnode*, nat) : nat*
+dec $ref_return_retire_clear_methods(pstate, pmethoddesc*) : bool
+def $ref_return_retire_clear_methods(S, eps) = true
+def $ref_return_retire_clear_methods(S, [pmethoddesc]) = true
+  -- if $ptlc(pmethoddesc.NAME) = $ptascii("__destruct")
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = eps /\ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = eps
+  -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (NStmtClassMethod (SEQUENCE eps) phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE ([statement_echo])) metadata_method)
+  -- if $ref_return_retire_echo(statement_echo)
+def $ref_return_retire_clear_methods(S, pmethoddesc*) = false -- otherwise
 dec $ref_return_retire_clear_value(pstate, pvalue) : bool
 def $ref_return_retire_clear_value(S, PNULL) = true
 def $ref_return_retire_clear_value(S, POBJECT n_holder) = true
@@ -1605,7 +1616,8 @@ def $ref_return_retire_clear_value(S, POBJECT n_holder) = true
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ ~pclassdesc.ABSTRACT
   -- if pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = eps
-  -- if pclassdesc.METHODS = eps /\ pclassdesc.CONSTANTS = eps
+  -- if pclassdesc.CONSTANTS = eps
+  -- if $ref_return_retire_clear_methods(S, pclassdesc.METHODS)
   -- if pclassdesc.PROPERTIES = [ppropertydesc]
   -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "object"]))]
   -- if $objectprops_at(S.OBJECTPROPS, n_holder) = ([ppropertyslot])
