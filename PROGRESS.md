@@ -7,6 +7,27 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct and selected `ini_set(NULL, quiet primitive)` now resume handlers through
+one numeric/named/mixed two-item unpack. Array V→O capture and normalized unpack
+preserve earlier REQUEST values and the selected function despite later writes.
+Returning handlers reach false/default delivery; a supplied throw preserves
+Exception identity/caller99, precision10/sibling2311 and cancels the body before
+normal setter recovery10→12. Strict NULL rejects after argument effects.
+
+Four exact source comparisons and all953 premises (316+190+87+360) pass at
+`51747f166`/`3673267d0`/406. Initial `02f581357` CPU5 native4/baseline0 remain
+distinct from later CPU2. Nine stable/reaped reports pass first attempts; expected
+Deprecated lines6/23 are separate from quiet accepted workers. Only13 module172
+lines change; replay/trace/body/roots/discard/GC stay exact, with no old tests
+replayed. Multiple packs, PIPE and wider values remain partial.
+[Direct unpack NULL INI review](coverage/semantics/ini-set-unpack-null-option-review.json).
+
+Composed over `1df35bfaa`/406 with module172/four tests private-exact and every
+other runtime/schema/ordered manifest parent-exact. Incoming V84 INSTANCE values,
+comparison/arithmetic-warning, property, Generator, reference/finally and float-key
+debt paths have no producer here. Private source4/state953 cuts retain their
+original identities; no joined actor or renewed agreement credit.
+
 Ordinary live class-instance values now publish directly and in canonical array
 snapshots through dynamic-only `PVOBJECT` authority. No constant-NEW history is
 fabricated; present certificates keep their existing priority/refusals, direct

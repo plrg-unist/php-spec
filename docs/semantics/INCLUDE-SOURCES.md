@@ -509,8 +509,8 @@ and have no timeout/interruption/survivor; accepted worker stderr is empty. Only
 selected false-handler source has default PHP Deprecated output. Initial `fb753d7fe`
 native/baseline CPU3 remains distinct from later CPU2; baseline Unsupported after
 B|V|O| has zero agreement. Old positional623 source-prefix refusals remain valid
-without replay. The quiet value boundary stays unchanged. Packed/PIPE forms remain
-partial; retained positional and named owners have separate increments below.
+without replay. The quiet value boundary stays unchanged. Packed forms beyond the
+bounded follow-ups below and PIPE remain partial; retained owners are covered below.
 
 The [retained intrinsic NULL-option increment](../../coverage/semantics/ini-set-owned-null-option-review.json)
 adds a disjoint owner-present positional arm to the same validator. Existing source
@@ -605,6 +605,27 @@ survivor and no accepted replay. Selected Deprecated24 is expected; other PHP an
 accepted worker stderr are empty. Only13 module172 lines and one obsolete coherent
 Source66 named-pack refusal change; no914 replay or trace/root/discard/GC change.
 Multiple packs, PIPE, sole-owner lifetimes and wider values remain partial.
+
+The [direct/selected unpacked NULL-option increment](../../coverage/semantics/ini-set-unpack-null-option-review.json)
+adds one disjoint ownerless admission arm for a sole two-item numeric/named/mixed
+pack. Invocation validity authenticates the selected string callee; source replay
+authenticates pack destinations and order. Compiled pooled facts constrain literal contents. Inline array V→O
+construction stores the earlier REQUEST before later option effects. Completed
+snapshots remain historical when a callback changes the retained live pack.
+True/false handlers reach false/default delivery; throw preserves Exception identity,
+caller99/precision10/sibling2311 and cancels the body, followed by setter10→12.
+
+Four originals agree and 953 premises (316+190+87 author,360 independent) pass at
+`51747f166`/`3673267d0`/406. Native strict numeric keys5/9 normalize to raw
+`[NULL,2321]` after helper effects and before any handler; the peer intentionally
+has no native trace traversal. Its actual three-frame handler/API/caller trace
+and authentic REQUEST identity, unpack cursors, precise discard, source/carrier/
+selection controls and budgets are state proof. Initial `02f581357` CPU5 native4/
+baseline0 precede later CPU2. Nine stable/reaped reports pass without failures or
+retries; expected Deprecated lines6/23 accompany quiet accepted workers. Only13
+module172 lines change; existing replay/trace/continuation/roots/discard/GC remain
+exact. No old control repair or accepted replay is needed. Multiple packs,
+Traversable, PIPE and owning/NaN/legacy-string values remain partial.
 
 The [unary CONFIG PIPE increment](../../coverage/semantics/include-config-pipe-review.json)
 replays the authenticated left child and `CODEPIPE_SEND`, rather than an ordinary

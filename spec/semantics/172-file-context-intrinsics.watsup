@@ -521,6 +521,19 @@ def $config_ini_null_valid(S, pconfigcall) = true
   -- if $config_ini_quiet_value(S, pvalue)
   -- if $config_ini_pack_known(S, pconfigpack.ITEMS, $compiled_read(S, pconfigpack.SITE))
   -- if ~$config_strict(S, pconfigcall)
+def $config_ini_null_valid(S, pconfigcall) = true
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.OWNER = eps
+  -- if pconfigcall.INDEX = 1
+  -- if pconfigcall.PACKS = [pconfigpack]
+  -- if pconfigpack.INDEX = 0
+  -- if pconfigpack.ITEMS = [ENTRY pkey_first (DIRECT pvalue_first), ENTRY pkey_second (DIRECT pvalue_second)]
+  -- if ~$pipe_site(S, pconfigcall.SITE)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN pvalue)]
+  -- if $config_ini_quiet_value(S, pvalue)
+  -- if $config_ini_pack_known(S, pconfigpack.ITEMS, $compiled_read(S, pconfigpack.SITE))
+  -- if ~$config_strict(S, pconfigcall)
 def $config_ini_null_valid(S, pconfigcall) = false -- otherwise
 dec $config_ini_unary_finish(pstate, pconfigcall, preqbytes) : pstate
 dec $config_ini_null_finish(pstate, pconfigcall) : pstate
