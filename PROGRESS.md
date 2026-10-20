@@ -7,6 +7,29 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained intrinsic `ini_set` Closures now resume NULL-option handlers with a
+separate table-free stdClass value across positional, named and mixed calls.
+The callable owner and value have distinct object roots; later option effects
+and handler writes mutate the same captured value while replacing the live callee.
+Returning handling reaches parameter2 TypeError with empty API option and rawNULL
+explicit wrapper option. Supplied throw preserves Exception identity/result99 and
+shared writes; ordinary strict priority and original-owner recovery remain intact.
+
+Four exact source comparisons and 1,328 state premises (300+289+289+450) pass on
+the first attempt at `816cb419e`/`8e34dfdf3`/407. Initial `c91c9cca8` native4/
+baseline0 and later source/state checks all use CPU1. Nine stable/reaped reports
+pass without failures or retries; only Deprecated11/19 is expected and workers
+are quiet. Only12 additive172 lines change; existing validators/source helpers/
+finish/trace/root/discard/GC and historical tests remain exact. Native E/W/N/I/I/
+shared-mark observations differ from the actual state-only peer three-frame
+value edges/dual task roots/full-discard proof. Packed/PIPE, materialized tables,
+wider properties and sole-owner lifetimes remain partial; paused paths untouched.
+[Retained NULL stdClass INI review](coverage/semantics/ini-set-owned-null-stdclass-value-review.json).
+
+Composed over `1504582b3`/407 with module172/four tests private-exact and every
+other runtime/schema/ordered manifest parent-exact. Source4/state1,328 retain
+private407 cuts without joined execution or renewed evidence.
+
 Repeated pending THROW now preserves exactly one owning LIVE input at a parked
 simple-CV used yield. Only the selected receiver clears initialization; physical
 frame, park history and input stay intact. A common timing correction drops an

@@ -326,7 +326,8 @@ whose properties hold direct quiet primitives. Returning handlers reach paramete
 TypeError with an empty option and the same updated object; throwing handlers
 preserve raw NULL and cancel rejection. Four originals and 911 state premises
 cover shared property writes, strict priority, ownership and normal recovery.
-Owned/packed and wider named object values remain partial.
+Owned forms beyond the bounded follow-up below, packed calls and wider object
+values remain partial.
 
 [Named NULL INI options with retained stdClass values](coverage/semantics/ini-set-named-null-stdclass-value-review.json)
 now preserve the earlier object across reversed argument evaluation and shared
@@ -334,7 +335,7 @@ property writes. Returning handlers reach parameter2 TypeError with an empty
 option and the same updated object; a supplied throw preserves raw NULL and
 cancels rejection. Four source comparisons and 1,109 state premises cover named
 binding, strict option priority, owning trace edges and normal setter recovery.
-Owned/packed calls, materialized tables and wider properties remain partial.
+Packed/PIPE calls, materialized tables and wider properties/lifetimes remain partial.
 
 [Named retained INI calls with rejected array values](coverage/semantics/ini-set-owned-named-null-array-value-review.json)
 now retain the original Closure and earlier flat quiet array across reversed
@@ -344,6 +345,16 @@ keeps raw NULL in its numeric wrapper arguments. A supplied throw cancels reject
 Four source comparisons and 1,319 state premises cover both owning roots, strict
 ordinary versus weak explicit calls, actual trace edges and retained-setter reuse.
 Purely positional/packed array values, wider leaves and sole-owner lifetimes
+remain partial.
+
+[Retained INI calls with shared stdClass values](coverage/semantics/ini-set-owned-null-stdclass-value-review.json)
+now cover positional, named and mixed NULL-option calls with a retained intrinsic
+Closure and a separate table-free object of direct quiet properties. Shared writes
+remain visible through both API and explicit wrapper arguments: the API option
+converts to empty while the wrapper keeps raw NULL. Four source comparisons and
+1,328 state premises cover return/throw ordering, distinct owning roots, strict
+ordinary versus weak explicit invocation, precise discard and original-owner reuse.
+Packed/PIPE calls, materialized tables, wider properties and sole-owner lifetimes
 remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
