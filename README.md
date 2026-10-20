@@ -1868,6 +1868,14 @@ COW shares the Closure; method static cells remain request roots. Throwing
 duplicate cleanup can retire the sole receiver before catch.
 [String-method Closure define review](coverage/semantics/define-runtime-string-closure-review.json).
 
+Closures returned by `Closure::fromCallable` also publish with their saved
+selection and USER permission. A private Base descriptor remains selected
+despite a distinct Child method with the same name, after callable inputs and
+creator/factory retirement. Query COW shares the Closure; method statics remain
+request roots. A private duplicate copy can release its sole receiver before
+catch. The factory itself gains no VALUE authority.
+[From-callable Closure define review](coverage/semantics/define-runtime-from-callable-review.json).
+
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
 children while cast/query arrays retain COW. A private duplicate copy can keep

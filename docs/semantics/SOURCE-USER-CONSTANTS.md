@@ -665,6 +665,24 @@ credit; coherent clones and inherited flag delegates are structural
 support. Factory/intrinsic and other Closure domains remain separate.
 [String-method Closure define review](../../coverage/semantics/define-runtime-string-closure-review.json).
 
+Bare FROMCALLABLECLOSURE values use dynamic-only `PVOBJECT` authority through
+existing live scope and saved source, USER permission, selected method and
+receiver validators. A captured factory may retire: its saved source still
+authenticates the invocation, whose USER scope supplies selection permission.
+Private Base selection remains distinct from a Child same-name method when
+the selected Closure is later invoked globally. Source callback arrays, factory
+objects, creator frames and frozen input/history fields are not Closure children; only
+an optional nonstatic receiver is. Method static cells remain independent
+request roots. Direct publication, canonical/query COW and pending duplicate
+retirement preserve pointer/scope identity and the original Exception; the last
+private receiver can be destroyed after handler output and before catch.
+Certificate/wrapper priority, global/default policies and the DEFINE-origin
+query fence stay unchanged. Only ordinary direct instance/static and captured
+factory-instance omitted/false originals gain execution credit; coherent clones
+and inherited flag delegates retain structural support. The factory itself and
+other excluded object forms gain no VALUE authority.
+[From-callable Closure define review](../../coverage/semantics/define-runtime-from-callable-review.json).
+
 Ordinary `stdClass` values also use dynamic-only `PVOBJECT` authority when their
 selected property record and optional cached table validate, including live
 physical reference cells and their immediate values. A present stdClass birth
