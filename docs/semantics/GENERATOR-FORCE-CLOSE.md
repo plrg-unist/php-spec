@@ -182,6 +182,15 @@ RUNNING child's yield-site close claim, skips J-END and has Previous NULL; the
 Middle close claim remains queued. No storage pin or owning-return receipt is
 manufactured. See the
 [bare-yield SEND review](../../coverage/semantics/generator-unused-bare-yield-send-review.json).
+At a normal node-free COMPLETE, pending ancestor SEND preserves its
+authenticated optional child-prefix before argument, unused-current-copy and
+receiver release. Assignment retains the copy through receiver finally. The observed still-pending Middle skips J;
+a first pending Middle NEXT changes that physical history without entering its
+body. The later SEND then reaches a RUNNING Middle finally, whose slot clear
+can throw a RuntimeException before queued Upper finally, with Previous NULL.
+Raw-row COW distinguishes old snapshot and live row, and no owning return or
+storage pin is manufactured. See the
+[node-free ancestor SEND review](../../coverage/semantics/generator-nodefree-ancestor-send-review.json).
 Pending NEXT preserves that parked return across the same close transfer but
 creates no current copy. A temporary sole receiver releases its cache during
 storage cleanup, before caller delivery; a throwing cache has no older caught

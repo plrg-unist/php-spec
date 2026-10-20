@@ -207,6 +207,25 @@ the original peer message-control failure keeps zero credit; only its protected-
 correction repeats only the peer under strict45/state720. History representation,
 roots,156 and storage/writer transitions stay unchanged. Wider bodies/targets/
 values/types/source orders, reentry and GC remain partial.
+
+M130 adds a SOURCE-only later-retirement tag with the actual true queue and one
+completed inner cursor. A unique missing protected-finally path, singleton
+computed return/compiled line, emitted ordinary non-BYREF callee, D/C links and
+capture ORIGIN authenticate D without its freed allocation. The direct C3
+supplied-global method and existing B/A bounds remain required. Replay keeps
+D_NULL/C_NULL/B/A and NoticeD21; a separate two-cleared parser preserves the old
+one-cleared predicate. Old false/Holder rules, generic cleanup, roots and GC stay unchanged.
+
+Author 129/2 stays at 78e8; final source 1/peer 162+2 pass at 25e7/408, totaling 291/4 across
+those cuts with an explicit direct-C3 guard bridge. Initial source 1 is preserved
+separately, not a second original. Actual C/saved f and D/C-free pending retain
+the supplied ID; mirrored D LINE/SOURCE histories fail public validation despite
+the same heap. Four raw/public capture/replay/resume states and one native ending
+preserve Notice21/fresh detached NULL/b7. BYREF/ORIGIN controls are helper-only;
+missing-list checks are cardinality facts. Native/baseline and separate 87/3 stay at 7944.
+Original filter compile0, active-C finder and main-table state0 are preserved; only the
+corrected peer retries under strict 45/state 300. Wider prefixes/bodies/throw forms,
+fewer slots, reentry and GC remain partial; no general reachability claim.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same

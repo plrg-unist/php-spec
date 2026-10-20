@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "milestone": "OP76 explicit integer-cast range Warning",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "Explicit CASTINT of a range-warning float in a defined plain nonreference CV, with a named Warning handler. Finite2^63 normal delivery and NaN supplied-throw cancellation are witnessed; other producers and callback outcomes remain partial.",
+  "runtime_revision": "157ae26d5bcb19c9230ff62d722acf972a43bcc8",
+  "helper_revision": "2023324d8c19c0712d4bad9f624a78841ea233ab",
+  "private_modules": 408,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "cf3732512b140c5dc2c59bde8d4857159a4093add6980f5a0a3289f7dbd8b300",
+    "spec/semantics/58-ordinary-expressions.watsup": "e873eabd588ace8b3d3410ea58479485675fdabe1d76e042d928b26a71b2a9a1",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "ae9dfb14069ea80a81e24ca5745b09d211b19080a90f12b656094ccefc21d17c"
+  },
+  "engine_basis": [
+    "Pinned ZEND_CAST_SPEC_CV_HANDLER uses zval_get_long with the original CV. The getter takes the double by value, then zend_dval_to_lval emits Range Warning before finite slow wrapping. The false explicit-cast flag skips the implicit-safe compatible-precision check, so NaN has one range notice rather than the implicit-safe two. The VM exception check cancels delivery after a supplied handler throw.",
+    "The model may calculate the pure wrapped long before dispatch; only the original double is already saved by C before Range Warning. Fresh source/compiled operand line/CV float snapshots authenticate dispatch; returned stage1 retains source and conversion history without rereading the changed or retired source. The scalar descriptor has EPS roots. Normal resume supplies the saved typed PINT and matching BASE.",
+    "Exactly59 additions: one30 tag,58 declaration/value exclusion and56 appended404 lines. Four original int-cast rule-label atoms were corrected to integer-cast after a pre-application syntax failure; APIs, premises and bodies did not change. Existing cast/float_long/string saturation/implicit NaN/formatter/CONFIG/DEFINE/400 and generic unwind bodies stay exact."
+  ],
+  "contract": [
+    "Author float2^63 warns at input25. Its handler replaces x with the same-spelling numeric text and quietly casts that text to MAX_LONG, printing T:9223372036854775807. The outer saved float instead wraps to strict PHP_INT_MIN. Actual output, current text bytes, calls1 and EOFx8 distinguish saved float semantics from rereading the saturating text.",
+    "Independent explicit NaN cast uses mask2. Its handler writes99, unsets the source and throws the same Exception created at20. Identity/noPrevious/20/outer100/sourceabsence/calls1 and fresh EOFx8 establish cancellation. No later Deprecated or result is delivered; an erroneous implicit-safe continuation would remain visible at this mask.",
+    "Focused145+122 has one authentic staged traversal per fixture: actual begin/fresh+entered Warning, current carrier bytes versus saved numeric history, raw typed MIN_LONG+BASE/no store versus driven metadata, retired source owner0 on throw, same Exception/root2, default counts, EOF and zero cuts. Only author has an undriven source/admission matrix; no forged state or duplicate full-entry replay is executed."
+  ],
+  "required_follow_on": [
+    "Only finite normal completion and NaN supplied throw are source-witnessed. Normal NaN, throwing finite conversions, copied/reference operands, other handlers and wider producers/lifetimes remain partial.",
+    "The quiet text cast is a discriminator using unchanged string saturation; no numeric-text or numeric-algorithm evidence is renewed. No engine bug or intentional divergence is claimed. OP12/COMP88 and Source47 low-initial-precision DEFINE-name callbacks remain paused and untouched, as do active property/clone/array/Generator selectors."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-76/source-157ae26d5-author-one/report.json",
+        "sha256": "0259a0c8a721f9b22113d31d1b9fb725f5d5b3681e5f3315a39700a89ddb412f",
+        "revision": "157ae26d5bcb19c9230ff62d722acf972a43bcc8",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-76/review-model-157ae26d5-review-one/report.json",
+        "sha256": "576734492b33c82f9011684259ce38f20beff65187ce03c314ade65c0226f55e",
+        "revision": "157ae26d5bcb19c9230ff62d722acf972a43bcc8",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-76/state-2023324d8-two/report.json",
+        "sha256": "cf5ed147eb79a175df6e60b153a7d802f1d57c85ee50808efd6cd4199d2752d7",
+        "revision": "2023324d8c19c0712d4bad9f624a78841ea233ab",
+        "modules": 408,
+        "cases": [
+          "int-cast-range-float-wrap-string-cap",
+          "int-cast-range-nan-warning-throw"
+        ],
+        "conditions": [
+          145,
+          122
+        ],
+        "total": 267
+      }
+    ],
+    "total_source_agreements": 2,
+    "total_focused_state_conditions": 267
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-76/baseline-45535690d-float-wrap/report.json",
+      "sha256": "7149b672afead59564da92f27744a8b29abe8d8a376e1bca49a4ddd2b15fd365",
+      "result": "Actual frontend accepted/checked program/Unsupported before H1; empty semantic stdout+stderr, reason error-handler ingress requires a producer continuation, model1/rowfalse/wrapper1/agreement0 retained without override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-76/native-45535690d-author-one/report.json",
+        "sha256": "75226d1310804527266349966d281dab3048562c8fa629e49cddd6d20771e96e"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-76/native-45535690d-review-one/report.json",
+        "sha256": "8486c20d132ae3079d02aa476e34fd5e8f7c3de16012531436613b4b495d3ac4"
+      }
+    ],
+    "original_source_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-76/source-3237b31dc-author-one/report.json",
+      "sha256": "576527d0b4fa2eee92be9fd65fb971c84f8c72adaea19ec7bbaefa305b1f9a99",
+      "result": "Production-rule lexical syntax failure before PHP application at PhpStep/int-cast-range-warning-begin; model1, peer unrun, zero agreement. Exactly four rule-label int atoms changed to integer; original report/raw output retained."
+    },
+    "corrected_full_static": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-76/static-157ae26d5/report.json",
+      "sha256": "948a2c8080d5fcbba27d340831e4b9c6c4399d817bec1985142cc141e4945350",
+      "result": "Full ordered408 struct PASS0/empty stderr/reaped before corrected source checks; no PHP/native/application execution."
+    },
+    "external_continuation": "After corrected author wrapper PASS, the thin external controller read nonexistent top-level passed rather than rows[*].passed and stopped before peer. The successful author0259a0c8 was inspected/retained without repeat; only previously unrun peer then executed. This recorder stop adds zero application credit.",
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-76/state-prep-2023324d8-two/report.json",
+        "sha256": "5cfe6453dc31116ba0a433790bfe752554b69b5f2d8c5aa5c97a595e274cee35",
+        "result": "Retained full author1+peer1 original paths/native bytes; checked frontend/adapter and both full408 struct passes0/reaped. Zero native/application replay or semantic credit."
+      }
+    ],
+    "standalone_syntax": "Two standalone undefined-pstate diagnostics, zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-76",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/genuine CPU5; original and corrected source CPU2 separately granted/released; focused CPU4. Native30/modelCLI60-process90/checked30/full408struct30 per fixture/full408SL120 per group. Retained-source prep authenticates author1+peer1 and performs no native/application replay.",
+    "record": "Restore matching Git cuts/local tools in a fresh directory. Original source paths/native streams authenticate focused fixtures; external evidence is not a runtime dependency. Copied local tools add no rebuild/portability claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "commands": [
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/int_cast_range_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/int_cast_range_warning_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-76/static-157ae26d5/run-static.py",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-76/state-prep-2023324d8-two/run-prepare.py",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-76/state-2023324d8-two/run-state.py"
+    ]
+  },
+  "composition": {
+    "parent": "5ee243f0c254e32442f6296209f1171ea721dd11",
+    "private_publication": "7c42ea1172303f04792f7de15ee21028e28f1382",
+    "modules": 409,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "26862e21ae47b4f7e5c76f90b47416b12f186e3b9c26819aa2c27c4fceb133a2",
+      "spec/semantics/58-ordinary-expressions.watsup": "e873eabd588ace8b3d3410ea58479485675fdabe1d76e042d928b26a71b2a9a1",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "ae9dfb14069ea80a81e24ca5745b09d211b19080a90f12b656094ccefc21d17c"
+    },
+    "other_incoming_paths_preserved": 66,
+    "gate": "Eight incoming runtime paths (30/53/172/207/289/400/413/419) and ordered409 manifest are preserved. INI_SET NULL/alias-ARRAY reception, retained DEFINE NULL flags, Generator SEND refresh, magic private-property inc/dec and typed NULL-key array-literal reset selectors have no producer in the direct scalar CASTINT/named h sources. Incoming207 missing-read SPACESHIP with primitive/ordinary-object ARRAY leaves is absent: observers use defined strict scalar/Throwable identity checks and quiet isset only. GLOBALS literal string dimensions and native Throwable trace arrays do not enter ARRAY_VALUE literal builders or property inc/dec; counters use ordinary ADD. New419 variants/root/discard arms are task-specific and absent, with no pstate field/default/general-root change. Complete parent30/53/419/manifest409 and all other incoming runtime bytes remain exact. Private source2/state267 retain their tested408 cuts; no joined execution, accepted replay or renewed credit."
+  }
+}

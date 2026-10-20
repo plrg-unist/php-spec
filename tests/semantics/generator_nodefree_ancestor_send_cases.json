@@ -1,0 +1,20 @@
+[
+  {
+    "id": "generator-nodefree-ancestor-send-finally-row-write",
+    "purpose": "One pending ancestor above a scalar-return COMPLETE leaf; unused current snapshot retires after normal argument cleanup and before selected Upper finally mutation.",
+    "source": "<?php\nclass NodefreeAncestorSendRowOld47 { function __destruct() { echo \"A|\"; } }\nclass NodefreeAncestorSendRowLive47 { function __destruct() { echo \"C-LIVE|\"; } }\nclass NodefreeAncestorSendRowArgument47 { function __destruct() { echo \"ARG|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"ARG-END|\"; } }\nfunction &nodefreeAncestorSendRowChild47() { global $row; $row = [new NodefreeAncestorSendRowOld47()]; echo \"C|\"; yield 7 => $row; echo \"L|\"; return 0; }\nfunction nodefreeAncestorSendRowMiddle47() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; } }\nfunction nodefreeAncestorSendRowUpper47() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; $GLOBALS[\"row\"][0] = new NodefreeAncestorSendRowLive47(); echo \"K-END|\"; } }\nfunction nodefreeAncestorSendRowOuter47() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = nodefreeAncestorSendRowChild47(); $middle = nodefreeAncestorSendRowMiddle47(); $upper = nodefreeAncestorSendRowUpper47(); $outer = nodefreeAncestorSendRowOuter47();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\necho \"S|\";\n$upper->send(new NodefreeAncestorSendRowArgument47()); echo \"CALLER|\"; unset($copy); echo \"DROPPED|\"; unset($row); echo \"ROW-DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "ee9a97a8c5368abbaf9384e854fef055137ed582522e4918d37ed12e3fbaf835",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|S|ARG|F|ARG-END|K|A|K-END|CALLER|DROPPED|C-LIVE|ROW-DROPPED|E"
+  },
+  {
+    "id": "generator-nodefree-ancestor-send-assignment-control",
+    "purpose": "One pending ancestor above a scalar-return COMPLETE leaf; assignment keeps the current snapshot through selected Upper finally mutation.",
+    "source": "<?php\nclass NodefreeAncestorSendRowOld47 { function __destruct() { echo \"A|\"; } }\nclass NodefreeAncestorSendRowLive47 { function __destruct() { echo \"C-LIVE|\"; } }\nclass NodefreeAncestorSendRowArgument47 { function __destruct() { echo \"ARG|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"ARG-END|\"; } }\nfunction &nodefreeAncestorSendRowChild47() { global $row; $row = [new NodefreeAncestorSendRowOld47()]; echo \"C|\"; yield 7 => $row; echo \"L|\"; return 0; }\nfunction nodefreeAncestorSendRowMiddle47() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; } }\nfunction nodefreeAncestorSendRowUpper47() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; $GLOBALS[\"row\"][0] = new NodefreeAncestorSendRowLive47(); echo \"K-END|\"; } }\nfunction nodefreeAncestorSendRowOuter47() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = nodefreeAncestorSendRowChild47(); $middle = nodefreeAncestorSendRowMiddle47(); $upper = nodefreeAncestorSendRowUpper47(); $outer = nodefreeAncestorSendRowOuter47();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\necho \"S|\";\n$copy = $upper->send(new NodefreeAncestorSendRowArgument47()); echo \"CALLER|\"; unset($copy); echo \"DROPPED|\"; unset($row); echo \"ROW-DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "4ce7671f25b1d3308b5c7018bd316d3ddfd11fdb61aa4427642cb0cde8f68ab9",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|S|ARG|F|ARG-END|K|K-END|CALLER|A|DROPPED|C-LIVE|ROW-DROPPED|E"
+  }
+]

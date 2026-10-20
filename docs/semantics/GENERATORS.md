@@ -156,6 +156,17 @@ cache RuntimeException from Child finally distinguish these owners without a
 COMPLETE or copied-return root. Wider links, abrupt argument callbacks, body
 entry and collection remain unvalidated; see the
 [bare-yield SEND review](../../coverage/semantics/generator-unused-bare-yield-send-review.json).
+One pending native ancestor above a normal node-free COMPLETE middle also
+returns current without entering either body. Child refresh contributes its
+exact closed-child release; a prior getter leaves no prefix. Only selected
+Upper clears its bit. In the tested alias-drop histories, still-pending Middle
+skips J while Upper finally mutates the row. A first pending Middle NEXT clears
+that physical bit independently: later Upper SEND can trigger Middle finally,
+where slot clearing throws a cache RuntimeException before Upper finally,
+with Previous NULL. Unused copies retire after normal argument cleanup;
+assignment keeps its copy. Wider chains, masked or abrupt arguments, body entry
+and collection remain unvalidated; see the
+[node-free ancestor SEND review](../../coverage/semantics/generator-nodefree-ancestor-send-review.json).
 Pending zero-argument NEXT also clears only the selected receiver bit while
 preserving that parked owning frame/site and copied return. It returns NULL
 without a current snapshot; a later explicit getter creates a separate copy.
