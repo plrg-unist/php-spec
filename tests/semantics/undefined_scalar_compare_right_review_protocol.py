@@ -75,7 +75,7 @@ def checks(program, path, name):
         'S_without = $unset_name(S_resume,$ptascii("left"))', '$us_guard(S_without)',
         '$error_read_valid(S_without,perrorread)', '~$scalar_compare_read_other(S_without,perrorread)',
         'PhpStep: S_without ~> S_denied',
-        'S_denied = S_without[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed left operand"]',
+        'S_denied = S_without[.TODO = (BINARY_RIGHT EQUAL (KNOWN PNULL) ' + str(line) + ') :: ptask_resume*][.RESULT = KNOWN PNULL][.BASE = perrorread.BASE]',
     ]
     if rebound:
         values += [

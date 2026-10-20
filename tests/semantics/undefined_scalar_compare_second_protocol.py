@@ -20,8 +20,6 @@ def checks(program, path, name):
         reason = ('scalar comparison warning changed left operand' if condition.startswith('S_right_refused = ')
                   else 'scalar comparison warning changed right operand')
         condition = condition.replace('spaceship warning changed opposing scalar', reason)
-        if condition.startswith('S_right_refused = '):
-            condition = 'S_right_refused = S_right_missing[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed left operand"]'
         if condition.startswith(('S_compared = ', 'S_again_compared = ')):
             condition = condition.replace('KNOWN (PINT 0)', 'KNOWN (PBOOL true)')
         if false:

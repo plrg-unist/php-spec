@@ -44,8 +44,10 @@ def checks(program, path, name):
     if boolean:
         return values + [
             '~$spaceship_checked_missing(S_removed,perrorread_right)',
-            'S_restored = S_removed[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed left operand"]',
-            'S_restored.EVENTS = S_removed.EVENTS',
+            'S_restored = S_removed[.TODO = (BINARY_RIGHT EQUAL (KNOWN PNULL) 10) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = perrorread_right.BASE]',
+            '$error_read_plan(S_restored) = eps', 'PhpStep: S_restored ~> S_compared',
+            'S_compared = S_restored[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]',
+            'S_compared.EVENTS = S_removed.EVENTS',
         ]
     return values + [
         '$spaceship_checked_missing(S_removed,perrorread_right)',
