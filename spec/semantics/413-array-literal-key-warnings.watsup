@@ -184,6 +184,7 @@ dec $literal_reference_property_sources(pstate, nat, pproptypesource*, pnode*) :
 dec $literal_reference_flat_array(pstate, nat, pnode*) : bool
 dec $literal_reference_flat_leaf(pstate, pvalue) : bool
 dec $literal_reference_flat_cell(pstate, nat) : bool
+dec $literal_reference_child_array(pstate, nat, pnode*) : bool
 dec $literal_reference_flat_items(pstate, pentry*) : bool
 dec $literal_reference_flat_sources(pstate, pentry*, pnode*) : bool
 dec $literal_reference_retain(pstate, nat) : pstate
@@ -364,6 +365,17 @@ def $literal_reference_flat_array(S, n, pnode_live*) = false -- otherwise
 def $literal_reference_flat_leaf(S, PSTRING n*) = $startup_bytes(n*)
 def $literal_reference_flat_leaf(S, PSTRING_CARRIER pstringidentity n*) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*)
 def $literal_reference_flat_leaf(S, pvalue) = $array_float_key_scalar(S, pvalue) -- otherwise
+;; Child tables have only DIRECT values. Check their edges before flat_items
+;; so eligibility cannot recurse through another reference or owning value.
+def $literal_reference_child_array(S, n, pnode_live*) = true
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS /\ (HARRAY n) <- pnode_live*
+  -- if ~$array_immutable(S, n)
+  -- if $heap_count(HARRAY n, $pools_nodes(S.POOLS)) = 0
+  -- if ~(n <- S.LITERALARRAYDEBTS)
+  -- if $entries_nodes(S.ARRAYS[n].ITEMS) = eps
+  -- if $literal_reference_flat_items(S, S.ARRAYS[n].ITEMS)
+def $literal_reference_child_array(S, n, pnode_live*) = false -- otherwise
 def $literal_reference_flat_cell(S, n) = true
   -- if $call_reference_operand_valid(S, REFERENCE n)
   -- if S.STORE[n] = DEFINED pvalue
@@ -371,6 +383,13 @@ def $literal_reference_flat_cell(S, n) = true
   -- if $propref_at(S.PROPREFS, n) = eps
   -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
   -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+def $literal_reference_flat_cell(S, n) = true
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED (PARRAY n_payload)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if $literal_reference_child_array(S, n_payload, S.ALLOCATIONS)
 def $literal_reference_flat_cell(S, n) = true
   -- if $call_reference_operand_valid(S, REFERENCE n)
   -- if S.STORE[n] = DEFINED pvalue
@@ -387,11 +406,13 @@ def $literal_reference_flat_items(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*) = 
 def $literal_reference_flat_items(S, (ENTRY pkey (ALIAS n)) :: pentry*) = ($literal_reference_flat_cell(S, n) /\ ~(n <- S.LITERALREFDEBTS) /\ $literal_reference_flat_items(S, pentry*))
 def $literal_reference_flat_items(S, pentry*) = false -- otherwise
 
-;; Property source objects must survive the same logical prune as their leaves.
+;; Child tables and property sources must survive the same prune as their leaves.
 def $literal_reference_flat_sources(S, eps, pnode_live*) = true
 def $literal_reference_flat_sources(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*, pnode_live*) = $literal_reference_flat_sources(S, pentry*, pnode_live*)
 def $literal_reference_flat_sources(S, (ENTRY pkey (ALIAS n)) :: pentry*, pnode_live*) = true
   -- if $propref_at(S.PROPREFS, n) = eps
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $heap_subset($value_nodes(pvalue), pnode_live*)
   -- if $literal_reference_flat_sources(S, pentry*, pnode_live*)
 def $literal_reference_flat_sources(S, (ENTRY pkey (ALIAS n)) :: pentry*, pnode_live*) = true
   -- if $propref_at(S.PROPREFS, n) = (ppropref)
@@ -403,8 +424,8 @@ dec $literal_array_debt_tables_safe(pstate, hgraph, nat*) : bool
 def $literal_debt_pending(S) = (S.LITERALREFDEBTS =/= eps \/ S.LITERALARRAYDEBTS =/= eps)
 
 ;; A positive debt CELL survives biased pruning and keeps its child-table edge.
-;; Positive tables keep their debt-free scalar leaf CELL edges. Such leaf
-;; cells and direct values have no further owner edges.
+;; Positive tables keep debt-free leaf CELLs and their debt-free DIRECT child
+;; tables. No admitted child value has a further owner edge.
 dec $literal_reference_debt_cells_safe(pstate, hgraph, nat*) : bool
 def $literal_reference_debt_cells_safe(S, H, eps) = true
 def $literal_reference_debt_cells_safe(S, H, n :: n_tail*) = true

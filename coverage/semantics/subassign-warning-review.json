@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "milestone": "OP62 selected-reference subtraction assignment Warning continuations",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "Direct distinct CV operands of -= with preexisting selected untyped scalar reference cells, an initially leading-numeric LEFT and quiet numeric RHS, and named Warning handler. Capture LEFT before its Warning, then read selected old RHS and capture it before its own Warning. Cached fractional subtraction writes the selected old target through its surviving alias despite current-name rebindings and postcapture RHS retirement. A supplied second throw cancels compound/outer stores. Initial quiet-RHS admission is not PINT2-only; other operands/targets/lifetimes remain partial.",
+  "runtime_revision": "ee582af8b9d193f9b9ab34dfed10688f42c4c959",
+  "helper_revision": "1f037ee80cd0d3d7e0b3b5d8181a6784fff09f87",
+  "private_modules": 407,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "da4c958bab97ad2554de9c336b417d673fd7e7469aac31868b81fc2b9f5954e4",
+    "spec/semantics/55-compound-assignment.watsup": "e3b3fedd5db5c2beeedfa029c4f5b9d2248b33ff4f5b8856e6dcf2dfab8e1887",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "8b53493644d212ced8a3d5c5ddba14fd87b24355aef54c1c9985d422531db6b0"
+  },
+  "engine_basis": [
+    "Pinned ZEND_ASSIGN_OP fixes dereferenced var_ptr/result=LEFT before zend_binary_op, without ordinary MUL operand swapping. sub_function_slow dereferences both operands, converts LEFT then RIGHT into separate holders, and returns FAILURE before result destruction when either conversion fails or leaves a pending handler exception. Only after both succeed does result==op1 get destroyed and subtraction write from the two copies. zendi_try_convert_scalar_to_number fills each holder before Warning.",
+    "Dedicated ARITHMETIC_SUBASSIGN_CONVERT/WARNING tags authenticate AssignOpMinus/source/RHSline and reuse existing arithmetic phases, conversions, selected-pointer readers, error dispatch, num_sub and write_cell_checked. One generic compound EPS gate leaves old family source/entry/validator/numeric/dispatch/store bodies exact. No new state field/module or operand-retention root.",
+    "Fresh input requires live allocated unconstrained scalar CELL through unchanged arithmetic_owned_cell_valid; n0 checks actual selected input, entered/returned n1 keeps source/raw-number history. Final oldtarget safety is separate from historical RHS. Unavailable/constrained/owning fresh inputs, failed conversions, unsafe successful target and owning callback have explicit partial Unsupported boundaries."
+  ],
+  "contract": [
+    "Author initial dynamic12.5tail/quiet2 refs enter H1, which writes old99/5.5tail and rebinds currentright7. H2 writes old88/7, rebinds currentleft77 and throws the same Exception created on line20. Catch observes noPrevious/outer100/calls2/old88/current77, proving no subtraction store; later oldaliases73 then6/4 versus current8/9 preserve topology. Author stderr is empty.",
+    "Independent H2 instead removes the final old RHS alias after writing old7 and rebinding currenttarget77, then returns false. Cached12.5 minus5.5 yields strictfloat7.0 in old target and outer result, not a recomputation from live99/88/7. Old RHS owner0/unallocated/getterEPS does not invalidate n1 cache; old target owner1/replacement owners2 persist. Later oldalias6/current8/9 and one original default second Warning25 retain topology and report order.",
+    "Focused183/199 authenticates actual new entry, both real fresh/entered Warning phases, old selected RHS versus current-name value, coherent fresh-value refusal, historical retired RHS, raw whole-state float7.0 store versus driven effects, same supplied-Exception owner2/cancellation, metadata prefixes and full-entry/zero budgets. One undriven author guard matrix checks source/line/range/type/allocation/handler/target boundaries. Existing integer HELPERS plus renamed DIV-family frontiers and peer counters have13 unique declarations. One LEFT text typo was corrected during static review before any helper actor; no semantic failure/retry or accepted replay."
+  ],
+  "required_follow_on": [
+    "A surviving alias keeps the selected old target live and scalar through the tested traces; fresh inputs must be unconstrained/nonowning. Initially bad/leading RHS, initially plain/copied/owning producers, failed LEFT or late TypeError completion, constrained/expired/owning targets, arrays/objects and wider handlers/lifetimes remain partial. Pure refusal controls do not establish excluded executions.",
+    "Historical RHS may retire after capture without an operand-retention root. Other last-owner/destructor histories remain outside this bound. Existing DIV, power assignment and prior arithmetic evidence retain their original cuts with zero renewal. OP12 remains paused; no low-level binary64/signed64 renewal, engine bug or intentional divergence is claimed."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-62/source-ee582af8b-author-one/report.json",
+        "sha256": "6517091f9f7b0e6fdae5caf5eec0521ee270559a2c35f60084d9ef1d46ca4491",
+        "revision": "ee582af8b9d193f9b9ab34dfed10688f42c4c959",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-62/review-model-ee582af8b-review-one/report.json",
+        "sha256": "6fa2e7e92671f3bbc0e49464d1d6d755d0650cf234a9e83b5563835e0786cc8e",
+        "revision": "ee582af8b9d193f9b9ab34dfed10688f42c4c959",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-62/state-1f037ee80-two/report.json",
+        "sha256": "0b1c47eda2b4371a0d2626adbf9dd63e0bbe8d4a90da5a1e64e548bea9b70f21",
+        "revision": "1f037ee80cd0d3d7e0b3b5d8181a6784fff09f87",
+        "modules": 407,
+        "cases": [
+          "subassign-warning-second-throw",
+          "subassign-warning-retired-cached-float"
+        ],
+        "conditions": [
+          183,
+          199
+        ],
+        "total": 382
+      }
+    ],
+    "total_source_agreements": 2,
+    "total_focused_state_conditions": 382
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-62/baseline-5f896367e-second-throw/report.json",
+      "sha256": "71a6d18b63937066bc026f964d1c66152c94922ba5a7e754c7418207164728f8",
+      "result": "Actual frontend accepted/checked program/Unsupported BEFORE H1, empty semantic streams, reason error-handler ingress requires a producer continuation, model1/agreement0/wrapperfalse; no override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-62/native-5f896367e-author-one/report.json",
+        "sha256": "7dbf182c61d4f3bcba5881c8b2287dbe0e5f5a1fd1fb2e89892539fb9e1fdf3b"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-62/native-5f896367e-review-one/report.json",
+        "sha256": "6d2bdc6a6c9cd0cb1bda45d63324947b9b758a5620bf625e748d65d221f1e746"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-62/state-prep-1f037ee80-two/report.json",
+        "sha256": "9af54e1967d5fec5b7556f91ac9446c8fb9c03830c6588173021baf049d17116",
+        "result": "Retained original paths/native bytes; checked frontend/adapter only, zero native/application replay, workers0/reaped."
+      }
+    ],
+    "standalone_syntax": "Two standalone undefined-pstate diagnostics, zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-62",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/genuine and changed-source packets use separately granted CPU5 cuts; focused CPU2. Native30/modelCLI60-process90, checked prep30/full407 SL120 per group. Author stderr empty; peer one original default second Warning25. Retained-source preparation performs no native/application replay.",
+    "record": "Restore matching Git cuts/local tools in a fresh directory. Retained original paths/native streams authenticate focused fixtures; external evidence is not a runtime dependency. Copied local tools add no rebuild/portability claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "commands": [
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 tests/semantics/subassign_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 tests/semantics/subassign_warning_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-62/state-prep-1f037ee80-two/run-prepare.py",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-62/state-1f037ee80-two/run-state.py"
+    ]
+  },
+  "composition": {
+    "parent": "607d2bc66630e8816aa598a898245c74d8b08988",
+    "private_publication": "11c83dd92fbfbadd18f9d92e711ef2ace1db44c6",
+    "modules": 407,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "da4c958bab97ad2554de9c336b417d673fd7e7469aac31868b81fc2b9f5954e4",
+      "spec/semantics/55-compound-assignment.watsup": "e3b3fedd5db5c2beeedfa029c4f5b9d2248b33ff4f5b8856e6dcf2dfab8e1887",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "8b53493644d212ced8a3d5c5ddba14fd87b24355aef54c1c9985d422531db6b0"
+    },
+    "other_incoming_paths_preserved": 39,
+    "gate": "The actual parent607d2bc666 differs from OP62 base553943078 in seven runtime paths172/280/289/382/400/403/417. Module172 named ini_set(NULL,rejected-array), modules280/289 parked buffered owning Generator SEND, and module400 runtime DEFINE of an unscoped NAMEDCLOSURE require absent APIs/producers. Modules382/403/417 inherited virtual int SET and lexical parent::set call/pending/trace/parameter fences require absent property/parent-hook source and PARENT_HOOK_TARGET context. The by-value named h, direct selected scalar -=, GLOBALS scalar reference writes, supplied native Exception construction/getters and echo-only finally produce none of these paths; internal Throwable trace arrays do not produce array literal or hook syntax. No state field/tag/default/init/general-root/ordered407-manifest change;30/55/404 remain base-exact before our overlay. Preserve fullparent30 with only SUBASSIGN tagpair, fullparent55 with only plan declaration/EPS, private404 and six tests, and every other parent runtime/manifest path. Source2/state382 retain their original private407 cuts. No concrete selector interaction warrants joined execution or renewed evidence."
+  }
+}

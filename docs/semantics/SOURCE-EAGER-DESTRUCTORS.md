@@ -123,16 +123,28 @@ cell and object indices. M121 relaxes uniqueness only after a valid variable/glo
 operand and only for the structural suffix's HCELL arm. All restore/function,
 minimum-count and old-source/LINE Notice constraints remain.
 
-Source1 and 430/10 at `638496fa6` prove actual za/z slots for one HCELL, finite
-C→D supplied throw/local catch, same outside record, Notice13/freshNULL/detachment
-and five full raw/public states per fixture. Both exact slots remain required
-despite live global aliases; mirrored wrong-source/owner metadata preserves the
-same heap/cell but refuses. Duplicate HOBJECT suffixes remain rejected. Two
-actual shared jobs drop n→n−1→n−2 before function exit while the cell/copy/object
-survive; no collection claim is made. Whole/split endings agree. SOURCE/history
-representation, finite body/pending/finish, roots, ownership/storage/GC and schema
-stay unchanged. Other reference producers, typed/property cells, fewer than two
-remaining slots, wider bodies and reentry remain open.
+M121 source1 and430/10 at `638496fa6` validate repeated za/z slots, each required
+lexical task, unchanged computed-object uniqueness and two shared owner drops.
+M122 adds a singleton plain public nonstatic `object` property source to the
+global reader. Existing138 authority binds its allocated holder, exact ALIAS
+slot/DECL and nonreadonly source; the new guard requires object TYPE, no asymmetric
+setter/hook and a current allocated POBJECT. The old untyped branch is unchanged.
+Source metadata adds no owner: actual property/global edges retain the HCELL.
+
+Source1 and566/9 at `cbdb48da3` prove current/saved global readers, exact property
+metadata through both shared jobs, n→n−1→n−2 before function exit and referent
+owners2. A task-only deletion refuses with a valid typed reader/heap; independent
+wrong-source metadata preserves the heap, and scalar-current-value controls keep
+the heap valid before refusal. Same outside catch, Notice14, fresh detached NULL
+and raw/public/whole-split states pass. Before request shutdown, a rejected scalar
+write keeps the referent and property alias unchanged, while legal object replacement updates
+holder/z/za and preserves the old copy and detached r/b. The existing writer enforces
+both results;156, body/pending/finish, history representation, roots/ownership/storage/
+GC and schema stay unchanged. One original author fixture failure0 used a resume
+helper that leaves NORMAL finder states unchanged; only that call changes to drive
+before the affected author retry and first peer execution. Other property types/
+sources, multiple sources, holder retirement, fewer than two remaining slots,
+wider bodies and reentry remain open.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same

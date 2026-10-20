@@ -96,7 +96,7 @@ type sources, supplied throws and inverse cleanup in the
 [typed-source ledger](../../coverage/semantics/array-literal-float-ref-types-review.json).
 Untyped reference cells may instead hold mutable nonpool flat arrays. Entries are
 either DIRECT values (null/bool/int/float or validated byte strings) or bounded
-primitive ALIAS references. The debt remains on
+ALIAS references described below. The debt remains on
 the CELL, which owns one child table independently of its wrapper count. Singleton reference entries unwrap to DIRECT
 array values; later child writes use ordinary COW. A still-indebted wrapper can
 switch child tables while a direct CV retains its previous table. Stable same-cell
@@ -108,7 +108,7 @@ The [array-to-scalar ledger](../../coverage/semantics/array-literal-float-ref-ar
 checks normal/throw transfer, debt cancellation and repeated owners.
 The [flat-array ledger](../../coverage/semantics/array-literal-float-ref-arrays-review.json)
 records fresh singleton/shared, deletion, supplied-throw and inverse-cleanup cases.
-Array-valued type sources, pooled/immutable or nested arrays, reference entries
+Array-valued type sources, pooled/immutable arrays, nesting and reference entries
 outside the bounds below, other owning payloads, effective-zero, static/hooked/queued or retired
 sources, coercion/backing records, active collection and outstanding request-end
 debt remain explicit Unsupported before pruning. Ordinary by-value owning-CV
@@ -134,7 +134,7 @@ or cancels debt. Initial scalar and array plans remain disjoint; captured runtim
 array temporaries remain owned and frozen. The
 [mixed-CV review](../../coverage/semantics/array-literal-float-mixed-cv-review.json)
 checks both inverse cycles, entry deletion and supplied-throw cleanup with positive
-physical counts. Initially wrapped CVs, pooled/immutable or nested tables,
+physical counts. Initially wrapped CVs, pooled/immutable tables, nesting and
 reference leaves outside these bounds and other owning CV values remain Unsupported.
 The [string-leaf review](../../coverage/semantics/array-literal-float-string-leaf-review.json)
 adds ordinary tables and untyped wrapper payloads containing canonical-byte or
@@ -142,12 +142,12 @@ validated-carrier string leaves. String snapshots remain independent across
 shared table writes and restored ALIAS copies. Singleton reference entries
 unwrap before child/string COW.
 Existing byte/carrier validation and string-offset COW rules remain in use;
-direct string CV/cell payloads and array/object-valued leaves stay Unsupported.
+direct string CV/cell payloads and array/object-valued leaves outside the bounds below stay Unsupported.
 Embedded ALIAS entries may name live untyped cells holding null/bool/int/float
 or canonical-byte/validated-carrier strings, without property/coercion/backing
 receipts or CELL debt. Every leaf must survive logical
-pruning: positive tables keep their leaf edges, and leaves have no further owner
-edges. Child-table COW preserves shared leaf references and unwraps singleton
+pruning: positive tables keep their leaf edges, including the bounded child-table
+edges described below. Child-table COW preserves shared leaf references and unwraps singleton
 leaves independently of outer table/wrapper counts. The
 [alias-leaf review](../../coverage/semantics/array-literal-float-alias-leaf-review.json)
 checks both counts, sibling-slot separation, deletion, supplied throw and inverse cleanup.
@@ -169,6 +169,19 @@ The [typed string-leaf review](../../coverage/semantics/array-literal-float-type
 checks shared byte writes and weak integer-to-string coercion, rejected array
 writes, fixed snapshots and singleton byte COW after explicit property unset.
 Global direct string CV/CELL retarget bounds remain unchanged.
+Untyped array-valued ALIAS leaves may hold one mutable nonpool child table of
+DIRECT null/bool/int/float or validated byte strings. Child eligibility first
+rejects all outgoing owner edges, before checking its DIRECT values; this excludes
+recursive eligibility and cycles. The leaf has no CELL debt or type/coercion/backing
+records, and its child has no HARRAY debt. For debt-bearing payloads, both must
+survive the same logical prune. Positive outer tables keep leaf edges; debt-free
+leaves keep their child-table edges. Shared leaf copies preserve ALIAS writes;
+singleton leaves unwrap to DIRECT array values before independent child COW.
+Snapshots and sibling writes separate these effects from outer table/wrapper
+biases through deletion, supplied throw and inverse cleanup.
+The [array-alias-leaf review](../../coverage/semantics/array-literal-float-array-alias-leaf-review.json)
+records the new bounded cases. Typed array leaves, deeper owning children and
+indebted descendants remain Unsupported.
 The source basis is pinned `Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT`,
 `Zend/zend_hash.c::zend_array_dup_value`, and
 `Zend/zend_operators.h::zend_dval_to_lval_safe`, with string writes from

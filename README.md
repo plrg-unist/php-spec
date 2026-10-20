@@ -20,12 +20,13 @@ remains later research.
 variable's null result through handlers while following current scalar CV bindings.
 This covers bounded spaceship operands and distinct direct-CV
 `==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
-Both-missing pairs can resume if the first handler defines the later scalar,
-including the same missing name at `<=>` or `==`/`!=`/`<`/`<=`; `$x == $x` can
-then be false. Greater operators warn right first. `<=>`, forward
-`==`/`!=`/`<`/`<=` (including the same CV), and distinct `>`/`>=` pairs also stage
+Both-missing pairs, including one missing name twice, can resume if the first
+handler defines the later scalar. `$x == $x` can then be false and `$x > $x`
+true. Greater operators warn right first. All seven comparison operators also stage
 a second Warning if the later physical CV stays missing, freezing both NULLs
 despite writes from the second handler.
+Unsetting an already checked left CV during a missing-right spaceship Warning
+compares quietly against frozen right NULL and preserves surviving aliases.
 Wider warning paths remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
@@ -48,7 +49,7 @@ handler. Separate table counts preserve old array owners and omitted new-array
 owners; inverse retargeting cancels them before cleanup. Initial scalar and
 array plans remain distinct, while same-table transfer and restored COW keep
 ordinary values distinct from PHP reference wrappers.
-These flat tables also admit reference leaves holding null/bool/int/float
+These bounded tables also admit reference leaves holding null/bool/int/float
 or validated byte strings, either untyped or constrained by validated ordinary
 instance-property type sources. Debt-bearing payloads require every source object
 to survive logical pruning. Shared copies keep typed rejection/coercion; explicit property
@@ -56,6 +57,11 @@ unset removes its constraint before singleton copying. Child-table copies preser
 shared leaf aliases and unwrap singleton leaves; string byte writes keep earlier
 snapshots independent
 of both leaf references and outer table/wrapper count corrections.
+Untyped reference leaves may also hold one mutable nonpool child table of DIRECT
+null/bool/int/float or validated byte strings. Its table must survive logical
+pruning and carry no HARRAY debt; leaf CELL debt and deeper owning edges remain
+excluded. Shared leaf references propagate nested writes, while singleton leaf
+copies unwrap before child-array COW and preserve independent snapshots.
 Direct string CV/cell payloads, unsafe deficit retirement and wider domains remain
 Unsupported. Duplicate replacement and later items stay ordered.
 
@@ -316,7 +322,15 @@ whose properties hold direct quiet primitives. Returning handlers reach paramete
 TypeError with an empty option and the same updated object; throwing handlers
 preserve raw NULL and cancel rejection. Four originals and 911 state premises
 cover shared property writes, strict priority, ownership and normal recovery.
-Named/owned/packed and wider object values remain partial.
+Owned/packed and wider named object values remain partial.
+
+[Named NULL INI options with retained stdClass values](coverage/semantics/ini-set-named-null-stdclass-value-review.json)
+now preserve the earlier object across reversed argument evaluation and shared
+property writes. Returning handlers reach parameter2 TypeError with an empty
+option and the same updated object; a supplied throw preserves raw NULL and
+cancels rejection. Four source comparisons and 1,109 state premises cover named
+binding, strict option priority, owning trace edges and normal setter recovery.
+Owned/packed calls, materialized tables and wider properties remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -762,6 +776,13 @@ cover strict `2.4`, Error priority, aliases and default Warning bytes in the
 [DIV repair ledger](coverage/semantics/div-repair-review.json).
 Owning/constrained/expired cells and wider operands remain partial.
 
+Selected-reference `-=` now retains both converted numbers through their
+Warnings. Cached `12.5 - 5.5` writes strict float `7.0` through the old target alias
+after current-name rebinding and RHS retirement. A supplied second throw cancels
+compound and outer stores. Two originals and 382 focused premises pass in the
+[compound subtraction ledger](coverage/semantics/subassign-warning-review.json).
+Other operands, unsafe targets and wider lifetimes remain partial.
+
 Selected-reference `/=` now captures both numbers before their respective
 Warnings. Cached `12.5 / 5` writes strict float `2.5` through the old target alias
 despite current-name rebinding. A second supplied throw cancels storage; a captured
@@ -862,6 +883,15 @@ unchanged. A signed-zero/default case delivers `-INF` after old RHS retirement.
 Two originals and 334 focused premises pass in the
 [selected power-assignment ledger](coverage/semantics/powerassign-selected-warning-review.json).
 Other operands, unsafe targets and wider lifetimes remain partial.
+
+Selected-reference `**=` now distinguishes conversion and final deprecation
+throws. A second conversion Exception cancels storage; a final Deprecated Exception
+still writes cached `+INF` through the old target before resuming, leaving the
+outer assignment unchanged. A signed/default case yields `-INF` after RHS retirement.
+Three originals and 688 focused premises pass in the
+[converted power ledger](coverage/semantics/powerassign-conversion-warning-review.json).
+Initial leading LEFT/quiet RHS scalar refs and a primitive target before and after
+final dispatch bound this slice; wider values, producers and lifetimes remain partial.
 
 Plain-CV `%=` now keeps the first converted long through a fractional-float
 deprecation, then reads the live quiet integer RHS. Normal return stores the
@@ -1781,6 +1811,13 @@ Distinct first-class objects and direct calls share request static cells without
 Closure child edges. Retiring all Closures leaves a function-static child alive
 until an explicit later direct-function clear releases it.
 [Named Closure define review](coverage/semantics/define-runtime-named-closure-review.json).
+
+Closures captured from array callables also publish with their selected method
+and optional receiver scope. Changing or dropping the original callable array
+leaves that selection intact. Method static cells remain request roots; query
+COW shares the Closure, and throwing-duplicate cleanup can retire its bound
+receiver before catch.
+[Array-method Closure define review](coverage/semantics/define-runtime-array-closure-review.json).
 
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
@@ -4478,15 +4515,19 @@ pauses, required literal history despite an unchanged heap, engine TypeError cat
 one line7 Notice and detached aliases.
 Owning-return histories with at least three pending slots preserve finite
 first-retirement destructor throws, supplied-object identity, cleared NULL and
-detached caller references. Ordinary global references may now alias across
-pending slots; each still keeps its own source/owner/restore authority and cleanup
-count. Computed objects retain distinct sole owners. A fresh za/z-alias source
-and 430/10 checks at `638496fa6` prove each required slot, two successive shared
-releases, exact public pauses, same caught object, Notice13 and separate caller
-and global writes. Earlier evidence retains its original cuts in the
+detached caller references. Ordinary global references may alias across pending
+slots; each keeps its own source/owner/restore authority and cleanup count. A
+singleton plain public `object` property source is now admitted through its exact
+live ALIAS slot and declaration.
+Computed objects retain distinct sole owners. A fresh typed za/z source and 566
+Boolean/9 raw checks at `cbdb48da3` preserve the property constraint through both
+shared-cell releases, same supplied catch, Notice14 and detached caller NULL.
+A failed string write leaves the property unchanged; a valid object replacement
+updates holder/z/za while the old copy, detached r and prior b stay separate.
+Earlier evidence retains its original cuts in the
 [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-Other reference producers, typed/property cells, fewer than two remaining slots,
-wider bodies/reentry, GC and consumers remain open.
+Other property types/sources, multiple sources, holder retirement, fewer than two
+remaining slots, wider bodies/reentry, GC and consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

@@ -124,7 +124,14 @@ Scalar `<=>` additionally admits a missing left CV with a captured primitive or
 defined direct-CV right operand, and a captured primitive or defined scalar
 direct-CV left with a missing right CV. The latter follows the current left
 wrapper after the callback, including reference rebinding; it adds no borrowed
-old-cell owner. Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also admit either missing
+old-cell owner. If the callback removes this already checked left CV, the exact
+right-frozen spaceship record restores a known-NULL left task and compares to 0
+without another Warning. A surviving alias retains its cell; the missing right
+name need not be initialized. The
+[checked-left removal review](../../coverage/semantics/undefined-spaceship-checked-unset-review.json)
+checks quiet restoration separately from an unread right removed during a
+missing-left Warning, which still warns again.
+Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also admit either missing
 operand with an initially defined scalar counterpart, following that counterpart's
 current wrapper after the callback. A missing right name need not be initialized.
 Both protocols freeze null while preserving the opposing read. Owning opposing
@@ -163,7 +170,7 @@ records false/default and supplied-throw checks. The
 [shared second-read review](../../coverage/semantics/undefined-scalar-compare-second-same-review.json)
 also permits the first callback to leave or remove that name: the next Warning
 freezes its second NULL, independent of later writes or continued absence.
-A `<=>`, `==`/`!=`/`<`/`<=` or distinct `>`/`>=` now restores when
+All seven comparisons, with distinct or shared direct CVs, now restore when
 the later physical CV remains missing or was removed
 by the first handler. Existing ingress stages its second Warning and known-NULL
 record; later writes cannot change the NULL/NULL result or cause a third Warning.
@@ -177,8 +184,13 @@ direct CVs and the RHS read line. The
 adds an exact right-frozen restore and NULL-only right INPUT certificate,
 authenticating both compiled CVs before the source-left second Warning. Its
 default reports stay right then left; late reference creation cannot change the
-two captured NULLs. First-callback owning comparison values, reversed same-CV entry, already
-checked defined counterparts removed during the later Warning and wider producers remain partial.
+two captured NULLs. The
+[shared reversed review](../../coverage/semantics/undefined-scalar-compare-reversed-same-review.json)
+admits identical CV names only for the greater operators' right-frozen shape and
+inverse NULL-only certificate; ordinary forward right-frozen shapes stay distinct.
+First-callback owning comparison values and wider producers remain partial.
+The six Boolean comparison operators still refuse removal of an already checked
+defined counterpart during the later Warning.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding
@@ -301,8 +313,8 @@ records normal, deletion and supplied-throw paths with balanced inverse cleanup.
 The [string-alias ledger](../../coverage/semantics/array-literal-float-string-alias-leaf-review.json)
 checks string byte writes across shared and singleton leaf copies, independent
 snapshots, deletion and supplied throws. Only the embedded leaf-cell predicate
-broadens; direct string CV/CELL retargets, array/object-valued or indebted
-leaves and recursive graphs remain Unsupported.
+broadens; direct string CV/CELL retargets, array-valued leaves outside the bound
+below, object-valued or indebted leaves and recursive graphs remain Unsupported.
 Embedded null/bool/int/float or validated byte-string ALIAS leaves also admit
 validated ordinary instance-property type sources. Both ordinary table-CV and
 wrapper-payload continuations use this bound. For debt-bearing payloads, every
@@ -318,6 +330,17 @@ independent snapshots, with singleton byte COW after explicit property unset.
 Global direct string CV/CELL retarget admission remains unchanged.
 Typed arrays/objects, static/hooked/queued or retired sources,
 coercion/backing records and unsafe debt retirement remain Unsupported.
+Untyped embedded array-valued ALIAS leaves now admit one mutable nonpool child
+table of DIRECT null/bool/int/float or validated byte strings. The child has no
+outgoing owner edge or HARRAY debt, and the leaf has no CELL debt or
+type/coercion/backing records. Logical-pruned liveness includes the child, not
+only the leaf CELL. This bounded shape needs no recursive eligibility or new
+count/prune algorithm: surviving outer tables keep the leaf and its child edge.
+Shared leaf writes propagate; singleton leaf copies unwrap before child-array
+COW, keeping snapshots independent. The
+[array-alias-leaf ledger](../../coverage/semantics/array-literal-float-array-alias-leaf-review.json)
+separates table sharing with sibling slots and covers deletion, supplied throw,
+inverse balancing and cleanup. Deeper, typed or indebted descendants stay out.
 
 Missing-key module409 retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,

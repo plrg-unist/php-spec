@@ -219,6 +219,20 @@ and 468 focused premises check these routes in the
 Selected cells must remain live, untyped and nonowning; other producers,
 owning/constrained payloads, failed LEFT conversion and wider lifetimes remain partial.
 
+Selected-reference `-=` now stages both conversions through named Warning
+handlers. Cached `12.5 - 5.5` writes strict float `7.0` through the old target alias,
+while current names retain replacements `77`/`7`. The RHS may lose its last alias after
+capture; returned history keeps its number without a live lookup. A supplied second
+Exception from line 20 cancels compound and outer stores, preserving callback value `88`
+and outer result `100`.
+The scalar store consumes the marker and updates the old cell, result and location
+without allocation, detachment or name redirect. Two originals and 183+199 focused
+premises cover real fresh/entered phases, raw/driven effects, owners and budgets in
+the [compound subtraction ledger](../../coverage/semantics/subassign-warning-review.json).
+Initial leading LEFT/quiet RHS in untyped scalar reference cells and a surviving
+old-target alias bound the slice. Failed conversions, other producers/targets and
+wider lifetimes remain partial.
+
 Selected-reference `/=` now stages LEFT conversion and the delayed old RHS
 through named Warning handlers. Both numeric holders survive callbacks. Cached
 `12.5`/`5` yields strict float `2.5` in the old target alias even after both current
@@ -462,8 +476,24 @@ The scalar store consumes the marker and changes only old STORE/RESULT/LOCATION
 Two originals and 181+153 focused premises check raw/driven effects, pending owner2,
 retired RHS owner0, alias topology and budgets in the
 [selected power-assignment ledger](../../coverage/semantics/powerassign-selected-warning-review.json).
-Initial quiet PINT/PFLOAT references and a surviving old-target alias bound the slice;
-text conversions, other producers/targets and wider lifetimes remain partial.
+Initial quiet PINT/PFLOAT references and a surviving old-target alias bound the slice.
+Other text conversions, producers/targets and wider lifetimes remain partial.
+
+Selected-reference `**=` now also stages leading-text conversions before final
+Deprecated. Each number is captured before its own Warning. A supplied second
+conversion Exception leaves callback value `88` and outer result `100` unchanged;
+a final Deprecated Exception instead permits cached `+INF` to replace callback
+value `66` in the old target before that same Exception resumes. Outer delivery stops.
+The final marker owns the pending Throwable until the mandatory store restores
+`THROW_SEARCH`; old quiet-power snapshot and commit rules remain exact.
+An independent signed-zero/default case delivers strict `-INF` through the old target
+after both current names rebind to `77`/`7` and the captured RHS retires. Three originals
+and 186+241+261 focused premises cover real fresh/entered callbacks, historical holders,
+raw/driven marker/store effects, owners and budgets in the
+[converted power ledger](../../coverage/semantics/powerassign-conversion-warning-review.json).
+Initial leading LEFT/quiet RHS untyped scalar refs and a surviving old-target alias
+bound the slice. Before final dispatch and store the old target must be PINT/PFLOAT,
+avoiding refcounted-target destruction. Wider values/producers/lifetimes remain partial.
 
 Plain-CV `%=` now captures a fractional-float left conversion before its
 deprecation, then reads the live quiet integer RHS after a named handler returns.

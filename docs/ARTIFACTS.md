@@ -109,6 +109,12 @@ The repeated global-alias return-history proof is in
 489,309 bytes under `.tools/m121/`, six reports with original packets,
 accepted state snapshots and the two-guard runtime patch, SHA-256 `2fd91a9f24363656f5feae940e70fac9fb5e9ef52212ac57e3abfee77ea346fb`.
 
+The typed object-property alias return-history proof is in
+`../php-spec-evidence-archive/lifecycle-property-alias-122/manifest.json`:
+621,616 bytes under `.tools/m122/`, seven reports retaining the original
+author fixture failure, corrected/accepted snapshots and exact runtime patch,
+SHA-256 `b0b79d39cc6cead5bba949e7b7495223aa22036f64cd7f42aa493a3eb1a75e4c`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the
