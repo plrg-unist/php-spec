@@ -98,6 +98,7 @@ def $property_hook_compound_pending(S) = false -- otherwise
 dec $arithmetic_addassign_plan(pstate) : (pintegeroperation, pvalue, pnumber)?
 dec $arithmetic_addassign_cv_plan(pstate) : (pintegeroperation, pvalue, pnumber)?
 dec $arithmetic_divassign_plan(pstate) : pintegeroperation?
+dec $arithmetic_subassign_plan(pstate) : pintegeroperation?
 dec $concatassign_array_plan(pstate) : ptask?
 dec $powerassign_warning_plan(pstate) : ptask?
 dec $powerassign_selected_warning_plan(pstate) : ptask?
@@ -118,6 +119,7 @@ rule PhpStep/compound-apply: S ~> S_updated[.HELD = S.HELD]
   -- if $arithmetic_addassign_plan(S) = eps
   -- if $arithmetic_addassign_cv_plan(S) = eps
   -- if $arithmetic_divassign_plan(S) = eps
+  -- if $arithmetic_subassign_plan(S) = eps
   -- if $concatassign_array_plan(S) = eps
   -- if $powerassign_warning_plan(S) = eps
   -- if $powerassign_selected_warning_plan(S) = eps

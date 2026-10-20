@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Selected-reference `-=` now retains both numbers through conversion Warnings.
+Cached `12.5 - 5.5` writes strict float `7.0` through the old target alias after
+both current-name rebindings and old RHS retirement. A supplied second-handler
+Exception cancels compound and outer stores, preserving callback value `88`, current
+replacement `77` and outer result `100`.
+Two originals pass at `ee582af8b`/407 and 382 focused premises at `1f037ee80`/407.
+[Compound subtraction ledger](coverage/semantics/subassign-warning-review.json).
+Initial leading LEFT/quiet RHS scalar refs and a surviving old-target alias bound
+this slice; wider operands/targets/lifetimes remain partial, OP12 paused.
+
+Composed over `607d2bc66`/407, preserving incoming state, task and
+manifest paths. Source2/state382 retain their private407 cuts; independently
+reviewed absent incoming selectors require no joined execution or renewed credit.
+
 A first pending SEND now overwrites one owning LIVE input at a parked simple-CV
 used yield with a new owning argument. The old count becomes orphaned without
 decrement; the new count becomes LIVE before receiver initialization and current
@@ -85,19 +99,8 @@ DEFINE-value, magic parent-get, Generator, reference/finally, arithmetic-assignm
 and array-literal debt selectors have no producer here. Source4/995 and the three
 timeouts/two localizations0 retain private cuts without joined execution.
 
-Quiet selected-reference `**=` now commits captured infinity through the old
-target alias even when the Deprecated handler rebinds both current names and
-throws. The same supplied Exception resumes after the `+INF` store; the outer
-assignment retains `100`.
-A signed-zero/default case delivers strict `-INF` after old RHS retirement.
-Two originals pass at `d27e44ca2`/407 and 334 focused premises at `65b51b641`/407.
-[Selected power-assignment ledger](coverage/semantics/powerassign-selected-warning-review.json).
-Initial quiet primitive-number refs and a surviving scalar old-target alias bound
-this slice; wider operands/targets/lifetimes remain partial, OP12 paused.
-
-Composed over `5e6feda5b`/407, preserving incoming state, task and
-manifest paths. Source2/state334 retain their private407 cuts; independently
-reviewed absent incoming selectors require no joined execution or renewed credit.
+Earlier selected-reference `**=` Deprecated continuations retain source2/state334
+in the [selected power ledger](coverage/semantics/powerassign-selected-warning-review.json).
 
 The same missing direct CV twice at `==`/`!=`/`<`/`<=` now traverses its
 second Warning when the first handler leaves or removes that name. Two captured

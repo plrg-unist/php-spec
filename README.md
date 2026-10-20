@@ -762,6 +762,13 @@ cover strict `2.4`, Error priority, aliases and default Warning bytes in the
 [DIV repair ledger](coverage/semantics/div-repair-review.json).
 Owning/constrained/expired cells and wider operands remain partial.
 
+Selected-reference `-=` now retains both converted numbers through their
+Warnings. Cached `12.5 - 5.5` writes strict float `7.0` through the old target alias
+after current-name rebinding and RHS retirement. A supplied second throw cancels
+compound and outer stores. Two originals and 382 focused premises pass in the
+[compound subtraction ledger](coverage/semantics/subassign-warning-review.json).
+Other operands, unsafe targets and wider lifetimes remain partial.
+
 Selected-reference `/=` now captures both numbers before their respective
 Warnings. Cached `12.5 / 5` writes strict float `2.5` through the old target alias
 despite current-name rebinding. A second supplied throw cancels storage; a captured

@@ -219,6 +219,20 @@ and 468 focused premises check these routes in the
 Selected cells must remain live, untyped and nonowning; other producers,
 owning/constrained payloads, failed LEFT conversion and wider lifetimes remain partial.
 
+Selected-reference `-=` now stages both conversions through named Warning
+handlers. Cached `12.5 - 5.5` writes strict float `7.0` through the old target alias,
+while current names retain replacements `77`/`7`. The RHS may lose its last alias after
+capture; returned history keeps its number without a live lookup. A supplied second
+Exception from line 20 cancels compound and outer stores, preserving callback value `88`
+and outer result `100`.
+The scalar store consumes the marker and updates the old cell, result and location
+without allocation, detachment or name redirect. Two originals and 183+199 focused
+premises cover real fresh/entered phases, raw/driven effects, owners and budgets in
+the [compound subtraction ledger](../../coverage/semantics/subassign-warning-review.json).
+Initial leading LEFT/quiet RHS in untyped scalar reference cells and a surviving
+old-target alias bound the slice. Failed conversions, other producers/targets and
+wider lifetimes remain partial.
+
 Selected-reference `/=` now stages LEFT conversion and the delayed old RHS
 through named Warning handlers. Both numeric holders survive callbacks. Cached
 `12.5`/`5` yields strict float `2.5` in the old target alias even after both current
