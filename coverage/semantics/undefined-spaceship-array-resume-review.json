@@ -1,0 +1,98 @@
+{
+  "milestone": "COMP108 live flat arrays after missing-CV spaceship Warnings",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "Resume only: an opposing direct CV may hold a live allocated flat array of DIRECT primitive leaves after an already admitted <=> Warning. Existing scalar or missing-pair entry, including one missing name twice, stays unchanged. The first missing result remains NULL; current empty/nonempty arrays determine 0 or -1/+1.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "57065e1ae0892b148385797dbcc9faf0e88fa44e",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "2f082f43c1fe6f838c5b976d04622467bba245bf8a7d0cc4af0debf0df029599"
+  },
+  "modules": 407,
+  "engine_basis": "ZEND_SPACESHIP fetches OP1 then OP2 before compare_function. A missing fetch yields language-level NULL after its Warning, while a defined CV wrapper follows callback rebinding. zend_compare handles NULL/ARRAY through zval_is_true, observing table emptiness rather than array leaves or next-index history.",
+  "implementation": "Twenty-four additive207 lines add a resume-only exact-record/current-CV predicate for allocated in-bounds arrays with DIRECT scalar entries and exclude it from the SPACE changed-opposing refusal. Generic restore and existing comparison/ownership consume the current table. Scalar/pair ingress, source certificates, Boolean helpers, fields/tasks/roots/discard remain exact.",
+  "behavior": [
+    "Four author and four independent originals agree on empty arrays, nonempty [false] versus frozen NULL, all primitive leaf tags, fresh/reference rebinding, COW copies and NEXT1 append, one false/default report and chosen Exception identity/caller41/finally. Both-missing and same-CV entries need no new history flag.",
+    "Four strict-SL source-reached groups check raw restore/comparison, immutable-empty separation, current reference CELL2 versus table1, pooled-copy owners, old target2 to1, compiled source/line/CODE/operator and entry exclusions, and zero/split budgets.",
+    "Two affected scalar fronts retain their allocationless PARRAY0 refusals; only five former array-boundary source selectors become normal. These checks renew no historical agreement."
+  ],
+  "baseline": {
+    "revision": "a6eb790ae06bfc44d9899c7d7530f6d26cfde8cf",
+    "report": "initial/baseline-report.json",
+    "sha256": "e8c1c58b34b62c2685a2fa971604eb003d496574d36799036c8f96bfffb78dcd",
+    "native": "Initial author2 and independent4 retain a6eb790ae/407, original paths/bytes/profile/oracle. Peer model4 reuses retained native4; changed-source author native6 is separately recorded in author-source/native-report.json.",
+    "model": "Genuine unchanged missing-left source is accepted/checked, then Unsupported/spaceship warning changed opposing scalar after exactly H:1:1:10:1; with empty stderr.",
+    "agreement_credit": 0
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "aae242d32bdbb569de2e06479a2fc80f48432995d5c01ca475d4d28539bf8721",
+      "revision": "9e3cde55577acefe927274d9ad0b8e14a8696907",
+      "agreements": 4,
+      "unsupported_controls": 2
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "ad085a49617b956d932f402a4c6787bc3a65af570794b963169b33b7c457d2f2",
+      "revision": "9e3cde55577acefe927274d9ad0b8e14a8696907",
+      "agreements": 4,
+      "unsupported_controls": 0
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "dfeb08154023a22c7909a39d2bf58d1a97d0a384d9034155f4892dddfd660abb",
+      "revision": "9e3cde55577acefe927274d9ad0b8e14a8696907",
+      "premises": 248,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "c836e58431147e598ea3482815286539b303393772e0f3c3b53b9b5402fbdaed",
+      "revision": "9e3cde55577acefe927274d9ad0b8e14a8696907",
+      "premises": 317,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 8,
+    "unsupported_source_controls": 2,
+    "state_premises": 565,
+    "state_groups": 4
+  },
+  "maintenance": {
+    "state": {
+      "report": "maintenance-state/report.json",
+      "sha256": "59d3f3415f09f91041fbd7d03cd14ce46415fa69a9842be96ebc6953de3503d0",
+      "revision": "9e3cde55577acefe927274d9ad0b8e14a8696907",
+      "premises": 121,
+      "groups": 2
+    },
+    "source_selectors": {
+      "report": "maintenance-source/report.json",
+      "sha256": "9e5e93a0c3d19554329156d07ffec2eb48d4005ff57f247e6b86dec0e6cfe558",
+      "revision": "9e3cde55577acefe927274d9ad0b8e14a8696907",
+      "selectors": 5
+    },
+    "historical_agreement_renewal": 0,
+    "scope": "Only old89/90 scalar fronts through their allocationless array refusal; only old89 callback-array, old90 right-array, old97 both-array, old98 same-array and old105 checked-left-array native/model selectors."
+  },
+  "validation": "CPU4 serial/fail-first/full reap, 2GiB: native6 hard100/wall120/per15; model6 hard465/wall480/CLI45/record60; retained peer4 hard315/wall330/CLI60/record75; each focused/maintenance pair hard275/wall290/per120 strict SL/dettrue/cachefalse; five selectors hard380/wall400/child80. Reports retain commands, inputs, exits and raw observations.",
+  "failures": [],
+  "remaining": [
+    "Initially owning comparison operands remain outside ingress. Nested arrays, reference/object array entries, ordinary Boolean array continuation, wider producers/lifetimes and paused COMP88 remain partial.",
+    "All actual gates pass first attempts at9e3cde555/407. Initial records keep their cuts; affected checks renew no old credit."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-108",
+  "artifact_manifest_sha256": "aedb97c3caa7e0fdb59cf083044c268339d22af1a50942c23201b44c4de8ff98",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_spaceship_array_resume_sources.py --phase native --output .tools/comp108-source-new",
+    "python3 tests/semantics/undefined_spaceship_array_resume_sources.py --phase model --output .tools/comp108-source-new",
+    "python3 tests/semantics/undefined_spaceship_array_resume_state.py --output .tools/comp108-state-new",
+    "python3 tests/semantics/undefined_spaceship_array_resume_review_state.py --output .tools/comp108-peer-state-new",
+    "python3 tests/semantics/undefined_spaceship_array_resume_maintenance.py --output .tools/comp108-maint-state-new"
+  ]
+}

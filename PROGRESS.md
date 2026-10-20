@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+`<=>` now resumes against a handler-created live flat primitive array through
+its current opposing CV/reference. Frozen NULL compares by table emptiness;
+nonempty `[false]` makes `$x <=> $x` return -1. Both-missing/same-name entry,
+reference rebinding, pooled COW copies, immutable-empty separation, NEXT1 append,
+false/default and chosen Exception/caller41/finally agree. Twenty-four added207
+lines preserve scalar/pair ingress, certificates, Boolean helpers and all
+fields/tasks/roots/discard. Eight source agreements plus two controls and 565
+strict-SL premises/four groups (248 author +317 independent) pass first attempts
+at `9e3cde555`/407. Separate affected121/2 and five old array selectors renew no
+historical credit; initial native2+4/genuine keep `a6eb790ae`/407. Initial-array,
+nested/reference/object leaves and wider producers remain partial.
+[Array resume review](coverage/semantics/undefined-spaceship-array-resume-review.json).
+
 Reversed `>`/`>=` now quietly consume a checked defined source-right CV removed
 by the missing-left Warning handler. First source-left NULL stays frozen, yielding
 false/true without another report or reading an old alias/current left9. Fresh and

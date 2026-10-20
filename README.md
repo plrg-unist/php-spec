@@ -18,6 +18,8 @@ remains later research.
 
 [Scalar comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.
+At `<=>` resume, a handler-created flat primitive array also follows its current
+CV/reference binding; emptiness determines comparison against the frozen NULL.
 This covers bounded spaceship operands and distinct direct-CV
 `==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
 Both-missing pairs, including one missing name twice, can resume if the first

@@ -134,9 +134,15 @@ missing-left Warning, which still warns again.
 Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also admit either missing
 operand with an initially defined scalar counterpart, following that counterpart's
 current wrapper after the callback. A missing right name need not be initialized.
-Both protocols freeze null while preserving the opposing read. Owning opposing
-values remain unsupported; a missing later physical CV can warn again after the
-first read, including one removed by the first handler.
+Both protocols freeze null while preserving the opposing read. Owning Boolean
+comparison counterparts remain unsupported; a missing later physical CV can warn
+again after the first read, including one removed by the first handler.
+`<=>` resume also permits a live flat primitive array at the opposing CV, including
+reference rebinding and COW, after any already admitted scalar/missing-pair entry.
+Only its current emptiness is compared against frozen NULL. Array ingress and
+nested/reference/object entries remain partial; the
+[array resume review](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
+records the unchanged certificates, roots and discard.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.
 [The equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json)
