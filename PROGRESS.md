@@ -24,6 +24,15 @@ representation overclaim. Runtime/source bytes remain unchanged across these
 fixture corrections. Primitive omitted/false is the bounded new slice; owning
 payloads, broader flags/coercions/packs and paused name paths remain partial.
 
+Composed over `d4bd11220`/407: tested199/400 stay exact; shared30/172 keep
+incoming task alternatives and Source76/77 INI selectors beside the private
+receipt patch. Legacy selected records lift pointwise with `OWNER eps` in
+reached/projected/budget/FOLD.MEMORY states, without a new pstate/heap field or
+manifest change. Undefined-comparison, clone, ref-return, Generator, property
+unset and float-key/debt selectors are unproduced. Private source/state cuts and
+eight raw roots, including zero-credit failures/observations, retain their
+identities without an integration actor or accepted replay.
+
 Selected-reference `%=` now captures a fresh fractional RHS after the first
 Deprecated and before the second. Captured `0.5` still raises `Modulo by zero` at
 line 25 despite current and original RHS values of `5`, preserving old target
