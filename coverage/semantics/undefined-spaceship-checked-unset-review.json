@@ -1,0 +1,97 @@
+{
+  "milestone": "COMP105 checked spaceship left CV removed during missing-right Warning",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "Initially defined ordinary scalar left CV and missing distinct direct right CV at <=>. A returning handler can remove the already checked left name; comparison consumes it quietly against frozen right NULL without retaining an old alias value or reporting again.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "3677126c4",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "efe072624417973c7a33f158c3136042f9d1996aec2fb5c0e3ee2d414aac8779"
+  },
+  "modules": 407,
+  "engine_basis": "ZEND_SPACESHIP fetches OP1 with _get_zval_ptr_cv_BP_VAR_R, retaining its current CV wrapper, before fetching missing OP2. After the Warning callback unsets checked OP1, zend_compare handles its UNDEF quietly against the missing-read NULL and returns 0. A later physical CV not yet checked still requires its own Warning. Pending supplied exceptions follow ordinary discard.",
+  "implementation": "Twelve additive lines in module207 recognize only the exact existing spaceship right-frozen record with currently absent/UNDEFINED left. A separate resume arm substitutes KNOWN PNULL for TASK left, retaining the frozen right RESULT and saved BASE. Entry, source certificates, fields, tasks, roots and discard stay unchanged; Boolean operators and old left-frozen retry records are excluded.",
+  "behavior": [
+    "Plain integer, Boolean/no-init-right, float/false-default and initial-reference originals return 0 after exactly one Warning. Current right9 and a surviving old alias2/8 distinguish both frozen right NULL and quiet removed-left use. Alias writes/rebinding, one default report, chosen Exception identity/caller41/finally and an opposite unchecked-right two-Warning original agree exactly.",
+    "Four strict-SL source-reached groups execute actual dispatch/return/resume, exact whole-state quiet fold/comparison, owners1 to0 and2 to1 (then2 after source rebinding), absent/UNDEFINED and both-missing fetch-order controls, CODE/source/operator/compiled-line refusals and zero/split budgets.",
+    "Only affected old90/99 SPACE resume fronts and preserved old100 Boolean refusal run in maintenance. Two revised old source selectors complete normally; these checks renew no historical agreement."
+  ],
+  "baseline": {
+    "revision": "ac3cff066194e40f8780de1075b50f5c6156bcb3",
+    "report": "initial/initial-report.json",
+    "sha256": "00691b94106ba80841f3b7eda611897c9cab5f1038cd14ecc477426736531017",
+    "native": "Fresh author2 and independent4 retain exact original paths/bytes/profile/oracle at ac3cff066/407. Checked-left removal returns 0 after one Warning, while removal of an unread right gives two.",
+    "model": "Genuine unchanged plain source is accepted/checked, then Unsupported/spaceship warning changed opposing scalar after exactly H:1:1:10:1; with empty stderr.",
+    "agreement_credit": 0
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "83ddfbfd648bc73b36f2a10817efab7ef922890d4e6a9d0442445f1cb3ab322a",
+      "revision": "d94166f4b79e7b0d4308f7deb400724fc0523276",
+      "agreements": 4,
+      "unsupported_controls": 2
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "ddd66429cc1665fe6b68c9a298003685e0efb95d9582351faf5e211964598be5",
+      "revision": "d94166f4b79e7b0d4308f7deb400724fc0523276",
+      "agreements": 4,
+      "unsupported_controls": 0
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "23ed836bd93ef6e7346c4e1545a0b9df28c6ea4686626b63720a87bf2429e8c5",
+      "revision": "d94166f4b79e7b0d4308f7deb400724fc0523276",
+      "premises": 243,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "719e245be04738146d810ba7958fae8ba4f85877b2777fb32b36a9cd56412ae0",
+      "revision": "d94166f4b79e7b0d4308f7deb400724fc0523276",
+      "premises": 244,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 8,
+    "unsupported_source_controls": 2,
+    "state_premises": 487,
+    "state_groups": 4
+  },
+  "maintenance": {
+    "state": {
+      "report": "maintenance-state/report.json",
+      "sha256": "30c453726a4dd310057b4cd4eb27247415bfb08d6d506641ed8e700f8155a7c9",
+      "revision": "d94166f4b79e7b0d4308f7deb400724fc0523276",
+      "premises": 104,
+      "groups": 3
+    },
+    "source_selectors": {
+      "report": "maintenance-source/report.json",
+      "sha256": "d0865d6606ba49855c68f21fb4c2a013103d1d5c809948de9f95599bcc48bf24",
+      "revision": "d94166f4b79e7b0d4308f7deb400724fc0523276",
+      "selectors": 2
+    },
+    "historical_agreement_renewal": 0,
+    "scope": "Source-reached old90 and old99 fronts quietly fold removed checked left; old100 EQUAL right-frozen removal remains Unsupported. Only old90 peer-left-unset-has-no-second-native-warning and old99 second-spaceship-removed-left-boundary source expectations are checked as maintenance assertions, without old campaign credit."
+  },
+  "failures": [],
+  "remaining": [
+    "The six Boolean comparisons still refuse removal of already checked defined counterparts. Owning comparison values, wider producers/lifetimes and paused COMP88 remain outside this slice.",
+    "All actual gates pass first attempts at d94166f4b/407. Genuine baseline and native observations retain ac3cff066; no accepted or historical campaign is replayed."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-105",
+  "artifact_manifest_sha256": "38dda299822f4ccf48d32bc760b9744d3c61301036553ff3cc555388dd6cfa39",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_spaceship_checked_unset_sources.py --phase native --output .tools/comp105-source-new",
+    "python3 tests/semantics/undefined_spaceship_checked_unset_sources.py --phase model --output .tools/comp105-source-new",
+    "python3 tests/semantics/undefined_spaceship_checked_unset_state.py --output .tools/comp105-state-new",
+    "python3 tests/semantics/undefined_spaceship_checked_unset_review_state.py --output .tools/comp105-peer-state-new",
+    "python3 tests/semantics/undefined_spaceship_checked_unset_maintenance.py --output .tools/comp105-maint-state-new"
+  ]
+}

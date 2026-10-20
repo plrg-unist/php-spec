@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+A defined scalar left CV removed by a missing-right `<=>` Warning handler now
+compares quietly against frozen right NULL, returning 0 without another report or
+retaining an old alias value. Surviving reference cells retain their own writes;
+false/default and chosen Exception identity/caller41/finally agree. The opposite
+unread-right removal still warns twice. Twelve additive lines in module207 reuse the exact
+right-frozen record; entry, source certificates, fields/tasks/roots/discard stay exact.
+Eight source agreements plus two controls and 487 strict-SL premises/four groups
+(243 author +244 independent) pass first attempts at `d94166f4b`/407. Separate affected
+104 premises/three resume fronts and two old selectors renew no historical credit.
+Genuine `ac3cff066` changed-opposing baseline retains zero. Boolean checked-counterpart
+removal, owning values and wider producers remain partial.
+[Checked-left removal review](coverage/semantics/undefined-spaceship-checked-unset-review.json).
+
 The same initially missing direct CV twice at `>`/`>=` now warns for source
 right first, then reads current shared left. Setting string0 can make `$x > $x`
 true; leaving/removing that name instead stages a second Warning and two NULLs,
