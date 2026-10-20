@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Affected old forward restore plus reversed and spaceship boundaries only."""
+"""Affected old forward/reversed restores and the separate spaceship retry."""
 import argparse
 import base64
 import json
@@ -38,8 +38,11 @@ def checks(program, path, name):
         return values + [
             '~$scalar_compare_read_other(S_removed,perrorread)',
             '~$scalar_compare_read_again(S_removed,perrorread)',
+            '$scalar_compare_checked_right_missing(S_removed,perrorread)',
             'PhpStep: S_removed ~> S_refused',
-            'S_refused = S_removed[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed right operand"]',
+            'S_refused = S_removed[.TODO = perrorread.TASK :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = perrorread.BASE]',
+            '$error_read_plan(S_refused) = eps', 'PhpStep: S_refused ~> S_compared',
+            'S_compared = S_refused[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]',
             'S_refused.EVENTS = S_removed.EVENTS',
         ]
     values += [

@@ -51,7 +51,7 @@ def checks(program, path, name):
         elif original.startswith('S_compared = '):
             condition = condition.replace('KNOWN (PINT 0)', 'KNOWN (PBOOL ' + boolean + ')')
         elif original.startswith('S_wrong_denied = '):
-            condition = 'S_wrong_denied = S_wrong[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed right operand"]'
+            condition = 'S_wrong_denied = S_wrong[.TODO = perrorread_left.TASK :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = perrorread_left.BASE]'
         elif original.startswith('perrorread_bad = '):
             condition = 'perrorread_bad = perrorread_first[.ORIGINAL = BINARY_RIGHT ' + op + ' (VARIABLE ($ptascii("left")) z_left) 999][.TASK = BINARY_RIGHT ' + op + ' (VARIABLE ($ptascii("left")) z_left) 999][.LINE = 999]'
         elif original == '$error_read_shape(perrorread_bad.ORIGINAL,perrorread_bad.INPUT,perrorread_bad.BASE) = (perrorread_bad)':
