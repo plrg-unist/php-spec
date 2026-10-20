@@ -1798,8 +1798,10 @@ def $call_task_valid(S, REF_RETURN_RETIRE_HISTORY ptask*) = false
 def $task_nodes(REF_RETURN_RETIRE_HOLDER_HISTORY ptask* porigin_holder) = eps
 def $call_task_valid(S, REF_RETURN_RETIRE_HOLDER_HISTORY ptask* porigin_holder) = false
 dec $ref_return_retire_history(ptask) : (ptask*, porigin?)?
-def $ref_return_retire_history(REF_RETURN_RETIRE_HISTORY ptask*) = ((ptask*, eps))
-def $ref_return_retire_history(REF_RETURN_RETIRE_HOLDER_HISTORY ptask* porigin_holder) = ((ptask*, (porigin_holder)))
+def $ref_return_retire_history(REF_RETURN_RETIRE_HISTORY ptask*) = ((ptask*, porigin_saved?))
+  -- if porigin_saved? = eps
+def $ref_return_retire_history(REF_RETURN_RETIRE_HOLDER_HISTORY ptask* porigin_holder) = ((ptask*, porigin_saved?))
+  -- if porigin_saved? = (porigin_holder)
 def $ref_return_retire_history(ptask) = eps -- otherwise
 
 dec $ref_return_retire_operation_tail(ptask*, pdestructionoperation) : ptask*?
