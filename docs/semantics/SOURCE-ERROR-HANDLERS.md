@@ -154,7 +154,16 @@ initially missing CV twice: first NULL stays frozen while the second read sees
 the shared name initialized by the handler. The
 [same-variable review](../../coverage/semantics/undefined-spaceship-same-review.json)
 records its one-premise entry extension; source/resume/discard stay unchanged.
-A `<=>` or distinct `==`/`!=`/`<`/`<=`/`>`/`>=` now restores when
+Forward `==`/`!=`/`<`/`<=` also admit one missing ordinary CV twice, reusing the
+first-NULL/current-read record. Both compiled CV occurrences still authenticate
+the source. A scalar or reference initialized by the first handler can make
+equality nonreflexive; the
+[Boolean same-variable review](../../coverage/semantics/undefined-scalar-compare-same-review.json)
+records false/default and supplied-throw checks. The
+[shared second-read review](../../coverage/semantics/undefined-scalar-compare-second-same-review.json)
+also permits the first callback to leave or remove that name: the next Warning
+freezes its second NULL, independent of later writes or continued absence.
+A `<=>`, `==`/`!=`/`<`/`<=` or distinct `>`/`>=` now restores when
 the later physical CV remains missing or was removed
 by the first handler. Existing ingress stages its second Warning and known-NULL
 record; later writes cannot change the NULL/NULL result or cause a third Warning.
@@ -163,12 +172,12 @@ covers both callbacks, default order and second supplied throw. No task variants
 fields or discard rules are added. The
 [forward review](../../coverage/semantics/undefined-scalar-compare-second-review.json)
 adds only a narrow known-NULL-left source arm authenticating both compiled,
-distinct direct CVs and the RHS read line. The
+direct CVs and the RHS read line. The
 [reversed review](../../coverage/semantics/undefined-scalar-compare-second-reversed-review.json)
 adds an exact right-frozen restore and NULL-only right INPUT certificate,
 authenticating both compiled CVs before the source-left second Warning. Its
 default reports stay right then left; late reference creation cannot change the
-two captured NULLs. Owning comparison values, ordinary same-CV forms, already
+two captured NULLs. First-callback owning comparison values, reversed same-CV entry, already
 checked defined counterparts removed during the later Warning and wider producers remain partial.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.

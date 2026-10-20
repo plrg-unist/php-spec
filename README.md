@@ -20,9 +20,10 @@ remains later research.
 variable's null result through handlers while following current scalar CV bindings.
 This covers bounded spaceship operands and distinct direct-CV
 `==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
-Both-missing pairs, including the same missing variable twice at `<=>`,
-can resume if the first handler defines the later scalar; greater operators
-warn right first. `<=>` and distinct `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also stage
+Both-missing pairs can resume if the first handler defines the later scalar,
+including the same missing name at `<=>` or `==`/`!=`/`<`/`<=`; `$x == $x` can
+then be false. Greater operators warn right first. `<=>`, forward
+`==`/`!=`/`<`/`<=` (including the same CV), and distinct `>`/`>=` pairs also stage
 a second Warning if the later physical CV stays missing, freezing both NULLs
 despite writes from the second handler.
 Wider warning paths remain partial.
@@ -753,6 +754,14 @@ text reports live bool/string types. Four originals and 468 focused premises
 cover strict `2.4`, Error priority, aliases and default Warning bytes in the
 [DIV repair ledger](coverage/semantics/div-repair-review.json).
 Owning/constrained/expired cells and wider operands remain partial.
+
+Selected-reference `/=` now captures both numbers before their respective
+Warnings. Cached `12.5 / 5` writes strict float `2.5` through the old target alias
+despite current-name rebinding. A second supplied throw cancels storage; a captured
+zero still raises DivisionByZeroError after RHS repair and retirement. Three
+originals and 554 focused premises check these paths in the
+[compound DIV ledger](coverage/semantics/divassign-warning-review.json).
+Other operands, unsafe targets and wider lifetimes remain partial.
 
 Unary `+` and `-` now capture leading-numeric strings from defined non-reference
 CVs before named warning handlers. Three exact originals and 323 genuine state
@@ -1737,10 +1746,13 @@ catch when only the private copied array still owns it.
 [Runtime object define review](coverage/semantics/define-runtime-object-review.json).
 
 Bare runtime Closures also publish under bounded live callable authority:
-unscoped lexical Closures retain reference captures and static cells, and method
-Closures retain their receiver. Canonical array/query copies share these objects;
+lexical Closures retain reference captures and static cells, and method
+Closures retain their receiver. Class-born REAL Closures preserve validated
+lexical/called scope, private property identity and an optional receiver.
+Canonical array/query copies share these objects;
 an unpinned method receiver retires only after the last Closure owner is released.
 [Runtime Closure define review](coverage/semantics/define-runtime-closure-review.json).
+[Scoped REAL define review](coverage/semantics/define-scoped-runtime-closure-review.json).
 
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
@@ -3337,6 +3349,17 @@ First owns 200; Second and Grand start at 300, then Grand's slot becomes 400. Th
 getter remains 13; later `private(set)` narrowing fails against the immediate parent. Two
 originals and four focused states are in the
 [repeated protected-setter review](coverage/semantics/repeated-protected-plain-inherited-getter-review.json).
+
+Selected virtual Child get hooks now call the lexical parent's real public
+virtual hook with naked `parent::$value::get()`. The call borrows This from the
+outer hook, keeps Grandchild called scope and Parent private access, and preserves
+scalar/owning returns or the same supplied exception through receiver cleanup.
+Real Throwable traces retain the parent hook's function/class/type. Outside-hook
+and wrong-property calls fail compilation before output. Six unique source
+agreements and 377 focused checks retain separate tested cuts in the
+[parent get-hook review](coverage/semantics/parent-get-hook-review.json).
+Other parent-hook shapes remain partial.
+
 A direct trait’s public body-backed `int` getter also imports into a parentless
 using class. Its code and `__METHOD__` spelling remain the trait’s; lexical/private
 scope follows the using class and called scope follows the receiver. Slot 100→300
@@ -4417,16 +4440,16 @@ agree with PHP; separate 463/8 state checks cover its shared-cell RELEASE/EXIT
 pauses, required literal history despite an unchanged heap, engine TypeError catch,
 one line7 Notice and detached aliases.
 Owning-return histories with at least three pending slots preserve finite
-first-retirement destructor throws, including stable supplied-Throwable identity,
-cleared NULL recovery and detached caller references. Remaining computed objects
-keep their source/restore/sole-owner checks; ordinary global-CV slots now bind
-the emitted source to the actual shared cell. A mixed source and 439/12 checks
-at `4a1cc45c5` prove same-object catch, wrong-cell/kind and missing-slot refusals,
-exact shared-cell release/public pauses, Notice15 and z/za/caller aliases.
-Earlier computed-only evidence keeps its original cuts in the
+first-retirement destructor throws, supplied-object identity, cleared NULL and
+detached caller references. Ordinary global references may now alias across
+pending slots; each still keeps its own source/owner/restore authority and cleanup
+count. Computed objects retain distinct sole owners. A fresh za/z-alias source
+and 430/10 checks at `638496fa6` prove each required slot, two successive shared
+releases, exact public pauses, same caught object, Notice13 and separate caller
+and global writes. Earlier evidence retains its original cuts in the
 [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-Repeated alias slots, other reference producers, wider bodies/reentry, GC and
-consumers remain open.
+Other reference producers, typed/property cells, fewer than two remaining slots,
+wider bodies/reentry, GC and consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

@@ -112,32 +112,27 @@ local/caller identity and message observers, cleared NULL/Notice17 and detached
 aliases. Valid null-cell/unequal-live-ID controls, original-false/source receipt and
 saved-owner refusals accompany exact parent/NULL public states and whole/split
 ending. The sole declaration moves314→270 for the earlier use; its definition,
-history/finish/root rules stay unchanged. M119 replaces the exact-three source
-tail and exact11-task cleared suffix with recursive validators. Every remaining
-computed object keeps its cursor/LINE, lexical restore link, distinct live ID,
-finite normal class and sole task owner; at least two outer owners remain.
-The structural suffix preserves its initial cleared NULL, terminal function and
-exact source/LINE Notice. Source1 and368/6 at `0c1f7dea2` prove four simultaneous
-owners, D→E supplied throw/local catch, retained C/B/A tasks, same outside object,
-Notice22/freshNULL/detachment and three exact raw/public states. Missing owner
-and mirrored farthest-LINE refusals, malformed restores/Notice/duplicate IDs and
-constructed former-three-slot subcuts accompany full whole/split equality.
-First-throw body, pending, SOURCE/finish/root and storage/GC rules are unchanged.
-M120 adds ordinary global-CV reference slots to this distinct-node family. Each
-slot authenticates emitted source, current ENV and actual GLOBALTABLE cell,
-ordinary name, untyped REF membership and allocation. Shared cells need no
-owner1 check; tagged HOBJECT/HCELL identities distinguish equal table indices.
-The cleared suffix admits the same reference slots and keeps all restore links,
-minimum two outer slots and exact old-source Notice. Source1 and439/12 at
-`4a1cc45c5` prove mixed C/z/A history, nested supplied throw and same local/caller
-identity, Notice15/freshNULL/detachment and full raw/public states. Releasing z's
-slot removes one HCELL owner while z/za/z_old and its object survive; this is no
-collection claim. Valid-heap missing-slot, wrong live-cell/same-value and mirrored
-wrong-kind controls refuse. Pure suffix cases separate cell/object indices and
-retain the current repeated-cell exclusion. SOURCE/history representation,
-pending/finish/body classifiers, roots, ownership/storage/GC and schema are
-unchanged. Repeated alias slots, other
-reference producers, typed/property cells, wider bodies and reentry remain open.
+history/finish/root rules stay unchanged. The owning-return family uses recursive
+source/suffix validators with at least two remaining lexical slots. Computed
+objects keep their finite normal class,
+old operand, source/LINE, restore relation, sole owner and distinct HOBJECT ID.
+Ordinary untyped global-CV references authenticate emitted source, current ENV,
+actual GLOBALTABLE cell, REF membership and allocation. These cells may be
+shared or repeated across distinct lexical slots; typed node tags still separate
+cell and object indices. M121 relaxes uniqueness only after a valid variable/global
+operand and only for the structural suffix's HCELL arm. All restore/function,
+minimum-count and old-source/LINE Notice constraints remain.
+
+Source1 and 430/10 at `638496fa6` prove actual za/z slots for one HCELL, finite
+C→D supplied throw/local catch, same outside record, Notice13/freshNULL/detachment
+and five full raw/public states per fixture. Both exact slots remain required
+despite live global aliases; mirrored wrong-source/owner metadata preserves the
+same heap/cell but refuses. Duplicate HOBJECT suffixes remain rejected. Two
+actual shared jobs drop n→n−1→n−2 before function exit while the cell/copy/object
+survive; no collection claim is made. Whole/split endings agree. SOURCE/history
+representation, finite body/pending/finish, roots, ownership/storage/GC and schema
+stay unchanged. Other reference producers, typed/property cells, fewer than two
+remaining slots, wider bodies and reentry remain open.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same
