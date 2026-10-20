@@ -59,7 +59,7 @@ def checks(program, path, name):
         '$scalar_compare_missing_pair(S,perrorread)',
         '~$scalar_compare_missing_pair(S_resume,perrorread)',
         '~$error_missing_operand(S_resume,$error_read_operand(perrorread))',
-        '~$scalar_compare_missing_pair(S,perrorread_other)',
+        '~$error_read_valid(S,perrorread_other)',
         'perrorread_right = perrorread[.TASK = perrorread.ORIGINAL][.RESULT = KNOWN PNULL]',
         '~$scalar_compare_missing_pair(S,perrorread_right)',
         '~$error_read_valid(S,perrorread_right)',
