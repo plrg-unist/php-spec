@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Bare unscoped REAL and live METHOD Closures now publish through dynamic-only
+`PVOBJECT` authority, retaining lexical aliases, per-Closure statics and receiver
+identity through direct/query/array copies. Invalid static cells, busy captures,
+scopes, wrappers and present callable records retain their fences; existing
+certificates and global/default policies stay unchanged. A private duplicate copy
+can be the last Closure owner and runs its receiver destructor before the
+original handler Exception reaches catch, while the raw trace sees source NULL.
+
+Three originals pass at `2f0b57ade`/406; 646 focused premises (244+118+284) pass at
+`18f94c794`/406 with two zero-budget identities. All first attempts pass without
+failure/retry or accepted replay. Four historical helper projections change
+without renewing V82/V83 evidence. Ordinary unscoped lexical/bound method
+originals use omitted/false flags; structural clones/inherited flags receive no
+extra execution credit, and other Closure forms/names/lifetimes remain partial.
+[Runtime Closure review](coverage/semantics/define-runtime-closure-review.json).
+
 Ordinary live class-instance values now publish directly and in canonical array
 snapshots through dynamic-only `PVOBJECT` authority. No constant-NEW history is
 fabricated; present certificates keep their existing priority/refusals, direct

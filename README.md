@@ -1662,7 +1662,7 @@ until the trace and Closure owners are released.
 
 Certified Closure values can be defined directly, retaining pointer identity and
 shared static cells through duplicates, queries and a pending ignored-Warning
-exception. Ordinary unrecorded Closure values remain Unsupported.
+exception. Their existing certificates retain their own validation policy.
 [Certified Closure define review](coverage/semantics/define-certified-closure-review.json).
 
 Ordinary live class instances without a constant-NEW record can also be defined
@@ -1670,6 +1670,12 @@ directly or as array leaves. Queries retain their identity and shared properties
 An unpinned duplicate candidate is destroyed on retirement, including before
 catch when only the private copied array still owns it.
 [Runtime object define review](coverage/semantics/define-runtime-object-review.json).
+
+Bare runtime Closures also publish under bounded live callable authority:
+unscoped lexical Closures retain reference captures and static cells, and method
+Closures retain their receiver. Canonical array/query copies share these objects;
+an unpinned method receiver retires only after the last Closure owner is released.
+[Runtime Closure define review](coverage/semantics/define-runtime-closure-review.json).
 
 Fresh definitions also copy nonempty array trees containing certified Closure,
 stdClass or user-instance leaves under the admitted flags. Copied containers freeze source
@@ -1712,8 +1718,8 @@ nonempty byte strings are true. Flag-array COW and later callback writes leave t
 original API flag intact through duplicate cleanup or pending fresh publication.
 Strict calls retain the raw string in TypeError traces.
 [Byte-only array-flag review](coverage/semantics/define-array-byte-flag-review.json).
-Unrecorded Closure/stdClass and internal object values, other owning leaves and
-wider flags/names remain partial.
+Other Closure forms, unrecorded stdClass/internal object values, other owning
+leaves and wider flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
 [Two exact sources and 288 public premises](coverage/semantics/class-qualified-defined-review.json)
