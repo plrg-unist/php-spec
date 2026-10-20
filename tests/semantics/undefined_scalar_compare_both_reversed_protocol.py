@@ -27,6 +27,11 @@ def checks(program, path, name):
         old, new = (('BINARY_RIGHT EQUAL ', 'BINARY_RIGHT GREATEREQUAL ') if plain
                     else ('BINARY_RIGHT LESS ', 'BINARY_RIGHT GREATER '))
         condition = condition.replace(old, new)
+        if condition.startswith('$scalar_compare_right_read_shape(BINARY_RIGHT '):
+            result += [condition.replace(' = eps', ' = (perrorread_same)'),
+                       '~$error_read_source(S,perrorread_same)',
+                       '~$error_read_valid(S,perrorread_same)']
+            continue
         if condition.startswith('PhpStep: S_missing ~> S_missing_refused'):
             condition = 'PhpStep: S_missing ~> S_missing_restored'
         if condition.startswith('S_missing_refused = S_missing['):
