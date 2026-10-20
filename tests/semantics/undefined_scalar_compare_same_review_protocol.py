@@ -20,10 +20,7 @@ def checks(program, path, name):
         if condition.startswith('S_compared = '):
             condition = condition.replace('KNOWN (PINT $(-1))', 'KNOWN (PBOOL ' + answer + ')')
         if condition == 'PhpStep: S_without ~> S_without_restored':
-            result.append('~$scalar_compare_read_again(S_without,perrorread)')
-            condition = 'PhpStep: S_without ~> S_without_refused'
-        if condition.startswith('S_without_restored = S_without['):
-            condition = 'S_without_refused = S_without[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed right operand"]'
+            result.append('$scalar_compare_read_again(S_without,perrorread)')
         if condition.startswith('$us_output('):
             expected = ('H:1:1:9;H:1:1:11;R:1:1:1:1;A:1:1:1;END;' if target else
                         'H:1:1:12;R:1:1:1;A:1:1;END;')
@@ -31,8 +28,8 @@ def checks(program, path, name):
         result.append(condition)
     result += [
         '$error_read_shape(perrorread.TASK,perrorread.RESULT,perrorread.BASE) = (perrorread_second)',
-        '~$error_read_source(S_without,perrorread_second)',
-        '~$error_read_valid(S_without,perrorread_second)',
+        '$error_read_source(S_without,perrorread_second)',
+        '$error_read_valid(S_without,perrorread_second)',
         'S.ORIGIN = (porigin_same)',
         '$code_expression_at_source(S,porigin_same,[PCFIELD 0]) = (z_left)',
         '$code_expression_at_source(S,porigin_same,[PCFIELD 1]) = (' + str(line) + ')',
