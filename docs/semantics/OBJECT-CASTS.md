@@ -23,10 +23,15 @@ therefore differ from foreach and copied array views of the new table. Physical
 old-table bucket count includes an INDIRECT whose slot becomes unset.
 
 Source construction keeps these locators internal; ordinary array casts export
-copied values. Copied declared-bucket reference iteration, cached ordinary cloning
+copied values. Copied declared-bucket reference iteration, mixed dynamic cached cloning
 and collector visitation remain explicit Unsupported boundaries. Six exact sources
 and 743 reached premises/37 raw steps cover table generations, slot/cell ownership,
 UNDEF and throw cleanup.
+
+Declared-only cached cloning now has a
+[bounded path](../../coverage/semantics/cached-property-clone-review.json): a fresh
+table retargets locators to copied slots while retaining shallow values and
+existing reference/type-source rules.
 
 [Direct comparison materialization](../../coverage/semantics/direct-table-comparison-review.json)
 now permits genuine foreach and dynamic-property table creation while the original
@@ -41,7 +46,8 @@ Their fresh arrays copy direct values and singleton references; shared reference
 remain live. Actual cast states verify copied entries, cell/object owners and
 unchanged object maps/flags. Independent projected-array comparison and throwing
 cleanup pass three exact sources and 503 reached premises/35 raw steps. Existing
-GC, cached-clone, reference-iteration and broader lifetime limits remain open.
+GC, mixed dynamic cached-clone, reference-iteration and broader lifetime limits
+remain open.
 
 A NaN cast allocates the object before delivering its warning through the real
 error handler. Its continuation retains the original operand category and zval

@@ -13,6 +13,17 @@ existing copy-on-write rules, singleton reference wrappers are unwrapped, and
 live aliases remain shared. Retained typed-property aliases acquire another
 type source, which ordinary owner release detaches.
 
+[Declared-only cached clones](../../coverage/semantics/cached-property-clone-review.json)
+now rebuild a fresh table for ordinary public declared-only storage after genuine
+object foreach materialization. Each
+nonowning INDIRECT locator targets the copy; existing slot-copy and type-source
+rules unwrap singleton references and retain held aliases. Later foreach observes
+independent writes/unset, escaped aliases retain only the clone constraint after
+source unset, and a shallow Payload survives source retirement until the copy
+releases it. Five source agreements and 378 focused premises have separate cuts.
+This unary-clone evidence excludes dynamic buckets, clone callbacks, readonly,
+active collection and wider cached/type/lifetime histories.
+
 Module300 executes genuine `__clone` callbacks with the selected method's
 declaring scope and the copy's called class. Access is checked before allocation;
 intrinsic access errors retain the authentic `clone()` trace frame. Fixed formal
@@ -74,9 +85,10 @@ For ordinary objects, nonempty readonly `clone(..., withProperties)` updates use
 a separate second window with [captured conversions and write revisions](READONLY-CLONE-UPDATES.md);
 an empty update array uses only the callback window. Generator `__clone`
 creation/discard, property hooks, lazy objects,
-destructors, uncloneable internal objects, Traversable argument unpacking and
-wider lifecycle integration remain required. The two retired callback/readonly
-negative rows keep their historical results; hook/destructor controls remain.
+wider callback/destructor interactions, uncloneable internal objects, Traversable
+argument unpacking and broader lifecycle integration remain required. The two
+retired callback/readonly negative rows keep their historical results; hook and
+wider callback/destructor controls remain.
 
 [Callback sources](../../tests/semantics/readonly_clone_sources.py) retain 20
 normal originals, five declaration errors and one explicit-exit shutdown case.

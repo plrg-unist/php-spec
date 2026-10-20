@@ -2759,7 +2759,8 @@ steps. Broader close/destructor lifetimes remain required.
 now keep declared slots live in retained tables while copied generations keep their
 own values. Dynamic add/unset, shared cells, physical unset buckets and throw cleanup
 pass six exact sources and 743 reached premises/37 raw steps. Foreach and array casts
-read the current table. Cached cloning and collector traversal remain explicit limits.
+read the current table. Declared-only cached cloning is covered below; mixed dynamic
+caches and collector traversal remain explicit limits.
 [Materialization during direct comparison](coverage/semantics/direct-table-comparison-review.json)
 now preserves the original inline-slot walk while nested comparisons use separate
 concrete-table guards and pins. Live slots versus retained cells, newly added dynamic
@@ -4640,6 +4641,14 @@ binds named/unpacked arguments and applies weak property updates in order.
 Genuine clone callbacks and nonempty readonly update windows have separate cuts;
 Generator callbacks, hooks and wider lifecycle
 integration remain open.
+
+[Cached ordinary cloning](coverage/semantics/cached-property-clone-review.json) now
+builds fresh tables for public declared-only objects materialized by foreach.
+Locators target the copy without adding value owners; singleton references unwrap,
+held typed aliases gain a clone source, and shallow Payloads survive source release.
+Five original-source agreements and 378 focused premises retain separate tested
+cuts. Dynamic caches, clone callbacks, readonly and wider GC histories remain open.
+
 [`get_class` testing support](docs/semantics/GET-CLASS.md) observes finite live
 object names and executing lexical scope through direct and callable invocation.
 [Labels and goto](docs/semantics/SOURCE-GOTO.md) now resolve within each callable,

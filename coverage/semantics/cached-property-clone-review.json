@@ -1,0 +1,183 @@
+{
+  "scope": "Unary clone of ordinary public declared-only INSTANCE storage with a genuine foreach-materialized cached table, idle collection, no clone callback or readonly slots. Fresh locators and existing shallow/reference/type-source copying.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_objects.c zend_objects_clone_members allocates a fresh hash, shallow-copies slots and retargets INDIRECT buckets.",
+      "Zend/zend_variables.c zval_add_ref is the copy constructor: unwrap destination when reference count1, otherwise addref. Original source wrapper remains.",
+      "Zend/zend_object_handlers.c rebuild_object_properties_internal and Zend/zend_vm_def.h FE_RESET_R provide the actual foreach materialization/consumer. Existing property type-source attachment/removal governs held aliases."
+    ],
+    "divergence": "No engine bug or intentional divergence; the original singleton forecast misread the copy constructor and is preserved as a classifier failure."
+  },
+  "implementation": {
+    "files": [
+      "spec/semantics/150-clone-runtime.watsup"
+    ],
+    "sha256": "e9c1b6f1c896e0ce99fe8beeb8fe560ba93721aa616ea47a78a0b33d614994da",
+    "basis": "34 additive lines authenticate declared-only source cache, live image and idle/no-callback/no-readonly bounds; rebuild source key/order using fresh array_insert, retarget every INDIRECT to clone, then reuse unchanged clone_slots/merge_item/type-source attachment. Cache metadata adds no cell/Payload owner. Old uncached route and explicit cached Unsupported fallback remain disjoint; no schema/roots/138/261/GC change."
+  },
+  "validation": {
+    "native_first": {
+      "revision": "607d2bc66630e8816aa598a898245c74d8b08988",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/native-first/report.json",
+        "sha256": "abd1a1c84d2dd999dd4c4835718b85ee00a2a3cc4ac3edd0b132ade8e4ac92f6"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/affinity-native-first.json",
+        "sha256": "d91b151e3ad21393b94cf3ff5ba1851636b23e54ba05ca81091f0e18af9f4cf8"
+      },
+      "result": "Original classifier remains false/zero: scalar exact; singleton actual quiet tuple U:1|7|T|1|9|E| retained and independently accepted after correcting forecast. Held/payload unrun. Affinity partial1/4 CPU1, singleton empty argv; stopped/reaped without replay."
+    },
+    "native_remaining": {
+      "revision": "607d2bc66630e8816aa598a898245c74d8b08988",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/native-remaining-repair1/report.json",
+        "sha256": "72e293007c5914055346584fb68e026ae0e261b753fef608fd2145b03aabb76e"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/affinity-native-remaining-repair1.json",
+        "sha256": "16daaaa6eb7901845ce71df66c62ec41b2051a49f2c8cb3c0fcd3e5ebf806fb3"
+      },
+      "result": "Only held/payload exact quiet0; composite four native observations accepted. Both CPU4 masks captured, held full argv/payload empty argv; fast-child qualification retained."
+    },
+    "baseline_four": {
+      "revision": "607d2bc66630e8816aa598a898245c74d8b08988",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/accepted-current-baseline/report.json",
+        "sha256": "1ad9f9f5d7dc5995cbdf55f8e4ca6a4920572f3912132eabcd0ecda70e9869c3"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/affinity-accepted-current-baseline.json",
+        "sha256": "2f92db6532fba69ea7aaa9491b61e17ffaa61257f4cff83a8e502d6497701a37"
+      },
+      "result": "Four checked Unsupported cached ordinary property-table cloning; CLI1/semantic exitNone/quiet stderr, prefixes S:1|2|M| / U: / H: / P:, zero agreements. Complete4 CPU4/full argv/stable/reaped."
+    },
+    "foreach_native": {
+      "revision": "607d2bc66630e8816aa598a898245c74d8b08988",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/native-foreach/report.json",
+        "sha256": "d55a10c56d73c19ed5b066324bfea4b084f21e649425492bd1b7868a1f635f13"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/affinity-native-foreach.json",
+        "sha256": "a7bed533f32915fa958b8c66d2e9f9ea6d4efe193aa501f664b9ba77691b96b0"
+      },
+      "result": "One fresh later-foreach discriminator, exact42 quiet0. CPU1 mask captured/empty argv; short child not replayed."
+    },
+    "foreach_baseline": {
+      "revision": "607d2bc66630e8816aa598a898245c74d8b08988",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/accepted-current-foreach-baseline/report.json",
+        "sha256": "81be911989fdd64704c6d2e0622135138fa02a2cf4223e21d0d2129bf91f560e"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/affinity-accepted-current-foreach-baseline.json",
+        "sha256": "8acf32871bf2e8de60eb35b450af137654f4fa8f7918f9b5ebfc38ec4907fad5"
+      },
+      "result": "Checked same cached-clone Unsupported/CLI1/None/F:/quiet stderr, zero agreement; complete1 CPU1/full argv/stable/reaped."
+    },
+    "source_four": {
+      "revision": "e4d73c83ca84183fb46c2ad407f0b2f42e7ead46",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/changed-model-gbtt7_wt/report.json",
+        "sha256": "d5f86b6bfde616e9781176a6e293889b8c40c841cc64baf3852771de730d68a2"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/affinity-changed-source-110.json",
+        "sha256": "240f0e7c570a0286003f51ac0b07f18e63fe6c123b3f7b55cffc80e5bf3e2be3"
+      },
+      "result": "Four exact normal native agreements, quiet0/stable/reaped; complete4 CPU4/full argv."
+    },
+    "foreach_source": {
+      "revision": "e4d73c83ca84183fb46c2ad407f0b2f42e7ead46",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/changed-foreach-model-b642rl4p/report.json",
+        "sha256": "64cffebcde5acb4d2f40e2add9fd34d0b22025b2615e53434c0abf7d4e250db3"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/affinity-changed-foreach-source-110.json",
+        "sha256": "cd9f43c8bfd0dd023bb9df7e55f60bb88ebed1c46cb612fd9029f850f1a7770b"
+      },
+      "result": "One exact normal native agreement42, quiet0/stable/reaped; complete1 CPU4/full argv."
+    },
+    "focused_parse_failure": {
+      "revision": "bd286427e5edf864156231f80b242d236b861183",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-protocol-u4ferxip/report.json",
+        "sha256": "a4b2e0b9586ec962e7e0ae75a2aa2e47d7d5af2bfd1cb2d295f6c7808dacff6c"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/affinity-state-110.json",
+        "sha256": "839706e3e63cdde3bed3cb006325a857491a6dded1b4ec68491b31d6b194f713"
+      },
+      "result": "First AL parse diagnostic before application, all groups unrun/zero credit. Sole correction TABLE (|S_front.ARRAYS|); partial1/8 CPU1 observer stopped/reaped."
+    },
+    "focused_first": {
+      "revision": "c82ba3736e7095e2d91fa11136bc96ff7b0ac6f6",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-protocol-l0876h4l/report.json",
+        "sha256": "dd871747f1329f6b6f73eb7d8189887ac31035bb3f49d8d9f2f11e9707b7d1c5"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/affinity-state-110-repair1.json",
+        "sha256": "e5aab4da559a3de481c6873dfccdb07bbd7e4733cecf84cf51fe576fa1b273d8"
+      },
+      "result": "Enclosing false retained: foreach92 and singleton91 exacttrue accepted183=171 reached+12 derived; held99 rawfalse0, payload unrun. All six workers quiet0/stable/reaped, partial6/8 CPU5/full argv observer stopped/reaped."
+    },
+    "held_diagnostic": {
+      "revision": "c82ba3736e7095e2d91fa11136bc96ff7b0ac6f6",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/diagnostic-110-808spumx/report.json",
+        "sha256": "fdbea3fe0b9a229c3d2193270772f83e58ecae048e9c4fb550dd475094c5ecb9"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/affinity-held-diagnostic-110.json",
+        "sha256": "aaadb6c0bfe2e3a8627a7b6f7962ac229cb6a8cc9b1cc8b994b14acd62228ac8"
+      },
+      "result": "Exact shared-initial prefixes51/57/62/78/85/99 -> true,true,true,true,false,false; one SL90/23.673s, diagnostic/source credit0. Localized interned string-literal fixture assertion; complete1 CPU1/full argv/stable/reaped."
+    },
+    "focused_remaining": {
+      "revision": "4a744884aa542a94d89376ec267fcbb19b4aa918",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-protocol-_tn3ihh5/report.json",
+        "sha256": "516a39c45fc9281febe91ff595cb19d2eefa0e290affa397b11b7ba186c46cd6"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110/.tools/cached-property-clone-probes-110/affinity-state-110-repair2.json",
+        "sha256": "9739099b68795e49378aa452cf928919c6851da0cd0814a6be2cd0a771f54d8a"
+      },
+      "result": "Only corrected held99 plus unrun payload96 exacttrue,195 reached. AL90 then strictSL90, quiet0/stable/reaped; complete4 CPU1/full argv. Combined378=366 reached+12 derived with retained183; no accepted replay."
+    }
+  },
+  "reproduction": {
+    "cwd": "/home/user/workspace/php-spec/.tools/cached-property-clone-private-110",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "profile": "tests/semantics/profile.json",
+    "caps": "Serial native45/model60/outer75/100000steps; focused AL90 then strictSL90/cachefalse/dettrue/fail-first/full reap. Checked preparation invokes zero applications.",
+    "gate": "Ready watcher at assigned CPU then env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c CPU python3 -u .tools/cached-property-clone-probes-110/run.py native --revision 607d2bc66630e8816aa598a898245c74d8b08988. Only unrun held/payload continued through run-repair1.py; observational baseline4 used that corrected composite. Separate run-foreach.py native then baseline at same revision.",
+    "source": "Ready capture-candidate-affinity.py 4 changed-model- 4 changed-source-110; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u .tools/cached-property-clone-probes-110/run-repair1.py changed --revision e4d73c83ca84183fb46c2ad407f0b2f42e7ead46. After full reap, fresh changed-foreach-model-/1/changed-foreach-source-110 observer then the same prefix with run-foreach.py changed at the same revision.",
+    "focused": "Ready watch-state-affinity-repair1.py 5 then env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u tests/semantics/cached_property_clone_protocol.py --revision c82ba3736e7095e2d91fa11136bc96ff7b0ac6f6. One exact-prefix SL diagnostic follows under CPU1; corrected remaining actor uses watch-state-affinity-repair2.py 1 then env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u tests/semantics/cached_property_clone_protocol.py --case held --case payload --revision 4a744884aa542a94d89376ec267fcbb19b4aa918.",
+    "recovery": "Ignored originals/drivers/raw fixtures remain at original paths. Recover versioned runtime/tests from tested commits; no fresh rebuild claim."
+  },
+  "tools": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    ".tools/cached-property-clone-probes-110/run.py": "67fbf8ce7091aa58cb689b8a2dced0753ae61caf4832897773072ba01cb6e4cb",
+    ".tools/cached-property-clone-probes-110/run-repair1.py": "dd1ab354346d8acd7be627bdcd5d4cc39e9ee94c7c24ee038ae0fad411c355a3",
+    ".tools/cached-property-clone-probes-110/run-foreach.py": "4fe42761093a2e2afe3f929b797bc61548218331de527c0b4cf89be6fab94da8"
+  },
+  "limits": "Validated scalar, singleton/held int aliases and ordinary untyped Payload histories only. Later foreach is an existing consumer, type-source behavior reuses138. Unary evidence does not renew intrinsic clone/update campaigns. Dynamic buckets, callbacks, readonly, active collection, private/hooked/array-valued source histories and broader cache/type/lifecycle forms remain partial. No general GC or full-core claim.",
+  "review": {
+    "status": "accepted; independently reviewed",
+    "reviewer": "/root/class_review_84",
+    "semantic": "Native/composite baseline, source5, separate focused183/195 and concise publication independently accepted; original forecast/parse/Boolean failures and diagnostic retain zero. Actual-parent preservation is separately reviewed before integration."
+  }
+}

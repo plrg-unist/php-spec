@@ -1116,6 +1116,8 @@ test-semantics: build
 	python3 tests/semantics/clone_compiler.py
 	python3 tests/semantics/clone_expressions.py
 	python3 tests/semantics/clone_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/cached_property_clone_cases.json
+	python3 tests/semantics/cached_property_clone_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/clone_controls.py
 	python3 tests/semantics/get_class_intrinsic.py
 	python3 tests/semantics/get_class_protocol.py

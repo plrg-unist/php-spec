@@ -1096,39 +1096,30 @@ joined actor, accepted replay or renewed execution credit.
 The earlier nonowning-copy arithmetic route retains source10/state767 in its
 [review ledger](coverage/semantics/copied-arithmetic-warning-review.json).
 
-Public virtual implicit `int` Child setters now call the lexical root Parent
-setter through naked `parent::$value::set(f())`. The parent target borrows This;
-the outer setter marker retains it when the argument callback clears the global
-receiver. Parent receives 7 while Child retains 20, with private secret 7 versus
-99 and Grand called scope. The parent call returns NULL; the outer assignment
-still yields its literal 20. A supplied Parent throw or an array-argument
-TypeError cancels Child continuation/commit, preserves destination 42 and
-releases the receiver before catch. Fresh TypeError traces name the Parent setter.
-Wrong-kind get-from-set rejects compilation before output.
+Ordinary public declared-only objects now clone after foreach materializes their
+property table. Module 150 builds fresh table metadata and retargets nonowning
+locators to the copy, reusing shallow slot copies and typed-reference attachment.
+Singleton wrappers unwrap only in the copy; held aliases share the cell and retain
+the clone constraint after source unset. Later foreach sees independent writes and
+skips the copy's unset slot. A shallow Payload survives source destruction and is
+released after the copy's destructor.
 
-Four exact source agreements pass at `be38e926a`/407. Focused 459 = 445 reached +
-14 derived pass in three histories at `f7fde2808`/407, including real argument
-callback/projection, typed reception, private/called scope, NULL-versus-20 receipt,
-receiver cleanup, supplied identity, compiler control and budget resumption.
-Four native originals and the genuine four compiler Unsupported observations retain `9a3c31b66`;
-baseline agreement stays zero. Native affinity is partial 1/4 with full captured
-argv; model/state workers have complete affinity and are stable/reaped. No
-semantic failure, retry or historical replay occurred.
-[Parent set-hook review](coverage/semantics/parent-set-hook-review.json).
+Five exact source agreements pass at `e4d73c83c`/407. Focused 378 = 366 reached +
+12 derived retains foreach 92/singleton 91 at `c82ba3736` and held 99/payload 96 at
+`4a744884a`. Real clone fronts check fresh metadata, cache roots, ordered type
+sources, escaped-alias rejection/removal, teardown and budget resumption.
+The genuine five baselines are checked cached-clone Unsupported/zero agreement.
+The first native singleton forecast was wrong: Zend's copy constructor unwraps a
+sole reference; original raw observations are retained without replay. One fixture
+parse failure, held Boolean false and the six-prefix diagnostic retain zero credit.
+The fixes only parenthesize a TABLE index and observe the interned string literal.
+[Cached property-clone review](coverage/semantics/cached-property-clone-review.json).
 
-Modules 403/382 add only the authenticated public virtual implicit-int root/Child
-source/link edge; 417 reuses its borrowed target/record and ordinary argument,
-receive, return and cleanup machinery. Get compatibility is structural, with
-CLASS108's evidence retained at its original cuts. Backing/asymmetric or wider
-setter hierarchies/types, explicit parameters, other argument/result producers
-and wider lifetime/reentry remain partial. No generic cleanup/root/GC change.
-
-Composed over `d2bae8d5eb`/407, preserving the incoming manifest and all
-other incoming runtime/schema/default/root bytes. Incoming reference-return histories,
-INI/DEFINE, missing-CV comparisons, arithmetic Warnings and typed-ALIAS/float-key
-literal selectors are absent; the bad argument is a DIRECT primitive array.
-Four source agreements at be38 and 459 focused premises at f7 retain their
-tested cuts; no joined actor or accepted replay was needed.
+Only 34 lines in module 150 change; existing foreach, reference/type-source and
+cleanup machinery is consumed. Native sampling remains qualified, all model/state
+workers are stable/reaped, and historical clone campaigns are not renewed.
+Dynamic buckets, callbacks, readonly, active collection and wider cached/type/
+lifetime histories remain partial. No generic storage/root/GC change.
 
 Retained propertyless Stringable `define` names now receive captured NULL flags
 with primitive candidates in admitted user-global/class-name domains. One module400
