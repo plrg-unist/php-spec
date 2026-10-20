@@ -147,7 +147,7 @@ $heap_owners($heap_graph(S_get_enter),HOBJECT n_child) = 1
 ''')
 GET_EXIT = lines(r'''
 S_get_exit.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_get) :: (DESTRUCTOR_FRAME_EXIT pdestructionframe_get) :: (PROPERTY_COALESCE_RESULT ppropertycoalesce true) :: ptask_get_tail*
-pdestructionframe_get.FUNCTION = ppropertycoalesce.GET
+pdestructionframe_get.FUNCTION = pmethoddesc_get.FUNCTION.ORIGIN
 $property_coalesce_exit(S_get_exit,S_get_exit.TODO,ppropertycoalesce,true) = (pdestructionframe_get)
 pdestructionframe_get <- S_get_exit.DESTRUCTION.FRAMES
 ~$pc_in_isset(S_get_exit,n_child) /\ $pc_in_get(S_get_exit,n_child) /\ $pc_guard(S_get_exit)
@@ -232,7 +232,7 @@ ppropertycoalesce_tail = ppropertycoalesce[.TAIL = eps]
 ppropertycoalesce_caller = ppropertycoalesce[.CALLER = (pcallcontext_isset)]
 ~$property_coalesce_valid(S_isset_result,ppropertycoalesce_caller)
 S_isset_exit.DESTRUCTION.FRAMES = pdestructionframe_isset :: pdestructionframe_tail*
-pdestructionframe_wrong = pdestructionframe_isset[.FUNCTION = ppropertycoalesce.GET]
+pdestructionframe_wrong = pdestructionframe_isset[.FUNCTION = pmethoddesc_get.FUNCTION.ORIGIN]
 S_wrong_exit = S_isset_exit[.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_isset) :: (DESTRUCTOR_FRAME_EXIT pdestructionframe_wrong) :: (PROPERTY_COALESCE_RESULT ppropertycoalesce false) :: ptask_isset_tail*][.DESTRUCTION.FRAMES = pdestructionframe_wrong :: pdestructionframe_tail*]
 $property_coalesce_exit(S_wrong_exit,S_wrong_exit.TODO,ppropertycoalesce,false) = eps
 ~$pc_in_isset(S_wrong_exit,n_child) /\ ~$call_task_valid(S_wrong_exit,PROPERTY_COALESCE_RESULT ppropertycoalesce false)
