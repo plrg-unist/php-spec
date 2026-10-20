@@ -130,6 +130,12 @@ in the request object-store pass. It is neither released before caller catch nor
 owned by the transient current copy. Cache/input aliases and a distinct throwing
 cache preserve their separate counts in the
 [pending-buffered review](../../coverage/semantics/generator-pending-buffered-throw-review.json).
+Pending NEXT can preserve that one owning input without a current copy. During
+last-owner cleanup, the physical child's storage pin releases its cache before
+the queued ancestor finally blocks. A cache throw reaches the caller without
+chaining an older exception that is merely globally owned; the orphan input
+remains request-late. See the
+[buffered NEXT review](../../coverage/semantics/generator-parked-pending-buffered-next-review.json).
 At a bare yield in one by-value array `foreach`, parked close instead transfers
 the iteration container count into request retention before releasing CV/context
 owners. It removes that iterator without decrementing the array; visited-item

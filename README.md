@@ -1249,6 +1249,10 @@ receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit
 getter has its own copy. See the
 [parked NEXT review](coverage/semantics/generator-parked-pending-owning-next-review.json).
+With one owning buffered simple-CV input at a parked child, pending `next()`
+likewise returns NULL without copying current or changing that input. Closing
+orphans its count; row COW and shared-cell writes preserve its separate lifetime.
+See the [buffered NEXT review](coverage/semantics/generator-parked-pending-buffered-next-review.json).
 Nonpending body entry, wider parked API leaves and waiting-result GC remain open.
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller

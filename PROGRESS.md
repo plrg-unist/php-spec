@@ -7,6 +7,32 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pending zero-argument NEXT now also returns before dispatch through native links
+to a parked simple-CV used yield with one owning LIVE input. Only the selected
+receiver initializes; the input and physical child/frame remain unchanged. NULL
+adds no current snapshot. Close orphans the input while cache storage cleanup
+runs before queued ancestor finally blocks. Real row COW leaves the old array
+with the input alone, and embedded input cells remain mutable after close.
+SEND overwrite, nonpending/body entry, wider inputs/owners/loops and GC stay open.
+[Buffered NEXT review](coverage/semantics/generator-parked-pending-buffered-next-review.json).
+
+Four source agreements and strict406 pass at 3a95fa9a3; 735 new premises
+(346 author +389 independent;715 local +20 generic) and four-fixture elaboration
+pass at 2f77bb8f4/406 with identical module289 runtime bytes. Elaboration earns zero
+execution credit. Native4 and genuine unchanged public force-close Unsupported
+retain 6d777d725/406, zero agreement. One peer source CLI timeout during confirmed
+CPU5 contention is retained at zero; its unchanged exclusive retry passes at the same
+100/120 caps, then the unrun source passes. All state checks pass first attempts;
+no historical renewal or GC credit. All actors reaped and CPU5 released.
+
+Composed over `396e8d14f2`/406 with tested module289 unchanged;
+all other incoming runtime/schema/default/root/ordered-manifest/pipeline bytes
+remain parent-exact. Source-selector review found no concrete interaction with
+ordinary typed reference-return histories, INI/DEFINE, arithmetic warnings or
+float-key debt producers, which are absent here. Source/strict cuts stay at 3a95;
+735 state premises/elaboration retain 2f77. Composition adds no execution credit.
+No joined actor or accepted replay was needed.
+
 Direct/selected positional `ini_set(NULL, stdClass)` now resumes Deprecated
 handlers for retained table-free objects with direct quiet primitive properties.
 Returning handling then rejects parameter2 with an empty option and the same
@@ -140,8 +166,8 @@ Only the selected receiver clears initialization; the physical frame/site and
 copied return stay parked. NULL adds no current snapshot. A sole receiver's cache
 can therefore run before caller delivery without chaining an older globally kept
 Exception. Real row COW leaves the copied return as the old-array owner, and
-returned cells remain mutable after close. Nonpending/body entry, wider parked
-NEXT and waiting-result GC stay open.
+returned cells remain mutable after close. At that cut, nonpending/body entry,
+wider parked NEXT and waiting-result GC remained open.
 [Parked NEXT review](coverage/semantics/generator-parked-pending-owning-next-review.json).
 
 Four originals and 672 new premises (320 author +352 independent;652 local +20
