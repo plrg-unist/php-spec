@@ -1,0 +1,78 @@
+{
+  "scope": "CV receiver and literal inherited private property ??= with typed-bool Isset, existing absent-return Get, inherited Set, and named no-argument by-value int RHS. Re-fetch current receiver after RHS; finite Get0/NULL, replacement/NULL write and supplied Set throw histories.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_observations_accepted": true,
+  "native_revision": "25f8d3066b9515cc69359f9d077018943369cb5d",
+  "cases": [
+    {
+      "id": "retarget",
+      "source_file": "magic-coalesce-assignment-retarget.php",
+      "source": "<?php\nclass CoalesceParent111 {\n    private int $value = 41;\n    public int $tag = 1;\n    public function __isset(string $name): bool { echo 'I', $this->tag, '|'; return false; }\n    public function __get($name) { global $error; echo 'G|'; throw $error; }\n    public function __set(string $name, $incoming): void {\n        global $child, $rhs;\n        echo 'S', $this->tag, ':', $incoming, '|';\n        $this->value = $incoming;\n        $rhs = 99;\n        $child = null;\n    }\n    public function peek(): int { return $this->value; }\n    public function __destruct() { echo 'D', $this->tag, '|'; }\n}\nclass CoalesceChild111 extends CoalesceParent111 {}\nfunction rhs111(): int {\n    global $child, $replacement;\n    echo 'R|';\n    $child = $replacement;\n    echo 'r|';\n    return 7;\n}\n$error = new Exception('same111');\n$replacement = new CoalesceChild111();\n$replacement->tag = 2;\n$child = new CoalesceChild111();\n$rhs = 5;\n$result = 42;\necho 'N:';\n$result = ($child->value ??= rhs111());\necho 'A|', $result, '|', $rhs, '|', $replacement->peek(), '|';\nunset($child, $replacement, $error);\necho 'E|';\n",
+      "source_sha256": "206d3e2c685f65b867cf72ce84e9394b1c266710e63fceb48e92f52c96c2be46",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111/.tools/magic-coalesce-assignment-probes-111/retarget-untyped.php",
+      "stdout_base64": "TjpJMXxSfEQxfHJ8UzI6N3xBfDd8OTl8N3xEMnxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "assignment_line": 32,
+      "native_raw_sha256": "046fe6f7cc22ffa4547cd2841ff179deb70f14883959141f89105a1e12fd0231",
+      "native_report_sha256": "2a6cb59da8a34856daf72fdf3192a5c150c3db14787deac686c379a7a9d12c8c",
+      "status": "normal"
+    },
+    {
+      "id": "zero",
+      "source_file": "magic-coalesce-assignment-zero.php",
+      "source": "<?php\nclass CoalesceParent111 {\n    private int $value = 41;\n    public int $tag = 1;\n    public function __isset(string $name): bool { echo 'I', $this->tag, '|'; return true; }\n    public function __get($name) {\n        global $child;\n        echo 'G', $this->tag, '|';\n        $child = null;\n        return 0;\n    }\n    public function __set(string $name, $incoming): void { global $error; echo 'S|'; throw $error; }\n    public function __destruct() { echo 'D', $this->tag, '|'; }\n}\nclass CoalesceChild111 extends CoalesceParent111 {}\nfunction rhs111(): int { global $error; echo 'R|'; throw $error; }\n$error = new Exception('same111');\n$child = new CoalesceChild111();\n$result = 42;\necho 'Z:';\n$result = ($child->value ??= rhs111());\necho 'A|', $result, '|';\nunset($child, $error);\necho 'E|';\n",
+      "source_sha256": "4e38ebad6fe6d023d7055d2d2d2aab33af3d60e0d25179ed08706823a557b9ea",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111/.tools/magic-coalesce-assignment-probes-111/zero-untyped.php",
+      "stdout_base64": "WjpJMXxHMXxEMXxBfDB8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "assignment_line": 21,
+      "native_raw_sha256": "948af4cbf757cb6e42c9d153761e7271daa37dcf4b799783ac045078f3106a94",
+      "native_report_sha256": "2a6cb59da8a34856daf72fdf3192a5c150c3db14787deac686c379a7a9d12c8c",
+      "status": "normal"
+    },
+    {
+      "id": "null-write",
+      "source_file": "magic-coalesce-assignment-null-write.php",
+      "source": "<?php\nclass CoalesceParent111 {\n    private int $value = 41;\n    public int $tag = 1;\n    public function __isset(string $name): bool { echo 'I', $this->tag, '|'; return true; }\n    public function __get($name) { echo 'G', $this->tag, '|'; return null; }\n    public function __set(string $name, $incoming): void { global $error; echo 'S|'; throw $error; }\n    public function __destruct() { echo 'D', $this->tag, '|'; }\n}\nclass CoalesceChild111 extends CoalesceParent111 {}\nfunction rhs111(): int {\n    global $child;\n    echo 'R|';\n    $child = null;\n    echo 'r|';\n    return 7;\n}\n$error = new Exception('same111');\n$child = new CoalesceChild111();\n$result = 42;\necho 'E:';\ntry { $result = ($child->value ??= rhs111()); echo 'A|'; }\ncatch (Error $caught) { echo 'C|', $caught->getMessage(), '|', $result, '|'; }\necho 'F|';\nunset($child, $caught, $error);\necho 'E|';\n",
+      "source_sha256": "8f722f4121e48fd566ab38205d60755eb0160d83236d5ce0391123a1eab1ad24",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111/.tools/magic-coalesce-assignment-probes-111/null-write-untyped.php",
+      "stdout_base64": "RTpJMXxHMXxSfEQxfHJ8Q3xBdHRlbXB0IHRvIGFzc2lnbiBwcm9wZXJ0eSAidmFsdWUiIG9uIG51bGx8NDJ8RnxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "assignment_line": 22,
+      "native_raw_sha256": "77fdfecdd9df399dc5222b0262964d82494270734394d4d9746d3eb31ab605e7",
+      "native_report_sha256": "2a6cb59da8a34856daf72fdf3192a5c150c3db14787deac686c379a7a9d12c8c",
+      "status": "normal"
+    },
+    {
+      "id": "set-throw",
+      "source_file": "magic-coalesce-assignment-set-throw.php",
+      "source": "<?php\nclass CoalesceParent111 {\n    private int $value = 41;\n    public int $tag = 1;\n    public function __isset(string $name): bool { echo 'I', $this->tag, '|'; return false; }\n    public function __get($name) { global $error; echo 'G|'; throw $error; }\n    public function __set(string $name, $incoming): void {\n        global $child, $error, $rhs;\n        echo 'S', $this->tag, ':', $incoming, '|';\n        $child = null;\n        $rhs = 99;\n        throw $error;\n    }\n    public function __destruct() { echo 'D', $this->tag, '|'; }\n}\nclass CoalesceChild111 extends CoalesceParent111 {}\nfunction rhs111(): int { echo 'R|'; return 7; }\n$error = new Exception('same111');\n$child = new CoalesceChild111();\n$rhs = 5;\n$result = 42;\necho 'X:';\ntry { $result = ($child->value ??= rhs111()); echo 'A|'; }\ncatch (Exception $caught) { if ($caught === $error) { echo 'C|'; } echo $result, '|'; }\necho 'F|';\nunset($child, $caught, $error);\necho 'E|';\n",
+      "source_sha256": "7e37ba2e913f46738cc5da5f9335e179323dc8fc423638219e515410935abbb0",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111/.tools/magic-coalesce-assignment-probes-111/set-throw-untyped.php",
+      "stdout_base64": "WDpJMXxSfFMxOjd8RDF8Q3w0MnxGfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "assignment_line": 23,
+      "native_raw_sha256": "182163dff599010bb03a08e367da5ca5a142eb51ff9370bc630bee44ab1a3174",
+      "native_report_sha256": "2a6cb59da8a34856daf72fdf3192a5c150c3db14787deac686c379a7a9d12c8c",
+      "status": "normal"
+    }
+  ]
+}
