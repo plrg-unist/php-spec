@@ -35,8 +35,9 @@ Surviving aliases keep their value and ownership. See the
 and the
 [live-left review](../../coverage/semantics/undefined-spaceship-right-review.json).
 After an admitted Warning at any of the seven operators, the opposing CV can hold a live flat
-array of primitive values without element references. Against frozen NULL, empty
-arrays compare as false and nonempty arrays as true. At `<=>`, empty gives 0;
+array of primitive values without element references. Against frozen NULL,
+comparison uses the array's Boolean truth value: empty is false and nonempty true.
+At `<=>`, empty gives 0;
 nonempty gives -1 with NULL left and +1 with NULL right.
 This includes both-missing and same-name entry: `$x <=> $x` can return -1 after
 the handler creates `[false]`. Current reference/COW bindings and next-index
