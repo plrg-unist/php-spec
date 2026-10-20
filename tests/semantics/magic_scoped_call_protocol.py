@@ -23,11 +23,13 @@ def $sc_stage(S,SC_PACK) = true
 def $sc_stage(S,SC_RECEIVE porigin) = true
   -- if S.TODO = (TYPE_RECEIVE porigin 0) :: ptask*
 def $sc_stage(S,SC_ENTER n ptbytes) = true
+  -- if S.TODO = (RETURN_UNWIND (KNOWN (PINT 7)) porigin_return?) :: ptask*
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = MAGIC_METHOD_TARGET pmagicmethodcall n_array pvalue*
   -- if S.STORE[n] = DEFINED PNULL
   -- if $sc_output(S.EVENTS) = ptbytes
 def $sc_stage(S,SC_MUTATE n_child n_rhs) = true
+  -- if S.TODO = (RETURN_UNWIND (KNOWN (PINT 2)) porigin_return?) :: ptask*
   -- if S.CURRENT = (pcallcontext)
   -- if S.STORE[n_child] = DEFINED PNULL /\ S.STORE[n_rhs] = DEFINED (PINT 99)
   -- if $sc_output(S.EVENTS) = $ptascii("N:B|M|")
