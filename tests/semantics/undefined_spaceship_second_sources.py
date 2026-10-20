@@ -7,7 +7,7 @@ from undefined_spaceship_second_cases import CASES
 
 family.CASES = CASES
 family.UNSUPPORTED = {'second-spaceship-removed-left-boundary': ('spaceship warning changed opposing scalar', b'B|H|')}
-family.BASELINE = ('error-handler ingress requires a producer continuation', b'')
+family.BASELINE = ('spaceship warning changed opposing scalar', b'H:1:1::10;')
 family_fingerprint = family.fingerprint
 
 
