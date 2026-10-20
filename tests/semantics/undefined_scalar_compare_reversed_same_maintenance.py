@@ -40,7 +40,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
-    run({'ge-missing-right': SINGLE['ge-missing-right'],
+    run({'ge-missing-right-false': SINGLE['ge-missing-right-false'],
          'peer-both-missing-greater-equal-left-bound-to-target-reference':
              BOTH['peer-both-missing-greater-equal-left-bound-to-target-reference']},
         checks, PREFIX, args.output,
