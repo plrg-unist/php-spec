@@ -30,6 +30,7 @@ dec $spaceship_read_scalar(pvalue) : bool
 dec $spaceship_read_operand(pstate, poperand) : bool
 dec $spaceship_read_other(pstate, perrorread) : bool
 dec $spaceship_read_again(pstate, perrorread) : bool
+dec $spaceship_checked_missing(pstate, perrorread) : bool
 dec $scalar_compare_read_other(pstate, perrorread) : bool
 dec $scalar_compare_read_again(pstate, perrorread) : bool
 dec $scalar_compare_missing_pair(pstate, perrorread) : bool
@@ -433,6 +434,13 @@ def $spaceship_read_again(S, perrorread) = true
   -- if $error_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
   -- if $error_missing_operand(S, perrorread.INPUT)
 def $spaceship_read_again(S, perrorread) = false -- otherwise
+;; OP1 was already checked before OP2 warned. If the callback unsets its CV,
+;; zend_compare consumes UNDEF quietly; do not perform a second variable read.
+def $spaceship_checked_missing(S, perrorread) = true
+  -- if $spaceship_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
+  -- if perrorread.TASK = BINARY_RIGHT SPACESHIP (VARIABLE n_left* z_left) z
+  -- if $error_missing_operand(S, VARIABLE n_left* z_left)
+def $spaceship_checked_missing(S, perrorread) = false -- otherwise
 ;; Comparison helpers test raw physical OP1, then current OP2; >/>= swap them.
 ;; A single missing CV with a defined scalar counterpart keeps the source shape.
 ;; The missing value freezes NULL; the defined opposing CV keeps its live wrapper.
@@ -481,6 +489,10 @@ def $scalar_compare_missing_pair(S, perrorread) = false -- otherwise
 def $error_read_resume(S, perrorread, ptask_tail*) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "spaceship warning changed opposing scalar"]
   -- if ~$spaceship_read_other(S, perrorread)
   -- if ~$spaceship_read_again(S, perrorread)
+  -- if ~$spaceship_checked_missing(S, perrorread)
+def $error_read_resume(S, perrorread, ptask_tail*) = S[.TODO = (BINARY_RIGHT SPACESHIP (KNOWN PNULL) z) :: ptask_tail*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]
+  -- if $spaceship_checked_missing(S, perrorread)
+  -- if perrorread.TASK = BINARY_RIGHT SPACESHIP poperand z
 def $error_read_resume(S, perrorread, ptask_tail*) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed right operand"]
   -- if ~$scalar_compare_read_other(S, perrorread)
   -- if $scalar_compare_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) =/= (perrorread)
