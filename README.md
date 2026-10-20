@@ -48,7 +48,7 @@ handler. Separate table counts preserve old array owners and omitted new-array
 owners; inverse retargeting cancels them before cleanup. Initial scalar and
 array plans remain distinct, while same-table transfer and restored COW keep
 ordinary values distinct from PHP reference wrappers.
-These flat tables also admit reference leaves holding null/bool/int/float
+These bounded tables also admit reference leaves holding null/bool/int/float
 or validated byte strings, either untyped or constrained by validated ordinary
 instance-property type sources. Debt-bearing payloads require every source object
 to survive logical pruning. Shared copies keep typed rejection/coercion; explicit property
@@ -56,6 +56,11 @@ unset removes its constraint before singleton copying. Child-table copies preser
 shared leaf aliases and unwrap singleton leaves; string byte writes keep earlier
 snapshots independent
 of both leaf references and outer table/wrapper count corrections.
+Untyped reference leaves may also hold one mutable nonpool child table of DIRECT
+null/bool/int/float or validated byte strings. Its table must survive logical
+pruning and carry no HARRAY debt; leaf CELL debt and deeper owning edges remain
+excluded. Shared leaf references propagate nested writes, while singleton leaf
+copies unwrap before child-array COW and preserve independent snapshots.
 Direct string CV/cell payloads, unsafe deficit retirement and wider domains remain
 Unsupported. Duplicate replacement and later items stay ordered.
 

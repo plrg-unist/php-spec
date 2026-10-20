@@ -301,8 +301,8 @@ records normal, deletion and supplied-throw paths with balanced inverse cleanup.
 The [string-alias ledger](../../coverage/semantics/array-literal-float-string-alias-leaf-review.json)
 checks string byte writes across shared and singleton leaf copies, independent
 snapshots, deletion and supplied throws. Only the embedded leaf-cell predicate
-broadens; direct string CV/CELL retargets, array/object-valued or indebted
-leaves and recursive graphs remain Unsupported.
+broadens; direct string CV/CELL retargets, array-valued leaves outside the bound
+below, object-valued or indebted leaves and recursive graphs remain Unsupported.
 Embedded null/bool/int/float or validated byte-string ALIAS leaves also admit
 validated ordinary instance-property type sources. Both ordinary table-CV and
 wrapper-payload continuations use this bound. For debt-bearing payloads, every
@@ -318,6 +318,17 @@ independent snapshots, with singleton byte COW after explicit property unset.
 Global direct string CV/CELL retarget admission remains unchanged.
 Typed arrays/objects, static/hooked/queued or retired sources,
 coercion/backing records and unsafe debt retirement remain Unsupported.
+Untyped embedded array-valued ALIAS leaves now admit one mutable nonpool child
+table of DIRECT null/bool/int/float or validated byte strings. The child has no
+outgoing owner edge or HARRAY debt, and the leaf has no CELL debt or
+type/coercion/backing records. Logical-pruned liveness includes the child, not
+only the leaf CELL. This bounded shape needs no recursive eligibility or new
+count/prune algorithm: surviving outer tables keep the leaf and its child edge.
+Shared leaf writes propagate; singleton leaf copies unwrap before child-array
+COW, keeping snapshots independent. The
+[array-alias-leaf ledger](../../coverage/semantics/array-literal-float-array-alias-leaf-review.json)
+separates table sharing with sibling slots and covers deletion, supplied throw,
+inverse balancing and cleanup. Deeper, typed or indebted descendants stay out.
 
 Missing-key module409 retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,

@@ -52,8 +52,8 @@ checks child COW after ordinary names disappear and debt cancellation. The
 [flat-array review](../../coverage/semantics/array-literal-float-ref-arrays-review.json)
 checks these counts through stable insertion, deletion, throw and inverse cleanup.
 Debt cells must keep positive effective counts. Array-valued type sources,
-nested or pooled/immutable arrays, array/object-valued or indebted embedded leaves, other owning
-values, static/hooked/queued or retired sources,
+pooled/immutable arrays, nesting or array leaves outside the bound below,
+object-valued or indebted embedded leaves, other owning values, static/hooked/queued or retired sources,
 coercion/backing records, active collection, effective-zero retirement and
 outstanding debt at request end are explicit Unsupported before pruning. Isolated
 compiler images reject both runtime fields. The [deficit review](../../coverage/semantics/array-literal-float-ref-deficit-review.json)
@@ -68,7 +68,7 @@ cancels both, while same-table insertion adds no bias. Only unmarked ordinary CV
 and mutable nonpool flat tables with these bounded DIRECT or ALIAS entries are
 admitted. Combined CELL/table
 debt safety uses logical pruning before subtracting either count bias. Positive
-table targets keep their primitive leaf edges; table debt does not subtract leaf
+table targets keep their admitted leaf edges; table debt does not subtract leaf
 owners. Deletion/throw deficits,
 restored COW and retired original CV cells are checked in the
 [ordinary array-CV ledger](../../coverage/semantics/array-literal-float-array-cv-review.json).
@@ -110,6 +110,15 @@ adds shared byte writes, independent snapshots and weak scalar coercion while
 preserving rejection and property-unset singleton copying. Global direct string
 CELL admission stays unchanged. Typed array/object leaves and wider type-source
 lifetimes remain Unsupported.
+Untyped embedded ALIAS leaves may also own one mutable nonpool child array of
+DIRECT null/bool/int/float or validated byte strings. Each leaf is debt-free and
+its child table has no HARRAY debt or outgoing owner edge; both must survive
+logical pruning. This finite shape preserves the positive-target lifetime proof
+without changing count/prune algorithms. Child-table COW keeps shared leaf
+references, while singleton leaves unwrap before copying their array payload.
+Independent child snapshots and sibling writes distinguish all three ownership
+levels in the [array-alias-leaf ledger](../../coverage/semantics/array-literal-float-array-alias-leaf-review.json).
+Typed array leaves, deeper nesting and indebted descendants remain Unsupported.
 
 `tests/semantics/reference_wrappers.py` checks original source regressions,
 copying and rebinding, budget resumption, ownership graphs, cycle collection and
