@@ -538,6 +538,24 @@ Initial leading LEFT/quiet RHS untyped scalar refs and a surviving old-target al
 bound the slice. Before final dispatch and store the old target must be PINT/PFLOAT,
 avoiding refcounted-target destruction. Wider values/producers/lifetimes remain partial.
 
+Selected-reference `%=` now converts a freshly rebound fractional RHS after the
+first LEFT Deprecated callback. The current RHS CV selects that reference live;
+its long is then captured before the second Deprecated. Captured `0.5` becomes
+zero even when the second handler repairs current RHS to `5` and the original RHS
+alias also holds `5`: fresh `DivisionByZeroError` at line 25 preserves callback
+old target `88`, current target name `77` and outer `100`. Conversely, captured
+`5.5` becomes `5` even when its fresh reference is changed to `7` and both owning
+names are unset. Cached `12 % 5` stores integer `2` through the surviving old
+target alias; current name `77` and original RHS alias `0` remain independent.
+Two originals and 190+174 focused premises cover both reached fresh/entered
+handlers, current selection versus returned history, RHS owners two to zero,
+raw capture/store or THROWN versus driven fresh Error, EOF and budget cuts in the
+[RHS conversion ledger](../../coverage/semantics/modassign-selected-rhs-warning-review.json).
+Initial selected scalar references with fractional LEFT and quiet PINT RHS stay
+unchanged. Later fitting fractional RHS references, named Deprecated handlers and a safe
+surviving old target bound the slice; other values, owning/typed producers and
+wider lifetimes remain partial. Generic throw/unwind and numeric bodies are unchanged.
+
 Selected-reference `%=` now fixes its old LEFT cell before converting a fitting
 fractional float. Captured `12` survives the named Deprecated callback; RIGHT stays
 a delayed CV wrapper and is dereferenced afterward. Rebinding current RHS from

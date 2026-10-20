@@ -95,7 +95,7 @@ def conditions(name, program, path, stdout):
             '$array_float_ref_key_old_payload(S_resume, n_builder, n_old, DIRECT (PINT 44))',
             '$array_float_ref_key_ready(S_resume, n_builder, n_old, poperand)',
             'S_resume.LITERALREFRETAINED = eps', 'S_resume.LITERALREFDEBTS = eps',
-            'S_owning = S_resume[.STORE[n_current] = DEFINED (PARRAY n_old_array)]',
+            'S_owning = S_resume[.STORE[n_current] = DEFINED (PSTRING eps)]',
             '$call_task_valid(S_owning, ' + marker + ')',
             '$array_float_ref_key_value(S_owning, n_old, poperand) = eps',
             '~$array_float_ref_key_ready(S_owning, n_builder, n_old, poperand)',

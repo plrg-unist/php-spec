@@ -1,0 +1,110 @@
+{
+  "scope": "Unary CV clone of ordinary public declared-only INSTANCE storage with a genuine foreach-materialized cache and existing public zero-argument __clone():void. Singleton/held int aliases, source retirement and failed-copy cleanup; idle collection and no readonly slots.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_objects.c zend_objects_clone_members copies declared slots and rebuilds INDIRECT buckets before calling __clone. Zend/zend_variables.c zval_add_ref unwraps the clone destination for singleton references; held references retain shared cells and clone type sources.",
+      "Zend/zend_vm_def.h ZEND_CLONE borrows a CV operand and stores the returned clone before exception cleanup. A throwing callback permits failed-copy destruction; its last Payload owner retires before the same supplied catch."
+    ],
+    "divergence": "No engine bug or intentional divergence identified."
+  },
+  "implementation": {
+    "files": [
+      "spec/semantics/150-clone-runtime.watsup"
+    ],
+    "sha256": "992f62ca7a529020948f7ad89974cc50bfa18f540f028e77b91f4001742830f2",
+    "basis": "Remove only the callback exclusion from clone_cached_ready. Existing 300 checks access before allocation and supplies callback entry, operation/window validation, return and throw cleanup; existing 150 cache/source/image/idle-GC/readonly bounds and fresh retarget/slot copying stay exact. INPUT retains VARIABLE source identity with operand_nodes EPS; no added source owner, state, root, schema, manifest or generic cleanup change."
+  },
+  "validation": {
+    "native": {
+      "revision": "3a5990daecea68af35b89feb1825af37b21871d9",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-callback-private-113/.tools/cached-clone-callback-probes-113/native-first/report.json",
+        "sha256": "d9cc589fa65b3932440f3ab27214ec27243b28a89c9f2b5dcff05a91b2c64314"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-callback-private-113/.tools/cached-clone-callback-probes-113/affinity-native-first.json",
+        "sha256": "257dd816836170d0067460fe56fe469b2b502221c8db17eec4db72be42f7b5e4"
+      },
+      "result": "Four exact normal quiet0 tuples26/37/29/30, stable/reaped. Fast-native affinity partial0/4; no live affinity claim or replay."
+    },
+    "baseline": {
+      "revision": "3a5990daecea68af35b89feb1825af37b21871d9",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-callback-private-113/.tools/cached-clone-callback-probes-113/accepted-current-baseline/report.json",
+        "sha256": "9e4e2f7226a4c13562d553069550eabb7b42f47877a75aeec1f3c7206a3dc2f7"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-callback-private-113/.tools/cached-clone-callback-probes-113/affinity-accepted-current-baseline.json",
+        "sha256": "97d78631ff8f16cbe574a7d2106e3473168258e4eb979b81a053aca147b69f34"
+      },
+      "result": "Four checked Unsupported cached ordinary property-table cloning, CLI1/semantic exitNone/quiet stderr, prefixes U:/H:/R:/X:, zero agreement. Complete4 CPU1/full argv/stable/reaped."
+    },
+    "source": {
+      "revision": "d2cea26dd3aed4c51cbf305e3b2a906d531a7dd6",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-callback-private-113/.tools/cached-clone-callback-probes-113/changed-model-9h2h3nug/report.json",
+        "sha256": "fe51c305793492295724ac435c47fe5ff6cb7e9701036d6622b39548e9e1a07d"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-callback-private-113/.tools/cached-clone-callback-probes-113/affinity-changed-source-113.json",
+        "sha256": "bd4ea8da2a28a1cbe2064af37c20ba9e45b6585fd6ff49a43663c085289fd09c"
+      },
+      "result": "Four exact normal native agreements26/37/29/30, quiet0/stable/reaped; complete4 CPU1/full argv."
+    },
+    "focused": {
+      "revision": "23f1e50f5c546e9f8be614f9b5f20c8cdbec6a66",
+      "prepared": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-callback-private-113/.tools/cached-clone-callback-protocol-mhes0ouh/PREPARED.json",
+        "sha256": "6220257bc1d2fe5684444a77feb21ba22e0f8e1a64fd5e3965617c5ada27f3a8"
+      },
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-callback-private-113/.tools/cached-clone-callback-protocol-1fhwulpr/report.json",
+        "sha256": "b905fa5649082901b923d58aba984eb6e5339e00fa75f64118a81118c44419b3"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/cached-property-clone-callback-private-113/.tools/cached-clone-callback-probes-113/affinity-state-113.json",
+        "sha256": "e408fbd9c18881a57f5e5a409468953db3ed3e949ace2277dfec961f19bd3da2"
+      },
+      "result": "Four stricttrue groups 154/169/158/178, 659 = 651 reached + 8 derived, apps4. Actual clone/callback/OBJECTITER fronts, independent cache metadata, singleton vs held type sources, borrowed source retirement, failed copy/Payload destruction and same catch with destination42 unchanged; full call/window/heap guards, small forged source/cache controls and budget resume. Eight quiet exits0, stable/reaped, complete8 CPU1/full 410-element argv."
+    },
+    "classification": "All semantic source/state actors passed first attempt; no numeric failure, diagnostic or retry. Earlier CLASS110 and callback/readonly campaigns retain their historical identities and receive no renewed credit."
+  },
+  "reproduction": {
+    "cwd": "/home/user/workspace/php-spec/.tools/cached-property-clone-callback-private-113",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "profile": "tests/semantics/profile.json",
+    "caps": "Serial native45/model60/outer75/100000steps; focused AL90 then strictSL90/cachefalse/dettrue/fail-first/full reap. Checked preparation invokes zero applications.",
+    "native": "Ready python3 -u .tools/cached-clone-callback-probes-113/watch-affinity.py native-first native 1; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/cached-clone-callback-probes-113/run.py native --revision 3a5990daecea68af35b89feb1825af37b21871d9",
+    "baseline": "Fresh ready python3 -u .tools/cached-clone-callback-probes-113/watch-affinity.py accepted-current-baseline model 1; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/cached-clone-callback-probes-113/run.py baseline --revision 3a5990daecea68af35b89feb1825af37b21871d9",
+    "source": "Ready python3 -u .tools/cached-clone-callback-probes-113/capture-candidate-affinity.py 1 changed-model- 4 changed-source-113; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/cached-clone-callback-probes-113/run.py changed --revision d2cea26dd3aed4c51cbf305e3b2a906d531a7dd6",
+    "focused": "Ready python3 -u .tools/cached-clone-callback-probes-113/watch-state-affinity.py 1; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u tests/semantics/cached_clone_callback_protocol.py --revision 23f1e50f5c546e9f8be614f9b5f20c8cdbec6a66",
+    "recovery": "Ignored originals, driver, raw fixtures and reports stay at their original paths. Recover versioned runtime/tests from the recorded tested commits; reused local tools establish no fresh rebuild claim."
+  },
+  "tools": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    ".tools/cached-clone-callback-probes-113/run.py": "152ee2db6df44e8ab31fddccfda8108fda147f3b1e8a8716c6d0577bf4f47bde"
+  },
+  "limits": "Validated public declared-only unary CV clone with zero-argument public void callback and these int-alias/untyped Payload histories only. Foreach, property constraint attachment/removal and callback/destructor machinery are existing consumers. Dynamic caches, readonly, private/hooked layouts, clone-with updates, intrinsic callback forms, active collection and wider callback/lifetime histories remain partial; no inheritance or full-core claim.",
+  "review": {
+    "status": "accepted; independently reviewed",
+    "reviewer": "/root/class_review_84",
+    "semantic": "Independent native/genuine baseline, source4, focused659 and concise publication accepted; actual-parent preservation is checked separately before integration."
+  },
+  "composition": {
+    "incoming_parent": "9fa0a1a294437bec54b3fbe29a6a4fae65ca849c",
+    "publication_head": "48d63bd0d3d6cd251a9313f8acd9703f1d6e1432",
+    "incoming_modules": 407,
+    "result_modules": 407,
+    "basis": "Only the reviewed module150 callback exclusion changes; all other150 bytes and incoming300/138/261, state/default/root and ordered-manifest bytes remain exact. Incoming270 object-typed reference-return holder,289 Generator,207 missing-array comparison,30/404/58 BITNOT_NAN,172 INI stdClass pack and413 float-key array/ref callback selectors have no producer in these int-alias/untyped Payload clone histories.",
+    "validation": "Actual-parent selector and exact candidate preservation independently reviewed before FF. Source4 at d2cea and focused659 at23f1 retain original cuts; no joined execution, accepted replay or renewed historical110 credit."
+  }
+}

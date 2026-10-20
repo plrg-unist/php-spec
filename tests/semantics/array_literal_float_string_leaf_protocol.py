@@ -100,7 +100,7 @@ def conditions(name, program, path, stdout):
         'S_resume.STORE[n_key] = DEFINED (PFLOAT n_live_bits)',
         '$float_long(n_live_bits, true) = (9, [PRECISIONLOSS])',
         'S_resume.LITERALARRAYRETAINED = eps', 'S_resume.LITERALARRAYDEBTS = eps',
-        'S_wrapped = S_resume[.REFCELLS = S_resume.REFCELLS ++ [n_current_cell]]',
+        'S_wrapped = S_resume[.REFCELLS = S_resume.REFCELLS ++ [n_current_cell]][.STORE[n_current_cell] = DEFINED (PSTRING eps)]',
         '$call_task_valid(S_wrapped, ' + marker + ')',
         '$array_float_array_key_value(S_wrapped, poperand) = eps',
         '~$array_float_array_key_ready(S_wrapped, n_builder, n_old, poperand)',

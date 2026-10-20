@@ -237,7 +237,7 @@ def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_ca
   -- if preqbytes_lookup = $dynamic_lookup_name(preqbytes_original)
   -- if n_nonce = S.SELECTSEQ
   -- if n_depth = |S.FRAMES|
-  -- if pselectedcall = {NONCE n_nonce, SITE porigin, KIND pintrinsic, ORIGINAL preqbytes_original, LOOKUP preqbytes_lookup, DEPTH n_depth, LINE z_call}
+  -- if pselectedcall = {NONCE n_nonce, SITE porigin, KIND pintrinsic, OWNER eps, ORIGINAL preqbytes_original, LOOKUP preqbytes_lookup, DEPTH n_depth, LINE z_call}
 def $pipe_name(S, preqbytes_original, preqbytes_lookup, eps, pvalue, porigin, z_send, z_lookup, z_call) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (ARGINFO_INVOKE {SITE porigin, KIND pintrinsic, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue)]), NAMED false, OWNER eps, SELECTION (n_nonce), LINE z_call}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ~$dynamic_method_scan(preqbytes_original, false, false)
   -- if $call_target(S, preqbytes_lookup, eps) = eps
@@ -248,7 +248,7 @@ def $pipe_name(S, preqbytes_original, preqbytes_lookup, eps, pvalue, porigin, z_
   -- if preqbytes_lookup = $dynamic_lookup_name(preqbytes_original)
   -- if n_nonce = S.SELECTSEQ
   -- if n_depth = |S.FRAMES|
-  -- if pselectedcall = {NONCE n_nonce, SITE porigin, KIND pintrinsic, ORIGINAL preqbytes_original, LOOKUP preqbytes_lookup, DEPTH n_depth, LINE z_call}
+  -- if pselectedcall = {NONCE n_nonce, SITE porigin, KIND pintrinsic, OWNER eps, ORIGINAL preqbytes_original, LOOKUP preqbytes_lookup, DEPTH n_depth, LINE z_call}
 
 dec $arginfo_unpack_prefix(pstate, pargcall, pentry*) : pargcall?
 
@@ -379,6 +379,7 @@ def $arginfo_selected_valid(S, pargcall) = true
   -- if pargcall.SELECTION = (n_nonce)
   -- if $(n_nonce < |S.SELECTEDCALLS|)
   -- if S.SELECTEDCALLS[n_nonce] = pselectedcall
+  -- if pselectedcall.OWNER = eps
   -- if pselectedcall.NONCE = n_nonce
   -- if pselectedcall.SITE = pargcall.SITE
   -- if pselectedcall.KIND = pargcall.KIND
@@ -606,6 +607,7 @@ def $selected_task_nonce(ARGINFO_UNPACK_PREP pargcall) = pargcall.SELECTION
 def $selected_task_nonce(ARGINFO_UNPACK_NEXT pargcall poperand n) = pargcall.SELECTION
 def $selected_task_nonce(ARGINFO_INVOKE pargcall) = pargcall.SELECTION
 def $selected_entry_source_valid(S, pselectedcall) = true
+  -- if pselectedcall.OWNER = eps
   -- if $arginfo_kind(pselectedcall.KIND)
   -- if pselectedcall.LOOKUP = $dynamic_lookup_name(pselectedcall.ORIGINAL)
   -- if $intrinsic_lookup(pselectedcall.LOOKUP, eps) = (pselectedcall.KIND)

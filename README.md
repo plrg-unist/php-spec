@@ -51,8 +51,10 @@ Ordinary unwrapped CVs may switch between null/bool/int/float and flat runtime
 arrays with DIRECT null/bool/int/float or validated string leaves during the
 handler. Separate table counts preserve old array owners and omitted new-array
 owners; inverse retargeting cancels them before cleanup. Initial scalar and
-array plans remain distinct, while same-table transfer and restored COW keep
-ordinary values distinct from PHP reference wrappers.
+array plans remain distinct. A by-value array CV may become an untyped reference
+during the handler, inserting a shared ALIAS with separate old-table and new-CELL
+count biases. A reciprocal reference-element callback can instead insert an
+ordinary array value, cancelling both biases before normal copying and cleanup.
 These bounded tables also admit reference leaves holding null/bool/int/float
 or validated byte strings, either untyped or constrained by validated ordinary
 instance-property type sources. Debt-bearing payloads require every source object
@@ -332,8 +334,8 @@ whose properties hold direct quiet primitives. Returning handlers reach paramete
 TypeError with an empty option and the same updated object; throwing handlers
 preserve raw NULL and cancel rejection. Four originals and 911 state premises
 cover shared property writes, strict priority, ownership and normal recovery.
-Owned forms beyond the bounded follow-up below, packed calls and wider object
-values remain partial.
+Owned/packed forms beyond the bounded follow-ups below and wider object values
+remain partial.
 
 [Named NULL INI options with retained stdClass values](coverage/semantics/ini-set-named-null-stdclass-value-review.json)
 now preserve the earlier object across reversed argument evaluation and shared
@@ -341,7 +343,8 @@ property writes. Returning handlers reach parameter2 TypeError with an empty
 option and the same updated object; a supplied throw preserves raw NULL and
 cancels rejection. Four source comparisons and 1,109 state premises cover named
 binding, strict option priority, owning trace edges and normal setter recovery.
-Packed/PIPE calls, materialized tables and wider properties/lifetimes remain partial.
+Packed forms beyond the bounded follow-up below, PIPE, materialized tables and
+wider properties/lifetimes remain partial.
 
 [Named retained INI calls with rejected array values](coverage/semantics/ini-set-owned-named-null-array-value-review.json)
 now retain the original Closure and earlier flat quiet array across reversed
@@ -381,6 +384,17 @@ converted-empty value TypeError, while supplied throw preserves raw NULL and
 cancels rejection. Four source comparisons and 1,182 state premises cover literal
 authority, selected-call metadata, owning trace edges, strict priority and recovery.
 Additional arguments/packs, wider value leaves and PIPE remain partial.
+
+[Direct and selected packed INI stdClass values](coverage/semantics/ini-set-unpack-null-stdclass-value-review.json)
+now retain one table-free object from a two-item numeric, named or mixed pack.
+The snapshot saves object identity; later shared property writes remain visible
+through the captured value after live-pack replacement or outer retirement.
+Returning handlers reach converted-empty value TypeError, while supplied throw
+preserves raw NULL and the updated object and cancels rejection. Four source
+comparisons and 1,253 state premises cover owning root transfer, shared identity,
+strict option priority, precise discard and original string-setter recovery.
+Retained-owner packed objects, additional arguments/packs, materialized tables,
+wider properties, PIPE and sole-owner lifetimes remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -968,6 +982,13 @@ Three originals and 688 focused premises pass in the
 Initial leading LEFT/quiet RHS scalar refs and a primitive target before and after
 final dispatch bound this slice; wider values, producers and lifetimes remain partial.
 
+Selected-reference `%=` also caches a rebound fractional RHS before its second
+Deprecated callback. Repairing RHS to `5` after capturing `0.5` cannot prevent
+`Modulo by zero`; retiring the RHS after capturing `5.5` still lets `12 % 5` store
+integer `2` through the old target alias. Two originals and 364 focused premises pass in the
+[RHS conversion ledger](coverage/semantics/modassign-selected-rhs-warning-review.json).
+Initial quiet-integer RHS entry stays unchanged; wider values and lifetimes remain partial.
+
 Selected-reference `%=` now keeps its old target while reading the current RHS
 wrapper after a float-to-int Deprecated callback. Rebinding RHS from old `0` to `5`
 lets captured `12` store integer `2` through the old alias; the opposite old `5`
@@ -1391,6 +1412,11 @@ ignored argument, current snapshot and receiver in that order. The snapshot
 survives argument-driven COW, then can retire before ancestor finally blocks.
 An assigned result instead survives receiver cleanup. See the
 [unused SEND review](coverage/semantics/generator-unused-pending-send-review.json).
+The ignored argument may also be the same owning value as current. Although the
+fresh result masks its consumed slot, argument and result keep separate release
+owners before receiver cleanup. Array container counts share one element-edge
+set; assigned results keep their copy. See the
+[aliased SEND review](coverage/semantics/generator-unused-pending-send-alias-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit
@@ -1936,6 +1962,13 @@ selection still uses the invoking USER scope. Creating the factory in a class
 grants no later global permission. A rejected callback's receiver stays alive
 through its raw Error trace, then retires when those references are released.
 [Factory Closure define review](coverage/semantics/define-runtime-from-factory-review.json).
+
+Retained `define(...)` Closure callees now publish primitive constants and handle
+duplicates with omitted/false flags, including explicit `__invoke`. Captured
+callee identity survives later argument changes; nonowning selection history
+keeps queries valid after the callee dies. Repeated calls at one source site keep
+separate nonces, and throwing duplicates preserve raw API/wrapper arguments.
+[Owned DEFINE call review](coverage/semantics/define-owned-closure-review.json).
 
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
@@ -4820,12 +4853,20 @@ Genuine clone callbacks and nonempty readonly update windows have separate cuts;
 Generator callbacks, hooks and wider lifecycle
 integration remain open.
 
-[Cached ordinary cloning](coverage/semantics/cached-property-clone-review.json) now
-builds fresh tables for public declared-only objects materialized by foreach.
+The earlier [cached ordinary cloning](coverage/semantics/cached-property-clone-review.json)
+cut builds fresh tables for public declared-only objects materialized by foreach.
 Locators target the copy without adding value owners; singleton references unwrap,
 held typed aliases gain a clone source, and shallow Payloads survive source release.
-Five original-source agreements and 378 focused premises retain separate tested
-cuts. Dynamic caches, clone callbacks, readonly and wider GC histories remain open.
+Its five source agreements and 378 focused premises exclude clone callbacks.
+
+[Cached clone callbacks](coverage/semantics/cached-clone-callback-review.json) now
+reuse the existing public zero-argument `__clone():void` path. Actual foreach in
+the callback reads the copy's locators; a borrowed source may retire there while
+its Payload survives in the copy. Held int aliases retain the clone constraint,
+and supplied throw destroys the failed copy/Payload before the original catch;
+the destination stays `42`.
+Four source agreements and 659 focused premises pass at separate cuts. Dynamic
+caches, readonly, active collection and wider callback/lifetime histories remain open.
 
 [`get_class` testing support](docs/semantics/GET-CLASS.md) observes finite live
 object names and executing lexical scope through direct and callable invocation.

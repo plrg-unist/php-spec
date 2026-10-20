@@ -100,9 +100,15 @@ through ignored-argument cleanup, then retires before the selected receiver.
 Argument-driven COW therefore sees the snapshot, while its old payload can die
 before ancestor finally blocks. An assigned SEND result keeps its copy through
 receiver cleanup until the caller drops it. This correction requires the exact
-consumed argument/receiver slots; masked argument/snapshot aliases and abrupt argument
-callbacks remain unvalidated. See the
+consumed argument/receiver slots; abrupt argument callbacks remain unvalidated.
+See the
 [unused SEND review](../../coverage/semantics/generator-unused-pending-send-review.json).
+An owning argument identical to current can also take this path when the fresh
+result masks its consumed slot. The tested cases have argument, result and current
+as three owners; two quiet releases leave only current before receiver cleanup.
+A shared array keeps one element-edge set throughout. Assigned calls keep
+the net result transfer; other masked shapes remain unvalidated. See the
+[aliased SEND review](../../coverage/semantics/generator-unused-pending-send-alias-review.json).
 Pending zero-argument NEXT also clears only the selected receiver bit while
 preserving that parked owning frame/site and copied return. It returns NULL
 without a current snapshot; a later explicit getter creates a separate copy.
