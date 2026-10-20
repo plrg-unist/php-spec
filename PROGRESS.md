@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+All seven missing-CV comparisons now accept live ordinary non-Stringable
+object counterparts, initially defined or callback-created, including stdClass.
+The current CV/reference binding supplies the counterpart against frozen NULL;
+replacing an old object can run its destructor inside the callback. Read records
+add no object owner, so replacements survive only through current owners, including
+catch/finally. Captured-object, checked-removal and unread-retry paths stay exact.
+
+Ten exact source agreements plus two internal-object controls and 729 strict-SL
+premises/five groups (307 author +422 independent) pass first attempts at
+`16cd96ba0`/408. Separate affected110/two groups and one old114 stdClass selector
+renew no historical credit. Initial native2+4 and genuine ingress refusal retain
+`4c593a1e3`/408. No failures/retries; paused COMP88 and DEFINE are untouched.
+[Live-object review](coverage/semantics/undefined-comparison-live-object-review.json).
+
 All seven comparisons now retain captured ordinary non-Stringable objects across
 missing-CV Warnings, including user instances and `stdClass`. Saved TASK/RESULT
 owners preserve identity through callback rebinding and shared property writes;
