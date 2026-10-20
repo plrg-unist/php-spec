@@ -7,7 +7,6 @@ from undefined_scalar_compare_array_resume_cases import CASES
 
 family.CASES = CASES
 family.UNSUPPORTED = {
-    'boolean-array-initial-array-boundary': ('error-handler ingress requires a producer continuation', b'B|'),
     'boolean-array-nested-array-boundary': ('scalar comparison warning changed left operand', b'B|H|'),
 }
 family.BASELINE = ('scalar comparison warning changed right operand', b'H:1:1:10:1;')

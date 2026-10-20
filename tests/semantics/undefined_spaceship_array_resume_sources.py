@@ -7,7 +7,6 @@ from undefined_spaceship_array_resume_cases import CASES
 
 family.CASES = CASES
 family.UNSUPPORTED = {
-    'array-resume-initial-array-boundary': ('error-handler ingress requires a producer continuation', b'B|'),
     'array-resume-nested-array-boundary': ('spaceship warning changed opposing scalar', b'B|H|'),
 }
 family.BASELINE = ('spaceship warning changed opposing scalar', b'H:1:1:10:1;')
