@@ -49,7 +49,7 @@ def conditions(name, program, path, stdout):
         '~$array_float_key_scalar(S, pvalue_initial)',
         '~$literal_reference_flat_cell(S[.STORE[n_typed] = DEFINED (PINT 44)], n_typed)',
         '~$literal_reference_flat_cell(S[.STORE[n_typed] = DEFINED (PSTRING ([256]))], n_typed)',
-        '~$literal_reference_flat_cell(S[.STORE[n_typed] = DEFINED (PSTRING_CARRIER (REQUEST_STRING |S.STRINGDATA|) eps)], n_typed)',
+        '~$literal_reference_flat_cell(S[.STORE[n_typed] = DEFINED (PSTRING_CARRIER (REQUEST_STRING (|S.STRINGDATA|)) eps)], n_typed)',
         '~$literal_reference_flat_array(S[.LITERALREFDEBTS = [n_typed]], n_current, S.ALLOCATIONS)',
         'S_string_cv = S[.STORE[n_q] = DEFINED pvalue_initial]',
         '$array_float_array_key_value(S_string_cv, poperand) = eps',
