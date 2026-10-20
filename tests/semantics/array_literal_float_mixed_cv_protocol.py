@@ -85,7 +85,7 @@ def conditions(name, program, path, stdout):
         'S_resume.STORE[n_q] = DEFINED ' + ('(PINT 44)' if array_first else '(PARRAY n_table)'),
         'S_resume.STORE[n_key] = DEFINED (PFLOAT n_live_bits)',
         '$float_long(n_live_bits, true) = (9, [PRECISIONLOSS])',
-        'S_wrapped = S_resume[.REFCELLS = n_q :: S_resume.REFCELLS]',
+        'S_wrapped = S_resume[.REFCELLS = n_q :: S_resume.REFCELLS]' + ('[.STORE[n_q] = DEFINED (PSTRING eps)]' if array_first else ''),
         '$call_task_valid(S_wrapped, ' + first_marker + ')',
         '$array_float_key_live_value(S_wrapped, poperand) = eps',
         '$error_read_discard(S_wrapped, ' + first_marker + ').COMPLETION = UNSUPPORTED ' + json.dumps(reason),
