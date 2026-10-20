@@ -128,10 +128,14 @@ def checks(initial, name, stdout):
         # Validator-only controls never become execution roots.
         'S_missing = S[.CONSTANTCLOSURES = [pconstantclosure_right]]',
         'S_plain = S_missing[.OBJECTS[n_left] = REALCLOSURE porigin_left eps eps]',
+        '$dynamic_define_value_class(S_plain,POBJECT n_left) = (PVOBJECT)',
+        '$dynamic_constant_case_valid(S_plain,pconfigcall)',
+        '~$constant_value_class_valid(S_plain,POBJECT n_left,PVCLOSURE n_left porigin_left)',
+        '~$user_constants_valid(S_plain,S_plain.USERCONSTANTS)',
         'S_bad_site = S[.CONSTANTCLOSURES[0].SITE = pconfigcall.SITE]',
         'S_bad_prefix = S[.CONSTANTCLOSURES[0].PREFIX = $(|S.DECLARATIONS| + 1)]',
         'S_dead = S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS,HOBJECT n_left)]']
-    for state in ('S_missing','S_plain','S_bad_site','S_bad_prefix','S_dead'):
+    for state in ('S_missing','S_bad_site','S_bad_prefix','S_dead'):
         values += [f'$dynamic_define_value_class({state},POBJECT n_left) = eps',
             f'~$dynamic_constant_case_valid({state},pconfigcall)']
     values += [

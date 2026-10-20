@@ -13,8 +13,8 @@ def $magic_method_needed(S, n, ptbytes) = true
   -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
 def $magic_method_needed(S, n, ptbytes) = false -- otherwise
 
-;; Scoped magic fallback is deliberately outside this direct-call slice.
-;; Constructor-special selection precedes that fallback in the engine.
+;; Compatible current This determines scoped fallback priority. Constructor-
+;; special selection precedes it; the selected source slice is bounded below.
 def $magic_method_scoped(S, porigin) = true
   -- if ~$scoped_ctor_arm(S)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
@@ -85,16 +85,41 @@ def $magic_method_arguments_source(S, porigin, phpType7*, n) = false -- otherwis
 
 ;; This history proves the selected source without rereading the receiver CV
 ;; or later argument values. Arguments may legitimately mutate either one.
-dec $magic_method_descriptor(pstate, pmagicmethodcall) : bool
-def $magic_method_descriptor(S, pmagicmethodcall) = true
+dec $magic_method_scoped_source(pstate, pmagicmethodcall) : bool
+def $magic_method_scoped_source(S, pmagicmethodcall) = true
+  -- if pmagicmethodcall.SITE = PORIGIN n_unit pcpath
+  -- if $origin_node(S.SOURCES, pmagicmethodcall.SITE) = (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $ptlc($base64(text_class)) = $ptascii("self")
+  -- if pmagicmethodcall.NAME = $base64(text_name) /\ pmagicmethodcall.ARGUMENTS = phpType7*
+  -- if pmagicmethodcall.LINE = $runtime_line(S[.ORIGIN = (pmagicmethodcall.SITE)], eps, NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if pmagicmethodcall.CALLER = (pcallcontext)
+  -- if pcallcontext.TARGET = METHOD_TARGET pmagicmethodcall.OBJECT pcallcontext.FUNCTION
+  -- if pcallcontext.RECEIVER = (pmagicmethodcall.OBJECT) /\ pcallcontext.CALLED_CLASS = (pmagicmethodcall.CLASS)
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction_caller)
+  -- if pcallcontext.FUNCTION = pfunction_caller.ORIGIN
+  -- if $method_context_scope(pmagicmethodcall.CALLER) = (porigin_requested)
+  -- if $closure_source_class(S, pmagicmethodcall.SITE) = (porigin_requested)
+  -- if S_site = S[.CURRENT = pmagicmethodcall.CALLER][.ORIGIN = (pmagicmethodcall.SITE)]
+  -- if $magic_method_scoped(S_site, porigin_requested)
+  -- if $effective_method(S, porigin_requested, pmagicmethodcall.NAME, |S.CLASSES|) = eps
+def $magic_method_scoped_source(S, pmagicmethodcall) = false -- otherwise
+dec $magic_method_call_source(pstate, pmagicmethodcall) : bool
+def $magic_method_call_source(S, pmagicmethodcall) = true
   -- if pmagicmethodcall.SITE = PORIGIN n_unit pcpath
   -- if $origin_node(S.SOURCES, pmagicmethodcall.SITE) = (NExprMethodCall (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
   -- if pmagicmethodcall.NAME = $base64(text_name) /\ pmagicmethodcall.ARGUMENTS = phpType7*
-  -- if |phpType7*| <- [1,2] /\ $base64(text_receiver) =/= $ptascii("this")
+  -- if $base64(text_receiver) =/= $ptascii("this")
   -- if $source_emission_cv(S, n_unit, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
   -- if ~$scope_global(S[.ORIGIN = (pmagicmethodcall.SITE)], [PCFIELD 0])
   -- if pmagicmethodcall.LINE = $runtime_line(S[.ORIGIN = (pmagicmethodcall.SITE)], eps, NExprMethodCall (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
-  -- if $magic_method_arguments_source(S, pmagicmethodcall.SITE, phpType7*, 0)
+def $magic_method_call_source(S, pmagicmethodcall) = true
+  -- if $magic_method_scoped_source(S, pmagicmethodcall)
+def $magic_method_call_source(S, pmagicmethodcall) = false -- otherwise
+dec $magic_method_descriptor(pstate, pmagicmethodcall) : bool
+def $magic_method_descriptor(S, pmagicmethodcall) = true
+  -- if $magic_method_call_source(S, pmagicmethodcall)
+  -- if |pmagicmethodcall.ARGUMENTS| <- [1,2]
+  -- if $magic_method_arguments_source(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, 0)
   -- if $(pmagicmethodcall.OBJECT < |S.OBJECTS|)
   -- if S.OBJECTS[pmagicmethodcall.OBJECT] = INSTANCE pmagicmethodcall.CLASS
   -- if $class_at(S.CLASSES, pmagicmethodcall.CLASS) = (pclassdesc)
@@ -129,6 +154,10 @@ def $magic_method_capture(S, pmagicmethodcall) = true
   -- if S_read = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
   -- if S_read.COMPLETION = NORMAL /\ S_read.RESULT = KNOWN (POBJECT pmagicmethodcall.OBJECT)
   -- if $magic_method_argument_capture(S, pmagicmethodcall.ARGUMENTS[0])
+def $magic_method_capture(S, pmagicmethodcall) = true
+  -- if $magic_method_caller(S, pmagicmethodcall)
+  -- if $magic_method_scoped_source(S, pmagicmethodcall)
+  -- if $magic_method_argument_capture(S, pmagicmethodcall.ARGUMENTS[0])
 def $magic_method_capture(S, pmagicmethodcall) = false -- otherwise
 
 dec $magic_method_plan(pstate, nat, ptbytes, phpType7*, int) : pmagicmethodcall?
@@ -148,6 +177,16 @@ def $magic_method_start(S, n, ptbytes, phpType7*, z) = S[.TODO = (CALL_ARGS (MAG
   -- if $magic_method_plan(S, n, ptbytes, phpType7*, z) = (pmagicmethodcall)
 def $magic_method_start(S, n, ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "magic method source or argument mode"]
   -- if $magic_method_plan(S, n, ptbytes, phpType7*, z) = eps
+def $magic_method_scoped_start(S, phpType19, ptbytes_class, ptbytes_method, z) = $magic_method_start(S, n, ptbytes_method, phpType7*, z)
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.TODO = (SCOPED_CLASS phpType19 (NIdentifier (BYTES text_name) metadata_name) phpType7* z) :: ptask_tail*
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $base64(text_name) = ptbytes_method
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_requested)
+  -- if $method_context_scope(S.CURRENT) = (porigin_requested)
+  -- if $scoped_current_receiver(S) = (n)
+  -- if $magic_method_plan(S, n, ptbytes_method, phpType7*, z) =/= eps
+def $magic_method_scoped_start(S, phpType19, ptbytes_class, ptbytes_method, z) = S[.COMPLETION = UNSUPPORTED "scoped magic method fallback"] -- otherwise
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $magic_method_start(S_read, n, ptbytes, phpType7*, z)
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL

@@ -56,8 +56,8 @@ def $dynamic_constant_class(PSTRING_CARRIER (REQUEST_STRING n_string) n_bytes*) 
 def $dynamic_constant_class(pvalue) = (PVSCALAR) -- if $constant_nonstring_scalar(pvalue)
 def $dynamic_constant_class(pvalue) = eps -- otherwise
 
-;; Runtime instances use live class authority, not a fabricated constant-NEW
-;; receipt. A present receipt must still satisfy its existing certification.
+;; Runtime values use live class/callable authority, not fabricated receipts.
+;; A present certificate and its outer wrapper retain their existing authority.
 dec $dynamic_runtime_object(pstate, nat) : bool
 def $dynamic_runtime_object(S, n_object) = true
   -- if $(n_object < |S.OBJECTS|) /\ HOBJECT n_object <- S.ALLOCATIONS
@@ -66,6 +66,18 @@ def $dynamic_runtime_object(S, n_object) = true
   -- if pclassdesc.KIND = "class" /\ ~pclassdesc.ABSTRACT
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
   -- if $global_new_record(S.CONSTANTOBJECTS, n_object) = eps
+def $dynamic_runtime_object(S, n_object) = true
+  -- if $(n_object < |S.OBJECTS|) /\ HOBJECT n_object <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_object] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $typed_closure(S, n_object) /\ $closure_live_object_valid(S, n_object)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n_object) = eps
+  -- if $closure_scope_complete(S, [HOBJECT n_object])
+  -- if $constant_callable_record(S.CONSTANTCLOSURES, n_object) = eps
+def $dynamic_runtime_object(S, n_object) = true
+  -- if $(n_object < |S.OBJECTS|) /\ HOBJECT n_object <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_object] = METHODCLOSURE porigin_method porigin_site porigin_called pmethodcapture?
+  -- if $typed_closure(S, n_object)
+  -- if $constant_callable_record(S.CONSTANTCLOSURES, n_object) = eps
 def $dynamic_runtime_object(S, n_object) = false -- otherwise
 
 dec $dynamic_define_value_class(pstate, pvalue) : pvalueclass?

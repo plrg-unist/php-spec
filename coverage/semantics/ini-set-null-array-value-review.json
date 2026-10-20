@@ -1,0 +1,88 @@
+{
+  "scope": "Ownerless direct/selected INI_SET positional2, rawNULL option plus retained live allocated flat ARRAY with DIRECT quiet primitive leaves. Invocation/selection and immutable source/pool facts authenticate the call; named/owned/packed and wider payloads stay outside this increment.",
+  "status": "independently_accepted_private_integrated_on_join",
+  "reviewer": "/root/source_review_35",
+  "parent": "054ec9cc5dcf476aa042473c3eaeac96fe6813da",
+  "semantic_revision": "c33c912057ddaedfe97162654631b5deddabbca6",
+  "tested_revision": "b7a14d47d611d73efa8c59fd24cd86695ac6a528",
+  "modules": 406,
+  "semantic_files": {
+    "spec/semantics/172-file-context-intrinsics.watsup": "f321eafb65ac21410b26765d2cf26005c0e935ca89971694121f5425bde882b3"
+  },
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "primary": "Pinned basic_functions.c PHP_FUNCTION(ini_set) parses option via Z_PARAM_STR before receiving new_value as ZVAL and rejecting types above IS_STRING. zend_parse_arg_str_weak deprecates rawNULL then converts it to empty string only after the handler returns without Exception. zend_argument_type_error(2) therefore sees converted empty option, while a handler-created Exception sees rawNULL.",
+  "semantics": "Only27 additive172 lines: DIRECT+quiet rejected_entries recursion; bounds/allocation/rejected_array; separate positional ownerless NULL2 invoke/source-option/pool-known-array/weak/nonPIPE validator; array-only null_finish delegates exact existing converted-empty TypeError2. quiet_value and existing source replay/value error/trace/root/discard/GC/schema/400 bodies remain exact.",
+  "accepted": [
+    "Four checked normal model records exactly equal native stdout/PHPstderr/PHPexit0 atb7a14d47d/runtimec33c91205/406. Defaultempty and true-handler2333 value errors follow option deprecation; one minimal native TypeError observer confirms empty arg0 and original2333. Selected false handler COW mutates keep after V replaces livevalue with a primitive, yet captured array still causes TypeError2/caller99 and setter8 to11 recovery. Strict rawNULL rejects parameter1 after V before handler, preserving earlier2371/current0. Peer supplied Exception identity99/REQUEST old leaf versus mutated keep/precision10/sibling2389 and oldstring setter10 to12 agree. Expected Deprecated9/20 only; strict/peer PHPstderr quiet.",
+    "All844 premises (219+188+96 author,341 independent) pass at the same cut. Actual pre-V selected call/rawNULL plus original array, real task and trace-array edges, converted-empty two-frame value TypeError, rawNULL two-frame strict TypeError and three-frame handler Exception trace, authentic REQUEST leaf identity, COW keep versus sole saved-task/old alias capture, exact restored discard with idempotent existing GC buffer, literal-pool allocated2334 forgery, malformed carrier/undefined/alias/nested/owning/NaN leaf/source/count/phase controls, actual recovery/final outputs and budgets are checked. Four accepted raw SL outputs are true LF/exit0/quiet.",
+    "Nine stable/head-stable/reaped reports PASS first attempts without failure/retry/timeout/interruption/survivor. Initialc4c7 native4/baseline0 CPU3 precede implementation; later source/model/public checks useCPU2. Native converted-empty/2333 byte observation and peer state-only full raw-array trace remain distinct. No accepted native/base or prior source replay."
+  ],
+  "baseline_zero_credit": "At clean source-onlyc4c7eab2a715f47356fd7fa4fae2ee58dbc372b4/unchanged054ec9cc5/406, selected-null-array-value-false-handler-keeps-captured-array-after-cow is Unsupported error-handler ingress requires a producer continuation afterB|V|, CLI1/nullPHPexit/quiet workerstderr0. Native author3/peer1 precede semantic edits.",
+  "compatibility": "Old62 array negatives target unchanged quiet_value rather than the newly eligible null_valid; later named/owned/packed shapes remain excluded. No old control repair or67/68 replay. V85 ordinary string-name/Closure VALUE DEFINE classifier is disjoint; paused Source47/owned-NUL/low-precision NaN untouched. No engine bug or intentional divergence identified.",
+  "execution": "LC_ALL=C TZ=UTC INT+kill5 AS3221225472; CPU3 initial native4/baseline, CPU2 models/publics. Serial fail-first/full reap; native15s/CLI45s-host60s/freshSL90s. All accepted workerstderr empty.",
+  "command_prefix": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s <cap>s prlimit --as=3221225472 -- taskset -c <cpu> python3 <step>",
+  "commands": [
+    {
+      "revision": "c4c7eab2a715f47356fd7fa4fae2ee58dbc372b4",
+      "cpu": 3,
+      "caps": [
+        90,
+        90,
+        90
+      ],
+      "steps": [
+        "tests/semantics/ini_set_null_array_value_sources.py --phase native --output .tools/ini-set-null-array-value-native-69",
+        "tests/semantics/ini_set_null_array_value_review_sources.py --phase native --output .tools/ini-set-null-array-value-review-69",
+        "tests/semantics/ini_set_null_array_value_sources.py --phase baseline --case selected-null-array-value-false-handler-keeps-captured-array-after-cow --output .tools/ini-set-null-array-value-native-69"
+      ]
+    },
+    {
+      "revision": "b7a14d47d611d73efa8c59fd24cd86695ac6a528",
+      "cpu": 2,
+      "caps": [
+        240,
+        90,
+        90,
+        360,
+        90,
+        120
+      ],
+      "steps": [
+        "tests/semantics/ini_set_null_array_value_sources.py --phase model --output .tools/ini-set-null-array-value-native-69",
+        "tests/semantics/ini_set_null_array_value_review_sources.py --phase model --output .tools/ini-set-null-array-value-review-69",
+        "tests/semantics/ini_set_null_array_value_protocol.py --phase prepare --sources .tools/ini-set-null-array-value-native-69 --output .tools/ini-set-null-array-value-public-69",
+        "tests/semantics/ini_set_null_array_value_protocol.py --phase check --sources .tools/ini-set-null-array-value-native-69 --output .tools/ini-set-null-array-value-public-69",
+        "tests/semantics/ini_set_null_array_value_review_protocol.py --phase prepare --sources .tools/ini-set-null-array-value-review-69 --output .tools/ini-set-null-array-value-review-public-69",
+        "tests/semantics/ini_set_null_array_value_review_protocol.py --phase check --sources .tools/ini-set-null-array-value-review-69 --output .tools/ini-set-null-array-value-review-public-69"
+      ]
+    }
+  ],
+  "raw_root": ".tools/ini-set-null-array-value-evidence-69",
+  "report_sha256": {
+    "author/public/check-report.json": "aef6174d6daa981d63f213454f33b8d591b67540fd91222f893cd9b6f074aae3",
+    "author/public/prepare-report.json": "3df1deedbf1b8abd3ba05555cc5d140a415a2655a82682aa35409225c184fa7a",
+    "author/review/model-report.json": "15822a6bfe93cc44f94aa267c0ccc5e67a67c3a0b1e3c216a772b9e5a6def012",
+    "author/review/native-report.json": "d3536242f83e7d4c09e55d35638f316e5544ebae13f79b0775a37b82f144fa69",
+    "author/review-public/check-report.json": "d5c29bf1438696cc3bbed0cba08dfcba0798b43f3e25900f9b28153e6dc76f97",
+    "author/review-public/prepare-report.json": "2450746e53ad927c8b04f7fe3cfd6e38f5ab9c1569c87755ef923f9068cacbeb",
+    "author/sources/baseline-report.json": "901748aea75a69c8bdcdacb108297e7a9fb48964cde63eeb567f85e9bb0b3144",
+    "author/sources/model-report.json": "a7fa6e9dd361541b5d53e9b61d458cacb67f45fd4ae976e74246dbb057163b5e",
+    "author/sources/native-report.json": "a8e4894f38f77b317673cbc06dafc827bfb5be3cb967aeb467c28aa5efaa94f8"
+  },
+  "recovery": "Four roots moved once after independent ACCEPT/RAW STOP/focused users[] to author/{sources,review,public,review-public}; nine concise reports hashed once. Restore recorded original paths/cuts for exact source/cwd identity; reports retain full fingerprints/commands/exits. No raw/hash renewal.",
+  "remaining": "Named/owned/packed array-value continuations, references/nesting/owning/NaN/legacy-PSTRING leaves and wider configuration remain partial. No full-core/equivalence/BOLA claim.",
+  "composition": {
+    "parent": "ef04bb9a751bd27aafb16ed2ee38c5184abd334e",
+    "private_publication": "673cc353fd253fb760ad08c7a63ec395e4c50e1f",
+    "modules": 406,
+    "semantic_files": {
+      "spec/semantics/172-file-context-intrinsics.watsup": "f321eafb65ac21410b26765d2cf26005c0e935ca89971694121f5425bde882b3"
+    },
+    "seams": "Parent172/368/301 exactbase. Incoming scoped magic fallback, reference/finally retirement, parked Generator NEXT, REAL/METHOD Closure DEFINE values, missing-CV spaceship, ADD/+= warnings and lossy-float literal debt selectors have no producer: only resolved Throwable methods, named handlers, ordinary by-value returns, initialized counters/identity compares, integer-key DIRECT primitive arrays and scalar sibling DEFINE. New30 task tag adds no state field; debt fields empty. Independent actual-parent semantic seam CLEAR.",
+    "evidence": "Private source4/state844 atb7a14d47d/runtimec33c91205/406, initialc4c7 native4/baseline0 and nine first-pass reports retain exact cuts; no joined actor or renewed evidence."
+  }
+}

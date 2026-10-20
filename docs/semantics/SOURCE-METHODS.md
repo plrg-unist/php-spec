@@ -25,7 +25,7 @@ payload before releasing the selected receiver, then delivers the cached scalar
 result or the same supplied Throwable. Four original-source agreements and
 355 focused premises (334 reached + 21 derived) bind separate tested cuts in the
 [magic-call review](../../coverage/semantics/magic-call-review.json).
-Inaccessible/scoped instance magic positives, dynamic/first-class forms,
+Inaccessible and other scoped instance magic positives, dynamic/first-class forms,
 named/unpacked/reference sends, exported arrays and wider ownership remain open.
 Needed out-of-family calls are explicitly Unsupported; ordinary declared methods,
 constructor-special dispatch and existing callable API refusals keep their routes.
@@ -42,9 +42,28 @@ cleanup to the same catch; public static methods bypass magic.
 [Four source agreements and 341 focused premises](../../coverage/semantics/magic-static-call-review.json)
 bind separate tested cuts. The actual context has no receiver roots; the priority
 counterexample is a structural predicate control only. Constructor-special and
-compatible-current-This `__call` priority retain their routes. Forwarding
-`self`/`parent`/`static`, inaccessible/dynamic/first-class/API magic positives,
+compatible-current-This `__call` priority retain their routes. Other forwarding
+`parent`/`static`/explicit-class forms, inaccessible/dynamic/first-class/API magic positives,
 reference/named/unpacked sends, exported arrays and wider lifetimes remain open.
+
+Selected literal `self::missing(...)` inside an ordinary `METHOD_TARGET` instance
+caller now uses compatible current This and its inherited `__call` before static
+magic fallback. The stored caller/site certificate resolves lexical self to Parent
+and keeps runtime Child; argument callbacks never recapture a global receiver CV.
+The existing parentless magic-owner source/signature and positional argument
+bounds remain. Entry performs ordinary name/packed-array type reception.
+
+The receiver remains owned by the outer method through the following statement.
+Its inner call caches scalar 7 before argument-array/payload cleanup changes the
+live global to 99; a supplied payload-destructor Exception instead unwinds the
+outer call to the same catch with destination 42. The received scalar/global
+mutation control is not a delayed local-CV snapshot claim.
+[Four original agreements and 442 state premises](../../coverage/semantics/magic-scoped-call-review.json)
+retain distinct source/state cuts. The external static case was already a baseline
+agreement; three scoped fallbacks were genuinely Unsupported. One early cleanup
+stage fixture failure and two zero-credit diagnostics are preserved. Direct99
+source factoring is statically compatible without renewing its tests. Child-owned
+magic overrides, other scoped names, callable APIs and wider lifetimes remain open.
 
 ## Descriptors and dispatch
 

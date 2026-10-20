@@ -60,7 +60,7 @@ def checks(program, path, name):
         '$scalar_compare_missing_pair(S_again,perrorread)',
         '~$scalar_compare_read_other(S_again,perrorread)',
         '$error_read_plan(S_again) = eps',
-        'PhpStep: S_again ~> S_again_denied',
-        'S_again_denied = S_again[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed right operand"]',
+        'PhpStep: S_again ~> S_again_restored',
+        'S_again_restored = S_again[.TODO = perrorread.TASK :: ptask_resume*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]',
     ]
     return result

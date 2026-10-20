@@ -63,6 +63,7 @@ def checks(program, path, name):
         '$us_guard(S_again)', '$error_read_valid(S_again,perrorread)',
         '$scalar_compare_missing_pair(S_again,perrorread)',
         '~$scalar_compare_read_other(S_again,perrorread)',
+        '~$scalar_compare_read_again(S_again,perrorread)',
         '$error_read_plan(S_again) = eps',
         'PhpStep: S_again ~> S_again_denied',
         'S_again_denied = S_again[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed left operand"]',
