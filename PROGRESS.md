@@ -7,6 +7,29 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Normal unparked pending ancestor SEND now preserves its actual closed-child
+refresh release before ignored argument, unused current result and receiver.
+The tested child/copy return has two array owners but one element-edge set until
+child storage retires. Assigned results survive receiver cleanup; pre-refreshed
+row COW keeps its snapshot through ARG-END, and equal-cache cleanup throws a new
+RuntimeException with Previous NULL before ancestor finally.
+[Normal SEND review](coverage/semantics/generator-unused-detached-send-review.json).
+
+Four sources and strict407 pass at `d7d633ae2`; gate4 and 561 focused premises
+(316 author +245 independent; 541 local +20 generic) pass at `4b29c00ce`.
+Native4 and the genuine `f61112e16` NORMAL D/K disagreement retain failed agreement
+and zero credit. All post-change checks pass first execution at original caps,
+without retries, historical renewal or accepted replay. All actors are reaped and
+CPU2 released. Only289 changes; normal direct receivers, wider refresh shapes,
+abrupt argument callbacks, body entry and collection remain unvalidated.
+
+Composed over `6b58a1a15`/407 with tested289 and all six tests private-exact.
+Every other incoming runtime/schema/default/root/ordered-manifest/pipeline byte
+stays parent-exact. Clone/selected-owner, INI/DEFINE, missing-read, modulo and
+float-key selectors have no producer here; selected-call metadata/debts stay
+empty. Private source4/strict407/state561 retain their cuts without joined
+execution, accepted replay or renewed credit.
+
 Retained intrinsic `ini_set` Closures now unpack a NULL option and a separate
 shared table-free STDINSTANCE from one two-item numeric, named or mixed pack.
 The held receiver and value remain distinct object roots while active outer
@@ -146,8 +169,8 @@ Composed over `92b95086a`/407 with module172/four tests private-exact and every
 other runtime/schema/ordered-manifest byte parent-exact. Source4/state1,253 retain
 private407 cuts without joined execution or renewed evidence.
 
-Pending SEND now preserves separate ignored-argument and result owners when both
-are the same owning current. The fresh result masks the consumed argument slot,
+At Iterator40, pending SEND preserved separate ignored-argument and result
+owners when both are the same owning current. The fresh result masks the consumed argument slot,
 but both real owners release before the receiver. In the tested cases, counts rise
 from two to three, then two quiet drops leave only current; shared arrays keep one
 element-edge set.

@@ -1428,6 +1428,12 @@ fresh result masks its consumed slot, argument and result keep separate release
 owners before receiver cleanup. Array container counts share one element-edge
 set; assigned results keep their copy. See the
 [aliased SEND review](coverage/semantics/generator-unused-pending-send-alias-review.json).
+A normal, unparked pending ancestor `send` preserves the same unused-result
+order.
+Its first refresh may release a closed child before argument, result and receiver
+cleanup. Assigned copies survive receiver retirement; row COW and equal-cache
+arguments preserve separate owners. See the
+[normal SEND review](coverage/semantics/generator-unused-detached-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit
