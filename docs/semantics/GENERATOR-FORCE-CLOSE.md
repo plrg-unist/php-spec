@@ -88,7 +88,7 @@ keeps a cache alive through sole receiver close, then releases before caller cat
 A cache destructor can replace the injected exception with its previous chain
 intact. No exception owner belongs to the parked Generator. The
 [pending-throw review](../../coverage/semantics/generator-pending-throw-review.json)
-checks reference-child and detached-middle histories; later resumption remains
+checks reference-child and detached-middle histories; later body entry remains
 Unsupported because the global exception-opline history is not yet modeled.
 For a direct detached middle with an owning simple-CV copied return, pending
 THROW also parks the frame. Close first transfers that return's count out of the
@@ -105,6 +105,12 @@ receipt is valid while CLOSING has both pending and parked history. Cache-copy
 cleanup can run after upper finally and replace the supplied exception before
 catch, independently of the retained return. See the
 [ancestor THROW review](../../coverage/semantics/generator-pending-owning-chain-throw-review.json).
+A second pending THROW can clear the still-pending selected receiver without
+executing the parked frame. The copied return and parked source site stay intact;
+close keeps the same transfer and finally omission after either receiver order.
+A sole-middle snapshot destructor replaces the second supplied exception after
+ordinary ancestor cleanup, independently of the retained return. See the
+[repeated THROW review](../../coverage/semantics/generator-repeated-pending-owning-throw-review.json).
 A live used-yield input stays in place at the pending THROW step. Physical leaf
 close retains its count before retiring the parked frame; the payload runs only
 in the request object-store pass. It is neither released before caller catch nor

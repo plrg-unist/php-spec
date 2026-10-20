@@ -6,10 +6,7 @@ import global_constant_sources as family
 from undefined_scalar_compare_review_cases import CASES
 
 family.CASES = CASES
-family.UNSUPPORTED = {
-    'peer-both-missing-right-initialized-on-first-warning':
-        ('error-handler ingress requires a producer continuation', b''),
-}
+family.UNSUPPORTED = {}
 family.BASELINE = ('error-handler ingress requires a producer continuation', b'')
 family_fingerprint = family.fingerprint
 

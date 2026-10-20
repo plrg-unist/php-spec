@@ -15,7 +15,7 @@ def checks(program, path, name):
         '$lookup(S.ENV,$ptascii("right")) = (n_right)',
         '$heap_owners($heap_prune($heap_graph(S)),HCELL n_right) = 1',
         '$error_read_plan(S_array_entry) = eps',
-        '$error_read_plan(S_missing_entry) = eps',
+        '$error_read_plan(S_missing_entry) = (perrorread)',
     }
     result = [values[0]]
     for condition in values[1:]:

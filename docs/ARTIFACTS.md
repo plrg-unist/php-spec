@@ -84,6 +84,11 @@ The nested C→D destructor return-history proof is in
 failures and the runtime patch, SHA-256
 `ddad5ee4e9af8e7ffe8b0475db2923f8fb0b0d8258fca42a4a127f9fd5a14547`.
 
+The finite nested Exception constructor-kind proof is in
+`../php-spec-evidence-archive/lifecycle-exception-width-117/manifest.json`:
+442,184 bytes under `.tools/m117/`, six first-attempt actor reports and the runtime
+patch, SHA-256 `1e17bd769bc00db84384ca464599754e3e43864f16c2a754bad394c1d69edb9f`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

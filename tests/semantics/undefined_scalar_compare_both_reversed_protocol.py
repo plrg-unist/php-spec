@@ -14,7 +14,8 @@ def checks(program, path, name):
         '$lookup(S.ENV,$ptascii("left")) = (n_left)',
         '$heap_owners($heap_prune($heap_graph(S)),HCELL n_left) = 1',
         '$error_read_plan(S_entry_array) = eps',
-        '$error_read_plan(S_entry_missing) = eps',
+        '$error_read_state_shape(S_entry_missing,ptask_original,S.RESULT,S.BASE) = (perrorread_left)',
+        '$error_read_plan(S_entry_missing) = (perrorread_left)',
     }
     result = [values[0]]
     for condition in values[1:]:

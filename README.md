@@ -18,9 +18,11 @@ remains later research.
 
 [Scalar comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.
-This covers bounded spaceship operands and direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs
-with one missing operand, including rebinding. Both-missing pairs can resume if
-the first handler defines the opposing scalar; greater operators warn right first.
+This covers bounded spaceship operands and distinct direct-CV
+`==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
+Both-missing pairs, including `<=>`,
+can resume if the first handler defines the opposing scalar; greater operators
+warn right first.
 Wider warning paths remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
@@ -256,7 +258,15 @@ now preserve the original Closure and early value across reversed named argument
 effects. Native `__invoke` arguments remain numeric and normalized. Four originals
 and 928 state premises cover true/false handlers, throwing cancellation, strict
 ordinary versus weak explicit calls, owner roots and reuse of the retained setter.
-Packed/PIPE forms, sole-owner lifetimes and wider values remain partial.
+Packed forms beyond the numeric follow-up below, PIPE, sole-owner lifetimes
+and wider values remain partial.
+
+[Numeric unpacked retained NULL INI calls](coverage/semantics/ini-set-owned-unpack-null-option-review.json)
+now preserve the original Closure and captured arguments from one numeric two-item
+pack across live callee and pack mutations. Explicit wrapper arguments remain
+normalized `[NULL, value]`; ordinary strict calls still reject NULL first.
+Four originals and 914 state premises cover return, throw, literal-source authority
+and reuse of the retained setter. Other packs, PIPE and wider values remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -471,8 +481,17 @@ alias and writes a new non-reference CV cell; a supplied throw preserves the
 alias and callback writes. Three exact originals and 387 focused SL premises
 cover capture, default Warning, commit/cancellation and public guards in the
 [plain-CV compound ledger](coverage/semantics/addassign-cv-warning-review.json).
-The RHS remains defined, plain and quietly numeric; owning/constrained targets,
+Its quiet-RHS completion requires a defined, plain numeric RHS; owning/constrained targets,
 wider producers and lifecycle paths remain partial.
+
+Plain-CV `+=` now also captures a newly leading RHS after the LEFT Warning and
+issues a second Warning before storing. Cached float `18.0` survives RHS unset or
+late reference creation; successful storage detaches a late referenced target, while a
+second supplied throw preserves alias write-through and cancels the outer store.
+Four originals and 465 focused premises are retained in the
+[second-Warning ledger](coverage/semantics/addassign-rhs-warning-review.json).
+Other target/producer classes and wider lifetimes remain partial.
+
 [Stringable compound concatenation352](coverage/semantics/compound-string-live-rhs-review.json)
 reads a defined RHS CV after the left conversion, preserves the non-reference
 self-CV fast path, and retains evaluated temporary/reference operands through
@@ -1143,6 +1162,13 @@ clears initialization; the physical middle stays parked with its return intact.
 Close retains that return and skips the middle finally; cache copies, row COW
 and mutable returned cells keep separate lifetimes. See the
 [ancestor THROW review](coverage/semantics/generator-pending-owning-chain-throw-review.json).
+An already parked owning return also admits another pending `throw` when the
+selected receiver still needs initialization. That receiver clears its own bit
+without entering the body, even if the physical middle was already initialized.
+Distinct or reused exceptions, current snapshots and return cells keep their
+separate lifetimes; actual parked body entry remains Unsupported. See the
+[repeated THROW review](coverage/semantics/generator-repeated-pending-owning-throw-review.json).
+Parked next/send and wider repeated-THROW leaves remain open.
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller
 catch. The independent current copy can still trigger a replacement exception. See the
@@ -4278,8 +4304,10 @@ and 514/12 checks at `9aa2136d9` prove cleared-NULL recovery, one Notice and det
 caller aliases. One nested destructor now follows the same path: C creates
 and releases D, whose TypeError reaches that local catch. A fresh comparison and
 454/9 checks at `bf107b70c` prove nested saved scopes, remaining owners and detached
-NULL recovery. Other bodies/throw forms, deeper reentry, GC and broader consumers
-remain open.
+NULL recovery. Literal builtin Exception now follows that finite path too:
+source1 and 385/4 checks at `1c87142fd` bind its pending kind to the compiled
+constructor, reject a valid wrong-kind Throwable and preserve Notice17/detached
+NULL recovery. Other throw forms, deeper reentry, GC and broader consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

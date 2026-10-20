@@ -143,7 +143,14 @@ snapshot retain independent counts; a real row write can COW the raw cache away
 from a held snapshot and the same copied return without duplicating element
 edges. The [ancestor THROW review](../../coverage/semantics/generator-pending-owning-chain-throw-review.json)
 also covers sole-receiver replacement cleanup and late returned-cell writes.
-Later parked resume and wider owning continuations remain open.
+A later pending THROW may target that same parked owning continuation directly
+or through finite native links. The selected receiver must still be pending; the
+physical middle need not be. Native HANDLE_EXCEPTION is already installed, so
+this call preserves parked history and returns before body entry. Its separate
+current snapshot can retire after receiver close; returned array aliases and
+embedded cells keep their owners. See the
+[repeated THROW review](../../coverage/semantics/generator-repeated-pending-owning-throw-review.json).
+Actual parked body entry and wider owning continuations remain open.
 Pending `send` through native shared links can now buffer a paused child's yield
 result when it is assigned directly to a simple CV. When a direct or forwarded
 `next` resumes the child, it consumes that value without adding another owner.

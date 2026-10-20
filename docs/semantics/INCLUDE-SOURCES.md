@@ -555,8 +555,33 @@ optional-name bindings fix the first type constraint; the second whole-state fin
 expectation now includes the exact existing GC buffer update when the owner task
 root is consumed. Shared64 and runtime GC remain unchanged. No accepted source,
 native or old782 actor repeats. Only selected default Deprecated line24 is expected;
-other PHP stderr and accepted worker stderr are empty. Packed/PIPE, sole-owner
-retirement, owning/NaN/legacy-string values and wider configuration remain partial.
+other PHP stderr and accepted worker stderr are empty. Packed forms beyond the
+numeric follow-up below, PIPE, sole-owner retirement, owning/NaN/legacy-string
+values and wider configuration remain partial.
+
+The [numeric unpacked retained-owner increment](../../coverage/semantics/ini-set-owned-unpack-null-option-review.json)
+adds one disjoint NULL2 admission arm for a sole numeric two-item pack. Completed
+pack entries are historical snapshots: callback mutations of the retained source
+array cannot replace earlier NULL/value arguments. Numeric keys3/7 normalize to
+API and wrapper slots0/1. Active unpack retains the array; the completed certificate
+adds no array root. Immutable compiled facts authenticate literal contents, while
+unknown helper/CV captures retain structural source authority without invented
+history checks. Ordinary strict reception and weak explicit `__invoke` stay exact.
+
+Four source comparisons and author584 premises (204+173+207) retain `35aa840bc`/
+`bbde7c32c`/405; peer330 passes at `dc8798c3b`/the same runtime, totaling914. Actual
+unpack cursors, owner roots, four-frame raw REQUEST trace, full throwing discard,
+callback pack mutation, returning false/default delivery, retained setter recovery,
+source/carrier/count refusals and zero/split budgets pass. Native peer observes
+only numeric wrapper arguments; state checks prove carrier identity and full trace.
+Initial `a3a17aa48` CPU3 native4/baseline0 precedes implementation; later checks use
+CPU2. Eleven stable/reaped reports retain one pre-main peer binder failure0, fixed
+only by extracting the snapshot before destructuring its carrier. Source4/author584
+are not replayed. Default Deprecated lines7/20 are expected; other PHP and accepted
+worker stderr are empty. Existing continuations, traces, roots, discard and GC stay
+unchanged; one array-comparison declaration moves from400 to172 before first use.
+Other packs, PIPE, sole-owner lifetimes and owning/NaN/legacy-string values remain
+partial; old623/746/782/928 cuts and paused work are not renewed.
 
 The [unary CONFIG PIPE increment](../../coverage/semantics/include-config-pipe-review.json)
 replays the authenticated left child and `CODEPIPE_SEND`, rather than an ordinary

@@ -138,15 +138,16 @@ record the scalar continuations and their separate validation cuts. Greater
 operators reverse physical VM operands; the same source shapes apply within the
 single-missing/scalar-throughout bound.
 Both-missing distinct direct CVs may enter the first Warning: forward
-`==`/`!=`/`<`/`<=` freeze left NULL and require the handler to define right scalar;
+`==`/`!=`/`<`/`<=`/`<=>` freeze left NULL and require the handler to define right scalar;
 reversed `>`/`>=` freeze right NULL and require current left scalar. The first
 name may remain undefined. The shared ingress-only predicate distinguishes both
 shapes; existing resume guards still refuse an undefined opposing name. A pending
 Exception suppresses the second Warning and follows ordinary discard. The
 [forward review](../../coverage/semantics/undefined-scalar-compare-both-review.json)
 and [reversed review](../../coverage/semantics/undefined-scalar-compare-both-reversed-review.json)
+and [spaceship review](../../coverage/semantics/undefined-spaceship-both-review.json)
 record fresh owners and entry/resume separation. Returning second-Warning chains,
-same-CV/owning counterparts and spaceship both-missing remain partial.
+same-CV/owning counterparts and wider producers remain partial.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding
