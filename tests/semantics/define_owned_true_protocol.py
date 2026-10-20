@@ -66,8 +66,8 @@ def controls():
         '$selected_entry_source_valid(S_dead,pselectedcall_first)',
         '~$dynamic_constant_case_valid(S_dead,pconfigcall)',
         'pconfigcall_object = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,1,KNOWN (POBJECT n_first))]',
-        '~$dynamic_owned_define_valid(S,pconfigcall_object)',
-        '~$dynamic_constant_case_valid(S,pconfigcall_object)']
+        '$dynamic_owned_define_valid(S,pconfigcall_object)',
+        '$dynamic_constant_case_valid(S,pconfigcall_object)']
     # These originals spell TRUE literally; the compiled argument also refuses FALSE.
     for label, value in [('false','PBOOL false'),('null','PNULL'),('quiet','PINT 0')]:
         call = 'pconfigcall_' + label

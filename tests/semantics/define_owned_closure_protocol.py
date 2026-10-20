@@ -88,7 +88,7 @@ def controls():
         'S_stale = S[.SELECTEDCALLS = [pselectedcall_first,pselectedcall_newer]][.SELECTSEQ = 2]',
         '$selected_newer_same_owner(S_stale.SELECTEDCALLS,pselectedcall_first)',
         '~$config_selected_valid(S_stale,pconfigcall)',
-        '~$dynamic_owned_define_valid(S,pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,1,KNOWN (POBJECT n_first))])',
+        '$dynamic_owned_define_valid(S,pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,1,KNOWN (POBJECT n_first))])',
         '~$dynamic_owned_define_valid(S,pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,2,KNOWN (PBOOL true))])',
         '~$dynamic_owned_define_valid(S,pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,2,KNOWN PNULL)])',
         '~$dynamic_owned_define_valid(S,pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,2,KNOWN (PINT 0))])',

@@ -46,8 +46,8 @@ def controls():
         '$selected_entry_source_valid(S_dead,pselectedcall_first)',
         '~$dynamic_null_define_flag_valid(S_dead,pconfigcall)',
         'pconfigcall_object = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,1,KNOWN (POBJECT n_first))]',
-        '$dynamic_define_value_class(S,POBJECT n_first) = eps',
-        '~$dynamic_null_define_flag_valid(S,pconfigcall_object)']
+        '$dynamic_define_value_class(S,POBJECT n_first) = (PVOBJECT)',
+        '$dynamic_null_define_flag_valid(S,pconfigcall_object)']
     # These are pure validator projections, never replacement machine steps.
     for label, value in [('false','PBOOL false'),('true','PBOOL true'),('quiet','PINT 0')]:
         call = 'pconfigcall_' + label

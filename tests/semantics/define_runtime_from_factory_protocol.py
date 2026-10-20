@@ -87,7 +87,7 @@ def controls():
         'S_wrapped = S[.OBJECTS[n_left] = CONSTANTCLOSURE pconfigcall.SITE (S.OBJECTS[n_left])]',
         '$dynamic_define_value_class(S_wrapped,POBJECT n_left) = eps',
         'S_internal = S[.OBJECTS[n_left] = INTRINSICCLOSURE INTRINSIC_DEFINE]',
-        '~$dynamic_runtime_object(S_internal,n_left)',
+        '$dynamic_runtime_object(S_internal,n_left)',
         'pconstantclosure_bad = {OBJECT n_left,SITE pconfigcall.SITE,DECL pconfigcall.SITE,PREFIX (|S.DECLARATIONS|)}',
         'S_bad_record = S[.CONSTANTCLOSURES = [pconstantclosure_bad]]',
         '$dynamic_define_value_class(S_bad_record,POBJECT n_left) = eps']
