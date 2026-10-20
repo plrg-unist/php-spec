@@ -1573,19 +1573,25 @@ dec $ref_return_retire_call(pstate, prefreturncursor) : bool
 def $ref_return_retire_call(S, prefreturncursor) = true
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprFuncCall (NName (BYTES text) metadata_name) (SEQUENCE eps) metadata_call) metadata_return)
 def $ref_return_retire_call(S, prefreturncursor) = false -- otherwise
-dec $ref_return_retire_property_cell(pstate, nat) : bool
-def $ref_return_retire_property_cell(S, n_cell) = true
-  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
-  -- if ppropref.SOURCES = [OBJECT_PROP_SOURCE n_owner ptbytes_key porigin_decl]
+dec $ref_return_retire_property_sources(pstate, nat, pproptypesource*) : bool
+def $ref_return_retire_property_sources(S, n_cell, eps) = true
+def $ref_return_retire_property_sources(S, n_cell, (OBJECT_PROP_SOURCE n_owner ptbytes_key porigin_decl) :: pproptypesource_tail*) = $ref_return_retire_property_sources(S, n_cell, pproptypesource_tail*)
   -- if $propref_source_valid(S, n_cell, OBJECT_PROP_SOURCE n_owner ptbytes_key porigin_decl)
-  -- if S.STORE[n_cell] = DEFINED (POBJECT n_value)
-  -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
   -- if S.OBJECTS[n_owner] = INSTANCE porigin_class
   -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ptbytes_key) = (ppropertydesc)
   -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc.STATIC
-  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "object"]))]
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "object"]))] \/ (|ppropertydesc.TYPE| = 2 /\ (PTBRANCH ([PTBUILTIN "object"])) <- ppropertydesc.TYPE /\ (PTBRANCH ([PTBUILTIN "string"])) <- ppropertydesc.TYPE)
   -- if ppropertydesc.SETVISIBILITY = eps
   -- if ~$property_hook_declared(S, n_owner, ptbytes_key)
+def $ref_return_retire_property_sources(S, n_cell, pproptypesource*) = false -- otherwise
+dec $ref_return_retire_property_cell(pstate, nat) : bool
+def $ref_return_retire_property_cell(S, n_cell) = true
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if ppropref.SOURCES =/= eps
+  -- if $propref_unique_sources(ppropref.SOURCES)
+  -- if $ref_return_retire_property_sources(S, n_cell, ppropref.SOURCES)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_value)
+  -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
 def $ref_return_retire_property_cell(S, n_cell) = false -- otherwise
 dec $weakmap_key_maps(pstate, pnode*, nat) : nat*
 dec $ref_return_retire_clear_value(pstate, pvalue) : bool
@@ -1598,11 +1604,12 @@ def $ref_return_retire_clear_value(S, POBJECT n_holder) = true
   -- if pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = eps
   -- if pclassdesc.METHODS = eps /\ pclassdesc.CONSTANTS = eps
   -- if pclassdesc.PROPERTIES = [ppropertydesc]
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "object"]))]
   -- if $objectprops_at(S.OBJECTPROPS, n_holder) = ([ppropertyslot])
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
   -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN)
   -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
-  -- if ppropref.SOURCES = [OBJECT_PROP_SOURCE n_holder ppropertyslot.NAME ppropertydesc.ORIGIN]
+  -- if (OBJECT_PROP_SOURCE n_holder ppropertyslot.NAME ppropertydesc.ORIGIN) <- ppropref.SOURCES
   -- if $ref_return_retire_property_cell(S, n_cell)
   -- if n_owners = $heap_owners($heap_graph(S), HCELL n_cell)
   -- if $(n_owners > 1)
