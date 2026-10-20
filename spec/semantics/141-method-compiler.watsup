@@ -470,10 +470,13 @@ def $ppscoped_parent_missing(P, NName (BYTES text_name) metadata_name) = true
 def $ppscoped_parent_missing(P, phpType19) = false -- otherwise
 def $ppdispatch(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppconstant_error(P, $ptascii("Cannot use \"parent\" when current class scope has no parent"), P.LOCATION.LINE)
   -- if $ppscoped_parent_missing(P, phpType19)
+  -- if ~$parent_hook_syntax(NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
 def $ppdispatch(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppcall_init($ppmethod_call_name($ppscoped_class(P, pcpath, phpType19), pcpath, phpType20), pcpath)
   -- if $ppfirstclass(phpType7*) /\ ~$ppscoped_parent_missing(P, phpType19)
+  -- if ~$parent_hook_syntax(NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
 def $ppdispatch(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppmethod_call_name($ppscoped_class(P, pcpath, phpType19), pcpath, phpType20), pcpath ++ [PCFIELD 2], 0, phpType7*, PNUNSUPPORTED "static method call has deferred parameter modes")
   -- if ~$ppfirstclass(phpType7*) /\ ~$ppscoped_parent_missing(P, phpType19)
+  -- if ~$parent_hook_syntax(NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
 
 ;; Class lexical constants use the declaring scope. static::class is a runtime
 ;; called-class read, so its compiled operand has no constant value.
