@@ -289,6 +289,13 @@ originals and 953 state premises cover true/false handling, throwing cancellatio
 strict NULL priority, source authentication and normal setter recovery. Multiple
 packs, PIPE and wider values remain partial.
 
+[NULL INI options with rejected array values](coverage/semantics/ini-set-null-array-value-review.json)
+now resume handlers for direct/selected positional calls with retained flat arrays
+of direct quiet primitive leaves. Returning handlers reach the value TypeError
+with an empty option and the earlier array; throwing handlers retain raw NULL and
+cancel before value rejection. Four originals and 844 state premises cover COW,
+strict option priority and normal recovery. Wider values/forms remain partial.
+
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
 send/callback site. Ordinary Closure PIPE follows caller strictness; normal and

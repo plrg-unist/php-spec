@@ -7,6 +7,28 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct/selected positional `ini_set(NULL, array)` now resumes Deprecated handlers
+for retained flat arrays of direct quiet primitive leaves. Normal handling then
+raises parameter2 TypeError with the converted empty option and captured array;
+COW writes to the live alias cannot replace it. A supplied throw keeps rawNULL,
+Exception identity/caller99/precision10/sibling2389 and cancels value rejection.
+Strict parameter1 priority after effects and real setter recovery remain intact.
+
+Four exact originals and all844 premises (219+188+96+341) pass first attempts at
+`b7a14d47d`/`c33c91205`/406. Initial `c4c7eab2a` CPU3 native4/baseline0 precede
+later CPU2 checks. Nine reports are stable/reaped with expected Deprecated9/20,
+quiet accepted workers and no failures/retries. Only27 module172 lines change;
+source-pool authentication, actual array/task/trace edges, COW, precise restoration/
+discard and budgets are checked without changing trace/roots/GC. Named/owned/
+packed array-value continuations and wider leaves remain partial.
+[NULL array INI review](coverage/semantics/ini-set-null-array-value-review.json).
+
+Composed over `ef04bb9a75`/406 with module172/four tests private-exact and every
+other runtime/schema/ordered manifest parent-exact. Incoming magic-call/Closure
+DEFINE values, reference/finally, Generator, numeric-warning and lossy-float debt
+paths have no producer here. Source4/state844 retain their private identities
+without a joined actor or renewed agreement credit.
+
 Selected-reference `+=` now captures a newly leading RHS before its second
 Warning. Cached float `18.0` writes the old target alias despite current-name
 rebinding and post-capture RHS retirement; a supplied second throw preserves
