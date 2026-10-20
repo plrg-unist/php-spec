@@ -46,7 +46,7 @@ def checks(program, path, name):
         'S.STORE[n_current] = DEFINED (PARRAY n_array)',
         '$lookup(S.ENV,$ptascii("missing")) = eps',
         '$lookup(S.ENV,$ptascii("result")) = (n_result)', 'S.STORE[n_result] = DEFINED (PINT 41)',
-        '(HARRAY n_array) <- S.ALLOCATIONS', '~(n_array <- S.IMMUTABLE)',
+        '(HARRAY n_array) <- S.ALLOCATIONS', '~$array_immutable(S,n_array)',
         'S.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_object))]',
         'S.ARRAYS[n_array].NEXT = 1',
         '(HOBJECT n_object) <- S.ALLOCATIONS', 'S.OBJECTS[n_object] = INSTANCE porigin_class',
