@@ -94,7 +94,8 @@ def reach(name, previous, stage):
 
 FRONT = lines(r'''
 S_front.TODO = (UPDATE_PREP pupdate b_post z_update) :: ptask_tail*
-S_front.ORIGIN = (porigin_parent) /\ S_front.RESULT = KNOWN PNULL
+S_front.ORIGIN = (porigin_parent)
+S_front.RESULT = KNOWN PNULL
 pbase_pending = S_front.BASE
 pbase_pending = BASE_PROPERTY_PENDING (BASE_VALUE (VARIABLE ptbytes_cv z_cv)) (KNOWN (PSTRING ptbytes_name)) z_receiver
 ptbytes_cv = $ptascii("child") /\ ptbytes_name = $ptascii("value")
