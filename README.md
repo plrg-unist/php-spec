@@ -514,6 +514,14 @@ focused premises retain this in the
 [selected-RHS Warning ledger](coverage/semantics/addassign-selected-rhs-warning-review.json).
 Other producers, unsafe targets and wider lifetimes remain partial.
 
+Failed delayed RHS conversion in selected-reference `+=` now reports the old
+selected operand types despite both current names rebinding. Flat arrays raise
+`array + array` without retrying union; old bool/bad text raises `bool + string`
+while current names keep quiet replacements. Both preserve the selected target,
+aliases and outer destination. Two originals and 304 focused premises retain this
+in the [selected failure ledger](coverage/semantics/addassign-selected-failure-review.json).
+Other values, producers and lifetimes remain partial.
+
 Initially plain CV `+=` destinations now retain their selection through a named
 warning handler that creates a late alias. Successful replacement detaches that
 alias and writes a new non-reference CV cell; a supplied throw preserves the

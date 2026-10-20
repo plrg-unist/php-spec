@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Selected-reference `+=` now reports failed delayed RHS conversion using the
+old selected cells despite both current names rebinding. Flat arrays raise
+TypeError without union retry; old bool/bad text preserves its labels, outer100
+and alias write-through while current replacements remain independent.
+Two originals pass at `252cb0193`/406 and 304 focused premises at `32881880d`/406.
+[Selected failure ledger](coverage/semantics/addassign-selected-failure-review.json).
+No entry/tag/root or successful store changes; wider values/producers/lifetimes
+remain partial and OP12 stays paused.
+
+Composed over `5d8476935`/406, preserving incoming runtime, task and
+manifest paths. Source2/state304 retain their private406 cuts; independently
+reviewed absent incoming selectors require no joined execution or renewed credit.
+
 Distinct direct CVs at `==`/`!=`/`<`/`<=` now traverse the second Warning
 when right stays missing or is removed by the first handler. Two captured NULLs
 preserve Boolean true/false/false/true despite late references or scalar writes;
@@ -49,17 +62,8 @@ DEFINE values, reference/finally, Generator, numeric-warning and lossy-float deb
 paths have no producer here. Source4/state844 retain their private identities
 without a joined actor or renewed agreement credit.
 
-Selected-reference `+=` now captures a newly leading RHS before its second
-Warning. Cached float `18.0` writes the old target alias despite current-name
-rebinding and post-capture RHS retirement; a supplied second throw preserves
-callback/alias writes and cancels storage. Two originals pass at `ddcef772a`/406
-and 330 focused premises at `a1f5cd969`/406.
-[Selected-RHS Warning ledger](coverage/semantics/addassign-selected-rhs-warning-review.json).
-Other producers/unsafe targets and wider lifetimes remain partial; OP12 paused.
-
-Composed over `06a0e4c7b`/406, preserving incoming fields, task variants
-and manifest. Source2/state330 retain their private406 cuts; independently reviewed
-incoming selectors require no joined execution or renewed credit.
+Earlier selected-reference `+=` second-Warning storage retains source2/state330
+in its [review ledger](coverage/semantics/addassign-selected-rhs-warning-review.json).
 
 Pending literal zero-argument NEXT now returns before dispatch at an already
 parked owning simple-CV copied return, directly or through finite native links.
