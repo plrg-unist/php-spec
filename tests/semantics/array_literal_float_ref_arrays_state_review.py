@@ -121,7 +121,7 @@ def conditions(name, program, path, stdout):
             '~$literal_reference_cell(S_resume[.PROPREFS = [{CELL n_new, SOURCES eps}]], n_new, S_resume.ALLOCATIONS)',
             '~$literal_reference_cell(S_resume[.ARRAYS[n_new_array].ITEMS = [ENTRY (KINT 0) (ALIAS n_old)]], n_new, S_resume.ALLOCATIONS)',
             '~$literal_reference_cell(S_resume[.ARRAYS[n_new_array].ITEMS = [ENTRY (KINT 0) (DIRECT (PARRAY n_new_array))]], n_new, S_resume.ALLOCATIONS)',
-            '~$literal_reference_cell(S_resume[.ARRAYS[n_new_array].ITEMS = [ENTRY (KINT 0) (DIRECT (PSTRING ($ptascii("bad"))))]], n_new, S_resume.ALLOCATIONS)',
+            '~$literal_reference_cell(S_resume[.ARRAYS[n_new_array].ITEMS = [ENTRY (KINT 0) (DIRECT (PSTRING_CARRIER (REQUEST_STRING (|S_resume.STRINGDATA|)) ($ptascii("bad"))))]], n_new, S_resume.ALLOCATIONS)',
             'PhpStep: S_resume ~> S_insert',
             'S_insert.TODO = (ARRAY_NEXT n_builder phpType13*) :: ptask_tail*',
             'S_insert.STORE = S_resume.STORE', 'S_insert.RESULT = KNOWN PNULL',
