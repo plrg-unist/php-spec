@@ -23,6 +23,203 @@ unchanged ingress refusal retains private `e98ba7556`/407. No failures or retrie
 paused COMP88 and DEFINE ownership are untouched.
 [Captured-object review](coverage/semantics/undefined-comparison-captured-object-review.json).
 
+Composed over `828239b29`/408 with tested207 and all 17 publication tests
+preserved. Incoming INI/DEFINE, Generator SEND, unary-copy/BITNOT-range,
+magic property `+=` and float-key literal selectors have no producer here;
+logical `!isset`, plain tag assignments and ADD counters retain their existing
+paths. New foreign task variants and ordered408 remain parent-exact, without
+state-field changes. Source/state and affected checks retain their accepted407
+cut without joined execution, accepted replay or renewed credit.
+
+Range-only bitwise NOT now stages one Warning for plain float CVs. Finite
+`2^63` keeps its original double through the callback, then signed wrapping and
+complement yield `PHP_INT_MAX` after source `99` is removed. Infinity's supplied
+Exception instead cancels complement/delivery and preserves callback write `99`
+and outer `100`; neither original emits Deprecated. Two originals pass at
+`f114178d2`/408 and 116+124 focused premises at `b46e89b12`/408 in the
+[range BITNOT ledger](coverage/semantics/bitnot-range-warning-review.json).
+Fresh snapshots authenticate the CV; returned scalar history survives source
+owner zero. The model may compute the pure wrapped long early; Zend saves the
+double before Warning and performs finite slow wrapping afterward. Old precision,
+NaN, numeric, formatting and unwind bodies remain exact. Other producers,
+reference/owning operands and broader lifecycles remain partial. OP12, COMP88 and
+Source47 low-initial-precision paths remain paused; property selectors stay exact.
+
+Composed over `aa101b821`/408, preserving incoming state, task and
+ordered-manifest paths. Source2/state240 retain their private408 cuts;
+independently reviewed absent incoming selectors require no joined execution
+or renewed credit.
+
+Retained intrinsic `ini_set` receivers now resume NULL-option handling for the
+same one-entry key0 ALIAS ARRAY with a live untyped quiet primitive cell. The
+captured setter and array survive live callee replacement and current-container
+COW; later cell writes remain visible through both API and explicit-wrapper
+arguments. Strict ordinary reception rejects parameter1 after value effects,
+while the same setter's explicit call is weak and reaches parameter2. A supplied
+Exception cancels rejection and the retained setter remains usable.
+
+Four exact source comparisons and 1,521 state premises (372+321+385+443) pass
+first attempt at `4eb8c2785`/`5894b4ffc`/407. Initial `3b962c9ea` CPU3 native4/base0
+precedes CPU5 affected checks; nine stable/reaped reports PASS, only Deprecated13/21,
+quiet workers and no failures/retries. Native E/W/N/L/L/A observes a later cell
+write after actual TypeError/getTrace in both argument arrays. State proves the
+owner-only config partial then owner+array roots, transitive shared HCELL, raw
+three-frame supplied Exception and whole restoration/discard. No receiver trace
+edge or direct CELL root/buffer is invented. Only the OWNER-empty conjunct is
+removed; PACKSeps/positional/source/ref/metadata/weak fences and all helpers,
+trace/root/GC/schema/historical tests stay exact without replay. Whole-state
+PARAMETERBACKINGS EPS bounds this slice; wider forms/references remain partial,
+with paused paths untouched.
+[Retained shared-reference INI array review](coverage/semantics/ini-set-owned-null-alias-array-value-review.json).
+
+Composed over `3bddd3aed`/408 with private-exact172/four tests and all other
+runtime/schema/ordered408/new418 bytes parent-exact. Incoming Generator SEND,
+owned DEFINE object values, unary-copy warnings, float-key borrowing and INSTANCE
+magic property+= have no source producer here. Incoming checkpoints stay preserved
+except the reviewed stale81 owned partial qualifier. Source4/state1,521 retain
+private407 cuts without execution or renewed credit at408.
+
+Pre-refreshed direct pending SEND now releases its unused owning current copy
+correctly when the normal simple-CV child return owns no heap node. The snapshot
+survives normal argument mutation, then retires before receiver finally;
+assignment keeps its copy. Tests distinguish integer `0`, NULL and a literal
+string return from the owning current array/object. Argument-time row COW keeps
+the old snapshot through ARG-END, while a finally-time slot clear can throw a
+RuntimeException with Previous NULL. No owning return root is manufactured.
+[Scalar-return SEND review](coverage/semantics/generator-unused-scalar-return-send-review.json).
+
+Four native observations and the genuine NORMAL order disagreement retain
+`710dbeff2`/407. Four source agreements and strict407 pass at `14e2bd9d0`;
+gate4 and 498 focused premises (262 author +236 independent; 478 local +20
+generic) pass at `91e20f6d9`. Baseline recordfalse/agreement0 is preserved.
+All post-change checks pass first execution at original caps, without failures,
+retries, historical renewal or accepted replay; actors are reaped/CPU2 released.
+
+Only module289 gains a disjoint node-free identity arm with source/tail, empty
+held/task owners and inactive-collection checks. Owning-return receipts,
+ancestor/child-prefix arms, module270, root functions, close and collector bodies
+stay unchanged. Wider input histories, abrupt argument callbacks, nonpending
+body entry and collection remain unvalidated; no global input-registry guard
+is claimed.
+
+Composed over `3cd1251b4`/408, preserving tested289 and six tests byte-for-byte.
+Incoming INI/DEFINE, ordinary typed-ref history, selected numeric-warning,
+float-key callback and magic integer property-ADD selectors are unselected here.
+All other incoming runtime/schema/default/root/ordered-manifest/pipeline bytes
+remain parent-exact. Source4/strict407/state498 retain their private cuts and
+baseline disagreement, without joined execution, accepted replay or renewal.
+
+Selected main-scope CV receivers and literal inherited-private integer property
+names now support `+=`: the named integer RHS runs before receiver lookup,
+then the chosen object stays pinned through Get/addition/Set.
+Get clearing the CV leaves Set on that object. Separate inner handler holds end
+before the outer hold; cached `7` survives receiver destruction writing live `99`.
+Supplied Get/Set throws preserve the same Exception and destination `42`.
+
+Four source agreements at `1541d9a22`/408 and 891 focused premises (870 reached
++ 21 derived) at `c6c08f537`/408 pass on the four actual histories. The genuine
+baseline has four consumer Unsupported results. The separate native `'5tail'`
+Warning/Set control remains outside the quiet PINT/in-range slice and is explicitly
+refused with zero agreement. Original admission, fixture/driver failures and two
+diagnostics retain zero credit. Runtime changes only module 30, new 418 and the
+ordered manifest; existing Get/Set, ordinary RHS/arithmetic and generic cleanup/GC
+remain unchanged. Wider kinds/operators/receivers/reentry remain partial.
+[Magic property += review](coverage/semantics/magic-property-addassign-review.json).
+
+Composed over `6896a7a96`/407 with module 418, six tests and family scope
+private-exact; module 30 retains incoming operator/retire-history tags beside the
+new outer tasks. Ordered 407 + 418 gives 408; unrelated runtime/default/root
+bytes remain incoming-exact. INI/DEFINE, ref-return, Generator, missing weak
+comparison, float-key and unary/SHIFT/XOR selectors are unproduced here.
+Source4/refusal1/state891 retain their tested cuts without accepted replay.
+
+Earlier evaluated unary copies retain source2/state253 in the
+[unary-copy ledger](coverage/semantics/unary-copy-warning-review.json).
+
+Retained DEFINE Closure calls now publish direct POBJECT values through the
+existing classifier under omitted/raw-false flags. Ordinary INSTANCE row/query
+identity and cached stdClass child/table COW survive source and callee retirement.
+Normal rejected INSTANCE argument cleanup runs its destructor with the callee
+held. A supplied Exception's raw object arguments instead outlive the callee;
+after Exception/trace retirement, final raw views release the object normally
+with no pending Exception and the callee gone.
+
+Three source agreements pass at `ec1f3cc57`/407; 811 focused premises
+(323+184 author,304 independent) and four budget identities pass first attempts
+at `371b8a2a0`/407. Two fresh-job expectations were corrected during static review
+before execution: the published pointer transfers to its new row, leaving only
+the callee to release. Existing other object classes compose structurally without
+new producer credit. Primitive/ARRAY, flag/name/receipt/root/global/default and
+paused-boundary policies stay exact; wider owning call domains remain partial.
+[Owned object review](coverage/semantics/define-owned-object-review.json).
+
+Composed over `90a8545f8`/407: tested400 and six scripts remain private-exact;
+all seven introduced incoming runtime paths and ordered manifest stay parent-exact.
+Source81 INI_SET/NULL/primitive-ALIAS guards are disjoint from DEFINE. Missing
+loose comparisons, reference-return/holder retirement, Generator SEND, selected
+XOR and borrowed/constrained float-key producers are absent; retained/debt lists
+stay empty. Two new task alternatives add no state/heap field or module. Whole
+incoming inventory and PROGRESS retain the exact private suffix/checkpoint.
+Accepted source/state407 cuts compose without replay or renewed credit.
+
+Ownerless positional `ini_set(NULL, array)` now resumes Deprecated handlers for
+one key0 ALIAS element backed by a live allocated untyped reference cell with a
+quiet primitive value. The saved array keeps its shape across current-container
+COW, while later cell writes remain visible through both arrays and saved trace
+arguments. Returning handling reaches empty-option parameter2 TypeError; supplied
+Exception retains rawNULL and cancels rejection. Strict option priority follows
+completed value effects, and the original string setter remains usable.
+
+Four exact source comparisons and 1,261 state premises (349+292+202+418) pass
+first attempt at `5a910116f`/`5ba6dd256`/407. Initial `dc883ec00` CPU3 native4/base0
+precedes CPU5 affected checks; nine stable/reaped reports PASS, only Deprecated12/21
+and quiet workers, no failures/retries. Native E/L/A observes a later leaf write
+after actual TypeError/getTrace; state checks prove the transitive HARRAY→HCELL
+edge, current COW table sharing and whole restoration/discard. HCELL is neither
+a direct task root nor a possible GC buffer root. Only29 additive172 lines change;
+old DIRECT-array guards/84/138/helpers/trace/root/GC/schema and historical tests
+stay exact without replay. Whole-state PARAMETERBACKINGS EPS bounds this slice;
+named/packed/PIPE forms, typed/property references and owning referents remain
+partial, with paused paths untouched.
+[Shared-reference INI array review](coverage/semantics/ini-set-null-alias-array-value-review.json).
+
+Composed over `0b95e2e72`/407 with the incoming DEFINE-only root-order partition
+retained in172 and own29-line ALIAS guard/finish delta added. Other runtime/schema/
+ordered-manifest bytes stay parent-exact. Incoming missing-read comparisons,
+byref-return destructor histories, Generator SEND, selected XOR conversions and
+float-key typed/property borrowing have no producer here. The entire incoming
+checkpoint tail remains unchanged; source4/state1,261 retain private407 cuts
+without joined execution or renewed credit.
+
+At Iterator43, direct pending SEND could refresh one allocated closed child
+without a prior getter at a normal owning simple-CV return. Cleanup releases
+child, ignored argument, unused current copy and receiver in that order; assignment keeps its
+copy. Argument-time raw-row COW or object rebinding preserves an older argument
+while finally mutates current. A rebound cache can throw RuntimeException inside
+the live finally, with Previous NULL and its copied return still independent.
+[Direct refresh review](coverage/semantics/generator-unused-direct-refresh-send-review.json).
+
+Four source agreements and strict407 pass at `3b26f3f4a`; gate4 and 582 focused
+premises (331 author +251 independent; 562 local +20 generic) pass at `db627cb81`.
+Original `c86cf7d7f` author native2 is retained; corrected peer2 and the genuine
+NORMAL cleanup-order disagreement retain `28f552daf`. Earlier peer native2
+allowed BAD-MIDDLE after premature alias drops and has zero target credit; only
+those originals were corrected and re-observed. Baseline recordfalse/agreement0
+stays preserved. All post-change checks pass first execution at original caps,
+without historical renewal or accepted replay; actors are reaped/CPU1 released.
+
+Only module289 changes: direct original-child admission is disjoint from prior getter
+and ancestor arms, and cleanup keeps its exact child prefix. Root, close,
+collector and generic owner functions stay unchanged. Wider refreshes, abrupt
+argument callbacks, nonpending body entry and collection remain unvalidated.
+
+Composed over `e98ba7556`/407 with tested289 and six tests private-exact.
+Other incoming runtime/schema/default/root/ordered-manifest/pipeline bytes
+remain parent-exact. Missing-read comparison, selected-XOR, float-key,
+INI/DEFINE and ordinary typed-ref selectors have no producer here.
+Source4/strict407/state582 retain private cuts, original peer target0 and
+baseline disagreement, without joined execution, accepted replay or renewal.
+
 All six Boolean comparisons now retain captured null/bool/int/float/byte-string
 values across missing-CV Warnings. Two source certificates widen within an explicit
 primitive-or-array bound; domain checks, array liveness, saved roots and generic
@@ -46,26 +243,9 @@ foreign task variants and the ordered manifest stay parent-exact. Accepted
 source/focused cuts and the final-runtime affected cut retain their identities
 without joined execution or renewed credit.
 
-Selected-reference `^=` now protects leading fractional RHS text before its
-Warning. A supplied throw skips the later precision diagnostic and store,
-retaining the same Exception, callback write `88` and outer `100`. Normal return keeps
-the original `"5.5tail"` precision message and long `5` after rewriting the old RHS
-to `7` and retiring its last alias; the third callback writes old target `66`, then
-cached `12 XOR 5` stores integer `9` through its surviving alias. Current names
-and replacements remain separate. Two originals pass at `6544ab0d0`/407 and
-200+250 focused premises at `727fd5cb6`/407 in the
+Earlier protected selected-reference `^=` retains source2/state450 and its
+original peer parser failure0 in the
 [protected XOR text ledger](coverage/semantics/xorassign-selected-rhs-warning-review.json).
-The original peer fixture syntax failure retains zero credit; only the corrected
-peer fixture recompiles while the accepted author compiler output is retained.
-Initial strict scalar references, fractional LEFT/quiet PINT RHS and two-notice
-leading fractional text bound the slice. Other conversions and owning lifetimes
-remain partial; numeric, formatting and generic-unwind bodies stay unchanged.
-OP12, COMP88 and Source47 low-initial-precision callbacks remain paused.
-
-Composed over `4105d1eb2`/407, preserving incoming state, task and
-ordered-manifest paths. Source2/state450 retain their private407 cuts;
-independently reviewed absent incoming selectors require no joined execution
-or renewed credit.
 
 Retained DEFINE Closure callees now accept existing bounded array snapshots
 under omitted/raw-false flags. Named capture, canonical DIRECT copies, nested
@@ -160,9 +340,10 @@ fixed it before interpretation. All post-change source/state checks pass first
 attempt at original caps. The original failure stays preserved, without historical renewal or
 accepted replay; actors are reaped and CPU1 released.
 
-Only289's identity-refresh arm changes; source/slot/discard guards and all root,
-close and collector functions stay exact. Direct refresh prefixes, abrupt
-argument callbacks, wider owners, body entry and collection remain unvalidated.
+At Iterator42, only289's identity-refresh arm changed; source/slot/discard guards
+and root, close and collector functions stayed exact. Direct refresh prefixes,
+abrupt argument callbacks, wider owners, body entry and collection then remained
+unvalidated.
 
 Composed over `22b962aa1`/407 with tested289 and six tests private-exact.
 All other incoming runtime/schema/default/root/ordered-manifest/pipeline bytes
@@ -173,32 +354,6 @@ joined execution, accepted replay or renewed credit.
 
 Earlier selected-reference `>>=` retains source2/state358 in the
 [selected shift ledger](coverage/semantics/shiftassign-selected-warning-review.json).
-
-Direct missing instance calls now preserve named string keys and mixed send
-order through inherited public `__call(string,array)`. Earlier main-CV send `7`
-survives a later argument's mutation of that same cell to `99` and receiver-CV
-clearing. Named-only parameter/buffer sharing has two table owners and one
-Payload edge; explicit `unset($arguments)` leaves the Payload alive through `A`.
-After compiled locals, the buffer releases before the borrowed receiver, preserving
-cached `7` or the same supplied throw with destination `42` unchanged.
-
-Three sources pass at `7772c5121`/407. Unique 559 focused premises (536 reached
-+ 23 derived) retain selection 195 at `4c8943a6a` and corrected owning 179/throwing
-185 at `2c4ea4154`. The genuine baseline has three consumer Unsupported results
-and one preexisting compiler-control agreement. Four retained native tuples are
-accepted under the corrected fatal-trace template; the original recorder failure
-and stale-STORE fixture failure retain zero credit. Runtime changes only modules
-30 and 414; shared positional/static/scoped helpers and generic binding/cleanup
-stay compatible without replay. Static/scoped named, unpacked/reference sends
-and wider argument/lifetime forms remain partial.
-[Named magic-call review](coverage/semantics/magic-named-call-review.json).
-
-Composed over `47f1fc251`/407 with tested module 414 and all six tests
-private-exact. Module 30 preserves incoming selected-call OWNER and operator tags
-beside the named target/task variants; ordered 407 and other runtime/default/root
-bytes remain incoming-exact. Unproduced INI/DEFINE, reference-return, Generator,
-missing-read and array/operator-warning selectors require no joined execution.
-Source3/state559 retain their separate cuts without accepted replay.
 
 Ownerless positional `ini_set(NULL, value)` now retains a live exact bare
 `ini_get` Closure value across argument and handler rewrites. Returning handling
@@ -1988,36 +2143,39 @@ joined actor, accepted replay or renewed execution credit.
 The earlier mixed CV/selected-reference arithmetic route retains source9/state858
 in its [review ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 
-M127 preserves a finite Holder destructor's supplied throw when it differs from
-D's planned object. A new nonowning, nonexecutable SOURCE history tag retains
-the actual pre-clear Holder class beside the original false queue. The emitted
-D NULL-write/global cell binds that class at capture; its static plain object
-property and finite public destructor image remain valid after the object retires.
-Pending may match D's planned operand or the retained Holder's own emitted global,
-preserving held-Holder possibilities. Same-ID/normal/PNULL legacy capture stays
-exact. Only modules 30/270 change; existing storage/type-source detach, typed writer,
-root policies,156 and Iterator39's hook remain unchanged.
+M128 validates a real held Holder on unchanged `4105d1eb2`/407. A separate
+`$keep = $holder` cell retains the object through D's NULL write, so D reaches DA
+and propagates planned given. After the local catch, function replay/return
+preserves Notice15 and a fresh detached NULL/prior b7. Both property sources remain attached, and the first
+string write raises TypeError without changing the referent or property slots.
+Dropping keep later runs Left and catches distinct other with Previous NULL.
+Only then does string become legal; the remaining Right union still rejects NULL,
+and valid replacement preserves the old copy and detached r/b.
 
-One original and 374 Boolean/4 raw checks pass at `a5cc86c953`/407
-(author163/2, independent211/2). The caught object is other, not given; both
-outside records/messages survive, Previous is NULL and DA is skipped. Local
-catch/Notice15/fresh detached NULL/prior b7, W/NQ/right replacement and whole/split
-states agree. Exact capture, restored-D pending and holder-free clear/parent
-states match public budgets. Mirrored wrong class and third-live pending IDs
-refuse with valid heap/live operands; a post-free private property image refuses.
-Same-ID legacy and held owner2 checks are constructed, with no fresh held-source
-credit. Cleanup/H/noDA/typed writes already agreed in the unchanged baseline;
-this repairs history admission and pending authority.
+One original agrees exactly; author 112/2 and independent 160/2 pass 272 Boolean/4
+raw checks in two forward chains. Capture has real Holder owner2; planned-pending
+replay leaves it owner1 with both sources. Later callback/storage transfer removes
+only Left's type source while its slot becomes PROP_UNSET. The ALIAS edge moves
+to a HCELL release job before that job decrements one owner. Four raw/public
+zero/one transitions agree. No duplicate whole-program drive, runtime change,
+repair patch or mismatch diagnosis is needed. Source 222.073<240 and focused
+256.994<420 / 298.382<720 pass first attempt; strict45, stable pins, quiet model
+workers and full parent/group reap are retained.
 
-Native1, one NORMAL wrong-ending baseline and separate 122/2 diagnosis retain
-`d977b28fe`/407. Original parser failure b732 remains0; only two literal-path
-parentheses change before diagnosis. Original source attempt0c6b at8c341 fails
-in the decoder's nested optional return, with no completed model result or
-agreement. Explicit typed optional bindings repeat only that source at a5cc.
-Accepted actors are quiet, stable and fully reaped; state checks pass first
-attempt. Bounds are source180/strict45/author420/peer720. Wider Holder bodies,
-writes/types/constructors, fewer outer slots, broader reentry and GC remain partial.
+M127's retained class history and source1/374+4 stay at a5cc; its earlier
+constructed held/same-ID controls and parser/decoder failures retain their own
+scope. The new held evidence is this fresh finite two-property-source original,
+not a general Holder/reentry/GC claim. Wider bodies/writes/types/constructors,
+fewer outer slots and broader consumers remain partial.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M128 composes as documentation only over actual `6e17b3bc23`/408. Every spec path
+and the ordered 408 manifest remain parent-exact. Incoming unary copied-value
+Warning plans need absent arithmetic/eligible named handlers; the new 418 magic
+property += path needs absent private-int/__get/__set/named-RHS producers.
+Existing public object aliases and ordinary assignments retain their routes.
+No pstate/default fields change. Source 1 and 272/4 stay at 4105/407; composition adds
+no joined actor or renewed execution credit.
 
 M127 composes over actual parent `cd98ca4a59`/407. Module270 stays byte-exact
 tested `a5cc`; module30 adds only the nonowning history alternative beside the
@@ -2075,47 +2233,45 @@ GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no root
 and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
-Captured by-value primitive/ARRAY slots now admit existing validated ordinary
-instance-property type sources accepting the current payload. Readiness requires
-every source object in the same logical-pruned live set as the allocated marked
-CELL and bounded payload, even before debt. Nonempty unique source receipts,
-no queued/hooks/coercion/backing records and no HCELL debt retain the existing
-bounds. BORROWED ROOT/scalar and REFERENCE/ARRAY markers still own no captured
-CELL; type metadata adds no owner, while real properties contribute CELL edges.
+Owning ARRAY returns from ordinary statically named no-argument by-value
+functions now enter float-key literal handlers. The checked nonconstant value
+occurrence must resolve without fallback to an active ordinary function with
+BYREF false. Current producer globals are irrelevant after the return: handler
+writes, reference writes and unsetting/recreating a global cannot redirect the
+captured KNOWN table. Existing mutable/nonpool and object-free readiness bounds,
+builder refusal, task/frame ownership and all count/prune/driver rules stay exact.
+The owner transfers into a DIRECT entry without literal debt or retention.
 
-Four fresh natives and the genuine unchanged pre-handler Unsupported retain
-`6bce238f1`/407 with comparison credit0. Strict407/source4 pass at `f8a2747c0`;
-focused1272 (571 author +701 independent; 1257 Boolean +15 raw) passes at
-`dcd055f88`. All post-change first executions pass with quiet stderr, no failures,
-corrections, retries or timeouts, and full reap. Source models use180/outer210 and
-focused fixtures SL180. One-source primitive2→ARRAY B→weak44 and ARRAY A→weak44→A
-cycles preserve invalid-string rejection and numeric-string→INT coercion, while
-current q rebindREF99 cannot redirect DIRECT insertion. Copy66/shared77 and
-old-A88/hold+balance2/copy99 distinguish table bias from typed alias writes.
-Deletion keeps an independent B-table owner, then safe final-property unset with
-outside alive permits inverseNULL. Dual-source supplied throw retains constraints
-through weak44; later outside77 leaves DIRECT balanceNULL/44 fixed. All native
-biases cancel before cleanup; actual source liveness, node retirement and zero/
-split-budget checks pass.
+Four fresh natives retain `ac7e55c32`/407. The genuine unchanged model completes
+the maker (`M:1;`) before its pre-handler Unsupported; natural comparison stays0.
+Strict407/source4 pass at `f551dd093`; focused756 (383 author +373 independent;
+749 Boolean +7 raw) passes at `c24bbde576`. The original author fixture at
+`970bd386c` stopped before semantics on first-class constructor-list grouping,
+retaining zero credit with its second front unrun. A one-line grouping correction
+changes no premise or domain; only the affected author packet and then previously
+unrun peer packet execute. Source models use180/outer210 and focused fixtures
+SL180. Successful actors are quiet, without timeout/interruption, and fully reaped;
+runtime, source and accepted observations require no correction or replay. Fresh
+runtime DIRECT-integer arrays distinguish old2/7 from producer44/88 or replacement
+33/8, independent copied55 and a fresh second maker call. Independent sole-owner
+returns check entry deletion and supplied-throw retirement, same Throwable,
+destination99 and cancelled later7. No inverse bias cycle or historical fixture
+maintenance is needed. By-reference returns, call arguments, fallback/dynamic/
+method/Closure producers, owning objects and unsafe/GC boundaries remain partial;
+paused LIST/owned-NUL paths are untouched.
+[Owning return-value review](coverage/semantics/array-literal-float-return-array-value-review.json).
 
-The sole413 change reuses existing literal_reference_cell validation; ordinary/A19
-input/value/live classifiers, global plain_cell, type/write helpers, marker roots
-and graph/count/prune/driver algorithms stay exact. No historical fixture or
-source replay is needed: earlier empty-source negatives remain invalid. Fresh
-witnesses use public int|array properties, PINT payloads and runtime DIRECT-integer
-tables; broader accepting descriptors compose existing validation without a new
-public-only/type-specific gate or fresh all-types claim. Direct strings/objects,
-wider source kinds, deeper/indebted children, unsafe/effective-zero retirement,
-active GC and request-end debt remain partial; paused LIST/owned-NUL and unrelated
-active producers stay untouched.
-[Typed captured-CV review](coverage/semantics/array-literal-float-typed-wrapped-mixed-cv-review.json).
+Composed over `c75cdb7c7`/408 with accepted413 and all six test paths unchanged.
+Every other runtime/schema and the ordered manifest preserves the parent.
+Incoming INI/DEFINE, missing loose comparisons, Generator, magic-property += and
+numeric-text unary Warning selectors are absent; the latest M128 tail is prose
+only. Strict/source/focused retain their private407 cuts and original parser0,
+without joined execution or accepted replay.
 
-Composed over `b3eeb315b`/407 with accepted413 and all six owned test paths
-unchanged. Every other runtime/schema and ordered manifest byte preserves the
-parent. Incoming missing comparisons, parked SEND, INI/DEFINE, object-reference
-retirement history and selected shift/XOR warning selectors are absent; their
-new tags/tasks remain unproduced. Source4/strict407/state1272 and genuine baseline0
-retain private cuts without joined execution, accepted or historical replay.
+Earlier typed captured-CV sources retain native/genuine `6bce238f1`, source4/
+strict407 `f8a2747c0` and state1272 `dcd055f88`, integrated as `e0d5c204d`.
+Their genuine pre-handler baseline0 and first-pass original cuts remain in the
+[typed captured-CV ledger](coverage/semantics/array-literal-float-typed-wrapped-mixed-cv-review.json).
 
 Earlier wrapped primitive/ARRAY capture retains native/genuine `0e29621d7`,
 source4/strict407 `68c7306a4` and state1115 `aaaa46b06`, integrated as `7e64f4847`.
@@ -12451,7 +12607,10 @@ pending replay afterward. M126 adds same-ID supplied Holder throw with a D-after
 marker control, source 2 and 399/5 at 982a, preserving abrupt pending/storage and
 local replay. M127 retains the actual cleared Holder class and either finite
 supplied operand, source 1 and 374/4 at a5cc, preserving distinct caught identity,
-Previous NULL and nonowning authority after retirement. Wider Holder bodies,
+Previous NULL and nonowning authority after retirement. M128 validates real held
+ownership and later last-owner retirement on unchanged 4105, source 1 and 272/4,
+with planned-given catch/early constraint before the later other throw and source
+relaxation. Wider Holder bodies,
 writes/types/constructors, fewer outer slots, interposed histories, deeper reentry
 and GC remain open.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is

@@ -145,6 +145,12 @@ The distinct supplied Holder authority proof is in
 interpreter failures, accepted snapshots, worker180 and both runtime patches,
 SHA-256 `7813593edb0b96ffbe342abd638404e5e7957af40cbddbfa4546e66d831fcc37`.
 
+The real held-Holder validation is in
+`../php-spec-evidence-archive/lifecycle-holder-held-128/manifest.json`:
+393,761 bytes under `.tools/m128/`, four fresh reports, original packets and
+accepted snapshots with the 240s worker transport; no runtime patch,
+SHA-256 `632a98f8a09c7aa110b2ad523cac30680e85b59d7d2d7ce3fec5f20120ad1a9a`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

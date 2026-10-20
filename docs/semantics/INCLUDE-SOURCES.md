@@ -992,3 +992,64 @@ is invented. Real getter10→oldsetter10/12→samegetter12 survives supplied Exc
 Helpers/finish/148 allocation/368 trace/root/discard/GC and historical tests stay
 exact, without replay. Named/unpacked/PIPE forms, other callable kinds and
 sole-owner lifetimes remain partial; paused boundaries remain untouched.
+
+The [shared-reference rejected-array increment](../../coverage/semantics/ini-set-null-alias-array-value-review.json)
+adds a separate ownerless positional NULL2 continuation for exactly key0 ALIAS
+to a live allocated untyped reference cell holding a quiet primitive. Existing84
+reference authority supplies bounds/DEFINED/REFCELLS/allocation; property-reference
+and coercion metadata must be absent, and whole-state PARAMETERBACKINGS must be
+EPS. The old DIRECT-array predicates remain unchanged. Invocation/source shape
+checks authenticate the call and written arguments; option facts permit NULL,
+while value facts must be unknown (`compiled_read` EPS). Actual partial states
+witness the earlier capture rather than reconstructing current CV history.
+
+The array is passed by value with one shared element reference. Current-container
+COW appends31/37/41 without changing the saved one-entry shape; both containers
+still reach the same cell, so subsequent leaf writes remain visible. Returning
+handling converts the API option to empty before parameter2 TypeError. Supplied
+Exception retains rawNULL/old array and cancels rejection; strict reception
+completes value effects then rejects parameter1 with handler0. Original string
+setter recovery remains usable.
+
+Four originals and all1,261 premises (349+292+202 author,418 independent) pass
+first attempt at `5a910116f`/`5ba6dd256`/407. Initial `dc883ec00` CPU3 native4/base0
+precedes CPU5 model/public checks; nine stable/reaped reports PASS, only Deprecated12/21,
+quiet workers and no failures/retries. Native E/L/A writes the leaf after actual
+TypeError/getTrace and reads the updated trace value plus saved shape, without a
+physical array-ID claim. Peer native has no trace traversal. Actual state proves
+one-frame API TypeErrors, handler/API two-frame raw Exception, transitive
+HARRAY→HCELL ownership and exact restoration/discard with existing idempotent
+array buffering. HCELL is not directly task-rooted or a possible GC buffer root.
+Only29 additive172 lines change; shared84/138/array/trace/root/GC/schema and
+historical tests stay exact without replay. Named/packed/PIPE forms,
+additional entries, typed/property/parameter-backed references, owning referents
+and sole-owner lifetimes remain partial; paused boundaries stay untouched.
+
+The [retained receiver/shared-reference array increment](../../coverage/semantics/ini-set-owned-null-alias-array-value-review.json)
+removes only the OWNER-empty conjunct from that positional ALIAS-array header,
+preserving PACKSeps and every reference/domain/source/weak fence. Invocation
+validity authenticates the allocated exact INI_SET receiver and ordinary or
+explicit method source. The key0 cell remains live/untyped/quiet, property and
+coercion metadata absent, whole-state PARAMETERBACKINGS EPS and captured value
+facts unknown (`compiled_read` EPS). No shared array/type/trace/GC change follows.
+
+Actual partial config states hold the setter/rawNULL before V; completed sends
+also root the earlier array despite live INI_GET replacement and current-container
+COW. Both saved arrays continue to reach the same HCELL after later writes.
+Returning handling reaches converted-empty API/rawNULL wrapper parameter2
+TypeError. Strict ordinary reception rejects parameter1 after effects with
+handler0; the SAME held setter's explicit call is weak, enters the handler once
+and reaches parameter2. Original setter recovery survives supplied Exception.
+
+Four originals and all1,521 premises (372+321+385 author,443 independent) pass
+first attempt at `4eb8c2785`/`5894b4ffc`/407. Initial `3b962c9ea` CPU3 native4/base0
+precedes CPU5 affected checks; nine stable/reaped reports PASS, only Deprecated13/21,
+quiet workers and no failures/retries. Native E/W/N/L/L/A writes the cell after
+actual TypeError/getTrace and observes both saved argument arrays without physical
+array-ID equality. Peer native has no trace traversal. Actual state proves the
+handler/API/wrapper three-frame raw Exception, both raw argument edges to the earlier
+ARRAY→HCELL, owner+array config roots and existing idempotent buffers/full discard. No
+receiver trace edge or direct CELL task/buffer root is invented. Helpers/finish/
+84/138/trace/root/GC/schema/historical tests remain exact without replay. Named,
+unpacked/PIPE forms, additional entries, typed/property/backed references,
+owning referents and sole-owner lifetimes remain partial; paused paths untouched.

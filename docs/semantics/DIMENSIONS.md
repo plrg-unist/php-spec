@@ -175,6 +175,15 @@ weak integer coercion and invalid-string rejection; removing the final property
 source leaves an outside alias usable without its constraint. Direct strings,
 wider source kinds and unsafe lifetimes remain Unsupported; global ordinary/A19
 classifiers, task ownership and count/prune algorithms stay exact.
+Ordinary no-argument named functions may supply an owning ARRAY return temporary.
+The checked value occurrence must resolve without fallback to an active by-value
+function. Its KNOWN table stays frozen while the handler mutates or removes
+producer globals, even when a global originally named a reference. Existing
+mutable/nonpool and object-free readiness bounds remain; no table or CELL count
+bias is introduced. Entry deletion and supplied throw release the owning table
+normally. The [return-value review](../../coverage/semantics/array-literal-float-return-array-value-review.json)
+keeps these sources separate from borrowed CV slots; by-reference returns,
+arguments and wider call producers remain Unsupported on this warning path.
 The [string-leaf review](../../coverage/semantics/array-literal-float-string-leaf-review.json)
 adds ordinary tables and untyped wrapper payloads containing canonical-byte or
 validated-carrier string leaves. String snapshots remain independent across

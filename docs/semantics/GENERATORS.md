@@ -123,8 +123,21 @@ snapshot forcing COW, so replacing its old element runs its destructor before
 Equal argument/current values still supply two real release owners; clearing an
 object-valued raw cell in finally can throw before the next statement. See the
 [direct SEND review](../../coverage/semantics/generator-unused-direct-detached-send-review.json).
-Direct refresh prefixes, abrupt argument callbacks, body entry and collection
-remain unvalidated.
+At that cut, direct refresh prefixes remained unvalidated.
+Direct pending SEND now also authenticates an allocated closed child before
+refreshing its normal owning return. It releases that child before argument,
+unused result and receiver cleanup. Rebinding raw current during argument
+evaluation preserves the older argument; finally sees the new row or object.
+Assignment keeps its independent copy. Wider refreshes, abrupt argument
+callbacks, body entry and collection remain unvalidated; see the
+[direct refresh review](../../coverage/semantics/generator-unused-direct-refresh-send-review.json).
+A pre-refreshed direct pending SEND can likewise have a node-free copied return
+and an owning current value. The current snapshot survives normal argument
+mutation, then an unused copy retires before receiver finally; assignment keeps
+its copy. Tests cover `return 0`, NULL and a literal string without retaining an
+owning return receipt. Wider input histories, abrupt argument callbacks, body
+entry and collection remain unvalidated; see the
+[scalar-return SEND review](../../coverage/semantics/generator-unused-scalar-return-send-review.json).
 Pending zero-argument NEXT also clears only the selected receiver bit while
 preserving that parked owning frame/site and copied return. It returns NULL
 without a current snapshot; a later explicit getter creates a separate copy.

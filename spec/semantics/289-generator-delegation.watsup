@@ -125,6 +125,26 @@ def $generator_pending_detached_send(S, pgeneratorop) = true
   -- if $generator_pending_resume(S_refreshed, pgeneratorop)
   -- if $generator_pending_return_leaf(S_refreshed, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1)) = (n_leaf)
   -- if n_leaf =/= pgeneratorop.OBJECT
+;; A direct pending receiver may still own its closed child before this call.
+;; Authenticate that original edge and the refreshed owning return separately.
+def $generator_pending_detached_send(S, pgeneratorop) = true
+  -- if pgeneratorop.NAME = "send" /\ ~pgeneratorop.ADVANCE
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if $generator_operation_valid(S, pgeneratorop)
+  -- if pgeneratorop.ARGUMENTS = [pvalue]
+  -- if $call_reference_operand_valid(S, KNOWN pvalue)
+  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* 2
+  -- if |phpType7*| = 1 /\ $generator_arguments_supported(phpType7*)
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if (HOBJECT n_child) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_child] = GENERATOR pgenerator_child
+  -- if pgenerator_child.PHASE = GENERATOR_CLOSED
+  -- if S_refreshed = $generator_from_refresh(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1))
+  -- if $generator_pending_resume(S_refreshed, pgeneratorop)
+  -- if $generator_pending_return_leaf(S_refreshed, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1)) = (n_leaf)
+  -- if n_leaf = pgeneratorop.OBJECT
 def $generator_pending_detached_send(S, pgeneratorop) = false -- otherwise
 
 ;; A pending SEND can return before dispatch even at HANDLE_EXCEPTION.
@@ -250,15 +270,30 @@ def $eager_task_inputs(S, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue])) = $v
   -- if $generator_pending_detached_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_shared_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_unused_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_parked_send(S, pgeneratorop[.ARGUMENTS = [pvalue]])
 
 ;; A refreshed normal owning SEND can use its direct or ancestor receiver.
-;; Only an ancestor may first detach the authenticated closed-child prefix.
+;; Either may first detach the authenticated closed-child prefix.
 def $generator_unused_send_refresh(S, S, pgeneratorop, eps) = true
   -- if $generator_pending_detached_send(S, pgeneratorop)
   -- if $generator_pending_return_leaf(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1)) =/= eps
+;; A node-free copied return adds no retained owner. Its owning current copy
+;; still survives argument cleanup and retires before this direct receiver.
+def $generator_unused_send_refresh(S, S, pgeneratorop, eps) = true
+  -- if $generator_pending_detached_send(S, pgeneratorop)
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PARKED = eps
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = eps /\ pgeneratorfrom.ACQUISITION = eps
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.TODO = (GENERATOR_FROM_COMPLETE pgeneratorop.OBJECT pgeneratorfrom.SITE n_child pvalue_return) :: ptask_tail*
+  -- if $value_nodes(pvalue_return) = eps
+  -- if $generator_return_site(S, pgeneratorop.OBJECT, pgeneratorfrom.SITE)
+  -- if $generator_input_tail(S, pgeneratorfrom.SITE, ptask_tail*)
+  -- if pframe.HELD = eps /\ $tasks_nodes(ptask_tail*) = eps
+  -- if S.GC.ACTIVE = eps
 def $generator_unused_send_refresh(S, S_refreshed, pgeneratorop, [HOBJECT n_child]) = true
   -- if $generator_pending_detached_send(S, pgeneratorop)
   -- if S_refreshed = $generator_from_refresh(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1))
   -- if $generator_pending_return_leaf(S_refreshed, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1)) = (n_leaf)
-  -- if n_leaf =/= pgeneratorop.OBJECT
   -- if S.OBJECTS[n_leaf] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if pgeneratorfrom.INPUT = (POBJECT n_child)

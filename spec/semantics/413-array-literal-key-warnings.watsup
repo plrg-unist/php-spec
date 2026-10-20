@@ -30,6 +30,16 @@ def $array_float_key_input_source(S, NExprArray (SEQUENCE phpType13*) metadata, 
   -- if S.ORIGIN = (PORIGIN n_unit pcpath)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1]) = ((z, false))
+def $array_float_key_input_source(S, NExprFuncCall name (SEQUENCE eps) metadata, KNOWN (PARRAY n)) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if ~$array_immutable(S, n)
+  -- if $heap_count(HARRAY n, $pools_nodes(S.POOLS)) = 0
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1]) = ((z, false))
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 1]) = ((n_name*, eps))
+  -- if $call_target(S, n_name*, eps) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF
 def $array_float_key_input_source(S, expression, poperand) = false -- otherwise
 
 dec $array_float_key_scalar(pstate, pvalue) : bool
