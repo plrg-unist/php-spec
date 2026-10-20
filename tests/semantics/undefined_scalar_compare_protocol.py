@@ -89,7 +89,7 @@ def checks(program, path, name):
             'S_removed = $unset_name(S_resume,$ptascii("right"))',
             '$error_read_valid(S_removed,perrorread)', '~$scalar_compare_read_other(S_removed,perrorread)',
             'PhpStep: S_removed ~> S_removed_refused',
-            'S_removed_refused = S_removed[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed right operand"]',
+            'S_removed_refused = S_removed[.TODO = perrorread.TASK :: ptask_tail*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]',
         ]
     else:
         values += [

@@ -31,11 +31,6 @@ def checks(program, path, name):
         condition = condition.replace('$scalar_compare_read_other(', '$spaceship_read_other(')
         condition = condition.replace('scalar comparison warning changed right operand',
                                       'spaceship warning changed opposing scalar')
-        if condition == 'PhpStep: S_without ~> S_denied':
-            condition = 'PhpStep: S_without ~> S_without_restored'
-        if condition.startswith('S_denied = S_without['):
-            result.append('$spaceship_read_again(S_without,perrorread)')
-            condition = 'S_without_restored = S_without[.TODO = perrorread.TASK :: ptask_resume*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]'
         condition = condition.replace(') 13', ') ' + str(line)).replace(' = 13', ' = ' + str(line))
         if condition.startswith('S_compared = '):
             condition = condition.replace('KNOWN (PBOOL false)', 'KNOWN (PINT $(-1))')
