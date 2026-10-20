@@ -123,7 +123,21 @@ Notice22/freshNULL/detachment and three exact raw/public states. Missing owner
 and mirrored farthest-LINE refusals, malformed restores/Notice/duplicate IDs and
 constructed former-three-slot subcuts accompany full whole/split equality.
 First-throw body, pending, SOURCE/finish/root and storage/GC rules are unchanged.
-Mixed/reference histories, other bodies, writes/callbacks and deeper reentry remain open.
+M120 adds ordinary global-CV reference slots to this distinct-node family. Each
+slot authenticates emitted source, current ENV and actual GLOBALTABLE cell,
+ordinary name, untyped REF membership and allocation. Shared cells need no
+owner1 check; tagged HOBJECT/HCELL identities distinguish equal table indices.
+The cleared suffix admits the same reference slots and keeps all restore links,
+minimum two outer slots and exact old-source Notice. Source1 and439/12 at
+`4a1cc45c5` prove mixed C/z/A history, nested supplied throw and same local/caller
+identity, Notice15/freshNULL/detachment and full raw/public states. Releasing z's
+slot removes one HCELL owner while z/za/z_old and its object survive; this is no
+collection claim. Valid-heap missing-slot, wrong live-cell/same-value and mirrored
+wrong-kind controls refuse. Pure suffix cases separate cell/object indices and
+retain the current repeated-cell exclusion. SOURCE/history representation,
+pending/finish/body classifiers, roots, ownership/storage/GC and schema are
+unchanged. Repeated alias slots, other
+reference producers, typed/property cells, wider bodies and reentry remain open.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same

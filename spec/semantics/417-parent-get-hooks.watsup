@@ -1,0 +1,188 @@
+;; A naked parent::$p::get() is a hook call, not a static-property class read.
+;; PHP-Parser keeps the inner fetch span when parentheses wrap that class operand.
+dec $parent_hook_file_entry(metadataEntry) : int?
+def $parent_hook_file_entry(MstartFilePos z) = (z)
+def $parent_hook_file_entry(metadataEntry) = eps -- otherwise
+dec $parent_hook_file_start(metadata) : int?
+def $parent_hook_file_start(metadataEntry :: metadata) = (z)
+  -- if $parent_hook_file_entry(metadataEntry) = (z)
+def $parent_hook_file_start(eps) = eps
+def $parent_hook_file_start(metadataEntry :: metadata) = $parent_hook_file_start(metadata)
+  -- if $parent_hook_file_entry(metadataEntry) = eps
+
+dec $parent_hook_parts(expression) : (ptbytes, ptbytes)?
+def $parent_hook_parts(NExprStaticCall (NExprStaticPropertyFetch (NName (BYTES text_parent) metadata_parent) (NVarLikeIdentifier (BYTES text_property) metadata_property) metadata_fetch) phpType20 (SEQUENCE phpType7*) metadata) = (($base64(text_property), ptbytes_hook))
+  -- if $ptlc($base64(text_parent)) = $ptascii("parent")
+  -- if $hook_literal_name(phpType20) = (ptbytes_hook)
+  -- if $ptlc(ptbytes_hook) <- [$ptascii("get"), $ptascii("set")]
+  -- if $parent_hook_file_start(metadata) = (z_file)
+  -- if $parent_hook_file_start(metadata_fetch) = (z_file)
+  -- if $source_token_start(metadata) = (z_token)
+  -- if $source_token_start(metadata_fetch) = (z_token)
+  -- if $(z_file >= 0 /\ z_token >= 0)
+def $parent_hook_parts(expression) = eps -- otherwise
+def $parent_hook_syntax(expression) = ($parent_hook_parts(expression) =/= eps)
+
+;; GOTOROOT is the physical property hook while its body is compiled.
+dec $ppparent_hook_context(ppstate) : (ptbytes, ptbytes)?
+def $ppparent_hook_context(P) = (($base64(text_property), $ptlc($base64(text_hook))))
+  -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, P.GOTOROOT) = (NPropertyHook phpType14 phpType24 phpType4 (NIdentifier (BYTES text_hook) metadata_hook_name) phpType16 phpType39 metadata_hook)
+  -- if $(|P.GOTOROOT| >= 2)
+  -- if PCINDEX n_hook = P.GOTOROOT[$nabs($( |P.GOTOROOT| - 1))]
+  -- if pcpath_group = P.GOTOROOT[0:$nabs($( |P.GOTOROOT| - 2))]
+  -- if P.GOTOROOT = pcpath_group ++ [PCFIELD 4, PCINDEX n_hook]
+  -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath_group) = (NStmtProperty phpType14_property phpType24_property phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_property) metadata_property) phpType5 metadata_item])) phpType37 metadata)
+def $ppparent_hook_context(P) = eps -- otherwise
+
+dec $ppparent_hook_call(ppstate, pcpath, expression, ptbytes, ptbytes, phpType7*) : ppstate
+def $ppparent_hook_call(P, pcpath, expression, ptbytes_property, ptbytes_hook, phpType7*) = $ppconstant_error(P, $ptascii("Cannot use \"parent\" when no class scope is active"), P.LOCATION.LINE)
+  -- if P.CLASSCONTEXT = eps
+def $ppparent_hook_call(P, pcpath, expression, ptbytes_property, ptbytes_hook, phpType7*) = $ppunsupported(P, "parent property hook first-class callable")
+  -- if P.CLASSCONTEXT =/= eps
+  -- if $ppfirstclass(phpType7*)
+def $ppparent_hook_call(P, pcpath, expression, ptbytes_property, ptbytes_hook, phpType7*) = $ppconstant_error(P, $ptascii("Must not use parent::$") ++ ptbytes_property ++ $ptascii("::") ++ ptbytes_hook ++ $ptascii("() outside a property hook"), P.LOCATION.LINE)
+  -- if P.CLASSCONTEXT =/= eps
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $ppparent_hook_context(P) = eps
+def $ppparent_hook_call(P, pcpath, expression, ptbytes_property, ptbytes_hook, phpType7*) = $ppconstant_error(P, $ptascii("Must not use parent::$") ++ ptbytes_property ++ $ptascii("::") ++ ptbytes_hook ++ $ptascii("() in a different property ($") ++ ptbytes_current ++ $ptascii(")"), P.LOCATION.LINE)
+  -- if P.CLASSCONTEXT =/= eps
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $ppparent_hook_context(P) = ((ptbytes_current, ptbytes_kind))
+  -- if ptbytes_current =/= ptbytes_property
+def $ppparent_hook_call(P, pcpath, expression, ptbytes_property, ptbytes_hook, phpType7*) = $ppconstant_error(P, $ptascii("Must not use parent::$") ++ ptbytes_property ++ $ptascii("::") ++ ptbytes_hook ++ $ptascii("() in a different property hook (") ++ ptbytes_kind ++ $ptascii(")"), P.LOCATION.LINE)
+  -- if P.CLASSCONTEXT =/= eps
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $ppparent_hook_context(P) = ((ptbytes_property, ptbytes_kind))
+  -- if $ptlc(ptbytes_hook) =/= ptbytes_kind
+def $ppparent_hook_call(P, pcpath, expression, ptbytes_property, ptbytes_hook, eps) = $ppclearvalue(P)
+  -- if P.CLASSCONTEXT =/= eps
+  -- if $ppparent_hook_context(P) = ((ptbytes_property, $ptascii("get")))
+  -- if $ptlc(ptbytes_hook) = $ptascii("get")
+  -- if ~P.CLOSURE
+def $ppparent_hook_call(P, pcpath, expression, ptbytes_property, ptbytes_hook, phpType7*) = $ppunsupported(P, "parent property hook call arguments or scope") -- otherwise
+
+def $ppdispatch(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppparent_hook_call(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata, ptbytes_property, ptbytes_hook, phpType7*)
+  -- if $parent_hook_parts(NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata) = ((ptbytes_property, ptbytes_hook))
+
+;; The immutable caller proves lexical Child, independent of the live Parent
+;; context and any later write to the source receiver CV.
+dec $parent_hook_function(pstate, pparenthookcall) : pfunction?
+def $parent_hook_function(S, pparenthookcall) = (pfunction)
+  -- if pparenthookcall.CALLER.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
+  -- if pparenthookcall.OBJECT = ppropertyhook.OBJECT
+  -- if $property_hook_valid(S, ppropertyhook, true)
+  -- if $property_hook_function(S, ppropertyhook) = (pfunction_child)
+  -- if pparenthookcall.CALLER.FUNCTION = pfunction_child.ORIGIN
+  -- if pparenthookcall.CALLER.RECEIVER = (pparenthookcall.OBJECT)
+  -- if pparenthookcall.CALLER.INSTANCE = eps
+  -- if pparenthookcall.CALLER.LEXICAL_CLASS = (porigin_child)
+  -- if $target_lexical_class(S, pparenthookcall.CALLER.TARGET) = (porigin_child)
+  -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
+  -- if pclassdesc_child.KIND = "class"
+  -- if pfunction_child.ORIGIN = PORIGIN n_unit pcpath_hook
+  -- if pparenthookcall.SITE = PORIGIN n_unit pcpath_site
+  -- if $(|pcpath_site| >= |pfunction_child.BODY|)
+  -- if pcpath_site[0:|pfunction_child.BODY|] = pfunction_child.BODY
+  -- if $origin_node(S.SOURCES, pfunction_child.ORIGIN) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_child_get) metadata_child_get) (SEQUENCE eps) (SEQUENCE statement_child*) metadata_child)
+  -- if $ptlc($base64(text_child_get)) = $ptascii("get")
+  -- if $origin_node(S.SOURCES, pparenthookcall.SITE) = (NExprStaticCall phpType19 phpType20 (SEQUENCE eps) metadata)
+  -- if $parent_hook_parts(NExprStaticCall phpType19 phpType20 (SEQUENCE eps) metadata) = ((ptbytes_property, ptbytes_hook))
+  -- if $ptlc(ptbytes_hook) = $ptascii("get")
+  -- if $code_expression(pfunction_child.CODE.EXPRESSIONS, pcpath_site) = ((pparenthookcall.LINE, b))
+  -- if pparenthookcall.LINE = $source_line(metadata)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_child) = (SOURCE_PARENT pparenthookcall.CLASS)
+  -- if $class_at(S.CLASSES, pparenthookcall.CLASS) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
+  -- if $property_desc_at($property_layout(S, pparenthookcall.CLASS, |S.CLASSES|), ptbytes_property) = (ppropertydesc_parent)
+  -- if $hook_property_at(pclassdesc_parent.PROPERTIES, pparenthookcall.PROPERTY) = (ppropertydesc_parent)
+  -- if ppropertydesc_parent.ORIGIN = pparenthookcall.PROPERTY
+  -- if $property_effective_desc(S, pparenthookcall.OBJECT, ptbytes_property) = (ppropertydesc_child)
+  -- if ppropertydesc_child.ORIGIN = ppropertyhook.PROPERTY
+  -- if $property_hook_virtual(S, ppropertydesc_child) /\ $property_hook_virtual(S, ppropertydesc_parent)
+  -- if ppropertydesc_child.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc_parent.VISIBILITY = PROPERTY_PUBLIC
+  -- if $property_hook_origin(S, ppropertydesc_parent) = (pparenthookcall.HOOK)
+  -- if $origin_node(S.SOURCES, pparenthookcall.HOOK) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) (SEQUENCE statement*) metadata_parent)
+  -- if $ptlc($base64(text_get)) = $ptascii("get")
+  -- if $function_at($all_functions(S), pparenthookcall.HOOK) = (pfunction)
+  -- if pfunction.SIGNATURE = {PARAMETERS eps, RETURNS ppropertydesc_parent.TYPE, BYREF false}
+  -- if pfunction.NAME = pclassdesc_parent.NAME ++ $ptascii("::") ++ $hook_name(ptbytes_property)
+  -- if pfunction.DEFAULTS = eps /\ ~pfunction.EARLY
+  -- if ~$function_generator(S, pfunction)
+  -- if $(pparenthookcall.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pparenthookcall.OBJECT] = INSTANCE porigin_called
+  -- if pparenthookcall.CALLER.CALLED_CLASS = (porigin_called)
+def $parent_hook_function(S, pparenthookcall) = eps -- otherwise
+
+dec $parent_hook_plan(pstate) : pparenthookcall?
+def $parent_hook_plan(S) = (pparenthookcall)
+  -- if S.COMPLETION = NORMAL
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 phpType20 (SEQUENCE eps) metadata)
+  -- if $parent_hook_parts(NExprStaticCall phpType19 phpType20 (SEQUENCE eps) metadata) = ((ptbytes_property, ptbytes_hook))
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_child) = (SOURCE_PARENT porigin_parent)
+  -- if $property_desc_at($property_layout(S, porigin_parent, |S.CLASSES|), ptbytes_property) = (ppropertydesc)
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if $property_hook_origin(S, ppropertydesc) = (porigin_hook)
+  -- if pparenthookcall = {SITE porigin_site, OBJECT ppropertyhook.OBJECT, PROPERTY porigin_property, HOOK porigin_hook, CLASS porigin_parent, LINE $source_line(metadata), CALLER pcallcontext}
+  -- if $parent_hook_function(S, pparenthookcall) =/= eps
+def $parent_hook_plan(S) = eps -- otherwise
+rule PhpStep/parent-hook-call: S ~> S[.TODO = [(CALL_ARGS (PARENT_HOOK_TARGET pparenthookcall) eps 0 eps (pparenthookcall.SITE) pparenthookcall.LINE), METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (EVAL expression) :: ptask_tail*
+  -- if $parent_hook_syntax(expression)
+  -- if $method_source_task(S, expression)
+  -- if $parent_hook_plan(S) = (pparenthookcall)
+rule PhpStep/parent-hook-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "parent get hook source or function"]
+  -- if S.TODO = (EVAL expression) :: ptask_tail*
+  -- if $parent_hook_syntax(expression)
+  -- if $parent_hook_plan(S) = eps
+
+;; Zend's real parent hook frame has This without RELEASE_THIS. The outer
+;; Child hook owns that object; the pending target and entered call borrow it.
+def $target_nodes(PARENT_HOOK_TARGET pparenthookcall) = eps
+def $target_instance(PARENT_HOOK_TARGET pparenthookcall) = eps
+def $target_receiver(S, PARENT_HOOK_TARGET pparenthookcall) = (pparenthookcall.OBJECT)
+def $target_lexical_class(S, PARENT_HOOK_TARGET pparenthookcall) = (pparenthookcall.CLASS)
+def $target_called_class(S, PARENT_HOOK_TARGET pparenthookcall) = pparenthookcall.CALLER.CALLED_CLASS
+def $target_function(S, PARENT_HOOK_TARGET pparenthookcall) = $parent_hook_function(S, pparenthookcall)
+def $call_receiver_roots(pcallcontext) = eps
+  -- if pcallcontext.TARGET = PARENT_HOOK_TARGET pparenthookcall
+
+dec $parent_hook_pending(pstate, pparenthookcall) : bool
+def $parent_hook_pending(S, pparenthookcall) = true
+  -- if S.TODO = (CALL_ARGS (PARENT_HOOK_TARGET pparenthookcall) eps 0 eps (pparenthookcall.SITE) pparenthookcall.LINE) :: METHOD_RESULT :: ptask_tail*
+  -- if S.ORIGIN = (pparenthookcall.SITE)
+  -- if S.CURRENT = (pparenthookcall.CALLER)
+  -- if $parent_hook_function(S, pparenthookcall) =/= eps
+def $parent_hook_pending(S, pparenthookcall) = false -- otherwise
+
+dec $parent_hook_entered(pstate, pcallcontext?, pframe*, pparenthookcall) : bool
+def $parent_hook_entered(S, (pcallcontext), pframe :: pframe_tail*, pparenthookcall) = true
+  -- if pcallcontext.TARGET = PARENT_HOOK_TARGET pparenthookcall
+  -- if pcallcontext.FUNCTION = pparenthookcall.HOOK /\ pcallcontext.CALLSITE = (pparenthookcall.SITE) /\ pcallcontext.LINE = pparenthookcall.LINE
+  -- if pcallcontext.ARGC = 0 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps
+  -- if pframe.CONTEXT = (pparenthookcall.CALLER)
+  -- if pframe.ORIGIN = (pparenthookcall.SITE)
+  -- if pframe.TODO = METHOD_RESULT :: ptask_tail*
+  -- if $parent_hook_function(S, pparenthookcall) =/= eps
+def $parent_hook_entered(S, (pcallcontext), pframe :: pframe_tail*, pparenthookcall) = $parent_hook_entered(S, pframe.CONTEXT, pframe_tail*, pparenthookcall)
+  -- if pcallcontext.TARGET =/= PARENT_HOOK_TARGET pparenthookcall
+def $parent_hook_entered(S, eps, pframe :: pframe_tail*, pparenthookcall) = $parent_hook_entered(S, pframe.CONTEXT, pframe_tail*, pparenthookcall)
+def $parent_hook_entered(S, pcallcontext?, eps, pparenthookcall) = false
+def $parent_hook_entered(S, pcallcontext?, pframe*, pparenthookcall) = false -- otherwise
+
+def $call_selected_valid(S, PARENT_HOOK_TARGET pparenthookcall, (porigin)) = (porigin = pparenthookcall.SITE /\ ($parent_hook_pending(S, pparenthookcall) \/ $parent_hook_entered(S, S.CURRENT, S.FRAMES, pparenthookcall)))
+
+;; Trace names use the captured lexical parent even after receiver retirement.
+def $trace_context_function(S, pcallcontext) = $hook_name(ppropertydesc.NAME)
+  -- if pcallcontext.TARGET = PARENT_HOOK_TARGET pparenthookcall
+  -- if $class_at(S.CLASSES, pparenthookcall.CLASS) = (pclassdesc)
+  -- if $hook_property_at(pclassdesc.PROPERTIES, pparenthookcall.PROPERTY) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = pparenthookcall.PROPERTY
+def $trace_context_class(S, pcallcontext) = (pclassdesc.NAME)
+  -- if pcallcontext.TARGET = PARENT_HOOK_TARGET pparenthookcall
+  -- if $class_at(S.CLASSES, pparenthookcall.CLASS) = (pclassdesc)
+def $trace_context_type(S, pcallcontext) = ($ptascii("->"))
+  -- if pcallcontext.TARGET = PARENT_HOOK_TARGET pparenthookcall

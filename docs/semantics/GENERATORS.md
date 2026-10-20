@@ -101,9 +101,15 @@ without a current snapshot; a later explicit getter creates a separate copy.
 Sole-receiver cache destruction can therefore precede caller delivery, without
 chaining an older caught exception that is merely globally owned. See the
 [parked NEXT review](../../coverage/semantics/generator-parked-pending-owning-next-review.json).
-Nonpending body entry and nonowning/input/loop or wider parked API leaves remain
-Unsupported.
-Actual parked body entry, wider suspended owners and waiting-result GC remain open.
+One owning buffered input at a parked simple-CV used yield also admits pending
+zero-argument NEXT through native links. Only the selected receiver clears its
+bit; the physical child, input and parked frame stay unchanged. NULL adds no
+cache owner. Physical close orphans the input before storage releases current,
+so a cache destructor can run before ancestor finally blocks and caller delivery.
+See the [buffered NEXT review](../../coverage/semantics/generator-parked-pending-buffered-next-review.json).
+Nonpending body entry, parked SEND overwrites, nonowning inputs, loop owners and
+wider parked API leaves remain Unsupported.
+Wider suspended owners and waiting-result GC remain open.
 
 A direct detached parent with an owning copied return now admits ordinary unpack
 at a simple-CV assigned `yield from`. Null-key rejection leaves its COMPLETE

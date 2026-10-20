@@ -301,8 +301,18 @@ records normal, deletion and supplied-throw paths with balanced inverse cleanup.
 The [string-alias ledger](../../coverage/semantics/array-literal-float-string-alias-leaf-review.json)
 checks string byte writes across shared and singleton leaf copies, independent
 snapshots, deletion and supplied throws. Only the embedded leaf-cell predicate
-broadens; direct string CV/CELL retargets, array/object-valued, typed or indebted
+broadens; direct string CV/CELL retargets, array/object-valued or indebted
 leaves and recursive graphs remain Unsupported.
+Embedded null/bool/int/float ALIAS leaves also admit validated ordinary
+instance-property type sources. Both ordinary table-CV and wrapper-payload
+continuations use this bound. For debt-bearing payloads, every source object must
+survive logical pruning with its actual property alias; metadata adds no owner.
+Shared leaf copies keep typed rejection/coercion. Explicit property unset removes
+its source while the object remains rooted, allowing later singleton copies to
+unwrap. The [typed-leaf ledger](../../coverage/semantics/array-literal-float-typed-alias-leaf-review.json)
+records int-property coercion/rejection, multiple sources, deletion and supplied
+throw. Typed strings/arrays/objects, static/hooked/queued or retired sources,
+coercion/backing records and unsafe debt retirement remain Unsupported.
 
 Missing-key module409 retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,

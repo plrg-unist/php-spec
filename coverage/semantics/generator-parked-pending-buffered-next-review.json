@@ -1,0 +1,89 @@
+{
+  "milestone": "Iterator36: pending parked NEXT preserves one owning buffered input",
+  "status": "composed-accepted",
+  "scope": "Literal zero-argument NEXT through finite native Generator links to a parked PAUSED simple-CV used yield with exactly one authenticated owning LIVE input. Only the selected pending receiver initializes. Input, physical frame and PARKED stay unchanged; NULL creates no current copy. Close orphans the input; cache storage cleanup precedes queued ancestor finalizers. Actual COW and post-close cell writes retain the independent input lifetime.",
+  "implementation": {
+    "path": "spec/semantics/289-generator-delegation.watsup",
+    "change": "+45 lines; separate PAUSED arm and bounded buffered_next_leaf authentication. Old owning-COMPLETE arm and all transitions/owners/roots/defaults/collector code remain exact.",
+    "sha256": "fb9b82702bed3b1803d3644e5fbe5b0e5fa6da328514a0dff8363c0fc3473785"
+  },
+  "tested_revisions": {
+    "native_and_unchanged_baseline": "6d777d725aa167d0603f6d3537c9367387ee42c6",
+    "source4_and_strict406": "3a95fa9a3e71ae2318cac0f4c11aca5df71a67d2",
+    "elaboration4_and_state735": "2f77bb8f4133cb1c610a5c0c82c594a293544a38",
+    "bridge": "State-only/Makefile commit leaves every runtime/source input byte unchanged."
+  },
+  "validation": {
+    "native": 4,
+    "unchanged_baseline": "Genuine public force-close Unsupported after exact 17 OUTPUT chunks; original source/native tuple reused, zero agreement.",
+    "sources": "Four unique normal agreements, exact original stdout/stderr/exit0.",
+    "states": {
+      "author": [
+        199,
+        147
+      ],
+      "peer": [
+        249,
+        140
+      ],
+      "total": 735,
+      "local": 715,
+      "generic": 20
+    },
+    "compiler": "Strict406 and four-fixture parse/elaboration pass. Elaboration earns zero execution credit.",
+    "failure": "Original peer COW CLI 100s timeout during confirmed CPU5 overlap (M120 ran 08:51:28\u201308:55:11 UTC; timeout 08:52:54) is retained at zero. Exclusive unchanged affected-only retry at the same 100/120 caps passed; only the unrun CELL followed. No semantic/state failures, cap/code correction, historical renewal or GC credit."
+  },
+  "commands": {
+    "native": [
+      "taskset -c 5 python3 .tools/native.py",
+      "taskset -c 5 python3 .tools/review-native.py"
+    ],
+    "baseline": "taskset -c 5 python3 .tools/baseline.py --native-report <native-author report>",
+    "strict": "taskset -c 5 python3 .tools/strict.py",
+    "source": "taskset -c 5 python3 <author or peer source wrapper> --native-report <matching retained report>; peer retry/CELL use separate --case selections",
+    "fixture_elab": "taskset -c 5 python3 .tools/state-elab.py",
+    "state": "taskset -c 5 python3 <author or peer state wrapper> --case <one exact report selection>"
+  },
+  "environment": {
+    "php_source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "mode": "SL, caches off, encountered determinism checks",
+    "locale": "LC_ALL=C TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset; one Iterator36 actor",
+    "caps": "native 8s; source 100/120s and 100000 steps; strict/state 120s; fixture elaboration 60s; state seek/finish 4000/4000",
+    "exits": "Accepted wrappers/models exit0, stderr empty/no timeout; baseline model1 and original contention model1 retained separately."
+  },
+  "reports": {
+    "native-author": ".tools/generator-parked-pending-buffered-next-native-7nxhx3l1/report.json",
+    "native-peer": ".tools/generator-parked-pending-buffered-next-review-native-pptp37xq/report.json",
+    "unchanged-baseline": ".tools/generator-parked-pending-buffered-next-baseline-osvnot7y/report.json",
+    "strict406": ".tools/generator-parked-pending-buffered-next-author-sl-u0u94uil/report.json",
+    "source-author2": ".tools/generator-parked-pending-buffered-next-source-38kjts31/report.json",
+    "source-peer-contention-timeout0": ".tools/generator-parked-pending-buffered-next-review-source-4p7cvmq8/report.json",
+    "source-peer-affected-retry1": ".tools/generator-parked-pending-buffered-next-review-source-v_g8q5pp/report.json",
+    "source-peer-unrun1": ".tools/generator-parked-pending-buffered-next-review-source-wdh6uq44/report.json",
+    "fixture-elab4": ".tools/generator-parked-pending-buffered-next-state-elab-6c71mrg5/report.json",
+    "state-author199": ".tools/fiber-state-review-0w76c0lp/report.json",
+    "state-author147": ".tools/fiber-state-review-8xjfb9tz/report.json",
+    "state-peer249": ".tools/fiber-state-review-eto10an2/report.json",
+    "state-peer140": ".tools/fiber-state-review-ixgbopf0/report.json"
+  },
+  "evidence": {
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-parked-pending-buffered-next-36/private.tar.gz",
+      "bytes": 2031884,
+      "sha256": "8197642f535ca940dbb03e09ba276616e28fec2f386b5ca4457d32a0e5425cdf"
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-parked-pending-buffered-next-36/manifest.json",
+    "recovery": "Archive restores all thirteen raw report directories, eight ignored capture/runner inputs, six tests, watched runtime and support snapshots. Manifest holds per-report hashes/status/cuts and input hashes; retain private/composed Git branches for tracked revisions. Reused local binaries establish no new offline build or portability claim."
+  },
+  "remaining": "Parked SEND overwrite, nonpending/body entry, scalar/nonowning or multiple inputs, loop/HELD/other owning suspended tasks and GC remain outside this admission. Full core PHP and foundational verification remain incomplete.",
+  "composition": {
+    "parent": "396e8d14f2123e319f6ac35f0ed6a1bbcff26af1",
+    "private_publication": "c5928f86fd8b15d327a672d95435e59c2dcf5be0",
+    "runtime": "Tested module289 bytes exact; every other incoming runtime/schema/default/root/ordered manifest/pipeline path preserved.",
+    "validation": "Original accepted cuts retained; source selectors independently reviewed disjoint. No joined actor or accepted replay."
+  }
+}

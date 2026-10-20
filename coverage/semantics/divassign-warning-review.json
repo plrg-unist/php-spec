@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "milestone": "OP60 selected-reference compound division Warning continuations",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "Direct distinct CV operands of /= with preexisting selected untyped scalar references, an initially leading-numeric LEFT and quiet numeric RHS, and named Warning handler. Capture each numeric holder before its Warning and read the old selected RHS after LEFT callback. Successful numeric division writes the old target through its surviving alias despite current-name rebind. Cached zero raises DivisionByZeroError without storage even after RHS repair/retirement; supplied second throw cancels compound/outer stores. Initial quiet-RHS admission is not restricted to the PINT2 witness. Other producer/target/lifecycle classes remain partial.",
+  "runtime_revision": "fb9388492f74743acae46e523fb8b6fbd025c914",
+  "helper_revision": "6364a6c163925086880c93e08dfd97637f8b1e83",
+  "private_modules": 406,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "8b24126abe38d89f1c43deddf7539b32b5ba48965d80c5cd285eefede23702ee",
+    "spec/semantics/55-compound-assignment.watsup": "0a67ab6a2f3872fa73732d846e93cc064fc16a5786c326ec9658f33a6bb40eb4",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "f686dfa55da1ac106d9f7159d8a95a45c98b68e054d5c287d83bf2f58f9ea770"
+  },
+  "engine_basis": [
+    "Pinned ZEND_ASSIGN_OP selects/dereferences var_ptr before zend_binary_op(result=LEFT). div_function dereferences both selected operands, converts LEFT then RIGHT into holders, and computes result_copy. Only DIV_SUCCESS destroys/replaces result==op1. DIV_BY_ZERO and failed callback conversion preserve it; zendi_try_convert_scalar_to_number fills a holder before Warning and returns failure if the callback left an exception.",
+    "Two ARITHMETIC_DIVASSIGN_CONVERT/WARNING tags use existing arithmetic phases, numeric/text conversions, selected-pointer readers, number_result/error_dispatch and write_cell_checked. Dedicated AssignOpDiv source/line authority and initial plan add one generic compound EPS gate; old ADD/ordinary DIV/other compound conversion/dispatch/numeric/store bodies remain exact. No new state field/module or operand-retention root.",
+    "Fresh selected input requires live allocated unconstrained scalar CELL through unchanged arithmetic_owned_cell_valid. Warning n0 rechecks actual input; entered/returned n1 retains source/raw-number history without live RHS lookup. A separate target check guards successful NUM storage. DIVZERO uses holders first and performs no target write. Unavailable/constrained/owning fresh input, failed conversion or unsafe successful target has an explicit partial Unsupported boundary; indirect owning handler remains bounded."
+  ],
+  "contract": [
+    "Author h1 changes selected REQUEST12.5tail/quiet2 to99/5tail and rebinds current right to replacement7. h2 changes old aliases88/7 and rebinds current left to replacement77. Cached12.5/5 gives strictfloat2.5 in old leftAlias and outer result, while current77/7 remain. Raw atomic store consumes the marker and updates the old STORE cell, RESULT and LOCATION; no new cell, detachment or ENV redirect. Later old aliases6/4 versus current8/9 preserve topology.",
+    "The second author throws the same Exception created on line20 after h2 writes/rebindings. Catch observes noPrevious/outer100/oldalias88/current77/right7/calls2 and old alias73. Marker is discarded, no numeric store occurs, same Throwable has task+global owner2, and later aliases remain independent. Both author stderr streams are empty.",
+    "Independent h1 instead prepares old RHS0tail and rebinds its current name to7. At second Warning h2 repairs old RHS7, removes its last alias and rebinds current target77 while old target alias88 survives. Cached zero still raises fresh DivisionByZeroError25/nullPrevious/outer100; RHS owner0/unallocated/getterEPS cannot invalidate returned holder. Old target owner1 and replacements2 survive; later oldalias6 versus current8/9 preserves topology. One original default second Warning25 remains on stderr.",
+    "Focused189/160/205 authenticates new entry, both real fresh/entered Warning phases, conversion/cache coherence, selected old-pointer versus current-name reads, successful raw/driven storage, supplied-throw discard and raw zero THROWN versus indexed fresh Error/soleowner/trace ARRAY prefix. One author undriven guard matrix checks source/line/type/allocation/domain boundaries. Existing integer helper prefix plus family frontiers has13 unique declarations; metadata prefixes, owners, final observables and compact full-entry/zero budgets are checked."
+  ],
+  "required_follow_on": [
+    "A surviving alias keeps the selected old target live and scalar through the tested traces; fresh input must be unconstrained/nonowning. Initially bad/leading RHS, initially plain or copied/owning operands, failed LEFT/late TypeError completion, unsafe/expired targets, typed sources, arrays/objects and wider handlers/lifetimes remain partial. Pure refusal controls do not validate excluded executions.",
+    "Historical RHS may retire after capture without operand retention. Other last-owner/destructor and unsafe target lifetimes are outside this bound. Ordinary DIV and prior ADD/compound evidence keep their original cuts with zero renewal. OP12 remains paused; no engine bug or intentional divergence is claimed."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-60/source-fb9388492-author-two/report.json",
+        "sha256": "2b864dd67109831f51ff187d3e714c7a30d9944c7ef2506581d78f611bc91cdd",
+        "revision": "fb9388492f74743acae46e523fb8b6fbd025c914",
+        "agreements": 2
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-60/review-model-fb9388492-review-one/report.json",
+        "sha256": "8d5369d59dbbd49952468464f5efed35628b5fa78f9790c86bfd8d7e55aca2bb",
+        "revision": "fb9388492f74743acae46e523fb8b6fbd025c914",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-60/state-6364a6c16-three/report.json",
+        "sha256": "d5d95795a55677f275585efe1ebbbce0b7fba6965be754aa40d7ecc3351df004",
+        "revision": "6364a6c163925086880c93e08dfd97637f8b1e83",
+        "modules": 406,
+        "cases": [
+          "divassign-warning-selected-float",
+          "divassign-warning-second-throw",
+          "divassign-warning-retired-cached-zero"
+        ],
+        "conditions": [
+          189,
+          160,
+          205
+        ],
+        "total": 554
+      }
+    ],
+    "total_source_agreements": 3,
+    "total_focused_state_conditions": 554
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-60/baseline-0793e3fcc-selected-float/report.json",
+      "sha256": "4ac4540490dc5299e6cee5b421391bf063b9263bbbb8727be05425d996863d23",
+      "result": "Actual frontend accepted/checked program/Unsupported BEFORE H1, empty semantic streams, reason error-handler ingress requires a producer continuation, model1/agreement0/wrapperfalse; no override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-60/native-0793e3fcc-author-two/report.json",
+        "sha256": "c0ae6e660420bc006283b3b735b89dc35731617ba9a55ca126e540025e999c77"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-60/native-0793e3fcc-review-one/report.json",
+        "sha256": "ab2693b08df1480fb1d66dd53b224e6f92cf85b92a0e082a13f6ff734aa897cf"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-60/state-prep-6364a6c16-three/report.json",
+        "sha256": "899c09cae7eadb9e4e60c3ee931b16be091d77a12fa5f51bed0eaa499b638cf9",
+        "result": "Retained original paths/native bytes; checked frontend/adapter only, zero native/application replay, workers0/reaped."
+      }
+    ],
+    "standalone_syntax": "Three standalone undefined-pstate diagnostics, zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-60",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/baseline, changed source and focused groups use separately granted CPU3 cuts. Native30/modelCLI60-process90, checked prep30/full406 SL120 per group. Author stderr empty; peer one original default second Warning25. Retained-source preparation performs no native/application replay.",
+    "commands": [
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 tests/semantics/divassign_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 tests/semantics/divassign_warning_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-60/state-prep-6364a6c16-three/run-prepare.py",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-60/state-6364a6c16-three/run-state.py"
+    ],
+    "record": "Restore matching Git cuts/local tools in a fresh directory. Retained original paths/native streams authenticate focused fixtures; external evidence is not a runtime dependency. Copied local tools add no rebuild/portability claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "composition": {
+    "parent": "219e1b868189bf6e2ffe9a066aabfe5b40b99c80",
+    "private_publication": "a03ba11d9bd4016aa1a5ebb737926bcb806725d8",
+    "modules": 407,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "bf4d2d124bba785235b27c3c4b98427f8ba48db8e32f145080c4cf87eb160179",
+      "spec/semantics/55-compound-assignment.watsup": "0a67ab6a2f3872fa73732d846e93cc064fc16a5786c326ec9658f33a6bb40eb4",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "f686dfa55da1ac106d9f7159d8a95a45c98b68e054d5c287d83bf2f58f9ea770"
+    },
+    "other_incoming_paths_preserved": 78,
+    "gate": "The actual parent differs from OP60 baseb19 in eleven runtime paths141/142/156/172/207/270/289/30/400/413/417 plus the append-only407 manifest. Modules156/270 require nested typed-by-reference reference/object returns with owning retirement/finally cursors, absent from the by-value Boolean handler and top-level echo-only finally. Module172 NULL-option INI_SET/stdClass reception and module400 DEFINE/stdClass source paths are absent. Module207 reversed missing-CV comparison chains are absent from defined scalar guards/counters/strict observers. Module289 parked pending NEXT with an owning LIVE input requires absent Generator/NEXT history. Module413's typed embedded literal ALIAS-array leaves/property-source liveness requires a lossy-float literal-key/reference producer and typed source, absent from scalar aliases and GLOBALS dimension writes; Error trace arrays do not produce that syntax. Modules141/142/417 require lexical parent::$p::get/property-hook source and a selected borrowed hook receiver. Handler h is a global by-value nonmethod; builtin Exception construction and native Throwable getLine/getPrevious/getMessage resolve their ordinary routes and cannot produce PARENT_HOOK_TARGET. Incoming30 adds only that target/record syntax, with no pstate field/default/init change; preserve it and the complete407 manifest. Common55/404 remain base-exact before our overlay. Compose only DIVASSIGN tagpair onto fullparent30, plan declaration/EPS onto fullparent55, and private404/six tests. Source3/state554 keep original private406 cuts. No concrete selector interaction warrants joined execution or renewed evidence."
+  }
+}
