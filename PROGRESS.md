@@ -7,6 +7,25 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Selected-reference `>>=` now captures LEFT before Deprecated and reads the rebound
+count afterward. Cached `-12` with count `64` stores integer `-1` through the old
+target alias despite current LEFT `77`; old count `2` would give `-3`, and a reread
+positive LEFT would give `0`. Current count `-1` instead raises `ArithmeticError`
+at line 25 before a compound store, preserving callback `88` and outer `100`.
+Old aliases and replacements retain separate owners and write-through at EOF.
+Two originals pass at `6d2b58e98`/407 and 195+163 focused premises at
+`dfebbc42b`/407 in the
+[selected shift ledger](coverage/semantics/shiftassign-selected-warning-review.json).
+Initial strict scalar references, fractional LEFT/quiet PINT count and surviving
+target aliases bound this slice. Other conversions/operators/owning lifetimes
+remain partial; numeric and generic-unwind bodies stay unchanged. OP12, COMP88
+and Source47 low-initial-precision callbacks remain paused.
+
+Composed over `7e64f4847`/407, preserving incoming state, task and
+ordered-manifest paths. Source2/state358 retain their private407 cuts;
+independently reviewed absent incoming selectors require no joined execution
+or renewed credit.
+
 Direct missing instance calls now preserve named string keys and mixed send
 order through inherited public `__call(string,array)`. Earlier main-CV send `7`
 survives a later argument's mutation of that same cell to `99` and receiver-CV
@@ -83,23 +102,8 @@ runtime constructors use implicit keys and retained/debt histories stay empty.
 Arrays, pools, ownership, schema/defaults and the ordered manifest stay parent-exact.
 Private source/state and affected cuts retain `147f5eac2`/407 without replay.
 
-Selected-reference `^=` now preserves both old referents and numeric specialization
-before LEFT Deprecated. Captured `12` XOR old RHS `5` stores integer `9` through the
-old target alias despite current names `77`/`7`; changing both old values to bad
-strings instead raises `TypeError` at line 25, preserving old strings and outer
-`100` without a bytewise retry. Aliases and replacements retain separate owners.
-Two originals pass at `95ef0f3a4`/407 and 199+163 focused premises at
-`48604a942`/407 in the
-[selected XOR ledger](coverage/semantics/xorassign-selected-warning-review.json).
-Initial scalar references, fractional LEFT/quiet PINT RHS and safe surviving
-aliases bound this slice. Other conversions/operators/owning lifetimes remain
-partial; numeric and generic-unwind bodies stay unchanged. OP12, COMP88 and
-Source47 low-initial-precision callbacks remain paused.
-
-Composed over `d977b28fe`/407, preserving incoming state, task and
-ordered-manifest paths. Source2/state362 retain their private407 cuts;
-independently reviewed absent incoming selectors require no joined execution
-or renewed credit.
+Earlier selected-reference `^=` retains source2/state362 and its original fixture
+failure0 in the [selected XOR ledger](coverage/semantics/xorassign-selected-warning-review.json).
 
 Normal unparked pending ancestor SEND now preserves its actual closed-child
 refresh release before ignored argument, unused current result and receiver.

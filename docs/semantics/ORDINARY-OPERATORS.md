@@ -627,6 +627,23 @@ covering the actual atomic commit/error, original bindings, owners and budgets.
 Initial references/copies, unsafe targets and wider RHS/callback/lifecycle forms
 remain partial; refusal projections do not establish wider execution.
 
+Selected-reference `>>=` fixes the old target before converting LEFT, but resolves
+the RHS CV after its Deprecated callback. Captured `-12` with rebound count `64`
+stores strict integer `-1` through the surviving old alias despite callback target
+`99` and current LEFT `77`; old count `2` would give `-3`, and a positive LEFT
+would give `0`. A rebound count of `-1` instead raises `ArithmeticError` with
+`Bit shift by negative number` at RHS line 25, preserving callback target `88`,
+outer `100` and alias topology. EOF writes still reach old aliases separately
+from replacement cells. Two originals and 195+163 focused premises cover real
+fresh/entered callbacks, source and reference controls, returned LEFT history,
+raw no-store THROWN or old-cell store, driven fresh indexed Error, owners and
+zero/one-step cuts in the
+[selected shift ledger](../../coverage/semantics/shiftassign-selected-warning-review.json).
+Initial untyped primitive references, fitting fractional LEFT, quiet PINT count
+and a safe surviving old target bound this slice. SHIFTLEFT, additional count
+conversions, typed/owning operands and wider producers/lifecycles remain partial;
+numeric and generic-unwind bodies keep their earlier cuts.
+
 For distinct initially plain CVs, `<<=` and `>>=` keep a fractional-float left
 conversion before their deprecation and read the live quiet integer count afterward.
 Captured `-12` with live count `2` stores `-48` or `-3` despite callback target `99`;
@@ -637,7 +654,7 @@ SL premises pass in the
 [shift-assignment ledger](../../coverage/semantics/shiftassign-warning-review.json).
 Both AST directions have their own source authority; old modulo validators stay
 unchanged. Fresh cache/source/op/line guards, actual cells/owners, default Deprecated
-and budgets are covered. Pure ready projections establish refusals only. Initial
+and budgets are covered. Pure ready projections establish refusals only. Other initial
 references/copies, warning or noninteger counts, unsafe targets and wider lifecycle
 remain partial.
 

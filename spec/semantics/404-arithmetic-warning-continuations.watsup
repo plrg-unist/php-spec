@@ -4237,3 +4237,120 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 8192
   -- if $integer_float_notices([PRECISIONLOSS], n_bits) = [(8192, perrorcall.MESSAGE)]
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pintegeroperation.LINE
+
+
+;; ASSIGN_OP fixes the target first; SHIFTRIGHT dereferences its RHS after LEFT converts.
+;; The selected target and live RHS CV have separate authority after the callback.
+dec $shiftassign_selected_warning_source(pstate, pintegeroperation) : bool
+def $shiftassign_selected_warning_source(S, pintegeroperation) = true
+  -- if S.ORIGIN = (pintegeroperation.SITE)
+  -- if pintegeroperation.OP = SHIFTRIGHT /\ ~pintegeroperation.SWAPPED
+  -- if $origin_node(S.SOURCES, pintegeroperation.SITE) = (NExprAssignOpShiftRight expression_left expression_right metadata)
+  -- if pintegeroperation.LEFT = VARIABLE ptbytes_left z_left
+  -- if pintegeroperation.RIGHT = VARIABLE ptbytes_right z_right
+  -- if ptbytes_left =/= ptbytes_right
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_target
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CV ptbytes_right
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 0], pintegeroperation.LEFT)
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 1], pintegeroperation.RIGHT)
+  -- if $integer_pointer_source(S, pintegeroperation.LEFTPOINTER, pintegeroperation.LEFT)
+  -- if $code_expression_at_source(S, pintegeroperation.SITE, [PCFIELD 1]) = (pintegeroperation.LINE)
+def $shiftassign_selected_warning_source(S, pintegeroperation) = false -- otherwise
+
+dec $shiftassign_selected_warning_snapshot(pstate, pintegeroperation, nat) : bool
+def $shiftassign_selected_warning_snapshot(S, pintegeroperation, n_bits) = true
+  -- if $integer_pointer_select(S, pintegeroperation.LEFT) = (pintegeroperation.LEFTPOINTER)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_target
+  -- if $arithmetic_owned_cell_valid(S, n_target)
+  -- if $integer_pointer_value(S, pintegeroperation.LEFTPOINTER) = (PFLOAT n_bits)
+  -- if $integer_pointer_select(S, pintegeroperation.RIGHT) = (INTEGER_CELL n_right)
+  -- if $arithmetic_owned_cell_valid(S, n_right)
+  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (PINT i_right)
+  -- if $long_range(i_right)
+def $shiftassign_selected_warning_snapshot(S, pintegeroperation, n_bits) = false -- otherwise
+
+dec $shiftassign_selected_warning_valid(pstate, pintegeroperation, nat, int, nat) : bool
+def $shiftassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, n_stage) = true
+  -- if $shiftassign_selected_warning_source(S, pintegeroperation)
+  -- if $(n_bits < 18446744073709551616 /\ n_stage <= 1)
+  -- if $float_long(n_bits, true) = (i_left, [PRECISIONLOSS])
+  -- if n_stage = 1 \/ $shiftassign_selected_warning_snapshot(S, pintegeroperation, n_bits)
+def $shiftassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, n_stage) = false -- otherwise
+
+def $shiftassign_selected_warning_plan(S) = (SHIFT_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left 0)
+  -- if S.TODO = (COMPOUND_APPLY SHIFTRIGHT (BASE_VALUE poperand_left) false z) :: ptask_tail*
+  -- if $error_handler_eligible(S, 8192) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if poperand_right = S.RESULT
+  -- if $integer_pointer_select(S, poperand_left) = (INTEGER_CELL n_target)
+  -- if $integer_pointer_select(S, poperand_right) = (pintegerpointer_right)
+  -- if $integer_pointer_value(S, INTEGER_CELL n_target) = (PFLOAT n_bits)
+  -- if $(n_bits < 18446744073709551616)
+  -- if $float_long(n_bits, true) = (i_left, [PRECISIONLOSS])
+  -- if pintegeroperation = {SITE porigin, OP SHIFTRIGHT, LINE z, SWAPPED false, LEFT poperand_left, RIGHT poperand_right, LEFTPOINTER INTEGER_CELL n_target, RIGHTPOINTER $integer_right_pointer(SHIFTRIGHT, poperand_right, pintegerpointer_right)}
+  -- if $shiftassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, 0)
+def $shiftassign_selected_warning_plan(S) = eps -- otherwise
+
+dec $shiftassign_selected_warning_target(pstate, pintegeroperation) : bool
+def $shiftassign_selected_warning_target(S, pintegeroperation) = true
+  -- if $shiftassign_selected_warning_source(S, pintegeroperation)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_target
+  -- if $arithmetic_owned_cell_valid(S, n_target)
+def $shiftassign_selected_warning_target(S, pintegeroperation) = false -- otherwise
+
+dec $shiftassign_selected_warning_right(pstate, pintegeroperation) : int?
+def $shiftassign_selected_warning_right(S, pintegeroperation) = (i_right)
+  -- if $shiftassign_selected_warning_source(S, pintegeroperation)
+  -- if $integer_pointer_select(S, pintegeroperation.RIGHT) = (INTEGER_CELL n_right)
+  -- if $arithmetic_owned_cell_valid(S, n_right)
+  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (PINT i_right)
+  -- if $long_range(i_right)
+def $shiftassign_selected_warning_right(S, pintegeroperation) = eps -- otherwise
+
+rule PhpStep/shiftassign-selected-warning-begin: S ~> S[.TODO = ptask :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = ROOT n_target]
+  -- if S.TODO = ptask_old :: ptask_tail*
+  -- if $shiftassign_selected_warning_plan(S) = (ptask)
+  -- if ptask = SHIFT_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left 0
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_target
+rule PhpStep/shiftassign-selected-warning-dispatch: S ~> $error_dispatch(S, 8192, n_message*, pintegeroperation.LINE, DIAGNOSTIC "Deprecated" n_message* pintegeroperation.LINE, SHIFT_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left 1)
+  -- if S.TODO = (SHIFT_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left 0) :: ptask_tail*
+  -- if $shiftassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, 0)
+  -- if $integer_float_notices([PRECISIONLOSS], n_bits) = [(8192, n_message*)]
+  -- if ~$error_handler_eligible(S, 8192) \/ $arithmetic_add_named(S)
+rule PhpStep/shiftassign-selected-warning-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "selected right shift assignment owning deprecation callback"]
+  -- if S.TODO = (SHIFT_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left 0) :: ptask_tail*
+  -- if $shiftassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, 0)
+  -- if $error_handler_eligible(S, 8192) /\ ~$arithmetic_add_named(S)
+rule PhpStep/shiftassign-selected-warning-commit: S ~> $write_cell_checked(S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT i_result)][.LOCATION = ROOT n_target], n_target, PINT i_result, pintegeroperation.LINE)
+  -- if S.TODO = (SHIFT_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left 1) :: ptask_tail*
+  -- if $shiftassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, 1)
+  -- if $shiftassign_selected_warning_right(S, pintegeroperation) = (i_right)
+  -- if $integer_binary(SHIFTRIGHT, i_left, i_right) = IRESULT i_result
+  -- if $shiftassign_selected_warning_target(S, pintegeroperation)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_target
+rule PhpStep/shiftassign-selected-warning-negative: S ~> $integer_result(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL], NEGSHIFT, pintegeroperation.LINE)
+  -- if S.TODO = (SHIFT_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left 1) :: ptask_tail*
+  -- if $shiftassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, 1)
+  -- if $shiftassign_selected_warning_right(S, pintegeroperation) = (i_right)
+  -- if $integer_binary(SHIFTRIGHT, i_left, i_right) = NEGSHIFT
+
+rule PhpStep/shiftassign-selected-warning-right-boundary: S ~> S[.COMPLETION = UNSUPPORTED "selected right shift assignment quiet integer RHS"]
+  -- if S.TODO = (SHIFT_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left 1) :: ptask_tail*
+  -- if $shiftassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, 1)
+  -- if $shiftassign_selected_warning_right(S, pintegeroperation) = eps
+rule PhpStep/shiftassign-selected-warning-target-boundary: S ~> S[.COMPLETION = UNSUPPORTED "selected right shift assignment expired, constrained or owning target"]
+  -- if S.TODO = (SHIFT_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left 1) :: ptask_tail*
+  -- if $shiftassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, 1)
+  -- if $shiftassign_selected_warning_right(S, pintegeroperation) = (i_right)
+  -- if $(i_right >= 0) /\ ~$shiftassign_selected_warning_target(S, pintegeroperation)
+
+def $task_nodes(SHIFT_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left n_stage) = eps
+def $call_task_valid(S, SHIFT_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left n_stage) = $shiftassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, n_stage)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = SHIFT_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left 1
+  -- if $shiftassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, 1)
+  -- if perrorcall.TARGET =/= eps \/ $shiftassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, 0)
+  -- if perrorcall.SITE = pintegeroperation.SITE /\ perrorcall.LINE = pintegeroperation.LINE
+  -- if perrorcall.LEVEL = 8192
+  -- if $integer_float_notices([PRECISIONLOSS], n_bits) = [(8192, perrorcall.MESSAGE)]
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pintegeroperation.LINE

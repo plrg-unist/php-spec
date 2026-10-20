@@ -1,0 +1,118 @@
+{
+  "milestone": "OP70 selected-reference right shift: delayed count and captured sign",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "scope": "Direct-CV >>= with two initially selected live untyped nonowning scalar reference cells: finite fitting fractional LEFT and quiet PINT count. LEFT converts before Deprecated, but the RHS CV is dereferenced afterward. Negative current count raises ArithmeticError before any compound store; nonnegative current count uses captured LEFT and writes the surviving old target. Other operators/conversions/producers/owning lifecycles remain partial.",
+  "runtime_revision": "6d2b58e9812f166ffff256a614db09e9b82064c4",
+  "helper_revision": "dfebbc42ba61ff9895854a4e16d7d946cb60596b",
+  "private_modules": 407,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "da678254b4c111f0d6812da4d107fb60c0baa3fa2356b221d974802a18ecaa88",
+    "spec/semantics/55-compound-assignment.watsup": "7f1ae3659dd7ac033e3154ef81a463c26a7093c8d04940741aba52a7a95b1ff9",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "0cf720dbf24c9bcf4f7cd0534997a43e38f62272e85d6769ae39b3c1fbf45828"
+  },
+  "engine_basis": [
+    "Pinned shift_right_function uses convert_op1_op2_long: it converts LEFT before dereferencing the RHS wrapper, then checks the saved count. Negative count throws Bit shift by negative number before destroying or storing result==op1. Count>=64 stores -1 or0 from the captured LEFT sign. ZEND_ASSIGN_OP fixes the old target before the helper.",
+    "Separate SHIFT_ASSIGN_SELECTED_WARNING source/plan/snapshot/valid authenticate AssignOpShiftRight/SHIFTRIGHT/nonSWAPPED, old LEFT CELL and delayed RIGHT CV, compiled RHS25, fresh strict reference selection and fractional float-to-long history. Returned stage1 keeps source/LEFT history without current LEFT or initial RHS lifetime checks. Current RHS helper resolves a strict live untyped reference containing a quiet signed-64 PINT. Negative error precedes target lookup; numeric success requires the safe surviving old target and uses existing integer_binary/write_cell_checked. Explicit unavailable/invalid RHS, unsafe success target and owning-handler boundaries remain; marker roots are empty. Old CV/numeric/write/dispatch/unwind bodies are exact."
+  ],
+  "contract": [
+    "Author initial -12.5/2 refs: named Deprecated handler writes oldtarget88 and rebinds current names to77/-1, returning true. Fresh ArithmeticError at RHS25 has exact Bit shift by negative number, noPrevious; callback88 and outer100 remain without a compound store. OldRHS2 would instead give -3. EOF oldaliases6/4 and replacement8/9 prove topology. Native stderr empty.",
+    "Independent peer uses the same -12.5/2 refs, writes oldtarget99, rebinds current names to77/64 and returns false. Captured -12 shifted by current64 delivers strict int-1 through oldtargetalias and outer result. Old count2 would give -3; rereading positive oldtarget99 or currentLEFT77 would give0. OldRHS2/currentLEFT77 stay separate; EOF writes reach oldaliases6/4 versus replacements8/9. Exactly one default Deprecated25. Old owners2-to1 and replacement owners2 are checked.",
+    "Focused195+163 use the exact arithmetic/integer HELPERS prefix, a single-warning frontier family and accepted scalar diagnostic/list-fold idiom. Each traverses actual source entry, fresh and entered callback, returned historical LEFT/current count, raw exact no-store THROWN or old-cell store, driven fresh indexed Error/owner1/trace prefixes or unchanged store metadata, EOF and zero/one-step cuts once. Only author has an undriven source/type/handler/refusal matrix; those projections do not establish excluded executions."
+  ],
+  "required_follow_on": [
+    "Initial primitive references/fitting fractional LEFT/quiet PINT count, a safe surviving old target alias and named Deprecated callbacks bound this slice. SHIFTLEFT, additional RHS notices/conversions, copied/owning/typed/missing/expired operands, wider producers and lifecycles remain partial. All witness aliases survive; no retention or lifetime expansion is claimed.",
+    "The compound store adds no CELL, detachment, name redirect or operand-retention root; ordinary generated ArithmeticError has its separate instance owner. No supplied-handler-throw or generic-unwind/numeric-algorithm renewal is claimed. Prior evidence keeps its original cuts/failures0; OP12, COMP88 and Source47 low-initial-precision callbacks remain paused. No engine bug or intentional divergence is claimed."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-70/source-6d2b58e98-author-one/report.json",
+        "sha256": "58f9271906fecdb6e0d3fd14754813a60d2313bd430e16a71417b3acf848ce2f",
+        "revision": "6d2b58e9812f166ffff256a614db09e9b82064c4",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-70/review-model-6d2b58e98-review-one/report.json",
+        "sha256": "1ad02cb08996274c2a8fbed74b59e19a7cb6f8c96aba79ad10bc9caa01f542ee",
+        "revision": "6d2b58e9812f166ffff256a614db09e9b82064c4",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-70/state-dfebbc42b-two/report.json",
+        "sha256": "3fad442db97eebad2d5ad8879d1510650cd2d44f5cbe517550cb23d84dd75d06",
+        "revision": "dfebbc42ba61ff9895854a4e16d7d946cb60596b",
+        "modules": 407,
+        "cases": [
+          "shiftassign-selected-warning-negative-count",
+          "shiftassign-selected-warning-saturated-sign"
+        ],
+        "conditions": [
+          195,
+          163
+        ],
+        "total": 358
+      }
+    ],
+    "total_source_agreements": 2,
+    "total_focused_state_conditions": 358
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-70/baseline-35f359e17-negative-count/report.json",
+      "sha256": "f0652728cdae03c37be2c2fadb37e5dfa95db8deac3134e697938dbf54245f15",
+      "result": "Actual frontend accepted/checked program/Unsupported BEFORE H1, empty semantic stdout/stderr, reason error-handler ingress requires a producer continuation, model1/11.90s/agreement0/wrapperfalse; no override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-70/native-35f359e17-author-one/report.json",
+        "sha256": "f74d374bb479fdb247007f15c27cca599b2f262b940904d820d0655c1c16f892"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-70/native-35f359e17-review-one/report.json",
+        "sha256": "5d22a6c4817b11248023878c84fa717e93d0be762af9e2885a7f7767b008c453"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-70/state-prep-dfebbc42b-two/report.json",
+        "sha256": "e455c6d630e77517ceb736adcd1aecb33b967039d972491b82ae0d7157028554",
+        "result": "Retained own source/native bytes and checked frontend/adapter, both exact fixtures full407 struct PASS0; all workers/compiler processes0/reaped. Zero native/application or semantic execution credit."
+      }
+    ],
+    "standalone_syntax": "Two standalone undefined-pstate diagnostics, zero semantic credit.",
+    "full_compiler": "Each exact prepared fixture must pass ordered407 struct before SL; zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-70",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/genuine and affected source use separate CPU2 grants/cuts; focused CPU3. Native30/modelCLI60-process90, checked prep30/full407 struct30 per fixture/SL120 per group. Author stderr empty; peer one own original default Deprecated25. Retained own source/native bytes avoid application/native replay.",
+    "record": "Restore matching Git cuts/local tools in a fresh directory. Retained source paths/native bytes authenticate focused fixtures; external evidence is not an operational dependency. Copied tools add no rebuild or portability claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "commands": [
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/shiftassign_selected_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/shiftassign_selected_warning_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-70/state-prep-dfebbc42b-two/run-prepare.py",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-70/state-dfebbc42b-two/run-state.py"
+    ]
+  },
+  "composition": {
+    "parent": "7e64f484708867741736e0d13449f375ac4905d9",
+    "private_publication": "10b65918beba2afdb088fcf815ad1f1d56372612",
+    "modules": 407,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "ce0409e3c9e517e956198d0d8dd48638c3653f2eb97d01bd31306f3f3009d638",
+      "spec/semantics/55-compound-assignment.watsup": "7f1ae3659dd7ac033e3154ef81a463c26a7093c8d04940741aba52a7a95b1ff9",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "0cf720dbf24c9bcf4f7cd0534997a43e38f62272e85d6769ae39b3c1fbf45828"
+    },
+    "other_incoming_paths_preserved": 30,
+    "gate": "Independent actual-parent selector review: base259ce8ac1-to-parent7e64f484708867741736e0d13449f375ac4905d9/407 changes exactly four runtime paths30/172/413/414. INI/getter Closure reception and user/named magic-call selectors have no producer in static named h, global scalar references and native ArithmeticError getters. A38 borrowed primitive/array slot completion/retention requires float-key ARRAY_VALUE/ARRAY_KEY_FLOAT_RESULT or reference literal-key continuations, absent here; global string dimensions and ordinary native Error trace arrays do not enter those validators. No generic machine-field/default/general-root/ordered-manifest change. Preserve complete incoming30 magic task/target/root-specific additions plus sole SHIFT tag; private source2 at6d2b58e98 and focused358 atdfebbc42b retain407 cuts without joined execution or renewed credit. OP12, COMP88 and Source47 low-initial-precision pauses remain unchanged."
+  }
+}

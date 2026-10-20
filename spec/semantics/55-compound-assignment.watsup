@@ -109,6 +109,7 @@ dec $modassign_selected_warning_plan(pstate) : ptask?
 dec $modassign_right_warning_plan(pstate) : ptask?
 dec $modassign_both_warning_plan(pstate) : ptask?
 dec $shiftassign_warning_plan(pstate) : ptask?
+dec $shiftassign_selected_warning_plan(pstate) : ptask?
 dec $shiftassign_right_warning_plan(pstate) : ptask?
 dec $shiftassign_both_warning_plan(pstate) : ptask?
 dec $bitassign_warning_plan(pstate) : ptask?
@@ -134,6 +135,7 @@ rule PhpStep/compound-apply: S ~> S_updated[.HELD = S.HELD]
   -- if $modassign_right_warning_plan(S) = eps
   -- if $modassign_both_warning_plan(S) = eps
   -- if $shiftassign_warning_plan(S) = eps
+  -- if $shiftassign_selected_warning_plan(S) = eps
   -- if $shiftassign_right_warning_plan(S) = eps
   -- if $shiftassign_both_warning_plan(S) = eps
   -- if $bitassign_warning_plan(S) = eps

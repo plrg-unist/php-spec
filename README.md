@@ -1050,6 +1050,15 @@ LEFT `12`, RHS `5.0` stores `2` and detaches alias `99`; signed zero raises
 `DivisionByZeroError` before storage.
 Three exact originals and 364 focused SL premises pass in the
 [quiet float modulo ledger](coverage/semantics/modassign-quiet-float-review.json).
+
+Selected-reference `>>=` now keeps the captured LEFT and reads the rebound count
+after Deprecated. Cached `-12` with current count `64` stores integer `-1` through
+the old alias despite current LEFT `77`; current count `-1` instead raises
+`ArithmeticError` before storage, preserving callback `88` and outer `100`.
+Two originals and 358 focused premises pass in the
+[selected shift ledger](coverage/semantics/shiftassign-selected-warning-review.json).
+Other conversions, operators, producers and owning lifetimes remain partial.
+
 For initially plain variables, `<<=` and `>>=` now retain a fractional left
 conversion through deprecation handlers, then read the live quiet integer count.
 Success detaches a late target alias; supplied throw or a negative count preserves
