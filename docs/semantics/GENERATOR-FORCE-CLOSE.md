@@ -90,8 +90,9 @@ detached current with a node-free copied return, pending initialization returns
 before body entry but the physical frame remains parked at the native exception operation. Later
 explicit close skips that frame's finally even though initialization is cleared.
 Real CV/context owners still retire through the existing frame jobs; other owning
-suspended task/held temporaries are excluded. The API's transient copied current
+suspended task/held temporaries are excluded. A used API result's copied current
 keeps a cache alive through sole receiver close, then releases before caller catch.
+An unused result drops that copy before receiver cleanup.
 A cache destructor can replace the injected exception with its previous chain
 intact. No exception owner belongs to the parked Generator. The
 [pending-throw review](../../coverage/semantics/generator-pending-throw-review.json)
@@ -143,6 +144,14 @@ the queued ancestor finally blocks. A cache throw reaches the caller without
 chaining an older exception that is merely globally owned; the orphan input
 remains request-late. See the
 [buffered NEXT review](../../coverage/semantics/generator-parked-pending-buffered-next-review.json).
+A repeated pending THROW also preserves one owning LIVE input until physical close
+orphans it. For an unused API return, cache destruction runs in the child's real
+storage pin before queued ancestor finally blocks; the second supplied exception
+remains pending, while the earlier caught exception is only globally owned. A call
+in assignment context keeps a result temporary and delays that cache destructor
+until after receiver cleanup. Both keep the same input and Previous identity, as
+checked by the
+[repeated buffered THROW review](../../coverage/semantics/generator-repeated-pending-buffered-throw-review.json).
 At a bare yield in one by-value array `foreach`, parked close instead transfers
 the iteration container count into request retention before releasing CV/context
 owners. It removes that iterator without decrementing the array; visited-item

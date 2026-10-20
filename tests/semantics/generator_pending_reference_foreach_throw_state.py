@@ -123,7 +123,7 @@ CASES = {
             'S_one.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (GENERATOR_PENDING_THROW pgeneratorpendingthrow) :: ptask_tail*',
             'pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_middle)]',
             'pdestructionoperation.PENDING = (n_exception)',
-            'pgeneratorpendingthrow.VALUE = PINT 5',
+            'pgeneratorpendingthrow.VALUE = PNULL',
             'pgeneratorpendingthrow.SOURCE = pgeneratorop_throw',
             'pgeneratorpendingthrow.LEAF = n_child',
             '$generator_pending_throw_carried(S_one, pgeneratorpendingthrow, S_one.TODO)',

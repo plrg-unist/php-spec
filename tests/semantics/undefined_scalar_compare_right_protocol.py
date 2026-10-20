@@ -89,7 +89,7 @@ def checks(program, path, name):
             'S_missing = S_resume[.STORE = $set_cell(S_resume.STORE,n_left,UNDEFINED)]',
             '$error_read_valid(S_missing,perrorread)', '~$scalar_compare_read_other(S_missing,perrorread)',
             'PhpStep: S_missing ~> S_missing_refused',
-            'S_missing_refused = S_missing[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed left operand"]',
+            'S_missing_refused = S_missing[.TODO = (BINARY_RIGHT ' + op + ' (KNOWN PNULL) ' + str(line) + ') :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = perrorread.BASE]',
         ]
     else:
         values += [

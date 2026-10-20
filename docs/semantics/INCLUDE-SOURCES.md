@@ -703,9 +703,10 @@ baseline0 precede CPU1 checks. Eleven stable/reaped reports retain the original
 peer negative-state binder collision0, fixed only by a local name prefix; no
 accepted source/author/native or earlier-source replay. Expected Deprecated9/20
 accompany quiet accepted workers. Only33 additive172 lines change; existing
-trace/root/discard/GC/value-error bodies stay exact. Owned/packed, wider named forms,
-materialized tables, aliases/deferred/unset/owning properties and other object
-kinds remain partial; no Stringable/COMP88 callback is executed or enabled.
+trace/root/discard/GC/value-error bodies stay exact. Owned forms beyond the bounded
+follow-up below, packed calls, materialized tables, aliases/deferred/unset/owning
+properties and other object kinds remain partial; no Stringable/COMP88 callback
+is executed or enabled.
 
 The [named NULL-option array increment](../../coverage/semantics/ini-set-named-null-array-value-review.json)
 adds a disjoint ownerless named/mixed call arm for retained allocated flat DIRECT
@@ -730,8 +731,9 @@ redundant setup preserves the core counterexample without changing caps/runtime.
 Fifteen actor reports retain twelve PASS/three timeouts, plus two diagnostic0
 records. Only Deprecated24 is expected; accepted workers are quiet. The22-line
 addition preserves positional69/stdClass70/finish/trace/root/discard/GC bodies;
-no old control repair or accepted-source replay. Owned/packed arrays, references,
-nesting/owning/NaN/legacy-string leaves and wider configuration remain partial.
+no old control repair or accepted-source replay. Owned forms beyond the bounded
+follow-up below, packed arrays, references, nesting/owning/NaN/legacy-string leaves
+and wider configuration remain partial.
 
 The [named NULL-option stdClass increment](../../coverage/semantics/ini-set-named-null-stdclass-value-review.json)
 adds a disjoint ownerless named/mixed arm using the unchanged live, allocated,
@@ -755,5 +757,64 @@ state checks. Thirteen stable/reaped reports retain two pre-main fixture binding
 failures0; only binding order changes, without accepted source/native/author replay.
 Only Deprecated24 is expected and accepted workers are quiet. The21-line addition
 preserves positional70/named-array71/stdClass validator/finish/trace/root/discard/GC
-bodies. Owned/packed calls, materialized tables, declared/deferred/unset/ALIAS or
-owning/NaN/legacy-string properties and other object kinds remain partial.
+bodies. Packed/PIPE calls, sole-owner lifetimes, materialized tables,
+declared/deferred/unset/ALIAS or owning/NaN/legacy-string properties and other
+object kinds remain partial.
+
+The [named retained-owner array increment](../../coverage/semantics/ini-set-owned-named-null-array-value-review.json)
+adds one disjoint owner-present named/mixed NULL2 arm for live flat DIRECT quiet
+arrays. Invocation validity authenticates the held intrinsic Closure and call
+mode; existing written-name mapping and pooled literal contents authenticate the
+normalized option/value slots. Before the later option expression runs, the
+partial named task owns both the original Closure and earlier array. Live callee
+replacement and alias COW preserve those captures. Returning handlers reach the
+existing value TypeError with empty API option; explicit `__invoke` keeps rawNULL
+and the same array in its numeric wrapper arguments. Ordinary strict calls reject
+rawNULL before handlers, whereas explicit invocation remains weak. A supplied
+throw cancels rejection and preserves identity/result99 and callback writes.
+
+Four originals and all1,319 premises (348+286+287 author,398 independent) pass at
+`f3a7657f9`/`4fc76dcea`/406. Native return observes E/W/N/2617/2617 for converted
+API versus raw wrapper values. Peer native avoids trace traversal; actual state
+proves handler/API/wrapper three-frame rawNULL/array edges, owner plus array task
+roots, COW/current aliases, exact restored discard with existing idempotent GC
+buffering, source-pool forgery refusal, budgets and retained-owner recovery.
+The Closure is held by the task and `keep`, not an invented trace-owner edge.
+Initial `d527a9877` CPU3 native4/baseline0 precedes CPU1 models/state. Nine
+stable/reaped reports pass without failure or retry; only Deprecated18 is expected
+and workers are quiet. Only12 additive172 lines change; existing source helpers,
+finish/trace/root/discard/GC and historical tests stay exact, without old replay.
+Purely positional/packed owned array values, references/nesting/owning/NaN or
+legacy-string leaves, PIPE and sole-owner lifetimes remain partial. Paused
+Stringable/COMP88 and other stopped boundaries are untouched.
+
+The [retained-owner stdClass increment](../../coverage/semantics/ini-set-owned-null-stdclass-value-review.json)
+adds one owner-present ordinary two-argument NULL2 arm, covering positional,
+named and mixed calls through the existing written-destination helper. Invocation
+validity authenticates the live intrinsic owner and call mode; value source facts
+must be unknown, while option facts permit NULL. The unchanged validator requires
+a live table-free STDINSTANCE with undeclared DIRECT quiet-primitive properties.
+The held Closure and value are distinct object roots. A named partial task owns
+both before later option effects; ordinary positional strict reception retains
+its owner before the value helper completes. Shared property writes and live
+callee replacement preserve the captured value pointer without array COW.
+
+Four originals and all1,328 premises (300+289+289 author,450 independent) pass at
+`816cb419e`/`8e34dfdf3`/407. Returning handling reaches TypeError2 with empty API
+option; the explicit numeric wrapper keeps rawNULL and the same updated value.
+Native E/W/N/I/I/true74 observations establish that identity/shared-mark behavior.
+Ordinary strict calls complete value effects before TypeError1/handler0, while
+the same owner's explicit mixed call remains weak. Peer native has no trace
+traversal; actual state proves the handler/API/wrapper three-frame rawNULL/value
+edges, distinct task roots, shared property records, exact restored discard with
+existing idempotent buffers, source/property/table/carrier refusals, budgets and
+original-owner recovery10→12. The trace arguments own the value, not an invented
+Closure edge. A supplied Exception preserves identity/result99 and cancels rejection.
+
+Initial `c91c9cca8` native4/baseline0 and all later checks use CPU1. Nine
+stable/reaped reports pass first attempt; only Deprecated11/19 is expected and
+workers are quiet. Only12 additive172 lines change; existing validation/source/
+finish/trace/root/discard/GC bodies and old tests stay exact, without historical
+replay. Packed/PIPE calls, materialized tables, declared/deferred/unset/ALIAS or
+owning/NaN/legacy-string properties, other value kinds and sole-owner lifetimes
+remain partial. Paused Stringable/COMP88 and other stopped boundaries are untouched.

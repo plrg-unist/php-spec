@@ -108,17 +108,22 @@ checks this distinction, two sources, deletion, supplied throw and inverse clean
 The [typed string-leaf ledger](../../coverage/semantics/array-literal-float-typed-string-alias-leaf-review.json)
 adds shared byte writes, independent snapshots and weak scalar coercion while
 preserving rejection and property-unset singleton copying. Global direct string
-CELL admission stays unchanged. Typed array/object leaves and wider type-source
+CELL admission stays unchanged. Object leaves and wider type-source
 lifetimes remain Unsupported.
-Untyped embedded ALIAS leaves may also own one mutable nonpool child array of
+Embedded ALIAS leaves may also own one mutable nonpool child array of
 DIRECT null/bool/int/float or validated byte strings. Each leaf is debt-free and
-its child table has no HARRAY debt or outgoing owner edge; both must survive
-logical pruning. This finite shape preserves the positive-target lifetime proof
+its child table has no HARRAY debt or outgoing owner edge. Validated ordinary
+property sources may constrain that child array. For debt-bearing payloads,
+the child and every source object must survive the same logical prune. This
+finite shape preserves the positive-target lifetime proof
 without changing count/prune algorithms. Child-table COW keeps shared leaf
 references, while singleton leaves unwrap before copying their array payload.
 Independent child snapshots and sibling writes distinguish all three ownership
 levels in the [array-alias-leaf ledger](../../coverage/semantics/array-literal-float-array-alias-leaf-review.json).
-Typed array leaves, deeper nesting and indebted descendants remain Unsupported.
+The [typed array-leaf ledger](../../coverage/semantics/array-literal-float-typed-array-alias-leaf-review.json)
+adds scalar rejection, shared nested writes and singleton child COW after explicit
+property unset. Global outer typed-array CELL retargets, deeper nesting and
+indebted descendants remain Unsupported.
 
 `tests/semantics/reference_wrappers.py` checks original source regressions,
 copying and rebinding, budget resumption, ownership graphs, cycle collection and

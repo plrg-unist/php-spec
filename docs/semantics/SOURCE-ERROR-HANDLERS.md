@@ -189,8 +189,13 @@ two captured NULLs. The
 admits identical CV names only for the greater operators' right-frozen shape and
 inverse NULL-only certificate; ordinary forward right-frozen shapes stay distinct.
 First-callback owning comparison values and wider producers remain partial.
-The six Boolean comparison operators still refuse removal of an already checked
-defined counterpart during the later Warning.
+Forward `==`/`!=`/`<`/`<=` also quietly fold a checked left CV removed during a
+missing-right Warning to NULL against the frozen right NULL. Their distinct scalar
+right-frozen record preserves surviving alias owners and yields true/false/false/true
+without another report; see the
+[forward checked-left review](../../coverage/semantics/undefined-scalar-compare-checked-unset-review.json).
+Reversed `>`/`>=` still refuse removal of an already checked defined source-right
+counterpart during the later Warning.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding
@@ -328,19 +333,26 @@ throw. The [typed string-leaf ledger](../../coverage/semantics/array-literal-flo
 checks shared byte writes, integer-to-string coercion, rejected array writes and
 independent snapshots, with singleton byte COW after explicit property unset.
 Global direct string CV/CELL retarget admission remains unchanged.
-Typed arrays/objects, static/hooked/queued or retired sources,
+Object-valued leaves, static/hooked/queued or retired sources,
 coercion/backing records and unsafe debt retirement remain Unsupported.
-Untyped embedded array-valued ALIAS leaves now admit one mutable nonpool child
+Embedded array-valued ALIAS leaves admit one mutable nonpool child
 table of DIRECT null/bool/int/float or validated byte strings. The child has no
 outgoing owner edge or HARRAY debt, and the leaf has no CELL debt or
-type/coercion/backing records. Logical-pruned liveness includes the child, not
-only the leaf CELL. This bounded shape needs no recursive eligibility or new
-count/prune algorithm: surviving outer tables keep the leaf and its child edge.
+coercion/backing records. Validated ordinary instance-property type sources may
+constrain its array value. For debt-bearing payloads, logical-pruned liveness
+includes the child and every source object, not only the leaf CELL. This bounded
+shape needs no recursive eligibility or new count/prune algorithm: surviving
+outer tables keep the leaf and its child edge.
 Shared leaf writes propagate; singleton leaf copies unwrap before child-array
 COW, keeping snapshots independent. The
 [array-alias-leaf ledger](../../coverage/semantics/array-literal-float-array-alias-leaf-review.json)
 separates table sharing with sibling slots and covers deletion, supplied throw,
-inverse balancing and cleanup. Deeper, typed or indebted descendants stay out.
+inverse balancing and cleanup. The
+[typed array-leaf ledger](../../coverage/semantics/array-literal-float-typed-array-alias-leaf-review.json)
+adds public array-property witnesses with scalar rejection and nested child COW,
+including source removal by explicit property unset. Other accepted property
+descriptors compose existing type-source validation. Global outer typed-array
+CELL admission, deeper owning children and indebted descendants stay out.
 
 Missing-key module409 retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,
