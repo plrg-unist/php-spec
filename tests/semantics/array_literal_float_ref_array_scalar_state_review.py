@@ -99,7 +99,7 @@ def conditions(name, program, path, stdout):
         f'$array_float_ref_key_ready(S_two_resume, n_b, {old2}, poperand_two)',
         f'$array_float_ref_key_source(S_two_resume[.ENV = eps], n_b, {old2}, poperand_two, eps, z_two, n_bits_two, {key2})',
         f'~$array_float_ref_key_ready(S_two_resume[.STORE[{old2}] = DEFINED (PARRAY n_b)], n_b, {old2}, poperand_two)',
-        'S_owning = S_two_resume[.STORE[n_current_two] = DEFINED (PARRAY n_original)]',
+        'S_owning = S_two_resume[.STORE[n_current_two] = DEFINED (PSTRING eps)]',
         f'$array_float_ref_key_value(S_owning, {old2}, poperand_two) = eps',
         f'~$array_float_ref_key_ready(S_owning, n_b, {old2}, poperand_two)',
         '$error_read_discard(S_owning, ' + marker2 + ').COMPLETION = UNSUPPORTED "array literal float-key reference during throw"',
