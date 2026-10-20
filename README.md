@@ -3297,6 +3297,17 @@ First owns 200; Second and Grand start at 300, then Grand's slot becomes 400. Th
 getter remains 13; later `private(set)` narrowing fails against the immediate parent. Two
 originals and four focused states are in the
 [repeated protected-setter review](coverage/semantics/repeated-protected-plain-inherited-getter-review.json).
+
+Selected virtual Child get hooks now call the lexical parent's real public
+virtual hook with naked `parent::$value::get()`. The call borrows This from the
+outer hook, keeps Grandchild called scope and Parent private access, and preserves
+scalar/owning returns or the same supplied exception through receiver cleanup.
+Real Throwable traces retain the parent hook's function/class/type. Outside-hook
+and wrong-property calls fail compilation before output. Six unique source
+agreements and 377 focused checks retain separate tested cuts in the
+[parent get-hook review](coverage/semantics/parent-get-hook-review.json).
+Other parent-hook shapes remain partial.
+
 A direct trait’s public body-backed `int` getter also imports into a parentless
 using class. Its code and `__METHOD__` spelling remain the trait’s; lexical/private
 scope follows the using class and called scope follows the receiver. Slot 100→300

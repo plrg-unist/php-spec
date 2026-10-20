@@ -801,33 +801,29 @@ joined actor, accepted replay or renewed execution credit.
 The earlier nonowning-copy arithmetic route retains source10/state767 in its
 [review ledger](coverage/semantics/copied-arithmetic-warning-review.json).
 
-Compatible-current-This `self::missing(...)` now selects inherited instance
-`__call` before `__callStatic` within an ordinary instance method. Stored
-caller/site history preserves lexical Parent/called Child and the original
-receiver through argument callbacks that clear its global CV. The received
-scalar 7 remains separate from the mutated global 99. Outer `run()` retains This
-through its following statement; argument-array/payload cleanup preserves cached
-return 7 or sends the same supplied destructor Exception to catch/destination 42.
+Real zero-argument `parent::$value::get()` now selects the lexical parent's
+public virtual hook while borrowing This from the active Child hook. A Grandchild
+keeps called scope, Parent's private 41 wins over Child's 99, and clearing the
+receiver CV leaves only the outer hook's owner. Scalar/owning returns survive
+receiver cleanup; a supplied Parent throw skips Child continuation and preserves
+catch/destination 42. Real Throwable traces retain `$value::get`, Parent and `->`.
+Outside-hook and wrong-property calls fail compilation before application output.
 
-Four source agreements pass at `bdc12b0b8`/406 and 442 focused premises
-(430 reached + 12 derived, three applications) at `afe124892`/406. Native four and
-the genuine baseline retain `cdbf6fc9b`: three scoped Unsupported observations and
-one preexisting external-static agreement. The initial focused false result (157 premises) and two
-zero-credit diagnostics remain; only fixture stages changed to wait for real
-return fronts after assignment release bookkeeping. All actors are reaped and
-CPUs released; no accepted native/source/baseline or historical replay.
-[Scoped magic-call review](coverage/semantics/magic-scoped-call-review.json).
-Only modules 142/414 change; existing signatures, argument modes, packed ownership
-and generic cleanup remain. Self-only ordinary callers and parentless magic-owner
-source proofs bound this slice. Child overrides, other scoped forms, APIs,
-reference/named/unpacked sends and wider lifetimes remain partial.
+Five exact source agreements retain `6ae47c032`/407; the fresh trace agreement
+retains `fae53b024`/407. Unique focused 377 = 366 reached + 11 derived: selection 139
+at `fae53b024`, owning 128/throwing 110 at `20023579d`. The initial 374 checks remain
+a separate accepted cut, not trace-field coverage. Genuine baselines preserve
+three PHP Error mismatches, an incorrectly executed outside-hook file and an
+inherited-hook Unsupported, plus the later trace-field mismatch; all earn zero.
+The native fatal-template failure and two pre-execution elaboration failures stay
+zero. Native short-child affinity is qualified; accepted workers are stable/reaped.
+[Parent get-hook review](coverage/semantics/parent-get-hook-review.json).
 
-Composed over `df8f9e804`/406 with tested 142/414 and all source/state files
-unchanged. Incoming reference-return/finally, INI/DEFINE, missing-CV comparison,
-arithmetic-warning, Generator and lossy-float literal-key selectors are absent.
-Argument packing directly constructs its table; existing debt fields stay empty.
-All unrelated incoming runtime/schema/root/manifest bytes remain exact. Source4
-and state442 retain private cuts without joined execution or accepted replay.
+Module 417 and narrow 30/141/142 gates add the borrowed target and source/caller
+certificate; generic call, body, return and cleanup rules remain. Only naked
+literal get calls in ordinary public virtual statement hooks are admitted.
+Wrapped syntax stays ordinary static-property dispatch; backing/plain-parent
+trampolines, set/ref/FCC/arguments, traits and wider callers remain partial.
 
 Retained propertyless Stringable `define` names now receive captured NULL flags
 with primitive candidates in admitted user-global/class-name domains. One module400
