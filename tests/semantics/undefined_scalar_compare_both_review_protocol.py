@@ -54,7 +54,7 @@ def checks(program, path, name):
         '$error_read_shape(perrorread_reverse.ORIGINAL,perrorread_reverse.INPUT,perrorread_reverse.BASE) = (perrorread_reverse)',
         '~$scalar_compare_missing_pair(S,perrorread_reverse)',
         '~$error_read_valid(S,perrorread_reverse)',
-        '~$scalar_compare_missing_pair(S,perrorread[.INPUT = VARIABLE ($ptascii("missing")) z_right][.RESULT = VARIABLE ($ptascii("missing")) z_right])',
+        '~$error_read_valid(S,perrorread[.INPUT = VARIABLE ($ptascii("missing")) z_right][.RESULT = VARIABLE ($ptascii("missing")) z_right])',
         'S_again = $unset_name($unset_name(S_resume,$ptascii("missing")),$ptascii("right"))',
         '$us_guard(S_again)', '$error_read_valid(S_again,perrorread)',
         '$scalar_compare_missing_pair(S_again,perrorread)',

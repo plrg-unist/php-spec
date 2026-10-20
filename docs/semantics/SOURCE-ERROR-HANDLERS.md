@@ -154,6 +154,14 @@ initially missing CV twice: first NULL stays frozen while the second read sees
 the shared name initialized by the handler. The
 [same-variable review](../../coverage/semantics/undefined-spaceship-same-review.json)
 records its one-premise entry extension; source/resume/discard stay unchanged.
+Forward `==`/`!=`/`<`/`<=` also admit one missing ordinary CV twice, reusing the
+first-NULL/current-read record. Both compiled CV occurrences still authenticate
+the source. A scalar or reference initialized by the first handler can make
+equality nonreflexive; the
+[Boolean same-variable review](../../coverage/semantics/undefined-scalar-compare-same-review.json)
+records false/default and supplied-throw checks. The distinct-name read-again
+guard and known-NULL second-read certificate stay unchanged, so returning with
+the shared name still missing remains explicit Unsupported after its first report.
 A `<=>` or distinct `==`/`!=`/`<`/`<=`/`>`/`>=` now restores when
 the later physical CV remains missing or was removed
 by the first handler. Existing ingress stages its second Warning and known-NULL
@@ -168,7 +176,8 @@ distinct direct CVs and the RHS read line. The
 adds an exact right-frozen restore and NULL-only right INPUT certificate,
 authenticating both compiled CVs before the source-left second Warning. Its
 default reports stay right then left; late reference creation cannot change the
-two captured NULLs. Owning comparison values, ordinary same-CV forms, already
+two captured NULLs. Owning comparison values, ordinary same-CV second-Warning
+chains, reversed same-CV entry, already
 checked defined counterparts removed during the later Warning and wider producers remain partial.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
@@ -292,8 +301,18 @@ records normal, deletion and supplied-throw paths with balanced inverse cleanup.
 The [string-alias ledger](../../coverage/semantics/array-literal-float-string-alias-leaf-review.json)
 checks string byte writes across shared and singleton leaf copies, independent
 snapshots, deletion and supplied throws. Only the embedded leaf-cell predicate
-broadens; direct string CV/CELL retargets, array/object-valued, typed or indebted
+broadens; direct string CV/CELL retargets, array/object-valued or indebted
 leaves and recursive graphs remain Unsupported.
+Embedded null/bool/int/float ALIAS leaves also admit validated ordinary
+instance-property type sources. Both ordinary table-CV and wrapper-payload
+continuations use this bound. For debt-bearing payloads, every source object must
+survive logical pruning with its actual property alias; metadata adds no owner.
+Shared leaf copies keep typed rejection/coercion. Explicit property unset removes
+its source while the object remains rooted, allowing later singleton copies to
+unwrap. The [typed-leaf ledger](../../coverage/semantics/array-literal-float-typed-alias-leaf-review.json)
+records int-property coercion/rejection, multiple sources, deletion and supplied
+throw. Typed strings/arrays/objects, static/hooked/queued or retired sources,
+coercion/backing records and unsafe debt retirement remain Unsupported.
 
 Missing-key module409 retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,

@@ -20,8 +20,6 @@ def checks(program, path, name):
         condition = condition.replace('$scalar_compare_read_other(', '$spaceship_read_other(')
         condition = condition.replace('scalar comparison warning changed right operand',
                                       'spaceship warning changed opposing scalar')
-        if condition == '~$scalar_compare_missing_pair(S,perrorread[.INPUT = VARIABLE ($ptascii("missing")) z_right][.RESULT = VARIABLE ($ptascii("missing")) z_right])':
-            condition = condition.replace('$scalar_compare_missing_pair(', '$error_read_valid(')
         if target:
             condition = condition.replace(') 10', ') 9').replace(' = 10', ' = 9')
         if condition.startswith('perrorread_bad = '):

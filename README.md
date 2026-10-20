@@ -20,9 +20,10 @@ remains later research.
 variable's null result through handlers while following current scalar CV bindings.
 This covers bounded spaceship operands and distinct direct-CV
 `==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
-Both-missing pairs, including the same missing variable twice at `<=>`,
-can resume if the first handler defines the later scalar; greater operators
-warn right first. `<=>` and distinct `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also stage
+Both-missing pairs can resume if the first handler defines the later scalar,
+including the same missing name at `<=>` or `==`/`!=`/`<`/`<=`; `$x == $x` can
+then be false. Greater operators warn right first. `<=>` and distinct
+`==`/`!=`/`<`/`<=`/`>`/`>=` pairs also stage
 a second Warning if the later physical CV stays missing, freezing both NULLs
 despite writes from the second handler.
 Wider warning paths remain partial.
@@ -48,8 +49,12 @@ owners; inverse retargeting cancels them before cleanup. Initial scalar and
 array plans remain distinct, while same-table transfer and restored COW keep
 ordinary values distinct from PHP reference wrappers.
 These flat tables also admit untyped reference leaves holding null/bool/int/float
-or validated byte strings. Child-table copies preserve shared leaf aliases and
-unwrap singleton leaves; string byte writes keep earlier snapshots independent
+or validated byte strings, and null/bool/int/float leaves with validated ordinary
+instance-property type sources. Debt-bearing payloads require every source object
+to survive logical pruning. Shared copies keep typed rejection/coercion; explicit property
+unset removes its constraint before singleton copying. Child-table copies preserve
+shared leaf aliases and unwrap singleton leaves; string byte writes keep earlier
+snapshots independent
 of both leaf references and outer table/wrapper count corrections.
 Direct string CV/cell payloads, unsafe deficit retirement and wider domains remain
 Unsupported. Duplicate replacement and later items stay ordered.
@@ -750,6 +755,14 @@ cover strict `2.4`, Error priority, aliases and default Warning bytes in the
 [DIV repair ledger](coverage/semantics/div-repair-review.json).
 Owning/constrained/expired cells and wider operands remain partial.
 
+Selected-reference `/=` now captures both numbers before their respective
+Warnings. Cached `12.5 / 5` writes strict float `2.5` through the old target alias
+despite current-name rebinding. A second supplied throw cancels storage; a captured
+zero still raises DivisionByZeroError after RHS repair and retirement. Three
+originals and 554 focused premises check these paths in the
+[compound DIV ledger](coverage/semantics/divassign-warning-review.json).
+Other operands, unsafe targets and wider lifetimes remain partial.
+
 Unary `+` and `-` now capture leading-numeric strings from defined non-reference
 CVs before named warning handlers. Three exact originals and 323 genuine state
 premises check callback writes, supplied throws with unchanged destinations,
@@ -1249,6 +1262,10 @@ receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit
 getter has its own copy. See the
 [parked NEXT review](coverage/semantics/generator-parked-pending-owning-next-review.json).
+With one owning buffered simple-CV input at a parked child, pending `next()`
+likewise returns NULL without copying current or changing that input. Closing
+orphans its count; row COW and shared-cell writes preserve its separate lifetime.
+See the [buffered NEXT review](coverage/semantics/generator-parked-pending-buffered-next-review.json).
 Nonpending body entry, wider parked API leaves and waiting-result GC remain open.
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller
@@ -1729,10 +1746,13 @@ catch when only the private copied array still owns it.
 [Runtime object define review](coverage/semantics/define-runtime-object-review.json).
 
 Bare runtime Closures also publish under bounded live callable authority:
-unscoped lexical Closures retain reference captures and static cells, and method
-Closures retain their receiver. Canonical array/query copies share these objects;
+lexical Closures retain reference captures and static cells, and method
+Closures retain their receiver. Class-born REAL Closures preserve validated
+lexical/called scope, private property identity and an optional receiver.
+Canonical array/query copies share these objects;
 an unpinned method receiver retires only after the last Closure owner is released.
 [Runtime Closure define review](coverage/semantics/define-runtime-closure-review.json).
+[Scoped REAL define review](coverage/semantics/define-scoped-runtime-closure-review.json).
 
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
@@ -3329,6 +3349,17 @@ First owns 200; Second and Grand start at 300, then Grand's slot becomes 400. Th
 getter remains 13; later `private(set)` narrowing fails against the immediate parent. Two
 originals and four focused states are in the
 [repeated protected-setter review](coverage/semantics/repeated-protected-plain-inherited-getter-review.json).
+
+Selected virtual Child get hooks now call the lexical parent's real public
+virtual hook with naked `parent::$value::get()`. The call borrows This from the
+outer hook, keeps Grandchild called scope and Parent private access, and preserves
+scalar/owning returns or the same supplied exception through receiver cleanup.
+Real Throwable traces retain the parent hook's function/class/type. Outside-hook
+and wrong-property calls fail compilation before output. Six unique source
+agreements and 377 focused checks retain separate tested cuts in the
+[parent get-hook review](coverage/semantics/parent-get-hook-review.json).
+Other parent-hook shapes remain partial.
+
 A direct trait’s public body-backed `int` getter also imports into a parentless
 using class. Its code and `__METHOD__` spelling remain the trait’s; lexical/private
 scope follows the using class and called scope follows the receiver. Slot 100→300

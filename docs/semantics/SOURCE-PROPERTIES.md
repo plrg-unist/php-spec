@@ -423,6 +423,20 @@ Later private(set) narrowing is rejected against immediate First at class17,
 without borrowing the distant virtual-parent exception. Existing permission,
 default/layout/store/owner rules are unchanged;
 [repeated protected-setter review](../../coverage/semantics/repeated-protected-plain-inherited-getter-review.json).
+
+Naked literal zero-argument `parent::$value::get()` inside an ordinary public
+virtual Child statement getter selects the physical public virtual get in its
+lexical immediate parent. The new target borrows This; the outer hook retains it
+through receiver-CV nulling, and returned values survive receiver release. Grand
+called scope differs from Parent lexical/private scope. Real Throwable traces use
+the captured parent property/class, including after receiver retirement.
+Outside-hook/wrong-property diagnostics precede application output; matching
+file/token starts distinguish naked from parenthesized class operands. Six unique
+sources and 377 focused checks keep separate cuts in the
+[parent get-hook review](../../coverage/semantics/parent-get-hook-review.json).
+Backing/plain-parent trampolines, set/ref/FCC/arguments, traits and wider callers
+remain partial; existing declarations, return typing and generic cleanup are reused.
+
 Other inherited getter roots/shapes and wider
 type-presence combinations remain required.
 Backed-parent inheritance retains invariant types; broader type equivalence and

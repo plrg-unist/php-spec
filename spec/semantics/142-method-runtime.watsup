@@ -993,6 +993,7 @@ rule PhpStep/scoped-call-named: S ~> S[.TODO = (SCOPED_CLASS phpType19 phpType20
 rule PhpStep/scoped-call-dynamic: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_class), SCOPED_CLASS expression_class phpType20 phpType7* $runtime_line(S, eps, NExprStaticCall expression_class phpType20 (SEQUENCE phpType7*) metadata)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprStaticCall expression_class phpType20 (SEQUENCE phpType7*) metadata)) :: ptask_tail*
   -- if ~$ppscoped_named(expression_class)
+  -- if ~$parent_hook_syntax(NExprStaticCall expression_class phpType20 (SEQUENCE phpType7*) metadata)
   -- if S.ORIGIN = (porigin)
   -- if ~$constant_callable_active(S, porigin)
 rule PhpStep/scoped-class: S ~> $scoped_name_prepare(S_class, phpType19, poperand_selector, phpType20, phpType7*, z)

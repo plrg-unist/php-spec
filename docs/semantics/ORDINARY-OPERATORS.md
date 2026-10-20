@@ -219,6 +219,21 @@ and 468 focused premises check these routes in the
 Selected cells must remain live, untyped and nonowning; other producers,
 owning/constrained payloads, failed LEFT conversion and wider lifetimes remain partial.
 
+Selected-reference `/=` now stages LEFT conversion and the delayed old RHS
+through named Warning handlers. Both numeric holders survive callbacks. Cached
+`12.5`/`5` yields strict float `2.5` in the old target alias even after both current
+names rebind to 77/7. A second supplied Exception20 cancels compound/outer stores
+and preserves callback88/7. A captured zero instead raises fresh
+DivisionByZeroError25 despite RHS repair7 and last-alias retirement; the old target
+stays 88 and outer100. Successful storage updates the existing selected cell,
+RESULT and LOCATION without detachment or name redirect. Three originals and
+554 focused premises retain real fresh/entered phases, raw/driven effects,
+owners and budgets in the [compound DIV ledger](../../coverage/semantics/divassign-warning-review.json).
+Entry requires leading LEFT/quiet RHS in live untyped scalar reference cells; a
+surviving alias keeps the old target live. Fresh inputs and successful targets
+have separate guards, while returned holders stay historical after RHS expiry.
+Failed conversions, other producers/targets and wider lifetimes remain partial.
+
 Unary `+`/`-` now suspend leading-numeric warnings from defined non-reference
 CVs through named handlers. Zend's `zend_compile_unary_pm` lowers to multiplication
 by fixed `+1`/`-1`; the operand instruction line governs the warning. The converted
