@@ -42,7 +42,7 @@ nonempty gives -1 with NULL left and +1 with NULL right.
 This includes both-missing and same-name entry: `$x <=> $x` can return -1 after
 the handler creates `[false]`. Current reference/COW bindings and next-index
 history survive; captured arrays and nested/reference/object entries
-remain partial. Entry checks stay unchanged; the
+remain partial. The
 [spaceship](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
 and [Boolean array resume reviews](../../coverage/semantics/undefined-scalar-compare-array-resume-review.json)
 record source, ownership and budget checks. The Boolean extension preserves

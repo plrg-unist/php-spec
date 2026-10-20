@@ -144,7 +144,7 @@ their ordinary rules. Captured-array ingress and
 nested/reference/object entries remain partial; the
 [spaceship](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
 and [Boolean array resume reviews](../../coverage/semantics/undefined-scalar-compare-array-resume-review.json)
-record unchanged ingress, certificates, roots and discard. The Boolean extension
+record resume bounds, certificates, roots and discard. The Boolean extension
 keeps physical order, current alias/COW ownership and known-NULL second records.
 The [initial-array extension](../../coverage/semantics/undefined-comparison-initial-array-review.json)
 widens only four entry premises: saved reads add no initial-table owner, and
