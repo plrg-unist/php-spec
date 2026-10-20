@@ -46,9 +46,10 @@ handler. Separate table counts preserve old array owners and omitted new-array
 owners; inverse retargeting cancels them before cleanup. Initial scalar and
 array plans remain distinct, while same-table transfer and restored COW keep
 ordinary values distinct from PHP reference wrappers.
-These flat tables also admit untyped null/bool/int/float reference leaves.
-Child-table copies preserve shared leaves and unwrap singleton leaves,
-independently of outer table and wrapper count corrections.
+These flat tables also admit untyped reference leaves holding null/bool/int/float
+or validated byte strings. Child-table copies preserve shared leaf aliases and
+unwrap singleton leaves; string byte writes keep earlier snapshots independent
+of both leaf references and outer table/wrapper count corrections.
 Direct string CV/cell payloads, unsafe deficit retirement and wider domains remain
 Unsupported. Duplicate replacement and later items stay ordered.
 
