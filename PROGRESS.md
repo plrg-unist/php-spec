@@ -2481,43 +2481,45 @@ GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no root
 and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
-Initially typed reference-wrapped value CVs now resume NULL literal-key
-callbacks through existing ordinary property-source validation. The captured
-CELL, its current bounded payload and current source objects must survive the
-same logical pruning, even debt-free. Reset additionally checks that every
-current constraint accepts the saved snapshot; allocation remains sufficient
-for that owning argument after throw cleanup pops its marker. No captured CELL
-root, generic typed-write, task, count/prune or driver rule changes.
+Ordinary named calls without arguments returning ARRAY by value now resume
+NULL literal-key deprecation handlers. A distinct owning-VAR continuation keeps
+the acquisition and NULL backup as two HARRAY roots, with no source CELL owner
+or CV reset. Producer-global writes/unsets remain visible while the captured
+returned table stays frozen. Normal completion drops one pending owner and
+inserts a DIRECT empty-key entry; supplied throw drops both without insertion,
+then the existing driver retires the sole returned table and builder before
+catch. No literal bias, generic call-return, count/prune or driver change.
 
-Four originals retain `42559400a`/408; the genuine unchanged model refuses
-before the first handler with natural comparison0. Fresh public `int|array`
-slots cover scalar2→ARRAY55/88→reset2 and ARRAY2/7→weak44→resetARRAY, rejected
-bad strings, q rebound99, DIRECT snapshots and separate child/table COW. A
-reached public `int` source accepts current44 yet makes the saved ARRAY
-incompatible, so this continuation's readiness refuses there; explicit detach
-restores readiness before native return. Independent
-single-source detach/deletion and dual-source supplied throw check restoration
-before catch with the same Throwable, dest99 and cancelled later7.
+Four originals retain `e7eac6ab0`/409. The genuine unchanged model stops after
+maker `M:1;` before the handler with natural comparison0. Global ARRAY and global
+REF payloads returned by value remain captured2/7 despite callback44/88 or source
+unset/recreated33/8, with current99, outside66, copy55 and fresh-maker2 controls.
+Independent sole-owner runtime2/8 returns cover copy66/99, last-entry retirement,
+duplicate-empty-key supplied throw, same Throwable/dest99/cancelled later7 and
+maker execution once. The NULL key changes to9 while insertion stays under `""`.
 
-Strict408/source4 pass at `07190a415`; focused1041 =1033 Boolean +8 raw
-(517 author +524 independent) pass at `a7469e1eb`. All post-change first
+Strict409/source4 pass at `f63ffede0`; focused827 =819 Boolean +8 raw
+(393 author +434 independent) pass at `c7b4a9245`. All post-change first
 executions pass without runtime/source or fixture repair, retry or accepted
 replay. Source models use180/outer210 and focused fixtures SL180; successful
 actors are quiet, without timeout/interruption or surviving descendants, fully
 reaped and CPU3 released. No historical fixture maintenance is needed.
-Fresh payloads are PINT and runtime DIRECT-int arrays; broader accepting
-property descriptors and existing primitive/byte validation compose unchanged
-checks without fresh all-types credit. Static sources, hooks, coercion/backing
-records, CELL debt, direct string/object values, wider graphs and unsafe or
-active-GC lifetimes remain outside this continuation. Paused LIST-key and
-owned-NUL paths stay untouched.
-[Typed NULL-key review](coverage/semantics/array-literal-null-key-typed-wrapped-cv-review.json).
+Source admission reuses compiled nonconstant call/no-fallback/active BYREF-false
+function checks and an ordinary unmarked NULL key CV. The mutable nonpool
+returned table has edge-free/debt-free DIRECT leaves; value/builder reach stays
+object-free. Fresh return functions have no parameters and DIRECT-int payloads;
+existing primitive/validated-byte leaves compose unchanged validation without
+fresh all-values credit. By-reference returns, array-constructor TMPs, calls with
+arguments, methods/Closures/dynamic calls, wider graphs and unsafe/active-GC
+lifetimes remain outside this continuation. Paused LIST-key and owned-NUL paths
+stay untouched.
+[NULL return-value review](coverage/semantics/array-literal-null-key-return-array-value-review.json).
 
-Composed over `841c88c80`/409 with accepted413 and six test paths unchanged.
-Incoming packed INI, magic property inc/dec and owned DEFINE selectors have no
-producer in these originals. Every other runtime/schema and the ordered409
-manifest retains parent bytes. Native, source and focused evidence retain their
-private408 cuts and baseline0, without joined execution or replay.
+Earlier typed captured NULL-key reset retains native/genuine `42559400a`/408,
+strict/source4 `07190a415` and focused1041 `a7469e1eb`, integrated as `1a06ca19f`.
+Its pre-handler baseline0, first-pass cuts and reached restrictive-source
+readiness boundary before native detach remain in the
+[typed NULL-key ledger](coverage/semantics/array-literal-null-key-typed-wrapped-cv-review.json).
 
 Earlier untyped captured NULL-key reset retains native/genuine `0ad616aca`/408,
 strict/source4 `440aed450` and focused916 `0242fc366`, integrated as `4a687d9aa`.

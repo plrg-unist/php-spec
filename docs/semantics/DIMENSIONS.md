@@ -216,6 +216,18 @@ native callback returns. This is an explicit Unsupported boundary of this
 continuation. No generic typed-write or owner
 rule changes; see the
 [typed NULL-key review](../../coverage/semantics/array-literal-null-key-typed-wrapped-cv-review.json).
+Ordinary named calls with no arguments and a by-value function target can also
+supply an owning ARRAY value at a NULL key. The active compiled name has no
+fallback; mutable nonpool edge-free/debt-free returned tables use the existing
+payload bound, with no object reachable from the value or builder. The VAR
+acquisition plus NULL backup gives two pending table owners. Normal completion
+keeps producer writes and inserts a frozen DIRECT value under `""`; throw removes
+both owners without inserting, retiring an otherwise unowned returned table
+and builder before catch.
+This path has no captured CV to reset and introduces no literal bias. See the
+[NULL return-value review](../../coverage/semantics/array-literal-null-key-return-array-value-review.json).
+By-reference returns, array-constructor TMPs, calls with arguments and other
+call producers remain outside this continuation.
 The [string-leaf review](../../coverage/semantics/array-literal-float-string-leaf-review.json)
 adds ordinary tables and untyped wrapper payloads containing canonical-byte or
 validated-carrier string leaves. String snapshots remain independent across

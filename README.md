@@ -64,6 +64,12 @@ rejects that snapshot; detach can restore readiness. Existing typed writes
 still handle coercion and rejection. Direct string/object payloads
 and wider producers remain partial.
 
+Ordinary named calls with no arguments that return arrays by value also resume
+NULL-key callbacks. Their owning returned value stays frozen while producer
+global writes persist. A separate continuation holds acquisition and backup
+owners, then transfers one DIRECT entry or retires both before catch. By-reference
+returns, array-constructor temporaries and wider call forms remain partial.
+
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
 remain live, while runtime array temporaries retain their own tables.
