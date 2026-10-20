@@ -3811,3 +3811,29 @@ def $arithmetic_unary_reference_plan(S) = eps -- otherwise
 rule PhpStep/arithmetic-unary-reference-begin: S ~> S[.TODO = (ARITHMETIC_UNARY_WARNING punarywarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if $arithmetic_unary_reference_plan(S) = (punarywarning)
+
+
+;; Select both referents before converting LEFT; nonquiet text RHS is read later.
+;; Distinct variable names may select the same cell without retaining it twice.
+def $arithmetic_addassign_repair_plan(S) = ((pintegeroperation, pvalue_left, pnumber_left))
+  -- if S.TODO = (COMPOUND_APPLY ADD (BASE_VALUE poperand_left) false z) :: ptask_tail*
+  -- if $error_handler_eligible(S, 2)
+  -- if $arithmetic_add_named(S)
+  -- if $arithmetic_addassign_plan(S) = eps
+  -- if S.ORIGIN = (porigin)
+  -- if poperand_right = S.RESULT
+  -- if $integer_pointer_select(S, poperand_left) = (INTEGER_CELL n_left)
+  -- if $integer_pointer_select(S, poperand_right) = (INTEGER_CELL n_right)
+  -- if $arithmetic_owned_cell_valid(S, n_left)
+  -- if $arithmetic_owned_cell_valid(S, n_right)
+  -- if $integer_pointer_value(S, INTEGER_CELL n_left) = (pvalue_left)
+  -- if $integer_pointer_value(S, INTEGER_CELL n_right) = (pvalue_right)
+  -- if $arithmetic_add_conversion(pvalue_left) = ((pnumber_left, true))
+  -- if $string_bytes(pvalue_right) = (ptbytes_right)
+  -- if pintegeroperation = {SITE porigin, OP ADD, LINE z, SWAPPED false, LEFT poperand_left, RIGHT poperand_right, LEFTPOINTER INTEGER_CELL n_left, RIGHTPOINTER INTEGER_CELL n_right}
+  -- if $arithmetic_addassign_source(S, pintegeroperation)
+def $arithmetic_addassign_repair_plan(S) = eps -- otherwise
+rule PhpStep/arithmetic-addassign-repair-begin: S ~> S[.TODO = (ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue_left pnumber_left 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = ROOT n_left]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $arithmetic_addassign_repair_plan(S) = ((pintegeroperation, pvalue_left, pnumber_left))
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_left

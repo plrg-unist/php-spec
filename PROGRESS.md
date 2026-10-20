@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Selected-reference `+=` now stages an initially nonquiet text RHS. A first
+Warning can repair bad text before the selected old RHS converts; a second
+supplied Exception preserves callback `88`/`7` and outer `100` without storing.
+Two CV names sharing one CELL capture `12.5` then `5.5` across callbacks despite
+both names rebinding to `77`/`7`. Cached float `18.0` stores through the surviving
+old alias as owners fall from three to two to one. Two originals pass at
+`985f082b7`/407 and 352 focused premises at `ee5da44bd`/407.
+[Staged RHS ledger](coverage/semantics/addassign-repair-review.json).
+Only a strict source/selected-scalar text entry is added; old plans, phase/holder,
+failure, store, numeric and root bodies stay exact. Other producers, unsafe
+targets and wider lifetimes remain partial, OP12 paused.
+
+Composed over `c828e621a`/407, preserving incoming state, task and
+manifest paths. Source2/state352 retain their private407 cuts; independently
+reviewed absent incoming selectors require no joined execution or renewed credit.
+
 From-callable method Closure VALUES now publish under their saved source and
 invocation USER permission. Base-private selection stays distinct from a Child
 same-name method after callback/creator retirement. A captured factory can be
@@ -106,20 +122,8 @@ observer `!isset` supplies a known Boolean, leaving unary-reference capture unus
 Source8+2/state503 and affected115/3/three selectors retain `9eab9fb71`/407
 without joined execution, accepted replay or historical renewal.
 
-Unary `+`/`-` now captures leading text from selected scalar references.
-After the Warning handler rebinds the current name and removes the last old alias,
-the old CELL has owner zero and retires; saved numeric history remains valid.
-Unary+ supplied Exception20 preserves outer `100`; returning unary- delivers float
-zero with native `-0` and exact negative-zero bits. Two originals pass at
-`e0b854224`/407 and 264 focused premises at `97af56faf`/407.
-[Unary-reference ledger](coverage/semantics/unary-reference-warning-review.json).
-Fresh untyped scalar refs and primitive handler writes bound the traces; old unary
-CV/numeric/dispatch/resume/root bodies stay exact. Wider producers, owning/constrained
-cells and lifetimes remain partial, OP12 paused.
-
-Composed over `d02051cab`/407, preserving incoming state, task and
-manifest paths. Source2/state264 retain their private407 cuts; independently
-reviewed absent incoming selectors require no joined execution or renewed credit.
+Earlier unary-reference Warning capture retains source2/state264 in the
+[unary-reference ledger](coverage/semantics/unary-reference-warning-review.json).
 
 String-selected method Closure VALUES now publish with their validated requested
 method and lexical/called/optional receiver identity. A fixed Base descriptor

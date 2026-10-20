@@ -573,6 +573,14 @@ focused premises retain this in the
 [selected-RHS Warning ledger](coverage/semantics/addassign-selected-rhs-warning-review.json).
 Other producers, unsafe targets and wider lifetimes remain partial.
 
+Selected-reference `+=` now also stages conversion for an initially nonquiet
+text RHS. A first callback can repair bad text; a second supplied throw cancels
+the store. Two names sharing one reference cell capture `12.5` then `5.5` across
+callbacks and store float `18.0` through the old alias despite both names rebinding.
+Two originals and 352 focused premises pass in the
+[staged RHS ledger](coverage/semantics/addassign-repair-review.json).
+Other producers, unsafe targets and wider lifetimes remain partial.
+
 Failed delayed RHS conversion in selected-reference `+=` now reports the old
 selected operand types despite both current names rebinding. Flat arrays raise
 `array + array` without retrying union; old bool/bad text raises `bool + string`
