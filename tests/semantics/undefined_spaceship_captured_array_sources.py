@@ -7,7 +7,6 @@ from undefined_spaceship_captured_array_cases import CASES
 
 family.CASES = CASES
 family.UNSUPPORTED = {
-    'captured-boolean-boundary': ('error-handler ingress requires a producer continuation', b'B|'),
     'captured-nested-boundary': ('error-handler ingress requires a producer continuation', b'B|'),
 }
 family.BASELINE = ('error-handler ingress requires a producer continuation', b'')

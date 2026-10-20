@@ -139,8 +139,9 @@ def checks(program, path, name):
         '~$error_read_valid(S[.CODE = eps],perrorread)', '$error_read_plan(S[.CODE = eps]) = eps',
         '~$error_read_valid(S[.ORIGIN = eps],perrorread)',
         'perrorread_foreign = perrorread[.ORIGINAL = BINARY_RIGHT EQUAL ' + ('(KNOWN (PARRAY n_array))' if left else '(VARIABLE ($ptascii("missing")) z_missing)') + ' ' + str(line) + '][.TASK = BINARY_RIGHT EQUAL ' + ('(KNOWN (PARRAY n_array))' if left else '(KNOWN PNULL)') + ' ' + str(line) + ']',
-        '~$spaceship_read_array(S,perrorread_foreign)', '~$scalar_compare_read_array(S,perrorread_foreign)',
+        '~$spaceship_read_array(S,perrorread_foreign)', '$scalar_compare_read_array(S,perrorread_foreign)',
         '~$error_read_valid(S,perrorread_foreign)',
+        '$error_read_plan(S[.TODO = perrorread_foreign.ORIGINAL :: ptask_tail*][.RESULT = perrorread_foreign.INPUT][.BASE = perrorread_foreign.BASE]) = eps',
     ]
     if left:
         values += ['S_done.STORE[n_source] = DEFINED (PARRAY n_current)',
