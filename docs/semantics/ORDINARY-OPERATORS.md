@@ -446,8 +446,24 @@ Three exact originals plus 296 author and 111 independent SL premises check thes
 paths, default operand-line Deprecated, fresh guards and budgets in the
 [power-assignment ledger](../../coverage/semantics/powerassign-warning-review.json).
 Ready requires the same live, allocated, nonowning, unconstrained target; pure
-pruned/missing/wrong-slot/owning projections establish refusals only. Initial
-references/copies, wider operands/targets, callbacks and lifecycle remain partial.
+pruned/missing/wrong-slot/owning projections establish refusals only. Other initial
+reference/copy forms, wider operands/targets, callbacks and lifecycle remain partial.
+
+Quiet selected-reference `**=` now captures both primitive numbers before final
+Deprecated. A supplied handler Exception still permits the compound store:
+cached `+INF` replaces the callback's `88` in the selected old target alias before
+the same Exception resumes; the outer assignment retains `100`.
+A false handler with captured negative-zero/-3 yields strict `-INF` in old target
+and result even after both current names rebind to 77/7 and the old RHS loses its
+last alias. Fresh dispatch authenticates both selected live unconstrained cells;
+returned history avoids RHS lookup, and the final target has its own safety guard.
+The scalar store consumes the marker and changes only old STORE/RESULT/LOCATION
+(or restores THROW_SEARCH and clears delivery); no cell, detachment or ENV redirect.
+Two originals and 181+153 focused premises check raw/driven effects, pending owner2,
+retired RHS owner0, alias topology and budgets in the
+[selected power-assignment ledger](../../coverage/semantics/powerassign-selected-warning-review.json).
+Initial quiet PINT/PFLOAT references and a surviving old-target alias bound the slice;
+text conversions, other producers/targets and wider lifetimes remain partial.
 
 Plain-CV `%=` now captures a fractional-float left conversion before its
 deprecation, then reads the live quiet integer RHS after a named handler returns.

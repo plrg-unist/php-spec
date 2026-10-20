@@ -22,8 +22,8 @@ This covers bounded spaceship operands and distinct direct-CV
 `==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
 Both-missing pairs can resume if the first handler defines the later scalar,
 including the same missing name at `<=>` or `==`/`!=`/`<`/`<=`; `$x == $x` can
-then be false. Greater operators warn right first. `<=>` and distinct
-`==`/`!=`/`<`/`<=`/`>`/`>=` pairs also stage
+then be false. Greater operators warn right first. `<=>`, forward
+`==`/`!=`/`<`/`<=` (including the same CV), and distinct `>`/`>=` pairs also stage
 a second Warning if the later physical CV stays missing, freezing both NULLs
 despite writes from the second handler.
 Wider warning paths remain partial.
@@ -48,8 +48,8 @@ handler. Separate table counts preserve old array owners and omitted new-array
 owners; inverse retargeting cancels them before cleanup. Initial scalar and
 array plans remain distinct, while same-table transfer and restored COW keep
 ordinary values distinct from PHP reference wrappers.
-These flat tables also admit untyped reference leaves holding null/bool/int/float
-or validated byte strings, and null/bool/int/float leaves with validated ordinary
+These flat tables also admit reference leaves holding null/bool/int/float
+or validated byte strings, either untyped or constrained by validated ordinary
 instance-property type sources. Debt-bearing payloads require every source object
 to survive logical pruning. Shared copies keep typed rejection/coercion; explicit property
 unset removes its constraint before singleton copying. Child-table copies preserve
@@ -302,6 +302,13 @@ of direct quiet primitive leaves. Returning handlers reach the value TypeError
 with an empty option and the earlier array; throwing handlers retain raw NULL and
 cancel before value rejection. Four originals and 844 state premises cover COW,
 strict option priority and normal recovery. Wider values/forms remain partial.
+
+[Named NULL INI options with rejected array values](coverage/semantics/ini-set-named-null-array-value-review.json)
+now retain an earlier array across reversed value/option evaluation and later COW.
+Returning handlers reach the value TypeError with an empty option; a supplied
+throw keeps raw NULL and cancels rejection. Four source comparisons and 995 state
+premises cover named/mixed source authentication, ownership, strict option
+priority and recovery. Owned/packed array values and wider leaves remain partial.
 
 [NULL INI options with retained stdClass values](coverage/semantics/ini-set-null-stdclass-value-review.json)
 now resume handlers for direct/selected positional calls with table-free objects
@@ -847,6 +854,15 @@ outer assignment stays unchanged. Three exact originals and 407 focused SL
 premises cover signed infinity, target storage and pending ownership in the
 [power-assignment ledger](coverage/semantics/powerassign-warning-review.json).
 Wider operands, targets, callbacks and lifecycle paths remain partial.
+
+Quiet selected-reference `**=` now writes captured infinity through the old
+target alias even after current-name rebinding and a supplied deprecation-handler
+throw. The same Exception resumes after the store; the outer assignment stays
+unchanged. A signed-zero/default case delivers `-INF` after old RHS retirement.
+Two originals and 334 focused premises pass in the
+[selected power-assignment ledger](coverage/semantics/powerassign-selected-warning-review.json).
+Other operands, unsafe targets and wider lifetimes remain partial.
+
 Plain-CV `%=` now keeps the first converted long through a fractional-float
 deprecation, then reads the live quiet integer RHS. Normal return stores the
 remainder; a supplied throw or live zero leaves the target and late alias intact.
@@ -4446,16 +4462,16 @@ agree with PHP; separate 463/8 state checks cover its shared-cell RELEASE/EXIT
 pauses, required literal history despite an unchanged heap, engine TypeError catch,
 one line7 Notice and detached aliases.
 Owning-return histories with at least three pending slots preserve finite
-first-retirement destructor throws, including stable supplied-Throwable identity,
-cleared NULL recovery and detached caller references. Remaining computed objects
-keep their source/restore/sole-owner checks; ordinary global-CV slots now bind
-the emitted source to the actual shared cell. A mixed source and 439/12 checks
-at `4a1cc45c5` prove same-object catch, wrong-cell/kind and missing-slot refusals,
-exact shared-cell release/public pauses, Notice15 and z/za/caller aliases.
-Earlier computed-only evidence keeps its original cuts in the
+first-retirement destructor throws, supplied-object identity, cleared NULL and
+detached caller references. Ordinary global references may now alias across
+pending slots; each still keeps its own source/owner/restore authority and cleanup
+count. Computed objects retain distinct sole owners. A fresh za/z-alias source
+and 430/10 checks at `638496fa6` prove each required slot, two successive shared
+releases, exact public pauses, same caught object, Notice13 and separate caller
+and global writes. Earlier evidence retains its original cuts in the
 [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-Repeated alias slots, other reference producers, wider bodies/reentry, GC and
-consumers remain open.
+Other reference producers, typed/property cells, fewer than two remaining slots,
+wider bodies/reentry, GC and consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

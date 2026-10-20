@@ -450,7 +450,6 @@ def $scalar_compare_read_again(S, perrorread) = true
   -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (VARIABLE n_left* z_left) z
   -- if pbin = EQUAL \/ pbin = NOTEQUAL \/ pbin = LESS \/ pbin = LESSEQUAL
   -- if perrorread.INPUT = VARIABLE n_right* z_right
-  -- if n_left* =/= n_right*
   -- if $error_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
   -- if $error_missing_operand(S, perrorread.INPUT)
 ;; Greater operators have frozen source right first; only this exact record
@@ -521,7 +520,7 @@ def $spaceship_read_source_operand(S, porigin, KNOWN pvalue) = true
 def $spaceship_read_source_operand(S, porigin, VARIABLE n* z) = $error_variable_source(S, (porigin), [PCFIELD 1], n*)
 def $spaceship_read_source_operand(S, porigin, poperand) = false -- otherwise
 ;; The first missing read has already frozen left NULL. Authenticate the
-;; second read against the same forward, distinct direct-CV source expression.
+;; second read against the same forward direct-CV source expression.
 def $error_read_source(S, perrorread) = true
   -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (KNOWN PNULL) z
   -- if pbin = EQUAL \/ pbin = NOTEQUAL \/ pbin = LESS \/ pbin = LESSEQUAL
@@ -533,7 +532,6 @@ def $error_read_source(S, perrorread) = true
   -- if $origin_node(S.SOURCES, porigin_left) = (NExprVariable (BYTES text_left) metadata_left)
   -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 0], $base64(text_left))
   -- if $code_expression_at_source(S, porigin, [PCFIELD 0]) = (z_left)
-  -- if $base64(text_left) =/= n_right*
   -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 1], n_right*)
   -- if perrorread.NAME = n_right* /\ perrorread.LINE = z
   -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)

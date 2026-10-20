@@ -374,9 +374,13 @@ def $literal_reference_flat_cell(S, n) = true
 def $literal_reference_flat_cell(S, n) = true
   -- if $call_reference_operand_valid(S, REFERENCE n)
   -- if S.STORE[n] = DEFINED pvalue
-  -- if $array_float_key_scalar(S, pvalue)
+  -- if $literal_reference_flat_leaf(S, pvalue)
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
   -- if $propref_at(S.PROPREFS, n) = (ppropref)
-  -- if $literal_reference_cell(S, n, S.ALLOCATIONS)
+  -- if ppropref.SOURCES =/= eps
+  -- if $propref_unique_sources(ppropref.SOURCES)
+  -- if $literal_reference_property_sources(S, n, ppropref.SOURCES, S.ALLOCATIONS)
 def $literal_reference_flat_cell(S, n) = false -- otherwise
 def $literal_reference_flat_items(S, eps) = true
 def $literal_reference_flat_items(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*) = ($literal_reference_flat_leaf(S, pvalue) /\ $literal_reference_flat_items(S, pentry*))

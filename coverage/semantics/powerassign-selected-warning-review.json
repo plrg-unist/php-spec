@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "milestone": "OP61 selected-reference power assignment Deprecated continuations",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "Direct distinct CV operands of **= with preexisting selected untyped PINT/PFLOAT reference cells and a named E_DEPRECATED-only handler. Capture both quiet numbers before final power Deprecated. Commit cached signed infinity to the selected old target through its surviving alias after current-name rebindings, including before propagating a supplied handler Exception. Only the outer assignment is canceled on throw. Returned history permits old RHS retirement after capture. Other operands/targets/lifetimes remain partial.",
+  "runtime_revision": "d27e44ca204ca4dd66136679cf32d663ef07228e",
+  "helper_revision": "65b51b641738b31e246356659c421e9639821782",
+  "private_modules": 407,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "24e5a50a06b4c931739f347c8ae0959319c49c3158bac389d8692fbad48bf0e0",
+    "spec/semantics/55-compound-assignment.watsup": "51b4946015eee31a681128b39b05b18cc5400fc2026d871fb00fc73ced0fddd3",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "87ef0ff405524e4e1fc64c5dbbb29e76e93cdbff3365d6720de9d8bf874acec7"
+  },
+  "engine_basis": [
+    "Pinned ZEND_ASSIGN_OP selects/dereferences var_ptr and passes result=LEFT to zend_binary_op. pow_function dereferences both operands; pow_function_base passes both numeric C arguments to safe_pow before zend_power_base_0_exponent_lt_0_error invokes the Deprecated handler. ZVAL_DOUBLE stores the power result even with EG(exception), returns SUCCESS, and the VM checks the pending exception afterward. This differs from div_function result_copy storage only on DIV_SUCCESS.",
+    "One POWER_ASSIGN_SELECTED_WARNING tag and separate source/plan/target authority preserve the old plain-CV POWER_ASSIGN_WARNING bodies and controls. Fresh snapshot authenticates both selected strict scalar cells and quiet primitive numbers; entered/returned stage1 keeps source/numeric history independent of current names or RHS allocation. Final target safety is separate. One forward plan declaration/generic compound EPS gate; existing pure power, pointer, handler and checked-cell-write helpers are reused.",
+    "The selected marker has empty operand roots. While a supplied exception is pending, error_read_discard replaces its THROW_SEARCH owner with one instance_root on the marker; mandatory old-cell commit restores the same THROW_SEARCH and clears result delivery. No cell allocation, target detachment or name redirect is added by the store. Unsafe live target or owning callback has a partial Unsupported boundary; no new state field/module or old numeric/dispatch/store body change."
+  ],
+  "contract": [
+    "Author starts selected PINT0/-2 refs. The single8192/line25 callback writes old aliases88/7, rebinds current names to77/7 and throws the same Exception created on line20. The old target receives +INF before catch; outer100/noPrevious/calls1 and current replacements remain. Old alias73 then6 versus current8/9 proves no redirect/detachment. Author stderr is empty.",
+    "Independent selected PFLOAT negative-zero/-3 refs yield strict -INF in old target and outer result after a false handler writes old88/7, rebinds both names77/7 and removes the last old RHS alias. The retired RHS has owner0/unallocated/getterEPS while returned cache remains valid; surviving old target owner1 and replacement owners2 persist. Later oldalias6/current8/9 and one original default Deprecated25 distinguish history and topology.",
+    "Focused181/153 authenticates actual new plans, raw begin, fresh EHI/entered callback, pending or returned history, selected old target versus current replacement, raw whole-state store versus driven effects, same-Exception owner2 transfer, immutable metadata prefixes, final native outputs and compact full-entry/zero budgets. One undriven author guard matrix checks source/line/range/type/allocation/handler/target boundaries. Existing integer HELPERS plus renamed old powerassign frontiers and peer diagnostic counters have12 unique declarations."
+  ],
+  "required_follow_on": [
+    "Initial inputs are quiet PINT/PFLOAT values in live allocated unconstrained selected reference cells; a surviving old target alias keeps its referent live and nonowning through the tested traces. Numeric text, conversions with Warning, plain/copied/owned producers, constrained/expired or owning targets, arrays/objects, wider handlers and lifetimes remain partial. Refusal-only projections do not establish excluded executions.",
+    "The historical RHS may retire after capture without an operand-retention root. Other last-owner/destructor and unsafe target histories remain outside this slice. Existing plain-CV power assignment, ordinary power and prior arithmetic evidence retain their original cuts with zero renewal. OP12 remains paused; no engine bug or intentional divergence is claimed."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-61/source-d27e44ca2-author-one/report.json",
+        "sha256": "06062a4903334bb147c44046b74b474ffa0acd5a335cf3567d5b33041c5bd986",
+        "revision": "d27e44ca204ca4dd66136679cf32d663ef07228e",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-61/review-model-d27e44ca2-review-one/report.json",
+        "sha256": "0cbc0e4bb7a980579b3d63db5afc2ccdcdbf9294d3054437ba53fc965b24fc2c",
+        "revision": "d27e44ca204ca4dd66136679cf32d663ef07228e",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-61/state-65b51b641-two/report.json",
+        "sha256": "599fd22d2290ce02465669cdfe6f949c95e1bac01da37245993c1fb4c63dbffa",
+        "revision": "65b51b641738b31e246356659c421e9639821782",
+        "modules": 407,
+        "cases": [
+          "powerassign-selected-warning-pending-throw",
+          "powerassign-selected-warning-negative-retired"
+        ],
+        "conditions": [
+          181,
+          153
+        ],
+        "total": 334
+      }
+    ],
+    "total_source_agreements": 2,
+    "total_focused_state_conditions": 334
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-61/baseline-1b04d9861-pending-throw/report.json",
+      "sha256": "19228bea542e6b9d80029705807476e5baeca9f98441b7915606f2e7dedd0141",
+      "result": "Actual frontend accepted/checked program/Unsupported BEFORE H1, empty semantic streams, reason error-handler ingress requires a producer continuation, model1/agreement0/wrapperfalse; no override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-61/native-1b04d9861-author-one/report.json",
+        "sha256": "d0d72a6ca895934de8f9bbcb343dfec8bf626dcf39de956045d51dde008b811a"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-61/native-1b04d9861-review-one/report.json",
+        "sha256": "32a85c0ea2572ebceeb2192707e08eab92a01d708bed91e12ac074cf5a5daa1f"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-61/state-prep-65b51b641-two/report.json",
+        "sha256": "59d7c975dd6ac8b3c5a27d52bf4c5f81d8bdc7e1c07eab02f34329f8f5d3ccbb",
+        "result": "Retained original paths/native bytes; checked frontend/adapter only, zero native/application replay, workers0/reaped."
+      }
+    ],
+    "standalone_syntax": "Two standalone undefined-pstate diagnostics, zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-61",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/genuine packet CPU5 and changed source CPU4; focused CPU4. Native30/modelCLI60-process90, checked prep30/full407 SL120 per group. Author stderr empty; peer one original default Deprecated25. Retained-source preparation performs no native/application replay.",
+    "record": "Restore matching Git cuts/local tools in a fresh directory. Retained original paths/native streams authenticate focused fixtures; external evidence is not a runtime dependency. Copied local tools add no rebuild/portability claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "commands": [
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 tests/semantics/powerassign_selected_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 tests/semantics/powerassign_selected_warning_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-61/state-prep-65b51b641-two/run-prepare.py",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-61/state-65b51b641-two/run-state.py"
+    ]
+  },
+  "composition": {
+    "parent": "5e6feda5b55901db5df2976f1bf3c595b2284081",
+    "private_publication": "696240c8fefe305ffeb2d191d818dff69f446064",
+    "modules": 407,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "24e5a50a06b4c931739f347c8ae0959319c49c3158bac389d8692fbad48bf0e0",
+      "spec/semantics/55-compound-assignment.watsup": "51b4946015eee31a681128b39b05b18cc5400fc2026d871fb00fc73ced0fddd3",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "87ef0ff405524e4e1fc64c5dbbb29e76e93cdbff3365d6720de9d8bf874acec7"
+    },
+    "other_incoming_paths_preserved": 33,
+    "gate": "The actual parent5e6feda5b differs from OP61 basef92 in four runtime paths156/207/270/413. Modules156/270 broaden repeated HCELL slots in nested typed by-reference mixed-return/finally retirement chains; handler h is by-value and only returns false or throws a supplied Exception, finally only echoes, and no typed object|null return/destructor chain or retirement cursor is produced. Module207 permits same-CV second missing reads for EQUAL/NOTEQUAL/LESS/LESSEQUAL; our selected POWER inputs, handler guards/counter and strict identity/isset observers are defined, with no loose comparison missing-CV continuation. Module413 extends typed string ALIAS leaves only within lossy-float explicit-reference array-literal key histories; these numeric scalar sources contain no array literal, typed property source or such producer. GLOBALS dimension writes and internal Exception trace arrays cannot supply that source-selected array plan. Existing literal retention/debt fields remain empty and their validators/roots/wrappers are unchanged. No new field/tag/default/root/ordered407-manifest change. Common30/55/404 stay base-exact before our overlay. Preserve fullparent30 with only the selected-power tag, fullparent55 with only plan declaration/EPS, private404 and six tests; other runtime/manifest paths parent-exact. Source2/state334 retain their original private407 cuts. No concrete selector interaction warrants joined execution or renewed evidence."
+  }
+}

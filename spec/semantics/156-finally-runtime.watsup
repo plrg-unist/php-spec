@@ -1127,7 +1127,6 @@ def $ref_partial_object_chain_rest((FINALLY_REF_RETURN porigin porigin_source (K
   -- if $ref_partial_object_chain_rest(ptask_tail*, porigin_restore?, (HOBJECT n) :: pnode_seen*, porigin_old, z_old)
 def $ref_partial_object_chain_rest((FINALLY_REF_RETURN porigin porigin_source (REFERENCE n) z) :: (FINALLY_PHASE porigin 3) :: (ORIGIN_RETURN porigin_restore?) :: ptask_tail*, porigin_inner?, pnode_seen*, porigin_old, z_old) = true
   -- if porigin_inner? = $origin_child((porigin), [PCFIELD 2])
-  -- if ~((HCELL n) <- pnode_seen*)
   -- if $ref_partial_object_chain_rest(ptask_tail*, porigin_restore?, (HCELL n) :: pnode_seen*, porigin_old, z_old)
 def $ref_partial_object_chain_rest(ptask*, porigin_restore?, pnode_seen*, porigin_old, z_old) = false -- otherwise
 dec $ref_partial_object_chain_here(ptask*) : bool

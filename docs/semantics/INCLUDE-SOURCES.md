@@ -646,9 +646,9 @@ and malformed leaf/source/count/phase/budget refusals. Initial `c4c7eab2a` CPU3
 native4/baseline0 remains distinct from later CPU2. Nine stable/reaped reports pass
 without failures or retries; only Deprecated9/20 are expected, accepted workers are
 quiet. Only27 additive172 lines reuse existing value-error/trace/root/discard/GC
-bodies; no old control repair or67/68 replay is needed. Named/owned/packed array
-values, references/nesting/owning/NaN/legacy-string leaves and wider configuration
-remain partial.
+bodies; no old control repair or67/68 replay is needed. Owned/packed array
+values, wider named forms, references/nesting/owning/NaN/legacy-string leaves
+and wider configuration remain partial.
 
 The [unary CONFIG PIPE increment](../../coverage/semantics/include-config-pipe-review.json)
 replays the authenticated left child and `CODEPIPE_SEND`, rather than an ordinary
@@ -706,3 +706,29 @@ accompany quiet accepted workers. Only33 additive172 lines change; existing
 trace/root/discard/GC/value-error bodies stay exact. Named/owned/packed, materialized
 tables, aliases/deferred/unset/owning properties and other object kinds remain
 partial; no Stringable/COMP88 callback is executed or enabled.
+
+The [named NULL-option array increment](../../coverage/semantics/ini-set-named-null-array-value-review.json)
+adds a disjoint ownerless named/mixed call arm for retained allocated flat DIRECT
+quiet-primitive arrays. Each written argument name maps to its
+normalized destination: option facts permit NULL, while known value arrays use
+compiled-pool contents authority. Unknown CV/helper facts remain structural.
+The actual partial argument task owns the earlier array in destination1 before
+the later option argument separates the live alias by COW. Returning Deprecated
+handling reaches the existing converted-empty parameter2 TypeError; supplied
+throw retains rawNULL and the captured array and cancels rejection.
+
+Author3 source comparisons retain `9441427317`; the smaller peer source and all
+995 premises (282+210+122+381) pass at `c84b49c413`/`4a0c2ce147`/406. The native
+literal observer establishes converted empty option/earlier2473; actual state
+proves owning task/trace edges, partial named normalization, COW separation,
+two-frame TypeErrors and the top-level peer's two-frame handler Exception,
+precise restored discard/existing GC buffering and recovery. Peer native has no
+trace traversal or physical array-identity claim. Initial `f45bd2c849` CPU2
+native4/baseline0 precedes CPU4 author checks and final CPU2 checks. Three earlier
+peer CLI45 timeouts and two budget localizations remain inconclusive0; reducing
+redundant setup preserves the core counterexample without changing caps/runtime.
+Fifteen actor reports retain twelve PASS/three timeouts, plus two diagnostic0
+records. Only Deprecated24 is expected; accepted workers are quiet. The22-line
+addition preserves positional69/stdClass70/finish/trace/root/discard/GC bodies;
+no old control repair or accepted-source replay. Owned/packed arrays, references,
+nesting/owning/NaN/legacy-string leaves and wider configuration remain partial.
