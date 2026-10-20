@@ -23,6 +23,14 @@ instance/static omitted/false originals are distinct from structural clone and
 inherited-flag support; wider domains and core remain partial.
 [Array-method Closure define review](coverage/semantics/define-runtime-array-closure-review.json).
 
+Composed over `2f164e55d`/407 with exact tested400+6 and complete incoming
+runtime/manifest/inventory prefixes preserved. INI, missing loose comparisons,
+by-reference return, pending Generator SEND, subtraction assignment and selected
+lossy-float literal-key debt paths are unselected. Raw aliases/static cells do not
+imply reference-return retirement; retained/debt lists stay empty. No state/graph/
+module lift is needed. Source3/state865 retain their private407 cuts without joined
+execution, accepted replay or renewed historical credit.
+
 Direct/selected named and mixed NULL-option `ini_set` calls now retain table-free
 stdClass values with direct quiet primitive properties. Reversed value/option
 evaluation preserves the earlier object through shared property writes and live
