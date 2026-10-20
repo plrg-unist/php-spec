@@ -633,6 +633,20 @@ Only ordinary first-class-function omitted/false originals receive new execution
 credit; coherent clones and inherited flag delegates retain structural support.
 [Named Closure define review](../../coverage/semantics/define-runtime-named-closure-review.json).
 
+Bare array-selected method Closures use dynamic-only `PVOBJECT` authority through
+the existing live selection-site, method/capture and lexical/called/receiver-scope
+validators, with absent binding/callable-certificate records. Original callable
+arrays and member cells are conversion inputs, not Closure children. Publication,
+queries and canonical array COW retain the selected pointer and optional receiver
+after input mutation or retirement; method static cells remain independent
+request roots. A private duplicate array can become the only Closure owner,
+retiring its receiver before the original handler Exception reaches catch.
+Global/default policies and the DEFINE-origin direct-query fence stay unchanged.
+Ordinary instance/static first-class-array omitted/false originals are distinct
+from structural coherent-clone/inherited-flag support, which gains no execution
+credit.
+[Array-method Closure define review](../../coverage/semantics/define-runtime-array-closure-review.json).
+
 Ordinary `stdClass` values also use dynamic-only `PVOBJECT` authority when their
 selected property record and optional cached table validate, including live
 physical reference cells and their immediate values. A present stdClass birth

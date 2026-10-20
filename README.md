@@ -1776,6 +1776,13 @@ Closure child edges. Retiring all Closures leaves a function-static child alive
 until an explicit later direct-function clear releases it.
 [Named Closure define review](coverage/semantics/define-runtime-named-closure-review.json).
 
+Closures captured from array callables also publish with their selected method
+and optional receiver scope. Changing or dropping the original callable array
+leaves that selection intact. Method static cells remain request roots; query
+COW shares the Closure, and throwing-duplicate cleanup can retire its bound
+receiver before catch.
+[Array-method Closure define review](coverage/semantics/define-runtime-array-closure-review.json).
+
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
 children while cast/query arrays retain COW. A private duplicate copy can keep
