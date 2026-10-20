@@ -7,6 +7,33 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Normal unused pending SEND at a parked owning simple-CV copied return now keeps
+current through ignored-argument cleanup, then releases that snapshot before the
+receiver. A raw-row snapshot survives argument COW through ARG-END, but its old
+payload retires before ancestor finally. Normally assigned SEND results keep
+their copy through receiver retirement. A scalar-argument cache destructor throws
+with Previous NULL; an older caught Exception exists only in globals.
+[Unused SEND review](coverage/semantics/generator-unused-pending-send-review.json).
+
+Four source agreements and strict compilation of 407 modules pass at `bc8faf780`.
+The four-fixture gate and 228 author premises pass at `6be0abef4`; 253 independent
+premises at `c735a2708` bring the new total to 481 (461 local +20 generic).
+The unchanged `43b2e6391` baseline is a checked NORMAL cache/finally-order mismatch,
+retaining its failed agreement and zero credit. One peer synthetic
+LINE0 negative overclaimed generic historical-source authority; only that clause
+changed to a forbidden explicit cleanup SOURCE, with original failure0 preserved.
+All actors are reaped and CPU3 released; no native/source/author replay or
+historical renewal. Exact consumed-slot admission leaves masked aliases, abrupt
+argument callbacks, wider domains, body entry and collection unvalidated.
+
+Composed over `a883e6bbd`/407 with tested289 unchanged and the exact three-line270
+hook atop incoming property-source history. Every other runtime/schema/default/
+root/ordered-manifest/pipeline byte stays parent-exact. Incoming INI/DEFINE,
+property/coalesce, comparison, compound-warning and float-key debt selectors have
+no producer here; M124 ordinary typed-reference property histories stay disjoint.
+Private tested cuts and original fixture failure0 retain their identities,
+without joined execution or accepted replay.
+
 Captured `Closure::fromCallable(...)` factory VALUES now publish directly and
 in canonical array snapshots. Queries share the receiver-free factory; its
 creation scope grants no later private permission. Actual USER invocation
@@ -145,13 +172,13 @@ Composed over `1504582b3`/407 with module172/four tests private-exact and every
 other runtime/schema/ordered manifest parent-exact. Source4/state1,328 retain
 private407 cuts without joined execution or renewed evidence.
 
-Repeated pending THROW now preserves exactly one owning LIVE input at a parked
-simple-CV used yield. Only the selected receiver clears initialization; physical
-frame, park history and input stay intact. A common timing correction drops an
-unused current copy before receiver cleanup, while a call in assignment context
-keeps its result temporary through that cleanup. Native cases distinguish cache destruction before versus after
-ancestor finally blocks, second-exception Previous identity, raw-row COW and
-post-close shared-cell rebinding.
+At Iterator38, repeated pending THROW preserves exactly one owning LIVE input at
+a parked simple-CV used yield. Only the selected receiver clears initialization;
+physical frame, park history and input stay intact. A common timing correction
+drops an unused current copy before receiver cleanup, while a call in assignment
+context keeps its result temporary through that cleanup. Native cases distinguish
+cache destruction before versus after ancestor finally blocks, second-exception
+Previous identity, raw-row COW and post-close shared-cell rebinding.
 [Repeated buffered THROW review](coverage/semantics/generator-repeated-pending-buffered-throw-review.json).
 
 Five source agreements and strict407 pass at `062c1b77a4`. Nine-fixture

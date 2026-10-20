@@ -1365,6 +1365,11 @@ site, physical frame and copied return stay parked. Snapshot capture precedes
 normal ignored-argument cleanup, including row COW or Generator-alias retirement.
 The used cache and mutable returned cells retain their separate lifetimes. See the
 [parked SEND review](coverage/semantics/generator-parked-pending-owning-send-review.json).
+For a normal unused `send` in this owning-return slice, cleanup now releases the
+ignored argument, current snapshot and receiver in that order. The snapshot
+survives argument-driven COW, then can retire before ancestor finally blocks.
+An assigned result instead survives receiver cleanup. See the
+[unused SEND review](coverage/semantics/generator-unused-pending-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit

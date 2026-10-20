@@ -29,6 +29,8 @@ dec $eager_removed(pnode*, pnode*) : pnode*
 dec $eager_slots(pstate, pstate) : pnode*
 dec $eager_slots_owners(pstate, pstate, pnode*) : pnode*
 dec $eager_operation_owners(pstate, pstate, pstate, ptask, pnode*, pnode*) : (pstate, pownerobservation)
+dec $generator_unused_send_cleanup(pstate, pstate, ptask, pnode*) : bool
+def $generator_unused_send_cleanup(S, S_out, ptask, pnode*) = false -- otherwise
 dec $eager_unused_assignment(pstate, pstate) : bool
 dec $eager_operation_destination(pstate, pstate) : pstate
 dec $eager_live_slots(pstate, pnode*) : pnode*
@@ -293,6 +295,7 @@ def $destruction_transition_owners(S, S_next) = ($eager_operation_destination(S,
 def $eager_operation_owners(S, S_next, S_out, ptask, eps, pnode_owner*) = ($eager_operation_destination(S, S_next), OBSERVED_OWNER_ORDER pnode_owner*)
 def $eager_operation_owners(S, S_next, S_out, ptask, pnode*, pnode_owner*) = ($eager_operation_begin(S_out, S, ptask, pnode*), OBSERVED_OWNER_ORDER pnode_owner*)
   -- if pnode* =/= eps
+  -- if ~$generator_unused_send_cleanup(S, S_out, ptask, pnode*)
 def $eager_destination_value(S, S_next) = S_next[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $eager_unused_assignment(S, S_next)
 def $eager_destination_value(S, S_next) = S_next[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]

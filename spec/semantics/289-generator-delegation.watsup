@@ -248,6 +248,26 @@ def $eager_task_inputs(S, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue])) = $v
   -- if pgeneratorop.ARGUMENTS = eps
   -- if $generator_pending_detached_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_shared_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_unused_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_parked_send(S, pgeneratorop[.ARGUMENTS = [pvalue]])
 
+;; An unused current copy survives argument cleanup, then retires before the
+;; receiver. Require the exact consumed slots; aliased arguments can mask one.
+def $generator_unused_send_cleanup(S, S_out, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue_argument]), pnode*) = true
+  -- if S.TODO = (GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue_argument])) :: ptask_tail*
+  -- if pgeneratorop.ARGUMENTS = eps
+  -- if pgeneratorop_full = pgeneratorop[.ARGUMENTS = [pvalue_argument]]
+  -- if $generator_pending_parked_send(S, pgeneratorop_full)
+  -- if ~$reference_call_used(S, pgeneratorop.SITE)
+  -- if $destructor_return_discarded(ptask_tail*)
+  -- if S.GC.ACTIVE = eps
+  -- if S_out.COMPLETION = NORMAL
+  -- if S_out.RESULT = KNOWN pvalue_result
+  -- if $value_nodes(pvalue_result) =/= eps
+  -- if pnode* =/= eps
+  -- if pnode* = $value_nodes(pvalue_argument) ++ $generator_operation_nodes(pgeneratorop)
+  -- if S_out = $generator_operate(S[.TODO = ptask_tail*], pgeneratorop_full)
+def $eager_operation_owners(S, S_next, S_out, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue_argument]), pnode*, pnode_owner*) = ($eager_operation_begin(S_out[.RESULT = KNOWN PNULL], S, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue_argument]), $value_nodes(pvalue_argument) ++ $value_nodes(pvalue_result) ++ $generator_operation_nodes(pgeneratorop)), OBSERVED_OWNER_ORDER pnode_owner*)
+  -- if $generator_unused_send_cleanup(S, S_out, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue_argument]), pnode*)
+  -- if S_out.RESULT = KNOWN pvalue_result
+
 ;; Pending SEND initializes a TMP before its live range begins. Count that
 ;; physical reference externally; SOURCE's receiver is nonowning history.
 def $generator_inputs_nodes(eps) = eps
