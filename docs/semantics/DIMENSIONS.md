@@ -184,9 +184,8 @@ The [array-alias-leaf review](../../coverage/semantics/array-literal-float-array
 records untyped cases; the
 [typed array-leaf review](../../coverage/semantics/array-literal-float-typed-array-alias-leaf-review.json)
 adds public array-property witnesses with scalar rejection, shared nested writes
-and singleton copying after explicit property unset. Global outer typed-array
-CELL admission stays unchanged. Deeper owning children and indebted descendants
-remain Unsupported.
+and singleton copying after explicit property unset. Deeper owning children and
+indebted descendants remain Unsupported.
 DIRECT child-array entries use the same mutable nonpool, debt-free, edge-free
 child bound. Their actual HARRAY nodes must survive logical pruning; repeated
 entries contribute separate owner edges. A child write can therefore separate
@@ -196,6 +195,16 @@ CELL. Snapshot, repeated-child, deletion and supplied-throw witnesses in the
 separate child COW from outer HARRAY/CELL biases and inverse balancing. Child
 eligibility still rejects outgoing owner edges before examining DIRECT values,
 so no recursive eligibility or deeper graph is admitted.
+Outer array-valued reference cells also admit validated ordinary property type
+sources accepting the bounded payload. For debt-bearing cells, the payload and
+every source object must survive the same logical prune. A physically singleton
+reference entry unwraps during copying even while its property source stays
+live: the copied array value permits scalar replacement and independent child
+COW, while the original remains constrained. After inverse balancing, shared
+copies retain the typed ALIAS. Explicit property unset detaches its constraint;
+an extra alias keeps the count positive until balancing. The
+[typed outer-array reference review](../../coverage/semantics/array-literal-float-typed-array-ref-review.json)
+checks these paths, initial typed-old capture, deletion and supplied throw.
 The source basis is pinned `Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT`,
 `Zend/zend_hash.c::zend_array_dup_value`, and
 `Zend/zend_operators.h::zend_dval_to_lval_safe`, with string writes from

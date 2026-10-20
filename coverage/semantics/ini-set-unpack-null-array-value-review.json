@@ -1,0 +1,86 @@
+{
+  "scope": "Direct/fixed and selected string INI_SET calls, rawNULL option and live flat DIRECT quiet ARRAY value from exactly one two-item numeric/named/mixed unpack pack. Ownerless selected history, INDEX1/solePACKindex0/nonPIPE/effectiveweak only. Existing retained-owner calls stay admitted; completed snapshots remain historical/nonowning without rereading the current outer table.",
+  "status": "integrated",
+  "reviewer": "/root/source_review_35",
+  "parent": "1d8b2d55e0b2f26ff038e553aebed75100bdbb40",
+  "initial_revision": "0f0ac8ca543af25ea1c8795563e6f7b0374cc86e",
+  "semantic_revision": "7d4c579ea210301be29555016956ec46256f3511",
+  "tested_revision": "3e6fb699564d504a967ef1b94196f00482dec97d",
+  "modules": 407,
+  "semantic_files": {
+    "spec/semantics/172-file-context-intrinsics.watsup": "c0b46a413d1ff93432748e7dc306ab1f642336dab1ef6749370923429a37c12e"
+  },
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "primary": "Pinned basic_functions.c PHP_FUNCTION(ini_set) parses option string before rejecting array value at parameter2. zend_parse_arg_str_weak reports rawNULL before conversion: return converts API option to empty, supplied Exception cancels body. SEND_UNPACK uses insertion order, ignores numeric key values and copies by-value arguments. String calls retain ordinary caller strictness and captured name selection before argument effects.",
+  "semantics": "Exactly one172 line deleted: the unused OWNER-present condition in the existing sole-pack ARRAY arm. config_invoke_valid still authenticates fixed/selected or retained-owner call mode; all count/layout/snapshot/live flat quiet/recursive pooled contents-provenance/nonPIPE/weak guards stay exact. No replay/helper/body/finish/trace/root/discard/GC/schema/400 or old test change.",
+  "accepted": [
+    "Source4 normal/accepted/program model raws exactly equal actual native stdout/PHPstderr/PHPexit0 at3e6fb6995/runtime7d4c579ea/407. Direct numeric3/7 NULL+[2833] default and selected mixed NULL+[2843] true handler both reach TypeError2; native E/2843 observes converted-empty numeric API arguments. Selected inline reversed construction captures authentic REQUEST array before O/COW/live ini_get/value0; false/default handling still rejects earlier ARRAY/result99 and original string8-to11 recovers. Strict selected numeric5/9 old2857 remains rawNULL parameter1/handler0 after P effects/live[0,0]/0, with original string9-to11 recovery. Peer supplied same Exception99/effect1/warn1/currenthandler-array76/livepack0/oldREQUEST/2879/10-to12 agrees. Only rendered Deprecated9/16; strict/peer PHPstderr and all model workerstderr quiet.",
+    "All1182 actual SL premises pass at the same tested/runtime cut:292+271+158 author and461 independent. Actual selected record before helper, pre-O builder ownership, unpack cursors outer-only-to-inner-plus-outer-to-inner-only, historical cert/author outer retirement and peer old/current pack COW are checked. Recursive literal contents/provenance positives and coherent allocated2844 source forgery refusal retain authority. API-only return/strict TypeErrors and actual two-frame handler/API rawNULL/old-array Exception edge, authentic carrier, exact full handler restoration/discard with existing idempotent inner buffer, selected metadata/domain/source controls, budget identities/full endings and real selected-string recovery pass. Four SL raws true LF/quiet/exit0. Native observes values, not physical array IDs; peer native has no trace traversal.",
+    "Nine concise reports PASS/input-stable/HEAD-stable/full-reaped on first attempts. Initial0f0ac8ca5 CPU3 native4/genuine baseline0 and later model/state CPU3 retain their identities. No failure, timeout, interruption, survivor, accepted replay or historical renewal."
+  ],
+  "baseline_zero_credit": "At clean source-only0f0ac8ca543af25ea1c8795563e6f7b0374cc86e/unchanged1d8b2d55e/407, captured-string-unpack-array-before-option-cow-and-live-callee-rebinding is Unsupported error-handler ingress requires a producer continuation afterB|O|, CLI1/nullPHPexit/quiet workerstderr/zero agreement. Native author3+peer1 precede runtime/protocol edits.",
+  "compatibility": "Old75 forged OWNERnone is still source-invalid for actual retained Closure invocation; old scalar-pack controls remain snapshot/type-inconsistent, PACKSeps array/stdClass heads are disjoint. No historical repair/actor. V92 FROMCALLABLEFACTORY DEFINE selectors are disjoint KIND/value/source shapes; no shared source-validator/body change from this milestone. Primitive sibling DEFINE2879 only. No Stringable/userclass/reference/last-owner or paused Source47/owned-NUL/NaN/COMP88 execution. No engine bug or intentional divergence identified.",
+  "execution": "Initial and affected packets CPU3, LC_ALL=C TZ=UTC INT+kill5 AS3221225472, serial fail-first/full reap. Native15/CLI45-host60/freshSL90 unchanged; workers quiet.",
+  "command_prefix": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s <cap>s prlimit --as=3221225472 -- taskset -c <cpu> python3 <step>",
+  "commands": [
+    {
+      "revision": "0f0ac8ca543af25ea1c8795563e6f7b0374cc86e",
+      "cpu": 3,
+      "caps": [
+        90,
+        90,
+        90
+      ],
+      "steps": [
+        "tests/semantics/ini_set_unpack_null_array_value_sources.py --phase native --output .tools/ini-set-unpack-null-array-value-native-76",
+        "tests/semantics/ini_set_unpack_null_array_value_review_sources.py --phase native --output .tools/ini-set-unpack-null-array-value-review-76",
+        "tests/semantics/ini_set_unpack_null_array_value_sources.py --phase baseline --case captured-string-unpack-array-before-option-cow-and-live-callee-rebinding --output .tools/ini-set-unpack-null-array-value-native-76"
+      ]
+    },
+    {
+      "revision": "3e6fb699564d504a967ef1b94196f00482dec97d",
+      "cpu": 3,
+      "caps": [
+        240,
+        90,
+        90,
+        360,
+        90,
+        120
+      ],
+      "steps": [
+        "tests/semantics/ini_set_unpack_null_array_value_sources.py --phase model --output .tools/ini-set-unpack-null-array-value-native-76",
+        "tests/semantics/ini_set_unpack_null_array_value_review_sources.py --phase model --output .tools/ini-set-unpack-null-array-value-review-76",
+        "tests/semantics/ini_set_unpack_null_array_value_protocol.py --phase prepare --sources .tools/ini-set-unpack-null-array-value-native-76 --output .tools/ini-set-unpack-null-array-value-public-76",
+        "tests/semantics/ini_set_unpack_null_array_value_protocol.py --phase check --sources .tools/ini-set-unpack-null-array-value-native-76 --output .tools/ini-set-unpack-null-array-value-public-76",
+        "tests/semantics/ini_set_unpack_null_array_value_review_protocol.py --phase prepare --sources .tools/ini-set-unpack-null-array-value-review-76 --output .tools/ini-set-unpack-null-array-value-review-public-76",
+        "tests/semantics/ini_set_unpack_null_array_value_review_protocol.py --phase check --sources .tools/ini-set-unpack-null-array-value-review-76 --output .tools/ini-set-unpack-null-array-value-review-public-76"
+      ]
+    }
+  ],
+  "raw_root": ".tools/ini-set-unpack-null-array-value-evidence-76",
+  "report_sha256": {
+    "author/public/check-report.json": "b55fe8bc8f853c52ee5642729aa90aa9f4f04e404b042a981b17b72f31cdbd62",
+    "author/public/prepare-report.json": "5fcbbaa8184714424314b61d239049adababd948347b42ce70b0eab5aead321c",
+    "author/review/model-report.json": "844da64c9673282693615b21c9009c2d1f303322cb596969a85f55069db3a3c2",
+    "author/review/native-report.json": "4dc0af042e8f26708e31cddc0cdb2cef3a639afb708e61de26b15966373eac9d",
+    "author/review-public/check-report.json": "020ba781cc34226bb34d98f83e4e1ba2f7634c172f32fc651b5abec90d35063f",
+    "author/review-public/prepare-report.json": "9a0e1947b6deaf415e232cba54baef030915fcaf251790152d3995a4afde30a5",
+    "author/sources/baseline-report.json": "e29698c9772a5da6073fd43d2e56072b1d7901af1854a2c45d7cf1eb21022d17",
+    "author/sources/model-report.json": "91a95e47e30d2bd29d47e044cefcdcff9f2b1cf603df8504563857512a67f47e",
+    "author/sources/native-report.json": "6a60bcfd3413096f5e61690d8cc5122df851769a9f4257624c7aad7b0a7a51ac"
+  },
+  "recovery": "After independent ACCEPT/RAW STOP/focused users[], four roots moved once to author/{sources,review,public,review-public}; nine concise reports hashed once. Restore original paths/cuts for source/cwd identity; reports retain inputs/commands/exits. No raw/hash renewal.",
+  "remaining": "Additional arguments/packs, retained-owner purely positional ARRAY calls without unpacking, nested/owning/reference/undefined/NaN/legacy-string inner leaves, packed stdClass/other object values, PIPE and sole-owner lifetimes remain partial. No full-core/equivalence/BOLA claim.",
+  "composition": {
+    "parent": "f1726092ce4e8786346ae85922ffe7d194c8bf31",
+    "private_publication": "7cbad5e6f1f1500e910f5eedd4e57812b0f229ab",
+    "ordered_modules": 407,
+    "seams": "Parent172/config selection/source/trace/root/301 GC/schema/manifest are base-exact. Incoming checked-missing comparisons, reference-return/destructor chains, parked Generator delegation, FROMCALLABLEFACTORY DEFINE classification and typed-PARRAY CELL float-key literal warning/debt selectors have no producer here. Only defined strict comparisons, integer increments/quiet concat, DIRECT integer/string-key arrays and primitive PINT2879 sibling DEFINE occur. Preserve all incoming runtime/schema/ordered407 bytes; no actual selected-record constructor/schema change is present.",
+    "evidence": "Source4/state1182 retain3e6fb6995/runtime7d4c579ea/407 and initial0f0ac8ca5 native4/baseline0. Actual-parent selector review requires no joined actor or state lift; no raw/hash renewal."
+  }
+}

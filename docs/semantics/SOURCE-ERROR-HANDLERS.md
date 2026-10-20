@@ -134,9 +134,15 @@ missing-left Warning, which still warns again.
 Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also admit either missing
 operand with an initially defined scalar counterpart, following that counterpart's
 current wrapper after the callback. A missing right name need not be initialized.
-Both protocols freeze null while preserving the opposing read. Owning opposing
-values remain unsupported; a missing later physical CV can warn again after the
-first read, including one removed by the first handler.
+Both protocols freeze null while preserving the opposing read. Owning Boolean
+comparison counterparts remain unsupported; a missing later physical CV can warn
+again after the first read, including one removed by the first handler.
+`<=>` resume also permits a live flat primitive array at the opposing CV, including
+reference rebinding and COW, after any already admitted scalar/missing-pair entry.
+Only its current emptiness is compared against frozen NULL. Array ingress and
+nested/reference/object entries remain partial; the
+[array resume review](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
+records the unchanged certificates, roots and discard.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.
 [The equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json)
@@ -194,8 +200,12 @@ missing-right Warning to NULL against the frozen right NULL. Their distinct scal
 right-frozen record preserves surviving alias owners and yields true/false/false/true
 without another report; see the
 [forward checked-left review](../../coverage/semantics/undefined-scalar-compare-checked-unset-review.json).
-Reversed `>`/`>=` still refuse removal of an already checked defined source-right
-counterpart during the later Warning.
+Reversed `>`/`>=` now also consume an already checked source-right CV removed
+during the missing-left Warning quietly. Their old left-frozen record preserves
+TASK/first NULL and restores RESULT as NULL, yielding false/true with surviving
+aliases and one report; the opposite unread-left path still warns again. The
+[reversed checked-right review](../../coverage/semantics/undefined-scalar-compare-checked-unset-reversed-review.json)
+records this bounded restore. Owning values and wider producers remain partial.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding
@@ -351,8 +361,8 @@ inverse balancing and cleanup. The
 [typed array-leaf ledger](../../coverage/semantics/array-literal-float-typed-array-alias-leaf-review.json)
 adds public array-property witnesses with scalar rejection and nested child COW,
 including source removal by explicit property unset. Other accepted property
-descriptors compose existing type-source validation. Global outer typed-array
-CELL admission, deeper owning children and indebted descendants stay out.
+descriptors compose existing type-source validation. Deeper owning children and
+indebted descendants stay out.
 DIRECT child-array entries share the same bounded child eligibility, with no
 embedded leaf CELL: children are mutable nonpool tables of DIRECT
 null/bool/int/float or validated byte strings, without outgoing owner edges or
@@ -362,6 +372,17 @@ logical pruning and preserves duplicate edges. The
 checks independent child COW, repeated-child owner multiplicity, deletion and
 supplied throw while outer table/wrapper biases cancel before cleanup. No new
 recursive eligibility, source authentication or ownership algorithm is introduced.
+Outer array-valued reference cells also retain ordinary validated property type
+sources accepting the bounded payload. The actual payload and every source
+object use the same logical-pruned live set for debt safety. Physical count1
+copies unwrap to DIRECT values, permitting scalar replacement and independent
+payload COW while the original property remains typed; restored shared copies
+keep the ALIAS and its type constraint. Explicit source removal is tested with an
+extra alias through inverse balancing, avoiding effective-zero retirement. The
+[typed outer-array ledger](../../coverage/semantics/array-literal-float-typed-array-ref-review.json)
+records public array-property witnesses, including deletion, dual-source supplied
+throw and initial typed-old capture. Other accepting descriptors compose existing
+validation; global primitive/string gates, type writers and count/prune rules stay exact.
 
 Missing-key module409 retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,

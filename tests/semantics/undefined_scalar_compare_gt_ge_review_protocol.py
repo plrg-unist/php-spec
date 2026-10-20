@@ -20,7 +20,7 @@ def checks(program, path, name):
             if condition == 'PhpStep: S_without ~> S_without_restored':
                 condition = 'PhpStep: S_without ~> S_denied'
             if condition.startswith('S_without_restored = S_without['):
-                condition = 'S_denied = S_without[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed right operand"]'
+                condition = 'S_denied = S_without[.TODO = perrorread.TASK :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = perrorread.BASE]'
             if condition == '$error_read_plan(S_both) = (perrorread)':
                 result += [
                     '$scalar_compare_right_read_shape(perrorread.ORIGINAL,perrorread.INPUT,perrorread.BASE) = (perrorread_both_right)',

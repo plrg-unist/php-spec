@@ -6,9 +6,7 @@ import global_constant_sources as family
 from undefined_spaceship_checked_unset_cases import CASES
 
 family.CASES = CASES
-family.UNSUPPORTED = {
-    'checked-left-array-boundary': ('spaceship warning changed opposing scalar', b'B|H|'),
-}
+family.UNSUPPORTED = {}
 family.BASELINE = ('spaceship warning changed opposing scalar', b'H:1:1:10:1;')
 family_fingerprint = family.fingerprint
 

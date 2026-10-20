@@ -6,9 +6,7 @@ import global_constant_sources as family
 from undefined_scalar_compare_second_reversed_cases import CASES
 
 family.CASES = CASES
-family.UNSUPPORTED = {
-    'second-reversed-removed-right-boundary': ('scalar comparison warning changed right operand', b'B|H|'),
-}
+family.UNSUPPORTED = {}
 family.BASELINE = ('scalar comparison warning changed left operand', b'H:1::1:10;')
 family_fingerprint = family.fingerprint
 

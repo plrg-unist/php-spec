@@ -30,33 +30,45 @@ right read: its current wrapper is read after the callback, including a newly
 created reference or rebinding to another scalar cell. The missing right stays
 null. Removing that already checked left CV now compares quietly against the
 frozen right NULL, returning 0 without another Warning or an old-cell read.
-Surviving aliases keep their value and ownership. Replacing left with an owning
-value remains Unsupported. See the
+Surviving aliases keep their value and ownership. See the
 [checked-left removal review](../../coverage/semantics/undefined-spaceship-checked-unset-review.json)
 and the
 [live-left review](../../coverage/semantics/undefined-spaceship-right-review.json).
+After an admitted `<=>` Warning, either opposing CV can now hold a live flat
+array of primitive values without element references. Against frozen NULL, empty
+arrays give 0; nonempty arrays give -1 with NULL left and +1 with NULL right.
+This includes both-missing and same-name entry: `$x <=> $x` can return -1 after
+the handler creates `[false]`. Current reference/COW bindings and next-index
+history survive; initially owning operands and nested/reference/object entries
+remain partial. Entry checks stay unchanged; the
+[array resume review](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
+records the source, ownership and budget checks.
 Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also suspend with one missing operand
 and a defined scalar counterpart. The missing value stays null while the opposing
 wrapper follows callback writes, late reference creation and rebinding. A missing
 right name can remain undefined throughout the callback. False handlers preserve
 default Warning order; throws preserve destination/catch/finally. The opposing CV
-must remain scalar on return, except for the removed-left and second-Warning
-paths below; owning values stop Unsupported. The
+must remain scalar on return unless an already checked name is removed or a later
+missing read stages another Warning, as described below; owning values stop
+Unsupported. The
 [missing-left review](../../coverage/semantics/undefined-scalar-compare-review.json)
 and [missing-right review](../../coverage/semantics/undefined-scalar-compare-right-review.json)
 and [not-equal/less-or-equal review](../../coverage/semantics/undefined-scalar-compare-ne-le-review.json)
 and [greater review](../../coverage/semantics/undefined-scalar-compare-gt-ge-review.json)
 record the separate cuts. Zend evaluates `>`/`>=` source expressions left to right,
-then reverses physical comparison operands. The single-missing/scalar-throughout
-bound makes these source-oriented records valid; removed-right native probes
-confirm one Warning without admitting that wider path. Forward `==`/`!=`/`<`/`<=`
+then reverses physical comparison operands. Records retain source orientation
+while resume guards follow the physical checks. Forward `==`/`!=`/`<`/`<=`
 now quietly compare a checked left CV removed during a missing-right Warning
 against frozen right NULL, yielding true, false, false, true. Surviving aliases
 retain their own values and owners; absent right, false/default and supplied throw
 remain ordered. The
 [forward checked-left review](../../coverage/semantics/undefined-scalar-compare-checked-unset-review.json)
-checks this separate right-frozen restore. Reversed `>`/`>=` still refuse removal
-of an already checked defined source-right counterpart. Owning values and wider
+checks this separate right-frozen restore. Reversed `>`/`>=` now also quietly
+consume an already checked source-right CV removed during the missing-left Warning.
+Their first source-left NULL stays frozen, yielding false/true without an old alias
+read or a second report; see the
+[reversed checked-right review](../../coverage/semantics/undefined-scalar-compare-checked-unset-reversed-review.json).
+Removing an unread later CV still stages its Warning. Owning values and wider
 producers remain partial. Earlier spaceship cuts remain in the
 [scalar warning review](../../coverage/semantics/undefined-spaceship-review.json).
 

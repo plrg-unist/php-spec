@@ -44,7 +44,7 @@ def conditions(name, program, path, stdout):
         'ppropref_typed.SOURCES = [OBJECT_PROP_SOURCE n_box ($ptascii("slot")) porigin_property]',
         '$propref_sources_valid(S, n_typed, ppropref_typed.SOURCES)',
         '$literal_reference_flat_cell(S, n_typed)', '~$literal_reference_plain_cell(S, n_typed)',
-        '~$literal_reference_cell(S, n_typed, S.ALLOCATIONS)',
+        '~$literal_reference_cell(S, n_typed, [HCELL n_typed, HOBJECT n_box])',
         '$literal_reference_child_array(S, n_payload, S.ALLOCATIONS)',
         items('S', 'n_current', 'ALIAS n_typed', 8), items('S', 'n_old', 'ALIAS n_old_leaf', 7),
         payload('S', 'n_payload', 44), payload('S', 'n_old_payload', 33),

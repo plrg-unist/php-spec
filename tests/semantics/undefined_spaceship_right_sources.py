@@ -6,7 +6,7 @@ import global_constant_sources as family
 from undefined_spaceship_right_cases import CASES
 
 family.CASES = CASES
-family.UNSUPPORTED = {'right-array-boundary': ('spaceship warning changed opposing scalar', b'B|H|')}
+family.UNSUPPORTED = {}
 family.BASELINE = ('error-handler ingress requires a producer continuation', b'')
 family_fingerprint = family.fingerprint
 
