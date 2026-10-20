@@ -2518,42 +2518,36 @@ joined actor, accepted replay or renewed execution credit.
 The earlier mixed CV/selected-reference arithmetic route retains source9/state858
 in its [review ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 
-M130 preserves a source-local catch after a later computed owning return throws.
-D retires normally, then C throws the outside supplied object with B/A pending.
-Existing destructor order already agreed; the repair restores C/K, D2/D1/S,
-Notice at completed D's line21, a fresh detached NULL and prior b7.
+M131 preserves local catch and the first completed return's Notice after two
+normal owning retirements. Five computed slots retire E and D normally, then C
+throws the supplied global object with B/A pending. Existing body order already
+agreed; the repair restores C/K/S, NoticeE26, fresh detached NULL and prior b7.
 
-A SOURCE-only tag retains the actual true C queue and one completed D cursor.
-Exactly one missing protected-finally path, D's singleton computed return,
-compiled line and ordinary by-value callee, D/C links and initial ORIGIN bind
-that source authority after D is freed. Replay retains D_NULL/C_NULL/B/A and
-NoticeD21. The added direct-method guard excludes wider Holder-clearing throws;
-old false/Holder/one-cleared paths, generic cleanup, roots and GC are unchanged.
+A SOURCE-only prefix history retains the actual true C queue and completed
+cursors in retirement order. Optional recursion validates every missing lexical
+path, singleton computed return, compiled line, emitted ordinary non-BYREF callee
+and restore link, reversing [D,E] to [E,D]. Initial C.finally capture and exact
+post-effect list validation require no freed E/D allocation. Direct C3 supplied
+throw and existing outer/function/local-replay bounds stay required. The old
+single-cursor tag retains its domain through a singleton wrapper. A linked leading
+NULL grammar preserves E/D/C replay and first E Notice before the live B/A slots;
+generic cleanup, storage, roots and GC stay unchanged.
 
-One distinct original agrees at final `25e7a1f6c`/408 in 50.272<120; its initial 78e8
-comparison remains separate. Author 129/2 retains 78e8; independent 162/2 retains
-25e7, totaling 291 Boolean/4 raw across explicit cuts. The final +2 guard holds
-pointwise on the author's unchanged direct C3 method; the peer proves it in
-borrowed f and post-free pending. No author replay. Four exact raw/public states
-cover D completion/C capture, pending replay and D_NULL resume/REF_RECHECK.
-BYREF/capture-ORIGIN controls are helper-only; missing-list facts are cardinality
-checks. Mirrored D LINE/SOURCE mutations preserve heap/supplied identity before
-public refusal; the peer owns one ending. Original compile-only filter, active-C
-finder and caller-table fixture failures remain zero. Only the corrected peer
-retries
-under strict 45/state 300; accepted source/author cuts remain separate.
-Native/baseline and separate 87/3 diagnosis retain 7944/408. Wider prefixes/throw forms,
-fewer remaining slots, reentry and GC remain partial; this is bounded structural
-authority, not general reachability.
+One original agrees in 59.956<120 at `c46401d32`/409. Author 162/3 and independent
+181/3 pass (343 Boolean/6 raw), with three early capture states plus pending
+replay, E_NULL resumption and actual D_NULL consumption retaining E REF_RECHECK.
+Helper-only extraction controls distinguish empty success, skipped ancestors,
+reversed input and invalid tails. Mirrored interior D LINE/order histories keep
+heap/supplied identity valid before public refusal; grammar controls retain the
+first Notice and every interior link. One forward caller ending uses main ENV.
+Native/baseline and separate 118/4 diagnosis retain `a535c65ff`/409. No executed
+failure, retry or accepted replay. Fresh coverage is two completed returns and
+two remaining slots; longer widths, fewer slots, broader throw forms, reentry and
+GC remain partial. This is structural source authority, not general reachability.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
-M130 composes over actual `0a6f5a589`/409. Tested 156/270 stay byte-exact25e7;
-30 preserves all parent additions except the new history tag, and every other
-spec path/ordered409 manifest stays parent-exact. Incoming INI/DEFINE, flat-array
-spaceship, NULL literal-key restore, magic property updates, named Warning casts
-and Generator SEND selectors have no producer. The source's int casts consume
-booleans without handlers, so cast plans stay empty. Private source/author/peer
-cuts remain unchanged; composition adds no joined execution credit.
+M130's one-prefix source/291+4 retain their explicit 78e8/25e7 cuts and all three
+fixture failures; all earlier evidence remains separate.
 
 M129's source1/382+4, original protected-key failure and all earlier cuts remain
 separate; no accepted historical campaign is renewed.

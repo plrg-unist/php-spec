@@ -5001,15 +5001,15 @@ no-instance, echo-only interposed scalar history. Fresh control/treatment source
 agree with PHP; separate 463/8 state checks cover its shared-cell RELEASE/EXIT
 pauses, required literal history despite an unchanged heap, engine TypeError catch,
 one line7 Notice and detached aliases.
-Owning-return histories preserve a local catch when a later computed slot throws
-after the innermost one retires normally. A nonowning completed cursor keeps both
-cleared returns and Notice at the original line21, then a fresh detached NULL
-and prior caller alias. One original and 291 Boolean/4 raw checks across retained
-`78e8a3bb5` and narrowed `25e7a1f6c` cuts cover this four-slot supplied-global path.
-Earlier
-Holder/typed-alias cuts remain separate in the
+Owning-return histories preserve a local catch after normal E/D retirement,
+then a supplied-global C throw with B/A pending. A nonowning completed-cursor list
+keeps three cleared returns and the first completed return's Notice at line26,
+then a fresh detached NULL and prior caller alias. One original and 343 Boolean/6 raw checks
+pass at `c46401d32`/409. The older single-prefix 291/4 and Holder/typed-alias cuts
+remain separate in the
 [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-Wider prefixes/throw forms, fewer than two remaining slots, reentry and GC remain open.
+The list is recursive; fresh PHP evidence covers two completed returns. Wider
+widths/throw forms, fewer than two remaining slots, reentry and GC remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;
