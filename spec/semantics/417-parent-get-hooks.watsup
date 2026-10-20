@@ -1,3 +1,7 @@
+dec $parent_set_hook_arg(expression) : phpType7?
+dec $parent_set_hook_function(pstate, pparenthookcall) : pfunction?
+dec $parent_set_hook_tasks(ptask*, pparenthookcall) : bool
+dec $parent_set_hook_pair(ptask, ptask*, pparenthookcall) : bool
 ;; A naked parent::$p::get() is a hook call, not a static-property class read.
 ;; PHP-Parser keeps the inner fetch span when parentheses wrap that class operand.
 dec $parent_hook_file_entry(metadataEntry) : int?
@@ -59,6 +63,12 @@ def $ppparent_hook_call(P, pcpath, expression, ptbytes_property, ptbytes_hook, e
   -- if $ppparent_hook_context(P) = ((ptbytes_property, $ptascii("get")))
   -- if $ptlc(ptbytes_hook) = $ptascii("get")
   -- if ~P.CLOSURE
+def $ppparent_hook_call(P, pcpath, expression, ptbytes_property, ptbytes_hook, ([phpType7])) = $ppcall_args($ppclearvalue(P), pcpath ++ [PCFIELD 2], 0, [phpType7], PNUNSUPPORTED "parent set hook deferred parameter mode")
+  -- if P.CLASSCONTEXT =/= eps
+  -- if $ppparent_hook_context(P) = ((ptbytes_property, $ptascii("set")))
+  -- if $ptlc(ptbytes_hook) = $ptascii("set")
+  -- if ~P.CLOSURE
+  -- if $parent_set_hook_arg(expression) = (phpType7)
 def $ppparent_hook_call(P, pcpath, expression, ptbytes_property, ptbytes_hook, phpType7*) = $ppunsupported(P, "parent property hook call arguments or scope") -- otherwise
 
 def $ppdispatch(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppparent_hook_call(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata, ptbytes_property, ptbytes_hook, phpType7*)
@@ -111,6 +121,8 @@ def $parent_hook_function(S, pparenthookcall) = (pfunction)
   -- if $(pparenthookcall.OBJECT < |S.OBJECTS|)
   -- if S.OBJECTS[pparenthookcall.OBJECT] = INSTANCE porigin_called
   -- if pparenthookcall.CALLER.CALLED_CLASS = (porigin_called)
+def $parent_hook_function(S, pparenthookcall) = $parent_set_hook_function(S, pparenthookcall)
+  -- if pparenthookcall.CALLER.TARGET = PROPERTY_SET_TARGET ppropertyhook
 def $parent_hook_function(S, pparenthookcall) = eps -- otherwise
 
 dec $parent_hook_plan(pstate) : pparenthookcall?
@@ -134,6 +146,7 @@ rule PhpStep/parent-hook-call: S ~> S[.TODO = [(CALL_ARGS (PARENT_HOOK_TARGET pp
   -- if $parent_hook_syntax(expression)
   -- if $method_source_task(S, expression)
   -- if $parent_hook_plan(S) = (pparenthookcall)
+  -- if pparenthookcall.CALLER.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
 rule PhpStep/parent-hook-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "parent get hook source or function"]
   -- if S.TODO = (EVAL expression) :: ptask_tail*
   -- if $parent_hook_syntax(expression)
@@ -152,6 +165,7 @@ def $call_receiver_roots(pcallcontext) = eps
 
 dec $parent_hook_pending(pstate, pparenthookcall) : bool
 def $parent_hook_pending(S, pparenthookcall) = true
+  -- if pparenthookcall.CALLER.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
   -- if S.TODO = (CALL_ARGS (PARENT_HOOK_TARGET pparenthookcall) eps 0 eps (pparenthookcall.SITE) pparenthookcall.LINE) :: METHOD_RESULT :: ptask_tail*
   -- if S.ORIGIN = (pparenthookcall.SITE)
   -- if S.CURRENT = (pparenthookcall.CALLER)
@@ -160,6 +174,7 @@ def $parent_hook_pending(S, pparenthookcall) = false -- otherwise
 
 dec $parent_hook_entered(pstate, pcallcontext?, pframe*, pparenthookcall) : bool
 def $parent_hook_entered(S, (pcallcontext), pframe :: pframe_tail*, pparenthookcall) = true
+  -- if pparenthookcall.CALLER.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
   -- if pcallcontext.TARGET = PARENT_HOOK_TARGET pparenthookcall
   -- if pcallcontext.FUNCTION = pparenthookcall.HOOK /\ pcallcontext.CALLSITE = (pparenthookcall.SITE) /\ pcallcontext.LINE = pparenthookcall.LINE
   -- if pcallcontext.ARGC = 0 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps
@@ -176,7 +191,14 @@ def $parent_hook_entered(S, pcallcontext?, pframe*, pparenthookcall) = false -- 
 def $call_selected_valid(S, PARENT_HOOK_TARGET pparenthookcall, (porigin)) = (porigin = pparenthookcall.SITE /\ ($parent_hook_pending(S, pparenthookcall) \/ $parent_hook_entered(S, S.CURRENT, S.FRAMES, pparenthookcall)))
 
 ;; Trace names use the captured lexical parent even after receiver retirement.
-def $trace_context_function(S, pcallcontext) = $hook_name(ppropertydesc.NAME)
+dec $parent_hook_trace_name(pstate, pparenthookcall, ptbytes) : ptbytes
+def $parent_hook_trace_name(S, pparenthookcall, ptbytes) = $hook_name(ptbytes)
+  -- if $origin_node(S.SOURCES, pparenthookcall.HOOK) = (NPropertyHook phpType14 phpType24 phpType4 (NIdentifier (BYTES text) metadata_name) phpType16 phpType39 metadata)
+  -- if $ptlc($base64(text)) = $ptascii("get")
+def $parent_hook_trace_name(S, pparenthookcall, ptbytes) = $property_set_name(ptbytes)
+  -- if $origin_node(S.SOURCES, pparenthookcall.HOOK) = (NPropertyHook phpType14 phpType24 phpType4 (NIdentifier (BYTES text) metadata_name) phpType16 phpType39 metadata)
+  -- if $ptlc($base64(text)) = $ptascii("set")
+def $trace_context_function(S, pcallcontext) = $parent_hook_trace_name(S, pparenthookcall, ppropertydesc.NAME)
   -- if pcallcontext.TARGET = PARENT_HOOK_TARGET pparenthookcall
   -- if $class_at(S.CLASSES, pparenthookcall.CLASS) = (pclassdesc)
   -- if $hook_property_at(pclassdesc.PROPERTIES, pparenthookcall.PROPERTY) = (ppropertydesc)
@@ -186,3 +208,111 @@ def $trace_context_class(S, pcallcontext) = (pclassdesc.NAME)
   -- if $class_at(S.CLASSES, pparenthookcall.CLASS) = (pclassdesc)
 def $trace_context_type(S, pcallcontext) = ($ptascii("->"))
   -- if pcallcontext.TARGET = PARENT_HOOK_TARGET pparenthookcall
+
+;; One positional value comes from a literal named, no-argument producer.
+def $parent_set_hook_arg(NExprStaticCall phpType19 phpType20 (SEQUENCE ([NArg ABSENT (NExprFuncCall (NName (BYTES text_function) metadata_function) (SEQUENCE eps) metadata_argument) (BOOLEAN false) (BOOLEAN false) metadata_arg])) metadata) = (NArg ABSENT (NExprFuncCall (NName (BYTES text_function) metadata_function) (SEQUENCE eps) metadata_argument) (BOOLEAN false) (BOOLEAN false) metadata_arg)
+  -- if $parent_hook_parts(NExprStaticCall phpType19 phpType20 (SEQUENCE ([NArg ABSENT (NExprFuncCall (NName (BYTES text_function) metadata_function) (SEQUENCE eps) metadata_argument) (BOOLEAN false) (BOOLEAN false) metadata_arg])) metadata) = ((ptbytes, ptbytes_hook))
+  -- if $ptlc(ptbytes_hook) = $ptascii("set")
+def $parent_set_hook_arg(expression) = eps -- otherwise
+
+def $parent_set_hook_function(S, pparenthookcall) = (pfunction)
+  -- if pparenthookcall.CALLER.TARGET = PROPERTY_SET_TARGET ppropertyhook
+  -- if pparenthookcall.OBJECT = ppropertyhook.OBJECT
+  -- if $property_set_valid(S, ppropertyhook)
+  -- if $property_set_function(S, ppropertyhook) = (pfunction_child)
+  -- if pparenthookcall.CALLER.FUNCTION = pfunction_child.ORIGIN
+  -- if pparenthookcall.CALLER.RECEIVER = (pparenthookcall.OBJECT)
+  -- if pparenthookcall.CALLER.INSTANCE = eps
+  -- if pparenthookcall.CALLER.LEXICAL_CLASS = (porigin_child)
+  -- if $target_lexical_class(S, pparenthookcall.CALLER.TARGET) = (porigin_child)
+  -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
+  -- if pclassdesc_child.KIND = "class"
+  -- if pfunction_child.ORIGIN = PORIGIN n_unit pcpath_hook
+  -- if pparenthookcall.SITE = PORIGIN n_unit pcpath_site
+  -- if $(|pcpath_site| >= |pfunction_child.BODY|)
+  -- if pcpath_site[0:|pfunction_child.BODY|] = pfunction_child.BODY
+  -- if $origin_node(S.SOURCES, pparenthookcall.SITE) = (expression)
+  -- if $parent_set_hook_arg(expression) = (phpType7)
+  -- if $parent_hook_parts(expression) = ((ptbytes_property, ptbytes_hook))
+  -- if $code_expression(pfunction_child.CODE.EXPRESSIONS, pcpath_site) = ((pparenthookcall.LINE, b))
+  -- if expression = NExprStaticCall phpType19 phpType20 (SEQUENCE ([phpType7])) metadata
+  -- if pparenthookcall.LINE = $source_line(metadata)
+  -- if $code_name(pfunction_child.CODE.NAMES, pcpath_site ++ [PCFIELD 2, PCINDEX 0, PCFIELD 1]) = ((ptbytes_producer, ptbytes_fallback?))
+  -- if $callable_at(S.CALLABLES, $ptlc(ptbytes_producer)) = (porigin_producer)
+  -- if $function_at($all_functions(S), porigin_producer) = (pfunction_producer)
+  -- if pfunction_producer.SIGNATURE.PARAMETERS = eps /\ ~pfunction_producer.SIGNATURE.BYREF
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_child) = (SOURCE_PARENT pparenthookcall.CLASS)
+  -- if $class_at(S.CLASSES, pparenthookcall.CLASS) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
+  -- if $property_desc_at($property_layout(S, pparenthookcall.CLASS, |S.CLASSES|), ptbytes_property) = (ppropertydesc_parent)
+  -- if $hook_property_at(pclassdesc_parent.PROPERTIES, pparenthookcall.PROPERTY) = (ppropertydesc_parent)
+  -- if ppropertydesc_parent.ORIGIN = pparenthookcall.PROPERTY
+  -- if $property_effective_desc(S, pparenthookcall.OBJECT, ptbytes_property) = (ppropertydesc_child)
+  -- if ppropertydesc_child.ORIGIN = ppropertyhook.PROPERTY
+  -- if $property_set_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child)
+  -- if $property_set_origin(S, ppropertydesc_parent) = (pparenthookcall.HOOK)
+  -- if $function_at($all_functions(S), pparenthookcall.HOOK) = (pfunction)
+  -- if pfunction.SIGNATURE = $property_set_signature(ppropertydesc_parent)
+  -- if pfunction.NAME = pclassdesc_parent.NAME ++ $ptascii("::") ++ $property_set_name(ptbytes_property)
+  -- if pfunction.DEFAULTS = eps /\ ~pfunction.EARLY
+  -- if ~$function_generator(S, pfunction)
+  -- if $(pparenthookcall.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pparenthookcall.OBJECT] = INSTANCE porigin_called
+  -- if pparenthookcall.CALLER.CALLED_CLASS = (porigin_called)
+def $parent_set_hook_function(S, pparenthookcall) = eps -- otherwise
+
+def $parent_hook_plan(S) = (pparenthookcall)
+  -- if S.COMPLETION = NORMAL
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_SET_TARGET ppropertyhook
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin_site) = (expression)
+  -- if $parent_set_hook_arg(expression) = (phpType7)
+  -- if $parent_hook_parts(expression) = ((ptbytes_property, ptbytes_hook))
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_child) = (SOURCE_PARENT porigin_parent)
+  -- if $property_desc_at($property_layout(S, porigin_parent, |S.CLASSES|), ptbytes_property) = (ppropertydesc)
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if $property_set_origin(S, ppropertydesc) = (porigin_hook)
+  -- if expression = NExprStaticCall phpType19 phpType20 phpType6 metadata
+  -- if pparenthookcall = {SITE porigin_site, OBJECT ppropertyhook.OBJECT, PROPERTY porigin_property, HOOK porigin_hook, CLASS porigin_parent, LINE $source_line(metadata), CALLER pcallcontext}
+  -- if $parent_set_hook_function(S, pparenthookcall) =/= eps
+rule PhpStep/parent-set-hook-call: S ~> S[.TODO = [(CALL_ARGS (PARENT_HOOK_TARGET pparenthookcall) ([phpType7]) 0 eps (pparenthookcall.SITE) pparenthookcall.LINE), METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (EVAL expression) :: ptask_tail*
+  -- if $method_source_task(S, expression)
+  -- if $parent_set_hook_arg(expression) = (phpType7)
+  -- if $parent_hook_plan(S) = (pparenthookcall)
+  -- if pparenthookcall.CALLER.TARGET = PROPERTY_SET_TARGET ppropertyhook
+
+;; The saved source proves the pending target while its argument calls user code.
+def $parent_set_hook_pair(CALL_ARGS (PARENT_HOOK_TARGET pparenthookcall) phpType7* n poperand* porigin? z, METHOD_RESULT :: ptask_tail*, pparenthookcall) = true
+  -- if porigin? = (pparenthookcall.SITE) /\ z = pparenthookcall.LINE
+  -- if $(n <= 1) /\ |poperand*| = n /\ $(|phpType7*| + n = 1)
+def $parent_set_hook_pair(CALL_SEND (PARENT_HOOK_TARGET pparenthookcall) eps 0 eps porigin? z, METHOD_RESULT :: ptask_tail*, pparenthookcall) = true
+  -- if porigin? = (pparenthookcall.SITE) /\ z = pparenthookcall.LINE
+def $parent_set_hook_pair(ptask, ptask_tail*, pparenthookcall) = false -- otherwise
+def $parent_set_hook_tasks(ptask :: ptask_tail*, pparenthookcall) = ($parent_set_hook_pair(ptask, ptask_tail*, pparenthookcall) \/ $parent_set_hook_tasks(ptask_tail*, pparenthookcall))
+def $parent_set_hook_tasks(eps, pparenthookcall) = false
+def $parent_hook_pending(S, pparenthookcall) = true
+  -- if pparenthookcall.CALLER.TARGET = PROPERTY_SET_TARGET ppropertyhook
+  -- if S.CURRENT = (pparenthookcall.CALLER)
+  -- if $parent_set_hook_tasks(S.TODO, pparenthookcall)
+  -- if $parent_set_hook_function(S, pparenthookcall) =/= eps
+
+def $parent_hook_entered(S, (pcallcontext), pframe :: pframe_tail*, pparenthookcall) = true
+  -- if pparenthookcall.CALLER.TARGET = PROPERTY_SET_TARGET ppropertyhook
+  -- if pcallcontext.TARGET = PARENT_HOOK_TARGET pparenthookcall
+  -- if pcallcontext.FUNCTION = pparenthookcall.HOOK /\ pcallcontext.CALLSITE = (pparenthookcall.SITE) /\ pcallcontext.LINE = pparenthookcall.LINE
+  -- if pcallcontext.ARGC = 1 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps
+  -- if pframe.CONTEXT = (pparenthookcall.CALLER)
+  -- if pframe.ORIGIN = (pparenthookcall.SITE)
+  -- if pframe.TODO = METHOD_RESULT :: ptask_tail*
+  -- if $parent_set_hook_function(S, pparenthookcall) =/= eps
+
+;; Implicit setters have a source hook line, with no source Param occurrence.
+def $default_parameter_line(S, porigin, 0) = $source_line(metadata)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = PARENT_HOOK_TARGET pparenthookcall
+  -- if pparenthookcall.HOOK = porigin
+  -- if $parent_set_hook_function(S, pparenthookcall) =/= eps
+  -- if $origin_node(S.SOURCES, porigin) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11 (SEQUENCE eps) (SEQUENCE statement*) metadata)
