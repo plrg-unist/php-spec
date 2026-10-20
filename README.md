@@ -3628,6 +3628,15 @@ receiver release and fallback. Supplied RV-destructor throws preserve the same
 catch and destination 42. [Four originals and 640 focused premises](coverage/semantics/magic-coalesce-no-get-review.json)
 cover these paths. Other results, aliases and reentry remain partial.
 
+Selected CV/literal private-property `??=` now combines inherited Isset/Get/Set.
+The quiet-read receiver hold ends before the named integer RHS runs; the write
+then re-fetches the current CV. A replacement receives `7`, Get zero skips the
+write, and a current-null receiver raises Error after RHS effects. The expression
+keeps the returned temporary `7` despite a setter's unrelated global mutation.
+A supplied setter Exception preserves the same catch and destination `42`.
+[Four originals and 746 focused premises](coverage/semantics/magic-coalesce-assignment-review.json)
+cover these paths; wider receivers, RHS values and reentry remain partial.
+
 Inherited private writes now invoke a public `__set(string $name, $incoming): void`
 for selected external CV/literal assignments. The setter receives integer `7`,
 but a used CV RHS is read for the result after receiver release: callback `99`
@@ -3635,8 +3644,8 @@ then destructor `123` yields `123`; a literal stays `7`, while a held receiver
 permits `99` before its later destructor. Setter throws preserve the destination
 and the same Exception. Four originals and 524 focused premises cover entry,
 receiver ownership, late delivery and cleanup;
-[setter review](coverage/semantics/magic-setter-review.json). Initial references,
-owning RHS values and wider magic-write forms remain unsupported.
+[setter review](coverage/semantics/magic-setter-review.json). Initial references
+and owning RHS values remain unsupported; wider magic-write forms remain partial.
 
 Hooked iteration, defaulted virtual hooks, other paired or virtual setters, wider trait
 setters, other explicit setter parameter forms, references, other inherited/trait

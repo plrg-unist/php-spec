@@ -1037,6 +1037,8 @@ test-semantics: build
 	python3 tests/semantics/magic_coalesce_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_coalesce_no_get_cases.json
 	python3 tests/semantics/magic_coalesce_no_get_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_coalesce_assignment_cases.json
+	python3 tests/semantics/magic_coalesce_assignment_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_cases.json
 	python3 tests/semantics/magic_empty_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_scalar_cases.json

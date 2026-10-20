@@ -1196,37 +1196,28 @@ joined actor, accepted replay or renewed execution credit.
 The earlier nonowning-copy arithmetic route retains source10/state767 in its
 [review ledger](coverage/semantics/copied-arithmetic-warning-review.json).
 
-Ordinary public declared-only objects now clone after foreach materializes their
-property table. Module 150 builds fresh table metadata and retargets nonowning
-locators to the copy, reusing shallow slot copies and typed-reference attachment.
-Singleton wrappers unwrap only in the copy; held aliases share the cell and retain
-the clone constraint after source unset. Later foreach sees independent writes and
-skips the copy's unset slot. A shallow Payload survives source destruction and is
-released after the copy's destructor.
+Selected inherited-private CV/literal `??=` now releases its quiet-read receiver
+hold before a named integer RHS, then re-fetches the current CV for Set. Old→replacement
+selection receives `7`; Get zero skips RHS/Set and releases before delivery;
+current NULL raises Error after RHS effects. A cached temporary `7` survives the
+setter's unrelated global `99`, and a supplied Set Exception preserves the same
+catch and destination `42` after receiver cleanup.
 
-Five exact source agreements pass at `e4d73c83c`/407. Focused 378 = 366 reached +
-12 derived retains foreach 92/singleton 91 at `c82ba3736` and held 99/payload 96 at
-`4a744884a`. Real clone fronts check fresh metadata, cache roots, ordered type
-sources, escaped-alias rejection/removal, teardown and budget resumption.
-The genuine five baselines are checked cached-clone Unsupported/zero agreement.
-The first native singleton forecast was wrong: Zend's copy constructor unwraps a
-sole reference; original raw observations are retained without replay. One fixture
-parse failure, held Boolean false and the six-prefix diagnostic retain zero credit.
-The fixes only parenthesize a TABLE index and observe the interned string literal.
-[Cached property-clone review](coverage/semantics/cached-property-clone-review.json).
+Four exact source agreements pass at `1c9630c70`/407; all four focused histories
+pass at `ef3caae9d`/407: 746 = 732 reached + 14 derived premises. Actual read
+release, receiver retirement, node-free decision, fresh Set receive, saved call
+validity, zero/error receipts and PREP budgets are checked. Earlier typed-Get-name
+originals stop at the genuine declaration barrier; four fresh untyped-name
+variants expose the quiet-consumer Unsupported gap. Both complete gates remain
+separate, with zero baseline agreement and qualified short-native affinity.
+No runtime/test failure, diagnostic or accepted replay was needed.
+[Magic coalesce-assignment review](coverage/semantics/magic-coalesce-assignment-review.json).
 
-Only 34 lines in module 150 change; existing foreach, reference/type-source and
-cleanup machinery is consumed. Native sampling remains qualified, all model/state
-workers are stable/reaped, and historical clone campaigns are not renewed.
-Dynamic buckets, callbacks, readonly, active collection and wider cached/type/
-lifetime histories remain partial. No generic storage/root/GC change.
-
-Composed over `81717e928`/407 with tested module 150 and runtime/test bodies
-preserved. Incoming reference-return, INI/DEFINE, missing-scalar comparison,
-arithmetic Warning and float-key literal/debt selectors are unselected; new task
-tags and all state/root/default/ordered-manifest bytes remain parent-exact.
-Source5 at e4d73 and focused183/195 retain original cuts and failures0; no concrete
-joined interaction or accepted replay required another actor.
+Modules 30/72/412/416 add the consumer and cached-int write route, reusing existing
+method declarations, inheritance, call/receive and ordinary null-write Error.
+Existing `??`/assignment selectors remain pointwise disjoint. Reference/owning
+RHSs, no-Get/untyped-Isset forms, Get/RHS throws and wider reentry remain partial;
+no generic ownership, destruction, WeakMap, GC or manifest change.
 
 Retained propertyless Stringable `define` names now receive captured NULL flags
 with primitive candidates in admitted user-global/class-name domains. One module400
