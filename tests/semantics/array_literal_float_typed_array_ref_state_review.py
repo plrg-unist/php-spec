@@ -13,13 +13,17 @@ from array_literal_float_array_alias_leaf_state_review import child
 
 def typed_sources(state, owners):
     sources = [f'OBJECT_PROP_SOURCE n_{name} ($ptascii("slot")) porigin_{name}' for name in owners]
-    checks = [f'$propref_at({state}.PROPREFS, n_new) = (ppropref_new)',
-              'ppropref_new.SOURCES = [' + ', '.join(sources) + ']',
-              f'$propref_sources_valid({state}, n_new, ppropref_new.SOURCES)']
-    for name, source in zip(owners, sources):
+    checks = []
+    for name in owners:
         checks += [
             f'$lookup({state}.ENV, $ptascii("{name}")) = (n_{name}_cell)',
             f'{state}.STORE[n_{name}_cell] = DEFINED (POBJECT n_{name})',
+        ]
+    checks += [f'$propref_at({state}.PROPREFS, n_new) = (ppropref_new)',
+               'ppropref_new.SOURCES = [' + ', '.join(sources) + ']',
+               f'$propref_sources_valid({state}, n_new, ppropref_new.SOURCES)']
+    for name, source in zip(owners, sources):
+        checks += [
             f'$node_children({state}, HOBJECT n_{name}) = [HCELL n_new]',
             f'$propref_descriptor({state}, {source}) = (ppropertydesc_{name})',
             f'ppropertydesc_{name}.TYPE = [(PTBRANCH ([PTBUILTIN "array"]))]',
@@ -59,13 +63,13 @@ def conditions(name, program, path, stdout):
         '$node_children(S, HARRAY n_new_payload) = eps',
         '~$literal_reference_plain_cell(S, n_new)', '~$literal_reference_flat_cell(S, n_new)',
         '$literal_reference_cell(S, n_new, S.ALLOCATIONS)',
+    ] + typed_sources('S', owners) + [
         '$literal_reference_cell(S, n_new, ' + live + ')',
         '~$literal_reference_cell(S, n_new, [HCELL n_new, HARRAY n_new_array, HARRAY n_new_payload])',
         '~$literal_reference_cell(S, n_new, [HCELL n_new, ' + live_objects + '])',
         '~$literal_reference_cell(S, n_new, [HCELL n_new, HARRAY n_new_array, ' + live_objects + '])',
         '$literal_reference_flat_array(S, n_new_array, [HARRAY n_new_array, HARRAY n_new_payload])',
         '$literal_reference_cell(S, n_old, S.ALLOCATIONS)',
-    ] + typed_sources('S', owners) + [
         '~$literal_reference_cell(S[.STORE[n_new] = DEFINED (PINT 55)], n_new, S.ALLOCATIONS)',
         '~$literal_reference_cell(S[.STORE[n_new] = DEFINED (PSTRING ($ptascii("text")))], n_new, S.ALLOCATIONS)',
         'S_duplicate = S[.PROPREFS = [ppropref_new[.SOURCES = ppropref_new.SOURCES ++ ppropref_new.SOURCES]]]',
