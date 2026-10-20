@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained `define(...)` Closure callees now preserve captured identity through
+later argument rewrites, primitive publication and returning/throwing duplicates.
+A live CONFIG matches its owner and nonce; nonowning historical receipts keep
+queries valid after owner/frame retirement. Ordinary/named calls and explicit
+`__invoke` preserve earlier values, same-site nonces and raw API/wrapper arguments.
+Legacy string selections carry `OWNER eps`; no new heap edge or intrinsic VALUE
+authority is added. [Owned DEFINE review](coverage/semantics/define-owned-closure-review.json).
+
+Three source agreements pass first attempts at `d61257602`/407; 767 focused
+premises (264+178 author at `b03e51135`,325 independent at `99e14b569`) include
+four budget identities. Original main/peer fixture failures and a shape-assuming
+diagnostic retain zero credit. A shape-free retained-prefix observation confirms
+immediate Closure retirement; PHP strict comparison resolves only a trace-carrier
+representation overclaim. Runtime/source bytes remain unchanged across these
+fixture corrections. Primitive omitted/false is the bounded new slice; owning
+payloads, broader flags/coercions/packs and paused name paths remain partial.
+
 Selected-reference `%=` now captures a fresh fractional RHS after the first
 Deprecated and before the second. Captured `0.5` still raises `Modulo by zero` at
 line 25 despite current and original RHS values of `5`, preserving old target

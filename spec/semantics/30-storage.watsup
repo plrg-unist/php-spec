@@ -273,7 +273,7 @@ syntax pdeclnoticeitem = METHOD_NOTICE pdeclnotice | COMPILER_NOTICE pldiagnosti
 syntax pdeclnoticekind = NOTICE_RUNTIME | NOTICE_FILE nat | NOTICE_EVAL nat nat
 syntax pdeclnoticebatch = { KIND pdeclnoticekind, SITE porigin, LINE int, CLASSES (porigin, nat)*, NOTICES pdeclnoticeitem*, INDEX nat }
 syntax pdeprecatedconstant = { SITE porigin, LINE int, PREFIX nat }
-syntax pselectedcall = { NONCE nat, SITE porigin, KIND pintrinsic, ORIGINAL nat*, LOOKUP nat*, DEPTH nat, LINE int }
+syntax pselectedcall = { NONCE nat, SITE porigin, KIND pintrinsic, OWNER nat?, ORIGINAL nat*, LOOKUP nat*, DEPTH nat, LINE int }
 syntax pgettermethod = GET_MESSAGE | GET_CODE | GET_FILE | GET_LINE | GET_PREVIOUS | GET_TRACE | GET_TRACE_STRING | GET_TO_STRING | GET_SEVERITY | GET_SENSITIVE_VALUE
 ;; A captured factory supplies nonowning creation and invocation authority.
 syntax pgettersource = porigin | GETTER_FACTORY nat porigin

@@ -1961,6 +1961,13 @@ grants no later global permission. A rejected callback's receiver stays alive
 through its raw Error trace, then retires when those references are released.
 [Factory Closure define review](coverage/semantics/define-runtime-from-factory-review.json).
 
+Retained `define(...)` Closure callees now publish primitive constants and handle
+duplicates with omitted/false flags, including explicit `__invoke`. Captured
+callee identity survives later argument changes; nonowning selection history
+keeps queries valid after the callee dies. Repeated calls at one source site keep
+separate nonces, and throwing duplicates preserve raw API/wrapper arguments.
+[Owned DEFINE call review](coverage/semantics/define-owned-closure-review.json).
+
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
 children while cast/query arrays retain COW. A private duplicate copy can keep
