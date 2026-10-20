@@ -4819,22 +4819,20 @@ pauses, required literal history despite an unchanged heap, engine TypeError cat
 one line7 Notice and detached aliases.
 Owning-return histories with at least three pending slots preserve finite
 first-retirement destructor throws and detached caller references. Global
-reference slots keep lexical authority even when they share one cell; plain
-public `object`/`object|string` property sources retain their actual ALIAS and
-declaration. A finite D destructor can clear an object-only Holder before its
-planned supplied throw. The Holder may echo or throw a different supplied object;
-a nonowning class certificate retains its own throw authority after retirement.
-The finite pending set also preserves D's planned operand for held Holders.
-One original and 374 Boolean/4 raw checks at `a5cc86c953` preserve caught other,
-separate given/messages, Previous NULL, skipped DA, local catch/Notice15/fresh
-NULL and detached r/prior b. Existing cleanup and typed writes already matched:
-string becomes legal after Left retires, remaining Right rejects NULL and valid
-replacement keeps the old copy separate. Constructed held/same-ID and malformed
-certificate/third-live controls have their stated state scope. Earlier cuts and
-original parser/decoder failures remain in the
+reference slots keep lexical authority when they share one cell; plain public
+`object`/`object|string` property sources retain their actual ALIAS/declaration.
+A finite D can clear an object-only Holder before its planned supplied throw.
+The Holder may echo or throw a different supplied object; nonowning class history
+retains either finite operand after retirement. M127 source 1/374+4 and its
+constructed controls keep their original cut in the
 [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-Wider Holder bodies/writes/types/constructors, fewer than two remaining slots,
-broader reentry and GC remain open.
+A fresh real held-Holder source and 272 Boolean/4 raw checks agree on unchanged
+`4105d1eb2`: D reaches DA/planned given, the first string write stays constrained,
+and only a later last-owner drop runs Left/other and relaxes the surviving alias.
+The remaining union rejects NULL; replacement preserves the old copy and detached
+r/prior b. No runtime rule changes. Earlier cuts/failures remain separate; wider
+Holder bodies/writes/types/constructors, fewer than two remaining slots, broader
+reentry and GC remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;
