@@ -64,8 +64,8 @@ def conditions(name, program, path, stdout):
     if array:
         checks += [
             'pvalue = PARRAY n_old', 'n_key* = $ptascii("key")',
-            '$lookup(S.ENV, $ptascii("key")) = (n_key)', 'n_key =/= n_q',
-            'S.STORE[n_key] = DEFINED PNULL',
+            '$lookup(S.ENV, $ptascii("key")) = (n_key_cell)', 'n_key_cell =/= n_q',
+            'S.STORE[n_key_cell] = DEFINED PNULL',
             '$lookup(S.ENV, $ptascii("old_hold")) = (n_hold)',
             'S.STORE[n_hold] = DEFINED (PARRAY n_old)', 'n_hold =/= n_q',
             pair('S', 'n_old', 2, 7), '$heap_owners($heap_graph(S), HARRAY n_old) = 2',
@@ -132,7 +132,7 @@ def conditions(name, program, path, stdout):
             '$lookup(S_resume.ENV, $ptascii("changed")) = (n_changed_cell)',
             'S_resume.STORE[n_changed_cell] = DEFINED (PARRAY n_held_changed)',
             'n_held_changed =/= n_changed', pair('S_resume', 'n_held_changed', 44, 88),
-            'S_resume.STORE[n_key] = DEFINED (PINT 9)',
+            'S_resume.STORE[n_key_cell] = DEFINED (PINT 9)',
             '$heap_owners($heap_graph(S_resume), HARRAY n_old) = 3',
             '$heap_owners($heap_graph(S_resume), HARRAY n_changed) = 1',
             '$heap_owners($heap_graph(S_resume), HARRAY n_held_changed) = 1',
@@ -152,7 +152,7 @@ def conditions(name, program, path, stdout):
     ] + empty_biases('S_insert')
     if array:
         checks += [
-            'S_insert.STORE[n_key] = DEFINED (PINT 9)',
+            'S_insert.STORE[n_key_cell] = DEFINED (PINT 9)',
             '$heap_owners($heap_graph(S_insert), HARRAY n_old) = 3',
             '$heap_owners($heap_graph(S_insert), HARRAY n_changed) = 0',
         ]
