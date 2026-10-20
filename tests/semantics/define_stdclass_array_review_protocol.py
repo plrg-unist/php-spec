@@ -122,7 +122,8 @@ def checks(initial, stdout):
     values += [
         '~$dynamic_array_source(S_row[.SELECTEDCALLS = eps][.SELECTSEQ = 0],puserconstant.ORIGIN)',
         'S_no_birth = S_row[.CONSTANTSTDOBJECTS = eps]',
-        '$dynamic_array_value(S_no_birth,PARRAY n_root,eps,false) = eps',
+        '$dynamic_array_value(S_no_birth,PARRAY n_root,eps,false) =/= eps',
+        '~$user_constants_valid(S_no_birth,S_no_birth.USERCONSTANTS)',
         'S_incomplete = S_row[.CONSTANTSTDOBJECTS = $global_std_record_put(S_row.CONSTANTSTDOBJECTS,pconstantstdobject_left[.COMPLETE = false])]',
         '$dynamic_array_value(S_incomplete,PARRAY n_root,eps,false) = eps',
         'S_dead = S_row[.ALLOCATIONS = $destruction_node_delete(S_row.ALLOCATIONS,HOBJECT n_left)]',
