@@ -53,7 +53,7 @@ def conditions(name, program, path, stdout):
         '~$array_float_array_key_source(S[.ORIGIN = eps], ' + args + ')',
         '~$array_float_array_key_source(S[.CODE = eps], ' + args + ')',
         '~$array_float_array_key_source(S, n_a, n_old, poperand, phpType13*, $(z + 1), n_bits, i)',
-        '$array_float_array_key_plan(S[.REFCELLS = n_initial_q :: S.REFCELLS]) = eps',
+        '$array_float_array_key_plan(S[.REFCELLS = n_initial_q :: S.REFCELLS][.STORE[n_initial_q] = DEFINED (PSTRING eps)]) = eps',
         '$heap_owners($heap_graph(S), HARRAY n_old) = 2',
         '$heap_valid($heap_graph(S))', '$call_descriptors_valid(S)',
     ]

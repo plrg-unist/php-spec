@@ -70,7 +70,7 @@ def conditions(name, program, path, stdout):
         'S_request.RESULT = KNOWN pvalue_request', '$string_carrier_valid(S_request, pvalue_request)',
         '$literal_reference_flat_leaf(S_request, pvalue_request)', '$operand_nodes(KNOWN pvalue_request) = eps',
         '$call_descriptors_valid(S)', '$heap_valid($heap_graph(S))',
-        '$array_float_array_key_plan(S[.REFCELLS = S.REFCELLS ++ [n_q]]) = eps',
+        '$array_float_array_key_plan(S[.REFCELLS = S.REFCELLS ++ [n_q]][.STORE[n_q] = DEFINED (PSTRING eps)]) = eps',
         '~$array_float_array_key_source(S[.ORIGIN = eps], ' + args + ')',
         '~$array_float_array_key_source(S, n_builder, n_old, poperand, phpType13*, $(z + 1), n_bits, i)',
         '~$array_float_array_key_source(S, n_builder, n_builder, poperand, phpType13*, z, n_bits, i)',
