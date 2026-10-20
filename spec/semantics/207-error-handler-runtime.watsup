@@ -618,10 +618,11 @@ def $scalar_compare_read_source(pcnode) = eps -- otherwise
 def $spaceship_read_source_operand(S, porigin, KNOWN pvalue) = true
 def $spaceship_read_source_operand(S, porigin, VARIABLE n* z) = $error_variable_source(S, (porigin), [PCFIELD 1], n*)
 def $spaceship_read_source_operand(S, porigin, poperand) = false -- otherwise
-;; Saved array values carry no new producer history. Authenticate the missing
-;; direct CV and both compiled expressions; liveness/flatness stays a domain check.
+;; Saved primitive/array values carry no new producer history. Authenticate the
+;; missing direct CV and both compiled expressions; array bounds stay a domain check.
 def $error_read_source(S, perrorread) = true
-  -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (KNOWN (PARRAY n_array)) z
+  -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (KNOWN pvalue) z
+  -- if $spaceship_read_scalar(pvalue) \/ $both_arrays(pvalue,pvalue)
   -- if perrorread.INPUT = VARIABLE n_right* z_right
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (pcnode)
@@ -632,7 +633,8 @@ def $error_read_source(S, perrorread) = true
   -- if perrorread.NAME = n_right* /\ perrorread.LINE = z
 def $error_read_source(S, perrorread) = true
   -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (VARIABLE n_left* z_left) z
-  -- if perrorread.INPUT = KNOWN (PARRAY n_array)
+  -- if perrorread.INPUT = KNOWN pvalue
+  -- if $spaceship_read_scalar(pvalue) \/ $both_arrays(pvalue,pvalue)
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (pcnode)
   -- if $scalar_compare_read_source(pcnode) = (pbin)
