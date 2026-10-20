@@ -1,0 +1,114 @@
+{
+  "scope": "Selected main-scope CV/literal inherited-private int pre/post updates with existing BYVAL untyped-name Get and Set(string,untyped):void. Raw PINT and in-range +/-1 only; four normal or supplied-throw histories.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_vm_def.h PRE/POST_INC_OBJ and DEC_OBJ resolve the receiver, then use the overloaded helper when get_property_ptr_ptr cannot supply direct storage.",
+      "Zend/zend_execute.c zend_post_incdec_overloaded_property2367 and zend_pre_incdec_overloaded_property2396 pin the selected object, read BP_VAR_R, copy OLD/NEW into the used result before Set, then release the receiver.",
+      "Existing zend_std_read_property/write_property handler holds remain separate from the outer helper hold. Get DECL is absent for the literal inherited-private name; the separate physical PROPERTY origin authenticates Set."
+    ],
+    "divergence": "No engine bug or intentional divergence identified. Raw non-PINT values, coercions and overflow are explicitly outside the admitted slice."
+  },
+  "implementation": {
+    "revision": "30885ab60e49c4095a6a058a6d709452cab0d065",
+    "files": {
+      "spec/semantics/30-storage.watsup": "8f23df5e661ff6b306dfdb01261205b0e0bf9f2c0a21caffcc186107ecf033e1",
+      "spec/semantics/53-incdec.watsup": "9fbe21ba997cba8d63f52b722e1a98903d8122e6bf314f3a1dd60f0bf3add86d",
+      "spec/semantics/419-magic-property-incdec.watsup": "f1fd9d2bd4cca988939d77601edb7ad21b430051bc3f69014b4953520c10c750",
+      "spec/semantics/modules.json": "390a27271a165460146c4fb5c0dba1efd36346f68d8caa2bb9c364369adc4be1"
+    },
+    "basis": "The exact UPDATE_PREP plan selects the main CV once and installs existing Get plus a separate outer VALUE owner. Immutable OLD/NEW and the POST flag authenticate Set and selected delivery after CV NULL/rebinding. The tiny module 53 exclusion applies only when this new plan succeeds. Existing 390/update_value/380/412/418 and generic owner/cleanup/GC bodies remain unchanged; no pstate field or PHP syntax schema change."
+  },
+  "validation": {
+    "native": {
+      "revision": "bb1cd389dc2b040e99e133c08d03c0ae798ca4b7",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-incdec-private-117/.tools/magic-property-incdec-probes-117/native-first/report.json",
+        "sha256": "259412f7aa3a70ce1f33317c9bef15206c24040e86e010fd073832f0f934d6d4"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-incdec-private-117/.tools/magic-property-incdec-probes-117/affinity-native-first.json",
+        "sha256": "0823aeeeb088f818a24cf9569b858b8759b23a263b60fc970006b0329009ab0c"
+      },
+      "result": "Four exact quiet normal tuples 68/73/75/68. Fast affinity observer partial 1/4: post CPU3 mask with empty argv. No full native affinity/argv claim or replay."
+    },
+    "genuine_baseline": {
+      "revision": "bb1cd389dc2b040e99e133c08d03c0ae798ca4b7",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-incdec-private-117/.tools/magic-property-incdec-probes-117/accepted-current-baseline/report.json",
+        "sha256": "7234edf5a24fe8beaeb3eeed123d9be9c83e729945407930a9cb411c345c635b"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-incdec-private-117/.tools/magic-property-incdec-probes-117/affinity-accepted-current-baseline.json",
+        "sha256": "46371a084aab2f1e28cf0c9fab5a0f009e8350dfacebf2fae5d2f368f3861cbd"
+      },
+      "result": "Four frontend+adapter-checked Unsupported magic getter read receiver or mode, prefixes P:/N:/X:/G:, CLI1/semantic exitNone/quiet; zero agreements. Complete 4 CPU3/full 7 argv/stable/reaped."
+    },
+    "source": {
+      "revision": "30885ab60e49c4095a6a058a6d709452cab0d065",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-incdec-private-117/.tools/magic-property-incdec-probes-117/changed-model-6fh9bn37/report.json",
+        "sha256": "2020f026b856c1a4a74f9cab1d940a72589f49a249e4e68a53f3560f8f635fb6"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-incdec-private-117/.tools/magic-property-incdec-probes-117/affinity-changed-source-117.json",
+        "sha256": "9482c21524b59c27061336d4fecf38c3fb37a321b1b1a417a17bafad2fabd169"
+      },
+      "result": "Four checked normal native agreements 68/73/75/68, CLI0/quiet/stable/reaped. Complete 4 CPU5/full 7 argv/start-matched receipts."
+    },
+    "focused": {
+      "revision": "cf3f99e05f3337897f2e7073e3330849ff5e84dd",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-incdec-private-117/.tools/magic-property-incdec-protocol-jr8n9spa/report.json",
+        "sha256": "5c84a00039aa6d420d265197a3ea00797cec97e2cf5f649e8a01a3bdd1a0c095"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-incdec-private-117/.tools/magic-property-incdec-probes-117/affinity-state-117-repair1.json",
+        "sha256": "5f8432b0e9c3f980b83df80ea7e97aa3da7a8a872ebbdacd148404638822ebdd"
+      },
+      "prepared": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-incdec-private-117/.tools/magic-property-incdec-protocol-6tkm881n/PREPARED.json",
+        "sha256": "5790d07b17e62800e9898feb457d4a730dcdc5141fbd66ad8fa7c420843e15fd"
+      },
+      "result": "Four stricttrue AL90/SL90 groups: post 239, retarget 221, Set throw 219, Get throw 142;821 = 798 reached + 23 derived. Eight quiet0/full CPU4/exact 412 argv/start matches/stability/emptygroups/reaped.",
+      "witnesses": "Post++ sets 6 and delivers OLD 5 after D6/live 99; pre-- retains the old receiver across Get retargeting and delivers NEW 4. Pre++ Set commits 6 before the same supplied throw while outer after stays 42. Post-- Get throws before arithmetic/Set and retires field 5. Actual separate holds, saved scopes, raw transition/stable bookkeeping fronts, source/range refusals and zero/resume budgets are checked."
+    }
+  },
+  "preserved_failure": {
+    "revision": "fe3c682f869650471fe8ccc1fc2c10cb9b33330e",
+    "report": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-property-incdec-private-117/.tools/magic-property-incdec-protocol-8g_rjwyj/report.json",
+      "sha256": "29901c4da0474a8b2671858a8e27658ee3bda47d8d9927359463a0ae5e238d64"
+    },
+    "affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-property-incdec-private-117/.tools/magic-property-incdec-probes-117/affinity-state-117.json",
+      "sha256": "20caa66dac9fc37270d5f5034895cfec095067148294193a3cc8c807d2f7643c"
+    },
+    "result": "First AL fixture compilation rejected a fresh porigin_parent inside a conjunction (compiler stdout diagnostic/CLI0). Zero applications/credit; all four histories unrun. Sole fixture repair splits origin binding and result comparison, without changing assertions/runtime. Observer partial 1/8 CPU5/full 412 argv; stopped/reaped. No diagnostic or source replay."
+  },
+  "compatibility": "Runtime at focused cf3f is byte-exact to source 30885. Only the one fixture binding split separates failed fe3c and accepted cf3f. Earlier115/390 source/state cuts remain historical; no renewed credit.",
+  "reproduction": {
+    "environment": "LC_ALL=C TZ=UTC PHP_SPEC_SCRIPT_ENCODING absent; jobs1/profile tests/semantics/profile.json/error_reporting30719. Native45, model60/outer75/100000steps; focus serial AL90/strictSL90/cache false/det true. Raw reports bind binary/module/source hashes, argv, exits and stable inputs.",
+    "gate_driver": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-property-incdec-private-117/.tools/magic-property-incdec-probes-117/run.py",
+      "sha256": "63ebb9507bd24c05d3e3296e97d4ad551a6381af143ddd8477bf3d5416b41565"
+    },
+    "commands": [
+      "python3 -u .tools/magic-property-incdec-probes-117/watch-affinity.py native-first native 3",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u .tools/magic-property-incdec-probes-117/run.py native --revision bb1cd389dc2b040e99e133c08d03c0ae798ca4b7",
+      "python3 -u .tools/magic-property-incdec-probes-117/watch-affinity.py accepted-current-baseline model 3",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u .tools/magic-property-incdec-probes-117/run.py baseline --revision bb1cd389dc2b040e99e133c08d03c0ae798ca4b7",
+      "python3 -u .tools/magic-property-incdec-probes-117/capture-candidate-affinity.py 5 changed-model- 4 changed-source-117",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u .tools/magic-property-incdec-probes-117/run.py changed --revision 30885ab60e49c4095a6a058a6d709452cab0d065",
+      "python3 -u .tools/magic-property-incdec-probes-117/watch-state-affinity-repair1.py 4",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u tests/semantics/magic_property_incdec_protocol.py --revision cf3f99e05f3337897f2e7073e3330849ff5e84dd"
+    ],
+    "recovery": "Ignored originals, gate driver, tools and raw fixtures remain at original paths. Versioned runtime/tests recover from tested commits. No fresh rebuild claim."
+  },
+  "limits": "Only selected main-scope CV/literal private-int access with the existing Get/Set signatures and raw in-range PINT updates. Normal post++/pre--, pre++ Setthrow and post-- Getthrow are the four source witnesses; no reached post-- arithmetic/Set claim. Wider receivers/names/access, raw kinds/coercions/overflow, references, hooks, reentry and owning RV/GC histories remain partial. Existing declaration/inheritance/handler and cleanup rules are consumed.",
+  "review": {
+    "state": "implementation, validation and publication independently accepted",
+    "reviewer": "class_review_84"
+  }
+}

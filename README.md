@@ -3985,6 +3985,16 @@ to `99`. Supplied Get/Set throws preserve the same catch and destination `42`.
 cover this quiet, in-range slice. A native `'5tail'` Get result warns;
 the model explicitly refuses it. Other kinds, operators and access forms remain partial.
 
+Selected main-scope CV/literal inherited-private integer properties now execute
+pre/post `++`/`--` through the existing magic Get/Set signatures. Get may clear or
+retarget the CV while Set still uses the chosen object. Post-increment delivers
+old `5` after Set/destruction of `6`; pre-decrement delivers new `4`. A throwing
+pre-increment setter commits `6` but leaves the outer destination `42`; a throwing
+post-decrement getter skips arithmetic and Set.
+[Four source agreements and 821 focused premises](coverage/semantics/magic-property-incdec-review.json)
+check these quiet, in-range paths and separate receiver holds. Wider coercion,
+reference, overflow and access forms remain partial.
+
 Inherited private writes now invoke a public `__set(string $name, $incoming): void`
 for selected external CV/literal assignments. The setter receives integer `7`,
 but a used CV RHS is read for the result after receiver release: callback `99`

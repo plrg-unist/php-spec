@@ -38,31 +38,22 @@ backup selectors have no source producer here. Incoming checkpoints remain intac
 except the reviewed stale81 named partial qualifier; source4/author1,200 and peer428
 retain their private split cuts without joined execution or renewed credit.
 
-Ordinary public objects with nonempty declared layouts and live dynamic buckets
-now clone their cached property tables. Declared slots copy first, fresh locators
-retarget to the copy, and dynamic lookup mirrors add no duplicate value owners.
-Actual foreach sees independent writes and membership/order; singleton dynamic
-wrappers unwrap, held aliases stay shared, and a shallow Payload survives source
-retirement until copy destruction.
+Selected main-scope CV/literal inherited-private integer pre/post updates now
+retain the chosen receiver across magic Get/Set. Get may clear or retarget the CV;
+post++ still sets `6` and returns old `5` after destruction of `6`, while pre--
+returns new `4`. Pre++ Set commits `6` before a supplied throw, preserving outer
+destination `42`. Post-- Get throw skips arithmetic/Set and preserves the same
+catch/destination `42`.
 
-Four source agreements at `03d0c6633`/408 and 477 focused premises (433 reached
-+ 44 derived) at `b82cf88bd`/408 pass. The genuine baseline refuses all four cached
-clones. Two earlier focused false reports retain zero credit: named lookup hides
-raw dynamic UNSET rows, and a derived helper needed standard object-handle
-registration before its full guard. No runtime correction or diagnostic was needed.
-The final CPU3 run shared scheduling after a root assignment collision; all eight
-workers passed within their original caps, with full affinity/stability/reap receipts.
-Only module 150 changes; existing table, reference, iteration and cleanup/GC rules
-stay exact. Mixed callbacks, copied-declared DIRECT images, zero-declared sharing,
-readonly and active collection remain partial.
-[Mixed cached clone review](coverage/semantics/mixed-cached-clone-review.json).
-
-Composed over `fc0309120`/408 with tested module 150, six tests and both family
-scopes private-exact; all other runtime/default/root and ordered-manifest bytes
-remain incoming-exact. INI/DEFINE, missing comparisons, Generator SEND, float-key/
-NULL-key array and bitnot/modulo Warning selectors have no producer here.
-Source4 and focused 477 retain their tested cuts without joined execution,
-accepted replay or renewed historical clone credit.
+Four source agreements at `30885ab60`/409 and 821 focused premises (798 reached
++ 23 derived) at `cf3f99e05`/409 pass. The genuine baseline refuses all four at
+magic getter ingress. One original pre-application fixture binding failure retains
+zero credit; the sole correction splits a fresh origin binding from a comparison.
+No diagnostic or source replay was needed. Module 419 adds the bounded consumer
+with module 30 records and a plan-only module 53 exclusion. Existing numeric,
+Get/Set, cleanup and GC bodies stay exact. Raw PINT/in-range +/-1 only; wider
+coercion/ref/overflow/hooks/reentry remain partial.
+[Magic property inc/dec review](coverage/semantics/magic-property-incdec-review.json).
 
 NaN modulo now reports its remaining safe-conversion notice before propagating
 a first-Warning supplied Exception. Mask `2` defaults precision Deprecated at line 25;
