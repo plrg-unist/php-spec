@@ -165,6 +165,12 @@ owner-order observation stays unchanged. A raw-row snapshot survives argument
 COW and alias retirement until ARG-END, then its old payload retires before
 ancestor finally. Assigned results keep their copy through receiver cleanup.
 See the [unused SEND review](../../coverage/semantics/generator-unused-pending-send-review.json).
+When argument and current are the same owning value, the fresh RESULT can match
+the old argument root, leaving only the receiver in the removed-slot list. The
+authenticated argument and new result still require two real release jobs before
+the receiver; original owner-order observation stays unchanged. Their two quiet
+drops preserve one array element-edge set. Assigned calls retain the net result
+copy; see the [aliased SEND review](../../coverage/semantics/generator-unused-pending-send-alias-review.json).
 Literal pending NEXT takes the same initialization-only return through a direct
 or finite native-linked receiver, preserving the actual parked source and frame.
 Its NULL result owns no current snapshot. After a raw-row write performs COW,

@@ -1,0 +1,94 @@
+{
+  "milestone": "Iterator40: aliased pending SEND argument and result owners",
+  "status": "composed-accepted",
+  "scope": "Normal unused pending SEND at a parked owning simple-CV copied return, with an owning ignored argument identical to current/result and a still-pending selected receiver. No suspended input or body entry.",
+  "implementation": {
+    "paths": {
+      "spec/semantics/289-generator-delegation.watsup": "129110adec5fe16b09c9aa9c4049dd39a8948c45dde2aaf53051daa3e11f06ab"
+    },
+    "change": "One disjoint final guard admits actual receiver-only removed slots when argument equals result; distinct arguments retain the existing slot condition. Existing cleanup schedules the independently real argument and fresh result owners before the receiver, with NULL operation value and original owner-order observation unchanged. No root-function, task/schema, close or collector changes."
+  },
+  "validation": {
+    "native": 4,
+    "unchanged_baseline": "Checked NORMAL exit0 differs only by ARG-END|K|D versus native ARG-END|D|K. The original per-record disagreement stays false and normal agreement0; the expected-disagreement observer passes. No Unsupported or timeout.",
+    "sources": "Four exact stdout/stderr/exit0 agreements. The author pair differs only by $copy = before SEND: unused D precedes K, while assigned K/CALLER precede D. Peer row sharing preserves one element-edge set. The cache RuntimeException has PreviousNULL with older E global-only.",
+    "states": {
+      "author": [
+        135,
+        114
+      ],
+      "peer": [
+        174,
+        120
+      ],
+      "total": 543,
+      "local": 523,
+      "generic": 20
+    },
+    "observations": "Actual argument/result alias masks its consumed slot. In the tested cases, two real release roots restore object/array count2 to3, then quiet drops3 to2 to1 before receiver retirement. Assigned calls keep the existing net result transfer. Counterfeit extra alias slots, forged result and discarded-tail controls reject; real storage-pinned cleanup proves D-before-K.",
+    "compiler": "Strict407 and four-fixture elaboration pass; elaboration earns zero execution credit.",
+    "failures": "All post-change checks pass on first execution at original caps. No retry, historical renewal or accepted replay; the genuine baseline disagreement is retained."
+  },
+  "tested_revisions": {
+    "native_and_genuine_baseline": "08456a66889627bc27fb25d98ee694fde3dcdfbc",
+    "strict407_source4": "aabdc86b2ede82980c5aea70b81961494323371f",
+    "elaboration4_state543": "9926436b5645be5348008e839caa80c6988e135b",
+    "bridge": "Runtime289 and all source bytes remain exact across aabdc86b2 source/strict and 9926436b5 gate/states; the latter adds only the reviewed fixtures and Makefile targets. Accepted evidence was not replayed."
+  },
+  "commands": {
+    "native": [
+      "taskset -c 3 python3 .tools/native.py",
+      "taskset -c 3 python3 .tools/review-native.py"
+    ],
+    "baseline": "taskset -c 3 python3 .tools/baseline.py --native-report .tools/generator-unused-pending-send-alias-native-l34szzbt/report.json",
+    "strict": "taskset -c 3 python3 .tools/strict.py",
+    "source": [
+      "taskset -c 3 python3 tests/semantics/generator_unused_pending_send_alias_sources.py --native-report .tools/generator-unused-pending-send-alias-native-l34szzbt/report.json",
+      "taskset -c 3 python3 tests/semantics/generator_unused_pending_send_alias_review_sources.py --native-report .tools/generator-unused-pending-send-alias-review-native-53y5x03s/report.json"
+    ],
+    "elaboration": "taskset -c 3 python3 .tools/state-elab.py",
+    "state": "taskset -c 3 python3 tests/semantics/generator_unused_pending_send_alias_state.py --case <one selection>; peer selections use generator_unused_pending_send_alias_review_state.py. Exact expansions remain in mapped raw reports."
+  },
+  "environment": {
+    "php_source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "mode": "SL, caches off, encountered determinism checks; LC_ALL=C TZ=UTC, script encoding unset, exclusive CPU3.",
+    "caps": "Native8s; source100/120 and100000steps; strict120; elaboration60; states120 with seek/finish4000/4000.",
+    "exits": "All accepted wrappers/models exit0 quietly without timeout. Baseline model0 remains disagreement0."
+  },
+  "reports": {
+    "native-author2": ".tools/generator-unused-pending-send-alias-native-l34szzbt/report.json",
+    "native-peer2": ".tools/generator-unused-pending-send-alias-review-native-53y5x03s/report.json",
+    "unchanged-normal-disagreement": ".tools/generator-unused-pending-send-alias-baseline-mtmgarbc/report.json",
+    "strict407": ".tools/generator-unused-pending-send-alias-author-sl-_x8q4ef0/report.json",
+    "source-author2": ".tools/generator-unused-pending-send-alias-source-1qaaoajd/report.json",
+    "source-peer2": ".tools/generator-unused-pending-send-alias-review-source-jy4ps2rz/report.json",
+    "elaboration4": ".tools/generator-unused-pending-send-alias-state-elab-wlw4sb4t/report.json",
+    "state-author135": ".tools/fiber-state-review-ribqhyhj/report.json",
+    "state-author114": ".tools/fiber-state-review-8il8axnf/report.json",
+    "state-peer174": ".tools/fiber-state-review-pdy0nzoy/report.json",
+    "state-peer120": ".tools/fiber-state-review-v9pd7egw/report.json"
+  },
+  "evidence": {
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-unused-pending-send-alias-40/private.tar.gz",
+      "bytes": 1949584,
+      "sha256": "393c19c027a9aff97e6f587ce37f32531c8edf96557da9f4f8c1324c06b7666e"
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-unused-pending-send-alias-40/manifest.json",
+    "recovery": "Archive restores11 raw report directories,8 ignored inputs,6 tests,9 relevant runtime files and8 support inputs at their project-relative paths. Manifest binds hashes, tested cuts and statuses; raw reports preserve exact commands/exits. Git history retains tracked cuts. Reused pinned tools establish no new build or portability claim."
+  },
+  "remaining": "Other masked-slot shapes, abrupt argument callbacks, wider SEND domains, body entry and explicit collection remain unvalidated. Complete core and foundational verification remain incomplete.",
+  "composition": {
+    "parent": "af3fb9ca3cf2ce272eab76d5ed59bdbe387e54e4",
+    "private_publication": "8842672c478e19d72b5c10d4575a87ee1f8e276c",
+    "runtime": "289 is tested/private byte-exact. Every other incoming runtime/schema/default/root/ordered407 manifest/pipeline byte remains parent-exact, including M125 ordinary typed-reference holder helpers and the unchanged generic eager hook.",
+    "composed_runtime_sha256": {
+      "spec/semantics/289-generator-delegation.watsup": "129110adec5fe16b09c9aa9c4049dd39a8948c45dde2aaf53051daa3e11f06ab"
+    },
+    "validation": "Actual introduced selectors independently reviewed disjoint; source4/strict407/state543 retain their private cuts. No joined execution, accepted replay or renewed credit."
+  }
+}

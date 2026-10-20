@@ -413,6 +413,10 @@ test-semantics: build
 	python3 tests/semantics/generator_unused_pending_send_review_sources.py
 	python3 tests/semantics/generator_unused_pending_send_state.py
 	python3 tests/semantics/generator_unused_pending_send_review_state.py
+	python3 tests/semantics/generator_unused_pending_send_alias_sources.py
+	python3 tests/semantics/generator_unused_pending_send_alias_review_sources.py
+	python3 tests/semantics/generator_unused_pending_send_alias_state.py
+	python3 tests/semantics/generator_unused_pending_send_alias_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

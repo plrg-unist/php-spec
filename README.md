@@ -1389,6 +1389,11 @@ ignored argument, current snapshot and receiver in that order. The snapshot
 survives argument-driven COW, then can retire before ancestor finally blocks.
 An assigned result instead survives receiver cleanup. See the
 [unused SEND review](coverage/semantics/generator-unused-pending-send-review.json).
+The ignored argument may also be the same owning value as current. Although the
+fresh result masks its consumed slot, argument and result keep separate release
+owners before receiver cleanup. Array container counts share one element-edge
+set; assigned results keep their copy. See the
+[aliased SEND review](coverage/semantics/generator-unused-pending-send-alias-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit

@@ -7,6 +7,30 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pending SEND now preserves separate ignored-argument and result owners when both
+are the same owning current. The fresh result masks the consumed argument slot,
+but both real owners release before the receiver. In the tested cases, counts rise
+from two to three, then two quiet drops leave only current; shared arrays keep one
+element-edge set.
+Normally assigned SEND keeps its net result copy through receiver retirement.
+The cache RuntimeException has Previous NULL with the older Exception global-only.
+[Aliased SEND review](coverage/semantics/generator-unused-pending-send-alias-review.json).
+
+Four source agreements and strict407 pass at `aabdc86b2`; the four-fixture gate and
+543 focused premises (249 author +294 independent; 523 local +20 generic) pass at
+`9926436b5`. Native4 and the genuine `08456a668` baseline retain their earlier cut:
+checked NORMAL disagrees only in D/K order, with failed agreement and zero credit.
+All post-change checks pass on first execution at original caps, without retries
+or historical renewal; actors are reaped and CPU3 released. Only289's final slot guard changes. Other
+masked shapes, abrupt arguments, wider APIs, body entry and collection remain open.
+
+Composed over `af3fb9ca3`/407 with tested289 and six tests private-exact.
+All other incoming runtime/schema/default/root/ordered-manifest/pipeline bytes
+stay parent-exact. New finite missing-read array comparisons and ordinary typed
+reference holder-cleanup selectors have no producer here; generic eager dispatch
+stays unchanged. Native/source/strict/state keep their private cuts without
+joined execution, accepted replay or renewed credit.
+
 `==`, `!=`, `<`, `<=`, `>` and `>=` now resume against handler-created live flat
 DIRECT primitive arrays through current CV/reference bindings. Frozen NULL
 compares with table emptiness, preserving both physical orders and admitted
@@ -111,10 +135,10 @@ here; the new cleanup exclusion is false for these ordinary tasks. Array COW,
 pool and GC bodies stay parent-exact. New8+2/state565 and separate121/2/five
 selectors retain `9e3cde555`/407 without joined execution or renewed credit.
 
-Normal unused pending SEND at a parked owning simple-CV copied return now keeps
-current through ignored-argument cleanup, then releases that snapshot before the
-receiver. A raw-row snapshot survives argument COW through ARG-END, but its old
-payload retires before ancestor finally. Normally assigned SEND results keep
+At Iterator39, normal unused pending SEND at a parked owning simple-CV copied
+return keeps current through ignored-argument cleanup, then releases that snapshot
+before the receiver. A raw-row snapshot survives argument COW through ARG-END, but
+its old payload retires before ancestor finally. Normally assigned SEND results keep
 their copy through receiver retirement. A scalar-argument cache destructor throws
 with Previous NULL; an older caught Exception exists only in globals.
 [Unused SEND review](coverage/semantics/generator-unused-pending-send-review.json).
@@ -127,8 +151,8 @@ retaining its failed agreement and zero credit. One peer synthetic
 LINE0 negative overclaimed generic historical-source authority; only that clause
 changed to a forbidden explicit cleanup SOURCE, with original failure0 preserved.
 All actors are reaped and CPU3 released; no native/source/author replay or
-historical renewal. Exact consumed-slot admission leaves masked aliases, abrupt
-argument callbacks, wider domains, body entry and collection unvalidated.
+historical renewal. At that cut, exact consumed-slot admission left masked aliases,
+abrupt argument callbacks, wider domains, body entry and collection unvalidated.
 
 Composed over `a883e6bbd`/407 with tested289 unchanged and the exact three-line270
 hook atop incoming property-source history. Every other runtime/schema/default/
