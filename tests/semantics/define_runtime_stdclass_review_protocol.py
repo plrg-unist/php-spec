@@ -226,7 +226,7 @@ def checks(initial, stdout):
         *instance.property_value('S_throw','n_child',41,'throw_value'),
         '~(n_child <- S_throw.DESTRUCTION.CALLED)',
         '$test_outputs(S_throw.EVENTS) = ' + term(warning),
-        # Authentic discard prunes each container before the child's destructor.
+        # The table/reference retire while the box keeps its storage pin.
         'S_pause = $drive_steps(S_throw,0)', 'S_pause = S_throw[.COMPLETION = BUDGET]',
         'S_resume = $test_running(S_pause)', 'S_resume = S_throw',
         *common.step('S_drop','S_resume'),
@@ -241,7 +241,13 @@ def checks(initial, stdout):
         'pdestructionoperation.SOURCE = THROW_SEARCH n_error',
         '$destructor_enter_valid(S_free,pdestructorcall)',
         '~(HARRAY n_candidate <- S_free.ALLOCATIONS)',
-        '~(HOBJECT n_box <- S_free.ALLOCATIONS)',
+        'HOBJECT n_box <- S_free.ALLOCATIONS',
+        '$instance_storage_for(S_free,n_box) = (pinstancestorage_box)',
+        'pinstancestorage_box.OBJECT = n_box',
+        'pinstancestorage_box.NEXT = 1',
+        '$instance_storage_basic(S_free,pinstancestorage_box)',
+        '$heap_owners($heap_graph(S_free),HOBJECT n_box) = 1',
+        '$node_children(S_free,HOBJECT n_box) = eps',
         '~(HARRAY n_table <- S_free.ALLOCATIONS)',
         '~(HCELL n_property <- S_free.ALLOCATIONS)',
         '$heap_edge_owners(HOBJECT n_child,$heap_graph(S_free).EDGES,[HCELL n_property]) = 0',
