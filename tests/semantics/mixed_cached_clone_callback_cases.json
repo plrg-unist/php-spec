@@ -1,0 +1,78 @@
+{
+  "scope": "Ordinary public nonempty declared/dynamic cached unary CV clone through existing public __clone():void: callback foreach/membership, untyped dynamic aliases, borrowed source retirement, active Payload deletion and supplied-throw failed-copy cleanup. No readonly/zero-declared/GC expansion.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_observations_accepted": true,
+  "native_revision": "841c88c80ce0cdb2d99223be9bcc2b8006c8214e",
+  "cases": [
+    {
+      "id": "singleton",
+      "source_file": "mixed-cached-clone-callback-singleton.php",
+      "source": "<?php\n#[AllowDynamicProperties]\nclass MixedCallback118 {\n    public int $tag = 1;\n    public function __clone(): void {\n        echo 'C|';\n        $this->tag = 2;\n        $this->extra = 7;\n        unset($this->obsolete);\n        $this->tail = 8;\n        foreach ($this as $key => $entry) { echo $key, ':', $entry, '|'; }\n        unset($key, $entry);\n        echo 'c|';\n    }\n}\necho 'U:';\n$source = new MixedCallback118();\n$source->extra = 1;\n$source->obsolete = 3;\n$alias =& $source->extra;\nunset($alias);\nforeach ($source as $key => $entry) {}\nunset($key, $entry);\n$copy = clone $source;\necho 'A|', $source->extra, '/', $copy->extra, '|';\n$source->extra = 9;\necho 'B|', $source->extra, '/', $copy->extra, '|';\nforeach ($source as $key => $entry) { echo $key, ':', $entry, '|'; }\nunset($key, $entry, $source, $copy);\necho 'E|';\n",
+      "source_sha256": "7fb077dd5af2efe5190d7ab213affd3733e86d80a659cf9783a8d72b118f9c55",
+      "original_source": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-callback-private-118/.tools/mixed-cached-clone-callback-probes-118/singleton.php",
+      "stdout_base64": "VTpDfHRhZzoyfGV4dHJhOjd8dGFpbDo4fGN8QXwxLzd8Qnw5Lzd8dGFnOjF8ZXh0cmE6OXxvYnNvbGV0ZTozfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "clone_line": 24,
+      "native_raw_sha256": "a8b9b8887c5fa8151ae2be4371b38b0fdeed2ac988d17ca6b4d92f39bcaf00df",
+      "native_report_sha256": "fff59cca2a7e5357b3ca0595606d4a40b323273fc45eb198414e0325e4eded44",
+      "status": "normal"
+    },
+    {
+      "id": "held",
+      "source_file": "mixed-cached-clone-callback-held.php",
+      "source": "<?php\n#[AllowDynamicProperties]\nclass MixedCallback118 {\n    public int $tag = 1;\n    public function __clone(): void {\n        echo 'C|';\n        $this->tag = 2;\n        $this->extra = 7;\n        foreach ($this as $key => $entry) { echo $key, ':', $entry, '|'; }\n        unset($key, $entry);\n        echo 'c|';\n    }\n}\necho 'H:';\n$source = new MixedCallback118();\n$source->extra = 1;\n$alias =& $source->extra;\nforeach ($source as $key => $entry) {}\nunset($key, $entry);\n$copy = clone $source;\necho 'A|', $source->extra, '/', $copy->extra, '/', $alias, '|';\nunset($source->extra);\n$alias = 9;\necho 'B|', $copy->extra, '/', $alias, '|';\nunset($source);\nunset($copy->extra);\n$alias = 'free';\necho $alias, '|';\nunset($copy, $alias);\necho 'E|';\n",
+      "source_sha256": "888a346cdce9b014e712bf6b8909bdfa005ec81a7fb305323bbd560d9461da95",
+      "original_source": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-callback-private-118/.tools/mixed-cached-clone-callback-probes-118/held.php",
+      "stdout_base64": "SDpDfHRhZzoyfGV4dHJhOjd8Y3xBfDcvNy83fEJ8OS85fGZyZWV8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "clone_line": 20,
+      "native_raw_sha256": "5c819580f333a361d08718fae0827e09330acb9fda603eb69850c5bd20970c2e",
+      "native_report_sha256": "fff59cca2a7e5357b3ca0595606d4a40b323273fc45eb198414e0325e4eded44",
+      "status": "normal"
+    },
+    {
+      "id": "retire",
+      "source_file": "mixed-cached-clone-callback-retire.php",
+      "source": "<?php\nclass MixedPayload118 {\n    public int $value = 7;\n    public function __destruct() { echo 'V', $this->value, '|'; }\n}\n#[AllowDynamicProperties]\nclass MixedCallback118 {\n    public int $tag = 1;\n    public function __clone(): void {\n        global $source;\n        echo 'C|';\n        $this->tag = 2;\n        $source = null;\n        foreach ($this as $key => $entry) {\n            if ($key === 'tag') { echo 'T', $entry, '|'; }\n            else { echo 'P', $entry->value, '|'; }\n        }\n        unset($key, $entry);\n        unset($this->payload);\n        echo 'c|';\n    }\n    public function __destruct() { echo 'D', $this->tag, '|'; }\n}\n$source = new MixedCallback118();\n$source->payload = new MixedPayload118();\nforeach ($source as $key => $entry) {}\nunset($key, $entry);\n$result = 42;\necho 'R:';\n$result = clone $source;\necho 'A|', $result->tag, '|';\nunset($result, $source);\necho 'E|';\n",
+      "source_sha256": "88ae683424e06f81a56179a3ce8bce41e2f94727d52d8b5a76769c09b4072d79",
+      "original_source": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-callback-private-118/.tools/mixed-cached-clone-callback-probes-118/retire.php",
+      "stdout_base64": "UjpDfEQxfFQyfFA3fFY3fGN8QXwyfEQyfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "clone_line": 30,
+      "native_raw_sha256": "90801e0c83eaf7060ff825eddee62e05bbef66c3ca8480a32d9059a0ebdb6654",
+      "native_report_sha256": "fff59cca2a7e5357b3ca0595606d4a40b323273fc45eb198414e0325e4eded44",
+      "status": "normal"
+    },
+    {
+      "id": "throwing",
+      "source_file": "mixed-cached-clone-callback-throwing.php",
+      "source": "<?php\nclass MixedPayload118 {\n    public int $value = 7;\n    public function __destruct() { echo 'V', $this->value, '|'; }\n}\n#[AllowDynamicProperties]\nclass MixedCallback118 {\n    public int $tag = 1;\n    public function __clone(): void {\n        global $source, $error;\n        echo 'C|';\n        $this->tag = 2;\n        $source = null;\n        foreach ($this as $key => $entry) {\n            if ($key === 'tag') { echo 'T', $entry, '|'; }\n            else { echo 'P', $entry->value, '|'; }\n        }\n        unset($key, $entry);\n        echo 'c|';\n        throw $error;\n    }\n    public function __destruct() { echo 'D', $this->tag, '|'; }\n}\n$error = new Exception('same118');\n$source = new MixedCallback118();\n$source->payload = new MixedPayload118();\nforeach ($source as $key => $entry) {}\nunset($key, $entry);\n$result = 42;\necho 'X:';\ntry { $result = clone $source; echo 'bad|'; }\ncatch (Throwable $caught) {\n    echo 'C|', $caught === $error ? 'same|' : 'wrong|', $result, '|';\n}\nunset($source, $caught, $error);\necho 'E|';\n",
+      "source_sha256": "249dc9f54914ad8a3e66c01b242c4a8781a7656bc184e90fbccf8410eabc5ffa",
+      "original_source": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-callback-private-118/.tools/mixed-cached-clone-callback-probes-118/throwing.php",
+      "stdout_base64": "WDpDfEQxfFQyfFA3fGN8RDJ8Vjd8Q3xzYW1lfDQyfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "clone_line": 31,
+      "native_raw_sha256": "33deaa13fa6d9df9021500da5b62026a69751e96e3c29842e671f195d92e2ede",
+      "native_report_sha256": "fff59cca2a7e5357b3ca0595606d4a40b323273fc45eb198414e0325e4eded44",
+      "status": "normal"
+    }
+  ]
+}
