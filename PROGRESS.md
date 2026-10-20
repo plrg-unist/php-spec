@@ -25,6 +25,15 @@ Boolean/class-name, value, receipt, cleanup and global/default policies stay
 exact. Source84 INI_SET, magic properties and paused paths remain disjoint.
 [Owned NULL-flag review](coverage/semantics/define-owned-null-review.json).
 
+Composed over adbe80fab/409: tested module 400 and seven changed scripts stay
+private-exact; eight incoming runtime paths and ordered manifest stay parent-exact.
+Source84 INI_SET/single-pack and new private magic-property inc/dec are disjoint.
+Quiet global CV increments and ordinary property assignments keep their paths;
+numeric stdClass casts, NULL-key reference ARRAY warnings and Generator SEND are absent.
+New module 30 continuation/task forms add no pstate/heap field or root-policy change.
+Accepted source/state cuts retain their original 408 identities through this bridge,
+without joined execution, accepted replay or renewed credit.
+
 One numeric/named/mixed unpack pack now carries rawNULL plus the exact one-entry
 key0 ALIAS ARRAY through `ini_set` reception, for strings and retained setters.
 The saved inner array keeps its shape while its untyped quiet cell stays live;
