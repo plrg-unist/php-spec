@@ -7,6 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Selected-reference `%=` now captures a fresh fractional RHS after the first
+Deprecated and before the second. Captured `0.5` still raises `Modulo by zero` at
+line 25 despite current and original RHS values of `5`, preserving old target
+`88` and outer `100`. Captured `5.5` still stores integer `2` through the old target
+alias after its fresh RHS cell retires; current target name `77` stays separate.
+Two originals pass at `885d94362`/407 and 190+174 focused premises at
+`d9fa496cb`/407 in the
+[RHS conversion ledger](coverage/semantics/modassign-selected-rhs-warning-review.json).
+Initial quiet-PINT entry and numeric/unwind/write bodies stay unchanged. Fitting
+fractional values, named handlers and a safe surviving old target bound the slice;
+other producers, constraints and owning lifetimes remain partial. OP12, COMP88
+and Source47 low-initial-precision NaN-name callbacks remain paused.
+
+Composed over `af64fe78f`/407, preserving incoming state, task and
+ordered-manifest paths. Source2/state364 retain their private407 cuts;
+independently reviewed absent incoming selectors require no joined execution
+or renewed credit.
+
 Cached ordinary public declared-only clones now enter the existing public
 zero-argument `__clone():void` path. Actual callback foreach reads fresh copy
 locators; singleton int wrappers unwrap in the copy while held aliases share
@@ -100,22 +118,8 @@ array COW/GC/pools and ordered407 stay parent-exact. New10+2/state587 and
 separate131/2/thirteen selectors retain `d4a551c1d`/407 without joined execution
 or historical renewal.
 
-Plain-CV NaN bitwise NOT now completes range Warning then precision Deprecated
-before checking a pending Exception. A first-handler throw with mask `2` still
-defaults the second notice, while mask `8194` suppresses both its body and default.
-Both preserve the supplied Exception, callback write `99`, and outer value `100`. The normal peer unsets its
-source in the second handler, defaults Deprecated once and still delivers cached
-integer `-1`. Three originals pass at `e6b244d30`/407; 158+139 focused premises
-pass at `88967f432`/407 in the
-[NaN BITNOT ledger](coverage/semantics/bitnot-nan-warning-review.json).
-The eligible-pending control is source-only. Existing finite bitnot/numeric/format/
-CONFIG/generic dispatch/module400 stay exact; no algorithm renewal is claimed.
-Named handlers/plain NaN CVs bound this slice; wider cases remain partial and
-Source47 low-initial-precision NaN-name callbacks, OP12 and COMP88 remain paused.
-
-Composed over `3a5990dae`/407, preserving incoming state, task and
-manifest paths. Source3/state297 retain their private407 cuts; independently
-reviewed absent incoming selectors require no joined execution or renewed credit.
+Earlier plain-CV NaN bitwise NOT retains source3/state297 and original preparation
+failures0 in the [NaN BITNOT ledger](coverage/semantics/bitnot-nan-warning-review.json).
 
 Direct and selected string `ini_set` calls now retain flat quiet ARRAY values
 from one two-item numeric, named or mixed pack while handling a NULL option.

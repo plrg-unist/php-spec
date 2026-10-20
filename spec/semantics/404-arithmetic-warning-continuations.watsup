@@ -3932,10 +3932,13 @@ rule PhpStep/modassign-selected-warning-zero: S ~> $integer_result(S[.TODO = pta
   -- if S.TODO = (MOD_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left 1) :: ptask_tail*
   -- if $modassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, 1)
   -- if $modassign_selected_warning_right(S, pintegeroperation) = (0)
+dec $modassign_selected_right_warning_plan(pstate) : ptask?
+
 rule PhpStep/modassign-selected-warning-right-boundary: S ~> S[.COMPLETION = UNSUPPORTED "selected modulo assignment quiet integer RHS"]
   -- if S.TODO = (MOD_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left 1) :: ptask_tail*
   -- if $modassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, 1)
   -- if $modassign_selected_warning_right(S, pintegeroperation) = eps
+  -- if $modassign_selected_right_warning_plan(S) = eps
 rule PhpStep/modassign-selected-warning-target-boundary: S ~> S[.COMPLETION = UNSUPPORTED "selected modulo assignment expired, constrained or owning target"]
   -- if S.TODO = (MOD_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left 1) :: ptask_tail*
   -- if $modassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, 1)
@@ -4044,3 +4047,67 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 8192
   -- if $integer_float_notices([PRECISIONLOSS], pbitnotwarning.BITS) = [(8192, perrorcall.MESSAGE)]
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pbitnotwarning.LINE
+
+
+;; MOD reads the current RHS after LEFT's callback, then saves that converted
+;; long before a second Deprecated. Neither holder rereads the RHS on return.
+dec $modassign_selected_right_warning_snapshot(pstate, pintegeroperation, nat) : bool
+def $modassign_selected_right_warning_snapshot(S, pintegeroperation, n_right_bits) = true
+  -- if $integer_pointer_select(S, pintegeroperation.RIGHT) = (INTEGER_CELL n_right)
+  -- if $arithmetic_owned_cell_valid(S, n_right)
+  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (PFLOAT n_right_bits)
+def $modassign_selected_right_warning_snapshot(S, pintegeroperation, n_right_bits) = false -- otherwise
+
+dec $modassign_selected_right_warning_valid(pstate, pintegeroperation, nat, int, nat, int, nat) : bool
+def $modassign_selected_right_warning_valid(S, pintegeroperation, n_left_bits, i_left, n_right_bits, i_right, n_stage) = true
+  -- if $modassign_selected_warning_valid(S, pintegeroperation, n_left_bits, i_left, 1)
+  -- if $(n_right_bits < 18446744073709551616 /\ n_stage <= 1)
+  -- if $float_long(n_right_bits, true) = (i_right, [PRECISIONLOSS])
+  -- if n_stage = 1 \/ $modassign_selected_right_warning_snapshot(S, pintegeroperation, n_right_bits)
+def $modassign_selected_right_warning_valid(S, pintegeroperation, n_left_bits, i_left, n_right_bits, i_right, n_stage) = false -- otherwise
+
+def $modassign_selected_right_warning_plan(S) = (MOD_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_left_bits i_left n_right_bits i_right 0)
+  -- if S.TODO = (MOD_ASSIGN_SELECTED_WARNING pintegeroperation n_left_bits i_left 1) :: ptask_tail*
+  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (PFLOAT n_right_bits)
+  -- if $(n_right_bits < 18446744073709551616)
+  -- if $float_long(n_right_bits, true) = (i_right, [PRECISIONLOSS])
+  -- if $modassign_selected_right_warning_valid(S, pintegeroperation, n_left_bits, i_left, n_right_bits, i_right, 0)
+def $modassign_selected_right_warning_plan(S) = eps -- otherwise
+
+rule PhpStep/modassign-selected-right-warning-begin: S ~> S[.TODO = ptask :: ptask_tail*]
+  -- if S.TODO = ptask_old :: ptask_tail*
+  -- if $modassign_selected_right_warning_plan(S) = (ptask)
+rule PhpStep/modassign-selected-right-warning-dispatch: S ~> $error_dispatch(S, 8192, n_message*, pintegeroperation.LINE, DIAGNOSTIC "Deprecated" n_message* pintegeroperation.LINE, MOD_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_left_bits i_left n_right_bits i_right 1)
+  -- if S.TODO = (MOD_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_left_bits i_left n_right_bits i_right 0) :: ptask_tail*
+  -- if $modassign_selected_right_warning_valid(S, pintegeroperation, n_left_bits, i_left, n_right_bits, i_right, 0)
+  -- if $integer_float_notices([PRECISIONLOSS], n_right_bits) = [(8192, n_message*)]
+  -- if ~$error_handler_eligible(S, 8192) \/ $arithmetic_add_named(S)
+rule PhpStep/modassign-selected-right-warning-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "selected modulo assignment owning RHS deprecation callback"]
+  -- if S.TODO = (MOD_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_left_bits i_left n_right_bits i_right 0) :: ptask_tail*
+  -- if $modassign_selected_right_warning_valid(S, pintegeroperation, n_left_bits, i_left, n_right_bits, i_right, 0)
+  -- if $error_handler_eligible(S, 8192) /\ ~$arithmetic_add_named(S)
+rule PhpStep/modassign-selected-right-warning-commit: S ~> $write_cell_checked(S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT i_result)][.LOCATION = ROOT n_target], n_target, PINT i_result, pintegeroperation.LINE)
+  -- if S.TODO = (MOD_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_left_bits i_left n_right_bits i_right 1) :: ptask_tail*
+  -- if $modassign_selected_right_warning_valid(S, pintegeroperation, n_left_bits, i_left, n_right_bits, i_right, 1)
+  -- if $long_mod(i_left, i_right) = IRESULT i_result
+  -- if $modassign_selected_warning_target(S, pintegeroperation)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_target
+rule PhpStep/modassign-selected-right-warning-zero: S ~> $integer_result(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL], INTZERO, pintegeroperation.LINE)
+  -- if S.TODO = (MOD_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_left_bits i_left n_right_bits i_right 1) :: ptask_tail*
+  -- if $modassign_selected_right_warning_valid(S, pintegeroperation, n_left_bits, i_left, n_right_bits, i_right, 1)
+  -- if i_right = 0
+rule PhpStep/modassign-selected-right-warning-target-boundary: S ~> S[.COMPLETION = UNSUPPORTED "selected modulo assignment expired, constrained or owning target after RHS conversion"]
+  -- if S.TODO = (MOD_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_left_bits i_left n_right_bits i_right 1) :: ptask_tail*
+  -- if $modassign_selected_right_warning_valid(S, pintegeroperation, n_left_bits, i_left, n_right_bits, i_right, 1)
+  -- if i_right =/= 0 /\ ~$modassign_selected_warning_target(S, pintegeroperation)
+
+def $task_nodes(MOD_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_left_bits i_left n_right_bits i_right n_stage) = eps
+def $call_task_valid(S, MOD_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_left_bits i_left n_right_bits i_right n_stage) = $modassign_selected_right_warning_valid(S, pintegeroperation, n_left_bits, i_left, n_right_bits, i_right, n_stage)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = MOD_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_left_bits i_left n_right_bits i_right 1
+  -- if $modassign_selected_right_warning_valid(S, pintegeroperation, n_left_bits, i_left, n_right_bits, i_right, 1)
+  -- if perrorcall.TARGET =/= eps \/ $modassign_selected_right_warning_snapshot(S, pintegeroperation, n_right_bits)
+  -- if perrorcall.SITE = pintegeroperation.SITE /\ perrorcall.LINE = pintegeroperation.LINE
+  -- if perrorcall.LEVEL = 8192
+  -- if $integer_float_notices([PRECISIONLOSS], n_right_bits) = [(8192, perrorcall.MESSAGE)]
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pintegeroperation.LINE

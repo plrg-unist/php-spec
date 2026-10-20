@@ -980,6 +980,13 @@ Three originals and 688 focused premises pass in the
 Initial leading LEFT/quiet RHS scalar refs and a primitive target before and after
 final dispatch bound this slice; wider values, producers and lifetimes remain partial.
 
+Selected-reference `%=` also caches a rebound fractional RHS before its second
+Deprecated callback. Repairing RHS to `5` after capturing `0.5` cannot prevent
+`Modulo by zero`; retiring the RHS after capturing `5.5` still lets `12 % 5` store
+integer `2` through the old target alias. Two originals and 364 focused premises pass in the
+[RHS conversion ledger](coverage/semantics/modassign-selected-rhs-warning-review.json).
+Initial quiet-integer RHS entry stays unchanged; wider values and lifetimes remain partial.
+
 Selected-reference `%=` now keeps its old target while reading the current RHS
 wrapper after a float-to-int Deprecated callback. Rebinding RHS from old `0` to `5`
 lets captured `12` store integer `2` through the old alias; the opposite old `5`
