@@ -1,0 +1,20 @@
+[
+  {
+    "id": "review-unused-bare-yield-send-argument-row-cow",
+    "purpose": "One pending native ancestor SEND at a PAUSED bare statement yield; normal argument-time raw row COW and alias-drop distinguish snapshot lifetime from later child-finally mutation.",
+    "source": "<?php\nclass BareYieldSendRowOld46 { function __destruct() { echo \"A|\"; } }\nclass BareYieldSendRowNew46 { function __destruct() { echo \"C|\"; } }\nclass BareYieldSendRowFinal46 { function __destruct() { echo \"N|\"; } }\nclass BareYieldSendRowArgument46 { function __destruct() { echo \"ARG|\"; $GLOBALS[\"row\"][0] = new BareYieldSendRowNew46(); echo \"MUTATED|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"ARG-END|\"; } }\nfunction &bareYieldSendRowChild46() { global $row; $row = [new BareYieldSendRowOld46()]; echo \"C0|\"; try { yield 7 => $row; echo \"BAD-CHILD|\"; } finally { echo \"J|\"; $GLOBALS[\"row\"][0] = new BareYieldSendRowFinal46(); echo \"J-END|\"; } }\nfunction bareYieldSendRowMiddle46() { try { echo \"M|\"; yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"K|\"; } }\nfunction bareYieldSendRowOuter46() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = bareYieldSendRowChild46(); $middle = bareYieldSendRowMiddle46(); $outer = bareYieldSendRowOuter46();\necho \"P|\"; $outer->rewind(); echo \"H|\";\necho \"S|\";\n$middle->send(new BareYieldSendRowArgument46()); echo \"CALLER|\";\nunset($row); echo \"ROW-DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "b88a89052a6ed9d6d0a0e629a54f6726eab49dfc7eb9fde39a2bbf7e1b6945d9",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C0|H|S|ARG|MUTATED|F|ARG-END|A|J|C|J-END|K|CALLER|N|ROW-DROPPED|E"
+  },
+  {
+    "id": "review-unused-bare-yield-send-object-finally-throw",
+    "purpose": "An unused current copy at a pending native ancestor SEND; normal argument cleanup drops independent Generator aliases, and physical child finally clears the raw object slot while observing the resulting RuntimeException and Previous.",
+    "source": "<?php\nclass BareYieldSendObjectCache46 { function __destruct() { echo \"D|\"; throw new RuntimeException(\"cache46\"); } }\nclass BareYieldSendObjectArgument46 { function __destruct() { echo \"ARG|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"ARG-END|\"; } }\nfunction &bareYieldSendObjectChild46() { global $slot; $slot = new BareYieldSendObjectCache46(); echo \"C|\"; try { yield $slot; echo \"BAD-CHILD|\"; } finally { echo \"J|\"; $GLOBALS[\"slot\"] = null; echo \"J-END|\"; } }\nfunction bareYieldSendObjectMiddle46() { try { echo \"M|\"; yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"K|\"; } }\nfunction bareYieldSendObjectOuter46() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = bareYieldSendObjectChild46(); $middle = bareYieldSendObjectMiddle46(); $outer = bareYieldSendObjectOuter46();\necho \"P|\"; $outer->rewind(); echo \"H|\";\necho \"S|\";\ntry { $middle->send(new BareYieldSendObjectArgument46()); echo \"BAD-RETURN|\"; }\ncatch (Exception $caught) { echo \"CALLER|\", $caught instanceof RuntimeException ? 1 : 0, \"|\", $caught->getMessage() === \"cache46\" ? 1 : 0, \"|\", $caught->getPrevious() === null ? 1 : 0, \"|\"; }\nunset($caught, $slot); echo \"E\";\n",
+    "source_sha256": "bef3d55a1e517948a2464ad5852a4d3c9a36deda7008a8c7a7f19edbd5319dbf",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|H|S|ARG|F|ARG-END|J|D|K|CALLER|1|1|1|E"
+  }
+]

@@ -29,9 +29,14 @@ array keeps its table through handler writes, COW and supplied-throw cleanup.
 Captured ordinary objects keep their identity and shared property writes. If the
 saved operand is the last remaining owner, its release runs the destructor before
 the outer store or catch; surviving aliases delay destruction until their release.
+A live ordinary non-Stringable object CV also follows its current binding: replacing
+it may run the old destructor inside the handler, while a new object stays owned
+by current CVs/references through comparison or catch. The saved read record adds
+no object owner. See the
+[live-object review](coverage/semantics/undefined-comparison-live-object-review.json).
 Both-missing pairs, including one missing name twice, can resume if the first
-handler defines the later scalar or flat array. `$x == $x` can then be false and `$x > $x`
-true. Greater operators check source right first. All seven comparison operators
+handler defines the later scalar, flat array or ordinary object. `$x == $x` can
+then be false and `$x > $x` true. Greater operators check source right first. All seven comparison operators
 also stage a second Warning if the later physical CV stays missing, freezing both NULLs
 despite writes from the second handler.
 Removing an already checked defined counterpart during a missing-CV Warning
@@ -44,7 +49,11 @@ Handler writes are visible inside the callback and undone before insertion or
 supplied-throw propagation. If key and value share the same NULL CV, its key
 mutation is undone too. ARRAY capture owns both acquisition and backup copies;
 normal restore transfers them into the CV and DIRECT entry, while throw restores
-the CV before releasing the builder. Wider value/slot forms remain partial.
+the CV before releasing the builder. Initially untyped reference-wrapped value
+CVs capture their old CELL payload instead: resetting that payload preserves a
+callback's new binding of the source name. A live alias must keep the
+captured CELL alive; neither the marker nor its metadata owns that CELL.
+Typed/string/object slots and wider producers remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
@@ -471,7 +480,7 @@ TypeError/trace capture stays visible through both API and explicit-wrapper arra
 arguments; the API option is empty while the wrapper retains NULL. Four source
 comparisons and 1,521 state premises cover strict ordinary versus weak explicit
 reception, supplied-throw cancellation, transitive reference edges, exact discard
-and original-setter recovery. Unpacked/PIPE forms, typed/property references,
+and original-setter recovery. Multiple packs/PIPE forms, typed/property references,
 owning referents and sole-owner lifetimes remain partial.
 
 [Named INI calls with shared-reference arrays](coverage/semantics/ini-set-named-null-alias-array-value-review.json)
@@ -482,7 +491,17 @@ Four source comparisons and 1,628 state premises cover saved shape with live cel
 contents, empty API versus raw NULL wrapper options, strict ordinary versus weak
 explicit reception, supplied-throw cancellation and setter recovery. One peer
 optional-name fixture typing failure is retained; only its corrected 428 checks
-were rerun. Unpacking/PIPE, wider references and sole-owner lifetimes remain partial.
+were rerun. Multiple packs/PIPE, wider references and sole-owner lifetimes remain partial.
+
+[Unpacked INI arrays with shared reference elements](coverage/semantics/ini-set-unpack-null-alias-array-value-review.json)
+now preserve the captured inner array and its live cell through one numeric,
+named or mixed argument pack. Fixed/selected strings and retained setters share
+the same narrow continuation. Later outer-pack rewrites and current-container
+COW preserve the saved shape while cell writes remain visible through API and
+wrapper arguments. Four source comparisons and 1,719 state premises cover cursor
+root transfer, strict ordinary versus weak explicit reception, supplied-throw
+cancellation, precise discard and setter recovery. Additional packs/arguments,
+PIPE, wider references and sole-owner lifetimes remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -973,6 +992,14 @@ delivery, while normal unary minus retains float zero with native output `-0`.
 Two originals and 264 focused premises pass in the
 [unary-reference ledger](coverage/semantics/unary-reference-warning-review.json).
 Wider producers, constrained/owning cells and callback lifetimes remain partial.
+
+Explicit numeric casts of an empty `stdClass` now resume named Warning handlers.
+The plain source CV is borrowed: replacing or removing its last object owner makes
+`WeakReference::get()` return null inside the callback. Float conversion still
+delivers strict `1.0`; an integer-cast handler's supplied Exception cancels delivery.
+Two originals and 272 focused premises pass in the
+[object numeric-cast ledger](coverage/semantics/object-numeric-cast-warning-review.json).
+Other classes, operand producers and lifetimes remain partial.
 
 NaN modulo now finishes safe conversion's precision notice before propagating
 a supplied Exception from its range Warning handler. Mask `2` still defaults the
@@ -1582,6 +1609,12 @@ whose normal simple-CV return owns no heap node. Child release precedes argument
 cleanup, unused current retirement and receiver finally; assignment keeps its
 copy. See the
 [node-free refresh review](coverage/semantics/generator-unused-scalar-refresh-send-review.json).
+Pending ancestor SEND at one PAUSED bare-statement-yield child now drops an
+unused current snapshot after normal argument cleanup and before receiver
+release. In the tested alias-drop histories, Child finally runs before the
+selected receiver's finally; assignment keeps its copy. Argument-time row COW and a child-finally cache RuntimeException
+preserve their separate owners. See the
+[bare-yield SEND review](coverage/semantics/generator-unused-bare-yield-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit
@@ -2148,6 +2181,13 @@ after the callee dies. Normal rejected INSTANCE argument cleanup runs its
 destructor before callee release; a throwing duplicate's raw trace instead
 retains the object after callee death until its raw argument views retire.
 [Owned object call review](coverage/semantics/define-owned-object-review.json).
+
+Captured DEFINE callees also receive raw `true`. The ignored-case Warning runs
+before key lookup and array snapshotting: a returning handler can install the
+key or change a reference leaf. A thrown handler Exception still permits fresh
+same-object registration. Raw API/wrapper traces retain `true`, and the row
+keeps the object after trace retirement.
+[Owned true-flag review](coverage/semantics/define-owned-true-review.json).
 
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
@@ -4890,21 +4930,18 @@ agree with PHP; separate 463/8 state checks cover its shared-cell RELEASE/EXIT
 pauses, required literal history despite an unchanged heap, engine TypeError catch,
 one line7 Notice and detached aliases.
 Owning-return histories with at least three pending slots preserve finite
-first-retirement destructor throws and detached caller references. Global
-reference slots keep lexical authority when they share one cell; plain public
-`object`/`object|string` property sources retain their actual ALIAS/declaration.
-A finite D can clear an object-only Holder before its planned supplied throw.
-The Holder may echo or throw a different supplied object; nonowning class history
-retains either finite operand after retirement. M127 source 1/374+4 and its
-constructed controls keep their original cut in the
+first-retirement destructor throws and detached caller references. Global slots
+keep lexical authority while sharing a cell and plain public property constraints.
+A Holder's finite literal-string write through its own typed alias can now raise
+a generated TypeError before its source detaches. Retained class authority matches
+that assignment's origin/message/line/Previous after the Holder is freed; a held
+Holder can still leave D's planned supplied throw. One original and 382 Boolean/4
+raw checks at `3fae596f5` preserve the local catch, Notice15/fresh detached NULL,
+prior b7 and later right-union writes/replacement. M128's real held-owner timing
+and earlier cuts remain separate in the
 [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-A fresh real held-Holder source and 272 Boolean/4 raw checks agree on unchanged
-`4105d1eb2`: D reaches DA/planned given, the first string write stays constrained,
-and only a later last-owner drop runs Left/other and relaxes the surviving alias.
-The remaining union rejects NULL; replacement preserves the old copy and detached
-r/prior b. No runtime rule changes. Earlier cuts/failures remain separate; wider
-Holder bodies/writes/types/constructors, fewer than two remaining slots, broader
-reentry and GC remain open.
+Wider bodies/targets/types/source orders, fewer than two remaining slots, reentry
+and GC remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

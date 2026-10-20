@@ -192,9 +192,18 @@ key keeps its write. Scalar or mutable nonpool edge-free/debt-free DIRECT-leaf
 array payloads use the existing validators. ARRAY capture keeps both acquisition
 and backup owners; the overwritten callback table retires normally. The
 [NULL-key review](../../coverage/semantics/array-literal-null-key-warning-review.json)
-checks restoration, independent snapshots, COW, deletion and throw. Rebound,
-unset, wrapped/typed slots, direct string/object values and wider graphs remain
-Unsupported on this continuation; float-key rules stay unchanged.
+checks restoration, independent snapshots, COW, deletion and throw. Rebound or unset ordinary slots, typed slots, direct string/object values and
+wider graphs remain Unsupported on this continuation; float-key rules stay
+unchanged.
+An initially untyped reference-wrapped value CV captures the old dereferenced
+CELL payload. A surviving alias keeps that marked slot live, and NULL conversion
+restores its snapshot even when the original name now refers to another CELL.
+The latter binding stays intact. The existing two ARRAY snapshot owners and
+DIRECT insertion/throw reset remain unchanged. The
+[wrapped NULL-key review](../../coverage/semantics/array-literal-null-key-wrapped-cv-review.json)
+checks primitive and array reset, independent snapshots/COW, deletion and throw.
+Property/coercion/backing records, CELL debt and wider payloads remain excluded;
+source metadata can remain valid after a locator retires while readiness refuses.
 The [string-leaf review](../../coverage/semantics/array-literal-float-string-leaf-review.json)
 adds ordinary tables and untyped wrapper payloads containing canonical-byte or
 validated-carrier string leaves. String snapshots remain independent across

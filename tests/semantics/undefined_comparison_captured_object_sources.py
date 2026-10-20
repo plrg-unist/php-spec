@@ -7,7 +7,6 @@ from undefined_comparison_captured_object_cases import CASES
 
 family.CASES = CASES
 family.UNSUPPORTED = {
-    'captured-object-variable-boundary': ('error-handler ingress requires a producer continuation', b'B|'),
     'captured-object-closure-boundary': ('error-handler ingress requires a producer continuation', b'B|'),
 }
 family.BASELINE = ('error-handler ingress requires a producer continuation', b'')

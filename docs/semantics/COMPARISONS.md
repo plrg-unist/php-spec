@@ -83,17 +83,23 @@ through the callback. If the saved operand is the last remaining owner, its rele
 runs the destructor before the outer store or catch; surviving aliases delay it
 until their release. Source certificates admit the object tag,
 while entry/resume separately check allocation, ordinary kind and freeing state.
-Direct-CV object wrappers, internal objects and Stringable remain outside this
-Warning slice. The
+Internal objects and Stringable remain outside this Warning slice. The
 [captured-object review](../../coverage/semantics/undefined-comparison-captured-object-review.json)
 records normal/default/throw ownership and budget checks.
+Live ordinary object CVs now enter or resume the same seven operators. Their
+current binding supplies the counterpart, including callback-created objects
+after both-missing or same-CV entry. Old objects may destruct inside the callback
+when replaced; new object lifetimes follow their current owners. Read records
+add no object owner, and existing physical checked-removal/unread-retry rules
+remain intact. The [live-object review](../../coverage/semantics/undefined-comparison-live-object-review.json)
+checks normal/default/throw lifetimes and budget resumption.
 Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also suspend with one missing operand
 and a defined scalar counterpart. The missing value stays null while the opposing
 wrapper follows callback writes, late reference creation and rebinding. A missing
 right name can remain undefined throughout the callback. False handlers preserve
 default Warning order; throws preserve destination/catch/finally. The opposing CV
-may return as a scalar or the bounded flat array above. A removed name quietly
-folds or stages another Warning according to physical order, as described below;
+may return as a scalar, the bounded flat array or an ordinary non-Stringable object.
+A removed name quietly folds or stages another Warning according to physical order, as described below;
 other owning values stop Unsupported. The
 [missing-left review](../../coverage/semantics/undefined-scalar-compare-review.json)
 and [missing-right review](../../coverage/semantics/undefined-scalar-compare-right-review.json)

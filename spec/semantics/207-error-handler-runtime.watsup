@@ -42,6 +42,7 @@ dec $scalar_compare_checked_missing(pstate, perrorread) : bool
 dec $scalar_compare_checked_right_missing(pstate, perrorread) : bool
 dec $scalar_compare_missing_pair(pstate, perrorread) : bool
 dec $comparison_read_object_value(pstate, pvalue) : bool
+dec $comparison_read_object_operand(pstate, poperand) : bool
 dec $comparison_read_object(pstate, perrorread) : bool
 dec $spaceship_read_source_operand(pstate, porigin, poperand) : bool
 dec $identity_read_plan(pstate) : pidentityread?
@@ -376,13 +377,13 @@ def $error_read_plan(S) = (perrorread)
   -- if $spaceship_right_read_shape(ptask, S.RESULT, S.BASE) = (perrorread)
   -- if $error_missing_operand(S, $error_read_operand(perrorread))
   -- if $error_read_source(S, perrorread)
-  -- if $spaceship_read_other(S, perrorread) \/ $spaceship_read_array(S, perrorread)
+  -- if $spaceship_read_other(S, perrorread) \/ $spaceship_read_array(S, perrorread) \/ $comparison_read_object(S, perrorread)
 def $error_read_plan(S) = (perrorread)
   -- if S.TODO = ptask :: ptask_tail*
   -- if $scalar_compare_right_read_shape(ptask, S.RESULT, S.BASE) = (perrorread)
   -- if $error_missing_operand(S, $error_read_operand(perrorread))
   -- if $error_read_source(S, perrorread)
-  -- if $scalar_compare_read_other(S, perrorread) \/ $scalar_compare_read_array(S, perrorread) \/ $scalar_compare_missing_pair(S, perrorread)
+  -- if $scalar_compare_read_other(S, perrorread) \/ $scalar_compare_read_array(S, perrorread) \/ $comparison_read_object(S, perrorread) \/ $scalar_compare_missing_pair(S, perrorread)
 def $error_read_plan(S) = eps -- otherwise
 def $error_read_pending(S) = ($key_read_pending(S) \/ $property_undefined_reference_plan(S) =/= eps \/ (($error_handler_eligible(S, 2) \/ $eval_compile_recorded_error(S, 2)) /\ ($error_read_plan(S) =/= eps \/ $identity_read_plan(S) =/= eps \/ $global_read_plan(S) =/= eps \/ $computed_name_plan(S) =/= eps \/ $computed_cv_name_plan(S) =/= eps \/ $computed_array_name_plan(S) =/= eps \/ $property_null_read_plan(S) =/= eps \/ $property_undefined_read_plan(S) =/= eps)))
 def $error_read_begin(S) = $key_read_begin(S)
@@ -568,14 +569,27 @@ def $scalar_compare_missing_pair(S, perrorread) = true
   -- if $error_missing_operand(S, $error_read_operand(perrorread))
   -- if $error_missing_operand(S, VARIABLE n_left* z_left)
 def $scalar_compare_missing_pair(S, perrorread) = false -- otherwise
-;; OBJECT/NULL ordering precedes object handlers in zend_compare. Only captured
-;; ordinary instances enter this path; live VARIABLE wrappers keep their bounds.
+;; OBJECT/NULL ordering precedes object handlers in zend_compare. A captured
+;; identity stays saved; a direct CV follows its current ordinary instance.
 def $comparison_read_object_value(S, POBJECT n_object) = true
   -- if $(n_object < |S.OBJECTS|) /\ (HOBJECT n_object) <- S.ALLOCATIONS
   -- if ~$instance_storage_freeing(S, n_object)
   -- if $instanceof_dynamic_class(S, POBJECT n_object) =/= eps
   -- if ~$class_instanceof(S, POBJECT n_object, $ptascii("Stringable"))
 def $comparison_read_object_value(S, pvalue) = false -- otherwise
+def $comparison_read_object_operand(S, VARIABLE n* z) = $comparison_read_object_value(S, pvalue)
+  -- if ~$environment_blocked(S, n*)
+  -- if $lookup(S.ENV, n*) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+def $comparison_read_object_operand(S, poperand) = false -- otherwise
+def $comparison_read_object(S, perrorread) = $comparison_read_object_operand(S, VARIABLE n_left* z_left)
+  -- if $spaceship_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread) \/ $scalar_compare_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
+  -- if perrorread.TASK = BINARY_RIGHT pbin (VARIABLE n_left* z_left) z
+def $comparison_read_object(S, perrorread) = $comparison_read_object_operand(S, perrorread.INPUT)
+  -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (VARIABLE n* z_origin) z
+  -- if pbin = EQUAL \/ pbin = NOTEQUAL \/ pbin = LESS \/ pbin = LESSEQUAL \/ pbin = GREATER \/ pbin = GREATEREQUAL \/ pbin = SPACESHIP
+  -- if perrorread.INPUT = VARIABLE n_right* z_right
+  -- if $error_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
 def $comparison_read_object(S, perrorread) = $comparison_read_object_value(S, pvalue)
   -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (KNOWN pvalue) z
   -- if pbin = EQUAL \/ pbin = NOTEQUAL \/ pbin = LESS \/ pbin = LESSEQUAL \/ pbin = GREATER \/ pbin = GREATEREQUAL \/ pbin = SPACESHIP

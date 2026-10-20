@@ -169,7 +169,12 @@ property effects. When no other owner remains, saved-operand release runs the
 destructor before the outer store or catch; surviving aliases retain their lifetime.
 See the
 [captured-object review](../../coverage/semantics/undefined-comparison-captured-object-review.json).
-Direct-CV/internal/Stringable objects, resources, nonflat arrays and wider producers remain partial.
+Live direct-CV ordinary objects also enter/resume through their current unblocked
+defined cell, without adding a saved object root. Rebinding can destroy the old
+object inside the handler; replacement lifetime follows current owners through
+normal return or supplied throw. Existing removal/retry and source certificates
+stay unchanged; see the [live-object review](../../coverage/semantics/undefined-comparison-live-object-review.json).
+Internal/Stringable objects, resources, nonflat arrays and wider producers remain partial.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.
 [The equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json)
@@ -400,8 +405,18 @@ when throw cleanup pops the saved marker, so restoration precedes pruning even
 without another old-table owner. The
 [NULL-key ledger](../../coverage/semantics/array-literal-null-key-warning-review.json)
 checks two saved table edges, normal COW/deletion and restoration before catch.
-Unset/rebound, reference/typed/coercion/backing slots, direct strings/objects and
-wider payload graphs stay Unsupported; the paused LIST-key boundary is unchanged.
+Unset/rebound ordinary slots, typed/coercion/backing slots, direct strings/objects
+and wider payload graphs stay Unsupported; the paused LIST-key boundary is unchanged.
+An initial untyped reference-wrapped value instead captures a borrowed old CELL
+payload locator. Its snapshot resets that live payload before insertion/catch,
+while a rebound source name continues to name its new CELL. Range-only locator
+metadata delegates to the actual VARIABLE source spelling/line; a lost or retired
+captured CELL remains authentic but fails readiness/discard explicitly. Both CELL
+and bounded current payload need logical liveness and empty property/coercion/
+backing records with no CELL debt. The
+[wrapped NULL-key ledger](../../coverage/semantics/array-literal-null-key-wrapped-cv-review.json)
+checks captured-slot restoration, two pending ARRAY owners and independent COW;
+no global input classifier, task owner or count/prune/driver rule changes.
 String leaves validate canonical bytes or existing carrier records. Their table
 and wrapper counts stay separate from copied string bytes: debt-time writes may
 share a table while a string snapshot stays unchanged. Singleton reference

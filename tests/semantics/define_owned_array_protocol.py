@@ -229,11 +229,12 @@ def flags():
     values=[]
     for label,value in [('null','PNULL'),('quiet','PINT 0'),('true','PBOOL true')]:
         call='pconfigcall_'+label
+        negated = '' if label == 'true' else '~'
         values += [f'{call} = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,2,KNOWN ({value}))]',
             f'$config_invoke_valid(S,{call})',
             f'$dynamic_define_values({call}) = (($ptascii("V94_NESTED_OWNED"),PARRAY n_input))',
-            f'~$dynamic_owned_define_header(S,{call})',
-            f'~$dynamic_array_call_valid(S,{call})']
+            f'{negated}$dynamic_owned_define_header(S,{call})',
+            f'{negated}$dynamic_array_call_valid(S,{call})']
     return values
 
 

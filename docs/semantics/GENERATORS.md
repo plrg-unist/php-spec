@@ -146,6 +146,16 @@ argument-time row COW and a cache RuntimeException inside finally preserve their
 distinct owners without an owning return root. Ancestor/wider refreshes, abrupt
 argument callbacks, body entry and collection remain unvalidated; see the
 [node-free refresh review](../../coverage/semantics/generator-unused-scalar-refresh-send-review.json).
+Pending ancestor SEND also handles one native link to a PAUSED bare-statement
+yield, without a send target or buffered input. The selected receiver clears
+its initialization bit while the child stays paused. Its current snapshot
+survives normal argument cleanup; an unused copy retires before receiver
+release. In the tested alias-drop histories, Child finally runs before Middle
+finally. Assignment keeps the copy. Row COW and a
+cache RuntimeException from Child finally distinguish these owners without a
+COMPLETE or copied-return root. Wider links, abrupt argument callbacks, body
+entry and collection remain unvalidated; see the
+[bare-yield SEND review](../../coverage/semantics/generator-unused-bare-yield-send-review.json).
 Pending zero-argument NEXT also clears only the selected receiver bit while
 preserving that parked owning frame/site and copied return. It returns NULL
 without a current snapshot; a later explicit getter creates a separate copy.

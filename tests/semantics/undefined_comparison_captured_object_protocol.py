@@ -137,7 +137,8 @@ def checks(program, path, name):
         '~$comparison_read_object(S,perrorread_foreign)', '~$error_read_valid(S,perrorread_foreign)',
         '$error_read_plan(S[.TODO = perrorread_foreign.ORIGINAL :: ptask_tail*]) = eps',
         '$error_read_shape(BINARY_RIGHT ' + operator + ' (VARIABLE ($ptascii("missing")) 1) ' + str(line) + ',VARIABLE ($ptascii("saved")) 2,perrorread.BASE) = (perrorread_variable)',
-        '~$comparison_read_object(S,perrorread_variable)',
+        '$comparison_read_object(S,perrorread_variable)',
+        '~$error_read_source(S,perrorread_variable)', '~$error_read_valid(S,perrorread_variable)',
     ]
     if equal:
         values += [
