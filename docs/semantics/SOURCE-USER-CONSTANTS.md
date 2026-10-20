@@ -95,7 +95,8 @@ selection authenticate the call site; namespaced fallback is outside this slice.
 
 Retained intrinsic DEFINE Closure callees also admit primitive values, bounded
 array snapshots or existing supported direct objects, string names and
-omitted/raw Boolean flags, through ordinary or explicit `__invoke` calls.
+omitted/raw Boolean flags or separate raw NULL reception, through ordinary or
+explicit `__invoke` calls.
 Preparation records the exact captured owner with a nonce before arguments run;
 the live CONFIG must match that owner, site, kind and line. Its durable selection
 record owns nothing and authenticates the saved intrinsic tag after the callee
@@ -104,7 +105,7 @@ string selections carry an empty owner; owned records have no original string.
 Repeated same-site calls preserve inactive historical records while requiring
 the current nonce for active tasks. Named capture, frame retirement and normal
 or throwing duplicates preserve the earlier primitive arguments and old row.
-Coercive flags/names, packs and PIPE remain outside this owned-call
+Other flag/name coercions, packs and PIPE remain outside this owned-call
 slice; no intrinsic Closure VALUE authority is added.
 [Owned DEFINE call review](../../coverage/semantics/define-owned-closure-review.json).
 
@@ -118,8 +119,9 @@ observes the callee alive; it has retired when false is delivered or the origina
 Exception reaches catch. A returning handler may replace the raw alias with a
 different owning child: rejected-copy cleanup runs first, call argument owners
 are released next, and the callee last. Both child destructors observe the callee
-alive. The owned header admits omitted or raw Boolean flags; existing ownerless
-NULL/quiet-flag delegates and other intrinsic cleanup orders stay exact.
+alive. The owned Boolean header admits omitted or raw Boolean flags; separate
+NULL reception can enter the same array path after a normal weak callback.
+Ownerless quiet-flag delegates and other intrinsic cleanup orders stay exact.
 [Owned array call review](../../coverage/semantics/define-owned-array-review.json).
 
 Owned direct objects reuse the existing value classifier without changing leaf,
@@ -148,6 +150,17 @@ INSTANCE values; other current value classes compose structurally. Existing name
 leaf, receipt, argument-before-callee cleanup, global/default and paused policies
 remain exact.
 [Owned true-flag review](../../coverage/semantics/define-owned-true-review.json).
+
+Raw NULL uses separate pre-body reception. Strict ordinary calls raise
+parameter-3 TypeError after all argument effects, without invoking the handler
+or registering a row. Explicit `__invoke` remains weak even in a strict source:
+its Deprecated callback precedes lookup and ARRAY copying, so a normal return
+copies the current alias value. A supplied Exception cancels registration;
+raw API/wrapper arguments retain NULL and the object after callee retirement.
+After those trace owners retire, normal disposal runs with no pending Exception.
+Existing receipt, Boolean-header, value and cleanup authority stays exact;
+owned class-qualified names and wider flag coercions remain outside this slice.
+[Owned NULL-flag review](../../coverage/semantics/define-owned-null-review.json).
 
 Public row checks require a genuine source/selection, canonical unique name,
 matching value class and empty read/receive metadata. Available immutable

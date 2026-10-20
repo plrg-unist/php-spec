@@ -7,6 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Captured DEFINE Closure calls now receive raw NULL flags through a separate
+reception path. Strict ordinary calls reject parameter3 after argument effects;
+explicit __invoke is weak even in a strict source. A normal Deprecated callback
+precedes lookup and ARRAY copying; a supplied Exception cancels registration.
+Raw NULL/object trace arguments can outlive the callee, with later normal
+no-pending disposal after their actual owners retire.
+
+Three source agreements pass at ba8d285f7/408. First focused checks total
+852 = 300 + 238 + 314 premises/four budgets at e807d9645, with actual
+420/240/420 caps. Strict captured 17 versus weak captured 41/callback 53,
+post-handler ARRAY 41 versus raw 53,
+query COW/history and pooled caller lifetime are checked. All first attempts;
+no failures, retries, diagnostic-only probes or accepted/historical replay.
+
+Boolean/class-name, value, receipt, cleanup and global/default policies stay
+exact. Source84 INI_SET, magic properties and paused paths remain disjoint.
+[Owned NULL-flag review](coverage/semantics/define-owned-null-review.json).
+
 One numeric/named/mixed unpack pack now carries rawNULL plus the exact one-entry
 key0 ALIAS ARRAY through `ini_set` reception, for strings and retained setters.
 The saved inner array keeps its shape while its untyped quiet cell stays live;

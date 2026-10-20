@@ -2189,6 +2189,13 @@ same-object registration. Raw API/wrapper traces retain `true`, and the row
 keeps the object after trace retirement.
 [Owned true-flag review](coverage/semantics/define-owned-true-review.json).
 
+Captured DEFINE callees also receive raw NULL flags. Strict ordinary calls raise
+parameter-3 TypeError after argument effects; explicit `__invoke` receives weakly
+and reports Deprecated. A returning handler precedes registration and ARRAY
+copying, while a thrown handler Exception cancels the body. Raw API/wrapper
+arguments keep NULL and can retain an object after the callee dies.
+[Owned NULL-flag review](coverage/semantics/define-owned-null-review.json).
+
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
 children while cast/query arrays retain COW. A private duplicate copy can keep
