@@ -3633,5 +3633,89 @@
     "artifact_manifest": "../php-spec-evidence-archive/lifecycle-mixed-owning-120/manifest.json",
     "archive_sha256": "ad1387df1535f45c813b05c52be87aa2574d867a6d7eb0d6b6d2131dc189ecea",
     "recovery": "Restore based468 at the original lifecycle-mixed-owning-120 worktree path, apply runtime/mixed-global-slot.patch and extract .tools/m120 with matching providers. Six reports preserve original source/native/parsed/checked/request/profile/environment plus immutable accepted state fixture/producer/runner snapshots. No checkout/build tree or production archive dependency."
+  },
+  "repeated_global_alias_return_slots": {
+    "status": "independently_reviewed_repeated_global_alias_return_slots",
+    "revision": "638496fa6eb737798932dccf859653b17e8f7770",
+    "modules": 406,
+    "implementation": [
+      "spec/semantics/270-eager-destructors.watsup",
+      "spec/semantics/156-finally-runtime.watsup"
+    ],
+    "engine": "Pinned BIND_GLOBAL retains the actual shared reference cell and each saved old return owns a separate count, even if za/z alias. DISCARD_EXCEPTION clears the replaced computed return while FAST_CALL/FAST_RET preserve continuation addresses. THROW preserves the supplied object. Native fixes same local/caller identity, Notice13 and freshNULL versus global aliases/prior b7.",
+    "source": "Outer return za and middle return z share one actual HCELL via caller za=&z and two f global imports; innermost old3 returns sole C. C creates/unsets D and D throws the outside given Exception. Distinct source/owner sites remain despite equal cell. Local/caller caught identity succeeds, cleared C gives Notice13 and r freshNULL, b remains7, z/za preserve old object through r=changed, then za=alias updates z while r stayschanged.",
+    "repair": "Only270+1/-1 and156-1. After Some ref_return_retire_operand, KNOWN-object source necessarily satisfies retire_call while REFERENCE source is a disjoint ordinary global NExprVariable. Thus ~retire_call OR ~seen relaxes uniqueness exactly for authentic references and preserves computed-object distinctness pointwise. The cleared suffix removes only HCELL membership rejection, retaining HOBJECT uniqueness, tagged seen, every restore/function link, min2 outer slots and exact Notice. No helper/API, source identity/owner gates, finite body/pending/queue, SOURCE/history representation, finish, roots, ownership/storage/GC or schema change.",
+    "domain": "The existing named byref ?object first-retirement family retains at least two remaining lexical return slots. Each ordinary untyped global-CV REFERENCE slot authenticates emitted source and actual current/global cell; distinct za/z sites may now alias the same HCELL, counting each pending task separately. Computed KNOWN-object slots retain the exact finite class/source/old-operand/sole-owner and typed-node uniqueness guards. The SOURCE reader relaxes uniqueness only after a valid variable/global operand; the structural cleared suffix relaxes only HCELL duplication. All owner/source LINE, restore/protected/function/min2/Notice, finite body/pending/queue, SOURCE/history representation, finish/root/ownership/storage/GC/schema paths remain unchanged. Fresh source is C plus two global aliases za/z, finite C creates/unsets D and D throws the same outside supplied Exception; two shared releases drop n to n-1 to n-2 before function exit while global aliases/copy/object stay live. Other reference producers, typed/property cells, wider callback bodies/reentry, min-threshold cases, GC and consumers remain open.",
+    "native_and_source": "Native1 and unchanged NORMAL wrong-ending baseline retain396/406. The baseline loses local C/K/S/Notice, CI0/CMnone/RN0 and r/b detachment while z/za aliasing remains correct. One affected production source at638496 preserves source/parsed/checked/request bytes and exact native stdout/Notice13/exit. Earlier accepted sources/diagnoses are not replayed.",
+    "author": "188 Boolean/5 raw: authentic distinct za/z sites and shared current/global cell; computed-call versus variable distinction and positive recursion even with the same HCELL seeded in seen. Removing either physical pending task leaves STORE/ALLOCATIONS, valid heap, both global readers and original history site valid, drops one HCELL owner while its object stays owners2, then SOURCE/public refuses. Repeated-HCELL structural suffix passes; duplicate HOBJECT suffix refuses. Full wrapped capture/parent/cleared-C and two shared-release steps prove n to n-1 to n-2 with cell/copy/object live, same outside record/catch/Notice13/freshNULL/aliases and exact whole-split ending.",
+    "independent": "242 Boolean/5 raw: independent fresh packet, real saved C/f scope, deleting either exact za/z task in saved f leaves both global readers/original site valid and same STORE/ALLOCATIONS/valid heap but source/public refuse. Mirrored reused z SOURCE with outer za owner updates history, queued task and registry; heap, pending identity and actual global reader remain valid before cursor-site/source/public refusal. Duplicate-HOBJECT structural fence, five full wrapped states, successive shared jobs, n to n-1 to n-2 with allocation/copy/object preserved, same caught Exception/Notice13/NULL and full alias/whole-split ending pass.",
+    "diagnosis": "89 Boolean/2 raw at396/406: actual false11 pre-C with distinct za/z owner/source but same HCELL; each emitted ordinary global operand is individually admitted. One-outer recursion passes without HCELL in seen but fails with that same node present; full source capture is eps although C-D body/given/pending gates remain valid. First raw true8/no-recheck preserves both reference tasks; pending plainfalse SOURCE goes to generic search and misses local catch.",
+    "validation": "430 Boolean/10 raw at638496/406 (author188/5, independent242/5), strictSL45/state240/300/jobs1, true/empty stderr/stable/full reap. Native1/source1 and diagnosis89/2 keep separate cuts. Every actor runs once with no failed/retried actor or accepted historical renewal.",
+    "reports": [
+      {
+        "path": ".tools/m121/diagnostic-bi3du973/report.json",
+        "sha256": "76b3cb7d674fc58013b940604e33b2f95f49453873c8c786609cb2f36a9cea67",
+        "revision": "396e8d14f2123e319f6ac35f0ed6a1bbcff26af1",
+        "complete": true,
+        "boolean_premises": 89,
+        "raw_php_steps": 2,
+        "source_agreements": 0,
+        "native_observations": 0
+      },
+      {
+        "path": ".tools/m121/model-aliased-owning-baseline-151aqa7s/report.json",
+        "sha256": "8632bfe2b96e6787305208cabcf560e1d2e19f03e6328ed9080a505f849cc242",
+        "revision": "396e8d14f2123e319f6ac35f0ed6a1bbcff26af1",
+        "complete": true,
+        "boolean_premises": 0,
+        "raw_php_steps": 0,
+        "source_agreements": 0,
+        "native_observations": 0
+      },
+      {
+        "path": ".tools/m121/model-aliased-owning-repaired-3hqq9oc_/report.json",
+        "sha256": "a87df97c43a8e7a6e4eb06cff85a4a2ce1268016437d362cfa13dc0c6fe49821",
+        "revision": "638496fa6eb737798932dccf859653b17e8f7770",
+        "complete": true,
+        "boolean_premises": 0,
+        "raw_php_steps": 0,
+        "source_agreements": 1,
+        "native_observations": 0
+      },
+      {
+        "path": ".tools/m121/native-aliased-owning-l32hem42/report.json",
+        "sha256": "61baa4641928c25f198cce61b3edbda1f00b9c7df78562f04328ed0d322a29ad",
+        "revision": "396e8d14f2123e319f6ac35f0ed6a1bbcff26af1",
+        "complete": true,
+        "boolean_premises": 0,
+        "raw_php_steps": 0,
+        "source_agreements": 0,
+        "native_observations": 1
+      },
+      {
+        "path": ".tools/m121/public-djdgnwnu/report.json",
+        "sha256": "ce1724d52e6cf81110130ac98a0d870a5f99ec8a3d76ca52b0f74355e85511c0",
+        "revision": "638496fa6eb737798932dccf859653b17e8f7770",
+        "complete": true,
+        "boolean_premises": 188,
+        "raw_php_steps": 5,
+        "source_agreements": 0,
+        "native_observations": 0
+      },
+      {
+        "path": ".tools/m121/reviewer-p2kct9d4/report.json",
+        "sha256": "87c5260ac5cc057caae2685ff968aea5fe15398db902424d04c3e50572d14451",
+        "revision": "638496fa6eb737798932dccf859653b17e8f7770",
+        "complete": true,
+        "boolean_premises": 242,
+        "raw_php_steps": 5,
+        "source_agreements": 0,
+        "native_observations": 0
+      }
+    ],
+    "limits": "Fresh source evidence is two distinct ordinary global za/z sites aliasing one untyped HCELL plus finite C-D supplied Exception cleanup. General authenticated repeated reference slots are admitted recursively, but other reference producers, typed/property cells, smaller slot thresholds, wider bodies/mutation/reentry, collector paths and broader consumers stay partial.",
+    "artifact_manifest": "../php-spec-evidence-archive/lifecycle-aliased-owning-121/manifest.json",
+    "archive_sha256": "2fd91a9f24363656f5feae940e70fac9fb5e9ef52212ac57e3abfee77ea346fb",
+    "recovery": "Restore base396 at the original lifecycle-aliased-owning-121 worktree path, apply runtime/repeated-alias-slots.patch and extract .tools/m121 with matching providers. Six reports preserve original source/native/parsed/checked/request/profile/environment plus immutable accepted state fixture/producer/runner snapshots. No checkout/build tree or production archive dependency."
   }
 }

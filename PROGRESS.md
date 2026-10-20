@@ -1032,44 +1032,33 @@ joined actor, accepted replay or renewed execution credit.
 The earlier mixed CV/selected-reference arithmetic route retains source9/state858
 in its [review ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 
-M120 admits an ordinary global-CV reference slot beside computed objects in the
-bounded owning-return history. The source reader checks the emitted CV, current
-ENV and real GLOBALTABLE cell, ordinary name, untyped reference and allocation.
-Shared HCELLs need no sole-owner condition; computed objects retain their finite
-class/source/LINE/restore and owner1 checks. Tagged cell/object nodes preserve
-distinct identity across tables. The cleared-NULL grammar accepts both slot
-kinds while retaining restore links, minimum two outer slots and exact Notice.
-SOURCE/history representation, pending/finish/body classifiers, roots,
-release/storage, GC and schema stay unchanged.
+M121 preserves two pending global-reference returns that alias one HCELL.
+Every lexical slot still authenticates its emitted source, current/global cell,
+owner/LINE and restore path; the shared cell's repeated identity no longer
+rejects the history. Computed objects keep their unchanged sole-owner and
+HOBJECT uniqueness checks. Only the source-reader uniqueness condition and
+cleared-suffix HCELL condition change; minimum two outer slots, Notice,
+SOURCE/history representation, body/pending/finish, roots and transitions stay unchanged.
 
-One fresh mixed source and 439 Boolean/12 raw checks pass at `4a1cc45c5`/406
-(author204/7, independent235/5). C plus global z and computed A precede nested
-C→D supplied throw; the same outside Exception reaches the local catch/caller
-observer, cleared C gives Notice15 and a detached fresh NULL. The z slot's
-release drops exactly one cell owner while global z/za, copied z_old, STORE and
-the object stay live. Exact public states cover capture, pending replay, cleared
-C and shared-cell RELEASE/empty/EXIT; whole/split endings agree. Wrong live-cell
-identity, mirrored operand kind and task-only deletions refuse with valid heaps;
-structural checks distinguish equal numeric cell/object IDs. Repeated alias
-slots remain outside the current distinct-node grammar.
+One fresh za/z-alias source and 430 Boolean/10 raw checks pass at `638496fa6`/406
+(author188/5, independent242/5). C→D throws the same outside supplied Exception
+into the local catch and caller observer, then cleared C yields Notice13 and a
+fresh detached NULL. Two real shared-cell releases lower owners successively
+n→n−1→n−2 before function exit; the cell, global z/za, copied z_old and object
+stay live. Deleting either exact pending task refuses with both global readers
+and the original history site still admitted and a valid heap. Mirrored
+wrong-owner/source metadata with the same cell/heap also refuses; duplicate
+HOBJECT suffixes remain excluded. Five complete raw/public states per fixture
+and full whole/split endings agree, including separate r/b/z/za writes.
 
-Native1 and the wrong-ending baseline retain `d4682e6bf`/406. Separate98/2
-source-linked diagnosis isolates the missing reference arm from supported A and
-supplied-throw gates. One affected source agrees exactly with the original tuple
-and all four packets at 4a1cc. Every actor executes once; model workers and fixtures
-finish quiet/stable/reaped with strict45 and author240/peer300 caps. Author timing
-was contended; the reviewed passing result is retained without replay. Other
-reference producers, typed/property cells, wider bodies, reentry, GC and consumers
-remain open.
+Native1 and the wrong-ending baseline retain `396e8d14f`/406. Separate89/2
+diagnosis proves both globals individually supported and isolates repeated-HCELL
+rejection from the finite supplied throw/pending gates. One affected source
+matches every original packet and the native tuple at `638496fa6`. Every actor
+runs once with quiet model workers/fixtures, stable inputs and full reap;
+strict45 and author240/peer300 caps. Other reference producers, typed/property
+cells, fewer than two remaining slots, wider bodies/reentry, GC and consumers remain open.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-
-Composed over `af6220b17`/406 after review of incoming magic-call, INI,
-loose-comparison Warning, Generator, compound-ADD and literal-array selectors,
-all unproduced here. Live stdClass values do not select DEFINE publication;
-ordinary destructor/getMessage paths stay unchanged and literal debt lists stay
-empty. Only156/270 differ and byte-match tested4a1cc; every other parent runtime,
-task/default/root and ordered406 manifest stays exact. Native/source/diagnosis
-and439/12 keep their private cuts without joined execution or accepted replay.
 
 Retained propertyless Stringable `define` names now accept captured boolean true
 with primitive candidates and non-NUL global/class-like results. One module400
@@ -11424,8 +11413,10 @@ outside identity/message, local catch/NULL/Notice17 and remaining owners. M119
 adds recursive owning-source/suffix validation, fresh four-owner source1 and368/6
 at0c1f. M120 adds an authenticated global-reference slot beside computed objects,
 fresh source1 and439/12 at4a1cc with shared-cell release and Notice15/detachment.
-Repeated alias slots, other interposed/pending histories, deeper reentry, GC and
-wider typed consumers remain open core obligations for permanent lifecycle/control work.
+M121 adds two genuine za/z slots sharing one cell, source1 and 430/10 at638496,
+with each lexical task required and two exact shared-owner drops. Other
+reference producers, typed/property cells, interposed/pending histories, deeper
+reentry, GC and wider typed consumers remain open for permanent lifecycle/control work.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
 integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV
