@@ -7,6 +7,35 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Ownerless positional `ini_set(NULL, array)` now resumes Deprecated handlers for
+one key0 ALIAS element backed by a live allocated untyped reference cell with a
+quiet primitive value. The saved array keeps its shape across current-container
+COW, while later cell writes remain visible through both arrays and saved trace
+arguments. Returning handling reaches empty-option parameter2 TypeError; supplied
+Exception retains rawNULL and cancels rejection. Strict option priority follows
+completed value effects, and the original string setter remains usable.
+
+Four exact source comparisons and 1,261 state premises (349+292+202+418) pass
+first attempt at `5a910116f`/`5ba6dd256`/407. Initial `dc883ec00` CPU3 native4/base0
+precedes CPU5 affected checks; nine stable/reaped reports PASS, only Deprecated12/21
+and quiet workers, no failures/retries. Native E/L/A observes a later leaf write
+after actual TypeError/getTrace; state checks prove the transitive HARRAY→HCELL
+edge, current COW table sharing and whole restoration/discard. HCELL is neither
+a direct task root nor a possible GC buffer root. Only29 additive172 lines change;
+old DIRECT-array guards/84/138/helpers/trace/root/GC/schema and historical tests
+stay exact without replay. Whole-state PARAMETERBACKINGS EPS bounds this slice;
+named/owned/packed/PIPE forms, typed/property references and owning referents remain
+partial, with paused paths untouched.
+[Shared-reference INI array review](coverage/semantics/ini-set-null-alias-array-value-review.json).
+
+Composed over `0b95e2e72`/407 with the incoming DEFINE-only root-order partition
+retained in172 and own29-line ALIAS guard/finish delta added. Other runtime/schema/
+ordered-manifest bytes stay parent-exact. Incoming missing-read comparisons,
+byref-return destructor histories, Generator SEND, selected XOR conversions and
+float-key typed/property borrowing have no producer here. The entire incoming
+checkpoint tail remains unchanged; source4/state1,261 retain private407 cuts
+without joined execution or renewed credit.
+
 Direct pending SEND can now refresh one allocated closed child without a prior
 getter at a normal owning simple-CV return. Cleanup releases child, ignored
 argument, unused current copy and receiver in that order; assignment keeps its

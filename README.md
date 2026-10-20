@@ -438,6 +438,16 @@ cancellation, strict ordinary versus weak explicit calls, precise discard and
 real getter/old-setter/getter recovery. Named/unpacked/PIPE forms, other callable
 kinds and sole-owner lifetimes remain partial.
 
+[Rejected INI arrays with a shared reference element](coverage/semantics/ini-set-null-alias-array-value-review.json)
+now retain a one-entry array whose key0 element aliases a live untyped cell with
+a quiet primitive value. Container COW preserves the earlier shape while later
+cell writes remain visible through saved arguments, including after trace capture.
+Returning handlers reach the empty-option value TypeError; supplied throw keeps
+raw NULL and cancels rejection. Four source comparisons and 1,261 state premises
+cover the transitive array-to-cell edge, strict option priority, full discard and
+normal setter recovery. This slice is ownerless positional NULL2 without unpacking;
+typed/property references, owning referents and wider forms remain partial.
+
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
 send/callback site. Ordinary Closure PIPE follows caller strictness; normal and
