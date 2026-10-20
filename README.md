@@ -47,9 +47,10 @@ handler. Separate table counts preserve old array owners and omitted new-array
 owners; inverse retargeting cancels them before cleanup. Initial scalar and
 array plans remain distinct, while same-table transfer and restored COW keep
 ordinary values distinct from PHP reference wrappers.
-These flat tables also admit untyped null/bool/int/float reference leaves.
-Child-table copies preserve shared leaves and unwrap singleton leaves,
-independently of outer table and wrapper count corrections.
+These flat tables also admit untyped reference leaves holding null/bool/int/float
+or validated byte strings. Child-table copies preserve shared leaf aliases and
+unwrap singleton leaves; string byte writes keep earlier snapshots independent
+of both leaf references and outer table/wrapper count corrections.
 Direct string CV/cell payloads, unsafe deficit retirement and wider domains remain
 Unsupported. Duplicate replacement and later items stay ordered.
 
@@ -512,6 +513,14 @@ second throw preserves callback writes without storing. Two originals and 330
 focused premises retain this in the
 [selected-RHS Warning ledger](coverage/semantics/addassign-selected-rhs-warning-review.json).
 Other producers, unsafe targets and wider lifetimes remain partial.
+
+Failed delayed RHS conversion in selected-reference `+=` now reports the old
+selected operand types despite both current names rebinding. Flat arrays raise
+`array + array` without retrying union; old bool/bad text raises `bool + string`
+while current names keep quiet replacements. Both preserve the selected target,
+aliases and outer destination. Two originals and 304 focused premises retain this
+in the [selected failure ledger](coverage/semantics/addassign-selected-failure-review.json).
+Other values, producers and lifetimes remain partial.
 
 Initially plain CV `+=` destinations now retain their selection through a named
 warning handler that creates a late alias. Successful replacement detaches that
@@ -1717,6 +1726,13 @@ Closures retain their receiver. Canonical array/query copies share these objects
 an unpinned method receiver retires only after the last Closure owner is released.
 [Runtime Closure define review](coverage/semantics/define-runtime-closure-review.json).
 
+Ordinary `stdClass` values also publish directly and in array snapshots under
+selected live property/table checks. Queries share the same object and owning
+children while cast/query arrays retain COW. A private duplicate copy can keep
+the sole box-to-child path through a cached property reference; retiring it runs
+the child destructor before the handler Exception reaches catch.
+[Runtime stdClass define review](coverage/semantics/define-runtime-stdclass-review.json).
+
 Fresh definitions also copy nonempty array trees containing certified Closure,
 stdClass or user-instance leaves under the admitted flags. Copied containers freeze source
 reference values while object pointers and property writes remain shared,
@@ -1758,7 +1774,7 @@ nonempty byte strings are true. Flag-array COW and later callback writes leave t
 original API flag intact through duplicate cleanup or pending fresh publication.
 Strict calls retain the raw string in TypeError traces.
 [Byte-only array-flag review](coverage/semantics/define-array-byte-flag-review.json).
-Other Closure forms, unrecorded stdClass/internal object values, other owning
+Other Closure forms, internal object values, other owning
 leaves and wider flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.

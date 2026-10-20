@@ -22,6 +22,49 @@ no failures or retries. Same-CV ordinary forms, owning comparison values, remova
 of already checked defined counterparts and wider producers remain partial.
 [Reversed second-Warning review](coverage/semantics/undefined-scalar-compare-second-reversed-review.json).
 
+Composed over `245ad2006`/406 with tested module207 and publication tests
+preserved. Incoming stdClass DEFINE, selected-reference `+=` failure and
+lossy-float literal-key retention selectors have no producer here; debt lists
+stay empty. Source8+2/state675 and affected92/3/one selector retain their
+private cut without joined execution or historical renewal.
+
+Ordinary `stdClass` VALUES now use dynamic-only `PVOBJECT` authority with
+selected property/table integrity and live physical/dereferenced child checks.
+Certified rows retain `PVSTDCLASS` priority; global/default policies stay unchanged.
+Cast/property-reference and canonical query COW share object/child identity. A
+private duplicate copy can retain the sole cached box-to-table-to-reference-to-child
+path until child D41 runs before catch with the original Exception/raw NULL trace.
+The box keeps its existing storage pin during child teardown, then retires.
+
+Three originals pass first attempts at `836433494`/406; 769 focused premises
+(278+156+335), including two zero-budget identities, pass at `7e6abf6d2`/406.
+The first fixture's premature box-death assertion retains zero; its correction
+checks the real pin, with only affected/unrun cases executed. No production/source
+change, diagnostic, timeout or accepted/historical replay follows that correction.
+Ordinary NEW omitted/false originals are distinct from structural cast/clone/flag
+composition; other objects/names/lifetimes stay partial.
+[Runtime stdClass review](coverage/semantics/define-runtime-stdclass-review.json).
+
+Composed over `b19e53e48`/406 with exact tested400+16 and preserved incoming
+runtime/manifest/inventory prefixes. INI_SET, missing loose comparisons, magic
+fallback, `+=` warning/failure and lossy-float literal-key selectors are unselected;
+retained/debt lists stay empty with no new state/graph lift. One empty helper EOF
+line is removed with identical Python AST; source3/state769 retain private cuts
+without joined execution, accepted replay or renewed historical credit.
+
+Selected-reference `+=` now reports failed delayed RHS conversion using the
+old selected cells despite both current names rebinding. Flat arrays raise
+TypeError without union retry; old bool/bad text preserves its labels, outer100
+and alias write-through while current replacements remain independent.
+Two originals pass at `252cb0193`/406 and 304 focused premises at `32881880d`/406.
+[Selected failure ledger](coverage/semantics/addassign-selected-failure-review.json).
+No entry/tag/root or successful store changes; wider values/producers/lifetimes
+remain partial and OP12 stays paused.
+
+Composed over `5d8476935`/406, preserving incoming runtime, task and
+manifest paths. Source2/state304 retain their private406 cuts; independently
+reviewed absent incoming selectors require no joined execution or renewed credit.
+
 Distinct direct CVs at `==`/`!=`/`<`/`<=` now traverse the second Warning
 when right stays missing or is removed by the first handler. Two captured NULLs
 preserve Boolean true/false/false/true despite late references or scalar writes;
@@ -64,17 +107,8 @@ DEFINE values, reference/finally, Generator, numeric-warning and lossy-float deb
 paths have no producer here. Source4/state844 retain their private identities
 without a joined actor or renewed agreement credit.
 
-Selected-reference `+=` now captures a newly leading RHS before its second
-Warning. Cached float `18.0` writes the old target alias despite current-name
-rebinding and post-capture RHS retirement; a supplied second throw preserves
-callback/alias writes and cancels storage. Two originals pass at `ddcef772a`/406
-and 330 focused premises at `a1f5cd969`/406.
-[Selected-RHS Warning ledger](coverage/semantics/addassign-selected-rhs-warning-review.json).
-Other producers/unsafe targets and wider lifetimes remain partial; OP12 paused.
-
-Composed over `06a0e4c7b`/406, preserving incoming fields, task variants
-and manifest. Source2/state330 retain their private406 cuts; independently reviewed
-incoming selectors require no joined execution or renewed credit.
+Earlier selected-reference `+=` second-Warning storage retains source2/state330
+in its [review ledger](coverage/semantics/addassign-selected-rhs-warning-review.json).
 
 Pending literal zero-argument NEXT now returns before dispatch at an already
 parked owning simple-CV copied return, directly or through finite native links.
@@ -1056,32 +1090,40 @@ and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
 Flat runtime tables in lossy-float literal-key callbacks now admit embedded
-ALIAS leaves to live untyped null/bool/int/float cells, without property/coercion/
-backing receipts or CELL debt. Both ordinary table retargets and untyped wrapper
-payloads use the bounded entries. Positive targets keep their leaf edges through
-pruning; primitive leaves own no further nodes. Table/wrapper bias and leaf
-counts stay separate: sibling writes prove table sharing/COW, while shared leaf
-references survive child copying and singleton leaves unwrap to DIRECT.
-Four fresh natives and the genuine unchanged Unsupported baseline retain
-`a4452bf5d`/406. Strict406 and source4 pass at `eb84338a2`: author2 plus original
-independent deletion and the unchanged throw's 78.59s timing retry at120/150.
-The original throw model60 timeout remains zero. Focused state951 (938 Boolean +
-13 raw; 428 author + 523 independent) passes first executions at `d4ffb94f1`.
-Only413's entry admission/liveness checks broaden; source/error authentication,
-tasks, fields, count/prune/lifetime algorithms and driver stay unchanged.
-DIRECT byte-string support remains intact. Owning/typed/indebted reference leaves,
-nested/pooled/immutable tables, wrapped by-value CVs, array-valued type sources,
-direct string CV/cell payloads, effective-zero, active collection and outstanding
-request-end debt remain Unsupported. Paused LIST/owned-NUL and active lifecycle/
-class paths are untouched.
-[Alias-leaf review](coverage/semantics/array-literal-float-alias-leaf-review.json).
+untyped string-valued ALIAS leaves alongside null/bool/int/float leaves. Canonical
+bytes and authenticated carriers use existing validation. A separate leaf-cell
+predicate keeps global primitive-cell and direct string CV/CELL admission exact;
+marked/live/untyped/coercion/backing, leaf-CELL-debt and logical-pruning bounds
+remain unchanged. Positive targets retain their leaf edges; strings add no
+modeled heap edges or user destructors. Table debt does not subtract leaf owners.
 
-Composed over `69b6a809a`/406 with accepted413/tests unchanged and every other
-parent runtime/manifest byte preserved. Incoming INI_SET, missing-comparison,
-DEFINE, typed reference-return/destructor and ADD selectors are absent here;
-the final207 change requires missing-CV spaceship reception. Seven partial rows
-append only reviewed deltas, preserving incoming prose/checkpoints. Source4/
-state951 retain private cuts and timeout0 without joined execution or renewed credit.
+Four fresh natives and the genuine unchanged Unsupported baseline retain
+`4a6f62070`/406. Strict406 and source4 pass at `b893408e6`. Focused state1034
+(1021 Boolean +13 raw; 475 author +559 independent) passes first executions at
+`38b3ae5f6`. No source/state failures or retries; the genuine baseline stays zero.
+Sibling writes distinguish table sharing/COW independently of shared leaf byte
+writes. Singleton leaf copies detach, shared ALIAS strings propagate changes,
+and earlier string snapshots stay fixed. Deletion and supplied-throw cleanup
+preserve outer count biases until inverse balancing, then normal COW resumes.
+Only413 leaf admission and two superseded pure string-refusal controls change;
+source/error authentication, tasks, fields, count/prune/lifetime algorithms and
+driver stay exact. Array/object-valued, typed or indebted leaves,
+recursive/pooled/immutable tables, wrapped by-value CVs, direct string CV/CELL
+retargets, unsafe effective-zero,
+active collection and request-end debt remain Unsupported. Paused LIST/owned-NUL
+and active lifecycle/class paths are untouched.
+[String-alias review](coverage/semantics/array-literal-float-string-alias-leaf-review.json).
+
+Composed over `a4bd3b94f`/406 with accepted413/tests unchanged and all other
+parent runtime/manifest bytes preserved. Incoming reference-return retirement,
+Generator NEXT, Closure DEFINE, magic-call, INI_SET and loose-comparison/compound
+Warning selectors are absent here. Seven partial inventory rows append only the
+reviewed deltas; source4/state1034 retain their private cuts and baseline0 without
+joined execution or renewed historical credit.
+
+Earlier primitive ALIAS leaves retain source4/strict406 at `eb84338a2` and state951
+at `d4ffb94f1`; the original throw timeout stays zero in the
+[alias-leaf ledger](coverage/semantics/array-literal-float-alias-leaf-review.json).
 
 Earlier string-leaf support retains source4/strict406 at `c4e9c2441` and state850
 at `03ca5dc22`, integrated as `f3d014d14`; the original fixture-grouping failure

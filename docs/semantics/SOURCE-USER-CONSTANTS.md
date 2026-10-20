@@ -607,7 +607,20 @@ Closures with omitted/false flags; structurally valid clones and inherited flag
 delegates receive no additional execution credit.
 [Runtime Closure define review](../../coverage/semantics/define-runtime-closure-review.json).
 
-Other Closure forms, unrecorded stdClass/internal object values, other owning
+Ordinary `stdClass` values also use dynamic-only `PVOBJECT` authority when their
+selected property record and optional cached table validate, including live
+physical reference cells and their immediate values. A present stdClass birth
+record retains certified `PVSTDCLASS` priority and cannot fall through if invalid.
+No producer history is reconstructed; global/default policies stay unchanged.
+Direct queries keep the DEFINE-origin fence. Object/property identity remains
+shared through cast-table COW and canonical array/query copies. A private copy
+can retain the last box-to-table-to-reference-to-child path after a throwing
+handler clears the source alias, running the child destructor before catch.
+The originals use ordinary NEW with omitted/false flags; coherent casts/clones
+and inherited flag delegates have no additional execution credit.
+[Runtime stdClass define review](../../coverage/semantics/define-runtime-stdclass-review.json).
+
+Other Closure forms, internal object values, other owning
 array leaves, nonfinite direct-object flags, coerced names and wider owning define domains
 remain partial.
 

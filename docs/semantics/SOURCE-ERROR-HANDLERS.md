@@ -282,14 +282,18 @@ entries unwrap before child/string COW, then an inverse restores shared ALIAS co
 The [string-leaf ledger](../../coverage/semantics/array-literal-float-string-leaf-review.json)
 checks normal/same-table, deletion and supplied-throw paths. Direct string CV/cell
 payloads remain Unsupported. No string-conversion callback or identity rule changes.
-Embedded ALIAS leaves now admit live untyped null/bool/int/float cells with no
-property/coercion/backing receipts or CELL debt. Their ordinary counts remain
+Embedded ALIAS leaves now admit live untyped cells holding null/bool/int/float
+or validated byte strings, with no property/coercion/backing receipts or CELL debt. Their ordinary counts remain
 separate from outer HARRAY/CELL biases: child-table COW keeps shared aliases or
 unwraps singleton leaves, while sibling slots reveal table sharing independently.
 Positive surviving tables preserve every leaf edge. The
 [alias-leaf ledger](../../coverage/semantics/array-literal-float-alias-leaf-review.json)
 records normal, deletion and supplied-throw paths with balanced inverse cleanup.
-Owning, typed or indebted reference leaves and recursive graphs remain Unsupported.
+The [string-alias ledger](../../coverage/semantics/array-literal-float-string-alias-leaf-review.json)
+checks string byte writes across shared and singleton leaf copies, independent
+snapshots, deletion and supplied throws. Only the embedded leaf-cell predicate
+broadens; direct string CV/CELL retargets, array/object-valued, typed or indebted
+leaves and recursive graphs remain Unsupported.
 
 Missing-key module409 retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,
