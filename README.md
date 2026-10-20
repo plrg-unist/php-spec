@@ -1700,6 +1700,13 @@ Closures retain their receiver. Canonical array/query copies share these objects
 an unpinned method receiver retires only after the last Closure owner is released.
 [Runtime Closure define review](coverage/semantics/define-runtime-closure-review.json).
 
+Ordinary `stdClass` values also publish directly and in array snapshots under
+selected live property/table checks. Queries share the same object and owning
+children while cast/query arrays retain COW. A private duplicate copy can keep
+the sole box-to-child path through a cached property reference; retiring it runs
+the child destructor before the handler Exception reaches catch.
+[Runtime stdClass define review](coverage/semantics/define-runtime-stdclass-review.json).
+
 Fresh definitions also copy nonempty array trees containing certified Closure,
 stdClass or user-instance leaves under the admitted flags. Copied containers freeze source
 reference values while object pointers and property writes remain shared,
@@ -1741,7 +1748,7 @@ nonempty byte strings are true. Flag-array COW and later callback writes leave t
 original API flag intact through duplicate cleanup or pending fresh publication.
 Strict calls retain the raw string in TypeError traces.
 [Byte-only array-flag review](coverage/semantics/define-array-byte-flag-review.json).
-Other Closure forms, unrecorded stdClass/internal object values, other owning
+Other Closure forms, internal object values, other owning
 leaves and wider flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.

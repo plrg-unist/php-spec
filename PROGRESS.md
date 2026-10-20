@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Ordinary `stdClass` VALUES now use dynamic-only `PVOBJECT` authority with
+selected property/table integrity and live physical/dereferenced child checks.
+Certified rows retain `PVSTDCLASS` priority; global/default policies stay unchanged.
+Cast/property-reference and canonical query COW share object/child identity. A
+private duplicate copy can retain the sole cached box-to-table-to-reference-to-child
+path until child D41 runs before catch with the original Exception/raw NULL trace.
+The box keeps its existing storage pin during child teardown, then retires.
+
+Three originals pass first attempts at `836433494`/406; 769 focused premises
+(278+156+335), including two zero-budget identities, pass at `7e6abf6d2`/406.
+The first fixture's premature box-death assertion retains zero; its correction
+checks the real pin, with only affected/unrun cases executed. No production/source
+change, diagnostic, timeout or accepted/historical replay follows that correction.
+Ordinary NEW omitted/false originals are distinct from structural cast/clone/flag
+composition; other objects/names/lifetimes stay partial.
+[Runtime stdClass review](coverage/semantics/define-runtime-stdclass-review.json).
+
 Pending literal zero-argument NEXT now returns before dispatch at an already
 parked owning simple-CV copied return, directly or through finite native links.
 Only the selected receiver clears initialization; the physical frame/site and
