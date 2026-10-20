@@ -7,6 +7,29 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained intrinsic `ini_set` Closures now resume NULL-option handlers with named
+or mixed flat quiet ARRAY values. Reversed evaluation owns both the original
+Closure and earlier array before later option effects replace the live callee
+and separate an alias by COW. Returning handling reaches parameter2 TypeError:
+API option is empty while explicit `__invoke` retains rawNULL. Supplied throw
+preserves Exception identity/result99 and the captured value, followed by normal
+original-owner recovery; ordinary strict calls reject option before handlers.
+
+Four source agreements and all1,319 state premises (348+286+287+398) pass on the
+first attempt at `f3a7657f9`/`4fc76dcea`/406. Initial `d527a9877` CPU3 native4/
+baseline0 precedes CPU1 model/state checks. Nine stable/reaped reports pass;
+only selected Deprecated18 is expected and workers are quiet. Only12 additive172
+lines change; source helpers, finish/trace/root/discard/GC and old tests remain
+exact. Native E/W/N/value observations are distinct from the actual state-only
+peer three-frame carrier/array-edge/owner-root/full-discard proof. Purely
+positional/packed owned arrays, wider leaves and sole-owner lifetimes remain
+partial; paused paths are untouched.
+[Named retained NULL array INI review](coverage/semantics/ini-set-owned-named-null-array-value-review.json).
+
+Composed over `25f8d3066`/407 with module172/four tests private-exact and every
+other runtime/schema/ordered manifest parent-exact. Source4/state1,319 retain
+private406 cuts without joined execution or renewed evidence.
+
 Selected-reference `**=` now retains both conversion holders through final
 Deprecated. A second conversion Exception cancels storage (old `88`, outer `100`);
 a final Deprecated Exception still writes cached `+INF` over callback `66` through

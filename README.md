@@ -314,7 +314,8 @@ now retain an earlier array across reversed value/option evaluation and later CO
 Returning handlers reach the value TypeError with an empty option; a supplied
 throw keeps raw NULL and cancels rejection. Four source comparisons and 995 state
 premises cover named/mixed source authentication, ownership, strict option
-priority and recovery. Owned/packed array values and wider leaves remain partial.
+priority and recovery. Owned forms beyond the bounded follow-up below, packed
+array values and wider leaves remain partial.
 
 [NULL INI options with retained stdClass values](coverage/semantics/ini-set-null-stdclass-value-review.json)
 now resume handlers for direct/selected positional calls with table-free objects
@@ -331,6 +332,16 @@ option and the same updated object; a supplied throw preserves raw NULL and
 cancels rejection. Four source comparisons and 1,109 state premises cover named
 binding, strict option priority, owning trace edges and normal setter recovery.
 Owned/packed calls, materialized tables and wider properties remain partial.
+
+[Named retained INI calls with rejected array values](coverage/semantics/ini-set-owned-named-null-array-value-review.json)
+now retain the original Closure and earlier flat quiet array across reversed
+argument effects, live callee replacement and alias COW. Returning handlers reach
+parameter2 TypeError: the API receives an empty option while explicit `__invoke`
+keeps raw NULL in its numeric wrapper arguments. A supplied throw cancels rejection.
+Four source comparisons and 1,319 state premises cover both owning roots, strict
+ordinary versus weak explicit calls, actual trace edges and retained-setter reuse.
+Purely positional/packed array values, wider leaves and sole-owner lifetimes
+remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
