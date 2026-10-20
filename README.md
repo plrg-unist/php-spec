@@ -363,8 +363,8 @@ remain visible through both API and explicit wrapper arguments: the API option
 converts to empty while the wrapper keeps raw NULL. Four source comparisons and
 1,328 state premises cover return/throw ordering, distinct owning roots, strict
 ordinary versus weak explicit invocation, precise discard and original-owner reuse.
-Packed/PIPE calls, materialized tables, wider properties and sole-owner lifetimes
-remain partial.
+Packed forms beyond the bounded follow-up below, PIPE, materialized tables,
+wider properties and sole-owner lifetimes remain partial.
 
 [Packed retained INI calls with array values](coverage/semantics/ini-set-owned-unpack-null-array-value-review.json)
 now accept one two-item numeric, named or mixed pack with NULL option and an
@@ -393,8 +393,19 @@ Returning handlers reach converted-empty value TypeError, while supplied throw
 preserves raw NULL and the updated object and cancels rejection. Four source
 comparisons and 1,253 state premises cover owning root transfer, shared identity,
 strict option priority, precise discard and original string-setter recovery.
-Retained-owner packed objects, additional arguments/packs, materialized tables,
-wider properties, PIPE and sole-owner lifetimes remain partial.
+Additional arguments/packs, materialized tables, wider properties, other object
+kinds, PIPE and sole-owner lifetimes remain partial.
+
+[Packed retained INI calls with shared stdClass values](coverage/semantics/ini-set-owned-unpack-null-stdclass-value-review.json)
+now keep both the original intrinsic Closure and a separate table-free object
+through one numeric, named or mixed pack. Shared property writes stay visible
+after live callee/value replacement and live-pack COW or outer retirement.
+Returning handlers reach TypeError with empty API option and raw NULL explicit
+wrapper option; both retain the same updated object. Four source comparisons and
+1,452 state premises cover dual object roots, supplied-throw cancellation,
+strict ordinary versus weak explicit calls, precise discard and retained-setter reuse.
+Additional arguments/packs, materialized tables, wider properties, other object
+kinds, PIPE and sole-owner lifetimes remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled

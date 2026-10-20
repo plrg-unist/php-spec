@@ -7,6 +7,32 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained intrinsic `ini_set` Closures now unpack a NULL option and a separate
+shared table-free STDINSTANCE from one two-item numeric, named or mixed pack.
+The held receiver and value remain distinct object roots while active outer
+ownership transfers to normalized sends. Historical certificates keep no outer
+root and do not freeze property contents. Shared writes survive live callee/value
+replacement, outer retirement and live-pack COW. Returning handling reaches empty
+API/rawNULL explicit-wrapper TypeError2; supplied Exception preserves the same
+updated value and cancels rejection. Strict ordinary priority and owner reuse survive.
+
+Four exact source comparisons and 1,452 state premises (316+293+329+514) pass
+first attempt at `97ecd7d8a`/`1c19a1812`/407. Initial `9fe932aaa` native4/baseline0
+and later packets use CPU1; nine stable/reaped reports PASS without failures or
+retries, expected Deprecated12/16 only and quiet workers. One172 OWNER-empty
+condition is deleted; invocation/source/domain/weak guards and all helper/finish/
+trace/root/discard/GC bodies stay exact, without historical replay. Native E/W/N/I/I/
+updated-mark differs from state-only dual task roots/outer transfer/three-frame
+owning value trace/full discard. DIRECT describes captured entries after dereference;
+original reference forms remain unvalidated. Additional packs, materialized tables,
+wider properties/object kinds, PIPE and sole-owner lifetimes remain partial.
+[Packed retained NULL stdClass INI review](coverage/semantics/ini-set-owned-unpack-null-stdclass-value-review.json).
+
+Composed over `b7ce3dd97`/407 with four tests private-exact and module172 equal
+to the incoming V93 receipt-aware parent minus the sole STD-pack OWNER-empty
+condition. All other runtime/schema/ordered-manifest bytes stay parent-exact.
+Source4/state1,452 retain private407 cuts without joined execution or renewed credit.
+
 All seven comparisons now admit an initially defined live flat DIRECT primitive
 array CV opposite a missing read. The missing result stays NULL while current
 scalar/array rebinding, checked quiet removal or unread second Warning follows
