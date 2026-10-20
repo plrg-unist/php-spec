@@ -517,33 +517,27 @@ joined actor, accepted replay or renewed execution credit.
 The earlier nonowning-copy arithmetic route retains source10/state767 in its
 [review ledger](coverage/semantics/copied-arithmetic-warning-review.json).
 
-Selected private-property `??` now pairs inherited typed-bool `__isset(string)`
-with an untyped by-value Get. Isset and Get guards end with their respective
-calls, including actual compiled-local cleanup. One marker retains the selected
-receiver after caller-CV nulling, then releases it before fallback evaluation.
-False skips Get; zero skips the fallback; null observes receiver-D mutation to 99.
-An owning Get result remains one owner through receiver D and main output, while
-a supplied Get Exception preserves the same catch and destination 42 without RHS.
+No-Get inherited-private property `??` now calls the selected typed-bool or
+absent-return `__isset(string)`. Ordinary object RV disposal retains the receiver
+while both magic guards are inactive. Sole RV destruction sees a live weak target;
+held RV destruction runs after receiver release/fallback and sees NULL. Supplied
+RV-D throws preserve catch identity and destination 42 without fallback.
 
-Five original agreements retain separate cuts: four at `67aac5274` and corrected
-throwing at `25106708d`. Focused checks total 604 premises (585 reached +19 derived),
-combining false (119)/null (174) at `22d98f7af` with owning (170)/throw (141) at
-`6d7c3b471`, including full frame-exit/call validity, guard changes,
-source/caller/tail refusals and PREP zero/resume budgets.
-Both initial elaboration failures, the redundant discard transition and the first
-owning fixture's conflicting completion binding remain explicit zero-credit failures;
-only affected cases repeat. Module 416 plus storage/runtime/manifest changes reuse ordinary
-coalesce delivery and cleanup; generic ownership/destruction/GC rules stay exact.
-Known BYVAL transfer is generic, with observed zero/null/Payload histories. Wider values,
-no-Get combinations and local-destructor/reentry lifetimes remain partial.
-[Magic coalesce review](coverage/semantics/magic-coalesce-review.json).
+Four originals agree at `2ad0660c1`/406. All 640 focused premises (615 reached +25
+derived; four groups) pass at `7218b430e` with the same runtime, including full saved
+call validity, exact cached NULL/SOURCE receipts, owner/guard/weak checks and PREP
+budget resumption. Typed true is a derived control. The genuine baseline stops at
+`magic isset quiet consumer`; the original recorder expected a normal mismatch
+and retains its false report/zero credit. Its first refusal and three separately
+completed refusals remain distinct. Native sampling missed all four tiny children;
+model/state CPU captures are complete for their selected workers. All actors reaped.
 
-Composed over `da94669ce`/405 with the tested module416 and136 bytes retained.
-Incoming literal-array fields stay empty, contributing no roots/debts; selected
-arithmetic, comparison, Generator, INI/DEFINE and reference-return retirement
-producers are absent. Incoming task/field/default and ordered manifest entries
-remain intact. Source5/focused604 keep separate cuts and original failures;
-no joined actor, accepted replay or renewed credit.
+Modules 416 and 30 now use optional GET and a receiver-only RV continuation; two
+prior fixture projections mechanically extract the already bound getter origin.
+Getter-present typed-bool behavior is statically preserved without renewing its
+source5/state604 cut. No generic destruction/GC change, false owning-RV claim or
+new WeakReference implementation. Wider results, receivers, aliases and reentry
+remain partial. [No-Get coalesce review](coverage/semantics/magic-coalesce-no-get-review.json).
 
 Retained propertyless Stringable `define` names now receive captured NULL flags
 with primitive candidates in admitted user-global/class-name domains. One module400

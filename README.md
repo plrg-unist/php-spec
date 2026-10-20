@@ -3388,7 +3388,14 @@ evaluates the fallback after receiver release. An owning getter result survives
 that release; a supplied getter Exception preserves the same catch and destination.
 [Five originals and 604 focused premises](coverage/semantics/magic-coalesce-review.json)
 cover guard changes, actual local cleanup, sole result ownership and budgets.
-Wider receivers, no-Get combinations and reentrant lifetimes remain partial.
+Wider receivers and reentrant lifetimes remain partial.
+
+Selected no-Get private-property `??` now calls typed-bool or absent-return
+`__isset(string)`. An ordinary object RV is disposed while the captured receiver
+remains live and both magic guards are inactive; a held RV disposes later, after
+receiver release and fallback. Supplied RV-destructor throws preserve the same
+catch and destination 42. [Four originals and 640 focused premises](coverage/semantics/magic-coalesce-no-get-review.json)
+cover these paths. Other results, aliases and reentry remain partial.
 
 Inherited private writes now invoke a public `__set(string $name, $incoming): void`
 for selected external CV/literal assignments. The setter receives integer `7`,
