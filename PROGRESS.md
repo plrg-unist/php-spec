@@ -24,6 +24,15 @@ receipt/global/default and other intrinsic policies stay exact. Direct owning
 objects, broader flags/packs and paused name paths remain partial.
 [Owned array review](coverage/semantics/define-owned-array-review.json).
 
+Composed over `b77ab92f8`/407: tested400 and six scripts remain private-exact;
+shared172 preserves the complete incoming INI tail beside DEFINE-only argument
+ordering. Other incoming runtime/ordered-manifest bytes stay parent-exact.
+Missing-comparison, ref-return, Generator, selected arithmetic, magic-call and
+float-key selectors have no producer here; Box-property aliases carry no float-key
+plan or retained/debt history. New target/task alternatives add no state/heap
+field. Source/state cuts retain their407 identities without joined execution,
+accepted replay or renewed credit.
+
 Retained intrinsic `ini_set` receivers now reject a separate bare `ini_get`
 Closure value after NULL-option handling, without invoking that value. The old
 setter and getter remain distinct HOBJECT roots when argument effects rebind the
