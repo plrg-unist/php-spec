@@ -1,0 +1,97 @@
+{
+  "milestone": "COMP103 same-CV forward second-Warning continuation",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "One initially missing ordinary direct CV twice at ==, !=, < or <=. If the first handler leaves or removes that name, the second Warning freezes its NULL too; later writes or continued absence cannot change the result.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "da6794fbf",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "70b8cad4efed0d8b54c986ec0d71503dc0c8f4983ef29bdad0834be02d81245e"
+  },
+  "modules": 407,
+  "engine_basis": "Forward Zend comparison helpers inspect raw OP1 then current OP2 for UNDEF. Each missing read produces language-level NULL after its Warning. The second callback cannot change either captured result, so EQ/NE/LESS/LE yield true/false/false/true. A pending exception suppresses further reporting.",
+  "implementation": "Remove only same-name distinctness from the existing forward read-again guard and its known-NULL-left source certificate. Both actual ordinary compiled CV occurrences, diagnostic lines, NULL-only record and forward operator whitelist remain authenticated; no fields, task variants, roots, resume or discard rules change.",
+  "behavior": [
+    "Exact sources discriminate frozen NULL/NULL from the string0/reference created by the second callback. Fresh and existing target aliases, first define/unset, both names still absent, two false/default reports and a second chosen Exception preserve results, caller41, identity and finally.",
+    "Four strict-SL source-reached groups execute both dispatch/return/resume stages, whole raw restores and Boolean comparison, current alias owners0/1 to2, no-third-Warning after removal, compiled source/read-line/CODE/non-NULL/op refusals and zero/split budgets.",
+    "Only affected old102 same-name resume/certificate assertions and three source expectations change. Two old fronts stop at the second invocation; three revised selectors renew no historical credit."
+  ],
+  "baseline": {
+    "revision": "d2699d5ae238691621c250ac990ed8779b2ca74f",
+    "report": "initial/initial-report.json",
+    "sha256": "ad220d6e197bd8083e14b7b795fc98caeb5e45859cb0e7fbde01e5d280a22eda",
+    "retained_native": "Author2 and peer4 observations at 00f8245f8 retain exact original paths, bytes, profile and oracle. EQ true/LESS false, late references/defaults, no-init NE/LE and second chosen throw all finish two Warnings.",
+    "model": "One genuine unchanged EQ stops Unsupported/scalar comparison warning changed right operand after H:1:1:10:1;, with empty stderr and accepted checked program. The model uses the same original source path and canonical cwd; no native rerun.",
+    "agreement_credit": 0
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "05b241cbfc44ace30b6938a5145f05b24af43d6de7730e5fa10164f5b69ba26c",
+      "revision": "be7733a4ce15063818a7b48664149b80fba7b735",
+      "agreements": 5,
+      "unsupported_controls": 1
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "a359bb1be0952bd4f7a360c0122c38c0bb790f4a568706267c2d9b5cdcc39bb3",
+      "revision": "be7733a4ce15063818a7b48664149b80fba7b735",
+      "agreements": 4,
+      "unsupported_controls": 0
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "0078a28251a281573314fa5365daa58faad6d19b31b3c9b0077f44ff8ab879a6",
+      "revision": "be7733a4ce15063818a7b48664149b80fba7b735",
+      "premises": 337,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "af4b4b7a05dcbd2d51fcfea7ce1d7dd1b5732e997582a5470c6a1b6b24c126f5",
+      "revision": "be7733a4ce15063818a7b48664149b80fba7b735",
+      "premises": 351,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 9,
+    "unsupported_source_controls": 1,
+    "state_premises": 688,
+    "state_groups": 4
+  },
+  "maintenance": {
+    "state": {
+      "report": "maintenance-state/report.json",
+      "sha256": "4c41289714de07580ce2f8bc9e736751cb50c10f2cfef7764012183830084982",
+      "revision": "be7733a4ce15063818a7b48664149b80fba7b735",
+      "premises": 84,
+      "groups": 2
+    },
+    "source_selectors": {
+      "report": "maintenance-source/report.json",
+      "sha256": "4994c7dc27089e773bacdc8f0fe8aebd3fd170564e4cfbc401afa82aa995d7b1",
+      "revision": "be7733a4ce15063818a7b48664149b80fba7b735",
+      "selectors": 3
+    },
+    "historical_agreement_renewal": 0,
+    "scope": "Old102 EQ/LE fronts validate the changed restore/certificate only through the second invocation. Old102 author and peer still-missing sources plus old100 same-name source now finish normally; no other historical campaign runs."
+  },
+  "failures": [],
+  "remaining": [
+    "Reversed same-CV entry, first-callback owning comparison values, ordinary literal/captured producers, removal of already checked defined counterparts and wider lifetimes remain partial.",
+    "All gates pass first attempts at be7733a4c/407; native/genuine baseline cuts remain separate. Paused COMP88 stays excluded."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-103",
+  "artifact_manifest_sha256": "11bc99c05482af7ba215821ce09b71f9b3f9b7ed9afc09fe8b75374373bb4b2f",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_scalar_compare_second_same_sources.py --phase native --output .tools/comp103-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_second_same_sources.py --phase model --output .tools/comp103-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_second_same_state.py --output .tools/comp103-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_second_same_review_state.py --output .tools/comp103-peer-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_second_same_maintenance.py --output .tools/comp103-maint-state-new"
+  ]
+}

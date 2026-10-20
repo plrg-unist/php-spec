@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+The same missing direct CV twice at `==`/`!=`/`<`/`<=` now traverses its
+second Warning when the first handler leaves or removes that name. Two captured
+NULLs yield true/false/false/true despite second-handler writes/references;
+continued absence causes no third Warning. False/default order and second
+chosen Exception identity/caller41/finally pass. Only two distinctness premises
+are removed; both compiled CVs/lines and the NULL-only certificate stay checked.
+Nine source agreements plus one control and 688 strict-SL premises/four groups
+(337 author + 351 independent) pass first attempts at `be7733a4c`/407. Separate
+affected84/two fronts and three revised selectors renew no historical credit.
+Genuine `d2699d5ae` first-H Unsupported baseline stays zero; no failures/retries.
+Reversed same-CV, first-callback owning values and wider producers/lifetimes
+remain partial.
+[Shared second-Warning review](coverage/semantics/undefined-scalar-compare-second-same-review.json).
+
 An initially missing direct CV twice at `==`/`!=`/`<`/`<=` now enters one Warning
 and compares frozen first NULL with the handler-defined current scalar/reference.
 `$x == $x` can be false; `$x != $x` and `$x < $x` can be true. Two premise edits
