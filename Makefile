@@ -409,6 +409,10 @@ test-semantics: build
 	python3 tests/semantics/generator_repeated_pending_buffered_throw_review_sources.py
 	python3 tests/semantics/generator_repeated_pending_buffered_throw_state.py
 	python3 tests/semantics/generator_repeated_pending_buffered_throw_review_state.py
+	python3 tests/semantics/generator_unused_pending_send_sources.py
+	python3 tests/semantics/generator_unused_pending_send_review_sources.py
+	python3 tests/semantics/generator_unused_pending_send_state.py
+	python3 tests/semantics/generator_unused_pending_send_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

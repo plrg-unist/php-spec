@@ -95,6 +95,14 @@ It clears only the selected receiver bit and snapshots current before normal
 ignored-argument cleanup. The physical frame/site and return count stay intact;
 row COW and used-cache survival after Generator retirement are checked in the
 [parked SEND review](../../coverage/semantics/generator-parked-pending-owning-send-review.json).
+For normal unused SEND in this owning-return slice, current remains copied
+through ignored-argument cleanup, then retires before the selected receiver.
+Argument-driven COW therefore sees the snapshot, while its old payload can die
+before ancestor finally blocks. An assigned SEND result keeps its copy through
+receiver cleanup until the caller drops it. This correction requires the exact
+consumed argument/receiver slots; masked argument/snapshot aliases and abrupt argument
+callbacks remain unvalidated. See the
+[unused SEND review](../../coverage/semantics/generator-unused-pending-send-review.json).
 Pending zero-argument NEXT also clears only the selected receiver bit while
 preserving that parked owning frame/site and copied return. It returns NULL
 without a current snapshot; a later explicit getter creates a separate copy.
