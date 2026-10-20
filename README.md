@@ -371,6 +371,15 @@ comparisons and 1,280 state premises cover ownership transfer, literal contents,
 strict priority, trace edges and retained-setter recovery. Additional arguments
 or packs, wider value leaves, PIPE and sole-owner lifetimes remain partial.
 
+[Direct and selected packed INI array values](coverage/semantics/ini-set-unpack-null-array-value-review.json)
+now use the same NULL-option continuation without a Closure owner. String callee
+selection precedes later pack effects; the earlier inner array survives outer
+retirement, live name/value replacement and COW. Returning handlers reach
+converted-empty value TypeError, while supplied throw preserves raw NULL and
+cancels rejection. Four source comparisons and 1,182 state premises cover literal
+authority, selected-call metadata, owning trace edges, strict priority and recovery.
+Additional arguments/packs, wider value leaves and PIPE remain partial.
+
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
 send/callback site. Ordinary Closure PIPE follows caller strictness; normal and

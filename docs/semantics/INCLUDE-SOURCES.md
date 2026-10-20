@@ -851,3 +851,28 @@ additive172 lines change; existing replay/helpers/finish/trace/root/discard/GC a
 historical tests stay exact. Additional arguments/packs, owning/nested/reference
 or nonquiet value leaves, PIPE and sole-owner lifetimes remain partial; paused
 Stringable/owned-NUL and other stopped boundaries are untouched.
+
+The [direct/selected packed-array increment](../../coverage/semantics/ini-set-unpack-null-array-value-review.json)
+removes only the unused OWNER-presence condition from that sole-pack ARRAY arm.
+Invocation validity still authenticates fixed, selected-string or retained-owner
+call modes; pack count, normalized NULL/value, DIRECT quiet leaves, recursive
+literal contents/provenance, nonPIPE and effective-weak guards remain exact.
+Selected string metadata is captured before pack effects. Active outer/inner
+ownership transfers to normalized inner-only roots; completed snapshots remain
+historical without rereading current outer tables. Inline construction captures
+the earlier array before O/COW/live-name replacement. Returning handling reaches
+empty-option TypeError2, supplied Exception keeps rawNULL/earlier array and cancels
+rejection, strict calls reject parameter1 after argument effects, and the original
+selected setter remains usable.
+
+Four originals and1,182 premises (292+271+158 author,461 independent) pass first
+attempt at `3e6fb6995`/`7d4c579ea`/407. Initial `0f0ac8ca5` native4/baseline0
+and later checks use CPU3; nine stable/reaped reports PASS, only Deprecated9/16.
+Native E/2843 observes API values; peer native has no trace traversal. Actual state
+proves selected records, cursor/root transfer, outer retirement and live-pack COW,
+rawNULL/inner-array handler/API two-frame Exception edges, exact idempotent-buffer
+restoration/discard, source-pool forgery refusal, budgets and selected-string
+recovery. No native physical-array identity is claimed. Existing helper/body/
+trace/root/discard/GC and historical tests stay exact without old replay. Additional
+arguments/packs, nested/owning/reference or nonquiet inner leaves, packed object values,
+PIPE and sole-owner lifetimes remain partial; paused boundaries untouched.

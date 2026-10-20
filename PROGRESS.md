@@ -7,6 +7,29 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct and selected string `ini_set` calls now retain flat quiet ARRAY values
+from one two-item numeric, named or mixed pack while handling a NULL option.
+Selected callee history precedes pack effects; the original inner survives outer
+retirement, later live-callee/value replacement and alias COW. Returning handling
+reaches converted-empty parameter2 TypeError; supplied Exception preserves raw
+NULL/earlier array and cancels rejection. Strict calls remain parameter1-first
+after argument effects, and the original string setter remains usable.
+
+Four exact source comparisons and 1,182 state premises (292+271+158+461) pass
+first attempt at `3e6fb6995`/`7d4c579ea`/407. Initial `0f0ac8ca5` native4/
+baseline0 and later model/state packets use CPU3. Nine stable/reaped reports
+PASS without failures/retries; only Deprecated9/16 is expected and workers are
+quiet. One172 OWNER-presence condition is deleted; invocation/source/domain/weak
+guards, replay/finish/trace/root/discard/GC and historical tests remain exact.
+Native E/2843 values differ from state-only selected records, inner/outer identity,
+retirement and two-frame raw trace/edge/full-discard proof. Additional arguments/
+packs, wider inner leaves, packed object values and PIPE remain partial; paused paths untouched.
+[Direct/selected packed NULL array INI review](coverage/semantics/ini-set-unpack-null-array-value-review.json).
+
+Composed over `f1726092c`/407 with module172/four tests private-exact and every
+other runtime/schema/ordered-manifest byte parent-exact. Source4/state1,182 retain
+private407 cuts without joined execution or renewed evidence.
+
 `<=>` now resumes against a handler-created live flat primitive array through
 its current opposing CV/reference. Frozen NULL compares by table emptiness;
 nonempty `[false]` makes `$x <=> $x` return -1. Both-missing/same-name entry,
