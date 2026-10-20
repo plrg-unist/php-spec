@@ -19,7 +19,7 @@ Eight source agreements plus two controls and 675 strict-SL premises/four groups
 affected 92 premises/three groups and one old96 selector preserve opposite-order
 refusals without historical renewal. Genuine `a4bd3b94f` baseline stays zero;
 no failures or retries. Same-CV ordinary forms, owning comparison values, removal
-of previously checked CVs and wider producers remain partial.
+of already checked defined counterparts and wider producers remain partial.
 [Reversed second-Warning review](coverage/semantics/undefined-scalar-compare-second-reversed-review.json).
 
 Distinct direct CVs at `==`/`!=`/`<`/`<=` now traverse the second Warning

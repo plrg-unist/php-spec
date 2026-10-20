@@ -168,8 +168,8 @@ distinct direct CVs and the RHS read line. The
 adds an exact right-frozen restore and NULL-only right INPUT certificate,
 authenticating both compiled CVs before the source-left second Warning. Its
 default reports stay right then left; late reference creation cannot change the
-two captured NULLs. Owning comparison values, ordinary same-CV forms, previously
-checked CVs removed during the later Warning and wider producers remain partial.
+two captured NULLs. Owning comparison values, ordinary same-CV forms, already
+checked defined counterparts removed during the later Warning and wider producers remain partial.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding

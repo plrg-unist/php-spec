@@ -46,7 +46,7 @@ record the separate cuts. Zend evaluates `>`/`>=` source expressions left to rig
 then reverses physical comparison operands. The single-missing/scalar-throughout
 bound makes these source-oriented records valid; removed-right native probes
 confirm one Warning without admitting that wider path. Owning values, removal of
-previously checked CVs and wider producers remain partial. Earlier spaceship cuts remain in the
+already checked defined counterparts and wider producers remain partial. Earlier spaceship cuts remain in the
 [scalar warning review](../../coverage/semantics/undefined-spaceship-review.json).
 
 Distinct loose-comparison CV pairs can also begin with both values missing.
@@ -81,8 +81,8 @@ Second-handler writes or reference binding cannot change the two captured NULLs:
 and `>`/`>=` return false, true after source-right then source-left Warnings.
 Leaving the name missing causes no third Warning. False handlers preserve each
 default Warning's order, and a second supplied throw preserves destination and
-catch/finally. Removing a previously checked CV during the later Warning remains
-an explicit Unsupported boundary.
+catch/finally. A single missing read still refuses removal of its already checked defined
+counterpart.
 [Second-Warning review](../../coverage/semantics/undefined-spaceship-second-review.json)
 records fresh source/state checks and only the affected historical controls.
 The [forward review](../../coverage/semantics/undefined-scalar-compare-second-review.json)
