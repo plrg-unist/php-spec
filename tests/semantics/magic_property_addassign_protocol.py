@@ -10,7 +10,7 @@ sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 git = lambda *parts: subprocess.check_output(['git', *parts], cwd=ROOT, env=recorder.ENV).decode().strip()
 
 PREFIX = r'''
-syntax pmastage = MA_PREP | MA_RHS porigin | MA_APPLY | MA_GET_RETURN | MA_GET_THROW | MA_GET_RESULT | MA_VALUE | MA_RECEIVE porigin | MA_SET_RETURN | MA_SET_THROW | MA_SET_RESULT | MA_DELIVERY | MA_FINISH | MA_GET_DISCARD | MA_SET_DISCARD | MA_OUTER_DISCARD | MA_DTOR nat | MA_CATCH | MA_OUTPUT ptbytes
+syntax pmastage = MA_PREP | MA_RHS porigin | MA_APPLY | MA_GET_RETURN | MA_GET_THROW | MA_GET_RESULT | MA_GET_COPY | MA_VALUE | MA_RECEIVE porigin | MA_SET_RETURN | MA_SET_THROW | MA_SET_RESULT | MA_DELIVERY | MA_FINISH | MA_GET_DISCARD | MA_SET_DISCARD | MA_OUTER_DISCARD | MA_FINISH_DISCARD | MA_DTOR nat | MA_CATCH | MA_OUTPUT ptbytes
 dec $ma_output(pevent*) : ptbytes
 def $ma_output(eps) = eps
 def $ma_output((OUTPUT ptbytes) :: pevent_tail*) = ptbytes ++ $ma_output(pevent_tail*)
@@ -35,6 +35,9 @@ def $ma_stage(S,MA_GET_THROW) = true
   -- if S.TODO = (THROW_VALUE porigin_throw z) :: ptask_tail*
 def $ma_stage(S,MA_GET_RESULT) = true
   -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+def $ma_stage(S,MA_GET_COPY) = true
+  -- if S.TODO = (PROPERTY_GET_COPY ppropertyget (KNOWN (PINT 5))) :: ptask_tail*
   -- if S.CURRENT = eps /\ S.FRAMES = eps
 def $ma_stage(S,MA_VALUE) = true
   -- if S.TODO = (PROPERTY_MAGIC_ADD_VALUE ppropertymagicadd) :: ptask_tail*
@@ -63,6 +66,9 @@ def $ma_stage(S,MA_SET_DISCARD) = true
   -- if S.CURRENT = eps /\ S.FRAMES = eps
 def $ma_stage(S,MA_OUTER_DISCARD) = true
   -- if S.TODO = (THROW_SEARCH n_error) :: (PROPERTY_MAGIC_ADD_VALUE ppropertymagicadd) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+def $ma_stage(S,MA_FINISH_DISCARD) = true
+  -- if S.TODO = (THROW_SEARCH n_error) :: (PROPERTY_MAGIC_ADD_FINISH ppropertymagicadd 5 7) :: ptask_tail*
   -- if S.CURRENT = eps /\ S.FRAMES = eps
 def $ma_stage(S,MA_DTOR n) = true
   -- if S.CURRENT = (pcallcontext)
@@ -239,7 +245,11 @@ $property_magic_set_valid(S_setresult,ppropertymagicset)
 S_setresult.RESULT = KNOWN PNULL
 $heap_owners($heap_graph(S_setresult),HOBJECT n_selected) = $(n_external + 2)
 PhpStep: S_setresult ~> S_delivery_raw
-S_delivery = $ma_after(S_setresult,S_delivery_raw)
+S_delivery_pending = $ma_after(S_setresult,S_delivery_raw)
+S_delivery_found = $ma_seek(S_delivery_pending,MA_DELIVERY,2000)
+S_delivery_found.COMPLETION = NORMAL \/ S_delivery_found.COMPLETION = BUDGET
+S_delivery = S_delivery_found[.COMPLETION = NORMAL]
+$ma_stage(S_delivery,MA_DELIVERY)
 S_delivery.TODO = (PROPERTY_MAGIC_SET_DELIVERY ppropertymagicset) :: ppropertymagicset.TAIL
 $heap_owners($heap_graph(S_delivery),HOBJECT n_selected) = $(n_external + 1)
 ~$ma_in_set(S_delivery,n_selected) /\ $ma_guard(S_delivery)
@@ -432,7 +442,9 @@ def main():
                     '$property_get_verify(S_getresult,ppropertyget,S_getresult.RESULT) = S_getresult',
                     'PhpStep: S_getresult ~> S_copy_raw',
                     'S_copy_raw.TODO = (PROPERTY_GET_COPY ppropertyget (KNOWN (PINT 5))) :: (ORIGIN_RETURN (porigin_parent)) :: (PROPERTY_MAGIC_ADD_VALUE ppropertymagicadd) :: ptask_tail*',
-                    'S_copy = $ma_after(S_getresult,S_copy_raw)',
+                    'S_copy_pending = $ma_after(S_getresult,S_copy_raw)',
+                    *reach('S_copy','S_copy_pending','MA_GET_COPY'),
+                    'S_copy.TODO = S_copy_raw.TODO',
                     '$heap_owners($heap_graph(S_copy),HOBJECT n_selected) = $(n_external + 1)',
                     r'~$ma_in_get(S_copy,n_selected) /\ $ma_guard(S_copy)']
                 reached += reach('S_value','S_copy','MA_VALUE') + VALUE
@@ -446,7 +458,8 @@ def main():
                         'S_discard.TODO = (THROW_SEARCH n_error) :: (PROPERTY_MAGIC_SET_RESULT ppropertymagicset) :: (PROPERTY_MAGIC_ADD_FINISH ppropertymagicadd 5 7) :: ptask_tail*',
                         r'$property_magic_set_valid(S_discard,ppropertymagicset) /\ $ma_guard(S_discard)',
                         'PhpStep: S_discard ~> S_inner_drop_raw',
-                        'S_inner_drop = $ma_after(S_discard,S_inner_drop_raw)',
+                        'S_inner_releasing = $ma_after(S_discard,S_inner_drop_raw)',
+                        *reach('S_inner_drop','S_inner_releasing','MA_FINISH_DISCARD'),
                         'S_inner_drop.TODO = (THROW_SEARCH n_error) :: (PROPERTY_MAGIC_ADD_FINISH ppropertymagicadd 5 7) :: ptask_tail*',
                         'S_inner_drop.RESULT = KNOWN PNULL',
                         '$heap_owners($heap_graph(S_inner_drop),HOBJECT n_selected) = 1',
