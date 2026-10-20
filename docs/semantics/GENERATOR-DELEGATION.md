@@ -199,6 +199,12 @@ current copy still owns its array or object through normal argument cleanup.
 After argument COW, the old snapshot and live raw row have distinct containers
 and element edges. No child prefix or owning return is manufactured; see the
 [scalar-return SEND review](../../coverage/semantics/generator-unused-scalar-return-send-review.json).
+A shared pure endpoint proof now also authenticates the direct no-getter case
+with one original allocated CLOSED child. Actual refresh supplies the node-free
+COMPLETE, and its sole removed child edge precedes argument/result/receiver
+release. The raw cell temporarily has child and middle cache owners; no copied
+return owner is added. Owning receipts and finite ancestor proofs remain separate;
+see the [node-free refresh review](../../coverage/semantics/generator-unused-scalar-refresh-send-review.json).
 Literal pending NEXT takes the same initialization-only return through a direct
 or finite native-linked receiver, preserving the actual parked source and frame.
 Its NULL result owns no current snapshot. After a raw-row write performs COW,

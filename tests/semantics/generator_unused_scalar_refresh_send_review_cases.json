@@ -1,0 +1,20 @@
+[
+  {
+    "id": "review-unused-scalar-refresh-send-argument-row-cow",
+    "purpose": "Without a getter, direct pending SEND refreshes a closed child with NULL return before normal argument COW; observe old snapshot versus current and finally retirement order.",
+    "source": "<?php\nclass ScalarRefreshSendRowOld45 { function __destruct() { echo \"A|\"; } }\nclass ScalarRefreshSendRowNew45 { function __destruct() { echo \"C|\"; } }\nclass ScalarRefreshSendRowFinal45 { function __destruct() { echo \"N|\"; } }\nclass ScalarRefreshSendRowArgument45 { function __destruct() { echo \"ARG|\"; $GLOBALS[\"row\"][0] = new ScalarRefreshSendRowNew45(); echo \"MUTATED|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"ARG-END|\"; } }\nfunction &scalarRefreshSendRowChild45() { global $row; $row = [new ScalarRefreshSendRowOld45()]; echo \"C0|\"; yield 7 => $row; echo \"L|\"; return null; }\nfunction scalarRefreshSendRowMiddle45() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; $GLOBALS[\"row\"][0] = new ScalarRefreshSendRowFinal45(); echo \"J-END|\"; } }\nfunction scalarRefreshSendRowUpper45() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction scalarRefreshSendRowOuter45() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = scalarRefreshSendRowChild45(); $middle = scalarRefreshSendRowMiddle45(); $upper = scalarRefreshSendRowUpper45(); $outer = scalarRefreshSendRowOuter45();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\necho \"S|\";\n$middle->send(new ScalarRefreshSendRowArgument45()); echo \"CALLER|\"; unset($row); echo \"ROW-DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "1d617b49d11857aa8282c4b3fa3f854a4144057601dba5f18bf3f6dcc5135d95",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C0|L|H|S|ARG|MUTATED|F|K|ARG-END|A|J|C|J-END|CALLER|N|ROW-DROPPED|E"
+  },
+  {
+    "id": "review-unused-scalar-refresh-send-object-finally-throw",
+    "purpose": "A direct pending SEND refreshes its closed child with literal string return before normal argument alias-drop; observe a cache RuntimeException during finally slot clearing.",
+    "source": "<?php\nclass ScalarRefreshSendObjectCache45 { function __destruct() { echo \"D|\"; throw new RuntimeException(\"cache45\"); } }\nclass ScalarRefreshSendObjectArgument45 { function __destruct() { echo \"ARG|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"ARG-END|\"; } }\nfunction &scalarRefreshSendObjectChild45() { global $slot; $slot = new ScalarRefreshSendObjectCache45(); echo \"C|\"; yield $slot; echo \"L|\"; return \"done45\"; }\nfunction scalarRefreshSendObjectMiddle45() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; $GLOBALS[\"slot\"] = null; echo \"J-END|\"; } }\nfunction scalarRefreshSendObjectUpper45() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction scalarRefreshSendObjectOuter45() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = scalarRefreshSendObjectChild45(); $middle = scalarRefreshSendObjectMiddle45(); $upper = scalarRefreshSendObjectUpper45(); $outer = scalarRefreshSendObjectOuter45();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\necho \"S|\";\ntry { $middle->send(new ScalarRefreshSendObjectArgument45()); echo \"BAD-RETURN|\"; } catch (Throwable $cleanup) { echo \"CALLER|\", $cleanup instanceof RuntimeException ? 1 : 0, \"|\", $cleanup->getMessage() === \"cache45\" ? 1 : 0, \"|\", $cleanup->getPrevious() === null ? 1 : 0, \"|\"; }\nunset($cleanup, $slot); echo \"E\";\n",
+    "source_sha256": "78e8b9e4626565f70650f358cc1a44930e754bfb73c5b88c3a252783e311e776",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|S|ARG|F|K|ARG-END|J|D|CALLER|1|1|1|E"
+  }
+]

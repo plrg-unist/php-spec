@@ -166,6 +166,12 @@ finally sees the new row. Clearing an object current can throw during the live
 finally and skip J-END, with Previous NULL. These cases have no retained owning
 return; the existing close claim supplies the callback context. See the
 [scalar-return SEND review](../../coverage/semantics/generator-unused-scalar-return-send-review.json).
+At the direct no-getter node-free return, the authenticated closed-child release
+comes first. The current snapshot then survives normal argument COW through
+ARG-END and retires before receiver finally mutates the live row. Object-current
+clearing can throw inside that live finally with Previous NULL; no owning return
+retention is manufactured. See the
+[node-free refresh review](../../coverage/semantics/generator-unused-scalar-refresh-send-review.json).
 Pending NEXT preserves that parked return across the same close transfer but
 creates no current copy. A temporary sole receiver releases its cache during
 storage cleanup, before caller delivery; a throwing cache has no older caught

@@ -7,6 +7,38 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct pending SEND without a getter now refreshes one allocated closed child
+whose normal simple-CV return owns no heap node. Child cache-edge release comes
+before normal argument cleanup, unused current-copy retirement and receiver
+finally. Assignment keeps its copy; argument-time row COW and a cache
+RuntimeException inside live finally retain distinct owners without a copied
+return root. Integer `0`, NULL and a literal string bound the observations.
+[Node-free refresh review](coverage/semantics/generator-unused-scalar-refresh-send-review.json).
+
+Four native observations and a genuine NORMAL cleanup-order disagreement retain
+`2eb1a41c9`/408. Four source agreements and strict408 pass at `67d3c04b3`;
+gate5, 559 new focused premises (323 author +236 independent; 539 local +20
+generic) and one affected historical group of 172 pass at `e3cdf16c9`.
+Only that old constructed PINT9 refusal is promoted to acceptance; no old native,
+source-comparison or sibling replay. Baseline recordfalse/agreement0 remains.
+All post-change executions pass first time at original caps, without failures,
+retries or cap changes; actors are reaped/CPU5 released.
+
+Only module289 changes at runtime. A shared pure node-free endpoint preserves
+the prior identity proof; separate direct original-child admission and the exact
+refresh-produced prefix leave owning walkers/receipts and the common scheduler
+unchanged. Module270, root functions, close and collector bodies stay exact.
+Node-free ancestor/wider refreshes, input/owner histories, abrupt argument
+callbacks, nonpending body entry and collection remain unvalidated.
+
+Composed over `c3848eac0`/408 with tested289, six new tests and the
+single historical observer correction private-exact. Incoming INI/DEFINE,
+missing-read comparison, unary-warning and float/null-key callback selectors
+have no producer here. All other runtime/schema/default/root bytes, ordered
+manifest and pipeline remain parent-exact. Source4/strict408/new559/affected172
+retain their private cuts and baseline disagreement without joined execution,
+accepted replay or renewed credit.
+
 All seven comparisons now retain captured ordinary non-Stringable objects across
 missing-CV Warnings, including user instances and `stdClass`. Saved TASK/RESULT
 owners preserve identity through callback rebinding and shared property writes;
@@ -79,8 +111,8 @@ magic property+= have no source producer here. Incoming checkpoints stay preserv
 except the reviewed stale81 owned partial qualifier. Source4/state1,521 retain
 private407 cuts without execution or renewed credit at408.
 
-Pre-refreshed direct pending SEND now releases its unused owning current copy
-correctly when the normal simple-CV child return owns no heap node. The snapshot
+At Iterator44, pre-refreshed direct pending SEND released its unused owning
+current copy correctly when the normal simple-CV child return owned no heap node. The snapshot
 survives normal argument mutation, then retires before receiver finally;
 assignment keeps its copy. Tests distinguish integer `0`, NULL and a literal
 string return from the owning current array/object. Argument-time row COW keeps

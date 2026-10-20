@@ -1,0 +1,20 @@
+[
+  {
+    "id": "generator-unused-scalar-refresh-send-finally-row-write",
+    "purpose": "A direct pending SEND must refresh its allocated CLOSED child with node-free return 0 before normal argument cleanup; the unused current copy retires before finally mutation.",
+    "source": "<?php\nclass UnusedScalarRefreshSendRowOld45 { function __destruct() { echo \"A|\"; } }\nclass UnusedScalarRefreshSendRowLive45 { function __destruct() { echo \"C-LIVE|\"; } }\nclass UnusedScalarRefreshSendRowArgument45 { function __destruct() { echo \"ARG|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"ARG-END|\"; } }\nfunction &unusedScalarRefreshSendRowChild45() { global $row; $row = [new UnusedScalarRefreshSendRowOld45()]; echo \"C|\"; yield 7 => $row; echo \"L|\"; return 0; }\nfunction unusedScalarRefreshSendRowMiddle45() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; $GLOBALS[\"row\"][0] = new UnusedScalarRefreshSendRowLive45(); echo \"J-END|\"; } }\nfunction unusedScalarRefreshSendRowUpper45() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction unusedScalarRefreshSendRowOuter45() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = unusedScalarRefreshSendRowChild45(); $middle = unusedScalarRefreshSendRowMiddle45(); $upper = unusedScalarRefreshSendRowUpper45(); $outer = unusedScalarRefreshSendRowOuter45();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\necho \"S|\";\n$middle->send(new UnusedScalarRefreshSendRowArgument45()); echo \"CALLER|\"; unset($copy); echo \"DROPPED|\"; unset($row); echo \"ROW-DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "5bae07f43a712e192481bc9fe64b4cb50dc9ac475c08a8a4de31f9dbb197b8d2",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|S|ARG|F|K|ARG-END|J|A|J-END|CALLER|DROPPED|C-LIVE|ROW-DROPPED|E"
+  },
+  {
+    "id": "generator-unused-scalar-refresh-send-assignment-control",
+    "purpose": "A direct pending SEND must refresh its allocated CLOSED child with node-free return 0 before normal argument cleanup; assignment keeps the current copy through finally.",
+    "source": "<?php\nclass UnusedScalarRefreshSendRowOld45 { function __destruct() { echo \"A|\"; } }\nclass UnusedScalarRefreshSendRowLive45 { function __destruct() { echo \"C-LIVE|\"; } }\nclass UnusedScalarRefreshSendRowArgument45 { function __destruct() { echo \"ARG|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"ARG-END|\"; } }\nfunction &unusedScalarRefreshSendRowChild45() { global $row; $row = [new UnusedScalarRefreshSendRowOld45()]; echo \"C|\"; yield 7 => $row; echo \"L|\"; return 0; }\nfunction unusedScalarRefreshSendRowMiddle45() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; $GLOBALS[\"row\"][0] = new UnusedScalarRefreshSendRowLive45(); echo \"J-END|\"; } }\nfunction unusedScalarRefreshSendRowUpper45() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction unusedScalarRefreshSendRowOuter45() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = unusedScalarRefreshSendRowChild45(); $middle = unusedScalarRefreshSendRowMiddle45(); $upper = unusedScalarRefreshSendRowUpper45(); $outer = unusedScalarRefreshSendRowOuter45();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\necho \"S|\";\n$copy = $middle->send(new UnusedScalarRefreshSendRowArgument45()); echo \"CALLER|\"; unset($copy); echo \"DROPPED|\"; unset($row); echo \"ROW-DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "6e49b5c912870bf3e6f9c77d6fec4eeb6251005effba2f13ba2b1b937c2e9d14",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|S|ARG|F|K|ARG-END|J|J-END|CALLER|A|DROPPED|C-LIVE|ROW-DROPPED|E"
+  }
+]

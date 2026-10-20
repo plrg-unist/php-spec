@@ -1559,6 +1559,11 @@ child return owns no heap node. Its current snapshot survives normal argument
 COW, then retires before finally; assignment keeps its copy. The tested integer,
 NULL and string returns add no owning return root. See the
 [scalar-return SEND review](coverage/semantics/generator-unused-scalar-return-send-review.json).
+Direct pending SEND without a getter also refreshes one allocated closed child
+whose normal simple-CV return owns no heap node. Child release precedes argument
+cleanup, unused current retirement and receiver finally; assignment keeps its
+copy. See the
+[node-free refresh review](coverage/semantics/generator-unused-scalar-refresh-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit

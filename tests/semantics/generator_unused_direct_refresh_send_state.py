@@ -194,7 +194,7 @@ $generator_unused_send_cleanup(S, S_raw, ptask_source, pnode_inputs*)
 ~$generator_pending_detached_send(S[.OBJECTS[n_middle] = GENERATOR pgenerator_middle[.PENDING_INIT = false]], pgeneratorop_full)
 ~$generator_pending_detached_send(S[.OBJECTS[n_child] = GENERATOR pgenerator_child[.PHASE = GENERATOR_PAUSED]], pgeneratorop_full)
 ~$generator_pending_detached_send(S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, HOBJECT n_child)], pgeneratorop_full)
-~$generator_pending_detached_send(S[.OBJECTS[n_child] = GENERATOR pgenerator_child[.RETURN = (PINT 9)]], pgeneratorop_full)
+$generator_pending_detached_send(S[.OBJECTS[n_child] = GENERATOR pgenerator_child[.RETURN = (PINT 9)]], pgeneratorop_full)
 ~$generator_pending_detached_send(S[.OBJECTS[n_middle] = GENERATOR pgenerator_middle[.FRAME = (pframe_middle[.HELD = [HOBJECT n_argument]])]], pgeneratorop_full)
 ~$generator_pending_detached_send(S, pgeneratorop_full[.NAME = "next"])
 S_no_discard = S[.TODO = [ptask_source]]
