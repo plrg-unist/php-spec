@@ -120,6 +120,20 @@ default Warning bytes, selected-cell owners and budget resumption in the
 owning/constrained/expired and wider arithmetic/lifecycle forms remain partial;
 earlier ADD/DIV evidence retains its original cuts.
 
+Direct plain-CV `$x += $x` now starts its numeric conversion before the generic
+self snapshot. Zend emits the same CV for both operands without a temporary copy.
+LEFT captures `12.5` from initial `12.5tail`; its handler writes `5.5tail`, which
+the same live CV then supplies to RIGHT. After RIGHT captures `5.5`, its handler's
+write of `88` cannot change the strict float `18.0` stored in that CV and delivered
+to the outer destination. A second supplied Exception from line 20 instead keeps
+`88` and outer `100`, with no compound store. Two originals and 193+166 focused
+premises cover actual callback entry, both captures, equal pointers, historical
+validation, raw versus driven store, EOF and budgets in the
+[self-addition ledger](../../coverage/semantics/addassign-self-warning-review.json).
+No alias or extra cell owner is introduced. Old numeric, store and unwind bodies
+stay unchanged; other operand producers, compound operators and wider histories
+remain partial. Dimension self-copy and paused inc/dec paths are untouched.
+
 Numeric compound `+=` now stages the same leading-left warning for direct CVs
 with preexisting untyped reference cells and a quiet numeric RHS. The saved left
 number and both selected addresses survive a named handler. On return, the live

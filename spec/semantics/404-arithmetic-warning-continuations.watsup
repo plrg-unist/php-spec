@@ -4686,3 +4686,44 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 2
   -- if $integer_float_notices([RANGEWARNING], pbitnotwarning.BITS) = [(2, perrorcall.MESSAGE)]
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pbitnotwarning.LINE
+
+;; Direct self ASSIGN_OP uses the same CV twice, without the dimension self-copy.
+;; Capture LEFT now; the existing CV continuation reads RIGHT after its Warning.
+def $arithmetic_addassign_cv_source(S, pintegeroperation) = true
+  -- if S.ORIGIN = (pintegeroperation.SITE)
+  -- if pintegeroperation.OP = ADD /\ ~pintegeroperation.SWAPPED
+  -- if $origin_node(S.SOURCES, pintegeroperation.SITE) = (NExprAssignOpPlus expression_left expression_right metadata)
+  -- if pintegeroperation.LEFT = VARIABLE ptbytes z_left
+  -- if pintegeroperation.RIGHT = VARIABLE ptbytes z_right
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CV ptbytes
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 0], pintegeroperation.LEFT)
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 1], pintegeroperation.RIGHT)
+  -- if $code_expression_at_source(S, pintegeroperation.SITE, [PCFIELD 1]) = (pintegeroperation.LINE)
+
+def $arithmetic_addassign_self_plan(S) = ((pintegeroperation, pvalue, pnumber))
+  -- if S.TODO = (COMPOUND_APPLY ADD (BASE_VALUE poperand_left) true z) :: ptask_tail*
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if poperand_left = VARIABLE ptbytes z_left
+  -- if S.RESULT = VARIABLE ptbytes z_right
+  -- if $integer_pointer_select(S, poperand_left) = (INTEGER_CV ptbytes)
+  -- if $integer_pointer_select(S, S.RESULT) = (INTEGER_CV ptbytes)
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if (HCELL n) <- S.ALLOCATIONS
+  -- if ~$foreach_released_name(S, ptbytes)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes) = (pvalue)
+  -- if $submul_initial_value(S, pvalue)
+  -- if $arithmetic_add_conversion(pvalue) = ((pnumber, true))
+  -- if pintegeroperation = {SITE porigin, OP ADD, LINE z, SWAPPED false, LEFT poperand_left, RIGHT S.RESULT, LEFTPOINTER INTEGER_CV ptbytes, RIGHTPOINTER INTEGER_CV ptbytes}
+  -- if $arithmetic_addassign_cv_warning_valid(S, pintegeroperation, pvalue, pnumber, 0)
+def $arithmetic_addassign_self_plan(S) = eps -- otherwise
+
+rule PhpStep/arithmetic-addassign-self-begin: S ~> S[.TODO = (ARITHMETIC_ADDASSIGN_CV_WARNING pintegeroperation pvalue pnumber 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = ROOT n]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $arithmetic_addassign_self_plan(S) = ((pintegeroperation, pvalue, pnumber))
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes
+  -- if $lookup(S.ENV, ptbytes) = (n)

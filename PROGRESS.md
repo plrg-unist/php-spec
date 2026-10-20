@@ -7,6 +7,25 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct same-CV `$x += $x` now captures LEFT before the first Warning handler,
+then reads the changed CV for RIGHT. Initial `12.5tail` becomes `5.5tail` in H1;
+H2 writes `88`, but cached `12.5 + 5.5` still stores strict float `18.0`.
+A supplied second Exception instead preserves `88` and outer `100` without a store.
+Two originals pass at `2dd868194`/409 and 193+166 focused premises at
+`c256522f7`/409 in the [self-addition ledger](coverage/semantics/addassign-self-warning-review.json).
+The old CV Warning tags/capture/store/unwind bodies are reused; only modules
+55/404 gain the self entry/source/gate. Equal pointers, real handlers, fresh versus
+historical capture, owner1/EPS roots, raw/driven store, EOF and budgets are checked.
+Numeric algorithms, generic self-copy, dimensions and reference/alias/lifetime
+protocols stay exact. Other operands/compound operators and owning or constrained
+histories remain partial; paused OP12/COMP88/Source47 and active shared207/class/
+array/Generator/dynamic/lifecycle selectors are untouched.
+
+Composed over `7b3cd33d7`/409, preserving incoming state, task and
+ordered-manifest paths. Source2/state359 retain their private409 cuts;
+independently reviewed absent incoming selectors require no joined execution
+or renewed credit.
+
 Pending SEND now reaches a normal node-free COMPLETE through one native
 ancestor. Only selected Upper clears its bit; a first pending Middle NEXT
 changes the physical initialization history independently. Exact optional child
@@ -38,24 +57,8 @@ runtime/schema/default/root/ordered-manifest/pipeline bytes remain parent-exact.
 Source4/strict408/state647 retain their private cuts and genuine refusal0,
 without joined execution, accepted replay or renewed credit.
 
-Explicit integer casts now retain range-warning floats across named callbacks.
-The original `2^63` float wraps to `PHP_INT_MIN`; the handler's same-spelling text
-cast instead caps at `PHP_INT_MAX`. Explicit NaN has only one Warning, and a supplied
-Exception cancels delivery after source removal while outer `100` survives.
-Two originals at `157ae26d5`/408 and 145+122 focused premises at `2023324d8`/408 pass
-in the [integer-cast range ledger](coverage/semantics/int-cast-range-warning-review.json).
-Fresh CV/source snapshots differ from returned history; EPS roots, raw typed
-result/BASE, real callbacks and EOF/budgets are checked. The original rule-label
-parser failure remains zero; corrected full408 static passed before source retry.
-Only modules 30/58/404 change. Numeric/string saturation, formatting, CONFIG/DEFINE
-and generic unwind bodies stay exact; paused OP12/COMP88/Source47 and active
-property/clone/array/Generator selectors remain untouched. Normal NaN, throwing
-finite conversions and broader producers/lifetimes remain partial.
-
-Composed over `5ee243f0c`/409, preserving incoming state, task and
-ordered-manifest paths. Source2/state267 retain their private408 cuts;
-independently reviewed absent incoming selectors require no joined execution
-or renewed credit.
+Earlier explicit integer-cast range handling retains source2/state267 and its
+original parser failure0 in the [cast-range ledger](coverage/semantics/int-cast-range-warning-review.json).
 
 All seven missing-CV comparisons now accept allocated flat DIRECT arrays of
 primitives or live ordinary non-Stringable object leaves, both captured and

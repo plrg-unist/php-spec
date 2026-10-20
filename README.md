@@ -1008,6 +1008,14 @@ Two originals and 264 focused premises pass in the
 [unary-reference ledger](coverage/semantics/unary-reference-warning-review.json).
 Wider producers, constrained/owning cells and callback lifetimes remain partial.
 
+Self compound addition, `$x += $x`, now reads its second operand after the
+first Warning handler. With initial `12.5tail`, the handler's `5.5tail` supplies
+the second number; a later write of `88` cannot change the cached float result
+`18.0`. A supplied second Exception cancels storage and preserves outer `100`.
+Two originals and 359 focused premises pass in the
+[self-addition ledger](coverage/semantics/addassign-self-warning-review.json).
+Other producers and constrained or owning histories remain partial.
+
 Explicit integer casts now retain a range-warning float across its callback.
 The saved `2^63` float wraps to `PHP_INT_MIN`, while the handler's cast of the
 same-spelling text saturates to `PHP_INT_MAX`. A NaN handler's supplied Exception
