@@ -1721,10 +1721,13 @@ catch when only the private copied array still owns it.
 [Runtime object define review](coverage/semantics/define-runtime-object-review.json).
 
 Bare runtime Closures also publish under bounded live callable authority:
-unscoped lexical Closures retain reference captures and static cells, and method
-Closures retain their receiver. Canonical array/query copies share these objects;
+lexical Closures retain reference captures and static cells, and method
+Closures retain their receiver. Class-born REAL Closures preserve validated
+lexical/called scope, private property identity and an optional receiver.
+Canonical array/query copies share these objects;
 an unpinned method receiver retires only after the last Closure owner is released.
 [Runtime Closure define review](coverage/semantics/define-runtime-closure-review.json).
+[Scoped REAL define review](coverage/semantics/define-scoped-runtime-closure-review.json).
 
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
