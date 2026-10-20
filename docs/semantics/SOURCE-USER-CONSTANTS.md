@@ -679,9 +679,26 @@ private receiver can be destroyed after handler output and before catch.
 Certificate/wrapper priority, global/default policies and the DEFINE-origin
 query fence stay unchanged. Only ordinary direct instance/static and captured
 factory-instance omitted/false originals gain execution credit; coherent clones
-and inherited flag delegates retain structural support. The factory itself and
-other excluded object forms gain no VALUE authority.
+and inherited flag delegates retain structural support. Factory values have
+separate source guards below; other excluded object forms gain no new authority.
 [From-callable Closure define review](../../coverage/semantics/define-runtime-from-callable-review.json).
+
+Bare FROMCALLABLEFACTORY values use dynamic-only `PVOBJECT` authority with
+existing live fixed-creation source validation and absent scope, binding and
+callable records. Creation metadata supplies no USER permission or receiver
+edge. A queried class-created factory invoked globally still rejects private
+access; a queried factory invoked inside a Base USER frame can select its private
+method. Normal duplicate disposal can retire the last rejected factory while
+a derived method Closure retains valid saved source without owning that factory.
+Canonical/query COW preserves factory identity, including explicit `__invoke`;
+method statics remain independent request roots. On private denial, both Error
+trace frames share the raw callback array and its single receiver edge. Later
+Error/view retirement releases that receiver through normal cleanup with no
+pending Error. Global/default policies, certificate priority and the DEFINE-origin
+query fence stay exact. Only ordinary omitted/false direct/array originals gain
+execution credit; coherent clones and inherited flags remain structural support.
+Other intrinsic Closure forms retain their existing boundaries.
+[Factory Closure define review](../../coverage/semantics/define-runtime-from-factory-review.json).
 
 Ordinary `stdClass` values also use dynamic-only `PVOBJECT` authority when their
 selected property record and optional cached table validate, including live
