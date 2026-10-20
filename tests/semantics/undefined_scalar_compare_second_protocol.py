@@ -31,7 +31,7 @@ def checks(program, path, name):
         result.append(condition)
     result += [
         '~$spaceship_checked_missing(S_right_missing,perrorread_right)',
-        'perrorread_nonnull = perrorread_second[.ORIGINAL = BINARY_RIGHT ' + op + ' (KNOWN (POBJECT 0)) 10][.TASK = BINARY_RIGHT ' + op + ' (KNOWN (POBJECT 0)) 10]',
+        'perrorread_nonnull = perrorread_second[.ORIGINAL = BINARY_RIGHT ' + op + ' (KNOWN PUNDEFINED) 10][.TASK = BINARY_RIGHT ' + op + ' (KNOWN PUNDEFINED) 10]',
         '$error_read_shape(perrorread_nonnull.ORIGINAL,perrorread_nonnull.INPUT,perrorread_nonnull.BASE) = (perrorread_nonnull)',
         '~$error_read_valid(S_restored_1,perrorread_nonnull)',
         '~$error_read_source(S_restored_1,perrorread_nonnull)',

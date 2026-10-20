@@ -162,7 +162,14 @@ captured primitives while preserving both compiled descriptors and the missing C
 Current alias writes cannot replace the saved bytes/value, and actual second
 Warnings still freeze NULL; see the
 [primitive review](../../coverage/semantics/undefined-scalar-compare-captured-primitive-review.json).
-Owning objects/resources, nonflat arrays and wider producers remain partial.
+All seven comparisons now admit captured ordinary non-Stringable objects through
+the generic saved shapes. Boolean known objects cannot bypass their live-domain
+guard through the scalar default. Existing saved roots retain identity and shared
+property effects. When no other owner remains, saved-operand release runs the
+destructor before the outer store or catch; surviving aliases retain their lifetime.
+See the
+[captured-object review](../../coverage/semantics/undefined-comparison-captured-object-review.json).
+Direct-CV/internal/Stringable objects, resources, nonflat arrays and wider producers remain partial.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.
 [The equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json)

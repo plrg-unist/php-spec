@@ -131,6 +131,13 @@ evaluation preserves the older argument; finally sees the new row or object.
 Assignment keeps its independent copy. Wider refreshes, abrupt argument
 callbacks, body entry and collection remain unvalidated; see the
 [direct refresh review](../../coverage/semantics/generator-unused-direct-refresh-send-review.json).
+A pre-refreshed direct pending SEND can likewise have a node-free copied return
+and an owning current value. The current snapshot survives normal argument
+mutation, then an unused copy retires before receiver finally; assignment keeps
+its copy. Tests cover `return 0`, NULL and a literal string without retaining an
+owning return receipt. Wider input histories, abrupt argument callbacks, body
+entry and collection remain unvalidated; see the
+[scalar-return SEND review](../../coverage/semantics/generator-unused-scalar-return-send-review.json).
 Pending zero-argument NEXT also clears only the selected receiver bit while
 preserving that parked owning frame/site and copied return. It returns NULL
 without a current snapshot; a later explicit getter creates a separate copy.

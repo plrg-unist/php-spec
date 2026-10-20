@@ -1,0 +1,20 @@
+[
+  {
+    "id": "generator-unused-scalar-return-send-finally-row-write",
+    "purpose": "A pre-refreshed direct pending SEND has a node-free copied return0 and owning raw row; unused result must retire before finally mutation.",
+    "source": "<?php\nclass UnusedScalarReturnSendRowOld44 { function __destruct() { echo \"A|\"; } }\nclass UnusedScalarReturnSendRowLive44 { function __destruct() { echo \"C-LIVE|\"; } }\nclass UnusedScalarReturnSendRowArgument44 { function __destruct() { echo \"ARG|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"ARG-END|\"; } }\nfunction &unusedScalarReturnSendRowChild44() { global $row; $row = [new UnusedScalarReturnSendRowOld44()]; echo \"C|\"; yield 7 => $row; echo \"L|\"; return 0; }\nfunction unusedScalarReturnSendRowMiddle44() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; $GLOBALS[\"row\"][0] = new UnusedScalarReturnSendRowLive44(); echo \"J-END|\"; } }\nfunction unusedScalarReturnSendRowUpper44() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction unusedScalarReturnSendRowOuter44() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = unusedScalarReturnSendRowChild44(); $middle = unusedScalarReturnSendRowMiddle44(); $upper = unusedScalarReturnSendRowUpper44(); $outer = unusedScalarReturnSendRowOuter44();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\n$middle->current(); echo \"G|\";\necho \"S|\";\n$middle->send(new UnusedScalarReturnSendRowArgument44()); echo \"CALLER|\"; unset($copy); echo \"DROPPED|\"; unset($row); echo \"ROW-DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "22de11aa84eaa263ae5cc1911fe9f861e8129a8e43c159860f39957aff035853",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|G|S|ARG|F|K|ARG-END|J|A|J-END|CALLER|DROPPED|C-LIVE|ROW-DROPPED|E"
+  },
+  {
+    "id": "generator-unused-scalar-return-send-assignment-control",
+    "purpose": "A pre-refreshed direct pending SEND has a node-free copied return0 and owning raw row; only assignment changes result demand and keeps its snapshot through finally.",
+    "source": "<?php\nclass UnusedScalarReturnSendRowOld44 { function __destruct() { echo \"A|\"; } }\nclass UnusedScalarReturnSendRowLive44 { function __destruct() { echo \"C-LIVE|\"; } }\nclass UnusedScalarReturnSendRowArgument44 { function __destruct() { echo \"ARG|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"ARG-END|\"; } }\nfunction &unusedScalarReturnSendRowChild44() { global $row; $row = [new UnusedScalarReturnSendRowOld44()]; echo \"C|\"; yield 7 => $row; echo \"L|\"; return 0; }\nfunction unusedScalarReturnSendRowMiddle44() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; $GLOBALS[\"row\"][0] = new UnusedScalarReturnSendRowLive44(); echo \"J-END|\"; } }\nfunction unusedScalarReturnSendRowUpper44() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction unusedScalarReturnSendRowOuter44() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = unusedScalarReturnSendRowChild44(); $middle = unusedScalarReturnSendRowMiddle44(); $upper = unusedScalarReturnSendRowUpper44(); $outer = unusedScalarReturnSendRowOuter44();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\n$middle->current(); echo \"G|\";\necho \"S|\";\n$copy = $middle->send(new UnusedScalarReturnSendRowArgument44()); echo \"CALLER|\"; unset($copy); echo \"DROPPED|\"; unset($row); echo \"ROW-DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "006dbb88db7d1e88c62e71b673b300136623b0689ebde193f78a77c8c52cfcb2",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|G|S|ARG|F|K|ARG-END|J|J-END|CALLER|A|DROPPED|C-LIVE|ROW-DROPPED|E"
+  }
+]

@@ -43,7 +43,7 @@ def checks(program, path, name):
         'S_no_code = S_restored_1[.CODE = eps]',
         '~$error_read_source(S_no_code,perrorread_second)',
         '~$error_read_valid(S_no_code,perrorread_second)',
-        'perrorread_nonnull = perrorread_second[.ORIGINAL = BINARY_RIGHT ' + op + ' (KNOWN (POBJECT 0)) 10][.TASK = BINARY_RIGHT ' + op + ' (KNOWN (POBJECT 0)) 10]',
+        'perrorread_nonnull = perrorread_second[.ORIGINAL = BINARY_RIGHT ' + op + ' (KNOWN PUNDEFINED) 10][.TASK = BINARY_RIGHT ' + op + ' (KNOWN PUNDEFINED) 10]',
         '$error_read_shape(perrorread_nonnull.ORIGINAL,perrorread_nonnull.INPUT,perrorread_nonnull.BASE) = (perrorread_nonnull)',
         '~$error_read_source(S_restored_1,perrorread_nonnull)',
         '~$error_read_valid(S_restored_1,perrorread_nonnull)',

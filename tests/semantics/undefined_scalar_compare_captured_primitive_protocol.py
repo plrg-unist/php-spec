@@ -101,7 +101,7 @@ def checks(program, path, name):
         'perrorread_foreign = perrorread[.ORIGINAL = ' + original.replace(operator,'BITXOR') + '][.TASK = ' + task.replace(operator,'BITXOR') + ']',
         '~$error_read_source(S,perrorread_foreign)', '~$error_read_valid(S,perrorread_foreign)',
         '$error_read_plan(S[.TODO = perrorread_foreign.ORIGINAL :: ptask_tail*]) = eps',
-        'perrorread_object = perrorread' + ('[.INPUT = KNOWN (POBJECT 0)][.RESULT = KNOWN (POBJECT 0)]' if equal else '[.ORIGINAL = BINARY_RIGHT GREATER (KNOWN (POBJECT 0)) 14][.TASK = BINARY_RIGHT GREATER (KNOWN (POBJECT 0)) 14]'),
+        'perrorread_object = perrorread' + ('[.INPUT = KNOWN PUNDEFINED][.RESULT = KNOWN PUNDEFINED]' if equal else '[.ORIGINAL = BINARY_RIGHT GREATER (KNOWN PUNDEFINED) 14][.TASK = BINARY_RIGHT GREATER (KNOWN PUNDEFINED) 14]'),
         '$error_read_shape(perrorread_object.ORIGINAL,perrorread_object.INPUT,perrorread_object.BASE) = (perrorread_object)',
         '~$error_read_source(S,perrorread_object)', '~$error_read_valid(S,perrorread_object)',
         '$error_read_plan(S[.TODO = perrorread_object.ORIGINAL :: ptask_tail*][.RESULT = perrorread_object.INPUT]) = eps',
