@@ -308,4 +308,3 @@ sources.family.fingerprint = fingerprint
 
 if __name__ == '__main__':
     raise SystemExit(0 if packet.main() else 1)
-

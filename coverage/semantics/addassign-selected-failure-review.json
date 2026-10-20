@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "milestone": "OP59 selected-reference compound ADD delayed RHS failure",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "The existing leading-LEFT/initially quiet-RHS += route through preexisting selected reference cells now reports failed delayed RHS conversion from its live old referents. Both cells must remain allocated/live/unconstrained and hold valid nonowning scalars or allocated flat DIRECT arrays within the unchanged failure-value bound. Current name rebinding cannot redirect type labels or the selected destination. Failure preserves both source cells/aliases and outer result; array union is not retried. No new initial admission or producer.",
+  "runtime_revision": "252cb0193d152802e6d2b98d540c1a1cf72c365a",
+  "helper_revision": "32881880d72c7f90e18739045823c43181f58007",
+  "private_modules": 406,
+  "runtime_sha256": {
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "d0810dfecd48cdd9c48b787b895cd298dd7e1ce679a512e797d991e0a2cb4503"
+  },
+  "engine_basis": [
+    "Pinned ZEND_ASSIGN_OP selects and dereferences var_ptr before calling zend_binary_op with result==LEFT. add_function_slow dereferences both operands and attempts array fast dispatch before numeric conversion. After LEFT Warning returns it converts the already selected RHS. Failed conversion calls zend_binop_error on those live selected values and does not retry array union or destroy/replace result==op1.",
+    "Sole404 +25 lines add a source/historical-old-marker1 failure helper, one TypeError transition and one old-boundary EPS exclusion plus forward declaration. The helper authenticates the actual returned marker, selected allocated CELL pair and absent property/reference-coercion/parameter constraints, then reuses unchanged arithmetic_addassign_cv_failure_value and requires failed RHS conversion. Old entry, source, conversion/Warning, quiet readiness/store, second-Warning, getters, roots and numeric bodies remain exact.",
+    "The transition retires the old marker and returns raw THROWN with RESULTnull. It neither writes selected cells nor invokes CV detachment or array union. Ordinary driven execution separately allocates the fresh TypeError and its normal ownership. The marker retains its existing empty task roots; surviving aliases keep the old cells live."
+  ],
+  "contract": [
+    "Author h1 changes selected REQUEST12.5tail/PINT2 to two distinct flat arrays[1]/[2] and returns true. TypeError array + array on RHS line25 with noPrevious/outer100/one callback proves no array-union retry or compound/outer store. Both aliases retain the original array identities/items through EOF; author stderr is empty.",
+    "Independent h1 changes old aliases to false/dynamic REQUESTbad5, then rebinds both current names to replacement77/7 and returns false. The error is bool + string, not a product of current-name rereads. Old CELLs have owner1 and replacements2; outer100 and callback writes remain. Subsequent old aliases73/4 versus current8/9 prove no detach/store/redirect. Exactly one original default Warning25 remains on stderr.",
+    "Focused144/160 reuses existing selected-addassign HELPERS byte-exact and reaches real plan/fresh/entered/returned Warning phases. Author owns one undriven refusal matrix. Exact whole-state raw THROWN is distinguished from driven indexed freshTypeError25/soleowner. STORE/ENV/REFCELLS/events/STRINGDATA remain unchanged at failure, array prefixes/identities/items and owner counts are preserved, and callback prefixes/EOF topology/full-entry and zero budgets are checked. No new search protocol."
+  ],
+  "required_follow_on": [
+    "Initial quiet-RHS admission remains unchanged; this does not admit initially bad RHS or other producers. Missing/expired/constrained selected cells, absent last alias, objects and nested/reference/owning array leaves, indirect handlers and wider arithmetic/lifecycle cases remain partial. Pure guard refusals establish no typed/owning/lifetime execution.",
+    "OP58 successful second-RHS Warning/storage and OP56 plain-CV failure retain separate tested cuts without renewed credit. No numeric result, compound store, operand-retention root or dynamic producer is added here. OP12 remains paused; no engine bug or intentional divergence is claimed."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-59/source-252cb0193-author-one/report.json",
+        "sha256": "f28e9c0f80c57602f60b87011ab9e2cc28c353c50006396fa185a6693de16e85",
+        "revision": "252cb0193d152802e6d2b98d540c1a1cf72c365a",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-59/review-model-252cb0193-review-one/report.json",
+        "sha256": "4e9af39011791f3481b22cf6ca66144dd761f90f45a62e2f6a8bb19d24a0f1f4",
+        "revision": "252cb0193d152802e6d2b98d540c1a1cf72c365a",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-59/state-32881880d-two/report.json",
+        "sha256": "f9e1772a419e81d9cf2cee61bfae3fda8cc725b19aa633f9ebc2f9cd9f7f64fb",
+        "revision": "32881880d72c7f90e18739045823c43181f58007",
+        "modules": 406,
+        "cases": [
+          "addassign-selected-failure-array-pair",
+          "addassign-selected-failure-rebound-live-types"
+        ],
+        "conditions": [
+          144,
+          160
+        ],
+        "total": 304
+      }
+    ],
+    "total_source_agreements": 2,
+    "total_focused_state_conditions": 304
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-59/baseline-e473d68c7-array-pair/report.json",
+      "sha256": "a84c2f580fa3c4f75e413975c2cd05c3398486d20e0759ec1063cabc65034d1d",
+      "result": "Actual accepted/checked program/Unsupported AFTER H1 prefix H:1:2:25:1:1;, reason compound addition live operands or target, empty semantic stderr/model1/agreement0/wrapperfalse; no override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-59/native-e473d68c7-author-one/report.json",
+        "sha256": "9c4a7438fb5636d8276cdc6aa1aed862f34d389f1e1a969980daf75d81852f3e"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-59/native-e473d68c7-review-one/report.json",
+        "sha256": "8a4c0c181fc61aaa642cd062ec3b0dc5cd7085a26e1f20346c1afebf0de0d3ef"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-59/state-prep-32881880d-two/report.json",
+        "sha256": "d2dae3fed8039f1161a9b0cccf2faf53c294849e3b5d60905b2811719377cce6",
+        "result": "Retained original paths/native bytes; checked frontend/adapter only, zero native/application replay; workers0/reaped."
+      }
+    ],
+    "standalone_syntax": "Two standalone undefined-pstate diagnostics, zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-59",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/baseline CPU3, changed source and focused groups separately granted CPU5. Native30/modelCLI60-process90, checked prep30/full406 SL120 per group. Author source stderr empty; peer one original default Warning25. Retained-source prep performs no native/application replay.",
+    "commands": [
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 tests/semantics/addassign_selected_failures.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 tests/semantics/addassign_selected_failure_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-59/state-prep-32881880d-two/run-prepare.py",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-59/state-32881880d-two/run-state.py"
+    ],
+    "record": "Restore matching Git cuts and local tools in a fresh directory. Retained original paths/native streams authenticate focused fixtures; external evidence is not a runtime dependency. Copied local tools add no rebuild/portability claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "composition": {
+    "parent": "5d84769356409ac04f396f07f4fb481f4303dacf",
+    "private_publication": "6c009c58c4338825ed5581e97703a03f5894cb65",
+    "modules": 406,
+    "runtime_sha256": {
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "d0810dfecd48cdd9c48b787b895cd298dd7e1ce679a512e797d991e0a2cb4503"
+    },
+    "other_incoming_paths_preserved": 43,
+    "gate": "The actual parent differs from OP59 baseef04 in three runtime paths172/207/413; shared30/40/404, selected-pointer readers, state/roots/defaults and ordered406 manifest remain exact. Module172's NULL-option INI_SET rejected-array reception requires an absent configuration API/call pack; named handler h and builtin Throwable observers produce none. Module207's forward weak-comparison second missing-CV Warning/source authority requires missing comparison operands; all strict observers and source operands here are defined. Module413's lossy-float explicit-reference literal ALIAS scalar/string-leaf paths require that specialized array producer; author [1]/[2] use quiet integer keys and DIRECT integer leaves, and GLOBALS dimension writes do not produce such literal plans. Existing literal-retention/debt fields stay empty. There are no new state/tag/default/root fields or module additions. Preserve every incoming runtime and manifest path, overlaying only private404 and its six new tests. Source2/state304 retain their original private406 cuts. No concrete selector interaction warrants joined execution or renewed evidence."
+  }
+}

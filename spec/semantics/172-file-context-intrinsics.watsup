@@ -470,6 +470,16 @@ def $config_ini_pack_known(S, pentry*, (PARRAY n_known)) = $dynamic_array_same_e
   -- if HARRAY n_known <- S.ALLOCATIONS
   -- if $($heap_count(HARRAY n_known, $pools_nodes(S.POOLS)) > 0)
 def $config_ini_pack_known(S, pentry*, pvalue?) = false -- otherwise
+dec $config_ini_rejected_entries(pstate, pentry*) : bool
+def $config_ini_rejected_entries(S, eps) = true
+def $config_ini_rejected_entries(S, ENTRY pkey (DIRECT pvalue) :: pentry_tail*) = ($config_ini_quiet_value(S, pvalue) /\ $config_ini_rejected_entries(S, pentry_tail*))
+def $config_ini_rejected_entries(S, pentry*) = false -- otherwise
+dec $config_ini_rejected_array(pstate, nat) : bool
+def $config_ini_rejected_array(S, n_array) = true
+  -- if $(n_array < |S.ARRAYS|)
+  -- if HARRAY n_array <- S.ALLOCATIONS
+  -- if $config_ini_rejected_entries(S, S.ARRAYS[n_array].ITEMS)
+def $config_ini_rejected_array(S, n_array) = false -- otherwise
 dec $config_ini_null_valid(pstate, pconfigcall) : bool
 def $config_ini_null_valid(S, pconfigcall) = true
   -- if $config_invoke_valid(S, pconfigcall)
@@ -534,6 +544,19 @@ def $config_ini_null_valid(S, pconfigcall) = true
   -- if $config_ini_quiet_value(S, pvalue)
   -- if $config_ini_pack_known(S, pconfigpack.ITEMS, $compiled_read(S, pconfigpack.SITE))
   -- if ~$config_strict(S, pconfigcall)
+def $config_ini_null_valid(S, pconfigcall) = true
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if pconfigcall.INDEX = 2 /\ ~pconfigcall.NAMED
+  -- if ~$pipe_site(S, pconfigcall.SITE)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN (PARRAY n_array))]
+  -- if $config_ini_rejected_array(S, n_array)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression_option, false, eps, porigin_option, z_option))
+  -- if $compiled_read(S, porigin_option) = eps \/ $compiled_read(S, porigin_option) = (PNULL)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 1) = ((expression_value, false, eps, porigin_value, z_value))
+  -- if $config_ini_pack_known(S, S.ARRAYS[n_array].ITEMS, $compiled_read(S, porigin_value))
+  -- if ~$config_strict(S, pconfigcall)
 def $config_ini_null_valid(S, pconfigcall) = false -- otherwise
 dec $config_ini_unary_finish(pstate, pconfigcall, preqbytes) : pstate
 dec $config_ini_null_finish(pstate, pconfigcall) : pstate
@@ -543,6 +566,10 @@ def $config_ini_null_finish(S, pconfigcall) = $config_ini_finish(S, pconfigcall,
   -- if pconfigcall.KIND = INTRINSIC_INI_SET
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN pvalue)]
   -- if $config_ini_quiet_value(S, pvalue)
+def $config_ini_null_finish(S, pconfigcall) = $config_ini_finish(S, pconfigcall, eps, PARRAY n_array)
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN (PARRAY n_array))]
+  -- if $config_ini_rejected_array(S, n_array)
 dec $config_ini_option_miss(pconfigcall, preqbytes) : bool
 def $config_ini_option_miss(pconfigcall, n_option*) = true
   -- if n_option* =/= $ptascii("include_path")

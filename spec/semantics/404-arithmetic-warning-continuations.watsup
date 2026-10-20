@@ -456,10 +456,14 @@ rule PhpStep/arithmetic-addassign-commit: S ~> $write_cell_checked(S[.TODO = pta
   -- if $arithmetic_addassign_ready(S, pintegeroperation) = (pnumber_right)
   -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_left
   -- if pvalue_result = $number_value($num_add(pnumber_left, pnumber_right))
+dec $arithmetic_addassign_right_snapshot(pstate, pintegeroperation) : (pvalue, pnumber)?
+dec $arithmetic_addassign_failure_operands(pstate, pintegeroperation) : (pvalue, pvalue)?
 rule PhpStep/arithmetic-addassign-boundary: S ~> S[.COMPLETION = UNSUPPORTED "compound addition live operands or target"]
   -- if S.TODO = (ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue pnumber 1) :: ptask_tail*
   -- if $arithmetic_addassign_warning_valid(S, pintegeroperation, pvalue, pnumber, 1)
   -- if $arithmetic_addassign_ready(S, pintegeroperation) = eps
+  -- if $arithmetic_addassign_right_snapshot(S, pintegeroperation) = eps
+  -- if $arithmetic_addassign_failure_operands(S, pintegeroperation) = eps
 
 def $task_nodes(ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue pnumber n) = eps
 def $call_task_valid(S, ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue pnumber n) = $arithmetic_addassign_warning_valid(S, pintegeroperation, pvalue, pnumber, n)
@@ -3198,3 +3202,84 @@ def $arithmetic_add_array_failure_operands(S, pintegeroperation, parithmeticphas
 rule PhpStep/arithmetic-add-array-type-failure: S ~> $type_failure(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL], ADD, pvalue_left, pvalue_right, pintegeroperation.LINE)
   -- if S.TODO = (ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
   -- if $arithmetic_add_array_failure_operands(S, pintegeroperation, parithmeticphase) = ((pvalue_left, pvalue_right))
+
+;; A selected-reference ASSIGN_OP reads its old RHS after the LEFT Warning.
+;; Capture before the second Warning, then write only the selected old target.
+dec $arithmetic_addassign_right_target(pstate, pintegeroperation) : bool
+def $arithmetic_addassign_right_target(S, pintegeroperation) = true
+  -- if $arithmetic_addassign_source(S, pintegeroperation)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_left
+  -- if $arithmetic_owned_cell_valid(S, n_left)
+def $arithmetic_addassign_right_target(S, pintegeroperation) = false -- otherwise
+
+def $arithmetic_addassign_right_snapshot(S, pintegeroperation) = ((pvalue_right, pnumber_right))
+  -- if $arithmetic_addassign_source(S, pintegeroperation)
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CELL n_right
+  -- if $arithmetic_owned_cell_valid(S, n_right)
+  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (pvalue_right)
+  -- if $arithmetic_add_conversion(pvalue_right) = ((pnumber_right, true))
+  -- if $arithmetic_add_phase_valid(ARITHMETIC_RIGHT pnumber_right)
+def $arithmetic_addassign_right_snapshot(S, pintegeroperation) = eps -- otherwise
+
+dec $arithmetic_addassign_right_warning_valid(pstate, pintegeroperation, pvalue, pnumber, pvalue, pnumber, nat) : bool
+def $arithmetic_addassign_right_warning_valid(S, pintegeroperation, pvalue_left, pnumber_left, pvalue_right, pnumber_right, n) = ($arithmetic_addassign_warning_valid(S, pintegeroperation, pvalue_left, pnumber_left, 1) /\ $arithmetic_add_conversion(pvalue_right) = ((pnumber_right, true)) /\ $arithmetic_add_phase_valid(ARITHMETIC_RIGHT pnumber_right) /\ $(n <= 1) /\ (n = 1 \/ $arithmetic_addassign_right_snapshot(S, pintegeroperation) = ((pvalue_right, pnumber_right))))
+
+rule PhpStep/arithmetic-addassign-right-capture: S ~> S[.TODO = (ARITHMETIC_ADDASSIGN_RIGHT_WARNING pintegeroperation pvalue_left pnumber_left pvalue_right pnumber_right 0) :: ptask_tail*]
+  -- if S.TODO = (ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue_left pnumber_left 1) :: ptask_tail*
+  -- if $arithmetic_addassign_warning_valid(S, pintegeroperation, pvalue_left, pnumber_left, 1)
+  -- if $arithmetic_addassign_ready(S, pintegeroperation) = eps
+  -- if $arithmetic_addassign_right_snapshot(S, pintegeroperation) = ((pvalue_right, pnumber_right))
+rule PhpStep/arithmetic-addassign-right-warning: S ~> $error_dispatch(S, 2, $ptascii("A non-numeric value encountered"), pintegeroperation.LINE, DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) pintegeroperation.LINE, ARITHMETIC_ADDASSIGN_RIGHT_WARNING pintegeroperation pvalue_left pnumber_left pvalue_right pnumber_right 1)
+  -- if S.TODO = (ARITHMETIC_ADDASSIGN_RIGHT_WARNING pintegeroperation pvalue_left pnumber_left pvalue_right pnumber_right 0) :: ptask_tail*
+  -- if $arithmetic_addassign_right_warning_valid(S, pintegeroperation, pvalue_left, pnumber_left, pvalue_right, pnumber_right, 0)
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/arithmetic-addassign-right-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "compound addition owning RHS warning callback"]
+  -- if S.TODO = (ARITHMETIC_ADDASSIGN_RIGHT_WARNING pintegeroperation pvalue_left pnumber_left pvalue_right pnumber_right 0) :: ptask_tail*
+  -- if $arithmetic_addassign_right_warning_valid(S, pintegeroperation, pvalue_left, pnumber_left, pvalue_right, pnumber_right, 0)
+  -- if $error_handler_eligible(S, 2)
+  -- if ~$arithmetic_add_named(S)
+rule PhpStep/arithmetic-addassign-right-commit: S ~> $write_cell_checked(S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue_result][.LOCATION = ROOT n_left], n_left, pvalue_result, pintegeroperation.LINE)
+  -- if S.TODO = (ARITHMETIC_ADDASSIGN_RIGHT_WARNING pintegeroperation pvalue_left pnumber_left pvalue_right pnumber_right 1) :: ptask_tail*
+  -- if $arithmetic_addassign_right_warning_valid(S, pintegeroperation, pvalue_left, pnumber_left, pvalue_right, pnumber_right, 1)
+  -- if $arithmetic_addassign_right_target(S, pintegeroperation)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_left
+  -- if pvalue_result = $number_value($num_add(pnumber_left, pnumber_right))
+rule PhpStep/arithmetic-addassign-right-boundary: S ~> S[.COMPLETION = UNSUPPORTED "compound addition RHS-warning target"]
+  -- if S.TODO = (ARITHMETIC_ADDASSIGN_RIGHT_WARNING pintegeroperation pvalue_left pnumber_left pvalue_right pnumber_right 1) :: ptask_tail*
+  -- if $arithmetic_addassign_right_warning_valid(S, pintegeroperation, pvalue_left, pnumber_left, pvalue_right, pnumber_right, 1)
+  -- if ~$arithmetic_addassign_right_target(S, pintegeroperation)
+
+def $task_nodes(ARITHMETIC_ADDASSIGN_RIGHT_WARNING pintegeroperation pvalue_left pnumber_left pvalue_right pnumber_right n) = eps
+def $call_task_valid(S, ARITHMETIC_ADDASSIGN_RIGHT_WARNING pintegeroperation pvalue_left pnumber_left pvalue_right pnumber_right n) = $arithmetic_addassign_right_warning_valid(S, pintegeroperation, pvalue_left, pnumber_left, pvalue_right, pnumber_right, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ARITHMETIC_ADDASSIGN_RIGHT_WARNING pintegeroperation pvalue_left pnumber_left pvalue_right pnumber_right 1
+  -- if $arithmetic_addassign_right_warning_valid(S, pintegeroperation, pvalue_left, pnumber_left, pvalue_right, pnumber_right, 1)
+  -- if perrorcall.TARGET =/= eps \/ $arithmetic_addassign_right_warning_valid(S, pintegeroperation, pvalue_left, pnumber_left, pvalue_right, pnumber_right, 0)
+  -- if perrorcall.SITE = pintegeroperation.SITE
+  -- if perrorcall.LINE = pintegeroperation.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("A non-numeric value encountered")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) pintegeroperation.LINE
+
+;; Failed RIGHT conversion keeps the selected referents and never retries the
+;; earlier array-union fast path or replaces the compound destination.
+def $arithmetic_addassign_failure_operands(S, pintegeroperation) = ((pvalue_left, pvalue_right))
+  -- if S.TODO = (ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue_cached pnumber_cached 1) :: ptask_tail*
+  -- if $arithmetic_addassign_warning_valid(S, pintegeroperation, pvalue_cached, pnumber_cached, 1)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_left
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CELL n_right
+  -- if (HCELL n_left) <- S.ALLOCATIONS
+  -- if (HCELL n_right) <- S.ALLOCATIONS
+  -- if $propref_at(S.PROPREFS, n_left) = eps /\ $propref_at(S.PROPREFS, n_right) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n_left) = eps /\ $reference_coercion_at(S.REFCOERCIONS, n_right) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_left) = eps /\ $parameter_backing_at(S.PARAMETERBACKINGS, n_right) = eps
+  -- if $integer_pointer_value(S, pintegeroperation.LEFTPOINTER) = (pvalue_left)
+  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (pvalue_right)
+  -- if $arithmetic_addassign_cv_failure_value(S, pvalue_left)
+  -- if $arithmetic_addassign_cv_failure_value(S, pvalue_right)
+  -- if $arithmetic_add_conversion(pvalue_right) = eps
+def $arithmetic_addassign_failure_operands(S, pintegeroperation) = eps -- otherwise
+
+rule PhpStep/arithmetic-addassign-rhs-type-failure: S ~> $type_failure(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL], ADD, pvalue_left, pvalue_right, pintegeroperation.LINE)
+  -- if S.TODO = (ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue_cached pnumber_cached 1) :: ptask_tail*
+  -- if $arithmetic_addassign_failure_operands(S, pintegeroperation) = ((pvalue_left, pvalue_right))

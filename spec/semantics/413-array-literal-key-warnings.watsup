@@ -183,6 +183,7 @@ dec $literal_reference_cell(pstate, nat, pnode*) : bool
 dec $literal_reference_property_sources(pstate, nat, pproptypesource*, pnode*) : bool
 dec $literal_reference_flat_array(pstate, nat, pnode*) : bool
 dec $literal_reference_flat_leaf(pstate, pvalue) : bool
+dec $literal_reference_flat_cell(pstate, nat) : bool
 dec $literal_reference_flat_items(pstate, pentry*) : bool
 dec $literal_reference_retain(pstate, nat) : pstate
 dec $literal_reference_owe(pstate, nat) : pstate
@@ -361,16 +362,24 @@ def $literal_reference_flat_array(S, n, pnode_live*) = false -- otherwise
 def $literal_reference_flat_leaf(S, PSTRING n*) = $startup_bytes(n*)
 def $literal_reference_flat_leaf(S, PSTRING_CARRIER pstringidentity n*) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*)
 def $literal_reference_flat_leaf(S, pvalue) = $array_float_key_scalar(S, pvalue) -- otherwise
+def $literal_reference_flat_cell(S, n) = true
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $literal_reference_flat_leaf(S, pvalue)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+def $literal_reference_flat_cell(S, n) = false -- otherwise
 def $literal_reference_flat_items(S, eps) = true
 def $literal_reference_flat_items(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*) = ($literal_reference_flat_leaf(S, pvalue) /\ $literal_reference_flat_items(S, pentry*))
-def $literal_reference_flat_items(S, (ENTRY pkey (ALIAS n)) :: pentry*) = ($literal_reference_plain_cell(S, n) /\ ~(n <- S.LITERALREFDEBTS) /\ $literal_reference_flat_items(S, pentry*))
+def $literal_reference_flat_items(S, (ENTRY pkey (ALIAS n)) :: pentry*) = ($literal_reference_flat_cell(S, n) /\ ~(n <- S.LITERALREFDEBTS) /\ $literal_reference_flat_items(S, pentry*))
 def $literal_reference_flat_items(S, pentry*) = false -- otherwise
 
 dec $literal_array_debt_tables_safe(pstate, hgraph, nat*) : bool
 def $literal_debt_pending(S) = (S.LITERALREFDEBTS =/= eps \/ S.LITERALARRAYDEBTS =/= eps)
 
 ;; A positive debt CELL survives biased pruning and keeps its child-table edge.
-;; Positive tables keep their primitive, debt-free leaf CELL edges. Such leaf
+;; Positive tables keep their debt-free scalar leaf CELL edges. Such leaf
 ;; cells and direct values have no further owner edges.
 dec $literal_reference_debt_cells_safe(pstate, hgraph, nat*) : bool
 def $literal_reference_debt_cells_safe(S, H, eps) = true

@@ -23,6 +23,9 @@ def checks(program, path, name):
             ]
             continue
         condition = condition.replace(old, new)
+        if left and condition.startswith('S_removed_refused = S_removed['):
+            result.append('~$scalar_compare_read_again(S_removed,perrorread)')
+            condition = 'S_removed_refused = S_removed[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed right operand"]'
         if condition.startswith('S_compared = '):
             old_result, new_result = ('true', 'false') if left else ('false', 'true')
             condition = condition.replace('KNOWN (PBOOL ' + old_result + ')',

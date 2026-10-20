@@ -142,14 +142,19 @@ validated-carrier string leaves. String snapshots remain independent across
 shared table writes and restored ALIAS copies. Singleton reference entries
 unwrap before child/string COW.
 Existing byte/carrier validation and string-offset COW rules remain in use;
-direct string CV/cell payloads and wider owning leaves stay Unsupported.
-Embedded ALIAS entries may name live untyped null/bool/int/float cells without
-property/coercion/backing receipts or CELL debt. Every leaf must survive logical
+direct string CV/cell payloads and array/object-valued leaves stay Unsupported.
+Embedded ALIAS entries may name live untyped cells holding null/bool/int/float
+or canonical-byte/validated-carrier strings, without property/coercion/backing
+receipts or CELL debt. Every leaf must survive logical
 pruning: positive tables keep their leaf edges, and leaves have no further owner
 edges. Child-table COW preserves shared leaf references and unwraps singleton
 leaves independently of outer table/wrapper counts. The
 [alias-leaf review](../../coverage/semantics/array-literal-float-alias-leaf-review.json)
 checks both counts, sibling-slot separation, deletion, supplied throw and inverse cleanup.
+The [string-alias review](../../coverage/semantics/array-literal-float-string-alias-leaf-review.json)
+extends only embedded leaf admission: shared string references propagate byte
+writes, singleton copies detach, and earlier string snapshots stay unchanged.
+Global primitive-cell and direct string CV/cell bounds stay exact.
 The source basis is pinned `Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT`,
 `Zend/zend_hash.c::zend_array_dup_value`, and
 `Zend/zend_operators.h::zend_dval_to_lval_safe`, with string writes from
