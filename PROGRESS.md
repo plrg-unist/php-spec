@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Reversed `>`/`>=` now quietly consume a checked defined source-right CV removed
+by the missing-left Warning handler. First source-left NULL stays frozen, yielding
+false/true without another report or reading an old alias/current left9. Fresh and
+initial references, one false/default report, absent initialization and chosen
+Exception identity/caller41/finally agree; an unread left still warns twice.
+Thirteen added lines in module207 preserve entry/source/forward+SPACE helpers and
+existing right-frozen retry. Nine source agreements plus one control and 560 strict-SL
+premises/four groups (296 author +264 independent) pass first executed attempts
+at `0e7bc1f2f`/407. Separate affected 68/2 and two old selectors renew no historical
+credit; native2+4 and genuine changed-right baseline retain `cca3340b3`/407.
+Owning comparison values and wider producers remain partial.
+[Reversed checked-right review](coverage/semantics/undefined-scalar-compare-checked-unset-reversed-review.json).
+
 Forward `==`/`!=`/`<`/`<=` now quietly compare a checked defined left CV removed
 by a missing-right Warning handler against frozen right NULL, yielding
 true/false/false/true without another report or an old-alias read. Surviving

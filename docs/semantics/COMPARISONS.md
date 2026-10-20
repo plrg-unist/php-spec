@@ -40,23 +40,27 @@ and a defined scalar counterpart. The missing value stays null while the opposin
 wrapper follows callback writes, late reference creation and rebinding. A missing
 right name can remain undefined throughout the callback. False handlers preserve
 default Warning order; throws preserve destination/catch/finally. The opposing CV
-must remain scalar on return, except for the removed-left and second-Warning
-paths below; owning values stop Unsupported. The
+must remain scalar on return unless an already checked name is removed or a later
+missing read stages another Warning, as described below; owning values stop
+Unsupported. The
 [missing-left review](../../coverage/semantics/undefined-scalar-compare-review.json)
 and [missing-right review](../../coverage/semantics/undefined-scalar-compare-right-review.json)
 and [not-equal/less-or-equal review](../../coverage/semantics/undefined-scalar-compare-ne-le-review.json)
 and [greater review](../../coverage/semantics/undefined-scalar-compare-gt-ge-review.json)
 record the separate cuts. Zend evaluates `>`/`>=` source expressions left to right,
-then reverses physical comparison operands. The single-missing/scalar-throughout
-bound makes these source-oriented records valid; removed-right native probes
-confirm one Warning without admitting that wider path. Forward `==`/`!=`/`<`/`<=`
+then reverses physical comparison operands. Records retain source orientation
+while resume guards follow the physical checks. Forward `==`/`!=`/`<`/`<=`
 now quietly compare a checked left CV removed during a missing-right Warning
 against frozen right NULL, yielding true, false, false, true. Surviving aliases
 retain their own values and owners; absent right, false/default and supplied throw
 remain ordered. The
 [forward checked-left review](../../coverage/semantics/undefined-scalar-compare-checked-unset-review.json)
-checks this separate right-frozen restore. Reversed `>`/`>=` still refuse removal
-of an already checked defined source-right counterpart. Owning values and wider
+checks this separate right-frozen restore. Reversed `>`/`>=` now also quietly
+consume an already checked source-right CV removed during the missing-left Warning.
+Their first source-left NULL stays frozen, yielding false/true without an old alias
+read or a second report; see the
+[reversed checked-right review](../../coverage/semantics/undefined-scalar-compare-checked-unset-reversed-review.json).
+Removing an unread later CV still stages its Warning. Owning values and wider
 producers remain partial. Earlier spaceship cuts remain in the
 [scalar warning review](../../coverage/semantics/undefined-spaceship-review.json).
 

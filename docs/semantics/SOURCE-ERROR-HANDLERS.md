@@ -194,8 +194,12 @@ missing-right Warning to NULL against the frozen right NULL. Their distinct scal
 right-frozen record preserves surviving alias owners and yields true/false/false/true
 without another report; see the
 [forward checked-left review](../../coverage/semantics/undefined-scalar-compare-checked-unset-review.json).
-Reversed `>`/`>=` still refuse removal of an already checked defined source-right
-counterpart during the later Warning.
+Reversed `>`/`>=` now also consume an already checked source-right CV removed
+during the missing-left Warning quietly. Their old left-frozen record preserves
+TASK/first NULL and restores RESULT as NULL, yielding false/true with surviving
+aliases and one report; the opposite unread-left path still warns again. The
+[reversed checked-right review](../../coverage/semantics/undefined-scalar-compare-checked-unset-reversed-review.json)
+records this bounded restore. Owning values and wider producers remain partial.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding
