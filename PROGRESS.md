@@ -7,27 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Cached ordinary public declared-only clones now enter the existing public
-zero-argument `__clone():void` path. Actual callback foreach reads fresh copy
-locators; singleton int wrappers unwrap in the copy while held aliases share
-updates and retain the clone-only constraint after source unset. The borrowed
-source may retire inside the callback; supplied throw destroys the failed copy
-and last Payload before the same catch, leaving the destination `42` unchanged.
+Direct missing instance calls now preserve named string keys and mixed send
+order through inherited public `__call(string,array)`. Earlier main-CV send `7`
+survives a later argument's mutation of that same cell to `99` and receiver-CV
+clearing. Named-only parameter/buffer sharing has two table owners and one
+Payload edge; explicit `unset($arguments)` leaves the Payload alive through `A`.
+After compiled locals, the buffer releases before the borrowed receiver, preserving
+cached `7` or the same supplied throw with destination `42` unchanged.
 
-Four exact sources pass at `d2cea26dd`/407 and 659 focused premises (651 reached
-+ 8 derived) pass at `23f1e50f5`/407. All semantic actors pass first attempt;
-four genuine baselines remain cached-clone Unsupported/zero agreement. Fast
-native affinity is 0/4; baseline/source/state masks and full argv are complete.
-Only the callback exclusion in module 150 changes; existing 300 call/window/throw
-and slot/type-source/foreach/GC rules stay exact. Earlier 110 cuts remain historical.
-Dynamic/readonly/intrinsic/update and wider callback/lifetime forms remain partial.
-[Cached clone callback review](coverage/semantics/cached-clone-callback-review.json).
-
-Composed over `9fa0a1a29`/407 with tested module 150 and the six tests
-private-exact; all other incoming runtime, state/default/root and ordered-manifest
-bytes remain preserved. Incoming reference-return, Generator, missing-read,
-bitwise-warning and array-debt selectors are absent from these clone histories.
-Source4/focused659 retain their private cuts without joined execution or replay.
+Three sources pass at `7772c5121`/407. Unique 559 focused premises (536 reached
++ 23 derived) retain selection 195 at `4c8943a6a` and corrected owning 179/throwing
+185 at `2c4ea4154`. The genuine baseline has three consumer Unsupported results
+and one preexisting compiler-control agreement. Four retained native tuples are
+accepted under the corrected fatal-trace template; the original recorder failure
+and stale-STORE fixture failure retain zero credit. Runtime changes only modules
+30 and 414; shared positional/static/scoped helpers and generic binding/cleanup
+stay compatible without replay. Static/scoped named, unpacked/reference sends
+and wider argument/lifetime forms remain partial.
+[Named magic-call review](coverage/semantics/magic-named-call-review.json).
 
 Direct and selected string `ini_set` calls now retain table-free STDINSTANCE
 values from one two-item numeric, named or mixed unpack pack. Historical snapshots

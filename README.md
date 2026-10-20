@@ -4356,6 +4356,15 @@ receiver release and cached result or supplied-exception delivery.
 [Four source agreements and 355 focused premises](coverage/semantics/magic-call-review.json)
 cover these paths and public-method bypass. Wider magic call forms remain partial.
 
+Direct missing instance calls also preserve named string keys and mixed send order.
+An earlier scalar send stays `7` when a later argument changes its source CV to `99`.
+Named-only calls share the argument table with a retained buffer: `unset($arguments)`
+leaves its Payload alive through `A`, then buffer cleanup precedes receiver cleanup
+and cached `7` delivery or the same supplied throw with destination `42` unchanged.
+[Three source agreements and 559 focused premises](coverage/semantics/magic-named-call-review.json)
+bind separate cuts. Static/scoped named, unpacked/reference sends and wider
+argument/ownership forms remain partial.
+
 External literal missing static calls also invoke inherited public
 `__callStatic(string,array)`, retaining lexical Parent/called Child and early sends
 with no receiver owner. Argument-array cleanup precedes cached scalar result or
