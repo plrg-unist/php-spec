@@ -1,0 +1,9 @@
+#!/usr/bin/env python3
+"""Original-source owning ARRAY returns at lossy literal keys."""
+import incdec_warnings as runner
+import array_literal_float_return_array_value_cases as cases
+
+
+if __name__ == '__main__':
+    runner.cases = cases
+    raise SystemExit(0 if runner.main() else 1)
