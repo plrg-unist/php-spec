@@ -7,6 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Ordinary live class-instance values now publish directly and in canonical array
+snapshots through dynamic-only `PVOBJECT` authority. No constant-NEW history is
+fabricated; present certificates keep their existing priority/refusals, direct
+queries require DEFINE origin, and global/default policies stay unchanged.
+Unpinned duplicate candidates run destructors on retirement: the private array
+copy can be the sole owner after source-alias clearing and runs D41 before the
+original handler Exception reaches catch. Query COW retains stored containers
+and shared typed-property identity.
+
+Three originals pass at `121f9fe88`/405; 622 focused premises (230+145+247) pass at
+`f3bebe265`/405, including two zero-budget identities. The first source binder
+failure and focused unset/rebound-CV fixture failure retain zero; only affected
+checks and previously unrun cases execute after those corrections. No accepted
+source/native/baseline or historical campaign is replayed. Executed classes have
+no constructor and omitted/false flags; inherited flags compose structurally
+without extra source credit. Wider object kinds/names/lifetimes stay partial.
+[Runtime object review](coverage/semantics/define-runtime-object-review.json).
+
 Certified Closure values now publish directly or as nested array leaves through
 existing durable object/site/source-prefix/live authority. Direct rows and copied
 leaves share the same pointer/static cells; normal duplicates preserve the old
