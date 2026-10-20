@@ -22,8 +22,9 @@ This covers bounded spaceship operands and distinct direct-CV
 `==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
 Both-missing pairs, including the same missing variable twice at `<=>`,
 can resume if the first handler defines the later scalar; greater operators
-warn right first. `<=>` also stages a second Warning if the later CV stays
-missing, freezing both NULLs despite writes from the second handler.
+warn right first. `<=>` and distinct `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also stage
+a second Warning if the later physical CV stays missing, freezing both NULLs
+despite writes from the second handler.
 Wider warning paths remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
@@ -46,9 +47,14 @@ handler. Separate table counts preserve old array owners and omitted new-array
 owners; inverse retargeting cancels them before cleanup. Initial scalar and
 array plans remain distinct, while same-table transfer and restored COW keep
 ordinary values distinct from PHP reference wrappers.
-These flat tables also admit untyped null/bool/int/float reference leaves.
-Child-table copies preserve shared leaves and unwrap singleton leaves,
-independently of outer table and wrapper count corrections.
+These flat tables also admit untyped reference leaves holding null/bool/int/float
+or validated byte strings, and null/bool/int/float leaves with validated ordinary
+instance-property type sources. Debt-bearing payloads require every source object
+to survive logical pruning. Shared copies keep typed rejection/coercion; explicit property
+unset removes its constraint before singleton copying. Child-table copies preserve
+shared leaf aliases and unwrap singleton leaves; string byte writes keep earlier
+snapshots independent
+of both leaf references and outer table/wrapper count corrections.
 Direct string CV/cell payloads, unsafe deficit retirement and wider domains remain
 Unsupported. Duplicate replacement and later items stay ordered.
 
@@ -289,6 +295,21 @@ originals and 953 state premises cover true/false handling, throwing cancellatio
 strict NULL priority, source authentication and normal setter recovery. Multiple
 packs, PIPE and wider values remain partial.
 
+[NULL INI options with rejected array values](coverage/semantics/ini-set-null-array-value-review.json)
+now resume handlers for direct/selected positional calls with retained flat arrays
+of direct quiet primitive leaves. Returning handlers reach the value TypeError
+with an empty option and the earlier array; throwing handlers retain raw NULL and
+cancel before value rejection. Four originals and 844 state premises cover COW,
+strict option priority and normal recovery. Wider values/forms remain partial.
+
+[NULL INI options with retained stdClass values](coverage/semantics/ini-set-null-stdclass-value-review.json)
+now resume handlers for direct/selected positional calls with table-free objects
+whose properties hold direct quiet primitives. Returning handlers reach parameter2
+TypeError with an empty option and the same updated object; throwing handlers
+preserve raw NULL and cancel rejection. Four originals and 911 state premises
+cover shared property writes, strict priority, ownership and normal recovery.
+Named/owned/packed and wider object values remain partial.
+
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
 send/callback site. Ordinary Closure PIPE follows caller strictness; normal and
@@ -504,6 +525,14 @@ second throw preserves callback writes without storing. Two originals and 330
 focused premises retain this in the
 [selected-RHS Warning ledger](coverage/semantics/addassign-selected-rhs-warning-review.json).
 Other producers, unsafe targets and wider lifetimes remain partial.
+
+Failed delayed RHS conversion in selected-reference `+=` now reports the old
+selected operand types despite both current names rebinding. Flat arrays raise
+`array + array` without retrying union; old bool/bad text raises `bool + string`
+while current names keep quiet replacements. Both preserve the selected target,
+aliases and outer destination. Two originals and 304 focused premises retain this
+in the [selected failure ledger](coverage/semantics/addassign-selected-failure-review.json).
+Other values, producers and lifetimes remain partial.
 
 Initially plain CV `+=` destinations now retain their selection through a named
 warning handler that creates a late alias. Successful replacement detaches that
@@ -1224,6 +1253,10 @@ receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit
 getter has its own copy. See the
 [parked NEXT review](coverage/semantics/generator-parked-pending-owning-next-review.json).
+With one owning buffered simple-CV input at a parked child, pending `next()`
+likewise returns NULL without copying current or changing that input. Closing
+orphans its count; row COW and shared-cell writes preserve its separate lifetime.
+See the [buffered NEXT review](coverage/semantics/generator-parked-pending-buffered-next-review.json).
 Nonpending body entry, wider parked API leaves and waiting-result GC remain open.
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller
@@ -1709,6 +1742,13 @@ Closures retain their receiver. Canonical array/query copies share these objects
 an unpinned method receiver retires only after the last Closure owner is released.
 [Runtime Closure define review](coverage/semantics/define-runtime-closure-review.json).
 
+Ordinary `stdClass` values also publish directly and in array snapshots under
+selected live property/table checks. Queries share the same object and owning
+children while cast/query arrays retain COW. A private duplicate copy can keep
+the sole box-to-child path through a cached property reference; retiring it runs
+the child destructor before the handler Exception reaches catch.
+[Runtime stdClass define review](coverage/semantics/define-runtime-stdclass-review.json).
+
 Fresh definitions also copy nonempty array trees containing certified Closure,
 stdClass or user-instance leaves under the admitted flags. Copied containers freeze source
 reference values while object pointers and property writes remain shared,
@@ -1750,7 +1790,7 @@ nonempty byte strings are true. Flag-array COW and later callback writes leave t
 original API flag intact through duplicate cleanup or pending fresh publication.
 Strict calls retain the raw string in TypeError traces.
 [Byte-only array-flag review](coverage/semantics/define-array-byte-flag-review.json).
-Other Closure forms, unrecorded stdClass/internal object values, other owning
+Other Closure forms, internal object values, other owning
 leaves and wider flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
@@ -4386,18 +4426,18 @@ credit is unchanged. An unused destructor declaration now also preserves the
 no-instance, echo-only interposed scalar history. Fresh control/treatment sources
 agree with PHP; separate 463/8 state checks cover its shared-cell RELEASE/EXIT
 pauses, required literal history despite an unchanged heap, engine TypeError catch,
-one line7 Notice and detached aliases. Owning computed-return histories with at least three pending slots now
-preserve first-retirement direct or nested destructor throws while at least two
-outer return slots stay live. Finite literal builtin
-TypeError/Exception and stable global supplied-Throwable bodies retain their
-source and identity; cleared NULL recovery keeps the Notice and detached caller
-reference. Recursive source/suffix validation checks every remaining owner and
-restore link. A fresh four-owner supplied-Exception source and 368/6 checks at
-`0c1f7dea2` cover missing-owner/metadata refusals, exact public pauses and complete
-alias endings. Earlier three-owner evidence keeps its recorded cuts in the
+one line7 Notice and detached aliases.
+Owning-return histories with at least three pending slots preserve finite
+first-retirement destructor throws, including stable supplied-Throwable identity,
+cleared NULL recovery and detached caller references. Remaining computed objects
+keep their source/restore/sole-owner checks; ordinary global-CV slots now bind
+the emitted source to the actual shared cell. A mixed source and 439/12 checks
+at `4a1cc45c5` prove same-object catch, wrong-cell/kind and missing-slot refusals,
+exact shared-cell release/public pauses, Notice15 and z/za/caller aliases.
+Earlier computed-only evidence keeps its original cuts in the
 [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-Mixed/reference histories, other bodies, deeper reentry, GC and wider consumers
-remain open.
+Repeated alias slots, other reference producers, wider bodies/reentry, GC and
+consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

@@ -197,6 +197,12 @@ including during receiver retirement before catch, and remains separate from
 current snapshots and reference caches. A lower pending `send` can consume its
 initialization while an upper pending `throw` still returns without advancing;
 see the [pending-buffered review](../../coverage/semantics/generator-pending-buffered-throw-review.json).
+A still-pending ancestor can then take zero-argument NEXT without consuming or
+overwriting that one owning input. It returns NULL, leaving the child parked.
+After real row COW, only the input keeps the old array, with one element-edge set;
+the raw reference cache follows the new row. An embedded input cell remains
+mutable after close. See the
+[buffered NEXT review](../../coverage/semantics/generator-parked-pending-buffered-next-review.json).
 The [parked-foreach review](../../coverage/semantics/generator-pending-foreach-throw-review.json)
 adds exactly one by-value array loop at a bare yield. Physical child close retains
 the iteration container, preserving shared reference cells and late

@@ -128,7 +128,8 @@ old-cell owner. Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also admit 
 operand with an initially defined scalar counterpart, following that counterpart's
 current wrapper after the callback. A missing right name need not be initialized.
 Both protocols freeze null while preserving the opposing read. Owning opposing
-values remain unsupported; ordinary comparisons also refuse removed CVs.
+values remain unsupported; a missing later physical CV can warn again after the
+first read, including one removed by the first handler.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.
 [The equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json)
@@ -139,11 +140,11 @@ record the scalar continuations and their separate validation cuts. Greater
 operators reverse physical VM operands; the same source shapes apply within the
 single-missing/scalar-throughout bound.
 Both-missing distinct direct CVs may enter the first Warning: forward
-`==`/`!=`/`<`/`<=` freeze left NULL and require the handler to define right scalar;
-reversed `>`/`>=` freeze right NULL and require current left scalar. The first
+`==`/`!=`/`<`/`<=` freeze left NULL before reading current right;
+reversed `>`/`>=` freeze right NULL before reading current left. The first
 name may remain undefined. `<=>` shares forward entry and can fetch a missing
 right afterward. The shared ingress-only predicate distinguishes both
-shapes; ordinary comparison resume guards still refuse an undefined opposing name. A pending
+shapes; a missing later physical CV can trigger the second Warning below. A pending
 Exception suppresses the second Warning and follows ordinary discard. The
 [forward review](../../coverage/semantics/undefined-scalar-compare-both-review.json)
 and [reversed review](../../coverage/semantics/undefined-scalar-compare-both-reversed-review.json)
@@ -153,13 +154,22 @@ initially missing CV twice: first NULL stays frozen while the second read sees
 the shared name initialized by the handler. The
 [same-variable review](../../coverage/semantics/undefined-spaceship-same-review.json)
 records its one-premise entry extension; source/resume/discard stay unchanged.
-A frozen-left `<=>` now restores when the later CV remains missing or was removed
+A `<=>` or distinct `==`/`!=`/`<`/`<=`/`>`/`>=` now restores when
+the later physical CV remains missing or was removed
 by the first handler. Existing ingress stages its second Warning and known-NULL
-record; later writes cannot change result 0 or cause a third Warning.
+record; later writes cannot change the NULL/NULL result or cause a third Warning.
 [Second-Warning review](../../coverage/semantics/undefined-spaceship-second-review.json)
-covers both callbacks, default order and second supplied throw. Source certificates,
-tasks, fields and discard remain exact. Other operators' second-Warning chains,
-owning counterparts, right-frozen removed-left paths and wider producers remain partial.
+covers both callbacks, default order and second supplied throw. No task variants,
+fields or discard rules are added. The
+[forward review](../../coverage/semantics/undefined-scalar-compare-second-review.json)
+adds only a narrow known-NULL-left source arm authenticating both compiled,
+distinct direct CVs and the RHS read line. The
+[reversed review](../../coverage/semantics/undefined-scalar-compare-second-reversed-review.json)
+adds an exact right-frozen restore and NULL-only right INPUT certificate,
+authenticating both compiled CVs before the source-left second Warning. Its
+default reports stay right then left; late reference creation cannot change the
+two captured NULLs. Owning comparison values, ordinary same-CV forms, already
+checked defined counterparts removed during the later Warning and wider producers remain partial.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding
@@ -272,14 +282,28 @@ entries unwrap before child/string COW, then an inverse restores shared ALIAS co
 The [string-leaf ledger](../../coverage/semantics/array-literal-float-string-leaf-review.json)
 checks normal/same-table, deletion and supplied-throw paths. Direct string CV/cell
 payloads remain Unsupported. No string-conversion callback or identity rule changes.
-Embedded ALIAS leaves now admit live untyped null/bool/int/float cells with no
-property/coercion/backing receipts or CELL debt. Their ordinary counts remain
+Embedded ALIAS leaves now admit live untyped cells holding null/bool/int/float
+or validated byte strings, with no property/coercion/backing receipts or CELL debt. Their ordinary counts remain
 separate from outer HARRAY/CELL biases: child-table COW keeps shared aliases or
 unwraps singleton leaves, while sibling slots reveal table sharing independently.
 Positive surviving tables preserve every leaf edge. The
 [alias-leaf ledger](../../coverage/semantics/array-literal-float-alias-leaf-review.json)
 records normal, deletion and supplied-throw paths with balanced inverse cleanup.
-Owning, typed or indebted reference leaves and recursive graphs remain Unsupported.
+The [string-alias ledger](../../coverage/semantics/array-literal-float-string-alias-leaf-review.json)
+checks string byte writes across shared and singleton leaf copies, independent
+snapshots, deletion and supplied throws. Only the embedded leaf-cell predicate
+broadens; direct string CV/CELL retargets, array/object-valued or indebted
+leaves and recursive graphs remain Unsupported.
+Embedded null/bool/int/float ALIAS leaves also admit validated ordinary
+instance-property type sources. Both ordinary table-CV and wrapper-payload
+continuations use this bound. For debt-bearing payloads, every source object must
+survive logical pruning with its actual property alias; metadata adds no owner.
+Shared leaf copies keep typed rejection/coercion. Explicit property unset removes
+its source while the object remains rooted, allowing later singleton copies to
+unwrap. The [typed-leaf ledger](../../coverage/semantics/array-literal-float-typed-alias-leaf-review.json)
+records int-property coercion/rejection, multiple sources, deletion and supplied
+throw. Typed strings/arrays/objects, static/hooked/queued or retired sources,
+coercion/backing records and unsafe debt retirement remain Unsupported.
 
 Missing-key module409 retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,

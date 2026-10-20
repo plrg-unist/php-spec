@@ -52,7 +52,7 @@ checks child COW after ordinary names disappear and debt cancellation. The
 [flat-array review](../../coverage/semantics/array-literal-float-ref-arrays-review.json)
 checks these counts through stable insertion, deletion, throw and inverse cleanup.
 Debt cells must keep positive effective counts. Array-valued type sources,
-nested or pooled/immutable arrays, owning/typed/indebted embedded leaves, other owning
+nested or pooled/immutable arrays, array/object-valued or indebted embedded leaves, other owning
 values, static/hooked/queued or retired sources,
 coercion/backing records, active collection, effective-zero retirement and
 outstanding debt at request end are explicit Unsupported before pruning. Isolated
@@ -86,12 +86,25 @@ unwrap before child/string COW; balanced copies retain shared ALIAS entries. The
 [string-leaf ledger](../../coverage/semantics/array-literal-float-string-leaf-review.json)
 checks these paths, deletion and supplied throws. Direct string CV/cell payloads
 remain Unsupported; no new string identity or ownership model is introduced.
-Embedded ALIAS leaves must be live, marked, untyped null/bool/int/float cells with
-no coercion/backing receipts or CELL debt. Child-table duplication preserves a
+Embedded ALIAS leaves must be live, marked, untyped cells holding null/bool/int/float
+or validated byte strings, with no property/coercion/backing receipts or CELL debt. Child-table duplication preserves a
 shared leaf ALIAS and unwraps a singleton leaf to DIRECT, independently of the
 outer reference-wrapper unwrapping and HARRAY debt. The
 [alias-leaf ledger](../../coverage/semantics/array-literal-float-alias-leaf-review.json)
 separates these effects with sibling writes, deletion, supplied throw and inverse cleanup.
+The [string-alias ledger](../../coverage/semantics/array-literal-float-string-alias-leaf-review.json)
+adds shared/singleton string leaves: byte writes propagate through shared ALIAS
+entries while unwrapped singleton leaves and earlier string snapshots remain independent.
+A separate leaf-cell predicate leaves direct string CELL retargets Unsupported.
+Embedded null/bool/int/float leaves also admit validated ordinary instance-property
+type sources. Table debt does not subtract the property or table edges into a
+leaf. For debt-bearing payloads, every source object must survive logical pruning;
+leaf count positivity alone is insufficient. Shared copies enforce/coerce typed
+writes. Explicit property unset removes its source before releasing the alias,
+so a later singleton copy can unwrap without a constraint while the object stays
+rooted. The [typed-leaf ledger](../../coverage/semantics/array-literal-float-typed-alias-leaf-review.json)
+checks this distinction, two sources, deletion, supplied throw and inverse cleanup.
+Typed string/array/object leaves and wider type-source lifetimes remain Unsupported.
 
 `tests/semantics/reference_wrappers.py` checks original source regressions,
 copying and rebinding, budget resumption, ownership graphs, cycle collection and

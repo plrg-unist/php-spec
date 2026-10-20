@@ -27,6 +27,10 @@ def checks(program, path, name):
         old, new = (('BINARY_RIGHT EQUAL ', 'BINARY_RIGHT GREATEREQUAL ') if plain
                     else ('BINARY_RIGHT LESS ', 'BINARY_RIGHT GREATER '))
         condition = condition.replace(old, new)
+        if condition.startswith('PhpStep: S_missing ~> S_missing_refused'):
+            condition = 'PhpStep: S_missing ~> S_missing_restored'
+        if condition.startswith('S_missing_refused = S_missing['):
+            condition = 'S_missing_restored = S_missing[.TODO = perrorread.TASK :: ptask_tail*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]'
         if not plain and condition.startswith('S_compared = '):
             condition = condition.replace('KNOWN (PBOOL false)', 'KNOWN (PBOOL true)')
         result.append(condition)
@@ -48,8 +52,9 @@ def checks(program, path, name):
         '$error_read_valid(S_again,perrorread)',
         '$scalar_compare_missing_pair(S_again,perrorread)',
         '~$scalar_compare_read_other(S_again,perrorread)',
-        'PhpStep: S_again ~> S_denied',
-        'S_denied = S_again[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed left operand"]',
+        '$scalar_compare_read_again(S_again,perrorread)',
+        'PhpStep: S_again ~> S_again_restored',
+        'S_again_restored = S_again[.TODO = perrorread.TASK :: ptask_tail*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]',
     ]
     if plain:
         result += [

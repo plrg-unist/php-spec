@@ -78,7 +78,8 @@ def fresh(initial,target,donor,budget=False):
         'n_owners = $heap_owners($heap_graph(S),HOBJECT n_object)',
         '$(n_owners > 1)',
         # Pure helper projections are never driven.
-        '$dynamic_define_value_class(S[.CONSTANTSTDOBJECTS = eps],POBJECT n_object) = eps',
+        '$dynamic_define_value_class(S[.CONSTANTSTDOBJECTS = eps],POBJECT n_object) = (PVOBJECT)',
+        '~$constant_value_class_valid(S[.CONSTANTSTDOBJECTS = eps],POBJECT n_object,PVSTDCLASS n_object porigin_site)',
         '$dynamic_define_value_class(S[.CONSTANTSTDOBJECTS = $global_std_record_put(S.CONSTANTSTDOBJECTS,pconstantstdobject[.COMPLETE = false])],POBJECT n_object) = eps',
         '$dynamic_define_value_class(S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS,HOBJECT n_object)],POBJECT n_object) = eps',
         'n_absent = |S.OBJECTS|', '$dynamic_define_value_class(S,POBJECT n_absent) = eps',

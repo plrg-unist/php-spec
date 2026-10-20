@@ -84,7 +84,7 @@ def conditions(name, program, path, stdout):
         '~$array_float_array_key_ready(S_leaf_debt, n_builder, n_old, poperand)',
         '$error_read_discard(S_leaf_debt, ' + marker + ').COMPLETION = UNSUPPORTED "array literal float-key array CV during throw"',
         '~$literal_reference_flat_items(S_resume[.STORE[n_current_leaf] = DEFINED (PARRAY n_builder)], S_resume.ARRAYS[n_current].ITEMS)',
-        '~$literal_reference_flat_items(S_resume[.STORE[n_current_leaf] = DEFINED (PSTRING ($ptascii("leaf")))], S_resume.ARRAYS[n_current].ITEMS)',
+        '~$literal_reference_flat_items(S_resume[.STORE[n_current_leaf] = DEFINED (PSTRING_CARRIER (REQUEST_STRING (|S_resume.STRINGDATA|)) ($ptascii("leaf")))], S_resume.ARRAYS[n_current].ITEMS)',
         '~$literal_reference_flat_items(S_resume[.PROPREFS = [{CELL n_current_leaf, SOURCES eps}]], S_resume.ARRAYS[n_current].ITEMS)',
         'PhpStep: S_resume ~> S_insert',
         'S_insert.STORE = S_resume.STORE',

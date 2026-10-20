@@ -83,8 +83,8 @@ def checks(program, path, name):
         '$error_read_plan(S_both) = (perrorread)',
         'S_without = $unset_name(S_resume,$ptascii("right"))', '$us_guard(S_without)',
         '$error_read_valid(S_without,perrorread)', '~$scalar_compare_read_other(S_without,perrorread)',
-        'PhpStep: S_without ~> S_denied',
-        'S_denied = S_without[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed right operand"]',
+        'PhpStep: S_without ~> S_without_restored',
+        'S_without_restored = S_without[.TODO = perrorread.TASK :: ptask_resume*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]',
     ]
     if rebound:
         values += [
