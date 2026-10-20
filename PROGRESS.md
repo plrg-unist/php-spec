@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+All seven comparisons now retain captured ordinary non-Stringable objects across
+missing-CV Warnings, including user instances and `stdClass`. Saved TASK/RESULT
+owners preserve identity through callback rebinding and shared property writes;
+when no other owner remains, saved-operand release runs the destructor before the
+outer store or catch. Surviving aliases delay destruction. Source tags and live
+object-domain checks stay separate; generic roots, restore/discard and fields are
+unchanged. Direct-CV/internal/Stringable objects remain outside this slice.
+
+Ten exact source agreements plus two controls and 768 strict-SL premises/five
+groups (327 author +441 independent) pass first attempts at `46e302bfd`/407.
+Separate affected 467/five groups and one internal-object Unsupported selector
+renew no historical credit. Initial native2+4 retain `90a8545f8`/407; genuine
+unchanged ingress refusal retains private `e98ba7556`/407. No failures or retries;
+paused COMP88 and DEFINE ownership are untouched.
+[Captured-object review](coverage/semantics/undefined-comparison-captured-object-review.json).
+
 All six Boolean comparisons now retain captured null/bool/int/float/byte-string
 values across missing-CV Warnings. Two source certificates widen within an explicit
 primitive-or-array bound; domain checks, array liveness, saved roots and generic

@@ -75,6 +75,18 @@ aliases and string identity metadata. The
 [primitive review](../../coverage/semantics/undefined-scalar-compare-captured-primitive-review.json)
 checks snapshots, default/throw and actual second-read NULL compatibility. Nested,
 reference or object array entries and wider owning producers remain partial.
+All seven operators also admit captured allocated ordinary non-Stringable objects,
+including `stdClass`. The captured identity survives source rebinding or removal,
+while shared property writes remain visible. Object/NULL ordering gives +1 or -1
+before comparison handlers or casts. Existing TASK/RESULT owners retain the object
+through the callback. If the saved operand is the last remaining owner, its release
+runs the destructor before the outer store or catch; surviving aliases delay it
+until their release. Source certificates admit the object tag,
+while entry/resume separately check allocation, ordinary kind and freeing state.
+Direct-CV object wrappers, internal objects and Stringable remain outside this
+Warning slice. The
+[captured-object review](../../coverage/semantics/undefined-comparison-captured-object-review.json)
+records normal/default/throw ownership and budget checks.
 Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also suspend with one missing operand
 and a defined scalar counterpart. The missing value stays null while the opposing
 wrapper follows callback writes, late reference creation and rebinding. A missing

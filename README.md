@@ -26,6 +26,9 @@ The defined counterpart may already be a live flat primitive array at entry;
 its current scalar/array binding supplies the counterpart, with ordinary COW.
 Computed primitives stay captured at all seven comparisons; a computed flat primitive
 array keeps its table through handler writes, COW and supplied-throw cleanup.
+Captured ordinary objects keep their identity and shared property writes. If the
+saved operand is the last remaining owner, its release runs the destructor before
+the outer store or catch; surviving aliases delay destruction until their release.
 Both-missing pairs, including one missing name twice, can resume if the first
 handler defines the later scalar or flat array. `$x == $x` can then be false and `$x > $x`
 true. Greater operators check source right first. All seven comparison operators

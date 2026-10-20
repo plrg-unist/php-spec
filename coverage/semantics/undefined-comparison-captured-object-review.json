@@ -1,0 +1,100 @@
+{
+  "milestone": "COMP114 captured ordinary objects at missing comparison reads",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "All seven comparison operators retain captured allocated ordinary non-Stringable INSTANCE/STDINSTANCE identities across a missing direct-CV Warning. Shared property writes stay visible while source rebinding or removal cannot replace the captured object or frozen missing NULL.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "80011cc34bf42d64c60f7afc7aa56c7b8c1e7532",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "bba244a3409c2d45be66a151218bb30d8af4ef4e3d705686a06151be407d6d3d"
+  },
+  "modules": 407,
+  "engine_basis": "zend_compare handles OBJECT/NULL as +1 and NULL/OBJECT as -1 before comparison handlers or casts. VM FREE_OP cleanup releases a saved temporary after comparison and before the outer destination store, or before catch on a supplied exception. If that was the last remaining owner, the destructor runs then; surviving aliases delay destruction until their release.",
+  "implementation": "Two generic KNOWN orientations select captured objects only through a live allocated ordinary-kind/non-Stringable domain predicate. Boolean known objects explicitly reject the scalar default; two captured-value certificates add only the stable POBJECT tag while preserving the missing CV and both compiled descriptors. Entry/resume guards widen; VARIABLE-object paths, roots, generic restoration/discard, tasks and fields stay exact.",
+  "behavior": [
+    "Ten exact originals span all seven operators, ordinary user classes and stdClass, returned/assigned/constructed identities, current-name versus captured-object discrimination, shared property writes, surviving aliases, no-init one-Warning counts, false/default and first supplied Exception/caller41/finally.",
+    "Five source-reached strict-SL groups distinguish saved TASK/RESULT owners, reference-cell2\u21921, object owners3/2\u21921\u21920, raw restore/compare versus driven DESTRUCTOR_ENTER, destination41 and pending Exception, malformed source/domain controls and zero/split budgets."
+  ],
+  "baseline": {
+    "report": "initial/baseline-report.json",
+    "sha256": "4573b0a943865d481c1d0b709d9840a3cda3f8a61a77a7e0683edad508467c65",
+    "revision": "e98ba75569ebeef72bba7794695d7cf14406a2b0",
+    "native_revision": "90a8545f8cf11f61f02698595455af243611ac45",
+    "agreement_credit": 0,
+    "native": "Initial author2 and peer4 retain actual canonical 90a8545f8/407. Retained peer model4 reuses native4; changed-source author native8 is recorded separately at 46e302bfd/407.",
+    "model": "Genuine unchanged EQ captured-right ordinary object is accepted/checked then ingress Unsupported with empty streams at private e98ba7556/407."
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "04585e3eea0c6eff9d8732fa570d3a99bb05740bf4f27155159e3837876f5e61",
+      "revision": "46e302bfde8a6d22e29e5ca0f2b08fa9fe3d549c",
+      "agreements": 6,
+      "unsupported_controls": 2
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "2d14e4158193421deb391b469cce0668e87d2d5012ce83a249dd0f3a9497ee9c",
+      "revision": "46e302bfde8a6d22e29e5ca0f2b08fa9fe3d549c",
+      "agreements": 4,
+      "unsupported_controls": 0
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "7e91f00c1a865b0ae393ffca3143738e6541649e2c2da0e7c75450ac61932df1",
+      "revision": "46e302bfde8a6d22e29e5ca0f2b08fa9fe3d549c",
+      "premises": 327,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "ae7a17631e85676c60c06f789dc767575d6e0540ee80d0ec6e832cea0c62db3f",
+      "revision": "46e302bfde8a6d22e29e5ca0f2b08fa9fe3d549c",
+      "premises": 441,
+      "groups": 3
+    }
+  ],
+  "totals": {
+    "source_agreements": 10,
+    "unsupported_source_controls": 2,
+    "state_premises": 768,
+    "state_groups": 5
+  },
+  "maintenance": {
+    "state": {
+      "report": "maintenance-state/report.json",
+      "sha256": "c8a178ec86031f5fceb2f5ce309bbc5b09b8584f58095ad603e895a98a98e8b6",
+      "revision": "46e302bfde8a6d22e29e5ca0f2b08fa9fe3d549c",
+      "premises": 467,
+      "groups": 5
+    },
+    "source_selectors": {
+      "report": "maintenance-source/report.json",
+      "sha256": "a1f8d5f1879987b7df756d249c0826bab25d6b69810e2674a916d79e48a8a2e1",
+      "revision": "46e302bfde8a6d22e29e5ca0f2b08fa9fe3d549c",
+      "selectors": 1,
+      "normal_agreements": 0,
+      "unsupported_controls": 1
+    },
+    "historical_agreement_renewal": 0,
+    "scope": "Three old100/101/103 fronts stop after their actual second NULL comparison; two old113 fronts stop before dispatch. Repaired PUNDEFINED source exclusions and POBJECT source-positive/domain-false contracts are checked without claiming captured source execution or replaying old full bodies. The old113 builtin Exception selector remains Unsupported after B|; it earns no agreement credit."
+  },
+  "validation": "CPU3 serial/fail-first/full reap,2GiB: native8 130/150/per15; model8 605/620/CLI45/record60; retained peer4 315/330/CLI60/record75. Author2 state275/290, peer3 state405/420, maintenance5 state645/660, per120 strictSL/dettrue/cachefalse. One selector100/120/child80. All semantic checks pass first executions; exact commands/inputs/exits are archived.",
+  "failures": [],
+  "divergences": [],
+  "remaining": [
+    "Live VARIABLE object entry/resume, internal/enum/Stringable objects, resources, nonflat/reference/object arrays, reference-return wrappers and wider owning producers remain partial. Paused COMP88 and DEFINE ownership are untouched.",
+    "Source validity retains stable tag/descriptor facts after retirement; allocation, ordinary kind and freeing checks remain domain decisions. Constructed source-valid records are not claimed as source-reached captured executions."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-114",
+  "artifact_manifest_sha256": "1eb2c5ec2e2dd6f020baaf7b594ea23d267e9302b887175de6b4925876f098d2",
+  "independent_reviewer": "/root/comp89_review",
+  "reproduction": [
+    "python3 tests/semantics/undefined_comparison_captured_object_sources.py --phase native --output .tools/comp114-source-new",
+    "python3 tests/semantics/undefined_comparison_captured_object_sources.py --phase model --output .tools/comp114-source-new",
+    "python3 tests/semantics/undefined_comparison_captured_object_state.py --output .tools/comp114-state-new",
+    "python3 tests/semantics/undefined_comparison_captured_object_review_state.py --output .tools/comp114-peer-state-new",
+    "python3 tests/semantics/undefined_comparison_captured_object_maintenance.py --output .tools/comp114-maint-state-new"
+  ]
+}
