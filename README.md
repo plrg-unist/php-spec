@@ -1170,7 +1170,14 @@ without entering the body, even if the physical middle was already initialized.
 Distinct or reused exceptions, current snapshots and return cells keep their
 separate lifetimes; actual parked body entry remains Unsupported. See the
 [repeated THROW review](coverage/semantics/generator-repeated-pending-owning-throw-review.json).
-Parked next/send and wider repeated-THROW leaves remain open.
+A pending `send` can also return the current cache before entering that parked
+owning continuation. Only its selected receiver clears initialization; the source
+site, physical frame and copied return stay parked. Snapshot capture precedes
+normal ignored-argument cleanup, including row COW or Generator-alias retirement.
+The used cache and mutable returned cells retain their separate lifetimes. See the
+[parked SEND review](coverage/semantics/generator-parked-pending-owning-send-review.json).
+Parked next, nonpending body entry and wider parked SEND/repeated-THROW leaves
+remain open.
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller
 catch. The independent current copy can still trigger a replacement exception. See the

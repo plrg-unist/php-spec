@@ -90,7 +90,13 @@ frame and copied return remain unchanged. Reversing middle/ancestor calls proves
 that the leaf bit does not control this early return. Distinct and same-object
 exceptions and sole-middle cache replacement are checked in the
 [repeated THROW review](../../coverage/semantics/generator-repeated-pending-owning-throw-review.json).
-Parked next/send and repeats at nonowning, input or loop leaves remain Unsupported.
+Pending SEND at that same owning continuation also returns before body entry.
+It clears only the selected receiver bit and snapshots current before normal
+ignored-argument cleanup. The physical frame/site and return count stay intact;
+row COW and used-cache survival after Generator retirement are checked in the
+[parked SEND review](../../coverage/semantics/generator-parked-pending-owning-send-review.json).
+Parked next, nonpending SEND/body entry, nonowning/input/loop parked SEND and
+repeated THROW at those wider leaves remain Unsupported.
 Actual parked body entry, wider suspended owners and waiting-result GC remain open.
 
 A direct detached parent with an owning copied return now admits ordinary unpack

@@ -7,6 +7,31 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+A pending literal SEND now returns current before dispatch at an already parked
+owning simple-CV copied return, directly or through finite native links. Only the
+selected receiver clears initialization; its physical middle/frame/site and return
+stay parked. Snapshot capture precedes normal ignored-argument COW and Generator
+alias retirement. Used caches and mutable returned cells retain separate owners.
+Parked NEXT, nonpending/body entry, wider parked SEND and GC remain open.
+[Parked SEND review](coverage/semantics/generator-parked-pending-owning-send-review.json).
+
+Four originals and 646 new premises (302 author +344 independent;626 local +20
+generic) pass at `507bd5904`/406 with runtime `a01d38836`: only280/289 admission and
+eager-order predicates change. Four reached fronts check real GEN_ARGS, retired
+result delivery, post-COW OP_EXIT and late shared-cell WRITE; excluded scalar and
+nonpending parked routes remain refused. Strict406/four-fixture elaboration pass
+at the same cut; elaboration has zero execution credit. Native4 and genuine
+unchanged public force-close Unsupported retain `5a393c4c8`/406 with zero model
+agreement. No failures/retries/historical renewal or new GC credit; all actors
+reaped and CPUs released.
+
+Composed over `f3d014d14`/406 with tested280/289 bytes unchanged; all other
+runtime/schema/default/root/ordered-manifest/pipeline bytes remain parent-exact.
+Incoming INI, weak-comparison, compound-ADD, property-coalesce/RV and lossy-float
+literal-key string selectors are unproduced; literal debt fields stay empty.
+Source4/state646/strict406 retain their private cut; parent composition adds no
+execution credit. No joined actor or accepted replay was needed.
+
 Plain-CV `+=` now stages a second RHS Warning after its LEFT handler changes
 the initially quiet value to leading text. Four originals pass at `ba9a8d17e`/405;
 three focused fixtures pass 465 premises at `367bc7c9e`/405. Cached float `18.0`
@@ -80,7 +105,8 @@ show that only the selected receiver needs initialization; the physical middle
 may already be initialized. Its parked source/frame/return stay intact and the
 call returns before body entry. Distinct or reused exceptions, current snapshots,
 sole-middle replacement, raw-row COW and returned cells retain separate lifetimes.
-Parked next/send, nonowning/input/loop repeats, actual body entry and GC remain open.
+At that cut, parked next/send, nonowning/input/loop repeats, actual body entry
+and GC remained open.
 [Repeated THROW review](coverage/semantics/generator-repeated-pending-owning-throw-review.json).
 
 Four originals and 629 new premises (289 author +340 independent;609 local +20
