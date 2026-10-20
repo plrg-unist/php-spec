@@ -1,0 +1,98 @@
+{
+  "milestone": "COMP102 same-CV forward Boolean Warning entry",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "One initially missing ordinary direct CV twice at ==, !=, < or <=. Returning handlers define a current scalar/reference; the first result stays NULL. Same-name returning second-Warning chains and owning values remain explicit Unsupported.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "fdf4e6976",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "86902d5da9ac345dd535a3505be184437662228d351cf793d484619815e804fc"
+  },
+  "modules": 406,
+  "engine_basis": "The forward Zend comparison helpers check raw OP1 UNDEF, producing language-level NULL after its Warning, then inspect current OP2. When both source operands name one CV, callback initialization changes only the later read. EQ can be false and NE/LESS true with current string0. Pending exceptions suppress further reporting.",
+  "implementation": "Remove the forward ingress pair distinctness premise and admit identical names only for the four forward operators in the existing compiled direct-CV source arm. Scalar return guards, distinct-CV read-again and known-NULL second-read certificate stay unchanged. Reversed same-CV, owning values and returning same-name second-Warning paths remain excluded; no fields, task variants, roots or discard changes.",
+  "behavior": [
+    "Four forward predicates, zero/string values, fresh/target references, false/default order and a first chosen Exception match exact native originals. EQ false and LESS/NE true demonstrate frozen first NULL rather than two reads of the changed value. A no-init false handler emits exactly one modeled H/default Warning before Unsupported, versus native two.",
+    "Four strict-SL source-reached groups check actual dispatch/return/resume, whole raw restore/comparison, shared cell identity and late owners0/1 to2, exact compiled CV lines, source/op/shape/CODE corruption, defined-name ingress exclusion and zero/split budgets. Same-name retry and coherent second-read certificate remain explicitly rejected.",
+    "Affected old95/98 foreign-source same-name assertions now test compiled source validity; an orphan transformation is removed without changing its expanded SPACE conditions. Entry-only maintenance and one revised old100 refusal selector renew no historical credit."
+  ],
+  "baseline": {
+    "revision": "a3775c96528ee85126fb5b0b033a54247f8c7704",
+    "report": "initial/initial-report.json",
+    "sha256": "76a93991bf8412370c4f339b9c7f2c1035fe347def2f8d9262fb4a69169285f7",
+    "native": "Two exact EQ/LESS same-CV originals produce false/true after setting x to string0, with one H at10 and all result observers1; empty stderr.",
+    "model": "Genuine unchanged EQ is Unsupported/error-handler ingress requires a producer continuation, with empty stdout/stderr.",
+    "agreement_credit": 0
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "d1599a921bca60c4099a5a045993d3f49ac066ef6f590eb79a75d80d45c749c9",
+      "revision": "7f84d55ba44499614a8343c2806684ad94082445",
+      "agreements": 4,
+      "unsupported_controls": 2
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "95d17d45858fd874794636d049614306f59fd0c5b720546e4a0856de67a348ce",
+      "revision": "7f84d55ba44499614a8343c2806684ad94082445",
+      "agreements": 3,
+      "unsupported_controls": 1
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "81d89aae5a9e45b11df98b9973fe607e64cb5fc2ace6f34b6562e7cb5e432c66",
+      "revision": "7f84d55ba44499614a8343c2806684ad94082445",
+      "premises": 256,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "9097650bc2cb84ce2aa396a4547d1adff4ac6724590d099f2f69e7d35a9aba7a",
+      "revision": "7f84d55ba44499614a8343c2806684ad94082445",
+      "premises": 235,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 7,
+    "unsupported_source_controls": 3,
+    "state_groups": 4,
+    "state_premises": 491
+  },
+  "maintenance": {
+    "state": {
+      "report": "maintenance-state/report.json",
+      "sha256": "4f8c3886112f4a4660e855a3ea0467287ec7e73860c47767682482d934090b5c",
+      "revision": "7f84d55ba44499614a8343c2806684ad94082445",
+      "premises": 38,
+      "groups": 2
+    },
+    "source_selectors": [
+      {
+        "report": "maintenance-source/model-second-forward-same-name-boundary-report.json",
+        "sha256": "c93eaf95707feb1e976021cb77bdf8c449ddc1ee3359fc2f6c39b8bbeae09780",
+        "revision": "7f84d55ba44499614a8343c2806684ad94082445"
+      }
+    ],
+    "historical_agreement_renewal": 0,
+    "scope": "Two old source-reached entry fronts prove pure same-name admission cannot authenticate foreign operator/CV source metadata. One old100 source control checks the revised first-H Unsupported boundary without old full-body campaigns."
+  },
+  "failures": [],
+  "remaining": [
+    "Returning same-name forward second-Warning chains, reversed same-CV entry, owning comparison values, removal of already checked defined counterparts and wider producers/lifetimes remain partial.",
+    "All gates pass first attempts at 7f84d55ba/406. Paused COMP88 remains excluded."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-102",
+  "artifact_manifest_sha256": "4c8bf0911ddb42eb893fbd0da181f7aa8ec3faacc0bd42ad1317461207183168",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_scalar_compare_same_sources.py --phase native --output .tools/comp102-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_same_sources.py --phase model --output .tools/comp102-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_same_state.py --output .tools/comp102-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_same_review_state.py --output .tools/comp102-peer-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_same_maintenance.py --output .tools/comp102-maint-state-new"
+  ]
+}

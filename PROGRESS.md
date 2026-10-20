@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+An initially missing direct CV twice at `==`/`!=`/`<`/`<=` now enters one Warning
+and compares frozen first NULL with the handler-defined current scalar/reference.
+`$x == $x` can be false; `$x != $x` and `$x < $x` can be true. Two premise edits
+retain both compiled CV descriptors, current alias ownership, default report order
+and supplied Exception identity/destination/finally. Returning with the name still
+missing, owning values and reversed same-CV entry remain explicit boundaries;
+read-again and known-NULL second-read certificates stay distinct-name only.
+Seven source agreements plus three controls and 491 strict-SL premises/four
+groups (256 author + 235 independent) pass first attempts at `7f84d55ba`/406.
+Separate affected 38 premises/two entry fronts and one old100 prefix control
+renew no historical credit. Genuine `a3775c965` ingress baseline stays zero; no
+failures or retries. Wider source/owning lifetimes and same-name second-Warning
+chains outside `<=>` remain partial.
+[Same-CV Boolean review](coverage/semantics/undefined-scalar-compare-same-review.json).
+
 Distinct direct CVs at `>`/`>=` now traverse the second Warning with physical
 source right first, then still-missing left, including a scalar left removed by
 the first handler. Both NULLs stay captured despite late references or writes;

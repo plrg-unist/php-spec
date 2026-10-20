@@ -20,9 +20,10 @@ remains later research.
 variable's null result through handlers while following current scalar CV bindings.
 This covers bounded spaceship operands and distinct direct-CV
 `==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
-Both-missing pairs, including the same missing variable twice at `<=>`,
-can resume if the first handler defines the later scalar; greater operators
-warn right first. `<=>` and distinct `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also stage
+Both-missing pairs can resume if the first handler defines the later scalar,
+including the same missing name at `<=>` or `==`/`!=`/`<`/`<=`; `$x == $x` can
+then be false. Greater operators warn right first. `<=>` and distinct
+`==`/`!=`/`<`/`<=`/`>`/`>=` pairs also stage
 a second Warning if the later physical CV stays missing, freezing both NULLs
 despite writes from the second handler.
 Wider warning paths remain partial.

@@ -154,6 +154,14 @@ initially missing CV twice: first NULL stays frozen while the second read sees
 the shared name initialized by the handler. The
 [same-variable review](../../coverage/semantics/undefined-spaceship-same-review.json)
 records its one-premise entry extension; source/resume/discard stay unchanged.
+Forward `==`/`!=`/`<`/`<=` also admit one missing ordinary CV twice, reusing the
+first-NULL/current-read record. Both compiled CV occurrences still authenticate
+the source. A scalar or reference initialized by the first handler can make
+equality nonreflexive; the
+[Boolean same-variable review](../../coverage/semantics/undefined-scalar-compare-same-review.json)
+records false/default and supplied-throw checks. The distinct-name read-again
+guard and known-NULL second-read certificate stay unchanged, so returning with
+the shared name still missing remains explicit Unsupported after its first report.
 A `<=>` or distinct `==`/`!=`/`<`/`<=`/`>`/`>=` now restores when
 the later physical CV remains missing or was removed
 by the first handler. Existing ingress stages its second Warning and known-NULL
@@ -168,7 +176,8 @@ distinct direct CVs and the RHS read line. The
 adds an exact right-frozen restore and NULL-only right INPUT certificate,
 authenticating both compiled CVs before the source-left second Warning. Its
 default reports stay right then left; late reference creation cannot change the
-two captured NULLs. Owning comparison values, ordinary same-CV forms, already
+two captured NULLs. Owning comparison values, ordinary same-CV second-Warning
+chains, reversed same-CV entry, already
 checked defined counterparts removed during the later Warning and wider producers remain partial.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
