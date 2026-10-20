@@ -30,6 +30,16 @@ def $array_float_key_input_source(S, NExprArray (SEQUENCE phpType13*) metadata, 
   -- if S.ORIGIN = (PORIGIN n_unit pcpath)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1]) = ((z, false))
+def $array_float_key_input_source(S, NExprFuncCall name (SEQUENCE eps) metadata, KNOWN (PARRAY n)) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if ~$array_immutable(S, n)
+  -- if $heap_count(HARRAY n, $pools_nodes(S.POOLS)) = 0
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1]) = ((z, false))
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 1]) = ((n_name*, eps))
+  -- if $call_target(S, n_name*, eps) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF
 def $array_float_key_input_source(S, expression, poperand) = false -- otherwise
 
 dec $array_float_key_scalar(pstate, pvalue) : bool
@@ -712,3 +722,82 @@ def $error_read_discard(S, ARRAY_KEY_FLOAT_ARRAY_RESULT n n_old poperand phpType
   -- if $array_float_array_key_ready(S, n, n_old, poperand)
 def $error_read_discard(S, ARRAY_KEY_FLOAT_ARRAY_RESULT n n_old poperand phpType13* z n_bits i) = S[.COMPLETION = UNSUPPORTED "array literal float-key array CV during throw"]
   -- if ~$array_float_array_key_ready(S, n, n_old, poperand)
+
+;; NULL conversion backs up the value, then resets the same CV before either
+;; insertion or throw. ARRAY values have both their acquisition and backup owner.
+dec $array_null_key_payload(pstate, pvalue, pnode*) : bool
+def $array_null_key_payload(S, PARRAY n, pnode_live*) = $literal_reference_child_array(S, n, pnode_live*)
+def $array_null_key_payload(S, pvalue, pnode_live*) = $array_float_key_scalar(S, pvalue) -- otherwise
+
+dec $array_null_key_slot(pstate, nat, poperand) : pvalue?
+def $array_null_key_slot(S, n_capture, VARIABLE n_name* z) = (pvalue)
+  -- if $lookup(S.ENV, n_name*) = (n_capture)
+  -- if $array_float_key_live_value(S, VARIABLE n_name* z) = (pvalue)
+  -- if ~(n_capture <- S.LITERALREFDEBTS)
+  -- if H_live = $heap_prune($heap_graph(S)[.DEBTS = eps])
+  -- if (HCELL n_capture) <- H_live.NODES
+  -- if $array_null_key_payload(S, pvalue, H_live.NODES)
+def $array_null_key_slot(S, n_capture, poperand) = eps -- otherwise
+
+dec $array_null_key_source(pstate, nat, nat, poperand, pvalue, phpType13*, int) : bool
+def $array_null_key_source(S, n, n_capture, poperand, pvalue, phpType13*, z) = true
+  -- if $(n < |S.ARRAYS| /\ n_capture < |S.STORE|)
+  -- if (HARRAY n) <- S.ALLOCATIONS /\ ~$array_immutable(S, n)
+  -- if $heap_count(HARRAY n, $pools_nodes(S.POOLS)) = 0
+  -- if pvalue =/= PARRAY n
+  -- if $array_null_key_payload(S, pvalue, S.ALLOCATIONS)
+  -- if $array_float_key_item(S, phpType13*, z) = ((NExprVariable (BYTES text) metadata, poperand_key))
+  -- if poperand = VARIABLE ($base64(text)) z
+  -- if $array_float_key_input_source(S, NExprVariable (BYTES text) metadata, poperand)
+def $array_null_key_source(S, n, n_capture, poperand, pvalue, phpType13*, z) = false -- otherwise
+
+dec $array_null_key_ready(pstate, nat, nat, poperand, pvalue) : bool
+def $array_null_key_ready(S, n, n_capture, poperand, pvalue) = true
+  -- if $array_null_key_slot(S, n_capture, poperand) = (pvalue_current)
+  -- if pvalue_current =/= PARRAY n /\ pvalue =/= PARRAY n
+  ;; Throw discard has popped the marker; its snapshot argument still owns the
+  ;; allocated value even when that value has no remaining root in this S yet.
+  -- if $array_null_key_payload(S, pvalue, S.ALLOCATIONS)
+def $array_null_key_ready(S, n, n_capture, poperand, pvalue) = false -- otherwise
+dec $array_null_key_restore(pstate, nat, pvalue) : pstate
+def $array_null_key_restore(S, n_capture, pvalue) = S[.STORE[n_capture] = DEFINED pvalue]
+
+dec $array_null_key_plan(pstate) : (nat, nat, poperand, pvalue, phpType13*, int)?
+def $array_null_key_plan(S) = ((n, n_capture, S.RESULT, pvalue, phpType13*, z))
+  -- if S.TODO = (ARRAY_VALUE n (VARIABLE n_key* z_key) phpType13* z) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if S.RESULT = VARIABLE n_name* z
+  -- if $lookup(S.ENV, n_name*) = (n_capture)
+  -- if $array_null_key_slot(S, n_capture, S.RESULT) = (pvalue)
+  -- if $array_float_key_value(S, VARIABLE n_key* z_key) = (PNULL)
+  -- if $array_null_key_source(S, n, n_capture, S.RESULT, pvalue, phpType13*, z)
+  -- if $array_null_key_ready(S, n, n_capture, S.RESULT, pvalue)
+def $array_null_key_plan(S) = eps -- otherwise
+def $array_null_key_pending(S) = ($error_handler_eligible(S, 8192) /\ $array_null_key_plan(S) =/= eps)
+
+rule PhpStep/array-null-key-warning: S ~> $error_dispatch(S, 8192, $list_null_key_message(), z, DIAGNOSTIC "Deprecated" $list_null_key_message() z, ARRAY_KEY_NULL_RESULT n n_capture poperand pvalue phpType13* z)
+  -- if $array_null_key_pending(S)
+  -- if $array_null_key_plan(S) = ((n, n_capture, poperand, pvalue, phpType13*, z))
+rule PhpStep/array-null-key-result: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13*) :: ptask_tail*][.RESULT = KNOWN PNULL][.ORIGIN = $origin_next_item(S.ORIGIN, phpType13*)]
+  -- if S.TODO = (ARRAY_KEY_NULL_RESULT n n_capture poperand pvalue phpType13* z) :: ptask_tail*
+  -- if $array_null_key_source(S, n, n_capture, poperand, pvalue, phpType13*, z)
+  -- if $array_null_key_ready(S, n, n_capture, poperand, pvalue)
+  -- if S_out = $literal_insert($array_null_key_restore(S, n_capture, pvalue), n, (KSTRING eps), pvalue, z)
+rule PhpStep/array-null-key-result-unsupported: S ~> S[.TODO = eps][.RESULT = KNOWN PNULL][.COMPLETION = UNSUPPORTED "array literal null-key value reset after callback"]
+  -- if S.TODO = (ARRAY_KEY_NULL_RESULT n n_capture poperand pvalue phpType13* z) :: ptask_tail*
+  -- if $array_null_key_source(S, n, n_capture, poperand, pvalue, phpType13*, z)
+  -- if ~$array_null_key_ready(S, n, n_capture, poperand, pvalue)
+
+def $call_task_valid(S, ARRAY_KEY_NULL_RESULT n n_capture poperand pvalue phpType13* z) = $array_null_key_source(S, n, n_capture, poperand, pvalue, phpType13*, z)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ARRAY_KEY_NULL_RESULT n n_capture poperand pvalue phpType13* z
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $array_null_key_source(S, n, n_capture, poperand, pvalue, phpType13*, z)
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $list_null_key_message()
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" $list_null_key_message() z
+def $task_nodes(ARRAY_KEY_NULL_RESULT n n_capture poperand pvalue phpType13* z) = [HARRAY n] ++ $value_nodes(pvalue) ++ $value_nodes(pvalue)
+def $error_read_discard(S, ARRAY_KEY_NULL_RESULT n n_capture poperand pvalue phpType13* z) = $array_null_key_restore(S, n_capture, pvalue)
+  -- if $array_null_key_ready(S, n, n_capture, poperand, pvalue)
+def $error_read_discard(S, ARRAY_KEY_NULL_RESULT n n_capture poperand pvalue phpType13* z) = S[.COMPLETION = UNSUPPORTED "array literal null-key value reset during throw"]
+  -- if ~$array_null_key_ready(S, n, n_capture, poperand, pvalue)

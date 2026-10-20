@@ -372,6 +372,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | KEY_COALESCE_RHS_RESULT pcoalesceread
   | DEPRECATED_CONSTANT_RESULT pdeprecatedconstant | REPORTING_LONG_RESULT pconfigcall int
   | INTEGER_OPERATOR_CONVERT pintegeroperation pintegerphase | INTEGER_OPERATOR_WARNING pintegeroperation pintegerphase pintegerconversion nat
+  | MOD_NAN_PENDING pintegeroperation pintegerconversion nat nat
   | ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase | ARITHMETIC_ADD_WARNING pintegeroperation parithmeticphase pvalue pnumber nat
   | ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue pnumber nat
   | ARITHMETIC_ADDASSIGN_RIGHT_WARNING pintegeroperation pvalue pnumber pvalue pnumber nat
@@ -390,6 +391,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | ARITHMETIC_CV_DEPRECATED pintegeroperation pnumber pnumber nat
   | ARITHMETIC_UNARY_WARNING punarywarning nat
   | BITNOT_WARNING pbitnotwarning nat
+  | BITNOT_RANGE_WARNING pbitnotwarning nat
   | BITNOT_NAN_WARNING pbitnotwarning nat nat?
   | ARRAY_STRING_CAST_WARNING porigin poperand int nat
   | CONCAT_ARRAY_LEFT_WARNING porigin poperand poperand nat int nat
@@ -499,6 +501,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | ARRAY_NEXT nat phpType13* | ARRAY_KEY nat expression phpType13* | ARRAY_VALUE nat poperand? phpType13* int
   | ARRAY_REF_KEY nat expression phpType13* | ARRAY_REF_VALUE nat poperand? phpType13* int
   | ARRAY_KEY_FLOAT_RESULT nat poperand phpType13* int nat int
+  | ARRAY_KEY_NULL_RESULT nat nat poperand pvalue phpType13* int
   | ARRAY_KEY_FLOAT_REF_RESULT nat nat poperand phpType13* int nat int
   | ARRAY_KEY_FLOAT_ARRAY_RESULT nat nat poperand phpType13* int nat int
   | DIM_PREP expression | DIM_NAME int | DIM_CAPTURE | DIM_INDEX expression int | DIM_PATH pbase int | DIM_FETCH int

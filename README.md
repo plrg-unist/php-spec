@@ -26,6 +26,9 @@ The defined counterpart may already be a live flat primitive array at entry;
 its current scalar/array binding supplies the counterpart, with ordinary COW.
 Computed primitives stay captured at all seven comparisons; a computed flat primitive
 array keeps its table through handler writes, COW and supplied-throw cleanup.
+Captured ordinary objects keep their identity and shared property writes. If the
+saved operand is the last remaining owner, its release runs the destructor before
+the outer store or catch; surviving aliases delay destruction until their release.
 Both-missing pairs, including one missing name twice, can resume if the first
 handler defines the later scalar or flat array. `$x == $x` can then be false and `$x > $x`
 true. Greater operators check source right first. All seven comparison operators
@@ -35,11 +38,24 @@ Removing an already checked defined counterpart during a missing-CV Warning
 compares it quietly against that read's frozen NULL and preserves surviving aliases.
 Wider warning paths remain partial.
 
+[NULL literal keys](docs/semantics/DIMENSIONS.md) restore the original ordinary
+value CV after the deprecation handler, then insert that value under `""`.
+Handler writes are visible inside the callback and undone before insertion or
+supplied-throw propagation. If key and value share the same NULL CV, its key
+mutation is undone too. ARRAY capture owns both acquisition and backup copies;
+normal restore transfers them into the CV and DIRECT entry, while throw restores
+the CV before releasing the builder. Wider value/slot forms remain partial.
+
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
-remain live, while runtime array temporaries retain their own tables. Reference
-elements transfer a stable cell normally; retargeting preserves the acquired
-count, cancelling existing debt before retaining unmatched old owners for the
+remain live, while runtime array temporaries retain their own tables.
+Ordinary statically named no-argument functions returning arrays by value also
+keep their returned table fixed through handler writes to producer globals,
+including globals that hold references. The owning temporary transfers into the
+literal without a count bias; entry deletion and supplied throw retire its last
+owner normally. By-reference returns and wider call producers remain partial.
+Reference elements transfer a stable cell normally; retargeting preserves the
+acquired count, cancelling existing debt before retaining unmatched old owners for the
 request, including on throw. Different-reference retargeting also tracks the new
 cell's missing owner until it is balanced. Cells holding null/bool/int/float or
 bounded arrays may carry ordinary live instance-property type sources: physically
@@ -447,6 +463,16 @@ raw NULL and cancels rejection. Four source comparisons and 1,261 state premises
 cover the transitive array-to-cell edge, strict option priority, full discard and
 normal setter recovery. This slice is ownerless positional NULL2 without unpacking;
 typed/property references, owning referents and wider forms remain partial.
+
+[Retained INI receivers with shared-reference arrays](coverage/semantics/ini-set-owned-null-alias-array-value-review.json)
+now preserve both the setter and the earlier one-entry array when argument effects
+replace the live callee and COW changes the current container. A cell write after
+TypeError/trace capture stays visible through both API and explicit-wrapper array
+arguments; the API option is empty while the wrapper retains NULL. Four source
+comparisons and 1,521 state premises cover strict ordinary versus weak explicit
+reception, supplied-throw cancellation, transitive reference edges, exact discard
+and original-setter recovery. Named/unpacked/PIPE forms, typed/property references,
+owning referents and sole-owner lifetimes remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -937,6 +963,22 @@ delivery, while normal unary minus retains float zero with native output `-0`.
 Two originals and 264 focused premises pass in the
 [unary-reference ledger](coverage/semantics/unary-reference-warning-review.json).
 Wider producers, constrained/owning cells and callback lifetimes remain partial.
+
+NaN modulo now finishes safe conversion's precision notice before propagating
+a supplied Exception from its range Warning handler. Mask `2` still defaults the
+Deprecated; mask `8194` runs neither a second body nor default. Neither reads the
+now-zero divisor. The normal control reads its divisor only after both callbacks.
+Three originals and 340 focused premises pass in the
+[pending modulo ledger](coverage/semantics/mod-nan-pending-review.json), fixing
+an original NORMAL stderr disagreement. Other operators and producers remain partial.
+
+Range-only bitwise NOT now resumes named Warning handlers for plain float CVs.
+The original `2^63` float survives source removal and produces `PHP_INT_MAX`
+after signed wrapping and complement. An infinity handler's supplied Exception
+instead cancels delivery; neither original emits Deprecated. Two originals and
+240 focused premises pass in the
+[range BITNOT ledger](coverage/semantics/bitnot-range-warning-review.json).
+Other producers and owning lifetimes remain partial.
 
 NaN bitwise NOT now finishes range Warning and precision Deprecated before
 checking a pending Exception. A first-handler throw still permits an ineligible
@@ -1520,6 +1562,16 @@ unused current copy and receiver; assignment keeps its copy. Argument-time raw
 row or slot rebinding preserves the earlier argument and the current used by
 finally. See the
 [direct refresh review](coverage/semantics/generator-unused-direct-refresh-send-review.json).
+Pre-refreshed direct pending SEND also preserves this order when the copied
+child return owns no heap node. Its current snapshot survives normal argument
+COW, then retires before finally; assignment keeps its copy. The tested integer,
+NULL and string returns add no owning return root. See the
+[scalar-return SEND review](coverage/semantics/generator-unused-scalar-return-send-review.json).
+Direct pending SEND without a getter also refreshes one allocated closed child
+whose normal simple-CV return owns no heap node. Child release precedes argument
+cleanup, unused current retirement and receiver finally; assignment keeps its
+copy. See the
+[node-free refresh review](coverage/semantics/generator-unused-scalar-refresh-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit

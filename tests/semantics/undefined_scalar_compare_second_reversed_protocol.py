@@ -100,7 +100,7 @@ def checks(program, path, name):
         '~$error_read_valid(S_resume_2[.ORIGIN = eps],perrorread_second)',
         '~$error_call_valid(S_warn_2,perrorcall_2[.MESSAGE = eps])',
         '~$error_call_valid(S_warn_2,perrorcall_2[.LEVEL = 8])',
-        'perrorread_nonnull = perrorread_second[.INPUT = KNOWN (POBJECT 0)][.RESULT = KNOWN (POBJECT 0)]',
+        'perrorread_nonnull = perrorread_second[.INPUT = KNOWN PUNDEFINED][.RESULT = KNOWN PUNDEFINED]',
         '$error_read_shape(perrorread_nonnull.ORIGINAL,perrorread_nonnull.INPUT,perrorread_nonnull.BASE) = (perrorread_nonnull)',
         '~$error_read_valid(S_restored_1,perrorread_nonnull)', '~$error_read_source(S_restored_1,perrorread_nonnull)',
         'S_no_code = S_restored_1[.CODE = eps]', '~$error_read_valid(S_no_code,perrorread_second)',

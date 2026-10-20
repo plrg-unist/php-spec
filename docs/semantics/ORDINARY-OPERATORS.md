@@ -22,7 +22,8 @@ Conversions capture the number and original float-string before diagnostics.
 `%` and shifts dereference the RHS after left conversion; bitwise operations
 dereference both before conversion and retain their original numeric dispatch.
 Borrowed reference pointers add no owner. Each notice reads the current handler
-registry; a thrown handler prevents later conversion notices and the result.
+registry. A thrown handler cancels the result; the NaN modulo case below first
+finishes safe conversion's remaining notice.
 The [review ledger](../../coverage/semantics/integer-operator-warning-review.json)
 keeps source and genuine production-SL state checks at their tested revisions.
 Evaluated literal/unary/ternary copies and reference-assignment/named byref-call
@@ -38,6 +39,21 @@ binds 37 source cases and 714 reached conditions, preserving the original swap m
 Wider bitwise producer classes and object conversion remain open. Expired
 pointers stay Unsupported; six earlier callback-unset native originals crashed with
 signal11, with no diagnosed engine cause or agreement claim.
+
+Plain-CV NaN `%` now preserves the remaining precision Deprecated after its
+range Warning handler throws. With mask `2`, the default Deprecated on line 25
+precedes the same supplied Exception from line 20; mask `8194` runs neither a
+second handler body nor default. The callback's writes `x=99`, `y=0` survive,
+outer `100` remains unchanged, and the pending conversion never reads that zero
+divisor. Normal return instead finishes both notices before reading current RHS:
+the control keeps divisor `0` through H1, changes it to `5` in H2 and yields saved
+`0 % 5 = 0` despite live LEFT `88`. Three originals and 165+175 focused premises
+cover real callbacks, pending Throwable ownership, raw default/restoration and
+normal RIGHT capture/result, EOF and budgets in the
+[pending modulo ledger](../../coverage/semantics/mod-nan-pending-review.json).
+The eligible-pending control is source-only. Only a specialized discard bridge
+and pending task are added; old normal/numeric/formatting/unwind bodies remain
+unchanged. Other operators, phases, producers and broader lifetimes remain partial.
 
 Module404 stages `+` when the left operand is a leading-numeric string and both
 direct CVs already select live, initially untyped reference cells. Zend's
@@ -305,6 +321,20 @@ the [unary-reference ledger](../../coverage/semantics/unary-reference-warning-re
 Fresh untyped scalar references and primitive handler writes bound these traces;
 other producers/constraints/owning payloads and wider lifetimes remain partial.
 
+Plain-CV bitwise NOT now also handles float conversion with only a range
+Warning. The original double is saved before that callback; finite signed wrapping
+follows its return. At `2^63`, writing source `99` and then unsetting it still gives
+`PHP_INT_MAX` after complement, with one default Warning on line 25. Infinity's
+supplied Exception from line 20 instead preserves its identity, callback write `99`
+and outer `100`, canceling complement and delivery. Neither case emits Deprecated.
+Two originals and 116+124 focused premises cover source/bits/line authority,
+fresh versus returned snapshots, real callbacks, raw no-store result versus driven
+metadata, retirement/fresh EOF and budgets in the
+[range BITNOT ledger](../../coverage/semantics/bitnot-range-warning-review.json).
+Existing conversion/complement, precision-only/NaN, formatting and unwind bodies
+stay unchanged. Initial references/copies, owning values and broader lifecycles
+remain partial; paused low-initial-precision name paths are untouched.
+
 Plain-CV NaN bitwise NOT now preserves the two-notice conversion order. Range
 Warning precedes precision Deprecated, and the engine checks a pending exception
 only afterward. With a first-handler supplied throw, mask `2` still defaults the
@@ -329,7 +359,7 @@ unchanged destination. Three exact originals and 227 author plus 97 independent
 SL premises check live 99, negative truncation, false fallback on the operand line,
 public snapshot/diagnostic rejection and budget resumption in the
 [BITNOT ledger](../../coverage/semantics/bitnot-warning-review.json).
-Other range/NaN producers, operands, callbacks and lifecycle forms remain required.
+Other operand producers, callbacks and lifecycle forms remain required.
 
 Explicit `(string)` casts now stage an array warning for a defined non-reference
 CV holding a nonempty mutable flat array of direct, defined nonowning scalars.

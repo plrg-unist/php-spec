@@ -4459,3 +4459,97 @@ def $arithmetic_unary_copy_plan(S) = eps -- otherwise
 rule PhpStep/arithmetic-unary-copy-begin: S ~> S[.TODO = (ARITHMETIC_UNARY_WARNING punarywarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if $arithmetic_unary_copy_plan(S) = (punarywarning)
+
+;; Range-only safe conversion holds the original double before Warning. The
+;; pure wrapped long may be computed early; a thrown callback cancels complement.
+dec $bitnot_range_source_valid(pstate, pbitnotwarning) : bool
+def $bitnot_range_source_valid(S, pbitnotwarning) = true
+  -- if S.ORIGIN = (pbitnotwarning.SITE)
+  -- if $origin_node(S.SOURCES, pbitnotwarning.SITE) = (NExprBitwiseNot expression metadata)
+  -- if pbitnotwarning.INPUT = VARIABLE ptbytes z
+  -- if $integer_operand_source(S, pbitnotwarning.SITE, [PCFIELD 0], pbitnotwarning.INPUT)
+  -- if $code_expression_at_source(S, pbitnotwarning.SITE, [PCFIELD 0]) = (pbitnotwarning.LINE)
+  -- if $(pbitnotwarning.BITS < 18446744073709551616)
+  -- if $float_long(pbitnotwarning.BITS, true) = (pbitnotwarning.VALUE, [RANGEWARNING])
+def $bitnot_range_source_valid(S, pbitnotwarning) = false -- otherwise
+
+def $bitnot_range_warning_plan(S) = (pbitnotwarning)
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (BITNOT_RESULT z) :: ptask_tail*
+  -- if S.RESULT = VARIABLE ptbytes z_input
+  -- if $integer_pointer_select(S, S.RESULT) = (INTEGER_CV ptbytes)
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes) = (PFLOAT n_bits)
+  -- if $(n_bits < 18446744073709551616)
+  -- if $float_long(n_bits, true) = (i, [RANGEWARNING])
+  -- if pbitnotwarning = {SITE porigin, LINE z, INPUT S.RESULT, BITS n_bits, VALUE i}
+  -- if $bitnot_range_source_valid(S, pbitnotwarning)
+def $bitnot_range_warning_plan(S) = eps -- otherwise
+
+dec $bitnot_range_warning_valid(pstate, pbitnotwarning, nat) : bool
+def $bitnot_range_warning_valid(S, pbitnotwarning, n) = ($bitnot_range_source_valid(S, pbitnotwarning) /\ $(n <= 1) /\ (n = 1 \/ $bitnot_snapshot(S, pbitnotwarning)))
+
+rule PhpStep/bitnot-range-warning-begin: S ~> S[.TODO = (BITNOT_RANGE_WARNING pbitnotwarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $bitnot_range_warning_plan(S) = (pbitnotwarning)
+rule PhpStep/bitnot-range-warning-dispatch: S ~> $error_dispatch(S, 2, n_message*, pbitnotwarning.LINE, DIAGNOSTIC "Warning" n_message* pbitnotwarning.LINE, BITNOT_RANGE_WARNING pbitnotwarning 1)
+  -- if S.TODO = (BITNOT_RANGE_WARNING pbitnotwarning 0) :: ptask_tail*
+  -- if $bitnot_range_warning_valid(S, pbitnotwarning, 0)
+  -- if $integer_float_notices([RANGEWARNING], pbitnotwarning.BITS) = [(2, n_message*)]
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/bitnot-range-warning-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "bitwise NOT owning range callback"]
+  -- if S.TODO = (BITNOT_RANGE_WARNING pbitnotwarning 0) :: ptask_tail*
+  -- if $bitnot_range_warning_valid(S, pbitnotwarning, 0)
+  -- if $error_handler_eligible(S, 2) /\ ~$arithmetic_add_named(S)
+rule PhpStep/bitnot-range-warning-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT $long_not(pbitnotwarning.VALUE))]
+  -- if S.TODO = (BITNOT_RANGE_WARNING pbitnotwarning 1) :: ptask_tail*
+  -- if $bitnot_range_warning_valid(S, pbitnotwarning, 1)
+
+def $task_nodes(BITNOT_RANGE_WARNING pbitnotwarning n) = eps
+def $call_task_valid(S, BITNOT_RANGE_WARNING pbitnotwarning n) = $bitnot_range_warning_valid(S, pbitnotwarning, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = BITNOT_RANGE_WARNING pbitnotwarning 1
+  -- if $bitnot_range_warning_valid(S, pbitnotwarning, 1)
+  -- if perrorcall.TARGET =/= eps \/ $bitnot_snapshot(S, pbitnotwarning)
+  -- if perrorcall.SITE = pbitnotwarning.SITE /\ perrorcall.LINE = pbitnotwarning.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if $integer_float_notices([RANGEWARNING], pbitnotwarning.BITS) = [(2, perrorcall.MESSAGE)]
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pbitnotwarning.LINE
+
+;; A thrown LEFT NaN range callback still finishes safe conversion's remaining
+;; precision notice before the macro checks failure; no RHS or modulo runs.
+dec $mod_nan_pending_source(pstate, pintegeroperation, pintegerconversion) : bool
+def $mod_nan_pending_source(S, pintegeroperation, pintegerconversion) = true
+  -- if $integer_warning_valid(S, pintegeroperation, INTEGER_LEFT, pintegerconversion, 1)
+  -- if pintegeroperation.OP = MODULO /\ ~pintegeroperation.SWAPPED
+  -- if pintegeroperation.LEFT = VARIABLE ptbytes_left z_left
+  -- if pintegeroperation.RIGHT = VARIABLE ptbytes_right z_right
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CV ptbytes_right
+  -- if pintegerconversion.INPUT = PFLOAT n_bits
+  -- if $(n_bits < 18446744073709551616)
+  -- if $float_long(n_bits, true) = (0, [RANGEWARNING, PRECISIONLOSS])
+def $mod_nan_pending_source(S, pintegeroperation, pintegerconversion) = false -- otherwise
+dec $mod_nan_pending_valid(pstate, pintegeroperation, pintegerconversion, nat, nat) : bool
+def $mod_nan_pending_valid(S, pintegeroperation, pintegerconversion, n_stage, n_exception) = ($mod_nan_pending_source(S, pintegeroperation, pintegerconversion) /\ $(n_stage <= 1) /\ $destructor_pending_valid(S, (n_exception)))
+
+def $error_read_discard(S, INTEGER_OPERATOR_WARNING pintegeroperation INTEGER_LEFT pintegerconversion 1) = S[.TODO = (MOD_NAN_PENDING pintegeroperation pintegerconversion 0 n_exception) :: ptask_tail*]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
+  -- if $mod_nan_pending_valid(S, pintegeroperation, pintegerconversion, 0, n_exception)
+
+rule PhpStep/mod-nan-pending-default: S ~> $error_dispatch(S, 8192, n_message*, pintegeroperation.LINE, DIAGNOSTIC "Deprecated" n_message* pintegeroperation.LINE, MOD_NAN_PENDING pintegeroperation pintegerconversion 1 n_exception)
+  -- if S.TODO = (MOD_NAN_PENDING pintegeroperation pintegerconversion 0 n_exception) :: ptask_tail*
+  -- if $mod_nan_pending_valid(S, pintegeroperation, pintegerconversion, 0, n_exception)
+  -- if ~$error_handler_eligible(S, 8192)
+  -- if pintegerconversion.NOTICES[1] = (8192, n_message*)
+rule PhpStep/mod-nan-pending-suppressed: S ~> S[.TODO = (MOD_NAN_PENDING pintegeroperation pintegerconversion 1 n_exception) :: ptask_tail*][.ERRORFATALTRACE = eps]
+  -- if S.TODO = (MOD_NAN_PENDING pintegeroperation pintegerconversion 0 n_exception) :: ptask_tail*
+  -- if $mod_nan_pending_valid(S, pintegeroperation, pintegerconversion, 0, n_exception)
+  -- if $error_handler_eligible(S, 8192)
+rule PhpStep/mod-nan-pending-throw: S ~> S[.TODO = (THROW_SEARCH n_exception) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (MOD_NAN_PENDING pintegeroperation pintegerconversion 1 n_exception) :: ptask_tail*
+  -- if $mod_nan_pending_valid(S, pintegeroperation, pintegerconversion, 1, n_exception)
+
+def $task_nodes(MOD_NAN_PENDING pintegeroperation pintegerconversion n_stage n_exception) = $instance_roots((n_exception))
+def $call_task_valid(S, MOD_NAN_PENDING pintegeroperation pintegerconversion n_stage n_exception) = $mod_nan_pending_valid(S, pintegeroperation, pintegerconversion, n_stage, n_exception)

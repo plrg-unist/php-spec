@@ -162,7 +162,14 @@ captured primitives while preserving both compiled descriptors and the missing C
 Current alias writes cannot replace the saved bytes/value, and actual second
 Warnings still freeze NULL; see the
 [primitive review](../../coverage/semantics/undefined-scalar-compare-captured-primitive-review.json).
-Owning objects/resources, nonflat arrays and wider producers remain partial.
+All seven comparisons now admit captured ordinary non-Stringable objects through
+the generic saved shapes. Boolean known objects cannot bypass their live-domain
+guard through the scalar default. Existing saved roots retain identity and shared
+property effects. When no other owner remains, saved-operand release runs the
+destructor before the outer store or catch; surviving aliases retain their lifetime.
+See the
+[captured-object review](../../coverage/semantics/undefined-comparison-captured-object-review.json).
+Direct-CV/internal/Stringable objects, resources, nonflat arrays and wider producers remain partial.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.
 [The equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json)
@@ -373,6 +380,28 @@ checks fresh public int|array coercion/rejection, safe source detach and indepen
 DIRECT copies through normal/deletion/throw cycles. Type/write helpers and all
 marker roots remain exact; direct strings, wider sources and unsafe lifetimes
 stay excluded.
+An ARRAY returned by an ordinary no-argument named function also survives the
+float-key callback as a frozen owning value. Authentication uses its checked
+nonconstant call occurrence, compiled name without fallback, active user function
+and by-value signature; current producer globals do not participate. The existing
+KNOWN task/frame owner transfers directly to the literal, with no count bias.
+The [return-value ledger](../../coverage/semantics/array-literal-float-return-array-value-review.json)
+checks global/reference sources, COW, sole-owner entry deletion and supplied throw.
+By-reference returns, arguments and wider call producers remain outside this arm;
+existing mutable/nonpool, builder and object-free readiness guards stay exact.
+A defined NULL key on a by-value literal CV item now has a separate Deprecated
+continuation. Zend backs up the value and restores its captured ordinary CV after
+the handler, before either empty-string-key insertion or supplied-throw cleanup.
+The handler's writes remain observable inside its body. Distinct key changes
+survive; a shared key/value NULL CV is restored too. Source authentication keeps
+the checked item/spelling/line, while readiness requires the same live unmarked
+slot and safe current payload. ARRAY snapshots remain allocated owning arguments
+when throw cleanup pops the saved marker, so restoration precedes pruning even
+without another old-table owner. The
+[NULL-key ledger](../../coverage/semantics/array-literal-null-key-warning-review.json)
+checks two saved table edges, normal COW/deletion and restoration before catch.
+Unset/rebound, reference/typed/coercion/backing slots, direct strings/objects and
+wider payload graphs stay Unsupported; the paused LIST-key boundary is unchanged.
 String leaves validate canonical bytes or existing carrier records. Their table
 and wrapper counts stay separate from copied string bytes: debt-time writes may
 share a table while a string snapshot stays unchanged. Singleton reference

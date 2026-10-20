@@ -175,6 +175,26 @@ weak integer coercion and invalid-string rejection; removing the final property
 source leaves an outside alias usable without its constraint. Direct strings,
 wider source kinds and unsafe lifetimes remain Unsupported; global ordinary/A19
 classifiers, task ownership and count/prune algorithms stay exact.
+Ordinary no-argument named functions may supply an owning ARRAY return temporary.
+The checked value occurrence must resolve without fallback to an active by-value
+function. Its KNOWN table stays frozen while the handler mutates or removes
+producer globals, even when a global originally named a reference. Existing
+mutable/nonpool and object-free readiness bounds remain; no table or CELL count
+bias is introduced. Entry deletion and supplied throw release the owning table
+normally. The [return-value review](../../coverage/semantics/array-literal-float-return-array-value-review.json)
+keeps these sources separate from borrowed CV slots; by-reference returns,
+arguments and wider call producers remain Unsupported on this warning path.
+NULL literal-key conversion separately backs up an ordinary unmarked value CV
+before dispatch. It restores that same live slot before inserting its frozen
+value under the empty-string key, or before propagating a supplied throw. A
+shared NULL key/value CV therefore loses the handler's key write too; a distinct
+key keeps its write. Scalar or mutable nonpool edge-free/debt-free DIRECT-leaf
+array payloads use the existing validators. ARRAY capture keeps both acquisition
+and backup owners; the overwritten callback table retires normally. The
+[NULL-key review](../../coverage/semantics/array-literal-null-key-warning-review.json)
+checks restoration, independent snapshots, COW, deletion and throw. Rebound,
+unset, wrapped/typed slots, direct string/object values and wider graphs remain
+Unsupported on this continuation; float-key rules stay unchanged.
 The [string-leaf review](../../coverage/semantics/array-literal-float-string-leaf-review.json)
 adds ordinary tables and untyped wrapper payloads containing canonical-byte or
 validated-carrier string leaves. String snapshots remain independent across

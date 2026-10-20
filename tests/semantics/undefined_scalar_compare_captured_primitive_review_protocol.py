@@ -132,13 +132,17 @@ def checks(program, path, name):
         record = 'perrorread_' + name_value
         values += [record + ' = perrorread' + changes,
                    '$error_read_shape(' + record + '.ORIGINAL,' + record + '.INPUT,' + record + '.BASE) = (' + record + ')']
-        if name_value in ('object', 'undefined'):
+        if name_value == 'undefined':
             values += ['~$error_read_source(S,' + record + ')', '~$error_read_valid(S,' + record + ')']
         else:
             values += ['$error_read_source(S,' + record + ')', '$error_read_valid(S,' + record + ')']
         if name_value in ('integer', 'null'):
             values += ['$scalar_compare_read_other(S,' + record + ')', '~$scalar_compare_read_array(S,' + record + ')']
     values += [
+        '~((HOBJECT 0) <- S.ALLOCATIONS)',
+        '~$scalar_compare_read_other(S,perrorread_object)',
+        '~$comparison_read_object(S,perrorread_object)',
+        '$error_read_plan(S[.TODO = perrorread_object.ORIGINAL :: ptask_tail*][.RESULT = perrorread_object.INPUT][.BASE = perrorread_object.BASE]) = eps',
         '~((HARRAY 0) <- S.ALLOCATIONS)', '~$scalar_compare_read_other(S,perrorread_array)',
         '~$scalar_compare_read_array(S,perrorread_array)',
         '$error_read_plan(S[.TODO = perrorread_array.ORIGINAL :: ptask_tail*][.RESULT = perrorread_array.INPUT][.BASE = perrorread_array.BASE]) = eps',

@@ -429,6 +429,14 @@ test-semantics: build
 	python3 tests/semantics/generator_unused_direct_refresh_send_state.py
 	python3 tests/semantics/generator_unused_direct_refresh_send_review_sources.py
 	python3 tests/semantics/generator_unused_direct_refresh_send_review_state.py
+	python3 tests/semantics/generator_unused_scalar_return_send_sources.py
+	python3 tests/semantics/generator_unused_scalar_return_send_state.py
+	python3 tests/semantics/generator_unused_scalar_return_send_review_sources.py
+	python3 tests/semantics/generator_unused_scalar_return_send_review_state.py
+	python3 tests/semantics/generator_unused_scalar_refresh_send_sources.py
+	python3 tests/semantics/generator_unused_scalar_refresh_send_state.py
+	python3 tests/semantics/generator_unused_scalar_refresh_send_review_sources.py
+	python3 tests/semantics/generator_unused_scalar_refresh_send_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

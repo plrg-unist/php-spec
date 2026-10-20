@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "milestone": "OP74 pending NaN modulo conversion diagnostics",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "Direct plain-CV MODULO, non-swapped LEFT conversion of NaN with RANGEWARNING then PRECISIONLOSS, named handlers, primitive callback writes and a supplied native Exception. Initial RHS integers and two observed masks bound the validation; other operators, phases, producers and lifecycles remain partial.",
+  "runtime_revision": "831b79878d33db5317cba0358ea23bc346961395",
+  "helper_revision": "13e01efdfc4b17057129e98d5411ab24ef371497",
+  "private_modules": 408,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "12d3f8a5656d0404eeb73b83e9829b683c4fb1d14e1e92caf7bf44c44df25094",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "31e377e16825a39d47b382f2ea87f7e23c2c2d96f18fd35a75c99a7f61277e35"
+  },
+  "engine_basis": [
+    "zendi_try_get_long saves the double then finishes zend_dval_to_lval_safe before checking EG(exception). NaN produces range Warning then precision Deprecated. convert_op1_op2_long returns on failed LEFT before reading/converting RHS or checking modulo zero.",
+    "With a pending exception, an ineligible precision level still goes to the default diagnostic. An eligible level enters zend_call_function with EG(exception), which returns SUCCESS with UNDEF retval and therefore runs neither a second user body nor the default. The mask8194 pending control has source coverage only.",
+    "Exactly39 additions in30+404: sole MOD_NAN_PENDING task, source/history validator and error_read_discard bridge for the authentic LEFT warning cursor1, two pending-notice rules and same-exception restoration. Ineligible default uses existing error_dispatch/trace policy; eligible suppression clears ERRORFATALTRACE. The pending tag replaces one THROW_SEARCH owner with the same instance root. Existing ingress, normal conversion, numeric, formatting, generic dispatch/unwind bodies and paused paths stay exact."
+  ],
+  "contract": [
+    "Both author originals start xNAN/y5. First Warning25 handler writes x99/y0 then throws the same Exception created at20. Mask2 still emits one default Deprecated25 before the identity/noPrevious/20/outer100/x99/y0/calls1 catch; mask8194 emits none and never calls the handler again. Neither reads RHS0 or raises Modulo-by-zero. EOF writes x8/y9 with outer100 intact.",
+    "Independent normal original starts xNAN/y0; H1 leaves y0 and writes x99, H2 writes x88/y5 and returns false. Only after both notices does RIGHT capture actual PINT5, yielding cached0%5=int0 rather than premature-zero Error or reread88%5=3. One default Deprecated25 and EOFx8/y9/v0/calls2 are exact. This normal protocol is an unchanged control.",
+    "Focused165+175 inherits the exact integer HELPERS and accepted diagnostic classifier/fold. One authentic source-to-EOF traversal per fixture checks fresh/entered callbacks, pending sameException owner2, raw remaining default and same THROW_SEARCH restoration without RHS/outer store, normal actual RIGHT INPUT5 and exact raw result versus driven metadata, heap/call validity and zero/one-step cuts. Only author has an undriven refusal matrix. No forged state or duplicate full-entry replay is executed."
+  ],
+  "required_follow_on": [
+    "Source3 versus focus2 is intentional: the eligible-pending suppression branch is source-only. Other binary operators/phases, operand producers, owning/typed/reference inputs, handler mutation and wider lifecycle histories remain partial.",
+    "Old normal/numeric/formatting/generic-unwind evidence keeps its own cuts. No algorithm renewal, engine bug or intentional divergence is claimed. OP12/COMP88/Source47 low-initial-precision DEFINE-name callbacks and active property/clone/array/Generator selectors remain untouched."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-74/source-831b79878-author-two/report.json",
+        "sha256": "207faa400ae0c99a282c98439bda1587228bae17d3d5a45571332fbba3f6dd63",
+        "revision": "831b79878d33db5317cba0358ea23bc346961395",
+        "agreements": 2
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-74/review-model-831b79878-review-one/report.json",
+        "sha256": "5f622bff3f6058b32080769fe293bf449d2e0655138a764298814d6bd3ac71d8",
+        "revision": "831b79878d33db5317cba0358ea23bc346961395",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-74/state-13e01efdf-two/report.json",
+        "sha256": "2a38ff29a63110fe9a884236e81a0f55d7259e81f7fc025356d59a771cf1a123",
+        "revision": "13e01efdfc4b17057129e98d5411ab24ef371497",
+        "modules": 408,
+        "cases": [
+          "mod-nan-pending-ineligible-precision",
+          "mod-nan-left-current-right"
+        ],
+        "conditions": [
+          165,
+          175
+        ],
+        "total": 340
+      }
+    ],
+    "total_source_agreements": 3,
+    "total_focused_state_conditions": 340
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-74/baseline-9c561430f-ineligible-precision/report.json",
+      "sha256": "cdecc353b85a3906bd41c14d73d323d5628f1659aad80111ae297c21c7fed908",
+      "result": "Actual frontend accepted/checked program/NORMAL/model0/reason null; full stdout matches native, but semantic stderr is empty while native emits one Deprecated25. Original rowfalse/wrapper1/agreement0 retained, not Unsupported."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-74/native-9c561430f-author-two/report.json",
+        "sha256": "e5a7f06432e4a9a2da9012570a0be9e7399126298bf7776f7568fd93eed160e0"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-74/native-9c561430f-review-one/report.json",
+        "sha256": "ba2705c52d59fdf94b767f2d68d92a45d0bba496789dd396a31e84ef8c3bfe71"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-74/state-prep-13e01efdf-two/report.json",
+        "sha256": "3ed35fc24e16c2d97ecc10e7d0dccdd8a40aba26fd3239a7ff943febdc34b18a",
+        "result": "Retained full author2+peer1 original paths/native bytes; checked frontend/adapter and both full408 struct passes0/reaped. Zero native/application replay or semantic credit."
+      }
+    ],
+    "standalone_syntax": "Two standalone undefined-pstate diagnostics, zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-74",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/genuine CPU2; source CPU4; focused CPU4, each separately granted. Native30/modelCLI60-process90/checked30/full408struct30 per fixture/full408SL120 per group. Retained-source prep authenticates full author2+peer1 and performs no native/application replay.",
+    "record": "Restore matching Git cuts/local tools in a fresh directory. Original source paths/native streams authenticate focused fixtures; external evidence is not a runtime dependency. Copied local tools add no rebuild/portability claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "commands": [
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 tests/semantics/mod_nan_pending_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 tests/semantics/mod_nan_pending_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-74/state-prep-13e01efdf-two/run-prepare.py",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-74/state-13e01efdf-two/run-state.py"
+    ]
+  },
+  "composition": {
+    "parent": "7ba8ef89ff519228f6260d11dfa918a235695488",
+    "private_publication": "2eefec612d86914a03f140b3e596cf65c514a126",
+    "modules": 408,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "70d3b5dc9ed38a5ae6aded254401e5da844f80b4871358a88e8a41a3696824b3",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "31e377e16825a39d47b382f2ea87f7e23c2c2d96f18fd35a75c99a7f61277e35"
+    },
+    "other_incoming_paths_preserved": 25,
+    "gate": "Independently reviewed base4c593a1e3 to actual parent7ba8ef89f: incoming runtime30/41/413 ARRAY_KEY_NULL_RESULT and NULL-key ARRAY_VALUE literal backup/reset/discard, plus289 Generator detached-send/node-free-return refresh. Direct-CV modulo, static named h, primitive global writes and native Exception/Throwable getters have no array-literal builder, Generator/yield-from/send producer; GLOBALS literal string dimensions and internal Throwable trace arrays do not select these paths. Complete parent30 tags and all incoming array/Generator bytes remain intact beside the sole MOD_NAN_PENDING addition. No state/default/general-root/ordered408 manifest or40/55/58/404 change in the incoming tail; source3/state340 retain their private408 cuts, with no joined execution or renewed credit."
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "milestone": "Iterator44: unused SEND at node-free copied returns",
+  "status": "composed-accepted",
+  "scope": "Pre-refreshed direct pending SEND at a normal simple-CV COMPLETE with a node-free copied child return and an owning current value. Tested child returns are integer 0, NULL and a literal string; normal argument cleanup precedes unused-copy retirement and receiver finally.",
+  "implementation": {
+    "paths": {
+      "spec/semantics/289-generator-delegation.watsup": "ce9af7dfe3df52ea0f7fc71432e285cef490be2378a710d9dc3bbcbc8bef31e5"
+    },
+    "change": "A separate identity/empty-prefix arm authenticates the direct COMPLETE endpoint, source/tail, flags, empty held/task owners and inactive collection. Existing owning-return receipts, ancestor/child-prefix arms, source-demand/discarded-tail checks and owner scheduler stay exact. No module270, root-function, schema, close or collection change."
+  },
+  "validation": {
+    "native": "Four target observations, including a one-assignment used/unused pair, argument-time row COW and a cache RuntimeException inside live finally. No body entry or owning return root.",
+    "unchanged_baseline": "Checked NORMAL model0 gives J|J-END|A instead of native J|A|J-END. Original recordfalse/normalagreements0 remain; the disagreement observer passes.",
+    "sources": "Four exact stdout/stderr/exit agreements. Snapshot survives argument COW until ARG-END, then retires before finally. Assignment keeps its copy; finally-time slot clearing can throw with Previous NULL.",
+    "states": {
+      "author": [
+        138,
+        124
+      ],
+      "peer": [
+        122,
+        114
+      ],
+      "total": 498,
+      "local": 478,
+      "generic": 20
+    },
+    "observations": "Real GEN_ARGS proves the old detached helper already accepts this endpoint while the owning-return leaf does not. Current array1\u21922 has one element edge and no retained return. Actual Arg-END separates raw row and snapshot owners; the cache callback has a RUNNING receiver/close claim. Source demand, malformed slots/results/tails/flags, public execution and budget controls pass.",
+    "compiler": "Strict407 and four-fixture elaboration pass; compilation earns no execution credit.",
+    "failures": "All post-change checks pass first execution at original caps. No failures, retries, cap changes, historical renewal or accepted replay."
+  },
+  "tested_revisions": {
+    "native4_baseline": "710dbeff24a90ef90bc51f8d9188e174049e7d27",
+    "source4_strict407": "14e2bd9d008a57a58fb9b43fc8f3cca12525fe88",
+    "elaboration4_state498": "91e20f6d9a222176e6046f6681d86ba1406821f9",
+    "bridge": "Runtime289/main sources stay exact between source and state cuts. All six tests match the state cut; no tested input correction."
+  },
+  "commands": {
+    "native": [
+      "taskset -c 3 python3 .tools/native.py",
+      "taskset -c 3 python3 .tools/review-native.py"
+    ],
+    "baseline": "taskset -c 3 python3 .tools/baseline.py --native-report .tools/generator-unused-scalar-return-send-native-iohxltpe/report.json",
+    "strict": "taskset -c 2 python3 .tools/strict.py",
+    "source": [
+      "taskset -c 2 python3 tests/semantics/generator_unused_scalar_return_send_sources.py --native-report .tools/generator-unused-scalar-return-send-native-iohxltpe/report.json",
+      "taskset -c 2 python3 tests/semantics/generator_unused_scalar_return_send_review_sources.py --native-report .tools/generator-unused-scalar-return-send-review-native-zxff9q21/report.json"
+    ],
+    "elaboration": "taskset -c 2 python3 .tools/state-elab.py",
+    "state": [
+      "taskset -c 2 python3 tests/semantics/generator_unused_scalar_return_send_state.py --case scalar-return-unused-send-drops-current-copy-before-finally",
+      "taskset -c 2 python3 tests/semantics/generator_unused_scalar_return_send_state.py --case scalar-return-assigned-send-keeps-current-copy-through-finally",
+      "taskset -c 2 python3 tests/semantics/generator_unused_scalar_return_send_review_state.py --case scalar-return-send-snapshot-survives-argument-cow-before-finally",
+      "taskset -c 2 python3 tests/semantics/generator_unused_scalar_return_send_review_state.py --case scalar-return-send-cache-throws-inside-direct-finally"
+    ]
+  },
+  "environment": {
+    "php": "8.5.10 CLI NTS64; source 34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "mode": "SL/cacheoff/encountered determinism; LC_ALL=C TZ=UTC, script encoding unset. Serial exclusive CPU3 native/baseline, CPU2 source/state. Project-local binaries reused; no fresh portability claim.",
+    "caps": "Native8s; source100000steps/model100/process120; strict120; compile60; states120/seek4000/finish4000.",
+    "exits": "All observers/post-change models exit0, empty stderr/no timeout/stable inputs and HEAD. Baseline model0 remains disagreement0. Actors fully reaped; CPU2 released."
+  },
+  "reports": {
+    "native-author2": ".tools/generator-unused-scalar-return-send-native-iohxltpe/report.json",
+    "native-peer2": ".tools/generator-unused-scalar-return-send-review-native-zxff9q21/report.json",
+    "unchanged-normal-disagreement": ".tools/generator-unused-scalar-return-send-baseline-_iiuqlsj/report.json",
+    "strict407": ".tools/generator-unused-scalar-return-send-author-sl-zj8l3mz5/report.json",
+    "source-author2": ".tools/generator-unused-scalar-return-send-source-z092sn69/report.json",
+    "source-peer2": ".tools/generator-unused-scalar-return-send-review-source-knqtio9a/report.json",
+    "elaboration4": ".tools/generator-unused-scalar-return-send-state-elab-f91xcib6/report.json",
+    "state-author138": ".tools/fiber-state-review-pfvd4mwf/report.json",
+    "state-author124": ".tools/fiber-state-review-hdjr4f2q/report.json",
+    "state-peer122": ".tools/fiber-state-review-4jt1cler/report.json",
+    "state-peer114": ".tools/fiber-state-review-nsnmjxt2/report.json"
+  },
+  "evidence": {
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-unused-scalar-return-send-44/private.tar.gz",
+      "bytes": 1929165,
+      "sha256": "e8b03c66a9da0c5735c3f4e0b386f0927903bae26e62cb3ecfb3a5799dc35065"
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-unused-scalar-return-send-44/manifest.json",
+    "recovery": "Adjacent manifest binds 11 report roles and 31 recovery inputs. Extract ignored drivers/catalogs and raw report directories into the retained private checkout; supply pinned project-local binaries. Raw records retain exact commands/source paths/outputs/cuts; private commits retain source/state inputs."
+  },
+  "remaining": "Wider input/refresh/owner histories, abrupt argument callbacks, nonpending body entry and collection remain unvalidated. Observations have no input registry entries; no new global registry guard is claimed. Owning-return/parked and ordinary typed-ref paths stay unchanged.",
+  "composition": {
+    "parent": "3cd1251b4d4b75b50bfcfa958759aea8aa9242d9",
+    "private_publication": "fe6be7599255c73c225fa623f8f366a388dde6a4",
+    "preserved": "Tested289 and six tests remain private-exact; all other incoming runtime/schema/default/root/408manifest/pipeline bytes remain parent-exact. Shared prose and feature suffixes preserve incoming content.",
+    "interaction": "Introduced INI/DEFINE, ordinary typed-ref history, selected numeric-warning, lossy-float callback and magic integer property-ADD selectors have no producer here. Independent actual-tail review found no joined execution obligation.",
+    "credit": "Private source/state cuts and genuine baseline disagreement stay unchanged; no accepted replay or renewed credit."
+  }
+}

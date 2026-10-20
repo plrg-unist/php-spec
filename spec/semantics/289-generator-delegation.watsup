@@ -90,6 +90,25 @@ dec $generator_pending_return_leaf(pstate, nat, nat) : nat?
 dec $generator_buffered_next_leaf(pstate, nat, nat) : nat?
 dec $generator_pending_throw_value(pstate, pgeneratorop) : pvalue
 dec $generator_unused_send_refresh(pstate, pstate, pgeneratorop, pnode*) : bool
+dec $generator_nodefree_return_waiting(pstate, nat) : bool
+
+;; A copied primitive return has no retained owner, but its current may own one.
+def $generator_nodefree_return_waiting(S, n) = true
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_DELEGATING /\ pgenerator.PARKED = eps
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = eps /\ pgeneratorfrom.ACQUISITION = eps
+  -- if pgeneratorfrom.CURRENT =/= eps /\ pgeneratorfrom.POSITION = 1
+  -- if $generator_from_record_valid(S, n, pgenerator)
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.TODO = (GENERATOR_FROM_COMPLETE n pgeneratorfrom.SITE n_child pvalue_return) :: ptask_tail*
+  -- if $generator_from_complete_valid(S, n, pgeneratorfrom.SITE, n_child, pvalue_return)
+  -- if $value_nodes(pvalue_return) = eps
+  -- if $generator_return_site(S, n, pgeneratorfrom.SITE)
+  -- if $generator_input_tail(S, pgeneratorfrom.SITE, ptask_tail*)
+  -- if pframe.HELD = eps /\ $tasks_nodes(ptask_tail*) = eps
+  -- if S.GC.ACTIVE = eps
+def $generator_nodefree_return_waiting(S, n) = false -- otherwise
 
 ;; YIELD_FROM has no send target. Its detached current can be returned without
 ;; advancing. A bounded owning result keeps its separate close boundary.
@@ -145,6 +164,24 @@ def $generator_pending_detached_send(S, pgeneratorop) = true
   -- if $generator_pending_resume(S_refreshed, pgeneratorop)
   -- if $generator_pending_return_leaf(S_refreshed, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1)) = (n_leaf)
   -- if n_leaf = pgeneratorop.OBJECT
+;; The same original child edge can refresh to a node-free direct return.
+def $generator_pending_detached_send(S, pgeneratorop) = true
+  -- if pgeneratorop.NAME = "send" /\ ~pgeneratorop.ADVANCE
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if $generator_operation_valid(S, pgeneratorop)
+  -- if pgeneratorop.ARGUMENTS = [pvalue]
+  -- if $call_reference_operand_valid(S, KNOWN pvalue)
+  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* 2
+  -- if |phpType7*| = 1 /\ $generator_arguments_supported(phpType7*)
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if (HOBJECT n_child) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_child] = GENERATOR pgenerator_child
+  -- if pgenerator_child.PHASE = GENERATOR_CLOSED
+  -- if S_refreshed = $generator_from_refresh(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1))
+  -- if $generator_pending_resume(S_refreshed, pgeneratorop)
+  -- if $generator_nodefree_return_waiting(S_refreshed, pgeneratorop.OBJECT)
 def $generator_pending_detached_send(S, pgeneratorop) = false -- otherwise
 
 ;; A pending SEND can return before dispatch even at HANDLE_EXCEPTION.
@@ -274,6 +311,12 @@ def $eager_task_inputs(S, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue])) = $v
 def $generator_unused_send_refresh(S, S, pgeneratorop, eps) = true
   -- if $generator_pending_detached_send(S, pgeneratorop)
   -- if $generator_pending_return_leaf(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1)) =/= eps
+;; A node-free copied return adds no retained owner. Its owning current copy
+;; still survives argument cleanup and retires before this direct receiver.
+def $generator_unused_send_refresh(S, S, pgeneratorop, eps) = true
+  -- if $generator_pending_detached_send(S, pgeneratorop)
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if $generator_nodefree_return_waiting(S, pgeneratorop.OBJECT)
 def $generator_unused_send_refresh(S, S_refreshed, pgeneratorop, [HOBJECT n_child]) = true
   -- if $generator_pending_detached_send(S, pgeneratorop)
   -- if S_refreshed = $generator_from_refresh(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1))
@@ -284,6 +327,17 @@ def $generator_unused_send_refresh(S, S_refreshed, pgeneratorop, [HOBJECT n_chil
   -- if (HOBJECT n_child) <- S.ALLOCATIONS
   -- if S.OBJECTS[n_child] = GENERATOR pgenerator_child
   -- if pgenerator_child.PHASE = GENERATOR_CLOSED
+  -- if $eager_slots(S, S_refreshed) = [HOBJECT n_child]
+def $generator_unused_send_refresh(S, S_refreshed, pgeneratorop, [HOBJECT n_child]) = true
+  -- if $generator_pending_detached_send(S, pgeneratorop)
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if (HOBJECT n_child) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_child] = GENERATOR pgenerator_child
+  -- if pgenerator_child.PHASE = GENERATOR_CLOSED
+  -- if S_refreshed = $generator_from_refresh(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1))
+  -- if $generator_nodefree_return_waiting(S_refreshed, pgeneratorop.OBJECT)
   -- if $eager_slots(S, S_refreshed) = [HOBJECT n_child]
 def $generator_unused_send_refresh(S, S_refreshed, pgeneratorop, pnode*) = false -- otherwise
 

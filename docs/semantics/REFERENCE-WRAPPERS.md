@@ -115,6 +115,24 @@ all source objects must survive the same logical pruning as CELL/payload. Fresh
 int|array rejection/coercion, safe final-property detach, independent table owners
 and DIRECT primitive snapshots distinguish this from reference-element insertion.
 Direct strings, wider source kinds and unsafe lifetimes stay excluded.
+An ordinary named function returning an ARRAY by value supplies an owning KNOWN
+operand, including when its source global is a reference. The return has already
+dereferenced the source; subsequent handler writes or global rebinding cannot
+change that table. Existing task/frame roots transfer this owner into a DIRECT
+literal entry without debt or retention. The
+[return-value ledger](../../coverage/semantics/array-literal-float-return-array-value-review.json)
+checks frozen tables, COW and last-owner deletion/throw cleanup. Only a checked
+no-argument call with no fallback and a by-value signature enters this new arm;
+by-reference returns retain their separate lifetime requirements.
+NULL-key literal conversion has its own value-reset continuation. The captured
+ordinary CV index is nonowning and must still be the same live unmarked slot,
+without property/coercion/backing records or CELL debt. For ARRAY values the
+marker/frame owns two old-table edges, one acquired insertion value and one
+backup. Normal completion moves these into the restored CV and DIRECT entry;
+throw restores the CV and releases the insertion/builder owners before catch.
+No literal debt, retention or generic count/prune rule changes. The
+[NULL-key ledger](../../coverage/semantics/array-literal-null-key-warning-review.json)
+separates restored old tables, retired callback tables and independent snapshots.
 String leaves use canonical bytes or existing valid carriers; they add no modeled
 heap edges or user destructors. Ordinary string-offset writes preserve independent
 snapshots while table/CELL aliases share bytes. Singleton reference entries
