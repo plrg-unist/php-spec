@@ -411,7 +411,8 @@ def $literal_reference_flat_sources(S, eps, pnode_live*) = true
 def $literal_reference_flat_sources(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*, pnode_live*) = $literal_reference_flat_sources(S, pentry*, pnode_live*)
 def $literal_reference_flat_sources(S, (ENTRY pkey (ALIAS n)) :: pentry*, pnode_live*) = true
   -- if $propref_at(S.PROPREFS, n) = eps
-  -- if $heap_subset($slot_nodes(S.STORE[n]), pnode_live*)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $heap_subset($value_nodes(pvalue), pnode_live*)
   -- if $literal_reference_flat_sources(S, pentry*, pnode_live*)
 def $literal_reference_flat_sources(S, (ENTRY pkey (ALIAS n)) :: pentry*, pnode_live*) = true
   -- if $propref_at(S.PROPREFS, n) = (ppropref)
