@@ -49,8 +49,10 @@ Ordinary unwrapped CVs may switch between null/bool/int/float and flat runtime
 arrays with DIRECT null/bool/int/float or validated string leaves during the
 handler. Separate table counts preserve old array owners and omitted new-array
 owners; inverse retargeting cancels them before cleanup. Initial scalar and
-array plans remain distinct, while same-table transfer and restored COW keep
-ordinary values distinct from PHP reference wrappers.
+array plans remain distinct. A by-value array CV may become an untyped reference
+during the handler, inserting a shared ALIAS with separate old-table and new-CELL
+count biases. A reciprocal reference-element callback can instead insert an
+ordinary array value, cancelling both biases before normal copying and cleanup.
 These bounded tables also admit reference leaves holding null/bool/int/float
 or validated byte strings, either untyped or constrained by validated ordinary
 instance-property type sources. Debt-bearing payloads require every source object

@@ -64,9 +64,9 @@ Ordinary by-value array CVs use separate `LITERALARRAYRETAINED` and
 `LITERALARRAYDEBTS` fields for HARRAY counts. Their saved continuation owns the
 pre-conversion table, rather than its original CV cell. Inserting a different live
 table preserves the old count and omits one new-table owner; inverse retargeting
-cancels both, while same-table insertion adds no bias. Only unmarked ordinary CVs
-and mutable nonpool flat tables with these bounded DIRECT or ALIAS entries are
-admitted. Combined CELL/table
+cancels both, while same-table insertion adds no bias. Initial by-value admission
+requires an unmarked ordinary CV and a mutable nonpool flat table with these
+bounded DIRECT or ALIAS entries. Combined CELL/table
 debt safety uses logical pruning before subtracting either count bias. Positive
 table targets keep their admitted leaf edges; table debt does not subtract leaf
 owners. Deletion/throw deficits,
@@ -79,6 +79,17 @@ count, cancelling debt before retaining an unmatched owner. The two initial plan
 stay disjoint, and captured runtime-array temporaries incur no debt. The
 [mixed-CV ledger](../../coverage/semantics/array-literal-float-mixed-cv-review.json)
 checks both inverse cycles, deletion and supplied-throw cleanup before balanced COW.
+An initially ordinary array CV can become an untyped reference during its
+callback. Zend inserts that live wrapper even for a by-value item, retaining the
+acquired HARRAY count and recording a missing CELL owner. A reciprocal reference
+item may complete from a fresh ordinary array CV, retaining its acquired CELL
+count and owing a table owner. Existing retain/owe operations cancel both
+families through unchanged graph construction and count/prune algorithms. The
+[CV/reference cycle ledger](../../coverage/semantics/array-literal-float-cv-ref-cycle-review.json)
+distinguishes physical singleton unwrapping, restored shared aliases and child
+COW through deletion and supplied throw. These new completion arms require
+untyped outer cells without coercion/backing records; direct strings and the
+existing unsafe lifetime bounds remain excluded.
 String leaves use canonical bytes or existing valid carriers; they add no modeled
 heap edges or user destructors. Ordinary string-offset writes preserve independent
 snapshots while table/CELL aliases share bytes. Singleton reference entries

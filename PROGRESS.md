@@ -1696,49 +1696,38 @@ GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no root
 and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
-Lossy-float literal-key callbacks now admit outer array-valued reference cells
-with ordinary validated property type sources accepting their bounded payload.
-For debt-bearing cells, the actual payload and every source object use the same
-logical-pruned live set; nonempty unique receipts and existing coercion/backing
-exclusions stay in force.
-Property aliases own the CELL, whose one payload edge stays independent of its
-alias count. A physical count1 literal copy unwraps to a DIRECT array value and
-permits scalar replacement and child COW while the original remains typed.
-Inverse balancing restores shared typed ALIAS copies. An extra alias keeps
-physical counts positive when the final property source is explicitly unset,
-allowing later ordinary scalar replacement; initial typed-old capture is covered.
-Deletion and a dual-source supplied throw separate constraints, direct child COW,
-fixed snapshots and outer CELL debt before inverse cleanup.
+Lossy-float literal-key callbacks now cross ordinary array CVs and untyped
+references. An initially unwrapped by-value CV can become a wrapper during the
+handler: insertion uses ALIAS, retaining the acquired old HARRAY owner and
+recording the omitted new-CELL owner. A reciprocal reference-element callback
+may unset/recreate its CV as an ordinary array; DIRECT insertion cancels both
+bias families before normal COW and teardown. Physical singleton copies detach,
+while balanced shared copies preserve the alias. Child snapshots and sibling
+writes distinguish this from ordinary old-table COW through deletion and a
+supplied throw.
 
 Four fresh natives and the genuine unchanged Unsupported after the first
-handler retain `0a2687c03`/407 with baseline credit0. Strict407/source4 pass at
-`746c434a2`; focused1030 (458 author +572 independent; 1017 Boolean +13 raw)
-passes at the distinct author `78e4c0cef` and corrected peer `75cdb7f35` cuts.
-Author checks use SL180; peer checks use a cap-only SL240 wrapper after its source
-throw took 152.02s, and the corrected state throw took 178.02s. The original peer
-fixture stopped during elaboration on an unbound object variable, retaining zero
-credit with its second row unrun. Only existing binding order changes before the
-affected peer retry; accepted author, source and native results stay closed.
-Successful actors are quiet and fully reaped. Fresh properties have array
-type and payloads contain DIRECT integers or bounded DIRECT integer children;
-other accepting descriptors and admitted payload shapes compose existing
-validation. Sole413 adds the typed-PARRAY cell arm. Global primitive/string
-gates, source/error authentication, fields/tasks, type writers and
-count/prune/driver algorithms stay exact. Two A33 pure negatives now omit the
-required payload or source-object live node; their PHP, counts and old credit
-remain unchanged. Deeper/indebted children, static/hooked/queued or retired
-sources, coercion/backing records, unsafe/effective-zero retirement, active
-collection and request-end debt remain Unsupported. Paused LIST/owned-NUL and
-active INI/class/lifecycle/DEFINE work are untouched.
-[Typed outer-array reference review](coverage/semantics/array-literal-float-typed-array-ref-review.json).
+handler retain `5ab7a08cf`/407 with baseline credit0. Strict407/source4 pass at
+`fe78bda2f`; focused1223 (593 author +630 independent; 1208 Boolean +15 raw)
+passes at `2432e64b1`. All post-change first executions pass with quiet stderr,
+no failures/retries/timeouts and full reap. Source models use180/outer210;
+focused fixtures use SL180. The sole413 completion arms leave initial/A19 value
+classifiers, source/error authentication, fields/tasks, type writers and
+count/prune/driver algorithms unchanged. Six earlier pure negatives now project
+unsupported outer strings; their original PHP, counts and historical credit stay
+unchanged. Fresh wrapper payloads are integers or runtime DIRECT-integer arrays;
+other admitted primitive/bounded-array shapes compose existing validation.
+The new cross-family arms exclude outer property/coercion/backing records and
+string CELLs. Initially wrapped by-value CVs, deeper or indebted children,
+unsafe/effective-zero retirement, active collection and request-end debt remain
+outside this admission. Paused LIST/owned-NUL and active class/lifecycle/INI/
+operator/Generator/DEFINE selectors are untouched.
+[CV/reference cycle review](coverage/semantics/array-literal-float-cv-ref-cycle-review.json).
 
-Composed over `2199eb6f4`/407 with accepted413, six new tests and both A33
-pure controls unchanged. Every other runtime and ordered manifest byte preserves
-the parent. Packed INI, modulo Warning, spaceship-array, object-return, parked
-Generator and Closure DEFINE selectors have no producer here; ordinary public
-array-property operations retain their existing routes. Source4/strict407 and
-author458/peer572 retain their distinct private cuts and original peer0 without
-joined execution or renewed historical credit.
+Earlier typed outer-array cells retain source4/strict407 at `746c434a2`, author458
+at `78e4c0cef` and corrected peer572 at `75cdb7f35`, integrated as `f1726092c`.
+Their genuine baseline0 and original peer elaboration failure0 remain in the
+[typed outer-array ledger](coverage/semantics/array-literal-float-typed-array-ref-review.json).
 
 Earlier DIRECT child-array entries retain source4/strict407-fixed at `320d21f44`
 and state977 at `5272d8a12`, integrated as `b2fb2dc8b`; their genuine baseline0
