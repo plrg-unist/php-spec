@@ -1486,7 +1486,7 @@ def $property_release_partition(ppropertyslot :: ppropertyslot_tail*, b) = $prop
   -- if (ppropertyslot.DECL = eps) =/= b
 
 
-;; First retirement in a three-object return chain can throw before another
+;; First retirement in an owning-object return chain can throw before another
 ;; finalizer has installed a cursor. Keep its exact source queue as non-owning
 ;; operation evidence; normal completion discards it with the operation.
 dec $ref_return_retire_class_method(pstate, porigin) : pmethoddesc?
@@ -1561,33 +1561,43 @@ dec $ref_return_retire_call(pstate, prefreturncursor) : bool
 def $ref_return_retire_call(S, prefreturncursor) = true
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprFuncCall (NName (BYTES text) metadata_name) (SEQUENCE eps) metadata_call) metadata_return)
 def $ref_return_retire_call(S, prefreturncursor) = false -- otherwise
+dec $ref_return_retire_outer(pstate, prefreturncursor, nat*, ptask*, porigin) : porigin*?
+def $ref_return_retire_outer(S, prefreturncursor_inner, n_seen*, [TYPE_FALLTHROUGH porigin_function], porigin_function) = (eps)
+  -- if prefreturncursor_inner.OUTER = (porigin_function)
+def $ref_return_retire_outer(S, prefreturncursor_inner, n_seen*, (FINALLY_REF_RETURN porigin_outer porigin_old (KNOWN (POBJECT n)) z_old) :: (FINALLY_PHASE porigin_outer 3) :: (ORIGIN_RETURN porigin_restore?) :: ptask_tail*, porigin_function) = (porigin_outer :: porigin_tail*)
+  -- if prefreturncursor_outer = { OWNER porigin_outer, SOURCE porigin_old, LINE z_old, OUTER porigin_restore? }
+  -- if $ref_return_cursor_site(S, prefreturncursor_outer)
+  -- if $ref_return_retire_call(S, prefreturncursor_outer)
+  -- if $ref_return_cursor_inside(porigin_outer, prefreturncursor_inner.SOURCE)
+  -- if prefreturncursor_inner.OUTER = $origin_child((porigin_outer), [PCFIELD 2])
+  -- if ~(n <- n_seen*)
+  -- if $ref_return_retire_normal_class(S, n)
+  -- if $ref_return_cursor_old_operand(S, prefreturncursor_outer, KNOWN (POBJECT n))
+  -- if $heap_owners($heap_graph(S), HOBJECT n) = 1
+  -- if $ref_return_retire_outer(S, prefreturncursor_outer, n :: n_seen*, ptask_tail*, porigin_function) = (porigin_tail*)
+def $ref_return_retire_outer(S, prefreturncursor, n_seen*, ptask*, porigin) = eps -- otherwise
 dec $ref_return_retire_site(pstate, ptask*) : prefreturncursor?
-def $ref_return_retire_site(S, [RETURN_REF_UNWIND (REFERENCE n_y) z false (PORIGIN n pcpath_source), FINALLY_REF_RETURN porigin_c porigin_old_c (KNOWN (POBJECT n_c)) z_c, FINALLY_PHASE porigin_c 3, ORIGIN_RETURN porigin_restore_c?, FINALLY_REF_RETURN porigin_b porigin_old_b (KNOWN (POBJECT n_b)) z_b, FINALLY_PHASE porigin_b 3, ORIGIN_RETURN porigin_restore_b?, FINALLY_REF_RETURN porigin_a porigin_old_a (KNOWN (POBJECT n_a)) z_a, FINALLY_PHASE porigin_a 3, ORIGIN_RETURN (porigin_function), TYPE_FALLTHROUGH porigin_function]) = (prefreturncursor_c)
+def $ref_return_retire_site(S, (RETURN_REF_UNWIND (REFERENCE n_y) z false (PORIGIN n pcpath_source)) :: (FINALLY_REF_RETURN porigin_c porigin_old_c (KNOWN (POBJECT n_c)) z_c) :: (FINALLY_PHASE porigin_c 3) :: (ORIGIN_RETURN porigin_restore_c?) :: ptask_outer*) = (prefreturncursor_c)
   -- if S.OUTPUTBUFFERS = eps
   -- if prefreturncursor_c = { OWNER porigin_c, SOURCE porigin_old_c, LINE z_c, OUTER porigin_restore_c? }
-  -- if prefreturncursor_b = { OWNER porigin_b, SOURCE porigin_old_b, LINE z_b, OUTER porigin_restore_b? }
-  -- if prefreturncursor_a = { OWNER porigin_a, SOURCE porigin_old_a, LINE z_a, OUTER (porigin_function) }
-  -- if $ref_return_pair_computed_sites(S, prefreturncursor_b, prefreturncursor_a)
   -- if $ref_return_cursor_site(S, prefreturncursor_c)
-  -- if $ref_return_retire_call(S, prefreturncursor_c) /\ $ref_return_retire_call(S, prefreturncursor_b) /\ $ref_return_retire_call(S, prefreturncursor_a)
-  -- if $ref_return_cursor_inside(porigin_b, porigin_old_c)
-  -- if porigin_restore_c? = $origin_child((porigin_b), [PCFIELD 2])
+  -- if $ref_return_retire_call(S, prefreturncursor_c)
   -- if $ref_return_cursor_inside(porigin_c, PORIGIN n pcpath_source)
   -- if $ref_return_pair_operand(S, PORIGIN n pcpath_source, REFERENCE n_y)
   -- if $reference_return_fetch_valid(S[.ORIGIN = (PORIGIN n pcpath_source)], z)
   -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.FUNCTION = porigin_function
+  -- if porigin_function = pcallcontext.FUNCTION
   -- if $origin_node(S.SOURCES, porigin_function) = (NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata_function)
+  -- if $function_at($all_functions(S), porigin_function) = (pfunction)
+  -- if pfunction.SIGNATURE.BYREF
+  -- if pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "object"])), (PTBRANCH ([PTBUILTIN "null"]))]
+  -- if $ref_return_retire_outer(S, prefreturncursor_c, [n_c], ptask_outer*, porigin_function) = (porigin_outer*)
+  -- if $(|porigin_outer*| >= 2)
   -- if $source_unit(S.SOURCES, n) = (pcunit)
-  -- if $ref_chain_paths($ppfinally_protected(pcunit.OCCURRENCES, pcpath_source), [porigin_c, porigin_b, porigin_a], n, pcpath_source)
+  -- if $ref_chain_paths($ppfinally_protected(pcunit.OCCURRENCES, pcpath_source), porigin_c :: porigin_outer*, n, pcpath_source)
   -- if $ref_replay_contexts(S, PORIGIN n pcpath_source) = [REPLAY_TRY porigin_local]
   -- if $ref_replay_site(S, PORIGIN n pcpath_source, z, [REPLAY_TRY porigin_local])
   -- if $ref_return_retire_throw_site(S, n_c) = (porigin_new)
-  -- if $ref_return_retire_normal_class(S, n_b) /\ $ref_return_retire_normal_class(S, n_a)
-  -- if n_c =/= n_b /\ n_c =/= n_a /\ n_b =/= n_a
-  -- if $ref_return_cursor_old_operand(S, prefreturncursor_b, KNOWN (POBJECT n_b))
-  -- if $ref_return_cursor_old_operand(S, prefreturncursor_a, KNOWN (POBJECT n_a))
-  -- if $heap_owners($heap_graph(S), HOBJECT n_b) = 1 /\ $heap_owners($heap_graph(S), HOBJECT n_a) = 1
 def $ref_return_retire_site(S, ptask*) = eps -- otherwise
 dec $ref_return_retire_queue(ptask*) : ptask*
 def $ref_return_retire_queue((RETURN_REF_UNWIND poperand z false porigin_source) :: (FINALLY_REF_RETURN porigin porigin_old poperand_old z_old) :: (FINALLY_PHASE porigin 3) :: (ORIGIN_RETURN porigin_restore?) :: ptask_tail*) = (RETURN_REF_UNWIND poperand z true porigin_source) :: ptask_tail*
