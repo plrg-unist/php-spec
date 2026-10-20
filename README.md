@@ -1061,6 +1061,14 @@ Three originals and 340 focused premises pass in the
 [pending modulo ledger](coverage/semantics/mod-nan-pending-review.json), fixing
 an original NORMAL stderr disagreement. Other operators and producers remain partial.
 
+Evaluated float copies now enter bitwise NOT's precision Deprecated handler.
+A selected ternary keeps `12.5` after the handler removes its source and flips
+the condition, producing strict integer `-13`. A by-value call completes once
+before a supplied handler Exception cancels delivery and preserves outer `100`.
+Two originals and 279 focused premises pass in the
+[copy BITNOT ledger](coverage/semantics/bitnot-copy-warning-review.json).
+Other producers, copied range/NaN and owning histories remain partial.
+
 Range-only bitwise NOT now resumes named Warning handlers for plain float CVs.
 The original `2^63` float survives source removal and produces `PHP_INT_MAX`
 after signed wrapping and complement. An infinity handler's supplied Exception

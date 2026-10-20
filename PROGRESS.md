@@ -7,6 +7,27 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Evaluated finite float copies now enter BITNOT's precision Deprecated protocol.
+The selected ternary saves `12.5`; writing/removing its source and flipping the
+condition cannot change strict integer `-13`. The by-value named return emits
+`P;` once before conversion; its handler's supplied Exception from line 20 cancels complement
+and outer assignment, preserving `100`. Immutable `KNOWN` snapshots remain valid
+after the originating CV reaches owner zero, without retaining a cell root.
+Two originals pass at `c33e7ad45`/409 and 140+139 focused premises at
+`fbd1a93f3`/409 in the [copy BITNOT ledger](coverage/semantics/bitnot-copy-warning-review.json).
+The genuine baseline retains its `P;` prefix before Unsupported with zero credit.
+Only 31 lines in modules 58/404 change; old numeric, producer lowering,
+Warning tag, dispatch/complement/root/unwind bodies stay exact. Real callbacks,
+raw no-store result versus driven metadata, cancellation, EOF and budgets pass.
+Other producers, copied range/NaN and owning/constrained histories remain partial;
+paused OP12/COMP88/Source47 and active shared207/class/array/Generator/dynamic/
+lifecycle selectors are untouched. No accepted source/native replay is needed.
+
+Composed over `53eeb3d98`/409, preserving incoming state, task and
+ordered-manifest paths. Source2/state279 retain their private409 cuts;
+independently reviewed absent incoming selectors require no joined execution
+or renewed credit.
+
 Unused zero-argument CURRENT now drops its snapshot before receiver cleanup
 at an already-refreshed normal node-free one-ancestor endpoint after selected
 initialization clears. CURRENT preserves both bits; assignment keeps its copy.
@@ -115,24 +136,8 @@ DEFINE NULL flag, numeric cast/self-add and typed NULL-key callbacks have no
 producer here. Incoming419/schema/ordered409 stay exact; COMP117 is absent/later.
 Source4/state1,165 retain private408 cuts without joined execution or renewed credit.
 
-Direct same-CV `$x += $x` now captures LEFT before the first Warning handler,
-then reads the changed CV for RIGHT. Initial `12.5tail` becomes `5.5tail` in H1;
-H2 writes `88`, but cached `12.5 + 5.5` still stores strict float `18.0`.
-A supplied second Exception instead preserves `88` and outer `100` without a store.
-Two originals pass at `2dd868194`/409 and 193+166 focused premises at
-`c256522f7`/409 in the [self-addition ledger](coverage/semantics/addassign-self-warning-review.json).
-The old CV Warning tags/capture/store/unwind bodies are reused; only modules
-55/404 gain the self entry/source/gate. Equal pointers, real handlers, fresh versus
-historical capture, owner1/EPS roots, raw/driven store, EOF and budgets are checked.
-Numeric algorithms, generic self-copy, dimensions and reference/alias/lifetime
-protocols stay exact. Other operands/compound operators and owning or constrained
-histories remain partial; paused OP12/COMP88/Source47 and active shared207/class/
-array/Generator/dynamic/lifecycle selectors are untouched.
-
-Composed over `7b3cd33d7`/409, preserving incoming state, task and
-ordered-manifest paths. Source2/state359 retain their private409 cuts;
-independently reviewed absent incoming selectors require no joined execution
-or renewed credit.
+Earlier direct same-CV self addition retains source2/state359 and both normal
+and supplied second-throw outcomes in the [self-addition ledger](coverage/semantics/addassign-self-warning-review.json).
 
 At Iterator47, pending SEND reached a normal node-free COMPLETE through one
 native ancestor. Only selected Upper clears its bit; a first pending Middle NEXT
