@@ -1754,6 +1754,12 @@ an unpinned method receiver retires only after the last Closure owner is release
 [Runtime Closure define review](coverage/semantics/define-runtime-closure-review.json).
 [Scoped REAL define review](coverage/semantics/define-scoped-runtime-closure-review.json).
 
+Bare named-function Closure values also publish under live function authority.
+Distinct first-class objects and direct calls share request static cells without
+Closure child edges. Retiring all Closures leaves a function-static child alive
+until an explicit later direct-function clear releases it.
+[Named Closure define review](coverage/semantics/define-runtime-named-closure-review.json).
+
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
 children while cast/query arrays retain COW. A private duplicate copy can keep
