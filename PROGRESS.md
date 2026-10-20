@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+All seven missing-CV comparisons now accept allocated flat DIRECT arrays of
+primitives or live ordinary non-Stringable object leaves, both captured and
+current. Captured COW preserves child identity; live-table replacement can
+release children inside the handler. Final table release drops child edges;
+destruction occurs only when no other object owner remains. Existing source,
+root and restore/discard machinery stays exact. ALIAS/nested/internal/Stringable
+leaves remain partial; paused COMP88 and A42 NULL-key restoration are untouched.
+
+New source10+2 passes at `c56e2875`/408; focused821/five groups and separate
+affected167/two groups pass at `a6db98493`/408. The original pre-main fixture
+elaboration failure retains zero credit: its nonexistent immutable field was
+replaced by the existing predicate, with runtime/source bytes unchanged and
+accepted source/native checks not repeated. Initial native2+4 retains
+`7944f78c7`/408; genuine ingress refusal retains `d3d306aa3`/408.
+[Object-array review](coverage/semantics/undefined-comparison-object-array-review.json).
+
 All seven missing-CV comparisons now accept live ordinary non-Stringable
 object counterparts, initially defined or callback-created, including stdClass.
 The current CV/reference binding supplies the counterpart against frozen NULL;

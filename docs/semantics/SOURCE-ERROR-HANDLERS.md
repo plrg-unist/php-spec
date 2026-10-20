@@ -140,7 +140,7 @@ again after the first read, including one removed by the first handler.
 All seven comparisons permit a live flat primitive array at the opposing CV on entry or return, including
 reference rebinding and COW. Both-missing/shared-name entries retain physical order.
 Current arrays compare by emptiness against frozen NULL; rebound scalars keep
-their ordinary rules. Nested/reference/object entries remain partial; the
+their ordinary rules. Nested/reference/internal-object entries remain partial; the
 [spaceship](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
 and [Boolean array resume reviews](../../coverage/semantics/undefined-scalar-compare-array-resume-review.json)
 record resume bounds, certificates, roots and discard. The Boolean extension
@@ -174,6 +174,13 @@ defined cell, without adding a saved object root. Rebinding can destroy the old
 object inside the handler; replacement lifetime follows current owners through
 normal return or supplied throw. Existing removal/retry and source certificates
 stay unchanged; see the [live-object review](../../coverage/semantics/undefined-comparison-live-object-review.json).
+The existing flat-array entry guard now receives the reached state and admits
+DIRECT primitive or live ordinary-object leaves. Saved tables retain their
+children through COW; current-table replacement may release them inside the
+callback. Final table release runs child destructors only when no other object
+owner remains. Source certificates, roots and restore/discard stay exact;
+ALIAS/nested/internal/Stringable leaves remain partial. See the
+[object-array review](../../coverage/semantics/undefined-comparison-object-array-review.json).
 Internal/Stringable objects, resources, nonflat arrays and wider producers remain partial.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.

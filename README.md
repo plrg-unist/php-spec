@@ -18,13 +18,13 @@ remains later research.
 
 [Comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.
-When any of the seven operators resumes, a handler-created flat primitive array
+When any of the seven operators resumes, a handler-created bounded flat array
 follows its current CV/reference binding; emptiness determines comparison against frozen NULL.
 This covers bounded spaceship operands and distinct direct-CV
 `==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
-The defined counterpart may already be a live flat primitive array at entry;
+The defined counterpart may already be a live bounded flat array at entry;
 its current scalar/array binding supplies the counterpart, with ordinary COW.
-Computed primitives stay captured at all seven comparisons; a computed flat primitive
+Computed primitives stay captured at all seven comparisons; a computed bounded flat
 array keeps its table through handler writes, COW and supplied-throw cleanup.
 Captured ordinary objects keep their identity and shared property writes. If the
 saved operand is the last remaining owner, its release runs the destructor before
@@ -34,6 +34,11 @@ it may run the old destructor inside the handler, while a new object stays owned
 by current CVs/references through comparison or catch. The saved read record adds
 no object owner. See the
 [live-object review](coverage/semantics/undefined-comparison-live-object-review.json).
+Flat DIRECT arrays may contain primitives and live ordinary non-Stringable objects.
+Captured tables retain their children through COW; replacing a live array can
+release children inside the handler. Releasing the last table owner drops its
+child edges; destructors run when no other object owner remains. See the
+[object-array review](coverage/semantics/undefined-comparison-object-array-review.json).
 Both-missing pairs, including one missing name twice, can resume if the first
 handler defines the later scalar, flat array or ordinary object. `$x == $x` can
 then be false and `$x > $x` true. Greater operators check source right first. All seven comparison operators

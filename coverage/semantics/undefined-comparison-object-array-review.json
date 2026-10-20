@@ -1,0 +1,103 @@
+{
+  "milestone": "COMP116 ordinary-object leaves in arrays at missing comparison reads",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "All seven operators admit allocated flat arrays of DIRECT primitive or live ordinary non-Stringable INSTANCE/STDINSTANCE values against frozen missing NULL, through existing captured and current-CV shapes.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "d0d543c877d96af97604153d6c194186b16be94b",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "39b19b9687d754bb65564d0332e17c0e36a7371aabe6c6b3106f0a757836f740"
+  },
+  "modules": 408,
+  "engine_basis": "zend_compare uses array truth against NULL without comparing entries. Saved operands retain array containers; COW and ordinary transitive child ownership determine destruction when those containers retire.",
+  "implementation": "The existing array-entry validator receives S and accepts DIRECT scalar or live ordinary-object leaves. Seven old fixture calls gain their reached state argument. Outer allocation/flat bounds, source certificates, saved/current roots, state/tasks, restoration, comparison and discard stay unchanged.",
+  "behavior": [
+    "Captured tables preserve child identity through source replacement and COW. Live CV replacement can release the old table and child inside the handler; current reference cells and separate copies keep their own lifetimes.",
+    "Multiple table owners do not multiply the edge from each DIRECT object entry. Releasing the final table owner removes its entry edges; a child destructor runs before the outer store or catch only if no other object owner remains.",
+    "Ten source agreements cover all seven operators, ordinary user instances/stdClass, callback-created arrays, current/captured COW and references, default/no-init reads and supplied throw with caller41/finally."
+  ],
+  "baseline": {
+    "report": "initial/baseline-report.json",
+    "sha256": "b4876f969f115aead5e7fb3b0157d52f19b50b877f672b743623cb2574644c1e",
+    "revision": "d3d306aa3d844dd0fafff2d55481c5b47446d5c6",
+    "native_revision": "7944f78c7723b40c656b96ed8db8f430468d5bd7",
+    "agreement_credit": 0,
+    "native": "Initial author2 and peer4 retain their actual canonical7944f78c7/408 cuts; peer model4 reuses native4. Changed-source author native8 is separately recorded atc56e2875/408.",
+    "model": "Genuine unchanged live EQ is accepted/checked then ingress Unsupported with empty streams at privated3d306aa3/408."
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "de5a165d16a9d00e3e273966208a622cac02b1dfcc79dc40ecd84a3477ddf69e",
+      "revision": "c56e2875d84c38887eef4efadce03e4192849c47",
+      "agreements": 6,
+      "unsupported_controls": 2
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "836527d05a55f7801777495d628dfda6f21cff509f721b19d6682673791602e2",
+      "revision": "c56e2875d84c38887eef4efadce03e4192849c47",
+      "agreements": 4,
+      "unsupported_controls": 0
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "bbe98377831851adb69ddf3cf322c3615366efd709a0bff16961db087e4b7288",
+      "revision": "a6db984939d57b682fb24ab89dc1c9dcd9fb5f9c",
+      "premises": 320,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "96a258a09705b2b15633f9bd3ff28fb82965eb41c9cc67d23a98c01d06f1f396",
+      "revision": "a6db984939d57b682fb24ab89dc1c9dcd9fb5f9c",
+      "premises": 501,
+      "groups": 3
+    }
+  ],
+  "totals": {
+    "source_agreements": 10,
+    "unsupported_source_controls": 2,
+    "state_premises": 821,
+    "state_groups": 5
+  },
+  "maintenance": {
+    "state": {
+      "report": "maintenance-state/report.json",
+      "sha256": "5c567a2b1ca82bf78998e693e84b2a0609c53404a5fd376deb6245b4c4acc1fc",
+      "revision": "a6db984939d57b682fb24ab89dc1c9dcd9fb5f9c",
+      "premises": 167,
+      "groups": 2
+    },
+    "historical_agreement_renewal": 0,
+    "scope": "Actual old108 current-array and old111 captured-array fronts stop at handler return, checking seven state-aware entry contracts with existing unallocated/internal/ALIAS/nested exclusions. No old comparison body or source agreement is renewed."
+  },
+  "validation": "CPU1 serial/fail-first/full reap,2GiB: native8 130/150/per15; model8 605/620/10k (two60/75, six45/60 CLI/record bounds); retained peer4 315/330/CLI60/record75. Author2 state275/290, peer3 state405/420, affected2 state275/290, per120 strictSL/dettrue/cachefalse. Inputs/HEAD stay stable, process groups empty; raw commands and exits are archived.",
+  "failures": [
+    {
+      "report": "author-state-failed/report.json",
+      "sha256": "bc3f9868d7ce4ae968511a53dd78815fcff66ded8c47eef4d2a464dae9b57869",
+      "revision": "c56e2875d84c38887eef4efadce03e4192849c47",
+      "agreement_credit": 0,
+      "failure": "First captured fixture failed during elaboration before main because S.IMMUTABLE is not a pstate field; no semantic premise ran and the live group was unrun.",
+      "correction": "Only that premise changed to the existing $array_immutable(S,n_array) predicate at a6db98493. Corrected captured161 and initially unrun live159 passed; source/native checks were not repeated."
+    }
+  ],
+  "compatibility": "Source10+2 retains c56e2875; focused821 and affected167 retain a6db98493. Runtime207 and source bytes are identical across these cuts; only the elaboration fixture predicate changed. Peer/affected checks passed their first executions.",
+  "divergences": [],
+  "remaining": [
+    "ALIAS/reference entries, nested arrays, internal/enum/Stringable object leaves and wider owning/reference-return producers remain partial. Paused COMP88 is untouched.",
+    "A42 NULL literal-key restoration has no producer here: these arrays use implicit integer keys and whole-CV references. No array/root/state/history machinery changes."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-116",
+  "artifact_manifest_sha256": "3b70746b0fbee55db7978b674af00d20ddadc1dbdda534f4c316b1ce2291cbf8",
+  "independent_reviewer": "/root/comp89_review",
+  "reproduction": [
+    "python3 tests/semantics/undefined_comparison_object_array_sources.py --phase native --output .tools/comp116-source-new",
+    "python3 tests/semantics/undefined_comparison_object_array_sources.py --phase model --output .tools/comp116-source-new",
+    "python3 tests/semantics/undefined_comparison_object_array_state.py --output .tools/comp116-state-new",
+    "python3 tests/semantics/undefined_comparison_object_array_review_state.py --output .tools/comp116-peer-state-new",
+    "python3 tests/semantics/undefined_comparison_object_array_maintenance.py --output .tools/comp116-maint-state-new"
+  ]
+}
