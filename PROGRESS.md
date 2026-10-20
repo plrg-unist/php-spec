@@ -7,7 +7,6 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-
 From-callable method Closure VALUES now publish under their saved source and
 invocation USER permission. Base-private selection stays distinct from a Child
 same-name method after callback/creator retirement. A captured factory can be
@@ -25,6 +24,15 @@ policies stay exact. Ordinary direct instance/static and captured-factory
 instance omitted/false originals are distinct from structural support for clones
 and inherited flags. Factory VALUE and wider domains/core remain partial.
 [From-callable Closure define review](coverage/semantics/define-runtime-from-callable-review.json).
+
+V91 composes over Source74 parent `75aa61535c97`/407 with its tested400 bytes
+and four scripts intact. Eight introduced runtime paths and the ordered manifest
+stay incoming-exact; selected INI_SET, missing-read, ref-return, Generator, dirty
+unary and lossy-key paths remain unselected. No state/heap/schema lift is needed;
+existing retained/debt lists remain empty. The original four-file inverse and
+whole incoming inventory/prefix checks pass. Native/source/state evidence keeps
+its private407 cuts and four raw roots; no joined execution or replay is added.
+
 Retained intrinsic `ini_set` Closures now resume NULL-option handlers with a
 separate table-free stdClass value across positional, named and mixed calls.
 The callable owner and value have distinct object roots; later option effects
