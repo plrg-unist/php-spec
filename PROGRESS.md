@@ -7,6 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Captured allocated flat DIRECT primitive arrays now survive missing `<=>`
+reads in either orientation. Literal, runtime constructor, assignment and
+ordinary by-value return snapshots preserve their earlier table through handler
+writes, COW and source removal. Existing TASK/RESULT/BASE roots retain and
+transfer that owner, then release it after comparison or supplied throw; otherwise
+unowned tables prune before catch. Two SPACE-only record arms and a factored value guard
+preserve Boolean domains, source certificates, resume/discard and state fields.
+
+Eight source agreements plus two Boolean/nested controls and 629 strict-SL
+premises/five groups (270 author + 359 independent) pass first attempts at
+`147f5eac2`/407, including raw temporary retirement, aliases/NEXT history,
+false/default, chosen Exception/caller41/finally and budgets. Separate affected
+57/one group and one old captured selector renew no historical credit. Initial
+native2+4 and genuine unchanged ingress refusal retain `b7ce3dd97`/407.
+Captured Boolean arrays, nested/reference/object entries and wider producers
+remain partial; paused COMP88 is untouched.
+[Captured-array review](coverage/semantics/undefined-spaceship-captured-array-review.json).
+
 All seven comparisons now admit an initially defined live flat DIRECT primitive
 array CV opposite a missing read. The missing result stays NULL while current
 scalar/array rebinding, checked quiet removal or unread second Warning follows

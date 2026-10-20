@@ -41,7 +41,7 @@ At `<=>`, empty gives 0;
 nonempty gives -1 with NULL left and +1 with NULL right.
 This includes both-missing and same-name entry: `$x <=> $x` can return -1 after
 the handler creates `[false]`. Current reference/COW bindings and next-index
-history survive; captured arrays and nested/reference/object entries
+history survive; nested/reference/object entries
 remain partial. The
 [spaceship](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
 and [Boolean array resume reviews](../../coverage/semantics/undefined-scalar-compare-array-resume-review.json)
@@ -52,7 +52,17 @@ Its current binding follows scalar/array replacement, checked quiet removal or
 unread retry. Initial table ownership stays with CVs, references, copies and pools;
 the saved read record adds no table owner. The
 [initial-array review](../../coverage/semantics/undefined-comparison-initial-array-review.json)
-checks entry, aliases/COW and budget resumption; captured/temporary arrays stay excluded.
+checks entry, aliases/COW and budget resumption.
+At `<=>`, an allocated flat DIRECT primitive array may also be captured from a
+literal, runtime constructor, assignment or ordinary by-value return. Its table
+stays captured while the handler changes or removes the source names; comparison
+uses the saved empty/nonempty value against frozen NULL. Existing saved
+TASK/RESULT/BASE roots retain the table, transfer on restore, and release the saved
+owner after comparison or supplied throw. Tables with no surviving owner retire
+before catch while aliases retain their COW effects. The
+[captured-array review](../../coverage/semantics/undefined-spaceship-captured-array-review.json)
+records source and ownership checks. Captured arrays at Boolean comparisons,
+nested/reference/object entries and wider producers remain partial.
 Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also suspend with one missing operand
 and a defined scalar counterpart. The missing value stays null while the opposing
 wrapper follows callback writes, late reference creation and rebinding. A missing

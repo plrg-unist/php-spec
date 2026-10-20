@@ -1,0 +1,97 @@
+{
+  "milestone": "COMP111 captured flat arrays at missing spaceship reads",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "At <=> only, an opposing captured KNOWN array may be live, allocated and flat with DIRECT primitive entries. Literal, runtime constructor, assignment and by-value return snapshots retain their earlier value across handler writes, COW and source removal.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "bf6c0ef17a80ac6139e5d26fb8ecbbd4fb8bb4c8",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "29facbe4bc37b8d661edc54f3b53f170d6801c59bf687e8cfd1697dfadf37cc6"
+  },
+  "modules": 407,
+  "engine_basis": "ZEND_SPACESHIP fetches OP1 then OP2, calls compare_function and frees temporary operands. Each missing read yields language-level NULL after its Warning; the opposite temporary remains a captured value, while CV sources remain live. zval_undefined_cv suppresses a later Warning under a pending exception.",
+  "implementation": "Factor the existing live-flat-array value check and add two exact SPACE captured-record arms. Shared Boolean array operands stay VARIABLE-only. Existing source certificates, saved TASK/RESULT/BASE roots, resume, discard, tasks and state fields remain unchanged.",
+  "behavior": [
+    "Eight exact sources cover both captured orientations, unpooled empty NEXT1 and nonempty snapshots, literals and by-value returns/assignments, alias COW, source/saved-name removal, false/default, and chosen Exception identity/caller41/finally. Boolean and nested captured-array controls remain explicit Unsupported.",
+    "Five source-reached strict-SL groups prove saved TASK/RESULT roots, captured owner transfer and retirement, raw restore/compare and throw discard before catch, surviving aliases/NEXT history, compiled source/line/CODE/operator/liveness bounds, and zero/split budgets."
+  ],
+  "baseline": {
+    "report": "initial/baseline-report.json",
+    "sha256": "a9062454fe1a830808da3c7a856d7898f529e98e21a3db15db2b9fb05cc6fdb2",
+    "revision": "b7ce3dd97f61ef9d9ef2d8d1bc3aa1d4d4ed4fda",
+    "agreement_credit": 0,
+    "native": "Initial author2 and peer4 retain b7ce3dd97/407. Peer model4 reuses retained native4; changed-source author native6 is separately retained.",
+    "model": "Genuine unchanged captured-right constructor source is accepted/checked then ingress Unsupported with empty stdout/stderr."
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "59cffdf656b785b5c8869ade32b190b508e44641057cd4bf021917c3155e9575",
+      "revision": "147f5eac22652408d4216019e546eb693554fdd7",
+      "agreements": 4,
+      "unsupported_controls": 2
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "1008197e498d446a4a813b4568351cb2679859afb2def68c7805058ff6c2e11e",
+      "revision": "147f5eac22652408d4216019e546eb693554fdd7",
+      "agreements": 4,
+      "unsupported_controls": 0
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "531454bb2b8f8b54a7daecd154cf4498580e05766a497a9e49512198f42ae839",
+      "revision": "147f5eac22652408d4216019e546eb693554fdd7",
+      "premises": 270,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "bfca93b46d77e0ae20b3948c8179ae1d23e1e9800328d7f77c6506fe03507be0",
+      "revision": "147f5eac22652408d4216019e546eb693554fdd7",
+      "premises": 359,
+      "groups": 3
+    }
+  ],
+  "totals": {
+    "source_agreements": 8,
+    "unsupported_source_controls": 2,
+    "state_premises": 629,
+    "state_groups": 5
+  },
+  "maintenance": {
+    "state": {
+      "report": "maintenance-state/report.json",
+      "sha256": "89e14453127832e844b5ef51b424d749a4e6a7ceb64863cf3a57d4913c377e79",
+      "revision": "147f5eac22652408d4216019e546eb693554fdd7",
+      "premises": 57,
+      "groups": 1
+    },
+    "source_selectors": {
+      "report": "maintenance-source/report.json",
+      "sha256": "257faf0f9311c905e216ed16469f9a9b4ca38617c39eef1bbe5b30795f92f028",
+      "revision": "147f5eac22652408d4216019e546eb693554fdd7",
+      "selectors": 1
+    },
+    "historical_agreement_renewal": 0,
+    "scope": "Only the old110 SPACE front through captured-result entry/invoke, plus its former literal-captured source boundary native/model selector. Original source bodies and unrelated historical campaigns are not replayed."
+  },
+  "validation": "CPU3 serial/fail-first/full reap,2GiB: native6 hard100/wall120/per15; model6 hard465/wall480/CLI45/record60; retained peer4 hard315/wall330/CLI60/record75. Author2 state275/290 and peer3 state405/420, per120 strict SL/dettrue/cachefalse; maintenance1 hard145/wall150/per120; one selector100/120/child80. Raw reports retain commands, inputs, exits and observations.",
+  "failures": [],
+  "remaining": [
+    "Captured Boolean arrays, nested/reference/object array leaves, reference-return wrappers, other owning operands and wider producers/lifetimes remain partial; paused COMP88 untouched.",
+    "New source/state and affected checks pass first executed attempts at147f5eac2/407. Initial native/genuine cuts retain b7ce3dd97/407; no historical agreement is renewed."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-111",
+  "artifact_manifest_sha256": "657da6cb91ae7698e3ed00904f65f122fe259179938e227101e35e493adc3755",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_spaceship_captured_array_sources.py --phase native --output .tools/comp111-source-new",
+    "python3 tests/semantics/undefined_spaceship_captured_array_sources.py --phase model --output .tools/comp111-source-new",
+    "python3 tests/semantics/undefined_spaceship_captured_array_state.py --output .tools/comp111-state-new",
+    "python3 tests/semantics/undefined_spaceship_captured_array_review_state.py --output .tools/comp111-peer-state-new",
+    "python3 tests/semantics/undefined_spaceship_captured_array_maintenance.py --output .tools/comp111-maint-state-new"
+  ]
+}
