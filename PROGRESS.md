@@ -2407,48 +2407,37 @@ joined actor, accepted replay or renewed execution credit.
 The earlier mixed CV/selected-reference arithmetic route retains source9/state858
 in its [review ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 
-M129 preserves a generated TypeError from a Holder's typed-alias write during
-owning-reference return retirement. Left still has its object constraint when
-its destructor writes a literal string, so the write rejects without changing
-the referent. H runs; HA and D's later DA do not. The local Throwable catch now
-receives that error, distinct from both outside supplied objects, with its own
-assignment origin/line2 and Previous NULL. Replay/return preserves Notice15,
-a fresh detached NULL and prior b7; later W/NQ/right replacement matches PHP.
+M130 preserves a source-local catch after a later computed owning return throws.
+D retires normally, then C throws the outside supplied object with B/A pending.
+Existing destructor order already agreed; the repair restores C/K, D2/D1/S,
+Notice at completed D's line21, a fresh detached NULL and prior b7.
 
-The isolated 270 admission arm requires the exact finite five-statement body, emitted
-ordinary global target equal to the Holder's own ALIAS cell, and its own source
-first in the already validated list. Existing nonowning class history recognizes
-the canonical assignment TypeError after the Holder/slot/source are gone.
-Planned given remains possible if another owner keeps Holder alive; unreachable
-other is excluded on this failing-write arm. Old method domains, history payload,
-roots and existing write, storage and replay transitions stay unchanged. Existing
-write rejection, cleanup and later constraints already matched the baseline.
+A SOURCE-only tag retains the actual true C queue and one completed D cursor.
+Exactly one missing protected-finally path, D's singleton computed return,
+compiled line and ordinary by-value callee, D/C links and initial ORIGIN bind
+that source authority after D is freed. Replay retains D_NULL/C_NULL/B/A and
+NoticeD21. The added direct-method guard excludes wider Holder-clearing throws;
+old false/Holder/one-cleared paths, generic cleanup, roots and GC are unchanged.
 
-One original agrees at `3fae596f5`/408 in 164.404<240; author 165/2 and independent
-217/2 pass 382 Boolean/4 raw checks in forward chains. Initial target, order,
-private and held controls are helper-only. Four exact raw/public capture, parent replay,
-restored-D receipt and holder-free clear transitions pass; the peer owns one full
-ending. Native 1/baseline 0 and separate 157/2 diagnosis keep c75c/408. The original
-peer fixture failure keeps zero credit; its protected message-key correction
-repeats only the affected peer under strict45/state720. Accepted author/source
-cuts stay closed. Stable pins, quiet workers and full parent/group reap are
-retained. Wider bodies/targets/value kinds/types, source orders, fewer outer
-slots, reentry and GC remain partial.
+One distinct original agrees at final `25e7a1f6c`/408 in 50.272<120; its initial 78e8
+comparison remains separate. Author 129/2 retains 78e8; independent 162/2 retains
+25e7, totaling 291 Boolean/4 raw across explicit cuts. The final +2 guard holds
+pointwise on the author's unchanged direct C3 method; the peer proves it in
+borrowed f and post-free pending. No author replay. Four exact raw/public states
+cover D completion/C capture, pending replay and D_NULL resume/REF_RECHECK.
+BYREF/capture-ORIGIN controls are helper-only; missing-list facts are cardinality
+checks. Mirrored D LINE/SOURCE mutations preserve heap/supplied identity before
+public refusal; the peer owns one ending. Original compile-only filter, active-C
+finder and caller-table fixture failures remain zero. Only the corrected peer
+retries
+under strict 45/state 300; accepted source/author cuts remain separate.
+Native/baseline and separate 87/3 diagnosis retain 7944/408. Wider prefixes/throw forms,
+fewer remaining slots, reentry and GC remain partial; this is bounded structural
+authority, not general reachability.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
-M128's unchanged 4105/407 source 1 and 272/4 retain real held-owner/planned throw,
-early combined constraint and later last-owner other/source relaxation. M127's
-retained-class source 1/374+4 and original parser/decoder failures keep their own
-cuts. No accepted historical campaign is renewed.
-
-M129 composes over actual `d3d306aa3`/408. Only 270 changes and stays byte-exact
-3fae; every other parent spec path and ordered manifest is preserved. Incoming
-cached clone, INI/DEFINE, missing/loose object comparisons, Generator SEND,
-array-literal float/NULL keys and bitnot/modulo Warning selectors have no producer.
-Strict identity/instanceof remains on its existing route. New 30 task alternatives
-add no pstate/default field; 138/359/156 are unchanged. Private source 1/382+4 and
-native/baseline/157+2 keep their original cuts, with no joined actor or renewed
-execution credit.
+M129's source1/382+4, original protected-key failure and all earlier cuts remain
+separate; no accepted historical campaign is renewed.
 
 M128 composes as documentation only over actual `6e17b3bc23`/408. Every spec path
 and the ordered 408 manifest remain parent-exact. Incoming unary copied-value
