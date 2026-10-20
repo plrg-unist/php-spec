@@ -96,7 +96,7 @@ def literal(initial, stdout):
         '$closure_lexicals(pfunction_flag.CODE.EXPRESSIONS) = [LEXICAL ($ptascii("cell")) true z_capture]',
         '$typed_closure(S,n_flag)', '$closure_callable(S,n_flag)',
         '$dynamic_define_invalid_flag_kind(S,POBJECT n_flag)',
-        '$dynamic_define_value_class(S,POBJECT n_flag) = eps',
+        '$dynamic_define_value_class(S,POBJECT n_flag) = (PVOBJECT)',
         '$node_children(S,HOBJECT n_flag) = [HCELL n_cell]',
         'n_cell <- S.REFCELLS', 'S.STORE[n_cell] = DEFINED (PINT 23)',
         'S.STORE[n_flag_cv] = DEFINED (PBOOL false)', 'S.STORE[n_calls] = DEFINED (PINT 0)',
