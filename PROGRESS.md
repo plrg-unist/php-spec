@@ -7,6 +7,32 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained intrinsic `ini_set` receivers now reject a separate bare `ini_get`
+Closure value after NULL-option handling, without invoking that value. The old
+setter and getter remain distinct HOBJECT roots when argument effects rebind the
+live callee to the same getter. Returning handling reaches empty API/rawNULL
+explicit-wrapper parameter2 TypeError; supplied Exception cancels rejection.
+Strict ordinary parameter1/handler0 precedes same-owner explicit weak reception;
+real getter→old setter→same getter recovery remains usable.
+
+Four exact source comparisons and 1,595 state premises (384+360+422+429) pass
+first attempt at `e9d360e44`/`425c5ef28`/407. Initial `4c1ddc2fc` native4/baseline0
+and affected packets use CPU4; nine stable/reaped reports PASS without failures
+or retries, expected Deprecated12/17 only and quiet workers. Only the getter arm's
+OWNER-empty restriction is deleted; invocation/source facts, value-kind/weak guards,
+helpers/finish/trace/root/discard/GC and historical tests remain exact, without replay.
+Native E/W/N/I/I differs from state-only dual task roots/three-frame raw value
+edges/full discard, with no invented receiver edge. Named/unpacked/PIPE forms,
+other callable kinds and sole-owner lifetimes remain partial; paused paths untouched.
+[Retained setter/getter-value review](coverage/semantics/ini-set-owned-null-getter-closure-value-review.json).
+
+Composed over `d67ebb92d`/407 with module172/four tests private-exact and all
+other runtime/schema/ordered-manifest bytes parent-exact. Incoming missing-read
+array comparisons, Generator SEND, selected shift conversion, float-key reference
+debt and named INSTANCE magic-call selectors are absent. Incoming checkpoints stay
+preserved except the reviewed stale79 receiver qualifier. Source4/state1,595 retain
+private407 cuts without joined execution or renewed credit.
+
 All six Boolean comparisons now retain captured allocated flat DIRECT primitive
 arrays across missing-CV Warnings, including both source orientations, literal,
 runtime constructor, assignment and by-value return snapshots. Array-only source
@@ -119,7 +145,7 @@ change: a live exact-kind predicate, positional admission and existing TypeError
 delegation. Quiet-value/Closure allocation/trace/root/discard/GC and historical
 tests stay exact, without old replay. Native empty-option/getter-identity evidence
 differs from state-only captured HOBJECT/two-frame owning trace/full discard.
-Other Closure kinds, retained setter receivers, named/packed/PIPE forms and
+Other Closure kinds, named/packed/PIPE forms and
 sole-owner lifetimes remain partial; paused boundaries are untouched.
 [Rejected getter Closure INI review](coverage/semantics/ini-set-null-getter-closure-value-review.json).
 

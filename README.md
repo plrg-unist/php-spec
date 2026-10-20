@@ -422,8 +422,18 @@ the value TypeError; supplied throw preserves raw NULL and the captured getter a
 cancels rejection. The value is never invoked during reception. Four source
 comparisons and 1,374 state premises cover earlier callee/option/value capture,
 owning trace edges, strict option priority, precise discard and real getter reuse
-before and after setter recovery. Other callable kinds, retained setter receivers,
-named/unpacked forms and sole-owner lifetimes remain partial.
+before and after setter recovery. Other callable kinds, named/unpacked forms
+and sole-owner lifetimes remain partial; retained positional setters follow below.
+
+[Retained setters with rejected getter Closure values](coverage/semantics/ini-set-owned-null-getter-closure-value-review.json)
+now keep the original `ini_set` receiver and a separate `ini_get` value through
+positional NULL reception, even when value effects rebind the live callee to that
+same getter. Returning handling reaches the value TypeError with empty API option
+and raw NULL explicit-wrapper option; both retain the getter. Four source
+comparisons and 1,595 state premises cover distinct callable roots, supplied-throw
+cancellation, strict ordinary versus weak explicit calls, precise discard and
+real getter/old-setter/getter recovery. Named/unpacked/PIPE forms, other callable
+kinds and sole-owner lifetimes remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
