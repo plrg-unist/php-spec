@@ -1525,6 +1525,11 @@ unused current copy and receiver; assignment keeps its copy. Argument-time raw
 row or slot rebinding preserves the earlier argument and the current used by
 finally. See the
 [direct refresh review](coverage/semantics/generator-unused-direct-refresh-send-review.json).
+Pre-refreshed direct pending SEND also preserves this order when the copied
+child return owns no heap node. Its current snapshot survives normal argument
+COW, then retires before finally; assignment keeps its copy. The tested integer,
+NULL and string returns add no owning return root. See the
+[scalar-return SEND review](coverage/semantics/generator-unused-scalar-return-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit

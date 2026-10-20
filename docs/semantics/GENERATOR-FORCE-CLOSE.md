@@ -159,6 +159,13 @@ current snapshot retires and physical finally begins. A row rebind preserves
 the old argument; clearing a rebound object current can throw during the live
 finally, with Previous NULL. Copied returns retain their separate lifetime; see
 the [direct refresh review](../../coverage/semantics/generator-unused-direct-refresh-send-review.json).
+With a node-free copied return, pre-refreshed direct pending SEND still keeps
+its unused current copy through normal argument cleanup and drops it before
+forced finally. Argument-time row COW keeps the old snapshot through ARG-END;
+finally sees the new row. Clearing an object current can throw during the live
+finally and skip J-END, with Previous NULL. These cases have no retained owning
+return; the existing close claim supplies the callback context. See the
+[scalar-return SEND review](../../coverage/semantics/generator-unused-scalar-return-send-review.json).
 Pending NEXT preserves that parked return across the same close transfer but
 creates no current copy. A temporary sole receiver releases its cache during
 storage cleanup, before caller delivery; a throwing cache has no older caught

@@ -7,6 +7,36 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pre-refreshed direct pending SEND now releases its unused owning current copy
+correctly when the normal simple-CV child return owns no heap node. The snapshot
+survives normal argument mutation, then retires before receiver finally;
+assignment keeps its copy. Tests distinguish integer `0`, NULL and a literal
+string return from the owning current array/object. Argument-time row COW keeps
+the old snapshot through ARG-END, while a finally-time slot clear can throw a
+RuntimeException with Previous NULL. No owning return root is manufactured.
+[Scalar-return SEND review](coverage/semantics/generator-unused-scalar-return-send-review.json).
+
+Four native observations and the genuine NORMAL order disagreement retain
+`710dbeff2`/407. Four source agreements and strict407 pass at `14e2bd9d0`;
+gate4 and 498 focused premises (262 author +236 independent; 478 local +20
+generic) pass at `91e20f6d9`. Baseline recordfalse/agreement0 is preserved.
+All post-change checks pass first execution at original caps, without failures,
+retries, historical renewal or accepted replay; actors are reaped/CPU2 released.
+
+Only module289 gains a disjoint node-free identity arm with source/tail, empty
+held/task owners and inactive-collection checks. Owning-return receipts,
+ancestor/child-prefix arms, module270, root functions, close and collector bodies
+stay unchanged. Wider input histories, abrupt argument callbacks, nonpending
+body entry and collection remain unvalidated; no global input-registry guard
+is claimed.
+
+Composed over `3cd1251b4`/408, preserving tested289 and six tests byte-for-byte.
+Incoming INI/DEFINE, ordinary typed-ref history, selected numeric-warning,
+float-key callback and magic integer property-ADD selectors are unselected here.
+All other incoming runtime/schema/default/root/ordered-manifest/pipeline bytes
+remain parent-exact. Source4/strict407/state498 retain their private cuts and
+baseline disagreement, without joined execution, accepted replay or renewal.
+
 Selected main-scope CV receivers and literal inherited-private integer property
 names now support `+=`: the named integer RHS runs before receiver lookup,
 then the chosen object stays pinned through Get/addition/Set.
@@ -105,9 +135,9 @@ float-key typed/property borrowing have no producer here. The entire incoming
 checkpoint tail remains unchanged; source4/state1,261 retain private407 cuts
 without joined execution or renewed credit.
 
-Direct pending SEND can now refresh one allocated closed child without a prior
-getter at a normal owning simple-CV return. Cleanup releases child, ignored
-argument, unused current copy and receiver in that order; assignment keeps its
+At Iterator43, direct pending SEND could refresh one allocated closed child
+without a prior getter at a normal owning simple-CV return. Cleanup releases
+child, ignored argument, unused current copy and receiver in that order; assignment keeps its
 copy. Argument-time raw-row COW or object rebinding preserves an older argument
 while finally mutates current. A rebound cache can throw RuntimeException inside
 the live finally, with Previous NULL and its copied return still independent.

@@ -192,6 +192,13 @@ owners, then survives child retirement independently of current. The raw cell
 can follow an argument-time rebind while the argument retains its earlier value.
 See the
 [direct refresh review](../../coverage/semantics/generator-unused-direct-refresh-send-review.json).
+The direct identity case also authenticates a simple-CV COMPLETE whose copied
+return owns no heap node. Source/tail, empty held/task owners and inactive
+collection bound the endpoint; the owning-return receipt stays separate. The
+current copy still owns its array or object through normal argument cleanup.
+After argument COW, the old snapshot and live raw row have distinct containers
+and element edges. No child prefix or owning return is manufactured; see the
+[scalar-return SEND review](../../coverage/semantics/generator-unused-scalar-return-send-review.json).
 Literal pending NEXT takes the same initialization-only return through a direct
 or finite native-linked receiver, preserving the actual parked source and frame.
 Its NULL result owns no current snapshot. After a raw-row write performs COW,

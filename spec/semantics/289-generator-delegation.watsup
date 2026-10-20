@@ -274,6 +274,22 @@ def $eager_task_inputs(S, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue])) = $v
 def $generator_unused_send_refresh(S, S, pgeneratorop, eps) = true
   -- if $generator_pending_detached_send(S, pgeneratorop)
   -- if $generator_pending_return_leaf(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1)) =/= eps
+;; A node-free copied return adds no retained owner. Its owning current copy
+;; still survives argument cleanup and retires before this direct receiver.
+def $generator_unused_send_refresh(S, S, pgeneratorop, eps) = true
+  -- if $generator_pending_detached_send(S, pgeneratorop)
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PARKED = eps
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = eps /\ pgeneratorfrom.ACQUISITION = eps
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.TODO = (GENERATOR_FROM_COMPLETE pgeneratorop.OBJECT pgeneratorfrom.SITE n_child pvalue_return) :: ptask_tail*
+  -- if $value_nodes(pvalue_return) = eps
+  -- if $generator_return_site(S, pgeneratorop.OBJECT, pgeneratorfrom.SITE)
+  -- if $generator_input_tail(S, pgeneratorfrom.SITE, ptask_tail*)
+  -- if pframe.HELD = eps /\ $tasks_nodes(ptask_tail*) = eps
+  -- if S.GC.ACTIVE = eps
 def $generator_unused_send_refresh(S, S_refreshed, pgeneratorop, [HOBJECT n_child]) = true
   -- if $generator_pending_detached_send(S, pgeneratorop)
   -- if S_refreshed = $generator_from_refresh(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1))
