@@ -3839,6 +3839,16 @@ A supplied setter Exception preserves the same catch and destination `42`.
 [Four originals and 746 focused premises](coverage/semantics/magic-coalesce-assignment-review.json)
 cover these paths; wider receivers, RHS values and reentry remain partial.
 
+Selected main-scope CV receivers and literal inherited-private integer property
+names now support `+=`. The named integer RHS runs before receiver lookup;
+the operation then pins that selected object through Get,
+addition and Set, even when Get clears the CV. Separate handler holds end before
+the outer hold; computed `7` survives receiver destruction changing a live global
+to `99`. Supplied Get/Set throws preserve the same catch and destination `42`.
+[Four source agreements and 891 focused premises](coverage/semantics/magic-property-addassign-review.json)
+cover this quiet, in-range slice. A native `'5tail'` Get result warns;
+the model explicitly refuses it. Other kinds, operators and access forms remain partial.
+
 Inherited private writes now invoke a public `__set(string $name, $incoming): void`
 for selected external CV/literal assignments. The setter receives integer `7`,
 but a used CV RHS is read for the result after receiver release: callback `99`

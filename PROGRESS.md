@@ -7,31 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Direct missing instance calls now preserve named string keys and mixed send
-order through inherited public `__call(string,array)`. Earlier main-CV send `7`
-survives a later argument's mutation of that same cell to `99` and receiver-CV
-clearing. Named-only parameter/buffer sharing has two table owners and one
-Payload edge; explicit `unset($arguments)` leaves the Payload alive through `A`.
-After compiled locals, the buffer releases before the borrowed receiver, preserving
-cached `7` or the same supplied throw with destination `42` unchanged.
+Selected main-scope CV receivers and literal inherited-private integer property
+names now support `+=`: the named integer RHS runs before receiver lookup,
+then the chosen object stays pinned through Get/addition/Set.
+Get clearing the CV leaves Set on that object. Separate inner handler holds end
+before the outer hold; cached `7` survives receiver destruction writing live `99`.
+Supplied Get/Set throws preserve the same Exception and destination `42`.
 
-Three sources pass at `7772c5121`/407. Unique 559 focused premises (536 reached
-+ 23 derived) retain selection 195 at `4c8943a6a` and corrected owning 179/throwing
-185 at `2c4ea4154`. The genuine baseline has three consumer Unsupported results
-and one preexisting compiler-control agreement. Four retained native tuples are
-accepted under the corrected fatal-trace template; the original recorder failure
-and stale-STORE fixture failure retain zero credit. Runtime changes only modules
-30 and 414; shared positional/static/scoped helpers and generic binding/cleanup
-stay compatible without replay. Static/scoped named, unpacked/reference sends
-and wider argument/lifetime forms remain partial.
-[Named magic-call review](coverage/semantics/magic-named-call-review.json).
-
-Composed over `47f1fc251`/407 with tested module 414 and all six tests
-private-exact. Module 30 preserves incoming selected-call OWNER and operator tags
-beside the named target/task variants; ordered 407 and other runtime/default/root
-bytes remain incoming-exact. Unproduced INI/DEFINE, reference-return, Generator,
-missing-read and array/operator-warning selectors require no joined execution.
-Source3/state559 retain their separate cuts without accepted replay.
+Four source agreements at `1541d9a22`/408 and 891 focused premises (870 reached
++ 21 derived) at `c6c08f537`/408 pass on the four actual histories. The genuine
+baseline has four consumer Unsupported results. The separate native `'5tail'`
+Warning/Set control remains outside the quiet PINT/in-range slice and is explicitly
+refused with zero agreement. Original admission, fixture/driver failures and two
+diagnostics retain zero credit. Runtime changes only module 30, new 418 and the
+ordered manifest; existing Get/Set, ordinary RHS/arithmetic and generic cleanup/GC
+remain unchanged. Wider kinds/operators/receivers/reentry remain partial.
+[Magic property += review](coverage/semantics/magic-property-addassign-review.json).
 
 Ownerless positional `ini_set(NULL, value)` now retains a live exact bare
 `ini_get` Closure value across argument and handler rewrites. Returning handling

@@ -781,6 +781,28 @@ their earlier campaigns are not renewed. Reference/owning RHS values, no-Get or
 untyped-Isset variants, Get/RHS throws, wider receiver/property forms and reentry
 remain partial. No generic ownership, destruction, WeakMap or GC rule changes.
 
+Selected main-CV/literal inherited-private integer `+=` now composes the existing
+by-value `__get($name)` and `__set(string $name, $incoming): void` signatures.
+A named no-argument, nonreference integer-returning RHS runs before receiver
+lookup. Once selected, a separate outer hold keeps that object through Get,
+addition and Set; clearing its CV in Get does not redirect Set. Each handler
+retains its own inner hold. Raw PINT operands and an in-range integer sum are
+required. The used result caches `7` before receiver destruction changes the
+live global to `99`; supplied Get/Set throws skip the outer store and preserve
+the same Exception and destination `42`.
+
+[Four source agreements and 891 premises (870 reached + 21 derived)](../../coverage/semantics/magic-property-addassign-review.json)
+check post-RHS selection, actual handler receives, saved caller authority after
+CV nulling, separate holds, cleanup receipts, source refusals and PREP budgets.
+The read descriptor has DECL absent because the inherited private storage key is
+mangled; a separate physical property origin authenticates the Set continuation.
+Existing Get verification remains unchanged. A native `'5tail'` Get result
+warns then stores `7`; the model refuses that out-of-slice raw kind before
+Warning/Set, with zero agreement. Original admission/fixture/driver failures and
+two localization diagnostics retain zero credit. Wider receivers/names, RHSs,
+coercions, overflow, references, hooks and reentry remain partial. Declaration,
+inheritance, ordinary arithmetic, generic cleanup and GC rules are unchanged.
+
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and
 promoted nonnullable types do not acquire ordinary implicit nullable widening.
