@@ -246,7 +246,8 @@ extend that quiet-value domain to ordinary named and mixed arguments. Reversed
 `value:`/`option:` calls capture the earlier value before later option effects;
 handler and strict-error traces retain normalized `[NULL, value]` arguments.
 Four additional originals and 746 premises pass, including false/default delivery
-and throwing-handler cancellation. Packed and PIPE forms remain partial.
+and throwing-handler cancellation. Packed forms beyond the bounded follow-ups
+below and PIPE remain partial.
 
 [Retained intrinsic NULL INI calls](coverage/semantics/ini-set-owned-null-option-review.json)
 extend the quiet-value continuation to positional `ini_set` Closures. The original
@@ -261,7 +262,7 @@ now preserve the original Closure and early value across reversed named argument
 effects. Native `__invoke` arguments remain numeric and normalized. Four originals
 and 928 state premises cover true/false handlers, throwing cancellation, strict
 ordinary versus weak explicit calls, owner roots and reuse of the retained setter.
-Packed forms beyond the numeric follow-up below, PIPE, sole-owner lifetimes
+Packed forms beyond the unpack follow-ups below, PIPE, sole-owner lifetimes
 and wider values remain partial.
 
 [Numeric unpacked retained NULL INI calls](coverage/semantics/ini-set-owned-unpack-null-option-review.json)
@@ -269,7 +270,21 @@ now preserve the original Closure and captured arguments from one numeric two-it
 pack across live callee and pack mutations. Explicit wrapper arguments remain
 normalized `[NULL, value]`; ordinary strict calls still reject NULL first.
 Four originals and 914 state premises cover return, throw, literal-source authority
-and reuse of the retained setter. Other packs, PIPE and wider values remain partial.
+and reuse of the retained setter. Multiple packs, PIPE and wider values remain partial.
+
+[Named unpacked retained NULL INI calls](coverage/semantics/ini-set-owned-named-unpack-null-option-review.json)
+now cover one named or mixed-key pack. Array elements run in insertion order;
+reversed `value`/`option` keys normalize to slots1/0 without replacing the earlier
+captured value. Four source comparisons and 1,001 state premises cover returning
+and throwing handlers, strict ordinary versus weak explicit calls, and owner reuse.
+Multiple packs, PIPE, sole-owner lifetimes and wider values remain partial.
+
+[Direct and selected unpacked NULL INI calls](coverage/semantics/ini-set-unpack-null-option-review.json)
+now resume handlers through one numeric, named or mixed two-item pack. Earlier
+values and the selected function survive later array and handler writes. Four
+originals and 953 state premises cover true/false handling, throwing cancellation,
+strict NULL priority, source authentication and normal setter recovery. Multiple
+packs, PIPE and wider values remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -495,6 +510,14 @@ Four originals and 465 focused premises are retained in the
 [second-Warning ledger](coverage/semantics/addassign-rhs-warning-review.json).
 Other target/producer classes and wider lifetimes remain partial.
 
+Failed delayed RHS conversion in that plain-CV `+=` route now reports the
+live operand types without storing or detaching a late target alias. Callback
+arrays produce `array + array` TypeError without retrying union; a bool and bad
+text produce `bool + string`. Two originals and 273 focused premises preserve
+array identities/items/counts and alias write-through in the
+[delayed-RHS failure ledger](coverage/semantics/addassign-rhs-failure-review.json).
+Wider values, producers and lifetimes remain partial.
+
 [Stringable compound concatenation352](coverage/semantics/compound-string-live-rhs-review.json)
 reads a defined RHS CV after the left conversion, preserves the non-reference
 self-CV fast path, and retains evaluated temporary/reference operands through
@@ -656,7 +679,14 @@ writes. A repaired old RHS `5.5` yields `17.5` with one Warning even when its na
 is rebound to `2tail`; unrepaired text uses live bool/string TypeError labels.
 Four originals and 428 focused premises cover these routes; the supplied first
 throw is source-only. The [ADD repair ledger](coverage/semantics/add-repair-review.json)
-retains the baseline. Owning/constrained/expired cells and wider forms remain partial.
+retains the baseline. Other owning/constrained/expired cells and wider forms remain partial.
+
+Ordinary ADD now rejects delayed flat-array conversion using the live selected
+types, without retrying union or storing the outer result. An old RHS array stays
+selected after its name is rebound; callback arrays and aliases survive the error.
+Two originals and 296 focused premises check these paths and pool/cell owners in
+the [ADD array-failure ledger](coverage/semantics/add-array-failure-review.json).
+Other producers, nested/owning leaves and wider lifetimes remain partial.
 
 Leading-numeric-string `-` and `*` now retain both selected reference cells and
 numeric holders through named Warning handlers. A first handler can repair an
@@ -1618,7 +1648,7 @@ Byte-only string leaves, including compiled literals, preserve their exact bytes
 through array copying, query COW and duplicate cleanup, including empty, one-byte
 and binary values. Existing string carriers retain their own identity checks.
 [Literal-string array review](coverage/semantics/define-literal-string-array-review.json).
-Uncertified owning values and wider array warning/flag paths remain partial.
+Other owning values and wider array warning/flag paths remain partial.
 String-name `define` with an omitted/false flag now shares already-certified
 stdClass donors. Named/selected calls preserve the captured pointer through later
 CV changes, and duplicate handlers keep the old binding and property writes on
@@ -1650,6 +1680,12 @@ Certified Closure values can be defined directly, retaining pointer identity and
 shared static cells through duplicates, queries and a pending ignored-Warning
 exception. Ordinary unrecorded Closure values remain Unsupported.
 [Certified Closure define review](coverage/semantics/define-certified-closure-review.json).
+
+Ordinary live class instances without a constant-NEW record can also be defined
+directly or as array leaves. Queries retain their identity and shared properties.
+An unpinned duplicate candidate is destroyed on retirement, including before
+catch when only the private copied array still owns it.
+[Runtime object define review](coverage/semantics/define-runtime-object-review.json).
 
 Fresh definitions also copy nonempty array trees containing certified Closure,
 stdClass or user-instance leaves under the admitted flags. Copied containers freeze source
@@ -1692,8 +1728,8 @@ nonempty byte strings are true. Flag-array COW and later callback writes leave t
 original API flag intact through duplicate cleanup or pending fresh publication.
 Strict calls retain the raw string in TypeError traces.
 [Byte-only array-flag review](coverage/semantics/define-array-byte-flag-review.json).
-Ordinary uncertified objects, other owning leaves and wider
-flags/names remain partial.
+Unrecorded Closure/stdClass and internal object values, other owning leaves and
+wider flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
 [Two exact sources and 288 public premises](coverage/semantics/class-qualified-defined-review.json)
@@ -4317,7 +4353,10 @@ and releases D, whose TypeError reaches that local catch. A fresh comparison and
 NULL recovery. Literal builtin Exception now follows that finite path too:
 source1 and 385/4 checks at `1c87142fd` bind its pending kind to the compiled
 constructor, reject a valid wrong-kind Throwable and preserve Notice17/detached
-NULL recovery. Other throw forms, deeper reentry, GC and broader consumers remain open.
+NULL recovery. A stable global supplied Exception now also retains its outside
+identity/message through that nested path, local catch and detached NULL result:
+source1 and 428/4 checks at `3018f824d`. Other bodies, intervening writes, deeper
+reentry, GC and broader consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

@@ -63,6 +63,19 @@ source/phase/expiry guards, sole Error ownership and budget resumption in the
 [ADD failure ledger](../../coverage/semantics/arithmetic-failure-review.json).
 
 
+That selected-reference ADD failure route now also handles allocated flat arrays
+after the first LEFT Warning. Both live arrays produce `array + array` TypeError;
+the earlier array-union fast path is not retried. A live bool and selected old RHS
+array produce `bool + array` even after the current RHS name binds replacement7.
+The old cell remains live through its alias, with owners falling from two to one;
+the replacement has two. The literal array retains pool1+cell1 owners through the
+error, then pool1 after its old alias is overwritten. No source cell or outer
+destination is replaced by failure. Two originals and 296 focused premises cover
+raw THROWN, fresh indexed TypeError and this topology in the
+[ADD array-failure ledger](../../coverage/semantics/add-array-failure-review.json).
+The old scalar helper and entry remain exact. Other producers, constrained or
+expired cells, nested/reference/owning array leaves and wider lifetimes stay partial.
+
 Selected-reference ADD now admits valid nonnumeric RHS text before the LEFT
 Warning. A separate entry keeps the old plan exact and enters its existing phases;
 both selected cells must be live, untyped and nonowning. The LEFT number is captured
@@ -135,6 +148,20 @@ retain real phases and raw-versus-driven writes in the
 The unchanged entry requires an initially quiet RHS; the new snapshot still
 requires that RHS plain and defined. Selected-reference destinations, pre-snapshot
 RHS references, owning/constrained/expired targets and wider lifetimes remain partial.
+
+A failed delayed RHS conversion after that first plain-CV `+=` Warning now
+raises TypeError from the live dereferenced pair. Changing both values to flat
+arrays yields `array + array`: the earlier array-union fast path is not retried.
+Creating a late LEFT alias, then changing LEFT to false and RHS to bad text yields
+`bool + string`. Failure preserves the target/alias, outer destination `100`,
+array identities/items/counts and callback writes, with no detach or store.
+Two originals and 273 focused premises distinguish raw THROWN from the fresh
+indexed TypeError in the
+[delayed-RHS failure ledger](../../coverage/semantics/addassign-rhs-failure-review.json).
+The inherited entry stays unchanged. Current RHS must still be plain; the live
+pair is bounded to valid nonowning scalars or allocated flat DIRECT arrays.
+Missing/constrained cells, nested/reference/owning leaves, objects/resources and
+wider producers/lifetimes remain partial.
 
 The same bounded CV/reference-cell route now stages leading-numeric-string `/`.
 Zend's `div_function` dereferences both operands before conversion; each numeric

@@ -220,7 +220,7 @@ def checks(program, path, name):
         '~$config_ini_null_valid(S,pconfigcall_S[.SENT = pconfigcall_S.SENT ++ [NAMED_SENT (KNOWN PNULL)]])',
         'pconfigpack_named = pconfigpack[.ITEMS = [ENTRY (KSTRING ' + text('option') + ') (DIRECT PNULL),ENTRY (KSTRING ' + text('value') + ') (DIRECT pvalue_captured)]]',
         'pconfigcall_named = pconfigcall_S[.NAMED = true][.PACKS = [pconfigpack_named]]',
-        '$config_invoke_valid(S,pconfigcall_named)', '~$config_ini_null_valid(S,pconfigcall_named)',
+        '$config_invoke_valid(S,pconfigcall_named)', '$config_ini_null_valid(S,pconfigcall_named)',
         'pvalue_bad = PSTRING_CARRIER (REQUEST_STRING (|S.STRINGDATA|)) ' + text('unpack-owned-value66'),
         '~$string_carrier_valid(S,pvalue_bad)', '~$config_ini_quiet_value(S,pvalue_bad)',
         'pconfigpack_bad = pconfigpack[.ITEMS = [ENTRY (KINT 3) (DIRECT PNULL),ENTRY (KINT 7) (DIRECT pvalue_bad)]]',

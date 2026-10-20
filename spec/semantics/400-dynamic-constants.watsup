@@ -56,6 +56,18 @@ def $dynamic_constant_class(PSTRING_CARRIER (REQUEST_STRING n_string) n_bytes*) 
 def $dynamic_constant_class(pvalue) = (PVSCALAR) -- if $constant_nonstring_scalar(pvalue)
 def $dynamic_constant_class(pvalue) = eps -- otherwise
 
+;; Runtime instances use live class authority, not a fabricated constant-NEW
+;; receipt. A present receipt must still satisfy its existing certification.
+dec $dynamic_runtime_object(pstate, nat) : bool
+def $dynamic_runtime_object(S, n_object) = true
+  -- if $(n_object < |S.OBJECTS|) /\ HOBJECT n_object <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ ~pclassdesc.ABSTRACT
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
+  -- if $global_new_record(S.CONSTANTOBJECTS, n_object) = eps
+def $dynamic_runtime_object(S, n_object) = false -- otherwise
+
 dec $dynamic_define_value_class(pstate, pvalue) : pvalueclass?
 def $dynamic_define_value_class(S, pvalue) = (pvalueclass)
   -- if $dynamic_constant_class(pvalue) = (pvalueclass)
@@ -68,6 +80,8 @@ def $dynamic_define_value_class(S, POBJECT n_object) = (PVINSTANCE n_object pcon
 def $dynamic_define_value_class(S, POBJECT n_object) = (PVSTDCLASS n_object pconstantstdobject.SITE)
   -- if $global_std_record(S.CONSTANTSTDOBJECTS, n_object) = (pconstantstdobject)
   -- if $constant_value_class_valid(S, POBJECT n_object, PVSTDCLASS n_object pconstantstdobject.SITE)
+def $dynamic_define_value_class(S, POBJECT n_object) = (PVOBJECT)
+  -- if $dynamic_runtime_object(S, n_object)
 def $dynamic_define_value_class(S, pvalue) = eps -- otherwise
 
 ;; A historical definition does not resolve mutable CVs or a namespace fallback
@@ -1082,6 +1096,7 @@ def $dynamic_global_constant_array_tree(S, PSTRING_CARRIER pstringidentity n_byt
 def $dynamic_global_constant_array_tree(S, POBJECT n_object, PVINSTANCE n_original porigin_site) = $constant_value_class_valid(S, POBJECT n_object, PVINSTANCE n_original porigin_site)
 def $dynamic_global_constant_array_tree(S, POBJECT n_object, PVCLOSURE n_original porigin_site) = $constant_value_class_valid(S, POBJECT n_object, PVCLOSURE n_original porigin_site)
 def $dynamic_global_constant_array_tree(S, POBJECT n_object, PVSTDCLASS n_original porigin_site) = $constant_value_class_valid(S, POBJECT n_object, PVSTDCLASS n_original porigin_site)
+def $dynamic_global_constant_array_tree(S, POBJECT n_object, PVOBJECT) = $dynamic_runtime_object(S, n_object)
 def $dynamic_global_constant_array_tree(S, PARRAY n_array, PVARRAY true eps) = true
   -- if (HARRAY n_array) <- S.ALLOCATIONS
   -- if $(n_array < |S.ARRAYS|)
@@ -1113,6 +1128,12 @@ def $dynamic_global_constant_value(S, preqbytes) = (POBJECT n_object)
   -- if puserconstant.VALUE = POBJECT n_object
   -- if puserconstant.CLASS = PVSTDCLASS n_object porigin_site
   -- if $constant_value_class_valid(S, puserconstant.VALUE, puserconstant.CLASS)
+def $dynamic_global_constant_value(S, preqbytes) = (POBJECT n_object)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = (puserconstant)
+  -- if puserconstant.VALUE = POBJECT n_object
+  -- if puserconstant.CLASS = PVOBJECT
+  -- if $dynamic_define_source(S, puserconstant.ORIGIN)
+  -- if $dynamic_runtime_object(S, n_object)
 def $dynamic_global_constant_value(S, preqbytes) = (PARRAY n_array)
   -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = (puserconstant)
   -- if puserconstant.VALUE = PARRAY n_array

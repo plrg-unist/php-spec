@@ -104,8 +104,8 @@ def checks(initial, name, stdout):
         '~$dynamic_constant_case_valid(S,pconfigcall_bad_name)',
         'pconfigcall_int = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,2,KNOWN (PINT 1))]',
         '$dynamic_scalar_define_flag_valid(S,pconfigcall_int)',
-        # Pure receipt refusals never enter the driver.
-        '~$dynamic_constant_case_valid(S_missing,pconfigcall)',
+        # Pure structural receipt controls never enter the driver.
+        '$dynamic_constant_case_valid(S_missing,pconfigcall)',
         '~$dynamic_constant_case_valid(S_incomplete,pconfigcall)',
         '~$dynamic_constant_case_valid(S_dead,pconfigcall)',
         'S_pause = $drive_steps(S,0)', 'S_pause = S[.COMPLETION = BUDGET]',

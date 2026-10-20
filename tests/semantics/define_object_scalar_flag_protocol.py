@@ -80,7 +80,7 @@ def literal(initial, stdout):
         'S.STORE[n_flag] = DEFINED (PINT 0)',
         '$heap_owners($heap_graph(S),HOBJECT n_left) = 3',
         *instance.controls('n_left','pconstantobject_left'),
-        '~$dynamic_scalar_define_flag_valid(S_missing,pconfigcall_false)',
+        '$dynamic_scalar_define_flag_valid(S_missing,pconfigcall_false)',
         '~$dynamic_scalar_define_flag_valid(S_incomplete,pconfigcall_false)',
         '~$dynamic_scalar_define_flag_valid(S_dead,pconfigcall_false)',
         'n_bad_string = |S.STRINGDATA|',
