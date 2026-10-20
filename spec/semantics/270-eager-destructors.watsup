@@ -1913,3 +1913,87 @@ def $destructor_pending_finish(S, pdestructionoperation, n_exception, ptask_queu
   -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = (n_exception)
   -- if $ref_return_retire_history_pending(S, ptask_history*, porigin_holder?, (n_exception))
   -- if $ref_replay_contexts(S, porigin_source) = [REPLAY_TRY porigin_local]
+
+;; One normal retirement has discharged the innermost computed return. Its
+;; source cursor still determines FAST_RET and the eventual by-value Notice.
+dec $ref_return_retire_missing(pcpath*, porigin*, nat, pcpath) : porigin*
+def $ref_return_retire_missing(eps, porigin_owner*, n, pcpath_source) = eps
+def $ref_return_retire_missing(pcpath :: pcpath_tail*, porigin_owner*, n, pcpath_source) = (PORIGIN n pcpath) :: $ref_return_retire_missing(pcpath_tail*, porigin_owner*, n, pcpath_source)
+  -- if $effect_below(pcpath ++ [PCFIELD 2], pcpath_source)
+  -- if ~((PORIGIN n pcpath) <- porigin_owner*)
+def $ref_return_retire_missing(pcpath :: pcpath_tail*, porigin_owner*, n, pcpath_source) = $ref_return_retire_missing(pcpath_tail*, porigin_owner*, n, pcpath_source)
+  -- if ~$effect_below(pcpath ++ [PCFIELD 2], pcpath_source) \/ (PORIGIN n pcpath) <- porigin_owner*
+dec $ref_return_retire_later_site(pstate, ptask*) : (prefreturncursor, prefreturncursor)?
+def $ref_return_retire_later_site(S, (RETURN_REF_UNWIND (REFERENCE n_y) z true (PORIGIN n pcpath_source)) :: (FINALLY_REF_RETURN porigin_c porigin_old_c (KNOWN (POBJECT n_c)) z_c) :: (FINALLY_PHASE porigin_c 3) :: (ORIGIN_RETURN porigin_restore_c?) :: ptask_outer*) = ((prefreturncursor_done, prefreturncursor_c))
+  -- if S.OUTPUTBUFFERS = eps
+  -- if prefreturncursor_c = { OWNER porigin_c, SOURCE porigin_old_c, LINE z_c, OUTER porigin_restore_c? }
+  -- if $ref_return_cursor_site(S, prefreturncursor_c)
+  -- if $ref_return_retire_call(S, prefreturncursor_c)
+  -- if $ref_return_cursor_inside(porigin_c, PORIGIN n pcpath_source)
+  -- if $ref_return_pair_operand(S, PORIGIN n pcpath_source, REFERENCE n_y)
+  -- if $reference_return_fetch_valid(S[.ORIGIN = (PORIGIN n pcpath_source)], z)
+  -- if S.CURRENT = (pcallcontext)
+  -- if porigin_function = pcallcontext.FUNCTION
+  -- if $origin_node(S.SOURCES, porigin_function) = (NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata_function)
+  -- if $function_at($all_functions(S), porigin_function) = (pfunction)
+  -- if pfunction.SIGNATURE.BYREF
+  -- if pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "object"])), (PTBRANCH ([PTBUILTIN "null"]))]
+  -- if $ref_return_retire_outer(S, prefreturncursor_c, [HOBJECT n_c], ptask_outer*, porigin_function) = (porigin_outer*)
+  -- if $(|porigin_outer*| >= 2)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $ref_return_retire_missing($ppfinally_protected(pcunit.OCCURRENCES, pcpath_source), porigin_c :: porigin_outer*, n, pcpath_source) = [PORIGIN n pcpath_done]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_done) = (NStmtTryCatch (SEQUENCE ([NStmtReturn (NExprFuncCall (NName (BYTES text_call) metadata_name) (SEQUENCE eps) metadata_call) metadata_return])) (SEQUENCE eps) (NStmtFinally phpType23_done metadata_finally) metadata_try)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_done ++ [PCFIELD 0, PCINDEX 0]) = ((z_done, false))
+  -- if prefreturncursor_done = { OWNER PORIGIN n pcpath_done, SOURCE PORIGIN n (pcpath_done ++ [PCFIELD 0, PCINDEX 0]), LINE z_done, OUTER $origin_child((porigin_c), [PCFIELD 2]) }
+  -- if $ref_return_cursor_site(S, prefreturncursor_done)
+  -- if $ref_return_cursor_inside(prefreturncursor_done.OWNER, PORIGIN n pcpath_source)
+  -- if $ref_return_cursor_inside(porigin_c, prefreturncursor_done.SOURCE)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath_done ++ [PCFIELD 0, PCINDEX 0, PCFIELD 0]) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = (pfunction_done)
+  -- if ~pfunction_done.SIGNATURE.BYREF
+  -- if $ref_replay_contexts(S, PORIGIN n pcpath_source) = [REPLAY_TRY porigin_local]
+  -- if $ref_replay_site(S, PORIGIN n pcpath_source, z, [REPLAY_TRY porigin_local])
+  -- if $ref_return_retire_throw_site(S, n_c) = (porigin_given)
+  -- if $ref_return_retire_global_throw(S, porigin_given) =/= eps
+def $ref_return_retire_later_site(S, ptask*) = eps -- otherwise
+dec $ref_return_retire_later_queue(ptask*) : ptask*
+def $ref_return_retire_later_queue((RETURN_REF_UNWIND poperand z true porigin_source) :: (FINALLY_REF_RETURN porigin porigin_old poperand_old z_old) :: (FINALLY_PHASE porigin 3) :: (ORIGIN_RETURN porigin_restore?) :: ptask_tail*) = (RETURN_REF_UNWIND poperand z true porigin_source) :: ptask_tail*
+def $ref_return_retire_later_queue(ptask*) = eps -- otherwise
+def $eager_operation_source(S, RETURN_REF_UNWIND (REFERENCE n_y) z true porigin_source) = REF_RETURN_RETIRE_LATER_HISTORY S.TODO prefreturncursor_done
+  -- if S.TODO = (RETURN_REF_UNWIND (REFERENCE n_y) z true porigin_source) :: (FINALLY_REF_RETURN porigin_c porigin_old_c (KNOWN (POBJECT n_c)) z_c) :: ptask_tail*
+  -- if $ref_return_retire_later_site(S, S.TODO) = ((prefreturncursor_done, prefreturncursor_c))
+  -- if S.ORIGIN = prefreturncursor_done.OUTER
+  -- if (HOBJECT n_c) <- S.ALLOCATIONS
+  -- if $heap_owners($heap_graph(S), HOBJECT n_c) = 1
+def $task_nodes(REF_RETURN_RETIRE_LATER_HISTORY ptask* prefreturncursor_done) = eps
+def $call_task_valid(S, REF_RETURN_RETIRE_LATER_HISTORY ptask* prefreturncursor_done) = false
+dec $ref_return_retire_later_pending(pstate, ptask*, nat?) : bool
+def $ref_return_retire_later_pending(S, ptask_history*, eps) = true
+def $ref_return_retire_later_pending(S, ptask_history*, (n)) = true
+  -- if ptask_history* = (RETURN_REF_UNWIND poperand z true porigin_source) :: (FINALLY_REF_RETURN porigin_c porigin_old_c (KNOWN (POBJECT n_c)) z_c) :: ptask_tail*
+  -- if $ref_return_retire_throw_site(S, n_c) = (porigin_given)
+  -- if $ref_return_retire_global_throw(S, porigin_given) = (n)
+def $ref_return_retire_later_pending(S, ptask_history*, n?) = false -- otherwise
+dec $ref_return_retire_later_operation(pdestructionoperation, pstate?) : bool
+def $ref_return_retire_later_operation(pdestructionoperation, (S)) = true
+  -- if pdestructionoperation.SOURCE = REF_RETURN_RETIRE_LATER_HISTORY ptask_history* prefreturncursor_done
+  -- if $ref_return_retire_later_site(S, ptask_history*) = ((prefreturncursor_done, prefreturncursor_c))
+  -- if $ref_return_retire_operation_tail(S.TODO, pdestructionoperation) = ($ref_return_retire_later_queue(ptask_history*))
+  -- if pdestructionoperation.ORIGIN = prefreturncursor_c.OUTER
+  -- if pdestructionoperation.COMPLETION = NORMAL
+  -- if $ref_return_retire_later_pending(S, ptask_history*, pdestructionoperation.PENDING)
+def $ref_return_retire_later_operation(pdestructionoperation, S?) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = $ref_return_retire_later_operation(pdestructionoperation, $ref_return_retire_operation_scope(S, pdestructionoperation))
+  -- if pdestructionoperation.SOURCE = REF_RETURN_RETIRE_LATER_HISTORY ptask_history* prefreturncursor_done
+def $destructor_pending_finish(S, pdestructionoperation, n_exception, ptask_queued*) = S[.TODO = (THROW_SEARCH n_exception) :: ($ref_replay_tasks(porigin_source, z, [REPLAY_TRY porigin_local]) ++ [FINALLY_REF_RETURN prefreturncursor_done.OWNER prefreturncursor_done.SOURCE (KNOWN PNULL) prefreturncursor_done.LINE, FINALLY_PHASE prefreturncursor_done.OWNER 3, ORIGIN_RETURN prefreturncursor_done.OUTER, FINALLY_REF_RETURN prefreturncursor_c.OWNER prefreturncursor_c.SOURCE (KNOWN PNULL) prefreturncursor_c.LINE, FINALLY_PHASE prefreturncursor_c.OWNER 3, ORIGIN_RETURN prefreturncursor_c.OUTER] ++ ptask_outer* ++ [REF_RETURN_NOTICE prefreturncursor_done.SOURCE prefreturncursor_done.LINE REF_NOTICE_VALUE])][.ORIGIN = (porigin_local)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
+  -- if pdestructionoperation.SOURCE = REF_RETURN_RETIRE_LATER_HISTORY ptask_history* prefreturncursor_done
+  -- if $ref_return_retire_later_site(S, ptask_history*) = ((prefreturncursor_done, prefreturncursor_c))
+  -- if ptask_history* = (RETURN_REF_UNWIND (REFERENCE n_y) z true porigin_source) :: ptask_history_tail*
+  -- if ptask_queued* = (RETURN_REF_UNWIND (REFERENCE n_y) z true porigin_source) :: ptask_outer*
+  -- if ptask_queued* = $ref_return_retire_later_queue(ptask_history*)
+  -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pdestructionoperation.ORIGIN = prefreturncursor_c.OUTER
+  -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = (n_exception)
+  -- if $ref_return_retire_later_pending(S, ptask_history*, (n_exception))
+  -- if $ref_replay_contexts(S, porigin_source) = [REPLAY_TRY porigin_local]
