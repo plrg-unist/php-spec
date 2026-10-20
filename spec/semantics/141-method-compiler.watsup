@@ -462,6 +462,7 @@ def $ppdispatch(P, pcpath, NExprNullsafeMethodCall expression phpType20 (SEQUENC
   -- if $ppfirstclass(phpType7*)
 def $ppdispatch(P, pcpath, NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppmethod_call_name($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath, phpType20), pcpath ++ [PCFIELD 2], 0, phpType7*, PNUNSUPPORTED "nullsafe method call has deferred parameter modes")
   -- if ~$ppfirstclass(phpType7*)
+dec $parent_hook_syntax(expression) : bool
 dec $ppscoped_parent_missing(ppstate, phpType19) : bool
 def $ppscoped_parent_missing(P, NName (BYTES text_name) metadata_name) = true
   -- if $ptlc($base64(text_name)) = $ptascii("parent")

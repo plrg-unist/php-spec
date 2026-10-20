@@ -17,7 +17,6 @@ def $parent_hook_parts(NExprStaticCall (NExprStaticPropertyFetch (NName (BYTES t
   -- if $source_token_start(metadata_fetch) = (z_token)
   -- if $(z_file >= 0 /\ z_token >= 0)
 def $parent_hook_parts(expression) = eps -- otherwise
-dec $parent_hook_syntax(expression) : bool
 def $parent_hook_syntax(expression) = ($parent_hook_parts(expression) =/= eps)
 
 ;; GOTOROOT is the physical property hook while its body is compiled.
