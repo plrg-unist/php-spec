@@ -394,6 +394,19 @@ The [return-value ledger](../../coverage/semantics/array-literal-float-return-ar
 checks global/reference sources, COW, sole-owner entry deletion and supplied throw.
 By-reference returns, arguments and wider call producers remain outside this arm;
 existing mutable/nonpool, builder and object-free readiness guards stay exact.
+A defined NULL key on a by-value literal CV item now has a separate Deprecated
+continuation. Zend backs up the value and restores its captured ordinary CV after
+the handler, before either empty-string-key insertion or supplied-throw cleanup.
+The handler's writes remain observable inside its body. Distinct key changes
+survive; a shared key/value NULL CV is restored too. Source authentication keeps
+the checked item/spelling/line, while readiness requires the same live unmarked
+slot and safe current payload. ARRAY snapshots remain allocated owning arguments
+when throw cleanup pops the saved marker, so restoration precedes pruning even
+without another old-table owner. The
+[NULL-key ledger](../../coverage/semantics/array-literal-null-key-warning-review.json)
+checks two saved table edges, normal COW/deletion and restoration before catch.
+Unset/rebound, reference/typed/coercion/backing slots, direct strings/objects and
+wider payload graphs stay Unsupported; the paused LIST-key boundary is unchanged.
 String leaves validate canonical bytes or existing carrier records. Their table
 and wrapper counts stay separate from copied string bytes: debt-time writes may
 share a table while a string snapshot stays unchanged. Singleton reference

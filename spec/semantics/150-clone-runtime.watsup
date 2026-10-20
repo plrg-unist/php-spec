@@ -64,10 +64,83 @@ def $clone_plain(S, n_source) = $clone_slots(S_new, n, pobjectprops.SLOTS)
   -- if $objectprops_record_at(S.OBJECTPROPS, n_source) = (pobjectprops)
   -- if $clone_cached_table(n_source, n, S.ARRAYS[n_table].ITEMS, $array_empty()) = (parray)
   -- if S_new = S[.OBJECTS = S.OBJECTS ++ [S.OBJECTS[n_source]]][.OBJECTPROPS = S.OBJECTPROPS ++ [{OBJECT n, SLOTS eps, MATERIALIZED true}]][.ARRAYS = S.ARRAYS ++ [parray]][.OBJECTTABLES = S.OBJECTTABLES ++ [{OBJECT n, TABLE n_table_new}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n, HARRAY n_table_new]][.RESULT = KNOWN (POBJECT n)]
+;; Mixed tables own dynamic buckets; the matching slots are lookup mirrors.
+;; Declared slots copy first, then dynamic buckets use zval_add_ref semantics.
+dec $clone_mixed_item(pstate, pitem) : pitem?
+def $clone_mixed_item(S, DIRECT pvalue) = (DIRECT pvalue)
+def $clone_mixed_item(S, ALIAS n_cell) = ($merge_item(S, ALIAS n_cell))
+def $clone_mixed_item(S, pitem) = eps -- otherwise
+dec $clone_mixed_table(pstate, nat, nat, ppropertyslot*, pentry*, parray) : parray?
+def $clone_mixed_table(S, n_source, n_target, ppropertyslot_all*, eps, parray) = (parray)
+def $clone_mixed_table(S, n_source, n_target, ppropertyslot_all*, (ENTRY (KSTRING ptbytes) (INDIRECT n_source ptbytes)) :: pentry_tail*, parray) = $clone_mixed_table(S, n_source, n_target, ppropertyslot_all*, pentry_tail*, $array_insert(parray, KSTRING ptbytes, INDIRECT n_target ptbytes))
+  -- if $property_slot_at(ppropertyslot_all*, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.DECL =/= eps
+def $clone_mixed_table(S, n_source, n_target, ppropertyslot_all*, (ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*, parray) = $clone_mixed_table(S, n_source, n_target, ppropertyslot_all*, pentry_tail*, $array_insert(parray, KSTRING ptbytes, pitem_new))
+  -- if $property_slot_at(ppropertyslot_all*, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if $clone_mixed_item(S, pitem) = (pitem_new)
+def $clone_mixed_table(S, n_source, n_target, ppropertyslot_all*, pentry*, parray) = eps -- otherwise
+
+dec $clone_mixed_declared(ppropertyslot*) : ppropertyslot*
+def $clone_mixed_declared(eps) = eps
+def $clone_mixed_declared(ppropertyslot :: ppropertyslot_tail*) = ppropertyslot :: $clone_mixed_declared(ppropertyslot_tail*)
+  -- if ppropertyslot.DECL =/= eps
+def $clone_mixed_declared(ppropertyslot :: ppropertyslot_tail*) = $clone_mixed_declared(ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = eps
+dec $clone_mixed_dynamic(ppropertyslot*) : bool
+def $clone_mixed_dynamic(eps) = false
+def $clone_mixed_dynamic(ppropertyslot :: ppropertyslot_tail*) = true
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+def $clone_mixed_dynamic(ppropertyslot :: ppropertyslot_tail*) = $clone_mixed_dynamic(ppropertyslot_tail*)
+  -- if ppropertyslot.DECL =/= eps \/ ppropertyslot.STATE = PROP_UNSET
+def $clone_mixed_dynamic(ppropertyslot_all*) = false -- otherwise
+
+dec $clone_mixed_mirrors(ppropertyslot*, pentry*) : ppropertyslot*?
+def $clone_mixed_mirrors(eps, pentry*) = (eps)
+def $clone_mixed_mirrors(ppropertyslot :: ppropertyslot_tail*, pentry*) = $clone_mixed_mirrors(ppropertyslot_tail*, pentry*)
+  -- if ppropertyslot.DECL =/= eps
+def $clone_mixed_mirrors(ppropertyslot :: ppropertyslot_tail*, pentry*) = (ppropertyslot :: ppropertyslot_new*)
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_UNSET
+  -- if $entry_lookup(pentry*, KSTRING ppropertyslot.NAME) = eps
+  -- if $clone_mixed_mirrors(ppropertyslot_tail*, pentry*) = (ppropertyslot_new*)
+def $clone_mixed_mirrors(ppropertyslot :: ppropertyslot_tail*, pentry*) = (ppropertyslot[.STATE = PROP_VALUE pitem_new] :: ppropertyslot_new*)
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if $entry_lookup(pentry*, KSTRING ppropertyslot.NAME) = (pitem_new)
+  -- if ~$indirect_item(pitem_new)
+  -- if $clone_mixed_mirrors(ppropertyslot_tail*, pentry*) = (ppropertyslot_new*)
+def $clone_mixed_mirrors(ppropertyslot_all*, pentry*) = eps -- otherwise
+
+dec $clone_mixed_ready(pstate, nat) : bool
+def $clone_mixed_ready(S, n_source) = true
+  -- if $object_table_ordinary(S, n_source)
+  -- if $object_table_at(S.OBJECTTABLES, n_source) = (n_table)
+  -- if $(n_table < |S.ARRAYS|) /\ (HARRAY n_table) <- S.ALLOCATIONS
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_source) = (pobjectprops)
+  -- if pobjectprops.MATERIALIZED /\ $clone_mixed_dynamic(pobjectprops.SLOTS)
+  -- if $object_tables_valid(S) /\ S.GC.ACTIVE = eps
+  -- if ~$clone_readonly_updates(S, n_source) /\ ~$clone_callback_value(S, POBJECT n_source)
+  -- if $clone_mixed_table(S, n_source, |S.OBJECTS|, pobjectprops.SLOTS, S.ARRAYS[n_table].ITEMS, $array_empty()) = (parray)
+  -- if $clone_mixed_mirrors(pobjectprops.SLOTS, parray.ITEMS) =/= eps
+def $clone_mixed_ready(S, n_source) = false -- otherwise
+def $clone_plain(S, n_source) = S_declared[.OBJECTPROPS = $objectprops_set(S_declared.OBJECTPROPS, n, pobjectprops_new.SLOTS ++ ppropertyslot_dynamic*)][.ARRAYS = S_declared.ARRAYS ++ [parray]][.OBJECTTABLES = S_declared.OBJECTTABLES ++ [{OBJECT n, TABLE n_table_new}]][.ALLOCATIONS = S_declared.ALLOCATIONS ++ [HARRAY n_table_new]]
+  -- if $clone_mixed_ready(S, n_source)
+  -- if n = |S.OBJECTS|
+  -- if n_table_new = |S.ARRAYS|
+  -- if $object_table_at(S.OBJECTTABLES, n_source) = (n_table)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_source) = (pobjectprops)
+  -- if S_instance = S[.OBJECTS = S.OBJECTS ++ [S.OBJECTS[n_source]]][.OBJECTPROPS = S.OBJECTPROPS ++ [{OBJECT n, SLOTS eps, MATERIALIZED true}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+  -- if S_declared = $clone_slots(S_instance, n, $clone_mixed_declared(pobjectprops.SLOTS))
+  -- if $clone_mixed_table(S_declared, n_source, n, pobjectprops.SLOTS, S.ARRAYS[n_table].ITEMS, $array_empty()) = (parray)
+  -- if $clone_mixed_mirrors(pobjectprops.SLOTS, parray.ITEMS) = (ppropertyslot_dynamic*)
+  -- if $objectprops_record_at(S_declared.OBJECTPROPS, n) = (pobjectprops_new)
 def $clone_plain(S, n_source) = S[.COMPLETION = UNSUPPORTED "cached ordinary property-table cloning"]
   -- if $object_table_ordinary(S, n_source)
   -- if $object_table_at(S.OBJECTTABLES, n_source) = (n_table)
-  -- if ~$clone_cached_ready(S, n_source)
+  -- if ~$clone_cached_ready(S, n_source) /\ ~$clone_mixed_ready(S, n_source)
 
 ;; Real closure hash duplication copies singleton static/capture wrappers, but
 ;; retains wrappers also owned by active invocation locals or escaped aliases.

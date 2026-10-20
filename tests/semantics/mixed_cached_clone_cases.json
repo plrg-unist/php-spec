@@ -1,0 +1,75 @@
+{
+  "scope": "Ordinary public nonempty declared layout plus live dynamic buckets in a cached property table; fresh mixed clone, singleton/held untyped wrappers, independent foreach and shallow Payload lifetime. No __clone, readonly, active collection, zero-declared or copied-declared DIRECT table images.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_observations_accepted": true,
+  "native_revision": "c75cdb7c772706aef0d352e0dbfc0c51d4787e74",
+  "native_report_sha256": "273089f0fa0a41b379d7d902eab9ae3770c01e1f01c9de8ea659b89abbbf5933",
+  "cases": [
+    {
+      "id": "scalar",
+      "source_file": "mixed-cached-clone-scalar.php",
+      "source": "<?php\n#[AllowDynamicProperties]\nclass MixedScalar116 { public int $declared = 1; }\necho 'M:';\n$source = new MixedScalar116();\n$source->alpha = 7;\n$source->beta = 9;\nforeach ($source as $key => $value) { echo $key, ':', $value, '|'; }\nunset($key, $value);\n$copy = clone $source;\n$copy->declared = 2;\n$copy->alpha = 17;\n$source->beta = 19;\necho 'C|';\nforeach ($copy as $key => $value) { echo $key, ':', $value, '|'; }\necho 'S|';\nforeach ($source as $key => $value) { echo $key, ':', $value, '|'; }\nunset($copy->alpha);\n$copy->gamma = 23;\necho 'c|';\nforeach ($copy as $key => $value) { echo $key, ':', $value, '|'; }\necho 's|';\nforeach ($source as $key => $value) { echo $key, ':', $value, '|'; }\nunset($key, $value, $source, $copy);\necho 'E|';\n",
+      "source_sha256": "6ce533d4ca5353a4624896168f5ef939d1e1de96aaf663825f0817873f564bfc",
+      "original_source": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-probes-116/scalar.php",
+      "stdout_base64": "TTpkZWNsYXJlZDoxfGFscGhhOjd8YmV0YTo5fEN8ZGVjbGFyZWQ6MnxhbHBoYToxN3xiZXRhOjl8U3xkZWNsYXJlZDoxfGFscGhhOjd8YmV0YToxOXxjfGRlY2xhcmVkOjJ8YmV0YTo5fGdhbW1hOjIzfHN8ZGVjbGFyZWQ6MXxhbHBoYTo3fGJldGE6MTl8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "clone_line": 10,
+      "native_raw_sha256": "3f027663c5b7a72b753e0e9f87d5eea0aaadfd1293ff74b40a6afaabd2f45d12",
+      "status": "normal"
+    },
+    {
+      "id": "singleton",
+      "source_file": "mixed-cached-clone-singleton.php",
+      "source": "<?php\n#[AllowDynamicProperties]\nclass MixedSingleton116 { public int $declared = 1; }\necho 'U:';\n$source = new MixedSingleton116();\n$source->extra = 1;\n$alias =& $source->extra;\nunset($alias);\nforeach ($source as $key => $value) {}\nunset($key, $value);\n$copy = clone $source;\n$copy->extra = 7;\necho $source->extra, '/', $copy->extra, '|';\n$source->extra = 9;\necho $source->extra, '/', $copy->extra, '|';\n$copy->declared = 2;\nforeach ($copy as $key => $value) { echo $key, ':', $value, '|'; }\nunset($key, $value, $source, $copy);\necho 'E|';\n",
+      "source_sha256": "fa8f7ea9dd593e29cb2d911de28d89e495626d54f66ba751a6d47234460bcba0",
+      "original_source": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-probes-116/singleton.php",
+      "stdout_base64": "VToxLzd8OS83fGRlY2xhcmVkOjJ8ZXh0cmE6N3xFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "clone_line": 11,
+      "native_raw_sha256": "9f33435db1171230e23147b90fefd3c9c986708d15f94419e3b5780f2d225364",
+      "status": "normal"
+    },
+    {
+      "id": "held",
+      "source_file": "mixed-cached-clone-held.php",
+      "source": "<?php\n#[AllowDynamicProperties]\nclass MixedHeld116 { public int $declared = 1; }\necho 'H:';\n$source = new MixedHeld116();\n$source->extra = 1;\n$alias =& $source->extra;\nforeach ($source as $key => $value) {}\nunset($key, $value);\n$copy = clone $source;\n$copy->extra = 7;\necho $source->extra, '/', $copy->extra, '/', $alias, '|';\nunset($source->extra);\n$alias = 9;\necho $copy->extra, '/', $alias, '|';\nunset($source);\nunset($copy->extra);\n$alias = 'free';\necho $alias, '|';\nunset($copy, $alias);\necho 'E|';\n",
+      "source_sha256": "505d4318188acb0c39d5a42eabafe95814bf9dfd4ff7620376be2a6d8bd23b4d",
+      "original_source": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-probes-116/held.php",
+      "stdout_base64": "SDo3LzcvN3w5Lzl8ZnJlZXxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "clone_line": 10,
+      "native_raw_sha256": "4d8964c30a62a437389f225d4d7465f90d8bf566aa7b83113b80ae849789c321",
+      "status": "normal"
+    },
+    {
+      "id": "payload",
+      "source_file": "mixed-cached-clone-payload.php",
+      "source": "<?php\nclass MixedPayloadValue116 {\n    public int $value = 7;\n    public function __destruct() { echo 'V', $this->value, '|'; }\n}\n#[AllowDynamicProperties]\nclass MixedPayload116 {\n    public int $tag = 1;\n    public function __destruct() { echo 'D', $this->tag, '|'; }\n}\necho 'P:';\n$source = new MixedPayload116();\n$source->payload = new MixedPayloadValue116();\nforeach ($source as $key => $value) {}\nunset($key, $value);\n$copy = clone $source;\n$copy->tag = 2;\nunset($source);\necho 'A|', $copy->payload->value, '|';\nunset($copy);\necho 'B|';\n",
+      "source_sha256": "b0562c6e010f08dd897034ba809318e5a49ce18bf7cf330a5fdee2dd9104699f",
+      "original_source": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-probes-116/payload.php",
+      "stdout_base64": "UDpEMXxBfDd8RDJ8Vjd8Qnw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "clone_line": 16,
+      "native_raw_sha256": "19b3514d44b14dcd9f5e744e0feca3599188dfe22470aedcfc745fc9a5b5e50a",
+      "status": "normal"
+    }
+  ]
+}

@@ -43,6 +43,14 @@ Removing an already checked defined counterpart during a missing-CV Warning
 compares it quietly against that read's frozen NULL and preserves surviving aliases.
 Wider warning paths remain partial.
 
+[NULL literal keys](docs/semantics/DIMENSIONS.md) restore the original ordinary
+value CV after the deprecation handler, then insert that value under `""`.
+Handler writes are visible inside the callback and undone before insertion or
+supplied-throw propagation. If key and value share the same NULL CV, its key
+mutation is undone too. ARRAY capture owns both acquisition and backup copies;
+normal restore transfers them into the CV and DIRECT entry, while throw restores
+the CV before releasing the builder. Wider value/slot forms remain partial.
+
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
 remain live, while runtime array temporaries retain their own tables.
@@ -468,8 +476,18 @@ TypeError/trace capture stays visible through both API and explicit-wrapper arra
 arguments; the API option is empty while the wrapper retains NULL. Four source
 comparisons and 1,521 state premises cover strict ordinary versus weak explicit
 reception, supplied-throw cancellation, transitive reference edges, exact discard
-and original-setter recovery. Named/unpacked/PIPE forms, typed/property references,
+and original-setter recovery. Unpacked/PIPE forms, typed/property references,
 owning referents and sole-owner lifetimes remain partial.
+
+[Named INI calls with shared-reference arrays](coverage/semantics/ini-set-named-null-alias-array-value-review.json)
+now capture the earlier array before a later named option helper changes its
+shared cell, current container and live callee. Fixed/selected strings and retained
+setters use the same source-destination checks; positional authority is preserved.
+Four source comparisons and 1,628 state premises cover saved shape with live cell
+contents, empty API versus raw NULL wrapper options, strict ordinary versus weak
+explicit reception, supplied-throw cancellation and setter recovery. One peer
+optional-name fixture typing failure is retained; only its corrected 428 checks
+were rerun. Unpacking/PIPE, wider references and sole-owner lifetimes remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -960,6 +978,14 @@ delivery, while normal unary minus retains float zero with native output `-0`.
 Two originals and 264 focused premises pass in the
 [unary-reference ledger](coverage/semantics/unary-reference-warning-review.json).
 Wider producers, constrained/owning cells and callback lifetimes remain partial.
+
+NaN modulo now finishes safe conversion's precision notice before propagating
+a supplied Exception from its range Warning handler. Mask `2` still defaults the
+Deprecated; mask `8194` runs neither a second body nor default. Neither reads the
+now-zero divisor. The normal control reads its divisor only after both callbacks.
+Three originals and 340 focused premises pass in the
+[pending modulo ledger](coverage/semantics/mod-nan-pending-review.json), fixing
+an original NORMAL stderr disagreement. Other operators and producers remain partial.
 
 Range-only bitwise NOT now resumes named Warning handlers for plain float CVs.
 The original `2^63` float survives source removal and produces `PHP_INT_MAX`
@@ -1556,6 +1582,11 @@ child return owns no heap node. Its current snapshot survives normal argument
 COW, then retires before finally; assignment keeps its copy. The tested integer,
 NULL and string returns add no owning return root. See the
 [scalar-return SEND review](coverage/semantics/generator-unused-scalar-return-send-review.json).
+Direct pending SEND without a getter also refreshes one allocated closed child
+whose normal simple-CV return owns no heap node. Child release precedes argument
+cleanup, unused current retirement and receiver finally; assignment keeps its
+copy. See the
+[node-free refresh review](coverage/semantics/generator-unused-scalar-refresh-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit
@@ -2122,6 +2153,13 @@ after the callee dies. Normal rejected INSTANCE argument cleanup runs its
 destructor before callee release; a throwing duplicate's raw trace instead
 retains the object after callee death until its raw argument views retire.
 [Owned object call review](coverage/semantics/define-owned-object-review.json).
+
+Captured DEFINE callees also receive raw `true`. The ignored-case Warning runs
+before key lookup and array snapshotting: a returning handler can install the
+key or change a reference leaf. A thrown handler Exception still permits fresh
+same-object registration. Raw API/wrapper traces retain `true`, and the row
+keeps the object after trace retirement.
+[Owned true-flag review](coverage/semantics/define-owned-true-review.json).
 
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
@@ -5036,8 +5074,17 @@ the callback reads the copy's locators; a borrowed source may retire there while
 its Payload survives in the copy. Held int aliases retain the clone constraint,
 and supplied throw destroys the failed copy/Payload before the original catch;
 the destination stays `42`.
-Four source agreements and 659 focused premises pass at separate cuts. Dynamic
-caches, readonly, active collection and wider callback/lifetime histories remain open.
+Four source agreements and 659 focused premises pass at separate cuts. Mixed
+dynamic callback caches, readonly, active collection and wider callback/lifetime
+histories remain open.
+
+[Mixed cached clones](coverage/semantics/mixed-cached-clone-review.json) now copy
+ordinary public declared slots and live dynamic buckets into a fresh table. Declared
+locators target the copy; dynamic lookup mirrors add no owner. Real foreach sees
+independent writes and membership, singleton wrappers unwrap, held aliases stay
+shared, and the copy keeps a Payload alive after source retirement. Four originals
+and 477 focused premises pass at separate cuts. This path excludes `__clone`,
+readonly, active collection, zero-declared and copied-declared DIRECT cache images.
 
 [`get_class` testing support](docs/semantics/GET-CLASS.md) observes finite live
 object names and executing lexical scope through direct and callable invocation.

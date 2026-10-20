@@ -433,6 +433,10 @@ test-semantics: build
 	python3 tests/semantics/generator_unused_scalar_return_send_state.py
 	python3 tests/semantics/generator_unused_scalar_return_send_review_sources.py
 	python3 tests/semantics/generator_unused_scalar_return_send_review_state.py
+	python3 tests/semantics/generator_unused_scalar_refresh_send_sources.py
+	python3 tests/semantics/generator_unused_scalar_refresh_send_state.py
+	python3 tests/semantics/generator_unused_scalar_refresh_send_review_sources.py
+	python3 tests/semantics/generator_unused_scalar_refresh_send_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -1156,6 +1160,8 @@ test-semantics: build
 	python3 tests/semantics/cached_property_clone_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/cached_clone_callback_cases.json
 	python3 tests/semantics/cached_clone_callback_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/mixed_cached_clone_cases.json
+	python3 tests/semantics/mixed_cached_clone_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/clone_controls.py
 	python3 tests/semantics/get_class_intrinsic.py
 	python3 tests/semantics/get_class_protocol.py

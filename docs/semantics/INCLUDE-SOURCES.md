@@ -1021,7 +1021,7 @@ one-frame API TypeErrors, handler/API two-frame raw Exception, transitive
 HARRAY→HCELL ownership and exact restoration/discard with existing idempotent
 array buffering. HCELL is not directly task-rooted or a possible GC buffer root.
 Only29 additive172 lines change; shared84/138/array/trace/root/GC/schema and
-historical tests stay exact without replay. Named/packed/PIPE forms,
+historical tests stay exact without replay. Packed/PIPE forms,
 additional entries, typed/property/parameter-backed references, owning referents
 and sole-owner lifetimes remain partial; paused boundaries stay untouched.
 
@@ -1050,6 +1050,36 @@ array-ID equality. Peer native has no trace traversal. Actual state proves the
 handler/API/wrapper three-frame raw Exception, both raw argument edges to the earlier
 ARRAY→HCELL, owner+array config roots and existing idempotent buffers/full discard. No
 receiver trace edge or direct CELL task/buffer root is invented. Helpers/finish/
-84/138/trace/root/GC/schema/historical tests remain exact without replay. Named,
-unpacked/PIPE forms, additional entries, typed/property/backed references,
+84/138/trace/root/GC/schema/historical tests remain exact without replay.
+Unpacked/PIPE forms, additional entries, typed/property/backed references,
+owning referents and sole-owner lifetimes remain partial; paused paths untouched.
+
+The [named shared-reference array increment](../../coverage/semantics/ini-set-named-null-alias-array-value-review.json)
+extends that same exact key0 ALIAS-array continuation to named/mixed calls for
+fixed/selected strings and retained setters. Existing destination-aware source
+checks replace the positional spelling checks with identical absent-name facts:
+option facts allow unknown/NULL and value facts require unknown (`compiled_read`
+EPS). Actual partial `[HOLE,oldARRAY]` states witness capture before the later
+option helper; the helper never reconstructs current CV history. PACKSeps,
+live/untyped/quiet cell authority, absent property/coercion metadata, whole-state
+PARAMETERBACKINGS EPS and effective weak reception remain unchanged.
+
+Four source agreements and1,200 author premises (477+325+398) retain `108d62605`;
+corrected peer428 retains `b6abcce69`, total1,628 at common `166547069`/408.
+Initial `013007e47` CPU3 native4/base0 precedes CPU2 affected checks and the sole
+CPU5 peer retry. Eleven stable/reaped reports retain ten PASS plus one optional-name
+tuple typing failure0, corrected only by typed bindings/two added premises.
+Source4/author1,200/native/base were not replayed. Only selected Deprecated21
+occurs; all four accepted SL streams are true LF/quiet/exit0.
+
+Native E/W/N/L/L/A reads both saved arguments after an external post-TypeError/
+getTrace cell write, while current `[43,43]` distinguishes their saved shape.
+State proves owning partial capture before option effects, normalized old array
+with its live HCELL, current COW sharing, one-frame API versus two-frame explicit
+TypeErrors, and the peer's actual handler/API two-frame raw Exception after the
+post-allocation leaf write. Existing array buffering and whole restoration/discard
+remain exact; HCELL is neither directly task-rooted nor GC-bufferable. There is
+no physical exported-array identity or frozen-referent claim. Only3+/5-172 lines
+change; helpers/finish/trace/root/GC/schema/historical tests stay exact without
+replay. Unpacked/PIPE, additional keys/entries, typed/property/backed references,
 owning referents and sole-owner lifetimes remain partial; paused paths untouched.
