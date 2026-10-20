@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+The same initially missing direct CV twice at `>`/`>=` now warns for source
+right first, then reads current shared left. Setting string0 can make `$x > $x`
+true; leaving/removing that name instead stages a second Warning and two NULLs,
+yielding false/true without a third report. Fresh/target references, one/two
+false-default reports and second chosen Exception identity/caller41/finally pass.
+Only two premises change; both compiled CVs/lines and the inverse NULL-only
+certificate remain checked. Nine source agreements plus one control and 589
+strict-SL premises/four groups (282 author + 307 independent) pass first attempts
+at `7a1b5bcb9`/407. A pre-worker maintenance selector KeyError retains zero;
+only its case key/label was corrected. Affected 46 premises/two entry fronts and one
+old101 selector pass at `9e8d51bec` without accepted replay or historical renewal.
+Genuine `788b01efd` ingress baseline stays zero. First-callback owning values,
+already checked defined counterparts removed later and wider producers remain partial.
+[Reversed shared-CV review](coverage/semantics/undefined-scalar-compare-reversed-same-review.json).
+
 The same missing direct CV twice at `==`/`!=`/`<`/`<=` now traverses its
 second Warning when the first handler leaves or removes that name. Two captured
 NULLs yield true/false/false/true despite second-handler writes/references;

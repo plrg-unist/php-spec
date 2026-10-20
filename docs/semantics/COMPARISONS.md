@@ -77,13 +77,16 @@ stays frozen; false handlers retain one default Warning and a supplied throw
 preserves destination/identity/finally. The
 [Boolean same-variable review](../../coverage/semantics/undefined-scalar-compare-same-review.json)
 records this bounded entry. Leaving or removing that name instead triggers the
-second read below; reversed same-CV entry remains partial.
+second read below. Reversed `>`/`>=` also allow one shared missing CV, preserving
+source-right NULL while following current source left. Thus `$x > $x` can be true
+after the first handler sets it to string `'0'`. The
+[reversed shared-variable review](../../coverage/semantics/undefined-scalar-compare-reversed-same-review.json)
+checks this right-frozen entry and the returning second-Warning path.
 
-If a `<=>`, `==`/`!=`/`<`/`<=` or distinct `>`/`>=` read resumes with
+If any of these seven comparisons resumes with
 its later physical direct CV still missing,
 the driver now dispatches the second Warning and freezes its NULL too. This
-includes a scalar opposing CV removed by the first handler and the same name
-twice for `<=>` or the four forward Boolean operators.
+includes a scalar later CV removed by the first handler and the same name twice.
 Second-handler writes or reference binding cannot change the two captured NULLs:
 `<=>` returns 0, the four forward Boolean operators return true, false, false, true,
 and `>`/`>=` return false, true after source-right then source-left Warnings.
@@ -101,8 +104,10 @@ removes only two same-name restrictions: both missing reads stay NULL even when
 the second handler creates a reference or leaves the name absent. The
 [reversed review](../../coverage/semantics/undefined-scalar-compare-second-reversed-review.json)
 adds the inverse NULL-right certificate and exact first-right restore. Both
-compiled descriptors are checked, including the multiline left location. Ordinary
-literal/captured operands, reversed same-CV entry and first-callback owning
+compiled descriptors are checked, including the multiline left location. The
+shared reversed form removes only its two same-name restrictions, retaining
+physical right-first order and the NULL-only certificate. Ordinary
+literal/captured operands and first-callback owning
 comparison values remain partial.
 
 Array comparison first handles identical container identity, then recursion on
