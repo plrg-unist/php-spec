@@ -1515,6 +1515,17 @@ def $ref_return_retire_normal_class(S, n) = true
   -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (NStmtClassMethod (SEQUENCE eps) phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE ([statement_echo])) metadata_method)
   -- if $ref_return_retire_echo(statement_echo)
 def $ref_return_retire_normal_class(S, n) = false -- otherwise
+dec $ref_return_retire_global_throw(pstate, porigin) : nat?
+def $ref_return_retire_global_throw(S, PORIGIN n pcpath) = (n_exception)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprVariable (BYTES text_given) metadata_given)
+  -- if ~$this_name($base64(text_given)) /\ ~$psautoglobal($base64(text_given))
+  -- if $source_emission_cv(S, n, pcpath, NExprVariable (BYTES text_given) metadata_given)
+  -- if S.GLOBALTABLE = (psymboltable)
+  -- if $lookup(psymboltable.ENV, $base64(text_given)) = (n_cell)
+  -- if $(n_cell < |S.STORE|)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_exception)
+  -- if $throwable_live(S, n_exception)
+def $ref_return_retire_global_throw(S, porigin) = eps -- otherwise
 dec $ref_return_retire_throw_method(pstate, pmethoddesc) : porigin?
 def $ref_return_retire_throw_method(S, pmethoddesc) = (porigin_new)
   -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (NStmtClassMethod (SEQUENCE eps) phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE ([statement_echo, NStmtExpression (NExprThrow (NExprNew (NName (BYTES text_class) metadata_name) (SEQUENCE ([NArg ABSENT (NScalarString (BYTES text_message) metadata_message) (BOOLEAN false) (BOOLEAN false) metadata_arg])) metadata_new) metadata_throw) metadata_statement])) metadata_method)
@@ -1522,6 +1533,11 @@ def $ref_return_retire_throw_method(S, pmethoddesc) = (porigin_new)
   -- if $base64(text_class) = $ptascii("TypeError") \/ $base64(text_class) = $ptascii("Exception")
   -- if $origin_child((pmethoddesc.FUNCTION.ORIGIN), [PCFIELD 6, PCINDEX 1, PCFIELD 0, PCFIELD 0]) = (porigin_new)
   -- if $new_source_name(S, porigin_new) = ($base64(text_class))
+def $ref_return_retire_throw_method(S, pmethoddesc) = (porigin_given)
+  -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (NStmtClassMethod (SEQUENCE eps) phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE ([NStmtGlobal (SEQUENCE ([NExprVariable (BYTES text_given) metadata_global_variable])) metadata_global, statement_echo, NStmtExpression (NExprThrow (NExprVariable (BYTES text_given) metadata_throw_variable) metadata_throw) metadata_statement])) metadata_method)
+  -- if $ref_return_retire_echo(statement_echo)
+  -- if $origin_child((pmethoddesc.FUNCTION.ORIGIN), [PCFIELD 6, PCINDEX 2, PCFIELD 0, PCFIELD 0]) = (porigin_given)
+  -- if $ref_return_retire_global_throw(S, porigin_given) =/= eps
 def $ref_return_retire_throw_method(S, pmethoddesc) = eps -- otherwise
 dec $ref_return_retire_throw_site(pstate, nat) : porigin?
 def $ref_return_retire_throw_site(S, n) = (porigin_new)
@@ -1615,6 +1631,10 @@ def $ref_return_retire_pending(S, ptask_history*, (n)) = true
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if pthrowable.KIND = text_kind /\ pthrowable.ORIGIN = (porigin_new) /\ pthrowable.FILEORIGIN = (porigin_new)
   -- if $string_bytes($throwable_field(S, n, "message")) = ($base64(text_message))
+def $ref_return_retire_pending(S, ptask_history*, (n)) = true
+  -- if ptask_history* = (RETURN_REF_UNWIND poperand z false porigin_source) :: (FINALLY_REF_RETURN porigin_c porigin_old_c (KNOWN (POBJECT n_c)) z_c) :: ptask_tail*
+  -- if $ref_return_retire_throw_site(S, n_c) = (porigin_given)
+  -- if $ref_return_retire_global_throw(S, porigin_given) = (n)
 def $ref_return_retire_pending(S, ptask_history*, n?) = false -- otherwise
 dec $ref_return_retire_operation_valid(pdestructionoperation, pstate?) : bool
 def $ref_return_retire_operation_valid(pdestructionoperation, (S)) = true
