@@ -1955,6 +1955,8 @@ def $ref_return_retire_later_site(S, (RETURN_REF_UNWIND (REFERENCE n_y) z true (
   -- if $ref_replay_contexts(S, PORIGIN n pcpath_source) = [REPLAY_TRY porigin_local]
   -- if $ref_replay_site(S, PORIGIN n pcpath_source, z, [REPLAY_TRY porigin_local])
   -- if $ref_return_retire_throw_site(S, n_c) = (porigin_given)
+  -- if $ref_return_retire_method(S, n_c) = (pmethoddesc)
+  -- if $ref_return_retire_clear_throw(S, pmethoddesc) = (porigin_given)
   -- if $ref_return_retire_global_throw(S, porigin_given) =/= eps
 def $ref_return_retire_later_site(S, ptask*) = eps -- otherwise
 dec $ref_return_retire_later_queue(ptask*) : ptask*
