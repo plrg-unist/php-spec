@@ -400,6 +400,16 @@ def $literal_reference_flat_cell(S, n) = true
   -- if ppropref.SOURCES =/= eps
   -- if $propref_unique_sources(ppropref.SOURCES)
   -- if $literal_reference_property_sources(S, n, ppropref.SOURCES, S.ALLOCATIONS)
+def $literal_reference_flat_cell(S, n) = true
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED (PARRAY n_payload)
+  -- if $literal_reference_child_array(S, n_payload, S.ALLOCATIONS)
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if $propref_at(S.PROPREFS, n) = (ppropref)
+  -- if ppropref.SOURCES =/= eps
+  -- if $propref_unique_sources(ppropref.SOURCES)
+  -- if $literal_reference_property_sources(S, n, ppropref.SOURCES, S.ALLOCATIONS)
 def $literal_reference_flat_cell(S, n) = false -- otherwise
 def $literal_reference_flat_items(S, eps) = true
 def $literal_reference_flat_items(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*) = ($literal_reference_flat_leaf(S, pvalue) /\ $literal_reference_flat_items(S, pentry*))
@@ -416,6 +426,8 @@ def $literal_reference_flat_sources(S, (ENTRY pkey (ALIAS n)) :: pentry*, pnode_
   -- if $literal_reference_flat_sources(S, pentry*, pnode_live*)
 def $literal_reference_flat_sources(S, (ENTRY pkey (ALIAS n)) :: pentry*, pnode_live*) = true
   -- if $propref_at(S.PROPREFS, n) = (ppropref)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $heap_subset($value_nodes(pvalue), pnode_live*)
   -- if $literal_reference_property_sources(S, n, ppropref.SOURCES, pnode_live*)
   -- if $literal_reference_flat_sources(S, pentry*, pnode_live*)
 def $literal_reference_flat_sources(S, pentry*, pnode_live*) = false -- otherwise

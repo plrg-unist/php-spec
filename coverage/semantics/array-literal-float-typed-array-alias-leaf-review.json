@@ -1,0 +1,41 @@
+{
+  "milestone": "A33",
+  "status": "independently validated; reviewed actual-parent composition",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348; sole oracle .tools/php/bin/php, tests/semantics/profile.json",
+  "behavior": "Embedded array-valued ALIAS leaves may retain validated ordinary instance-property type sources accepting the bounded child array. Typed writes and final-source unset use existing property-reference rules.",
+  "domain": "Mutable nonpool child HARRAY with edge-free DIRECT null/bool/int/float or validated byte leaves; no child HARRAY debt, leaf HCELL debt, coercion/backing records, deeper owning edge or cycle. Actual child and every source object must survive the same logical prune for debt-bearing payloads.",
+  "implementation": "Only module 413: separate typed-child flat_cell admission and value_nodes subset in typed flat_sources. Global plain_cell/literal_reference_cell/scalar gates, producer authentication, tasks/fields, count/prune and driver rules stay unchanged.",
+  "semantic_review": "Property aliases own the leaf CELL; that CELL owns one child-table edge regardless of alias multiplicity. Public array-property witnesses reject scalar99, share nested55/66/77 while snapshot44 stays fixed, and remove the constraint before singleton child COW on final property unset. Sibling writes isolate outer table/wrapper biases; dual-source deletion and supplied throw balance before cleanup.",
+  "witness_limit": "Fresh property descriptors are public array and fresh child values DIRECT integers; other accepted property types and edge-free scalar/byte leaves compose unchanged validation.",
+  "compatibility": "Old typed scalar/byte flat_items already requires DEFINED payloads whose value_nodes is empty, so the new typed live-subset check is vacuous there. A32 untyped-child admission stays exact; no historical evidence is renewed.",
+  "cuts": {"base": "2f164e55db95552735ee9fe20095712871835a80", "native_and_unchanged_baseline": "91304a57a92e4dac7d1857a4d7099e726cba5e7e", "runtime_strict_and_source": "002e2fa90db55b1f7c00da764a9596e1bcffa274", "focused_state": "7921eed5821fa15205fe5475ab6d31161a7b5c27"},
+  "validation": {"fresh_native": 4, "strict_modules": 407, "source_agreements": 4, "author": 449, "independent": 685, "conditions": 1134, "boolean": 1121, "raw": 13, "timing": "Author SL180; first/unrun peer SL240 via cap-only wrapper after source throw174.02s. All post-change actors pass first attempt, with no correction, retry or accepted replay; the unchanged baseline retains zero credit."},
+  "baseline": {"frontend": "accepted", "checked": "program", "credit": 0, "native_exit": 0, "model_exit": 1, "status": "unsupported", "reason": "array literal float-key array CV after callback", "stdout": "D:8192:1:15;"},
+  "execution": "Native/genuine CPU5; strict/source/focused CPU3. Source models180/outer210, strict SL180; author focused SL180. Before first unrun peer execution only, cap-only wrapper raises fixed numeric SL180 to SL240 (source throw174.02s); peer throw207.37s. No post-change correction/failure, retry or accepted rerun; quiet exits and empty process groups.",
+  "focused": [
+    {"id": "array-literal-float-typed-array-alias-leaf-cv-shared", "conditions": 220, "raw": 3, "cap_seconds": 180, "elapsed_seconds": 140.83},
+    {"id": "array-literal-float-typed-array-alias-leaf-cv-unset-property", "conditions": 229, "raw": 3, "cap_seconds": 180, "elapsed_seconds": 82.23},
+    {"id": "array-literal-typed-array-alias-review-delete-entry", "conditions": 355, "raw": 4, "cap_seconds": 240, "elapsed_seconds": 153.87},
+    {"id": "array-literal-typed-array-alias-review-supplied-throw", "conditions": 330, "raw": 3, "cap_seconds": 240, "elapsed_seconds": 207.37}
+  ],
+  "reports": [
+    {"path": ".tools/array-literal-float-typed-array-alias-leaf-baseline-33/report.json", "revision": "91304a57a92e4dac7d1857a4d7099e726cba5e7e", "sha256": "e34a94347fbc3a6c988656f7878525ca94a90a792ed776fda1204fee9dc4cda1"},
+    {"path": ".tools/array-literal-float-typed-array-alias-leaf-native-rest-33/report.json", "revision": "91304a57a92e4dac7d1857a4d7099e726cba5e7e", "sha256": "f1345ed1cabb334a9cf0fa90429a0dc7df510d0b950b57d7a34898a385f61fa8"},
+    {"path": ".tools/array-literal-float-typed-array-alias-leaf-review-native-33/report.json", "revision": "91304a57a92e4dac7d1857a4d7099e726cba5e7e", "sha256": "1b4338bd92142d250bcf64b8a354257b3b550af7c06841fd38ab6484b221521f"},
+    {"path": ".tools/array-literal-float-typed-array-alias-leaf-strict-33/report.json", "revision": "002e2fa90db55b1f7c00da764a9596e1bcffa274", "sha256": "67837ef91597a17d491f30adc360db41913d81d0c6d0c65d1913293d133c6941"},
+    {"path": ".tools/array-literal-float-typed-array-alias-leaf-author-source-33/report.json", "revision": "002e2fa90db55b1f7c00da764a9596e1bcffa274", "sha256": "e97cc23285e3af3f280cf1584e04cf3af62dd56008f7bb50f11bc714f7b44647"},
+    {"path": ".tools/array-literal-float-typed-array-alias-leaf-review-source-33/report.json", "revision": "002e2fa90db55b1f7c00da764a9596e1bcffa274", "sha256": "59f57cdce4eb7e31babfd958a332b48362f036288437460652994de294438f56"},
+    {"path": ".tools/array-literal-float-typed-array-alias-leaf-author-state-33/report.json", "revision": "7921eed5821fa15205fe5475ab6d31161a7b5c27", "sha256": "8d47c459a1674d617fb3ac3b5af8aee7bbef5cb34151a6822c318aa288a963e0"},
+    {"path": ".tools/array-literal-float-typed-array-alias-leaf-review-state-33/report.json", "revision": "7921eed5821fa15205fe5475ab6d31161a7b5c27", "sha256": "62f49e092f83fd751e7119272942ab3e36ecc9c6dd294f8e4319cddc29c1d00d"}
+  ],
+  "runtime_sha256": {"spec/semantics/413-array-literal-key-warnings.watsup": "36f549a8cca9739cd5a7ccbd5adb444664f6e22918cdfcc6d5b8f4f21bfe09a2"},
+  "runners_sha256": {
+    ".tools/array-literal-float-typed-array-alias-leaf-strict-33.py": "b3fdd73566ecfbfc6b2e7b6f24d5e17488e7196f0ad96fc3e10381da797151ac",
+    ".tools/array-literal-float-typed-array-alias-leaf-reuse-33.py": "b9036f79688b9b38e0a7250c55b4dde248fd3c87928a7789daf193c13679a042",
+    ".tools/array-literal-float-typed-array-alias-leaf-state-cap-33.py": "8dbf2bf04905615353443aa35da35b31d013f7a3615e5c372f570de448425c0b"
+  },
+  "raw_archive": {"path": ".tools/array-literal-float-typed-array-alias-leaf-33-raw.tar.gz", "bytes": 425970, "members": 124, "sha256": "1d746248e41340b736fbda8bd6a83684931d91c1b15050ce9e18442cadab7903", "recovery": "Recreate the recorded worktree at focused_state, provision project-local tool references, and extract this archive there; members are rooted under .tools/ and retain original native source paths and all eight report roots."},
+  "recovery": "At the recorded worktree path, restore focused_state and provision project-local tool references; extract the canonical archive with -C <restored_worktree> (entries start .tools/). Raw reports retain exact argv/cwd/profile/environment, original source bytes/streams, binary/input hashes, exits and group reaping.",
+  "boundaries": "Global outer typed-array CELL and direct owning-string CV/CELL retarget gates stay unchanged. Static/hooked/queued/retired sources, deeper or indebted children, unsafe/effective-zero retirement, active GC and request-end debt remain outside this slice; paused LIST/owned-NUL paths untouched.",
+  "composition": {"parent": "b2c2354872b461a69a2ebffe96c295de711ba190", "ordered_manifest_modules": 407, "accepted_private_state": "7921eed5821fa15205fe5475ab6d31161a7b5c27", "runtime": "Sole413 and six tests preserve accepted private bytes; every other runtime and manifest path is parent-exact.", "interaction": "Incoming INI, spaceship, cached clone, power-assignment and method-Closure DEFINE selectors are absent; prior scalar/byte typed checks and untyped child admission are preserved pointwise. No joined actor or renewed historical credit."}
+}

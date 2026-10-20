@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "milestone": "OP64 unary scalar-reference Warning capture and retirement",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "Unary +/- applied to a direct CV selecting a live untyped nonowning scalar reference cell with leading-numeric text and a named Warning handler. Capture the number before the callback; the current name may rebind and the last old alias may retire before return or throw. Existing historical unary marker delivers the saved number or discards it on the supplied exception without retaining the old cell. Wider producers, constrained cells and owning/lifecycle histories remain partial.",
+  "runtime_revision": "e0b8542245db19586b43b1abae0d168a48312e2e",
+  "helper_revision": "97af56faf117822779cb81fc1f11e14d427c8537",
+  "private_modules": 407,
+  "runtime_sha256": {
+    "spec/semantics/40-control.watsup": "814d02675cde2e182b6688fabaf63c5e32c69b31ddb41cf63a92a5d34fc9db11",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "a7f635ef2d1dc0b966d6958a698dde578d3400ff0392b59a44501d56c69ecd65"
+  },
+  "engine_basis": [
+    "Pinned zend_compile_unary_pm compiles a nonconstant operand as ZEND_MUL with constant+1/-1. mul_function_slow dereferences operands and fills scalar numeric copies through zendi_try_convert_scalar_to_number before its Warning; normal completion multiplies the copies, while a pending conversion exception returns FAILURE without delivering the unary result. The compiled operand line governs the Warning.",
+    "The separate arithmetic_unary_reference_plan and begin use the existing punarywarning record/tag. A CELL-only fresh snapshot arm additionally authenticates source/operand line, live allocation, unconstrained/nonowning scalar contents and exact raw value; old CV plan and prior snapshot clause remain exact. One forward declaration and two generic unary EPS gates are the only40 edits. No new field/module/tag/numeric/dispatch/resume/root body.",
+    "Entered/returned n1 validation keeps the old source/raw-number history and does not reselect or reread the current source cell. Existing task_nodes stays empty: a CV is not an owning reference-result operand. The tested handler writes primitive99 before rebinding and removing the last alias; old HCELL owner2 becomes0/unallocated/getterEPS while the replacement cell has two name owners. Owning later replacements/destructor histories are outside this trace bound, not claimed as a dynamically enforced completion boundary."
+  ],
+  "contract": [
+    "Author unary+ starts from dynamic12.5tail in preexisting x/alias reference names. Its single Warning25 handler writes old99, binds current x to replacement77, removes oldalias and throws the same Exception created on line20. Identity/nullPrevious/line20/outer100/current77/aliasabsence/calls1 and later currentx8-to-replacement8 are checked. Focus134 authenticates fresh/entered callback, discarded unary marker, oldcell owner0 and supplied Throwable owner2; no result reaches the outer destination. No separate normal unary+ completion witness is claimed.",
+    "Independent unary- starts from dynamic0.0tail; the same rebind/retirement handler returns false. Native core echo is exactly -0, strict equality establishes float-zero type/value, and focused PFLOAT bits9223372036854775808 establish the negative sign. Cached zero survives old99/current77 and old-cell retirement; no old or replacement cell is written by unary completion. Later x8 reaches replacement8 while the captured result remains negative zero. Exactly one original default Warning25 is emitted.",
+    "Focused134/130 reuses the exact old unary HELPERS plus two stage0/seek declarations and peer diagnostic counters. Real initial-source/fresh/entered/returned phases, single undriven author source/scalar/handler guard matrix, raw whole-state begin/result transitions versus driver pruning, immutable carrier prefix, historical validity after owner0, alias topology, EOF and zero/one-step budgets are checked. Author retains one full-entry replay; peer uses one staged source-to-EOF traversal. No forged state is driven and no low-level numeric renewal is claimed."
+  ],
+  "required_follow_on": [
+    "Initial selected untyped scalar references and primitive callback writes bound these traces. Other copied/owning reference-result producers, missing/expired/constrained fresh cells, object/array/resource payloads, wider handlers and destructor/lifecycle paths remain partial. Refusal projections validate only the new entry/snapshot domain, not excluded executions.",
+    "Old unary CV and previous arithmetic evidence retain original cuts without renewed credit. No source/compound store rule, detachment or operand-retention owner is added. OP12 remains paused; no engine bug or intentional divergence is claimed."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-64/source-e0b854224-author-one/report.json",
+        "sha256": "fc144dd804d2b5eb60ad9411fd8d539da7380a700a46f4e20552375110b04b97",
+        "revision": "e0b8542245db19586b43b1abae0d168a48312e2e",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-64/review-model-e0b854224-review-one/report.json",
+        "sha256": "ac860de9d3f9d387c57df8f839fe90edaf4a336bfd7b4e76c542edf3fa20944d",
+        "revision": "e0b8542245db19586b43b1abae0d168a48312e2e",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-64/state-97af56faf-two/report.json",
+        "sha256": "864488e7f7e2c4cf6fa0a4f56ec4188b68f94d67485eda03438f6a0daabacbe5",
+        "revision": "97af56faf117822779cb81fc1f11e14d427c8537",
+        "modules": 407,
+        "cases": [
+          "unary-reference-warning-throw-retired",
+          "unary-reference-warning-retired-negative-zero"
+        ],
+        "conditions": [
+          134,
+          130
+        ],
+        "total": 264
+      }
+    ],
+    "total_source_agreements": 2,
+    "total_focused_state_conditions": 264
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-64/baseline-ac6996cd5-throw-retired/report.json",
+      "sha256": "079d733bf425b2179006bdadae5a9702f2d181a9bf05af46c0cbf8d42c73d083",
+      "result": "Actual frontend accepted/checked program/Unsupported BEFORE H1, empty semantic streams, reason error-handler ingress requires a producer continuation, model1/agreement0/wrapperfalse; no override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-64/native-ac6996cd5-author-one/report.json",
+        "sha256": "acaeaf758e201e0effbb2ac6d0c9b8fb18596c023da3d2f5ced5b815f98a0e25"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-64/native-ac6996cd5-review-one/report.json",
+        "sha256": "221b0f17b6ad52c9842eb2c718d4e67ac5aca0b43c9b9639214532bf33764f0f"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-64/state-prep-97af56faf-two/report.json",
+        "sha256": "eab8d496e055646a463e66904b387dbdaf4f8f1ace24dbe7680d8e67dc2a008c",
+        "result": "Retained original paths/native bytes; checked frontend/adapter only, zero native/application replay, workers0/reaped."
+      }
+    ],
+    "standalone_syntax": "Two standalone undefined-pstate diagnostics, zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-64",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/genuine CPU1, source/focused CPU3 are distinct grants/cuts. Native30/modelCLI60-process90, checked prep30/full407 SL120 per group. Author stderr empty; peer one original default Warning25. Retained-source preparation performs no native/application replay.",
+    "record": "Restore matching Git cuts/local tools in a fresh directory. Retained original paths/native streams authenticate focused fixtures; external evidence is not a runtime dependency. Copied local tools add no rebuild/portability claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "commands": [
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 tests/semantics/unary_reference_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 tests/semantics/unary_reference_warning_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-64/state-prep-97af56faf-two/run-prepare.py",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-64/state-97af56faf-two/run-state.py"
+    ]
+  },
+  "composition": {
+    "parent": "d02051cab5b52dd6263259dceaceb68dc0d2bd23",
+    "private_publication": "edf4d8fa7e8fe46e790f0659ed0ebe5360a902ba",
+    "modules": 407,
+    "runtime_sha256": {
+      "spec/semantics/40-control.watsup": "814d02675cde2e182b6688fabaf63c5e32c69b31ddb41cf63a92a5d34fc9db11",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "a7f635ef2d1dc0b966d6958a698dde578d3400ff0392b59a44501d56c69ecd65"
+    },
+    "other_incoming_paths_preserved": 26,
+    "gate": "Independent actual-parent gate: base 25f8d3066 to parent d02051cab changes runtime paths 172, 400 and 413 only. Named selected-owner INI_SET NULL/rejected-array and live STRINGMETHODCLOSURE DEFINE producers are absent from direct scalar unary refs, by-value global h, native Exception and Throwable getters. The A33 typed-property reference-to-flat-array child/debt producer is also absent; no property/reference literal array source occurs and literal retention/debt fields stay empty. No schema, default, general root or ordered 407-module manifest change; 40/404 are parent-base exact before the reviewed unary additions. Preserve all incoming paths and private source2/state264 cuts; no concrete interaction requires joined execution or renewed credit."
+  }
+}

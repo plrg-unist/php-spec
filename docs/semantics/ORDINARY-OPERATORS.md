@@ -259,8 +259,21 @@ reaches the destination.
 Three exact originals and 227 author plus 96 independent genuine SL premises
 check negative boundary float delivery, false fallback, public snapshot/message
 rejection, ownership and budget resumption in the
-[unary ledger](../../coverage/semantics/unary-warning-review.json). Other producers,
-references/owning operands, callbacks and lifecycle forms remain required.
+[unary ledger](../../coverage/semantics/unary-warning-review.json). Other reference/owning producers, callbacks and lifecycle forms remain required.
+
+Selected scalar-reference unary `+`/`-` now reuses this captured-number protocol.
+Fresh snapshots authenticate the selected live unconstrained CELL and actual raw
+text. The handler writes old value `99`, rebinds the current name to replacement
+`77` and removes its last old alias; that CELL reaches owner zero and retires.
+Returned history remains valid without a source lookup or operand-retention root.
+A supplied Exception from line 20 cancels outer delivery (`100`). Normal unary minus
+instead delivers float zero: native echo `-0` and exact negative-zero bits establish
+its sign, while strict equality checks its float type/value. Unary completion writes
+no source or replacement cell. Two originals and 134+130 focused premises cover
+real fresh/entered callbacks, raw versus driven results, owners, EOF and budgets in
+the [unary-reference ledger](../../coverage/semantics/unary-reference-warning-review.json).
+Fresh untyped scalar references and primitive handler writes bound these traces;
+other producers/constraints/owning payloads and wider lifetimes remain partial.
 
 Bitwise NOT now retains a finite in-range fractional float's converted long before its
 precision-loss deprecation. The bounded producer accepts a defined non-reference
@@ -476,8 +489,24 @@ The scalar store consumes the marker and changes only old STORE/RESULT/LOCATION
 Two originals and 181+153 focused premises check raw/driven effects, pending owner2,
 retired RHS owner0, alias topology and budgets in the
 [selected power-assignment ledger](../../coverage/semantics/powerassign-selected-warning-review.json).
-Initial quiet PINT/PFLOAT references and a surviving old-target alias bound the slice;
-text conversions, other producers/targets and wider lifetimes remain partial.
+Initial quiet PINT/PFLOAT references and a surviving old-target alias bound the slice.
+Other text conversions, producers/targets and wider lifetimes remain partial.
+
+Selected-reference `**=` now also stages leading-text conversions before final
+Deprecated. Each number is captured before its own Warning. A supplied second
+conversion Exception leaves callback value `88` and outer result `100` unchanged;
+a final Deprecated Exception instead permits cached `+INF` to replace callback
+value `66` in the old target before that same Exception resumes. Outer delivery stops.
+The final marker owns the pending Throwable until the mandatory store restores
+`THROW_SEARCH`; old quiet-power snapshot and commit rules remain exact.
+An independent signed-zero/default case delivers strict `-INF` through the old target
+after both current names rebind to `77`/`7` and the captured RHS retires. Three originals
+and 186+241+261 focused premises cover real fresh/entered callbacks, historical holders,
+raw/driven marker/store effects, owners and budgets in the
+[converted power ledger](../../coverage/semantics/powerassign-conversion-warning-review.json).
+Initial leading LEFT/quiet RHS untyped scalar refs and a surviving old-target alias
+bound the slice. Before final dispatch and store the old target must be PINT/PFLOAT,
+avoiding refcounted-target destruction. Wider values/producers/lifetimes remain partial.
 
 Plain-CV `%=` now captures a fractional-float left conversion before its
 deprecation, then reads the live quiet integer RHS after a named handler returns.

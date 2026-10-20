@@ -163,25 +163,30 @@ rejection/coercion. Explicit property unset removes that source, permitting
 singleton unwrapping when only its table entry remains, even while the object stays
 rooted. Int-property witnesses, multiple sources and supplied throws are in the
 [typed-leaf review](../../coverage/semantics/array-literal-float-typed-alias-leaf-review.json).
-Typed array/object leaves, static/hooked/queued or retired sources and
+Object-valued leaves, static/hooked/queued or retired sources and
 coercion/backing records remain outside this extension.
 The [typed string-leaf review](../../coverage/semantics/array-literal-float-typed-string-alias-leaf-review.json)
 checks shared byte writes and weak integer-to-string coercion, rejected array
 writes, fixed snapshots and singleton byte COW after explicit property unset.
 Global direct string CV/CELL retarget bounds remain unchanged.
-Untyped array-valued ALIAS leaves may hold one mutable nonpool child table of
+Array-valued ALIAS leaves may hold one mutable nonpool child table of
 DIRECT null/bool/int/float or validated byte strings. Child eligibility first
 rejects all outgoing owner edges, before checking its DIRECT values; this excludes
-recursive eligibility and cycles. The leaf has no CELL debt or type/coercion/backing
-records, and its child has no HARRAY debt. For debt-bearing payloads, both must
-survive the same logical prune. Positive outer tables keep leaf edges; debt-free
-leaves keep their child-table edges. Shared leaf copies preserve ALIAS writes;
+recursive eligibility and cycles. The leaf has no CELL debt or coercion/backing
+records, and its child has no HARRAY debt. Ordinary instance-property type sources
+use the validation above. For debt-bearing payloads, the child and every source
+object must survive the same logical prune. Positive outer tables keep leaf edges;
+debt-free leaves keep their child-table edges. Shared leaf copies preserve ALIAS writes;
 singleton leaves unwrap to DIRECT array values before independent child COW.
 Snapshots and sibling writes separate these effects from outer table/wrapper
 biases through deletion, supplied throw and inverse cleanup.
 The [array-alias-leaf review](../../coverage/semantics/array-literal-float-array-alias-leaf-review.json)
-records the new bounded cases. Typed array leaves, deeper owning children and
-indebted descendants remain Unsupported.
+records untyped cases; the
+[typed array-leaf review](../../coverage/semantics/array-literal-float-typed-array-alias-leaf-review.json)
+adds public array-property witnesses with scalar rejection, shared nested writes
+and singleton copying after explicit property unset. Global outer typed-array
+CELL admission stays unchanged. Deeper owning children and indebted descendants
+remain Unsupported.
 The source basis is pinned `Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT`,
 `Zend/zend_hash.c::zend_array_dup_value`, and
 `Zend/zend_operators.h::zend_dval_to_lval_safe`, with string writes from

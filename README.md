@@ -58,11 +58,13 @@ unset removes its constraint before singleton copying. Child-table copies preser
 shared leaf aliases and unwrap singleton leaves; string byte writes keep earlier
 snapshots independent
 of both leaf references and outer table/wrapper count corrections.
-Untyped reference leaves may also hold one mutable nonpool child table of DIRECT
-null/bool/int/float or validated byte strings. Its table must survive logical
-pruning and carry no HARRAY debt; leaf CELL debt and deeper owning edges remain
-excluded. Shared leaf references propagate nested writes, while singleton leaf
-copies unwrap before child-array COW and preserve independent snapshots.
+Reference leaves may also hold one mutable nonpool child table of DIRECT
+null/bool/int/float or validated byte strings, with optional validated ordinary
+instance-property type sources. For debt-bearing payloads, the child and every
+source object must survive logical pruning. Child HARRAY debt, leaf CELL debt
+and deeper owning edges remain excluded. Shared leaves preserve typed nested
+writes; removing the final property source permits singleton unwrapping before
+child-array COW, with independent snapshots.
 Direct string CV/cell payloads, unsafe deficit retirement and wider domains remain
 Unsupported. Duplicate replacement and later items stay ordered.
 
@@ -315,7 +317,8 @@ now retain an earlier array across reversed value/option evaluation and later CO
 Returning handlers reach the value TypeError with an empty option; a supplied
 throw keeps raw NULL and cancels rejection. Four source comparisons and 995 state
 premises cover named/mixed source authentication, ownership, strict option
-priority and recovery. Owned/packed array values and wider leaves remain partial.
+priority and recovery. Owned forms beyond the bounded follow-up below, packed
+array values and wider leaves remain partial.
 
 [NULL INI options with retained stdClass values](coverage/semantics/ini-set-null-stdclass-value-review.json)
 now resume handlers for direct/selected positional calls with table-free objects
@@ -332,6 +335,16 @@ option and the same updated object; a supplied throw preserves raw NULL and
 cancels rejection. Four source comparisons and 1,109 state premises cover named
 binding, strict option priority, owning trace edges and normal setter recovery.
 Owned/packed calls, materialized tables and wider properties remain partial.
+
+[Named retained INI calls with rejected array values](coverage/semantics/ini-set-owned-named-null-array-value-review.json)
+now retain the original Closure and earlier flat quiet array across reversed
+argument effects, live callee replacement and alias COW. Returning handlers reach
+parameter2 TypeError: the API receives an empty option while explicit `__invoke`
+keeps raw NULL in its numeric wrapper arguments. A supplied throw cancels rejection.
+Four source comparisons and 1,319 state premises cover both owning roots, strict
+ordinary versus weak explicit calls, actual trace edges and retained-setter reuse.
+Purely positional/packed array values, wider leaves and sole-owner lifetimes
+remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -798,6 +811,15 @@ premises check callback writes, supplied throws with unchanged destinations,
 negative boundary float delivery and a false-handler warning on the operand line.
 [Unary evidence](coverage/semantics/unary-warning-review.json) preserves the
 original failures; wider operand, callback and lifecycle forms remain partial.
+
+Unary `+`/`-` now also captures leading text from selected scalar references.
+A handler may rebind the current name and remove the last old alias; the cached
+number remains valid after that cell retires. A supplied Exception cancels outer
+delivery, while normal unary minus retains float zero with native output `-0`.
+Two originals and 264 focused premises pass in the
+[unary-reference ledger](coverage/semantics/unary-reference-warning-review.json).
+Wider producers, constrained/owning cells and callback lifetimes remain partial.
+
 Bitwise NOT now retains the converted long through named deprecation handlers
 for finite in-range fractional floats in defined non-reference CVs. Three exact originals
 and 324 genuine state premises check live writes, supplied throws, false fallback,
@@ -884,6 +906,15 @@ unchanged. A signed-zero/default case delivers `-INF` after old RHS retirement.
 Two originals and 334 focused premises pass in the
 [selected power-assignment ledger](coverage/semantics/powerassign-selected-warning-review.json).
 Other operands, unsafe targets and wider lifetimes remain partial.
+
+Selected-reference `**=` now distinguishes conversion and final deprecation
+throws. A second conversion Exception cancels storage; a final Deprecated Exception
+still writes cached `+INF` through the old target before resuming, leaving the
+outer assignment unchanged. A signed/default case yields `-INF` after RHS retirement.
+Three originals and 688 focused premises pass in the
+[converted power ledger](coverage/semantics/powerassign-conversion-warning-review.json).
+Initial leading LEFT/quiet RHS scalar refs and a primitive target before and after
+final dispatch bound this slice; wider values, producers and lifetimes remain partial.
 
 Plain-CV `%=` now keeps the first converted long through a fractional-float
 deprecation, then reads the live quiet integer RHS. Normal return stores the
@@ -1810,6 +1841,14 @@ leaves that selection intact. Method static cells remain request roots; query
 COW shares the Closure, and throwing-duplicate cleanup can retire its bound
 receiver before catch.
 [Array-method Closure define review](coverage/semantics/define-runtime-array-closure-review.json).
+
+Closures captured from class-method strings also publish with their
+selected method and optional receiver. A fixed Base method keeps that
+descriptor despite a Child override, while retaining called Child scope.
+Computed static strings retain their selection after source rewrites. Query
+COW shares the Closure; method static cells remain request roots. Throwing
+duplicate cleanup can retire the sole receiver before catch.
+[String-method Closure define review](coverage/semantics/define-runtime-string-closure-review.json).
 
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
@@ -2788,7 +2827,8 @@ steps. Broader close/destructor lifetimes remain required.
 now keep declared slots live in retained tables while copied generations keep their
 own values. Dynamic add/unset, shared cells, physical unset buckets and throw cleanup
 pass six exact sources and 743 reached premises/37 raw steps. Foreach and array casts
-read the current table. Cached cloning and collector traversal remain explicit limits.
+read the current table. Declared-only cached cloning is covered below; mixed dynamic
+caches and collector traversal remain explicit limits.
 [Materialization during direct comparison](coverage/semantics/direct-table-comparison-review.json)
 now preserves the original inline-slot walk while nested comparisons use separate
 concrete-table guards and pins. Live slots versus retained cells, newly added dynamic
@@ -4510,15 +4550,16 @@ detached caller references. Ordinary global references may alias across pending
 slots; each keeps its own source/owner/restore authority and cleanup count. A
 singleton plain public `object` property source is now admitted through its exact
 live ALIAS slot and declaration.
-Computed objects retain distinct sole owners. A fresh typed za/z source and 566
-Boolean/9 raw checks at `cbdb48da3` preserve the property constraint through both
-shared-cell releases, same supplied catch, Notice14 and detached caller NULL.
-A failed string write leaves the property unchanged; a valid object replacement
-updates holder/z/za while the old copy, detached r and prior b stay separate.
+Computed objects retain distinct sole owners. If the Holder stays live, its type
+constraint survives both pending-slot releases. A finite destructor may now clear
+the last safe Holder before its supplied throw: one source and 579 Boolean/11 raw
+checks at `994d0412c` preserve local catch/Notice14/fresh detached NULL through all
+six cleanup steps. The type source detaches, so a surviving za string write succeeds;
+the old copy, detached r, prior b and later object replacement remain separate.
 Earlier evidence retains its original cuts in the
 [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-Other property types/sources, multiple sources, holder retirement, fewer than two
-remaining slots, wider bodies/reentry, GC and consumers remain open.
+Other property types/sources, multiple sources, wider holder lifetimes, fewer than
+two remaining slots, broader bodies/reentry, GC and consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;
@@ -4673,6 +4714,14 @@ binds named/unpacked arguments and applies weak property updates in order.
 Genuine clone callbacks and nonempty readonly update windows have separate cuts;
 Generator callbacks, hooks and wider lifecycle
 integration remain open.
+
+[Cached ordinary cloning](coverage/semantics/cached-property-clone-review.json) now
+builds fresh tables for public declared-only objects materialized by foreach.
+Locators target the copy without adding value owners; singleton references unwrap,
+held typed aliases gain a clone source, and shallow Payloads survive source release.
+Five original-source agreements and 378 focused premises retain separate tested
+cuts. Dynamic caches, clone callbacks, readonly and wider GC histories remain open.
+
 [`get_class` testing support](docs/semantics/GET-CLASS.md) observes finite live
 object names and executing lexical scope through direct and callable invocation.
 [Labels and goto](docs/semantics/SOURCE-GOTO.md) now resolve within each callable,
