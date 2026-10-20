@@ -67,8 +67,8 @@ def controls():
         '~$dynamic_owned_define_valid(S_bad,pconfigcall)',
         'pconfigcall_callee_value = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,1,KNOWN (POBJECT n_first))]',
         '$dynamic_owned_define_header(S,pconfigcall_callee_value)',
-        '$dynamic_define_value_class(S,POBJECT n_first) = eps',
-        '~$dynamic_owned_define_valid(S,pconfigcall_callee_value)']
+        '$dynamic_define_value_class(S,POBJECT n_first) = (PVOBJECT)',
+        '$dynamic_owned_define_valid(S,pconfigcall_callee_value)']
 
 
 def direct(initial, stdout):

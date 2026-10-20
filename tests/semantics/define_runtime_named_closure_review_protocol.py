@@ -79,7 +79,7 @@ def controls():
         '$typed_closure(S_binding,n_closure)',
         '~$dynamic_runtime_object(S_binding,n_closure)',
         'S_internal = S[.OBJECTS[n_closure] = INTRINSICCLOSURE INTRINSIC_DEFINE]',
-        '~$dynamic_runtime_object(S_internal,n_closure)',
+        '$dynamic_runtime_object(S_internal,n_closure)',
         'S_wrapped = S[.OBJECTS[n_closure] = CONSTANTCLOSURE pconfigcall.SITE (NAMEDCLOSURE porigin_function)]',
         '~$dynamic_runtime_object(S_wrapped,n_closure)',
         '$dynamic_define_value_class(S_wrapped,POBJECT n_closure) = eps',

@@ -7,6 +7,25 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Bare supported intrinsic Closures now publish directly and in ARRAY snapshots.
+Exact live pointers survive named capture, query COW and later callee replacement.
+A queried/recovered DEFINE Closure becomes a writer under its own selected owner
+identity; distinct callee/VALUE Closures can die while their primitive rows
+remain authenticated by nonowning history. Other supported kinds compose
+structurally; only DEFINE invocation is exercised.
+
+Three source agreements pass at 2ac92800b/409. Focused checks total
+841 = 259 + 250 + 332 premises/three budgets at b2ed96448, actual 420 each.
+The first DIRECT check's CURRENT type/refusal overclaim is retained with zero
+credit; module 253 already admits that bare intrinsic. Only the two pure signs
+in each helper changed before affected DIRECT and first ARRAY/peer checks.
+
+Only seven added module 400 lines extend existing typed/live VALUE authority;
+source-specific old controls change without historical execution or renewed credit.
+No producer, child/root, receipt, invocation, flag/name or global/default change;
+Source85 missing-CV INI_SET and paused boundaries remain disjoint.
+[Intrinsic Closure VALUE review](coverage/semantics/define-intrinsic-closure-review.json).
+
 All seven missing-CV comparison array shapes now admit ALIAS entries whose live
 allocated reference cell holds a defined primitive. Captured containers retain
 their entries while shared cell writes stay visible across COW copies. Singleton

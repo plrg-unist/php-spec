@@ -96,7 +96,7 @@ def controls():
         '~$config_selected_valid(S_dead,pconfigcall_capture)',
         'S_bound = S[.SELECTEDCALLS[0] = pselectedcall_a[.OWNER = (|S.OBJECTS|)]]',
         '~$selected_entry_source_valid(S_bound,S_bound.SELECTEDCALLS[0])',
-        '$dynamic_define_value_class(S,POBJECT n_a) = eps',
+        '$dynamic_define_value_class(S,POBJECT n_a) = (PVOBJECT)',
         '$node_children(S,HOBJECT n_weak_a) = eps',
         '$node_children(S,HOBJECT n_weak_b) = eps']
 
@@ -149,7 +149,7 @@ def checks(initial, stdout):
         '$config_invoke_valid(S_inv,pconfigcall_name)',
         '~$dynamic_owned_define_valid(S_inv,pconfigcall_name)',
         'pconfigcall_value = pconfigcall_first[.SENT = $named_slot_set(pconfigcall_first.SENT,1,KNOWN (POBJECT n_a))]',
-        '~$dynamic_owned_define_valid(S_inv,pconfigcall_value)',
+        '$dynamic_owned_define_valid(S_inv,pconfigcall_value)',
         'pconfigcall_flag = pconfigcall_first[.SENT = $named_slot_set(pconfigcall_first.SENT,2,KNOWN (PBOOL true))]',
         '$dynamic_owned_define_valid(S_inv,pconfigcall_flag)',
         'S_pause = $drive_steps(S_inv,0)', 'S_pause = S_inv[.COMPLETION = BUDGET]',

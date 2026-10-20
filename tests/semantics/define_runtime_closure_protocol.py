@@ -68,7 +68,7 @@ def controls():
         'S_busy = S[.TODO = (CLOSURE_CAPTURE n_left 1) :: S.TODO]',
         '~$typed_closure(S_busy,n_left)', '~$dynamic_runtime_object(S_busy,n_left)',
         'S_internal = S[.OBJECTS[n_left] = INTRINSICCLOSURE INTRINSIC_DEFINE]',
-        '~$dynamic_runtime_object(S_internal,n_left)',
+        '$dynamic_runtime_object(S_internal,n_left)',
         'S_named = S[.OBJECTS[n_left] = NAMEDCLOSURE porigin_left]',
         '~$dynamic_runtime_object(S_named,n_left)',
         'S_wrapped = S[.OBJECTS[n_left] = CONSTANTCLOSURE pconfigcall.SITE (S.OBJECTS[n_left])]',
