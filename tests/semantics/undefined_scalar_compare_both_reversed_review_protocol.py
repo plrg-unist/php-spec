@@ -43,6 +43,11 @@ def checks(program, path, name):
                 continue
             condition = condition.replace('$heap_owners($heap_prune($heap_graph(S)),HCELL n_original) = 1',
                                           '$heap_owners($heap_prune($heap_graph(S)),HCELL n_original) = 0')
+        if condition == 'PhpStep: S_without ~> S_denied':
+            result.append('$scalar_compare_read_again(S_without,perrorread)')
+            condition = 'PhpStep: S_without ~> S_without_restored'
+        if condition.startswith('S_denied = S_without['):
+            condition = 'S_without_restored = S_without[.TODO = perrorread.TASK :: ptask_tail*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]'
         if condition.startswith('$us_output('):
             expected = ('H:1:1:9;R:1:1:1;A:1:1;END;' if target else
                         'H:1:1:13;R:1:1:1:1;A:1;END;')
@@ -63,10 +68,10 @@ def checks(program, path, name):
         '$us_guard(S_again)', '$error_read_valid(S_again,perrorread)',
         '$scalar_compare_missing_pair(S_again,perrorread)',
         '~$scalar_compare_read_other(S_again,perrorread)',
-        '~$scalar_compare_read_again(S_again,perrorread)',
+        '$scalar_compare_read_again(S_again,perrorread)',
         '$error_read_plan(S_again) = eps',
-        'PhpStep: S_again ~> S_again_denied',
-        'S_again_denied = S_again[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed left operand"]',
+        'PhpStep: S_again ~> S_again_restored',
+        'S_again_restored = S_again[.TODO = perrorread.TASK :: ptask_tail*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]',
     ]
     if target:
         result += ['$lookup(S_resume.ENV,$ptascii("missing")) = eps',

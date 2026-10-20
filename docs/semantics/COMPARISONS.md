@@ -36,7 +36,7 @@ and a defined scalar counterpart. The missing value stays null while the opposin
 wrapper follows callback writes, late reference creation and rebinding. A missing
 right name can remain undefined throughout the callback. False handlers preserve
 default Warning order; throws preserve destination/catch/finally. The opposing CV
-must remain scalar on return, except for the forward second-Warning paths below;
+must remain scalar on return, except for the second-Warning paths below;
 other removed or owning values stop Unsupported. The
 [missing-left review](../../coverage/semantics/undefined-scalar-compare-review.json)
 and [missing-right review](../../coverage/semantics/undefined-scalar-compare-right-review.json)
@@ -45,8 +45,8 @@ and [greater review](../../coverage/semantics/undefined-scalar-compare-gt-ge-rev
 record the separate cuts. Zend evaluates `>`/`>=` source expressions left to right,
 then reverses physical comparison operands. The single-missing/scalar-throughout
 bound makes these source-oriented records valid; removed-right native probes
-confirm one Warning without admitting that wider path. Reversed second-Warning chains,
-owning/removed counterparts and wider producers remain partial. Earlier spaceship cuts remain in the
+confirm one Warning without admitting that wider path. Owning values, removal of
+already checked defined counterparts and wider producers remain partial. Earlier spaceship cuts remain in the
 [scalar warning review](../../coverage/semantics/undefined-spaceship-review.json).
 
 Distinct loose-comparison CV pairs can also begin with both values missing.
@@ -55,8 +55,8 @@ defines current right. Reversed `>`/`>=` warn for source right first and freeze 
 NULL while the handler defines current left. The first name may remain undefined.
 A supplied throw suppresses the second Warning while retaining destination,
 Exception identity and finally; `zval_undefined_cv` checks the pending exception
-before reporting. Reversed comparisons with the opposing name still missing
-remain explicit Unsupported before the second-Warning chain.
+before reporting. A returning handler can instead leave the later physical CV
+missing and trigger the second Warning below.
 The spaceship path uses the same left-frozen record and entry-only predicate.
 Owning counterparts and removed-left spaceship operands
 and wider producers remain partial. The
@@ -67,26 +67,39 @@ record the separate cuts. Affected older entry assertions now select the first
 physical missing operand; these maintenance checks do not renew earlier results.
 
 At `<=>`, both operands may also name the same initially missing CV. The first
-read stays NULL while the second sees the handler-created scalar or reference.
-The other six operators with the same missing CV remain partial. The
+read stays NULL while the second sees the handler-created scalar or reference. The
 [same-variable review](../../coverage/semantics/undefined-spaceship-same-review.json)
-records this entry extension and its separate source/state cut.
+records that entry extension and its separate source/state cut. Forward
+`==`/`!=`/`<`/`<=` now also admit the same missing CV when the handler defines a
+current scalar/reference before returning. Thus `$x == $x` can be false and `$x != $x` or
+`$x < $x` true after setting the current value to string `'0'`. The first NULL
+stays frozen; false handlers retain one default Warning and a supplied throw
+preserves destination/identity/finally. The
+[Boolean same-variable review](../../coverage/semantics/undefined-scalar-compare-same-review.json)
+records this bounded entry. Returning with the name still missing refuses after
+the first Warning; its second-read continuation and reversed same-CV entry remain partial.
 
-If a frozen-left `<=>` or distinct forward `==`/`!=`/`<`/`<=` read resumes with
-its later direct CV still missing,
+If a `<=>` or distinct `==`/`!=`/`<`/`<=`/`>`/`>=` read resumes with
+its later physical direct CV still missing,
 the driver now dispatches the second Warning and freezes its NULL too. This
-includes a scalar right CV removed by the first handler and the same name twice for `<=>`.
+includes a scalar opposing CV removed by the first handler and the same name twice for `<=>`.
 Second-handler writes or reference binding cannot change the two captured NULLs:
-`<=>` returns 0 and the four forward Boolean operators return true, false, false, true.
+`<=>` returns 0, the four forward Boolean operators return true, false, false, true,
+and `>`/`>=` return false, true after source-right then source-left Warnings.
 Leaving the name missing causes no third Warning. False handlers preserve each
 default Warning's order, and a second supplied throw preserves destination and
-catch/finally. The existing right-frozen removed-left refusal stays separate.
+catch/finally. A single missing read still refuses removal of its already checked defined
+counterpart.
 [Second-Warning review](../../coverage/semantics/undefined-spaceship-second-review.json)
 records fresh source/state checks and only the affected historical controls.
 The [forward review](../../coverage/semantics/undefined-scalar-compare-second-review.json)
 adds a NULL-only source certificate for the second read, requiring both compiled
-distinct direct CVs and the actual RHS diagnostic line. Ordinary literal/captured-left,
-same-CV and reversed producers remain separate.
+distinct direct CVs and the actual RHS diagnostic line. The
+[reversed review](../../coverage/semantics/undefined-scalar-compare-second-reversed-review.json)
+adds the inverse NULL-right certificate and exact first-right restore. Both
+compiled descriptors are checked, including the multiline left location. Ordinary
+literal/captured operands, same-CV second-Warning chains outside `<=>`, and owning
+comparison values remain partial.
 
 Array comparison first handles identical container identity, then recursion on
 the left operand, element counts, and exact normalized key lookup in left

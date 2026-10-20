@@ -99,6 +99,11 @@ The recursive four-owning return-history proof is in
 556,432 bytes under `.tools/m119/`, seven reports retaining the pre-state
 diagnostic failure and exact runtime patch, SHA-256 `8c14a312f25ee839f32183e5778257c51fd558f4972cbcf49ac8898d326b9aa7`.
 
+The mixed global-cell/object return-history proof is in
+`../php-spec-evidence-archive/lifecycle-mixed-owning-120/manifest.json`:
+501,562 bytes under `.tools/m120/`, six reports with original source
+packets, accepted state snapshots and runtime patch, SHA-256 `ad1387df1535f45c813b05c52be87aa2574d867a6d7eb0d6b6d2131dc189ecea`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

@@ -1561,21 +1561,39 @@ dec $ref_return_retire_call(pstate, prefreturncursor) : bool
 def $ref_return_retire_call(S, prefreturncursor) = true
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprFuncCall (NName (BYTES text) metadata_name) (SEQUENCE eps) metadata_call) metadata_return)
 def $ref_return_retire_call(S, prefreturncursor) = false -- otherwise
-dec $ref_return_retire_outer(pstate, prefreturncursor, nat*, ptask*, porigin) : porigin*?
-def $ref_return_retire_outer(S, prefreturncursor_inner, n_seen*, [TYPE_FALLTHROUGH porigin_function], porigin_function) = (eps)
+dec $ref_return_retire_global_operand(pstate, prefreturncursor, nat) : bool
+def $ref_return_retire_global_operand(S, prefreturncursor, n_cell) = true
+  -- if prefreturncursor.SOURCE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata_return)
+  -- if ~$this_name($base64(text)) /\ ~$psautoglobal($base64(text))
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text) metadata_variable)
+  -- if $ref_return_pair_operand(S, prefreturncursor.SOURCE, REFERENCE n_cell)
+  -- if S.GLOBALTABLE = (psymboltable)
+  -- if $lookup(psymboltable.ENV, $base64(text)) = (n_cell)
+  -- if $propref_at(S.PROPREFS, n_cell) = eps
+  -- if (HCELL n_cell) <- S.ALLOCATIONS /\ n_cell <- S.REFCELLS
+def $ref_return_retire_global_operand(S, prefreturncursor, n_cell) = false -- otherwise
+dec $ref_return_retire_operand(pstate, prefreturncursor, poperand) : pnode?
+def $ref_return_retire_operand(S, prefreturncursor, KNOWN (POBJECT n)) = (HOBJECT n)
+  -- if $ref_return_retire_call(S, prefreturncursor)
+  -- if $ref_return_retire_normal_class(S, n)
+  -- if $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN (POBJECT n))
+  -- if $heap_owners($heap_graph(S), HOBJECT n) = 1
+def $ref_return_retire_operand(S, prefreturncursor, REFERENCE n) = (HCELL n)
+  -- if $ref_return_retire_global_operand(S, prefreturncursor, n)
+def $ref_return_retire_operand(S, prefreturncursor, poperand) = eps -- otherwise
+dec $ref_return_retire_outer(pstate, prefreturncursor, pnode*, ptask*, porigin) : porigin*?
+def $ref_return_retire_outer(S, prefreturncursor_inner, pnode_seen*, [TYPE_FALLTHROUGH porigin_function], porigin_function) = (eps)
   -- if prefreturncursor_inner.OUTER = (porigin_function)
-def $ref_return_retire_outer(S, prefreturncursor_inner, n_seen*, (FINALLY_REF_RETURN porigin_outer porigin_old (KNOWN (POBJECT n)) z_old) :: (FINALLY_PHASE porigin_outer 3) :: (ORIGIN_RETURN porigin_restore?) :: ptask_tail*, porigin_function) = (porigin_outer :: porigin_tail*)
+def $ref_return_retire_outer(S, prefreturncursor_inner, pnode_seen*, (FINALLY_REF_RETURN porigin_outer porigin_old poperand_old z_old) :: (FINALLY_PHASE porigin_outer 3) :: (ORIGIN_RETURN porigin_restore?) :: ptask_tail*, porigin_function) = (porigin_outer :: porigin_tail*)
   -- if prefreturncursor_outer = { OWNER porigin_outer, SOURCE porigin_old, LINE z_old, OUTER porigin_restore? }
   -- if $ref_return_cursor_site(S, prefreturncursor_outer)
-  -- if $ref_return_retire_call(S, prefreturncursor_outer)
   -- if $ref_return_cursor_inside(porigin_outer, prefreturncursor_inner.SOURCE)
   -- if prefreturncursor_inner.OUTER = $origin_child((porigin_outer), [PCFIELD 2])
-  -- if ~(n <- n_seen*)
-  -- if $ref_return_retire_normal_class(S, n)
-  -- if $ref_return_cursor_old_operand(S, prefreturncursor_outer, KNOWN (POBJECT n))
-  -- if $heap_owners($heap_graph(S), HOBJECT n) = 1
-  -- if $ref_return_retire_outer(S, prefreturncursor_outer, n :: n_seen*, ptask_tail*, porigin_function) = (porigin_tail*)
-def $ref_return_retire_outer(S, prefreturncursor, n_seen*, ptask*, porigin) = eps -- otherwise
+  -- if $ref_return_retire_operand(S, prefreturncursor_outer, poperand_old) = (pnode)
+  -- if ~(pnode <- pnode_seen*)
+  -- if $ref_return_retire_outer(S, prefreturncursor_outer, pnode :: pnode_seen*, ptask_tail*, porigin_function) = (porigin_tail*)
+def $ref_return_retire_outer(S, prefreturncursor, pnode_seen*, ptask*, porigin) = eps -- otherwise
 dec $ref_return_retire_site(pstate, ptask*) : prefreturncursor?
 def $ref_return_retire_site(S, (RETURN_REF_UNWIND (REFERENCE n_y) z false (PORIGIN n pcpath_source)) :: (FINALLY_REF_RETURN porigin_c porigin_old_c (KNOWN (POBJECT n_c)) z_c) :: (FINALLY_PHASE porigin_c 3) :: (ORIGIN_RETURN porigin_restore_c?) :: ptask_outer*) = (prefreturncursor_c)
   -- if S.OUTPUTBUFFERS = eps
@@ -1591,7 +1609,7 @@ def $ref_return_retire_site(S, (RETURN_REF_UNWIND (REFERENCE n_y) z false (PORIG
   -- if $function_at($all_functions(S), porigin_function) = (pfunction)
   -- if pfunction.SIGNATURE.BYREF
   -- if pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "object"])), (PTBRANCH ([PTBUILTIN "null"]))]
-  -- if $ref_return_retire_outer(S, prefreturncursor_c, [n_c], ptask_outer*, porigin_function) = (porigin_outer*)
+  -- if $ref_return_retire_outer(S, prefreturncursor_c, [HOBJECT n_c], ptask_outer*, porigin_function) = (porigin_outer*)
   -- if $(|porigin_outer*| >= 2)
   -- if $source_unit(S.SOURCES, n) = (pcunit)
   -- if $ref_chain_paths($ppfinally_protected(pcunit.OCCURRENCES, pcpath_source), porigin_c :: porigin_outer*, n, pcpath_source)
