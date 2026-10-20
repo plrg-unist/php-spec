@@ -1,0 +1,151 @@
+;; Overloaded pre/post updates pin the chosen object across BP_VAR_R Get and
+;; Set. Each existing handler marker retains its separate inner object hold.
+dec $property_magic_update_source(pstate, porigin, pupdate, bool) : bool
+def $property_magic_update_source(S, PORIGIN n pcpath, pupdate, b_post) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $update_warning_kind(expression) = ((pupdate, b_post))
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata_property)
+  -- if $base64(text_receiver) =/= $ptascii("this")
+  -- if $property_source_task(S[.ORIGIN = (PORIGIN n pcpath)], expression)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0, PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
+  -- if ~$scope_global(S[.ORIGIN = (PORIGIN n pcpath)], [PCFIELD 0, PCFIELD 0])
+  -- if $closure_source_class(S, PORIGIN n pcpath) = eps
+def $property_magic_update_source(S, porigin, pupdate, b_post) = false -- otherwise
+
+;; This history never re-reads the CV changed by Get or requires its object to
+;; remain allocated after the final helper hold has been released.
+dec $property_magic_update_history(pstate, ppropertymagicupdate) : bool
+def $property_magic_update_history(S, ppropertymagicupdate) = true
+  -- if $property_magic_update_source(S, ppropertymagicupdate.SITE, ppropertymagicupdate.OP, ppropertymagicupdate.POST)
+  -- if $origin_node(S.SOURCES, ppropertymagicupdate.SITE) = (expression)
+  -- if $origin_child((ppropertymagicupdate.SITE), [PCFIELD 0]) = (ppropertymagicupdate.GET.SITE)
+  -- if ppropertymagicupdate.LINE = $runtime_line(S[.ORIGIN = (ppropertymagicupdate.SITE)], eps, expression)
+  -- if $property_get_history(S, ppropertymagicupdate.GET)
+  -- if $property_get_method(S, ppropertymagicupdate.GET.OBJECT) = (pmethoddesc_get)
+  -- if $property_empty_get_source(S, pmethoddesc_get)
+  -- if $property_magic_set_method(S, ppropertymagicupdate.GET.OBJECT) = (pmethoddesc_set)
+  -- if pmethoddesc_set.FUNCTION.ORIGIN = ppropertymagicupdate.SET /\ pmethoddesc_set.OWNER = pmethoddesc_get.OWNER
+  -- if $property_magic_set_method_source(S, pmethoddesc_set)
+  -- if $property_effective_desc(S, ppropertymagicupdate.GET.OBJECT, ppropertymagicupdate.GET.NAME) = (ppropertydesc)
+  -- if ppropertymagicupdate.GET.DECL = eps /\ ppropertydesc.ORIGIN = ppropertymagicupdate.PROPERTY
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (pmethoddesc_get.OWNER)
+  -- if ~$property_hook_declared(S, ppropertymagicupdate.GET.OBJECT, ppropertymagicupdate.GET.NAME)
+  -- if ppropertymagicupdate.OWNER = 0 /\ ppropertymagicupdate.CALLER = eps
+def $property_magic_update_history(S, ppropertymagicupdate) = false -- otherwise
+
+dec $property_magic_update_valid(pstate, ppropertymagicupdate, ptask) : bool
+def $property_magic_update_valid(S, ppropertymagicupdate, ptask) = true
+  -- if $property_magic_update_history(S, ppropertymagicupdate)
+  -- if S.ORIGIN = (ppropertymagicupdate.SITE)
+  -- if |S.FRAMES| = ppropertymagicupdate.OWNER /\ S.CURRENT = ppropertymagicupdate.CALLER
+  -- if $property_lookup_scope(S) = eps
+  -- if $source_operand_suffix(S.TODO, ptask, ppropertymagicupdate.TAIL)
+  -- if (HOBJECT ppropertymagicupdate.GET.OBJECT) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, ppropertymagicupdate.GET.OBJECT)
+def $property_magic_update_valid(S, ppropertymagicupdate, ptask) = false -- otherwise
+
+dec $property_magic_update_plan(pstate) : ppropertymagicupdate?
+def $property_magic_update_plan(S) = (ppropertymagicupdate)
+  -- if S.TODO = (UPDATE_PREP pupdate b_post z) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.ORIGIN = (porigin_parent)
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.RESULT = KNOWN PNULL
+  -- if $property_magic_update_source(S, porigin_parent, pupdate, b_post)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (expression)
+  -- if $origin_child((porigin_parent), [PCFIELD 0]) = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (expression_target)
+  -- if S.BASE = BASE_PROPERTY_PENDING (BASE_VALUE (VARIABLE ptbytes_receiver z_cv)) (KNOWN (PSTRING ptbytes_name)) z_receiver
+  -- if $property_pending_source_base(S[.ORIGIN = (porigin_site)], S.BASE, expression_target)
+  -- if z = $runtime_line(S, eps, expression)
+  -- if S_receiver = $property_pending_resolve(S, BASE_VALUE (VARIABLE ptbytes_receiver z_cv), KNOWN (PSTRING ptbytes_name), PPRW, z_receiver, z)
+  -- if S_receiver.COMPLETION = NORMAL
+  -- if S_receiver.BASE = BASE_PROPERTY (POBJECT n) ptbytes_name
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_get_needed(S, n, ptbytes_name) /\ $property_magic_set_needed(S, n, ptbytes_name)
+  -- if $property_get_method(S, n) = (pmethoddesc_get)
+  -- if $property_magic_set_method(S, n) = (pmethoddesc_set)
+  -- if z_get = $runtime_line(S[.ORIGIN = (porigin_site)], eps, expression_target)
+  -- if ppropertyget = {SITE porigin_site, NAME ptbytes_name, LINE z_get, OBJECT n, CLASS porigin_class, METHOD pmethoddesc_get.FUNCTION.ORIGIN, DECL $property_get_decl(S, porigin_class, ptbytes_name)}
+  -- if $property_effective_desc(S, n, ptbytes_name) = (ppropertydesc)
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if ppropertymagicupdate = {SITE porigin_parent, GET ppropertyget, SET pmethoddesc_set.FUNCTION.ORIGIN, PROPERTY porigin_property, LINE z, OP pupdate, POST b_post, OWNER 0, CALLER eps, TAIL ptask_tail*}
+  -- if $property_magic_update_history(S, ppropertymagicupdate)
+  -- if S_get = S[.ORIGIN = (porigin_site)][.TODO = [(PROPERTY_GET_RESULT ppropertyget), ORIGIN_RETURN (porigin_parent), PROPERTY_MAGIC_UPDATE_VALUE ppropertymagicupdate] ++ ptask_tail*]
+  -- if $property_get_capture(S_get, ppropertyget)
+  -- if ~$property_get_guard_tasks(ptask_tail*, n, ptbytes_name) /\ ~$property_get_guard_frames(S.FRAMES, n, ptbytes_name)
+  -- if ~$property_empty_get_active(S, n, ptbytes_name)
+  -- if ~$property_magic_set_guard(S, S.CURRENT, S.FRAMES, n, ptbytes_name)
+def $property_magic_update_plan(S) = eps -- otherwise
+def $property_magic_update_pending(S) = ($property_magic_update_plan(S) =/= eps)
+
+rule PhpStep/property-magic-update-get: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_GET_TARGET ppropertymagicupdate.GET.OBJECT ppropertymagicupdate.GET.METHOD) eps 1 ([KNOWN (PSTRING ppropertymagicupdate.GET.NAME)]) (ppropertymagicupdate.GET.SITE) ppropertymagicupdate.GET.LINE), PROPERTY_GET_RESULT ppropertymagicupdate.GET, ORIGIN_RETURN (ppropertymagicupdate.SITE), PROPERTY_MAGIC_UPDATE_VALUE ppropertymagicupdate] ++ ppropertymagicupdate.TAIL][.ORIGIN = (ppropertymagicupdate.GET.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~$key_write_pending(S)
+  -- if $property_magic_update_plan(S) = (ppropertymagicupdate)
+
+dec $property_magic_update_next(pupdate, int) : int
+def $property_magic_update_next(INCREMENT, i) = $(i + 1)
+def $property_magic_update_next(DECREMENT, i) = $(i - 1)
+dec $property_magic_update_values(ppropertymagicupdate, int, int) : bool
+def $property_magic_update_values(ppropertymagicupdate, i_old, i_new) = ($long_range(i_old) /\ $long_range(i_new) /\ i_new = $property_magic_update_next(ppropertymagicupdate.OP, i_old))
+dec $property_magic_update_result(ppropertymagicupdate, int, int) : int
+def $property_magic_update_result(ppropertymagicupdate, i_old, i_new) = i_old -- if ppropertymagicupdate.POST
+def $property_magic_update_result(ppropertymagicupdate, i_old, i_new) = i_new -- if ~ppropertymagicupdate.POST
+
+;; OLD and NEW are immutable before Set. Its receipt selects the same object
+;; even when Get has nulled or rebound the receiver CV.
+dec $property_magic_update_set(pstate, ppropertymagicset) : bool
+def $property_magic_update_set(S, ppropertymagicset) = true
+  -- if ppropertymagicset.TAIL = (PROPERTY_MAGIC_UPDATE_FINISH ppropertymagicupdate i_old i_new) :: ptask_tail*
+  -- if ptask_tail* = ppropertymagicupdate.TAIL
+  -- if $property_magic_update_history(S, ppropertymagicupdate)
+  -- if $property_magic_update_values(ppropertymagicupdate, i_old, i_new)
+  -- if ppropertymagicset = {SITE ppropertymagicupdate.SITE, NAME ppropertymagicupdate.GET.NAME, LINE ppropertymagicupdate.LINE, OBJECT ppropertymagicupdate.GET.OBJECT, CLASS ppropertymagicupdate.GET.CLASS, METHOD ppropertymagicupdate.SET, PROPERTY ppropertymagicupdate.PROPERTY, RHS KNOWN (PINT i_new), CELL eps, INPUT i_new, OWNER ppropertymagicupdate.OWNER, CALLER ppropertymagicupdate.CALLER, TAIL ((PROPERTY_MAGIC_UPDATE_FINISH ppropertymagicupdate i_old i_new) :: ppropertymagicupdate.TAIL)}
+def $property_magic_update_set(S, ppropertymagicset) = false -- otherwise
+def $property_magic_set_source(S, ppropertymagicset) = true
+  -- if $property_magic_update_set(S, ppropertymagicset)
+def $property_magic_set_capture(S, ppropertymagicset) = true
+  -- if $property_magic_update_set(S, ppropertymagicset)
+  -- if $property_magic_set_valid(S, ppropertymagicset)
+
+dec $property_magic_update_set_plan(pstate) : ppropertymagicset?
+def $property_magic_update_set_plan(S) = (ppropertymagicset)
+  -- if S.TODO = (PROPERTY_MAGIC_UPDATE_VALUE ppropertymagicupdate) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if $property_magic_update_valid(S, ppropertymagicupdate, PROPERTY_MAGIC_UPDATE_VALUE ppropertymagicupdate)
+  -- if S.RESULT = KNOWN (PINT i_old)
+  -- if i_new = $property_magic_update_next(ppropertymagicupdate.OP, i_old)
+  -- if $property_magic_update_values(ppropertymagicupdate, i_old, i_new)
+  -- if ppropertymagicset = {SITE ppropertymagicupdate.SITE, NAME ppropertymagicupdate.GET.NAME, LINE ppropertymagicupdate.LINE, OBJECT ppropertymagicupdate.GET.OBJECT, CLASS ppropertymagicupdate.GET.CLASS, METHOD ppropertymagicupdate.SET, PROPERTY ppropertymagicupdate.PROPERTY, RHS KNOWN (PINT i_new), CELL eps, INPUT i_new, OWNER ppropertymagicupdate.OWNER, CALLER ppropertymagicupdate.CALLER, TAIL ((PROPERTY_MAGIC_UPDATE_FINISH ppropertymagicupdate i_old i_new) :: ppropertymagicupdate.TAIL)}
+  -- if ~$property_magic_set_guard(S, S.CURRENT, S.FRAMES, ppropertymagicupdate.GET.OBJECT, ppropertymagicupdate.GET.NAME)
+  -- if $property_magic_update_set(S, ppropertymagicset)
+def $property_magic_update_set_plan(S) = eps -- otherwise
+rule PhpStep/property-magic-update-set: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_MAGIC_SET_TARGET ppropertymagicset) eps 2 ([KNOWN (PSTRING ppropertymagicset.NAME), KNOWN (PINT ppropertymagicset.INPUT)]) (ppropertymagicset.SITE) ppropertymagicset.LINE), PROPERTY_MAGIC_SET_RESULT ppropertymagicset] ++ ppropertymagicset.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $property_magic_update_set_plan(S) = (ppropertymagicset)
+rule PhpStep/property-magic-update-value-invalid: S ~> S[.COMPLETION = UNSUPPORTED "magic update getter result or integer range"]
+  -- if S.TODO = (PROPERTY_MAGIC_UPDATE_VALUE ppropertymagicupdate) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if $property_magic_update_set_plan(S) = eps
+
+rule PhpStep/property-magic-update-finish: S ~> S[.TODO = ppropertymagicupdate.TAIL][.RESULT = KNOWN (PINT $property_magic_update_result(ppropertymagicupdate, i_old, i_new))]
+  -- if S.TODO = (PROPERTY_MAGIC_UPDATE_FINISH ppropertymagicupdate i_old i_new) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN (PINT i_new)
+  -- if $property_magic_update_valid(S, ppropertymagicupdate, PROPERTY_MAGIC_UPDATE_FINISH ppropertymagicupdate i_old i_new)
+  -- if $property_magic_update_values(ppropertymagicupdate, i_old, i_new)
+rule PhpStep/property-magic-update-finish-invalid: S ~> S[.COMPLETION = UNSUPPORTED "magic update result continuation"]
+  -- if S.TODO = (PROPERTY_MAGIC_UPDATE_FINISH ppropertymagicupdate i_old i_new) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if ~$property_magic_update_valid(S, ppropertymagicupdate, PROPERTY_MAGIC_UPDATE_FINISH ppropertymagicupdate i_old i_new) \/ ~$property_magic_update_values(ppropertymagicupdate, i_old, i_new) \/ S.RESULT =/= KNOWN (PINT i_new)
+
+def $task_nodes(PROPERTY_MAGIC_UPDATE_VALUE ppropertymagicupdate) = [HOBJECT ppropertymagicupdate.GET.OBJECT]
+def $task_nodes(PROPERTY_MAGIC_UPDATE_FINISH ppropertymagicupdate i_old i_new) = [HOBJECT ppropertymagicupdate.GET.OBJECT]
+def $call_task_valid(S, PROPERTY_MAGIC_UPDATE_VALUE ppropertymagicupdate) = $property_magic_update_valid(S, ppropertymagicupdate, PROPERTY_MAGIC_UPDATE_VALUE ppropertymagicupdate)
+def $call_task_valid(S, PROPERTY_MAGIC_UPDATE_FINISH ppropertymagicupdate i_old i_new) = ($property_magic_update_valid(S, ppropertymagicupdate, PROPERTY_MAGIC_UPDATE_FINISH ppropertymagicupdate i_old i_new) /\ $property_magic_update_values(ppropertymagicupdate, i_old, i_new))
+def $return_discard(S, PROPERTY_MAGIC_UPDATE_VALUE ppropertymagicupdate) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $return_discard(S, PROPERTY_MAGIC_UPDATE_FINISH ppropertymagicupdate i_old i_new) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $error_read_discard(S, PROPERTY_MAGIC_UPDATE_VALUE ppropertymagicupdate) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $error_read_discard(S, PROPERTY_MAGIC_UPDATE_FINISH ppropertymagicupdate i_old i_new) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $eager_operation_source_guard(S, pdestructionoperation) = ($property_magic_update_history(S, ppropertymagicupdate) /\ $property_magic_update_values(ppropertymagicupdate, i_old, i_new))
+  -- if pdestructionoperation.SOURCE = PROPERTY_MAGIC_UPDATE_FINISH ppropertymagicupdate i_old i_new

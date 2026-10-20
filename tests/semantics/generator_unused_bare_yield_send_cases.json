@@ -1,0 +1,20 @@
+[
+  {
+    "id": "generator-unused-bare-yield-send-finally-row-write",
+    "purpose": "One pending native ancestor SEND at a PAUSED bare-yield child; normal argument alias-drop and child-finally row mutation distinguish unused snapshot retirement.",
+    "source": "<?php\nclass UnusedBareYieldSendRowOld46 { function __destruct() { echo \"A|\"; } }\nclass UnusedBareYieldSendRowLive46 { function __destruct() { echo \"C-LIVE|\"; } }\nclass UnusedBareYieldSendRowArgument46 { function __destruct() { echo \"ARG|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"ARG-END|\"; } }\nfunction &unusedBareYieldSendRowChild46() { global $row; $row = [new UnusedBareYieldSendRowOld46()]; echo \"C|\"; try { yield 7 => $row; echo \"BAD-CHILD|\"; } finally { echo \"J|\"; $GLOBALS[\"row\"][0] = new UnusedBareYieldSendRowLive46(); echo \"J-END|\"; } }\nfunction unusedBareYieldSendRowMiddle46() { try { echo \"M|\"; yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"K|\"; } }\nfunction unusedBareYieldSendRowOuter46() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = unusedBareYieldSendRowChild46(); $middle = unusedBareYieldSendRowMiddle46(); $outer = unusedBareYieldSendRowOuter46();\necho \"P|\"; $outer->rewind(); echo \"H|\";\necho \"S|\";\n$middle->send(new UnusedBareYieldSendRowArgument46()); echo \"CALLER|\"; unset($copy); echo \"DROPPED|\"; unset($row); echo \"ROW-DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "80943eb1f8dce0364beef936f5e84edab7da01f1af669f41d6fde63d61d2ce68",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|H|S|ARG|F|ARG-END|J|A|J-END|K|CALLER|DROPPED|C-LIVE|ROW-DROPPED|E"
+  },
+  {
+    "id": "generator-unused-bare-yield-send-assignment-control",
+    "purpose": "One pending native ancestor SEND at a PAUSED bare-yield child; normal argument alias-drop and child-finally row mutation distinguish an assigned snapshot.",
+    "source": "<?php\nclass UnusedBareYieldSendRowOld46 { function __destruct() { echo \"A|\"; } }\nclass UnusedBareYieldSendRowLive46 { function __destruct() { echo \"C-LIVE|\"; } }\nclass UnusedBareYieldSendRowArgument46 { function __destruct() { echo \"ARG|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"ARG-END|\"; } }\nfunction &unusedBareYieldSendRowChild46() { global $row; $row = [new UnusedBareYieldSendRowOld46()]; echo \"C|\"; try { yield 7 => $row; echo \"BAD-CHILD|\"; } finally { echo \"J|\"; $GLOBALS[\"row\"][0] = new UnusedBareYieldSendRowLive46(); echo \"J-END|\"; } }\nfunction unusedBareYieldSendRowMiddle46() { try { echo \"M|\"; yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"K|\"; } }\nfunction unusedBareYieldSendRowOuter46() { try { echo \"O|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = unusedBareYieldSendRowChild46(); $middle = unusedBareYieldSendRowMiddle46(); $outer = unusedBareYieldSendRowOuter46();\necho \"P|\"; $outer->rewind(); echo \"H|\";\necho \"S|\";\n$copy = $middle->send(new UnusedBareYieldSendRowArgument46()); echo \"CALLER|\"; unset($copy); echo \"DROPPED|\"; unset($row); echo \"ROW-DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "f3e20e329c9c8af9554fd00afb8f26b209c4311e89bcf90816ae7ff8dcbca752",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|M|C|H|S|ARG|F|ARG-END|J|J-END|K|CALLER|A|DROPPED|C-LIVE|ROW-DROPPED|E"
+  }
+]

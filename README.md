@@ -484,7 +484,7 @@ TypeError/trace capture stays visible through both API and explicit-wrapper arra
 arguments; the API option is empty while the wrapper retains NULL. Four source
 comparisons and 1,521 state premises cover strict ordinary versus weak explicit
 reception, supplied-throw cancellation, transitive reference edges, exact discard
-and original-setter recovery. Unpacked/PIPE forms, typed/property references,
+and original-setter recovery. Multiple packs/PIPE forms, typed/property references,
 owning referents and sole-owner lifetimes remain partial.
 
 [Named INI calls with shared-reference arrays](coverage/semantics/ini-set-named-null-alias-array-value-review.json)
@@ -495,7 +495,17 @@ Four source comparisons and 1,628 state premises cover saved shape with live cel
 contents, empty API versus raw NULL wrapper options, strict ordinary versus weak
 explicit reception, supplied-throw cancellation and setter recovery. One peer
 optional-name fixture typing failure is retained; only its corrected 428 checks
-were rerun. Unpacking/PIPE, wider references and sole-owner lifetimes remain partial.
+were rerun. Multiple packs/PIPE, wider references and sole-owner lifetimes remain partial.
+
+[Unpacked INI arrays with shared reference elements](coverage/semantics/ini-set-unpack-null-alias-array-value-review.json)
+now preserve the captured inner array and its live cell through one numeric,
+named or mixed argument pack. Fixed/selected strings and retained setters share
+the same narrow continuation. Later outer-pack rewrites and current-container
+COW preserve the saved shape while cell writes remain visible through API and
+wrapper arguments. Four source comparisons and 1,719 state premises cover cursor
+root transfer, strict ordinary versus weak explicit reception, supplied-throw
+cancellation, precise discard and setter recovery. Additional packs/arguments,
+PIPE, wider references and sole-owner lifetimes remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -1603,6 +1613,12 @@ whose normal simple-CV return owns no heap node. Child release precedes argument
 cleanup, unused current retirement and receiver finally; assignment keeps its
 copy. See the
 [node-free refresh review](coverage/semantics/generator-unused-scalar-refresh-send-review.json).
+Pending ancestor SEND at one PAUSED bare-statement-yield child now drops an
+unused current snapshot after normal argument cleanup and before receiver
+release. In the tested alias-drop histories, Child finally runs before the
+selected receiver's finally; assignment keeps its copy. Argument-time row COW and a child-finally cache RuntimeException
+preserve their separate owners. See the
+[bare-yield SEND review](coverage/semantics/generator-unused-bare-yield-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit
@@ -2176,6 +2192,13 @@ key or change a reference leaf. A thrown handler Exception still permits fresh
 same-object registration. Raw API/wrapper traces retain `true`, and the row
 keeps the object after trace retirement.
 [Owned true-flag review](coverage/semantics/define-owned-true-review.json).
+
+Captured DEFINE callees also receive raw NULL flags. Strict ordinary calls raise
+parameter-3 TypeError after argument effects; explicit `__invoke` receives weakly
+and reports Deprecated. A returning handler precedes registration and ARRAY
+copying, while a thrown handler Exception cancels the body. Raw API/wrapper
+arguments keep NULL and can retain an object after the callee dies.
+[Owned NULL-flag review](coverage/semantics/define-owned-null-review.json).
 
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
@@ -4012,6 +4035,16 @@ to `99`. Supplied Get/Set throws preserve the same catch and destination `42`.
 [Four source agreements and 891 focused premises](coverage/semantics/magic-property-addassign-review.json)
 cover this quiet, in-range slice. A native `'5tail'` Get result warns;
 the model explicitly refuses it. Other kinds, operators and access forms remain partial.
+
+Selected main-scope CV/literal inherited-private integer properties now execute
+pre/post `++`/`--` through the existing magic Get/Set signatures. Get may clear or
+retarget the CV while Set still uses the chosen object. Post-increment delivers
+old `5` after Set/destruction of `6`; pre-decrement delivers new `4`. A throwing
+pre-increment setter commits `6` but leaves the outer destination `42`; a throwing
+post-decrement getter skips arithmetic and Set.
+[Four source agreements and 821 focused premises](coverage/semantics/magic-property-incdec-review.json)
+check these quiet, in-range paths and separate receiver holds. Wider coercion,
+reference, overflow and access forms remain partial.
 
 Inherited private writes now invoke a public `__set(string $name, $incoming): void`
 for selected external CV/literal assignments. The setter receives integer `7`,

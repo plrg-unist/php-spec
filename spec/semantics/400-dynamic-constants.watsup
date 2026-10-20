@@ -891,7 +891,7 @@ dec $dynamic_array_source(pstate, porigin) : bool
 def $dynamic_array_source(S, porigin) = $dynamic_define_source(S, porigin)
 def $dynamic_array_call_valid(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
-  -- if (pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps) \/ $dynamic_owned_define_header(S, pconfigcall)
+  -- if (pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps) \/ $dynamic_owned_define_header(S, pconfigcall) \/ ($dynamic_null_define_flag_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall))
   -- if $config_invoke_valid(S, pconfigcall)
   -- if $dynamic_array_source(S, pconfigcall.SITE)
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_array))
@@ -2228,7 +2228,7 @@ def $dynamic_null_define_flag_values(pconfigcall) = ((preqbytes, pvalue))
 def $dynamic_null_define_flag_values(pconfigcall) = eps -- otherwise
 def $dynamic_null_define_flag_call(pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
-  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if pconfigcall.PACKS = eps
   -- if $dynamic_null_define_flag_values(pconfigcall) = ((preqbytes, pvalue))
 def $dynamic_null_define_flag_call(pconfigcall) = false -- otherwise
 def $dynamic_null_define_flag_valid(S, pconfigcall) = true
@@ -2580,6 +2580,7 @@ rule PhpStep/dynamic-class-define-scalar-invoke: S ~> $dynamic_class_define_scal
 ;; The raw NULL capture and this conversion-only marker never enter registration.
 def $dynamic_class_define_null_call(pconfigcall) = true
   -- if $dynamic_null_define_flag_call(pconfigcall)
+  -- if pconfigcall.OWNER = eps
   -- if $dynamic_null_define_flag_values(pconfigcall) = ((preqbytes, pvalue))
   -- if $dynamic_constant_class_name(preqbytes) /\ ~(0 <- preqbytes)
 def $dynamic_class_define_null_call(pconfigcall) = false -- otherwise

@@ -205,6 +205,14 @@ COMPLETE, and its sole removed child edge precedes argument/result/receiver
 release. The raw cell temporarily has child and middle cache owners; no copied
 return owner is added. Owning receipts and finite ancestor proofs remain separate;
 see the [node-free refresh review](../../coverage/semantics/generator-unused-scalar-refresh-send-review.json).
+For pending SEND over one native link to a PAUSED bare-statement-yield child,
+refresh is identity: there is no closed-child prefix, COMPLETE or copied-return
+owner. Source demand and the real discarded tail select argument, unused
+current-copy and receiver release in that order. The tested shared row cell has
+three owners: global, Child REFCELL and Child frame CV; its array still has one element
+edge. Empty held/task owners, an empty input registry and inactive collection
+bound this arm; wider chains stay separate. See the
+[bare-yield SEND review](../../coverage/semantics/generator-unused-bare-yield-send-review.json).
 Literal pending NEXT takes the same initialization-only return through a direct
 or finite native-linked receiver, preserving the actual parked source and frame.
 Its NULL result owns no current snapshot. After a raw-row write performs COW,

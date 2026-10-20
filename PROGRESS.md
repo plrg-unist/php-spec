@@ -7,6 +7,95 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Captured DEFINE Closure calls now receive raw NULL flags through a separate
+reception path. Strict ordinary calls reject parameter3 after argument effects;
+explicit __invoke is weak even in a strict source. A normal Deprecated callback
+precedes lookup and ARRAY copying; a supplied Exception cancels registration.
+Raw NULL/object trace arguments can outlive the callee, with later normal
+no-pending disposal after their actual owners retire.
+
+Three source agreements pass at ba8d285f7/408. First focused checks total
+852 = 300 + 238 + 314 premises/four budgets at e807d9645, with actual
+420/240/420 caps. Strict captured 17 versus weak captured 41/callback 53,
+post-handler ARRAY 41 versus raw 53,
+query COW/history and pooled caller lifetime are checked. All first attempts;
+no failures, retries, diagnostic-only probes or accepted/historical replay.
+
+Boolean/class-name, value, receipt, cleanup and global/default policies stay
+exact. Source84 INI_SET, magic properties and paused paths remain disjoint.
+[Owned NULL-flag review](coverage/semantics/define-owned-null-review.json).
+
+Composed over adbe80fab/409: tested module 400 and seven changed scripts stay
+private-exact; eight incoming runtime paths and ordered manifest stay parent-exact.
+Source84 INI_SET/single-pack and new private magic-property inc/dec are disjoint.
+Quiet global CV increments and ordinary property assignments keep their paths;
+numeric stdClass casts, NULL-key reference ARRAY warnings and Generator SEND are absent.
+New module 30 continuation/task forms add no pstate/heap field or root-policy change.
+Accepted source/state cuts retain their original 408 identities through this bridge,
+without joined execution, accepted replay or renewed credit.
+
+One numeric/named/mixed unpack pack now carries rawNULL plus the exact one-entry
+key0 ALIAS ARRAY through `ini_set` reception, for strings and retained setters.
+The saved inner array keeps its shape while its untyped quiet cell stays live;
+later outer-pack rewrites and current-container COW cannot replace that value.
+Returning handling reaches empty API/rawNULL wrapper parameter2 TypeError;
+strict ordinary reception completes effects before parameter1, while explicit
+reception stays weak and a supplied Exception cancels rejection.
+
+Four exact source comparisons and 1,719 state premises (422+323+430+544) pass
+first attempt at `6df1a6240`/`c27d6dd58`/408. Initial `733e53bcc` native4/base0
+and affected checks all use CPU2; nine stable/reaped reports PASS, only
+Deprecated13/19, quiet workers and no failures/retries. Native E/W/N/L/L/A
+observes both argument arrays after a post-TypeError/getTrace cell write.
+State proves cursor roots transferring outer→inner+outer→inner, transitive HCELL,
+inline outer retirement, strict same-owner weak reuse, actual two-frame supplied
+Exception and whole idempotent restoration/discard. Captured entries are DIRECT
+after dereference; no original outer-reference freedom or frozen-cell claim.
+Only12 additive172 lines change; invoke/replay/alias predicate/finish/trace/root/
+GC/schema/historical tests stay exact without replay. Compiled pack facts must
+be unknown (EPS); whole-state PARAMETERBACKINGS EPS bounds the same reference
+slice. Additional packs/arguments, PIPE, wider references and sole-owner lifetimes
+remain partial; paused paths untouched.
+[Unpacked shared-reference INI array review](coverage/semantics/ini-set-unpack-null-alias-array-value-review.json).
+
+Composed over `d7675c746`/408 with private-exact172/four tests and every other
+runtime/schema/ordered-manifest byte parent-exact. Incoming missing-CV loose-object
+comparison, ref-return holder retirement, Generator SEND, STD numeric-cast Warning,
+owned DEFINE true-flag and explicit NULL-key reference selectors have no producer
+here. Incoming checkpoints remain intact except reviewed81/83 pack qualifiers;
+source4/state1,719 retain private408 cuts without joined execution or renewed credit.
+
+Pending ancestor SEND over one native link to a PAUSED bare-statement-yield
+child now retires an unused current snapshot after normal argument cleanup and
+before receiver release. Assignment keeps its copy. In the tested alias-drop
+histories, Child finally precedes Middle finally; argument COW and a cache
+RuntimeException inside live Child finally retain their distinct owners without
+COMPLETE or copied-return roots.
+[Bare-yield SEND review](coverage/semantics/generator-unused-bare-yield-send-review.json).
+
+Four native observations and a genuine NORMAL cleanup-order disagreement retain
+`aa13b34fe`/408. Source4/strict408 pass at `de4882e78`; corrected gate4 and
+608 focused premises (335 author +273 independent; 588 local +20 generic) pass
+at `cb3cf7f12`. Baseline recordfalse/agreement0 remains. Original compile-only
+`456ad98a9`/r0v failure0 is preserved: two saved-frame lookups now bind LOCALS
+before symbol-table ENV, adding three premises. No state was interpreted before
+that correction. All source/state executions pass first time at original caps;
+actors are reaped/CPU4 released, without cap changes or historical renewal.
+
+Only module289 gains a disjoint identity proof for the existing pending API.
+Source demand, discarded tail, result/slot transfer, owner observation and the
+scheduler stay exact. Empty held/task owners, empty input registry and inactive
+collection bound this arm; no close/root-function/collector body changes.
+Wider chains, other owner/input histories, masked or abrupt arguments,
+nonpending body entry and collection remain unvalidated.
+
+Composed over `5ccfa9f9a`/408, preserving tested289 and six tests byte-for-byte.
+Incoming clone, INI/DEFINE, missing-read comparison, numeric warning, typed-ref
+holder and float/null-key callback selectors have no producer here. All other
+runtime/schema/default/root/ordered-manifest/pipeline bytes stay parent-exact.
+Source4/strict408/state608 and original compileFAIL0 retain their private cuts
+without joined execution, accepted replay or renewed credit.
+
 Borrowed empty `stdClass` numeric casts now resume named Warning handlers.
 Replacing/removing the sole source retires the object inside the callback, where
 WeakReference already returns null. Float conversion still delivers strict `1.0`;
@@ -96,7 +185,7 @@ partial roots, normalized oldARRAY-to-liveHCELL, two-frame supplied Exception an
 whole idempotent restoration/discard. No exported-array identity, frozen referent,
 receiver trace edge or direct CELL task/buffer root is claimed. Only3+/5- lines
 in172 factor existing source checks; helpers/finish/root/trace/GC/schema and old
-tests remain exact without replay. Unpacked/PIPE, wider reference metadata,
+tests remain exact without replay. Multiple packs/PIPE, wider reference metadata,
 owning referents and sole-owner lifetimes remain partial; paused paths untouched.
 [Named shared-reference INI array review](coverage/semantics/ini-set-named-null-alias-array-value-review.json).
 
@@ -107,37 +196,35 @@ backup selectors have no source producer here. Incoming checkpoints remain intac
 except the reviewed stale81 named partial qualifier; source4/author1,200 and peer428
 retain their private split cuts without joined execution or renewed credit.
 
-Ordinary public objects with nonempty declared layouts and live dynamic buckets
-now clone their cached property tables. Declared slots copy first, fresh locators
-retarget to the copy, and dynamic lookup mirrors add no duplicate value owners.
-Actual foreach sees independent writes and membership/order; singleton dynamic
-wrappers unwrap, held aliases stay shared, and a shallow Payload survives source
-retirement until copy destruction.
+Selected main-scope CV/literal inherited-private integer pre/post updates now
+retain the chosen receiver across magic Get/Set. Get may clear or retarget the CV;
+post++ still sets `6` and returns old `5` after destruction of `6`, while pre--
+returns new `4`. Pre++ Set commits `6` before a supplied throw, preserving outer
+destination `42`. Post-- Get throw skips arithmetic/Set and preserves the same
+catch/destination `42`.
 
-Four source agreements at `03d0c6633`/408 and 477 focused premises (433 reached
-+ 44 derived) at `b82cf88bd`/408 pass. The genuine baseline refuses all four cached
-clones. Two earlier focused false reports retain zero credit: named lookup hides
-raw dynamic UNSET rows, and a derived helper needed standard object-handle
-registration before its full guard. No runtime correction or diagnostic was needed.
-The final CPU3 run shared scheduling after a root assignment collision; all eight
-workers passed within their original caps, with full affinity/stability/reap receipts.
-Only module 150 changes; existing table, reference, iteration and cleanup/GC rules
-stay exact. Mixed callbacks, copied-declared DIRECT images, zero-declared sharing,
-readonly and active collection remain partial.
-[Mixed cached clone review](coverage/semantics/mixed-cached-clone-review.json).
+Four source agreements at `30885ab60`/409 and 821 focused premises (798 reached
++ 23 derived) at `cf3f99e05`/409 pass. The genuine baseline refuses all four at
+magic getter ingress. One original pre-application fixture binding failure retains
+zero credit; the sole correction splits a fresh origin binding from a comparison.
+No diagnostic or source replay was needed. Module 419 adds the bounded consumer
+with module 30 records and a plan-only module 53 exclusion. Existing numeric,
+Get/Set, cleanup and GC bodies stay exact. Raw PINT/in-range +/-1 only; wider
+coercion/ref/overflow/hooks/reentry remain partial.
+[Magic property inc/dec review](coverage/semantics/magic-property-incdec-review.json).
 
-Composed over `fc0309120`/408 with tested module 150, six tests and both family
-scopes private-exact; all other runtime/default/root and ordered-manifest bytes
-remain incoming-exact. INI/DEFINE, missing comparisons, Generator SEND, float-key/
-NULL-key array and bitnot/modulo Warning selectors have no producer here.
-Source4 and focused 477 retain their tested cuts without joined execution,
-accepted replay or renewed historical clone credit.
+Composed over `f3ed17350`/408 with tested modules 53/419, six tests and family
+scope private-exact. Module 30 retains incoming task tags; the ordered manifest
+is parent 408 plus 419. Incoming INI/DEFINE, missing comparisons, typed ref-return,
+Generator, cast/warning and NULL-key array selectors have no producer here.
+Source/state results retain their tested identities without joined execution
+or renewed historical credit.
 
 Earlier pending NaN modulo retains source3/state340 and its original NORMAL
 stderr mismatch in the [pending modulo ledger](coverage/semantics/mod-nan-pending-review.json).
 
-Direct pending SEND without a getter now refreshes one allocated closed child
-whose normal simple-CV return owns no heap node. Child cache-edge release comes
+At Iterator45, direct pending SEND without a getter refreshed one allocated
+closed child whose normal simple-CV return owns no heap node. Child cache-edge release comes
 before normal argument cleanup, unused current-copy retirement and receiver
 finally. Assignment keeps its copy; argument-time row COW and a cache
 RuntimeException inside live finally retain distinct owners without a copied
@@ -300,7 +387,7 @@ edge, current COW table sharing and whole restoration/discard. HCELL is neither
 a direct task root nor a possible GC buffer root. Only29 additive172 lines change;
 old DIRECT-array guards/84/138/helpers/trace/root/GC/schema and historical tests
 stay exact without replay. Whole-state PARAMETERBACKINGS EPS bounds this slice;
-packed/PIPE forms, typed/property references and owning referents remain
+multiple packs/PIPE forms, typed/property references and owning referents remain
 partial, with paused paths untouched.
 [Shared-reference INI array review](coverage/semantics/ini-set-null-alias-array-value-review.json).
 
@@ -2402,6 +2489,12 @@ records, CELL debt, direct string/object values, wider graphs and unsafe or
 active-GC lifetimes remain outside this continuation. Paused LIST-key and
 owned-NUL paths stay untouched.
 [Typed NULL-key review](coverage/semantics/array-literal-null-key-typed-wrapped-cv-review.json).
+
+Composed over `841c88c80`/409 with accepted413 and six test paths unchanged.
+Incoming packed INI, magic property inc/dec and owned DEFINE selectors have no
+producer in these originals. Every other runtime/schema and the ordered409
+manifest retains parent bytes. Native, source and focused evidence retain their
+private408 cuts and baseline0, without joined execution or replay.
 
 Earlier untyped captured NULL-key reset retains native/genuine `0ad616aca`/408,
 strict/source4 `440aed450` and focused916 `0242fc366`, integrated as `4a687d9aa`.

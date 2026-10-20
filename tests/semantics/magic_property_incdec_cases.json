@@ -1,0 +1,78 @@
+{
+  "scope": "Main-scope CV/literal inherited-private int pre/post increment and decrement; raw in-range PINT Get, retained selected receiver, separate Get/Set holds and cached OLD/NEW result. Normal and supplied Get/Set throw cleanup only.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_observations_accepted": true,
+  "native_revision": "bb1cd389dc2b040e99e133c08d03c0ae798ca4b7",
+  "cases": [
+    {
+      "id": "post",
+      "source_file": "magic-property-incdec-post.php",
+      "source": "<?php\nclass MagicUpdateParent117 {\n    private int $value = 5;\n    public int $tag = 1;\n    public function __get($name) {\n        global $child;\n        echo 'G', $this->tag, '|', __CLASS__, '|', static::class, '|';\n        $child = null;\n        echo 'g|';\n        return $this->value;\n    }\n    public function __set(string $name, $incoming): void {\n        echo 'S', $this->tag, '/', $incoming, '|';\n        $this->value = $incoming;\n        echo 's|';\n    }\n    public function __destruct() {\n        global $live;\n        echo 'D', $this->tag, '/', $this->value, '|';\n        $live = 99;\n    }\n}\nclass MagicUpdateChild117 extends MagicUpdateParent117 {}\necho 'P:';\n$live = 0;\n$child = new MagicUpdateChild117();\n$result = $child->value++;\necho 'A', $result, '/', $live, '|';\necho 'E|';\n",
+      "source_sha256": "406d2ec371102ed95df3beb799e149c52c6f84cf4218800301287d48ec086ea8",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-property-incdec-private-117/.tools/magic-property-incdec-probes-117/post.php",
+      "stdout_base64": "UDpHMXxNYWdpY1VwZGF0ZVBhcmVudDExN3xNYWdpY1VwZGF0ZUNoaWxkMTE3fGd8UzEvNnxzfEQxLzZ8QTUvOTl8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "update_line": 27,
+      "native_raw_sha256": "d5d71f7d46ed5971d45fa0759b876e511c1ccbe13f9622b06014966d18c2f545",
+      "native_report_sha256": "259412f7aa3a70ce1f33317c9bef15206c24040e86e010fd073832f0f934d6d4",
+      "status": "normal"
+    },
+    {
+      "id": "retarget",
+      "source_file": "magic-property-incdec-retarget.php",
+      "source": "<?php\nclass MagicUpdateParent117 {\n    private int $value = 5;\n    public int $tag = 1;\n    public function __get($name) {\n        global $child, $replacement;\n        echo 'G', $this->tag, '|', __CLASS__, '|', static::class, '|';\n        $child = $replacement;\n        echo 'g|';\n        return $this->value;\n    }\n    public function __set(string $name, $incoming): void {\n        echo 'S', $this->tag, '/', $incoming, '|';\n        $this->value = $incoming;\n        echo 's|';\n    }\n    public function __destruct() {\n        global $live;\n        echo 'D', $this->tag, '/', $this->value, '|';\n        $live = 99;\n    }\n}\nclass MagicUpdateChild117 extends MagicUpdateParent117 {}\necho 'N:';\n$live = 0;\n$child = new MagicUpdateChild117();\n$replacement = new MagicUpdateChild117();\n$replacement->tag = 2;\n$result = --$child->value;\necho 'A', $result, '/', $live, '|';\nunset($child, $replacement);\necho 'E|';\n",
+      "source_sha256": "092b69e0dd4e146ec43cd8362acb5e38cc9b638383e57f557d03e9a60e7dbbbf",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-property-incdec-private-117/.tools/magic-property-incdec-probes-117/retarget.php",
+      "stdout_base64": "TjpHMXxNYWdpY1VwZGF0ZVBhcmVudDExN3xNYWdpY1VwZGF0ZUNoaWxkMTE3fGd8UzEvNHxzfEQxLzR8QTQvOTl8RDIvNXxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "update_line": 29,
+      "native_raw_sha256": "b4e0ca4585bfd51c705f6f55eefa27a84c28f447648b0995b907f5c152dd91b5",
+      "native_report_sha256": "259412f7aa3a70ce1f33317c9bef15206c24040e86e010fd073832f0f934d6d4",
+      "status": "normal"
+    },
+    {
+      "id": "set-throw",
+      "source_file": "magic-property-incdec-set-throw.php",
+      "source": "<?php\nclass MagicUpdateParent117 {\n    private int $value = 5;\n    public int $tag = 1;\n    public function __get($name) {\n        global $child;\n        echo 'G', $this->tag, '|', __CLASS__, '|', static::class, '|';\n        $child = null;\n        echo 'g|';\n        return $this->value;\n    }\n    public function __set(string $name, $incoming): void {\n        global $error;\n        echo 'S', $this->tag, '/', $incoming, '|';\n        $this->value = $incoming;\n        echo 't|';\n        throw $error;\n    }\n    public function __destruct() {\n        global $live;\n        echo 'D', $this->tag, '/', $this->value, '|';\n        $live = 99;\n    }\n}\nclass MagicUpdateChild117 extends MagicUpdateParent117 {}\n$error = new Exception('planned117');\n$after = 42;\n$live = 0;\necho 'X:';\n$child = new MagicUpdateChild117();\ntry { $after = ++$child->value; echo 'bad|'; }\ncatch (Throwable $caught) {\n    echo 'C|', $caught === $error ? 'same|' : 'wrong|', $after, '/', $live, '|';\n}\nunset($caught, $error);\necho 'E|';\n",
+      "source_sha256": "bd01524c2b5a2c976fdb37f0c18e2c0101eacb9c27268a673afbb9c4f0c26f16",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-property-incdec-private-117/.tools/magic-property-incdec-probes-117/set-throw.php",
+      "stdout_base64": "WDpHMXxNYWdpY1VwZGF0ZVBhcmVudDExN3xNYWdpY1VwZGF0ZUNoaWxkMTE3fGd8UzEvNnx0fEQxLzZ8Q3xzYW1lfDQyLzk5fEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "update_line": 31,
+      "native_raw_sha256": "c1ac7085993c7f7531a25d0e62ae8d9b4705a0c29e908aaf2949328cfa420024",
+      "native_report_sha256": "259412f7aa3a70ce1f33317c9bef15206c24040e86e010fd073832f0f934d6d4",
+      "status": "normal"
+    },
+    {
+      "id": "get-throw",
+      "source_file": "magic-property-incdec-get-throw.php",
+      "source": "<?php\nclass MagicUpdateParent117 {\n    private int $value = 5;\n    public int $tag = 1;\n    public function __get($name) {\n        global $child, $error;\n        echo 'G', $this->tag, '|', __CLASS__, '|', static::class, '|';\n        $child = null;\n        echo 't|';\n        throw $error;\n    }\n    public function __set(string $name, $incoming): void {\n        echo 'S', $this->tag, '/', $incoming, '|';\n        $this->value = $incoming;\n        echo 's|';\n    }\n    public function __destruct() {\n        global $live;\n        echo 'D', $this->tag, '/', $this->value, '|';\n        $live = 99;\n    }\n}\nclass MagicUpdateChild117 extends MagicUpdateParent117 {}\n$error = new Exception('planned117');\n$after = 42;\n$live = 0;\necho 'G:';\n$child = new MagicUpdateChild117();\ntry { $after = $child->value--; echo 'bad|'; }\ncatch (Throwable $caught) {\n    echo 'C|', $caught === $error ? 'same|' : 'wrong|', $after, '/', $live, '|';\n}\nunset($caught, $error);\necho 'E|';\n",
+      "source_sha256": "2adc84d38184adb8f956514ceb823ae9ea0b4e3688e291d688c1e416a279a7ee",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-property-incdec-private-117/.tools/magic-property-incdec-probes-117/get-throw.php",
+      "stdout_base64": "RzpHMXxNYWdpY1VwZGF0ZVBhcmVudDExN3xNYWdpY1VwZGF0ZUNoaWxkMTE3fHR8RDEvNXxDfHNhbWV8NDIvOTl8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "update_line": 29,
+      "native_raw_sha256": "739e0d0e7f6492183b322867c0cad32924b372099f9e66f93622d634695cb8e6",
+      "native_report_sha256": "259412f7aa3a70ce1f33317c9bef15206c24040e86e010fd073832f0f934d6d4",
+      "status": "normal"
+    }
+  ]
+}
