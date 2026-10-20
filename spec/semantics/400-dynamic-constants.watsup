@@ -66,6 +66,17 @@ def $dynamic_std_table_valid(S, n_object) = true
   -- if $object_table_at(S.OBJECTTABLES, n_object) = eps
 def $dynamic_std_table_valid(S, n_object) = $object_tables_list_valid(S, [{OBJECT n_object, TABLE n_table}])
   -- if $object_table_at(S.OBJECTTABLES, n_object) = (n_table)
+dec $dynamic_real_scope_valid(pstate, nat) : bool
+def $dynamic_real_scope_valid(S, n_object) = true
+  -- if $closure_scope_at(S.CLOSURESCOPES, n_object) = eps
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n_object) = eps
+def $dynamic_real_scope_valid(S, n_object) = $closure_scope_row_valid(S, pclosurescope)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n_object) = (pclosurescope)
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n_object) = eps
+def $dynamic_real_scope_valid(S, n_object) = $closure_binding_source_valid(S, pclosurebinding)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n_object) = eps
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n_object) = (pclosurebinding)
+def $dynamic_real_scope_valid(S, n_object) = false -- otherwise
 dec $dynamic_runtime_object(pstate, nat) : bool
 def $dynamic_runtime_object(S, n_object) = true
   -- if $(n_object < |S.OBJECTS|) /\ HOBJECT n_object <- S.ALLOCATIONS
@@ -86,7 +97,7 @@ def $dynamic_runtime_object(S, n_object) = true
   -- if $(n_object < |S.OBJECTS|) /\ HOBJECT n_object <- S.ALLOCATIONS
   -- if S.OBJECTS[n_object] = REALCLOSURE porigin pitem* pstaticcell*
   -- if $typed_closure(S, n_object) /\ $closure_live_object_valid(S, n_object)
-  -- if $closure_scope_at(S.CLOSURESCOPES, n_object) = eps
+  -- if $dynamic_real_scope_valid(S, n_object)
   -- if $closure_scope_complete(S, [HOBJECT n_object])
   -- if $constant_callable_record(S.CONSTANTCLOSURES, n_object) = eps
 def $dynamic_runtime_object(S, n_object) = true

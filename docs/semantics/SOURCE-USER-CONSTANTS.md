@@ -594,8 +594,11 @@ compose through the classifier without extra source credit.
 [Runtime object define review](../../coverage/semantics/define-runtime-object-review.json).
 
 Bare runtime REAL and METHOD Closures also use dynamic-only `PVOBJECT` authority.
-REAL values require completed capture, valid static cells and no class/binding
-scope; METHOD values use the existing live method/receiver-scope validator.
+REAL values require completed capture, valid static cells and scope completeness.
+Their selected scope must either be absent with no binding, pass the existing
+class-scope row validator with no binding, or pass the existing binding-source
+validator with no ordinary scope. METHOD values use the existing live
+method/receiver-scope validator.
 Exact outer tags and absent callable records prevent invalid certified wrappers
 or present records from falling through. Direct queries retain the DEFINE-origin
 fence; global/default policies stay unchanged. Lexical aliases, per-Closure
@@ -606,6 +609,18 @@ source alias. The originals execute ordinary unscoped lexical and bound method
 Closures with omitted/false flags; structurally valid clones and inherited flag
 delegates receive no additional execution credit.
 [Runtime Closure define review](../../coverage/semantics/define-runtime-closure-review.json).
+
+Class-born REAL originals also exercise inherited lexical Base/called Child
+scope with separate private shadows, both with a receiver and receiver-free
+static property access. Direct publication, duplicates and array/query COW
+retain the same Closure, static cells and receiver edge. An explicit handler
+invocation can mutate the receiver before the private array copy retires it,
+running its destructor before the original Exception reaches catch. Only these
+omitted/false originals receive new execution credit; valid bindings, coherent
+clones and inherited flag delegates retain structural support. Selected binding
+validation preserves genuine prior bound values while refusing malformed
+presence-only projections; no producer history or certificate is fabricated.
+[Scoped REAL define review](../../coverage/semantics/define-scoped-runtime-closure-review.json).
 
 Ordinary `stdClass` values also use dynamic-only `PVOBJECT` authority when their
 selected property record and optional cached table validate, including live

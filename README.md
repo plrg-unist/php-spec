@@ -1746,10 +1746,13 @@ catch when only the private copied array still owns it.
 [Runtime object define review](coverage/semantics/define-runtime-object-review.json).
 
 Bare runtime Closures also publish under bounded live callable authority:
-unscoped lexical Closures retain reference captures and static cells, and method
-Closures retain their receiver. Canonical array/query copies share these objects;
+lexical Closures retain reference captures and static cells, and method
+Closures retain their receiver. Class-born REAL Closures preserve validated
+lexical/called scope, private property identity and an optional receiver.
+Canonical array/query copies share these objects;
 an unpinned method receiver retires only after the last Closure owner is released.
 [Runtime Closure define review](coverage/semantics/define-runtime-closure-review.json).
+[Scoped REAL define review](coverage/semantics/define-scoped-runtime-closure-review.json).
 
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
@@ -4437,16 +4440,16 @@ agree with PHP; separate 463/8 state checks cover its shared-cell RELEASE/EXIT
 pauses, required literal history despite an unchanged heap, engine TypeError catch,
 one line7 Notice and detached aliases.
 Owning-return histories with at least three pending slots preserve finite
-first-retirement destructor throws, including stable supplied-Throwable identity,
-cleared NULL recovery and detached caller references. Remaining computed objects
-keep their source/restore/sole-owner checks; ordinary global-CV slots now bind
-the emitted source to the actual shared cell. A mixed source and 439/12 checks
-at `4a1cc45c5` prove same-object catch, wrong-cell/kind and missing-slot refusals,
-exact shared-cell release/public pauses, Notice15 and z/za/caller aliases.
-Earlier computed-only evidence keeps its original cuts in the
+first-retirement destructor throws, supplied-object identity, cleared NULL and
+detached caller references. Ordinary global references may now alias across
+pending slots; each still keeps its own source/owner/restore authority and cleanup
+count. Computed objects retain distinct sole owners. A fresh za/z-alias source
+and 430/10 checks at `638496fa6` prove each required slot, two successive shared
+releases, exact public pauses, same caught object, Notice13 and separate caller
+and global writes. Earlier evidence retains its original cuts in the
 [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-Repeated alias slots, other reference producers, wider bodies/reentry, GC and
-consumers remain open.
+Other reference producers, typed/property cells, fewer than two remaining slots,
+wider bodies/reentry, GC and consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;
