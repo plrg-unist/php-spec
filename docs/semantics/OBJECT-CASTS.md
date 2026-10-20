@@ -23,15 +23,22 @@ therefore differ from foreach and copied array views of the new table. Physical
 old-table bucket count includes an INDIRECT whose slot becomes unset.
 
 Source construction keeps these locators internal; ordinary array casts export
-copied values. Copied declared-bucket reference iteration, mixed dynamic cached cloning
-and collector visitation remain explicit Unsupported boundaries. Six exact sources
-and 743 reached premises/37 raw steps cover table generations, slot/cell ownership,
-UNDEF and throw cleanup.
+copied values. Copied declared-bucket reference iteration and collector visitation
+remain explicit Unsupported boundaries. At that original table cut, mixed cached
+cloning was also refused. Its six exact sources and 743 reached premises/37 raw
+steps cover table generations, slot/cell ownership, UNDEF and throw cleanup.
 
 Declared-only cached cloning now has a
 [bounded path](../../coverage/semantics/cached-property-clone-review.json): a fresh
 table retargets locators to copied slots while retaining shallow values and
 existing reference/type-source rules.
+
+[Mixed cached clones](../../coverage/semantics/mixed-cached-clone-review.json)
+now rebuild a fresh table for public nonempty declared layouts plus live dynamic
+buckets, with no `__clone`. Declared locators retarget; dynamic items copy once and
+lookup mirrors add no edge. Independent foreach membership, singleton/held wrappers
+and Payload retirement pass four originals and 477 focused premises. This adds no
+table producer, iteration, root or GC rule.
 
 [Direct comparison materialization](../../coverage/semantics/direct-table-comparison-review.json)
 now permits genuine foreach and dynamic-property table creation while the original
@@ -46,8 +53,8 @@ Their fresh arrays copy direct values and singleton references; shared reference
 remain live. Actual cast states verify copied entries, cell/object owners and
 unchanged object maps/flags. Independent projected-array comparison and throwing
 cleanup pass three exact sources and 503 reached premises/35 raw steps. Existing
-GC, mixed dynamic cached-clone, reference-iteration and broader lifetime limits
-remain open.
+GC, mixed dynamic cached callbacks, copied-declared cache images, reference-iteration
+and broader lifetime limits remain open.
 
 A NaN cast allocates the object before delivering its warning through the real
 error handler. Its continuation retains the original operand category and zval

@@ -1,0 +1,135 @@
+{
+  "scope": "Unary CV clone of ordinary public nonempty declared layouts plus live dynamic buckets in a foreach-materialized cache. Fresh declared locators/dynamic mirrors, singleton and held untyped int wrappers, independent table membership and shallow Payload retirement; no __clone, readonly or active collection.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_objects.c zend_objects_clone_members copies declared slots first, then rebuilds the property hash in source bucket order: INDIRECT entries retarget to copied slots, raw dynamic buckets use zval_add_ref. The zero-declared/no-callback fast-sharing branch is separate and excluded here.",
+      "Zend/zend_variables.c zval_add_ref unwraps only a singleton reference destination. Held wrappers stay shared. Existing 261 instance_table_nodes gives declared slots and the property table their real edges; DECL-eps dynamic mirrors add no owner."
+    ],
+    "divergence": "No engine bug or intentional divergence identified."
+  },
+  "implementation": {
+    "files": [
+      "spec/semantics/150-clone-runtime.watsup"
+    ],
+    "sha256": "0d15ffdc97e83302a82d5f2200a7ec2e145515db7c39f68513c547d32c979ffe",
+    "basis": "A disjoint mixed/no-callback route copies declared slots through unchanged clone_slots before fresh table construction. Raw DIRECT/ALIAS entries must match live DECL-eps source slots; copied destination items install lookup mirrors without another merge or owner. Declared-only and callback routes remain exact. No 261/138/300, root, state-field, syntax schema, manifest or generic cleanup change."
+  },
+  "validation": {
+    "native": {
+      "revision": "c75cdb7c772706aef0d352e0dbfc0c51d4787e74",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-probes-116/native-first/report.json",
+        "sha256": "273089f0fa0a41b379d7d902eab9ae3770c01e1f01c9de8ea659b89abbbf5933"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-probes-116/affinity-native-first.json",
+        "sha256": "f5a59f5ab9b30a9429fe538b2b1c6f98bfe875c436c72509c9590fe7fac35d5c"
+      },
+      "result": "Four exact normal quiet0 tuples 146/31/19/17, stable/reaped. Fast-native affinity partial 1/4: scalar CPU1/full 29-element argv; other short workers were not sampled, observer stopped/reaped without replay."
+    },
+    "baseline": {
+      "revision": "c75cdb7c772706aef0d352e0dbfc0c51d4787e74",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-probes-116/accepted-current-baseline/report.json",
+        "sha256": "d3d52c351c909a91fb332a9e9043e304382908eae12a93ec36839b3b2731f0fa"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-probes-116/affinity-accepted-current-baseline.json",
+        "sha256": "7870e2355f2bf1274459e38c1e046c6f4cc6867ae35ba46c84f9483d4d791cd2"
+      },
+      "result": "Four frontend+adapter-checked Unsupported cached ordinary property-table cloning; CLI1/semantic exitNone/quiet stderr, prefixes M:declared:1|alpha:7|beta:9| / U: / H: / P:, zero agreement. Complete4 CPU1/full python3+recorded argv/PID-start matches, stable/reaped."
+    },
+    "source": {
+      "revision": "03d0c6633ebcbc5638a9aba3e0619e9dbcc0bf96",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-probes-116/changed-model-5glp07u3/report.json",
+        "sha256": "1373a786879cc1d048bf522af43ed33058481fbba6c00bbe0db73c36cbea0a9e"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-probes-116/affinity-changed-source-116.json",
+        "sha256": "b6ef460079e3d5803f34e1f461cd0cb98e7c34e7ddaa21e536229df820d2937a"
+      },
+      "result": "Four exact normal native agreements 146/31/19/17; quiet0/stable/reaped, complete4 CPU2/full python3+recorded argv/PID-start matches."
+    },
+    "focused": {
+      "revision": "b82cf88bdbddf0e5e8a7e929441cd88eadd1c9eb",
+      "prepared": {
+        "path": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-protocol-d90us7cy/PREPARED.json",
+        "sha256": "06813c6dc390b2650a9f288c8ae80a0c964d9ef6f5ec31fe50a0a0f70f1accb5"
+      },
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-protocol-vkcvltmp/report.json",
+        "sha256": "14f1f6a1a83f27314e38030e46d74fb0f4eeb7588caaa395d68b1425bab23587"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-probes-116/affinity-state-116-repair2.json",
+        "sha256": "f162ef364cd5362e58554c67fdeb5f0238f70f6ed1c089ef18ebfb6bf1290747"
+      },
+      "result": "Four stricttrue groups 142/103/118/114; 477 = 433 reached + 44 derived, apps4/source0. Actual clone registration, independent table metadata/locators, dynamic mirror zero-edges, singleton-vs-held wrappers and real Payload/source-table retirement; stable guards, refusals and budget resume. A derived late clone preserves raw UNSET metadata and compacts serial4 to3. Eight quiet exits0/all stability/empty groups/full reap, complete8 CPU3/full411 argv/PID-start matches.",
+      "scheduling": "Root discovered an overlapping M129 assignment to CPU3 after launch and directed the current actor to finish. Affinity is complete but shared scheduling is explicit; no exclusive-CPU claim or migration/replay. AL/SL elapsed seconds: scalar8.047/23.306, singleton8.280/15.920, held8.030/25.335, payload16.261/34.114; all below90."
+    },
+    "original_focused_failure": {
+      "revision": "aa1693de8df36c5ac909b1200954e7e8a6ae5bd7",
+      "prepared": {
+        "path": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-protocol-xynzavm5/PREPARED.json",
+        "sha256": "7b1859664ecb2c5987cb8b7865ecd99bb9980f9fd4b2e23c9e629283d8e02047"
+      },
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-protocol-g7bxvat0/report.json",
+        "sha256": "aff3b3b1a73671d532c60ebf6602f6687802cb2bf3cd698869b58557cb19487e"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-probes-116/affinity-state-116.json",
+        "sha256": "74b95649fc14cde9b0a1c7b66295eb822fe2709bf9ded8091e10fd293316fb6c"
+      },
+      "result": "Enclosing report false; scalar138 compiled then returned quiet false, passing credit0, other groups unrun. The fixture wrongly expected property_slot_at to return a DECL-eps PROP_UNSET row: unchanged 136 hides that row from named lookup while raw SLOTS preserves it. Four affected lookup assertions now prove exact raw membership plus named absence; no runtime/owner/guard weakening or diagnostic. Two workers CPU2/full411 argv/PID-start matched and reaped; observer partial2/8 stopped/reaped."
+    },
+    "second_focused_failure": {
+      "revision": "6374ce06fe72486195923601fd99e6e41b36f15a",
+      "prepared": {
+        "path": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-protocol-15eddj89/PREPARED.json",
+        "sha256": "dcfdf3cac9d28ff5d0b55d869cc56d2a1a4822a990cbb1ad48b89408e5563933"
+      },
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-protocol-brlkdk41/report.json",
+        "sha256": "1df0c09c452ea87278e7a821621e74655f46d77c6034f3f39b0757faf532767f"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116/.tools/mixed-cached-clone-probes-116/affinity-state-116-repair1.json",
+        "sha256": "9e6dbe0c1c4736247ee5e2fce7e08427529d4371d1840605e60226675f087240"
+      },
+      "result": "Enclosing report false; scalar140 compiled then quiet false, passing credit0, other groups unrun. Derived clone_plain call bypassed generic destruction_store_new, so new OBJECTS lacked handle registration before the full guard. Fixture now explicitly registers the raw helper result and asserts equal handle/object lengths; actual clone PhpStep was unchanged. No diagnostic actor or runtime correction. Two workers CPU1/full411 argv/PID-start matched and reaped; observer partial2/8 stopped/reaped."
+    },
+    "classification": "Native, genuine baseline and source4 pass their first attempts. Both earlier focused enclosing reports remain false/zero credit; the required raw-UNSET and derived-handle fixture corrections affect only focused checks. No diagnostic actor, runtime correction, source/native replay or renewed historical110/113 credit."
+  },
+  "reproduction": {
+    "cwd": "/home/user/workspace/php-spec/.tools/mixed-cached-clone-private-116",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "profile": "tests/semantics/profile.json",
+    "caps": "Serial native45/model60/outer75/100000 steps; focused AL90 then strict SL90/cachefalse/dettrue/fail-first/full reap. Checked preparation invokes zero applications.",
+    "native": "Ready python3 -u .tools/mixed-cached-clone-probes-116/watch-affinity.py native-first native 1; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/mixed-cached-clone-probes-116/run.py native --revision c75cdb7c772706aef0d352e0dbfc0c51d4787e74",
+    "baseline": "Fresh ready python3 -u .tools/mixed-cached-clone-probes-116/watch-affinity.py accepted-current-baseline model 1; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/mixed-cached-clone-probes-116/run.py baseline --revision c75cdb7c772706aef0d352e0dbfc0c51d4787e74",
+    "source": "Ready python3 -u .tools/mixed-cached-clone-probes-116/capture-candidate-affinity.py 2 changed-model- 4 changed-source-116; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 2 python3 -u .tools/mixed-cached-clone-probes-116/run.py changed --revision 03d0c6633ebcbc5638a9aba3e0619e9dbcc0bf96",
+    "focused": "Ready python3 -u .tools/mixed-cached-clone-probes-116/watch-state-affinity-repair2.py 3; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u tests/semantics/mixed_cached_clone_protocol.py --revision b82cf88bdbddf0e5e8a7e929441cd88eadd1c9eb",
+    "recovery": "Ignored originals, driver, raw fixtures and reports stay at their original paths. Recover versioned runtime/tests from the recorded tested commits; reused local tools establish no fresh rebuild claim."
+  },
+  "tools": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    ".tools/mixed-cached-clone-probes-116/run.py": "7e96a25a30af17bc2bc2c848c328e63dd84e694e922ab447f86a52fbab5e597b"
+  },
+  "limits": "Only ordinary public nonempty declared layouts with live source-consistent DIRECT/ALIAS dynamic buckets and no __clone, readonly or active collection are newly admitted. Copied-declared DIRECT cache images, raw undefined dynamic buckets, zero-declared fast sharing, other layouts and wider clone/callback/GC histories remain partial. PropertyFetch/Foreach are existing producers/consumers, with no dynamic declaration, attribute, type-constraint or inheritance expansion.",
+  "review": {
+    "status": "accepted; independently reviewed",
+    "reviewer": "/root/class_review_84",
+    "semantic": "Independent native/genuine baseline, source4, corrected focused477 and concise publication accepted. Actual-parent preservation is checked separately before integration."
+  }
+}

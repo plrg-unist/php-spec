@@ -7,29 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Selected main-scope CV receivers and literal inherited-private integer property
-names now support `+=`: the named integer RHS runs before receiver lookup,
-then the chosen object stays pinned through Get/addition/Set.
-Get clearing the CV leaves Set on that object. Separate inner handler holds end
-before the outer hold; cached `7` survives receiver destruction writing live `99`.
-Supplied Get/Set throws preserve the same Exception and destination `42`.
+Ordinary public objects with nonempty declared layouts and live dynamic buckets
+now clone their cached property tables. Declared slots copy first, fresh locators
+retarget to the copy, and dynamic lookup mirrors add no duplicate value owners.
+Actual foreach sees independent writes and membership/order; singleton dynamic
+wrappers unwrap, held aliases stay shared, and a shallow Payload survives source
+retirement until copy destruction.
 
-Four source agreements at `1541d9a22`/408 and 891 focused premises (870 reached
-+ 21 derived) at `c6c08f537`/408 pass on the four actual histories. The genuine
-baseline has four consumer Unsupported results. The separate native `'5tail'`
-Warning/Set control remains outside the quiet PINT/in-range slice and is explicitly
-refused with zero agreement. Original admission, fixture/driver failures and two
-diagnostics retain zero credit. Runtime changes only module 30, new 418 and the
-ordered manifest; existing Get/Set, ordinary RHS/arithmetic and generic cleanup/GC
-remain unchanged. Wider kinds/operators/receivers/reentry remain partial.
-[Magic property += review](coverage/semantics/magic-property-addassign-review.json).
-
-Composed over `6896a7a96`/407 with module 418, six tests and family scope
-private-exact; module 30 retains incoming operator/retire-history tags beside the
-new outer tasks. Ordered 407 + 418 gives 408; unrelated runtime/default/root
-bytes remain incoming-exact. INI/DEFINE, ref-return, Generator, missing weak
-comparison, float-key and unary/SHIFT/XOR selectors are unproduced here.
-Source4/refusal1/state891 retain their tested cuts without accepted replay.
+Four source agreements at `03d0c6633`/408 and 477 focused premises (433 reached
++ 44 derived) at `b82cf88bd`/408 pass. The genuine baseline refuses all four cached
+clones. Two earlier focused false reports retain zero credit: named lookup hides
+raw dynamic UNSET rows, and a derived helper needed standard object-handle
+registration before its full guard. No runtime correction or diagnostic was needed.
+The final CPU3 run shared scheduling after a root assignment collision; all eight
+workers passed within their original caps, with full affinity/stability/reap receipts.
+Only module 150 changes; existing table, reference, iteration and cleanup/GC rules
+stay exact. Mixed callbacks, copied-declared DIRECT images, zero-declared sharing,
+readonly and active collection remain partial.
+[Mixed cached clone review](coverage/semantics/mixed-cached-clone-review.json).
 
 Unary `+`/`-` now accepts evaluated nonowning copies before Warning. A named
 by-value return emits its producer output once; its handler writes source `99`,

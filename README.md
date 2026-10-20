@@ -5000,8 +5000,17 @@ the callback reads the copy's locators; a borrowed source may retire there while
 its Payload survives in the copy. Held int aliases retain the clone constraint,
 and supplied throw destroys the failed copy/Payload before the original catch;
 the destination stays `42`.
-Four source agreements and 659 focused premises pass at separate cuts. Dynamic
-caches, readonly, active collection and wider callback/lifetime histories remain open.
+Four source agreements and 659 focused premises pass at separate cuts. Mixed
+dynamic callback caches, readonly, active collection and wider callback/lifetime
+histories remain open.
+
+[Mixed cached clones](coverage/semantics/mixed-cached-clone-review.json) now copy
+ordinary public declared slots and live dynamic buckets into a fresh table. Declared
+locators target the copy; dynamic lookup mirrors add no owner. Real foreach sees
+independent writes and membership, singleton wrappers unwrap, held aliases stay
+shared, and the copy keeps a Payload alive after source retirement. Four originals
+and 477 focused premises pass at separate cuts. This path excludes `__clone`,
+readonly, active collection, zero-declared and copied-declared DIRECT cache images.
 
 [`get_class` testing support](docs/semantics/GET-CLASS.md) observes finite live
 object names and executing lexical scope through direct and callable invocation.
