@@ -4483,15 +4483,19 @@ pauses, required literal history despite an unchanged heap, engine TypeError cat
 one line7 Notice and detached aliases.
 Owning-return histories with at least three pending slots preserve finite
 first-retirement destructor throws, supplied-object identity, cleared NULL and
-detached caller references. Ordinary global references may now alias across
-pending slots; each still keeps its own source/owner/restore authority and cleanup
-count. Computed objects retain distinct sole owners. A fresh za/z-alias source
-and 430/10 checks at `638496fa6` prove each required slot, two successive shared
-releases, exact public pauses, same caught object, Notice13 and separate caller
-and global writes. Earlier evidence retains its original cuts in the
+detached caller references. Ordinary global references may alias across pending
+slots; each keeps its own source/owner/restore authority and cleanup count. A
+singleton plain public `object` property source is now admitted through its exact
+live ALIAS slot and declaration.
+Computed objects retain distinct sole owners. A fresh typed za/z source and 566
+Boolean/9 raw checks at `cbdb48da3` preserve the property constraint through both
+shared-cell releases, same supplied catch, Notice14 and detached caller NULL.
+A failed string write leaves the property unchanged; a valid object replacement
+updates holder/z/za while the old copy, detached r and prior b stay separate.
+Earlier evidence retains its original cuts in the
 [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-Other reference producers, typed/property cells, fewer than two remaining slots,
-wider bodies/reentry, GC and consumers remain open.
+Other property types/sources, multiple sources, holder retirement, fewer than two
+remaining slots, wider bodies/reentry, GC and consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

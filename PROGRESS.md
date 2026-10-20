@@ -1243,41 +1243,35 @@ joined actor, accepted replay or renewed execution credit.
 The earlier mixed CV/selected-reference arithmetic route retains source9/state858
 in its [review ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 
-M121 preserves two pending global-reference returns that alias one HCELL.
-Every lexical slot still authenticates its emitted source, current/global cell,
-owner/LINE and restore path; the shared cell's repeated identity no longer
-rejects the history. Computed objects keep their unchanged sole-owner and
-HOBJECT uniqueness checks. Only the source-reader uniqueness condition and
-cleared-suffix HCELL condition change; minimum two outer slots, Notice,
-SOURCE/history representation, body/pending/finish, roots and transitions stay unchanged.
+M122 preserves owning-return history through a typed property reference. Two
+global za/z return slots share the cell of Holder's plain public `object` field.
+The existing finite C→D supplied-Exception cleanup now reaches the local catch,
+then cleared C emits Notice14 and returns a fresh detached NULL; prior b stays7.
+Only270's global-operand guard changes: a singleton valid property source must
+authenticate the allocated holder, exact ALIAS slot/DECL, public nonstatic object
+TYPE, no asymmetric setter/hook, and a current allocated object. Existing138
+authority excludes readonly sources. Untyped globals retain their previous path.
+The typed writer,156, history representation, roots and transitions stay unchanged.
 
-One fresh za/z-alias source and 430 Boolean/10 raw checks pass at `638496fa6`/406
-(author188/5, independent242/5). C→D throws the same outside supplied Exception
-into the local catch and caller observer, then cleared C yields Notice13 and a
-fresh detached NULL. Two real shared-cell releases lower owners successively
-n→n−1→n−2 before function exit; the cell, global z/za, copied z_old and object
-stay live. Deleting either exact pending task refuses with both global readers
-and the original history site still admitted and a valid heap. Mirrored
-wrong-owner/source metadata with the same cell/heap also refuses; duplicate
-HOBJECT suffixes remain excluded. Five complete raw/public states per fixture
-and full whole/split endings agree, including separate r/b/z/za writes.
+One original source and 566 Boolean/9 raw checks pass at `cbdb48da3`/407
+(author241/4, independent325/5). Both actual shared-cell jobs remove one pending
+owner while holder/slot/DECL/PROPREF remain valid and the referent stays owners2.
+Metadata adds no owner; the property ALIAS and actual global edges retain the cell.
+Task-only deletion still refuses despite a valid typed reader/heap. Same-heap
+wrong-source metadata and a heap-valid scalar current value refuse. Before shutdown,
+a rejected za string write leaves the referent unchanged; a legal object replacement
+updates holder/z/za while old copy, detached r and prior b remain separate. Exact
+raw/public pauses and complete whole/split endings agree.
 
-Native1 and the wrong-ending baseline retain `396e8d14f`/406. Separate89/2
-diagnosis proves both globals individually supported and isolates repeated-HCELL
-rejection from the finite supplied throw/pending gates. One affected source
-matches every original packet and the native tuple at `638496fa6`. Every actor
-runs once with quiet model workers/fixtures, stable inputs and full reap;
-strict45 and author240/peer300 caps. Other reference producers, typed/property
-cells, fewer than two remaining slots, wider bodies/reentry, GC and consumers remain open.
+Native1, the wrong-ending baseline and separate119/2 diagnosis retain `b0ebc5d2f`/407.
+The affected source preserves all original packets and the exact native tuple.
+One original author failure0 compared a completed run with an uncontinued NORMAL
+finder state: its resume helper only drives BUDGET. Only that split call changes
+to drive in author and unrun peer; affected author retry and first peer pass with
+all assertions retained. Accepted model actors are quiet, stable and fully reaped;
+strict45 and author300/peer420 caps. Other property types/sources, multiple sources,
+holder retirement, fewer than two outer slots, wider bodies/reentry and GC remain open.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-
-Composed over `f92ca068d`/407 with tested156/270 unchanged. Incoming lexical
-parent-hook, compound-DIV Warning, loose-comparison Warning, parked Generator,
-typed array-leaf and scoped Closure DEFINE paths have no producer in this source.
-Ordinary destructor/getMessage/global/THROW paths remain unchanged. Parent417,
-task variants, state/default/root paths and ordered407 manifest stay exact;
-native/source/diagnosis and430/10 retain their private406 cuts without joined
-execution or accepted replay.
 
 Retained propertyless Stringable `define` names now accept captured boolean true
 with primitive candidates and non-NUL global/class-like results. One module400
@@ -11642,9 +11636,12 @@ adds recursive owning-source/suffix validation, fresh four-owner source1 and368/
 at0c1f. M120 adds an authenticated global-reference slot beside computed objects,
 fresh source1 and439/12 at4a1cc with shared-cell release and Notice15/detachment.
 M121 adds two genuine za/z slots sharing one cell, source1 and 430/10 at638496,
-with each lexical task required and two exact shared-owner drops. Other
-reference producers, typed/property cells, interposed/pending histories, deeper
-reentry, GC and wider typed consumers remain open for permanent lifecycle/control work.
+with each lexical task required and two exact shared-owner drops. M122 adds a
+validated singleton plain public object-property source, source1 and566/9 atcbdb;
+two slot releases preserve its constraint, failed scalar writes leave it unchanged,
+and valid object replacement remains separate from detached r. Other property
+types/sources, holder retirement, interposed/pending histories, deeper reentry,
+GC and wider typed consumers remain open for permanent lifecycle/control work.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
 integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV
