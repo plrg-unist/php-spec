@@ -453,6 +453,16 @@ cover the transitive array-to-cell edge, strict option priority, full discard an
 normal setter recovery. This slice is ownerless positional NULL2 without unpacking;
 typed/property references, owning referents and wider forms remain partial.
 
+[Retained INI receivers with shared-reference arrays](coverage/semantics/ini-set-owned-null-alias-array-value-review.json)
+now preserve both the setter and the earlier one-entry array when argument effects
+replace the live callee and COW changes the current container. A cell write after
+TypeError/trace capture stays visible through both API and explicit-wrapper array
+arguments; the API option is empty while the wrapper retains NULL. Four source
+comparisons and 1,521 state premises cover strict ordinary versus weak explicit
+reception, supplied-throw cancellation, transitive reference edges, exact discard
+and original-setter recovery. Named/unpacked/PIPE forms, typed/property references,
+owning referents and sole-owner lifetimes remain partial.
+
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
 send/callback site. Ordinary Closure PIPE follows caller strictness; normal and

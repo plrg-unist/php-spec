@@ -1,0 +1,88 @@
+{
+  "scope": "Retained exact INTRINSICCLOSURE INI_SET receiver with positional rawNULL option plus exact one-entry key0 ALIAS ARRAY VALUE. Live allocated DEFINED REFCELL holds a quiet primitive; property/coercion metadata absent and whole-state PARAMETERBACKINGS EPS. INDEX2/PACKSeps/notNAMED/nonPIPE/effectiveweak; captured value source facts unknown (compiled_read EPS).",
+  "status": "integrated",
+  "reviewer": "/root/source_review_35",
+  "parent": "90a8545f8cf11f61f02698595455af243611ac45",
+  "initial_revision": "3b962c9eaa0ab5b87bcf71c0c6df6115db093cf3",
+  "semantic_revision": "5894b4ffc959939bc31cb70433810ebfcd4d5ef7",
+  "tested_revision": "4eb8c2785ed946999365807b3147a4c30e0449c2",
+  "modules": 407,
+  "semantic_files": {
+    "spec/semantics/172-file-context-intrinsics.watsup": "bffc3b3337df963c1cc09c804063a4ea9868a63584fd200396cc9e9df0c9109c"
+  },
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "primary": "Pinned basic_functions.c PHP_FUNCTION(ini_set) parses the option string first; Z_PARAM_ZVAL receives new_value and the following Z_TYPE>IS_STRING guard rejects ARRAY parameter2 without traversing elements. By-value array copies share embedded reference cells. Returning NULL Deprecated handling converts the API option to empty; explicit Closure __invoke retains raw normalized wrapper sends and weak reception; supplied throw cancels rejection.",
+  "semantics": "Only the ALIAS-array header OWNER-empty conjunct is removed; PACKSeps is preserved on that premise. Invocation/selection validity authenticates the allocated exact INI_SET owner and actual ordinary/method source. All positional count/source0 EPS-orNULL/valueEPS/nonPIPE/effectiveweak/key0 reference/quiet/property+coercion/globalbackings guards remain. Actual partial config states hold old setter/rawNULL before V, then owner+ARRAY despite live INI_GET replacement/current-container COW; original and current arrays reach the same live HCELL. No current-CV history reconstruction, frozen primitive, receiver trace edge or direct CELL task root. All predicates/helpers/finish/84/138/trace/root/discard/GC/schema/400 and historical tests stay exact.",
+  "accepted": [
+    "Source4 actual accepted/program/normal model stdout/PHPstderr/PHPexit0 exactly match native at4eb8c2785/runtime5894b4ffc/407. Ordinary default and explicit true-return calls reach parameter2 TypeError. Native E/W/N/L/L/A writes the shared cell after actual TypeError/getTrace: APIempty versus wrapperrawNULL, both argument arrays observe the new leaf while their old one-entry shape differs from current43. No physical exported-array identity claim.",
+    "Selected retained owner/rawNULL precede V; live callee becomes retained INI_GET while the same cell is written/current array COW-appends31. False handler writes that cell/appends37, then default Deprecated and parameter2 TypeError preserve99/old shape/current31+37 and old setter8-to11. Strict ordinary completes effects then rejects rawNULL parameter1 with handler0; SAME keep explicit reception is weak, invokes the handler once, writes weak-array82 through both containers and reaches parameter2 before real setter9-to11.",
+    "Author1078=372+321+385 and independent peer443 total1521 strict-SL premises pass. Owner-only partial config then owner+HARRAY roots, captured modes and shared transitive HCELL are actual. Ordinary TypeErrors have one API frame, explicit TypeErrors API/wrapper two frames, supplied Exception handler/API/wrapper three frames with both raw argument edges to oldARRAY-to-liveCELL after the post-allocation leaf write. Existing owner+ARRAY buffers and whole idempotent restored/discard equality, ref/type/owner/source/carrier/phase controls and budgets pass. HCELL is not directly task-rooted or GC-bufferable.",
+    "Peer native supplies saved Exception I99/effect1/warn1/after-exception82/current37/old-no1 C/sibling3239 then ordinary strict oldsetter10-to12; no native trace traversal. Nine reports PASS first attempt/input+HEAD stable, four SL raws exactly true LF/quiet/exit0, model workers quiet, no timeout/interruption/survivor. Only default Deprecated13 and selected Deprecated21 occur; strict/peer PHPstderr quiet. No execution failure, fixture/runtime/harness correction or retry."
+  ],
+  "baseline_zero_credit": "At clean source-only3b962c9eaa0ab5b87bcf71c0c6df6115db093cf3/unchanged90a8545f8/407, captured-owned-null-alias-array-before-live-owner-and-cell-writes is accepted/program Unsupported: error-handler ingress requires a producer continuation after B|V|, CLI1/nullPHPexit/quietworker17.958s, zero agreement. Native author3+peer1 precede semantic/protocol edits.",
+  "compatibility": "Old81 string-call positives remain covered; forged owner(0) retains an incompatible string-selection nonce and stays invalid. New owned controls use empty/wrong getter/dead/out-of-range owner. Coherent DIRECT31 remains rejected_array-positive but null_valid-negative for retained purely positional calls, preserving that documented gap. No historical repair/actor. DEFINE value classifiers and lossy-float-key typed/property borrowing selectors are absent; no generic array/reference/GC widening. No Stringable/userclass/cast/clone/owning referent/last-owner or paused path; no engine bug or intentional divergence identified.",
+  "execution": "Initial CPU3; affected six CPU5. LC_ALL=C TZ=UTC INT+kill5 AS3221225472, serial fail-first/full reap. Native15/CLI45-host60/freshSL90 unchanged. Models33.291-to37.240s; SL47.876-to58.814s. CPU5 released before final raw acceptance.",
+  "command_prefix": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s <cap>s prlimit --as=3221225472 -- taskset -c <cpu> python3 <step>",
+  "commands": [
+    {
+      "revision": "3b962c9eaa0ab5b87bcf71c0c6df6115db093cf3",
+      "cpu": 3,
+      "caps": [
+        90,
+        90,
+        90
+      ],
+      "steps": [
+        "tests/semantics/ini_set_owned_null_alias_array_value_sources.py --phase native --output .tools/ini-set-owned-null-alias-array-value-native-82",
+        "tests/semantics/ini_set_owned_null_alias_array_value_review_sources.py --phase native --output .tools/ini-set-owned-null-alias-array-value-review-82",
+        "tests/semantics/ini_set_owned_null_alias_array_value_sources.py --phase baseline --case captured-owned-null-alias-array-before-live-owner-and-cell-writes --output .tools/ini-set-owned-null-alias-array-value-native-82"
+      ]
+    },
+    {
+      "revision": "4eb8c2785ed946999365807b3147a4c30e0449c2",
+      "cpu": 5,
+      "caps": [
+        240,
+        90,
+        90,
+        360,
+        90,
+        120
+      ],
+      "steps": [
+        "tests/semantics/ini_set_owned_null_alias_array_value_sources.py --phase model --output .tools/ini-set-owned-null-alias-array-value-native-82",
+        "tests/semantics/ini_set_owned_null_alias_array_value_review_sources.py --phase model --output .tools/ini-set-owned-null-alias-array-value-review-82",
+        "tests/semantics/ini_set_owned_null_alias_array_value_protocol.py --phase prepare --sources .tools/ini-set-owned-null-alias-array-value-native-82 --output .tools/ini-set-owned-null-alias-array-value-public-82",
+        "tests/semantics/ini_set_owned_null_alias_array_value_protocol.py --phase check --sources .tools/ini-set-owned-null-alias-array-value-native-82 --output .tools/ini-set-owned-null-alias-array-value-public-82",
+        "tests/semantics/ini_set_owned_null_alias_array_value_review_protocol.py --phase prepare --sources .tools/ini-set-owned-null-alias-array-value-review-82 --output .tools/ini-set-owned-null-alias-array-value-review-public-82",
+        "tests/semantics/ini_set_owned_null_alias_array_value_review_protocol.py --phase check --sources .tools/ini-set-owned-null-alias-array-value-review-82 --output .tools/ini-set-owned-null-alias-array-value-review-public-82"
+      ]
+    }
+  ],
+  "raw_root": ".tools/ini-set-owned-null-alias-array-value-evidence-82",
+  "report_sha256": {
+    "author/public/check-report.json": "4580c8358171b8f8195bfebb5f8052a8ce07be0120b71807c948340473649bfa",
+    "author/public/prepare-report.json": "ce25e45b6cce0c03b75e90cc05ffe4053725ab04b7af1ac42cdab196117f8517",
+    "author/review/model-report.json": "4d42862cbdcf080a903d85617921091af48858336bc2b86d04596c5a7637a8df",
+    "author/review/native-report.json": "810b55c6b8f9361135f5d901124c30e6b6af70661fa8e429b46a2352600d1715",
+    "author/review-public/check-report.json": "1d4288541a31adffccbd58c71f9b762c7b3fdefaecf1b117b8fa79575621fc21",
+    "author/review-public/prepare-report.json": "c353fb68b4c4fbc6ff8418ca3945e905998d65b05cbc0e9573ca6023d050546b",
+    "author/sources/baseline-report.json": "0baad6f76e3018adb1e1978124aafc8561db78b322752753aa905db7ac49bffb",
+    "author/sources/model-report.json": "0237d023a1153f768572273e01835feeec3f78c1436ac6c6b9ff500c9c5ca8bb",
+    "author/sources/native-report.json": "bb4e11cd51954946fd1f3aa2771eca2fd8cc6a757e08c6f7c2d24c27a44a2c36"
+  },
+  "recovery": "After independent ACCEPT/RAW STOP/focused users[], four roots moved once to author/{sources,review,public,review-public}; nine concise reports hashed once. Restore original paths and revisions for source/cwd identity; reports retain exact inputs/commands/exits. No raw/hash renewal.",
+  "remaining": "Named/mixed/unpacked/PIPE forms, additional entries/keys, typed/property/parameter-backed references, nonempty global PARAMETERBACKINGS, owning/nonquiet referents and sole-owner lifetimes remain partial. Retained purely positional DIRECT array values also remain partial. This is not complete core, equivalence or BOLA freedom; paused boundaries untouched.",
+  "composition": {
+    "parent": "3bddd3aed79f4cd6a56f8597c962235aa2740b80",
+    "private_publication": "dbf2c54de997679000405007b6c7e7acb595bb7a",
+    "ordered_modules": 408,
+    "seams": "Eight incoming paths289/30/40/400/404/413/418/modules.json preserved. Node-free unused Generator SEND is absent. Owned DEFINE POBJECT admission is absent (our fixed sibling is ownerless PINT3239). Magic/unary-copy warning routing has no producer: sources use quiet integer increments.413 named BYVALUE ARRAY-return admission requires lossy-float literal-key callbacks; our implicit key0 ALIAS constructor and quiet appends have none. New418 requires INSTANCE property+=typed-int RHS/Get/Set, absent all originals.172/39/84/138/301/368/schema are base-exact; retain full ordered408/new418. Own172/four tests remain private-exact, every other runtime/schema/manifest byte parent-exact.",
+    "documentation": "README/family private edits and exact environment own2helpers/2sources/1ledger+suffix. Own checkpoint/composition precede incoming PROGRESS tail, preserved except the exact reviewed stale81 owned partial qualifier.",
+    "evidence": "Source4/state1521 retain4eb8c2785/runtime5894b4ffc/407; initial3b962c9ea native4/baseline0 and nine first-pass reports unchanged. No execution, semantic rerun, state lift or renewed credit at408."
+  }
+}

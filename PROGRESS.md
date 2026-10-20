@@ -7,6 +7,35 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained intrinsic `ini_set` receivers now resume NULL-option handling for the
+same one-entry key0 ALIAS ARRAY with a live untyped quiet primitive cell. The
+captured setter and array survive live callee replacement and current-container
+COW; later cell writes remain visible through both API and explicit-wrapper
+arguments. Strict ordinary reception rejects parameter1 after value effects,
+while the same setter's explicit call is weak and reaches parameter2. A supplied
+Exception cancels rejection and the retained setter remains usable.
+
+Four exact source comparisons and 1,521 state premises (372+321+385+443) pass
+first attempt at `4eb8c2785`/`5894b4ffc`/407. Initial `3b962c9ea` CPU3 native4/base0
+precedes CPU5 affected checks; nine stable/reaped reports PASS, only Deprecated13/21,
+quiet workers and no failures/retries. Native E/W/N/L/L/A observes a later cell
+write after actual TypeError/getTrace in both argument arrays. State proves the
+owner-only config partial then owner+array roots, transitive shared HCELL, raw
+three-frame supplied Exception and whole restoration/discard. No receiver trace
+edge or direct CELL root/buffer is invented. Only the OWNER-empty conjunct is
+removed; PACKSeps/positional/source/ref/metadata/weak fences and all helpers,
+trace/root/GC/schema/historical tests stay exact without replay. Whole-state
+PARAMETERBACKINGS EPS bounds this slice; wider forms/references remain partial,
+with paused paths untouched.
+[Retained shared-reference INI array review](coverage/semantics/ini-set-owned-null-alias-array-value-review.json).
+
+Composed over `3bddd3aed`/408 with private-exact172/four tests and all other
+runtime/schema/ordered408/new418 bytes parent-exact. Incoming Generator SEND,
+owned DEFINE object values, unary-copy warnings, float-key borrowing and INSTANCE
+magic property+= have no source producer here. Incoming checkpoints stay preserved
+except the reviewed stale81 owned partial qualifier. Source4/state1,521 retain
+private407 cuts without execution or renewed credit at408.
+
 Pre-refreshed direct pending SEND now releases its unused owning current copy
 correctly when the normal simple-CV child return owns no heap node. The snapshot
 survives normal argument mutation, then retires before receiver finally;
@@ -123,7 +152,7 @@ edge, current COW table sharing and whole restoration/discard. HCELL is neither
 a direct task root nor a possible GC buffer root. Only29 additive172 lines change;
 old DIRECT-array guards/84/138/helpers/trace/root/GC/schema and historical tests
 stay exact without replay. Whole-state PARAMETERBACKINGS EPS bounds this slice;
-named/owned/packed/PIPE forms, typed/property references and owning referents remain
+named/packed/PIPE forms, typed/property references and owning referents remain
 partial, with paused paths untouched.
 [Shared-reference INI array review](coverage/semantics/ini-set-null-alias-array-value-review.json).
 
