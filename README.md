@@ -2038,6 +2038,13 @@ keeps queries valid after the callee dies. Repeated calls at one source site kee
 separate nonces, and throwing duplicates preserve raw API/wrapper arguments.
 [Owned DEFINE call review](coverage/semantics/define-owned-closure-review.json).
 
+Owned callees also accept existing bounded array snapshots. Copied containers
+and shared object leaves survive source/callee retirement and query COW.
+Rejected-copy and argument cleanup precede callee release: sole child
+destructors can observe it alive before false delivery. Supplied exceptions
+preserve the raw argument trace through candidate cleanup.
+[Owned array call review](coverage/semantics/define-owned-array-review.json).
+
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
 children while cast/query arrays retain COW. A private duplicate copy can keep

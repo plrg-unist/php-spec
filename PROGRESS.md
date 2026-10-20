@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained DEFINE Closure callees now accept existing bounded array snapshots
+under omitted/raw-false flags. Named capture, canonical DIRECT copies, nested
+aliases and query COW preserve the earlier array and shared object identity after
+callee/source retirement. Returning cleanup releases the rejected private copy,
+then call argument owners, then the callee. A raw-only replacement child exposed
+the old order: both child destructors now observe the callee held. Throwing
+handling preserves the original Exception/raw alias-NULL API/wrapper trace.
+
+Four affected source agreements pass at `f69cbda12`/407; 933 focused premises
+(305+142 author at `65af97416`,299+187 independent at `d534ab5f0`) include five
+budget identities. Original ingress refusal, normal cleanup mismatch, accidental
+cap150 timeout and NEXT representation failure remain preserved without credit.
+Only the ARRAY owner header and DEFINE root order change; leaf/copy/query,
+receipt/global/default and other intrinsic policies stay exact. Direct owning
+objects, broader flags/packs and paused name paths remain partial.
+[Owned array review](coverage/semantics/define-owned-array-review.json).
+
 Retained intrinsic `ini_set` receivers now reject a separate bare `ini_get`
 Closure value after NULL-option handling, without invoking that value. The old
 setter and getter remain distinct HOBJECT roots when argument effects rebind the
