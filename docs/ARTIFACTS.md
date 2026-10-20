@@ -151,6 +151,13 @@ The real held-Holder validation is in
 accepted snapshots with the 240s worker transport; no runtime patch,
 SHA-256 `632a98f8a09c7aa110b2ad523cac30680e85b59d7d2d7ce3fec5f20120ad1a9a`.
 
+The generated Holder typed-write TypeError proof is in
+`../php-spec-evidence-archive/lifecycle-holder-write-129/manifest.json`:
+716,332 bytes under `.tools/m129/`, seven reports including the original peer
+fixture failure, original packets, accepted snapshots, worker240 and the
+isolated270 runtime patch,
+SHA-256 `81813f0b3fab83016de8a81e302445543ce305dd11e28f7ee59ea962db9d6988`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

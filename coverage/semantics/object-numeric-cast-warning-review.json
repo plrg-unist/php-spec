@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "milestone": "OP75 borrowed stdClass numeric-cast Warning",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "Explicit CASTINT/CASTFLOAT of an empty live stdClass in a plain nonreference CV, with a named Warning handler. The callback replaces/removes the only strong source and observes immediate retirement through the existing WeakReference protocol. Other producers/classes/references/lifecycles remain partial.",
+  "runtime_revision": "a5ab776a9c617158550e9218a2f0ffafa1bb00b1",
+  "helper_revision": "f9c86896516e5c3ef33e1e8eeaf2f6afdbf4cdfc",
+  "private_modules": 408,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "30503ed86f28c8ad3905728a2fff6a103e7b7f8b05dcbf56d37b4175d800c7b6",
+    "spec/semantics/58-ordinary-expressions.watsup": "92216681c6e1db88dccf658e6b10327fcb8a44dce37dd563d72466850ed52a08",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "93dce4fffa6ed4bedd7a09c6288166bf3c3ba68644bc6d28328a9f40085f25b1"
+  },
+  "engine_basis": [
+    "Pinned ZEND_CAST_SPEC_CV_HANDLER passes the CV directly to zval_get_long/double without copying or adding an object reference. The standard cast handler fails numeric conversion; convert_object_to_type formats the class message before zend_error, then the numeric getter returns fallback1/1.0 without another object read. A supplied handler throw cancels delivery at the VM exception check.",
+    "The descriptor stores source/cast/operand/line/stage only, with no object ID, value or root. Source authority matches the actual cast and compiled operand line; fresh capture/dispatch requires an allocated empty STDINSTANCE/no object table in a nonreference CV. Entered/returned stage1 is source history and survives object/source retirement. WeakReference retains nonowning target-ID history; get returns NULL after target allocation retires, without changing the wrapper body to an empty target.",
+    "Exactly80 additions: sole30 task,58 declaration/value exclusion and77 appended404 lines for source/snapshot/plan/valid, message/result constants, begin/dispatch/owning-handler boundary/resume and descriptor guards. Old cast, WeakReference296, GC/roots, numeric, formatting and generic dispatch/unwind bodies stay exact. New task roots are empty; no WeakMap or collection behavior is widened."
+  ],
+  "contract": [
+    "Author CASTINT input25 warns once. The handler replaces x with99, immediately prints WeakReference get===NULL, then throws the same Exception created at20. Identity/noPrevious/20/outer100/x99/calls1 and EOFx8 establish cancellation after real object retirement. No normal integer-cast completion witness is claimed.",
+    "Independent CASTFLOAT starts with B:weakget===x, then its handler writes99, unsets x and prints Weaknull/sourceabsence before returning false. One original default Warning25 precedes strict float1.0, sourceabsence/calls1 and EOFfreshx8. Returning99.0, rereading undefined x or inventing an object root would disagree. No supplied-throw float witness is claimed.",
+    "Focused134+138 inherits the exact integer HELPERS and accepted diagnostic classifier/fold. One authentic source-to-EOF traversal per fixture checks source/fresh guards, actual fresh+entered callbacks, sameException cancellation versus typedfloat1.0+BASE delivery, object owner1-to0 and source owner0/1, live nonowning weak history/getNULL, EPS task roots, raw versus driven effects, EOF and zero/one-step cuts. Only author has an undriven refusal matrix; no forged state or duplicate full-entry replay is executed."
+  ],
+  "required_follow_on": [
+    "Empty stdClass/plain nonreference CVs and the two observed callback outcomes bound validation. Populated stdClass values, user instances and other internal objects, copied/reference operands, owning callback replacements, broader handlers and destructor/lifecycle forms remain partial.",
+    "WeakReference is an existing lifetime observer; no weak-reference/GC/class-identity/numeric-algorithm or generic-unwind evidence is renewed. No engine bug or intentional divergence is claimed. OP12/COMP88/Source47 low-initial-precision paths and active property/clone/array/Generator selectors remain untouched."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-75/source-a5ab776a9-author-one/report.json",
+        "sha256": "0ab2270e40401635d0983f72422dd166c5684daea9d982c83c6b04cd2f604636",
+        "revision": "a5ab776a9c617158550e9218a2f0ffafa1bb00b1",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-75/review-model-a5ab776a9-review-one/report.json",
+        "sha256": "798989ce183dfd3967425ec9c2587194529a22d3b495afe376c45e3aae121363",
+        "revision": "a5ab776a9c617158550e9218a2f0ffafa1bb00b1",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-75/state-f9c868965-two/report.json",
+        "sha256": "bcf13e689f53ba49c3ec5d8702ad46eb14caf84cb634fe598a1cc8459ff2c88a",
+        "revision": "f9c86896516e5c3ef33e1e8eeaf2f6afdbf4cdfc",
+        "modules": 408,
+        "cases": [
+          "object-numeric-cast-warning-int-throw",
+          "object-numeric-cast-float-retired"
+        ],
+        "conditions": [
+          134,
+          138
+        ],
+        "total": 272
+      }
+    ],
+    "total_source_agreements": 2,
+    "total_focused_state_conditions": 272
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-75/baseline-ba2083f36-int-throw/report.json",
+      "sha256": "58a889b16d1d354f0864d5f3a983ea6172fb512cf3779bf20f5ed78816442a56",
+      "result": "Actual frontend accepted/checked program/Unsupported before H1; empty semantic stdout+stderr, reason error-handler ingress requires a producer continuation, model1/rowfalse/wrapper1/agreement0 retained without override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-75/native-ba2083f36-author-one/report.json",
+        "sha256": "2ff5914f6058bf36b2bb14e634218ff7859d52f6703913cf093fef48b90c1ab7"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-75/native-ba2083f36-review-one/report.json",
+        "sha256": "479f0877f24699a63eb3931660b5e05d7705ec38e1ce22da93909a9616d0a2a1"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-75/state-prep-f9c868965-two/report.json",
+        "sha256": "c149b489af74a28c6e65e219876dddc09ec14787432463c948151aaaa560d8d2",
+        "result": "Retained full author1+peer1 original paths/native bytes; checked frontend/adapter and both full408 struct passes0/reaped. Zero native/application replay or semantic credit."
+      }
+    ],
+    "standalone_syntax": "Two standalone undefined-pstate diagnostics, zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-75",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/genuine CPU2; source CPU2; focused CPU5, each separately granted/released. Native30/modelCLI60-process90/checked30/full408struct30 per fixture/full408SL120 per group. Retained-source prep authenticates author1+peer1 and performs no native/application replay.",
+    "record": "Restore matching Git cuts/local tools in a fresh directory. Original source paths/native streams authenticate focused fixtures; external evidence is not a runtime dependency. Copied local tools add no rebuild/portability claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "commands": [
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/object_numeric_cast_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/object_numeric_cast_warning_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-75/state-prep-f9c868965-two/run-prepare.py",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-75/state-f9c868965-two/run-state.py"
+    ]
+  },
+  "composition": {
+    "parent": "4a687d9aa88797e9790246fcb4019fba64fa921f",
+    "private_publication": "a4cc02263081db8903958442261e7661db486fda",
+    "modules": 408,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "30503ed86f28c8ad3905728a2fff6a103e7b7f8b05dcbf56d37b4175d800c7b6",
+      "spec/semantics/58-ordinary-expressions.watsup": "92216681c6e1db88dccf658e6b10327fcb8a44dce37dd563d72466850ed52a08",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "93dce4fffa6ed4bedd7a09c6288166bf3c3ba68644bc6d28328a9f40085f25b1"
+    },
+    "other_incoming_paths_preserved": 49,
+    "gate": "Independently reviewed base1dc4d7814 to actual parent4a687d9aa: incoming runtime172/400 INI_SET and owned DEFINE guards have no producer here; WeakReference create/get use distinct existing intrinsic kinds. Incoming207 expands missing-CV ordinary comparisons, while observers use defined IDENTICAL values and quiet isset for removed x. Incoming270 typed-property byref-return retirement/write/TypeError histories require absent property/ref-return producers; empty stdClass and by-value WeakReference/Throwable getters do not select them. Incoming413 NULL-key ARRAY_VALUE literal/reference-cell handling requires absent array-literal builders. Generic GC, WeakReference, state/default/root infrastructure, ordered408 manifest and30/58/404 remain base-exact before own overlays. Preserve every incoming path; source2/state272 retain private408 cuts without joined execution or renewed evidence."
+  }
+}

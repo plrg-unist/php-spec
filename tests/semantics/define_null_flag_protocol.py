@@ -188,7 +188,8 @@ def checks(program, path, name):
                 '~$dynamic_null_define_flag_valid(S,pconfigcall_invalid_' + label + ')']
         for change in ('.SITE = PORIGIN 0 eps', '.LINE = $(pconfigcall_S.LINE + 1)', '.SELECTION = eps', '.KIND = INTRINSIC_CONSTANT'):
             values += ['~$dynamic_null_define_flag_valid(S,pconfigcall_S[' + change + '])']
-        values += ['~$dynamic_null_define_flag_call(pconfigcall_S[.OWNER = (0)])',
+        values += ['$dynamic_null_define_flag_call(pconfigcall_S[.OWNER = (0)])',
+            '~$dynamic_null_define_flag_valid(S,pconfigcall_S[.OWNER = (0)])',
             '~$dynamic_null_define_flag_call(pconfigcall_S[.SENT = $named_slot_set(pconfigcall_S.SENT,2,KNOWN (PBOOL true))])']
     else:
         assert name == 'strict-null-flag-after-all-argument-effects'

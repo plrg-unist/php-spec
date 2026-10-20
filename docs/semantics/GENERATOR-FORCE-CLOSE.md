@@ -172,6 +172,16 @@ ARG-END and retires before receiver finally mutates the live row. Object-current
 clearing can throw inside that live finally with Previous NULL; no owning return
 retention is manufactured. See the
 [node-free refresh review](../../coverage/semantics/generator-unused-scalar-refresh-send-review.json).
+With one PAUSED bare-statement-yield child, pending ancestor SEND drops its
+unused snapshot after normal argument cleanup, before receiver release. In the
+tested alias-drop histories, Child finally runs before Middle finally.
+Argument-time COW preserves the old snapshot through ARG-END; the child sees
+the live row. An assigned copy survives
+both finalizers. A cache RuntimeException during Child's slot clear uses the
+RUNNING child's yield-site close claim, skips J-END and has Previous NULL; the
+Middle close claim remains queued. No storage pin or owning-return receipt is
+manufactured. See the
+[bare-yield SEND review](../../coverage/semantics/generator-unused-bare-yield-send-review.json).
 Pending NEXT preserves that parked return across the same close transfer but
 creates no current copy. A temporary sole receiver releases its cache during
 storage cleanup, before caller delivery; a throwing cache has no older caught

@@ -317,6 +317,26 @@ def $generator_unused_send_refresh(S, S, pgeneratorop, eps) = true
   -- if $generator_pending_detached_send(S, pgeneratorop)
   -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
   -- if $generator_nodefree_return_waiting(S, pgeneratorop.OBJECT)
+;; One native link borrows current from a bare-yield child. The copied API
+;; result still retires after its argument and before receiver release.
+def $generator_unused_send_refresh(S, S, pgeneratorop, eps) = true
+  -- if $generator_pending_unused_send(S, pgeneratorop)
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if pgeneratorop.ARGUMENTS = [pvalue_argument]
+  -- if $call_reference_operand_valid(S, KNOWN pvalue_argument)
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PARKED = eps
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if pgeneratorfrom.CURRENT = eps /\ pgeneratorfrom.POSITION = 1
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.HELD = eps /\ $tasks_nodes(pframe.TODO) = eps
+  -- if $generator_unused_send_leaf(S, n_child, 1) = (n_child)
+  -- if S.OBJECTS[n_child] = GENERATOR pgenerator_child
+  -- if pgenerator_child.PARKED = eps
+  -- if pgenerator_child.FRAME = (pframe_child)
+  -- if pframe_child.HELD = eps /\ $tasks_nodes(pframe_child.TODO) = eps
+  -- if S.GENERATORINPUTS = eps /\ S.GC.ACTIVE = eps
 def $generator_unused_send_refresh(S, S_refreshed, pgeneratorop, [HOBJECT n_child]) = true
   -- if $generator_pending_detached_send(S, pgeneratorop)
   -- if S_refreshed = $generator_from_refresh(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1))

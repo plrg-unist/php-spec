@@ -1613,9 +1613,23 @@ def $ref_return_retire_property_cell(S, n_cell) = true
   -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
 def $ref_return_retire_property_cell(S, n_cell) = false -- otherwise
 dec $weakmap_key_maps(pstate, pnode*, nat) : nat*
+dec $ref_return_retire_write_method(pstate, pmethoddesc) : porigin?
+def $ref_return_retire_write_method(S, pmethoddesc) = (PORIGIN n pcpath_write)
+  -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (NStmtClassMethod (SEQUENCE eps) phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE ([NStmtGlobal (SEQUENCE ([NExprVariable (BYTES text_target) metadata_global_target, NExprVariable (BYTES text_other) metadata_global_other])) metadata_global, statement_echo, NStmtExpression (NExprAssign (NExprVariable (BYTES text_target) metadata_target) (NScalarString (BYTES text_value) metadata_value) metadata_assign) metadata_statement, statement_marker, NStmtExpression (NExprThrow (NExprVariable (BYTES text_other) metadata_other) metadata_throw) metadata_throw_statement])) metadata_method)
+  -- if text_target =/= text_other
+  -- if ~$this_name($base64(text_other)) /\ ~$psautoglobal($base64(text_other))
+  -- if $ref_return_retire_echo(statement_echo) /\ $ref_return_retire_echo(statement_marker)
+  -- if $origin_child((pmethoddesc.FUNCTION.ORIGIN), [PCFIELD 6, PCINDEX 2, PCFIELD 0]) = (PORIGIN n pcpath_write)
+  -- if $source_emission_cv(S, n, pcpath_write ++ [PCFIELD 0], NExprVariable (BYTES text_target) metadata_target)
+  -- if $origin_child((PORIGIN n pcpath_write), [PCFIELD 1]) = (porigin_value)
+  -- if $compiled_read(S, porigin_value) = (pvalue)
+  -- if $string_bytes(pvalue) = ($base64(text_value))
+def $ref_return_retire_write_method(S, pmethoddesc) = eps -- otherwise
 dec $ref_return_retire_clear_throw(pstate, pmethoddesc) : porigin?
 def $ref_return_retire_clear_throw(S, pmethoddesc) = $ref_return_retire_throw_method(S, pmethoddesc)
   -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (NStmtClassMethod (SEQUENCE eps) phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE ([statement_global, statement_echo, statement_throw])) metadata_method)
+def $ref_return_retire_clear_throw(S, pmethoddesc) = (porigin_write)
+  -- if $ref_return_retire_write_method(S, pmethoddesc) = (porigin_write)
 def $ref_return_retire_clear_throw(S, pmethoddesc) = eps -- otherwise
 dec $ref_return_retire_clear_methods(pstate, pmethoddesc*) : bool
 def $ref_return_retire_clear_methods(S, eps) = true
@@ -1648,6 +1662,18 @@ def $ref_return_retire_clear_class(S, porigin_class) = (pclassdesc)
   -- if ppropertydesc.SETVISIBILITY = eps
   -- if ~$property_hook_source_declared(S, ppropertydesc)
 def $ref_return_retire_clear_class(S, porigin_class) = eps -- otherwise
+dec $ref_return_retire_write_cell(pstate, pmethoddesc*, nat, pproptypesource) : bool
+def $ref_return_retire_write_cell(S, eps, n_cell, pproptypesource) = true
+def $ref_return_retire_write_cell(S, [pmethoddesc], n_cell, pproptypesource) = true
+  -- if $ref_return_retire_write_method(S, pmethoddesc) = eps
+def $ref_return_retire_write_cell(S, [pmethoddesc], n_cell, pproptypesource) = true
+  -- if $ref_return_retire_write_method(S, pmethoddesc) = (porigin_write)
+  -- if $origin_node(S.SOURCES, porigin_write) = (NExprAssign (NExprVariable (BYTES text_target) metadata_target) expression_value metadata_assign)
+  -- if S.GLOBALTABLE = (psymboltable)
+  -- if $lookup(psymboltable.ENV, $base64(text_target)) = (n_cell)
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if ppropref.SOURCES = pproptypesource :: pproptypesource_tail*
+def $ref_return_retire_write_cell(S, pmethoddesc*, n_cell, pproptypesource) = false -- otherwise
 dec $ref_return_retire_clear_value(pstate, pvalue) : bool
 def $ref_return_retire_clear_value(S, PNULL) = true
 def $ref_return_retire_clear_value(S, POBJECT n_holder) = true
@@ -1661,6 +1687,7 @@ def $ref_return_retire_clear_value(S, POBJECT n_holder) = true
   -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
   -- if (OBJECT_PROP_SOURCE n_holder ppropertyslot.NAME ppropertydesc.ORIGIN) <- ppropref.SOURCES
   -- if $ref_return_retire_property_cell(S, n_cell)
+  -- if $ref_return_retire_write_cell(S, pclassdesc.METHODS, n_cell, OBJECT_PROP_SOURCE n_holder ppropertyslot.NAME ppropertydesc.ORIGIN)
   -- if n_owners = $heap_owners($heap_graph(S), HCELL n_cell)
   -- if $(n_owners > 1)
   -- if $object_table_at(S.OBJECTTABLES, n_holder) = eps
@@ -1840,9 +1867,25 @@ def $ref_return_retire_pending(S, ptask_history*, (n)) = true
   -- if $ref_return_retire_throw_site(S, n_c) = (porigin_given)
   -- if $ref_return_retire_global_throw(S, porigin_given) = (n)
 def $ref_return_retire_pending(S, ptask_history*, n?) = false -- otherwise
+dec $ref_return_retire_holder_pending(pstate, porigin, porigin, nat?) : bool
+def $ref_return_retire_holder_pending(S, porigin_holder, porigin_given, n?) = true
+  -- if $ref_return_retire_global_throw(S, porigin_given) = n?
+def $ref_return_retire_holder_pending(S, porigin_holder, porigin_write, (n)) = true
+  -- if $ref_return_retire_clear_class(S, porigin_holder) = (pclassdesc)
+  -- if pclassdesc.METHODS = [pmethoddesc]
+  -- if $ref_return_retire_write_method(S, pmethoddesc) = (porigin_write)
+  -- if pclassdesc.PROPERTIES = [ppropertydesc]
+  -- if $code_expression_at_source(S, porigin_write, [PCFIELD 0]) = (z)
+  -- if $throwable_live(S, n)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if pthrowable.KIND = "TypeError" /\ pthrowable.ORIGIN = (porigin_write) /\ pthrowable.FILEORIGIN = (porigin_write)
+  -- if $string_bytes($throwable_field(S, n, "message")) = ($ptascii("Cannot assign string to reference held by property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type object"))
+  -- if $throwable_field(S, n, "line") = PINT z
+  -- if $throwable_field(S, n, "previous") = PNULL
+def $ref_return_retire_holder_pending(S, porigin_holder, porigin_given, n?) = false -- otherwise
 dec $ref_return_retire_history_pending(pstate, ptask*, porigin?, nat?) : bool
 def $ref_return_retire_history_pending(S, ptask_history*, eps, n?) = $ref_return_retire_pending(S, ptask_history*, n?)
-def $ref_return_retire_history_pending(S, ptask_history*, (porigin_holder), n?) = ($ref_return_retire_pending(S, ptask_history*, n?) \/ $ref_return_retire_global_throw(S, porigin_holder_given) = n?)
+def $ref_return_retire_history_pending(S, ptask_history*, (porigin_holder), n?) = ($ref_return_retire_pending(S, ptask_history*, n?) \/ $ref_return_retire_holder_pending(S, porigin_holder, porigin_holder_given, n?))
   -- if ptask_history* = (RETURN_REF_UNWIND poperand z false porigin_source) :: (FINALLY_REF_RETURN porigin_c porigin_old_c (KNOWN (POBJECT n_c)) z_c) :: ptask_tail*
   -- if $ref_return_retire_holder_site(S, n_c, porigin_holder) = (porigin_holder_given)
 def $ref_return_retire_history_pending(S, ptask_history*, porigin_holder?, n?) = false -- otherwise

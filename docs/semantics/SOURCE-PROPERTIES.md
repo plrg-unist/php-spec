@@ -803,6 +803,22 @@ two localization diagnostics retain zero credit. Wider receivers/names, RHSs,
 coercions, overflow, references, hooks and reentry remain partial. Declaration,
 inheritance, ordinary arithmetic, generic cleanup and GC rules are unchanged.
 
+Selected main-scope CV/literal inherited-private integer pre/post updates now
+compose the existing Get/Set handlers. UPDATE_PREP captures the selected object;
+a separate outer hold survives Get clearing or retargeting its CV, and each
+handler keeps its own inner hold. Immutable OLD/NEW integers select the postfix
+old value or prefix new value before outer receiver destruction. The read's DECL
+remains absent; the separate physical property origin authenticates Set.
+
+[Four originals and 821 focused premises (798 reached + 23 derived)](../../coverage/semantics/magic-property-incdec-review.json)
+cover normal post++/pre--, pre++ Set committing `6` then throwing with destination `42`,
+and post-- Get throwing before arithmetic/Set. Actual receives, stable release
+fronts, cached result/destructor effects, same-error catches, source/range refusals
+and budgets pass. One pre-application fixture binding failure retains zero credit.
+Raw PINT and in-range +/-1 are required; wider coercions, overflow, references,
+hooks, access variants and reentry remain partial. Generic numeric, handler,
+ownership and GC rules are unchanged; earlier 115/390 campaigns are not renewed.
+
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and
 promoted nonnullable types do not acquire ordinary implicit nullable widening.

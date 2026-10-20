@@ -179,6 +179,34 @@ ending. Four complete public zero/one comparisons follow two single forward chai
 there is no duplicate whole-program drive, repair patch or diagnostic. The four
 fresh reports pass first attempt under source 240/strict 45/author 420/peer 720.
 Runtime rules, history representation, root policies, storage and writer are unchanged.
+
+M129 adds an exact five-statement Holder body: ordinary global imports, literal
+echo, literal-string assignment through the imported CV, literal marker and a
+supplied throw. The Holder destructor stays public/nonstatic/nonabstract, with
+zero arguments, a by-value signature, no return annotation and no attributes.
+Existing class and property bounds remain unchanged.
+Initial admission authenticates the compiled string and emitted target against
+the Holder's own ALIAS cell, with its own object-property source first. This guarantees its TypeError before the marker or supplied throw;
+other valid source orders remain outside this new arm. Old method points bypass
+the new cell check. The retained class/queue payload remains unchanged.
+
+Pending is D's planned supplied object for held Holders, or the generated live
+canonical TypeError with exact assignment ORIGIN/FILEORIGIN, own static property
+message, compiled target line and Previous NULL. Static metadata survives Holder
+retirement; no retired slot/allocation is required. The unreachable Holder supplied
+operand is excluded on the guaranteed failing-write arm. Existing 138 rejection
+keeps the referent unchanged; existing 359 removes Left's type source and marks
+its slot PROP_UNSET before later freeing. Neither writer nor cleanup is repaired.
+
+Source 1 and 382/4 at 3fae/408 pass; 165/2 author covers initial helper-only target/
+order/private/held controls and capture/parent replay to the caller prefix.
+Independent 217/2 covers actual no-commit error, abrupt clear receipt, holder-free
+authority and live heap-equal wrong origin/fileorigin/message refusals, then one
+full native ending. Native 1/baseline 0 and separate 157/2 diagnosis retain c75c/408;
+the original peer message-control failure keeps zero credit; only its protected-key fixture
+correction repeats only the peer under strict45/state720. History representation,
+roots,156 and storage/writer transitions stay unchanged. Wider bodies/targets/
+values/types/source orders, reentry and GC remain partial.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same

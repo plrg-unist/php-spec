@@ -1,0 +1,89 @@
+{
+  "scope": "INI_SET rawNULL option plus exact one-entry key0 ALIAS ARRAY VALUE through one numeric/named/mixed two-item unpack pack, for fixed/selected strings and retained exact INTRINSICCLOSURE INI_SET receivers. INDEX1/packINDEX0/exact2 captured DIRECT entries/nonPIPE/effectiveweak; live allocated DEFINED untyped REFCELL holds a quiet primitive, property/coercion metadata absent, whole-state PARAMETERBACKINGS EPS and compiled pack fact EPS.",
+  "status": "integrated",
+  "reviewer": "/root/source_review_35",
+  "parent": "bb1cd389dc2b040e99e133c08d03c0ae798ca4b7",
+  "initial_revision": "733e53bccf90369e5292eda9940406253bca31cb",
+  "semantic_revision": "c27d6dd5877b07cb8399e058bf272e65e81c4ce7",
+  "tested_revision": "6df1a6240875a6378311538d2514ec5597ec6d79",
+  "modules": 408,
+  "semantic_files": {
+    "spec/semantics/172-file-context-intrinsics.watsup": "ebdca49cc0828666836445a34746fefc4a5b1d8a0054f27ab465deb9a6fb8e46"
+  },
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "primary": "Pinned basic_functions.c PHP_FUNCTION(ini_set) parses the option string first; Z_PARAM_ZVAL receives new_value, then the Z_TYPE>IS_STRING body guard rejects ARRAY parameter2 without traversing elements. Zend/zend_vm_def.h ZEND_SEND_UNPACK uses ZVAL_COPY_DEREF for by-value parameters: the outer reference is dereferenced while a copied inner array keeps embedded reference cells. Returned NULL Deprecated handling converts API option to empty; explicit __invoke retains raw normalized wrapper sends and weak reception; supplied throw cancels rejection.",
+  "semantics": "Exactly12 additive172 lines form one disjoint pack ALIAS ingress. Existing invocation/source replay authenticates one unpack argument, normalized destinations and owner/method mode. Exact captured two-DIRECT snapshot and normalized NULL/PARRAY bind the earlier inner; compiled pack fact must be unknown (EPS), with no invented pool receipt or current-CV history reconstruction. Existing rejected_alias_array and all reference/type/globalbacking guards remain exact. Completed PACKS is historical/nonowning; SENT roots the inner array and optional receiver, never a reread of current outer contents. Snapshot preserves container shape and pointer, not HCELL contents. Existing finish/trace/root/discard/GC/schema/array predicates and historical tests stay unchanged.",
+  "accepted": [
+    "Actual source4 model JSON is accepted/program/normal; stdout/PHPstderr/PHPexit0 exactly match actual native/report bytes at6df1a6240/runtimec27d6dd58/408, workers quiet. Numeric fixed default then retained explicit reversed true handling gives E/W/N/L/L/A after post-TypeError/getTrace cell write: APIempty/wrapperrawNULL, both argument arrays see the live leaf with one-entry saved shape versus current43, result99/warn1/recovery14-to11. No physical exported-array identity is claimed.",
+    "Selected string inline reversed builder captures the old inner before O shared-cell write/currentappend31/livecallee-value replacement; the outer allocation retires. False handler writes the same cell/appends37/precision8 then default Deprecated19 and parameter2 TypeError preserve99/oldshape/current31+37 and setter8-to11. Strict retained ordinary P preserves old5/9 pack against live[0,0]/value0/current31, completes effects then rawNULL parameter1/handler0 at precision14. SAME keep explicit mixed reception is weak, writes weak-array84/precision8, reaches parameter2/handler1 and recovers8-to11.",
+    "Author1175=422+323+430 plus independent peer544 totals1719 strict-SL premises. Actual peer cursors0/1/2 prove outer-only then inner+outer roots and completed inner-only roots; author proves owned partial receiver-only then completed receiver+inner and actual inline-builder outer retirement. Transitive ARRAY-to-HCELL is retained, HCELL is not directly task-rooted or GC-bufferable. Ordinary TypeErrors have one API frame, explicit TypeErrors API/wrapper two frames; both exported argument arrays reach the same live cell.",
+    "Peer native has no trace traversal: I99/effect1/warn1/after-exception84/current37/livepack0/old-no1 C/sibling3359/stringsetter10-to12. Actual state proves saved original outer versus handler current outer COW, old inner reference after the post-Exception allocation cell write, handler/API two-frame rawNULL/oldARRAY-to-HCELL edge, one existing array buffer and whole idempotent restored/discard equality. No frozen referent or receiver trace edge is invented.",
+    "Nine reports PASS first attempt/input+HEAD stable; four SL raws exactly true LF/quiet/exit0. No timeout/interruption/group survivor, execution failure, fixture/runtime/harness correction or retry. Only default Deprecated13 and selected Deprecated19; strict/peer PHPstderr quiet. Initial native4/baseline0 and affected checks allCPU2; no native/base or historical replay."
+  ],
+  "baseline_zero_credit": "At source-only733e53bcc/unchangedbb1cd389d/408, captured-unpack-alias-array-before-option-cell-and-live-value-effects is accepted/program Unsupported: error-handler ingress requires a producer continuation after B|O|, CLI1/nullPHPexit/quietworker17.848s, zero agreement. Native author3+peer1 precede semantic/protocol edits.",
+  "compatibility": "Old83/81/82 fake PACKS controls retain incompatible two-written-argument source shape. Earlier alias-to-array-CV negatives hold an owning/nonquiet referent and still fail the exact predicate. DIRECT-array and ALIAS heads remain disjoint; coherent DIRECT31 is admitted by older onepack DIRECT guards. Captured DIRECT outer entries are after dereference and do not certify original outer reference freedom. No generic array/reference widening, DEFINE/value classifier, clone, NULL/float-key callback or paused path. No engine bug or intentional divergence identified.",
+  "execution": "Initial and affected CPU2. LC_ALL=C TZ=UTC INT+kill5 AS3221225472, serial fail-first/full reap. Native15/CLI45-host60/freshSL90 unchanged. Models31.131-to38.805s; SL45.424-to69.792s. CPU2 fully released before final raw acceptance.",
+  "command_prefix": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s <cap>s prlimit --as=3221225472 -- taskset -c <cpu> python3 <step>",
+  "commands": [
+    {
+      "revision": "733e53bccf90369e5292eda9940406253bca31cb",
+      "cpu": 2,
+      "caps": [
+        90,
+        90,
+        90
+      ],
+      "steps": [
+        "tests/semantics/ini_set_unpack_null_alias_array_value_sources.py --phase native --output .tools/ini-set-unpack-null-alias-array-value-native-84",
+        "tests/semantics/ini_set_unpack_null_alias_array_value_review_sources.py --phase native --output .tools/ini-set-unpack-null-alias-array-value-review-84",
+        "tests/semantics/ini_set_unpack_null_alias_array_value_sources.py --phase baseline --case captured-unpack-alias-array-before-option-cell-and-live-value-effects --output .tools/ini-set-unpack-null-alias-array-value-native-84"
+      ]
+    },
+    {
+      "revision": "6df1a6240875a6378311538d2514ec5597ec6d79",
+      "cpu": 2,
+      "caps": [
+        240,
+        90,
+        90,
+        360,
+        90,
+        120
+      ],
+      "steps": [
+        "tests/semantics/ini_set_unpack_null_alias_array_value_sources.py --phase model --output .tools/ini-set-unpack-null-alias-array-value-native-84",
+        "tests/semantics/ini_set_unpack_null_alias_array_value_review_sources.py --phase model --output .tools/ini-set-unpack-null-alias-array-value-review-84",
+        "tests/semantics/ini_set_unpack_null_alias_array_value_protocol.py --phase prepare --sources .tools/ini-set-unpack-null-alias-array-value-native-84 --output .tools/ini-set-unpack-null-alias-array-value-public-84",
+        "tests/semantics/ini_set_unpack_null_alias_array_value_protocol.py --phase check --sources .tools/ini-set-unpack-null-alias-array-value-native-84 --output .tools/ini-set-unpack-null-alias-array-value-public-84",
+        "tests/semantics/ini_set_unpack_null_alias_array_value_review_protocol.py --phase prepare --sources .tools/ini-set-unpack-null-alias-array-value-review-84 --output .tools/ini-set-unpack-null-alias-array-value-review-public-84",
+        "tests/semantics/ini_set_unpack_null_alias_array_value_review_protocol.py --phase check --sources .tools/ini-set-unpack-null-alias-array-value-review-84 --output .tools/ini-set-unpack-null-alias-array-value-review-public-84"
+      ]
+    }
+  ],
+  "raw_root": ".tools/ini-set-unpack-null-alias-array-value-evidence-84",
+  "report_sha256": {
+    "author/public/check-report.json": "dcc53bee5cb514647f02ad6c096429f4e9f07c285c131d4f18351abfa6984579",
+    "author/public/prepare-report.json": "cbadcb403bc70f0956ff7caa46c82749653069947d8989b959baaf359ecdaac3",
+    "author/review/model-report.json": "f2ba02b9e95fbc4fd7e2e4edd97ac19bedf9e306a275234c7c63ecf642773b5c",
+    "author/review/native-report.json": "befb85eb33e2ade2593714eb9178a5cf5addd69600154952bbb22e66f849a0cc",
+    "author/review-public/check-report.json": "8b0db3906f2b499ef83ea92efb71dba82497c5341d76c4b873a9d4ba1f91c5ce",
+    "author/review-public/prepare-report.json": "f6c73bb571b0311627727c465a1428ddf9e4e3d93ecda9def9b6fd3914c73cef",
+    "author/sources/baseline-report.json": "023283749e3252cf4a0b27dfbbda8351dbb40e7de8302dd9502be2185f04ab67",
+    "author/sources/model-report.json": "b3178473b2d7deee9bea6694933de3337d186837cdd4f19a62d8f4d74e1d0809",
+    "author/sources/native-report.json": "548d214f0ac15ce701ea8e5d6de81c5eea1aaffbb3849e005c93e2fa05a8c582"
+  },
+  "recovery": "After independent ACCEPT/RAW STOP/focused users[], four roots moved once to author/{sources,review,public,review-public}; nine concise reports hashed once with structured author/report-manifest.json. Restore original paths/revisions for exact source/cwd identity; no raw/hash renewal.",
+  "remaining": "Additional arguments/packs, PIPE, additional entries/keys in the inner array, typed/property/parameter-backed references, nonempty global PARAMETERBACKINGS, owning/nonquiet referents and sole-owner lifetimes remain partial. Retained purely positional DIRECT array calls without unpacking remain partial. This is not complete core, equivalence or BOLA freedom; paused boundaries untouched.",
+  "composition": {
+    "parent": "d7675c7463c8d1578b1386a1601b84c4db84c57c",
+    "private_publication": "50fa2c8b391f65483f42f548f292ae00fc118fc2",
+    "ordered_modules": 408,
+    "seams": "Eight incoming paths207/270/289/30/400/404/413/58 remain parent-exact.207 live-CV/missing loose-object comparison has no producer (defined strict identities/quiet isset).270 typed-property by-reference return holder/destructor write/pending paths are absent; primitive element references are not reference-return holders.289 delegated Generator SEND states are absent.30/404/58 numeric object-cast Warning requires CAST_RESULT on STD CV; there are no casts or STD producers here.400 owned DEFINE rawBOOLtrue is absent: scalar sibling3359 uses fixed two-slot omitted-flag DEFINE.413 REFERENCE NULL-key path requires explicit VARIABLE key evaluating NULL; omitted key0, quiet appends and outer integer/string keys cannot select it.172/ref helpers/301/368/schema/ordered408 are base-exact apart from own12-line admission; no state field lift or joined actor needed.",
+    "pointwise": "172/four tests private-exact, every other runtime/schema/ordered408/new418 byte parent-exact. README/family narrow private edits and exact environment own2helpers/2sources/1ledger+suffix retained beside incoming content. Own checkpoint/composition precede incoming PROGRESS tail, preserved except exact reviewed81/83 pack remaining qualifiers.",
+    "evidence": "Source4/state1719 retain6df1a6240/runtimec27d6dd58/408; initial733e53 native4/base0 and nine first-pass reports unchanged. No semantic rerun, accepted replay, joined execution or renewed credit."
+  }
+}

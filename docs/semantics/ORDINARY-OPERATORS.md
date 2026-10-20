@@ -361,6 +361,20 @@ public snapshot/diagnostic rejection and budget resumption in the
 [BITNOT ledger](../../coverage/semantics/bitnot-warning-review.json).
 Other operand producers, callbacks and lifecycle forms remain required.
 
+Explicit `(int)`/`(float)` casts of an empty `stdClass` in a plain CV now stage
+one named-handler Warning. The VM borrows that CV and formats the class message
+before calling the handler; no conversion owner keeps the object alive. Replacing
+or unsetting its sole source makes the existing WeakReference observer return null
+inside the callback. Float conversion then delivers strict `1.0` without rereading
+the missing source. An integer-cast supplied Exception from line 20 instead preserves
+identity, null Previous, callback write `99` and outer `100`, canceling delivery.
+Two originals and 134+138 focused premises cover fresh versus historical validation,
+real callbacks, object retirement/nonowning weak history, EPS task roots, raw versus
+driven effects, EOF and budgets in the
+[object numeric-cast ledger](../../coverage/semantics/object-numeric-cast-warning-review.json).
+WeakReference, GC, numeric and unwind bodies stay unchanged. Normal int completion,
+throwing float conversion, other classes/producers and wider lifetimes remain partial.
+
 Explicit `(string)` casts now stage an array warning for a defined non-reference
 CV holding a nonempty mutable flat array of direct, defined nonowning scalars.
 Source and compiled operand-line authority accompany the CV identity. Fresh
