@@ -181,7 +181,11 @@ def $pipe_name(S, preqbytes_original, preqbytes_lookup, eps, pvalue, porigin, z_
 dec $config_nodes(pconfigcall) : pnode*
 dec $closure_current_config_tag(pconfigcall) : bool
 ;; PACKS are historical capture certificates; only real argument/receiver owners root values.
+;; DEFINE disposes rejected copies first, then call arguments, then the Closure callee.
+def $config_nodes(pconfigcall) = $named_slots_roots(pconfigcall.SENT) ++ $exit_owner_nodes(pconfigcall.OWNER)
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE
 def $config_nodes(pconfigcall) = $exit_owner_nodes(pconfigcall.OWNER) ++ $named_slots_roots(pconfigcall.SENT)
+  -- if pconfigcall.KIND =/= INTRINSIC_DEFINE
   -- if (~$closure_static_api_kind(pconfigcall.KIND) \/ $closure_current_config_tag(pconfigcall)) /\ ~$weakref_static(pconfigcall.KIND) /\ ~$fiber_capture_config_tag(pconfigcall)
 def $config_nodes(pconfigcall) = $named_slots_roots(pconfigcall.SENT)
   -- if ($closure_static_api_kind(pconfigcall.KIND) /\ ~$closure_current_config_tag(pconfigcall)) \/ $weakref_static(pconfigcall.KIND) \/ $fiber_capture_config_tag(pconfigcall)
@@ -697,7 +701,6 @@ def $config_ini_null_valid(S, pconfigcall) = true
 def $config_ini_null_valid(S, pconfigcall) = true
   -- if $config_invoke_valid(S, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_INI_SET
-  -- if pconfigcall.OWNER = eps
   -- if pconfigcall.PACKS = eps
   -- if pconfigcall.INDEX = 2
   -- if ~pconfigcall.NAMED

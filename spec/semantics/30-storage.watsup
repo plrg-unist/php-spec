@@ -409,6 +409,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | SHIFT_ASSIGN_BOTH_RIGHT pintegeroperation nat nat nat int nat int nat
   | BIT_ASSIGN_WARNING pintegeroperation nat nat nat int nat
   | XOR_ASSIGN_SELECTED_WARNING pintegeroperation nat int nat
+  | XOR_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation nat int pintegerconversion nat
   | BIT_ASSIGN_RIGHT_WARNING pintegeroperation nat nat int nat int nat
   | BIT_ASSIGN_BOTH_LEFT pintegeroperation nat nat nat int nat
   | BIT_ASSIGN_BOTH_RIGHT pintegeroperation nat nat nat int nat int nat
@@ -419,6 +420,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | UPDATE_WARNING_EXIT perrorcall int
   | UPDATE_WARNING_EXIT_HISTORY perrorcall int ptask*
   | REF_RETURN_RETIRE_HISTORY ptask*
+  | REF_RETURN_RETIRE_HOLDER_HISTORY ptask* porigin
   | UPDATE_WARNING_CALLBACK_EXIT pdestructioncleanup int nat
   | UPDATE_WARNING_CALLBACK_HISTORY pdestructioncleanup int ptask*
   | UPDATE_WARNING_CALLBACK_PREVIOUS pdestructionoperation int nat

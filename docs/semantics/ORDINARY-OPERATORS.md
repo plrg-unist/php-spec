@@ -702,6 +702,23 @@ covering actual atomic commit/error, original bindings, cells/owners and budgets
 Wider initial forms, conversions, unsafe targets and lifecycle remain partial;
 pure projections establish refusals only, and older threshold cuts are not renewed.
 
+Selected-reference `^=` also protects a leading fractional RHS string before its
+Warning. After LEFT Deprecated, old `5.5tail` is selected despite current RHS `7`.
+A supplied Warning throw returns the same Exception at line 20 and skips the
+later precision diagnostic and compound store, leaving callback write `88` and outer
+`100`. Normal return instead retains the original quoted `"5.5tail"` message and
+long `5` after the old RHS is rewritten to `7` and loses its last owner. The third
+callback writes old target `66`; cached `12 XOR 5` then stores integer `9` through
+its surviving alias while current LEFT `77` remains separate. Two originals and
+200+250 focused premises cover real callbacks, fresh selection versus returned
+history, raw TODO-only capture/store, cancellation, owners, EOF and budget cuts
+in the [protected XOR text ledger](../../coverage/semantics/xorassign-selected-rhs-warning-review.json).
+Initial untyped scalar references, fractional LEFT/quiet PINT initial RHS,
+exactly leading Warning plus string-precision Deprecated and a safe surviving
+target bound the slice. Single-notice text, other conversion forms/producers,
+typed or owning cells and wider lifecycles remain partial. Existing generic
+unwind, numeric conversion and diagnostic-formatting bodies stay unchanged.
+
 Selected-reference `^=` now dereferences both operands and chooses numeric
 specialization before converting fractional LEFT. Captured `12` survives the
 Deprecated callback; selected old RHS `5`, rather than rebound current name `7`,

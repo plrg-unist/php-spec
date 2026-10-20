@@ -1567,11 +1567,11 @@ def $ref_return_retire_throw_method(S, pmethoddesc) = (porigin_given)
   -- if $ref_return_retire_clear_global(S, porigin_clear, porigin_given)
   -- if $ref_return_retire_global_throw(S, porigin_given) =/= eps
 def $ref_return_retire_throw_method(S, pmethoddesc) = eps -- otherwise
-dec $ref_return_retire_throw_site(pstate, nat) : porigin?
-def $ref_return_retire_throw_site(S, n) = (porigin_new)
+dec $ref_return_retire_throwing_method(pstate, nat) : pmethoddesc?
+def $ref_return_retire_throwing_method(S, n) = (pmethoddesc)
   -- if $ref_return_retire_method(S, n) = (pmethoddesc)
-  -- if $ref_return_retire_throw_method(S, pmethoddesc) = (porigin_new)
-def $ref_return_retire_throw_site(S, n) = (porigin_new)
+  -- if $ref_return_retire_throw_method(S, pmethoddesc) =/= eps
+def $ref_return_retire_throwing_method(S, n) = (pmethoddesc_child)
   -- if $ref_return_retire_method(S, n) = (pmethoddesc)
   -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (NStmtClassMethod (SEQUENCE eps) phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE ([statement_echo, NStmtExpression (NExprAssign (NExprVariable (BYTES text_local) metadata_local) (NExprNew (NName (BYTES text_class) metadata_name) (SEQUENCE eps) metadata_new) metadata_assign) metadata_statement, NStmtUnset (SEQUENCE ([NExprVariable (BYTES text_local) metadata_unset_local])) metadata_unset])) metadata_method)
   -- if $ref_return_retire_echo(statement_echo)
@@ -1582,7 +1582,11 @@ def $ref_return_retire_throw_site(S, n) = (porigin_new)
   -- if $class_at(S.CLASSES, porigin_class_child) = (pclassdesc_child)
   -- if ~pclassdesc_child.ABSTRACT
   -- if $ref_return_retire_class_method(S, porigin_class_child) = (pmethoddesc_child)
-  -- if $ref_return_retire_throw_method(S, pmethoddesc_child) = (porigin_new)
+  -- if $ref_return_retire_throw_method(S, pmethoddesc_child) =/= eps
+def $ref_return_retire_throwing_method(S, n) = eps -- otherwise
+dec $ref_return_retire_throw_site(pstate, nat) : porigin?
+def $ref_return_retire_throw_site(S, n) = $ref_return_retire_throw_method(S, pmethoddesc)
+  -- if $ref_return_retire_throwing_method(S, n) = (pmethoddesc)
 def $ref_return_retire_throw_site(S, n) = eps -- otherwise
 dec $ref_return_retire_call(pstate, prefreturncursor) : bool
 def $ref_return_retire_call(S, prefreturncursor) = true
@@ -1631,11 +1635,8 @@ def $ref_return_retire_clear_methods(S, [pmethoddesc]) = true
   -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = eps
   -- if $ref_return_retire_clear_throw(S, pmethoddesc) =/= eps
 def $ref_return_retire_clear_methods(S, pmethoddesc*) = false -- otherwise
-dec $ref_return_retire_clear_value(pstate, pvalue) : bool
-def $ref_return_retire_clear_value(S, PNULL) = true
-def $ref_return_retire_clear_value(S, POBJECT n_holder) = true
-  -- if $(n_holder < |S.OBJECTS|) /\ (HOBJECT n_holder) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n_holder] = INSTANCE porigin_class
+dec $ref_return_retire_clear_class(pstate, porigin) : pclassdesc?
+def $ref_return_retire_clear_class(S, porigin_class) = (pclassdesc)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ ~pclassdesc.ABSTRACT
   -- if pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = eps
@@ -1643,6 +1644,17 @@ def $ref_return_retire_clear_value(S, POBJECT n_holder) = true
   -- if $ref_return_retire_clear_methods(S, pclassdesc.METHODS)
   -- if pclassdesc.PROPERTIES = [ppropertydesc]
   -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "object"]))]
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY
+  -- if ppropertydesc.SETVISIBILITY = eps
+  -- if ~$property_hook_source_declared(S, ppropertydesc)
+def $ref_return_retire_clear_class(S, porigin_class) = eps -- otherwise
+dec $ref_return_retire_clear_value(pstate, pvalue) : bool
+def $ref_return_retire_clear_value(S, PNULL) = true
+def $ref_return_retire_clear_value(S, POBJECT n_holder) = true
+  -- if $(n_holder < |S.OBJECTS|) /\ (HOBJECT n_holder) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_holder] = INSTANCE porigin_class
+  -- if $ref_return_retire_clear_class(S, porigin_class) = (pclassdesc)
+  -- if pclassdesc.PROPERTIES = [ppropertydesc]
   -- if $objectprops_at(S.OBJECTPROPS, n_holder) = ([ppropertyslot])
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
   -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN)
@@ -1676,8 +1688,39 @@ def $ref_return_retire_clear_global(S, PORIGIN n pcpath, porigin_given) = true
   -- if $(n_holder_cell < |S.STORE|)
   -- if S.STORE[n_holder_cell] = DEFINED pvalue
   -- if $ref_return_retire_clear_value(S, pvalue)
-  -- if $ref_return_retire_clear_pending(S, pvalue, porigin_given)
 def $ref_return_retire_clear_global(S, porigin, porigin_given) = false -- otherwise
+;; The selected method must be a previously authenticated D4/D5 NULL-write body.
+dec $ref_return_retire_clear_site(pstate, nat) : (pvalue, porigin)?
+def $ref_return_retire_clear_site(S, n_c) = ((pvalue, porigin_given))
+  -- if $ref_return_retire_throwing_method(S, n_c) = (pmethoddesc)
+  -- if $ref_return_retire_throw_method(S, pmethoddesc) = (porigin_given)
+  -- if $origin_child((pmethoddesc.FUNCTION.ORIGIN), [PCFIELD 6, PCINDEX 2, PCFIELD 0]) = (porigin_assign)
+  -- if $origin_node(S.SOURCES, porigin_assign) = (NExprAssign (NExprVariable (BYTES text_holder) metadata_holder) expression_null metadata_assign)
+  -- if S.GLOBALTABLE = (psymboltable)
+  -- if $lookup(psymboltable.ENV, $base64(text_holder)) = (n_holder_cell)
+  -- if $(n_holder_cell < |S.STORE|)
+  -- if S.STORE[n_holder_cell] = DEFINED pvalue
+def $ref_return_retire_clear_site(S, n_c) = eps -- otherwise
+dec $ref_return_retire_holder_capture(pstate, nat) : porigin?
+def $ref_return_retire_holder_capture(S, n_c) = (porigin_class)
+  -- if $ref_return_retire_clear_site(S, n_c) = ((POBJECT n_holder, porigin_given))
+  -- if S.OBJECTS[n_holder] = INSTANCE porigin_class
+  -- if ~$ref_return_retire_clear_pending(S, POBJECT n_holder, porigin_given)
+def $ref_return_retire_holder_capture(S, n_c) = eps -- otherwise
+dec $ref_return_retire_holder_value(pstate, pvalue, porigin) : bool
+def $ref_return_retire_holder_value(S, PNULL, porigin_class) = true
+def $ref_return_retire_holder_value(S, POBJECT n_holder, porigin_class) = true
+  -- if $(n_holder < |S.OBJECTS|)
+  -- if S.OBJECTS[n_holder] = INSTANCE porigin_class
+def $ref_return_retire_holder_value(S, pvalue, porigin_class) = false -- otherwise
+dec $ref_return_retire_holder_site(pstate, nat, porigin) : porigin?
+def $ref_return_retire_holder_site(S, n_c, porigin_class) = (porigin_holder_given)
+  -- if $ref_return_retire_clear_site(S, n_c) = ((pvalue, porigin_given))
+  -- if $ref_return_retire_holder_value(S, pvalue, porigin_class)
+  -- if $ref_return_retire_clear_class(S, porigin_class) = (pclassdesc)
+  -- if pclassdesc.METHODS = [pmethoddesc]
+  -- if $ref_return_retire_clear_throw(S, pmethoddesc) = (porigin_holder_given)
+def $ref_return_retire_holder_site(S, n_c, porigin_class) = eps -- otherwise
 dec $ref_return_retire_global_operand(pstate, prefreturncursor, nat) : bool
 def $ref_return_retire_global_operand(S, prefreturncursor, n_cell) = true
   -- if prefreturncursor.SOURCE = PORIGIN n pcpath
@@ -1742,9 +1785,24 @@ def $eager_operation_source(S, RETURN_REF_UNWIND (REFERENCE n_y) z false porigin
   -- if $ref_return_retire_site(S, S.TODO) = (prefreturncursor_c)
   -- if (HOBJECT n_c) <- S.ALLOCATIONS
   -- if $heap_owners($heap_graph(S), HOBJECT n_c) = 1
-;; This tag is never an executable continuation and retains no retired value.
+  -- if $ref_return_retire_holder_capture(S, n_c) = eps
+def $eager_operation_source(S, RETURN_REF_UNWIND (REFERENCE n_y) z false porigin_source) = REF_RETURN_RETIRE_HOLDER_HISTORY S.TODO porigin_holder
+  -- if S.TODO = (RETURN_REF_UNWIND (REFERENCE n_y) z false porigin_source) :: (FINALLY_REF_RETURN porigin_c porigin_old_c (KNOWN (POBJECT n_c)) z_c) :: ptask_tail*
+  -- if $ref_return_retire_site(S, S.TODO) = (prefreturncursor_c)
+  -- if (HOBJECT n_c) <- S.ALLOCATIONS
+  -- if $heap_owners($heap_graph(S), HOBJECT n_c) = 1
+  -- if $ref_return_retire_holder_capture(S, n_c) = (porigin_holder)
+;; These tags are never executable continuations and retain no retired value.
 def $task_nodes(REF_RETURN_RETIRE_HISTORY ptask*) = eps
 def $call_task_valid(S, REF_RETURN_RETIRE_HISTORY ptask*) = false
+def $task_nodes(REF_RETURN_RETIRE_HOLDER_HISTORY ptask* porigin_holder) = eps
+def $call_task_valid(S, REF_RETURN_RETIRE_HOLDER_HISTORY ptask* porigin_holder) = false
+dec $ref_return_retire_history(ptask) : (ptask*, porigin?)?
+def $ref_return_retire_history(REF_RETURN_RETIRE_HISTORY ptask*) = ((ptask*, porigin_saved?))
+  -- if porigin_saved? = eps
+def $ref_return_retire_history(REF_RETURN_RETIRE_HOLDER_HISTORY ptask* porigin_holder) = ((ptask*, porigin_saved?))
+  -- if porigin_saved? = (porigin_holder)
+def $ref_return_retire_history(ptask) = eps -- otherwise
 
 dec $ref_return_retire_operation_tail(ptask*, pdestructionoperation) : ptask*?
 def $ref_return_retire_operation_tail((DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*, pdestructionoperation) = (ptask_tail*)
@@ -1782,21 +1840,27 @@ def $ref_return_retire_pending(S, ptask_history*, (n)) = true
   -- if $ref_return_retire_throw_site(S, n_c) = (porigin_given)
   -- if $ref_return_retire_global_throw(S, porigin_given) = (n)
 def $ref_return_retire_pending(S, ptask_history*, n?) = false -- otherwise
+dec $ref_return_retire_history_pending(pstate, ptask*, porigin?, nat?) : bool
+def $ref_return_retire_history_pending(S, ptask_history*, eps, n?) = $ref_return_retire_pending(S, ptask_history*, n?)
+def $ref_return_retire_history_pending(S, ptask_history*, (porigin_holder), n?) = ($ref_return_retire_pending(S, ptask_history*, n?) \/ $ref_return_retire_global_throw(S, porigin_holder_given) = n?)
+  -- if ptask_history* = (RETURN_REF_UNWIND poperand z false porigin_source) :: (FINALLY_REF_RETURN porigin_c porigin_old_c (KNOWN (POBJECT n_c)) z_c) :: ptask_tail*
+  -- if $ref_return_retire_holder_site(S, n_c, porigin_holder) = (porigin_holder_given)
+def $ref_return_retire_history_pending(S, ptask_history*, porigin_holder?, n?) = false -- otherwise
 dec $ref_return_retire_operation_valid(pdestructionoperation, pstate?) : bool
 def $ref_return_retire_operation_valid(pdestructionoperation, (S)) = true
-  -- if pdestructionoperation.SOURCE = REF_RETURN_RETIRE_HISTORY ptask_history*
+  -- if $ref_return_retire_history(pdestructionoperation.SOURCE) = ((ptask_history*, porigin_holder?))
   -- if $ref_return_retire_site(S, ptask_history*) = (prefreturncursor_c)
   -- if $ref_return_retire_operation_tail(S.TODO, pdestructionoperation) = (ptask_queued*)
   -- if ptask_queued* = $ref_return_retire_queue(ptask_history*)
   -- if pdestructionoperation.ORIGIN = prefreturncursor_c.OUTER
   -- if pdestructionoperation.COMPLETION = NORMAL
-  -- if $ref_return_retire_pending(S, ptask_history*, pdestructionoperation.PENDING)
+  -- if $ref_return_retire_history_pending(S, ptask_history*, porigin_holder?, pdestructionoperation.PENDING)
 def $ref_return_retire_operation_valid(pdestructionoperation, S?) = false -- otherwise
 def $eager_operation_source_guard(S, pdestructionoperation) = $ref_return_retire_operation_valid(pdestructionoperation, $ref_return_retire_operation_scope(S, pdestructionoperation))
-  -- if pdestructionoperation.SOURCE = REF_RETURN_RETIRE_HISTORY ptask_history*
+  -- if $ref_return_retire_history(pdestructionoperation.SOURCE) = ((ptask_history*, porigin_holder?))
 
 def $destructor_pending_finish(S, pdestructionoperation, n_exception, ptask_queued*) = S[.TODO = (THROW_SEARCH n_exception) :: ($ref_replay_tasks(porigin_source, z, [REPLAY_TRY porigin_local]) ++ [FINALLY_REF_RETURN prefreturncursor_c.OWNER prefreturncursor_c.SOURCE (KNOWN PNULL) prefreturncursor_c.LINE, FINALLY_PHASE prefreturncursor_c.OWNER 3, ORIGIN_RETURN prefreturncursor_c.OUTER] ++ ptask_outer* ++ [REF_RETURN_NOTICE prefreturncursor_c.SOURCE prefreturncursor_c.LINE REF_NOTICE_VALUE])][.ORIGIN = (porigin_local)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
-  -- if pdestructionoperation.SOURCE = REF_RETURN_RETIRE_HISTORY ptask_history*
+  -- if $ref_return_retire_history(pdestructionoperation.SOURCE) = ((ptask_history*, porigin_holder?))
   -- if $ref_return_retire_site(S, ptask_history*) = (prefreturncursor_c)
   -- if ptask_history* = (RETURN_REF_UNWIND (REFERENCE n_y) z false porigin_source) :: ptask_history_tail*
   -- if ptask_queued* = (RETURN_REF_UNWIND (REFERENCE n_y) z true porigin_source) :: ptask_outer*
@@ -1804,5 +1868,5 @@ def $destructor_pending_finish(S, pdestructionoperation, n_exception, ptask_queu
   -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
   -- if pdestructionoperation.ORIGIN = prefreturncursor_c.OUTER
   -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = (n_exception)
-  -- if $ref_return_retire_pending(S, ptask_history*, (n_exception))
+  -- if $ref_return_retire_history_pending(S, ptask_history*, porigin_holder?, (n_exception))
   -- if $ref_replay_contexts(S, porigin_source) = [REPLAY_TRY porigin_local]

@@ -572,23 +572,22 @@ dec $array_float_array_key_reference(pstate, nat) : nat?
 def $array_float_array_key_reference(S, n_cell) = (n_array)
   -- if $call_reference_operand_valid(S, REFERENCE n_cell)
   -- if ~(n_cell <- S.LITERALREFDEBTS)
-  -- if $propref_at(S.PROPREFS, n_cell) = eps
-  -- if $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
-  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps
   -- if S.STORE[n_cell] = DEFINED (PARRAY n_array)
   -- if H_live = $heap_prune($heap_graph(S)[.DEBTS = eps])
   -- if (HCELL n_cell) <- H_live.NODES
-  -- if $literal_reference_flat_array(S, n_array, H_live.NODES)
+  -- if $literal_reference_cell(S, n_cell, H_live.NODES)
 def $array_float_array_key_reference(S, n_cell) = eps -- otherwise
 
 ;; Primitive slots have no acquired table owner; ARRAY slots reuse the same
 ;; validated borrowed-cell domain, including positive table debt at the inverse.
 def $array_float_key_borrowed_value(S, n_cell) = (pvalue)
-  -- if $literal_reference_plain_cell(S, n_cell)
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
   -- if ~(n_cell <- S.LITERALREFDEBTS)
   -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $array_float_key_scalar(S, pvalue)
   -- if H_live = $heap_prune($heap_graph(S)[.DEBTS = eps])
   -- if (HCELL n_cell) <- H_live.NODES
+  -- if $literal_reference_cell(S, n_cell, H_live.NODES)
 def $array_float_key_borrowed_value(S, n_cell) = (PARRAY n_array)
   -- if $array_float_array_key_reference(S, n_cell) = (n_array)
 def $array_float_key_borrowed_value(S, n_cell) = eps -- otherwise
