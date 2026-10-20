@@ -4324,7 +4324,10 @@ and releases D, whose TypeError reaches that local catch. A fresh comparison and
 NULL recovery. Literal builtin Exception now follows that finite path too:
 source1 and 385/4 checks at `1c87142fd` bind its pending kind to the compiled
 constructor, reject a valid wrong-kind Throwable and preserve Notice17/detached
-NULL recovery. Other throw forms, deeper reentry, GC and broader consumers remain open.
+NULL recovery. A stable global supplied Exception now also retains its outside
+identity/message through that nested path, local catch and detached NULL result:
+source1 and 428/4 checks at `3018f824d`. Other bodies, intervening writes, deeper
+reentry, GC and broader consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

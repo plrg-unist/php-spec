@@ -104,7 +104,16 @@ pending KIND correlation with that constructor. Source1 and385/4 at `1c87142fd`
 include a valid wrong-kind property layout with unchanged heap/origins/message,
 deep saved-owner/LINE and constructor-origin refusals, exact parent/NULL budgets
 and the same caught Exception/Notice17/detached ending. History/transition/root
-rules are unchanged; other constructors/throw forms and deeper reentry remain open.
+rules are unchanged. M118 adds exact global/echo/throw-same-CV bodies using the
+emitted ordinary CV and its real global cell. Pending must equal that live object;
+constructor kind/origin are preserved, with no fabricated D-new provenance.
+Source1 and428/4 at `3018f824d` prove the supplied outside Exception survives into
+local/caller identity and message observers, cleared NULL/Notice17 and detached
+aliases. Valid null-cell/unequal-live-ID controls, original-false/source receipt and
+saved-owner refusals accompany exact parent/NULL public states and whole/split
+ending. The sole declaration moves314→270 for the earlier use; its definition,
+history/finish/root rules stay unchanged. Other bodies, writes/callbacks and
+deeper reentry remain open.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same

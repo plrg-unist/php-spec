@@ -766,36 +766,42 @@ joined actor, accepted replay or renewed execution credit.
 The earlier mixed CV/selected-reference arithmetic route retains source9/state858
 in its [review ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 
-M117 extends finite destructor return-history replay to a literal builtin
-Exception. The direct throw classifier admits exactly canonical TypeError or
-Exception, requires its compiled NEW name to match, and binds the live pending
-Throwable kind to that constructor. All finite class/body, source/origin/message,
-saved-scope and remaining-owner guards stay intact; no history, replay, roots,
-release/storage, GC or state/task schema changes.
+M118 preserves a supplied global Throwable through finite nested-destructor
+return replay. The new exact body imports one ordinary global, echoes a literal,
+and throws that same compiled CV. Its real request-table cell must hold the
+exact live pending object; no new constructor or D-origin metadata is invented.
+The same outside Exception reaches the local catch and separate caller identity/
+message observer, then cleared C gives one Notice17 and a fresh detached NULL.
+Existing class checks and old body arms, saved scopes, owning B/A tasks,
+SOURCE/replay, roots, release/storage, GC and state/task schema remain unchanged.
 
-Native1 and the unchanged wrong-ending baseline retain `54238b756`/405. A focused
-62 Boolean/one raw diagnosis proves actual compiled Exception/KIND identity,
-the old TypeError-only selector loss and generic pending exit. The repaired
-source and 385 Boolean/four raw checks pass at `1c87142fd`/405 (author139/2,
-independent246/2). A valid TypeError property layout at the Exception constructor
-preserves heap, live pending validity, message and origins but refuses history
-admission. Deep LINE/owner controls, constructor ORIGIN/FILEORIGIN controls,
-borrowed/physical receipts, exact parent/cleared-C public steps, same local
-Exception, Notice17 and fresh detached NULL/whole-split ending pass.
+Native1 and the genuine wrong-ending baseline retain `c162060e5`/406; separate
+84 Boolean/one raw diagnosis proves stable given-cell/outside-record identity and
+lost history. Source1 and 428 Boolean/four raw checks pass at `3018f824d`/406
+(author168/2, independent260/2). Nulling the given cell still leaves a live valid
+pending Throwable but refuses history. Constructed unequal live IDs with the
+same record/property values isolate exact identity, including a mirrored wrong
+pending receipt. Source-flag, borrowed/physical receipt and saved-owner controls,
+exact parent/cleared-C public steps, same caught/global object, Notice/aliases
+and full whole/split endings pass.
 
-All six actors pass first attempts, quiet/stable/reaped; state actors use
-strict45/state180. Original native/baseline/diagnosis/source and TypeError cuts
-are not replayed. Other builtin/custom/supplied Throwables, bodies, deeper
-reentry, properties, larger/mixed histories, GC and wider consumers remain open.
+One affected-source initialization failure remains zero: the CV guard declaration
+followed its new270 use. Moving only that declaration from314 to270 fixes loading;
+its definition is unchanged. Only the affected source retries; native, baseline,
+diagnosis and earlier accepted cases are not replayed. State actors use strict45,
+author180/peer240 caps and finish quiet/stable/reaped. Fresh supplied coverage is
+builtin Exception in the finite nested body; intervening writes/callbacks, other
+bodies, deeper reentry, properties, larger/mixed histories, GC and wider consumers
+remain open.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
-Composed over `0d35177b7`/406 after reviewing the actual ADD, DEFINE,
-array-retarget and magic-property coalesce additions. Their source producers are
-absent here; ordinary zero-argument destructor/getMessage calls and builtin NEW
-stay on the existing paths, with literal-array debts/retention empty. Only270
-differs and keeps exact tested1c871 bytes; every other parent runtime file, task
-variant and ordered406 manifest stays exact. Native1/source1, diagnosis62/1 and
-state385/4 retain their private405 cuts without joined execution or renewed credit.
+Composed over `172648814`/406 after reviewing incoming INI/DEFINE, missing-CV
+spaceship (including same-CV), compound-ADD Warning/RHS failure, parked Generator
+SEND, property-coalesce/RV
+and float-key array string-leaf selectors, all unproduced here. Only270/314
+differ and byte-match tested3018; every other parent runtime/task/default/root
+and ordered406 manifest path stays exact. Native/source/diagnosis/state retain
+their private cuts without a joined actor or accepted replay.
 
 Retained propertyless Stringable `define` names now accept captured boolean true
 with primitive candidates and non-NUL global/class-like results. One module400
@@ -11134,8 +11140,9 @@ including saved callers and source-region owner refusals, without a runtime fix.
 M115 adds first-C direct-TypeError history/replay with B/A still owning, source1
 and 514/12 at9aa, same local catch and cleared-C NULL/Notice16 recovery. M116
 adds one nested C→D destructor path with source1 and454/9 atbf107. M117 adds
-literal Exception constructor-kind correlation, source1 and385/4 at1c871 with
-same local catch/NULL/Notice17 and live outer-owner refusals. Other
+literal Exception constructor-kind correlation, source1 and385/4 at1c871. M118
+adds one stable supplied-global Throwable body, source1 and428/4 at3018, preserving
+outside identity/message, local catch/NULL/Notice17 and remaining owners. Other
 interposed/pending histories, deeper reentry or larger/mixed owners, GC and
 wider typed consumers remain open core obligations for permanent lifecycle/control work.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
