@@ -25,6 +25,15 @@ exact. Other value classes compose structurally; Source82 INI_SET, CLASS115 magi
 `+=` and the paused source boundaries are untouched.
 [Owned true-flag review](coverage/semantics/define-owned-true-review.json).
 
+Composed over `bb1cd389d`/408: tested module 400 and eight scripts stay private-exact;
+nine introduced incoming runtime paths and ordered manifest stay parent-exact.
+Source83 INI_SET remains disjoint from DEFINE. Clone, Generator SEND, missing
+loose comparisons, ~/% float and NULL/float-key producers are absent; counters
+and property/trace keys use quiet initialized integers and fixed strings.
+New task variants add no pstate/heap field; reached/projected/budget/FOLD.MEMORY
+states need no field lift. Source and focused cuts retain original 408 identities
+without joined execution, accepted replay or renewed credit.
+
 Named/mixed NULL-option `ini_set` now captures the one-entry key0 ALIAS ARRAY
 before later written option effects. The saved container retains its shape while
 the shared quiet primitive cell stays live through option/handler writes and
