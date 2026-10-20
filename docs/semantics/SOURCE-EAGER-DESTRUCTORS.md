@@ -123,34 +123,34 @@ cell and object indices. M121 relaxes uniqueness only after a valid variable/glo
 operand and only for the structural suffix's HCELL arm. All restore/function,
 minimum-count and old-source/LINE Notice constraints remain.
 
-M121 source1/state430 Boolean10 raw validates each repeated za/z lexical slot;
-M122 source1/state566 Boolean9 raw validates singleton public object sources and
-unchanged typed rejection/replacement while the Holder remains live. Their private
-cuts stay in the ledger. Type-source metadata owns no edge; the property ALIAS and
-actual globals retain the shared cell.
+M121 validates repeated lexical slots and M122 singleton typed-object sources.
+M123 admits the exact global/echo/NULL-write/throw-CV body using emitted LHS,
+compiled NULL, distinct ordinary global cells and a NULL-or-safe-holder value.
+The initial methodless singleton object-property holder excludes callbacks from
+later cleanup; post-store NULL requires no retired-holder liveness. Their original
+source/state cuts remain in the ledger.
 
-M123 admits one exact global/echo/NULL-write/throw-CV body. Emitted LHS and compiled
-NULL, separate ordinary names/real cells and an untyped allocated write cell are
-required. Its current value is NULL or an allocated methodless parentless class
-with one plain object-property ALIAS, existing138 authority, a shared cell, no
-object table and no live WeakMap key entry. Before history capture, these guards
-exclude callbacks from later cleanup; the NULL branch stays valid after the actual
-write without retired-holder liveness.
-Only270 rules change; the WeakMap helper declaration moves386→270 definition-exact.
+M124 replaces singleton source admission with nonempty, unique, complete validation.
+Every source retains existing138 slot/declaration/public/nonstatic/nonreadonly/
+SETVISIBILITYeps/nohook authority and type object or exactly object|string; the current referent
+must be an allocated object. The clear-holder image still requires its own source
+and object-only type. Type-source metadata is nonowning; actual ALIAS/global edges
+own the shared cell. Only270 changes;138/359, writer,156, SOURCE/history representation,
+body/pending/finish/roots/GC and schema stay unchanged.
 
-Source1 and 579 Boolean/11 raw at `994d0412c` prove source removal/slot-to-job transfer
-before the separate cell-owner decrement, storage finish, handle release and empty
-pop. All six raw cleanup fronts match full wrapped zero/one public budgets with
-the parent history valid. Same-cell/scalar write-cell controls retain given/pending
-and global readers before SOURCE/public refusal; initial method/key fences are
-helper-only constructions. Same supplied catch, Notice14, fresh detached NULL,
-now-legal string alias write and later replacement preserve old copy/r/b distinctions
-and exact whole/split ending. Existing138/359 detachment, writer,156, history
-representation, pending/finish/roots/GC and schema stay unchanged. The baseline
-already matched storage/writes; history admission was the gap. One peer fixture
-compile failure0 and its420s timeout0 are retained; only the ENV expression and
-peer cap change before the identical370/7 succeeds under cap600. Other holder images,
-property sources, callback clears, wider bodies/reentry and GC remain open.
+Source1 and 506 Boolean/6 raw at `d9bbdebfc`/407 authenticate actual two-to-one
+removal, transfer before owner decrement, surviving right metadata and exact
+wrapped/public states. Missing-own, malformed second/stale/duplicate metadata and
+valid-heap task-only deletion controls refuse. The same supplied catch/Notice15/
+fresh detached NULL/b7 survive. String assignment succeeds, NULL raises the remaining
+right-property TypeError without referent/ALIAS mutation, then legal replacement
+preserves old copy/r/b and whole-split equality. The baseline already matched
+storage and writes. Original diagnostic0 and its affected157/4 retry retain dadc/407;
+only two expectation polarities and one full-site assertion change. They remain
+separate from the repaired source and first-attempt focused proofs.
+Recursive source validation has no count cap, but fresh execution covers only two
+sources becoming one. Wider sources/types/values, callback holders, reentry and GC
+remain partial.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same
