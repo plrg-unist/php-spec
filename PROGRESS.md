@@ -7,6 +7,35 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+An undefined direct VALUE CV now freezes NULL at positional `ini_set` argument1,
+after the option and selected string or retained setter are captured. Warning
+callbacks can create an ARRAY and replace the live callee/option without changing
+that result. Weak reception next handles NULL Deprecated and returns false;
+strict ordinary reception raises parameter1 with NULL/NULL API arguments, while
+explicit reception stays weak. First-Warning throw cancels API entry.
+
+Source4 and 1,165 premises (301+257+308+299) pass at `ed96f17f7`/408. Initial
+`f2d24d56b` native4/base0 remain; default Deprecated17/Warning17 only. Initial
+and first affected CPU2, field-order retry CPU5 and final CPU3 are fully reaped.
+Fifteen reports retain13 PASS/two failure0: a pre-main pack-field-order fixture
+error, then a real transient direct-CV result-integrity gap. Certified resume now
+completes the NULL send into CONFIG_ARGS, with full state equality and a negative
+old CONFIG_SEND/KNOWNNULL control. Source4 was repeated only for that runtime
+correction; native paths/cwd, caps and both failures remain unchanged/preserved.
+Only25 additive207 lines change;166/172/234 validators, generic restoration,
+trace/root/GC/schema and parser foreign boundary stay exact. Actual state proves
+old-setter-only pending roots, callback ARRAY COW, strict API-only trace,
+handler-only pre-API Exception/full discard and setter recovery. Named/unpacked/
+PIPE, wider missing-read producers and sole-owner lifetimes remain partial.
+[Undefined INI value review](coverage/semantics/ini-set-undefined-value-review.json).
+
+Composed over `5c04d2a60`/409, preserving the incoming COMP116 state-aware
+comparison entries helper beside own25 INI read/source/fused-resume lines. Clone,
+byref-return/finally retirement, Generator SEND, magic-property increment, owned
+DEFINE NULL flag, numeric cast/self-add and typed NULL-key callbacks have no
+producer here. Incoming419/schema/ordered409 stay exact; COMP117 is absent/later.
+Source4/state1,165 retain private408 cuts without joined execution or renewed credit.
+
 Direct same-CV `$x += $x` now captures LEFT before the first Warning handler,
 then reads the changed CV for RIGHT. Initial `12.5tail` becomes `5.5tail` in H1;
 H2 writes `88`, but cached `12.5 + 5.5` still stores strict float `18.0`.

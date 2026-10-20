@@ -518,6 +518,17 @@ root transfer, strict ordinary versus weak explicit reception, supplied-throw
 cancellation, precise discard and setter recovery. Additional packs/arguments,
 PIPE, wider references and sole-owner lifetimes remain partial.
 
+[Undefined INI value reads](coverage/semantics/ini-set-undefined-value-review.json)
+now keep the missing argument as NULL when its Warning handler assigns that CV
+an array and replaces the live callee. The earlier option and setter stay captured:
+weak reception then handles NULL Deprecated, strict ordinary reception rejects
+parameter1, and explicit reception stays weak. A first-Warning throw cancels API
+entry. Four source comparisons and 1,165 state premises cover callback COW,
+certified NULL delivery, exact restoration, pre-API trace and setter recovery.
+The original fixture-order and transient-integrity failures are preserved;
+the latter now completes the certified send without weakening source validation.
+Named/unpacked/PIPE forms and wider missing-read producers remain partial.
+
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
 send/callback site. Ordinary Closure PIPE follows caller strictness; normal and
