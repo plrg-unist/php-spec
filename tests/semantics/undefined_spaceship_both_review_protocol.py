@@ -20,6 +20,18 @@ def checks(program, path, name):
         condition = condition.replace('$scalar_compare_read_other(', '$spaceship_read_other(')
         condition = condition.replace('scalar comparison warning changed right operand',
                                       'spaceship warning changed opposing scalar')
+        if condition == '~$scalar_compare_missing_pair(S,perrorread[.INPUT = VARIABLE ($ptascii("missing")) z_right][.RESULT = VARIABLE ($ptascii("missing")) z_right])':
+            condition = condition.replace('$scalar_compare_missing_pair(', '$error_read_valid(')
+        if condition == 'PhpStep: S_without ~> S_denied':
+            condition = 'PhpStep: S_without ~> S_without_restored'
+        if condition.startswith('S_denied = S_without['):
+            result.append('$spaceship_read_again(S_without,perrorread)')
+            condition = 'S_without_restored = S_without[.TODO = perrorread.TASK :: ptask_resume*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]'
+        if condition == 'PhpStep: S_again ~> S_again_denied':
+            condition = 'PhpStep: S_again ~> S_again_restored'
+        if condition.startswith('S_again_denied = S_again['):
+            result.append('$spaceship_read_again(S_again,perrorread)')
+            condition = 'S_again_restored = S_again[.TODO = perrorread.TASK :: ptask_resume*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]'
         if target:
             condition = condition.replace(') 10', ') 9').replace(' = 10', ' = 9')
         if condition.startswith('perrorread_bad = '):

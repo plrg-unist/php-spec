@@ -3,7 +3,6 @@
 ;; emits FETCH_OBJ_R at the property-name line. A no-argument named user call
 ;; emits INIT before that property fetch. Authored CODEEXPR/CODENAME records
 ;; certify these distinct occurrences; other producers keep the old fallback.
-dec $source_emission_cv(pstate, nat, pcpath, expression) : bool
 def $source_emission_cv(S, n, pcpath, NExprVariable (BYTES text) metadata) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprVariable (BYTES text) metadata)
   -- if $cv_source_name(S[.ORIGIN = (PORIGIN n pcpath)], BYTES text) = (ptbytes)

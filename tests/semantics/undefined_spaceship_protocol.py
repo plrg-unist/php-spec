@@ -101,6 +101,9 @@ def checks(program, path, name):
             'S_refused = S_changed[.TODO = eps][.COMPLETION = UNSUPPORTED "spaceship warning changed opposing scalar"]',
             'S_undefined = S_resume[.STORE = $set_cell(S_resume.STORE,n_y,UNDEFINED)]',
             '$error_read_valid(S_undefined,perrorread)', '~$spaceship_read_other(S_undefined,perrorread)',
-            'PhpStep: S_undefined ~> S_undefined_refused',
-            'S_undefined_refused = S_undefined[.TODO = eps][.COMPLETION = UNSUPPORTED "spaceship warning changed opposing scalar"]']
+            'PhpStep: S_undefined ~> S_undefined_restored',
+            'S_undefined_restored = S_undefined[.TODO = perrorread.TASK :: ptask_tail*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]',
+            '$spaceship_read_again(S_undefined,perrorread)',
+            '$error_read_plan(S_undefined_restored) = (perrorread_second)',
+            'perrorread_second.RESULT = KNOWN PNULL']
     return values

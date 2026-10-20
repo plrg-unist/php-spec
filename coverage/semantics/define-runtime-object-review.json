@@ -1,0 +1,93 @@
+{
+  "status": "accepted private milestone; publication cleared",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; sole pinned local oracle/profile; original PHP bytes/filename/cwd; full405 SL modules",
+  "base": "da94669ce19e001968c6ed50a0c65340ca133d0a",
+  "runtime": {
+    "module": "spec/semantics/400-dynamic-constants.watsup",
+    "sha256": "082f564c2299e7e7940633d9247bc97826126dc3d2a8283de9b4efd73a69e8e6",
+    "change": "Dynamic-only PVOBJECT authority for live ordinary class instances without a constant-NEW record, canonical array leaves and DEFINE-origin direct queries. Existing PVINSTANCE certification, default/global class support, allocation, schema, copy and cleanup rules stay unchanged."
+  },
+  "behavior": [
+    "An ordinary runtime object publishes directly with the same pointer and shared typed properties. A later unpinned duplicate survives its callback, then runs its destructor before false delivery; the old object row remains intact.",
+    "Canonical nested arrays dereference source aliases and copy containers while sharing the ordinary object. Caller-root COW, source retirement, real query bucket replacement and append history leave the stored pointer/containers intact; typed property writes remain shared.",
+    "The independent array duplicate clears its source alias while the private DIRECT copy is the sole object owner. That copy keeps the object through the throwing handler and its retirement runs D41 before the original Exception reaches catch; raw API trace still observes the cleared alias and old scalar row17 remains."
+  ],
+  "authority": "Exact live INSTANCE header, resolved nonabstract class/name-map identity and absent global_new_record supply structural authority, not reconstructed allocation history. Existing present certificates retain canonical PVINSTANCE; invalid present records refuse without fallback. Direct PVOBJECT queries additionally require DEFINE origin. Shared tree validation admits these leaves while global_constant_class_supported(PVOBJECT/tree) stays false. Pure missing-record getters become PVOBJECT but PVINSTANCE certification and malformed historical donor-state validation still refuse; eight surgical historical helpers receive no renewed execution credit.",
+  "engine_route": "Pinned Zend/zend_builtin_functions.c::define uses ZVAL_COPY for an object and copy_constant_array dereferences aliases/copies containers while retaining embedded objects. zend_register_constant rejects duplicates and releases the candidate through ordinary destruction. The existing semantic eager release/operation machinery supplies actual destructor fronts. No native fallback or engine divergence identified.",
+  "sources": {
+    "native_author_and_baseline_cut": "c96e2715a918c60a78d5cab377ecaad78d8be60d/405",
+    "accepted_model_and_peer_cut": "121f9fe880a93d68fba2dc40162c0dcec02a6379/405",
+    "agreements": 3,
+    "selection": [
+      "runtime-object-publication-and-unpinned-duplicate",
+      "runtime-object-array-source-retirement-and-query-cow",
+      "ordinary-instance-private-array-copy-retires-before-catch"
+    ],
+    "baseline": "Sole genuine unchanged direct main is Unsupported dynamic constant call domain after B|; CLI1/empty/stable/reaped, agreement0. Initial model21a fails before semantics on a combined VALUE/CLASS binder; the sequential split changes no policy. Only affected main and previously unrun array are modeled again, on exact retained native paths/bytes/cwd. Peer native/model passes first attempts. Exact-case modelCLI90/process105 leaves native15/baseline45 unchanged."
+  },
+  "state": {
+    "cut": "f3bebe265d00fe67e73843daf13b14d8c2812fab/405",
+    "premises": 622,
+    "by_case": {
+      "direct_duplicate": 230,
+      "nested_array": 145,
+      "private_array_retirement": 247
+    },
+    "budget_identities": 2,
+    "driven_forged_states": 0,
+    "checks": "Live class/record priority and global-policy refusals; DEFINE-origin query fence, no-allocation pointer queries, real VALUEfalse eager destructor delivery, two DIRECT PVOBJECT containers, source/query COW and typed-property sharing. Independent private-array discard reaches non-STORE DESTRUCTOR_ENTER with the original pending Exception, then restores its exact THROW tail after D41; raw trace ALIAS remains NULL and the old scalar row stays17. Final exact row/container/object/cell owners and two zero-budget identities pass; all malformed projections remain undriven."
+  },
+  "outcomes": "Initial source runner_failure0 and first focused direct ENV-cell assertion0 are preserved. Source VALUE/CLASS binders were split before semantic execution; the focused fixture now looks up the new candidate ENV cell after explicit unset/rebind, retaining the initial capture premise (229 to230). Array145 is unchanged. No accepted source/native/baseline replay, diagnostic or timing retry; old campaigns are not renewed. Corrected author230+145 and first peer247 pass; all actors fully reaped and CPU4 released.",
+  "remaining": "Executed originals use ordinary no-constructor class instances, ordinary global string names and omitted/false flags. Existing true/NULL/quiet delegates compose structurally without new execution credit. Unrecorded Closure/stdClass/internal object VALUES, other leaves/names/call/lifetime domains and constructors remain partial. Paused NaN/owned-NUL and Source66/67 INI_SET scopes are disjoint. Abstract graph owners are not native reference counts.",
+  "artifacts": {
+    ".tools/dynamic-runtime-object-define-native-84/native-report.json": "5bfc4c673bf270e1c3234306e5916e7998c72fdb08af78b2983f11642cfe9c39",
+    ".tools/dynamic-runtime-object-define-native-84/baseline-report.json": "8cdca42caebfc0a62c18e47973ade192280e456159e9fcdac7b0b9e0c73540e5",
+    ".tools/dynamic-runtime-object-define-native-84/model-report.json": "183c1aedcfa8d00218e54db1e2a89b764ae9685dac6fef44a26b2261b1724ed8",
+    ".tools/dynamic-runtime-object-define-model-retry-84/model-report.json": "d22aefbdadc2c230deb71f149cafff3452c6fe9d991ee76b2aca04f9a78f2c3b",
+    ".tools/dynamic-runtime-object-define-model-retry-84/exact-model.py": "0e97d332c4a997520e2f7a7b09646e98eec11d61f9a1ad2e324606d8d6c4d728",
+    ".tools/dynamic-runtime-object-define-peer-84/native-report.json": "4c9771d9747b11dca1dd529748ccd34ebd2099b276a21eb1318f1772f1a79164",
+    ".tools/dynamic-runtime-object-define-peer-84/model-report.json": "9938770e63bbaf1f5a0c7413abed50d5965e3e7e2047d9d0e7ddc6f79ef589c9",
+    ".tools/dynamic-runtime-object-define-state-84/fixtures-report.json": "7f7f0245ffb82048e1a83fdd211b56445c37cc4e834b35d2254b0e5283e59fb1",
+    ".tools/dynamic-runtime-object-define-state-84/check-report.json": "f9967e80a4fbb832b900cb649aed4c1c63317b8808cb2dea749417b3e2e68a92",
+    ".tools/dynamic-runtime-object-define-state-84-v2/fixtures-report.json": "7830118f277798a3367745543daa5322d167b145e98dcc25ceecc60f3127d9e2",
+    ".tools/dynamic-runtime-object-define-state-84-v2/check-report.json": "26469278fdc555cff53304c0e22d6ab1d27a6f881b6f57d2c01d773e95301cfe",
+    ".tools/dynamic-runtime-object-define-peer-state-84/fixtures-report.json": "8e4077a8dce28dd258d67f93b3c5192c33b9519cbfc04b69543ff5b2c4f4d24e",
+    ".tools/dynamic-runtime-object-define-peer-state-84/check-report.json": "b48b4297ef3a30518cdcabcb797e18fba829e1316673462cfa96bc9c6cbb45a2"
+  },
+  "recovery": "Canonical .tools roots retain original PHP, source/profile/environment/argv/cwd, raw stdout/stderr/processes, numeric fixtures and reports. Read source/runtime/prep at c96e/121f/b960/f3bebe via git show; preserve original filenames/cwd and use fresh output roots. Author nativehost45/process15, sole baselinehost90/CLI45/process60, corrected model-only exact-model.py host240 serial2/local90/105; peer nativehost45/modelhost120/local90/105. State scripts --phase fixtures/check --sources ORIGINAL_ROOT --output FRESH_ROOT: author fixtures120/check390 directSL180,arraySL150; peer fixtures120/check210SL180. No /tmp or obsolete worktree is required for recovery.",
+  "review": {
+    "author": "/root/dynamic_dev_59",
+    "reviewer": "/root/dynamic_review_59",
+    "decision": "cleared after independent semantic, source/state and publication review",
+    "scope": "Dynamic-only ordinary class-instance authority, canonical certificate priority, actual unpinned direct/array candidate retirement and pointer/property sharing; narrow fixture/source binder corrections preserve original failures and accepted evidence."
+  },
+  "composition": {
+    "parent": "cc137c06dec0fb2e91423759249f2ab4199a7f0c/406",
+    "candidate": "66746e185e2e9e63c64a3e962bb2ade5514416f6",
+    "private_publication": "bcedfff55f55dbc14609fa77f2d95dfb708add69",
+    "runtime_bridge": "Exact tested private400+21 is the sole runtime delta. Reversing private400 and README/CORE/USER changes reproduces incoming bytes exactly. Every other incoming spec/ordered-manifest path and all12 affected scripts preserve parent/private bytes respectively; unchanged declaration moves are retained.",
+    "module400_sha256": {
+      "parent": "1e50f4d5cb22dd7a4391935037fdc771d55c2467ff4b17100f7892f0431c6c30",
+      "composed": "ef81facbe23f2122fc43f9dd1a9cbaa83838f1a2e81968d94f4b5a2ff7fd0727",
+      "tested_source_and_state": "082f564c2299e7e7940633d9247bc97826126dc3d2a8283de9b4efd73a69e8e6"
+    },
+    "preserved_incoming_sha256": {
+      "spec/semantics/136-property-runtime.watsup": "b3420b145bb41c8f90044a8ebe7dfc7c21162dcf4389e147188b0b566d1b28e5",
+      "spec/semantics/172-file-context-intrinsics.watsup": "d9c59883f2eb5d87c3b461d766fb85803eacdc70044e961049a92233bb86ad65",
+      "spec/semantics/207-error-handler-runtime.watsup": "7b4bc8fc5605abe3575a42b242afdd440384e11a8bcce82018c8376821bc85ef",
+      "spec/semantics/270-eager-destructors.watsup": "3aed91144e5a3e02cf9aa747dc07e239c520df06fc7c6b2425a52ffe467541b0",
+      "spec/semantics/280-generators.watsup": "e6ddc8142e50d8ce6bf9fd58265b484a6647c023833a09b6a1d407f02641540d",
+      "spec/semantics/289-generator-delegation.watsup": "4cea0709674d70aad0e319a89dd963d649b70d111410cc26695ae4f15ba6d0d5",
+      "spec/semantics/30-storage.watsup": "80f2a99df296497de6add2b89fd217e5c3ece401934947dde21e08376024c303",
+      "spec/semantics/314-source-expression-emission.watsup": "b0462e118de0e66a68bea7b7206a5a601aab93fdb3b87797d8d42df1918a0aee",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "0224932ba707bdb82073b025647cf0f37984bedcea20fb55f5fcb29b100c5403",
+      "spec/semantics/413-array-literal-key-warnings.watsup": "f271b89c4051fc53b966fce303cbfbb3327c5774449a5fae276dc6b7b5bad487",
+      "spec/semantics/416-magic-property-coalesce.watsup": "35c877f350597abd2a74ab9756a39de0413d7d86beaee750c04ab51ae180ce28",
+      "spec/semantics/modules.json": "18d26aec3dc0be31944db24857fc365f302f6fbddbcda5d15a87d520b8969575"
+    },
+    "inventory": "Whole incoming inventory plus exactly the private constants2-helper/2-source/1-ledger/review suffix; prior prefixes, partial status and other169/306 rows stay exact. Incoming checkpoints/current scope are preserved.",
+    "semantic_seams": "Source66/67 module172 owner/numeric-or-named-pack INI_SET admission is disjoint. New416/136 and30/416 variants require coalesce/private magic-property producers absent here, including during real eager destruction. Module413 widening still requires VARIABLE lossy-PFLOAT literal-key plans; these sources use literal strings/int90 and ordinary DIM writes. Module404 RHS failure requires ADDASSIGN Warning/phase1 and compound +=, absent from quiet ++. Module270 supplied global-Throwable replay requires RETURN_REF_UNWIND/FINALLY_REF_RETURN and echo-then-throw destructor source, absent despite actual normal eager destructors. Module207 missing-pair SPACESHIP and280/289 parked Generator/send producers are absent. Module314 only moves the unchanged source_emission_cv declaration.",
+    "state_bridge": "No new pstate field, heap-graph schema or field lift. Existing literal retained/debt lists stay empty because their lossy-float-key producers are absent; new task/target variants are never constructed. Roots, owner counts, pruning, restored operation/Throwable tails and both budget identities preserve previous values.",
+    "evidence": "Source3 retain121f9fe88/405 and state622 retainf3bebe265/405. Independent actual-parent selector review and exact runtime/script/inventory composition justify this406 parent without a joined actor, accepted replay or renewed credit."
+  }
+}

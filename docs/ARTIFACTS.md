@@ -89,6 +89,11 @@ The finite nested Exception constructor-kind proof is in
 442,184 bytes under `.tools/m117/`, six first-attempt actor reports and the runtime
 patch, SHA-256 `1e17bd769bc00db84384ca464599754e3e43864f16c2a754bad394c1d69edb9f`.
 
+The supplied-global nested Throwable identity proof is in
+`../php-spec-evidence-archive/lifecycle-supplied-exception-118/manifest.json`:
+530,730 bytes under `.tools/m118/`, seven reports retaining the zero-evaluation source
+failure and both runtime patches, SHA-256 `3d0e7c69bd73fa711370672453cd46d2e96a5a2500b3ded8f9e94b046388e61e`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the
