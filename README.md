@@ -260,7 +260,7 @@ now preserve the original Closure and early value across reversed named argument
 effects. Native `__invoke` arguments remain numeric and normalized. Four originals
 and 928 state premises cover true/false handlers, throwing cancellation, strict
 ordinary versus weak explicit calls, owner roots and reuse of the retained setter.
-Packed forms beyond the numeric follow-up below, PIPE, sole-owner lifetimes
+Packed forms beyond the unpack follow-ups below, PIPE, sole-owner lifetimes
 and wider values remain partial.
 
 [Numeric unpacked retained NULL INI calls](coverage/semantics/ini-set-owned-unpack-null-option-review.json)
@@ -268,7 +268,14 @@ now preserve the original Closure and captured arguments from one numeric two-it
 pack across live callee and pack mutations. Explicit wrapper arguments remain
 normalized `[NULL, value]`; ordinary strict calls still reject NULL first.
 Four originals and 914 state premises cover return, throw, literal-source authority
-and reuse of the retained setter. Other packs, PIPE and wider values remain partial.
+and reuse of the retained setter. Multiple packs, PIPE and wider values remain partial.
+
+[Named unpacked retained NULL INI calls](coverage/semantics/ini-set-owned-named-unpack-null-option-review.json)
+now cover one named or mixed-key pack. Array elements run in insertion order;
+reversed `value`/`option` keys normalize to slots1/0 without replacing the earlier
+captured value. Four source comparisons and 1,001 state premises cover returning
+and throwing handlers, strict ordinary versus weak explicit calls, and owner reuse.
+Multiple packs, PIPE, sole-owner lifetimes and wider values remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled

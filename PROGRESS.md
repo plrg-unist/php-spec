@@ -7,6 +7,32 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained intrinsic `ini_set(NULL, quiet primitive)` now resumes handlers through
+one named/mixed-key unpack. Inline array V→O evaluation stores the earlier REQUEST
+before later option/live-callee writes; unpack subsequently maps reversed keys1→0.
+The original Closure survives, and ordinary strict reception still differs from
+weak explicit `__invoke`. A supplied throw keeps Exception identity/caller99,
+precision10/sibling2251 and cancels the body; the retained setter recovers10→12.
+
+Four source comparisons retain author3 at `8175923f8` and reduced peer1 at
+`43f6c410a`, runtime `9bb10d131`/406. All1,001 premises (265+178+204+354) pass at
+the latter cut, including the pre-O array, named unpack cursors, retired builder,
+full normalized four-frame trace/discard, pool/source/carrier controls and budgets.
+Initial `f7132ab30` CPU2 native4/baseline0 precede implementation; affected checks
+use CPU5. Eleven stable/reaped reports preserve one original peer CLI45 timeout0.
+Its numeric-wrapper native observation stays native-only; the accepted reduced
+peer removes catch trace traversal while all354 actual trace premises remain.
+No accepted source/native/author or914 replay. Only13 module172 lines and one
+obsolete66 coherent named-pack refusal change; body/trace/roots/discard/GC stay
+exact. Selected Deprecated24 is expected, accepted worker stderr is empty;
+multiple packs, PIPE, sole-owner lifetimes and wider values remain partial.
+[Named unpack NULL INI review](coverage/semantics/ini-set-owned-named-unpack-null-option-review.json).
+
+Composed over `3744afa839`/406 with module172/five tests private-exact and
+every other runtime/schema/ordered manifest parent-exact. Incoming comparison,
+arithmetic-warning, reference/finally, Generator, property and float-key debt
+paths have no producer here; no joined actor or renewed source/state credit.
+
 Failed delayed RHS conversion after the first plain-CV `+=` Warning now
 raises TypeError from live types without storing or detaching the target. Flat
 arrays cannot retry union; a late bool alias remains attached. Two originals
@@ -110,7 +136,7 @@ old623/746/782/928 replay. Actual unpack cursors, owner/array roots, historical
 snapshot validity, pooled literal authority, full raw four-frame trace/discard,
 source/carrier/count controls and budgets pass. Expected Deprecated lines7/20 are
 separate from quiet accepted worker stderr. Existing continuations/trace/GC remain
-exact; other packs, PIPE, sole-owner lifetimes and wider values remain partial.
+exact; multiple packs, PIPE, sole-owner lifetimes and wider values remain partial.
 [Numeric unpack NULL INI review](coverage/semantics/ini-set-owned-unpack-null-option-review.json).
 
 Composed over `5a011788f`/406 with module172/four tests private-exact and entire
