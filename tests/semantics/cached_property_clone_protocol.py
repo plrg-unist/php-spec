@@ -146,7 +146,7 @@ S_free_found = $cc_seek(S_catch,CC_OUTPUT $ptascii("H:7|7|7|8|8|T|8|8|free|"),10
 S_free_found.COMPLETION = NORMAL \/ S_free_found.COMPLETION = BUDGET
 S_free = S_free_found[.COMPLETION = NORMAL]
 $cc_output(S_free.EVENTS) = $ptascii("H:7|7|7|8|8|T|8|8|free|")
-S_free.STORE[n_cell] = DEFINED (PSTRING $ptascii("free"))
+S_free.STORE[n_cell] = DEFINED (PSTRING_CARRIER INTERNED_STRING $ptascii("free"))
 $propref_at(S_free.PROPREFS,n_cell) = eps
 $heap_owners($heap_graph(S_free),HCELL n_cell) = 1
 $cc_guard(S_free)
