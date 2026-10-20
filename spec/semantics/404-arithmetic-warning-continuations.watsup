@@ -3786,3 +3786,28 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 8192
   -- if perrorcall.MESSAGE = $ptascii("Power of base 0 and negative exponent is deprecated")
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pintegeroperation.LINE
+
+;; Unary CV operands do not retain their selected reference cell after capture.
+;; Entered/returned markers keep the converted number when its last name retires.
+def $arithmetic_unary_snapshot(S, punarywarning) = true
+  -- if $arithmetic_unary_valid(S, punarywarning)
+  -- if $integer_pointer_select(S, punarywarning.INPUT) = (INTEGER_CELL n)
+  -- if $arithmetic_owned_cell_valid(S, n)
+  -- if $integer_pointer_value(S, INTEGER_CELL n) = (punarywarning.VALUE)
+
+def $arithmetic_unary_reference_plan(S) = (punarywarning)
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (UNARY punary z) :: ptask_tail*
+  -- if S.RESULT = VARIABLE ptbytes z_input
+  -- if $integer_pointer_select(S, S.RESULT) = (INTEGER_CELL n)
+  -- if $arithmetic_owned_cell_valid(S, n)
+  -- if $integer_pointer_value(S, INTEGER_CELL n) = (pvalue)
+  -- if $arithmetic_add_conversion(pvalue) = ((pnumber, true))
+  -- if punarywarning = {SITE porigin, OP punary, LINE z, INPUT S.RESULT, VALUE pvalue, NUMBER pnumber}
+  -- if $arithmetic_unary_valid(S, punarywarning)
+def $arithmetic_unary_reference_plan(S) = eps -- otherwise
+
+rule PhpStep/arithmetic-unary-reference-begin: S ~> S[.TODO = (ARITHMETIC_UNARY_WARNING punarywarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $arithmetic_unary_reference_plan(S) = (punarywarning)

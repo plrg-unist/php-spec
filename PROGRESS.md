@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Unary `+`/`-` now captures leading text from selected scalar references.
+After the Warning handler rebinds the current name and removes the last old alias,
+the old CELL has owner zero and retires; saved numeric history remains valid.
+Unary+ supplied Exception20 preserves outer `100`; returning unary- delivers float
+zero with native `-0` and exact negative-zero bits. Two originals pass at
+`e0b854224`/407 and 264 focused premises at `97af56faf`/407.
+[Unary-reference ledger](coverage/semantics/unary-reference-warning-review.json).
+Fresh untyped scalar refs and primitive handler writes bound the traces; old unary
+CV/numeric/dispatch/resume/root bodies stay exact. Wider producers, owning/constrained
+cells and lifetimes remain partial, OP12 paused.
+
+Composed over `d02051cab`/407, preserving incoming state, task and
+manifest paths. Source2/state264 retain their private407 cuts; independently
+reviewed absent incoming selectors require no joined execution or renewed credit.
+
 String-selected method Closure VALUES now publish with their validated requested
 method and lexical/called/optional receiver identity. A fixed Base descriptor
 survives a Child override; computed static strings retain their selection after
@@ -54,22 +69,9 @@ Composed over `25f8d3066`/407 with module172/four tests private-exact and every
 other runtime/schema/ordered manifest parent-exact. Source4/state1,319 retain
 private406 cuts without joined execution or renewed evidence.
 
-Selected-reference `**=` now retains both conversion holders through final
-Deprecated. A second conversion Exception cancels storage (old `88`, outer `100`);
-a final Deprecated Exception still writes cached `+INF` over callback `66` through
-the old target, then resumes the same Exception without outer delivery. Default
-negative-zero completion delivers `-INF` despite name rebindings and RHS retirement.
-Three originals pass at `74fd1ea12`/407; 688 focused premises pass at `f2e05c619`/407.
-[Converted power ledger](coverage/semantics/powerassign-conversion-warning-review.json).
-One larger original source hit CLI60; duplicate observations were trimmed at unchanged
-caps and the timeout remains zero. No runtime correction or accepted replay.
-Initial leading LEFT/quiet RHS scalar refs, a surviving target alias and primitive
-old target before/after final dispatch bound this slice; wider domains remain partial,
-OP12 paused.
-
-Composed over `2926802c4`/407, preserving incoming state, task and
-manifest paths. Source3/state688 retain their private407 cuts; independently
-reviewed absent incoming selectors require no joined execution or renewed credit.
+Earlier converted selected-reference `**=` continuations retain source3/state688
+and the original source timeout0 in the
+[converted power ledger](coverage/semantics/powerassign-conversion-warning-review.json).
 
 A defined scalar left CV removed by a missing-right `<=>` Warning handler now
 compares quietly against frozen right NULL, returning 0 without another report or

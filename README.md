@@ -810,6 +810,15 @@ premises check callback writes, supplied throws with unchanged destinations,
 negative boundary float delivery and a false-handler warning on the operand line.
 [Unary evidence](coverage/semantics/unary-warning-review.json) preserves the
 original failures; wider operand, callback and lifecycle forms remain partial.
+
+Unary `+`/`-` now also captures leading text from selected scalar references.
+A handler may rebind the current name and remove the last old alias; the cached
+number remains valid after that cell retires. A supplied Exception cancels outer
+delivery, while normal unary minus retains float zero with native output `-0`.
+Two originals and 264 focused premises pass in the
+[unary-reference ledger](coverage/semantics/unary-reference-warning-review.json).
+Wider producers, constrained/owning cells and callback lifetimes remain partial.
+
 Bitwise NOT now retains the converted long through named deprecation handlers
 for finite in-range fractional floats in defined non-reference CVs. Three exact originals
 and 324 genuine state premises check live writes, supplied throws, false fallback,

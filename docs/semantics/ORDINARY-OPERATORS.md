@@ -259,8 +259,21 @@ reaches the destination.
 Three exact originals and 227 author plus 96 independent genuine SL premises
 check negative boundary float delivery, false fallback, public snapshot/message
 rejection, ownership and budget resumption in the
-[unary ledger](../../coverage/semantics/unary-warning-review.json). Other producers,
-references/owning operands, callbacks and lifecycle forms remain required.
+[unary ledger](../../coverage/semantics/unary-warning-review.json). Other reference/owning producers, callbacks and lifecycle forms remain required.
+
+Selected scalar-reference unary `+`/`-` now reuses this captured-number protocol.
+Fresh snapshots authenticate the selected live unconstrained CELL and actual raw
+text. The handler writes old value `99`, rebinds the current name to replacement
+`77` and removes its last old alias; that CELL reaches owner zero and retires.
+Returned history remains valid without a source lookup or operand-retention root.
+A supplied Exception from line 20 cancels outer delivery (`100`). Normal unary minus
+instead delivers float zero: native echo `-0` and exact negative-zero bits establish
+its sign, while strict equality checks its float type/value. Unary completion writes
+no source or replacement cell. Two originals and 134+130 focused premises cover
+real fresh/entered callbacks, raw versus driven results, owners, EOF and budgets in
+the [unary-reference ledger](../../coverage/semantics/unary-reference-warning-review.json).
+Fresh untyped scalar references and primitive handler writes bound these traces;
+other producers/constraints/owning payloads and wider lifetimes remain partial.
 
 Bitwise NOT now retains a finite in-range fractional float's converted long before its
 precision-loss deprecation. The bounded producer accepts a defined non-reference
