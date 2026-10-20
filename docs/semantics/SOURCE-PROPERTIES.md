@@ -476,11 +476,22 @@ unwind. Guard authority requires that internal call and its adjacent saved frame
 an ordinary direct call to the same method gains no implicit guard.
 One native/source original and a genuine state cut212 =165 reached +47 derived
 cover public bypass, typed name reception, private deletion, `seen=13` and restoration;
-abrupt cleanup is a task-local derived check. Other signatures, absent/public-unset
-or protected callback selection, wider receivers/names and recursive magic remain
-unsupported. Unrecognized pending receivers or names conservatively stop
+abrupt cleanup is a task-local derived check. That historical cut did not admit
+other signatures, absent/public-unset or protected selection, wider receivers/names
+or recursive magic. Unrecognized pending receivers or names conservatively stop
 when a declared `__unset` exists, without evaluating a receiver in demand detection.
 [Magic unset review](../../coverage/semantics/magic-unset-review.json).
+
+For declared ordinary public int slots, INITIAL first unset bypasses the callback;
+a later UNSET invokes the inherited unsetter. Captured descriptor history survives
+repopulation with VALUE `7`. Only UNSET magic demand is suppressed under the active
+guard: initialized VALUE deletion stays ordinary. Exact live compiled-local
+release/frame history retains IN_UNSET during Probe D, ending before the result
+marker and receiver destruction. Four originals and 579 focused premises cover
+recursive suppression/reset, CV-null lifetime, supplied throw/following store `42`, full
+saved call guards and budget resumption. Wider types, absent/dynamic/protected,
+readonly/hooked slots and general reentry remain partial; private evidence retains
+its earlier cut. [Public unset review](../../coverage/semantics/public-unset-review.json).
 
 A selected public nonstatic `__isset(string $name): bool` uses the same closed
 physical method-source proof, with a separate terminal-isset call/result protocol.

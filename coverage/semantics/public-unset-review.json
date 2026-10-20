@@ -1,0 +1,218 @@
+{
+  "scope": "Declared public nonstatic/nonreadonly int property on an ordinary instance; inherited existing __unset(string):void from a parentless owner. Direct CV/literal name only. INITIAL bypass, UNSET demand, same-name guard, VALUE repopulation, CV-null receiver cleanup and compiled-local destructor reentry.",
+  "engine": [
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_unset_property deletes initialized slots before consulting IN_UNSET;1615\u20131617 clears IS_PROP_UNINIT/INITIAL and bypasses the callback on first unset.",
+    "zend_std_unset_property1653+ retains receiver, sets IN_UNSET, invokes zend_std_call_unsetter, clears guard after method/local disposal, then releases receiver. Recursive already-unset same-name public access is a no-op."
+  ],
+  "implementation": {
+    "base": "b2fb2dc8b89fa789642a29dfcd1794d8901c00a2",
+    "source_revision": "a5c8773ec573a46d8e9ee24f32be4074a04bdb80",
+    "state_revision": "5e4a6dc6ccb3d09f09739c617d24da7676cf12b5",
+    "prior_state_revision": "04ab7b9a7afdfc62edefe13e1460e510a1ecd409",
+    "module_count": 407,
+    "files": [
+      "spec/semantics/406-magic-property-unset.watsup"
+    ],
+    "sha256": "b4d5d368fe38618401d86dec1406c203087c66f8cc2d26445fd98da0ff1c754c",
+    "change": "Public descriptor/source authority is independent of mutable slot state; only pending capture requires PROP_UNSET. Guarded no-op additionally requires real magic demand. Exact public-only compiled-local release/frame/result history extends guard authority through local destruction, with live frame membership only in active guard queries. Marker/receiver destruction has no guard.",
+    "compatibility": "The final one-line marker validator admits only the already-authenticated public compiled-local prefix, matching416; no behavioral step or IN_UNSET activation change. Source4 and first403 states retain original cuts by this narrow compatibility bridge. Existing private source/access/call/result routes are pointwise preserved: site factoring retains old checks; new public branches and public-only cleanup certificate cannot select private descriptors. Shared private access helper and all other modules, state/tasks/roots/manifest/GC are unchanged. Historical private evidence keeps its original cuts; no old application is renewed."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-probes-112/native-first/report.json",
+      "sha256": "f049282271d7dd5bb91c20df445aaa94869510db89a5d3405a0c004468d59e8d",
+      "revision": "b2fb2dc8b89fa789642a29dfcd1794d8901c00a2",
+      "completed": 4,
+      "quiet_normal_tuples_bytes": [
+        22,
+        12,
+        15,
+        22
+      ]
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-probes-112/accepted-current-baseline/report.json",
+      "sha256": "ae60eccadad33b91a7834eec380f1a8dd282304d598892bd71c8de689e5ce02d",
+      "revision": "b2fb2dc8b89fa789642a29dfcd1794d8901c00a2",
+      "checked_unsupported": 4,
+      "source_agreements": 0,
+      "reason": "magic unset source, function, or recursive access",
+      "prefixes": [
+        "I:B|",
+        "N:",
+        "X:",
+        "L:"
+      ],
+      "cli_exit": 1,
+      "semantic_exit": null,
+      "semantic_stderr": ""
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-probes-112/changed-model-91qywdo_/report.json",
+      "sha256": "67520fbf573a3a482bb3b0154a3713f51a68dde27b686efdda7332c427ca7643",
+      "revision": "a5c8773ec573a46d8e9ee24f32be4074a04bdb80",
+      "source_agreements": 4,
+      "normal_quiet_exit0": true
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-protocol-i3_o8r6g/report.json",
+      "sha256": "4ea5d713110c6385b261f6c48df446e00b1e94b9ae0b3deef851aa5dc9c30663",
+      "revision": "5e4a6dc6ccb3d09f09739c617d24da7676cf12b5",
+      "premises": 176,
+      "reached": 162,
+      "derived": 14,
+      "applications": 1,
+      "source_agreements": 0,
+      "groups": {
+        "cleanup": 176
+      },
+      "combined_premises": 579,
+      "combined_reached": 556,
+      "combined_derived": 23,
+      "result": "Combined four exact true across retained403 and corrected176 cuts; real INITIAL/VALUE ordinary deletion, typed reception, record validity after VALUE7, active local Probe D with full saved call/receipt, guard reset, sole receiver cleanup, supplied catch/following42 and budget resumption."
+    },
+    "accepted_first_three": {
+      "path": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-protocol-8dyobru8/report.json",
+      "sha256": "ef1f278f11958856820adb4e6450e7f4bad656c367eecd6b2f60a9d02bd97cd7",
+      "revision": "04ab7b9a7afdfc62edefe13e1460e510a1ecd409",
+      "accepted_case_ids": [
+        "initial",
+        "normal",
+        "throwing"
+      ],
+      "accepted_premises": 403,
+      "reached": 394,
+      "derived": 9,
+      "enclosing_report_passed": false,
+      "failed_cleanup_premises": 176,
+      "failed_cleanup_credit": 0,
+      "reason": "Saved compiled-local marker lacked the structural exit disjunct in call validation; original rawfalse retained."
+    },
+    "prepare": {
+      "path": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-protocol-lwkrgx2i/PREPARED.json",
+      "sha256": "dfe3c1d181a01f5e6b13ac06b64cfbae45eae14f3a99dab403863129cb1d039f",
+      "applications": 0
+    },
+    "diagnostic": {
+      "path": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-probes-112/diagnostic-112-refv5tev/report.json",
+      "sha256": "cb06700f34a24a1368a4a689f8f7ed96019158c01f7d78772c5c4cba8c6501e5",
+      "revision": "04ab7b9a7afdfc62edefe13e1460e510a1ecd409",
+      "vector": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "cuts": [
+        78,
+        88,
+        104,
+        105,
+        145,
+        176
+      ],
+      "credit": 0,
+      "finding": "Return/local facts pass; first failing block is restored local-exit full call validation, before projected Probe guard."
+    },
+    "preserved_pre_application_failure": {
+      "path": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-protocol-01loe140/report.json",
+      "sha256": "724c41280f29778cae4ccc3d90982ab7c74dac1dc0b578aaa9a30b7a7a508c88",
+      "revision": "3c9972d0e0d8ec54e1bee6ed6cebef027e9f9112",
+      "applications": 0,
+      "credit": 0,
+      "cause": "Initial AL fixture empty-iteration elaboration diagnostic. Seven slot-list aliases shared bases with scalar slots; only iteration variable names were renamed. No runtime correction or unrelated replay."
+    },
+    "affinity": {
+      "native": {
+        "path": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-probes-112/affinity-native-first.json",
+        "sha256": "257dd816836170d0067460fe56fe469b2b502221c8db17eec4db72be42f7b5e4",
+        "captured": 0,
+        "expected": 4,
+        "note": "Short native processes completed before sampling; no live affinity claim or replay."
+      },
+      "baseline": {
+        "path": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-probes-112/affinity-accepted-current-baseline.json",
+        "sha256": "e03ecfcf022036b60b829f76ea43d83ea41cd64e10b19418bc7ad7450e3e2593",
+        "captured": 4,
+        "cpu": 1
+      },
+      "source": {
+        "path": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-probes-112/affinity-changed-source-112.json",
+        "sha256": "b32141c3da8111d15b4858f293e87d6c2443fa64bf5615caf06a6f761e0ab9a6",
+        "captured": 4,
+        "cpu": 4
+      },
+      "focused": {
+        "path": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-probes-112/affinity-state-112-repair2.json",
+        "sha256": "38b7c35179e724152ed13253f8eb50301b82d4762180af83e71a2b3602b37598",
+        "captured": 2,
+        "cpu": 1
+      },
+      "accepted_first_three_and_cleanup_failure": {
+        "path": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-probes-112/affinity-state-112-repair1.json",
+        "sha256": "22fcc9d9fea335a07b24ee136903eaa5c84594f3bbbe5cc96e143ed541aeafa2",
+        "captured": 8,
+        "cpu": 1
+      },
+      "diagnostic": {
+        "path": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-probes-112/affinity-cleanup-diagnostic-112.json",
+        "sha256": "b6124312c38fd495684035fcfc416cb57d31d217170005ff047cd2bd5dc4ee1e",
+        "captured": 1,
+        "cpu": 1
+      },
+      "pre_application_failure": {
+        "path": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-probes-112/affinity-state-112.json",
+        "sha256": "b705e4d6fc00148acf57f41231f0723f4aaa5231e048040877cec76adb4a6ff4",
+        "captured": 1,
+        "expected": 8,
+        "cpu": 1
+      }
+    },
+    "bounds": "Native45/model60/outer75/100000 steps; focused serial AL90 then strictSL90, caches off/determinism on, fail-first. Stable inputs/fixtures/head/status; quiet workers, empty groups and all actor/observer/nested PIDs reaped."
+  },
+  "reproduction": {
+    "cwd": "/home/user/workspace/php-spec/.tools/public-unset-private-112",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "profile": "tests/semantics/profile.json",
+    "recorders": {
+      "run.py": {
+        "path": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-probes-112/run.py",
+        "sha256": "b8be7a2fa84ccbd00d59baa5ccc05a4aa5bbb1ab6ddfc51ab09f9be5e428935d"
+      },
+      "watch-state-affinity-repair2.py": {
+        "path": "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/public-unset-probes-112/watch-state-affinity-repair2.py",
+        "sha256": "7bd6738caf546fe3b1e714bc35bb7ed2d191f6a33a4fede53d084ef0aaee2886"
+      }
+    },
+    "commands": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/public-unset-probes-112/run.py native --revision b2fb2dc8b89fa789642a29dfcd1794d8901c00a2",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/public-unset-probes-112/run.py baseline --revision b2fb2dc8b89fa789642a29dfcd1794d8901c00a2",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u .tools/public-unset-probes-112/run.py changed --revision a5c8773ec573a46d8e9ee24f32be4074a04bdb80",
+      "python3 -u .tools/public-unset-probes-112/watch-state-affinity-repair2.py 1",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u tests/semantics/public_unset_protocol.py --case cleanup --revision 5e4a6dc6ccb3d09f09739c617d24da7676cf12b5"
+    ],
+    "recovery": "Ignored original sources, gate recorder, raw process/stream records and prepared/runtime fixtures remain at recorded paths. Versioned runtime/tests recover from tested commits; tools are reused project-local binaries, no fresh rebuild claim.",
+    "retained_enclosing_state_command": "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u tests/semantics/public_unset_protocol.py --revision 04ab7b9a7afdfc62edefe13e1460e510a1ecd409",
+    "retained_enclosing_state_note": "Original run includes three passing groups plus cleanupfalse; its enclosing report remains false, not a complete packet pass."
+  },
+  "tools": {
+    "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "/home/user/workspace/php-spec/.tools/public-unset-private-112/_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "/home/user/workspace/php-spec/.tools/public-unset-private-112/tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "/home/user/workspace/php-spec/.tools/public-unset-private-112/.tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+  },
+  "limits": "No missing/dynamic/protected/hooked/readonly slot or wider type/signature/receiver/name claim. No new getter/property type/inheritance machinery. Ordinary held aliases and broader local/reentrant lifecycle/GC remain partial. Supplied throw preserves following $after42; unset is not an assignment expression.",
+  "review": {
+    "status": "accepted; independently reviewed",
+    "reviewer": "/root/class_review_84",
+    "semantic": "Native/genuine/source4 and four focused histories independently reviewed. Original pre-application failure, cleanupfalse and prefix diagnostic retain zero; only affected cleanup rerun.",
+    "publication": "Six partial inventory appends, concise scope, exact raw pointers and tested-cut/validator bridge independently accepted by /root/class_review_84. Actual-parent preservation reviewed separately at integration."
+  }
+}

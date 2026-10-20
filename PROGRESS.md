@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Declared public int `__unset` now distinguishes INITIAL bypass, UNSET callback
+selection and ordinary VALUE deletion. Captured call history survives VALUE `7`;
+same-name recursive UNSET is suppressed through actual compiled-local Probe D,
+then guard authority ends before the result marker/receiver cleanup. CV-null
+return retains the selected receiver; supplied throw skips the following store and keeps `42`.
+
+Four originals pass at `a5c8773ec`/407. Focused 579 = 556 reached + 23 derived
+premises combine initial/normal/throwing 403 at `04ab7b9a7` with cleanup 176 at
+`5e4a6dc6c`/407. Four genuine unchanged baselines remain Unsupported/zero agreement; native short sampling is 0/4.
+Original fixture AL failure, cleanup `false` and prefix diagnostic remain zero.
+List aliases were separated; a missing exact cleanup marker-validation arm was
+added, rerunning only cleanup. No accepted replay. Module 406 alone
+preserves private paths/shared access, state/roots/GC and the ordered manifest.
+Other slot layouts/types/signatures and wider reentry remain partial.
+[Public unset review](coverage/semantics/public-unset-review.json).
+
 Selected-reference `+=` now stages an initially nonquiet text RHS. A first
 Warning can repair bad text before the selected old RHS converts; a second
 supplied Exception preserves callback `88`/`7` and outer `100` without storing.
@@ -1347,35 +1363,6 @@ joined actor, accepted replay or renewed execution credit.
 
 The earlier nonowning-copy arithmetic route retains source10/state767 in its
 [review ledger](coverage/semantics/copied-arithmetic-warning-review.json).
-
-Selected inherited-private CV/literal `??=` now releases its quiet-read receiver
-hold before a named integer RHS, then re-fetches the current CV for Set. Old→replacement
-selection receives `7`; Get zero skips RHS/Set and releases before delivery;
-current NULL raises Error after RHS effects. A cached temporary `7` survives the
-setter's unrelated global `99`, and a supplied Set Exception preserves the same
-catch and destination `42` after receiver cleanup.
-
-Four exact source agreements pass at `1c9630c70`/407; all four focused histories
-pass at `ef3caae9d`/407: 746 = 732 reached + 14 derived premises. Actual read
-release, receiver retirement, node-free decision, fresh Set receive, saved call
-validity, zero/error receipts and PREP budgets are checked. Earlier typed-Get-name
-originals stop at the genuine declaration barrier; four fresh untyped-name
-variants expose the quiet-consumer Unsupported gap. Both complete gates remain
-separate, with zero baseline agreement and qualified short-native affinity.
-No runtime/test failure, diagnostic or accepted replay was needed.
-[Magic coalesce-assignment review](coverage/semantics/magic-coalesce-assignment-review.json).
-
-Modules 30/72/412/416 add the consumer and cached-int write route, reusing existing
-method declarations, inheritance, call/receive and ordinary null-write Error.
-Existing `??`/assignment selectors remain pointwise disjoint. Reference/owning
-RHSs, no-Get/untyped-Isset forms, Get/RHS throws and wider reentry remain partial;
-no generic ownership, destruction, WeakMap, GC or manifest change.
-
-Composed over `43026cb4d`/407 with all four tested runtime files and test bodies
-preserved. Incoming INI/DEFINE, missing-scalar Warning, Generator, ref-return,
-lossy-float literal/debt and arithmetic-repair selectors are absent here; the
-WeakMap declaration relocation and every unrelated parent path remain intact.
-Source4/focused746 keep their private407 cuts without a joined actor or replay.
 
 Retained propertyless Stringable `define` names now receive captured NULL flags
 with primitive candidates in admitted user-global/class-name domains. One module400

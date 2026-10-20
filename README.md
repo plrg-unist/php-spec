@@ -3595,6 +3595,14 @@ skips the callback; the callback retains Parent lexical scope and Child called
 scope, removes Parent's private slot and sets `seen=13`.
 One original and one state/212 checks cover selection, reception and receiver
 cleanup; [magic unset review](coverage/semantics/magic-unset-review.json).
+
+Declared public int properties now invoke that unsetter only after becoming UNSET;
+INITIAL bypasses it; initialized VALUE deletes ordinarily. Same-name recursion is
+suppressed through compiled-local destructor cleanup, with guard reset before
+receiver destruction. CV-null return and supplied throw retain the selected
+receiver; four originals and 579 focused premises cover this bounded extension.
+[Public unset review](coverage/semantics/public-unset-review.json).
+
 A selected inherited `__isset(string $name): bool` now handles terminal `isset`
 of a direct CV/literal private property. Initialized public and typed-uninitialized
 slots bypass it; actual true/false results preserve short circuiting and storage.
