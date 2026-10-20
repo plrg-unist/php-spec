@@ -7,6 +7,32 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct/selected named and mixed NULL-option `ini_set` calls now retain table-free
+stdClass values with direct quiet primitive properties. Reversed value/option
+evaluation preserves the earlier object through shared property writes and live
+callee/value replacement. Returning handlers then reach converted-empty
+parameter2 TypeError; supplied throw preserves rawNULL, Exception identity/result99
+and the same mutable object before normal recovery. Strict option priority follows
+both argument effects without entering the handler.
+
+Four source agreements retain `5c765213a`/`4b1c27aee`/406; author680 passes at
+`398832dc72`, peer429 at `d68941e06`, totaling1,109 with the same runtime. Initial
+`6cc5796d7` CPU3 native4/baseline0 precedes CPU1 source checks, CPU4 author state
+and CPU2 final peer state. Thirteen stable/reaped reports preserve two pre-main
+fixture binding failures0, fixed only by separate binding/extraction premises;
+accepted source/native/author checks were not replayed. Only Deprecated24 is
+expected; accepted workers are quiet. Only21 additive172 lines change; existing
+stdClass validation, finish/trace/root/discard/GC and historical tests stay exact.
+Native object identity/mark and actual state-only peer trace remain distinct.
+[Named NULL stdClass INI review](coverage/semantics/ini-set-named-null-stdclass-value-review.json).
+
+Composed over `1ba02cb9f`/407 with module172/four tests private-exact and every
+other runtime/schema/ordered manifest parent-exact. STDINSTANCE mark access stays
+on the ordinary internal-object path; source property hooks, DEFINE object values,
+arithmetic warnings, Generator/reference retirement and literal-reference debts
+have no producer here. Source4/author680/peer429 and both pre-main failures0 retain
+private cuts without joined execution or renewed evidence.
+
 The same initially missing direct CV twice at `>`/`>=` now warns for source
 right first, then reads current shared left. Setting string0 can make `$x > $x`
 true; leaving/removing that name instead stages a second Warning and two NULLs,

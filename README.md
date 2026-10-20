@@ -320,7 +320,15 @@ whose properties hold direct quiet primitives. Returning handlers reach paramete
 TypeError with an empty option and the same updated object; throwing handlers
 preserve raw NULL and cancel rejection. Four originals and 911 state premises
 cover shared property writes, strict priority, ownership and normal recovery.
-Named/owned/packed and wider object values remain partial.
+Owned/packed and wider named object values remain partial.
+
+[Named NULL INI options with retained stdClass values](coverage/semantics/ini-set-named-null-stdclass-value-review.json)
+now preserve the earlier object across reversed argument evaluation and shared
+property writes. Returning handlers reach parameter2 TypeError with an empty
+option and the same updated object; a supplied throw preserves raw NULL and
+cancels rejection. Four source comparisons and 1,109 state premises cover named
+binding, strict option priority, owning trace edges and normal setter recovery.
+Owned/packed calls, materialized tables and wider properties remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
