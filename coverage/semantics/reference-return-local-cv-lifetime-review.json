@@ -3543,5 +3543,90 @@
     "artifact_manifest": "../php-spec-evidence-archive/lifecycle-four-owning-119/manifest.json",
     "archive_sha256": "8c14a312f25ee839f32183e5778257c51fd558f4972cbcf49ac8898d326b9aa7",
     "recovery": "Restore base3744 at the original lifecycle-four-owning-119 worktree path, apply runtime/recursive-owners.patch and extract .tools/m119 with matching providers. Seven reports retain original source/native/parsed/checked/request/profile/environment, the pre-state diagnostic binding failure and immutable accepted state fixture/producer/runner snapshots. No checkout/build tree or production archive dependency."
+  },
+  "mixed_global_reference_owning_return_history": {
+    "status": "independently_reviewed_mixed_global_reference_object_history",
+    "revision": "4a1cc45c51b8cd6549ffd76c640bfd0985e1054e",
+    "modules": 406,
+    "implementation": [
+      "spec/semantics/270-eager-destructors.watsup",
+      "spec/semantics/156-finally-runtime.watsup"
+    ],
+    "engine": "Pinned DISCARD_EXCEPTION frees and clears the replaced operand while FAST_CALL/FAST_RET preserve finalizer continuations. BIND_GLOBAL shares the global cell; discarding its old pending transfer removes one reference owner without collecting the still-rooted cell or object. THROW uses the same supplied object without a new constructor. Native observations fix Notice15, local/caller identity and detached r versus z/za aliases.",
+    "source": "Computed A then global z then computed C are simultaneously pending before selected y. z/za share a global HCELL and z_old separately holds its stdClass value. C creates/unsets D; D imports given and throws the outside supplied Exception. Local caught/caller observe the same object; cleared C produces one Notice15 and freshNULL. z remains original through r=changed; za=alias changes z while r stayschanged and b stays7.",
+    "repair": "Only270+29/-11 and156+11/-7. The new ordinary untyped global-reference slot reader authenticates return-CV emission, ENV/GLOBAL exact cell, allocation and REF membership. Computed-object checks are factored unchanged; recursive seen is typed pnode, separating HOBJECT and HCELL indices. The structural cleared suffix gains a disjoint REFERENCE arm and tagged seen. At least two outer slots and current distinct-node scope remain. SOURCE/history representation, pending/finish/body classifiers, roots, ownership/release/storage/GC transitions and schema are unchanged.",
+    "domain": "The existing named byref ?object first-retirement history family still requires at least two remaining slots. Each remaining computed object retains finite normal destructor/source/LINE/restore/old-operand/sole-owner checks. A new ordinary untyped global-CV REFERENCE slot authenticates emitted source, current ENV and actual GLOBALTABLE cell, allocation and REFCELLS membership. HCELL sharing is allowed; tagged pnode seen distinguishes cell and object indices while retaining the current distinct-node grammar. Fresh source has C plus global z and computed A, C creates/unsets D, and D throws the same outside supplied Exception. Restored structural suffix admits both object and reference slots and retains restore/function/Notice constraints. SOURCE/history representation, pending/finish/body classifiers, roots, ownership/release/storage, GC and schema remain unchanged. Repeated alias slots, other reference producers, typed/property cells, wider bodies/reentry and GC remain open.",
+    "native_and_source": "Native1 and unchanged NORMAL wrong-ending baseline retain d468/406: local catch/Notice/freshNULL are lost, CI0/CMnone/RN0 and r/b write-through, although z aliases remain correct. One affected agreement at4a1cc keeps original source/parsed/checked/request bytes and exact native stdout/Notice15/exit. No accepted historical replay.",
+    "author": "204 Boolean/7 raw: actual mixed C/z/A tail, emitted global reader and typed operand nodes; a different live same-value cell still passes the old generic operand validator but fails exact global identity. Missing z task leaves STORE/ALLOCATIONS and global z/za/object live, drops one HCELL owner, preserves valid heap then refuses. Mirrored wrong KNOWN-object kind preserves the operation registry receipt, pending validity and heap but refuses. Pure suffix tests allow equal HOBJECT/HCELL numbers and exclude duplicate HCELLs within the bounded grammar. Capture/pending/cleared-C plus slot/shared/empty/EXIT raw/public states, exact one-owner slot drop with unchanged STORE/allocation/object owners2, same supplied record/catch, freshNULL/Notice15/aliases and whole-split ending pass.",
+    "independent": "235 Boolean/5 raw: fresh independent packet, C/D/f saved scope and actual global z/za/z_old. Removing only the saved-f z task leaves the global reader/history site individually valid and STORE/ALLOCATIONS/heap valid, but queue correlation/public admission refuse. Wrong live same-value cell and wrong KNOWN-object kind are mirrored through SOURCE/history, actual queued task and operation registry with valid heap/operand/pending before refusal. Typed suffix checks, actual shared-cell job/decrement, same outside record/local catch, one Notice15 and r/z/za/b detachment accompany full wrapped-state and whole-split equality.",
+    "diagnosis": "98 Boolean/2 raw atd468/406: authentic middle REFERENCE cell/global aliases and objectowners2, false11\u2192true8/no recheck, live A owner1 and supported supplied throw/global-ID/pending gates. The old object-only recursive reader refuses the reference tail, retire_site is eps, SOURCE stays plainfalse, and generic pending search misses the selected local catch.",
+    "validation": "439 Boolean/12 raw at4a1cc/406 (author204/7, independent235/5), strictSL45, state240/300, jobs1, true/empty stderr/stable/full reap. Native1/source1 and diagnosis98/2 retain distinct cuts. Every actor executes once; no failed state actor or unrelated renewal.",
+    "resource_note": "The author CPU5 actor overlapped an unrelated Iterator36 peer from 08:51:28 to 08:52:54 UTC. Its strict19.785/state203.727s are contended timings only; exit0/true/quiet/stable inputs/full reap earned independent semantic acceptance without replay. The first independent M120 peer ran separately on root-reconciled exclusive CPU4. Original actor reports/raw remain unchanged.",
+    "reports": [
+      {
+        "path": ".tools/m120/diagnostic-bi665fvf/report.json",
+        "sha256": "d60e6b763d980079851eaed048d621c745114bd1f82fc7808f0d9f71031f67d6",
+        "revision": "d4682e6bf21f35ea94536ff4ee2ceeaaf9945814",
+        "complete": true,
+        "boolean_premises": 98,
+        "raw_php_steps": 2,
+        "source_agreements": 0,
+        "native_observations": 0
+      },
+      {
+        "path": ".tools/m120/model-mixed-owning-baseline-rgamwqq9/report.json",
+        "sha256": "c2b5b71e0249802ea43fac29b50918c6315f2c5b9801c381e8f79c4ba893b2f3",
+        "revision": "d4682e6bf21f35ea94536ff4ee2ceeaaf9945814",
+        "complete": true,
+        "boolean_premises": 0,
+        "raw_php_steps": 0,
+        "source_agreements": 0,
+        "native_observations": 0
+      },
+      {
+        "path": ".tools/m120/model-mixed-owning-repaired-fl0t7elh/report.json",
+        "sha256": "6c083294d70ba76a72878e1446f1927db52e157c21733aded79b6559fc1cd261",
+        "revision": "4a1cc45c51b8cd6549ffd76c640bfd0985e1054e",
+        "complete": true,
+        "boolean_premises": 0,
+        "raw_php_steps": 0,
+        "source_agreements": 1,
+        "native_observations": 0
+      },
+      {
+        "path": ".tools/m120/native-mixed-owning-40x_06fk/report.json",
+        "sha256": "f9f7bb03f2460b265adcb97d87dc7587535e969daef82be05afb2a166b36c7b1",
+        "revision": "d4682e6bf21f35ea94536ff4ee2ceeaaf9945814",
+        "complete": true,
+        "boolean_premises": 0,
+        "raw_php_steps": 0,
+        "source_agreements": 0,
+        "native_observations": 1
+      },
+      {
+        "path": ".tools/m120/public-ii6cmkym/report.json",
+        "sha256": "dd80f61e2e210c38454c0f24cd4d2b5bd4105b51399545fae0c95c349fc01625",
+        "revision": "4a1cc45c51b8cd6549ffd76c640bfd0985e1054e",
+        "complete": true,
+        "boolean_premises": 204,
+        "raw_php_steps": 7,
+        "source_agreements": 0,
+        "native_observations": 0
+      },
+      {
+        "path": ".tools/m120/reviewer-wr_63ept/report.json",
+        "sha256": "ae61d5c6d66d4a2451f962fab107978fa7a96d32373fcc06e8b769324d681a58",
+        "revision": "4a1cc45c51b8cd6549ffd76c640bfd0985e1054e",
+        "complete": true,
+        "boolean_premises": 235,
+        "raw_php_steps": 5,
+        "source_agreements": 0,
+        "native_observations": 0
+      }
+    ],
+    "limits": "Fresh source evidence is one shared ordinary global stdClass CV between two computed-object slots under the existing finite nested supplied-Exception body. The grammar still excludes repeated pending alias slots; that restriction is not a PHP-invalidity claim. Other reference producers, typed/property cells, wider mutations/bodies/reentry, collector paths and broader consumers remain partial.",
+    "artifact_manifest": "../php-spec-evidence-archive/lifecycle-mixed-owning-120/manifest.json",
+    "archive_sha256": "ad1387df1535f45c813b05c52be87aa2574d867a6d7eb0d6b6d2131dc189ecea",
+    "recovery": "Restore based468 at the original lifecycle-mixed-owning-120 worktree path, apply runtime/mixed-global-slot.patch and extract .tools/m120 with matching providers. Six reports preserve original source/native/parsed/checked/request/profile/environment plus immutable accepted state fixture/producer/runner snapshots. No checkout/build tree or production archive dependency."
   }
 }

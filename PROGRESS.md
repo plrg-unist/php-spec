@@ -885,39 +885,36 @@ joined actor, accepted replay or renewed execution credit.
 The earlier mixed CV/selected-reference arithmetic route retains source9/state858
 in its [review ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 
-M119 validates owning computed-return histories recursively instead of requiring
-exactly three slots. Every remaining object keeps an authentic source/LINE,
-lexical restore link, distinct identity, live old operand, finite echo-only class
-and sole task owner; at least two outer owners remain required. The consumed-NULL
-suffix likewise checks every owner/restore link and its exact old-source Notice.
-Existing finite first-throw bodies, supplied identity, SOURCE/finish, roots,
-ownership/release/storage, GC and task/state schema stay unchanged.
+M120 admits an ordinary global-CV reference slot beside computed objects in the
+bounded owning-return history. The source reader checks the emitted CV, current
+ENV and real GLOBALTABLE cell, ordinary name, untyped reference and allocation.
+Shared HCELLs need no sole-owner condition; computed objects retain their finite
+class/source/LINE/restore and owner1 checks. Tagged cell/object nodes preserve
+distinct identity across tables. The cleared-NULL grammar accepts both slot
+kinds while retaining restore links, minimum two outer slots and exact Notice.
+SOURCE/history representation, pending/finish/body classifiers, roots,
+release/storage, GC and schema stay unchanged.
 
-One fresh four-owner source and 368 Boolean/six raw checks pass at
-`0c1f7dea2`/406 (author143/3, independent225/3). Four simultaneous sole-owning
-returns precede nested D→E cleanup; the same outside supplied Exception reaches
-the local catch and caller observer, then cleared D gives one Notice22 and a
-fresh detached NULL while C/B/A retire. Missing nearest/middle/farthest owners refuse with valid
-heaps; mirrored outer LINE, broken restore/Notice and duplicate-ID controls
-refuse. Three raw/public states and full whole/split endings agree. Constructed
-two-remaining and old11-task subcuts preserve the former three-slot grammar;
-historical sources are not replayed.
+One fresh mixed source and 439 Boolean/12 raw checks pass at `4a1cc45c5`/406
+(author204/7, independent235/5). C plus global z and computed A precede nested
+C→D supplied throw; the same outside Exception reaches the local catch/caller
+observer, cleared C gives Notice15 and a detached fresh NULL. The z slot's
+release drops exactly one cell owner while global z/za, copied z_old, STORE and
+the object stay live. Exact public states cover capture, pending replay, cleared
+C and shared-cell RELEASE/empty/EXIT; whole/split endings agree. Wrong live-cell
+identity, mirrored operand kind and task-only deletions refuse with valid heaps;
+structural checks distinguish equal numeric cell/object IDs. Repeated alias
+slots remain outside the current distinct-node grammar.
 
-Native1 and the wrong-ending baseline retain `3744afa83`/406. Separate94/2
-diagnosis proves supported supplied throw selection but fixed-arity history loss.
-Its first pre-state binding failure remains zero; only adjacent assertion order
-changes for the affected retry. Accepted model actors finish quiet/stable/reaped
-with strict45 and author240/peer300 caps. Fresh source coverage is four owning objects;
-mixed/reference histories, other bodies, deeper reentry, properties, GC and wider
-consumers remain open.
+Native1 and the wrong-ending baseline retain `d4682e6bf`/406. Separate98/2
+source-linked diagnosis isolates the missing reference arm from supported A and
+supplied-throw gates. One affected source agrees exactly with the original tuple
+and all four packets at 4a1cc. Every actor executes once; model workers and fixtures
+finish quiet/stable/reaped with strict45 and author240/peer300 caps. Author timing
+was contended; the reviewed passing result is retained without replay. Other
+reference producers, typed/property cells, wider bodies, reentry, GC and consumers
+remain open.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-
-Composed over `76461b4d4`/406 after pointwise review of incoming INI,
-missing-CV spaceship, compound-ADD failure, DEFINE value/Closure and flat-array
-ALIAS-leaf selectors, all unproduced here. Literal retention/debt lists stay
-empty. Only156/270 differ and byte-match tested0c1f; every other parent runtime,
-task/default/root and ordered406 manifest stays exact. Native/source/diagnosis
-and368/6 retain their private cuts without joined execution or accepted replay.
 
 Retained propertyless Stringable `define` names now accept captured boolean true
 with primitive candidates and non-NUL global/class-like results. One module400
@@ -11262,8 +11259,9 @@ literal Exception constructor-kind correlation, source1 and385/4 at1c871. M118
 adds one stable supplied-global Throwable body, source1 and428/4 at3018, preserving
 outside identity/message, local catch/NULL/Notice17 and remaining owners. M119
 adds recursive owning-source/suffix validation, fresh four-owner source1 and368/6
-at0c1f with exact catch/Notice22/detachment. Other interposed/pending histories,
-mixed/reference owners, deeper reentry, GC and
+at0c1f. M120 adds an authenticated global-reference slot beside computed objects,
+fresh source1 and439/12 at4a1cc with shared-cell release and Notice15/detachment.
+Repeated alias slots, other interposed/pending histories, deeper reentry, GC and
 wider typed consumers remain open core obligations for permanent lifecycle/control work.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are

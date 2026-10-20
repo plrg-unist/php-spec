@@ -4349,18 +4349,18 @@ credit is unchanged. An unused destructor declaration now also preserves the
 no-instance, echo-only interposed scalar history. Fresh control/treatment sources
 agree with PHP; separate 463/8 state checks cover its shared-cell RELEASE/EXIT
 pauses, required literal history despite an unchanged heap, engine TypeError catch,
-one line7 Notice and detached aliases. Owning computed-return histories with at least three pending slots now
-preserve first-retirement direct or nested destructor throws while at least two
-outer return slots stay live. Finite literal builtin
-TypeError/Exception and stable global supplied-Throwable bodies retain their
-source and identity; cleared NULL recovery keeps the Notice and detached caller
-reference. Recursive source/suffix validation checks every remaining owner and
-restore link. A fresh four-owner supplied-Exception source and 368/6 checks at
-`0c1f7dea2` cover missing-owner/metadata refusals, exact public pauses and complete
-alias endings. Earlier three-owner evidence keeps its recorded cuts in the
+one line7 Notice and detached aliases.
+Owning-return histories with at least three pending slots preserve finite
+first-retirement destructor throws, including stable supplied-Throwable identity,
+cleared NULL recovery and detached caller references. Remaining computed objects
+keep their source/restore/sole-owner checks; ordinary global-CV slots now bind
+the emitted source to the actual shared cell. A mixed source and 439/12 checks
+at `4a1cc45c5` prove same-object catch, wrong-cell/kind and missing-slot refusals,
+exact shared-cell release/public pauses, Notice15 and z/za/caller aliases.
+Earlier computed-only evidence keeps its original cuts in the
 [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-Mixed/reference histories, other bodies, deeper reentry, GC and wider consumers
-remain open.
+Repeated alias slots, other reference producers, wider bodies/reentry, GC and
+consumers remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;
