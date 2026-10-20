@@ -7,6 +7,37 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pending SEND now reaches a normal node-free COMPLETE through one native
+ancestor. Only selected Upper clears its bit; a first pending Middle NEXT
+changes the physical initialization history independently. Exact optional child
+release precedes normal argument, unused-current-copy and receiver cleanup;
+assignment keeps its copy. Row COW and a cache RuntimeException inside live
+Middle finally preserve distinct owners without a copied-return root.
+[Node-free ancestor SEND review](coverage/semantics/generator-nodefree-ancestor-send-review.json).
+
+Four native observations and the genuine unchanged Unsupported retain
+`809aea98f`/408. The baseline stops at SEND after eight authentic OUTPUT chunks,
+preserving recordfalse/agreement0. Source4/strict408 pass at `b9f6926fb`;
+gate4 and 647 focused premises (384 author +263 independent; 627 local +20
+generic) pass at `b3456188e`. All post-change checks pass first execution at
+original caps, without failures, retries, cap changes or historical renewal;
+actors are reaped/CPU2 released.
+
+Only module289 changes: a fixed one-ancestor endpoint and separate API/cleanup
+arms reuse node-free return, source-demand and exact optional child-prefix
+proofs. Physical Middle's bit stays independent. Owning walkers, scheduler,
+root functions, NEXT, close and collector bodies remain exact. Empty held/task
+owners, input registry and inactive collection bound this slice. Deeper links,
+wider owner/input histories, masked or abrupt arguments, body entry and
+collection remain unvalidated.
+
+Composed over `921934ca1`/409, preserving tested289 and six tests exactly.
+Incoming INI/DEFINE, missing-read comparisons, NULL-key resets, magic updates
+and numeric-warning selectors have no producer here. All other
+runtime/schema/default/root/ordered-manifest/pipeline bytes remain parent-exact.
+Source4/strict408/state647 retain their private cuts and genuine refusal0,
+without joined execution, accepted replay or renewed credit.
+
 Explicit integer casts now retain range-warning floats across named callbacks.
 The original `2^63` float wraps to `PHP_INT_MIN`; the handler's same-spelling text
 cast instead caps at `PHP_INT_MAX`. Explicit NaN has only one Warning, and a supplied
@@ -107,9 +138,9 @@ owned DEFINE true-flag and explicit NULL-key reference selectors have no produce
 here. Incoming checkpoints remain intact except reviewed81/83 pack qualifiers;
 source4/state1,719 retain private408 cuts without joined execution or renewed credit.
 
-Pending ancestor SEND over one native link to a PAUSED bare-statement-yield
-child now retires an unused current snapshot after normal argument cleanup and
-before receiver release. Assignment keeps its copy. In the tested alias-drop
+At Iterator46, pending ancestor SEND over one native link to a PAUSED
+bare-statement-yield child retired an unused current snapshot after normal
+argument cleanup and before receiver release. Assignment keeps its copy. In the tested alias-drop
 histories, Child finally precedes Middle finally; argument COW and a cache
 RuntimeException inside live Child finally retain their distinct owners without
 COMPLETE or copied-return roots.

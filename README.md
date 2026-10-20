@@ -1631,6 +1631,12 @@ release. In the tested alias-drop histories, Child finally runs before the
 selected receiver's finally; assignment keeps its copy. Argument-time row COW and a child-finally cache RuntimeException
 preserve their separate owners. See the
 [bare-yield SEND review](coverage/semantics/generator-unused-bare-yield-send-review.json).
+Pending SEND now also returns current through one native ancestor above a
+normal node-free COMPLETE middle. Only the selected initialization bit clears;
+a first pending NEXT can clear the physical middle independently. Exact child
+refresh release, normal argument cleanup and unused-copy retirement precede
+receiver release; assignment retains its copy. See the
+[node-free ancestor SEND review](coverage/semantics/generator-nodefree-ancestor-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit

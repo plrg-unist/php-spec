@@ -213,6 +213,15 @@ three owners: global, Child REFCELL and Child frame CV; its array still has one 
 edge. Empty held/task owners, an empty input registry and inactive collection
 bound this arm; wider chains stay separate. See the
 [bare-yield SEND review](../../coverage/semantics/generator-unused-bare-yield-send-review.json).
+A separate fixed one-ancestor proof now reaches an allocated physical Middle
+with a normal node-free COMPLETE. It authenticates the real link/site, empty
+held/task owners and input registry, then reuses the direct endpoint proof and
+inactive-collection bound. Physical Middle's initialization bit is independent
+of selected Upper. Refresh contributes only its actual allocated CLOSED-child
+prefix; an already-refreshed endpoint contributes none. Owning-return walkers,
+source demand, result/slot ownership and the common release scheduler remain
+unchanged. See the
+[node-free ancestor SEND review](../../coverage/semantics/generator-nodefree-ancestor-send-review.json).
 Literal pending NEXT takes the same initialization-only return through a direct
 or finite native-linked receiver, preserving the actual parked source and frame.
 Its NULL result owns no current snapshot. After a raw-row write performs COW,
