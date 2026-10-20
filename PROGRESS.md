@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+All seven comparisons now admit an initially defined live flat DIRECT primitive
+array CV opposite a missing read. The missing result stays NULL while current
+scalar/array rebinding, checked quiet removal or unread second Warning follows
+existing physical order. Initial tables retain only CV/reference/copy/pool owners;
+saved read records add none. Four entry-premise alternatives preserve source,
+resume, tasks/fields/roots/discard. Ten source agreements plus two captured/nested
+controls and 511 strict-SL premises/four groups (239 author +272 independent)
+pass first attempts at `8e71e82b0`/407, including pooled COW, false/default,
+chosen Exception/caller41/finally and budgets. Separate affected173/2 and two
+former initial-array selectors renew no historical credit. Initial native2+4
+retain `92b95086a`/407; genuine unchanged baseline retains `af3fb9ca3`/407.
+Captured/temporary arrays, nested/reference/object leaves and wider producers
+remain partial.
+[Initial-array review](coverage/semantics/undefined-comparison-initial-array-review.json).
+
 `==`, `!=`, `<`, `<=`, `>` and `>=` now resume against handler-created live flat
 DIRECT primitive arrays through current CV/reference bindings. Frozen NULL
 compares with table emptiness, preserving both physical orders and admitted
