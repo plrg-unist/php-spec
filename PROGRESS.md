@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Quiet selected-reference `**=` now commits captured infinity through the old
+target alias even when the Deprecated handler rebinds both current names and
+throws. The same supplied Exception resumes after the `+INF` store; the outer
+assignment retains `100`.
+A signed-zero/default case delivers strict `-INF` after old RHS retirement.
+Two originals pass at `d27e44ca2`/407 and 334 focused premises at `65b51b641`/407.
+[Selected power-assignment ledger](coverage/semantics/powerassign-selected-warning-review.json).
+Initial quiet primitive-number refs and a surviving scalar old-target alias bound
+this slice; wider operands/targets/lifetimes remain partial, OP12 paused.
+
+Composed over `5e6feda5b`/407, preserving incoming state, task and
+manifest paths. Source2/state334 retain their private407 cuts; independently
+reviewed absent incoming selectors require no joined execution or renewed credit.
+
 The same missing direct CV twice at `==`/`!=`/`<`/`<=` now traverses its
 second Warning when the first handler leaves or removes that name. Two captured
 NULLs yield true/false/false/true despite second-handler writes/references;
@@ -75,19 +89,8 @@ here; new target/task variants stay unused and debt lists stay empty.
 Source7+3/state491 and affected38/2/one selector retain their private406
 cuts without joined execution or renewed historical credit.
 
-Selected-reference `/=` now stages both numeric holders before their Warnings.
-Cached float `2.5` writes the old target despite current-name rebindings; a second
-supplied throw cancels stores, and cached zero still errors after RHS repair and
-retirement. The surviving old target alias, callback writes and outer100 remain
-on both failure paths.
-Three originals pass at `fb9388492`/406 and 554 focused premises at `6364a6c16`/406.
-[Compound DIV ledger](coverage/semantics/divassign-warning-review.json).
-Initial leading-LEFT/quiet-RHS scalar references and a surviving old-target alias
-bound this slice; wider operands/targets/lifetimes remain partial, OP12 paused.
-
-Composed over `219e1b868`/407, preserving incoming state, task and
-manifest paths. Source3/state554 retain their private406 cuts; independently
-reviewed absent incoming selectors require no joined execution or renewed credit.
+Earlier selected-reference `/=` Warning continuations retain source3/state554
+in the [compound DIV ledger](coverage/semantics/divassign-warning-review.json).
 
 Pending zero-argument NEXT now also returns before dispatch through native links
 to a parked simple-CV used yield with one owning LIVE input. Only the selected

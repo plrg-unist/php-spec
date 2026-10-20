@@ -847,6 +847,15 @@ outer assignment stays unchanged. Three exact originals and 407 focused SL
 premises cover signed infinity, target storage and pending ownership in the
 [power-assignment ledger](coverage/semantics/powerassign-warning-review.json).
 Wider operands, targets, callbacks and lifecycle paths remain partial.
+
+Quiet selected-reference `**=` now writes captured infinity through the old
+target alias even after current-name rebinding and a supplied deprecation-handler
+throw. The same Exception resumes after the store; the outer assignment stays
+unchanged. A signed-zero/default case delivers `-INF` after old RHS retirement.
+Two originals and 334 focused premises pass in the
+[selected power-assignment ledger](coverage/semantics/powerassign-selected-warning-review.json).
+Other operands, unsafe targets and wider lifetimes remain partial.
+
 Plain-CV `%=` now keeps the first converted long through a fractional-float
 deprecation, then reads the live quiet integer RHS. Normal return stores the
 remainder; a supplied throw or live zero leaves the target and late alias intact.
