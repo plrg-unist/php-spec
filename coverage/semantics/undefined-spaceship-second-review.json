@@ -1,0 +1,108 @@
+{
+  "milestone": "COMP99 second missing-CV Warning in spaceship comparison",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "A frozen source-left NULL at <=> may fetch a later missing direct CV, including the same name twice or a scalar RHS removed by the first handler. The second Warning freezes NULL before its handler; comparison is NULL/NULL with result0.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "60f544ecc",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "3c6288d2eca57f87acca63f94237c0e7dd345b6cd905f0e27980218c271e0997"
+  },
+  "modules": 406,
+  "engine_basis": "ZEND_SPACESHIP fetches OP1 then OP2 with GET_OP*_ZVAL_PTR. Each missing read yields language-level NULL after its Warning; callback initialization cannot change that result. zval_undefined_cv suppresses reporting under a pending exception.",
+  "implementation": "One pure helper recognizes only the existing first-left-frozen SPACESHIP record with current missing INPUT. The resume refusal excludes that case; restoration lets existing driver ingress stage the second known-NULL-left record. Right-frozen removed-left records and owning first-resume values remain excluded. Source certificates, state fields, tasks, roots and discard stay exact.",
+  "behavior": [
+    "Both missing distinct CVs, initially scalar RHS unset, and the same missing CV traverse two callbacks. Second scalar writes, fresh aliases and target binding do not change result0; absent names produce no third Warning. Both false/default Warnings retain order. Second supplied Exception preserves destination41, catch identity and finally.",
+    "Four strict-SL groups retain authentic first and second plans, driven Warning interception, handler returns and exact raw restores/comparison. Fresh owners0 to2 and target owners1 to2 retain later writes; source/read-line/operator/shape refusals, right-frozen exclusion and zero/split budgets pass.",
+    "Affected old89/97/98 controls now restore the first record or expect normal two-Warning results. Their focused maintenance does not replay complete old state groups or renew historical credit."
+  ],
+  "baseline": {
+    "revision": "3d668f22ed4a570e1955d9be291b56f0d494e478",
+    "report": "initial/initial-report.json",
+    "sha256": "41c21ccdda2ca7d701a36932f1c91019198e4906bd8e082345e66c03526ba16c",
+    "native": "Two exact originals emit left then right H at line10 and result0, empty stderr.",
+    "model": "Genuine unchanged string original emits first H:1:1::10; then Unsupported/spaceship warning changed opposing scalar.",
+    "agreement_credit": 0
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "d789833ee3cfeb2cac69bd3aede05420d3d96b8edb0026f3df679c30d8929bf6",
+      "revision": "37df3a64b0774cb13b5de9b170e78bcafb37f047",
+      "agreements": 5,
+      "unsupported_controls": 1
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "ca4498e013d730402c303cb87e8ee43f56d732cd14b2a128c32869929480fcd8",
+      "revision": "37df3a64b0774cb13b5de9b170e78bcafb37f047",
+      "agreements": 4,
+      "unsupported_controls": 0
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "248974aad2c9deca38bfffa02b6974e20086e6307e8ee446eab8c9a690f3bef9",
+      "revision": "37df3a64b0774cb13b5de9b170e78bcafb37f047",
+      "premises": 311,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "a0da6b261078eaab28dad9eab53a25b3e8a301c0b605a065373af1c110e6d551",
+      "revision": "37df3a64b0774cb13b5de9b170e78bcafb37f047",
+      "premises": 331,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 9,
+    "unsupported_source_controls": 1,
+    "state_groups": 4,
+    "state_premises": 642
+  },
+  "maintenance": {
+    "state": {
+      "report": "maintenance-state/report.json",
+      "sha256": "426e52a06529ae3adeec894273d002fade5b251d0cb80ef0e3b3fb0dd7e0f8db",
+      "revision": "37df3a64b0774cb13b5de9b170e78bcafb37f047",
+      "premises": 132,
+      "groups": 3
+    },
+    "source_selectors": [
+      {
+        "report": "maintenance-source89/model-both-missing-boundary-report.json",
+        "sha256": "78b7057097de7f9cec908b9e2fa88ba6ad041f261ed2d97b986d9f0c3b1e8e5e",
+        "revision": "37df3a64b0774cb13b5de9b170e78bcafb37f047"
+      },
+      {
+        "report": "maintenance-source97/model-peer-both-missing-spaceship-right-remains-missing-report.json",
+        "sha256": "2aa80011850461599be4bd6d4c81c173dc433579f1034d01fb441e96358f94c9",
+        "revision": "37df3a64b0774cb13b5de9b170e78bcafb37f047"
+      },
+      {
+        "report": "maintenance-source98/model-peer-same-missing-spaceship-remains-missing-report.json",
+        "sha256": "4c182d902b56ddc6ae5dcf4035322e9fb0dda8cba8b81bdfcea4c109cbad6cae",
+        "revision": "37df3a64b0774cb13b5de9b170e78bcafb37f047"
+      }
+    ],
+    "historical_agreement_renewal": 0,
+    "scope": "Three source-reached old fronts check UNDEFINED/removed/same-name RHS only through second invoke; three old refusal selectors receive affected-only native/model checks. Original89/97/98 cuts remain historical."
+  },
+  "failures": [],
+  "remaining": [
+    "Other operators second-Warning chains, their same-CV forms, owning comparison operands, right-frozen removed-left paths and wider producer/lifetime forms remain partial.",
+    "All current gates pass first attempts at37df3a64b/406. Paused COMP88 Stringable and unrelated arithmetic remain excluded."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-99",
+  "artifact_manifest_sha256": "0fa5df1dafc3c223d08db617b8d2b4df75f10a278020bc45910c5c0219b2b74e",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_spaceship_second_sources.py --phase native --output .tools/comp99-source-new",
+    "python3 tests/semantics/undefined_spaceship_second_sources.py --phase model --output .tools/comp99-source-new",
+    "python3 tests/semantics/undefined_spaceship_second_state.py --output .tools/comp99-state-new",
+    "python3 tests/semantics/undefined_spaceship_second_review_state.py --output .tools/comp99-peer-state-new",
+    "python3 tests/semantics/undefined_spaceship_second_maintenance.py --output .tools/comp99-maint-state-new"
+  ]
+}

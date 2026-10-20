@@ -45,7 +45,7 @@ and [greater review](../../coverage/semantics/undefined-scalar-compare-gt-ge-rev
 record the separate cuts. Zend evaluates `>`/`>=` source expressions left to right,
 then reverses physical comparison operands. The single-missing/scalar-throughout
 bound makes these source-oriented records valid; removed-right native probes
-confirm one Warning without admitting that wider path. Second-Warning chains,
+confirm one Warning without admitting that wider path. Their second-Warning chains,
 owning/removed counterparts and wider producers remain partial. Earlier spaceship cuts remain in the
 [scalar warning review](../../coverage/semantics/undefined-spaceship-review.json).
 
@@ -55,10 +55,10 @@ defines current right. Reversed `>`/`>=` warn for source right first and freeze 
 NULL while the handler defines current left. The first name may remain undefined.
 A supplied throw suppresses the second Warning while retaining destination,
 Exception identity and finally; `zval_undefined_cv` checks the pending exception
-before reporting. Returning with the opposing name still missing remains explicit
-Unsupported before the second-Warning chain. The spaceship path uses the same
-left-frozen record and entry-only predicate; its existing scalar resume guard
-still rejects a missing or owning right value. Owning/removed counterparts
+before reporting. Returning ordinary comparisons with the opposing name still
+missing remains explicit Unsupported before the second-Warning chain.
+The spaceship path uses the same left-frozen record and entry-only predicate.
+Owning counterparts and removed-left spaceship operands
 and wider producers remain partial. The
 [forward review](../../coverage/semantics/undefined-scalar-compare-both-review.json)
 and [reversed review](../../coverage/semantics/undefined-scalar-compare-both-reversed-review.json)
@@ -68,10 +68,19 @@ physical missing operand; these maintenance checks do not renew earlier results.
 
 At `<=>`, both operands may also name the same initially missing CV. The first
 read stays NULL while the second sees the handler-created scalar or reference.
-Returning with that name still missing refuses before the second Warning; the
-other six operators with the same missing CV remain partial. The
+The other six operators with the same missing CV remain partial. The
 [same-variable review](../../coverage/semantics/undefined-spaceship-same-review.json)
 records this entry extension and its separate source/state cut.
+
+If a frozen-left `<=>` read resumes with its later direct CV still missing,
+the driver now dispatches the second Warning and freezes its NULL too. This
+includes a scalar right CV removed by the first handler and the same name twice.
+Second-handler writes or reference binding cannot change the comparison result 0;
+leaving the name missing causes no third Warning. False handlers preserve each
+default Warning's order, and a second supplied throw preserves destination and
+catch/finally. The existing right-frozen removed-left refusal stays separate.
+[Second-Warning review](../../coverage/semantics/undefined-spaceship-second-review.json)
+records fresh source/state checks and only the affected historical controls.
 
 Array comparison first handles identical container identity, then recursion on
 the left operand, element counts, and exact normalized key lookup in left

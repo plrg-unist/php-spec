@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+A frozen-left `<=>` now stages a second Warning when its later direct CV stays
+missing, including a removed scalar RHS or the same missing name twice. Both
+NULLs stay frozen despite second-handler writes/reference binding; a still absent
+name causes no third Warning. True/false default order and second supplied throw
+preserve destination/catch/finally. One helper and resume guard change; source
+certificates, fields, tasks, roots and discard stay exact. Nine source agreements
+plus one right-frozen removed-left refusal and 642 strict-SL premises/four groups
+(311 author + 331 independent) pass first attempts at `37df3a64b`/406. Separate
+affected 132 premises/three groups and three old selectors pass without renewing
+historical COMP89/97/98 credit. Genuine integrated COMP98 baseline `3d668f22e` stays zero;
+no failures or retries. Other operators' second-Warning chains, owning operands,
+right-frozen removed-left paths and wider producers remain partial.
+[Second-Warning spaceship review](coverage/semantics/undefined-spaceship-second-review.json).
+
 One initially missing CV may now occur twice at `<=>`: the first read freezes
 NULL, then the second sees the shared scalar/reference created by the handler.
 Only the entry predicate's distinctness premise widens for SPACESHIP; right-read
