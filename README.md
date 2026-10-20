@@ -471,8 +471,18 @@ TypeError/trace capture stays visible through both API and explicit-wrapper arra
 arguments; the API option is empty while the wrapper retains NULL. Four source
 comparisons and 1,521 state premises cover strict ordinary versus weak explicit
 reception, supplied-throw cancellation, transitive reference edges, exact discard
-and original-setter recovery. Named/unpacked/PIPE forms, typed/property references,
+and original-setter recovery. Unpacked/PIPE forms, typed/property references,
 owning referents and sole-owner lifetimes remain partial.
+
+[Named INI calls with shared-reference arrays](coverage/semantics/ini-set-named-null-alias-array-value-review.json)
+now capture the earlier array before a later named option helper changes its
+shared cell, current container and live callee. Fixed/selected strings and retained
+setters use the same source-destination checks; positional authority is preserved.
+Four source comparisons and 1,628 state premises cover saved shape with live cell
+contents, empty API versus raw NULL wrapper options, strict ordinary versus weak
+explicit reception, supplied-throw cancellation and setter recovery. One peer
+optional-name fixture typing failure is retained; only its corrected 428 checks
+were rerun. Unpacking/PIPE, wider references and sole-owner lifetimes remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled

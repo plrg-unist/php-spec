@@ -631,14 +631,12 @@ def $config_ini_null_valid(S, pconfigcall) = true
   -- if $config_invoke_valid(S, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_INI_SET
   -- if pconfigcall.PACKS = eps
-  -- if pconfigcall.INDEX = 2 /\ ~pconfigcall.NAMED
+  -- if pconfigcall.INDEX = 2
   -- if ~$pipe_site(S, pconfigcall.SITE)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN (PARRAY n_array))]
   -- if $config_ini_rejected_alias_array(S, n_array)
-  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression_option, false, eps, porigin_option, z_option))
-  -- if $compiled_read(S, porigin_option) = eps \/ $compiled_read(S, porigin_option) = (PNULL)
-  -- if $intrinsic_argument(S, pconfigcall.SITE, 1) = ((expression_value, false, eps, porigin_value, z_value))
-  -- if $compiled_read(S, porigin_value) = eps
+  -- if $config_ini_named_stdclass_argument(S, pconfigcall, 0)
+  -- if $config_ini_named_stdclass_argument(S, pconfigcall, 1)
   -- if ~$config_strict(S, pconfigcall)
 def $config_ini_null_valid(S, pconfigcall) = true
   -- if $config_invoke_valid(S, pconfigcall)

@@ -7,6 +7,37 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Named/mixed NULL-option `ini_set` now captures the one-entry key0 ALIAS ARRAY
+before later written option effects. The saved container retains its shape while
+the shared quiet primitive cell stays live through option/handler writes and
+current-container COW. Fixed/selected strings and retained setters use existing
+destination-aware source facts; positional authority and reference fences stay
+exact. Strict ordinary reception rejects parameter1 after effects; the same
+setter's explicit call is weak and reaches parameter2. A supplied Exception
+cancels rejection.
+
+Four exact source comparisons and 1,200 author premises (477+325+398) pass at
+`108d62605`; corrected peer428 passes at `b6abcce69`, total1,628 with common
+`166547069`/408. Initial `013007e47` CPU3 native4/base0 precedes CPU2 checks;
+only peer prepare/check reruns on CPU5 after a typed optional-name fixture fix.
+Eleven stable/reaped reports retain ten PASS and that original failure0; only
+selected Deprecated21 occurs. Native E/W/N/L/L/A observes both saved argument
+arrays after a post-TypeError/getTrace cell write. State proves before-option
+partial roots, normalized oldARRAY-to-liveHCELL, two-frame supplied Exception and
+whole idempotent restoration/discard. No exported-array identity, frozen referent,
+receiver trace edge or direct CELL task/buffer root is claimed. Only3+/5- lines
+in172 factor existing source checks; helpers/finish/root/trace/GC/schema and old
+tests remain exact without replay. Unpacked/PIPE, wider reference metadata,
+owning referents and sole-owner lifetimes remain partial; paused paths untouched.
+[Named shared-reference INI array review](coverage/semantics/ini-set-named-null-alias-array-value-review.json).
+
+Composed over `1dc4d7814`/408 with private-exact172/four tests and every other
+runtime/schema/ordered-manifest byte parent-exact. Incoming cached clone, missing-CV
+object comparison, Generator SEND, NaN modulo/bitwise warnings and NULL-key array
+backup selectors have no source producer here. Incoming checkpoints remain intact
+except the reviewed stale81 named partial qualifier; source4/author1,200 and peer428
+retain their private split cuts without joined execution or renewed credit.
+
 Ordinary public objects with nonempty declared layouts and live dynamic buckets
 now clone their cached property tables. Declared slots copy first, fresh locators
 retarget to the copy, and dynamic lookup mirrors add no duplicate value owners.
@@ -217,7 +248,7 @@ edge, current COW table sharing and whole restoration/discard. HCELL is neither
 a direct task root nor a possible GC buffer root. Only29 additive172 lines change;
 old DIRECT-array guards/84/138/helpers/trace/root/GC/schema and historical tests
 stay exact without replay. Whole-state PARAMETERBACKINGS EPS bounds this slice;
-named/packed/PIPE forms, typed/property references and owning referents remain
+packed/PIPE forms, typed/property references and owning referents remain
 partial, with paused paths untouched.
 [Shared-reference INI array review](coverage/semantics/ini-set-null-alias-array-value-review.json).
 
