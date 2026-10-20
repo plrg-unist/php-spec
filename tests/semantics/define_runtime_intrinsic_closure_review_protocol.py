@@ -95,7 +95,7 @@ def controls():
         '~$dynamic_runtime_object(S_wrapped,n_b)',
         '$dynamic_define_value_class(S_wrapped,POBJECT n_b) = eps',
         'S_current = S[.OBJECTS[n_b] = INTRINSICCLOSURE INTRINSIC_CLOSURE_CURRENT]',
-        '~$typed_closure(S_current,n_b)', '~$dynamic_runtime_object(S_current,n_b)',
+        '$typed_closure(S_current,n_b)', '$dynamic_runtime_object(S_current,n_b)',
         '~$config_selected_valid(S,pconfigcall_capture[.OWNER = (n_b)])',
         'S_other = S[.SELECTEDCALLS[0] = pselectedcall_a[.OWNER = (n_b)]]',
         '$selected_entry_source_valid(S_other,S_other.SELECTEDCALLS[0])',
