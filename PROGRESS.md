@@ -1448,43 +1448,39 @@ GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no root
 and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
-Lossy-float literal-key callbacks now admit embedded array-valued ALIAS leaves
-with validated ordinary instance-property type sources that accept the bounded
-child array. Child tables stay mutable, nonpool and edge-free, with DIRECT
-null/bool/int/float or validated byte-string values and no HARRAY debt. Leaf CELL
-debt and coercion/backing records remain excluded. For debt-bearing payloads,
-the actual child and every source object must survive the same logical prune.
-Shared leaves retain their property constraints during nested writes while child
-snapshots stay independent; public array-property witnesses reject scalar
-replacement. Explicit unset of the final property source
-permits singleton unwrapping and child COW while its object remains rooted.
-Sibling writes distinguish those counts from outer HARRAY/CELL biases through
-deletion, supplied throw and inverse balancing before cleanup.
+Lossy-float literal-key callbacks now admit DIRECT child-array entries in the
+bounded tables used by ordinary CV and reference-wrapper retargets. Each child
+is mutable, nonpool and debt-free, with edge-free DIRECT null/bool/int/float or
+validated byte-string contents. Existing entry-node traversal checks actual
+logical-pruned child liveness and preserves duplicate owning edges. No embedded
+leaf CELL is introduced: repeated entries naming the same child still separate
+on nested write. Snapshot and sibling observations distinguish that child COW
+from outer HARRAY/CELL biases through deletion, supplied throw and inverse
+balancing before cleanup.
 
-Four fresh natives and the genuine unchanged Unsupported after the first handler
-retain `91304a57a`/407 with baseline credit0. Strict407/source4 pass at
-`002e2fa90`; focused state1134 (449 author +685 independent; 1121 Boolean +13 raw)
-passes at `7921eed58`. Author checks use SL180; the first peer checks use an
-SL240 wrapper after the fresh source throw took 174.02s, and its state check took
-207.37s. All post-change first executions pass with quiet stderr and full reap,
-without correction or replay. Fresh properties have array type and child DIRECT
-integers; other accepted descriptors and edge-free scalar/byte payloads
-compose existing validation. Sole413 embedded-cell admission and child/source
-liveness change; global outer typed-array CELL retargets, source/error
-authentication, tasks, fields and ownership/prune/driver algorithms stay exact.
-Deeper owning children, indebted descendants, static/hooked/queued or retired
-sources, unsafe/effective-zero retirement, active collection and request-end debt
-remain Unsupported. Paused LIST/owned-NUL and active class/lifecycle work are
-untouched.
-[Typed array-leaf review](coverage/semantics/array-literal-float-typed-array-alias-leaf-review.json).
+Four fresh natives and the genuine unchanged Unsupported before the first
+handler retain `5334afc681`/407 with baseline credit0. Corrected strict407/source4
+pass at `320d21f44`; focused977 (443 author +534 independent; 964 Boolean +13 raw)
+passes at `5272d8a12`. All source and focused first executions pass with quiet
+stderr and full reap at the reviewed SL180 caps, without fixture correction.
+The original strict check at `d53539db3` failed during elaboration because a
+function had two otherwise clauses, retaining zero credit. Its sole syntax fix
+replaces the intermediate otherwise with the disjoint `value_nodes = eps`
+premise; no source or native replay occurs. Fresh children contain DIRECT
+integers; other edge-free primitive/byte contents compose unchanged validation.
+Sole413 admission uses the existing child predicate and keeps global leaf/CV,
+source/error authentication, tasks, fields and count/prune/driver rules exact.
+One stale A29 pure negative now names its actual self-table instead of an empty
+builder that A32 already admitted; its PHP and earlier evidence stay unchanged.
+Deeper owning children, indebted descendants, unsafe/effective-zero retirement,
+active collection and request-end debt remain Unsupported. Paused LIST/owned-NUL
+and active class/lifecycle/INI/operator work are untouched.
+[Direct child-leaf review](coverage/semantics/array-literal-float-direct-array-leaf-review.json).
 
-Composed over `b2c235487`/407 with accepted413 and all six tests unchanged.
-Every other runtime and ordered manifest byte preserves the parent. Incoming INI,
-spaceship, cached clone, power-assignment and Closure DEFINE selectors have no
-producer here. The new typed-source child check is vacuous for prior scalar/byte
-leaves; untyped child admission stays exact. Source4/strict407/state1134 and
-baseline0 retain their private cuts without joined execution or renewed agreement
-credit.
+Earlier typed array ALIAS leaves retain source4/strict407 at `002e2fa90` and
+state1134 at `7921eed58`, integrated as `d02051cab`; the first peer check used
+SL240 with no correction or replay. Baseline0 and the original cuts remain in
+the [typed array-leaf ledger](coverage/semantics/array-literal-float-typed-array-alias-leaf-review.json).
 
 Earlier untyped array ALIAS leaves retain source4/strict407 at `2711423e8` and
 state1147 at `8d4123b74`, integrated as `1ba02cb9f`. Both original failures retain

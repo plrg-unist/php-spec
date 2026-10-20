@@ -187,6 +187,15 @@ adds public array-property witnesses with scalar rejection, shared nested writes
 and singleton copying after explicit property unset. Global outer typed-array
 CELL admission stays unchanged. Deeper owning children and indebted descendants
 remain Unsupported.
+DIRECT child-array entries use the same mutable nonpool, debt-free, edge-free
+child bound. Their actual HARRAY nodes must survive logical pruning; repeated
+entries contribute separate owner edges. A child write can therefore separate
+one occurrence while another keeps its prior value, without an embedded leaf
+CELL. Snapshot, repeated-child, deletion and supplied-throw witnesses in the
+[direct child-leaf review](../../coverage/semantics/array-literal-float-direct-array-leaf-review.json)
+separate child COW from outer HARRAY/CELL biases and inverse balancing. Child
+eligibility still rejects outgoing owner edges before examining DIRECT values,
+so no recursive eligibility or deeper graph is admitted.
 The source basis is pinned `Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT`,
 `Zend/zend_hash.c::zend_array_dup_value`, and
 `Zend/zend_operators.h::zend_dval_to_lval_safe`, with string writes from

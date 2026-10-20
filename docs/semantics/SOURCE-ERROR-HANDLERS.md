@@ -348,6 +348,15 @@ adds public array-property witnesses with scalar rejection and nested child COW,
 including source removal by explicit property unset. Other accepted property
 descriptors compose existing type-source validation. Global outer typed-array
 CELL admission, deeper owning children and indebted descendants stay out.
+DIRECT child-array entries share the same bounded child eligibility, with no
+embedded leaf CELL: children are mutable nonpool tables of DIRECT
+null/bool/int/float or validated byte strings, without outgoing owner edges or
+HARRAY debt. Existing entry-node traversal requires each actual child to survive
+logical pruning and preserves duplicate edges. The
+[direct child-leaf ledger](../../coverage/semantics/array-literal-float-direct-array-leaf-review.json)
+checks independent child COW, repeated-child owner multiplicity, deletion and
+supplied throw while outer table/wrapper biases cancel before cleanup. No new
+recursive eligibility, source authentication or ownership algorithm is introduced.
 
 Missing-key module409 retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,

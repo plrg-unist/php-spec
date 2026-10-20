@@ -64,6 +64,9 @@ source object must survive logical pruning. Child HARRAY debt, leaf CELL debt
 and deeper owning edges remain excluded. Shared leaves preserve typed nested
 writes; removing the final property source permits singleton unwrapping before
 child-array COW, with independent snapshots.
+Bounded tables also admit DIRECT child arrays with the same edge-free payload
+bound. Each entry owns its child separately, including repeated entries naming
+the same table; nested writes separate children independently of outer count biases.
 Direct string CV/cell payloads, unsafe deficit retirement and wider domains remain
 Unsupported. Duplicate replacement and later items stay ordered.
 

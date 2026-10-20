@@ -1,0 +1,42 @@
+{
+  "milestone": "A34",
+  "status": "independently validated; private publication",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348; sole oracle .tools/php/bin/php, tests/semantics/profile.json",
+  "behavior": "Lossy-float literal-key callbacks admit DIRECT child-array entries in bounded ordinary-CV and reference-wrapper payload tables, preserving child COW independently of outer count biases.",
+  "domain": "Each child is an allocated live mutable nonpool HARRAY with edge-free DIRECT null/bool/int/float or validated byte-string contents and no HARRAY debt. Child eligibility rejects owning edges before examining contents, excluding deeper nesting, ALIAS descendants and cycles.",
+  "implementation": "Only module 413: a specialized DIRECT(PARRAY) flat_items clause reuses child_array; the generic DIRECT clause keeps node-empty payloads. Existing flat_leaf, flat_sources, child predicates, entry-node traversal, global CV/CELL gates, source authentication, fields/tasks and count/prune/driver algorithms remain unchanged.",
+  "semantic_review": "Each DIRECT entry contributes its own child HARRAY edge; duplicate entries preserve multiplicity without a leaf CELL. With no child CV or snapshot, duplicate edges alone force first66 versus second44, followed by independent copied77/88. Snapshot44, copied55/live66, parent siblings and old22/33 distinguish child COW from outer HARRAY/CELL biases through deletion, supplied throw, inverse balancing and retirement.",
+  "witness_limit": "Fresh child contents are DIRECT integers; other edge-free scalar/byte contents compose the existing validated-leaf predicate. This is not arbitrary recursive array admission.",
+  "compatibility": "All formerly admitted generic DIRECT leaves have empty value_nodes; the new premise preserves their domain while disjointly selecting PARRAY. ALIAS branches and child liveness checks stay exact. One stale A29 pure negative now names its self-table instead of an empty builder already admitted since A32; original PHP and historical agreement credit are unchanged.",
+  "cuts": {"base": "d02051cab5b52dd6263259dceaceb68dc0d2bd23", "native_and_unchanged_baseline": "5334afc68113c34d88a282b21f11fad647c4b0bf", "original_strict_failure": "d53539db32ce4eb73d7bdaf0cd873f9d53fefb12", "runtime_strict_and_source": "320d21f4400ade5221668afa7a253a0deaeda26b", "focused_state": "5272d8a121ab0ef4500f9fef0ebf6cf1eec0ee17"},
+  "validation": {"fresh_native": 4, "strict_modules": 407, "source_agreements": 4, "author": 443, "independent": 534, "conditions": 977, "boolean": 964, "raw": 13, "original_strict_failure_credit": 0},
+  "baseline": {"frontend": "accepted", "checked": "program", "status": "unsupported", "reason": "error-handler ingress requires a producer continuation", "stdout": "", "stderr": "", "credit": 0, "native_exit": 0, "model_exit": 1},
+  "execution": "Native/genuine, strict/source and focused packets ran serially on CPU3. Source models180/outer210; strict and focused SL180. Source4 and focused977 pass their first executions with quiet stderr, exits0, no timeout/interruption and empty process groups. Original unchanged Unsupported retains zero credit; no accepted native/source replay.",
+  "failure": "Initial strict407 at d53539db3 failed before source execution: two otherwise clauses in flat_items. The narrow correction removes the intermediate otherwise and checks existing value_nodes(pvalue)=eps, leaving the sole final fallback. Original strict34 report remains zero-credit; fresh strict34-fixed passes, followed only by previously unrun source4.",
+  "focused": [
+    {"id": "array-literal-float-direct-array-leaf-cv-snapshot", "conditions": 221, "raw": 3, "cap_seconds": 180, "elapsed_seconds": 90.88},
+    {"id": "array-literal-float-direct-array-leaf-cv-repeated-child", "conditions": 222, "raw": 3, "cap_seconds": 180, "elapsed_seconds": 54.82},
+    {"id": "array-literal-direct-array-leaf-review-delete-entry", "conditions": 272, "raw": 4, "cap_seconds": 180, "elapsed_seconds": 75.88},
+    {"id": "array-literal-direct-array-leaf-review-supplied-throw", "conditions": 262, "raw": 3, "cap_seconds": 180, "elapsed_seconds": 95.86}
+  ],
+  "reports": [
+    {"path": ".tools/array-literal-float-direct-array-leaf-baseline-34/report.json", "revision": "5334afc68113c34d88a282b21f11fad647c4b0bf", "sha256": "0c82244f08bccc1aa74f93126c97c430cce5cecf81981e1d5153921ec1787fb2"},
+    {"path": ".tools/array-literal-float-direct-array-leaf-native-rest-34/report.json", "revision": "5334afc68113c34d88a282b21f11fad647c4b0bf", "sha256": "f7d78e82479da25190dbc6e363f0f5107c7da82430899c498e8004e292c455f5"},
+    {"path": ".tools/array-literal-float-direct-array-leaf-review-native-34/report.json", "revision": "5334afc68113c34d88a282b21f11fad647c4b0bf", "sha256": "c7bc4e39565657cf15efcbd87da09e725be1a0d8c531b23faeb7dbd7cf42f4b6"},
+    {"path": ".tools/array-literal-float-direct-array-leaf-strict-34/report.json", "revision": "d53539db32ce4eb73d7bdaf0cd873f9d53fefb12", "sha256": "a21cd9ca4269c61cb69023281f9412f4675ee8cf0d2521ec5ee5e457d6f6ecc7"},
+    {"path": ".tools/array-literal-float-direct-array-leaf-strict-34-fixed/report.json", "revision": "320d21f4400ade5221668afa7a253a0deaeda26b", "sha256": "0f24c300d19b7cb339a1596fa4ce9305e88cdf3b9923a0e023856a15c321ab9b"},
+    {"path": ".tools/array-literal-float-direct-array-leaf-author-source-34/report.json", "revision": "320d21f4400ade5221668afa7a253a0deaeda26b", "sha256": "c4891fd8e747be6cb5cf1ea0eed5699cd6d409455e1e1577a5041fd19850c6ca"},
+    {"path": ".tools/array-literal-float-direct-array-leaf-review-source-34/report.json", "revision": "320d21f4400ade5221668afa7a253a0deaeda26b", "sha256": "59c42c0189c8d22d0b5aa99c17d82d5b0dcd4010e5a8978b21c9fd24c58c9afe"},
+    {"path": ".tools/array-literal-float-direct-array-leaf-author-state-34/report.json", "revision": "5272d8a121ab0ef4500f9fef0ebf6cf1eec0ee17", "sha256": "4e05bdf472320f77bed1316d1720b3f4359d6607d1d979a8db8ca556ffdfcf5b"},
+    {"path": ".tools/array-literal-float-direct-array-leaf-review-state-34/report.json", "revision": "5272d8a121ab0ef4500f9fef0ebf6cf1eec0ee17", "sha256": "895c002f70ace8b654177112b250d055430f5791703eddcd8aa5352b688c4ed9"}
+  ],
+  "runtime_sha256": {"spec/semantics/413-array-literal-key-warnings.watsup": "0e3d51e6a3fac29eae7b8a9f03f2c700e40242751dd0382a10a31131fef3700e"},
+  "runners_sha256": {
+    ".tools/array-literal-float-direct-array-leaf-strict-34.py": "6109f00b2731f5e7eced4793ed77a7a5e3142105d79c9aea2e452e3f5db9e1e6",
+    ".tools/array-literal-float-direct-array-leaf-strict-34-fixed.py": "e58838a583ca76bd5d0b5b572d037d5e315869f791d0a303b928bd719361cf00",
+    ".tools/array-literal-float-direct-array-leaf-reuse-34.py": "fc7f4ce368346b651541cc011548e57a1734539e323f3f545d4c16cc34ce95c9"
+  },
+  "raw_archive": {"path": ".tools/array-literal-float-direct-array-leaf-34-raw.tar.gz", "bytes": 429769, "members": 131, "sha256": "ed337a6cafe7e80e4fa04e176e2cd6c316f74fd1dbe57f094fc9b57591f19b41", "recovery": "Recreate the recorded worktree at focused_state, provision project-local tools/references, and extract this archive there. Members begin .tools/ and retain all nine report roots, original native source paths/streams, and three exact runners."},
+  "recovery": "Restore focused_state at /home/user/workspace/php-spec/.tools/array-literal-float-direct-array-leaves-34 and provision project-local tools/references; extract the canonical archive with -C <restored_worktree> (members start .tools/). All nine raw reports retain original source bytes/paths, exact argv/cwd/profile/environment, binary/input hashes, streams, exits and group reaping; the three exact strict/fixed/reuse runners are included.",
+  "boundaries": "Direct owning-string CV/CELL and global typed-array CELL retarget gates remain unchanged. Deeper or indebted children, unsafe/effective-zero retirement, active GC and request-end debt remain outside this slice; paused undefined-by-reference LIST and owned-NUL paths untouched."
+}
