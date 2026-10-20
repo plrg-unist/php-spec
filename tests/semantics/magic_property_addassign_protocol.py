@@ -223,7 +223,8 @@ $property_magic_set_entered(S_set,S_set.CURRENT,S_set.FRAMES,ppropertymagicset)
 S_set.FRAMES = [pframe_set]
 S_set_saved = $constant_frame_view(S_set,pframe_set,eps)
 $property_magic_set_capture(S_set_saved,ppropertymagicset)
-$lookup(pframe_set.ENV,ptbytes_cv) = (n_child_cell)
+S_set_scope = $constant_frame_scope(S_set,pframe_set,eps)
+$lookup(S_set_scope.ENV,ptbytes_cv) = (n_child_cell)
 S_set_saved.STORE[n_child_cell] = DEFINED PNULL
 $heap_owners($heap_graph(S_set),HOBJECT n_selected) = $(n_external + 2)
 ~$ma_in_get(S_set,n_selected) /\ $ma_in_set(S_set,n_selected) /\ $ma_guard(S_set)
@@ -494,7 +495,7 @@ def main():
             for fixture in report['fixtures']:
                 directory = Path(fixture['path']).parent
                 process = recorder.recorded([str(compiler),'algo',*map(str,modules),fixture['path']],directory / 'compiler',90)
-                passed = process['exit'] == 0 and not process['timeout'] and not process['interruption'] and not process['group_after'] and not (directory / 'compiler.stder').read_bytes() and b'\ndef $main : bool =\n' in (directory / 'compiler.stdout').read_bytes()
+                passed = process['exit'] == 0 and not process['timeout'] and not process['interruption'] and not process['group_after'] and not (directory / 'compiler.stderr').read_bytes() and b'\ndef $main : bool =\n' in (directory / 'compiler.stdout').read_bytes()
                 report['records'].append({'id':fixture['id'] + '-algorithmic-compilation','process':process,'passed':passed,'application_evaluations':0})
                 report['passed'] = passed
                 assert passed
@@ -503,7 +504,7 @@ def main():
                 output = (directory / 'state.stdout').read_bytes()
                 evaluated = process['exit'] == 0 and output in (b'true\n',b'false\n')
                 report['application_evaluations'] += int(evaluated)
-                passed = evaluated and not process['timeout'] and not process['interruption'] and not process['group_after'] and not (directory / 'state.stder').read_bytes() and output == b'true\n'
+                passed = evaluated and not process['timeout'] and not process['interruption'] and not process['group_after'] and not (directory / 'state.stderr').read_bytes() and output == b'true\n'
                 report['records'].append({'id':fixture['id'] + '-strict-SL-application','process':process,'passed':passed})
                 report['passed'] = passed
                 assert passed
@@ -511,6 +512,11 @@ def main():
         report.update(inputs_stable=before == {str(path):sha(path) for path in watched},
             fixtures_stable=all(row['sha256'] == sha(Path(row['path'])) for row in report['fixtures']),
             head_stable=revision == git('rev-parse','HEAD'),status_stable=status == git('status','--short'))
+        if not args.prepare_only:
+            report['passed'] = (report['passed'] and len(report['records']) == 2 * len(selected)
+                and all(row['passed'] for row in report['records'])
+                and report['application_invocations'] == len(selected)
+                and report['application_evaluations'] == len(selected))
         report['passed'] = report['passed'] and all(report[key] for key in ('inputs_stable','fixtures_stable','head_stable','status_stable'))
         (out / ('PREPARED.json' if args.prepare_only else 'report.json')).write_text(json.dumps(report,indent=2) + '\n')
         print(json.dumps({key:report[key] for key in ('passed','application_evaluations','premises','reached_premises','derived_premises','inputs_stable','head_stable','status_stable')}),flush=True)
