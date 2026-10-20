@@ -24,6 +24,13 @@ Ordinary NEW omitted/false originals are distinct from structural cast/clone/fla
 composition; other objects/names/lifetimes stay partial.
 [Runtime stdClass review](coverage/semantics/define-runtime-stdclass-review.json).
 
+Composed over `b19e53e48`/406 with exact tested400+16 and preserved incoming
+runtime/manifest/inventory prefixes. INI_SET, missing loose comparisons, magic
+fallback, `+=` warning/failure and lossy-float literal-key selectors are unselected;
+retained/debt lists stay empty with no new state/graph lift. One empty helper EOF
+line is removed with identical Python AST; source3/state769 retain private cuts
+without joined execution, accepted replay or renewed historical credit.
+
 Selected-reference `+=` now reports failed delayed RHS conversion using the
 old selected cells despite both current names rebinding. Flat arrays raise
 TypeError without union retry; old bool/bad text preserves its labels, outer100
