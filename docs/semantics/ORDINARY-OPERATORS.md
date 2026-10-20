@@ -276,6 +276,21 @@ check negative boundary float delivery, false fallback, public snapshot/message
 rejection, ownership and budget resumption in the
 [unary ledger](../../coverage/semantics/unary-warning-review.json). Other reference/owning producers, callbacks and lifecycle forms remain required.
 
+Evaluated nonowning copies now enter the same unary `+`/`-` Warning protocol.
+The named by-value-return case emits its producer output once before unary plus;
+its handler writes source `99`, unsets that source and throws the same Exception
+from line 20, leaving outer `100`. The selected-ternary unary-minus case removes
+its source, flips the condition and returns false. The unselected assignment
+sentinel stays `7`, while native echo `-0` and focused negative-zero bits establish
+the copied result's sign. Source retirement leaves the immutable `KNOWN` snapshot
+valid; a supplied throw discards the continuation. Unary completion writes no
+source cell. Two originals and
+118+135 focused premises cover source/carrier authority, real callbacks, raw
+versus driven transitions, cancellation, owners, EOF and budget cuts in the
+[unary-copy ledger](../../coverage/semantics/unary-copy-warning-review.json).
+Old CV/reference entry, function/ternary, numeric and unwind bodies stay unchanged.
+Other producers, owning reference results and wider lifecycles remain partial.
+
 Selected scalar-reference unary `+`/`-` now reuses this captured-number protocol.
 Fresh snapshots authenticate the selected live unconstrained CELL and actual raw
 text. The handler writes old value `99`, rebinds the current name to replacement

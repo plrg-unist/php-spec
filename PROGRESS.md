@@ -7,6 +7,25 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Unary `+`/`-` now accepts evaluated nonowning copies before Warning. A named
+by-value return emits its producer output once; its handler writes source `99`,
+removes the source and throws the same Exception from line 20, preserving outer
+`100`. A selected-ternary unary-minus copy instead survives source removal and
+condition reversal, retains the unselected-arm sentinel and delivers negative
+zero (`-0` plus exact bits). The immutable `KNOWN` snapshot remains valid after
+source owner one becomes zero. Two originals pass at `a1aaf2777`/407 and
+118+135 focused premises at `4b5f85ce7`/407 in the
+[unary-copy ledger](coverage/semantics/unary-copy-warning-review.json).
+Only copy admission and generic unary gates change; old CV/reference entry,
+function/ternary, numeric, dispatch and unwind bodies remain exact. Owning
+reference-result producers and broader lifecycles remain partial. OP12, COMP88
+and Source47 low-initial-precision callbacks remain paused.
+
+Composed over `25e37a438`/407, preserving incoming state, task and
+ordered-manifest paths. Source2/state253 retain their private407 cuts;
+independently reviewed absent incoming selectors require no joined execution
+or renewed credit.
+
 Retained DEFINE Closure calls now publish direct POBJECT values through the
 existing classifier under omitted/raw-false flags. Ordinary INSTANCE row/query
 identity and cached stdClass child/table COW survive source and callee retirement.
@@ -114,26 +133,9 @@ foreign task variants and the ordered manifest stay parent-exact. Accepted
 source/focused cuts and the final-runtime affected cut retain their identities
 without joined execution or renewed credit.
 
-Selected-reference `^=` now protects leading fractional RHS text before its
-Warning. A supplied throw skips the later precision diagnostic and store,
-retaining the same Exception, callback write `88` and outer `100`. Normal return keeps
-the original `"5.5tail"` precision message and long `5` after rewriting the old RHS
-to `7` and retiring its last alias; the third callback writes old target `66`, then
-cached `12 XOR 5` stores integer `9` through its surviving alias. Current names
-and replacements remain separate. Two originals pass at `6544ab0d0`/407 and
-200+250 focused premises at `727fd5cb6`/407 in the
+Earlier protected selected-reference `^=` retains source2/state450 and its
+original peer parser failure0 in the
 [protected XOR text ledger](coverage/semantics/xorassign-selected-rhs-warning-review.json).
-The original peer fixture syntax failure retains zero credit; only the corrected
-peer fixture recompiles while the accepted author compiler output is retained.
-Initial strict scalar references, fractional LEFT/quiet PINT RHS and two-notice
-leading fractional text bound the slice. Other conversions and owning lifetimes
-remain partial; numeric, formatting and generic-unwind bodies stay unchanged.
-OP12, COMP88 and Source47 low-initial-precision callbacks remain paused.
-
-Composed over `4105d1eb2`/407, preserving incoming state, task and
-ordered-manifest paths. Source2/state450 retain their private407 cuts;
-independently reviewed absent incoming selectors require no joined execution
-or renewed credit.
 
 Retained DEFINE Closure callees now accept existing bounded array snapshots
 under omitted/raw-false flags. Named capture, canonical DIRECT copies, nested

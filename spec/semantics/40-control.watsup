@@ -188,6 +188,7 @@ dec $power_warning_plan(pstate) : (pintegeroperation, pnumber, pnumber)?
 dec $quiet_power_copy_plan(pstate) : (pintegeroperation, pnumber, pnumber)?
 dec $arithmetic_unary_plan(pstate) : punarywarning?
 dec $arithmetic_unary_reference_plan(pstate) : punarywarning?
+dec $arithmetic_unary_copy_plan(pstate) : punarywarning?
 dec $string_compare_pending(pstate) : bool
 dec $aggregate_compare_pending(pstate) : bool
 dec $binary_source_apply(pstate, pbin, poperand, poperand, pvalue, pvalue, int) : pstate
@@ -260,6 +261,7 @@ rule PhpStep/unary: S ~> S_out[.TODO = ptask_tail*]
   -- if S.TODO = (UNARY punary z) :: ptask_tail*
   -- if $arithmetic_unary_plan(S) = eps
   -- if $arithmetic_unary_reference_plan(S) = eps
+  -- if $arithmetic_unary_copy_plan(S) = eps
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
@@ -268,6 +270,7 @@ rule PhpStep/unary-abrupt: S ~> S_read[.TODO = eps]
   -- if S.TODO = (UNARY punary z) :: ptask_tail*
   -- if $arithmetic_unary_plan(S) = eps
   -- if $arithmetic_unary_reference_plan(S) = eps
+  -- if $arithmetic_unary_copy_plan(S) = eps
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION =/= NORMAL
 rule PhpStep/assign-name: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), WRITE_NAME n_name* $variable_line(phpType32, metadata_1)] ++ ptask_tail*]

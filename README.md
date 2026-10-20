@@ -922,6 +922,14 @@ negative boundary float delivery and a false-handler warning on the operand line
 [Unary evidence](coverage/semantics/unary-warning-review.json) preserves the
 original failures; wider operand, callback and lifecycle forms remain partial.
 
+Unary `+`/`-` also accepts evaluated scalar copies from a by-value return or
+selected ternary. Removing the source during Warning cannot change the saved
+number or reevaluate the selected arm. A supplied Exception cancels delivery;
+normal unary minus preserves native `-0` and exact negative-zero bits.
+Two originals and 253 focused premises pass in the
+[unary-copy ledger](coverage/semantics/unary-copy-warning-review.json).
+Owning reference results and wider lifecycles remain partial.
+
 Unary `+`/`-` now also captures leading text from selected scalar references.
 A handler may rebind the current name and remove the last old alias; the cached
 number remains valid after that cell retires. A supplied Exception cancels outer
