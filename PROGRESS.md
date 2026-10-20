@@ -1763,40 +1763,40 @@ GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no root
 and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
-Lossy-float literal-key callbacks now cross ordinary array CVs and untyped
-references. An initially unwrapped by-value CV can become a wrapper during the
-handler: insertion uses ALIAS, retaining the acquired old HARRAY owner and
-recording the omitted new-CELL owner. A reciprocal reference-element callback
-may unset/recreate its CV as an ordinary array; DIRECT insertion cancels both
-bias families before normal COW and teardown. Physical singleton copies detach,
-while balanced shared copies preserve the alias. Child snapshots and sibling
-writes distinguish this from ordinary old-table COW through deletion and a
-supplied throw.
+Initially wrapped by-value array CVs now preserve the CELL payload slot selected
+before lossy-float key conversion. The existing ARRAY marker owns builder and
+acquired old HARRAY; its REFERENCE locator adds no CELL root. Rebinding q to a
+reference containing 99 cannot redirect insertion, while outside-alias writes
+supply a DIRECT array. The untyped captured CELL has no property/coercion/backing
+records or CELL debt and must survive logical pruning with its bounded payload.
+Source metadata survives locator retirement so readiness can refuse explicitly.
 
-Four fresh natives and the genuine unchanged Unsupported after the first
-handler retain `5ab7a08cf`/407 with baseline credit0. Strict407/source4 pass at
-`fe78bda2f`; focused1223 (593 author +630 independent; 1208 Boolean +15 raw)
-passes at `2432e64b1`. All post-change first executions pass with quiet stderr,
-no failures/retries/timeouts and full reap. Source models use180/outer210;
-focused fixtures use SL180. The sole413 completion arms leave initial/A19 value
-classifiers, source/error authentication, fields/tasks, type writers and
-count/prune/driver algorithms unchanged. Six earlier pure negatives now project
-unsupported outer strings; their original PHP, counts and historical credit stay
-unchanged. Fresh wrapper payloads are integers or runtime DIRECT-integer arrays;
-other admitted primitive/bounded-array shapes compose existing validation.
-The new cross-family arms exclude outer property/coercion/backing records and
-string CELLs. Initially wrapped by-value CVs, deeper or indebted children,
-unsafe/effective-zero retirement, active collection and request-end debt remain
-outside this admission. Paused LIST/owned-NUL and active class/lifecycle/INI/
-operator/Generator/DEFINE selectors are untouched.
-[CV/reference cycle review](coverage/semantics/array-literal-float-cv-ref-cycle-review.json).
+Four fresh natives and the genuine unchanged Unsupported before the first
+handler retain `50a044f12`/407 with baseline credit0. Strict407/source4 pass at
+`225e36cc5`; focused1146 (496 author +650 independent; 1133 Boolean +13 raw)
+passes at `82786a2e5`. All post-change first executions pass with quiet stderr,
+no failures/retries/timeouts and full reap. Native stable/current-name rebinding
+and captured A→B→A cycles distinguish DIRECT table copying from ALIAS insertion.
+Deletion and supplied throw keep a separate ordinary B-table owner so logical2/
+debt1/physical1 remains positive after entry or builder retirement. Outside55
+shares B while copied66 separates; inverse retargeting balances both table biases
+before independent77/88/99 COW and cleanup. Source models use180/outer210 and
+focused fixtures SL180. Existing ordinary/A19 classifiers, fields/tasks, global
+reference gates and graph/count/prune/driver algorithms remain exact.
 
-Composed over `0cf3749d9`/407 with accepted413, six new tests and all six pure
-controls unchanged. Every other runtime and ordered manifest byte preserves the
-parent. Its bitwise-NOT task is unproduced; object-return/destructor, magic
-property-unset, INI, loose-comparison and parked Generator selectors have no
-producer here. Source4/strict407/state1223 retain their private cuts and baseline0
-without joined execution, accepted replay or renewed historical credit.
+Three earlier pure initial-marked negatives now project unsupported string
+payloads; original PHP, counts and historical credit remain unchanged. Fresh
+payloads are runtime DIRECT-integer arrays; other bounded shapes compose existing
+validation. Initial wrapped scalar/string values, nonarray completion, typed outer
+cells, deeper/indebted children, unsafe/effective-zero retirement, active GC and
+request-end debt remain partial. Paused LIST/owned-NUL and active class/lifecycle/
+INI/operator/Generator/DEFINE selectors stay untouched.
+[Wrapped array-CV review](coverage/semantics/array-literal-float-wrapped-array-cv-review.json).
+
+Earlier ordinary ARRAY-CV/reference cycles retain native/genuine `5ab7a08cf`,
+source4/strict407 `fe78bda2f` and state1223 `2432e64b1`, integrated as `9fa0a1a29`.
+Their genuine after-first-handler baseline0 and original cuts remain in the
+[CV/reference cycle ledger](coverage/semantics/array-literal-float-cv-ref-cycle-review.json).
 
 Earlier typed outer-array cells retain source4/strict407 at `746c434a2`, author458
 at `78e4c0cef` and corrected peer572 at `75cdb7f35`, integrated as `f1726092c`.

@@ -311,8 +311,8 @@ cancels a retained count; array-to-scalar insertion preserves the acquired count
 or cancels debt. The same updates apply to supplied-throw cleanup. These two
 initial plans remain disjoint, and captured runtime-array temporaries incur no
 debt. The [mixed-CV ledger](../../coverage/semantics/array-literal-float-mixed-cv-review.json)
-records balanced cycles and entry-independent deletion/throw deficits. Initially
-wrapped by-value CVs, wider tables and unsafe debt retirement remain Unsupported.
+records balanced cycles and entry-independent deletion/throw deficits. Initial
+wrapped scalar/string CVs, wider tables and unsafe debt retirement remain Unsupported.
 An initially ordinary array CV can become an untyped wrapper during conversion,
 so even a by-value item may insert ALIAS rather than DIRECT. Its retained old
 HARRAY owner and omitted new-CELL owner survive deletion or builder retirement.
@@ -323,6 +323,20 @@ checks primitive/array wrapper payloads, singleton versus shared copies, child
 snapshots and old-table COW. These new arms exclude outer property/coercion/backing
 records and direct string CELLs, retaining the initial classifiers, source/error
 authentication and existing positive-lifetime guard.
+Initially wrapped untyped array CVs now use the same ARRAY marker with a borrowed
+REFERENCE payload-slot locator. Zend dereferences before dispatch, so a callback's
+new CV binding is ignored while writes through the surviving old alias supply the
+DIRECT array value. The acquired old table remains owned; the captured CELL adds
+no root. Source authentication reconstructs the actual VARIABLE spelling/line and
+can survive locator retirement, while readiness requires an allocated marked
+receipt-free CELL without CELL debt and a bounded array payload in the same
+logical-pruned live set. Missing outside ownership, nonarray completion and the
+active builder refuse explicitly. Deletion/throw preserves the HARRAY deficit;
+a separate ordinary table owner keeps it positive until the reciprocal slot
+retarget balances both table biases. The
+[wrapped array-CV ledger](../../coverage/semantics/array-literal-float-wrapped-array-cv-review.json)
+separates fresh stable/cycle/deletion/throw witnesses from the unchanged initial
+scalar/ordinary gates and graph/count/prune/driver algorithms.
 String leaves validate canonical bytes or existing carrier records. Their table
 and wrapper counts stay separate from copied string bytes: debt-time writes may
 share a table while a string snapshot stays unchanged. Singleton reference

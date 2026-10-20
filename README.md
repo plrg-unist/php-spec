@@ -53,6 +53,11 @@ array plans remain distinct. A by-value array CV may become an untyped reference
 during the handler, inserting a shared ALIAS with separate old-table and new-CELL
 count biases. A reciprocal reference-element callback can instead insert an
 ordinary array value, cancelling both biases before normal copying and cleanup.
+Initially wrapped untyped array CVs instead keep their captured CELL payload
+locator: rebinding the name cannot redirect insertion, while writes through a
+surviving outside alias supply the DIRECT array value. Table counts balance
+through reciprocal payload changes; the borrowed CELL adds no owner and must
+remain live. Scalar/string completion and wider outer sources remain partial.
 These bounded tables also admit reference leaves holding null/bool/int/float
 or validated byte strings, either untyped or constrained by validated ordinary
 instance-property type sources. Debt-bearing payloads require every source object
