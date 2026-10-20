@@ -64,7 +64,7 @@ def conditions(name, program, path, stdout):
         'S_request.RESULT = KNOWN pvalue_request', '$string_carrier_valid(S_request, pvalue_request)',
         '$literal_reference_flat_array(S_request[.ARRAYS[n_new_array].ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_request)]], n_new_array, S_request.ALLOCATIONS)',
         '~$literal_reference_flat_array(S[.ARRAYS[n_new_array].ITEMS = [ENTRY (KINT 0) (DIRECT (PSTRING_CARRIER (REQUEST_STRING (|S.STRINGDATA|)) ($ptascii("bad"))))]], n_new_array, S.ALLOCATIONS)',
-        '~$literal_reference_flat_array(S[.ARRAYS[n_new_array].ITEMS = [ENTRY (KINT 0) (DIRECT (PSTRING [256]))]], n_new_array, S.ALLOCATIONS)',
+        '~$literal_reference_flat_array(S[.ARRAYS[n_new_array].ITEMS = [ENTRY (KINT 0) (DIRECT (PSTRING ([256])))]], n_new_array, S.ALLOCATIONS)',
         '$literal_reference_flat_array(S[.ARRAYS[n_new_array].ITEMS = [ENTRY (KINT 0) (DIRECT (PSTRING eps))]], n_new_array, S.ALLOCATIONS)',
         '$lookup(S.ENV, $ptascii("key")) = (n_key)', 'S.STORE[n_key] = DEFINED (PFLOAT n_bits)',
         '$array_float_ref_key_source(S, ' + args + ')',
