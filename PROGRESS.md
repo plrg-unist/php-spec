@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Bare NAMED user-function Closure VALUES now publish under live function/name-map
+authority with absent scope/binding/certificate guards. Distinct first-class
+objects and direct calls share request-static counters, independently of Closure
+owners. Canonical/query COW retains the same pointer and source/append history.
+A private duplicate copy can retire the last FCC while its function-static child
+stays alive; an explicit later direct-function clear runs D41 before delivery.
+
+Three originals pass at `6973dea00`/407; 690 focused premises (248+131+311),
+including two zero-budget identities, pass at `23a4ba4e8`/407. All first attempts
+pass without failures, retries or accepted/historical replay. Sole400+7 reuses
+live function authority and existing dynamic-only PVOBJECT query/tree delegates;
+request STATICS roots and zero NAMED child edges are unchanged. Global/default
+policies stay exact. Ordinary omitted/false originals are distinct from structural
+clone/inherited-flag composition; wider domains and core remain partial.
+[Named Closure define review](coverage/semantics/define-runtime-named-closure-review.json).
+
 Class-born bare REAL Closure VALUES now retain validated lexical Base/called
 Child scope, distinct private shadows and an optional receiver through dynamic
 DEFINE publication and canonical array/query copies. Receiver-free static access
