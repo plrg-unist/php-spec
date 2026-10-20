@@ -6,10 +6,7 @@ import global_constant_sources as family
 from undefined_scalar_compare_ne_le_review_cases import CASES
 
 family.CASES = CASES
-family.UNSUPPORTED = {
-    'peer-missing-right-left-unset-has-one-warning':
-        ('scalar comparison warning changed left operand', b'H:1:1:10;'),
-}
+family.UNSUPPORTED = {}
 family.BASELINE = ('error-handler ingress requires a producer continuation', b'')
 family_fingerprint = family.fingerprint
 

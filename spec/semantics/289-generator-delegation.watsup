@@ -249,7 +249,8 @@ def $eager_task_inputs(S, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue])) = $v
   -- if $generator_pending_detached_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_shared_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_unused_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_parked_send(S, pgeneratorop[.ARGUMENTS = [pvalue]])
 
 ;; An unused current copy survives argument cleanup, then retires before the
-;; receiver. Require the exact consumed slots; aliased arguments can mask one.
+;; receiver. An equal argument can be matched by the fresh result, masking its
+;; consumed slot; its real argument owner still precedes that result's release.
 def $generator_unused_send_cleanup(S, S_out, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue_argument]), pnode*) = true
   -- if S.TODO = (GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue_argument])) :: ptask_tail*
   -- if pgeneratorop.ARGUMENTS = eps
@@ -262,7 +263,7 @@ def $generator_unused_send_cleanup(S, S_out, GENERATOR_ARGS pgeneratorop eps ([K
   -- if S_out.RESULT = KNOWN pvalue_result
   -- if $value_nodes(pvalue_result) =/= eps
   -- if pnode* =/= eps
-  -- if pnode* = $value_nodes(pvalue_argument) ++ $generator_operation_nodes(pgeneratorop)
+  -- if (pvalue_argument =/= pvalue_result /\ pnode* = $value_nodes(pvalue_argument) ++ $generator_operation_nodes(pgeneratorop)) \/ (pvalue_argument = pvalue_result /\ pnode* = $generator_operation_nodes(pgeneratorop))
   -- if S_out = $generator_operate(S[.TODO = ptask_tail*], pgeneratorop_full)
 def $eager_operation_owners(S, S_next, S_out, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue_argument]), pnode*, pnode_owner*) = ($eager_operation_begin(S_out[.RESULT = KNOWN PNULL], S, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue_argument]), $value_nodes(pvalue_argument) ++ $value_nodes(pvalue_result) ++ $generator_operation_nodes(pgeneratorop)), OBSERVED_OWNER_ORDER pnode_owner*)
   -- if $generator_unused_send_cleanup(S, S_out, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue_argument]), pnode*)

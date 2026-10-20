@@ -1,6 +1,6 @@
 {
   "milestone": "A36",
-  "status": "independently validated; private publication",
+  "status": "independently validated; integrated over 0cf3749d9",
   "target": "PHP 8.5.10 CLI NTS 64-bit; vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348; sole oracle .tools/php/bin/php, tests/semantics/profile.json",
   "behavior": "An ordinary by-value array CV can become a reference during lossy-float key conversion, so Zend inserts ALIAS. A reciprocal reference-element callback can recreate an ordinary array CV and insert DIRECT PARRAY, cancelling both count families.",
   "domain": "Initial ordinary ARRAY admission stays unmarked, mutable and nonpool. The new outer wrapper is untyped, with existing null/bool/int/float or bounded-array payloads and no property/coercion/backing receipts. The inverse uses a fresh ordinary unmarked array CV. Existing payload, descendant-liveness and positive-effective-count bounds apply.",
@@ -35,5 +35,6 @@
   },
   "raw_archive": {"path": ".tools/array-literal-float-cv-ref-cycle-36-raw.tar.gz", "bytes": 389092, "members": 123, "sha256": "bb760171eb95c98d0852a870062ab08a8eaff00fe04b4c23a88e7cc609e47035", "recovery": "Recreate the recorded worktree at focused_state, provision project-local tools/references, and extract this archive there. Members begin .tools/ and retain all eight report roots, original native source paths/streams and both exact runners."},
   "recovery": "Restore focused_state at /home/user/workspace/php-spec/.tools/array-literal-float-cv-ref-cycles-36 and provision project-local tools/references; extract the canonical archive with -C <restored_worktree> (members start .tools/). Eight raw reports preserve original native paths/bytes/streams, exact argv/cwd/profile/environment, binary/input hashes, exits and full reaping; both strict/reuse runners are included.",
-  "boundaries": "The new arms exclude outer typed/coercion/backing records and direct owning strings. Initial wrapped by-value CVs, wider owning graphs, deeper or indebted children, unsafe/effective-zero retirement, active GC and request-end debt remain outside this slice. Paused undefined-by-reference LIST and owned-NUL paths are untouched."
+  "boundaries": "The new arms exclude outer typed/coercion/backing records and direct owning strings. Initial wrapped by-value CVs, wider owning graphs, deeper or indebted children, unsafe/effective-zero retirement, active GC and request-end debt remain outside this slice. Paused undefined-by-reference LIST and owned-NUL paths are untouched.",
+  "composition": {"parent": "0cf3749d9363500110ef5304405c9473736ff7f9", "private_publication": "de305df6d52dd4c201b845a13549879843757518", "review": "Actual introduced typed object-return/destructor, magic property-unset, bitwise-NOT, INI, loose-comparison and parked Generator selectors are absent from A36; the new BITNOT task stays unproduced. Tested413 and all12 owned test paths are accepted2432-exact; other runtime and ordered407 manifest bytes preserve the parent. Source4/strict407/state1223 and genuine baseline0 retain their private cuts without joined execution or accepted/historical replay."}
 }

@@ -59,12 +59,11 @@ def $property_unset_pending(S) = true
   -- if S.BASE = BASE_PROPERTY (POBJECT n) ptbytes
   -- if $property_unset_needed(S, n, ptbytes)
 
-dec $property_unset_source(pstate, ppropertyunset) : bool
-def $property_unset_source(S, ppropertyunset) = true
-  -- if ppropertyunset.SITE = PORIGIN n pcpath
-  -- if $origin_node(S.SOURCES, ppropertyunset.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata)
-  -- if $base64(text_receiver) =/= $ptascii("this")
-  -- if ppropertyunset.NAME = $base64(text_name)
+dec $property_unset_site(pstate, porigin, ptbytes, int) : bool
+def $property_unset_site(S, porigin, ptbytes, z) = true
+  -- if porigin = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata)
+  -- if ptbytes = $base64(text_name)
   -- if $(|pcpath| >= 2)
   -- if pcpath_statement = pcpath[0:$nabs($(|pcpath| - 2))]
   -- if PCINDEX n_index = pcpath[$nabs($(|pcpath| - 1))]
@@ -72,9 +71,15 @@ def $property_unset_source(S, ppropertyunset) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath_statement) = (NStmtUnset (SEQUENCE expression*) metadata_statement)
   -- if $(n_index < |expression*|)
   -- if expression*[n_index] = NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata
-  -- if $property_source_task(S[.ORIGIN = (ppropertyunset.SITE)], expression*[n_index])
-  -- if ppropertyunset.LINE = $runtime_line(S[.ORIGIN = (ppropertyunset.SITE)], eps, expression*[n_index])
-  -- if $compiled_effects(S, ppropertyunset.SITE) = eps
+  -- if $property_source_task(S[.ORIGIN = (porigin)], expression*[n_index])
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], eps, expression*[n_index])
+  -- if $compiled_effects(S, porigin) = eps
+def $property_unset_site(S, porigin, ptbytes, z) = false -- otherwise
+dec $property_unset_source(pstate, ppropertyunset) : bool
+def $property_unset_source(S, ppropertyunset) = true
+  -- if $property_unset_site(S, ppropertyunset.SITE, ppropertyunset.NAME, ppropertyunset.LINE)
+  -- if $origin_node(S.SOURCES, ppropertyunset.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
+  -- if $base64(text_receiver) =/= $ptascii("this")
 def $property_unset_source(S, ppropertyunset) = false -- otherwise
 
 ;; Source occurrences contain statement roots, not a body sequence node.
@@ -141,6 +146,39 @@ def $property_unset_access_valid(S, n, ptbytes, ppropertydesc, PROPERTY_ACCESS p
   -- if porigin_declaring =/= porigin
 def $property_unset_access_valid(S, n, ptbytes, ppropertydesc, ppropertyaccess) = false -- otherwise
 
+;; Public descriptor history survives a callback repopulating the slot. Only
+;; pending capture requires UNSET; INITIAL and VALUE use ordinary unset first.
+dec $property_unset_public_desc(pstate, nat, ptbytes, ppropertydesc) : bool
+def $property_unset_public_desc(S, n, ptbytes, ppropertydesc) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if ppropertydesc.NAME = ptbytes /\ ppropertydesc.KEY = ptbytes
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]
+  -- if ~$property_hook_declared(S, n, ptbytes)
+def $property_unset_public_desc(S, n, ptbytes, ppropertydesc) = false -- otherwise
+dec $property_unset_selected_access(pstate, ppropertyunset, ppropertydesc) : bool
+def $property_unset_selected_access(S, ppropertyunset, ppropertydesc) = true
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE
+  -- if $property_unset_access_valid(S, ppropertyunset.OBJECT, ppropertyunset.NAME, ppropertydesc, $property_resolve_scope(S, ppropertyunset.OBJECT, ppropertyunset.NAME, $closure_source_class(S, ppropertyunset.SITE)))
+def $property_unset_selected_access(S, ppropertyunset, ppropertydesc) = true
+  -- if $property_unset_public_desc(S, ppropertyunset.OBJECT, ppropertyunset.NAME, ppropertydesc)
+  -- if $property_resolve_scope(S, ppropertyunset.OBJECT, ppropertyunset.NAME, $closure_source_class(S, ppropertyunset.SITE)) = PROPERTY_ACCESS ppropertydesc.KEY
+def $property_unset_selected_access(S, ppropertyunset, ppropertydesc) = false -- otherwise
+dec $property_unset_capture_state(pstate, ppropertyunset) : bool
+def $property_unset_capture_state(S, ppropertyunset) = true
+  -- if $property_effective_desc(S, ppropertyunset.OBJECT, ppropertyunset.NAME) = (ppropertydesc)
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE
+def $property_unset_capture_state(S, ppropertyunset) = true
+  -- if $property_effective_desc(S, ppropertyunset.OBJECT, ppropertyunset.NAME) = (ppropertydesc)
+  -- if $property_unset_public_desc(S, ppropertyunset.OBJECT, ppropertyunset.NAME, ppropertydesc)
+  -- if $objectprops_at(S.OBJECTPROPS, ppropertyunset.OBJECT) = (ppropertyslot_all*)
+  -- if $property_slot_at(ppropertyslot_all*, ppropertydesc.KEY) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_UNSET
+def $property_unset_capture_state(S, ppropertyunset) = false -- otherwise
+
 dec $property_unset_valid(pstate, ppropertyunset) : bool
 def $property_unset_valid(S, ppropertyunset) = true
   -- if $property_unset_source(S, ppropertyunset)
@@ -151,8 +189,8 @@ def $property_unset_valid(S, ppropertyunset) = true
   -- if $property_unset_function(S, ppropertyunset) =/= eps
   -- if $property_effective_desc(S, ppropertyunset.OBJECT, ppropertyunset.NAME) = (ppropertydesc)
   -- if ppropertydesc.ORIGIN = ppropertyunset.PROPERTY /\ ppropertydesc.NAME = ppropertyunset.NAME
-  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
-  -- if $property_unset_access_valid(S, ppropertyunset.OBJECT, ppropertyunset.NAME, ppropertydesc, $property_resolve_scope(S, ppropertyunset.OBJECT, ppropertyunset.NAME, $closure_source_class(S, ppropertyunset.SITE)))
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
+  -- if $property_unset_selected_access(S, ppropertyunset, ppropertydesc)
   -- if ~$property_hook_declared(S, ppropertyunset.OBJECT, ppropertyunset.NAME)
 def $property_unset_valid(S, ppropertyunset) = false -- otherwise
 
@@ -161,6 +199,7 @@ def $property_unset_valid(S, ppropertyunset) = false -- otherwise
 dec $property_unset_capture(pstate, ppropertyunset) : bool
 def $property_unset_capture(S, ppropertyunset) = true
   -- if $property_unset_valid(S, ppropertyunset)
+  -- if $property_unset_capture_state(S, ppropertyunset)
   -- if $origin_node(S.SOURCES, ppropertyunset.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
   -- if S_read = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
   -- if S_read.RESULT = KNOWN (POBJECT ppropertyunset.OBJECT)
@@ -206,6 +245,45 @@ def $property_unset_entered(S, (pcallcontext), pframe :: pframe_tail*, pproperty
 def $property_unset_entered(S, eps, pframe :: pframe_tail*, ppropertyunset) = $property_unset_entered(S, pframe.CONTEXT, pframe_tail*, ppropertyunset)
 def $property_unset_entered(S, pcallcontext?, eps, ppropertyunset) = false
 
+;; A public unset guard also covers compiled-local destruction, ending before
+;; the result marker itself. Live membership belongs only to the guard query.
+dec $property_unset_exit_call(ptask) : pdestructorcall?
+def $property_unset_exit_call(DESTRUCTOR_ENTER pdestructorcall) = (pdestructorcall)
+def $property_unset_exit_call(DESTRUCTOR_RESULT pdestructorcall) = (pdestructorcall)
+def $property_unset_exit_call(ptask) = eps -- otherwise
+dec $property_unset_public_exit(pstate, ptask*, ppropertyunset) : pdestructionframe?
+def $property_unset_public_exit(S, (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: (PROPERTY_UNSET_RESULT ppropertyunset) :: ptask_tail*, ppropertyunset) = (pdestructionframe)
+  -- if $property_unset_valid(S, ppropertyunset)
+  -- if $property_effective_desc(S, ppropertyunset.OBJECT, ppropertyunset.NAME) = (ppropertydesc)
+  -- if $property_unset_public_desc(S, ppropertyunset.OBJECT, ppropertyunset.NAME, ppropertydesc)
+  -- if pdestructionframe.FUNCTION = ppropertyunset.METHOD
+  -- if pdestructionframe.VALUE = KNOWN PNULL
+  -- if pdestructionframe.CALLER = S.CURRENT /\ pdestructionframe.ORIGIN = S.ORIGIN /\ S.ORIGIN = (ppropertyunset.SITE) /\ pdestructionframe.CONSTCONTEXT = S.CONSTCONTEXT
+def $property_unset_public_exit(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, ppropertyunset) = (pdestructionframe)
+  -- if $property_unset_public_exit(S, ptask_tail*, ppropertyunset) = (pdestructionframe)
+  -- if pdestructionrelease.CALLER = S.CURRENT /\ pdestructionrelease.ORIGIN = S.ORIGIN /\ pdestructionrelease.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pdestructionrelease.USER = $destructor_user_source(S)
+def $property_unset_public_exit(S, ptask_call :: (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, ppropertyunset) = (pdestructionframe)
+  -- if $property_unset_exit_call(ptask_call) = (pdestructorcall)
+  -- if $property_unset_public_exit(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, ppropertyunset) = (pdestructionframe)
+  -- if pdestructorcall.FRAME = (pdestructionframe) /\ pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.RELEASE = (pdestructionrelease_before)
+  -- if pdestructionrelease_before.JOBS = pdestructionjob_head :: pdestructionjob_tail*
+  -- if $destruction_job_node(pdestructionjob_head) = (HOBJECT pdestructorcall.OBJECT)
+  -- if pdestructionrelease = pdestructionrelease_before[.JOBS = pdestructionjob_tail*]
+  -- if ~pdestructorcall.STORE /\ pdestructorcall.USER = pdestructionrelease.USER
+  -- if pdestructorcall.CALLER = S.CURRENT /\ pdestructorcall.ORIGIN = S.ORIGIN /\ pdestructorcall.CONSTCONTEXT = S.CONSTCONTEXT
+def $property_unset_public_exit(S, ptask*, ppropertyunset) = eps -- otherwise
+dec $property_unset_public_exit_guard(pstate, ptask, nat, ptbytes) : bool
+def $property_unset_public_exit_guard(S, PROPERTY_UNSET_RESULT ppropertyunset, n, ptbytes) = true
+  -- if ppropertyunset.OBJECT = n /\ ppropertyunset.NAME = ptbytes
+  -- if $property_unset_public_exit(S, S.TODO, ppropertyunset) = (pdestructionframe)
+  -- if pdestructionframe <- S.DESTRUCTION.FRAMES
+def $property_unset_public_exit_guard(S, ptask, n, ptbytes) = false -- otherwise
+dec $property_unset_public_exit_active(pstate, ptask*, nat, ptbytes) : bool
+def $property_unset_public_exit_active(S, ptask :: ptask_tail*, n, ptbytes) = ($property_unset_public_exit_guard(S, ptask, n, ptbytes) \/ $property_unset_public_exit_active(S, ptask_tail*, n, ptbytes))
+def $property_unset_public_exit_active(S, eps, n, ptbytes) = false
+
 dec $property_unset_guard_frame(pstate, pcallcontext, pframe, nat, ptbytes) : bool
 def $property_unset_guard_frame(S, pcallcontext, pframe, n, ptbytes) = true
   -- if pcallcontext.TARGET = PROPERTY_UNSET_TARGET ppropertyunset
@@ -213,9 +291,32 @@ def $property_unset_guard_frame(S, pcallcontext, pframe, n, ptbytes) = true
   -- if $property_unset_frame(S, pcallcontext, pframe, ppropertyunset)
 def $property_unset_guard_frame(S, pcallcontext, pframe, n, ptbytes) = false -- otherwise
 dec $property_unset_guard(pstate, pcallcontext?, pframe*, nat, ptbytes) : bool
-def $property_unset_guard(S, (pcallcontext), pframe :: pframe_tail*, n, ptbytes) = ($property_unset_guard_frame(S, pcallcontext, pframe, n, ptbytes) \/ $property_unset_guard(S, pframe.CONTEXT, pframe_tail*, n, ptbytes))
-def $property_unset_guard(S, eps, pframe :: pframe_tail*, n, ptbytes) = $property_unset_guard(S, pframe.CONTEXT, pframe_tail*, n, ptbytes)
-def $property_unset_guard(S, pcallcontext?, eps, n, ptbytes) = false
+def $property_unset_guard(S, (pcallcontext), pframe :: pframe_tail*, n, ptbytes) = ($property_unset_guard_frame(S, pcallcontext, pframe, n, ptbytes) \/ $property_unset_public_exit_active($constant_frame_view(S, pframe, pframe_tail*), pframe.TODO, n, ptbytes) \/ $property_unset_guard(S, pframe.CONTEXT, pframe_tail*, n, ptbytes))
+def $property_unset_guard(S, eps, pframe :: pframe_tail*, n, ptbytes) = ($property_unset_public_exit_active($constant_frame_view(S, pframe, pframe_tail*), pframe.TODO, n, ptbytes) \/ $property_unset_guard(S, pframe.CONTEXT, pframe_tail*, n, ptbytes))
+def $property_unset_guard(S, pcallcontext?, eps, n, ptbytes) = $property_unset_public_exit_active(S, S.TODO, n, ptbytes)
+
+;; Same-name recursion is a no-op only for an already-unset public slot. A
+;; repopulated VALUE still follows ordinary storage deletion under this guard.
+dec $property_unset_public_guarded_plan(pstate) : pstate?
+def $property_unset_public_guarded_plan(S) = (S_target)
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.TODO = UNSET_ARRAY :: ptask_tail*
+  -- if S.BASE = BASE_PROPERTY_PENDING pbase (KNOWN (PSTRING ptbytes)) z_receiver
+  -- if S.ORIGIN = (porigin)
+  -- if $property_unset_site(S, porigin, ptbytes, $property_current_line(S))
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $property_pending_source_base(S, S.BASE, expression)
+  -- if S_target = $property_pending_resolve(S, pbase, KNOWN (PSTRING ptbytes), PPUNSET, z_receiver, $property_current_line(S))
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if $property_unset_public_desc(S, n, ptbytes, ppropertydesc)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
+  -- if $property_slot_at(ppropertyslot_all*, ppropertydesc.KEY) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_UNSET
+  -- if $property_unset_needed(S, n, ptbytes)
+  -- if $property_unset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
+def $property_unset_public_guarded_plan(S) = eps -- otherwise
 
 dec $property_unset_plan(pstate) : ppropertyunset?
 def $property_unset_plan(S) = (ppropertyunset)
@@ -251,6 +352,10 @@ rule PhpStep/property-unset-call: S ~> S_target[.TODO = [(CALL_ARGS (PROPERTY_UN
 rule PhpStep/property-unset-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic unset source, function, or recursive access"]
   -- if $property_unset_pending(S)
   -- if $property_unset_plan(S) = eps
+  -- if $property_unset_public_guarded_plan(S) = eps
+rule PhpStep/property-unset-public-guarded: S ~> S_target[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = UNSET_ARRAY :: ptask_tail*
+  -- if $property_unset_public_guarded_plan(S) = (S_target)
 rule PhpStep/property-unset-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_UNSET_RESULT ppropertyunset) :: ptask_tail*
   -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN PNULL
@@ -295,4 +400,4 @@ def $named_receives_ready(S, pfunction) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN
   -- if $property_unset_context(S, pcallcontext)
-def $call_task_valid(S, PROPERTY_UNSET_RESULT ppropertyunset) = ($property_unset_pending_call(S, ppropertyunset) \/ $property_unset_tail(S, ppropertyunset, S.TODO) \/ $property_unset_throw_tail(S, ppropertyunset))
+def $call_task_valid(S, PROPERTY_UNSET_RESULT ppropertyunset) = ($property_unset_pending_call(S, ppropertyunset) \/ $property_unset_tail(S, ppropertyunset, S.TODO) \/ $property_unset_throw_tail(S, ppropertyunset) \/ $property_unset_public_exit(S, S.TODO, ppropertyunset) =/= eps)

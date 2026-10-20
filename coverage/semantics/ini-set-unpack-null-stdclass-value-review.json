@@ -1,0 +1,86 @@
+{
+  "scope": "Direct/fixed and selected string INI_SET calls, rawNULL option and retained live table-free STDINSTANCE value with undeclared DIRECT quiet properties from exactly one two-item numeric/named/mixed unpack pack. OWNERnone/INDEX1/solePACKindex0/nonPIPE/effectiveweak; pack source facts must be unknown (compiled_read EPS). Historical snapshots save object identity, not property contents.",
+  "status": "integrated",
+  "reviewer": "/root/source_review_35",
+  "parent": "09603c277620dce8fe01dde03c2504dbca084cec",
+  "initial_revision": "70f4cfc876c1bdc7694cecfed8a8242603c70512",
+  "semantic_revision": "ec84a4ceb6151ac0314eb0dc615073119fc1306a",
+  "tested_revision": "eb31e651ecf98a47a15c275e23a5a986bb0baf9c",
+  "modules": 407,
+  "semantic_files": {
+    "spec/semantics/172-file-context-intrinsics.watsup": "7acabfd7bdd1682333412132b99f93c18b636b182458a3a31c0b2e59413b9b6b"
+  },
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "primary": "Pinned basic_functions.c PHP_FUNCTION(ini_set) parses option string before rejecting OBJECT at parameter2. zend_parse_arg_str_weak reports rawNULL before conversion: returning handling converts API option to empty, supplied Exception cancels body. SEND_UNPACK copies by-value values in insertion order and ignores numeric key values; an object zval retains shared identity, not a property snapshot. String call selection precedes argument effects and uses ordinary caller strictness.",
+  "semantics": "Exactly13 additive172 lines add a separate ownerless sole-pack POBJECT guard. Existing config_invoke_valid authenticates fixed/selected string calls; source replay authenticates normalized destinations/order. Live allocated table-free STDINSTANCE and undeclared DIRECT quiet slots use the unchanged validator; compiled_read(pack.SITE) must be EPS. Actual source/state captures witness history without reconstructing it. No helper/body/finish/trace/root/discard/GC/schema/400 or historical test change.",
+  "accepted": [
+    "Source4 accepted/program/normal model raws exactly equal native stdout/PHPstderr/PHPexit0 ateb31e651e/runtimeec84a4ceb/407. Empty numeric default and selected mixed populated true-handler paths reach parameter2 TypeError; native E/I/true77 observes converted-empty API option and same updated object despite livevalue0. Selected inline reversed construction captures the REQUEST-marked pointer before O/shared option77/live callee/value changes, then false/default handler77 still rejects the object/result99 and original string8-to11 recovers. Strict P updates the same object/sharedstrict77 then rejects rawNULL parameter1/handler0 after livepack[0,0]/value0, with9-to11 recovery. Peer supplied same Exception99/effect1/warn1 explicitly observes packOld.value===objectKeep and UPDATED handler-mark77 despite current packvalue0;2939/10-to12 survive. Only rendered Deprecated12/16; strict/peer PHPstderr and all model workerstderr quiet.",
+    "All1253 actual SL premises pass at the same tested/runtime cut:306+290+155 author and502 independent. Actual fixed/selected source records precede helper effects; pre-O builder holds the REQUEST object, and unpack cursors transfer outer-only to object-plus-outer to object-only roots. Shared option/handler property records remain visible after author outer retirement or peer current-outer COW; no object COW/frozen property claim. API-only converted-empty and rawNULL strict TypeErrors, actual two-frame handler/API rawNULL/same-object Exception edge, authentic REQUEST carrier, exact full handler restoration/discard with existing idempotent HOBJECT buffer, table/slot/source/carrier/layout refusals, budgets/full endings and real original string recovery pass. Four SL raws true LF/quiet/exit0. Native identity/mark witnesses are observable; peer native has no trace traversal and array physical identity is state-only.",
+    "Nine concise reports PASS/input-stable/HEAD-stable/full-reaped on first attempts. Initial70f4cfc876 CPU5 native4/genuine baseline0 and later CPU5 models/state retain their identities. No failure, timeout, interruption, survivor, accepted replay or historical renewal."
+  ],
+  "baseline_zero_credit": "At clean source-only70f4cfc876c1bdc7694cecfed8a8242603c70512/unchanged09603c277/407, captured-string-unpack-stdclass-before-shared-option-and-live-value-effects is Unsupported error-handler ingress requires a producer continuation afterB|O|, CLI1/nullPHPexit/quiet workerstderr/zero agreement. Native author3+peer1 precede runtime/protocol edits.",
+  "compatibility": "Existing PACKSeps stdClass and PARRAY pack arms are disjoint. Old75/76 object-leaf negatives still carry SENT PARRAY and fail unchanged flat quiet leaves; old70/72 forged pack metadata is source-inconsistent. No historical repair/actor. No lossy-float literal-key/ref/ALIAS debt producer or owning DEFINE value appears; sibling DEFINE uses PINT2939. No Stringable/userclass/cast/clone/reference/last-owner or paused Source47/owned-NUL/NaN/COMP88 execution. No engine bug or intentional divergence identified.",
+  "execution": "Initial and affected packets CPU5, LC_ALL=C TZ=UTC INT+kill5 AS3221225472, serial fail-first/full reap. Native15/CLI45-host60/freshSL90 unchanged; workers quiet.",
+  "command_prefix": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s <cap>s prlimit --as=3221225472 -- taskset -c <cpu> python3 <step>",
+  "commands": [
+    {
+      "revision": "70f4cfc876c1bdc7694cecfed8a8242603c70512",
+      "cpu": 5,
+      "caps": [
+        90,
+        90,
+        90
+      ],
+      "steps": [
+        "tests/semantics/ini_set_unpack_null_stdclass_value_sources.py --phase native --output .tools/ini-set-unpack-null-stdclass-value-native-77",
+        "tests/semantics/ini_set_unpack_null_stdclass_value_review_sources.py --phase native --output .tools/ini-set-unpack-null-stdclass-value-review-77",
+        "tests/semantics/ini_set_unpack_null_stdclass_value_sources.py --phase baseline --case captured-string-unpack-stdclass-before-shared-option-and-live-value-effects --output .tools/ini-set-unpack-null-stdclass-value-native-77"
+      ]
+    },
+    {
+      "revision": "eb31e651ecf98a47a15c275e23a5a986bb0baf9c",
+      "cpu": 5,
+      "caps": [
+        240,
+        90,
+        90,
+        360,
+        90,
+        120
+      ],
+      "steps": [
+        "tests/semantics/ini_set_unpack_null_stdclass_value_sources.py --phase model --output .tools/ini-set-unpack-null-stdclass-value-native-77",
+        "tests/semantics/ini_set_unpack_null_stdclass_value_review_sources.py --phase model --output .tools/ini-set-unpack-null-stdclass-value-review-77",
+        "tests/semantics/ini_set_unpack_null_stdclass_value_protocol.py --phase prepare --sources .tools/ini-set-unpack-null-stdclass-value-native-77 --output .tools/ini-set-unpack-null-stdclass-value-public-77",
+        "tests/semantics/ini_set_unpack_null_stdclass_value_protocol.py --phase check --sources .tools/ini-set-unpack-null-stdclass-value-native-77 --output .tools/ini-set-unpack-null-stdclass-value-public-77",
+        "tests/semantics/ini_set_unpack_null_stdclass_value_review_protocol.py --phase prepare --sources .tools/ini-set-unpack-null-stdclass-value-review-77 --output .tools/ini-set-unpack-null-stdclass-value-review-public-77",
+        "tests/semantics/ini_set_unpack_null_stdclass_value_review_protocol.py --phase check --sources .tools/ini-set-unpack-null-stdclass-value-review-77 --output .tools/ini-set-unpack-null-stdclass-value-review-public-77"
+      ]
+    }
+  ],
+  "raw_root": ".tools/ini-set-unpack-null-stdclass-value-evidence-77",
+  "report_sha256": {
+    "author/public/check-report.json": "0c762f704550e4f48084925aa0ce00d7b2f480d430c82909d3ef42d2b6b19150",
+    "author/public/prepare-report.json": "3350195ff1626a0f92f072795abdb790888ebbf2363226e3bc7656f31778403f",
+    "author/review/model-report.json": "e0e0044b9f00a1ce3127cc4918a6b82dd99fd54f125b2235a17cc9569d3f3e73",
+    "author/review/native-report.json": "1b34841db00eb2472ad65924e4399e0f672280527bf497b23d6d02fafc1b4599",
+    "author/review-public/check-report.json": "121cb214cf5dd652227d3df95de99b6a81c1883a6def182166ee49920d7683a4",
+    "author/review-public/prepare-report.json": "e9c996f1a7b9635e457012c95c65ea49d0b4e9e746125cd38b86cefdadbd8adc",
+    "author/sources/baseline-report.json": "4c0ebf1a4ef3649821c643307c22aaf4ffd3085f9162f8fe48412ea769debb84",
+    "author/sources/model-report.json": "aecebef8ceedb2c4489e9bfcb54e16b81693ad4e17b9b76a383964fa08b2df70",
+    "author/sources/native-report.json": "ce9ee4e8bf560a4f77c742116d2a319f878586f630c986610bb8f16539813c39"
+  },
+  "recovery": "After independent ACCEPT/RAW STOP/focused users[], four roots moved once to author/{sources,review,public,review-public}; nine concise reports hashed once. Restore original paths/cuts for source/cwd identity; reports retain inputs/commands/exits. No raw/hash renewal.",
+  "remaining": "Retained-owner packed stdClass values, additional arguments/packs, materialized object tables, declared/deferred/unset/ALIAS or owning/NaN/legacy-string properties, other object kinds, PIPE and sole-owner lifetimes remain partial. No full-core/equivalence/BOLA claim.",
+  "composition": {
+    "parent": "92b95086ade1b8eaffc4f123ae11a4e3fa6d22a5",
+    "private_publication": "26ba5e6107a1031c9e19966262dfbc8b687e9a33",
+    "ordered_modules": 407,
+    "seams": "Parent172/130/stdClass validation/301 GC/368/config source/trace/root bodies, selected constructors, state/schema and ordered407 are base-exact. Preserve incoming207/270/289/30/404/406/58. These originals use initialized strict identities, no missing-CV Boolean comparison; no Generator/SEND/pending cleanup or userclass typed by-reference holder/destructor. STDINSTANCE shared mark reads/writes cannot select INSTANCE public-int magic-unset descriptors, and no UNSET/PROPERTY_UNSET_RESULT occurs in current/saved tails. No PHP bitwise NOT/NaN producer or BITNOT_NAN_WARNING task is produced. V93 is absent. No state-field lift or joined execution is required.",
+    "evidence": "Source4/state1253 retain eb31e651e/runtimeec84a4ceb/407 and initial70f4cfc876 native4/baseline0/allCPU5. Actual-parent selector review and exact composition add no joined execution, accepted replay or renewed credit."
+  }
+}
