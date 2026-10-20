@@ -1,0 +1,94 @@
+{
+  "milestone": "Iterator41: normal pending ancestor SEND releases child before argument, result and receiver",
+  "status": "composed-accepted",
+  "scope": "Normal unused pending ancestor SEND at a finite owning simple-CV copied return, with either no refresh change or one actual closed-child release. Assigned calls provide the source-demand contrast; no body entry is validated.",
+  "implementation": {
+    "paths": {
+      "spec/semantics/289-generator-delegation.watsup": "292f6fdd8c02540d7787655c62855b23dd5b3a8eaa510b54d2ec141e6336efb3"
+    },
+    "change": "A normal owning leaf proof authenticates identity refresh or its exact allocated CLOSED-child prefix. Existing unused cleanup preserves that prefix before argument, current-result and receiver releases, retaining actual-result/consumed-slot/source/discarded-tail checks and original owner-order observation. Equal argument/result and assigned fallbacks remain distinct. Module 270, root functions, task/schema, close and collector remain unchanged."
+  },
+  "validation": {
+    "native": 4,
+    "unchanged_baseline": "Checked NORMAL exit0 differs only by ARG-END|K|D versus native ARG-END|D|K. Original per-record disagreement stays false and normal agreement0; the expected-disagreement observer passes. No Unsupported or timeout.",
+    "sources": "Four exact stdout/stderr/exit0 agreements. A no-getter pair differs only by $copy =: unused D precedes K, assigned K/CALLER precede D. Pre-refreshed row COW preserves its snapshot through ARG-END; equal-cache argument cleanup throws RuntimeException with PreviousNULL. No Middle J/body output occurs.",
+    "states": {
+      "author": [
+        162,
+        154
+      ],
+      "peer": [
+        133,
+        112
+      ],
+      "total": 561,
+      "local": 541,
+      "generic": 20
+    },
+    "observations": "Genuine GEN_ARGS proves the lost child edge, original owner order, temporary return-array count2 with one element edge, and child/argument/result/receiver jobs. Assigned VALUE keeps its copy and forged DISCARD still rejects. Real Arg-END and cache-destructor fronts prove old-row root1 versus live HCELL2, Middle storage pin1/NEXT2, queued Upper claim1, D2 and NULL pending/value before the new cleanup exception.",
+    "compiler": "Strict407 and four-fixture elaboration pass; elaboration earns zero execution credit.",
+    "failures": "All post-change checks pass first execution at original caps. No retry, historical renewal or accepted replay; genuine baseline disagreement is retained."
+  },
+  "tested_revisions": {
+    "native_and_genuine_baseline": "f61112e16e9a7d3db6d5697bb95a8de1d9bc3dd8",
+    "strict407_source4": "d7d633ae27facd57e4716d52df3fbe77a4f563f6",
+    "elaboration4_state561": "4b29c00ce5b35d51ddbf61004edcc485704a46b3",
+    "bridge": "Runtime289 and four original sources are exact across d7d633ae2 source/strict and 4b29c00ce gate/states; only reviewed state fixtures and Makefile targets are added. Native/genuine f61112e16 retains its unchanged pre-fix cut; no accepted evidence was replayed."
+  },
+  "commands": {
+    "native": [
+      "taskset -c 3 python3 .tools/native.py",
+      "taskset -c 3 python3 .tools/review-native.py"
+    ],
+    "baseline": "taskset -c 3 python3 .tools/baseline.py --native-report .tools/generator-unused-detached-send-native-hrlk94di/report.json",
+    "strict": "taskset -c 2 python3 .tools/strict.py",
+    "source": [
+      "taskset -c 2 python3 tests/semantics/generator_unused_detached_send_sources.py --native-report .tools/generator-unused-detached-send-native-hrlk94di/report.json",
+      "taskset -c 2 python3 tests/semantics/generator_unused_detached_send_review_sources.py --native-report .tools/generator-unused-detached-send-review-native-kvgmjj4g/report.json"
+    ],
+    "elaboration": "taskset -c 2 python3 .tools/state-elab.py",
+    "state": "taskset -c 2 python3 tests/semantics/generator_unused_detached_send_state.py --case <one selection>; peer selections use generator_unused_detached_send_review_state.py. Exact selections/expansions remain in mapped raw reports."
+  },
+  "environment": {
+    "php_source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "mode": "SL, caches off, encountered determinism checks; LC_ALL=C TZ=UTC, script encoding unset. Exclusive CPU3 native/baseline, CPU2 source/state.",
+    "caps": "Native 8s; source model100/process120 and100000steps; strict120; elaboration60; states120 with seek/finish4000/4000.",
+    "exits": "All accepted wrappers/models exit0 with empty stderr and no timeout. Baseline model0 remains disagreement0."
+  },
+  "reports": {
+    "native-author2": ".tools/generator-unused-detached-send-native-hrlk94di/report.json",
+    "native-peer2": ".tools/generator-unused-detached-send-review-native-kvgmjj4g/report.json",
+    "unchanged-normal-disagreement": ".tools/generator-unused-detached-send-baseline-qxut5lfx/report.json",
+    "strict407": ".tools/generator-unused-detached-send-author-sl-j32r0kv3/report.json",
+    "source-author2": ".tools/generator-unused-detached-send-source-4srk_j5w/report.json",
+    "source-peer2": ".tools/generator-unused-detached-send-review-source-memg5ezg/report.json",
+    "elaboration4": ".tools/generator-unused-detached-send-state-elab-bmd57hps/report.json",
+    "state-author162": ".tools/fiber-state-review-jlsfsef2/report.json",
+    "state-author154": ".tools/fiber-state-review-pd32fhlj/report.json",
+    "state-peer133": ".tools/fiber-state-review-wjziur4e/report.json",
+    "state-peer112": ".tools/fiber-state-review-7apfvfqq/report.json"
+  },
+  "evidence": {
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-unused-detached-send-41/private.tar.gz",
+      "bytes": 1906696,
+      "sha256": "e3a8c45f2c70c968bf64be4da3894f9c7d5c9cd7f9f604a8e62d49be531c0882"
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-unused-detached-send-41/manifest.json",
+    "recovery": "Archive restores11 raw report directories,8 ignored inputs,6 tests,9 relevant runtime files and8 support inputs at project-relative paths. Manifest binds hashes, cuts and statuses; raw reports preserve commands/exits. Git retains tracked cuts. Reused pinned tools establish no new build or portability claim."
+  },
+  "remaining": "Normal direct receivers, wider refresh/alias shapes, abrupt argument callbacks, body entry and explicit collection remain unvalidated. Complete core and foundational verification remain incomplete.",
+  "composition": {
+    "parent": "6b58a1a15fc2f14b505d62ebda905f0bd1058e69",
+    "private_publication": "2453fea4399818454af3ba27aeb7b9fcad3b2543",
+    "runtime": "289 is tested/private byte-exact. Every other incoming runtime/schema/default/root/ordered407 manifest/pipeline byte remains parent-exact, including the actual incoming172 OWNER guard and unchanged270 generic dispatch.",
+    "composed_runtime_sha256": {
+      "spec/semantics/289-generator-delegation.watsup": "292f6fdd8c02540d7787655c62855b23dd5b3a8eaa510b54d2ec141e6336efb3"
+    },
+    "validation": "Actual introduced selectors independently reviewed disjoint. Source4/strict407/state561 retain private cuts and baseline mismatch0; no joined execution, accepted replay or renewed credit."
+  }
+}

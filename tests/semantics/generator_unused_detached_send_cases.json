@@ -1,0 +1,20 @@
+[
+  {
+    "id": "generator-unused-detached-send-refresh-before-unused-result",
+    "purpose": "No prior getter: first pending SEND refreshes the closed-child link, then observe normal ignored-argument, current-result and selected-receiver cleanup.",
+    "source": "<?php\nclass UnusedDetachedSendCache41 { function __destruct() { echo \"D|\"; } }\nclass UnusedDetachedSendReturn41 { function __destruct() { echo \"R|\"; } }\nclass UnusedDetachedSendArgument41 { function __destruct() { echo \"ARG|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"ARG-END|\"; } }\nfunction unusedDetachedSendChild41() { echo \"C|\"; yield new UnusedDetachedSendCache41(); echo \"L|\"; return [new UnusedDetachedSendReturn41()]; }\nfunction unusedDetachedSendMiddle41() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; } }\nfunction unusedDetachedSendUpper41() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction unusedDetachedSendOuter41() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = unusedDetachedSendChild41(); $middle = unusedDetachedSendMiddle41(); $upper = unusedDetachedSendUpper41(); $outer = unusedDetachedSendOuter41();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\necho \"S|\";\n$upper->send(new UnusedDetachedSendArgument41()); echo \"CALLER|\"; unset($copy); echo \"DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "3a41a28ad90b8f1d8508e2039a882d669d8cf8ff203a3b42a6dddd6a6dcf4343",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|S|ARG|F|ARG-END|D|K|CALLER|DROPPED|ER|"
+  },
+  {
+    "id": "generator-unused-detached-send-refresh-assignment-control",
+    "purpose": "The same first pending SEND in assignment context; only $copy = differs, isolating the result owner through receiver cleanup.",
+    "source": "<?php\nclass UnusedDetachedSendCache41 { function __destruct() { echo \"D|\"; } }\nclass UnusedDetachedSendReturn41 { function __destruct() { echo \"R|\"; } }\nclass UnusedDetachedSendArgument41 { function __destruct() { echo \"ARG|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"ARG-END|\"; } }\nfunction unusedDetachedSendChild41() { echo \"C|\"; yield new UnusedDetachedSendCache41(); echo \"L|\"; return [new UnusedDetachedSendReturn41()]; }\nfunction unusedDetachedSendMiddle41() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; } }\nfunction unusedDetachedSendUpper41() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction unusedDetachedSendOuter41() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = unusedDetachedSendChild41(); $middle = unusedDetachedSendMiddle41(); $upper = unusedDetachedSendUpper41(); $outer = unusedDetachedSendOuter41();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\necho \"S|\";\n$copy = $upper->send(new UnusedDetachedSendArgument41()); echo \"CALLER|\"; unset($copy); echo \"DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "c53f2545a484ac2fff4e502620e01039e1652a4e8335e22c8ab9c94a524b5ad4",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|S|ARG|F|ARG-END|K|CALLER|D|DROPPED|ER|"
+  }
+]

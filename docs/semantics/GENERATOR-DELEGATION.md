@@ -171,6 +171,13 @@ authenticated argument and new result still require two real release jobs before
 the receiver; original owner-order observation stays unchanged. Their two quiet
 drops preserve one array element-edge set. Assigned calls retain the net result
 copy; see the [aliased SEND review](../../coverage/semantics/generator-unused-pending-send-alias-review.json).
+For an unparked pending ancestor SEND, refresh may first detach one closed
+child.
+That authentic removed-edge prefix precedes argument, unused current and receiver
+releases. The temporary return copy shares its array with the child; child
+storage retires before argument cleanup. A prior getter needs no prefix, and
+assigned calls retain their result. See the
+[normal SEND review](../../coverage/semantics/generator-unused-detached-send-review.json).
 Literal pending NEXT takes the same initialization-only return through a direct
 or finite native-linked receiver, preserving the actual parked source and frame.
 Its NULL result owns no current snapshot. After a raw-row write performs COW,

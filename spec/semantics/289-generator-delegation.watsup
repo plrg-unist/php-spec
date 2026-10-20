@@ -89,6 +89,7 @@ dec $generator_from_valid_task(pstate, nat, porigin, poperand) : bool
 dec $generator_pending_return_leaf(pstate, nat, nat) : nat?
 dec $generator_buffered_next_leaf(pstate, nat, nat) : nat?
 dec $generator_pending_throw_value(pstate, pgeneratorop) : pvalue
+dec $generator_unused_send_refresh(pstate, pstate, pgeneratorop, pnode*) : bool
 
 ;; YIELD_FROM has no send target. Its detached current can be returned without
 ;; advancing. A bounded owning result keeps its separate close boundary.
@@ -248,6 +249,26 @@ def $eager_task_inputs(S, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue])) = $v
   -- if pgeneratorop.ARGUMENTS = eps
   -- if $generator_pending_detached_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_shared_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_unused_send(S, pgeneratorop[.ARGUMENTS = [pvalue]]) \/ $generator_pending_parked_send(S, pgeneratorop[.ARGUMENTS = [pvalue]])
 
+;; A normal ancestor SEND may first detach one closed child. Authenticate that
+;; actual removed edge before scheduling argument, unused result and receiver.
+def $generator_unused_send_refresh(S, S, pgeneratorop, eps) = true
+  -- if $generator_pending_detached_send(S, pgeneratorop)
+  -- if $generator_pending_return_leaf(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1)) = (n_leaf)
+  -- if n_leaf =/= pgeneratorop.OBJECT
+def $generator_unused_send_refresh(S, S_refreshed, pgeneratorop, [HOBJECT n_child]) = true
+  -- if $generator_pending_detached_send(S, pgeneratorop)
+  -- if S_refreshed = $generator_from_refresh(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1))
+  -- if $generator_pending_return_leaf(S_refreshed, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1)) = (n_leaf)
+  -- if n_leaf =/= pgeneratorop.OBJECT
+  -- if S.OBJECTS[n_leaf] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if (HOBJECT n_child) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_child] = GENERATOR pgenerator_child
+  -- if pgenerator_child.PHASE = GENERATOR_CLOSED
+  -- if $eager_slots(S, S_refreshed) = [HOBJECT n_child]
+def $generator_unused_send_refresh(S, S_refreshed, pgeneratorop, pnode*) = false -- otherwise
+
 ;; An unused current copy survives argument cleanup, then retires before the
 ;; receiver. An equal argument can be matched by the fresh result, masking its
 ;; consumed slot; its real argument owner still precedes that result's release.
@@ -255,7 +276,9 @@ def $generator_unused_send_cleanup(S, S_out, GENERATOR_ARGS pgeneratorop eps ([K
   -- if S.TODO = (GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue_argument])) :: ptask_tail*
   -- if pgeneratorop.ARGUMENTS = eps
   -- if pgeneratorop_full = pgeneratorop[.ARGUMENTS = [pvalue_argument]]
-  -- if $generator_pending_parked_send(S, pgeneratorop_full)
+  -- if S_refreshed = $generator_from_refresh(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1))
+  -- if pnode_prefix* = $eager_slots(S, S_refreshed)
+  -- if ($generator_pending_parked_send(S, pgeneratorop_full) /\ pnode_prefix* = eps) \/ $generator_unused_send_refresh(S, S_refreshed, pgeneratorop_full, pnode_prefix*)
   -- if ~$reference_call_used(S, pgeneratorop.SITE)
   -- if $destructor_return_discarded(ptask_tail*)
   -- if S.GC.ACTIVE = eps
@@ -263,11 +286,13 @@ def $generator_unused_send_cleanup(S, S_out, GENERATOR_ARGS pgeneratorop eps ([K
   -- if S_out.RESULT = KNOWN pvalue_result
   -- if $value_nodes(pvalue_result) =/= eps
   -- if pnode* =/= eps
-  -- if (pvalue_argument =/= pvalue_result /\ pnode* = $value_nodes(pvalue_argument) ++ $generator_operation_nodes(pgeneratorop)) \/ (pvalue_argument = pvalue_result /\ pnode* = $generator_operation_nodes(pgeneratorop))
+  -- if (pvalue_argument =/= pvalue_result /\ pnode* = pnode_prefix* ++ $value_nodes(pvalue_argument) ++ $generator_operation_nodes(pgeneratorop)) \/ (pvalue_argument = pvalue_result /\ pnode* = pnode_prefix* ++ $generator_operation_nodes(pgeneratorop))
   -- if S_out = $generator_operate(S[.TODO = ptask_tail*], pgeneratorop_full)
-def $eager_operation_owners(S, S_next, S_out, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue_argument]), pnode*, pnode_owner*) = ($eager_operation_begin(S_out[.RESULT = KNOWN PNULL], S, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue_argument]), $value_nodes(pvalue_argument) ++ $value_nodes(pvalue_result) ++ $generator_operation_nodes(pgeneratorop)), OBSERVED_OWNER_ORDER pnode_owner*)
+def $eager_operation_owners(S, S_next, S_out, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue_argument]), pnode*, pnode_owner*) = ($eager_operation_begin(S_out[.RESULT = KNOWN PNULL], S, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue_argument]), pnode_prefix* ++ $value_nodes(pvalue_argument) ++ $value_nodes(pvalue_result) ++ $generator_operation_nodes(pgeneratorop)), OBSERVED_OWNER_ORDER pnode_owner*)
   -- if $generator_unused_send_cleanup(S, S_out, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue_argument]), pnode*)
   -- if S_out.RESULT = KNOWN pvalue_result
+  -- if S_refreshed = $generator_from_refresh(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1))
+  -- if pnode_prefix* = $eager_slots(S, S_refreshed)
 
 ;; Pending SEND initializes a TMP before its live range begins. Count that
 ;; physical reference externally; SOURCE's receiver is nonowning history.

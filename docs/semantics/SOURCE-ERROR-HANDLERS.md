@@ -137,14 +137,18 @@ current wrapper after the callback. A missing right name need not be initialized
 Both protocols freeze null while preserving the opposing read. Other owning
 comparison counterparts remain unsupported; a missing later physical CV can warn
 again after the first read, including one removed by the first handler.
-All seven comparison resumes permit a live flat primitive array at the opposing CV, including
-reference rebinding and COW, after any already admitted scalar/missing-pair entry.
-Only its current emptiness is compared against frozen NULL. Array ingress and
+All seven comparisons permit a live flat primitive array at the opposing CV on entry or return, including
+reference rebinding and COW. Both-missing/shared-name entries retain physical order.
+Current arrays compare by emptiness against frozen NULL; rebound scalars keep
+their ordinary rules. Captured-array ingress and
 nested/reference/object entries remain partial; the
 [spaceship](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
 and [Boolean array resume reviews](../../coverage/semantics/undefined-scalar-compare-array-resume-review.json)
-record unchanged ingress, certificates, roots and discard. The Boolean extension
+record resume bounds, certificates, roots and discard. The Boolean extension
 keeps physical order, current alias/COW ownership and known-NULL second records.
+The [initial-array extension](../../coverage/semantics/undefined-comparison-initial-array-review.json)
+widens only four entry premises: saved reads add no initial-table owner, and
+existing quiet-removal, unread-retry, scalar/array resume and discard stay exact.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.
 [The equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json)

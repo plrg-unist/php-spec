@@ -139,6 +139,12 @@ the last cache before the ancestor finally, independently of the request-late
 copied return. A throwing cache still has no pending older Exception to chain;
 see the
 [aliased SEND review](../../coverage/semantics/generator-unused-pending-send-alias-review.json).
+Normal unparked pending ancestor SEND preserves the proven optional
+closed-child release before argument, unused snapshot and receiver cleanup. Its copied return stays
+independent of the cache. Row COW preserves the old snapshot through ARG-END;
+an equal-cache argument can produce a new RuntimeException with Previous NULL
+before ancestor finally. See the
+[normal SEND review](../../coverage/semantics/generator-unused-detached-send-review.json).
 Pending NEXT preserves that parked return across the same close transfer but
 creates no current copy. A temporary sole receiver releases its cache during
 storage cleanup, before caller delivery; a throwing cache has no older caught

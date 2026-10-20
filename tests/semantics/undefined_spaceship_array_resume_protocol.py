@@ -1,4 +1,4 @@
-"""Live tables, frozen NULLs, exact restores and unchanged scalar ingress."""
+"""Live tables, frozen NULLs, exact restores and bounded array ingress."""
 import base64
 import json
 
@@ -91,7 +91,7 @@ def checks(program, path, name):
         '$drive_steps(S_return,4000) = S_done',
         'S_entry = $unset_name(S_resume,$ptascii("missing"))',
         '$spaceship_read_array(S_entry,perrorread)',
-        '$error_read_plan(S_entry[.TODO = ptask_original :: ptask_tail*][.RESULT = perrorread.INPUT][.BASE = perrorread.BASE]) = eps',
+        '$error_read_plan(S_entry[.TODO = ptask_original :: ptask_tail*][.RESULT = perrorread.INPUT][.BASE = perrorread.BASE]) = (perrorread)',
         '~$spaceship_read_array_operand(S_resume,KNOWN (PARRAY n_array))',
         'S_dead = S_resume[.ALLOCATIONS = $destruction_node_delete(S_resume.ALLOCATIONS,HARRAY n_array)]',
         '~$spaceship_read_array(S_dead,perrorread)', '$error_read_valid(S_dead,perrorread)',

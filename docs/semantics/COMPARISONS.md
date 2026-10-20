@@ -41,12 +41,18 @@ At `<=>`, empty gives 0;
 nonempty gives -1 with NULL left and +1 with NULL right.
 This includes both-missing and same-name entry: `$x <=> $x` can return -1 after
 the handler creates `[false]`. Current reference/COW bindings and next-index
-history survive; initially owning operands and nested/reference/object entries
-remain partial. Entry checks stay unchanged; the
+history survive; captured arrays and nested/reference/object entries
+remain partial. The
 [spaceship](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
 and [Boolean array resume reviews](../../coverage/semantics/undefined-scalar-compare-array-resume-review.json)
 record source, ownership and budget checks. The Boolean extension preserves
 reversed physical order and can make `$x != $x` or `$x < $x` true for `[false]`.
+The opposing direct CV may also hold the allocated flat array before the Warning.
+Its current binding follows scalar/array replacement, checked quiet removal or
+unread retry. Initial table ownership stays with CVs, references, copies and pools;
+the saved read record adds no table owner. The
+[initial-array review](../../coverage/semantics/undefined-comparison-initial-array-review.json)
+checks entry, aliases/COW and budget resumption; captured/temporary arrays stay excluded.
 Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also suspend with one missing operand
 and a defined scalar counterpart. The missing value stays null while the opposing
 wrapper follows callback writes, late reference creation and rebinding. A missing
@@ -85,7 +91,7 @@ Exception identity and finally; `zval_undefined_cv` checks the pending exception
 before reporting. A returning handler can instead leave the later physical CV
 missing and trigger the second Warning below.
 The spaceship path uses the same left-frozen record and entry-only predicate.
-Initially owning counterparts and wider producers remain partial. The
+Owning counterparts outside the flat-array bound and wider producers remain partial. The
 [forward review](../../coverage/semantics/undefined-scalar-compare-both-review.json)
 and [reversed review](../../coverage/semantics/undefined-scalar-compare-both-reversed-review.json)
 and [spaceship review](../../coverage/semantics/undefined-spaceship-both-review.json)

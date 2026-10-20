@@ -118,7 +118,7 @@ def checks(program, path, name):
         '$drive_steps(S_zero[.COMPLETION = NORMAL],4000) = S_done',
         'S_entry = $unset_name(S_resume,$ptascii("missing"))',
         '$spaceship_read_array(S_entry,perrorread)',
-        '$error_read_plan(S_entry[.TODO = perrorread.ORIGINAL :: ptask_tail*][.RESULT = perrorread.INPUT][.BASE = perrorread.BASE]) = eps',
+        '$error_read_plan(S_entry[.TODO = perrorread.ORIGINAL :: ptask_tail*][.RESULT = perrorread.INPUT][.BASE = perrorread.BASE]) = (perrorread)',
         '~$spaceship_read_array_operand(S_resume,KNOWN (PARRAY n_live))',
         'perrorread_bad = perrorread[.ORIGINAL = BINARY_RIGHT SPACESHIP (VARIABLE (' + text(left) + ') z_left) 999][.TASK = BINARY_RIGHT SPACESHIP (' + ('VARIABLE (' + text(left) + ') z_left' if rebound else 'KNOWN PNULL') + ') 999][.LINE = 999]',
         '$spaceship_read_array(S_resume,perrorread_bad)', '~$error_read_valid(S_resume,perrorread_bad)',
