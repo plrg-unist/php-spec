@@ -28,6 +28,7 @@ dec $ppparent_hook_context(ppstate) : (ptbytes, ptbytes)?
 def $ppparent_hook_context(P) = (($base64(text_property), $ptlc($base64(text_hook))))
   -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, P.GOTOROOT) = (NPropertyHook phpType14 phpType24 phpType4 (NIdentifier (BYTES text_hook) metadata_hook_name) phpType16 phpType39 metadata_hook)
   -- if $(|P.GOTOROOT| >= 2)
+  -- if PCINDEX n_hook = P.GOTOROOT[$nabs($( |P.GOTOROOT| - 1))]
   -- if pcpath_group = P.GOTOROOT[0:$nabs($( |P.GOTOROOT| - 2))]
   -- if P.GOTOROOT = pcpath_group ++ [PCFIELD 4, PCINDEX n_hook]
   -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath_group) = (NStmtProperty phpType14_property phpType24_property phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_property) metadata_property) phpType5 metadata_item])) phpType37 metadata)
