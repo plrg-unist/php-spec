@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+`==`, `!=`, `<`, `<=`, `>` and `>=` now resume against handler-created live flat
+DIRECT primitive arrays through current CV/reference bindings. Frozen NULL
+compares with table emptiness, preserving both physical orders and admitted
+both-missing/shared-name entry. Fresh/rebound references, pooled COW separation,
+NEXT1 append, default reporting and chosen Exception/caller41/finally agree.
+Twelve added207 lines preserve ingress, certificates, second-read records,
+SPACE behavior and fields/tasks/roots/discard. Ten source agreements plus two
+controls and 587 strict-SL premises/four groups (261 author +326 independent)
+pass first attempts at `d4a551c1d`/407. Separate affected131/2 and thirteen
+source selectors renew no historical credit, including two repaired stale
+quiet-unset expectations. Initial native2+4 retain `f1726092c`/407; genuine
+unchanged baseline retains `2199eb6f4`/407. Initially owning operands,
+nested/reference/object leaves and wider producers remain partial.
+[Boolean array resume review](coverage/semantics/undefined-scalar-compare-array-resume-review.json).
+
 `<=>` now resumes against a handler-created live flat primitive array through
 its current opposing CV/reference. Frozen NULL compares by table emptiness;
 nonempty `[false]` makes `$x <=> $x` return -1. Both-missing/same-name entry,

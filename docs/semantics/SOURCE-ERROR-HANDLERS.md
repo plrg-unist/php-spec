@@ -134,15 +134,17 @@ missing-left Warning, which still warns again.
 Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also admit either missing
 operand with an initially defined scalar counterpart, following that counterpart's
 current wrapper after the callback. A missing right name need not be initialized.
-Both protocols freeze null while preserving the opposing read. Owning Boolean
+Both protocols freeze null while preserving the opposing read. Other owning
 comparison counterparts remain unsupported; a missing later physical CV can warn
 again after the first read, including one removed by the first handler.
-`<=>` resume also permits a live flat primitive array at the opposing CV, including
+All seven comparison resumes permit a live flat primitive array at the opposing CV, including
 reference rebinding and COW, after any already admitted scalar/missing-pair entry.
 Only its current emptiness is compared against frozen NULL. Array ingress and
 nested/reference/object entries remain partial; the
-[array resume review](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
-records the unchanged certificates, roots and discard.
+[spaceship](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
+and [Boolean array resume reviews](../../coverage/semantics/undefined-scalar-compare-array-resume-review.json)
+record unchanged ingress, certificates, roots and discard. The Boolean extension
+keeps physical order, current alias/COW ownership and known-NULL second records.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.
 [The equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json)
@@ -194,7 +196,7 @@ two captured NULLs. The
 [shared reversed review](../../coverage/semantics/undefined-scalar-compare-reversed-same-review.json)
 admits identical CV names only for the greater operators' right-frozen shape and
 inverse NULL-only certificate; ordinary forward right-frozen shapes stay distinct.
-First-callback owning comparison values and wider producers remain partial.
+Owning comparison values outside the flat-array bound and wider producers remain partial.
 Forward `==`/`!=`/`<`/`<=` also quietly fold a checked left CV removed during a
 missing-right Warning to NULL against the frozen right NULL. Their distinct scalar
 right-frozen record preserves surviving alias owners and yields true/false/false/true
@@ -205,7 +207,7 @@ during the missing-left Warning quietly. Their old left-frozen record preserves
 TASK/first NULL and restores RESULT as NULL, yielding false/true with surviving
 aliases and one report; the opposite unread-left path still warns again. The
 [reversed checked-right review](../../coverage/semantics/undefined-scalar-compare-checked-unset-reversed-review.json)
-records this bounded restore. Owning values and wider producers remain partial.
+records this bounded restore. Other owning values and wider producers remain partial.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding

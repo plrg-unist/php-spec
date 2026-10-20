@@ -18,12 +18,12 @@ remains later research.
 
 [Scalar comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.
-At `<=>` resume, a handler-created flat primitive array also follows its current
-CV/reference binding; emptiness determines comparison against the frozen NULL.
+When any of the seven operators resumes, a handler-created flat primitive array
+follows its current CV/reference binding; emptiness determines comparison against frozen NULL.
 This covers bounded spaceship operands and distinct direct-CV
 `==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
 Both-missing pairs, including one missing name twice, can resume if the first
-handler defines the later scalar. `$x == $x` can then be false and `$x > $x`
+handler defines the later scalar or flat array. `$x == $x` can then be false and `$x > $x`
 true. Greater operators check source right first. All seven comparison operators
 also stage a second Warning if the later physical CV stays missing, freezing both NULLs
 despite writes from the second handler.

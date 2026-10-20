@@ -34,23 +34,26 @@ Surviving aliases keep their value and ownership. See the
 [checked-left removal review](../../coverage/semantics/undefined-spaceship-checked-unset-review.json)
 and the
 [live-left review](../../coverage/semantics/undefined-spaceship-right-review.json).
-After an admitted `<=>` Warning, either opposing CV can now hold a live flat
+After an admitted Warning at any of the seven operators, the opposing CV can hold a live flat
 array of primitive values without element references. Against frozen NULL, empty
-arrays give 0; nonempty arrays give -1 with NULL left and +1 with NULL right.
+arrays compare as false and nonempty arrays as true. At `<=>`, empty gives 0;
+nonempty gives -1 with NULL left and +1 with NULL right.
 This includes both-missing and same-name entry: `$x <=> $x` can return -1 after
 the handler creates `[false]`. Current reference/COW bindings and next-index
 history survive; initially owning operands and nested/reference/object entries
 remain partial. Entry checks stay unchanged; the
-[array resume review](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
-records the source, ownership and budget checks.
+[spaceship](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
+and [Boolean array resume reviews](../../coverage/semantics/undefined-scalar-compare-array-resume-review.json)
+record source, ownership and budget checks. The Boolean extension preserves
+reversed physical order and can make `$x != $x` or `$x < $x` true for `[false]`.
 Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also suspend with one missing operand
 and a defined scalar counterpart. The missing value stays null while the opposing
 wrapper follows callback writes, late reference creation and rebinding. A missing
 right name can remain undefined throughout the callback. False handlers preserve
 default Warning order; throws preserve destination/catch/finally. The opposing CV
-must remain scalar on return unless an already checked name is removed or a later
-missing read stages another Warning, as described below; owning values stop
-Unsupported. The
+may return as a scalar or the bounded flat array above. A removed name quietly
+folds or stages another Warning according to physical order, as described below;
+other owning values stop Unsupported. The
 [missing-left review](../../coverage/semantics/undefined-scalar-compare-review.json)
 and [missing-right review](../../coverage/semantics/undefined-scalar-compare-right-review.json)
 and [not-equal/less-or-equal review](../../coverage/semantics/undefined-scalar-compare-ne-le-review.json)
@@ -68,7 +71,7 @@ consume an already checked source-right CV removed during the missing-left Warni
 Their first source-left NULL stays frozen, yielding false/true without an old alias
 read or a second report; see the
 [reversed checked-right review](../../coverage/semantics/undefined-scalar-compare-checked-unset-reversed-review.json).
-Removing an unread later CV still stages its Warning. Owning values and wider
+Removing an unread later CV still stages its Warning. Other owning values and wider
 producers remain partial. Earlier spaceship cuts remain in the
 [scalar warning review](../../coverage/semantics/undefined-spaceship-review.json).
 
@@ -81,7 +84,7 @@ Exception identity and finally; `zval_undefined_cv` checks the pending exception
 before reporting. A returning handler can instead leave the later physical CV
 missing and trigger the second Warning below.
 The spaceship path uses the same left-frozen record and entry-only predicate.
-Owning counterparts and wider producers remain partial. The
+Initially owning counterparts and wider producers remain partial. The
 [forward review](../../coverage/semantics/undefined-scalar-compare-both-review.json)
 and [reversed review](../../coverage/semantics/undefined-scalar-compare-both-reversed-review.json)
 and [spaceship review](../../coverage/semantics/undefined-spaceship-both-review.json)
@@ -127,9 +130,9 @@ the second handler creates a reference or leaves the name absent. The
 adds the inverse NULL-right certificate and exact first-right restore. Both
 compiled descriptors are checked, including the multiline left location. The
 shared reversed form removes only its two same-name restrictions, retaining
-physical right-first order and the NULL-only certificate. Ordinary
-literal/captured operands and first-callback owning
-comparison values remain partial.
+physical right-first order and the NULL-only certificate. Wider
+literal/captured producers and owning comparison values outside the flat-array
+bound remain partial.
 
 Array comparison first handles identical container identity, then recursion on
 the left operand, element counts, and exact normalized key lookup in left
