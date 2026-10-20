@@ -1273,6 +1273,14 @@ strict45 and author300/peer420 caps. Other property types/sources, multiple sour
 holder retirement, fewer than two outer slots, wider bodies/reentry and GC remain open.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+Composed over `d0e429b7f`/407 with tested270 byte-exact and every other spec path
+and ordered manifest parent-exact. Incoming parent-hook/set, compound arithmetic
+Warning, missing loose comparison, parked Generator, INI/DEFINE and literal-array
+selectors have no producer here. Holder has no hooks or parent; existing138 and
+the ordinary typed writer remain unchanged. State/default/root paths stay exact;
+source1/566 Boolean9 raw retain their private407 cuts without joined execution
+or accepted replay.
+
 Retained propertyless Stringable `define` names now accept captured boolean true
 with primitive candidates and non-NUL global/class-like results. One module400
 raw-shape alternative preserves all source/carrier/saved-site, conversion, warning,
