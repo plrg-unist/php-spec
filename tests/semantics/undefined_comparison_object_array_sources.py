@@ -7,7 +7,6 @@ from undefined_comparison_object_array_cases import CASES
 
 family.CASES = CASES
 family.UNSUPPORTED = {
-    'object-array-alias-entry-boundary': ('error-handler ingress requires a producer continuation', b'B|'),
     'object-array-nested-resume-boundary': ('spaceship warning changed opposing scalar', b'B|H|'),
 }
 family.BASELINE = ('error-handler ingress requires a producer continuation', b'')
