@@ -7,6 +7,31 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Ownerless positional `ini_set(NULL, value)` now retains a live exact bare
+`ini_get` Closure value across argument and handler rewrites. Returning handling
+converts the option to empty before parameter2 TypeError; supplied Exception keeps
+raw NULL/the same getter and cancels rejection. Strict calls reject parameter1
+after value effects with handler0. The value is not called during reception;
+actual getter calls before and after original string-setter recovery still work.
+
+Four exact source comparisons and 1,374 state premises (326+353+278+417) pass
+first attempt at `487f3e446`/`f99899555`/407. Initial `d741939d6` native4/baseline0
+and later packets use CPU4; nine stable/reaped reports PASS without failures or
+retries, expected Deprecated11/17 only and quiet workers. Only23 additive172 lines
+change: a live exact-kind predicate, positional admission and existing TypeError2
+delegation. Quiet-value/Closure allocation/trace/root/discard/GC and historical
+tests stay exact, without old replay. Native empty-option/getter-identity evidence
+differs from state-only captured HOBJECT/two-frame owning trace/full discard.
+Other Closure kinds, retained setter receivers, named/packed/PIPE forms and
+sole-owner lifetimes remain partial; paused boundaries are untouched.
+[Rejected getter Closure INI review](coverage/semantics/ini-set-null-getter-closure-value-review.json).
+
+Composed over `259ce8ac1`/407 with module172/four tests private-exact and every
+other runtime/schema/ordered-manifest byte parent-exact. Incoming missing-read
+array comparisons, by-reference destructor returns, Generator SEND, selected XOR
+conversion and lossy-float-key reference-debt selectors have no producer here.
+Source4/state1,374 retain private407 cuts without joined execution or renewed credit.
+
 Captured allocated flat DIRECT primitive arrays now survive missing `<=>`
 reads in either orientation. Literal, runtime constructor, assignment and
 ordinary by-value return snapshots preserve their earlier table through handler

@@ -414,6 +414,16 @@ strict ordinary versus weak explicit calls, precise discard and retained-setter 
 Additional arguments/packs, materialized tables, wider properties, other object
 kinds, PIPE and sole-owner lifetimes remain partial.
 
+[Rejected getter Closure INI values](coverage/semantics/ini-set-null-getter-closure-value-review.json)
+now retain an exact bare `ini_get` Closure as the second value of an ownerless
+positional NULL-option call. Returning handlers convert the option to empty before
+the value TypeError; supplied throw preserves raw NULL and the captured getter and
+cancels rejection. The value is never invoked during reception. Four source
+comparisons and 1,374 state premises cover earlier callee/option/value capture,
+owning trace edges, strict option priority, precise discard and real getter reuse
+before and after setter recovery. Other callable kinds, retained setter receivers,
+named/unpacked forms and sole-owner lifetimes remain partial.
+
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
 send/callback site. Ordinary Closure PIPE follows caller strictness; normal and
