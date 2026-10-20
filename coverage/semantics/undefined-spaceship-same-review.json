@@ -1,0 +1,79 @@
+{
+  "milestone": "COMP98 same missing CV in spaceship comparison",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "One initially missing ordinary CV at both sides of <=>. First left Warning freezes NULL; on return the shared name must hold a scalar for the second read. Pending supplied Exception suppresses the second Warning.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "a84e7c96d",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "7b4bc8fc5605abe3575a42b242afdd440384e11a8bcce82018c8376821bc85ef"
+  },
+  "modules": 406,
+  "engine_basis": "ZEND_SPACESHIP fetches OP1 with its missing-CV Warning before OP2, which follows the current shared wrapper. zval_undefined_cv suppresses reporting under a pending exception. Fresh same-name native probes distinguish frozen NULL/string0 order -1 from same-value order0, reference creation/target binding, two-Warning return and pending-Exception suppression.",
+  "implementation": "Only widen the existing missing-pair distinctness premise for SPACESHIP. Same-name input retains the old first-NULL record; right-read shape stays eps. The other six operators keep distinct names. Source validity, scalar resume guard, fields, tasks, roots and discard remain exact.",
+  "behavior": [
+    "Same x/x reads preserve first NULL and current second scalar for string0, int0 and true. Fresh alias owners 0 to 2 and target owners 1 to 2 retain later writes; false handlers preserve default Warning order. Supplied Exception preserves destination41/catch identity/finally with one Warning.",
+    "Four strict-SL groups preserve actual source-reached dispatch/resume, signed -1, complete raw comparison, current cell identity, code/pools, source/read-line/operator corruption, right-frozen exclusion, defined-name no-warning entry, entry/resume separation and zero/split budgets.",
+    "A forged RHS can satisfy the pure missing-pair helper while failing the compiled source certificate. The sole affected COMP97 negative now checks source validity; fresh COMP98 predicates cover this distinction without replaying or renewing that older campaign."
+  ],
+  "baseline": {
+    "revision": "0ff3218cdf48cf9115c5cd1f8c79375566b5fc52",
+    "report": "initial/initial-report.json",
+    "sha256": "f39906c6f37f51a785b76f9eedd21923f1499640c054ed73ee66dadde27638be",
+    "native": "Two exact originals normal H:1:10:1;R:1:1:1;END;, empty stderr.",
+    "model": "Genuine unchanged same-CV <=> Unsupported/error-handler ingress requires a producer continuation, empty output.",
+    "agreement_credit": 0
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "100a410213243fb08f95c23a5451b371999d868b29460485eaa85f5d90f342ec",
+      "revision": "fda240445bc45e891f69c554ff02259404cf2025",
+      "agreements": 5,
+      "unsupported_controls": 1
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "0042082d93a11715c0de121dd32c759010469048303023901a7e48e290a712a2",
+      "revision": "fda240445bc45e891f69c554ff02259404cf2025",
+      "agreements": 3,
+      "unsupported_controls": 1
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "a6a8e959d5093c4d1e4cbbdb37479dd07aa47df491a63bea86a51e62f0685e49",
+      "revision": "fda240445bc45e891f69c554ff02259404cf2025",
+      "premises": 220,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "b68eeb1dad463c680c849cb1f4eb2c8152a38131c1fe5a242f1ac3011101d016",
+      "revision": "fda240445bc45e891f69c554ff02259404cf2025",
+      "premises": 213,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 8,
+    "unsupported_source_controls": 2,
+    "state_groups": 4,
+    "state_premises": 433
+  },
+  "failures": [],
+  "remaining": [
+    "Returning with the shared name still missing stops Unsupported before the native second-Warning chain. Owning/removed values, other same-CV comparison operators and wider producers remain partial; both refusal controls retain zero agreement.",
+    "All accepted checks passed first attempts at fda240445/406. Earlier comparison cuts are not replayed or renewed; paused COMP88 Stringable and unrelated arithmetic remain excluded."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-98",
+  "artifact_manifest_sha256": "49bbdf19493a214a2e155709afb1ba32766152d77441dda6a7b72108c03097f8",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_spaceship_same_sources.py --phase native --output .tools/comp98-source-new",
+    "python3 tests/semantics/undefined_spaceship_same_sources.py --phase model --output .tools/comp98-source-new",
+    "python3 tests/semantics/undefined_spaceship_same_state.py --output .tools/comp98-state-new",
+    "python3 tests/semantics/undefined_spaceship_same_review_state.py --output .tools/comp98-peer-state-new"
+  ]
+}

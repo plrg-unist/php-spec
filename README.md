@@ -20,8 +20,8 @@ remains later research.
 variable's null result through handlers while following current scalar CV bindings.
 This covers bounded spaceship operands and distinct direct-CV
 `==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
-Both-missing pairs, including `<=>`,
-can resume if the first handler defines the opposing scalar; greater operators
+Both-missing pairs, including the same missing variable twice at `<=>`,
+can resume if the first handler defines the later scalar; greater operators
 warn right first.
 Wider warning paths remain partial.
 

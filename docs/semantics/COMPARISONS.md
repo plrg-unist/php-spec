@@ -46,7 +46,7 @@ record the separate cuts. Zend evaluates `>`/`>=` source expressions left to rig
 then reverses physical comparison operands. The single-missing/scalar-throughout
 bound makes these source-oriented records valid; removed-right native probes
 confirm one Warning without admitting that wider path. Second-Warning chains,
-same-CV inputs, owning/removed counterparts and wider producers remain partial. Earlier spaceship cuts remain in the
+owning/removed counterparts and wider producers remain partial. Earlier spaceship cuts remain in the
 [scalar warning review](../../coverage/semantics/undefined-spaceship-review.json).
 
 Distinct loose-comparison CV pairs can also begin with both values missing.
@@ -58,13 +58,20 @@ Exception identity and finally; `zval_undefined_cv` checks the pending exception
 before reporting. Returning with the opposing name still missing remains explicit
 Unsupported before the second-Warning chain. The spaceship path uses the same
 left-frozen record and entry-only predicate; its existing scalar resume guard
-still rejects a missing or owning right value. Same-CV, owning/removed counterparts
+still rejects a missing or owning right value. Owning/removed counterparts
 and wider producers remain partial. The
 [forward review](../../coverage/semantics/undefined-scalar-compare-both-review.json)
 and [reversed review](../../coverage/semantics/undefined-scalar-compare-both-reversed-review.json)
 and [spaceship review](../../coverage/semantics/undefined-spaceship-both-review.json)
 record the separate cuts. Affected older entry assertions now select the first
 physical missing operand; these maintenance checks do not renew earlier results.
+
+At `<=>`, both operands may also name the same initially missing CV. The first
+read stays NULL while the second sees the handler-created scalar or reference.
+Returning with that name still missing refuses before the second Warning; the
+other six operators with the same missing CV remain partial. The
+[same-variable review](../../coverage/semantics/undefined-spaceship-same-review.json)
+records this entry extension and its separate source/state cut.
 
 Array comparison first handles identical container identity, then recursion on
 the left operand, element counts, and exact normalized key lookup in left

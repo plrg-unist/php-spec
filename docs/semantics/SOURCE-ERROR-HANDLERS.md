@@ -146,8 +146,13 @@ Exception suppresses the second Warning and follows ordinary discard. The
 [forward review](../../coverage/semantics/undefined-scalar-compare-both-review.json)
 and [reversed review](../../coverage/semantics/undefined-scalar-compare-both-reversed-review.json)
 and [spaceship review](../../coverage/semantics/undefined-spaceship-both-review.json)
-record fresh owners and entry/resume separation. Returning second-Warning chains,
-same-CV/owning counterparts and wider producers remain partial.
+record fresh owners and entry/resume separation. `<=>` also permits the same
+initially missing CV twice: first NULL stays frozen while the second read sees
+the shared name initialized by the handler. The
+[same-variable review](../../coverage/semantics/undefined-spaceship-same-review.json)
+records its one-premise entry extension; source/resume/discard stay unchanged.
+Returning second-Warning chains, other same-CV operators, owning counterparts
+and wider producers remain partial.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding

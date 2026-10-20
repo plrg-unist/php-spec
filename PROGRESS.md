@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+One initially missing CV may now occur twice at `<=>`: the first read freezes
+NULL, then the second sees the shared scalar/reference created by the handler.
+Only the entry predicate's distinctness premise widens for SPACESHIP; right-read
+shape stays empty and other six operators stay distinct. Source/resume/discard,
+fields and roots remain exact. Eight source agreements plus two zero-credit
+controls and 433 strict-SL premises/four groups (220 author + 213 independent)
+pass first attempts at `fda240445`/406. Fresh/target owners, raw signed comparison,
+false/default, pending-Exception suppression and source/line/budget checks pass;
+genuine `0ff3218cd` baseline stays zero. The affected COMP97 forged-name negative
+now checks source validity; fresh predicates distinguish pair admission from
+compiled authority without renewing old cuts. Second-Warning chains, other
+same-CV operators, owning/removed values and wider producers remain partial.
+[Same-variable spaceship review](coverage/semantics/undefined-spaceship-same-review.json).
+
 Plain-CV `+=` now stages a second RHS Warning after its LEFT handler changes
 the initially quiet value to leading text. Four originals pass at `ba9a8d17e`/405;
 three focused fixtures pass 465 premises at `367bc7c9e`/405. Cached float `18.0`
