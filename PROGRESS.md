@@ -2147,40 +2147,41 @@ GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no root
 and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
-Owning ARRAY returns from ordinary statically named no-argument by-value
-functions now enter float-key literal handlers. The checked nonconstant value
-occurrence must resolve without fallback to an active ordinary function with
-BYREF false. Current producer globals are irrelevant after the return: handler
-writes, reference writes and unsetting/recreating a global cannot redirect the
-captured KNOWN table. Existing mutable/nonpool and object-free readiness bounds,
-builder refusal, task/frame ownership and all count/prune/driver rules stay exact.
-The owner transfers into a DIRECT entry without literal debt or retention.
+NULL literal-key callbacks now restore the captured ordinary value CV before
+empty-string-key insertion or supplied-throw propagation. The value snapshot is
+frozen; handler writes are visible inside the callback but undone at reset. A
+shared key/value NULL CV is restored too, while distinct key writes survive.
+The new marker has no captured CELL root and owns two old-table edges for ARRAY
+values: acquisition plus backup. Normal reset transfers these into the CV and
+DIRECT entry; throw restores the CV before releasing builder/insertion owners.
+Current slot/payload liveness uses logical pruning, while the owning snapshot
+remains allocated across the atomic popped-marker discard. No count/prune/driver
+or float-key behavior changes.
 
-Four fresh natives retain `ac7e55c32`/407. The genuine unchanged model completes
-the maker (`M:1;`) before its pre-handler Unsupported; natural comparison stays0.
-Strict407/source4 pass at `f551dd093`; focused756 (383 author +373 independent;
-749 Boolean +7 raw) passes at `c24bbde576`. The original author fixture at
-`970bd386c` stopped before semantics on first-class constructor-list grouping,
-retaining zero credit with its second front unrun. A one-line grouping correction
-changes no premise or domain; only the affected author packet and then previously
-unrun peer packet execute. Source models use180/outer210 and focused fixtures
-SL180. Successful actors are quiet, without timeout/interruption, and fully reaped;
-runtime, source and accepted observations require no correction or replay. Fresh
-runtime DIRECT-integer arrays distinguish old2/7 from producer44/88 or replacement
-33/8, independent copied55 and a fresh second maker call. Independent sole-owner
-returns check entry deletion and supplied-throw retirement, same Throwable,
-destination99 and cancelled later7. No inverse bias cycle or historical fixture
-maintenance is needed. By-reference returns, call arguments, fallback/dynamic/
-method/Closure producers, owning objects and unsafe/GC boundaries remain partial;
-paused LIST/owned-NUL paths are untouched.
-[Owning return-value review](coverage/semantics/array-literal-float-return-array-value-review.json).
+Four fresh originals retain `4a09a56f7`/408. The unchanged model refuses before
+the first handler with natural comparison0. Fresh same-CV NULL and edge-free
+DIRECT-integer ARRAY witnesses distinguish restoration, separate key/tail writes,
+old/changed snapshots, child COW, entry deletion and same supplied Throwable with
+destination99 and cancelled later7. Existing primitive/validated byte-leaf rules
+compose without fresh all-payload credit. Strict408/source4 pass at `18c5f3c97`.
+Focused811 =803 Boolean +8 raw (425 author +386 independent) retains the original
+same-CV192 pass at `27db7bb70` and corrected ARRAY233/peer386 at `ce5e675cd`.
+The original ARRAY front stopped before semantics on a key-name byte-list versus
+cell-index stem collision, retaining zero credit. A rename-only correction changes
+no premise/domain; only that ARRAY front and the previously unrun peer execute.
+Source models use180/outer210; focused fixtures use SL180. Successful actors are
+quiet, without timeout/interruption or descendants, and fully reaped. No runtime,
+source, strict, native or accepted scalar observation is replayed.
+Unset/rebound or wrapped/typed/coercion/backing slots, direct string/object values,
+wider owning graphs and unsafe/GC lifetimes remain partial. The paused LIST-key
+and owned-NUL paths stay untouched.
+[NULL-key review](coverage/semantics/array-literal-null-key-warning-review.json).
 
-Composed over `c75cdb7c7`/408 with accepted413 and all six test paths unchanged.
-Every other runtime/schema and the ordered manifest preserves the parent.
-Incoming INI/DEFINE, missing loose comparisons, Generator, magic-property += and
-numeric-text unary Warning selectors are absent; the latest M128 tail is prose
-only. Strict/source/focused retain their private407 cuts and original parser0,
-without joined execution or accepted replay.
+Earlier owning ARRAY returns retain native/genuine `ac7e55c32`/407,
+strict/source4 `f551dd093` and focused756 `c24bbde576`, integrated as `3cd1251b4`.
+The genuine maker-prefix baseline0 and original `970bd386c` parserfailure0,
+grouping-only correction and accepted original cuts remain in the
+[return-value ledger](coverage/semantics/array-literal-float-return-array-value-review.json).
 
 Earlier typed captured-CV sources retain native/genuine `6bce238f1`, source4/
 strict407 `f8a2747c0` and state1272 `dcd055f88`, integrated as `e0d5c204d`.

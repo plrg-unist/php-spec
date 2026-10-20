@@ -124,6 +124,15 @@ literal entry without debt or retention. The
 checks frozen tables, COW and last-owner deletion/throw cleanup. Only a checked
 no-argument call with no fallback and a by-value signature enters this new arm;
 by-reference returns retain their separate lifetime requirements.
+NULL-key literal conversion has its own value-reset continuation. The captured
+ordinary CV index is nonowning and must still be the same live unmarked slot,
+without property/coercion/backing records or CELL debt. For ARRAY values the
+marker/frame owns two old-table edges, one acquired insertion value and one
+backup. Normal completion moves these into the restored CV and DIRECT entry;
+throw restores the CV and releases the insertion/builder owners before catch.
+No literal debt, retention or generic count/prune rule changes. The
+[NULL-key ledger](../../coverage/semantics/array-literal-null-key-warning-review.json)
+separates restored old tables, retired callback tables and independent snapshots.
 String leaves use canonical bytes or existing valid carriers; they add no modeled
 heap edges or user destructors. Ordinary string-offset writes preserve independent
 snapshots while table/CELL aliases share bytes. Singleton reference entries

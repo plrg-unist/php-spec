@@ -35,6 +35,14 @@ Removing an already checked defined counterpart during a missing-CV Warning
 compares it quietly against that read's frozen NULL and preserves surviving aliases.
 Wider warning paths remain partial.
 
+[NULL literal keys](docs/semantics/DIMENSIONS.md) restore the original ordinary
+value CV after the deprecation handler, then insert that value under `""`.
+Handler writes are visible inside the callback and undone before insertion or
+supplied-throw propagation. If key and value share the same NULL CV, its key
+mutation is undone too. ARRAY capture owns both acquisition and backup copies;
+normal restore transfers them into the CV and DIRECT entry, while throw restores
+the CV before releasing the builder. Wider value/slot forms remain partial.
+
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
 remain live, while runtime array temporaries retain their own tables.
