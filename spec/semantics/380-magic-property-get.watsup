@@ -571,11 +571,8 @@ def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
   -- if $call_reference_operand_valid(S, S.RESULT)
   -- if S_next.TODO = (PROPERTY_GET_COPY ppropertyget S.RESULT) :: ptask_tail*
   -- if S_next.RESULT = KNOWN PNULL /\ S_next.BASE = BASE_VALUE (KNOWN PNULL)
-dec $property_magic_add_get_pending(pstate, ppropertyget) : bool
-def $property_magic_add_get_pending(S, ppropertyget) = false -- otherwise
 rule PhpStep/property-get-result: S ~> $property_get_complete(S, ppropertyget, S.RESULT)
   -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
-  -- if ~$property_magic_add_get_pending(S, ppropertyget)
   -- if $property_get_valid(S, ppropertyget, true)
   -- if $property_get_tail_valid(S, ppropertyget)
   -- if $call_reference_operand_valid(S, S.RESULT)
