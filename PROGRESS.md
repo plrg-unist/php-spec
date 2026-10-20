@@ -7,6 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+From-callable method Closure VALUES now publish under their saved source and
+invocation USER permission. Base-private selection stays distinct from a Child
+same-name method after callback/creator retirement. A captured factory can be
+allocation-dead while its saved source still authenticates that selection; it is
+metadata, not an extra owner. Query COW shares the selected Closure, method
+statics remain request roots, and pending duplicate cleanup can destroy the sole
+receiver after handler output but before the original Exception reaches catch.
+
+Three originals pass at `a8373c8ebbb`/407; 995 focused premises (391+201+403),
+including three zero-budget identities, pass at `b88ace7cc4de`/407. All first
+attempts pass without failures, retries or accepted/historical replay. Sole400+6
+reuses234 typed/live permission/scope authority and dynamic-only PVOBJECT query/
+tree delegates; source protocols, roots, cleanup, schema and global/default
+policies stay exact. Ordinary direct instance/static and captured-factory
+instance omitted/false originals are distinct from structural support for clones
+and inherited flags. Factory VALUE and wider domains/core remain partial.
+[From-callable Closure define review](coverage/semantics/define-runtime-from-callable-review.json).
+
 String-selected method Closure VALUES now publish with their validated requested
 method and lexical/called/optional receiver identity. A fixed Base descriptor
 survives a Child override; computed static strings retain their selection after

@@ -1,0 +1,60 @@
+{
+  "status": "accepted private milestone; publication cleared",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; sole pinned local oracle/profile; original PHP bytes/filename/cwd; full407 SL modules",
+  "base": "b2c2354872b461a69a2ebffe96c295de711ba190",
+  "runtime": {
+    "module": "spec/semantics/400-dynamic-constants.watsup",
+    "change": "Sole400+6 admits exact bare FROMCALLABLECLOSURE VALUES under existing typed/live saved source, USER permission, selected descriptor and lexical/called/optional-receiver authority, with absent binding/callable certificate. Dynamic-only PVOBJECT query/tree, certificate priority, request statics, roots, cleanup, schema and global/default policies stay unchanged.",
+    "sha256": "9e8bb3ee9afa062512e1b8d2749ef38a9f1f41d693e8f010ae1a1da32a7b303c"
+  },
+  "behavior": [
+    "A private Base::read captured inside inherited Base.make retains its saved Base permission and descriptor despite a distinct same-name Child method. Local callback receiver/method references change and retire before DEFINE. Earlier LEFT publishes while the candidate becomes RIGHT; shared request-method counts1/2, explicit normal-duplicate handler invocation3 and later LEFT query4 preserve private values23/100 then41. RIGHT D41 precedes A; stored LEFT D23 runs at shutdown.",
+    "A receiver-free private static capture uses the Child class string inside Base.make, then retires its callback class/method cells. Canonical copying/query bucket COW/source NULL/append0 preserve the Closure pointer and raw history91; Base-private static seed23 then41 stays distinct from Child900. Query calls and a later public wrapper calling the private method share request counter1/2/3.",
+    "The independent source creates a factory globally, invokes it in USER Base.capture to select Base-private read, then unsets the factory and retires the local callback. Reached states prove both allocations dead with saved factory source still valid; factory creation grants no private permission. The handler explicitly invokes the selected Closure (Base41/Child97/called Receiver), clears the raw alias and throws. Its private DIRECT snapshot is then the sole Closure owner: D41 runs after H and before catch, preserving the same Exception, raw alias-NULL trace, old17 and sentinel."
+  ],
+  "authority": "Exact bare FROMCALLABLE requires bounds/live allocation, typed_closure and closure_live_object_valid. Existing234 live scope validation reaches from_valid: direct or saved-factory source, selecting invocation USER permission, frozen class/leaf/method identity and actual live receiver. Mere scope presence is insufficient. Factory history may be saved but not live; original callback arrays, creator frames and frozen input/history are metadata, never extra heap owners. Only the optional receiver is a child; method statics stay independent request roots under112. Binding/callable records must be absent, preserving present/wrapped certificate priority/refusal. Wrong permission, source/factory, selected descriptor, leaf, scope and liveness controls are pure projections, never driven. DEFINE-origin direct queries and global/default policies stay exact.",
+  "engine_route": "Pinned Zend/zend_API.c::zend_is_callable_ex selects the first parent USER frame, skipping the captured internal factory, and resolves private method tables in that permission scope. Zend/zend_closures.c::zend_create_closure_from_callable/zend_create_fake_closure retain selected scope/called scope/receiver; zend_create_closure_ex shares fake method statics and fake free skips destroying them. Zend/zend_builtin_functions.c::define uses ZVAL_COPY; copy_constant_array dereferences aliases/copies containers without cloning objects, and rejected candidates are released. Existing234/112/39/257/270 supply selection, statics, roots and cleanup; no native fallback or identified engine divergence.",
+  "sources": {
+    "native_author_and_baseline_cut": "fb2c631bc29a2484dc5d14b7403265b7a1c2009d/407",
+    "accepted_model_and_peer_cut": "a8373c8ebbb5ce4f82e96f770896a2a89d5208e0/407",
+    "agreements": 3,
+    "selection": [
+      "from-private-method-closure-and-normal-duplicate",
+      "from-private-static-closure-snapshot-query-cow-and-method-static",
+      "retired-factory-private-closure-copy-retires-receiver-before-catch"
+    ],
+    "baseline": "Sole genuine unchanged direct main is Unsupported dynamic constant call domain after B|N|, CLI1/empty/stable/reaped, agreement0 (33.463s). Native/model comparisons pass first attempts with exact normal0/empty tuples. Exact-case model120/process135 direct and peer,90/105 array leaves native15/baseline45 unchanged; measured model71.759/32.675/73.694s."
+  },
+  "state": {
+    "cut": "b88ace7cc4de3c88f4ccce4e85ab08238e8f6af9/407",
+    "premises": 995,
+    "by_case": {
+      "direct_private_permission": 391,
+      "static_from_array_query_cow": 201,
+      "retired_factory_private_receiver": 403
+    },
+    "budget_identities": 3,
+    "driven_forged_states": 0,
+    "checks": "Real positional FROM CONFIG capture binds local ALIAS callback members and live Base/Child creator scope; later DEFINE sees retired arrays/local cells and global CURRENT with saved private permission intact. Exact Base-private versus Child-public selected descriptors, neutral PVOBJECT row/query, canonical query COW/history and authenticated request-method counter roots are reached. The peer first reaches the live factory invocation in Base, then proves factory/callback/creator frames retired while saved source remains valid. Its private array/Closure retire before non-STORE receiver ENTER2, preserving the original pending Exception and restoring its exact THROW tail after D41."
+  },
+  "outcomes": "Source3/state995=391+201+403 accepted first attempts with three zero-budget identities, stable inputs and fully reaped actors. No failures, retries, diagnostic-only probes or accepted/historical source/native/baseline replay.",
+  "remaining": "Executed originals use ordinary direct instance/static API results and a captured-factory instance result with omitted/false flags. Coherent clones and inherited flag delegates retain structural support without extra execution credit or invented producer history. FROMCALLABLEFACTORY itself and other excluded object domains gain no VALUE authority; wider values/names/flags/lifetimes and core remain partial. Source74 INI_SET and paused Stringable/owned-NUL/COMP88 boundaries are disjoint. Abstract owners are not native refcounts.",
+  "artifacts": {
+    ".tools/dynamic-runtime-from-callable-define-native-91/native-report.json": "905aad72e91730c9da5443b546ff9b32edd3d61d43b36775927ec3a55acf0c44",
+    ".tools/dynamic-runtime-from-callable-define-native-91/baseline-report.json": "de1788ae5bb56419a01f004dc3eb9259f02a1c8b2754583e987e5897458a2f8d",
+    ".tools/dynamic-runtime-from-callable-define-native-91/model-report.json": "23c4852706de7a8b4651e70550ce768ce3bed6df28f6aefe5d99ee4584a8f648",
+    ".tools/dynamic-runtime-from-callable-define-peer-91/native-report.json": "78bac2ef83a9feb62bb9c5cd792c95ceadc84be076387ba3bbb85920ee4415f3",
+    ".tools/dynamic-runtime-from-callable-define-peer-91/model-report.json": "2553cfdbfea1c2611274c195fbffb99dce9ded0c9c2ed1301e0085f876d208b8",
+    ".tools/dynamic-runtime-from-callable-define-state-91/fixtures-report.json": "28ef8af781ae7feddd4550ab2071dded07266d102939defdef3b62309663cec5",
+    ".tools/dynamic-runtime-from-callable-define-state-91/check-report.json": "47ebff2d7aaaba4cdee7da7e7281d8dc4383da208ee7d3b14b92f22361a5cf2b",
+    ".tools/dynamic-runtime-from-callable-define-peer-state-91/fixtures-report.json": "d429bbabb397fa703633e6e21201e9b684aaad3883e01316f9a445c90bc5193e",
+    ".tools/dynamic-runtime-from-callable-define-peer-state-91/check-report.json": "36e5ca66c1b6811c301cc3de50181f6c715a69d0dff0e4abf7a8160d4c110a84"
+  },
+  "recovery": "Four canonical .tools roots retain original PHP, source/profile/environment/argv/cwd, raw stdout/stderr/processes and numeric fixtures/reports. Read sources/runtime/proofs at fb2c/a837/b88 using git show; keep original PHP paths/cwd and fresh output roots. Author nativehost45/process15, sole baselinehost90/CLI45/process60, changed modelhost270 serial direct120/135,array90/105; peer nativehost45/modelhost150/local120/135. State --phase fixtures/check --sources ORIGINAL_ROOT --output FRESH_ROOT: author fixtures120/check540 directSL300,arraySL180; peer fixtures120/check330SL300. No TMP or obsolete worktree is required for recovery.",
+  "review": {
+    "author": "/root/dynamic_dev_59",
+    "reviewer": "/root/dynamic_review_59",
+    "decision": "cleared after independent semantic, source/state and publication review",
+    "scope": "Bare fromCallable method VALUE authority, selecting USER permission versus factory creation, private Base descriptor versus distinct Child method, saved/dead factory source, shared request statics, canonical direct/array ownership and pending receiver retirement."
+  }
+}
