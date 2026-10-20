@@ -683,3 +683,26 @@ original object. The ledger separates current `0887697` source1/136, earlier thr
 source comparisons and the compiler image25 checks. Pure image and directory
 resumption calculations are reused once with the same validation branches.
 Broader callable consumers, warning ingress, OS/INI and lifecycle remain open.
+
+The [NULL-option stdClass increment](../../coverage/semantics/ini-set-null-stdclass-value-review.json)
+adds a disjoint positional ownerless arm for retained allocated table-free
+STDINSTANCE values with direct quiet primitive properties. Invocation/selection
+and compiled option facts authenticate the call; unknown CV/helper value facts do
+not invent object receipts. Returning Deprecated handling reaches the existing
+parameter2 TypeError with converted empty option and the same mutable object.
+A supplied throw retains rawNULL and shared property writes, cancels rejection,
+and preserves Exception identity/caller99/precision10/sibling2459 before recovery.
+
+Four exact originals and author525 pass at `16ce6e0f3`/`aff691607`/406; corrected
+peer386 passes at `37d83b736`, totaling911. Native return observes empty arg0 and
+same-object arg1/current mark; peer native avoids trace traversal. Actual state
+proves raw versus converted two-frame TypeErrors, the three-frame handler
+Exception/owning object edge, shared aliases without COW, precise restoration/
+discard and existing idempotent GC buffering. Initial `791533507` CPU2 native4/
+baseline0 precede CPU1 checks. Eleven stable/reaped reports retain the original
+peer negative-state binder collision0, fixed only by a local name prefix; no
+accepted source/author/native or earlier-source replay. Expected Deprecated9/20
+accompany quiet accepted workers. Only33 additive172 lines change; existing
+trace/root/discard/GC/value-error bodies stay exact. Named/owned/packed, materialized
+tables, aliases/deferred/unset/owning properties and other object kinds remain
+partial; no Stringable/COMP88 callback is executed or enabled.

@@ -7,6 +7,30 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct/selected positional `ini_set(NULL, stdClass)` now resumes Deprecated
+handlers for retained table-free objects with direct quiet primitive properties.
+Returning handling then rejects parameter2 with an empty option and the same
+updated object. A supplied throw preserves rawNULL, Exception identity/caller99,
+shared property writes/precision10/sibling2459 and cancels value rejection.
+Strict option priority after effects and real setter recovery remain intact.
+
+Four exact originals and author525 pass at `16ce6e0f3`/`aff691607`/406; independent
+386 passes at `37d83b736` with the same runtime, totaling911. Initial `791533507`
+CPU2 native4/baseline0 precede CPU1 model/state checks. Eleven stable/reaped reports
+retain one peer fixture binder collision0, corrected only by renaming negative
+states; accepted source/author checks were not replayed. Expected Deprecated9/20
+and quiet accepted workers remain distinct. Only33 module172 lines change; actual
+object/task/trace edges, shared identity, precise restoration/discard and existing
+idempotent GC buffering are checked. Wider object/forms remain partial; paused
+Stringable/COMP88 behavior is untouched.
+[NULL stdClass INI review](coverage/semantics/ini-set-null-stdclass-value-review.json).
+
+Composed over `a3775c965`/406 with module172/four tests private-exact and every
+other runtime/schema/ordered manifest parent-exact. Incoming DEFINE-value,
+missing-CV loose comparisons, warned `+=` and literal-reference debt selectors
+have no producer here. Source4/author525/peer386 and the binder failure0 retain
+private cuts without joined execution or renewed evidence.
+
 Distinct direct CVs at `>`/`>=` now traverse the second Warning with physical
 source right first, then still-missing left, including a scalar left removed by
 the first handler. Both NULLs stay captured despite late references or writes;

@@ -298,6 +298,14 @@ with an empty option and the earlier array; throwing handlers retain raw NULL an
 cancel before value rejection. Four originals and 844 state premises cover COW,
 strict option priority and normal recovery. Wider values/forms remain partial.
 
+[NULL INI options with retained stdClass values](coverage/semantics/ini-set-null-stdclass-value-review.json)
+now resume handlers for direct/selected positional calls with table-free objects
+whose properties hold direct quiet primitives. Returning handlers reach parameter2
+TypeError with an empty option and the same updated object; throwing handlers
+preserve raw NULL and cancel rejection. Four originals and 911 state premises
+cover shared property writes, strict priority, ownership and normal recovery.
+Named/owned/packed and wider object values remain partial.
+
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
 send/callback site. Ordinary Closure PIPE follows caller strictness; normal and
