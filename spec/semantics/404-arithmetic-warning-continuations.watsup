@@ -4216,11 +4216,14 @@ rule PhpStep/xorassign-selected-warning-type-failure: S ~> $type_failure(S[.TODO
   -- if S.TODO = (XOR_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left 1) :: ptask_tail*
   -- if $xorassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, 1)
   -- if $xorassign_selected_warning_failure_operands(S, pintegeroperation) = ((pvalue_left, pvalue_right))
+dec $xorassign_selected_rhs_warning_plan(pstate) : ptask?
+
 rule PhpStep/xorassign-selected-warning-right-boundary: S ~> S[.COMPLETION = UNSUPPORTED "selected XOR assignment quiet integer RHS or failed conversion"]
   -- if S.TODO = (XOR_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left 1) :: ptask_tail*
   -- if $xorassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, 1)
   -- if $xorassign_selected_warning_right(S, pintegeroperation) = eps
   -- if $xorassign_selected_warning_failure_operands(S, pintegeroperation) = eps
+  -- if $xorassign_selected_rhs_warning_plan(S) = eps
 rule PhpStep/xorassign-selected-warning-target-boundary: S ~> S[.COMPLETION = UNSUPPORTED "selected XOR assignment expired, constrained or owning target"]
   -- if S.TODO = (XOR_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left 1) :: ptask_tail*
   -- if $xorassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, 1)
@@ -4354,3 +4357,76 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 8192
   -- if $integer_float_notices([PRECISIONLOSS], n_bits) = [(8192, perrorcall.MESSAGE)]
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pintegeroperation.LINE
+
+
+;; zendi_try_get_long protects fractional text before its leading Warning.
+;; A throw there cancels precision/store; returned cursors keep the saved text.
+dec $xorassign_selected_rhs_warning_conversion(pvalue) : pintegerconversion?
+def $xorassign_selected_rhs_warning_conversion(pvalue) = (pintegerconversion)
+  -- if $bothassign_precision_string_conversion(pvalue) = (pintegerconversion)
+  -- if |pintegerconversion.NOTICES| = 2
+def $xorassign_selected_rhs_warning_conversion(pvalue) = eps -- otherwise
+
+dec $xorassign_selected_rhs_warning_snapshot(pstate, pintegeroperation) : pintegerconversion?
+def $xorassign_selected_rhs_warning_snapshot(S, pintegeroperation) = (pintegerconversion)
+  -- if $xorassign_selected_warning_target(S, pintegeroperation)
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CELL n_right
+  -- if $arithmetic_owned_cell_valid(S, n_right)
+  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (pvalue)
+  -- if $xorassign_selected_rhs_warning_conversion(pvalue) = (pintegerconversion)
+def $xorassign_selected_rhs_warning_snapshot(S, pintegeroperation) = eps -- otherwise
+
+dec $xorassign_selected_rhs_warning_valid(pstate, pintegeroperation, nat, int, pintegerconversion, nat) : bool
+def $xorassign_selected_rhs_warning_valid(S, pintegeroperation, n_bits, i_left, pintegerconversion, n_cursor) = true
+  -- if $xorassign_selected_warning_valid(S, pintegeroperation, n_bits, i_left, 1)
+  -- if $xorassign_selected_rhs_warning_conversion(pintegerconversion.INPUT) = (pintegerconversion)
+  -- if $string_plain(pintegerconversion.INPUT) = pintegerconversion.INPUT \/ $string_carrier_valid(S, pintegerconversion.INPUT)
+  -- if $(n_cursor <= |pintegerconversion.NOTICES|)
+  -- if $(n_cursor > 0) \/ $xorassign_selected_rhs_warning_snapshot(S, pintegeroperation) = (pintegerconversion)
+def $xorassign_selected_rhs_warning_valid(S, pintegeroperation, n_bits, i_left, pintegerconversion, n_cursor) = false -- otherwise
+
+def $xorassign_selected_rhs_warning_plan(S) = (XOR_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_bits i_left pintegerconversion 0)
+  -- if S.TODO = (XOR_ASSIGN_SELECTED_WARNING pintegeroperation n_bits i_left 1) :: ptask_tail*
+  -- if $xorassign_selected_rhs_warning_snapshot(S, pintegeroperation) = (pintegerconversion)
+  -- if $xorassign_selected_rhs_warning_valid(S, pintegeroperation, n_bits, i_left, pintegerconversion, 0)
+def $xorassign_selected_rhs_warning_plan(S) = eps -- otherwise
+
+rule PhpStep/xorassign-selected-rhs-warning-capture: S ~> S[.TODO = ptask :: ptask_tail*]
+  -- if S.TODO = ptask_old :: ptask_tail*
+  -- if $xorassign_selected_rhs_warning_plan(S) = (ptask)
+rule PhpStep/xorassign-selected-rhs-warning-dispatch: S ~> $error_dispatch(S, i_level, n_message*, pintegeroperation.LINE, DIAGNOSTIC $integer_notice_name(i_level) n_message* pintegeroperation.LINE, XOR_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_bits i_left pintegerconversion $(n_cursor + 1))
+  -- if S.TODO = (XOR_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_bits i_left pintegerconversion n_cursor) :: ptask_tail*
+  -- if $xorassign_selected_rhs_warning_valid(S, pintegeroperation, n_bits, i_left, pintegerconversion, n_cursor)
+  -- if $(n_cursor < |pintegerconversion.NOTICES|)
+  -- if pintegerconversion.NOTICES[n_cursor] = (i_level, n_message*)
+  -- if ~$error_handler_eligible(S, i_level) \/ $arithmetic_add_named(S)
+rule PhpStep/xorassign-selected-rhs-warning-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "selected XOR assignment owning text-conversion callback"]
+  -- if S.TODO = (XOR_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_bits i_left pintegerconversion n_cursor) :: ptask_tail*
+  -- if $xorassign_selected_rhs_warning_valid(S, pintegeroperation, n_bits, i_left, pintegerconversion, n_cursor)
+  -- if $(n_cursor < |pintegerconversion.NOTICES|)
+  -- if pintegerconversion.NOTICES[n_cursor] = (i_level, n_message*)
+  -- if $error_handler_eligible(S, i_level) /\ ~$arithmetic_add_named(S)
+rule PhpStep/xorassign-selected-rhs-warning-commit: S ~> $write_cell_checked(S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT i_result)][.LOCATION = ROOT n_target], n_target, PINT i_result, pintegeroperation.LINE)
+  -- if S.TODO = (XOR_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_bits i_left pintegerconversion n_cursor) :: ptask_tail*
+  -- if $xorassign_selected_rhs_warning_valid(S, pintegeroperation, n_bits, i_left, pintegerconversion, n_cursor)
+  -- if n_cursor = |pintegerconversion.NOTICES|
+  -- if $xorassign_selected_warning_target(S, pintegeroperation)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_target
+  -- if $integer_binary(BITXOR, i_left, pintegerconversion.VALUE) = IRESULT i_result
+rule PhpStep/xorassign-selected-rhs-warning-target-boundary: S ~> S[.COMPLETION = UNSUPPORTED "selected XOR assignment expired, constrained or owning target after text conversion"]
+  -- if S.TODO = (XOR_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_bits i_left pintegerconversion n_cursor) :: ptask_tail*
+  -- if $xorassign_selected_rhs_warning_valid(S, pintegeroperation, n_bits, i_left, pintegerconversion, n_cursor)
+  -- if n_cursor = |pintegerconversion.NOTICES|
+  -- if ~$xorassign_selected_warning_target(S, pintegeroperation)
+
+def $task_nodes(XOR_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_bits i_left pintegerconversion n_cursor) = eps
+def $call_task_valid(S, XOR_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_bits i_left pintegerconversion n_cursor) = $xorassign_selected_rhs_warning_valid(S, pintegeroperation, n_bits, i_left, pintegerconversion, n_cursor)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = XOR_ASSIGN_SELECTED_RIGHT_WARNING pintegeroperation n_bits i_left pintegerconversion n_cursor
+  -- if $xorassign_selected_rhs_warning_valid(S, pintegeroperation, n_bits, i_left, pintegerconversion, n_cursor)
+  -- if $(n_cursor > 0)
+  -- if n_previous = $(n_cursor - 1)
+  -- if perrorcall.TARGET =/= eps \/ $(n_previous > 0) \/ $xorassign_selected_rhs_warning_valid(S, pintegeroperation, n_bits, i_left, pintegerconversion, 0)
+  -- if pintegerconversion.NOTICES[n_previous] = (perrorcall.LEVEL, perrorcall.MESSAGE)
+  -- if perrorcall.SITE = pintegeroperation.SITE /\ perrorcall.LINE = pintegeroperation.LINE
+  -- if perrorcall.EVENT = DIAGNOSTIC $integer_notice_name(perrorcall.LEVEL) perrorcall.MESSAGE pintegeroperation.LINE

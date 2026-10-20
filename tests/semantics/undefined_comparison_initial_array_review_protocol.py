@@ -126,7 +126,12 @@ def checks(program, path, name):
             '$scalar_compare_checked_missing(S_resume,perrorread)',
             '$lookup(S_done.ENV,$ptascii("left")) = eps',
             'ptask_known = BINARY_RIGHT EQUAL (KNOWN (PARRAY n_initial)) 15',
-            '$error_read_plan(S[.TODO = ptask_known :: ptask_tail*]) = eps',
+            'S_known = S[.TODO = ptask_known :: ptask_tail*]',
+            '$error_read_plan(S_known) = (perrorread_known)',
+            '$error_read_valid(S_known,perrorread_known)',
+            '$scalar_compare_read_array(S_known,perrorread_known)',
+            '~$scalar_compare_read_other(S_known,perrorread_known)',
+            '$task_nodes(ERROR_READ_RESULT perrorread_known) = [HARRAY n_initial]',
         ]
     else:
         values += [

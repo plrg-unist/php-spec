@@ -116,6 +116,15 @@ a prior getter leaves no prefix. The tested child/copy return counts share one
 array element-edge set until child storage retires. Assigned copies, argument
 COW and equal-cache cleanup keep their separate lifetimes; see the
 [normal SEND review](../../coverage/semantics/generator-unused-detached-send-review.json).
+At the pre-refreshed direct physical receiver, normal pending SEND likewise
+releases its unused copy before forced finally. A byref raw row then has no
+snapshot forcing COW, so replacing its old element runs its destructor before
+`J-END`. Assignment retains the extra container until the caller drops it.
+Equal argument/current values still supply two real release owners; clearing an
+object-valued raw cell in finally can throw before the next statement. See the
+[direct SEND review](../../coverage/semantics/generator-unused-direct-detached-send-review.json).
+Direct refresh prefixes, abrupt argument callbacks, body entry and collection
+remain unvalidated.
 Pending zero-argument NEXT also clears only the selected receiver bit while
 preserving that parked owning frame/site and copied return. It returns NULL
 without a current snapshot; a later explicit getter creates a separate copy.

@@ -488,6 +488,10 @@ def $scalar_compare_read_other(S, perrorread) = $spaceship_read_operand(S, perro
   -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (VARIABLE n* z_origin) z
   -- if pbin = EQUAL \/ pbin = NOTEQUAL \/ pbin = LESS \/ pbin = LESSEQUAL \/ pbin = GREATER \/ pbin = GREATEREQUAL
   -- if $scalar_compare_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) =/= (perrorread)
+;; Captured arrays must pass the same live-flat bound as variable arrays.
+def $scalar_compare_read_other(S, perrorread) = false
+  -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (KNOWN (PARRAY n_array)) z
+  -- if pbin = EQUAL \/ pbin = NOTEQUAL \/ pbin = LESS \/ pbin = LESSEQUAL \/ pbin = GREATER \/ pbin = GREATEREQUAL
 def $scalar_compare_read_other(S, perrorread) = true -- otherwise
 ;; Boolean comparisons use the same live flat-array bound at entry and return.
 def $scalar_compare_read_array(S, perrorread) = $spaceship_read_array_operand(S, VARIABLE n_left* z_left)
@@ -495,6 +499,16 @@ def $scalar_compare_read_array(S, perrorread) = $spaceship_read_array_operand(S,
   -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (VARIABLE n_left* z_left) z
 def $scalar_compare_read_array(S, perrorread) = $spaceship_read_array_operand(S, perrorread.INPUT)
   -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (VARIABLE n* z_origin) z
+  -- if pbin = EQUAL \/ pbin = NOTEQUAL \/ pbin = LESS \/ pbin = LESSEQUAL \/ pbin = GREATER \/ pbin = GREATEREQUAL
+  -- if perrorread.INPUT = VARIABLE n_right* z_right
+  -- if $error_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
+def $scalar_compare_read_array(S, perrorread) = $spaceship_read_array_value(S, PARRAY n_array)
+  -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (VARIABLE n* z_origin) z
+  -- if pbin = EQUAL \/ pbin = NOTEQUAL \/ pbin = LESS \/ pbin = LESSEQUAL \/ pbin = GREATER \/ pbin = GREATEREQUAL
+  -- if perrorread.INPUT = KNOWN (PARRAY n_array)
+  -- if $error_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
+def $scalar_compare_read_array(S, perrorread) = $spaceship_read_array_value(S, PARRAY n_array)
+  -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (KNOWN (PARRAY n_array)) z
   -- if pbin = EQUAL \/ pbin = NOTEQUAL \/ pbin = LESS \/ pbin = LESSEQUAL \/ pbin = GREATER \/ pbin = GREATEREQUAL
   -- if $error_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
 def $scalar_compare_read_array(S, perrorread) = false -- otherwise
@@ -604,6 +618,28 @@ def $scalar_compare_read_source(pcnode) = eps -- otherwise
 def $spaceship_read_source_operand(S, porigin, KNOWN pvalue) = true
 def $spaceship_read_source_operand(S, porigin, VARIABLE n* z) = $error_variable_source(S, (porigin), [PCFIELD 1], n*)
 def $spaceship_read_source_operand(S, porigin, poperand) = false -- otherwise
+;; Saved array values carry no new producer history. Authenticate the missing
+;; direct CV and both compiled expressions; liveness/flatness stays a domain check.
+def $error_read_source(S, perrorread) = true
+  -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (KNOWN (PARRAY n_array)) z
+  -- if perrorread.INPUT = VARIABLE n_right* z_right
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $scalar_compare_read_source(pcnode) = (pbin)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 0]) = (z_left)
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 1], n_right*)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
+  -- if perrorread.NAME = n_right* /\ perrorread.LINE = z
+def $error_read_source(S, perrorread) = true
+  -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (VARIABLE n_left* z_left) z
+  -- if perrorread.INPUT = KNOWN (PARRAY n_array)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $scalar_compare_read_source(pcnode) = (pbin)
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 0], n_left*)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 0]) = (z_left)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
+  -- if perrorread.NAME = n_left* /\ perrorread.LINE = z
 ;; The first missing read has already frozen left NULL. Authenticate the
 ;; second read against the same forward direct-CV source expression.
 def $error_read_source(S, perrorread) = true

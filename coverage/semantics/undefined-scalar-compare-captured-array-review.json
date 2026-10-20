@@ -1,0 +1,104 @@
+{
+  "milestone": "COMP112 captured flat arrays at Boolean comparison Warning reads",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "All six Boolean comparisons admit live allocated flat DIRECT primitive PARRAY captures in either source orientation. Literal, runtime constructor, assignment and ordinary by-value return values stay captured across handler COW, source removal and current-name replacement.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "9136f71986d2da43c218d434594ada77a5243717",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "bdb5e04b4b8de3848f711c2d975c52e153e860f56aad6d07bd7aad5a30f4bd66"
+  },
+  "modules": 407,
+  "engine_basis": "Equality/smaller helpers test raw physical OP1 then OP2 before zend_compare; greater compilation swaps operands. A missing read yields language-level NULL after its Warning. Opposite temporary array values retain their earlier table until FREE_OP1/FREE_OP2; handler writes separate shared tables rather than replacing the saved value.",
+  "implementation": "Add exact captured-array Boolean domain arms and PARRAY-only source certificates authenticating the operation, missing direct CV and both compiled expression descriptors. Explicitly reject known arrays in the scalar default path, so dead/nonflat captures cannot bypass the array guard. Existing TASK/RESULT/BASE roots, shapes, fields, resume, discard, SPACE and NULL-only second-read certificates remain unchanged.",
+  "behavior": [
+    "Ten exact originals cover all six operators, empty/nonempty snapshots versus changed live names, runtime constructors, assignments and by-value returns, aliases/COW/NEXT history, missing names left absent with one Warning, false/default and first supplied Exception identity/caller41/finally. Captured primitives and nested arrays remain explicit ingress refusals.",
+    "Five source-reached strict-SL groups check captured TASK/RESULT roots and owner retirement, raw Boolean restoration/comparison and throw discard before catch, surviving copies and late COW, source/CODE/line/operator/liveness/flat bounds, known-NULL compatibility, and zero/split budgets."
+  ],
+  "baseline": {
+    "report": "initial/baseline-report.json",
+    "sha256": "0bf09246e7edf80b84c0145886cc8036ad5b091256c69e063dffd0f5667ef62e",
+    "revision": "259ce8ac1d7ad8f712552225d51da49ac67e2a66",
+    "agreement_credit": 0,
+    "native": "Initial author2 and peer4 retain259ce8ac1/407; retained peer model4 reuses native4. Changed-source author native8 is separately recorded.",
+    "model": "Genuine unchanged EQ captured-right assignment is accepted/checked then ingress Unsupported with empty stdout/stderr."
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "618869d0802ad87c773d51f1f0e11be55135c105c3595f19bb15eb41efae1e66",
+      "revision": "b7d4621544b87dd4fcc25433108e245bfff6ca1f",
+      "agreements": 6,
+      "unsupported_controls": 2
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "6c923f8406618e9646fdc321b10f2b8ab213fc14ca7047059d9de60232ac0967",
+      "revision": "b7d4621544b87dd4fcc25433108e245bfff6ca1f",
+      "agreements": 4,
+      "unsupported_controls": 0
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "9772d6c7fed55bc094fb47f23bde82c2253688456676405cb2f8105db5416106",
+      "revision": "b7d4621544b87dd4fcc25433108e245bfff6ca1f",
+      "premises": 297,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "f7af57ced9812a7d80937c677618a5355748187b5ea5ad965be90b985e68c31c",
+      "revision": "b7d4621544b87dd4fcc25433108e245bfff6ca1f",
+      "premises": 367,
+      "groups": 3
+    }
+  ],
+  "totals": {
+    "source_agreements": 10,
+    "unsupported_source_controls": 2,
+    "state_premises": 664,
+    "state_groups": 5
+  },
+  "maintenance": {
+    "state": {
+      "report": "maintenance-state/report.json",
+      "sha256": "92d2e597ad99ac25d16e748e24ae301e53e494320cedcb6de99db7b36c5d963c",
+      "revision": "b7d4621544b87dd4fcc25433108e245bfff6ca1f",
+      "premises": 145,
+      "groups": 3
+    },
+    "source_selectors": {
+      "report": "maintenance-source/report.json",
+      "sha256": "5b7d006fd678d5c6c48291cdcc86e78343ea85e15074cd1328480683e238ad10",
+      "revision": "b7d4621544b87dd4fcc25433108e245bfff6ca1f",
+      "selectors": 1
+    },
+    "historical_agreement_renewal": 0,
+    "scope": "Only two old111 source-reached SPACE fronts to foreign-Boolean domain/source assertions, and old110 EQUAL through a counterfactual KNOWN-array entry/invoke; that constructed alternative is not a claimed captured execution. Only old111 captured-boolean-boundary native/model selector is rechecked; original bodies and unrelated historical campaigns stay unchanged."
+  },
+  "validation": "CPU5 serial/fail-first/full reap,2GiB: native8 hard130/wall150/per15; model8 hard605/wall620/CLI45/record60; retained peer4 hard315/wall330/CLI60/record75. Author2 state275/290, peer3 and maintenance3 state405/420, per120 strict SL/dettrue/cachefalse; one affected selector100/120/child80. Raw reports retain commands, inputs, exits and observations.",
+  "failures": [],
+  "remaining": [
+    "Captured primitives at Boolean Warning reads, nested/reference/object array leaves, reference-return wrappers and wider producers/lifetimes remain partial; paused COMP88 untouched.",
+    "New source/state and affected checks pass first executed attempts at b7d462154/407. Initial native/genuine cuts retain259ce8ac1/407; no historical credit is renewed."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-112",
+  "artifact_manifest_sha256": "262f6fce57726492c549864ef5ff3a043373808cf1a644a3b23f87aa5cf55619",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_scalar_compare_captured_array_sources.py --phase native --output .tools/comp112-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_captured_array_sources.py --phase model --output .tools/comp112-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_captured_array_state.py --output .tools/comp112-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_captured_array_review_state.py --output .tools/comp112-peer-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_captured_array_maintenance.py --output .tools/comp112-maint-state-new"
+  ],
+  "integration": {
+    "parent": "32883dd21a8da2e783533b3295ed2825b3d26660",
+    "modules": 407,
+    "runtime": "Only spec/semantics/207-error-handler-runtime.watsup differs operationally from the actual parent, with tested bdb5e04b SHA and all 13 publication tests private-exact.",
+    "compatibility": "Independent actual-tail review finds no named magic method, INI, selected shift compound, float-key borrowed-cell literal or Generator SEND producer in these originals/fronts. Arrays, pools, ownership, source, schema, fields, defaults and ordered manifest stay parent-exact; no joined execution is warranted.",
+    "evidence": "Accepted source/state and affected reports retain b7d462154/407; initial native/genuine records retain259ce8ac1/407. Integration renews no historical credit."
+  }
+}

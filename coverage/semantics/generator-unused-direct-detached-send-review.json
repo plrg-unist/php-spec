@@ -1,0 +1,96 @@
+{
+  "milestone": "Iterator42: direct pending SEND result lifetime through forced finally",
+  "status": "composed-accepted",
+  "scope": "Pre-refreshed direct pending SEND at a normal owning simple-CV copied return, with no child-release prefix. Finally-time raw-current mutation distinguishes unused and assigned copies; equal argument/current values retain separate owners.",
+  "implementation": {
+    "paths": {
+      "spec/semantics/289-generator-delegation.watsup": "27087e5e8a578dade4a1846a217799fada1c952c900cbed9851f077981f3497c"
+    },
+    "change": "The identity-refresh arm keeps its finite owning proof and admits direct==leaf. The closed-child-prefix arm remains ancestor-only. Source demand, real discarded tail, actual operation/result/slots, original owner observation and all release algorithms remain exact. No270, root-function, schema, close or collection change."
+  },
+  "validation": {
+    "native": 4,
+    "unchanged_baseline": "Checked NORMAL model0 differs only by J|J-END|A versus native J|A|J-END. Original recordfalse and agreement0 remain; the expected-disagreement observer passes.",
+    "sources": "Four exact stdout/stderr/exit0 agreements. Unused row snapshots retire before finally mutation; assignment keeps the old element until caller unset. Masked array arguments also release twice. Clearing an object-valued raw reference throws RuntimeException during finally, omitting J-END and preserving PreviousNULL.",
+    "states": {
+      "author": [
+        135,
+        130
+      ],
+      "peer": [
+        141,
+        123
+      ],
+      "total": 529,
+      "local": 509,
+      "generic": 20
+    },
+    "observations": "Genuine GEN_ARGS proves direct identity refresh, HCELL2/one array element edge, exact removed slots and unused versus assigned VALUE. Two masked releases take array3 to2 to1. The real NULL-store callback has Middle RUNNING with a close claim, two frames/operations, D2 and retained returnR1, not a retired storage pin.",
+    "compiler": "Strict407 and corrected four-fixture elaboration pass. Elaboration is not execution.",
+    "failures": "Initial compile-only gate failed on three peer metavariable names with an undeclared prefix. Exact fixture-only renaming fixes it; original failure0 is preserved. All post-change source/state checks pass first attempt at original caps. No historical renewal or accepted replay."
+  },
+  "tested_revisions": {
+    "native_and_genuine_baseline": "963d2a22c46ca6dc778ad4a07de946a9a733194d",
+    "strict407_source4": "e3fc627e3d7d228b68218f7c88cd08a92e7032b8",
+    "original_compile_failure": "1726a8b09461d78d255cb25c41f01f5d253d79cd",
+    "elaboration4_state529": "a066cd8c3fe7dabb505433b4b6a41c15bd8301dc",
+    "bridge": "Runtime289/source bytes are exact across e3fc source/strict and a066 gate/states. The initial1726 compile-only gate failed on an undeclared poperation prefix; only three peer metavariable names changed to pdestructionoperation before the corrected gate and first state executions. Source, stages, events, counts and caps are unchanged. The original failure is retained with zero credit."
+  },
+  "commands": {
+    "native": [
+      "taskset -c 2 python3 .tools/native.py",
+      "taskset -c 2 python3 .tools/review-native.py"
+    ],
+    "baseline": "taskset -c 2 python3 .tools/baseline.py --native-report .tools/generator-unused-direct-detached-send-native-m23w98go/report.json",
+    "strict": "taskset -c 5 python3 .tools/strict.py",
+    "source": [
+      "taskset -c 5 python3 tests/semantics/generator_unused_direct_detached_send_sources.py --native-report .tools/generator-unused-direct-detached-send-native-m23w98go/report.json",
+      "taskset -c 5 python3 tests/semantics/generator_unused_direct_detached_send_review_sources.py --native-report .tools/generator-unused-direct-detached-send-review-native-merlbwkq/report.json"
+    ],
+    "elaboration": "taskset -c 1 python3 .tools/state-elab.py",
+    "state": "taskset -c 1 python3 tests/semantics/generator_unused_direct_detached_send_state.py --case <one selection>; peer selections use generator_unused_direct_detached_send_review_state.py. Exact selections/expansions are in the mapped reports."
+  },
+  "environment": {
+    "php_source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "mode": "SL, caches off, encountered determinism checks; LC_ALL=C TZ=UTC, script encoding unset. Exclusive CPU2 native/baseline, CPU5 source/strict, CPU1 gate/states.",
+    "caps": "Native 8s; source model100/process120 and100000steps; strict120; elaboration60; states120 with seek/finish4000/4000.",
+    "exits": "Accepted wrappers/models exit0 with empty stderr and no timeout. Baseline model0 remains disagreement0. The initial compile wrapper exits1 although compilerCLI0 prints a diagnostic; no execution credit."
+  },
+  "reports": {
+    "native-author2": ".tools/generator-unused-direct-detached-send-native-m23w98go/report.json",
+    "native-peer2": ".tools/generator-unused-direct-detached-send-review-native-merlbwkq/report.json",
+    "unchanged-normal-disagreement": ".tools/generator-unused-direct-detached-send-baseline-bqjnpbns/report.json",
+    "strict407": ".tools/generator-unused-direct-detached-send-author-sl-lfizk66a/report.json",
+    "source-author2": ".tools/generator-unused-direct-detached-send-source-22j24nwa/report.json",
+    "source-peer2": ".tools/generator-unused-direct-detached-send-review-source-l3bir5ps/report.json",
+    "elaboration-metavariable-failure0": ".tools/generator-unused-direct-detached-send-state-elab-p1gtpvx1/report.json",
+    "elaboration4": ".tools/generator-unused-direct-detached-send-state-elab-w8740chn/report.json",
+    "state-author135": ".tools/fiber-state-review-nt_hihad/report.json",
+    "state-author130": ".tools/fiber-state-review-wun3di5h/report.json",
+    "state-peer141": ".tools/fiber-state-review-81ijhc86/report.json",
+    "state-peer123": ".tools/fiber-state-review-0ji4eouw/report.json"
+  },
+  "evidence": {
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-unused-direct-detached-send-42/private.tar.gz",
+      "bytes": 2126655,
+      "sha256": "fdceebe746aea1129cfe5e11a76b7c2ea49d0b15ec2b9aa33ab3c254bca84dfa"
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-unused-direct-detached-send-42/manifest.json",
+    "recovery": "Archive restores12 raw directories,8 ignored inputs,6 tests,9 runtime and8 support files at project-relative paths. Manifest binds hashes/cuts/statuses; raw reports retain commands/exits. Git1726 retains pre-correction fixtures. Reused pinned tools establish no new build or portability claim."
+  },
+  "remaining": "Direct refresh prefixes, abrupt argument callbacks, wider suspended/alias shapes, body entry and collection remain unvalidated. Full core and foundational verification remain incomplete.",
+  "composition": {
+    "parent": "22b962aa142aca90b28f56bc9799e958350deccf",
+    "private_publication": "1cd2da31dca5856974e8b939beed49c7f2fff927",
+    "runtime": "289 remains source/state/private byte-exact. Every other incoming runtime/schema/default/root/ordered407-manifest/pipeline byte stays actual-parent exact, including named magic-call tasks, array literal-key and selected shift variants.",
+    "composed_runtime_sha256": {
+      "spec/semantics/289-generator-delegation.watsup": "27087e5e8a578dade4a1846a217799fada1c952c900cbed9851f077981f3497c"
+    },
+    "validation": "Actual introduced selectors independently reviewed disjoint. Source4/strict407/state529 retain private cuts and both compile failure0 and genuine disagreement0; no joined execution, accepted replay or renewed credit."
+  }
+}

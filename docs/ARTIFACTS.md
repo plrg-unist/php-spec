@@ -139,6 +139,12 @@ The throwing Holder return-history proof is in
 AST-binder diagnostic failure, corrected/accepted snapshots and exact270 patch,
 SHA-256 `fcd882047933f85ffdeb1f6b8a515a4662d294e812ad1b7c836f8e4ec665418b`.
 
+The distinct supplied Holder authority proof is in
+`../php-spec-evidence-archive/lifecycle-holder-replacement-127/manifest.json`:
+772,650 bytes under `.tools/m127/`, eight reports retaining parser and
+interpreter failures, accepted snapshots, worker180 and both runtime patches,
+SHA-256 `7813593edb0b96ffbe342abd638404e5e7957af40cbddbfa4546e66d831fcc37`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the
