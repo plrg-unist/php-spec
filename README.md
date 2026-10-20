@@ -49,7 +49,7 @@ handler. Separate table counts preserve old array owners and omitted new-array
 owners; inverse retargeting cancels them before cleanup. Initial scalar and
 array plans remain distinct, while same-table transfer and restored COW keep
 ordinary values distinct from PHP reference wrappers.
-These flat tables also admit reference leaves holding null/bool/int/float
+These bounded tables also admit reference leaves holding null/bool/int/float
 or validated byte strings, either untyped or constrained by validated ordinary
 instance-property type sources. Debt-bearing payloads require every source object
 to survive logical pruning. Shared copies keep typed rejection/coercion; explicit property
@@ -57,6 +57,11 @@ unset removes its constraint before singleton copying. Child-table copies preser
 shared leaf aliases and unwrap singleton leaves; string byte writes keep earlier
 snapshots independent
 of both leaf references and outer table/wrapper count corrections.
+Untyped reference leaves may also hold one mutable nonpool child table of DIRECT
+null/bool/int/float or validated byte strings. Its table must survive logical
+pruning and carry no HARRAY debt; leaf CELL debt and deeper owning edges remain
+excluded. Shared leaf references propagate nested writes, while singleton leaf
+copies unwrap before child-array COW and preserve independent snapshots.
 Direct string CV/cell payloads, unsafe deficit retirement and wider domains remain
 Unsupported. Duplicate replacement and later items stay ordered.
 
@@ -317,7 +322,15 @@ whose properties hold direct quiet primitives. Returning handlers reach paramete
 TypeError with an empty option and the same updated object; throwing handlers
 preserve raw NULL and cancel rejection. Four originals and 911 state premises
 cover shared property writes, strict priority, ownership and normal recovery.
-Named/owned/packed and wider object values remain partial.
+Owned/packed and wider named object values remain partial.
+
+[Named NULL INI options with retained stdClass values](coverage/semantics/ini-set-named-null-stdclass-value-review.json)
+now preserve the earlier object across reversed argument evaluation and shared
+property writes. Returning handlers reach parameter2 TypeError with an empty
+option and the same updated object; a supplied throw preserves raw NULL and
+cancels rejection. Four source comparisons and 1,109 state premises cover named
+binding, strict option priority, owning trace edges and normal setter recovery.
+Owned/packed calls, materialized tables and wider properties remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -1789,6 +1802,13 @@ Distinct first-class objects and direct calls share request static cells without
 Closure child edges. Retiring all Closures leaves a function-static child alive
 until an explicit later direct-function clear releases it.
 [Named Closure define review](coverage/semantics/define-runtime-named-closure-review.json).
+
+Closures captured from array callables also publish with their selected method
+and optional receiver scope. Changing or dropping the original callable array
+leaves that selection intact. Method static cells remain request roots; query
+COW shares the Closure, and throwing-duplicate cleanup can retire its bound
+receiver before catch.
+[Array-method Closure define review](coverage/semantics/define-runtime-array-closure-review.json).
 
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning

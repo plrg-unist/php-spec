@@ -703,9 +703,9 @@ baseline0 precede CPU1 checks. Eleven stable/reaped reports retain the original
 peer negative-state binder collision0, fixed only by a local name prefix; no
 accepted source/author/native or earlier-source replay. Expected Deprecated9/20
 accompany quiet accepted workers. Only33 additive172 lines change; existing
-trace/root/discard/GC/value-error bodies stay exact. Named/owned/packed, materialized
-tables, aliases/deferred/unset/owning properties and other object kinds remain
-partial; no Stringable/COMP88 callback is executed or enabled.
+trace/root/discard/GC/value-error bodies stay exact. Owned/packed, wider named forms,
+materialized tables, aliases/deferred/unset/owning properties and other object
+kinds remain partial; no Stringable/COMP88 callback is executed or enabled.
 
 The [named NULL-option array increment](../../coverage/semantics/ini-set-named-null-array-value-review.json)
 adds a disjoint ownerless named/mixed call arm for retained allocated flat DIRECT
@@ -732,3 +732,28 @@ records. Only Deprecated24 is expected; accepted workers are quiet. The22-line
 addition preserves positional69/stdClass70/finish/trace/root/discard/GC bodies;
 no old control repair or accepted-source replay. Owned/packed arrays, references,
 nesting/owning/NaN/legacy-string leaves and wider configuration remain partial.
+
+The [named NULL-option stdClass increment](../../coverage/semantics/ini-set-named-null-stdclass-value-review.json)
+adds a disjoint ownerless named/mixed arm using the unchanged live, allocated,
+table-free STDINSTANCE validator and DIRECT quiet-primitive property fence.
+Invocation/selection validity authenticates the callee; source replay binds the
+normalized layout. The new helper maps each written argument to option0/value1,
+allowing NULL option facts and unknown captured object facts without inventing
+object receipts. The actual partial argument task owns the earlier object before
+the later option argument mutates that same object's property. Returning handling
+reaches existing converted-empty parameter2 TypeError; supplied throw keeps rawNULL
+and shared writes and cancels rejection. Strict mode rejects option after effects.
+
+Source4 agreements retain `5c765213a`/`4b1c27aee`/406; author680 passes at
+`398832dc72` and peer429 at `d68941e06`, totaling1,109. Native return observes empty
+arg0/same-object arg1/updated mark. Peer native avoids trace traversal; actual state
+proves partial owning-slot capture, unchanged object identity/shared updates,
+two-frame TypeErrors and top-level handler Exception/owning trace edge, exact
+restoration/discard with existing idempotent GC buffering and recovery. Initial
+`6cc5796d7` CPU3 native4/baseline0 precedes CPU1 models, CPU4 author and CPU2 peer
+state checks. Thirteen stable/reaped reports retain two pre-main fixture binding
+failures0; only binding order changes, without accepted source/native/author replay.
+Only Deprecated24 is expected and accepted workers are quiet. The21-line addition
+preserves positional70/named-array71/stdClass validator/finish/trace/root/discard/GC
+bodies. Owned/packed calls, materialized tables, declared/deferred/unset/ALIAS or
+owning/NaN/legacy-string properties and other object kinds remain partial.
