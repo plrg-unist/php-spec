@@ -1,0 +1,97 @@
+{
+  "milestone": "COMP106 forward Boolean checked left CV removed during missing-right Warning",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "Initially defined ordinary scalar left CV and missing distinct direct right CV at ==/!=/</<=. A returning handler may remove the already checked left name; comparison quietly consumes NULL against the frozen right NULL, without another Warning or an old alias value.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "ecc730e319a0a333976c6c85d96c1f53cad78a9c",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "f1b745550f5bcc5439f6768f5fbf212e9f8a03dcea385ea10421046eb5ed30ce"
+  },
+  "modules": 407,
+  "engine_basis": "Forward comparison helpers fetch raw CV pointers and check OP1 before current OP2. A defined OP1 wrapper can be unset during the missing-OP2 Warning; zend_compare then handles that UNDEF quietly against the missing-read NULL and returns 0. The four Boolean predicates yield true, false, false, true. An unread later CV still requires its own Warning.",
+  "implementation": "Thirteen additive lines in module207 recognize only the existing scalar right-frozen record for EQUAL/NOTEQUAL/LESS/LESSEQUAL with currently absent/UNDEFINED left. A separate resume arm supplies KNOWN PNULL in TASK while preserving frozen right RESULT and saved BASE; the prior changed-left refusal excludes that helper. SPACE behavior, entry, source certificates, fields, tasks, roots and discard stay exact.",
+  "behavior": [
+    "Four author and four independent originals preserve one-Warning NULL/NULL booleans, absent right, surviving fresh and initial reference aliases, later target writes/rebinding, one false/default report and chosen Exception identity/caller41/finally. Array-left and reversed checked-right removal remain explicit refusal controls.",
+    "Four strict-SL source-reached groups execute actual dispatch/return/resume, whole-state quiet folds/comparisons, owner changes1 to0 and2 to1 (then2 on rebinding), fresh surviving aliases, absent/UNDEFINED and both-missing fetch-order controls, malformed source/CODE/operator/compiled-line guards and zero/split budgets.",
+    "Affected maintenance executes only changed old92/100 forward resume fronts and preserved old96 GE retry, plus three revised source selectors. These checks renew no historical agreement."
+  ],
+  "baseline": {
+    "revision": "2926802c4cbf8d9d585c203129c54c1794a59a87",
+    "report": "initial/initial-report.json",
+    "sha256": "b988146f4cac312ff0b84ea862bfc41596b581c45a3ac405e13daddd4aae236d",
+    "native": "Fresh author2 retain2926802c4/407; independent4 retain81717e928441e91638e84dbaf933efbe118ec447/407. Exact original paths/bytes/profile/oracle are preserved. Initial records retain their original cuts; peer model checks reuse the retained native4.",
+    "model": "Genuine unchanged EQUAL source is accepted/checked, then Unsupported/scalar comparison warning changed left operand after exactly H:1:1:10:1; with empty stderr.",
+    "agreement_credit": 0
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "5dd3fc8eceaabfb3fe2ce40e87cb3a5a24113fa6992eb3f8d7d42e20b206a38a",
+      "revision": "9eab9fb715a087da66a915f554239f2ffe925eb6",
+      "agreements": 4,
+      "unsupported_controls": 2
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "34d2510b859e3597b3ee0c7edad6633a0e612af3a7a02afed5fa74a37869669d",
+      "revision": "9eab9fb715a087da66a915f554239f2ffe925eb6",
+      "agreements": 4,
+      "unsupported_controls": 0
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "9b3f7293214e2d66e17cfbafdb1cd4ddd524505d22efa290592f2e2698bcd4d0",
+      "revision": "9eab9fb715a087da66a915f554239f2ffe925eb6",
+      "premises": 253,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "ab6fe69a63a73d014bb888ed045ae2876863d3ebfbb7252b390b273aa94354b9",
+      "revision": "9eab9fb715a087da66a915f554239f2ffe925eb6",
+      "premises": 250,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 8,
+    "unsupported_source_controls": 2,
+    "state_premises": 503,
+    "state_groups": 4
+  },
+  "maintenance": {
+    "state": {
+      "report": "maintenance-state/report.json",
+      "sha256": "4e3c3e171a15f8316d37aec3dfcd6cae0dde53470e4a80f51b70749e0c751e2a",
+      "revision": "9eab9fb715a087da66a915f554239f2ffe925eb6",
+      "premises": 115,
+      "groups": 3
+    },
+    "source_selectors": {
+      "report": "maintenance-source/report.json",
+      "sha256": "5f0d0f92f857a99af3c2111d624c213927f116525d75ce8d66dde30ba180c4ee",
+      "revision": "9eab9fb715a087da66a915f554239f2ffe925eb6",
+      "selectors": 3
+    },
+    "historical_agreement_renewal": 0,
+    "scope": "Old92 and old100 forward removed-left fronts quietly fold; old96 right-frozen GE removal still restores and dispatches the second read. Only peer-left-unset-has-no-second-native-warning, second-forward-removed-left-boundary and checked-left-equal-boundary source expectations run as affected selectors."
+  },
+  "failures": [],
+  "remaining": [
+    "Reversed >/>= still refuse removal of an already checked defined source-right counterpart. Owning values, wider producers/lifetimes and paused COMP88 remain outside this slice.",
+    "All actual gates pass first attempts at9eab9fb71/407. Initial native/genuine292 and independent native817 keep separate cuts; no accepted or historical campaign is replayed."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-106",
+  "artifact_manifest_sha256": "8a15043cee51bf67a99a597958863e9b510e14c647f43e72108d20d84f7b896e",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_scalar_compare_checked_unset_sources.py --phase native --output .tools/comp106-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_checked_unset_sources.py --phase model --output .tools/comp106-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_checked_unset_state.py --output .tools/comp106-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_checked_unset_review_state.py --output .tools/comp106-peer-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_checked_unset_maintenance.py --output .tools/comp106-maint-state-new"
+  ]
+}

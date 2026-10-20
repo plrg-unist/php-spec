@@ -25,8 +25,9 @@ handler defines the later scalar. `$x == $x` can then be false and `$x > $x`
 true. Greater operators warn right first. All seven comparison operators also stage
 a second Warning if the later physical CV stays missing, freezing both NULLs
 despite writes from the second handler.
-Unsetting an already checked left CV during a missing-right spaceship Warning
-compares quietly against frozen right NULL and preserves surviving aliases.
+Unsetting an already checked left CV during a missing-right `<=>`, `==`, `!=`,
+`<` or `<=` Warning compares quietly against frozen right NULL and preserves
+surviving aliases.
 Wider warning paths remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted

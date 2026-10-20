@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Forward `==`/`!=`/`<`/`<=` now quietly compare a checked defined left CV removed
+by a missing-right Warning handler against frozen right NULL, yielding
+true/false/false/true without another report or an old-alias read. Surviving
+fresh/initial references, absent right, one false/default and chosen Exception
+identity/caller41/finally agree. Thirteen additive207 lines preserve entry, source,
+SPACE, fields/tasks/roots/discard. Eight source agreements plus two controls and
+503 strict-SL premises/four groups (253 author +250 independent) pass first attempts
+at `9eab9fb71`/407. Separate affected115/3 and three source selectors renew no
+historical credit. Genuine292/native292+817 keep their cuts. Reversed checked-right
+removal, owning values and wider producers remain partial.
+[Forward checked-left review](coverage/semantics/undefined-scalar-compare-checked-unset-review.json).
+
 A defined scalar left CV removed by a missing-right `<=>` Warning handler now
 compares quietly against frozen right NULL, returning 0 without another report or
 retaining an old alias value. Surviving reference cells retain their own writes;
