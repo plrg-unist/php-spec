@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Array-produced method Closure VALUES now publish under validated selected
+method/site/capture and lexical/called/optional receiver scope. Original callable
+arrays can retire after member mutation without changing that selection. Direct
+and canonical/query COW keep pointer/receiver identity; method static cells remain
+independent request roots. A private duplicate snapshot can be the only Closure
+owner, retiring its receiver after the handler output and before original catch.
+
+Three originals pass at `d24a9d267`/407; 865 focused premises (347+183+335),
+including three zero-budget identities, pass at `72a79f42b`/407. All first attempts
+pass without failures, retries or accepted/historical replay. Sole400+6 reuses
+existing ARRAY callable authority and dynamic-only PVOBJECT query/tree delegates;
+statics, roots, cleanup, schema and global/default policies stay exact. Ordinary
+instance/static omitted/false originals are distinct from structural clone and
+inherited-flag support; wider domains and core remain partial.
+[Array-method Closure define review](coverage/semantics/define-runtime-array-closure-review.json).
+
 Direct/selected named and mixed NULL-option `ini_set` calls now retain table-free
 stdClass values with direct quiet primitive properties. Reversed value/option
 evaluation preserves the earlier object through shared property writes and live
