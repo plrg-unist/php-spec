@@ -106,7 +106,8 @@ Repeated same-site calls preserve inactive historical records while requiring
 the current nonce for active tasks. Named capture, frame retirement and normal
 or throwing duplicates preserve the earlier primitive arguments and old row.
 Other flag/name coercions, packs and PIPE remain outside this owned-call
-slice; no intrinsic Closure VALUE authority is added.
+slice. This call header does not extend leaf authority; intrinsic Closure values
+are covered separately below.
 [Owned DEFINE call review](../../coverage/semantics/define-owned-closure-review.json).
 
 Owned arrays reuse the existing authenticated leaf, canonical copy and query
@@ -133,8 +134,8 @@ throwing duplicate's raw API/__invoke object arguments instead outlive the
 callee. After the Exception and trace retire, the last raw argument views can
 release the object with no pending Exception and the callee gone. Other existing
 certified object and supported bare Closure/factory classes compose structurally
-without new producer credit; intrinsic Closure VALUE, coercive flags/packs and
-global/default policies remain unchanged.
+without new producer credit. Intrinsic Closure values are covered separately
+below; other coercive flags/packs and global/default policies remain unchanged.
 [Owned object call review](../../coverage/semantics/define-owned-object-review.json).
 
 Raw TRUE preserves the captured argument while emitting the ignored-case Warning
@@ -768,6 +769,19 @@ query fence stay exact. Only ordinary omitted/false direct/array originals gain
 execution credit; coherent clones and inherited flags remain structural support.
 Other intrinsic Closure forms retain their existing boundaries.
 [Factory Closure define review](../../coverage/semantics/define-runtime-from-factory-review.json).
+
+Bare INTRINSICCLOSURE values reuse PVOBJECT under existing supported intrinsic
+typed/live checks, absent scope/binding/certificate records and the exact outer
+tag. Queries and canonical ARRAY copies preserve the same pointer. A queried or
+trace-recovered DEFINE Closure can become a writer using its own existing
+selection receipt, despite later callee-CV replacement. A supplied duplicate
+Exception keeps the rejected VALUE after its distinct same-kind callee dies;
+later trace retirement can kill that VALUE while its primitive row remains
+source-valid through nonowning history. Intrinsic Closures add no child edges.
+The originals execute DEFINE VALUE and ARRAY DEFINE/DEFINED/CONSTANT identities;
+only DEFINE is invoked. Other supported intrinsic kinds compose structurally;
+existing typed/live eligibility and global/default policies stay exact.
+[Intrinsic Closure VALUE review](../../coverage/semantics/define-intrinsic-closure-review.json).
 
 Ordinary `stdClass` values also use dynamic-only `PVOBJECT` authority when their
 selected property record and optional cached table validate, including live

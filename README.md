@@ -2165,6 +2165,14 @@ grants no later global permission. A rejected callback's receiver stays alive
 through its raw Error trace, then retires when those references are released.
 [Factory Closure define review](coverage/semantics/define-runtime-from-factory-review.json).
 
+Bare supported intrinsic Closures also publish directly and in ARRAY snapshots.
+Queries preserve their identity; a recovered DEFINE Closure can become a writer
+under the existing exact-owner selection receipt. A throwing duplicate's raw
+VALUE can outlive a distinct same-kind callee, then write a primitive whose
+history stays valid after both Closures die. DEFINE is invoked in these originals;
+DEFINED/CONSTANT leaves are checked for identity.
+[Intrinsic Closure VALUE review](coverage/semantics/define-intrinsic-closure-review.json).
+
 Retained `define(...)` Closure callees now publish primitive constants and handle
 duplicates with omitted/false flags, including explicit `__invoke`. Captured
 callee identity survives later argument changes; nonowning selection history
