@@ -1058,6 +1058,15 @@ cached LEFT `-12`, `2.0` stores `-48`/`-3`; `64.0` stores right-shift `-1`.
 Success detaches late aliases; negative counts error before storage. Five exact
 originals and 629 focused SL premises pass in the
 [quiet float shift ledger](coverage/semantics/shiftassign-quiet-float-review.json).
+
+Selected-reference `^=` now keeps both old referents and the numeric path through
+a Deprecated callback. Captured `12` XOR old RHS `5` stores integer `9` through the
+old target alias despite current names `77`/`7`. Changing both old values to bad
+strings instead raises `TypeError`; it does not retry bytewise XOR or store.
+Two originals and 362 focused premises pass in the
+[selected XOR ledger](coverage/semantics/xorassign-selected-warning-review.json).
+Other conversions, operators, producers and owning lifetimes remain partial.
+
 For initially plain variables, numeric `&=`, `|=` and `^=` now keep their fractional
 left conversion through deprecation handlers, then read the live quiet integer RHS.
 Success detaches late aliases; supplied throw preserves callback writes and the

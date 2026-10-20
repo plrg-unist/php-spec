@@ -7,6 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Selected-reference `^=` now preserves both old referents and numeric specialization
+before LEFT Deprecated. Captured `12` XOR old RHS `5` stores integer `9` through the
+old target alias despite current names `77`/`7`; changing both old values to bad
+strings instead raises `TypeError` at line 25, preserving old strings and outer
+`100` without a bytewise retry. Aliases and replacements retain separate owners.
+Two originals pass at `95ef0f3a4`/407 and 199+163 focused premises at
+`48604a942`/407 in the
+[selected XOR ledger](coverage/semantics/xorassign-selected-warning-review.json).
+Initial scalar references, fractional LEFT/quiet PINT RHS and safe surviving
+aliases bound this slice. Other conversions/operators/owning lifetimes remain
+partial; numeric and generic-unwind bodies stay unchanged. OP12, COMP88 and
+Source47 low-initial-precision callbacks remain paused.
+
+Composed over `d977b28fe`/407, preserving incoming state, task and
+ordered-manifest paths. Source2/state362 retain their private407 cuts;
+independently reviewed absent incoming selectors require no joined execution
+or renewed credit.
+
 Normal unparked pending ancestor SEND now preserves its actual closed-child
 refresh release before ignored argument, unused current result and receiver.
 The tested child/copy return has two array owners but one element-edge set until
@@ -105,23 +123,8 @@ unset and float-key/debt selectors are unproduced. Private source/state cuts and
 eight raw roots, including zero-credit failures/observations, retain their
 identities without an integration actor or accepted replay.
 
-Selected-reference `%=` now captures a fresh fractional RHS after the first
-Deprecated and before the second. Captured `0.5` still raises `Modulo by zero` at
-line 25 despite current and original RHS values of `5`, preserving old target
-`88` and outer `100`. Captured `5.5` still stores integer `2` through the old target
-alias after its fresh RHS cell retires; current target name `77` stays separate.
-Two originals pass at `885d94362`/407 and 190+174 focused premises at
-`d9fa496cb`/407 in the
+Earlier selected-reference `%=` RHS conversion retains source2/state364 in the
 [RHS conversion ledger](coverage/semantics/modassign-selected-rhs-warning-review.json).
-Initial quiet-PINT entry and numeric/unwind/write bodies stay unchanged. Fitting
-fractional values, named handlers and a safe surviving old target bound the slice;
-other producers, constraints and owning lifetimes remain partial. OP12, COMP88
-and Source47 low-initial-precision NaN-name callbacks remain paused.
-
-Composed over `af64fe78f`/407, preserving incoming state, task and
-ordered-manifest paths. Source2/state364 retain their private407 cuts;
-independently reviewed absent incoming selectors require no joined execution
-or renewed credit.
 
 Cached ordinary public declared-only clones now enter the existing public
 zero-argument `__clone():void` path. Actual callback foreach reads fresh copy
