@@ -7,6 +7,25 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Explicit integer casts now retain range-warning floats across named callbacks.
+The original `2^63` float wraps to `PHP_INT_MIN`; the handler's same-spelling text
+cast instead caps at `PHP_INT_MAX`. Explicit NaN has only one Warning, and a supplied
+Exception cancels delivery after source removal while outer `100` survives.
+Two originals at `157ae26d5`/408 and 145+122 focused premises at `2023324d8`/408 pass
+in the [integer-cast range ledger](coverage/semantics/int-cast-range-warning-review.json).
+Fresh CV/source snapshots differ from returned history; EPS roots, raw typed
+result/BASE, real callbacks and EOF/budgets are checked. The original rule-label
+parser failure remains zero; corrected full408 static passed before source retry.
+Only modules 30/58/404 change. Numeric/string saturation, formatting, CONFIG/DEFINE
+and generic unwind bodies stay exact; paused OP12/COMP88/Source47 and active
+property/clone/array/Generator selectors remain untouched. Normal NaN, throwing
+finite conversions and broader producers/lifetimes remain partial.
+
+Composed over `5ee243f0c`/409, preserving incoming state, task and
+ordered-manifest paths. Source2/state267 retain their private408 cuts;
+independently reviewed absent incoming selectors require no joined execution
+or renewed credit.
+
 All seven missing-CV comparisons now accept allocated flat DIRECT arrays of
 primitives or live ordinary non-Stringable object leaves, both captured and
 current. Captured COW preserves child identity; live-table replacement can
@@ -119,25 +138,8 @@ runtime/schema/default/root/ordered-manifest/pipeline bytes stay parent-exact.
 Source4/strict408/state608 and original compileFAIL0 retain their private cuts
 without joined execution, accepted replay or renewed credit.
 
-Borrowed empty `stdClass` numeric casts now resume named Warning handlers.
-Replacing/removing the sole source retires the object inside the callback, where
-WeakReference already returns null. Float conversion still delivers strict `1.0`;
-an integer-cast supplied Exception preserves callback write `99` and outer `100`.
-Two originals pass at `a5ab776a9`/408 and 134+138 focused premises at
-`f9c868965`/408 in the
-[object numeric-cast ledger](coverage/semantics/object-numeric-cast-warning-review.json).
-Fresh class/CV/source snapshots authenticate dispatch; entered/returned history
-survives object retirement. The descriptor stores no object ID/value and adds no
-owner. Only modules 30/58/404 change; WeakReference/GC, numeric and generic unwind
-bodies stay unchanged. Other classes/producers/reference operands, owning
-replacements and wider lifetimes remain partial; no normal-int/throwing-float
-witness is claimed. Paused OP12/COMP88/Source47 and active property/clone/array/
-Generator selectors remain untouched.
-
-Composed over `4a687d9aa`/408, preserving incoming state, task and
-ordered-manifest paths. Source2/state272 retain their private408 cuts;
-independently reviewed absent incoming selectors require no joined execution
-or renewed credit.
+Earlier borrowed empty-stdClass casts retain source2/state272 and their bounded
+WeakReference retirement observer in the [object cast ledger](coverage/semantics/object-numeric-cast-warning-review.json).
 
 All seven missing-CV comparisons now accept live ordinary non-Stringable
 object counterparts, initially defined or callback-created, including stdClass.

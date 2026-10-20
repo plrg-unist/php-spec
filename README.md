@@ -1002,6 +1002,13 @@ Two originals and 264 focused premises pass in the
 [unary-reference ledger](coverage/semantics/unary-reference-warning-review.json).
 Wider producers, constrained/owning cells and callback lifetimes remain partial.
 
+Explicit integer casts now retain a range-warning float across its callback.
+The saved `2^63` float wraps to `PHP_INT_MIN`, while the handler's cast of the
+same-spelling text saturates to `PHP_INT_MAX`. A NaN handler's supplied Exception
+cancels delivery with no Deprecated. Two originals and 267 focused premises pass
+in the [integer-cast range ledger](coverage/semantics/int-cast-range-warning-review.json).
+Wider operand producers and lifetimes remain partial.
+
 Explicit numeric casts of an empty `stdClass` now resume named Warning handlers.
 The plain source CV is borrowed: replacing or removing its last object owner makes
 `WeakReference::get()` return null inside the callback. Float conversion still
