@@ -1,0 +1,148 @@
+{
+  "scope": "External CV receiver/literal inherited private property ??= with typed-bool Isset, existing absent-return BYVAL Get, inherited void Set and named nonref zeroarg int RHS. Read release and later CV re-fetch, Get0, current-null Error and supplied Set throw.",
+  "engine": {
+    "version": "PHP8.5.10 CLI NTS64",
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_compile.c:zend_compile_assign_coalesce (10597+), delayed_compile_prop and memoized_expr: BP_VAR_IS then RHS then BP_VAR_W; CV stays borrowed, only TMP/VAR expressions DUP.",
+      "Zend/zend_object_handlers.c:zend_std_read_property (917+) clears IN_ISSET before Get and releases the read receiver hold before coalesce fallback.",
+      "Zend/zend_vm_def.h:ZEND_ASSIGN_OBJ (2466+) re-fetches CV at write and raises current non-object Error; zend_std_write_property calls Set under its own receiver hold and the temporary RHS remains the assignment result."
+    ]
+  },
+  "implementation": {
+    "revision": "1c9630c7091e37ce6e6342e30af4a0202db9237f",
+    "files": {
+      "spec/semantics/30-storage.watsup": "1671a08cc553be548014845f8d36aa9837d02a67dfc7b3c935f7b2fa5bf21f2e",
+      "spec/semantics/72-coalesce-assignment-control.watsup": "6ebaa6ea7bafe40b26844fd5939626880c7077fa61ab0beb4f029b28151016b7",
+      "spec/semantics/412-magic-property-set.watsup": "dfc58b4a186480c9492c883c29e7148542576d6fab78ddbd8b2ffa4622ba192d",
+      "spec/semantics/416-magic-property-coalesce.watsup": "bf1cc430f725b3f490542f94c49f47ee7f3bce65ee951b88e6cbec8f4fef58d4"
+    },
+    "basis": "185 additive lines. Reuse captured Isset/Get read protocol, then a node-free source/caller/line-authenticated decision independent of old receiver liveness. A named nonref0arg int RHS resolves through compiled CODE names/call_target; the write re-fetches CV and reuses Set with cached KNOWN int/CELL eps. Ordinary ??/assignment remain AST/task-disjoint; no70/141/386/270/genericGC/root or manifest change."
+  },
+  "validation": {
+    "typed_native": {
+      "revision": "25f8d3066b9515cc69359f9d077018943369cb5d",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111/.tools/magic-coalesce-assignment-probes-111/native-first/report.json",
+        "sha256": "ee8214d05d21a0326cec47720fef3cc01ac9a04d46f3e6f076c9d883996dcfd8"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111/.tools/magic-coalesce-assignment-probes-111/affinity-native-first.json",
+        "sha256": "b978128bbae1cf8d595f22c036e82e8993112b5c6d107bdb415b28e01159f574"
+      },
+      "result": "Four exact quiet0 native tuples. Affinity partial2/4 CPU1: retarget empty argv, set-throw full29; stopped/reaped without replay."
+    },
+    "typed_baseline": {
+      "revision": "25f8d3066b9515cc69359f9d077018943369cb5d",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111/.tools/magic-coalesce-assignment-probes-111/accepted-current-baseline/report.json",
+        "sha256": "02cad0d437a9a1c28a2195e29f386bd244a2de2134c3ea65121cb460346933bb"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111/.tools/magic-coalesce-assignment-probes-111/affinity-accepted-current-baseline.json",
+        "sha256": "baf1a6b0fbf4786f88836bb49d7f2fdee179871a924295d390f45f3c0fc8d8b6"
+      },
+      "result": "Four checked compiler Unsupported magic getter signature, CLI1/semantic exitNone/empty semantic streams; completed observational gate, zero agreements. Complete4 CPU1/full argv/stable/reaped."
+    },
+    "untyped_native": {
+      "revision": "25f8d3066b9515cc69359f9d077018943369cb5d",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111/.tools/magic-coalesce-assignment-probes-111/native-untyped/report.json",
+        "sha256": "2a6cb59da8a34856daf72fdf3192a5c150c3db14787deac686c379a7a9d12c8c"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111/.tools/magic-coalesce-assignment-probes-111/affinity-native-untyped.json",
+        "sha256": "74119a3d7278c74534ff3da7043a04631fe3c027d7d786db2db2b27b76f4cdb4"
+      },
+      "result": "Four fresh variants differ only by deleting Get name-param string; exact31/17/67/24 quiet0. Affinity partial1/4 CPU1 retarget/full29; stopped/reaped without replay."
+    },
+    "consumer_baseline": {
+      "revision": "25f8d3066b9515cc69359f9d077018943369cb5d",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111/.tools/magic-coalesce-assignment-probes-111/accepted-current-untyped-baseline/report.json",
+        "sha256": "6146ec2806b28dbc797fcfef6dc39fdbd32ec890020ed1d07234407e2e562cdb"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111/.tools/magic-coalesce-assignment-probes-111/affinity-accepted-current-untyped-baseline.json",
+        "sha256": "7b2a50d96548ee3d7adb6062e768855fb23531435704b2f8e7edc5e3a46a1aee"
+      },
+      "result": "Four checked Unsupported magic isset quiet consumer/CLI1/semantic exitNone, prefixes N:/Z:/E:/X:, quiet semantic stderr/zero agreements. Complete4 CPU1/full argv/stable/reaped."
+    },
+    "source_four": {
+      "revision": "1c9630c7091e37ce6e6342e30af4a0202db9237f",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111/.tools/magic-coalesce-assignment-probes-111/changed-model-djuhwwd6/report.json",
+        "sha256": "d0796c856d25f9e3dc869f3001d7ec5974b1d82fbecf640ffb323dea19b85214"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111/.tools/magic-coalesce-assignment-probes-111/affinity-changed-source-111.json",
+        "sha256": "ed932ea542bd99748101dd79f5d7ed6339e4153efe6833a765fef11832ab215b"
+      },
+      "result": "Four exact normal native agreements, quiet0/all stability/empty groups/full reap; complete4 CPU4/full argv."
+    },
+    "focused": {
+      "revision": "ef3caae9d83d1a86591632e8e053c62965e7c95c",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111/.tools/magic-coalesce-assignment-protocol-qhn2mfrq/report.json",
+        "sha256": "1c0cb0e3b4d0f3f43da07c583201879eb9cd7c214cb9bae1a70e12f4e5cd6f5a"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111/.tools/magic-coalesce-assignment-probes-111/affinity-state-111.json",
+        "sha256": "3d4a0e18544292f38dbb50e14e238745f5a983ec281d02cce9e21994acf4eb64"
+      },
+      "result": "Four stricttrue groups,746=732 reached+14 derived,4 applications/source0. AL90/SL90 all quiet0/no timeout/interruption, stable fixtures/inputs/head/status, empty groups/PIDs absent; complete8 CPU4/full argv/start matched."
+    }
+  },
+  "reproduction": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "caps": "Native45/model60/outer75/100000steps; four serial fail-first. Focus each AL90 then strict SL90/cachefalse/dettrue.",
+    "commands": [
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-coalesce-assignment-probes-111/run.py native --revision 25f8d3066b9515cc69359f9d077018943369cb5d",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-coalesce-assignment-probes-111/run.py baseline --revision 25f8d3066b9515cc69359f9d077018943369cb5d",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-coalesce-assignment-probes-111/run-untyped.py native --revision 25f8d3066b9515cc69359f9d077018943369cb5d",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-coalesce-assignment-probes-111/run-untyped.py baseline --revision 25f8d3066b9515cc69359f9d077018943369cb5d",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u .tools/magic-coalesce-assignment-probes-111/run-untyped.py changed --revision 1c9630c7091e37ce6e6342e30af4a0202db9237f",
+      "python3 -u .tools/magic-coalesce-assignment-probes-111/watch-state-affinity.py 4",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u tests/semantics/magic_coalesce_assignment_protocol.py --revision ef3caae9d83d1a86591632e8e053c62965e7c95c"
+    ],
+    "drivers": {
+      "run.py": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111/.tools/magic-coalesce-assignment-probes-111/run.py",
+        "sha256": "e2e4722f0731118feb91ac86b54ee5f663b42956096aeaa588524d42d4ec2c66"
+      },
+      "run-untyped.py": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-assignment-private-111/.tools/magic-coalesce-assignment-probes-111/run-untyped.py",
+        "sha256": "0b07a35b31dee101a4970374216bdc7fbc4b0657034f1e26d42f85a8a4c4c6c2"
+      }
+    },
+    "recovery": "Ignored originals, gate drivers, raw records and fixtures remain at their recorded paths after light worktree retirement. Versioned runtime/tests recover from tested commits; no fresh rebuild is claimed."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile": "tests/semantics/profile.json"
+  },
+  "limits": [
+    "Typed Get-name declaration gate and later untyped consumer gate are distinct completed observations, both zero model agreement; no recorder/runtime failure is inferred.",
+    "Method signature and Parent/Child linking machinery are consumed, with no new declaration/inheritance admission. Original105/106/98 applications retain their prior cuts; compatibility is static AST/task separation.",
+    "Known BYVAL Get transfer is generic by nullness, but validated new histories are0/NULL. Write capture is known int from a named user function; no reference/owning RHS or mutable-CV snapshot claim.",
+    "No-Get/untyped-Isset ??=, Get/RHS throws, other receivers/names/owners, aliases and wider reentry/GC remain partial. Short native affinity sampling stays qualified without replay."
+  ],
+  "review": {
+    "status": "accepted; independently reviewed",
+    "reviewer": "/root/class_review_84",
+    "semantic": "Native/both baseline cuts, source4, all746 focused premises and concise publication independently accepted; actual-parent preservation is separately reviewed before integration. No source/state failure, diagnostic, retry or accepted replay."
+  },
+  "composition": {
+    "incoming_revision": "43026cb4dc1e9d946122f05e3e77f528118546fc",
+    "publication_revision": "4b121488e2515ba0c4ad248caced8f252f1be1e2",
+    "basis": "All four tested runtime files and six test files are publication-exact; incoming ordered407 manifest and all unrelated paths/WeakMap declaration relocation preserved. Incoming172/207/270/289/386/40/400/404/413 plus55 ADDASSIGN repair require absent INI/DEFINE, missing scalar Warning, ref-return, Generator, lossy-float literal/debt or arithmetic producers. No joined actor, accepted replay or renewed historical evidence."
+  }
+}

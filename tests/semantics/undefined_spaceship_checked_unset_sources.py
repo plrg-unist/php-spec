@@ -8,7 +8,6 @@ from undefined_spaceship_checked_unset_cases import CASES
 family.CASES = CASES
 family.UNSUPPORTED = {
     'checked-left-array-boundary': ('spaceship warning changed opposing scalar', b'B|H|'),
-    'checked-left-equal-boundary': ('scalar comparison warning changed left operand', b'B|H|'),
 }
 family.BASELINE = ('spaceship warning changed opposing scalar', b'H:1:1:10:1;')
 family_fingerprint = family.fingerprint

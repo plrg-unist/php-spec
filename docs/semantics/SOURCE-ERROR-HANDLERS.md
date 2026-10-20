@@ -189,8 +189,13 @@ two captured NULLs. The
 admits identical CV names only for the greater operators' right-frozen shape and
 inverse NULL-only certificate; ordinary forward right-frozen shapes stay distinct.
 First-callback owning comparison values and wider producers remain partial.
-The six Boolean comparison operators still refuse removal of an already checked
-defined counterpart during the later Warning.
+Forward `==`/`!=`/`<`/`<=` also quietly fold a checked left CV removed during a
+missing-right Warning to NULL against the frozen right NULL. Their distinct scalar
+right-frozen record preserves surviving alias owners and yields true/false/false/true
+without another report; see the
+[forward checked-left review](../../coverage/semantics/undefined-scalar-compare-checked-unset-review.json).
+Reversed `>`/`>=` still refuse removal of an already checked defined source-right
+counterpart during the later Warning.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding

@@ -43,7 +43,6 @@ def $noctor_object_valid(S, pnoctorcall) = true
 
 ;; Reuse the language's ArrayAccess operand/source protocol, without invoking
 ;; an invented user method. RHS readback remains the assignment's result.
-dec $weakmap_key_maps(pstate, pnode*, nat) : nat*
 dec $weakmap_has_key(pstate, nat, nat) : bool
 def $weakmap_key_maps(S, eps, n_key) = eps
 def $weakmap_key_maps(S, (HOBJECT n) :: pnode_tail*, n_key) = n :: $weakmap_key_maps(S, pnode_tail*, n_key)

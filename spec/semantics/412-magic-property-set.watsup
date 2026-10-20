@@ -87,6 +87,9 @@ def $property_magic_set_rhs_source(S, ppropertymagicset) = true
   -- if $origin_node(S.SOURCES, ppropertymagicset.SITE) = (NExprAssign expression_target (NScalarInt (INTEGER z) metadata_rhs) metadata)
   -- if ppropertymagicset.RHS = KNOWN (PINT ppropertymagicset.INPUT) /\ ppropertymagicset.CELL = eps
   -- if $compiled_read(S, PORIGIN n (pcpath ++ [PCFIELD 1])) = (PINT ppropertymagicset.INPUT)
+def $property_magic_set_rhs_source(S, ppropertymagicset) = true
+  -- if $property_coalesce_assign_source(S, ppropertymagicset.SITE)
+  -- if ppropertymagicset.RHS = KNOWN (PINT ppropertymagicset.INPUT) /\ ppropertymagicset.CELL = eps
 def $property_magic_set_rhs_source(S, ppropertymagicset) = false -- otherwise
 
 dec $property_magic_set_source(pstate, ppropertymagicset) : bool
@@ -99,6 +102,13 @@ def $property_magic_set_source(S, ppropertymagicset) = true
   -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0, PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
   -- if ~$scope_global(S[.ORIGIN = (ppropertymagicset.SITE)], [PCFIELD 0, PCFIELD 0])
   -- if ppropertymagicset.LINE = $runtime_line(S[.ORIGIN = (ppropertymagicset.SITE)], [PCFIELD 0], expression_target)
+  -- if $property_magic_set_rhs_source(S, ppropertymagicset)
+def $property_magic_set_source(S, ppropertymagicset) = true
+  -- if $property_coalesce_assign_source(S, ppropertymagicset.SITE)
+  -- if $origin_node(S.SOURCES, ppropertymagicset.SITE) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if expression_target = NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata_property
+  -- if ppropertymagicset.NAME = $base64(text_name)
+  -- if ppropertymagicset.LINE = $runtime_line(S[.ORIGIN = (ppropertymagicset.SITE)], eps, NExprAssignOpCoalesce expression_target expression_rhs metadata)
   -- if $property_magic_set_rhs_source(S, ppropertymagicset)
 def $property_magic_set_source(S, ppropertymagicset) = false -- otherwise
 
@@ -136,6 +146,12 @@ def $property_magic_set_capture(S, ppropertymagicset) = true
   -- if $origin_node(S.SOURCES, ppropertymagicset.SITE) = (NExprAssign (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata_property) expression_rhs metadata)
   -- if S_read = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
   -- if S_read.COMPLETION = NORMAL /\ S_read.RESULT = KNOWN (POBJECT ppropertymagicset.OBJECT)
+def $property_magic_set_capture(S, ppropertymagicset) = true
+  -- if $property_magic_set_valid(S, ppropertymagicset)
+  -- if $origin_node(S.SOURCES, ppropertymagicset.SITE) = (NExprAssignOpCoalesce (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata_property) expression_rhs metadata)
+  -- if S_read = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT ppropertymagicset.OBJECT)
 def $property_magic_set_capture(S, ppropertymagicset) = false -- otherwise
 
 dec $property_magic_set_cell(pstate, poperand) : nat?
@@ -213,6 +229,49 @@ def $property_magic_set_plan(S) = (ppropertymagicset)
   -- if $property_magic_set_rhs(S, ppropertymagicset) = (i)
   -- if ~$property_magic_set_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
 def $property_magic_set_plan(S) = eps -- otherwise
+
+def $property_magic_coalesce_write_pending(S) = true
+  -- if S.TODO = (COALESCE_ASSIGN_WRITE (BASE_PROPERTY_PENDING pbase poperand z_receiver) b z) :: ptask_tail*
+  -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if $property_magic_set_needed(S, n, ptbytes)
+def $property_magic_coalesce_write_pending(S) = false -- otherwise
+dec $property_magic_coalesce_set_plan(pstate) : ppropertymagicset?
+def $property_magic_coalesce_set_plan(S) = (ppropertymagicset)
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.TODO = (COALESCE_ASSIGN_WRITE (BASE_PROPERTY_PENDING pbase poperand z_receiver) false z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $property_coalesce_assign_source(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if z = $runtime_line(S, eps, NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if $property_pending_source_base(S[.ORIGIN = $origin_child((porigin), [PCFIELD 0])], BASE_PROPERTY_PENDING pbase poperand z_receiver, expression_target)
+  -- if $memoized_write_ready(S, BASE_PROPERTY_PENDING pbase poperand z_receiver, [PCFIELD 0])
+  -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if $property_magic_set_needed(S, n, ptbytes)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_magic_set_method(S, n) = (pmethoddesc)
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if S_rhs = $resolve_at(S_target, S.RESULT, z)
+  -- if S_rhs.COMPLETION = NORMAL
+  -- if S_rhs.RESULT = KNOWN (PINT i)
+  -- if S.RESULT = KNOWN (PINT i)
+  -- if ppropertymagicset = {SITE porigin, NAME ptbytes, LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY porigin_property, RHS S.RESULT, CELL eps, INPUT i, OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ptask_tail*}
+  -- if S_marker = S[.TODO = (PROPERTY_MAGIC_SET_RESULT ppropertymagicset) :: ptask_tail*]
+  -- if $property_magic_set_capture(S_marker, ppropertymagicset)
+  -- if ~$property_magic_set_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
+def $property_magic_coalesce_set_plan(S) = eps -- otherwise
+rule PhpStep/property-magic-coalesce-set-call: S ~> S_rhs[.TODO = [(CALL_ARGS (PROPERTY_MAGIC_SET_TARGET ppropertymagicset) eps 2 ([KNOWN (PSTRING ppropertymagicset.NAME), KNOWN (PINT ppropertymagicset.INPUT)]) (ppropertymagicset.SITE) ppropertymagicset.LINE), PROPERTY_MAGIC_SET_RESULT ppropertymagicset] ++ ppropertymagicset.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $property_magic_coalesce_set_plan(S) = (ppropertymagicset)
+  -- if S.TODO = (COALESCE_ASSIGN_WRITE (BASE_PROPERTY_PENDING pbase poperand z_receiver) false z) :: ptask_tail*
+  -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
+  -- if S_rhs = $resolve_at(S_target, S.RESULT, z)
+rule PhpStep/property-magic-coalesce-set-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic coalesce setter source, RHS, or recursive write"]
+  -- if $property_magic_coalesce_write_pending(S)
+  -- if $property_magic_coalesce_set_plan(S) = eps
 
 rule PhpStep/property-magic-set-call: S ~> S_rhs[.TODO = [(CALL_ARGS (PROPERTY_MAGIC_SET_TARGET ppropertymagicset) eps 2 ([KNOWN (PSTRING ppropertymagicset.NAME), KNOWN (PINT ppropertymagicset.INPUT)]) (ppropertymagicset.SITE) ppropertymagicset.LINE), PROPERTY_MAGIC_SET_RESULT ppropertymagicset] ++ ppropertymagicset.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $property_magic_set_plan(S) = (ppropertymagicset)

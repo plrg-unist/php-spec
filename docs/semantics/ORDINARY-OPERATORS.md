@@ -134,6 +134,21 @@ The old entry and quiet completion remain exact. Fresh selected RHS and final
 selected target require live unconstrained scalar cells at their respective phases;
 other producers, unsafe targets and wider lifetimes remain partial.
 
+A separate selected-reference `+=` entry now admits valid initially nonquiet
+text RHS while preserving the old quiet entry. Distinct bad text `bad5` can be
+repaired to `5.5tail` by the first Warning; a second supplied Exception cancels
+the selected and outer stores, preserving old `88`/`7` and outer `100`.
+Two variable names may also select the same CELL: LEFT captures `12.5`, the first
+callback changes that shared cell to `5.5tail` and rebinds current RIGHT to `7`.
+RIGHT captures old `5.5` before the second callback writes shared `88` and rebinds
+current LEFT to `77`. Cached float `18.0` then replaces `88` in the old cell through its surviving alias,
+with its owners falling from three to two to one; neither replacement is changed.
+The store creates no CELL, detachment or name redirect. Two originals and 175+177
+focused premises check real handlers, raw/driven transitions, aliases and budgets
+in the [staged RHS ledger](../../coverage/semantics/addassign-repair-review.json).
+Fresh scalar selected cells, valid text RHS and the surviving safe old target
+bound this slice; other producers, constraints/owning payloads and lifetimes stay partial.
+
 Failed delayed RHS conversion on selected-reference `+=` now reports the
 live old referents and preserves both cells. Changing them to flat arrays `[1]`
 and `[2]` raises `array + array` TypeError without retrying the earlier union
@@ -259,8 +274,21 @@ reaches the destination.
 Three exact originals and 227 author plus 96 independent genuine SL premises
 check negative boundary float delivery, false fallback, public snapshot/message
 rejection, ownership and budget resumption in the
-[unary ledger](../../coverage/semantics/unary-warning-review.json). Other producers,
-references/owning operands, callbacks and lifecycle forms remain required.
+[unary ledger](../../coverage/semantics/unary-warning-review.json). Other reference/owning producers, callbacks and lifecycle forms remain required.
+
+Selected scalar-reference unary `+`/`-` now reuses this captured-number protocol.
+Fresh snapshots authenticate the selected live unconstrained CELL and actual raw
+text. The handler writes old value `99`, rebinds the current name to replacement
+`77` and removes its last old alias; that CELL reaches owner zero and retires.
+Returned history remains valid without a source lookup or operand-retention root.
+A supplied Exception from line 20 cancels outer delivery (`100`). Normal unary minus
+instead delivers float zero: native echo `-0` and exact negative-zero bits establish
+its sign, while strict equality checks its float type/value. Unary completion writes
+no source or replacement cell. Two originals and 134+130 focused premises cover
+real fresh/entered callbacks, raw versus driven results, owners, EOF and budgets in
+the [unary-reference ledger](../../coverage/semantics/unary-reference-warning-review.json).
+Fresh untyped scalar references and primitive handler writes bound these traces;
+other producers/constraints/owning payloads and wider lifetimes remain partial.
 
 Bitwise NOT now retains a finite in-range fractional float's converted long before its
 precision-loss deprecation. The bounded producer accepts a defined non-reference
