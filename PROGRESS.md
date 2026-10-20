@@ -7,6 +7,34 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+A first pending SEND now overwrites one owning LIVE input at a parked simple-CV
+used yield with a new owning argument. The old count becomes orphaned without
+decrement; the new count becomes LIVE before receiver initialization and current
+capture. The physical child/frame stay parked. Used snapshots, raw-row COW and
+old embedded-cell/new direct-object inputs retain distinct owners through close
+and request-store destruction.
+[Buffered SEND review](coverage/semantics/generator-parked-pending-buffered-send-review.json).
+
+Four source agreements and strict406 pass at 1458b305fe. Four-fixture elaboration
+and 790 new premises (385 author +405 independent;770 local +20 generic) pass
+at c010f4e37/406. One exclusive peer 120s timeout remains zero; the unchanged full
+fixture passes in 118.988s under 240. Only that case now uses the validated 240s
+margin; the other three retain 120. Source/stage/check/Event formulas and runtime
+bytes stay exact across this wrapper-only bridge. Native4 and genuine unchanged
+force-close Unsupported retain dee143c999, zero agreement. All actors reaped and
+CPU5 released; no semantic correction, source/historical renewal or GC credit.
+Previous orphans/multiple records, nonowning arguments, nonpending body entry and
+wider suspended owners remain outside this admission; explicit collection is
+unvalidated here. Historical campaigns retain their original cuts.
+
+Composed over `ba94b5eafc`/407 with tested modules 280/289 and source/state
+formulas unchanged; the peer248-only 240s wrapper bound is the validated bridge.
+All other incoming runtime/schema/default/root/ordered-manifest/pipeline bytes
+remain parent-exact. Source-selector review found no interaction with ordinary
+typed-reference histories, parent hooks, DEFINE, comparison/arithmetic warnings
+or float-key debt producers, absent here. Private cuts and timeout0 retain their
+identities; no joined execution or accepted replay was needed.
+
 Bare NAMED user-function Closure VALUES now publish under live function/name-map
 authority with absent scope/binding/certificate guards. Distinct first-class
 objects and direct calls share request-static counters, independently of Closure
@@ -148,7 +176,8 @@ receiver initializes; the input and physical child/frame remain unchanged. NULL
 adds no current snapshot. Close orphans the input while cache storage cleanup
 runs before queued ancestor finally blocks. Real row COW leaves the old array
 with the input alone, and embedded input cells remain mutable after close.
-SEND overwrite, nonpending/body entry, wider inputs/owners/loops and GC stay open.
+At that cut, SEND overwrite, nonpending/body entry, wider inputs/owners/loops
+and GC stayed open.
 [Buffered NEXT review](coverage/semantics/generator-parked-pending-buffered-next-review.json).
 
 Four source agreements and strict406 pass at 3a95fa9a3; 735 new premises

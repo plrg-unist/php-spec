@@ -107,9 +107,16 @@ bit; the physical child, input and parked frame stay unchanged. NULL adds no
 cache owner. Physical close orphans the input before storage releases current,
 so a cache destructor can run before ancestor finally blocks and caller delivery.
 See the [buffered NEXT review](../../coverage/semantics/generator-parked-pending-buffered-next-review.json).
-Nonpending body entry, parked SEND overwrites, nonowning inputs, loop owners and
-wider parked API leaves remain Unsupported.
-Wider suspended owners and waiting-result GC remain open.
+A first pending SEND can instead replace that sole owning LIVE input with one
+new owning argument. The old count becomes orphaned without decrement; the new
+input becomes LIVE before the selected receiver initializes and current is copied.
+The physical child/frame stay parked. A used snapshot survives Generator storage
+retirement, separately from both request-late inputs. Row COW and old-input cells
+versus new direct copies distinguish these owners in the
+[buffered SEND review](../../coverage/semantics/generator-parked-pending-buffered-send-review.json).
+Previous orphans, multiple records, nonowning arguments, nonpending body entry and
+wider loop/held continuations remain outside this admission. Explicit collection
+is outside this validated slice.
 
 A direct detached parent with an owning copied return now admits ordinary unpack
 at a simple-CV assigned `yield from`. Null-key rejection leaves its COMPLETE

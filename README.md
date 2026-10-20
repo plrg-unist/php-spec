@@ -1282,6 +1282,12 @@ With one owning buffered simple-CV input at a parked child, pending `next()`
 likewise returns NULL without copying current or changing that input. Closing
 orphans its count; row COW and shared-cell writes preserve its separate lifetime.
 See the [buffered NEXT review](coverage/semantics/generator-parked-pending-buffered-next-review.json).
+A first pending `send` at that parked used yield can overwrite its sole owning
+LIVE input with another owning value. The old count becomes orphaned, the new
+count stays LIVE until close, and the captured current has an independent
+lifetime through COW and receiver retirement. Embedded old-input cells and new
+direct object copies remain distinct after rebinding; see the
+[buffered SEND review](coverage/semantics/generator-parked-pending-buffered-send-review.json).
 Nonpending body entry, wider parked API leaves and waiting-result GC remain open.
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller

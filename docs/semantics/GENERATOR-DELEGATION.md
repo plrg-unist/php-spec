@@ -203,6 +203,14 @@ After real row COW, only the input keeps the old array, with one element-edge se
 the raw reference cache follows the new row. An embedded input cell remains
 mutable after close. See the
 [buffered NEXT review](../../coverage/semantics/generator-parked-pending-buffered-next-review.json).
+A first pending SEND can overwrite the sole owning LIVE input with a new owning
+argument before the same initialization-only return. The old record becomes
+orphaned without releasing its value; the new record is LIVE. Current capture
+precedes argument/receiver cleanup, so row COW separates the old input and used
+snapshot from the raw reference cache. With an old `[&$slot]` input and new
+`[$slot]` input, post-close rebinding keeps the original object through the new
+direct edge and the replacement through the old shared cell. See the
+[buffered SEND review](../../coverage/semantics/generator-parked-pending-buffered-send-review.json).
 The [parked-foreach review](../../coverage/semantics/generator-pending-foreach-throw-review.json)
 adds exactly one by-value array loop at a bare yield. Physical child close retains
 the iteration container, preserving shared reference cells and late
