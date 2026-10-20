@@ -4653,15 +4653,16 @@ slots; each keeps its own source/owner/restore authority and cleanup count. A
 nonempty unique property-source list now authenticates every plain public ALIAS
 and declaration of type `object` or `object|string`, with a live object referent.
 Computed objects retain distinct sole owners. A finite destructor can clear one
-safe object-only Holder before throwing the supplied Exception. One source and
-506 Boolean/6 raw checks at `d9bbdebfc` preserve local catch/Notice15/fresh detached
-NULL while two sources become one. String assignment then succeeds; NULL still
-fails against the surviving union without changing its property. Valid object
-replacement preserves the old copy and detached r/prior b. Existing storage and
-typed writer rules stay unchanged. Earlier cuts remain in the
+object-only Holder before throwing the supplied Exception. The Holder may now run
+one public zero-argument literal-echo destructor first. One source and 361 Boolean/5
+raw checks at `842b2dc27` preserve both property sources through this callback,
+then local catch/Notice15/fresh detached NULL while two sources become one. String
+assignment succeeds; NULL still fails against the surviving union. Valid replacement
+preserves the old copy and detached r/prior b. Existing storage and typed writer
+rules stay unchanged. Earlier cuts remain in the
 [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-Fresh source coverage is two-to-one. Other source kinds/types/values, callback-bearing
-holders, fewer than two remaining slots, broader bodies/reentry and GC remain open.
+Wider Holder methods/writes/throws, source kinds/types/values, fewer than two remaining
+slots, broader bodies/reentry and GC remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

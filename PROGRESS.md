@@ -1604,46 +1604,45 @@ joined actor, accepted replay or renewed execution credit.
 The earlier mixed CV/selected-reference arithmetic route retains source9/state858
 in its [review ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 
-M124 preserves owning-return history when clearing one of two property sources
-on the shared za/z cell. Module270 now checks a nonempty unique source list in
-full: each real ALIAS/declaration must have the existing plain public authority
-and type object or exactly object|string, with a current allocated object value.
-The cleared methodless Holder keeps its own source membership and object-only
-type. The finite NULL-write/supplied-throw body, SOURCE/history representation,
-pending/finish/roots,138/359 storage and typed writer stay unchanged.
+M125 admits a normal literal-echo Holder destructor before its property source
+detaches. Only270 changes: clear-holder METHODS stay empty or contain one public,
+nonstatic/nonabstract zero-argument by-value destructor without a return annotation,
+with empty method attributes and exactly one literal echo. Existing OUTPUTBUFFERS
+and class/property/shared-cell/table/key bounds stay exact. The propertyless C/D
+selectors, NULL-write/supplied-throw body, SOURCE/history representation,
+pending/finish/roots,138/359 and typed writer stay unchanged.
 
-One original source and 506 Boolean/6 raw checks pass at `d9bbdebfc`/407
-(author229/4, independent277/2). Actual left-slot transfer removes only its source
-and retains the cell owner count; the following job drops one. Right's union
-source and ALIAS survive. Complete wrapped zero/one public states agree. Missing
-own source, malformed second/stale/duplicate metadata and a required-task deletion
-with valid heap/typed readers isolate source and queue authority.
+One original source and 361 Boolean/5 raw checks pass at `842b2dc27`/407
+(author141/2, independent220/3). Actual Left ENTER, normal RESULT and sole-object
+release match complete wrapped zero/one public states. Both property sources and
+ALIAS slots remain attached through the callback; the later real slot transfer
+leaves only Right's union source, without dropping the cell count at transfer.
+Saved Left/D/C/f scope and the original operation history remain authenticated.
+Initial private-method image and actual multi-statement D helper controls bound
+admission; they grant no private-source or broader Holder callback coverage.
 
-The same supplied Exception reaches the local catch and caller observer. Notice15,
-fresh detached NULL and prior b7 survive. A string alias write succeeds after the
-object-only source retires; NULL still raises the right-property TypeError without
-changing its referent or ALIAS. Legal object replacement, old copy and detached
-r/b remain separate, with exact whole/split equality. Storage and writer behavior
-already matched the baseline; this repair admits the return history.
+H precedes the same supplied Exception's local catch/caller observer. Notice15,
+fresh detached NULL/prior b7, successful string write, remaining union's NULL
+rejection and right-property replacement preserve alias/copy/r/b distinctions.
+Complete raw/public and whole/split states agree. The unchanged baseline already
+matched H, storage and writer behavior; initial history admission was the gap.
 
-Native1, NORMAL wrong-ending baseline0 and separate157/4 diagnosis retain
-`dadc621762`/407. The original diagnostic failure0 mispredicted two post-NULL
-pending-identity checks; only their polarities and one full-site assertion change
-before the affected retry. Source1 preserves all original packets and the native
-tuple. Focused proofs pass first attempts, strict45/author420/peer600, quiet/stable
-and fully reaped. Recursive validation has no count cap; fresh coverage is this
-two-to-one case. Other source kinds/types/values, callback-bearing holders,
-fewer than two outer slots, broader bodies/reentry and GC remain partial.
+Native1, NORMAL wrong-ending baseline0 and separate118/3 diagnosis keep
+`a883e6bbd`/407; source1 preserves every original packet and native tuple. All
+actors pass first attempts without failure/timeout/retry and fully reap with stable
+pins and quiet model workers. Treatment source uses upfront SL180 (114.372s),
+strict45/author420/peer600. Wider Holder methods/writes/throws, source kinds/types/
+values, fewer outer slots, broader reentry and GC remain partial.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
-Composed over `b65a921b4`/407 with only270 differing, byte-exact tested d9bb;
-every other spec path and ordered manifest stay parent-exact. Incoming named/
-packed INI, Closure DEFINE, arithmetic Warning, missing loose comparison,
-Generator, magic coalesce and literal-array selectors have no producer here.
-Initialized strict identities, static NEW and ordinary public property references
-retain existing routes; debt/retained lists stay empty, with no state/root/default
-change. Source1 and 506/6 keep private d9bb/407 cuts without joined execution or
-renewed credit.
+Composed over `c13e27c07`/407 with tested270 clear-method changes plus the
+incoming Iterator39 declaration/default/generic guard. That hook selects only
+GENERATOR_ARGS unused SEND, absent here. Incoming INI, missing-CV spaceship,
+NaN bitwise NOT, magic public-int unset and typed-array warning selectors also
+have no producer. C's local unset and359's internal PROP_UNSET create no magic
+property-unset result. Every non270 spec path and ordered manifest stay parent-
+exact; no state/default/root fields change. Source1 and361/5 keep private842b/407
+without joined execution or renewed historical credit.
 
 Retained propertyless Stringable `define` names now accept captured boolean true
 with primitive candidates and non-NUL global/class-like results. One module400
@@ -12044,8 +12043,10 @@ and valid object replacement remains separate from detached r. M123 admits the
 finite safe-holder NULL write, source1 and579/11 at994d. M124 admits each unique
 plain object/object|string source, source1 and 506/6 at d9bb: actual two-to-one
 removal permits string but preserves the remaining union's NULL rejection and
-right-property identity. Other source kinds/types/values, callback-bearing holders,
-fewer outer slots, interposed/pending histories, deeper reentry and GC remain open.
+right-property identity. M125 admits a normal literal-echo Holder destructor,
+source1 and361/5 at842b, preserving both sources during callback and the same
+pending replay afterward. Wider Holder callbacks/writes/throws, source kinds/types/
+values, fewer outer slots, interposed histories, deeper reentry and GC remain open.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
 integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV

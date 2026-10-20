@@ -123,34 +123,32 @@ cell and object indices. M121 relaxes uniqueness only after a valid variable/glo
 operand and only for the structural suffix's HCELL arm. All restore/function,
 minimum-count and old-source/LINE Notice constraints remain.
 
-M121 validates repeated lexical slots and M122 singleton typed-object sources.
-M123 admits the exact global/echo/NULL-write/throw-CV body using emitted LHS,
-compiled NULL, distinct ordinary global cells and a NULL-or-safe-holder value.
-The initial methodless singleton object-property holder excludes callbacks from
-later cleanup; post-store NULL requires no retired-holder liveness. Their original
-source/state cuts remain in the ledger.
+Repeated global slots retain their own lexical authority. Their nonempty unique
+property-source list validates each listed source against its actual ALIAS slot and
+declaration, with existing138 public/nonstatic/nonreadonly/SETVISIBILITYeps/nohook
+guards, type object or exactly
+object|string, and an allocated object referent. The clear-holder image retains
+its own source and object-only type. Source metadata owns no edge; actual ALIAS/
+global edges own the cell. Earlier M121–M124 cuts remain in the ledger.
 
-M124 replaces singleton source admission with nonempty, unique, complete validation.
-Every source retains existing138 slot/declaration/public/nonstatic/nonreadonly/
-SETVISIBILITYeps/nohook authority and type object or exactly object|string; the current referent
-must be an allocated object. The clear-holder image still requires its own source
-and object-only type. Type-source metadata is nonowning; actual ALIAS/global edges
-own the shared cell. Only270 changes;138/359, writer,156, SOURCE/history representation,
-body/pending/finish/roots/GC and schema stay unchanged.
+M125 permits empty METHODS as before or one public nonstatic/nonabstract destructor:
+zero arguments, by-value, no return annotation, empty method attributes and exactly
+one literal echo. Existing site OUTPUTBUFFERS=eps excludes output callbacks. Every
+other class/property/shared-cell/table/key guard and post-store NULL arm stays exact.
+Propertyless C/D predicates, the finite NULL-write/supplied-throw body, SOURCE/history
+representation, pending/finish/roots,138/359/writer/156 and schema do not change.
 
-Source1 and 506 Boolean/6 raw at `d9bbdebfc`/407 authenticate actual two-to-one
-removal, transfer before owner decrement, surviving right metadata and exact
-wrapped/public states. Missing-own, malformed second/stale/duplicate metadata and
-valid-heap task-only deletion controls refuse. The same supplied catch/Notice15/
-fresh detached NULL/b7 survive. String assignment succeeds, NULL raises the remaining
-right-property TypeError without referent/ALIAS mutation, then legal replacement
-preserves old copy/r/b and whole-split equality. The baseline already matched
-storage and writes. Original diagnostic0 and its affected157/4 retry retain dadc/407;
-only two expectation polarities and one full-site assertion change. They remain
-separate from the repaired source and first-attempt focused proofs.
-Recursive source validation has no count cap, but fresh execution covers only two
-sources becoming one. Wider sources/types/values, callback holders, reentry and GC
-remain partial.
+Source1 and 361 Boolean/5 raw at `842b2dc27`/407 bind real nested Holder entry,
+normal return and release-to-storage through full wrapped/public states. Both typed
+sources remain attached throughout H. Later slot transfer removes Left's type
+source; its property row stays PROP_UNSET until later free.
+Saved D/C/f scopes retain valid original history. Initial private-method-image and
+multi-statement-body fences are helper-only controls. Same supplied catch, Notice15,
+fresh detached NULL/b7, W/NQ/right replacement and whole/split ending pass. Baseline
+already matched H and storage/writes; it lost initial capture, despite valid
+post-NULL site/pending gates. Native1/baseline0/118+3 diagnosis keep a883/407.
+All actors pass first attempts; treatment SL180 is an upfront bound, not a retry.
+Wider Holder methods/writes/throws, source kinds/types/values, reentry and GC remain partial.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same
