@@ -25,6 +25,13 @@ no constructor and omitted/false flags; inherited flags compose structurally
 without extra source credit. Wider object kinds/names/lifetimes stay partial.
 [Runtime object review](coverage/semantics/define-runtime-object-review.json).
 
+Composed over `cc137c06de`/406 with the exact tested400+21 patch, preserving
+incoming declaration moves, runtime/manifest bytes and inventory prefixes.
+INI_SET, magic coalesce, lossy-float literal keys, compound-warning arithmetic,
+reference-return replay and Generator selectors are unselected; existing debts
+stay empty with no new state/graph lift. Source3/state622 retain private cuts
+without joined execution, accepted replay or renewed credit.
+
 Retained intrinsic `ini_set(NULL, quiet primitive)` now resumes handlers through
 one named/mixed-key unpack. Inline array V→O evaluation stores the earlier REQUEST
 before later option/live-callee writes; unpack subsequently maps reversed keys1→0.
