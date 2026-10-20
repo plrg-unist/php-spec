@@ -87,6 +87,7 @@ dec $generator_from_tasks_position(ptask*) : bool
 dec $generator_from_search_position(ptask*) : bool
 dec $generator_from_valid_task(pstate, nat, porigin, poperand) : bool
 dec $generator_pending_return_leaf(pstate, nat, nat) : nat?
+dec $generator_buffered_next_leaf(pstate, nat, nat) : nat?
 
 ;; YIELD_FROM has no send target. Its detached current can be returned without
 ;; advancing. A bounded owning result keeps its separate close boundary.
@@ -156,6 +157,21 @@ def $generator_pending_parked_next(S, pgeneratorop) = true
   -- if S_view = $generator_set(S, n_leaf, pgenerator[.PARKED = eps])
   -- if $generator_pending_return_leaf(S_view, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1)) = (n_leaf)
   -- if $generator_input_count(S.GENERATORINPUTS, n_leaf) = 0
+;; A used-yield input likewise survives this initialization-only NEXT. Its
+;; physical parked frame and the single LIVE count are never resumed or moved.
+def $generator_pending_parked_next(S, pgeneratorop) = true
+  -- if pgeneratorop.NAME = "next" /\ pgeneratorop.ARGUMENTS = eps /\ ~pgeneratorop.ADVANCE
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if $generator_operation_valid(S, pgeneratorop)
+  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS eps 2
+  -- if $generator_pending_resume(S, pgeneratorop)
+  -- if n_leaf = $generator_from_leaf(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1))
+  -- if $generator_object(S, n_leaf)
+  -- if S.OBJECTS[n_leaf] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_PAUSED /\ pgenerator.PARKED =/= eps
+  -- if $generator_parked_valid(S, pgenerator)
+  -- if S_view = $generator_set(S, n_leaf, pgenerator[.PARKED = eps])
+  -- if $generator_buffered_next_leaf(S_view, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1)) = (n_leaf)
 def $generator_pending_parked_next(S, pgeneratorop) = false -- otherwise
 
 def $generator_pending_return_leaf(S, n, 0) = eps
@@ -176,6 +192,35 @@ def $generator_pending_return_leaf(S, n, n_depth) = $generator_pending_return_le
   -- if pgenerator.FRAME = (pframe)
   -- if pframe.HELD = eps /\ $tasks_nodes(pframe.TODO) = eps
 def $generator_pending_return_leaf(S, n, n_depth) = eps -- otherwise
+
+def $generator_buffered_next_leaf(S, n, 0) = eps
+def $generator_buffered_next_leaf(S, n, n_depth) = (n)
+  -- if $(n_depth > 0)
+  -- if $generator_send_leaf(S, n, 1) = (n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PARKED = eps /\ S.GC.ACTIVE = eps
+  -- if S.GENERATORINPUTS = [pgeneratorinput]
+  -- if pgeneratorinput.LIVE /\ pgeneratorinput.OBJECT = n
+  -- if $generator_inputs_valid(S, S.GENERATORINPUTS)
+  -- if pgeneratorinput.SOURCE.ARGUMENTS = [pvalue]
+  -- if $value_nodes(pvalue) =/= eps
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.HELD = eps /\ $tasks_nodes(pframe.TODO) = eps
+def $generator_buffered_next_leaf(S, n, n_depth) = $generator_buffered_next_leaf(S, n_child, $nabs($(n_depth - 1)))
+  -- if $(n_depth > 0)
+  -- if $generator_object(S, n)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_DELEGATING /\ pgenerator.PARKED = eps
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if $generator_object(S, n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps /\ pgeneratorfrom.CURRENT = eps
+  -- if pgeneratorfrom.POSITION = 1
+  -- if $generator_from_record_valid(S, n, pgenerator)
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.HELD = eps /\ $tasks_nodes(pframe.TODO) = eps
+def $generator_buffered_next_leaf(S, n, n_depth) = eps -- otherwise
 
 ;; Native API argument cleanup precedes releasing its method receiver.
 def $eager_task_inputs(S, GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue])) = $value_nodes(pvalue) ++ $generator_operation_nodes(pgeneratorop)

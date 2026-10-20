@@ -36,6 +36,11 @@ def checks(program, path, name):
             condition = condition.replace('BINARY_RIGHT LESSEQUAL ', 'BINARY_RIGHT GREATER ')
             if condition == '$error_read_plan(S_both) = (perrorread_left)':
                 condition = '$error_read_plan(S_both) = (perrorread)'
+            if condition == 'PhpStep: S_without ~> S_denied':
+                result.append('$scalar_compare_read_again(S_without,perrorread)')
+                condition = 'PhpStep: S_without ~> S_without_restored'
+            if condition.startswith('S_denied = S_without['):
+                condition = 'S_without_restored = S_without[.TODO = perrorread.TASK :: ptask_tail*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]'
             if condition.startswith(('S_compared = ', 'S_right_compared = ')):
                 condition = condition.replace('KNOWN (PBOOL false)', 'KNOWN (PBOOL true)')
         if condition.startswith('S_denied = S_without['):

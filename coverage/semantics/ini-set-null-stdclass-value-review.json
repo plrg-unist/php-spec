@@ -1,0 +1,104 @@
+{
+  "scope": "Ownerless direct/selected positional2 INI_SET, rawNULL option and retained allocated table-free STDINSTANCE value. All properties are undeclared PROP_VALUE(DIRECT quiet primitive), including the empty object. Source option facts allow NULL and value facts remain unknown CV/helper captures; no object receipt is invented. Named/owned/packed, materialized tables and other object kinds remain partial.",
+  "status": "independently_accepted_private_integrated_on_join",
+  "reviewer": "/root/source_review_35",
+  "parent": "c82bd05823cb77066e3ee85fc615053db6256bb2",
+  "semantic_revision": "aff69160790b694ad759843575fc42ffab4d593b",
+  "tested_revision": "16ce6e0f30ced29e05e5527179cb31d926d44994",
+  "peer_state_revision": "37d83b736b1056b8cdb1ea3c6611568d7fe00492",
+  "modules": 406,
+  "semantic_files": {
+    "spec/semantics/172-file-context-intrinsics.watsup": "78724ff7510671a269dc6b58dbf35d36e966aafc5befd37c9ab7ede7db468d6e"
+  },
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "primary": "Pinned basic_functions.c PHP_FUNCTION(ini_set) parses option via Z_PARAM_STR, then rejects every object value before any object stringification. zend_parse_arg_str_weak deprecates rawNULL and converts it to empty only after a handler returns without Exception. Returning handling therefore reaches TypeError2 with converted empty option; supplied Exception sees rawNULL and cancels the body. Ordinary object properties remain shared through by-value argument capture.",
+  "semantics": "Only33 additive172 lines: rejected_slots recursion and bounded/live/table-free STDINSTANCE/record validator, separate positional ownerless NULL2/source-option/unknown-value/weak/nonPIPE arm, and stdClass-only null_finish delegate to the existing converted-empty TypeError2. Existing value-error/trace/roots/discard/GC/quiet_value/400/schema bodies remain exact.",
+  "accepted": [
+    "Four checked normal model records at16ce6e0f3/runtimeaff691607/406 exactly equal native stdout/PHPstderr/PHPexit0. Default and true-return paths raise parameter2 TypeError after Deprecated; one minimal native observer confirms empty arg0, same object arg1 and updated true70 mark. Selected V and false handler mutate shared mark while rebinding live value/callee/option; captured object still raises TypeError2/caller99 before setter8 to11 recovery. Strict completes V/shared mark then rejects rawNULL parameter1/handler0. Peer supplied Exception identity/caller99/shared handler-mark70 through both aliases/precision10/sibling2459 and oldstring setter10 to12 agree. Expected Deprecated9/20 only; strict/peer quiet.",
+    "All911 premises pass: author227+198+100 at16ce6e0f3 and independent386 at37d83b736, common runtimeaff691607. Actual pre-V selected/rawNULL capture, REQUEST property then shared updates without COW, real HOBJECT task and trace-array child edges, converted-empty and strict rawNULL two-frame TypeErrors versus three-frame handler Exception, exact restoration/discard with existing idempotent GC buffering, malformed property/carrier/table/allocation/source/count/phase refusals, normal recovery/full endings and budgets are checked. Four accepted SL raws are true LF/quiet/exit0. Peer native has no trace traversal; its full trace/edge is state-only proof.",
+    "Eleven stable/head-stable/reaped reports retain ten PASS and the original peer negative-state binder collision failure0. Initial791533 CPU2 native4/baseline0 precede CPU1 models/publics. The only correction prefixes malformed-property state binders to avoid genuine S_initial; assertion count and semantic premises stay386. Only peer prepare/check is repeated at37d83b736, without accepted native/model/author or earlier-source replay. No timeout/interruption/survivor."
+  ],
+  "baseline_zero_credit": "At clean source-only791533507f051819e3412f59856ee17676b32e7d/unchangedc82bd05823/406, selected-null-stdclass-value-false-handler-sees-shared-property-writes is Unsupported error-handler ingress requires a producer continuation afterB|V|, CLI1/nullPHPexit/quiet workerstderr/zero agreement. Author native3 and peer native1 ran before implementation.",
+  "failure_zero_credit": "Original review-public check at16ce6e0f3 exits1/empty stdout, stable/no timeout/reaped: generated line360 binds malformed-property S_initial to a mutated state, colliding with genuine initial state. It is retained unchanged; sole three generated state references use S_badprop_<suffix> in the corrected fixture. No runtime/source/model correction.",
+  "compatibility": "Old62 POBJECT negatives target unchanged quiet_value;68 packed controls stay outside PACKSeps;69 nested-object leaves still refuse via quiet_value. No old control repair/replay. V86 ordinary string-name STDINSTANCE DEFINE VALUE is separate in400; no shared object/table/GC helper edit. Source47/owned-NUL/low-initial-precision NaN and COMP88 Stringable supplied-throw pause remain untouched; no Stringable/userclass/cast/clone/reference/object-formatting original. No engine bug or intentional divergence identified.",
+  "execution": "LC_ALL=C TZ=UTC INT+kill5 AS3221225472, CPU2 initial native4/baseline then CPU1 models/publics/corrected peer. Serial fail-first/full reap, native15s/CLI45s-host60s/freshSL90s; accepted workerstderr empty.",
+  "command_prefix": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s <cap>s prlimit --as=3221225472 -- taskset -c <cpu> python3 <step>",
+  "commands": [
+    {
+      "revision": "791533507f051819e3412f59856ee17676b32e7d",
+      "cpu": 2,
+      "caps": [
+        90,
+        90,
+        90
+      ],
+      "steps": [
+        "tests/semantics/ini_set_null_stdclass_value_sources.py --phase native --output .tools/ini-set-null-stdclass-value-native-70",
+        "tests/semantics/ini_set_null_stdclass_value_review_sources.py --phase native --output .tools/ini-set-null-stdclass-value-review-70",
+        "tests/semantics/ini_set_null_stdclass_value_sources.py --phase baseline --case selected-null-stdclass-value-false-handler-sees-shared-property-writes --output .tools/ini-set-null-stdclass-value-native-70"
+      ]
+    },
+    {
+      "revision": "16ce6e0f30ced29e05e5527179cb31d926d44994",
+      "cpu": 1,
+      "caps": [
+        240,
+        90,
+        90,
+        360,
+        90,
+        120
+      ],
+      "steps": [
+        "tests/semantics/ini_set_null_stdclass_value_sources.py --phase model --output .tools/ini-set-null-stdclass-value-native-70",
+        "tests/semantics/ini_set_null_stdclass_value_review_sources.py --phase model --output .tools/ini-set-null-stdclass-value-review-70",
+        "tests/semantics/ini_set_null_stdclass_value_protocol.py --phase prepare --sources .tools/ini-set-null-stdclass-value-native-70 --output .tools/ini-set-null-stdclass-value-public-70",
+        "tests/semantics/ini_set_null_stdclass_value_protocol.py --phase check --sources .tools/ini-set-null-stdclass-value-native-70 --output .tools/ini-set-null-stdclass-value-public-70",
+        "tests/semantics/ini_set_null_stdclass_value_review_protocol.py --phase prepare --sources .tools/ini-set-null-stdclass-value-review-70 --output .tools/ini-set-null-stdclass-value-review-public-70",
+        "tests/semantics/ini_set_null_stdclass_value_review_protocol.py --phase check --sources .tools/ini-set-null-stdclass-value-review-70 --output .tools/ini-set-null-stdclass-value-review-public-70"
+      ]
+    },
+    {
+      "revision": "37d83b736b1056b8cdb1ea3c6611568d7fe00492",
+      "cpu": 1,
+      "caps": [
+        90,
+        120
+      ],
+      "steps": [
+        "tests/semantics/ini_set_null_stdclass_value_review_protocol.py --phase prepare --sources .tools/ini-set-null-stdclass-value-review-70 --output .tools/ini-set-null-stdclass-value-review-public-fixed-70",
+        "tests/semantics/ini_set_null_stdclass_value_review_protocol.py --phase check --sources .tools/ini-set-null-stdclass-value-review-70 --output .tools/ini-set-null-stdclass-value-review-public-fixed-70"
+      ]
+    }
+  ],
+  "raw_root": ".tools/ini-set-null-stdclass-value-evidence-70",
+  "report_sha256": {
+    "author/public/check-report.json": "ac6b7968dab0847606573bec1d6d618fd11e278295b3473b7229fd67cb4092b3",
+    "author/public/prepare-report.json": "3e6b692417b431e5914c24207d33843425a0d293c202561b93cf59cdec179d35",
+    "author/review/model-report.json": "595a2bbd1319bdea62d7cf499cea02062a2a04e0f2f71485651d95cc6f90abe1",
+    "author/review/native-report.json": "cabf8ad945e2602a5adbfa3598dbd86c836eb7233c73ee537db2a68399abd88c",
+    "author/review-public/check-report.json": "58cb667845710e3f56fdc5360174a31c052b518c1aa55a26a17e3d5ba608f65b",
+    "author/review-public/prepare-report.json": "2ea0a8d4a4eb9da5d65da6e76792950302134d9b018e18db37c26b7ae09fe3cc",
+    "author/review-public-fixed/check-report.json": "395481a2ca8b7a7c309fb73dd083b993a1596f99f6f8b01864e9b834ab62985b",
+    "author/review-public-fixed/prepare-report.json": "f175b92ad6fc93f57cf2b6de652ab6cf74ff66a31f988d4dbf6625071fe47f35",
+    "author/sources/baseline-report.json": "ad3091659393429a224099ad893139711b9bf502ea41153f1426059f07edd777",
+    "author/sources/model-report.json": "2c015419223b320cacdcd029b9a329a8e58f4b448d8a1789c8bc704a4ab27639",
+    "author/sources/native-report.json": "ee1a4b2bb02f6f3d135b67fb9079cca71959d6993acb1861a148874b1e1fede4"
+  },
+  "recovery": "Five roots moved once after independent ACCEPT/RAW STOP/focused users[] to author/{sources,review,public,review-public,review-public-fixed}; eleven concise reports hashed once. Preserve failed peer bytes0. Restore recorded original paths/cuts for exact source/cwd identity; reports retain full inputs/commands/exits. No raw/hash renewal.",
+  "remaining": "Named/owned/packed stdClass-value continuations, materialized tables, declared/unset/deferred/alias/undefined/owning/NaN/legacy-string properties, other object kinds and wider configuration/lifetime remain partial. No full-core/equivalence/BOLA claim.",
+  "composition": {
+    "parent": "a3775c96528ee85126fb5b0b033a54247f8c7704",
+    "private_publication": "cb282049c721694a1e9cefbfe6c55ea0e100e4bc",
+    "modules": 406,
+    "semantic_files": {
+      "spec/semantics/172-file-context-intrinsics.watsup": "78724ff7510671a269dc6b58dbf35d36e966aafc5befd37c9ab7ede7db468d6e"
+    },
+    "seams": "Parent172/368/301/39/source+trace bodies base-exact. Incoming207 missing direct-CV loose comparisons,400 STDINSTANCE DEFINE/constant-value classification,404 warned += and413 literal-reference scalar debt selectors require absent producers: observed CVs are defined and compared strictly, counters use integer++, concatenation is quiet, no object DEFINE/query or reference/float-key literal. Only scalar sibling DEFINE/query occurs. All incoming runtime/schema/ordered manifest preserved; independent actual-parent semantic seam CLEAR.",
+    "evidence": "Source4/author525 at16ce6e0f3 and peer386 at37d83b736 share runtimeaff691607/406; initial791533 native4/base0 and original peer binder failure0 keep their cuts. No joined actor or renewed credit."
+  }
+}

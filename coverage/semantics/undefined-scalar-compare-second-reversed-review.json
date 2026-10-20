@@ -1,0 +1,105 @@
+{
+  "milestone": "COMP101 reversed comparison second missing-CV Warning",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "Distinct direct CVs at > and >=. A first-source-right missing read may resume with left still missing or removed by its handler. The second Warning freezes NULL too, yielding false,true for NULL/NULL.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "b028b082a",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "3fa69be166785527fb1b013be03ba306786ba1c4489c02dddb9e61375f2ab503"
+  },
+  "modules": 406,
+  "engine_basis": "zend_compile_greater preserves source evaluation then emits SMALLER/SMALLER_OR_EQUAL with reversed physical operands. Their helpers test source-right UNDEF before current source-left UNDEF. Each missing read yields language-level NULL after its Warning; later callback writes cannot change that result. Pending exceptions suppress further reporting.",
+  "implementation": "A second scalar read-again clause accepts only the exact first-right-frozen record at >/>= with currently missing source left. A NULL-only right INPUT source arm authenticates both compiled distinct direct CVs, the original left descriptor and RHS diagnostic line. Existing driver stages the second read. Old left-frozen removed-right and same-CV paths stay excluded; no global binary-source widening, fields, tasks, roots or discard change.",
+  "behavior": [
+    "Distinct initially missing CVs, scalar left unset, and late fresh/target references preserve two NULL results with Boolean false,true. No-init second handlers cause no third Warning. False handlers retain source-right then source-left default reports; second supplied Exception preserves destination41, identity and finally.",
+    "Four strict-SL groups retain actual source-reached dispatch/returns, two complete raw restores and Boolean comparison. Fresh/target owners, isolated left/read-line/operator/shape controls, non-NULL RHS certificate refusals, absent CODE, opposite-order exclusion and zero/split budgets pass.",
+    "Only affected old GT/GE right-frozen controls now restore; old-left reversed and right-frozen forward refusals stay exact. Focused maintenance and one old96 selector renew no historical credit; no old full-body campaign runs."
+  ],
+  "baseline": {
+    "revision": "a4bd3b94f9f350a79b53c591631f3723d39e8acb",
+    "report": "initial/initial-report.json",
+    "sha256": "e2c1db043e9673d999a209a9d0bb9063de3f17e73946bb1bc4f40eebcec1652d",
+    "native": "Two exact GT/GE originals emit source-right then source-left H at line10 with expected false/true observers1; empty stderr.",
+    "model": "Genuine unchanged GT emits first H:1::1:10; then Unsupported/scalar comparison warning changed left operand.",
+    "agreement_credit": 0
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "b5d1ef570e3c59992196a7f3f6efe7ff8cbdc5bc53ae244b75a044652012b34b",
+      "revision": "83e33a435b9f403dfcd09a4bc6a41f72acde8fcc",
+      "agreements": 4,
+      "unsupported_controls": 2
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "e1c1fc92229671f8007b50893df6dfefb9591ccc758827c1bb2d97d72151eb10",
+      "revision": "83e33a435b9f403dfcd09a4bc6a41f72acde8fcc",
+      "agreements": 4,
+      "unsupported_controls": 0
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "a705948c7338d90ac5d4fd99bd692c8af33ed20e94b46492d3475c66595ef3cf",
+      "revision": "83e33a435b9f403dfcd09a4bc6a41f72acde8fcc",
+      "premises": 322,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "cba9f367f77f5632d93303d72668fd678db30add1d7761a30ece565a82aa2be8",
+      "revision": "83e33a435b9f403dfcd09a4bc6a41f72acde8fcc",
+      "premises": 353,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 8,
+    "unsupported_source_controls": 2,
+    "state_groups": 4,
+    "state_premises": 675
+  },
+  "maintenance": {
+    "state": {
+      "report": "maintenance-state/report.json",
+      "sha256": "3f1479a082f8827679b9878df911813d07bb113b7af898730db69fffc1813588",
+      "revision": "83e33a435b9f403dfcd09a4bc6a41f72acde8fcc",
+      "premises": 92,
+      "groups": 3
+    },
+    "source_selectors": [
+      {
+        "report": "maintenance-source/model-peer-both-missing-left-remains-missing-report.json",
+        "sha256": "456f629696d97e14e4a2a76608d49155c77dacb918e0b3105d99bbcc57c59cf1",
+        "revision": "83e33a435b9f403dfcd09a4bc6a41f72acde8fcc"
+      }
+    ],
+    "historical_agreement_renewal": 0,
+    "scope": "Three source-reached old GT-right/GT-left/EQ-right fronts check only affected continuation/refusal/invoke controls; one old96 still-missing refusal selector receives an affected native/model check. Prior cuts remain historical."
+  },
+  "failures": [],
+  "remaining": [
+    "Ordinary same-CV forms, owning comparison values, already checked defined counterparts removed during the later Warning, and wider literal/captured producers/lifetimes remain partial.",
+    "All gates pass first attempts at 83e33a435/406. Paused COMP88 and OP59 arithmetic remain excluded."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-101",
+  "artifact_manifest_sha256": "3ff24dbe002ef4c1d9cf7c4c9e2a569a50ad85d87d568f7c4fc44dd8cafbc5c4",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_scalar_compare_second_reversed_sources.py --phase native --output .tools/comp101-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_second_reversed_sources.py --phase model --output .tools/comp101-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_second_reversed_state.py --output .tools/comp101-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_second_reversed_review_state.py --output .tools/comp101-peer-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_second_reversed_maintenance.py --output .tools/comp101-maint-state-new"
+  ],
+  "integration": {
+    "parent": "245ad2006b93c2335efee42e872606433729ff1a",
+    "modules": 406,
+    "interaction_review": "Only incoming400/404/413 selectors change. STDINSTANCE DEFINE and lossy-float keyed-literal retention producers are absent; retained/debt lists stay empty. Added failed selected-reference += rule requires ARITHMETIC_ADDASSIGN_WARNING, never produced by these comparisons, handlers or maintenance fronts. No fields/defaults/schema/ordered manifest change.",
+    "preservation": "Only module207 differs from parent with tested3fa69be1 bytes. Other runtime/pipeline/schema/task/field/default/ordered manifest paths stay exact; publication tests, incoming inventory rows and full checkpoint body are preserved.",
+    "evidence": "New source8+2/state675 and separate maintenance92/3/one selector retain83e33a435/406; no joined execution or historical renewal."
+  }
+}

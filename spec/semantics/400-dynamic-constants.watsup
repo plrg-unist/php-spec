@@ -58,7 +58,23 @@ def $dynamic_constant_class(pvalue) = eps -- otherwise
 
 ;; Runtime values use live class/callable authority, not fabricated receipts.
 ;; A present certificate and its outer wrapper retain their existing authority.
+dec $dynamic_std_entries_live(pstate, pentry*) : bool
+def $dynamic_std_entries_live(S, eps) = true
+def $dynamic_std_entries_live(S, (ENTRY pkey pitem) :: pentry_tail*) = ($heap_subset($item_nodes(pitem) ++ $value_nodes($entry_value(S, pitem)), S.ALLOCATIONS) /\ $dynamic_std_entries_live(S, pentry_tail*))
+dec $dynamic_std_table_valid(pstate, nat) : bool
+def $dynamic_std_table_valid(S, n_object) = true
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = eps
+def $dynamic_std_table_valid(S, n_object) = $object_tables_list_valid(S, [{OBJECT n_object, TABLE n_table}])
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = (n_table)
 dec $dynamic_runtime_object(pstate, nat) : bool
+def $dynamic_runtime_object(S, n_object) = true
+  -- if $(n_object < |S.OBJECTS|) /\ HOBJECT n_object <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_object] = STDINSTANCE
+  -- if $global_std_record(S.CONSTANTSTDOBJECTS, n_object) = eps
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
+  -- if $objectprops_valid(S, [pobjectprops])
+  -- if $dynamic_std_table_valid(S, n_object)
+  -- if $dynamic_std_entries_live(S, $property_entries(pobjectprops.SLOTS))
 def $dynamic_runtime_object(S, n_object) = true
   -- if $(n_object < |S.OBJECTS|) /\ HOBJECT n_object <- S.ALLOCATIONS
   -- if S.OBJECTS[n_object] = INSTANCE porigin_class
