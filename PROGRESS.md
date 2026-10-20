@@ -2436,6 +2436,14 @@ fewer remaining slots, reentry and GC remain partial; this is bounded structural
 authority, not general reachability.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M130 composes over actual `0a6f5a589`/409. Tested 156/270 stay byte-exact25e7;
+30 preserves all parent additions except the new history tag, and every other
+spec path/ordered409 manifest stays parent-exact. Incoming INI/DEFINE, flat-array
+spaceship, NULL literal-key restore, magic property updates, named Warning casts
+and Generator SEND selectors have no producer. The source's int casts consume
+booleans without handlers, so cast plans stay empty. Private source/author/peer
+cuts remain unchanged; composition adds no joined execution credit.
+
 M129's source1/382+4, original protected-key failure and all earlier cuts remain
 separate; no accepted historical campaign is renewed.
 
