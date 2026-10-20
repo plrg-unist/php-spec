@@ -123,28 +123,34 @@ cell and object indices. M121 relaxes uniqueness only after a valid variable/glo
 operand and only for the structural suffix's HCELL arm. All restore/function,
 minimum-count and old-source/LINE Notice constraints remain.
 
-M121 source1 and430/10 at `638496fa6` validate repeated za/z slots, each required
-lexical task, unchanged computed-object uniqueness and two shared owner drops.
-M122 adds a singleton plain public nonstatic `object` property source to the
-global reader. Existing138 authority binds its allocated holder, exact ALIAS
-slot/DECL and nonreadonly source; the new guard requires object TYPE, no asymmetric
-setter/hook and a current allocated POBJECT. The old untyped branch is unchanged.
-Source metadata adds no owner: actual property/global edges retain the HCELL.
+M121 source1/state430 Boolean10 raw validates each repeated za/z lexical slot;
+M122 source1/state566 Boolean9 raw validates singleton public object sources and
+unchanged typed rejection/replacement while the Holder remains live. Their private
+cuts stay in the ledger. Type-source metadata owns no edge; the property ALIAS and
+actual globals retain the shared cell.
 
-Source1 and566/9 at `cbdb48da3` prove current/saved global readers, exact property
-metadata through both shared jobs, n→n−1→n−2 before function exit and referent
-owners2. A task-only deletion refuses with a valid typed reader/heap; independent
-wrong-source metadata preserves the heap, and scalar-current-value controls keep
-the heap valid before refusal. Same outside catch, Notice14, fresh detached NULL
-and raw/public/whole-split states pass. Before request shutdown, a rejected scalar
-write keeps the referent and property alias unchanged, while legal object replacement updates
-holder/z/za and preserves the old copy and detached r/b. The existing writer enforces
-both results;156, body/pending/finish, history representation, roots/ownership/storage/
-GC and schema stay unchanged. One original author fixture failure0 used a resume
-helper that leaves NORMAL finder states unchanged; only that call changes to drive
-before the affected author retry and first peer execution. Other property types/
-sources, multiple sources, holder retirement, fewer than two remaining slots,
-wider bodies and reentry remain open.
+M123 admits one exact global/echo/NULL-write/throw-CV body. Emitted LHS and compiled
+NULL, separate ordinary names/real cells and an untyped allocated write cell are
+required. Its current value is NULL or an allocated methodless parentless class
+with one plain object-property ALIAS, existing138 authority, a shared cell, no
+object table and no live WeakMap key entry. Before history capture, these guards
+exclude callbacks from later cleanup; the NULL branch stays valid after the actual
+write without retired-holder liveness.
+Only270 rules change; the WeakMap helper declaration moves386→270 definition-exact.
+
+Source1 and 579 Boolean/11 raw at `994d0412c` prove source removal/slot-to-job transfer
+before the separate cell-owner decrement, storage finish, handle release and empty
+pop. All six raw cleanup fronts match full wrapped zero/one public budgets with
+the parent history valid. Same-cell/scalar write-cell controls retain given/pending
+and global readers before SOURCE/public refusal; initial method/key fences are
+helper-only constructions. Same supplied catch, Notice14, fresh detached NULL,
+now-legal string alias write and later replacement preserve old copy/r/b distinctions
+and exact whole/split ending. Existing138/359 detachment, writer,156, history
+representation, pending/finish/roots/GC and schema stay unchanged. The baseline
+already matched storage/writes; history admission was the gap. One peer fixture
+compile failure0 and its420s timeout0 are retained; only the ENV expression and
+peer cap change before the identical370/7 succeeds under cap600. Other holder images,
+property sources, callback clears, wider bodies/reentry and GC remain open.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same

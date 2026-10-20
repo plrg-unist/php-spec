@@ -115,6 +115,12 @@ The typed object-property alias return-history proof is in
 author fixture failure, corrected/accepted snapshots and exact runtime patch,
 SHA-256 `b0b79d39cc6cead5bba949e7b7495223aa22036f64cd7f42aa493a3eb1a75e4c`.
 
+The holder type-source detachment and return-history proof is in
+`../php-spec-evidence-archive/lifecycle-holder-detach-123/manifest.json`:
+706,808 bytes under `.tools/m123/`, eight reports retaining the peer
+compile failure,420s timeout, exact snapshots and runtime/declaration patch,
+SHA-256 `05e40c928872590ab47a4d3b25d3f985d3457afc3dfc86f2ede99e3f923ae7e5`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

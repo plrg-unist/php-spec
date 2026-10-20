@@ -1365,43 +1365,49 @@ joined actor, accepted replay or renewed execution credit.
 The earlier mixed CV/selected-reference arithmetic route retains source9/state858
 in its [review ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 
-M122 preserves owning-return history through a typed property reference. Two
-global za/z return slots share the cell of Holder's plain public `object` field.
-The existing finite C→D supplied-Exception cleanup now reaches the local catch,
-then cleared C emits Notice14 and returns a fresh detached NULL; prior b stays7.
-Only270's global-operand guard changes: a singleton valid property source must
-authenticate the allocated holder, exact ALIAS slot/DECL, public nonstatic object
-TYPE, no asymmetric setter/hook, and a current allocated object. Existing138
-authority excludes readonly sources. Untyped globals retain their previous path.
-The typed writer,156, history representation, roots and transitions stay unchanged.
+M123 preserves owning-return history when D clears the last Holder value
+before throwing the supplied Exception. The new finite body imports distinct
+ordinary globals, echoes a literal, writes compiled NULL to the untyped holder
+cell and throws the same live given object. Its initial value is NULL or a safe
+methodless, parentless singleton object-property Holder: exact typed ALIAS source,
+shared cell, no object table or live WeakMap key entry. After the store, NULL
+keeps SOURCE validation valid without requiring the retired Holder to remain live.
+Only270 adds these guards;386 moves one unchanged helper declaration earlier.
+History representation, pending/finish/roots,138,359 and the typed writer stay unchanged.
 
-One original source and 566 Boolean/9 raw checks pass at `cbdb48da3`/407
-(author241/4, independent325/5). Both actual shared-cell jobs remove one pending
-owner while holder/slot/DECL/PROPREF remain valid and the referent stays owners2.
-Metadata adds no owner; the property ALIAS and actual global edges retain the cell.
-Task-only deletion still refuses despite a valid typed reader/heap. Same-heap
-wrong-source metadata and a heap-valid scalar current value refuse. Before shutdown,
-a rejected za string write leaves the referent unchanged; a legal object replacement
-updates holder/z/za while old copy, detached r and prior b remain separate. Exact
-raw/public pauses and complete whole/split endings agree.
+One original source and 579 Boolean/11 raw checks pass at `994d0412c`/407
+(author209/4, independent370/7). Six actual cleanup steps separate property-source
+detachment and slot-to-job transfer from the later HCELL owner decrement, storage
+finish, handle release and final empty pop. Exact zero/one public budgets match
+complete wrapped raw states while the parent history remains admitted. Same-cell
+and non-NULL scalar write-cell controls retain live given/pending and valid za/z
+readers before SOURCE/public refusal. Initial method/key exclusions are constructed
+helper checks. They establish no source callback or WeakMap coverage.
 
-Native1, the wrong-ending baseline and separate119/2 diagnosis retain `b0ebc5d2f`/407.
-The affected source preserves all original packets and the exact native tuple.
-One original author failure0 compared a completed run with an uncontinued NORMAL
-finder state: its resume helper only drives BUDGET. Only that split call changes
-to drive in author and unrun peer; affected author retry and first peer pass with
-all assertions retained. Accepted model actors are quiet, stable and fully reaped;
-strict45 and author300/peer420 caps. Other property types/sources, multiple sources,
-holder retirement, fewer than two outer slots, wider bodies/reentry and GC remain open.
+The local catch and caller observer retain the outside Exception. Cleared C gives
+Notice14 and fresh detached NULL, with prior b7. Holder is gone and its type source
+is detached; a za string write now succeeds through surviving z/za. The copied
+old object, detached r and later valid object replacement remain separate. Complete
+whole/split states agree. Existing storage detachment and writer behavior already
+matched the baseline; this repair admits their return history.
+
+Native1, wrong-ending baseline0 and separate118/4 diagnosis retain `ac3cff066`/407.
+Affected source1 preserves every original packet and the exact native tuple.
+Original peer compile-only0 used an undefined ENV helper; only that expression
+changes. Its corrected370/7 then times out at420 with empty streams/no assertion
+diagnostic; only the peer cap changes to600 for the same fixture. Accepted author,
+source/native/diagnosis stay closed. All completed actors are stable and fully
+reaped; strict45/author300/peer600. Wider holder images/property sources, callback
+clears, multiple writes, fewer than two outer slots, reentry and GC remain open.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
-Composed over `d0e429b7f`/407 with tested270 byte-exact and every other spec path
-and ordered manifest parent-exact. Incoming parent-hook/set, compound arithmetic
-Warning, missing loose comparison, parked Generator, INI/DEFINE and literal-array
-selectors have no producer here. Holder has no hooks or parent; existing138 and
-the ordinary typed writer remain unchanged. State/default/root paths stay exact;
-source1/566 Boolean9 raw retain their private407 cuts without joined execution
-or accepted replay.
+Composed over `53a7decc3`/407 with tested270/386 preserved; every other spec path
+and the ordered manifest remain parent-exact. Incoming cached clone, INI/DEFINE,
+missing spaceship, compound POWER, unary arithmetic Warning and array-literal
+selectors have no producer here. The source uses initialized strict identities,
+casts and object-valued aliases; debt/retained lists stay empty. No state/root/
+default field changes. Source1 and579/11 retain `994d0412c`/407 without joined
+execution or renewed historical credit.
 
 Retained propertyless Stringable `define` names now accept captured boolean true
 with primitive candidates and non-NUL global/class-like results. One module400
@@ -11782,9 +11788,11 @@ M121 adds two genuine za/z slots sharing one cell, source1 and 430/10 at638496,
 with each lexical task required and two exact shared-owner drops. M122 adds a
 validated singleton plain public object-property source, source1 and566/9 atcbdb;
 two slot releases preserve its constraint, failed scalar writes leave it unchanged,
-and valid object replacement remains separate from detached r. Other property
-types/sources, holder retirement, interposed/pending histories, deeper reentry,
-GC and wider typed consumers remain open for permanent lifecycle/control work.
+and valid object replacement remains separate from detached r. M123 admits one
+finite safe-holder NULL write before supplied throw, source1 and579/11 at994d;
+the real type-source detach/storage/job/free sequence keeps its history and makes
+the surviving alias scalar write legal. Other property types/sources, wider holder
+lifetimes, interposed/pending histories, deeper reentry, GC and consumers remain open.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
 integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV
