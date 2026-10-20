@@ -81,16 +81,16 @@ def reach(name, previous, stage):
 INITIAL = lines(r'''
 $lookup(S_initial_unset.ENV,$ptascii("child")) = (n_initial_cell)
 S_initial_unset.STORE[n_initial_cell] = DEFINED (POBJECT n_initial_object)
-$objectprops_at(S_initial_unset.OBJECTPROPS,n_initial_object) = (ppropertyslot_initial*)
-$property_slot_at(ppropertyslot_initial*,$ptascii("value")) = (ppropertyslot_initial)
+$objectprops_at(S_initial_unset.OBJECTPROPS,n_initial_object) = (ppropertyslot_initial_all*)
+$property_slot_at(ppropertyslot_initial_all*,$ptascii("value")) = (ppropertyslot_initial)
 ppropertyslot_initial.STATE = PROP_INITIAL
 ~$property_unset_needed(S_initial_unset,n_initial_object,$ptascii("value")) /\ ~$property_unset_pending(S_initial_unset)
 $property_unset_plan(S_initial_unset) = eps /\ ~$pu_active(S_initial_unset,n_initial_object) /\ $pu_guard(S_initial_unset)
 PhpStep: S_initial_unset ~> S_initial_raw
 S_initial_raw.EVENTS = S_initial_unset.EVENTS
 S_initial_deleted = $pu_after(S_initial_unset,S_initial_raw)
-$objectprops_at(S_initial_deleted.OBJECTPROPS,n_initial_object) = (ppropertyslot_deleted*)
-$property_slot_at(ppropertyslot_deleted*,$ptascii("value")) = (ppropertyslot_deleted)
+$objectprops_at(S_initial_deleted.OBJECTPROPS,n_initial_object) = (ppropertyslot_deleted_all*)
+$property_slot_at(ppropertyslot_deleted_all*,$ptascii("value")) = (ppropertyslot_deleted)
 ppropertyslot_deleted.STATE = PROP_UNSET
 $pu_guard(S_initial_deleted)
 ''')
@@ -109,8 +109,8 @@ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc.STATIC /\ ~ppropert
 ppropertydesc.NAME = ptbytes_name /\ ppropertydesc.KEY = ptbytes_name
 ppropertydesc.TYPE = [PTBRANCH ([PTBUILTIN "int"])]
 $property_unset_public_desc(S_front,n_child,ptbytes_name,ppropertydesc)
-$objectprops_at(S_front.OBJECTPROPS,n_child) = (ppropertyslot_front*)
-$property_slot_at(ppropertyslot_front*,ptbytes_name) = (ppropertyslot_front)
+$objectprops_at(S_front.OBJECTPROPS,n_child) = (ppropertyslot_front_all*)
+$property_slot_at(ppropertyslot_front_all*,ptbytes_name) = (ppropertyslot_front)
 ppropertyslot_front.STATE = PROP_UNSET
 $property_unset_method(S_front,n_child) = (pmethoddesc_unset)
 pmethoddesc_unset.FUNCTION = pfunction_unset
@@ -208,8 +208,8 @@ $pu_active(S_value_unset,n_child)
 ~$property_unset_needed(S_value_unset,n_child,ptbytes_name) /\ ~$property_unset_pending(S_value_unset)
 $property_unset_public_guarded_plan(S_value_unset) = eps
 PhpStep: S_value_unset ~> S_value_deleted
-$objectprops_at(S_value_deleted.OBJECTPROPS,n_child) = (ppropertyslot_value_deleted*)
-$property_slot_at(ppropertyslot_value_deleted*,ptbytes_name) = (ppropertyslot_value_deleted)
+$objectprops_at(S_value_deleted.OBJECTPROPS,n_child) = (ppropertyslot_value_deleted_all*)
+$property_slot_at(ppropertyslot_value_deleted_all*,ptbytes_name) = (ppropertyslot_value_deleted)
 ppropertyslot_value_deleted.STATE = PROP_UNSET
 S_value_deleted.EVENTS = S_value_unset.EVENTS /\ S_value_deleted.STORE = S_value_unset.STORE /\ S_value_deleted.ALLOCATIONS = S_value_unset.ALLOCATIONS
 ''')
@@ -313,8 +313,8 @@ def main():
                 reached += reach('S_return','S_inner_done','PU_RETURN') + RETURN
                 reached += lines(r"""
 S_return.STORE[n_child_cell] = DEFINED (POBJECT n_child)
-$objectprops_at(S_return.OBJECTPROPS,n_child) = (ppropertyslot_return*)
-$property_slot_at(ppropertyslot_return*,ptbytes_name) = (ppropertyslot_return)
+$objectprops_at(S_return.OBJECTPROPS,n_child) = (ppropertyslot_return_all*)
+$property_slot_at(ppropertyslot_return_all*,ptbytes_name) = (ppropertyslot_return)
 ppropertyslot_return.STATE = PROP_VALUE (DIRECT (PINT 7))
 ~$property_unset_capture_state(S_saved,ppropertyunset) /\ ~$property_unset_capture(S_saved,ppropertyunset)
 $heap_owners($heap_graph(S_return),HOBJECT n_child) = 2
@@ -327,14 +327,14 @@ $heap_owners($heap_graph(S_result_raw),HOBJECT n_child) = 1
 """)
                 reached += reach('S_value_front','S_releasing',f'PU_LINE {case["value_unset_line"]}')
                 reached += lines(r"""
-$objectprops_at(S_value_front.OBJECTPROPS,n_child) = (ppropertyslot_return*)
+$objectprops_at(S_value_front.OBJECTPROPS,n_child) = (ppropertyslot_return_all*)
 ~$property_unset_needed(S_value_front,n_child,ptbytes_name) /\ ~$property_unset_pending(S_value_front)
 $property_unset_plan(S_value_front) = eps /\ ~$pu_active(S_value_front,n_child) /\ $pu_guard(S_value_front)
 PhpStep: S_value_front ~> S_value_raw
 S_value_raw.EVENTS = S_value_front.EVENTS
 S_value_done = $pu_after(S_value_front,S_value_raw)
-$objectprops_at(S_value_done.OBJECTPROPS,n_child) = (ppropertyslot_value_done*)
-$property_slot_at(ppropertyslot_value_done*,ptbytes_name) = (ppropertyslot_value_done)
+$objectprops_at(S_value_done.OBJECTPROPS,n_child) = (ppropertyslot_value_done_all*)
+$property_slot_at(ppropertyslot_value_done_all*,ptbytes_name) = (ppropertyslot_value_done)
 ppropertyslot_value_done.STATE = PROP_UNSET
 $pu_guard(S_value_done)
 """)
@@ -447,8 +447,8 @@ pdestructionframe <- S_inner.DESTRUCTION.FRAMES
                 reached += reach('S_result','S_inner_done','PU_RESULT') + RESULT
                 reached += lines(r"""
 ~(HOBJECT n_probe <- S_result.ALLOCATIONS)
-$objectprops_at(S_result.OBJECTPROPS,n_child) = (ppropertyslot_after_probe*)
-$property_slot_at(ppropertyslot_after_probe*,ptbytes_name) = (ppropertyslot_after_probe)
+$objectprops_at(S_result.OBJECTPROPS,n_child) = (ppropertyslot_after_probe_all*)
+$property_slot_at(ppropertyslot_after_probe_all*,ptbytes_name) = (ppropertyslot_after_probe)
 ppropertyslot_after_probe.STATE = PROP_UNSET
 $property_unset_capture(S_result,ppropertyunset)
 $heap_owners($heap_graph(S_result),HOBJECT n_child) = 2
