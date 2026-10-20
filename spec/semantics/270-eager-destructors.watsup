@@ -1591,7 +1591,7 @@ def $ref_return_retire_outer(S, prefreturncursor_inner, pnode_seen*, (FINALLY_RE
   -- if $ref_return_cursor_inside(porigin_outer, prefreturncursor_inner.SOURCE)
   -- if prefreturncursor_inner.OUTER = $origin_child((porigin_outer), [PCFIELD 2])
   -- if $ref_return_retire_operand(S, prefreturncursor_outer, poperand_old) = (pnode)
-  -- if ~(pnode <- pnode_seen*)
+  -- if ~$ref_return_retire_call(S, prefreturncursor_outer) \/ ~(pnode <- pnode_seen*)
   -- if $ref_return_retire_outer(S, prefreturncursor_outer, pnode :: pnode_seen*, ptask_tail*, porigin_function) = (porigin_tail*)
 def $ref_return_retire_outer(S, prefreturncursor, pnode_seen*, ptask*, porigin) = eps -- otherwise
 dec $ref_return_retire_site(pstate, ptask*) : prefreturncursor?
