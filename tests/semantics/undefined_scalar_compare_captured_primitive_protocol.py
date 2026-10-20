@@ -11,11 +11,11 @@ PREFIX = COMMON.replace('BINARY_RIGHT SPACESHIP poperand z',
 def checks(program, path, name):
     equal = name == 'captured-equal-right-zero'
     operator = 'EQUAL' if equal else 'GREATER'
-    value = 'PINT 0' if equal else 'PSTRING ($ptascii("0"))'
+    value = 'PINT 0' if equal else 'pvalue_capture'
     original = ('BINARY_RIGHT EQUAL (VARIABLE ($ptascii("missing")) z_missing) 14'
                 if equal else 'BINARY_RIGHT GREATER (KNOWN (' + value + ')) 14')
     task = 'BINARY_RIGHT EQUAL (KNOWN PNULL) 14' if equal else original
-    saved = 'PINT 9' if equal else 'PSTRING eps'
+    saved = 'PINT 9' if equal else 'pvalue_current'
     values = [
         'S_initial = $php_run(' + program + ',0,' + json.dumps(base64.b64encode(str(path).encode()).decode()) + ')',
         'S_initial.COMPLETION = BUDGET', 'S_found = $us_seek(S_initial,0,1400)',
@@ -32,7 +32,8 @@ def checks(program, path, name):
         '$lookup(S.ENV,$ptascii("missing")) = eps',
         '$lookup(S.ENV,$ptascii("value")) = (n_value)',
         '$lookup(S.ENV,$ptascii("saved")) = (n_saved)', 'n_saved =/= n_value',
-        'S.STORE[n_value] = DEFINED (' + value + ')', 'S.STORE[n_saved] = DEFINED (' + value + ')',
+        'S.STORE[n_value] = DEFINED (' + (value if equal else 'pvalue_initial') + ')',
+        'S.STORE[n_saved] = DEFINED (' + (value if equal else 'pvalue_saved_initial') + ')',
         r'S.CURRENT = eps /\ S.FRAMES = eps',
         '$scalar_compare_read_other(S,perrorread)', '~$scalar_compare_read_array(S,perrorread)',
         '~$spaceship_read_array(S,perrorread)', '~$scalar_compare_missing_pair(S,perrorread)',
@@ -118,6 +119,10 @@ def checks(program, path, name):
         ]
     else:
         values += [
+            '$string_bytes(pvalue_capture) = ($ptascii("0"))',
+            '$string_bytes(pvalue_initial) = ($ptascii("0"))',
+            '$string_bytes(pvalue_saved_initial) = ($ptascii("0"))',
+            '$string_bytes(pvalue_current) = (eps)',
             'perrorread_name = perrorread[.INPUT = VARIABLE ($ptascii("foreign")) z_missing][.NAME = $ptascii("foreign")]',
             '$error_read_shape(perrorread_name.ORIGINAL,perrorread_name.INPUT,perrorread_name.BASE) = (perrorread_name)',
             '~$error_read_source(S,perrorread_name)',
