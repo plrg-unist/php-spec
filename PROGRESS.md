@@ -23,6 +23,14 @@ fixed-instance/computed-static omitted/false originals are distinct from structu
 clone/inherited-flag support; wider domains and core remain partial.
 [String-method Closure define review](coverage/semantics/define-runtime-string-closure-review.json).
 
+Composed over `f1e9d9aec`/407 with exact tested400+6 and complete incoming
+runtime/manifest/inventory prefixes preserved. Ordinary cached-property cloning,
+owner-present named NULL/array INI_SET, checked-missing spaceship reads and power
+assignment have no producer in these originals. New task alternatives stay unused;
+no state/graph/schema/module lift is needed and existing retained/debt lists remain
+empty. Source3/state873 retain private407 cuts without joined execution, accepted
+replay or renewed historical credit.
+
 Retained intrinsic `ini_set` Closures now resume NULL-option handlers with named
 or mixed flat quiet ARRAY values. Reversed evaluation owns both the original
 Closure and earlier array before later option effects replace the live callee
