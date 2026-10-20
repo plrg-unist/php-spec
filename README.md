@@ -53,7 +53,11 @@ the CV before releasing the builder. Initially untyped reference-wrapped value
 CVs capture their old CELL payload instead: resetting that payload preserves a
 callback's new binding of the source name. A live alias must keep the
 captured CELL alive; neither the marker nor its metadata owns that CELL.
-Typed/string/object slots and wider producers remain partial.
+Captured typed payloads also reset when the current property sources accept the
+saved value. This continuation reports Unsupported if a current constraint
+rejects that snapshot; detach can restore readiness. Existing typed writes
+still handle coercion and rejection. Direct string/object payloads
+and wider producers remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables

@@ -204,6 +204,18 @@ DIRECT insertion/throw reset remain unchanged. The
 checks primitive and array reset, independent snapshots/COW, deletion and throw.
 Property/coercion/backing records, CELL debt and wider payloads remain excluded;
 source metadata can remain valid after a locator retires while readiness refuses.
+Captured typed slots use existing ordinary property-source validation in the
+same logical live set as their current payload. Before reset, every current
+constraint must also accept the saved snapshot. This check uses allocated
+snapshot owners across popped-marker throw cleanup, after current source-object
+liveness is established. Fresh public `int|array` slots cover scalar-to-array
+reset, weak numeric-string-to-int writes, rejection, final-source detach and
+restoration before catch. A transient public `int` source accepts current44 but
+makes readiness refuse the old ARRAY; detach restores readiness before the
+native callback returns. This is an explicit Unsupported boundary of this
+continuation. No generic typed-write or owner
+rule changes; see the
+[typed NULL-key review](../../coverage/semantics/array-literal-null-key-typed-wrapped-cv-review.json).
 The [string-leaf review](../../coverage/semantics/array-literal-float-string-leaf-review.json)
 adds ordinary tables and untyped wrapper payloads containing canonical-byte or
 validated-carrier string leaves. String snapshots remain independent across

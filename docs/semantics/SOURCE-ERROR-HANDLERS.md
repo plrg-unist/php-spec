@@ -417,6 +417,16 @@ backing records with no CELL debt. The
 [wrapped NULL-key ledger](../../coverage/semantics/array-literal-null-key-wrapped-cv-review.json)
 checks captured-slot restoration, two pending ARRAY owners and independent COW;
 no global input classifier, task owner or count/prune/driver rule changes.
+Initially typed captured payloads reuse existing accepting ordinary property
+sources. Readiness validates current source objects and the bounded current
+payload in the same logical live set, then checks all current constraints against
+the frozen snapshot. Snapshot allocation, rather than a fresh graph root, is
+required after marker-pop during throw cleanup. Missing live sources or an
+incompatible newly attached source explicitly refuse reset; safe source detach
+can restore eligibility. Fresh public `int|array`/`int` witnesses distinguish
+weak44, rejected strings, transient restrictive-source refusal, DIRECT snapshots,
+deletion and restoration before the same supplied Throwable reaches catch. See
+the [typed NULL-key ledger](../../coverage/semantics/array-literal-null-key-typed-wrapped-cv-review.json).
 String leaves validate canonical bytes or existing carrier records. Their table
 and wrapper counts stay separate from copied string bytes: debt-time writes may
 share a table while a string snapshot stays unchanged. Singleton reference
