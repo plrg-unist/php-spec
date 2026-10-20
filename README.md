@@ -1470,6 +1470,11 @@ Its first refresh may release a closed child before argument, result and receive
 cleanup. Assigned copies survive receiver retirement; row COW and equal-cache
 arguments preserve separate owners. See the
 [normal SEND review](coverage/semantics/generator-unused-detached-send-review.json).
+At a normal owning return, pre-refreshed direct pending SEND drops its unused
+copy before receiver finally. A raw-row write retires the old element before
+`J-END`; an assigned copy survives until the caller drops it. Clearing an aliased
+object current can throw during finally and skip its remaining output. See the
+[direct SEND review](coverage/semantics/generator-unused-direct-detached-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit

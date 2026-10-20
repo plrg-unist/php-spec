@@ -1,0 +1,20 @@
+[
+  {
+    "id": "generator-unused-direct-detached-send-finally-row-write",
+    "purpose": "Direct pending Middle SEND after a getter refresh; normal argument cleanup drops Generator aliases before the physical receiver finally mutates the raw current row.",
+    "source": "<?php\nclass UnusedDirectSendRowOld42 { function __destruct() { echo \"A|\"; } }\nclass UnusedDirectSendRowLive42 { function __destruct() { echo \"C-LIVE|\"; } }\nclass UnusedDirectSendRowReturn42 { function __destruct() { echo \"R|\"; } }\nclass UnusedDirectSendRowArgument42 { function __destruct() { echo \"ARG|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"ARG-END|\"; } }\nfunction &unusedDirectSendRowChild42() { global $row; $row = [new UnusedDirectSendRowOld42()]; echo \"C|\"; yield 7 => $row; echo \"L|\"; return [new UnusedDirectSendRowReturn42()]; }\nfunction unusedDirectSendRowMiddle42() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; $GLOBALS[\"row\"][0] = new UnusedDirectSendRowLive42(); echo \"J-END|\"; } }\nfunction unusedDirectSendRowUpper42() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction unusedDirectSendRowOuter42() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = unusedDirectSendRowChild42(); $middle = unusedDirectSendRowMiddle42(); $upper = unusedDirectSendRowUpper42(); $outer = unusedDirectSendRowOuter42();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\n$middle->current(); echo \"G|\";\necho \"S|\";\n$middle->send(new UnusedDirectSendRowArgument42()); echo \"CALLER|\"; unset($copy); echo \"DROPPED|\"; unset($row); echo \"ROW-DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "a8d6cbb0b803dd914dcdc443df7dabe00c4ad1ff31b13f55a56e03944e6600f0",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|G|S|ARG|F|K|ARG-END|J|A|J-END|CALLER|DROPPED|C-LIVE|ROW-DROPPED|ER|"
+  },
+  {
+    "id": "generator-unused-direct-detached-send-assignment-control",
+    "purpose": "Only $copy = differs from the direct unused call, isolating the result container through receiver finally mutation and caller cleanup.",
+    "source": "<?php\nclass UnusedDirectSendRowOld42 { function __destruct() { echo \"A|\"; } }\nclass UnusedDirectSendRowLive42 { function __destruct() { echo \"C-LIVE|\"; } }\nclass UnusedDirectSendRowReturn42 { function __destruct() { echo \"R|\"; } }\nclass UnusedDirectSendRowArgument42 { function __destruct() { echo \"ARG|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"ARG-END|\"; } }\nfunction &unusedDirectSendRowChild42() { global $row; $row = [new UnusedDirectSendRowOld42()]; echo \"C|\"; yield 7 => $row; echo \"L|\"; return [new UnusedDirectSendRowReturn42()]; }\nfunction unusedDirectSendRowMiddle42() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; $GLOBALS[\"row\"][0] = new UnusedDirectSendRowLive42(); echo \"J-END|\"; } }\nfunction unusedDirectSendRowUpper42() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction unusedDirectSendRowOuter42() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\n$child = unusedDirectSendRowChild42(); $middle = unusedDirectSendRowMiddle42(); $upper = unusedDirectSendRowUpper42(); $outer = unusedDirectSendRowOuter42();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\n$middle->current(); echo \"G|\";\necho \"S|\";\n$copy = $middle->send(new UnusedDirectSendRowArgument42()); echo \"CALLER|\"; unset($copy); echo \"DROPPED|\"; unset($row); echo \"ROW-DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "0b26b8e8b18c7a721d5b52787f9010629c41132d88b4eed91635fc600702abf8",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|G|S|ARG|F|K|ARG-END|J|J-END|CALLER|A|DROPPED|C-LIVE|ROW-DROPPED|ER|"
+  }
+]

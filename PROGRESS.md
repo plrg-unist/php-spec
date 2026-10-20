@@ -7,6 +7,34 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pre-refreshed direct pending SEND at a normal owning copied return now releases
+its unused snapshot before receiver finally. A raw-row element retires during
+finally mutation; assignment keeps its copy until caller unset. Equal
+argument/current values release twice with one array element-edge set. In the
+object case, a raw-cell clear throws during the live finally, skips J-END and
+keeps Previous NULL; the owning copied return stays independent.
+[Direct SEND review](coverage/semantics/generator-unused-direct-detached-send-review.json).
+
+Four source agreements and strict407 pass at `e3fc627e3`; corrected gate4 and
+529 focused premises (265 author +264 independent; 509 local +20 generic) pass at
+`a066cd8c3`. Native4 and the genuine `963d2a22c` NORMAL A/J-END disagreement
+retain failed agreement and zero credit. Initial `1726a8b09` compile-only gate
+failed on three peer metavariable names with an undeclared prefix; exact renames
+fixed it before interpretation. All post-change source/state checks pass first
+attempt at original caps. The original failure stays preserved, without historical renewal or
+accepted replay; actors are reaped and CPU1 released.
+
+Only289's identity-refresh arm changes; source/slot/discard guards and all root,
+close and collector functions stay exact. Direct refresh prefixes, abrupt
+argument callbacks, wider owners, body entry and collection remain unvalidated.
+
+Composed over `22b962aa1`/407 with tested289 and six tests private-exact.
+All other incoming runtime/schema/default/root/ordered-manifest/pipeline bytes
+remain parent-exact. Named magic-call, lossy-float borrowed-CV, selected shift,
+INI/missing-read and ordinary typed-ref selectors have no producer here.
+Source4/strict407/state529 keep private cuts and compile failure0, without
+joined execution, accepted replay or renewed credit.
+
 Selected-reference `>>=` now captures LEFT before Deprecated and reads the rebound
 count afterward. Cached `-12` with count `64` stores integer `-1` through the old
 target alias despite current LEFT `77`; old count `2` would give `-3`, and a reread
@@ -105,8 +133,9 @@ Private source/state and affected cuts retain `147f5eac2`/407 without replay.
 Earlier selected-reference `^=` retains source2/state362 and its original fixture
 failure0 in the [selected XOR ledger](coverage/semantics/xorassign-selected-warning-review.json).
 
-Normal unparked pending ancestor SEND now preserves its actual closed-child
-refresh release before ignored argument, unused current result and receiver.
+At Iterator41, normal unparked pending ancestor SEND preserved its actual
+closed-child refresh release before ignored argument, unused current result
+and receiver.
 The tested child/copy return has two array owners but one element-edge set until
 child storage retires. Assigned results survive receiver cleanup; pre-refreshed
 row COW keeps its snapshot through ARG-END, and equal-cache cleanup throws a new
@@ -118,8 +147,8 @@ Four sources and strict407 pass at `d7d633ae2`; gate4 and 561 focused premises
 Native4 and the genuine `f61112e16` NORMAL D/K disagreement retain failed agreement
 and zero credit. All post-change checks pass first execution at original caps,
 without retries, historical renewal or accepted replay. All actors are reaped and
-CPU2 released. Only289 changes; normal direct receivers, wider refresh shapes,
-abrupt argument callbacks, body entry and collection remain unvalidated.
+CPU2 released. Only289 changed; normal direct receivers, wider refresh shapes,
+abrupt argument callbacks, body entry and collection were unvalidated at that cut.
 
 Composed over `6b58a1a15`/407 with tested289 and all six tests private-exact.
 Every other incoming runtime/schema/default/root/ordered-manifest/pipeline byte

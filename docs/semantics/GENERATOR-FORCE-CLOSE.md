@@ -145,6 +145,13 @@ independent of the cache. Row COW preserves the old snapshot through ARG-END;
 an equal-cache argument can produce a new RuntimeException with Previous NULL
 before ancestor finally. See the
 [normal SEND review](../../coverage/semantics/generator-unused-detached-send-review.json).
+At a normal owning return, pre-refreshed direct pending SEND leaves no unused
+snapshot through its own forced finally. Replacing a raw-row element can destroy
+it before `J-END`; clearing an object-valued reference can throw a new
+RuntimeException and skip `J-END`, with Previous NULL and the owning copied
+return retained separately.
+An assigned copy survives that receiver cleanup. See the
+[direct SEND review](../../coverage/semantics/generator-unused-direct-detached-send-review.json).
 Pending NEXT preserves that parked return across the same close transfer but
 creates no current copy. A temporary sole receiver releases its cache during
 storage cleanup, before caller delivery; a throwing cache has no older caught
