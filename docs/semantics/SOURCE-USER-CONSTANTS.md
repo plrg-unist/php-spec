@@ -580,8 +580,22 @@ admitted flag routes reuse the existing classifier and guards without additional
 source credit.
 [Certified Closure define review](../../coverage/semantics/define-certified-closure-review.json).
 
-Uncertified object values, other owning array leaves, nonfinite direct-object
-flags, coerced names and wider owning define domains remain partial.
+Ordinary live class-instance values without a constant-NEW record also use the
+existing `PVOBJECT` tag in DEFINE rows and canonical array leaves. The exact
+INSTANCE header, resolved nonabstract class and live allocation supply structural
+authority; no allocation history or durable receipt is fabricated. A present
+record must still validate as its certified class. Direct `constant()` queries
+require a DEFINE origin; global constant/default-object policies stay unchanged.
+An unpinned duplicate object retires before false delivery, and a private array
+copy can keep the sole object owner after its source alias is cleared, running
+its destructor before the original handler Exception reaches catch. The originals
+use no-constructor classes and omitted/false flags; inherited flag delegates
+compose through the classifier without extra source credit.
+[Runtime object define review](../../coverage/semantics/define-runtime-object-review.json).
+
+Unrecorded Closure/stdClass and internal object values, other owning array leaves,
+nonfinite direct-object flags, coerced names and wider owning define domains
+remain partial.
 
 Class-qualified `defined` queries reuse inherited lookup and the actual caller's
 lexical visibility. Missing or inaccessible members return false. The initial
@@ -1023,8 +1037,9 @@ records actual query fronts, shared counters, alias roots and certificate refusa
 
 Absent names raise `Error` with the stripped lookup spelling and the full received
 string argument in the API trace. Unknown startup values retain their prior Unsupported
-result. Generic `PVOBJECT`, stored ALIAS/cyclic array trees, Stringable/array name
-reception and packed/owning calls remain outside this slice. The original ordinary `const` string producer refusal retains
+result. `PVOBJECT` rows without the DEFINE-origin/live-class authority above,
+stored ALIAS/cyclic array trees, Stringable/array name reception and packed/owning
+calls remain outside this slice. The original ordinary `const` string producer refusal retains
 its historical cut; the string-publication follow-up above admits that producer
 domain without renewing the older lookup campaign. The [global-query ledger](../../coverage/semantics/global-constant-review.json)
 binds the source and public-state cuts without closing the constant family.

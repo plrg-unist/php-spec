@@ -1632,7 +1632,7 @@ Byte-only string leaves, including compiled literals, preserve their exact bytes
 through array copying, query COW and duplicate cleanup, including empty, one-byte
 and binary values. Existing string carriers retain their own identity checks.
 [Literal-string array review](coverage/semantics/define-literal-string-array-review.json).
-Uncertified owning values and wider array warning/flag paths remain partial.
+Other owning values and wider array warning/flag paths remain partial.
 String-name `define` with an omitted/false flag now shares already-certified
 stdClass donors. Named/selected calls preserve the captured pointer through later
 CV changes, and duplicate handlers keep the old binding and property writes on
@@ -1664,6 +1664,12 @@ Certified Closure values can be defined directly, retaining pointer identity and
 shared static cells through duplicates, queries and a pending ignored-Warning
 exception. Ordinary unrecorded Closure values remain Unsupported.
 [Certified Closure define review](coverage/semantics/define-certified-closure-review.json).
+
+Ordinary live class instances without a constant-NEW record can also be defined
+directly or as array leaves. Queries retain their identity and shared properties.
+An unpinned duplicate candidate is destroyed on retirement, including before
+catch when only the private copied array still owns it.
+[Runtime object define review](coverage/semantics/define-runtime-object-review.json).
 
 Fresh definitions also copy nonempty array trees containing certified Closure,
 stdClass or user-instance leaves under the admitted flags. Copied containers freeze source
@@ -1706,8 +1712,8 @@ nonempty byte strings are true. Flag-array COW and later callback writes leave t
 original API flag intact through duplicate cleanup or pending fresh publication.
 Strict calls retain the raw string in TypeError traces.
 [Byte-only array-flag review](coverage/semantics/define-array-byte-flag-review.json).
-Ordinary uncertified objects, other owning leaves and wider
-flags/names remain partial.
+Unrecorded Closure/stdClass and internal object values, other owning leaves and
+wider flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
 [Two exact sources and 288 public premises](coverage/semantics/class-qualified-defined-review.json)

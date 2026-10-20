@@ -97,7 +97,7 @@ def checks(initial, name, stdout):
         '$closure_scope_at(S.CLOSURESCOPES,n_flag) = (pclosurescope_flag)',
         '$closure_scope_roots(S.CLOSURESCOPES,n_flag) = [HOBJECT n_owner]',
         '$global_new_record(S.CONSTANTOBJECTS,n_owner) = eps',
-        '$dynamic_define_value_class(S,POBJECT n_owner) = eps',
+        '$dynamic_define_value_class(S,POBJECT n_owner) = (PVOBJECT)',
         '$dynamic_define_value_class(S,POBJECT n_flag) = eps',
         '$user_constant_at(S.USERCONSTANTS,$ptascii("V82_REVIEW_LEFT")) = (puserconstant_left)',
         '$user_constant_at(S.USERCONSTANTS,$ptascii("V82_REVIEW_RIGHT")) = (puserconstant_right)',

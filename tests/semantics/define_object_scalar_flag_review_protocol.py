@@ -101,7 +101,7 @@ def checks(initial, name, stdout):
         '$heap_owners($heap_graph(S),HOBJECT n_object) = 2',
         # Receipt and carrier projections are validator-only controls.
         *instance.controls('n_object','pconstantobject_left'),
-        '~$dynamic_scalar_define_flag_valid(S_missing,pconfigcall)',
+        '$dynamic_scalar_define_flag_valid(S_missing,pconfigcall)',
         '~$dynamic_scalar_define_flag_valid(S_incomplete,pconfigcall)',
         '~$dynamic_scalar_define_flag_valid(S_dead,pconfigcall)',
         'n_bad_string = |S.STRINGDATA|',

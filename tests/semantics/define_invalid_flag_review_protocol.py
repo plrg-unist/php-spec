@@ -91,7 +91,7 @@ def checks(initial, name, stdout):
         '$class_at(S.CLASSES,porigin_flag) = (pclassdesc_flag)',
         'pclassdesc_flag.NAME = ($ptascii("V81ReviewFlag"))',
         '$global_new_record(S.CONSTANTOBJECTS,n_flag) = eps',
-        '$dynamic_define_value_class(S,POBJECT n_flag) = eps',
+        '$dynamic_define_value_class(S,POBJECT n_flag) = (PVOBJECT)',
         '$dynamic_define_invalid_flag_kind(S,POBJECT n_flag)',
         *instance.property_value('S','n_flag',41,'flag_rebound'),
         'S.STORE[n_candidate] = DEFINED (POBJECT n_right)',
@@ -104,7 +104,7 @@ def checks(initial, name, stdout):
         '$source_constant_lookup(S,' + text(TARGET) + ') = eps',
         '$heap_owners($heap_graph(S),HOBJECT n_left) = 2',
         '$heap_owners($heap_graph(S),HOBJECT n_flag) = 1',
-        # Pure controls authenticate rejection without granting a publication class.
+        # Rejection-only controls do not authorize constant publication.
         'pconfigcall_unpublished_value = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,1,KNOWN (POBJECT n_flag))]',
         '$dynamic_define_invalid_flag_valid(S,pconfigcall_unpublished_value)',
         '~$dynamic_define_invalid_flag_valid(S,pconfigcall[.SELECTION = eps])',
