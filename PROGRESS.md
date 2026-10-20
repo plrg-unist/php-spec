@@ -822,35 +822,30 @@ GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no root
 and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
-Flat runtime tables in lossy-float literal-key callbacks now admit DIRECT byte
-strings, including existing valid carriers. HARRAY and wrapper CELL debts remain
-separate from copied string bytes. Debt-time string-offset writes share their
-table or reference cell while an independent string snapshot stays unchanged.
-Singleton reference entries unwrap before child/string COW; inverse retargeting
-clears the count bias and restores shared ALIAS copying. Plain bytes and carrier
-records use existing validation, with no new string identity or owner edges.
-Four fresh natives and the genuine unchanged Unsupported ingress baseline retain
-`56d7fcdc9`/406; the baseline remains zero agreement. Strict406 and four model-only
-source agreements pass at `c4e9c2441`. Focused state850 (838 Boolean + 12 raw;
-386 author + 464 independent) passes at `03ca5dc22`. The original author27
-elaboration failure stays zero; only invalid-byte constructor grouping changed
-before the corrected author run and previously unrun independent checks.
-Only the flat-leaf classifier in413 broadens; global scalar admission, tasks,
-fields, source/error guards, ownership/pruning/lifetime machinery and driver stay
-unchanged. One inherited A23 pure string-leaf refusal becomes an invalid-carrier
-refusal; original PHP and accepted historical positives are untouched.
-Direct string CV/cell payloads, wrapped by-value CVs, array-valued type sources,
-pooled/immutable or nested/reference-bearing/object-leaf tables, effective-zero, active collection
-and outstanding request-end debt remain Unsupported. Held LIST/owned-NUL and
-active lifecycle/class paths are untouched.
-[String-leaf review](coverage/semantics/array-literal-float-string-leaf-review.json).
+Flat runtime tables in lossy-float literal-key callbacks now admit embedded
+ALIAS leaves to live untyped null/bool/int/float cells, without property/coercion/
+backing receipts or CELL debt. Both ordinary table retargets and untyped wrapper
+payloads use the bounded entries. Positive targets keep their leaf edges through
+pruning; primitive leaves own no further nodes. Table/wrapper bias and leaf
+counts stay separate: sibling writes prove table sharing/COW, while shared leaf
+references survive child copying and singleton leaves unwrap to DIRECT.
+Four fresh natives and the genuine unchanged Unsupported baseline retain
+`a4452bf5d`/406. Strict406 and source4 pass at `eb84338a2`: author2 plus original
+independent deletion and the unchanged throw's 78.59s timing retry at120/150.
+The original throw model60 timeout remains zero. Focused state951 (938 Boolean +
+13 raw; 428 author + 523 independent) passes first executions at `d4ffb94f1`.
+Only413's entry admission/liveness checks broaden; source/error authentication,
+tasks, fields, count/prune/lifetime algorithms and driver stay unchanged.
+DIRECT byte-string support remains intact. Owning/typed/indebted reference leaves,
+nested/pooled/immutable tables, wrapped by-value CVs, array-valued type sources,
+direct string CV/cell payloads, effective-zero, active collection and outstanding
+request-end debt remain Unsupported. Paused LIST/owned-NUL and active lifecycle/
+class paths are untouched.
+[Alias-leaf review](coverage/semantics/array-literal-float-alias-leaf-review.json).
 
-Composed over `cdbf6fc9b`/406 with accepted413/tests unchanged and all other
-parent runtime/manifest bytes preserved. Incoming optional magic-coalesce GET/RV
-and destructor receipts require instance-property `??`/`__isset`/`__get` selectors,
-absent here; array/string ownership is unchanged. Seven partial inventory rows
-append their reviewed deltas, preserving incoming content. Source4/state850 keep
-their private cuts without a joined actor, accepted replay or renewed credit.
+Earlier string-leaf support retains source4/strict406 at `c4e9c2441` and state850
+at `03ca5dc22`, integrated as `f3d014d14`; the original fixture-grouping failure
+stays zero in its [ledger](coverage/semantics/array-literal-float-string-leaf-review.json).
 
 The earlier mixed-CV slice retains source4/strict405 at `6f2a87c1d` and state837
 at `a06bc1c72`, composed over `4cc5f7dd7` as `da94669ce`.

@@ -219,8 +219,9 @@ Physical singleton copies unwrap without the constraint; shared copies and the
 original property aliases still enforce/coerce typed writes. The
 [typed-source ledger](../../coverage/semantics/array-literal-float-ref-types-review.json)
 checks int-property singletons, two sources, typed old cells and supplied throws.
-Untyped wrappers may also contain mutable nonpool flat arrays of DIRECT
-null/bool/int/float or validated byte-string values. Wrapper debt and child-table
+Untyped wrappers may also contain mutable nonpool flat arrays. DIRECT entries
+hold null/bool/int/float or validated byte strings; ALIAS entries satisfy the
+primitive bounds below. Wrapper debt and child-table
 owners remain distinct across singleton unwrapping, later child COW, entry
 deletion and supplied-throw builder cleanup.
 Old arrays also complete with ordinary-scalar DIRECT insertion, retaining their
@@ -230,7 +231,7 @@ payloads must differ from the builder. The [array-to-scalar ledger](../../covera
 checks live scalar values, normal/throw ownership and debt cancellation.
 The [flat-array ledger](../../coverage/semantics/array-literal-float-ref-arrays-review.json)
 checks stable/inverse transfer and safe final retirement. Effective-zero retirement,
-array-valued type sources, nested/reference-bearing or pooled/immutable
+array-valued type sources, nested or pooled/immutable
 arrays, other owning values, static/hooked/queued or retired sources,
 coercion/backing records, active collection and outstanding request-end debt remain
 explicit Unsupported before pruning.
@@ -239,7 +240,7 @@ Ordinary by-value array CVs have their own table continuation. It pins the old
 table across the handler, inserts the live unwrapped array CV, and separately
 tracks the old HARRAY owner and omitted new-table owner. Same-table transfer does
 not require the original CV cell to survive. Array payloads must be mutable nonpool
-flat arrays of DIRECT null/bool/int/float values or validated byte strings,
+flat arrays with the same bounded DIRECT or ALIAS entries,
 distinct from the object-free builder.
 Deletion and supplied-throw cleanup preserve net table counts; an inverse retarget
 balances them before normal COW and teardown. The [ordinary array-CV ledger](../../coverage/semantics/array-literal-float-array-cv-review.json)
@@ -259,6 +260,14 @@ entries unwrap before child/string COW, then an inverse restores shared ALIAS co
 The [string-leaf ledger](../../coverage/semantics/array-literal-float-string-leaf-review.json)
 checks normal/same-table, deletion and supplied-throw paths. Direct string CV/cell
 payloads remain Unsupported. No string-conversion callback or identity rule changes.
+Embedded ALIAS leaves now admit live untyped null/bool/int/float cells with no
+property/coercion/backing receipts or CELL debt. Their ordinary counts remain
+separate from outer HARRAY/CELL biases: child-table COW keeps shared aliases or
+unwraps singleton leaves, while sibling slots reveal table sharing independently.
+Positive surviving tables preserve every leaf edge. The
+[alias-leaf ledger](../../coverage/semantics/array-literal-float-alias-leaf-review.json)
+records normal, deletion and supplied-throw paths with balanced inverse cleanup.
+Owning, typed or indebted reference leaves and recursive graphs remain Unsupported.
 
 Missing-key module409 retains a
 CV/literal array snapshot through real handlers, supplies null after insertion,
