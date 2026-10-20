@@ -95,8 +95,14 @@ It clears only the selected receiver bit and snapshots current before normal
 ignored-argument cleanup. The physical frame/site and return count stay intact;
 row COW and used-cache survival after Generator retirement are checked in the
 [parked SEND review](../../coverage/semantics/generator-parked-pending-owning-send-review.json).
-Parked next, nonpending SEND/body entry, nonowning/input/loop parked SEND and
-repeated THROW at those wider leaves remain Unsupported.
+Pending zero-argument NEXT also clears only the selected receiver bit while
+preserving that parked owning frame/site and copied return. It returns NULL
+without a current snapshot; a later explicit getter creates a separate copy.
+Sole-receiver cache destruction can therefore precede caller delivery, without
+chaining an older caught exception that is merely globally owned. See the
+[parked NEXT review](../../coverage/semantics/generator-parked-pending-owning-next-review.json).
+Nonpending body entry and nonowning/input/loop or wider parked API leaves remain
+Unsupported.
 Actual parked body entry, wider suspended owners and waiting-result GC remain open.
 
 A direct detached parent with an owning copied return now admits ordinary unpack

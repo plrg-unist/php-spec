@@ -94,6 +94,11 @@ The supplied-global nested Throwable identity proof is in
 530,730 bytes under `.tools/m118/`, seven reports retaining the zero-evaluation source
 failure and both runtime patches, SHA-256 `3d0e7c69bd73fa711370672453cd46d2e96a5a2500b3ded8f9e94b046388e61e`.
 
+The recursive four-owning return-history proof is in
+`../php-spec-evidence-archive/lifecycle-four-owning-119/manifest.json`:
+556,432 bytes under `.tools/m119/`, seven reports retaining the pre-state
+diagnostic failure and exact runtime patch, SHA-256 `8c14a312f25ee839f32183e5778257c51fd558f4972cbcf49ac8898d326b9aa7`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

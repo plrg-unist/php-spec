@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "milestone": "OP58 selected-reference compound ADD second RHS Warning",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "The existing leading-LEFT/initially quiet-RHS += route through preexisting selected reference cells now captures a newly leading RHS and issues its second Warning. Fresh RHS is the selected old live, allocated, unconstrained scalar cell, independently of current name rebinding. Returned holders are historical even after RHS retirement. A surviving alias keeps the selected old scalar/unconstrained target live for commit; cached arithmetic writes that cell rather than the current name. Supplied second throw cancels selected and outer storage. No new initial admission or operand producer.",
+  "runtime_revision": "ddcef772ab5b8310883a813765de8d965dbbe60c",
+  "helper_revision": "a1f5cd969e71f35a688d142249e96d5048aad6e6",
+  "private_modules": 406,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "9f5b0e4a9688bf3e199ac3c3461da78daa65ad7a5d6e3006d01c94eb379e092f",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "feb7f4af6473f5292703ee20b2a522c8db02286eb0814126d1ddf28b57e0b619"
+  },
+  "engine_basis": [
+    "Pinned ZEND_ASSIGN_OP dereferences var_ptr before passing it as result/LEFT to zend_binary_op. add_function_slow also dereferences RHS before conversion. _zendi_try_convert_scalar_to_number fills each holder before its Warning and afterwards only checks EG(exception); it does not reread the retired RHS. Successful arithmetic writes the selected old result pointer after both conversions. A supplied exception prevents that replacement.",
+    "One new nonowning ARITHMETIC_ADDASSIGN_RIGHT_WARNING tag saves both raw texts/numbers. The actual old returned LEFT marker bridges only with old readyEPS and an authenticated selected-RHS snapshot. The old boundary gains one snapshotEPS guard. Existing entry, quiet readiness/commit, scalar/array failure routes, getters, dispatch and numeric functions remain exact.",
+    "Fresh RHS validity reads its selected old cell; entered/returned validity keeps only original source and raw-number coherence. The old RHS may therefore have owner0 and no allocation after capture. Final target safety is separate: it authenticates the still-live selected old scalar cell, then uses unchanged write_cell_checked/LOCATION without a new CELL, detachment or name redirect. All new task roots are empty."
+  ],
+  "contract": [
+    "Author h1 changes selected REQUEST12.5tail/PINT2 to99/5.5tail. The second handler changes88/7 then throws the same Exception created on line20. Catch observes noPrevious/outer100/two calls and both aliases; subsequent alias73 then target7/right8 writes prove no compound store or detachment occurred.",
+    "Independent h1 repairs old RHS5.5tail then rebinds current right to replacement7. At second Warning the old RHS has one alias owner. h2 writes old target88, rebinds current left to replacement77, removes the last old RHS alias and returns false. Cached strictfloat18.0 reaches old leftAlias and outer result, while current left77/right7 remain. Old target has owner1, replacements2, old RHS0/unallocated; later oldalias6 versus currentleft8/replacement8 proves topology. Exactly one original default second Warning25 remains on stderr.",
+    "Focused150/180 reaches actual old plan and both real fresh/entered handler phases, exact TODO-only second capture, historical holders after RHS retirement, supplied-Exception cleanup and old-target storage. Raw commit is an exact selected STORE/RESULT/LOCATION update; driven execution is separate. Owners, no new cell/detach/ENV redirect, callback metadata prefixes, final alias topology, default diagnostics and compact full/zero budgets are checked. One author snapshot/target corruption matrix is refusal-only and never driven."
+  ],
+  "required_follow_on": [
+    "The inherited initial quiet-RHS entry is unchanged, not narrowed to the PINT2 witness. Failed or missing pre-capture RHS, constrained/owning/expired old targets, absent last target owner, other producers/handlers and wider arithmetic/lifecycle behavior remain partial. Pure guard refusals establish no typed/owning/lifetime execution claim.",
+    "Plain-CV += still has its separate replacement/detachment route. OP55/56/57 and all older selected-reference campaigns retain their own evidence with zero renewed credit. OP12 remains paused. No engine bug or intentional divergence is claimed."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-58/source-ddcef772a-author-one/report.json",
+        "sha256": "d5b47eda710326b614204d3ce0eebe53449bb91128720dc2b60b80b64b4142d6",
+        "revision": "ddcef772ab5b8310883a813765de8d965dbbe60c",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-58/review-model-ddcef772a-review-one/report.json",
+        "sha256": "03b140592bd1a17c328225e666c3a176d9128311ee0f5a0aa2263fd98d463dc2",
+        "revision": "ddcef772ab5b8310883a813765de8d965dbbe60c",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-58/state-a1f5cd969-two/report.json",
+        "sha256": "c7022908358b861819c7c6a603f1cb3bfacbb287528f54652fa2133aa3ae8ac3",
+        "revision": "a1f5cd969e71f35a688d142249e96d5048aad6e6",
+        "modules": 406,
+        "cases": [
+          "addassign-selected-rhs-warning-second-throw",
+          "addassign-selected-rhs-warning-rebound-retired"
+        ],
+        "conditions": [
+          150,
+          180
+        ],
+        "total": 330
+      }
+    ],
+    "total_source_agreements": 2,
+    "total_focused_state_conditions": 330
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-58/baseline-cb1ce1036-second-throw/report.json",
+      "sha256": "c505ce304d6895e09808491b9b367a6dd74c03ac1e56ffcefe7e358a03239680",
+      "result": "Actual frontend accepted/checked program/Unsupported AFTER H1 prefix H:1:2:25:1:1;, reason compound addition live operands or target, empty semantic stderr, model exit1/agreement0/wrapperfalse; no override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-58/native-cb1ce1036-author-one/report.json",
+        "sha256": "57b34334a195e2bcb444c542ec80749d7ed4ff1ef4007a6a31cafbf3c8d3a5c3"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-58/native-cb1ce1036-review-one/report.json",
+        "sha256": "d2c25aeb5516af6a158408f5c4a1b9592976c40392c97ab8e7ea4745daf43c0d"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-58/state-prep-a1f5cd969-two/report.json",
+        "sha256": "38c27be3fedb7d4d2f250edfc49db9f23453e28c1f7f75b2e7c098f106303390",
+        "result": "Retained original paths/native bytes; checked frontend/adapter only, zero application/native replay, workers0/reaped."
+      }
+    ],
+    "standalone_syntax": "Two standalone undefined-pstate diagnostics, zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-58",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/baseline, changed source and focused groups use separately granted CPU5 cuts. Native30/modelCLI60-process90, checked prep30/full406 SL120 per group. Author source stderr empty; peer one original default second Warning25. Retained-source preparation performs no native/application replay.",
+    "commands": [
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 tests/semantics/addassign_selected_rhs_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 tests/semantics/addassign_selected_rhs_warning_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-58/state-prep-a1f5cd969-two/run-prepare.py",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-58/state-a1f5cd969-two/run-state.py"
+    ],
+    "record": "Restore matching Git cuts and local tools in a fresh directory. Retained original paths/native streams authenticate focused fixtures; external evidence is not a runtime dependency. Copied local tools add no rebuild/portability claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "composition": {
+    "parent": "06a0e4c7b8621b12f56aba54ffd4486e3c7d1c35",
+    "private_publication": "9d3b71301d15993d417a37b804a30da8836b0310",
+    "modules": 406,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "9f5b0e4a9688bf3e199ac3c3461da78daa65ad7a5d6e3006d01c94eb379e092f",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "feb7f4af6473f5292703ee20b2a522c8db02286eb0814126d1ddf28b57e0b619"
+    },
+    "other_incoming_paths_preserved": 70,
+    "gate": "The actual parent differs from the OP58 base in nine runtime paths142/156/207/270/280/289/400/413/414; common30/40/404 and the ordered406 manifest remain exact. Modules142/414 scoped magic fallback requires self/static-call source, a compatible INSTANCE/current This and missing user-method authority; named handler h and native Throwable getLine/getPrevious supply none. Modules156/270 require typed by-reference object|null returns, finally object-retirement chains or saved destructor cursors, absent from these by-value scalar handlers and builtin Exception. Modules280/289 require parked pending Generator next/resume history, absent. Module207's second-missing SPACESHIP continuation is absent from defined scalar comparisons and quiet isset after unset. Module400 DEFINE/runtime-Closure authority and module413 lossy-float explicit-reference array-leaf producers are absent; literal retention/debt fields stay empty. No new state/tag/default/root fields are introduced by this tail. Preserve all incoming runtime and manifest paths, overlaying only the new selected-RHS tag in30 and private404 implementation. Source2/state330 retain their original private406 cuts. No concrete selector interaction warrants joined execution or renewed evidence."
+  }
+}

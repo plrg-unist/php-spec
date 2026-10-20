@@ -1118,16 +1118,23 @@ def $ref_partial_pair_scope_tail(ptask*) = ptask_suffix*
   -- if ptask_suffix* = [FINALLY_REF_RETURN porigin_inner porigin_old (KNOWN PNULL) z_old, FINALLY_PHASE porigin_inner 3, ORIGIN_RETURN (porigin_restore), FINALLY_REF_RETURN porigin_outer porigin_z (REFERENCE n_z) z_z, FINALLY_PHASE porigin_outer 3, ORIGIN_RETURN (porigin_function), TYPE_FALLTHROUGH porigin_function, REF_RETURN_NOTICE porigin_old z_old REF_NOTICE_VALUE]
   -- if (porigin_restore) = $origin_child((porigin_outer), [PCFIELD 2])
 def $ref_partial_pair_scope_tail(ptask*) = eps -- otherwise
+dec $ref_partial_object_chain_rest(ptask*, porigin?, nat*, porigin, int) : bool
+def $ref_partial_object_chain_rest([TYPE_FALLTHROUGH porigin_function, REF_RETURN_NOTICE porigin_old z_old REF_NOTICE_VALUE], (porigin_function), n_seen*, porigin_old, z_old) = true
+  -- if $(|n_seen*| >= 2)
+def $ref_partial_object_chain_rest((FINALLY_REF_RETURN porigin porigin_source (KNOWN (POBJECT n)) z) :: (FINALLY_PHASE porigin 3) :: (ORIGIN_RETURN porigin_restore?) :: ptask_tail*, porigin_inner?, n_seen*, porigin_old, z_old) = true
+  -- if porigin_inner? = $origin_child((porigin), [PCFIELD 2])
+  -- if ~(n <- n_seen*)
+  -- if $ref_partial_object_chain_rest(ptask_tail*, porigin_restore?, n :: n_seen*, porigin_old, z_old)
+def $ref_partial_object_chain_rest(ptask*, porigin_restore?, n_seen*, porigin_old, z_old) = false -- otherwise
+dec $ref_partial_object_chain_here(ptask*) : bool
+def $ref_partial_object_chain_here((FINALLY_REF_RETURN porigin porigin_old (KNOWN PNULL) z_old) :: (FINALLY_PHASE porigin 3) :: (ORIGIN_RETURN porigin_restore?) :: ptask_tail*) = $ref_partial_object_chain_rest(ptask_tail*, porigin_restore?, eps, porigin_old, z_old)
+def $ref_partial_object_chain_here(ptask*) = false -- otherwise
 dec $ref_partial_object_chain_scope_tail(ptask*) : ptask*
-def $ref_partial_object_chain_scope_tail(ptask*) = ptask_suffix*
-  -- if $(|ptask*| >= 11)
-  -- if n_prefix = $nabs($(|ptask*| - 11))
-  -- if ptask_suffix* = ptask*[n_prefix:11]
-  -- if ptask_suffix* = [FINALLY_REF_RETURN porigin_c porigin_old (KNOWN PNULL) z_old, FINALLY_PHASE porigin_c 3, ORIGIN_RETURN (porigin_restore_c), FINALLY_REF_RETURN porigin_b porigin_old_b (KNOWN (POBJECT n_b)) z_b, FINALLY_PHASE porigin_b 3, ORIGIN_RETURN (porigin_restore_b), FINALLY_REF_RETURN porigin_a porigin_old_a (KNOWN (POBJECT n_a)) z_a, FINALLY_PHASE porigin_a 3, ORIGIN_RETURN (porigin_function), TYPE_FALLTHROUGH porigin_function, REF_RETURN_NOTICE porigin_old z_old REF_NOTICE_VALUE]
-  -- if (porigin_restore_c) = $origin_child((porigin_b), [PCFIELD 2])
-  -- if (porigin_restore_b) = $origin_child((porigin_a), [PCFIELD 2])
-  -- if n_b =/= n_a
-def $ref_partial_object_chain_scope_tail(ptask*) = eps -- otherwise
+def $ref_partial_object_chain_scope_tail(ptask :: ptask_tail*) = ptask :: ptask_tail*
+  -- if $ref_partial_object_chain_here(ptask :: ptask_tail*)
+def $ref_partial_object_chain_scope_tail(ptask :: ptask_tail*) = $ref_partial_object_chain_scope_tail(ptask_tail*)
+  -- if ~$ref_partial_object_chain_here(ptask :: ptask_tail*)
+def $ref_partial_object_chain_scope_tail(eps) = eps
 dec $ref_consumed_scope_tail(ptask*) : ptask*
 def $ref_consumed_scope_tail(ptask*) = ptask_pair*
   -- if ptask_pair* = $ref_consumed_pair_tail(ptask*)

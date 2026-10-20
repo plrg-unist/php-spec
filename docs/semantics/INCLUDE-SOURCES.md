@@ -627,6 +627,29 @@ module172 lines change; existing replay/trace/continuation/roots/discard/GC rema
 exact. No old control repair or accepted replay is needed. Multiple packs,
 Traversable, PIPE and owning/NaN/legacy-string values remain partial.
 
+The [NULL-option rejected-array increment](../../coverage/semantics/ini-set-null-array-value-review.json)
+adds a separate positional ownerless arm for retained allocated flat arrays with
+DIRECT quiet primitive leaves. Invocation/selection validity authenticates the call;
+compiled option facts must allow NULL, while compiled pooled value facts constrain
+array contents without equating mutable array IDs or rereading live CV history.
+Existing array roots retain the earlier value across handler COW writes. Normal
+true/false handling reaches the existing parameter2 TypeError with an empty option;
+a handler throw keeps rawNULL, identity/caller99/precision10/sibling2389 and cancels
+before value rejection, then the original setter recovers10→12.
+
+Four exact originals and 844 premises (219+188+96 author,341 independent) pass at
+`b7a14d47d`/`c33c91205`/406. Native observes converted empty arg0/earlier2333 after
+return; peer native has no trace traversal. Actual state proves raw versus converted
+API frames, authentic REQUEST array leaves/edges, COW-separated keep/old arrays,
+precise restored discard with existing idempotent GC buffering, literal-pool forgery
+and malformed leaf/source/count/phase/budget refusals. Initial `c4c7eab2a` CPU3
+native4/baseline0 remains distinct from later CPU2. Nine stable/reaped reports pass
+without failures or retries; only Deprecated9/20 are expected, accepted workers are
+quiet. Only27 additive172 lines reuse existing value-error/trace/root/discard/GC
+bodies; no old control repair or67/68 replay is needed. Named/owned/packed array
+values, references/nesting/owning/NaN/legacy-string leaves and wider configuration
+remain partial.
+
 The [unary CONFIG PIPE increment](../../coverage/semantics/include-config-pipe-review.json)
 replays the authenticated left child and `CODEPIPE_SEND`, rather than an ordinary
 call argument. An RHS factory's recorded subcall name cannot replace its returned

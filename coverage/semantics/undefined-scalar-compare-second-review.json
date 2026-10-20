@@ -94,5 +94,12 @@
     "python3 tests/semantics/undefined_scalar_compare_second_state.py --output .tools/comp100-state-new",
     "python3 tests/semantics/undefined_scalar_compare_second_review_state.py --output .tools/comp100-peer-state-new",
     "python3 tests/semantics/undefined_scalar_compare_second_maintenance.py --output .tools/comp100-maint-state-new"
-  ]
+  ],
+  "integration": {
+    "parent": "c82bd05823cb77066e3ee85fc615053db6256bb2",
+    "modules": 406,
+    "interaction_review": "Scoped magic calls, BYREF/finally retirement, Generator, INI_SET/DEFINE and lossy-key debt producers are absent. Added ADDASSIGN RHS-warning tasks have no += producer; quiet calls+1 counter ADD cannot select them. No fields/defaults or ordered manifest change.",
+    "preservation": "Only module207 differs from parent with tested28db3dd0 bytes. Other runtime/schema/task/field/default/ordered manifest paths stay exact; publication tests, incoming inventory rows and full checkpoint body are preserved.",
+    "evidence": "New source8+2/state681 and separate maintenance104/3/one selector retain e40fab3d8/406; no joined execution or historical renewal."
+  }
 }
