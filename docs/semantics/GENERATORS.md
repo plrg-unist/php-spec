@@ -114,6 +114,15 @@ The physical child/frame stay parked. A used snapshot survives Generator storage
 retirement, separately from both request-late inputs. Row COW and old-input cells
 versus new direct copies distinguish these owners in the
 [buffered SEND review](../../coverage/semantics/generator-parked-pending-buffered-send-review.json).
+With exactly one owning LIVE input record, another pending THROW preserves it
+without writing it or entering the parked child. The selected receiver alone
+clears initialization; distinct and reused supplied exceptions keep their
+identities. An unused API return drops its transient current copy before receiver
+cleanup, whereas a call in assignment context retains its temporary copy until
+exceptional result cleanup. A sole-cache destructor can therefore run before or
+after ancestor finally blocks, independently of the orphaned input. The
+[repeated buffered THROW review](../../coverage/semantics/generator-repeated-pending-buffered-throw-review.json)
+also checks raw-row COW and mutable input cells after close.
 Previous orphans, multiple records, nonowning arguments, nonpending body entry and
 wider loop/held continuations remain outside this admission. Explicit collection
 is outside this validated slice.

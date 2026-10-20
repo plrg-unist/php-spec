@@ -7,6 +7,37 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Repeated pending THROW now preserves exactly one owning LIVE input at a parked
+simple-CV used yield. Only the selected receiver clears initialization; physical
+frame, park history and input stay intact. A common timing correction drops an
+unused current copy before receiver cleanup, while a call in assignment context
+keeps its result temporary through that cleanup. Native cases distinguish cache destruction before versus after
+ancestor finally blocks, second-exception Previous identity, raw-row COW and
+post-close shared-cell rebinding.
+[Repeated buffered THROW review](coverage/semantics/generator-repeated-pending-buffered-throw-review.json).
+
+Five source agreements and strict407 pass at `062c1b77a4`. Nine-fixture
+elaboration, 337 new author premises and five affected historical groups
+(829 premises) pass at `aa6c82b2c`; independent 337 passes at `6620f8a8d`.
+The 674 new premises (654 local +20 generic) are distinct from the affected 829.
+One original peer-source internal 100s timeout retains zero credit; the unchanged
+COW retry passes under 200/220, now its maintained case-only bound. CELL keeps
+100/120. Peer197 passes first execution in 123.465s under approved 200; peer140
+keeps 120. Runtime and complete source/stage/check/Event formulas stay exact
+across these wrapper-only bridges. Original native4/Unsupported retain
+`6bef81b39`, assignment-context native control `34563c706`; all actors reaped
+and CPU4 released, without native/accepted source replay or GC credit. Previous
+orphans/multiple inputs, wider suspended owners and nonpending body entry remain
+outside this admission; explicit collection is unvalidated.
+
+Composed over `cca3340b30`/407 with tested289 and all source/state formulas
+unchanged. Every other incoming runtime/schema/default/root/ordered-manifest/
+pipeline byte is parent-exact. Actual clone/INI/typed-reference history,
+DEFINE/comparison/arithmetic warning and float-key debt selectors have no producer
+here; the final checked-missing comparison tail is also unselected. Private cuts,
+source timeout0 and exact case-bound bridges retain their identities; no joined
+execution or accepted replay was needed.
+
 Forward `==`/`!=`/`<`/`<=` now quietly compare a checked defined left CV removed
 by a missing-right Warning handler against frozen right NULL, yielding
 true/false/false/true without another report or an old-alias read. Surviving
@@ -186,7 +217,7 @@ without joined execution, accepted replay or renewed historical credit.
 Earlier selected-reference `-=` Warning continuations retain source2/state382
 in the [compound subtraction ledger](coverage/semantics/subassign-warning-review.json).
 
-A first pending SEND now overwrites one owning LIVE input at a parked simple-CV
+At Iterator37's earlier cut, a first pending SEND overwrites one owning LIVE input at a parked simple-CV
 used yield with a new owning argument. The old count becomes orphaned without
 decrement; the new count becomes LIVE before receiver initialization and current
 capture. The physical child/frame stay parked. Used snapshots, raw-row COW and

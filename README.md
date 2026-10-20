@@ -1299,7 +1299,7 @@ catch, preserving cache owners and a replacement destructor exception's previous
 chain. See the [buffered-throw review](coverage/semantics/generator-buffered-throw-review.json).
 Pending `throw` through native links to a bare or buffered simple-CV yield, or a
 detached current with a nonowning copied return, reaches the caller immediately.
-Its current copy survives receiver cleanup; getters remain available, but later
+A used current copy survives receiver cleanup; getters remain available, but later
 resumption is Unsupported. Explicit
 close preserves the pinned parked-frame finally omission. See the
 [pending-throw review](coverage/semantics/generator-pending-throw-review.json).
@@ -1341,6 +1341,13 @@ count stays LIVE until close, and the captured current has an independent
 lifetime through COW and receiver retirement. Embedded old-input cells and new
 direct object copies remain distinct after rebinding; see the
 [buffered SEND review](coverage/semantics/generator-parked-pending-buffered-send-review.json).
+With exactly one owning LIVE input record, another pending `throw` preserves the
+parked child and input. Only the selected pending receiver clears initialization.
+An unused return drops its current copy before receiver cleanup; a call in
+assignment context keeps its temporary copy through that cleanup. Sole-receiver
+cache destruction therefore precedes or follows ancestor finally blocks, with the
+second supplied exception as Previous. See the
+[repeated buffered THROW review](coverage/semantics/generator-repeated-pending-buffered-throw-review.json).
 Nonpending body entry, wider parked API leaves and waiting-result GC remain open.
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller
