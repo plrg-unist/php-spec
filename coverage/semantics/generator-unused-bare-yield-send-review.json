@@ -1,0 +1,99 @@
+{
+  "milestone": "Iterator46: unused SEND snapshots at a bare-yield child",
+  "status": "composed-accepted",
+  "scope": "Pending ancestor SEND over one native link to a PAUSED bare-statement-yield child, with owning current and no send target, buffered input, parked history or COMPLETE. Its unused current snapshot survives normal argument cleanup and retires before receiver release; assignment keeps its copy.",
+  "implementation": {
+    "paths": {
+      "spec/semantics/289-generator-delegation.watsup": "b5a5ee40efe230235758ab3ac8ddba1555e664da4b922a00fc87d99ff7360807"
+    },
+    "change": "One disjoint identity arm authenticates the existing pending bare-yield SEND, physical child/source tail, empty held/task owners, empty input registry and inactive collection. Existing source-demand, discarded-tail, actual result/slots and scheduler stay exact. No API admission, module270, root-function, schema, close or collector change."
+  },
+  "validation": {
+    "native": "Four target observations: unused/assignment raw-row pair, normal argument-time row COW and cache RuntimeException inside physical Child finally. No BAD/body entry or copied-return root.",
+    "unchanged_baseline": "Checked NORMAL model0 emits J|J-END|K|A instead of native J|A|J-END|K. Raw recordfalse/normalagreements0 remain; the disagreement observer passes.",
+    "sources": "Four exact stdout/stderr/exit agreements. Snapshot survives argument COW through ARG-END. In tested alias-drop histories Child finally precedes Middle finally; a live-child slot clear throws with Previous NULL.",
+    "states": {
+      "new_author": [
+        180,
+        155
+      ],
+      "new_peer": [
+        147,
+        126
+      ],
+      "new_total": 608,
+      "new_local": 588,
+      "new_generic": 20
+    },
+    "observations": "Genuine GEN_ARGS binds the original PAUSED child with tested raw HCELL3, array1-to-2 and one element edge. Actual argument/snapshot/receiver jobs preserve the original owner observation; assignment owns its separate copy. Arg-END distinguishes old snapshot and current row. The destructor callback uses the RUNNING Child yield-site close claim and queued Middle claim, without storage pins or retained returns. Malformed source/state and budget-resumption controls pass.",
+    "compiler": "Strict408 and corrected four-fixture elaboration pass; compilation earns no execution credit.",
+    "maintenance": "Original compile gate 456ad/r0v failed before interpretation: saved frames expose optional LOCALS, not ENV. Only those two lookups were corrected. All post-change source/state executions pass first time at original caps; no interpreted failure, semantic retries, cap changes or historical renewal."
+  },
+  "tested_revisions": {
+    "native4_baseline": "aa13b34fe31be086a9f93d00d04a941716da48be",
+    "source4_strict408": "de4882e78964453d9a44522a45cd16c65960afe3",
+    "initial_elaboration_failure0": "456ad98a97a4b06216325e75188606bd751310f0",
+    "elaboration4_new608": "cb3cf7f1281df7fbe5a8d200c937581c9027bc67",
+    "bridge": "Runtime289/main sources remain exact across source de4882 and focused cb3cf. The initial 456ad compile gate used two invalid saved-frame ENV projections; corrected LOCALS-to-symbol-table ENV bindings add three premises across four groups. Sources/stages/events/caps stay unchanged. Original compiler failure0 is retained; no state interpretation preceded correction."
+  },
+  "commands": {
+    "native": [
+      "taskset -c 3 python3 .tools/native.py",
+      "taskset -c 3 python3 .tools/review-native.py"
+    ],
+    "baseline": "taskset -c 3 python3 .tools/baseline.py --native-report .tools/generator-unused-bare-yield-send-native-swvxu_q5/report.json",
+    "strict": "taskset -c 4 python3 .tools/strict.py",
+    "source": [
+      "taskset -c 4 python3 tests/semantics/generator_unused_bare_yield_send_sources.py --native-report .tools/generator-unused-bare-yield-send-native-swvxu_q5/report.json",
+      "taskset -c 4 python3 tests/semantics/generator_unused_bare_yield_send_review_sources.py --native-report .tools/generator-unused-bare-yield-send-review-native-32i2mgxk/report.json"
+    ],
+    "elaboration": "taskset -c 4 python3 .tools/state-elab.py",
+    "state": [
+      "taskset -c 4 python3 tests/semantics/generator_unused_bare_yield_send_state.py --case bare-yield-unused-send-releases-snapshot-before-child-finally",
+      "taskset -c 4 python3 tests/semantics/generator_unused_bare_yield_send_state.py --case bare-yield-assigned-send-keeps-snapshot-through-child-finally",
+      "taskset -c 4 python3 tests/semantics/generator_unused_bare_yield_send_review_state.py --case bare-yield-send-snapshot-survives-argument-cow-before-child-finally",
+      "taskset -c 4 python3 tests/semantics/generator_unused_bare_yield_send_review_state.py --case bare-yield-send-cache-throws-inside-physical-child-finally"
+    ]
+  },
+  "environment": {
+    "php": "8.5.10 CLI NTS64; source 34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "mode": "SL/cacheoff/encountered determinism; LC_ALL=C TZ=UTC, script encoding unset. Serial exclusive CPU3 native/baseline, CPU4 source/focused. Project-local binaries reused; no fresh portability claim.",
+    "caps": "Native 8s; source 100000 steps/model 100/process 120; strict 120; compile 60; states 120/seek 4000/finish 4000.",
+    "exits": "All passing observers and post-change semantic checks exit0, empty stderr/no timeout/stable inputs and HEAD. Initial compiler tool exits0 but lacks complete output; gate observer exits1. Baseline model0 remains disagreement0. Actors fully reaped; CPU4 released."
+  },
+  "reports": {
+    "native-author2": ".tools/generator-unused-bare-yield-send-native-swvxu_q5/report.json",
+    "native-peer2": ".tools/generator-unused-bare-yield-send-review-native-32i2mgxk/report.json",
+    "unchanged-normal-disagreement": ".tools/generator-unused-bare-yield-send-baseline-z8exfjff/report.json",
+    "strict408": ".tools/generator-unused-bare-yield-send-author-sl-t99_d9jo/report.json",
+    "source-author2": ".tools/generator-unused-bare-yield-send-source-6kpqi745/report.json",
+    "source-peer2": ".tools/generator-unused-bare-yield-send-review-source-6x3bhoa4/report.json",
+    "initial-elaboration4-failure0": ".tools/generator-unused-bare-yield-send-state-elab-r0vnb476/report.json",
+    "elaboration4": ".tools/generator-unused-bare-yield-send-state-elab-v7ean7zu/report.json",
+    "state-author180": ".tools/fiber-state-review-3d53ct3j/report.json",
+    "state-author155": ".tools/fiber-state-review-n6txbhra/report.json",
+    "state-peer147": ".tools/fiber-state-review-m7hab_4m/report.json",
+    "state-peer126": ".tools/fiber-state-review-pog_5nbm/report.json"
+  },
+  "evidence": {
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-unused-bare-yield-send-46/private.tar.gz",
+      "bytes": 2030085,
+      "sha256": "fa6bd77b398a0fd73305955f8ee45791525ce7234f4eee13a13f4a01d2666dfb"
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-unused-bare-yield-send-46/manifest.json",
+    "recovery": "Adjacent manifest binds 12 report roles (11 observational PASS plus original compileFAIL0) and 31 recovery inputs. Extract ignored drivers/catalogs and raw directories into the retained checkout; supply pinned project-local binaries. Revision456ad recovers original fixture modules. Raw reports retain exact commands/source paths/outputs/cuts."
+  },
+  "remaining": "Wider native chains, other suspended owners/input histories, masked or abrupt arguments, nonpending body entry and explicit collection remain unvalidated. Parked/COMPLETE and ordinary typed-ref paths stay unchanged.",
+  "composition": {
+    "parent": "5ccfa9f9a5a2466562db0784f2b487549791c109",
+    "private_publication": "f350c6d48ece7186d11d78545533499621022e87",
+    "preserved": "Tested289 and six tests remain private-exact. All other incoming runtime/schema/default/root/ordered408/pipeline bytes remain parent-exact; shared prose and feature suffixes preserve incoming content.",
+    "interaction": "Introduced clone, INI/DEFINE, missing-read comparison, numeric warning, ordinary typed-ref holder and float/null-key callback selectors have no producer here. Independent actual-tail review found no joined execution obligation.",
+    "credit": "Source/state cuts, original compiler failure0 and genuine NORMAL disagreement remain distinct; no accepted replay or renewed credit."
+  }
+}

@@ -1599,6 +1599,12 @@ whose normal simple-CV return owns no heap node. Child release precedes argument
 cleanup, unused current retirement and receiver finally; assignment keeps its
 copy. See the
 [node-free refresh review](coverage/semantics/generator-unused-scalar-refresh-send-review.json).
+Pending ancestor SEND at one PAUSED bare-statement-yield child now drops an
+unused current snapshot after normal argument cleanup and before receiver
+release. In the tested alias-drop histories, Child finally runs before the
+selected receiver's finally; assignment keeps its copy. Argument-time row COW and a child-finally cache RuntimeException
+preserve their separate owners. See the
+[bare-yield SEND review](coverage/semantics/generator-unused-bare-yield-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit

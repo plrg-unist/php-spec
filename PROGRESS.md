@@ -7,6 +7,37 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pending ancestor SEND over one native link to a PAUSED bare-statement-yield
+child now retires an unused current snapshot after normal argument cleanup and
+before receiver release. Assignment keeps its copy. In the tested alias-drop
+histories, Child finally precedes Middle finally; argument COW and a cache
+RuntimeException inside live Child finally retain their distinct owners without
+COMPLETE or copied-return roots.
+[Bare-yield SEND review](coverage/semantics/generator-unused-bare-yield-send-review.json).
+
+Four native observations and a genuine NORMAL cleanup-order disagreement retain
+`aa13b34fe`/408. Source4/strict408 pass at `de4882e78`; corrected gate4 and
+608 focused premises (335 author +273 independent; 588 local +20 generic) pass
+at `cb3cf7f12`. Baseline recordfalse/agreement0 remains. Original compile-only
+`456ad98a9`/r0v failure0 is preserved: two saved-frame lookups now bind LOCALS
+before symbol-table ENV, adding three premises. No state was interpreted before
+that correction. All source/state executions pass first time at original caps;
+actors are reaped/CPU4 released, without cap changes or historical renewal.
+
+Only module289 gains a disjoint identity proof for the existing pending API.
+Source demand, discarded tail, result/slot transfer, owner observation and the
+scheduler stay exact. Empty held/task owners, empty input registry and inactive
+collection bound this arm; no close/root-function/collector body changes.
+Wider chains, other owner/input histories, masked or abrupt arguments,
+nonpending body entry and collection remain unvalidated.
+
+Composed over `5ccfa9f9a`/408, preserving tested289 and six tests byte-for-byte.
+Incoming clone, INI/DEFINE, missing-read comparison, numeric warning, typed-ref
+holder and float/null-key callback selectors have no producer here. All other
+runtime/schema/default/root/ordered-manifest/pipeline bytes stay parent-exact.
+Source4/strict408/state608 and original compileFAIL0 retain their private cuts
+without joined execution, accepted replay or renewed credit.
+
 Borrowed empty `stdClass` numeric casts now resume named Warning handlers.
 Replacing/removing the sole source retires the object inside the callback, where
 WeakReference already returns null. Float conversion still delivers strict `1.0`;
@@ -136,8 +167,8 @@ accepted replay or renewed historical clone credit.
 Earlier pending NaN modulo retains source3/state340 and its original NORMAL
 stderr mismatch in the [pending modulo ledger](coverage/semantics/mod-nan-pending-review.json).
 
-Direct pending SEND without a getter now refreshes one allocated closed child
-whose normal simple-CV return owns no heap node. Child cache-edge release comes
+At Iterator45, direct pending SEND without a getter refreshed one allocated
+closed child whose normal simple-CV return owns no heap node. Child cache-edge release comes
 before normal argument cleanup, unused current-copy retirement and receiver
 finally. Assignment keeps its copy; argument-time row COW and a cache
 RuntimeException inside live finally retain distinct owners without a copied
