@@ -152,6 +152,13 @@ RuntimeException and skip `J-END`, with Previous NULL and the owning copied
 return retained separately.
 An assigned copy survives that receiver cleanup. See the
 [direct SEND review](../../coverage/semantics/generator-unused-direct-detached-send-review.json).
+Without a prior getter, normal owning direct pending SEND first releases its
+closed child. The ignored argument can then drop all Generator aliases while
+the API receiver remains held. Its normal cleanup finishes before the unused
+current snapshot retires and physical finally begins. A row rebind preserves
+the old argument; clearing a rebound object current can throw during the live
+finally, with Previous NULL. Copied returns retain their separate lifetime; see
+the [direct refresh review](../../coverage/semantics/generator-unused-direct-refresh-send-review.json).
 Pending NEXT preserves that parked return across the same close transfer but
 creates no current copy. A temporary sole receiver releases its cache during
 storage cleanup, before caller delivery; a throwing cache has no older caught

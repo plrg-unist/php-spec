@@ -1496,6 +1496,12 @@ copy before receiver finally. A raw-row write retires the old element before
 `J-END`; an assigned copy survives until the caller drops it. Clearing an aliased
 object current can throw during finally and skip its remaining output. See the
 [direct SEND review](coverage/semantics/generator-unused-direct-detached-send-review.json).
+Without a prior getter, direct pending SEND can also detach one allocated closed
+child at that normal owning return. Child release precedes the ignored argument,
+unused current copy and receiver; assignment keeps its copy. Argument-time raw
+row or slot rebinding preserves the earlier argument and the current used by
+finally. See the
+[direct refresh review](coverage/semantics/generator-unused-direct-refresh-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit

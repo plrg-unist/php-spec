@@ -7,6 +7,35 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct pending SEND can now refresh one allocated closed child without a prior
+getter at a normal owning simple-CV return. Cleanup releases child, ignored
+argument, unused current copy and receiver in that order; assignment keeps its
+copy. Argument-time raw-row COW or object rebinding preserves an older argument
+while finally mutates current. A rebound cache can throw RuntimeException inside
+the live finally, with Previous NULL and its copied return still independent.
+[Direct refresh review](coverage/semantics/generator-unused-direct-refresh-send-review.json).
+
+Four source agreements and strict407 pass at `3b26f3f4a`; gate4 and 582 focused
+premises (331 author +251 independent; 562 local +20 generic) pass at `db627cb81`.
+Original `c86cf7d7f` author native2 is retained; corrected peer2 and the genuine
+NORMAL cleanup-order disagreement retain `28f552daf`. Earlier peer native2
+allowed BAD-MIDDLE after premature alias drops and has zero target credit; only
+those originals were corrected and re-observed. Baseline recordfalse/agreement0
+stays preserved. All post-change checks pass first execution at original caps,
+without historical renewal or accepted replay; actors are reaped/CPU1 released.
+
+Only module289 changes: direct original-child admission is disjoint from prior getter
+and ancestor arms, and cleanup keeps its exact child prefix. Root, close,
+collector and generic owner functions stay unchanged. Wider refreshes, abrupt
+argument callbacks, nonpending body entry and collection remain unvalidated.
+
+Composed over `e98ba7556`/407 with tested289 and six tests private-exact.
+Other incoming runtime/schema/default/root/ordered-manifest/pipeline bytes
+remain parent-exact. Missing-read comparison, selected-XOR, float-key,
+INI/DEFINE and ordinary typed-ref selectors have no producer here.
+Source4/strict407/state582 retain private cuts, original peer target0 and
+baseline disagreement, without joined execution, accepted replay or renewal.
+
 All six Boolean comparisons now retain captured null/bool/int/float/byte-string
 values across missing-CV Warnings. Two source certificates widen within an explicit
 primitive-or-array bound; domain checks, array liveness, saved roots and generic
@@ -144,9 +173,10 @@ fixed it before interpretation. All post-change source/state checks pass first
 attempt at original caps. The original failure stays preserved, without historical renewal or
 accepted replay; actors are reaped and CPU1 released.
 
-Only289's identity-refresh arm changes; source/slot/discard guards and all root,
-close and collector functions stay exact. Direct refresh prefixes, abrupt
-argument callbacks, wider owners, body entry and collection remain unvalidated.
+At Iterator42, only289's identity-refresh arm changed; source/slot/discard guards
+and root, close and collector functions stayed exact. Direct refresh prefixes,
+abrupt argument callbacks, wider owners, body entry and collection then remained
+unvalidated.
 
 Composed over `22b962aa1`/407 with tested289 and six tests private-exact.
 All other incoming runtime/schema/default/root/ordered-manifest/pipeline bytes
