@@ -122,8 +122,7 @@ Independent child snapshots and sibling writes distinguish all three ownership
 levels in the [array-alias-leaf ledger](../../coverage/semantics/array-literal-float-array-alias-leaf-review.json).
 The [typed array-leaf ledger](../../coverage/semantics/array-literal-float-typed-array-alias-leaf-review.json)
 adds scalar rejection, shared nested writes and singleton child COW after explicit
-property unset. Global outer typed-array CELL retargets, deeper nesting and
-indebted descendants remain Unsupported.
+property unset. Deeper owning children and indebted descendants remain Unsupported.
 DIRECT entries may instead own bounded child arrays without an intervening leaf
 CELL. The same mutable nonpool, edge-free, debt-free child bound applies; actual
 child nodes must survive logical pruning. Duplicate entries retain duplicate
@@ -132,6 +131,17 @@ snapshot while outer table/wrapper debt remains unchanged. The
 [direct child-leaf ledger](../../coverage/semantics/array-literal-float-direct-array-leaf-review.json)
 checks both direct-child multiplicity and wrapper deletion/throw cleanup through
 balanced inverse retargeting. Count/prune algorithms and global leaf gates stay exact.
+Outer array-valued reference cells may carry validated ordinary property type
+sources accepting the bounded table. Property aliases and literal entries own
+the CELL; that CELL owns one payload-table edge. Type receipts add no owner.
+For debt-bearing cells, the actual payload and every source object must survive
+logical pruning. A physical count1 copy unwraps to a DIRECT array value, shedding
+its constraint and separating child writes while the original remains typed;
+balanced shared copies retain the ALIAS and its constraint. Final property unset
+removes the source before its alias is released, with another alias keeping
+physical counts positive until inverse balancing. The
+[typed outer-array ledger](../../coverage/semantics/array-literal-float-typed-array-ref-review.json)
+checks copy constraints, payload COW, initial typed-old capture, deletion and throw.
 
 `tests/semantics/reference_wrappers.py` checks original source regressions,
 copying and rebinding, budget resumption, ownership graphs, cycle collection and

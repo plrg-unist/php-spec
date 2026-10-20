@@ -35,12 +35,12 @@ remain live, while runtime array temporaries retain their own tables. Reference
 elements transfer a stable cell normally; retargeting preserves the acquired
 count, cancelling existing debt before retaining unmatched old owners for the
 request, including on throw. Different-reference retargeting also tracks the new
-cell's missing owner until it is balanced. Primitive cells may carry ordinary
-live instance-property type sources: singleton copies shed their
-constraint while the original stays typed; shared copies retain it. Untyped
-reference cells may also hold flat runtime arrays of DIRECT null/bool/int/float
-values or validated byte strings. Wrapper debt stays separate from child-table
-COW, including deletion and throw cleanup.
+cell's missing owner until it is balanced. Cells holding null/bool/int/float or
+bounded arrays may carry ordinary live instance-property type sources: physically
+singleton copies shed their constraint while the original stays typed; shared
+copies retain it. Reference cells may also hold flat runtime arrays of DIRECT
+null/bool/int/float values or validated byte strings. Wrapper debt stays separate
+from child-table COW, including deletion and throw cleanup.
 Retargeting a flat-array wrapper to an ordinary scalar preserves its acquired
 count, cancelling debt first or retaining the old wrapper and its child.
 Ordinary unwrapped CVs may switch between null/bool/int/float and flat runtime
