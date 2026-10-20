@@ -24,6 +24,15 @@ USER permission, roots, cleanup, schema and global/default policies stay exact.
 Clones/inherited flags are structural-only; wider domains/core remain partial.
 [Factory Closure define review](coverage/semantics/define-runtime-from-factory-review.json).
 
+V92 composes over Source75 parent `1d8b2d55e0`/407 with tested400 and four
+scripts exact. Nine introduced runtime paths plus the ordered manifest stay
+incoming-exact. INI_SET, missing-read, MODULO conversion and magic property
+coalesce-assignment selectors are unselected; no lossy-key/property-array debt
+producer appears. Added task alternatives need no state/heap/schema lift, and
+retained/debt lists remain empty. The original four-file inverse and whole
+inventory/prefix checks pass; native/source/state keep private407 cuts and raw4.
+No joined execution, accepted replay or new credit is added.
+
 Retained intrinsic `ini_set` Closures now accept a NULL option and an earlier
 flat quiet ARRAY value from one two-item numeric, named or mixed unpack pack.
 Active unpack retains the outer operand and inner child; normalized sends retain
