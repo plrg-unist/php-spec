@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Distinct direct CVs at `>`/`>=` now traverse the second Warning with physical
+source right first, then still-missing left, including a scalar left removed by
+the first handler. Both NULLs stay captured despite late references or writes;
+results remain false/true and no third Warning occurs. Default right/left order
+and second supplied Exception identity/destination/finally pass. One exact
+right-frozen restore and a NULL-only right INPUT certificate authenticate both
+compiled CVs and diagnostic line without new fields, tasks, roots or discard.
+Eight source agreements plus two controls and 675 strict-SL premises/four groups
+(322 author + 353 independent) pass first attempts at `83e33a435`/406. Separate
+affected 92 premises/three groups and one old96 selector preserve opposite-order
+refusals without historical renewal. Genuine `a4bd3b94f` baseline stays zero;
+no failures or retries. Same-CV ordinary forms, owning comparison values, removal
+of previously checked CVs and wider producers remain partial.
+[Reversed second-Warning review](coverage/semantics/undefined-scalar-compare-second-reversed-review.json).
+
 Distinct direct CVs at `==`/`!=`/`<`/`<=` now traverse the second Warning
 when right stays missing or is removed by the first handler. Two captured NULLs
 preserve Boolean true/false/false/true despite late references or scalar writes;
