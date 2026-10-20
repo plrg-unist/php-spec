@@ -4709,17 +4709,17 @@ detached caller references. Ordinary global references may alias across pending
 slots; each keeps its own source/owner/restore authority and cleanup count. A
 nonempty unique property-source list now authenticates every plain public ALIAS
 and declaration of type `object` or `object|string`, with a live object referent.
-Computed objects retain distinct sole owners. A finite destructor can clear one
-object-only Holder before throwing the supplied Exception. The Holder may now run
-one public zero-argument literal-echo destructor first. One source and 361 Boolean/5
-raw checks at `842b2dc27` preserve both property sources through this callback,
-then local catch/Notice15/fresh detached NULL while two sources become one. String
-assignment succeeds; NULL still fails against the surviving union. Valid replacement
-preserves the old copy and detached r/prior b. Existing storage and typed writer
-rules stay unchanged. Earlier cuts remain in the
-[review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-Wider Holder methods/writes/throws, source kinds/types/values, fewer than two remaining
-slots, broader bodies/reentry and GC remain open.
+Computed objects retain distinct sole owners. A finite D destructor can clear
+an object-only Holder, then echo a literal marker before its supplied throw.
+The Holder may echo normally or throw that same supplied object. Two originals
+and 399 Boolean/5 raw checks at `982a7919d` distinguish H;DA from H without DA,
+then preserve local catch/Notice15/fresh detached NULL as two property sources
+become one. String assignment succeeds; NULL still fails against the surviving
+union. Valid replacement preserves the old copy and detached r/prior b. Existing
+storage, pending and typed writer rules stay unchanged. Earlier cuts remain in
+the [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+Different propagated IDs, wider Holder bodies/writes, source kinds/types/values,
+fewer than two remaining slots, broader reentry and GC remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

@@ -131,24 +131,31 @@ object|string, and an allocated object referent. The clear-holder image retains
 its own source and object-only type. Source metadata owns no edge; actual ALIAS/
 global edges own the cell. Earlier M121–M124 cuts remain in the ledger.
 
-M125 permits empty METHODS as before or one public nonstatic/nonabstract destructor:
-zero arguments, by-value, no return annotation, empty method attributes and exactly
-one literal echo. Existing site OUTPUTBUFFERS=eps excludes output callbacks. Every
-other class/property/shared-cell/table/key guard and post-store NULL arm stays exact.
-Propertyless C/D predicates, the finite NULL-write/supplied-throw body, SOURCE/history
-representation, pending/finish/roots,138/359/writer/156 and schema do not change.
+M126 retains empty/normal literal-echo Holder methods and adds one finite
+public nonstatic/nonabstract destructor: zero arguments, by-value, no return
+annotation/attributes,
+exact global/echo/throw-CV body. A three-statement AST gate precedes delegation
+to the existing supplied-throw parser. Initial live-Holder admission correlates
+its emitted global value with D's supplied object; NULL after the write bypasses
+retired Holder facts. D's disjoint five-statement arm adds one literal echo after
+the authenticated NULL write; its old four-statement arm stays exact. Existing
+OUTPUTBUFFERS=eps excludes echo callbacks. All class/property/shared-cell/table/
+key bounds, propertyless C/D class guards, SOURCE/history representation, pending/
+finish/roots,138/359/writer/156/schema and Iterator39's hook stay unchanged.
 
-Source1 and 361 Boolean/5 raw at `842b2dc27`/407 bind real nested Holder entry,
-normal return and release-to-storage through full wrapped/public states. Both typed
-sources remain attached throughout H. Later slot transfer removes Left's type
-source; its property row stays PROP_UNSET until later free.
-Saved D/C/f scopes retain valid original history. Initial private-method-image and
-multi-statement-body fences are helper-only controls. Same supplied catch, Notice15,
-fresh detached NULL/b7, W/NQ/right replacement and whole/split ending pass. Baseline
-already matched H and storage/writes; it lost initial capture, despite valid
-post-NULL site/pending gates. Native1/baseline0/118+3 diagnosis keep a883/407.
-All actors pass first attempts; treatment SL180 is an upfront bound, not a retry.
-Wider Holder methods/writes/throws, source kinds/types/values, reentry and GC remain partial.
+Source 2 and 399 Boolean/5 raw at `982a7919d`/407 distinguish control H;DA from
+throwing H/noDA. Both preserve same supplied catch, Notice15, fresh detached NULL/
+b7, W/NQ/right replacement and whole/split ending. The actual restored-D raw
+step moves the Holder exception into the existing clear-operation receipt.
+Both property sources remain through callback completion; real slot transfer
+removes only Left's type source. The Left slot stays PROP_UNSET until later free;
+its HCELL job decrements ownership separately. Complete wrapped/public states agree.
+Private-method and two-live equal-message unequal-ID controls are helper-only;
+the latter retains the actual D site and refuses only the constructed mismatched
+expected-origin call. Native 2/baseline 0/152+3 diagnosis keep c253/407. The original
+cross-case AST-binder fixture failure remains0; only diagnosis retries. No accepted
+source/focused replay is added. Different propagated IDs and wider Holder bodies,
+writes, types, reentry and GC remain partial.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same
