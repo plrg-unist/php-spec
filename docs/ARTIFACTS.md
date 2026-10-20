@@ -133,6 +133,12 @@ The normal holder-destructor return-history proof is in
 packets, accepted snapshots, both bounded worker transports and exact270 patch,
 SHA-256 `eec0237203109c5115cac3bf3c2271efb914137478a271dcb1010ac61b0a0da6`.
 
+The throwing Holder return-history proof is in
+`../php-spec-evidence-archive/lifecycle-holder-throw-126/manifest.json`:
+949,527 bytes under `.tools/m126/`, seven reports retaining the original
+AST-binder diagnostic failure, corrected/accepted snapshots and exact270 patch,
+SHA-256 `fcd882047933f85ffdeb1f6b8a515a4662d294e812ad1b7c836f8e4ec665418b`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

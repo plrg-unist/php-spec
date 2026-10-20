@@ -66,8 +66,8 @@ This slice excludes objects reachable from the builder or captured array, both
 before dispatch and on completion. Zend inserts even with a pending exception;
 without objects, abandoning both graphs has the same observable cleanup. A
 callback introducing objects enters explicit Unsupported on return or throw.
-String CV elements, initially wrapped CVs and wider owning values remain outside
-this producer.
+String CV elements and wider owning values remain outside this producer. Wrapped
+CVs use only the separate bounded-array admission below.
 
 The separate reference-element continuation acquires a direct CV's wrapper before
 conversion. If the callback leaves or rebinds that CV to the same cell, insertion
@@ -134,7 +134,7 @@ or cancels debt. Initial scalar and array plans remain disjoint; captured runtim
 array temporaries remain owned and frozen. The
 [mixed-CV review](../../coverage/semantics/array-literal-float-mixed-cv-review.json)
 checks both inverse cycles, entry deletion and supplied-throw cleanup with positive
-physical counts. Initially wrapped CVs, pooled/immutable tables, nesting and
+physical counts. Wrapped scalar/string CVs, pooled/immutable tables, nesting and
 reference leaves outside these bounds and other owning CV values remain Unsupported.
 A callback may turn an initially ordinary array CV into an untyped reference
 holding null/bool/int/float or a bounded array. Its by-value item then becomes an
@@ -147,6 +147,20 @@ snapshots and ordinary old-table writes keep their COW behavior. The
 checks normal, deletion and supplied-throw paths. These completion arms exclude
 outer property/coercion/backing records and string CELL values; initial plans,
 global gates and lifetime limits stay unchanged.
+An initially wrapped untyped array CV captures its dereferenced CELL payload
+slot before conversion. The existing ARRAY marker owns only builder and old table;
+its REFERENCE locator adds no CELL owner. Completion reads that captured slot,
+ignoring current CV rebinding, and inserts DIRECT PARRAY. The allocated marked
+CELL has no property/coercion/backing records or CELL debt, and both CELL and
+bounded payload must survive logical pruning even before any debt exists. Source
+metadata remains valid when a locator retires; readiness then refuses explicitly.
+An outside alias keeps the borrowed slot alive, while deletion/throw requires
+another ordinary table owner to keep a new HARRAY deficit positive. Reciprocal
+slot retargeting cancels old/new table biases before ordinary COW and teardown.
+The [wrapped array-CV review](../../coverage/semantics/array-literal-float-wrapped-array-cv-review.json)
+checks rebinding-only, payload cycles, deletion and supplied throw. Initial wrapped
+scalar/string values, nonarray completion, typed outer cells and unsafe lifetimes
+remain Unsupported; the ordinary/A19 gates and count/prune algorithms stay exact.
 The [string-leaf review](../../coverage/semantics/array-literal-float-string-leaf-review.json)
 adds ordinary tables and untyped wrapper payloads containing canonical-byte or
 validated-carrier string leaves. String snapshots remain independent across

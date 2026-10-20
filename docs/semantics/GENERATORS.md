@@ -109,6 +109,13 @@ as three owners; two quiet releases leave only current before receiver cleanup.
 A shared array keeps one element-edge set throughout. Assigned calls keep
 the net result transfer; other masked shapes remain unvalidated. See the
 [aliased SEND review](../../coverage/semantics/generator-unused-pending-send-alias-review.json).
+Normal unparked pending ancestor SEND also releases an unused copy before the
+receiver.
+An exact refresh-produced child release stays before the argument and result;
+a prior getter leaves no prefix. The tested child/copy return counts share one
+array element-edge set until child storage retires. Assigned copies, argument
+COW and equal-cache cleanup keep their separate lifetimes; see the
+[normal SEND review](../../coverage/semantics/generator-unused-detached-send-review.json).
 Pending zero-argument NEXT also clears only the selected receiver bit while
 preserving that parked owning frame/site and copied return. It returns NULL
 without a current snapshot; a later explicit getter creates a separate copy.

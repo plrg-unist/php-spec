@@ -1,0 +1,131 @@
+{
+  "milestone": "OP69 selected XOR numeric specialization and old RHS referent",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "scope": "Direct-CV ^= with both initial operands in strict live untyped scalar reference cells: finite fitting fractional LEFT and quiet PINT RHS. XOR selects both old referents and its numeric path before LEFT Deprecated. After the callback, a quiet old RHS integer supplies the result through the old target, while failed scalar RHS conversion raises TypeError from both live old types without retrying string-pair specialization or storing. Other operators/conversions/producers/constraints and owning lifecycles remain partial.",
+  "runtime_revision": "95ef0f3a434c898f739258fdc3acaad321bacd8f",
+  "helper_revision": "48604a94297ac3e6fff7b52a8884dbc962eeb72c",
+  "private_modules": 407,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "d271b3418d0eb29c70b31ca8fa61606deedf9a346b61d6fd3cd4ed11a3bfb92f",
+    "spec/semantics/55-compound-assignment.watsup": "969a1c03e1aa9b6da2729028371f861018a0555f169da8cda4b703f481ae635c",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "4c788940ff787ab21f332ecbb9a99785b0d4f7a371357dfca81981aed20cac8b"
+  },
+  "engine_basis": [
+    "Pinned bitwise_xor_function dereferences both operands before its string-pair branch and before zendi_try_get_long converts LEFT. A callback can change the selected referents and current CV bindings, but the already selected old RHS address remains authoritative. Numeric specialization is not retried after callback writes. ZEND_ASSIGN_OP fixes the old target and uses no ordinary commutative slot swap.",
+    "Separate XOR_ASSIGN_SELECTED_WARNING source/plan/snapshot/valid helpers require AssignOpBitwiseXor, BITXOR/nonSWAPPED, both historical INTEGER_CELL pointers and compiled RHS line. Fresh snapshot authenticates current strict references, fractional LEFT and quiet PINT RHS; returned stage1 authenticates only source and captured LEFT float/long history, without current-name/value membership checks.",
+    "Resume reads the strict old RHS cell independently of ENV. Quiet PINT uses the existing integer_binary and safe old-target/write_cell_checked helpers; failed scalar integer_conversion reads both live old values and uses existing type_failure BITXOR with no new specialization or write. The failure helper reuses target as equivalent compiled-source plus strict left-scalar read authorization. Explicit other-RHS/unsafe-target/owning-handler boundaries remain. Old CV bitwise/dispatch/numeric/write/unwind bodies are exact, with only30 tag/55 declaration+generic EPS/appended404 rules."
+  ],
+  "contract": [
+    "Author starts with referenced LEFT12.5/quiet RHS2. Its named8192 handler writes the old referents to badL/badR, rebinds current names to77/7 and returns true. Fresh TypeError at RHS25 says Unsupported operand types: string ^ string, with noPrevious; outer100 and both old strings survive. This distinguishes the already chosen numeric path from a bytewise-string retry or current-name integer inputs. EOF oldaliases6/4 versus replacements8/9 prove failure preserved topology. Native stderr is empty.",
+    "Independent peer starts with the same12.5/2 references. The handler writes oldtarget99 and oldRHS5, rebinds current names to77/7 and returns false. Captured12 XOR selected old5 delivers strict int9 through oldtargetalias and outer result, rather than current7 giving11. Current LEFT77 and oldRHS5 remain unchanged until EOF alias writes6/4; current writes8/9 reach replacements. Exactly one default Deprecated25 occurs. Both old cells survive with owners2-to1, while replacement names share two owners.",
+    "Focused199/163 uses an exact arithmetic/integer HELPERS prefix, single-warning frontier family and accepted scalar diagnostic-classifier/list-fold idiom. Authentic source entry, fresh and entered callback, old referents versus rebound CVs, returned LEFT history, raw whole-state begin/store or THROWN versus driven fresh indexed TypeError/trace prefixes, owners, EOF and zero/one-step cuts are checked. Reached string values retain their actual identity carriers while byte observations establish badL/badR. Only author has an undriven refusal matrix. Each fixture traverses source-to-EOF once without redundant full-entry replay."
+  ],
+  "required_follow_on": [
+    "Initial selected scalar references, finite fitting fractional LEFT, quiet initial PINT RHS, safe surviving aliases and named Deprecated callbacks bound the witnesses. Later RHS quiet PINT success and failed nonowning scalar integer conversion are covered; fractional/leading-string/other conversion notices, missing/expired/constrained/owning cells, other bitwise operators and wider producers/callbacks/lifecycles remain partial. Undriven projections do not establish excluded executions.",
+    "The compound store adds no CELL, detachment, name redirect or operand-retention root; the generated TypeError has its separate ordinary instance owner. No supplied-handler-throw witness, generic-unwind renewal or numeric algorithm renewal is claimed. All prior evidence keeps its original cuts/failures0; OP12, COMP88 and Source47 low-initial-precision callbacks remain paused. No engine bug or intentional divergence is claimed."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-69/source-95ef0f3a4-author-one/report.json",
+        "sha256": "7fca77e873b19937dbd40522fc2ce01434261848a6ba2121c10d02c9a153e27c",
+        "revision": "95ef0f3a434c898f739258fdc3acaad321bacd8f",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-69/review-model-95ef0f3a4-review-one/report.json",
+        "sha256": "c51c4fb8b3c8ec3800d43bf01ff963d52dd7012f6d0399a11fa56a60bd285236",
+        "revision": "95ef0f3a434c898f739258fdc3acaad321bacd8f",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-69/state-48604a942-two/report.json",
+        "sha256": "803c016008d5a7f95d25af2fd9edf153cd1d605a8bf262823631b0862a42c211",
+        "revision": "48604a94297ac3e6fff7b52a8884dbc962eeb72c",
+        "modules": 407,
+        "cases": [
+          "xorassign-selected-warning-frozen-numeric-failure",
+          "xorassign-selected-warning-old-rhs"
+        ],
+        "conditions": [
+          199,
+          163
+        ],
+        "total": 362
+      }
+    ],
+    "total_source_agreements": 2,
+    "total_focused_state_conditions": 362
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-69/baseline-df979d168-frozen-numeric/report.json",
+      "sha256": "c6d5c93b47c74def9bda4f4f1476c23259bc6484a23b254b27496da8fb3074d7",
+      "result": "Actual frontend accepted/checked program/Unsupported BEFORE H1, empty semantic stdout/stderr, reason error-handler ingress requires a producer continuation, model1/12.11s/agreement0/wrapperfalse; no override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-69/native-df979d168-author-one/report.json",
+        "sha256": "a6b4b6160e325e65eb68fbb0b66d4f3ceb321ead1bb2b30004194f2f88f381b3"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-69/native-df979d168-review-one/report.json",
+        "sha256": "b513685b38ca45c5afdbe23639f96f6f4e43ce78e77dd53c018cab8f3b7c6a2c"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-69/state-prep-cbf8a8008-two/report.json",
+        "sha256": "c61c070b7b011703b6a53f4200fb910ae2c11065967e798125bb5836b664e097",
+        "result": "Original checked preparation/full407 static PASS0. Original peer compiler output is retained byte-exact in the corrected prep; no peer recompilation."
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-69/state-prep-48604a942-two/report.json",
+        "sha256": "93f9f64fb2486735f88ae21cfc449984a5b6fbbe839b660d46c983aa65be21cf",
+        "result": "Retained own source/native bytes and checked frontend/adapter; changed author full407 struct passes while byte-exact peer uses its retained original compiler output. All workers/compiler processes0/reaped; zero native/application or semantic execution credit."
+      }
+    ],
+    "focused_fixture_failure": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-69/state-cbf8a8008-two/report.json",
+        "sha256": "baa3cd9f3ebdc083d2e6a4aa637a2bcd58d60101347f7b0a50a82784690b81ef",
+        "result": "Original author197 failed at reached STORE assertion requiring plain PSTRING instead of compiled identity carrier, exit1/18.75s/empty stdout/no timeout/full reap; peer163 unrun. Zero semantic credit. Correction binds actual pvalues and observes bytes, retaining identities; only author conditions change199 while shared HELPERS/peer/runtime/source stay exact."
+      }
+    ],
+    "standalone_syntax": "Two standalone undefined-pstate diagnostics, zero semantic credit.",
+    "full_compiler": "Both exact prepared fixtures must pass ordered407 struct before SL; static checks carry zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-69",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/genuine, affected source and original failed focused group use distinct CPU3 grants/cuts; corrected focused CPU2. Native30/modelCLI60-process90, checked prep30/full407 struct30 per changed fixture/SL120 per group. Corrected prep recompiles author only and authenticates the unchanged original peer compiler output. Author stderr empty; peer one original default Deprecated25. Retained own source/native bytes avoid native/application replay.",
+    "record": "Restore matching Git cuts/local tools in a fresh directory. Retained source paths/native streams authenticate focused fixtures; external evidence is not an operational dependency. Copied local tools add no rebuild or portability claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "commands": [
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 tests/semantics/xorassign_selected_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 tests/semantics/xorassign_selected_warning_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-69/state-prep-48604a942-two/run-prepare.py",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-69/state-48604a942-two/run-state.py"
+    ]
+  },
+  "composition": {
+    "parent": "d977b28fe12248c6624508fc19e9e69f1733a466",
+    "private_publication": "a920afcafa049f439c5a88302db8d218dd15e9cf",
+    "modules": 407,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "62af6780d6087a9ae9d4e7251b2803ab5e51dd2ba6b2b20d6399af043f47104b",
+      "spec/semantics/55-compound-assignment.watsup": "969a1c03e1aa9b6da2729028371f861018a0555f169da8cda4b703f481ae635c",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "4c788940ff787ab21f332ecbb9a99785b0d4f7a371357dfca81981aed20cac8b"
+    },
+    "other_incoming_paths_preserved": 62,
+    "gate": "Independent actual-parent gate: OP69 base d4bd11220 to d977b28fe12248c6624508fc19e9e69f1733a466 changes eight runtime paths30/172/199/207/270/289/400/413. Incoming owned DEFINE selection/INI reception and pselectedcall.OWNER handling have no producer in static named h/global scalar references/native Throwable getters; SELECTEDCALLS remains empty. Nonstrict missing-read array comparisons, property-holder reference-return/destructor clear/throw, pending Generator send cleanup and float-key array/reference-literal capture/retention selectors are absent. GLOBALS string dimensions and internal TypeError trace arrays are not ARRAY_VALUE literal builders; retention/debt lists stay empty. No new machine state fields/defaults/general roots or ordered407 manifest changes occur. Preserve full incoming30 OWNER record and all other parent runtime, overlay only the XOR_ASSIGN_SELECTED_WARNING tag and55 declaration/generic EPS, and keep private404/six tests exact. Source2/focused362 retain private407 cuts95ef0f3a4/48604a942 without joined execution or renewed evidence. Original reached-assertion failure baa3 and preparation c61c remain zero; corrected prep retains the identical peer compiler output without repeat. OP12, COMP88 and Source47 low-initial-precision callbacks remain paused."
+  }
+}
