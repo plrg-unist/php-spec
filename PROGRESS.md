@@ -7,6 +7,30 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained intrinsic `ini_set` Closures now accept a NULL option and an earlier
+flat quiet ARRAY value from one two-item numeric, named or mixed unpack pack.
+Active unpack retains the outer operand and inner child; normalized sends retain
+the inner value independently. The completed pack certificate keeps no outer
+root, so outer retirement or later live-pack COW cannot replace the saved value.
+Returning Deprecated handlers reach empty-option value TypeError; explicit
+`__invoke` keeps raw NULL in its wrapper, and supplied throw cancels rejection.
+Strict ordinary priority, callback effects and original-owner recovery survive.
+
+Four exact source comparisons and 1,280 state premises (297+268+253+462) pass
+first attempt at `e4d97ddf3`/`acf17872c`/407. Initial `2c76281b0` CPU2
+native4/baseline0 precedes CPU4 model/state checks. Nine stable/reaped reports
+pass without failure or retry; only Deprecated9/17 is expected and workers are
+quiet. Only13 additive172 lines change; existing replay/source helpers/finish/
+trace/root/discard/GC and historical tests stay exact. Native E/W/N/2783 values
+are distinct from actual state-only inner/outer identity, retirement, trace edges
+and full-discard checks. Additional arguments/packs, references or wider inner
+leaves, PIPE and sole-owner lifetimes remain partial; paused paths untouched.
+[Packed retained NULL array INI review](coverage/semantics/ini-set-owned-unpack-null-array-value-review.json).
+
+Composed over `47bd81d48`/407 with module172/four tests private-exact and every
+other runtime/schema/ordered-manifest byte parent-exact. Source4/state1,280 retain
+private407 cuts without joined execution or renewed evidence.
+
 Selected-reference `%=` now saves LEFT's converted integer before Deprecated,
 then reads the current RHS wrapper. Old RHS `0` rebound to `5` gives cached
 `12 % 5 = 2` through the old target alias despite callback `99` and target name

@@ -346,7 +346,7 @@ parameter2 TypeError: the API receives an empty option while explicit `__invoke`
 keeps raw NULL in its numeric wrapper arguments. A supplied throw cancels rejection.
 Four source comparisons and 1,319 state premises cover both owning roots, strict
 ordinary versus weak explicit calls, actual trace edges and retained-setter reuse.
-Purely positional/packed array values, wider leaves and sole-owner lifetimes
+Purely positional calls without unpacking, wider array leaves and sole-owner lifetimes
 remain partial.
 
 [Retained INI calls with shared stdClass values](coverage/semantics/ini-set-owned-null-stdclass-value-review.json)
@@ -358,6 +358,16 @@ converts to empty while the wrapper keeps raw NULL. Four source comparisons and
 ordinary versus weak explicit invocation, precise discard and original-owner reuse.
 Packed/PIPE calls, materialized tables, wider properties and sole-owner lifetimes
 remain partial.
+
+[Packed retained INI calls with array values](coverage/semantics/ini-set-owned-unpack-null-array-value-review.json)
+now accept one two-item numeric, named or mixed pack with NULL option and an
+earlier flat quiet array value. Completed pack certificates keep no outer root;
+the captured inner array survives outer retirement, live callee replacement and
+alias COW. Returning handlers reach value TypeError with empty API option and raw
+NULL explicit wrapper option; supplied throw cancels rejection. Four source
+comparisons and 1,280 state premises cover ownership transfer, literal contents,
+strict priority, trace edges and retained-setter recovery. Additional arguments
+or packs, wider value leaves, PIPE and sole-owner lifetimes remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
