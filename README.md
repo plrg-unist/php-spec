@@ -862,6 +862,14 @@ Two originals and 264 focused premises pass in the
 [unary-reference ledger](coverage/semantics/unary-reference-warning-review.json).
 Wider producers, constrained/owning cells and callback lifetimes remain partial.
 
+NaN bitwise NOT now finishes range Warning and precision Deprecated before
+checking a pending Exception. A first-handler throw still permits an ineligible
+second level to default; an eligible second level runs neither body nor default.
+Two returning callbacks can remove the source CV while cached zero still gives
+integer `-1`. Three originals and 297 focused premises pass in the
+[NaN BITNOT ledger](coverage/semantics/bitnot-nan-warning-review.json).
+Wider producers/handlers remain partial; paused NaN-name conversion is untouched.
+
 Bitwise NOT now retains the converted long through named deprecation handlers
 for finite in-range fractional floats in defined non-reference CVs. Three exact originals
 and 324 genuine state premises check live writes, supplied throws, false fallback,

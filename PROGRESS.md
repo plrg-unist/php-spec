@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Plain-CV NaN bitwise NOT now completes range Warning then precision Deprecated
+before checking a pending Exception. A first-handler throw with mask `2` still
+defaults the second notice, while mask `8194` suppresses both its body and default.
+Both preserve the supplied Exception, callback write `99`, and outer value `100`. The normal peer unsets its
+source in the second handler, defaults Deprecated once and still delivers cached
+integer `-1`. Three originals pass at `e6b244d30`/407; 158+139 focused premises
+pass at `88967f432`/407 in the
+[NaN BITNOT ledger](coverage/semantics/bitnot-nan-warning-review.json).
+The eligible-pending control is source-only. Existing finite bitnot/numeric/format/
+CONFIG/generic dispatch/module400 stay exact; no algorithm renewal is claimed.
+Named handlers/plain NaN CVs bound this slice; wider cases remain partial and
+Source47 low-initial-precision NaN-name callbacks, OP12 and COMP88 remain paused.
+
+Composed over `3a5990dae`/407, preserving incoming state, task and
+manifest paths. Source3/state297 retain their private407 cuts; independently
+reviewed absent incoming selectors require no joined execution or renewed credit.
+
 Declared public int `__unset` now distinguishes INITIAL bypass, UNSET callback
 selection and ordinary VALUE deletion. Captured call history survives VALUE `7`;
 same-name recursive UNSET is suppressed through actual compiled-local Probe D,
@@ -148,21 +165,8 @@ Composed over `47bd81d48`/407 with module172/four tests private-exact and every
 other runtime/schema/ordered-manifest byte parent-exact. Source4/state1,280 retain
 private407 cuts without joined execution or renewed evidence.
 
-Selected-reference `%=` now saves LEFT's converted integer before Deprecated,
-then reads the current RHS wrapper. Old RHS `0` rebound to `5` gives cached
-`12 % 5 = 2` through the old target alias despite callback `99` and target name
-`77`. Old RHS `5` rebound to current `0` instead raises `Modulo by zero` at line 25 without
-replacing old `88` or outer `100`. Surviving aliases and replacement names retain
-separate owners/write-through. Two originals pass at `3656e30f9`/407 and
-321 focused premises at `b10c8a940`/407 in the
-[selected modulo ledger](coverage/semantics/modassign-selected-warning-review.json).
-Initial scalar references, finite in-range fractional LEFT and quiet integer RHS
-bound this slice. Existing CV/numeric/unwind/write/root bodies stay exact; other
-conversions, unsafe targets and wider lifetimes remain partial, OP12 paused.
-
-Composed over `a6eb790ae`/407, preserving incoming state, task and
-manifest paths. Source2/state321 retain their private407 cuts; independently
-reviewed absent incoming selectors require no joined execution or renewed credit.
+Earlier selected-reference `%=` delayed RHS dereference retains source2/state321
+in the [selected modulo ledger](coverage/semantics/modassign-selected-warning-review.json).
 
 Reversed `>`/`>=` now quietly consume a checked defined source-right CV removed
 by the missing-left Warning handler. First source-left NULL stays frozen, yielding

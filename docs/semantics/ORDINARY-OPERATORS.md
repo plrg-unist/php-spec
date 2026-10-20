@@ -290,6 +290,21 @@ the [unary-reference ledger](../../coverage/semantics/unary-reference-warning-re
 Fresh untyped scalar references and primitive handler writes bound these traces;
 other producers/constraints/owning payloads and wider lifetimes remain partial.
 
+Plain-CV NaN bitwise NOT now preserves the two-notice conversion order. Range
+Warning precedes precision Deprecated, and the engine checks a pending exception
+only afterward. With a first-handler supplied throw, mask `2` still defaults the
+second notice; mask `8194` runs neither a second body nor its default. Both cancel
+complement and outer storage while keeping the same Exception and the callback’s write of `99`.
+The independent normal case handles both notices, unsets the source during the
+second handler and returns false: default Deprecated occurs once, then cached zero
+produces strict integer `-1` despite source owner zero. Three originals and
+158+139 focused premises cover reached handler frames, pending ownership, raw
+transitions, default events, EOF and zero/one-step cuts in the
+[NaN BITNOT ledger](../../coverage/semantics/bitnot-nan-warning-review.json).
+The eligible-pending control has source coverage only. Named handlers and a plain
+NaN CV bound this slice; numeric/formatting/CONFIG/module400 and paused low-initial-
+precision NaN-name callbacks stay unchanged. Other producers/lifetimes remain partial.
+
 Bitwise NOT now retains a finite in-range fractional float's converted long before its
 precision-loss deprecation. The bounded producer accepts a defined non-reference
 CV and named handler. Fresh capture/dispatch equals the CV; saved callback frames
@@ -299,7 +314,7 @@ unchanged destination. Three exact originals and 227 author plus 97 independent
 SL premises check live 99, negative truncation, false fallback on the operand line,
 public snapshot/diagnostic rejection and budget resumption in the
 [BITNOT ledger](../../coverage/semantics/bitnot-warning-review.json).
-Range/NaN, other operands, callbacks and lifecycle forms remain required.
+Other range/NaN producers, operands, callbacks and lifecycle forms remain required.
 
 Explicit `(string)` casts now stage an array warning for a defined non-reference
 CV holding a nonempty mutable flat array of direct, defined nonowning scalars.
