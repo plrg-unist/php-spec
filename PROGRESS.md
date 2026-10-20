@@ -23,6 +23,13 @@ originals use omitted/false flags; structural clones/inherited flags receive no
 extra execution credit, and other Closure forms/names/lifetimes remain partial.
 [Runtime Closure review](coverage/semantics/define-runtime-closure-review.json).
 
+Composed over `1346859595`/406 with exact tested400 bytes, preserving incoming
+runtime/manifest bytes and inventory prefixes. INI_SET/SPACESHIP and lossy-float
+literal-key producers are absent. ADD can match the cell shape, but all captured
+operands are quiet PINT and no new array-failure branch selects. Retained/debt
+lists stay empty with no new state/graph lift. Source3/state646 keep private cuts
+without joined execution, accepted replay or renewed credit.
+
 A frozen-left `<=>` now stages a second Warning when its later direct CV stays
 missing, including a removed scalar RHS or the same missing name twice. Both
 NULLs stay frozen despite second-handler writes/reference binding; a still absent
