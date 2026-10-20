@@ -1,0 +1,104 @@
+{
+  "scope": "Retained live intrinsic INI_SET Closure, ordinary or explicit __invoke, sole two-item named/mixed array unpack normalized to rawNULL plus quiet primitive. Reversed/forward string keys and numeric-prefix/value-name packs are admitted by source replay. Numeric66, keep-owner and quiet-value boundaries stay exact; no multiple-pack/Traversable/PIPE/owning-value/sole-owner widening.",
+  "status": "independently_accepted_private_integrated_on_join",
+  "reviewer": "/root/source_review_35",
+  "parent": "eb82fd55b710b69630d4be250c74e4ff192c458d",
+  "semantic_revision": "9bb10d131be146778f17971662c28f1fc9f8523d",
+  "author_source_tested_revision": "8175923f8b6049644788d70cd9d860f79aa9c2d5",
+  "peer_source_tested_revision": "43f6c410aee44c3b67277a8de388dd32644baab6",
+  "tested_revision": "43f6c410aee44c3b67277a8de388dd32644baab6",
+  "modules": 406,
+  "semantic_files": {
+    "spec/semantics/172-file-context-intrinsics.watsup": "d9c59883f2eb5d87c3b461d766fb85803eacdc70044e961049a92233bb86ad65"
+  },
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "primary": "Pinned zend_vm_def.h SEND_UNPACK iterates in insertion order, resolves known string names into parameter slots and copies/dereferences by-value args. Array value evaluation precedes later elements. zend_parse_arg_str_weak deprecates rawNULL before conversion and cancels on pending Exception. Intrinsic nonvariadic __invoke metadata and numeric normalized wrapper arguments remain existing behavior, confirmed natively before editing.",
+  "semantics": "Only13 additive172 lines: disjoint owner-present/NAMEDtrue/INDEX1/one INDEX0 pack/exact2DIRECT entries, with unchanged invoke/source replay, quiet/pool-known, weak and non-PIPE gates. Replay authenticates names/destinations and rejects unknown/duplicate/numeric-after-named sequences. Numeric66 and all continuation/body/368 trace/root/discard/GC bodies stay exact. One old66 coherent named-pack negative becomes positive at the pure guard level, without renewing914 credit.",
+  "accepted": [
+    "Four checked normal records exactly equal native stdout/PHPstderr/PHPexit0: author3 at8175923f8 and reducedpeer1 at43f6c410a/runtime9bb10/406. Reversed literal plus mixed packs run true handlers; inline V then O captures earlier REQUEST before later value/callee writes and false/default delivery, followed by named-packed setter8 to11. Strict ordinary rawNULL2273 errors after both effects before handler, then same owner explicit forward-named NULL2281 is weak. Peer supplied Exception preserves identity99/effect1/warn1/live named-pack mutations/precision10/sibling2251 and oldsetter10 to12. Selected Deprecated24 is expected; other accepted PHPstderr is quiet.",
+    "All1001 premises pass at43f6/runtime9bb10/406:265+178+204 author and354 independent. Actual ARRAY_NEXT before O has REQUEST/owner/array roots while livecallee changed; completed historical pack links that now-retired primitive builder without reading it. Actual reversed unpack sends value to1 with HOLE0/NAMEDtrue before filling NULL0. Literal/pool coherent forgery, forward/mixed/numeric compatibility and invalid names/carriers/owners/counts/phases, full four-frame raw API/wrapper carrier identity, exact throw discard and returning finish with existing owner-GC buffer, recovery/final output and zero/split budgets pass. Four accepted SL raws are true LF/exit0/quiet.",
+    "Eleven stable/head-stable/reaped reports:10PASS plus original peer model CLI45 timeout0 ({status:timeout}, CLI1/50.137s/hosttimeoutfalse/quiet stderr/no survivors), not a semantic mismatch or checked agreement. Original f713 peer native numeric-wrapper observer remains native-only. Only that peer source removes two catch observer lines; final expected output changes while all354 actual trace assertions remain. Fresh changed peer native/model plus unrun publics execute; accepted author3/native/base and old914 are not replayed."
+  ],
+  "baseline_zero_credit": "At source-onlyf7132ab3021716164f8a742652a8d3559adafa73/unchangedeb82fd55b710b69630d4be250c74e4ff192c458d onCPU2, sole captured-owned-named-unpack-before-later-array-option-effects produces Unsupported error-handler ingress requires a producer continuation afterB|V|O|, CLI1/nullPHPexit/quiet workerstderr0. Author native3 and peer native1, including numeric wrapper policy, precede all edits. Baseline receives zero agreement.",
+  "compatibility": "The repaired old66 coherent named snapshot is source-structural and now admitted; mere NAMEDtrue flips on numeric certificates still contradict replay. Reused66/65/64 helpers are explicitly fingerprinted and imported before own sources. No new task/schema/trace/GC policy or native physical-ID claim. V84 ordinary string-name/live INSTANCE DEFINE values is disjoint. Paused Source47/owned-NUL/low-precision NaN remain untouched; no engine bug or intentional divergence identified.",
+  "execution": "LC_ALL=C TZ=UTC INT+kill5 AS3221225472; CPU2 initial native4/base, CPU5 first author3+original peer model then corrected peer native/model+public4. Serial fail-first/full reap, native15s/CLI45s-host60s/freshSL90s. Accepted workers quiet; original CLI deadline is preserved separately.",
+  "command_prefix": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s <cap>s prlimit --as=3221225472 -- taskset -c <cpu> python3 <step>",
+  "commands": [
+    {
+      "revision": "f7132ab3021716164f8a742652a8d3559adafa73",
+      "cpu": 2,
+      "caps": [
+        90,
+        90,
+        90
+      ],
+      "steps": [
+        "tests/semantics/ini_set_owned_named_unpack_null_option_sources.py --phase native --output .tools/ini-set-owned-named-unpack-null-option-native-67",
+        "tests/semantics/ini_set_owned_named_unpack_null_option_review_sources.py --phase native --output .tools/ini-set-owned-named-unpack-null-option-review-67",
+        "tests/semantics/ini_set_owned_named_unpack_null_option_sources.py --phase baseline --case captured-owned-named-unpack-before-later-array-option-effects --output .tools/ini-set-owned-named-unpack-null-option-native-67"
+      ]
+    },
+    {
+      "revision": "8175923f8b6049644788d70cd9d860f79aa9c2d5",
+      "cpu": 5,
+      "caps": [
+        240,
+        90
+      ],
+      "steps": [
+        "tests/semantics/ini_set_owned_named_unpack_null_option_sources.py --phase model --output .tools/ini-set-owned-named-unpack-null-option-native-67",
+        "tests/semantics/ini_set_owned_named_unpack_null_option_review_sources.py --phase model --output .tools/ini-set-owned-named-unpack-null-option-review-67"
+      ]
+    },
+    {
+      "revision": "43f6c410aee44c3b67277a8de388dd32644baab6",
+      "cpu": 5,
+      "caps": [
+        90,
+        90,
+        90,
+        360,
+        90,
+        120
+      ],
+      "steps": [
+        "tests/semantics/ini_set_owned_named_unpack_null_option_review_sources.py --phase native --output .tools/ini-set-owned-named-unpack-null-option-review-fixed-67",
+        "tests/semantics/ini_set_owned_named_unpack_null_option_review_sources.py --phase model --output .tools/ini-set-owned-named-unpack-null-option-review-fixed-67",
+        "tests/semantics/ini_set_owned_named_unpack_null_option_protocol.py --phase prepare --sources .tools/ini-set-owned-named-unpack-null-option-native-67 --output .tools/ini-set-owned-named-unpack-null-option-public-67",
+        "tests/semantics/ini_set_owned_named_unpack_null_option_protocol.py --phase check --sources .tools/ini-set-owned-named-unpack-null-option-native-67 --output .tools/ini-set-owned-named-unpack-null-option-public-67",
+        "tests/semantics/ini_set_owned_named_unpack_null_option_review_protocol.py --phase prepare --sources .tools/ini-set-owned-named-unpack-null-option-review-fixed-67 --output .tools/ini-set-owned-named-unpack-null-option-review-public-67",
+        "tests/semantics/ini_set_owned_named_unpack_null_option_review_protocol.py --phase check --sources .tools/ini-set-owned-named-unpack-null-option-review-fixed-67 --output .tools/ini-set-owned-named-unpack-null-option-review-public-67"
+      ]
+    }
+  ],
+  "raw_root": ".tools/ini-set-owned-named-unpack-null-option-evidence-67",
+  "report_sha256": {
+    "author/public/check-report.json": "fb251993a15a51e8b7b70411ac6b922b9c682f6eb9d10c6cbf4cf4c4f868526e",
+    "author/public/prepare-report.json": "8ad8c52f80c1f1aae17c1917720a6e3636233ed10cc2901b32ae355304dcc9c7",
+    "author/review/model-report.json": "46af0435efddc86dc60aab6a1d594d63578ef18758c4ad8f5b0e3ae64f46619d",
+    "author/review/native-report.json": "1cc49a11fdc84e52ac98647b2601c2c26c5f98d0a489b318a96232e1ddf3c6bf",
+    "author/review-fixed/model-report.json": "ee6ba09190ce471b12e090261c785dd1fdf0343e8f018deb6de707b24130ad0a",
+    "author/review-fixed/native-report.json": "0f2e85cc20f1b5a5b671f5a170c8a07ce350c282cc3ad69be490623a6a0ad5be",
+    "author/review-public/check-report.json": "4b8f60a99d9de94276095ac068febaf4234b0715ccf1758a1ba9675ec5044d6f",
+    "author/review-public/prepare-report.json": "71bf921a3d8ad2d3f7fa6a9e70dba372dbec294b8387c2ad3f3e1678c326368b",
+    "author/sources/baseline-report.json": "7a776b5a4ac3c261a81f4a806dd4981d02f581de5fe59f693ef3a7d8d5a66fe7",
+    "author/sources/model-report.json": "4600ea6fa598f9d59faddd905fe9bb526da2e0f66568192eba6e3dd9c1b2d421",
+    "author/sources/native-report.json": "68281e42797c89910db6daa8a52f352abd64657d537817c527ee7480d45d04c3"
+  },
+  "recovery": "Five roots moved once after reviewer RAW STOP/focused users[] into author/{sources,review,review-fixed,public,review-public}; eleven concise reports hashed once. Original review native-only witness/timeout remain untouched0. Restore recorded original paths/cuts for exact cwd/source identity; reports retain full fingerprints/commands/exits. No old evidence renewal.",
+  "remaining": "Multiple packs/wider unpack layouts/Traversable, ownerless packed continuation, PIPE, sole-owner retirement, owning/NaN/legacy-PSTRING values and full configuration remain partial. No full-core/equivalence/BOLA claim.",
+  "composition": {
+    "parent": "3744afa83981ed1816819f723337406cec5679c1",
+    "private_publication": "d3c7d8e181518d7c79627503d40358a67dbecdc2",
+    "modules": 406,
+    "semantic_files": {
+      "spec/semantics/172-file-context-intrinsics.watsup": "d9c59883f2eb5d87c3b461d766fb85803eacdc70044e961049a92233bb86ad65"
+    },
+    "seams": "Parent172/368/400/source replay/GC exactbase. Incoming comparison/arithmetic-warning, reference/finally, Generator, property and lossy-float array debt routes have no producer in these originals; optional task/property-record changes add no state field. Independent actual-parent semantic seam CLEAR.",
+    "evidence": "Accepted author3 at8175923, reducedpeer1/state1001 at43f6/runtime9bb10/406 retain private cuts; original native-only wrapper observation/peer timeout0 unchanged. No joined actor or renewed agreement credit."
+  }
+}

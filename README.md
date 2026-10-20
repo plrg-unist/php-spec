@@ -20,9 +20,10 @@ remains later research.
 variable's null result through handlers while following current scalar CV bindings.
 This covers bounded spaceship operands and distinct direct-CV
 `==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
-Both-missing pairs, including `<=>`,
-can resume if the first handler defines the opposing scalar; greater operators
-warn right first.
+Both-missing pairs, including the same missing variable twice at `<=>`,
+can resume if the first handler defines the later scalar; greater operators
+warn right first. `<=>` also stages a second Warning if the later CV stays
+missing, freezing both NULLs despite writes from the second handler.
 Wider warning paths remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
@@ -34,17 +35,22 @@ request, including on throw. Different-reference retargeting also tracks the new
 cell's missing owner until it is balanced. Primitive cells may carry ordinary
 live instance-property type sources: singleton copies shed their
 constraint while the original stays typed; shared copies retain it. Untyped
-reference cells may also hold flat runtime arrays of direct null/bool/int/float values. Wrapper
-debt stays separate from child-table COW, including deletion and throw cleanup.
+reference cells may also hold flat runtime arrays of DIRECT null/bool/int/float
+values or validated byte strings. Wrapper debt stays separate from child-table
+COW, including deletion and throw cleanup.
 Retargeting a flat-array wrapper to an ordinary scalar preserves its acquired
 count, cancelling debt first or retaining the old wrapper and its child.
 Ordinary unwrapped CVs may switch between null/bool/int/float and flat runtime
-arrays of those direct values during the handler. Separate table counts preserve
-old array owners and omitted new-array owners; inverse retargeting cancels them before cleanup. Initial scalar
-and array plans remain distinct, while same-table transfer and restored COW keep
+arrays with DIRECT null/bool/int/float or validated string leaves during the
+handler. Separate table counts preserve old array owners and omitted new-array
+owners; inverse retargeting cancels them before cleanup. Initial scalar and
+array plans remain distinct, while same-table transfer and restored COW keep
 ordinary values distinct from PHP reference wrappers.
-Unsafe deficit retirement and wider domains remain Unsupported. Duplicate
-replacement and later items stay ordered.
+These flat tables also admit untyped null/bool/int/float reference leaves.
+Child-table copies preserve shared leaves and unwrap singleton leaves,
+independently of outer table and wrapper count corrections.
+Direct string CV/cell payloads, unsafe deficit retirement and wider domains remain
+Unsupported. Duplicate replacement and later items stay ordered.
 
 [Destructuring key warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 now retain captured arrays or source reference cells through handlers, including
@@ -243,7 +249,8 @@ extend that quiet-value domain to ordinary named and mixed arguments. Reversed
 `value:`/`option:` calls capture the earlier value before later option effects;
 handler and strict-error traces retain normalized `[NULL, value]` arguments.
 Four additional originals and 746 premises pass, including false/default delivery
-and throwing-handler cancellation. Packed and PIPE forms remain partial.
+and throwing-handler cancellation. Packed forms beyond the bounded follow-ups
+below and PIPE remain partial.
 
 [Retained intrinsic NULL INI calls](coverage/semantics/ini-set-owned-null-option-review.json)
 extend the quiet-value continuation to positional `ini_set` Closures. The original
@@ -258,7 +265,7 @@ now preserve the original Closure and early value across reversed named argument
 effects. Native `__invoke` arguments remain numeric and normalized. Four originals
 and 928 state premises cover true/false handlers, throwing cancellation, strict
 ordinary versus weak explicit calls, owner roots and reuse of the retained setter.
-Packed forms beyond the numeric follow-up below, PIPE, sole-owner lifetimes
+Packed forms beyond the unpack follow-ups below, PIPE, sole-owner lifetimes
 and wider values remain partial.
 
 [Numeric unpacked retained NULL INI calls](coverage/semantics/ini-set-owned-unpack-null-option-review.json)
@@ -266,7 +273,21 @@ now preserve the original Closure and captured arguments from one numeric two-it
 pack across live callee and pack mutations. Explicit wrapper arguments remain
 normalized `[NULL, value]`; ordinary strict calls still reject NULL first.
 Four originals and 914 state premises cover return, throw, literal-source authority
-and reuse of the retained setter. Other packs, PIPE and wider values remain partial.
+and reuse of the retained setter. Multiple packs, PIPE and wider values remain partial.
+
+[Named unpacked retained NULL INI calls](coverage/semantics/ini-set-owned-named-unpack-null-option-review.json)
+now cover one named or mixed-key pack. Array elements run in insertion order;
+reversed `value`/`option` keys normalize to slots1/0 without replacing the earlier
+captured value. Four source comparisons and 1,001 state premises cover returning
+and throwing handlers, strict ordinary versus weak explicit calls, and owner reuse.
+Multiple packs, PIPE, sole-owner lifetimes and wider values remain partial.
+
+[Direct and selected unpacked NULL INI calls](coverage/semantics/ini-set-unpack-null-option-review.json)
+now resume handlers through one numeric, named or mixed two-item pack. Earlier
+values and the selected function survive later array and handler writes. Four
+originals and 953 state premises cover true/false handling, throwing cancellation,
+strict NULL priority, source authentication and normal setter recovery. Multiple
+packs, PIPE and wider values remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -492,6 +513,14 @@ Four originals and 465 focused premises are retained in the
 [second-Warning ledger](coverage/semantics/addassign-rhs-warning-review.json).
 Other target/producer classes and wider lifetimes remain partial.
 
+Failed delayed RHS conversion in that plain-CV `+=` route now reports the
+live operand types without storing or detaching a late target alias. Callback
+arrays produce `array + array` TypeError without retrying union; a bool and bad
+text produce `bool + string`. Two originals and 273 focused premises preserve
+array identities/items/counts and alias write-through in the
+[delayed-RHS failure ledger](coverage/semantics/addassign-rhs-failure-review.json).
+Wider values, producers and lifetimes remain partial.
+
 [Stringable compound concatenation352](coverage/semantics/compound-string-live-rhs-review.json)
 reads a defined RHS CV after the left conversion, preserves the non-reference
 self-CV fast path, and retains evaluated temporary/reference operands through
@@ -653,7 +682,14 @@ writes. A repaired old RHS `5.5` yields `17.5` with one Warning even when its na
 is rebound to `2tail`; unrepaired text uses live bool/string TypeError labels.
 Four originals and 428 focused premises cover these routes; the supplied first
 throw is source-only. The [ADD repair ledger](coverage/semantics/add-repair-review.json)
-retains the baseline. Owning/constrained/expired cells and wider forms remain partial.
+retains the baseline. Other owning/constrained/expired cells and wider forms remain partial.
+
+Ordinary ADD now rejects delayed flat-array conversion using the live selected
+types, without retrying union or storing the outer result. An old RHS array stays
+selected after its name is rebound; callback arrays and aliases survive the error.
+Two originals and 296 focused premises check these paths and pool/cell owners in
+the [ADD array-failure ledger](coverage/semantics/add-array-failure-review.json).
+Other producers, nested/owning leaves and wider lifetimes remain partial.
 
 Leading-numeric-string `-` and `*` now retain both selected reference cells and
 numeric holders through named Warning handlers. A first handler can repair an
@@ -1168,7 +1204,18 @@ without entering the body, even if the physical middle was already initialized.
 Distinct or reused exceptions, current snapshots and return cells keep their
 separate lifetimes; actual parked body entry remains Unsupported. See the
 [repeated THROW review](coverage/semantics/generator-repeated-pending-owning-throw-review.json).
-Parked next/send and wider repeated-THROW leaves remain open.
+A pending `send` can also return the current cache before entering that parked
+owning continuation. Only its selected receiver clears initialization; the source
+site, physical frame and copied return stay parked. Snapshot capture precedes
+normal ignored-argument cleanup, including row COW or Generator-alias retirement.
+The used cache and mutable returned cells retain their separate lifetimes. See the
+[parked SEND review](coverage/semantics/generator-parked-pending-owning-send-review.json).
+Pending `next()` at that parked owning return also clears only the selected
+receiver initialization bit. It returns NULL without copying current, so a sole
+receiver's cache destructor can run before caller delivery. A later explicit
+getter has its own copy. See the
+[parked NEXT review](coverage/semantics/generator-parked-pending-owning-next-review.json).
+Nonpending body entry, wider parked API leaves and waiting-result GC remain open.
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller
 catch. The independent current copy can still trigger a replacement exception. See the
@@ -1608,7 +1655,7 @@ Byte-only string leaves, including compiled literals, preserve their exact bytes
 through array copying, query COW and duplicate cleanup, including empty, one-byte
 and binary values. Existing string carriers retain their own identity checks.
 [Literal-string array review](coverage/semantics/define-literal-string-array-review.json).
-Uncertified owning values and wider array warning/flag paths remain partial.
+Other owning values and wider array warning/flag paths remain partial.
 String-name `define` with an omitted/false flag now shares already-certified
 stdClass donors. Named/selected calls preserve the captured pointer through later
 CV changes, and duplicate handlers keep the old binding and property writes on
@@ -1638,8 +1685,20 @@ until the trace and Closure owners are released.
 
 Certified Closure values can be defined directly, retaining pointer identity and
 shared static cells through duplicates, queries and a pending ignored-Warning
-exception. Ordinary unrecorded Closure values remain Unsupported.
+exception. Their existing certificates retain their own validation policy.
 [Certified Closure define review](coverage/semantics/define-certified-closure-review.json).
+
+Ordinary live class instances without a constant-NEW record can also be defined
+directly or as array leaves. Queries retain their identity and shared properties.
+An unpinned duplicate candidate is destroyed on retirement, including before
+catch when only the private copied array still owns it.
+[Runtime object define review](coverage/semantics/define-runtime-object-review.json).
+
+Bare runtime Closures also publish under bounded live callable authority:
+unscoped lexical Closures retain reference captures and static cells, and method
+Closures retain their receiver. Canonical array/query copies share these objects;
+an unpinned method receiver retires only after the last Closure owner is released.
+[Runtime Closure define review](coverage/semantics/define-runtime-closure-review.json).
 
 Fresh definitions also copy nonempty array trees containing certified Closure,
 stdClass or user-instance leaves under the admitted flags. Copied containers freeze source
@@ -1682,8 +1741,8 @@ nonempty byte strings are true. Flag-array COW and later callback writes leave t
 original API flag intact through duplicate cleanup or pending fresh publication.
 Strict calls retain the raw string in TypeError traces.
 [Byte-only array-flag review](coverage/semantics/define-array-byte-flag-review.json).
-Ordinary uncertified objects, other owning leaves and wider
-flags/names remain partial.
+Other Closure forms, unrecorded stdClass/internal object values, other owning
+leaves and wider flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
 [Two exact sources and 288 public premises](coverage/semantics/class-qualified-defined-review.json)
@@ -4307,20 +4366,18 @@ credit is unchanged. An unused destructor declaration now also preserves the
 no-instance, echo-only interposed scalar history. Fresh control/treatment sources
 agree with PHP; separate 463/8 state checks cover its shared-cell RELEASE/EXIT
 pauses, required literal history despite an unchanged heap, engine TypeError catch,
-one line7 Notice and detached aliases. Three simultaneously owning computed
-object returns also pass a fresh source comparison and 347/7 reached checks at
-`f305be84b`: normal C/B/A retirement, saved-caller owners, source-region refusals
-and selected-reference aliases. This requires no runtime change. A direct
-TypeError from the first computed object's destructor now preserves its local
-catch while the other two returns still own their objects. One fresh comparison
-and 514/12 checks at `9aa2136d9` prove cleared-NULL recovery, one Notice and detached
-caller aliases. One nested destructor now follows the same path: C creates
-and releases D, whose TypeError reaches that local catch. A fresh comparison and
-454/9 checks at `bf107b70c` prove nested saved scopes, remaining owners and detached
-NULL recovery. Literal builtin Exception now follows that finite path too:
-source1 and 385/4 checks at `1c87142fd` bind its pending kind to the compiled
-constructor, reject a valid wrong-kind Throwable and preserve Notice17/detached
-NULL recovery. Other throw forms, deeper reentry, GC and broader consumers remain open.
+one line7 Notice and detached aliases. Owning computed-return histories with at least three pending slots now
+preserve first-retirement direct or nested destructor throws while at least two
+outer return slots stay live. Finite literal builtin
+TypeError/Exception and stable global supplied-Throwable bodies retain their
+source and identity; cleared NULL recovery keeps the Notice and detached caller
+reference. Recursive source/suffix validation checks every remaining owner and
+restore link. A fresh four-owner supplied-Exception source and 368/6 checks at
+`0c1f7dea2` cover missing-owner/metadata refusals, exact public pauses and complete
+alias endings. Earlier three-owner evidence keeps its recorded cuts in the
+[review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+Mixed/reference histories, other bodies, deeper reentry, GC and wider consumers
+remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

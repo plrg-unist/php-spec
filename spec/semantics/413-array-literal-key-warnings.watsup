@@ -182,6 +182,7 @@ dec $literal_reference_plain_cell(pstate, nat) : bool
 dec $literal_reference_cell(pstate, nat, pnode*) : bool
 dec $literal_reference_property_sources(pstate, nat, pproptypesource*, pnode*) : bool
 dec $literal_reference_flat_array(pstate, nat, pnode*) : bool
+dec $literal_reference_flat_leaf(pstate, pvalue) : bool
 dec $literal_reference_flat_items(pstate, pentry*) : bool
 dec $literal_reference_retain(pstate, nat) : pstate
 dec $literal_reference_owe(pstate, nat) : pstate
@@ -354,16 +355,23 @@ def $literal_reference_flat_array(S, n, pnode_live*) = true
   -- if ~$array_immutable(S, n)
   -- if $heap_count(HARRAY n, $pools_nodes(S.POOLS)) = 0
   -- if $literal_reference_flat_items(S, S.ARRAYS[n].ITEMS)
+  -- if $heap_subset($entries_nodes(S.ARRAYS[n].ITEMS), pnode_live*)
 def $literal_reference_flat_array(S, n, pnode_live*) = false -- otherwise
+;; String leaves have no heap edges; retain their existing byte/carrier checks.
+def $literal_reference_flat_leaf(S, PSTRING n*) = $startup_bytes(n*)
+def $literal_reference_flat_leaf(S, PSTRING_CARRIER pstringidentity n*) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*)
+def $literal_reference_flat_leaf(S, pvalue) = $array_float_key_scalar(S, pvalue) -- otherwise
 def $literal_reference_flat_items(S, eps) = true
-def $literal_reference_flat_items(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*) = ($array_float_key_scalar(S, pvalue) /\ $literal_reference_flat_items(S, pentry*))
+def $literal_reference_flat_items(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*) = ($literal_reference_flat_leaf(S, pvalue) /\ $literal_reference_flat_items(S, pentry*))
+def $literal_reference_flat_items(S, (ENTRY pkey (ALIAS n)) :: pentry*) = ($literal_reference_plain_cell(S, n) /\ ~(n <- S.LITERALREFDEBTS) /\ $literal_reference_flat_items(S, pentry*))
 def $literal_reference_flat_items(S, pentry*) = false -- otherwise
 
 dec $literal_array_debt_tables_safe(pstate, hgraph, nat*) : bool
 def $literal_debt_pending(S) = (S.LITERALREFDEBTS =/= eps \/ S.LITERALARRAYDEBTS =/= eps)
 
 ;; A positive debt CELL survives biased pruning and keeps its child-table edge.
-;; Admitted array children are leaves; primitive targets have no outgoing owners.
+;; Positive tables keep their primitive, debt-free leaf CELL edges. Such leaf
+;; cells and direct values have no further owner edges.
 dec $literal_reference_debt_cells_safe(pstate, hgraph, nat*) : bool
 def $literal_reference_debt_cells_safe(S, H, eps) = true
 def $literal_reference_debt_cells_safe(S, H, n :: n_tail*) = true

@@ -94,9 +94,10 @@ existing typed writes.
 Fresh int-property witnesses check rejection, numeric-string coercion, multiple
 type sources, supplied throws and inverse cleanup in the
 [typed-source ledger](../../coverage/semantics/array-literal-float-ref-types-review.json).
-Untyped reference cells may instead hold mutable nonpool flat arrays with only
-DIRECT null/bool/int/float entries. The debt remains on the CELL, which owns one child
-table independently of its wrapper count. Singleton copies unwrap to DIRECT
+Untyped reference cells may instead hold mutable nonpool flat arrays. Entries are
+either DIRECT values (null/bool/int/float or validated byte strings) or bounded
+primitive ALIAS references. The debt remains on
+the CELL, which owns one child table independently of its wrapper count. Singleton reference entries unwrap to DIRECT
 array values; later child writes use ordinary COW. A still-indebted wrapper can
 switch child tables while a direct CV retains its previous table. Stable same-cell
 array insertion transfers the acquired owner without adding a request root.
@@ -107,14 +108,14 @@ The [array-to-scalar ledger](../../coverage/semantics/array-literal-float-ref-ar
 checks normal/throw transfer, debt cancellation and repeated owners.
 The [flat-array ledger](../../coverage/semantics/array-literal-float-ref-arrays-review.json)
 records fresh singleton/shared, deletion, supplied-throw and inverse-cleanup cases.
-Array-valued type sources, pooled/immutable or nested/reference-bearing/string-leaf
-arrays, other owning payloads, effective-zero, static/hooked/queued or retired
+Array-valued type sources, pooled/immutable or nested arrays, reference entries
+outside the bounds below, other owning payloads, effective-zero, static/hooked/queued or retired
 sources, coercion/backing records, active collection and outstanding request-end
 debt remain explicit Unsupported before pruning. Ordinary by-value owning-CV
 insertion remains partial.
 
 A separate continuation stages ordinary unwrapped array-CV values. Array values
-must be mutable nonpool flat arrays of DIRECT null/bool/int/float entries;
+must be mutable nonpool flat arrays with the same bounded entries;
 the builder stays object-free and distinct from their tables. The captured
 old table gets one owner before conversion, while insertion uses the live CV's
 table without its own ADDREF. `LITERALARRAYRETAINED` and `LITERALARRAYDEBTS` track
@@ -133,12 +134,26 @@ or cancels debt. Initial scalar and array plans remain disjoint; captured runtim
 array temporaries remain owned and frozen. The
 [mixed-CV review](../../coverage/semantics/array-literal-float-mixed-cv-review.json)
 checks both inverse cycles, entry deletion and supplied-throw cleanup with positive
-physical counts. Initially wrapped CVs, pooled/immutable or
-nested/reference-bearing/string-leaf tables and
-other owning CV values remain Unsupported.
+physical counts. Initially wrapped CVs, pooled/immutable or nested tables,
+reference leaves outside these bounds and other owning CV values remain Unsupported.
+The [string-leaf review](../../coverage/semantics/array-literal-float-string-leaf-review.json)
+adds ordinary tables and untyped wrapper payloads containing canonical-byte or
+validated-carrier string leaves. String snapshots remain independent across
+shared table writes and restored ALIAS copies. Singleton reference entries
+unwrap before child/string COW.
+Existing byte/carrier validation and string-offset COW rules remain in use;
+direct string CV/cell payloads and wider owning leaves stay Unsupported.
+Embedded ALIAS entries may name live untyped null/bool/int/float cells without
+property/coercion/backing receipts or CELL debt. Every leaf must survive logical
+pruning: positive tables keep their leaf edges, and leaves have no further owner
+edges. Child-table COW preserves shared leaf references and unwraps singleton
+leaves independently of outer table/wrapper counts. The
+[alias-leaf review](../../coverage/semantics/array-literal-float-alias-leaf-review.json)
+checks both counts, sibling-slot separation, deletion, supplied throw and inverse cleanup.
 The source basis is pinned `Zend/zend_vm_def.h::ZEND_ADD_ARRAY_ELEMENT`,
 `Zend/zend_hash.c::zend_array_dup_value`, and
-`Zend/zend_operators.h::zend_dval_to_lval_safe`.
+`Zend/zend_operators.h::zend_dval_to_lval_safe`, with string writes from
+`Zend/zend_execute.c::zend_assign_to_string_offset`.
 
 
 `45-dimension-write.watsup` supplies separate callback-free write and reference
