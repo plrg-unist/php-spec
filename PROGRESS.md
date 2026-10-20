@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Captured `Closure::fromCallable(...)` factory VALUES now publish directly and
+in canonical array snapshots. Queries share the receiver-free factory; its
+creation scope grants no later private permission. Actual USER invocation
+selects the method. A rejected duplicate factory can retire while a derived
+method keeps valid saved source without owning it. Global private denial
+retains the raw receiver through two Error trace frames, then normal trace
+retirement runs D41 with no pending Error.
+
+Three originals pass at `a56de3cf9`/407; 768 focused premises (309+150+309),
+including three zero-budget identities, pass at `40e510f03`/407. All source/
+state actors pass first attempts. Two staging/property-key fixture issues
+were corrected during static review before any state execution. Sole400+7
+reuses234 typed/live fixed-source authority with absent scope/binding/record;
+USER permission, roots, cleanup, schema and global/default policies stay exact.
+Clones/inherited flags are structural-only; wider domains/core remain partial.
+[Factory Closure define review](coverage/semantics/define-runtime-from-factory-review.json).
+
 Retained intrinsic `ini_set` Closures now accept a NULL option and an earlier
 flat quiet ARRAY value from one two-item numeric, named or mixed unpack pack.
 Active unpack retains the outer operand and inner child; normalized sends retain
