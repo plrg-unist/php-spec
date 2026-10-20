@@ -30,6 +30,7 @@ dec $spaceship_read_scalar(pvalue) : bool
 dec $spaceship_read_operand(pstate, poperand) : bool
 dec $spaceship_read_other(pstate, perrorread) : bool
 dec $spaceship_read_array_entries(pentry*) : bool
+dec $spaceship_read_array_value(pstate, pvalue) : bool
 dec $spaceship_read_array_operand(pstate, poperand) : bool
 dec $spaceship_read_array(pstate, perrorread) : bool
 dec $spaceship_read_again(pstate, perrorread) : bool
@@ -366,20 +367,20 @@ def $error_read_plan(S) = (perrorread)
   -- if $error_read_state_shape(S, ptask, S.RESULT, S.BASE) = (perrorread)
   -- if $error_missing_operand(S, $error_read_operand(perrorread))
   -- if $error_read_source(S, perrorread)
-  -- if $spaceship_read_other(S, perrorread) \/ $scalar_compare_missing_pair(S, perrorread)
-  -- if $scalar_compare_read_other(S, perrorread) \/ $scalar_compare_missing_pair(S, perrorread)
+  -- if $spaceship_read_other(S, perrorread) \/ $spaceship_read_array(S, perrorread) \/ $scalar_compare_missing_pair(S, perrorread)
+  -- if $scalar_compare_read_other(S, perrorread) \/ $scalar_compare_read_array(S, perrorread) \/ $scalar_compare_missing_pair(S, perrorread)
 def $error_read_plan(S) = (perrorread)
   -- if S.TODO = ptask :: ptask_tail*
   -- if $spaceship_right_read_shape(ptask, S.RESULT, S.BASE) = (perrorread)
   -- if $error_missing_operand(S, $error_read_operand(perrorread))
   -- if $error_read_source(S, perrorread)
-  -- if $spaceship_read_other(S, perrorread)
+  -- if $spaceship_read_other(S, perrorread) \/ $spaceship_read_array(S, perrorread)
 def $error_read_plan(S) = (perrorread)
   -- if S.TODO = ptask :: ptask_tail*
   -- if $scalar_compare_right_read_shape(ptask, S.RESULT, S.BASE) = (perrorread)
   -- if $error_missing_operand(S, $error_read_operand(perrorread))
   -- if $error_read_source(S, perrorread)
-  -- if $scalar_compare_read_other(S, perrorread) \/ $scalar_compare_missing_pair(S, perrorread)
+  -- if $scalar_compare_read_other(S, perrorread) \/ $scalar_compare_read_array(S, perrorread) \/ $scalar_compare_missing_pair(S, perrorread)
 def $error_read_plan(S) = eps -- otherwise
 def $error_read_pending(S) = ($key_read_pending(S) \/ $property_undefined_reference_plan(S) =/= eps \/ (($error_handler_eligible(S, 2) \/ $eval_compile_recorded_error(S, 2)) /\ ($error_read_plan(S) =/= eps \/ $identity_read_plan(S) =/= eps \/ $global_read_plan(S) =/= eps \/ $computed_name_plan(S) =/= eps \/ $computed_cv_name_plan(S) =/= eps \/ $computed_array_name_plan(S) =/= eps \/ $property_null_read_plan(S) =/= eps \/ $property_undefined_read_plan(S) =/= eps)))
 def $error_read_begin(S) = $key_read_begin(S)
@@ -433,24 +434,34 @@ def $spaceship_read_other(S, perrorread) = $spaceship_read_operand(S, perrorread
 def $spaceship_read_other(S, perrorread) = $spaceship_read_scalar(pvalue)
   -- if perrorread.ORIGINAL = BINARY_RIGHT SPACESHIP (KNOWN pvalue) z
 def $spaceship_read_other(S, perrorread) = true -- otherwise
-;; Scalar/pair entry stays unchanged. A callback may supply a live flat table
-;; through the opposing CV; NULL comparison only observes its current emptiness.
+;; Live flat tables may enter or resume through a direct CV or captured value.
+;; Saved TASK/RESULT/BASE roots retain captured tables across the callback.
 def $spaceship_read_array_entries(eps) = true
 def $spaceship_read_array_entries((ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = ($spaceship_read_scalar(pvalue) /\ $spaceship_read_array_entries(pentry_tail*))
 def $spaceship_read_array_entries(pentry*) = false -- otherwise
-def $spaceship_read_array_operand(S, VARIABLE n* z) = true
-  -- if ~$environment_blocked(S, n*)
-  -- if $lookup(S.ENV, n*) = (n_cell)
-  -- if S.STORE[n_cell] = DEFINED (PARRAY n_array)
+def $spaceship_read_array_value(S, PARRAY n_array) = true
   -- if (HARRAY n_array) <- S.ALLOCATIONS
   -- if $(n_array < |S.ARRAYS|)
   -- if $spaceship_read_array_entries(S.ARRAYS[n_array].ITEMS)
+def $spaceship_read_array_value(S, pvalue) = false -- otherwise
+def $spaceship_read_array_operand(S, VARIABLE n* z) = $spaceship_read_array_value(S, pvalue)
+  -- if ~$environment_blocked(S, n*)
+  -- if $lookup(S.ENV, n*) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
 def $spaceship_read_array_operand(S, poperand) = false -- otherwise
 def $spaceship_read_array(S, perrorread) = $spaceship_read_array_operand(S, VARIABLE n_left* z_left)
   -- if $spaceship_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
   -- if perrorread.TASK = BINARY_RIGHT SPACESHIP (VARIABLE n_left* z_left) z
 def $spaceship_read_array(S, perrorread) = $spaceship_read_array_operand(S, perrorread.INPUT)
   -- if perrorread.ORIGINAL = BINARY_RIGHT SPACESHIP (VARIABLE n* z_origin) z
+  -- if perrorread.INPUT = VARIABLE n_right* z_right
+  -- if $error_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
+def $spaceship_read_array(S, perrorread) = $spaceship_read_array_value(S, pvalue)
+  -- if perrorread.ORIGINAL = BINARY_RIGHT SPACESHIP (VARIABLE n* z_origin) z
+  -- if perrorread.INPUT = KNOWN pvalue
+  -- if $error_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
+def $spaceship_read_array(S, perrorread) = $spaceship_read_array_value(S, pvalue)
+  -- if perrorread.ORIGINAL = BINARY_RIGHT SPACESHIP (KNOWN pvalue) z
   -- if $error_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
 def $spaceship_read_array(S, perrorread) = false -- otherwise
 ;; Only a frozen first-left read can fetch a missing right CV next. The
@@ -478,7 +489,7 @@ def $scalar_compare_read_other(S, perrorread) = $spaceship_read_operand(S, perro
   -- if pbin = EQUAL \/ pbin = NOTEQUAL \/ pbin = LESS \/ pbin = LESSEQUAL \/ pbin = GREATER \/ pbin = GREATEREQUAL
   -- if $scalar_compare_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) =/= (perrorread)
 def $scalar_compare_read_other(S, perrorread) = true -- otherwise
-;; Boolean comparisons use the same live flat-array bound only on return.
+;; Boolean comparisons use the same live flat-array bound at entry and return.
 def $scalar_compare_read_array(S, perrorread) = $spaceship_read_array_operand(S, VARIABLE n_left* z_left)
   -- if $scalar_compare_right_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
   -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (VARIABLE n_left* z_left) z

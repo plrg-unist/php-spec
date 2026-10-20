@@ -815,8 +815,9 @@ Initial `c91c9cca8` native4/baseline0 and all later checks use CPU1. Nine
 stable/reaped reports pass first attempt; only Deprecated11/19 is expected and
 workers are quiet. Only12 additive172 lines change; existing validation/source/
 finish/trace/root/discard/GC bodies and old tests stay exact, without historical
-replay. Packed/PIPE calls, materialized tables, declared/deferred/unset/ALIAS or
-owning/NaN/legacy-string properties, other value kinds and sole-owner lifetimes
+replay. Packed forms beyond the bounded follow-up below, PIPE, materialized
+tables, declared/deferred/unset/ALIAS or owning/NaN/legacy-string properties, other
+value kinds and sole-owner lifetimes
 remain partial. Paused Stringable/COMP88 and other stopped boundaries are untouched.
 
 The [packed retained-owner array increment](../../coverage/semantics/ini-set-owned-unpack-null-array-value-review.json)
@@ -904,7 +905,64 @@ are distinct from state-only selected records, cursor/root transfer, retired out
 actual two-frame handler/API rawNULL/object edge and precise full restoration/
 discard with existing idempotent HOBJECT buffering. Peer native has no trace
 traversal. Only13 additive172 lines change; helpers/finish/trace/root/discard/GC
-and historical tests stay exact, without old replay. Retained-owner packed objects,
-additional arguments/packs, materialized tables, declared/deferred/unset/ALIAS or
+and historical tests stay exact, without old replay. Additional arguments/packs,
+materialized tables, declared/deferred/unset/ALIAS or
 owning/NaN/legacy-string properties, other object kinds, PIPE and sole-owner
 lifetimes remain partial; paused boundaries untouched.
+
+The [packed retained-owner stdClass increment](../../coverage/semantics/ini-set-owned-unpack-null-stdclass-value-review.json)
+removes only the OWNER-empty restriction from that sole-pack object arm. Invocation
+validity still authenticates the allocated intrinsic callee and ordinary/explicit
+source mode; replay binds normalized numeric, named or mixed sends. Captured pack
+entries are DIRECT after existing dereference; this does not establish original
+outer-entry reference freedom. Unknown pack facts (`compiled_read` EPS), table-free
+live STDINSTANCE and undeclared DIRECT quiet-primitive property guards stay exact.
+The original receiver and value are distinct HOBJECT roots. Unpack retains both
+while transferring the active outer HARRAY root; completed certificates remain
+historical and nonowning. Shared property writes stay visible after outer retirement,
+live-pack COW and live callee/value replacement, without freezing object contents.
+
+Four originals and all1,452 premises (316+293+329 author,514 independent) pass
+first attempt at `97ecd7d8a`/`1c19a1812`/407. Initial `9fe932aaa` native4/baseline0
+and all later checks use CPU1. Nine stable/reaped reports PASS without failure or
+retry; only Deprecated12/16 is expected and workers are quiet. Native E/W/N/I/I/
+true78 establishes empty API versus rawNULL wrapper options with the same updated
+object in both value slots. Strict ordinary rejects parameter1 after P effects;
+the same owner's explicit mixed call remains weak and reaches parameter2.
+Peer native has no trace traversal; actual state proves owner+outer to
+owner+value+outer to dual-HOBJECT transfer, live shared marks, current outer COW,
+rawNULL/same-value edges in the handler/API/wrapper three-frame Exception, exact
+full restoration/discard with existing idempotent buffers and strict original-owner
+recovery10→12. The trace owns the value, not an invented receiver edge. Only one172
+condition is deleted; helpers/finish/trace/root/discard/GC and historical tests stay
+exact, without old replay. A pending-unpack flag was corrected during static review
+before any actor. Additional arguments/packs, materialized tables, wider properties,
+other object kinds, PIPE and sole-owner lifetimes remain partial. Original reference
+forms have no new source agreement; paused boundaries remain untouched.
+
+The [rejected getter Closure value increment](../../coverage/semantics/ini-set-null-getter-closure-value-review.json)
+adds a separate ownerless positional NULL2 arm for a retained exact bare
+`INTRINSICCLOSURE INTRINSIC_INI_GET`. Bounds, allocation and exact body kind
+authenticate the live value; no property record or invented creation receipt is
+needed. Existing invocation/source checks authenticate the selected string callee
+and written arguments: option facts permit NULL, while value facts must be unknown
+(`compiled_read` EPS). Actual partial states witness the earlier capture rather
+than rereading current CVs. The edge-free getter is an owning HOBJECT argument,
+not the INI_SET receiver, and is never invoked during rejection.
+
+Returning Deprecated handling reaches the existing parameter2 TypeError with
+converted-empty API option and the same getter despite live value0. Supplied
+Exception preserves rawNULL/the old getter and cancels rejection. Strict reception
+rejects parameter1 after V effects with handler0. Real getter→string setter→same
+getter calls distinguish retained callable identity from the rebound live fields.
+Four originals and all1,374 premises (326+353+278 author,417 independent) pass
+first attempt at `487f3e446`/`f99899555`/407. Initial `d741939d6` native4/baseline0
+and affected checks use CPU4; nine stable/reaped reports PASS, only Deprecated11/17
+is expected and workers are quiet. Native E/I establishes empty API option and
+getter identity. Peer native has no trace traversal; actual state proves the
+partial root-free NULL capture, completed getter root, handler/API two-frame raw
+argument edge, existing idempotent buffering and exact restoration/discard.
+Only23 additive172 lines change; quiet-value/148 allocation/finish body/trace/root/
+discard/GC and historical tests remain exact, without replay. Other callable kinds,
+retained setter receivers, named/unpacked/PIPE forms and sole-owner lifetimes remain
+partial; no paused Stringable or owned-NUL path is exercised.

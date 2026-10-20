@@ -64,8 +64,8 @@ Ordinary by-value array CVs use separate `LITERALARRAYRETAINED` and
 `LITERALARRAYDEBTS` fields for HARRAY counts. Their saved continuation owns the
 pre-conversion table, rather than its original CV cell. Inserting a different live
 table preserves the old count and omits one new-table owner; inverse retargeting
-cancels both, while same-table insertion adds no bias. Initial by-value admission
-requires an unmarked ordinary CV and a mutable nonpool flat table with these
+cancels both, while same-table insertion adds no bias. The ordinary by-value plan
+requires an unmarked CV and a mutable nonpool flat table with these
 bounded DIRECT or ALIAS entries. Combined CELL/table
 debt safety uses logical pruning before subtracting either count bias. Positive
 table targets keep their admitted leaf edges; table debt does not subtract leaf
@@ -90,6 +90,19 @@ distinguishes physical singleton unwrapping, restored shared aliases and child
 COW through deletion and supplied throw. These new completion arms require
 untyped outer cells without coercion/backing records; direct strings and the
 existing unsafe lifetime bounds remain excluded.
+A separate initial wrapped-array plan keeps a nonowning REFERENCE locator for
+the CELL payload acquired before float conversion. Its ARRAY marker still owns
+only the builder and acquired HARRAY. Rebinding the CV cannot change this slot;
+callback writes through an outside alias determine the DIRECT array insertion.
+The captured CELL is untyped, has no coercion/backing records or CELL debt, and
+must be live after logical pruning together with its bounded payload. Metadata
+can authenticate a retired locator without permitting a stale read. The
+[wrapped array-CV ledger](../../coverage/semantics/array-literal-float-wrapped-array-cv-review.json)
+checks unchanged-payload transfer, reciprocal table-bias cancellation, direct-copy
+COW, deletion and supplied throw. Multiple aliases to one CELL add no payload-table
+owners: an independent ordinary table CV keeps an entry-independent HARRAY deficit
+positive. Initial scalar/string cells, nonarray completion and wider sources stay
+outside this admission.
 String leaves use canonical bytes or existing valid carriers; they add no modeled
 heap edges or user destructors. Ordinary string-offset writes preserve independent
 snapshots while table/CELL aliases share bytes. Singleton reference entries

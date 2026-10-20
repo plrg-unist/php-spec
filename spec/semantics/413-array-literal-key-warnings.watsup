@@ -533,8 +533,25 @@ def $array_float_array_key_value(S, VARIABLE n_name* z) = (n_array)
   -- if $literal_reference_flat_array(S, n_array, S.ALLOCATIONS)
 def $array_float_array_key_value(S, poperand) = eps -- otherwise
 
+;; An initially wrapped CV borrows its dereferenced payload slot. The pending
+;; ADDREF owns only the acquired table; another live edge must keep the CELL.
+dec $array_float_array_key_reference(pstate, nat) : nat?
+def $array_float_array_key_reference(S, n_cell) = (n_array)
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+  -- if ~(n_cell <- S.LITERALREFDEBTS)
+  -- if $propref_at(S.PROPREFS, n_cell) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps
+  -- if S.STORE[n_cell] = DEFINED (PARRAY n_array)
+  -- if H_live = $heap_prune($heap_graph(S)[.DEBTS = eps])
+  -- if (HCELL n_cell) <- H_live.NODES
+  -- if $literal_reference_flat_array(S, n_array, H_live.NODES)
+def $array_float_array_key_reference(S, n_cell) = eps -- otherwise
+
 ;; The ordinary CV zval itself can become a wrapper during conversion.
 dec $array_float_array_key_item(pstate, poperand) : pitem?
+def $array_float_array_key_item(S, REFERENCE n_cell) = (DIRECT (PARRAY n_array))
+  -- if $array_float_array_key_reference(S, n_cell) = (n_array)
 def $array_float_array_key_item(S, poperand) = (DIRECT pvalue)
   -- if $array_float_key_live_value(S, poperand) = (pvalue)
 def $array_float_array_key_item(S, VARIABLE n_name* z) = (ALIAS n_current)
@@ -552,6 +569,11 @@ def $array_float_array_key_ready(S, n, n_old, poperand) = true
   -- if n_old =/= n /\ ~$array_float_ref_key_builder_alias(S, n, pitem)
   -- if $literal_reference_flat_array(S, n_old, S.ALLOCATIONS)
   -- if $array_float_key_plain_nodes($heap_reach([HARRAY n], eps, $heap_graph(S).EDGES))
+def $array_float_array_key_ready(S, n, n_old, REFERENCE n_cell) = true
+  -- if $array_float_array_key_item(S, REFERENCE n_cell) = (pitem)
+  -- if n_old =/= n /\ ~$array_float_ref_key_builder_alias(S, n, pitem)
+  -- if $literal_reference_flat_array(S, n_old, S.ALLOCATIONS)
+  -- if $array_float_key_plain_nodes($heap_reach([HARRAY n], eps, $heap_graph(S).EDGES))
 def $array_float_array_key_ready(S, n, n_old, poperand) = false -- otherwise
 
 dec $array_float_array_key_source(pstate, nat, nat, poperand, phpType13*, int, nat, int) : bool
@@ -564,6 +586,10 @@ def $array_float_array_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, 
   -- if expression = NExprVariable (BYTES text) metadata
   -- if poperand = VARIABLE n_name* z
   -- if $array_float_key_input_source(S, expression, poperand)
+def $array_float_array_key_source(S, n, n_old, REFERENCE n_cell, phpType13*, z, n_bits, i) = true
+  -- if $(n_cell < |S.STORE|)
+  -- if $array_float_key_item(S, phpType13*, z) = ((NExprVariable (BYTES text) metadata, poperand_key))
+  -- if $array_float_array_key_source(S, n, n_old, VARIABLE ($base64(text)) z, phpType13*, z, n_bits, i)
 def $array_float_array_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i) = false -- otherwise
 
 dec $array_float_array_key_plan(pstate) : (nat, nat, poperand, phpType13*, int, nat, int)?
@@ -581,14 +607,33 @@ def $array_float_array_key_plan(S) = ((n, n_old, S.RESULT, phpType13*, z, n_bits
   -- if $float_long(n_bits, true) = (i, [PRECISIONLOSS])
   -- if $array_float_array_key_source(S, n, n_old, S.RESULT, phpType13*, z, n_bits, i)
   -- if $array_float_array_key_ready(S, n, n_old, S.RESULT)
+def $array_float_array_key_plan(S) = ((n, n_old, REFERENCE n_capture, phpType13*, z, n_bits, i))
+  -- if S.TODO = (ARRAY_VALUE n (VARIABLE n_key* z_key) phpType13* z) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if S.RESULT = VARIABLE n_name* z
+  -- if $array_float_key_item(S, phpType13*, z) = ((expression, VARIABLE n_key* z_key))
+  -- if $array_float_key_input_source(S, expression, S.RESULT)
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_capture)
+  -- if ~$foreach_released_container_cell(S, n_capture) /\ ~$update_released_array_name(S, n_name*)
+  -- if $array_float_array_key_reference(S, n_capture) = (n_old)
+  -- if ~$environment_blocked(S, n_key*)
+  -- if $lookup(S.ENV, n_key*) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if ~$foreach_released_container_cell(S, n_cell) /\ ~$update_released_array_name(S, n_key*)
+  -- if $(n_bits < 18446744073709551616)
+  -- if $float_long(n_bits, true) = (i, [PRECISIONLOSS])
+  -- if $array_float_array_key_source(S, n, n_old, REFERENCE n_capture, phpType13*, z, n_bits, i)
+  -- if $array_float_array_key_ready(S, n, n_old, REFERENCE n_capture)
 def $array_float_array_key_plan(S) = eps -- otherwise
 def $array_float_array_key_pending(S) = ($error_handler_eligible(S, 8192) /\ $array_float_array_key_plan(S) =/= eps)
 
 dec $array_float_array_key_retain(pstate, nat, poperand) : pstate
 def $array_float_array_key_retain(S, n_old, poperand) = S
-  -- if $array_float_array_key_value(S, poperand) = (n_old)
+  -- if $array_float_array_key_item(S, poperand) = (DIRECT (PARRAY n_old))
 def $array_float_array_key_retain(S, n_old, poperand) = $literal_array_owe($literal_array_retain(S, n_old), n_current)
-  -- if $array_float_array_key_value(S, poperand) = (n_current)
+  -- if $array_float_array_key_item(S, poperand) = (DIRECT (PARRAY n_current))
   -- if n_current =/= n_old
 def $array_float_array_key_retain(S, n_old, poperand) = $literal_array_retain(S, n_old)
   -- if $array_float_key_live_value(S, poperand) = (pvalue)

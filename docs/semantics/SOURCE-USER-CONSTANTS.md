@@ -93,6 +93,20 @@ separator; the final component stays case sensitive. `defined` removes a leading
 for lookup separately. Fixed global/explicit-global `define` and retained dynamic
 selection authenticate the call site; namespaced fallback is outside this slice.
 
+Retained intrinsic DEFINE Closure callees also admit primitive values, string
+names and omitted/false flags, through ordinary or explicit `__invoke` calls.
+Preparation records the exact captured owner with a nonce before arguments run;
+the live CONFIG must match that owner, site, kind and line. Its durable selection
+record owns nothing and authenticates the saved intrinsic tag after the callee
+dies, so fresh rows and later queries do not reread a mutable callee CV. Legacy
+string selections carry an empty owner; owned records have no original string.
+Repeated same-site calls preserve inactive historical records while requiring
+the current nonce for active tasks. Named capture, frame retirement and normal
+or throwing duplicates preserve the earlier primitive arguments and old row.
+Other flags, owning payloads, coercive names, packs and PIPE remain outside this
+owned-call slice; no intrinsic Closure VALUE authority is added.
+[Owned DEFINE call review](../../coverage/semantics/define-owned-closure-review.json).
+
 Public row checks require a genuine source/selection, canonical unique name,
 matching value class and empty read/receive metadata. Available immutable
 positional literal facts constrain names and values. Variable-derived payloads keep

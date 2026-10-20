@@ -538,6 +538,24 @@ Initial leading LEFT/quiet RHS untyped scalar refs and a surviving old-target al
 bound the slice. Before final dispatch and store the old target must be PINT/PFLOAT,
 avoiding refcounted-target destruction. Wider values/producers/lifetimes remain partial.
 
+Selected-reference `%=` now converts a freshly rebound fractional RHS after the
+first LEFT Deprecated callback. The current RHS CV selects that reference live;
+its long is then captured before the second Deprecated. Captured `0.5` becomes
+zero even when the second handler repairs current RHS to `5` and the original RHS
+alias also holds `5`: fresh `DivisionByZeroError` at line 25 preserves callback
+old target `88`, current target name `77` and outer `100`. Conversely, captured
+`5.5` becomes `5` even when its fresh reference is changed to `7` and both owning
+names are unset. Cached `12 % 5` stores integer `2` through the surviving old
+target alias; current name `77` and original RHS alias `0` remain independent.
+Two originals and 190+174 focused premises cover both reached fresh/entered
+handlers, current selection versus returned history, RHS owners two to zero,
+raw capture/store or THROWN versus driven fresh Error, EOF and budget cuts in the
+[RHS conversion ledger](../../coverage/semantics/modassign-selected-rhs-warning-review.json).
+Initial selected scalar references with fractional LEFT and quiet PINT RHS stay
+unchanged. Later fitting fractional RHS references, named Deprecated handlers and a safe
+surviving old target bound the slice; other values, owning/typed producers and
+wider lifetimes remain partial. Generic throw/unwind and numeric bodies are unchanged.
+
 Selected-reference `%=` now fixes its old LEFT cell before converting a fitting
 fractional float. Captured `12` survives the named Deprecated callback; RIGHT stays
 a delayed CV wrapper and is dereferenced afterward. Rebinding current RHS from
@@ -667,6 +685,22 @@ covering actual atomic commit/error, original bindings, cells/owners and budgets
 Wider initial forms, conversions, unsafe targets and lifecycle remain partial;
 pure projections establish refusals only, and older threshold cuts are not renewed.
 
+Selected-reference `^=` now dereferences both operands and chooses numeric
+specialization before converting fractional LEFT. Captured `12` survives the
+Deprecated callback; selected old RHS `5`, rather than rebound current name `7`,
+produces integer `9` through the surviving old target alias. Current LEFT `77`
+and replacement bindings remain separate. If the handler instead changes both
+old values to nonnumeric strings, `TypeError` reports `string ^ string` at line 25
+without retrying bytewise XOR, replacing the old string or changing outer `100`.
+Two originals and 199+163 focused premises cover real fresh/entered callbacks,
+source/selection controls, returned LEFT history, raw store or THROWN versus fresh
+indexed Error, owners, EOF and zero/one-step cuts in the
+[selected XOR ledger](../../coverage/semantics/xorassign-selected-warning-review.json).
+Initial untyped scalar references, fitting fractional LEFT and quiet PINT RHS,
+later quiet PINT or failed nonowning scalar RHS conversion and surviving aliases
+bound the slice. Other conversions, operators, producers and owning lifetimes
+remain partial; generic unwind and numeric algorithms keep their earlier cuts.
+
 For distinct initially plain CVs, numeric `&=`, `|=` and `^=` keep a fractional
 LEFT conversion before deprecation and read the live quiet integer RHS afterward.
 Captured12/live5 stores4/13/9 despite callback target99 and initial RHS3, detaching
@@ -677,7 +711,7 @@ Five exact originals and 575 author plus 117 independent SL premises pass in the
 [bitwise-assignment ledger](../../coverage/semantics/bitassign-warning-review.json).
 All three AST/operation pairs have separate source authority from modulo/shifts.
 Fresh cache/source/op/line guards, actual cells/owners and budgets are covered;
-pure projections establish refusals only. Initial references/copies, warning or
+pure projections establish refusals only. Other initial references/copies, warning or
 noninteger RHS, unsafe targets and wider lifecycle remain partial. Initial float
 LEFT/quiet integer RHS bypasses Zend's separate two-string specialization.
 

@@ -22,6 +22,10 @@ When any of the seven operators resumes, a handler-created flat primitive array
 follows its current CV/reference binding; emptiness determines comparison against frozen NULL.
 This covers bounded spaceship operands and distinct direct-CV
 `==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
+The defined counterpart may already be a live flat primitive array at entry;
+its current scalar/array binding supplies the counterpart, with ordinary COW.
+At `<=>`, a computed flat primitive array keeps its captured table through
+handler writes, COW and supplied-throw cleanup.
 Both-missing pairs, including one missing name twice, can resume if the first
 handler defines the later scalar or flat array. `$x == $x` can then be false and `$x > $x`
 true. Greater operators check source right first. All seven comparison operators
@@ -53,6 +57,11 @@ array plans remain distinct. A by-value array CV may become an untyped reference
 during the handler, inserting a shared ALIAS with separate old-table and new-CELL
 count biases. A reciprocal reference-element callback can instead insert an
 ordinary array value, cancelling both biases before normal copying and cleanup.
+Initially wrapped untyped array CVs instead keep their captured CELL payload
+locator: rebinding the name cannot redirect insertion, while writes through a
+surviving outside alias supply the DIRECT array value. Table counts balance
+through reciprocal payload changes; the borrowed CELL adds no owner and must
+remain live. Scalar/string completion and wider outer sources remain partial.
 These bounded tables also admit reference leaves holding null/bool/int/float
 or validated byte strings, either untyped or constrained by validated ordinary
 instance-property type sources. Debt-bearing payloads require every source object
@@ -361,8 +370,8 @@ remain visible through both API and explicit wrapper arguments: the API option
 converts to empty while the wrapper keeps raw NULL. Four source comparisons and
 1,328 state premises cover return/throw ordering, distinct owning roots, strict
 ordinary versus weak explicit invocation, precise discard and original-owner reuse.
-Packed/PIPE calls, materialized tables, wider properties and sole-owner lifetimes
-remain partial.
+Packed forms beyond the bounded follow-up below, PIPE, materialized tables,
+wider properties and sole-owner lifetimes remain partial.
 
 [Packed retained INI calls with array values](coverage/semantics/ini-set-owned-unpack-null-array-value-review.json)
 now accept one two-item numeric, named or mixed pack with NULL option and an
@@ -391,8 +400,29 @@ Returning handlers reach converted-empty value TypeError, while supplied throw
 preserves raw NULL and the updated object and cancels rejection. Four source
 comparisons and 1,253 state premises cover owning root transfer, shared identity,
 strict option priority, precise discard and original string-setter recovery.
-Retained-owner packed objects, additional arguments/packs, materialized tables,
-wider properties, PIPE and sole-owner lifetimes remain partial.
+Additional arguments/packs, materialized tables, wider properties, other object
+kinds, PIPE and sole-owner lifetimes remain partial.
+
+[Packed retained INI calls with shared stdClass values](coverage/semantics/ini-set-owned-unpack-null-stdclass-value-review.json)
+now keep both the original intrinsic Closure and a separate table-free object
+through one numeric, named or mixed pack. Shared property writes stay visible
+after live callee/value replacement and live-pack COW or outer retirement.
+Returning handlers reach TypeError with empty API option and raw NULL explicit
+wrapper option; both retain the same updated object. Four source comparisons and
+1,452 state premises cover dual object roots, supplied-throw cancellation,
+strict ordinary versus weak explicit calls, precise discard and retained-setter reuse.
+Additional arguments/packs, materialized tables, wider properties, other object
+kinds, PIPE and sole-owner lifetimes remain partial.
+
+[Rejected getter Closure INI values](coverage/semantics/ini-set-null-getter-closure-value-review.json)
+now retain an exact bare `ini_get` Closure as the second value of an ownerless
+positional NULL-option call. Returning handlers convert the option to empty before
+the value TypeError; supplied throw preserves raw NULL and the captured getter and
+cancels rejection. The value is never invoked during reception. Four source
+comparisons and 1,374 state premises cover earlier callee/option/value capture,
+owning trace edges, strict option priority, precise discard and real getter reuse
+before and after setter recovery. Other callable kinds, retained setter receivers,
+named/unpacked forms and sole-owner lifetimes remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -980,6 +1010,13 @@ Three originals and 688 focused premises pass in the
 Initial leading LEFT/quiet RHS scalar refs and a primitive target before and after
 final dispatch bound this slice; wider values, producers and lifetimes remain partial.
 
+Selected-reference `%=` also caches a rebound fractional RHS before its second
+Deprecated callback. Repairing RHS to `5` after capturing `0.5` cannot prevent
+`Modulo by zero`; retiring the RHS after capturing `5.5` still lets `12 % 5` store
+integer `2` through the old target alias. Two originals and 364 focused premises pass in the
+[RHS conversion ledger](coverage/semantics/modassign-selected-rhs-warning-review.json).
+Initial quiet-integer RHS entry stays unchanged; wider values and lifetimes remain partial.
+
 Selected-reference `%=` now keeps its old target while reading the current RHS
 wrapper after a float-to-int Deprecated callback. Rebinding RHS from old `0` to `5`
 lets captured `12` store integer `2` through the old alias; the opposite old `5`
@@ -1033,6 +1070,15 @@ cached LEFT `-12`, `2.0` stores `-48`/`-3`; `64.0` stores right-shift `-1`.
 Success detaches late aliases; negative counts error before storage. Five exact
 originals and 629 focused SL premises pass in the
 [quiet float shift ledger](coverage/semantics/shiftassign-quiet-float-review.json).
+
+Selected-reference `^=` now keeps both old referents and the numeric path through
+a Deprecated callback. Captured `12` XOR old RHS `5` stores integer `9` through the
+old target alias despite current names `77`/`7`. Changing both old values to bad
+strings instead raises `TypeError`; it does not retry bytewise XOR or store.
+Two originals and 362 focused premises pass in the
+[selected XOR ledger](coverage/semantics/xorassign-selected-warning-review.json).
+Other conversions, operators, producers and owning lifetimes remain partial.
+
 For initially plain variables, numeric `&=`, `|=` and `^=` now keep their fractional
 left conversion through deprecation handlers, then read the live quiet integer RHS.
 Success detaches late aliases; supplied throw preserves callback writes and the
@@ -1408,6 +1454,12 @@ fresh result masks its consumed slot, argument and result keep separate release
 owners before receiver cleanup. Array container counts share one element-edge
 set; assigned results keep their copy. See the
 [aliased SEND review](coverage/semantics/generator-unused-pending-send-alias-review.json).
+A normal, unparked pending ancestor `send` preserves the same unused-result
+order.
+Its first refresh may release a closed child before argument, result and receiver
+cleanup. Assigned copies survive receiver retirement; row COW and equal-cache
+arguments preserve separate owners. See the
+[normal SEND review](coverage/semantics/generator-unused-detached-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit
@@ -1953,6 +2005,13 @@ selection still uses the invoking USER scope. Creating the factory in a class
 grants no later global permission. A rejected callback's receiver stays alive
 through its raw Error trace, then retires when those references are released.
 [Factory Closure define review](coverage/semantics/define-runtime-from-factory-review.json).
+
+Retained `define(...)` Closure callees now publish primitive constants and handle
+duplicates with omitted/false flags, including explicit `__invoke`. Captured
+callee identity survives later argument changes; nonowning selection history
+keeps queries valid after the callee dies. Repeated calls at one source site keep
+separate nonces, and throwing duplicates preserve raw API/wrapper arguments.
+[Owned DEFINE call review](coverage/semantics/define-owned-closure-review.json).
 
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
@@ -4680,17 +4739,17 @@ detached caller references. Ordinary global references may alias across pending
 slots; each keeps its own source/owner/restore authority and cleanup count. A
 nonempty unique property-source list now authenticates every plain public ALIAS
 and declaration of type `object` or `object|string`, with a live object referent.
-Computed objects retain distinct sole owners. A finite destructor can clear one
-object-only Holder before throwing the supplied Exception. The Holder may now run
-one public zero-argument literal-echo destructor first. One source and 361 Boolean/5
-raw checks at `842b2dc27` preserve both property sources through this callback,
-then local catch/Notice15/fresh detached NULL while two sources become one. String
-assignment succeeds; NULL still fails against the surviving union. Valid replacement
-preserves the old copy and detached r/prior b. Existing storage and typed writer
-rules stay unchanged. Earlier cuts remain in the
-[review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-Wider Holder methods/writes/throws, source kinds/types/values, fewer than two remaining
-slots, broader bodies/reentry and GC remain open.
+Computed objects retain distinct sole owners. A finite D destructor can clear
+an object-only Holder, then echo a literal marker before its supplied throw.
+The Holder may echo normally or throw that same supplied object. Two originals
+and 399 Boolean/5 raw checks at `982a7919d` distinguish H;DA from H without DA,
+then preserve local catch/Notice15/fresh detached NULL as two property sources
+become one. String assignment succeeds; NULL still fails against the surviving
+union. Valid replacement preserves the old copy and detached r/prior b. Existing
+storage, pending and typed writer rules stay unchanged. Earlier cuts remain in
+the [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+Different propagated IDs, wider Holder bodies/writes, source kinds/types/values,
+fewer than two remaining slots, broader reentry and GC remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

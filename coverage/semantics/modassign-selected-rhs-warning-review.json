@@ -1,0 +1,117 @@
+{
+  "milestone": "OP68 selected modulo RHS conversion and historical divisor",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "scope": "Existing selected-reference %= entry with finite fitting fractional LEFT and quiet PINT RHS. After the first Deprecated callback, a freshly selected strict untyped RHS reference may hold a fitting fractional float. Its converted long is captured before the second Deprecated callback and retained independently of later repair or retirement. Cached zero raises the ordinary Error without selected or outer storage; cached nonzero uses the existing safe old-target write. Wider inputs, producers, callbacks and owning/typed lifecycle remain partial.",
+  "runtime_revision": "885d94362bf9e13e61c7c32df80763ce606eea17",
+  "helper_revision": "d9fa496cb9d4b945080f927f34843f9581c9a12c",
+  "private_modules": 407,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "9e1d3b6dad0d26f657786cf8abfb6e4add153e37e44582f8c14794bae98ca7e0",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "0493879c07af12c72a602617e770a2e4ce8781f04d788dd59414b1b582353b52"
+  },
+  "engine_basis": [
+    "Pinned convert_op1_op2_long converts LEFT first, then resolves and dereferences the still-current RHS CV wrapper. zendi_try_get_long fills the RHS long holder before its float precision-loss Deprecated. mod_function tests the saved op2_lval only after conversion returns, so a subsequent callback repair or retirement cannot change that divisor. ZEND_ASSIGN_OP has already fixed the old target address.",
+    "The new plan bridges only an actual old MOD_ASSIGN_SELECTED_WARNING returned marker1 when the quiet-PINT path is unavailable. It captures the current RHS PFLOAT into MOD_ASSIGN_SELECTED_RIGHT_WARNING. Stage0 requires the strict current reference snapshot; stage1 authenticates compiled source and saved LEFT/RHS conversion history without rereading RHS names, membership, allocation or value. Snapshot alone is a value/selection helper; valid/plan retain source authority.",
+    "Cached zero consumes the marker through existing integer_result before target lookup. Nonzero checks the unchanged safe old-target helper and uses long_mod/write_cell_checked without redirection or a new cell. Explicit unsafe-target and owning-handler boundaries remain. The old initial plan, quiet-right route, numeric/error/unwind/write bodies and roots stay exact; only one30 tag, a forward declaration/old-boundary EPS and appended404 rules change."
+  ],
+  "contract": [
+    "Author starts with LEFT12.5/quiet oldRHS5 in distinct reference cells. H1 writes oldtarget99 and rebinds current RHS to a fresh0.5 reference. H2 writes oldtarget88, rebinds current LEFT to77 and repairs current RHS to5. Both surviving oldRHS5 and currentRHS5 are nonzero, yet captured0.5-to0 raises fresh DivisionByZeroError with message Modulo by zero at RHS25/noPrevious. Oldtarget88 and outer100 survive; EOF oldaliases6/4 versus replacements8/9 prove preserved topology. Both callbacks return true and native stderr is empty.",
+    "Independent peer starts with oldRHS0 and fresh replacement5.5. H1 rebinds current RHS to5.5; H2 writes oldtarget88, rebinds current LEFT77, changes the fresh RHS to7 and unsets both names owning that new cell. Captured12%5 still delivers strict int2 through the surviving old target alias and outer result. The old RHS alias stays0 until its independent EOF write. The fresh RHS has owners2-to0, is unallocated and unreadable, while its returned history remains valid. Exactly the second Deprecated defaults; EOF oldaliases6/4, replacementLeft8 and RHS absence persist.",
+    "Focused190/174 share the old selected-modulo/arithmetic/integer HELPERS prefix and the accepted scalar diagnostic-classifier/list-fold idiom. Actual initial entry, both fresh and entered handlers, current versus original RHS, historical holders after repair/retirement, raw TODO-only bridge and atomic THROWN or integer store versus driven fresh Error/pruning, owners, EOF and zero/one-step cuts are checked. One author-only undriven matrix separates source authority from value snapshots. Each fixture traverses source-to-EOF once, with no redundant full-entry replay."
+  ],
+  "required_follow_on": [
+    "Initial selected scalar references, finite in-range fractional LEFT, quiet initial PINT RHS, a later fitting fractional PFLOAT in a strict untyped reference, named8192 handlers and a safe surviving old target bound these witnesses. Other conversion classes, ordinary nonreference RHS, constraints, owning payloads and wider producers/callbacks/lifecycles remain partial. Undriven projections do not establish excluded executions.",
+    "The compound store adds no cell, detachment, name redirect or operand-retention root; the ordinary generated Error owns its separate instance. No supplied-handler-throw witness, generic-unwind renewal or numeric algorithm renewal is claimed. Earlier OP66/OP67 and other evidence keep original cuts and failures0. OP12, COMP88 and Source47 low-initial-precision DEFINE-name callbacks remain paused; no engine bug or intentional divergence is claimed."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-68/source-885d94362-author-one/report.json",
+        "sha256": "3229d4c9dde61c1a585359a10d07a0c181c36b90d3a93b2c3e832f524d84cec8",
+        "revision": "885d94362bf9e13e61c7c32df80763ce606eea17",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-68/review-model-885d94362-review-one/report.json",
+        "sha256": "681d68530f8b826c9f600c9fa3a96bf7130270aa14585232193b09b2a4573dff",
+        "revision": "885d94362bf9e13e61c7c32df80763ce606eea17",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-68/state-d9fa496cb-two/report.json",
+        "sha256": "6cfd0ebd3efa266cb852e21047266128e81b0d0ea10f720c1b943cd094eea58e",
+        "revision": "d9fa496cb9d4b945080f927f34843f9581c9a12c",
+        "modules": 407,
+        "cases": [
+          "modassign-selected-rhs-warning-cached-zero",
+          "modassign-selected-rhs-warning-retired-divisor"
+        ],
+        "conditions": [
+          190,
+          174
+        ],
+        "total": 364
+      }
+    ],
+    "total_source_agreements": 2,
+    "total_focused_state_conditions": 364
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-68/baseline-c48247f18-cached-zero/report.json",
+      "sha256": "3a59ddd1ad97915736c035a300d031841af0192d30b4d98a18095742bd9f71ea",
+      "result": "Actual frontend accepted/checked program/Unsupported AFTER exact H1 prefix; selected modulo assignment quiet integer RHS reason, model1, empty semantic stderr, agreement0/rowpassedfalse/wrapperfalse; no override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-68/native-c48247f18-author-one/report.json",
+        "sha256": "be5b7a87b2bf623a292c38a88deed531c77f78cc90b9d30f511f4810b885653e"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-68/native-c48247f18-review-one/report.json",
+        "sha256": "f5eeaf618f29258c36e40aa6f970c77c15613758327a40d88e558ff28d565911"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-68/state-prep-d9fa496cb-two/report.json",
+        "sha256": "41623063a5c788f43c582bec2091dc46b58130f151fe61ecf65fb369ec220019",
+        "result": "Retained own source/native bytes, checked frontend/adapter and both full ordered407 struct checks only; all workers/compiler processes0/reaped, zero native/application or semantic execution credit."
+      }
+    ],
+    "standalone_syntax": "Two standalone undefined-pstate diagnostics, zero semantic credit.",
+    "full_compiler": "Both exact prepared fixtures must pass full ordered407 struct before SL; static-only checks carry zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-68",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/genuine and affected source use separate CPU1 grants/cuts; focused CPU1. Native30/modelCLI60-process90, checked prep30/full407 struct30 per fixture/SL120 per group. Author stderr empty; peer one original default second Deprecated25. Retained-source preparation reuses immutable own paths/native bytes without native/application replay.",
+    "record": "Restore matching Git cuts/local tools in a fresh directory. Retained original paths and native streams authenticate the focused fixtures; external evidence is not an operational runtime dependency. Copied tools add no rebuild or portability claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "commands": [
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/modassign_selected_rhs_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 tests/semantics/modassign_selected_rhs_warning_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-68/state-prep-d9fa496cb-two/run-prepare.py",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-68/state-d9fa496cb-two/run-state.py"
+    ]
+  },
+  "composition": {
+    "parent": "af64fe78f5685a6c364943fcb9f647e5a8659de1",
+    "private_publication": "a215de930e36c1dba9e4b3eb2b4d711e4ea212d5",
+    "modules": 407,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "9e1d3b6dad0d26f657786cf8abfb6e4add153e37e44582f8c14794bae98ca7e0",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "0493879c07af12c72a602617e770a2e4ce8781f04d788dd59414b1b582353b52"
+    },
+    "other_incoming_paths_preserved": 74,
+    "gate": "Independent actual-parent gate: OP68 base c13e27c07 to af64fe78f5685a6c364943fcb9f647e5a8659de1 changes six runtime paths150/172/207/270/289/413. Cached clone callback admission, named NULL/unpack rejected-stdClass INI reception, nonstrict missing-read live-array comparison, ref-return property-holder destructor cleanup, equal unused pending Generator send cleanup, and float-key literal retarget/reference/child-array retention selectors have no producer in the defined scalar selected-reference %= sources, global by-value named h, ordinary native Error and Throwable getters. GLOBALS dimension writes and internal Error trace arrays do not select array-literal key retention; literal retention/debt fields stay empty. There are no new shared state fields/defaults/general roots or ordered407-module changes;30/404 remain parent-base exact. Preserve complete incoming runtime/schema/manifest, overlay the sole MOD_ASSIGN_SELECTED_RIGHT_WARNING tag and private404/six tests exactly. Source2/focused364 retain private407 cuts885d94362/d9fa496cb without joined execution or renewed evidence. OP12, COMP88 and Source47 low-initial-precision callbacks remain paused."
+  }
+}
