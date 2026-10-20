@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+All seven missing-CV comparison array shapes now admit ALIAS entries whose live
+allocated reference cell holds a defined primitive. Captured containers retain
+their entries while shared cell writes stay visible across COW copies. Singleton
+references unwrap on copying; repeated entries own separate cell edges, independent
+of the number of table owners. Outside aliases can retain cells after compare or
+throw. Existing DIRECT leaves, source certificates, roots and restore/discard stay
+exact; object/array-valued aliases, nested arrays and paused COMP88 remain partial.
+
+New source10+2 and focused794/five groups pass first executions at
+`4f79af46c`/409. One separate old116 primitive-alias selector now agrees normally,
+without historical credit renewal. Initial native2+4 retains `921934ca1`/409;
+genuine ingress refusal retains `5ee243f0c`/409. No worker failure or retry.
+[Reference-array review](coverage/semantics/undefined-comparison-reference-array-review.json).
+
 All seven missing-CV comparisons now accept allocated flat DIRECT arrays of
 primitives or live ordinary non-Stringable object leaves, both captured and
 current. Captured COW preserves child identity; live-table replacement can

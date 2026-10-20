@@ -1,0 +1,92 @@
+{
+  "milestone": "COMP117 primitive reference entries in arrays at missing comparison reads",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "All seven existing captured/current array-vs-frozen-NULL shapes admit ALIAS entries whose live allocated reference cell contains a defined primitive. DIRECT primitive/ordinary-object entries retain their prior domain.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "e9efc373658af5931f53c9e5e927b744c7d269d4",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "f68a065f12e266cc51c603c52a759f13da15efc4927c8aed46ed0bd106540c6a"
+  },
+  "modules": 409,
+  "engine_basis": "zend_compare uses array truth against NULL without reading entries. zend_array_dup_value unwraps singleton primitive references during COW and retains shared references; existing array-to-cell edges determine lifetime.",
+  "implementation": "One four-line ALIAS-entry recursion arm checks call_reference_operand_valid, DEFINED payload and spaceship_read_scalar. No source, root, state/task, restore/discard or comparison rule changes. Separate Source85 CONFIG_SEND shape/source/resume fragments are selector-disjoint and must be preserved at actual-parent composition.",
+  "behavior": [
+    "Captured containers retain their ALIAS entries while shared cell writes remain visible across COW copies. A singleton-reference copy unwraps to DIRECT, leaving the old captured/copy value unchanged.",
+    "Each ALIAS entry owns one cell edge; multiple owners of one table do not multiply that edge. Repeated entries can point to the same cell. Final table release removes its entry edges, while outside aliases keep cells live through catch/finally and later writes.",
+    "Ten source agreements cover all seven operators, all primitive payload tags, current target-reference replacement, shared/same-CV and both-missing creation, no-init/default and first supplied throw. Source-reached state groups prove raw restore/compare/discard, actual singleton COW, transitive cell counts, malformed source/domain refusals and full split/zero budgets."
+  ],
+  "baseline": {
+    "report": "initial/baseline-report.json",
+    "sha256": "055a807ef90674ffce916440dc7f35c3d52488c8a64a9370ade4527483b6b431",
+    "revision": "5ee243f0c254e32442f6296209f1171ea721dd11",
+    "native_revision": "921934ca10575083b0d2ae15e88243f771ac3744",
+    "agreement_credit": 0,
+    "native": "Initial author2 and peer4 retain their actual canonical921934ca1/409 cuts; peer model4 reuses native4. Changed-source author native8 is separately recorded at4f79af46c/409.",
+    "model": "Genuine unchanged EQ is accepted/checked then ingress Unsupported with empty streams at private5ee243f0c/409."
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "0838b51fd13d1cf978d5452768a6f0a41899472a349c8a5c85381d83256665ba",
+      "revision": "4f79af46ceeceed773dab37f86fbf16126677378",
+      "agreements": 6,
+      "unsupported_controls": 2
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "767f5a8db814cbcaa8904621977d9da0471ec9a7169486372ca7d38dade1ebe6",
+      "revision": "4f79af46ceeceed773dab37f86fbf16126677378",
+      "agreements": 4,
+      "unsupported_controls": 0
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "aa60fec15fbe72d8876b959f04d243a71e01e18fb91c01d5bcb9423b52f96c4c",
+      "revision": "4f79af46ceeceed773dab37f86fbf16126677378",
+      "premises": 320,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "7195f1ed2a34919c83759626e429e43192ec47d24a3eddac33ea601cda239d15",
+      "revision": "4f79af46ceeceed773dab37f86fbf16126677378",
+      "premises": 474,
+      "groups": 3
+    }
+  ],
+  "totals": {
+    "source_agreements": 10,
+    "unsupported_source_controls": 2,
+    "state_premises": 794,
+    "state_groups": 5
+  },
+  "maintenance": {
+    "source_selectors": {
+      "report": "maintenance-source/report.json",
+      "sha256": "3e96f1b5cd1bc83521f09cbc60ae0ae88ccf1ebaacc3fb9775fe1f293ddb16ed",
+      "revision": "4f79af46ceeceed773dab37f86fbf16126677378",
+      "selectors": 1,
+      "normal_agreements": 1
+    },
+    "historical_agreement_renewal": 0,
+    "scope": "Only the old116 primitive-ALIAS entry Unsupported mapping is removed; its exact original now agrees normally as B|H|0. Existing constructed ALIAS negatives retain independent non-reference, missing-cell or nonprimitive-payload refusal reasons. No old state protocol or full campaign is renewed."
+  },
+  "validation": "CPU2 serial/fail-first/full reap,2GiB: native8 130/150/per15; model8 605/620/10k (two60/75, six45/60 CLI/record bounds); retained peer4 315/330/CLI60/record75. Author2 state275/290 and peer3 state405/420, per120 strictSL/dettrue/cachefalse. One selector100/120/child80. All worker checks passed first executions; original author process was continued and fully reaped across orchestration capacity interruptions, without restart. Inputs/HEAD stable, groups empty; raw commands and exits are archived.",
+  "failures": [],
+  "divergences": [],
+  "remaining": [
+    "Object/array-valued ALIAS entries, nested arrays, internal/enum/Stringable DIRECT object leaves and wider owning/reference-return producers remain partial. Paused COMP88 is untouched.",
+    "Reference membership, STORE bounds/defined payload and HCELL allocation are domain checks; source certificates remain stable. Implicit integer keys and whole-CV aliases produce no NULL literal-key or CONFIG_SEND/INI path."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-117",
+  "artifact_manifest_sha256": "9f646262959d9b846bcb83d381a12bce86fcc75352410320002464fb8ddf2392",
+  "independent_reviewer": "/root/comp89_review",
+  "reproduction": [
+    "python3 tests/semantics/undefined_comparison_reference_array_sources.py --phase native --output .tools/comp117-source-new",
+    "python3 tests/semantics/undefined_comparison_reference_array_sources.py --phase model --output .tools/comp117-source-new",
+    "python3 tests/semantics/undefined_comparison_reference_array_state.py --output .tools/comp117-state-new",
+    "python3 tests/semantics/undefined_comparison_reference_array_review_state.py --output .tools/comp117-peer-state-new"
+  ]
+}
