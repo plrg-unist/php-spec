@@ -1,0 +1,66 @@
+{
+  "scope": "Unary CV clone with materialized declared-public ordinary property table and existing public zeroarg void __clone callback. Actual callback foreach, singleton/held int references, borrowed source retirement and supplied callback throw.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_observations_accepted": true,
+  "native_revision": "3a5990daecea68af35b89feb1825af37b21871d9",
+  "cases": [
+    {
+      "id": "singleton",
+      "source_file": "cached-clone-callback-singleton.php",
+      "source": "<?php\nclass CachedCallback113 {\n    public int $value = 1;\n    public int $tag = 1;\n    public function __clone(): void {\n        echo 'C|';\n        $this->value = 7;\n        $this->tag = 2;\n        foreach ($this as $key => $entry) { echo $key, ':', $entry, '|'; }\n        unset($key, $entry);\n        echo 'c|';\n    }\n}\n$source = new CachedCallback113();\n$alias =& $source->value;\nunset($alias);\nforeach ($source as $key => $entry) {}\nunset($key, $entry);\necho 'U:';\n$copy = clone $source;\necho $source->value, '/', $copy->value, '|';\nunset($source, $copy);\necho 'E|';\n",
+      "source_sha256": "c0e94f3fd89ce51994303d47986c8602ce55420650eae87489df73895ae18c69",
+      "original_source": "/home/user/workspace/php-spec/.tools/cached-property-clone-callback-private-113/.tools/cached-clone-callback-probes-113/singleton.php",
+      "stdout_base64": "VTpDfHZhbHVlOjd8dGFnOjJ8Y3wxLzd8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "4982bbd2c6eba5cb4e80186948796c771fb6bb56a979c663a69f9dfde1dcfe99"
+    },
+    {
+      "id": "held",
+      "source_file": "cached-clone-callback-held.php",
+      "source": "<?php\nclass CachedCallback113 {\n    public int $value = 1;\n    public int $tag = 1;\n    public function __clone(): void {\n        echo 'C|';\n        $this->value = 7;\n        $this->tag = 2;\n        foreach ($this as $key => $entry) { echo $key, ':', $entry, '|'; }\n        unset($key, $entry);\n        echo 'c|';\n    }\n}\n$source = new CachedCallback113();\n$alias =& $source->value;\nforeach ($source as $key => $entry) {}\nunset($key, $entry);\necho 'H:';\n$copy = clone $source;\necho $alias, '/', $source->value, '/', $copy->value, '|';\nunset($source->value);\ntry { $alias = 'bad'; } catch (TypeError $caught) { echo 'T|'; }\necho $alias, '|';\nunset($copy->value);\n$alias = 'free';\necho $alias, '|';\nunset($source, $copy, $alias, $caught);\necho 'E|';\n",
+      "source_sha256": "6fc78f950581171551c2aaf0440f627460839e0c1ebaa7d2f528ab7e6636dbc3",
+      "original_source": "/home/user/workspace/php-spec/.tools/cached-property-clone-callback-private-113/.tools/cached-clone-callback-probes-113/held.php",
+      "stdout_base64": "SDpDfHZhbHVlOjd8dGFnOjJ8Y3w3LzcvN3xUfDd8ZnJlZXxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "8c582b9bdc5fbef843c477a39a08da59a26c4eca6a75032ebf1b91f1c1859162"
+    },
+    {
+      "id": "retire",
+      "source_file": "cached-clone-callback-retire.php",
+      "source": "<?php\nclass ClonePayload113 {\n    public int $value = 7;\n    public function __destruct() { echo 'V', $this->value, '|'; }\n}\nclass CachedCallback113 {\n    public int $tag = 1;\n    public $payload;\n    public function __clone(): void {\n        global $source;\n        echo 'C|';\n        $this->tag = 2;\n        $source = null;\n        foreach ($this as $key => $entry) {\n            if ($key === 'tag') { echo 'T', $entry, '|'; }\n            else { echo 'P', $entry->value, '|'; }\n        }\n        unset($key, $entry);\n        echo 'c|';\n    }\n    public function __destruct() { echo 'D', $this->tag, '|'; }\n}\n$source = new CachedCallback113();\n$source->payload = new ClonePayload113();\nforeach ($source as $key => $entry) {}\nunset($key, $entry);\n$copy = 42;\necho 'R:';\n$copy = clone $source;\necho 'A|';\necho $copy->tag, '/', $copy->payload->value, '|';\nunset($copy, $source);\necho 'E|';\n",
+      "source_sha256": "0c4d2ab55eb78427c09869a982ef6b7b3e56afc3758352b86b92310a8791ad9c",
+      "original_source": "/home/user/workspace/php-spec/.tools/cached-property-clone-callback-private-113/.tools/cached-clone-callback-probes-113/retire.php",
+      "stdout_base64": "UjpDfEQxfFQyfFA3fGN8QXwyLzd8RDJ8Vjd8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "e3af13a68e97ef646f99ede9d2a3138db29bd27cc43c2cb6b7a8f3442a3f1b95"
+    },
+    {
+      "id": "throwing",
+      "source_file": "cached-clone-callback-throwing.php",
+      "source": "<?php\nclass ClonePayload113 {\n    public int $value = 7;\n    public function __destruct() { echo 'V', $this->value, '|'; }\n}\nclass CachedCallback113 {\n    public int $tag = 1;\n    public $payload;\n    public function __clone(): void {\n        global $source, $error;\n        echo 'C|';\n        $this->tag = 2;\n        foreach ($this as $key => $entry) {\n            if ($key === 'tag') { echo 'T', $entry, '|'; }\n            else { echo 'P', $entry->value, '|'; }\n        }\n        unset($key, $entry);\n        $source = null;\n        echo 'c|';\n        throw $error;\n    }\n    public function __destruct() { echo 'D', $this->tag, '|'; }\n}\n$error = new Exception('same113');\n$source = new CachedCallback113();\n$source->payload = new ClonePayload113();\nforeach ($source as $key => $entry) {}\nunset($key, $entry);\n$result = 42;\necho 'X:';\ntry { $result = clone $source; echo 'A|'; }\ncatch (Exception $caught) { if ($caught === $error) { echo 'C|'; } echo $result, '|'; }\necho 'F|';\nunset($source, $caught, $error);\necho 'E|';\n",
+      "source_sha256": "f5ab97e077707d30ea788006e8e2103dba0264f94a62849aeecf5522dba4d8f8",
+      "original_source": "/home/user/workspace/php-spec/.tools/cached-property-clone-callback-private-113/.tools/cached-clone-callback-probes-113/throwing.php",
+      "stdout_base64": "WDpDfFQyfFA3fEQxfGN8RDJ8Vjd8Q3w0MnxGfEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "55b13f743a6f54fd97fe2139718314710bbbb250e0b82c9f3931c1fe4925299a"
+    }
+  ]
+}
