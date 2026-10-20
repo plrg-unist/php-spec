@@ -61,8 +61,20 @@ TASK/RESULT/BASE roots retain the table, transfer on restore, and release the sa
 owner after comparison or supplied throw. Tables with no surviving owner retire
 before catch while aliases retain their COW effects. The
 [captured-array review](../../coverage/semantics/undefined-spaceship-captured-array-review.json)
-records source and ownership checks. Captured arrays at Boolean comparisons,
-nested/reference/object entries and wider producers remain partial.
+records source and ownership checks. The six Boolean operators now admit the
+same captured flat-array domain, preserving snapshots and physical operand order.
+Their bounded source certificates authenticate the missing direct CV and both
+compiled expression descriptors. Known arrays cannot bypass the live-flat guard
+through the scalar default. Existing roots, restoration and throw cleanup stay
+unchanged; see the
+[Boolean captured-array review](../../coverage/semantics/undefined-scalar-compare-captured-array-review.json).
+Captured null, bool, int, float and byte-string operands now also survive Boolean
+Warning reads. For example, `$missing == ($saved = 0)` stays true after the callback
+writes 9 to both names. Returned strings keep their bytes independently of current
+aliases and string identity metadata. The
+[primitive review](../../coverage/semantics/undefined-scalar-compare-captured-primitive-review.json)
+checks snapshots, default/throw and actual second-read NULL compatibility. Nested,
+reference or object array entries and wider owning producers remain partial.
 Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also suspend with one missing operand
 and a defined scalar counterpart. The missing value stays null while the opposing
 wrapper follows callback writes, late reference creation and rebinding. A missing

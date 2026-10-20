@@ -276,6 +276,21 @@ check negative boundary float delivery, false fallback, public snapshot/message
 rejection, ownership and budget resumption in the
 [unary ledger](../../coverage/semantics/unary-warning-review.json). Other reference/owning producers, callbacks and lifecycle forms remain required.
 
+Evaluated nonowning copies now enter the same unary `+`/`-` Warning protocol.
+The named by-value-return case emits its producer output once before unary plus;
+its handler writes source `99`, unsets that source and throws the same Exception
+from line 20, leaving outer `100`. The selected-ternary unary-minus case removes
+its source, flips the condition and returns false. The unselected assignment
+sentinel stays `7`, while native echo `-0` and focused negative-zero bits establish
+the copied result's sign. Source retirement leaves the immutable `KNOWN` snapshot
+valid; a supplied throw discards the continuation. Unary completion writes no
+source cell. Two originals and
+118+135 focused premises cover source/carrier authority, real callbacks, raw
+versus driven transitions, cancellation, owners, EOF and budget cuts in the
+[unary-copy ledger](../../coverage/semantics/unary-copy-warning-review.json).
+Old CV/reference entry, function/ternary, numeric and unwind bodies stay unchanged.
+Other producers, owning reference results and wider lifecycles remain partial.
+
 Selected scalar-reference unary `+`/`-` now reuses this captured-number protocol.
 Fresh snapshots authenticate the selected live unconstrained CELL and actual raw
 text. The handler writes old value `99`, rebinds the current name to replacement
@@ -627,6 +642,23 @@ covering the actual atomic commit/error, original bindings, owners and budgets.
 Initial references/copies, unsafe targets and wider RHS/callback/lifecycle forms
 remain partial; refusal projections do not establish wider execution.
 
+Selected-reference `>>=` fixes the old target before converting LEFT, but resolves
+the RHS CV after its Deprecated callback. Captured `-12` with rebound count `64`
+stores strict integer `-1` through the surviving old alias despite callback target
+`99` and current LEFT `77`; old count `2` would give `-3`, and a positive LEFT
+would give `0`. A rebound count of `-1` instead raises `ArithmeticError` with
+`Bit shift by negative number` at RHS line 25, preserving callback target `88`,
+outer `100` and alias topology. EOF writes still reach old aliases separately
+from replacement cells. Two originals and 195+163 focused premises cover real
+fresh/entered callbacks, source and reference controls, returned LEFT history,
+raw no-store THROWN or old-cell store, driven fresh indexed Error, owners and
+zero/one-step cuts in the
+[selected shift ledger](../../coverage/semantics/shiftassign-selected-warning-review.json).
+Initial untyped primitive references, fitting fractional LEFT, quiet PINT count
+and a safe surviving old target bound this slice. SHIFTLEFT, additional count
+conversions, typed/owning operands and wider producers/lifecycles remain partial;
+numeric and generic-unwind bodies keep their earlier cuts.
+
 For distinct initially plain CVs, `<<=` and `>>=` keep a fractional-float left
 conversion before their deprecation and read the live quiet integer count afterward.
 Captured `-12` with live count `2` stores `-48` or `-3` despite callback target `99`;
@@ -637,7 +669,7 @@ SL premises pass in the
 [shift-assignment ledger](../../coverage/semantics/shiftassign-warning-review.json).
 Both AST directions have their own source authority; old modulo validators stay
 unchanged. Fresh cache/source/op/line guards, actual cells/owners, default Deprecated
-and budgets are covered. Pure ready projections establish refusals only. Initial
+and budgets are covered. Pure ready projections establish refusals only. Other initial
 references/copies, warning or noninteger counts, unsafe targets and wider lifecycle
 remain partial.
 
@@ -684,6 +716,23 @@ premises pass in the [quiet float shift ledger](../../coverage/semantics/shiftas
 covering actual atomic commit/error, original bindings, cells/owners and budgets.
 Wider initial forms, conversions, unsafe targets and lifecycle remain partial;
 pure projections establish refusals only, and older threshold cuts are not renewed.
+
+Selected-reference `^=` also protects a leading fractional RHS string before its
+Warning. After LEFT Deprecated, old `5.5tail` is selected despite current RHS `7`.
+A supplied Warning throw returns the same Exception at line 20 and skips the
+later precision diagnostic and compound store, leaving callback write `88` and outer
+`100`. Normal return instead retains the original quoted `"5.5tail"` message and
+long `5` after the old RHS is rewritten to `7` and loses its last owner. The third
+callback writes old target `66`; cached `12 XOR 5` then stores integer `9` through
+its surviving alias while current LEFT `77` remains separate. Two originals and
+200+250 focused premises cover real callbacks, fresh selection versus returned
+history, raw TODO-only capture/store, cancellation, owners, EOF and budget cuts
+in the [protected XOR text ledger](../../coverage/semantics/xorassign-selected-rhs-warning-review.json).
+Initial untyped scalar references, fractional LEFT/quiet PINT initial RHS,
+exactly leading Warning plus string-precision Deprecated and a safe surviving
+target bound the slice. Single-notice text, other conversion forms/producers,
+typed or owning cells and wider lifecycles remain partial. Existing generic
+unwind, numeric conversion and diagnostic-formatting bodies stay unchanged.
 
 Selected-reference `^=` now dereferences both operands and chooses numeric
 specialization before converting fractional LEFT. Captured `12` survives the

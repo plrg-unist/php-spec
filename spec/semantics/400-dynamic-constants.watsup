@@ -229,10 +229,10 @@ dec $dynamic_halt_receive(pstate, pconfigcall) : pstate
 dec $dynamic_global_constant_finish(pstate, pconfigcall) : pstate
 dec $dynamic_scalar_define_call(pconfigcall) : bool
 dec $dynamic_nan_define_name_entry(pstate, pconfigcall) : bool
-;; Owned DEFINE calls currently admit primitive values and omitted/false flags.
+;; Owned DEFINE calls share captured-owner and omitted/false reception checks.
 ;; The live call must match its historical captured-owner selection.
-dec $dynamic_owned_define_valid(pstate, pconfigcall) : bool
-def $dynamic_owned_define_valid(S, pconfigcall) = true
+dec $dynamic_owned_define_header(pstate, pconfigcall) : bool
+def $dynamic_owned_define_header(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_DEFINE /\ pconfigcall.OWNER =/= eps
   -- if pconfigcall.PACKS = eps /\ ~$pipe_site(S, pconfigcall.SITE)
   -- if $config_invoke_valid(S, pconfigcall)
@@ -240,8 +240,17 @@ def $dynamic_owned_define_valid(S, pconfigcall) = true
   -- if $named_slot_at(pconfigcall.SENT, 0) = NAMED_SENT (KNOWN pvalue_name)
   -- if $string_plain(pvalue_name) = pvalue_name \/ $string_carrier_valid(S, pvalue_name)
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
-  -- if ~$dynamic_constant_case_flag(pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue)] \/ pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN (PBOOL false))]
+def $dynamic_owned_define_header(S, pconfigcall) = false -- otherwise
+dec $dynamic_owned_define_valid(pstate, pconfigcall) : bool
+def $dynamic_owned_define_valid(S, pconfigcall) = true
+  -- if $dynamic_owned_define_header(S, pconfigcall)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
   -- if $dynamic_constant_class(pvalue) =/= eps
+def $dynamic_owned_define_valid(S, pconfigcall) = true
+  -- if $dynamic_owned_define_header(S, pconfigcall)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, POBJECT n_object))
+  -- if $dynamic_define_value_class(S, POBJECT n_object) =/= eps
 def $dynamic_owned_define_valid(S, pconfigcall) = false -- otherwise
 dec $dynamic_define_finish(pstate, pconfigcall) : pstate
 def $dynamic_define_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -882,7 +891,7 @@ dec $dynamic_array_source(pstate, porigin) : bool
 def $dynamic_array_source(S, porigin) = $dynamic_define_source(S, porigin)
 def $dynamic_array_call_valid(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
-  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if (pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps) \/ $dynamic_owned_define_header(S, pconfigcall)
   -- if $config_invoke_valid(S, pconfigcall)
   -- if $dynamic_array_source(S, pconfigcall.SITE)
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, PARRAY n_array))

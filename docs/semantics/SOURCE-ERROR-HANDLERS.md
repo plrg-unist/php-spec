@@ -148,11 +148,21 @@ keeps physical order, current alias/COW ownership and known-NULL second records.
 The [initial-array extension](../../coverage/semantics/undefined-comparison-initial-array-review.json)
 widens only four entry premises: saved reads add no initial-table owner, and
 existing quiet-removal, unread-retry, scalar/array resume and discard stay exact.
-At `<=>` only, captured allocated flat DIRECT primitive tables now enter through
+At `<=>`, captured allocated flat DIRECT primitive tables enter through
 two exact saved-read shapes. Existing TASK/RESULT/BASE roots retain snapshots
 through callback COW and source removal, then release the saved owner on compare or throw;
 see the [captured-array review](../../coverage/semantics/undefined-spaceship-captured-array-review.json).
-Boolean captured-array ingress stays excluded.
+The six Boolean operators now admit captured flat arrays with bounded source
+certificates checking the missing direct CV and both compiled expressions. Their
+scalar default explicitly rejects known arrays, so liveness/flatness cannot be
+bypassed. Saved owners and generic restore/discard are unchanged; the
+[Boolean captured-array review](../../coverage/semantics/undefined-scalar-compare-captured-array-review.json)
+records source, COW and abrupt-release checks. Those certificates also admit
+captured primitives while preserving both compiled descriptors and the missing CV.
+Current alias writes cannot replace the saved bytes/value, and actual second
+Warnings still freeze NULL; see the
+[primitive review](../../coverage/semantics/undefined-scalar-compare-captured-primitive-review.json).
+Owning objects/resources, nonflat arrays and wider producers remain partial.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.
 [The equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json)
@@ -320,7 +330,7 @@ or cancels debt. The same updates apply to supplied-throw cleanup. These two
 initial plans remain disjoint, and captured runtime-array temporaries incur no
 debt. The [mixed-CV ledger](../../coverage/semantics/array-literal-float-mixed-cv-review.json)
 records balanced cycles and entry-independent deletion/throw deficits. Initial
-wrapped scalar/string CVs, wider tables and unsafe debt retirement remain Unsupported.
+wrapped string CVs, wider tables and unsafe debt retirement remain Unsupported.
 An initially ordinary array CV can become an untyped wrapper during conversion,
 so even a by-value item may insert ALIAS rather than DIRECT. Its retained old
 HARRAY owner and omitted new-CELL owner survive deletion or builder retirement.
@@ -331,20 +341,38 @@ checks primitive/array wrapper payloads, singleton versus shared copies, child
 snapshots and old-table COW. These new arms exclude outer property/coercion/backing
 records and direct string CELLs, retaining the initial classifiers, source/error
 authentication and existing positive-lifetime guard.
-Initially wrapped untyped array CVs now use the same ARRAY marker with a borrowed
+Initially wrapped array CVs use the same ARRAY marker with a borrowed
 REFERENCE payload-slot locator. Zend dereferences before dispatch, so a callback's
 new CV binding is ignored while writes through the surviving old alias supply the
 DIRECT array value. The acquired old table remains owned; the captured CELL adds
 no root. Source authentication reconstructs the actual VARIABLE spelling/line and
 can survive locator retirement, while readiness requires an allocated marked
-receipt-free CELL without CELL debt and a bounded array payload in the same
-logical-pruned live set. Missing outside ownership, nonarray completion and the
+CELL without CELL debt or coercion/backing records and a bounded array payload
+in the same logical-pruned live set. Missing live slot ownership, strings/objects and the
 active builder refuse explicitly. Deletion/throw preserves the HARRAY deficit;
 a separate ordinary table owner keeps it positive until the reciprocal slot
 retarget balances both table biases. The
 [wrapped array-CV ledger](../../coverage/semantics/array-literal-float-wrapped-array-cv-review.json)
 separates fresh stable/cycle/deletion/throw witnesses from the unchanged initial
 scalar/ordinary gates and graph/count/prune/driver algorithms.
+Initial wrapped primitives now earn BORROWED ROOT in the existing scalar marker.
+Only the builder is rooted; the captured CELL must remain live independently.
+A separate completion helper reads primitive or bounded-array payloads from that
+slot, leaving global input/value/live classifiers exact. ARRAY capture can also
+complete as a DIRECT primitive. Opposite captured-slot cycles cancel table debt
+or retained counts through normal and throw cleanup, while source metadata can
+still authenticate a retired locator before readiness refuses. The
+[wrapped mixed-CV ledger](../../coverage/semantics/array-literal-float-wrapped-mixed-cv-review.json)
+records fresh bool/int/float/NULL and table-copy witnesses. Captured slots may
+also use existing nonempty unique ordinary property sources whose types accept
+the payload. Their objects must survive the same logical pruning even debt-free;
+source authentication remains metadata-only, while readiness/discard refuse a
+missing source object despite a positive CELL/payload count. The
+[typed captured-CV ledger](../../coverage/semantics/array-literal-float-typed-wrapped-mixed-cv-review.json)
+checks fresh public int|array coercion/rejection, safe source detach and independent
+DIRECT copies through normal/deletion/throw cycles. Type/write helpers and all
+marker roots remain exact; direct strings, wider sources and unsafe lifetimes
+stay excluded.
 String leaves validate canonical bytes or existing carrier records. Their table
 and wrapper counts stay separate from copied string bytes: debt-time writes may
 share a table while a string snapshot stays unchanged. Singleton reference

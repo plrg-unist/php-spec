@@ -1,0 +1,88 @@
+{
+  "scope": "Ownerless ordinary positional INI_SET rawNULL option plus retained exact one-entry key0 ALIAS ARRAY VALUE. The cell is live, allocated, DEFINED, in REFCELLS and holds a quiet primitive; property-reference/coercion metadata is absent and whole-state PARAMETERBACKINGS is EPS. INDEX2/PACKSeps/notNAMED/nonPIPE/effectiveweak; value source facts must be unknown (compiled_read EPS).",
+  "status": "integrated",
+  "reviewer": "/root/source_review_35",
+  "parent": "b77ab92f83c40a349e2916a0908674b7fe064e43",
+  "initial_revision": "dc883ec005da0f295e21f4a292b01e9891c01907",
+  "semantic_revision": "5ba6dd256a23b47d2eb7b87349bb0bb8ae7fad2c",
+  "tested_revision": "5a910116f961247868286baef82d8a07b9f1c0bc",
+  "modules": 407,
+  "semantic_files": {
+    "spec/semantics/172-file-context-intrinsics.watsup": "b7ea3997842b562116212cdb59438eaa6d1d58d5f70d925dd8c075a52c2f90cc"
+  },
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "primary": "Pinned basic_functions.c PHP_FUNCTION(ini_set) parses the option string first; Z_PARAM_ZVAL receives new_value, then the following Z_TYPE>IS_STRING body guard rejects ARRAY parameter2 without traversing elements. Zend array COW preserves shared element reference cells. Returning NULL Deprecated handling converts the API option to empty; supplied throw cancels value rejection.",
+  "semantics": "Only29 additive172 lines: a separate one-ALIAS-array predicate uses existing84 reference validity, quiet referent and138 metadata fences; a disjoint ownerless positional NULL2 header authenticates written option EPS/NULL and value EPS facts, and an array-only finish delegates the existing empty-option TypeError2 body. Actual partial states witness rawNULL/callee capture before V; retained original ARRAY and current COW copy both reach the same HCELL after later leaf writes. Old DIRECT rejected_array/entries,84/138/trace/root/discard/GC/schema and historical tests remain exact. No current-CV reread, reconstructed history, frozen referent or direct CELL task root is introduced.",
+  "accepted": [
+    "Source4 actual accepted/program/normal model stdout/PHPstderr/PHPexit0 exactly match native at5a910116f/runtime5ba6dd256/407. Default and true-return cases reach parameter2 TypeError; compact native E/L/A writes the leaf after actual TypeError/getTrace, then sees the new leaf through the saved trace array while its one-entry shape remains unchanged and current copy has41. No native physical array-ID claim.",
+    "Selected V writes the shared cell and COW-appends31 before rebinding live callee/option/value. False handler writes the same cell and appends37, then default Deprecated and parameter2 TypeError preserve99/old shape/current31+37 and original string setter8-to11. Strict reception completes V/shared-cell/container effects then raises rawNULL parameter1 TypeError with handler0 and real9-to11 recovery.",
+    "Author843=349+292+202 plus independent peer418 total1261 strict-SL premises pass. Actual rawNULL partial has no config heap root; completed SENT roots only HARRAY, whose child is the same HCELL shared by the current COW table. Returning/strict TypeErrors have one API frame; supplied Exception has handler/API two frames, with rawNULL and actual oldARRAY-to-liveCELL edges after the post-allocation leaf write. HCELL is not a possible GC buffer root. Existing one-array buffering and idempotent whole restored/discard equality, malformed/source/ref/type/carrier controls and budget identities pass.",
+    "Peer native supplies the same Exception I99/effect1/warn1, later leafafter-exception81/current37/old-no1 C/sibling3179 then original string setter10-to12; it does not traverse native traces. Nine reports PASS first attempt/input+HEAD stable, four SL streams exactly true LF/quiet/exit0, model workers quiet, no timeout/interruption/survivor. Only default Deprecated12 and selected Deprecated21 occur; strict/peer PHPstderr is quiet. No execution failure, retry or runtime/harness correction."
+  ],
+  "baseline_zero_credit": "At clean source-onlydc883ec005da0f295e21f4a292b01e9891c01907/unchangedb77ab92f8/407, captured-null-alias-array-before-reference-write-and-live-value-rebinding is accepted/program Unsupported: error-handler ingress requires a producer continuation after B|V|, CLI1/nullPHPexit/quietworker17.555s, zero agreement. Native author3+peer1 precede semantic/protocol edits.",
+  "compatibility": "The old DIRECT-array guard stays exact, so named/owned/packed DIRECT domains are not silently widened. Earlier malformed ALIAS-to-owning-array controls remain rejected by quiet/ref fences; source metadata controls remain inconsistent. No historical fixture repair/replay. Direct A39 partition: only413 typed/property capture under lossy-float literal-key markers, absent here; V95 is400 DEFINE+ordinary INSTANCE VALUE, absent here. No Stringable/userclass/cast/clone/owning referent/last-owner or paused boundary execution; no engine bug or intentional divergence identified.",
+  "execution": "Initial packet CPU3; affected six CPU5. LC_ALL=C TZ=UTC INT+kill5 AS3221225472, serial fail-first/full reap. Native15/CLI45-host60/freshSL90 unchanged. Models22.601-to33.821s; SL29.217-to49.862s. CPU5 released before final raw acceptance.",
+  "command_prefix": "env LC_ALL=C TZ=UTC timeout --signal=INT --kill-after=5s <cap>s prlimit --as=3221225472 -- taskset -c <cpu> python3 <step>",
+  "commands": [
+    {
+      "revision": "dc883ec005da0f295e21f4a292b01e9891c01907",
+      "cpu": 3,
+      "caps": [
+        90,
+        90,
+        90
+      ],
+      "steps": [
+        "tests/semantics/ini_set_null_alias_array_value_sources.py --phase native --output .tools/ini-set-null-alias-array-value-native-81",
+        "tests/semantics/ini_set_null_alias_array_value_review_sources.py --phase native --output .tools/ini-set-null-alias-array-value-review-81",
+        "tests/semantics/ini_set_null_alias_array_value_sources.py --phase baseline --case captured-null-alias-array-before-reference-write-and-live-value-rebinding --output .tools/ini-set-null-alias-array-value-native-81"
+      ]
+    },
+    {
+      "revision": "5a910116f961247868286baef82d8a07b9f1c0bc",
+      "cpu": 5,
+      "caps": [
+        240,
+        90,
+        90,
+        360,
+        90,
+        120
+      ],
+      "steps": [
+        "tests/semantics/ini_set_null_alias_array_value_sources.py --phase model --output .tools/ini-set-null-alias-array-value-native-81",
+        "tests/semantics/ini_set_null_alias_array_value_review_sources.py --phase model --output .tools/ini-set-null-alias-array-value-review-81",
+        "tests/semantics/ini_set_null_alias_array_value_protocol.py --phase prepare --sources .tools/ini-set-null-alias-array-value-native-81 --output .tools/ini-set-null-alias-array-value-public-81",
+        "tests/semantics/ini_set_null_alias_array_value_protocol.py --phase check --sources .tools/ini-set-null-alias-array-value-native-81 --output .tools/ini-set-null-alias-array-value-public-81",
+        "tests/semantics/ini_set_null_alias_array_value_review_protocol.py --phase prepare --sources .tools/ini-set-null-alias-array-value-review-81 --output .tools/ini-set-null-alias-array-value-review-public-81",
+        "tests/semantics/ini_set_null_alias_array_value_review_protocol.py --phase check --sources .tools/ini-set-null-alias-array-value-review-81 --output .tools/ini-set-null-alias-array-value-review-public-81"
+      ]
+    }
+  ],
+  "raw_root": ".tools/ini-set-null-alias-array-value-evidence-81",
+  "report_sha256": {
+    "author/public/check-report.json": "2720b8e0346bf884ac41d53e62203bc65d1d11f8205ce22be14d0104ca3a8b39",
+    "author/public/prepare-report.json": "89f4646805fe4b5c7cc8fdaad4267b56709eb3e1a5969143f6496c670555fa6c",
+    "author/review/model-report.json": "1e8c347ebdc9befb515ee571fc917cdb6e22a929de4a35b17149bdb7ba34eaa8",
+    "author/review/native-report.json": "89731e66ac188e9759255b2338e06199b58345ca9712aa49527082ed24e2fe91",
+    "author/review-public/check-report.json": "20a2aacc9a1c5352f5a28d39e59198ae62313dd6f396868064a0b7abd3041bdc",
+    "author/review-public/prepare-report.json": "4888eaf0e947484b260d07b604b80b76363b5c09a92c5c8b8d6b68be8e168f6c",
+    "author/sources/baseline-report.json": "31147a91ffcbadf42e63695b12b41bb49f35430f524205b14632b560fc78fd1d",
+    "author/sources/model-report.json": "660f968b1abaadc38255a7b7d657ca4f617d3d453c6e261e0906220fd61194c1",
+    "author/sources/native-report.json": "406b5410cdb9835ecf672e71cfe97b5ef5f6a58000c6e724b36dc923bb95982d"
+  },
+  "recovery": "After independent ACCEPT/RAW STOP/focused users[], four roots moved once to author/{sources,review,public,review-public}; nine concise reports hashed once. Restore original paths and revisions for source/cwd identity; reports retain exact inputs/commands/exits. No raw/hash renewal.",
+  "remaining": "Named/mixed/owned/packed/PIPE forms, additional entries/keys, typed/property/parameter-backed references, nonempty global PARAMETERBACKINGS, owning/nonquiet referents and sole-owner lifetimes remain partial. This is not complete core, semantic equivalence or BOLA freedom; paused boundaries stay untouched.",
+  "composition": {
+    "parent": "0b95e2e7242b204b03943005279ee9c96d230f50",
+    "private_publication": "6fa97804bd30214ab23d7ae15714228efb4e3172",
+    "ordered_modules": 407,
+    "seams": "Preserve V94 DEFINE-only args-before-owner config_nodes head and generic nonDEFINE fence in172, plus owned DEFINE ARRAY400 header. INI_SET keeps previous SENT root order; fixed primitive sibling DEFINE has no owning arguments/callee. New207 missing-read Boolean selectors have no producer (defined variables/strict identities/quiet isset);270 byref-return destructor/global-holder history is absent (by-value helpers, primitive element reference is not byref return);289 Generator SEND is absent;30/404 fractional-text selected XOR tasks are absent (quiet integer increments). A39/413 typed/property borrowing requires a lossy-float-key marker, absent from implicit key0 [&leaf]; new172 uses unchanged84/138, without413 coupling. All incoming eight runtime paths/root partition and schema/state/39/301/368/ordered407 are preserved; additive task tags need no lift.",
+    "documentation": "Private README/family insertion and exact environment.config own2helpers/2sources/1ledger+suffix; own checkpoint/composition precede the entire incoming PROGRESS tail unchanged.",
+    "evidence": "Source4/state1261 retain5a910116f/runtime5ba6dd256/407; initialdc883ec00 native4/baseline0 and nine first-pass reports stay unchanged. No joined actor, semantic rerun or renewed credit."
+  }
+}

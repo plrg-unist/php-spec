@@ -93,8 +93,9 @@ separator; the final component stays case sensitive. `defined` removes a leading
 for lookup separately. Fixed global/explicit-global `define` and retained dynamic
 selection authenticate the call site; namespaced fallback is outside this slice.
 
-Retained intrinsic DEFINE Closure callees also admit primitive values, string
-names and omitted/false flags, through ordinary or explicit `__invoke` calls.
+Retained intrinsic DEFINE Closure callees also admit primitive values, bounded
+array snapshots or existing supported direct objects, string names and
+omitted/false flags, through ordinary or explicit `__invoke` calls.
 Preparation records the exact captured owner with a nonce before arguments run;
 the live CONFIG must match that owner, site, kind and line. Its durable selection
 record owns nothing and authenticates the saved intrinsic tag after the callee
@@ -103,9 +104,36 @@ string selections carry an empty owner; owned records have no original string.
 Repeated same-site calls preserve inactive historical records while requiring
 the current nonce for active tasks. Named capture, frame retirement and normal
 or throwing duplicates preserve the earlier primitive arguments and old row.
-Other flags, owning payloads, coercive names, packs and PIPE remain outside this
-owned-call slice; no intrinsic Closure VALUE authority is added.
+Other flags, coercive names, packs and PIPE remain outside this owned-call
+slice; no intrinsic Closure VALUE authority is added.
 [Owned DEFINE call review](../../coverage/semantics/define-owned-closure-review.json).
+
+Owned arrays reuse the existing authenticated leaf, canonical copy and query
+policy. Capturing an earlier raw array preserves its identity through later
+callee/source CV changes; copying dereferences its current alias cells into
+DIRECT entries. Query COW copies containers while sharing object leaves. A
+rejected private candidate retains its own child after the raw alias becomes
+NULL, then retires that child before the captured callee. The child destructor
+observes the callee alive; it has retired when false is delivered or the original
+Exception reaches catch. A returning handler may replace the raw alias with a
+different owning child: rejected-copy cleanup runs first, call argument owners
+are released next, and the callee last. Both child destructors observe the callee
+alive. The new header admits only omitted or raw Boolean false flags; existing
+ownerless NULL/quiet-flag delegates and other intrinsic cleanup orders stay exact.
+[Owned array call review](../../coverage/semantics/define-owned-array-review.json).
+
+Owned direct objects reuse the existing value classifier without changing leaf,
+certificate, scope or live-storage authority. The originals publish an ordinary
+INSTANCE and a cached stdClass, retaining pointer and child identity after source
+and callee retirement; cast-view COW keeps the stdClass table intact. A normal
+rejected INSTANCE argument runs its destructor while the callee is held. A
+throwing duplicate's raw API/__invoke object arguments instead outlive the
+callee. After the Exception and trace retire, the last raw argument views can
+release the object with no pending Exception and the callee gone. Other existing
+certified object and supported bare Closure/factory classes compose structurally
+without new producer credit; intrinsic Closure VALUE, wider flags/packs and
+global/default policies remain unchanged.
+[Owned object call review](../../coverage/semantics/define-owned-object-review.json).
 
 Public row checks require a genuine source/selection, canonical unique name,
 matching value class and empty read/receive metadata. Available immutable

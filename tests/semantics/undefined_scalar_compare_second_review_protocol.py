@@ -30,7 +30,7 @@ def checks(program, path, name):
     line = 13 if target else 16
     result += [
         '~$error_read_valid(S_first_resume,perrorread_reversed)',
-        'perrorread_value = perrorread_second[.ORIGINAL = BINARY_RIGHT ' + operator + ' (KNOWN (PINT 1)) ' + str(line) + '][.TASK = BINARY_RIGHT ' + operator + ' (KNOWN (PINT 1)) ' + str(line) + ']',
+        'perrorread_value = perrorread_second[.ORIGINAL = BINARY_RIGHT ' + operator + ' (KNOWN (POBJECT 0)) ' + str(line) + '][.TASK = BINARY_RIGHT ' + operator + ' (KNOWN (POBJECT 0)) ' + str(line) + ']',
         '$error_read_shape(perrorread_value.ORIGINAL,perrorread_value.INPUT,perrorread_value.BASE) = (perrorread_value)',
         '~$error_read_valid(S_first_restored,perrorread_value)',
     ]

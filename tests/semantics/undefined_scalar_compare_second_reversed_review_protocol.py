@@ -66,7 +66,7 @@ def checks(program, path, name):
             condition = '$error_read_shape(ptask_original,S.RESULT,S.BASE) = (perrorread_left)'
         result.append(condition)
     result += [
-        'perrorread_nonnull = perrorread_second[.INPUT = KNOWN (PINT 1)][.RESULT = KNOWN (PINT 1)]',
+        'perrorread_nonnull = perrorread_second[.INPUT = KNOWN (POBJECT 0)][.RESULT = KNOWN (POBJECT 0)]',
         '$error_read_shape(perrorread_nonnull.ORIGINAL,perrorread_nonnull.INPUT,perrorread_nonnull.BASE) = (perrorread_nonnull)',
         '~$error_read_valid(S_first_restored,perrorread_nonnull)',
         '~$error_read_source(S_first_restored,perrorread_nonnull)',

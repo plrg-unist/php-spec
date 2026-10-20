@@ -56,6 +56,7 @@ def $array_float_key_value(S, poperand) = eps -- otherwise
 ;; Initial scalar/TMP admission stays separate from the live ordinary CV.
 dec $array_float_array_key_value(pstate, poperand) : nat?
 dec $literal_array_owe(pstate, nat) : pstate
+dec $array_float_key_borrowed_value(pstate, nat) : pvalue?
 dec $array_float_key_live_value(pstate, poperand) : pvalue?
 def $array_float_key_live_value(S, VARIABLE n_name* z) = (pvalue)
   -- if $array_float_key_value(S, VARIABLE n_name* z) = (pvalue)
@@ -68,9 +69,17 @@ def $array_float_key_live_value(S, VARIABLE n_name* z) = (PARRAY n)
 def $array_float_key_live_value(S, KNOWN (PARRAY n)) = $array_float_key_value(S, KNOWN (PARRAY n))
 def $array_float_key_live_value(S, poperand) = eps -- otherwise
 
+;; A marked primitive CV was dereferenced before key conversion. Its ROOT
+;; locator borrows the captured slot rather than owning the reference wrapper.
+dec $array_float_key_completion_value(pstate, poperand) : pvalue?
+def $array_float_key_completion_value(S, BORROWED (ROOT n_cell)) = $array_float_key_borrowed_value(S, n_cell)
+def $array_float_key_completion_value(S, poperand) = $array_float_key_live_value(S, poperand) -- otherwise
+
 dec $array_float_key_retain(pstate, poperand) : pstate
 def $array_float_key_retain(S, VARIABLE n_name* z) = $literal_array_owe(S, n)
   -- if $array_float_key_live_value(S, VARIABLE n_name* z) = (PARRAY n)
+def $array_float_key_retain(S, BORROWED (ROOT n_cell)) = $literal_array_owe(S, n)
+  -- if $array_float_key_borrowed_value(S, n_cell) = (PARRAY n)
 def $array_float_key_retain(S, poperand) = S -- otherwise
 
 ;; A pending exception still inserts in Zend before its builder is discarded.
@@ -82,7 +91,7 @@ def $array_float_key_plain_nodes((HARRAY n) :: pnode*) = $array_float_key_plain_
 def $array_float_key_plain_nodes((HOBJECT n) :: pnode*) = false
 dec $array_float_key_ready(pstate, nat, poperand) : bool
 def $array_float_key_ready(S, n, poperand) = true
-  -- if $array_float_key_live_value(S, poperand) = (pvalue)
+  -- if $array_float_key_completion_value(S, poperand) = (pvalue)
   -- if pvalue =/= PARRAY n
   -- if $array_float_key_plain_nodes($heap_reach([HARRAY n] ++ $operand_nodes(poperand), eps, $heap_graph(S).EDGES))
 def $array_float_key_ready(S, n, poperand) = false -- otherwise
@@ -96,6 +105,10 @@ def $array_float_key_source(S, n, poperand, phpType13*, z, n_bits, i) = true
   -- if poperand =/= KNOWN (PARRAY n)
   -- if $array_float_key_item(S, phpType13*, z) = ((expression, poperand_key))
   -- if $array_float_key_input_source(S, expression, poperand)
+def $array_float_key_source(S, n, BORROWED (ROOT n_cell), phpType13*, z, n_bits, i) = true
+  -- if $(n_cell < |S.STORE|)
+  -- if $array_float_key_item(S, phpType13*, z) = ((NExprVariable (BYTES text) metadata, poperand_key))
+  -- if $array_float_key_source(S, n, VARIABLE ($base64(text)) z, phpType13*, z, n_bits, i)
 def $array_float_key_source(S, n, poperand, phpType13*, z, n_bits, i) = false -- otherwise
 
 dec $array_float_key_plan(pstate) : (nat, poperand, phpType13*, int, nat, int)?
@@ -113,6 +126,26 @@ def $array_float_key_plan(S) = ((n, S.RESULT, phpType13*, z, n_bits, i))
   -- if $float_long(n_bits, true) = (i, [PRECISIONLOSS])
   -- if $array_float_key_source(S, n, S.RESULT, phpType13*, z, n_bits, i)
   -- if $array_float_key_ready(S, n, S.RESULT)
+def $array_float_key_plan(S) = ((n, BORROWED (ROOT n_capture), phpType13*, z, n_bits, i))
+  -- if S.TODO = (ARRAY_VALUE n (VARIABLE n_key* z_key) phpType13* z) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if S.RESULT = VARIABLE n_name* z
+  -- if $array_float_key_item(S, phpType13*, z) = ((expression, VARIABLE n_key* z_key))
+  -- if $array_float_key_input_source(S, expression, S.RESULT)
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_capture)
+  -- if ~$foreach_released_container_cell(S, n_capture) /\ ~$update_released_array_name(S, n_name*)
+  -- if $array_float_key_borrowed_value(S, n_capture) = (pvalue)
+  -- if $array_float_key_scalar(S, pvalue)
+  -- if ~$environment_blocked(S, n_key*)
+  -- if $lookup(S.ENV, n_key*) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if $(n_bits < 18446744073709551616)
+  -- if ~$foreach_released_container_cell(S, n_cell) /\ ~$update_released_array_name(S, n_key*)
+  -- if $float_long(n_bits, true) = (i, [PRECISIONLOSS])
+  -- if $array_float_key_source(S, n, BORROWED (ROOT n_capture), phpType13*, z, n_bits, i)
+  -- if $array_float_key_ready(S, n, BORROWED (ROOT n_capture))
 def $array_float_key_plan(S) = eps -- otherwise
 def $array_float_key_pending(S) = ($error_handler_eligible(S, 8192) /\ $array_float_key_plan(S) =/= eps)
 
@@ -123,7 +156,7 @@ rule PhpStep/array-float-key-result: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13*
   -- if S.TODO = (ARRAY_KEY_FLOAT_RESULT n poperand phpType13* z n_bits i) :: ptask_tail*
   -- if $array_float_key_source(S, n, poperand, phpType13*, z, n_bits, i)
   -- if $array_float_key_ready(S, n, poperand)
-  -- if $array_float_key_live_value(S, poperand) = (pvalue)
+  -- if $array_float_key_completion_value(S, poperand) = (pvalue)
   -- if S_out = $literal_insert($array_float_key_retain(S, poperand), n, (KINT i), pvalue, z)
 rule PhpStep/array-float-key-result-unsupported: S ~> S[.TODO = eps][.RESULT = KNOWN PNULL][.COMPLETION = UNSUPPORTED "array literal float-key element after callback"]
   -- if S.TODO = (ARRAY_KEY_FLOAT_RESULT n poperand phpType13* z n_bits i) :: ptask_tail*
@@ -539,19 +572,30 @@ dec $array_float_array_key_reference(pstate, nat) : nat?
 def $array_float_array_key_reference(S, n_cell) = (n_array)
   -- if $call_reference_operand_valid(S, REFERENCE n_cell)
   -- if ~(n_cell <- S.LITERALREFDEBTS)
-  -- if $propref_at(S.PROPREFS, n_cell) = eps
-  -- if $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
-  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps
   -- if S.STORE[n_cell] = DEFINED (PARRAY n_array)
   -- if H_live = $heap_prune($heap_graph(S)[.DEBTS = eps])
   -- if (HCELL n_cell) <- H_live.NODES
-  -- if $literal_reference_flat_array(S, n_array, H_live.NODES)
+  -- if $literal_reference_cell(S, n_cell, H_live.NODES)
 def $array_float_array_key_reference(S, n_cell) = eps -- otherwise
+
+;; Primitive slots have no acquired table owner; ARRAY slots reuse the same
+;; validated borrowed-cell domain, including positive table debt at the inverse.
+def $array_float_key_borrowed_value(S, n_cell) = (pvalue)
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+  -- if ~(n_cell <- S.LITERALREFDEBTS)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $array_float_key_scalar(S, pvalue)
+  -- if H_live = $heap_prune($heap_graph(S)[.DEBTS = eps])
+  -- if (HCELL n_cell) <- H_live.NODES
+  -- if $literal_reference_cell(S, n_cell, H_live.NODES)
+def $array_float_key_borrowed_value(S, n_cell) = (PARRAY n_array)
+  -- if $array_float_array_key_reference(S, n_cell) = (n_array)
+def $array_float_key_borrowed_value(S, n_cell) = eps -- otherwise
 
 ;; The ordinary CV zval itself can become a wrapper during conversion.
 dec $array_float_array_key_item(pstate, poperand) : pitem?
-def $array_float_array_key_item(S, REFERENCE n_cell) = (DIRECT (PARRAY n_array))
-  -- if $array_float_array_key_reference(S, n_cell) = (n_array)
+def $array_float_array_key_item(S, REFERENCE n_cell) = (DIRECT pvalue)
+  -- if $array_float_key_borrowed_value(S, n_cell) = (pvalue)
 def $array_float_array_key_item(S, poperand) = (DIRECT pvalue)
   -- if $array_float_key_live_value(S, poperand) = (pvalue)
 def $array_float_array_key_item(S, VARIABLE n_name* z) = (ALIAS n_current)
@@ -636,7 +680,7 @@ def $array_float_array_key_retain(S, n_old, poperand) = $literal_array_owe($lite
   -- if $array_float_array_key_item(S, poperand) = (DIRECT (PARRAY n_current))
   -- if n_current =/= n_old
 def $array_float_array_key_retain(S, n_old, poperand) = $literal_array_retain(S, n_old)
-  -- if $array_float_key_live_value(S, poperand) = (pvalue)
+  -- if $array_float_array_key_item(S, poperand) = (DIRECT pvalue)
   -- if $array_float_key_scalar(S, pvalue)
 def $array_float_array_key_retain(S, n_old, poperand) = $literal_reference_owe($literal_array_retain(S, n_old), n_current)
   -- if $array_float_array_key_item(S, poperand) = (ALIAS n_current)

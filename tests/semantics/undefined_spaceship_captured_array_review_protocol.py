@@ -133,7 +133,7 @@ def checks(program, path, name):
         '~$error_call_valid(S_warn,perrorcall[.RESUME = ERROR_READ_RESULT perrorread_bad])',
         '~$error_read_valid(S[.CODE = eps],perrorread)', '~$error_read_valid(S[.ORIGIN = eps],perrorread)',
         'perrorread_foreign = perrorread[.ORIGINAL = BINARY_RIGHT EQUAL (' + ('VARIABLE ($ptascii("missing")) z_missing' if right else 'KNOWN (PARRAY n_array)') + ') ' + str(line) + '][.TASK = BINARY_RIGHT EQUAL (' + ('KNOWN PNULL' if right else 'KNOWN (PARRAY n_array)') + ') ' + str(line) + ']',
-        '~$spaceship_read_array(S,perrorread_foreign)', '~$scalar_compare_read_array(S,perrorread_foreign)',
+        '~$spaceship_read_array(S,perrorread_foreign)', '$scalar_compare_read_array(S,perrorread_foreign)',
         '~$error_read_valid(S,perrorread_foreign)',
     ]
     if right:

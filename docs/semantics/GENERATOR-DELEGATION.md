@@ -178,6 +178,20 @@ releases. The temporary return copy shares its array with the child; child
 storage retires before argument cleanup. A prior getter needs no prefix, and
 assigned calls retain their result. See the
 [normal SEND review](../../coverage/semantics/generator-unused-detached-send-review.json).
+The identity-refresh proof also admits the direct pending physical receiver at
+that normal owning return. Argument cleanup and unused-result release precede
+its finally; assigned copies retain their independent owner. Raw-row writes
+therefore distinguish one container from an assigned snapshot, while shared
+reference cells keep their own edges. At that cut the closed-child-prefix proof
+was ancestor-only; see the
+[direct SEND review](../../coverage/semantics/generator-unused-direct-detached-send-review.json).
+The direct pending receiver now also admits exactly one allocated closed child
+whose actual refresh produces an owning copied return. Its authenticated child
+release stays first; the copied return temporarily has child and waiting-slot
+owners, then survives child retirement independently of current. The raw cell
+can follow an argument-time rebind while the argument retains its earlier value.
+See the
+[direct refresh review](../../coverage/semantics/generator-unused-direct-refresh-send-review.json).
 Literal pending NEXT takes the same initialization-only return through a direct
 or finite native-linked receiver, preserving the actual parked source and frame.
 Its NULL result owns no current snapshot. After a raw-row write performs COW,

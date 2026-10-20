@@ -147,20 +147,34 @@ snapshots and ordinary old-table writes keep their COW behavior. The
 checks normal, deletion and supplied-throw paths. These completion arms exclude
 outer property/coercion/backing records and string CELL values; initial plans,
 global gates and lifetime limits stay unchanged.
-An initially wrapped untyped array CV captures its dereferenced CELL payload
+An initially wrapped array CV captures its dereferenced CELL payload
 slot before conversion. The existing ARRAY marker owns only builder and old table;
 its REFERENCE locator adds no CELL owner. Completion reads that captured slot,
 ignoring current CV rebinding, and inserts DIRECT PARRAY. The allocated marked
-CELL has no property/coercion/backing records or CELL debt, and both CELL and
-bounded payload must survive logical pruning even before any debt exists. Source
+CELL has no coercion/backing records or CELL debt, and both CELL and bounded
+payload must survive logical pruning even before any debt exists. Source
 metadata remains valid when a locator retires; readiness then refuses explicitly.
 An outside alias keeps the borrowed slot alive, while deletion/throw requires
 another ordinary table owner to keep a new HARRAY deficit positive. Reciprocal
 slot retargeting cancels old/new table biases before ordinary COW and teardown.
 The [wrapped array-CV review](../../coverage/semantics/array-literal-float-wrapped-array-cv-review.json)
-checks rebinding-only, payload cycles, deletion and supplied throw. Initial wrapped
-scalar/string values, nonarray completion, typed outer cells and unsafe lifetimes
-remain Unsupported; the ordinary/A19 gates and count/prune algorithms stay exact.
+checks rebinding-only, payload cycles, deletion and supplied throw.
+The [wrapped mixed-CV review](../../coverage/semantics/array-literal-float-wrapped-mixed-cv-review.json)
+adds initial wrapped null/bool/int/float values and primitive completion. The
+existing scalar marker uses BORROWED ROOT for the captured slot and owns only the
+builder; ARRAY capture still owns its old table. Both read the captured live slot
+rather than the rebound name. Scalar-to-array completion owes one table owner;
+array-to-scalar completion retains the acquired table count. Reciprocal changes
+cancel these biases, including after entry deletion or supplied throw. A separate
+ordinary table owner keeps entry-independent debt positive. The
+[typed captured-CV review](../../coverage/semantics/array-literal-float-typed-wrapped-mixed-cv-review.json)
+adds existing ordinary validated property sources accepting the captured primitive
+or bounded array. Every source object must survive the same logical pruning as
+the CELL and payload, even before debt. Fresh public int|array slots preserve
+weak integer coercion and invalid-string rejection; removing the final property
+source leaves an outside alias usable without its constraint. Direct strings,
+wider source kinds and unsafe lifetimes remain Unsupported; global ordinary/A19
+classifiers, task ownership and count/prune algorithms stay exact.
 The [string-leaf review](../../coverage/semantics/array-literal-float-string-leaf-review.json)
 adds ordinary tables and untyped wrapper payloads containing canonical-byte or
 validated-carrier string leaves. String snapshots remain independent across
