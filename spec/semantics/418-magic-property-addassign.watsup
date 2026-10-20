@@ -1,0 +1,176 @@
+;; ASSIGN_OBJ_OP re-fetches its CV after the RHS, then pins that object across
+;; BP_VAR_R Get, the binary operation, Set and RV/result cleanup. The existing
+;; Get/Set markers each retain their separate inner handler hold.
+dec $property_magic_add_source(pstate, porigin) : bool
+def $property_magic_add_source(S, PORIGIN n pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if expression = NExprAssignOpPlus expression_target expression_rhs metadata
+  -- if expression_target = NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata_property
+  -- if expression_rhs = NExprFuncCall (NName (BYTES text_function) metadata_function) (SEQUENCE eps) metadata_call
+  -- if $base64(text_receiver) =/= $ptascii("this")
+  -- if $property_source_task(S[.ORIGIN = (PORIGIN n pcpath)], expression)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0, PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
+  -- if ~$scope_global(S[.ORIGIN = (PORIGIN n pcpath)], [PCFIELD 0, PCFIELD 0])
+  -- if $closure_source_class(S, PORIGIN n pcpath) = eps
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 1]) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = (pfunction)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 (BOOLEAN false) phpType11 (SEQUENCE eps) phpType18 (SEQUENCE statement*) metadata_function_source)
+  -- if ~$pfunction_builtin(pfunction.NAME) /\ ~$function_generator(S, pfunction)
+  -- if pfunction.SIGNATURE.PARAMETERS = eps /\ ~pfunction.SIGNATURE.BYREF
+  -- if pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "int"]))]
+def $property_magic_add_source(S, porigin) = false -- otherwise
+
+;; This descriptor is immutable history. Neither a current CV read nor the
+;; continued allocation of the original receiver is needed after its release.
+dec $property_magic_add_history(pstate, ppropertymagicadd) : bool
+def $property_magic_add_history(S, ppropertymagicadd) = true
+  -- if $property_magic_add_source(S, ppropertymagicadd.SITE)
+  -- if $origin_node(S.SOURCES, ppropertymagicadd.SITE) = (NExprAssignOpPlus expression_target expression_rhs metadata)
+  -- if $origin_child((ppropertymagicadd.SITE), [PCFIELD 0]) = (ppropertymagicadd.GET.SITE)
+  -- if ppropertymagicadd.LINE = $runtime_line(S[.ORIGIN = (ppropertymagicadd.SITE)], eps, NExprAssignOpPlus expression_target expression_rhs metadata)
+  -- if $property_get_history(S, ppropertymagicadd.GET)
+  -- if $property_get_method(S, ppropertymagicadd.GET.OBJECT) = (pmethoddesc_get)
+  -- if $property_empty_get_source(S, pmethoddesc_get)
+  -- if $property_magic_set_method(S, ppropertymagicadd.GET.OBJECT) = (pmethoddesc_set)
+  -- if pmethoddesc_set.FUNCTION.ORIGIN = ppropertymagicadd.SET /\ pmethoddesc_set.OWNER = pmethoddesc_get.OWNER
+  -- if $property_magic_set_method_source(S, pmethoddesc_set)
+  -- if $property_effective_desc(S, ppropertymagicadd.GET.OBJECT, ppropertymagicadd.GET.NAME) = (ppropertydesc)
+  -- if ppropertymagicadd.GET.DECL = (ppropertydesc.ORIGIN)
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (pmethoddesc_get.OWNER)
+  -- if ~$property_hook_declared(S, ppropertymagicadd.GET.OBJECT, ppropertymagicadd.GET.NAME)
+  -- if $long_range(ppropertymagicadd.RHS)
+  -- if ppropertymagicadd.OWNER = 0 /\ ppropertymagicadd.CALLER = eps
+def $property_magic_add_history(S, ppropertymagicadd) = false -- otherwise
+
+dec $property_magic_add_valid(pstate, ppropertymagicadd, ptask) : bool
+def $property_magic_add_valid(S, ppropertymagicadd, ptask) = true
+  -- if $property_magic_add_history(S, ppropertymagicadd)
+  -- if S.ORIGIN = (ppropertymagicadd.SITE)
+  -- if |S.FRAMES| = ppropertymagicadd.OWNER /\ S.CURRENT = ppropertymagicadd.CALLER
+  -- if $property_lookup_scope(S) = eps
+  -- if $source_operand_suffix(S.TODO, ptask, ppropertymagicadd.TAIL)
+  -- if (HOBJECT ppropertymagicadd.GET.OBJECT) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, ppropertymagicadd.GET.OBJECT)
+def $property_magic_add_valid(S, ppropertymagicadd, ptask) = false -- otherwise
+
+;; compound_target receives the already-consumed COMPOUND_APPLY's tail from
+;; hold_task_inputs. Its ordinary RHS evaluation and source BASE stay unchanged.
+dec $property_magic_add_plan(pstate, pbase, poperand, int) : ppropertymagicadd?
+def $property_magic_add_plan(S, pbase, KNOWN (PINT i), z) = (ppropertymagicadd)
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.ORIGIN = (porigin_parent)
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $property_magic_add_source(S, porigin_parent)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprAssignOpPlus expression_target expression_rhs metadata)
+  -- if pbase = BASE_PROPERTY_PENDING (BASE_VALUE (VARIABLE ptbytes_receiver z_cv)) (KNOWN (PSTRING ptbytes_name)) z_receiver
+  -- if $origin_child((porigin_parent), [PCFIELD 0]) = (porigin_site)
+  -- if $property_pending_source_base(S[.ORIGIN = (porigin_site)], pbase, expression_target)
+  -- if z = $runtime_line(S, eps, NExprAssignOpPlus expression_target expression_rhs metadata)
+  -- if S_receiver = $property_pending_resolve(S, BASE_VALUE (VARIABLE ptbytes_receiver z_cv), KNOWN (PSTRING ptbytes_name), PPRW, z_receiver, z)
+  -- if S_receiver.COMPLETION = NORMAL
+  -- if S_receiver.BASE = BASE_PROPERTY (POBJECT n) ptbytes_name
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_get_needed(S, n, ptbytes_name) /\ $property_magic_set_needed(S, n, ptbytes_name)
+  -- if $property_get_method(S, n) = (pmethoddesc_get)
+  -- if $property_magic_set_method(S, n) = (pmethoddesc_set)
+  -- if z_get = $runtime_line(S[.ORIGIN = (porigin_site)], eps, expression_target)
+  -- if ppropertyget = {SITE porigin_site, NAME ptbytes_name, LINE z_get, OBJECT n, CLASS porigin_class, METHOD pmethoddesc_get.FUNCTION.ORIGIN, DECL $property_get_decl(S, porigin_class, ptbytes_name)}
+  -- if ppropertymagicadd = {SITE porigin_parent, GET ppropertyget, SET pmethoddesc_set.FUNCTION.ORIGIN, LINE z, RHS i, OWNER 0, CALLER eps, TAIL S.TODO}
+  -- if $property_magic_add_history(S, ppropertymagicadd)
+  -- if S_get = S[.ORIGIN = (porigin_site)][.TODO = [(PROPERTY_GET_RESULT ppropertyget), ORIGIN_RETURN (porigin_parent), PROPERTY_MAGIC_ADD_VALUE ppropertymagicadd] ++ S.TODO]
+  -- if $property_get_capture(S_get, ppropertyget)
+  -- if ~$property_get_guard_tasks(S.TODO, n, ptbytes_name) /\ ~$property_get_guard_frames(S.FRAMES, n, ptbytes_name)
+  -- if ~$property_empty_get_active(S, n, ptbytes_name)
+  -- if ~$property_magic_set_guard(S, S.CURRENT, S.FRAMES, n, ptbytes_name)
+def $property_magic_add_plan(S, pbase, poperand, z) = eps -- otherwise
+
+def $compound_target(S, ADD, BASE_PROPERTY_PENDING pbase poperand_name z_receiver, poperand, z) = S[.TODO = [(CALL_ARGS (PROPERTY_GET_TARGET ppropertymagicadd.GET.OBJECT ppropertymagicadd.GET.METHOD) eps 1 ([KNOWN (PSTRING ppropertymagicadd.GET.NAME)]) (ppropertymagicadd.GET.SITE) ppropertymagicadd.GET.LINE), PROPERTY_GET_RESULT ppropertymagicadd.GET, ORIGIN_RETURN (ppropertymagicadd.SITE), PROPERTY_MAGIC_ADD_VALUE ppropertymagicadd] ++ ppropertymagicadd.TAIL][.ORIGIN = (ppropertymagicadd.GET.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $property_magic_add_plan(S, BASE_PROPERTY_PENDING pbase poperand_name z_receiver, poperand, z) = (ppropertymagicadd)
+
+;; An inaccessible private slot has no prop_info in Zend's magic BP_VAR_R
+;; route. Inspect the raw RV here, before ordinary typed-property verification.
+def $property_magic_add_get_pending(S, ppropertyget) = true
+  -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: (ORIGIN_RETURN (porigin_parent)) :: (PROPERTY_MAGIC_ADD_VALUE ppropertymagicadd) :: ptask_tail*
+  -- if ppropertymagicadd.GET = ppropertyget /\ ppropertymagicadd.SITE = porigin_parent
+dec $property_magic_add_get_ready(pstate, ppropertyget) : bool
+def $property_magic_add_get_ready(S, ppropertyget) = true
+  -- if $property_magic_add_get_pending(S, ppropertyget)
+  -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: (ORIGIN_RETURN (porigin_parent)) :: (PROPERTY_MAGIC_ADD_VALUE ppropertymagicadd) :: ptask_tail*
+  -- if S.ORIGIN = (ppropertyget.SITE)
+  -- if $property_get_valid(S, ppropertyget, true) /\ $property_get_tail_valid(S, ppropertyget)
+  -- if $property_magic_add_valid(S[.ORIGIN = (porigin_parent)], ppropertymagicadd, PROPERTY_MAGIC_ADD_VALUE ppropertymagicadd)
+  -- if S.RESULT = KNOWN (PINT i)
+  -- if $long_range(i)
+def $property_magic_add_get_ready(S, ppropertyget) = false -- otherwise
+rule PhpStep/property-magic-add-get-result: S ~> S[.TODO = (PROPERTY_GET_COPY ppropertyget S.RESULT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if $property_magic_add_get_ready(S, ppropertyget)
+rule PhpStep/property-magic-add-get-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic compound raw getter result"]
+  -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if $property_magic_add_get_pending(S, ppropertyget)
+  -- if ~$property_magic_add_get_ready(S, ppropertyget)
+
+dec $property_magic_add_sum(ppropertymagicadd, int, int) : bool
+def $property_magic_add_sum(ppropertymagicadd, i_left, i_sum) = ($long_range(i_left) /\ $long_range(i_sum) /\ i_sum = $(i_left + ppropertymagicadd.RHS))
+
+;; A Set receipt binds the computed result to the retained outer operation.
+;; Its source remains authentic after Get or Set clears the receiver CV.
+dec $property_magic_add_set(pstate, ppropertymagicset) : bool
+def $property_magic_add_set(S, ppropertymagicset) = true
+  -- if ppropertymagicset.TAIL = (PROPERTY_MAGIC_ADD_FINISH ppropertymagicadd i_left i_sum) :: ptask_tail*
+  -- if ptask_tail* = ppropertymagicadd.TAIL
+  -- if $property_magic_add_history(S, ppropertymagicadd)
+  -- if $property_magic_add_sum(ppropertymagicadd, i_left, i_sum)
+  -- if ppropertymagicadd.GET.DECL = (porigin_property)
+  -- if ppropertymagicset = {SITE ppropertymagicadd.SITE, NAME ppropertymagicadd.GET.NAME, LINE ppropertymagicadd.LINE, OBJECT ppropertymagicadd.GET.OBJECT, CLASS ppropertymagicadd.GET.CLASS, METHOD ppropertymagicadd.SET, PROPERTY porigin_property, RHS KNOWN (PINT i_sum), CELL eps, INPUT i_sum, OWNER ppropertymagicadd.OWNER, CALLER ppropertymagicadd.CALLER, TAIL ((PROPERTY_MAGIC_ADD_FINISH ppropertymagicadd i_left i_sum) :: ppropertymagicadd.TAIL)}
+def $property_magic_add_set(S, ppropertymagicset) = false -- otherwise
+def $property_magic_set_source(S, ppropertymagicset) = true
+  -- if $property_magic_add_set(S, ppropertymagicset)
+def $property_magic_set_capture(S, ppropertymagicset) = true
+  -- if $property_magic_add_set(S, ppropertymagicset)
+  -- if $property_magic_set_valid(S, ppropertymagicset)
+
+dec $property_magic_add_set_plan(pstate) : ppropertymagicset?
+def $property_magic_add_set_plan(S) = (ppropertymagicset)
+  -- if S.TODO = (PROPERTY_MAGIC_ADD_VALUE ppropertymagicadd) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if $property_magic_add_valid(S, ppropertymagicadd, PROPERTY_MAGIC_ADD_VALUE ppropertymagicadd)
+  -- if S.RESULT = KNOWN (PINT i_left)
+  -- if i_sum = $(i_left + ppropertymagicadd.RHS)
+  -- if $property_magic_add_sum(ppropertymagicadd, i_left, i_sum)
+  -- if ppropertymagicadd.GET.DECL = (porigin_property)
+  -- if ppropertymagicset = {SITE ppropertymagicadd.SITE, NAME ppropertymagicadd.GET.NAME, LINE ppropertymagicadd.LINE, OBJECT ppropertymagicadd.GET.OBJECT, CLASS ppropertymagicadd.GET.CLASS, METHOD ppropertymagicadd.SET, PROPERTY porigin_property, RHS KNOWN (PINT i_sum), CELL eps, INPUT i_sum, OWNER ppropertymagicadd.OWNER, CALLER ppropertymagicadd.CALLER, TAIL ((PROPERTY_MAGIC_ADD_FINISH ppropertymagicadd i_left i_sum) :: ppropertymagicadd.TAIL)}
+  -- if ~$property_magic_set_guard(S, S.CURRENT, S.FRAMES, ppropertymagicadd.GET.OBJECT, ppropertymagicadd.GET.NAME)
+  -- if $property_magic_add_set(S, ppropertymagicset)
+def $property_magic_add_set_plan(S) = eps -- otherwise
+rule PhpStep/property-magic-add-set: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_MAGIC_SET_TARGET ppropertymagicset) eps 2 ([KNOWN (PSTRING ppropertymagicset.NAME), KNOWN (PINT ppropertymagicset.INPUT)]) (ppropertymagicset.SITE) ppropertymagicset.LINE), PROPERTY_MAGIC_SET_RESULT ppropertymagicset] ++ ppropertymagicset.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $property_magic_add_set_plan(S) = (ppropertymagicset)
+rule PhpStep/property-magic-add-value-invalid: S ~> S[.COMPLETION = UNSUPPORTED "magic compound getter result or integer sum"]
+  -- if S.TODO = (PROPERTY_MAGIC_ADD_VALUE ppropertymagicadd) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if $property_magic_add_set_plan(S) = eps
+
+rule PhpStep/property-magic-add-finish: S ~> S[.TODO = ppropertymagicadd.TAIL]
+  -- if S.TODO = (PROPERTY_MAGIC_ADD_FINISH ppropertymagicadd i_left i_sum) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN (PINT i_sum)
+  -- if $property_magic_add_valid(S, ppropertymagicadd, PROPERTY_MAGIC_ADD_FINISH ppropertymagicadd i_left i_sum)
+  -- if $property_magic_add_sum(ppropertymagicadd, i_left, i_sum)
+rule PhpStep/property-magic-add-finish-invalid: S ~> S[.COMPLETION = UNSUPPORTED "magic compound result continuation"]
+  -- if S.TODO = (PROPERTY_MAGIC_ADD_FINISH ppropertymagicadd i_left i_sum) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if ~$property_magic_add_valid(S, ppropertymagicadd, PROPERTY_MAGIC_ADD_FINISH ppropertymagicadd i_left i_sum) \/ ~$property_magic_add_sum(ppropertymagicadd, i_left, i_sum) \/ S.RESULT =/= KNOWN (PINT i_sum)
+
+def $task_nodes(PROPERTY_MAGIC_ADD_VALUE ppropertymagicadd) = [HOBJECT ppropertymagicadd.GET.OBJECT]
+def $task_nodes(PROPERTY_MAGIC_ADD_FINISH ppropertymagicadd i_left i_sum) = [HOBJECT ppropertymagicadd.GET.OBJECT]
+def $call_task_valid(S, PROPERTY_MAGIC_ADD_VALUE ppropertymagicadd) = $property_magic_add_valid(S, ppropertymagicadd, PROPERTY_MAGIC_ADD_VALUE ppropertymagicadd)
+def $call_task_valid(S, PROPERTY_MAGIC_ADD_FINISH ppropertymagicadd i_left i_sum) = ($property_magic_add_valid(S, ppropertymagicadd, PROPERTY_MAGIC_ADD_FINISH ppropertymagicadd i_left i_sum) /\ $property_magic_add_sum(ppropertymagicadd, i_left, i_sum))
+def $return_discard(S, PROPERTY_MAGIC_ADD_VALUE ppropertymagicadd) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $return_discard(S, PROPERTY_MAGIC_ADD_FINISH ppropertymagicadd i_left i_sum) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $error_read_discard(S, PROPERTY_MAGIC_ADD_VALUE ppropertymagicadd) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $error_read_discard(S, PROPERTY_MAGIC_ADD_FINISH ppropertymagicadd i_left i_sum) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $eager_operation_source_guard(S, pdestructionoperation) = ($property_magic_add_history(S, ppropertymagicadd) /\ $property_magic_add_sum(ppropertymagicadd, i_left, i_sum))
+  -- if pdestructionoperation.SOURCE = PROPERTY_MAGIC_ADD_FINISH ppropertymagicadd i_left i_sum

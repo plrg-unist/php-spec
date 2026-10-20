@@ -220,6 +220,7 @@ syntax pparenthookcall = { SITE porigin, OBJECT nat, PROPERTY porigin, HOOK pori
 syntax pmagicmethodcall = { SITE porigin, NAME ptbytes, LINE int, OBJECT nat, CLASS porigin, METHOD porigin, ARGUMENTS phpType7*, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax pmagicstaticmethodcall = { SITE porigin, NAME ptbytes, LINE int, CLASS porigin, METHOD porigin, ARGUMENTS phpType7*, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax ppropertymagicset = { SITE porigin, NAME ptbytes, LINE int, OBJECT nat, CLASS porigin, METHOD porigin, PROPERTY porigin, RHS poperand, CELL nat?, INPUT int, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
+syntax ppropertymagicadd = { SITE porigin, GET ppropertyget, SET porigin, LINE int, RHS int, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax ppropertycoalesce = { SITE porigin, NAME ptbytes, LINE int, OBJECT nat, CLASS porigin, ISSET porigin, GET porigin?, PROPERTY porigin, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax ppropertyemptynan = { EMPTY ppropertyempty, FLOAT nat, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax ppropertyemptyrv = { EMPTY ppropertyempty, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
@@ -320,6 +321,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | PROPERTY_COALESCE_RESULT ppropertycoalesce bool | PROPERTY_COALESCE_RV ppropertycoalesce
   | PROPERTY_COALESCE_ASSIGN_VALUE porigin pbase nat pcallcontext?
   | MAGIC_METHOD_NAMED_ARGS pmagicmethodcall nat poperand* | MAGIC_METHOD_NAMED_SEND pmagicmethodcall nat poperand* | MAGIC_METHOD_NAMED_RESULT pmagicmethodcall nat nat pvalue*
+  | PROPERTY_MAGIC_ADD_VALUE ppropertymagicadd | PROPERTY_MAGIC_ADD_FINISH ppropertymagicadd int int
   | PROPERTY_MAGIC_SET_RESULT ppropertymagicset | PROPERTY_MAGIC_SET_DELIVERY ppropertymagicset | PROPERTY_EMPTY_NAN ppropertyemptynan | PROPERTY_EMPTY_RV ppropertyemptyrv | PROPERTY_EMPTY_RESULT ppropertyempty bool | PROPERTY_ISSET_RESULT ppropertyisset | PROPERTY_UNSET_RESULT ppropertyunset | PROPERTY_SET_RESULT ppropertyhook pvalue | PROPERTY_HOOK_RESULT ppropertyhook | PROPERTY_HOOK_ISSET_RESULT ppropertyhook bool | PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase | PROPERTY_HOOK_COMPOUND_RESULT ppropertyhook pbase int int | PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook pbase int int | INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachbind | FOREACH_SCALAR_END nat nat porigin pvalue int
   | PROMOTE_PARAMETER porigin nat
   | GC_MAIN_SCAN pgcplan pgcscan | GC_MAIN_RETURN pgcplan pgcscan nat
