@@ -32,8 +32,19 @@ The unary CV operand preserves source identity without owning it, so source
 retirement during the callback leaves the copy/Payload live. Supplied throw
 releases the failed copy and last Payload before the same catch, without committing
 the assignment. Four exact originals and 659 focused premises have separate cuts.
-This adds no iteration, reference-constraint or callback-cleanup rule; dynamic,
-readonly, intrinsic/update and wider callback/GC histories remain partial.
+This adds no iteration, reference-constraint or callback-cleanup rule; mixed dynamic
+callbacks, readonly, intrinsic/update and wider callback/GC histories remain partial.
+
+[Mixed cached cloning](../../coverage/semantics/mixed-cached-clone-review.json)
+adds ordinary public nonempty declared layouts with live dynamic buckets and no
+`__clone`. Declared slots copy first; a fresh table retargets their locators and
+copies source-consistent dynamic items. Matching lookup mirrors reuse the copied
+items without another owner or reference-copy operation. Actual foreach checks
+independent writes, bucket membership and order; singleton versus held dynamic
+wrappers and shared Payload retirement retain their distinct lifetimes. Four
+originals and 477 focused premises include a derived late-UNSET/compaction check.
+Zero-declared sharing, copied-declared DIRECT images, undefined dynamic buckets,
+readonly, mixed callbacks and active collection remain outside this new route.
 
 Module300 executes genuine `__clone` callbacks with the selected method's
 declaring scope and the copy's called class. Access is checked before allocation;

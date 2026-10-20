@@ -4515,3 +4515,41 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 2
   -- if $integer_float_notices([RANGEWARNING], pbitnotwarning.BITS) = [(2, perrorcall.MESSAGE)]
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pbitnotwarning.LINE
+
+;; A thrown LEFT NaN range callback still finishes safe conversion's remaining
+;; precision notice before the macro checks failure; no RHS or modulo runs.
+dec $mod_nan_pending_source(pstate, pintegeroperation, pintegerconversion) : bool
+def $mod_nan_pending_source(S, pintegeroperation, pintegerconversion) = true
+  -- if $integer_warning_valid(S, pintegeroperation, INTEGER_LEFT, pintegerconversion, 1)
+  -- if pintegeroperation.OP = MODULO /\ ~pintegeroperation.SWAPPED
+  -- if pintegeroperation.LEFT = VARIABLE ptbytes_left z_left
+  -- if pintegeroperation.RIGHT = VARIABLE ptbytes_right z_right
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CV ptbytes_right
+  -- if pintegerconversion.INPUT = PFLOAT n_bits
+  -- if $(n_bits < 18446744073709551616)
+  -- if $float_long(n_bits, true) = (0, [RANGEWARNING, PRECISIONLOSS])
+def $mod_nan_pending_source(S, pintegeroperation, pintegerconversion) = false -- otherwise
+dec $mod_nan_pending_valid(pstate, pintegeroperation, pintegerconversion, nat, nat) : bool
+def $mod_nan_pending_valid(S, pintegeroperation, pintegerconversion, n_stage, n_exception) = ($mod_nan_pending_source(S, pintegeroperation, pintegerconversion) /\ $(n_stage <= 1) /\ $destructor_pending_valid(S, (n_exception)))
+
+def $error_read_discard(S, INTEGER_OPERATOR_WARNING pintegeroperation INTEGER_LEFT pintegerconversion 1) = S[.TODO = (MOD_NAN_PENDING pintegeroperation pintegerconversion 0 n_exception) :: ptask_tail*]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
+  -- if $mod_nan_pending_valid(S, pintegeroperation, pintegerconversion, 0, n_exception)
+
+rule PhpStep/mod-nan-pending-default: S ~> $error_dispatch(S, 8192, n_message*, pintegeroperation.LINE, DIAGNOSTIC "Deprecated" n_message* pintegeroperation.LINE, MOD_NAN_PENDING pintegeroperation pintegerconversion 1 n_exception)
+  -- if S.TODO = (MOD_NAN_PENDING pintegeroperation pintegerconversion 0 n_exception) :: ptask_tail*
+  -- if $mod_nan_pending_valid(S, pintegeroperation, pintegerconversion, 0, n_exception)
+  -- if ~$error_handler_eligible(S, 8192)
+  -- if pintegerconversion.NOTICES[1] = (8192, n_message*)
+rule PhpStep/mod-nan-pending-suppressed: S ~> S[.TODO = (MOD_NAN_PENDING pintegeroperation pintegerconversion 1 n_exception) :: ptask_tail*][.ERRORFATALTRACE = eps]
+  -- if S.TODO = (MOD_NAN_PENDING pintegeroperation pintegerconversion 0 n_exception) :: ptask_tail*
+  -- if $mod_nan_pending_valid(S, pintegeroperation, pintegerconversion, 0, n_exception)
+  -- if $error_handler_eligible(S, 8192)
+rule PhpStep/mod-nan-pending-throw: S ~> S[.TODO = (THROW_SEARCH n_exception) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (MOD_NAN_PENDING pintegeroperation pintegerconversion 1 n_exception) :: ptask_tail*
+  -- if $mod_nan_pending_valid(S, pintegeroperation, pintegerconversion, 1, n_exception)
+
+def $task_nodes(MOD_NAN_PENDING pintegeroperation pintegerconversion n_stage n_exception) = $instance_roots((n_exception))
+def $call_task_valid(S, MOD_NAN_PENDING pintegeroperation pintegerconversion n_stage n_exception) = $mod_nan_pending_valid(S, pintegeroperation, pintegerconversion, n_stage, n_exception)

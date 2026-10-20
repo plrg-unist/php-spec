@@ -372,6 +372,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | KEY_COALESCE_RHS_RESULT pcoalesceread
   | DEPRECATED_CONSTANT_RESULT pdeprecatedconstant | REPORTING_LONG_RESULT pconfigcall int
   | INTEGER_OPERATOR_CONVERT pintegeroperation pintegerphase | INTEGER_OPERATOR_WARNING pintegeroperation pintegerphase pintegerconversion nat
+  | MOD_NAN_PENDING pintegeroperation pintegerconversion nat nat
   | ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase | ARITHMETIC_ADD_WARNING pintegeroperation parithmeticphase pvalue pnumber nat
   | ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue pnumber nat
   | ARITHMETIC_ADDASSIGN_RIGHT_WARNING pintegeroperation pvalue pnumber pvalue pnumber nat

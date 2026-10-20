@@ -1,0 +1,106 @@
+{
+  "milestone": "COMP115 current ordinary object CVs at missing comparison reads",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "All seven operators admit live ordinary non-Stringable INSTANCE/STDINSTANCE counterparts through authentic direct-CV missing-read records, at entry or after callback creation/rebinding. The missing value remains frozen NULL while the counterpart follows its current CV/reference cell.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "8fbca610e2650294a288c5247313f93829ae2ecb",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "4e7b3077bdf016aededb4a9f91627163229b1f59fc41b353fae5c2e53e52a4f9"
+  },
+  "modules": 408,
+  "engine_basis": "VM comparison operands retain live CV wrappers across the missing-read Warning; zend_compare takes explicit OBJECT/NULL fast branches before object handlers or casts. Rebinding may release the old object inside the callback. A current replacement remains owned by current CV/reference edges, not the saved read record.",
+  "implementation": "One VARIABLE-only operand resolver reuses the existing live ordinary-object validator. Two exact old-left/right-frozen object-record arms and two special entry OR guards widen. Captured KNOWN arms, source certificates, roots, state/tasks, restoration/discard, scalar/array guards and checked-removal/unread-retry behavior stay unchanged.",
+  "behavior": [
+    "Ten exact originals cover all seven operators, user instances/stdClass, old-object destruction inside callback, scalar/object/reference replacement, surviving aliases, both-missing/same-CV creation, no-init reads, false/default, checked quiet removal versus unread second Warning, and first supplied Exception/caller41/finally.",
+    "Five source-reached strict-SL groups prove zero saved HOBJECT roots, current reference-cell owners2/object1 and surviving old-copy1, raw restore/compare versus driven destructor timing, replacement lifetime through catch, malformed source/domain controls and zero/split budgets."
+  ],
+  "baseline": {
+    "report": "initial/baseline-report.json",
+    "sha256": "1393278319cc69debc740a73d96efa2efa0717573f9e63f22e17c4d93da41d64",
+    "revision": "4c593a1e352f6d83578e9a0d20cc8b80d64440dd",
+    "native_revision": "4c593a1e352f6d83578e9a0d20cc8b80d64440dd",
+    "agreement_credit": 0,
+    "native": "Initial author2 and peer4 retain their actual canonical 4c593a1e3/408 cuts; peer model4 reuses native4. Changed-source author native8 is separately recorded at16cd96ba0/408.",
+    "model": "Genuine unchanged EQ live ordinary-object counterpart is accepted/checked then ingress Unsupported with empty streams at private4c593a1e3/408."
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "513abc8e1988a74c894ef9c30c5a2edb5370b12c233d5b05ef773bbc02122478",
+      "revision": "16cd96ba0f22235b6b6de184b9c51ea065022534",
+      "agreements": 6,
+      "unsupported_controls": 2
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "756ec2a63286be5c8940c63f50898d1c8dcb89ce454b2ef036be530e77fe6e15",
+      "revision": "16cd96ba0f22235b6b6de184b9c51ea065022534",
+      "agreements": 4,
+      "unsupported_controls": 0
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "2fcdfa5c9cb1c80f5bb137d08cbbec713b583a732197a3c9591dab8617981d0d",
+      "revision": "16cd96ba0f22235b6b6de184b9c51ea065022534",
+      "premises": 307,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "05d4d738ddfd2707b66d703b5d03e62700e6a9cb093464f237f405295fb33bdf",
+      "revision": "16cd96ba0f22235b6b6de184b9c51ea065022534",
+      "premises": 422,
+      "groups": 3
+    }
+  ],
+  "totals": {
+    "source_agreements": 10,
+    "unsupported_source_controls": 2,
+    "state_premises": 729,
+    "state_groups": 5
+  },
+  "maintenance": {
+    "state": {
+      "report": "maintenance-state/report.json",
+      "sha256": "d79871de0d175557f50b48ce0c1475f466e98313094ffa2f9ee3de9fd9768bb7",
+      "revision": "16cd96ba0f22235b6b6de184b9c51ea065022534",
+      "premises": 110,
+      "groups": 2
+    },
+    "source_selectors": {
+      "report": "maintenance-source/report.json",
+      "sha256": "cb63cefd7079dee0a7802d5d642a8859bb3a76dee41330ac12387d50da994643",
+      "revision": "16cd96ba0f22235b6b6de184b9c51ea065022534",
+      "selectors": 1,
+      "normal_agreements": 1
+    },
+    "historical_agreement_renewal": 0,
+    "scope": "Two actual old114 captured-source fronts check newly positive pure VARIABLE object-domain predicates while source/validity remain false for those forged descriptors. No old continuation body is renewed. The former VARIABLE stdClass refusal selector now agrees normally; Closure entry/resume controls remain explicit refusals."
+  },
+  "validation": "CPU2 serial/fail-first/full reap,2GiB: source native8 130/150/per15; model8 605/620/CLI45/record60/10k; retained peer4 315/330/CLI60/record75. Author2 state275/290, peer3 state405/420, maintenance2 state275/290, per120 strictSL/dettrue/cachefalse. One selector100/120/child80. All semantic checks pass first executions; commands/inputs/exits are archived.",
+  "failures": [],
+  "divergences": [],
+  "remaining": [
+    "Internal/enum/Stringable objects, resources, nonflat/reference/object arrays, reference-return wrappers and wider owning producers remain partial. Paused COMP88 and DEFINE ownership are untouched.",
+    "Object liveness/kind remains a domain decision; source validity is unchanged. Constructed source-invalid records are not claimed as actual live-CV source executions."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-115",
+  "artifact_manifest_sha256": "db2cbce787af032328ed58e26a9fa78aba4a4f5f79d505219e3e15776fe2973f",
+  "independent_reviewer": "/root/comp89_review",
+  "reproduction": [
+    "python3 tests/semantics/undefined_comparison_live_object_sources.py --phase native --output .tools/comp115-source-new",
+    "python3 tests/semantics/undefined_comparison_live_object_sources.py --phase model --output .tools/comp115-source-new",
+    "python3 tests/semantics/undefined_comparison_live_object_state.py --output .tools/comp115-state-new",
+    "python3 tests/semantics/undefined_comparison_live_object_review_state.py --output .tools/comp115-peer-state-new",
+    "python3 tests/semantics/undefined_comparison_live_object_maintenance.py --output .tools/comp115-maint-state-new"
+  ],
+  "integration": {
+    "parent": "d1e9f42a73324df91ed1c70558893536043b807d",
+    "modules": 408,
+    "runtime": "Sole operational207 retains tested4e7b3077 SHA; all 12 publication tests stay private-exact.",
+    "compatibility": "Independent actual-tail review excludes clone, INI, Generator, selected MODULO, keyed NULL-literal reset and owned DEFINE raw-TRUE producers. Ordinary ADD counters and current global-CV writes retain existing paths; foreign tasks, schema/default/root bytes and ordered408 stay parent-exact. No joined actor is warranted.",
+    "evidence": "Native/genuine4c593 and accepted source/state/affected16cd retain their original408 identities, without accepted replay or historical credit renewal."
+  }
+}

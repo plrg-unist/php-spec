@@ -169,7 +169,12 @@ property effects. When no other owner remains, saved-operand release runs the
 destructor before the outer store or catch; surviving aliases retain their lifetime.
 See the
 [captured-object review](../../coverage/semantics/undefined-comparison-captured-object-review.json).
-Direct-CV/internal/Stringable objects, resources, nonflat arrays and wider producers remain partial.
+Live direct-CV ordinary objects also enter/resume through their current unblocked
+defined cell, without adding a saved object root. Rebinding can destroy the old
+object inside the handler; replacement lifetime follows current owners through
+normal return or supplied throw. Existing removal/retry and source certificates
+stay unchanged; see the [live-object review](../../coverage/semantics/undefined-comparison-live-object-review.json).
+Internal/Stringable objects, resources, nonflat arrays and wider producers remain partial.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.
 [The equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json)
