@@ -2233,42 +2233,38 @@ GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no root
 and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
-NULL literal-key callbacks now restore the captured ordinary value CV before
-empty-string-key insertion or supplied-throw propagation. The value snapshot is
-frozen; handler writes are visible inside the callback but undone at reset. A
-shared key/value NULL CV is restored too, while distinct key writes survive.
-The new marker has no captured CELL root and owns two old-table edges for ARRAY
-values: acquisition plus backup. Normal reset transfers these into the CV and
-DIRECT entry; throw restores the CV before releasing builder/insertion owners.
-Current slot/payload liveness uses logical pruning, while the owning snapshot
-remains allocated across the atomic popped-marker discard. No count/prune/driver
-or float-key behavior changes.
+Initially untyped reference-wrapped value CVs now enter NULL literal-key
+callbacks using the same marker and a nonowning captured CELL payload locator.
+A callback can mutate that payload and rebind the source name to another CELL;
+reset restores the captured old payload before DIRECT empty-string insertion or
+supplied-throw propagation, leaving the new name binding intact. The captured
+marked CELL and bounded current payload must survive logical pruning even
+without debt, with no property/coercion/backing records or CELL debt. Source
+metadata delegates to the actual VARIABLE occurrence and can authenticate a
+retired locator before readiness explicitly refuses. Existing two ARRAY snapshot
+roots, restore/discard, ordinary-CV mode and count/prune/driver bodies stay exact.
 
-Four fresh originals retain `4a09a56f7`/408. The unchanged model refuses before
-the first handler with natural comparison0. Fresh same-CV NULL and edge-free
-DIRECT-integer ARRAY witnesses distinguish restoration, separate key/tail writes,
-old/changed snapshots, child COW, entry deletion and same supplied Throwable with
-destination99 and cancelled later7. Existing primitive/validated byte-leaf rules
-compose without fresh all-payload credit. Strict408/source4 pass at `18c5f3c97`.
-Focused811 =803 Boolean +8 raw (425 author +386 independent) retains the original
-same-CV192 pass at `27db7bb70` and corrected ARRAY233/peer386 at `ce5e675cd`.
-The original ARRAY front stopped before semantics on a key-name byte-list versus
-cell-index stem collision, retaining zero credit. A rename-only correction changes
-no premise/domain; only that ARRAY front and the previously unrun peer execute.
-Source models use180/outer210; focused fixtures use SL180. Successful actors are
-quiet, without timeout/interruption or descendants, and fully reaped. No runtime,
-source, strict, native or accepted scalar observation is replayed.
-Unset/rebound or wrapped/typed/coercion/backing slots, direct string/object values,
-wider owning graphs and unsafe/GC lifetimes remain partial. The paused LIST-key
-and owned-NUL paths stay untouched.
-[NULL-key review](coverage/semantics/array-literal-null-key-warning-review.json).
+Four fresh originals retain `0ad616aca`/408. The genuine unchanged model refuses
+before the first handler with natural comparison0. Fresh primitive2 and runtime
+DIRECT-int ARRAY2/7 witnesses distinguish captured reset from reboundq99,
+callback44 or55/88, independent changed44/88/old_hold/copy66 and later77/99 COW.
+Sole-owner deletion and supplied throw check restoration before catch with the
+same Throwable, dest99 and cancelled later7. Strict408/source4 pass at
+`440aed450`; focused916 =908 Boolean +8 raw (454 author +462 independent) pass
+at `0242fc366`. All post-change first executions pass without runtime/source or
+fixture repair, retry or accepted replay. Source models use180/outer210 and
+focused fixtures SL180; successful actors are quiet, without timeout/interruption
+or surviving descendants, fully reaped and CPU5 released.
+No historical fixture maintenance is needed. Typed/string/object slots, wrapped
+keys, wider producers/graphs and unsafe or active-GC lifetimes remain partial;
+paused LIST-key and owned-NUL paths stay untouched.
+[Wrapped NULL-key review](coverage/semantics/array-literal-null-key-wrapped-cv-review.json).
 
-Composed over `4c593a1e3`/408 after independent introduced-selector review.
-Incoming INI, missing-object comparisons, Generator and BITNOT-range Warning
-producers are absent. Parent30 tags are preserved with only the NULL marker added;
-accepted41/413 and all six test paths remain unchanged. Every other runtime/schema
-and ordered manifest retains parent bytes. Separate accepted cuts and original
-elaboration0 keep their credit without joined execution or replay.
+Earlier ordinary NULL value-CV reset retains native/genuine `4a09a56f7`/408,
+strict/source4 `18c5f3c97`, original scalar192 `27db7bb70` and corrected
+ARRAY233/peer386 `ce5e675cd`, integrated as `c3848eac0`. Focused811 and the
+original ARRAY elaboration0/alpha-only affected retry retain their cuts in the
+[NULL-key ledger](coverage/semantics/array-literal-null-key-warning-review.json).
 
 Earlier owning ARRAY returns retain native/genuine `ac7e55c32`/407,
 strict/source4 `f551dd093` and focused756 `c24bbde576`, integrated as `3cd1251b4`.

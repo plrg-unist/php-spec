@@ -400,8 +400,18 @@ when throw cleanup pops the saved marker, so restoration precedes pruning even
 without another old-table owner. The
 [NULL-key ledger](../../coverage/semantics/array-literal-null-key-warning-review.json)
 checks two saved table edges, normal COW/deletion and restoration before catch.
-Unset/rebound, reference/typed/coercion/backing slots, direct strings/objects and
-wider payload graphs stay Unsupported; the paused LIST-key boundary is unchanged.
+Unset/rebound ordinary slots, typed/coercion/backing slots, direct strings/objects
+and wider payload graphs stay Unsupported; the paused LIST-key boundary is unchanged.
+An initial untyped reference-wrapped value instead captures a borrowed old CELL
+payload locator. Its snapshot resets that live payload before insertion/catch,
+while a rebound source name continues to name its new CELL. Range-only locator
+metadata delegates to the actual VARIABLE source spelling/line; a lost or retired
+captured CELL remains authentic but fails readiness/discard explicitly. Both CELL
+and bounded current payload need logical liveness and empty property/coercion/
+backing records with no CELL debt. The
+[wrapped NULL-key ledger](../../coverage/semantics/array-literal-null-key-wrapped-cv-review.json)
+checks captured-slot restoration, two pending ARRAY owners and independent COW;
+no global input classifier, task owner or count/prune/driver rule changes.
 String leaves validate canonical bytes or existing carrier records. Their table
 and wrapper counts stay separate from copied string bytes: debt-time writes may
 share a table while a string snapshot stays unchanged. Singleton reference

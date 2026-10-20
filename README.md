@@ -44,7 +44,11 @@ Handler writes are visible inside the callback and undone before insertion or
 supplied-throw propagation. If key and value share the same NULL CV, its key
 mutation is undone too. ARRAY capture owns both acquisition and backup copies;
 normal restore transfers them into the CV and DIRECT entry, while throw restores
-the CV before releasing the builder. Wider value/slot forms remain partial.
+the CV before releasing the builder. Initially untyped reference-wrapped value
+CVs capture their old CELL payload instead: resetting that payload preserves a
+callback's new binding of the source name. A live alias must keep the
+captured CELL alive; neither the marker nor its metadata owns that CELL.
+Typed/string/object slots and wider producers remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
