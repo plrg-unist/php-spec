@@ -86,12 +86,16 @@ unwrap before child/string COW; balanced copies retain shared ALIAS entries. The
 [string-leaf ledger](../../coverage/semantics/array-literal-float-string-leaf-review.json)
 checks these paths, deletion and supplied throws. Direct string CV/cell payloads
 remain Unsupported; no new string identity or ownership model is introduced.
-Embedded ALIAS leaves must be live, marked, untyped null/bool/int/float cells with
-no coercion/backing receipts or CELL debt. Child-table duplication preserves a
+Embedded ALIAS leaves must be live, marked, untyped cells holding null/bool/int/float
+or validated byte strings, with no property/coercion/backing receipts or CELL debt. Child-table duplication preserves a
 shared leaf ALIAS and unwraps a singleton leaf to DIRECT, independently of the
 outer reference-wrapper unwrapping and HARRAY debt. The
 [alias-leaf ledger](../../coverage/semantics/array-literal-float-alias-leaf-review.json)
 separates these effects with sibling writes, deletion, supplied throw and inverse cleanup.
+The [string-alias ledger](../../coverage/semantics/array-literal-float-string-alias-leaf-review.json)
+adds shared/singleton string leaves: byte writes propagate through shared ALIAS
+entries while unwrapped singleton leaves and earlier string snapshots remain independent.
+A separate leaf-cell predicate leaves direct string CELL retargets Unsupported.
 
 `tests/semantics/reference_wrappers.py` checks original source regressions,
 copying and rebinding, budget resumption, ownership graphs, cycle collection and

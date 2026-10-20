@@ -238,7 +238,7 @@ def strict(initial, stdout):
         'S.STORE[n_api] = DEFINED pvalue_api', '$string_bytes(pvalue_api) = ($ptascii("defined"))',
         'S.STORE[n_calls] = DEFINED (PINT 0)',
         *define.property_value('S','n_left',43,'strict_before'),
-        '~$dynamic_null_define_flag_valid(S[.CONSTANTSTDOBJECTS = eps],pconfigcall)',
+        '$dynamic_null_define_flag_valid(S[.CONSTANTSTDOBJECTS = eps],pconfigcall)',
         '~$dynamic_null_define_flag_valid(S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS,HOBJECT n_left)],pconfigcall)',
         'n_arrays = |S.ARRAYS|', 'n_error = |S.OBJECTS|',
         'n_owners = $heap_owners($heap_graph(S),HOBJECT n_left)', 'n_owners = 2',

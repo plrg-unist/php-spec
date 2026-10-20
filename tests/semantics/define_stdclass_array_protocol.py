@@ -82,7 +82,7 @@ def fresh(initial,target,donor,keys,alias=False,budget=False):
         ('history','[.ARRAYS = $array_replace(S_row.ARRAYS,n_root,parray_root[.NEXT = $(parray_root.NEXT + 1)])]')]
     for suffix,change in projections:
         values += ['S_'+suffix+' = S_row'+change,
-            '$dynamic_array_value(S_'+suffix+',PARRAY n_root,eps,false) = eps',
+            '$dynamic_array_value(S_'+suffix+',PARRAY n_root,eps,false) '+('=/=' if suffix == 'missing' else '=')+' eps',
             '~$user_constants_valid(S_'+suffix+',S_'+suffix+'.USERCONSTANTS)']
     wrong='PVARRAY false ([('+first+',PVOBJECT),('+nested+',pvalueclass_child)])'
     values += ['puserconstant_bad = puserconstant[.CLASS = '+wrong+']',

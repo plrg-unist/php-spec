@@ -1,0 +1,79 @@
+{
+  "scope": "Compatible current-This self:: literal missing calls in an ordinary inherited instance method select runtime __call before __callStatic; received scalar and packed owning argument cleanup preserve lexical Parent/called Child and cached scalar result or same supplied payload-destructor exception.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_gate_completed": true,
+  "native_revision": "cdbf6fc9b41ff59a32011bdfcc9a38ff853ebecf",
+  "native_report_sha256": "eb57787dda32334e931ecfc569f1df5f743f8ec6173ed481dddc10afcfb66f1a",
+  "cases": [
+    {
+      "id": "selection",
+      "source_file": "magic-scoped-call-selection.php",
+      "source": "<?php\nclass ScopedParent107 {\n    public function __call(string $name, array $arguments) {\n        echo 'I|', $name, '|', $arguments[0], '|', $arguments[1], '|', __CLASS__, '|', static::class, '|';\n        return 7;\n    }\n    public static function __callStatic(string $name, array $arguments) {\n        echo 'S|';\n        return -1;\n    }\n    public function run($first) {\n        echo 'B|';\n        $value = self::MiSsInG($first, mutate107());\n        echo 'A|';\n        return $value;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass ScopedChild107 extends ScopedParent107 {}\nfunction mutate107() {\n    global $child, $rhs;\n    echo 'M|';\n    $rhs = 99;\n    $child = null;\n    return 2;\n}\n$rhs = 7;\n$child = new ScopedChild107();\n$result = 42;\necho 'N:';\n$result = $child->run($rhs);\necho $result, '|', $rhs, '|E|';\n",
+      "source_sha256": "6e154897ba00dd2e3d4e7fd0677098dc26fced90d4c60d78c71eed3179b9fd89",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107/.tools/magic-scoped-call-probes-107/selection.php",
+      "native_group": "native-first",
+      "stdout_base64": "TjpCfE18SXxNaVNzSW5HfDd8MnxTY29wZWRQYXJlbnQxMDd8U2NvcGVkQ2hpbGQxMDd8QXxEfDd8OTl8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "call_line": 13,
+      "native_raw_sha256": "3e12970711c84c887d7d0ffba55d153c14f0240ae8e33697ee43939e7c7f9eed",
+      "status": "normal"
+    },
+    {
+      "id": "owning",
+      "source_file": "magic-scoped-call-owning.php",
+      "source": "<?php\nclass ScopedPayload107 {\n    public function __destruct() {\n        global $rhs, $error;\n        echo 'P|';\n        $rhs = 99;\n    }\n}\nclass ScopedParent107 {\n    public function __call(string $name, array $arguments) {\n        global $child, $rhs;\n        echo 'I|', $name, '|';\n        $child = null;\n        return $rhs;\n    }\n    public static function __callStatic(string $name, array $arguments) {\n        echo 'S|';\n        return -1;\n    }\n    public function run() {\n        echo 'B|';\n        $value = self::MiSsInG(new ScopedPayload107());\n        echo 'A|';\n        return $value;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass ScopedChild107 extends ScopedParent107 {}\n$error = new Exception('supplied');\n$rhs = 7;\n$child = new ScopedChild107();\n$result = 42;\necho 'O:';\n$result = $child->run();\necho $result, '|', $rhs, '|E|';\n",
+      "source_sha256": "ae37b89ce9217d277c3c61235634f516515a8fca3099dc5069f2b8bab25ae006",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107/.tools/magic-scoped-call-probes-107/owning.php",
+      "native_group": "native-first",
+      "stdout_base64": "TzpCfEl8TWlTc0luR3xQfEF8RHw3fDk5fEV8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "call_line": 22,
+      "native_raw_sha256": "4b249c229c1866449aa510635c5500f202d4c2ee01db7d388e96d5a10675954e",
+      "status": "normal"
+    },
+    {
+      "id": "throwing",
+      "source_file": "magic-scoped-call-throwing.php",
+      "source": "<?php\nclass ScopedPayload107 {\n    public function __destruct() {\n        global $rhs, $error;\n        echo 'P|';\n        throw $error;\n    }\n}\nclass ScopedParent107 {\n    public function __call(string $name, array $arguments) {\n        global $child, $rhs;\n        echo 'I|', $name, '|';\n        $child = null;\n        return $rhs;\n    }\n    public static function __callStatic(string $name, array $arguments) {\n        echo 'S|';\n        return -1;\n    }\n    public function run() {\n        echo 'B|';\n        $value = self::MiSsInG(new ScopedPayload107());\n        echo 'A|';\n        return $value;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nclass ScopedChild107 extends ScopedParent107 {}\n$error = new Exception('supplied');\n$rhs = 7;\n$child = new ScopedChild107();\n$result = 42;\necho 'X:';\ntry {\n    $result = $child->run();\n} catch (Exception $caught) {\n    echo $caught === $error ? 'C' : '!', '|';\n}\necho $result, '|E|';\n",
+      "source_sha256": "15f8a7302ac0b72e2ae4b4e4ac069e0a1894a6de7ee52eb7d5ecaf2d1d7d79bd",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107/.tools/magic-scoped-call-probes-107/throwing.php",
+      "native_group": "native-first",
+      "stdout_base64": "WDpCfEl8TWlTc0luR3xQfER8Q3w0MnxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "call_line": 22,
+      "native_raw_sha256": "b86787d5233d8e8b1e7d302351b97a1962d64325691289fc37f3e44a4c8c92c7",
+      "status": "normal"
+    },
+    {
+      "id": "static",
+      "source_file": "magic-scoped-call-static.php",
+      "source": "<?php\nclass ScopedParent107 {\n    public function __call(string $name, array $arguments) {\n        echo 'I|';\n        return -1;\n    }\n    public static function __callStatic(string $name, array $arguments) {\n        echo 'S|', $name, '|', $arguments[0], '|', __CLASS__, '|', static::class, '|';\n        return 9;\n    }\n}\nclass ScopedChild107 extends ScopedParent107 {}\necho 'C:';\n$result = ScopedChild107::MiSsInG(7);\necho $result, '|E|';\n",
+      "source_sha256": "b83c39f7582ee4af10ed39af53054cfdfd2eee1b00f02673f11be6e2f8af0f5a",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-scoped-call-private-107/.tools/magic-scoped-call-probes-107/static.php",
+      "native_group": "native-first",
+      "stdout_base64": "QzpTfE1pU3NJbkd8N3xTY29wZWRQYXJlbnQxMDd8U2NvcGVkQ2hpbGQxMDd8OXxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "call_line": 14,
+      "native_raw_sha256": "be346d784da343acf726c2dc9d673209b10fb90b5558cf5eef44ebb1df074bd8",
+      "status": "normal"
+    }
+  ]
+}

@@ -44,7 +44,7 @@ def conditions(name, program, path, stdout):
         '$literal_reference_flat_array(S, n_new_array, [HARRAY n_new_array, HCELL n_new_leaf])',
         '~$literal_reference_flat_array(S, n_new_array, [HARRAY n_new_array])',
         '~$literal_reference_flat_array(S[.STORE[n_new_leaf] = UNDEFINED], n_new_array, S.ALLOCATIONS)',
-        '~$literal_reference_flat_array(S[.STORE[n_new_leaf] = DEFINED (PSTRING ($ptascii("owning")))], n_new_array, S.ALLOCATIONS)',
+        '~$literal_reference_flat_array(S[.STORE[n_new_leaf] = DEFINED (PSTRING_CARRIER (REQUEST_STRING (|S.STRINGDATA|)) ($ptascii("invalid")))], n_new_array, S.ALLOCATIONS)',
         '~$literal_reference_flat_array(S[.STORE[n_new_leaf] = DEFINED (PARRAY n_new_array)], n_new_array, S.ALLOCATIONS)',
         '~$literal_reference_flat_array(S[.PROPREFS = [{CELL n_new_leaf, SOURCES eps}]], n_new_array, S.ALLOCATIONS)',
         '~$literal_reference_flat_array(S[.REFCELLS = eps], n_new_array, S.ALLOCATIONS)',

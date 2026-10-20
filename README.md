@@ -22,8 +22,9 @@ This covers bounded spaceship operands and distinct direct-CV
 `==`/`!=`/`<`/`<=`/`>`/`>=` pairs with one missing operand, including rebinding.
 Both-missing pairs, including the same missing variable twice at `<=>`,
 can resume if the first handler defines the later scalar; greater operators
-warn right first. `<=>` also stages a second Warning if the later CV stays
-missing, freezing both NULLs despite writes from the second handler.
+warn right first. `<=>` and distinct `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also stage
+a second Warning if the later physical CV stays missing, freezing both NULLs
+despite writes from the second handler.
 Wider warning paths remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
@@ -46,9 +47,10 @@ handler. Separate table counts preserve old array owners and omitted new-array
 owners; inverse retargeting cancels them before cleanup. Initial scalar and
 array plans remain distinct, while same-table transfer and restored COW keep
 ordinary values distinct from PHP reference wrappers.
-These flat tables also admit untyped null/bool/int/float reference leaves.
-Child-table copies preserve shared leaves and unwrap singleton leaves,
-independently of outer table and wrapper count corrections.
+These flat tables also admit untyped reference leaves holding null/bool/int/float
+or validated byte strings. Child-table copies preserve shared leaf aliases and
+unwrap singleton leaves; string byte writes keep earlier snapshots independent
+of both leaf references and outer table/wrapper count corrections.
 Direct string CV/cell payloads, unsafe deficit retirement and wider domains remain
 Unsupported. Duplicate replacement and later items stay ordered.
 
@@ -289,6 +291,21 @@ originals and 953 state premises cover true/false handling, throwing cancellatio
 strict NULL priority, source authentication and normal setter recovery. Multiple
 packs, PIPE and wider values remain partial.
 
+[NULL INI options with rejected array values](coverage/semantics/ini-set-null-array-value-review.json)
+now resume handlers for direct/selected positional calls with retained flat arrays
+of direct quiet primitive leaves. Returning handlers reach the value TypeError
+with an empty option and the earlier array; throwing handlers retain raw NULL and
+cancel before value rejection. Four originals and 844 state premises cover COW,
+strict option priority and normal recovery. Wider values/forms remain partial.
+
+[NULL INI options with retained stdClass values](coverage/semantics/ini-set-null-stdclass-value-review.json)
+now resume handlers for direct/selected positional calls with table-free objects
+whose properties hold direct quiet primitives. Returning handlers reach parameter2
+TypeError with an empty option and the same updated object; throwing handlers
+preserve raw NULL and cancel rejection. Four originals and 911 state premises
+cover shared property writes, strict priority, ownership and normal recovery.
+Named/owned/packed and wider object values remain partial.
+
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
 send/callback site. Ordinary Closure PIPE follows caller strictness; normal and
@@ -494,8 +511,25 @@ the current variable name does not redirect that store; a supplied throw cancels
 it. Three exact originals and 360 focused SL premises cover commit, selected-cell
 history, default Warning, throw cleanup and refusal checks in the
 [compound ADD warning ledger](coverage/semantics/addassign-warning-review.json).
-This direct-CV route requires a quiet numeric RHS at commit; typed/owning/expired
+That original quiet completion requires a numeric RHS; typed/owning/expired
 targets, wider operands and callbacks remain partial.
+
+Selected-reference `+=` now also captures a newly leading RHS and runs its
+second Warning. Cached float `18.0` writes the old target alias even after the
+current target name is rebound and the captured RHS is retired. A supplied
+second throw preserves callback writes without storing. Two originals and 330
+focused premises retain this in the
+[selected-RHS Warning ledger](coverage/semantics/addassign-selected-rhs-warning-review.json).
+Other producers, unsafe targets and wider lifetimes remain partial.
+
+Failed delayed RHS conversion in selected-reference `+=` now reports the old
+selected operand types despite both current names rebinding. Flat arrays raise
+`array + array` without retrying union; old bool/bad text raises `bool + string`
+while current names keep quiet replacements. Both preserve the selected target,
+aliases and outer destination. Two originals and 304 focused premises retain this
+in the [selected failure ledger](coverage/semantics/addassign-selected-failure-review.json).
+Other values, producers and lifetimes remain partial.
+
 Initially plain CV `+=` destinations now retain their selection through a named
 warning handler that creates a late alias. Successful replacement detaches that
 alias and writes a new non-reference CV cell; a supplied throw preserves the
@@ -1210,8 +1244,12 @@ site, physical frame and copied return stay parked. Snapshot capture precedes
 normal ignored-argument cleanup, including row COW or Generator-alias retirement.
 The used cache and mutable returned cells retain their separate lifetimes. See the
 [parked SEND review](coverage/semantics/generator-parked-pending-owning-send-review.json).
-Parked next, nonpending body entry and wider parked SEND/repeated-THROW leaves
-remain open.
+Pending `next()` at that parked owning return also clears only the selected
+receiver initialization bit. It returns NULL without copying current, so a sole
+receiver's cache destructor can run before caller delivery. A later explicit
+getter has its own copy. See the
+[parked NEXT review](coverage/semantics/generator-parked-pending-owning-next-review.json).
+Nonpending body entry, wider parked API leaves and waiting-result GC remain open.
 With a buffered input, pending `throw` preserves its count; physical close retains
 it until request-store destruction, including receiver cleanup before caller
 catch. The independent current copy can still trigger a replacement exception. See the
@@ -1696,6 +1734,13 @@ Closures retain their receiver. Canonical array/query copies share these objects
 an unpinned method receiver retires only after the last Closure owner is released.
 [Runtime Closure define review](coverage/semantics/define-runtime-closure-review.json).
 
+Ordinary `stdClass` values also publish directly and in array snapshots under
+selected live property/table checks. Queries share the same object and owning
+children while cast/query arrays retain COW. A private duplicate copy can keep
+the sole box-to-child path through a cached property reference; retiring it runs
+the child destructor before the handler Exception reaches catch.
+[Runtime stdClass define review](coverage/semantics/define-runtime-stdclass-review.json).
+
 Fresh definitions also copy nonempty array trees containing certified Closure,
 stdClass or user-instance leaves under the admitted flags. Copied containers freeze source
 reference values while object pointers and property writes remain shared,
@@ -1737,7 +1782,7 @@ nonempty byte strings are true. Flag-array COW and later callback writes leave t
 original API flag intact through duplicate cleanup or pending fresh publication.
 Strict calls retain the raw string in TypeError traces.
 [Byte-only array-flag review](coverage/semantics/define-array-byte-flag-review.json).
-Other Closure forms, unrecorded stdClass/internal object values, other owning
+Other Closure forms, internal object values, other owning
 leaves and wider flags/names remain partial.
 Class-qualified `defined` now checks inherited user constants with lexical visibility
 and quiet misses. Named autoload resumes the same captured query once.
@@ -4060,8 +4105,21 @@ with no receiver owner. Argument-array cleanup precedes cached scalar result or
 supplied-throw delivery; a payload destructor changes the live global while the
 used result keeps its earlier value.
 [Four source agreements and 341 focused premises](coverage/semantics/magic-static-call-review.json)
-cover these paths and public-static bypass. Forwarding, inaccessible/dynamic/API
+cover these paths and public-static bypass. Other scoped, inaccessible/dynamic/API
 magic positives and wider argument/ownership modes remain partial.
+
+Selected literal `self::missing(...)` calls inside an ordinary instance method
+now choose the compatible runtime receiver's inherited `__call` before
+`__callStatic`. Lexical Parent and called Child remain distinct. A received
+scalar stays 7 while an argument callback changes a separate global to 99 and
+clears the global receiver CV. `run()` still owns This through the call and its
+following statement. Packed argument cleanup preserves cached return 7 despite
+a payload write of 99; a supplied payload-destructor throw cancels that statement
+and leaves the caller destination at 42.
+[Four source agreements and 442 focused premises](coverage/semantics/magic-scoped-call-review.json)
+cover three self histories plus the existing external-static control. Other scoped
+forms, overrides and wider argument/ownership modes remain partial.
+
 Ordinary abstract scoped calls reject before arguments. Without magic fallback,
 inaccessible concrete nonstatic methods report access errors before missing-receiver
 errors. Literal

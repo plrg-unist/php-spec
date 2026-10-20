@@ -1,0 +1,106 @@
+{
+  "milestone": "Iterator35: pending NEXT before dispatch at a parked owning copied return",
+  "status": "independent implementation and publication review accepted; composed over reviewed actual parent",
+  "independent_reviewer": "/root/iterator_review_15",
+  "base": "3d668f22ed4a570e1955d9be291b56f0d494e478",
+  "native_baseline_cut": "e290191b4dc79f19b874dde12b375ae6c239290f",
+  "source_state_strict_cut": "a7b3a6a61e6e99d3a67ba2de2597aa67b2acb689",
+  "tested_runtime": "c510e266283b538171c3f37e62d7564ff21b9cc4",
+  "modules": 406,
+  "scope": "Literal zero-argument pending NEXT at an already parked owning simple-CV assigned yield-from COMPLETE, directly or through finite native links. Only the selected receiver must still need initialization. No input, other owning continuation/HELD, acquired producer, loop/startpack/borrowed API, active GC or actual body entry.",
+  "semantics": [
+    "NEXT authenticates the selected receiver pending bit and the existing parked owning-return receipt. Borrowed PARKED normalization checks the finite path; actual frame, history and return stay unchanged.",
+    "The NULL result adds no current snapshot. A later getter copies current; real row COW leaves COMPLETE as the old-array owner with one payload-edge set, and returned cells stay mutable after close.",
+    "Sole-receiver cache cleanup runs under the storage pin before caller delivery. The new RuntimeException has PreviousNULL while the earlier Exception remains globally owned."
+  ],
+  "source_authority": [
+    "vendor/php-src/Zend/zend_generators.c::Generator::next initializes/resumes without RETURN_COPY_DEREF; resume checks the selected receiver DO_INIT before dispatch. Existing method selection already admits helper-produced receivers. Only280/289 admission/complement changes; result, cleanup, roots, close and GC rules stay exact."
+  ],
+  "validation_identity": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": {
+      "mode": "SL",
+      "cache": false,
+      "determinism_checks": true,
+      "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+      "ocaml": "5.1.0"
+    },
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "jobs": 1
+    },
+    "budgets": "native8s; source100s/model and120s/process/100000steps; elab60s; strictSL120s; one state case/process SL120s, seek4000/finish4000.",
+    "reused_local_tools": "Existing exact private tool/reference provisioning only; no new rebuild, portability or source-closure claim."
+  },
+  "runtime_sha256": {
+    "spec/semantics/280-generators.watsup": "01583cf7b898cb2c1200ace71004c3405e121d9524b6dbc9dd64fdd64d0603f4",
+    "spec/semantics/289-generator-delegation.watsup": "2dee40db95e932db2178fae2e81d5c6368406318e8bae4efa211bef984a08274"
+  },
+  "reports": {
+    "native_author": ".tools/generator-parked-pending-owning-next-native-cdto3kf_/report.json",
+    "native_peer": ".tools/generator-parked-pending-owning-next-review-native-hn0wlvfz/report.json",
+    "baseline": ".tools/generator-parked-pending-owning-next-baseline-a5kynzdt/report.json",
+    "elaboration": ".tools/generator-parked-pending-owning-next-state-elab-3k6inegs/report.json",
+    "strict": ".tools/generator-parked-pending-owning-next-author-sl-2g_99gx6/report.json",
+    "source_author": ".tools/generator-parked-pending-owning-next-source-7m7uvfy9/report.json",
+    "source_peer": ".tools/generator-parked-pending-owning-next-review-source-sfvlvmmx/report.json",
+    "state_author_next": ".tools/fiber-state-review-43ehqkdi/report.json",
+    "state_author_storage": ".tools/fiber-state-review-jgjzo2da/report.json",
+    "state_peer_next": ".tools/fiber-state-review-uppmk9hd/report.json",
+    "state_peer_cell": ".tools/fiber-state-review-qisa7ekl/report.json"
+  },
+  "native_and_baseline": {
+    "originals": 4,
+    "normal_agreements": 0,
+    "baseline_selected": 1,
+    "baseline_result": "Unchanged public Unsupported Generator force-close at request end; fourteen authentic OUTPUT chunks P|O|U|M|C|L|H|T|CATCH|1|1|N|; model exit1, empty stderr, null diagnostic/exit_status. Original source/native tuple reused without PHP replay; zero model agreement."
+  },
+  "source_agreements": {
+    "new_normal": 4,
+    "php_error": 0,
+    "historical_renewal": 0,
+    "native_reused": true
+  },
+  "reached_states": {
+    "new_assertions": 672,
+    "author": 320,
+    "peer": 352,
+    "local": 652,
+    "generic": 20,
+    "groups": 4,
+    "historical_renewal": 0,
+    "fronts": "Actual direct and reverse-ancestor GEN_ARGS no-copy steps; real cache-destructor storage callback; real late shared-cell WRITE. Source/tail/flags/receiver/PARKED authority, scalar/nonpending exclusions, unique edges, public/heap validity, zero/split budgets and full native endings."
+  },
+  "elaboration_and_strict": "Four complete generated fixtures, unique EOF and four headers; elaboration earns zero execution credit. Ordered406 strict SL returns exact true with caches off and encountered determinism checks.",
+  "fixture_cleanup": {
+    "path": "tests/semantics/generator_parked_pending_owning_next_state.py",
+    "tested_revision": "a7b3a6a61e6e99d3a67ba2de2597aa67b2acb689",
+    "tested_sha256": "c0ead7fa554938aaad299cd6424093f2f7dfe89545fb378996d941a47efe47e4",
+    "publication_sha256": "d8224b67249b7793963f5ed3e27eaed47261084e0a2ec470455a87d4d72f35b2",
+    "cases_and_events_sha256": "0953607e1974b548e32b5a32a61056783c8628f26ce0f9f9653d3b5185b2f073",
+    "cases_stages_checks_events_identical": true,
+    "removed_only": "unused outputs helper and VALID/BUDGET/DONE constants; no executable CASES change"
+  },
+  "failures_and_retries": "None: all eleven reports passed on first attempts, HEAD/inputs stable, expected exits and empty unexpected stderr; all actors reaped and CPU2 fully released.",
+  "remaining": "Nonpending/body entry, nonowning/input/loop or wider parked NEXT, exceptional wider callbacks and waiting-result GC remain open. No new SEND/THROW/unpack/creation, whole-core, interaction-tree or BOLA claim.",
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/generator-parked-pending-owning-next-35/private.tar.gz",
+    "bytes": 1882185,
+    "sha256": "ffacc0accad0f586722c82c4875b85d5c28e8aaa44c1a4b6af2b6fe225b7d745",
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-parked-pending-owning-next-35/manifest.json",
+    "recovery": "Extract the archive into a private checkout of the recorded cut and provision its exact local tools/references. Ignored capture/elab/strict drivers and raw reports are archived; generic source wrappers use --native-report, state wrappers select one --case from each report. The original tested author fixture is also in tested-inputs; publication removes unused Python helpers only, with exact CASES/stage/check/event equality."
+  },
+  "composition": {
+    "actual_parent": "d4682e6bf21f35ea94536ff4ee2ceeaaf9945814",
+    "parent_modules": 406,
+    "private_publication": "d72280e216cfb9373257371df831bbe41c44434b",
+    "interaction_review": "Independent actual-parent source-selector review found no concrete interaction; no joined actor or accepted replay.",
+    "preservation": "Only280/289 runtime change, with tested bytes exact. All other parent runtime/schema/default/root/ordered-manifest/pipeline bytes are preserved. Six tests and three family docs retain private-publication bytes; five inventory suffixes append to actual parent prefixes.",
+    "execution_credit": "Source4/state672/strict406 retain a7b3a6a61; native/baseline retain e290191b4. Composition adds no execution credit."
+  },
+  "report_provenance": "The adjacent evidence manifest retains every report SHA256, revision and PASS flag; archived process records retain commands and exits."
+}

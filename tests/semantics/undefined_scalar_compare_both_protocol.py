@@ -50,6 +50,6 @@ def checks(program, path, name):
             '$error_read_valid(S_without,perrorread)',
             '~$scalar_compare_read_other(S_without,perrorread)',
             'PhpStep: S_without ~> S_denied',
-            'S_denied = S_without[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed right operand"]',
+            'S_denied = S_without[.TODO = perrorread.TASK :: ptask_tail*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]',
         ]
     return result

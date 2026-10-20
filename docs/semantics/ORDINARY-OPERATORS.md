@@ -116,9 +116,38 @@ entered and returned holders remain historical. Three exact originals and
 273 author plus 87 independent focused SL premises are recorded in the
 [compound ADD ledger](../../coverage/semantics/addassign-warning-review.json).
 Lookup-only negative projections check PROPREF presence, ownership and expiry;
-they do not establish typed-source or owning-target execution. Newly warning or
-invalid RHS values, constrained/owning/expired targets, wider operands/callbacks
+they do not establish typed-source or owning-target execution. Other invalid RHS
+values, constrained/expired targets, owning targets for these numeric stores, wider operands/callbacks
 and lifecycle paths remain explicit boundaries.
+
+Selected-reference `+=` now captures a leading RHS produced by that first
+Warning, before issuing a second Warning. The old RHS stays selected despite
+current-name rebinding; after capture its last alias may disappear, leaving owner0
+and no allocation without invalidating the historical holder. Cached `12.5`/`5.5`
+then store strict float `18.0` through the old target alias, while the current
+target name keeps replacement77. This updates the existing selected cell and
+LOCATION, with no new cell, detachment or name redirect. A supplied second throw
+instead preserves callback88/7 and outer100, with no store. Two originals and
+330 focused premises retain real phases, raw/driven stores and aliases in the
+[selected-RHS Warning ledger](../../coverage/semantics/addassign-selected-rhs-warning-review.json).
+The old entry and quiet completion remain exact. Fresh selected RHS and final
+selected target require live unconstrained scalar cells at their respective phases;
+other producers, unsafe targets and wider lifetimes remain partial.
+
+Failed delayed RHS conversion on selected-reference `+=` now reports the
+live old referents and preserves both cells. Changing them to flat arrays `[1]`
+and `[2]` raises `array + array` TypeError without retrying the earlier union
+fast path. Rebinding both current names to 77/7 cannot replace the old false/bad
+text labels: failure reports `bool + string`, while old aliases keep owner1 and
+current replacements owner2. No compound/outer store, detachment or name redirect
+occurs; later old-alias73/4 versus current8/9 writes preserve that topology.
+Two originals and 304 focused premises check real Warning phases, raw THROWN
+versus driven fresh TypeError25, array identity/item/count preservation and budgets
+in the [selected failure ledger](../../coverage/semantics/addassign-selected-failure-review.json).
+Both old cells must remain allocated/live/unconstrained; the existing scalar/flat
+DIRECT-array bound is reused. Missing/expired/constrained cells, objects,
+nested/reference/owning array leaves, other producers and wider lifetimes remain partial.
+
 Initially plain CV `+=` destinations now keep their original CV-slot selection
 across the leading-left warning. A reference created by the named handler can
 retain the callback's replacement through an alias. Successful arithmetic detaches
