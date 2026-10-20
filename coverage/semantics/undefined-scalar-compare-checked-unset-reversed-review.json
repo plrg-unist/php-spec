@@ -93,5 +93,12 @@
     "python3 tests/semantics/undefined_scalar_compare_checked_unset_reversed_state.py --output .tools/comp107-state-new",
     "python3 tests/semantics/undefined_scalar_compare_checked_unset_reversed_review_state.py --output .tools/comp107-peer-state-new",
     "python3 tests/semantics/undefined_scalar_compare_checked_unset_reversed_maintenance.py --output .tools/comp107-maint-state-new"
-  ]
+  ],
+  "integration": {
+    "parent": "b2fb2dc8b89fa789642a29dfcd1794d8901c00a2",
+    "modules": 407,
+    "preservation": "Only tested207 changes under runtime/pipeline; all15 publication tests and the full incoming checkpoint body are preserved. Every other schema/task/field/default/ordered-manifest path and other inventory row is parent-exact.",
+    "interaction_review": "INI, DEFINE/FROMCALLABLECLOSURE, Generator pending throw, property coalesce assignment/magic set, compound ADD and float-key nested-array producers are absent. Ordinary counter ADD and direct-CV isset keep their old paths; new property task variants remain unproduced. The empty-array control has no keyed/reference child elements and retained/debt lists remain empty.",
+    "evidence": "New source9+1/state560 and separate affected68/2/two selectors retain0e7bc1f2f/407; initial native2+4 and genuine baseline retain cca3340b3/407. No joined execution, accepted replay or renewed historical agreement."
+  }
 }

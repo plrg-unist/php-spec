@@ -747,6 +747,29 @@ indirect or recursive writes and wider receiver/lifetime forms remain open;
 generic ownership, destruction and GC rules are unchanged.
 [Magic setter review](../../coverage/semantics/magic-setter-review.json).
 
+Selected CV/literal inherited-private `??=` composes the existing typed-bool
+`__isset(string)`, absent-return by-value `__get($name)` and
+`__set(string $name, $incoming): void` sources. One read marker retains the
+receiver through Isset/Get, then releases that hold before a named no-argument,
+nonreference integer-returning RHS executes. The node-free decision retains
+source/caller/line history without retaining or requiring the old receiver.
+The later write re-fetches the CV: a replacement gets the returned `7`, while
+current NULL raises Error after RHS effects. Get zero suppresses RHS and Set.
+The setter receives a cached temporary `7`; changing an unrelated global to
+`99` does not change expression delivery. A supplied Set Exception retires its
+receiver before the same catch and preserves destination `42`.
+
+[Four originals and 746 focused premises](../../coverage/semantics/magic-coalesce-assignment-review.json)
+check actual receiver retirement, root-free continuation, fresh Set reception,
+entered/saved call validity after CV nulling, cached zero disposal, both errors,
+compiled-name/source refusals and PREP budget resumption. The earlier four
+typed-Get-name sources retain their declaration Unsupported observations; four
+fresh untyped-name variants isolate the genuine quiet-consumer gap. Existing
+declarations, inheritance, ordinary `??` and assignment machinery are reused;
+their earlier campaigns are not renewed. Reference/owning RHS values, no-Get or
+untyped-Isset variants, Get/RHS throws, wider receiver/property forms and reentry
+remain partial. No generic ownership, destruction, WeakMap or GC rule changes.
+
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and
 promoted nonnullable types do not acquire ordinary implicit nullable widening.

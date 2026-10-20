@@ -412,7 +412,9 @@ def $literal_reference_flat_cell(S, n) = true
   -- if $literal_reference_property_sources(S, n, ppropref.SOURCES, S.ALLOCATIONS)
 def $literal_reference_flat_cell(S, n) = false -- otherwise
 def $literal_reference_flat_items(S, eps) = true
+def $literal_reference_flat_items(S, (ENTRY pkey (DIRECT (PARRAY n))) :: pentry*) = ($literal_reference_child_array(S, n, S.ALLOCATIONS) /\ $literal_reference_flat_items(S, pentry*))
 def $literal_reference_flat_items(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*) = ($literal_reference_flat_leaf(S, pvalue) /\ $literal_reference_flat_items(S, pentry*))
+  -- if $value_nodes(pvalue) = eps
 def $literal_reference_flat_items(S, (ENTRY pkey (ALIAS n)) :: pentry*) = ($literal_reference_flat_cell(S, n) /\ ~(n <- S.LITERALREFDEBTS) /\ $literal_reference_flat_items(S, pentry*))
 def $literal_reference_flat_items(S, pentry*) = false -- otherwise
 
@@ -488,8 +490,8 @@ def $literal_array_owe(S, n) = S[.LITERALARRAYRETAINED = $literal_reference_dele
 def $literal_array_owe(S, n) = S[.LITERALARRAYDEBTS = S.LITERALARRAYDEBTS ++ [n]]
   -- if ~(n <- S.LITERALARRAYRETAINED)
 
-;; Logical pruning first removes ordinary garbage. Surviving positive-count
-;; table targets are flat leaves, so subtracting their debts creates no cascade.
+;; Logical pruning removes ordinary garbage first. Positive target tables keep
+;; their bounded child edges, so subtracting debt creates no owner cascade.
 def $literal_array_debt_tables_safe(S, H, eps) = true
 def $literal_array_debt_tables_safe(S, H, n :: n_tail*) = true
   -- if $literal_reference_flat_array(S, n, H.NODES)

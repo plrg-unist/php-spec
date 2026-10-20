@@ -1,0 +1,104 @@
+{
+  "milestone": "Iterator38: repeated parked THROW with one buffered input and unused-result timing",
+  "status": "composed-accepted",
+  "scope": "Repeated literal THROW through finite native links to a parked PAUSED simple-CV used yield with exactly one owning LIVE input record. Only the selected pending receiver clears initialization; physical frame, park history and input stay unchanged. Unused current copies drop before receiver cleanup; a call in assignment context keeps its result temporary through it.",
+  "implementation": {
+    "path": "spec/semantics/289-generator-delegation.watsup",
+    "sha256": "114a28db8673a766fb17ca129265ef4e5bfb74c7ca5f21cdf95a41e3d7100e11",
+    "change": "Separate singleton-input target reuses the finite buffered-NEXT validator on a PARKED-only borrowed view. Common throw-value selection authenticates operation, source demand and discarded tail; used or unauthenticated demand retains the copy. No fields, roots, close or collector changes."
+  },
+  "validation": {
+    "native": 5,
+    "unchanged_baseline": "Public force-close Unsupported after 17 exact OUTPUT chunks; reused original/native tuple, zero agreement.",
+    "sources": "Five unique normal agreements, exact stdout/stderr/exit0; assignment-context control differs only by assignment syntax and moves D after ancestor finally blocks.",
+    "new_states": {
+      "author": [
+        182,
+        155
+      ],
+      "peer": [
+        197,
+        140
+      ],
+      "total": 674,
+      "local": 654,
+      "generic": 20
+    },
+    "affected_prior_states": {
+      "selected": [
+        117,
+        165,
+        147,
+        193,
+        207
+      ],
+      "total": 829,
+      "scope": "Only five unused-result observer groups; all other siblings/source inputs unchanged. No historical source campaign renewal."
+    },
+    "compiler": "Strict compilation of 407 modules and nine-fixture elaboration pass; elaboration earns zero execution credit.",
+    "failure": "One exclusive peer COW source hit internal 100s: no semantic result, zero credit. Unchanged affected-only200/220 retry passes in 103.063s; previously unrun CELL passes at 100/120. Maintained COW-only caps match accepted commands. Peer197 passes first execution in 123.465s under approved 200 based on source/state cost; peer140 keeps 120."
+  },
+  "tested_revisions": {
+    "native4_and_unchanged_baseline": "6bef81b3905a05a1d4280cb538d43133b60db7da",
+    "assigned_native_control": "34563c706a3266dd269336efd355cee2d6e4f50e",
+    "source5_and_strict407": "062c1b77a4af2b11ea203c1bf70a8f2ec5dc2d0c",
+    "elaboration9_author337_affected829": "aa6c82b2c4b0120833ad2d32989e01f4a7cd9fc8",
+    "peer337": "6620f8a8d0f0f1c1055206b33aed54fdb99b412e",
+    "bridge": "Runtime/source formulas remain exact across cuts. Source cap transfer changes only recorded COW command/budget; peer-state change preserves complete CASES/Events and removes its unused helper, with zero-model dispatch checks."
+  },
+  "commands": {
+    "native": "taskset -c <1 for original4, 2 for control> python3 <native.py, review-native.py or used-native.py>",
+    "baseline": "taskset -c 1 python3 .tools/baseline.py --native-report <vh5 retained report>",
+    "strict": "taskset -c 2 python3 .tools/strict.py",
+    "source": "taskset -c <2 or 4> python3 <selected source wrapper> --native-report <matching retained report>; author uses vh5 plus _m0. Accepted COW uses .tools/peer-source-retry.py.",
+    "elaboration": "taskset -c 4 python3 .tools/state-elab.py",
+    "state": "taskset -c 4 python3 <selected state wrapper> --case <one exact report selection>"
+  },
+  "environment": {
+    "php_source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "mode": "SL, caches off, encountered determinism checks; LC_ALL=C TZ=UTC; script encoding unset, one exclusive assigned CPU.",
+    "caps": "Native 8s; source 100/120 except COW 200/220,100000steps; strict 120; elaboration 60; state seek/finish 4000/4000, process 120 except peer197 at 200.",
+    "exits": "Accepted wrappers/models0, quiet/no timeout; unchanged Unsupported model1 and source timeout model1 retained separately."
+  },
+  "reports": {
+    "native-author2": ".tools/generator-repeated-pending-buffered-throw-native-vh5xwdtw/report.json",
+    "native-peer2": ".tools/generator-repeated-pending-buffered-throw-review-native-07ck2qm7/report.json",
+    "unchanged-baseline": ".tools/generator-repeated-pending-buffered-throw-baseline-5r_7y7ne/report.json",
+    "native-used-control": ".tools/generator-repeated-pending-buffered-throw-used-native-_m0npb3u/report.json",
+    "strict407": ".tools/generator-repeated-pending-buffered-throw-author-sl-p3guim0s/report.json",
+    "source-author3": ".tools/generator-repeated-pending-buffered-throw-source-qsgd1v8e/report.json",
+    "source-peer-cow-timeout0": ".tools/generator-repeated-pending-buffered-throw-review-source-stud5rfl/report.json",
+    "source-peer-cow": ".tools/generator-repeated-pending-buffered-throw-review-source-retry-k2m5la9z/report.json",
+    "source-peer-cell": ".tools/generator-repeated-pending-buffered-throw-review-source-klog4vbr/report.json",
+    "elaboration9": ".tools/generator-repeated-pending-buffered-throw-state-elab-wf_4if84/report.json",
+    "state-author182": ".tools/fiber-state-review-wiibh1f0/report.json",
+    "state-author155": ".tools/fiber-state-review-er1cxk_d/report.json",
+    "affected21-117": ".tools/fiber-state-review-nwv92ytj/report.json",
+    "affected24-165": ".tools/fiber-state-review-dwgqh1r9/report.json",
+    "affected25-147": ".tools/fiber-state-review-jspr8x5w/report.json",
+    "affected26-193": ".tools/fiber-state-review-f2xlhxyb/report.json",
+    "affected33-207": ".tools/fiber-state-review-vghkg2hq/report.json",
+    "state-peer197": ".tools/fiber-state-review-azf72evr/report.json",
+    "state-peer140": ".tools/fiber-state-review-8crs6q5k/report.json"
+  },
+  "evidence": {
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-repeated-pending-buffered-throw-38/private.tar.gz",
+      "bytes": 2547275,
+      "sha256": "110c09f68d4f576e8e1f621da038e1543288920d674fe7c7a2bda46a7d479364"
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-repeated-pending-buffered-throw-38/manifest.json",
+    "recovery": "Archive restores 19 raw report directories, 11 ignored inputs, 16 current test/catalog files, 11 relevant runtime files, 8 support inputs and 2 tested wrapper snapshots. Manifest holds hashes/statuses/revisions; raw reports preserve exact commands/exits. Branches retain tracked cuts. Reused local binaries establish no new build/portability claim."
+  },
+  "remaining": "Previous orphans/multiple inputs, nonowning input, loop/HELD/other suspended owners and nonpending body entry are outside this admission. Explicit collection is unvalidated; complete core and foundational verification remain incomplete.",
+  "composition": {
+    "parent": "cca3340b3044dc9ea6970daca8b49d67171563cd",
+    "private_publication": "10d15c05b559e60bfad9a64e6325d56cccce67a1",
+    "runtime": "Tested289 byte-exact; all other incoming runtime/schema/default/root/ordered407 manifest/pipeline bytes preserved.",
+    "validation": "Actual introduced selectors independently reviewed disjoint; private cuts, timeout0 and command/formula-identical cap bridges retain identities. No joined actor or accepted replay."
+  }
+}

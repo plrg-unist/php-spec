@@ -134,6 +134,21 @@ The old entry and quiet completion remain exact. Fresh selected RHS and final
 selected target require live unconstrained scalar cells at their respective phases;
 other producers, unsafe targets and wider lifetimes remain partial.
 
+A separate selected-reference `+=` entry now admits valid initially nonquiet
+text RHS while preserving the old quiet entry. Distinct bad text `bad5` can be
+repaired to `5.5tail` by the first Warning; a second supplied Exception cancels
+the selected and outer stores, preserving old `88`/`7` and outer `100`.
+Two variable names may also select the same CELL: LEFT captures `12.5`, the first
+callback changes that shared cell to `5.5tail` and rebinds current RIGHT to `7`.
+RIGHT captures old `5.5` before the second callback writes shared `88` and rebinds
+current LEFT to `77`. Cached float `18.0` then replaces `88` in the old cell through its surviving alias,
+with its owners falling from three to two to one; neither replacement is changed.
+The store creates no CELL, detachment or name redirect. Two originals and 175+177
+focused premises check real handlers, raw/driven transitions, aliases and budgets
+in the [staged RHS ledger](../../coverage/semantics/addassign-repair-review.json).
+Fresh scalar selected cells, valid text RHS and the surviving safe old target
+bound this slice; other producers, constraints/owning payloads and lifetimes stay partial.
+
 Failed delayed RHS conversion on selected-reference `+=` now reports the
 live old referents and preserves both cells. Changing them to flat arrays `[1]`
 and `[2]` raises `array + array` TypeError without retrying the earlier union

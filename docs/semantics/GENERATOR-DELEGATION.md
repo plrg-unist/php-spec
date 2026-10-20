@@ -186,7 +186,7 @@ used-yield shapes remain Unsupported.
 
 Pending `throw` follows a separate no-advance path through native links to a bare
 yield or detached current with a node-free copied return. It throws to the caller
-while retaining the copied current through receiver retirement. Only the physical leaf is parked;
+while retaining a used copied current through receiver retirement. Only the physical leaf is parked;
 getters preserve it and later real resume through any ancestor is Unsupported.
 Explicit close omits the parked frame's finally, including a detached middle with
 cleared initialization. Other suspended task/held owners stay outside this admission;
@@ -211,6 +211,14 @@ snapshot from the raw reference cache. With an old `[&$slot]` input and new
 `[$slot]` input, post-close rebinding keeps the original object through the new
 direct edge and the replacement through the old shared cell. See the
 [buffered SEND review](../../coverage/semantics/generator-parked-pending-buffered-send-review.json).
+A second pending THROW with exactly one owning LIVE input record leaves it
+unchanged. Its actual receiver must still be pending, independently of the parked
+physical child's bit. An unused result adds no surviving current owner before
+receiver cleanup: input/raw-row aliases keep two array counts and one element-edge
+set, then real COW leaves the old array input-only. A call in assignment context
+keeps its temporary copy through receiver cleanup. The
+[repeated buffered THROW review](../../coverage/semantics/generator-repeated-pending-buffered-throw-review.json)
+separates these lifetimes and same-object rethrow from post-close cell rebinding.
 The [parked-foreach review](../../coverage/semantics/generator-pending-foreach-throw-review.json)
 adds exactly one by-value array loop at a bare yield. Physical child close retains
 the iteration container, preserving shared reference cells and late

@@ -124,6 +124,14 @@ The [typed array-leaf ledger](../../coverage/semantics/array-literal-float-typed
 adds scalar rejection, shared nested writes and singleton child COW after explicit
 property unset. Global outer typed-array CELL retargets, deeper nesting and
 indebted descendants remain Unsupported.
+DIRECT entries may instead own bounded child arrays without an intervening leaf
+CELL. The same mutable nonpool, edge-free, debt-free child bound applies; actual
+child nodes must survive logical pruning. Duplicate entries retain duplicate
+owner edges, so nested COW separates each occurrence and any independent
+snapshot while outer table/wrapper debt remains unchanged. The
+[direct child-leaf ledger](../../coverage/semantics/array-literal-float-direct-array-leaf-review.json)
+checks both direct-child multiplicity and wrapper deletion/throw cleanup through
+balanced inverse retargeting. Count/prune algorithms and global leaf gates stay exact.
 
 `tests/semantics/reference_wrappers.py` checks original source regressions,
 copying and rebinding, budget resumption, ownership graphs, cycle collection and
