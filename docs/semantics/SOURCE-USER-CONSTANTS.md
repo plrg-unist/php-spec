@@ -647,6 +647,24 @@ from structural coherent-clone/inherited-flag support, which gains no execution
 credit.
 [Array-method Closure define review](../../coverage/semantics/define-runtime-array-closure-review.json).
 
+Bare string-selected method Closures use the same dynamic-only `PVOBJECT`
+policy with existing full-string/source-site, target and live scope
+validation, plus absent binding/callable-certificate records. A fixed
+Base::read capture inside an inherited method on a Child receiver preserves
+the Base descriptor despite a Child override, with called Child and the
+original receiver. A computed qualified static string retains its selected
+class/method after its source CV changes. Original strings and creator
+frames are not Closure children; only an optional receiver is. Method
+static cells remain independent request roots. Direct publication and
+canonical/query COW share the pointer, and private duplicate-copy
+retirement can run its receiver destructor after handler output but before
+the original catch. Global/default policies and the DEFINE-origin
+direct-query fence stay unchanged. Only ordinary
+fixed-instance/computed-static omitted/false originals gain execution
+credit; coherent clones and inherited flag delegates are structural
+support. Factory/intrinsic and other Closure domains remain separate.
+[String-method Closure define review](../../coverage/semantics/define-runtime-string-closure-review.json).
+
 Ordinary `stdClass` values also use dynamic-only `PVOBJECT` authority when their
 selected property record and optional cached table validate, including live
 physical reference cells and their immediate values. A present stdClass birth

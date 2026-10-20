@@ -101,6 +101,12 @@ def $dynamic_runtime_object(S, n_object) = true
   -- if $constant_callable_record(S.CONSTANTCLOSURES, n_object) = eps
 def $dynamic_runtime_object(S, n_object) = true
   -- if $(n_object < |S.OBJECTS|) /\ HOBJECT n_object <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_object] = STRINGMETHODCLOSURE pcalltarget pstringselection
+  -- if $typed_closure(S, n_object) /\ $closure_live_object_valid(S, n_object)
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n_object) = eps
+  -- if $constant_callable_record(S.CONSTANTCLOSURES, n_object) = eps
+def $dynamic_runtime_object(S, n_object) = true
+  -- if $(n_object < |S.OBJECTS|) /\ HOBJECT n_object <- S.ALLOCATIONS
   -- if S.OBJECTS[n_object] = NAMEDCLOSURE porigin
   -- if $typed_closure(S, n_object) /\ $closure_live_object_valid(S, n_object)
   -- if $closure_scope_at(S.CLOSURESCOPES, n_object) = eps

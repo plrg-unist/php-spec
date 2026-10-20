@@ -1830,6 +1830,14 @@ COW shares the Closure, and throwing-duplicate cleanup can retire its bound
 receiver before catch.
 [Array-method Closure define review](coverage/semantics/define-runtime-array-closure-review.json).
 
+Closures captured from class-method strings also publish with their
+selected method and optional receiver. A fixed Base method keeps that
+descriptor despite a Child override, while retaining called Child scope.
+Computed static strings retain their selection after source rewrites. Query
+COW shares the Closure; method static cells remain request roots. Throwing
+duplicate cleanup can retire the sole receiver before catch.
+[String-method Closure define review](coverage/semantics/define-runtime-string-closure-review.json).
+
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
 children while cast/query arrays retain COW. A private duplicate copy can keep

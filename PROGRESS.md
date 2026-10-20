@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+String-selected method Closure VALUES now publish with their validated requested
+method and lexical/called/optional receiver identity. A fixed Base descriptor
+survives a Child override; computed static strings retain their selection after
+source rewrites. Direct publication and canonical/query COW share the Closure;
+method static cells remain independent request roots. A private duplicate copy
+can keep the sole receiver through handler output and retire it before catch.
+
+Three originals pass at `3d8f3be654`/407; 873 focused premises (352+182+339),
+including three zero-budget identities, pass at `dff9e1a137`/407. All first attempts
+pass without failures, retries or accepted/historical replay. Sole400+6 reuses
+existing STRING callable authority and dynamic-only PVOBJECT query/tree delegates;
+statics, roots, cleanup, schema and global/default policies stay exact. Ordinary
+fixed-instance/computed-static omitted/false originals are distinct from structural
+clone/inherited-flag support; wider domains and core remain partial.
+[String-method Closure define review](coverage/semantics/define-runtime-string-closure-review.json).
+
 Retained intrinsic `ini_set` Closures now resume NULL-option handlers with named
 or mixed flat quiet ARRAY values. Reversed evaluation owns both the original
 Closure and earlier array before later option effects replace the live callee
