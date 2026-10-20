@@ -1041,36 +1041,31 @@ and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
 Flat runtime tables in lossy-float literal-key callbacks now admit embedded
-untyped string-valued ALIAS leaves alongside null/bool/int/float leaves. Canonical
-bytes and authenticated carriers use existing validation. A separate leaf-cell
-predicate keeps global primitive-cell and direct string CV/CELL admission exact;
-marked/live/untyped/coercion/backing, leaf-CELL-debt and logical-pruning bounds
-remain unchanged. Positive targets retain their leaf edges; strings add no
-modeled heap edges or user destructors. Table debt does not subtract leaf owners.
+null/bool/int/float ALIAS leaves with validated ordinary instance-property type
+sources. The existing primitive-property rules enforce rejection/coercion; shared
+leaf copies retain their constraint. Explicit property unset removes its source
+before releasing the alias, allowing a later singleton copy to unwrap while the
+object remains rooted. For debt-bearing payloads, each source object must survive
+logical pruning alongside the leaf; positive leaf counts alone do not suffice.
 
 Four fresh natives and the genuine unchanged Unsupported baseline retain
-`4a6f62070`/406. Strict406 and source4 pass at `b893408e6`. Focused state1034
-(1021 Boolean +13 raw; 475 author +559 independent) passes first executions at
-`38b3ae5f6`. No source/state failures or retries; the genuine baseline stays zero.
-Sibling writes distinguish table sharing/COW independently of shared leaf byte
-writes. Singleton leaf copies detach, shared ALIAS strings propagate changes,
-and earlier string snapshots stay fixed. Deletion and supplied-throw cleanup
-preserve outer count biases until inverse balancing, then normal COW resumes.
-Only413 leaf admission and two superseded pure string-refusal controls change;
-source/error authentication, tasks, fields, count/prune/lifetime algorithms and
-driver stay exact. Array/object-valued, typed or indebted leaves,
-recursive/pooled/immutable tables, wrapped by-value CVs, direct string CV/CELL
-retargets, unsafe effective-zero,
-active collection and request-end debt remain Unsupported. Paused LIST/owned-NUL
-and active lifecycle/class paths are untouched.
-[String-alias review](coverage/semantics/array-literal-float-string-alias-leaf-review.json).
+`4843da9fd`/406. Strict406 and source4 pass at `5be36f8e9`. Focused state1033
+(1020 Boolean +13 raw; 436 author +597 independent) passes first executions at
+`cdc59a8d9`. No source/state failures or retries; the genuine baseline stays zero
+after its first diagnostic. Sibling writes
+distinguish table COW from leaf sharing, and both HARRAY and wrapper-CELL producers
+balance before teardown. Only413 leaf eligibility and source-object liveness change;
+source/error authentication, tasks, fields, count/prune algorithms and driver stay
+exact. Fresh witnesses use ordinary public int properties without user methods,
+hooks, inheritance or destructors. Typed strings/arrays/objects, indebted leaves,
+static/hooked/queued or retired sources, coercion/backing records, recursive or
+pooled/immutable tables, effective-zero, active collection and request-end debt
+remain Unsupported. Paused LIST/owned-NUL and active class/lifecycle work are
+untouched. [Typed-leaf review](coverage/semantics/array-literal-float-typed-alias-leaf-review.json).
 
-Composed over `a4bd3b94f`/406 with accepted413/tests unchanged and all other
-parent runtime/manifest bytes preserved. Incoming reference-return retirement,
-Generator NEXT, Closure DEFINE, magic-call, INI_SET and loose-comparison/compound
-Warning selectors are absent here. Seven partial inventory rows append only the
-reviewed deltas; source4/state1034 retain their private cuts and baseline0 without
-joined execution or renewed historical credit.
+Earlier untyped string ALIAS leaves retain source4/strict406 at `b893408e6` and
+state1034 at `38b3ae5f6`, integrated as `5d8476935`; its genuine baseline remains
+zero in the [string-alias ledger](coverage/semantics/array-literal-float-string-alias-leaf-review.json).
 
 Earlier primitive ALIAS leaves retain source4/strict406 at `eb84338a2` and state951
 at `d4ffb94f1`; the original throw timeout stays zero in the

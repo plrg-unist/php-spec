@@ -52,7 +52,7 @@ checks child COW after ordinary names disappear and debt cancellation. The
 [flat-array review](../../coverage/semantics/array-literal-float-ref-arrays-review.json)
 checks these counts through stable insertion, deletion, throw and inverse cleanup.
 Debt cells must keep positive effective counts. Array-valued type sources,
-nested or pooled/immutable arrays, owning/typed/indebted embedded leaves, other owning
+nested or pooled/immutable arrays, array/object-valued or indebted embedded leaves, other owning
 values, static/hooked/queued or retired sources,
 coercion/backing records, active collection, effective-zero retirement and
 outstanding debt at request end are explicit Unsupported before pruning. Isolated
@@ -96,6 +96,15 @@ The [string-alias ledger](../../coverage/semantics/array-literal-float-string-al
 adds shared/singleton string leaves: byte writes propagate through shared ALIAS
 entries while unwrapped singleton leaves and earlier string snapshots remain independent.
 A separate leaf-cell predicate leaves direct string CELL retargets Unsupported.
+Embedded null/bool/int/float leaves also admit validated ordinary instance-property
+type sources. Table debt does not subtract the property or table edges into a
+leaf. For debt-bearing payloads, every source object must survive logical pruning;
+leaf count positivity alone is insufficient. Shared copies enforce/coerce typed
+writes. Explicit property unset removes its source before releasing the alias,
+so a later singleton copy can unwrap without a constraint while the object stays
+rooted. The [typed-leaf ledger](../../coverage/semantics/array-literal-float-typed-alias-leaf-review.json)
+checks this distinction, two sources, deletion, supplied throw and inverse cleanup.
+Typed string/array/object leaves and wider type-source lifetimes remain Unsupported.
 
 `tests/semantics/reference_wrappers.py` checks original source regressions,
 copying and rebinding, budget resumption, ownership graphs, cycle collection and

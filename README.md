@@ -48,8 +48,12 @@ owners; inverse retargeting cancels them before cleanup. Initial scalar and
 array plans remain distinct, while same-table transfer and restored COW keep
 ordinary values distinct from PHP reference wrappers.
 These flat tables also admit untyped reference leaves holding null/bool/int/float
-or validated byte strings. Child-table copies preserve shared leaf aliases and
-unwrap singleton leaves; string byte writes keep earlier snapshots independent
+or validated byte strings, and null/bool/int/float leaves with validated ordinary
+instance-property type sources. Debt-bearing payloads require every source object
+to survive logical pruning. Shared copies keep typed rejection/coercion; explicit property
+unset removes its constraint before singleton copying. Child-table copies preserve
+shared leaf aliases and unwrap singleton leaves; string byte writes keep earlier
+snapshots independent
 of both leaf references and outer table/wrapper count corrections.
 Direct string CV/cell payloads, unsafe deficit retirement and wider domains remain
 Unsupported. Duplicate replacement and later items stay ordered.
