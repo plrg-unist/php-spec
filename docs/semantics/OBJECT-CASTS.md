@@ -40,6 +40,13 @@ lookup mirrors add no edge. Independent foreach membership, singleton/held wrapp
 and Payload retirement pass four originals and 477 focused premises. This adds no
 table producer, iteration, root or GC rule.
 
+[Mixed cached callbacks](../../coverage/semantics/mixed-cached-clone-callback-review.json)
+now reuse those tables through ordinary public `__clone():void`. Dynamic mirrors
+remain nonowning through callback foreach/mutation, borrowed source retirement,
+last-Payload deletion inside the window and failed-copy cleanup after a supplied
+throw. Four originals and 756 focused checks pass without changing table, unset,
+callback-cleanup or GC rules.
+
 [Direct comparison materialization](../../coverage/semantics/direct-table-comparison-review.json)
 now permits genuine foreach and dynamic-property table creation while the original
 object-protected inline-slot comparison is active. Its captured cursor ignores new
@@ -53,8 +60,8 @@ Their fresh arrays copy direct values and singleton references; shared reference
 remain live. Actual cast states verify copied entries, cell/object owners and
 unchanged object maps/flags. Independent projected-array comparison and throwing
 cleanup pass three exact sources and 503 reached premises/35 raw steps. Existing
-GC, mixed dynamic cached callbacks, copied-declared cache images, reference-iteration
-and broader lifetime limits remain open.
+GC, wider mixed dynamic cached callbacks, copied-declared cache images,
+reference-iteration and broader lifetime limits remain open.
 
 A NaN cast allocates the object before delivering its warning through the real
 error handler. Its continuation retains the original operand category and zval

@@ -196,29 +196,23 @@ backup selectors have no source producer here. Incoming checkpoints remain intac
 except the reviewed stale81 named partial qualifier; source4/author1,200 and peer428
 retain their private split cuts without joined execution or renewed credit.
 
-Selected main-scope CV/literal inherited-private integer pre/post updates now
-retain the chosen receiver across magic Get/Set. Get may clear or retarget the CV;
-post++ still sets `6` and returns old `5` after destruction of `6`, while pre--
-returns new `4`. Pre++ Set commits `6` before a supplied throw, preserving outer
-destination `42`. Post-- Get throw skips arithmetic/Set and preserves the same
-catch/destination `42`.
+Ordinary public mixed declared/dynamic cached unary CV clones now reach existing
+public `__clone():void` callbacks. Callback foreach uses fresh copy locators and
+independent bucket membership; singleton dynamic wrappers unwrap while held aliases
+share their untyped cell. Borrowed source retirement drops its table while the copy
+survives. Deleting the copy's last Payload bucket runs its destructor inside the
+live callback window. A supplied callback throw instead clears the window, destroys
+the failed copy/Payload and reaches the same catch with destination `42` unchanged.
 
-Four source agreements at `30885ab60`/409 and 821 focused premises (798 reached
-+ 23 derived) at `cf3f99e05`/409 pass. The genuine baseline refuses all four at
-magic getter ingress. One original pre-application fixture binding failure retains
-zero credit; the sole correction splits a fresh origin binding from a comparison.
-No diagnostic or source replay was needed. Module 419 adds the bounded consumer
-with module 30 records and a plan-only module 53 exclusion. Existing numeric,
-Get/Set, cleanup and GC bodies stay exact. Raw PINT/in-range +/-1 only; wider
-coercion/ref/overflow/hooks/reentry remain partial.
-[Magic property inc/dec review](coverage/semantics/magic-property-incdec-review.json).
-
-Composed over `f3ed17350`/408 with tested modules 53/419, six tests and family
-scope private-exact. Module 30 retains incoming task tags; the ordered manifest
-is parent 408 plus 419. Incoming INI/DEFINE, missing comparisons, typed ref-return,
-Generator, cast/warning and NULL-key array selectors have no producer here.
-Source/state results retain their tested identities without joined execution
-or renewed historical credit.
+Four exact source agreements at `a83c34a75`/409 and 756 focused checks (748 reached
++ 8 derived) at `d1cf12ded`/409 pass their first attempts. Native/genuine cuts remain
+`841c88c80`/409: the baseline refused all four at cached cloning. Eight focused
+workers are quiet, stable and fully reaped; no failure, retry, diagnostic or
+historical CLASS113/116 replay. Only module 150's mixed callback exclusion changes;
+existing copy/mirror, access, callback, unset, ownership and GC rules stay exact.
+Readonly, zero-declared sharing, copied-declared DIRECT images, active collection
+and wider callback histories remain partial.
+[Mixed cached callback review](coverage/semantics/mixed-cached-clone-callback-review.json).
 
 Earlier pending NaN modulo retains source3/state340 and its original NORMAL
 stderr mismatch in the [pending modulo ledger](coverage/semantics/mod-nan-pending-review.json).

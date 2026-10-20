@@ -5116,17 +5116,26 @@ the callback reads the copy's locators; a borrowed source may retire there while
 its Payload survives in the copy. Held int aliases retain the clone constraint,
 and supplied throw destroys the failed copy/Payload before the original catch;
 the destination stays `42`.
-Four source agreements and 659 focused premises pass at separate cuts. Mixed
-dynamic callback caches, readonly, active collection and wider callback/lifetime
-histories remain open.
+Four source agreements and 659 focused premises pass at separate cuts. That
+declared-only cut excluded mixed dynamic callback caches, readonly, active
+collection and wider callback/lifetime histories.
 
 [Mixed cached clones](coverage/semantics/mixed-cached-clone-review.json) now copy
 ordinary public declared slots and live dynamic buckets into a fresh table. Declared
 locators target the copy; dynamic lookup mirrors add no owner. Real foreach sees
 independent writes and membership, singleton wrappers unwrap, held aliases stay
 shared, and the copy keeps a Payload alive after source retirement. Four originals
-and 477 focused premises pass at separate cuts. This path excludes `__clone`,
+and 477 focused premises pass at separate cuts. This no-callback cut excludes
 readonly, active collection, zero-declared and copied-declared DIRECT cache images.
+
+[Mixed cached callbacks](coverage/semantics/mixed-cached-clone-callback-review.json)
+now use the existing public `__clone():void` path for those declared/dynamic tables.
+Actual callback foreach and bucket mutation preserve fresh copy locators and
+singleton-versus-held dynamic aliases. Borrowed source retirement leaves the copy
+live; deleting its last Payload bucket runs the destructor inside the callback
+window. A supplied throw instead destroys the failed copy/Payload before the same
+catch and unchanged destination `42`. Four originals and 756 focused checks pass.
+Readonly, active collection, zero-declared and wider callback histories remain partial.
 
 [`get_class` testing support](docs/semantics/GET-CLASS.md) observes finite live
 object names and executing lexical scope through direct and callable invocation.
