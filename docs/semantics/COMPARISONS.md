@@ -75,10 +75,10 @@ records this entry extension and its separate source/state cut.
 If a frozen-left `<=>` or distinct forward `==`/`!=`/`<`/`<=` read resumes with
 its later direct CV still missing,
 the driver now dispatches the second Warning and freezes its NULL too. This
-includes a scalar right CV removed by the first handler and the same name twice.
+includes a scalar right CV removed by the first handler and the same name twice for `<=>`.
 Second-handler writes or reference binding cannot change the two captured NULLs:
 `<=>` returns 0 and the four forward Boolean operators return true, false, false, true.
-leaving the name missing causes no third Warning. False handlers preserve each
+Leaving the name missing causes no third Warning. False handlers preserve each
 default Warning's order, and a second supplied throw preserves destination and
 catch/finally. The existing right-frozen removed-left refusal stays separate.
 [Second-Warning review](../../coverage/semantics/undefined-spaceship-second-review.json)
