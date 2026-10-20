@@ -441,6 +441,16 @@ can restore eligibility. Fresh public `int|array`/`int` witnesses distinguish
 weak44, rejected strings, transient restrictive-source refusal, DIRECT snapshots,
 deletion and restoration before the same supplied Throwable reaches catch. See
 the [typed NULL-key ledger](../../coverage/semantics/array-literal-null-key-typed-wrapped-cv-review.json).
+NULL-key handling now also captures owning ARRAY values from ordinary named
+calls without arguments. Checked call occurrence, no fallback and an active
+by-value function authenticate this VAR producer; array-constructor TMPs do not
+enter its two-owner marker. Callback producer-global writes persist while the
+returned table stays frozen. Normal completion inserts one DIRECT empty-key
+value; supplied throw performs no insertion or CV writeback and retires an
+otherwise unowned returned table and builder before catch. The popped owning snapshot is validated through
+allocation and existing bounded/object-free checks. No literal debt or generic
+cleanup change; see the
+[NULL return-value ledger](../../coverage/semantics/array-literal-null-key-return-array-value-review.json).
 String leaves validate canonical bytes or existing carrier records. Their table
 and wrapper counts stay separate from copied string bytes: debt-time writes may
 share a table while a string snapshot stays unchanged. Singleton reference

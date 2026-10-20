@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "milestone": "OP77 direct same-CV self addition",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "Direct same-name plain nonreference CV += itself, initially valid leading-numeric text, with a named Warning handler. Both numbers are captured in sequence through real callbacks; normal float18.0 and supplied second-throw cancellation are witnessed. No reference/property/dimension/owning expansion.",
+  "runtime_revision": "2dd8681942f63544cc4ff17fa38cade0e169af0b",
+  "helper_revision": "c256522f796b1024bac4f47e8985fdc1aa36c413",
+  "private_modules": 409,
+  "runtime_sha256": {
+    "spec/semantics/55-compound-assignment.watsup": "4a0b9699b0261598b984674cc28b18170dacd0c485b3fd867785bbd036ed426c",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "d2ca248e1fae87fd2de5cee5b949f03e53921b65c8dd3cf23d966d00613bb230"
+  },
+  "engine_basis": [
+    "Pinned zend_compile_compound_assign VAR branch compiles the RHS normally and emits ASSIGN_OP CV/CV. It does not use the potential-assign-to-self copy used for DIM. ZEND_ASSIGN_OP passes the same selected CV zval as result/LEFT/RIGHT. add_function_slow snapshots LEFT before its conversion Warning, then reads that still-live RIGHT zval after callback return and saves RIGHT before its Warning.",
+    "The existing high-level compound_snapshot marks the same variable true, so the generic self path would resolve an early RHS copy before the first callback. A strict same-name plain-CV entry bypasses that generic path only for this leading-text named-handler case and enters the old CV Warning tag. Its fresh capture authenticates source/operand lines, allocated nonreference unconstrained scalar storage and carrier bytes; later LEFT/RIGHT holders are historical.",
+    "Exactly43 additions:55 declaration/compound-self EPS and41 appended404 lines for the disjoint same-name source arm, self plan and old-tag begin. All old conversion/right-capture/store/error/unwind/tag/root bodies remain exact. No30/state/schema/manifest,207/53/dimension, class/array/Generator/dynamic/lifecycle or paused-path edit."
+  ],
+  "contract": [
+    "Author initial same CV holds12.5tail. H1 replaces it with5.5tail and returns true, so LEFT remains12.5 while RIGHT later captures5.5. H2 writes88 and returns false. The old CV and outer destination both receive strict float18.0, with exactly the second default Warning at line25; EOFx8/calls2 stays independent of the saved outer result. An early RHS snapshot would give25, while rereading current values would give11 or176.",
+    "Independent source uses the same two conversions, but H2 writes88 and throws the identical Exception created at20. Same identity/noPrevious/line20/x88/outer100/calls2 and EOFx8 prove no compound or outer store. No extra default Warning is emitted.",
+    "Focused193+166 inherits the exact old RHS/CV/arithmetic/integer HELPERS and accepted diagnostic classifier/fold. One authentic source-to-EOF traversal per fixture binds equal CV pointers, the true-self marker, actual literal/dynamic pvalues plus bytes, real fresh+entered callbacks, delayed same-CV RHS capture, fresh versus returned history, raw begin/capture/old-cell store versus driven metadata, owner1/EPS roots, throw root2, diagnostics and zero cuts. Only author has an undriven admission matrix; no forged state or duplicate full-entry replay executes."
+  ],
+  "required_follow_on": [
+    "This new consumer class is bounded by initial leading text, direct same-name nonreference CVs, the named callback and the two observed outcomes. Other compound operators, copied/reference operands, owning or constrained callbacks/targets and wider self/dimension/lifecycle histories remain partial.",
+    "Numeric parsing/addition, generic compiler self snapshots, old store/unwind algorithms and reference/alias/lifetime evidence are not renewed. No engine bug or intentional divergence is claimed. Paused OP12 dimension inc/dec, COMP88 and Source47 DEFINE-name low-precision callbacks stay untouched; active shared207/property/array/Generator/dynamic/lifecycle selectors are disjoint."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-77/source-2dd868194-author-one/report.json",
+        "sha256": "870d59614297f9398358a8ab8dd595229058f7932034c054e68cf6156ab4d107",
+        "revision": "2dd8681942f63544cc4ff17fa38cade0e169af0b",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-77/review-model-2dd868194-review-one/report.json",
+        "sha256": "1b8bdefe177fc387a8dad90fcf0ed5bfd147ad73ab2ba50b7852056479565f99",
+        "revision": "2dd8681942f63544cc4ff17fa38cade0e169af0b",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-77/state-c256522f7-two/report.json",
+        "sha256": "e339bf141f6d6c372ce804661f9d87fb2982a05acf8b90aed35bec19fe1b5916",
+        "revision": "c256522f796b1024bac4f47e8985fdc1aa36c413",
+        "modules": 409,
+        "cases": [
+          "addassign-self-warning-current-rhs",
+          "addassign-self-warning-second-throw"
+        ],
+        "conditions": [
+          193,
+          166
+        ],
+        "total": 359
+      }
+    ],
+    "total_source_agreements": 2,
+    "total_focused_state_conditions": 359
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-77/baseline-3687f18f3-self-read/report.json",
+      "sha256": "f0179e33cb58911e24fd6a50bddbd21c1d923e7ab1eb84ccccb1a8ed65fe6a97",
+      "result": "Actual frontend accepted/checked program/Unsupported before H1; empty semantic streams, reason error-handler ingress requires a producer continuation, model1/rowfalse/agreement0. Native twoWarnings/result18 remains retained without override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-77/native-3687f18f3-author-one/report.json",
+        "sha256": "3a27c5d6bb4cde5392a9f3cfaa48e848ef5da2e0db995da3076cabcf59160f03"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-77/native-3687f18f3-review-one/report.json",
+        "sha256": "4966033a39d91fe7958b57bf5fc0d76acc3d1af693181bc7fbc2436b9963bb63"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-77/state-prep-c256522f7-two/report.json",
+        "sha256": "623c11399bfcfd799de2c6d56c3c8191e8e98bb2be350c5e2833a9dd039eb4db",
+        "result": "Retained full author1+peer1 original paths/native bytes; checked frontend/adapter and both full409 struct passes0/reaped. Zero native/application replay or semantic credit."
+      }
+    ],
+    "standalone_syntax": "Two standalone undefined-pstate diagnostics, zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-77",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/genuine CPU1, source CPU2 and focused CPU4 separately granted/released. Native30/modelCLI60-process90/checked30/full409struct30 per fixture/full409SL120 per group. Retained prep authenticates author1+peer1 original paths/native bytes, without native/application replay.",
+    "record": "Restore matching Git cuts/local tools in a fresh directory. External source/native paths authenticate focused fixtures and are not runtime dependencies. Copied local tools add no rebuild/portability claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "commands": [
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/addassign_self_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 tests/semantics/addassign_self_warning_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-77/state-prep-c256522f7-two/run-prepare.py",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-77/state-c256522f7-two/run-state.py"
+    ]
+  },
+  "composition": {
+    "parent": "7b3cd33d7b7658af60cfa37d58cf8c3a609775f6",
+    "private_publication": "69ba7d53fcbfdb5a4bab8c1f5ae7281897c579c0",
+    "modules": 409,
+    "runtime_sha256": {
+      "spec/semantics/55-compound-assignment.watsup": "4a0b9699b0261598b984674cc28b18170dacd0c485b3fd867785bbd036ed426c",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "d2ca248e1fae87fd2de5cee5b949f03e53921b65c8dd3cf23d966d00613bb230"
+    },
+    "other_incoming_paths_preserved": 39,
+    "gate": "Six incoming runtime paths (30/150/156/270/289/413) and ordered409 manifest remain parent-exact. Typed by-reference-return/finally retired-object histories and node-free Generator SEND ancestor refresh have no producer in these ordinary by-value named h/direct-scalar self ADD sources. Incoming clone150 mixed cached __clone admission requires a clone/user-object/property-table producer, absent here. Incoming ARRAY_KEY_NULL_VALUE_RESULT30/413 requires a NULL-key ARRAY_VALUE literal with an owning by-value ARRAY return; h returns primitive bool and the sources have no ARRAY literal, NULL key, property reference or returned ARRAY. GLOBALS fixed string dimensions and native Throwable trace arrays are distinct from ARRAY_VALUE literal builders. Native Exception is THROWABLE, not a destructor-bearing user INSTANCE; no RETURN_REF_UNWIND/FINALLY_REF_RETURN/Generator task or new history tag is reached. New task-specific roots/discard arms add no pstate/default/general-root field. Preserve all parent runtime and manifest bytes while overlaying only our55 declaration/self EPS and private404/six tests; source2/state359 keep their private409 cuts without joined execution, accepted replay or renewed credit."
+  }
+}

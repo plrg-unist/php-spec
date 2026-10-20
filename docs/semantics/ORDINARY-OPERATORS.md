@@ -120,6 +120,20 @@ default Warning bytes, selected-cell owners and budget resumption in the
 owning/constrained/expired and wider arithmetic/lifecycle forms remain partial;
 earlier ADD/DIV evidence retains its original cuts.
 
+Direct plain-CV `$x += $x` now starts its numeric conversion before the generic
+self snapshot. Zend emits the same CV for both operands without a temporary copy.
+LEFT captures `12.5` from initial `12.5tail`; its handler writes `5.5tail`, which
+the same live CV then supplies to RIGHT. After RIGHT captures `5.5`, its handler's
+write of `88` cannot change the strict float `18.0` stored in that CV and delivered
+to the outer destination. A second supplied Exception from line 20 instead keeps
+`88` and outer `100`, with no compound store. Two originals and 193+166 focused
+premises cover actual callback entry, both captures, equal pointers, historical
+validation, raw versus driven store, EOF and budgets in the
+[self-addition ledger](../../coverage/semantics/addassign-self-warning-review.json).
+No alias or extra cell owner is introduced. Old numeric, store and unwind bodies
+stay unchanged; other operand producers, compound operators and wider histories
+remain partial. Dimension self-copy and paused inc/dec paths are untouched.
+
 Numeric compound `+=` now stages the same leading-left warning for direct CVs
 with preexisting untyped reference cells and a quiet numeric RHS. The saved left
 number and both selected addresses survive a named handler. On return, the live
@@ -360,6 +374,22 @@ SL premises check live 99, negative truncation, false fallback on the operand li
 public snapshot/diagnostic rejection and budget resumption in the
 [BITNOT ledger](../../coverage/semantics/bitnot-warning-review.json).
 Other operand producers, callbacks and lifecycle forms remain required.
+
+Explicit `(int)` of a range-warning float in a plain nonreference CV now
+resumes a named handler using the original double. Finite `2^63` wraps to
+`PHP_INT_MIN` even after the callback replaces it with same-spelling text whose
+quiet cast saturates to `PHP_INT_MAX`. C saves the double before Warning and
+wraps afterward; the model's earlier pure long calculation adds no observable effect.
+The explicit false conversion flag gives NaN one range Warning, without the
+implicit-safe precision notice. A supplied Exception cancels delivery after source
+removal, preserving identity and outer `100`. Two source cases and 145+122 focused
+premises cover real
+callbacks, fresh versus historical validation, EPS roots, raw typed result/BASE,
+retirement, diagnostics and budgets in the
+[integer-cast range ledger](../../coverage/semantics/int-cast-range-warning-review.json).
+The original rule-label parser failure stays zero; numeric/string/formatting and
+generic unwind bodies remain unchanged. Normal NaN, throwing finite conversions
+and wider producers/lifetimes remain partial; paused DEFINE precision is untouched.
 
 Explicit `(int)`/`(float)` casts of an empty `stdClass` in a plain CV now stage
 one named-handler Warning. The VM borrows that CV and formats the class message

@@ -1114,3 +1114,36 @@ identity, frozen referent or receiver trace edge is claimed. Only12 additive172
 lines change; helpers/finish/trace/root/GC/schema/historical tests stay exact without
 replay. Additional packs/arguments, PIPE, typed/property/backed references, owning
 referents and sole-owner lifetimes remain partial; paused boundaries untouched.
+
+The [undefined INI VALUE increment](../../coverage/semantics/ini-set-undefined-value-review.json)
+handles a direct missing CV at positional argument1 after rawNULL option capture,
+for selected strings and retained INI_SET receivers. Warning callbacks may define
+that CV as an ARRAY and replace the live callee/option; the saved result remains
+NULL. Weak reception next dispatches NULL-option Deprecated and returns false;
+strict ordinary reception instead raises parameter1 with NULL/NULL API arguments.
+Strict explicit reception is weak. A supplied first-Warning Exception cancels API
+and wrapper entry, while the original setter remains usable.
+
+Only25 additive207 lines change. Exact count2/INDEX1/PACKSeps/nonNAMED/nonPIPE,
+pending selection/owner authority, option compiledEPS-orNULL and direct-variable
+source/name/line checks authenticate the read. Its certificate roots only the
+captured setter when present; callback-created ARRAYs stay in ordinary globals.
+Certified resume completes the NULL send into CONFIG_ARGS, preserving the strict
+direct-CV result validator rather than exposing KNOWNNULL at CONFIG_SEND. Existing
+166/172/234 validators, generic restore/discard, trace/root/GC/schema and parser
+foreign boundary remain unchanged.
+
+Source4 and all1,165 premises (301+257+308 author,299 independent) pass at
+`ed96f17f7`/408. Native and initial baseline retain `f2d24d56b`; baseline B| is
+Unsupported/zero agreement. Initial/first affected CPU2, field-order retry CPU5
+and corrected affected CPU3 retain separate records. Fifteen reports include
+13 PASS and two failure0: pre-main malformed-pack field order, then an actual
+transient result-integrity failure requiring the fused resume. Earlier model
+streams are preserved; only changed runtime justified their repetition, with
+native source paths/cwd and caps unchanged. Default Deprecated17/Warning17 are
+the only PHPstderr. State proves whole Warning/Deprecated restoration, NULL send
+despite live ARRAY, strict API-only trace, actual handler-only pre-API Exception,
+idempotent owner-buffer discard and original-setter recovery. No receiver trace
+edge or native peer trace observation is claimed. Wider names/packs/PIPE, other
+read positions/producers and sole-owner lifetimes remain partial; paused paths
+are untouched.

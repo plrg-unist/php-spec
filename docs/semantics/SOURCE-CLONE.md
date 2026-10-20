@@ -32,8 +32,9 @@ The unary CV operand preserves source identity without owning it, so source
 retirement during the callback leaves the copy/Payload live. Supplied throw
 releases the failed copy and last Payload before the same catch, without committing
 the assignment. Four exact originals and 659 focused premises have separate cuts.
-This adds no iteration, reference-constraint or callback-cleanup rule; mixed dynamic
-callbacks, readonly, intrinsic/update and wider callback/GC histories remain partial.
+That declared-only cut added no iteration, reference-constraint or callback-cleanup
+rule; mixed dynamic callbacks, readonly, intrinsic/update and wider callback/GC
+histories were excluded.
 
 [Mixed cached cloning](../../coverage/semantics/mixed-cached-clone-review.json)
 adds ordinary public nonempty declared layouts with live dynamic buckets and no
@@ -44,7 +45,20 @@ independent writes, bucket membership and order; singleton versus held dynamic
 wrappers and shared Payload retirement retain their distinct lifetimes. Four
 originals and 477 focused premises include a derived late-UNSET/compaction check.
 Zero-declared sharing, copied-declared DIRECT images, undefined dynamic buckets,
-readonly, mixed callbacks and active collection remain outside this new route.
+readonly, mixed callbacks and active collection were outside that no-callback cut.
+
+[Mixed cached callbacks](../../coverage/semantics/mixed-cached-clone-callback-review.json)
+now consume this ordinary public nonempty declared/dynamic path through existing
+public zero-argument `__clone():void`. Actual callback foreach reads copied locators
+and mutates independent bucket membership; singleton and held untyped dynamic
+aliases keep distinct copy behavior. A borrowed source can retire with its table
+while the copy remains live. Deleting the copy's sole Payload bucket runs its
+destructor inside the live callback window; a supplied callback throw instead
+clears that window before failed-copy and Payload cleanup, preserving the same
+catch and outer destination `42`. Four originals and 756 focused checks have
+separate cuts. Only the mixed callback exclusion in module 150 changes; modules
+300/261/138, access, ownership and generic cleanup stay exact. Wider layouts,
+readonly, zero-declared sharing, copied-declared DIRECT images and GC remain partial.
 
 Module300 executes genuine `__clone` callbacks with the selected method's
 declaring scope and the copy's called class. Access is checked before allocation;

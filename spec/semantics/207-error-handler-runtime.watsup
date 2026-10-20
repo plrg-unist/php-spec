@@ -350,6 +350,15 @@ def $error_read_shape(ptask, VARIABLE n* z, pbase) = ({ORIGINAL ptask, INPUT VAR
 def $error_read_shape(BINARY_RIGHT pbin (VARIABLE n* z_origin) z, poperand, pbase) = ({ORIGINAL BINARY_RIGHT pbin (VARIABLE n* z_origin) z, INPUT poperand, BASE pbase, NAME n*, LINE z, TASK BINARY_RIGHT pbin (KNOWN PNULL) z, RESULT poperand})
 def $error_read_shape(BINARY_RIGHT pbin (KNOWN pvalue) z, VARIABLE n* z_origin, pbase) = ({ORIGINAL BINARY_RIGHT pbin (KNOWN pvalue) z, INPUT VARIABLE n* z_origin, BASE pbase, NAME n*, LINE z, TASK BINARY_RIGHT pbin (KNOWN pvalue) z, RESULT KNOWN PNULL})
 def $error_read_shape(ptask, poperand, pbase) = eps -- otherwise
+;; SEND_VAR freezes undefined VALUE as NULL before entering the C API, even
+;; when the Warning callback defines that CV or replaces the live callee.
+def $error_read_state_shape(S, CONFIG_SEND pconfigcall, VARIABLE n* z, pbase) = ({ORIGINAL CONFIG_SEND pconfigcall, INPUT VARIABLE n* z, BASE pbase, NAME n*, LINE z, TASK CONFIG_SEND pconfigcall, RESULT KNOWN PNULL})
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.INDEX = 1 /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL)]
+  -- if ~$pipe_site(S, pconfigcall.SITE)
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (2)
+  -- if $config_pending_valid(S, pconfigcall, false)
 def $error_read_state_shape(S, ptask, poperand, pbase) = $error_read_shape(ptask, poperand, pbase) -- otherwise
 ;; GET_OP1_ZVAL_PTR keeps the CV wrapper, without identity's early dereference.
 ;; OP2's warning therefore leaves the live left name and freezes only right NULL.
@@ -632,6 +641,12 @@ def $error_read_resume(S, perrorread, ptask_tail*) = S[.TODO = (BINARY_RIGHT pbi
   -- if perrorread.TASK = BINARY_RIGHT pbin poperand z
 def $error_read_resume(S, perrorread, ptask_tail*) = S[.TODO = perrorread.TASK :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = perrorread.BASE]
   -- if $scalar_compare_checked_right_missing(S, perrorread)
+;; Complete the certified undefined SEND without exposing a known result at
+;; a direct-CV send site, whose ordinary result must remain its CV wrapper.
+def $error_read_resume(S, perrorread, ptask_tail*) = S[.TODO = (CONFIG_ARGS ($config_sent(pconfigcall, KNOWN PNULL, eps)[.INDEX = 2])) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if perrorread.TASK = CONFIG_SEND pconfigcall
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if $error_read_valid(S, perrorread)
 def $error_read_resume(S, perrorread, ptask_tail*) = S[.TODO = perrorread.TASK :: ptask_tail*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE] -- otherwise
 rule PhpStep/error-read-resume: S ~> $error_read_resume(S, perrorread, ptask_tail*)
   -- if S.TODO = (ERROR_READ_RESULT perrorread) :: ptask_tail*
@@ -787,6 +802,16 @@ def $error_read_source(S, perrorread) = true
   -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 1], perrorread.NAME)
   -- if perrorread.LINE = z
   -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
+def $error_read_source(S, perrorread) = true
+  -- if perrorread.ORIGINAL = CONFIG_SEND pconfigcall
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if $error_read_state_shape(S, perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
+  -- if $config_ini_named_stdclass_argument(S, pconfigcall, 0)
+  -- if S.ORIGIN = (pconfigcall.SITE)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 1) = ((expression, false, eps, porigin_argument, z))
+  -- if $exit_callable_arguments(S, pconfigcall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if $error_variable_source(S, (pconfigcall.SITE), [PCFIELD n_field, PCINDEX 1, PCFIELD 1], perrorread.NAME)
+  -- if perrorread.LINE = z
 def $error_read_source(S, perrorread) = false -- otherwise
 def $code_expression_at_source(S, PORIGIN n pcpath_parent, pcpath) = (z)
   -- if $code_at(S.CODE, n) = (pcode)

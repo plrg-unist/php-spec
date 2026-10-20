@@ -4630,3 +4630,100 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 2
   -- if perrorcall.MESSAGE = $object_numeric_cast_message(pcast)
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE z
+
+;; Explicit CASTINT saves its double before Warning and skips the implicit-safe
+;; precision check. Float wrap differs from numeric-string saturation.
+dec $int_cast_range_source_valid(pstate, pbitnotwarning) : bool
+def $int_cast_range_source_valid(S, pbitnotwarning) = true
+  -- if S.ORIGIN = (pbitnotwarning.SITE)
+  -- if $origin_node(S.SOURCES, pbitnotwarning.SITE) = (NExprCastInt expression metadata)
+  -- if pbitnotwarning.INPUT = VARIABLE ptbytes z
+  -- if $integer_operand_source(S, pbitnotwarning.SITE, [PCFIELD 0], pbitnotwarning.INPUT)
+  -- if $code_expression_at_source(S, pbitnotwarning.SITE, [PCFIELD 0]) = (pbitnotwarning.LINE)
+  -- if $(pbitnotwarning.BITS < 18446744073709551616)
+  -- if $float_long(pbitnotwarning.BITS, false) = (pbitnotwarning.VALUE, [RANGEWARNING])
+def $int_cast_range_source_valid(S, pbitnotwarning) = false -- otherwise
+
+def $int_cast_range_plan(S) = (pbitnotwarning)
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (CAST_RESULT CASTINT z) :: ptask_tail*
+  -- if S.RESULT = VARIABLE ptbytes z_input
+  -- if $integer_pointer_select(S, S.RESULT) = (INTEGER_CV ptbytes)
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes) = (PFLOAT n_bits)
+  -- if $(n_bits < 18446744073709551616)
+  -- if $float_long(n_bits, false) = (i, [RANGEWARNING])
+  -- if pbitnotwarning = {SITE porigin, LINE z, INPUT S.RESULT, BITS n_bits, VALUE i}
+  -- if $int_cast_range_source_valid(S, pbitnotwarning)
+def $int_cast_range_plan(S) = eps -- otherwise
+
+dec $int_cast_range_warning_valid(pstate, pbitnotwarning, nat) : bool
+def $int_cast_range_warning_valid(S, pbitnotwarning, n) = ($int_cast_range_source_valid(S, pbitnotwarning) /\ $(n <= 1) /\ (n = 1 \/ $bitnot_snapshot(S, pbitnotwarning)))
+
+rule PhpStep/integer-cast-range-warning-begin: S ~> S[.TODO = (INT_CAST_RANGE_WARNING pbitnotwarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $int_cast_range_plan(S) = (pbitnotwarning)
+rule PhpStep/integer-cast-range-warning-dispatch: S ~> $error_dispatch(S, 2, n_message*, pbitnotwarning.LINE, DIAGNOSTIC "Warning" n_message* pbitnotwarning.LINE, INT_CAST_RANGE_WARNING pbitnotwarning 1)
+  -- if S.TODO = (INT_CAST_RANGE_WARNING pbitnotwarning 0) :: ptask_tail*
+  -- if $int_cast_range_warning_valid(S, pbitnotwarning, 0)
+  -- if $integer_float_notices([RANGEWARNING], pbitnotwarning.BITS) = [(2, n_message*)]
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/integer-cast-range-warning-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "integer cast owning range callback"]
+  -- if S.TODO = (INT_CAST_RANGE_WARNING pbitnotwarning 0) :: ptask_tail*
+  -- if $int_cast_range_warning_valid(S, pbitnotwarning, 0)
+  -- if $error_handler_eligible(S, 2) /\ ~$arithmetic_add_named(S)
+rule PhpStep/integer-cast-range-warning-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT pbitnotwarning.VALUE)][.BASE = BASE_VALUE (KNOWN (PINT pbitnotwarning.VALUE))]
+  -- if S.TODO = (INT_CAST_RANGE_WARNING pbitnotwarning 1) :: ptask_tail*
+  -- if $int_cast_range_warning_valid(S, pbitnotwarning, 1)
+
+def $task_nodes(INT_CAST_RANGE_WARNING pbitnotwarning n) = eps
+def $call_task_valid(S, INT_CAST_RANGE_WARNING pbitnotwarning n) = $int_cast_range_warning_valid(S, pbitnotwarning, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = INT_CAST_RANGE_WARNING pbitnotwarning 1
+  -- if $int_cast_range_warning_valid(S, pbitnotwarning, 1)
+  -- if perrorcall.TARGET =/= eps \/ $bitnot_snapshot(S, pbitnotwarning)
+  -- if perrorcall.SITE = pbitnotwarning.SITE /\ perrorcall.LINE = pbitnotwarning.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if $integer_float_notices([RANGEWARNING], pbitnotwarning.BITS) = [(2, perrorcall.MESSAGE)]
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pbitnotwarning.LINE
+
+;; Direct self ASSIGN_OP uses the same CV twice, without the dimension self-copy.
+;; Capture LEFT now; the existing CV continuation reads RIGHT after its Warning.
+def $arithmetic_addassign_cv_source(S, pintegeroperation) = true
+  -- if S.ORIGIN = (pintegeroperation.SITE)
+  -- if pintegeroperation.OP = ADD /\ ~pintegeroperation.SWAPPED
+  -- if $origin_node(S.SOURCES, pintegeroperation.SITE) = (NExprAssignOpPlus expression_left expression_right metadata)
+  -- if pintegeroperation.LEFT = VARIABLE ptbytes z_left
+  -- if pintegeroperation.RIGHT = VARIABLE ptbytes z_right
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CV ptbytes
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 0], pintegeroperation.LEFT)
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 1], pintegeroperation.RIGHT)
+  -- if $code_expression_at_source(S, pintegeroperation.SITE, [PCFIELD 1]) = (pintegeroperation.LINE)
+
+def $arithmetic_addassign_self_plan(S) = ((pintegeroperation, pvalue, pnumber))
+  -- if S.TODO = (COMPOUND_APPLY ADD (BASE_VALUE poperand_left) true z) :: ptask_tail*
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if poperand_left = VARIABLE ptbytes z_left
+  -- if S.RESULT = VARIABLE ptbytes z_right
+  -- if $integer_pointer_select(S, poperand_left) = (INTEGER_CV ptbytes)
+  -- if $integer_pointer_select(S, S.RESULT) = (INTEGER_CV ptbytes)
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if (HCELL n) <- S.ALLOCATIONS
+  -- if ~$foreach_released_name(S, ptbytes)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes) = (pvalue)
+  -- if $submul_initial_value(S, pvalue)
+  -- if $arithmetic_add_conversion(pvalue) = ((pnumber, true))
+  -- if pintegeroperation = {SITE porigin, OP ADD, LINE z, SWAPPED false, LEFT poperand_left, RIGHT S.RESULT, LEFTPOINTER INTEGER_CV ptbytes, RIGHTPOINTER INTEGER_CV ptbytes}
+  -- if $arithmetic_addassign_cv_warning_valid(S, pintegeroperation, pvalue, pnumber, 0)
+def $arithmetic_addassign_self_plan(S) = eps -- otherwise
+
+rule PhpStep/arithmetic-addassign-self-begin: S ~> S[.TODO = (ARITHMETIC_ADDASSIGN_CV_WARNING pintegeroperation pvalue pnumber 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = ROOT n]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $arithmetic_addassign_self_plan(S) = ((pintegeroperation, pvalue, pnumber))
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes
+  -- if $lookup(S.ENV, ptbytes) = (n)
