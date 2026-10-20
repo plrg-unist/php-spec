@@ -32,17 +32,19 @@ request, including on throw. Different-reference retargeting also tracks the new
 cell's missing owner until it is balanced. Primitive cells may carry ordinary
 live instance-property type sources: singleton copies shed their
 constraint while the original stays typed; shared copies retain it. Untyped
-reference cells may also hold flat runtime arrays of direct null/bool/int/float values. Wrapper
-debt stays separate from child-table COW, including deletion and throw cleanup.
+reference cells may also hold flat runtime arrays of DIRECT null/bool/int/float
+values or validated byte strings. Wrapper debt stays separate from child-table
+COW, including deletion and throw cleanup.
 Retargeting a flat-array wrapper to an ordinary scalar preserves its acquired
 count, cancelling debt first or retaining the old wrapper and its child.
 Ordinary unwrapped CVs may switch between null/bool/int/float and flat runtime
-arrays of those direct values during the handler. Separate table counts preserve
-old array owners and omitted new-array owners; inverse retargeting cancels them before cleanup. Initial scalar
-and array plans remain distinct, while same-table transfer and restored COW keep
+arrays with DIRECT null/bool/int/float or validated string leaves during the
+handler. Separate table counts preserve old array owners and omitted new-array
+owners; inverse retargeting cancels them before cleanup. Initial scalar and
+array plans remain distinct, while same-table transfer and restored COW keep
 ordinary values distinct from PHP reference wrappers.
-Unsafe deficit retirement and wider domains remain Unsupported. Duplicate
-replacement and later items stay ordered.
+Direct string CV/cell payloads, unsafe deficit retirement and wider domains remain
+Unsupported. Duplicate replacement and later items stay ordered.
 
 [Destructuring key warnings](docs/semantics/SOURCE-DESTRUCTURING-WARNINGS.md)
 now retain captured arrays or source reference cells through handlers, including

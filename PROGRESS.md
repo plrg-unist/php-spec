@@ -719,36 +719,32 @@ GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no root
 and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
-Lossy-float literal-key callbacks now admit ordinary unwrapped CV retargets between
-null/bool/int/float values and mutable nonpool flat arrays of those DIRECT values.
-Initial scalar/TMP admission remains separate from the initial array-CV plan;
-live completion reads the current ordinary CV without requiring its original
-cell to survive. Scalar-to-array insertion owes one table owner or cancels an
-earlier retained count. Array-to-scalar insertion preserves the acquired count,
-cancelling debt before retaining an unmatched owner. Captured runtime-array
-temporaries remain frozen and owned, and same-table transfers add no bias.
-Normal inverse cycles restore COW; deletion and supplied-throw cleanup preserve
-entry-independent debt until the array-to-scalar inverse cancels it.
-Four fresh natives and a genuine checked Unsupported after the first callback
-retain `97e60d13e`; the baseline remains zero agreement. Strict405 and four
-model-only original-source agreements pass at `6f2a87c1d`. At `a06bc1c72`,
-837 focused premises (822 Boolean +15 raw; author401/independent436) pass first
-executions, quiet and reaped with no failure/retry. Original native paths/bytes/
-streams are reused without replay.
-Only module413 changes; one inherited pure scalar-refusal projection becomes a
-string-refusal control, with its original PHP and accepted positives untouched.
-No field, task, graph-count, pruning or driver change is needed. Initially wrapped
-CVs, pooled/immutable or nested/reference-bearing/string-leaf tables, other
-owning values, effective-zero, active collection and outstanding request-end debt
-remain Unsupported. Held LIST/owned-NUL and active lifecycle/class scopes are untouched.
-[Mixed-CV review](coverage/semantics/array-literal-float-mixed-cv-review.json).
+Flat runtime tables in lossy-float literal-key callbacks now admit DIRECT byte
+strings, including existing valid carriers. HARRAY and wrapper CELL debts remain
+separate from copied string bytes. Debt-time string-offset writes share their
+table or reference cell while an independent string snapshot stays unchanged.
+Singleton reference entries unwrap before child/string COW; inverse retargeting
+clears the count bias and restores shared ALIAS copying. Plain bytes and carrier
+records use existing validation, with no new string identity or owner edges.
+Four fresh natives and the genuine unchanged Unsupported ingress baseline retain
+`56d7fcdc9`/406; the baseline remains zero agreement. Strict406 and four model-only
+source agreements pass at `c4e9c2441`. Focused state850 (838 Boolean + 12 raw;
+386 author + 464 independent) passes at `03ca5dc22`. The original author27
+elaboration failure stays zero; only invalid-byte constructor grouping changed
+before the corrected author run and previously unrun independent checks.
+Only the flat-leaf classifier in413 broadens; global scalar admission, tasks,
+fields, source/error guards, ownership/pruning/lifetime machinery and driver stay
+unchanged. One inherited A23 pure string-leaf refusal becomes an invalid-carrier
+refusal; original PHP and accepted historical positives are untouched.
+Direct string CV/cell payloads, wrapped by-value CVs, array-valued type sources,
+pooled/immutable or nested/reference-bearing/object-leaf tables, effective-zero, active collection
+and outstanding request-end debt remain Unsupported. Held LIST/owned-NUL and
+active lifecycle/class paths are untouched.
+[String-leaf review](coverage/semantics/array-literal-float-string-leaf-review.json).
 
-Composed over `4cc5f7dd7`/405 after reviewing incoming INI, missing-comparison,
-typed reference-return destructor, ADD-repair and certified-Closure DEFINE paths,
-whose selectors are absent here. Only module413 differs; seven new/maintained
-tests retain their accepted private bytes, and every other runtime/ordered
-manifest path is parent-exact. Source4/state837 retain their private cuts without
-a joined actor, accepted replay or renewed credit.
+The earlier mixed-CV slice retains source4/strict405 at `6f2a87c1d` and state837
+at `a06bc1c72`, composed over `4cc5f7dd7` as `da94669ce`.
+[Mixed-CV ledger](coverage/semantics/array-literal-float-mixed-cv-review.json).
 
 The earlier ordinary array-CV slice retains source4/strict405 at `e9382c39e`
 and state808 at `a0730822b`, composed over `ff95ac656` as `d23e7bc03`.

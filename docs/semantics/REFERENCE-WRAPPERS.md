@@ -37,9 +37,10 @@ shared copies retain typed rejection/coercion. For debt-bearing cells, source
 objects and their actual property aliases must survive logical pruning. The
 [typed-source review](../../coverage/semantics/array-literal-float-ref-types-review.json)
 checks both typed sides and multiple live sources. Untyped CELL payloads may also
-be mutable nonpool flat arrays of DIRECT null/bool/int/float entries. The CELL
-keeps one child-table edge; its debt never subtracts from HARRAY owners. A singleton
-outer copy unwraps the wrapper, then ordinary child COW separates array values.
+be mutable nonpool flat arrays of DIRECT null/bool/int/float values or validated
+byte strings. The CELL keeps one child-table edge; its debt never subtracts from
+HARRAY owners. Copying a singleton reference entry unwraps its wrapper, then
+ordinary child COW separates array values.
 Changing the child table leaves the same CELL debt in place. Old-array completion
 also admits an ordinary-scalar DIRECT value. Its acquired count cancels an existing
 debt first; otherwise the wrapper and its child remain owned for the request.
@@ -50,7 +51,7 @@ checks child COW after ordinary names disappear and debt cancellation. The
 [flat-array review](../../coverage/semantics/array-literal-float-ref-arrays-review.json)
 checks these counts through stable insertion, deletion, throw and inverse cleanup.
 Debt cells must keep positive effective counts. Array-valued type sources,
-nested/reference-bearing/string-leaf or pooled/immutable arrays, other owning
+nested/reference-bearing or pooled/immutable arrays, other owning
 values, static/hooked/queued or retired sources,
 coercion/backing records, active collection, effective-zero retirement and
 outstanding debt at request end are explicit Unsupported before pruning. Isolated
@@ -63,8 +64,9 @@ Ordinary by-value array CVs use separate `LITERALARRAYRETAINED` and
 pre-conversion table, rather than its original CV cell. Inserting a different live
 table preserves the old count and omits one new-table owner; inverse retargeting
 cancels both, while same-table insertion adds no bias. Only unmarked ordinary CVs
-and mutable nonpool flat DIRECT null/bool/int/float tables are admitted. Combined
-CELL/table debt safety uses logical pruning before subtracting either count bias;
+and mutable nonpool flat tables of DIRECT null/bool/int/float values or validated
+byte strings are admitted. Combined CELL/table debt safety uses logical pruning
+before subtracting either count bias;
 positive flat table targets have no outgoing owner edges. Deletion/throw deficits,
 restored COW and retired original CV cells are checked in the
 [ordinary array-CV ledger](../../coverage/semantics/array-literal-float-array-cv-review.json).
@@ -75,6 +77,13 @@ count, cancelling debt before retaining an unmatched owner. The two initial plan
 stay disjoint, and captured runtime-array temporaries incur no debt. The
 [mixed-CV ledger](../../coverage/semantics/array-literal-float-mixed-cv-review.json)
 checks both inverse cycles, deletion and supplied-throw cleanup before balanced COW.
+String leaves use canonical bytes or existing valid carriers; they add no modeled
+heap edges or user destructors. Ordinary string-offset writes preserve independent
+snapshots while table/CELL aliases share bytes. Singleton reference entries
+unwrap before child/string COW; balanced copies retain shared ALIAS entries. The
+[string-leaf ledger](../../coverage/semantics/array-literal-float-string-leaf-review.json)
+checks these paths, deletion and supplied throws. Direct string CV/cell payloads
+remain Unsupported; no new string identity or ownership model is introduced.
 
 `tests/semantics/reference_wrappers.py` checks original source regressions,
 copying and rebinding, budget resumption, ownership graphs, cycle collection and
