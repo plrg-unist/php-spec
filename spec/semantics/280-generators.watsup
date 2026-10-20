@@ -353,6 +353,7 @@ def $generator_resume(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Generator 
   -- if ~$generator_parked(S, pgeneratorop.OBJECT, |S.OBJECTS|)
 def $generator_resume(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Generator resume after pending throw"]
   -- if $generator_parked(S, pgeneratorop.OBJECT, |S.OBJECTS|)
+  -- if ~$generator_pending_throw_ready(S, pgeneratorop)
 def $generator_resume(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "Generator buffered send throw"]
   -- if ~$generator_pending_resume(S, pgeneratorop)
   -- if $generator_input_blocked(S, pgeneratorop)

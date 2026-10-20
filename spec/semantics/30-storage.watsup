@@ -218,7 +218,7 @@ syntax ppropertygetstring = { GET ppropertyget, INPUT poperand, OBJECT nat, SOUR
 syntax pmagicmethodcall = { SITE porigin, NAME ptbytes, LINE int, OBJECT nat, CLASS porigin, METHOD porigin, ARGUMENTS phpType7*, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax pmagicstaticmethodcall = { SITE porigin, NAME ptbytes, LINE int, CLASS porigin, METHOD porigin, ARGUMENTS phpType7*, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax ppropertymagicset = { SITE porigin, NAME ptbytes, LINE int, OBJECT nat, CLASS porigin, METHOD porigin, PROPERTY porigin, RHS poperand, CELL nat?, INPUT int, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
-syntax ppropertycoalesce = { SITE porigin, NAME ptbytes, LINE int, OBJECT nat, CLASS porigin, ISSET porigin, GET porigin, PROPERTY porigin, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
+syntax ppropertycoalesce = { SITE porigin, NAME ptbytes, LINE int, OBJECT nat, CLASS porigin, ISSET porigin, GET porigin?, PROPERTY porigin, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax ppropertyemptynan = { EMPTY ppropertyempty, FLOAT nat, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax ppropertyemptyrv = { EMPTY ppropertyempty, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax ppropertypublicnan = { READ pnameread, OBJECT nat, CLASS porigin, PROPERTY ppropertyid, FLOAT nat, CELL nat?, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
@@ -315,7 +315,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | OB_USER_REFERENCE_RELEASE pobinvoke nat nat
   | OUTPUT_STRING_RELEASE pobstringrelease
   | OB_USER_SEND pobinvoke nat | OB_USER_REFERENCE pobinvoke nat | OB_USER_ENTER pobinvoke | OB_USER_RESULT pobinvoke | OB_USER_DEPRECATED pobinvoke pvalue | OB_USER_COMMIT pobinvoke poboutput | OB_USER_RELEASE pobrelease
-  | PROPERTY_COALESCE_RESULT ppropertycoalesce bool
+  | PROPERTY_COALESCE_RESULT ppropertycoalesce bool | PROPERTY_COALESCE_RV ppropertycoalesce
   | PROPERTY_MAGIC_SET_RESULT ppropertymagicset | PROPERTY_MAGIC_SET_DELIVERY ppropertymagicset | PROPERTY_EMPTY_NAN ppropertyemptynan | PROPERTY_EMPTY_RV ppropertyemptyrv | PROPERTY_EMPTY_RESULT ppropertyempty bool | PROPERTY_ISSET_RESULT ppropertyisset | PROPERTY_UNSET_RESULT ppropertyunset | PROPERTY_SET_RESULT ppropertyhook pvalue | PROPERTY_HOOK_RESULT ppropertyhook | PROPERTY_HOOK_ISSET_RESULT ppropertyhook bool | PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase | PROPERTY_HOOK_COMPOUND_RESULT ppropertyhook pbase int int | PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook pbase int int | INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachbind | FOREACH_SCALAR_END nat nat porigin pvalue int
   | PROMOTE_PARAMETER porigin nat
   | GC_MAIN_SCAN pgcplan pgcscan | GC_MAIN_RETURN pgcplan pgcscan nat
@@ -369,6 +369,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase | ARITHMETIC_ADD_WARNING pintegeroperation parithmeticphase pvalue pnumber nat
   | ARITHMETIC_ADDASSIGN_WARNING pintegeroperation pvalue pnumber nat
   | ARITHMETIC_ADDASSIGN_CV_WARNING pintegeroperation pvalue pnumber nat
+  | ARITHMETIC_ADDASSIGN_CV_RIGHT_WARNING pintegeroperation pvalue pnumber pvalue pnumber nat
   | ARITHMETIC_DIV_CONVERT pintegeroperation parithmeticphase | ARITHMETIC_DIV_WARNING pintegeroperation parithmeticphase pvalue pnumber nat
   | SUBMUL_CONVERT pintegeroperation parithmeticphase | SUBMUL_WARNING pintegeroperation parithmeticphase pvalue pnumber nat
   | POWER_CONVERT pintegeroperation parithmeticphase | POWER_CONVERSION_WARNING pintegeroperation parithmeticphase pvalue pnumber nat

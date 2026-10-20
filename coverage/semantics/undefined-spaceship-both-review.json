@@ -1,0 +1,127 @@
+{
+  "milestone": "COMP97 both-missing spaceship comparison with scalar right initialization",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "Distinct initially missing direct CVs at <=>. First left Warning freezes NULL; the handler must define current right scalar on return. First left name may stay absent. Pending supplied Exception suppresses the second Warning.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "7c54cecfa",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "e23da372ae3511067655c958a14842d0016c6c4c790aeea0c98ec9b8d45df3fc"
+  },
+  "modules": 405,
+  "engine_basis": "ZEND_SPACESHIP in zend_vm_def.h fetches OP1 with its missing-CV warning before OP2. zval_undefined_cv in zend_execute.c checks EG(exception)==NULL. Fresh native probes distinguish left-first warnings, current right string0/order -1, first-name absence and pending-Exception suppression.",
+  "implementation": "Only add SPACESHIP to the existing forward missing-pair membership and OR that entry predicate into the first spaceship read guard. Existing frozen-left shape, distinct names, source certificate, resume scalar guard, fields, roots and discard stay exact.",
+  "behavior": [
+    "Scalar zero, string0 and true distinguish frozen NULL from callback-defined9; false handlers retain default Warning order. Fresh alias/target reference cells have owners 0 or 1 to 2, preserve raw restored/comparison state and later alias writes.",
+    "Four strict-SL groups retain actual source-reached dispatch/resume, signed -1, code/pools, source/read-line/operator/shape corruption, same-name/right-frozen exclusions, entry-only admission and zero/split budgets. Supplied Exception preserves destination41/catch identity/finally with no second Warning."
+  ],
+  "baseline": {
+    "revision": "826bdf0b320e08c2e5a63ac402d18909b69dd845",
+    "report": "initial/initial-report.json",
+    "sha256": "e6caaf94cec0e5f60c9b2497811f9f4cfd403a0647cdabd2c65cb8d8290e7385",
+    "native": "Two exact originals normal H:1:10:1;R:1:1:1;END;, empty stderr.",
+    "model": "Genuine unchanged <=> Unsupported/error-handler ingress requires a producer continuation, empty output.",
+    "agreement_credit": 0
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "f072ac0d19105e92bf203040713dd8bb2595d72a0e720b5c66c362959fe42481",
+      "revision": "04b3378e3aec0bf5103dadc71b92dc33a164ad62",
+      "agreements": 5,
+      "unsupported_controls": 1
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "e11bb32b796d9c8325de9bc3b0ff337655322119c4c310415e526847d2b7d1b2",
+      "revision": "04b3378e3aec0bf5103dadc71b92dc33a164ad62",
+      "agreements": 3,
+      "unsupported_controls": 1
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "e7dc71ffe9efad5d5465750ad16fcb63c570c675a606f4f3822b05af95677921",
+      "revision": "04b3378e3aec0bf5103dadc71b92dc33a164ad62",
+      "premises": 208,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "07b9fe14e102f114ccbb42f835715af34135587d5ad198a36c6a7c11c1cb81a0",
+      "revision": "55e64f682d7631ff0e285ada3db8fc2673fb4fc4",
+      "premises": 231,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 8,
+    "unsupported_source_controls": 2,
+    "state_groups": 4,
+    "state_premises": 439
+  },
+  "maintenance": {
+    "purpose": "Repair stale maintained expectations after earlier both-missing extensions, selecting the first physical missing record. Returning old spaceship boundary now reaches its existing post-handler refusal. Native/source bodies and historical cuts unchanged.",
+    "accepted": [
+      {
+        "report": "maintenance-entry/report.json",
+        "sha256": "d902267476a99c4adc6ab010da3b60182e2e2f8e91dfa44f4d19d7f09a46cdbc",
+        "revision": "04b3378e3aec0bf5103dadc71b92dc33a164ad62",
+        "result": "136 strict-SL premises / 3 entry-only groups"
+      },
+      {
+        "report": "maintenance-initialized-right/report.json",
+        "sha256": "079a8d248b6f5e9782e72b0dfec41a528d646b4452da87edf07710078a3ada19",
+        "revision": "04b3378e3aec0bf5103dadc71b92dc33a164ad62",
+        "result": "One old initialized-right selector exactly matches retained native"
+      },
+      {
+        "report": "maintenance-spaceship/model-both-missing-boundary-report.json",
+        "sha256": "ceb146caef35b17fd33d01bc58b02935446a70b8c0f7e1fee30cf957c0490f4a",
+        "revision": "04b3378e3aec0bf5103dadc71b92dc33a164ad62",
+        "result": "One old spaceship boundary now refuses after first handler"
+      }
+    ],
+    "renewed_source_agreements": 0,
+    "state_groups": 3,
+    "state_premises": 136
+  },
+  "failures": [
+    {
+      "report": "maintenance-entry-failure/report.json",
+      "sha256": "69198cd9c01f5026618e50d872d9d4f17ff3f8f710a15be8464d56819f27fcee",
+      "revision": "e06bbbf5084d3f6e07da8219a80c460797dbd1d4",
+      "reason": "Entry fixture used raw PhpStep instead of driver warning interception; affected entry packet retried, with later groups initially unrun",
+      "credit": 0
+    },
+    {
+      "report": "peer-state-failure/report.json",
+      "sha256": "da585bb89f18e917d396e7dc423ea706dea1cb29a0824c91d7ec017726afeaa9",
+      "revision": "04b3378e3aec0bf5103dadc71b92dc33a164ad62",
+      "reason": "Peer negative corrupted unused left provenance; actual read-line corruption corrected and affected peer packet retried, with second group initially unrun",
+      "credit": 0
+    }
+  ],
+  "remaining": [
+    "Returning with right still absent stops explicitly Unsupported before the second-Warning chain. Same-CV, owning/removed counterparts and wider producers remain partial; both refusal controls retain zero agreement.",
+    "Earlier COMP89-96 evidence keeps its original cuts and credit. Maintenance and the peer test-only line correction do not renew accepted source or author-state results; quarantined COMP88 and unrelated arithmetic remain excluded."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-97",
+  "artifact_manifest_sha256": "73ad4257df20ce8900cf88de47a808bb235854a11ecfabeb3763c62b776eb480",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_spaceship_both_sources.py --phase native --output .tools/comp97-source-new",
+    "python3 tests/semantics/undefined_spaceship_both_sources.py --phase model --output .tools/comp97-source-new",
+    "python3 tests/semantics/undefined_spaceship_both_state.py --output .tools/comp97-state-new",
+    "python3 tests/semantics/undefined_spaceship_both_review_state.py --output .tools/comp97-peer-state-new",
+    "python3 tests/semantics/comparison_both_entry_controls.py --output .tools/comp97-entry-new"
+  ],
+  "integration": {
+    "parent": "eb82fd55b710b69630d4be250c74e4ff192c458d",
+    "modules": 406,
+    "actual_tail": "ADD repair matches only BINARY_RIGHT ADD and returns eps for spaceship/scalar comparison and identity/concat observers. Retained numeric-unpack INI, certified Closure DEFINE, Generator pending-throw and destructor/ref-return selectors are absent. Mixed float-key array value paths require their float-key producer, absent even from empty-array controls; existing debt fields stay empty. New module416 and PROPERTY_COALESCE task/target variants require property/coalesce producers absent from all selected sources and fixtures; guards, roots and call-validity branches therefore retain old ordinary-CV behavior.",
+    "preservation": "Sole parent-relative runtime delta is module207 with tested e23da372 bytes. Every other runtime/schema/task/field/default and ordered406 manifest path is parent-exact; incoming feature rows, documentation and checkpoint body are preserved.",
+    "validation": "Independent pointwise actual-tail review; source8+2, author208, peer231 and maintenance136 keep their separate private cuts and both zero-credit fixture failures. No joined actor or accepted replay."
+  }
+}

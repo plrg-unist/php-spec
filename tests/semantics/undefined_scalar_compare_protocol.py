@@ -81,7 +81,7 @@ def checks(program, path, name):
             'S_array_entry = S[.STORE = $set_cell(S.STORE,n_right,DEFINED (PARRAY 0))]',
             '$error_read_plan(S_array_entry) = eps',
             'S_missing_entry = S[.STORE = $set_cell(S.STORE,n_right,UNDEFINED)]',
-            '$error_read_plan(S_missing_entry) = eps',
+            '$error_read_plan(S_missing_entry) = (perrorread)',
             'S_array = S_resume[.STORE = $set_cell(S_resume.STORE,n_right,DEFINED (PARRAY 0))]',
             '$error_read_valid(S_array,perrorread)', '~$scalar_compare_read_other(S_array,perrorread)',
             'PhpStep: S_array ~> S_array_refused',

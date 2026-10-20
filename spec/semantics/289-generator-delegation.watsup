@@ -346,6 +346,16 @@ def $generator_pending_throw_target(S, pgeneratorop) = (n_leaf)
   -- if $generator_pending_return_leaf(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1)) = (n_leaf)
   -- if n_leaf =/= pgeneratorop.OBJECT
   -- if $generator_input_count(S.GENERATORINPUTS, n_leaf) = 0
+;; An already parked copied return may still have a pending API receiver.
+;; Clear only borrowed validation history; the real frame never unparks.
+def $generator_pending_throw_target(S, pgeneratorop) = (n_leaf)
+  -- if $generator_object(S, pgeneratorop.OBJECT)
+  -- if n_leaf = $generator_from_leaf(S, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1))
+  -- if $generator_return_parked_waiting(S, n_leaf)
+  -- if S.OBJECTS[n_leaf] = GENERATOR pgenerator
+  -- if S_view = $generator_set(S, n_leaf, pgenerator[.PARKED = eps])
+  -- if $generator_pending_return_leaf(S_view, pgeneratorop.OBJECT, $(|S.OBJECTS| + 1)) = (n_leaf)
+  -- if $generator_input_count(S.GENERATORINPUTS, n_leaf) = 0
 def $generator_pending_throw_target(S, pgeneratorop) = $generator_pending_throw_leaf(S, pgeneratorop.OBJECT, |S.OBJECTS|) -- otherwise
 def $generator_pending_throw_ready(S, pgeneratorop) = true
   -- if $generator_pending_resume(S, pgeneratorop)

@@ -461,6 +461,15 @@ def $config_ini_quiet_value(S, PFLOAT n) = true -- if (b, false) = $number_bool(
 def $config_ini_quiet_value(S, PSTRING_CARRIER pstringidentity n*) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*)
 def $config_ini_quiet_value(S, pvalue) = false -- otherwise
 dec $dynamic_scalar_define_arguments(pstate, pconfigcall, nat) : bool
+dec $dynamic_array_same_entries(pstate, pentry*, pentry*) : bool
+;; Compare immutable source facts with the captured entries, never the current pack array.
+dec $config_ini_pack_known(pstate, pentry*, pvalue?) : bool
+def $config_ini_pack_known(S, pentry*, eps) = true
+def $config_ini_pack_known(S, pentry*, (PARRAY n_known)) = $dynamic_array_same_entries(S, pentry*, S.ARRAYS[n_known].ITEMS)
+  -- if $(n_known < |S.ARRAYS|)
+  -- if HARRAY n_known <- S.ALLOCATIONS
+  -- if $($heap_count(HARRAY n_known, $pools_nodes(S.POOLS)) > 0)
+def $config_ini_pack_known(S, pentry*, pvalue?) = false -- otherwise
 dec $config_ini_null_valid(pstate, pconfigcall) : bool
 def $config_ini_null_valid(S, pconfigcall) = true
   -- if $config_invoke_valid(S, pconfigcall)
@@ -485,6 +494,19 @@ def $config_ini_null_valid(S, pconfigcall) = true
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN pvalue)]
   -- if $config_ini_quiet_value(S, pvalue)
   -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
+  -- if ~$config_strict(S, pconfigcall)
+def $config_ini_null_valid(S, pconfigcall) = true
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.OWNER = (n_owner)
+  -- if pconfigcall.INDEX = 1 /\ ~pconfigcall.NAMED
+  -- if pconfigcall.PACKS = [pconfigpack]
+  -- if pconfigpack.INDEX = 0
+  -- if pconfigpack.ITEMS = [ENTRY (KINT i_option) (DIRECT PNULL), ENTRY (KINT i_value) (DIRECT pvalue)]
+  -- if ~$pipe_site(S, pconfigcall.SITE)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN pvalue)]
+  -- if $config_ini_quiet_value(S, pvalue)
+  -- if $config_ini_pack_known(S, pconfigpack.ITEMS, $compiled_read(S, pconfigpack.SITE))
   -- if ~$config_strict(S, pconfigcall)
 def $config_ini_null_valid(S, pconfigcall) = false -- otherwise
 dec $config_ini_unary_finish(pstate, pconfigcall, preqbytes) : pstate

@@ -385,6 +385,10 @@ test-semantics: build
 	python3 tests/semantics/generator_pending_owning_chain_throw_review_sources.py
 	python3 tests/semantics/generator_pending_owning_chain_throw_state.py
 	python3 tests/semantics/generator_pending_owning_chain_throw_review_state.py
+	python3 tests/semantics/generator_repeated_pending_owning_throw_sources.py
+	python3 tests/semantics/generator_repeated_pending_owning_throw_review_sources.py
+	python3 tests/semantics/generator_repeated_pending_owning_throw_state.py
+	python3 tests/semantics/generator_repeated_pending_owning_throw_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -1015,6 +1019,8 @@ test-semantics: build
 	python3 tests/semantics/terminal_isset_rv_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_coalesce_cases.json
 	python3 tests/semantics/magic_coalesce_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_coalesce_no_get_cases.json
+	python3 tests/semantics/magic_coalesce_no_get_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_cases.json
 	python3 tests/semantics/magic_empty_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_scalar_cases.json

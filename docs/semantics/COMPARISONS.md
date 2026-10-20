@@ -50,17 +50,21 @@ same-CV inputs, owning/removed counterparts and wider producers remain partial. 
 [scalar warning review](../../coverage/semantics/undefined-spaceship-review.json).
 
 Distinct loose-comparison CV pairs can also begin with both values missing.
-Forward `==`/`!=`/`<`/`<=` warn for left first and freeze its NULL while the handler
+Forward `==`/`!=`/`<`/`<=`/`<=>` warn for left first and freeze its NULL while the handler
 defines current right. Reversed `>`/`>=` warn for source right first and freeze its
 NULL while the handler defines current left. The first name may remain undefined.
 A supplied throw suppresses the second Warning while retaining destination,
 Exception identity and finally; `zval_undefined_cv` checks the pending exception
 before reporting. Returning with the opposing name still missing remains explicit
-Unsupported before the second-Warning chain. Same-CV, owning/removed counterparts,
-spaceship both-missing and wider producers remain partial. The
+Unsupported before the second-Warning chain. The spaceship path uses the same
+left-frozen record and entry-only predicate; its existing scalar resume guard
+still rejects a missing or owning right value. Same-CV, owning/removed counterparts
+and wider producers remain partial. The
 [forward review](../../coverage/semantics/undefined-scalar-compare-both-review.json)
 and [reversed review](../../coverage/semantics/undefined-scalar-compare-both-reversed-review.json)
-record the separate cuts.
+and [spaceship review](../../coverage/semantics/undefined-spaceship-both-review.json)
+record the separate cuts. Affected older entry assertions now select the first
+physical missing operand; these maintenance checks do not renew earlier results.
 
 Array comparison first handles identical container identity, then recursion on
 the left operand, element counts, and exact normalized key lookup in left

@@ -765,7 +765,6 @@ def $dynamic_array_recursive_entries(S, pentry*, n_seen*) = eps -- otherwise
 ;; Literal facts constrain contents and empty-array provenance, not internal IDs.
 ;; Variables keep the same structural table policy as primitive dynamic values.
 dec $dynamic_array_same(pstate, pvalue, pvalue) : bool
-dec $dynamic_array_same_entries(pstate, pentry*, pentry*) : bool
 def $dynamic_array_same(S, PARRAY n_left, PARRAY n_right) = $dynamic_array_same_entries(S, S.ARRAYS[n_left].ITEMS, S.ARRAYS[n_right].ITEMS)
   -- if $(n_left < |S.ARRAYS| /\ n_right < |S.ARRAYS|)
   -- if HARRAY n_left <- S.ALLOCATIONS /\ HARRAY n_right <- S.ALLOCATIONS

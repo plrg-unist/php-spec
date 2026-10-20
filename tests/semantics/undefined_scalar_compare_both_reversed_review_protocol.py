@@ -21,7 +21,7 @@ def checks(program, path, name):
             condition = '~$scalar_compare_read_other(S,perrorread)'
         if condition == '~$error_missing_operand(S,$error_read_operand(perrorread_left))':
             condition = '$error_missing_operand(S,$error_read_operand(perrorread_left))'
-        if condition == '$error_read_plan(S_both) = eps':
+        if condition == '$error_read_plan(S_both) = (perrorread_left)':
             condition = '$error_read_plan(S_both) = (perrorread)'
         condition = condition.replace('BINARY_RIGHT EQUAL ', 'BINARY_RIGHT ' + op + ' ')
         condition = condition.replace(') 13', ') ' + str(line)).replace(' = 13', ' = ' + str(line))

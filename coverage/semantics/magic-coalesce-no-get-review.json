@@ -1,0 +1,115 @@
+{
+  "scope": "Selected external CV/literal inherited-private no-Get property ??; typed-bool or absent-return Isset, ordinary INSTANCE RV disposal before receiver release with both guards inactive, held RV lifetime and supplied throw.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_object_handlers.c zend_std_read_property BP_VAR_IS: ADDREF receiver, IN_ISSET around call_issetter; clear guard before truth/RV disposal. False releases receiver before RV disposal; true disposes RV before optional getter or receiver release. Selected false bool is nonowning; no false owning-RV claim.",
+      "Zend/zend_object_handlers.c zend_std_call_issetter; Zend/zend_vm_def.h zend_leave_helper and ZEND_COALESCE: ordinary compiled-local cleanup, then NULL/UNDEF fallback selection. Zend/zend_weakrefs.c weak target notification supports the observed sole versus held visibility."
+    ]
+  },
+  "implementation": {
+    "files": [
+      "spec/semantics/30-storage.watsup",
+      "spec/semantics/416-magic-property-coalesce.watsup"
+    ],
+    "basis": "Optional GET reuses the existing source/caller/frame/exit certificate. Getter-present records still require typed-bool Isset and the same getter/owner. No-Get additionally admits the physical absent-return Isset source. PBOOL values select quiet NULL; only live nonfree ordinary INSTANCE RVs enter a distinct receiver-only continuation caching NULL. Ordinary eager RV cleanup authenticates exact release-before/head job, caller/origin/context, operation SOURCE=original false result marker and VALUE/BASE=NULL; it never activates a property guard. Receiver release then precedes ordinary COALESCE_RESULT. Generic throw discard invokes existing task helpers. No136/154/380/70/84/257/270 or generic free/GC change."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106/.tools/magic-coalesce-no-get-probes-106/native-first/report.json",
+      "sha256": "457a79e3ac90c7bfdbb3a8cbaf4959b7d76e971b479e1aba4841bf69845955ae",
+      "revision": "0d35177b75e8af582d8d63c81c0822ed9f2936a0",
+      "result": "Four exact15/21/21/19 quiet0 native streams; zero model credit."
+    },
+    "first_baseline_observation": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106/.tools/magic-coalesce-no-get-probes-106/accepted-current-baseline/report.json",
+      "sha256": "630abd86a1d854f3e98153164808e58f89e01052579781038fa890d65b962266",
+      "revision": "0d35177b75e8af582d8d63c81c0822ed9f2936a0",
+      "result": "Original report and false row remain completed=false: classifier expected a normal mismatch. Actual frontend+adapter checked Unsupported magic isset quiet consumer/CLI1/output F:/quietstderr/exit_statusNone is retained as the genuine first refusal, zero source agreement and zero passing credit for this expectation failure."
+    },
+    "remaining_baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106/.tools/magic-coalesce-no-get-probes-106/accepted-current-baseline-repair1/report.json",
+      "sha256": "b5f033b476fb6efaa458a0692c4a2df620a4ba62c8d38a233f53655b48229f0d",
+      "revision": "0d35177b75e8af582d8d63c81c0822ed9f2936a0",
+      "result": "Only unrun normal/held/throwing: three exact checked Unsupported/CLI1/output N:/H:/X:/quietstderr/exit_statusNone, zero agreement. Separate baseline-only classifier; original native/recorder/cases unchanged."
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106/.tools/magic-coalesce-no-get-probes-106/changed-model-0broqrjv/report.json",
+      "sha256": "f9d12c304ce2c39a037ef196d8dfc9185eb8df202ca03423f8ccd8bf0b4625c9",
+      "revision": "2ad0660c149cc36ece6e6402dd476acab8198aa6",
+      "result": "Four exact checked normal native agreements/quiet0/stable/groups empty; first implementation actor."
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106/.tools/magic-coalesce-no-get-protocol-q4nfgwaz/report.json",
+      "sha256": "5500e01b9c799c4404a42ade2b6d780d75be345fe2fc6739f5457dae2c53b0f9",
+      "revision": "7218b430e0cbbaef5750b76107a0aac6267a34da",
+      "result": "Four exacttrue groups130/186/163/161;640=615 reached+25 derived,4 applications/0source agreements. Eight quiet AL/strictSL exits0; all input/fixture/head/status stability, no timeout/groups/PIDs."
+    }
+  },
+  "focused_scope": "Actual PREP source/capture, inherited lexical Parent/called Child reception, compiled-local Isset exit and later inactive guards. Typed false skips to NULL/fallback99. Sole/held object ingress drops exactly one RV owner while retaining receiver; real payload D sees weak receiver live, saved call validity and exact NULL/SOURCE receipt. Held result resumes without D then later payload D sees expired receiver/NULL after result99/mainF. Supplied RV-D throw cancels fallback, frees receiver and reaches same CATCH_BIND/destination42. PREP zero/resume covers capture/disposal. Derived typed-bool true produces exactly the false raw NULL continuation; forged typed-bool RV marker is rejected. Well-rooted null result takes actual Unsupported; wrong source/get metadata and consistently relinked receipt SOURCE/VALUE controls deny certificates.",
+  "compatibility": "Existing Some-GET records embed old scalar GET as Some origin; optional comparisons/lookup are total, old needed/source/owner/function/guard/step conditions reduce to the prior105 route. Pending-function check is already implied by old valid descriptors. New RV rules require GETeps/absent-return source and are disjoint. Only two105 harness projections now use the already bound getter descriptor origin. This is static compatibility, not renewed105 source/state execution.",
+  "reproduction": {
+    "cwd": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106",
+    "profile": "tests/semantics/profile.json",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "native": "Ready native-first/native CPU5 watcher; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u .tools/magic-coalesce-no-get-probes-106/run.py native --revision 0d35177b75e8af582d8d63c81c0822ed9f2936a0",
+    "baseline": "Original same actor baseline onCPU5 stopped false; separate run-baseline-repair1.py baseline --case normal --case held --case throwing --revision 0d35177b75e8af582d8d63c81c0822ed9f2936a0 onCPU2 after ready baseline-repair1 observer.",
+    "source": "Ready changed-source-106/count4/CPU2 observer; same run.py changed --revision 2ad0660c149cc36ece6e6402dd476acab8198aa6",
+    "focused": "Ready watch-state-affinity.py 2; env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 2 python3 -u tests/semantics/magic_coalesce_no_get_protocol.py --revision 7218b430e0cbbaef5750b76107a0aac6267a34da",
+    "caps": "Native45/model60/outer75/100000steps, serial/fail-first. Each focused group AL90 then strictSL90/cachefalse/dettrue;8-worker840s observer. Checked prep0 apps. Actors/observers fully reaped; no accepted replay.",
+    "affinity": [
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106/.tools/magic-coalesce-no-get-probes-106/affinity-native-first.json",
+        "sha256": "96094cd1edf19e4ae20ae90fdf8a9e193e8251e96d87a4b38547605e9afefcfd",
+        "result": "No live samples0/4 from tiny native children; observer stopped/reaped, parent tasksetCPU5 command retained. No native live-affinity capture claim."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106/.tools/magic-coalesce-no-get-probes-106/affinity-accepted-current-baseline.json",
+        "sha256": "9059389bc7d9842a93d510cb807caa1fd67dd0d41192d645df37be230e9edbe8",
+        "result": "Partial1/4/fullargv CPU5 for original false expectation failure; stopped/reaped."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106/.tools/magic-coalesce-no-get-probes-106/affinity-accepted-current-baseline-repair1.json",
+        "sha256": "0bb3f1cf0e63907d2df3da9d0b5c9a5de9ea575ebfc693a79e5b44c2df44c3af",
+        "result": "Complete3CPU2/fullargv for unrun baseline cases."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106/.tools/magic-coalesce-no-get-probes-106/affinity-changed-source-106.json",
+        "sha256": "7c191d0359bfebbc0bbc86c004d654963764e5c662153b54bb98b972abda11e3",
+        "result": "Complete4CPU2/fullargv."
+      },
+      {
+        "path": "/home/user/workspace/php-spec/.tools/magic-coalesce-no-get-private-106/.tools/magic-coalesce-no-get-probes-106/affinity-state-106.json",
+        "sha256": "7e9f2859f53463fe2bc055be4d8d6843d424f669861449849c436e5dbbda315d",
+        "result": "Complete8CPU2/fullargv; actual process PIDs/starttimes match, all absent after reap."
+      }
+    ]
+  },
+  "limits": "Selected external CV/literal private property/source classes only. Ordinary INSTANCE RV/booleans only; other no-Get RV kinds have explicit result refusal. False owning arrays, reference returns, absent/public/unset/wider property receivers, recursive callbacks, aliases/cycles and full GC preservation remain open. Present-Get untyped Isset stays excluded. WeakReference and ordinary inheritance/declaration/destructor machinery are used, not expanded. No engine bug or intentional divergence claim.",
+  "artifacts": "Ignored original sources/private drivers/reports/streams/process records/generated fixtures remain at original paths. Maintained sources/catalogue/harness recover from tested commits; fixtures are ignored. Existing tools reused, no fresh rebuild/archive claim.",
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "original_driver_sha256": "1a00d47db123ed69849817205ae3ce79dcedef59ab3f077052372dd041aa1771",
+    "baseline_driver_sha256": "7db8c79d9f424379c680a78976efe74cad9c55ca3c9b1a6c50423d4cfd5ed61b",
+    "focused_driver_sha256": "17373baf3ac2f3907e80c3f93981384ed99288aa967125d023d87a7e3edc186e"
+  },
+  "review": {
+    "independent": "class_review_84",
+    "status": "Native, genuine baseline observations, source4, focused640 and concise publication independently accepted. Original baseline expectation failure remains zero; separate tested cuts and native affinity limits are preserved."
+  },
+  "composition": {
+    "parent": "0ff3218cdf48cf9115c5cd1f8c79375566b5fc52",
+    "publication": "662640881b7a49b60ff241fc787fe24b06dc2355",
+    "modules": 406,
+    "basis": "All incoming manifest entries remain exact in order; existing416 is extended without a new module. Shared30 preserves incoming ARITHMETIC_ADDASSIGN_CV_RIGHT_WARNING plus own optionalGET/RV insertion. Incoming172 INI pack/400 declaration relocation,207 both-missing spaceship,270 reference-return retirement Exception,280/289 Generator and404 += Warning selectors are absent. No new state/default/root fields; selected constructor/destructor/Throwable/call/ownership dependencies unchanged. All other runtime/test/family publication bytes and unrelated incoming paths retained.",
+    "validation": "Independent exact actual-parent semantic and preservation review. Source4@2ad and focused640@7218 retain original cuts, baseline expectation failure0 and native affinity limits; no joined actor or accepted replay."
+  }
+}

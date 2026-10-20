@@ -1,0 +1,85 @@
+{
+  "milestone": "Iterator33: another pending THROW at an already parked owning Generator return",
+  "status": "Independently validated and reviewed; exact single-parent composition for canonical integration",
+  "independent_reviewer": "iterator_review_15",
+  "base": "18cbdedb31238d4b364a4d198fe738a837c0aadd",
+  "native_baseline_cut": "fcbbb186de0c86b5703320ca57797fbada2b7357",
+  "source_state_strict_cut": "743179929d0ae2e1de98ccf4d882514a98e12524",
+  "tested_runtime": "d4dbefafbb96ab8f18166cefce3ba6bb99ab3c5a",
+  "modules": 405,
+  "scope": "Repeated literal one-Throwable pending THROW at a parked owning simple-CV assigned yield-from COMPLETE, directly or through finite native links. Only the selected receiver must remain pending. No owning input/other task/HELD, acquired producer, loop/startpack/borrowed API, active GC or actual parked body entry.",
+  "semantics": [
+    "The target authenticates actual parked waiting, then clears only nonowning PARKED in a borrowed view to reuse the existing finite normal-return path validator. Actual state/frame/site remain intact. The parked refusal excludes exactly ready pending THROW; no unpark or body dispatch is introduced.",
+    "Upper-then-middle and middle-then-upper histories prove that initialization belongs to the selected receiver, independently of the physical middle bit. Another THROW clears that receiver bit and throws the supplied object to the caller without consuming the copied return. Distinct or reused exceptions gain no implicit Previous link from prior caught variables.",
+    "One transient current snapshot survives receiver retirement and may replace the second exception with Previous identity intact. Array snapshots/returns retain separate container counts with one payload edge; raw-row COW and returned-cell mutation remain live. Existing close retains the return and omits the parked middle finally."
+  ],
+  "source_authority": [
+    "Pinned Zend/zend_exceptions.c::zend_throw_exception_internal/is_handle_exception_set leave an already installed HANDLE_EXCEPTION opline untouched. Generator::throw and zend_generator_resume in Zend/zend_generators.c then test DO_INIT on orig_generator and return before dispatch when current is defined.",
+    "Existing Zend get_current/update_current copy the child return and expose the physical cache. RETURN_COPY_DEREF and call cleanup separate cache, receiver and pending exception lifetimes. No engine bug or intentional divergence is classified."
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS 64-bit; source 34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; SL, caches off, encountered determinism",
+    "environment": "profile.json, PHP -n, LC_ALL=C, TZ=UTC, PHP_SPEC_SCRIPT_ENCODING unset. Serial CPU5 resource lease for native/baseline and later model packet, with explicit author/peer handoffs and no overlap. Exact commands/exits/raw outputs in reports; all actors reaped and lease released."
+  },
+  "runtime_sha256": {
+    "spec/semantics/280-generators.watsup": "a42198c32eadfe3555ebad744aea325a12d21535e7a563965d1d4ae1a8586605",
+    "spec/semantics/289-generator-delegation.watsup": "f09cdb5824b76310ccdc5a1536ca195df66f359b43db63bc998cfcb133f2ddd3"
+  },
+  "reports": {
+    "native_author": ".tools/generator-repeated-pending-owning-throw-native-ubucjcgj/report.json",
+    "native_peer": ".tools/generator-repeated-pending-owning-throw-review-native-y9kxy4in/report.json",
+    "unchanged_baseline": ".tools/generator-repeated-pending-owning-throw-baseline-lg9_9sn1/report.json",
+    "fixture_elaboration": ".tools/generator-repeated-pending-owning-throw-state-elab-4qkbq5ov/report.json",
+    "strict405": ".tools/generator-repeated-pending-owning-throw-author-sl-z4bbr71a/report.json",
+    "source_author": ".tools/generator-repeated-pending-owning-throw-source-ozp5eni8/report.json",
+    "source_peer": ".tools/generator-repeated-pending-owning-throw-review-source-tiz5q17_/report.json",
+    "state_author183": ".tools/fiber-state-review-0dz_7n4g/report.json",
+    "state_author106": ".tools/fiber-state-review-ssm7sww8/report.json",
+    "state_peer207": ".tools/fiber-state-review-xpevcz1e/report.json",
+    "state_peer133": ".tools/fiber-state-review-8v35p486/report.json"
+  },
+  "native_and_baseline": {
+    "native_originals": 4,
+    "model_agreements": 0,
+    "baseline": "Unchanged ed769d6b reuses exact ubuc native bytes without PHP replay. First ancestor THROW succeeds; second direct-middle THROW reaches public Unsupported Generator force-close at request end after19 OUTPUT chunks P|O|U|M|C|L|H|T1|C1|1|1|G1|1|1|T2|. Model1/empty stderr/no timeout/null diagnostic and exit_status; zero agreement."
+  },
+  "source_agreements": {
+    "normal": 4,
+    "php_error": 0,
+    "native_replayed": false
+  },
+  "reached_states": {
+    "new_premises": 629,
+    "author": 289,
+    "independent": 340,
+    "local_checks": 609,
+    "generic_reachability": 20,
+    "checks": [
+      "Real second direct-middle GEN_ARGS preserves actual parked source/frame/return1 and clears only its pending bit. E1/E2 each2, middle3 and cache1→2 derive from one receiver job and one value snapshot. Wrong source/tail/HELD/duplicate/park and cleared-receiver controls precede the full held-cache ending.",
+      "Real no-GC copied-cache callback after sole-middle cleanup has retired middle/child, D2/E2 and retained return-array1. Saved pending receipt/public validity and full CLEARED-before-D/Previous=second-E ending pass.",
+      "Reverse-history second ancestor GEN_ARGS has upper pending and middle already nonpending/parked. Old-array3→4 comes from one snapshot, with one old-object edge, raw cell2 and E1/E2 each2. Next/send/nonpending controls stay refused; full actual COW/close ending passes.",
+      "Real post-close returned-cell WRITE after same-object repeats queues oldR retirement, leaves newC through the retained cell and has null unused OP.VALUE. Full identity/no-Previous and R-before-WRITE/newC-after-E ending passes."
+    ],
+    "budgets": "SL120s/group, seek4000/full ending4000, public+heap validity, zero-budget identity and whole/split equality. Four separate groups true/exit0/empty stderr/no timeout/stable HEAD+inputs."
+  },
+  "elaboration_and_strict": "Four-fixture elaboration60s has unique EOF/all four headers and zero execution credit; strict405 SL120s returns true with caches off and encountered determinism.",
+  "failures_and_retries": "None; eleven report roles pass first attempts. No historical campaign or GC source credit is renewed.",
+  "remaining": "Parked pending NEXT/SEND, repeated THROW at nonowning/used-input/loop leaves, nonpending parked body entry/global exception-opline execution, wider owning continuations/acquisitions and waiting-result GC remain partial. No rebuild/portability, whole-core, interaction-tree or BOLA claim.",
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/generator-repeated-pending-owning-throw-33/private.tar.gz",
+    "bytes": 1877255,
+    "sha256": "6e0ebbfcf8f15bb55f85c0bce9abf17280dcdb6bddb05532c61cf2559606051a",
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-repeated-pending-owning-throw-33/manifest.json",
+    "recovery": "Restore the private branch/cut, extract private.tar.gz at its root and provision existing local tools. Reports preserve exact commands/exits/raw paths; source wrappers use --native-report. Bulky evidence remains outside Git."
+  },
+  "composition": {
+    "parent": "c162060e51de878599ce7c143f2574d71c4c2a45",
+    "parent_modules": 406,
+    "private_publication": "a028ec3e3bdc370a0ca01bf9a368d2a36e2e7071",
+    "runtime": "Only280/289 private tested bytes; every other parent runtime/schema/default/root/ordered manifest/pipeline byte preserved.",
+    "interaction_review": "Earlier selectors plus M117 ordinary typed-reference Exception replay are unproduced by these untyped Generator sources. No joined actor or accepted replay; original private cuts retain their credit."
+  }
+}

@@ -118,9 +118,23 @@ are recorded in the [plain-CV ledger](../../coverage/semantics/addassign-cv-warn
 Fresh selection/snapshot authority, real saved TARGET frames, historical values,
 old-alias owners two to one, default Warning and budget continuation are checked.
 Missing-name, PROPREF, owning and newly referenced RHS projections are pure refusal
-queries, not authenticated typed/lifetime behavior. The selected RHS must remain
-plain, defined and quietly numeric; wider operands, owning/constrained targets,
+queries, not authenticated typed/lifetime behavior. That quiet-RHS completion needs
+a plain, defined numeric RHS; wider operands, owning/constrained targets,
 callbacks and lifecycle paths remain required.
+
+The existing plain-CV `+=` entry now also handles a newly leading RHS after
+the first LEFT Warning. It captures that RHS number before issuing the second
+Warning and preserves both holders as history. Late RHS reference creation or
+unset cannot replace cached `12.5`/`5.5`, which yield strict float `18.0`. Storage
+uses the existing CV replacement helper: a late target alias and RHS retain `88`
+with owners falling from three to two, while LEFT gets a new cell and LOCATION.
+A supplied second throw instead preserves target alias write-through and outer
+destination `100`, with no detach/store. Four originals and 465 focused premises
+retain real phases and raw-versus-driven writes in the
+[second-Warning ledger](../../coverage/semantics/addassign-rhs-warning-review.json).
+The unchanged entry requires an initially quiet RHS; the new snapshot still
+requires that RHS plain and defined. Selected-reference destinations, pre-snapshot
+RHS references, owning/constrained/expired targets and wider lifetimes remain partial.
 
 The same bounded CV/reference-cell route now stages leading-numeric-string `/`.
 Zend's `div_function` dereferences both operands before conversion; each numeric
