@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Failed delayed RHS conversion after the first plain-CV `+=` Warning now
+raises TypeError from live types without storing or detaching the target. Flat
+arrays cannot retry union; a late bool alias remains attached. Two originals
+pass at `a90b28046`/406 and 273 focused premises at `5ef7c838a`/406, preserving
+array identities/items/counts and alias write-through.
+[Delayed-RHS failure ledger](coverage/semantics/addassign-rhs-failure-review.json).
+Other values/producers and wider lifetimes remain partial; OP12 paused.
+
+Composed over `3d668f22e`/406, preserving every incoming runtime, task
+and manifest path. Source2/state273 retain their private406 cuts; independently
+reviewed absent incoming selectors require no joined execution or renewed credit.
+
 One initially missing CV may now occur twice at `<=>`: the first read freezes
 NULL, then the second sees the shared scalar/reference created by the handler.
 Only the entry predicate's distinctness premise widens for SPACESHIP; right-read
@@ -52,18 +64,8 @@ literal-key string selectors are unproduced; literal debt fields stay empty.
 Source4/state646/strict406 retain their private cut; parent composition adds no
 execution credit. No joined actor or accepted replay was needed.
 
-Plain-CV `+=` now stages a second RHS Warning after its LEFT handler changes
-the initially quiet value to leading text. Four originals pass at `ba9a8d17e`/405;
-three focused fixtures pass 465 premises at `367bc7c9e`/405. Cached float `18.0`
-survives late references or RHS unset. A late target reference detaches on success;
-a second supplied throw preserves alias write-through without storing. Author
-normal is source-only.
-[Second-Warning ledger](coverage/semantics/addassign-rhs-warning-review.json).
-Other target/producer classes and wider lifetimes remain partial; OP12 paused.
-
-Composed over `d946f57ec`/406, preserving incoming fields, task variants
-and manifest. Source4/state465 retain their private405 cuts; independently reviewed
-incoming selectors require no joined execution or renewed credit.
+Earlier plain-CV `+=` second-Warning behavior retains source4/state465 in its
+[review ledger](coverage/semantics/addassign-rhs-warning-review.json).
 
 Both-missing distinct-CV `<=>` now warns left first and freezes NULL before
 reading the handler-created scalar right. The first name may stay absent;

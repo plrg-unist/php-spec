@@ -559,11 +559,13 @@ rule PhpStep/arithmetic-addassign-cv-commit: S ~> $arithmetic_addassign_cv_write
   -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
   -- if pvalue_result = $number_value($num_add(pnumber_left, pnumber_right))
 dec $arithmetic_addassign_cv_right_snapshot(pstate, pintegeroperation) : (pvalue, pnumber)?
+dec $arithmetic_addassign_cv_failure_operands(pstate, pintegeroperation) : (pvalue, pvalue)?
 rule PhpStep/arithmetic-addassign-cv-boundary: S ~> S[.COMPLETION = UNSUPPORTED "plain compound addition live operands or target"]
   -- if S.TODO = (ARITHMETIC_ADDASSIGN_CV_WARNING pintegeroperation pvalue pnumber 1) :: ptask_tail*
   -- if $arithmetic_addassign_cv_warning_valid(S, pintegeroperation, pvalue, pnumber, 1)
   -- if $arithmetic_addassign_cv_ready(S, pintegeroperation) = eps
   -- if $arithmetic_addassign_cv_right_snapshot(S, pintegeroperation) = eps
+  -- if $arithmetic_addassign_cv_failure_operands(S, pintegeroperation) = eps
 
 def $task_nodes(ARITHMETIC_ADDASSIGN_CV_WARNING pintegeroperation pvalue pnumber n) = eps
 def $call_task_valid(S, ARITHMETIC_ADDASSIGN_CV_WARNING pintegeroperation pvalue pnumber n) = $arithmetic_addassign_cv_warning_valid(S, pintegeroperation, pvalue, pnumber, n)
@@ -3135,3 +3137,39 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 2
   -- if perrorcall.MESSAGE = $ptascii("A non-numeric value encountered")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) pintegeroperation.LINE
+
+;; Once LEFT has converted, failed RIGHT conversion reports the live pair;
+;; ASSIGN_OP neither retries array union nor detaches/replaces the destination.
+dec $arithmetic_addassign_cv_failure_value(pstate, pvalue) : bool
+def $arithmetic_addassign_cv_failure_value(S, pvalue) = true -- if $submul_initial_value(S, pvalue)
+def $arithmetic_addassign_cv_failure_value(S, PARRAY n) = true
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if $array_string_cast_items(S.ARRAYS[n].ITEMS)
+def $arithmetic_addassign_cv_failure_value(S, pvalue) = false -- otherwise
+
+def $arithmetic_addassign_cv_failure_operands(S, pintegeroperation) = ((pvalue_left, pvalue_right))
+  -- if S.TODO = (ARITHMETIC_ADDASSIGN_CV_WARNING pintegeroperation pvalue_cached pnumber_cached 1) :: ptask_tail*
+  -- if $arithmetic_addassign_cv_warning_valid(S, pintegeroperation, pvalue_cached, pnumber_cached, 1)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes_left
+  -- if pintegeroperation.RIGHTPOINTER = INTEGER_CV ptbytes_right
+  -- if $lookup(S.ENV, ptbytes_left) = (n_left)
+  -- if $lookup(S.ENV, ptbytes_right) = (n_right)
+  -- if (HCELL n_left) <- S.ALLOCATIONS
+  -- if (HCELL n_right) <- S.ALLOCATIONS
+  -- if ~(n_right <- S.REFCELLS)
+  -- if ~$foreach_released_name(S, ptbytes_left)
+  -- if ~$foreach_released_name(S, ptbytes_right)
+  -- if $propref_at(S.PROPREFS, n_left) = eps /\ $propref_at(S.PROPREFS, n_right) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n_left) = eps /\ $reference_coercion_at(S.REFCOERCIONS, n_right) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_left) = eps /\ $parameter_backing_at(S.PARAMETERBACKINGS, n_right) = eps
+  -- if $integer_pointer_value(S, pintegeroperation.LEFTPOINTER) = (pvalue_left)
+  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (pvalue_right)
+  -- if $arithmetic_addassign_cv_failure_value(S, pvalue_left)
+  -- if $arithmetic_addassign_cv_failure_value(S, pvalue_right)
+  -- if $arithmetic_add_conversion(pvalue_right) = eps
+def $arithmetic_addassign_cv_failure_operands(S, pintegeroperation) = eps -- otherwise
+
+rule PhpStep/arithmetic-addassign-cv-rhs-type-failure: S ~> $type_failure(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL], ADD, pvalue_left, pvalue_right, pintegeroperation.LINE)
+  -- if S.TODO = (ARITHMETIC_ADDASSIGN_CV_WARNING pintegeroperation pvalue_cached pnumber_cached 1) :: ptask_tail*
+  -- if $arithmetic_addassign_cv_failure_operands(S, pintegeroperation) = ((pvalue_left, pvalue_right))

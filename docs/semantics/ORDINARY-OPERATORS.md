@@ -136,6 +136,20 @@ The unchanged entry requires an initially quiet RHS; the new snapshot still
 requires that RHS plain and defined. Selected-reference destinations, pre-snapshot
 RHS references, owning/constrained/expired targets and wider lifetimes remain partial.
 
+A failed delayed RHS conversion after that first plain-CV `+=` Warning now
+raises TypeError from the live dereferenced pair. Changing both values to flat
+arrays yields `array + array`: the earlier array-union fast path is not retried.
+Creating a late LEFT alias, then changing LEFT to false and RHS to bad text yields
+`bool + string`. Failure preserves the target/alias, outer destination `100`,
+array identities/items/counts and callback writes, with no detach or store.
+Two originals and 273 focused premises distinguish raw THROWN from the fresh
+indexed TypeError in the
+[delayed-RHS failure ledger](../../coverage/semantics/addassign-rhs-failure-review.json).
+The inherited entry stays unchanged. Current RHS must still be plain; the live
+pair is bounded to valid nonowning scalars or allocated flat DIRECT arrays.
+Missing/constrained cells, nested/reference/owning leaves, objects/resources and
+wider producers/lifetimes remain partial.
+
 The same bounded CV/reference-cell route now stages leading-numeric-string `/`.
 Zend's `div_function` dereferences both operands before conversion; each numeric
 holder is filled before its warning. The divisor is tested after conversion, so a

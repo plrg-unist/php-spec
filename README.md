@@ -494,6 +494,14 @@ Four originals and 465 focused premises are retained in the
 [second-Warning ledger](coverage/semantics/addassign-rhs-warning-review.json).
 Other target/producer classes and wider lifetimes remain partial.
 
+Failed delayed RHS conversion in that plain-CV `+=` route now reports the
+live operand types without storing or detaching a late target alias. Callback
+arrays produce `array + array` TypeError without retrying union; a bool and bad
+text produce `bool + string`. Two originals and 273 focused premises preserve
+array identities/items/counts and alias write-through in the
+[delayed-RHS failure ledger](coverage/semantics/addassign-rhs-failure-review.json).
+Wider values, producers and lifetimes remain partial.
+
 [Stringable compound concatenation352](coverage/semantics/compound-string-live-rhs-review.json)
 reads a defined RHS CV after the left conversion, preserves the non-reference
 self-CV fast path, and retains evaluated temporary/reference operands through
