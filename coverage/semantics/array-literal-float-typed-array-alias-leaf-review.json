@@ -1,6 +1,6 @@
 {
   "milestone": "A33",
-  "status": "independently validated private cut; final-parent composition pending",
+  "status": "independently validated; reviewed actual-parent composition",
   "target": "PHP 8.5.10 CLI NTS 64-bit; vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348; sole oracle .tools/php/bin/php, tests/semantics/profile.json",
   "behavior": "Embedded array-valued ALIAS leaves may retain validated ordinary instance-property type sources accepting the bounded child array. Typed writes and final-source unset use existing property-reference rules.",
   "domain": "Mutable nonpool child HARRAY with edge-free DIRECT null/bool/int/float or validated byte leaves; no child HARRAY debt, leaf HCELL debt, coercion/backing records, deeper owning edge or cycle. Actual child and every source object must survive the same logical prune for debt-bearing payloads.",
@@ -36,5 +36,6 @@
   },
   "raw_archive": {"path": ".tools/array-literal-float-typed-array-alias-leaf-33-raw.tar.gz", "bytes": 425970, "members": 124, "sha256": "1d746248e41340b736fbda8bd6a83684931d91c1b15050ce9e18442cadab7903", "recovery": "Recreate the recorded worktree at focused_state, provision project-local tool references, and extract this archive there; members are rooted under .tools/ and retain original native source paths and all eight report roots."},
   "recovery": "At the recorded worktree path, restore focused_state and provision project-local tool references; extract the canonical archive with -C <restored_worktree> (entries start .tools/). Raw reports retain exact argv/cwd/profile/environment, original source bytes/streams, binary/input hashes, exits and group reaping.",
-  "boundaries": "Global outer typed-array CELL and direct owning-string CV/CELL retarget gates stay unchanged. Static/hooked/queued/retired sources, deeper or indebted children, unsafe/effective-zero retirement, active GC and request-end debt remain outside this slice; paused LIST/owned-NUL paths untouched."
+  "boundaries": "Global outer typed-array CELL and direct owning-string CV/CELL retarget gates stay unchanged. Static/hooked/queued/retired sources, deeper or indebted children, unsafe/effective-zero retirement, active GC and request-end debt remain outside this slice; paused LIST/owned-NUL paths untouched.",
+  "composition": {"parent": "b2c2354872b461a69a2ebffe96c295de711ba190", "ordered_manifest_modules": 407, "accepted_private_state": "7921eed5821fa15205fe5475ab6d31161a7b5c27", "runtime": "Sole413 and six tests preserve accepted private bytes; every other runtime and manifest path is parent-exact.", "interaction": "Incoming INI, spaceship, cached clone, power-assignment and method-Closure DEFINE selectors are absent; prior scalar/byte typed checks and untyped child admission are preserved pointwise. No joined actor or renewed historical credit."}
 }

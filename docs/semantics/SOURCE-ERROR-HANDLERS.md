@@ -124,7 +124,14 @@ Scalar `<=>` additionally admits a missing left CV with a captured primitive or
 defined direct-CV right operand, and a captured primitive or defined scalar
 direct-CV left with a missing right CV. The latter follows the current left
 wrapper after the callback, including reference rebinding; it adds no borrowed
-old-cell owner. Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also admit either missing
+old-cell owner. If the callback removes this already checked left CV, the exact
+right-frozen spaceship record restores a known-NULL left task and compares to 0
+without another Warning. A surviving alias retains its cell; the missing right
+name need not be initialized. The
+[checked-left removal review](../../coverage/semantics/undefined-spaceship-checked-unset-review.json)
+checks quiet restoration separately from an unread right removed during a
+missing-left Warning, which still warns again.
+Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also admit either missing
 operand with an initially defined scalar counterpart, following that counterpart's
 current wrapper after the callback. A missing right name need not be initialized.
 Both protocols freeze null while preserving the opposing read. Owning opposing
@@ -181,8 +188,9 @@ two captured NULLs. The
 [shared reversed review](../../coverage/semantics/undefined-scalar-compare-reversed-same-review.json)
 admits identical CV names only for the greater operators' right-frozen shape and
 inverse NULL-only certificate; ordinary forward right-frozen shapes stay distinct.
-First-callback owning comparison values, already
-checked defined counterparts removed during the later Warning and wider producers remain partial.
+First-callback owning comparison values and wider producers remain partial.
+The six Boolean comparison operators still refuse removal of an already checked
+defined counterpart during the later Warning.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding

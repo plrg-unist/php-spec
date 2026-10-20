@@ -20,6 +20,8 @@ def checks(program, path, name):
         reason = ('scalar comparison warning changed left operand' if condition.startswith('S_right_refused = ')
                   else 'scalar comparison warning changed right operand')
         condition = condition.replace('spaceship warning changed opposing scalar', reason)
+        if condition.startswith('S_right_refused = '):
+            condition = 'S_right_refused = S_right_missing[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed left operand"]'
         if condition.startswith(('S_compared = ', 'S_again_compared = ')):
             condition = condition.replace('KNOWN (PINT 0)', 'KNOWN (PBOOL true)')
         if false:
@@ -30,6 +32,7 @@ def checks(program, path, name):
                     condition += ' ++ [$error_default_event(S_return_' + str(index) + ',WARNING ($ptascii("' + variable + '")) 10)]'
         result.append(condition)
     result += [
+        '~$spaceship_checked_missing(S_right_missing,perrorread_right)',
         'perrorread_nonnull = perrorread_second[.ORIGINAL = BINARY_RIGHT ' + op + ' (KNOWN (PINT 1)) 10][.TASK = BINARY_RIGHT ' + op + ' (KNOWN (PINT 1)) 10]',
         '$error_read_shape(perrorread_nonnull.ORIGINAL,perrorread_nonnull.INPUT,perrorread_nonnull.BASE) = (perrorread_nonnull)',
         '~$error_read_valid(S_restored_1,perrorread_nonnull)',

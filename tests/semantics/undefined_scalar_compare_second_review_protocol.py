@@ -25,7 +25,7 @@ def checks(program, path, name):
         condition = condition.replace('spaceship warning changed opposing scalar',
                                       'scalar comparison warning changed right operand')
         if condition.startswith('S_wrong_denied = '):
-            condition = condition.replace('changed right operand', 'changed left operand')
+            condition = 'S_wrong_denied = S_wrong[.TODO = eps][.COMPLETION = UNSUPPORTED "scalar comparison warning changed left operand"]'
         if condition.startswith('S_compared = '):
             condition = condition.replace('KNOWN (PINT 0)', 'KNOWN (PBOOL ' + value + ')')
         result.append(condition)

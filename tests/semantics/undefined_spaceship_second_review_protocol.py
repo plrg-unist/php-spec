@@ -146,7 +146,7 @@ def checks(program, path, name):
         '$error_read_valid(S_wrong,perrorread_right)',
         '~$spaceship_read_other(S_wrong,perrorread_right)',
         'PhpStep: S_wrong ~> S_wrong_denied',
-        'S_wrong_denied = S_wrong[.TODO = eps][.COMPLETION = UNSUPPORTED "spaceship warning changed opposing scalar"]',
+        'S_wrong_denied = S_wrong[.TODO = (BINARY_RIGHT SPACESHIP (KNOWN PNULL) ' + str(line) + ') :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = perrorread_right.BASE]',
         'S_array = S_second_resume[.STORE = $set_cell(S_second_resume.STORE,n_current,DEFINED (PARRAY 0))][.TODO = (ERROR_READ_RESULT perrorread_first) :: ptask_tail*]',
         '$error_read_valid(S_array,perrorread_first)',
         '~$spaceship_read_other(S_array,perrorread_first)',

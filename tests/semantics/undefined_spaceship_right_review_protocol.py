@@ -65,7 +65,7 @@ def checks(program, path, name):
         'S_without = $unset_name(S_resume,$ptascii("left"))', '$us_guard(S_without)',
         '$error_read_valid(S_without,perrorread)', '~$spaceship_read_other(S_without,perrorread)',
         'PhpStep: S_without ~> S_denied',
-        'S_denied.COMPLETION = UNSUPPORTED "spaceship warning changed opposing scalar"',
+        'S_denied = S_without[.TODO = (BINARY_RIGHT SPACESHIP (KNOWN PNULL) ' + str(line) + ') :: ptask_resume*][.RESULT = KNOWN PNULL][.BASE = perrorread.BASE]',
         'S_denied.EVENTS = S_resume.EVENTS',
     ]
     if rebound:

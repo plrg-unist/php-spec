@@ -3624,3 +3624,165 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 2
   -- if perrorcall.MESSAGE = $ptascii("A non-numeric value encountered")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pintegeroperation.LINE
+
+;; pow_function cancels the store on a conversion exception, but safe_pow
+;; still commits its cached result after a final Deprecated callback throws.
+dec $arithmetic_powerassign_source(pstate, pintegeroperation) : bool
+def $arithmetic_powerassign_source(S, pintegeroperation) = $powerassign_selected_warning_source(S, pintegeroperation)
+
+dec $arithmetic_powerassign_input(pstate, pintegeroperation, parithmeticphase) : pvalue?
+def $arithmetic_powerassign_input(S, pintegeroperation, parithmeticphase) = (pvalue)
+  -- if $arithmetic_powerassign_source(S, pintegeroperation)
+  -- if $arithmetic_add_pointer(pintegeroperation, parithmeticphase) = INTEGER_CELL n
+  -- if $arithmetic_owned_cell_valid(S, n)
+  -- if $integer_pointer_value(S, INTEGER_CELL n) = (pvalue)
+def $arithmetic_powerassign_input(S, pintegeroperation, parithmeticphase) = eps -- otherwise
+
+def $arithmetic_powerassign_plan(S) = (pintegeroperation)
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (COMPOUND_APPLY POWER (BASE_VALUE poperand_left) false z) :: ptask_tail*
+  -- if poperand_right = S.RESULT
+  -- if $integer_pointer_select(S, poperand_left) = (pintegerpointer_left)
+  -- if $integer_pointer_select(S, poperand_right) = (pintegerpointer_right)
+  -- if pintegerpointer_left = INTEGER_CELL n_left
+  -- if pintegerpointer_right = INTEGER_CELL n_right
+  -- if pintegeroperation = {SITE porigin, OP POWER, LINE z, SWAPPED false, LEFT poperand_left, RIGHT poperand_right, LEFTPOINTER pintegerpointer_left, RIGHTPOINTER pintegerpointer_right}
+  -- if $arithmetic_powerassign_input(S, pintegeroperation, ARITHMETIC_LEFT) = (pvalue_left)
+  -- if $arithmetic_add_conversion(pvalue_left) = ((pnumber_left, true))
+  -- if $arithmetic_powerassign_input(S, pintegeroperation, ARITHMETIC_RIGHT pnumber_left) = (pvalue_right)
+  -- if $arithmetic_add_conversion(pvalue_right) = ((pnumber_right, false))
+def $arithmetic_powerassign_plan(S) = eps -- otherwise
+
+dec $arithmetic_powerassign_target(pstate, pintegeroperation) : bool
+def $arithmetic_powerassign_target(S, pintegeroperation) = true
+  -- if $arithmetic_powerassign_source(S, pintegeroperation)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_target
+  -- if $powerassign_selected_warning_ready(S, pintegeroperation, n_target)
+  -- if $integer_pointer_value(S, pintegeroperation.LEFTPOINTER) = (pvalue)
+  -- if $power_warning_number(pvalue) = (pnumber)
+def $arithmetic_powerassign_target(S, pintegeroperation) = false -- otherwise
+
+dec $arithmetic_powerassign_converted(pstate, pintegeroperation, parithmeticphase, pnumber) : pstate
+def $arithmetic_powerassign_converted(S, pintegeroperation, ARITHMETIC_LEFT, pnumber) = S[.TODO = (ARITHMETIC_POWERASSIGN_CONVERT pintegeroperation (ARITHMETIC_RIGHT pnumber)) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = ptask :: ptask_tail*
+def $arithmetic_powerassign_converted(S, pintegeroperation, ARITHMETIC_RIGHT pnumber_left, pnumber_right) = $write_cell_checked(S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.LOCATION = ROOT n_target], n_target, pvalue, pintegeroperation.LINE)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $arithmetic_powerassign_target(S, pintegeroperation)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_target
+  -- if (pnumber_result, false) = $num_pow(pnumber_left, pnumber_right)
+  -- if pvalue = $number_value(pnumber_result)
+def $arithmetic_powerassign_converted(S, pintegeroperation, ARITHMETIC_RIGHT pnumber_left, pnumber_right) = S[.TODO = (POWER_ASSIGN_CONVERTED_DEPRECATED pintegeroperation pnumber_left pnumber_right 0 eps) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $arithmetic_powerassign_target(S, pintegeroperation)
+  -- if (pnumber_result, true) = $num_pow(pnumber_left, pnumber_right)
+def $arithmetic_powerassign_converted(S, pintegeroperation, ARITHMETIC_RIGHT pnumber_left, pnumber_right) = S[.COMPLETION = UNSUPPORTED "converted power assignment requires primitive selected target"]
+  -- if ~$arithmetic_powerassign_target(S, pintegeroperation)
+
+dec $arithmetic_powerassign_warning_valid(pstate, pintegeroperation, parithmeticphase, pvalue, pnumber, nat) : bool
+def $arithmetic_powerassign_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, n) = ($arithmetic_powerassign_source(S, pintegeroperation) /\ $arithmetic_add_phase_valid(parithmeticphase) /\ $arithmetic_add_conversion(pvalue) = ((pnumber, true)) /\ $(n <= 1) /\ (n = 1 \/ parithmeticphase =/= ARITHMETIC_LEFT \/ $arithmetic_add_selected(S, pintegeroperation)) /\ (n = 1 \/ $arithmetic_powerassign_input(S, pintegeroperation, parithmeticphase) = (pvalue)))
+
+rule PhpStep/arithmetic-powerassign-begin: S ~> S[.TODO = (ARITHMETIC_POWERASSIGN_CONVERT pintegeroperation ARITHMETIC_LEFT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = ROOT n_left]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $arithmetic_powerassign_plan(S) = (pintegeroperation)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_left
+rule PhpStep/arithmetic-powerassign-convert: S ~> $arithmetic_powerassign_converted(S, pintegeroperation, parithmeticphase, pnumber)
+  -- if S.TODO = (ARITHMETIC_POWERASSIGN_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
+  -- if $call_task_valid(S, ARITHMETIC_POWERASSIGN_CONVERT pintegeroperation parithmeticphase)
+  -- if $arithmetic_powerassign_input(S, pintegeroperation, parithmeticphase) = (pvalue)
+  -- if $arithmetic_add_conversion(pvalue) = ((pnumber, false))
+rule PhpStep/arithmetic-powerassign-capture-warning: S ~> S[.TODO = (ARITHMETIC_POWERASSIGN_WARNING pintegeroperation parithmeticphase pvalue pnumber 0) :: ptask_tail*]
+  -- if S.TODO = (ARITHMETIC_POWERASSIGN_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
+  -- if $call_task_valid(S, ARITHMETIC_POWERASSIGN_CONVERT pintegeroperation parithmeticphase)
+  -- if $arithmetic_powerassign_input(S, pintegeroperation, parithmeticphase) = (pvalue)
+  -- if $arithmetic_add_conversion(pvalue) = ((pnumber, true))
+rule PhpStep/arithmetic-powerassign-unavailable: S ~> S[.COMPLETION = UNSUPPORTED "converted power assignment missing, constrained or owning selected input"]
+  -- if S.TODO = (ARITHMETIC_POWERASSIGN_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
+  -- if $call_task_valid(S, ARITHMETIC_POWERASSIGN_CONVERT pintegeroperation parithmeticphase)
+  -- if $arithmetic_powerassign_input(S, pintegeroperation, parithmeticphase) = eps
+rule PhpStep/arithmetic-powerassign-invalid-conversion: S ~> S[.COMPLETION = UNSUPPORTED "converted power assignment selected operand conversion"]
+  -- if S.TODO = (ARITHMETIC_POWERASSIGN_CONVERT pintegeroperation parithmeticphase) :: ptask_tail*
+  -- if $call_task_valid(S, ARITHMETIC_POWERASSIGN_CONVERT pintegeroperation parithmeticphase)
+  -- if $arithmetic_powerassign_input(S, pintegeroperation, parithmeticphase) = (pvalue)
+  -- if $arithmetic_add_conversion(pvalue) = eps
+rule PhpStep/arithmetic-powerassign-warning: S ~> $error_dispatch(S, 2, $ptascii("A non-numeric value encountered"), pintegeroperation.LINE, DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) pintegeroperation.LINE, ARITHMETIC_POWERASSIGN_WARNING pintegeroperation parithmeticphase pvalue pnumber 1)
+  -- if S.TODO = (ARITHMETIC_POWERASSIGN_WARNING pintegeroperation parithmeticphase pvalue pnumber 0) :: ptask_tail*
+  -- if $arithmetic_powerassign_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, 0)
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/arithmetic-powerassign-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "converted power assignment owning warning callback"]
+  -- if S.TODO = (ARITHMETIC_POWERASSIGN_WARNING pintegeroperation parithmeticphase pvalue pnumber 0) :: ptask_tail*
+  -- if $arithmetic_powerassign_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, 0)
+  -- if $error_handler_eligible(S, 2)
+  -- if ~$arithmetic_add_named(S)
+rule PhpStep/arithmetic-powerassign-resume: S ~> $arithmetic_powerassign_converted(S, pintegeroperation, parithmeticphase, pnumber)
+  -- if S.TODO = (ARITHMETIC_POWERASSIGN_WARNING pintegeroperation parithmeticphase pvalue pnumber 1) :: ptask_tail*
+  -- if $arithmetic_powerassign_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, 1)
+
+def $task_nodes(ARITHMETIC_POWERASSIGN_CONVERT pintegeroperation parithmeticphase) = eps
+def $task_nodes(ARITHMETIC_POWERASSIGN_WARNING pintegeroperation parithmeticphase pvalue pnumber n) = eps
+def $call_task_valid(S, ARITHMETIC_POWERASSIGN_CONVERT pintegeroperation parithmeticphase) = ($arithmetic_powerassign_source(S, pintegeroperation) /\ $arithmetic_add_phase_valid(parithmeticphase) /\ (parithmeticphase =/= ARITHMETIC_LEFT \/ $arithmetic_add_selected(S, pintegeroperation)))
+def $call_task_valid(S, ARITHMETIC_POWERASSIGN_WARNING pintegeroperation parithmeticphase pvalue pnumber n) = $arithmetic_powerassign_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ARITHMETIC_POWERASSIGN_WARNING pintegeroperation parithmeticphase pvalue pnumber 1
+  -- if $arithmetic_powerassign_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, 1)
+  -- if perrorcall.TARGET =/= eps \/ $arithmetic_powerassign_warning_valid(S, pintegeroperation, parithmeticphase, pvalue, pnumber, 0)
+  -- if perrorcall.SITE = pintegeroperation.SITE /\ perrorcall.LINE = pintegeroperation.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("A non-numeric value encountered")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pintegeroperation.LINE
+
+;; Converted holders authenticate this final callback without a fresh cell read.
+;; The primitive old target bounds pow_function's pre-Deprecated destruction.
+dec $powerassign_converted_deprecated_valid(pstate, pintegeroperation, pnumber, pnumber, nat, nat?) : bool
+def $powerassign_converted_deprecated_valid(S, pintegeroperation, pnumber_left, pnumber_right, n_stage, n_pending?) = true
+  -- if $arithmetic_powerassign_source(S, pintegeroperation)
+  -- if $(n_stage <= 1)
+  -- if $power_warning_number($number_value(pnumber_left)) = (pnumber_left)
+  -- if $power_warning_number($number_value(pnumber_right)) = (pnumber_right)
+  -- if (pnumber_result, true) = $num_pow(pnumber_left, pnumber_right)
+  -- if $destructor_pending_valid(S, n_pending?)
+  -- if n_pending? = eps \/ n_stage = 1
+  -- if n_stage = 1 \/ $arithmetic_powerassign_target(S, pintegeroperation)
+def $powerassign_converted_deprecated_valid(S, pintegeroperation, pnumber_left, pnumber_right, n_stage, n_pending?) = false -- otherwise
+
+rule PhpStep/powerassign-converted-deprecated-dispatch: S ~> $error_dispatch(S, 8192, $ptascii("Power of base 0 and negative exponent is deprecated"), pintegeroperation.LINE, DIAGNOSTIC "Deprecated" $ptascii("Power of base 0 and negative exponent is deprecated") pintegeroperation.LINE, POWER_ASSIGN_CONVERTED_DEPRECATED pintegeroperation pnumber_left pnumber_right 1 eps)
+  -- if S.TODO = (POWER_ASSIGN_CONVERTED_DEPRECATED pintegeroperation pnumber_left pnumber_right 0 eps) :: ptask_tail*
+  -- if $powerassign_converted_deprecated_valid(S, pintegeroperation, pnumber_left, pnumber_right, 0, eps)
+  -- if ~$error_handler_eligible(S, 8192) \/ $arithmetic_add_named(S)
+rule PhpStep/powerassign-converted-deprecated-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "converted power assignment owning deprecation callback"]
+  -- if S.TODO = (POWER_ASSIGN_CONVERTED_DEPRECATED pintegeroperation pnumber_left pnumber_right 0 eps) :: ptask_tail*
+  -- if $powerassign_converted_deprecated_valid(S, pintegeroperation, pnumber_left, pnumber_right, 0, eps)
+  -- if $error_handler_eligible(S, 8192) /\ ~$arithmetic_add_named(S)
+rule PhpStep/powerassign-converted-deprecated-commit: S ~> $write_cell_checked(S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue_result][.LOCATION = ROOT n_target], n_target, pvalue_result, pintegeroperation.LINE)
+  -- if S.TODO = (POWER_ASSIGN_CONVERTED_DEPRECATED pintegeroperation pnumber_left pnumber_right 1 eps) :: ptask_tail*
+  -- if $powerassign_converted_deprecated_valid(S, pintegeroperation, pnumber_left, pnumber_right, 1, eps)
+  -- if $arithmetic_powerassign_target(S, pintegeroperation)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_target
+  -- if (pnumber_result, true) = $num_pow(pnumber_left, pnumber_right)
+  -- if pvalue_result = $number_value(pnumber_result)
+rule PhpStep/powerassign-converted-deprecated-commit-throw: S ~> S_written[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (POWER_ASSIGN_CONVERTED_DEPRECATED pintegeroperation pnumber_left pnumber_right 1 (n_exception)) :: ptask_tail*
+  -- if $powerassign_converted_deprecated_valid(S, pintegeroperation, pnumber_left, pnumber_right, 1, (n_exception))
+  -- if $arithmetic_powerassign_target(S, pintegeroperation)
+  -- if pintegeroperation.LEFTPOINTER = INTEGER_CELL n_target
+  -- if (pnumber_result, true) = $num_pow(pnumber_left, pnumber_right)
+  -- if S_written = $write_cell_checked(S[.TODO = (THROW_SEARCH n_exception) :: ptask_tail*][.LOCATION = ROOT n_target], n_target, $number_value(pnumber_result), pintegeroperation.LINE)
+rule PhpStep/powerassign-converted-deprecated-boundary: S ~> S[.COMPLETION = UNSUPPORTED "converted power assignment requires primitive selected target"]
+  -- if S.TODO = (POWER_ASSIGN_CONVERTED_DEPRECATED pintegeroperation pnumber_left pnumber_right 1 n_pending?) :: ptask_tail*
+  -- if $powerassign_converted_deprecated_valid(S, pintegeroperation, pnumber_left, pnumber_right, 1, n_pending?)
+  -- if ~$arithmetic_powerassign_target(S, pintegeroperation)
+
+def $error_read_discard(S, POWER_ASSIGN_CONVERTED_DEPRECATED pintegeroperation pnumber_left pnumber_right 1 eps) = S[.TODO = (POWER_ASSIGN_CONVERTED_DEPRECATED pintegeroperation pnumber_left pnumber_right 1 (n_exception)) :: ptask_tail*]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
+  -- if $powerassign_converted_deprecated_valid(S, pintegeroperation, pnumber_left, pnumber_right, 1, eps)
+def $task_nodes(POWER_ASSIGN_CONVERTED_DEPRECATED pintegeroperation pnumber_left pnumber_right n_stage n_pending?) = $instance_roots(n_pending?)
+def $call_task_valid(S, POWER_ASSIGN_CONVERTED_DEPRECATED pintegeroperation pnumber_left pnumber_right n_stage n_pending?) = $powerassign_converted_deprecated_valid(S, pintegeroperation, pnumber_left, pnumber_right, n_stage, n_pending?)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = POWER_ASSIGN_CONVERTED_DEPRECATED pintegeroperation pnumber_left pnumber_right 1 eps
+  -- if $powerassign_converted_deprecated_valid(S, pintegeroperation, pnumber_left, pnumber_right, 1, eps)
+  -- if perrorcall.TARGET =/= eps \/ $powerassign_converted_deprecated_valid(S, pintegeroperation, pnumber_left, pnumber_right, 0, eps)
+  -- if perrorcall.SITE = pintegeroperation.SITE /\ perrorcall.LINE = pintegeroperation.LINE
+  -- if perrorcall.LEVEL = 8192
+  -- if perrorcall.MESSAGE = $ptascii("Power of base 0 and negative exponent is deprecated")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE pintegeroperation.LINE
