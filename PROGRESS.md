@@ -23,6 +23,14 @@ policies stay exact. Ordinary omitted/false originals are distinct from structur
 clone/inherited-flag composition; wider domains and core remain partial.
 [Named Closure define review](coverage/semantics/define-runtime-named-closure-review.json).
 
+Composed over `562080a9f`/407 with exact tested400+7 and complete incoming
+runtime/manifest/inventory prefixes preserved. By-ref/finally, INI, missing loose
+comparisons, power assignment and typed-property literal-key debt selectors are
+unselected. Raw static/source cells have no property-reference source; retained/
+debt lists stay empty. No state/graph/module lift is needed. Source3/state690
+retain their private407 cuts without joined execution, accepted replay or renewed
+historical credit.
+
 Direct/selected named and mixed `ini_set` calls now retain a flat quiet-primitive
 array value captured before a later NULL-option argument and alias COW. Returning
 Deprecated handling reaches parameter2 TypeError with converted empty option;
