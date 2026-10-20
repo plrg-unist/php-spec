@@ -1,0 +1,81 @@
+{
+  "status": "accepted private milestone; publication cleared",
+  "target": "PHP 8.5.10 CLI NTS64; pinned local oracle/profile; original PHP bytes, filename and cwd; source SL and focused strict-SL over 407 modules",
+  "base": "cd98ca4a59dc83c3d30a8c4f96d9f618f231b20a",
+  "runtime": {
+    "tested_revision": "ec1f3cc57abc3ad682404c2211c03e4fac912aec",
+    "files": {
+      "spec/semantics/400-dynamic-constants.watsup": "508d915a781f60418dc68ed55f1efa551ec54395baf5ed420dde350ab37ffe4c"
+    },
+    "change": "Add one disjoint owned POBJECT arm using the unchanged dynamic_define_value_class. Primitive and ARRAY arms, captured header and all lifecycle/source/query bodies remain exact."
+  },
+  "behavior": [
+    "Early named direct INSTANCE capture survives late source/callee replacement. Fresh rows and queries share the same object after the captured callee dies; property19 becomes shared23. A normal duplicate owns rejected41 only through its captured argument: its destructor observes the callee held before false/gone; the old23 row survives until shutdown.",
+    "A direct stdClass with a genuine cached property table retains its owning child after both source CVs and the callee retire. Query identity, shared child19 to41, cast-view COW and independent append history preserve the original table and physical child edge.",
+    "A supplied Exception preserves raw API/__invoke direct-object arguments while callee cleanup completes. The object remains shared41 to53 through the raw argument views after the Exception/trace retire; final view retirement reaches normal non-STORE disposal with no pending Exception, runs D53 with the callee gone, then leaves old17 and the caller97 sentinel unchanged."
+  ],
+  "authority": "Reuse the existing POBJECT classifier under the same captured live owner/nonce/source, compiled argument/name-carrier and omitted/raw-Boolean-false header. Existing certificate priority, exact tag/scope/live-storage checks and DEFINE-origin query fence remain unchanged. Executed direct values are ordinary INSTANCE and cached STDINSTANCE; other already-supported certified objects and bare Closure/factory forms compose structurally without additional producer credit. Intrinsic Closure VALUE remains excluded.",
+  "compatibility": "The primitive arm is exact; ARRAY retains its separate copy policy. Only two old ordinary-object pure projections become owned-valid; their ARRAY-call refusals and bare intrinsic DEFINE VALUE negatives remain. No receipt, root order, copy, trace, global/default, other-intrinsic, state-field, schema or module change.",
+  "engine_route": "Pinned Zend/zend_builtin_functions.c::define uses ZVAL_COPY for non-array values; Zend/zend_constants.c::zend_register_constant disposes a rejected value after duplicate reporting. Existing zend_closure_internal_handler/DO_FCALL argument-before-RELEASE_THIS cleanup and Throwable raw argument snapshots account for the held/gone lifetime contrast. No allocation identity is inferred beyond the executed WeakReference/pointer observations.",
+  "sources": {
+    "native_and_genuine_revision": "c1877d9e9889ac000e98bcdd27c17216ae8fec90",
+    "model_revision": "ec1f3cc57abc3ad682404c2211c03e4fac912aec",
+    "accepted_agreements": 3,
+    "genuine_baseline": "Sole unchanged author main refuses dynamic constant call domain after B|N|1|held|, CLI1/empty, 27.472876s, stable/no timeout. No replay of accepted native/baseline.",
+    "commands": "Author native45/process15 then direct baseline90/CLI45/process60; model-only host360 serial CLI180/195 and120/135 at original native95 PHP/cwd. Peer native45/process15 then model210/CLI180/process195 at original peer95 PHP/cwd. Model times71.875921,39.712274,76.2069s; all exact native normal0/empty, stable, fully reaped."
+  },
+  "state": {
+    "revision": "371b8a2a0ecbaac57cd061cd2a9fe56c120e7f7c",
+    "premises": [
+      323,
+      184,
+      304
+    ],
+    "total": 811,
+    "zero_budget_resumption_identities": 4,
+    "checks": "Actual early capture, durable dead-owner row/query authority, malformed/dead/certificate/header refusals, fresh same-pointer root transfer, normal payload-before-callee ENTER, cached table/COW/child ownership, original Exception and raw API/wrapper edges, later normal trace-view disposal, shutdown and zero-budget resumptions. Projections are undriven.",
+    "commands": "Author fixtures120/check720 local420+240 at original native95 to fresh state95; peer fixtures120/check390 local360 at original peer95 to fresh peer-state95. Raw true LF/empty, process0, stable and full reap; CPU4 released."
+  },
+  "outcomes": "All native/source/state attempts pass first time. Static review corrected two fresh release-job expectations before any state execution: the same direct pointer transfers into the row, so only the callee is released there. Duplicate and throwing cleanup still release payload then callee. No executed fixture failures, diagnostic-only probes or semantic replay.",
+  "remaining": "Other flags/coercions, wider names/packs/PIPE and broader producer execution remain partial. No new intrinsic Closure VALUE or global/default authority. Source47 low-initial-precision DEFINE names, Stringable, owned-NUL and COMP88 remain paused; Source81 INI_SET and CLASS115 magic properties are disjoint. No portability/rebuild claim.",
+  "artifacts": {
+    ".tools/dynamic-owned-object-define-native-95/native-report.json": "fef72b538bd3dc1764c99bdd79e3e81cddcbf062db640ca25c49eb3880221630",
+    ".tools/dynamic-owned-object-define-native-95/baseline-report.json": "12725518e31eebdebb0fa739d6ef19ed1f4c902629c2725f01ab4535f71ffb00",
+    ".tools/dynamic-owned-object-define-native-95/model-report.json": "8369bd6dff1883c7f9fd41157e939fbb8ed70aca51eba4b5e4fdf5dbc45d596f",
+    ".tools/dynamic-owned-object-define-peer-95/native-report.json": "7b97e21f475107799bdc99e8546210123a2debdcb9970ae4fd7e41e470d12f4c",
+    ".tools/dynamic-owned-object-define-peer-95/model-report.json": "cad2a13e2ea310792aab9e623b70ebbafa5b5f8bb7f55b74b5b848cd969d5ce1",
+    ".tools/dynamic-owned-object-define-state-95/fixtures-report.json": "7063de2c0b9ac42cba0894d7701d4fbfb62da74a1b3b3223818fc7c3e0ce8408",
+    ".tools/dynamic-owned-object-define-state-95/check-report.json": "ca4cbb772bc5c233b0dc7d20127236582b88ecae603518b762f48be26e263e0e",
+    ".tools/dynamic-owned-object-define-peer-state-95/fixtures-report.json": "d2e1e3fd482aae85b4b4db577c4cd441790ef09dc80e286c51f625905722f2fe",
+    ".tools/dynamic-owned-object-define-peer-state-95/check-report.json": "a4d8a23a0ff97891201f93707204f7824658075deb970d3e3ab088d76b4b3aec"
+  },
+  "recovery": "Retain private branch semantics/dynamic-owned-object-define-95 and canonical .tools/dynamic-owned-object-define-{native,peer,state,peer-state}-95. Recreate the original WT95 path at each recorded revision with the same project-local build/reference inputs; exact original PHP/cwd, oracle/runtime fingerprints and argv/caps are in the reports and process/command files. Use fresh outputs for any justified recovery; no TMP dependency.",
+  "review": {
+    "author": "dynamic_dev_59",
+    "reviewer": "dynamic_review_59",
+    "decision": "cleared",
+    "scope": "Independent original/runtime/focused review cleared capture/classifier/row/query authority and complementary destructor lifetimes. Source3 and811 premises/four budgets accepted; final semantic/count/cut/hash/inventory publication read cleared."
+  },
+  "composition": {
+    "parent": "90a8545f8cf11f61f02698595455af243611ac45",
+    "private_publication": "b7b4a1ca027979466fff326b9b1fcc6727358d01",
+    "module_count": 407,
+    "incoming_files": {
+      "spec/semantics/172-file-context-intrinsics.watsup": "6daf8e2bfd521febece351af16cbfdebace409344d362278bc66cddf3bf594cf",
+      "spec/semantics/207-error-handler-runtime.watsup": "eb0e78483ca2c1792c6248ccedec5f6cbefb6e52686ac6c9d441a83c42c5fff2",
+      "spec/semantics/270-eager-destructors.watsup": "2e6ef7d877be9b0f4b9c0a12c42ee48ebeb5de0a623833e1f553f3e81ced1fdc",
+      "spec/semantics/289-generator-delegation.watsup": "46d6578f134da91f0cc2758243975bed692ed3f4bc6692bde4e4f3a69d3e8e66",
+      "spec/semantics/30-storage.watsup": "53001c95d1d8c7965abfc07548bb089eb2434385ff1304b74fd70aaac0d9415f",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "14b1540a6ca477956666ac8cab7e70367e8cbd5da1a53bfbe36a4b685af31605",
+      "spec/semantics/413-array-literal-key-warnings.watsup": "7f85a179d12d8430b9d1b239a6f0b5052ebc48236ec3eda86bb32691ace936a1",
+      "spec/semantics/modules.json": "775dee5d4aee063bfcc930b31842c1945f8c4879fdf19b551af41f50f439bbdc"
+    },
+    "composed_runtime": {
+      "spec/semantics/400-dynamic-constants.watsup": "508d915a781f60418dc68ed55f1efa551ec54395baf5ed420dde350ab37ffe4c"
+    },
+    "identity": "The original private four-file runtime/scope patch composes contextually; module400 and six scripts remain private-exact. All seven introduced incoming runtime paths and ordered manifest stay parent-exact. Whole incoming inventory retains the exact private constants suffix; whole incoming PROGRESS retains the private17 checkpoint plus this bridge.",
+    "selectors": "Source81 new172 requires INI_SET/OWNER eps/NULL and a selected primitive ALIAS ARRAY; V95 uses DEFINE. Missing loose-comparison reads, RETURN_REF_UNWIND/pending-holder retirement, Generator SEND, selected XOR fractional-text and borrowed/constrained float-key producers are absent. V95 counters are initialized quiet PINT increments; properties and trace/cast arrays use fixed string/int keys with empty retained/debt histories. Existing DEFINE argument-before-callee order stays parent-exact.",
+    "state": "Two new task alternatives add no pstate/heap field or module; no lift is needed in reached, projected, budget or FOLD.MEMORY states. Accepted ec1 source/371 state cuts keep their407 identities through the explicit selector/byte bridge, without joined execution, accepted replay or renewed credit.",
+    "reviewer": "dynamic_review_59"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "scope": "Main CV/literal private int += with named noarg by-value int RHS, inherited existing Get/Set, post-RHS receiver selection and separate outer/inner receiver holds. Quiet in-range int sum and normal/Get-throw/Set-throw cleanup only.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_observations_accepted": true,
+  "native_revision": "24f391ce1c48b12c68ce7369e47ede6444a2a851",
+  "cases": [
+    {
+      "id": "retarget",
+      "source_file": "magic-property-addassign-retarget.php",
+      "source": "<?php\nclass MagicAddParent115 {\n    private int $value = 5;\n    public int $tag = 1;\n    public function __get($name) {\n        global $child;\n        echo 'G', $this->tag, '|', __CLASS__, '|', static::class, '|';\n        $child = null;\n        echo 'g|';\n        return $this->value;\n    }\n    public function __set(string $name, $incoming): void {\n        echo 'S', $this->tag, '/', $incoming, '|';\n        $this->value = $incoming;\n        echo 's|';\n    }\n    public function __destruct() {\n        global $rhs;\n        echo 'D', $this->tag, '/', $this->value, '|';\n        $rhs = 99;\n    }\n}\nclass MagicAddChild115 extends MagicAddParent115 {}\nfunction rhs115(): int {\n    global $child, $replacement, $rhs;\n    echo 'R|';\n    $child = $replacement;\n    $rhs = 100;\n    echo 'r|';\n    return 2;\n}\necho 'N:';\n$rhs = 0;\n$result = 42;\n$child = new MagicAddChild115();\n$replacement = new MagicAddChild115();\n$replacement->tag = 2;\n$result = ($child->value += rhs115());\necho 'A|', $result, '/', $rhs, '|';\nunset($replacement);\necho 'E|', $rhs, '|';\n",
+      "source_sha256": "dc52e503f6d34798071caeeeccb96e5e3ac1e5300026954b054c6c8d3a7b477b",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/retarget.php",
+      "stdout_base64": "TjpSfEQxLzV8cnxHMnxNYWdpY0FkZFBhcmVudDExNXxNYWdpY0FkZENoaWxkMTE1fGd8UzIvN3xzfEF8Ny8xMDB8RDIvN3xFfDk5fA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "assignment_line": 38,
+      "native_raw_sha256": "5c2e7fa4db3887fae1215c94f2d3ade0cdcd2f62211ddab549f73cc0d634664e",
+      "native_report_sha256": "87d9526ab2a1f808a7269135905c32f2ee1cf34262db418464b6b7e1210996e0",
+      "status": "normal"
+    },
+    {
+      "id": "sole",
+      "source_file": "magic-property-addassign-sole.php",
+      "source": "<?php\nclass MagicAddParent115 {\n    private int $value = 5;\n    public int $tag = 1;\n    public function __get($name) {\n        global $child;\n        echo 'G', $this->tag, '|', __CLASS__, '|', static::class, '|';\n        $child = null;\n        echo 'g|';\n        return $this->value;\n    }\n    public function __set(string $name, $incoming): void {\n        echo 'S', $this->tag, '/', $incoming, '|';\n        $this->value = $incoming;\n        echo 's|';\n    }\n    public function __destruct() {\n        global $rhs;\n        echo 'D', $this->tag, '/', $this->value, '|';\n        $rhs = 99;\n    }\n}\nclass MagicAddChild115 extends MagicAddParent115 {}\nfunction rhs115(): int {\n    global $rhs;\n    echo 'R|';\n    $rhs = 55;\n    echo 'r|';\n    return 2;\n}\necho 'O:';\n$rhs = 0;\n$result = 42;\n$child = new MagicAddChild115();\n$result = ($child->value += rhs115());\necho 'A|', $result, '/', $rhs, '|';\necho 'E|';\n",
+      "source_sha256": "ac1f8c573aa80b01efa44696426c97b1e35f37133412b7a2182f6d51e2b41be1",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/sole.php",
+      "stdout_base64": "TzpSfHJ8RzF8TWFnaWNBZGRQYXJlbnQxMTV8TWFnaWNBZGRDaGlsZDExNXxnfFMxLzd8c3xEMS83fEF8Ny85OXxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "assignment_line": 35,
+      "native_raw_sha256": "83edfb509e63fd2a7e690b12b9cafa09a504d1e199e680ad4a7082eb10ff8756",
+      "native_report_sha256": "87d9526ab2a1f808a7269135905c32f2ee1cf34262db418464b6b7e1210996e0",
+      "status": "normal"
+    },
+    {
+      "id": "set-throw",
+      "source_file": "magic-property-addassign-set-throw.php",
+      "source": "<?php\nclass MagicAddParent115 {\n    private int $value = 5;\n    public int $tag = 1;\n    public function __get($name) {\n        global $child;\n        echo 'G', $this->tag, '|', __CLASS__, '|', static::class, '|';\n        $child = null;\n        echo 'g|';\n        return $this->value;\n    }\n    public function __set(string $name, $incoming): void {\n        global $error;\n        echo 'S', $this->tag, '/', $incoming, '|';\n        throw $error;\n    }\n    public function __destruct() {\n        global $rhs;\n        echo 'D', $this->tag, '/', $this->value, '|';\n        $rhs = 99;\n    }\n}\nclass MagicAddChild115 extends MagicAddParent115 {}\nfunction rhs115(): int {\n    global $rhs;\n    echo 'R|';\n    $rhs = 55;\n    echo 'r|';\n    return 2;\n}\necho 'X:';\n$error = new Exception('chosen115');\n$rhs = 0;\n$result = 42;\n$child = new MagicAddChild115();\ntry {\n    $result = ($child->value += rhs115());\n    echo 'BAD|';\n} catch (Exception $caught) {\n    if ($caught === $error) { echo 'C|'; }\n    echo $result, '/', $rhs, '|';\n} finally { echo 'F|'; }\necho 'E|';\n",
+      "source_sha256": "f333cc4d8ba39d2cb5c5cad8100dc90b5dde6a2c639c2579eeb42e5c1e4479dd",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/set-throw.php",
+      "stdout_base64": "WDpSfHJ8RzF8TWFnaWNBZGRQYXJlbnQxMTV8TWFnaWNBZGRDaGlsZDExNXxnfFMxLzd8RDEvNXxDfDQyLzk5fEZ8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "assignment_line": 37,
+      "native_raw_sha256": "116df847543ac2eabc2612bd46a8fa7b92a4498667849750b22129ba4ac8b9eb",
+      "native_report_sha256": "87d9526ab2a1f808a7269135905c32f2ee1cf34262db418464b6b7e1210996e0",
+      "status": "normal"
+    },
+    {
+      "id": "get-throw",
+      "source_file": "magic-property-addassign-get-throw.php",
+      "source": "<?php\nclass MagicAddParent115 {\n    private int $value = 5;\n    public int $tag = 1;\n    public function __get($name) {\n        global $child, $error;\n        echo 'G', $this->tag, '|', __CLASS__, '|', static::class, '|';\n        $child = null;\n        throw $error;\n    }\n    public function __set(string $name, $incoming): void {\n        echo 'S', $this->tag, '/', $incoming, '|';\n        $this->value = $incoming;\n        echo 's|';\n    }\n    public function __destruct() {\n        global $rhs;\n        echo 'D', $this->tag, '/', $this->value, '|';\n        $rhs = 99;\n    }\n}\nclass MagicAddChild115 extends MagicAddParent115 {}\nfunction rhs115(): int {\n    global $rhs;\n    echo 'R|';\n    $rhs = 55;\n    echo 'r|';\n    return 2;\n}\necho 'G:';\n$error = new Exception('chosen115');\n$rhs = 0;\n$result = 42;\n$child = new MagicAddChild115();\ntry {\n    $result = ($child->value += rhs115());\n    echo 'BAD|';\n} catch (Exception $caught) {\n    if ($caught === $error) { echo 'C|'; }\n    echo $result, '/', $rhs, '|';\n} finally { echo 'F|'; }\necho 'E|';\n",
+      "source_sha256": "3000f7167cc8db5cbb2fde78e8cf37c764abc0487cc53014b356246c21e88d3b",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/get-throw.php",
+      "stdout_base64": "RzpSfHJ8RzF8TWFnaWNBZGRQYXJlbnQxMTV8TWFnaWNBZGRDaGlsZDExNXxEMS81fEN8NDIvOTl8RnxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "assignment_line": 36,
+      "native_raw_sha256": "c8a60eb95c2033152adae4e9d8c2c5240ed8e8d44f3c67f812fc5d6850fec699",
+      "native_report_sha256": "87d9526ab2a1f808a7269135905c32f2ee1cf34262db418464b6b7e1210996e0",
+      "status": "normal"
+    }
+  ]
+}

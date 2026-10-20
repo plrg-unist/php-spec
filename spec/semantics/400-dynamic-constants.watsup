@@ -247,6 +247,10 @@ def $dynamic_owned_define_valid(S, pconfigcall) = true
   -- if $dynamic_owned_define_header(S, pconfigcall)
   -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
   -- if $dynamic_constant_class(pvalue) =/= eps
+def $dynamic_owned_define_valid(S, pconfigcall) = true
+  -- if $dynamic_owned_define_header(S, pconfigcall)
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, POBJECT n_object))
+  -- if $dynamic_define_value_class(S, POBJECT n_object) =/= eps
 def $dynamic_owned_define_valid(S, pconfigcall) = false -- otherwise
 dec $dynamic_define_finish(pstate, pconfigcall) : pstate
 def $dynamic_define_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]

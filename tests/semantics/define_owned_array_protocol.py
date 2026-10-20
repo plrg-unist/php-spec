@@ -104,7 +104,7 @@ def direct(initial, stdout):
         '$weakref_get(S,n_weak_first) = POBJECT n_first',
         'pconfigcall_object = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,1,KNOWN (POBJECT n_left))]',
         '$dynamic_owned_define_header(S,pconfigcall_object)',
-        '~$dynamic_owned_define_valid(S,pconfigcall_object)',
+        '$dynamic_owned_define_valid(S,pconfigcall_object)',
         '~$dynamic_array_call_valid(S,pconfigcall_object)',
         '~$dynamic_owned_define_header(S,pconfigcall[.OWNER = eps])',
         '~$dynamic_owned_define_header(S,pconfigcall[.SELECTION = eps])',

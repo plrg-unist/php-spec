@@ -1,0 +1,173 @@
+{
+  "scope": "Main CV/literal inherited-private int magic += with existing public BYVAL untyped-name __get and __set(string,untyped):void, named-noarg nonref int RHS, raw PINT/in-range sum. Four finite selection/sole/Getthrow/Setthrow histories.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_compile.c delayed compound-property compilation and zend_vm_def.h ASSIGN_OBJ_OP: RHS precedes fetching simple receiver CV.",
+      "Zend/zend_execute.c zend_assign_op_overloaded_property2429+: outer hold across BP_VAR_R Get, binary, Set, used-result copy and receiver release. Zend/zend_object_handlers.c adds separate Get/Set handler holds and clears their guards before inner release.",
+      "Inherited private mangled KEY is not the literal lookup key: Get DECL absent leaves existing verification identity; physical property declaration separately authenticates Set."
+    ],
+    "divergence": "No engine bug or intentional divergence identified. The 5tail numeric-warning form is explicitly Unsupported, not agreement."
+  },
+  "implementation": {
+    "files": {
+      "spec/semantics/30-storage.watsup": "2d375b15721c672a4344e35db38c8af8d39b18dd160f24d16f591ea05b1b911d",
+      "spec/semantics/418-magic-property-addassign.watsup": "661a3235ab77e186921f589aadae0cbf5a2155122c0928f7615aabfeda689c63",
+      "spec/semantics/modules.json": "4c4e80111a99742b16cbeee039406cb1996131fbae942c334b7bd97279e7a5e8"
+    },
+    "basis": "Existing compound_target extension consumes the ordinary post-RHS pending base, captures the selected object in outer VALUE/FINISH tasks, reuses old Get/Set inner handlers and authenticates Set from immutable source/caller/tail/computed sum after CV NULL. Raw int/range refusal is after unchanged Get COPY. No 55/380/412/79/138/257/270 edit, pstate field/syntax schema or generic arithmetic/GC change."
+  },
+  "validation": {
+    "native": {
+      "revision": "24f391ce1c48b12c68ce7369e47ede6444a2a851",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/native-first/report.json",
+        "sha256": "87d9526ab2a1f808a7269135905c32f2ee1cf34262db418464b6b7e1210996e0"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/affinity-native-first.json",
+        "sha256": "9ed83ef0a6c91edf2d70601643cf0e1c1e67fc257e33eed6d6c6d4860300e2bf"
+      },
+      "result": "Four exact quiet normal tuples 76/67/68/61. Fast observer partial 2/4 CPU1: retarget has empty argv; Setthrow has full 29 args. No full native affinity claim or replay."
+    },
+    "genuine_baseline": {
+      "revision": "24f391ce1c48b12c68ce7369e47ede6444a2a851",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/accepted-current-baseline/report.json",
+        "sha256": "64701a82d98fc87f631edfafbee5156503f57eda313c9545b74aba34116bb695"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/affinity-accepted-current-baseline.json",
+        "sha256": "08c589cffd8e7f8d545d75f76747938df7d3b4d00eb9f456092e6490a55919ad"
+      },
+      "result": "Four checked Unsupported magic getter read receiver or mode after RHS effects, CLI1/semantic exitNone/quiet; zero agreements. Complete 4 CPU1/full 7 argv/stable/reaped."
+    },
+    "raw_native": {
+      "revision": "cf59037afbecd550a3cdf3a8914bef0d3cc09982",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/native-raw-string/report.json",
+        "sha256": "4614812866389316852df44d16bd8e09b4ebd192d6a7f45176b50693d4659c4f"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/affinity-native-raw-string.json",
+        "sha256": "5266aa4981b10b67e0d41a1ecaea679e93c8cf46af052a46a72765b3b7b26a29"
+      },
+      "result": "Separate 5tail raw Get result: exact sole stdout 67/exit 0 plus Warning at assignment line 35, then Set 7. Fast affinity 0/1 qualified; no replay. Outside admitted slice."
+    },
+    "source": {
+      "revision": "1541d9a220614cad11252216feb485eda0c55285",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/changed-model-isxsv9_7/report.json",
+        "sha256": "86a668ba4d2b00d004b52e6db7f4d6f9023cd53952bf41021309de7087547765"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/affinity-changed-source-115-repair1.json",
+        "sha256": "b45d9dc64c10833cb16ac700bacb521334820d4c7369f7d0be2ce6f2a6766411"
+      },
+      "result": "Four exact normal native agreements after correcting DECL identity; quiet0/stable/reaped/full 4 CPU3/7 argv."
+    },
+    "raw_refusal": {
+      "revision": "1541d9a220614cad11252216feb485eda0c55285",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/changed-raw-string-model-5atq1ul0/report.json",
+        "sha256": "b47bde66cf437cc8553d019e507b1303f3ecf88e3516b3b765646ba8a76cc883"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/affinity-changed-raw-string-source-115-repair1.json",
+        "sha256": "6aa167b876fb2e7e6112c2ec25c71cbec265f9d87de3c26052c7c9107e937f21"
+      },
+      "result": "Checked Unsupported magic compound getter result or integer sum after Get/g and before Warning/Set; CLI1/None/zero agreement, full 1 CPU3/7 argv/stable/reaped."
+    },
+    "focused": {
+      "revision": "c6c08f537ab457814c44b489563c754668738b74",
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-protocol-tomsr0em/report.json",
+        "sha256": "504d0ab87f9e3f1e7b86062fe28475317715ace69d195d69433138bb40241584"
+      },
+      "affinity": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/affinity-state-115-repair2.json",
+        "sha256": "32ee7b09a3dc938ee0b42a117fd2b8e4bc70e0603a41bee9fb0902cc6fd7711b"
+      },
+      "result": "Four stricttrue AL90/SL90 groups, 891 = 870 + 21, eight quiet0 workers/full CPU4 argv/start/stability/groups/reaped. No source replay.",
+      "prepared": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-protocol-wz8tzbpp/PREPARED.json",
+        "sha256": "94f425e69a595d6b8528b3ce9e369cc4742411236052f898a51ff3260c7186c6"
+      }
+    }
+  },
+  "preserved_failures_and_diagnostics": [
+    {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/changed-model-_j8c3rqa/report.json",
+        "sha256": "8345d6a7632cfefdc3a823083a0fe0aa83e60f3944e5a80238fa46c897674d9a"
+      },
+      "result": "First candidate retarget admission Unsupported/zero credit; GET.DECL wrongly required physical origin. Corrected in1541; remaining originals were unrun."
+    },
+    {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-protocol-1ychj1jh/report.json",
+        "sha256": "dc9c542c972a71f9122ab14e4d2e9cd649d545a37295302dc26c4b89fe4b419a"
+      },
+      "result": "Original pre-application invalid pframe.ENV and masked stderr path failure:0 apps/empty records despite stale passed=true. Retained zero credit; corrected scope view/paths/fail-closed recorder only."
+    },
+    {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-protocol-a6p5ulh9/report.json",
+        "sha256": "8c725cd0b372194fdfc4563a6f888091d3daef693405f2c78c5097ad4f4ae8d0"
+      },
+      "result": "Corrected retarget 245 quiet Booleanfalse/zero credit, other histories unrun; immediate ma_after count included pending decrement root."
+    },
+    {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/diagnostic-115-tu3umgfv/report.json",
+        "sha256": "c39eb780bd842f2a5d47628c00b80225da1d41c0a00727f8e01d0931241b469a"
+      },
+      "result": "Zero-credit exact-prefix 8 vector T,T,T,F,F,F,F,F localized Get-return/COPY block."
+    },
+    {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/diagnostic-get-115-ua0xd6vp/report.json",
+        "sha256": "39fc589d847669f858e7094bf8e9e9656109fc5d09de11799519017426f889ea"
+      },
+      "result": "Zero-credit exact-prefix 6 vector T,T,T,T,T,F localized GetRESULT\u2192COPY immediate ownership checks. Fixture-only actual COPY/DELIVERY/throw-FINISH seeks drain shared release bookkeeping; raw transitions/counts/guards remain."
+    }
+  ],
+  "reproduction": {
+    "environment": "LC_ALL=C TZ=UTC PHP_SPEC_SCRIPT_ENCODING absent; jobs1; profile tests/semantics/profile.json/error_reporting30719. Native45, model60/outer75/100000steps; focus serial AL90/strict SL90/cache false/det true. Exact binary/module/source hashes and process argv/exits are in raw reports.",
+    "gate_driver": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/run.py",
+      "sha256": "0efd9a6589ef82833f850f0e10558e34ab17750fec3bee8156d561bcb0ebf584"
+    },
+    "raw_driver": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/run-raw-string.py",
+      "sha256": "b487cad6198b5f040b726dd952e482907fcff233744c9000c963862171774abb"
+    },
+    "raw_affected_driver": {
+      "path": "/home/user/workspace/php-spec/.tools/magic-property-addassign-private-115/.tools/magic-property-addassign-probes-115/run-raw-string-repair1.py",
+      "sha256": "537c61061ba05b362eb55af5deb542d3d05d384a75c1b9c7b0966f167f4291c0"
+    },
+    "commands": [
+      "python3 -u .tools/magic-property-addassign-probes-115/watch-affinity.py native-first native 1",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-property-addassign-probes-115/run.py native --revision 24f391ce1c48b12c68ce7369e47ede6444a2a851",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 1 python3 -u .tools/magic-property-addassign-probes-115/run.py baseline --revision 24f391ce1c48b12c68ce7369e47ede6444a2a851",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u .tools/magic-property-addassign-probes-115/run.py changed --revision 1541d9a220614cad11252216feb485eda0c55285",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 3 python3 -u .tools/magic-property-addassign-probes-115/run-raw-string-repair1.py changed --revision 1541d9a220614cad11252216feb485eda0c55285",
+      "python3 -u .tools/magic-property-addassign-probes-115/watch-state-affinity-repair2.py 4",
+      "env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u tests/semantics/magic_property_addassign_protocol.py --revision c6c08f537ab457814c44b489563c754668738b74"
+    ],
+    "recovery": "Ignored original sources/drivers/raw fixtures remain at original paths; versioned runtime/tests recover from recorded tested commits. No fresh rebuild claim."
+  },
+  "limits": "Only the stated main CV/literal private-int hierarchy, ordinary named noarg nonref int RHS and raw PINT/in-range ADD. Other values/coercions/overflow/operators, receiver/name/access variants, references, hooks, traits, owning RHSs and reentry remain partial. Existing declarations, inheritance and cleanup are consumed; no old campaign renewal or general lifecycle/GC closure.",
+  "review": {
+    "state": "implementation, validation and publication independently accepted",
+    "reviewer": "class_review_84"
+  },
+  "composition": {
+    "incoming_parent": "6896a7a968ecdef09751093b0645aae866ec0cdc",
+    "publication_parent": "a349f1f22d283f421dd5116f6ee09cddba7a745e",
+    "module_count": 408,
+    "basis": "Tested module 418, six tests and family blob remain publication-exact. Module 30 preserves incoming SHIFT/XOR/ref-return tags plus the new outer tasks; manifest is incoming ordered 407 plus 418. Incoming actual selectors in172/207/270/289/400/404/413/55 and OP72 unary-copy40/404 are absent from selected sources/fronts. Generic release/roots/defaults and380/412 remain unchanged. Source4/refusal1/state891 retain tested identities; no joined actor.",
+    "fresh_semantic_evaluations": 0
+  }
+}

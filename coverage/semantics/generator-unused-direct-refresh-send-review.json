@@ -1,0 +1,100 @@
+{
+  "milestone": "Iterator43: direct pending SEND closed-child refresh",
+  "status": "composed-accepted",
+  "scope": "Direct pending SEND without a prior getter, at one allocated closed child whose normal simple-CV return owns a copied value. Normal argument cleanup and unused versus assigned current copies retain distinct lifetimes.",
+  "implementation": {
+    "paths": {
+      "spec/semantics/289-generator-delegation.watsup": "46d6578f134da91f0cc2758243975bed692ed3f4bc6692bde4e4f3a69d3e8e66"
+    },
+    "change": "A separate direct arm authenticates the original child and actual refreshed owning leaf. The exact closed-child release prefix now also admits that direct receiver. Existing source demand, discarded-tail, actual result/slots, owner observation and release algorithms stay exact; no module270, root-function, schema, close or collection change."
+  },
+  "validation": {
+    "native": "Four target cases: unchanged author pair and corrected independent pair. Two earlier peer observations remain raw normal successes but have zero target credit: premature alias drops allowed BAD-MIDDLE body entry and early return retirement.",
+    "unchanged_baseline": "Checked NORMAL model0 produces J|J-END|ARG-END|A instead of native ARG-END|J|A|J-END. Original per-record false/normalagreements0 remain; the disagreement observer passes.",
+    "sources": "Four exact stdout/stderr/exit agreements. Assignment preserves its copy; argument-time COW or object rebinding preserves an older argument while finally mutates the new current. Cache RuntimeException arises inside live finally with Previous NULL.",
+    "states": {
+      "author": [
+        172,
+        159
+      ],
+      "peer": [
+        124,
+        127
+      ],
+      "total": 582,
+      "local": 562,
+      "generic": 20
+    },
+    "observations": "Real GEN_ARGS binds the allocated closed child before refresh: raw-cell owners2→3 and copied-return owners1→2, with one element edge. Child release precedes argument/result/receiver. Arg-END keeps only the scheduled unused copy plus raw current; the later cache callback has a RUNNING receiver and retained return1. Prefix, source, malformed-state and budget controls pass.",
+    "compiler": "Strict407 and four-fixture elaboration pass; compilation earns no execution credit.",
+    "failures": "Only affected peer originals were corrected and re-observed. Author native, genuine baseline and accepted checks were not replayed. All post-change source/state checks pass first execution at original caps; no historical renewal."
+  },
+  "tested_revisions": {
+    "author_and_original_peer_native": "c86cf7d7f13507719a725f3b75f8c775e20a1aa9",
+    "corrected_peer_native_and_baseline": "28f552daff329f75439a46bab61c8ab098e97f02",
+    "source4_strict407": "3b26f3f4abce4a69853b060f9cf501f80a27c20b",
+    "elaboration4_state582": "db627cb81bf67c743f776796d8efd26ee9025e21",
+    "bridge": "Runtime289/main sources are exact across source and state cuts. The author REFCELL fixture correction occurred before the first gate/execution; no tested fixture was changed afterward."
+  },
+  "commands": {
+    "native": [
+      "taskset -c 5 python3 .tools/native.py",
+      "taskset -c 5 python3 .tools/review-native.py",
+      "taskset -c 1 python3 .tools/review-corrected-native.py"
+    ],
+    "baseline": "taskset -c 1 python3 .tools/baseline.py --native-report .tools/generator-unused-direct-refresh-send-native-k5to1xs2/report.json",
+    "strict": "taskset -c 1 python3 .tools/strict.py",
+    "source": [
+      "taskset -c 1 python3 tests/semantics/generator_unused_direct_refresh_send_sources.py --native-report .tools/generator-unused-direct-refresh-send-native-k5to1xs2/report.json",
+      "taskset -c 1 python3 tests/semantics/generator_unused_direct_refresh_send_review_sources.py --native-report .tools/generator-unused-direct-refresh-send-review-corrected-native-b66_icw9/report.json"
+    ],
+    "elaboration": "taskset -c 1 python3 .tools/state-elab.py",
+    "state": [
+      "taskset -c 1 python3 tests/semantics/generator_unused_direct_refresh_send_state.py --case direct-unrefreshed-send-releases-child-before-argument-result-receiver",
+      "taskset -c 1 python3 tests/semantics/generator_unused_direct_refresh_send_state.py --case direct-unrefreshed-assigned-send-keeps-copy-after-child-release",
+      "taskset -c 1 python3 tests/semantics/generator_unused_direct_refresh_send_review_state.py --case direct-refresh-send-current-copy-survives-array-argument-cleanup",
+      "taskset -c 1 python3 tests/semantics/generator_unused_direct_refresh_send_review_state.py --case direct-refresh-send-new-cache-throws-from-finally-cell-clear"
+    ]
+  },
+  "environment": {
+    "php": "8.5.10 CLI NTS64; source 34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "mode": "SL/cacheoff/encountered determinism; LC_ALL=C TZ=UTC, script encoding unset. Serial exclusive CPU5 initial native, CPU1 corrected native/baseline/source/state. Project-local binaries reused; no fresh portability claim.",
+    "caps": "Native8s; source100000steps/model100/process120; strict120; compile60; states120/seek4000/finish4000.",
+    "exits": "All observers and post-change models exit0, empty stderr/no timeout/stable inputs and HEAD. Baseline model0 remains disagreement0. Original peer normal observations remain zero target credit. Actors fully reaped; CPU1 released."
+  },
+  "reports": {
+    "native-author2": ".tools/generator-unused-direct-refresh-send-native-k5to1xs2/report.json",
+    "native-original-peer-zero-target": ".tools/generator-unused-direct-refresh-send-review-native-dwe3e33i/report.json",
+    "native-corrected-peer2": ".tools/generator-unused-direct-refresh-send-review-corrected-native-b66_icw9/report.json",
+    "unchanged-normal-disagreement": ".tools/generator-unused-direct-refresh-send-baseline-igpwna_b/report.json",
+    "strict407": ".tools/generator-unused-direct-refresh-send-author-sl-4a4ex333/report.json",
+    "source-author2": ".tools/generator-unused-direct-refresh-send-source-u68_hp0m/report.json",
+    "source-peer2": ".tools/generator-unused-direct-refresh-send-review-source-c2xybp4u/report.json",
+    "elaboration4": ".tools/generator-unused-direct-refresh-send-state-elab-01tm8t3i/report.json",
+    "state-author172": ".tools/fiber-state-review-7b4g4g9f/report.json",
+    "state-author159": ".tools/fiber-state-review-c_ugkp7_/report.json",
+    "state-peer124": ".tools/fiber-state-review-eizuebvx/report.json",
+    "state-peer127": ".tools/fiber-state-review-_1qd464r/report.json"
+  },
+  "evidence": {
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-unused-direct-refresh-send-43/private.tar.gz",
+      "bytes": 1945158,
+      "sha256": "166d100170d26f39d836678583eab2457e0bdc1c7cb59291f134161903e34d17"
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-unused-direct-refresh-send-43/manifest.json",
+    "recovery": "The adjacent manifest binds 12 report roles and 33 recovery inputs. Extract ignored drivers/catalogs and raw report directories into the private checkout; provide project-local pinned binaries. Reports retain exact commands, original native source paths, outputs and tested cuts. Private branch/commits retain source/state inputs."
+  },
+  "remaining": "Wider refreshes/owners, abrupt argument callbacks, nonpending body entry and collection remain unvalidated. Original body-entering peer sources are excluded from target coverage; parked and ordinary typed-ref paths stay unchanged.",
+  "composition": {
+    "parent": "e98ba75569ebeef72bba7794695d7cf14406a2b0",
+    "private_publication": "57a19ea87969544ae7c8e1abcf6a1911f4775983",
+    "preserved": "Tested289 and six tests remain private-exact; all other incoming runtime/schema/default/root/407manifest/pipeline bytes remain parent-exact. Shared prose and feature suffixes preserve incoming content.",
+    "interaction": "Introduced INI/DEFINE, ordinary typed-ref history, missing-read comparison, selected-XOR and lossy-float literal-key selectors have no producer in these sources. Independent actual-tail review found no joined execution obligation.",
+    "credit": "Private source/state cuts and original peer target0/baseline disagreement remain unchanged; no accepted replay or renewed credit."
+  }
+}

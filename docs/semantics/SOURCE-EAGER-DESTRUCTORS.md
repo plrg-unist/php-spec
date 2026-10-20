@@ -157,8 +157,8 @@ Notice15/fresh detached NULL/prior b7, W/NQ/right replacement and whole/split.
 Exact capture, abrupt restored-D receipt and holder-free clear/parent states
 match public zero/one budgets. Mirrored wrong class and third-live pending IDs
 refuse with heap/live operands valid; private retained property metadata refuses
-after retirement. Same-ID and held owner2 controls are constructed, not extra
-PHP sources or general fabricated-history validation.
+after retirement. On that cut, same-ID and held owner2 controls are constructed,
+not extra PHP sources or general fabricated-history validation.
 Native1/baseline0/122+2 diagnosis keep d977/407. Parser failure b732 remains0;
 two literal-path parentheses correct only that fixture. First source attempt0c6b
 at8c341 fails in the new decoder's optional tuple representation; typed optional
@@ -166,6 +166,19 @@ bindings correct it before affected source1 at a5cc. No completed result/agreeme
 comes from that failed attempt. Focused actors pass first attempt at420/720;
 source180 and strict45 remain bounded. Existing cleanup/H/noDA/typed writes already
 matched the baseline. Wider bodies/writes/types/constructors, reentry and GC remain partial.
+M128 adds one real held-Holder original on unchanged 4105/407, with source 1 and
+272 Boolean/4 raw (112/2 author, 160/2 independent). Separate keep/holder cells
+own the same object: owner2 at capture becomes owner1 after D's NULL write, while
+both property sources and slots remain intact. Planned given reaches the local
+catch/fresh NULL/Notice15; early string rejection leaves the target unchanged.
+The later keep=NULL callback throws other with Previous NULL. Storage transfer
+removes Left's type source and marks its slot PROP_UNSET, transferring the ALIAS
+edge to a HCELL job before the shared-cell owner decrement. Right's source survives;
+string then succeeds, NULL still fails, and replacement/aliases match the native
+ending. Four complete public zero/one comparisons follow two single forward chains;
+there is no duplicate whole-program drive, repair patch or diagnostic. The four
+fresh reports pass first attempt under source 240/strict 45/author 420/peer 720.
+Runtime rules, history representation, root policies, storage and writer are unchanged.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same
