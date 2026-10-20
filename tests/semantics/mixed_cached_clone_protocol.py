@@ -229,7 +229,9 @@ S_refused.STORE = S_oob.STORE /\ S_refused.OBJECTS = S_oob.OBJECTS /\ S_refused.
 ~$clone_task_valid(S_front,porigin_clone,$(z_clone + 1))
 S_late_input = S_iterated[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 $clone_mixed_ready(S_late_input,n_copy)
-S_late = $clone_plain(S_late_input,n_copy)
+S_late_raw = $clone_plain(S_late_input,n_copy)
+S_late = $destruction_store_new(S_late_raw)
+|S_late.DESTRUCTION.HANDLES| = |S_late.OBJECTS|
 S_late.COMPLETION = NORMAL
 S_late.RESULT = KNOWN (POBJECT n_late)
 n_late = |S_iterated.OBJECTS|
