@@ -7,6 +7,35 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Unused zero-argument CURRENT now drops its snapshot before receiver cleanup
+at an already-refreshed normal node-free one-ancestor endpoint after selected
+initialization clears. CURRENT preserves both bits; assignment keeps its copy.
+Normal cache cleanup, raw-row finally mutation and live Middle-finally
+RuntimeException distinguish these owners.
+[Unused CURRENT review](coverage/semantics/generator-unused-current-review.json).
+
+Native4 and genuine unchanged NORMAL disagreement retain `68db56889`/409:
+model K-before-D versus native D-before-K, with raw recordfalse/agreement0.
+Source4/strict409 pass at `8def1de09`; gate4 and 517 focused premises
+(285 author +232 independent; 497 local +20 generic) pass at `6038eeef5`.
+All post-change checks pass first execution at original caps, without failures,
+retries, cap changes or historical renewal. Actors are reaped/CPU3 released.
+
+Only module289 changes. Original-state endpoint/update identity, literal zero arguments,
+source demand, actual discarded tail and real plain result authenticate quiet
+copy/drop fusion. Actual receiver-only jobs, flags/heap, assigned copy and
+forged-DISCARD fallback are checked;270/280, root functions, API admission,
+close and collector bodies remain exact. Pending selected receivers, child
+prefixes, wider endpoints and collection remain unvalidated for this CURRENT
+rule.
+
+Composed over `9b469f334`/409 with tested289 and six tests preserved.
+Incoming clone, ordinary reference-return, NULL-key array, missing-read,
+INI/DEFINE and numeric-warning selectors have no producer here. All other
+runtime/schema/default/root/ordered-manifest/pipeline bytes remain parent-exact.
+Source4/strict409/new517 retain their private cuts and genuine NORMAL
+recordfalse/agreement0, without joined execution, replay or renewed credit.
+
 Bare supported intrinsic Closures now publish directly and in ARRAY snapshots.
 Exact live pointers survive named capture, query COW and later callee replacement.
 A queried/recovered DEFINE Closure becomes a writer under its own selected owner
@@ -105,8 +134,8 @@ ordered-manifest paths. Source2/state359 retain their private409 cuts;
 independently reviewed absent incoming selectors require no joined execution
 or renewed credit.
 
-Pending SEND now reaches a normal node-free COMPLETE through one native
-ancestor. Only selected Upper clears its bit; a first pending Middle NEXT
+At Iterator47, pending SEND reached a normal node-free COMPLETE through one
+native ancestor. Only selected Upper clears its bit; a first pending Middle NEXT
 changes the physical initialization history independently. Exact optional child
 release precedes normal argument, unused-current-copy and receiver cleanup;
 assignment keeps its copy. Row COW and a cache RuntimeException inside live

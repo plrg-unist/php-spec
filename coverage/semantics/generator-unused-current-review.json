@@ -1,0 +1,97 @@
+{
+  "milestone": "Iterator48: unused CURRENT snapshot before receiver cleanup",
+  "status": "composed-accepted",
+  "scope": "Literal zero-argument CURRENT on an already-refreshed one-ancestor node-free COMPLETE endpoint with selected initialization cleared. The unused snapshot retires before receiver cleanup; assignment retains it. CURRENT changes neither initialization bit.",
+  "implementation": {
+    "paths": {
+      "spec/semantics/289-generator-delegation.watsup": "982ff77597a3cbf796940bb0cb102eab16157a3cb330f57816ea092252f9d3d5"
+    },
+    "change": "An operation-boundary helper retains original S and authenticates source-unused demand plus real discarded tail, fixed endpoint, update identity and actual plain owning result. Zero arguments permit quiet copy/drop fusion while physical current owns the value. Used sources and other shapes keep their result. No changes to 270/280, root functions, schema, API admission, close or collector."
+  },
+  "validation": {
+    "native": "Four target observations: direct-yield object unused/assignment pair after first Upper NEXT, retained raw-row Upper-finally write, and independent Middle/Upper NEXT before a live Middle-finally cache RuntimeException. No BAD markers or target CURRENT body reentry.",
+    "unchanged_baseline": "Checked NORMAL/model0/empty stderr; sole CLEARED|K|D|CALLER instead of native CLEARED|D|K|CALLER. Raw recordfalse/normalagreements0 remain; the disagreement observer passes.",
+    "sources": "Four exact stdout/stderr/exit agreements. Unused normal D precedes Upper K; assignment keeps D through K/CALLER until explicit drop. Row mutation releases A inside K. Physical finally slot clearing throws RuntimeException, skips J-END and reaches K with Previous NULL.",
+    "states": {
+      "new_author": [
+        149,
+        136
+      ],
+      "new_peer": [
+        112,
+        120
+      ],
+      "new_total": 517,
+      "new_local": 497,
+      "new_generic": 20
+    },
+    "observations": "Actual GEN_ARGS binds Upper1/Middle1/cacheD1. Plain result has D2; unused fusion leaves NULL/D1, assignment keeps D2 through operation VALUE. Receiver-only jobs retain original owner observation. Source-used plus forged DISCARD preserves the copy. Missing-tail/bit/held/flags/source/forged-result and budget controls pass. Real Upper finally has HCELL1/array1/one element edge; the callback has RUNNING Middle, two operations and queued Upper claim, without storage-pin or copied-return owners.",
+    "compiler": "Strict409 and four-fixture elaboration pass; compilation earns no execution credit.",
+    "maintenance": "All post-change checks pass first execution at original caps, without failures, retries, cap changes or historical renewal."
+  },
+  "tested_revisions": {
+    "native4_baseline": "68db56889fa2bfc1f26c17ac1844bd0363711047",
+    "source4_strict409": "8def1de09c502e0e1bdc5a47f030fdb585544da5",
+    "elaboration4_new517": "6038eeef587c21075b92d6ef17a9b49a45d34fa4",
+    "bridge": "Runtime289/main sources are exact across source8def and focused6038. Six test inputs are focused-cut exact; no semantic or harness correction followed execution. Accepted cuts stay distinct without replay or renewed credit."
+  },
+  "commands": {
+    "native": [
+      "taskset -c 1 python3 .tools/native.py",
+      "taskset -c 1 python3 .tools/review-native.py"
+    ],
+    "baseline": "taskset -c 1 python3 .tools/baseline.py --native-report .tools/generator-unused-current-native-6jf9iwu5/report.json",
+    "strict": "taskset -c 3 python3 .tools/strict.py",
+    "source": [
+      "taskset -c 3 python3 tests/semantics/generator_unused_current_sources.py --native-report .tools/generator-unused-current-native-6jf9iwu5/report.json",
+      "taskset -c 3 python3 tests/semantics/generator_unused_current_review_sources.py --native-report .tools/generator-unused-current-review-native-8bt1ozqv/report.json"
+    ],
+    "elaboration": "taskset -c 3 python3 .tools/state-elab.py",
+    "state": [
+      "taskset -c 3 python3 tests/semantics/generator_unused_current_state.py --case unused-current-fuses-copy-before-sole-receiver",
+      "taskset -c 3 python3 tests/semantics/generator_unused_current_state.py --case assigned-current-retains-copy-through-receiver",
+      "taskset -c 3 python3 tests/semantics/generator_unused_current_review_state.py --case unused-current-row-is-unique-before-upper-finally-write",
+      "taskset -c 3 python3 tests/semantics/generator_unused_current_review_state.py --case unused-current-cache-throws-inside-initialized-middle-finally"
+    ]
+  },
+  "environment": {
+    "php": "8.5.10 CLI NTS64; source 34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "mode": "SL/cacheoff/encountered determinism; LC_ALL=C TZ=UTC, script encoding unset. Serial exclusive CPU1 native/baseline, CPU3 source/focused. Project-local binaries reused; no fresh portability claim.",
+    "caps": "Native 8s; source 100000 steps/model 100/process 120; strict 120; compile 60; states 120/seek 4000/finish 4000.",
+    "exits": "All observers exit0/empty stderr/no timeout/stable inputs and HEAD. Post-change models exit0; baseline model0 remains checked NORMAL with raw recordfalse/agreement0. Actors fully reaped; CPU3 released."
+  },
+  "reports": {
+    "native-author2": ".tools/generator-unused-current-native-6jf9iwu5/report.json",
+    "native-peer2": ".tools/generator-unused-current-review-native-8bt1ozqv/report.json",
+    "unchanged-normal-disagreement": ".tools/generator-unused-current-baseline-oejn4v58/report.json",
+    "strict409": ".tools/generator-unused-current-author-sl-7uh05g6m/report.json",
+    "source-author2": ".tools/generator-unused-current-source-7jc0jkyx/report.json",
+    "source-peer2": ".tools/generator-unused-current-review-source-8k9oiepg/report.json",
+    "elaboration4": ".tools/generator-unused-current-state-elab-4vagra_j/report.json",
+    "state-author149": ".tools/fiber-state-review-8je4k5x_/report.json",
+    "state-author136": ".tools/fiber-state-review-8fbv73ne/report.json",
+    "state-peer112": ".tools/fiber-state-review-6bbegz_f/report.json",
+    "state-peer120": ".tools/fiber-state-review-j1qo7bvi/report.json"
+  },
+  "evidence": {
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-unused-current-48/private.tar.gz",
+      "bytes": 1921741,
+      "sha256": "b8485cc608bf75477296dc5947e90337a28e92757a7d2459f088959d764c773c"
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-unused-current-48/manifest.json",
+    "recovery": "Adjacent manifest binds 11 report roles and 31 recovery inputs. Extract ignored drivers/catalogs and raw directories into the retained checkout; supply pinned project-local binaries. Reports retain exact commands/source paths/outputs/cuts. Baseline observer PASS preserves raw disagreement and zero agreement."
+  },
+  "remaining": "Pending selected receivers, original child prefixes, owning COMPLETE or bare-yield endpoints, wider links/owners and collection remain unvalidated for this CURRENT rule. SEND, THROW, NEXT, ordinary typed-ref history and generic close behavior remain unchanged.",
+  "composition": {
+    "parent": "9b469f33472067dd97c856e96d416a35f4709c0e",
+    "private_publication": "12fbffef013f4bdb4b78cf5926caa41dee39f887",
+    "preserved": "Tested289 and six tests stay private-exact. All other incoming runtime/schema/default/root/ordered409/pipeline bytes remain parent-exact; shared prose and five feature suffixes preserve incoming content.",
+    "interaction": "Introduced clone, ordinary reference-return, NULL-key array, missing-read, INI/DEFINE and numeric-warning selectors have no producer here. Independent actual-tail review found no joined execution obligation.",
+    "credit": "Source/state cuts and genuine NORMAL raw recordfalse/agreement0 stay distinct, without accepted replay or renewed credit."
+  }
+}

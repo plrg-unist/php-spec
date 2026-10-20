@@ -191,6 +191,15 @@ can throw a RuntimeException before queued Upper finally, with Previous NULL.
 Raw-row COW distinguishes old snapshot and live row, and no owning return or
 storage pin is manufactured. See the
 [node-free ancestor SEND review](../../coverage/semantics/generator-nodefree-ancestor-send-review.json).
+Unused zero-argument CURRENT at the already-refreshed normal node-free
+one-ancestor endpoint releases its snapshot before the receiver. In the tested
+sole-receiver object history, cache destruction precedes Upper finally;
+assignment retains the copy until caller drop. Upper-finally row mutation has
+one live array owner. A separately initialized Middle runs its finally, where
+slot clearing destroys the cache and throws RuntimeException before Upper
+finally, with Previous NULL. Both real close receipts remain ordinary; no
+copied-return owner or storage pin is added. See the
+[unused CURRENT review](../../coverage/semantics/generator-unused-current-review.json).
 Pending NEXT preserves that parked return across the same close transfer but
 creates no current copy. A temporary sole receiver releases its cache during
 storage cleanup, before caller delivery; a throwing cache has no older caught

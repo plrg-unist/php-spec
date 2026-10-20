@@ -167,6 +167,16 @@ with Previous NULL. Unused copies retire after normal argument cleanup;
 assignment keeps its copy. Wider chains, masked or abrupt arguments, body entry
 and collection remain unvalidated; see the
 [node-free ancestor SEND review](../../coverage/semantics/generator-nodefree-ancestor-send-review.json).
+Zero-argument CURRENT also drops an unused snapshot before releasing its
+receiver. The validated producer first clears selected Upper with an
+initialization-only NEXT and leaves one already-refreshed native link to a
+node-free COMPLETE Middle. CURRENT preserves both initialization bits.
+Assignment retains its copy through cleanup until the caller drops it. The
+normal cache destructor runs before Upper finally in the tested sole-receiver
+history; raw-row mutation and a cache RuntimeException inside initialized Middle
+finally distinguish the missing extra owner. Pending receivers, child prefixes,
+wider endpoints and collection remain unvalidated for this CURRENT rule. See the
+[unused CURRENT review](../../coverage/semantics/generator-unused-current-review.json).
 Pending zero-argument NEXT also clears only the selected receiver bit while
 preserving that parked owning frame/site and copied return. It returns NULL
 without a current snapshot; a later explicit getter creates a separate copy.

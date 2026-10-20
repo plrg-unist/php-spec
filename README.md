@@ -1666,6 +1666,12 @@ a first pending NEXT can clear the physical middle independently. Exact child
 refresh release, normal argument cleanup and unused-copy retirement precede
 receiver release; assignment retains its copy. See the
 [node-free ancestor SEND review](coverage/semantics/generator-nodefree-ancestor-send-review.json).
+At a refreshed node-free COMPLETE after initialization-only NEXT, zero-
+argument `current()` on a temporary sole ancestor drops its unused snapshot
+before receiver cleanup. Assignment keeps its copy. A normal cache destructor,
+raw-row finally mutation and a RuntimeException inside physical Middle finally
+distinguish these owners; CURRENT changes no initialization bit. See the
+[unused CURRENT review](coverage/semantics/generator-unused-current-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit
