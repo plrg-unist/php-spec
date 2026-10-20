@@ -7,7 +7,6 @@ from undefined_scalar_compare_same_cases import CASES
 
 family.CASES = CASES
 family.UNSUPPORTED = {
-    'same-forward-still-missing-boundary': ('scalar comparison warning changed right operand', b'B|H|'),
     'same-forward-array-boundary': ('scalar comparison warning changed right operand', b'B|H|'),
 }
 family.BASELINE = ('error-handler ingress requires a producer continuation', b'')

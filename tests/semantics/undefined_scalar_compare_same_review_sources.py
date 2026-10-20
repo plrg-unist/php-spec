@@ -6,10 +6,7 @@ import global_constant_sources as family
 from undefined_scalar_compare_same_review_cases import CASES
 
 family.CASES = CASES
-family.UNSUPPORTED = {
-    'peer-same-forward-less-equal-remains-missing-default':
-        ('scalar comparison warning changed right operand', b'H:1:1:9:1;'),
-}
+family.UNSUPPORTED = {}
 family_fingerprint = family.fingerprint
 
 
