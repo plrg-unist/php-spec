@@ -13,8 +13,8 @@ existing copy-on-write rules, singleton reference wrappers are unwrapped, and
 live aliases remain shared. Retained typed-property aliases acquire another
 type source, which ordinary owner release detaches.
 
-[Declared-only cached clones](../../coverage/semantics/cached-property-clone-review.json)
-now rebuild a fresh table for ordinary public declared-only storage after genuine
+The earlier [declared-only cached clones](../../coverage/semantics/cached-property-clone-review.json)
+cut rebuilds a fresh table for ordinary public declared-only storage after genuine
 object foreach materialization. Each
 nonowning INDIRECT locator targets the copy; existing slot-copy and type-source
 rules unwrap singleton references and retain held aliases. Later foreach observes
@@ -23,6 +23,17 @@ source unset, and a shallow Payload survives source retirement until the copy
 releases it. Five source agreements and 378 focused premises have separate cuts.
 This unary-clone evidence excludes dynamic buckets, clone callbacks, readonly,
 active collection and wider cached/type/lifetime histories.
+
+[Cached callbacks](../../coverage/semantics/cached-clone-callback-review.json)
+now consume that declared-public cache path through existing public zero-argument
+`__clone():void` methods. Actual callback foreach reads retargeted copy locators;
+singleton and held int aliases retain their distinct copy/type-source behavior.
+The unary CV operand preserves source identity without owning it, so source
+retirement during the callback leaves the copy/Payload live. Supplied throw
+releases the failed copy and last Payload before the same catch, without committing
+the assignment. Four exact originals and 659 focused premises have separate cuts.
+This adds no iteration, reference-constraint or callback-cleanup rule; dynamic,
+readonly, intrinsic/update and wider callback/GC histories remain partial.
 
 Module300 executes genuine `__clone` callbacks with the selected method's
 declaring scope and the copy's called class. Access is checked before allocation;

@@ -7,26 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Declared public int `__unset` now distinguishes INITIAL bypass, UNSET callback
-selection and ordinary VALUE deletion. Captured call history survives VALUE `7`;
-same-name recursive UNSET is suppressed through actual compiled-local Probe D,
-then guard authority ends before the result marker/receiver cleanup. CV-null
-return retains the selected receiver; supplied throw skips the following store and keeps `42`.
+Cached ordinary public declared-only clones now enter the existing public
+zero-argument `__clone():void` path. Actual callback foreach reads fresh copy
+locators; singleton int wrappers unwrap in the copy while held aliases share
+updates and retain the clone-only constraint after source unset. The borrowed
+source may retire inside the callback; supplied throw destroys the failed copy
+and last Payload before the same catch, leaving the destination `42` unchanged.
 
-Four originals pass at `a5c8773ec`/407. Focused 579 = 556 reached + 23 derived
-premises combine initial/normal/throwing 403 at `04ab7b9a7` with cleanup 176 at
-`5e4a6dc6c`/407. Four genuine unchanged baselines remain Unsupported/zero agreement; native short sampling is 0/4.
-Original fixture AL failure, cleanup `false` and prefix diagnostic remain zero.
-List aliases were separated; a missing exact cleanup marker-validation arm was
-added, rerunning only cleanup. No accepted replay. Module 406 alone
-preserves private paths/shared access, state/roots/GC and the ordered manifest.
-Other slot layouts/types/signatures and wider reentry remain partial.
-[Public unset review](coverage/semantics/public-unset-review.json).
-
-Composed over `09603c277`/407, preserving every incoming runtime path except
-the reviewed module406 delta and retaining the ordered manifest. Actual incoming
-selectors are independently reviewed before FF; source4 and the403/176 state cuts
-retain their identities, with no joined execution or accepted replay.
+Four exact sources pass at `d2cea26dd`/407 and 659 focused premises (651 reached
++ 8 derived) pass at `23f1e50f5`/407. All semantic actors pass first attempt;
+four genuine baselines remain cached-clone Unsupported/zero agreement. Fast
+native affinity is 0/4; baseline/source/state masks and full argv are complete.
+Only the callback exclusion in module 150 changes; existing 300 call/window/throw
+and slot/type-source/foreach/GC rules stay exact. Earlier 110 cuts remain historical.
+Dynamic/readonly/intrinsic/update and wider callback/lifetime forms remain partial.
+[Cached clone callback review](coverage/semantics/cached-clone-callback-review.json).
 
 Direct and selected string `ini_set` calls now retain flat quiet ARRAY values
 from one two-item numeric, named or mixed pack while handling a NULL option.

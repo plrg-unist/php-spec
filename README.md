@@ -4809,12 +4809,20 @@ Genuine clone callbacks and nonempty readonly update windows have separate cuts;
 Generator callbacks, hooks and wider lifecycle
 integration remain open.
 
-[Cached ordinary cloning](coverage/semantics/cached-property-clone-review.json) now
-builds fresh tables for public declared-only objects materialized by foreach.
+The earlier [cached ordinary cloning](coverage/semantics/cached-property-clone-review.json)
+cut builds fresh tables for public declared-only objects materialized by foreach.
 Locators target the copy without adding value owners; singleton references unwrap,
 held typed aliases gain a clone source, and shallow Payloads survive source release.
-Five original-source agreements and 378 focused premises retain separate tested
-cuts. Dynamic caches, clone callbacks, readonly and wider GC histories remain open.
+Its five source agreements and 378 focused premises exclude clone callbacks.
+
+[Cached clone callbacks](coverage/semantics/cached-clone-callback-review.json) now
+reuse the existing public zero-argument `__clone():void` path. Actual foreach in
+the callback reads the copy's locators; a borrowed source may retire there while
+its Payload survives in the copy. Held int aliases retain the clone constraint,
+and supplied throw destroys the failed copy/Payload before the original catch;
+the destination stays `42`.
+Four source agreements and 659 focused premises pass at separate cuts. Dynamic
+caches, readonly, active collection and wider callback/lifetime histories remain open.
 
 [`get_class` testing support](docs/semantics/GET-CLASS.md) observes finite live
 object names and executing lexical scope through direct and callable invocation.
