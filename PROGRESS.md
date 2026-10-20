@@ -7,6 +7,25 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Range-only bitwise NOT now stages one Warning for plain float CVs. Finite
+`2^63` keeps its original double through the callback, then signed wrapping and
+complement yield `PHP_INT_MAX` after source `99` is removed. Infinity's supplied
+Exception instead cancels complement/delivery and preserves callback write `99`
+and outer `100`; neither original emits Deprecated. Two originals pass at
+`f114178d2`/408 and 116+124 focused premises at `b46e89b12`/408 in the
+[range BITNOT ledger](coverage/semantics/bitnot-range-warning-review.json).
+Fresh snapshots authenticate the CV; returned scalar history survives source
+owner zero. The model may compute the pure wrapped long early; Zend saves the
+double before Warning and performs finite slow wrapping afterward. Old precision,
+NaN, numeric, formatting and unwind bodies remain exact. Other producers,
+reference/owning operands and broader lifecycles remain partial. OP12, COMP88 and
+Source47 low-initial-precision paths remain paused; property selectors stay exact.
+
+Composed over `aa101b821`/408, preserving incoming state, task and
+ordered-manifest paths. Source2/state240 retain their private408 cuts;
+independently reviewed absent incoming selectors require no joined execution
+or renewed credit.
+
 Retained intrinsic `ini_set` receivers now resume NULL-option handling for the
 same one-entry key0 ALIAS ARRAY with a live untyped quiet primitive cell. The
 captured setter and array survive live callee replacement and current-container
@@ -90,24 +109,8 @@ bytes remain incoming-exact. INI/DEFINE, ref-return, Generator, missing weak
 comparison, float-key and unary/SHIFT/XOR selectors are unproduced here.
 Source4/refusal1/state891 retain their tested cuts without accepted replay.
 
-Unary `+`/`-` now accepts evaluated nonowning copies before Warning. A named
-by-value return emits its producer output once; its handler writes source `99`,
-removes the source and throws the same Exception from line 20, preserving outer
-`100`. A selected-ternary unary-minus copy instead survives source removal and
-condition reversal, retains the unselected-arm sentinel and delivers negative
-zero (`-0` plus exact bits). The immutable `KNOWN` snapshot remains valid after
-source owner one becomes zero. Two originals pass at `a1aaf2777`/407 and
-118+135 focused premises at `4b5f85ce7`/407 in the
+Earlier evaluated unary copies retain source2/state253 in the
 [unary-copy ledger](coverage/semantics/unary-copy-warning-review.json).
-Only copy admission and generic unary gates change; old CV/reference entry,
-function/ternary, numeric, dispatch and unwind bodies remain exact. Owning
-reference-result producers and broader lifecycles remain partial. OP12, COMP88
-and Source47 low-initial-precision callbacks remain paused.
-
-Composed over `25e37a438`/407, preserving incoming state, task and
-ordered-manifest paths. Source2/state253 retain their private407 cuts;
-independently reviewed absent incoming selectors require no joined execution
-or renewed credit.
 
 Retained DEFINE Closure calls now publish direct POBJECT values through the
 existing classifier under omitted/raw-false flags. Ordinary INSTANCE row/query

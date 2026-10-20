@@ -305,6 +305,20 @@ the [unary-reference ledger](../../coverage/semantics/unary-reference-warning-re
 Fresh untyped scalar references and primitive handler writes bound these traces;
 other producers/constraints/owning payloads and wider lifetimes remain partial.
 
+Plain-CV bitwise NOT now also handles float conversion with only a range
+Warning. The original double is saved before that callback; finite signed wrapping
+follows its return. At `2^63`, writing source `99` and then unsetting it still gives
+`PHP_INT_MAX` after complement, with one default Warning on line 25. Infinity's
+supplied Exception from line 20 instead preserves its identity, callback write `99`
+and outer `100`, canceling complement and delivery. Neither case emits Deprecated.
+Two originals and 116+124 focused premises cover source/bits/line authority,
+fresh versus returned snapshots, real callbacks, raw no-store result versus driven
+metadata, retirement/fresh EOF and budgets in the
+[range BITNOT ledger](../../coverage/semantics/bitnot-range-warning-review.json).
+Existing conversion/complement, precision-only/NaN, formatting and unwind bodies
+stay unchanged. Initial references/copies, owning values and broader lifecycles
+remain partial; paused low-initial-precision name paths are untouched.
+
 Plain-CV NaN bitwise NOT now preserves the two-notice conversion order. Range
 Warning precedes precision Deprecated, and the engine checks a pending exception
 only afterward. With a first-handler supplied throw, mask `2` still defaults the
@@ -329,7 +343,7 @@ unchanged destination. Three exact originals and 227 author plus 97 independent
 SL premises check live 99, negative truncation, false fallback on the operand line,
 public snapshot/diagnostic rejection and budget resumption in the
 [BITNOT ledger](../../coverage/semantics/bitnot-warning-review.json).
-Other range/NaN producers, operands, callbacks and lifecycle forms remain required.
+Other operand producers, callbacks and lifecycle forms remain required.
 
 Explicit `(string)` casts now stage an array warning for a defined non-reference
 CV holding a nonempty mutable flat array of direct, defined nonowning scalars.

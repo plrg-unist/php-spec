@@ -953,6 +953,14 @@ Two originals and 264 focused premises pass in the
 [unary-reference ledger](coverage/semantics/unary-reference-warning-review.json).
 Wider producers, constrained/owning cells and callback lifetimes remain partial.
 
+Range-only bitwise NOT now resumes named Warning handlers for plain float CVs.
+The original `2^63` float survives source removal and produces `PHP_INT_MAX`
+after signed wrapping and complement. An infinity handler's supplied Exception
+instead cancels delivery; neither original emits Deprecated. Two originals and
+240 focused premises pass in the
+[range BITNOT ledger](coverage/semantics/bitnot-range-warning-review.json).
+Other producers and owning lifetimes remain partial.
+
 NaN bitwise NOT now finishes range Warning and precision Deprecated before
 checking a pending Exception. A first-handler throw still permits an ineligible
 second level to default; an eligible second level runs neither body nor default.
