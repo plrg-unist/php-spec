@@ -6,9 +6,7 @@ import global_constant_sources as family
 from undefined_scalar_compare_checked_unset_cases import CASES
 
 family.CASES = CASES
-family.UNSUPPORTED = {
-    'checked-equal-array-boundary': ('scalar comparison warning changed left operand', b'B|H|'),
-}
+family.UNSUPPORTED = {}
 family.BASELINE = ('scalar comparison warning changed left operand', b'H:1:1:10:1;')
 family_fingerprint = family.fingerprint
 

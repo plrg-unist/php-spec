@@ -6,7 +6,7 @@ import global_constant_sources as family
 from undefined_scalar_compare_ne_le_cases import CASES
 
 family.CASES = CASES
-family.UNSUPPORTED = {'ne-right-array-boundary': ('scalar comparison warning changed right operand', b'B|H|')}
+family.UNSUPPORTED = {}
 family.BASELINE = ('error-handler ingress requires a producer continuation', b'')
 family_fingerprint = family.fingerprint
 
