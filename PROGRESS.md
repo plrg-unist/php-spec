@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Selected-reference `**=` now retains both conversion holders through final
+Deprecated. A second conversion Exception cancels storage (old `88`, outer `100`);
+a final Deprecated Exception still writes cached `+INF` over callback `66` through
+the old target, then resumes the same Exception without outer delivery. Default
+negative-zero completion delivers `-INF` despite name rebindings and RHS retirement.
+Three originals pass at `74fd1ea12`/407; 688 focused premises pass at `f2e05c619`/407.
+[Converted power ledger](coverage/semantics/powerassign-conversion-warning-review.json).
+One larger original source hit CLI60; duplicate observations were trimmed at unchanged
+caps and the timeout remains zero. No runtime correction or accepted replay.
+Initial leading LEFT/quiet RHS scalar refs, a surviving target alias and primitive
+old target before/after final dispatch bound this slice; wider domains remain partial,
+OP12 paused.
+
+Composed over `2926802c4`/407, preserving incoming state, task and
+manifest paths. Source3/state688 retain their private407 cuts; independently
+reviewed absent incoming selectors require no joined execution or renewed credit.
+
 A defined scalar left CV removed by a missing-right `<=>` Warning handler now
 compares quietly against frozen right NULL, returning 0 without another report or
 retaining an old alias value. Surviving reference cells retain their own writes;
@@ -98,19 +115,8 @@ new task tags stay unused and retained/debt lists stay empty. Source9+1/state589
 retain7a1; corrected affected46/2/one selector retain9e8 and setup failure0,
 without joined execution, accepted replay or renewed historical credit.
 
-Selected-reference `-=` now retains both numbers through conversion Warnings.
-Cached `12.5 - 5.5` writes strict float `7.0` through the old target alias after
-both current-name rebindings and old RHS retirement. A supplied second-handler
-Exception cancels compound and outer stores, preserving callback value `88`, current
-replacement `77` and outer result `100`.
-Two originals pass at `ee582af8b`/407 and 382 focused premises at `1f037ee80`/407.
-[Compound subtraction ledger](coverage/semantics/subassign-warning-review.json).
-Initial leading LEFT/quiet RHS scalar refs and a surviving old-target alias bound
-this slice; wider operands/targets/lifetimes remain partial, OP12 paused.
-
-Composed over `607d2bc66`/407, preserving incoming state, task and
-manifest paths. Source2/state382 retain their private407 cuts; independently
-reviewed absent incoming selectors require no joined execution or renewed credit.
+Earlier selected-reference `-=` Warning continuations retain source2/state382
+in the [compound subtraction ledger](coverage/semantics/subassign-warning-review.json).
 
 A first pending SEND now overwrites one owning LIVE input at a parked simple-CV
 used yield with a new owning argument. The old count becomes orphaned without

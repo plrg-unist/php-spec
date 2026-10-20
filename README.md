@@ -884,6 +884,15 @@ Two originals and 334 focused premises pass in the
 [selected power-assignment ledger](coverage/semantics/powerassign-selected-warning-review.json).
 Other operands, unsafe targets and wider lifetimes remain partial.
 
+Selected-reference `**=` now distinguishes conversion and final deprecation
+throws. A second conversion Exception cancels storage; a final Deprecated Exception
+still writes cached `+INF` through the old target before resuming, leaving the
+outer assignment unchanged. A signed/default case yields `-INF` after RHS retirement.
+Three originals and 688 focused premises pass in the
+[converted power ledger](coverage/semantics/powerassign-conversion-warning-review.json).
+Initial leading LEFT/quiet RHS scalar refs and a primitive target before and after
+final dispatch bound this slice; wider values, producers and lifetimes remain partial.
+
 Plain-CV `%=` now keeps the first converted long through a fractional-float
 deprecation, then reads the live quiet integer RHS. Normal return stores the
 remainder; a supplied throw or live zero leaves the target and late alias intact.
