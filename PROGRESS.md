@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Selected-reference `/=` now stages both numeric holders before their Warnings.
+Cached float `2.5` writes the old target despite current-name rebindings; a second
+supplied throw cancels stores, and cached zero still errors after RHS repair and
+retirement. The surviving old target alias, callback writes and outer100 remain
+on both failure paths.
+Three originals pass at `fb9388492`/406 and 554 focused premises at `6364a6c16`/406.
+[Compound DIV ledger](coverage/semantics/divassign-warning-review.json).
+Initial leading-LEFT/quiet-RHS scalar references and a surviving old-target alias
+bound this slice; wider operands/targets/lifetimes remain partial, OP12 paused.
+
+Composed over `219e1b868`/407, preserving incoming state, task and
+manifest paths. Source3/state554 retain their private406 cuts; independently
+reviewed absent incoming selectors require no joined execution or renewed credit.
+
 Pending zero-argument NEXT now also returns before dispatch through native links
 to a parked simple-CV used yield with one owning LIVE input. Only the selected
 receiver initializes; the input and physical child/frame remain unchanged. NULL
@@ -102,18 +116,8 @@ retained/debt lists stay empty with no new state/graph lift. One empty helper EO
 line is removed with identical Python AST; source3/state769 retain private cuts
 without joined execution, accepted replay or renewed historical credit.
 
-Selected-reference `+=` now reports failed delayed RHS conversion using the
-old selected cells despite both current names rebinding. Flat arrays raise
-TypeError without union retry; old bool/bad text preserves its labels, outer100
-and alias write-through while current replacements remain independent.
-Two originals pass at `252cb0193`/406 and 304 focused premises at `32881880d`/406.
-[Selected failure ledger](coverage/semantics/addassign-selected-failure-review.json).
-No entry/tag/root or successful store changes; wider values/producers/lifetimes
-remain partial and OP12 stays paused.
-
-Composed over `5d8476935`/406, preserving incoming runtime, task and
-manifest paths. Source2/state304 retain their private406 cuts; independently
-reviewed absent incoming selectors require no joined execution or renewed credit.
+Earlier selected-reference `+=` delayed failure retains source2/state304 in its
+[review ledger](coverage/semantics/addassign-selected-failure-review.json).
 
 Distinct direct CVs at `==`/`!=`/`<`/`<=` now traverse the second Warning
 when right stays missing or is removed by the first handler. Two captured NULLs

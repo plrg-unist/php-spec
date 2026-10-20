@@ -754,6 +754,14 @@ cover strict `2.4`, Error priority, aliases and default Warning bytes in the
 [DIV repair ledger](coverage/semantics/div-repair-review.json).
 Owning/constrained/expired cells and wider operands remain partial.
 
+Selected-reference `/=` now captures both numbers before their respective
+Warnings. Cached `12.5 / 5` writes strict float `2.5` through the old target alias
+despite current-name rebinding. A second supplied throw cancels storage; a captured
+zero still raises DivisionByZeroError after RHS repair and retirement. Three
+originals and 554 focused premises check these paths in the
+[compound DIV ledger](coverage/semantics/divassign-warning-review.json).
+Other operands, unsafe targets and wider lifetimes remain partial.
+
 Unary `+` and `-` now capture leading-numeric strings from defined non-reference
 CVs before named warning handlers. Three exact originals and 323 genuine state
 premises check callback writes, supplied throws with unchanged destinations,
