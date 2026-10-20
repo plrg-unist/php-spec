@@ -158,6 +158,13 @@ cleanup. After row COW, the used snapshot and copied return retain two old-array
 counts with one element edge, while the raw reference cache follows the new row.
 Receiver retirement can leave the used cache as its sole owner. See the
 [parked SEND review](../../coverage/semantics/generator-parked-pending-owning-send-review.json).
+Normal unused SEND now schedules its real copied current between ignored-argument
+and receiver release. Source demand and the actual discarded-result tail must
+agree; the consumed argument/receiver slots must match exactly. The original
+owner-order observation stays unchanged. A raw-row snapshot survives argument
+COW and alias retirement until ARG-END, then its old payload retires before
+ancestor finally. Assigned results keep their copy through receiver cleanup.
+See the [unused SEND review](../../coverage/semantics/generator-unused-pending-send-review.json).
 Literal pending NEXT takes the same initialization-only return through a direct
 or finite native-linked receiver, preserving the actual parked source and frame.
 Its NULL result owns no current snapshot. After a raw-row write performs COW,

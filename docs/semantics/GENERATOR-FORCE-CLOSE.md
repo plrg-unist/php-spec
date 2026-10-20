@@ -126,6 +126,13 @@ can outlive all Generators and retire after caller delivery. Close retains the
 same copied-return count and skips the parked middle finally. Returned cells
 remain mutable after close. See the
 [parked SEND review](../../coverage/semantics/generator-parked-pending-owning-send-review.json).
+For normal unused SEND, the captured current survives argument cleanup but drops
+before receiver cleanup. Its cache destructor can therefore precede the queued
+ancestor finally, while the independent copied return stays request-late. The
+scalar-argument cache destructor throws a RuntimeException whose Previous stays
+NULL; an older caught Exception exists only in globals. An assigned result
+retains its copy through receiver retirement; see the
+[unused SEND review](../../coverage/semantics/generator-unused-pending-send-review.json).
 Pending NEXT preserves that parked return across the same close transfer but
 creates no current copy. A temporary sole receiver releases its cache during
 storage cleanup, before caller delivery; a throwing cache has no older caught

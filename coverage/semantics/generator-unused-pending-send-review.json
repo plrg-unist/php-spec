@@ -1,0 +1,97 @@
+{
+  "milestone": "Iterator39: unused pending SEND result retires between argument and receiver",
+  "status": "composed-accepted",
+  "scope": "Normal pending SEND at an existing parked owning simple-CV copied return. A current snapshot survives normal ignored-argument cleanup, then an unused result releases before the receiver; a normally assigned result keeps its copy through receiver retirement.",
+  "implementation": {
+    "paths": {
+      "spec/semantics/270-eager-destructors.watsup": "1a11a09cf91af73668cc290cb72e108365603d5643e2d78f4ef01d7f6c39d6f7",
+      "spec/semantics/289-generator-delegation.watsup": "1fa375285192b119b4c7958da9c31d41b8e14f155540e50b6779fc0c13e1c89d"
+    },
+    "change": "270 adds a false-default selector and generic complement;289 authenticates source-unused demand, actual discarded tail, exact consumed slots and actual normal result. Existing eager cleanup transfers that real result into argument\u2192snapshot\u2192receiver jobs, with NULL operation value and original owner-order observation unchanged. No fields, root functions, body, close or collector changes."
+  },
+  "validation": {
+    "native": 4,
+    "unchanged_baseline": "Checked NORMAL exit0 with only D/K adjacent inversion. The original per-record disagreement stays false and normal agreement0; the expected-disagreement observer passes. No Unsupported or timeout.",
+    "sources": "Four normal agreements preserve exact stdout/stderr/exit0. The author pair differs only by $copy = before SEND: unused D precedes ancestor K; used K/CALLER precede D. Peer COW keeps oldA through ARG-END, then releases it before K. Scalar cache RuntimeException has PreviousNULL despite oldE globals.",
+    "states": {
+      "author": [
+        116,
+        112
+      ],
+      "peer": [
+        133,
+        120
+      ],
+      "total": 481,
+      "local": 461,
+      "generic": 20
+    },
+    "compiler": "Strict407 and four-fixture elaboration pass; elaboration earns zero execution credit.",
+    "failure": "First peer133 failed an added LINE0 negative: historical GEN_ARGS line is not generic destruction-source liveness authority. One fixture clause now uses forbidden explicit SOURCE DESTRUCTOR_GLOBALS. Corrected133 and previously unrun120 pass at original caps; original failure0 is preserved. No runtime/cap change or accepted replay."
+  },
+  "tested_revisions": {
+    "native_and_genuine_baseline": "43b2e6391b9b1b92b41899c526f8d4e2b598af9c",
+    "strict407_source4": "bc8faf7806bf21f53092a26fd1a364266dec82d8",
+    "elaboration4_author228_original_failure0": "6be0abef4356b6deb5b11fecb974a37ae96de507",
+    "corrected_peer253": "c735a2708954cc10fd248f76aa3ea881a0b6986d",
+    "bridge": "Runtime270/289 and source bytes exact across bc8faf/6be0/c735. Only peer133 synthetic negative changes LINE0 history to forbidden explicit SOURCE DESTRUCTOR_GLOBALS; original failure0 remains. Author/source/strict/gate were not replayed."
+  },
+  "commands": {
+    "native": [
+      "taskset -c 1 python3 .tools/native.py",
+      "taskset -c 1 python3 .tools/review-native.py"
+    ],
+    "baseline": "taskset -c 1 python3 .tools/baseline.py --native-report .tools/generator-unused-pending-send-native-jm4gopga/report.json",
+    "strict": "taskset -c 2 python3 .tools/strict.py",
+    "source": [
+      "taskset -c 2 python3 tests/semantics/generator_unused_pending_send_sources.py --native-report .tools/generator-unused-pending-send-native-jm4gopga/report.json",
+      "taskset -c 2 python3 tests/semantics/generator_unused_pending_send_review_sources.py --native-report .tools/generator-unused-pending-send-review-native-_ztrcqfd/report.json"
+    ],
+    "elaboration": "taskset -c 3 python3 .tools/state-elab.py",
+    "state": "taskset -c 3 python3 tests/semantics/generator_unused_pending_send_state.py --case <one selection>; use generator_unused_pending_send_review_state.py for peer selections. Exact expansions remain in mapped raw reports."
+  },
+  "environment": {
+    "php_source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "mode": "SL, caches off, encountered determinism checks; LC_ALL=C TZ=UTC, script encoding unset, exclusive assigned CPU.",
+    "caps": "Native8s; source100/120 and100000steps; strict120; elaboration60; states120 with seek/finish4000/4000.",
+    "exits": "All accepted wrappers/models exit0 quietly without timeout. Original synthetic failure exits1 with its failed condition; baseline model0 remains disagreement0."
+  },
+  "reports": {
+    "native-author2": ".tools/generator-unused-pending-send-native-jm4gopga/report.json",
+    "native-peer2": ".tools/generator-unused-pending-send-review-native-_ztrcqfd/report.json",
+    "unchanged-normal-disagreement": ".tools/generator-unused-pending-send-baseline-kizdxm3m/report.json",
+    "strict407": ".tools/generator-unused-pending-send-author-sl-kqj6k_rv/report.json",
+    "source-author2": ".tools/generator-unused-pending-send-source-q6dbdksa/report.json",
+    "source-peer2": ".tools/generator-unused-pending-send-review-source-aljfm3ou/report.json",
+    "elaboration4": ".tools/generator-unused-pending-send-state-elab-jh39fla0/report.json",
+    "state-author116": ".tools/fiber-state-review-ctyjjite/report.json",
+    "state-author112": ".tools/fiber-state-review-iidpwznu/report.json",
+    "state-peer133-LINE0-failure0": ".tools/fiber-state-review-4gi3vdgq/report.json",
+    "state-peer133": ".tools/fiber-state-review-irkfbffe/report.json",
+    "state-peer120": ".tools/fiber-state-review-ogdhz17x/report.json"
+  },
+  "evidence": {
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-unused-pending-send-39/private.tar.gz",
+      "bytes": 1999963,
+      "sha256": "e338d78b88eed0059bbcb76f353228cd4277e563f69e709e7a241428d9f41b08"
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-unused-pending-send-39/manifest.json",
+    "recovery": "Archive restores12 raw report directories,8 ignored inputs,6 tests,9 relevant runtime files and8 support inputs. Manifest binds hashes, tested cuts and statuses; raw reports preserve exact commands/exits. Git history retains tracked cuts. Reused pinned tools establish no new build or portability claim."
+  },
+  "remaining": "Masked argument/snapshot aliases, abrupt argument callbacks, wider SEND domains, body entry and explicit collection remain unvalidated. Complete core and foundational verification remain incomplete.",
+  "composition": {
+    "parent": "a883e6bbd072721096f0b0cffcb1c90abcd8839c",
+    "private_publication": "047977939a2d206a094d46472529f294d1f487c7",
+    "runtime": "289 is tested/private byte-exact.270 preserves incoming M124 property-source helpers and adds only the exact reviewed declaration, false default and generic complement; tested hashes above keep their original cuts. All other incoming runtime/schema/default/root/ordered407 manifest/pipeline bytes stay parent-exact.",
+    "composed_runtime_sha256": {
+      "spec/semantics/270-eager-destructors.watsup": "b9d9f94bde498ec047a1b2363fde28d58e1b6f38a6808e6a7209ef2e070dc0a6",
+      "spec/semantics/289-generator-delegation.watsup": "1fa375285192b119b4c7958da9c31d41b8e14f155540e50b6779fc0c13e1c89d"
+    },
+    "validation": "Actual introduced selectors independently reviewed disjoint. Source4/strict/author228/peer253 and original LINE0 fixture failure0 retain their cuts; no joined execution or accepted replay."
+  }
+}

@@ -30,11 +30,19 @@ right read: its current wrapper is read after the callback, including a newly
 created reference or rebinding to another scalar cell. The missing right stays
 null. Removing that already checked left CV now compares quietly against the
 frozen right NULL, returning 0 without another Warning or an old-cell read.
-Surviving aliases keep their value and ownership. Replacing left with an owning
-value remains Unsupported. See the
+Surviving aliases keep their value and ownership. See the
 [checked-left removal review](../../coverage/semantics/undefined-spaceship-checked-unset-review.json)
 and the
 [live-left review](../../coverage/semantics/undefined-spaceship-right-review.json).
+After an admitted `<=>` Warning, either opposing CV can now hold a live flat
+array of primitive values without element references. Against frozen NULL, empty
+arrays give 0; nonempty arrays give -1 with NULL left and +1 with NULL right.
+This includes both-missing and same-name entry: `$x <=> $x` can return -1 after
+the handler creates `[false]`. Current reference/COW bindings and next-index
+history survive; initially owning operands and nested/reference/object entries
+remain partial. Entry checks stay unchanged; the
+[array resume review](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
+records the source, ownership and budget checks.
 Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also suspend with one missing operand
 and a defined scalar counterpart. The missing value stays null while the opposing
 wrapper follows callback writes, late reference creation and rebinding. A missing

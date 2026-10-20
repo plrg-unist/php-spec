@@ -121,6 +121,12 @@ The holder type-source detachment and return-history proof is in
 compile failure,420s timeout, exact snapshots and runtime/declaration patch,
 SHA-256 `05e40c928872590ab47a4d3b25d3f985d3457afc3dfc86f2ede99e3f923ae7e5`.
 
+The partial property-source return-history proof is in
+`../php-spec-evidence-archive/lifecycle-property-intersection-124/manifest.json`:
+668,822 bytes under `.tools/m124/`, seven reports retaining the original
+diagnostic failure, corrected/accepted snapshots and exact270 patch,
+SHA-256 `e65400aad708e13d816d830c3d48c5c19c6c694269b30e400837b9bea4e2af0e`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

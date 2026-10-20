@@ -523,6 +523,22 @@ Initial leading LEFT/quiet RHS untyped scalar refs and a surviving old-target al
 bound the slice. Before final dispatch and store the old target must be PINT/PFLOAT,
 avoiding refcounted-target destruction. Wider values/producers/lifetimes remain partial.
 
+Selected-reference `%=` now fixes its old LEFT cell before converting a fitting
+fractional float. Captured `12` survives the named Deprecated callback; RIGHT stays
+a delayed CV wrapper and is dereferenced afterward. Rebinding current RHS from
+old `0` to replacement `5` therefore stores integer `2` through the surviving old
+target alias, despite callback value `99` and current target name `77`. Rebinding
+old RHS `5` to current `0` instead raises Modulo-by-zero DivisionByZeroError at
+RHS line 25 without replacing callback `88` or outer `100`. Both original aliases
+stay live with one owner, while rebound names and replacements share two.
+Two originals and 151+170 focused premises cover actual fresh/entered callbacks,
+source/selection controls, raw store or THROWN versus driven fresh Error, owners,
+EOF and zero/one-step cuts in the
+[selected modulo ledger](../../coverage/semantics/modassign-selected-warning-review.json).
+Initial scalar refs, finite in-range fractional LEFT, quiet PINT RHS before and
+after the callback, and a safe surviving old target bound the slice. Other
+conversions, producers/constraints/owning payloads and lifetimes remain partial.
+
 Plain-CV `%=` now captures a fractional-float left conversion before its
 deprecation, then reads the live quiet integer RHS after a named handler returns.
 Captured `12` and live `5` produce `2` despite the callback's target write.
@@ -534,7 +550,7 @@ premises pass in the
 [modulo-assignment ledger](../../coverage/semantics/modassign-warning-review.json).
 Fresh source/selection/cache/line guards, actual CELL/LOCATION, alias/error owners
 and budget resumption are covered. Pure ready projections establish refusals only.
-Initial references/copies, warning or noninteger RHS values, unsafe targets,
+Other initial references/copies, warning or noninteger RHS values, unsafe targets,
 wider callbacks and lifecycle paths remain partial.
 
 For a quiet integer LEFT and fractional-float RIGHT, `%=` keeps both converted

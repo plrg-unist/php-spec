@@ -784,7 +784,7 @@ Initial `d527a9877` CPU3 native4/baseline0 precedes CPU1 models/state. Nine
 stable/reaped reports pass without failure or retry; only Deprecated18 is expected
 and workers are quiet. Only12 additive172 lines change; existing source helpers,
 finish/trace/root/discard/GC and historical tests stay exact, without old replay.
-Purely positional/packed owned array values, references/nesting/owning/NaN or
+Purely positional owned-array calls without unpacking, references/nesting/owning/NaN or
 legacy-string leaves, PIPE and sole-owner lifetimes remain partial. Paused
 Stringable/COMP88 and other stopped boundaries are untouched.
 
@@ -818,3 +818,36 @@ finish/trace/root/discard/GC bodies and old tests stay exact, without historical
 replay. Packed/PIPE calls, materialized tables, declared/deferred/unset/ALIAS or
 owning/NaN/legacy-string properties, other value kinds and sole-owner lifetimes
 remain partial. Paused Stringable/COMP88 and other stopped boundaries are untouched.
+
+The [packed retained-owner array increment](../../coverage/semantics/ini-set-owned-unpack-null-array-value-review.json)
+adds one disjoint owner-present NULL2 arm for exactly one two-item unpack pack.
+Numeric, named and mixed keys normalize through unchanged source replay;
+invocation validity authenticates the held intrinsic Closure and effective call
+mode. The inner ARRAY must be live and flat with DIRECT quiet primitive leaves.
+Unknown pack source facts stay structural; known literal snapshots must match
+recursive pooled contents and provenance, without equating physical array IDs or
+rereading the current outer table. A coherent changed-inner literal forgery is
+invocation-valid but fails that source authority.
+
+Before a later inline option expression, the builder owns the earlier inner
+array. Actual unpack cursors transfer normalized value roots while retaining the
+active outer operand. Completed pack certificates are historical and nonowning;
+the earlier inner survives outer retirement or later outer/alias COW and live
+callee/value replacement. Return handling reaches TypeError2 with empty API
+option and rawNULL explicit wrapper; supplied Exception cancels rejection.
+Ordinary strict calls reject rawNULL first, explicit invocation stays weak, and
+the original held setter remains usable.
+
+Four originals and all1,280 premises (297+268+253 author,462 independent) pass
+first attempt at `e4d97ddf3`/`acf17872c`/407. Initial `2c76281b0` CPU2
+native4/baseline0 precedes CPU4 models/state. Nine stable/reaped reports PASS;
+only Deprecated9/17 is expected and workers are quiet. Native E/W/N/2783/2783
+observes numeric API/wrapper values; peer native avoids trace traversal. Actual
+state proves inner/outer identity and retirement, task roots and value edges in
+the handler/API/wrapper trace, COW-separated live packs, exact restored discard
+with existing idempotent buffers, source/carrier/domain controls and budgets.
+No trace-owner edge or native physical-array identity is claimed. Only13
+additive172 lines change; existing replay/helpers/finish/trace/root/discard/GC and
+historical tests stay exact. Additional arguments/packs, owning/nested/reference
+or nonquiet value leaves, PIPE and sole-owner lifetimes remain partial; paused
+Stringable/owned-NUL and other stopped boundaries are untouched.
