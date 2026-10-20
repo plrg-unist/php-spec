@@ -678,7 +678,14 @@ writes. A repaired old RHS `5.5` yields `17.5` with one Warning even when its na
 is rebound to `2tail`; unrepaired text uses live bool/string TypeError labels.
 Four originals and 428 focused premises cover these routes; the supplied first
 throw is source-only. The [ADD repair ledger](coverage/semantics/add-repair-review.json)
-retains the baseline. Owning/constrained/expired cells and wider forms remain partial.
+retains the baseline. Other owning/constrained/expired cells and wider forms remain partial.
+
+Ordinary ADD now rejects delayed flat-array conversion using the live selected
+types, without retrying union or storing the outer result. An old RHS array stays
+selected after its name is rebound; callback arrays and aliases survive the error.
+Two originals and 296 focused premises check these paths and pool/cell owners in
+the [ADD array-failure ledger](coverage/semantics/add-array-failure-review.json).
+Other producers, nested/owning leaves and wider lifetimes remain partial.
 
 Leading-numeric-string `-` and `*` now retain both selected reference cells and
 numeric holders through named Warning handlers. A first handler can repair an

@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "milestone": "OP57 selected-reference ADD delayed array failure",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "After LEFT conversion and its Warning in ordinary ADD with two selected reference-cell inputs, failed delayed RIGHT conversion reports live selected types even when at least one is an allocated flat DIRECT array. Both selected cells must remain allocated, live and unconstrained; payloads are valid nonowning scalars or flat arrays. Rebinding a variable name does not change the selected old referent while a surviving alias keeps it live. No array-union retry, source replacement or outer result store occurs.",
+  "runtime_revision": "4fcde1782e8930b2f926564f323f2af0f9d4ac52",
+  "helper_revision": "4aaf17817b60e9b93172f5b26225e130f8696b64",
+  "private_modules": 406,
+  "runtime_sha256": {
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "051946974a187052144035b8a6f0d7a799b1a30833a43fd0d8026e771a4fb3ab"
+  },
+  "engine_basis": [
+    "Pinned add_function_slow dereferences both operands once, then attempts fast numeric/array dispatch before conversion. It converts LEFT before RIGHT without retrying array union after the LEFT Warning. Failed RIGHT conversion reports zend_binop_error from those selected pointers; the temporary result is not delivered. Current variable-name bindings are not a substitute for the preselected reference cells.",
+    "Only25 lines in module404 are added: a forward declaration, one EPS guard on the old invalid-conversion boundary, and a separate bounded array-failure helper/rule. The old scalar-failure helper, entry plans, phase/source validity, numeric conversions, dispatch, readers and roots remain exact. The new helper reuses OP56 failure_value unchanged, requires at least one array and failed RIGHT conversion, so it is disjoint from the old scalar and successful-conversion routes.",
+    "The selected cells retain their real alias owners; pointers and Warning holders add none. Arrays are borrowed values with flat DIRECT nonowning leaves. The new rule retires its marker before ordinary TypeError allocation and neither writes cells nor retries union. Raw THROWN and the driven fresh indexed Throwable are checked separately."
+  ],
+  "contract": [
+    "Author initial REQUEST12.5tail/PINT2 is selected through preexisting aliases. h1 writes distinct arrays[1]/[2] and returns true. TypeError array + array at line25 leaves outer100 and both source/alias items intact. Focused states preserve both array identities and owner counts across failure.",
+    "Independent h1 writes LEFTfalse and selected old RIGHTarray[2], then rebinds current right to replacement7 and returns false. TypeError bool + array at line25 proves the old referent remains selected; reading current right would wrongly finish numerically. The old cell drops from two alias owners to one while the replacement has two. The literal array has pool1+cell1 owners, then only pool1 after oldAlias3; later current-right8 also changes replacement8 without changing oldAlias3. Exactly one original default Warning25 remains on stderr.",
+    "Focused147/149 starts actual initialized programs and reaches old entry, first fresh EHI, real returned callback effects and an exact one-step RIGHT continuation. It checks historical LEFT validity, live selected failure inputs, the old scalar-helper positive contrast, exact raw THROWN/no-store, driven fresh Error/site/owner1, metadata and array-prefix/count preservation, alias topology/default counts, EOF and compact full/zero budgets. The single author corruption matrix is refusal-only; no projected malformed state is driven."
+  ],
+  "required_follow_on": [
+    "Other initial plain/mixed/copied/owning producers, failed LEFT conversion, missing/expired/constrained selected cells, unheld referents, nested/reference/owning array leaves, object/resource replacement and wider lifecycle behavior remain partial. This bounded failure route establishes no new ordinary successful array operation or destructor behavior.",
+    "OP56 compound failure and all earlier scalar/Warning campaigns retain their own evidence and receive zero renewed credit. OP12 remains paused. No engine bug or intentional divergence is claimed."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-57/source-4fcde1782-author-one/report.json",
+        "sha256": "41857fb23c83b8e26ec330af5b62cca6328c6017b174fe4309c64d3fa32c1990",
+        "revision": "4fcde1782e8930b2f926564f323f2af0f9d4ac52",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-57/review-model-4fcde1782-review-one/report.json",
+        "sha256": "02aa4c3a5b6a4a39c1047906ac5f8c60830b478c2d57b950c0a8a957bfb1fd9b",
+        "revision": "4fcde1782e8930b2f926564f323f2af0f9d4ac52",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-57/state-4aaf17817-two/report.json",
+        "sha256": "9df81984b761872dd729768d58ef49ab99f3bcbfda89bdb88f814a0c2318fd59",
+        "revision": "4aaf17817b60e9b93172f5b26225e130f8696b64",
+        "modules": 406,
+        "cases": [
+          "add-array-failure-no-union",
+          "add-array-failure-selected-right-rebind"
+        ],
+        "conditions": [
+          147,
+          149
+        ],
+        "total": 296
+      }
+    ],
+    "total_source_agreements": 2,
+    "total_focused_state_conditions": 296
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-57/baseline-2baaed225-no-union/report.json",
+      "sha256": "f1aba722791a9a06ccfd29b5e069c8cc98a4d942f4da538d1da8dfefd8ba11c1",
+      "result": "Actual frontend accepted/checked program/Unsupported AFTER H1 prefix H:1:2:25:1:1;, reason arithmetic addition selected operand conversion, empty semantic stderr, model exit1/agreement0/wrapperfalse; no override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-57/native-2baaed225-author-one/report.json",
+        "sha256": "faff841b828cd357230ad5d2d40b469e29efa19c06e647e9da2e191d22de01d0"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-57/native-2baaed225-review-one/report.json",
+        "sha256": "799f6b5645781a7665110b6db3bfabd2883c3c26ca9914a11fbd8a4150d68675"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-57/state-prep-4aaf17817-two/report.json",
+        "sha256": "fdc329917b0b3f016abcbc3b57d363458ba8c8e4cf3f96cb8d543f9bd55fdbdf",
+        "result": "Retained original paths/native bytes; checked frontend/adapter only, zero application/native replay, workers0/reaped."
+      }
+    ],
+    "standalone_syntax": "Two standalone undefined-pstate diagnostics, zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-57",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/baseline use CPU3; changed source uses CPU4, native30/modelCLI60-process90. Focused checked prep30/full406 SL120 per group use CPU4. Author source stderr empty; peer one original default first Warning25. Retained-source preparation performs no native/application replay.",
+    "commands": [
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 tests/semantics/add_array_failures.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 tests/semantics/add_array_failure_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-57/state-prep-4aaf17817-two/run-prepare.py",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-57/state-4aaf17817-two/run-state.py"
+    ],
+    "record": "Restore matching Git cuts and local tools in a fresh directory. Retained original paths/native streams authenticate focused fixtures; external evidence is not a runtime dependency. Copied local tools add no rebuild/portability claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "composition": {
+    "parent": "054ec9cc5dcf476aa042473c3eaeac96fe6813da",
+    "private_publication": "bd02ad8410833aa2960659829b41ce11a56d017e",
+    "modules": 406,
+    "runtime_sha256": {
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "051946974a187052144035b8a6f0d7a799b1a30833a43fd0d8026e771a4fb3ab"
+    },
+    "other_incoming_paths_preserved": 34,
+    "gate": "The actual parent differs from the OP57 base in four runtime paths172/270/314/400; the ordered406 manifest and common30/40/404 remain exact. Module172 retained/named and owner-eps INI_SET pack-null validity requires an INTRINSIC_INI_SET call with a NULL sent option and two-item pack, absent from both ordinary ADD/TypeError originals. Module270 requires reference-return/finally destructor or global-throw cleanup cursors; h is by-value, no custom destructor or reference-return producer exists, and the top-level finally does not supply that cursor. Module400 requires DEFINE/runtime-instance source captures, absent here. Module314 relocates source_emission_cv's declaration with its body unchanged. No new state/tag/default/root fields are introduced by this tail. Complete incoming172/270/314/400 and every other parent spec/default/manifest path are preserved; only404 carries the private OP57 implementation. Source2/state296 retain their original private406 cuts. No concrete selector interaction warrants joined execution or renewed evidence."
+  }
+}

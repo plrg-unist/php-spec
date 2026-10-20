@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Ordinary ADD now rejects delayed flat-array conversion using live selected
+reference-cell types, without retrying union or delivering an outer result.
+Two originals pass at `4fcde1782`/406 and 296 focused premises at `4aaf17817`/406.
+The old RHS array stays selected despite name rebinding; source/alias identities
+and literal-pool owners survive the error.
+[ADD array-failure ledger](coverage/semantics/add-array-failure-review.json).
+Other producers/values and wider lifetimes remain partial; OP12 paused.
+
+Composed over `054ec9cc5`/406, preserving every incoming runtime, task
+and manifest path. Source2/state296 retain their private406 cuts; independently
+reviewed absent incoming selectors require no joined execution or renewed credit.
+
 Direct and selected `ini_set(NULL, quiet primitive)` now resume handlers through
 one numeric/named/mixed two-item unpack. Array V→O capture and normalized unpack
 preserve earlier REQUEST values and the selected function despite later writes.
@@ -79,17 +91,8 @@ every other runtime/schema/ordered manifest parent-exact. Incoming comparison,
 arithmetic-warning, reference/finally, Generator, property and float-key debt
 paths have no producer here; no joined actor or renewed source/state credit.
 
-Failed delayed RHS conversion after the first plain-CV `+=` Warning now
-raises TypeError from live types without storing or detaching the target. Flat
-arrays cannot retry union; a late bool alias remains attached. Two originals
-pass at `a90b28046`/406 and 273 focused premises at `5ef7c838a`/406, preserving
-array identities/items/counts and alias write-through.
-[Delayed-RHS failure ledger](coverage/semantics/addassign-rhs-failure-review.json).
-Other values/producers and wider lifetimes remain partial; OP12 paused.
-
-Composed over `3d668f22e`/406, preserving every incoming runtime, task
-and manifest path. Source2/state273 retain their private406 cuts; independently
-reviewed absent incoming selectors require no joined execution or renewed credit.
+Earlier plain-CV `+=` delayed failure retains source2/state273 in its
+[review ledger](coverage/semantics/addassign-rhs-failure-review.json).
 
 One initially missing CV may now occur twice at `<=>`: the first read freezes
 NULL, then the second sees the shared scalar/reference created by the handler.
