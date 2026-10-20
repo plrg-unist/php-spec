@@ -160,6 +160,15 @@ is enough while that marker is popped, without requiring a transient graph root.
 Existing call authentication, bounded payload/object-free checks and generic
 count/prune rules stay in use. See the
 [NULL return-value ledger](../../coverage/semantics/array-literal-null-key-return-array-value-review.json).
+An inline runtime array constructor instead has one owning TMP edge, with no
+NULL backup and no captured CELL owner. Its distinct marker transfers that edge
+to a DIRECT entry or drops it during throw cleanup. Reading a scalar reference
+inside the constructor captures its value; later source rebinding stays visible
+without changing the saved child. Source/nonconstant and existing bounded-payload
+checks keep this path separate from pooled constants and the two-owner returned
+VAR. Popped-marker allocation is sufficient for identity discard before normal
+pruning; no bias or count/prune algorithm changes. See the
+[NULL array-TMP ledger](../../coverage/semantics/array-literal-null-key-array-tmp-review.json).
 String leaves use canonical bytes or existing valid carriers; they add no modeled
 heap edges or user destructors. Ordinary string-offset writes preserve independent
 snapshots while table/CELL aliases share bytes. Singleton reference entries

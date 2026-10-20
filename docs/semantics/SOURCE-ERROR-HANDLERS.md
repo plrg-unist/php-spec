@@ -444,6 +444,16 @@ otherwise unowned returned table and builder before catch. The popped owning sna
 allocation and existing bounded/object-free checks. No literal debt or generic
 cleanup change; see the
 [NULL return-value ledger](../../coverage/semantics/array-literal-null-key-return-array-value-review.json).
+A runtime array-constructor value at a NULL key uses its own one-owner TMP
+marker. The actual nonconstant `NExprArray` occurrence authenticates the producer;
+existing mutable/nonpool, bounded payload and object-free checks stay in use.
+Constructor effects happen before the diagnostic, while later handler seed/key
+writes persist and the captured table stays frozen. Normal completion inserts a
+DIRECT empty-key entry without resetting a source CV. Supplied throw inserts
+nothing and drops the sole pending edge; an otherwise unowned value and builder
+retire before catch. Existing allocated-snapshot readiness also handles the
+moment after marker pop. See the
+[NULL array-TMP ledger](../../coverage/semantics/array-literal-null-key-array-tmp-review.json).
 String leaves validate canonical bytes or existing carrier records. Their table
 and wrapper counts stay separate from copied string bytes: debt-time writes may
 share a table while a string snapshot stays unchanged. Singleton reference

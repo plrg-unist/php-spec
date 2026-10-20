@@ -2511,46 +2511,43 @@ GENERATORRETURNRETAINED and LITERALREFRETAINED lift by empty fields with no root
 and valid empty receipts, preserving owners/budgets pointwise. Source3/state632
 retain private403 cuts and both zero-credit failures without replay.
 
-Ordinary named calls without arguments returning ARRAY by value now resume
-NULL literal-key deprecation handlers. A distinct owning-VAR continuation keeps
-the acquisition and NULL backup as two HARRAY roots, with no source CELL owner
-or CV reset. Producer-global writes/unsets remain visible while the captured
-returned table stays frozen. Normal completion drops one pending owner and
-inserts a DIRECT empty-key entry; supplied throw drops both without insertion,
-then the existing driver retires the sole returned table and builder before
-catch. No literal bias, generic call-return, count/prune or driver change.
+Runtime array constructors now resume NULL literal-key deprecation handlers
+with one owning TMP edge. Unlike an owning function-return VAR, they take no
+NULL backup and reset no producer CV. Normal completion transfers the frozen
+child into a DIRECT empty-key entry; supplied throw inserts nothing, drops that
+edge and lets the driver retire an otherwise unowned child and builder before
+catch. Existing source/nonconstant, mutable/nonpool, bounded edge-free/debt-free
+payload and object-free checks remain; no literal bias or generic count/prune,
+call-return or driver change.
 
-Four originals retain `e7eac6ab0`/409. The genuine unchanged model stops after
-maker `M:1;` before the handler with natural comparison0. Global ARRAY and global
-REF payloads returned by value remain captured2/7 despite callback44/88 or source
-unset/recreated33/8, with current99, outside66, copy55 and fresh-maker2 controls.
-Independent sole-owner runtime2/8 returns cover copy66/99, last-entry retirement,
-duplicate-empty-key supplied throw, same Throwable/dest99/cancelled later7 and
-maker execution once. The NULL key changes to9 while insertion stays under `""`.
+Four originals retain `eb67d83a4`/409. The genuine unchanged model stops before
+the first handler with empty streams and natural comparison0. Seed++ produces
+captured2 before handlerH3/current44, then copy55/fresh44/current99 separate
+capture from rereading. A marked scalar read becomes DIRECT2 before outside44
+and source rebind33; later outside66/source99/held88/fresh33 distinguish source
+aliases, an independent sibling table and copied child ownership. Independent
+sole-owner deletion and throw cover child2/8, copy66/99, seed++ exactly once,
+prior empty-key8, same Throwable/dest99/cancelled later7 and key9 versus `""`.
 
-Strict409/source4 pass at `f63ffede0`; focused827 =819 Boolean +8 raw
-(393 author +434 independent) pass at `c7b4a9245`. All post-change first
-executions pass without runtime/source or fixture repair, retry or accepted
-replay. Source models use180/outer210 and focused fixtures SL180; successful
-actors are quiet, without timeout/interruption or surviving descendants, fully
-reaped and CPU3 released. No historical fixture maintenance is needed.
-Source admission reuses compiled nonconstant call/no-fallback/active BYREF-false
-function checks and an ordinary unmarked NULL key CV. The mutable nonpool
-returned table has edge-free/debt-free DIRECT leaves; value/builder reach stays
-object-free. Fresh return functions have no parameters and DIRECT-int payloads;
-existing primitive/validated-byte leaves compose unchanged validation without
-fresh all-values credit. By-reference returns, array-constructor TMPs, calls with
-arguments, methods/Closures/dynamic calls, wider graphs and unsafe/active-GC
-lifetimes remain outside this continuation. Paused LIST-key and owned-NUL paths
-stay untouched.
-[NULL return-value review](coverage/semantics/array-literal-null-key-return-array-value-review.json).
+Strict409/source4 pass at `7d52be8c6`; focused805 =797 Boolean +8 raw
+(388 author +417 independent) pass at `ccb47159c`. All post-change first
+executions pass without runtime/source or fixture repair, retry, cap change or
+accepted replay. Source models use180/outer210 and focused fixtures SL180;
+actors are reaped without diagnostic stderr, timeout/interruption or surviving
+descendants, and CPU1 is released. No historical fixture maintenance is needed.
 
-Composed over `a535c65ff`/409 with accepted413 and six test paths unchanged.
-Storage30 adds only the owning-NULL task beside incoming variants. Cast-warning,
-Generator and object reference-return/finalizer selectors have no producer here;
-every other runtime/schema and the ordered409 manifest retains parent bytes.
-Original native, source and focused409 cuts retain baseline0 without joined
-execution or accepted replay.
+Only30 adds the TMP task and413 adds its source/plan/resumption. The returned
+VAR and CV reset continuations keep their existing bodies and owners. Fresh
+witnesses have DIRECT-int children; existing primitive/validated-byte leaf
+validation composes unchanged, without all-values credit. Pooled constants,
+embedded owning leaves, wider producers/graphs, active GC and unsafe lifetimes
+remain outside this continuation. Paused LIST-key and owned-NUL paths stay exact.
+[NULL array-TMP review](coverage/semantics/array-literal-null-key-array-tmp-review.json).
+
+Earlier owning NULL-key ARRAY returns retain originals `e7eac6ab0`/409,
+strict/source4 `f63ffede0` and focused827 `c7b4a9245`, integrated as `6a4fc0964`.
+The makerM1 pre-handler baseline0, two pending VAR owners and first-pass cuts
+remain in the [NULL return-value ledger](coverage/semantics/array-literal-null-key-return-array-value-review.json).
 
 Earlier typed captured NULL-key reset retains native/genuine `42559400a`/408,
 strict/source4 `07190a415` and focused1041 `a7469e1eb`, integrated as `1a06ca19f`.
