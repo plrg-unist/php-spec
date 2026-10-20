@@ -47,8 +47,8 @@ handler. Separate table counts preserve old array owners and omitted new-array
 owners; inverse retargeting cancels them before cleanup. Initial scalar and
 array plans remain distinct, while same-table transfer and restored COW keep
 ordinary values distinct from PHP reference wrappers.
-These flat tables also admit untyped reference leaves holding null/bool/int/float
-or validated byte strings, and null/bool/int/float leaves with validated ordinary
+These flat tables also admit reference leaves holding null/bool/int/float
+or validated byte strings, either untyped or constrained by validated ordinary
 instance-property type sources. Debt-bearing payloads require every source object
 to survive logical pruning. Shared copies keep typed rejection/coercion; explicit property
 unset removes its constraint before singleton copying. Child-table copies preserve
