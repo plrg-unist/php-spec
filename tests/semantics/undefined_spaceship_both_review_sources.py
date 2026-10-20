@@ -6,10 +6,7 @@ import global_constant_sources as family
 from undefined_spaceship_both_review_cases import CASES
 
 family.CASES = CASES
-family.UNSUPPORTED = {
-    'peer-both-missing-spaceship-right-remains-missing':
-        ('spaceship warning changed opposing scalar', b'H:1:1::8;'),
-}
+family.UNSUPPORTED = {}
 family_fingerprint = family.fingerprint
 
 

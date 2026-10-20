@@ -20,6 +20,9 @@ def checks(program, path, name):
         condition = condition.replace('$scalar_compare_right_read_shape(', '$spaceship_right_read_shape(')
         condition = condition.replace('scalar comparison warning changed right operand',
                                       'spaceship warning changed opposing scalar')
+        for state, restored in (('S_removed', 'S_removed_refused'), ('S_without', 'S_denied')):
+            if condition == restored + ' = ' + state + '[.TODO = eps][.COMPLETION = UNSUPPORTED "spaceship warning changed opposing scalar"]':
+                condition = restored + ' = ' + state + '[.TODO = perrorread.TASK :: ptask_tail*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]'
         if condition.startswith('S_compared = '):
             condition = condition.replace('KNOWN (PBOOL true)', 'KNOWN (PINT $(-1))')
         if plain and condition == 'S_resume.STORE[n_right] = DEFINED (PINT 0)':
