@@ -1,10 +1,14 @@
 ;; A naked parent::$p::get() is a hook call, not a static-property class read.
 ;; PHP-Parser keeps the inner fetch span when parentheses wrap that class operand.
+dec $parent_hook_file_entry(metadataEntry) : int?
+def $parent_hook_file_entry(MstartFilePos z) = (z)
+def $parent_hook_file_entry(metadataEntry) = eps -- otherwise
 dec $parent_hook_file_start(metadata) : int?
-def $parent_hook_file_start((MstartFilePos z) :: metadata) = (z)
+def $parent_hook_file_start(metadataEntry :: metadata) = (z)
+  -- if $parent_hook_file_entry(metadataEntry) = (z)
 def $parent_hook_file_start(eps) = eps
 def $parent_hook_file_start(metadataEntry :: metadata) = $parent_hook_file_start(metadata)
-  -- otherwise
+  -- if $parent_hook_file_entry(metadataEntry) = eps
 
 dec $parent_hook_parts(expression) : (ptbytes, ptbytes)?
 def $parent_hook_parts(NExprStaticCall (NExprStaticPropertyFetch (NName (BYTES text_parent) metadata_parent) (NVarLikeIdentifier (BYTES text_property) metadata_property) metadata_fetch) phpType20 (SEQUENCE phpType7*) metadata) = (($base64(text_property), ptbytes_hook))
