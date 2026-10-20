@@ -3356,6 +3356,14 @@ agreements and 377 focused checks retain separate tested cuts in the
 [parent get-hook review](coverage/semantics/parent-get-hook-review.json).
 Other parent-hook shapes remain partial.
 
+Public virtual implicit `int` setters also admit `parent::$value::set(f())`
+from the matching Child setter. The borrowed call retains lexical Parent/called
+Grand through argument effects, returns `NULL`, and leaves the outer assignment's
+literal value 20 intact. Parent throws and bad-argument TypeError cancel that
+assignment; real TypeError traces name the Parent setter. Four source agreements
+and 459 focused checks are recorded in the
+[parent set-hook review](coverage/semantics/parent-set-hook-review.json).
+
 A direct trait’s public body-backed `int` getter also imports into a parentless
 using class. Its code and `__METHOD__` spelling remain the trait’s; lexical/private
 scope follows the using class and called scope follows the receiver. Slot 100→300

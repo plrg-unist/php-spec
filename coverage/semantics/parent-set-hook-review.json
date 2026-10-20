@@ -1,0 +1,93 @@
+{
+  "scope": "Naked parent::$value::set(one named-noarg by-value producer) in an ordinary public virtual implicit-int Child setter; physical immediate parentless Parent setter, borrowed This, called Grand and literal20 external assignment.",
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_compile.c zend_compile_parent_property_hook_call recognizes naked syntax and checks active property/kind before argument compilation.",
+      "Zend/zend_vm_def.h ZEND_INIT_PARENT_PROPERTY_HOOK_CALL selects lexical immediate parent and borrows This without RELEASE_THIS, before ordinary sends.",
+      "Zend/zend_execute.c zend_verify_arg_error and Zend/zend_vm_def.h ZEND_RECV perform parameter verification before Parent body; zend_leave_helper and ordinary property write preserve the tested literal20 delivery after hook/receiver cleanup."
+    ]
+  },
+  "implementation": {
+    "files": [
+      "spec/semantics/382-backed-get-hooks.watsup",
+      "spec/semantics/403-backed-set-hooks.watsup",
+      "spec/semantics/417-parent-get-hooks.watsup"
+    ],
+    "basis": "A disjoint public virtual implicit-int root/Child source edge extends existing setter compilation/origin/link checks. The existing parent target/record contributes no receiver owner; PROPERTY_SET_RESULT owns it. Immutable Child caller/code/parent property authenticates argument callback and entered Parent context, with ordinary positional sends and typed receive. Exact saved pending source plus argc1 receipt, implicit hook receive line and pure get/set trace name; no new task/schema/root/generic cleanup rule. Existing zero-argument get branches are pointwise preserved by caller-kind guards."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/parent-set-hook-private-109/.tools/parent-set-hook-probes-109/native-first/report.json",
+      "sha256": "74d0e1acfccb5371d0ba65b4e89dc24db45bf8fc8d49b600a33c6e364bd20d8e",
+      "result": "Four exact quiet tuples 70/23/56/0, normal3 and wrong-kind fatal255/line7/trace.",
+      "revision": "9a3c31b66f89749a9817f1cc449da416b1a8d747"
+    },
+    "baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/parent-set-hook-private-109/.tools/parent-set-hook-probes-109/accepted-current-baseline/report.json",
+      "sha256": "604408a400223e27c5c1ef6f8a7065d4f5f1be8056cf0bb7f4246ebf68981fbd",
+      "result": "Four checked compiler Unsupported before output, exact reason set, by-reference, attributed or defaulted virtual property hook; CLI1/semantic exitNone/zero agreement.",
+      "revision": "9a3c31b66f89749a9817f1cc449da416b1a8d747"
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec/.tools/parent-set-hook-private-109/.tools/parent-set-hook-probes-109/changed-model-rmqsfq__/report.json",
+      "sha256": "de6bda034c5f9b8954827d5dc4c1dbac21cde49248432e81a056c0c55f04bf27",
+      "result": "Four exact native agreements, normal3/static-rejection1, CLI0/quiet/stable/reaped.",
+      "revision": "be38e926af40bd67ff048925d9a6554792372053"
+    },
+    "focused": {
+      "path": "/home/user/workspace/php-spec/.tools/parent-set-hook-private-109/.tools/parent-set-hook-protocol-maoy2rc3/report.json",
+      "sha256": "323a7ae42ff87ffeca9afcf0220219e329e368df98032bd7fd2b4cdf62e06bb8",
+      "result": "Three exact true applications;459=445 reached+14 derived, AL90 then strictSL90, stable/quiet/reaped.",
+      "revision": "f7fde2808eea35155d8c62eff445af7912b793ec"
+    },
+    "native_affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/parent-set-hook-private-109/.tools/parent-set-hook-probes-109/affinity-native-first.json",
+      "sha256": "0a2e70e855e583bcc3856c8103a9d3c2adc0e2b8b6fd473d25b7b464d3fd9cfd",
+      "result": "Qualified partial1/4 CPU5, selection full argv; short children not replayed; observer stopped/reaped."
+    },
+    "baseline_affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/parent-set-hook-private-109/.tools/parent-set-hook-probes-109/affinity-accepted-current-baseline.json",
+      "sha256": "31ddb4de1819ce64dee8a65ad2adf2409ae69ee7a3746f1dff0c0f6681dcc8a2",
+      "result": "Complete4 CPU5/full argv; workers absent."
+    },
+    "source_affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/parent-set-hook-private-109/.tools/parent-set-hook-probes-109/affinity-changed-source-109.json",
+      "sha256": "2710f41a2d07bea57117afa5e81027a00f71210349f95bd5dfea0122fcfc5b6a",
+      "result": "Complete4 CPU4/full argv; workers absent."
+    },
+    "focused_affinity": {
+      "path": "/home/user/workspace/php-spec/.tools/parent-set-hook-private-109/.tools/parent-set-hook-probes-109/affinity-state-109.json",
+      "sha256": "38abccbc2dbbbb3ec37600a031226efffc87704f929b10d9b0fed2e9640fa546",
+      "result": "Complete6 CPU4/full argv; workers absent."
+    }
+  },
+  "reproduction": {
+    "cwd": "/home/user/workspace/php-spec/.tools/parent-set-hook-private-109",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "profile": "tests/semantics/profile.json",
+    "native_baseline": "CPU5 ready watch-affinity.py native-first native 5 then env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 5 python3 -u .tools/parent-set-hook-probes-109/run.py native --revision 9a3c31b66f89749a9817f1cc449da416b1a8d747; only exact PASS/reap permits fresh accepted-current-baseline model5 observer and same baseline actor. Baseline was observational, not forced to a status/count.",
+    "source": "CPU4 ready capture-candidate-affinity.py 4 changed-model- 4 changed-source-109, then env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u .tools/parent-set-hook-probes-109/run.py changed --revision be38e926af40bd67ff048925d9a6554792372053.",
+    "focused": "Ready watch-state-affinity.py 4, then env -u PHP_SPEC_SCRIPT_ENCODING LC_ALL=C TZ=UTC taskset -c 4 python3 -u tests/semantics/parent_set_hook_protocol.py --revision f7fde2808eea35155d8c62eff445af7912b793ec.",
+    "caps": "Serial native45/model60/outer75/100000steps; focused AL90 then strictSL90/cachefalse/dettrue/fail-first/full reap. Checked preparation invokes zero applications.",
+    "recovery": "Ignored originals, gate driver, raw records and fixtures remain at original paths; recover versioned runtime/tests from the recorded tested commits. No fresh rebuild claim."
+  },
+  "tools": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "run.py_sha256": "a0c31a64c58ca60f6e406e84af29147b80f9fca72f0991e2939911b2900d60f2"
+  },
+  "limits": "Only observed7/array reception, NULL parent result and literal20 external result are validated. Wider setter hierarchies/types, backing/asymmetric properties, explicit parameters, named/unpacked/ref/FCC arguments, other producers/results and lifecycle/reentry remain partial. No108 source/state/trace credit renewed; get compatibility is static. Ordinary private secret storage is distinct from virtual-property backing. No generic GC/cleanup expansion or full-core claim.",
+  "review": {
+    "status": "accepted; independently reviewed",
+    "reviewer": "/root/class_review_84",
+    "semantic": "Native/genuine baseline, source4, focused459 and concise publication independently accepted; actual-parent preservation is separately peer checked before integration."
+  }
+}

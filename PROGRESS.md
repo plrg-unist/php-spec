@@ -946,36 +946,32 @@ joined actor, accepted replay or renewed execution credit.
 The earlier nonowning-copy arithmetic route retains source10/state767 in its
 [review ledger](coverage/semantics/copied-arithmetic-warning-review.json).
 
-Real zero-argument `parent::$value::get()` now selects the lexical parent's
-public virtual hook while borrowing This from the active Child hook. A Grandchild
-keeps called scope, Parent's private 41 wins over Child's 99, and clearing the
-receiver CV leaves only the outer hook's owner. Scalar/owning returns survive
-receiver cleanup; a supplied Parent throw skips Child continuation and preserves
-catch/destination 42. Real Throwable traces retain `$value::get`, Parent and `->`.
-Outside-hook and wrong-property calls fail compilation before application output.
+Public virtual implicit `int` Child setters now call the lexical root Parent
+setter through naked `parent::$value::set(f())`. The parent target borrows This;
+the outer setter marker retains it when the argument callback clears the global
+receiver. Parent receives 7 while Child retains 20, with private secret 7 versus
+99 and Grand called scope. The parent call returns NULL; the outer assignment
+still yields its literal 20. A supplied Parent throw or an array-argument
+TypeError cancels Child continuation/commit, preserves destination 42 and
+releases the receiver before catch. Fresh TypeError traces name the Parent setter.
+Wrong-kind get-from-set rejects compilation before output.
 
-Five exact source agreements retain `6ae47c032`/407; the fresh trace agreement
-retains `fae53b024`/407. Unique focused 377 = 366 reached + 11 derived: selection 139
-at `fae53b024`, owning 128/throwing 110 at `20023579d`. The initial 374 checks remain
-a separate accepted cut, not trace-field coverage. Genuine baselines preserve
-three PHP Error mismatches, an incorrectly executed outside-hook file and an
-inherited-hook Unsupported, plus the later trace-field mismatch; all earn zero.
-The native fatal-template failure and two pre-execution elaboration failures stay
-zero. Native short-child affinity is qualified; accepted workers are stable/reaped.
-[Parent get-hook review](coverage/semantics/parent-get-hook-review.json).
+Four exact source agreements pass at `be38e926a`/407. Focused 459 = 445 reached +
+14 derived pass in three histories at `f7fde2808`/407, including real argument
+callback/projection, typed reception, private/called scope, NULL-versus-20 receipt,
+receiver cleanup, supplied identity, compiler control and budget resumption.
+Four native originals and the genuine four compiler Unsupported observations retain `9a3c31b66`;
+baseline agreement stays zero. Native affinity is partial 1/4 with full captured
+argv; model/state workers have complete affinity and are stable/reaped. No
+semantic failure, retry or historical replay occurred.
+[Parent set-hook review](coverage/semantics/parent-set-hook-review.json).
 
-Module 417 and narrow 30/141/142 gates add the borrowed target and source/caller
-certificate; generic call, body, return and cleanup rules remain. Only naked
-literal get calls in ordinary public virtual statement hooks are admitted.
-Wrapped syntax stays ordinary static-property dispatch; backing/plain-parent
-trampolines, set/ref/FCC/arguments, traits and wider callers remain partial.
-
-Composed over `00f8245f8`/406, retaining all incoming manifest entries and adding
-417. Incoming ref-return history, INI/DEFINE, missing-CV comparison, Generator,
-arithmetic-warning and float-key typed-ALIAS literal selectors have no producer
-here. Existing debt fields remain empty; selected hook/call/type/cleanup paths
-are unchanged incoming. Source5+1/state139+128+110 retain their private cuts;
-no joined actor or accepted replay was needed.
+Modules 403/382 add only the authenticated public virtual implicit-int root/Child
+source/link edge; 417 reuses its borrowed target/record and ordinary argument,
+receive, return and cleanup machinery. Get compatibility is structural, with
+CLASS108's evidence retained at its original cuts. Backing/asymmetric or wider
+setter hierarchies/types, explicit parameters, other argument/result producers
+and wider lifetime/reentry remain partial. No generic cleanup/root/GC change.
 
 Retained propertyless Stringable `define` names now receive captured NULL flags
 with primitive candidates in admitted user-global/class-name domains. One module400

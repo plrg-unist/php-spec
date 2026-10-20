@@ -434,8 +434,26 @@ Outside-hook/wrong-property diagnostics precede application output; matching
 file/token starts distinguish naked from parenthesized class operands. Six unique
 sources and 377 focused checks keep separate cuts in the
 [parent get-hook review](../../coverage/semantics/parent-get-hook-review.json).
-Backing/plain-parent trampolines, set/ref/FCC/arguments, traits and wider callers
-remain partial; existing declarations, return typing and generic cleanup are reused.
+This get-only cut leaves backing/plain-parent trampolines, refs/FCC/arguments,
+traits and wider callers partial; existing declarations, return typing and generic
+cleanup are reused.
+
+A public virtual implicit `int` setter on Child may also call the matching
+physical setter on its immediate parentless Parent with naked
+`parent::$value::set(f())`. The single positional, nonreference argument comes
+from a named zero-argument by-value producer. Parent borrows This through the
+callback clearing the global receiver; the outer setter marker retains the sole
+receiver owner. Parent private secret 7, Child private secret 99 and called Grand
+remain distinct. The parent call returns `NULL`; the tested outer assignment
+retains its literal 20. Supplied throws preserve identity/destination 42, while
+an array argument errors after callback effects and before Parent body, with
+`$value::set`/Parent/`->` trace fields. The wrong-kind call fails compilation.
+Four source agreements and 459 focused checks retain separate cuts in the
+[parent set-hook review](../../coverage/semantics/parent-set-hook-review.json).
+Only the public virtual implicit-int root/Child edge is added; backing/asymmetric
+or wider setter hierarchies/types, explicit parameters, other argument/result
+producers and wider lifetime/reentry remain partial. Existing get behavior is
+preserved structurally without renewing its application evidence.
 
 Other inherited getter roots/shapes and wider
 type-presence combinations remain required.
