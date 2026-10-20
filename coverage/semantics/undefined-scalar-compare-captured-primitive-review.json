@@ -1,0 +1,134 @@
+{
+  "milestone": "COMP113 captured primitives at Boolean comparison Warning reads",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "All six Boolean comparisons retain captured null, Boolean, integer, float and byte-string values from literals, assignments and ordinary by-value returns across a missing direct-CV Warning. Callback writes or alias removal cannot replace the captured value or frozen missing NULL.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "c76ff66e1a91f7f42b7a8df4ebf769100ab7fc73",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "eb0e78483ca2c1792c6248ccedec5f6cbefb6e52686ac6c9d441a83c42c5fff2"
+  },
+  "modules": 407,
+  "engine_basis": "Equality/smaller helpers test physical OP1 then OP2, replacing each missing CV read with language-level NULL after its Warning. Greater compilation swaps physical operands after source evaluation. Constant and temporary primitive values stay captured while CV wrappers may follow callback writes.",
+  "implementation": "Widen only the two captured-value source certificates to the explicit primitive-or-PARRAY domain. The missing direct CV and both compiled expressions remain authenticated. Existing scalar/array domain checks, known-array default rejection, NULL-only actual second-read restoration, SPACE paths, fields, roots and discard stay unchanged. Remove the two now-subsumed NULL source clauses so actual second reads match exactly one certificate.",
+  "behavior": [
+    "Ten exact originals span all six operators and captured null/bool/int/float/byte-string snapshots versus changed names, return/assignment values, aliases, no-init one-Warning counts, false/default and first supplied Exception/caller41/finally. Captured objects and nested arrays remain explicit ingress refusals.",
+    "Five source-reached strict-SL groups check raw captured restoration/Boolean results, carrier-neutral string bytes, current reference owners and copies, source/CODE/line/operator/domain controls, actual supplied-throw discard and zero/split budgets."
+  ],
+  "baseline": {
+    "report": "initial/baseline-report.json",
+    "sha256": "00f0007fbb2a18e1432f374f408468303a7f5bfafa630d7057f472d3bd9a33d8",
+    "revision": "d67ebb92d244d841aef46ceb57644b2ed4e74a22",
+    "agreement_credit": 0,
+    "native": "Initial author2 and peer4 retain d67ebb92d/407; retained peer model4 reuses native4. Changed-source author native8 is separately recorded.",
+    "model": "Genuine unchanged EQ captured-right int0 assignment is accepted/checked then ingress Unsupported with empty streams."
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "5ced4c122ee6a84d44116fd7b106aa1754aa6f4508f656505634385f589a5ef3",
+      "revision": "9ac9ae82c5ca11594de04f5acff25e076f1f51c6",
+      "agreements": 6,
+      "unsupported_controls": 2
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "9a08709c3df3fb12eaeab57adc30d4eb7010adfdc0d4bf4c5c40b20b554e5d9a",
+      "revision": "9ac9ae82c5ca11594de04f5acff25e076f1f51c6",
+      "agreements": 4,
+      "unsupported_controls": 0
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "e1b2a67819d5ec6ee022d742aae02ec71539ca72bb1d1b6e415dae75ac72053c",
+      "revision": "9ac9ae82c5ca11594de04f5acff25e076f1f51c6",
+      "accepted_records": [
+        "captured-equal-right-zero"
+      ],
+      "premises": 129,
+      "groups": 1,
+      "overall_report_passed": false
+    },
+    {
+      "report": "author-state-fixed/report.json",
+      "sha256": "ac5f5d35080776a92ccfa3cf4447cb95adfe3dde57202581341cc8752f96e867",
+      "revision": "af6c5f4229d943e15b0b4e2bf599637eaba69ee2",
+      "premises": 130,
+      "groups": 1
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "1a94ab950e97a10c91f2ee3af209e79faa9f63f314c6e444b8d849dc3885d94e",
+      "revision": "af6c5f4229d943e15b0b4e2bf599637eaba69ee2",
+      "premises": 381,
+      "groups": 3
+    }
+  ],
+  "totals": {
+    "source_agreements": 10,
+    "unsupported_source_controls": 2,
+    "state_premises": 640,
+    "state_groups": 5
+  },
+  "maintenance": {
+    "state": {
+      "report": "maintenance-state-fixed/report.json",
+      "sha256": "d82daf77567a93f4b7ded3740c5203b1bf717b6d87a9b4ed84389b5619b10073",
+      "revision": "c76ff66e1a91f7f42b7a8df4ebf769100ab7fc73",
+      "premises": 373,
+      "groups": 3
+    },
+    "source_selectors": {
+      "report": "maintenance-source/report.json",
+      "sha256": "83a928268422b1c604be69bc1205c5590c4ad3d227db24b80e85bcd848aa6938",
+      "revision": "c76ff66e1a91f7f42b7a8df4ebf769100ab7fc73",
+      "selectors": 1
+    },
+    "historical_agreement_renewal": 0,
+    "scope": "Only affected old100/101/103 source fronts through two actual Warnings and the raw comparison are checked. Their actual saved NULL stays unchanged; coherent counterfactual primitive records may be source-valid while owning records remain rejected. This is not a claimed captured execution. One old112 literal-primitive selector is rechecked; no old full-body campaign."
+  },
+  "validation": "CPU5 serial/fail-first/full reap,2GiB: native8 130/150/per15; model8 605/620/CLI45/record60; retained peer4 315/330/CLI60/record75. Author state275/290, peer3 and maintenance3 state405/420, per120 strictSL/dettrue/cachefalse; one selector100/120/child80. Exact commands/inputs/exits remain in raw reports.",
+  "failures": [
+    {
+      "report": "author-state/report.json",
+      "sha256": "e1b2a67819d5ec6ee022d742aae02ec71539ca72bb1d1b6e415dae75ac72053c",
+      "revision": "9ac9ae82c5ca11594de04f5acff25e076f1f51c6",
+      "record": "captured-greater-left-string",
+      "premises": 126,
+      "agreement_credit": 0,
+      "reason": "Fixture required a plain PSTRING rather than accepting the captured string carrier. Source agreements and EQ129 remained accepted.",
+      "correction": "Only GT binds captured/initial/current values independently and checks string bytes; GT130 retried through the archived ignored retry_state.py into fresh output. Runtime/source/native/EQ were not replayed."
+    },
+    {
+      "report": "maintenance-state/report.json",
+      "sha256": "ea82e063e555b1934fd4e8c152325cec342ca75a28c169a47aaea1e6aba6c6c4",
+      "revision": "af6c5f4229d943e15b0b4e2bf599637eaba69ee2",
+      "record": "old-forward-second-null",
+      "premises": 121,
+      "agreement_credit": 0,
+      "reason": "Actual second NULL matched both the generalized primitive certificate and an old NULL-only certificate, causing strict nondeterminism. The first maintenance group stopped; the other groups and selector were initially unrun.",
+      "correction": "Remove only the two subsumed source clauses at c76ff66e1, preserving actual NULL shapes/restoration. The affected three-group packet retried into fresh output; no source/focused/native replay."
+    }
+  ],
+  "remaining": [
+    "Captured objects/resources, nonflat/reference/object arrays, reference-return wrappers and wider owning producers remain partial; paused COMP88 untouched.",
+    "Source and EQ129 retain 9ac9ae82c/407. Corrected GT130 and independent381 retain af6c5f422/407; EQ conditions are byte-exact across the fixture correction. Final-runtime affected373/selector retain c76ff66e1/407, with the independent absent-clause compatibility bridge above. Initial native/genuine retain d67ebb92d/407; historical credit is not renewed."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-113",
+  "artifact_manifest_sha256": "398bcb0f84a55d5e58bbb28c38ff0518f44934841534fb8ddef8fa7cc4a6598d",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_scalar_compare_captured_primitive_sources.py --phase native --output .tools/comp113-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_captured_primitive_sources.py --phase model --output .tools/comp113-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_captured_primitive_state.py --output .tools/comp113-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_captured_primitive_review_state.py --output .tools/comp113-peer-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_captured_primitive_maintenance.py --output .tools/comp113-maint-state-new"
+  ],
+  "final_runtime_compatibility": {
+    "revision": "c76ff66e1a91f7f42b7a8df4ebf769100ab7fc73",
+    "runtime_sha256": "eb0e78483ca2c1792c6248ccedec5f6cbefb6e52686ac6c9d441a83c42c5fff2",
+    "review": "Each removed NULL clause implies its generalized primitive certificate, so the intended certificate set and NULL restoration are unchanged. Earlier accepted captures have non-NULL operands or assignment/return source expressions; their constructed NULL controls also cannot select the removed direct-CV/orientation clauses. Source10+2 and focused640 retain their original cuts; only affected maintenance373/3 and one selector execute the final runtime."
+  }
+}

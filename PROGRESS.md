@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+All six Boolean comparisons now retain captured null/bool/int/float/byte-string
+values across missing-CV Warnings. Two source certificates widen within an explicit
+primitive-or-array bound; domain checks, array liveness, saved roots and generic
+restore/discard remain unchanged. Current writes cannot replace snapshots, and
+actual second reads still freeze NULL.
+
+Ten source agreements plus two owning/nested controls pass at `9ac9ae82c`/407.
+New strict-SL 640/five groups comprise EQ129 there and corrected GT130 plus independent
+381 at `af6c5f422`/407. Original GT126 string-fixture and first maintenance121
+duplicate-certificate failures retain zero. Only GT and the affected maintenance packet repeated. Final-runtime
+373/three groups plus one old112 selector pass at `c76ff66e1`/407; the superseded
+NULL clauses are unselected by earlier captures, which retain their accepted cuts. Initial
+native2+4/genuine retain `d67ebb92d`/407. Wider owning forms and paused COMP88 remain
+partial. [Primitive review](coverage/semantics/undefined-scalar-compare-captured-primitive-review.json).
+
 All six Boolean comparisons now retain captured allocated flat DIRECT primitive
 arrays across missing-CV Warnings, including both source orientations, literal,
 runtime constructor, assignment and by-value return snapshots. Array-only source

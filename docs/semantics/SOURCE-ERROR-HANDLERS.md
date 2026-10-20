@@ -152,13 +152,17 @@ At `<=>`, captured allocated flat DIRECT primitive tables enter through
 two exact saved-read shapes. Existing TASK/RESULT/BASE roots retain snapshots
 through callback COW and source removal, then release the saved owner on compare or throw;
 see the [captured-array review](../../coverage/semantics/undefined-spaceship-captured-array-review.json).
-The six Boolean operators now admit captured flat arrays with array-only source
+The six Boolean operators now admit captured flat arrays with bounded source
 certificates checking the missing direct CV and both compiled expressions. Their
 scalar default explicitly rejects known arrays, so liveness/flatness cannot be
 bypassed. Saved owners and generic restore/discard are unchanged; the
 [Boolean captured-array review](../../coverage/semantics/undefined-scalar-compare-captured-array-review.json)
-records source, COW and abrupt-release checks. Captured primitives at Boolean Warning reads and
-nonflat arrays remain partial.
+records source, COW and abrupt-release checks. Those certificates also admit
+captured primitives while preserving both compiled descriptors and the missing CV.
+Current alias writes cannot replace the saved bytes/value, and actual second
+Warnings still freeze NULL; see the
+[primitive review](../../coverage/semantics/undefined-scalar-compare-captured-primitive-review.json).
+Owning objects/resources, nonflat arrays and wider producers remain partial.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.
 [The equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json)
