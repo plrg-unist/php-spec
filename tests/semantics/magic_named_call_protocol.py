@@ -369,7 +369,8 @@ $heap_owners($heap_graph(S_packed),HOBJECT n_child) = 2
                             'S_return.STORE[n_arguments_cell] = DEFINED (PARRAY n_arguments)']
             else:
                 reached += lines(r'''
-S_return.STORE[n_arguments_cell] = UNDEFINED
+$lookup(S_return.ENV,$ptascii("arguments")) = eps
+~(HCELL n_arguments_cell <- S_return.ALLOCATIONS)
 $lookup(S_return.ENV,$ptascii("cached")) = (n_cached_cell)
 S_return.STORE[n_cached_cell] = DEFINED (PINT 7) /\ S_return.STORE[n_rhs_cell] = DEFINED (PINT 7)
 $heap_owners($heap_graph(S_return),HARRAY n_named) = 1 /\ $heap_owners($heap_graph(S_return),HOBJECT n_payload) = 1
