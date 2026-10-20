@@ -7,6 +7,37 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+One numeric/named/mixed unpack pack now carries rawNULL plus the exact one-entry
+key0 ALIAS ARRAY through `ini_set` reception, for strings and retained setters.
+The saved inner array keeps its shape while its untyped quiet cell stays live;
+later outer-pack rewrites and current-container COW cannot replace that value.
+Returning handling reaches empty API/rawNULL wrapper parameter2 TypeError;
+strict ordinary reception completes effects before parameter1, while explicit
+reception stays weak and a supplied Exception cancels rejection.
+
+Four exact source comparisons and 1,719 state premises (422+323+430+544) pass
+first attempt at `6df1a6240`/`c27d6dd58`/408. Initial `733e53bcc` native4/base0
+and affected checks all use CPU2; nine stable/reaped reports PASS, only
+Deprecated13/19, quiet workers and no failures/retries. Native E/W/N/L/L/A
+observes both argument arrays after a post-TypeError/getTrace cell write.
+State proves cursor roots transferring outer→inner+outer→inner, transitive HCELL,
+inline outer retirement, strict same-owner weak reuse, actual two-frame supplied
+Exception and whole idempotent restoration/discard. Captured entries are DIRECT
+after dereference; no original outer-reference freedom or frozen-cell claim.
+Only12 additive172 lines change; invoke/replay/alias predicate/finish/trace/root/
+GC/schema/historical tests stay exact without replay. Compiled pack facts must
+be unknown (EPS); whole-state PARAMETERBACKINGS EPS bounds the same reference
+slice. Additional packs/arguments, PIPE, wider references and sole-owner lifetimes
+remain partial; paused paths untouched.
+[Unpacked shared-reference INI array review](coverage/semantics/ini-set-unpack-null-alias-array-value-review.json).
+
+Composed over `d7675c746`/408 with private-exact172/four tests and every other
+runtime/schema/ordered-manifest byte parent-exact. Incoming missing-CV loose-object
+comparison, ref-return holder retirement, Generator SEND, STD numeric-cast Warning,
+owned DEFINE true-flag and explicit NULL-key reference selectors have no producer
+here. Incoming checkpoints remain intact except reviewed81/83 pack qualifiers;
+source4/state1,719 retain private408 cuts without joined execution or renewed credit.
+
 Pending ancestor SEND over one native link to a PAUSED bare-statement-yield
 child now retires an unused current snapshot after normal argument cleanup and
 before receiver release. Assignment keeps its copy. In the tested alias-drop
@@ -127,7 +158,7 @@ partial roots, normalized oldARRAY-to-liveHCELL, two-frame supplied Exception an
 whole idempotent restoration/discard. No exported-array identity, frozen referent,
 receiver trace edge or direct CELL task/buffer root is claimed. Only3+/5- lines
 in172 factor existing source checks; helpers/finish/root/trace/GC/schema and old
-tests remain exact without replay. Unpacked/PIPE, wider reference metadata,
+tests remain exact without replay. Multiple packs/PIPE, wider reference metadata,
 owning referents and sole-owner lifetimes remain partial; paused paths untouched.
 [Named shared-reference INI array review](coverage/semantics/ini-set-named-null-alias-array-value-review.json).
 
@@ -331,7 +362,7 @@ edge, current COW table sharing and whole restoration/discard. HCELL is neither
 a direct task root nor a possible GC buffer root. Only29 additive172 lines change;
 old DIRECT-array guards/84/138/helpers/trace/root/GC/schema and historical tests
 stay exact without replay. Whole-state PARAMETERBACKINGS EPS bounds this slice;
-packed/PIPE forms, typed/property references and owning referents remain
+multiple packs/PIPE forms, typed/property references and owning referents remain
 partial, with paused paths untouched.
 [Shared-reference INI array review](coverage/semantics/ini-set-null-alias-array-value-review.json).
 

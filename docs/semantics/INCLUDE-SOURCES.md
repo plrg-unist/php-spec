@@ -1021,7 +1021,7 @@ one-frame API TypeErrors, handler/API two-frame raw Exception, transitive
 HARRAY→HCELL ownership and exact restoration/discard with existing idempotent
 array buffering. HCELL is not directly task-rooted or a possible GC buffer root.
 Only29 additive172 lines change; shared84/138/array/trace/root/GC/schema and
-historical tests stay exact without replay. Packed/PIPE forms,
+historical tests stay exact without replay. Multiple packs/PIPE forms,
 additional entries, typed/property/parameter-backed references, owning referents
 and sole-owner lifetimes remain partial; paused boundaries stay untouched.
 
@@ -1051,7 +1051,7 @@ handler/API/wrapper three-frame raw Exception, both raw argument edges to the ea
 ARRAY→HCELL, owner+array config roots and existing idempotent buffers/full discard. No
 receiver trace edge or direct CELL task/buffer root is invented. Helpers/finish/
 84/138/trace/root/GC/schema/historical tests remain exact without replay.
-Unpacked/PIPE forms, additional entries, typed/property/backed references,
+Multiple packs/PIPE forms, additional entries, typed/property/backed references,
 owning referents and sole-owner lifetimes remain partial; paused paths untouched.
 
 The [named shared-reference array increment](../../coverage/semantics/ini-set-named-null-alias-array-value-review.json)
@@ -1081,5 +1081,36 @@ post-allocation leaf write. Existing array buffering and whole restoration/disca
 remain exact; HCELL is neither directly task-rooted nor GC-bufferable. There is
 no physical exported-array identity or frozen-referent claim. Only3+/5-172 lines
 change; helpers/finish/trace/root/GC/schema/historical tests stay exact without
-replay. Unpacked/PIPE, additional keys/entries, typed/property/backed references,
+replay. Multiple packs/PIPE, additional keys/entries, typed/property/backed references,
 owning referents and sole-owner lifetimes remain partial; paused paths untouched.
+
+The [unpacked shared-reference array increment](../../coverage/semantics/ini-set-unpack-null-alias-array-value-review.json)
+adds one disjoint NULL2 header for a sole numeric/named/mixed two-item pack,
+with either string selection or a retained INI_SET receiver. Normalized sends
+hold rawNULL and the same exact key0 ALIAS ARRAY. Invoke/source replay authenticates
+the snapshot and mode; compiled pack facts must be unknown (EPS). The existing
+live untyped quiet-cell predicate, absent property/coercion metadata, whole-state
+PARAMETERBACKINGS EPS and effective weak/nonPIPE fences remain unchanged.
+Captured pack entries are DIRECT after dereference; this does not prove that
+original outer entries were reference-free.
+
+Four source agreements and all1,719 premises (422+323+430 author,544 independent)
+pass first attempt at `6df1a6240`/`c27d6dd58`/408. Initial `733e53bcc` native4/base0
+and affected checks all use CPU2; nine reports PASS/stable/reaped, only Deprecated13/19,
+quiet workers and no failures/retries. Native E/W/N/L/L/A changes the leaf after
+actual TypeError/getTrace and observes both saved arguments with their old shape.
+The selected inline builder captures the inner array before later option effects,
+then retires its outer pack. Strict ordinary completes pack effects before
+parameter1/handler0; the same setter's explicit mixed call is weak and reaches
+parameter2/handler1. Normal setter reuse remains usable.
+
+State proves active outer→inner+outer cursor roots and completed inner-only roots
+(plus the receiver when present), with the same transitive live HCELL. The retained
+peer pack contrasts current outer COW to scalar0 with the old snapshot and observes
+the post-Exception leaf through actual raw handler/API two-frame arguments.
+Existing array buffering and whole idempotent restoration/discard stay exact;
+HCELL is neither directly task-rooted nor GC-bufferable. No physical exported-array
+identity, frozen referent or receiver trace edge is claimed. Only12 additive172
+lines change; helpers/finish/trace/root/GC/schema/historical tests stay exact without
+replay. Additional packs/arguments, PIPE, typed/property/backed references, owning
+referents and sole-owner lifetimes remain partial; paused boundaries untouched.

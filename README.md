@@ -480,7 +480,7 @@ TypeError/trace capture stays visible through both API and explicit-wrapper arra
 arguments; the API option is empty while the wrapper retains NULL. Four source
 comparisons and 1,521 state premises cover strict ordinary versus weak explicit
 reception, supplied-throw cancellation, transitive reference edges, exact discard
-and original-setter recovery. Unpacked/PIPE forms, typed/property references,
+and original-setter recovery. Multiple packs/PIPE forms, typed/property references,
 owning referents and sole-owner lifetimes remain partial.
 
 [Named INI calls with shared-reference arrays](coverage/semantics/ini-set-named-null-alias-array-value-review.json)
@@ -491,7 +491,17 @@ Four source comparisons and 1,628 state premises cover saved shape with live cel
 contents, empty API versus raw NULL wrapper options, strict ordinary versus weak
 explicit reception, supplied-throw cancellation and setter recovery. One peer
 optional-name fixture typing failure is retained; only its corrected 428 checks
-were rerun. Unpacking/PIPE, wider references and sole-owner lifetimes remain partial.
+were rerun. Multiple packs/PIPE, wider references and sole-owner lifetimes remain partial.
+
+[Unpacked INI arrays with shared reference elements](coverage/semantics/ini-set-unpack-null-alias-array-value-review.json)
+now preserve the captured inner array and its live cell through one numeric,
+named or mixed argument pack. Fixed/selected strings and retained setters share
+the same narrow continuation. Later outer-pack rewrites and current-container
+COW preserve the saved shape while cell writes remain visible through API and
+wrapper arguments. Four source comparisons and 1,719 state premises cover cursor
+root transfer, strict ordinary versus weak explicit reception, supplied-throw
+cancellation, precise discard and setter recovery. Additional packs/arguments,
+PIPE, wider references and sole-owner lifetimes remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
