@@ -7,6 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained DEFINE Closure calls now receive raw Boolean TRUE. The ignored-case
+Warning precedes key lookup and ARRAY snapshotting: a returning handler's fixed
+DEFINE installs 53 before the outer call reports a duplicate. The ARRAY snapshot
+copies the handler's 41. A supplied Exception still permits fresh same-object
+registration; the row keeps shared 53 after callee and trace retirement.
+
+Three source agreements pass at `9c995f7e9`/408. The 808 focused premises comprise
+259 direct at `39292093f` and 246 ARRAY plus 303 independent at `6b9034a79`, with
+three budget identities. The original binder compile failure and ARRAY getter
+projection failure retain zero credit. The latter changed only a pure expectation:
+missing history invalidates the public ARRAY row, while its thin tree getter
+still extracts the canonical value. Passing direct 259 was not replayed.
+
+Existing name/value, receipt, cleanup, coercion and global/default policies remain
+exact. Other value classes compose structurally; Source82 INI_SET, CLASS115 magic
+`+=` and the paused source boundaries are untouched.
+[Owned true-flag review](coverage/semantics/define-owned-true-review.json).
+
 Named/mixed NULL-option `ini_set` now captures the one-entry key0 ALIAS ARRAY
 before later written option effects. The saved container retains its shape while
 the shared quiet primitive cell stays live through option/handler writes and

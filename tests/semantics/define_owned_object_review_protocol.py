@@ -143,10 +143,11 @@ def checks(initial, stdout):
         '~$dynamic_owned_define_valid(S,pconfigcall_callee_value)']
     for label, value in [('null','PNULL'),('quiet','PINT 0'),('true','PBOOL true')]:
         call = 'pconfigcall_' + label
+        negated = '' if label == 'true' else '~'
         values += [f'{call} = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,2,KNOWN ({value}))]',
             f'$config_invoke_valid(S,{call})',
-            f'~$dynamic_owned_define_header(S,{call})',
-            f'~$dynamic_owned_define_valid(S,{call})']
+            f'{negated}$dynamic_owned_define_header(S,{call})',
+            f'{negated}$dynamic_owned_define_valid(S,{call})']
     values += [
         *common.step('S_dispatch','S'), *common.public('S_dispatch'),
         'S_dispatch.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_dispatch*',

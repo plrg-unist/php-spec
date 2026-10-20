@@ -2149,6 +2149,13 @@ destructor before callee release; a throwing duplicate's raw trace instead
 retains the object after callee death until its raw argument views retire.
 [Owned object call review](coverage/semantics/define-owned-object-review.json).
 
+Captured DEFINE callees also receive raw `true`. The ignored-case Warning runs
+before key lookup and array snapshotting: a returning handler can install the
+key or change a reference leaf. A thrown handler Exception still permits fresh
+same-object registration. Raw API/wrapper traces retain `true`, and the row
+keeps the object after trace retirement.
+[Owned true-flag review](coverage/semantics/define-owned-true-review.json).
+
 Ordinary `stdClass` values also publish directly and in array snapshots under
 selected live property/table checks. Queries share the same object and owning
 children while cast/query arrays retain COW. A private duplicate copy can keep

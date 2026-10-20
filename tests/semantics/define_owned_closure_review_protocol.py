@@ -151,7 +151,7 @@ def checks(initial, stdout):
         'pconfigcall_value = pconfigcall_first[.SENT = $named_slot_set(pconfigcall_first.SENT,1,KNOWN (POBJECT n_a))]',
         '~$dynamic_owned_define_valid(S_inv,pconfigcall_value)',
         'pconfigcall_flag = pconfigcall_first[.SENT = $named_slot_set(pconfigcall_first.SENT,2,KNOWN (PBOOL true))]',
-        '~$dynamic_owned_define_valid(S_inv,pconfigcall_flag)',
+        '$dynamic_owned_define_valid(S_inv,pconfigcall_flag)',
         'S_pause = $drive_steps(S_inv,0)', 'S_pause = S_inv[.COMPLETION = BUDGET]',
         '$test_running(S_pause) = S_inv',
         *common.step('S_row','S_inv'), *common.public('S_row'),
