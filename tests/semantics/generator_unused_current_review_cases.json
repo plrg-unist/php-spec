@@ -1,0 +1,20 @@
+[
+  {
+    "id": "review-unused-current-row-finally-write",
+    "purpose": "A first initialization-only Upper NEXT precedes zero-argument CURRENT on a selected sole ancestor; retained raw row and its finally write distinguish snapshot ownership without argument callbacks.",
+    "source": "<?php\nclass UnusedCurrentRowOld48 { function __destruct() { echo \"A|\"; } }\nclass UnusedCurrentRowLive48 { function __destruct() { echo \"C-LIVE|\"; } }\nfunction &unusedCurrentRowChild48() { global $row; $row = [new UnusedCurrentRowOld48()]; echo \"C0|\"; yield 7 => $row; echo \"L|\"; return null; }\nfunction unusedCurrentRowMiddle48() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; return $reply; } finally { echo \"J|\"; } }\nfunction unusedCurrentRowUpper48() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; $GLOBALS[\"row\"][0] = new UnusedCurrentRowLive48(); echo \"K-END|\"; } }\nfunction unusedCurrentRowOuter48() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\nfunction unusedCurrentRowTake48() { echo \"TAKE|\"; $chosen = $GLOBALS[\"upper\"]; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"CLEARED|\"; return $chosen; }\n$child = unusedCurrentRowChild48(); $middle = unusedCurrentRowMiddle48(); $upper = unusedCurrentRowUpper48(); $outer = unusedCurrentRowOuter48();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\n$upper->next(); echo \"INIT|\";\necho \"S|\";\nunusedCurrentRowTake48()->current(); echo \"CALLER|\";\nunset($row); echo \"ROW-DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "9cab92b823f0afdefcc9d6a9747bd884f131ba802d8650654078db33075630a7",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C0|L|H|INIT|S|TAKE|F|CLEARED|K|A|K-END|CALLER|C-LIVE|ROW-DROPPED|E"
+  },
+  {
+    "id": "review-unused-current-physical-finally-slot-throw",
+    "purpose": "Independent initialization-only Middle and Upper NEXT calls precede CURRENT; live physical finally slot clearing and a literal cache RuntimeException expose cleanup order and Previous identity.",
+    "source": "<?php\nclass UnusedCurrentObjectCache48 { function __destruct() { echo \"D|\"; throw new RuntimeException(\"cache48\"); } }\nfunction &unusedCurrentObjectChild48() { global $slot; $slot = new UnusedCurrentObjectCache48(); echo \"C|\"; yield $slot; echo \"L|\"; return \"done48\"; }\nfunction unusedCurrentObjectMiddle48() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; return $reply; } finally { echo \"J|\"; $GLOBALS[\"slot\"] = null; echo \"J-END|\"; } }\nfunction unusedCurrentObjectUpper48() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction unusedCurrentObjectOuter48() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\nfunction unusedCurrentObjectTake48() { echo \"TAKE|\"; $chosen = $GLOBALS[\"upper\"]; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"CLEARED|\"; return $chosen; }\n$child = unusedCurrentObjectChild48(); $middle = unusedCurrentObjectMiddle48(); $upper = unusedCurrentObjectUpper48(); $outer = unusedCurrentObjectOuter48();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\n$middle->next(); echo \"INIT-M|\";\n$upper->next(); echo \"INIT-U|\";\necho \"S|\";\ntry { unusedCurrentObjectTake48()->current(); echo \"BAD-RETURN|\"; }\ncatch (Exception $caught) { echo \"CALLER|\", $caught instanceof RuntimeException ? 1 : 0, \"|\", $caught->getMessage() === \"cache48\" ? 1 : 0, \"|\", $caught->getPrevious() === null ? 1 : 0, \"|\"; }\nunset($caught, $slot); echo \"E\";\n",
+    "source_sha256": "25ddb1ba7ecbeb2002c6ab768dc420948d4ef7121ecfa6ce1298305c3dafa9a8",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|INIT-M|INIT-U|S|TAKE|F|CLEARED|J|D|K|CALLER|1|1|1|E"
+  }
+]

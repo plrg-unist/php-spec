@@ -226,6 +226,32 @@ missing-list checks are cardinality facts. Native/baseline and separate 87/3 sta
 Original filter compile0, active-C finder and main-table state0 are preserved; only the
 corrected peer retries under strict 45/state 300. Wider prefixes/bodies/throw forms,
 fewer slots, reentry and GC remain partial; no general reachability claim.
+
+M131 extends completed-prefix authority with a separate SOURCE-only cursor-list
+tag. Every missing lexical path is checked through the same compiled computed
+return/non-BYREF callee and cursor bounds. Optional recursion distinguishes an
+invalid tail from empty success and reverses [D,E] to retirement order [E,D].
+The old one-prefix tag uses a singleton wrapper; new capture requires at least
+two cursors and actual C.finally ORIGIN. Exact list/true queue/direct C3 Given
+authority survives E/D/C free without historical object roots.
+
+Pending replay restores E_NULL/D_NULL/C_NULL/B/A and NoticeE26. The suffix grammar
+recurses through linked leading NULL slots before any live node, retaining the
+first Notice and minimum two live slots. Its old one-HERE helper now also accepts
+two NULLs; previously accepted one/two-NULL scanner suffixes and transitions stay
+the same. Other history tags, generic execution, storage and roots are unchanged.
+
+Source 1 and 343/6 at c464/409 pass. Three author raw/public states cover actual
+E/D completion and C capture; helper-only extraction controls test full-list
+authority. Independent proof mirrors interior D LINE/order mutations in the
+physical EXIT/registry with unchanged heap and supplied identity, checks linked
+NULL/first-Notice grammar, and proves raw/public pending finish, E resumption and
+D_NULL consumption with one E REF_RECHECK. Main ENV, local catch, one Notice26,
+fresh NULL/b7 and one full native ending pass. Native/baseline and separate 118/4
+remain at a535/409; no executed failure/retry or old actor. The recursive rule
+has fresh two-prefix coverage only; fewer remaining slots, wider throw bodies,
+reentry and GC remain partial. Non-BYREF is a source bound, not an oracle claim
+about the Notice behavior of by-reference callees.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
 Pruning prepares the object store and fatal marks once, then selects the same

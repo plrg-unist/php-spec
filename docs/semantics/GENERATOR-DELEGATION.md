@@ -222,6 +222,14 @@ prefix; an already-refreshed endpoint contributes none. Owning-return walkers,
 source demand, result/slot ownership and the common release scheduler remain
 unchanged. See the
 [node-free ancestor SEND review](../../coverage/semantics/generator-nodefree-ancestor-send-review.json).
+For zero-argument CURRENT, an original already-refreshed one-ancestor endpoint
+and cleared selected bit authenticate quiet unused-result discard. Actual
+update identity and plain-result equality exclude a child-prefix transition or
+forged output. Source demand and the real discarded continuation must agree;
+assignment context keeps its copy even with a forged DISCARD tail. The physical
+cache owns the value throughout the fused copy/drop, so existing receiver and
+close machinery suffice. See the
+[unused CURRENT review](../../coverage/semantics/generator-unused-current-review.json).
 Literal pending NEXT takes the same initialization-only return through a direct
 or finite native-linked receiver, preserving the actual parked source and frame.
 Its NULL result owns no current snapshot. After a raw-row write performs COW,

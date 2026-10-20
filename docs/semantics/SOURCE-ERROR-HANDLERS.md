@@ -140,7 +140,7 @@ again after the first read, including one removed by the first handler.
 All seven comparisons permit a live flat primitive array at the opposing CV on entry or return, including
 reference rebinding and COW. Both-missing/shared-name entries retain physical order.
 Current arrays compare by emptiness against frozen NULL; rebound scalars keep
-their ordinary rules. Nested/reference/internal-object entries remain partial; the
+their ordinary rules. Nested/internal-object entries remain partial; the
 [spaceship](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
 and [Boolean array resume reviews](../../coverage/semantics/undefined-scalar-compare-array-resume-review.json)
 record resume bounds, certificates, roots and discard. The Boolean extension
@@ -179,8 +179,15 @@ DIRECT primitive or live ordinary-object leaves. Saved tables retain their
 children through COW; current-table replacement may release them inside the
 callback. Final table release runs child destructors only when no other object
 owner remains. Source certificates, roots and restore/discard stay exact;
-ALIAS/nested/internal/Stringable leaves remain partial. See the
+Object/array-valued ALIAS entries and nested/internal/Stringable leaves remain partial. See the
 [object-array review](../../coverage/semantics/undefined-comparison-object-array-review.json).
+Primitive ALIAS entries also pass when their cell is a live allocated reference
+with a defined primitive payload. Saved table roots retain the entry-to-cell
+edges; table owners do not multiply them. COW unwraps singleton references while
+shared cells preserve writes across copies, including after a saved table is
+released by a throw. Source/restore/discard machinery stays exact; the
+[reference-array review](../../coverage/semantics/undefined-comparison-reference-array-review.json)
+records normal/default/throw cell lifetimes and budgets.
 Internal/Stringable objects, resources, nonflat arrays and wider producers remain partial.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.

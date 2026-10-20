@@ -165,6 +165,13 @@ all three peer fixture failures, original packets, immutable snapshots, worker12
 combined runtime patch and the separate two-premise narrowing patch,
 SHA-256 `cb5018d95cd9cc4b5bf5943f3f159c8746ec61d1d5aeae8e715c3233bd86e0e0`.
 
+The recursive completed-prefix retirement proof is in
+`../php-spec-evidence-archive/lifecycle-double-retirement-131/manifest.json`:
+500,623 bytes/104 members under `.tools/m131/`, six reports,
+original packets, immutable author/peer snapshots, worker120 and the isolated
+three-file runtime patch,
+SHA-256 `024ccd1c4835d69185db414a83588eeb42fa5515424b0c9c0e782b030817c035`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

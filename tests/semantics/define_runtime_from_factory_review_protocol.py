@@ -76,7 +76,7 @@ def controls():
         'S_binding = S[.CLOSUREBINDINGS = [pclosurebinding_bad]]',
         '$typed_closure(S_binding,n_factory)', '~$dynamic_runtime_object(S_binding,n_factory)',
         'S_internal = S[.OBJECTS[n_factory] = INTRINSICCLOSURE INTRINSIC_DEFINE]',
-        '$typed_closure(S_internal,n_factory)', '~$dynamic_runtime_object(S_internal,n_factory)',
+        '$typed_closure(S_internal,n_factory)', '$dynamic_runtime_object(S_internal,n_factory)',
         'S_wrapped = S[.OBJECTS[n_factory] = CONSTANTCLOSURE pconfigcall.SITE (S.OBJECTS[n_factory])]',
         '$dynamic_define_value_class(S_wrapped,POBJECT n_factory) = eps',
         'pconstantclosure_bad = {OBJECT n_factory,SITE pconfigcall.SITE,DECL pconfigcall.SITE,PREFIX (|S.DECLARATIONS|)}',
