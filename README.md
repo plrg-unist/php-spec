@@ -937,6 +937,14 @@ Three originals and 688 focused premises pass in the
 Initial leading LEFT/quiet RHS scalar refs and a primitive target before and after
 final dispatch bound this slice; wider values, producers and lifetimes remain partial.
 
+Selected-reference `%=` now keeps its old target while reading the current RHS
+wrapper after a float-to-int Deprecated callback. Rebinding RHS from old `0` to `5`
+lets captured `12` store integer `2` through the old alias; the opposite old `5`
+to current `0` raises Modulo-by-zero without storing. Rebinding the target name
+leaves its replacement unchanged. Two originals and 321 focused premises pass in
+the [selected modulo ledger](coverage/semantics/modassign-selected-warning-review.json).
+Other conversions, producers and lifetimes remain partial.
+
 Plain-CV `%=` now keeps the first converted long through a fractional-float
 deprecation, then reads the live quiet integer RHS. Normal return stores the
 remainder; a supplied throw or live zero leaves the target and late alias intact.

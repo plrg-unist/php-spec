@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Selected-reference `%=` now saves LEFT's converted integer before Deprecated,
+then reads the current RHS wrapper. Old RHS `0` rebound to `5` gives cached
+`12 % 5 = 2` through the old target alias despite callback `99` and target name
+`77`. Old RHS `5` rebound to current `0` instead raises `Modulo by zero` at line 25 without
+replacing old `88` or outer `100`. Surviving aliases and replacement names retain
+separate owners/write-through. Two originals pass at `3656e30f9`/407 and
+321 focused premises at `b10c8a940`/407 in the
+[selected modulo ledger](coverage/semantics/modassign-selected-warning-review.json).
+Initial scalar references, finite in-range fractional LEFT and quiet integer RHS
+bound this slice. Existing CV/numeric/unwind/write/root bodies stay exact; other
+conversions, unsafe targets and wider lifetimes remain partial, OP12 paused.
+
+Composed over `a6eb790ae`/407, preserving incoming state, task and
+manifest paths. Source2/state321 retain their private407 cuts; independently
+reviewed absent incoming selectors require no joined execution or renewed credit.
+
 Reversed `>`/`>=` now quietly consume a checked defined source-right CV removed
 by the missing-left Warning handler. First source-left NULL stays frozen, yielding
 false/true without another report or reading an old alias/current left9. Fresh and
@@ -27,21 +43,8 @@ property tasks stay unused and retained/debt lists stay empty. Source9+1/state56
 and affected68/2/two selectors retain `0e7bc1f2f`/407 without joined execution,
 accepted replay or historical renewal.
 
-Selected-reference `+=` now stages an initially nonquiet text RHS. A first
-Warning can repair bad text before the selected old RHS converts; a second
-supplied Exception preserves callback `88`/`7` and outer `100` without storing.
-Two CV names sharing one CELL capture `12.5` then `5.5` across callbacks despite
-both names rebinding to `77`/`7`. Cached float `18.0` stores through the surviving
-old alias as owners fall from three to two to one. Two originals pass at
-`985f082b7`/407 and 352 focused premises at `ee5da44bd`/407.
-[Staged RHS ledger](coverage/semantics/addassign-repair-review.json).
-Only a strict source/selected-scalar text entry is added; old plans, phase/holder,
-failure, store, numeric and root bodies stay exact. Other producers, unsafe
-targets and wider lifetimes remain partial, OP12 paused.
-
-Composed over `c828e621a`/407, preserving incoming state, task and
-manifest paths. Source2/state352 retain their private407 cuts; independently
-reviewed absent incoming selectors require no joined execution or renewed credit.
+Earlier selected-reference `+=` staged RHS admission retains source2/state352
+in the [staged RHS ledger](coverage/semantics/addassign-repair-review.json).
 
 From-callable method Closure VALUES now publish under their saved source and
 invocation USER permission. Base-private selection stays distinct from a Child
