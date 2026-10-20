@@ -133,6 +133,12 @@ scalar-argument cache destructor throws a RuntimeException whose Previous stays
 NULL; an older caught Exception exists only in globals. An assigned result
 retains its copy through receiver retirement; see the
 [unused SEND review](../../coverage/semantics/generator-unused-pending-send-review.json).
+Equal argument/current values supply distinct argument and result owners for two
+quiet releases. In the tested case with one receiver owner, retirement destroys
+the last cache before the ancestor finally, independently of the request-late
+copied return. A throwing cache still has no pending older Exception to chain;
+see the
+[aliased SEND review](../../coverage/semantics/generator-unused-pending-send-alias-review.json).
 Pending NEXT preserves that parked return across the same close transfer but
 creates no current copy. A temporary sole receiver releases its cache during
 storage cleanup, before caller delivery; a throwing cache has no older caught

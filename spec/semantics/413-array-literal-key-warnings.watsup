@@ -200,6 +200,13 @@ def $array_float_ref_key_value(S, n_old, VARIABLE n_name* z) = (DIRECT pvalue)
   -- if $lookup(S.ENV, n_name*) = (n_current)
   -- if n_current =/= n_old
   -- if $array_float_key_value(S, VARIABLE n_name* z) = (pvalue)
+def $array_float_ref_key_value(S, n_old, VARIABLE n_name* z) = (DIRECT (PARRAY n_array))
+  -- if $lookup(S.ENV, n_name*) = (n_current)
+  -- if n_current =/= n_old
+  -- if $propref_at(S.PROPREFS, n_old) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n_old) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_old) = eps
+  -- if $array_float_array_key_value(S, VARIABLE n_name* z) = (n_array)
 def $array_float_ref_key_value(S, n_old, VARIABLE n_name* z) = (ALIAS n_current)
   -- if ~$environment_blocked(S, n_name*)
   -- if $lookup(S.ENV, n_name*) = (n_current)
@@ -221,6 +228,7 @@ def $array_float_ref_key_old_payload(S, n, n_old, pitem) = false -- otherwise
 dec $array_float_ref_key_builder_alias(pstate, nat, pitem) : bool
 def $array_float_ref_key_builder_alias(S, n, ALIAS n_current) = true
   -- if S.STORE[n_current] = DEFINED (PARRAY n)
+def $array_float_ref_key_builder_alias(S, n, DIRECT (PARRAY n)) = true
 def $array_float_ref_key_builder_alias(S, n, pitem) = false -- otherwise
 
 dec $array_float_ref_key_ready(pstate, nat, nat, poperand) : bool
@@ -256,6 +264,9 @@ def $array_float_ref_key_retain(S, n_old, poperand) = S
   -- if $array_float_ref_key_value(S, n_old, poperand) = (ALIAS n_old)
 def $array_float_ref_key_retain(S, n_old, poperand) = $literal_reference_retain(S, n_old)
   -- if $array_float_ref_key_value(S, n_old, poperand) = (DIRECT pvalue)
+  -- if $array_float_key_scalar(S, pvalue)
+def $array_float_ref_key_retain(S, n_old, poperand) = $literal_array_owe($literal_reference_retain(S, n_old), n_current)
+  -- if $array_float_ref_key_value(S, n_old, poperand) = (DIRECT (PARRAY n_current))
 def $array_float_ref_key_retain(S, n_old, poperand) = $literal_reference_owe($literal_reference_retain(S, n_old), n_current)
   -- if $array_float_ref_key_value(S, n_old, poperand) = (ALIAS n_current)
   -- if n_current =/= n_old
@@ -522,11 +533,23 @@ def $array_float_array_key_value(S, VARIABLE n_name* z) = (n_array)
   -- if $literal_reference_flat_array(S, n_array, S.ALLOCATIONS)
 def $array_float_array_key_value(S, poperand) = eps -- otherwise
 
+;; The ordinary CV zval itself can become a wrapper during conversion.
+dec $array_float_array_key_item(pstate, poperand) : pitem?
+def $array_float_array_key_item(S, poperand) = (DIRECT pvalue)
+  -- if $array_float_key_live_value(S, poperand) = (pvalue)
+def $array_float_array_key_item(S, VARIABLE n_name* z) = (ALIAS n_current)
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_current)
+  -- if ~$foreach_released_container_cell(S, n_current) /\ ~$update_released_array_name(S, n_name*)
+  -- if $propref_at(S.PROPREFS, n_current) = eps
+  -- if $literal_reference_cell(S, n_current, S.ALLOCATIONS)
+def $array_float_array_key_item(S, poperand) = eps -- otherwise
+
 dec $array_float_array_key_ready(pstate, nat, nat, poperand) : bool
 def $array_float_array_key_ready(S, n, n_old, poperand) = true
   -- if poperand = VARIABLE n_name* z
-  -- if $array_float_key_live_value(S, poperand) = (pvalue)
-  -- if n_old =/= n /\ pvalue =/= PARRAY n
+  -- if $array_float_array_key_item(S, poperand) = (pitem)
+  -- if n_old =/= n /\ ~$array_float_ref_key_builder_alias(S, n, pitem)
   -- if $literal_reference_flat_array(S, n_old, S.ALLOCATIONS)
   -- if $array_float_key_plain_nodes($heap_reach([HARRAY n], eps, $heap_graph(S).EDGES))
 def $array_float_array_key_ready(S, n, n_old, poperand) = false -- otherwise
@@ -570,6 +593,8 @@ def $array_float_array_key_retain(S, n_old, poperand) = $literal_array_owe($lite
 def $array_float_array_key_retain(S, n_old, poperand) = $literal_array_retain(S, n_old)
   -- if $array_float_key_live_value(S, poperand) = (pvalue)
   -- if $array_float_key_scalar(S, pvalue)
+def $array_float_array_key_retain(S, n_old, poperand) = $literal_reference_owe($literal_array_retain(S, n_old), n_current)
+  -- if $array_float_array_key_item(S, poperand) = (ALIAS n_current)
 
 rule PhpStep/array-float-array-key-warning: S ~> $error_dispatch(S[.RESULT = KNOWN PNULL], 8192, $list_float_key_message(n_bits), z, DIAGNOSTIC "Deprecated" $list_float_key_message(n_bits) z, ARRAY_KEY_FLOAT_ARRAY_RESULT n n_old poperand phpType13* z n_bits i)
   -- if $array_float_array_key_pending(S)
@@ -578,8 +603,8 @@ rule PhpStep/array-float-array-key-result: S ~> S_out[.TODO = (ARRAY_NEXT n phpT
   -- if S.TODO = (ARRAY_KEY_FLOAT_ARRAY_RESULT n n_old poperand phpType13* z n_bits i) :: ptask_tail*
   -- if $array_float_array_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i)
   -- if $array_float_array_key_ready(S, n, n_old, poperand)
-  -- if $array_float_key_live_value(S, poperand) = (pvalue)
-  -- if S_out = $literal_insert($array_float_array_key_retain(S, n_old, poperand), n, (KINT i), pvalue, z)
+  -- if $array_float_array_key_item(S, poperand) = (pitem)
+  -- if S_out = $literal_item_insert($array_float_array_key_retain(S, n_old, poperand), n, (KINT i), pitem, z)
 rule PhpStep/array-float-array-key-result-unsupported: S ~> S[.TODO = eps][.RESULT = KNOWN PNULL][.COMPLETION = UNSUPPORTED "array literal float-key array CV after callback"]
   -- if S.TODO = (ARRAY_KEY_FLOAT_ARRAY_RESULT n n_old poperand phpType13* z n_bits i) :: ptask_tail*
   -- if $array_float_array_key_source(S, n, n_old, poperand, phpType13*, z, n_bits, i)

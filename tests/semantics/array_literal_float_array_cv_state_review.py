@@ -115,7 +115,7 @@ def conditions(name, program, path, stdout):
             '$array_float_array_key_value(S_resume, poperand) = (n_new)',
             '$array_float_array_key_ready(S_resume, n_a, n_old, poperand)',
             '$array_float_array_key_source(S_resume[.ENV = eps], ' + args + ')',
-            '~$array_float_array_key_ready(S_resume[.REFCELLS = n_q :: S_resume.REFCELLS], n_a, n_old, poperand)',
+            '~$array_float_array_key_ready(S_resume[.REFCELLS = n_q :: S_resume.REFCELLS][.STORE[n_q] = DEFINED (PSTRING eps)], n_a, n_old, poperand)',
             '~$array_float_array_key_ready(S_resume[.STORE[n_q] = DEFINED (PARRAY n_a)], n_a, n_old, poperand)',
             'PhpStep: S_resume ~> S_insert',
             'S_insert.STORE = S_resume.STORE',

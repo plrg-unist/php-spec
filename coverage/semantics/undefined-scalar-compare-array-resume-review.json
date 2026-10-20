@@ -1,0 +1,105 @@
+{
+  "milestone": "COMP109 live flat arrays after missing-CV Boolean comparison Warnings",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "Resume only for ==, !=, <, <=, > and >=: an opposing direct CV may hold a live allocated flat array of DIRECT primitive leaves after an already admitted scalar or missing-pair Warning, including a shared name. The first missing result stays NULL; table emptiness determines the Boolean comparison.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "4d0e96b1d34a6c0251896f1894636d3d649c72f9",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "72265c506806aca56dfa5605261f5982838675012da16cdcccdd9a4091644e8c"
+  },
+  "modules": 407,
+  "engine_basis": "Zend equality/smaller helpers test physical OP1 UNDEF then current OP2 before zend_compare. Greater compilation preserves source evaluation order but swaps physical operands. A missing read yields language-level NULL after its Warning; current CV wrappers follow callback rebinding. NULL/ARRAY compares truth by table emptiness, independently of leaves and next-index history.",
+  "implementation": "Twelve additive207 lines reuse the existing allocated flat DIRECT-array operand validator behind an exact Boolean record predicate and exclude it from two resume refusals. Generic restore/comparison/ownership perform the read. Scalar/pair ingress, source certificates, known-NULL second records, SPACE behavior, tasks/fields/roots/discard stay exact.",
+  "behavior": [
+    "Six author and four independent originals agree across all six operators, both physical orders, both-missing/shared-CV entry, all primitive leaf tags, late reference rebinding, COW copies and NEXT1 append, one default Warning and a first supplied Exception preserving caller41/identity/finally.",
+    "Four strict-SL groups check raw frozen-NULL restore and Boolean results, immutable-empty and shared nonimmutable pool separation, CELL2/table1 ownership, old target2 to1, source/line/CODE/operator exclusions, known-NULL second-record exclusion, physical unread-left retry and zero/split budgets.",
+    "Two authentic old scalar fronts retain allocationless PARRAY0 refusals. Eleven old flat-array boundary selectors now agree normally; two stale quiet-unset wrapper expectations are repaired without source-body changes. All thirteen affected selectors renew no historical agreement."
+  ],
+  "baseline": {
+    "report": "initial/baseline-report.json",
+    "sha256": "a4dfd8a492c64490f4f77f7cae1bc74a405eec8321560eb80dab7589f916ed51",
+    "revision": "2199eb6f436db25ae6faf59cb07fc0fcb513e4a4",
+    "native": "Initial author2 and peer4 retain actual canonical f1726092c/407 cuts; genuine unchanged model retains private2199eb6f4/407. Peer model4 reuses retained native4; changed-source author native8 is separately recorded in author-source/native-report.json.",
+    "model": "Genuine unchanged EQUAL source is accepted/checked, then Unsupported/scalar comparison warning changed right operand after exactly H:1:1:10:1; with empty stderr.",
+    "agreement_credit": 0
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "89e477ad96b523bbd92216067cc1e0f53945946161152f752f2bf0d50d7c2ae3",
+      "revision": "d4a551c1ddbd2ad7721fa2d9dd8b1451fcfb8f04",
+      "agreements": 6,
+      "unsupported_controls": 2
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "409318667ebe9bb308fca027bb8674ae0924fdc1231e50f453e97de309278195",
+      "revision": "d4a551c1ddbd2ad7721fa2d9dd8b1451fcfb8f04",
+      "agreements": 4,
+      "unsupported_controls": 0
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "35fab10b8cb6cdc71a8aaf8c148dcdd50c99cb068269274a5059470a959e0c66",
+      "revision": "d4a551c1ddbd2ad7721fa2d9dd8b1451fcfb8f04",
+      "premises": 261,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "004a9569f94514310e097671083016039b2ef5a6b95bce0269b37a63d1607a3c",
+      "revision": "d4a551c1ddbd2ad7721fa2d9dd8b1451fcfb8f04",
+      "premises": 326,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 10,
+    "unsupported_source_controls": 2,
+    "state_premises": 587,
+    "state_groups": 4
+  },
+  "maintenance": {
+    "state": {
+      "report": "maintenance-state/report.json",
+      "sha256": "7b0ddfb67e5929fcde9342a56bb114f656b2c597958fd0169d1cfcf6ebd3f016",
+      "revision": "d4a551c1ddbd2ad7721fa2d9dd8b1451fcfb8f04",
+      "premises": 131,
+      "groups": 2
+    },
+    "source_selectors": {
+      "report": "maintenance-source/report.json",
+      "sha256": "81747e77dfde925fc4747862b9c99cb367e9ca71e5441fd658069e1bd72a8cdb",
+      "revision": "d4a551c1ddbd2ad7721fa2d9dd8b1451fcfb8f04",
+      "selectors": 13
+    },
+    "historical_agreement_renewal": 0,
+    "scope": "Only old91/92 scalar fronts through allocationless-array refusal. Eleven selected former flat-array boundary sources plus old93/94 stale checked-counterpart-unset expectations, with exact keys retained in initial/maintenance_sources.py; no full old family campaign."
+  },
+  "validation": "CPU4 serial/fail-first/full reap,2GiB: native8 hard130/wall150/per15; model8 hard605/wall620/CLI45/record60; retained peer4 hard315/wall330/CLI60/record75. Focused and maintenance pairs hard275/wall290/per120 strict SL/dettrue/cachefalse. Thirteen selectors hard1020/wall1040/child80. Reports retain commands/inputs/exits/raw observations.",
+  "failures": [],
+  "remaining": [
+    "Initially owning operands, nested/reference/object array leaves and wider producers/lifetimes remain partial; paused COMP88 is untouched.",
+    "All actual gates pass first attempts at d4a551c1d/407. Initial records keep their original cuts; affected checks renew no historical credit."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-109",
+  "artifact_manifest_sha256": "e6a52e79c1214a2894e4b36ffe4988533eaa7bbeb7d6e54913736556c798e03d",
+  "independent_reviewer": "/root/comp89_review",
+  "divergences": [],
+  "reproduction": [
+    "python3 tests/semantics/undefined_scalar_compare_array_resume_sources.py --phase native --output .tools/comp109-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_array_resume_sources.py --phase model --output .tools/comp109-source-new",
+    "python3 tests/semantics/undefined_scalar_compare_array_resume_state.py --output .tools/comp109-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_array_resume_review_state.py --output .tools/comp109-peer-state-new",
+    "python3 tests/semantics/undefined_scalar_compare_array_resume_maintenance.py --output .tools/comp109-maint-state-new"
+  ],
+  "integration": {
+    "parent": "c253765319a81ca0d926addcd3dce4fec5085bc6",
+    "modules": 407,
+    "preservation": "Sole operational207 retains tested72265c50. All22 own publication tests, full incoming checkpoint body, every other schema/task/field/default/ordered-manifest path and other inventory row are preserved; own seven rows stay partial.",
+    "interaction_review": "INI_SET NULL-pack relaxation needs its absent intrinsic. Public property-unset guards require PROPERTY/PROPERTY_UNSET producers, absent from ordinary array/GLOBALS unset. Reference-return clear-method selectors require absent BYREF retirement. NaN bitnot requires BITNOT_RESULT, absent from logical NOT/isset. Typed float-key array reference admission needs PROPREF/property-source/float-key history, absent from current CV references and primitive implicit-key arrays. Array COW/GC/pool bodies stay parent-exact; the new BITNOT_NAN_WARNING task variant remains unused.",
+    "evidence": "Source10+2/state587 and separate affected131/2/thirteen selectors retain d4a551c1d/407. Initial native2+4 retain f1726092c/407 and genuine baseline2199eb6f4/407; no joined execution, accepted replay or historical renewal."
+  }
+}

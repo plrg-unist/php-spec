@@ -117,8 +117,8 @@ insertion remains partial.
 A separate continuation stages ordinary unwrapped array-CV values. Array values
 must be mutable nonpool flat arrays with the same bounded entries;
 the builder stays object-free and distinct from their tables. The captured
-old table gets one owner before conversion, while insertion uses the live CV's
-table without its own ADDREF. `LITERALARRAYRETAINED` and `LITERALARRAYDEBTS` track
+old table gets one owner before conversion. An unwrapped completion uses the live
+CV's table without its own ADDREF. `LITERALARRAYRETAINED` and `LITERALARRAYDEBTS` track
 these HARRAY count biases separately from wrapper CELL biases. A same-table
 retarget transfers its owner even if the original CV cell was retired. A different
 retarget can make ordinary CV and literal values share writes at physical count1.
@@ -136,6 +136,17 @@ array temporaries remain owned and frozen. The
 checks both inverse cycles, entry deletion and supplied-throw cleanup with positive
 physical counts. Initially wrapped CVs, pooled/immutable tables, nesting and
 reference leaves outside these bounds and other owning CV values remain Unsupported.
+A callback may turn an initially ordinary array CV into an untyped reference
+holding null/bool/int/float or a bounded array. Its by-value item then becomes an
+ALIAS: the old HARRAY count is retained and the new CELL owes an owner. The
+reciprocal reference-element callback may unset/recreate its CV as an ordinary
+array, inserting DIRECT PARRAY and cancelling both count families. Physical
+singleton copies unwrap; balanced shared copies preserve aliases, while child
+snapshots and ordinary old-table writes keep their COW behavior. The
+[CV/reference cycle review](../../coverage/semantics/array-literal-float-cv-ref-cycle-review.json)
+checks normal, deletion and supplied-throw paths. These completion arms exclude
+outer property/coercion/backing records and string CELL values; initial plans,
+global gates and lifetime limits stay unchanged.
 The [string-leaf review](../../coverage/semantics/array-literal-float-string-leaf-review.json)
 adds ordinary tables and untyped wrapper payloads containing canonical-byte or
 validated-carrier string leaves. String snapshots remain independent across
