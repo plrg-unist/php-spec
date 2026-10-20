@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Class-born bare REAL Closure VALUES now retain validated lexical Base/called
+Child scope, distinct private shadows and an optional receiver through dynamic
+DEFINE publication and canonical array/query copies. Receiver-free static access
+keeps Base23→41 separate from Child900. An explicit throwing-handler invocation
+keeps the sole private-copy Closure-to-receiver path until D41 runs after H and
+before catch with the original Exception and raw cleared-alias trace.
+
+Three exact originals pass at `c53f30069`/406; 762 focused premises
+(296+141+325), including two zero-budget identities, pass at `c0183a6a3`/406.
+All first attempts pass without failures, retries or accepted/historical replay.
+Sole400+12/−1 validates the selected ordinary scope or binding record while
+retaining capture/static/completeness/certificate guards; genuine prior bound
+values are preserved. Global/default policies and ownership machinery stay exact.
+Executed class-born omitted/false cases are distinct from structural valid binding,
+clone and inherited-flag composition; wider domains and core remain partial.
+[Scoped REAL define review](coverage/semantics/define-scoped-runtime-closure-review.json).
+
 Ordinary `stdClass` VALUES now use dynamic-only `PVOBJECT` authority with
 selected property/table integrity and live physical/dereferenced child checks.
 Certified rows retain `PVSTDCLASS` priority; global/default policies stay unchanged.
