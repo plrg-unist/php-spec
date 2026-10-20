@@ -130,8 +130,9 @@ S_changed_found.COMPLETION = NORMAL \/ S_changed_found.COMPLETION = BUDGET
 S_changed = S_changed_found[.COMPLETION = NORMAL]
 $mc_output(S_changed.EVENTS) = $ptascii("H:7/7/7|9/9|")
 $objectprops_record_at(S_changed.OBJECTPROPS,n_source) = (pobjectprops_changed_source)
-$property_slot_at(pobjectprops_changed_source.SLOTS,$ptascii("extra")) = (ppropertyslot_changed_source)
-ppropertyslot_changed_source.DECL = eps /\ ppropertyslot_changed_source.STATE = PROP_UNSET
+ppropertyslot_changed_source = {DECL eps, NAME $ptascii("extra"), STATE PROP_UNSET}
+ppropertyslot_changed_source <- pobjectprops_changed_source.SLOTS
+$property_slot_at(pobjectprops_changed_source.SLOTS,$ptascii("extra")) = eps
 $entry_lookup(S_changed.ARRAYS[n_table_source].ITEMS,KSTRING $ptascii("extra")) = eps
 $objectprops_record_at(S_changed.OBJECTPROPS,n_copy) = (pobjectprops_changed_copy)
 $property_slot_at(pobjectprops_changed_copy.SLOTS,$ptascii("extra")) = (ppropertyslot_changed_copy)
@@ -146,8 +147,9 @@ S_free = S_free_found[.COMPLETION = NORMAL]
 $mc_output(S_free.EVENTS) = $ptascii("H:7/7/7|9/9|free|")
 ~(HOBJECT n_source <- S_free.ALLOCATIONS) /\ ~(HARRAY n_table_source <- S_free.ALLOCATIONS)
 $objectprops_record_at(S_free.OBJECTPROPS,n_copy) = (pobjectprops_free_copy)
-$property_slot_at(pobjectprops_free_copy.SLOTS,$ptascii("extra")) = (ppropertyslot_free_copy)
-ppropertyslot_free_copy.STATE = PROP_UNSET
+ppropertyslot_free_copy = {DECL eps, NAME $ptascii("extra"), STATE PROP_UNSET}
+ppropertyslot_free_copy <- pobjectprops_free_copy.SLOTS
+$property_slot_at(pobjectprops_free_copy.SLOTS,$ptascii("extra")) = eps
 $entry_lookup(S_free.ARRAYS[n_table_copy].ITEMS,KSTRING $ptascii("extra")) = eps
 $node_children(S_free,HARRAY n_table_copy) = eps
 S_free.STORE[n_cell] = DEFINED (PSTRING_CARRIER INTERNED_STRING $ptascii("free"))
@@ -241,8 +243,9 @@ S_late.ARRAYS[n_table_late].POSITIONS = [POSITION (KSTRING $ptascii("declared"))
 S_late.ARRAYS[n_table_late].SERIAL = 3
 S_late.ARRAYS[n_table_late].NEXT = $(-9223372036854775808)
 $objectprops_record_at(S_late.OBJECTPROPS,n_late) = (pobjectprops_late)
-$property_slot_at(pobjectprops_late.SLOTS,$ptascii("alpha")) = (ppropertyslot_late_alpha)
-ppropertyslot_late_alpha.DECL = eps /\ ppropertyslot_late_alpha.STATE = PROP_UNSET
+ppropertyslot_late_alpha = {DECL eps, NAME $ptascii("alpha"), STATE PROP_UNSET}
+ppropertyslot_late_alpha <- pobjectprops_late.SLOTS
+$property_slot_at(pobjectprops_late.SLOTS,$ptascii("alpha")) = eps
 $property_slot_at(pobjectprops_late.SLOTS,$ptascii("beta")) = (ppropertyslot_late_beta)
 ppropertyslot_late_beta.DECL = eps /\ ppropertyslot_late_beta.STATE = PROP_VALUE (DIRECT (PINT 9))
 $property_slot_at(pobjectprops_late.SLOTS,$ptascii("gamma")) = (ppropertyslot_late_gamma)
@@ -370,8 +373,9 @@ def main():
                             'S_iterated.ARRAYS[n_table_source].ITEMS = [ENTRY (KSTRING $ptascii("declared")) (INDIRECT n_source $ptascii("declared")),ENTRY (KSTRING $ptascii("alpha")) (DIRECT (PINT 7)),ENTRY (KSTRING $ptascii("beta")) (DIRECT (PINT 19))]',
                             'S_iterated.ARRAYS[n_table_copy].ITEMS = [ENTRY (KSTRING $ptascii("declared")) (INDIRECT n_copy $ptascii("declared")),ENTRY (KSTRING $ptascii("beta")) (DIRECT (PINT 9)),ENTRY (KSTRING $ptascii("gamma")) (DIRECT (PINT 23))]',
                             '$objectprops_record_at(S_iterated.OBJECTPROPS,n_copy) = (pobjectprops_iterated)',
-                            '$property_slot_at(pobjectprops_iterated.SLOTS,$ptascii("alpha")) = (ppropertyslot_unset)',
-                            r'ppropertyslot_unset.DECL = eps /\ ppropertyslot_unset.STATE = PROP_UNSET',
+                            'ppropertyslot_unset = {DECL eps, NAME $ptascii("alpha"), STATE PROP_UNSET}',
+                            'ppropertyslot_unset <- pobjectprops_iterated.SLOTS',
+                            '$property_slot_at(pobjectprops_iterated.SLOTS,$ptascii("alpha")) = eps',
                             '$property_slot_at(pobjectprops_iterated.SLOTS,$ptascii("declared")) = (ppropertyslot_iterated_declared)',
                             'ppropertyslot_iterated_declared.STATE = PROP_VALUE (DIRECT (PINT 2))',
                             '$objectprops_record_at(S_iterated.OBJECTPROPS,n_source) = (pobjectprops_iterated_source)',
