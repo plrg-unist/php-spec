@@ -158,6 +158,13 @@ fixture failure, original packets, accepted snapshots, worker240 and the
 isolated270 runtime patch,
 SHA-256 `81813f0b3fab83016de8a81e302445543ce305dd11e28f7ee59ea962db9d6988`.
 
+The later owning-retirement proof is in
+`../php-spec-evidence-archive/lifecycle-later-retirement-130/manifest.json`:
+805,680 bytes/159 members under `.tools/m130/`, ten reports retaining
+all three peer fixture failures, original packets, immutable snapshots, worker120,
+combined runtime patch and the separate two-premise narrowing patch,
+SHA-256 `cb5018d95cd9cc4b5bf5943f3f159c8746ec61d1d5aeae8e715c3233bd86e0e0`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

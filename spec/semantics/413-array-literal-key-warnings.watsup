@@ -741,12 +741,12 @@ def $array_null_key_slot(S, n_capture, REFERENCE n_cell) = (pvalue)
   -- if n_capture = n_cell
   -- if $call_reference_operand_valid(S, REFERENCE n_cell)
   -- if S.STORE[n_cell] = DEFINED pvalue
-  -- if $propref_at(S.PROPREFS, n_cell) = eps
   -- if $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
   -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps
   -- if ~(n_cell <- S.LITERALREFDEBTS)
   -- if H_live = $heap_prune($heap_graph(S)[.DEBTS = eps])
   -- if (HCELL n_cell) <- H_live.NODES
+  -- if $literal_reference_cell(S, n_cell, H_live.NODES)
   -- if $array_null_key_payload(S, pvalue, H_live.NODES)
 def $array_null_key_slot(S, n_capture, poperand) = eps -- otherwise
 
@@ -774,6 +774,7 @@ def $array_null_key_ready(S, n, n_capture, poperand, pvalue) = true
   ;; Throw discard has popped the marker; its snapshot argument still owns the
   ;; allocated value even when that value has no remaining root in this S yet.
   -- if $array_null_key_payload(S, pvalue, S.ALLOCATIONS)
+  -- if $propref_at(S.PROPREFS, n_capture) = eps \/ $literal_reference_cell(S[.STORE[n_capture] = DEFINED pvalue], n_capture, S.ALLOCATIONS)
 def $array_null_key_ready(S, n, n_capture, poperand, pvalue) = false -- otherwise
 dec $array_null_key_restore(pstate, nat, pvalue) : pstate
 def $array_null_key_restore(S, n_capture, pvalue) = S[.STORE[n_capture] = DEFINED pvalue]
@@ -800,7 +801,31 @@ def $array_null_key_plan(S) = ((n, n_capture, REFERENCE n_capture, pvalue, phpTy
   -- if $array_null_key_source(S, n, n_capture, REFERENCE n_capture, pvalue, phpType13*, z)
   -- if $array_null_key_ready(S, n, n_capture, REFERENCE n_capture, pvalue)
 def $array_null_key_plan(S) = eps -- otherwise
-def $array_null_key_pending(S) = ($error_handler_eligible(S, 8192) /\ $array_null_key_plan(S) =/= eps)
+;; An ordinary by-value function return is an owning VAR, so NULL conversion
+;; adds a backup owner without a captured CV slot to restore.
+dec $array_null_value_source(pstate, nat, nat, phpType13*, int) : bool
+def $array_null_value_source(S, n, n_value, phpType13*, z) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if ~$array_immutable(S, n) /\ $heap_count(HARRAY n, $pools_nodes(S.POOLS)) = 0
+  -- if n =/= n_value
+  -- if $array_float_key_item(S, phpType13*, z) = ((NExprFuncCall name (SEQUENCE eps) metadata, poperand_key))
+  -- if $array_float_key_input_source(S, NExprFuncCall name (SEQUENCE eps) metadata, KNOWN (PARRAY n_value))
+def $array_null_value_source(S, n, n_value, phpType13*, z) = false -- otherwise
+
+dec $array_null_value_ready(pstate, nat, nat) : bool
+def $array_null_value_ready(S, n, n_value) = ($array_null_key_payload(S, PARRAY n_value, S.ALLOCATIONS) /\ $array_float_key_ready(S, n, KNOWN (PARRAY n_value)))
+
+dec $array_null_value_plan(pstate) : (nat, nat, phpType13*, int)?
+def $array_null_value_plan(S) = ((n, n_value, phpType13*, z))
+  -- if S.TODO = (ARRAY_VALUE n (VARIABLE n_key* z_key) phpType13* z) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if S.RESULT = KNOWN (PARRAY n_value)
+  -- if $array_float_key_item(S, phpType13*, z) = ((expression, VARIABLE n_key* z_key))
+  -- if $array_float_key_value(S, VARIABLE n_key* z_key) = (PNULL)
+  -- if $array_null_value_source(S, n, n_value, phpType13*, z)
+  -- if $array_null_value_ready(S, n, n_value)
+def $array_null_value_plan(S) = eps -- otherwise
+def $array_null_key_pending(S) = ($error_handler_eligible(S, 8192) /\ ($array_null_key_plan(S) =/= eps \/ $array_null_value_plan(S) =/= eps))
 
 rule PhpStep/array-null-key-warning: S ~> $error_dispatch(S, 8192, $list_null_key_message(), z, DIAGNOSTIC "Deprecated" $list_null_key_message() z, ARRAY_KEY_NULL_RESULT n n_capture poperand pvalue phpType13* z)
   -- if $array_null_key_pending(S)
@@ -828,3 +853,30 @@ def $error_read_discard(S, ARRAY_KEY_NULL_RESULT n n_capture poperand pvalue php
   -- if $array_null_key_ready(S, n, n_capture, poperand, pvalue)
 def $error_read_discard(S, ARRAY_KEY_NULL_RESULT n n_capture poperand pvalue phpType13* z) = S[.COMPLETION = UNSUPPORTED "array literal null-key value reset during throw"]
   -- if ~$array_null_key_ready(S, n, n_capture, poperand, pvalue)
+
+rule PhpStep/array-null-value-warning: S ~> $error_dispatch(S, 8192, $list_null_key_message(), z, DIAGNOSTIC "Deprecated" $list_null_key_message() z, ARRAY_KEY_NULL_VALUE_RESULT n n_value phpType13* z)
+  -- if $array_null_key_pending(S)
+  -- if $array_null_value_plan(S) = ((n, n_value, phpType13*, z))
+rule PhpStep/array-null-value-result: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13*) :: ptask_tail*][.RESULT = KNOWN PNULL][.ORIGIN = $origin_next_item(S.ORIGIN, phpType13*)]
+  -- if S.TODO = (ARRAY_KEY_NULL_VALUE_RESULT n n_value phpType13* z) :: ptask_tail*
+  -- if $array_null_value_source(S, n, n_value, phpType13*, z)
+  -- if $array_null_value_ready(S, n, n_value)
+  -- if S_out = $literal_insert(S, n, (KSTRING eps), PARRAY n_value, z)
+rule PhpStep/array-null-value-result-unsupported: S ~> S[.TODO = eps][.RESULT = KNOWN PNULL][.COMPLETION = UNSUPPORTED "array literal null-key returned array after callback"]
+  -- if S.TODO = (ARRAY_KEY_NULL_VALUE_RESULT n n_value phpType13* z) :: ptask_tail*
+  -- if $array_null_value_source(S, n, n_value, phpType13*, z)
+  -- if ~$array_null_value_ready(S, n, n_value)
+
+def $call_task_valid(S, ARRAY_KEY_NULL_VALUE_RESULT n n_value phpType13* z) = $array_null_value_source(S, n, n_value, phpType13*, z)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ARRAY_KEY_NULL_VALUE_RESULT n n_value phpType13* z
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $array_null_value_source(S, n, n_value, phpType13*, z)
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $list_null_key_message()
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" $list_null_key_message() z
+def $task_nodes(ARRAY_KEY_NULL_VALUE_RESULT n n_value phpType13* z) = [HARRAY n, HARRAY n_value, HARRAY n_value]
+def $error_read_discard(S, ARRAY_KEY_NULL_VALUE_RESULT n n_value phpType13* z) = S
+  -- if $array_null_value_ready(S, n, n_value)
+def $error_read_discard(S, ARRAY_KEY_NULL_VALUE_RESULT n n_value phpType13* z) = S[.COMPLETION = UNSUPPORTED "array literal null-key returned array during throw"]
+  -- if ~$array_null_value_ready(S, n, n_value)

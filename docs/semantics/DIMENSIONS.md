@@ -204,6 +204,30 @@ DIRECT insertion/throw reset remain unchanged. The
 checks primitive and array reset, independent snapshots/COW, deletion and throw.
 Property/coercion/backing records, CELL debt and wider payloads remain excluded;
 source metadata can remain valid after a locator retires while readiness refuses.
+Captured typed slots use existing ordinary property-source validation in the
+same logical live set as their current payload. Before reset, every current
+constraint must also accept the saved snapshot. This check uses allocated
+snapshot owners across popped-marker throw cleanup, after current source-object
+liveness is established. Fresh public `int|array` slots cover scalar-to-array
+reset, weak numeric-string-to-int writes, rejection, final-source detach and
+restoration before catch. A transient public `int` source accepts current44 but
+makes readiness refuse the old ARRAY; detach restores readiness before the
+native callback returns. This is an explicit Unsupported boundary of this
+continuation. No generic typed-write or owner
+rule changes; see the
+[typed NULL-key review](../../coverage/semantics/array-literal-null-key-typed-wrapped-cv-review.json).
+Ordinary named calls with no arguments and a by-value function target can also
+supply an owning ARRAY value at a NULL key. The active compiled name has no
+fallback; mutable nonpool edge-free/debt-free returned tables use the existing
+payload bound, with no object reachable from the value or builder. The VAR
+acquisition plus NULL backup gives two pending table owners. Normal completion
+keeps producer writes and inserts a frozen DIRECT value under `""`; throw removes
+both owners without inserting, retiring an otherwise unowned returned table
+and builder before catch.
+This path has no captured CV to reset and introduces no literal bias. See the
+[NULL return-value review](../../coverage/semantics/array-literal-null-key-return-array-value-review.json).
+By-reference returns, array-constructor TMPs, calls with arguments and other
+call producers remain outside this continuation.
 The [string-leaf review](../../coverage/semantics/array-literal-float-string-leaf-review.json)
 adds ordinary tables and untyped wrapper payloads containing canonical-byte or
 validated-carrier string leaves. String snapshots remain independent across

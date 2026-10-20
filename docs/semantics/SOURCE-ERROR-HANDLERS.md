@@ -140,7 +140,7 @@ again after the first read, including one removed by the first handler.
 All seven comparisons permit a live flat primitive array at the opposing CV on entry or return, including
 reference rebinding and COW. Both-missing/shared-name entries retain physical order.
 Current arrays compare by emptiness against frozen NULL; rebound scalars keep
-their ordinary rules. Nested/reference/object entries remain partial; the
+their ordinary rules. Nested/reference/internal-object entries remain partial; the
 [spaceship](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
 and [Boolean array resume reviews](../../coverage/semantics/undefined-scalar-compare-array-resume-review.json)
 record resume bounds, certificates, roots and discard. The Boolean extension
@@ -174,6 +174,13 @@ defined cell, without adding a saved object root. Rebinding can destroy the old
 object inside the handler; replacement lifetime follows current owners through
 normal return or supplied throw. Existing removal/retry and source certificates
 stay unchanged; see the [live-object review](../../coverage/semantics/undefined-comparison-live-object-review.json).
+The existing flat-array entry guard now receives the reached state and admits
+DIRECT primitive or live ordinary-object leaves. Saved tables retain their
+children through COW; current-table replacement may release them inside the
+callback. Final table release runs child destructors only when no other object
+owner remains. Source certificates, roots and restore/discard stay exact;
+ALIAS/nested/internal/Stringable leaves remain partial. See the
+[object-array review](../../coverage/semantics/undefined-comparison-object-array-review.json).
 Internal/Stringable objects, resources, nonflat arrays and wider producers remain partial.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.
@@ -417,6 +424,26 @@ backing records with no CELL debt. The
 [wrapped NULL-key ledger](../../coverage/semantics/array-literal-null-key-wrapped-cv-review.json)
 checks captured-slot restoration, two pending ARRAY owners and independent COW;
 no global input classifier, task owner or count/prune/driver rule changes.
+Initially typed captured payloads reuse existing accepting ordinary property
+sources. Readiness validates current source objects and the bounded current
+payload in the same logical live set, then checks all current constraints against
+the frozen snapshot. Snapshot allocation, rather than a fresh graph root, is
+required after marker-pop during throw cleanup. Missing live sources or an
+incompatible newly attached source explicitly refuse reset; safe source detach
+can restore eligibility. Fresh public `int|array`/`int` witnesses distinguish
+weak44, rejected strings, transient restrictive-source refusal, DIRECT snapshots,
+deletion and restoration before the same supplied Throwable reaches catch. See
+the [typed NULL-key ledger](../../coverage/semantics/array-literal-null-key-typed-wrapped-cv-review.json).
+NULL-key handling now also captures owning ARRAY values from ordinary named
+calls without arguments. Checked call occurrence, no fallback and an active
+by-value function authenticate this VAR producer; array-constructor TMPs do not
+enter its two-owner marker. Callback producer-global writes persist while the
+returned table stays frozen. Normal completion inserts one DIRECT empty-key
+value; supplied throw performs no insertion or CV writeback and retires an
+otherwise unowned returned table and builder before catch. The popped owning snapshot is validated through
+allocation and existing bounded/object-free checks. No literal debt or generic
+cleanup change; see the
+[NULL return-value ledger](../../coverage/semantics/array-literal-null-key-return-array-value-review.json).
 String leaves validate canonical bytes or existing carrier records. Their table
 and wrapper counts stay separate from copied string bytes: debt-time writes may
 share a table while a string snapshot stays unchanged. Singleton reference

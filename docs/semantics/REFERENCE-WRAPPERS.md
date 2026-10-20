@@ -141,6 +141,25 @@ with no property/coercion/backing records or CELL debt. Its outside alias owns
 the only required CELL edge; the marker still adds no CELL root. The
 [wrapped NULL-key ledger](../../coverage/semantics/array-literal-null-key-wrapped-cv-review.json)
 checks actual captured-versus-rebound identities and restore-before-catch cleanup.
+Typed captured payloads compose the existing ordinary property-source checks;
+source objects and the current bounded payload must be logically live together.
+Readiness validates the saved payload against every current source and reports
+Unsupported if a newly restrictive source rejects it. The
+snapshot remains an allocated owning argument after a throw pops the marker.
+Property aliases add CELL edges, not extra payload-table owners; the marker
+continues to own no CELL. Existing coercion/rejection and source detach do the
+typed writes. Fresh union/int source controls and restore-before-catch checks are
+in the [typed NULL-key ledger](../../coverage/semantics/array-literal-null-key-typed-wrapped-cv-review.json).
+A named by-value function called without arguments supplies an owning returned
+VAR, including when its body returns a global reference payload by value. NULL
+conversion adds one backup, so its separate marker holds the returned HARRAY
+twice without a source CELL owner or CV reset. Normal insertion consumes one
+owner and transfers the other to a DIRECT entry; throw discards both and lets
+the public driver retire the sole value/builder before catch. Snapshot allocation
+is enough while that marker is popped, without requiring a transient graph root.
+Existing call authentication, bounded payload/object-free checks and generic
+count/prune rules stay in use. See the
+[NULL return-value ledger](../../coverage/semantics/array-literal-null-key-return-array-value-review.json).
 String leaves use canonical bytes or existing valid carriers; they add no modeled
 heap edges or user destructors. Ordinary string-offset writes preserve independent
 snapshots while table/CELL aliases share bytes. Singleton reference entries

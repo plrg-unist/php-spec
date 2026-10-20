@@ -41,7 +41,7 @@ At `<=>`, empty gives 0;
 nonempty gives -1 with NULL left and +1 with NULL right.
 This includes both-missing and same-name entry: `$x <=> $x` can return -1 after
 the handler creates `[false]`. Current reference/COW bindings and next-index
-history survive; nested/reference/object entries
+history survive; nested/reference/internal-object entries
 remain partial. The
 [spaceship](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
 and [Boolean array resume reviews](../../coverage/semantics/undefined-scalar-compare-array-resume-review.json)
@@ -74,7 +74,7 @@ writes 9 to both names. Returned strings keep their bytes independently of curre
 aliases and string identity metadata. The
 [primitive review](../../coverage/semantics/undefined-scalar-compare-captured-primitive-review.json)
 checks snapshots, default/throw and actual second-read NULL compatibility. Nested,
-reference or object array entries and wider owning producers remain partial.
+reference or internal-object array entries and wider owning producers remain partial.
 All seven operators also admit captured allocated ordinary non-Stringable objects,
 including `stdClass`. The captured identity survives source rebinding or removal,
 while shared property writes remain visible. Object/NULL ordering gives +1 or -1
@@ -93,6 +93,16 @@ when replaced; new object lifetimes follow their current owners. Read records
 add no object owner, and existing physical checked-removal/unread-retry rules
 remain intact. The [live-object review](../../coverage/semantics/undefined-comparison-live-object-review.json)
 checks normal/default/throw lifetimes and budget resumption.
+Flat DIRECT array entries now accept primitives or live ordinary non-Stringable
+objects at all seven existing captured/current shapes. The state-aware entry
+guard keeps allocation and object-kind checks separate from source validity.
+Captured COW tables retain object identity; replacing a current table can release
+its children inside the callback. Multiple table owners do not multiply the edge
+from each DIRECT object entry. Final table release drops those edges and runs a destructor
+before the outer store or catch only if no other object owner remains.
+The [object-array review](../../coverage/semantics/undefined-comparison-object-array-review.json)
+checks transitive roots, raw release versus driven destruction, COW and budgets.
+ALIAS entries, nested arrays and internal/Stringable leaves remain partial.
 Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also suspend with one missing operand
 and a defined scalar counterpart. The missing value stays null while the opposing
 wrapper follows callback writes, late reference creation and rebinding. A missing

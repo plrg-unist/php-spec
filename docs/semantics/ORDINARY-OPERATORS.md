@@ -361,6 +361,22 @@ public snapshot/diagnostic rejection and budget resumption in the
 [BITNOT ledger](../../coverage/semantics/bitnot-warning-review.json).
 Other operand producers, callbacks and lifecycle forms remain required.
 
+Explicit `(int)` of a range-warning float in a plain nonreference CV now
+resumes a named handler using the original double. Finite `2^63` wraps to
+`PHP_INT_MIN` even after the callback replaces it with same-spelling text whose
+quiet cast saturates to `PHP_INT_MAX`. C saves the double before Warning and
+wraps afterward; the model's earlier pure long calculation adds no observable effect.
+The explicit false conversion flag gives NaN one range Warning, without the
+implicit-safe precision notice. A supplied Exception cancels delivery after source
+removal, preserving identity and outer `100`. Two source cases and 145+122 focused
+premises cover real
+callbacks, fresh versus historical validation, EPS roots, raw typed result/BASE,
+retirement, diagnostics and budgets in the
+[integer-cast range ledger](../../coverage/semantics/int-cast-range-warning-review.json).
+The original rule-label parser failure stays zero; numeric/string/formatting and
+generic unwind bodies remain unchanged. Normal NaN, throwing finite conversions
+and wider producers/lifetimes remain partial; paused DEFINE precision is untouched.
+
 Explicit `(int)`/`(float)` casts of an empty `stdClass` in a plain CV now stage
 one named-handler Warning. The VM borrows that CV and formats the class message
 before calling the handler; no conversion owner keeps the object alive. Replacing
