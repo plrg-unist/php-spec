@@ -94,7 +94,7 @@ A separate initial wrapped-array plan keeps a nonowning REFERENCE locator for
 the CELL payload acquired before float conversion. Its ARRAY marker still owns
 only the builder and acquired HARRAY. Rebinding the CV cannot change this slot;
 callback writes through an outside alias determine the DIRECT array insertion.
-The captured CELL is untyped, has no coercion/backing records or CELL debt, and
+The captured CELL has no coercion/backing records or CELL debt, and
 must be live after logical pruning together with its bounded payload. Metadata
 can authenticate a retired locator without permitting a stale read. The
 [wrapped array-CV ledger](../../coverage/semantics/array-literal-float-wrapped-array-cv-review.json)
@@ -108,7 +108,13 @@ ROOT in the scalar marker adds no CELL or payload-table root; array capture keep
 only its acquired table owner. Primitive-to-array debt and array-to-primitive
 retention cancel through reciprocal captured-slot writes. Later alias writes leave
 DIRECT primitive snapshots fixed, and balanced tables regain ordinary COW.
-Strings, typed outer cells and unsafe lifetimes remain outside this admission.
+The [typed captured-CV ledger](../../coverage/semantics/array-literal-float-typed-wrapped-mixed-cv-review.json)
+adds existing valid ordinary property sources accepting the captured payload.
+Their metadata adds no owner; each actual property still owns a CELL edge, and
+all source objects must survive the same logical pruning as CELL/payload. Fresh
+int|array rejection/coercion, safe final-property detach, independent table owners
+and DIRECT primitive snapshots distinguish this from reference-element insertion.
+Direct strings, wider source kinds and unsafe lifetimes stay excluded.
 String leaves use canonical bytes or existing valid carriers; they add no modeled
 heap edges or user destructors. Ordinary string-offset writes preserve independent
 snapshots while table/CELL aliases share bytes. Singleton reference entries

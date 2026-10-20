@@ -331,14 +331,14 @@ checks primitive/array wrapper payloads, singleton versus shared copies, child
 snapshots and old-table COW. These new arms exclude outer property/coercion/backing
 records and direct string CELLs, retaining the initial classifiers, source/error
 authentication and existing positive-lifetime guard.
-Initially wrapped untyped array CVs now use the same ARRAY marker with a borrowed
+Initially wrapped array CVs use the same ARRAY marker with a borrowed
 REFERENCE payload-slot locator. Zend dereferences before dispatch, so a callback's
 new CV binding is ignored while writes through the surviving old alias supply the
 DIRECT array value. The acquired old table remains owned; the captured CELL adds
 no root. Source authentication reconstructs the actual VARIABLE spelling/line and
 can survive locator retirement, while readiness requires an allocated marked
-receipt-free CELL without CELL debt and a bounded array payload in the same
-logical-pruned live set. Missing outside ownership, strings/objects and the
+CELL without CELL debt or coercion/backing records and a bounded array payload
+in the same logical-pruned live set. Missing live slot ownership, strings/objects and the
 active builder refuse explicitly. Deletion/throw preserves the HARRAY deficit;
 a separate ordinary table owner keeps it positive until the reciprocal slot
 retarget balances both table biases. The
@@ -353,8 +353,16 @@ complete as a DIRECT primitive. Opposite captured-slot cycles cancel table debt
 or retained counts through normal and throw cleanup, while source metadata can
 still authenticate a retired locator before readiness refuses. The
 [wrapped mixed-CV ledger](../../coverage/semantics/array-literal-float-wrapped-mixed-cv-review.json)
-records fresh bool/int/float/NULL and table-copy witnesses; strings, typed outer
-cells and unsafe lifetimes remain excluded.
+records fresh bool/int/float/NULL and table-copy witnesses. Captured slots may
+also use existing nonempty unique ordinary property sources whose types accept
+the payload. Their objects must survive the same logical pruning even debt-free;
+source authentication remains metadata-only, while readiness/discard refuse a
+missing source object despite a positive CELL/payload count. The
+[typed captured-CV ledger](../../coverage/semantics/array-literal-float-typed-wrapped-mixed-cv-review.json)
+checks fresh public int|array coercion/rejection, safe source detach and independent
+DIRECT copies through normal/deletion/throw cycles. Type/write helpers and all
+marker roots remain exact; direct strings, wider sources and unsafe lifetimes
+stay excluded.
 String leaves validate canonical bytes or existing carrier records. Their table
 and wrapper counts stay separate from copied string bytes: debt-time writes may
 share a table while a string snapshot stays unchanged. Singleton reference
