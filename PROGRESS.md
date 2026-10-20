@@ -24,6 +24,15 @@ new producer credit. Primitive/ARRAY, flag/name/receipt/root/global/default and
 paused-boundary policies stay exact; wider owning call domains remain partial.
 [Owned object review](coverage/semantics/define-owned-object-review.json).
 
+Composed over `90a8545f8`/407: tested400 and six scripts remain private-exact;
+all seven introduced incoming runtime paths and ordered manifest stay parent-exact.
+Source81 INI_SET/NULL/primitive-ALIAS guards are disjoint from DEFINE. Missing
+loose comparisons, reference-return/holder retirement, Generator SEND, selected
+XOR and borrowed/constrained float-key producers are absent; retained/debt lists
+stay empty. Two new task alternatives add no state/heap field or module. Whole
+incoming inventory and PROGRESS retain the exact private suffix/checkpoint.
+Accepted source/state407 cuts compose without replay or renewed credit.
+
 Ownerless positional `ini_set(NULL, array)` now resumes Deprecated handlers for
 one key0 ALIAS element backed by a live allocated untyped reference cell with a
 quiet primitive value. The saved array keeps its shape across current-container
