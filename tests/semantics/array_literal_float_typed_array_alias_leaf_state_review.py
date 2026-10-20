@@ -40,7 +40,7 @@ def conditions(name, program, path, stdout):
         '~$literal_reference_plain_cell(S, n_old_leaf)',
         '$literal_reference_flat_cell(S, n_old_leaf)', '~$literal_reference_plain_cell(S, n_new_leaf)',
         '$literal_reference_flat_cell(S, n_new_leaf)',
-        '~$literal_reference_cell(S, n_new_leaf, S.ALLOCATIONS)',
+        '~$literal_reference_cell(S, n_new_leaf, [HCELL n_new_leaf, HARRAY n_new_payload])',
         '~$literal_reference_plain_cell(S, n_old)', '$literal_reference_cell(S, n_old, S.ALLOCATIONS)',
         '$entries_nodes(S.ARRAYS[n_new_array].ITEMS) = [HCELL n_new_leaf]',
         '$literal_reference_flat_items(S, S.ARRAYS[n_new_array].ITEMS)',
