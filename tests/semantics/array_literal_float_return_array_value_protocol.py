@@ -65,7 +65,7 @@ def conditions(name, program, path, stdout):
         'S_constant = S[.CODE = [pcode[.EXPRESSIONS = [CODEEXPR pcpath_call z true]]]]',
         '~$array_float_key_input_source(S_constant, expression, poperand)',
         '~$array_float_key_input_source(S[.CODE = [pcode[.NAMES = eps]]], expression, poperand)',
-        '~$array_float_key_input_source(S, NExprFuncCall name (SEQUENCE [NVariadicPlaceholder metadata]) metadata, poperand)',
+        '~$array_float_key_input_source(S, NExprFuncCall name (SEQUENCE ([(NVariadicPlaceholder metadata)])) metadata, poperand)',
         '~$array_float_key_input_source(S, NExprFuncCall (NExprVariable (BYTES "c291cmNl") metadata) (SEQUENCE eps) metadata, poperand)',
         '~$array_float_key_input_source(S, expression, REFERENCE n_source)',
         '~$array_float_key_source(S[.SOURCES = eps], ' + args + ')',
