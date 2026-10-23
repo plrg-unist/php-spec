@@ -5088,6 +5088,12 @@ in the [review ledger](coverage/semantics/reference-return-local-cv-lifetime-rev
 Exact terminal function/restore links remain required, and fixed reference-pair
 suffix priority is preserved. Fresh width is two completed returns; single-prefix
 short cases, reference-valued remainders, wider throw forms, reentry and GC remain open.
+First C retirement also preserves local catch with one global reference or computed
+object return remaining. Notices9/11, fresh NULL/b7 and the original z/za object
+survive. Two originals and 290 Boolean/five raw checks retain explicit object
+`2387` and reference `cfab` cuts in the same ledger. The history stays nonowning;
+replay rules disambiguate equal fixed-pair/generic tails while retaining longer tails.
+Other singleton reference sources, wider throws/reentry and GC remain partial.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

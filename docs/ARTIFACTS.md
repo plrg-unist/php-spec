@@ -185,6 +185,13 @@ original packets, immutable author/peer snapshots, the zero-credit interrupted
 author output/receipt, worker120 and the isolated two-file runtime patch,
 SHA-256 `18f98564d69dcfd2ec6c1961d1d213e0e583d45a3d4db03dedc11f94cf0dd81b`.
 
+The first-retirement singleton REF/object proof is in
+`../php-spec-evidence-archive/lifecycle-reference-remainder-133/manifest.json`:
+821,114 bytes/175 members under `.tools/m133/`, nine reports (seven complete,
+two preserved failures), original packets, immutable diagnostic/author/peer
+snapshots, worker120 and the isolated two-file runtime patch,
+SHA-256 `c6805d52873b73b03a5211809310df0c024eb6aafd5b8e5e8d5d4d12ef22a1ea`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the
