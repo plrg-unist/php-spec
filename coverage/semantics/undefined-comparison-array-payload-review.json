@@ -1,0 +1,120 @@
+{
+  "milestone": "COMP119 flat child arrays held by comparison reference entries",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "Existing missing-CV comparison arrays admit a live reference cell containing one allocated flat child ARRAY of DIRECT primitives or live ordinary non-Stringable objects. Empty and permanent pooled child arrays are admitted; child ALIAS/INDIRECT/UNINITIALIZED/PARRAY entries remain outside the bound.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "b6e7c8cb23a4dfdb0490b702b0602b157ac9d5e7",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "7e2c0bb1890391d926125097e072823ed8b6481849c19db075bbbb56e751201d"
+  },
+  "modules": 409,
+  "engine_basis": "zend_compare tests outer ARRAY truth against NULL without visiting entries. zend_array_dup_value unwraps singleton references except a reference back to the source table; shared references retain their cell. Existing nested array COW and ARRAY-to-CELL-to-ARRAY-to-OBJECT ownership supply lifetime effects.",
+  "implementation": "Only207 changes: one declared pvalue helper checks child allocation/bounds, destructures DIRECT-only entries before reusing the existing entry predicate, and joins the ALIAS payload disjunction. DIRECT validation never calls this helper, so child traversal cannot recurse. Source/history certificates, roots, state/task schemas, restore/discard and driver bodies remain exact.",
+  "behavior": [
+    "Singleton outer copying unwraps its cell to a DIRECT child table; inner COW separates the child. The captured old cell/child/object survives while the new child can die inside the handler, then its old object dies before the outer store.",
+    "Shared cells follow replacement child tables across saved/COW outer containers. An ordinary value snapshot retains the old child independently; outside cell aliases delay final new-child destruction until after the comparison result store.",
+    "All seven operators, same-CV/both-missing creation, empty/pooled child truth, default reporting and supplied-handler throw are source checked. Reached state tests authenticate raw owner drops separately from driven destructor entry, exact pending Exception/cancellation, malformed source/domain controls and whole/zero budgets."
+  ],
+  "baseline": {
+    "report": "initial/baseline-report.json",
+    "sha256": "117017f4e432d2e8ce5f7c4bd38eeb4bbd1c611e8a1754e51fd6a3833924fb37",
+    "revision": "aa92a398b664016eff7b21077df14e51d8c170b3",
+    "native_revision": "25b63539ed31e77de3bf0505929d041367f62e60",
+    "agreement_credit": 0,
+    "observation": "Six initial native originals retain actual25b63539e. Genuine unchanged privateaa92a398b/409 accepts/checks the live original, then reports ingress Unsupported with empty streams. Initial native6 is reused without replay."
+  },
+  "accepted": [
+    {
+      "report": "author-retained-source/report.json",
+      "sha256": "567fece2a1e427e2f4f64653ef3c0161c8bad3ad5bbe733d22140b87792e109b",
+      "revision": "7dfd813c29e085dfcb91cfea02ee01b2c8927d46",
+      "agreements": 2,
+      "native_replay": 0
+    },
+    {
+      "report": "author-new-source/model-report.json",
+      "sha256": "e284c86697857c2d84a3f71776e4e3afbef9c552c54b096d929a6b1cb1b0ad02",
+      "revision": "7dfd813c29e085dfcb91cfea02ee01b2c8927d46",
+      "agreements": 4,
+      "unsupported_controls": 2
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "5de93a22ccaf122efe4ddbb96be9e44814855d7fca487d3ab964b10873d9b44f",
+      "revision": "7dfd813c29e085dfcb91cfea02ee01b2c8927d46",
+      "agreements": 4,
+      "native_replay": 0
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "37bcc51f7a88ca248431432e3e5e0e785b2e19fd54affd77db7d97ddf99b341e",
+      "revision": "7dfd813c29e085dfcb91cfea02ee01b2c8927d46",
+      "premises": 382,
+      "groups": 2
+    },
+    {
+      "report": "author-state-original/report.json",
+      "sha256": "0ff6ec9f0b53c58e65e18d3c32c2549dd2acd438ff1aa025fcf97b6c5f19b456",
+      "revision": "f35cefadb6a1b5e572383e246151bfd7f726e488",
+      "premises": 202,
+      "groups": 1,
+      "scope": "Only completed singleton-state202 is accepted; later budget28 failed with0 credit."
+    },
+    {
+      "report": "author-state-fixed/report.json",
+      "sha256": "694658e774c6f506ffab97d8c64ceea00b757a5a0d32100d052ec8c841f2bcc9",
+      "revision": "05650e70cb30db98a69cf97d23d5304f3688a317",
+      "premises": 247,
+      "groups": 3
+    }
+  ],
+  "totals": {
+    "source_agreements": 10,
+    "unsupported_source_controls": 2,
+    "state_premises": 831,
+    "state_groups": 6
+  },
+  "maintenance": {
+    "report": "maintenance-source/report.json",
+    "sha256": "6ca07d10ac7e6507fd6be346ab1ff85f3166423ca6b10ad5daf2eb4ed04549de",
+    "revision": "05650e70cb30db98a69cf97d23d5304f3688a317",
+    "selectors": 2,
+    "normal_agreements": 2,
+    "historical_agreement_renewal": 0,
+    "scope": "Only old117/118 flat [7] child-array resume refusal mappings are removed; both exact selected originals now agree normally as B|H|-1. Prior constructed self/cross-cycle child arrays still contain ALIAS or nested PARRAY entries and remain refused. No historical state campaign is renewed."
+  },
+  "validation": "Serial/fail-first,2GiB,full reap: initial CPU1 native6/per15 and model CLI80/record90 under130 outer; source CPU1 retained2 models60/75 then new native6/per15 and new models45-or60/+15, under independent605 whole and175/130/455 phase ceilings. Peer4 uses315 outer/60/75; peer state382 uses275 outer/child120. Author original515/child120 preserves202 and failure28; corrected/unrun247 uses CPU2/405/child120. Selector2 uses CPU2/200/per80 script bounds. All reports retain actual stable input/HEAD identities; state checks use strictSL,dettrue,cachefalse.831 counts executed premises, including repeated setup in two explicit budget groups, without a distinct-obligation claim.",
+  "failures": [
+    {
+      "report": "author-state-original/report.json",
+      "sha256": "0ff6ec9f0b53c58e65e18d3c32c2549dd2acd438ff1aa025fcf97b6c5f19b456",
+      "revision": "f35cefadb6a1b5e572383e246151bfd7f726e488",
+      "agreement_credit": 0,
+      "failed_premises": 28,
+      "phase": "fixture budget output assertion",
+      "cause": "Budget fixture resumed the bare raw S_compared projection, omitting the driver comparison transition and its released-owner operation. Only its restart moved to S_restored; both raw PhpStep assertions remain. The successful202 fixture regenerates exactly and is retained, while only failed28 and unrun191/28 execute at05650e70c. Runtime/source and peer acceptance remain unchanged."
+    }
+  ],
+  "divergences": [],
+  "remaining": [
+    "DIRECT nested outer entries, child ALIAS/deeper arrays, internal/enum/Stringable child objects, cycles and wider owning/reference-return/destructor histories remain partial. Paused COMP88 is untouched.",
+    "This guard extends payload eligibility only; source certificates remain stable and object/allocation/reference validity stay separate domain checks. Implicit integer keys and ordinary by-value returns produce no NULL-key or INI_SET/CONFIG_SEND path."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-119",
+  "artifact_manifest_sha256": "7fa0a45c12c42e7dca45c0d5ed5aadd668b66174733c21e8b1cad2589b96a3f4",
+  "independent_reviewer": "/root/comp118_review",
+  "independent_review": {
+    "report": "initial/independent-review.json",
+    "sha256": "b0c6e54ca441ede5c2c571b6d8847261458b819c6920262e2e5fb89a190f0d21"
+  },
+  "reproduction": [
+    "python3 tests/semantics/undefined_comparison_array_payload_sources.py --phase native --output .tools/comp119-source-new",
+    "python3 tests/semantics/undefined_comparison_array_payload_sources.py --phase model --output .tools/comp119-source-new",
+    "python3 tests/semantics/undefined_comparison_array_payload_review_sources.py --phase native --output .tools/comp119-peer-source-new",
+    "python3 tests/semantics/undefined_comparison_array_payload_review_sources.py --phase model --output .tools/comp119-peer-source-new",
+    "python3 tests/semantics/undefined_comparison_array_payload_state.py --output .tools/comp119-state-new",
+    "python3 tests/semantics/undefined_comparison_array_payload_review_state.py --output .tools/comp119-peer-state-new"
+  ]
+}

@@ -47,6 +47,11 @@ can run the last-owned object destructor before the outer store or catch.
 Outside aliases delay that release. See the
 [reference-array review](coverage/semantics/undefined-comparison-reference-array-review.json)
 and [object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json).
+Reference cells may also hold one flat child array of DIRECT primitives or
+ordinary non-Stringable objects. Outer copying and inner COW preserve separate tables while
+object identities stay shared. Saved chains and outside aliases preserve child
+destructor timing; empty children leave outer array truth unchanged. See the
+[child-array review](coverage/semantics/undefined-comparison-array-payload-review.json).
 Both-missing pairs, including one missing name twice, can resume if the first
 handler defines the later scalar, flat array or ordinary object. `$x == $x` can
 then be false and `$x > $x` true. Greater operators check source right first. All seven comparison operators

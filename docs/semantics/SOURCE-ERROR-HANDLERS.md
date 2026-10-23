@@ -179,7 +179,7 @@ DIRECT primitive or live ordinary-object leaves. Saved tables retain their
 children through COW; current-table replacement may release them inside the
 callback. Final table release runs child destructors only when no other object
 owner remains. Source certificates, roots and restore/discard stay exact;
-Array-valued ALIAS entries and nested/internal/Stringable leaves remain partial. See the
+DIRECT nested entries and deeper/internal/Stringable child leaves remain partial. See the
 [object-array review](../../coverage/semantics/undefined-comparison-object-array-review.json).
 Primitive ALIAS entries also pass when their cell is a live allocated reference
 with a defined primitive payload. Saved table roots retain the entry-to-cell
@@ -195,7 +195,12 @@ a last saved ARRAY-to-CELL-to-OBJECT chain can run destruction before store/catc
 Surviving aliases delay it. The [object-reference review](../../coverage/semantics/undefined-comparison-object-reference-array-review.json)
 checks raw ownership separately from driven destructor entry and keeps source,
 root and restore/discard machinery unchanged.
-Internal/Stringable objects, resources, nonflat arrays and wider producers remain partial.
+Cells may also hold one flat child array of DIRECT primitives or ordinary non-Stringable objects.
+Shared-cell replacement, singleton outer unwrapping and inner COW preserve child
+owners; saved chains can run the final destructor before store/catch. Empty and
+pooled children retain outer truth. The [child-array review](../../coverage/semantics/undefined-comparison-array-payload-review.json)
+records normal/throw and source/domain/budget evidence without source/root changes.
+Internal/Stringable objects, resources, wider array graphs and producers remain partial.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.
 [The equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json)

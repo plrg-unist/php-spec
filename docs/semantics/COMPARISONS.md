@@ -102,7 +102,7 @@ from each DIRECT object entry. Final table release drops those edges and runs a 
 before the outer store or catch only if no other object owner remains.
 The [object-array review](../../coverage/semantics/undefined-comparison-object-array-review.json)
 checks transitive roots, raw release versus driven destruction, COW and budgets.
-Array-valued ALIAS entries, nested arrays and internal/Stringable leaves remain partial.
+DIRECT nested entries, deeper child arrays and internal/Stringable leaves remain partial.
 Primitive ALIAS entries now pass the same guard when their reference cell is
 allocated, marked as a reference, in bounds and holds a defined primitive.
 Captured table entries survive source replacement; shared cell writes remain
@@ -121,6 +121,16 @@ saved cell. Last ARRAY-to-CELL-to-OBJECT release runs destruction before the
 outer store or catch only when no other owner remains. The
 [object-reference review](../../coverage/semantics/undefined-comparison-object-reference-array-review.json)
 checks these orders, shared property writes, outside aliases and throw cleanup.
+ALIAS payloads also admit one allocated flat child array of DIRECT primitives or
+ordinary non-Stringable objects, including empty and permanently pooled arrays.
+The DIRECT-only shape bounds eligibility before child validation. Singleton outer
+copies unwrap the reference; inner COW separates child tables while their object
+identities remain shared. Shared cells follow child replacement, while an ordinary
+inner snapshot keeps its old table. Last saved ARRAY-to-CELL-to-ARRAY-to-OBJECT
+release can run destruction before store/catch; surviving aliases delay it. The
+[child-array review](../../coverage/semantics/undefined-comparison-array-payload-review.json)
+checks these owners, empty-child truth, supplied throws and budgets. Child aliases,
+deeper arrays, cycles and wider owning histories remain partial.
 Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also suspend with one missing operand
 and a defined scalar counterpart. The missing value stays null while the opposing
 wrapper follows callback writes, late reference creation and rebinding. A missing
