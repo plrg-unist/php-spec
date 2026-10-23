@@ -967,7 +967,15 @@ before catch and preserves the untouched outer assignment. Later access enters
 the getter again after guard reset. Four source agreements and 868 focused
 premises retain separate runtime and fixture cuts in the
 [recursion review](../../coverage/semantics/magic-get-recursion-review.json).
-Declared UNSET/denied recursion, by-reference getters, quiet probes, owned
+Declared public untyped UNSET properties now also use that Warning/NULL path.
+Their immutable descriptor remains valid after handler population; the original
+DECL identity and physical key survive the interrupted read and local cleanup.
+[Four new source agreements and 542 focused premises](../../coverage/semantics/magic-get-unset-recursion-review.json)
+retain separate source and state cuts. Sole-owner clearing and supplied throw
+have new source evidence; population and local cleanup also have reached proofs.
+Real typed-UNSET and denied-private states reject Warning admission, without
+claiming their later model Error paths. Typed INITIAL remains a separate existing
+agreement. Typed/nonpublic recursion, by-reference getters, quiet probes, owned
 receivers, computed names, suspension and wider lifetime combinations remain partial.
 
 The [getter review](../../coverage/semantics/magic-property-get-review.json) records

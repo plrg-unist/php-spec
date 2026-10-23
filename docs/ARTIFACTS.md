@@ -31,6 +31,12 @@ focused checks, all fixture failures and diagnostics in
 Its 14,711,985-byte archive has SHA-256
 `95fdd8cbfd591039fe1a104525a964de568feccfdc8aa73ec720827a5e9b194b`.
 
+Declared-UNSET getter recursion is retained in
+`../php-spec-evidence-archive/magic-get-unset-recursion-120/manifest.json`, including
+the original fixture compiler failure and observer limitations. Its 5,212,465-byte
+archive has SHA-256
+`e94cc096c40b1a22af50f5823ea8e2ea6b64991819ba470bfbdaf03de6a812c5`.
+
 Keep future compressed raw traces, source snapshots and tool copies in this
 external archive (using new paths for new evidence) or in ignored `.tools/`.
 Commit concise reports and manifests with hashes and locations. Preserve raw
@@ -184,6 +190,13 @@ The short remaining-slot completed-prefix proof is in
 original packets, immutable author/peer snapshots, the zero-credit interrupted
 author output/receipt, worker120 and the isolated two-file runtime patch,
 SHA-256 `18f98564d69dcfd2ec6c1961d1d213e0e583d45a3d4db03dedc11f94cf0dd81b`.
+
+The first-retirement singleton REF/object proof is in
+`../php-spec-evidence-archive/lifecycle-reference-remainder-133/manifest.json`:
+821,114 bytes/175 members under `.tools/m133/`, nine reports (seven complete,
+two preserved failures), original packets, immutable diagnostic/author/peer
+snapshots, worker120 and the isolated two-file runtime patch,
+SHA-256 `c6805d52873b73b03a5211809310df0c024eb6aafd5b8e5e8d5d4d12ef22a1ea`.
 
 ## Commit provenance and recovery
 

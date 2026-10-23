@@ -1,0 +1,177 @@
+{
+  "milestone": "A47: nested pooled constant ARRAY children at ordinary NULL literal keys",
+  "status": "Reviewed composed candidate; accepted native/source/focused cuts retained.",
+  "target": "PHP8.5.10 CLI NTS64-bit; vendor/php-src tag34308a6666b2d489c509541ea9befea9e2b42348",
+  "cuts": {
+    "native_and_genuine": "fe83f1684a417248ff3f4c10ea6e0a6448a22dd8",
+    "runtime": "a5460073bea18c4e210b89c0b0cb50e714ba1bf2",
+    "strict_source4_focused1093": "b8ea9937579618ada8431c427a19d398c84aa700"
+  },
+  "runtime": {
+    "spec/semantics/413-array-literal-key-warnings.watsup": "d81429d2a318dad97b560952dbd839363d6a22533e0eecf17d5193e80035a05a"
+  },
+  "engine": "zend_try_ct_eval_array/zend_compile_array folds nested by-value constant children. ZEND_ADD_ARRAY_ELEMENT acquires the CONST owner before NULL conversion; only CV/VAR receive backup/reset. A parent-root increment does not duplicate child entries; zend_array_dup adds edges for a real copied table. EG(exception) precedes empty-string insertion.",
+  "compiler_provenance": "Unchanged45 pfremember retains folded children in FACTS/MEMORY.HELD;46 fact export and32 pool installation publish separate permanent child roots. Fresh original descendants have one pool root plus one physical parent edge, even while the parent has multiple pending/user roots. These are model pool/edge identities, not an assertion of Zend raw refcounts.",
+  "scope": "Finite nested DIRECT array subtrees at the existing exact compiled-read CONST source gate, with ordinary unmarked defined NULL CV keys. Each descendant must be in-range, allocated and array-debt-free; primitive/canonical-byte/carrier leaves reuse existing validation. Per-path ancestors seeded with builder/root reject self, ancestor and would-be insertion cycles, while sibling DAG edges are admitted independently. No separate child pool root is required.",
+  "ownership": "Existing CONST marker still owns only builder plus one pending top-array edge. Descendant owners come from actual child pool facts and physical entry edges. Pending parent multiplicity does not multiply those edges; copying a table adds one edge for each copied entry. Normal insertion transfers the pending root, while throw drops it before catch and leaves original pool graphs intact. No task, source/CV reset, backup, field, bias or root/count/prune algorithm change.",
+  "fresh_witnesses": "Repeated same-occurrence invocation keeps original2/7 and2/8 children despite callback writes to held44/7 and old a2/99, separate copy-right77 and later new b55/7. Nested empty children remain immutable originals while copies append66/55/77. Peer depth4 mixed-key COW separates66/99 with untouched sibling/empty edges, then deletes the last user entry. Depth3 supplied throw preserves the given Throwable, prior empty-key8, destination99 and cancelled later7.",
+  "controls": "Explicit source-occurrence child pool paths, root pending2/3/1 versus physical child2/4/3/4 counts; selective COW child edges and final copied-node retirement. Root-only pool remains ready with a child owner supplied only by its parent. Marked-ALIAS/object/debt/out-of-range/unallocated/self/root/builder-cycle refusals, repeated-child DAG admission, raw/drive dispatch/insertion/throw-pop equality, exact outputs, EOF and zero/split budgets.",
+  "bounds": "Fresh leaves are integers and empty descendants through depth4; other primitive/validated-byte leaves compose unchanged validation without fresh all-leaf credit. Reference/object leaves, broader producers/graphs and active lifecycle histories remain partial. Old A46 edge-free readiness is equivalent under the new items validator, so accepted A46 tests need no repair or replay. Paused OP12/Source47 DEFINE NaN, owned-NUL source release, undefined-byref LIST keys and COMP88 remain untouched.",
+  "validation": {
+    "strict_modules": 409,
+    "original_native_cases": 4,
+    "checked_source_agreements": 4,
+    "author_conditions": 341,
+    "peer_conditions": 752,
+    "successful_conditions": 1093,
+    "boolean_conditions": 1085,
+    "raw_steps": 8,
+    "postchange_first_executions_passed": true,
+    "postchange_failures": 0,
+    "retries": 0,
+    "cap_changes": 0,
+    "accepted_replay": false,
+    "preparation": "The peer ALIAS negative gained a legal reference marker and heap-valid check before freeze/first interpretation; both preparation records are preserved without execution credit."
+  },
+  "genuine_baseline": {
+    "revision": "fe83f1684a417248ff3f4c10ea6e0a6448a22dd8",
+    "case": "array-literal-null-key-constant-subtree-repeated",
+    "status": "unsupported",
+    "reason": "error-handler ingress requires a producer continuation",
+    "model_stdout": "P:1;",
+    "model_exit": 1,
+    "native_exit": 0,
+    "passed": false,
+    "agreement_credit": 0
+  },
+  "execution": {
+    "cpu": 3,
+    "native_cap_seconds": 30,
+    "genuine_model_outer_caps": [
+      60,
+      90
+    ],
+    "strict_focused_sl_cap_seconds": 180,
+    "source_model_outer_caps": [
+      180,
+      210
+    ],
+    "strict_seconds": 9.58780312538147,
+    "source_seconds": [
+      70.77467107772827,
+      23.791069507598877,
+      40.55452632904053,
+      20.210246801376343
+    ],
+    "focused_seconds": [
+      76.47926378250122,
+      22.281786918640137,
+      46.97871541976929,
+      22.063531637191772
+    ],
+    "actors": "Expected stdout and empty diagnostic stderr, no timeout/interruption/surviving groups; wrappers fully reaped and CPU3 released. All post-change first executions pass at unchanged caps; genuine baseline remains zero credit.",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null
+    },
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "tools": {
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    }
+  },
+  "source_sha256": {
+    "array-literal-null-key-constant-subtree-repeated": "3eda44ab02249b292cd4cca1cbec6dbb7e81db5792aaedd8923e5c9e534d21d0",
+    "array-literal-null-key-constant-subtree-empty": "79df511d26b5cd925a035b00180abc5c5954db460770b8691a15c2b11336cd0e",
+    "array-literal-null-key-constant-subtree-review-delete-entry": "bead9906647a6d80035d2db3e29c9082ecbb1a3a83b53dd569e50ffb215fa0f2",
+    "array-literal-null-key-constant-subtree-review-supplied-throw": "68bf7021f2ed8a2e7dd8fdec5f7fd4a10f77511d87e4b6c39f998394cbeee151"
+  },
+  "commands": [
+    "taskset -c 3 python3 -B tests/semantics/array_literal_null_key_constant_subtree_warnings.py --case array-literal-null-key-constant-subtree-repeated --output .tools/array-literal-null-key-constant-subtree-baseline-47",
+    "taskset -c 3 python3 -B tests/semantics/array_literal_null_key_constant_subtree_warnings.py --exclude array-literal-null-key-constant-subtree-repeated --native-only --output .tools/array-literal-null-key-constant-subtree-native-rest-47",
+    "taskset -c 3 python3 -B tests/semantics/array_literal_null_key_constant_subtree_review_sources.py --native-only --output .tools/array-literal-null-key-constant-subtree-review-native-47",
+    "taskset -c 3 python3 .tools/array-literal-null-key-constant-subtree-strict-47.py",
+    "taskset -c 3 python3 .tools/array-literal-null-key-constant-subtree-reuse-47.py --group author --output .tools/array-literal-null-key-constant-subtree-source-author-47",
+    "taskset -c 3 python3 .tools/array-literal-null-key-constant-subtree-reuse-47.py --group review --output .tools/array-literal-null-key-constant-subtree-source-review-47",
+    "taskset -c 3 python3 -B tests/semantics/array_literal_null_key_constant_subtree_protocol.py --source-report .tools/array-literal-null-key-constant-subtree-source-author-47/report.json --output .tools/array-literal-null-key-constant-subtree-author-state-47",
+    "taskset -c 3 python3 -B tests/semantics/array_literal_null_key_constant_subtree_state_review.py --source-report .tools/array-literal-null-key-constant-subtree-source-review-47/report.json --output .tools/array-literal-null-key-constant-subtree-review-state-47"
+  ],
+  "reports": {
+    "baseline-47": {
+      "path": ".tools/array-literal-null-key-constant-subtree-baseline-47/report.json",
+      "sha256": "6d2ee1830d732a08404a1de5860998c3d8b3ac687489744dd6206457cfbd8cc2",
+      "revision": "fe83f1684a417248ff3f4c10ea6e0a6448a22dd8"
+    },
+    "native-rest-47": {
+      "path": ".tools/array-literal-null-key-constant-subtree-native-rest-47/report.json",
+      "sha256": "e0398fcea8f8fbfa816f2045167dcc6dff1c09e0c2a1be083ee943909bf2bf81",
+      "revision": "fe83f1684a417248ff3f4c10ea6e0a6448a22dd8"
+    },
+    "review-native-47": {
+      "path": ".tools/array-literal-null-key-constant-subtree-review-native-47/report.json",
+      "sha256": "821cf407777e569e17c8c310b5bd1a3f93190635471ec107b714949a95d4b1b3",
+      "revision": "fe83f1684a417248ff3f4c10ea6e0a6448a22dd8"
+    },
+    "strict-47": {
+      "path": ".tools/array-literal-null-key-constant-subtree-strict-47/report.json",
+      "sha256": "114ac9e691f21786ceede474804d63ab22aeb300ab89df9774e1a164750a06a9",
+      "revision": "b8ea9937579618ada8431c427a19d398c84aa700"
+    },
+    "source-author-47": {
+      "path": ".tools/array-literal-null-key-constant-subtree-source-author-47/report.json",
+      "sha256": "697e2de18b46e62166fbd1977ca0301b6f88bb4662f3bcde3626bde886bc3cc9",
+      "revision": "b8ea9937579618ada8431c427a19d398c84aa700"
+    },
+    "source-review-47": {
+      "path": ".tools/array-literal-null-key-constant-subtree-source-review-47/report.json",
+      "sha256": "dc337b4ac696fe491186b51ab32536a46085cdd63e6f2ce59df963cd9eab21f1",
+      "revision": "b8ea9937579618ada8431c427a19d398c84aa700"
+    },
+    "author-state-47": {
+      "path": ".tools/array-literal-null-key-constant-subtree-author-state-47/report.json",
+      "sha256": "b1431c9a08761d89d518d155e507e8b79321123aaf0913567a2679ba80df99db",
+      "revision": "b8ea9937579618ada8431c427a19d398c84aa700"
+    },
+    "review-state-47": {
+      "path": ".tools/array-literal-null-key-constant-subtree-review-state-47/report.json",
+      "sha256": "002b5be7937816b180b4f181016b73bc508ef4331884c242cb0652aab340bd88",
+      "revision": "b8ea9937579618ada8431c427a19d398c84aa700"
+    }
+  },
+  "runners": {
+    ".tools/array-literal-null-key-constant-subtree-strict-47.py": "6b11695abbde0aab14db0a43a4ef483b349e740f13b09f41231489ba085b5dd4",
+    ".tools/array-literal-null-key-constant-subtree-reuse-47.py": "a6cd8bd588df58b6a1723cf3a029251736fe93781cb446b2406b21db0b6031e1"
+  },
+  "archive": {
+    "path": ".tools/array-literal-null-key-constant-subtree-47-raw.tar.gz",
+    "bytes": 607575,
+    "members": 197,
+    "sha256": "649f4d04b3cd5af93beb340bed30629c2e2bb3959d4cf8df4c96bef61a2f6fbc"
+  },
+  "recovery": "Canonical .tools/array-literal-null-key-constant-subtree-publication-47.json and the raw archive preserve all eight reports, preparation, original sources/native/model streams/process receipts and strict/reuse scripts. Restore under the recorded worktree cwd and listed Git cuts, preserving original paths/bytes/profile/fingerprints; provision pinned local tools as needed. Preparation has no execution credit; genuine Unsupported has no agreement credit.",
+  "composition": {
+    "parent": "3a45a284de25a9937b16dfa8d1e4ad9a67efc41e",
+    "ordered_manifest_modules": 409,
+    "runtime_policy": "Tested413 and all six A47 scripts remain private-exact. Incoming30/58/172/207/380/400/404, every other runtime/schema path and ordered409 remain parent-exact; no new task or pstate/heap field.",
+    "interaction": "A47 has no INI_SET packs, missing-CV comparison, recursive magic-property getter, explicit NaN Boolean cast or owned CONSTANT/DEFINED query producer. All incoming selectors are unselected.",
+    "progress_policy": "Preserve the concise parent family/active/remaining layout, update A47 integration/links and refresh current rows from explicit root orchestration facts. No former checkpoint history restored; status maintenance adds no execution credit.",
+    "joined_execution": false,
+    "accepted_replay": false
+  }
+}

@@ -223,13 +223,18 @@ source demand, result/slot ownership and the common release scheduler remain
 unchanged. See the
 [node-free ancestor SEND review](../../coverage/semantics/generator-nodefree-ancestor-send-review.json).
 For zero-argument CURRENT, an original already-refreshed one-ancestor endpoint
-and cleared selected bit authenticate quiet unused-result discard. Actual
+authenticates quiet unused-result discard for either selected initialization bit. Actual
 update identity and plain-result equality exclude a child-prefix transition or
 forged output. Source demand and the real discarded continuation must agree;
 assignment context keeps its copy even with a forged DISCARD tail. The physical
 cache owns the value throughout the fused copy/drop, so existing receiver and
 close machinery suffice. See the
 [unused CURRENT review](../../coverage/semantics/generator-unused-current-review.json).
+The removed selected-bit guard had retained a snapshot through live Middle
+finally and Upper cleanup. The new pending-receiver originals distinguish raw
+plain copies from their discarded result, preserve both bits and keep the actual
+receiver-only release job. All endpoint/update/source/discard checks remain;
+see the [pending CURRENT review](../../coverage/semantics/generator-pending-unused-current-review.json).
 A supplied exception from an ignored argument does not cancel the remaining
 pending SEND snapshot or receiver releases at the pre-refreshed direct node-free
 endpoint. Existing pending-operation and Generator-close records carry that

@@ -13,6 +13,8 @@ def $dynamic_constant_kind(INTRINSIC_DEFINE) = true
 def $dynamic_constant_kind(INTRINSIC_DEFINED) = true
 def $dynamic_constant_kind(INTRINSIC_CONSTANT) = true
 dec $dynamic_scalar_constant_call(pconfigcall) : bool
+dec $dynamic_owned_scalar_query_value(pvalue) : bool
+dec $dynamic_owned_scalar_query_call(pconfigcall) : bool
 dec $dynamic_null_constant_call(pconfigcall) : bool
 dec $dynamic_null_define_call(pconfigcall) : bool
 dec $dynamic_define_quiet_flag(pvalue) : bool
@@ -663,6 +665,7 @@ rule PhpStep/dynamic-constant-invoke: S ~> $dynamic_constant_receive(S, pconfigc
   -- if $dynamic_constant_kind(pconfigcall.KIND)
   -- if ~$config_string_launch(S, pconfigcall)
   -- if ~$dynamic_scalar_constant_call(pconfigcall)
+  -- if ~$dynamic_owned_scalar_query_call(pconfigcall)
   -- if ~$dynamic_scalar_define_call(pconfigcall)
   -- if ~$dynamic_null_constant_call(pconfigcall)
   -- if ~$dynamic_null_define_call(pconfigcall)
@@ -1666,6 +1669,18 @@ def $dynamic_class_constant_receive(S, pconfigcall) = $dynamic_keyword_receive(S
 
 ;; Z_PARAM_STR mutates the API argument slot, not the caller's scalar CV.
 ;; Keep the captured call as source authority and derive only the result/trace.
+def $dynamic_owned_scalar_query_value(PBOOL b) = true
+def $dynamic_owned_scalar_query_value(PINT i) = true
+def $dynamic_owned_scalar_query_value(PFLOAT n) = true
+  -- if $(n < 18446744073709551616)
+  -- if $float_decode(n) = FINITE n_sign n_numerator n_denominator
+def $dynamic_owned_scalar_query_value(pvalue) = false -- otherwise
+def $dynamic_owned_scalar_query_call(pconfigcall) = true
+  -- if pconfigcall.KIND <- [INTRINSIC_CONSTANT, INTRINSIC_DEFINED]
+  -- if pconfigcall.OWNER =/= eps /\ pconfigcall.SELECTION = eps /\ pconfigcall.PACKS = eps
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if $dynamic_owned_scalar_query_value(pvalue)
+def $dynamic_owned_scalar_query_call(pconfigcall) = false -- otherwise
 def $dynamic_scalar_constant_call(pconfigcall) = true
   -- if pconfigcall.KIND <- [INTRINSIC_CONSTANT, INTRINSIC_DEFINED]
   -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
@@ -1674,8 +1689,9 @@ def $dynamic_scalar_constant_call(pconfigcall) = true
 def $dynamic_scalar_constant_call(pconfigcall) = false -- otherwise
 dec $dynamic_scalar_constant_valid(pstate, pconfigcall) : bool
 def $dynamic_scalar_constant_valid(S, pconfigcall) = true
-  -- if $dynamic_scalar_constant_call(pconfigcall)
+  -- if $dynamic_scalar_constant_call(pconfigcall) \/ $dynamic_owned_scalar_query_call(pconfigcall)
   -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.OWNER = eps \/ ~$pipe_site(S, pconfigcall.SITE)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
   -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, preqbytes?, porigin_argument, z))
   -- if pvalue_known? = $compiled_read(S, porigin_argument)
@@ -1697,7 +1713,7 @@ def $dynamic_scalar_constant_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.RE
   -- if $string_bytes(pvalue_query) = (preqbytes)
   -- if $dynamic_global_constant_value(S, $dynamic_constant_query(preqbytes)) = (pvalue)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
-def $dynamic_scalar_constant_finish(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue_query)]], "Error", $ptascii("Undefined constant \"") ++ preqbytes_query ++ $ptascii("\""))
+def $dynamic_scalar_constant_finish(S, pconfigcall) = $throwable_allocate(S[.ORIGIN = (pconfigcall.SITE)][.TODO = ptask_tail*], "Error", $ptascii("Undefined constant \"") ++ preqbytes_query ++ $ptascii("\""), pconfigcall.LINE, $source_trace_prefixed(S, $config_trace_frames(S, pconfigcall, [pvalue_query])))
   -- if S.COMPLETION = NORMAL
   -- if pconfigcall.KIND = INTRINSIC_CONSTANT
   -- if S.RESULT = KNOWN pvalue_query
@@ -1733,6 +1749,10 @@ rule PhpStep/dynamic-scalar-constant-invoke: S ~> $dynamic_scalar_constant_recei
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
   -- if $dynamic_scalar_constant_call(pconfigcall)
+rule PhpStep/dynamic-owned-scalar-query-invoke: S ~> $dynamic_scalar_constant_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_owned_scalar_query_call(pconfigcall)
 
 ;; Registration keeps the raw call; only its received name and trace view change.
 dec $dynamic_define_false_scalar_flag(pvalue) : bool

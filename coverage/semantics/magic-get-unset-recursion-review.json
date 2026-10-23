@@ -1,0 +1,107 @@
+{
+  "decision": "accepted-partial",
+  "scope": "Declared public nonstatic untyped PROP_UNSET, literal property name, ordinary borrowed receiver and implicit by-value non-generator __get. Immutable descriptor history remains valid after a handler populates the slot; only entry checks UNSET.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json",
+  "engine_route": "vendor/php-src/Zend/zend_object_handlers.c::zend_get_property_offset clears property_info for untyped declarations. zend_std_read_property bypasses Get for typed INITIAL, but explicit UNSET permits Get. Recursive IN_GET then reaches ordinary Warning/NULL for untyped public slots, typed-property Error for typed slots, or zend_wrong_offset Error for denied access.",
+  "implementation": {
+    "revision": "f7e8c0223a3c95f0e46742fafaea0a6ce302d024",
+    "file": "spec/semantics/380-magic-property-get.watsup",
+    "sha256": "f8705b92daa645af6ae6e5ae78a528a50d7ee3f8953487d69d2f1bca6ec2a850",
+    "delta": "10 additions/1 deletion: preserve the exact absent-descriptor arm and admit only public/nonstatic/TYPE=eps/KEY=NAME declared descriptors. Existing guard, Warning, entry slot check, verification, owner and cleanup bodies remain unchanged; no module 377, root, GC, schema or manifest edit."
+  },
+  "independent_review": {
+    "reviewer": "class119_review",
+    "test_revision": "68e8e1e321a1ba95ef02cff8730c529523dadca2",
+    "decision": "Accepted runtime, source agreements, tests and counterexamples. Reused119 declarative helpers are unchanged. Saved-view predicates are projection checks, not parent-scope reachability claims."
+  },
+  "source_evidence": {
+    "catalogue": "tests/semantics/magic_get_unset_recursion_cases.json",
+    "initial_revision": "25b63539ed31e77de3bf0505929d041367f62e60",
+    "native_cases": 7,
+    "new_case_baseline": "Population, sole receiver clearing, supplied throw and local-cleanup originals each genuinely stop Unsupported after the original prefix; new agreements 0.",
+    "controls": "Typed INITIAL already agrees in the unchanged model (separate existing control 1). Typed UNSET and inherited private denial remain Unsupported in the model; native Error controls are not new source agreements.",
+    "model_revision": "f7e8c0223a3c95f0e46742fafaea0a6ce302d024",
+    "new_agreements": 4,
+    "modes": "Original bytes/path/cwd/profile and exact stdout/stderr/status; strict SL with 409 modules. 45 s native, 60 s model and 75 s outer caps; 100,000 steps.",
+    "evidence_levels": "All four new originals have source/native agreement. New reached-state author proofs select only population and local cleanup; sole/throw retain source-only evidence here.",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "focused_evidence": {
+    "revision": "68e8e1e321a1ba95ef02cff8730c529523dadca2",
+    "module_count": 409,
+    "author": {
+      "command": "python3 tests/semantics/magic_get_unset_recursion_protocol.py --revision 68e8e1e321a1ba95ef02cff8730c529523dadca2",
+      "groups": {
+        "populate": 235,
+        "cleanup": 241
+      },
+      "premises": 476,
+      "reached_premises": 411,
+      "derived_premises": 65,
+      "algorithmic_gates": 2,
+      "strict_SL_true": 2,
+      "cap_seconds": 90
+    },
+    "independent": {
+      "command": "python3 .tools/magic-get-recursion-unset-review-120/run-controls.py",
+      "premises": 66,
+      "controls": [
+        "typed-unset",
+        "denied-private"
+      ],
+      "strict_SL_true": 1,
+      "cap_seconds": 90
+    },
+    "total_premises": 542,
+    "properties": "Actual DECL/UNSET/physical-key and immutable type/visibility authority; handler population retains descriptor identity and captured NULL; raw/pending/recovered read cuts, authentic local destruction guard, reset and full budget equality. Independent real active typed/private getter states retain valid frames/heap but refuse Warning helper/history/continuation/plan.",
+    "processes": "Serial CPU 4; final author actor/observer and peer actor reaped with exit 0, all child groups empty, inputs/head/status stable."
+  },
+  "preserved_failure": {
+    "report": "original-compile-failure",
+    "revision": "3be209299713ca3636712ba9205b41afc28ae060",
+    "application_evaluations": 0,
+    "credit": 0,
+    "cause": "Fresh property identity was bound inside a conjunction; the algorithmic diagnostic on stdout caused the gate to fail despite exit 0. Splitting the fixture into direct equalities preserves every assertion and adds one explicit binder premise per selected group. Runtime code and accepted source evidence are unchanged."
+  },
+  "observer_limits": "Native live sampling captured6/7 and changed source sampling3/4; source observer directory assertion correction and all failures retained. Taskset inheritance is separate provenance; baseline7 and the four author compiler/runner process live observations are complete. No semantic replay.",
+  "raw": {
+    "manifest": "../php-spec-evidence-archive/magic-get-unset-recursion-120/manifest.json",
+    "archive_bytes": 5212465,
+    "archive_sha256": "e94cc096c40b1a22af50f5823ea8e2ea6b64991819ba470bfbdaf03de6a812c5",
+    "reports": {
+      "native7": {
+        "path": ".tools/magic-get-recursion-unset-probes-120/native-first/report.json",
+        "sha256": "5f31e256f59466886b9416d7472afb664aab915bfd70ca75732f89f27e856932"
+      },
+      "baseline7": {
+        "path": ".tools/magic-get-recursion-unset-probes-120/accepted-current-baseline/report.json",
+        "sha256": "ab091410392a1cea2d068c9f50752582d752eb4cba8157cf5f179327f2dc76f9"
+      },
+      "source4": {
+        "path": ".tools/magic-get-recursion-unset-probes-120/changed-model-lmtpcv7w/report.json",
+        "sha256": "6152170564b043156ee5183f1e6ab24270a150d6a5c87be14c6c39cd11347833"
+      },
+      "original-compile-failure": {
+        "path": ".tools/magic-get-unset-recursion-protocol-c_ml2orn/report.json",
+        "sha256": "f5692181a1a5f7d92250cceb52d5a2cb78ab92ce44fbf4c6e6824b6bd4d52a65"
+      },
+      "author476": {
+        "path": ".tools/magic-get-unset-recursion-protocol-fl7xdbsn/report.json",
+        "sha256": "6f9a5b399dada1b72b898b9afbc179e5a5de309068d14c234216bc80931806bc"
+      },
+      "independent66": {
+        "path": ".tools/magic-get-recursion-unset-review-120/report.json",
+        "sha256": "fc1ccb6147c312431d60f4ac66019721843dcecdf3767fb9528120c09190493b"
+      }
+    }
+  },
+  "composition": {
+    "parent_revision": "323b6714cd8c2067acb677b4a2dcb898c1eeb65b",
+    "module_count": 409,
+    "preservation": "Tested module 380 and all nine new test/catalogue files plus the reused CLASS119 helper remain identical to their tested private versions. Other runtime files, ordered manifest and shared parser/build/harness paths match the parent; new task alternatives require no state/frame/default lift.",
+    "independent_selector_review": "Incoming by-reference replay/retirement, Generator CURRENT, captured constant query, NaN bool-cast and NULL-key ARRAY selectors have no producer in these original or reached/derived fixtures. Normal local-cleanup bodies remain unchanged.",
+    "credit": "No joined execution, accepted-source replay or historical credit renewal. CLASS119 absent-descriptor evidence retains its own cuts."
+  },
+  "limits": "Typed or nonpublic recursion, by-reference getters, quiet probes, owned receivers, computed names, suspension and wider lifetimes remain partial. No family/full-core closure or intentional engine divergence is claimed. Paused boundaries remain untouched.",
+  "engine_bugs_or_intentional_divergences": []
+}
