@@ -2114,6 +2114,11 @@ A returning handler can publish the empty-name constant; a throwing handler keep
 the raw null API argument. Strict calls raise `TypeError` without that warning.
 The [null-name review](coverage/semantics/global-constant-null-name-review.json)
 records callback order, trace views and resumption checks.
+Captured NULL query callees also stay alive through deprecation callbacks and
+retire after return or throw. Strict ordinary calls reject NULL; explicit
+`__invoke` stays weak in strict source. Returning false permits default reporting;
+throws preserve raw NULL API/wrapper arguments and the unassigned caller result.
+[Captured NULL query review](coverage/semantics/constant-owned-null-query-review.json).
 Array queries retain the stored root and children; existing COW preserves nested
 writes, reference acquisition and append history. Immutable and mutable empty
 roots retain their provenance. The [array-query review](coverage/semantics/global-constant-array-review.json)
