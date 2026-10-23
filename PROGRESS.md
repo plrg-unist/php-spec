@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+At Iterator49, an ignored SEND argument's destructor can throw a supplied
+Exception at a pre-refreshed direct node-free COMPLETE. Existing cleanup
+preserves that exception while retiring the remaining snapshot and receiver.
+An unused snapshot dies before Middle finally; assignment keeps a temporary
+through finally but never completes its CV store. Argument-time row COW and a
+RuntimeException inside live Middle finally preserve separate owners and
+Previous identity. This is validation-only; production semantics are unchanged.
+[Argument-exception SEND review](coverage/semantics/generator-abrupt-argument-send-review.json).
+
+Native4 and genuine unused NORMAL agreement1 retain `067e3b0`/409; the
+other source3 retain `8a96477`. Gate4 and 512 reached premises
+(256 author +256 independent; 492 local +20 generic) pass at `0f9172971`/409.
+All ten reports pass first attempt at original caps, without failures, retries,
+cap changes or accepted replay. Actors are reaped and CPU1 released. Wider,
+parked, owning-return, reentrant and collection histories remain unvalidated.
+
 Unused zero-argument CURRENT now drops its snapshot before receiver cleanup
 at an already-refreshed normal node-free one-ancestor endpoint after selected
 initialization clears. CURRENT preserves both bits; assignment keeps its copy.

@@ -1672,6 +1672,13 @@ before receiver cleanup. Assignment keeps its copy. A normal cache destructor,
 raw-row finally mutation and a RuntimeException inside physical Middle finally
 distinguish these owners; CURRENT changes no initialization bit. See the
 [unused CURRENT review](coverage/semantics/generator-unused-current-review.json).
+At a pre-refreshed direct node-free COMPLETE, existing pending SEND cleanup also
+preserves a supplied Exception thrown by its ignored argument's destructor.
+Unused snapshots retire before receiver finally; assignment context retains a
+temporary through finally but never completes the CV store. Argument-time row
+COW and a live cache RuntimeException preserve distinct owners and Previous
+identity. See the
+[abrupt argument SEND review](coverage/semantics/generator-abrupt-argument-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit

@@ -1,0 +1,97 @@
+{
+  "milestone": "Iterator49: pending SEND argument-exception cleanup",
+  "status": "accepted-private",
+  "scope": "Pre-refreshed direct native Generator receiver at a normal primitive node-free COMPLETE. Its ignored object argument throws an outside supplied Exception during destruction; remaining snapshot and receiver cleanup still execute. No production semantics change.",
+  "implementation": {
+    "runtime_parent": "fbc3f8f8cecbcc8ce2e764d72528f0f61b14861e",
+    "production_change": "None. All spec, compiler, schema, adapter, parser, native helpers, root and collector bytes remain parent-exact. Only six source/state test files, four Makefile entries and publication documentation are added.",
+    "source_evidence": [
+      "vendor/php-src/Zend/zend_generators.c: Generator::send and zend_generator_dtor_storage",
+      "vendor/php-src/Zend/zend_vm_def.h: ZEND_DO_FCALL cleanup",
+      "vendor/php-src/Zend/zend_exceptions.c: zend_exception_set_previous"
+    ]
+  },
+  "validation": {
+    "native": "Four distinct normal target observations, captured before forecasting stdout. Unused/used row snapshots, argument-time COW, and a cache RuntimeException inside live Middle finally; native-only reports earn no model agreement.",
+    "genuine_unchanged": "The initial unused original already agrees normally at 067e3b0, normal_agreements=1. This is neither a discrepancy nor an Unsupported/refusal baseline and earns no repair claim.",
+    "sources": "The used author control and two independent originals agree at 8a96477 using the captured native reports without another oracle execution. All four originals preserve exact stdout, empty stderr and exit0; assignment never stores copy after the argument throw.",
+    "states": {
+      "new_author": [
+        128,
+        128
+      ],
+      "new_peer": [
+        129,
+        127
+      ],
+      "new_total": 512,
+      "new_local": 492,
+      "new_generic": 20
+    },
+    "observations": "Actual pending SEND operation and CLOSE_BODY records preserve the supplied identity while Middle is RUNNING. Unused VALUE is NULL/array1; used VALUE owns its copied array2 until finally completes. Argument COW separates old snapshot/current arrays, each with one child-edge set. One release step retires the snapshot array but keeps the old object on its actual release job. The live cache destructor runs beneath Middle finally with independent store/SEND records, HCELL2 and cache2; RuntimeException.previous is the supplied Exception, whose previous remains NULL.",
+    "controls": "Same-heap forged operation-source and Generator-phase refusals, malformed non-Throwable pending refusals, actual source-use distinction, complete ending/heap checks and zero/one/two-step public budget equality. Pending-ID negatives do not establish substitution refusal for a different valid Throwable.",
+    "compiler": "All four generated focused fixtures elaborate against 409 modules with unique EOF sentinel and all four main headers. Parse/elaboration earns no execution credit.",
+    "maintenance": "All ten reports pass first execution at original caps; no failures, retries, cap changes, production repairs or accepted source/native replays. Existing complete author runs were recovered after restart; only the unrun two peer checks executed afterward. All actors are reaped and CPU1 released."
+  },
+  "tested_revisions": {
+    "native4_genuine_unused1": "067e3b0b2c708f7305403b84f39db7218803d7ad",
+    "other_source3": "8a96477b6a17a9bbd91825ff4e7eef0ab66ca340",
+    "elaboration4_focused512": "0f91729716db96f4c2af424fb4b9b970bc5cb050",
+    "bridge": "Production and original source bytes are exact across these cuts; only tests and observed native metadata were added. Accepted native/source and focused identities remain separate, without replay or renewed historical credit."
+  },
+  "commands": {
+    "native": [
+      "python3 .tools/native.py",
+      "python3 .tools/review-native.py"
+    ],
+    "genuine": "python3 .tools/genuine.py --native-report .tools/generator-abrupt-argument-send-native-0m359put/report.json",
+    "source": [
+      "python3 tests/semantics/generator_abrupt_argument_send_sources.py --case generator-abrupt-argument-send-used-temporary-control --native-report .tools/generator-abrupt-argument-send-native-0m359put/report.json",
+      "python3 tests/semantics/generator_abrupt_argument_send_review_sources.py --native-report .tools/generator-abrupt-argument-send-review-native-3eg9_k3_/report.json"
+    ],
+    "elaboration": "taskset -c1 python3 .tools/state-elab.py",
+    "states": [
+      "taskset -c1 python3 tests/semantics/generator_abrupt_argument_send_state.py --case abrupt-argument-unused-result-before-finally-row-write",
+      "taskset -c1 python3 tests/semantics/generator_abrupt_argument_send_state.py --case abrupt-argument-used-temporary-survives-finally-row-write",
+      "taskset -c1 python3 tests/semantics/generator_abrupt_argument_send_review_state.py --case abrupt-argument-send-keeps-pending-across-snapshot-release",
+      "taskset -c1 python3 tests/semantics/generator_abrupt_argument_send_review_state.py --case abrupt-argument-send-replacement-inside-live-finally"
+    ]
+  },
+  "environment": {
+    "php": "8.5.10 CLI NTS64; source 34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_identities": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; SL/cacheoff/encountered determinism",
+    "settings": "LC_ALL=C TZ=UTC, PHP_SPEC_SCRIPT_ENCODING unset. Focused packet serial on CPU1. Existing local tools reused; no fresh portability claim.",
+    "caps": "Native 8s; source 100000 steps/model 100/process 120; four-fixture elaboration 60; states 120/seek 4000/finish 4000.",
+    "exits": "All native/model/compiler processes exit0, no timeout, empty stderr. State stdout is exactly true plus newline. All recorded input/head stability checks pass."
+  },
+  "reports": {
+    "native-author2": ".tools/generator-abrupt-argument-send-native-0m359put/report.json",
+    "native-peer2": ".tools/generator-abrupt-argument-send-review-native-3eg9_k3_/report.json",
+    "genuine-unchanged-normal1": ".tools/generator-abrupt-argument-send-genuine-poczr44x/report.json",
+    "source-used1": ".tools/generator-abrupt-argument-send-source-2tmp8jcj/report.json",
+    "source-peer2": ".tools/generator-abrupt-argument-send-review-source-wryadxgr/report.json",
+    "elaboration4": ".tools/generator-abrupt-argument-send-state-elab-pmknrjhd/report.json",
+    "state-author128-unused": ".tools/fiber-state-review-b4th4f9g/report.json",
+    "state-author128-used": ".tools/fiber-state-review-a6bk8rbd/report.json",
+    "state-peer129": ".tools/fiber-state-review-nlqal_e1/report.json",
+    "state-peer127": ".tools/fiber-state-review-3cjfq8nq/report.json"
+  },
+  "evidence": {
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-abrupt-argument-send-49/private.tar.gz",
+      "bytes": 1818931,
+      "sha256": "b2d72e44a64f3ba49ed171f43b285599866de099e208935ec4eb4387e051201d"
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-abrupt-argument-send-49/manifest.json",
+    "recovery": "Extract at a checkout containing tested commit0f917297. Reuse the pinned project-local binaries or rebuild those pins; archive contains no build tree or checkout. Reports retain original commands, source/cwd identities, stdout/stderr, caps, outcomes and fingerprints. Accepted native/source paths remain separate cuts and are not rerun by recovery."
+  },
+  "remaining": "Wider native-link or owning-return endpoints, different abrupt arguments, parked receivers, broader callback/reentry histories and explicit collection remain unvalidated by this slice. Existing unfinished OP12/Source47/owned-NUL/undefined-byref-LIST/COMP88 work is unchanged.",
+  "independent_review": "Replacement /root/iterator49_review reviewed semantic behavior, counterexamples, test reliability, publication scope and current-parent composition; no blocker. All four focused reports and their original caps/cuts were independently inspected."
+}

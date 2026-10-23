@@ -200,6 +200,15 @@ slot clearing destroys the cache and throws RuntimeException before Upper
 finally, with Previous NULL. Both real close receipts remain ordinary; no
 copied-return owner or storage pin is added. See the
 [unused CURRENT review](../../coverage/semantics/generator-unused-current-review.json).
+At the pre-refreshed direct node-free pending SEND endpoint, a supplied argument
+Exception survives the remaining snapshot release and receiver finally.
+Assignment context retains a temporary until after finally, then unwinds
+without storing its CV. Argument COW preserves one edge set per array. Slot
+clearing inside RUNNING Middle finally can instead throw RuntimeException,
+whose Previous is the supplied Exception; that original exception keeps Previous
+NULL. These are validation-only observations of existing close/pending rules.
+See the
+[abrupt argument SEND review](../../coverage/semantics/generator-abrupt-argument-send-review.json).
 Pending NEXT preserves that parked return across the same close transfer but
 creates no current copy. A temporary sole receiver releases its cache during
 storage cleanup, before caller delivery; a throwing cache has no older caught
