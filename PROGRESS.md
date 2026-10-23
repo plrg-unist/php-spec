@@ -8,9 +8,9 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
-Canonical integration currently reaches `25b63539e`/409 modules. OP80 is prepared
-for integration: explicit `(bool)` of direct-CV NaN warns before rereading the
-same ordinary float slot. A named handler's `0.0` write yields strict `false`;
+This checkpoint adds reviewed OP80 over integration parent `25b63539e`, with
+409 modules. Explicit `(bool)` of direct-CV NaN warns before rereading the same
+ordinary float slot. A named handler's `0.0` write yields strict `false`;
 returning false permits the default Warning at operand25. A supplied Exception20
 cancels the result and outer assignment, preserving `100`.
 
@@ -25,7 +25,7 @@ unchanged record layout and ordinary-slot readiness/snapshot helpers. The marker
 adds no cell root; entry, capture, returned/throw and EOF cuts check owner1.
 Old Boolean-NOT, shared truth/numeric/formatting, CONFIG/400 and generic unwind
 remain unchanged. References/rebinding, copies, changed representations and wider
-handlers/lifetimes remain partial. Publication is independently reviewed; integration is pending.
+handlers/lifetimes remain partial. Implementation, evidence and publication are independently reviewed.
 
 ## Integrated behavior and entrypoints
 
@@ -52,7 +52,6 @@ than retain superseded operational checkpoints.
 
 | Track | Current state |
 | --- | --- |
-| OP80 explicit Boolean-cast NaN | Source2/full409/focused291 pass; publication and integration pending. |
 | V100 owned scalar CONSTANT/DEFINED query | Source3 and focused710 pass; publication pending. |
 | A47 nested pooled CONST arrays | Source4/strict pass; focused1093 running. |
 | M133 first retirement with one REF/object remainder | Source2 and author117 pass; peer found a156 replay-branch overlap, correction pending. |
@@ -61,7 +60,8 @@ than retain superseded operational checkpoints.
 | CLASS120 declared UNSET `__get` recursion | Native packet preparation. |
 | Iterator51 pending-selected unused CURRENT | Genuine NORMAL disagreement: native retires A inside Middle finally, model after Upper K; minimal289 repair in progress. |
 
-Iterator49/50, V99, M132, A46, OP79, Source86, COMP118 and CLASS119 are integrated.
+Iterator49/50, V99, M132, A46, OP79/80, Source86, COMP118 and CLASS119 are integrated
+into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
 for private changes.

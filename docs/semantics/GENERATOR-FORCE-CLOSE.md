@@ -209,6 +209,14 @@ whose Previous is the supplied Exception; that original exception keeps Previous
 NULL. These are validation-only observations of existing close/pending rules.
 See the
 [abrupt argument SEND review](../../coverage/semantics/generator-abrupt-argument-send-review.json).
+Through one native ancestor, a supplied argument Exception survives snapshot
+retirement and selected Upper finally even when inherited-pending Middle skips
+its finally. After an independent Middle NEXT, its live finally can destroy the
+cache first: RuntimeException replaces the supplied Exception before Upper
+finally, with that exact supplied object as Previous. The ordinary store
+operation has no pending exception; the enclosing SEND/close records retain it.
+No close or root rule changes; see the
+[ancestor argument-exception review](../../coverage/semantics/generator-ancestor-abrupt-argument-send-review.json).
 Pending NEXT preserves that parked return across the same close transfer but
 creates no current copy. A temporary sole receiver releases its cache during
 storage cleanup, before caller delivery; a throwing cache has no older caught

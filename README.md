@@ -39,10 +39,14 @@ Captured tables retain their children through COW; replacing a live array can
 release children inside the handler. Releasing the last table owner drops its
 child edges; destructors run when no other object owner remains. See the
 [object-array review](coverage/semantics/undefined-comparison-object-array-review.json).
-Reference entries also admit live cells with defined primitive payloads. COW
-unwraps singleton references and preserves shared cells; captured containers keep
-their entries while writes through those cells remain visible. See the
-[reference-array review](coverage/semantics/undefined-comparison-reference-array-review.json).
+Reference entries also admit live cells with primitive or ordinary-object payloads.
+COW unwraps singleton references and preserves shared cells; captured containers
+keep their entries while writes through those cells remain visible. Replacing a
+shared object can run its destructor inside the handler; final saved-table release
+can run the last-owned object destructor before the outer store or catch.
+Outside aliases delay that release. See the
+[reference-array review](coverage/semantics/undefined-comparison-reference-array-review.json)
+and [object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json).
 Both-missing pairs, including one missing name twice, can resume if the first
 handler defines the later scalar, flat array or ordinary object. `$x == $x` can
 then be false and `$x > $x` true. Greater operators check source right first. All seven comparison operators
@@ -542,6 +546,16 @@ certified NULL delivery, exact restoration, pre-API trace and setter recovery.
 The original fixture-order and transient-integrity failures are preserved;
 the latter now completes the certified send without weakening source validation.
 Named/unpacked/PIPE forms and wider missing-read producers remain partial.
+
+[Two-group INI argument unpacking](coverage/semantics/ini-set-two-pack-null-array-value-review.json)
+now preserves a NULL option and an earlier flat array through two singleton
+packs, including reversed names and a named first pack followed by a numeric
+second pack. Later argument and handler effects retain the selected setter and
+captured array across COW. Four source comparisons and 1,877 state premises
+cover strict ordinary versus weak explicit reception, supplied-throw cancellation,
+source authority, roots, cleanup and setter recovery. Two fixture binding failures
+are preserved; only affected checks were repeated. Wider groups/arrays, PIPE and
+sole-owner lifetimes remain partial.
 
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
@@ -1707,6 +1721,13 @@ temporary through finally but never completes the CV store. Argument-time row
 COW and a live cache RuntimeException preserve distinct owners and Previous
 identity. See the
 [abrupt argument SEND review](coverage/semantics/generator-abrupt-argument-send-review.json).
+One native ancestor also preserves a supplied argument-destructor Exception
+through pending SEND snapshot and receiver cleanup. Upper clears its own
+initialization while inherited-pending Middle can still skip finally; a prior
+Middle NEXT permits its cache RuntimeException before Upper finally, preserving
+the supplied Previous identity. Assignment keeps a temporary without storing
+its CV. This is validation of existing rules; see the
+[ancestor argument-exception review](coverage/semantics/generator-ancestor-abrupt-argument-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit
@@ -4499,6 +4520,12 @@ distinct native, source, strict and state cuts plus the original failures.
 The actual369 composition over `b9f0b1ae9` passes strict at `bae438b0f`
 (5.181s), preserving current class, Generator, return and callable interfaces.
 Source/state evidence retains its original cuts.
+Same-name implicit getter recursion on a missing undeclared literal property now
+warns and returns captured NULL, including during compiled-local cleanup.
+Handler population, caller-CV clearing, supplied throw and later guard reset pass
+[four original agreements and 868 focused premises](coverage/semantics/magic-get-recursion-review.json).
+The actual implicit frame authenticates the guard; explicit calls and queued or
+returned markers do not. Wider recursion and lifetime forms remain partial.
 Denied private/protected reads and inherited-private literal fallback now invoke
 the getter without applying the hidden property's type. Allowed lexical reads
 use the physical backing key or raise its initialization Error. The original

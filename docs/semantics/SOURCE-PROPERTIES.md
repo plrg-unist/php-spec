@@ -933,7 +933,8 @@ also invoke the getter, with no hidden property type verification,
 even for INITIAL or initialized typed backing. Allowed lexical VALUE reads the
 physical key; accessible typed INITIAL raises Error without invoking the getter.
 Lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, writes, quiet probes,
-wider signatures and guarded recursion remain explicit Unsupported.
+wider signatures and recursion beyond the bounded missing-property case below
+remain explicit Unsupported.
 
 For CV receivers, module380 owns one hold while the known-instance getter frame borrows
 it. The raw returned value or reference survives any captured property verification
@@ -955,6 +956,20 @@ entered continuations never reread the caller CV or property absence. The
 nonpublic path authenticates the ordinary caller scope from its source site
 before entry and retains that lookup history through privileged getter and
 destructor contexts.
+
+Same-name implicit recursion on an absent undeclared literal property now uses
+the ordinary undefined-property Warning and captured NULL. The actual by-value
+getter frame retains the guard through compiled-local destruction; explicit
+`__get` calls, queued RESULT and returned COPY markers do not supply authority.
+Handler population cannot redirect the interrupted NULL, and clearing the caller
+CV leaves the getter's receiver hold intact. A supplied throw releases that hold
+before catch and preserves the untouched outer assignment. Later access enters
+the getter again after guard reset. Four source agreements and 868 focused
+premises retain separate runtime and fixture cuts in the
+[recursion review](../../coverage/semantics/magic-get-recursion-review.json).
+Declared UNSET/denied recursion, by-reference getters, quiet probes, owned
+receivers, computed names, suspension and wider lifetime combinations remain partial.
+
 The [getter review](../../coverage/semantics/magic-property-get-review.json) records
 eight exact source agreements, 1293 setup-inclusive reached premises and the
 separate original failures. The

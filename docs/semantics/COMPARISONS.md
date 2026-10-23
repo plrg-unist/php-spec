@@ -102,7 +102,7 @@ from each DIRECT object entry. Final table release drops those edges and runs a 
 before the outer store or catch only if no other object owner remains.
 The [object-array review](../../coverage/semantics/undefined-comparison-object-array-review.json)
 checks transitive roots, raw release versus driven destruction, COW and budgets.
-Object/array-valued ALIAS entries, nested arrays and internal/Stringable leaves remain partial.
+Array-valued ALIAS entries, nested arrays and internal/Stringable leaves remain partial.
 Primitive ALIAS entries now pass the same guard when their reference cell is
 allocated, marked as a reference, in bounds and holds a defined primitive.
 Captured table entries survive source replacement; shared cell writes remain
@@ -113,6 +113,14 @@ Final table release drops those edges; outside aliases may keep the cell alive
 through catch/finally and later writes. Comparison still uses array emptiness.
 The [reference-array review](../../coverage/semantics/undefined-comparison-reference-array-review.json)
 checks actual singleton COW, repeated/shared ownership, restore/discard and budgets.
+ALIAS cells may also hold live ordinary non-Stringable objects. Saved entries
+retain cell locations rather than the previous object payload: shared-cell
+replacement can destroy the old object inside the handler. Singleton COW instead
+unwraps the copied bucket to DIRECT and retains the original object through the
+saved cell. Last ARRAY-to-CELL-to-OBJECT release runs destruction before the
+outer store or catch only when no other owner remains. The
+[object-reference review](../../coverage/semantics/undefined-comparison-object-reference-array-review.json)
+checks these orders, shared property writes, outside aliases and throw cleanup.
 Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also suspend with one missing operand
 and a defined scalar counterpart. The missing value stays null while the opposing
 wrapper follows callback writes, late reference creation and rebinding. A missing

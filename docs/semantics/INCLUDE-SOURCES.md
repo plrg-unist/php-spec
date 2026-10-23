@@ -1147,3 +1147,28 @@ idempotent owner-buffer discard and original-setter recovery. No receiver trace
 edge or native peer trace observation is claimed. Wider names/packs/PIPE, other
 read positions/producers and sole-owner lifetimes remain partial; paused paths
 are untouched.
+
+
+The [two-group NULL/ARRAY increment](../../coverage/semantics/ini-set-two-pack-null-array-value-review.json)
+admits exactly two singleton DIRECT unpack snapshots for fixed/selected strings
+and retained setters. Normalized sends retain raw NULL and the allocated flat
+quiet DIRECT array; each saved pack separately authenticates its source and
+compiled fact. Later outer-pack writes never replace these captures. Numeric,
+named, reversed and mixed groups reuse existing destination replay. At this pin,
+SEND_UNPACK's named-order flag resets per opcode, so a named first group followed
+by a fresh numeric second group remains valid. No cross-group ordering fence is
+introduced.
+
+Only14 additive172 lines change. Existing weak/nonPIPE, invocation/owner, ARRAY,
+finish/trace/root/discard and source validators stay exact. Four originals pass at
+`582227151`/409; author1,350=484+404+462 plus independent527 totals1,877 strict-SL
+premises. The first484 retains its original cut; the other groups pass at
+`7b4fb564a`. Two pre-main fixture binding failures retain zero credit, and only
+affected checks repeat. Thirteen reports retain11PASS/two failure0; all accepted
+actors are reaped at original limits. Native default Deprecated8/17 is separate
+from quiet strict/peer output. State proves active outer/inner root transfer,
+retired outer history, captured COW, raw handler/API supplied-Exception cancellation,
+full restored/discard identity and setter recovery; native compact observations
+do not imply those trace/root facts. Raw records are external with original paths
+and hashes. Additional groups/entries, PIPE, wider ARRAY leaves and sole-owner
+lifetimes remain partial; paused boundaries remain unchanged.
