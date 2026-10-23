@@ -189,6 +189,7 @@ dec $quiet_power_copy_plan(pstate) : (pintegeroperation, pnumber, pnumber)?
 dec $arithmetic_unary_plan(pstate) : punarywarning?
 dec $arithmetic_unary_reference_plan(pstate) : punarywarning?
 dec $arithmetic_unary_copy_plan(pstate) : punarywarning?
+dec $boolxor_plan(pstate) : pboolxoroperation?
 dec $string_compare_pending(pstate) : bool
 dec $aggregate_compare_pending(pstate) : bool
 dec $binary_source_apply(pstate, pbin, poperand, poperand, pvalue, pvalue, int) : pstate
@@ -198,6 +199,7 @@ rule PhpStep/binary-right: S ~> S_out[.HELD = S.HELD]
   -- if S.TODO = (BINARY_RIGHT pbin poperand z) :: ptask_tail*
   -- if ~$gc_retired_binary(S, pbin, poperand)
   -- if $integer_operator_plan(S) = eps
+  -- if $boolxor_plan(S) = eps
   -- if $arithmetic_add_plan(S) = eps
   -- if $arithmetic_add_repair_plan(S) = eps
   -- if $arithmetic_div_plan(S) = eps

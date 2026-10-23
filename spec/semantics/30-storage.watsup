@@ -145,6 +145,7 @@ syntax parithmeticphase
 syntax punarywarning
 syntax pbitnotwarning
 syntax pboolnotnanwarning
+syntax pboolxoroperation, pboolxorphase
 syntax pstringcompare
 syntax paggregatecompare
 syntax pnumbercompare
@@ -397,6 +398,9 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | BOOLNOT_NAN_WARNING pboolnotnanwarning nat
   | BOOLCAST_NAN_WARNING pboolnotnanwarning nat
   | ARRAYCAST_NAN_WARNING pboolnotnanwarning nat
+  | BOOLXOR_CONVERT pboolxoroperation pboolxorphase
+  | BOOLXOR_WARNING pboolxoroperation pboolxorphase nat
+  | BOOLXOR_PENDING pboolxoroperation nat nat
   | BITNOT_RANGE_WARNING pbitnotwarning nat
   | INT_CAST_RANGE_WARNING pbitnotwarning nat
   | BITNOT_NAN_WARNING pbitnotwarning nat nat?

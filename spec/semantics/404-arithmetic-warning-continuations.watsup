@@ -4959,3 +4959,146 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 2
   -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to array")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pboolnotnanwarning.LINE
+
+;; boolean_xor_function caches LEFT truth before converting the live RIGHT CV.
+;; Each float read follows its own NaN callback; the descriptors add no owners.
+syntax pboolxoroperation = { LEFT pboolnotnanwarning, RIGHT pboolnotnanwarning }
+syntax pboolxorphase = BOOLXOR_LEFT | BOOLXOR_RIGHT bool
+
+dec $boolxor_source(pstate, pboolxoroperation) : bool
+def $boolxor_source(S, pboolxoroperation) = true
+  -- if S.ORIGIN = (pboolxoroperation.LEFT.SITE)
+  -- if pboolxoroperation.RIGHT.SITE = pboolxoroperation.LEFT.SITE
+  -- if pboolxoroperation.RIGHT.LINE = pboolxoroperation.LEFT.LINE
+  -- if $origin_node(S.SOURCES, pboolxoroperation.LEFT.SITE) = (NExprBinaryOpLogicalXor expression_left expression_right metadata)
+  -- if pboolxoroperation.LEFT.INPUT = VARIABLE ptbytes_left z_left
+  -- if pboolxoroperation.RIGHT.INPUT = VARIABLE ptbytes_right z_right
+  -- if $integer_operand_source(S, pboolxoroperation.LEFT.SITE, [PCFIELD 0], pboolxoroperation.LEFT.INPUT)
+  -- if $integer_operand_source(S, pboolxoroperation.LEFT.SITE, [PCFIELD 1], pboolxoroperation.RIGHT.INPUT)
+  -- if $code_expression_at_source(S, pboolxoroperation.LEFT.SITE, [PCFIELD 1]) = (pboolxoroperation.LEFT.LINE)
+  -- if $(pboolxoroperation.LEFT.CELL < |S.STORE| /\ pboolxoroperation.RIGHT.CELL < |S.STORE|)
+  -- if pboolxoroperation.LEFT.CELL =/= pboolxoroperation.RIGHT.CELL
+  -- if $(pboolxoroperation.LEFT.BITS < 18446744073709551616 /\ pboolxoroperation.RIGHT.BITS < 18446744073709551616)
+  -- if $fparts_nan($float_decode(pboolxoroperation.LEFT.BITS))
+def $boolxor_source(S, pboolxoroperation) = false -- otherwise
+
+dec $boolxor_snapshot(pstate, pboolxoroperation) : bool
+def $boolxor_snapshot(S, pboolxoroperation) = ($boolnot_nan_snapshot(S, pboolxoroperation.LEFT) /\ $boolnot_nan_snapshot(S, pboolxoroperation.RIGHT))
+dec $boolxor_ready(pstate, pboolxoroperation, pboolxorphase) : nat?
+def $boolxor_ready(S, pboolxoroperation, BOOLXOR_LEFT) = $boolnot_nan_ready(S, pboolxoroperation.LEFT)
+def $boolxor_ready(S, pboolxoroperation, BOOLXOR_RIGHT b) = $boolnot_nan_ready(S, pboolxoroperation.RIGHT)
+dec $boolxor_nan(pstate, pboolxoroperation, pboolxorphase) : bool
+def $boolxor_nan(S, pboolxoroperation, pboolxorphase) = true
+  -- if $boolxor_ready(S, pboolxoroperation, pboolxorphase) = (n_bits)
+  -- if $fparts_nan($float_decode(n_bits))
+def $boolxor_nan(S, pboolxoroperation, pboolxorphase) = false -- otherwise
+
+def $boolxor_plan(S) = (pboolxoroperation)
+  -- if S.TODO = (BINARY_RIGHT LOGICALXOR poperand_left z) :: ptask_tail*
+  -- if ~$gc_retired_binary(S, LOGICALXOR, poperand_left)
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if poperand_left = VARIABLE ptbytes_left z_left
+  -- if S.RESULT = VARIABLE ptbytes_right z_right
+  -- if $lookup(S.ENV, ptbytes_left) = (n_left)
+  -- if $lookup(S.ENV, ptbytes_right) = (n_right)
+  -- if $(n_left < |S.STORE| /\ n_right < |S.STORE|)
+  -- if S.STORE[n_left] = DEFINED (PFLOAT n_left_bits)
+  -- if S.STORE[n_right] = DEFINED (PFLOAT n_right_bits)
+  -- if pboolxoroperation = {LEFT {SITE porigin, LINE z, INPUT poperand_left, CELL n_left, BITS n_left_bits}, RIGHT {SITE porigin, LINE z, INPUT S.RESULT, CELL n_right, BITS n_right_bits}}
+  -- if $boolxor_source(S, pboolxoroperation)
+  -- if $boolxor_snapshot(S, pboolxoroperation)
+def $boolxor_plan(S) = eps -- otherwise
+
+dec $boolxor_convert_valid(pstate, pboolxoroperation, pboolxorphase) : bool
+def $boolxor_convert_valid(S, pboolxoroperation, BOOLXOR_LEFT) = ($boolxor_source(S, pboolxoroperation) /\ $boolxor_snapshot(S, pboolxoroperation))
+def $boolxor_convert_valid(S, pboolxoroperation, BOOLXOR_RIGHT b) = $boolxor_source(S, pboolxoroperation)
+dec $boolxor_warning_snapshot(pstate, pboolxoroperation, pboolxorphase) : bool
+def $boolxor_warning_snapshot(S, pboolxoroperation, BOOLXOR_LEFT) = $boolxor_snapshot(S, pboolxoroperation)
+def $boolxor_warning_snapshot(S, pboolxoroperation, BOOLXOR_RIGHT b) = $boolxor_nan(S, pboolxoroperation, BOOLXOR_RIGHT b)
+dec $boolxor_warning_valid(pstate, pboolxoroperation, pboolxorphase, nat) : bool
+def $boolxor_warning_valid(S, pboolxoroperation, pboolxorphase, n) = ($boolxor_source(S, pboolxoroperation) /\ $(n <= 1) /\ (n = 1 \/ $boolxor_warning_snapshot(S, pboolxoroperation, pboolxorphase)))
+dec $boolxor_converted(pstate, pboolxoroperation, pboolxorphase, bool) : pstate
+def $boolxor_converted(S, pboolxoroperation, BOOLXOR_LEFT, b) = S[.TODO = (BOOLXOR_CONVERT pboolxoroperation (BOOLXOR_RIGHT b)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+def $boolxor_converted(S, pboolxoroperation, BOOLXOR_RIGHT b_left, b_right) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL (b_left =/= b_right))][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+
+rule PhpStep/boolxor-begin: S ~> S[.TODO = (BOOLXOR_CONVERT pboolxoroperation BOOLXOR_LEFT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $boolxor_plan(S) = (pboolxoroperation)
+rule PhpStep/boolxor-quiet: S ~> $boolxor_converted(S, pboolxoroperation, pboolxorphase, b)
+  -- if S.TODO = (BOOLXOR_CONVERT pboolxoroperation pboolxorphase) :: ptask_tail*
+  -- if $boolxor_convert_valid(S, pboolxoroperation, pboolxorphase)
+  -- if $boolxor_ready(S, pboolxoroperation, pboolxorphase) = (n_bits)
+  -- if (b, false) = $number_bool(NFLOAT n_bits)
+rule PhpStep/boolxor-capture-warning: S ~> S[.TODO = (BOOLXOR_WARNING pboolxoroperation pboolxorphase 0) :: ptask_tail*]
+  -- if S.TODO = (BOOLXOR_CONVERT pboolxoroperation pboolxorphase) :: ptask_tail*
+  -- if $boolxor_convert_valid(S, pboolxoroperation, pboolxorphase)
+  -- if $boolxor_nan(S, pboolxoroperation, pboolxorphase)
+rule PhpStep/boolxor-convert-boundary: S ~> S[.COMPLETION = UNSUPPORTED "logical XOR changed CV representation"]
+  -- if S.TODO = (BOOLXOR_CONVERT pboolxoroperation pboolxorphase) :: ptask_tail*
+  -- if $boolxor_convert_valid(S, pboolxoroperation, pboolxorphase)
+  -- if $boolxor_ready(S, pboolxoroperation, pboolxorphase) = eps
+rule PhpStep/boolxor-dispatch: S ~> $error_dispatch(S, 2, $ptascii("unexpected NAN value was coerced to bool"), pboolxoroperation.LEFT.LINE, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to bool")) pboolxoroperation.LEFT.LINE, BOOLXOR_WARNING pboolxoroperation pboolxorphase 1)
+  -- if S.TODO = (BOOLXOR_WARNING pboolxoroperation pboolxorphase 0) :: ptask_tail*
+  -- if $boolxor_warning_valid(S, pboolxoroperation, pboolxorphase, 0)
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/boolxor-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "logical XOR owning warning callback"]
+  -- if S.TODO = (BOOLXOR_WARNING pboolxoroperation pboolxorphase 0) :: ptask_tail*
+  -- if $boolxor_warning_valid(S, pboolxoroperation, pboolxorphase, 0)
+  -- if $error_handler_eligible(S, 2) /\ ~$arithmetic_add_named(S)
+rule PhpStep/boolxor-warning-resume: S ~> $boolxor_converted(S, pboolxoroperation, pboolxorphase, b)
+  -- if S.TODO = (BOOLXOR_WARNING pboolxoroperation pboolxorphase 1) :: ptask_tail*
+  -- if $boolxor_warning_valid(S, pboolxoroperation, pboolxorphase, 1)
+  -- if $boolxor_ready(S, pboolxoroperation, pboolxorphase) = (n_bits)
+  -- if (b, b_warning) = $number_bool(NFLOAT n_bits)
+rule PhpStep/boolxor-warning-boundary: S ~> S[.COMPLETION = UNSUPPORTED "logical XOR changed CV representation"]
+  -- if S.TODO = (BOOLXOR_WARNING pboolxoroperation pboolxorphase 1) :: ptask_tail*
+  -- if $boolxor_warning_valid(S, pboolxoroperation, pboolxorphase, 1)
+  -- if $boolxor_ready(S, pboolxoroperation, pboolxorphase) = eps
+
+;; A LEFT-handler throw still reaches RIGHT's C conversion before VM unwind.
+dec $boolxor_pending_valid(pstate, pboolxoroperation, nat, nat) : bool
+def $boolxor_pending_valid(S, pboolxoroperation, n_stage, n_exception) = ($boolxor_source(S, pboolxoroperation) /\ $(n_stage <= 1) /\ $destructor_pending_valid(S, (n_exception)))
+def $error_read_discard(S, BOOLXOR_WARNING pboolxoroperation BOOLXOR_LEFT 1) = S[.TODO = (BOOLXOR_PENDING pboolxoroperation 0 n_exception) :: ptask_tail*]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
+  -- if $boolxor_pending_valid(S, pboolxoroperation, 0, n_exception)
+rule PhpStep/boolxor-pending-quiet: S ~> S[.TODO = (BOOLXOR_PENDING pboolxoroperation 1 n_exception) :: ptask_tail*][.ERRORFATALTRACE = eps]
+  -- if S.TODO = (BOOLXOR_PENDING pboolxoroperation 0 n_exception) :: ptask_tail*
+  -- if $boolxor_pending_valid(S, pboolxoroperation, 0, n_exception)
+  -- if $boolxor_ready(S, pboolxoroperation, BOOLXOR_RIGHT false) = (n_bits)
+  -- if (b, false) = $number_bool(NFLOAT n_bits)
+rule PhpStep/boolxor-pending-default: S ~> $error_dispatch(S, 2, $ptascii("unexpected NAN value was coerced to bool"), pboolxoroperation.LEFT.LINE, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to bool")) pboolxoroperation.LEFT.LINE, BOOLXOR_PENDING pboolxoroperation 1 n_exception)
+  -- if S.TODO = (BOOLXOR_PENDING pboolxoroperation 0 n_exception) :: ptask_tail*
+  -- if $boolxor_pending_valid(S, pboolxoroperation, 0, n_exception)
+  -- if $boolxor_nan(S, pboolxoroperation, BOOLXOR_RIGHT false)
+  -- if ~$error_handler_eligible(S, 2)
+rule PhpStep/boolxor-pending-suppressed: S ~> S[.TODO = (BOOLXOR_PENDING pboolxoroperation 1 n_exception) :: ptask_tail*][.ERRORFATALTRACE = eps]
+  -- if S.TODO = (BOOLXOR_PENDING pboolxoroperation 0 n_exception) :: ptask_tail*
+  -- if $boolxor_pending_valid(S, pboolxoroperation, 0, n_exception)
+  -- if $boolxor_nan(S, pboolxoroperation, BOOLXOR_RIGHT false)
+  -- if $error_handler_eligible(S, 2)
+rule PhpStep/boolxor-pending-boundary: S ~> S[.COMPLETION = UNSUPPORTED "logical XOR pending RIGHT representation"]
+  -- if S.TODO = (BOOLXOR_PENDING pboolxoroperation 0 n_exception) :: ptask_tail*
+  -- if $boolxor_pending_valid(S, pboolxoroperation, 0, n_exception)
+  -- if $boolxor_ready(S, pboolxoroperation, BOOLXOR_RIGHT false) = eps
+rule PhpStep/boolxor-pending-throw: S ~> S[.TODO = (THROW_SEARCH n_exception) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (BOOLXOR_PENDING pboolxoroperation 1 n_exception) :: ptask_tail*
+  -- if $boolxor_pending_valid(S, pboolxoroperation, 1, n_exception)
+
+def $task_nodes(BOOLXOR_CONVERT pboolxoroperation pboolxorphase) = eps
+def $task_nodes(BOOLXOR_WARNING pboolxoroperation pboolxorphase n) = eps
+def $task_nodes(BOOLXOR_PENDING pboolxoroperation n_stage n_exception) = $instance_roots((n_exception))
+def $call_task_valid(S, BOOLXOR_CONVERT pboolxoroperation pboolxorphase) = $boolxor_convert_valid(S, pboolxoroperation, pboolxorphase)
+def $call_task_valid(S, BOOLXOR_WARNING pboolxoroperation pboolxorphase n) = $boolxor_warning_valid(S, pboolxoroperation, pboolxorphase, n)
+def $call_task_valid(S, BOOLXOR_PENDING pboolxoroperation n_stage n_exception) = $boolxor_pending_valid(S, pboolxoroperation, n_stage, n_exception)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = BOOLXOR_WARNING pboolxoroperation pboolxorphase 1
+  -- if $boolxor_warning_valid(S, pboolxoroperation, pboolxorphase, 1)
+  -- if perrorcall.TARGET =/= eps \/ $boolxor_warning_snapshot(S, pboolxoroperation, pboolxorphase)
+  -- if perrorcall.SITE = pboolxoroperation.LEFT.SITE /\ perrorcall.LINE = pboolxoroperation.LEFT.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pboolxoroperation.LEFT.LINE
