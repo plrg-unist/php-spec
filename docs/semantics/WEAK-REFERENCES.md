@@ -105,10 +105,11 @@ property. Insertion occurs while that property is null; the ordinary property
 write then supplies the backedge. The initial cut limited other allocated
 objects to weak wrappers.
 
-The physical graph still contains Map→Value→Key for eager ownership. GC first
-excludes Map→Value, then restores it only when both map and key are reachable.
-A held key protects the value, and a held value reaches its key. With neither
-held, the pair is logically white despite the live map's physical value edge.
+The physical graph contains Map→Value→Key, optionally through a reference cell,
+for eager ownership. GC restores Map→Value when map and key are reachable. With
+a live map and white key, a virtual Key→Value edge instead discovers the unheld
+component; this adds no physical owner. A held key protects the value, and a held
+value reaches its key.
 An authentic destructor-free GC_FREE plan clears that entry before the unchanged
 strong resurrection guard and existing count, buffer, store and handle disposal.
 
@@ -124,11 +125,44 @@ source's `WeakMap ephemeron collection` refusal remains zero agreement.
 
 The basis is `zend_weakmap_get_gc`, key-entry helpers and `gc_scan_black` in
 `Zend/zend_weakrefs.c` / `Zend/zend_gc.c`: an entry is retained when both map and
-key are live. Wider maps/destructor callbacks, typed/reference or wider value
-properties, inactive contexts, unheld-map and general ephemeron graphs remain
+key are live. Wider maps/destructor callbacks, typed properties, wider reference
+or value shapes, inactive contexts, unheld-map and general ephemeron graphs remain
 required. Countable remains nominal-only and count library execution is excluded
 by CORE. Earlier cuts retain their evidence in the
 [ledger](../../coverage/semantics/weak-map-review.json).
+
+## Reference-cell backedges and Key-only discovery
+
+M134 admits the canonical ALIAS of a live marked HCELL holding Key in the same
+public untyped property, limited to methodless Value. The old DIRECT admission
+keeps its two original checks. Actual ownership remains Map→Value→HCELL→Key;
+In the ALIAS case, Key stays a physical leaf with one object owner. The cell has
+one property owner, or a second external alias owner while held.
+
+The quiet held source reaches its next collection with only Key buffered.
+The old tracing graph missed Value and reached the existing
+strong resurrection refusal. The virtual white-Key edge now discovers Value and
+its cell without changing the eager graph, roots, disposal or that guard.
+Protected live-Key and no-live-map branches stay exact. DIRECT walks already
+reaching Value loop back to a visited node, preserving count and free order.
+
+Four originals and 282/4 focused checks pass at9e37/409. Unheld collection returns2
+then0; held collection returns0 before the alias drops, then2. Quiet ALIAS and
+DIRECT controls omit pre-release gets, so observation cannot seed Value's buffer
+slot. The author134/2 follows real CONFIG/TRACE/FREE, count2 excluding the cell,
+exact budgets and a valid-heap external-root stale-plan refusal. Peer148/2 follows
+actual protected ownership, Key-only discovery and both GC_FREE steps. Allocation
+of Key/Value/HCELL ends and weak gets return NULL, while stale STORE/REFCELLS
+history remains recorded without a live node, edge or owner. Protected/no-map
+root-list controls are helper-only, without a PHP reachability claim.
+
+Native4/baseline4/diagnosis166/1 retain323b/409. The three ALIAS refusals and DIRECT
+non-destructor-resurrection refusal stay zero credit; no fixture/recorder failure, retry, cap change
+or accepted historical replay occurred. All actors are reaped/CPU5 released.
+Typed or wider reference-property forms, ALIAS-Value destructor callbacks,
+array values/properties, wider graphs/maps,
+unheld-map and inactive contexts remain partial; count-library bodies stay excluded.
+[Review and recovery](../../coverage/semantics/weak-map-review.json).
 
 ## Ordinary Std graphs beside a methodless ephemeron
 

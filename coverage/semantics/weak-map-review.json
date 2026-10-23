@@ -2026,5 +2026,147 @@
       "python3 tests/semantics/weak_map_scalar_replacement_state.py --case scalar-to-object"
     ],
     "boundaries": "One live singleton receiver, leaf nonfreeing stdClass Key and supported scalars or ordinary leaf objects only. Wider keys/values, references, methods/iteration, mutation while freeing, escaped receiver/key owners, broader reentrant scalar contexts and general ephemeron graphs remain open. Existing ordinary object replacement cuts and failures retain their separate evidence."
+  },
+  "hcell_ephemeron_134": {
+    "status": "independently_reviewed_hcell_ephemeron_and_key_discovery",
+    "revision": "9e37d56cac3fd63983ca00130e5e321d3db04645",
+    "baseline_revision": "323b6714cd8c2067acb677b4a2dcb898c1eeb65b",
+    "modules": 409,
+    "implementation": [
+      "spec/semantics/386-weak-map-lifetime.watsup"
+    ],
+    "change": "A live singleton map with a stdClass leaf Key and a parentless methodless Value whose one public untyped property stores an ALIAS to a live marked HCELL containing Key. The direct-property lane retains its old admission. A virtual Key-to-Value edge under live-map/white-Key tracing enables discovery from Key-only candidates; live-Key and no-live-map branches remain exact. Only module386 changes26+/3-; no physical ownership, roots,301 disposal, state/payload/default/manifest change.",
+    "engine": "Pinned Zend/zend_weakrefs.c zend_weakmap_get_key_entry_gc and zend_weakmap_get_gc expose conditional entry values; Zend/zend_gc.c gc_scan_black restores map/value tracing only with live map and key. Generic scanning traverses reference zvals. GC counts objects/arrays rather than the HCELL, whose disposal is tested separately.",
+    "outcomes": "Unheld ALIAS collects Key/Value2, then0; both WRefs become NULL and the map remains live. External alias-held cases first retain0 and the entry; dropping the alias then collects2. Quiet ALIAS and DIRECT controls omit pre-release gets, separating Key-only discovery from observation-induced Value buffering. All stderr is empty and all four sources exit0.",
+    "validation": "Four exact original-source agreements, author134/2 and independent148/2 (282 Boolean/four raw) pass at9e37/409. Native4, genuine unchanged Unsupported4 and source-reached diagnosis166/1 retain323b/409. Twelve recorders complete with stable inputs and full parent/group reap; focused fixtures return true with quiet stderr at original20/120/45/240/300 caps; CPU5 released. No fixture/recorder failure or historical replay; genuine baseline refusals retain zero agreement.",
+    "validation_scope": "Author134/2 follows actual CONFIG/TRACE/FREE, authenticates Map-to-Value-to-HCELL-to-Key physical edges versus the virtual tracing edge, count2 with HCELL excluded from COUNTED but present in FREESET, entry preparation and exact raw/public budgets. A coherent external root leaves a valid heap but invalidates the old white plan and refuses publicly. Physical Key/Value/HCELL allocations disappear while STORE/REFCELLS history remains nonowning. Peer148/2 follows actual protected owner2 then last-alias owner1/Key-only buffer, virtual Value/HCELL discovery, exact two GC_FREE boundaries, weak NULL visibility and one native ending. Protected/no-map root-list queries are helper-only; they do not establish PHP reachability.",
+    "compatibility": "The old DIRECT admission is the same two checks factored into a helper. Existing protected and no-live-map projections stay exact. On DIRECT paths already reaching Value, the added edge returns to a visited node, preserving traversal/count/free order; Key-only discovery is the repaired case. Ordinary heap_graph edges and strong resurrection/free guards are unchanged.",
+    "failure_history": "All twelve recorders complete first execution at original native20/source120/strict45/author240/peer300 caps; no fixture/recorder failure, timeout, retry or accepted historical replay. Baseline3 ALIAS cases retain Unsupported WeakMap ephemeron collection; fresh DIRECT quiet control retains Unsupported non-destructor resurrection after G1:0/P:1/G2. Baseline4 and diagnosis166/1 keep323b/409, source4/focused282+4 keep9e37/409. All actors/parents/groups reaped and CPU5 released.",
+    "reports": [
+      {
+        "path": ".tools/m134/native-weakmap-hcell-z8ia21e9/report.json",
+        "sha256": "0d670fe65643f1028feb709d5a6a169b241f52fc9163db2576a9b3c91f3dc586",
+        "revision": "323b6714cd8c2067acb677b4a2dcb898c1eeb65b",
+        "complete": true,
+        "boolean_premises": 0,
+        "raw_php_steps": 0,
+        "source_agreements": 0,
+        "native_observations": 2
+      },
+      {
+        "path": ".tools/m134/native-weakmap-hcell-quiet-o2ilxvlu/report.json",
+        "sha256": "65bb1ff303a7cd73aaa2d4a58ed41e37a3e1ad6bca9aee0478daa0bc13c5d0f2",
+        "revision": "323b6714cd8c2067acb677b4a2dcb898c1eeb65b",
+        "complete": true,
+        "boolean_premises": 0,
+        "raw_php_steps": 0,
+        "source_agreements": 0,
+        "native_observations": 1
+      },
+      {
+        "path": ".tools/m134/native-weakmap-direct-quiet-r22a7ulu/report.json",
+        "sha256": "548861009912eadf5fd77b3a307534005885dfa0258897fcb1f23d06c5720b2d",
+        "revision": "323b6714cd8c2067acb677b4a2dcb898c1eeb65b",
+        "complete": true,
+        "boolean_premises": 0,
+        "raw_php_steps": 0,
+        "source_agreements": 0,
+        "native_observations": 1
+      },
+      {
+        "path": ".tools/m134/model-weakmap-hcell-baseline-axtk6u7_/report.json",
+        "sha256": "6cd0aea08e9997567a074c396dc504bcc6749f8073c78f747603692a706e7eea",
+        "revision": "323b6714cd8c2067acb677b4a2dcb898c1eeb65b",
+        "complete": true,
+        "boolean_premises": 0,
+        "raw_php_steps": 0,
+        "source_agreements": 0,
+        "native_observations": 0
+      },
+      {
+        "path": ".tools/m134/model-weakmap-hcell-quiet-baseline-nerq22ah/report.json",
+        "sha256": "e8e9774002df1af730f20017e9ac8e180742093d2739180f653bb4e903cf5657",
+        "revision": "323b6714cd8c2067acb677b4a2dcb898c1eeb65b",
+        "complete": true,
+        "boolean_premises": 0,
+        "raw_php_steps": 0,
+        "source_agreements": 0,
+        "native_observations": 0
+      },
+      {
+        "path": ".tools/m134/model-weakmap-direct-quiet-baseline-_xkgp9ry/report.json",
+        "sha256": "cf10f05b7e6850c3812626cfdbaeddd8c1402b88ff390833f41e265b5c3869e7",
+        "revision": "323b6714cd8c2067acb677b4a2dcb898c1eeb65b",
+        "complete": true,
+        "boolean_premises": 0,
+        "raw_php_steps": 0,
+        "source_agreements": 0,
+        "native_observations": 0
+      },
+      {
+        "path": ".tools/m134/diagnostic-xtzea80g/report.json",
+        "sha256": "d13ff545a7c5adcb0f9800ce9d7baae75310ba60284db3db810cf95ed95f5e9e",
+        "revision": "323b6714cd8c2067acb677b4a2dcb898c1eeb65b",
+        "complete": true,
+        "boolean_premises": 166,
+        "raw_php_steps": 1,
+        "source_agreements": 0,
+        "native_observations": 0
+      },
+      {
+        "path": ".tools/m134/model-weakmap-hcell-repaired-ud9e1f5e/report.json",
+        "sha256": "e4e13dc8b2fb489f69047514bc4a7cd77f77fec3065a3d7cf6bffcba884fe9f0",
+        "revision": "9e37d56cac3fd63983ca00130e5e321d3db04645",
+        "complete": true,
+        "boolean_premises": 0,
+        "raw_php_steps": 0,
+        "source_agreements": 2,
+        "native_observations": 0
+      },
+      {
+        "path": ".tools/m134/model-weakmap-hcell-quiet-repaired-4c4q9buk/report.json",
+        "sha256": "4e99d5bc4456d432b7e06f8070fb7eee4afed8736735f31c6e02c106798d9adc",
+        "revision": "9e37d56cac3fd63983ca00130e5e321d3db04645",
+        "complete": true,
+        "boolean_premises": 0,
+        "raw_php_steps": 0,
+        "source_agreements": 1,
+        "native_observations": 0
+      },
+      {
+        "path": ".tools/m134/model-weakmap-direct-quiet-repaired-d49c4rpm/report.json",
+        "sha256": "338b439ece867620c629d560e101e333317668cf57f98bb3d427fc5fcdcaaa5e",
+        "revision": "9e37d56cac3fd63983ca00130e5e321d3db04645",
+        "complete": true,
+        "boolean_premises": 0,
+        "raw_php_steps": 0,
+        "source_agreements": 1,
+        "native_observations": 0
+      },
+      {
+        "path": ".tools/m134/public-i69dew4n/report.json",
+        "sha256": "391a678513c0cc8d924acd0d5b742521c1b959752c1e2d5558ee4320453859c8",
+        "revision": "9e37d56cac3fd63983ca00130e5e321d3db04645",
+        "complete": true,
+        "boolean_premises": 134,
+        "raw_php_steps": 2,
+        "source_agreements": 0,
+        "native_observations": 0
+      },
+      {
+        "path": ".tools/m134/reviewer-4feum5h_/report.json",
+        "sha256": "c40cd869b795dccfe5bb5feb0501a023cbfb55ef7755598fcf6a47b0129574cd",
+        "revision": "9e37d56cac3fd63983ca00130e5e321d3db04645",
+        "complete": true,
+        "boolean_premises": 148,
+        "raw_php_steps": 2,
+        "source_agreements": 0,
+        "native_observations": 0
+      }
+    ],
+    "limits": "New ALIAS admission is methodless, public/untyped single-property, live singleton map/leaf Key/main-thread scope. Typed or wider reference-property forms, ALIAS-Value destructor callbacks, array-valued entries/properties, wider graphs/maps, unheld-map and inactive contexts remain partial. No Countable/count-library, callback, general reachability or complete-GC claim. No engine bug or intentional divergence identified.",
+    "artifact_manifest": "../php-spec-evidence-archive/weakmap-hcell-backedge-134/manifest.json",
+    "archive_sha256": "9a8da0cb235155fe26ae69ba55a553718a9f94c1143b96834035c91bffff0f8e",
+    "recovery": "Restore tested9e37 at original .tools/weakmap-hcell-backedge-134 path, or apply the isolated386 patch to323b. Extract .tools/m134 with matching project-local providers. Twelve reports retain original bytes/path/cwd, parsed/checked/request/profile/environment, all native/baseline/source streams, source-reached diagnosis and immutable author/peer fixture/producer/runner snapshots plus worker120. No copied build tree or production archive dependency."
   }
 }

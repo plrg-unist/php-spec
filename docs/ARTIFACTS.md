@@ -203,6 +203,13 @@ two preserved failures), original packets, immutable diagnostic/author/peer
 snapshots, worker120 and the isolated two-file runtime patch,
 SHA-256 `c6805d52873b73b03a5211809310df0c024eb6aafd5b8e5e8d5d4d12ef22a1ea`.
 
+The WeakMap HCELL backedge/Key-only discovery proof is in
+`../php-spec-evidence-archive/weakmap-hcell-backedge-134/manifest.json`:
+653,225 bytes/238 members under `.tools/m134/`, twelve complete reports,
+original packets and Unsupported observations, immutable diagnosis/author/peer
+snapshots, worker120 and the isolated386 runtime patch,
+SHA-256 `9a8da0cb235155fe26ae69ba55a553718a9f94c1143b96834035c91bffff0f8e`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

@@ -2949,13 +2949,15 @@ originals agree at `ac980b0`; 333 reached checks cover reuse, real wrapper
 retirement/recreation and notification. Wider freeing contexts and inactive
 carriers remain required; earlier evidence and the original refusal stay separate.
 
-A live singleton WeakMap now supports explicit collection of a destructor-free
-value-to-key backedge. Ordinary value ownership remains strong; GC traces the
-entry only when both map and key are reachable. Holding either key or value
-protects the pair; dropping both allows collection while the map survives.
-Two originals agree at `0167ec6c`; 439 reached checks validate conditional tracing,
-entry disposal and held owners. Wider maps, callbacks and ephemeron graphs remain
-required. [Review](coverage/semantics/weak-map-review.json).
+A live singleton WeakMap supports methodless public untyped value-to-key backedges
+directly or through one reference cell. An external key alias protects the pair;
+dropping it permits collection while the map survives. A white key discovers its
+conditional value through a virtual tracing edge without adding a physical owner.
+Four originals and 282 Boolean/four raw checks pass at `9e37d56ca`/409, including
+quiet ALIAS/DIRECT controls without intermediate value reads. GC counts two
+objects; the reference-cell allocation disappears while its recorded identity
+remains nonowning. Wider maps, typed/wider reference-property forms, ALIAS-Value
+destructor callbacks, array values and other graphs remain partial. [Review](coverage/semantics/weak-map-review.json).
 
 That methodless singleton can now coexist with ordinary `stdClass` graphs.
 Two originals agree at `fa2e00c6`: an independent self-cycle collects alongside
