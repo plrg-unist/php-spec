@@ -173,9 +173,17 @@ Pooled constant array literals instead keep their permanent pool owner plus one
 pending value edge. Exact compiled-read identity authenticates the value occurrence;
 normal insertion transfers the pending edge to DIRECT, while throw drops it and
 preserves the pool. No NULL backup, producer CELL root or CV reset is needed.
-Flat DIRECT primitive/validated-byte leaves bound this path. Repeated calls,
+The initial flat slice has DIRECT primitive/validated-byte leaves. Repeated calls,
 empty-array COW, deletion and supplied throw are recorded in the
 [constant NULL-key ledger](../../coverage/semantics/array-literal-null-key-constant-array-review.json).
+Nested DIRECT constant subtrees validate each allocated, debt-free child with
+the existing primitive/byte leaf checks. Per-path ancestors reject cycles and
+builder backedges while allowing shared siblings. Root multiplicity does not
+multiply child edges; real table clones add physical edges instead. Exported
+child facts can add permanent roots, but a separate child pool root is not
+required. Repeated handler-time COW, deep deletion, empty descendants and throw
+checks are in the
+[nested constant ledger](../../coverage/semantics/array-literal-null-key-constant-subtree-review.json).
 String leaves use canonical bytes or existing valid carriers; they add no modeled
 heap edges or user destructors. Ordinary string-offset writes preserve independent
 snapshots while table/CELL aliases share bytes. Singleton reference entries

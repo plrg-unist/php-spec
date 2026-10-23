@@ -86,7 +86,11 @@ supplied throw. Pooled constant array literals keep their permanent pool owner
 and one pending edge, preserving the original table across callbacks, repeated
 calls and later COW. Throw drops only the pending edge. See the
 [constant-array review](coverage/semantics/array-literal-null-key-constant-array-review.json).
-Nested or owning constant leaves, wider graphs and other key producers remain partial.
+Nested DIRECT constant arrays also preserve each physical child edge independently
+of the parent's pending owners. Handler-time child COW, repeated calls, empty
+descendants and supplied-throw cleanup retain the original pool graph. See the
+[nested constant-array review](coverage/semantics/array-literal-null-key-constant-subtree-review.json).
+Reference/object leaves, wider histories and other key producers remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
@@ -1721,6 +1725,12 @@ before receiver cleanup. Assignment keeps its copy. A normal cache destructor,
 raw-row finally mutation and a RuntimeException inside physical Middle finally
 distinguish these owners; CURRENT changes no initialization bit. See the
 [unused CURRENT review](coverage/semantics/generator-unused-current-review.json).
+The same discard now accepts a still-pending selected receiver. CURRENT leaves
+both initialization bits unchanged; a separately initialized Middle can run its
+finally with no extra snapshot owner. A row rewrite releases its old value inside
+Middle finally, and cache destruction can throw there before Upper cleanup.
+Assignment retains its copy. See the
+[pending CURRENT review](coverage/semantics/generator-pending-unused-current-review.json).
 At a pre-refreshed direct node-free COMPLETE, existing pending SEND cleanup also
 preserves a supplied Exception thrown by its ignored argument's destructor.
 Unused snapshots retire before receiver finally; assignment context retains a
@@ -4538,6 +4548,10 @@ Handler population, caller-CV clearing, supplied throw and later guard reset pas
 [four original agreements and 868 focused premises](coverage/semantics/magic-get-recursion-review.json).
 The actual implicit frame authenticates the guard; explicit calls and queued or
 returned markers do not. Wider recursion and lifetime forms remain partial.
+Explicitly unset public untyped declarations now share this captured NULL path,
+retaining their descriptor through population and local cleanup.
+[Four new source agreements and 542 focused premises](coverage/semantics/magic-get-unset-recursion-review.json)
+distinguish typed/private refusal controls; those later Error paths remain partial.
 Denied private/protected reads and inherited-private literal fallback now invoke
 the getter without applying the hidden property's type. Allowed lexical reads
 use the physical backing key or raise its initialization Error. The original
@@ -5091,6 +5105,12 @@ in the [review ledger](coverage/semantics/reference-return-local-cv-lifetime-rev
 Exact terminal function/restore links remain required, and fixed reference-pair
 suffix priority is preserved. Fresh width is two completed returns; single-prefix
 short cases, reference-valued remainders, wider throw forms, reentry and GC remain open.
+First C retirement also preserves local catch with one global reference or computed
+object return remaining. Notices9/11, fresh NULL/b7 and the original z/za object
+survive. Two originals and 290 Boolean/five raw checks retain explicit object
+`2387` and reference `cfab` cuts in the same ledger. The history stays nonowning;
+replay rules disambiguate equal fixed-pair/generic tails while retaining longer tails.
+Other singleton reference sources, wider throws/reentry and GC remain partial.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

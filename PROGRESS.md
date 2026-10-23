@@ -8,7 +8,7 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
-OP81 is prepared for integration: explicit `(array)` of direct-CV NaN warns
+OP81 is composed over `5c5d2c5bd`/409: explicit `(array)` of direct-CV NaN warns
 before copying the same live float into a fresh singleton. A named handler's
 `0.0` write produces `[0.0]`; later array COW and source `x=8` remain independent.
 A supplied Exception20 cancels delivery and outer assignment, preserving `100`.
@@ -25,7 +25,7 @@ allocation path. The record/slot helpers, allocator, old Boolean casts/NOT,
 shared numeric/formatting, CONFIG/400, roots and generic unwind stay unchanged.
 References/rebinding, copied operands, changed representations and wider
 handlers/lifetimes remain partial. Native throwing allocation timing is unclaimed.
-Publication is independently reviewed; composition is pending.
+Implementation, evidence and publication are independently reviewed.
 
 ## Integrated behavior and entrypoints
 
@@ -39,7 +39,7 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | Comparisons and arrays | Seven missing-CV comparisons admit bounded DIRECT/ALIAS arrays, including ordinary non-Stringable object leaves. Cell replacement, COW and final release preserve distinct owners. NULL-key literals support bounded CV, returned, temporary and pooled CONST values, including nested DIRECT subtrees with physical child edges and handler-time COW. [Nested CONST review](coverage/semantics/array-literal-null-key-constant-subtree-review.json). [Comparisons](docs/semantics/COMPARISONS.md), [dimensions](docs/semantics/DIMENSIONS.md), [object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json). |
 | Calls and configuration | Ordinary/scoped/captured calls preserve selected targets, argument order, references and genuine callback frames. Two singleton INI_SET packs retain raw NULL/quiet ARRAY, callee and option through later effects. [Calls](docs/semantics/SOURCE-CALLS.md), [include/configuration](docs/semantics/INCLUDE-SOURCES.md), [two-pack review](coverage/semantics/ini-set-two-pack-null-array-value-review.json). |
 | Constants and callable values | Bounded DEFINE/CONSTANT/DEFINED preserve source authority, scopes, primitive/array/object snapshots and captured intrinsic Closure identity. Captured Boolean/integer/finite-float queries distinguish strict ordinary reception from weak explicit calls and converted API/raw wrapper arguments. [Constant contract](docs/semantics/SOURCE-USER-CONSTANTS.md), [string-query review](coverage/semantics/constant-owned-query-review.json), [scalar-query review](coverage/semantics/constant-owned-scalar-query-review.json). |
-| Classes and properties | Visibility, references, typed writes, hooks, magic access and clone have bounded routes. Same-name implicit getter recursion delivers missing-property Warning/captured NULL and resets its guard before later entry. [Properties](docs/semantics/SOURCE-PROPERTIES.md), [classes](docs/semantics/SOURCE-CLASSES.md), [recursion review](coverage/semantics/magic-get-recursion-review.json). |
+| Classes and properties | Visibility, references, typed writes, hooks, magic access and clone have bounded routes. Same-name implicit getter recursion delivers captured NULL for missing undeclared or explicitly unset untyped public properties; immutable descriptor history survives handler population and local cleanup. [Properties](docs/semantics/SOURCE-PROPERTIES.md), [classes](docs/semantics/SOURCE-CLASSES.md), [recursion review](coverage/semantics/magic-get-recursion-review.json), [declared-UNSET review](coverage/semantics/magic-get-unset-recursion-review.json). |
 | Generators and Fibers | Supported suspension, delegation and cleanup preserve snapshots and initialization history. Unused CURRENT also retires its snapshot before a still-pending selected receiver, preserving both bits and live Middle-finally cleanup. [Pending CURRENT review](coverage/semantics/generator-pending-unused-current-review.json). Direct/one-ancestor node-free SEND handles supplied argument-destructor Exceptions and distinct unused/assigned owners. [Generators](docs/semantics/GENERATORS.md), [delegation](docs/semantics/GENERATOR-DELEGATION.md), [ancestor review](coverage/semantics/generator-ancestor-abrupt-argument-send-review.json). |
 | Returns and lifetime | Bounded by-reference return/finally chains retain remaining owners, local catches and consumed recovery through normal/throw retirement. First C retirement with one REF/object remainder preserves local catch, the computed-return Notice and a detached caller cell. The finite `returns_verify` work is complete; wider PHP return and lifetime coverage remains open. [Return contract](docs/semantics/SOURCE-REFERENCE-RETURNS.md), [eager cleanup](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md), [return review](coverage/semantics/reference-return-local-cv-lifetime-review.json). |
 | Diagnostics and environment | Supported warning/exception handlers retain raw registration, selected callback and emitting frame. Request facts, inclusion and lifecycle effects stay explicit. [Handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md), [exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md), [request inputs](docs/semantics/REQUEST-INPUTS.md). |
@@ -55,11 +55,9 @@ than retain superseded operational checkpoints.
 | M134 WeakMap HCELL backedge | Scope agreed; native-first alias-held/unheld packet preparing. |
 | Source87 user-Iterator CONFIG unpack | Native6 retained; genuine wrong TypeError has zero credit; implementation pending. |
 | COMP119 array-valued ALIAS child COW | First two changed-source cases pass; remaining gate running. |
-| CLASS120 declared UNSET `__get` recursion | Changed source4 accepted; focused checks preparing. |
-| OP81 `(array)` NaN cast | Source2 and focused325 pass across retained cuts; publication/integration pending. |
 | V101 | Scoping after V100 integration. |
 
-Iterator49/50/51, V99/V100, M132/M133, A46/A47, OP79/80, Source86, COMP118 and CLASS119 are integrated
+Iterator49/50/51, V99/V100, M132/M133, A46/A47, OP79/80/81, Source86, COMP118 and CLASS119/120 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation

@@ -112,9 +112,10 @@ local/caller identity and message observers, cleared NULL/Notice17 and detached
 aliases. Valid null-cell/unequal-live-ID controls, original-false/source receipt and
 saved-owner refusals accompany exact parent/NULL public states and whole/split
 ending. The sole declaration moves314→270 for the earlier use; its definition,
-history/finish/root rules stay unchanged. The owning-return family uses recursive
-source/suffix validators with at least two remaining lexical slots. Computed
-objects keep their finite normal class,
+history/finish/root rules stay unchanged. Initial owning-retirement histories use
+recursive source/suffix validators with at least one remaining lexical slot;
+completed-prefix histories admit zero.
+Computed objects keep their finite normal class,
 old operand, source/LINE, restore relation, sole owner and distinct HOBJECT ID.
 Ordinary untyped global-CV references authenticate emitted source, current ENV,
 actual GLOBALTABLE cell, REF membership and allocation. These cells may be
@@ -272,6 +273,31 @@ state after strict PASS; its receipt remains zero credit and only that affected 
 repeats at unchanged 45/240. Peer first 45/300 passes; all actors are reaped/CPU5
 released. No accepted replay or generic cleanup/root/state change. Single-prefix
 short cases, wider reference-valued histories, bodies/throws, reentry and GC stay partial.
+
+M133 admits one lexical outer slot at the first false-head C retirement, before
+any completed prefix. The slot is either an ordinary global-CV REFERENCE with
+shared HCELL owners or one sole owning computed A object. Only module270's count floor
+changes from2 to1; zero remains excluded and all source/restore/body bounds stay intact.
+Local C/K/S, supplied identity, Notice9/11, fresh detached NULL and b7 match PHP;
+z/za retain the original referent after the caller writes its separate result.
+
+The independent REF proof exposes an identical fixed-pair/generic suffix overlap
+in module156's replay remainder. One inequality removes only the duplicate generic arm
+when its selected suffix equals the fixed pair's. Nine pure grammar checks retain
+an unequal longer suffix despite its shorter pair-shaped tail; the deliberately
+reused NULL source/owner is helper-only and establishes no PHP reachability.
+
+Final distinct source2 use object2387 and REFcfab. Author117/2 at2387 and peer173/3
+atcfab total290/5 across those cuts. They cover actual HCELL owner4, active C/
+saved f, C-free same-given pending, same-heap history refusal and a valid owner3
+counterstate after deleting only the queued task. They also cover
+exact raw/public capture/replay/C_NULL budgets and one ending per source. The
+object proof already has pair-tail EPS, so its accepted source/117 stays exact
+through the one module156 guard without a rerun. Initial REF agreement remains separate.
+Native2/base2/corrected109/2 diagnosis retain256/409. The original raw-flag fixture
+failure and real peer nondeterminism remain zero; only affected diagnosis, then
+REF source/peer repeat at unchanged caps. Actors are reaped/CPU2 released.
+Short single-prefix, wider reference/property/throw/reentry and GC forms stay partial.
 
 Pruning prepares the object store and fatal marks once, then selects the same
 unsupported, refused, pending-release or store-drop result. Unmatch in preparation,

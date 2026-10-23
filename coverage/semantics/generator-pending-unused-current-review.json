@@ -1,0 +1,97 @@
+{
+  "milestone": "Iterator51: unused CURRENT before pending receiver cleanup",
+  "status": "composed-accepted",
+  "scope": "Literal zero-argument unused CURRENT at the pre-refreshed one-native-ancestor primitive COMPLETE now accepts a still-pending selected receiver. CURRENT preserves both initialization bits and retires its snapshot before receiver cleanup; assignment keeps the copy.",
+  "implementation": {
+    "runtime_parent": "75d3eeac70a463542f945209be3f94c6437fce25",
+    "paths": {
+      "spec/semantics/289-generator-delegation.watsup": "5e3c54fc98621641f4a8982f14d493ca40cd2fd1b631bd08abd5b01376e28180"
+    },
+    "change": "Remove only the selected Generator binding and cleared-PENDING_INIT premises from generator_unused_current_result; the endpoint already authenticates the allocated Generator. Exact source-use/discard, zero arguments, inactive flags, original endpoint/update identity and actual plain-result equality remain. No API, current/resume body, close, root, scheduler, ownership, schema or collector change.",
+    "old_control": "One old48 constructed pending-bit helper expectation now selects NULL while retaining its plain owning-result assertion. New source-derived pending states execute that branch; old historical source/state evidence is not replayed or renewed.",
+    "engine_evidence": [
+      "vendor/php-src/Zend/zend_vm_def.h: DO_FCALL unused retval before receiver release",
+      "vendor/php-src/Zend/zend_generators.c: Generator::current and zend_generator_dtor_storage"
+    ]
+  },
+  "validation": {
+    "native": "Four first observations without stdout forecasts: unused/assigned raw row plus normal/throwing raw object slot clear. Selected Upper is not explicitly advanced; physical Middle receives its own initialization-only NEXT. Actual originals run both Middle J and Upper K.",
+    "genuine_unchanged": "Checked NORMAL model0/empty stderr at b7f96b717: native J|A|J-END|K versus model J|J-END|K|A. The original comparison report remains passed=false/recordfalse/normal_agreements0. Separate observation.json binds its original SHA and reports the actual classification without rewriting that report or awarding agreement.",
+    "source4": "Four exact normal stdout/stderr/exit agreements after the repair. Unused row A occurs inside Middle finally; assignment retains it until caller drop. Normal D precedes J-END; RuntimeException D skips J-END before K. Cache type/message/PreviousNULL and distinct outside Given/unchanged Given.previous flags are preserved.",
+    "states": {
+      "new_author": [
+        160,
+        147
+      ],
+      "new_peer": [
+        137,
+        137
+      ],
+      "new_total": 581,
+      "new_local": 561,
+      "new_generic": 20
+    },
+    "observations": "Actual CURRENT API state binds Upper PENDINGtrue/Middlefalse, node-free COMPLETE PNULL, HCELL2/array1 and one element edge. Plain ARRAY result has array2; unused fusion returns NULL without changing storage/allocations or either bit, while assignment keeps array2. Actual transition has one receiver-only release job and authentic operation metadata. Same-heap opposite-bit helper control also discards; source-used plus forged DISCARD retains its copy. During both cache destructors, Middle is RUNNING/false and Upper CLOSING/true with one queued claim; store/current pending are empty, CURRENT VALUE is NULL, cache2/cell2 are real callback owners, and outside Given has one global owner without being selected pending. Exact public0/1/2 and whole/split endings pass.",
+    "controls": "Original-result/source/site, missing-tail, owning-held, flags and arguments retain fallback behavior; same-heap live-finally source/phase corruptions refuse. Constructed opposite-bit/held/forged-result controls are helper checks, not new PHP source coverage.",
+    "compiler": "Full SL409 strict main and four-fixture parse/elaboration pass; the latter has a unique EOF sentinel and all four main headers. Compilation earns no source agreement.",
+    "maintenance": "All eight post-change executed groups (strict1/source2/gate1/state4) pass first affected execution at original caps, without runtime/fixture corrections, worker failures, retries, cap changes or historical replay. Native4 was captured once; the earlier genuine timing disagreement remains preserved. Actors reaped; CPU5 released."
+  },
+  "tested_revisions": {
+    "native4_genuine_normal_disagreement": "b7f96b717cb4610ffb31be297c76a60cfc3acc9f",
+    "source4_strict409": "c7aa278da3f358a03e4987c7995d065ca8304aaa",
+    "gate4_focused581": "cc849531f27ab2ad5f59f598933c242ab8f00991",
+    "bridge": "Runtime289 and original source bytes are exact across source c7aa278da and focused cc849531f. Seven maintained test inputs are focused-cut exact; no semantic or harness correction followed affected execution. Original baseline and accepted private cuts remain distinct without replay or renewed credit."
+  },
+  "commands": {
+    "native": "taskset -c5 python3 .tools/native.py",
+    "baseline": "taskset -c5 python3 .tools/baseline.py --case generator-pending-unused-current-row-finally-write --native-report .tools/generator-pending-unused-current-native-mepg0_z1/report.json",
+    "strict_and_source4": "taskset -c5 python3 .tools/source-packet.py",
+    "elaboration": "taskset -c5 python3 .tools/state-elab.py",
+    "focused": "taskset -c5 python3 .tools/state-packet.py"
+  },
+  "environment": {
+    "php": "8.5.10 CLI NTS64; source 34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_identities": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; SL/cacheoff/encountered determinism",
+    "settings": "Serial CPU5; LC_ALL=C TZ=UTC, script encoding unset. Existing local project tools reused; no fresh portability claim.",
+    "caps": "Native 8s; source 100000 steps/model 100/process 120; strict 120; elaboration 60; focused 120/seek 4000/finish 4000.",
+    "exits": "All native/compiler/model processes exit0/empty stderr/no timeout; original baseline comparison is semantically false. Focused stdout exactly true plus newline. Recorded inputs and HEAD stable."
+  },
+  "reports": {
+    "native4": ".tools/generator-pending-unused-current-native-mepg0_z1/report.json",
+    "unchanged-normal-disagreement": ".tools/generator-pending-unused-current-baseline-60rrvpsj/report.json",
+    "unchanged-classification-observer": ".tools/generator-pending-unused-current-baseline-60rrvpsj/observation.json",
+    "strict409": ".tools/generator-pending-unused-current-author-sl-exexrrof/report.json",
+    "source-author2": ".tools/generator-pending-unused-current-source-h4j746jc/report.json",
+    "source-peer2": ".tools/generator-pending-unused-current-review-source-6ugktkaq/report.json",
+    "elaboration4": ".tools/generator-pending-unused-current-state-elab-wstt07a1/report.json",
+    "state-author160": ".tools/fiber-state-review-ed_cjlio/report.json",
+    "state-author147": ".tools/fiber-state-review-wuua32em/report.json",
+    "state-peer137-normal": ".tools/fiber-state-review-zpbl1u15/report.json",
+    "state-peer137-throw": ".tools/fiber-state-review-llxo8h3z/report.json"
+  },
+  "evidence": {
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-pending-unused-current-51/private.tar.gz",
+      "bytes": 1845436,
+      "sha256": "91c314c7c38889182e8a368c65f68d030450c6ce82d0209ecce3edd8b1f27886"
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-pending-unused-current-51/manifest.json",
+    "recovery": "Extract raw folders/drivers into matching tested checkouts and supply pinned project-local tools. Native/baseline retain b7f96b717 before observed stdout metadata; affected source/strict retain c7aa278da and focused fixtures cc849531f. Original baseline report keeps checked NORMAL/recordfalse/agreement0; separate observation.json binds its original SHA without rewriting it. Six new tests and the one corrected old48 helper counter are retained; old historical results are not replayed. Exact commands/source paths, raw outputs, exits, caps and identities remain in reports. No checkout/build tree/backup is archived."
+  },
+  "remaining": "Child prefixes, deeper links, owning/parked or wider endpoints and collection remain unvalidated for this CURRENT discard arm. SEND/THROW/NEXT and paused OP12/Source47/owned-NUL/undefined-byref-LIST/COMP88 behavior stay unchanged.",
+  "independent_review": "Replacement /root/iterator49_review reviewed native-first sources/observations, genuine disagreement, two-premise repair, old48 counter, counterexamples/ownership, affected source/strict/focused reliability, archive/recovery and compact publication; no blocker. Actual incoming selectors through3a45a284d were independently checked as absent.",
+  "composition": {
+    "parent": "30fd9927fa6977aa54ae42b82bfbafd8ea92b70d",
+    "private_publication": "296a6d2e3b2ecfb3c772d46e6d8dbf25df67d773",
+    "preserved": "Tested289 stays private-exact, as do six new tests, the one old48 helper counter and four Makefile entries. Every other production/runtime/schema/root/ordered409/pipeline/shared harness/profile path stays parent-exact. Compact actual-parent PROGRESS and all incoming inventory contents are preserved with only the reviewed current milestone/row/suffix additions.",
+    "interaction": "Incoming380 requires user __get/PROPERTY_GET_RESULT/property-fetch recursion;400 requires captured scalar CONSTANT/DEFINED query;30/58/404 require direct FLOAT NaN bool cast plus named Warning callback;413 requires NULL-key CONST subtree snapshots. Incoming270 requires ordinary BYREF object|null RETURN_REF_UNWIND and156 requires REF_REPLAY/FINALLY_REF_RETURN remainder. None is produced here: defined raw caches, literal row keys, no property fetch/query/cast/handler; Take and cleanup functions are byvalue, Child is a Generator with primitive return/no signature. Independent actual-tail review found no joined execution obligation.",
+    "credit": "Native/genuine NORMAL rawfalse atb7, source4/strict atc7 and gate4/state581 atcc remain separate original409 cuts; no accepted replay or renewed credit."
+  }
+}

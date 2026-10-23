@@ -174,9 +174,17 @@ node-free COMPLETE Middle. CURRENT preserves both initialization bits.
 Assignment retains its copy through cleanup until the caller drops it. The
 normal cache destructor runs before Upper finally in the tested sole-receiver
 history; raw-row mutation and a cache RuntimeException inside initialized Middle
-finally distinguish the missing extra owner. Pending receivers, child prefixes,
-wider endpoints and collection remain unvalidated for this CURRENT rule. See the
+finally distinguish the missing extra owner. Child prefixes, wider endpoints
+and collection remain unvalidated for this CURRENT rule. See the
 [unused CURRENT review](../../coverage/semantics/generator-unused-current-review.json).
+The same pre-refreshed one-ancestor endpoint now drops unused CURRENT snapshots
+while selected Upper is still pending. CURRENT preserves both bits; physical
+Middle can already be initialized by its own NEXT. Its row rewrite releases the
+old value inside Middle finally, while assignment retains its copy through both
+finally blocks until caller drop. Normal and throwing object slot clears occur
+inside live Middle finally; a separately global-owned Exception is not selected
+as Previous. The existing close plan runs both J and K in these originals. See the
+[pending CURRENT review](../../coverage/semantics/generator-pending-unused-current-review.json).
 The pre-refreshed direct node-free pending SEND path also survives an ignored-argument
 destructor throwing a supplied Exception. Its remaining snapshot and receiver
 cleanup still run. Assignment context keeps the VM temporary through physical

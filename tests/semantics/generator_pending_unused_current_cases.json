@@ -1,0 +1,20 @@
+[
+  {
+    "id": "generator-pending-unused-current-row-finally-write",
+    "purpose": "Unused CURRENT at a pre-refreshed one-ancestor COMPLETE; selected Upper remains pending while initialized Middle finally rewrites the raw row.",
+    "source": "<?php\nclass PendingUnusedCurrentRowOld51 { function __destruct() { echo \"A|\"; } }\nclass PendingUnusedCurrentRowLive51 { function __destruct() { echo \"C-LIVE|\"; } }\nfunction &pendingUnusedCurrentRowChild51() { global $row; $row = [new PendingUnusedCurrentRowOld51()]; echo \"C0|\"; yield 7 => $row; echo \"L|\"; return null; }\nfunction pendingUnusedCurrentRowMiddle51() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; return $reply; } finally { echo \"J|\"; $GLOBALS[\"row\"][0] = new PendingUnusedCurrentRowLive51(); echo \"J-END|\"; } }\nfunction pendingUnusedCurrentRowUpper51() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction pendingUnusedCurrentRowOuter51() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\nfunction pendingUnusedCurrentRowTake51() { echo \"TAKE|\"; $chosen = $GLOBALS[\"upper\"]; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"CLEARED|\"; return $chosen; }\n$child = pendingUnusedCurrentRowChild51(); $middle = pendingUnusedCurrentRowMiddle51(); $upper = pendingUnusedCurrentRowUpper51(); $outer = pendingUnusedCurrentRowOuter51();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\n$upper->current(); echo \"REFRESH|\";\n$middle->next(); echo \"INIT-M|\";\necho \"S|\";\npendingUnusedCurrentRowTake51()->current(); echo \"CALLER|\"; unset($copy); echo \"DROPPED|\";\nunset($row); echo \"ROW-DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "d48c594294cfa81c2bc191a6bd3ef5fbfdafb3e3ec49b82beed6efc923978864",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C0|L|H|REFRESH|INIT-M|S|TAKE|F|CLEARED|J|A|J-END|K|CALLER|DROPPED|C-LIVE|ROW-DROPPED|E"
+  },
+  {
+    "id": "generator-pending-unused-current-assignment-control",
+    "purpose": "Assigned CURRENT snapshot through physical Middle finally with selected Upper still pending.",
+    "source": "<?php\nclass PendingUnusedCurrentRowOld51 { function __destruct() { echo \"A|\"; } }\nclass PendingUnusedCurrentRowLive51 { function __destruct() { echo \"C-LIVE|\"; } }\nfunction &pendingUnusedCurrentRowChild51() { global $row; $row = [new PendingUnusedCurrentRowOld51()]; echo \"C0|\"; yield 7 => $row; echo \"L|\"; return null; }\nfunction pendingUnusedCurrentRowMiddle51() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; return $reply; } finally { echo \"J|\"; $GLOBALS[\"row\"][0] = new PendingUnusedCurrentRowLive51(); echo \"J-END|\"; } }\nfunction pendingUnusedCurrentRowUpper51() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction pendingUnusedCurrentRowOuter51() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\nfunction pendingUnusedCurrentRowTake51() { echo \"TAKE|\"; $chosen = $GLOBALS[\"upper\"]; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"CLEARED|\"; return $chosen; }\n$child = pendingUnusedCurrentRowChild51(); $middle = pendingUnusedCurrentRowMiddle51(); $upper = pendingUnusedCurrentRowUpper51(); $outer = pendingUnusedCurrentRowOuter51();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\n$upper->current(); echo \"REFRESH|\";\n$middle->next(); echo \"INIT-M|\";\necho \"S|\";\n$copy = pendingUnusedCurrentRowTake51()->current(); echo \"CALLER|\"; unset($copy); echo \"DROPPED|\";\nunset($row); echo \"ROW-DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "a83cea168acf3e6313bdf87da83fe9dfb42f02cfd5da53dc91821f5e13d4a905",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C0|L|H|REFRESH|INIT-M|S|TAKE|F|CLEARED|J|J-END|K|CALLER|A|DROPPED|C-LIVE|ROW-DROPPED|E"
+  }
+]
