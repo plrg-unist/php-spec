@@ -38,7 +38,7 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | Operators and warning decisions | Arithmetic/casts distinguish saved values from live CVs and stage supported diagnostics through callbacks. Direct NaN Boolean NOT produces stricttrue after a live0.0 write; copied fractional BITNOT retains its saved integer. [Operators](docs/semantics/ORDINARY-OPERATORS.md), [truth callbacks](docs/semantics/SOURCE-WARNING-TRUTH.md), [numerics](docs/semantics/NUMERICS.md). |
 | Comparisons and arrays | Seven missing-CV comparisons admit bounded DIRECT/ALIAS arrays, including ordinary non-Stringable object leaves. Cell replacement, COW and final release preserve distinct owners. NULL-key literals support bounded CV, returned, temporary and pooled CONST values. [Comparisons](docs/semantics/COMPARISONS.md), [dimensions](docs/semantics/DIMENSIONS.md), [object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json). |
 | Calls and configuration | Ordinary/scoped/captured calls preserve selected targets, argument order, references and genuine callback frames. Two singleton INI_SET packs retain raw NULL/quiet ARRAY, callee and option through later effects. [Calls](docs/semantics/SOURCE-CALLS.md), [include/configuration](docs/semantics/INCLUDE-SOURCES.md), [two-pack review](coverage/semantics/ini-set-two-pack-null-array-value-review.json). |
-| Constants and callable values | Bounded DEFINE/CONSTANT/DEFINED preserve source authority, scopes, primitive/array/object snapshots and captured intrinsic Closure identity. [Constant contract](docs/semantics/SOURCE-USER-CONSTANTS.md), [captured query review](coverage/semantics/constant-owned-query-review.json). |
+| Constants and callable values | Bounded DEFINE/CONSTANT/DEFINED preserve source authority, scopes, primitive/array/object snapshots and captured intrinsic Closure identity. Captured Boolean/integer/finite-float queries distinguish strict ordinary reception from weak explicit calls and converted API/raw wrapper arguments. [Constant contract](docs/semantics/SOURCE-USER-CONSTANTS.md), [string-query review](coverage/semantics/constant-owned-query-review.json), [scalar-query review](coverage/semantics/constant-owned-scalar-query-review.json). |
 | Classes and properties | Visibility, references, typed writes, hooks, magic access and clone have bounded routes. Same-name implicit getter recursion delivers missing-property Warning/captured NULL and resets its guard before later entry. [Properties](docs/semantics/SOURCE-PROPERTIES.md), [classes](docs/semantics/SOURCE-CLASSES.md), [recursion review](coverage/semantics/magic-get-recursion-review.json). |
 | Generators and Fibers | Supported suspension, delegation and cleanup preserve snapshots and initialization history. Direct/one-ancestor node-free SEND handles supplied argument-destructor Exceptions and distinct unused/assigned owners. [Generators](docs/semantics/GENERATORS.md), [delegation](docs/semantics/GENERATOR-DELEGATION.md), [ancestor review](coverage/semantics/generator-ancestor-abrupt-argument-send-review.json). |
 | Returns and lifetime | Bounded by-reference return/finally chains retain remaining owners, local catches and consumed recovery through normal/throw retirement. The finite `returns_verify` work is complete; wider PHP return and lifetime coverage remains open. [Return contract](docs/semantics/SOURCE-REFERENCE-RETURNS.md), [eager cleanup](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md), [return review](coverage/semantics/reference-return-local-cv-lifetime-review.json). |
@@ -52,7 +52,6 @@ than retain superseded operational checkpoints.
 
 | Track | Current state |
 | --- | --- |
-| V100 owned scalar CONSTANT/DEFINED query | Source3 and focused710 pass; publication pending. |
 | A47 nested pooled CONST arrays | Source4/strict pass; focused1093 running. |
 | M133 first retirement with one REF/object remainder | Source2 and author117 pass; peer found a156 replay-branch overlap, correction pending. |
 | Source87 user-Iterator CONFIG unpack | Native6 retained; genuine wrong TypeError has zero credit; implementation pending. |
@@ -60,7 +59,7 @@ than retain superseded operational checkpoints.
 | CLASS120 declared UNSET `__get` recursion | Native packet preparation. |
 | Iterator51 pending-selected unused CURRENT | Genuine NORMAL disagreement: native retires A inside Middle finally, model after Upper K; minimal289 repair in progress. |
 
-Iterator49/50, V99, M132, A46, OP79/80, Source86, COMP118 and CLASS119 are integrated
+Iterator49/50, V99/V100, M132, A46, OP79/80, Source86, COMP118 and CLASS119 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation

@@ -2076,6 +2076,11 @@ lookup sees constants registered by those effects. Queried readers preserve
 identity, array results retain query COW, and missing-name Errors release the
 callee while retaining raw API/wrapper arguments for later recovery.
 [Captured query review](coverage/semantics/constant-owned-query-review.json).
+Captured query callees also receive Boolean, integer and finite-float names.
+Strict ordinary calls reject them with raw scalar TypeError arguments; explicit
+`__invoke` converts weakly even in strict source. An explicit missing-name Error
+retains the converted API string and the wrapper's original scalar separately.
+[Captured scalar query review](coverage/semantics/constant-owned-scalar-query-review.json).
 Ownerless calls receive integer, boolean and float query names according to caller
 strictness: weak calls convert to strings, while strict calls raise `TypeError`
 with the original argument.
