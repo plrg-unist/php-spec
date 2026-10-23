@@ -52,11 +52,13 @@ than retain superseded operational checkpoints.
 
 | Track | Current state |
 | --- | --- |
-| M133 first retirement with one REF/object remainder | Source2 and author117 pass; peer found a156 replay-branch overlap, correction pending. |
+| M133 first retirement with one REF/object remainder | Source2/focused290 accepted; publication queued. |
 | Source87 user-Iterator CONFIG unpack | Native6 retained; genuine wrong TypeError has zero credit; implementation pending. |
-| COMP119 array-valued ALIAS child COW | Native6 retained; genuine Unsupported has zero credit; implementation in progress. |
-| CLASS120 declared UNSET `__get` recursion | Native packet preparation. |
-| Iterator51 pending-selected unused CURRENT | Genuine NORMAL disagreement: native retires A inside Middle finally, model after Upper K; minimal289 repair in progress. |
+| COMP119 array-valued ALIAS child COW | First two changed-source cases pass; remaining gate running. |
+| CLASS120 declared UNSET `__get` recursion | Changed source4 accepted; focused checks preparing. |
+| Iterator51 pending-selected unused CURRENT | Source4/focused581 accepted; publication preparing. |
+| OP81 `(array)` NaN cast | Native packet preparing. |
+| V101 | Scoping after V100 integration. |
 
 Iterator49/50, V99/V100, M132, A46/A47, OP79/80, Source86, COMP118 and CLASS119 are integrated
 into this branch.
