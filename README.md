@@ -2036,8 +2036,15 @@ validated user array trees, certified completed user instances and certified
 Closures. They use the captured query, remove one leading separator and preserve
 terminal-name case.
 Missing names raise an API `Error`; argument effects precede lookup.
-Integer, boolean and float query names follow caller strictness: weak calls convert to
-strings, while strict calls raise `TypeError` with the original argument.
+Retained `defined(...)` and `constant(...)` Closure callees also query non-NUL
+global string names. Captured callees and names survive argument mutations;
+lookup sees constants registered by those effects. Queried readers preserve
+identity, array results retain query COW, and missing-name Errors release the
+callee while retaining raw API/wrapper arguments for later recovery.
+[Captured query review](coverage/semantics/constant-owned-query-review.json).
+Ownerless calls receive integer, boolean and float query names according to caller
+strictness: weak calls convert to strings, while strict calls raise `TypeError`
+with the original argument.
 Captured originals still authenticate the call; weak missing-name Error traces
 contain the converted string. The [scalar-name review](coverage/semantics/global-constant-scalar-name-review.json)
 records source and resumption checks.

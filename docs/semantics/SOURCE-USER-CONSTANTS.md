@@ -883,6 +883,21 @@ does not intern or rebuild a result. Named and positional literal arguments use
 immutable compiler facts, while mutable arguments retain the existing capture
 policy.
 
+Retained DEFINED/CONSTANT Closure callees also accept one captured non-NUL global
+string name, through the existing live matching-intrinsic owner and source/site,
+line and named-call validation. `SELECTION` stays empty: these reads create no
+durable selection record. Immutable argument facts must still match the captured
+value, and request string carriers retain their existing authentication.
+Argument effects can replace the live callee/name and register a constant before
+lookup without changing the captured call. Ordinary and explicit `__invoke`
+calls share this admission. A missing-name explicit call retains raw API/wrapper
+trace arguments on Error; the callee retires before catch, while a later
+ordinary call through an independent reader recovers.
+Returned arrays use the same stored root and existing query COW/append history.
+The three originals and focused state checks cover these paths without extending
+name coercion, class-qualified/HALT/NUL names, packs or PIPE.
+[Captured query review](../../coverage/semantics/constant-owned-query-review.json).
+
 Plain `constant`/`defined` calls also receive integer, boolean and float query
 names. Weak callers use the existing string conversion after
 argument effects; strict callers raise `TypeError` before conversion. The captured
@@ -1241,8 +1256,9 @@ records actual query fronts, shared counters, alias roots and certificate refusa
 Absent names raise `Error` with the stripped lookup spelling and the full received
 string argument in the API trace. Unknown startup values retain their prior Unsupported
 result. `PVOBJECT` rows without the DEFINE-origin/live class-or-callable authority
-above, stored ALIAS/cyclic array trees, Stringable/array name reception and packed/owning
-calls remain outside this slice. The original ordinary `const` string producer refusal retains
+above, stored ALIAS/cyclic array trees, Stringable/array name reception, packed
+calls, and owning calls beyond the raw global-string route remain outside this
+slice. The original ordinary `const` string producer refusal retains
 its historical cut; the string-publication follow-up above admits that producer
 domain without renewing the older lookup campaign. The [global-query ledger](../../coverage/semantics/global-constant-review.json)
 binds the source and public-state cuts without closing the constant family.

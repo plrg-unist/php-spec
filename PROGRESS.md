@@ -7,6 +7,32 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Retained DEFINED/CONSTANT Closure callees now query captured non-NUL global
+string names under the existing live/source authority. Later argument writes
+preserve the selected callee/name, while lookup sees a late DEFINE. Queried
+readers retain identity; ARRAY query COW/history and missing-name Error/raw
+API/`__invoke` traces survive independent reader recovery.
+[Captured query review](coverage/semantics/constant-owned-query-review.json).
+
+Three source agreements retain `2d356aece`/409; focused checks pass
+631 = 227 + 166 + 238 premises/three budgets at `b4a2d3e77`/409.
+The completed author fixtures were reused; a command-only check interrupted by
+restart retains zero credit. Resumed author and first peer checks return quiet
+`true` at their original 420-second caps. No source/native replay or semantic
+correction; all actors reaped and CPU4 released.
+
+Only module400 changes, 14 insertions/two deletions: no selection history,
+receipt, source/schema, root or coercion policy is added. Packs/PIPE, owning
+class/HALT/NUL names and wider coercion/lifetime forms remain partial.
+Paused OP12/COMP88/Source47, owned-NUL release and undefined by-reference LIST
+boundaries remain untouched.
+
+Composed over `17fa27ac`/409: tested400 and all four scripts remain private-exact;
+incoming30/413/58/404 and the ordered manifest remain parent-exact. NULL-key
+owning ARRAY TMP and copied-float BITNOT selectors have no producer here.
+The task alternative adds no pstate/heap field; source3/focused631 retain their
+private409 cuts without joined execution, replay or renewed credit.
+
 At Iterator49, an ignored SEND argument's destructor can throw a supplied
 Exception at a pre-refreshed direct node-free COMPLETE. Existing cleanup
 preserves that exception while retiring the remaining snapshot and receiver.
