@@ -25,6 +25,12 @@ back from the mirror after checking its SHA-256; the restored file is ignored.
 This relocation does not upgrade historical or interrupted results to passes.
 The paused agents' unfinished runs remain under the existing ignored `.tools/`.
 
+The guarded getter-recursion milestone retains source/native observations,
+focused checks, all fixture failures and diagnostics in
+`../php-spec-evidence-archive/magic-get-recursion-119/manifest.json`.
+Its 14,711,985-byte archive has SHA-256
+`95fdd8cbfd591039fe1a104525a964de568feccfdc8aa73ec720827a5e9b194b`.
+
 Keep future compressed raw traces, source snapshots and tool copies in this
 external archive (using new paths for new evidence) or in ignored `.tools/`.
 Commit concise reports and manifests with hashes and locations. Preserve raw

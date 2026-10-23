@@ -4439,6 +4439,12 @@ distinct native, source, strict and state cuts plus the original failures.
 The actual369 composition over `b9f0b1ae9` passes strict at `bae438b0f`
 (5.181s), preserving current class, Generator, return and callable interfaces.
 Source/state evidence retains its original cuts.
+Same-name implicit getter recursion on a missing undeclared literal property now
+warns and returns captured NULL, including during compiled-local cleanup.
+Handler population, caller-CV clearing, supplied throw and later guard reset pass
+[four original agreements and 868 focused premises](coverage/semantics/magic-get-recursion-review.json).
+The actual implicit frame authenticates the guard; explicit calls and queued or
+returned markers do not. Wider recursion and lifetime forms remain partial.
 Denied private/protected reads and inherited-private literal fallback now invoke
 the getter without applying the hidden property's type. Allowed lexical reads
 use the physical backing key or raise its initialization Error. The original

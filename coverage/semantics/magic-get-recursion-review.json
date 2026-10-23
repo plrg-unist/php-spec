@@ -1,0 +1,131 @@
+{
+  "decision": "accepted-partial",
+  "scope": "Same-name implicit by-value __get recursion for an absent undeclared literal property on an ordinary borrowed receiver, including an authenticated compiled-local release. Declared UNSET/denied recursion, by-reference getters, quiet probes, owned receivers, computed names, suspension and wider lifecycle combinations remain partial.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json",
+  "engine_route": "vendor/php-src/Zend/zend_object_handlers.c::zend_std_read_property sets IN_GET around zend_std_call_getter and clears it before receiver release; recursive missing reads fall through to the ordinary undefined-property Warning/NULL path. Local destruction before zend_std_call_getter returns remains guarded.",
+  "implementation": {
+    "revision": "c47a383f70b57c35fa9c0633cb46a88110dd8d46",
+    "runtime_file": "spec/semantics/380-magic-property-get.watsup",
+    "runtime_sha256": "a04b5d6b60f4355bee87b34bfb1396d88a93cb162a0e8b1859d02beb959904ba",
+    "delta": "101 additive module380 lines. Reuses module377 Warning/NULL and existing implicit frame/local-release authority; no module377, root, GC, schema or manifest change."
+  },
+  "review": {
+    "reviewer": "class119_review",
+    "accepted_revision": "e3aca475430dbde29d414e5dc5cfe1ca09209d40",
+    "findings": "Actual implicit frame or authenticated live compiled-local exit guards the same object/name. Explicit METHOD_TARGET, queued RESULT, COPY and forged line/name/receiver/exit histories provide no guard. Warning history neither rereads the receiver CV nor rechecks absence; a handler-created value cannot replace captured NULL. Supplied throw preserves the same Throwable, receiver cleanup precedes catch, and outer assignment remains 42. Control projections are tested as projections, without a saved-parent reachability claim."
+  },
+  "source_evidence": {
+    "catalogue": "tests/semantics/magic_get_recursion_cases.json",
+    "cases": [
+      "populate",
+      "sole",
+      "throwing",
+      "cleanup"
+    ],
+    "native_revision": "d5a7855e233a8ca5f8c6ef864c7fd13c2dbc71bf",
+    "baseline_revision": "d5a7855e233a8ca5f8c6ef864c7fd13c2dbc71bf",
+    "baseline": "All four genuinely stop Unsupported after their original prefix, with 0 agreements.",
+    "model_revision": "c47a383f70b57c35fa9c0633cb46a88110dd8d46",
+    "module_count": 409,
+    "agreements": 4,
+    "renewed_source_credit": 0,
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "focused_evidence": {
+    "revision": "e3aca475430dbde29d414e5dc5cfe1ca09209d40",
+    "module_count": 409,
+    "author": {
+      "command": "python3 tests/semantics/magic_get_recursion_protocol.py --revision e3aca475430dbde29d414e5dc5cfe1ca09209d40",
+      "premises": 828,
+      "reached_premises": 739,
+      "derived_premises": 89,
+      "groups": {
+        "populate": 221,
+        "sole": 210,
+        "throwing": 170,
+        "cleanup": 227
+      },
+      "algorithmic_gates": 4,
+      "strict_SL_true": 4,
+      "cap_seconds": 90
+    },
+    "independent": {
+      "premises": 40,
+      "command": "python3 .tools/magic-get-recursion-review-119/run-review-corrected.py",
+      "strict_SL_true": 1,
+      "cap_seconds": 90
+    },
+    "total_premises": 868,
+    "properties": "Actual entry/binding, Warning capture/resume, handler population/CV clearing/throw, receiver roots, local destructor guard/reset, result delivery, forged-state refusals and complete-state budget equality. Raw DIM_FETCH returns 9; driven release temporarily stores it in operation.VALUE before genuine tail recovery.",
+    "processes": "Serial CPU5; exact affinity captured. Final actors/observer reaped with exit 0; all children exit 0, empty stderr, no timeout/interruption or remaining process group. Inputs/head/status stable."
+  },
+  "preserved_failures": [
+    {
+      "report": "original-populate-false",
+      "revision": "5d691092ac8bcc533c668be2ba06114bbe8b3874",
+      "credit": 0,
+      "cause": "Fixture waited for TYPE_RECEIVE despite complete untyped formal binding. Exact-prefix diagnostic preserved separately."
+    },
+    {
+      "report": "fixed-entry-populate-false",
+      "revision": "ad50242a9d863a2ac75feb6d5d4130a3dfec210f",
+      "credit": 0,
+      "cause": "Derived populated read confused raw result 9 with pending ordinary receiver cleanup. Corrected by raw/pending/recovered assertions, without runtime changes."
+    },
+    {
+      "report": "independent-original-false",
+      "revision": "ad50242a9d863a2ac75feb6d5d4130a3dfec210f",
+      "credit": 0,
+      "cause": "Independent fixture counted 2 owners at inner PREP; actual RESULT adds the third temporary owner. Shared-state diagnostic confirms 3, then 2 at Warning. All actual validators and forged-history refusals pass; diagnostic credit 0."
+    }
+  ],
+  "raw": {
+    "manifest": "../php-spec-evidence-archive/magic-get-recursion-119/manifest.json",
+    "archive_bytes": 14711985,
+    "archive_sha256": "95fdd8cbfd591039fe1a104525a964de568feccfdc8aa73ec720827a5e9b194b",
+    "reports": {
+      "native4": {
+        "path": ".tools/magic-get-recursion-probes-119/native-first/report.json",
+        "sha256": "3816fbc642045ec5da92ee94e10e7397322119480a87274be28e81df8a08989d"
+      },
+      "baseline4": {
+        "path": ".tools/magic-get-recursion-probes-119/accepted-current-baseline/report.json",
+        "sha256": "8855a8b9e32c055aa78ce10364b2516d3e253bf7f6a44d7b5a7ea049d9d3e3ac"
+      },
+      "source4": {
+        "path": ".tools/magic-get-recursion-probes-119/changed-model-8jqan2eo/report.json",
+        "sha256": "0731ccc0374356f1179d1bd553ae197939bfe3bd9ac840effe0753907b490df1"
+      },
+      "original-populate-false": {
+        "path": ".tools/magic-get-recursion-protocol-zz_9rve0/report.json",
+        "sha256": "6451d6ecd8c79a7381d4bcd8e6032c17b4201f975368fbe98a9241753bda81d3"
+      },
+      "prefix-diagnostic": {
+        "path": ".tools/magic-get-recursion-probes-119/diagnostic-119-guexq0ka/report.json",
+        "sha256": "5fd8106566f207198077527af2e186086c633a81602173d1d38ec77e5a03f56e"
+      },
+      "fixed-entry-populate-false": {
+        "path": ".tools/magic-get-recursion-protocol-6ume85la/report.json",
+        "sha256": "3aac78d7f69092a93d589c2c8c981570ffd3cac31e891ac208caa36846caef87"
+      },
+      "independent-original-false": {
+        "path": ".tools/magic-get-recursion-review-119/report.json",
+        "sha256": "1bf097fc2bd532930c315928a88200c3b71ea4291db1c811765017928992460e"
+      },
+      "shared-state-diagnostic": {
+        "path": ".tools/magic-get-recursion-review-119/diagnostic-report.json",
+        "sha256": "bf7de33fdd79db02e611534270df3709c5a00a150739a270a49af2ad0382b176"
+      },
+      "author828": {
+        "path": ".tools/magic-get-recursion-protocol-7ql27ujp/report.json",
+        "sha256": "1efe8a8280b2487c27bd8280d11abbca6d74f9a2c729c098f7346e357ca5b61f"
+      },
+      "independent40": {
+        "path": ".tools/magic-get-recursion-review-119/report-corrected.json",
+        "sha256": "898fff11f6cdeb4d6ebf8323b5023a1d9a21622b5857621c7cbc62f29e5c53f0"
+      }
+    }
+  },
+  "limits": "Four original agreements and finite focused checks do not close properties.magic-get-set or full PHP core. Source4 retains its original runtime cut without replay; earlier accepted class cuts receive no renewed credit. Paused OP12/Source47/owned-NUL/undefined-byref LIST-key/COMP88 boundaries are unchanged.",
+  "engine_bugs_or_intentional_divergences": []
+}

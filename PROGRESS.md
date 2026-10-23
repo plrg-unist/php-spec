@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Same-name implicit getter recursion now delivers the ordinary missing-property
+Warning and captured NULL through handler population, caller-CV clearing and
+supplied throw. The guard survives authenticated compiled-local destruction and
+resets before later getter entry. Only module 380 changes; module 377, roots, GC,
+schemas and the ordered manifest stay exact. Four source agreements retain
+`c47a383f7`/409; 828 author and 40 independent premises pass at `e3aca4754`/409.
+Three fixture failures and zero-credit diagnostics remain preserved: untyped
+entry, raw versus driven cleanup, and PREP's third temporary owner were corrected.
+All actors are reaped and CPU 5 released. Wider forms remain partial; paused
+boundaries are untouched. [Recursion review](coverage/semantics/magic-get-recursion-review.json).
+
 An undefined direct VALUE CV now freezes NULL at positional `ini_set` argument1,
 after the option and selected string or retained setter are captured. Warning
 callbacks can create an ARRAY and replace the live callee/option without changing
