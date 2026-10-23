@@ -23,6 +23,12 @@ compiler, root algorithms and count biases stay exact. Fresh flat DIRECT integer
 and empty arrays are checked; nested/owning leaves and wider histories remain
 partial. [Constant NULL-key review](coverage/semantics/array-literal-null-key-constant-array-review.json).
 
+Composed over `2cda68f98`/409 with tested30/413 and all six A46 scripts
+private-exact. Incoming156/270 by-reference object-return chains and400 owned
+constant-query selectors have no producer here; other runtime/schema/ordered409
+bytes remain parent-exact. Source4/focused851 retain their private409 cuts
+without joined execution, accepted replay or renewed credit.
+
 Retained DEFINED/CONSTANT Closure callees now query captured non-NUL global
 string names under the existing live/source authority. Later argument writes
 preserve the selected callee/name, while lookup sees a late DEFINE. Queried
