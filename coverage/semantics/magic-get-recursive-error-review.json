@@ -1,0 +1,106 @@
+{
+  "decision": "accepted-partial",
+  "scope": "Public nonstatic typed PROP_UNSET, literal name, ordinary borrowed local/$this receiver and implicit by-value non-generator __get. Actual Get or authenticated compiled-local exit holds the same-name/object guard; defined NULL and lexical denial are distinct.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json",
+  "engine_route": "vendor/php-src/Zend/zend_object_handlers.c::zend_std_read_property keeps IN_GET through getter/local cleanup, skips recursive Get and falls to uninit_error. zend_typed_property_uninitialized_access uses the declaring property class. Typed INITIAL bypasses Get; denied access instead follows zend_wrong_offset.",
+  "implementation": {
+    "revision": "324c3509e5888c0cff3f9d1e8b1048ed76b8bf2f",
+    "file": "spec/semantics/380-magic-property-get.watsup",
+    "sha256": "c5d0dbea6cac04a560ac97720e39976d85fbcb209fa06d779cbd166aa14685c4",
+    "delta": "34 additions: a source/live-CV/public-typed-DECL/UNSET/real-guard Error plan and rule, plus matching Unsupported exclusion. Existing throw_scalar/Throwable materialization and cleanup are reused. Old Warning arms remain exact; no module136/377, root, GC, task, schema or manifest edit."
+  },
+  "independent_review": {
+    "reviewer": "class119_review",
+    "test_revision": "7ca6530c57b7d59d99acc4e1ea42417705c82a62",
+    "decision": "Accepted runtime, four source agreements, author413 and independent83. Private descriptor/INITIAL/current/task mutations are derived selector tests; no actual private reached-state claim."
+  },
+  "source_evidence": {
+    "catalogue": "tests/semantics/magic_get_recursive_error_cases.json",
+    "initial_revision": "5c5d2c5bd2a9b34c0bff682b32d5b7c2210ced75",
+    "native_cases": 6,
+    "new_case_baseline": "Propagation, nullable recovery and local cleanup are Unsupported. Replacement is a genuine model php_error255: R:G|D| then uncaught supplied Exception, versus native normal0 catch with recursive Error as Previous. New agreements0.",
+    "controls": "Different-object local receiver already agrees (separate existing control1). Typed private UNSET source stops at class compilation, not the inner access; no agreement or reached refusal credit.",
+    "model_revision": "324c3509e5888c0cff3f9d1e8b1048ed76b8bf2f",
+    "new_agreements": 4,
+    "modes": "Original bytes/path/cwd/profile; strict SL with409 modules. Native45s/model60s/outer75s caps,100000 steps,serial.",
+    "evidence_levels": "All four new originals agree. Author reached proofs select recovery, replacement and local cleanup; inherited propagation is source-only here.",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "focused_evidence": {
+    "revision": "7ca6530c57b7d59d99acc4e1ea42417705c82a62",
+    "module_count": 409,
+    "author": {
+      "command": "taskset -c 2 python3 tests/semantics/magic_get_recursive_error_protocol.py --revision 7ca6530c57b7d59d99acc4e1ea42417705c82a62",
+      "groups": {
+        "recover": 145,
+        "replacement": 127,
+        "cleanup": 141
+      },
+      "premises": 413,
+      "reached_premises": 404,
+      "derived_premises": 9,
+      "algorithmic_gates": 3,
+      "strict_SL_true": 3,
+      "cap_seconds": 90
+    },
+    "independent": {
+      "command": "taskset -c 2 python3 .tools/magic-get-recursive-error-review-121/run.py --revision 7ca6530c57b7d59d99acc4e1ea42417705c82a62",
+      "premises": 83,
+      "reached_premises": 57,
+      "derived_premises": 26,
+      "algorithmic_gates": 1,
+      "strict_SL_true": 1,
+      "cap_seconds": 90
+    },
+    "total_premises": 496,
+    "properties": "Structural seeks do not use the new selector. Fresh Error image binds declaring-class message, inner origin/file/line, NULL Previous and no Warning; real NULL population retains guard and descriptor, receiver retirement precedes catch, supplied Exception retains original Error as Previous, actual local-exit frames remain authoritative, and budget resumption equals final state. Independent actual wrong-object read enters its own Get; INITIAL/untyped/private/current/task mutants stay derived.",
+    "processes": "Serial CPU2; author and peer fully reaped0, all child groups empty, inputs/head/status stable. Peer sampled direct compiler/runner CPU2; taskset/wrapper provenance does not imply other live-child observations."
+  },
+  "preserved_failure": {
+    "revision": "602e153c40db0cd215442f6fab0670b0961f57fe",
+    "report": "original-compile-failure",
+    "application_evaluations": 0,
+    "credit": 0,
+    "cause": "Fresh pthrowable_error inside non-invertible OBJECTS concatenation. Algorithmic stdout diagnostic failed the artifact gate despite exit0; direct indexed equality binds the record before exact append comparison. Source/runtime remained unchanged."
+  },
+  "raw": {
+    "manifest": "../php-spec-evidence-archive/magic-get-recursive-error-121/manifest.json",
+    "archive_bytes": 10009252,
+    "archive_sha256": "8ac491c1a0bbdd28b1d88e3d185bcfa62d1f743a533201d2143a6ce3d5f30de3",
+    "reports": {
+      "native6": {
+        "path": ".tools/magic-get-recursive-error-probes-121/native-first/report.json",
+        "sha256": "a32fe8537ab721249373956a72277c4b9e4c2ccb7d5e671ed19e1305a3c44082"
+      },
+      "baseline6": {
+        "path": ".tools/magic-get-recursive-error-probes-121/accepted-current-baseline/report.json",
+        "sha256": "e8f59b37969dc5afff279d9ed6e303e24157408be1d519610a172872b1456f66"
+      },
+      "source4": {
+        "path": ".tools/magic-get-recursive-error-probes-121/changed-model-idf009ff/report.json",
+        "sha256": "7cb657b7881a7b2d61c3f4e057e0d94505fac27bb9a8ec03b940260c225f569d"
+      },
+      "original-compile-failure": {
+        "path": ".tools/magic-get-recursive-error-protocol-tkw87a5i/report.json",
+        "sha256": "4a0fca0532fc36011a6dc015544fcc31c50a1e57988e0df08f416ecc74a792a3"
+      },
+      "author413": {
+        "path": ".tools/magic-get-recursive-error-protocol-kxxgt37c/report.json",
+        "sha256": "d1a6cd6c30db542837853a81a90f76e2842107ec031d80de2d63160cbe009a42"
+      },
+      "independent83": {
+        "path": ".tools/magic-get-recursive-error-review-121/execution-nowymvut/report.json",
+        "sha256": "6730bcf71f040956ef4640507e50303620e246c7eeaa8f548a02db91d8e2cac4"
+      }
+    }
+  },
+  "composition": {
+    "parent_revision": "a384f4343d52dcbd0a5dc560ef6449870f4b2afe",
+    "module_count": 409,
+    "preservation": "Tested380, eight new maintained inputs and reused119 helper are exact. Incoming operational paths207/30/400/404/41/413/58 and ordered manifest are preserved. Added task alternatives do not change state/frame/default fields.",
+    "independent_selector_review": "Incoming missing-CV array-comparison payloads, owned NULL constant queries, NaN array casts and undefined array-literal key CVs have no producer here. Throwable trace arrays use trace materialization, not ARRAY_VALUE key execution.",
+    "credit": "No joined execution or accepted-source replay; CLASS119/120 and incoming evidence retain their original cuts."
+  },
+  "limits": "Nonpublic recursion, by-reference getters, quiet probes, owned receivers, computed names, suspension and wider typed/lifetime forms remain partial. No family/full-core closure; paused lanes untouched.",
+  "engine_bugs_or_intentional_divergences": []
+}

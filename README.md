@@ -4568,7 +4568,12 @@ returned markers do not. Wider recursion and lifetime forms remain partial.
 Explicitly unset public untyped declarations now share this captured NULL path,
 retaining their descriptor through population and local cleanup.
 [Four new source agreements and 542 focused premises](coverage/semantics/magic-get-unset-recursion-review.json)
-distinguish typed/private refusal controls; those later Error paths remain partial.
+distinguish typed/private Warning refusals and retain their original cuts.
+Public typed UNSET reentry now raises a fresh Error with the declaring class and
+inner read's file/line, including during actual local cleanup. Nullable NULL
+recovery/reset, caller-CV destruction before catch and replacement Exception's
+Previous link pass [four source agreements and 496 focused premises](coverage/semantics/magic-get-recursive-error-review.json).
+Private denial and wider typed/receiver/lifetime forms remain partial.
 Denied private/protected reads and inherited-private literal fallback now invoke
 the getter without applying the hidden property's type. Allowed lexical reads
 use the physical backing key or raise its initialization Error. The original

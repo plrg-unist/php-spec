@@ -8,23 +8,18 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
-COMP119 is composed over `92dc63f27`/409. Missing-CV comparisons now retain
-one flat child array behind a reference entry. Singleton outer copies unwrap the
-cell; inner COW and ordinary snapshots keep separate child tables, while shared
-cells follow replacement. Final child-object release can run destruction before
-store/catch; outside aliases delay it. Empty and pooled children preserve outer truth.
+CLASS121 adds public typed UNSET same-name implicit getter reentry. A fresh Error
+uses the declaring class and inner read's file/line, survives local cleanup and
+becomes Previous when receiver destruction throws. Defined NULL reads normally
+under the active guard; later unset resets Get entry.
 
-Ten source agreements/two Unsupported controls and 382 independent state premises
-retain `7dfd813c2`; author202 retains `f35cefadb`, and corrected/unrun247 retains
-`05650e70c`/409. The six groups execute 831 premises; two affected old selectors
-agree normally without historical renewal. One budget fixture failure retains zero
-credit: its restart moved before the raw comparison so the driver retains release
-context. Runtime/source acceptance was unchanged and successful checks were not replayed.
-[Child-array review](coverage/semantics/undefined-comparison-array-payload-review.json).
-
-Only207 adds bounded payload eligibility. Source certificates, roots and all
-incoming operational bytes stay exact. Child references/deeper arrays, cycles,
-internal/Stringable objects and wider histories remain partial; paused lanes stay paused.
+Four source agreements retain `324c3509e`/409; 413 author and 83 independent
+premises retain `7ca6530c5`/409. The original fixture binding failure has zero
+evaluation credit. Native/baseline classification preserves the genuine uncaught
+replacement-Exception mismatch, and the private source control remains blocked
+at class compilation. [Typed reentry review](coverage/semantics/magic-get-recursive-error-review.json).
+Nonpublic/wider typed recursion, by-reference getters, quiet probes, owned
+receivers, computed names and wider lifecycle forms remain partial.
 
 ## Integrated behavior and entrypoints
 
@@ -38,7 +33,7 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | Comparisons and arrays | Seven missing-CV comparisons admit bounded DIRECT/ALIAS arrays, including ordinary non-Stringable object leaves. Reference-held flat DIRECT child arrays preserve outer/inner COW, snapshots and final child release. [Child-array review](coverage/semantics/undefined-comparison-array-payload-review.json). Undefined key variables in array literals resume Warning callbacks with a fixed empty key and live null/bool/int/float value CVs. [Undefined key review](coverage/semantics/array-literal-undefined-key-warning-review.json). NULL-key literals support bounded CV, returned, temporary and pooled CONST values, including nested DIRECT subtrees with physical child edges and handler-time COW. [Nested CONST review](coverage/semantics/array-literal-null-key-constant-subtree-review.json). [Comparisons](docs/semantics/COMPARISONS.md), [dimensions](docs/semantics/DIMENSIONS.md), [object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json). |
 | Calls and configuration | Ordinary/scoped/captured calls preserve selected targets, argument order, references and genuine callback frames. Two singleton INI_SET packs retain raw NULL/quiet ARRAY, callee and option through later effects. [Calls](docs/semantics/SOURCE-CALLS.md), [include/configuration](docs/semantics/INCLUDE-SOURCES.md), [two-pack review](coverage/semantics/ini-set-two-pack-null-array-value-review.json). |
 | Constants and callable values | Bounded DEFINE/CONSTANT/DEFINED preserve source authority, scopes, primitive/array/object snapshots and captured intrinsic Closure identity. Captured Boolean/integer/finite-float/NULL queries preserve strict ordinary versus weak explicit reception, raw/received trace arguments and callee ownership through deprecation callbacks. [Constant contract](docs/semantics/SOURCE-USER-CONSTANTS.md), [string-query review](coverage/semantics/constant-owned-query-review.json), [scalar-query review](coverage/semantics/constant-owned-scalar-query-review.json), [NULL-query review](coverage/semantics/constant-owned-null-query-review.json). |
-| Classes and properties | Visibility, references, typed writes, hooks, magic access and clone have bounded routes. Same-name implicit getter recursion delivers captured NULL for missing undeclared or explicitly unset untyped public properties; immutable descriptor history survives handler population and local cleanup. [Properties](docs/semantics/SOURCE-PROPERTIES.md), [classes](docs/semantics/SOURCE-CLASSES.md), [recursion review](coverage/semantics/magic-get-recursion-review.json), [declared-UNSET review](coverage/semantics/magic-get-unset-recursion-review.json). |
+| Classes and properties | Visibility, references, typed writes, hooks, magic access and clone have bounded routes. Same-name implicit getter recursion delivers captured NULL for missing/untyped UNSET properties and a fresh declaring-class Error for public typed UNSET; defined NULL, local cleanup and replacement Previous retain their distinctions. [Properties](docs/semantics/SOURCE-PROPERTIES.md), [classes](docs/semantics/SOURCE-CLASSES.md), [recursion review](coverage/semantics/magic-get-recursion-review.json), [declared-UNSET review](coverage/semantics/magic-get-unset-recursion-review.json), [typed reentry review](coverage/semantics/magic-get-recursive-error-review.json). |
 | Generators and Fibers | Supported suspension, delegation and cleanup preserve snapshots and initialization history. Unused CURRENT also retires its snapshot before a still-pending selected receiver, preserving both bits and live Middle-finally cleanup. [Pending CURRENT review](coverage/semantics/generator-pending-unused-current-review.json). Direct/one-ancestor node-free SEND handles supplied argument-destructor Exceptions and distinct unused/assigned owners. [Generators](docs/semantics/GENERATORS.md), [delegation](docs/semantics/GENERATOR-DELEGATION.md), [ancestor review](coverage/semantics/generator-ancestor-abrupt-argument-send-review.json). |
 | Returns and lifetime | Bounded by-reference return/finally chains retain remaining owners, local catches and consumed recovery through normal/throw retirement. First C retirement with one REF/object remainder preserves local catch, the computed-return Notice and a detached caller cell. The finite `returns_verify` work is complete; wider PHP return and lifetime coverage remains open. [Return contract](docs/semantics/SOURCE-REFERENCE-RETURNS.md), [eager cleanup](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md), [return review](coverage/semantics/reference-return-local-cv-lifetime-review.json). |
 | Diagnostics and environment | Supported warning/exception handlers retain raw registration, selected callback and emitting frame. Request facts, inclusion and lifecycle effects stay explicit. [Handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md), [exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md), [request inputs](docs/semantics/REQUEST-INPUTS.md). |
@@ -54,7 +49,7 @@ than retain superseded operational checkpoints.
 | M134 WeakMap HCELL backedge | Scope agreed; native-first alias-held/unheld packet preparing. |
 | Source87 user-Iterator CONFIG unpack | Native6 retained; genuine wrong TypeError has zero credit; implementation pending. |
 
-Iterator49/50/51, V99/V100/V101, M132/M133, A46/A47/A48, OP79/80/81, Source86, COMP118/119 and CLASS119/120 are integrated
+Iterator49/50/51, V99/V100/V101, M132/M133, A46/A47/A48, OP79/80/81, Source86, COMP118/119 and CLASS119/120/121 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
