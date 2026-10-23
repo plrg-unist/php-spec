@@ -124,6 +124,14 @@ literal entry without debt or retention. The
 checks frozen tables, COW and last-owner deletion/throw cleanup. Only a checked
 no-argument call with no fallback and a by-value signature enters this new arm;
 by-reference returns retain their separate lifetime requirements.
+Undefined ordinary literal-key CVs instead warn and fix the empty-string key.
+An initially defined null/bool/int/float value CV remains a nonowning live locator
+through its callback, without backup or reset; the marker owns only the builder.
+Readiness keeps current values ordinary and nonowning and the builder reach
+object-free. Zend's UNDEF branch inserts before checking a pending exception;
+discarding the doomed object-free builder without insertion has the same
+observable effects. A later defined NULL key still uses its separate reset path.
+See the [undefined-key ledger](../../coverage/semantics/array-literal-undefined-key-warning-review.json).
 NULL-key literal conversion has its own value-reset continuation. The captured
 ordinary CV index is nonowning and must still be the same live unmarked slot,
 without property/coercion/backing records or CELL debt. For ARRAY values the

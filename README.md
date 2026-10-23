@@ -61,6 +61,13 @@ Removing an already checked defined counterpart during a missing-CV Warning
 compares it quietly against that read's frozen NULL and preserves surviving aliases.
 Wider warning paths remain partial.
 
+At `[$missing => $value]`, an undefined ordinary key variable can now resume a
+Warning callback while null/bool/int/float value CVs stay live. A handler's
+`$missing=9; $value=44` still inserts `""=>44`; later items read the new key.
+Returning false forwards the Warning, and an object-free supplied throw cancels
+the array assignment. Strings, owning values and constrained/reference CVs remain
+partial. [Undefined-key review](coverage/semantics/array-literal-undefined-key-warning-review.json).
+
 [NULL literal keys](docs/semantics/DIMENSIONS.md) restore the original ordinary
 value CV after the deprecation handler, then insert that value under `""`.
 Handler writes are visible inside the callback and undone before insertion or
