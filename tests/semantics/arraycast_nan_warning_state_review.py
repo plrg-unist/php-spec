@@ -42,7 +42,7 @@ def conditions(name, program, path, stdout):
         '~$boolnot_nan_source(S_entry, pboolnotnanwarning)',
         '$boolcast_nan_plan(S_entry) = eps',
         '~$boolcast_nan_source(S_entry, pboolnotnanwarning)',
-        '$number_bool(NFLOAT pboolnotnanwarning.BITS) = (true, true)',
+        '$fparts_nan($float_decode(pboolnotnanwarning.BITS))',
         '$integer_operand_source(S_entry, pboolnotnanwarning.SITE, [PCFIELD 0], pboolnotnanwarning.INPUT)',
         '$lookup(S_entry.ENV, $ptascii("x")) = (n_x)',
         'pboolnotnanwarning.CELL = n_x',
