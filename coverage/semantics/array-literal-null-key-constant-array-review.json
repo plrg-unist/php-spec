@@ -1,0 +1,167 @@
+{
+  "milestone": "A46: pooled constant ARRAY values at ordinary NULL literal keys",
+  "status": "Independently reviewed private candidate; native/source/focused cuts retained.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor/php-src tag34308a6666b2d489c509541ea9befea9e2b42348",
+  "cuts": {
+    "native_and_genuine": "be2ab5398a8fd9fb712fe10d558ba2a1b4911599",
+    "runtime_strict_source4": "8ec80158aebb0025da2683318270a4d3422bbe3c",
+    "focused369_plus482": "a87f924ee74af9fa6713017ed1044232cc2a0708"
+  },
+  "runtime": {
+    "spec/semantics/30-storage.watsup": "9d72d71011ff329754c062bc4a77e4ccf7c48db205d69cc4cee8d2a8f3a85ff3",
+    "spec/semantics/413-array-literal-key-warnings.watsup": "bbcbb6b0a29d8a66bbff29c66ed6f885f0963d758e28c1969f9c1111ceba4068"
+  },
+  "engine": "zend_compile_array/zend_try_ct_eval_array produces IS_CONST. ZEND_ADD_ARRAY_ELEMENT adds a CONST owner before key conversion; only CV/VAR receive the NULL backup/reset. EG(exception) is checked before empty-string insertion, dropping the pending CONST owner while its literal pool survives.",
+  "source_identity": "The value must be a checked NExprArray at the current array-item occurrence; compiled_read at PCFIELD1 must return its exact saved PARRAY under the constant descriptor flag. Existing PFFACT/CODEEXPR carries the previous emitted opcode line, not a previous-AST-item heuristic. Fresh operation lines5/9/10/11 differ from literal AST starts6/10/11/13; compiler bytes are unchanged.",
+  "scope": "Initially ordinary unmarked defined NULL CV keys; a mutable nonpool builder and separate allocated pooled value table. Existing flat DIRECT primitive/validated-byte leaf validation, no value debt or child heap edges, and object-free builder/value reach bound readiness. Fresh payloads contain DIRECT ints or no entries; no all-values credit is claimed.",
+  "ownership": "ARRAY_KEY_NULL_CONST_RESULT owns the builder plus one pending value edge, alongside the existing permanent pool. RESULT to marker/frame preserves two value owners. Normal insertion transfers the pending edge to DIRECT; COW/deletion can leave only the pool. Throw inserts nothing and drops only the pending edge, retiring an otherwise unowned builder before catch while preserving the pool. No source CELL root, NULL backup, CV reset or literal bias.",
+  "fresh_witnesses": "Repeated invocation reuses the same source occurrence and original2/7 pool after earlier children become55/7 and55/77; second result2/88 stays independent. Empty constant COW separates66/55 from a fresh empty literal. Peer deletion preserves2/8 versus66/99; supplied throw keeps the exact given Throwable, dest99 and cancelled later7, without replacing prior empty-key8.",
+  "controls": "Exact source/descriptor/value/line, no-pool and forged-pool negatives; key-NULL/unmarked and old TMP/VAR/CV disjointness; alias/deeper/object/debt readiness refusals. Actual raw dispatch/insertion/discard versus driven steps, pending2 to pool-only1, no HCELL roots or callback STORE reset, permanent pool at EOF, zero/split budgets and exact original outputs.",
+  "bounds": "Nested or owning constant leaves, broader key/value producers, graphs and active lifecycle histories remain partial. Existing primitive/byte helper composes without fresh all-leaf validation. Only30/413 change runtime; compiler, generic root/count/prune/driver and old TMP/VAR/CV source/ready/result/discard bodies stay exact except the pending OR extension. Paused OP12, Source47 DEFINE NaN, owned-NUL source-release, undefined-byref LIST key and COMP88 boundaries remain untouched.",
+  "validation": {
+    "strict_modules": 409,
+    "original_native_cases": 4,
+    "checked_source_agreements": 4,
+    "author_conditions": 369,
+    "peer_conditions": 482,
+    "successful_conditions": 851,
+    "boolean_conditions": 843,
+    "raw_steps": 8,
+    "postchange_first_executions_passed": true,
+    "postchange_failures": 0,
+    "retries": 0,
+    "cap_changes": 0,
+    "accepted_replay": false
+  },
+  "genuine_baseline": {
+    "revision": "be2ab5398a8fd9fb712fe10d558ba2a1b4911599",
+    "case": "array-literal-null-key-constant-array-repeated",
+    "status": "unsupported",
+    "reason": "error-handler ingress requires a producer continuation",
+    "model_stdout": "P:1;",
+    "model_exit": 1,
+    "native_exit": 0,
+    "passed": false,
+    "agreement_credit": 0
+  },
+  "execution": {
+    "strict_source_cpu": 2,
+    "focused_cpu": 3,
+    "native_cap_seconds": 30,
+    "genuine_model_outer_caps": [
+      60,
+      90
+    ],
+    "strict_focused_sl_cap_seconds": 180,
+    "source_model_outer_caps": [
+      180,
+      210
+    ],
+    "strict_seconds": 9.411811828613281,
+    "source_seconds": [
+      41.40961837768555,
+      16.76983952522278,
+      21.859565496444702,
+      20.322256803512573
+    ],
+    "focused_seconds": [
+      44.69111704826355,
+      18.89147686958313,
+      24.93349289894104,
+      22.23239541053772
+    ],
+    "actors": "All source/focused checks passed first execution at unchanged caps; stdout expected, diagnostic stderr empty, no timeout/interruption/children. Wrappers fully reaped and CPU3 released. Genuine baseline retains zero agreement credit.",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null
+    },
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "tools": {
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    }
+  },
+  "source_sha256": {
+    "array-literal-null-key-constant-array-repeated": "f45f6fa3074ac4e5cd74b5179f99e3b3c6e1f2ec306687eb08dd4b77c7b989cd",
+    "array-literal-null-key-constant-array-empty": "4a7d3eabd846b42b5c9a9dda1d193b1f27eee7cb73258de24e246d9df01a3ac0",
+    "array-literal-null-key-constant-array-review-delete-entry": "55c9a4f72f08e798dfc2d4c9f68ba450ba452fe8d95ad546f379d1b10d3ab966",
+    "array-literal-null-key-constant-array-review-supplied-throw": "0883e331d9d64854bae55d9627bdf95a86e8537c1d17ae33c6c0bf1c2b9877c3"
+  },
+  "commands": [
+    "taskset -c 2 python3 .tools/array-literal-null-key-constant-array-strict-46.py",
+    "taskset -c 2 python3 .tools/array-literal-null-key-constant-array-reuse-46.py --group author --output .tools/array-literal-null-key-constant-array-source-author-46",
+    "taskset -c 2 python3 .tools/array-literal-null-key-constant-array-reuse-46.py --group review --output .tools/array-literal-null-key-constant-array-source-review-46",
+    "taskset -c 3 python3 -B tests/semantics/array_literal_null_key_constant_array_protocol.py --source-report .tools/array-literal-null-key-constant-array-source-author-46/report.json --output .tools/array-literal-null-key-constant-array-author-state-46",
+    "taskset -c 3 python3 -B tests/semantics/array_literal_null_key_constant_array_state_review.py --source-report .tools/array-literal-null-key-constant-array-source-review-46/report.json --output .tools/array-literal-null-key-constant-array-review-state-46"
+  ],
+  "reports": {
+    "baseline-46": {
+      "path": ".tools/array-literal-null-key-constant-array-baseline-46/report.json",
+      "sha256": "4651f637e8edcae8fe557af42dfdd19807bf5d428c75c875a09964b6b9c7497c",
+      "revision": "be2ab5398a8fd9fb712fe10d558ba2a1b4911599"
+    },
+    "native-rest-46": {
+      "path": ".tools/array-literal-null-key-constant-array-native-rest-46/report.json",
+      "sha256": "44d744fee2ab752423cae26f03e12f2f90eb851b10d0b8ead7dceaac382d2156",
+      "revision": "be2ab5398a8fd9fb712fe10d558ba2a1b4911599"
+    },
+    "review-native-46": {
+      "path": ".tools/array-literal-null-key-constant-array-review-native-46/report.json",
+      "sha256": "c848226ea18942e269b0cb262a78eb85badd005026cd96beb54d3076ef949aa8",
+      "revision": "be2ab5398a8fd9fb712fe10d558ba2a1b4911599"
+    },
+    "strict-46": {
+      "path": ".tools/array-literal-null-key-constant-array-strict-46/report.json",
+      "sha256": "63fc1fff4cccbcba3e645faadef0043178323699ed968d353acf028b3a1b726c",
+      "revision": "8ec80158aebb0025da2683318270a4d3422bbe3c"
+    },
+    "source-author-46": {
+      "path": ".tools/array-literal-null-key-constant-array-source-author-46/report.json",
+      "sha256": "edf6860a7bd8afbaa7319b2aa46b0dc2245294e2aedd091fd93ae4af420c9498",
+      "revision": "8ec80158aebb0025da2683318270a4d3422bbe3c"
+    },
+    "source-review-46": {
+      "path": ".tools/array-literal-null-key-constant-array-source-review-46/report.json",
+      "sha256": "ee73f4cbebaa73ab88da993d6337954577d0030df40d544f76c17b9690a72542",
+      "revision": "8ec80158aebb0025da2683318270a4d3422bbe3c"
+    },
+    "author-state-46": {
+      "path": ".tools/array-literal-null-key-constant-array-author-state-46/report.json",
+      "sha256": "93ddd8f0655cd674364524825fd629334d530db18d5ffd9c6c52fa2c0d7ff2a9",
+      "revision": "a87f924ee74af9fa6713017ed1044232cc2a0708"
+    },
+    "review-state-46": {
+      "path": ".tools/array-literal-null-key-constant-array-review-state-46/report.json",
+      "sha256": "bc42a9cb7983fdf953985461ffc3e9a2f7e64f7a5c774c69c0cda833064deb53",
+      "revision": "a87f924ee74af9fa6713017ed1044232cc2a0708"
+    }
+  },
+  "runners": {
+    ".tools/array-literal-null-key-constant-array-strict-46.py": "ab6ceabc9083e02f0f925c7905320b96b971c4c436fdf3af0a20ed60aae68f1e",
+    ".tools/array-literal-null-key-constant-array-reuse-46.py": "9f406acc0b8d2ec8e27c9047108b94e91628086d50710f7dd5c3c74bf29a7f71"
+  },
+  "archive": {
+    "path": ".tools/array-literal-null-key-constant-array-46-raw.tar.gz",
+    "bytes": 478618,
+    "members": 172,
+    "sha256": "4349bac8b92a22addbbbaee863a6811b0c013e18c0e778e92da1aaf559f4f44d"
+  },
+  "recovery": "Canonical .tools/array-literal-null-key-constant-array-publication-46.json and the raw archive retain reports, preparation, original source/native/model streams, process receipts and strict/reuse scripts. Restore under the recorded worktree cwd at the listed Git cuts, preserving argv paths, original bytes, profile and input/tool fingerprints. Rebuild/provision pinned local tools as needed. Baseline Unsupported remains zero credit; preparation records are not executions.",
+  "native_commands": "Exact PHP argv/cwd/profile and process exits are retained in the three native/genuine reports; their pre-restart taskset wrapper was not recorded. No CPU affinity is inferred."
+}

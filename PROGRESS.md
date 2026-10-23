@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Pooled constant array literals now resume ordinary unmarked NULL-key callbacks.
+Exact compiled-read identity keeps the permanent pool and one pending edge;
+normal insertion transfers the latter to DIRECT, while throw preserves the pool.
+Repeated calls reuse the original literal after earlier child COW; empty constants,
+entry deletion and supplied throws retain independent values and cancellation.
+
+Native4 and the genuine `P:1;` then Unsupported/credit0 retain `be2ab5398`/409.
+Strict409/source4 pass at `8ec80158a`; 851 focused premises (369 author +482
+independent, including eight raw steps) pass at `a87f924ee`. All post-change first executions
+pass at original caps, with no failures, retries or accepted replay; actors are
+reaped and CPU3 released. Existing folded compiler lines remain distinct from
+literal AST lines. Only30/413 add the CONST continuation; TMP/VAR/CV bodies,
+compiler, root algorithms and count biases stay exact. Fresh flat DIRECT integers
+and empty arrays are checked; nested/owning leaves and wider histories remain
+partial. [Constant NULL-key review](coverage/semantics/array-literal-null-key-constant-array-review.json).
+
 Retained DEFINED/CONSTANT Closure callees now query captured non-NUL global
 string names under the existing live/source authority. Later argument writes
 preserve the selected callee/name, while lookup sees a late DEFINE. Queried

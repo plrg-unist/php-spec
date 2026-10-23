@@ -78,8 +78,11 @@ Runtime array constructors at NULL keys use one owning temporary, with no NULL
 backup or producer-variable reset. The child table freezes before the handler,
 including a scalar reference read by value or a seed increment. Normal completion
 transfers its DIRECT entry; an otherwise unowned table retires on deletion or
-supplied throw.
-Constant arrays, wider payload graphs and other key producers remain partial.
+supplied throw. Pooled constant array literals keep their permanent pool owner
+and one pending edge, preserving the original table across callbacks, repeated
+calls and later COW. Throw drops only the pending edge. See the
+[constant-array review](coverage/semantics/array-literal-null-key-constant-array-review.json).
+Nested or owning constant leaves, wider graphs and other key producers remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
