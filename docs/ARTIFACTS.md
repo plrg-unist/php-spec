@@ -210,6 +210,13 @@ original packets and Unsupported observations, immutable diagnosis/author/peer
 snapshots, worker120 and the isolated386 runtime patch,
 SHA-256 `9a8da0cb235155fe26ae69ba55a553718a9f94c1143b96834035c91bffff0f8e`.
 
+The ARRAY-valued WeakMap ephemeron proof is in
+`../php-spec-evidence-archive/weakmap-array-ephemeron-135/manifest.json`:
+336,514 bytes/136 members under `.tools/m135/`, six reports (five complete and
+the preserved SL binding failure), original packets, immutable author/peer
+snapshots, worker120 and the isolated386 runtime patch,
+SHA-256 `37e6499d641e08f7b9be18c52c714afa4433813278c2a2ab58e7659a0a522236`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

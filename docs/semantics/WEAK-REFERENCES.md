@@ -164,6 +164,28 @@ array values/properties, wider graphs/maps,
 unheld-map and inactive contexts remain partial; count-library bodies stay excluded.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
+## Array-valued entries
+
+M135 admits first insertion of one ordinary mutable nonproxy array
+`[0 => &$key]`, binding its live marked reference cell to the actual leaf Key.
+Physical ownership is Map→Array→HCELL→Key. Conditional tracing strips Map→Array
+and lets a white Key discover Array; it adds no physical owner. The existing
+object-valued helpers and collector/disposal rules stay unchanged.
+
+Two originals and 306 Boolean/four raw checks pass at9bf6/409. Unheld collection
+returns2 then0; a quiet external alias protects the entry with0 before release,
+then collection returns2 and the weak key becomes NULL. Array and Key are counted;
+the cell is also physically disposed. Old ARRAYS/STORE/REFCELLS rows retain no
+live edge or owner. Actual pending insertion, both held passes and exact resumption
+budgets are checked independently. Constructed DIRECT-array, stale-root and
+incomplete-free-plan controls refuse without extra PHP source credit.
+
+Native/baseline retain d8e/409; the original SL binding failure at363ce retains
+zero. Surrounding ordinary arrays/cells use existing generic collection, with no
+additional source witnesses here. Other array layouts, replacement/callbacks,
+wider maps, unheld-map and inactive/Fiber contexts remain partial.
+[Review and recovery](../../coverage/semantics/weak-map-review.json).
+
 ## Ordinary Std graphs beside a methodless ephemeron
 
 At `fa2e00c6`, module386 admitted allocated, nonfreeing outside `stdClass` graphs when the

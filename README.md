@@ -2968,9 +2968,15 @@ Four originals and 282 Boolean/four raw checks pass at `9e37d56ca`/409, includin
 quiet ALIAS/DIRECT controls without intermediate value reads. GC counts two
 objects; the reference-cell allocation disappears while its recorded identity
 remains nonowning. Wider maps, typed/wider reference-property forms, ALIAS-Value
-destructor callbacks, array values and other graphs remain partial. [Review](coverage/semantics/weak-map-review.json).
+destructor callbacks, wider array values and other graphs remain partial. [Review](coverage/semantics/weak-map-review.json).
 
-That methodless singleton can now coexist with ordinary `stdClass` graphs.
+A singleton array entry containing one reference to its Key also supports
+collection and external-alias protection. Two originals and 306 Boolean/four raw
+checks pass at `9bf6e1399`/409: count2 includes Array/Key while the uncounted cell
+is physically retired. Old array/reference rows remain nonowning history.
+Other array layouts and replacement/callback lifetimes remain partial.
+
+The object-valued singleton can now coexist with ordinary `stdClass` graphs.
 Two originals agree at `fa2e00c6`: an independent self-cycle collects alongside
 the pair, or alone while Key is held. The 405 focused checks cover real GC
 disposal, indirect Key protection and its then-active destructor/nonleaf refusal.
