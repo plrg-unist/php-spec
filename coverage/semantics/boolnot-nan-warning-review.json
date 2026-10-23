@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "milestone": "OP79 direct-CV NaN Boolean NOT Warning",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/ordinary precision14 profile",
+  "scope": "Boolean NOT of NaN in an ordinary allocated nonreference direct CV, with a named Warning handler and the same live float slot on return. The normal original writes0.0/returns false; the independent original writes0.0/throws a supplied Exception. References, rebinding, copied operands, owning/wider handlers and changed representations remain partial.",
+  "runtime_revision": "39eab9034f14da64f824a4163bb73a5e18d1cd12",
+  "helper_revision": "01faf61e6fd4f51a3065c3048e4a1bcef1b56b24",
+  "private_modules": 409,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "feddc2e08b5129982cbeaf6890fa79e1da766fc2a80807ad197694f545bcf5ad",
+    "spec/semantics/51-truth-expressions.watsup": "365b3a77cba0320fe1447b10651cf87cc133ad186ef8864960a20fc2f4a768e3",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "6b2558d4298ba9cb2d31b1c22fda221d083d891e39b55de6ee9163af1a744ac8"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_compile.c::zend_unary_op_produces_error excludes float BOOL/BOOL_NOT folding. Zend/zend_vm_def.h::ZEND_BOOL_NOT passes its CV pointer to i_zend_is_true and checks callback exceptions before the following assignment. Zend/zend_operators.h::i_zend_is_true emits the NaN bool Warning before rereading that pointer\u2019s double.",
+    "Source/operand/line and NaN bits authenticate the marker; readiness requires the original ENV cell, live allocation, unwrapped float, no blocked/released name, property source, reference coercion or parameter backing. Entry snapshots current NaN; entered/returned callbacks retain historical source authority and reread the current float once. The marker holds no cell root.",
+    "Exactly85 added runtime lines:30 forward type/task,51 plan declaration/EPS gate,404 operation-specific record, source/slot checks, plan, Warning dispatch, resume/boundary and task/callback validity. Shared truth_value, numeric algorithms, formatting, CONFIG/DEFINE/module400, root functions and generic unwind stay exact."
+  ],
+  "contract": [
+    "Normal h sees Warning2 at operand line25, increments calls once, writes the live x to float0.0 and returns false. Rereading that float gives false before NOT, so the result/outer v become stricttrue rather than the initial NaN complement false. One default Warning remains; finally and EOF x8 execute normally.",
+    "Independent h writes float0.0 and throws the supplied Exception allocated at line20. Catch observes identical Exception, null Previous, line20, unchanged v100, live x0.0 and calls1. Neither result nor outer assignment nor default Warning occurs; finally and EOF x8 still execute.",
+    "Focused151+129 premises use two checked-source-derived recipes, including transformed-state guard negatives and six additional derived same-slot/representation controls. Both traverse real entry, raw capture, fresh and entered callback, then returned live reread or caller THROW_SEARCH through EOF. EPS task roots, cell owner1, original caller storage, raw no-store result, exact Warning/Deprecated counts, supplied Exception root2/identity and zero-step cuts are checked. Derived retyped-stage1 refuses with the exact Unsupported state; it receives no native agreement credit."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-79/source-39eab9034-author-one/report.json",
+        "sha256": "0f11d96f75f37b7724d28534c98cd9ba36aee1eb3da5278319ab5ad09a585eb9",
+        "revision": "39eab9034f14da64f824a4163bb73a5e18d1cd12",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-79/review-model-39eab9034-review-one/report.json",
+        "sha256": "6c084268e884122cb98f8eb3828a2a9f10f8179ef7536834e0d32ec35cd74c51",
+        "revision": "39eab9034f14da64f824a4163bb73a5e18d1cd12",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-79/focused-01faf61e6-two/report.json",
+        "sha256": "9c9f45a439368e6e70f6127d01b68dee7726474bcbfc234a989b9bfe6ff61066",
+        "revision": "01faf61e6fd4f51a3065c3048e4a1bcef1b56b24",
+        "modules": 409,
+        "conditions": [
+          151,
+          129
+        ],
+        "total": 280,
+        "full_struct_cases": 2
+      }
+    ],
+    "total_source_agreements": 2,
+    "total_focused_state_conditions": 280,
+    "review": "Independent operators79_review accepted runtime/author/header before execution, both first-result fixtures afterward, and publication scope/counts/provenance. Actual-tail composition independently cleared at c0a79679a over256083636/409; metadata edits require no semantic replay."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-79/baseline-d42ba3d98-live-float/report.json",
+      "sha256": "c32be3e53c07a9e23d3073a54f2fb288062adae2671c5bed186b0cd7f2f4a08a",
+      "revision": "d42ba3d982f05eb1d9c6f99723e217f44fef4ce9",
+      "result": "Genuine accepted/checked program stops Unsupported before handler output: error-handler ingress requires a producer continuation. Empty semantic stdout/stderr; model1/rowfalse/agreement0. No relabeling or replay."
+    },
+    "first_affected_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-79/source-d1141850f-author-one/report.json",
+      "sha256": "c9d522cfe8adca8ccdf358f401d1a18d1f4a75433b4a7f51b99de21f86ad1433",
+      "revision": "d1141850fa516eddf37d2707bfd293f9743c8f9b",
+      "result": "Pre-main runner_failure: pboolnotnanwarning is undefined in30. Model1/rowfalse/agreement0. Corrected only by the missing forward type at39eab9034; the corrected full409 struct and affected author/first peer sources passed. Original retained."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-79/native-d42ba3d98-author-one/report.json",
+        "sha256": "c69d59e74956e73018b5a52bdce5df2cbafd6d8023c8656495b40ec3bb1b5d5f",
+        "revision": "d42ba3d982f05eb1d9c6f99723e217f44fef4ce9"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-79/native-d42ba3d98-review-one/report.json",
+        "sha256": "a16cc902226dab50e8959d2b8c3f3adfa5a4b89ba1a63e115fb0ee906e1901e0",
+        "revision": "d42ba3d982f05eb1d9c6f99723e217f44fef4ce9"
+      }
+    ],
+    "corrected_full_static": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-79/static-39eab9034/report.json",
+      "sha256": "1e5ab6786e427b563d6dee61daebc38180fe76fb15097a0c97d280f5efeadf12",
+      "revision": "39eab9034f14da64f824a4163bb73a5e18d1cd12",
+      "result": "Full ordered409 struct only; semantic credit0."
+    }
+  },
+  "limits": [
+    "The exact normal native witness is write0.0/returnfalse/defaultWarning and the independent witness is supplied throw. Other still-float payloads are admitted by helper reasoning, without separate source evidence. No native NaN bit-identity, broad handler/lifetime coverage, numeric-algorithm renewal, engine bug or intentional divergence is claimed.",
+    "The selector requires NExprBooleanNot/TRUTH_RESULTtrue and fixed Warning2 at precision14. No DEFINE/name producer exists here: paused Source47 low-precision DEFINE NaN behavior, shared truth/formatting/CONFIG/400 remain untouched. Paused OP12, COMP88, owned-NUL and undefined-byref LIST work stay separate."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-79",
+    "environment": "LC_ALL=C,TZ=UTC,PHP_SPEC_SCRIPT_ENCODING absent. Initial native/baseline and corrected struct/source usedCPU2; final focused packet usedCPU5. Actors reaped and slots released. Checked workers30s, full409struct30s/fixture, full409SL120s/fixture; accepted native30s/modelCLI60s-process90s retain original caps.",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "focused_command": "taskset -c 5 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-79/run-focused.py 01faf61e6fd4f51a3065c3048e4a1bcef1b56b24 5",
+    "record": "Restore matching Git cuts/local tools in a fresh directory, preserve original source/native/report paths and use a new output directory. run-focused.py checks retained bytes/current runtime identities, creates checked fixtures and runs full struct/SL; it performs no native/application/source-agreement replay. The external archive is evidence, not a build input. Local tool reuse establishes no fresh rebuild/portability result."
+  },
+  "composition": {
+    "parent": "256083636c0420049353fccbbd348793b73e63be",
+    "private_publication": "8f807b66b85f1a4e6d22f416423ef0b91dd2feb8",
+    "modules": 409,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "182ba1a7b65393be5c22cff533d8ceb5432f2b845b103d954111242969b1fecd",
+      "spec/semantics/51-truth-expressions.watsup": "365b3a77cba0320fe1447b10651cf87cc133ad186ef8864960a20fc2f4a768e3",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "6b2558d4298ba9cb2d31b1c22fda221d083d891e39b55de6ee9163af1a744ac8"
+    },
+    "gate": "Incoming156/270 short ref-return retirement,400 captured global queries,413 CONST NULL-key arrays and the ordered409 manifest stay parent-exact. Combined30 preserves the incoming ARRAY_KEY_NULL_CONST_RESULT variant plus only the tested BOOLNOT_NAN_WARNING forward type/tag. Tested51/404 and six OP79 scripts stay private-exact. V99 requires owned CONFIG CONSTANT/DEFINED query calls or intrinsic Closures; neither original produces them, and predefined NAN uses the existing named-constant lookup. M132 requires a BYREF nullable-object return, RETURN_REF_UNWIND REFERENCE cursor and owning finally chain; both h functions are ordinary untyped by-value calls. A46 requires ARRAY_VALUE with a direct NULL key and nested pool-owned CONST array value, absent from both originals; fixed-string GLOBALS dimensions and intrinsic Throwable traces are different producers. Generic schema/state fields, root functions, restoration and ordering remain parent-exact; the disjoint task variant needs no field lift of reached or derived fixtures. Source2/state280 retain their private409 cuts without joined execution, accepted replay or renewed credit."
+  }
+}

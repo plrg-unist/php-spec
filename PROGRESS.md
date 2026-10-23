@@ -23,6 +23,147 @@ Nine executed reports pass; a separate native mode compatibility view preserves
 the original recorder and executes nothing. No failures, retries, cap changes,
 production repairs or accepted replay. Actors are reaped and CPU1 released.
 
+Composed over `aa92a398b`/409 with all production and shared harness bytes
+parent-exact and six tests/Makefile private-exact. Incoming ordinary reference
+retirement, NULL-key ARRAY, constant/INI_SET and missing-read/NaN warning
+selectors have no producer here. Original native/source/state cuts stay separate,
+without joined execution, accepted replay or renewed credit.
+
+All seven existing missing-CV comparison array shapes now admit object-valued
+ALIAS entries under the existing live ordinary non-Stringable bound. Captured
+tables preserve cell locations, so replacing a shared cell can destroy its old
+object inside the handler. Singleton COW unwraps the copied entry instead.
+Last saved ARRAY-to-CELL-to-OBJECT release runs destruction before store/catch
+when no other owner remains; outside aliases can delay it. Source certificates,
+roots and restore/discard stay unchanged; nested/internal/Stringable leaves and
+paused COMP88 remain partial.
+
+Ten source agreements and two Unsupported controls pass at `92a58951b`/409.
+Six focused groups execute 949 assertions: 922 distinct and 27 repeated setup
+premises. Author and recovered COW checks retain `2d930468a`; new partition and
+throw checks retain `ba61ad36d`/409. One affected old117 selector now agrees
+normally, without renewing historical credit. Initial native2+4 retains
+`127946e6c`/409 and genuine refusal `b7adf553b`/409. The original pre-main binder
+failure, host interruption and 120-second timeout retain zero credit. Partitioning
+preserves every assertion at the original caps without accepted replay. Original
+peer worker finalization remains unobserved; its completed COW group is retained.
+[Object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json).
+
+Composed over `0c7789751`/409, preserving tested207 and all nine publication
+tests. Incoming two-pack INI, pooled NULL-key arrays, NaN Boolean NOT, typed
+by-reference return/finally and captured constant-query producers are absent here.
+Source85 CONFIG_SEND stays exact. New30 task variants add no pstate field;
+all other runtime/schema/root/ordered-manifest bytes remain parent-exact.
+Accepted private cuts and recovery limits retain their identities, without
+joined execution, accepted replay or historical credit renewal.
+
+Two singleton argument packs now preserve raw NULL and a captured flat quiet
+ARRAY for fixed/selected strings and retained INI_SET setters. Each saved source
+fact authenticates separately; later helper/handler effects preserve the old
+option, selected callee and inner array across COW. Reversed names and named-first
+then fresh-numeric-second packs remain valid under the pinned per-opcode ordering
+flag. Strict ordinary rejects option1; explicit reception stays weak. Supplied
+Deprecated-handler throws cancel value rejection and assignment.
+
+Source4 passes at `582227151`/409. Focused1,877=484+404+462 author plus527 independent
+retains the accepted first484 at that cut; corrected404, previously unrun462 and peer527 pass at
+`7b4fb564a`. Two pre-main fixture binding failures at582227151/d2740f2b3 remain0;
+only extraction premises and their order changed, with no runtime/source rerun.
+Thirteen reports retain11PASS/two failure0, stable inputs/HEAD and fully reaped
+actors at original caps. Fresh checks use CPU2, now released. Native4 and genuine
+Unsupported B|P| at `cf8a3ddea` remain unrenewed. Raw originals moved once outside
+Git with path/hash recovery; no backup worktree is kept.
+
+Only14 additive172 lines change. Existing replay, source compiler, 207/400,
+trace/root/finish/discard/GC/schema and historical tests stay exact. State proves
+actual partial root transfer/outer retirement, COW, source/pack/owner refusals,
+whole restored/discard identity, raw supplied-Exception cancellation, setter
+recovery and budgets. Wider packs/arrays, PIPE and sole-owner lifetimes remain
+partial; paused OP12/Source47/owned NUL/undefined byref LIST/COMP88 stay untouched.
+[Two-group INI review](coverage/semantics/ini-set-two-pack-null-array-value-review.json).
+
+Composed over `7aae9a326`/409 with tested172 and all four test bodies preserved;
+every other runtime/schema/ordered-manifest/pipeline path stays parent-exact.
+Incoming M132 by-reference-return/finally, A46 NULL-key ARRAY and OP79 Boolean-NOT
+NaN selectors have no producer here; V99 retained queries remain disjoint.
+Added task alternatives require no state/root field lift. Source4 and state1,877
+retain their private409 cuts without joined execution, replay or renewed credit.
+
+Direct Boolean NOT now emits a NaN Warning before rereading the same ordinary
+float CV. A named handler's `0.0` write yields strict `true`; returning false
+permits the default Warning at operand line 25. The independent supplied
+Exception from line 20 cancels the result and outer assignment, preserving `100`.
+The borrowed slot stays owner1; no continuation root is added.
+
+Source2 and full409 struct pass at `39eab9034`; author151 + independent129 =280
+focused premises pass first execution at `01faf61e6`/409, including six additional
+derived same-slot/representation controls. Original pre-main missing-forward-
+type failure and genuine pre-handler Unsupported retain zero credit.
+[NaN Boolean NOT review](coverage/semantics/boolnot-nan-warning-review.json).
+All actors are reaped; CPU5 is released. Accepted native/source evidence is not replayed.
+
+Only85 additions in modules30/51/404 implement this operation-specific producer,
+record and warning/resume protocol. Shared truth/numeric/formatter/CONFIG/400,
+roots and unwind bodies stay exact. Reference/rebinding, copied operands,
+owning/wider handlers and changed representations remain partial. Paused OP12,
+COMP88, Source47 low-precision DEFINE, owned-NUL and undefined-byref LIST work
+remain untouched. Publication is independently reviewed.
+
+Composed over `256083636`/409, preserving incoming156/270/400/413 and the
+ordered manifest. Module30 contains only the parent plus the tested forward
+type/task additions;51/404 and six OP79 tests stay private-exact. Incoming
+constant-query, nullable-object reference-return retirement and CONST-array
+NULL-key selectors have no producer here. Source2/state280 retain their private
+409 cuts without joined execution, accepted replay or renewed credit.
+
+Pooled constant array literals now resume ordinary unmarked NULL-key callbacks.
+Exact compiled-read identity keeps the permanent pool and one pending edge;
+normal insertion transfers the latter to DIRECT, while throw preserves the pool.
+Repeated calls reuse the original literal after earlier child COW; empty constants,
+entry deletion and supplied throws retain independent values and cancellation.
+
+Native4 and the genuine `P:1;` then Unsupported/credit0 retain `be2ab5398`/409.
+Strict409/source4 pass at `8ec80158a`; 851 focused premises (369 author +482
+independent, including eight raw steps) pass at `a87f924ee`. All post-change first executions
+pass at original caps, with no failures, retries or accepted replay; actors are
+reaped and CPU3 released. Existing folded compiler lines remain distinct from
+literal AST lines. Only30/413 add the CONST continuation; TMP/VAR/CV bodies,
+compiler, root algorithms and count biases stay exact. Fresh flat DIRECT integers
+and empty arrays are checked; nested/owning leaves and wider histories remain
+partial. [Constant NULL-key review](coverage/semantics/array-literal-null-key-constant-array-review.json).
+
+Composed over `2cda68f98`/409 with tested30/413 and all six A46 scripts
+private-exact. Incoming156/270 by-reference object-return chains and400 owned
+constant-query selectors have no producer here; other runtime/schema/ordered409
+bytes remain parent-exact. Source4/focused851 retain their private409 cuts
+without joined execution, accepted replay or renewed credit.
+
+Retained DEFINED/CONSTANT Closure callees now query captured non-NUL global
+string names under the existing live/source authority. Later argument writes
+preserve the selected callee/name, while lookup sees a late DEFINE. Queried
+readers retain identity; ARRAY query COW/history and missing-name Error/raw
+API/`__invoke` traces survive independent reader recovery.
+[Captured query review](coverage/semantics/constant-owned-query-review.json).
+
+Three source agreements retain `2d356aece`/409; focused checks pass
+631 = 227 + 166 + 238 premises/three budgets at `b4a2d3e77`/409.
+The completed author fixtures were reused; a command-only check interrupted by
+restart retains zero credit. Resumed author and first peer checks return quiet
+`true` at their original 420-second caps. No source/native replay or semantic
+correction; all actors reaped and CPU4 released.
+
+Only module400 changes, 14 insertions/two deletions: no selection history,
+receipt, source/schema, root or coercion policy is added. Packs/PIPE, owning
+class/HALT/NUL names and wider coercion/lifetime forms remain partial.
+Paused OP12/COMP88/Source47, owned-NUL release and undefined by-reference LIST
+boundaries remain untouched.
+
+Composed over `17fa27ac`/409: tested400 and all four scripts remain private-exact;
+incoming30/413/58/404 and the ordered manifest remain parent-exact. NULL-key
+owning ARRAY TMP and copied-float BITNOT selectors have no producer here.
+The task alternative adds no pstate/heap field; source3/focused631 retain their
+private409 cuts without joined execution, replay or renewed credit.
+
 At Iterator49, an ignored SEND argument's destructor can throw a supplied
 Exception at a pre-refreshed direct node-free COMPLETE. Existing cleanup
 preserves that exception while retiring the remaining snapshot and receiver.
@@ -2559,6 +2700,32 @@ joined actor, accepted replay or renewed execution credit.
 
 The earlier mixed CV/selected-reference arithmetic route retains source9/state858
 in its [review ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
+
+M132 preserves the local catch and first completed-return Notice with one or
+zero ordinary object slots remaining after E/D finish and C throws the supplied
+object. Two minimum-count guards are removed; exact function/restore termination,
+missing lexical paths and existing prefix authority remain required. A negative pair-selector
+guard preserves the fixed reference-pair suffix priority on grammar overlap.
+No history payload, state/default/root, generic cleanup or manifest changes.
+
+Two originals agree at `5a03f54ce`/409 in 51.487/34.105<120, with Notice21/16,
+C/K/S, supplied identity, fresh detached NULL and b7. Author140/2 plus peer149/2
+pass 289/4 focused checks, including zero/one budgets, same-heap missing-A/terminal
+public refusals and exact E/D/C NULL replay. Pair overlap is grammar-only.
+Native2/base2 and separate149/4 diagnosis retain `fbc3f8f8c`/409. The original
+author's state process was interrupted by an environment restart after strict
+PASS; its receipt retains zero credit. Only that affected packet repeated at the
+unchanged 240 cap; peer passes first at 300. All actors are reaped/CPU5 released;
+no accepted source/native/base/diagnostic replay. Single-prefix short cases,
+reference-valued remainders, wider throws, reentry and GC remain partial.
+[Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
+M132 composes over actual `75e2d6a1c`/409. Tested modules 156/270 remain byte-exact 5a03;
+every other spec path and the ordered manifest stay parent-exact. Incoming
+NULL-key TMP, copied BITNOT and intrinsic CONSTANT/DEFINED query selectors
+have no producer here; no state/default/root lift or joined actor is required.
+Source2/289+4 retain private 5a03/409 and the interrupted author retains zero,
+without accepted replay or renewed execution credit.
 
 M131 preserves local catch and the first completed return's Notice after two
 normal owning retirements. Five computed slots retire E and D normally, then C
