@@ -125,6 +125,7 @@ syntax pconfigpack = { INDEX nat, SITE porigin, LINE int, ARRAY nat, ITEMS pentr
 syntax ptraversablepack = { INDEX nat, SITE porigin, LINE int, OBJECT nat, ITEMS pentry* }
 syntax pfiberpack = FIBER_ARRAY_PACK pconfigpack | FIBER_TRAVERSABLE_PACK ptraversablepack
 syntax pconfigcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT pnamedslot*, NAMED bool, OWNER nat?, SELECTION nat?, LINE int, PACKS pconfigpack* }
+syntax pconfigiterator = { CALL pconfigcall, ITERATOR nat, OBJECT nat, INPUT poperand, ITEMS pentry*, CURRENT poperand, KEY poperand }
 syntax pfiberfactory = { CALL pconfigcall, ITEMS pentry* }
 syntax pfiberarray = { SITE porigin, INIT int, LINE int, ARRAY nat, ITEMS pentry*, KIND pintrinsic, NAME ptbytes, INPUT nat? }
 syntax pfiberrawapi = { ITEMS pentry*, KIND pintrinsic, NAME ptbytes, INPUT nat? }
@@ -472,6 +473,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | YIELD_FROM_ITERATOR_VALID nat pyieldfromreceipt poperand
   | FOREACH_AGGREGATE pforeachaggregate text
   | ITERATOR_UNPACK piteratorunpack text
+  | CONFIG_ITERATOR pconfigiterator text
   | GENERATOR_UNPACK pgeneratorunpack text
   | USERITER_RESULT nat nat statement porigin int text poperand | USERITER_NEXT nat nat statement porigin int poperand
   | EVAL_COMPILE_RESUME pevalcompile | EVAL_COMPILE_END nat | EVAL_COMPILE_EXIT int | EVAL_COMPILE_FORMAT_EXIT int | EVAL_COMPILE_FATAL pevalcompilefatal | EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender

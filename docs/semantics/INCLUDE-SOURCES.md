@@ -1172,3 +1172,34 @@ full restored/discard identity and setter recovery; native compact observations
 do not imply those trace/root facts. Raw records are external with original paths
 and hashes. Additional groups/entries, PIPE, wider ARRAY leaves and sole-owner
 lifetimes remain partial; paused boundaries remain unchanged.
+
+The [Iterator CONFIG bridge](../../coverage/semantics/config-iterator-unpack-review.json)
+streams one borrowed CV holding an initialized user Iterator into INI_SET. The
+Iterator methods have exact signatures, return by value and are non-generators;
+current returns plain strings and key returns integers. Rewind, valid, current, key and next execute through genuine callback frames;
+current is cached before key, and sending occurs only after key succeeds. Ordered
+history preserves repeated integer keys as distinct positional arguments without
+constructing a PHP ARRAY or changing historical ARRAY pack certificates.
+
+The original pending call authenticates source and selected callee independently
+of this history. DATA owns the Iterator once; completed traversal removes its
+cursor and releases DATA before existing API reception. Callback writes to the
+live callee do not reselect the call. A supplied Exception from key leaves current
+unsent, preserves the existing result, removes the cursor and resumes the same
+Exception after cleanup. Reached states distinguish these pre-API key frames from
+an API trace frame and validate task roots, exact discard and setter recovery.
+
+Four source agreements and two Unsupported controls retain `612d265ee`/410.
+The 742 original author/peer state obligations pass through source-based parts
+at `c91927197`, `443002e33` and `6062f4807`; 175 repeated setup conditions add
+no coverage. Original fixture/timeout outcomes keep zero credit. The unchanged
+genuine report preserves the initial false TypeError; overwritten auxiliary CLI
+recorder files remain unavailable, without reconstruction or replay.
+
+Last-owner finish and cleanup stop explicitly before releasing their retained
+roots; wider retirement is partial. Generator and user IteratorAggregate unpack
+controls are explicitly Unsupported. The pre-existing builtin-Traversable false
+TypeError classification, including WeakMap, remains open; ordinary non-Traversable
+TypeError is preserved. Named keys, nonstring/reference/owning values, additional
+arguments/packs, other CONFIG callees, suspension, warning/arity reception and
+wider lifetime producers remain partial. Paused boundaries remain untouched.

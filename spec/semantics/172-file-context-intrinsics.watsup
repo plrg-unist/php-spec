@@ -248,6 +248,7 @@ rule PhpStep/config-arguments-done: S ~> S[.TODO = (CONFIG_INVOKE pconfigcall) :
   -- if $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX)
 
 dec $config_unpack_valid(pstate, pconfigcall, poperand, nat) : bool
+dec $config_traversable_value(pstate, pvalue) : bool
 dec $config_pack_capture(pstate, pentry*) : pentry*
 def $config_pack_capture(S, eps) = eps
 def $config_pack_capture(S, (ENTRY pkey pitem) :: pentry*) = (ENTRY pkey (DIRECT $entry_value(S, pitem))) :: $config_pack_capture(S, pentry*)
@@ -288,6 +289,7 @@ rule PhpStep/config-unpack-type: S ~> $throw_scalar(S_value, "TypeError", $ptasc
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN pvalue
   -- if ~$is_array_value(pvalue)
+  -- if ~$config_traversable_value(S_value, pvalue)
 rule PhpStep/config-unpack-abrupt: S ~> S_value
   -- if S.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask_tail*
   -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall.INDEX) = ((expression, true, preqbytes?, porigin, z))

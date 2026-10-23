@@ -578,6 +578,17 @@ source authority, roots, cleanup and setter recovery. Two fixture binding failur
 are preserved; only affected checks were repeated. Wider groups/arrays, PIPE and
 sole-owner lifetimes remain partial.
 
+[Iterator CONFIG unpacking](coverage/semantics/config-iterator-unpack-review.json)
+now streams initialized user Iterators into INI_SET, preserving duplicate integer
+keys as separate positional sends. Callback effects retain the selected setter;
+the Iterator cursor releases before API entry. A key callback throw leaves its
+current value unsent, preserves the same Exception and cancels the assignment.
+The first slice uses borrowed CV operands, plain string values and external
+Iterator/callee owners. Four source agreements and 742 original state premises
+pass; two Generator/user IteratorAggregate controls remain Unsupported. Earlier
+fixture/timeouts retain zero credit. Builtin Traversable classification and wider
+producers remain open.
+
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
 send/callback site. Ordinary Closure PIPE follows caller strictness; normal and
