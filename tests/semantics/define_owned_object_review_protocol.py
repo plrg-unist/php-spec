@@ -139,8 +139,8 @@ def checks(initial, stdout):
         '~$dynamic_owned_define_valid(S_dead_callee,pconfigcall)',
         'pconfigcall_callee_value = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT,1,KNOWN (POBJECT n_callee))]',
         '$dynamic_owned_define_header(S,pconfigcall_callee_value)',
-        '$dynamic_define_value_class(S,POBJECT n_callee) = eps',
-        '~$dynamic_owned_define_valid(S,pconfigcall_callee_value)']
+        '$dynamic_define_value_class(S,POBJECT n_callee) = (PVOBJECT)',
+        '$dynamic_owned_define_valid(S,pconfigcall_callee_value)']
     for label, value in [('null','PNULL'),('quiet','PINT 0'),('true','PBOOL true')]:
         call = 'pconfigcall_' + label
         negated = '' if label == 'true' else '~'

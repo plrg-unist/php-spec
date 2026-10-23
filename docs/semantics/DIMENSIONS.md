@@ -228,6 +228,17 @@ This path has no captured CV to reset and introduces no literal bias. See the
 [NULL return-value review](../../coverage/semantics/array-literal-null-key-return-array-value-review.json).
 By-reference returns, array-constructor TMPs, calls with arguments and other
 call producers remain outside this continuation.
+Runtime `NExprArray` values have a separate one-owner NULL-key continuation.
+The checked occurrence must be nonconstant and its table mutable and nonpool;
+the existing edge-free/debt-free payload and object-free reach bounds apply.
+There is no VAR backup or CV writeback: handler seed writes and rebinding persist,
+while the constructor's DIRECT child remains frozen under the empty-string key.
+Normal insertion transfers the owning edge; supplied throw inserts nothing and
+retires an otherwise unowned child table and builder before catch. Fresh integer
+leaves cover evaluation once, marked scalar reads by value, COW and last-entry
+deletion. Existing primitive/validated-byte leaf checks compose unchanged; pooled
+constants, embedded owning leaves and wider producers remain outside this path.
+See the [NULL array-TMP review](../../coverage/semantics/array-literal-null-key-array-tmp-review.json).
 The [string-leaf review](../../coverage/semantics/array-literal-float-string-leaf-review.json)
 adds ordinary tables and untyped wrapper payloads containing canonical-byte or
 validated-carrier string leaves. String snapshots remain independent across

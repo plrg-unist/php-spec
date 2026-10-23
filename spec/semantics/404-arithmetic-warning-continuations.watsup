@@ -4727,3 +4727,112 @@ rule PhpStep/arithmetic-addassign-self-begin: S ~> S[.TODO = (ARITHMETIC_ADDASSI
   -- if $arithmetic_addassign_self_plan(S) = ((pintegeroperation, pvalue, pnumber))
   -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes
   -- if $lookup(S.ENV, ptbytes) = (n)
+
+;; A completed scalar producer supplies an immutable copy, not a later CV read.
+def $bitnot_source_valid(S, pbitnotwarning) = true
+  -- if S.ORIGIN = (pbitnotwarning.SITE)
+  -- if $origin_node(S.SOURCES, pbitnotwarning.SITE) = (NExprBitwiseNot expression metadata)
+  -- if pbitnotwarning.INPUT = KNOWN (PFLOAT pbitnotwarning.BITS)
+  -- if $integer_operand_source(S, pbitnotwarning.SITE, [PCFIELD 0], pbitnotwarning.INPUT)
+  -- if $code_expression_at_source(S, pbitnotwarning.SITE, [PCFIELD 0]) = (pbitnotwarning.LINE)
+  -- if $(pbitnotwarning.BITS < 18446744073709551616)
+  -- if $float_long(pbitnotwarning.BITS, true) = (pbitnotwarning.VALUE, [PRECISIONLOSS])
+def $bitnot_snapshot(S, pbitnotwarning) = true
+  -- if pbitnotwarning.INPUT = KNOWN (PFLOAT pbitnotwarning.BITS)
+  -- if $bitnot_source_valid(S, pbitnotwarning)
+
+def $bitnot_copy_plan(S) = (pbitnotwarning)
+  -- if $error_handler_eligible(S, 8192) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (BITNOT_RESULT z) :: ptask_tail*
+  -- if S.RESULT = KNOWN (PFLOAT n_bits)
+  -- if $(n_bits < 18446744073709551616)
+  -- if $float_long(n_bits, true) = (i, [PRECISIONLOSS])
+  -- if pbitnotwarning = {SITE porigin, LINE z, INPUT S.RESULT, BITS n_bits, VALUE i}
+  -- if $bitnot_source_valid(S, pbitnotwarning)
+def $bitnot_copy_plan(S) = eps -- otherwise
+
+rule PhpStep/bitnot-copy-begin: S ~> S[.TODO = (BITNOT_WARNING pbitnotwarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $bitnot_copy_plan(S) = (pbitnotwarning)
+
+;; BOOL_NOT keeps the original CV pointer: NaN warns before rereading its double.
+;; Keep that slot live and floating here; no copied source or cell root is held.
+syntax pboolnotnanwarning = { SITE porigin, LINE int, INPUT poperand, CELL nat, BITS nat }
+dec $boolnot_nan_source(pstate, pboolnotnanwarning) : bool
+def $boolnot_nan_source(S, pboolnotnanwarning) = true
+  -- if S.ORIGIN = (pboolnotnanwarning.SITE)
+  -- if $origin_node(S.SOURCES, pboolnotnanwarning.SITE) = (NExprBooleanNot expression metadata)
+  -- if pboolnotnanwarning.INPUT = VARIABLE ptbytes z_input
+  -- if $integer_operand_source(S, pboolnotnanwarning.SITE, [PCFIELD 0], pboolnotnanwarning.INPUT)
+  -- if $code_expression_at_source(S, pboolnotnanwarning.SITE, [PCFIELD 0]) = (pboolnotnanwarning.LINE)
+  -- if $(pboolnotnanwarning.CELL < |S.STORE|)
+  -- if $(pboolnotnanwarning.BITS < 18446744073709551616)
+  -- if $fparts_nan($float_decode(pboolnotnanwarning.BITS))
+def $boolnot_nan_source(S, pboolnotnanwarning) = false -- otherwise
+
+dec $boolnot_nan_ready(pstate, pboolnotnanwarning) : nat?
+def $boolnot_nan_ready(S, pboolnotnanwarning) = (n_bits)
+  -- if pboolnotnanwarning.INPUT = VARIABLE ptbytes z_input
+  -- if ~$environment_blocked(S, ptbytes)
+  -- if ~$foreach_released_name(S, ptbytes)
+  -- if $lookup(S.ENV, ptbytes) = (pboolnotnanwarning.CELL)
+  -- if $(pboolnotnanwarning.CELL < |S.STORE|)
+  -- if (HCELL pboolnotnanwarning.CELL) <- S.ALLOCATIONS
+  -- if ~(pboolnotnanwarning.CELL <- S.REFCELLS)
+  -- if $propref_at(S.PROPREFS, pboolnotnanwarning.CELL) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, pboolnotnanwarning.CELL) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, pboolnotnanwarning.CELL) = eps
+  -- if S.STORE[pboolnotnanwarning.CELL] = DEFINED (PFLOAT n_bits)
+  -- if $(n_bits < 18446744073709551616)
+def $boolnot_nan_ready(S, pboolnotnanwarning) = eps -- otherwise
+
+dec $boolnot_nan_snapshot(pstate, pboolnotnanwarning) : bool
+def $boolnot_nan_snapshot(S, pboolnotnanwarning) = ($boolnot_nan_ready(S, pboolnotnanwarning) = (pboolnotnanwarning.BITS))
+def $boolnot_nan_plan(S) = (pboolnotnanwarning)
+  -- if S.TODO = (TRUTH_RESULT true z) :: ptask_tail*
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.RESULT = VARIABLE ptbytes z_input
+  -- if $lookup(S.ENV, ptbytes) = (n_cell)
+  -- if $(n_cell < |S.STORE|)
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if pboolnotnanwarning = {SITE porigin, LINE z, INPUT S.RESULT, CELL n_cell, BITS n_bits}
+  -- if $boolnot_nan_source(S, pboolnotnanwarning)
+  -- if $boolnot_nan_snapshot(S, pboolnotnanwarning)
+def $boolnot_nan_plan(S) = eps -- otherwise
+
+dec $boolnot_nan_warning_valid(pstate, pboolnotnanwarning, nat) : bool
+def $boolnot_nan_warning_valid(S, pboolnotnanwarning, n) = ($boolnot_nan_source(S, pboolnotnanwarning) /\ $(n <= 1) /\ (n = 1 \/ $boolnot_nan_snapshot(S, pboolnotnanwarning)))
+
+rule PhpStep/boolnot-nan-begin: S ~> S[.TODO = (BOOLNOT_NAN_WARNING pboolnotnanwarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $boolnot_nan_plan(S) = (pboolnotnanwarning)
+rule PhpStep/boolnot-nan-dispatch: S ~> $error_dispatch(S, 2, $ptascii("unexpected NAN value was coerced to bool"), pboolnotnanwarning.LINE, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to bool")) pboolnotnanwarning.LINE, BOOLNOT_NAN_WARNING pboolnotnanwarning 1)
+  -- if S.TODO = (BOOLNOT_NAN_WARNING pboolnotnanwarning 0) :: ptask_tail*
+  -- if $boolnot_nan_warning_valid(S, pboolnotnanwarning, 0)
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/boolnot-nan-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "boolean NOT NaN owning warning callback"]
+  -- if S.TODO = (BOOLNOT_NAN_WARNING pboolnotnanwarning 0) :: ptask_tail*
+  -- if $boolnot_nan_warning_valid(S, pboolnotnanwarning, 0)
+  -- if $error_handler_eligible(S, 2) /\ ~$arithmetic_add_named(S)
+rule PhpStep/boolnot-nan-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL (~b))][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (BOOLNOT_NAN_WARNING pboolnotnanwarning 1) :: ptask_tail*
+  -- if $boolnot_nan_warning_valid(S, pboolnotnanwarning, 1)
+  -- if $boolnot_nan_ready(S, pboolnotnanwarning) = (n_bits)
+  -- if (b, b_warning) = $number_bool(NFLOAT n_bits)
+rule PhpStep/boolnot-nan-target-boundary: S ~> S[.COMPLETION = UNSUPPORTED "boolean NOT NaN changed CV representation"]
+  -- if S.TODO = (BOOLNOT_NAN_WARNING pboolnotnanwarning 1) :: ptask_tail*
+  -- if $boolnot_nan_warning_valid(S, pboolnotnanwarning, 1)
+  -- if $boolnot_nan_ready(S, pboolnotnanwarning) = eps
+
+def $task_nodes(BOOLNOT_NAN_WARNING pboolnotnanwarning n) = eps
+def $call_task_valid(S, BOOLNOT_NAN_WARNING pboolnotnanwarning n) = $boolnot_nan_warning_valid(S, pboolnotnanwarning, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = BOOLNOT_NAN_WARNING pboolnotnanwarning 1
+  -- if $boolnot_nan_warning_valid(S, pboolnotnanwarning, 1)
+  -- if perrorcall.TARGET =/= eps \/ $boolnot_nan_snapshot(S, pboolnotnanwarning)
+  -- if perrorcall.SITE = pboolnotnanwarning.SITE /\ perrorcall.LINE = pboolnotnanwarning.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pboolnotnanwarning.LINE

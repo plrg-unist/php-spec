@@ -39,6 +39,14 @@ Captured tables retain their children through COW; replacing a live array can
 release children inside the handler. Releasing the last table owner drops its
 child edges; destructors run when no other object owner remains. See the
 [object-array review](coverage/semantics/undefined-comparison-object-array-review.json).
+Reference entries also admit live cells with primitive or ordinary-object payloads.
+COW unwraps singleton references and preserves shared cells; captured containers
+keep their entries while writes through those cells remain visible. Replacing a
+shared object can run its destructor inside the handler; final saved-table release
+can run the last-owned object destructor before the outer store or catch.
+Outside aliases delay that release. See the
+[reference-array review](coverage/semantics/undefined-comparison-reference-array-review.json)
+and [object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json).
 Both-missing pairs, including one missing name twice, can resume if the first
 handler defines the later scalar, flat array or ordinary object. `$x == $x` can
 then be false and `$x > $x` true. Greater operators check source right first. All seven comparison operators
@@ -68,7 +76,17 @@ Ordinary named calls with no arguments that return arrays by value also resume
 NULL-key callbacks. Their owning returned value stays frozen while producer
 global writes persist. A separate continuation holds acquisition and backup
 owners, then transfers one DIRECT entry or retires both before catch. By-reference
-returns, array-constructor temporaries and wider call forms remain partial.
+returns and wider call forms remain partial.
+
+Runtime array constructors at NULL keys use one owning temporary, with no NULL
+backup or producer-variable reset. The child table freezes before the handler,
+including a scalar reference read by value or a seed increment. Normal completion
+transfers its DIRECT entry; an otherwise unowned table retires on deletion or
+supplied throw. Pooled constant array literals keep their permanent pool owner
+and one pending edge, preserving the original table across callbacks, repeated
+calls and later COW. Throw drops only the pending edge. See the
+[constant-array review](coverage/semantics/array-literal-null-key-constant-array-review.json).
+Nested or owning constant leaves, wider graphs and other key producers remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
@@ -529,6 +547,16 @@ The original fixture-order and transient-integrity failures are preserved;
 the latter now completes the certified send without weakening source validation.
 Named/unpacked/PIPE forms and wider missing-read producers remain partial.
 
+[Two-group INI argument unpacking](coverage/semantics/ini-set-two-pack-null-array-value-review.json)
+now preserves a NULL option and an earlier flat array through two singleton
+packs, including reversed names and a named first pack followed by a numeric
+second pack. Later argument and handler effects retain the selected setter and
+captured array across COW. Four source comparisons and 1,877 state premises
+cover strict ordinary versus weak explicit reception, supplied-throw cancellation,
+source authority, roots, cleanup and setter recovery. Two fixture binding failures
+are preserved; only affected checks were repeated. Wider groups/arrays, PIPE and
+sole-owner lifetimes remain partial.
+
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
 send/callback site. Ordinary Closure PIPE follows caller strictness; normal and
@@ -665,6 +693,11 @@ source execution regressions; unfinished behavior returns explicit Unsupported.
 Reviewed truth/logical operators and ternary preserve PHP's distinct compiler
 and runtime phases; [truth evidence](coverage/semantics/truth-review.json) records
 source comparisons, selected-value copying and budget resumption.
+Direct Boolean NOT now warns on a NaN CV before rereading the same live float
+slot. A handler's `0.0` write produces strict `true`; its supplied Exception
+cancels the result and outer assignment. Two originals and 280 focused premises
+pass in the [NaN Boolean NOT ledger](coverage/semantics/boolnot-nan-warning-review.json).
+Changed representations, references, copied operands and wider handlers remain partial.
 Eligible classes and named functions publish in compilation order, so earlier
 notices and declarations survive later compiler diagnostics. Parser and modifier
 preflight preserve their distinct first errors, while declaration history binds
@@ -1049,6 +1082,14 @@ now-zero divisor. The normal control reads its divisor only after both callbacks
 Three originals and 340 focused premises pass in the
 [pending modulo ledger](coverage/semantics/mod-nan-pending-review.json), fixing
 an original NORMAL stderr disagreement. Other operators and producers remain partial.
+
+Evaluated float copies now enter bitwise NOT's precision Deprecated handler.
+A selected ternary keeps `12.5` after the handler removes its source and flips
+the condition, producing strict integer `-13`. A by-value call completes once
+before a supplied handler Exception cancels delivery and preserves outer `100`.
+Two originals and 279 focused premises pass in the
+[copy BITNOT ledger](coverage/semantics/bitnot-copy-warning-review.json).
+Other producers, copied range/NaN and owning histories remain partial.
 
 Range-only bitwise NOT now resumes named Warning handlers for plain float CVs.
 The original `2^63` float survives source removal and produces `PHP_INT_MAX`
@@ -1662,6 +1703,26 @@ a first pending NEXT can clear the physical middle independently. Exact child
 refresh release, normal argument cleanup and unused-copy retirement precede
 receiver release; assignment retains its copy. See the
 [node-free ancestor SEND review](coverage/semantics/generator-nodefree-ancestor-send-review.json).
+At a refreshed node-free COMPLETE after initialization-only NEXT, zero-
+argument `current()` on a temporary sole ancestor drops its unused snapshot
+before receiver cleanup. Assignment keeps its copy. A normal cache destructor,
+raw-row finally mutation and a RuntimeException inside physical Middle finally
+distinguish these owners; CURRENT changes no initialization bit. See the
+[unused CURRENT review](coverage/semantics/generator-unused-current-review.json).
+At a pre-refreshed direct node-free COMPLETE, existing pending SEND cleanup also
+preserves a supplied Exception thrown by its ignored argument's destructor.
+Unused snapshots retire before receiver finally; assignment context retains a
+temporary through finally but never completes the CV store. Argument-time row
+COW and a live cache RuntimeException preserve distinct owners and Previous
+identity. See the
+[abrupt argument SEND review](coverage/semantics/generator-abrupt-argument-send-review.json).
+One native ancestor also preserves a supplied argument-destructor Exception
+through pending SEND snapshot and receiver cleanup. Upper clears its own
+initialization while inherited-pending Middle can still skip finally; a prior
+Middle NEXT permits its cache RuntimeException before Upper finally, preserving
+the supplied Previous identity. Assignment keeps a temporary without storing
+its CV. This is validation of existing rules; see the
+[ancestor argument-exception review](coverage/semantics/generator-ancestor-abrupt-argument-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit
@@ -2004,8 +2065,15 @@ validated user array trees, certified completed user instances and certified
 Closures. They use the captured query, remove one leading separator and preserve
 terminal-name case.
 Missing names raise an API `Error`; argument effects precede lookup.
-Integer, boolean and float query names follow caller strictness: weak calls convert to
-strings, while strict calls raise `TypeError` with the original argument.
+Retained `defined(...)` and `constant(...)` Closure callees also query non-NUL
+global string names. Captured callees and names survive argument mutations;
+lookup sees constants registered by those effects. Queried readers preserve
+identity, array results retain query COW, and missing-name Errors release the
+callee while retaining raw API/wrapper arguments for later recovery.
+[Captured query review](coverage/semantics/constant-owned-query-review.json).
+Ownerless calls receive integer, boolean and float query names according to caller
+strictness: weak calls convert to strings, while strict calls raise `TypeError`
+with the original argument.
 Captured originals still authenticate the call; weak missing-name Error traces
 contain the converted string. The [scalar-name review](coverage/semantics/global-constant-scalar-name-review.json)
 records source and resumption checks.
@@ -2207,6 +2275,14 @@ selection still uses the invoking USER scope. Creating the factory in a class
 grants no later global permission. A rejected callback's receiver stays alive
 through its raw Error trace, then retires when those references are released.
 [Factory Closure define review](coverage/semantics/define-runtime-from-factory-review.json).
+
+Bare supported intrinsic Closures also publish directly and in ARRAY snapshots.
+Queries preserve their identity; a recovered DEFINE Closure can become a writer
+under the existing exact-owner selection receipt. A throwing duplicate's raw
+VALUE can outlive a distinct same-kind callee, then write a primitive whose
+history stays valid after both Closures die. DEFINE is invoked in these originals;
+DEFINED/CONSTANT leaves are checked for identity.
+[Intrinsic Closure VALUE review](coverage/semantics/define-intrinsic-closure-review.json).
 
 Retained `define(...)` Closure callees now publish primitive constants and handle
 duplicates with omitted/false flags, including explicit `__invoke`. Captured
@@ -4989,15 +5065,15 @@ no-instance, echo-only interposed scalar history. Fresh control/treatment source
 agree with PHP; separate 463/8 state checks cover its shared-cell RELEASE/EXIT
 pauses, required literal history despite an unchanged heap, engine TypeError catch,
 one line7 Notice and detached aliases.
-Owning-return histories preserve a local catch when a later computed slot throws
-after the innermost one retires normally. A nonowning completed cursor keeps both
-cleared returns and Notice at the original line21, then a fresh detached NULL
-and prior caller alias. One original and 291 Boolean/4 raw checks across retained
-`78e8a3bb5` and narrowed `25e7a1f6c` cuts cover this four-slot supplied-global path.
-Earlier
-Holder/typed-alias cuts remain separate in the
-[review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-Wider prefixes/throw forms, fewer than two remaining slots, reentry and GC remain open.
+Owning-return histories preserve local catch after normal E/D retirement,
+then a supplied-global C throw with one or zero ordinary object slots remaining.
+The nonowning completed-cursor list keeps E/D/C NULL replay, the first E Notice
+at line21/16, fresh detached NULL and the prior caller alias. Two originals and
+289 Boolean/four raw checks pass at `5a03f54ce`/409; older cuts remain separate
+in the [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+Exact terminal function/restore links remain required, and fixed reference-pair
+suffix priority is preserved. Fresh width is two completed returns; single-prefix
+short cases, reference-valued remainders, wider throw forms, reentry and GC remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

@@ -1,4 +1,5 @@
 dec $bitnot_warning_plan(pstate) : pbitnotwarning?
+dec $bitnot_copy_plan(pstate) : pbitnotwarning?
 dec $bitnot_range_warning_plan(pstate) : pbitnotwarning?
 dec $bitnot_nan_warning_plan(pstate) : pbitnotwarning?
 dec $array_string_cast_plan(pstate) : (porigin, poperand, int)?
@@ -51,6 +52,7 @@ rule PhpStep/ordinary-cast_result-abrupt: S ~> S_read[.TODO = eps]
 rule PhpStep/ordinary-bitnot_result-value: S ~> S_out[.TODO = ptask_tail*]
   -- if S.TODO = (BITNOT_RESULT z) :: ptask_tail*
   -- if $bitnot_warning_plan(S) = eps
+  -- if $bitnot_copy_plan(S) = eps
   -- if $bitnot_nan_warning_plan(S) = eps
   -- if $bitnot_range_warning_plan(S) = eps
   -- if S_read = $resolve_at(S, S.RESULT, z)
@@ -60,6 +62,7 @@ rule PhpStep/ordinary-bitnot_result-value: S ~> S_out[.TODO = ptask_tail*]
 rule PhpStep/ordinary-bitnot_result-abrupt: S ~> S_read[.TODO = eps]
   -- if S.TODO = (BITNOT_RESULT z) :: ptask_tail*
   -- if $bitnot_warning_plan(S) = eps
+  -- if $bitnot_copy_plan(S) = eps
   -- if $bitnot_nan_warning_plan(S) = eps
   -- if $bitnot_range_warning_plan(S) = eps
   -- if S_read = $resolve_at(S, S.RESULT, z)

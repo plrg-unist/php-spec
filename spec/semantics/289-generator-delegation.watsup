@@ -92,6 +92,7 @@ dec $generator_pending_throw_value(pstate, pgeneratorop) : pvalue
 dec $generator_unused_send_refresh(pstate, pstate, pgeneratorop, pnode*) : bool
 dec $generator_nodefree_return_waiting(pstate, nat) : bool
 dec $generator_nodefree_ancestor_leaf(pstate, nat) : nat?
+dec $generator_unused_current_result(pstate, pstate, pgeneratorop) : pstate
 
 ;; A copied primitive return has no retained owner, but its current may own one.
 def $generator_nodefree_return_waiting(S, n) = true
@@ -1365,7 +1366,27 @@ def $generator_from_update_plain(S, pgeneratorop) = S -- otherwise
 def $generator_from_aborted(S, pgeneratorop, porigin, n_child) = S_resumed
   -- if S_resumed = $generator_resume(S, pgeneratorop[.ADVANCE = false])
   -- if S_resumed.TODO = (GENERATOR_FROM_NEXT pgeneratorop.OBJECT porigin) :: ptask*
-def $generator_operate(S, pgeneratorop) = $generator_operate_plain(S_updated, pgeneratorop)
+;; With no arguments, an unused CURRENT copy can be discarded quietly
+;; before releasing the selected receiver. A used source keeps its copy.
+def $generator_unused_current_result(S, S_result, pgeneratorop) = S_result[.RESULT = KNOWN PNULL]
+  -- if pgeneratorop.NAME = "current" /\ ~pgeneratorop.ADVANCE
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if pgeneratorop.ARGUMENTS = eps
+  -- if $generator_operation_valid(S, pgeneratorop)
+  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS eps 2
+  -- if ~$reference_call_used(S, pgeneratorop.SITE)
+  -- if $destructor_return_discarded(S.TODO)
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if ~pgenerator.PENDING_INIT
+  -- if $generator_nodefree_ancestor_leaf(S, pgeneratorop.OBJECT) =/= eps
+  -- if $generator_from_update(S, pgeneratorop) = S
+  -- if S_result = $generator_operate_plain(S, pgeneratorop)
+  -- if S_result.COMPLETION = NORMAL
+  -- if S_result.RESULT = KNOWN pvalue
+  -- if $value_nodes(pvalue) =/= eps
+def $generator_unused_current_result(S, S_result, pgeneratorop) = S_result -- otherwise
+
+def $generator_operate(S, pgeneratorop) = $generator_unused_current_result(S, $generator_operate_plain(S_updated, pgeneratorop), pgeneratorop)
   -- if S_updated = $generator_from_update(S, pgeneratorop)
   -- if S_updated.COMPLETION = NORMAL
   -- if ~$generator_from_update_entered(S, S_updated, pgeneratorop)

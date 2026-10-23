@@ -1,5 +1,19 @@
 # Warning callbacks and truth decisions
 
+Direct Boolean NOT of a NaN in an ordinary nonreference CV now retains the
+selected cell through a named Warning callback. `i_zend_is_true` warns before
+rereading that double; changing it to `0.0` therefore gives strict `true` after
+NOT. A callback returning false permits the default Warning at operand line 25.
+A supplied Exception instead cancels result delivery and preserves outer `100`.
+The marker adds no cell owner. The same allocated slot must remain a float;
+representation changes stop explicitly with Unsupported. Two original-source
+agreements and 280 focused premises in two checked-source-derived recipes,
+including derived boundary controls, pass in the
+[OP79 ledger](../../coverage/semantics/boolnot-nan-warning-review.json).
+Reference/rebinding and owning handlers, copied operands and wider lifetimes
+remain partial. This operation-specific module404 route leaves shared truth,
+numeric/formatting, CONFIG/DEFINE and paused Source47 behavior unchanged.
+
 Module209 resumes source-certified missing-CV decisions with the original null,
 even when an error handler defines the same variable. It covers `if`/`elseif`,
 `while`/`do`/`for`, both Boolean and keyword short-circuit operators, Boolean NOT,

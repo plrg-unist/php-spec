@@ -1,0 +1,20 @@
+[
+  {
+    "id": "generator-unused-current-before-receiver-close",
+    "purpose": "Unused zero-argument CURRENT on a sole selected ancestor after initialization-only NEXT; normal cache cleanup and selected finally ordering are observed.",
+    "source": "<?php\nclass UnusedCurrentCache48 { function __destruct() { echo \"D|\"; } }\nfunction unusedCurrentChild48() { echo \"C|\"; yield 7 => new UnusedCurrentCache48(); echo \"L|\"; return 0; }\nfunction unusedCurrentMiddle48() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; } }\nfunction unusedCurrentUpper48() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction unusedCurrentOuter48() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\nfunction unusedCurrentTake48($chosen) { echo \"TAKE|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"CLEARED|\"; return $chosen; }\n$child = unusedCurrentChild48(); $middle = unusedCurrentMiddle48(); $upper = unusedCurrentUpper48(); $outer = unusedCurrentOuter48();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\n$upper->next(); echo \"INIT|\";\necho \"S|\";\nunusedCurrentTake48($upper)->current(); echo \"CALLER|\"; unset($copy); echo \"DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "f5ec3c3e310fd597a92575598f9915e5710a4eb892b2a7b51627de26ed64aaf6",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|INIT|S|TAKE|F|CLEARED|D|K|CALLER|DROPPED|E"
+  },
+  {
+    "id": "generator-unused-current-assignment-control",
+    "purpose": "Assignment-context CURRENT differs only by storing its snapshot; observes the copy through receiver cleanup and explicit caller drop.",
+    "source": "<?php\nclass UnusedCurrentCache48 { function __destruct() { echo \"D|\"; } }\nfunction unusedCurrentChild48() { echo \"C|\"; yield 7 => new UnusedCurrentCache48(); echo \"L|\"; return 0; }\nfunction unusedCurrentMiddle48() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; } finally { echo \"J|\"; } }\nfunction unusedCurrentUpper48() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; } }\nfunction unusedCurrentOuter48() { try { echo \"O|\"; yield from $GLOBALS[\"upper\"]; echo \"BAD-OUTER|\"; } finally { echo \"F|\"; } }\nfunction unusedCurrentTake48($chosen) { echo \"TAKE|\"; unset($GLOBALS[\"outer\"], $GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"CLEARED|\"; return $chosen; }\n$child = unusedCurrentChild48(); $middle = unusedCurrentMiddle48(); $upper = unusedCurrentUpper48(); $outer = unusedCurrentOuter48();\necho \"P|\"; $outer->rewind(); $child->next(); unset($child); echo \"H|\";\n$upper->next(); echo \"INIT|\";\necho \"S|\";\n$copy = unusedCurrentTake48($upper)->current(); echo \"CALLER|\"; unset($copy); echo \"DROPPED|\"; echo \"E\";\n",
+    "source_sha256": "206f6629471e2d7e392421107a4486535c7fc4604d7629a7082ff6d3c375d726",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "P|O|U|M|C|L|H|INIT|S|TAKE|F|CLEARED|K|CALLER|D|DROPPED|E"
+  }
+]

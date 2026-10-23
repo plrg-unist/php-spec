@@ -364,6 +364,21 @@ The eligible-pending control has source coverage only. Named handlers and a plai
 NaN CV bound this slice; numeric/formatting/CONFIG/module400 and paused low-initial-
 precision NaN-name callbacks stay unchanged. Other producers/lifetimes remain partial.
 
+Evaluated finite fractional copies now reuse BITNOT's precision Deprecated
+continuation. The operand is already `KNOWN`: a by-value call emits `P;` once
+before returning `12.5`, and its handler removes the source then throws the same
+Exception from line 20, canceling complement and preserving outer `100`. A selected ternary
+instead returns normally after the handler writes `99`, removes the source and
+flips the condition. Its saved `12.5` still gives strict integer `-13`, independently
+of current names or the other arm's `29.5`. Source retirement leaves the immutable
+copy snapshot valid at both cursor stages; no cell owner is retained and complement
+writes no source cell. Two originals and 140+139 focused premises cover source/bits
+authority, real callbacks, cancellation, raw versus driven result, EOF and budgets
+in the [copy BITNOT ledger](../../coverage/semantics/bitnot-copy-warning-review.json).
+Old producer lowering, conversion/complement, dispatch, roots and unwind stay
+unchanged. Other producers, copied range/NaN and owning/constrained histories remain
+partial; paused and active selectors are untouched.
+
 Bitwise NOT now retains a finite in-range fractional float's converted long before its
 precision-loss deprecation. The bounded producer accepts a defined non-reference
 CV and named handler. Fresh capture/dispatch equals the CV; saved callback frames
@@ -373,7 +388,7 @@ unchanged destination. Three exact originals and 227 author plus 97 independent
 SL premises check live 99, negative truncation, false fallback on the operand line,
 public snapshot/diagnostic rejection and budget resumption in the
 [BITNOT ledger](../../coverage/semantics/bitnot-warning-review.json).
-Other operand producers, callbacks and lifecycle forms remain required.
+Producers beyond these bounded CV/copy cases and wider callbacks/lifecycles remain partial.
 
 Explicit `(int)` of a range-warning float in a plain nonreference CV now
 resumes a named handler using the original double. Finite `2^63` wraps to

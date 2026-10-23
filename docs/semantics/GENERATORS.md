@@ -167,6 +167,33 @@ with Previous NULL. Unused copies retire after normal argument cleanup;
 assignment keeps its copy. Wider chains, masked or abrupt arguments, body entry
 and collection remain unvalidated; see the
 [node-free ancestor SEND review](../../coverage/semantics/generator-nodefree-ancestor-send-review.json).
+Zero-argument CURRENT also drops an unused snapshot before releasing its
+receiver. The validated producer first clears selected Upper with an
+initialization-only NEXT and leaves one already-refreshed native link to a
+node-free COMPLETE Middle. CURRENT preserves both initialization bits.
+Assignment retains its copy through cleanup until the caller drops it. The
+normal cache destructor runs before Upper finally in the tested sole-receiver
+history; raw-row mutation and a cache RuntimeException inside initialized Middle
+finally distinguish the missing extra owner. Pending receivers, child prefixes,
+wider endpoints and collection remain unvalidated for this CURRENT rule. See the
+[unused CURRENT review](../../coverage/semantics/generator-unused-current-review.json).
+The pre-refreshed direct node-free pending SEND path also survives an ignored-argument
+destructor throwing a supplied Exception. Its remaining snapshot and receiver
+cleanup still run. Assignment context keeps the VM temporary through physical
+finally, but no CV store completes after the argument throws. Argument-time
+row COW separates the old snapshot from live current; a RuntimeException from
+slot clearing inside Middle finally links the supplied Exception as Previous,
+whose own Previous remains NULL. This validates existing rules without a
+runtime change. Wider, parked and collection histories remain unvalidated; see the
+[abrupt argument SEND review](../../coverage/semantics/generator-abrupt-argument-send-review.json).
+The same abrupt argument cleanup is validated through one native ancestor.
+Only selected Upper clears initialization; inherited-pending Middle still skips
+finally, while an independent Middle NEXT permits physical finally execution.
+Unused snapshot retirement, assignment's unstored temporary, argument-time COW
+and a cache RuntimeException before Upper finally preserve their distinct owners
+and supplied Previous identity. No runtime rule changes; wider links, owning
+returns, parked/reentrant histories and collection remain unvalidated. See the
+[ancestor argument-exception review](../../coverage/semantics/generator-ancestor-abrupt-argument-send-review.json).
 Pending zero-argument NEXT also clears only the selected receiver bit while
 preserving that parked owning frame/site and copied return. It returns NULL
 without a current snapshot; a later explicit getter creates a separate copy.

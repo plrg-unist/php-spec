@@ -106,7 +106,8 @@ Repeated same-site calls preserve inactive historical records while requiring
 the current nonce for active tasks. Named capture, frame retirement and normal
 or throwing duplicates preserve the earlier primitive arguments and old row.
 Other flag/name coercions, packs and PIPE remain outside this owned-call
-slice; no intrinsic Closure VALUE authority is added.
+slice. This call header does not extend leaf authority; intrinsic Closure values
+are covered separately below.
 [Owned DEFINE call review](../../coverage/semantics/define-owned-closure-review.json).
 
 Owned arrays reuse the existing authenticated leaf, canonical copy and query
@@ -133,8 +134,8 @@ throwing duplicate's raw API/__invoke object arguments instead outlive the
 callee. After the Exception and trace retire, the last raw argument views can
 release the object with no pending Exception and the callee gone. Other existing
 certified object and supported bare Closure/factory classes compose structurally
-without new producer credit; intrinsic Closure VALUE, coercive flags/packs and
-global/default policies remain unchanged.
+without new producer credit. Intrinsic Closure values are covered separately
+below; other coercive flags/packs and global/default policies remain unchanged.
 [Owned object call review](../../coverage/semantics/define-owned-object-review.json).
 
 Raw TRUE preserves the captured argument while emitting the ignored-case Warning
@@ -769,6 +770,19 @@ execution credit; coherent clones and inherited flags remain structural support.
 Other intrinsic Closure forms retain their existing boundaries.
 [Factory Closure define review](../../coverage/semantics/define-runtime-from-factory-review.json).
 
+Bare INTRINSICCLOSURE values reuse PVOBJECT under existing supported intrinsic
+typed/live checks, absent scope/binding/certificate records and the exact outer
+tag. Queries and canonical ARRAY copies preserve the same pointer. A queried or
+trace-recovered DEFINE Closure can become a writer using its own existing
+selection receipt, despite later callee-CV replacement. A supplied duplicate
+Exception keeps the rejected VALUE after its distinct same-kind callee dies;
+later trace retirement can kill that VALUE while its primitive row remains
+source-valid through nonowning history. Intrinsic Closures add no child edges.
+The originals execute DEFINE VALUE and ARRAY DEFINE/DEFINED/CONSTANT identities;
+only DEFINE is invoked. Other supported intrinsic kinds compose structurally;
+existing typed/live eligibility and global/default policies stay exact.
+[Intrinsic Closure VALUE review](../../coverage/semantics/define-intrinsic-closure-review.json).
+
 Ordinary `stdClass` values also use dynamic-only `PVOBJECT` authority when their
 selected property record and optional cached table validate, including live
 physical reference cells and their immediate values. A present stdClass birth
@@ -868,6 +882,21 @@ argument effects. Stored string carriers retain their allocation class; the API
 does not intern or rebuild a result. Named and positional literal arguments use
 immutable compiler facts, while mutable arguments retain the existing capture
 policy.
+
+Retained DEFINED/CONSTANT Closure callees also accept one captured non-NUL global
+string name, through the existing live matching-intrinsic owner and source/site,
+line and named-call validation. `SELECTION` stays empty: these reads create no
+durable selection record. Immutable argument facts must still match the captured
+value, and request string carriers retain their existing authentication.
+Argument effects can replace the live callee/name and register a constant before
+lookup without changing the captured call. Ordinary and explicit `__invoke`
+calls share this admission. A missing-name explicit call retains raw API/wrapper
+trace arguments on Error; the callee retires before catch, while a later
+ordinary call through an independent reader recovers.
+Returned arrays use the same stored root and existing query COW/append history.
+The three originals and focused state checks cover these paths without extending
+name coercion, class-qualified/HALT/NUL names, packs or PIPE.
+[Captured query review](../../coverage/semantics/constant-owned-query-review.json).
 
 Plain `constant`/`defined` calls also receive integer, boolean and float query
 names. Weak callers use the existing string conversion after
@@ -1227,8 +1256,9 @@ records actual query fronts, shared counters, alias roots and certificate refusa
 Absent names raise `Error` with the stripped lookup spelling and the full received
 string argument in the API trace. Unknown startup values retain their prior Unsupported
 result. `PVOBJECT` rows without the DEFINE-origin/live class-or-callable authority
-above, stored ALIAS/cyclic array trees, Stringable/array name reception and packed/owning
-calls remain outside this slice. The original ordinary `const` string producer refusal retains
+above, stored ALIAS/cyclic array trees, Stringable/array name reception, packed
+calls, and owning calls beyond the raw global-string route remain outside this
+slice. The original ordinary `const` string producer refusal retains
 its historical cut; the string-publication follow-up above admits that producer
 domain without renewing the older lookup campaign. The [global-query ledger](../../coverage/semantics/global-constant-review.json)
 binds the source and public-state cuts without closing the constant family.

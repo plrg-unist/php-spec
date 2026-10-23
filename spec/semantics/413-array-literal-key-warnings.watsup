@@ -825,7 +825,59 @@ def $array_null_value_plan(S) = ((n, n_value, phpType13*, z))
   -- if $array_null_value_source(S, n, n_value, phpType13*, z)
   -- if $array_null_value_ready(S, n, n_value)
 def $array_null_value_plan(S) = eps -- otherwise
-def $array_null_key_pending(S) = ($error_handler_eligible(S, 8192) /\ ($array_null_key_plan(S) =/= eps \/ $array_null_value_plan(S) =/= eps))
+;; A runtime constructor is an owning TMP, without the VAR NULL backup.
+dec $array_null_tmp_source(pstate, nat, nat, phpType13*, int) : bool
+def $array_null_tmp_source(S, n, n_value, phpType13*, z) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if ~$array_immutable(S, n) /\ $heap_count(HARRAY n, $pools_nodes(S.POOLS)) = 0
+  -- if n =/= n_value
+  -- if $array_float_key_item(S, phpType13*, z) = ((NExprArray (SEQUENCE phpType13_child*) metadata, poperand_key))
+  -- if $array_float_key_input_source(S, NExprArray (SEQUENCE phpType13_child*) metadata, KNOWN (PARRAY n_value))
+def $array_null_tmp_source(S, n, n_value, phpType13*, z) = false -- otherwise
+
+dec $array_null_tmp_plan(pstate) : (nat, nat, phpType13*, int)?
+def $array_null_tmp_plan(S) = ((n, n_value, phpType13*, z))
+  -- if S.TODO = (ARRAY_VALUE n (VARIABLE n_key* z_key) phpType13* z) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if S.RESULT = KNOWN (PARRAY n_value)
+  -- if $array_float_key_item(S, phpType13*, z) = ((expression, VARIABLE n_key* z_key))
+  -- if $array_float_key_value(S, VARIABLE n_key* z_key) = (PNULL)
+  -- if $array_null_tmp_source(S, n, n_value, phpType13*, z)
+  -- if $array_null_value_ready(S, n, n_value)
+def $array_null_tmp_plan(S) = eps -- otherwise
+;; CONST values retain their permanent pool owner and acquire one pending edge.
+dec $array_null_const_source(pstate, nat, nat, phpType13*, int) : bool
+def $array_null_const_source(S, n, n_value, phpType13*, z) = true
+  -- if $(n < |S.ARRAYS| /\ n_value < |S.ARRAYS|) /\ n =/= n_value
+  -- if (HARRAY n) <- S.ALLOCATIONS /\ (HARRAY n_value) <- S.ALLOCATIONS
+  -- if ~$array_immutable(S, n) /\ $heap_count(HARRAY n, $pools_nodes(S.POOLS)) = 0
+  -- if $array_float_key_item(S, phpType13*, z) = ((NExprArray (SEQUENCE phpType13_child*) metadata, poperand_key))
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
+  -- if $compiled_read(S, PORIGIN n_unit (pcpath ++ [PCFIELD 1])) = (PARRAY n_value)
+def $array_null_const_source(S, n, n_value, phpType13*, z) = false -- otherwise
+
+dec $array_null_const_ready(pstate, nat, nat) : bool
+def $array_null_const_ready(S, n, n_value) = true
+  -- if $(n < |S.ARRAYS| /\ n_value < |S.ARRAYS|) /\ n =/= n_value
+  -- if (HARRAY n) <- S.ALLOCATIONS /\ (HARRAY n_value) <- S.ALLOCATIONS
+  -- if $($heap_count(HARRAY n_value, $pools_nodes(S.POOLS)) > 0)
+  -- if ~(n_value <- S.LITERALARRAYDEBTS)
+  -- if $entries_nodes(S.ARRAYS[n_value].ITEMS) = eps
+  -- if $literal_reference_flat_items(S, S.ARRAYS[n_value].ITEMS)
+  -- if $array_float_key_plain_nodes($heap_reach([HARRAY n, HARRAY n_value], eps, $heap_graph(S).EDGES))
+def $array_null_const_ready(S, n, n_value) = false -- otherwise
+
+dec $array_null_const_plan(pstate) : (nat, nat, phpType13*, int)?
+def $array_null_const_plan(S) = ((n, n_value, phpType13*, z))
+  -- if S.TODO = (ARRAY_VALUE n (VARIABLE n_key* z_key) phpType13* z) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if S.RESULT = KNOWN (PARRAY n_value)
+  -- if $array_float_key_item(S, phpType13*, z) = ((expression, VARIABLE n_key* z_key))
+  -- if $array_float_key_value(S, VARIABLE n_key* z_key) = (PNULL)
+  -- if $array_null_const_source(S, n, n_value, phpType13*, z)
+  -- if $array_null_const_ready(S, n, n_value)
+def $array_null_const_plan(S) = eps -- otherwise
+def $array_null_key_pending(S) = ($error_handler_eligible(S, 8192) /\ ($array_null_key_plan(S) =/= eps \/ $array_null_value_plan(S) =/= eps \/ $array_null_tmp_plan(S) =/= eps \/ $array_null_const_plan(S) =/= eps))
 
 rule PhpStep/array-null-key-warning: S ~> $error_dispatch(S, 8192, $list_null_key_message(), z, DIAGNOSTIC "Deprecated" $list_null_key_message() z, ARRAY_KEY_NULL_RESULT n n_capture poperand pvalue phpType13* z)
   -- if $array_null_key_pending(S)
@@ -880,3 +932,57 @@ def $error_read_discard(S, ARRAY_KEY_NULL_VALUE_RESULT n n_value phpType13* z) =
   -- if $array_null_value_ready(S, n, n_value)
 def $error_read_discard(S, ARRAY_KEY_NULL_VALUE_RESULT n n_value phpType13* z) = S[.COMPLETION = UNSUPPORTED "array literal null-key returned array during throw"]
   -- if ~$array_null_value_ready(S, n, n_value)
+
+rule PhpStep/array-null-tmp-warning: S ~> $error_dispatch(S, 8192, $list_null_key_message(), z, DIAGNOSTIC "Deprecated" $list_null_key_message() z, ARRAY_KEY_NULL_TMP_RESULT n n_value phpType13* z)
+  -- if $array_null_key_pending(S)
+  -- if $array_null_tmp_plan(S) = ((n, n_value, phpType13*, z))
+rule PhpStep/array-null-tmp-result: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13*) :: ptask_tail*][.RESULT = KNOWN PNULL][.ORIGIN = $origin_next_item(S.ORIGIN, phpType13*)]
+  -- if S.TODO = (ARRAY_KEY_NULL_TMP_RESULT n n_value phpType13* z) :: ptask_tail*
+  -- if $array_null_tmp_source(S, n, n_value, phpType13*, z)
+  -- if $array_null_value_ready(S, n, n_value)
+  -- if S_out = $literal_insert(S, n, (KSTRING eps), PARRAY n_value, z)
+rule PhpStep/array-null-tmp-result-unsupported: S ~> S[.TODO = eps][.RESULT = KNOWN PNULL][.COMPLETION = UNSUPPORTED "array literal null-key temporary array after callback"]
+  -- if S.TODO = (ARRAY_KEY_NULL_TMP_RESULT n n_value phpType13* z) :: ptask_tail*
+  -- if $array_null_tmp_source(S, n, n_value, phpType13*, z)
+  -- if ~$array_null_value_ready(S, n, n_value)
+
+def $call_task_valid(S, ARRAY_KEY_NULL_TMP_RESULT n n_value phpType13* z) = $array_null_tmp_source(S, n, n_value, phpType13*, z)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ARRAY_KEY_NULL_TMP_RESULT n n_value phpType13* z
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $array_null_tmp_source(S, n, n_value, phpType13*, z)
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $list_null_key_message()
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" $list_null_key_message() z
+def $task_nodes(ARRAY_KEY_NULL_TMP_RESULT n n_value phpType13* z) = [HARRAY n, HARRAY n_value]
+def $error_read_discard(S, ARRAY_KEY_NULL_TMP_RESULT n n_value phpType13* z) = S
+  -- if $array_null_value_ready(S, n, n_value)
+def $error_read_discard(S, ARRAY_KEY_NULL_TMP_RESULT n n_value phpType13* z) = S[.COMPLETION = UNSUPPORTED "array literal null-key temporary array during throw"]
+  -- if ~$array_null_value_ready(S, n, n_value)
+
+rule PhpStep/array-null-const-warning: S ~> $error_dispatch(S, 8192, $list_null_key_message(), z, DIAGNOSTIC "Deprecated" $list_null_key_message() z, ARRAY_KEY_NULL_CONST_RESULT n n_value phpType13* z)
+  -- if $array_null_key_pending(S)
+  -- if $array_null_const_plan(S) = ((n, n_value, phpType13*, z))
+rule PhpStep/array-null-const-result: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13*) :: ptask_tail*][.RESULT = KNOWN PNULL][.ORIGIN = $origin_next_item(S.ORIGIN, phpType13*)]
+  -- if S.TODO = (ARRAY_KEY_NULL_CONST_RESULT n n_value phpType13* z) :: ptask_tail*
+  -- if $array_null_const_source(S, n, n_value, phpType13*, z)
+  -- if $array_null_const_ready(S, n, n_value)
+  -- if S_out = $literal_insert(S, n, (KSTRING eps), PARRAY n_value, z)
+rule PhpStep/array-null-const-result-unsupported: S ~> S[.TODO = eps][.RESULT = KNOWN PNULL][.COMPLETION = UNSUPPORTED "array literal null-key constant array after callback"]
+  -- if S.TODO = (ARRAY_KEY_NULL_CONST_RESULT n n_value phpType13* z) :: ptask_tail*
+  -- if $array_null_const_source(S, n, n_value, phpType13*, z)
+  -- if ~$array_null_const_ready(S, n, n_value)
+
+def $call_task_valid(S, ARRAY_KEY_NULL_CONST_RESULT n n_value phpType13* z) = $array_null_const_source(S, n, n_value, phpType13*, z)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ARRAY_KEY_NULL_CONST_RESULT n n_value phpType13* z
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $array_null_const_source(S, n, n_value, phpType13*, z)
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $list_null_key_message()
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" $list_null_key_message() z
+def $task_nodes(ARRAY_KEY_NULL_CONST_RESULT n n_value phpType13* z) = [HARRAY n, HARRAY n_value]
+def $error_read_discard(S, ARRAY_KEY_NULL_CONST_RESULT n n_value phpType13* z) = S
+  -- if $array_null_const_ready(S, n, n_value)
+def $error_read_discard(S, ARRAY_KEY_NULL_CONST_RESULT n n_value phpType13* z) = S[.COMPLETION = UNSUPPORTED "array literal null-key constant array during throw"]
+  -- if ~$array_null_const_ready(S, n, n_value)

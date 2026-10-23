@@ -191,6 +191,32 @@ can throw a RuntimeException before queued Upper finally, with Previous NULL.
 Raw-row COW distinguishes old snapshot and live row, and no owning return or
 storage pin is manufactured. See the
 [node-free ancestor SEND review](../../coverage/semantics/generator-nodefree-ancestor-send-review.json).
+Unused zero-argument CURRENT at the already-refreshed normal node-free
+one-ancestor endpoint releases its snapshot before the receiver. In the tested
+sole-receiver object history, cache destruction precedes Upper finally;
+assignment retains the copy until caller drop. Upper-finally row mutation has
+one live array owner. A separately initialized Middle runs its finally, where
+slot clearing destroys the cache and throws RuntimeException before Upper
+finally, with Previous NULL. Both real close receipts remain ordinary; no
+copied-return owner or storage pin is added. See the
+[unused CURRENT review](../../coverage/semantics/generator-unused-current-review.json).
+At the pre-refreshed direct node-free pending SEND endpoint, a supplied argument
+Exception survives the remaining snapshot release and receiver finally.
+Assignment context retains a temporary until after finally, then unwinds
+without storing its CV. Argument COW preserves one edge set per array. Slot
+clearing inside RUNNING Middle finally can instead throw RuntimeException,
+whose Previous is the supplied Exception; that original exception keeps Previous
+NULL. These are validation-only observations of existing close/pending rules.
+See the
+[abrupt argument SEND review](../../coverage/semantics/generator-abrupt-argument-send-review.json).
+Through one native ancestor, a supplied argument Exception survives snapshot
+retirement and selected Upper finally even when inherited-pending Middle skips
+its finally. After an independent Middle NEXT, its live finally can destroy the
+cache first: RuntimeException replaces the supplied Exception before Upper
+finally, with that exact supplied object as Previous. The ordinary store
+operation has no pending exception; the enclosing SEND/close records retain it.
+No close or root rule changes; see the
+[ancestor argument-exception review](../../coverage/semantics/generator-ancestor-abrupt-argument-send-review.json).
 Pending NEXT preserves that parked return across the same close transfer but
 creates no current copy. A temporary sole receiver releases its cache during
 storage cleanup, before caller delivery; a throwing cache has no older caught

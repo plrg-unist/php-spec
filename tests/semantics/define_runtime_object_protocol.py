@@ -64,7 +64,7 @@ def controls():
         'S_std = S[.OBJECTS[n_left] = STDINSTANCE]',
         '$dynamic_define_value_class(S_std,POBJECT n_left) = eps',
         'S_closure = S[.OBJECTS[n_left] = INTRINSICCLOSURE INTRINSIC_DEFINE]',
-        '$dynamic_define_value_class(S_closure,POBJECT n_left) = eps',
+        '$dynamic_define_value_class(S_closure,POBJECT n_left) = (PVOBJECT)',
         # An intentionally invalid present receipt cannot become ordinary authority.
         'pconstantobject_bad = {OBJECT n_left,SITE pconfigcall.SITE,DECL pconfigcall.SITE,CLASS porigin_left,PREFIX (|S.DECLARATIONS|),COMPLETE false}',
         'S_incomplete = S[.CONSTANTOBJECTS = [pconstantobject_bad]]',

@@ -41,7 +41,7 @@ At `<=>`, empty gives 0;
 nonempty gives -1 with NULL left and +1 with NULL right.
 This includes both-missing and same-name entry: `$x <=> $x` can return -1 after
 the handler creates `[false]`. Current reference/COW bindings and next-index
-history survive; nested/reference/internal-object entries
+history survive; nested/internal-object entries
 remain partial. The
 [spaceship](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
 and [Boolean array resume reviews](../../coverage/semantics/undefined-scalar-compare-array-resume-review.json)
@@ -74,7 +74,7 @@ writes 9 to both names. Returned strings keep their bytes independently of curre
 aliases and string identity metadata. The
 [primitive review](../../coverage/semantics/undefined-scalar-compare-captured-primitive-review.json)
 checks snapshots, default/throw and actual second-read NULL compatibility. Nested,
-reference or internal-object array entries and wider owning producers remain partial.
+object/array-valued reference entries, internal-object leaves and wider owning producers remain partial.
 All seven operators also admit captured allocated ordinary non-Stringable objects,
 including `stdClass`. The captured identity survives source rebinding or removal,
 while shared property writes remain visible. Object/NULL ordering gives +1 or -1
@@ -102,7 +102,25 @@ from each DIRECT object entry. Final table release drops those edges and runs a 
 before the outer store or catch only if no other object owner remains.
 The [object-array review](../../coverage/semantics/undefined-comparison-object-array-review.json)
 checks transitive roots, raw release versus driven destruction, COW and budgets.
-ALIAS entries, nested arrays and internal/Stringable leaves remain partial.
+Array-valued ALIAS entries, nested arrays and internal/Stringable leaves remain partial.
+Primitive ALIAS entries now pass the same guard when their reference cell is
+allocated, marked as a reference, in bounds and holds a defined primitive.
+Captured table entries survive source replacement; shared cell writes remain
+visible across COW copies. Singleton primitive references unwrap in a copied
+table, while shared references remain ALIAS. Each entry owns a cell edge;
+multiple table owners do not multiply it, and repeated entries own separate edges.
+Final table release drops those edges; outside aliases may keep the cell alive
+through catch/finally and later writes. Comparison still uses array emptiness.
+The [reference-array review](../../coverage/semantics/undefined-comparison-reference-array-review.json)
+checks actual singleton COW, repeated/shared ownership, restore/discard and budgets.
+ALIAS cells may also hold live ordinary non-Stringable objects. Saved entries
+retain cell locations rather than the previous object payload: shared-cell
+replacement can destroy the old object inside the handler. Singleton COW instead
+unwraps the copied bucket to DIRECT and retains the original object through the
+saved cell. Last ARRAY-to-CELL-to-OBJECT release runs destruction before the
+outer store or catch only when no other owner remains. The
+[object-reference review](../../coverage/semantics/undefined-comparison-object-reference-array-review.json)
+checks these orders, shared property writes, outside aliases and throw cleanup.
 Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also suspend with one missing operand
 and a defined scalar counterpart. The missing value stays null while the opposing
 wrapper follows callback writes, late reference creation and rebinding. A missing

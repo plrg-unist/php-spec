@@ -125,7 +125,7 @@ def checks(initial, stdout):
         '$dynamic_define_value_class(S_dead,POBJECT n_object) = eps',
         '~$dynamic_runtime_object(S,|S.OBJECTS|)',
         'S_internal = S[.OBJECTS[n_object] = INTRINSICCLOSURE INTRINSIC_DEFINE]',
-        '~$dynamic_runtime_object(S_internal,n_object)',
+        '$dynamic_runtime_object(S_internal,n_object)',
         'pconstantobject_incomplete = {OBJECT n_object,SITE pconfigcall.SITE,DECL pconfigcall.SITE,CLASS porigin_class,PREFIX (|S.DECLARATIONS|),COMPLETE false}',
         'S_incomplete = S[.CONSTANTOBJECTS = [pconstantobject_incomplete]]',
         '~$dynamic_runtime_object(S_incomplete,n_object)',

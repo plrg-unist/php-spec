@@ -95,6 +95,13 @@ def $dynamic_runtime_object(S, n_object) = true
   -- if $global_new_record(S.CONSTANTOBJECTS, n_object) = eps
 def $dynamic_runtime_object(S, n_object) = true
   -- if $(n_object < |S.OBJECTS|) /\ HOBJECT n_object <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_object] = INTRINSICCLOSURE pintrinsic
+  -- if $typed_closure(S, n_object) /\ $closure_live_object_valid(S, n_object)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n_object) = eps
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n_object) = eps
+  -- if $constant_callable_record(S.CONSTANTCLOSURES, n_object) = eps
+def $dynamic_runtime_object(S, n_object) = true
+  -- if $(n_object < |S.OBJECTS|) /\ HOBJECT n_object <- S.ALLOCATIONS
   -- if S.OBJECTS[n_object] = ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?
   -- if $typed_closure(S, n_object) /\ $closure_live_object_valid(S, n_object)
   -- if $closure_binding_at(S.CLOSUREBINDINGS, n_object) = eps
@@ -224,6 +231,7 @@ dec $dynamic_array_known_matches(pstate, pvalue, pvalue?) : bool
 dec $dynamic_defined_receive(pstate, pconfigcall) : pstate
 dec $dynamic_class_constant_receive(pstate, pconfigcall) : pstate
 dec $dynamic_global_constant_call(pconfigcall) : bool
+dec $dynamic_owned_global_query_valid(pstate, pconfigcall) : bool
 dec $dynamic_halt_call(pconfigcall) : bool
 dec $dynamic_halt_receive(pstate, pconfigcall) : pstate
 dec $dynamic_global_constant_finish(pstate, pconfigcall) : pstate
@@ -620,7 +628,7 @@ def $dynamic_constant_receive(S, pconfigcall) = $dynamic_define_finish(S, pconfi
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
 def $dynamic_constant_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL $dynamic_constant_exists(S, preqbytes))][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_DEFINED
-  -- if pconfigcall.OWNER = eps
+  -- if pconfigcall.OWNER = eps \/ $dynamic_owned_global_query_valid(S, pconfigcall)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name)]
   -- if $string_bytes(pvalue_name) = (preqbytes)
   -- if $dynamic_constant_global_name($dynamic_constant_query(preqbytes))
@@ -1170,9 +1178,20 @@ def $dynamic_global_constant_call(pconfigcall) = false -- otherwise
 def $dynamic_global_constant_known(S, porigin) = $compiled_read(S, porigin_argument)
   -- if $intrinsic_argument(S, porigin, 0) = ((expression, false, preqbytes?, porigin_argument, z))
 def $dynamic_global_constant_known(S, porigin) = eps -- otherwise
+;; Query calls keep their live selected owner but publish no selection history.
+def $dynamic_owned_global_query_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND <- [INTRINSIC_CONSTANT, INTRINSIC_DEFINED]
+  -- if pconfigcall.OWNER =/= eps /\ pconfigcall.SELECTION = eps /\ pconfigcall.PACKS = eps
+  -- if ~$pipe_site(S, pconfigcall.SITE)
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_global_constant_call(pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_query)]
+  -- if $string_plain(pvalue_query) = pvalue_query \/ $string_carrier_valid(S, pvalue_query)
+  -- if $dynamic_define_value_matches(pvalue_query, $dynamic_global_constant_known(S, pconfigcall.SITE))
+def $dynamic_owned_global_query_valid(S, pconfigcall) = false -- otherwise
 def $dynamic_global_constant_valid(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_CONSTANT
-  -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if (pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps) \/ $dynamic_owned_global_query_valid(S, pconfigcall)
   -- if $config_invoke_valid(S, pconfigcall)
   -- if $dynamic_global_constant_call(pconfigcall)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_query)]

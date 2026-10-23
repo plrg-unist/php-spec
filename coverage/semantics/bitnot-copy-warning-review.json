@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "milestone": "OP78 evaluated-copy bitwise NOT precision conversion",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/profile",
+  "scope": "Finite in-range fractional PFLOAT copies evaluated before BITNOT, with a named Deprecated handler. A by-value named return and a selected ternary witness cancellation and cached complement after source retirement. No reference, owning, NaN/range, property or lifecycle producer expansion.",
+  "runtime_revision": "c33e7ad45be63ddf1dd1fa884e888fe99a6c8213",
+  "helper_revision": "fbd1a93f39abb30c26f7c2a90d2895b29c7340bb",
+  "private_modules": 409,
+  "runtime_sha256": {
+    "spec/semantics/58-ordinary-expressions.watsup": "7500b0862288ffd2d1e51197cb4d5e2433a49fb615eb51b346080d8182a2ee46",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "c21309d60a4fbba8288c21957669c8047bdf566d0747ee4749558d5fd4a68d67"
+  },
+  "engine_basis": [
+    "Pinned zend_compile_unary_op evaluates the operand before BW_NOT. Warning-producing fractional PFLOAT is excluded from compile-time evaluation; the by-value call/ternary supplies an evaluated copy. bitwise_not_function saves long12 before the precision Deprecated, then checks the callback exception before complementing. The numeric algorithm and producer lowering are unchanged.",
+    "Existing integer_operand_source authenticates KNOWN nonreference operands and remains unchanged. The new source/snapshot arm requires KNOWN PFLOAT with matching saved bits, authentic BITNOT source/operand line and exactly PRECISIONLOSS. The immutable copy remains a valid snapshot after its originating CV is removed; no source lookup or cell owner is saved. Only the two actual call/ternary producers receive new evidence.",
+    "Exactly31 additions:58 declaration and two generic EPS gates plus28 appended404 lines for the disjoint KNOWN source/snapshot, copy plan and old-tag begin. BITNOT_WARNING dispatch, complement, roots and unwind are unchanged, as are old CV/range/NaN/cast paths, numeric formatting, CONFIG/DEFINE and all shared207/array/class/Generator/dynamic/lifecycle selectors."
+  ],
+  "contract": [
+    "Author copied_value prints P; once and returns float12.5 before conversion. Its Deprecated25 handler writes source99, unsets that CV and throws the supplied Exception20. Identity/noPrevious/line20, outer100, source absence, calls1 and fresh EOFx8 prove canceled delivery after producer completion. No complement/default Deprecated or outer store occurs.",
+    "Independent ternary initially selects x12.5 with pick=true and other29.5. The handler writes99, removes x, flips pick=false and returns false. The copied12.5 still supplies long12 and strict int-13, with one default Deprecated25. Reusing current99 or reevaluating the false arm would yield -100 or -30. EOF creates a distinct x8 while other29.5/pickfalse/result-13 remain independent.",
+    "Focused140+139 inherits the exact old bitnot/arithmetic/integer HELPERS plus copy frontier/seek and the maintained diagnostic classifier/fold. Each fixture traverses actual entry, raw begin, real fresh+entered callback and caller throw or returned complement once through EOF. KNOWN INPUT identity, immutable snapshot/valid0+1 after source owner1-to0, EPS roots, same Exception root2, raw no-store result versus driven metadata, diagnostics and zero cuts are explicit. Only author has an undriven refusal matrix; no forged state or full-entry replay executes."
+  ],
+  "required_follow_on": [
+    "Other evaluated producers, copied NaN/range conversions, reference/owning or constrained operands and wider callbacks/lifetimes remain partial. Existing compiled-literal authority is preserved without claiming a new literal witness. The by-value-return and ternary algorithms receive no renewed coverage.",
+    "Old numeric conversion/complement, formatting, dispatch, root and generic unwind algorithms are not renewed. No engine bug or intentional divergence is claimed. Paused OP12, COMP88 and Source47 low-precision DEFINE-name callbacks remain untouched; shared207/property/array/Generator/dynamic/lifecycle selectors are disjoint."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-78/source-c33e7ad45-author-one/report.json",
+        "sha256": "196186a982acfa0c8913fb13e0a352523d14753eaf224f7494241b846c942a4f",
+        "revision": "c33e7ad45be63ddf1dd1fa884e888fe99a6c8213",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-78/review-model-c33e7ad45-review-one/report.json",
+        "sha256": "84089612b6893050b885e0860df3f5563857b775ab4be0cc4728cca002b415e4",
+        "revision": "c33e7ad45be63ddf1dd1fa884e888fe99a6c8213",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-78/state-fbd1a93f3-two/report.json",
+        "sha256": "ced0d5c7c294c6f257f2de4b39d97217e8602f16f7fe842d8d80420486e80f7e",
+        "revision": "fbd1a93f39abb30c26f7c2a90d2895b29c7340bb",
+        "modules": 409,
+        "cases": [
+          "bitnot-copy-warning-return-throw",
+          "bitnot-copy-warning-ternary-snapshot"
+        ],
+        "conditions": [
+          140,
+          139
+        ],
+        "total": 279
+      }
+    ],
+    "total_source_agreements": 2,
+    "total_focused_state_conditions": 279
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-78/baseline-211981444-copy-return/report.json",
+      "sha256": "3817a6ade9be0fcd71a37b48fe99f037fbd8c224dbcdd8f20ed8d7a18940d3b6",
+      "result": "Actual frontend accepted/checked program/Unsupported after the completed producer printed P; semantic stdout is P; and semantic stderr is empty. Reason error-handler ingress requires a producer continuation, model1/rowfalse/agreement0. Native supplied-throw stream remains retained without override."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-78/native-211981444-author-one/report.json",
+        "sha256": "451f2c379183ccc686118f82ea8c5c36ecabe4b21dfeb89d58ecf63c2e1e4549"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-78/native-211981444-review-one/report.json",
+        "sha256": "bb7b3fad039a39915e67696e1c17e741b554fc0c0309b4ac492b69e28412ee7a"
+      }
+    ],
+    "checked_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-78/state-prep-fbd1a93f3-two/report.json",
+        "sha256": "cb07d3475efceea628ca3d52404c13be208cf58543d9e319ce146cff0a7812a9",
+        "result": "Retained full author1+peer1 original paths/native bytes; checked frontend/adapter and both full409 struct passes0/reaped. Zero native/application replay or semantic credit."
+      }
+    ],
+    "standalone_syntax": "Two standalone undefined-pstate diagnostics, zero semantic credit."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-78",
+    "environment": "LC_ALL=C,TZ=UTC,no PHP_SPEC_SCRIPT_ENCODING. Native/genuine CPU2, source CPU4 and focused CPU4 separately granted/released. Native30/modelCLI60-process90/checked30/full409struct30 per fixture/full409SL120 per group. Retained prep authenticates author1+peer1 original paths/native bytes, without native/application replay.",
+    "record": "Restore matching Git cuts/local tools in a fresh directory. External source/native paths authenticate focused fixtures and are not runtime dependencies. Copied local tools add no rebuild/portability claim.",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "commands": [
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 tests/semantics/bitnot_copy_warnings.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 tests/semantics/bitnot_copy_warning_review.py --output NEW_EXTERNAL_DIRECTORY",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-78/state-prep-fbd1a93f3-two/run-prepare.py",
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 /home/user/workspace/php-spec-evidence-archive/operators-78/state-fbd1a93f3-two/run-state.py"
+    ]
+  },
+  "composition": {
+    "parent": "53eeb3d986cc53c9b7f478cb3b770dc65c65231a",
+    "private_publication": "66ee6cf74c6913000b2b6b6cb2db7804a16614fe",
+    "modules": 409,
+    "runtime_sha256": {
+      "spec/semantics/58-ordinary-expressions.watsup": "7500b0862288ffd2d1e51197cb4d5e2433a49fb615eb51b346080d8182a2ee46",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "c21309d60a4fbba8288c21957669c8047bdf566d0747ee4749558d5fd4a68d67"
+    },
+    "other_incoming_paths_preserved": 68,
+    "gate": "Seven incoming runtime paths (30/156/207/270/289/400/413) and the ordered409 manifest remain parent-exact. Incoming207 INI_SET missing-SEND and missing-CV SPACESHIP ALIAS-array selectors require absent intrinsic/missing-read/ARRAY comparison producers; all observers are defined strict scalar comparisons or quiet isset. Incoming400 intrinsic Closure VALUE reception requires absent DEFINE/INTRINSICCLOSURE sources. Newer30/156/270 REF_RETURN_RETIRE_PREFIX_HISTORY and completed-cursor chains require by-reference return/finally, destructor-bearing INSTANCE holders and retirement unwind tasks, absent from ordinary by-value copied_value/h and native Throwable getters. New289 unused CURRENT cleanup requires a Generator/ancestor/current operation, absent here. New30/413 ARRAY_KEY_NULL_TMP_RESULT requires an owning nested ARRAY_VALUE literal with NULL key; neither original creates an ARRAY literal, NULL key, owning return or array-key builder. GLOBALS fixed string dimensions and intrinsic Throwable trace arrays are different producers. Task-specific tags/root/discard arms add no pstate/default/general-root field. Preserve all incoming runtime and manifest bytes, overlaying only58 copy-plan declaration/two EPS and private404/six tests. Source2/state279 keep their private409 cuts without joined execution, accepted replay or renewed credit."
+  }
+}
