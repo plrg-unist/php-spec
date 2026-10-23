@@ -450,6 +450,11 @@ rule PhpStep/dynamic-query-string-result: S ~> $dynamic_query_string_finish(S, p
   -- if S.ORIGIN = (porigin_child)
   -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
   -- if S.RESULT = KNOWN pvalue
+;; Both explicit argument slots are decremented before the saved callee.
+def $eager_task_inputs(S, CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) = [HOBJECT n_object] ++ $named_slots_roots(pconfigcall.SENT) ++ $exit_owner_nodes(pconfigcall.OWNER)
+  -- if $dynamic_owned_query_string_call(pconfigcall)
+  -- if $config_method_receiver(S, pconfigcall)
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
 
 ;; Define names convert in the same saved API context before registration.
 dec $dynamic_define_string_call(pconfigcall) : bool
