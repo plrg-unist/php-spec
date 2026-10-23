@@ -86,7 +86,11 @@ supplied throw. Pooled constant array literals keep their permanent pool owner
 and one pending edge, preserving the original table across callbacks, repeated
 calls and later COW. Throw drops only the pending edge. See the
 [constant-array review](coverage/semantics/array-literal-null-key-constant-array-review.json).
-Nested or owning constant leaves, wider graphs and other key producers remain partial.
+Nested DIRECT constant arrays also preserve each physical child edge independently
+of the parent's pending owners. Handler-time child COW, repeated calls, empty
+descendants and supplied-throw cleanup retain the original pool graph. See the
+[nested constant-array review](coverage/semantics/array-literal-null-key-constant-subtree-review.json).
+Reference/object leaves, wider histories and other key producers remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
