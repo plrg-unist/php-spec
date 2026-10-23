@@ -47,6 +47,11 @@ can run the last-owned object destructor before the outer store or catch.
 Outside aliases delay that release. See the
 [reference-array review](coverage/semantics/undefined-comparison-reference-array-review.json)
 and [object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json).
+Reference cells may also hold one flat child array of DIRECT primitives or
+ordinary non-Stringable objects. Outer copying and inner COW preserve separate tables while
+object identities stay shared. Saved chains and outside aliases preserve child
+destructor timing; empty children leave outer array truth unchanged. See the
+[child-array review](coverage/semantics/undefined-comparison-array-payload-review.json).
 Both-missing pairs, including one missing name twice, can resume if the first
 handler defines the later scalar, flat array or ordinary object. `$x == $x` can
 then be false and `$x > $x` true. Greater operators check source right first. All seven comparison operators
@@ -55,6 +60,13 @@ despite writes from the second handler.
 Removing an already checked defined counterpart during a missing-CV Warning
 compares it quietly against that read's frozen NULL and preserves surviving aliases.
 Wider warning paths remain partial.
+
+At `[$missing => $value]`, an undefined ordinary key variable can now resume a
+Warning callback while null/bool/int/float value CVs stay live. A handler's
+`$missing=9; $value=44` still inserts `""=>44`; later items read the new key.
+Returning false forwards the Warning, and an object-free supplied throw cancels
+the array assignment. Strings, owning values and constrained/reference CVs remain
+partial. [Undefined-key review](coverage/semantics/array-literal-undefined-key-warning-review.json).
 
 [NULL literal keys](docs/semantics/DIMENSIONS.md) restore the original ordinary
 value CV after the deprecation handler, then insert that value under `""`.
@@ -2116,6 +2128,11 @@ A returning handler can publish the empty-name constant; a throwing handler keep
 the raw null API argument. Strict calls raise `TypeError` without that warning.
 The [null-name review](coverage/semantics/global-constant-null-name-review.json)
 records callback order, trace views and resumption checks.
+Captured NULL query callees also stay alive through deprecation callbacks and
+retire after return or throw. Strict ordinary calls reject NULL; explicit
+`__invoke` stays weak in strict source. Returning false permits default reporting;
+throws preserve raw NULL API/wrapper arguments and the unassigned caller result.
+[Captured NULL query review](coverage/semantics/constant-owned-null-query-review.json).
 Array queries retain the stored root and children; existing COW preserves nested
 writes, reference acquisition and append history. Immutable and mutable empty
 roots retain their provenance. The [array-query review](coverage/semantics/global-constant-array-review.json)
@@ -4558,7 +4575,12 @@ returned markers do not. Wider recursion and lifetime forms remain partial.
 Explicitly unset public untyped declarations now share this captured NULL path,
 retaining their descriptor through population and local cleanup.
 [Four new source agreements and 542 focused premises](coverage/semantics/magic-get-unset-recursion-review.json)
-distinguish typed/private refusal controls; those later Error paths remain partial.
+distinguish typed/private Warning refusals and retain their original cuts.
+Public typed UNSET reentry now raises a fresh Error with the declaring class and
+inner read's file/line, including during actual local cleanup. Nullable NULL
+recovery/reset, caller-CV destruction before catch and replacement Exception's
+Previous link pass [four source agreements and 496 focused premises](coverage/semantics/magic-get-recursive-error-review.json).
+Private denial and wider typed/receiver/lifetime forms remain partial.
 Denied private/protected reads and inherited-private literal fallback now invoke
 the getter without applying the hidden property's type. Allowed lexical reads
 use the physical backing key or raise its initialization Error. The original

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "milestone": "OP82 logical XOR NaN callback sequencing",
-  "status": "bounded independently reviewed semantics; private publication awaiting composition",
+  "status": "bounded independently reviewed semantics; private composition awaiting actual-tail review",
   "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/ordinary precision14 profile",
   "scope": "LOGICALXOR with distinct ordinary allocated nonreference float CVs, initially NaN LEFT and float RIGHT, named Warning callback, and remaining reads in the same saved float slots. Each conversion reads its live float after its own Warning; converted LEFT truth stays cached across RIGHT. A LEFT-handler throw still processes remaining RIGHT warning/default before unwinding the same Exception; a RIGHT-handler throw cancels delivery directly. Copied/reference/owning operands, representation changes and wider handlers remain partial.",
   "tested_revision": "8423be817e946b77717669215cd31a6873d16573",
@@ -115,5 +115,16 @@
       "taskset -c 1 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-82/run-focused.py 8423be817e946b77717669215cd31a6873d16573 1"
     ],
     "record": "Restore matching Git cut/local tools and retained original paths; choose fresh output directories. Focused fixtures reuse accepted source/native tuples without execution replay. Raw external evidence is not a build input; local regular-binary reuse proves no fresh offline rebuild."
+  },
+  "composition": {
+    "parent": "3dd56d5d0a15f111045ca9c811aa970843bc8368",
+    "private_publication": "9e2f1aea7ae7e3f229bc46760ad17f718babb081",
+    "modules": 409,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "f5c4464d9151c008bfc647db7278369bc6cc6f85d37050a3c011deb319f86e6a",
+      "spec/semantics/40-control.watsup": "760a0c6adeda30304a8ee1771087485cb4d69ae27e3c9a8c27b0025ec298eb49",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "63d59cc0a6401e01f7d5efd9e28c6172ce2db2a01e3cfc93b8e142dbfb48c024"
+    },
+    "gate": "Tested40/404 and six OP82 scripts remain private-exact. Removing exactly four OP82 forward-type/task lines from30 reproduces parent30; all other semantic paths/manifest remain parent-exact.207 requires missing-CV comparison array ALIAS payloads; all XOR/CALLS CVs are defined floats/ints and the source operator is LOGICALXOR.380 requires user typed-UNSET implicit __get reentry, absent from primitive CVs and builtin Throwable observers.400 requires an owned CONSTANT/DEFINED NULL query; NAN is a named-constant fetch and neither source invokes those queries.41/413 require ARRAY_VALUE with an undefined key variable and a literal builder; no source contains an array literal. There is no state/frame/heap field or default change. Thus the actual selectors are disjoint, source3/focused605 retain8423/409 without joined replay or algorithm/rebuild renewal. PROGRESS retains actual-parent family/integrated/remaining/paused facts plus the root-provided active snapshot, removing integratedCLASS121. Candidate review pending."
   }
 }

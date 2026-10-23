@@ -2,6 +2,7 @@ dec $array_float_key_pending(pstate) : bool
 dec $array_float_array_key_pending(pstate) : bool
 dec $array_float_ref_key_pending(pstate) : bool
 dec $array_null_key_pending(pstate) : bool
+dec $array_undefined_key_pending(pstate) : bool
 
 rule PhpStep/array-literal: S ~> S_new[.TODO = (ARRAY_NEXT n phpType13*) :: ptask_tail*][.RESULT = KNOWN PNULL][.ORIGIN = $origin_first_item(S.ORIGIN, phpType13*)]
   -- if S.TODO = (EVAL (NExprArray (SEQUENCE phpType13*) metadata)) :: ptask_tail*
@@ -32,6 +33,7 @@ rule PhpStep/array-value-keyed: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13_tail*
   -- if ~$array_float_key_pending(S)
   -- if ~$array_float_array_key_pending(S)
   -- if ~$array_null_key_pending(S)
+  -- if ~$array_undefined_key_pending(S)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
@@ -47,6 +49,7 @@ rule PhpStep/array-key-abrupt: S ~> S_key[.TODO = eps]
   -- if ~$array_float_key_pending(S)
   -- if ~$array_float_array_key_pending(S)
   -- if ~$array_null_key_pending(S)
+  -- if ~$array_undefined_key_pending(S)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_key = $key_operand(S_read, poperand, z)

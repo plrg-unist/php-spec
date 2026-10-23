@@ -37,6 +37,11 @@ the original fixture compiler failure and observer limitations. Its 5,212,465-by
 archive has SHA-256
 `e94cc096c40b1a22af50f5823ea8e2ea6b64991819ba470bfbdaf03de6a812c5`.
 
+Typed recursive-getter Error evidence is retained in
+`../php-spec-evidence-archive/magic-get-recursive-error-121/manifest.json`: native6,
+the unchanged-model PHP-error mismatch, four source agreements, the zero-evaluation
+fixture failure and 496 focused premises. The archive includes tested-input snapshots.
+
 Keep future compressed raw traces, source snapshots and tool copies in this
 external archive (using new paths for new evidence) or in ignored `.tools/`.
 Commit concise reports and manifests with hashes and locations. Preserve raw

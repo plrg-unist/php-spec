@@ -6,9 +6,7 @@ import global_constant_sources as family
 from undefined_comparison_reference_array_cases import CASES
 
 family.CASES = CASES
-family.UNSUPPORTED = {
-    'reference-array-nested-alias-resume-boundary': ('spaceship warning changed opposing scalar', b'B|H|'),
-}
+family.UNSUPPORTED = {}
 family.BASELINE = ('error-handler ingress requires a producer continuation', b'')
 family.MODEL_TIMEOUTS = {
     'reference-array-predicates-no-init': 60,

@@ -8,7 +8,6 @@ from undefined_comparison_object_reference_array_cases import CASES
 family.CASES = CASES
 family.UNSUPPORTED = {
     'object-reference-array-internal-alias-entry-boundary': ('error-handler ingress requires a producer continuation', b'B|'),
-    'object-reference-array-nested-alias-resume-boundary': ('spaceship warning changed opposing scalar', b'B|H|'),
 }
 family.BASELINE = ('error-handler ingress requires a producer continuation', b'')
 family.MODEL_TIMEOUTS = {
