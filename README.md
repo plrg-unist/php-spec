@@ -589,6 +589,15 @@ pass; two Generator/user IteratorAggregate controls remain Unsupported. Earlier
 fixture/timeouts retain zero credit. Builtin Traversable classification and wider
 producers remain open.
 
+[WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
+now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
+throws the object-key `Error` before copying its current value or entering the
+API, preserving even a map-owned quiet object. Borrowed map/key owners and saved
+setters survive both paths. Four source agreements, strict410 and 407 state
+conditions pass; the original strict and raw-state fixture failures retain zero
+credit. Wider entries, temporary operands, loss of external owners and GC
+contexts remain open.
+
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
 send/callback site. Ordinary Closure PIPE follows caller strictness; normal and

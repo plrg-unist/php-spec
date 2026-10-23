@@ -1,0 +1,95 @@
+{
+  "scope": "CONFIG INI_SET unpack from one initialized borrowed CV holding an externally owned empty/singleton WeakMap; live external stdClass key, existing NULL/bool/int/string current or parentless methodless leaf INSTANCE current, optional externally retained intrinsic setter. Source validation covers fixed calls and explicit retained __invoke.",
+  "status": "integrated",
+  "reviewer": "/root/source86_review",
+  "parent": "5d56de254246b03c64ddcf1a565b8e8e1ac3069a",
+  "source_only_revision": "334d56943e228dd2b5407acb6c84ba9d25b7a3f8",
+  "initial_semantic_revision": "c429902741fa969b75b225c389424a60227bde1e",
+  "semantic_and_source_revision": "f90fafb27217e28a369c741e0ccdce074914cb51",
+  "state_revision": "dfac5af1b95c9d4e5e743bdbfe7f625f28b76fd6",
+  "ordered_modules": 410,
+  "semantic_sha256": {
+    "spec/semantics/420-config-iterator-unpack.watsup": "8218bfbe6bb0d7c0fc5ccd0e31aeca41e37289224e5c0f2399d535b2bcb19d59"
+  },
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "primary": "Pinned Zend/zend_vm_def.h ZEND_SEND_UNPACK calls get_current_data before get_current_key, then zend_throw_error for a non-int/non-string key before copying/sending current. The key temporary is destroyed before iterator dtor. Zend/zend_weakrefs.c zend_weakmap_get_iterator owns DATA, get_current_data borrows the table pointer, get_current_key ZVAL_OBJ_COPYs Key, and iterator_dtor deletes the cursor/releases DATA. Empty traversal falls through to ordinary invocation/arity reception.",
+  "semantics": "Sole420 change recognizes actual WEAKMAP as Traversable and authenticates original CONFIG_UNPACK_PREP/source/selected callee, one borrowed CV and live shared map/key/optional receiver owners. Quiet bounded native pins retire silently inside one authored step; no PHP ARRAY represents the unpacked map; no historical pack certificate, iterator task/cursor/schema or GC rule is invented. Occupied finish returns original state with THROWN Error/key message/unpack line, so no current copy/send or API/__invoke frame exists. Empty finish uses existing config_receive with INDEX1/SENTeps under original prep, producing exact2/0 ArgumentCountError at call line with API/optional wrapper args[]. Unsupported scope uses original state and preserves borrowed RESULT/root ownership.",
+  "normalization": "152 default same-frame Throwable continuation retires the original prep before THROW_SEARCH, so retained callee owners go3 raw\u21922 normalized, then3 at saved-setter recovery\u21922 after return. Raw API trace_materialize leaves RESULT=PARRAY trace while THROWING;166 pending unpack-result validation is a normal-entry contract,84 bypasses non-NORMAL states. Fixtures keep raw trace/heap/owner assertions and validate full descriptors after driven normalization. Occupied raw THROWN keeps original borrowed RESULT/full heap exactly.",
+  "accepted": [
+    "Native author3+peer1 PASS at334d, all exit0/quiet/stable/reaped. Model source4 PASS atf90 with exact native stdout/stderr/PHPexit0, accepted/program/normal; no native renewal. Empty fixed/owned errors use call lines4/5, occupied scalar/peer errors unpack lines6/11. Explicit empty shows ini_set+__invoke/args[]; occupied peer has no API/wrapper frame and preserves result99, precision14, map-only current and saved-setter recovery14\u21929.",
+    "Corrected strict410 full SL elaboration/algorithmic/structuring PASS atf90 in9.531s/cap90, true LF/empty stderr/exit0/stable/no survivors. All later semantic bytes remain exactf90.",
+    "Author109+117 and independent181, total407 strict-SL conditions PASS atdfac in14.036/16.936/19.603s at unchanged90 caps, true LF/empty stderr/exit0/stable/no survivors. Source-reached prep/scope, actual API/wrapper versus empty key trace, full raw heap identity/no ARRAY/send, unchanged map/key/current ownership, callee retirement, source/owner refusals including raw last-callee Unsupported, caught Error identity, recovery and two budget points are checked.",
+    "Existing stdClass non-Traversable TypeError and Generator/user Aggregate Unsupported selectors remain disjoint: weakmap_at is false for those old value variants. No old source/state/controls or accepted Source87 evidence is replayed. Native compact observations are distinct from the reached-state root/trace/whole-state proofs."
+  ],
+  "conditions": {
+    "author_fixed_empty": 109,
+    "author_retained_empty": 117,
+    "independent_retained_occupied": 181,
+    "total": 407
+  },
+  "genuine_zero_credit": "Untouched334d runtime5d56/410 occupied-scalar completes normally/CLI0 but catches TypeError and prints T|Only arrays and Traversables can be unpacked, WeakMap given|6|Z|99|14|V|precision|R|14|9; native prints E|Keys must be of type int|string during argument unpacking. Exact stdout mismatch gives outer harness1/agreement0,13.751s/host60/no survivors. This is a genuine wrong caught-error observation, not Unsupported or an unhandled php_error.",
+  "failures": [
+    {
+      "revision": "c429902741fa969b75b225c389424a60227bde1e",
+      "artifact": "raw/.tools/config-weakmap-unpack-strict-88/report.json",
+      "credit": 0,
+      "cause": "Pre-evaluation invalid binding n inside a noninvertible conjunction at420:141; two result-binding premises split, no domain change.7.093s/exit1/cap90/stable/quiet stdout/no survivors; source/state checks unrun."
+    },
+    {
+      "revision": "f90fafb27217e28a369c741e0ccdce074914cb51",
+      "artifact": "raw/.tools/config-weakmap-unpack-state-binding-88/check-report.json",
+      "credit": 0,
+      "cause": "First108 evaluates until call_descriptors_valid(S_raw), incorrectly applying normal-entry result validation to raw THROWING API trace ARRAY.10.678s/exit1/cap90/stable/no survivors; other116/181 unrun. Public checks move after normalization, raw heap remains; driven prep/owner expectations corrected before later checks. No runtime or accepted source/strict repeat."
+    }
+  ],
+  "recorder": "Four-line shared global_constant_sources correction uses phase+existing report case suffix for the three inner recorder paths. Only model --case artifact names change; native/baseline/full-model names and source/cwd stay exact. Static scan found no global-family fixed-name consumers. Original genuine report+all four process/exit/stdout/stderr files are retained and hash-identical after full model; the prior Source87 loss is neither reconstructed nor reclassified.",
+  "execution": {
+    "cpu": 3,
+    "address_space_bytes": 3221225472,
+    "state_and_strict_cap_seconds": 90,
+    "source_steps": 10000,
+    "source_CLI_seconds": 45,
+    "source_host_seconds": 60,
+    "mode": "Production source SL; fixture --sl with caches false/encountered determinism true. All sessions and process groups reaped; CPU3 released."
+  },
+  "commands": {
+    "native_and_genuine": "Native source scripts --phase native at334d, then author --phase model --case occupied-weakmap-rejects-object-key-before-any-config-send against original native root; exact wrappers/exits in native-88/outer-commands.json.",
+    "strict_and_models": "Corrected strict-binding-88/run.py then author/peer --phase model atf90; exact argv and wrappers in strict report and check-binding-commands-88.json. Original c429 packet stopped at strict.",
+    "focused": "Author/review protocols --phase prepare|check --sources original native/review roots --output state-normalized-88/peer-state-normalized-88 atdfac. Exact serial240/150 wrappers/exits in check-normalized-commands-88.json; unchanged inner90 limits."
+  },
+  "raw_root": "../php-spec-evidence-archive/config-weakmap-unpack-88",
+  "manifest_sha256": "4bdcf3c353226b611bdd5c6a8010895e515bc165453f414f434150f7efb4468c",
+  "recovery": "External manifest maps23 moved roots/logs/command records to original WT88 paths and hashes16 reports. Restore recorded revisions/paths/cwd and verify hashes. RAW STOP/no process preceded one relocation; no backup checkout or extra audit archive. Evidence is not a build prerequisite.",
+  "remaining": "ARRAY/float/wider current values, wider keys/classes, temporary/reference operand producers, extra arguments/packs, loss of external map/key/callee ownership and GC callback lifetimes and other callee/CONFIG/Traversable forms remain partial. Unhandled WEAKMAP modes are explicit Unsupported; old G/A controls keep their earlier cuts. M135 ARRAY backedge/GC and M136 foreach ownership remain separate; no30/129/386 changes. Paused OP12, Source47 low-precision DEFINE NaN, owned NUL release, undefined byref LIST and COMP88 remain untouched. No engine bug or intentional divergence identified; no full-core/equivalence/BOLA claim.",
+  "composition": {
+    "parent": "cc4dae969ce6c02cab27075e9ffbae0bff6ba938",
+    "private_publication": "aa0e2ebb9ae2ee6aebb172770935daf21cf03c49",
+    "ordered_modules": 410,
+    "preservation": "420 and all five scripts are publication-exact. Every other runtime/schema/ordered manifest/pipeline path remains actual-parent exact; no state-field lift. README/family additions, three inventory suffixes and compact PROGRESS preserve incoming M135 behavior/evidence.",
+    "incoming_review": "Independent5d56\u2192cc4 review CLEAR: every new386 branch requires a PARRAY entry/backedge or ARRAY GC shape. This slice uses empty/scalar/methodless leaf INSTANCE maps, and old scalar/object helper bodies remain exact. No producer reaches the new branch, so no joined execution or renewed evidence is warranted.",
+    "evidence": "Native4/genuine334d, strict410/source4f90 and407 statedfac retain their original cuts. Two failures0 remain intact; metadata-only composition adds no execution/renewed credit."
+  }
+}

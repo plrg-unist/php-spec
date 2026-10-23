@@ -18,7 +18,7 @@ dec $config_iterator_finish(pstate, pconfigiterator, ptask*) : pstate
 dec $config_iterator_discard(pstate, pconfigiterator, text) : pstate
 dec $config_iterator_discard_allowed(pstate, pconfigiterator) : bool
 
-def $config_traversable_value(S, POBJECT n) = ($useriter_instance(S, n) \/ $generator_object(S, n) \/ $generator_from_aggregate(S, POBJECT n))
+def $config_traversable_value(S, POBJECT n) = ($useriter_instance(S, n) \/ $generator_object(S, n) \/ $generator_from_aggregate(S, POBJECT n) \/ $weakmap_at(S, n))
   -- if $(n < |S.OBJECTS|)
   -- if HOBJECT n <- S.ALLOCATIONS
 def $config_traversable_value(S, pvalue) = false -- otherwise
@@ -77,7 +77,78 @@ rule PhpStep/config-traversable-unsupported: S ~> S_value[.COMPLETION = UNSUPPOR
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN (POBJECT n_object)
   -- if $config_traversable_value(S_value, POBJECT n_object)
+  -- if ~$weakmap_at(S_value, n_object)
   -- if ~$config_iterator_start(S_value, pconfigcall, S.RESULT, n_object)
+
+;; With external map/key owners and a quiet current, WeakMap's DATA/key pins
+;; retire silently. The current table pointer is borrowed, never copied/sent.
+dec $config_weakmap_value(pstate, pvalue) : bool
+dec $config_weakmap_contents(pstate, nat) : bool
+dec $config_weakmap_owner(pstate, nat?) : bool
+dec $config_weakmap_scope(pstate, pconfigcall, poperand, nat) : bool
+dec $config_weakmap_finish(pstate, pconfigcall, nat, int) : pstate
+def $config_weakmap_value(S, pvalue) = true -- if $weakmap_scalar_value(S, pvalue)
+def $config_weakmap_value(S, POBJECT n) = true
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if ~$instance_storage_freeing(S, n)
+  -- if $node_children(S, HOBJECT n) = eps
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.PARENT = eps /\ pclassdesc.METHODS = eps
+def $config_weakmap_value(S, pvalue) = false -- otherwise
+def $config_weakmap_contents(S, n) = true -- if S.OBJECTS[n] = WEAKMAP eps
+def $config_weakmap_contents(S, n) = true
+  -- if S.OBJECTS[n] = WEAKMAP (pweakmapentry)
+  -- if $(pweakmapentry.KEY < |S.OBJECTS|) /\ (HOBJECT pweakmapentry.KEY) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pweakmapentry.KEY] = STDINSTANCE
+  -- if ~$instance_storage_freeing(S, pweakmapentry.KEY)
+  -- if $node_children(S, HOBJECT pweakmapentry.KEY) = eps
+  -- if $($heap_owners($heap_graph(S), HOBJECT pweakmapentry.KEY) > 0)
+  -- if $weakmap_before_valid(S, pweakmapentry)
+  -- if $config_weakmap_value(S, pweakmapentry.VALUE)
+def $config_weakmap_contents(S, n) = false -- otherwise
+def $config_weakmap_owner(S, eps) = true
+def $config_weakmap_owner(S, (n)) = $($heap_owners($heap_graph(S), HOBJECT n) > 1)
+def $config_weakmap_scope(S, pconfigcall, poperand, n) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.INDEX = 0 /\ pconfigcall.SENT = eps
+  -- if ~pconfigcall.NAMED /\ pconfigcall.PACKS = eps
+  -- if ~$pipe_site(S, pconfigcall.SITE)
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (1)
+  -- if $config_pending_valid(S, pconfigcall, true)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, true, eps, PORIGIN n_source pcpath, z))
+  -- if poperand = VARIABLE ptbytes z
+  -- if $code_at(S.CODE, n_source) = (pcode)
+  -- if $source_unit(S.SOURCES, n_source) = (pcunit)
+  -- if $unpack_cv_at(pcode, pcunit, pcpath) = (ptbytes)
+  -- if S_input = $quiet_operand(S, poperand)
+  -- if S_input.COMPLETION = NORMAL /\ S_input.RESULT = KNOWN (POBJECT n)
+  -- if $weakmap_at(S, n) /\ ~$instance_storage_freeing(S, n)
+  -- if $($heap_owners($heap_graph(S), HOBJECT n) > 0)
+  -- if $config_weakmap_owner(S, pconfigcall.OWNER)
+  -- if $config_weakmap_contents(S, n)
+def $config_weakmap_scope(S, pconfigcall, poperand, n) = false -- otherwise
+def $config_weakmap_finish(S, pconfigcall, n, z) = $config_receive(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall[.INDEX = 1])
+  -- if S.OBJECTS[n] = WEAKMAP eps
+def $config_weakmap_finish(S, pconfigcall, n, z) = $throw_scalar(S, "Error", $ptascii("Keys must be of type int|string during argument unpacking"), z)
+  -- if S.OBJECTS[n] = WEAKMAP (pweakmapentry)
+rule PhpStep/config-weakmap-unpack: S ~> $config_weakmap_finish(S, pconfigcall, n, z)
+  -- if S.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (POBJECT n)
+  -- if $config_weakmap_scope(S, pconfigcall, S.RESULT, n)
+rule PhpStep/config-weakmap-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "CONFIG WeakMap unpack outside borrowed quiet domain"]
+  -- if S.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (POBJECT n)
+  -- if $weakmap_at(S_value, n)
+  -- if ~$config_weakmap_scope(S, pconfigcall, S.RESULT, n)
 
 def $config_iterator_stage(S, pconfigiterator, text) = true
   -- if text <- ["rewind-start", "rewind"]

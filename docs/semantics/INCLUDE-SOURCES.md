@@ -1198,8 +1198,40 @@ recorder files remain unavailable, without reconstruction or replay.
 
 Last-owner finish and cleanup stop explicitly before releasing their retained
 roots; wider retirement is partial. Generator and user IteratorAggregate unpack
-controls are explicitly Unsupported. The pre-existing builtin-Traversable false
-TypeError classification, including WeakMap, remains open; ordinary non-Traversable
-TypeError is preserved. Named keys, nonstring/reference/owning values, additional
+controls are explicitly Unsupported. At the Source87 cut, builtin WeakMap still
+received a false TypeError; the increment below corrects that classification and
+bounded producers. Ordinary non-Traversable TypeError is preserved. Named keys,
+nonstring/reference/owning values, additional
 arguments/packs, other CONFIG callees, suspension, warning/arity reception and
 wider lifetime producers remain partial. Paused boundaries remain untouched.
+
+The [WeakMap CONFIG increment](../../coverage/semantics/config-weakmap-unpack-review.json)
+admits one borrowed initialized CV containing an externally held empty/singleton
+WeakMap into INI_SET. Existing source/callee authority remains intact. Empty
+traversal reaches exact2/0 ArgumentCountError at the call line, with empty API
+arguments and an explicit __invoke wrapper when present. A live stdClass key in
+an occupied map produces Error at the unpack line before copying or sending
+current, with no synthetic API/wrapper frame. Supported current values are the
+existing quiet scalar domain or a parentless methodless leaf INSTANCE; the map
+may solely own that object.
+
+With these external map/key owners, the native iterator/key pins retire silently
+inside one authored rule. No PHP ARRAY represents the unpacked map; no iterator
+task, cursor or schema is added.
+Raw Error preserves the original prep and full heap; normal exception transition
+then retires prep before throw search. Raw API allocation temporarily returns its
+trace ARRAY, so descriptor checks apply after normalization while raw trace/heap
+assertions remain. Actual source-reached state tests cover source/owner refusals,
+callee owners, Error identity, recovery and budgets.
+
+Four source agreements and strict410 retain `f90fafb27`; author109+117 and
+independent181 conditions retain `dfac5af1b`, total407. The original strict
+binding failure and inappropriate raw descriptor assertion retain zero credit.
+Native4 and the genuine wrong caught-TypeError comparison retain `334d56943`.
+Case-specific inner recorder stems preserve all original genuine files alongside
+the later full model; no accepted replay occurs. ARRAY entries, wider object/key
+forms, temporary operands, multiple packs, loss of external map/key/callee owners,
+GC callbacks and
+other CONFIG/Traversable producers remain partial. Existing stdClass TypeError
+and Generator/user Aggregate Unsupported controls are preserved by disjoint guards;
+their earlier executions are not renewed.

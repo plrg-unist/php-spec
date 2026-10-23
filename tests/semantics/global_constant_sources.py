@@ -98,6 +98,7 @@ def main():
         return
     out = args.output.resolve(); out.mkdir(parents=True, exist_ok=True)
     suffix = '-' + '-'.join(args.case) if args.phase == 'model' and args.case else ''
+    stem = args.phase + suffix
     report_path = out / (args.phase + suffix + '-report.json')
     assert not report_path.exists()
     profile = json.loads((ROOT / 'tests/semantics/profile.json').read_bytes())
@@ -137,10 +138,10 @@ def main():
                 assert original['source_sha256'] == row['source_sha256']
                 timeout = MODEL_TIMEOUTS.get(name, 45)
                 command = [str(ROOT / 'bin/php-semantics'), str(source), '--steps', '10000', '--timeout', str(timeout)]
-                row['process'] = recorder.recorded(command, directory / args.phase, timeout + 15)
-                outcome = json.loads((directory / (args.phase + '.stdout')).read_bytes()); row['outcome'] = outcome
+                row['process'] = recorder.recorded(command, directory / stem, timeout + 15)
+                outcome = json.loads((directory / (stem + '.stdout')).read_bytes()); row['outcome'] = outcome
                 assert not row['process']['timeout'] and not row['process']['group_after']
-                assert (directory / (args.phase + '.stderr')).read_bytes() == b''
+                assert (directory / (stem + '.stderr')).read_bytes() == b''
                 assert outcome['frontend'] == 'accepted' and outcome['checked'] == 'program'
                 if args.phase == 'baseline':
                     assert row['process']['exit'] == 1 and outcome['status'] == 'unsupported'
