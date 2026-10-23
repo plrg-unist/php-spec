@@ -10,7 +10,7 @@ sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 git = lambda *parts: subprocess.check_output(['git', *parts], cwd=ROOT, env=recorder.ENV).decode().strip()
 
 PREFIX = r'''
-syntax pgrstage = GR_OUTER | GR_RECEIVE porigin | GR_RECURSE | GR_INVOKE | GR_HANDLER | GR_WARNING_RESULT | GR_WARNING_THROW | GR_GET_RESULT | GR_GET_COPY | GR_GET_THROW | GR_EXIT | GR_DTOR nat | GR_CATCH | GR_OUTPUT ptbytes
+syntax pgrstage = GR_OUTER | GR_ENTER porigin | GR_RECURSE | GR_INVOKE | GR_HANDLER | GR_WARNING_RESULT | GR_WARNING_THROW | GR_GET_RESULT | GR_GET_COPY | GR_GET_THROW | GR_EXIT | GR_DTOR nat | GR_CATCH | GR_OUTPUT ptbytes
 dec $gr_output(pevent*) : ptbytes
 dec $gr_output_event(pevent) : bool
 def $gr_output(eps) = eps
@@ -22,8 +22,13 @@ dec $gr_stage(pstate,pgrstage) : bool
 def $gr_stage(S,GR_OUTER) = true
   -- if S.CURRENT = eps /\ S.FRAMES = eps
   -- if $property_get_plan(S) =/= eps
-def $gr_stage(S,GR_RECEIVE porigin) = true
-  -- if S.TODO = (TYPE_RECEIVE porigin 0) :: ptask_tail*
+;; Complete untyped arguments enter the body directly, without TYPE_RECEIVE.
+def $gr_stage(S,GR_ENTER porigin) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_GET_TARGET n porigin
+  -- if pcallcontext.FUNCTION = porigin /\ S.ORIGIN = (porigin)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if $property_get_frame(S,pcallcontext,pframe)
 def $gr_stage(S,GR_RECURSE) = ($property_get_recursive_plan(S) =/= eps)
 def $gr_stage(S,GR_INVOKE) = true
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
@@ -110,11 +115,13 @@ $target_nodes(PROPERTY_GET_TARGET n_child ppropertyget.METHOD) = eps
 $heap_owners($heap_graph(S_call),HOBJECT n_child) = 2
 ~$gr_active(S_call,n_child,ptbytes_name) /\ $gr_guard(S_call)
 ''')
-RECEIVE = lines(r'''
+ENTER = lines(r'''
 S_get.CURRENT = (pcallcontext_get)
 pcallcontext_get.TARGET = PROPERTY_GET_TARGET n_child ppropertyget.METHOD
 S_get.FRAMES = [pframe_get]
 pframe_get.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+$lookup(S_get.ENV,$ptascii("name")) = (n_name_cell)
+S_get.STORE[n_name_cell] = DEFINED (PSTRING ptbytes_name)
 $property_get_frame(S_get,pcallcontext_get,pframe_get)
 $property_get_recursive_frame(S_get,pcallcontext_get,pframe_get,n_child,ptbytes_name)
 $property_get_recursive_guard(S_get,S_get.CURRENT,S_get.FRAMES,n_child,ptbytes_name)
@@ -397,7 +404,7 @@ def main():
             if name == 'sole':
                 reached += ['$lookup(S_front.ENV,$ptascii("live")) = (n_live_cell)',
                     'S_front.STORE[n_live_cell] = DEFINED (PINT 7)']
-            reached += reach('S_get','S_call','GR_RECEIVE ppropertyget.METHOD') + RECEIVE
+            reached += reach('S_get','S_call','GR_ENTER ppropertyget.METHOD') + ENTER
             if name == 'cleanup':
                 reached += reach('S_exit','S_get','GR_EXIT')
                 reached += reach('S_inner','S_exit','GR_RECURSE') + INNER + CLEANUP
