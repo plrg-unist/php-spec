@@ -8,24 +8,23 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
-OP81 is composed over `5c5d2c5bd`/409: explicit `(array)` of direct-CV NaN warns
-before copying the same live float into a fresh singleton. A named handler's
-`0.0` write produces `[0.0]`; later array COW and source `x=8` remain independent.
-A supplied Exception20 cancels delivery and outer assignment, preserving `100`.
+COMP119 is composed over `92dc63f27`/409. Missing-CV comparisons now retain
+one flat child array behind a reference entry. Singleton outer copies unwrap the
+cell; inner COW and ordinary snapshots keep separate child tables, while shared
+cells follow replacement. Final child-object release can run destruction before
+store/catch; outside aliases delay it. Empty and pooled children preserve outer truth.
 
-Two exact originals/full409 and author192 pass at `9e5255eb8`/409; corrected
-peer133 passes at `fc3f2cb1c` with unchanged runtime. The original peer fixture
-expected the bool message instead of array and retains zero credit; only that
-fixture was rerun. The 325 total premises combine actual callbacks, fresh-array
-ownership/COW and derived source/consumer/representation/no-rewarning controls.
-[NaN array-cast review](coverage/semantics/arraycast-nan-warning-review.json).
+Ten source agreements/two Unsupported controls and 382 independent state premises
+retain `7dfd813c2`; author202 retains `f35cefadb`, and corrected/unrun247 retains
+`05650e70c`/409. The six groups execute 831 premises; two affected old selectors
+agree normally without historical renewal. One budget fixture failure retains zero
+credit: its restart moved before the raw comparison so the driver retains release
+context. Runtime/source acceptance was unchanged and successful checks were not replayed.
+[Child-array review](coverage/semantics/undefined-comparison-array-payload-review.json).
 
-Only64 additions in30/58/404 add the cast-specific source/task and normal
-allocation path. The record/slot helpers, allocator, old Boolean casts/NOT,
-shared numeric/formatting, CONFIG/400, roots and generic unwind stay unchanged.
-References/rebinding, copied operands, changed representations and wider
-handlers/lifetimes remain partial. Native throwing allocation timing is unclaimed.
-Implementation, evidence and publication are independently reviewed.
+Only207 adds bounded payload eligibility. Source certificates, roots and all
+incoming operational bytes stay exact. Child references/deeper arrays, cycles,
+internal/Stringable objects and wider histories remain partial; paused lanes stay paused.
 
 ## Integrated behavior and entrypoints
 
@@ -36,7 +35,7 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | --- | --- |
 | Source and compilation | Checked ASTs retain source occurrences, ordered publication, compilation phases and diagnostic priority. Dynamic source and request inputs have explicit provider boundaries. [Compiler](docs/semantics/SOURCE-COMPILER.md), [context](docs/semantics/SOURCE-CONTEXT.md), [dynamic source](docs/semantics/DYNAMIC-SOURCE.md). |
 | Operators and warning decisions | Arithmetic/casts distinguish saved values from live CVs and stage supported diagnostics through callbacks. Direct NaN Boolean NOT/Boolean cast produce stricttrue/false after a live0.0 write; NaN array casting constructs a fresh singleton from that live float. Copied fractional BITNOT retains its saved integer. [Operators](docs/semantics/ORDINARY-OPERATORS.md), [truth callbacks](docs/semantics/SOURCE-WARNING-TRUTH.md), [numerics](docs/semantics/NUMERICS.md). |
-| Comparisons and arrays | Seven missing-CV comparisons admit bounded DIRECT/ALIAS arrays, including ordinary non-Stringable object leaves. Cell replacement, COW and final release preserve distinct owners. NULL-key literals support bounded CV, returned, temporary and pooled CONST values, including nested DIRECT subtrees with physical child edges and handler-time COW. [Nested CONST review](coverage/semantics/array-literal-null-key-constant-subtree-review.json). [Comparisons](docs/semantics/COMPARISONS.md), [dimensions](docs/semantics/DIMENSIONS.md), [object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json). |
+| Comparisons and arrays | Seven missing-CV comparisons admit bounded DIRECT/ALIAS arrays, including ordinary non-Stringable object leaves. Reference-held flat DIRECT child arrays preserve outer/inner COW, snapshots and final child release. [Child-array review](coverage/semantics/undefined-comparison-array-payload-review.json). NULL-key literals support bounded CV, returned, temporary and pooled CONST values, including nested DIRECT subtrees with physical child edges and handler-time COW. [Nested CONST review](coverage/semantics/array-literal-null-key-constant-subtree-review.json). [Comparisons](docs/semantics/COMPARISONS.md), [dimensions](docs/semantics/DIMENSIONS.md), [object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json). |
 | Calls and configuration | Ordinary/scoped/captured calls preserve selected targets, argument order, references and genuine callback frames. Two singleton INI_SET packs retain raw NULL/quiet ARRAY, callee and option through later effects. [Calls](docs/semantics/SOURCE-CALLS.md), [include/configuration](docs/semantics/INCLUDE-SOURCES.md), [two-pack review](coverage/semantics/ini-set-two-pack-null-array-value-review.json). |
 | Constants and callable values | Bounded DEFINE/CONSTANT/DEFINED preserve source authority, scopes, primitive/array/object snapshots and captured intrinsic Closure identity. Captured Boolean/integer/finite-float queries distinguish strict ordinary reception from weak explicit calls and converted API/raw wrapper arguments. [Constant contract](docs/semantics/SOURCE-USER-CONSTANTS.md), [string-query review](coverage/semantics/constant-owned-query-review.json), [scalar-query review](coverage/semantics/constant-owned-scalar-query-review.json). |
 | Classes and properties | Visibility, references, typed writes, hooks, magic access and clone have bounded routes. Same-name implicit getter recursion delivers captured NULL for missing undeclared or explicitly unset untyped public properties; immutable descriptor history survives handler population and local cleanup. [Properties](docs/semantics/SOURCE-PROPERTIES.md), [classes](docs/semantics/SOURCE-CLASSES.md), [recursion review](coverage/semantics/magic-get-recursion-review.json), [declared-UNSET review](coverage/semantics/magic-get-unset-recursion-review.json). |
@@ -54,10 +53,9 @@ than retain superseded operational checkpoints.
 | --- | --- |
 | M134 WeakMap HCELL backedge | Scope agreed; native-first alias-held/unheld packet preparing. |
 | Source87 user-Iterator CONFIG unpack | Native6 retained; genuine wrong TypeError has zero credit; implementation pending. |
-| COMP119 array-valued ALIAS child COW | First two changed-source cases pass; remaining gate running. |
 | V101 | Scoping after V100 integration. |
 
-Iterator49/50/51, V99/V100, M132/M133, A46/A47, OP79/80/81, Source86, COMP118 and CLASS119/120 are integrated
+Iterator49/50/51, V99/V100, M132/M133, A46/A47, OP79/80/81, Source86, COMP118/119 and CLASS119/120 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
