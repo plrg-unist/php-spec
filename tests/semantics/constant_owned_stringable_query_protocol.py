@@ -254,7 +254,7 @@ def order(initial, stdout):
         values += [f'~(HOBJECT {node} <- S_final.ALLOCATIONS)']
     # Result-domain projections are not driven as source states.
     for index,value in enumerate(['PSTRING ' + text('A::B'),
-            'PSTRING ' + text('__COMPILER_HALT_OFFSET__'),'PSTRING [65,0,66]','PINT 0']):
+            'PSTRING ' + text('__COMPILER_HALT_OFFSET__'),'PSTRING ([65,0,66])','PINT 0']):
         values += [f'S_refused_{index} = $dynamic_query_string_finish(S_returned,pconfigcall_S,{value})',
             f'S_refused_{index}.COMPLETION = UNSUPPORTED "Stringable query global name"',
             f'S_refused_{index}.EVENTS = S_returned.EVENTS',

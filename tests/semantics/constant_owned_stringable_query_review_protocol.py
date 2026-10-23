@@ -257,7 +257,7 @@ def checks(initial, stdout):
         *define.finish('S_released',stdout),
         'S_final.USERCONSTANTS = eps', 'S_final.SELECTEDCALLS = eps', 'S_final.SELECTSEQ = 0']
     for index, value in enumerate(['PSTRING ' + text('A::B'),
-            'PSTRING ' + text('__COMPILER_HALT_OFFSET__'), 'PSTRING [65,0,66]', 'PINT 0']):
+            'PSTRING ' + text('__COMPILER_HALT_OFFSET__'), 'PSTRING ([65,0,66])', 'PINT 0']):
         bad = f'S_refused_{index}'
         values += [f'{bad} = $dynamic_query_string_finish(S_returned,pconfigcall,{value})',
             f'{bad}.COMPLETION = UNSUPPORTED "Stringable query global name"',
