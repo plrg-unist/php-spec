@@ -8,7 +8,7 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
-OP82 is privately composed over `304c877d6`/409. Logical XOR converts two distinct ordinary float CVs with initially
+OP82 is composed over `304c877d6`/409. Logical XOR converts two distinct ordinary float CVs with initially
 NaN LEFT in order, reading each live float after its NaN Warning callback.
 LEFT truth stays cached across
 RIGHT's callback: H1 can create RIGHTNaN and H2 can write both zeros while the
@@ -20,7 +20,7 @@ recipes (254/172/179), including derived slot/phase and pending controls, pass a
 `8423be817`/409. The genuine pre-H Unsupported/native/static observations retain
 zero agreement credit. [XOR review](coverage/semantics/xor-nan-warning-review.json).
 Wider operands, changed representations and handlers remain partial; paused lanes
-stay paused. Publication review is complete; actual-tail composition awaits independent review.
+stay paused. Publication and actual-tail composition are independently reviewed.
 
 ## Integrated behavior and entrypoints
 
