@@ -33,7 +33,7 @@ def controls(state, call, owner, label):
             '.KIND = INTRINSIC_DEFINE', '.INDEX = 0', '.SITE = PORIGIN 0 eps',
             f'.LINE = $({call}.LINE + 1)', f'.NAMED = ~{call}.NAMED']:
         values += [f'~$dynamic_scalar_constant_valid({state},{call}[{change}])']
-    values += [f'pconfigpack_{label} = {{INDEX 0, SITE {call}.SITE, LINE {call}.LINE, ARRAY |{state}.ARRAYS|, ITEMS eps}}',
+    values += [f'pconfigpack_{label} = {{INDEX 0, SITE {call}.SITE, LINE {call}.LINE, ARRAY 0, ITEMS eps}}',
         f'~$dynamic_owned_scalar_query_call({call}[.PACKS = [pconfigpack_{label}]])']
     for value in ['PNULL', 'PSTRING ($ptascii("37"))', 'PARRAY 0', 'POBJECT 0',
             'PFLOAT 9218868437227405312', 'PFLOAT 18442240474082181120',
