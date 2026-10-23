@@ -2589,6 +2589,13 @@ no accepted source/native/base/diagnostic replay. Single-prefix short cases,
 reference-valued remainders, wider throws, reentry and GC remain partial.
 [Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M132 composes over actual `75e2d6a1c`/409. Tested modules 156/270 remain byte-exact 5a03;
+every other spec path and the ordered manifest stay parent-exact. Incoming
+NULL-key TMP, copied BITNOT and intrinsic CONSTANT/DEFINED query selectors
+have no producer here; no state/default/root lift or joined actor is required.
+Source2/289+4 retain private 5a03/409 and the interrupted author retains zero,
+without accepted replay or renewed execution credit.
+
 M131 preserves local catch and the first completed return's Notice after two
 normal owning retirements. Five computed slots retire E and D normally, then C
 throws the supplied global object with B/A pending. Existing body order already
