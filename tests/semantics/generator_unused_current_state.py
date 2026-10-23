@@ -171,7 +171,7 @@ S_no_tail_plain.RESULT = KNOWN (POBJECT n_cache)
 S_pending = $generator_set(S_call, n_upper, pgenerator_upper[.PENDING_INIT = true])
 S_pending_plain = $generator_operate_plain(S_pending, pgeneratorop)
 $heap_graph(S_pending) = $heap_graph(S_call)
-$generator_unused_current_result(S_pending, S_pending_plain, pgeneratorop) = S_pending_plain
+$generator_unused_current_result(S_pending, S_pending_plain, pgeneratorop) = S_pending_plain[.RESULT = KNOWN PNULL]
 S_pending_plain.RESULT = KNOWN (POBJECT n_cache)
 S_held = $generator_set(S_call, n_upper, pgenerator_upper[.FRAME = (pframe_upper[.HELD = [HOBJECT n_cache]])])
 S_held_plain = $generator_operate_plain(S_held, pgeneratorop)
