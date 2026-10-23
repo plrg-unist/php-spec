@@ -4774,12 +4774,15 @@ def $boolnot_nan_source(S, pboolnotnanwarning) = false -- otherwise
 dec $boolnot_nan_ready(pstate, pboolnotnanwarning) : nat?
 def $boolnot_nan_ready(S, pboolnotnanwarning) = (n_bits)
   -- if pboolnotnanwarning.INPUT = VARIABLE ptbytes z_input
+  -- if ~$environment_blocked(S, ptbytes)
   -- if ~$foreach_released_name(S, ptbytes)
   -- if $lookup(S.ENV, ptbytes) = (pboolnotnanwarning.CELL)
   -- if $(pboolnotnanwarning.CELL < |S.STORE|)
   -- if (HCELL pboolnotnanwarning.CELL) <- S.ALLOCATIONS
   -- if ~(pboolnotnanwarning.CELL <- S.REFCELLS)
   -- if $propref_at(S.PROPREFS, pboolnotnanwarning.CELL) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, pboolnotnanwarning.CELL) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, pboolnotnanwarning.CELL) = eps
   -- if S.STORE[pboolnotnanwarning.CELL] = DEFINED (PFLOAT n_bits)
   -- if $(n_bits < 18446744073709551616)
 def $boolnot_nan_ready(S, pboolnotnanwarning) = eps -- otherwise
