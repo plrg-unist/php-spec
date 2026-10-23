@@ -10,6 +10,7 @@ dec $property_get_recursive_exit(pstate, ptask*, ppropertyget) : pdestructionfra
 dec $property_get_recursive_exit_task(pstate, ptask, nat, ptbytes) : bool
 dec $property_get_recursive_exit_active(pstate, ptask*, nat, ptbytes) : bool
 dec $property_get_recursive_guard(pstate, pcallcontext?, pframe*, nat, ptbytes) : bool
+dec $property_get_recursive_untyped(pstate, nat, ptbytes) : bool
 dec $property_get_recursive_history(pstate, ppropertywarning) : bool
 dec $property_get_recursive_warning(pstate, nat, ptbytes, int) : ppropertywarning?
 dec $property_get_recursive_plan(pstate) : ppropertywarning?
@@ -429,6 +430,14 @@ def $property_get_recursive_guard(S, pcallcontext?, eps, n, ptbytes) = $property
 
 ;; The Warning's captured read remains null if its handler populates storage.
 ;; Only entry checks absence; history does not reread the receiver CV or slot.
+def $property_get_recursive_untyped(S, n, ptbytes) = true
+  -- if $property_effective_desc(S, n, ptbytes) = eps
+def $property_get_recursive_untyped(S, n, ptbytes) = true
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.TYPE = eps /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ~ppropertydesc.STATIC /\ ppropertydesc.KEY = ptbytes
+def $property_get_recursive_untyped(S, n, ptbytes) = false -- otherwise
+
 def $property_get_recursive_history(S, ppropertywarning) = true
   -- if $property_null_read_valid(S, ppropertywarning.READ)
   -- if ppropertywarning.KEY = ppropertywarning.READ.NAME
@@ -438,7 +447,7 @@ def $property_get_recursive_history(S, ppropertywarning) = true
   -- if (HOBJECT ppropertywarning.OBJECT) <- S.ALLOCATIONS
   -- if ~$instance_storage_freeing(S, ppropertywarning.OBJECT)
   -- if S.OBJECTS[ppropertywarning.OBJECT] = INSTANCE porigin_class
-  -- if $property_effective_desc(S, ppropertywarning.OBJECT, ppropertywarning.KEY) = eps
+  -- if $property_get_recursive_untyped(S, ppropertywarning.OBJECT, ppropertywarning.KEY)
   -- if ~$property_hook_declared(S, ppropertywarning.OBJECT, ppropertywarning.KEY)
   -- if $property_get_method(S, ppropertywarning.OBJECT) = (pmethoddesc)
   -- if ~$function_generator(S, pmethoddesc.FUNCTION) /\ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
