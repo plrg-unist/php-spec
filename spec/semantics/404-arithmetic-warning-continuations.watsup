@@ -4727,3 +4727,31 @@ rule PhpStep/arithmetic-addassign-self-begin: S ~> S[.TODO = (ARITHMETIC_ADDASSI
   -- if $arithmetic_addassign_self_plan(S) = ((pintegeroperation, pvalue, pnumber))
   -- if pintegeroperation.LEFTPOINTER = INTEGER_CV ptbytes
   -- if $lookup(S.ENV, ptbytes) = (n)
+
+;; A completed scalar producer supplies an immutable copy, not a later CV read.
+def $bitnot_source_valid(S, pbitnotwarning) = true
+  -- if S.ORIGIN = (pbitnotwarning.SITE)
+  -- if $origin_node(S.SOURCES, pbitnotwarning.SITE) = (NExprBitwiseNot expression metadata)
+  -- if pbitnotwarning.INPUT = KNOWN (PFLOAT pbitnotwarning.BITS)
+  -- if $integer_operand_source(S, pbitnotwarning.SITE, [PCFIELD 0], pbitnotwarning.INPUT)
+  -- if $code_expression_at_source(S, pbitnotwarning.SITE, [PCFIELD 0]) = (pbitnotwarning.LINE)
+  -- if $(pbitnotwarning.BITS < 18446744073709551616)
+  -- if $float_long(pbitnotwarning.BITS, true) = (pbitnotwarning.VALUE, [PRECISIONLOSS])
+def $bitnot_snapshot(S, pbitnotwarning) = true
+  -- if pbitnotwarning.INPUT = KNOWN (PFLOAT pbitnotwarning.BITS)
+  -- if $bitnot_source_valid(S, pbitnotwarning)
+
+def $bitnot_copy_plan(S) = (pbitnotwarning)
+  -- if $error_handler_eligible(S, 8192) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (BITNOT_RESULT z) :: ptask_tail*
+  -- if S.RESULT = KNOWN (PFLOAT n_bits)
+  -- if $(n_bits < 18446744073709551616)
+  -- if $float_long(n_bits, true) = (i, [PRECISIONLOSS])
+  -- if pbitnotwarning = {SITE porigin, LINE z, INPUT S.RESULT, BITS n_bits, VALUE i}
+  -- if $bitnot_source_valid(S, pbitnotwarning)
+def $bitnot_copy_plan(S) = eps -- otherwise
+
+rule PhpStep/bitnot-copy-begin: S ~> S[.TODO = (BITNOT_WARNING pbitnotwarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $bitnot_copy_plan(S) = (pbitnotwarning)

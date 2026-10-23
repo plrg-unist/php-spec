@@ -72,7 +72,14 @@ Ordinary named calls with no arguments that return arrays by value also resume
 NULL-key callbacks. Their owning returned value stays frozen while producer
 global writes persist. A separate continuation holds acquisition and backup
 owners, then transfers one DIRECT entry or retires both before catch. By-reference
-returns, array-constructor temporaries and wider call forms remain partial.
+returns and wider call forms remain partial.
+
+Runtime array constructors at NULL keys use one owning temporary, with no NULL
+backup or producer-variable reset. The child table freezes before the handler,
+including a scalar reference read by value or a seed increment. Normal completion
+transfers its DIRECT entry; an otherwise unowned table retires on deletion or
+supplied throw.
+Constant arrays, wider payload graphs and other key producers remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
@@ -1053,6 +1060,14 @@ now-zero divisor. The normal control reads its divisor only after both callbacks
 Three originals and 340 focused premises pass in the
 [pending modulo ledger](coverage/semantics/mod-nan-pending-review.json), fixing
 an original NORMAL stderr disagreement. Other operators and producers remain partial.
+
+Evaluated float copies now enter bitwise NOT's precision Deprecated handler.
+A selected ternary keeps `12.5` after the handler removes its source and flips
+the condition, producing strict integer `-13`. A by-value call completes once
+before a supplied handler Exception cancels delivery and preserves outer `100`.
+Two originals and 279 focused premises pass in the
+[copy BITNOT ledger](coverage/semantics/bitnot-copy-warning-review.json).
+Other producers, copied range/NaN and owning histories remain partial.
 
 Range-only bitwise NOT now resumes named Warning handlers for plain float CVs.
 The original `2^63` float survives source removal and produces `PHP_INT_MAX`
