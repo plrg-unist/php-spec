@@ -14,6 +14,7 @@ dec $property_get_recursive_untyped(pstate, nat, ptbytes) : bool
 dec $property_get_recursive_history(pstate, ppropertywarning) : bool
 dec $property_get_recursive_warning(pstate, nat, ptbytes, int) : ppropertywarning?
 dec $property_get_recursive_plan(pstate) : ppropertywarning?
+dec $property_get_recursive_error_plan(pstate) : ppropertydesc?
 dec $property_get_string_capture(pstate, ppropertyget) : ppropertygetstring?
 dec $property_get_string_record(ptask) : ppropertygetstring?
 dec $property_get_string_scope(pstate, ppropertygetstring) : bool
@@ -310,6 +311,7 @@ rule PhpStep/property-get-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic g
   -- if $property_get_pending(S)
   -- if $property_get_plan(S) = eps
   -- if $property_get_recursive_plan(S) = eps
+  -- if $property_get_recursive_error_plan(S) = eps
 
 ;; The internal call borrows its receiver from the one saved RESULT task.
 def $target_nodes(PROPERTY_GET_TARGET n porigin) = eps
@@ -483,6 +485,38 @@ def $property_get_recursive_plan(S) = eps -- otherwise
 rule PhpStep/property-get-recursive-warning: S ~> $property_undefined_read_dispatch(S[.TODO = (DIM_FETCH z) :: ptask_tail*], ppropertywarning)
   -- if S.TODO = (PROPERTY_PREP phpType20 z) :: (DIM_FETCH z) :: ptask_tail*
   -- if $property_get_recursive_plan(S) = (ppropertywarning)
+
+;; A typed UNSET slot reentered under IN_GET throws before return verification.
+;; Defined NULL and lexical denial take different paths through read_property.
+def $property_get_recursive_error_plan(S) = (ppropertydesc)
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text) metadata_name) z) :: (DIM_FETCH z) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL) /\ S.SOURCEPENDING = eps
+  -- if S.ORIGIN = (porigin)
+  -- if pnameread = {SITE porigin, NAME $base64(text), LINE z}
+  -- if $property_null_read_valid(S, pnameread)
+  -- if $property_undefined_borrowed_source(S, pnameread)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS /\ ~$instance_storage_freeing(S, n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if ppropertywarning = {READ pnameread, OBJECT n, KEY pnameread.NAME, FREEING false, BORROWED true, CELL eps}
+  -- if $property_undefined_cv_receiver(S, ppropertywarning)
+  -- if $property_effective_desc(S, n, pnameread.NAME) = (ppropertydesc)
+  -- if ppropertydesc.TYPE =/= eps /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ~ppropertydesc.STATIC /\ ppropertydesc.NAME = pnameread.NAME /\ ppropertydesc.KEY = pnameread.NAME
+  -- if $property_resolve(S, n, pnameread.NAME) = PROPERTY_ACCESS pnameread.NAME
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
+  -- if $property_slot_at(ppropertyslot_all*, pnameread.NAME) = (ppropertyslot)
+  -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN) /\ ppropertyslot.STATE = PROP_UNSET
+  -- if ~$property_hook_declared(S, n, pnameread.NAME)
+  -- if $property_get_method(S, n) = (pmethoddesc)
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION) /\ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if $property_get_recursive_guard(S, S.CURRENT, S.FRAMES, n, pnameread.NAME)
+def $property_get_recursive_error_plan(S) = eps -- otherwise
+rule PhpStep/property-get-recursive-error: S ~> $throw_scalar(S, "Error", $ptascii("Typed property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ $c_string(ppropertydesc.NAME) ++ $ptascii(" must not be accessed before initialization"), z)
+  -- if S.TODO = (PROPERTY_PREP phpType20 z) :: (DIM_FETCH z) :: ptask_tail*
+  -- if $property_get_recursive_error_plan(S) = (ppropertydesc)
 
 ;; Exact verification is identity: neither a checked write nor TYPE_SOURCES
 ;; attachment occurs. Integer numeric strings convert only the actual RV or
