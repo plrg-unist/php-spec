@@ -78,6 +78,7 @@ S_raw.COMPLETION = THROWN "Error" ptbytes_message z_inner
 S_raw.TODO = S_inner.TODO /\ S_raw.OBJECTS = S_inner.OBJECTS
 S_material = $throwable_transition(S_inner,S_raw)
 S_material.COMPLETION = THROWING n_error
+S_material.OBJECTS[n_error] = THROWABLE pthrowable_error
 S_material.OBJECTS = S_inner.OBJECTS ++ [THROWABLE pthrowable_error]
 n_error = |S_inner.OBJECTS|
 pthrowable_error.KIND = "Error" /\ pthrowable_error.ORIGIN = (porigin_inner)
