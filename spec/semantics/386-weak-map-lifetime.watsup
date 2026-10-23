@@ -7,6 +7,11 @@ def $weakmap_at(S, n) = true
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
   -- if $weakmap_object(S.OBJECTS[n])
 def $weakmap_at(S, n) = false -- otherwise
+;; Cursor rows are metadata; the saved FOREACH_NEXT task alone owns DATA.
+dec $weakmap_foreach_active(piterator*, nat) : bool
+def $weakmap_foreach_active(eps, n_map) = false
+def $weakmap_foreach_active((OBJECTITER n n_map n_position false) :: piterator_tail*, n_map) = true
+def $weakmap_foreach_active(piterator :: piterator_tail*, n_map) = $weakmap_foreach_active(piterator_tail*, n_map) -- otherwise
 def $closure_live_object_valid(S, n) = true -- if $weakmap_at(S, n)
 def $closure_scope_complete(S, (HOBJECT n) :: pnode*) = $closure_scope_complete(S, pnode*) -- if $weakmap_at(S, n)
 def $property_live_complete(S, (HOBJECT n) :: pnode*) = $property_live_complete(S, pnode*) -- if $weakmap_at(S, n)
@@ -109,6 +114,7 @@ def $weakmap_write_allowed(S, paccess) = true
   -- if paccess.TASK = ASSIGN_ARRAY (BASE_DIM paccess.BASE paccess.INPUT paccess.KEYLINE) paccess.LINE false
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_at(S, n_map)
+  -- if ~$weakmap_foreach_active(S.ITERATORS, n_map)
   -- if ~$instance_storage_freeing(S, n_map)
   -- if S_base = $quiet_operand(S, poperand)
   -- if S_base.COMPLETION = NORMAL
@@ -340,6 +346,7 @@ def $weakmap_unset_allowed(S, paccess) = true
   -- if paccess.SELECTED = $rcontainer_selected(S, poperand)
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_at(S, n_map)
+  -- if ~$weakmap_foreach_active(S.ITERATORS, n_map)
   -- if ~$instance_storage_freeing(S, n_map)
   -- if S_base = $quiet_operand(S, poperand)
   -- if S_base.COMPLETION = NORMAL
@@ -410,6 +417,7 @@ def $weakmap_second_write_allowed(S, paccess) = true
   -- if paccess.SELECTED = $rcontainer_selected(S, paccess.RHS)
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_at(S, n_map)
+  -- if ~$weakmap_foreach_active(S.ITERATORS, n_map)
   -- if ~$instance_storage_freeing(S, n_map)
   -- if S_base = $quiet_operand(S, poperand)
   -- if S_base.COMPLETION = NORMAL
@@ -448,6 +456,7 @@ def $weakmap_replace_allowed(S, paccess) = true
   -- if paccess.SELECTED = $rcontainer_selected(S, paccess.RHS)
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_at(S, n_map)
+  -- if ~$weakmap_foreach_active(S.ITERATORS, n_map)
   -- if ~$instance_storage_freeing(S, n_map)
   -- if S_base = $quiet_operand(S, poperand)
   -- if S_base.COMPLETION = NORMAL
@@ -813,6 +822,85 @@ def $clone_value(S, POBJECT n, z) = S[.COMPLETION = UNSUPPORTED "WeakMap clone p
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS eps, NEXT 0, POSITIONS eps, SERIAL 0})
   -- if $weakmap_at(S, n) /\ ~$instance_storage_freeing(S, n)
 def $object_foreach_reset(S, n) = S[.COMPLETION = UNSUPPORTED "WeakMap iteration protocol"] -- if $weakmap_at(S, n)
+
+;; The initial iterator slice uses distinct ordinary CV targets and one leaf
+;; object value. Explicit entry mutation stays outside its singleton cursor.
+dec $weakmap_foreach_name(expression) : preqbytes?
+def $weakmap_foreach_name(NExprVariable phpType32 metadata) = (n_name*)
+  -- if $cv_name(phpType32) = (n_name*)
+  -- if ~$this_name(n_name*) /\ n_name* =/= $ptascii("GLOBALS")
+def $weakmap_foreach_name(expression) = eps -- otherwise
+dec $weakmap_foreach_target(pstate, preqbytes) : bool
+def $weakmap_foreach_target(S, n_name*) = true -- if $lookup(S.ENV, n_name*) = eps
+def $weakmap_foreach_target(S, n_name*) = true
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ ~(n_cell <- S.REFCELLS)
+  -- if S.STORE[n_cell] = UNDEFINED \/ S.STORE[n_cell] = DEFINED PNULL
+def $weakmap_foreach_target(S, n_name*) = false -- otherwise
+dec $weakmap_foreach_entries(pstate, nat, pweakmapentry?) : bool
+def $weakmap_foreach_entries(S, n_map, eps) = true
+def $weakmap_foreach_entries(S, n_map, (pweakmapentry)) = true
+  -- if n_key = pweakmapentry.KEY
+  -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
+  -- if $node_children(S, HOBJECT n_key) = eps
+  -- if pweakmapentry.VALUE = POBJECT n_value
+  -- if $weakmap_free_value_allowed(S, pweakmapentry.VALUE)
+  -- if S.OBJECTS[n_value] = INSTANCE porigin_value
+  -- if $class_at(S.CLASSES, porigin_value) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.METHODS = eps
+  -- if $destructor_method(S, n_value) = eps
+  -- if $weakmap_before_valid(S, pweakmapentry)
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
+def $weakmap_foreach_entries(S, n_map, pweakmapentry?) = false -- otherwise
+dec $weakmap_foreach_storage_valid(pstate, nat) : bool
+def $weakmap_foreach_storage_valid(S, n_map) = true
+  -- if $weakmap_at(S, n_map) /\ ~$instance_storage_freeing(S, n_map)
+  -- if S.OBJECTS[n_map] = WEAKMAP pweakmapentry?
+  -- if $objectprops_at(S.OBJECTPROPS, n_map) = eps
+  -- if $object_table_at(S.OBJECTTABLES, n_map) = eps
+  -- if $objectprops_valid(S, S.OBJECTPROPS)
+  -- if $weakmap_foreach_entries(S, n_map, pweakmapentry?)
+def $weakmap_foreach_storage_valid(S, n_map) = false -- otherwise
+def $weakmap_foreach_cursor_valid(S, n, n_map, n_position) = true
+  -- if $(n < S.NEXTITER) /\ $(n_position <= 1)
+  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_map n_position false)
+  -- if $iterator_lookup($iterator_remove(S.ITERATORS, n), n) = eps
+  -- if $weakmap_foreach_storage_valid(S, n_map)
+def $weakmap_foreach_cursor_valid(S, n, n_map, n_position) = false -- otherwise
+dec $weakmap_foreach_begin(pstate, nat, statement, bool, int) : pstate
+def $weakmap_foreach_begin(S, n_map, statement, false, z) = S[.TODO = (FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z) :: ptask_tail*][.ITERATORS = S.ITERATORS ++ [OBJECTITER n n_map 0 false]][.NEXTITER = $(n + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $useriter_site(S, statement, porigin, z)
+  -- if statement = NStmtForeach expression_iterable expression_key (BOOLEAN false) expression_value (SEQUENCE statement_body*) (BOOLEAN false) metadata
+  -- if $weakmap_foreach_name(expression_key) = (n_key_name*)
+  -- if $weakmap_foreach_name(expression_value) = (n_value_name*)
+  -- if n_key_name* =/= n_value_name*
+  -- if $weakmap_foreach_target(S, n_key_name*) /\ $weakmap_foreach_target(S, n_value_name*)
+  -- if $weakmap_foreach_storage_valid(S, n_map)
+  -- if n = S.NEXTITER
+def $weakmap_foreach_begin(S, n_map, statement, b, z) = S[.COMPLETION = UNSUPPORTED "WeakMap foreach mode, targets, or storage"] -- otherwise
+def $foreach_begin(S, S_read, statement, plocation, b, z) = $weakmap_foreach_begin(S_read, n_map, statement, b, z)
+  -- if S_read.RESULT = KNOWN (POBJECT n_map)
+  -- if $(n_map < |S_read.OBJECTS|)
+  -- if $weakmap_object(S_read.OBJECTS[n_map])
+dec $weakmap_foreach_body(pstate, nat, nat, statement, porigin, int, pweakmapentry) : pstate
+def $weakmap_foreach_body(S, n, n_map, statement, porigin, z, pweakmapentry) = S[.TODO = [$foreach_value_task(S, expression_value, KNOWN pweakmapentry.VALUE, false, z), $at_task($origin_child((porigin), [PCFIELD 1]), LIST_STORE expression_key (KNOWN (POBJECT pweakmapentry.KEY)) false $runtime_line(S, [PCFIELD 1], expression_key))] ++ $statement_tasks(statement_body*, $origin_child((porigin), [PCFIELD 4]), 0) ++ [(FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z)] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if statement = NStmtForeach expression_iterable expression_key (BOOLEAN false) expression_value (SEQUENCE statement_body*) (BOOLEAN false) metadata
+rule PhpStep/weakmap-foreach-fetch: S ~> $weakmap_foreach_body(S[.ORIGIN = (porigin)][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_map 1 false)], n, n_map, statement, porigin, z, pweakmapentry)
+  -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z) :: ptask_tail*
+  -- if $weakmap_at(S, n_map)
+  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_map 0 false)
+  -- if $call_task_valid(S, FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z)
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+rule PhpStep/weakmap-foreach-end: S ~> $foreach_finish(S[.ORIGIN = (porigin)], n)
+  -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z) :: ptask_tail*
+  -- if $weakmap_at(S, n_map)
+  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_map n_position false)
+  -- if $call_task_valid(S, FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z)
+  -- if n_position = 1 \/ S.OBJECTS[n_map] = WEAKMAP eps
 def $property_unset_key_unshared(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "WeakMap property unset protocol"] -- if $weakmap_at(S, n)
 def $property_quiet_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "WeakMap quiet property protocol"] -- if $weakmap_at(S, n)
 ;; Standard same-class zero-property comparison never inspects private entries.
