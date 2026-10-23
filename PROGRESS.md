@@ -7,6 +7,38 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Two singleton argument packs now preserve raw NULL and a captured flat quiet
+ARRAY for fixed/selected strings and retained INI_SET setters. Each saved source
+fact authenticates separately; later helper/handler effects preserve the old
+option, selected callee and inner array across COW. Reversed names and named-first
+then fresh-numeric-second packs remain valid under the pinned per-opcode ordering
+flag. Strict ordinary rejects option1; explicit reception stays weak. Supplied
+Deprecated-handler throws cancel value rejection and assignment.
+
+Source4 passes at `582227151`/409. Focused1,877=484+404+462 author plus527 independent
+retains the accepted first484 at that cut; corrected404, previously unrun462 and peer527 pass at
+`7b4fb564a`. Two pre-main fixture binding failures at582227151/d2740f2b3 remain0;
+only extraction premises and their order changed, with no runtime/source rerun.
+Thirteen reports retain11PASS/two failure0, stable inputs/HEAD and fully reaped
+actors at original caps. Fresh checks use CPU2, now released. Native4 and genuine
+Unsupported B|P| at `cf8a3ddea` remain unrenewed. Raw originals moved once outside
+Git with path/hash recovery; no backup worktree is kept.
+
+Only14 additive172 lines change. Existing replay, source compiler, 207/400,
+trace/root/finish/discard/GC/schema and historical tests stay exact. State proves
+actual partial root transfer/outer retirement, COW, source/pack/owner refusals,
+whole restored/discard identity, raw supplied-Exception cancellation, setter
+recovery and budgets. Wider packs/arrays, PIPE and sole-owner lifetimes remain
+partial; paused OP12/Source47/owned NUL/undefined byref LIST/COMP88 stay untouched.
+[Two-group INI review](coverage/semantics/ini-set-two-pack-null-array-value-review.json).
+
+Composed over `7aae9a326`/409 with tested172 and all four test bodies preserved;
+every other runtime/schema/ordered-manifest/pipeline path stays parent-exact.
+Incoming M132 by-reference-return/finally, A46 NULL-key ARRAY and OP79 Boolean-NOT
+NaN selectors have no producer here; V99 retained queries remain disjoint.
+Added task alternatives require no state/root field lift. Source4 and state1,877
+retain their private409 cuts without joined execution, replay or renewed credit.
+
 Direct Boolean NOT now emits a NaN Warning before rereading the same ordinary
 float CV. A named handler's `0.0` write yields strict `true`; returning false
 permits the default Warning at operand line 25. The independent supplied

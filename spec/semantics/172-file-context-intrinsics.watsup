@@ -591,6 +591,20 @@ def $config_ini_null_valid(S, pconfigcall) = true
 def $config_ini_null_valid(S, pconfigcall) = true
   -- if $config_invoke_valid(S, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.INDEX = 2
+  -- if pconfigcall.PACKS = [pconfigpack_first, pconfigpack_second]
+  -- if pconfigpack_first.INDEX = 0 /\ pconfigpack_second.INDEX = 1
+  -- if pconfigpack_first.ITEMS = [ENTRY pkey_first (DIRECT pvalue_first)]
+  -- if pconfigpack_second.ITEMS = [ENTRY pkey_second (DIRECT pvalue_second)]
+  -- if ~$pipe_site(S, pconfigcall.SITE)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN (PARRAY n_array))]
+  -- if $config_ini_rejected_array(S, n_array)
+  -- if $config_ini_pack_known(S, pconfigpack_first.ITEMS, $compiled_read(S, pconfigpack_first.SITE))
+  -- if $config_ini_pack_known(S, pconfigpack_second.ITEMS, $compiled_read(S, pconfigpack_second.SITE))
+  -- if ~$config_strict(S, pconfigcall)
+def $config_ini_null_valid(S, pconfigcall) = true
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
   -- if pconfigcall.OWNER = (n_owner)
   -- if pconfigcall.INDEX = 1 /\ pconfigcall.NAMED
   -- if pconfigcall.PACKS = [pconfigpack]

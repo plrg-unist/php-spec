@@ -543,6 +543,16 @@ The original fixture-order and transient-integrity failures are preserved;
 the latter now completes the certified send without weakening source validation.
 Named/unpacked/PIPE forms and wider missing-read producers remain partial.
 
+[Two-group INI argument unpacking](coverage/semantics/ini-set-two-pack-null-array-value-review.json)
+now preserves a NULL option and an earlier flat array through two singleton
+packs, including reversed names and a named first pack followed by a numeric
+second pack. Later argument and handler effects retain the selected setter and
+captured array across COW. Four source comparisons and 1,877 state premises
+cover strict ordinary versus weak explicit reception, supplied-throw cancellation,
+source authority, roots, cleanup and setter recovery. Two fixture binding failures
+are preserved; only affected checks were repeated. Wider groups/arrays, PIPE and
+sole-owner lifetimes remain partial.
+
 [Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
 the held left value across RHS factory effects and authenticates its compiled
 send/callback site. Ordinary Closure PIPE follows caller strictness; normal and
