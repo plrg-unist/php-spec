@@ -1,0 +1,97 @@
+{
+  "scope": "Declared public untyped PROP_UNSET same-name implicit Get recursion; typed INITIAL/UNSET and denied-private native controls remain separate.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_revision": "25b63539ed31e77de3bf0505929d041367f62e60",
+  "cases": [
+    {
+      "id": "populate",
+      "source_file": "magic-get-unset-recursion-populate.php",
+      "source_sha256": "dab07ed288fd6e03773613ff4f93ba753c630184ffb7d05a85ae28eb2275c561",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-recursion-unset-private-120/.tools/magic-get-recursion-unset-probes-120/populate.php",
+      "stdout_base64": "UDpHfFd8d3xnfEF8bnVsbHw5fEd8V3x3fGd8QnxudWxsfDl8RHxFfA==",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "c7402022e857d7939c787999c22936dad9768cc48ddfc3149da44016c9edcc95",
+      "recursive_line": 17
+    },
+    {
+      "id": "sole",
+      "source_file": "magic-get-unset-recursion-sole.php",
+      "source_sha256": "6057ab613860700a089ac0fa9626955a44e925f42e826338acd2ffcb57080a5e",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-recursion-unset-private-120/.tools/magic-get-recursion-unset-probes-120/sole.php",
+      "stdout_base64": "UzpHfFd8d3xufGd8RHxBfDcvOTl8RXw=",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "d5cae56160b8346c361d425d00c7598a91222e5d58ecde56b37c0092e6f3ae82",
+      "recursive_line": 17
+    },
+    {
+      "id": "throwing",
+      "source_file": "magic-get-unset-recursion-throwing.php",
+      "source_sha256": "cab8447f770c7973dd3e107ed8a1d2f10e5bcf91af8612ab9d5f4228e73cc2e9",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-recursion-unset-private-120/.tools/magic-get-recursion-unset-probes-120/throwing.php",
+      "stdout_base64": "WDpHfFd8d3xEfEN8c2FtZXw0MnxFfA==",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "249ccab2d763697ed263731fa9d9ab31d54bb2dd23c9837911428481eb7c5a1d",
+      "recursive_line": 17
+    },
+    {
+      "id": "cleanup",
+      "source_file": "magic-get-unset-recursion-cleanup.php",
+      "source_sha256": "aa8d2c256d227d87567db94ec84dccba2312a878e9e8341f2ee43f3c73f766ce",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-recursion-unset-private-120/.tools/magic-get-recursion-unset-probes-120/cleanup.php",
+      "stdout_base64": "TDpHfGd8VnxXfHd8bnx2fEF8N3xHfGd8Qnw3fER8RXw=",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "109b993bd674f8259ec90a7b9d1495c693462fdbe8a83c0ba0da5f81e30a06a6",
+      "recursive_line": 12
+    }
+  ],
+  "controls": [
+    {
+      "id": "typed-initial",
+      "source_file": "magic-get-unset-recursion-typed-initial.php",
+      "source_sha256": "3ae9ca853bbad030ae1b48ac9f2e60c71b24a47461a52a78af3a36149fa5a55d",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-recursion-unset-private-120/.tools/magic-get-recursion-unset-probes-120/typed-initial.php",
+      "stdout_base64": "STp0eXBlZHxFfA==",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "877e9cb500e76c6d7e06b9372e3102ae77eed9fe4cf20ad0f383b03aece6a635"
+    },
+    {
+      "id": "typed-unset",
+      "source_file": "magic-get-unset-recursion-typed-unset.php",
+      "source_sha256": "d1fef7dbc5e73ff7dd5b580994b8f7e9308b645fb7db2d8f40e741e47a9e23ea",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-recursion-unset-private-120/.tools/magic-get-recursion-unset-probes-120/typed-unset.php",
+      "stdout_base64": "VDpHfHR5cGVkfDQyfER8RXw=",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "1cc967ea93cd0b4350b8a4cd2ce044d36a219cf8c1a8bacb4a87e4c30f55877b"
+    },
+    {
+      "id": "denied-private",
+      "source_file": "magic-get-unset-recursion-denied-private.php",
+      "source_sha256": "c1a6d3b16b6dd861f6b0097e70c23d43cebf8beed59c7727f85c3460d4b9d7a8",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-recursion-unset-private-120/.tools/magic-get-recursion-unset-probes-120/denied-private.php",
+      "stdout_base64": "TjpHfGRlbmllZHw0MnxEfEV8",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "107687020e5cdfe48ed4de518e689d3b72ac3fe3f5d9c418ae0177428360008b"
+    }
+  ]
+}

@@ -1,0 +1,180 @@
+{
+  "milestone": "A48: undefined ordinary ARRAY-key CV Warning with live nonowning value CVs",
+  "status": "Reviewed composed candidate; accepted native/source/focused cuts retained.",
+  "target": "PHP8.5.10 CLI NTS64-bit; vendor/php-src tag34308a6666b2d489c509541ea9befea9e2b42348",
+  "cuts": {
+    "native_and_genuine": "f4aafca5dea5162e7081077576139bb9f339bd95",
+    "runtime": "82600ebbace24e8009cca371f8b57dba9578d4f1",
+    "strict_source4_focused667": "34015e3f161341d5c3e777d5916a6724da2d89cb"
+  },
+  "runtime": {
+    "spec/semantics/30-storage.watsup": "90892acca6254dbfb9de361ed5f1e2b5c28d00a433b75c1737784f1cf82f92b0",
+    "spec/semantics/41-array-control.watsup": "f9d4491712caac73eacaed51062f99fffab33d27f700e2e124a0c0deb6ea33c6",
+    "spec/semantics/413-array-literal-key-warnings.watsup": "e58a9c13398f3892cc29f12344aaa7e2acd737b677f0dc1d3228f680b8642190"
+  },
+  "engine": "ZEND_ADD_ARRAY_ELEMENT/CV_CV gets the value pointer and performs its addref before reading the raw key CV. UNDEF calls zval_undefined_cv(E_WARNING), then fixes the empty-string key without a key reread, NULL deprecation or CV backup/reset. Unlike the NULL arm it inserts before NEXT_OPCODE_CHECK_EXCEPTION; authored VM and generated CV_CV specialization agree.",
+  "scope": "By-value checked NArrayItem with an ordinary absent or allocated-unmarked-UNDEFINED literal key CV and an initially defined ordinary null/bool/int/float value CV. Source authority binds actual key/value occurrences, names and operation line. Missingness is entry-only; the source/error-call validator remains valid after a callback creates the key. Current value reception remains ordinary/nonowning, with object-free builder reach.",
+  "ownership": "ARRAY_KEY_UNDEFINED_RESULT owns the builder only. The live value operand and saved missing-key name add no CELL/value root, backup, reset, retention or debt. Normal completion reads the current primitive CV and inserts DIRECT under the already selected empty-string key. A returning false callback emits exactly the original Warning; later items perform fresh reads.",
+  "throw_abstraction": "Zend inserts the live value even with the supplied exception pending; the model drops the doomed builder without that internal insertion. Object-free builder reach plus a nonowning current value excludes user destructor effects, making the same visible store/exception/cancellation outcome. The native throw preserves value44/destination99/later7 and the same Throwable. An overwritten object entry is explicitly refused; no objectful equivalence or engine bug is claimed.",
+  "source_lines": "Operation/value lines12/16/22 and peer13/15 differ from earlier key-variable lines11/15/21 and peer11/13. Existing compiler descriptors supply these lines; compiler bytes are unchanged. Native/model default stderr is authenticated as the exact one-line Undefined variable $missing Warning13 at the preserved original path.",
+  "fresh_witnesses": "An undefined key initialized to9 still receives live44 at empty-string, then a later item reads key9/tail66; copied primitive entries remain independent. A second original initializes the missing key toNULL: the first Warning keeps44, while a later Deprecated callback writes55 and the existing NULL protocol restores44. Independent default-false and supplied-throw witnesses preserve exact message/severity/line, live44, given Throwable and cancellation.",
+  "controls": "Pure source/name/line negatives, defined/marked/missing value refusal, legal allocated-UNDEFINED key versus defined NULL/9, builder bounds/allocation, stable source after key creation, exact Warning event/level/message, builder-only task/frame roots and CELL owner1. Legal mutable ARRAY completion is heap-valid/source-valid but refuses readiness and steps to Unsupported; object-reach throw discard refuses. Raw/driver steps, old NULL reset interaction, exact output, EOF and zero/split budgets are checked.",
+  "bounds": "Fresh value witnesses are integers; other null/bool/float values compose existing range/type checks without new all-values credit. Strings, owning values, other value/key producers, marked/constrained slots and wider lifecycle histories remain partial. Only83 additive30/41/413 lines change: task, dual keyed fallback gates and new protocol; old NULL/float, generic missing-read/default/rendering, compiler, pstate fields and root/count/prune bodies remain exact. Paused undefined-byref LIST, OP12, Source47 DEFINE NaN, owned-NUL source release and COMP88 remain untouched.",
+  "validation": {
+    "strict_modules": 409,
+    "original_native_cases": 4,
+    "checked_source_agreements": 4,
+    "author_conditions": 313,
+    "peer_conditions": 354,
+    "successful_conditions": 667,
+    "boolean_conditions": 657,
+    "raw_steps": 10,
+    "postchange_first_executions_passed": true,
+    "postchange_failures": 0,
+    "retries": 0,
+    "cap_changes": 0,
+    "accepted_replay": false
+  },
+  "genuine_baseline": {
+    "revision": "f4aafca5dea5162e7081077576139bb9f339bd95",
+    "case": "array-literal-undefined-key-live-value",
+    "status": "unsupported",
+    "reason": "error-handler ingress requires a producer continuation",
+    "model_stdout": "P;",
+    "model_exit": 1,
+    "native_exit": 0,
+    "passed": false,
+    "agreement_credit": 0
+  },
+  "execution": {
+    "cpu": 2,
+    "native_cap_seconds": 30,
+    "genuine_model_outer_caps": [
+      60,
+      90
+    ],
+    "strict_focused_sl_cap_seconds": 180,
+    "source_model_outer_caps": [
+      180,
+      210
+    ],
+    "strict_seconds": 9.4922935962677,
+    "source_seconds": [
+      16.708677291870117,
+      20.638911247253418,
+      16.65295147895813,
+      21.27367329597473
+    ],
+    "focused_seconds": [
+      18.00705051422119,
+      22.294134855270386,
+      16.865545988082886,
+      21.51159381866455
+    ],
+    "actors": "All post-change first executions pass at unchanged caps, with expected stdout/default Warning stderr, empty tooling stderr and no timeout/interruption/surviving groups. Wrappers fully reaped and CPU2 released; genuine Unsupported retains zero agreement credit.",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null
+    },
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "tools": {
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    }
+  },
+  "source_sha256": {
+    "array-literal-undefined-key-live-value": "29fd723462a38599636430ff6d1122fe149514435116bdee42d82fd4c788f63b",
+    "array-literal-undefined-key-then-null": "d0701658eebe7f447a14bfe1ec02a769dd6a6224b93419172a8098037bd9d555",
+    "array-literal-undefined-key-review-default": "ce23b9094a7aca2c1147ed756cf73f1a2c88a99d1eac341d895553966590b78f",
+    "array-literal-undefined-key-review-supplied-throw": "a267e3c79d79899c4b8495d3364ad08d879195ccdd1ff09ffda4449ae83e458e"
+  },
+  "commands": [
+    "taskset -c 2 python3 -B tests/semantics/array_literal_undefined_key_warnings.py --case array-literal-undefined-key-live-value --output .tools/array-literal-undefined-key-warning-baseline-48",
+    "taskset -c 2 python3 -B tests/semantics/array_literal_undefined_key_warnings.py --exclude array-literal-undefined-key-live-value --native-only --output .tools/array-literal-undefined-key-warning-native-rest-48",
+    "taskset -c 2 python3 -B tests/semantics/array_literal_undefined_key_warning_review_sources.py --native-only --output .tools/array-literal-undefined-key-warning-review-native-48",
+    "taskset -c 2 python3 .tools/array-literal-undefined-key-warning-strict-48.py",
+    "taskset -c 2 python3 .tools/array-literal-undefined-key-warning-reuse-48.py --group author --output .tools/array-literal-undefined-key-warning-source-author-48",
+    "taskset -c 2 python3 .tools/array-literal-undefined-key-warning-reuse-48.py --group review --output .tools/array-literal-undefined-key-warning-source-review-48",
+    "taskset -c 2 python3 -B tests/semantics/array_literal_undefined_key_warning_protocol.py --source-report .tools/array-literal-undefined-key-warning-source-author-48/report.json --output .tools/array-literal-undefined-key-warning-author-state-48",
+    "taskset -c 2 python3 -B tests/semantics/array_literal_undefined_key_warning_state_review.py --source-report .tools/array-literal-undefined-key-warning-source-review-48/report.json --output .tools/array-literal-undefined-key-warning-review-state-48"
+  ],
+  "reports": {
+    "baseline-48": {
+      "path": ".tools/array-literal-undefined-key-warning-baseline-48/report.json",
+      "sha256": "69577eed4d66a63074d8bc50621fc017bd85a4ad8f0ee323599bcd7d6c70a57e",
+      "revision": "f4aafca5dea5162e7081077576139bb9f339bd95"
+    },
+    "native-rest-48": {
+      "path": ".tools/array-literal-undefined-key-warning-native-rest-48/report.json",
+      "sha256": "073d2b408ac514534d35edcb3974810c01be6bd5b8507bf6984e828de5db3521",
+      "revision": "f4aafca5dea5162e7081077576139bb9f339bd95"
+    },
+    "review-native-48": {
+      "path": ".tools/array-literal-undefined-key-warning-review-native-48/report.json",
+      "sha256": "1502e980b2ee501f2dc18012adf4994fe5c7845f013c73a953bc9aa20f307633",
+      "revision": "f4aafca5dea5162e7081077576139bb9f339bd95"
+    },
+    "strict-48": {
+      "path": ".tools/array-literal-undefined-key-warning-strict-48/report.json",
+      "sha256": "192c47635bd398b9ba8c56f7f6a44dbf064be0b59948d827c8ae60656ded2cb0",
+      "revision": "34015e3f161341d5c3e777d5916a6724da2d89cb"
+    },
+    "source-author-48": {
+      "path": ".tools/array-literal-undefined-key-warning-source-author-48/report.json",
+      "sha256": "10561ebdd09a9150f8e4590c68d493024275e84e4360a73ef6b9cdbad4bd7b5e",
+      "revision": "34015e3f161341d5c3e777d5916a6724da2d89cb"
+    },
+    "source-review-48": {
+      "path": ".tools/array-literal-undefined-key-warning-source-review-48/report.json",
+      "sha256": "8da28dab25e3bb446a383f5746624b8dee872fefdeb121f3e5fbe331e2fba369",
+      "revision": "34015e3f161341d5c3e777d5916a6724da2d89cb"
+    },
+    "author-state-48": {
+      "path": ".tools/array-literal-undefined-key-warning-author-state-48/report.json",
+      "sha256": "3b5d25f902b724ca0c5b429385940715c685f9f729409a70a441c0670238c37d",
+      "revision": "34015e3f161341d5c3e777d5916a6724da2d89cb"
+    },
+    "review-state-48": {
+      "path": ".tools/array-literal-undefined-key-warning-review-state-48/report.json",
+      "sha256": "2380ff0f3829f7b12b57fed3eaab38791e06f0c305acb73328264a1e9df9dc67",
+      "revision": "34015e3f161341d5c3e777d5916a6724da2d89cb"
+    }
+  },
+  "runners": {
+    ".tools/array-literal-undefined-key-warning-strict-48.py": "a5eb3abc717362ce6b306e15fe7361546e70c2d5e0016c0f551049b0229b3d2d",
+    ".tools/array-literal-undefined-key-warning-reuse-48.py": "feba5b1c6dd20d60e0ddfec376e3a77146f7ad5aa5ca8b6531af8433a3905784"
+  },
+  "archive": {
+    "path": ".tools/array-literal-undefined-key-warning-48-raw.tar.gz",
+    "bytes": 505752,
+    "members": 197,
+    "sha256": "ccdb80192bc830374f5a83534f45a8d957cca4be6c8e85e65a979739ac699c36"
+  },
+  "recovery": "Canonical .tools/array-literal-undefined-key-warning-publication-48.json and the raw archive preserve eight reports, three preparation records, original sources/native/model streams/process receipts and strict/reuse scripts. Restore at the recorded cwd/Git cuts with original paths, bytes, profile and fingerprints; provision pinned local tools as needed. The default Warning stderr is expected program output. Preparation has no execution credit; genuine Unsupported has no agreement credit.",
+  "composition": {
+    "parent": "0878f450d4c278c03848f02fad82aea5878953fa",
+    "ordered_manifest_modules": 409,
+    "runtime_policy": "Tested41/413 and six A48 scripts remain private-exact. Shared30 is exactly parent30 plus the one tested undefined-key task; incoming NaN-array-cast variant is preserved. Incoming207/380/400/404/58 and all other runtime/schema/ordered409 paths remain parent-exact; no pstate/heap field change.",
+    "combined30_sha256": "17780afa85803a2d762d162dcb5134296817ba7216db88677ba6134483ac66ae",
+    "interaction": "Owned NULL queries, missing-comparison ARRAY payloads, declared-UNSET magic getters and direct NaN array casts have no producer in these ARRAY-key originals. Generic error-handler/default/rendering bodies remain parent-exact.",
+    "progress_policy": "Use the actual compact parent view, preserve its current integrated/active facts and add only A48 family/integration pointers; restore no historical checkpoint body.",
+    "joined_execution": false,
+    "accepted_replay": false
+  }
+}

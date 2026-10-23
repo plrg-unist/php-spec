@@ -933,7 +933,7 @@ also invoke the getter, with no hidden property type verification,
 even for INITIAL or initialized typed backing. Allowed lexical VALUE reads the
 physical key; accessible typed INITIAL raises Error without invoking the getter.
 Lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, writes, quiet probes,
-wider signatures and recursion beyond the bounded missing-property case below
+wider signatures and recursion beyond the bounded cases below
 remain explicit Unsupported.
 
 For CV receivers, module380 owns one hold while the known-instance getter frame borrows
@@ -967,8 +967,28 @@ before catch and preserves the untouched outer assignment. Later access enters
 the getter again after guard reset. Four source agreements and 868 focused
 premises retain separate runtime and fixture cuts in the
 [recursion review](../../coverage/semantics/magic-get-recursion-review.json).
-Declared UNSET/denied recursion, by-reference getters, quiet probes, owned
-receivers, computed names, suspension and wider lifetime combinations remain partial.
+Declared public untyped UNSET properties now also use that Warning/NULL path.
+Their immutable descriptor remains valid after handler population; the original
+DECL identity and physical key survive the interrupted read and local cleanup.
+[Four new source agreements and 542 focused premises](../../coverage/semantics/magic-get-unset-recursion-review.json)
+retain separate source and state cuts. Sole-owner clearing and supplied throw
+have new source evidence; population and local cleanup also have reached proofs.
+Those typed-UNSET and denied-private Warning refusals retain their original
+cuts; typed INITIAL remains a separate existing agreement.
+
+Public typed UNSET reentry now raises a fresh Error under the same actual Get
+guard, including compiled-local cleanup. The message names the declaring class,
+and the file/line identify the inner read. Caller-CV clearing releases the receiver
+before catch without overwriting the outer assignment; a destructor's supplied
+Exception retains that Error as Previous. A nullable slot populated with NULL is
+read normally under the still-active guard, and a later unset starts a new Get.
+[Four source agreements and 496 focused premises](../../coverage/semantics/magic-get-recursive-error-review.json)
+retain separate runtime and state cuts. Recovery, replacement and local cleanup
+have reached proofs; inherited propagation has source-only evidence. The typed
+private source control stops at class compilation, and its descriptor mutation
+has selector-only refusal credit. Nonpublic recursion, by-reference getters,
+quiet probes, owned receivers, computed names, suspension and wider typed/lifetime
+combinations remain partial.
 
 The [getter review](../../coverage/semantics/magic-property-get-review.json) records
 eight exact source agreements, 1293 setup-inclusive reached premises and the

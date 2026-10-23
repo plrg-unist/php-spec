@@ -998,3 +998,82 @@ def $error_read_discard(S, ARRAY_KEY_NULL_CONST_RESULT n n_value phpType13* z) =
   -- if $array_null_const_ready(S, n, n_value)
 def $error_read_discard(S, ARRAY_KEY_NULL_CONST_RESULT n n_value phpType13* z) = S[.COMPLETION = UNSUPPORTED "array literal null-key constant array during throw"]
   -- if ~$array_null_const_ready(S, n, n_value)
+
+;; An undefined key warns after acquiring the value CV, then fixes the empty
+;; key. Unlike NULL conversion, its callback never backs up or resets that CV.
+dec $array_undefined_key_missing(pstate, nat*) : bool
+def $array_undefined_key_missing(S, n_name*) = true
+  -- if ~$environment_blocked(S, n_name*) /\ ~$update_released_array_name(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = eps
+def $array_undefined_key_missing(S, n_name*) = true
+  -- if ~$environment_blocked(S, n_name*) /\ ~$update_released_array_name(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if ~(n_cell <- S.REFCELLS) /\ ~$foreach_released_container_cell(S, n_cell)
+  -- if S.STORE[n_cell] = UNDEFINED
+  -- if $propref_at(S.PROPREFS, n_cell) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps
+def $array_undefined_key_missing(S, n_name*) = false -- otherwise
+
+dec $array_undefined_key_source(pstate, nat, poperand, nat*, phpType13*, int) : bool
+def $array_undefined_key_source(S, n, poperand, n_key*, phpType13*, z) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if ~$array_immutable(S, n) /\ $heap_count(HARRAY n, $pools_nodes(S.POOLS)) = 0
+  -- if $array_float_key_item(S, phpType13*, z) = ((expression, VARIABLE n_key* z_key))
+  -- if expression = NExprVariable (BYTES text) metadata
+  -- if poperand = VARIABLE ($base64(text)) z
+  -- if $array_float_key_input_source(S, expression, poperand)
+def $array_undefined_key_source(S, n, poperand, n_key*, phpType13*, z) = false -- otherwise
+
+dec $array_undefined_key_value(pstate, poperand) : pvalue?
+def $array_undefined_key_value(S, poperand) = (pvalue)
+  -- if $array_float_key_live_value(S, poperand) = (pvalue)
+  -- if $array_float_key_scalar(S, pvalue)
+def $array_undefined_key_value(S, poperand) = eps -- otherwise
+dec $array_undefined_key_ready(pstate, nat, poperand) : bool
+def $array_undefined_key_ready(S, n, poperand) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if $array_undefined_key_value(S, poperand) = (pvalue)
+  -- if $array_float_key_plain_nodes($heap_reach([HARRAY n], eps, $heap_graph(S).EDGES))
+def $array_undefined_key_ready(S, n, poperand) = false -- otherwise
+
+dec $array_undefined_key_plan(pstate) : (nat, poperand, nat*, phpType13*, int)?
+def $array_undefined_key_plan(S) = ((n, S.RESULT, n_key*, phpType13*, z))
+  -- if S.TODO = (ARRAY_VALUE n (VARIABLE n_key* z_key) phpType13* z) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $array_undefined_key_source(S, n, S.RESULT, n_key*, phpType13*, z)
+  -- if $array_undefined_key_missing(S, n_key*)
+  -- if $array_undefined_key_ready(S, n, S.RESULT)
+def $array_undefined_key_plan(S) = eps -- otherwise
+def $array_undefined_key_pending(S) = ($error_handler_eligible(S, 2) /\ $array_undefined_key_plan(S) =/= eps)
+
+rule PhpStep/array-undefined-key-warning: S ~> $error_dispatch(S, 2, $ptascii("Undefined variable $") ++ n_key*, z, WARNING n_key* z, ARRAY_KEY_UNDEFINED_RESULT n poperand n_key* phpType13* z)
+  -- if $array_undefined_key_pending(S)
+  -- if $array_undefined_key_plan(S) = ((n, poperand, n_key*, phpType13*, z))
+rule PhpStep/array-undefined-key-result: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13*) :: ptask_tail*][.RESULT = KNOWN PNULL][.ORIGIN = $origin_next_item(S.ORIGIN, phpType13*)]
+  -- if S.TODO = (ARRAY_KEY_UNDEFINED_RESULT n poperand n_key* phpType13* z) :: ptask_tail*
+  -- if $array_undefined_key_source(S, n, poperand, n_key*, phpType13*, z)
+  -- if $array_undefined_key_ready(S, n, poperand)
+  -- if $array_undefined_key_value(S, poperand) = (pvalue)
+  -- if S_out = $literal_insert(S, n, (KSTRING eps), pvalue, z)
+rule PhpStep/array-undefined-key-result-unsupported: S ~> S[.TODO = eps][.RESULT = KNOWN PNULL][.COMPLETION = UNSUPPORTED "array literal undefined-key value after callback"]
+  -- if S.TODO = (ARRAY_KEY_UNDEFINED_RESULT n poperand n_key* phpType13* z) :: ptask_tail*
+  -- if $array_undefined_key_source(S, n, poperand, n_key*, phpType13*, z)
+  -- if ~$array_undefined_key_ready(S, n, poperand)
+
+def $call_task_valid(S, ARRAY_KEY_UNDEFINED_RESULT n poperand n_key* phpType13* z) = $array_undefined_key_source(S, n, poperand, n_key*, phpType13*, z)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ARRAY_KEY_UNDEFINED_RESULT n poperand n_key* phpType13* z
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $array_undefined_key_source(S, n, poperand, n_key*, phpType13*, z)
+  -- if perrorcall.LEVEL = 2 /\ perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $ptascii("Undefined variable $") ++ n_key*
+  -- if perrorcall.EVENT = WARNING n_key* z
+def $task_nodes(ARRAY_KEY_UNDEFINED_RESULT n poperand n_key* phpType13* z) = [HARRAY n]
+;; Zend inserts before observing a pending exception here. Object-free cleanup
+;; has the same effects when the doomed builder is discarded without insertion.
+def $error_read_discard(S, ARRAY_KEY_UNDEFINED_RESULT n poperand n_key* phpType13* z) = S
+  -- if $array_undefined_key_ready(S, n, poperand)
+def $error_read_discard(S, ARRAY_KEY_UNDEFINED_RESULT n poperand n_key* phpType13* z) = S[.COMPLETION = UNSUPPORTED "array literal undefined-key value during throw"]
+  -- if ~$array_undefined_key_ready(S, n, poperand)
