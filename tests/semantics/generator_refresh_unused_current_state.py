@@ -37,7 +37,7 @@ S.FRAMES = eps
 S.COMPLETION = NORMAL
 S.GC.ACTIVE = eps
 S.HELD = eps
-~S.CONSTCONTEXT
+S.CONSTCONTEXT = eps
 S.GENERATORINPUTS = eps
 S.GENERATORRETURNRETAINED = eps
 S.RESULT = KNOWN PNULL
@@ -179,7 +179,7 @@ $generator_nodefree_ancestor_leaf(S_closure_updated, n_upper) = (n_middle)
 S_absent = S_call[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, HOBJECT n_child)]
 S_absent_updated = $generator_from_update(S_absent, pgeneratorop)
 ~$generator_unused_current_refresh(S_absent, S_absent_updated, n_upper)
-S_badupdate = S_updated[.CONSTCONTEXT = true]
+S_badupdate = S_updated[.REPORTING = $(S_updated.REPORTING + 1)]
 $heap_graph(S_badupdate) = $heap_graph(S_updated)
 $generator_nodefree_ancestor_leaf(S_badupdate, n_upper) = (n_middle)
 ~$generator_unused_current_refresh(S_call, S_badupdate, n_upper)
