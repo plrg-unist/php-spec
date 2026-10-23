@@ -92,8 +92,10 @@ def $weakmap_write_value_allowed(S, paccess) = true
   -- if paccess.RHS = S.RESULT
   -- if paccess.SELECTED = $rcontainer_selected(S, paccess.RHS)
 def $weakmap_write_value_allowed(S, paccess) = true
-  -- if paccess.VALUE = PARRAY n_array /\ paccess.OFFSET = POBJECT n_key
-  -- if paccess.OBJECT = (n_map) /\ $weakmap_at(S, n_map)
+  -- if paccess.VALUE = PARRAY n_array
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_at(S, n_map)
   -- if S.OBJECTS[n_map] = WEAKMAP eps
   -- if $weakmap_array_backedge(S, n_array, n_key)
   -- if S.TODO = paccess.TASK :: ptask_tail*
