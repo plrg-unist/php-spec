@@ -10,7 +10,7 @@ sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 git = lambda *parts: subprocess.check_output(['git', *parts], cwd=ROOT, env=recorder.ENV).decode().strip()
 
 PREFIX = r'''
-syntax pgrstage = GR_OUTER | GR_ENTER porigin | GR_RECURSE | GR_INVOKE | GR_HANDLER | GR_WARNING_RESULT | GR_WARNING_THROW | GR_GET_RESULT | GR_GET_COPY | GR_GET_THROW | GR_EXIT | GR_DTOR nat | GR_CATCH | GR_OUTPUT ptbytes
+syntax pgrstage = GR_OUTER | GR_ENTER porigin | GR_RECURSE | GR_INVOKE | GR_HANDLER | GR_WARNING_RESULT | GR_WARNING_THROW | GR_GET_RESULT | GR_GET_COPY | GR_GET_THROW | GR_EXIT | GR_DTOR nat | GR_CATCH | GR_OUTPUT ptbytes | GR_TAIL ptask*
 dec $gr_output(pevent*) : ptbytes
 dec $gr_output_event(pevent) : bool
 def $gr_output(eps) = eps
@@ -61,6 +61,7 @@ def $gr_stage(S,GR_CATCH) = true
   -- if S.TODO = (CATCH_BIND porigin n_index n_error) :: ptask_tail*
   -- if S.CURRENT = eps
 def $gr_stage(S,GR_OUTPUT ptbytes) = ($gr_output(S.EVENTS) = ptbytes)
+def $gr_stage(S,GR_TAIL ptask*) = (S.TODO = ptask*)
 def $gr_stage(S,pgrstage) = false -- otherwise
 dec $gr_seek(pstate,pgrstage,nat) : pstate
 def $gr_seek(S,pgrstage,n) = S
@@ -269,11 +270,24 @@ S_populated_raw.TODO = (DIM_FETCH z_inner) :: ptask_inner_tail*
 S_populated_value = $gr_after(S_populated_read,S_populated_raw)
 S_populated_value.BASE = BASE_PROPERTY (POBJECT n_child) ptbytes_name
 PhpStep: S_populated_value ~> S_populated_fetched_raw
-S_populated_fetched = $gr_after(S_populated_value,S_populated_fetched_raw)
+S_populated_fetched_raw.TODO = ptask_inner_tail*
+S_populated_fetched_raw.RESULT = KNOWN (PINT 9)
+S_populated_pending = $gr_after(S_populated_value,S_populated_fetched_raw)
+S_populated_pending.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_populated) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_populated) :: ptask_inner_tail*
+S_populated_pending.RESULT = KNOWN PNULL
+pdestructionoperation_populated.SOURCE = DIM_FETCH z_inner
+pdestructionoperation_populated.VALUE = KNOWN (PINT 9) /\ pdestructionoperation_populated.PENDING = eps
+S_populated_fetched_found = $gr_seek(S_populated_pending,GR_TAIL ptask_inner_tail*,2000)
+S_populated_fetched_found.COMPLETION = NORMAL \/ S_populated_fetched_found.COMPLETION = BUDGET
+S_populated_fetched = S_populated_fetched_found[.COMPLETION = NORMAL]
+$gr_stage(S_populated_fetched,GR_TAIL ptask_inner_tail*)
 S_populated_fetched.TODO = ptask_inner_tail*
 S_populated_fetched.RESULT = KNOWN (PINT 9)
 S_populated_fetched.EVENTS = S_inner.EVENTS
+$gr_guard(S_populated_fetched)
 ''')
+# S_probe_saved is a control projection; its guard checks that projection,
+# not reachability of an actual saved-parent scope.
 CLEANUP = lines(r'''
 S_exit.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
 pdestructionframe.FUNCTION = ppropertyget.METHOD /\ pdestructionframe.VALUE = KNOWN (PINT 7)
