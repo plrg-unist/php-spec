@@ -1694,6 +1694,13 @@ temporary through finally but never completes the CV store. Argument-time row
 COW and a live cache RuntimeException preserve distinct owners and Previous
 identity. See the
 [abrupt argument SEND review](coverage/semantics/generator-abrupt-argument-send-review.json).
+One native ancestor also preserves a supplied argument-destructor Exception
+through pending SEND snapshot and receiver cleanup. Upper clears its own
+initialization while inherited-pending Middle can still skip finally; a prior
+Middle NEXT permits its cache RuntimeException before Upper finally, preserving
+the supplied Previous identity. Assignment keeps a temporary without storing
+its CV. This is validation of existing rules; see the
+[ancestor argument-exception review](coverage/semantics/generator-ancestor-abrupt-argument-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit

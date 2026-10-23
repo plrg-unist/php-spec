@@ -186,6 +186,14 @@ slot clearing inside Middle finally links the supplied Exception as Previous,
 whose own Previous remains NULL. This validates existing rules without a
 runtime change. Wider, parked and collection histories remain unvalidated; see the
 [abrupt argument SEND review](../../coverage/semantics/generator-abrupt-argument-send-review.json).
+The same abrupt argument cleanup is validated through one native ancestor.
+Only selected Upper clears initialization; inherited-pending Middle still skips
+finally, while an independent Middle NEXT permits physical finally execution.
+Unused snapshot retirement, assignment's unstored temporary, argument-time COW
+and a cache RuntimeException before Upper finally preserve their distinct owners
+and supplied Previous identity. No runtime rule changes; wider links, owning
+returns, parked/reentrant histories and collection remain unvalidated. See the
+[ancestor argument-exception review](../../coverage/semantics/generator-ancestor-abrupt-argument-send-review.json).
 Pending zero-argument NEXT also clears only the selected receiver bit while
 preserving that parked owning frame/site and copied return. It returns NULL
 without a current snapshot; a later explicit getter creates a separate copy.

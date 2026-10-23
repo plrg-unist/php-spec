@@ -238,6 +238,15 @@ temporaries retain different owners, while the latter never reaches a completed
 CV store. Argument COW and live-cache replacement exercise these distinct
 carriers without changing API admission or the release scheduler. See the
 [abrupt argument SEND review](../../coverage/semantics/generator-abrupt-argument-send-review.json).
+One selected native ancestor also carries an ignored argument's supplied
+Exception through the existing pending SEND release path. Upper's cleared bit
+is independent of physical Middle's inherited pending bit. The primitive
+COMPLETE adds no copied-return owner; the actual native link retains Middle.
+Assignment retains the transient current copy without reaching its CV store.
+Argument-time COW
+and a separately initialized Middle finally exercise the existing carriers
+before queued Upper cleanup. See the
+[ancestor argument-exception review](../../coverage/semantics/generator-ancestor-abrupt-argument-send-review.json).
 Literal pending NEXT takes the same initialization-only return through a direct
 or finite native-linked receiver, preserving the actual parked source and frame.
 Its NULL result owns no current snapshot. After a raw-row write performs COW,

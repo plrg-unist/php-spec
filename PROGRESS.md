@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Iterator50 validates supplied argument-destructor Exceptions through pending
+SEND over one native ancestor at a pre-refreshed primitive COMPLETE. Only
+Upper clears initialization; inherited-pending Middle skips finally. A prior
+Middle NEXT instead permits its cache RuntimeException before Upper finally,
+with the supplied Exception as Previous. Unused and assigned snapshots, no
+completed CV store and argument-time row COW preserve distinct owners.
+Production semantics are unchanged. See the
+[ancestor argument-exception review](coverage/semantics/generator-ancestor-abrupt-argument-send-review.json).
+
+Native4 retains `e2151e45e`/409; all four unchanged source agreements retain
+`26079c900`. Gate4 and 552 reached premises (267 author +285 independent;
+532 local +20 generic) pass at `95e9b02e3`/409, first attempt at original caps.
+Nine executed reports pass; a separate native mode compatibility view preserves
+the original recorder and executes nothing. No failures, retries, cap changes,
+production repairs or accepted replay. Actors are reaped and CPU1 released.
+
 At Iterator49, an ignored SEND argument's destructor can throw a supplied
 Exception at a pre-refreshed direct node-free COMPLETE. Existing cleanup
 preserves that exception while retiring the remaining snapshot and receiver.
