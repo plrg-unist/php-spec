@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "milestone": "OP82 logical XOR NaN callback sequencing",
+  "status": "bounded independently reviewed semantics; private publication awaiting composition",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/ordinary precision14 profile",
+  "scope": "LOGICALXOR with distinct ordinary allocated nonreference float CVs, initially NaN LEFT and float RIGHT, named Warning callback, and remaining reads in the same saved float slots. Each conversion reads its live float after its own Warning; converted LEFT truth stays cached across RIGHT. A LEFT-handler throw still processes remaining RIGHT warning/default before unwinding the same Exception; a RIGHT-handler throw cancels delivery directly. Copied/reference/owning operands, representation changes and wider handlers remain partial.",
+  "tested_revision": "8423be817e946b77717669215cd31a6873d16573",
+  "private_modules": 409,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "abcd96f084d772dc3248d369215e2513d0f69486e90105235fd17d6f392fe106",
+    "spec/semantics/40-control.watsup": "760a0c6adeda30304a8ee1771087485cb4d69ae27e3c9a8c27b0025ec298eb49",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "63d59cc0a6401e01f7d5efd9e28c6172ce2db2a01e3cfc93b8e142dbfb48c024"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_compile.c binary lowering retains direct CV operands; both have equal CV rank. Zend/zend_vm_def.h::ZEND_BOOL_XOR calls Zend/zend_operators.c::boolean_xor_function before the VM exception check. That helper caches op1_val before converting op2_val, with no intervening exception check. i_zend_is_true warns on NaN then rereads its double.",
+    "New binary-specific source/task/phase authority reuses only the slot layout and unchanged boolnot_nan_ready/snapshot. LEFT stores its post-callback bool in the RIGHT phase. Warning resume reads once and does not rewarn unchanged NaN. LEFT-throw discard owns the supplied Exception through pending RIGHT conversion/default and restores the same THROW_SEARCH; the live handler mask survives generic callback restoration.",
+    "149 runtime additions:30 forward types/tasks4,40 declaration/EPS gate2,404 appended source/plans/conversion/pending/validity143. Old404 remains an exact prefix; old51/shared truth/numeric/formatting, CONFIG/DEFINE/400, slot helpers and generic error/unwind bodies stay exact. Conversion markers add no cell root; pending owns exactly its Exception."
+  ],
+  "contract": [
+    "Normal H1 writes LEFT1.0 and RIGHTNaN, returns true; H2 writes both0.0 and returns false. Result is stricttrue from cached LEFTtrue xor live RIGHTfalse despite both final CVs0.0, with one default Warning at operand25, calls2 and EOF8/9.",
+    "Second-handler throw preserves supplied Exception20/null Previous and outer100 with both float0/calls2 and no default Warning. Independent first-handler throw writes LEFT0, leaves RIGHTNaN and changes mask8192; RIGHT default Warning occurs before the same Exception catch, outer100/calls1 and EOF8/9.",
+    "605 premises in three checked-source-derived recipes (author254, peer172/179) bind actual phase/callback/returned-or-throw/EOF cuts, same Exception roots, raw cache/result/default transitions and budgets. Source/slot/consumer refusals, LEFT0/unchanged-NaN/retyped transitions and pending quiet/eligible suppression are derived controls with no additional native agreement. Owner1 is checked at selected reached cuts, not every transient callback step."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-82/source-8423be817-author-one/report.json",
+        "sha256": "abb087e168a456de31b799a41e29f3b89f8eae77dd29bcfded6c848400638b57",
+        "revision": "8423be817e946b77717669215cd31a6873d16573",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-82/review-model-8423be817-second-throw/report.json",
+        "sha256": "a3cc9f9adc07c834aedfa48c79fecef90a690df5fded4666b67f337b923dbc02",
+        "revision": "8423be817e946b77717669215cd31a6873d16573",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-82/review-model-8423be817-first-throw/report.json",
+        "sha256": "3f89f6357212ea0cf33f2aedb1c9d7db2208b8095aa7ece6fc741fded779256c",
+        "revision": "8423be817e946b77717669215cd31a6873d16573",
+        "agreements": 1
+      }
+    ],
+    "state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-82/focused-8423be817-three/report.json",
+      "sha256": "1abce97be991355e00e95679c2996b7e92055ea0abe7b614488fd8246569c0f6",
+      "revision": "8423be817e946b77717669215cd31a6873d16573",
+      "cases": [
+        "xor-nan-warning-cached-left",
+        "xor-nan-warning-second-supplied-throw",
+        "xor-nan-warning-first-supplied-throw-masked"
+      ],
+      "conditions": [
+        254,
+        172,
+        179
+      ],
+      "total": 605
+    },
+    "total_source_agreements": 3,
+    "total_focused_state_conditions": 605,
+    "review": "Independent operators79_review accepted native/genuine observations, runtime/author/peer/header before execution and exact source/focused outcomes. Publication independently reviewed; actual-tail composition pending. Metadata changes add no execution credit."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-82/baseline-9730deaf7-cached-left/report.json",
+      "sha256": "057f512dc13002b0545baeb22d19d929d3d00a0855d544a6fed66064980f2b94",
+      "revision": "9730deaf71839520686553f5d09fe851bac2c07f",
+      "result": "Frontend-accepted/checked original stops Unsupported before H: error-handler ingress requires a producer continuation. Empty semantic streams/model1/rowfalse/agreement0; unchanged raw result."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-82/native-9730deaf7-author-one/report.json",
+        "sha256": "13795b7fc6048a648b7fcf90ebb30877e0d38a3f8a62a85cc4b0f119e82209a5",
+        "revision": "9730deaf71839520686553f5d09fe851bac2c07f"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-82/native-9730deaf7-second-throw/report.json",
+        "sha256": "37722c39ea5dfad3cc01b0e7a15192b73189ee33a33c4b23b45fdf7c4838937f",
+        "revision": "9730deaf71839520686553f5d09fe851bac2c07f"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-82/native-9730deaf7-first-throw/report.json",
+        "sha256": "6fe7158ccf8b41547fe4551af808e94cd72615b4ca82cdc222a686c718216f3c",
+        "revision": "9730deaf71839520686553f5d09fe851bac2c07f"
+      }
+    ],
+    "full_static": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-82/static-8423be817/report.json",
+      "sha256": "d5f33dc66ff8508f3b2ab979fc4e4461ecfd49f0b4f30b49b7b4a6c62747155f",
+      "revision": "8423be817e946b77717669215cd31a6873d16573",
+      "result": "Full ordered409 struct passes; semantic credit0."
+    }
+  },
+  "limits": [
+    "Three exact sources cover normal cache/live-right conversion, supplied RIGHT throw and supplied LEFT throw with remaining masked default Warning. LEFT0/no-rewarning/representation/pending quiet or eligible-mask controls are derived; they do not add source agreement. Native NaN-bit identity is unclaimed.",
+    "Initial same-cell, nonfloat/copy/reference operands, rebinding or owning/constrained representations and wider handlers/lifetimes remain partial. No old Boolean/cast/numeric algorithm renewal or engine bug/divergence claim.",
+    "Paused OP12, Source47 low-precision DEFINE NaN, owned-NUL source-release, undefined-byref LIST key and COMP88 Stringable supplied-throw crash remain separate."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-82",
+    "environment": "LC_ALL=C,TZ=UTC,PHP_SPEC_SCRIPT_ENCODING absent; ordinary profile. Native/genuine CPU4, source/focused CPU1. All actors reaped and slots released. Native30/modelCLI60-process90, full409struct30, checked workers30/fixturestruct30/SL120 per group; no cap changes.",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "commands": [
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-82/run-native-gate.py 9730deaf71839520686553f5d09fe851bac2c07f 4",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-82/run-source-gate.py 8423be817e946b77717669215cd31a6873d16573 1",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-82/run-focused.py 8423be817e946b77717669215cd31a6873d16573 1"
+    ],
+    "record": "Restore matching Git cut/local tools and retained original paths; choose fresh output directories. Focused fixtures reuse accepted source/native tuples without execution replay. Raw external evidence is not a build input; local regular-binary reuse proves no fresh offline rebuild."
+  }
+}

@@ -1033,6 +1033,19 @@ in the [OP81 ledger](../../coverage/semantics/arraycast-nan-warning-review.json)
 References, changed representations, owning replacements and wider producers
 remain partial. Native throwing-path allocation timing is not claimed.
 
+Logical XOR of two distinct ordinary float CVs with initially NaN LEFT now
+converts LEFT and then the live RIGHT through named NaN Warning callbacks. Each conversion rereads its float
+after the Warning; converted LEFT truth stays cached while RIGHT's handler runs.
+H1 can therefore turn quiet RIGHT into NaN, and H2 can set both CVs to zero while
+the result stays stricttrue. A supplied RIGHT-handler Exception cancels delivery.
+A supplied LEFT-handler Exception still permits the remaining RIGHT default
+Warning under a changed mask8192 before the same catch. The pending task owns that
+Exception until restoring its search; conversion markers add no cell owner.
+Three exact originals and 605 premises in three checked-source-derived recipes
+pass in the [XOR ledger](../../coverage/semantics/xor-nan-warning-review.json).
+LEFT0, unchanged-NaN, representation and pending quiet/suppressed controls are
+derived. Other operand/storage/handler forms and broader lifetime remain partial.
+
 ## Evidence and remaining work
 
 `tests/semantics/ordinary.py` embeds 1,506 exact source inputs and checks 25 source

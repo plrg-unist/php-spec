@@ -1364,6 +1364,13 @@ Two originals and 325 focused premises pass in the
 [NaN array-cast ledger](coverage/semantics/arraycast-nan-warning-review.json).
 References, changed representations and wider handlers remain partial.
 
+Logical XOR with initially NaN LEFT now caches its live post-warning truth before converting RIGHT.
+A first handler can create RIGHTNaN; a second handler can set both CVs to zero
+while the result stays true. A LEFT-handler throw still reaches a required RIGHT
+default Warning under mask8192 before the same catch; a RIGHT-handler throw cancels directly.
+Three originals and 605 focused premises, including derived controls, pass in the
+[XOR ledger](coverage/semantics/xor-nan-warning-review.json). Wider forms remain partial.
+
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
