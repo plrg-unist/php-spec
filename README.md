@@ -39,10 +39,14 @@ Captured tables retain their children through COW; replacing a live array can
 release children inside the handler. Releasing the last table owner drops its
 child edges; destructors run when no other object owner remains. See the
 [object-array review](coverage/semantics/undefined-comparison-object-array-review.json).
-Reference entries also admit live cells with defined primitive payloads. COW
-unwraps singleton references and preserves shared cells; captured containers keep
-their entries while writes through those cells remain visible. See the
-[reference-array review](coverage/semantics/undefined-comparison-reference-array-review.json).
+Reference entries also admit live cells with primitive or ordinary-object payloads.
+COW unwraps singleton references and preserves shared cells; captured containers
+keep their entries while writes through those cells remain visible. Replacing a
+shared object can run its destructor inside the handler; final saved-table release
+can run the last-owned object destructor before the outer store or catch.
+Outside aliases delay that release. See the
+[reference-array review](coverage/semantics/undefined-comparison-reference-array-review.json)
+and [object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json).
 Both-missing pairs, including one missing name twice, can resume if the first
 handler defines the later scalar, flat array or ordinary object. `$x == $x` can
 then be false and `$x > $x` true. Greater operators check source right first. All seven comparison operators

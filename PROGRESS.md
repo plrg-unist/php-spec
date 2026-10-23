@@ -7,6 +7,26 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+All seven existing missing-CV comparison array shapes now admit object-valued
+ALIAS entries under the existing live ordinary non-Stringable bound. Captured
+tables preserve cell locations, so replacing a shared cell can destroy its old
+object inside the handler. Singleton COW unwraps the copied entry instead.
+Last saved ARRAY-to-CELL-to-OBJECT release runs destruction before store/catch
+when no other owner remains; outside aliases can delay it. Source certificates,
+roots and restore/discard stay unchanged; nested/internal/Stringable leaves and
+paused COMP88 remain partial.
+
+Ten source agreements and two Unsupported controls pass at `92a58951b`/409.
+Six focused groups execute 949 assertions: 922 distinct and 27 repeated setup
+premises. Author and recovered COW checks retain `2d930468a`; new partition and
+throw checks retain `ba61ad36d`/409. One affected old117 selector now agrees
+normally, without renewing historical credit. Initial native2+4 retains
+`127946e6c`/409 and genuine refusal `b7adf553b`/409. The original pre-main binder
+failure, host interruption and 120-second timeout retain zero credit. Partitioning
+preserves every assertion at the original caps without accepted replay. Original
+peer worker finalization remains unobserved; its completed COW group is retained.
+[Object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json).
+
 Two singleton argument packs now preserve raw NULL and a captured flat quiet
 ARRAY for fixed/selected strings and retained INI_SET setters. Each saved source
 fact authenticates separately; later helper/handler effects preserve the old

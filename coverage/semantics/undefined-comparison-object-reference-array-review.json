@@ -1,0 +1,122 @@
+{
+  "milestone": "COMP118 ordinary object reference entries at missing comparison reads",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "All seven existing captured/current array-vs-frozen-NULL shapes admit ALIAS entries whose valid live reference cell holds a live ordinary non-Stringable object. Primitive ALIAS and DIRECT leaves keep their prior bounds.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "f6ef3ac5cc3a1ab02d6b4805019b15f90eb0f21d",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "5eb1dfa95e70de2a3a67c87fd088422f20395c67ef04f87e7218176224de71be"
+  },
+  "modules": 409,
+  "engine_basis": "zend_compare uses array truth against NULL without visiting entries. zend_array_dup_value unwraps a singleton reference while copying and retains shared reference cells. Existing ARRAY-to-CELL-to-OBJECT edges determine release.",
+  "implementation": "Only the existing ALIAS payload guard gains comparison_read_object_value beside spaceship_read_scalar; its reference validity, DEFINED payload and tail recursion remain exact. No source certificates, roots, state/tasks, restore/discard or comparison bodies change.",
+  "behavior": [
+    "Captured table entries preserve cell locations. Replacing a shared cell object changes the payload visible through saved/COW tables and can destroy the old object inside the callback. Singleton COW instead unwraps the copied bucket to DIRECT and leaves the captured original cell/object intact.",
+    "Each ALIAS entry owns a cell edge and the cell owns its current object edge. Table owners do not multiply those edges; repeated entries can own separate cell edges. Last saved-table release can destroy a last-owned object before outer store or catch, while outside cell aliases delay destruction.",
+    "New originals cover all seven operators, handler-created same-CV and both-missing arrays, STDINSTANCE, no-init/default and first supplied throw. Focused checks separate raw ownership drops from driven destructors, prove current shared payload versus singleton COW, and retain domain/source/CODE/line/op refusals and whole/split/zero budgets."
+  ],
+  "baseline": {
+    "report": "initial/baseline-report.json",
+    "sha256": "0032cb95d4b686019f80e2ad10f695e4f7550ffd1c12c954fb76f0b0ec52fb3d",
+    "revision": "b7adf553b21eea1b4b104cee72135e4467c92abc",
+    "native_revision": "127946e6cbbb92a7646b06b1705b9a68d6a98e32",
+    "agreement_credit": 0,
+    "native": "Initial author2/peer4 retain their actual127946e6c/409 native cuts; retained peer model4 reuses native4. Author native8 is separately recorded at92a58951b/409.",
+    "model": "Genuine unchanged EQ at privateb7adf553/409 is accepted/checked then ingress Unsupported with empty streams."
+  },
+  "accepted": [
+    {
+      "report": "author-source/model-report.json",
+      "sha256": "7175ae65d81c2922f87a7a1f89d7d21b14b15b06e4ac97c362916dbdfb9914fd",
+      "revision": "92a58951b81b75e1fd5334c14d855a48b29d4a06",
+      "agreements": 6,
+      "unsupported_controls": 2
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "11e8459622ba67295bec3674f2f5fc8f712cd9440edea38064ca2900ed8b606f",
+      "revision": "92a58951b81b75e1fd5334c14d855a48b29d4a06",
+      "agreements": 4,
+      "unsupported_controls": 0
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "099027fc493a68f6481f9a4efc8e38f589fbbf0a2a402d1842809eacc04534e9",
+      "revision": "2d930468aa8a9f576ad58b889890f819baa4d06b",
+      "premises": 377,
+      "groups": 2
+    },
+    {
+      "report": "peer-state/report.json",
+      "sha256": "32f32941cd121453d3a3039d2d827454c2127aa70bd4dcc0df1fbb67b437a00f",
+      "revision": "ba61ad36db7d2fd7327b3a03e1ed5a7120dfcac3",
+      "premises": 572,
+      "unique_premises": 545,
+      "groups": 4,
+      "provenance": "Recovered shared-COW194 retains original2d930468a raw exit0/true and exact fixture/source; its old worker-close stability was not observed after restart. New default194+budget35 and throw149 retain their own partition-driver cut and stable reports. The27 repeated setup assertions do not add new semantic coverage."
+    }
+  ],
+  "totals": {
+    "source_agreements": 10,
+    "unsupported_source_controls": 2,
+    "state_premises": 949,
+    "unique_state_premises": 922,
+    "repeated_setup_premises": 27,
+    "state_groups": 6
+  },
+  "maintenance": {
+    "source_selectors": {
+      "report": "maintenance-source/report.json",
+      "sha256": "3ef73f8a2ba0b5784dad24be5d333cef154afaa9810233851e8d912cbd6856a7",
+      "revision": "ba61ad36db7d2fd7327b3a03e1ed5a7120dfcac3",
+      "selectors": 1,
+      "normal_agreements": 1
+    },
+    "historical_agreement_renewal": 0,
+    "scope": "Only the old117 ordinary-object ALIAS entry Unsupported mapping is removed; its exact original now agrees normally as B|H|-1. Old constructed POBJECT0 negatives still have absent or internal objects, so no old state campaign or counterfactual repair is renewed."
+  },
+  "validation": "CPU1 source, CPU3 corrected author/original peer/timeout, then CPU4 affected partition/throw/selector; serial/fail-first/full reap,2GiB: author native8 130/150/per15, model8 605/620/10k (three60/75 and five45/60 CLI/record caps); retained peer4 315/330/60/75. Author2 state275/290; the new peer packet uses405 outer/per120 child, strictSL/dettrue/cachefalse. All observed state children retain the120-second cap. App restart interrupted the second peer group; the successful first group was retained. Resumed default202 timed out at the unchanged child120 cap; its assertions were partitioned without raising the cap. Only affected default194+budget35 and unrun throw149 completed afterward;27 repeated setup assertions add no coverage. One selector100/120/child80. Commands/exits and stable new-report fingerprints plus explicit recovered provenance are archived; no historical renewal.",
+  "failures": [
+    {
+      "report": "author-state-original/report.json",
+      "sha256": "70a0bdf0e6235ba7e57fc2db7869f96199416faeee80fd454d2ab5f86335a3d1",
+      "revision": "92a58951b81b75e1fd5334c14d855a48b29d4a06",
+      "agreement_credit": 0,
+      "phase": "pre-main fixture elaboration",
+      "cause": "Undeclared pnewdestructor type prefix. Corrected to pdestructorcall_new; analogous unrun peer poperation prefixes became pdestructionoperation. Counts and all generated conditions are otherwise exact. Runtime/source/native accepted cuts remain unchanged."
+    },
+    {
+      "report": "peer-state-timeout/report.json",
+      "sha256": "f58d9fa41a0a8ff9826ed5e3394ec10268209ad6d9deab095d6da0f1956af2ad",
+      "revision": "2d930468aa8a9f576ad58b889890f819baa4d06b",
+      "agreement_credit": 0,
+      "phase": "default202 focused state execution",
+      "cause": "Timed out at original120-second child cap with empty stdout/stderr. Report inputs/HEAD stable and process group fully reaped. Subsequent fixture partition preserves the original obligations at unchanged child caps; runtime/source acceptance remains unchanged."
+    }
+  ],
+  "interruptions": [
+    {
+      "report": "peer-state/interruption.json",
+      "sha256": "ba532d0e18cecc965eafc995e946a1162f41cd28824b750f4a333d1721effa06",
+      "agreement_credit": 0,
+      "phase": "second peer state group",
+      "cause": "App restart left greater-target-default with only its process record. No actor survived. Completed shared-COW retains its raw exit0/true and exact source/generated fixture at2d930468a, without claiming observed original worker-close/input-finalization stability. Only affected default and unrun throw groups resume. The recovered composite identifies per-record revisions and provenance."
+    }
+  ],
+  "divergences": [],
+  "remaining": [
+    "Nested/array-valued ALIAS payloads, internal/enum/Stringable object leaves and wider producers remain partial; paused COMP88 is untouched.",
+    "Allocation, reference membership, bounds/DEFINED, ordinary class and nonfreeing object checks remain domain checks, separate from stable source certificates. Implicit integer keys produce no NULL literal-key or CONFIG_SEND/INI path."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-118",
+  "artifact_manifest_sha256": "87180cc716e943e60118cf30f692316269becf85c5058ed054f908fc6389084b",
+  "independent_reviewer": "/root/comp118_review",
+  "reproduction": [
+    "python3 tests/semantics/undefined_comparison_object_reference_array_sources.py --phase native --output .tools/comp118-source-new",
+    "python3 tests/semantics/undefined_comparison_object_reference_array_sources.py --phase model --output .tools/comp118-source-new",
+    "python3 tests/semantics/undefined_comparison_object_reference_array_state.py --output .tools/comp118-state-new",
+    "python3 tests/semantics/undefined_comparison_object_reference_array_review_state.py --output .tools/comp118-peer-state-new"
+  ]
+}
