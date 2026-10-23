@@ -14,6 +14,18 @@ Reference/rebinding and owning handlers, copied operands and wider lifetimes
 remain partial. This operation-specific module404 route leaves shared truth,
 numeric/formatting, CONFIG/DEFINE and paused Source47 behavior unchanged.
 
+Explicit `(bool)` casts now have a separate `NExprCastBool`/`CAST_RESULT CASTBOOL`
+continuation for the same ordinary float-CV boundary. Pinned `zend_compile_cast`
+uses `ZEND_BOOL`; its post-Warning live-double read delivers strict `false` after
+the callback writes `0.0`. Returning false permits one default Warning at line25;
+a supplied Exception cancels the result and outer assignment. The existing
+record layout and slot-only readiness/snapshot helpers are reused without
+changing the Boolean-NOT source or negation rules. Two exact originals and 291
+premises in two checked-source-derived recipes, including derived refusals,
+pass in the [OP80 ledger](../../coverage/semantics/boolcast-nan-warning-review.json).
+Copied/reference operands, changed representations and wider handlers/lifetimes
+remain partial. Shared truth conversion and paused Source47 are unchanged.
+
 Module209 resumes source-certified missing-CV decisions with the original null,
 even when an error handler defines the same variable. It covers `if`/`elseif`,
 `while`/`do`/`for`, both Boolean and keyword short-circuit operators, Boolean NOT,

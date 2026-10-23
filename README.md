@@ -684,6 +684,11 @@ slot. A handler's `0.0` write produces strict `true`; its supplied Exception
 cancels the result and outer assignment. Two originals and 280 focused premises
 pass in the [NaN Boolean NOT ledger](coverage/semantics/boolnot-nan-warning-review.json).
 Changed representations, references, copied operands and wider handlers remain partial.
+Explicit Boolean casts also warn before rereading the same float CV: a handler's
+`0.0` write gives strict `false`, and its supplied Exception cancels delivery.
+Two originals and 291 focused premises pass in the
+[NaN Boolean-cast ledger](coverage/semantics/boolcast-nan-warning-review.json).
+The direct-CV and named-handler limits remain the same.
 Eligible classes and named functions publish in compilation order, so earlier
 notices and declarations survive later compiler diagnostics. Parser and modifier
 preflight preserve their distinct first errors, while declaration history binds
