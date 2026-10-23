@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "milestone": "OP80 explicit Boolean-cast NaN Warning",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/ordinary precision14 profile",
+  "scope": "Explicit (bool) of NaN in an ordinary allocated nonreference direct CV, named Warning callback, same live float slot on return. Normal write0.0/returnfalse yields strictfalse/defaultWarning; supplied Exception20 cancels result/outer assignment. References/rebinding, copies, changed representations and owning/wider handlers remain partial.",
+  "runtime_revision": "ba04982e2a5860a9dae98893a19f315df0e442c5",
+  "helper_revision": "ba04982e2a5860a9dae98893a19f315df0e442c5",
+  "private_modules": 409,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "ab6b4d709006e4208f6757d4b05c168e27133f969932304cbbe0860aea03e145",
+    "spec/semantics/58-ordinary-expressions.watsup": "9aa0c2d3601c01d48c048212c95b095680a4f4c82d008d36bbc87af3ae0ab9aa",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "0150e11f312f26141f047ee3da4d83dd31af908f661caced5c2e0534a40abdb1"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_compile.c::zend_compile_cast compiles the operand then emits ZEND_BOOL for _IS_BOOL. Zend/zend_vm_def.h::ZEND_BOOL calls i_zend_is_true(val), frees the operand and checks exceptions before the following assignment. Zend/zend_operators.h::i_zend_is_true emits the NaN bool Warning before rereading that pointer\u2019s double; the result is not negated.",
+    "The cast-specific source/plan require NExprCastBool/CAST_RESULT CASTBOOL and an authentic direct-CV operand/line. Existing pboolnotnanwarning is reused only as SITE/LINE/INPUT/CELL/BITS layout; unchanged boolnot_nan_ready/snapshot prove ordinary same-cell float readiness and fresh NaN snapshot, with no Boolean-NOT source or negation authority. The original slot remains allocated, unwrapped, unblocked and free of property/reference-coercion/parameter-backing constraints.",
+    "Exactly65 additions:30 task1,58 plan declaration/EPS gate2,404 appended cast-specific source/plan/validity/dispatch/nonnegated resume/boundary62. The record layout, readiness/snapshot helpers, old Boolean-NOT51/404, shared truth_value, numeric/formatting, CONFIG/DEFINE/400, roots and generic unwind remain exact."
+  ],
+  "contract": [
+    "Author h sees Warning2 at operand25, increments calls once, writes x to float0.0 and returns false. The live read supplies false, so result and outer v become strictfalse rather than captured NaN true. One default Warning remains; finally and EOF x8 execute.",
+    "Independent h writes float0.0 then throws the supplied Exception allocated20. Catch observes the identical Exception, null Previous, line20, v100, x0.0 and calls1. Result/outer assignment and default Warning are canceled; finally and EOF x8 execute.",
+    "Focused160+131 premises form two checked-source-derived recipes, mixing actual callback/EOF traversal and derived source/consumer/storage refusals. Raw capture/result/no-store equality, fresh and entered callbacks, historical source authority versus livefloat0, cell owner1 at entry/capture/returned-or-throw/EOF cuts and EPS task roots, warning counts, supplied Exception root2/identity and zero-step cuts pass. Explicit cross-source/consumer refusals separate BOOLNOT from CASTBOOL; six peer premises check same-valued different CELL refusal and exact Unsupported on a retyped stage1. Derived controls receive no native agreement credit."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-80/source-ba04982e2-author-one/report.json",
+        "sha256": "18220588490903e57a93cdd237aa3dae641ae6eaaa6cd863ebe42d49b4008c02",
+        "revision": "ba04982e2a5860a9dae98893a19f315df0e442c5",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-80/review-model-ba04982e2-review-one/report.json",
+        "sha256": "ba86f60aff5c6c139a85f161be52e2877eed6a7ae3befeef29d14c10772ad2e9",
+        "revision": "ba04982e2a5860a9dae98893a19f315df0e442c5",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-80/focused-ba04982e2-two/report.json",
+        "sha256": "e1615444147309f71406dbce5c90b27417780ffc3f43099cc8c34caef2a702d0",
+        "revision": "ba04982e2a5860a9dae98893a19f315df0e442c5",
+        "modules": 409,
+        "conditions": [
+          160,
+          131
+        ],
+        "total": 291,
+        "full_struct_cases": 2
+      }
+    ],
+    "total_source_agreements": 2,
+    "total_focused_state_conditions": 291,
+    "review": "Independent operators79_review accepted native/genuine observations, runtime/author/peer/header before affected execution, all first-result source/state outcomes, publication scope and compressed PROGRESS. Actual-tail composition independently cleared at66229eb87 over25b63539e/409; metadata edits require no semantic replay."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-80/baseline-de5daa8ba-live-float/report.json",
+      "sha256": "968b050edfd6a3d36bcdbf4ed8a58cbd82e6274285f2555a8d9eed443153a793",
+      "revision": "de5daa8ba02cb4bbdec9da165adcb8e1c5bc47d3",
+      "result": "Genuine frontend-accepted/checked program stops Unsupported before handler output: error-handler ingress requires a producer continuation. Empty semantic streams, model1/rowfalse/agreement0; raw outcome unchanged."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-80/native-de5daa8ba-author-one/report.json",
+        "sha256": "47d46372d82610bc6dd5054a4ce5d5eeef7ea45f5a6f252595b4e3176d161cd8",
+        "revision": "de5daa8ba02cb4bbdec9da165adcb8e1c5bc47d3"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-80/native-de5daa8ba-review-one/report.json",
+        "sha256": "27672f675ef8edcb74b5439f533a39bb540c47e1412748ac0c0aa59f29877efa",
+        "revision": "de5daa8ba02cb4bbdec9da165adcb8e1c5bc47d3"
+      }
+    ],
+    "full_static": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-80/static-ba04982e2/report.json",
+      "sha256": "70181fb82d221f8309e8e40f4c29c65885c495ec53d7c31c7457f0777efa4a8c",
+      "revision": "ba04982e2a5860a9dae98893a19f315df0e442c5",
+      "result": "First affected full ordered409 struct passes; semantic credit0."
+    }
+  },
+  "limits": [
+    "Two native witnesses cover write0.0/returnfalse/defaultWarning and write0.0/supplied throw. Other still-float payloads have helper reasoning without separate source witnesses. NaN bit identity is modeled, without native payload-identity evidence. No engine bug, intentional divergence, broad numeric algorithm, lifetime or OP79 renewal is claimed.",
+    "This CASTBOOL producer uses fixed Warning2/precision14. Paused Source47 low-precision DEFINE-name NaN behavior, OP12, COMP88, owned-NUL and undefined-byref LIST remain separate. Owning/copy/reference producers and wider callbacks/representation changes remain partial."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-80",
+    "environment": "LC_ALL=C,TZ=UTC,PHP_SPEC_SCRIPT_ENCODING absent. Native/genuine and first affected packets usedCPU1 separately granted/released. Native30s/modelCLI60s-process90s; full409struct30s; checked workers30s/fixturestruct30s/focusedSL120s per group. All actors reaped, original caps, all post-change first executions pass without failure/retry/accepted replay.",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "commands": [
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-80/run-native-gate.py de5daa8ba02cb4bbdec9da165adcb8e1c5bc47d3 1",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-80/run-source-gate.py ba04982e2a5860a9dae98893a19f315df0e442c5 1",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-80/run-focused.py ba04982e2a5860a9dae98893a19f315df0e442c5 1"
+    ],
+    "record": "Restore matching Git cuts and project-local regular tools in a fresh directory, preserve original source/native/report paths and use new output directories. Focused preparation uses retained accepted source/native tuples without application/native/source replay. Raw evidence is external, not a build dependency. Sparse private provisioning reused local binaries and establishes no new rebuild/portability result."
+  },
+  "composition": {
+    "parent": "25b63539ed31e77de3bf0505929d041367f62e60",
+    "private_publication": "22c6171dda2334c55814ebd3dba5babee6bebb0e",
+    "modules": 409,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "ab6b4d709006e4208f6757d4b05c168e27133f969932304cbbe0860aea03e145",
+      "spec/semantics/58-ordinary-expressions.watsup": "9aa0c2d3601c01d48c048212c95b095680a4f4c82d008d36bbc87af3ae0ab9aa",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "0150e11f312f26141f047ee3da4d83dd31af908f661caced5c2e0534a40abdb1"
+    },
+    "gate": "Tested30/58/404 and six OP80 scripts remain private-exact. Incoming172/207/380 and ordered409/schema/other runtime paths remain parent-exact. New172 two-singleton-pack INI_SET authority requires absent API/source/pack producers; h is an ordinary untyped named callback and Throwable getters use distinct intrinsic routes. The207 missing-CV comparison ALIAS-object expansion requires absent missing operands and array comparison values; all OP80 observations are strict defined primitives or identical Throwable objects. Module380 getter recursion needs an implicit source __get invocation, absent from these sources with no user classes or property gets. Iterator50 adds validation only and no Generator producer occurs here. Incoming changes add no pstate/frame/heap fields, so reached and derived fixtures need no lift. Source2/focused291 retain their privateba04982e2/409 cuts without joined execution, accepted replay, old OP79 renewal or rebuild credit. Compressed PROGRESS preserves the current parent facts, root-provided active/paused snapshot and remaining obligations; historical detail remains in ledgers/Git."
+  }
+}

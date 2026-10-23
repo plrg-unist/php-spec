@@ -4,6 +4,15 @@ dec $property_empty_prepare(pstate) : bool
 def $property_empty_prepare(S) = false -- otherwise
 dec $property_empty_get_active(pstate, nat, ptbytes) : bool
 def $property_empty_get_active(S, n, ptbytes) = false -- otherwise
+dec $property_get_recursive_frame(pstate, pcallcontext, pframe, nat, ptbytes) : bool
+dec $property_get_recursive_exit_call(ptask) : pdestructorcall?
+dec $property_get_recursive_exit(pstate, ptask*, ppropertyget) : pdestructionframe?
+dec $property_get_recursive_exit_task(pstate, ptask, nat, ptbytes) : bool
+dec $property_get_recursive_exit_active(pstate, ptask*, nat, ptbytes) : bool
+dec $property_get_recursive_guard(pstate, pcallcontext?, pframe*, nat, ptbytes) : bool
+dec $property_get_recursive_history(pstate, ppropertywarning) : bool
+dec $property_get_recursive_warning(pstate, nat, ptbytes, int) : ppropertywarning?
+dec $property_get_recursive_plan(pstate) : ppropertywarning?
 dec $property_get_string_capture(pstate, ppropertyget) : ppropertygetstring?
 dec $property_get_string_record(ptask) : ppropertygetstring?
 dec $property_get_string_scope(pstate, ppropertygetstring) : bool
@@ -299,6 +308,7 @@ rule PhpStep/property-get: S ~> $property_get_begin(S, ppropertyget)
 rule PhpStep/property-get-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic getter receiver, signature or recursive access"]
   -- if $property_get_pending(S)
   -- if $property_get_plan(S) = eps
+  -- if $property_get_recursive_plan(S) = eps
 
 ;; The internal call borrows its receiver from the one saved RESULT task.
 def $target_nodes(PROPERTY_GET_TARGET n porigin) = eps
@@ -373,6 +383,97 @@ def $named_context_valid(S, pcallcontext) = $property_get_context(S, pcallcontex
 def $reference_callback_used(S, pcallcontext) = (true)
   -- if S.CURRENT = (pcallcontext)
   -- if $property_get_context(S, pcallcontext)
+
+;; IN_GET belongs to the actual implicit call, including its compiled-local
+;; release. A queued RESULT marker, direct __get call or COPY is not authority.
+def $property_get_recursive_frame(S, pcallcontext, pframe, n, ptbytes) = true
+  -- if pframe.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if ppropertyget.OBJECT = n /\ ppropertyget.NAME = ptbytes
+  -- if $property_get_frame(S, pcallcontext, pframe)
+def $property_get_recursive_frame(S, pcallcontext, pframe, n, ptbytes) = false -- otherwise
+
+def $property_get_recursive_exit_call(DESTRUCTOR_ENTER pdestructorcall) = (pdestructorcall)
+def $property_get_recursive_exit_call(DESTRUCTOR_RESULT pdestructorcall) = (pdestructorcall)
+def $property_get_recursive_exit_call(ptask) = eps -- otherwise
+def $property_get_recursive_exit(S, (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*, ppropertyget) = (pdestructionframe)
+  -- if $property_get_valid(S, ppropertyget, true) /\ $property_get_tail_valid(S, ppropertyget)
+  -- if pdestructionframe.FUNCTION = ppropertyget.METHOD
+  -- if $destructor_return_operand_valid(S, pdestructionframe.VALUE) /\ $destructor_pending_valid(S, pdestructionframe.PENDING)
+  -- if pdestructionframe.CALLER = S.CURRENT /\ pdestructionframe.ORIGIN = S.ORIGIN /\ S.ORIGIN = (ppropertyget.SITE) /\ pdestructionframe.CONSTCONTEXT = S.CONSTCONTEXT
+def $property_get_recursive_exit(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, ppropertyget) = (pdestructionframe)
+  -- if $property_get_recursive_exit(S, ptask_tail*, ppropertyget) = (pdestructionframe)
+  -- if pdestructionrelease.CALLER = S.CURRENT /\ pdestructionrelease.ORIGIN = S.ORIGIN /\ pdestructionrelease.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pdestructionrelease.USER = $destructor_user_source(S)
+def $property_get_recursive_exit(S, ptask_call :: (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, ppropertyget) = (pdestructionframe)
+  -- if $property_get_recursive_exit_call(ptask_call) = (pdestructorcall)
+  -- if $property_get_recursive_exit(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, ppropertyget) = (pdestructionframe)
+  -- if pdestructorcall.FRAME = (pdestructionframe) /\ pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.RELEASE = (pdestructionrelease_before)
+  -- if pdestructionrelease_before.JOBS = pdestructionjob_head :: pdestructionjob_tail*
+  -- if $destruction_job_node(pdestructionjob_head) = (HOBJECT pdestructorcall.OBJECT)
+  -- if pdestructionrelease = pdestructionrelease_before[.JOBS = pdestructionjob_tail*]
+  -- if ~pdestructorcall.STORE /\ pdestructorcall.USER = pdestructionrelease.USER
+  -- if pdestructorcall.CALLER = S.CURRENT /\ pdestructorcall.ORIGIN = S.ORIGIN /\ pdestructorcall.CONSTCONTEXT = S.CONSTCONTEXT
+def $property_get_recursive_exit(S, ptask*, ppropertyget) = eps -- otherwise
+def $property_get_recursive_exit_task(S, PROPERTY_GET_RESULT ppropertyget, n, ptbytes) = true
+  -- if ppropertyget.OBJECT = n /\ ppropertyget.NAME = ptbytes
+  -- if $property_get_recursive_exit(S, S.TODO, ppropertyget) = (pdestructionframe)
+  -- if pdestructionframe <- S.DESTRUCTION.FRAMES
+def $property_get_recursive_exit_task(S, ptask, n, ptbytes) = false -- otherwise
+def $property_get_recursive_exit_active(S, ptask :: ptask_tail*, n, ptbytes) = ($property_get_recursive_exit_task(S, ptask, n, ptbytes) \/ $property_get_recursive_exit_active(S, ptask_tail*, n, ptbytes))
+def $property_get_recursive_exit_active(S, eps, n, ptbytes) = false
+
+def $property_get_recursive_guard(S, (pcallcontext), pframe :: pframe_tail*, n, ptbytes) = ($property_get_recursive_frame(S, pcallcontext, pframe, n, ptbytes) \/ $property_get_recursive_exit_active($constant_frame_view(S, pframe, pframe_tail*), pframe.TODO, n, ptbytes) \/ $property_get_recursive_guard(S, pframe.CONTEXT, pframe_tail*, n, ptbytes))
+def $property_get_recursive_guard(S, eps, pframe :: pframe_tail*, n, ptbytes) = ($property_get_recursive_exit_active($constant_frame_view(S, pframe, pframe_tail*), pframe.TODO, n, ptbytes) \/ $property_get_recursive_guard(S, pframe.CONTEXT, pframe_tail*, n, ptbytes))
+def $property_get_recursive_guard(S, pcallcontext?, eps, n, ptbytes) = $property_get_recursive_exit_active(S, S.TODO, n, ptbytes)
+
+;; The Warning's captured read remains null if its handler populates storage.
+;; Only entry checks absence; history does not reread the receiver CV or slot.
+def $property_get_recursive_history(S, ppropertywarning) = true
+  -- if $property_null_read_valid(S, ppropertywarning.READ)
+  -- if ppropertywarning.KEY = ppropertywarning.READ.NAME
+  -- if ppropertywarning.BORROWED /\ ~ppropertywarning.FREEING /\ ppropertywarning.CELL = eps
+  -- if $property_undefined_source_borrow(S, ppropertywarning)
+  -- if $(ppropertywarning.OBJECT < |S.OBJECTS|)
+  -- if (HOBJECT ppropertywarning.OBJECT) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, ppropertywarning.OBJECT)
+  -- if S.OBJECTS[ppropertywarning.OBJECT] = INSTANCE porigin_class
+  -- if $property_effective_desc(S, ppropertywarning.OBJECT, ppropertywarning.KEY) = eps
+  -- if ~$property_hook_declared(S, ppropertywarning.OBJECT, ppropertywarning.KEY)
+  -- if $property_get_method(S, ppropertywarning.OBJECT) = (pmethoddesc)
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION) /\ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if $property_get_recursive_guard(S, S.CURRENT, S.FRAMES, ppropertywarning.OBJECT, ppropertywarning.KEY)
+def $property_get_recursive_history(S, ppropertywarning) = false -- otherwise
+
+def $property_undefined_read_valid(S, ppropertywarning) = $property_get_recursive_history(S, ppropertywarning)
+  -- if $property_get_method(S, ppropertywarning.OBJECT) =/= eps
+
+def $property_get_recursive_warning(S, n, ptbytes, z) = (ppropertywarning)
+  -- if S.SOURCEPENDING = eps
+  -- if S.ORIGIN = (porigin)
+  -- if pnameread = {SITE porigin, NAME ptbytes, LINE z}
+  -- if ppropertywarning = {READ pnameread, OBJECT n, KEY ptbytes, FREEING false, BORROWED true, CELL eps}
+  -- if $property_get_recursive_history(S, ppropertywarning)
+  -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes
+  -- if $property_undefined_slot(S, n, ptbytes)
+  -- if $property_undefined_cv_receiver(S, ppropertywarning)
+def $property_get_recursive_warning(S, n, ptbytes, z) = eps -- otherwise
+
+def $property_undefined_read_plan(S) = (ppropertywarning)
+  -- if S.TODO = (DIM_FETCH z) :: ptask_tail*
+  -- if S.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if $property_get_recursive_warning(S, n, ptbytes, z) = (ppropertywarning)
+
+def $property_get_recursive_plan(S) = (ppropertywarning)
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text) metadata_name) z) :: (DIM_FETCH z) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $property_get_recursive_warning(S, n, $base64(text), z) = (ppropertywarning)
+def $property_get_recursive_plan(S) = eps -- otherwise
+rule PhpStep/property-get-recursive-warning: S ~> $property_undefined_read_dispatch(S[.TODO = (DIM_FETCH z) :: ptask_tail*], ppropertywarning)
+  -- if S.TODO = (PROPERTY_PREP phpType20 z) :: (DIM_FETCH z) :: ptask_tail*
+  -- if $property_get_recursive_plan(S) = (ppropertywarning)
 
 ;; Exact verification is identity: neither a checked write nor TYPE_SOURCES
 ;; attachment occurs. Integer numeric strings convert only the actual RV or

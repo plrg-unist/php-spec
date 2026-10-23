@@ -856,14 +856,26 @@ def $array_null_const_source(S, n, n_value, phpType13*, z) = true
   -- if $compiled_read(S, PORIGIN n_unit (pcpath ++ [PCFIELD 1])) = (PARRAY n_value)
 def $array_null_const_source(S, n, n_value, phpType13*, z) = false -- otherwise
 
+;; Each DIRECT child owns one edge, independently of its parent's root count.
+;; Ancestors exclude cycles and the builder that will receive the saved value.
+dec $array_null_const_items(pstate, pentry*, nat*) : bool
+def $array_null_const_items(S, eps, n_seen*) = true
+def $array_null_const_items(S, (ENTRY pkey (DIRECT (PARRAY n))) :: pentry*, n_seen*) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if ~(n <- n_seen*) /\ ~(n <- S.LITERALARRAYDEBTS)
+  -- if $array_null_const_items(S, S.ARRAYS[n].ITEMS, n :: n_seen*)
+  -- if $array_null_const_items(S, pentry*, n_seen*)
+def $array_null_const_items(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*, n_seen*) = ($literal_reference_flat_leaf(S, pvalue) /\ $array_null_const_items(S, pentry*, n_seen*))
+  -- if $value_nodes(pvalue) = eps
+def $array_null_const_items(S, pentry*, n_seen*) = false -- otherwise
+
 dec $array_null_const_ready(pstate, nat, nat) : bool
 def $array_null_const_ready(S, n, n_value) = true
   -- if $(n < |S.ARRAYS| /\ n_value < |S.ARRAYS|) /\ n =/= n_value
   -- if (HARRAY n) <- S.ALLOCATIONS /\ (HARRAY n_value) <- S.ALLOCATIONS
   -- if $($heap_count(HARRAY n_value, $pools_nodes(S.POOLS)) > 0)
   -- if ~(n_value <- S.LITERALARRAYDEBTS)
-  -- if $entries_nodes(S.ARRAYS[n_value].ITEMS) = eps
-  -- if $literal_reference_flat_items(S, S.ARRAYS[n_value].ITEMS)
+  -- if $array_null_const_items(S, S.ARRAYS[n_value].ITEMS, [n, n_value])
   -- if $array_float_key_plain_nodes($heap_reach([HARRAY n, HARRAY n_value], eps, $heap_graph(S).EDGES))
 def $array_null_const_ready(S, n, n_value) = false -- otherwise
 

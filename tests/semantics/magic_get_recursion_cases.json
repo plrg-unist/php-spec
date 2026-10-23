@@ -1,0 +1,78 @@
+{
+  "scope": "Absent untyped literal property guarded same-name implicit __get recursion; captured NULL through handler population, sole receiver clearing and supplied Warning throw, with authenticated compiled-local cleanup guard/reset.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_observations_accepted": true,
+  "native_revision": "d5a7855e233a8ca5f8c6ef864c7fd13c2dbc71bf",
+  "cases": [
+    {
+      "id": "populate",
+      "source_file": "magic-get-recursion-populate.php",
+      "source": "<?php\nfunction warn119($severity, $message, $file, $line) {\n    global $child;\n    echo 'W|';\n    $child->ghost = 9;\n    echo 'w|';\n    return true;\n}\n#[AllowDynamicProperties]\nclass RecursiveGet119 {\n    public int $tag = 1;\n    public function __get($name) {\n        global $make;\n        echo 'G|';\n        if ($make) {\n            $make = false;\n            $value = $this->ghost;\n        } else { $value = 7; }\n        echo 'g|';\n        return $value;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nset_error_handler('warn119');\n$child = new RecursiveGet119();\n$make = true;\necho 'P:';\n$first = $child->ghost;\necho 'A|', $first === null ? 'null|' : 'bad|', $child->ghost, '|';\nunset($child->ghost);\n$make = true;\n$second = $child->ghost;\necho 'B|', $second === null ? 'null|' : 'bad|', $child->ghost, '|';\nunset($child, $first, $second);\nrestore_error_handler();\necho 'E|';\n",
+      "source_sha256": "cd53f1170ba6e44fd195bf6f1ba8b32b7aa5b5d1ed0e3f7ab7f96aae0e0346db",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-recursion-private-119/.tools/magic-get-recursion-probes-119/populate.php",
+      "stdout_base64": "UDpHfFd8d3xnfEF8bnVsbHw5fEd8V3x3fGd8QnxudWxsfDl8RHxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "recursive_line": 17,
+      "native_raw_sha256": "c7402022e857d7939c787999c22936dad9768cc48ddfc3149da44016c9edcc95",
+      "native_report_sha256": "3816fbc642045ec5da92ee94e10e7397322119480a87274be28e81df8a08989d",
+      "status": "normal"
+    },
+    {
+      "id": "sole",
+      "source_file": "magic-get-recursion-sole.php",
+      "source": "<?php\nfunction warn119($severity, $message, $file, $line) {\n    global $child;\n    echo 'W|';\n    $child = null;\n    echo 'w|';\n    return true;\n}\nclass RecursiveGet119 {\n    public int $tag = 1;\n    public function __get($name) {\n        global $make;\n        echo 'G|';\n        if ($make) {\n            $make = false;\n            $fallback = $this->ghost;\n            echo $fallback === null ? 'n|' : 'bad|';\n        }\n        echo 'g|';\n        return 7;\n    }\n    public function __destruct() { global $live; $live = 99; echo 'D|'; }\n}\nset_error_handler('warn119');\n$child = new RecursiveGet119();\n$make = true;\n$live = 7;\necho 'S:';\n$result = $child->ghost;\necho 'A|', $result, '/', $live, '|';\nunset($child, $result);\nrestore_error_handler();\necho 'E|';\n",
+      "source_sha256": "962eb0d3932d96b3aad5c03d73991861c996f2584b608418b6ef22532028de3a",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-recursion-private-119/.tools/magic-get-recursion-probes-119/sole.php",
+      "stdout_base64": "UzpHfFd8d3xufGd8RHxBfDcvOTl8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "recursive_line": 16,
+      "native_raw_sha256": "d5cae56160b8346c361d425d00c7598a91222e5d58ecde56b37c0092e6f3ae82",
+      "native_report_sha256": "3816fbc642045ec5da92ee94e10e7397322119480a87274be28e81df8a08989d",
+      "status": "normal"
+    },
+    {
+      "id": "throwing",
+      "source_file": "magic-get-recursion-throwing.php",
+      "source": "<?php\nfunction warn119($severity, $message, $file, $line) {\n    global $child, $error;\n    echo 'W|';\n    $child = null;\n    echo 'w|';\n    throw $error;\n}\nclass RecursiveGet119 {\n    public int $tag = 1;\n    public function __get($name) {\n        global $make;\n        echo 'G|';\n        if ($make) {\n            $make = false;\n            $fallback = $this->ghost;\n            echo $fallback === null ? 'n|' : 'bad|';\n        }\n        echo 'g|';\n        return 7;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nset_error_handler('warn119');\n$error = new Exception('same119');\n$child = new RecursiveGet119();\n$make = true;\n$result = 42;\necho 'X:';\ntry { $result = $child->ghost; echo 'bad|'; }\ncatch (Throwable $caught) {\n    echo 'C|', $caught === $error ? 'same|' : 'wrong|', $result, '|';\n}\nunset($child, $caught, $error);\nrestore_error_handler();\necho 'E|';\n",
+      "source_sha256": "49c8d1aa70484fb6784bdef3472fdfe6a09d6eea6198a3d3012aefb1afdca4d2",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-recursion-private-119/.tools/magic-get-recursion-probes-119/throwing.php",
+      "stdout_base64": "WDpHfFd8d3xEfEN8c2FtZXw0MnxFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "recursive_line": 16,
+      "native_raw_sha256": "249ccab2d763697ed263731fa9d9ab31d54bb2dd23c9837911428481eb7c5a1d",
+      "native_report_sha256": "3816fbc642045ec5da92ee94e10e7397322119480a87274be28e81df8a08989d",
+      "status": "normal"
+    },
+    {
+      "id": "cleanup",
+      "source_file": "magic-get-recursion-cleanup.php",
+      "source": "<?php\nfunction warn119($severity, $message, $file, $line) {\n    echo 'W|w|';\n    return true;\n}\nclass Probe119 {\n    public function __destruct() {\n        global $child;\n        echo 'V|';\n        $receiver = $child;\n        $fallback = $receiver->ghost;\n        echo $fallback === null ? 'n|' : 'bad|';\n        unset($receiver);\n        echo 'v|';\n    }\n}\nclass RecursiveGet119 {\n    public int $tag = 1;\n    public function __get($name) {\n        global $make;\n        echo 'G|';\n        if ($make) { $make = false; $probe = new Probe119(); }\n        echo 'g|';\n        return 7;\n    }\n    public function __destruct() { echo 'D|'; }\n}\nset_error_handler('warn119');\n$child = new RecursiveGet119();\n$make = true;\necho 'L:';\n$result = $child->ghost;\necho 'A|', $result, '|';\n$result = $child->ghost;\necho 'B|', $result, '|';\nunset($child, $result);\nrestore_error_handler();\necho 'E|';\n",
+      "source_sha256": "d2a207d073e6e5be780d03de675aab933797f45fef95b9a55731a2a3fee3a694",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-recursion-private-119/.tools/magic-get-recursion-probes-119/cleanup.php",
+      "stdout_base64": "TDpHfGd8VnxXfHd8bnx2fEF8N3xHfGd8Qnw3fER8RXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "recursive_line": 11,
+      "native_raw_sha256": "109b993bd674f8259ec90a7b9d1495c693462fdbe8a83c0ba0da5f81e30a06a6",
+      "native_report_sha256": "3816fbc642045ec5da92ee94e10e7397322119480a87274be28e81df8a08989d",
+      "status": "normal"
+    }
+  ]
+}

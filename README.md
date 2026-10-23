@@ -86,7 +86,11 @@ supplied throw. Pooled constant array literals keep their permanent pool owner
 and one pending edge, preserving the original table across callbacks, repeated
 calls and later COW. Throw drops only the pending edge. See the
 [constant-array review](coverage/semantics/array-literal-null-key-constant-array-review.json).
-Nested or owning constant leaves, wider graphs and other key producers remain partial.
+Nested DIRECT constant arrays also preserve each physical child edge independently
+of the parent's pending owners. Handler-time child COW, repeated calls, empty
+descendants and supplied-throw cleanup retain the original pool graph. See the
+[nested constant-array review](coverage/semantics/array-literal-null-key-constant-subtree-review.json).
+Reference/object leaves, wider histories and other key producers remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
@@ -698,6 +702,11 @@ slot. A handler's `0.0` write produces strict `true`; its supplied Exception
 cancels the result and outer assignment. Two originals and 280 focused premises
 pass in the [NaN Boolean NOT ledger](coverage/semantics/boolnot-nan-warning-review.json).
 Changed representations, references, copied operands and wider handlers remain partial.
+Explicit Boolean casts also warn before rereading the same float CV: a handler's
+`0.0` write gives strict `false`, and its supplied Exception cancels delivery.
+Two originals and 291 focused premises pass in the
+[NaN Boolean-cast ledger](coverage/semantics/boolcast-nan-warning-review.json).
+The direct-CV and named-handler limits remain the same.
 Eligible classes and named functions publish in compilation order, so earlier
 notices and declarations survive later compiler diagnostics. Parser and modifier
 preflight preserve their distinct first errors, while declaration history binds
@@ -2077,6 +2086,11 @@ lookup sees constants registered by those effects. Queried readers preserve
 identity, array results retain query COW, and missing-name Errors release the
 callee while retaining raw API/wrapper arguments for later recovery.
 [Captured query review](coverage/semantics/constant-owned-query-review.json).
+Captured query callees also receive Boolean, integer and finite-float names.
+Strict ordinary calls reject them with raw scalar TypeError arguments; explicit
+`__invoke` converts weakly even in strict source. An explicit missing-name Error
+retains the converted API string and the wrapper's original scalar separately.
+[Captured scalar query review](coverage/semantics/constant-owned-scalar-query-review.json).
 Ownerless calls receive integer, boolean and float query names according to caller
 strictness: weak calls convert to strings, while strict calls raise `TypeError`
 with the original argument.
@@ -4521,6 +4535,12 @@ distinct native, source, strict and state cuts plus the original failures.
 The actual369 composition over `b9f0b1ae9` passes strict at `bae438b0f`
 (5.181s), preserving current class, Generator, return and callable interfaces.
 Source/state evidence retains its original cuts.
+Same-name implicit getter recursion on a missing undeclared literal property now
+warns and returns captured NULL, including during compiled-local cleanup.
+Handler population, caller-CV clearing, supplied throw and later guard reset pass
+[four original agreements and 868 focused premises](coverage/semantics/magic-get-recursion-review.json).
+The actual implicit frame authenticates the guard; explicit calls and queued or
+returned markers do not. Wider recursion and lifetime forms remain partial.
 Denied private/protected reads and inherited-private literal fallback now invoke
 the getter without applying the hidden property's type. Allowed lexical reads
 use the physical backing key or raise its initialization Error. The original
@@ -5074,6 +5094,12 @@ in the [review ledger](coverage/semantics/reference-return-local-cv-lifetime-rev
 Exact terminal function/restore links remain required, and fixed reference-pair
 suffix priority is preserved. Fresh width is two completed returns; single-prefix
 short cases, reference-valued remainders, wider throw forms, reentry and GC remain open.
+First C retirement also preserves local catch with one global reference or computed
+object return remaining. Notices9/11, fresh NULL/b7 and the original z/za object
+survive. Two originals and 290 Boolean/five raw checks retain explicit object
+`2387` and reference `cfab` cuts in the same ledger. The history stays nonowning;
+replay rules disambiguate equal fixed-pair/generic tails while retaining longer tails.
+Other singleton reference sources, wider throws/reentry and GC remain partial.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;

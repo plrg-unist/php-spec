@@ -898,6 +898,23 @@ The three originals and focused state checks cover these paths without extending
 name coercion, class-qualified/HALT/NUL names, packs or PIPE.
 [Captured query review](../../coverage/semantics/constant-owned-query-review.json).
 
+Captured query callees also receive Boolean, integer and finite-float names under
+the existing live matching-owner and source/argument-fact checks. The original
+ownerless scalar predicate stays exact; the owning route requires empty selection
+and packs and excludes PIPE. NULL and nonfinite owning names remain separate.
+Strict ordinary calls reject the captured raw scalar after argument effects.
+Explicit `__invoke` receives weakly even in strict source. Existing pure string
+conversion supplies the lookup spelling without writing caller CVs; lookup sees
+constants registered by earlier argument effects. A weak missing-name Error uses
+the received string only in its API frame and the original scalar in the explicit
+wrapper frame. The raw call continues to authenticate source, callee and line.
+Native originals distinguish late integer and false/empty-name lookup, ordinary
+false Error, strict true TypeError and explicit finite-float Error/recovery.
+Existing CONFIG ownership retires each selected callee after return or throw;
+retained trace arguments survive a later independent reader. No receipt, root,
+schema or conversion policy is added.
+[Captured scalar query review](../../coverage/semantics/constant-owned-scalar-query-review.json).
+
 Plain `constant`/`defined` calls also receive integer, boolean and float query
 names. Weak callers use the existing string conversion after
 argument effects; strict callers raise `TypeError` before conversion. The captured
@@ -1257,8 +1274,8 @@ Absent names raise `Error` with the stripped lookup spelling and the full receiv
 string argument in the API trace. Unknown startup values retain their prior Unsupported
 result. `PVOBJECT` rows without the DEFINE-origin/live class-or-callable authority
 above, stored ALIAS/cyclic array trees, Stringable/array name reception, packed
-calls, and owning calls beyond the raw global-string route remain outside this
-slice. The original ordinary `const` string producer refusal retains
+calls, and owning calls beyond the string/Boolean/integer/finite-float global-name
+routes remain outside this slice. The original ordinary `const` string producer refusal retains
 its historical cut; the string-publication follow-up above admits that producer
 domain without renewing the older lookup campaign. The [global-query ledger](../../coverage/semantics/global-constant-review.json)
 binds the source and public-state cuts without closing the constant family.
