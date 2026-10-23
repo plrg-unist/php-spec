@@ -238,7 +238,7 @@ def budgets(program, path, captured):
         'S_warn = S_warn_pause[.COMPLETION = NORMAL]',
         *seek('S_return', 'S_warn', 2), *seek('S_resume', 'S_return', 3),
         'PhpStep: S_resume ~> S_restored', 'PhpStep: S_restored ~> S_compared',
-        'S_done = $drive_steps(S_compared,8000)', 'S_done.COMPLETION = NORMAL',
+        'S_done = $drive_steps(S_restored,8000)', 'S_done.COMPLETION = NORMAL',
         r'S_done.TODO = eps /\ S_done.CURRENT = eps /\ S_done.FRAMES = eps',
         '$us_output(S_done.EVENTS) = ' + text(output), '$us_guard(S_done)',
         'S_done = $drive_steps(S_initial[.COMPLETION = NORMAL],8000)',
