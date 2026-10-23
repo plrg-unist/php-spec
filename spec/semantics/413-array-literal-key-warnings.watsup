@@ -1046,7 +1046,8 @@ def $array_undefined_key_plan(S) = ((n, S.RESULT, n_key*, phpType13*, z))
   -- if $array_undefined_key_missing(S, n_key*)
   -- if $array_undefined_key_ready(S, n, S.RESULT)
 def $array_undefined_key_plan(S) = eps -- otherwise
-def $array_undefined_key_pending(S) = ($error_handler_eligible(S, 2) /\ $array_undefined_key_plan(S) =/= eps)
+dec $array_undefined_array_key_plan(pstate) : (nat, nat, poperand, nat*, phpType13*, int)?
+def $array_undefined_key_pending(S) = ($error_handler_eligible(S, 2) /\ ($array_undefined_key_plan(S) =/= eps \/ $array_undefined_array_key_plan(S) =/= eps))
 
 rule PhpStep/array-undefined-key-warning: S ~> $error_dispatch(S, 2, $ptascii("Undefined variable $") ++ n_key*, z, WARNING n_key* z, ARRAY_KEY_UNDEFINED_RESULT n poperand n_key* phpType13* z)
   -- if $array_undefined_key_pending(S)
@@ -1077,3 +1078,55 @@ def $error_read_discard(S, ARRAY_KEY_UNDEFINED_RESULT n poperand n_key* phpType1
   -- if $array_undefined_key_ready(S, n, poperand)
 def $error_read_discard(S, ARRAY_KEY_UNDEFINED_RESULT n poperand n_key* phpType13* z) = S[.COMPLETION = UNSUPPORTED "array literal undefined-key value during throw"]
   -- if ~$array_undefined_key_ready(S, n, poperand)
+
+;; UNDEF and float keys share ARRAY acquisition and live CV insertion. Keep
+;; the old table owner, then apply the existing retention/debt accounting.
+dec $array_undefined_array_key_source(pstate, nat, nat, poperand, nat*, phpType13*, int) : bool
+def $array_undefined_array_key_source(S, n, n_old, poperand, n_key*, phpType13*, z) = true
+  -- if $array_undefined_key_source(S, n, poperand, n_key*, phpType13*, z)
+  -- if n_old =/= n /\ $literal_array_table_valid(S, n_old)
+def $array_undefined_array_key_source(S, n, n_old, poperand, n_key*, phpType13*, z) = false -- otherwise
+
+dec $array_undefined_array_key_ready(pstate, nat, nat, poperand) : bool
+def $array_undefined_array_key_ready(S, n, n_old, poperand) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if $array_float_key_live_value(S, poperand) =/= eps
+  -- if $array_float_array_key_ready(S, n, n_old, poperand)
+def $array_undefined_array_key_ready(S, n, n_old, poperand) = false -- otherwise
+
+def $array_undefined_array_key_plan(S) = ((n, n_old, S.RESULT, n_key*, phpType13*, z))
+  -- if S.TODO = (ARRAY_VALUE n (VARIABLE n_key* z_key) phpType13* z) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $array_float_array_key_value(S, S.RESULT) = (n_old)
+  -- if $array_undefined_array_key_source(S, n, n_old, S.RESULT, n_key*, phpType13*, z)
+  -- if $array_undefined_key_missing(S, n_key*)
+  -- if $array_undefined_array_key_ready(S, n, n_old, S.RESULT)
+def $array_undefined_array_key_plan(S) = eps -- otherwise
+
+rule PhpStep/array-undefined-array-key-warning: S ~> $error_dispatch(S[.RESULT = KNOWN PNULL], 2, $ptascii("Undefined variable $") ++ n_key*, z, WARNING n_key* z, ARRAY_KEY_UNDEFINED_ARRAY_RESULT n n_old poperand n_key* phpType13* z)
+  -- if $array_undefined_key_pending(S)
+  -- if $array_undefined_array_key_plan(S) = ((n, n_old, poperand, n_key*, phpType13*, z))
+rule PhpStep/array-undefined-array-key-result: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13*) :: ptask_tail*][.RESULT = KNOWN PNULL][.ORIGIN = $origin_next_item(S.ORIGIN, phpType13*)]
+  -- if S.TODO = (ARRAY_KEY_UNDEFINED_ARRAY_RESULT n n_old poperand n_key* phpType13* z) :: ptask_tail*
+  -- if $array_undefined_array_key_source(S, n, n_old, poperand, n_key*, phpType13*, z)
+  -- if $array_undefined_array_key_ready(S, n, n_old, poperand)
+  -- if $array_float_array_key_item(S, poperand) = (pitem)
+  -- if S_out = $literal_item_insert($array_float_array_key_retain(S, n_old, poperand), n, (KSTRING eps), pitem, z)
+rule PhpStep/array-undefined-array-key-result-unsupported: S ~> S[.TODO = eps][.RESULT = KNOWN PNULL][.COMPLETION = UNSUPPORTED "array literal undefined-key array CV after callback"]
+  -- if S.TODO = (ARRAY_KEY_UNDEFINED_ARRAY_RESULT n n_old poperand n_key* phpType13* z) :: ptask_tail*
+  -- if $array_undefined_array_key_source(S, n, n_old, poperand, n_key*, phpType13*, z)
+  -- if ~$array_undefined_array_key_ready(S, n, n_old, poperand)
+
+def $call_task_valid(S, ARRAY_KEY_UNDEFINED_ARRAY_RESULT n n_old poperand n_key* phpType13* z) = $array_undefined_array_key_source(S, n, n_old, poperand, n_key*, phpType13*, z)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ARRAY_KEY_UNDEFINED_ARRAY_RESULT n n_old poperand n_key* phpType13* z
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $array_undefined_array_key_source(S, n, n_old, poperand, n_key*, phpType13*, z)
+  -- if perrorcall.LEVEL = 2 /\ perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $ptascii("Undefined variable $") ++ n_key*
+  -- if perrorcall.EVENT = WARNING n_key* z
+def $task_nodes(ARRAY_KEY_UNDEFINED_ARRAY_RESULT n n_old poperand n_key* phpType13* z) = [HARRAY n, HARRAY n_old]
+def $error_read_discard(S, ARRAY_KEY_UNDEFINED_ARRAY_RESULT n n_old poperand n_key* phpType13* z) = $array_float_array_key_retain(S, n_old, poperand)
+  -- if $array_undefined_array_key_ready(S, n, n_old, poperand)
+def $error_read_discard(S, ARRAY_KEY_UNDEFINED_ARRAY_RESULT n n_old poperand n_key* phpType13* z) = S[.COMPLETION = UNSUPPORTED "array literal undefined-key array CV during throw"]
+  -- if ~$array_undefined_array_key_ready(S, n, n_old, poperand)
