@@ -2570,6 +2570,25 @@ joined actor, accepted replay or renewed execution credit.
 The earlier mixed CV/selected-reference arithmetic route retains source9/state858
 in its [review ledger](coverage/semantics/mixed-arithmetic-warning-review.json).
 
+M132 preserves the local catch and first completed-return Notice with one or
+zero ordinary object slots remaining after E/D finish and C throws the supplied
+object. Two minimum-count guards are removed; exact function/restore termination,
+missing lexical paths and existing prefix authority remain required. A negative pair-selector
+guard preserves the fixed reference-pair suffix priority on grammar overlap.
+No history payload, state/default/root, generic cleanup or manifest changes.
+
+Two originals agree at `5a03f54ce`/409 in 51.487/34.105<120, with Notice21/16,
+C/K/S, supplied identity, fresh detached NULL and b7. Author140/2 plus peer149/2
+pass 289/4 focused checks, including zero/one budgets, same-heap missing-A/terminal
+public refusals and exact E/D/C NULL replay. Pair overlap is grammar-only.
+Native2/base2 and separate149/4 diagnosis retain `fbc3f8f8c`/409. The original
+author's state process was interrupted by an environment restart after strict
+PASS; its receipt retains zero credit. Only that affected packet repeated at the
+unchanged 240 cap; peer passes first at 300. All actors are reaped/CPU5 released;
+no accepted source/native/base/diagnostic replay. Single-prefix short cases,
+reference-valued remainders, wider throws, reentry and GC remain partial.
+[Owning-return review](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+
 M131 preserves local catch and the first completed return's Notice after two
 normal owning retirements. Five computed slots retire E and D normally, then C
 throws the supplied global object with B/A pending. Existing body order already

@@ -172,6 +172,13 @@ original packets, immutable author/peer snapshots, worker120 and the isolated
 three-file runtime patch,
 SHA-256 `024ccd1c4835d69185db414a83588eeb42fa5515424b0c9c0e782b030817c035`.
 
+The short remaining-slot completed-prefix proof is in
+`../php-spec-evidence-archive/lifecycle-short-retirement-132/manifest.json`:
+642,917 bytes/138 members under `.tools/m132/`, six complete reports,
+original packets, immutable author/peer snapshots, the zero-credit interrupted
+author output/receipt, worker120 and the isolated two-file runtime patch,
+SHA-256 `18f98564d69dcfd2ec6c1961d1d213e0e583d45a3d4db03dedc11f94cf0dd81b`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

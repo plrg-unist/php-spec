@@ -254,6 +254,25 @@ reentry and GC remain partial. Non-BYREF is a source bound, not an oracle claim
 about the Notice behavior of by-reference callees.
 [Review and recovery](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
 
+M132 admits one or zero ordinary object remainders after the same two completed
+E/D returns and direct C supplied throw. Removing the two minimum-count guards
+retains exact terminal TYPE_FALLTHROUGH/function/restore links, every missing
+lexical path and the existing source/operand/body bounds. Fixed reference-pair
+suffixes keep priority where the broader grammar also matches; that overlap is
+checked as grammar only, without reached reference-valued PHP evidence.
+
+Two originals and 289/4 focused checks pass at 5a03/409, preserving local C/K/S,
+supplied identity, first E Notice21/16, fresh detached NULL and b7. One remaining
+A and zero remaining slots have actual capture/pending/public budget fronts;
+same-heap missing-A history and missing terminal-task controls refuse publicly.
+The peer follows active C/saved f through post-free pending and exact E/D/C NULL
+replay, wrong restore/Notice refusals and E_NULL resumption. Native2/base2 and
+separate149/4 diagnosis retain fbc3/409. Restart interrupted the first author
+state after strict PASS; its receipt remains zero credit and only that affected packet
+repeats at unchanged 45/240. Peer first 45/300 passes; all actors are reaped/CPU5
+released. No accepted replay or generic cleanup/root/state change. Single-prefix
+short cases, wider reference-valued histories, bodies/throws, reentry and GC stay partial.
+
 Pruning prepares the object store and fatal marks once, then selects the same
 unsupported, refused, pending-release or store-drop result. Unmatch in preparation,
 classification or selected results retains the original-state fallback. On the
