@@ -80,7 +80,7 @@ def conditions(name, program, path, stdout):
         'perrorcall.RESUME = ARRAYCAST_NAN_WARNING pboolnotnanwarning 1',
         'perrorcall.TARGET = eps', 'perrorcall.SITE = pboolnotnanwarning.SITE',
         'perrorcall.LEVEL = 2', 'perrorcall.LINE = 25',
-        'perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")',
+        'perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to array")',
         'perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE 25',
         '$error_call_valid(S_dispatch, perrorcall)',
         'S_dispatch.EVENTS = S_entry.EVENTS',
