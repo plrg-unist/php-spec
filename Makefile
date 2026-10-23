@@ -457,6 +457,10 @@ test-semantics: build
 	python3 tests/semantics/generator_ancestor_abrupt_argument_send_state.py
 	python3 tests/semantics/generator_ancestor_abrupt_argument_send_review_sources.py
 	python3 tests/semantics/generator_ancestor_abrupt_argument_send_review_state.py
+	python3 tests/semantics/generator_pending_unused_current_sources.py
+	python3 tests/semantics/generator_pending_unused_current_state.py
+	python3 tests/semantics/generator_pending_unused_current_review_sources.py
+	python3 tests/semantics/generator_pending_unused_current_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
