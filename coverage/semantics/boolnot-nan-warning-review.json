@@ -1,7 +1,7 @@
 {
   "version": 1,
   "milestone": "OP79 direct-CV NaN Boolean NOT Warning",
-  "status": "bounded independently reviewed semantics; composition pending",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
   "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/ordinary precision14 profile",
   "scope": "Boolean NOT of NaN in an ordinary allocated nonreference direct CV, with a named Warning handler and the same live float slot on return. The normal original writes0.0/returns false; the independent original writes0.0/throws a supplied Exception. References, rebinding, copied operands, owning/wider handlers and changed representations remain partial.",
   "runtime_revision": "39eab9034f14da64f824a4163bb73a5e18d1cd12",
@@ -104,5 +104,16 @@
     },
     "focused_command": "taskset -c 5 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-79/run-focused.py 01faf61e6fd4f51a3065c3048e4a1bcef1b56b24 5",
     "record": "Restore matching Git cuts/local tools in a fresh directory, preserve original source/native/report paths and use a new output directory. run-focused.py checks retained bytes/current runtime identities, creates checked fixtures and runs full struct/SL; it performs no native/application/source-agreement replay. The external archive is evidence, not a build input. Local tool reuse establishes no fresh rebuild/portability result."
+  },
+  "composition": {
+    "parent": "256083636c0420049353fccbbd348793b73e63be",
+    "private_publication": "8f807b66b85f1a4e6d22f416423ef0b91dd2feb8",
+    "modules": 409,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "182ba1a7b65393be5c22cff533d8ceb5432f2b845b103d954111242969b1fecd",
+      "spec/semantics/51-truth-expressions.watsup": "365b3a77cba0320fe1447b10651cf87cc133ad186ef8864960a20fc2f4a768e3",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "6b2558d4298ba9cb2d31b1c22fda221d083d891e39b55de6ee9163af1a744ac8"
+    },
+    "gate": "Incoming156/270 short ref-return retirement,400 captured global queries,413 CONST NULL-key arrays and the ordered409 manifest stay parent-exact. Combined30 preserves the incoming ARRAY_KEY_NULL_CONST_RESULT variant plus only the tested BOOLNOT_NAN_WARNING forward type/tag. Tested51/404 and six OP79 scripts stay private-exact. V99 requires owned CONFIG CONSTANT/DEFINED query calls or intrinsic Closures; neither original produces them, and predefined NAN uses the existing named-constant lookup. M132 requires a BYREF nullable-object return, RETURN_REF_UNWIND REFERENCE cursor and owning finally chain; both h functions are ordinary untyped by-value calls. A46 requires ARRAY_VALUE with a direct NULL key and nested pool-owned CONST array value, absent from both originals; fixed-string GLOBALS dimensions and intrinsic Throwable traces are different producers. Generic schema/state fields, root functions, restoration and ordering remain parent-exact; the disjoint task variant needs no field lift of reached or derived fixtures. Source2/state280 retain their private409 cuts without joined execution, accepted replay or renewed credit."
   }
 }

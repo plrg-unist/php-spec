@@ -230,6 +230,14 @@ assignment context keeps its copy even with a forged DISCARD tail. The physical
 cache owns the value throughout the fused copy/drop, so existing receiver and
 close machinery suffice. See the
 [unused CURRENT review](../../coverage/semantics/generator-unused-current-review.json).
+A supplied exception from an ignored argument does not cancel the remaining
+pending SEND snapshot or receiver releases at the pre-refreshed direct node-free
+endpoint. Existing pending-operation and Generator-close records carry that
+exception through real finally execution. Unused snapshots and assignment-context
+temporaries retain different owners, while the latter never reaches a completed
+CV store. Argument COW and live-cache replacement exercise these distinct
+carriers without changing API admission or the release scheduler. See the
+[abrupt argument SEND review](../../coverage/semantics/generator-abrupt-argument-send-review.json).
 Literal pending NEXT takes the same initialization-only return through a direct
 or finite native-linked receiver, preserving the actual parked source and frame.
 Its NULL result owns no current snapshot. After a raw-row write performs COW,

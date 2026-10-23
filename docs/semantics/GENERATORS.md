@@ -177,6 +177,15 @@ history; raw-row mutation and a cache RuntimeException inside initialized Middle
 finally distinguish the missing extra owner. Pending receivers, child prefixes,
 wider endpoints and collection remain unvalidated for this CURRENT rule. See the
 [unused CURRENT review](../../coverage/semantics/generator-unused-current-review.json).
+The pre-refreshed direct node-free pending SEND path also survives an ignored-argument
+destructor throwing a supplied Exception. Its remaining snapshot and receiver
+cleanup still run. Assignment context keeps the VM temporary through physical
+finally, but no CV store completes after the argument throws. Argument-time
+row COW separates the old snapshot from live current; a RuntimeException from
+slot clearing inside Middle finally links the supplied Exception as Previous,
+whose own Previous remains NULL. This validates existing rules without a
+runtime change. Wider, parked and collection histories remain unvalidated; see the
+[abrupt argument SEND review](../../coverage/semantics/generator-abrupt-argument-send-review.json).
 Pending zero-argument NEXT also clears only the selected receiver bit while
 preserving that parked owning frame/site and copied return. It returns NULL
 without a current snapshot; a later explicit getter creates a separate copy.

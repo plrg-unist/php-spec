@@ -169,6 +169,13 @@ checks keep this path separate from pooled constants and the two-owner returned
 VAR. Popped-marker allocation is sufficient for identity discard before normal
 pruning; no bias or count/prune algorithm changes. See the
 [NULL array-TMP ledger](../../coverage/semantics/array-literal-null-key-array-tmp-review.json).
+Pooled constant array literals instead keep their permanent pool owner plus one
+pending value edge. Exact compiled-read identity authenticates the value occurrence;
+normal insertion transfers the pending edge to DIRECT, while throw drops it and
+preserves the pool. No NULL backup, producer CELL root or CV reset is needed.
+Flat DIRECT primitive/validated-byte leaves bound this path. Repeated calls,
+empty-array COW, deletion and supplied throw are recorded in the
+[constant NULL-key ledger](../../coverage/semantics/array-literal-null-key-constant-array-review.json).
 String leaves use canonical bytes or existing valid carriers; they add no modeled
 heap edges or user destructors. Ordinary string-offset writes preserve independent
 snapshots while table/CELL aliases share bytes. Singleton reference entries

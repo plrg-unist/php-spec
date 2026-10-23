@@ -78,8 +78,11 @@ Runtime array constructors at NULL keys use one owning temporary, with no NULL
 backup or producer-variable reset. The child table freezes before the handler,
 including a scalar reference read by value or a seed increment. Normal completion
 transfers its DIRECT entry; an otherwise unowned table retires on deletion or
-supplied throw.
-Constant arrays, wider payload graphs and other key producers remain partial.
+supplied throw. Pooled constant array literals keep their permanent pool owner
+and one pending edge, preserving the original table across callbacks, repeated
+calls and later COW. Throw drops only the pending edge. See the
+[constant-array review](coverage/semantics/array-literal-null-key-constant-array-review.json).
+Nested or owning constant leaves, wider graphs and other key producers remain partial.
 
 [Array-literal float keys](docs/semantics/DIMENSIONS.md) now retain their converted
 integer across deprecation handlers. Unwrapped null/bool/int/float element variables
@@ -1692,6 +1695,13 @@ before receiver cleanup. Assignment keeps its copy. A normal cache destructor,
 raw-row finally mutation and a RuntimeException inside physical Middle finally
 distinguish these owners; CURRENT changes no initialization bit. See the
 [unused CURRENT review](coverage/semantics/generator-unused-current-review.json).
+At a pre-refreshed direct node-free COMPLETE, existing pending SEND cleanup also
+preserves a supplied Exception thrown by its ignored argument's destructor.
+Unused snapshots retire before receiver finally; assignment context retains a
+temporary through finally but never completes the CV store. Argument-time row
+COW and a live cache RuntimeException preserve distinct owners and Previous
+identity. See the
+[abrupt argument SEND review](coverage/semantics/generator-abrupt-argument-send-review.json).
 Pending `next()` at that parked owning return also clears only the selected
 receiver initialization bit. It returns NULL without copying current, so a sole
 receiver's cache destructor can run before caller delivery. A later explicit
@@ -2034,8 +2044,15 @@ validated user array trees, certified completed user instances and certified
 Closures. They use the captured query, remove one leading separator and preserve
 terminal-name case.
 Missing names raise an API `Error`; argument effects precede lookup.
-Integer, boolean and float query names follow caller strictness: weak calls convert to
-strings, while strict calls raise `TypeError` with the original argument.
+Retained `defined(...)` and `constant(...)` Closure callees also query non-NUL
+global string names. Captured callees and names survive argument mutations;
+lookup sees constants registered by those effects. Queried readers preserve
+identity, array results retain query COW, and missing-name Errors release the
+callee while retaining raw API/wrapper arguments for later recovery.
+[Captured query review](coverage/semantics/constant-owned-query-review.json).
+Ownerless calls receive integer, boolean and float query names according to caller
+strictness: weak calls convert to strings, while strict calls raise `TypeError`
+with the original argument.
 Captured originals still authenticate the call; weak missing-name Error traces
 contain the converted string. The [scalar-name review](coverage/semantics/global-constant-scalar-name-review.json)
 records source and resumption checks.
@@ -5021,15 +5038,15 @@ no-instance, echo-only interposed scalar history. Fresh control/treatment source
 agree with PHP; separate 463/8 state checks cover its shared-cell RELEASE/EXIT
 pauses, required literal history despite an unchanged heap, engine TypeError catch,
 one line7 Notice and detached aliases.
-Owning-return histories preserve a local catch after normal E/D retirement,
-then a supplied-global C throw with B/A pending. A nonowning completed-cursor list
-keeps three cleared returns and the first completed return's Notice at line26,
-then a fresh detached NULL and prior caller alias. One original and 343 Boolean/6 raw checks
-pass at `c46401d32`/409. The older single-prefix 291/4 and Holder/typed-alias cuts
-remain separate in the
-[review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
-The list is recursive; fresh PHP evidence covers two completed returns. Wider
-widths/throw forms, fewer than two remaining slots, reentry and GC remain open.
+Owning-return histories preserve local catch after normal E/D retirement,
+then a supplied-global C throw with one or zero ordinary object slots remaining.
+The nonowning completed-cursor list keeps E/D/C NULL replay, the first E Notice
+at line21/16, fresh detached NULL and the prior caller alias. Two originals and
+289 Boolean/four raw checks pass at `5a03f54ce`/409; older cuts remain separate
+in the [review ledger](coverage/semantics/reference-return-local-cv-lifetime-review.json).
+Exact terminal function/restore links remain required, and fixed reference-pair
+suffix priority is preserved. Fresh width is two completed returns; single-prefix
+short cases, reference-valued remainders, wider throw forms, reentry and GC remain open.
 A separate Fiber validation keeps a protected string-return carrier live after
 local unset and suspension, then delivers that cell to the resumed worker's r/a
 aliases and write. Source2, parked58/two refusals and late2/230 pass at `cb498f92`;
