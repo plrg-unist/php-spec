@@ -901,7 +901,8 @@ name coercion, class-qualified/HALT/NUL names, packs or PIPE.
 Captured query callees also receive Boolean, integer and finite-float names under
 the existing live matching-owner and source/argument-fact checks. The original
 ownerless scalar predicate stays exact; the owning route requires empty selection
-and packs and excludes PIPE. NULL and nonfinite owning names remain separate.
+and packs and excludes PIPE. Nonfinite owning names remain separate; NULL uses
+the continuation below.
 Strict ordinary calls reject the captured raw scalar after argument effects.
 Explicit `__invoke` receives weakly even in strict source. Existing pure string
 conversion supplies the lookup spelling without writing caller CVs; lookup sees
@@ -936,6 +937,19 @@ the converted string; a throwing handler keeps null in the API trace and cancels
 the lookup. Strict null calls raise `TypeError` without dispatching a deprecation.
 The [null-name review](../../coverage/semantics/global-constant-null-name-review.json)
 records genuine warning/resume fronts, source refusals and budget continuation.
+
+Captured NULL query callees reuse the same live matching-owner and source/fact
+authority with empty selection/packs and no PIPE. Existing
+`DYNAMIC_NULL_CONSTANT_RESULT` and callback tasks retain that owner through the
+warning and handler. A normal return converts NULL after callback effects; a
+false return delivers the default Deprecated before lookup. Ordinary strict
+calls reject before warning dispatch, while explicit `__invoke` stays weak in
+strict source. A missing-name Error separates its received empty-string API
+argument from the wrapper's raw NULL. A throwing handler preserves raw NULL in
+both frames and cancels conversion/lookup, including when its own empty-name
+definition succeeds. Shared cleanup retires the callee before catch. Existing
+continuation bodies, schema, roots and receipts remain unchanged.
+[Captured NULL query review](../../coverage/semantics/constant-owned-null-query-review.json).
 
 One positional Stringable query name now uses the existing user-method conversion
 pipeline. Weak `constant`/`defined` calls retain the raw object through
@@ -1274,7 +1288,7 @@ Absent names raise `Error` with the stripped lookup spelling and the full receiv
 string argument in the API trace. Unknown startup values retain their prior Unsupported
 result. `PVOBJECT` rows without the DEFINE-origin/live class-or-callable authority
 above, stored ALIAS/cyclic array trees, Stringable/array name reception, packed
-calls, and owning calls beyond the string/Boolean/integer/finite-float global-name
+calls, and owning calls beyond the string/Boolean/integer/finite-float/NULL global-name
 routes remain outside this slice. The original ordinary `const` string producer refusal retains
 its historical cut; the string-publication follow-up above admits that producer
 domain without renewing the older lookup campaign. The [global-query ledger](../../coverage/semantics/global-constant-review.json)

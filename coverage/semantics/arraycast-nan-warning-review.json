@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "milestone": "OP81 NaN direct-CV array cast Warning",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/ordinary precision14 profile",
+  "scope": "Explicit (array) of NaN in an ordinary allocated nonreference direct CV, named Warning callback, same live float slot on normal return. Callback0.0 becomes singleton[0.0], with later COW/source independence; supplied Exception20 cancels delivery/outer assignment. References/rebinding, copies, changed representations and wider handlers remain partial.",
+  "runtime_revision": "9e5255eb888c6ba3bd2830547881a751a16801fb",
+  "peer_fixture_revision": "fc3f2cb1c31a47a596ac9d9685f4e668cbc6fc4f",
+  "private_modules": 409,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "1364afc649b2e4a56095e9203312b85c8b888f11fe1eb103e3c7b7144445e3f3",
+    "spec/semantics/58-ordinary-expressions.watsup": "4ebc3dec9c1b8d907cf0502e1981ef4a402a2ddde59e1e956c0e4b38fa4c9afd",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "a910e8a9f1b9a80103ebca675576f25250d790dca07c778024ea31bb88cee919"
+  },
+  "engine_basis": [
+    "Pinned zend_compile_cast emits ZEND_CAST for IS_ARRAY. Zend/zend_vm_def.h::ZEND_CAST dereferences VAR/CV then calls Zend/zend_execute.h::zend_cast_zval_to_array. That helper emits the NaN array Warning before zend_hash_index_add_new copies from the live expr pointer into a newly created array. This differs from preserving the initial NaN value through the callback.",
+    "Cast-specific NExprCastArray/CAST_RESULT CASTARRAY authority reuses only pboolnotnanwarning layout and unchanged boolnot_nan_ready/snapshot ordinary-slot facts. Normal resume rereads that same float slot once and allocates the singleton with the existing allocate_array helper; it bypasses cast_array_notice so unchanged NaN cannot issue a second Warning.",
+    "Exactly64 additions:30 task1,58 declaration/EPS gate2,404 appended source/plan/validity/Warning dispatch/live-float singleton/boundary61. Old404 is an exact prefix; old Boolean-NOT/cast, numeric/formatting, CONFIG/DEFINE/400, allocator/root and generic unwind bodies are unchanged. The scalar marker owns neither cell nor array."
+  ],
+  "contract": [
+    "Normal h sees Warning2 at operand25, increments calls, writes x to float0.0 and returns false. Native and model produce strict singleton[0.0] with strictfloat0 member, one default Warning, later independent copy7/original0, finally and EOFx8. Capturing initial NaN would fail both singleton/member observations.",
+    "Independent h writes float0.0 then throws the supplied Exception20. Catch observes the same object, null Previous, line20, outerv100, x0.0 and calls1; finally/EOFx8 run without default Warning. This establishes canceled delivery/assignment, without a native throwing-path allocation-timing claim.",
+    "Author192 and peer133 form325 premises in two checked-source-derived recipes. Raw normal allocation binds a fresh ordinary table, exact singleton payload and sole result root before store; driven fields retain that table while permitting existing metadata transitions, and EOF binds distinct COW copy7/originalfloat0 owners. Real callback/source/slot/Exception cuts and budgets are checked. Transformed source/consumer/slot refusals and four unchanged-NaN no-rewarning premises are derived, with no native agreement credit."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-81/source-9e5255eb8-author-one/report.json",
+        "sha256": "3a3c658836ff7e89719d0d34b60a9ccf1e105c82abf20a5b29f45b93a2a92a89",
+        "revision": "9e5255eb888c6ba3bd2830547881a751a16801fb",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-81/review-model-9e5255eb8-review-one/report.json",
+        "sha256": "d20ec13163e02bbfed5739329d7c7bac687d353a1a1a7f1e923d146f03211429",
+        "revision": "9e5255eb888c6ba3bd2830547881a751a16801fb",
+        "agreements": 1
+      }
+    ],
+    "state": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-81/focused-9e5255eb8-two/report.json",
+        "sha256": "fc52bf65b6acadb33470a3e8d1aa83de48e81f05f5e43dc9dadc13d7bf08a9bb",
+        "revision": "9e5255eb888c6ba3bd2830547881a751a16801fb",
+        "cases": [
+          "arraycast-nan-warning-live-float"
+        ],
+        "conditions": [
+          192
+        ],
+        "total": 192,
+        "note": "Only the passing author row is accepted; the peer row and overall report remain failed."
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-81/focused-peer-fc3f2cb1c/report.json",
+        "sha256": "31fdf04e3044274222dd4ca71cbb013758d95f5c761e9d5186b0299b24e4ec62",
+        "revision": "fc3f2cb1c31a47a596ac9d9685f4e668cbc6fc4f",
+        "cases": [
+          "arraycast-nan-warning-supplied-throw"
+        ],
+        "conditions": [
+          133
+        ],
+        "total": 133,
+        "note": "Affected peer fixture only; current runtime hashes/profile match retained9e source tuple; no native/source/author replay."
+      }
+    ],
+    "total_source_agreements": 2,
+    "total_focused_state_conditions": 325,
+    "review": "Independent operators79_review accepted native/genuine observations, runtime/author/peer/header before execution, author/source outcomes, corrected peer-only fixture/result and publication scope/current PROGRESS. Actual-tail composition independently cleared at899116b3b over5c5d2c5bd/409; metadata changes add no semantic execution credit."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-81/baseline-915832998-live-float/report.json",
+      "sha256": "aaa700bee73ca1a2fa85a2f4d8ff9f006ee93e004a6d379d9627b10d559da708",
+      "revision": "915832998fab231c8e1890de7d2cd628996cca35",
+      "result": "Genuine frontend-accepted/checked program stops Unsupported before H: error-handler ingress requires a producer continuation. Empty semantic streams/model1/rowfalse/agreement0; raw result unchanged."
+    },
+    "first_peer_fixture_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-81/focused-9e5255eb8-two/report.json",
+      "sha256": "fc52bf65b6acadb33470a3e8d1aa83de48e81f05f5e43dc9dadc13d7bf08a9bb",
+      "revision": "9e5255eb888c6ba3bd2830547881a751a16801fb",
+      "case": "arraycast-nan-warning-supplied-throw",
+      "result": "Original133 main condition expected the inherited bool Warning message instead of array. SLexit1/empty stdout, no timeout; full struct and author192 had passed. Corrected one literal only atfc3, preserved count133 and every other assertion. No runtime/source/native/author replay."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-81/native-915832998-author-one/report.json",
+        "sha256": "2362ae5504d7453116de76f7792032ce8478cd9f88d0e479a89d0b0db2189078",
+        "revision": "915832998fab231c8e1890de7d2cd628996cca35"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-81/native-915832998-review-one/report.json",
+        "sha256": "a4bed486712d5a495fadb7e212fbda0bce82efc4944af3254c751ecc6382cc7f",
+        "revision": "915832998fab231c8e1890de7d2cd628996cca35"
+      }
+    ],
+    "full_static": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-81/static-9e5255eb8/report.json",
+      "sha256": "23cf2f15109d4a720e9555ffbf51763f128a5d9317e13fdaa9a3829661a13f4f",
+      "revision": "9e5255eb888c6ba3bd2830547881a751a16801fb",
+      "result": "Full ordered409 struct passes; semantic credit0."
+    }
+  },
+  "limits": [
+    "Two exact source witnesses cover livefloat0/defaultWarning/COW and supplied throw. Unchanged NaN and representation refusals are derived controls; other live floats have helper reasoning without separate source witnesses. Native NaN payload identity and throwing allocation timing are unclaimed.",
+    "Copied/reference operands, changed/rebound/owning source representations and wider handlers/lifetimes remain partial. Paused OP12/COMP88/Source47 low-precision DEFINE NaN, owned-NUL source-release and undefined-byref LIST key handling remain separate. No engine bug, intentional divergence or old numeric/COW/Boolean algorithm renewal is claimed."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-81",
+    "environment": "LC_ALL=C,TZ=UTC,PHP_SPEC_SCRIPT_ENCODING absent. Native/genuine usedCPU2; source/author/first peer packet usedCPU5; corrected peer-only packet usedCPU1. All actors reaped and slots released. Native30/modelCLI60-process90, full409struct30, checked workers30/fixturestruct30/SL120 per group; no cap changes.",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "commands": [
+      "taskset -c 2 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-81/run-native-gate.py 915832998fab231c8e1890de7d2cd628996cca35 2",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-81/run-source-gate.py 9e5255eb888c6ba3bd2830547881a751a16801fb 5",
+      "taskset -c 5 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-81/run-focused.py 9e5255eb888c6ba3bd2830547881a751a16801fb 5",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-81/run-peer-affected.py fc3f2cb1c31a47a596ac9d9685f4e668cbc6fc4f 1"
+    ],
+    "record": "Restore matching Git cuts/local tools in a fresh directory, retain original source/native/report paths and use new output directories. Corrected peer preparation uses retained accepted source/native bytes and matching runtime hashes; no application/native/source/author replay. Raw evidence is external, not a build dependency; reused regular binaries establish no fresh offline rebuild/portability result."
+  },
+  "composition": {
+    "parent": "5c5d2c5bd2a9b34c0bff682b32d5b7c2210ced75",
+    "private_publication": "d0a50614cd9493cd991b42fd1ac808ff97d8db7b",
+    "modules": 409,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "1364afc649b2e4a56095e9203312b85c8b888f11fe1eb103e3c7b7144445e3f3",
+      "spec/semantics/58-ordinary-expressions.watsup": "4ebc3dec9c1b8d907cf0502e1981ef4a402a2ddde59e1e956c0e4b38fa4c9afd",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "a910e8a9f1b9a80103ebca675576f25250d790dca07c778024ea31bb88cee919"
+    },
+    "gate": "Tested30/58/404 and six OP81 scripts remain private-exact; incoming156/270/289/380/413, schema and ordered409/other semantic paths remain parent-exact.156/270 require BYREF nullable-object return/retirement chains, absent from untyped by-value h and builtin Throwable observers.289 requires Generator CURRENT, absent here.380 requires implicit __get source calls and a declared user property, absent from primitive CVs, array dimensions and builtin Throwable methods.413 requires NULL-key CONST-array insertion; the cast uses allocate_array and its observer is flat numeric-key[0.0], with no nested ARRAY or NULL key. Incoming changes add no state/frame/heap field, so accepted/derived fixtures need no lift. Source2/author192 keep9e and corrected-peer133 keepsfc3 private409 cuts, including the original failed-peer0 record, without joined execution, accepted replay or algorithm/rebuild renewal. PROGRESS replaces the checkpoint and preserves actual-parent current/active/paused facts."
+  }
+}

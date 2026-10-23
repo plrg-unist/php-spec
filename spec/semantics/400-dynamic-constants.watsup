@@ -16,6 +16,7 @@ dec $dynamic_scalar_constant_call(pconfigcall) : bool
 dec $dynamic_owned_scalar_query_value(pvalue) : bool
 dec $dynamic_owned_scalar_query_call(pconfigcall) : bool
 dec $dynamic_null_constant_call(pconfigcall) : bool
+dec $dynamic_owned_null_query_call(pconfigcall) : bool
 dec $dynamic_null_define_call(pconfigcall) : bool
 dec $dynamic_define_quiet_flag(pvalue) : bool
 dec $dynamic_scalar_define_flag_call(pconfigcall) : bool
@@ -668,6 +669,7 @@ rule PhpStep/dynamic-constant-invoke: S ~> $dynamic_constant_receive(S, pconfigc
   -- if ~$dynamic_owned_scalar_query_call(pconfigcall)
   -- if ~$dynamic_scalar_define_call(pconfigcall)
   -- if ~$dynamic_null_constant_call(pconfigcall)
+  -- if ~$dynamic_owned_null_query_call(pconfigcall)
   -- if ~$dynamic_null_define_call(pconfigcall)
   -- if ~$dynamic_scalar_define_flag_call(pconfigcall)
   -- if ~$dynamic_null_define_flag_call(pconfigcall)
@@ -1918,6 +1920,11 @@ def $error_handler_trace_values(S, pcallcontext, pconfigcall_api) = $trace_extra
   -- if pconfigcall_api = pconfigcall[.SENT = $named_slot_set(pconfigcall.SENT, 0, KNOWN pvalue_name)]
 
 ;; ZPP warns with the raw null argument, then converts only after normal return.
+def $dynamic_owned_null_query_call(pconfigcall) = true
+  -- if pconfigcall.KIND <- [INTRINSIC_CONSTANT, INTRINSIC_DEFINED]
+  -- if pconfigcall.OWNER =/= eps /\ pconfigcall.SELECTION = eps /\ pconfigcall.PACKS = eps
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL)]
+def $dynamic_owned_null_query_call(pconfigcall) = false -- otherwise
 def $dynamic_null_constant_call(pconfigcall) = true
   -- if pconfigcall.KIND <- [INTRINSIC_CONSTANT, INTRINSIC_DEFINED]
   -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
@@ -1925,8 +1932,9 @@ def $dynamic_null_constant_call(pconfigcall) = true
 def $dynamic_null_constant_call(pconfigcall) = false -- otherwise
 dec $dynamic_null_constant_valid(pstate, pconfigcall) : bool
 def $dynamic_null_constant_valid(S, pconfigcall) = true
-  -- if $dynamic_null_constant_call(pconfigcall)
+  -- if $dynamic_null_constant_call(pconfigcall) \/ $dynamic_owned_null_query_call(pconfigcall)
   -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.OWNER = eps \/ ~$pipe_site(S, pconfigcall.SITE)
   -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, preqbytes?, porigin_argument, z))
   -- if pvalue_known? = $compiled_read(S, porigin_argument)
   -- if pvalue_known? = eps \/ pvalue_known? = (PNULL)
@@ -1946,6 +1954,9 @@ def $dynamic_null_constant_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED
 rule PhpStep/dynamic-null-constant-invoke: S ~> $dynamic_null_constant_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall) /\ $dynamic_null_constant_call(pconfigcall)
+rule PhpStep/dynamic-owned-null-query-invoke: S ~> $dynamic_null_constant_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall) /\ $dynamic_owned_null_query_call(pconfigcall)
 def $task_nodes(DYNAMIC_NULL_CONSTANT_RESULT pconfigcall) = $config_nodes(pconfigcall)
 def $selected_task_nonce(DYNAMIC_NULL_CONSTANT_RESULT pconfigcall) = pconfigcall.SELECTION
 def $call_task_valid(S, DYNAMIC_NULL_CONSTANT_RESULT pconfigcall) = ($dynamic_null_constant_valid(S, pconfigcall) /\ ~$config_strict(S, pconfigcall))
