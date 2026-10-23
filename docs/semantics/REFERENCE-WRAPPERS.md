@@ -132,6 +132,16 @@ object-free. Zend's UNDEF branch inserts before checking a pending exception;
 discarding the doomed object-free builder without insertion has the same
 observable effects. A later defined NULL key still uses its separate reset path.
 See the [undefined-key ledger](../../coverage/semantics/array-literal-undefined-key-warning-review.json).
+An initially ordinary ARRAY CV uses a separate undefined-key marker with one
+old-table acquisition owner alongside the builder. The current ordinary ARRAY or
+nonowning primitive supplies the DIRECT entry, without a CV backup/reset. The
+existing float-key retention/debt helpers account for retargeting on normal and
+supplied-throw completion; inverse writes cancel the biases before final release.
+Fresh integer-array witnesses distinguish shared writes while debt remains from
+restored COW, stable transfer and safe retirement. The existing bounded mutable
+nonpool array validator and object-free builder bound still apply; marked outer
+CVs, wider graphs and unsafe lifetimes remain partial. See the
+[ARRAY-CV ledger](../../coverage/semantics/array-literal-undefined-key-array-cv-review.json).
 NULL-key literal conversion has its own value-reset continuation. The captured
 ordinary CV index is nonowning and must still be the same live unmarked slot,
 without property/coercion/backing records or CELL debt. For ARRAY values the

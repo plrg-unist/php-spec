@@ -1,0 +1,179 @@
+{
+  "milestone": "A49: owning ordinary ARRAY CV values at undefined literal-key Warnings",
+  "status": "Reviewed composed candidate; accepted native/source/focused cuts retained.",
+  "target": "PHP8.5.10 CLI NTS64-bit; vendor/php-src tag34308a6666b2d489c509541ea9befea9e2b42348",
+  "cuts": {
+    "native_and_genuine": "6c1aa370c03f1863f4b474ff3b9916ed8add02c3",
+    "runtime": "1867448e78f8ef6cfec76a0d943cc72d77b4e6c6",
+    "strict_source4_focused752": "adde12c3fce9bbe92a52898822d6dda417d258db"
+  },
+  "runtime": {
+    "spec/semantics/30-storage.watsup": "a54732acceb46bf0b03901852a9201eabf03e6fd922c1b8920db4173cddf29de",
+    "spec/semantics/413-array-literal-key-warnings.watsup": "10b3e5fd51a6f4c93412d105901858097dd9807069d519be5a3dfebad07d092c"
+  },
+  "engine": "ZEND_ADD_ARRAY_ELEMENT/CV_CV dereferences and addrefs the ARRAY value before the raw key-CV read. UNDEF calls zval_undefined_cv(E_WARNING), fixes the empty-string key without rereading handler initialization, then inserts the current value before NEXT_OPCODE_CHECK_EXCEPTION. It has no NULL-key backup/reset. Authored VM and generated CV_CV agree.",
+  "scope": "By-value checked NArrayItem with an ordinary absent or allocated-unmarked-UNDEFINED key CV and an initially defined ordinary ARRAY value CV. The initial and current arrays reuse the existing bounded mutable nonpool array validator; current reception may instead be ordinary null/bool/int/float. Entry-only missingness and source/error-call authority remain separate, so handler-created keys do not invalidate the continuation.",
+  "ownership": "ARRAY_KEY_UNDEFINED_ARRAY_RESULT owns the builder and one acquired old-table edge, with no CELL root or backup. DIRECT insertion reads the current ordinary CV. The unchanged float-ARRAY retention/debt helpers preserve the old acquisition and owe a different current ARRAY, or retain the old ARRAY on scalar completion. Reciprocal retargets cancel these biases and restore ordinary COW.",
+  "throw_abstraction": "The doomed object-free builder is dropped without literal internal insertion, while applying exactly the same old-retention/current-debt accounting. Bounded object-free value graphs exclude destructor effects from that omission. The supplied Throwable, live current ARRAY, destination99 and canceled later7 agree natively; no objectful equivalence or engine bug is claimed.",
+  "fresh_witnesses": "Stable default forwarding transfers one acquired ARRAY owner without bias and preserves independent holder/q/entry COW. A\u2192B\u2192A retargeting exposes shared66 under B debt, then cancels biases before copy writes/final retirement. ARRAY\u219244\u2192ARRAY balances through the unchanged float-key scalar inverse, preserving DIRECT scalar snapshots. Independent supplied throw keeps three B holders, exposes shared55 after q=0, then inverse cancellation restores independent66 and88 COW writes.",
+  "source_lines": "Warning operation/value lines18/25,16 and peer13/20/32 differ from earlier key-variable lines. The scalar inverse uses the existing float Deprecated line23. Compiler bytes are unchanged; default Warning13 stderr is compared exactly at the preserved original path.",
+  "controls": "Source/origin/CODE/name/line and old-table bounds negatives, primitive/NULL/float ingress disjointness, exact Warning identity, builder+old-table task/frame roots with no CELL root, pre/post callback owners, raw versus driven steps and retention/debt cancellation are checked. Legal marked current CVs refuse readiness and produce explicit Unsupported result/discard without STORE mutation. Popped-marker throw accounting, canceled assignment/items, physical shared writes, restored COW, EOF retirement and zero/split budgets are checked.",
+  "bounds": "Fresh payloads are DIRECT integer pairs; broader existing scalar/byte/reference-leaf checks compose without all-values credit. Initial scalar undefined-key readiness and its ARRAY refusal remain exact. Marked/constrained outer CVs, direct strings/objects, wider producers/graphs, active collection and unsafe deficit lifetimes remain partial. The runtime diff is55+/1\u2212 in30/413: a new task/protocol and pending-plan OR; old NULL/float helpers, compiler, pstate fields, generic error/default paths and root/count/prune algorithms remain exact. Paused boundaries are untouched.",
+  "validation": {
+    "strict_modules": 409,
+    "original_native_cases": 4,
+    "checked_source_agreements": 4,
+    "author_conditions": 342,
+    "peer_conditions": 410,
+    "successful_conditions": 752,
+    "boolean_conditions": 739,
+    "raw_steps": 13,
+    "postchange_first_executions_passed": true,
+    "postchange_failures": 0,
+    "retries": 0,
+    "cap_changes": 0,
+    "accepted_replay": false
+  },
+  "genuine_baseline": {
+    "revision": "6c1aa370c03f1863f4b474ff3b9916ed8add02c3",
+    "case": "array-literal-undefined-key-array-cv-cycle",
+    "status": "unsupported",
+    "reason": "error-handler ingress requires a producer continuation",
+    "model_stdout": "P;",
+    "model_exit": 1,
+    "native_exit": 0,
+    "passed": false,
+    "agreement_credit": 0
+  },
+  "execution": {
+    "cpu": 2,
+    "native_cap_seconds": 30,
+    "genuine_model_outer_caps": [
+      60,
+      90
+    ],
+    "strict_focused_sl_cap_seconds": 180,
+    "source_model_outer_caps": [
+      180,
+      210
+    ],
+    "strict_seconds": 9.554481267929077,
+    "source_seconds": [
+      35.713802337646484,
+      25.262664794921875,
+      21.018575429916382,
+      60.92216229438782
+    ],
+    "focused_seconds": [
+      39.22802209854126,
+      27.432082653045654,
+      21.9016854763031,
+      64.77735567092896
+    ],
+    "actors": "All post-change first executions pass at original caps; expected program stdout/default Warning stderr, empty tooling stderr, no timeout/interruption/surviving groups. Wrappers are fully reaped and CPU2 released.",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null
+    },
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "tools": {
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    }
+  },
+  "source_sha256": {
+    "array-literal-undefined-key-array-cv-cycle": "4d728789aa6ff94488f97044e062ef5038768f270803d1c42c7d93bf76d67b65",
+    "array-literal-undefined-key-array-cv-scalar-inverse": "d8ff6d64cf4564a65f056d9c9ecf29b78473c83eb5a662595e7da74079783fd2",
+    "array-literal-undefined-key-array-cv-review-default": "63f73e43efd4ff0a39d1add783312645ebe41028235c324ebe96d48b792f289b",
+    "array-literal-undefined-key-array-cv-review-throw-inverse": "8a38c0399a0322b1e01581c7e202fc9fe3bed73f4dd322e4be5160e87ae85e63"
+  },
+  "commands": [
+    "taskset -c 2 python3 -B tests/semantics/array_literal_undefined_key_array_cv_warnings.py --case array-literal-undefined-key-array-cv-cycle --output .tools/array-literal-undefined-key-array-cv-baseline-49",
+    "taskset -c 2 python3 -B tests/semantics/array_literal_undefined_key_array_cv_warnings.py --exclude array-literal-undefined-key-array-cv-cycle --native-only --output .tools/array-literal-undefined-key-array-cv-native-rest-49",
+    "taskset -c 2 python3 -B tests/semantics/array_literal_undefined_key_array_cv_review_sources.py --native-only --output .tools/array-literal-undefined-key-array-cv-review-native-49",
+    "taskset -c 2 python3 .tools/array-literal-undefined-key-array-cv-strict-49.py",
+    "taskset -c 2 python3 .tools/array-literal-undefined-key-array-cv-reuse-49.py --group author --output .tools/array-literal-undefined-key-array-cv-source-author-49",
+    "taskset -c 2 python3 .tools/array-literal-undefined-key-array-cv-reuse-49.py --group review --output .tools/array-literal-undefined-key-array-cv-source-review-49",
+    "taskset -c 2 python3 -B tests/semantics/array_literal_undefined_key_array_cv_protocol.py --source-report .tools/array-literal-undefined-key-array-cv-source-author-49/report.json --output .tools/array-literal-undefined-key-array-cv-author-state-49",
+    "taskset -c 2 python3 -B tests/semantics/array_literal_undefined_key_array_cv_state_review.py --source-report .tools/array-literal-undefined-key-array-cv-source-review-49/report.json --output .tools/array-literal-undefined-key-array-cv-review-state-49"
+  ],
+  "reports": {
+    "baseline-49": {
+      "path": ".tools/array-literal-undefined-key-array-cv-baseline-49/report.json",
+      "sha256": "0d53fbceb689d9af3ee9dbd1da98e7736eca3642b5c7d726689174568feb29a5",
+      "revision": "6c1aa370c03f1863f4b474ff3b9916ed8add02c3"
+    },
+    "native-rest-49": {
+      "path": ".tools/array-literal-undefined-key-array-cv-native-rest-49/report.json",
+      "sha256": "3689f66bc4145c990091bcf478cfcbd62152865ea9c66b78a7c046213a0108a6",
+      "revision": "6c1aa370c03f1863f4b474ff3b9916ed8add02c3"
+    },
+    "review-native-49": {
+      "path": ".tools/array-literal-undefined-key-array-cv-review-native-49/report.json",
+      "sha256": "78259a937eb4e4b2758e4f3a19eaa49ff3a3ff4fbe5d19c3013d6b7d34726a92",
+      "revision": "6c1aa370c03f1863f4b474ff3b9916ed8add02c3"
+    },
+    "strict-49": {
+      "path": ".tools/array-literal-undefined-key-array-cv-strict-49/report.json",
+      "sha256": "b7191f5e4d11821de0c22a38614ac4dc5e868af03fb276c53bff6a8877d88b5e",
+      "revision": "adde12c3fce9bbe92a52898822d6dda417d258db"
+    },
+    "source-author-49": {
+      "path": ".tools/array-literal-undefined-key-array-cv-source-author-49/report.json",
+      "sha256": "2590563236b1b2f53f0cef806d7dc283aab33d23e35ea1d10e7691df4313985f",
+      "revision": "adde12c3fce9bbe92a52898822d6dda417d258db"
+    },
+    "source-review-49": {
+      "path": ".tools/array-literal-undefined-key-array-cv-source-review-49/report.json",
+      "sha256": "f56dadd42d96c558158aca529640f14d81a3dfc88bf5989f85f364361701d3bf",
+      "revision": "adde12c3fce9bbe92a52898822d6dda417d258db"
+    },
+    "author-state-49": {
+      "path": ".tools/array-literal-undefined-key-array-cv-author-state-49/report.json",
+      "sha256": "f91ecccffd05b125311b7d7ba23383b9279098e3effbbcb7de4f047caff4ca27",
+      "revision": "adde12c3fce9bbe92a52898822d6dda417d258db"
+    },
+    "review-state-49": {
+      "path": ".tools/array-literal-undefined-key-array-cv-review-state-49/report.json",
+      "sha256": "d5d47702489b9d47592b154f5eb5fca6cd949aabc351f9c0d5e73169254ad881",
+      "revision": "adde12c3fce9bbe92a52898822d6dda417d258db"
+    }
+  },
+  "runners": {
+    ".tools/array-literal-undefined-key-array-cv-strict-49.py": "819943ebeba5598c96307c2d1377c5cf10207b48f2c1b6ef7fcb4f9a569c7b3a",
+    ".tools/array-literal-undefined-key-array-cv-reuse-49.py": "a11ba8468c88d7f3f50f9d807c3052a0390bb381b56ad4d8ea91842985ca29b5"
+  },
+  "archive": {
+    "path": ".tools/array-literal-undefined-key-array-cv-49-raw.tar.gz",
+    "bytes": 588102,
+    "members": 197,
+    "sha256": "69d2f74c31e877beafcb34cdae45ec436cc428bcf84997f20aaecfa245d2599f"
+  },
+  "recovery": "Canonical .tools/array-literal-undefined-key-array-cv-publication-49.json and the raw archive preserve eight reports, three preparation records, original sources/native/model streams/process receipts and strict/reuse scripts. Restore at the recorded cwd/Git cuts with original paths, bytes, profile and fingerprints; provision pinned local tools as needed. The marked-state assertion addition changed preparation only. Preparation has no execution credit; genuine Unsupported retains zero agreement credit.",
+  "composition": {
+    "parent": "8c4b88b5a85dcb50c8f728c25b088f9952f73022",
+    "ordered_manifest_modules": 409,
+    "runtime_policy": "Tested413 and all six A49 scripts remain private-exact. Shared30 is exactly parent30 plus the one tested ARRAY-undefined-key task. Incoming40/404 BOOLXOR,289/380 and every other operational/schema/ordered409 path remain parent-exact; no pstate/heap field change.",
+    "combined30_sha256": "f9e560c0eb10017cf51a3a1f58b96ebb44221a947b4643d127527b56dec56b2d",
+    "interaction": "Incoming LOGICALXOR/initial-left-NaN continuations, unused Generator CURRENT refresh and public typed-UNSET magic getter recursion are unproduced by these ARRAY-key originals/handlers. The explicit float1.5 inverse is key conversion, with no LOGICALXOR occurrence. Generic error/default paths and retained float/NULL helpers remain exact; no selected shared interaction.",
+    "progress_policy": "Start from the compact actual parent view; preserve its current checkpoint/integrated/active facts and add only A49 family/integration pointers.",
+    "joined_execution": false,
+    "accepted_replay": false
+  }
+}

@@ -62,11 +62,16 @@ compares it quietly against that read's frozen NULL and preserves surviving alia
 Wider warning paths remain partial.
 
 At `[$missing => $value]`, an undefined ordinary key variable can now resume a
-Warning callback while null/bool/int/float value CVs stay live. A handler's
+Warning callback while null/bool/int/float value CVs stay live. An initial bounded
+mutable ARRAY CV also allows live ARRAY or nonowning primitive completion. A handler's
 `$missing=9; $value=44` still inserts `""=>44`; later items read the new key.
 Returning false forwards the Warning, and an object-free supplied throw cancels
-the array assignment. Strings, owning values and constrained/reference CVs remain
-partial. [Undefined-key review](coverage/semantics/array-literal-undefined-key-warning-review.json).
+the array assignment. An initial ARRAY contributes one acquired old-table owner;
+retargeting preserves the existing retention/debt effects through throw, and
+balanced inverse writes restore ordinary COW. Direct strings, marked/constrained
+value CVs, wider graphs and unsafe lifetimes remain partial.
+[Primitive review](coverage/semantics/array-literal-undefined-key-warning-review.json),
+[ARRAY-CV review](coverage/semantics/array-literal-undefined-key-array-cv-review.json).
 
 [NULL literal keys](docs/semantics/DIMENSIONS.md) restore the original ordinary
 value CV after the deprecation handler, then insert that value under `""`.
