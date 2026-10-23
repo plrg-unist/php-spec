@@ -186,6 +186,31 @@ additional source witnesses here. Other array layouts, replacement/callbacks,
 wider maps, unheld-map and inactive/Fiber contexts remain partial.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
+## Ordinary foreach DATA and copied CVs
+
+M136 adds by-value traversal of a singleton Map with a leaf `stdClass` Key and
+parentless methodless leaf INSTANCE Value. Key and Value targets are distinct
+ordinary unbound/undefined/NULL CVs. The saved `FOREACH_NEXT` task owns iterator
+DATA once; its `OBJECTITER` row is nonowning metadata. The object Key is copied
+directly through `LIST_STORE`, without array-key coercion. Existing loop cleanup
+handles exhaustion and `break`, with a bounded saved-owner hook in129.
+
+Two originals and 287 Boolean/five raw checks pass atb7af/410. After the body
+unsets original Map/Key CVs, DATA retains Map and copied Key/Value identities.
+Loop cleanup retires Map while those two CV copies survive; each later unset
+retires its own object. Constructed registry-only and same-heap cursor2 controls
+distinguish metadata from ownership and reject invalid cursor progress.
+
+First/second insertion, replacement and explicit entry removal refuse active
+cursors; implicit Key-death notification is unchanged. The separate native
+delete/reinsert control emits `B;E;`; its reached offsetUnset refusal retains
+zero agreement. The original normal-but-skipped baselines and two compiler stops
+also stay zero. A strict application0 preflight and corrected affected source2
+keep their separate records. Reference traversal, scalar/array or wider values,
+other/overwritten targets, explicit getIterator, mutation and wider map/callback/
+Fiber histories remain partial. Empty storage shares finish without an extra
+PHP witness. [Review and recovery](../../coverage/semantics/weak-map-review.json).
+
 ## Ordinary Std graphs beside a methodless ephemeron
 
 At `fa2e00c6`, module386 admitted allocated, nonfreeing outside `stdClass` graphs when the
@@ -305,7 +330,7 @@ Module386 admits zero-argument `new WeakMap()` and one first insertion with a
 live `stdClass` leaf key and ordinary INSTANCE leaf value. Declared WeakMap,
 ArrayAccess, Countable, IteratorAggregate and Traversable identities are preserved.
 Countable is nominal-only here; count library execution is excluded by
-[CORE](CORE.md) and stays Unsupported. Other map methods and iteration remain
+[CORE](CORE.md) and stays Unsupported. Other map methods and wider iteration remain
 required. The entry owns its value and keeps only a nonowning key ID. Source, current BASE/key/RHS operands and the
 assignment result remain authenticated. This first-entry lane stops on occupied
 entries, wider shapes and an existing entry for the key in another map; bounded

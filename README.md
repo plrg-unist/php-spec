@@ -2985,6 +2985,12 @@ checks pass at `9bf6e1399`/409: count2 includes Array/Key while the uncounted ce
 is physically retired. Old array/reference rows remain nonowning history.
 Other array layouts and replacement/callback lifetimes remain partial.
 
+Bounded by-value WeakMap `foreach` now retains the Map through hidden iterator
+DATA and copies its object Key/Value into ordinary CVs. Exhaustion or `break`
+retires DATA before those copies; two originals and 287 Boolean/five raw checks
+pass at `b7af270c7`/410. Active entry mutation is explicitly refused; reference,
+wider target/value and map-history cases remain partial.
+
 The object-valued singleton can now coexist with ordinary `stdClass` graphs.
 Two originals agree at `fa2e00c6`: an independent self-cycle collects alongside
 the pair, or alone while Key is held. The 405 focused checks cover real GC

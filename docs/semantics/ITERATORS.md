@@ -15,6 +15,13 @@ The iterator and its actual current result remain owned during `key()` and the b
 a reference result is read after `key()` and its original cell survives rebinding.
 Break, return, goto and abrupt frame teardown release the cursor and its owners.
 
+Module386 also admits bounded singleton WeakMap by-value traversal with ordinary
+CV targets and leaf object Key/Value. Hidden DATA owns the Map once, independently
+of the nonowning cursor row; object keys bypass array-key conversion. Exhaustion
+and `break` drop DATA while assigned Key/Value CVs retain their copies. Two source
+agreements and 287 Boolean/five raw checks pass atb7af/410. Active entry mutation
+and wider modes remain partial; [WeakMap](WEAK-REFERENCES.md) records exact limits.
+
 Module378 adds real `IteratorAggregate` acquisition to foreach. Implicit getter
 receivers remain borrowed; each returned Aggregate occurrence owns its raw
 retval, and layers retire inside-out before terminal Iterator/Generator startup.

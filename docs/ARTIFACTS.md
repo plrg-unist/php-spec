@@ -217,6 +217,13 @@ the preserved SL binding failure), original packets, immutable author/peer
 snapshots, worker120 and the isolated386 runtime patch,
 SHA-256 `37e6499d641e08f7b9be18c52c714afa4433813278c2a2ab58e7659a0a522236`.
 
+The WeakMap foreach DATA/copy lifetime proof is in
+`../php-spec-evidence-archive/weakmap-foreach-lifetime-136/manifest.json`:
+631,246 bytes/199 members under `.tools/m136/`, ten reports (eight complete and
+two preserved compiler stops), original3 packets, application0 preflight,
+immutable author/peer snapshots, worker120 and the isolated129/386 runtime patch,
+SHA-256 `ee02a4668b8b0c45f89d373c834bb454fb821b17a83c2ba4216c28f8d8e80b3e`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the
