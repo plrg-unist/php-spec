@@ -2014,7 +2014,21 @@ Retained, propertyless Stringable names now enter `__toString()` before position
 calls reject the raw object before entry, and a method throw cancels the query.
 [Four source agreements and 642 state premises](coverage/semantics/constant-query-stringable-name-review.json)
 cover raw versus converted traces, selected callees, callback effects and discard.
-Sole-owner destruction, wider receivers and named/packed forms remain partial.
+Ownerless sole-owner destruction, wider receivers and named/packed forms remain
+partial.
+
+Captured `constant(...)`/`defined(...)` callees also receive positional Stringable
+names with normal string returns. Ordinary conversion releases the object before
+lookup, so its destructor can publish the requested global name. Explicit
+`__invoke` keeps the raw wrapper object through lookup: `defined` returns false
+for an absent name before its destructor publishes that name. Missing Error
+traces retain the object beside the received API string. Strict ordinary calls
+reject without conversion and retain the object through the TypeError trace.
+Cleanup orders argument destruction
+before callee retirement when both become unreachable together.
+[Captured Stringable query review](coverage/semantics/constant-owned-stringable-query-review.json).
+This route requires mutable arguments and non-NUL global results; class names,
+packs, PIPE and supplied conversion throws remain outside its validated scope.
 
 Retained propertyless Stringable query names returning non-NUL class-qualified
 text now hand the converted API slot to existing guarded user-class lookup.
