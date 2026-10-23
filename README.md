@@ -1724,6 +1724,11 @@ finally with no extra snapshot owner. A row rewrite releases its old value insid
 Middle finally, and cache destruction can throw there before Upper cleanup.
 Assignment retains its copy. See the
 [pending CURRENT review](coverage/semantics/generator-pending-unused-current-review.json).
+First CURRENT refresh through one allocated closed Child is also covered when
+all Child edges are the transferred current cache. Its storage prefix retires
+before the receiver; assignment retains the current copy. Extra child owners
+remain outside this arm. See the
+[first-refresh CURRENT review](coverage/semantics/generator-refresh-unused-current-review.json).
 At a pre-refreshed direct node-free COMPLETE, existing pending SEND cleanup also
 preserves a supplied Exception thrown by its ignored argument's destructor.
 Unused snapshots retire before receiver finally; assignment context retains a

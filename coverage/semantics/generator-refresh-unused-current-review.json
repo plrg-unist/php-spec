@@ -1,0 +1,92 @@
+{
+  "milestone": "Iterator52: quiet child refresh before unused CURRENT cleanup",
+  "status": "accepted-private",
+  "scope": "Unused literal zero-argument CURRENT can first refresh one allocated CLOSED Child into a one-native-ancestor primitive COMPLETE. All Child-owned nodes must be the transferred current cache; the exact Child storage prefix precedes receiver cleanup. Identity admission and assignment copies remain unchanged.",
+  "implementation": {
+    "runtime_parent": "323b6714cd8c2067acb677b4a2dcb898c1eeb65b",
+    "paths": {
+      "spec/semantics/289-generator-delegation.watsup": "e288cdde4f5642fe04e532011d56e1fb3c5f42727bfd367ebd18666ef6cf78ac"
+    },
+    "change": "Add a pure original/updated-state refresh predicate with separate identity and exact single-Child arms. The new arm binds the original allocated CLOSED child, actual refresh, updated node-free endpoint, complete Child children equal to transferred current nodes, and exact eager slots [Child]. Existing source-use/discard/zero-argument/flag guards remain; the actual result must equal plain CURRENT on that authenticated updated state. No root, storage, close, scheduler, API admission, schema, parser or collector body change.",
+    "engine_evidence": [
+      "vendor/php-src/Zend/zend_generators.c: zend_generator_get_current, Generator::current and zend_generator_dtor_storage",
+      "vendor/php-src/Zend/zend_vm_def.h: unused retval retirement before receiver release"
+    ]
+  },
+  "validation": {
+    "native": "Four first observations without stdout forecasts, using only Child/Middle/Upper so an Outer destructor cannot pre-refresh the chain. Unused row A occurs inside K; assignment retains A through K-END/CALLER until explicit drop. Pre-close Middle NEXT permits normal D before J-END or throwing D before K, with cache type/message/PreviousNULL and outside Given kept separate.",
+    "genuine_unchanged": "At c4a4eb039, checked NORMAL model0/empty stderr gives K|K-END|A versus native K|A|K-END. The original comparison remains passed=false/recordfalse/normal_agreements0; separate observation.json binds the unchanged report SHA and records its actual classification without agreement credit.",
+    "source4": "Four exact normal stdout/stderr/exit agreements at 744b5b38e after the bounded refresh repair, reusing the captured native4 without another oracle run.",
+    "states": {
+      "new_author": [
+        221,
+        194
+      ],
+      "new_peer": [
+        136,
+        136
+      ],
+      "new_total": 687,
+      "new_local": 667,
+      "new_generic": 20
+    },
+    "observations": "Actual API state has Child1/cell2 and no original node-free endpoint. Exact refresh leaves the raw Child metadata allocated but removes its graph edge, installs Middle COMPLETE/current and raises cell count to3. Actual operation queues [Child,Upper]; next public step enters genuine Child storage with Upper still queued. The ARRAY has one element-edge set: unused current keeps array1, assignment array2 through the prefix. Public0/1/2 and exact whole/split endings pass. Live Middle callbacks have cache2/cell2, NULL CURRENT operation VALUE, separate empty store/current pending and outside Givenowner1; real Upper/Middle initialized bits and queued claim remain intact.",
+    "controls": "Constructed extra key/return/Closure-owner and missing-allocation cases refuse; key/Closure helpers retain an otherwise matching updated endpoint. Same-heap forged reporting-state updates and forged results refuse, and source-used plus forged DISCARD retains its ARRAY. These are helper boundary checks; the closure-pointer mutation is not fresh valid Closure source coverage.",
+    "compiler": "Strict SL409 passes at 744b5b38e. Corrected four-fixture elaboration has all main headers and unique EOF sentinel; compilation earns no source agreement.",
+    "failure_and_correction": "The original a50655295 gate correctly rejected an author-fixture optional-record CONSTCONTEXT used as bool, despite compiler exit0/empty stderr. No main executed. Two fixture lines alone changed: CONSTCONTEXT=eps and a same-heap forged integer REPORTING+1 update. Only the affected gate retried; source/runtime/native checks were not repeated. Original compiler diagnostics/generated fixtures remain at zero credit.",
+    "maintenance": "Corrected gate and all four focused groups pass at 6e3531a01, first semantic execution at original caps. No runtime correction followed source agreement; no cap changes or accepted/historical replay. All actors reaped; CPU1 released."
+  },
+  "tested_revisions": {
+    "native4_genuine_normal_disagreement": "c4a4eb03918e37d13485304e38b9d5252fcbca24",
+    "source4_strict409": "744b5b38e32b28eee3c0e6524785206d466bf841",
+    "original_premain_gate_failure": "a50655295ebc42f07cfbafa0c179859f6376fe13",
+    "corrected_gate4_focused687": "6e3531a011b082e4fd344cad0b86d9326fe7c476",
+    "bridge": "Runtime289 and original source bytes remain exact across source744b and focused6e. Six maintained tests are corrected-cut exact; only author fixture typing changed after the original gate. Baseline, failed compilation and accepted cuts retain their separate identities without replay or renewed credit."
+  },
+  "commands": {
+    "native": "taskset -c1 python3 .tools/native.py",
+    "baseline": "taskset -c1 python3 .tools/baseline.py --case generator-refresh-unused-current-row-finally-write --native-report .tools/generator-refresh-unused-current-native-7zx3f60h/report.json",
+    "strict_and_source4": "taskset -c1 python3 .tools/source-packet.py",
+    "elaboration": "taskset -c1 python3 .tools/state-elab.py",
+    "focused": "taskset -c1 python3 .tools/state-packet.py"
+  },
+  "environment": {
+    "php": "8.5.10 CLI NTS64; source 34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_identities": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; SL/cacheoff/encountered determinism",
+    "settings": "Serial CPU1; LC_ALL=C TZ=UTC, script encoding unset. Existing project-local tools reused; no fresh portability claim.",
+    "caps": "Native 8s; source 100000 steps/model 100/process 120; strict 120; elaboration 60; focused 120/seek 4000/finish 4000.",
+    "exits": "Native/compiler/model processes exit0 without timeout or stderr; original baseline comparison and pre-main fixture gate remain false. Focused stdout exactly true plus newline. Recorded inputs and HEAD stable."
+  },
+  "reports": {
+    "native4": ".tools/generator-refresh-unused-current-native-7zx3f60h/report.json",
+    "genuine-normal-disagreement": ".tools/generator-refresh-unused-current-baseline-6dafcfl6/report.json",
+    "genuine-classification-observer": ".tools/generator-refresh-unused-current-baseline-6dafcfl6/observation.json",
+    "strict409": ".tools/generator-refresh-unused-current-author-sl-qdgnre2y/report.json",
+    "source-author2": ".tools/generator-refresh-unused-current-source-x16ll_gu/report.json",
+    "source-peer2": ".tools/generator-refresh-unused-current-review-source-z96tgs_2/report.json",
+    "original-premain-type-failure": ".tools/generator-refresh-unused-current-state-elab-wj44ekcl/report.json",
+    "corrected-elaboration4": ".tools/generator-refresh-unused-current-state-elab-8camylag/report.json",
+    "state-author221": ".tools/fiber-state-review-z1tmtp8t/report.json",
+    "state-author194": ".tools/fiber-state-review-3qha57am/report.json",
+    "state-peer136-normal": ".tools/fiber-state-review-ctwro74f/report.json",
+    "state-peer136-throw": ".tools/fiber-state-review-_dk5_ch3/report.json"
+  },
+  "evidence": {
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-refresh-unused-current-52/private.tar.gz",
+      "bytes": 1970174,
+      "sha256": "27de4f39038971c85683d28def60a7c284cac8f64db6d5a0704dfc4d71d2b1f1"
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-refresh-unused-current-52/manifest.json",
+    "recovery": "Extract raw folders/drivers into matching tested checkouts and supply pinned project-local tools. Native/baseline retain c4a4eb039 before observed metadata; affected source/strict retain744b5b38e. Original a50655295 gate has no main execution and retains the optional-record fixture error at zero credit; only two fixture lines change before corrected gate/state6e3531a01. Original NORMAL disagreement keeps raw comparisonfalse/agreement0 and has a separate hash-bound classification observer. Exact source paths/commands/outputs/exits/caps/identities remain in reports. No checkout, build tree or backup is archived."
+  },
+  "remaining": "Extra Child key/return/Closure owners, masked Child/current identities, pending-selected prefix histories, deeper/owning/parked endpoints and collection remain unvalidated by this arm. SEND/THROW/NEXT and paused OP12/Source47/owned-NUL/undefined-byref-LIST/COMP88 behavior stay unchanged.",
+  "independent_review": "Replacement /root/iterator49_review reviewed native-first sources/observations, genuine disagreement, quiet refresh/callback exclusion, source/strict and focused reliability, fixture correction/failure retention, constructed counter limits, archive and compact publication; no blocker. Current incoming selectors througha384f4343 were independently checked as absent."
+}

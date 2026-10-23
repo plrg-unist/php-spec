@@ -208,6 +208,14 @@ global Exception stays separate. Normal destruction precedes J-END, and a cache
 RuntimeException skips J-END before Upper K with Previous NULL. No close or root
 rule changes; see the
 [pending CURRENT review](../../coverage/semantics/generator-pending-unused-current-review.json).
+When CURRENT itself first refreshes a completed child, the real child storage
+operation retains its temporary object claim before selected receiver cleanup.
+Only the current cache edge transfers; its later decrement cannot destroy that
+value while Middle retains it. Retiring the unused ARRAY copy precedes Upper
+row mutation, and object slot cleanup can run inside live Middle finally.
+Assignment preserves its copy. Extra Child owners remain outside this bounded
+arm; no storage/close/root rule changes. See the
+[first-refresh CURRENT review](../../coverage/semantics/generator-refresh-unused-current-review.json).
 At the pre-refreshed direct node-free pending SEND endpoint, a supplied argument
 Exception survives the remaining snapshot release and receiver finally.
 Assignment context retains a temporary until after finally, then unwinds
