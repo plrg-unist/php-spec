@@ -5,7 +5,8 @@
     "source": "<?php\nclass RefreshUnusedCurrentRowOld52 { function __destruct() { echo \"A|\"; } }\nclass RefreshUnusedCurrentRowLive52 { function __destruct() { echo \"C-LIVE|\"; } }\nfunction &refreshUnusedCurrentRowChild52() { global $row; $row = [new RefreshUnusedCurrentRowOld52()]; echo \"C0|\"; yield 7 => $row; echo \"L|\"; return null; }\nfunction refreshUnusedCurrentRowMiddle52() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; return $reply; } finally { echo \"J|\"; } }\nfunction refreshUnusedCurrentRowUpper52() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; $GLOBALS[\"row\"][0] = new RefreshUnusedCurrentRowLive52(); echo \"K-END|\"; } }\nfunction refreshUnusedCurrentRowTake52() { echo \"TAKE|\"; $chosen = $GLOBALS[\"upper\"]; unset($GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"CLEARED|\"; return $chosen; }\n$child = refreshUnusedCurrentRowChild52(); $middle = refreshUnusedCurrentRowMiddle52(); $upper = refreshUnusedCurrentRowUpper52();\necho \"P|\"; $upper->rewind(); echo \"READY|\";\n$child->next(); unset($child); echo \"H|\";\necho \"S|\";\nrefreshUnusedCurrentRowTake52()->current(); echo \"CALLER|\"; unset($copy); echo \"DROPPED|\";\nunset($row); echo \"ROW-DROPPED|\"; echo \"E\";\n",
     "source_sha256": "a6320d756021c396bf20de5db151eedbf21c04b667ca3954776a24450ed0af4f",
     "native_exit": 0,
-    "native_stderr": ""
+    "native_stderr": "",
+    "native_stdout": "P|U|M|C0|READY|L|H|S|TAKE|CLEARED|K|A|K-END|CALLER|DROPPED|C-LIVE|ROW-DROPPED|E"
   },
   {
     "id": "generator-refresh-unused-current-assignment-control",
@@ -13,6 +14,7 @@
     "source": "<?php\nclass RefreshUnusedCurrentRowOld52 { function __destruct() { echo \"A|\"; } }\nclass RefreshUnusedCurrentRowLive52 { function __destruct() { echo \"C-LIVE|\"; } }\nfunction &refreshUnusedCurrentRowChild52() { global $row; $row = [new RefreshUnusedCurrentRowOld52()]; echo \"C0|\"; yield 7 => $row; echo \"L|\"; return null; }\nfunction refreshUnusedCurrentRowMiddle52() { try { echo \"M|\"; $reply = yield from $GLOBALS[\"child\"]; echo \"BAD-MIDDLE|\"; return $reply; } finally { echo \"J|\"; } }\nfunction refreshUnusedCurrentRowUpper52() { try { echo \"U|\"; yield from $GLOBALS[\"middle\"]; echo \"BAD-UPPER|\"; } finally { echo \"K|\"; $GLOBALS[\"row\"][0] = new RefreshUnusedCurrentRowLive52(); echo \"K-END|\"; } }\nfunction refreshUnusedCurrentRowTake52() { echo \"TAKE|\"; $chosen = $GLOBALS[\"upper\"]; unset($GLOBALS[\"upper\"], $GLOBALS[\"middle\"], $GLOBALS[\"child\"]); echo \"CLEARED|\"; return $chosen; }\n$child = refreshUnusedCurrentRowChild52(); $middle = refreshUnusedCurrentRowMiddle52(); $upper = refreshUnusedCurrentRowUpper52();\necho \"P|\"; $upper->rewind(); echo \"READY|\";\n$child->next(); unset($child); echo \"H|\";\necho \"S|\";\n$copy = refreshUnusedCurrentRowTake52()->current(); echo \"CALLER|\"; unset($copy); echo \"DROPPED|\";\nunset($row); echo \"ROW-DROPPED|\"; echo \"E\";\n",
     "source_sha256": "73755437d7df2c4704c3c9a6aa31e4a67a3c1aa7d6148a649fc6d242d47f241b",
     "native_exit": 0,
-    "native_stderr": ""
+    "native_stderr": "",
+    "native_stdout": "P|U|M|C0|READY|L|H|S|TAKE|CLEARED|K|K-END|CALLER|A|DROPPED|C-LIVE|ROW-DROPPED|E"
   }
 ]
