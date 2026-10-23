@@ -30,7 +30,7 @@ def destructor(target, source, obj, output, pending='eps', inside=False, result=
         target + '.TODO = (DESTRUCTOR_ENTER pdestructorcall_' + target + ') :: ptask_destructor_' + target + '*',
         'pdestructorcall_' + target + '.OBJECT = ' + obj,
         'pdestructorcall_' + target + '.PENDING = ' + pending,
-        'pdestructorcall_' + target + '.OPERATION = (poperation_' + target + ')',
+        'pdestructorcall_' + target + '.OPERATION = (pdestructionoperation_' + target + ')',
         '$call_task_valid(' + target + ',DESTRUCTOR_ENTER pdestructorcall_' + target + ')',
         target + '.CURRENT ' + ('=/= eps' if inside else '= eps'),
         target + '.STORE[n_result] = DEFINED (' + result + ')',
@@ -226,8 +226,8 @@ def checks(program, path, name):
             owners('S_compared', 'HOBJECT n_new', 0),
             *controls('S', False, 'n_old', '40'),
             *destructor('S_last_saved', 'S_restored', 'n_new', 'P;B;O:1;I:1:1:1;H:1:1:40:1;'),
-            'poperation_S_last_saved.SOURCE = perrorread.TASK',
-            'poperation_S_last_saved.VALUE = KNOWN (PINT 1)',
+            'pdestructionoperation_S_last_saved.SOURCE = perrorread.TASK',
+            'pdestructionoperation_S_last_saved.VALUE = KNOWN (PINT 1)',
             *finish('S_last_saved', expected),
         ]
     values += [
@@ -261,7 +261,7 @@ def throw_checks():
         owners('S_discarded', 'HARRAY n_array', 0), owners('S_discarded', 'HCELL n_leaf', 0), owners('S_discarded', 'HOBJECT n_old', 0),
         *controls('S', False, 'n_old', '34'),
         *destructor('S_throw_destructor', 'S_throw', 'n_old', 'P;B;H:1:1:34:1;', '(n_exception)'),
-        'poperation_S_throw_destructor.SOURCE = THROW_SEARCH n_exception',
+        'pdestructionoperation_S_throw_destructor.SOURCE = THROW_SEARCH n_exception',
         *finish('S_throw_destructor', expected),
         'S_done.STORE[n_result] = DEFINED (PINT 41)',
         '$drive_steps(S_throw,8000) = S_done',
