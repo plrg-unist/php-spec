@@ -8,10 +8,15 @@ def $weakmap_at(S, n) = true
   -- if $weakmap_object(S.OBJECTS[n])
 def $weakmap_at(S, n) = false -- otherwise
 ;; Cursor rows are metadata; the saved FOREACH_NEXT task alone owns DATA.
+dec $weakmap_foreach_cursor_map(piterator, nat) : bool
+def $weakmap_foreach_cursor_map(OBJECTITER n n_map n_position false, n_map) = true
+def $weakmap_foreach_cursor_map(piterator, n_map) = false -- otherwise
 dec $weakmap_foreach_active(piterator*, nat) : bool
 def $weakmap_foreach_active(eps, n_map) = false
-def $weakmap_foreach_active((OBJECTITER n n_map n_position false) :: piterator_tail*, n_map) = true
-def $weakmap_foreach_active(piterator :: piterator_tail*, n_map) = $weakmap_foreach_active(piterator_tail*, n_map) -- otherwise
+def $weakmap_foreach_active(piterator :: piterator_tail*, n_map) = true
+  -- if $weakmap_foreach_cursor_map(piterator, n_map)
+def $weakmap_foreach_active(piterator :: piterator_tail*, n_map) = $weakmap_foreach_active(piterator_tail*, n_map)
+  -- if ~$weakmap_foreach_cursor_map(piterator, n_map)
 def $closure_live_object_valid(S, n) = true -- if $weakmap_at(S, n)
 def $closure_scope_complete(S, (HOBJECT n) :: pnode*) = $closure_scope_complete(S, pnode*) -- if $weakmap_at(S, n)
 def $property_live_complete(S, (HOBJECT n) :: pnode*) = $property_live_complete(S, pnode*) -- if $weakmap_at(S, n)
