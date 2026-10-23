@@ -18,7 +18,7 @@ def replace(lines, old, new):
 
 FRONT = replace(common.FRONT,
     r'ppropertyget.NAME = ptbytes_name /\ ppropertyget.DECL = eps',
-    [r'ppropertyget.NAME = ptbytes_name /\ ppropertyget.DECL = (ppropertyid)'])
+    ['ppropertyget.NAME = ptbytes_name', 'ppropertyget.DECL = (ppropertyid)'])
 FRONT = replace(FRONT,
     '$property_effective_desc(S_front,n_child,ptbytes_name) = eps',
     common.lines(r'''
