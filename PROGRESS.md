@@ -27,6 +27,14 @@ preserves every assertion at the original caps without accepted replay. Original
 peer worker finalization remains unobserved; its completed COW group is retained.
 [Object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json).
 
+Composed over `0c7789751`/409, preserving tested207 and all nine publication
+tests. Incoming two-pack INI, pooled NULL-key arrays, NaN Boolean NOT, typed
+by-reference return/finally and captured constant-query producers are absent here.
+Source85 CONFIG_SEND stays exact. New30 task variants add no pstate field;
+all other runtime/schema/root/ordered-manifest bytes remain parent-exact.
+Accepted private cuts and recovery limits retain their identities, without
+joined execution, accepted replay or historical credit renewal.
+
 Two singleton argument packs now preserve raw NULL and a captured flat quiet
 ARRAY for fixed/selected strings and retained INI_SET setters. Each saved source
 fact authenticates separately; later helper/handler effects preserve the old
