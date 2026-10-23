@@ -862,12 +862,15 @@ def $weakmap_foreach_storage_valid(S, n_map) = true
   -- if $objectprops_valid(S, S.OBJECTPROPS)
   -- if $weakmap_foreach_entries(S, n_map, pweakmapentry?)
 def $weakmap_foreach_storage_valid(S, n_map) = false -- otherwise
+dec $weakmap_foreach_cursor_valid(pstate, nat, nat, nat) : bool
 def $weakmap_foreach_cursor_valid(S, n, n_map, n_position) = true
   -- if $(n < S.NEXTITER) /\ $(n_position <= 1)
   -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_map n_position false)
   -- if $iterator_lookup($iterator_remove(S.ITERATORS, n), n) = eps
   -- if $weakmap_foreach_storage_valid(S, n_map)
 def $weakmap_foreach_cursor_valid(S, n, n_map, n_position) = false -- otherwise
+def $weakmap_foreach_owner_valid(S, n, n_map, n_position) = $weakmap_foreach_cursor_valid(S, n, n_map, n_position)
+  -- if $weakmap_at(S, n_map)
 dec $weakmap_foreach_begin(pstate, nat, statement, bool, int) : pstate
 def $weakmap_foreach_begin(S, n_map, statement, false, z) = S[.TODO = (FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z) :: ptask_tail*][.ITERATORS = S.ITERATORS ++ [OBJECTITER n n_map 0 false]][.NEXTITER = $(n + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
