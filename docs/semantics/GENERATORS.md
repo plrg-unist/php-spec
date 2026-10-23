@@ -174,7 +174,7 @@ node-free COMPLETE Middle. CURRENT preserves both initialization bits.
 Assignment retains its copy through cleanup until the caller drops it. The
 normal cache destructor runs before Upper finally in the tested sole-receiver
 history; raw-row mutation and a cache RuntimeException inside initialized Middle
-finally distinguish the missing extra owner. Child prefixes, wider endpoints
+finally distinguish the missing extra owner. Wider child prefixes/endpoints
 and collection remain unvalidated for this CURRENT rule. See the
 [unused CURRENT review](../../coverage/semantics/generator-unused-current-review.json).
 The same pre-refreshed one-ancestor endpoint now drops unused CURRENT snapshots
@@ -185,6 +185,14 @@ finally blocks until caller drop. Normal and throwing object slot clears occur
 inside live Middle finally; a separately global-owned Exception is not selected
 as Previous. The existing close plan runs both J and K in these originals. See the
 [pending CURRENT review](../../coverage/semantics/generator-pending-unused-current-review.json).
+The target CURRENT can now perform the first refresh through one allocated
+CLOSED Child. The original child link, actual refresh, updated node-free Middle
+and exact child-only slot loss authenticate this path. Child's complete owned
+children must equal the transferred current operand, keeping its storage release
+quiet. The existing child-storage prefix precedes receiver cleanup, with no unused
+snapshot owner; assignment retains its ARRAY. Extra key/return/Closure owners,
+masked child/current identities and wider histories remain unvalidated. See the
+[first-refresh CURRENT review](../../coverage/semantics/generator-refresh-unused-current-review.json).
 The pre-refreshed direct node-free pending SEND path also survives an ignored-argument
 destructor throwing a supplied Exception. Its remaining snapshot and receiver
 cleanup still run. Assignment context keeps the VM temporary through physical

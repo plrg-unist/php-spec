@@ -8,7 +8,7 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
-OP82 is privately composed over `3dd56d5d0`/409. Logical XOR converts two distinct ordinary float CVs with initially
+OP82 is privately composed over `304c877d6`/409. Logical XOR converts two distinct ordinary float CVs with initially
 NaN LEFT in order, reading each live float after its NaN Warning callback.
 LEFT truth stays cached across
 RIGHT's callback: H1 can create RIGHTNaN and H2 can write both zeros while the
@@ -35,7 +35,7 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | Calls and configuration | Ordinary/scoped/captured calls preserve selected targets, argument order, references and genuine callback frames. Two singleton INI_SET packs retain raw NULL/quiet ARRAY, callee and option through later effects. [Calls](docs/semantics/SOURCE-CALLS.md), [include/configuration](docs/semantics/INCLUDE-SOURCES.md), [two-pack review](coverage/semantics/ini-set-two-pack-null-array-value-review.json). |
 | Constants and callable values | Bounded DEFINE/CONSTANT/DEFINED preserve source authority, scopes, primitive/array/object snapshots and captured intrinsic Closure identity. Captured Boolean/integer/finite-float/NULL queries preserve strict ordinary versus weak explicit reception, raw/received trace arguments and callee ownership through deprecation callbacks. [Constant contract](docs/semantics/SOURCE-USER-CONSTANTS.md), [string-query review](coverage/semantics/constant-owned-query-review.json), [scalar-query review](coverage/semantics/constant-owned-scalar-query-review.json), [NULL-query review](coverage/semantics/constant-owned-null-query-review.json). |
 | Classes and properties | Visibility, references, typed writes, hooks, magic access and clone have bounded routes. Same-name implicit getter recursion delivers captured NULL for missing/untyped UNSET properties and a fresh declaring-class Error for public typed UNSET; defined NULL, local cleanup and replacement Previous retain their distinctions. [Properties](docs/semantics/SOURCE-PROPERTIES.md), [classes](docs/semantics/SOURCE-CLASSES.md), [recursion review](coverage/semantics/magic-get-recursion-review.json), [declared-UNSET review](coverage/semantics/magic-get-unset-recursion-review.json), [typed reentry review](coverage/semantics/magic-get-recursive-error-review.json). |
-| Generators and Fibers | Supported suspension, delegation and cleanup preserve snapshots and initialization history. Unused CURRENT also retires its snapshot before a still-pending selected receiver, preserving both bits and live Middle-finally cleanup. [Pending CURRENT review](coverage/semantics/generator-pending-unused-current-review.json). Direct/one-ancestor node-free SEND handles supplied argument-destructor Exceptions and distinct unused/assigned owners. [Generators](docs/semantics/GENERATORS.md), [delegation](docs/semantics/GENERATOR-DELEGATION.md), [ancestor review](coverage/semantics/generator-ancestor-abrupt-argument-send-review.json). |
+| Generators and Fibers | Supported suspension, delegation and cleanup preserve snapshots and initialization history. First CURRENT refresh through one quiet closed Child also retires the unused copy before receiver cleanup. [Refresh review](coverage/semantics/generator-refresh-unused-current-review.json). Unused CURRENT also retires its snapshot before a still-pending selected receiver, preserving both bits and live Middle-finally cleanup. [Pending CURRENT review](coverage/semantics/generator-pending-unused-current-review.json). Direct/one-ancestor node-free SEND handles supplied argument-destructor Exceptions and distinct unused/assigned owners. [Generators](docs/semantics/GENERATORS.md), [delegation](docs/semantics/GENERATOR-DELEGATION.md), [ancestor review](coverage/semantics/generator-ancestor-abrupt-argument-send-review.json). |
 | Returns and lifetime | Bounded by-reference return/finally chains retain remaining owners, local catches and consumed recovery through normal/throw retirement. First C retirement with one REF/object remainder preserves local catch, the computed-return Notice and a detached caller cell. The finite `returns_verify` work is complete; wider PHP return and lifetime coverage remains open. [Return contract](docs/semantics/SOURCE-REFERENCE-RETURNS.md), [eager cleanup](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md), [return review](coverage/semantics/reference-return-local-cv-lifetime-review.json). |
 | Diagnostics and environment | Supported warning/exception handlers retain raw registration, selected callback and emitting frame. Request facts, inclusion and lifecycle effects stay explicit. [Handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md), [exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md), [request inputs](docs/semantics/REQUEST-INPUTS.md). |
 
@@ -49,12 +49,11 @@ than retain superseded operational checkpoints.
 | --- | --- |
 | A49 owning ARRAY values at undefined keys | Native packet ready. |
 | COMP120 recursive DIRECT DAG | Native6/genuine Unsupported0 retained; implementation. |
-| V102 Stringable queries | Native3/genuine Unsupported0 retained; implementation. |
+| V102 Stringable queries | Source3 and791 state premises pass; publication. |
 | Source87 user-Iterator CONFIG unpack | Source4/two controls and strict private410 accepted; final125 cleanup obligations are being split, all742 retained. |
 | M134 WeakMap HCELL and discovery | Repaired source4 pass; physical state proofs preparing. |
-| Iterator52 closed-child CURRENT | Source4 and687 state premises pass; publication. |
 
-Iterator49/50/51, V99/V100/V101, M132/M133, A46/A47/A48, OP79/80/81/82, Source86, COMP118/119 and CLASS119/120/121 are integrated
+Iterator49/50/51/52, V99/V100/V101, M132/M133, A46/A47/A48, OP79/80/81/82, Source86, COMP118/119 and CLASS119/120/121 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation

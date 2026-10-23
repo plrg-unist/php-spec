@@ -222,10 +222,10 @@ prefix; an already-refreshed endpoint contributes none. Owning-return walkers,
 source demand, result/slot ownership and the common release scheduler remain
 unchanged. See the
 [node-free ancestor SEND review](../../coverage/semantics/generator-nodefree-ancestor-send-review.json).
-For zero-argument CURRENT, an original already-refreshed one-ancestor endpoint
-authenticates quiet unused-result discard for either selected initialization bit. Actual
-update identity and plain-result equality exclude a child-prefix transition or
-forged output. Source demand and the real discarded continuation must agree;
+For zero-argument CURRENT, an already-refreshed one-ancestor endpoint or one
+exact quiet closed-child refresh authenticates unused-result discard. Both
+initialization bits stay exact. The updated state and actual plain-result equality
+exclude unrelated changes or forged output. Source demand and the real discarded continuation must agree;
 assignment context keeps its copy even with a forged DISCARD tail. The physical
 cache owns the value throughout the fused copy/drop, so existing receiver and
 close machinery suffice. See the
@@ -235,6 +235,11 @@ finally and Upper cleanup. The new pending-receiver originals distinguish raw
 plain copies from their discarded result, preserve both bits and keep the actual
 receiver-only release job. All endpoint/update/source/discard checks remain;
 see the [pending CURRENT review](../../coverage/semantics/generator-pending-unused-current-review.json).
+The refresh arm also authenticates the original allocated CLOSED Child and
+exact single removed slot. Every Child-owned node must already be retained by
+the transferred current; extra key, return or Closure owners cannot enter this
+quiet arm. Existing storage and receiver scheduling stay unchanged. See the
+[first-refresh CURRENT review](../../coverage/semantics/generator-refresh-unused-current-review.json).
 A supplied exception from an ignored argument does not cancel the remaining
 pending SEND snapshot or receiver releases at the pre-refreshed direct node-free
 endpoint. Existing pending-operation and Generator-close records carry that
