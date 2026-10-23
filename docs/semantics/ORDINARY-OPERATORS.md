@@ -1021,6 +1021,18 @@ preserve array values with COW, turn null into an empty array, and wrap other
 current scalar values at key zero. `(void)` evaluates and discards its operand,
 retaining reads, warnings and side effects.
 
+NaN-to-array casts of an ordinary nonreference CV now resume named Warning
+callbacks before copying the current float into a fresh singleton. Writing `0.0`
+therefore yields `[0.0]`; a later array copy separates on write and the original
+stays independent of source `x=8`. A supplied Exception cancels delivery and
+outer assignment. The marker adds no cell or array root; normal completion uses
+the existing allocator. A derived unchanged-NaN resume checks that construction
+does not repeat its Warning. Two exact originals and 192+133 focused premises
+retain separate accepted cuts and the corrected peer-message fixture failure
+in the [OP81 ledger](../../coverage/semantics/arraycast-nan-warning-review.json).
+References, changed representations, owning replacements and wider producers
+remain partial. Native throwing-path allocation timing is not claimed.
+
 ## Evidence and remaining work
 
 `tests/semantics/ordinary.py` embeds 1,506 exact source inputs and checks 25 source

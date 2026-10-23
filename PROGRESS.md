@@ -8,24 +8,24 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
-This checkpoint adds reviewed OP80 over integration parent `25b63539e`, with
-409 modules. Explicit `(bool)` of direct-CV NaN warns before rereading the same
-ordinary float slot. A named handler's `0.0` write yields strict `false`;
-returning false permits the default Warning at operand25. A supplied Exception20
-cancels the result and outer assignment, preserving `100`.
+OP81 is prepared for integration: explicit `(array)` of direct-CV NaN warns
+before copying the same live float into a fresh singleton. A named handler's
+`0.0` write produces `[0.0]`; later array COW and source `x=8` remain independent.
+A supplied Exception20 cancels delivery and outer assignment, preserving `100`.
 
-Two exact original-source agreements, full409 struct and 291 focused premises
-(160 author +131 independent) pass at `ba04982e2`/409. The two recipes combine
-actual callback/EOF traversal with derived source, consumer and slot refusals.
-The original genuine model stopped Unsupported before handler output and keeps
-zero credit. [OP80 review](coverage/semantics/boolcast-nan-warning-review.json).
+Two exact originals/full409 and author192 pass at `9e5255eb8`/409; corrected
+peer133 passes at `fc3f2cb1c` with unchanged runtime. The original peer fixture
+expected the bool message instead of array and retains zero credit; only that
+fixture was rerun. The 325 total premises combine actual callbacks, fresh-array
+ownership/COW and derived source/consumer/representation/no-rewarning controls.
+[NaN array-cast review](coverage/semantics/arraycast-nan-warning-review.json).
 
-OP80 adds 65 lines in30/58/404. Cast-specific source/task authority reuses the
-unchanged record layout and ordinary-slot readiness/snapshot helpers. The marker
-adds no cell root; entry, capture, returned/throw and EOF cuts check owner1.
-Old Boolean-NOT, shared truth/numeric/formatting, CONFIG/400 and generic unwind
-remain unchanged. References/rebinding, copies, changed representations and wider
-handlers/lifetimes remain partial. Implementation, evidence and publication are independently reviewed.
+Only64 additions in30/58/404 add the cast-specific source/task and normal
+allocation path. The record/slot helpers, allocator, old Boolean casts/NOT,
+shared numeric/formatting, CONFIG/400, roots and generic unwind stay unchanged.
+References/rebinding, copied operands, changed representations and wider
+handlers/lifetimes remain partial. Native throwing allocation timing is unclaimed.
+Publication is independently reviewed; composition is pending.
 
 ## Integrated behavior and entrypoints
 
@@ -35,13 +35,13 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | Family | Current behavior and scope pointers |
 | --- | --- |
 | Source and compilation | Checked ASTs retain source occurrences, ordered publication, compilation phases and diagnostic priority. Dynamic source and request inputs have explicit provider boundaries. [Compiler](docs/semantics/SOURCE-COMPILER.md), [context](docs/semantics/SOURCE-CONTEXT.md), [dynamic source](docs/semantics/DYNAMIC-SOURCE.md). |
-| Operators and warning decisions | Arithmetic/casts distinguish saved values from live CVs and stage supported diagnostics through callbacks. Direct NaN Boolean NOT produces stricttrue after a live0.0 write; copied fractional BITNOT retains its saved integer. [Operators](docs/semantics/ORDINARY-OPERATORS.md), [truth callbacks](docs/semantics/SOURCE-WARNING-TRUTH.md), [numerics](docs/semantics/NUMERICS.md). |
-| Comparisons and arrays | Seven missing-CV comparisons admit bounded DIRECT/ALIAS arrays, including ordinary non-Stringable object leaves. Cell replacement, COW and final release preserve distinct owners. NULL-key literals support bounded CV, returned, temporary and pooled CONST values. [Comparisons](docs/semantics/COMPARISONS.md), [dimensions](docs/semantics/DIMENSIONS.md), [object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json). |
+| Operators and warning decisions | Arithmetic/casts distinguish saved values from live CVs and stage supported diagnostics through callbacks. Direct NaN Boolean NOT/Boolean cast produce stricttrue/false after a live0.0 write; NaN array casting constructs a fresh singleton from that live float. Copied fractional BITNOT retains its saved integer. [Operators](docs/semantics/ORDINARY-OPERATORS.md), [truth callbacks](docs/semantics/SOURCE-WARNING-TRUTH.md), [numerics](docs/semantics/NUMERICS.md). |
+| Comparisons and arrays | Seven missing-CV comparisons admit bounded DIRECT/ALIAS arrays, including ordinary non-Stringable object leaves. Cell replacement, COW and final release preserve distinct owners. NULL-key literals support bounded CV, returned, temporary and pooled CONST values, including nested DIRECT subtrees with physical child edges and handler-time COW. [Nested CONST review](coverage/semantics/array-literal-null-key-constant-subtree-review.json). [Comparisons](docs/semantics/COMPARISONS.md), [dimensions](docs/semantics/DIMENSIONS.md), [object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json). |
 | Calls and configuration | Ordinary/scoped/captured calls preserve selected targets, argument order, references and genuine callback frames. Two singleton INI_SET packs retain raw NULL/quiet ARRAY, callee and option through later effects. [Calls](docs/semantics/SOURCE-CALLS.md), [include/configuration](docs/semantics/INCLUDE-SOURCES.md), [two-pack review](coverage/semantics/ini-set-two-pack-null-array-value-review.json). |
 | Constants and callable values | Bounded DEFINE/CONSTANT/DEFINED preserve source authority, scopes, primitive/array/object snapshots and captured intrinsic Closure identity. Captured Boolean/integer/finite-float queries distinguish strict ordinary reception from weak explicit calls and converted API/raw wrapper arguments. [Constant contract](docs/semantics/SOURCE-USER-CONSTANTS.md), [string-query review](coverage/semantics/constant-owned-query-review.json), [scalar-query review](coverage/semantics/constant-owned-scalar-query-review.json). |
 | Classes and properties | Visibility, references, typed writes, hooks, magic access and clone have bounded routes. Same-name implicit getter recursion delivers missing-property Warning/captured NULL and resets its guard before later entry. [Properties](docs/semantics/SOURCE-PROPERTIES.md), [classes](docs/semantics/SOURCE-CLASSES.md), [recursion review](coverage/semantics/magic-get-recursion-review.json). |
-| Generators and Fibers | Supported suspension, delegation and cleanup preserve snapshots and initialization history. Direct/one-ancestor node-free SEND handles supplied argument-destructor Exceptions and distinct unused/assigned owners. [Generators](docs/semantics/GENERATORS.md), [delegation](docs/semantics/GENERATOR-DELEGATION.md), [ancestor review](coverage/semantics/generator-ancestor-abrupt-argument-send-review.json). |
-| Returns and lifetime | Bounded by-reference return/finally chains retain remaining owners, local catches and consumed recovery through normal/throw retirement. The finite `returns_verify` work is complete; wider PHP return and lifetime coverage remains open. [Return contract](docs/semantics/SOURCE-REFERENCE-RETURNS.md), [eager cleanup](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md), [return review](coverage/semantics/reference-return-local-cv-lifetime-review.json). |
+| Generators and Fibers | Supported suspension, delegation and cleanup preserve snapshots and initialization history. Unused CURRENT also retires its snapshot before a still-pending selected receiver, preserving both bits and live Middle-finally cleanup. [Pending CURRENT review](coverage/semantics/generator-pending-unused-current-review.json). Direct/one-ancestor node-free SEND handles supplied argument-destructor Exceptions and distinct unused/assigned owners. [Generators](docs/semantics/GENERATORS.md), [delegation](docs/semantics/GENERATOR-DELEGATION.md), [ancestor review](coverage/semantics/generator-ancestor-abrupt-argument-send-review.json). |
+| Returns and lifetime | Bounded by-reference return/finally chains retain remaining owners, local catches and consumed recovery through normal/throw retirement. First C retirement with one REF/object remainder preserves local catch, the computed-return Notice and a detached caller cell. The finite `returns_verify` work is complete; wider PHP return and lifetime coverage remains open. [Return contract](docs/semantics/SOURCE-REFERENCE-RETURNS.md), [eager cleanup](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md), [return review](coverage/semantics/reference-return-local-cv-lifetime-review.json). |
 | Diagnostics and environment | Supported warning/exception handlers retain raw registration, selected callback and emitting frame. Request facts, inclusion and lifecycle effects stay explicit. [Handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md), [exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md), [request inputs](docs/semantics/REQUEST-INPUTS.md). |
 
 ## Active and unintegrated work
@@ -52,14 +52,14 @@ than retain superseded operational checkpoints.
 
 | Track | Current state |
 | --- | --- |
-| A47 nested pooled CONST arrays | Source4/strict pass; focused1093 running. |
-| M133 first retirement with one REF/object remainder | Source2 and author117 pass; peer found a156 replay-branch overlap, correction pending. |
+| M134 WeakMap HCELL backedge | Scope agreed; native-first alias-held/unheld packet preparing. |
 | Source87 user-Iterator CONFIG unpack | Native6 retained; genuine wrong TypeError has zero credit; implementation pending. |
-| COMP119 array-valued ALIAS child COW | Native6 retained; genuine Unsupported has zero credit; implementation in progress. |
-| CLASS120 declared UNSET `__get` recursion | Native packet preparation. |
-| Iterator51 pending-selected unused CURRENT | Genuine NORMAL disagreement: native retires A inside Middle finally, model after Upper K; minimal289 repair in progress. |
+| COMP119 array-valued ALIAS child COW | First two changed-source cases pass; remaining gate running. |
+| CLASS120 declared UNSET `__get` recursion | Changed source4 accepted; focused checks preparing. |
+| OP81 `(array)` NaN cast | Source2 and focused325 pass across retained cuts; publication/integration pending. |
+| V101 | Scoping after V100 integration. |
 
-Iterator49/50, V99/V100, M132, A46, OP79/80, Source86, COMP118 and CLASS119 are integrated
+Iterator49/50/51, V99/V100, M132/M133, A46/A47, OP79/80, Source86, COMP118 and CLASS119 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation

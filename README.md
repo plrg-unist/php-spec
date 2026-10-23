@@ -1353,6 +1353,13 @@ and late aliases survive without a compound store; two live strings cannot retry
 bitwise string specialization. Ten originals and 566 focused SL premises pass in the
 [delayed failure ledger](coverage/semantics/delayed-type-failure-review.json).
 
+Explicit NaN-to-array casts now warn before copying the same live float CV.
+A handler's `0.0` write produces `[0.0]`, with later array COW independent of
+the source; its supplied Exception cancels delivery and outer assignment.
+Two originals and 325 focused premises pass in the
+[NaN array-cast ledger](coverage/semantics/arraycast-nan-warning-review.json).
+References, changed representations and wider handlers remain partial.
+
 Explicit array-to-string casts now suspend through named warning handlers for
 a bounded plain-CV array input. The borrowed array adds no saved owner: replacing
 or removing its CV still yields fixed `Array`, while a supplied throw preserves
