@@ -7,6 +7,26 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Direct Boolean NOT now emits a NaN Warning before rereading the same ordinary
+float CV. A named handler's `0.0` write yields strict `true`; returning false
+permits the default Warning at operand line 25. The independent supplied
+Exception from line 20 cancels the result and outer assignment, preserving `100`.
+The borrowed slot stays owner1; no continuation root is added.
+
+Source2 and full409 struct pass at `39eab9034`; author151 + independent129 =280
+focused premises pass first execution at `01faf61e6`/409, including six additional
+derived same-slot/representation controls. Original pre-main missing-forward-
+type failure and genuine pre-handler Unsupported retain zero credit.
+[NaN Boolean NOT review](coverage/semantics/boolnot-nan-warning-review.json).
+All actors are reaped; CPU5 is released. Accepted native/source evidence is not replayed.
+
+Only85 additions in modules30/51/404 implement this operation-specific producer,
+record and warning/resume protocol. Shared truth/numeric/formatter/CONFIG/400,
+roots and unwind bodies stay exact. Reference/rebinding, copied operands,
+owning/wider handlers and changed representations remain partial. Paused OP12,
+COMP88, Source47 low-precision DEFINE, owned-NUL and undefined-byref LIST work
+remain untouched. Publication is independently reviewed; composition is pending.
+
 Evaluated finite float copies now enter BITNOT's precision Deprecated protocol.
 The selected ternary saves `12.5`; writing/removing its source and flipping the
 condition cannot change strict integer `-13`. The by-value named return emits

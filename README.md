@@ -676,6 +676,11 @@ source execution regressions; unfinished behavior returns explicit Unsupported.
 Reviewed truth/logical operators and ternary preserve PHP's distinct compiler
 and runtime phases; [truth evidence](coverage/semantics/truth-review.json) records
 source comparisons, selected-value copying and budget resumption.
+Direct Boolean NOT now warns on a NaN CV before rereading the same live float
+slot. A handler's `0.0` write produces strict `true`; its supplied Exception
+cancels the result and outer assignment. Two originals and 280 focused premises
+pass in the [NaN Boolean NOT ledger](coverage/semantics/boolnot-nan-warning-review.json).
+Changed representations, references, copied operands and wider handlers remain partial.
 Eligible classes and named functions publish in compilation order, so earlier
 notices and declarations survive later compiler diagnostics. Parser and modifier
 preflight preserve their distinct first errors, while declaration history binds
