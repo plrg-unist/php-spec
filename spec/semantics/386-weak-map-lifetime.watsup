@@ -616,6 +616,22 @@ def $weakmap_gc_methods(S, n, pclassdesc) = true
   -- if $declaration_history_valid(S)
 def $weakmap_gc_methods(S, n, pclassdesc) = false -- otherwise
 
+;; The one untyped property can own Key directly or through a live reference.
+;; New reference backedges stay in the methodless Value lane.
+dec $weakmap_gc_backedge(pstate, nat, nat, ppropertyslot, pclassdesc) : bool
+def $weakmap_gc_backedge(S, n_value, n_key, ppropertyslot, pclassdesc) = true
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_key))
+  -- if $node_children(S, HOBJECT n_value) = [HOBJECT n_key]
+def $weakmap_gc_backedge(S, n_value, n_key, ppropertyslot, pclassdesc) = true
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
+  -- if pclassdesc.METHODS = eps
+  -- if $(n_cell < |S.STORE|)
+  -- if n_cell <- S.REFCELLS /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_key)
+  -- if $node_children(S, HOBJECT n_value) = [HCELL n_cell]
+  -- if $node_children(S, HCELL n_cell) = [HOBJECT n_key]
+def $weakmap_gc_backedge(S, n_value, n_key, ppropertyslot, pclassdesc) = false -- otherwise
+
 dec $weakmap_gc_shape(pstate, nat) : bool
 def $weakmap_gc_shape(S, n_map) = true
   -- if S.ACTIVEFIBER = eps /\ S.CURRENT = eps /\ S.FRAMES = eps
@@ -631,7 +647,6 @@ def $weakmap_gc_shape(S, n_map) = true
   -- if S.OBJECTS[n_value] = INSTANCE porigin_value
   -- if ~$instance_storage_freeing(S, n_key) /\ ~$instance_storage_freeing(S, n_value)
   -- if $node_children(S, HOBJECT n_key) = eps
-  -- if $node_children(S, HOBJECT n_value) = [HOBJECT n_key]
   -- if $class_at(S.CLASSES, porigin_value) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps
   -- if $weakmap_gc_methods(S, n_value, pclassdesc)
@@ -640,7 +655,7 @@ def $weakmap_gc_shape(S, n_map) = true
   -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.TYPE = eps
   -- if $objectprops_at(S.OBJECTPROPS, n_value) = ([ppropertyslot])
   -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN)
-  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_key))
+  -- if $weakmap_gc_backedge(S, n_value, n_key, ppropertyslot, pclassdesc)
   -- if $objectprops_valid(S, S.OBJECTPROPS)
   -- if $weakmap_before_valid(S, pweakmapentry)
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
