@@ -10,10 +10,12 @@ import constant_owned_null_query_sources as sources
 define, packet, common = captured.define, captured.packet, captured.common
 ROOT, text, term = captured.ROOT, captured.text, captured.term
 PREFIX = captured.PREFIX + nulls.PREFIX + r'''
+dec $test_owned_null_deprecated_item(pevent) : nat
+def $test_owned_null_deprecated_item(DIAGNOSTIC "Deprecated" preqbytes z) = 1
+def $test_owned_null_deprecated_item(pevent) = 0 -- otherwise
 dec $test_owned_null_deprecated(pevent*) : nat
 def $test_owned_null_deprecated(eps) = 0
-def $test_owned_null_deprecated((DIAGNOSTIC "Deprecated" preqbytes z) :: pevent*) = $(1 + $test_owned_null_deprecated(pevent*))
-def $test_owned_null_deprecated(pevent :: pevent_tail*) = $test_owned_null_deprecated(pevent_tail*) -- otherwise
+def $test_owned_null_deprecated(pevent :: pevent_tail*) = $($test_owned_null_deprecated_item(pevent) + $test_owned_null_deprecated(pevent_tail*))
 '''
 READ_MESSAGE = 'constant(): Passing null to parameter #1 ($name) of type string is deprecated'
 HAS_MESSAGE = 'defined(): Passing null to parameter #1 ($constant_name) of type string is deprecated'
