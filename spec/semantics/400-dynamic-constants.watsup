@@ -434,11 +434,11 @@ dec $dynamic_query_string_finish(pstate, pconfigcall, pvalue) : pstate
 def $dynamic_query_string_finish(S, pconfigcall, pvalue) = $dynamic_scalar_constant_finish(S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*][.RESULT = KNOWN pvalue], pconfigcall)
   -- if $dynamic_owned_query_string_call(pconfigcall)
   -- if $config_method_receiver(S, pconfigcall)
-  -- if $dynamic_owned_global_query_valid(S, pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue)]])
+  -- if $dynamic_owned_global_query_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue)]])
   -- if S.TODO = ptask :: ptask_tail*
 def $dynamic_query_string_finish(S, pconfigcall, pvalue) = S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue)]]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.OWNER = eps \/ ~$config_method_receiver(S, pconfigcall)
-  -- if pconfigcall.OWNER = eps \/ $dynamic_owned_global_query_valid(S, pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue)]])
+  -- if pconfigcall.OWNER = eps \/ $dynamic_owned_global_query_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue)]])
   -- if $string_bytes(pvalue) = (preqbytes)
   -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
   -- if $dynamic_constant_global_name($dynamic_constant_query(preqbytes)) \/ ($dynamic_constant_class_name(preqbytes) /\ ~(0 <- preqbytes))
