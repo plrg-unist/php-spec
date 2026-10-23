@@ -200,6 +200,14 @@ slot clearing destroys the cache and throws RuntimeException before Upper
 finally, with Previous NULL. Both real close receipts remain ordinary; no
 copied-return owner or storage pin is added. See the
 [unused CURRENT review](../../coverage/semantics/generator-unused-current-review.json).
+A still-pending selected Upper now also drops its unused CURRENT snapshot
+before receiver release. After Middle's own NEXT, slot clearing can destroy the
+cache inside RUNNING Middle finally while Upper remains CLOSING with its real
+queued claim. The current/store operations have no pending exception; an outside
+global Exception stays separate. Normal destruction precedes J-END, and a cache
+RuntimeException skips J-END before Upper K with Previous NULL. No close or root
+rule changes; see the
+[pending CURRENT review](../../coverage/semantics/generator-pending-unused-current-review.json).
 At the pre-refreshed direct node-free pending SEND endpoint, a supplied argument
 Exception survives the remaining snapshot release and receiver finally.
 Assignment context retains a temporary until after finally, then unwinds
