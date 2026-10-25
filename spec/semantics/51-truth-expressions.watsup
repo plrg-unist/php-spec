@@ -16,6 +16,7 @@ rule PhpStep/truth-result: S ~> $boolean_result(S[.TODO = ptask_tail*], b_negate
 rule PhpStep/boolean-not: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), TRUTH_RESULT true $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprBooleanNot expression metadata)) :: ptask_tail*
 
+dec $short_nan_plan(pstate) : (pboolnotnanwarning, ptask)?
 dec $short_result(pstate, bool, expression, int, int) : pstate
 def $short_result(S, b_or, expression, z_left, z_right) = S_bool[.TODO = eps]
   -- if S_bool = $condition(S, z_left)
@@ -31,6 +32,7 @@ def $short_result(S, b_or, expression, z_left, z_right) = S_bool[.TODO = [$at_ta
   -- if b =/= b_or
 rule PhpStep/short-result: S ~> $short_result(S[.TODO = ptask_tail*], b_or, expression, z_left, z_right)
   -- if S.TODO = (SHORT_RESULT b_or expression z_left z_right) :: ptask_tail*
+  -- if $short_nan_plan(S) = eps
 rule PhpStep/boolean-and: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), SHORT_RESULT false expression_2 $runtime_line(S, [PCFIELD 0], expression_1) $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprBinaryOpBooleanAnd expression_1 expression_2 metadata)) :: ptask_tail*
 rule PhpStep/boolean-or: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_1), SHORT_RESULT true expression_2 $runtime_line(S, [PCFIELD 0], expression_1) $runtime_line(S, [PCFIELD 1], expression_2)] ++ ptask_tail*]
