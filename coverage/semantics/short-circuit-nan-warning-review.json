@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "milestone": "OP84 live NaN LEFT short-circuit decisions",
+  "status": "bounded independently reviewed semantics; private publication awaiting composition",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/ordinary precision14 profile",
+  "scope": "NaN LEFT in an ordinary allocated nonreference float CV for &&/and/||/or. Named Warning callback resumes with the live truth of that same float slot, restoring the authenticated SHORT_RESULT before deciding whether RIGHT executes. RIGHT-result NaN, references/copies, changed representations, other conditional consumers and wider handlers remain partial.",
+  "tested_revision": "9a14e5244d52f2156280837dcacb4179e017eff2",
+  "private_modules": 410,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "9ee39c5dbeff1d3da90e557cc733021bfd52f66fbfb94a3c6db4031f6836b61c",
+    "spec/semantics/51-truth-expressions.watsup": "0851531c090fd933c10d326a68dff61a9260a98f264f9e9341b2f64bac2b002f",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "1c5a44f3b38744606f522e72aac98df6dd4472aff641f24ea5a098fcc1bc951d"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_compile.c::zend_compile_short_circuiting compiles LEFT then emits JMPZ_EX/JMPNZ_EX before compiling RIGHT, so the first Warning uses LEFT24 while RIGHT is25. Zend/zend_vm_def.h jump handlers use i_zend_is_true, whose double read follows the NaN Warning. ZEND_VM_JMP in Zend/zend_execute.c checks pending exception before branch transfer.",
+    "A source-authenticated SHORT_NAN_WARNING stores the original SHORT_RESULT and only slot facts. Normal resume reads the same live float once, restores that task with KNOWN PBOOL and no new Warning, then existing short-result decides skipping/scheduling RIGHT. A supplied handler throw discards the nonowning marker through the existing generic unwind; no RIGHT or outer store occurs.",
+    "69 additions:30 task1,51 declaration/EPS gate2,404 appended source/plan/validity/dispatch/Boolean restoration/boundary66. Old404 is an exact prefix. Existing truth_short_source normalizes four source constructors; old slot helpers, ordinary/ref Boolean NOT, casts/XOR, shared truth/numeric/formatting, CONFIG/DEFINE/400 and generic branch/unwind bodies remain exact."
+  ],
+  "contract": [
+    "H writes LEFT0 and returns false. Both && and and skip k, deliver strictfalse, retain rhs0 and one default Warning24. Both || and or enter k once; k writes LEFT2 and returns false, so final strictfalse/rhs1 also distinguish a frozen initial NaN decision or a later LEFT reread.",
+    "Independent H writes LEFT1 then throws the supplied Exception20. Although that live truth would enter an AND RHS, pending exception prevents k and outer assignment. Catch preserves the same Exception/null Previous, outer100/rhs0/calls1 and EOF; no default Warning occurs.",
+    "Five exact source agreements include all four spellings plus supplied throw. Focused511 comprises178 AND-skip,198 OR-enter and135 throw premises in three checked-source-derived recipes; keyword forms are source-only. Real H, raw live Boolean restoration, raw RHS scheduling, actual k entry/return, roots/no-store/EOF/budgets are checked. Opposite truth, unchanged NaN, representation/rebound and malformed source/consumer guards are derived controls with no additional native credit."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-84/source-9a14e5244-and/report.json",
+        "sha256": "3c3082a5e484c0c609f16f6980de6ea7f22953bb99804c83058044a39b0a0db7",
+        "revision": "9a14e5244d52f2156280837dcacb4179e017eff2",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-84/source-9a14e5244-keyword-and/report.json",
+        "sha256": "e9d67b979b4be4990c5c519de0084ed3628e68446dd957c310e3395990f68171",
+        "revision": "9a14e5244d52f2156280837dcacb4179e017eff2",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-84/review-model-9a14e5244-or/report.json",
+        "sha256": "99aedb0f2c935e8a66df3ec265c63ac290b34f077023914ea93d16b8d0e5d2c7",
+        "revision": "9a14e5244d52f2156280837dcacb4179e017eff2",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-84/review-model-9a14e5244-keyword-or/report.json",
+        "sha256": "c0f3334575dfc250b35fd7d2c6e027ff3e2715cd0f67f597c0aeba0b3a5bc756",
+        "revision": "9a14e5244d52f2156280837dcacb4179e017eff2",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-84/review-model-9a14e5244-throw/report.json",
+        "sha256": "6e3c71ddd4fb8720b6a1af9806eb013e484d328c4454b4f6773678c3c7a9f079",
+        "revision": "9a14e5244d52f2156280837dcacb4179e017eff2",
+        "agreements": 1
+      }
+    ],
+    "state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-84/focused-9a14e5244-three/report.json",
+      "sha256": "bf7fb07c29e9ec7c3f9d21292f22ada7486243bc7951e7d20ab68af8699d767e",
+      "revision": "9a14e5244d52f2156280837dcacb4179e017eff2",
+      "conditions": [
+        178,
+        198,
+        135
+      ],
+      "total": 511
+    },
+    "total_source_agreements": 5,
+    "total_focused_state_conditions": 511,
+    "review": "Independent operators79_review accepted native/genuine classification, runtime/author/peer/header before execution and exact source/focused first results. Publication independently reviewed; actual-tail composition pending. Metadata changes add no execution credit."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-84/baseline-1e3742081-and/report.json",
+      "sha256": "5d4e681fb1a191624144a41fec292a5d3349c60b986eab3937dc9ade9ac4a8b7",
+      "revision": "1e3742081e5303e96d83f88830210956bdc568f0",
+      "result": "Frontend-accepted/checked symbolic AND stops Unsupported before H: error-handler ingress requires a producer continuation. Empty semantic streams/model1/rowfalse/agreement0; raw files unchanged."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-84/native-1e3742081-and/report.json",
+        "sha256": "48bf9e0a06751a30f5481ac52f8ae269aa2c9376f854922753e78ce56193e9d5",
+        "revision": "1e3742081e5303e96d83f88830210956bdc568f0"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-84/native-1e3742081-keyword-and/report.json",
+        "sha256": "9fb92809d2a193b01d7bfd467bbc476eff372ba2a1da3caa7386974804879a26",
+        "revision": "1e3742081e5303e96d83f88830210956bdc568f0"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-84/native-1e3742081-or/report.json",
+        "sha256": "1797f4b99c381c0e828bf74a01fcee94adc16d2952d256ef78558281445fc0cd",
+        "revision": "1e3742081e5303e96d83f88830210956bdc568f0"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-84/native-1e3742081-keyword-or/report.json",
+        "sha256": "c11f42b5f9c24e295167d6a1d741152198b477ae5ee2694a8fbbfbcf90a471d3",
+        "revision": "1e3742081e5303e96d83f88830210956bdc568f0"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-84/native-1e3742081-throw/report.json",
+        "sha256": "2c9c448da1f0b09204b8202dbd1b03acf28e0f0c054eec7176d9db7ead2d75e8",
+        "revision": "1e3742081e5303e96d83f88830210956bdc568f0"
+      }
+    ],
+    "full_static": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-84/static-9a14e5244/report.json",
+      "sha256": "ba81f1e36d7dd1aed14a6a62e59b4754815d84dc09cbf56028a2208119af029f",
+      "revision": "9a14e5244d52f2156280837dcacb4179e017eff2",
+      "result": "Full ordered410 struct passes; semantic credit0."
+    }
+  },
+  "limits": [
+    "Exact native witnesses cover live LEFT0 skip/enter and truthy LEFT plus supplied throw. Other still-float payloads use existing pure number_bool reasoning; opposite truth/unchanged NaN/retype/rebound controls are derived. Native NaN-bit identity is unclaimed.",
+    "Only the original LEFT decision is admitted. RIGHT-result NaN, copied/reference or changed/rebound/owning representations, other if/loop/ternary consumers, wider handlers and lifetimes remain partial. No engine bug, intentional divergence or old Boolean/branch/numeric algorithm renewal is claimed.",
+    "Paused OP12, Source47 low-precision DEFINE NaN, owned-NUL source-release, undefined-byref LIST key and COMP88 Stringable supplied-throw crash remain separate."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-84",
+    "environment": "LC_ALL=C,TZ=UTC,PHP_SPEC_SCRIPT_ENCODING absent; ordinary precision14 profile. Native/genuine CPU4, source/focused CPU3; all actors reaped and slots released. Native30/modelCLI60-process90, full410struct30, checked workers30/fixturestruct30/SL120 per group; no cap changes.",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "commands": [
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-84/run-native-gate.py 1e3742081e5303e96d83f88830210956bdc568f0 4",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-84/run-source-gate.py 9a14e5244d52f2156280837dcacb4179e017eff2 3",
+      "taskset -c 3 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-84/run-focused.py 9a14e5244d52f2156280837dcacb4179e017eff2 3"
+    ],
+    "coordination_note": {
+      "record": "/home/user/workspace/php-spec-evidence-archive/operators-84/cpu4-coordination.json",
+      "sha256": "3c5994d23b89b5e6d31486cfacde3ffb646c909d2373e75bff4ff69a1f30121c",
+      "result": "Reported CPU4 overlap resolved by actual intervals: COMP121 source packet ended140.708s before OP84 first actor. Those packets did not overlap; no timing/exclusivity semantics claim or replay."
+    },
+    "record": "Restore matching Git cut/local tools and retained original paths; choose fresh output directories. Focused fixtures reuse accepted source/native tuples without replay. Raw external evidence is not a build input; reused regular binaries prove no fresh offline rebuild."
+  }
+}

@@ -1058,6 +1058,18 @@ requires the captured cell to remain live and floating. Three originals and
 Unchanged-NaN and zero-owner/retyped/constraint/debt refusals are derived controls.
 Freed-pointer behavior, constrained or owning forms and wider consumers remain partial.
 
+NaN LEFT values in ordinary float CVs now suspend `&&`/`and` and `||`/`or`
+decisions through a named Warning callback. A live `0.0` write skips AND's right
+operand and enters OR's; the selected right expression may then change the CV
+without retaking the LEFT decision. A truthy write plus supplied throw prevents
+that expression and the outer assignment. The nonowning marker restores the
+source-authenticated short-circuit task with its Boolean result. Five exact
+originals and 511 premises in three checked-source-derived recipes pass in the
+[short-circuit ledger](../../coverage/semantics/short-circuit-nan-warning-review.json).
+Keyword forms have source agreements; focused states cover symbolic skip, enter
+and throw. Opposite-truth/no-rewarning/refusal controls are derived. RIGHT NaN,
+reference operands, other conditional consumers and wider handlers remain partial.
+
 ## Evidence and remaining work
 
 `tests/semantics/ordinary.py` embeds 1,506 exact source inputs and checks 25 source

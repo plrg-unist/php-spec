@@ -1399,6 +1399,13 @@ and late aliases survive without a compound store; two live strings cannot retry
 bitwise string specialization. Ten originals and 566 focused SL premises pass in the
 [delayed failure ledger](coverage/semantics/delayed-type-failure-review.json).
 
+NaN LEFT short-circuit decisions now read the live float CV after a Warning
+callback. A `0.0` write skips `&&`/`and` RIGHT and enters `||`/`or` RIGHT; a supplied
+throw prevents RIGHT and outer assignment even after a truthy write. Five originals
+and 511 focused premises pass in the
+[short-circuit ledger](coverage/semantics/short-circuit-nan-warning-review.json).
+RIGHT NaN, references and other conditional consumers remain partial.
+
 NaN Boolean NOT through a retained unconstrained reference now rereads the saved
 inner cell after a handler removes or rebinds its source CV. An old-alias `0.0`
 write yields stricttrue even when the new source holds `1.0` or stays absent;
