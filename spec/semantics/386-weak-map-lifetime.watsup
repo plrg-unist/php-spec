@@ -802,6 +802,45 @@ def $weakmap_reference_gc_shape(S, n_map) = true
   -- if (HOBJECT n_map) <- $heap_reach(H.ROOTS, eps, $weakmap_reference_gc_strip(H.EDGES, n_map, n_cell))
 def $weakmap_reference_gc_shape(S, n_map) = false -- otherwise
 
+;; A methodless Value can close a cycle through its owning Map while the
+;; entry Key remains independently live. This is a distinct physical loop.
+dec $weakmap_loop_gc_shape(pstate, nat) : bool
+def $weakmap_loop_gc_shape(S, n_map) = true
+  -- if S.ACTIVEFIBER = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.ITERATORS = eps
+  -- if S.GC.WORKER = eps
+  -- if $weakmap_at(S, n_map)
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if ~$instance_storage_freeing(S, n_map)
+  -- if n_key = pweakmapentry.KEY
+  -- if pweakmapentry.VALUE = POBJECT n_value
+  -- if n_map =/= n_key /\ n_map =/= n_value /\ n_key =/= n_value
+  -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
+  -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_key] = STDINSTANCE
+  -- if S.OBJECTS[n_value] = INSTANCE porigin_value
+  -- if ~$instance_storage_freeing(S, n_key) /\ ~$instance_storage_freeing(S, n_value)
+  -- if $objectprops_at(S.OBJECTPROPS, n_key) = (eps)
+  -- if $node_children(S, HOBJECT n_key) = eps
+  -- if $class_at(S.CLASSES, porigin_value) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.METHODS = eps
+  -- if $destructor_method(S, n_value) = eps
+  -- if pclassdesc.PROPERTIES = [ppropertydesc]
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.TYPE = eps
+  -- if $objectprops_at(S.OBJECTPROPS, n_value) = ([ppropertyslot])
+  -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_map))
+  -- if $node_children(S, HOBJECT n_value) = [HOBJECT n_map]
+  -- if $objectprops_valid(S, S.OBJECTPROPS)
+  -- if $weakmap_before_valid(S, pweakmapentry)
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
+  -- if $weakmap_gc_objects(S, S.ALLOCATIONS, n_map, n_key, n_value)
+  -- if H = $heap_graph(S)
+  -- if $heap_valid(H)
+  -- if (HOBJECT n_key) <- $heap_reach(H.ROOTS, eps, $weakmap_gc_strip(H.EDGES, n_map, n_value))
+def $weakmap_loop_gc_shape(S, n_map) = false -- otherwise
+def $gc_ordinary_node(S, HOBJECT n_map) = true -- if $weakmap_loop_gc_shape(S, n_map)
+
 dec $weakmap_gc_shape(pstate, nat) : bool
 def $weakmap_gc_shape(S, n_map) = true
   -- if S.ACTIVEFIBER = eps /\ S.CURRENT = eps /\ S.FRAMES = eps
@@ -835,6 +874,7 @@ def $weakmap_gc_shape(S, n_map) = true
   -- if (HOBJECT n_map) <- $heap_reach(H.ROOTS, eps, $weakmap_gc_strip(H.EDGES, n_map, n_value))
 def $weakmap_gc_shape(S, n_map) = true -- if $weakmap_array_gc_shape(S, n_map)
 def $weakmap_gc_shape(S, n_map) = true -- if $weakmap_reference_gc_shape(S, n_map)
+def $weakmap_gc_shape(S, n_map) = true -- if $weakmap_loop_gc_shape(S, n_map)
 def $weakmap_gc_shape(S, n_map) = false -- otherwise
 
 def $weakmap_gc_map(S, eps) = eps
