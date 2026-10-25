@@ -461,6 +461,8 @@ def $eager_task_inputs(S, CONFIG_STRING_RESULT pconfigcall n_object porigin_chil
 ;; its live callee, including when the raw argument has retired.
 dec $dynamic_query_string_release_invoke(ptask*, pdestructionoperation) : pconfigcall?
 def $dynamic_query_string_release_invoke((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionoperation) = $dynamic_query_string_release_invoke(ptask_tail*, pdestructionoperation)
+def $dynamic_query_string_release_invoke((DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*, pdestructionoperation) = $dynamic_query_string_release_invoke(ptask_tail*, pdestructionoperation)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
 def $dynamic_query_string_release_invoke((DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*, pdestructionoperation) = $dynamic_query_string_release_invoke(ptask_tail*, pdestructionoperation)
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
 def $dynamic_query_string_release_invoke((DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (CONFIG_INVOKE pconfigcall) :: ptask_tail*, pdestructionoperation) = (pconfigcall)
