@@ -456,6 +456,63 @@ def $eager_task_inputs(S, CONFIG_STRING_RESULT pconfigcall n_object porigin_chil
   -- if $config_method_receiver(S, pconfigcall)
   -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
 
+;; An ordinary API releases its object before replacing the raw argument slot.
+;; The saved operation authenticates that history and the received call retains
+;; its live callee, including when the raw argument has retired.
+dec $dynamic_query_string_release_invoke(ptask*, pdestructionoperation) : pconfigcall?
+def $dynamic_query_string_release_invoke((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionoperation) = $dynamic_query_string_release_invoke(ptask_tail*, pdestructionoperation)
+def $dynamic_query_string_release_invoke((DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*, pdestructionoperation) = $dynamic_query_string_release_invoke(ptask_tail*, pdestructionoperation)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+def $dynamic_query_string_release_invoke((DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (CONFIG_INVOKE pconfigcall) :: ptask_tail*, pdestructionoperation) = (pconfigcall)
+def $dynamic_query_string_release_invoke(ptask*, pdestructionoperation) = eps -- otherwise
+dec $dynamic_query_string_release_valid(pstate, pdestructionoperation, pconfigcall) : bool
+def $dynamic_query_string_release_valid(S, pdestructionoperation, pconfigcall_received) = true
+  -- if pdestructionoperation.SOURCE = CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call
+  -- if pdestructionoperation.CLEANUP = eps /\ pdestructionoperation.ORIGIN = (pconfigcall.SITE)
+  -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT /\ S.ORIGIN = pdestructionoperation.ORIGIN
+  -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.VALUE = KNOWN PNULL
+  -- if pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL) /\ pdestructionoperation.NOGC = eps
+  -- if $dynamic_owned_query_string_call(pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if $(n_object < |S.OBJECTS|) /\ S.OBJECTS[n_object] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
+  -- if ~$config_method_receiver(S, pconfigcall) /\ ~$config_strict(S, pconfigcall)
+  -- if $dynamic_define_known(S, pconfigcall.SITE, 0) = eps
+  -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child)) /\ pconfigcall.LINE = z_call
+  -- if pconfigcall_received.SENT = [NAMED_SENT (KNOWN pvalue_received)]
+  -- if pconfigcall_received = pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue_received)]]
+  -- if $dynamic_owned_global_query_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall_received)
+def $dynamic_query_string_release_valid(S, pdestructionoperation, pconfigcall) = false -- otherwise
+def $destructor_frame_internal_site(S) = true
+  -- if $destructor_operation_for(S) = (pdestructionoperation)
+  -- if $dynamic_query_string_release_invoke(S.TODO, pdestructionoperation) = (pconfigcall)
+  -- if $dynamic_query_string_release_valid(S, pdestructionoperation, pconfigcall)
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pconfigcall, [POBJECT n_object])
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call
+  -- if pdestructorcall.OBJECT = n_object
+  -- if S_history = $destructor_boundary_scope(S, pdestructorcall, S.FRAMES)[.CURRENT = pdestructorcall.CALLER][.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT]
+  -- if $dynamic_query_string_release_invoke(S_history.TODO, pdestructionoperation) = (pconfigcall_received)
+  -- if $dynamic_query_string_release_valid(S_history, pdestructionoperation, pconfigcall_received)
+
+;; The successful object cast continues C lookup even with a pending Exception.
+;; A fresh missing-name Error chains it; a successful lookup preserves it.
+dec $dynamic_query_string_pending(pstate, nat) : pstate
+def $dynamic_query_string_pending(S, n) = $throwable_begin(S[.COMPLETION = THROWING n])
+  -- if S.COMPLETION = NORMAL
+def $dynamic_query_string_pending(S, n) = $throwable_begin($throwable_previous(S, n_new, n))
+  -- if S.COMPLETION = THROWING n_new
+def $dynamic_query_string_pending(S, n) = S -- otherwise
+def $destructor_pending_finish(S, pdestructionoperation, n, (CONFIG_INVOKE pconfigcall) :: ptask_tail*) = $destruction_transition(S_query, $dynamic_query_string_pending($dynamic_scalar_constant_finish(S_query[.RESULT = KNOWN pvalue_received], pconfigcall), n))
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pdestructionoperation.PENDING = (n)
+  -- if $dynamic_query_string_release_valid(S, pdestructionoperation, pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_received)]
+  -- if S_query = S[.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
+
 ;; Define names convert in the same saved API context before registration.
 dec $dynamic_define_string_call(pconfigcall) : bool
 def $dynamic_define_string_call(pconfigcall) = true
