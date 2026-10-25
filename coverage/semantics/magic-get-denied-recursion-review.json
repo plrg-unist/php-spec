@@ -1,0 +1,111 @@
+{
+  "decision": "accepted-partial",
+  "scope": "Private/protected PROPERTY_DENIED, literal raw name, live ordinary borrowed local/$this receiver and implicit by-value non-generator __get. Actual Get or authenticated compiled-local exit retains the same object/raw-name guard. The current lexical scope must equal the original inner source scope.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json",
+  "engine_route": "vendor/php-src/Zend/zend_object_handlers.c::zend_std_read_property sees IN_GET and wrong property offset, invokes zend_wrong_offset then zend_get_property_offset(silent=0)/zend_bad_property_access. This visibility Error uses receiver ce/name, before backing type/state checks and without a Warning callback.",
+  "implementation": {
+    "revision": "e2b8e8522daa597c20b39ec2bfce77397ab2c5a2",
+    "file": "spec/semantics/380-magic-property-get.watsup",
+    "sha256": "1a60f23790b37d8a6229497de9698f36340e3f5f37b20e75e47bf7c467a3cd03",
+    "delta": "31 additions: source/scope/live-CV/DENIED descriptor/raw-name/real-guard plan and rule reuse154 property_access_error, plus the matching Unsupported exclusion. No TYPE/STATE admission; old Warning and public typed Error arms exact. No compiler,154,377,root,GC,task,schema or manifest edit."
+  },
+  "independent_review": {
+    "reviewer": "class119_review",
+    "test_revision": "8849f55622f3c6f64393ea5b5fd4c60db8520b3c",
+    "decision": "Accepted runtime, source3, author312 and peer93. Actual protected allowed-scope and different-private-receiver states discriminate denial/identity; derived source-scope mutation keeps real guard and DENIED but refuses the new plan."
+  },
+  "source_evidence": {
+    "catalogue": "tests/semantics/magic_get_denied_recursion_cases.json",
+    "initial_revision": "014a08c78546ab6da0c953d8b5ef03f4cefb20e4",
+    "native_cases": 5,
+    "new_case_baseline": "All three new originals genuinely stop Unsupported at P:G|D|, U:G| or L:G|g|V|, with magic getter recursion reason; new agreements0.",
+    "controls": "Allowed Parent protected VALUE and a different local private receiver already agree in the unchanged model (separate existing controls2). They are not new source agreements.",
+    "model_revision": "e2b8e8522daa597c20b39ec2bfce77397ab2c5a2",
+    "new_agreements": 3,
+    "modes": "Original bytes/path/cwd/profile; strict SL410. Native45s/model60s/outer75s caps,100000 steps,serial.",
+    "evidence_levels": "All three originals agree. Author full trajectories select private typed UNSET recovery and protected typed INITIAL cleanup. Private untyped VALUE propagation has source agreement and one independent reached admission cut.",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "focused_evidence": {
+    "revision": "8849f55622f3c6f64393ea5b5fd4c60db8520b3c",
+    "module_count": 410,
+    "author": {
+      "command": "taskset -c 2 python3 tests/semantics/magic_get_denied_recursion_protocol.py --revision 8849f55622f3c6f64393ea5b5fd4c60db8520b3c",
+      "groups": {
+        "private-unset-recover": 149,
+        "protected-cleanup": 163
+      },
+      "premises": 312,
+      "reached_premises": 306,
+      "derived_premises": 6,
+      "algorithmic_gates": 2,
+      "strict_SL_true": 2,
+      "cap_seconds": 90
+    },
+    "independent": {
+      "command": "taskset -c 2 python3 .tools/magic-get-denied-recursion-review-122/run.py --revision 8849f55622f3c6f64393ea5b5fd4c60db8520b3c",
+      "premises": 93,
+      "reached_premises": 73,
+      "derived_premises": 20,
+      "algorithmic_gates": 1,
+      "strict_SL_true": 1,
+      "cap_seconds": 90
+    },
+    "total_premises": 405,
+    "properties": "Structural seeks avoid new-selector admission. Physical mangled key/DECL and hidden UNSET/INITIAL remain distinct from getter DECLeps. Fresh Error image binds receiver-class message, inner origin/file/line, NULL Previous and no Warning. Incompatible interned-string recovery bypasses hidden int verification; guard resets, local-exit frame remains genuine, and budget resumption equals final state. Independent actual private VALUE/allowed protected/different object cuts plus target/current/task/call-line/scope refusals preserve their separate evidence levels.",
+    "processes": "Native/source serial CPU3, focused/diagnostic serial CPU2. All actors fully reaped, child groups empty, inputs/head/status stable. Peer compiler/runner sampled CPU2; command/wrapper affinity is separate provenance, with no other live-child claim."
+  },
+  "preserved_failure": {
+    "revision": "a125bb0986edda2f4e48b00c7258029658eb3a07",
+    "report": "original-false",
+    "application_evaluations": 1,
+    "credit": 0,
+    "cause": "Recovery result expected plain PSTRING ok; compiled literal returns PSTRING_CARRIER INTERNED_STRING. The one-cut diagnostic preserved all123 preceding premises and returned the actual operand. Corrected only the expected carrier;312 premises unchanged, second original group unrun, source/runtime unchanged.",
+    "diagnostic_credit": 0
+  },
+  "earlier_compiler_boundary": "CLASS121 private control included an orphan class-level comment Stmt_Nop, producing its recorded compiler Unsupported. New markers lie inside multiline methods; no old replay, historical reclassification or class-Nop compiler expansion is claimed.",
+  "raw": {
+    "manifest": "../php-spec-evidence-archive/magic-get-denied-recursion-122/manifest.json",
+    "archive_bytes": 9906548,
+    "archive_sha256": "6ffb7c4ce42e4845aeb00df842938f3cba0b7a3358f7e940fd18519b89a55403",
+    "reports": {
+      "native5": {
+        "path": ".tools/magic-get-denied-recursion-probes-122/native-first/report.json",
+        "sha256": "d45bf736a018bb79df64f68b3b501d0386c238716fab6c53e641a32eae4852ce"
+      },
+      "baseline5": {
+        "path": ".tools/magic-get-denied-recursion-probes-122/accepted-current-baseline/report.json",
+        "sha256": "4c0df43e7b8339e40a8d3b4b3e5b95029da7c3d2effb5fa502fa00a0d21160e2"
+      },
+      "source3": {
+        "path": ".tools/magic-get-denied-recursion-probes-122/changed-model-tz1pvllp/report.json",
+        "sha256": "2c657f0dba7dd68c8a34d1bd99766b40fa57423f7282cc3e5df6fd0f8d1aa0d1"
+      },
+      "original-false": {
+        "path": ".tools/magic-get-denied-recursion-protocol-ccz10ruk/report.json",
+        "sha256": "5b7663b666a25bc2f8e611f597c12b1cb8ae98210088e4474cc7e5714288b33b"
+      },
+      "carrier-diagnostic": {
+        "path": ".tools/magic-get-denied-recursion-probes-122/literal-return-diagnostic/report.json",
+        "sha256": "7833eb9e4da449712aa56941db8dea211cebed0841131fc8a81a4bd5692af259"
+      },
+      "author312": {
+        "path": ".tools/magic-get-denied-recursion-protocol-94pvr818/report.json",
+        "sha256": "8a6014ae781043af3c48d8101d9348ee247c35965a8314d1d992fb775e2e5ba1"
+      },
+      "independent93": {
+        "path": ".tools/magic-get-denied-recursion-review-122/execution-_fynmc5i/report.json",
+        "sha256": "4466442e597590930d11561918a583389a4d2b844d5f75c044ddfab92fc0e347"
+      }
+    }
+  },
+  "composition": {
+    "parent_revision": "58246ec798ef67f6efeaa76a53531901844e0d8f",
+    "module_count": 410,
+    "preservation": "Tested380, seven new maintained inputs and reused119/121 helpers are exact. Incoming207/400 and ordered manifest remain parent-exact; no state/frame/default field changes.",
+    "independent_selector_review": "Incoming recursive DIRECT-DAG eligibility applies only to missing-CV array comparisons; owned Stringable CONSTANT/DEFINED queries and CONFIG_STRING_RESULT do not occur. getMessage/file/line and magic __FILE__ use other routes.",
+    "credit": "No joined execution or accepted-source replay; older/incoming evidence keeps its original cuts."
+  },
+  "limits": "Class-level comment Nop, lexically accessible nonpublic UNSET, bound-Closure scopes, by-reference getters, quiet probes, owned receivers, computed names, suspension and wider lifetime forms remain partial. No family/full-core closure; paused boundaries untouched.",
+  "engine_bugs_or_intentional_divergences": []
+}

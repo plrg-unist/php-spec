@@ -42,6 +42,11 @@ Typed recursive-getter Error evidence is retained in
 the unchanged-model PHP-error mismatch, four source agreements, the zero-evaluation
 fixture failure and 496 focused premises. The archive includes tested-input snapshots.
 
+Denied getter-reentry visibility Errors are retained in
+`../php-spec-evidence-archive/magic-get-denied-recursion-122/manifest.json`:
+native5/baseline5, three source agreements, the original false/carrier diagnostic,
+405 focused premises and tested-input snapshots.
+
 Keep future compressed raw traces, source snapshots and tool copies in this
 external archive (using new paths for new evidence) or in ignored `.tools/`.
 Commit concise reports and manifests with hashes and locations. Preserve raw

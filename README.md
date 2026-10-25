@@ -4643,7 +4643,11 @@ Public typed UNSET reentry now raises a fresh Error with the declaring class and
 inner read's file/line, including during actual local cleanup. Nullable NULL
 recovery/reset, caller-CV destruction before catch and replacement Exception's
 Previous link pass [four source agreements and 496 focused premises](coverage/semantics/magic-get-recursive-error-review.json).
-Private denial and wider typed/receiver/lifetime forms remain partial.
+Denied private/protected reentry now raises the receiver-class visibility Error,
+independently of hidden VALUE/UNSET/INITIAL storage. Ordinary source scope and
+actual Get/local-exit guards pass [three source agreements and 405 focused premises](coverage/semantics/magic-get-denied-recursion-review.json),
+including incompatible hidden-type recovery and allowed/different-object controls.
+Bound-Closure scopes and wider access/receiver/lifetime forms remain partial.
 Denied private/protected reads and inherited-private literal fallback now invoke
 the getter without applying the hidden property's type. Allowed lexical reads
 use the physical backing key or raise its initialization Error. The original
