@@ -79,6 +79,7 @@ rule PhpStep/config-traversable-unsupported: S ~> S_value[.COMPLETION = UNSUPPOR
   -- if $config_traversable_value(S_value, POBJECT n_object)
   -- if ~$weakmap_at(S_value, n_object)
   -- if ~$config_iterator_start(S_value, pconfigcall, S.RESULT, n_object)
+  -- if ~$config_aggregate_start(S, pconfigcall, S.RESULT, n_object)
 
 ;; With external map/key owners and a quiet current, WeakMap's DATA/key pins
 ;; retire silently. The current table pointer is borrowed, never copied/sent.
@@ -278,7 +279,7 @@ rule PhpStep/config-iterator-send: S ~> $config_iterator_clear(S, pconfigiterato
   -- if pconfigiterator.KEY = KNOWN (PINT z)
 
 ;; DATA/cursor retire before API reception. The historical object and entries in
-;; ready are nonowning; the original source CV remains an independent owner.
+;; ready are nonowning; an external Iterator owner remains after DATA retirement.
 def $config_iterator_finish(S, pconfigiterator, ptask_tail*) = $fiber_start_unpack_release(S[.ITERATORS = $iterator_remove(S.ITERATORS, pconfigiterator.ITERATOR)][.ORIGIN = (pconfigiterator.CALL.SITE)][.TODO = (CONFIG_ITERATOR pconfigiterator "ready") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], [HOBJECT pconfigiterator.OBJECT])
   -- if $($heap_owners($heap_graph(S), HOBJECT pconfigiterator.OBJECT) > 1)
 def $config_iterator_finish(S, pconfigiterator, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "CONFIG Iterator unpack last DATA owner"]

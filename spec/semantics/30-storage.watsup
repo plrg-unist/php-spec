@@ -126,6 +126,7 @@ syntax ptraversablepack = { INDEX nat, SITE porigin, LINE int, OBJECT nat, ITEMS
 syntax pfiberpack = FIBER_ARRAY_PACK pconfigpack | FIBER_TRAVERSABLE_PACK ptraversablepack
 syntax pconfigcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT pnamedslot*, NAMED bool, OWNER nat?, SELECTION nat?, LINE int, PACKS pconfigpack* }
 syntax pconfigiterator = { CALL pconfigcall, ITERATOR nat, OBJECT nat, INPUT poperand, ITEMS pentry*, CURRENT poperand, KEY poperand }
+syntax pconfigaggregate = { CALL pconfigcall, OBJECT nat, INPUT poperand }
 syntax pfiberfactory = { CALL pconfigcall, ITEMS pentry* }
 syntax pfiberarray = { SITE porigin, INIT int, LINE int, ARRAY nat, ITEMS pentry*, KIND pintrinsic, NAME ptbytes, INPUT nat? }
 syntax pfiberrawapi = { ITEMS pentry*, KIND pintrinsic, NAME ptbytes, INPUT nat? }
@@ -476,6 +477,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | FOREACH_AGGREGATE pforeachaggregate text
   | ITERATOR_UNPACK piteratorunpack text
   | CONFIG_ITERATOR pconfigiterator text
+  | CONFIG_AGGREGATE pconfigaggregate
   | GENERATOR_UNPACK pgeneratorunpack text
   | USERITER_RESULT nat nat statement porigin int text poperand | USERITER_NEXT nat nat statement porigin int poperand
   | EVAL_COMPILE_RESUME pevalcompile | EVAL_COMPILE_END nat | EVAL_COMPILE_EXIT int | EVAL_COMPILE_FORMAT_EXIT int | EVAL_COMPILE_FATAL pevalcompilefatal | EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender
@@ -1293,6 +1295,9 @@ dec $fiber_fixed_buffer_valid(pstate, porigin, pintrinsic, pvalue?) : bool
 dec $intrinsic_extent(pstate, porigin) : nat
 dec $fiber_start_shape(pstate, porigin, nat, pnamedargs, pfiberpack*) : bool
 dec $foreach_aggregate_selected(pstate, pcalltarget, porigin) : bool
+dec $config_aggregate_selected(pstate, pcalltarget, porigin) : bool
+dec $config_aggregate_pending_site(pstate, porigin) : bool
+dec $config_aggregate_start(pstate, pconfigcall, poperand, nat) : bool
 dec $foreach_aggregate_pending_site(pstate, porigin) : bool
 dec $foreach_aggregate_context(pstate, pcallcontext) : bool
 dec $fiber_traversal_selected(pstate, pcalltarget, porigin) : bool

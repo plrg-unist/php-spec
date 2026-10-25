@@ -1,0 +1,175 @@
+;; getIterator borrows the source Aggregate. Only its owned return temporary is
+;; transferred into Iterator DATA; the historical Aggregate identity owns nothing.
+dec $config_aggregate_method(pstate, nat) : pmethoddesc?
+dec $config_aggregate_scope(pstate, pconfigaggregate) : bool
+dec $config_aggregate_owners(pstate, pconfigaggregate, nat) : bool
+dec $config_aggregate_at(ptask, porigin) : bool
+dec $config_aggregate_count(ptask*, porigin) : nat
+dec $config_aggregate_valid(pstate, pconfigaggregate) : bool
+dec $config_aggregate_target(pstate, pconfigaggregate, pcalltarget) : bool
+dec $config_aggregate_frame(pstate, pcallcontext, pframe) : bool
+dec $config_aggregate_entered(pstate, pcallcontext?, pframe*, pcalltarget, porigin) : bool
+dec $config_aggregate_context(pstate, pcallcontext) : bool
+dec $config_aggregate_call(pstate, pconfigaggregate, ptask*) : pstate
+dec $config_aggregate_return_allowed(pstate, pconfigaggregate) : bool
+dec $config_aggregate_promote(pstate, pconfigaggregate, ptask*) : pstate
+dec $config_aggregate_discard(pstate, pconfigaggregate) : pstate
+
+def $config_aggregate_method(S, n) = (pmethoddesc)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, n)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $effective_method(S, porigin, $ptascii("getIterator"), |S.CLASSES|) = (pmethoddesc)
+  -- if $fiber_traversal_method_selected(S, n, pmethoddesc.FUNCTION.ORIGIN, "getIterator")
+  -- if pmethoddesc.FUNCTION.SIGNATURE = $useriter_signature($ptascii("getIterator"))
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
+def $config_aggregate_method(S, n) = eps -- otherwise
+def $config_aggregate_scope(S, pconfigaggregate) = true
+  -- if pconfigaggregate.CALL.KIND = INTRINSIC_INI_SET
+  -- if pconfigaggregate.CALL.INDEX = 0 /\ pconfigaggregate.CALL.SENT = eps
+  -- if ~pconfigaggregate.CALL.NAMED /\ pconfigaggregate.CALL.PACKS = eps
+  -- if ~$pipe_site(S, pconfigaggregate.CALL.SITE)
+  -- if $intrinsic_count(S, pconfigaggregate.CALL.SITE) = (1)
+  -- if $config_pending_valid(S[.ORIGIN = (pconfigaggregate.CALL.SITE)], pconfigaggregate.CALL, true)
+  -- if $intrinsic_argument(S, pconfigaggregate.CALL.SITE, 0) = ((expression, true, eps, PORIGIN n_source pcpath, z))
+  -- if pconfigaggregate.INPUT = VARIABLE ptbytes z
+  -- if $code_at(S.CODE, n_source) = (pcode)
+  -- if $source_unit(S.SOURCES, n_source) = (pcunit)
+  -- if $unpack_cv_at(pcode, pcunit, pcpath) = (ptbytes)
+  -- if $config_aggregate_method(S, pconfigaggregate.OBJECT) = (pmethoddesc)
+def $config_aggregate_scope(S, pconfigaggregate) = false -- otherwise
+def $config_aggregate_owners(S, pconfigaggregate, n) = true
+  -- if $($heap_owners($heap_graph(S), HOBJECT pconfigaggregate.OBJECT) > 0)
+  -- if pconfigaggregate.CALL.OWNER = eps
+def $config_aggregate_owners(S, pconfigaggregate, n) = true
+  -- if $($heap_owners($heap_graph(S), HOBJECT pconfigaggregate.OBJECT) > 0)
+  -- if pconfigaggregate.CALL.OWNER = (n_owner)
+  -- if $($heap_owners($heap_graph(S), HOBJECT n_owner) > n)
+def $config_aggregate_owners(S, pconfigaggregate, n) = false -- otherwise
+def $config_aggregate_start(S, pconfigcall, poperand, n) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask_tail*
+  -- if pconfigaggregate = {CALL pconfigcall, OBJECT n, INPUT poperand}
+  -- if $config_aggregate_scope(S, pconfigaggregate)
+  -- if poperand = VARIABLE ptbytes z
+  -- if $lookup(S.ENV, ptbytes) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n)
+  -- if $config_aggregate_owners(S, pconfigaggregate, 1)
+def $config_aggregate_start(S, pconfigcall, poperand, n) = false -- otherwise
+def $config_aggregate_at(CONFIG_AGGREGATE pconfigaggregate, porigin) = (pconfigaggregate.CALL.SITE = porigin)
+def $config_aggregate_at(ptask, porigin) = false -- otherwise
+def $config_aggregate_count(eps, porigin) = 0
+def $config_aggregate_count(ptask :: ptask_tail*, porigin) = $(1 + $config_aggregate_count(ptask_tail*, porigin)) -- if $config_aggregate_at(ptask, porigin)
+def $config_aggregate_count(ptask :: ptask_tail*, porigin) = $config_aggregate_count(ptask_tail*, porigin) -- if ~$config_aggregate_at(ptask, porigin)
+def $config_aggregate_valid(S, pconfigaggregate) = true
+  -- if $config_aggregate_scope(S, pconfigaggregate)
+  -- if $intrinsic_argument(S, pconfigaggregate.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if S.ORIGIN = (porigin)
+  -- if $config_aggregate_count(S.TODO, pconfigaggregate.CALL.SITE) = 1
+def $config_aggregate_valid(S, pconfigaggregate) = false -- otherwise
+def $config_aggregate_call(S, pconfigaggregate, ptask_tail*) = S[.ORIGIN = (porigin)][.TODO = (CALL_ARGS (AGGREGATE_METHOD_TARGET pconfigaggregate.OBJECT pmethoddesc.FUNCTION.ORIGIN) eps 0 eps (porigin) z) :: (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $config_aggregate_method(S, pconfigaggregate.OBJECT) = (pmethoddesc)
+  -- if $intrinsic_argument(S, pconfigaggregate.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+rule PhpStep/config-aggregate-start: S ~> $config_aggregate_call(S, {CALL pconfigcall, OBJECT n, INPUT S.RESULT}, ptask_tail*)
+  -- if S.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall.INDEX) = ((expression, true, eps, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (POBJECT n)
+  -- if $config_aggregate_start(S, pconfigcall, S.RESULT, n)
+
+;; The real borrowed callback is authorized by its pending task or caller frame.
+def $config_aggregate_target(S, pconfigaggregate, AGGREGATE_METHOD_TARGET n porigin_method) = true
+  -- if n = pconfigaggregate.OBJECT
+  -- if $config_aggregate_method(S, n) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
+def $config_aggregate_target(S, pconfigaggregate, pcalltarget) = false -- otherwise
+def $config_aggregate_pending_site(S, porigin) = true
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 0 eps (porigin) z) :: (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*
+  -- if $intrinsic_argument(S, pconfigaggregate.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if $config_aggregate_valid(S, pconfigaggregate)
+  -- if $config_aggregate_target(S, pconfigaggregate, pcalltarget)
+def $config_aggregate_pending_site(S, porigin) = false -- otherwise
+def $config_aggregate_frame(S, pcallcontext, pframe) = true
+  -- if pframe.TODO = (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*
+  -- if $intrinsic_argument(S, pconfigaggregate.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if pframe.ORIGIN = (porigin)
+  -- if pcallcontext.CALLSITE = (porigin) /\ pcallcontext.LINE = z
+  -- if pcallcontext.ARGC = 0 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps
+  -- if $config_aggregate_target(S, pconfigaggregate, $context_target(pcallcontext))
+  -- if $config_aggregate_valid(S[.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN], pconfigaggregate)
+def $config_aggregate_frame(S, pcallcontext, pframe) = false -- otherwise
+def $config_aggregate_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin) = $config_aggregate_frame(S, pcallcontext, pframe)
+  -- if $context_target(pcallcontext) = pcalltarget /\ pcallcontext.CALLSITE = (porigin)
+def $config_aggregate_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin) = $config_aggregate_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin)
+  -- if ~($context_target(pcallcontext) = pcalltarget /\ pcallcontext.CALLSITE = (porigin))
+def $config_aggregate_entered(S, eps, pframe :: pframe_tail*, pcalltarget, porigin) = $config_aggregate_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin)
+def $config_aggregate_entered(S, pcallcontext?, eps, pcalltarget, porigin) = false
+def $config_aggregate_selected(S, pcalltarget, porigin) = true
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 0 eps (porigin) z) :: ptask_tail*
+  -- if $config_aggregate_pending_site(S, porigin)
+def $config_aggregate_selected(S, pcalltarget, porigin) = true -- if $config_aggregate_entered(S, S.CURRENT, S.FRAMES, pcalltarget, porigin)
+def $config_aggregate_selected(S, pcalltarget, porigin) = false -- otherwise
+def $config_aggregate_context(S, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if $config_aggregate_entered(S, S.CURRENT, S.FRAMES, $context_target(pcallcontext), porigin)
+def $config_aggregate_context(S, pcallcontext) = false -- otherwise
+def $call_arguments_valid(S, (porigin), 0, eps, eps, 0) = true -- if $config_aggregate_pending_site(S, porigin)
+def $call_arity_valid(S, pcallcontext) = true -- if $config_aggregate_context(S, pcallcontext)
+def $call_extent_valid(S, pcallcontext) = true -- if $config_aggregate_context(S, pcallcontext)
+def $named_context_valid(S, pcallcontext) = true -- if $config_aggregate_context(S, pcallcontext)
+def $useriter_frame(S, pcallcontext, pframe) = true -- if $config_aggregate_frame(S, pcallcontext, pframe)
+def $useriter_marker(pframe) = true -- if pframe.TODO = (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*
+def $reference_callback_used(S, pcallcontext) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $config_aggregate_context(S, pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*
+
+def $task_nodes(CONFIG_AGGREGATE pconfigaggregate) = $config_nodes(pconfigaggregate.CALL)
+def $call_task_valid(S, CONFIG_AGGREGATE pconfigaggregate) = $config_aggregate_valid(S, pconfigaggregate)
+def $selected_task_nonce(CONFIG_AGGREGATE pconfigaggregate) = pconfigaggregate.CALL.SELECTION
+def $generator_internal_task(CONFIG_AGGREGATE pconfigaggregate) = true
+def $eager_explicit_task(CONFIG_AGGREGATE pconfigaggregate) = true
+def $config_aggregate_return_allowed(S, pconfigaggregate) = true
+  -- if $config_aggregate_valid(S, pconfigaggregate)
+  -- if $config_aggregate_owners(S, pconfigaggregate, 1)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $($heap_owners($heap_graph(S), HOBJECT n) > 1)
+  -- if $config_iterator_start(S, pconfigaggregate.CALL, pconfigaggregate.INPUT, n)
+def $config_aggregate_return_allowed(S, pconfigaggregate) = false -- otherwise
+def $config_aggregate_promote(S, pconfigaggregate, ptask_tail*) = S[.ITERATORS = S.ITERATORS ++ [OBJECTITER S.NEXTITER n 0 false]][.NEXTITER = $(S.NEXTITER + 1)][.TODO = (CONFIG_ITERATOR {CALL pconfigaggregate.CALL, ITERATOR S.NEXTITER, OBJECT n, INPUT pconfigaggregate.INPUT, ITEMS eps, CURRENT (KNOWN PNULL), KEY (KNOWN PNULL)} "rewind-start") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $config_aggregate_return_allowed(S, pconfigaggregate)
+  -- if S.RESULT = KNOWN (POBJECT n)
+def $config_aggregate_promote(S, pconfigaggregate, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "CONFIG Aggregate return outside shared initialized Iterator domain"]
+  -- if ~$config_aggregate_return_allowed(S, pconfigaggregate)
+rule PhpStep/config-aggregate-result: S ~> $config_aggregate_promote(S, pconfigaggregate, ptask_tail*)
+  -- if S.TODO = (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*
+
+;; Throw search has removed the task; restore its callee root at a last-owner
+;; boundary. No Iterator DATA/cursor has been created and no Aggregate pin exists.
+def $config_aggregate_discard(S, pconfigaggregate) = S[.TODO = (THROW_SEARCH n) :: (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*][.COMPLETION = UNSUPPORTED "CONFIG Aggregate unpack last cleanup owner"]
+  -- if ~$config_aggregate_owners(S, pconfigaggregate, 0)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+def $config_aggregate_discard(S, pconfigaggregate) = $eager_operation_begin(S_clean, S, CONFIG_AGGREGATE pconfigaggregate, $config_nodes(pconfigaggregate.CALL))
+  -- if $config_aggregate_owners(S, pconfigaggregate, 0)
+  -- if $destructor_operational(S)
+  -- if $eager_operation_pending(S) =/= eps
+  -- if S_clean = S[.ORIGIN = (pconfigaggregate.CALL.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $config_aggregate_discard(S, pconfigaggregate) = $fiber_start_unpack_release(S[.ORIGIN = (pconfigaggregate.CALL.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $config_nodes(pconfigaggregate.CALL))
+  -- if $config_aggregate_owners(S, pconfigaggregate, 0)
+  -- if ~$destructor_operational(S) \/ $eager_operation_pending(S) = eps
+def $eager_operation_source_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.SOURCE = CONFIG_AGGREGATE pconfigaggregate
+  -- if pdestructionoperation.CLEANUP = eps /\ pdestructionoperation.NOGC = eps
+  -- if pdestructionoperation.PENDING =/= eps /\ pdestructionoperation.COMPLETION = NORMAL
+  -- if pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if pdestructionoperation.ORIGIN = (pconfigaggregate.CALL.SITE)
+  -- if S_scope = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
+  -- if $config_aggregate_scope(S_scope, pconfigaggregate)
+def $return_discard(S, CONFIG_AGGREGATE pconfigaggregate) = $config_aggregate_discard(S, pconfigaggregate)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if ~$config_aggregate_owners(S, pconfigaggregate, 0) \/ $config_aggregate_valid(S[.TODO = (THROW_SEARCH n) :: (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*], pconfigaggregate)

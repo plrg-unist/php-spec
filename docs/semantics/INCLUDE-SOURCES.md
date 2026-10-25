@@ -1197,8 +1197,8 @@ genuine report preserves the initial false TypeError; overwritten auxiliary CLI
 recorder files remain unavailable, without reconstruction or replay.
 
 Last-owner finish and cleanup stop explicitly before releasing their retained
-roots; wider retirement is partial. Generator and user IteratorAggregate unpack
-controls are explicitly Unsupported. At the Source87 cut, builtin WeakMap still
+roots; wider retirement is partial. Generator and Generator-producing user
+IteratorAggregate unpack controls are explicitly Unsupported. At the Source87 cut, builtin WeakMap still
 received a false TypeError; the increment below corrects that classification and
 bounded producers. Ordinary non-Traversable TypeError is preserved. Named keys,
 nonstring/reference/owning values, additional
@@ -1233,5 +1233,34 @@ the later full model; no accepted replay occurs. ARRAY entries, wider object/key
 forms, temporary operands, multiple packs, loss of external map/key/callee owners,
 GC callbacks and
 other CONFIG/Traversable producers remain partial. Existing stdClass TypeError
-and Generator/user Aggregate Unsupported controls are preserved by disjoint guards;
+and Generator/Generator-producing Aggregate Unsupported controls are preserved by disjoint guards;
 their earlier executions are not renewed.
+
+The [Aggregate CONFIG producer](../../coverage/semantics/config-aggregate-iterator-unpack-review.json)
+admits one initialized borrowed CV holding an ordinary user IteratorAggregate.
+Its exact non-generator, by-value getIterator returns an externally retained
+initialized user Iterator; existing string-current/integer-key streaming follows.
+A source-authenticated pending record preserves the selected INI_SET call and
+borrowed Aggregate identity. The real borrowed method target creates no Aggregate
+pin. Its owned Iterator result transfers atomically into DATA and clears RESULT;
+the existing Iterator record and historical CV/site remain unchanged. No PHP
+ARRAY represents the Aggregate or returned traversal, and no ARRAY pack receipt
+is fabricated.
+
+Producer effects and later Iterator effects occur before API reception without
+reselecting the callee. A supplied getIterator Exception has only its genuine
+method frame at the unpack line, with no Iterator callbacks, DATA/cursor or
+API/__invoke frame. Exact discard and drained cleanup preserve external objects,
+Exception identity, the existing assignment and saved-setter recovery. Raw steps at loss of
+external Aggregate, returned-Iterator or callee owners stop explicitly with
+original roots/result/pending Exception before unsafe handoff or discard.
+
+Native3 and genuine Unsupported0 retain `ac41bce439`; strict411/source3 and
+fixed144 retain `a9a12a825`, with runtime `387e02afd` unchanged. Owned63+91 and
+peer118+97 original conditions pass through parts at `1472a567d`; 45 repeated
+setup conditions add no coverage, giving 513 originals/558 physical conditions.
+The original owned154 timeout remains inconclusive0; accepted cases and native
+observations were not replayed. References/temporaries, recursive or invalid
+returns, Generator/owning currents, named keys, extra packs/arguments, other
+callees and wider cleanup/GC/diagnostic histories remain partial. Existing direct
+Iterator, WeakMap and Generator-producing Aggregate controls keep their cuts.

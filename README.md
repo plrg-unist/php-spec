@@ -594,9 +594,19 @@ the Iterator cursor releases before API entry. A key callback throw leaves its
 current value unsent, preserves the same Exception and cancels the assignment.
 The first slice uses borrowed CV operands, plain string values and external
 Iterator/callee owners. Four source agreements and 742 original state premises
-pass; two Generator/user IteratorAggregate controls remain Unsupported. Earlier
+pass; two Generator/Generator-producing Aggregate controls remain Unsupported. Earlier
 fixture/timeouts retain zero credit. Builtin Traversable classification and wider
 producers remain open.
+
+[Aggregate CONFIG producers](coverage/semantics/config-aggregate-iterator-unpack-review.json)
+now call a real non-generator `getIterator()` before streaming its returned user
+Iterator into INI_SET. The Aggregate receiver is borrowed; the actual owned return
+transfers into DATA without an extra object owner or PHP ARRAY. Callback writes
+preserve the selected setter. A supplied getIterator Exception cancels DATA/API
+entry, retains its identity and genuine trace, then permits setter recovery.
+Three source agreements, strict411 and 513 original state obligations pass
+(558 physical conditions, 45 repeated setup). The original owned-case timeout
+keeps zero credit; wider producers, values and owner-loss lifetimes remain partial.
 
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
