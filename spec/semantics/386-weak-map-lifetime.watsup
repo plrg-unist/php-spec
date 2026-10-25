@@ -924,13 +924,12 @@ def $weakmap_foreach_reference_storage_valid(S, n_map) = true
   -- if $weakmap_before_valid(S, pweakmapentry)
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
 def $weakmap_foreach_reference_storage_valid(S, n_map) = false -- otherwise
-;; Quiet RC pruning must not skip std_dtor's removal of a reference entry.
+;; Quiet RC pruning must not skip std_dtor's removal of a methodless entry.
 ;; Keep an initiated release operational after that entry has been detached.
 dec $weakmap_reference_key_retiring(pstate, pnode) : bool
 def $weakmap_reference_key_retiring(S, HOBJECT n_map) = true
   -- if $weakmap_foreach_reference_storage_valid(S, n_map)
   -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
-  -- if pweakmapentry.VALUE = ALIAS n_cell
   -- if H = $heap_prune($heap_graph(S))
   -- if (HOBJECT n_map) <- H.NODES /\ ~((HOBJECT pweakmapentry.KEY) <- H.NODES)
 def $weakmap_reference_key_retiring(S, pnode) = false -- otherwise
