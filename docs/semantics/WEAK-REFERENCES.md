@@ -185,6 +185,32 @@ increase. Multiple-entry byref/wider payloads, explicit mutations, active read/A
 CONFIG/GC and wider Key/property/callback/context histories remain partial.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
+## Multiple-entry reference sharing
+
+M144 adds a distinct reference cursor and validated marked entry cells containing
+methodless leaf objects. Fresh fetch transfers Map-to-Value into
+Map-to-HCELL-to-Value; the reference body adds a CV cell owner. A later fetch
+rebinds only that CV, preserving an escaped first-cell alias. Internal slot updates
+keep Key/BEFORE/order. Post-loop reads dereference the authoritative cells and
+bulk teardown transfers cell nodes alongside direct values. Earlier by-value and
+append paths retain explicit direct-kind guards.
+
+Two originals and author149/3 plus peer177/3 pass 326 Boolean/six raw transitions
+at `cf9ccf997`/412. First-cell owners go3-to2 on loop rebinding while each Value
+keeps one cell edge. Independent writes change the intended Map slots. After
+Map removal, each alias cell remains owner1 and retires separately; stale
+STORE/REFCELLS IDs own nothing. Break transfers mixed cell/direct jobs, preserving
+the fetched cell2-to1 before detached rebinding and final disposal.
+
+Constructed NULL payload keeps valid cursor/descriptor authority but reaches an
+explicit storage refusal; a heap-identical mode/direct-kind forgery refuses
+publicly. Existing-cell reuse is helper-only. These add no PHP credit. Native and
+genuine refusals retain `ccbc21cb62`/412; strict app0 is separate and all affected
+checks pass first execution without replay or cap increase. Multiple-entry NULL,
+wider payloads, explicit mutation, by-value ALIAS traversal, active read/API,
+CONFIG/GC and wider Key-notification/callback/context histories remain partial.
+[Review and recovery](../../coverage/semantics/weak-map-review.json).
+
 ## Destructor-free singleton ephemeron collection
 
 Modules301/386 admit explicit collection for one live map, a `stdClass` leaf key

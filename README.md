@@ -2975,8 +2975,16 @@ Finite multi-entry by-value `foreach` now keeps one hidden Map DATA owner and
 nonowning weak Key history across target overwrites and singleton normalization.
 Two originals and 310 Boolean/seven raw checks pass at `43c9ebe17`/412: exhaustion
 retires the overwritten first pair; break bulk-cleans Map while copied targets
-survive. Explicit mutation, byref/wider payloads, active many-entry reads and
+survive. Explicit mutation, wider reference/payload forms, active many-entry reads and
 CONFIG/GC remain partial. [Review](coverage/semantics/weak-map-review.json).
+
+Multi-entry by-reference `foreach` now shares a validated leaf-object cell per
+fetched slot. An escaped first alias remains independent when the loop alias
+rebinds to the second; post-loop writes/readback and staged post-Map release agree.
+Break preserves its fetched cell through mixed ALIAS/direct teardown and later
+rebinding. Two originals and 326 Boolean/six raw checks pass at `cf9ccf997`/412.
+NULL/wider payloads, explicit mutations, by-value ALIAS traversal and CONFIG/GC
+remain partial. [Review](coverage/semantics/weak-map-review.json).
 
 An explicit array cast of a live nonfreeing map now creates a fresh empty array,
 even when populated. Results expose no entries and retain neither keys nor private

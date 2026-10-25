@@ -275,6 +275,12 @@ The multiple-entry WeakMap foreach proof is in
 packets, app0 preflight, immutable author/peer snapshots and the isolated30/422 patch.
 SHA-256 `29eb262d43a3fe1e17e5fa88029e22b67ab347b459f982cc1c0de1d165a2fed2`.
 
+The multiple-entry WeakMap reference-sharing proof is in
+`../php-spec-evidence-archive/weakmap-multiple-entry-reference-144/manifest.json`:
+572,000 bytes/123 members under `.tools/m144/`, six complete reports, original2
+packets, app0 preflight, immutable author/peer snapshots and the isolated30/422 patch.
+SHA-256 `208676595b098ca4d8a593ddebf3b0641e27f7ecb294389c31c0e27b985c03ca`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

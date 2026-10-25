@@ -2689,5 +2689,49 @@
     "artifact_manifest": "../php-spec-evidence-archive/weakmap-multiple-entry-foreach-143/manifest.json",
     "archive_sha256": "29eb262d43a3fe1e17e5fa88029e22b67ab347b459f982cc1c0de1d165a2fed2",
     "recovery": "Restore43c9ebe17 at original .tools/weakmap-multiple-entry-foreach-143 path, or apply isolated30/422 patch to f220222919; restore f220 for genuine baseline reproduction. Extract .tools/m143 and use matching project-local providers. Six complete reports preserve original2 sources/path/cwd, parsed/checked/request/native/model streams, app0 preflight and immutable author/peer snapshots with worker120. No binaries/copied build tree or production archive dependency."
+  },
+  "multiple_entries_reference_144": {
+    "status": "independently_reviewed_partial",
+    "scope": "Two-entry direct methodless-leaf Values with live empty-property stdClass Keys. Exhaustion escapes the first entry cell while the loop alias rebinds to the second, then independently writes/readbacks both slots and stages post-Map alias release. First-body break tests mixed ALIAS/direct teardown and detached-cell rebinding.",
+    "base_revision": "ccbc21cb62ea4d05feae75ce470eb90a1ae83885",
+    "runtime_revision": "cf9ccf9972f1c6857075cf7c31778059f45c0e4e",
+    "modules": 412,
+    "change": "Additive WEAKMAPREFITER retains weak Key history and uses existing FOREACH_NEXT DATA ownership/reference-body transfer. An allocated marked HCELL with defined parentless methodless-leaf object payload is authoritative. Fresh fetch replaces Map-to-Value with Map-to-HCELL-to-Value without incrementing Value ownership; existing-cell fetch reuses it exactly. Slot update preserves Key/BEFORE/order. Direct-kind guards preserve old by-value owner/begin/fetch and append admission; post-loop reads, notice and bulk release intentionally become slot-aware. Later excluded payloads stop at explicit reference-foreach storage refusal.",
+    "source_acceptance": {
+      "agreements": 2,
+      "revision": "cf9ccf9972f1c6857075cf7c31778059f45c0e4e",
+      "native_outputs": {
+        "exhaust": "K:1;K:1;R:11;D:1;X:1;Y:1;R:11;D:1;M:1;A:1;B:1;A:1;B:1;B:1;E;",
+        "break": "K:1;X:1;Y:1;M:1;M:1;X:1;Y:1;X:1;Z:1;Z:1;E;"
+      },
+      "baseline": "Both genuine base cases reach explicit WeakMap foreach mode, targets, or storage refusal before output; zero agreement."
+    },
+    "focused_acceptance": {
+      "revision": "cf9ccf9972f1c6857075cf7c31778059f45c0e4e",
+      "author_boolean": 149,
+      "author_raw": 3,
+      "peer_boolean": 177,
+      "peer_raw": 3,
+      "total_boolean": 326,
+      "total_raw": 6
+    },
+    "authority": "Author proves fresh first/second cells with each Value owner1, first cell Map+slot+escaped3-to-Map+escaped2 on second binding, independent source readback/replacement, Map disposal leaving each alias cell owner1, and staged cell/value retirement. STORE/REFCELLS IDs remain nonowning history after allocation disappears. Peer proves sole DATA removal, mixed [HCELL,Y] slot jobs, retained cell2-to1 with unchanged Value owner1, Map/Y retirement, detached slot replacement and final cell disposal. Keys remain held through Map cleanup.",
+    "constructed_controls": "Constructed NULL replaces only the reached first cell payload, preserving allocated nodes, marker/table/cursor with valid heap/descriptor but excluded reference storage; the public step reaches its explicit storage refusal. The mode/direct-kind forgery changes only the cursor tag, preserving the physical heap and refusing publicly. Exact existing-cell reuse is helper-only. All add zero PHP source credit.",
+    "compatibility": "Only30 adds a reference iterator alternative and422 changes. Existing by-value/direct admission is preserved with explicit kind guards; old singleton/ordinary-object/array/Generator clauses,386/301/39 algorithms and ordered412 manifest remain exact. No pstate/default/task or collector-algorithm lift. NULL singleton/reference protocols retain their separate bounds; multiple-entry NULL is not admitted.",
+    "validation": "Strict412/application0 preflight is separate from source agreement. All repaired-source/fixture/recorder checks pass first execution; genuine baseline Unsupported2 remain zero. No native/accepted-source replay or cap increase.",
+    "caps": "Native20/source120/strict45/author240/peer300, jobs1. All parents/workers/groups reaped; CPU3 released.",
+    "report_sha256": {
+      ".tools/m144/model-weakmap-multiple-reference-baseline-uazlthkr/report.json": "025075df49738ef0cb884f34c7ea3d6df8c7e689316f2a36d9943d8f747bd37a",
+      ".tools/m144/model-weakmap-multiple-reference-repaired-8z116xfa/report.json": "113f994dee61e8f45ffa70e810ddf85b75617966837ebff6f59d07a6abaaf01c",
+      ".tools/m144/native-weakmap-multiple-reference-iqk6k4_t/report.json": "6edbdd6ae112e701e08cbea66b13371fa4e83028de44e46e333f353e6d536f6e",
+      ".tools/m144/preflight-wd_kmut8/report.json": "d6b445d9ef5a2fb824e9821283b87f65ca6cc5c3ec9361ad523a3ff847b767d5",
+      ".tools/m144/public-ara9m67p/report.json": "253becd558c4ade91258fcd7730c1e72d8ac830af44b6f9c5dea84fb4cf49c5c",
+      ".tools/m144/reviewer-_up1dyg2/report.json": "919aa956ffd04e3caab2076f46f804a6159d97d8c413cb98506a6f6ffe222831"
+    },
+    "limits": "Multiple-entry NULL/scalar/array/non-leaf/callback payloads, by-value traversal of ALIAS entries, appending to reference-containing tables, replacement/explicit unset, active many-entry reads, CONFIG/GC and broader Key-notification/Map/reentry/Fiber histories remain partial. No Countable API, engine-bug or intentional-divergence claim.",
+    "actual_parent_review": "Parent is exact native/baselineccbc21cb62ea4d05feae75ce470eb90a1ae83885/412 with no incoming delta. Only30/422 differ and are exact testedcf9; every other spec path and ordered412 manifest is parent-exact. Old ledger objects/inventory prefixes and foreign checkpoint are preserved; own PROGRESS clause/list changes only. Publication adds no execution credit.",
+    "artifact_manifest": "../php-spec-evidence-archive/weakmap-multiple-entry-reference-144/manifest.json",
+    "archive_sha256": "208676595b098ca4d8a593ddebf3b0641e27f7ecb294389c31c0e27b985c03ca",
+    "recovery": "Restorecf9ccf997 at original .tools/weakmap-multiple-entry-reference-144 path, or apply isolated30/422 patch toccbc21cb62; restoreccbc for genuine baseline reproduction. Extract .tools/m144 and use matching project-local providers. Six complete reports preserve original2 source/path/cwd, checked/request/native/model tuples, app0 and immutable author/peer snapshots with worker120. No binaries/copied build tree or production archive dependency."
   }
 }
