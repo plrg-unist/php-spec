@@ -2962,7 +2962,7 @@ physical Value owner per slot, including shared Values. Two originals and 286
 Boolean/five raw checks pass at `8f71bbef1`/412: one Key death transfers only its
 entry to a release job and preserves the sibling, then normalizes to old singleton
 storage. Original preflight/fixture compile failures stay zero. Other payloads,
-replacement/explicit unset, wider iteration, GC/CONFIG and wider multiple-entry
+replacement/wider explicit unset, wider iteration, GC/CONFIG and wider multiple-entry
 Map teardown remain partial. [Review](coverage/semantics/weak-map-review.json).
 
 Last-owner multi-entry Map teardown now unregisters every Key before releasing
@@ -3064,7 +3064,12 @@ Explicit `unset($map[$key])` removes a matching entry before its value destructo
 while the map and key stay live. Missing object keys are no-ops; a separately held
 value survives entry removal. Throwing cleanup resumes the same pending Exception.
 Three originals agree at `0c01e5f`; 418 reached checks pass. Earlier cuts retain
-their original evidence.
+their original evidence. Multiple-entry dimension unset now also preserves absent
+Key no-op, sibling/BEFORE normalization and escaped-cell detachment. Two originals
+and 304 Boolean/four raw checks pass at `5a7beee8a`/412: raw direct removal uses
+public quiet pruning, while a retained cell survives deletion/rebinding and Map
+retirement until its final alias drops. Keys stay live independently. Wider
+payloads/callbacks, active/freeing contexts and method consumers remain partial.
 
 Occupied same-key replacement publishes the new value before releasing the old
 value and preserves key registration. A receiver continuation retains the map

@@ -128,7 +128,7 @@ retain `c5ccf2792`/411. Original app0 iteration-name and author record-list synt
 failures remain zero; only corrected preflight/author repeat, without source or
 native replay. At that cut, CONFIG/GC/foreach/teardown and old392/402/408
 new-kind fallbacks stay explicit exclusions. Wider payload/property/class/callback forms,
-replacement/explicit unset and cross-map/reentry/Fiber histories remain partial.
+replacement/wider explicit unset and cross-map/reentry/Fiber histories remain partial.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
 ## Last-owner multiple-entry Map teardown
@@ -154,7 +154,7 @@ allocated nodes/edges; the generic retained-release branch keeps the table and
 Values. It adds no PHP source credit. Native/genuine teardown refusals retain
 `70b7d5a0c`/412. All repaired/focused checks pass first execution, with no replay,
 cap increase or separate preflight. Wider Key properties/classes, non-leaf,
-reference/array/callback Values, multiple-entry replacement/explicit unset,
+reference/array/callback Values, multiple-entry replacement/wider explicit unset,
 iteration/CONFIG/GC and cross-map/freeing/reentry/Fiber combinations remain partial.
 Keys outside the authenticated retained-live shape still refuse.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
@@ -892,7 +892,7 @@ or ephemeron protocols remain required. Existing get and cleanup rules are uncha
 
 ## Explicit entry unset
 
-Module386 authenticates the actual `UNSET_ARRAY` task, source access certificate
+The singleton module386 authenticates the actual `UNSET_ARRAY` task, source access certificate
 and current map/key operands. A matching entry clears before value release; the
 existing eager edge comparison transfers its owner into a real VALUE job and
 UNSET operation. Missing live object keys leave the entry unchanged. A separate
@@ -905,10 +905,27 @@ from operation exit to THROW_SEARCH; originals supply the complete endings.
 The original message assertion expected a plain string and remains zero; the
 corrected case checks bytes while preserving string-carrier identity.
 
+Module422 also admits explicit dimension unset for inactive finite leaf-object
+or validated entry-HCELL tables. Missing object Keys are no-ops; deletion packs
+the exact retained records/BEFORE into singleton storage. Two sources and
+139/2 author plus165/2 peer checks pass 304 Boolean/four raw transitions at
+`5a7beee8a`/412. Raw direct X has owner0 but is still allocated; in these methodless
+Many-to-singleton witnesses, public quiet pruning retires it without release jobs.
+An escaped cell keeps owner1 and its Value. Rewriting it leaves A absent and B
+unchanged; Map/Y retire before the final slot/cell/Z release. Keys remain live
+until their explicit unset. Stale STORE/REFCELLS/OBJECTS history adds no owner.
+
+Constructed NULL-table, captured-OFFSET and ghost-cursor helper refusals add no
+PHP credit. Native and genuine baseline retain `9b3f9adf3`/412; baseline refusals
+remain zero, and all affected checks pass first execution without activation lift.
+Public method dispatch, wider payload/callback/freeing/active-context and
+replacement/CONFIG/GC consumers remain partial.
+
 The engine basis is `zend_weakmap_unset_dimension` and `zend_weakref_unregister`
 in `Zend/zend_weakrefs.c`: absent object keys are no-ops; matching removal releases
 the stored value while the key remains independent. Nonobject keys, wider unset
-contexts, reference/method/iteration and ephemeron protocols remain required;
+contexts/reference payloads, public methods, active-iteration mutation and
+ephemeron protocols remain required;
 mutation during freeing stays Unsupported. Earlier evidence retains its cuts.
 
 ## Occupied entry replacement
