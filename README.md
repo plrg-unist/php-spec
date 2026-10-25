@@ -1399,6 +1399,13 @@ and late aliases survive without a compound store; two live strings cannot retry
 bitwise string specialization. Ten originals and 566 focused SL premises pass in the
 [delayed failure ledger](coverage/semantics/delayed-type-failure-review.json).
 
+NaN Boolean NOT through a retained unconstrained reference now rereads the saved
+inner cell after a handler removes or rebinds its source CV. An old-alias `0.0`
+write yields stricttrue even when the new source holds `1.0` or stays absent;
+a supplied throw cancels delivery. Three originals and 516 focused premises pass
+in the [reference BOOL_NOT ledger](coverage/semantics/boolnot-reference-nan-warning-review.json).
+Dead/constrained/changed representations and wider consumers remain partial.
+
 Explicit NaN-to-array casts now warn before copying the same live float CV.
 A handler's `0.0` write produces `[0.0]`, with later array COW independent of
 the source; its supplied Exception cancels delivery and outer assignment.
