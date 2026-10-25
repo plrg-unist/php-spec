@@ -128,7 +128,7 @@ def invalid_controls(state, live, throwing):
         '~$spaceship_read_array_entries(S_dead,[ENTRY (KINT 0) (DIRECT (POBJECT ' + obj + '))])',
         '$spaceship_read_array_entries(' + state + ',eps)',
         '$spaceship_read_array_entries(' + state + ',[ENTRY (KINT 0) (DIRECT (POBJECT ' + obj + ')), ENTRY (KINT 1) (DIRECT PNULL)])',
-        '~$spaceship_read_array_entries(' + state + ',[ENTRY (KINT 0) (DIRECT (PARRAY ' + arr + '))])',
+        '$spaceship_read_array_entries(' + state + ',[ENTRY (KINT 0) (DIRECT (PARRAY ' + arr + '))])',
         '~$spaceship_read_array_entries(' + state + ',[ENTRY (KINT 0) (ALIAS n_source)])',
         '~$spaceship_read_array_entries(' + state + ',[ENTRY (KINT 0) UNINITIALIZED])',
         '~$spaceship_read_array_entries(' + state + ',[ENTRY (KINT 0) (DIRECT PUNDEFINED)])',

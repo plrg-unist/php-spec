@@ -8,9 +8,11 @@ def $boolean_result(S, b_negate, z) = S_bool[.RESULT = KNOWN (PBOOL (b =/= b_neg
   -- if S_bool.COMPLETION = NORMAL
   -- if S_bool.RESULT = KNOWN (PBOOL b)
 dec $boolnot_nan_plan(pstate) : pboolnotnanwarning?
+dec $boolnot_reference_nan_plan(pstate) : pboolnotnanwarning?
 rule PhpStep/truth-result: S ~> $boolean_result(S[.TODO = ptask_tail*], b_negate, z)
   -- if S.TODO = (TRUTH_RESULT b_negate z) :: ptask_tail*
   -- if $boolnot_nan_plan(S) = eps
+  -- if $boolnot_reference_nan_plan(S) = eps
 rule PhpStep/boolean-not: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), TRUTH_RESULT true $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprBooleanNot expression metadata)) :: ptask_tail*
 

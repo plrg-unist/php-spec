@@ -52,8 +52,13 @@ ordinary non-Stringable objects. Outer copying and inner COW preserve separate t
 object identities stay shared. Saved chains and outside aliases preserve child
 destructor timing; empty children leave outer array truth unchanged. See the
 [child-array review](coverage/semantics/undefined-comparison-array-payload-review.json).
+DIRECT child entries now admit recursive acyclic graphs of DIRECT array edges,
+with primitive or ordinary non-Stringable object leaves. Path-local checks allow
+shared subtrees; deep COW and final graph release preserve object identity and
+destructor timing. Nested aliases and deeper ALIAS payloads remain partial. See the
+[DIRECT graph review](coverage/semantics/undefined-comparison-direct-array-graph-review.json).
 Both-missing pairs, including one missing name twice, can resume if the first
-handler defines the later scalar, flat array or ordinary object. `$x == $x` can
+handler defines the later scalar, admitted array or ordinary object. `$x == $x` can
 then be false and `$x > $x` true. Greater operators check source right first. All seven comparison operators
 also stage a second Warning if the later physical CV stays missing, freezing both NULLs
 despite writes from the second handler.
@@ -99,7 +104,11 @@ Runtime array constructors at NULL keys use one owning temporary, with no NULL
 backup or producer-variable reset. The child table freezes before the handler,
 including a scalar reference read by value or a seed increment. Normal completion
 transfers its DIRECT entry; an otherwise unowned table retires on deletion or
-supplied throw. Pooled constant array literals keep their permanent pool owner
+supplied throw. Finite nested DIRECT temporaries also retain shared child edges
+through handler-time COW. Last-entry deletion or throw cascades through unowned
+runtime descendants while folded siblings retain their pool roots. See the
+[nested TMP review](coverage/semantics/array-literal-null-key-array-tmp-subtree-review.json).
+Pooled constant array literals keep their permanent pool owner
 and one pending edge, preserving the original table across callbacks, repeated
 calls and later COW. Throw drops only the pending edge. See the
 [constant-array review](coverage/semantics/array-literal-null-key-constant-array-review.json).
@@ -1394,6 +1403,13 @@ and late aliases survive without a compound store; two live strings cannot retry
 bitwise string specialization. Ten originals and 566 focused SL premises pass in the
 [delayed failure ledger](coverage/semantics/delayed-type-failure-review.json).
 
+NaN Boolean NOT through a retained unconstrained reference now rereads the saved
+inner cell after a handler removes or rebinds its source CV. An old-alias `0.0`
+write yields stricttrue even when the new source holds `1.0` or stays absent;
+a supplied throw cancels delivery. Three originals and 516 focused premises pass
+in the [reference BOOL_NOT ledger](coverage/semantics/boolnot-reference-nan-warning-review.json).
+Dead/constrained/changed representations and wider consumers remain partial.
+
 Explicit NaN-to-array casts now warn before copying the same live float CV.
 A handler's `0.0` write produces `[0.0]`, with later array COW independent of
 the source; its supplied Exception cancels delivery and outer assignment.
@@ -2018,7 +2034,21 @@ Retained, propertyless Stringable names now enter `__toString()` before position
 calls reject the raw object before entry, and a method throw cancels the query.
 [Four source agreements and 642 state premises](coverage/semantics/constant-query-stringable-name-review.json)
 cover raw versus converted traces, selected callees, callback effects and discard.
-Sole-owner destruction, wider receivers and named/packed forms remain partial.
+Ownerless sole-owner destruction, wider receivers and named/packed forms remain
+partial.
+
+Captured `constant(...)`/`defined(...)` callees also receive positional Stringable
+names with normal string returns. Ordinary conversion releases the object before
+lookup, so its destructor can publish the requested global name. Explicit
+`__invoke` keeps the raw wrapper object through lookup: `defined` returns false
+for an absent name before its destructor publishes that name. Missing Error
+traces retain the object beside the received API string. Strict ordinary calls
+reject without conversion and retain the object through the TypeError trace.
+Cleanup orders argument destruction
+before callee retirement when both become unreachable together.
+[Captured Stringable query review](coverage/semantics/constant-owned-stringable-query-review.json).
+This route requires mutable arguments and non-NUL global results; class names,
+packs, PIPE and supplied conversion throws remain outside its validated scope.
 
 Retained propertyless Stringable query names returning non-NUL class-qualified
 text now hand the converted API slot to existing guarded user-class lookup.
@@ -2992,8 +3022,16 @@ Other array layouts and replacement/callback lifetimes remain partial.
 Bounded by-value WeakMap `foreach` now retains the Map through hidden iterator
 DATA and copies its object Key/Value into ordinary CVs. Exhaustion or `break`
 retires DATA before those copies; two originals and 287 Boolean/five raw checks
-pass at `b7af270c7`/410. Active entry mutation is explicitly refused; reference,
+pass at `b7af270c7`/410. Active entry mutation is explicitly refused;
 wider target/value and map-history cases remain partial.
+
+Bounded by-reference WeakMap traversal shares the entry's cell and preserves
+rebinding plus escaped aliases through DATA or Key retirement. A reference
+containing NULL makes `isset` true while reads, `??` and `empty` retain their NULL
+behavior. Two sources retain separate `e975008b1`/`ae4590a36` cuts; 314 Boolean/five
+raw checks pass at `ae4590a36`/410. Original NULL mismatch and fixture failures remain
+zero; wider reference/CONFIG/GC histories and general quiet direct-entry Key
+notification remain partial. [Review](coverage/semantics/weak-map-review.json).
 
 The object-valued singleton can now coexist with ordinary `stdClass` graphs.
 Two originals agree at `fa2e00c6`: an independent self-cycle collects alongside
@@ -4628,7 +4666,11 @@ Public typed UNSET reentry now raises a fresh Error with the declaring class and
 inner read's file/line, including during actual local cleanup. Nullable NULL
 recovery/reset, caller-CV destruction before catch and replacement Exception's
 Previous link pass [four source agreements and 496 focused premises](coverage/semantics/magic-get-recursive-error-review.json).
-Private denial and wider typed/receiver/lifetime forms remain partial.
+Denied private/protected reentry now raises the receiver-class visibility Error,
+independently of hidden VALUE/UNSET/INITIAL storage. Ordinary source scope and
+actual Get/local-exit guards pass [three source agreements and 405 focused premises](coverage/semantics/magic-get-denied-recursion-review.json),
+including incompatible hidden-type recovery and allowed/different-object controls.
+Bound-Closure scopes and wider access/receiver/lifetime forms remain partial.
 Denied private/protected reads and inherited-private literal fallback now invoke
 the getter without applying the hidden property's type. Allowed lexical reads
 use the physical backing key or raise its initialization Error. The original

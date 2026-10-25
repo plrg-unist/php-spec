@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "milestone": "OP83 retained-reference NaN Boolean NOT",
+  "status": "bounded independently reviewed semantics; direct descendant of tested canonical base",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/ordinary precision14 profile",
+  "scope": "Source Boolean NOT through a retained unconstrained reference CELL containing NaN. Named Warning handler may change its float and unset or rebind the original CV; resume reads the saved inner CELL while it remains live and floating. Plain-CV Boolean NOT and other cast/truth producers remain separate; owning/constrained/dead/changed representations and wider callbacks remain partial.",
+  "tested_revision": "a11e71e1c21e93512477a554e1e384807d9e27cb",
+  "private_modules": 410,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "e502718aeb68e78129e024a1780cbf3e355d9ab0720f3ade6c283f1d96ea9b8c",
+    "spec/semantics/51-truth-expressions.watsup": "34c0da1a6371c52b3fdfb7ef3d717768f778fc15f2e773b4a727566f1e8eac80",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "1697503992038f8484cd3f080325de5ebe24b06bc5d8ab295fa83d7e20309579"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_vm_def.h::ZEND_BOOL_NOT calls i_zend_is_true before FREE_OP1/exception check. Zend/zend_operators.h::i_zend_is_true follows IS_REFERENCE to Z_REFVAL_P before its NaN Warning and rereads that inner double afterward. Rebinding the source CV cannot retarget this saved inner pointer while another alias retains it.",
+    "Separate reference producer and stage marker reuse only pboolnotnanwarning layout and boolnot_nan_source structural authority. Entry authenticates ENV binding/NaN; resume uses saved CELL with allocation/reference/positive post-prune owner checks and no ENV lookup. Property sources, reference coercions, parameter backing, foreach release and literal reference retention/debt are excluded.",
+    "73 additions:30 task1,51 declaration/EPS gate2,404 appended reference readiness/snapshot/plan/validity/dispatch/resume/boundary70. Old404 is an exact prefix; ordinary-CV helpers, shared truth/numeric/formatting/CONFIG/DEFINE/400, cell roots and generic throw/unwind bodies remain exact. The marker adds no root for its borrowed CELL."
+  ],
+  "contract": [
+    "Author H writes alias0 then rebinds x to replacement1; stricttrue differs from both fresh source1 and frozen initial NaN. Default Warning remains operand25. EOF writing x8 changes replacement while alias stays0. Old CELL owners change2 to1; replacement owners1 to2 at reached cuts.",
+    "Independent unset-only H keeps alias0 and removes x; resume still returns stricttrue with one default Warning and EOF x absent. Supplied-throw H removes/rebinds x while retaining alias0; catch keeps the same Exception20/null Previous and outer100. Independent alias7/x8 EOF writes keep replacement8 and no default Warning.",
+    "516 premises in three checked-source-derived recipes (178/172/166) traverse actual capture/fresh/entered/post-handler/result-or-throw/EOF cuts, raw transitions, roots and budgets. Changed-source/unchanged-NaN, source/constraint/debt guards and zero-owner/retype refusals are derived controls, with no additional native agreement. Owner counts refer to selected reached cuts, not all transient GLOBALS callback steps."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-83/source-a11e71e1c-author-one/report.json",
+        "sha256": "9e7dbab3cf1a19eeacfea92d910a435bce16b46836ad8122eb0f1a863d8b3be3",
+        "revision": "a11e71e1c21e93512477a554e1e384807d9e27cb",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-83/review-model-a11e71e1c-unset/report.json",
+        "sha256": "42906f437463a042c3efbdab39112d92a9f7569e3cbea257bc39273be9302bd4",
+        "revision": "a11e71e1c21e93512477a554e1e384807d9e27cb",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-83/review-model-a11e71e1c-throw/report.json",
+        "sha256": "a0590ffeb467ee003a3492f39d2af694c4afc4a9825b0512d940489498291809",
+        "revision": "a11e71e1c21e93512477a554e1e384807d9e27cb",
+        "agreements": 1
+      }
+    ],
+    "state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-83/focused-a11e71e1c-three/report.json",
+      "sha256": "164ff63b527d1f626437acb32231dd860fd794a0091d5ad903fb62dc6ee81990",
+      "revision": "a11e71e1c21e93512477a554e1e384807d9e27cb",
+      "conditions": [
+        178,
+        172,
+        166
+      ],
+      "total": 516
+    },
+    "total_source_agreements": 3,
+    "total_focused_state_conditions": 516,
+    "review": "Independent operators79_review accepted native/genuine classification, runtime/author/peer/header before execution and exact source/focused first results. Publication independently reviewed; direct integration retains canonical base58246ec798/410 without incoming semantic changes. Metadata changes add no execution credit."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-83/baseline-d5c70728a-rebound/report.json",
+      "sha256": "4f9ad23e56f861a340b29f59ef7afca2df75ab4d7332baa90bac2cb18d105ddf",
+      "revision": "d5c70728a6eb32c489566ee76eb85267a873327c",
+      "result": "Frontend-accepted/checked original stops Unsupported before H: error-handler ingress requires a producer continuation. Empty semantic streams/model1/rowfalse/agreement0; raw files unchanged."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-83/native-d5c70728a-author-one/report.json",
+        "sha256": "f9a1f1fccf34f2b11c98389ef90ab89eee2dd99ee67f872718d70f748676f325",
+        "revision": "d5c70728a6eb32c489566ee76eb85267a873327c"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-83/native-d5c70728a-unset/report.json",
+        "sha256": "1e4b8456415d774af099d1dc78b1fae1b5920527984b1268140e64b913870d72",
+        "revision": "d5c70728a6eb32c489566ee76eb85267a873327c"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-83/native-d5c70728a-throw/report.json",
+        "sha256": "51c1376ff8827f4418c77f7453b63c0f63ec9f49381160986c828287d54714d9",
+        "revision": "d5c70728a6eb32c489566ee76eb85267a873327c"
+      }
+    ],
+    "full_static": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-83/static-a11e71e1c/report.json",
+      "sha256": "679a24feae3d89667ecc6193be1e6d59bb78974aa4d74107279903953a224eef",
+      "revision": "a11e71e1c21e93512477a554e1e384807d9e27cb",
+      "result": "Full ordered410 struct passes; semantic credit0."
+    }
+  },
+  "limits": [
+    "Native source witnesses cover oldfloat0 with source rebind, source unset and supplied throw. Other live floats use existing pure number_bool reasoning. Unchanged NaN and dead/retyped/constraint/retention refusals are derived; native NaN-bit identity and freed-pointer behavior are unclaimed.",
+    "Copied/owned operands, property/constrained/parameter-backed references, loss of all old-cell owners, changed representation, wider handlers/lifetimes and other Boolean consumers remain partial. No engine bug, intentional divergence or old numeric/Boolean/cast algorithm renewal is claimed.",
+    "Paused OP12, Source47 low-precision DEFINE NaN, owned-NUL source-release, undefined-byref LIST key and COMP88 Stringable supplied-throw crash remain separate."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-83",
+    "environment": "LC_ALL=C,TZ=UTC,PHP_SPEC_SCRIPT_ENCODING absent; ordinary precision14 profile. Native/genuine CPU4, source/focused CPU1; all actors reaped and slots released. Native30/modelCLI60-process90, full410struct30, checked workers30/fixturestruct30/SL120 per group; no cap changes.",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "commands": [
+      "taskset -c 4 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-83/run-native-gate.py d5c70728a6eb32c489566ee76eb85267a873327c 4",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-83/run-source-gate.py a11e71e1c21e93512477a554e1e384807d9e27cb 1",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-83/run-focused.py a11e71e1c21e93512477a554e1e384807d9e27cb 1"
+    ],
+    "record": "Restore matching Git cut/local tools and retained original paths; choose fresh output directories. Focused fixtures reuse accepted source/native tuples without replay. Raw external evidence is not a build input; reused regular binaries prove no fresh offline rebuild."
+  }
+}

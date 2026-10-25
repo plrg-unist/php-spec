@@ -13,6 +13,7 @@ def $dynamic_constant_kind(INTRINSIC_DEFINE) = true
 def $dynamic_constant_kind(INTRINSIC_DEFINED) = true
 def $dynamic_constant_kind(INTRINSIC_CONSTANT) = true
 dec $dynamic_scalar_constant_call(pconfigcall) : bool
+dec $dynamic_scalar_constant_finish(pstate, pconfigcall) : pstate
 dec $dynamic_owned_scalar_query_value(pvalue) : bool
 dec $dynamic_owned_scalar_query_call(pconfigcall) : bool
 dec $dynamic_null_constant_call(pconfigcall) : bool
@@ -392,6 +393,12 @@ def $dynamic_define_array_name_valid(S, pconfigcall) = false -- otherwise
 ;; Query Stringables keep the raw API slot through the method, then replace it
 ;; in a separate CONFIG step before ordinary global or class lookup.
 dec $dynamic_query_string_call(pconfigcall) : bool
+dec $dynamic_owned_query_string_call(pconfigcall) : bool
+def $dynamic_owned_query_string_call(pconfigcall) = true
+  -- if pconfigcall.KIND <- [INTRINSIC_CONSTANT, INTRINSIC_DEFINED]
+  -- if pconfigcall.OWNER =/= eps /\ pconfigcall.SELECTION = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+def $dynamic_owned_query_string_call(pconfigcall) = false -- otherwise
 def $dynamic_query_string_call(pconfigcall) = true
   -- if pconfigcall.KIND <- [INTRINSIC_CONSTANT, INTRINSIC_DEFINED]
   -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
@@ -399,14 +406,15 @@ def $dynamic_query_string_call(pconfigcall) = true
 def $dynamic_query_string_call(pconfigcall) = false -- otherwise
 dec $dynamic_query_string_valid(pstate, pconfigcall) : bool
 def $dynamic_query_string_valid(S, pconfigcall) = true
-  -- if $dynamic_query_string_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
+  -- if ($dynamic_query_string_call(pconfigcall) \/ $dynamic_owned_query_string_call(pconfigcall)) /\ $config_invoke_valid(S, pconfigcall)
   -- if ~$pipe_site(S, pconfigcall.SITE)
+  -- if pconfigcall.OWNER = eps \/ $dynamic_define_known(S, pconfigcall.SITE, 0) = eps
   -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
   -- if $stringable_instance(S, n_object)
 def $dynamic_query_string_valid(S, pconfigcall) = false -- otherwise
 def $config_string_object(pconfigcall) = (n_object)
-  -- if $dynamic_query_string_call(pconfigcall)
+  -- if $dynamic_query_string_call(pconfigcall) \/ $dynamic_owned_query_string_call(pconfigcall)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
 def $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call) = true
   -- if $dynamic_query_string_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
@@ -417,12 +425,20 @@ def $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, 
   -- if ~$config_strict(S, pconfigcall)
 def $config_string_launch(S, pconfigcall) = true
   -- if S.FILEINCLUDEPATH = eps
-  -- if $dynamic_query_string_call(pconfigcall)
+  -- if $dynamic_query_string_call(pconfigcall) \/ $dynamic_owned_query_string_call(pconfigcall)
   -- if $config_string_object(pconfigcall) = (n_object)
   -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
   -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, pconfigcall.LINE)
 dec $dynamic_query_string_finish(pstate, pconfigcall, pvalue) : pstate
+;; An explicit wrapper retains its raw object through the API finish/trace.
+def $dynamic_query_string_finish(S, pconfigcall, pvalue) = $dynamic_scalar_constant_finish(S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*][.RESULT = KNOWN pvalue], pconfigcall)
+  -- if $dynamic_owned_query_string_call(pconfigcall)
+  -- if $config_method_receiver(S, pconfigcall)
+  -- if $dynamic_owned_global_query_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue)]])
+  -- if S.TODO = ptask :: ptask_tail*
 def $dynamic_query_string_finish(S, pconfigcall, pvalue) = S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue)]]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pconfigcall.OWNER = eps \/ ~$config_method_receiver(S, pconfigcall)
+  -- if pconfigcall.OWNER = eps \/ $dynamic_owned_global_query_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue)]])
   -- if $string_bytes(pvalue) = (preqbytes)
   -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
   -- if $dynamic_constant_global_name($dynamic_constant_query(preqbytes)) \/ ($dynamic_constant_class_name(preqbytes) /\ ~(0 <- preqbytes))
@@ -430,10 +446,15 @@ def $dynamic_query_string_finish(S, pconfigcall, pvalue) = S[.ORIGIN = (pconfigc
 def $dynamic_query_string_finish(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "Stringable query global name"] -- otherwise
 rule PhpStep/dynamic-query-string-result: S ~> $dynamic_query_string_finish(S, pconfigcall, pvalue)
   -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
-  -- if $dynamic_query_string_call(pconfigcall)
+  -- if $dynamic_query_string_call(pconfigcall) \/ $dynamic_owned_query_string_call(pconfigcall)
   -- if S.ORIGIN = (porigin_child)
   -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
   -- if S.RESULT = KNOWN pvalue
+;; Both explicit argument slots are decremented before the saved callee.
+def $eager_task_inputs(S, CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) = [HOBJECT n_object] ++ $named_slots_roots(pconfigcall.SENT) ++ $exit_owner_nodes(pconfigcall.OWNER)
+  -- if $dynamic_owned_query_string_call(pconfigcall)
+  -- if $config_method_receiver(S, pconfigcall)
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
 
 ;; Define names convert in the same saved API context before registration.
 dec $dynamic_define_string_call(pconfigcall) : bool
@@ -1699,7 +1720,6 @@ def $dynamic_scalar_constant_valid(S, pconfigcall) = true
   -- if pvalue_known? = $compiled_read(S, porigin_argument)
   -- if pvalue_known? = eps \/ pvalue_known? = (pvalue)
 def $dynamic_scalar_constant_valid(S, pconfigcall) = false -- otherwise
-dec $dynamic_scalar_constant_finish(pstate, pconfigcall) : pstate
 def $dynamic_scalar_constant_finish(S, pconfigcall) = S
   -- if S.COMPLETION =/= NORMAL
 def $dynamic_scalar_constant_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL $dynamic_constant_exists(S, preqbytes))][.BASE = BASE_VALUE (KNOWN PNULL)]

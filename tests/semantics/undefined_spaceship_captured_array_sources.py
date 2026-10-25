@@ -6,9 +6,7 @@ import global_constant_sources as family
 from undefined_spaceship_captured_array_cases import CASES
 
 family.CASES = CASES
-family.UNSUPPORTED = {
-    'captured-nested-boundary': ('error-handler ingress requires a producer continuation', b'B|'),
-}
+family.UNSUPPORTED = {}
 family.BASELINE = ('error-handler ingress requires a producer continuation', b'')
 family_fingerprint = family.fingerprint
 

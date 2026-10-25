@@ -200,7 +200,15 @@ Shared-cell replacement, singleton outer unwrapping and inner COW preserve child
 owners; saved chains can run the final destructor before store/catch. Empty and
 pooled children retain outer truth. The [child-array review](../../coverage/semantics/undefined-comparison-array-payload-review.json)
 records normal/throw and source/domain/budget evidence without source/root changes.
-Internal/Stringable objects, resources, wider array graphs and producers remain partial.
+DIRECT descendants now admit acyclic graphs of DIRECT array edges with the same
+scalar/ordinary-object leaves. Path-local traversal allows shared subtrees;
+legacy ALIAS payloads stay flat. Captured graphs retain deep COW snapshots, while
+live root cells follow replacement and surviving value copies retain old graphs.
+Last physical child release preserves destructor order before store/catch. The
+[DIRECT graph review](../../coverage/semantics/undefined-comparison-direct-array-graph-review.json)
+checks those owners and reached-cut budgets without changing source/root rules.
+Nested aliases, deeper ALIAS payloads, internal/Stringable objects, resources
+and wider owning histories remain partial.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.
 [The equality/less review](../../coverage/semantics/undefined-scalar-compare-review.json)

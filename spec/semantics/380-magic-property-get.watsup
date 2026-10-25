@@ -15,6 +15,7 @@ dec $property_get_recursive_history(pstate, ppropertywarning) : bool
 dec $property_get_recursive_warning(pstate, nat, ptbytes, int) : ppropertywarning?
 dec $property_get_recursive_plan(pstate) : ppropertywarning?
 dec $property_get_recursive_error_plan(pstate) : ppropertydesc?
+dec $property_get_recursive_denied_plan(pstate) : (nat, ptbytes)?
 dec $property_get_string_capture(pstate, ppropertyget) : ppropertygetstring?
 dec $property_get_string_record(ptask) : ppropertygetstring?
 dec $property_get_string_scope(pstate, ppropertygetstring) : bool
@@ -312,6 +313,7 @@ rule PhpStep/property-get-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic g
   -- if $property_get_plan(S) = eps
   -- if $property_get_recursive_plan(S) = eps
   -- if $property_get_recursive_error_plan(S) = eps
+  -- if $property_get_recursive_denied_plan(S) = eps
 
 ;; The internal call borrows its receiver from the one saved RESULT task.
 def $target_nodes(PROPERTY_GET_TARGET n porigin) = eps
@@ -517,6 +519,35 @@ def $property_get_recursive_error_plan(S) = eps -- otherwise
 rule PhpStep/property-get-recursive-error: S ~> $throw_scalar(S, "Error", $ptascii("Typed property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ $c_string(ppropertydesc.NAME) ++ $ptascii(" must not be accessed before initialization"), z)
   -- if S.TODO = (PROPERTY_PREP phpType20 z) :: (DIM_FETCH z) :: ptask_tail*
   -- if $property_get_recursive_error_plan(S) = (ppropertydesc)
+
+;; A recursive wrong-offset read raises the visibility Error before inspecting
+;; backing storage. The emitting scope and receiver class remain the inner read's.
+def $property_get_recursive_denied_plan(S) = ((n, pnameread.NAME))
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text) metadata_name) z) :: (DIM_FETCH z) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL) /\ S.SOURCEPENDING = eps
+  -- if S.ORIGIN = (porigin)
+  -- if pnameread = {SITE porigin, NAME $base64(text), LINE z}
+  -- if $property_null_read_valid(S, pnameread)
+  -- if $property_undefined_borrowed_source(S, pnameread)
+  -- if $property_lookup_scope(S) = $closure_source_class(S, porigin)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS /\ ~$instance_storage_freeing(S, n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if ppropertywarning = {READ pnameread, OBJECT n, KEY pnameread.NAME, FREEING false, BORROWED true, CELL eps}
+  -- if $property_undefined_cv_receiver(S, ppropertywarning)
+  -- if $property_resolve(S, n, pnameread.NAME) = PROPERTY_DENIED ppropertydesc
+  -- if ~ppropertydesc.STATIC /\ ppropertydesc.NAME = pnameread.NAME /\ ppropertydesc.KEY =/= pnameread.NAME
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE \/ ppropertydesc.VISIBILITY = PROPERTY_PROTECTED
+  -- if ~$property_hook_declared(S, n, pnameread.NAME)
+  -- if $property_get_method(S, n) = (pmethoddesc)
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION) /\ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if $property_get_recursive_guard(S, S.CURRENT, S.FRAMES, n, pnameread.NAME)
+def $property_get_recursive_denied_plan(S) = eps -- otherwise
+rule PhpStep/property-get-recursive-denied: S ~> $property_access_error(S, n, ptbytes, z)
+  -- if S.TODO = (PROPERTY_PREP phpType20 z) :: (DIM_FETCH z) :: ptask_tail*
+  -- if $property_get_recursive_denied_plan(S) = ((n, ptbytes))
 
 ;; Exact verification is identity: neither a checked write nor TYPE_SOURCES
 ;; attachment occurs. Integer numeric strings convert only the actual RV or

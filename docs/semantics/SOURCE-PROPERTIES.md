@@ -986,9 +986,23 @@ read normally under the still-active guard, and a later unset starts a new Get.
 retain separate runtime and state cuts. Recovery, replacement and local cleanup
 have reached proofs; inherited propagation has source-only evidence. The typed
 private source control stops at class compilation, and its descriptor mutation
-has selector-only refusal credit. Nonpublic recursion, by-reference getters,
-quiet probes, owned receivers, computed names, suspension and wider typed/lifetime
-combinations remain partial.
+has selector-only refusal credit. Those earlier controls retain their own cuts.
+
+Denied private/protected reentry now raises the ordinary visibility Error under
+the actual Get guard, including during local cleanup. Its message names the
+receiver class; the inner read supplies file/line and ordinary lexical scope.
+Hidden untyped VALUE, typed UNSET and typed INITIAL storage all preserve this
+priority. Local recovery can return an incompatible hidden-type value (`'ok'`)
+without verification. Allowed protected scope reads the mangled backing key,
+and another object enters its own Get. [Three source agreements and 405 focused
+premises](../../coverage/semantics/magic-get-denied-recursion-review.json) retain
+separate cuts; private VALUE propagation has source and an independent reached
+cut, while recovery/local cleanup have full author trajectories. The original
+plain-string fixture assumption and its carrier diagnostic retain zero credit.
+The earlier class-level comment Nop remains a compiler residual; these multiline
+witnesses do not expand that compiler route. Lexically accessible nonpublic UNSET,
+bound-Closure scopes, by-reference getters, quiet probes, owned receivers,
+computed names, suspension and wider lifetime combinations remain partial.
 
 The [getter review](../../coverage/semantics/magic-property-get-review.json) records
 eight exact source agreements, 1293 setup-inclusive reached premises and the

@@ -130,7 +130,7 @@ def checks(program, path, name):
         'n_outside = |S.ARRAYS|',
         'S_outside = S[.ALLOCATIONS = (HARRAY n_outside) :: S.ALLOCATIONS]',
         '~$spaceship_read_array_value(S_outside,PARRAY n_outside)',
-        '~$spaceship_read_array_entries(S,[ENTRY (KINT 0) (DIRECT (PARRAY n_array))])',
+        '$spaceship_read_array_entries(S,[ENTRY (KINT 0) (DIRECT (PARRAY n_array))])',
         '~$spaceship_read_array_entries(S,[ENTRY (KINT 0) (ALIAS n_missing)])',
         '~$spaceship_read_array_value(S,PINT 1)',
         'perrorread_bad = perrorread[.ORIGINAL = BINARY_RIGHT SPACESHIP ' + ('(KNOWN (PARRAY n_array))' if left else '(VARIABLE ($ptascii("missing")) z_missing)') + ' 999][.TASK = BINARY_RIGHT SPACESHIP ' + ('(KNOWN (PARRAY n_array))' if left else '(KNOWN PNULL)') + ' 999][.LINE = 999]',

@@ -41,8 +41,7 @@ At `<=>`, empty gives 0;
 nonempty gives -1 with NULL left and +1 with NULL right.
 This includes both-missing and same-name entry: `$x <=> $x` can return -1 after
 the handler creates `[false]`. Current reference/COW bindings and next-index
-history survive; nested/internal-object entries
-remain partial. The
+history survive; internal-object entries remain partial. The
 [spaceship](../../coverage/semantics/undefined-spaceship-array-resume-review.json)
 and [Boolean array resume reviews](../../coverage/semantics/undefined-scalar-compare-array-resume-review.json)
 record source, ownership and budget checks. The Boolean extension preserves
@@ -64,7 +63,7 @@ before catch while aliases retain their COW effects. The
 records source and ownership checks. The six Boolean operators now admit the
 same captured flat-array domain, preserving snapshots and physical operand order.
 Their bounded source certificates authenticate the missing direct CV and both
-compiled expression descriptors. Known arrays cannot bypass the live-flat guard
+compiled expression descriptors. Known arrays cannot bypass the live array domain guard
 through the scalar default. Existing roots, restoration and throw cleanup stay
 unchanged; see the
 [Boolean captured-array review](../../coverage/semantics/undefined-scalar-compare-captured-array-review.json).
@@ -73,8 +72,8 @@ Warning reads. For example, `$missing == ($saved = 0)` stays true after the call
 writes 9 to both names. Returned strings keep their bytes independently of current
 aliases and string identity metadata. The
 [primitive review](../../coverage/semantics/undefined-scalar-compare-captured-primitive-review.json)
-checks snapshots, default/throw and actual second-read NULL compatibility. Nested,
-object/array-valued reference entries, internal-object leaves and wider owning producers remain partial.
+checks snapshots, default/throw and actual second-read NULL compatibility. Nested
+reference entries, internal-object leaves and wider owning producers remain partial.
 All seven operators also admit captured allocated ordinary non-Stringable objects,
 including `stdClass`. The captured identity survives source rebinding or removal,
 while shared property writes remain visible. Object/NULL ordering gives +1 or -1
@@ -102,7 +101,7 @@ from each DIRECT object entry. Final table release drops those edges and runs a 
 before the outer store or catch only if no other object owner remains.
 The [object-array review](../../coverage/semantics/undefined-comparison-object-array-review.json)
 checks transitive roots, raw release versus driven destruction, COW and budgets.
-DIRECT nested entries, deeper child arrays and internal/Stringable leaves remain partial.
+Internal/Stringable leaves remain partial.
 Primitive ALIAS entries now pass the same guard when their reference cell is
 allocated, marked as a reference, in bounds and holds a defined primitive.
 Captured table entries survive source replacement; shared cell writes remain
@@ -130,13 +129,25 @@ inner snapshot keeps its old table. Last saved ARRAY-to-CELL-to-ARRAY-to-OBJECT
 release can run destruction before store/catch; surviving aliases delay it. The
 [child-array review](../../coverage/semantics/undefined-comparison-array-payload-review.json)
 checks these owners, empty-child truth, supplied throws and budgets. Child aliases,
-deeper arrays, cycles and wider owning histories remain partial.
+deeper ALIAS payloads, cycles and wider owning histories remain partial.
+DIRECT array entries additionally admit allocated child tables whose
+entries are DIRECT primitives, ordinary non-Stringable objects or further child
+tables. An ancestor path rejects DIRECT array cycles; each sibling keeps the
+original path, allowing repeated/shared subtrees without a fixed depth limit.
+Allocation and bounds precede row access. The separate ALIAS payload check stays
+flat, including when mixed with recursive DIRECT data in one outer table.
+Comparison against frozen NULL still tests only outer array truth. Existing
+physical child edges preserve deep COW snapshots and last-object destruction
+before store/catch; live root aliases follow replacements while value copies
+retain old graphs. Objects remain leaves; this adds no property-cycle claim.
+The [DIRECT graph review](../../coverage/semantics/undefined-comparison-direct-array-graph-review.json)
+records normal/default/throw, cycle/domain refusals and reached-cut budgets.
 Distinct direct-CV `==`/`!=`/`<`/`<=`/`>`/`>=` pairs also suspend with one missing operand
 and a defined scalar counterpart. The missing value stays null while the opposing
 wrapper follows callback writes, late reference creation and rebinding. A missing
 right name can remain undefined throughout the callback. False handlers preserve
 default Warning order; throws preserve destination/catch/finally. The opposing CV
-may return as a scalar, the bounded flat array or an ordinary non-Stringable object.
+may return as a scalar, an admitted array or an ordinary non-Stringable object.
 A removed name quietly folds or stages another Warning according to physical order, as described below;
 other owning values stop Unsupported. The
 [missing-left review](../../coverage/semantics/undefined-scalar-compare-review.json)

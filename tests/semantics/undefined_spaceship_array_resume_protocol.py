@@ -99,7 +99,7 @@ def checks(program, path, name):
         'S_dead_refused = S_dead[.TODO = eps][.COMPLETION = UNSUPPORTED "spaceship warning changed opposing scalar"]',
         '$spaceship_read_array_entries(S,[ENTRY (KINT 0) (DIRECT PNULL), ENTRY (KINT 1) (DIRECT (PBOOL false)), ENTRY (KINT 2) (DIRECT (PINT 7)), ENTRY (KINT 3) (DIRECT (PFLOAT 0)), ENTRY (KINT 4) (DIRECT (PSTRING ($ptascii("text"))))])',
         '~$spaceship_read_array_entries(S,[ENTRY (KINT 0) (ALIAS n_current)])',
-        '~$spaceship_read_array_entries(S,[ENTRY (KINT 0) (DIRECT (PARRAY n_array))])',
+        '$spaceship_read_array_entries(S,[ENTRY (KINT 0) (DIRECT (PARRAY n_array))])',
         '~$spaceship_read_array_entries(S,[ENTRY (KINT 0) (DIRECT (POBJECT 0))])',
         '~$spaceship_read_array_entries(S,[ENTRY (KINT 0) (DIRECT PUNDEFINED)])',
         'perrorread_bad = perrorread[.ORIGINAL = BINARY_RIGHT SPACESHIP (VARIABLE (' + text(left) + ') z_left) 999][.TASK = BINARY_RIGHT SPACESHIP (' + ('VARIABLE (' + text(left) + ') z_left' if right_missing else 'KNOWN PNULL') + ') 999][.LINE = 999]',

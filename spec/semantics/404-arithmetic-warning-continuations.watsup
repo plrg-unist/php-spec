@@ -5102,3 +5102,73 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 2
   -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pboolxoroperation.LEFT.LINE
+
+;; i_zend_is_true follows Z_REFVAL before Warning and keeps that inner pointer.
+;; This marker borrows its captured cell; the source CV may disappear or rebind.
+dec $boolnot_reference_nan_ready(pstate, pboolnotnanwarning) : nat?
+def $boolnot_reference_nan_ready(S, pboolnotnanwarning) = (n_bits)
+  -- if (HCELL pboolnotnanwarning.CELL) <- S.ALLOCATIONS
+  -- if ~$foreach_released_container_cell(S, pboolnotnanwarning.CELL)
+  -- if ~(pboolnotnanwarning.CELL <- S.LITERALREFRETAINED) /\ ~(pboolnotnanwarning.CELL <- S.LITERALREFDEBTS)
+  -- if $propref_at(S.PROPREFS, pboolnotnanwarning.CELL) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, pboolnotnanwarning.CELL) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, pboolnotnanwarning.CELL) = eps
+  -- if $integer_pointer_value(S, INTEGER_CELL pboolnotnanwarning.CELL) = (PFLOAT n_bits)
+  -- if $(n_bits < 18446744073709551616)
+def $boolnot_reference_nan_ready(S, pboolnotnanwarning) = eps -- otherwise
+
+dec $boolnot_reference_nan_snapshot(pstate, pboolnotnanwarning) : bool
+def $boolnot_reference_nan_snapshot(S, pboolnotnanwarning) = true
+  -- if pboolnotnanwarning.INPUT = VARIABLE ptbytes z_input
+  -- if ~$environment_blocked(S, ptbytes) /\ ~$foreach_released_name(S, ptbytes)
+  -- if $lookup(S.ENV, ptbytes) = (pboolnotnanwarning.CELL)
+  -- if $boolnot_reference_nan_ready(S, pboolnotnanwarning) = (pboolnotnanwarning.BITS)
+def $boolnot_reference_nan_snapshot(S, pboolnotnanwarning) = false -- otherwise
+
+def $boolnot_reference_nan_plan(S) = (pboolnotnanwarning)
+  -- if S.TODO = (TRUTH_RESULT true z) :: ptask_tail*
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.RESULT = VARIABLE ptbytes z_input
+  -- if $lookup(S.ENV, ptbytes) = (n_cell)
+  -- if $(n_cell < |S.STORE|)
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if pboolnotnanwarning = {SITE porigin, LINE z, INPUT S.RESULT, CELL n_cell, BITS n_bits}
+  -- if $boolnot_nan_source(S, pboolnotnanwarning)
+  -- if $boolnot_reference_nan_snapshot(S, pboolnotnanwarning)
+def $boolnot_reference_nan_plan(S) = eps -- otherwise
+
+dec $boolnot_reference_nan_warning_valid(pstate, pboolnotnanwarning, nat) : bool
+def $boolnot_reference_nan_warning_valid(S, pboolnotnanwarning, n) = ($boolnot_nan_source(S, pboolnotnanwarning) /\ $(n <= 1) /\ (n = 1 \/ $boolnot_reference_nan_snapshot(S, pboolnotnanwarning)))
+
+rule PhpStep/boolnot-reference-nan-begin: S ~> S[.TODO = (BOOLNOT_REFERENCE_NAN_WARNING pboolnotnanwarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $boolnot_reference_nan_plan(S) = (pboolnotnanwarning)
+rule PhpStep/boolnot-reference-nan-dispatch: S ~> $error_dispatch(S, 2, $ptascii("unexpected NAN value was coerced to bool"), pboolnotnanwarning.LINE, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to bool")) pboolnotnanwarning.LINE, BOOLNOT_REFERENCE_NAN_WARNING pboolnotnanwarning 1)
+  -- if S.TODO = (BOOLNOT_REFERENCE_NAN_WARNING pboolnotnanwarning 0) :: ptask_tail*
+  -- if $boolnot_reference_nan_warning_valid(S, pboolnotnanwarning, 0)
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/boolnot-reference-nan-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "boolean NOT NaN reference owning warning callback"]
+  -- if S.TODO = (BOOLNOT_REFERENCE_NAN_WARNING pboolnotnanwarning 0) :: ptask_tail*
+  -- if $boolnot_reference_nan_warning_valid(S, pboolnotnanwarning, 0)
+  -- if $error_handler_eligible(S, 2) /\ ~$arithmetic_add_named(S)
+rule PhpStep/boolnot-reference-nan-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL (~b))][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (BOOLNOT_REFERENCE_NAN_WARNING pboolnotnanwarning 1) :: ptask_tail*
+  -- if $boolnot_reference_nan_warning_valid(S, pboolnotnanwarning, 1)
+  -- if $boolnot_reference_nan_ready(S, pboolnotnanwarning) = (n_bits)
+  -- if (b, b_warning) = $number_bool(NFLOAT n_bits)
+rule PhpStep/boolnot-reference-nan-target-boundary: S ~> S[.COMPLETION = UNSUPPORTED "boolean NOT NaN changed reference representation"]
+  -- if S.TODO = (BOOLNOT_REFERENCE_NAN_WARNING pboolnotnanwarning 1) :: ptask_tail*
+  -- if $boolnot_reference_nan_warning_valid(S, pboolnotnanwarning, 1)
+  -- if $boolnot_reference_nan_ready(S, pboolnotnanwarning) = eps
+
+def $task_nodes(BOOLNOT_REFERENCE_NAN_WARNING pboolnotnanwarning n) = eps
+def $call_task_valid(S, BOOLNOT_REFERENCE_NAN_WARNING pboolnotnanwarning n) = $boolnot_reference_nan_warning_valid(S, pboolnotnanwarning, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = BOOLNOT_REFERENCE_NAN_WARNING pboolnotnanwarning 1
+  -- if $boolnot_reference_nan_warning_valid(S, pboolnotnanwarning, 1)
+  -- if perrorcall.TARGET =/= eps \/ $boolnot_reference_nan_snapshot(S, pboolnotnanwarning)
+  -- if perrorcall.SITE = pboolnotnanwarning.SITE /\ perrorcall.LINE = pboolnotnanwarning.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pboolnotnanwarning.LINE

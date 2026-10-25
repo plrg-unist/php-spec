@@ -10,8 +10,9 @@ representation changes stop explicitly with Unsupported. Two original-source
 agreements and 280 focused premises in two checked-source-derived recipes,
 including derived boundary controls, pass in the
 [OP79 ledger](../../coverage/semantics/boolnot-nan-warning-review.json).
-Reference/rebinding and owning handlers, copied operands and wider lifetimes
-remain partial. This operation-specific module404 route leaves shared truth,
+Wider reference/rebinding histories, owning handlers, copied operands and wider
+lifetimes remain partial. Retained unconstrained reference cells have a separate
+[OP83 route](../../coverage/semantics/boolnot-reference-nan-warning-review.json). This operation-specific module404 route leaves shared truth,
 numeric/formatting, CONFIG/DEFINE and paused Source47 behavior unchanged.
 
 Explicit `(bool)` casts now have a separate `NExprCastBool`/`CAST_RESULT CASTBOOL`

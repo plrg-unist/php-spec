@@ -24,6 +24,11 @@ receiver-retirement binding and event bytes change. Original caps stay fixed.
 Helper/delegated/other-API histories, reference caches, abandoned stacks and
 wider close/collection behavior remain partial; paused boundaries stay paused.
 
+
+Composed over `40b62888b`; incoming array, comparison, query, getter, warning
+and WeakMap selectors have no producer in these originals. Composition preserves
+accepted cuts without renewed execution credit.
+
 ## Integrated behavior and entrypoints
 
 Each family is bounded; its linked contract and inventory entries retain the
@@ -38,19 +43,19 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | Constants and callable values | Bounded DEFINE/CONSTANT/DEFINED preserve source authority, scopes, primitive/array/object snapshots and captured intrinsic Closure identity. Captured Boolean/integer/finite-float/NULL queries preserve strict ordinary versus weak explicit reception, raw/received trace arguments and callee ownership through deprecation callbacks. Captured positional Stringable queries distinguish ordinary prelookup destruction from explicit raw-wrapper retention and strict raw-object rejection. [Constant contract](docs/semantics/SOURCE-USER-CONSTANTS.md), [scalar-query review](coverage/semantics/constant-owned-scalar-query-review.json), [NULL-query review](coverage/semantics/constant-owned-null-query-review.json), [Stringable-query review](coverage/semantics/constant-owned-stringable-query-review.json). |
 | Classes and properties | Visibility, references, typed writes, hooks, magic access and clone have bounded routes. Same-name implicit getter recursion delivers captured NULL for missing/untyped UNSET, declaring-class Error for public typed UNSET, and receiver-class visibility Error for actual private/protected denial; real guards survive local cleanup. [Properties](docs/semantics/SOURCE-PROPERTIES.md), [classes](docs/semantics/SOURCE-CLASSES.md), [recursion review](coverage/semantics/magic-get-recursion-review.json), [declared-UNSET review](coverage/semantics/magic-get-unset-recursion-review.json), [typed reentry review](coverage/semantics/magic-get-recursive-error-review.json), [denied reentry review](coverage/semantics/magic-get-denied-recursion-review.json). |
 | Generators and Fibers | Direct named bodies entered by CURRENT/NEXT preserve their authentic resumer across Fiber suspension and supplied-Throwable injection, with distinct fresh/cached reentry Errors. [Transfer review](coverage/semantics/generator-fiber-transfer-review.json). Shared delegation, initialization history, unused snapshots and abrupt SEND cleanup retain their bounded contracts. [Generators](docs/semantics/GENERATORS.md), [Fibers](docs/semantics/FIBERS.md), [delegation](docs/semantics/GENERATOR-DELEGATION.md), [refresh review](coverage/semantics/generator-refresh-unused-current-review.json). |
-| Returns and lifetime | Bounded by-reference return/finally chains retain remaining owners, local catches and consumed recovery through normal/throw retirement. First C retirement with one REF/object remainder preserves local catch, the computed-return Notice and a detached caller cell. Singleton WeakMap collection follows canonical reference-cell backedges and array entries containing Key references, discovering conditional values from white keys without adding physical owners. Bounded foreach drops Map DATA at loop exit while copied object Key/Value CVs survive. [WeakMap review](coverage/semantics/weak-map-review.json). The finite `returns_verify` work is complete; wider PHP return and lifetime coverage remains open. [Return contract](docs/semantics/SOURCE-REFERENCE-RETURNS.md), [eager cleanup](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md), [return review](coverage/semantics/reference-return-local-cv-lifetime-review.json). |
+| Returns and lifetime | Bounded by-reference return/finally chains retain remaining owners, local catches and consumed recovery through normal/throw retirement. First C retirement with one REF/object remainder preserves local catch, the computed-return Notice and a detached caller cell. Singleton WeakMap collection follows canonical reference-cell backedges and array entries containing Key references, discovering conditional values from white keys without adding physical owners. Bounded foreach drops Map DATA at loop exit while copied object Key/Value CVs survive. By-reference traversal shares the entry cell, preserving rebinding, raw-NULL presence and residual alias disposal through Key notification. [WeakMap review](coverage/semantics/weak-map-review.json). The finite `returns_verify` work is complete; wider PHP return and lifetime coverage remains open. [Return contract](docs/semantics/SOURCE-REFERENCE-RETURNS.md), [eager cleanup](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md), [return review](coverage/semantics/reference-return-local-cv-lifetime-review.json). |
 | Diagnostics and environment | Supported warning/exception handlers retain raw registration, selected callback and emitting frame. Request facts, inclusion and lifecycle effects stay explicit. [Handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md), [exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md), [request inputs](docs/semantics/REQUEST-INPUTS.md). |
 
 ## Active and unintegrated work
 
 | Track | Current state |
 | --- | --- |
-| M137 WeakMap reference foreach | Escaped source exact; NULL source has a real Value-retention mismatch under diagnosis. |
+| M138 quiet WeakMap Key retirement | Native-first direct-entry notification packet preparation; no actor. |
 | V103 Stringable argument destructor | Native3/genuine wrong Error-Previous retained; implementation. |
 | Source89 IteratorAggregate CONFIG | Native3/genuine Unsupported retained; implementation. |
 | COMP121 ALIAS recursive DIRECT DAG | Native6/genuine Unsupported retained; implementation. |
 
-Iterator49/50/51/52/53, V99/V100/V101/V102, M132/M133/M134/M135/M136, A46/A47/A48/A49/A50, OP79/80/81/82/83, Source86/87/88, COMP118/119/120 and CLASS119/120/121/122 are integrated
+Iterator49/50/51/52/53, V99/V100/V101/V102, M132/M133/M134/M135/M136/M137, A46/A47/A48/A49/A50, OP79/80/81/82/83, Source86/87/88, COMP118/119/120 and CLASS119/120/121/122 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
