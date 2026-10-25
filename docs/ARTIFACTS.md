@@ -263,6 +263,12 @@ two preserved compile stops), original2 packets, app0 results, immutable
 failed/corrected author and peer snapshots and the isolated30/386/422/manifest patch.
 SHA-256 `aaf7bf4352b61aec50600cc0a1bac5c5ac30e7a40867a930694c4c0bd181e03b`.
 
+The multiple-entry WeakMap last-owner teardown proof is in
+`../php-spec-evidence-archive/weakmap-multiple-entry-teardown-142/manifest.json`:
+441,658 bytes/114 members under `.tools/m142/`, five complete reports, original2
+packets, immutable author/peer snapshots and the isolated422 teardown patch.
+SHA-256 `35c83747a9c98d004d549d571678fb38c6a1a402396366428d3c451bba463b73`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

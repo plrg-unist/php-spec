@@ -126,9 +126,37 @@ removal preserves the prefix record. These and excluded-consumer queries are
 constructed/helper controls with no extra PHP credit. Native/genuine refusals
 retain `c5ccf2792`/411. Original app0 iteration-name and author record-list syntax
 failures remain zero; only corrected preflight/author repeat, without source or
-native replay. CONFIG/GC/foreach/teardown and old392/402/408 new-kind fallbacks
-stay explicit exclusions. Wider payload/property/class/callback forms,
+native replay. At that cut, CONFIG/GC/foreach/teardown and old392/402/408
+new-kind fallbacks stay explicit exclusions. Wider payload/property/class/callback forms,
 replacement/explicit unset and cross-map/reentry/Fiber histories remain partial.
+[Review and recovery](../../coverage/semantics/weak-map-review.json).
+
+## Last-owner multiple-entry Map teardown
+
+M142 authenticates the actual popped Map release/owner0, canonical leaf-value
+table, independently owned live Keys and every pending slot job. Before any
+Value decrement, all Key registrations are removed into old empty-Map storage.
+The existing pin retains Map allocation and pending weak notification while
+`entries_nodes`/`destruction_values` transfers each slot without deduplication.
+Existing pending-release closure keeps cleanup active after normalization.
+Only twenty lines in422 change;257/39/386/30 and the ordered manifest stay exact.
+
+Two originals and author144/3 plus peer156/3 pass 300 Boolean/six raw transitions
+at `61a02e28e`/412. Separate X retires before Y starts its freeing pin. Shared
+Value has two pending job owners, then one after the retained first decrement,
+then an own freeing pin before physical disposal. Map allocation and both Keys
+survive these Value jobs; final Map/Value weak-null and independent Key retirement
+match the complete native endings. The fixtures record pending Map notification
+without assuming a mid-pin weak-Map get result.
+
+An added external Map-root counterstate changes ROOTS/owners while preserving
+allocated nodes/edges; the generic retained-release branch keeps the table and
+Values. It adds no PHP source credit. Native/genuine teardown refusals retain
+`70b7d5a0c`/412. All repaired/focused checks pass first execution, with no replay,
+cap increase or separate preflight. Wider Key properties/classes, non-leaf,
+reference/array/callback Values, multiple-entry replacement/explicit unset,
+iteration/CONFIG/GC and cross-map/freeing/reentry/Fiber combinations remain partial.
+Keys outside the authenticated retained-live shape still refuse.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
 ## Destructor-free singleton ephemeron collection
