@@ -157,7 +157,13 @@ $string_bytes($throwable_field(S_error, n_error, "message")) = ($ptascii("Cannot
 S_one_budget = $drive_steps(S, 1)
 S_one_budget.COMPLETION = BUDGET
 S_one = S_one_budget[.COMPLETION = NORMAL]
-S_one.TODO = (THROW_SEARCH n_error) :: ptask_error*
+S_one.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_error*
+pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_generator)]
+pdestructionoperation.PENDING = (n_error)
+pdestructionoperation.SOURCE = GENERATOR_ARGS pgeneratorop eps eps
+pdestructionoperation.VALUE = KNOWN PNULL
+$destructor_release_valid(S_one, pdestructionrelease)
+$destructor_operation_valid(S_one, pdestructionoperation)
 S_one.OBJECTS = S_error.OBJECTS
 S_one.OBJECTS[n_fiber] = FIBER pfiber
 S_one.OBJECTS[n_generator] = GENERATOR pgenerator
