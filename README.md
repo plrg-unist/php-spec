@@ -52,8 +52,13 @@ ordinary non-Stringable objects. Outer copying and inner COW preserve separate t
 object identities stay shared. Saved chains and outside aliases preserve child
 destructor timing; empty children leave outer array truth unchanged. See the
 [child-array review](coverage/semantics/undefined-comparison-array-payload-review.json).
+DIRECT child entries now admit recursive acyclic graphs of DIRECT array edges,
+with primitive or ordinary non-Stringable object leaves. Path-local checks allow
+shared subtrees; deep COW and final graph release preserve object identity and
+destructor timing. Nested aliases and deeper ALIAS payloads remain partial. See the
+[DIRECT graph review](coverage/semantics/undefined-comparison-direct-array-graph-review.json).
 Both-missing pairs, including one missing name twice, can resume if the first
-handler defines the later scalar, flat array or ordinary object. `$x == $x` can
+handler defines the later scalar, admitted array or ordinary object. `$x == $x` can
 then be false and `$x > $x` true. Greater operators check source right first. All seven comparison operators
 also stage a second Warning if the later physical CV stays missing, freezing both NULLs
 despite writes from the second handler.

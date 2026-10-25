@@ -8,7 +8,6 @@ from undefined_scalar_compare_captured_primitive_cases import CASES
 family.CASES = CASES
 family.UNSUPPORTED = {
     'captured-object-boundary': ('error-handler ingress requires a producer continuation', b'B|'),
-    'captured-nested-boundary': ('error-handler ingress requires a producer continuation', b'B|'),
 }
 family.BASELINE = ('error-handler ingress requires a producer continuation', b'')
 family_fingerprint = family.fingerprint
