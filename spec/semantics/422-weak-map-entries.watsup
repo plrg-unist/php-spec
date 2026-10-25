@@ -188,5 +188,25 @@ def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] 
 ;; Wider protocols refuse before generic tracing or storage disposal can
 ;; silently treat this table as an empty/ordinary object.
 def $weakmap_nonempty_node(S, HOBJECT n) = true -- if $weakmap_entries_at(S, n)
+dec $weakmap_entries_keys_held(pstate, pweakmapentry*) : bool
+def $weakmap_entries_keys_held(S, eps) = true
+def $weakmap_entries_keys_held(S, pweakmapentry :: pweakmapentry_tail*) = ($($heap_owners($heap_graph(S), HOBJECT pweakmapentry.KEY) > 0) /\ $weakmap_entries_keys_held(S, pweakmapentry_tail*))
+dec $weakmap_entries_free_allowed(pstate, nat, pdestructionrelease) : bool
+def $weakmap_entries_free_allowed(S, n_map, pdestructionrelease) = true
+  -- if $weakmap_entries_at(S, n_map)
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
+  -- if $destructor_release_valid(S, pdestructionrelease)
+  -- if $heap_owners($heap_graph(S), HOBJECT n_map) = 0
+  -- if $weakmap_entries_table_valid(S, n_map, eps)
+  -- if pweakmapentry_all* = $weakmap_entries_contents(S, n_map)
+  -- if $weakmap_entries_keys_held(S, pweakmapentry_all*)
+  -- if $destructor_jobs_valid(S, $destruction_values($weakmap_entries_nodes(pweakmapentry_all*)))
+def $weakmap_entries_free_allowed(S, n_map, pdestructionrelease) = false -- otherwise
+;; Unregister every Key before the first value decrement. The old empty-Map
+;; pin retains allocation/notification while each pending slot is retired.
+def $destruction_storage_free(S, HOBJECT n_map, pdestructionrelease) = $destructor_release_begin($gc_store_retire($instance_storage_called(S[.OBJECTS[n_map] = WEAKMAP eps][.TODO = (INSTANCE_STORAGE_STEP {OBJECT n_map, HANDLE S.DESTRUCTION.HANDLES[n_map], SLOTS eps, NEXT 0, NOTIFY $weakref_find(S, S.ALLOCATIONS, n_map), CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n_map), HOBJECT n_map), $destruction_values($weakmap_entries_nodes(pweakmapentry_all*)))
+  -- if $weakmap_entries_free_allowed(S, n_map, pdestructionrelease)
+  -- if pweakmapentry_all* = $weakmap_entries_contents(S, n_map)
 def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $destructor_release_replace(S, pdestructionrelease[.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionrelease.JOBS])[.COMPLETION = UNSUPPORTED "multiple-entry WeakMap storage destruction"]
   -- if $weakmap_entries_at(S, n)
+  -- if ~$weakmap_entries_free_allowed(S, n, pdestructionrelease)
