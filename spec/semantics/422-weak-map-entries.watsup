@@ -1,0 +1,192 @@
+;; Multiple entries retain the old empty/singleton representation on reduction.
+;; Keys are weak; each value slot contributes its own physical owner edge.
+def $weakmap_object(WEAKMAPENTRIES pweakmapentry*) = true
+def $weakmap_entries_at(S, n) = true
+  -- if $weakmap_at(S, n)
+  -- if S.OBJECTS[n] = WEAKMAPENTRIES pweakmapentry*
+def $weakmap_entries_at(S, n) = false -- otherwise
+def $object_name(S, n) = $ptascii("WeakMap")
+  -- if S.OBJECTS[n] = WEAKMAPENTRIES pweakmapentry*
+def $class_instanceof(S, POBJECT n, ptbytes) = ($ptlc($typed_callable_name(ptbytes)) <- [$ptascii("weakmap"), $ptascii("arrayaccess"), $ptascii("countable"), $ptascii("iteratoraggregate"), $ptascii("traversable")])
+  -- if S.OBJECTS[n] = WEAKMAPENTRIES pweakmapentry*
+def $typed_object_exact(S, ptbranch*, POBJECT n) = ($typed_class_type(ptbranch*, $ptascii("WeakMap")) \/ $typed_class_type(ptbranch*, $ptascii("ArrayAccess")) \/ $typed_class_type(ptbranch*, $ptascii("Countable")) \/ $typed_class_type(ptbranch*, $ptascii("IteratorAggregate")) \/ $typed_class_type(ptbranch*, $ptascii("Traversable")))
+  -- if S.OBJECTS[n] = WEAKMAPENTRIES pweakmapentry*
+def $typed_given(S, POBJECT n) = $ptascii("WeakMap")
+  -- if S.OBJECTS[n] = WEAKMAPENTRIES pweakmapentry*
+
+dec $weakmap_entries_nodes(pweakmapentry*) : pnode*
+def $weakmap_entries_nodes(eps) = eps
+def $weakmap_entries_nodes(pweakmapentry :: pweakmapentry_tail*) = $weakmap_value_nodes(pweakmapentry.VALUE) ++ $weakmap_entries_nodes(pweakmapentry_tail*)
+def $node_children(S, HOBJECT n) = $weakmap_entries_nodes(pweakmapentry*)
+  -- if S.OBJECTS[n] = WEAKMAPENTRIES pweakmapentry*
+dec $weakmap_entries_find(pweakmapentry*, nat) : pweakmapentry?
+def $weakmap_entries_find(eps, n_key) = eps
+def $weakmap_entries_find(pweakmapentry :: pweakmapentry_tail*, n_key) = (pweakmapentry)
+  -- if pweakmapentry.KEY = n_key
+def $weakmap_entries_find(pweakmapentry :: pweakmapentry_tail*, n_key) = $weakmap_entries_find(pweakmapentry_tail*, n_key)
+  -- if pweakmapentry.KEY =/= n_key
+def $weakmap_has_key(S, n_map, n_key) = true
+  -- if $weakmap_entries_at(S, n_map)
+  -- if S.OBJECTS[n_map] = WEAKMAPENTRIES pweakmapentry*
+  -- if $weakmap_entries_find(pweakmapentry*, n_key) =/= eps
+dec $weakmap_entries_delete(pweakmapentry*, nat) : pweakmapentry*
+def $weakmap_entries_delete(eps, n_key) = eps
+def $weakmap_entries_delete(pweakmapentry :: pweakmapentry_tail*, n_key) = $weakmap_entries_delete(pweakmapentry_tail*, n_key)
+  -- if pweakmapentry.KEY = n_key
+def $weakmap_entries_delete(pweakmapentry :: pweakmapentry_tail*, n_key) = pweakmapentry :: $weakmap_entries_delete(pweakmapentry_tail*, n_key)
+  -- if pweakmapentry.KEY =/= n_key
+dec $weakmap_entries_pack(pweakmapentry*) : pobject
+def $weakmap_entries_pack(eps) = WEAKMAP eps
+def $weakmap_entries_pack([pweakmapentry]) = WEAKMAP (pweakmapentry)
+def $weakmap_entries_pack(pweakmapentry*) = WEAKMAPENTRIES pweakmapentry* -- if $(|pweakmapentry*| >= 2)
+dec $weakmap_entries_contents(pstate, nat) : pweakmapentry*
+def $weakmap_entries_contents(S, n_map) = [pweakmapentry]
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+def $weakmap_entries_contents(S, n_map) = pweakmapentry*
+  -- if S.OBJECTS[n_map] = WEAKMAPENTRIES pweakmapentry*
+def $weakmap_entries_contents(S, n_map) = eps -- otherwise
+
+;; Only methodless leaf values enter the new table. References/arrays keep
+;; their earlier singleton protocols, without an implicit multi-value lift.
+dec $weakmap_entries_value_allowed(pstate, pweakmapvalue) : bool
+def $weakmap_entries_value_allowed(S, POBJECT n_value) = true
+  -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_value] = INSTANCE porigin
+  -- if ~$instance_storage_freeing(S, n_value)
+  -- if $node_children(S, HOBJECT n_value) = eps
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.METHODS = eps
+  -- if $destructor_method(S, n_value) = eps
+def $weakmap_entries_value_allowed(S, pweakmapvalue) = false -- otherwise
+dec $weakmap_entries_valid(pstate, pweakmapentry*, nat, nat*) : bool
+def $weakmap_entries_valid(S, eps, n_map, n_freeing*) = true
+def $weakmap_entries_valid(S, pweakmapentry :: pweakmapentry_tail*, n_map, n_freeing*) = true
+  -- if n_key = pweakmapentry.KEY
+  -- if $weakmap_entries_find(pweakmapentry_tail*, n_key) = eps
+  -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_key] = STDINSTANCE
+  -- if ~$instance_storage_freeing(S, n_key) \/ n_key <- n_freeing*
+  -- if $objectprops_at(S.OBJECTPROPS, n_key) = (eps)
+  -- if $object_table_at(S.OBJECTTABLES, n_key) = eps
+  -- if $node_children(S, HOBJECT n_key) = eps
+  -- if $weakmap_before_valid(S, pweakmapentry)
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
+  -- if $weakmap_entries_value_allowed(S, pweakmapentry.VALUE)
+  -- if $weakmap_entries_valid(S, pweakmapentry_tail*, n_map, n_freeing*)
+def $weakmap_entries_valid(S, pweakmapentry*, n_map, n_freeing*) = false -- otherwise
+dec $weakmap_entries_table_valid(pstate, nat, nat*) : bool
+def $weakmap_entries_table_valid(S, n_map, n_freeing*) = true
+  -- if $weakmap_at(S, n_map) /\ ~$instance_storage_freeing(S, n_map)
+  -- if ~$weakmap_foreach_active(S.ITERATORS, n_map)
+  -- if pweakmapentry* = $weakmap_entries_contents(S, n_map)
+  -- if pweakmapentry* =/= eps
+  -- if S.OBJECTS[n_map] = $weakmap_entries_pack(pweakmapentry*)
+  -- if $objectprops_at(S.OBJECTPROPS, n_map) = eps
+  -- if $object_table_at(S.OBJECTTABLES, n_map) = eps
+  -- if $objectprops_valid(S, S.OBJECTPROPS)
+  -- if $weakmap_entries_valid(S, pweakmapentry*, n_map, n_freeing*)
+  -- if $heap_valid($heap_graph(S))
+def $weakmap_entries_table_valid(S, n_map, n_freeing*) = false -- otherwise
+
+def $weakmap_entries_write_allowed(S, paccess) = true
+  -- if paccess.MODE = ACCESS_SET /\ ~paccess.LATCH /\ ~paccess.KEYHOLE
+  -- if paccess.BASE = BASE_VALUE poperand
+  -- if paccess.TASK = ASSIGN_ARRAY (BASE_DIM paccess.BASE paccess.INPUT paccess.KEYLINE) paccess.LINE false
+  -- if S.TODO = paccess.TASK :: ptask_tail*
+  -- if paccess.RHS = S.RESULT
+  -- if paccess.SELECTED = $rcontainer_selected(S, paccess.RHS)
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_entries_table_valid(S, n_map, eps)
+  -- if S_base = $quiet_operand(S, poperand)
+  -- if S_base.COMPLETION = NORMAL /\ S_base.RESULT = KNOWN (POBJECT n_map)
+  -- if S_key = $quiet_operand(S, paccess.INPUT)
+  -- if S_key.COMPLETION = NORMAL /\ S_key.RESULT = KNOWN paccess.OFFSET
+  -- if S_value = $quiet_operand(S, paccess.SELECTED)
+  -- if S_value.COMPLETION = NORMAL /\ S_value.RESULT = KNOWN paccess.VALUE
+  -- if $access_valid(S, paccess[.PHASE = ACCESS_CALL $ptascii("offsetSet")])
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
+  -- if $objectprops_at(S.OBJECTPROPS, n_key) = (eps)
+  -- if $object_table_at(S.OBJECTTABLES, n_key) = eps
+  -- if $node_children(S, HOBJECT n_key) = eps
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps
+  -- if $weakmap_entries_value_allowed(S, paccess.VALUE)
+def $weakmap_entries_write_allowed(S, paccess) = false -- otherwise
+def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = $weakmap_entries_pack(pweakmapentry* ++ [{KEY n_key, VALUE paccess.VALUE, BEFORE $weakref_find(S, S.ALLOCATIONS, n_key)}])], paccess, pvalue_result)
+  -- if ptbytes = $ptascii("offsetSet") /\ $weakmap_entries_write_allowed(S, paccess)
+  -- if paccess.OBJECT = (n_map)
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if pweakmapentry* = $weakmap_entries_contents(S, n_map)
+  -- if S_read = $quiet_operand(S, paccess.SELECTED)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue_result
+
+dec $weakmap_entries_access_allowed(pstate, paccess, ptbytes) : bool
+def $weakmap_entries_access_allowed(S, paccess, ptbytes) = true
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_entries_at(S, n_map)
+  -- if $weakmap_entries_table_valid(S, n_map, eps)
+  -- if (ptbytes = $ptascii("offsetGet") /\ $weakmap_read_allowed(S, paccess)) \/ (ptbytes = $ptascii("offsetExists") /\ ($weakmap_presence_allowed(S, paccess) \/ $weakmap_quiet_read_allowed(S, paccess)))
+def $weakmap_entries_access_allowed(S, paccess, ptbytes) = false -- otherwise
+def $access_call(S, paccess, ptbytes) = $key_read_done(S, $weakmap_value(S, pweakmapentry.VALUE))
+  -- if $weakmap_entries_access_allowed(S, paccess, ptbytes)
+  -- if paccess.MODE = ACCESS_READ KEY_R \/ paccess.MODE = ACCESS_READ KEY_IS
+  -- if paccess.OBJECT = (n_map)
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = (pweakmapentry)
+def $access_call(S, paccess, ptbytes) = $throw_scalar(S, "Error", $ptascii("Object ") ++ $object_name(S, n_key) ++ $ptascii("#") ++ $ntunsigned(S.DESTRUCTION.HANDLES[n_key]) ++ $ptascii(" not contained in WeakMap"), paccess.LINE)
+  -- if ptbytes = $ptascii("offsetGet") /\ $weakmap_entries_access_allowed(S, paccess, ptbytes)
+  -- if paccess.OBJECT = (n_map)
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = eps
+def $access_call(S, paccess, ptbytes) = $key_read_done(S, PNULL)
+  -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_entries_access_allowed(S, paccess, ptbytes)
+  -- if paccess.MODE = ACCESS_READ KEY_IS
+  -- if paccess.OBJECT = (n_map)
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = eps
+def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, ~b)
+  -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_entries_access_allowed(S, paccess, ptbytes)
+  -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
+  -- if paccess.OBJECT = (n_map)
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) =/= eps
+def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, b)
+  -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_entries_access_allowed(S, paccess, ptbytes)
+  -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
+  -- if paccess.OBJECT = (n_map)
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = eps
+def $access_call(S, paccess, ptbytes) = S[.COMPLETION = UNSUPPORTED "WeakMap multiple-entry dimension protocol"]
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_entries_at(S, n_map)
+  -- if ptbytes =/= $ptascii("offsetSet") \/ ~$weakmap_entries_write_allowed(S, paccess)
+  -- if ~$weakmap_entries_access_allowed(S, paccess, ptbytes)
+
+;; Keep cleanup active until the removed slot's release completes, even when
+;; normalizing to the old singleton removes the new representation itself.
+def $weakmap_entries_present(S, eps) = false
+def $weakmap_entries_present(S, (HOBJECT n) :: pnode_tail*) = true
+  -- if $weakmap_entries_at(S, n)
+def $weakmap_entries_present(S, (HOBJECT n) :: pnode_tail*) = $weakmap_entries_present(S, pnode_tail*)
+  -- if ~$weakmap_entries_at(S, n)
+def $weakmap_entries_present(S, (HCELL n) :: pnode_tail*) = $weakmap_entries_present(S, pnode_tail*)
+def $weakmap_entries_present(S, (HARRAY n) :: pnode_tail*) = $weakmap_entries_present(S, pnode_tail*)
+def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = $weakmap_entries_pack($weakmap_entries_delete(pweakmapentry*, n_key))][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = $weakmap_notice_wrapper(S, pweakmapentry)]) :: ptask_tail*], $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
+  -- if $weakmap_entries_at(S, n_map)
+  -- if $weakmap_entries_table_valid(S, n_map, [n_key])
+  -- if S.OBJECTS[n_map] = WEAKMAPENTRIES pweakmapentry*
+  -- if $weakmap_entries_find(pweakmapentry*, n_key) = (pweakmapentry)
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
+  -- if pinstancestorage.OBJECT = n_key
+  -- if $instance_storage_valid(S, pinstancestorage)
+  -- if pinstancestorage.NEXT = 0 /\ pinstancestorage.SLOTS = eps /\ pinstancestorage.NOTIFY = eps
+  -- if $destructor_jobs_valid(S, $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
+
+;; Wider protocols refuse before generic tracing or storage disposal can
+;; silently treat this table as an empty/ordinary object.
+def $weakmap_nonempty_node(S, HOBJECT n) = true -- if $weakmap_entries_at(S, n)
+def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $destructor_release_replace(S, pdestructionrelease[.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionrelease.JOBS])[.COMPLETION = UNSUPPORTED "multiple-entry WeakMap storage destruction"]
+  -- if $weakmap_entries_at(S, n)

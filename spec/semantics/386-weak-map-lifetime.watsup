@@ -7,6 +7,9 @@ def $weakmap_at(S, n) = true
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
   -- if $weakmap_object(S.OBJECTS[n])
 def $weakmap_at(S, n) = false -- otherwise
+dec $weakmap_entries_at(pstate, nat) : bool
+dec $weakmap_entries_write_allowed(pstate, paccess) : bool
+dec $weakmap_entries_present(pstate, pnode*) : bool
 ;; Cursor rows are metadata; the saved FOREACH_NEXT task alone owns DATA.
 dec $weakmap_foreach_cursor_map(piterator, nat) : bool
 def $weakmap_foreach_cursor_map(OBJECTITER n n_map n_position b_ref, n_map) = true
@@ -291,6 +294,7 @@ def $access_call(S, paccess, ptbytes) = $throw_scalar(S, "Error", $ptascii("Obje
   -- if ptbytes = $ptascii("offsetGet")
   -- if $weakmap_read_allowed(S, paccess)
   -- if paccess.OFFSET = POBJECT n_key
+  -- if ~$weakmap_entries_at(S, n_map)
   -- if ~$weakmap_has_key(S, n_map, n_key)
 ;; BP_VAR_IS reads return the stored value without a presence/get round trip.
 ;; Missing keys return null to the retained quiet language consumer.
@@ -325,6 +329,7 @@ def $access_call(S, paccess, ptbytes) = $key_read_done(S, PNULL)
   -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_quiet_read_allowed(S, paccess)
   -- if paccess.OBJECT = (n_map)
   -- if paccess.OFFSET = POBJECT n_key
+  -- if ~$weakmap_entries_at(S, n_map)
   -- if ~$weakmap_has_key(S, n_map, n_key)
 ;; has_dimension tests the stored zval directly. It neither calls offsetGet
 ;; nor copies the value, and uses the ordinary terminal test carrier.
@@ -354,6 +359,7 @@ def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, b)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
   -- if paccess.OBJECT = (n_map)
   -- if paccess.OFFSET = POBJECT n_key
+  -- if ~$weakmap_entries_at(S, n_map)
   -- if ~$weakmap_has_key(S, n_map, n_key)
 def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, pweakmapentry.VALUE =/= PNULL)
   -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_presence_allowed(S, paccess)
@@ -409,6 +415,7 @@ def $access_call(S, paccess, ptbytes) = $access_done(S, paccess, PNULL)
   -- if $weakmap_at(S, n_map)
   -- if ptbytes = $ptascii("offsetUnset") /\ $weakmap_unset_allowed(S, paccess)
   -- if paccess.OFFSET = POBJECT n_key
+  -- if ~$weakmap_entries_at(S, n_map)
   -- if ~$weakmap_has_key(S, n_map, n_key)
 def $access_call(S, paccess, ptbytes) = S[.COMPLETION = UNSUPPORTED "WeakMap dimension protocol outside first insertion"]
   -- if paccess.OBJECT = (n_map)
@@ -417,6 +424,8 @@ def $access_call(S, paccess, ptbytes) = S[.COMPLETION = UNSUPPORTED "WeakMap dim
   -- if ptbytes =/= $ptascii("offsetGet") \/ ~$weakmap_read_allowed(S, paccess)
   -- if ptbytes =/= $ptascii("offsetUnset") \/ ~$weakmap_unset_allowed(S, paccess)
   -- if ptbytes =/= $ptascii("offsetExists") \/ (~$weakmap_presence_allowed(S, paccess) /\ ~$weakmap_quiet_read_allowed(S, paccess))
+  -- if ~$weakmap_entries_at(S, n_map)
+  -- if ptbytes =/= $ptascii("offsetSet") \/ ~$weakmap_entries_write_allowed(S, paccess)
 
 ;; Weak payload registration order is the actual wrapper identity at insertion.
 ;; Borrowed NOTIFY metadata stays on the existing physical key pin until the
@@ -1022,7 +1031,7 @@ def $weakmap_reference_keys_retiring(S, pnode :: pnode_tail*) = true
   -- if $weakmap_reference_key_retiring(S, pnode)
 def $weakmap_reference_keys_retiring(S, pnode :: pnode_tail*) = $weakmap_reference_keys_retiring(S, pnode_tail*)
   -- if ~$weakmap_reference_key_retiring(S, pnode)
-def $weakmap_reference_operational(S) = (S.DESTRUCTION.RELEASES =/= eps \/ S.DESTRUCTION.OPERATIONS =/= eps \/ $weakmap_reference_keys_retiring(S, S.ALLOCATIONS))
+def $weakmap_reference_operational(S) = (S.DESTRUCTION.RELEASES =/= eps \/ S.DESTRUCTION.OPERATIONS =/= eps \/ $weakmap_reference_keys_retiring(S, S.ALLOCATIONS) \/ $weakmap_entries_present(S, S.ALLOCATIONS))
 dec $weakmap_foreach_cursor_valid(pstate, nat, nat, nat) : bool
 def $weakmap_foreach_cursor_valid(S, n, n_map, n_position) = true
   -- if $(n < S.NEXTITER) /\ $(n_position <= 1)
