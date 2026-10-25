@@ -5,6 +5,12 @@ PHP 8.5.10 CLI profile. It extends the real ownership graph and WeakReference
 protocol; unreachable cycles remain allocated until collection. It does not
 establish complete GC, WeakMap, or request-freeing semantics.
 
+Bounded WeakMap collection also handles finite independent direct entry pairs,
+selectively retiring white pairs and normalizing the protected survivor through
+this collector's unchanged planning, counting and disposal. Singleton reference,
+array and copy/COW lanes retain their separate bounds; see the
+[WeakMap contract](WEAK-REFERENCES.md).
+
 `gc_collect_cycles`, `gc_enable`, `gc_disable`, and `gc_enabled` use the existing
 source call and argument protocols. Manual collection works while automatic GC
 is disabled. A nested collection during a collector destructor returns zero.

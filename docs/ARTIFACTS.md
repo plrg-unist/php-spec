@@ -281,6 +281,12 @@ The multiple-entry WeakMap reference-sharing proof is in
 packets, app0 preflight, immutable author/peer snapshots and the isolated30/422 patch.
 SHA-256 `208676595b098ca4d8a593ddebf3b0641e27f7ecb294389c31c0e27b985c03ca`.
 
+The selective multiple-entry WeakMap ephemeron proof is in
+`../php-spec-evidence-archive/weakmap-multiple-entry-ephemeron-145/manifest.json`:
+483,023 bytes/123 members under `.tools/m145/`, six complete reports, original2
+packets, app0 preflight, immutable author/peer snapshots and the isolated422 patch.
+SHA-256 `fd18be8469986efff7089777ce8f7f9522c01bad623f6c8a7d33f40629fe349a`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

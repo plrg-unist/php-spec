@@ -2986,6 +2986,16 @@ rebinding. Two originals and 326 Boolean/six raw checks pass at `cf9ccf997`/412.
 NULL/wider payloads, explicit mutations, by-value ALIAS traversal and CONFIG/GC
 remain partial. [Review](coverage/semantics/weak-map-review.json).
 
+Finite independent multi-entry ephemeron pairs now collect selectively; conditional
+tracing adds no physical owners. Ordinary collector/count rules stay unchanged.
+Two originals and 322 Boolean/three raw checks pass at `296aa24f5`/412: unheld
+collection returns 4 then 0;
+a held first Key preserves its entry while the tail collects 2, then 2 after release
+and 0 on repetition.
+The held source avoids protected Value reads before release. Wider backedges,
+payloads, maps, active contexts and callbacks remain partial.
+[Review](coverage/semantics/weak-map-review.json).
+
 An explicit array cast of a live nonfreeing map now creates a fresh empty array,
 even when populated. Results expose no entries and retain neither keys nor private
 values. Two originals and 177 premises/6 actual casts cover fresh results, real

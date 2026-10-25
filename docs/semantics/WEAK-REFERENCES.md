@@ -211,6 +211,32 @@ wider payloads, explicit mutation, by-value ALIAS traversal, active read/API,
 CONFIG/GC and wider Key-notification/callback/context histories remain partial.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
+## Selective multiple-entry ephemeron collection
+
+M145 admits one global Map with finite independent DIRECT Value-to-own-Key
+backedges. Keys have empty properties; Values are parentless/methodless with one
+public untyped direct Key property. Both insertions precede backedge writes.
+All conditional Map edges are stripped for one real-root classification.
+Protected Keys restore Map-to-Value; white Keys reveal virtual Key-to-Value edges.
+Absent-Map helper roots strip without discovery. Physical owners stay unchanged.
+
+Canonical GC_FREE authority removes only complete unreachable pairs and packs
+surviving records unchanged, including BEFORE. Generic301 planning, counting and
+physical disposal stay exact. Two sources and author 146/1 plus peer 176/2 pass 322
+Boolean/three raw transitions at `296aa24f5`/412: unheld collection returns 4 then 0.
+Holding the first Key collects the tail pair (2), preserving entry presence and
+normalization, then collects the released survivor (2) with a final 0.
+No protected Value get precedes release. The second trace actually buffers A
+without X, so virtual discovery is tested rather than inferred from counters.
+
+Added-root stale-plan and incomplete-pair refusals, active-cursor and nil-Map-root
+queries are constructed/helper controls with no PHP credit. Stale OBJECTS IDs
+remain nonowning after physical retirement. Native/genuine refusals retain
+`2ccf7e19a`/412; app0 is separate, and all affected checks pass first execution
+without replay or cap increase. Wider maps/backedges, ALIAS/array payloads,
+callbacks, active iterators/frames/Fibers/workers and mixed graphs remain partial.
+[Review and recovery](../../coverage/semantics/weak-map-review.json).
+
 ## Destructor-free singleton ephemeron collection
 
 Modules301/386 admit explicit collection for one live map, a `stdClass` leaf key
