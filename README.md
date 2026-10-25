@@ -2939,8 +2939,9 @@ source; earlier cuts retain their inputs.
 Wrappers also satisfy nominal `WeakReference` argument and property types after
 their referent retires; diagnostics retain the actual internal class name.
 
-[WeakMap386](docs/semantics/WEAK-REFERENCES.md) supports empty construction and one
-first insertion with a `stdClass` leaf key and ordinary leaf value. The map owns
+[WeakMap386](docs/semantics/WEAK-REFERENCES.md) retains its reviewed singleton
+protocols; module422 adds the multiple-entry lane below. The original first-entry
+lane uses a `stdClass` leaf key and ordinary leaf value. The map owns
 its value; the key stays nonowning. Actual key free transfers the entry to real
 destructor release jobs while retaining its storage pin. Early key wrappers become
 null before the value callback; a wrapper registered after insertion returns the
@@ -2955,6 +2956,14 @@ checks pass at their separate cuts. Wider map free and wider ephemeron GC stop e
 general multi-map order, wider wrapper creation or mutation during freeing,
 additional strong key/map owners retained beyond callback cleanup and wider
 entry/read/mutation protocols remain required.
+
+Multiple methodless leaf entries now retain separate lookup identities and one
+physical Value owner per slot, including shared Values. Two originals and 286
+Boolean/five raw checks pass at `8f71bbef1`/412: one Key death transfers only its
+entry to a release job and preserves the sibling, then normalizes to old singleton
+storage. Original preflight/fixture compile failures stay zero. Other payloads,
+replacement/explicit unset, active iteration, GC/CONFIG and multiple-entry Map
+teardown remain partial. [Review](coverage/semantics/weak-map-review.json).
 
 An explicit array cast of a live nonfreeing map now creates a fresh empty array,
 even when populated. Results expose no entries and retain neither keys nor private

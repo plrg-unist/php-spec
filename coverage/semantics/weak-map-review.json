@@ -2553,5 +2553,53 @@
     "artifact_manifest": "../php-spec-evidence-archive/weakmap-entry-reference-ephemeron-140/manifest.json",
     "archive_sha256": "96aadbea9e3f28b2ca3fcf7a069824fdb54cf5d389974ff01ebaadb2275cd601",
     "recovery": "Restore28d3b297 at original .tools/weakmap-entry-reference-ephemeron-140 path, or apply isolated386 patch to58b7; restore58b7 for genuine baseline reproduction. Extract .tools/m140 and use matching project-local providers. Five closed reports preserve original2 sources/path/cwd, parsed/checked/request/native/model streams, immutable author/peer snapshots and worker120. No binaries/copied build tree or production archive dependency."
+  },
+  "multiple_entries_lifetime_141": {
+    "status": "independently_reviewed_partial",
+    "scope": "Finite ordered entries with unique live empty-property stdClass Keys and direct parentless methodless leaf INSTANCE Values. Two PHP witnesses use two separate Values or one shared Value, observe lookup/isset identity, then retire one Key at a time. Arbitrary table length uses recursive helpers; source witnesses have two entries.",
+    "base_revision": "c5ccf2792d3f5d532635ae53c01721f270063d54",
+    "runtime_revision": "8f71bbef106658919ecc55bf16df82f71b4aa9d5",
+    "baseline_modules": 411,
+    "modules": 412,
+    "representation": "Additive WEAKMAPENTRIES stores canonical lists of at least two records. Old empty/singleton option values and pweakmapvalue stay unchanged. Reduction preserves remaining record identity and BEFORE exactly. Every value slot contributes its own physical edge, including duplicate shared Value edges; keys remain weak.",
+    "change": "Actual second-key source/RHS/selected operands authenticate append. Ordinary read/quiet read/presence use the actual matching entry. New-table presence activates existing eager cleanup; a genuine freeing-Key pin permits exactly that target while siblings stay quiescent. Notification transfers only the removed entry edge into one Value job and normalizes survivors. Existing pending-release closure completes cleanup after normalization.",
+    "source_acceptance": {
+      "agreements": 2,
+      "revision": "8f71bbef106658919ecc55bf16df82f71b4aa9d5",
+      "native_outputs": {
+        "separate": "P:11;R:11;D:1;A:1;X:1;B:1;Y:1;P:1;B:1;Y:1;M:1;E;",
+        "shared": "P:11;R:1;A:1;V:1;B:1;P:1;B:1;V:1;M:1;E;"
+      },
+      "baseline": "Both genuine baseline cases refuse the second-key write with WeakMap dimension protocol outside first insertion, before any output; zero agreement."
+    },
+    "focused_acceptance": {
+      "revision": "8f71bbef106658919ecc55bf16df82f71b4aa9d5",
+      "author_boolean": 158,
+      "author_raw": 3,
+      "peer_boolean": 128,
+      "peer_raw": 2,
+      "total_boolean": 286,
+      "total_raw": 5
+    },
+    "authority": "Author binds the actual second ASSIGN plan, RHS/Key and public raw append. Independent Values become sole map-owned objects; first Key notification retires only X, preserving Y. Borrowed Key notification remains visible while X starts its own freeing pin, whose weak get is NULL before physical disposal. Peer proves shared owner2 before notification, owner2 across one-edge-to-job transfer, then owner1 after that job retires; final singleton cleanup releases the last owner.",
+    "constructed_controls": "A valid-heap old NULL entry preserves source/access authority but refuses conversion through the public driver. Duplicate-Key metadata preserves the shared physical heap and fails table uniqueness. Tail deletion/pack checks preserve the untouched prefix record. GC/CONFIG/foreach exclusions are helper-only checks on the reached table. None adds PHP source credit.",
+    "compatibility": "Old supported singleton paths retain their concrete values and false new-kind guards. Basic WeakMap identity/weak routing recognizes the new tag. Multiple-entry replacement/explicit unset, reference/array payloads, active cursors, CONFIG, GC and nonempty Map teardown remain explicit Unsupported; old392/402/408 new-tag defaults remain outside scope. No collector or physical ownership algorithm change.",
+    "validation": "Original990 strict/app0 stops on list/scalar iteration-name collision, fixed only by selected-entry binder rename. Original author157/3 stops before evaluation on comma notation for a record list; an equivalent cons-list binding passes158/3. The peer receives the same notation correction before its first execution. Both original outputs/fixtures/reports remain zero; no native/baseline/source replay or cap increase.",
+    "caps": "Native20/source120/strict45/author240/peer300, jobs1. Corrected app0 preflight adds no execution credit. All parents/workers/groups reaped and CPU3 released.",
+    "report_sha256": {
+      ".tools/m141/model-weakmap-multiple-entry-baseline-va765v5a/report.json": "0d82378661a68f1f55d2c0e5abf112d5a1b07bdc9ce785ff26cfb3c9b031f24c",
+      ".tools/m141/model-weakmap-multiple-entry-repaired-a54c6o99/report.json": "1b3b0ca61b12df57bd5e87188654f280ec757772d3b104a271f76c05c3272c09",
+      ".tools/m141/native-weakmap-multiple-entry-u4v8i3d1/report.json": "defad9f422a354c0bdd081c189b3edfb91a6c0245223a231d0590b4c2d692184",
+      ".tools/m141/preflight-lg6wkscs/report.json": "d468b361b73befc0482202821097bda1347d697a2bc845211312a3aa3dcbb9aa",
+      ".tools/m141/preflight-tu07rnh5/report.json": "c978a024291792b0e55b1589d7a549981ca62df5f6b00dcf30345772278baab5",
+      ".tools/m141/public-bag1s6zj/report.json": "c476fd49eb0dcf3e763ea0360e585254e3b74a6ff4bf7634d2291e6b5fae2f2a",
+      ".tools/m141/public-mj3qjedy/report.json": "8c09aebb95e57ffda4b8304de7c28d32deda552e55be350a9bde6a7c8c4e4d23",
+      ".tools/m141/reviewer-x0h5bxrb/report.json": "99963670811f0c26f24d78f93274de24818e588c61b97d3f15cfc56ab989745b"
+    },
+    "limits": "Wider Key properties/classes, value/reference/array/callback forms, multiple-entry replacement/explicit unset/iteration/CONFIG/GC/Map teardown and cross-map/freeing/reentry/Fiber combinations remain partial. No Countable API, engine-bug or intentional-divergence claim.",
+    "actual_parent_review": "Parent is exact native/baselinec5ccf2792d3f5d532635ae53c01721f270063d54/411 with no incoming delta. Runtime30/386/422 and ordered412 manifest are exact tested8f71; all other spec paths are parent-exact. Every old ledger object and inventory prefix is preserved; own PROGRESS clause/list changes only. Native/baseline411, accepted source/focused412 and both zero-credit compile stops retain their original cuts; publication adds no execution credit.",
+    "artifact_manifest": "../php-spec-evidence-archive/weakmap-multiple-entry-lifetime-141/manifest.json",
+    "archive_sha256": "aaf7bf4352b61aec50600cc0a1bac5c5ac30e7a40867a930694c4c0bd181e03b",
+    "recovery": "Restore8f71bbef1 at original .tools/weakmap-multiple-entry-lifetime-141 path, or apply isolated30/386/422/manifest patch to c5cc; restore c5cc for genuine baseline411 reproduction and990 for the original failed preflight. Extract .tools/m141 and use matching project-local providers. Eight reports preserve original2 sources/path/cwd, parsed/checked/request/native/model streams, app0 outputs, immutable failed/corrected author and final peer snapshots, and worker120. No binaries/copied build tree or production archive dependency."
   }
 }

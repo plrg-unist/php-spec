@@ -97,6 +97,40 @@ cleanup and wider map/ephemeron protocols remain required. Earlier cuts and
 failures retain their separate evidence in the
 [ledger](../../coverage/semantics/weak-map-review.json).
 
+## Multiple entries and selective Key retirement
+
+M141 adds an ordered `WEAKMAPENTRIES` storage alternative for at least two
+records, preserving all old empty/singleton values. Actual source/RHS/selected
+operands authenticate appends of unique empty-property `stdClass` Keys and direct
+parentless methodless leaf Values. Read, quiet read and presence select the actual
+entry. Recursive helpers handle finite lists; the two PHP witnesses have two
+entries with separate Values or one shared Value. Every slot contributes its own
+physical owner edge, while Keys remain weak.
+
+New-table presence activates existing eager cleanup. A genuine freeing-Key pin
+allows only that dying Key in table validation; siblings retain normal guards.
+Notification transfers only the removed slot into one Value job and preserves
+the remaining record, including BEFORE, when normalizing to singleton storage.
+Existing pending-release closure keeps cleanup active after normalization.
+
+Source2 and author158/3 plus peer128/2 pass 286 Boolean/five raw transitions at
+`8f71bbef1`/412. Separate X retires while Y survives. Shared Value has owner2 before
+notification and across one-edge-to-job transfer, then owner1 after that job ends;
+last-Key singleton cleanup retires it. The borrowed Key wrapper remains visible
+while X's own freeing pin hides its weak get before physical disposal. Exact
+append/notification/pin budgets and full native endings pass.
+
+A valid-heap old NULL payload refuses conversion through the public driver.
+Duplicate-Key metadata preserves the shared heap and fails uniqueness; tail
+removal preserves the prefix record. These and excluded-consumer queries are
+constructed/helper controls with no extra PHP credit. Native/genuine refusals
+retain `c5ccf2792`/411. Original app0 iteration-name and author record-list syntax
+failures remain zero; only corrected preflight/author repeat, without source or
+native replay. CONFIG/GC/foreach/teardown and old392/402/408 new-kind fallbacks
+stay explicit exclusions. Wider payload/property/class/callback forms,
+replacement/explicit unset and cross-map/reentry/Fiber histories remain partial.
+[Review and recovery](../../coverage/semantics/weak-map-review.json).
+
 ## Destructor-free singleton ephemeron collection
 
 Modules301/386 admit explicit collection for one live map, a `stdClass` leaf key

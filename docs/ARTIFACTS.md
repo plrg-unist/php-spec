@@ -256,6 +256,13 @@ The shared-entry WeakMap ephemeron proof is in
 packets, immutable author/peer snapshots and the isolated386 reference-entry patch.
 SHA-256 `96aadbea9e3f28b2ca3fcf7a069824fdb54cf5d389974ff01ebaadb2275cd601`.
 
+The multiple-entry WeakMap ownership/Key-retirement proof is in
+`../php-spec-evidence-archive/weakmap-multiple-entry-lifetime-141/manifest.json`:
+637,926 bytes/138 members under `.tools/m141/`, eight reports (six complete and
+two preserved compile stops), original2 packets, app0 results, immutable
+failed/corrected author and peer snapshots and the isolated30/386/422/manifest patch.
+SHA-256 `aaf7bf4352b61aec50600cc0a1bac5c5ac30e7a40867a930694c4c0bd181e03b`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the
