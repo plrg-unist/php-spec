@@ -434,3 +434,118 @@ rule PhpStep/weakmap-entries-reference-storage-refusal: S ~> S[.COMPLETION = UNS
   -- if $iterator_lookup(S.ITERATORS, n) = (WEAKMAPREFITER n n_map n_position n_keys*)
   -- if $call_task_valid(S, FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z)
   -- if ~$weakmap_entries_reference_storage(S, n_map)
+
+;; Independent destructor-free ephemeron pairs use the ordinary GC plan/count.
+;; Their conditional edges never alter the physical ownership graph.
+dec $weakmap_entries_gc_nodes(pweakmapentry*) : pnode*
+def $weakmap_entries_gc_nodes(eps) = eps
+def $weakmap_entries_gc_nodes(pweakmapentry :: pweakmapentry_tail*) = [HOBJECT pweakmapentry.KEY, HOBJECT n_value] ++ $weakmap_entries_gc_nodes(pweakmapentry_tail*)
+  -- if pweakmapentry.VALUE = POBJECT n_value
+dec $weakmap_entries_gc_entries(pstate, pweakmapentry*, nat) : bool
+def $weakmap_entries_gc_entries(S, eps, n_map) = true
+def $weakmap_entries_gc_entries(S, pweakmapentry :: pweakmapentry_tail*, n_map) = true
+  -- if n_key = pweakmapentry.KEY
+  -- if $weakmap_entries_find(pweakmapentry_tail*, n_key) = eps
+  -- if pweakmapentry.VALUE = POBJECT n_value
+  -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
+  -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_key] = STDINSTANCE
+  -- if S.OBJECTS[n_value] = INSTANCE porigin_value
+  -- if ~$instance_storage_freeing(S, n_key) /\ ~$instance_storage_freeing(S, n_value)
+  -- if $objectprops_at(S.OBJECTPROPS, n_key) = (eps)
+  -- if $object_table_at(S.OBJECTTABLES, n_key) = eps
+  -- if $object_table_at(S.OBJECTTABLES, n_value) = eps
+  -- if $node_children(S, HOBJECT n_key) = eps
+  -- if $class_at(S.CLASSES, porigin_value) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.METHODS = eps
+  -- if $destructor_method(S, n_value) = eps
+  -- if pclassdesc.PROPERTIES = [ppropertydesc]
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.TYPE = eps
+  -- if $objectprops_at(S.OBJECTPROPS, n_value) = ([ppropertyslot])
+  -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_key))
+  -- if $node_children(S, HOBJECT n_value) = [HOBJECT n_key]
+  -- if $weakmap_before_valid(S, pweakmapentry)
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
+  -- if $weakmap_entries_gc_entries(S, pweakmapentry_tail*, n_map)
+def $weakmap_entries_gc_entries(S, pweakmapentry*, n_map) = false -- otherwise
+dec $weakmap_entries_gc_objects(pstate, pnode*, nat, pnode*) : bool
+def $weakmap_entries_gc_objects(S, eps, n_map, pnode_pairs*) = true
+def $weakmap_entries_gc_objects(S, (HOBJECT n) :: pnode_tail*, n_map, pnode_pairs*) = $weakmap_entries_gc_objects(S, pnode_tail*, n_map, pnode_pairs*)
+  -- if $(n < |S.OBJECTS|)
+  -- if n = n_map \/ (HOBJECT n) <- pnode_pairs* \/ $weakref_object(S.OBJECTS[n])
+def $weakmap_entries_gc_objects(S, (HCELL n) :: pnode_tail*, n_map, pnode_pairs*) = $weakmap_entries_gc_objects(S, pnode_tail*, n_map, pnode_pairs*)
+  -- if $(n < |S.STORE|)
+def $weakmap_entries_gc_objects(S, (HARRAY n) :: pnode_tail*, n_map, pnode_pairs*) = $weakmap_entries_gc_objects(S, pnode_tail*, n_map, pnode_pairs*)
+  -- if $(n < |S.ARRAYS|)
+def $weakmap_entries_gc_objects(S, pnode*, n_map, pnode_pairs*) = false -- otherwise
+dec $weakmap_entries_gc_strip(hedge*, nat, pweakmapentry*) : hedge*
+def $weakmap_entries_gc_strip(hedge*, n_map, eps) = hedge*
+def $weakmap_entries_gc_strip(hedge*, n_map, pweakmapentry :: pweakmapentry_tail*) = $weakmap_entries_gc_strip($weakmap_gc_strip(hedge*, n_map, n_value), n_map, pweakmapentry_tail*)
+  -- if pweakmapentry.VALUE = POBJECT n_value
+dec $weakmap_entries_gc_shape(pstate, nat) : bool
+def $weakmap_entries_gc_shape(S, n_map) = true
+  -- if S.ACTIVEFIBER = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.ITERATORS = eps
+  -- if S.GC.WORKER = eps
+  -- if $weakmap_entries_at(S, n_map) /\ ~$instance_storage_freeing(S, n_map)
+  -- if S.OBJECTS[n_map] = WEAKMAPENTRIES pweakmapentry_all*
+  -- if $(|pweakmapentry_all*| >= 2)
+  -- if $objectprops_at(S.OBJECTPROPS, n_map) = eps
+  -- if $object_table_at(S.OBJECTTABLES, n_map) = eps
+  -- if $objectprops_valid(S, S.OBJECTPROPS)
+  -- if $weakmap_entries_gc_entries(S, pweakmapentry_all*, n_map)
+  -- if $weakmap_entries_gc_objects(S, S.ALLOCATIONS, n_map, $weakmap_entries_gc_nodes(pweakmapentry_all*))
+  -- if H = $heap_graph(S)
+  -- if $heap_valid(H)
+  -- if (HOBJECT n_map) <- $heap_reach(H.ROOTS, eps, $weakmap_entries_gc_strip(H.EDGES, n_map, pweakmapentry_all*))
+def $weakmap_entries_gc_shape(S, n_map) = false -- otherwise
+def $weakmap_gc_shape(S, n_map) = true -- if $weakmap_entries_gc_shape(S, n_map)
+
+dec $weakmap_entries_gc_edges(hedge*, nat, pweakmapentry*, pnode*) : hedge*
+def $weakmap_entries_gc_edges(hedge*, n_map, eps, pnode_live*) = hedge*
+def $weakmap_entries_gc_edges(hedge*, n_map, pweakmapentry :: pweakmapentry_tail*, pnode_live*) = (HEDGE (HOBJECT n_map) (HOBJECT n_value)) :: $weakmap_entries_gc_edges(hedge*, n_map, pweakmapentry_tail*, pnode_live*)
+  -- if pweakmapentry.VALUE = POBJECT n_value
+  -- if (HOBJECT pweakmapentry.KEY) <- pnode_live*
+def $weakmap_entries_gc_edges(hedge*, n_map, pweakmapentry :: pweakmapentry_tail*, pnode_live*) = (HEDGE (HOBJECT pweakmapentry.KEY) (HOBJECT n_value)) :: $weakmap_entries_gc_edges(hedge*, n_map, pweakmapentry_tail*, pnode_live*)
+  -- if pweakmapentry.VALUE = POBJECT n_value
+  -- if ~((HOBJECT pweakmapentry.KEY) <- pnode_live*)
+def $weakmap_gc_edges(S, hedge*, pnode_roots*) = $weakmap_entries_gc_edges(hedge_stripped*, n_map, pweakmapentry_all*, pnode_live*)
+  -- if $weakmap_gc_map(S, S.ALLOCATIONS) = (n_map)
+  -- if S.OBJECTS[n_map] = WEAKMAPENTRIES pweakmapentry_all*
+  -- if hedge_stripped* = $weakmap_entries_gc_strip(hedge*, n_map, pweakmapentry_all*)
+  -- if pnode_live* = $heap_reach(pnode_roots*, eps, hedge_stripped*)
+  -- if (HOBJECT n_map) <- pnode_live*
+def $weakmap_gc_edges(S, hedge*, pnode_roots*) = $weakmap_entries_gc_strip(hedge*, n_map, pweakmapentry_all*)
+  -- if $weakmap_gc_map(S, S.ALLOCATIONS) = (n_map)
+  -- if S.OBJECTS[n_map] = WEAKMAPENTRIES pweakmapentry_all*
+  -- if hedge_stripped* = $weakmap_entries_gc_strip(hedge*, n_map, pweakmapentry_all*)
+  -- if ~((HOBJECT n_map) <- $heap_reach(pnode_roots*, eps, hedge_stripped*))
+
+dec $weakmap_entries_gc_free_valid(pweakmapentry*, pnode*, pnode*) : bool
+def $weakmap_entries_gc_free_valid(eps, pnode_free*, pnode_live*) = true
+def $weakmap_entries_gc_free_valid(pweakmapentry :: pweakmapentry_tail*, pnode_free*, pnode_live*) = true
+  -- if pweakmapentry.VALUE = POBJECT n_value
+  -- if ~((HOBJECT pweakmapentry.KEY) <- pnode_free*) /\ ~((HOBJECT n_value) <- pnode_free*)
+  -- if $weakmap_entries_gc_free_valid(pweakmapentry_tail*, pnode_free*, pnode_live*)
+def $weakmap_entries_gc_free_valid(pweakmapentry :: pweakmapentry_tail*, pnode_free*, pnode_live*) = true
+  -- if pweakmapentry.VALUE = POBJECT n_value
+  -- if (HOBJECT pweakmapentry.KEY) <- pnode_free* /\ (HOBJECT n_value) <- pnode_free*
+  -- if ~((HOBJECT pweakmapentry.KEY) <- pnode_live*) /\ ~((HOBJECT n_value) <- pnode_live*)
+  -- if $weakmap_entries_gc_free_valid(pweakmapentry_tail*, pnode_free*, pnode_live*)
+def $weakmap_entries_gc_free_valid(pweakmapentry*, pnode_free*, pnode_live*) = false -- otherwise
+dec $weakmap_entries_gc_retain(pweakmapentry*, pnode*) : pweakmapentry*
+def $weakmap_entries_gc_retain(eps, pnode_free*) = eps
+def $weakmap_entries_gc_retain(pweakmapentry :: pweakmapentry_tail*, pnode_free*) = $weakmap_entries_gc_retain(pweakmapentry_tail*, pnode_free*)
+  -- if (HOBJECT pweakmapentry.KEY) <- pnode_free*
+def $weakmap_entries_gc_retain(pweakmapentry :: pweakmapentry_tail*, pnode_free*) = pweakmapentry :: $weakmap_entries_gc_retain(pweakmapentry_tail*, pnode_free*)
+  -- if ~((HOBJECT pweakmapentry.KEY) <- pnode_free*)
+def $weakmap_gc_prepare(S, pgcplan) = S[.OBJECTS[n_map] = $weakmap_entries_pack($weakmap_entries_gc_retain(pweakmapentry_all*, pgcplan.FREESET))]
+  -- if S.TODO = (GC_FREE pgcplan) :: ptask_tail*
+  -- if $call_task_valid(S, GC_FREE pgcplan)
+  -- if pgcplan.DTORS = eps
+  -- if $weakmap_gc_map(S, S.ALLOCATIONS) = (n_map)
+  -- if S.OBJECTS[n_map] = WEAKMAPENTRIES pweakmapentry_all*
+  -- if ~((HOBJECT n_map) <- pgcplan.FREESET)
+  -- if H = $gc_graph(S)
+  -- if $weakmap_entries_gc_free_valid(pweakmapentry_all*, pgcplan.FREESET, $heap_reach(H.ROOTS, eps, H.EDGES))
