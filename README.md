@@ -1916,6 +1916,10 @@ remain required.
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
 including eager argument and frame cleanup with pending exception chains.
+Direct named Generator bodies now preserve their literal CURRENT/NEXT resumer
+when they suspend inside a Fiber. Normal resume and supplied-Throwable injection
+restore that same stack; fresh reentry chains two Errors while cached reentry
+keeps one. [Transfer review](coverage/semantics/generator-fiber-transfer-review.json).
 [Arrow Generator311](docs/semantics/ARROW-GENERATORS.md) validates eager
 parameters, deferred captures, implicit yield/delegation returns and original
 signatures. Value warnings retain the same Throwable, cached key and closed

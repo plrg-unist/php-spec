@@ -31,6 +31,17 @@ then returns its by-value completion or throws without advancing a suspended
 yield. Positional excess arguments run before the argument-count error and appear
 in its trace.
 
+A named Generator entered by direct zero-argument CURRENT or NEXT can suspend
+inside an already running Fiber. Its actual resume operation and parameter cells
+move with that VM; the running Generator owns no duplicate frame. Resume restores
+the same body and supplied-Throwable injection follows its real catch/finally.
+An outside NEXT before the first yield fails both native initialization and resume,
+chaining two Errors; with an existing cache only resume fails. The
+[transfer review](../../coverage/semantics/generator-fiber-transfer-review.json)
+keeps the original pre-target observer refusal separate from the reached transfer
+fence. Helper/delegated contexts, reference caches and wider close/collection histories
+remain unvalidated.
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter
