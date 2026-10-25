@@ -449,7 +449,7 @@ def $spaceship_read_other(S, perrorread) = $spaceship_read_operand(S, perrorread
 def $spaceship_read_other(S, perrorread) = $spaceship_read_scalar(pvalue)
   -- if perrorread.ORIGINAL = BINARY_RIGHT SPACESHIP (KNOWN pvalue) z
 def $spaceship_read_other(S, perrorread) = true -- otherwise
-;; DIRECT array descendants keep a path-local cycle check; ALIAS stays flat.
+;; DIRECT descendants keep path-local cycle checks, including ALIAS array payloads.
 ;; Saved TASK/RESULT/BASE roots retain captured tables across the callback.
 def $spaceship_read_array_entries(S, eps) = true
 def $spaceship_read_array_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = (($spaceship_read_scalar(pvalue) \/ $comparison_read_object_value(S, pvalue) \/ $comparison_read_direct_array(S, pvalue, eps)) /\ $spaceship_read_array_entries(S, pentry_tail*))
@@ -458,11 +458,7 @@ def $spaceship_read_array_entries(S, (ENTRY pkey (ALIAS n_cell)) :: pentry_tail*
   -- if S.STORE[n_cell] = DEFINED pvalue
   -- if $spaceship_read_scalar(pvalue) \/ $comparison_read_object_value(S, pvalue) \/ $comparison_read_array_payload(S, pvalue)
 def $spaceship_read_array_entries(S, pentry*) = false -- otherwise
-def $comparison_read_array_payload(S, PARRAY n_child) = true
-  -- if (HARRAY n_child) <- S.ALLOCATIONS /\ $(n_child < |S.ARRAYS|)
-  -- if S.ARRAYS[n_child].ITEMS = (ENTRY pkey (DIRECT pvalue))*
-  -- if ($spaceship_read_scalar(pvalue) \/ $comparison_read_object_value(S, pvalue))*
-def $comparison_read_array_payload(S, pvalue) = false -- otherwise
+def $comparison_read_array_payload(S, pvalue) = $comparison_read_direct_array(S, pvalue, eps)
 def $comparison_read_direct_array(S, PARRAY n_child, n_seen*) = true
   -- if (HARRAY n_child) <- S.ALLOCATIONS /\ $(n_child < |S.ARRAYS|)
   -- if ~(n_child <- n_seen*)

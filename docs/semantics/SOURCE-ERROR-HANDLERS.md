@@ -195,19 +195,22 @@ a last saved ARRAY-to-CELL-to-OBJECT chain can run destruction before store/catc
 Surviving aliases delay it. The [object-reference review](../../coverage/semantics/undefined-comparison-object-reference-array-review.json)
 checks raw ownership separately from driven destructor entry and keeps source,
 root and restore/discard machinery unchanged.
-Cells may also hold one flat child array of DIRECT primitives or ordinary non-Stringable objects.
+Cells may also hold recursive acyclic DIRECT array-edge graphs of primitives
+or ordinary non-Stringable objects, using the existing path-local validator.
 Shared-cell replacement, singleton outer unwrapping and inner COW preserve child
 owners; saved chains can run the final destructor before store/catch. Empty and
 pooled children retain outer truth. The [child-array review](../../coverage/semantics/undefined-comparison-array-payload-review.json)
 records normal/throw and source/domain/budget evidence without source/root changes.
 DIRECT descendants now admit acyclic graphs of DIRECT array edges with the same
 scalar/ordinary-object leaves. Path-local traversal allows shared subtrees;
-legacy ALIAS payloads stay flat. Captured graphs retain deep COW snapshots, while
+ALIAS payloads reuse the same DIRECT graph bound. The
+[ALIAS DAG review](../../coverage/semantics/undefined-comparison-alias-direct-dag-review.json)
+checks deep cell replacement, singleton unwrapping and retained old payloads. Captured graphs retain deep COW snapshots, while
 live root cells follow replacement and surviving value copies retain old graphs.
 Last physical child release preserves destructor order before store/catch. The
 [DIRECT graph review](../../coverage/semantics/undefined-comparison-direct-array-graph-review.json)
 checks those owners and reached-cut budgets without changing source/root rules.
-Nested aliases, deeper ALIAS payloads, internal/Stringable objects, resources
+Descendant aliases, array-edge cycles, internal/Stringable objects, resources
 and wider owning histories remain partial.
 Source certificates stay valid through those changes;
 entry/resume domain guards refuse unsupported values without another Warning.

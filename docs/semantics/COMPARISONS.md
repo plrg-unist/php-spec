@@ -120,22 +120,26 @@ saved cell. Last ARRAY-to-CELL-to-OBJECT release runs destruction before the
 outer store or catch only when no other owner remains. The
 [object-reference review](../../coverage/semantics/undefined-comparison-object-reference-array-review.json)
 checks these orders, shared property writes, outside aliases and throw cleanup.
-ALIAS payloads also admit one allocated flat child array of DIRECT primitives or
-ordinary non-Stringable objects, including empty and permanently pooled arrays.
-The DIRECT-only shape bounds eligibility before child validation. Singleton outer
+ALIAS array payloads admit allocated recursive acyclic DIRECT array-edge graphs
+of primitives or ordinary non-Stringable objects, including empty and pooled
+arrays. Their helper delegates to the same path-local DIRECT validator. Singleton outer
 copies unwrap the reference; inner COW separates child tables while their object
 identities remain shared. Shared cells follow child replacement, while an ordinary
 inner snapshot keeps its old table. Last saved ARRAY-to-CELL-to-ARRAY-to-OBJECT
 release can run destruction before store/catch; surviving aliases delay it. The
 [child-array review](../../coverage/semantics/undefined-comparison-array-payload-review.json)
-checks these owners, empty-child truth, supplied throws and budgets. Child aliases,
-deeper ALIAS payloads, cycles and wider owning histories remain partial.
+checks the original flat-child owners and budgets. The
+[ALIAS DAG review](../../coverage/semantics/undefined-comparison-alias-direct-dag-review.json)
+checks deep singleton/shared COW, retained old payloads, physical child edges
+and final graph destruction before store/catch or after outside release.
+Descendant aliases, cycles and wider owning histories remain partial.
 DIRECT array entries additionally admit allocated child tables whose
 entries are DIRECT primitives, ordinary non-Stringable objects or further child
 tables. An ancestor path rejects DIRECT array cycles; each sibling keeps the
 original path, allowing repeated/shared subtrees without a fixed depth limit.
-Allocation and bounds precede row access. The separate ALIAS payload check stays
-flat, including when mixed with recursive DIRECT data in one outer table.
+Allocation and bounds precede row access. ALIAS array payloads reuse this same
+DIRECT graph bound; each outer cell retains its independent liveness/reference
+checks. Descendant ALIAS/INDIRECT/uninitialized entries remain refused.
 Comparison against frozen NULL still tests only outer array truth. Existing
 physical child edges preserve deep COW snapshots and last-object destruction
 before store/catch; live root aliases follow replacements while value copies

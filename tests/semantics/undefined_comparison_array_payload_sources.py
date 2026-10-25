@@ -8,7 +8,6 @@ from undefined_comparison_array_payload_cases import CASES
 family.CASES = CASES
 family.UNSUPPORTED = {
     'array-payload-child-reference-ingress-boundary': ('error-handler ingress requires a producer continuation', b'B|'),
-    'array-payload-deeper-child-resume-boundary': ('spaceship warning changed opposing scalar', b'B|H|'),
 }
 family.BASELINE = ('error-handler ingress requires a producer continuation', b'')
 family.MODEL_TIMEOUTS = {

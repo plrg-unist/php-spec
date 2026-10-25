@@ -1,0 +1,226 @@
+{
+  "milestone": "COMP121 ALIAS-held recursive DIRECT comparison DAGs",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "Existing seven missing-CV comparisons admit ALIAS cells holding allocated finite acyclic DIRECT array-edge DAGs of primitives or live ordinary non-Stringable object leaves. Descendant cells are not traversed.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "9c3d4ac6aa6e7f2233c2ec0c5f93d2a30eadd850",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "caf11215dd1408f1257791a5c403098313ea2dba930dbab0739145b43f0c1d8e"
+  },
+  "tested_modules": 410,
+  "engine_basis": "zend_compare uses outer ARRAY truth against NULL. zend_array_dup_value unwraps singleton reference buckets and preserves shared cells; ordinary deep COW and physical child edges govern transitive release.",
+  "implementation": "Only207 changes: the array-payload helper delegates to the existing path-local DIRECT graph validator with an empty ancestor path. Live/in-bounds reference-cell checks, descendant tag/object/cycle guards, source/history certificates, roots, schemas, restore/discard, comparison and ownership drivers remain unchanged.",
+  "baseline": {
+    "report": "actors-and-initial/baseline-report.json",
+    "sha256": "a78ca80dff33783df904a52a5cc54c4e40d61a9f7ee1370df66e9064052edb28",
+    "revision": "58246ec798ef67f6efeaa76a53531901844e0d8f",
+    "agreement_credit": 0,
+    "observation": "Native6 pass on the unchanged58246/410 base. The genuine unchanged live original is accepted/checked, then reports ingress Unsupported with empty streams. Initial native6 is reused without replay."
+  },
+  "accepted": [
+    {
+      "report": "author-retained-source/report.json",
+      "sha256": "ab9ea06ace92c65a0d145ab77322a852e841cba32dcb404e15654eb8422dee27",
+      "revision": "c48be9f026bb9f7b257399248f26208e78e8bebf",
+      "agreements": 2,
+      "native_replay": 0
+    },
+    {
+      "report": "author-new-source/model-report.json",
+      "sha256": "973343d4a083ed51c321ff34486737e9e30ff47eee7b9c51c719be40b5f12197",
+      "revision": "c48be9f026bb9f7b257399248f26208e78e8bebf",
+      "agreements": 4,
+      "unsupported_controls": 2
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "ec91a00bfe2fa75fa29d12096b863c7d27de98a361f41b49cc99a04c0d50be1f",
+      "revision": "c48be9f026bb9f7b257399248f26208e78e8bebf",
+      "agreements": 4,
+      "native_replay": 0
+    },
+    {
+      "report": "peer-state-partitioned/report.json",
+      "sha256": "c3058707f2f59b82def8b381e98b5a2f6e2ac7532cbc688ee42d264e9effe977",
+      "revision": "28fca727022b46822b3bfdd2d70a1955dc37e9bf",
+      "accepted_records": [
+        "alias-dag-shared-cell-replacement-domain",
+        "alias-dag-shared-cell-replacement-lifetime"
+      ],
+      "premises": 334,
+      "groups": 2,
+      "top_report_passed": false
+    },
+    {
+      "report": "peer-state-throw/report.json",
+      "sha256": "268230953eafcb87420155d1344ba12b64dfbbc426099ce25cb9ea03b09ca5b0",
+      "revision": "b09799e65d314be29b58a6522f31ba1ad74e6328",
+      "premises": 203,
+      "groups": 2
+    },
+    {
+      "report": "peer-state-budget-memory4g/report.json",
+      "sha256": "f1a82a133e0a46c33907c7b49e48768c1b70af058b1e103a3b06e6217dabe37a",
+      "revision": "113166d882e12b51497035657a28a701471a9af4",
+      "premises": 39,
+      "groups": 1,
+      "memory_bytes": 4294967296
+    },
+    {
+      "report": "author-state-binding-fixed/report.json",
+      "sha256": "36a8e8f1aa3c721c94d2e263d6c5c72e4c7f3aec247cc8b6d0b1f3aed5fd8663",
+      "revision": "113166d882e12b51497035657a28a701471a9af4",
+      "accepted_records": [
+        "alias-dag-captured-singleton-state",
+        "alias-dag-captured-singleton-budget"
+      ],
+      "premises": 288,
+      "groups": 2,
+      "top_report_passed": false
+    },
+    {
+      "report": "author-state-live-fixed/report.json",
+      "sha256": "2ae09ff68fefdaaa994bb6a2b2fe347cde607284195f343eb8820051d7e9427b",
+      "revision": "608dc3da2421dcffc9e8fb2446d13f38e87526ad",
+      "premises": 287,
+      "groups": 2
+    }
+  ],
+  "totals": {
+    "source_agreements": 10,
+    "unsupported_source_controls": 2,
+    "state_premises": 1151,
+    "state_groups": 9,
+    "counting": "Raw executed premises, including scoped setup and72 repeated partition-front premises; no distinct-obligation claim."
+  },
+  "behavior": [
+    "Singleton outer COW unwraps the ALIAS cell while deep shared children preserve old snapshots/object identity; the replacement object dies inside the callback and the captured old object before result store.",
+    "Shared outer cells follow a replacement DAG through COW of distinct outer tables; held value snapshots retain the old DAG. Live comparisons retain frozen NULL and an outside alias delays replacement-object destruction until after the false result store.",
+    "A supplied handler Exception releases the final captured CELL-to-DAG chain before catching that same Exception and preserves result41. Default diagnostics, all seven operators, created same/both-missing values and pooled empty shared children are source checked.",
+    "Reached proofs distinguish raw owner changes from driven destructors; physical shared edges, source/line descriptors, child ALIAS/INDIRECT/UNINITIALIZED/undefined/dead bounds and DIRECT cycles are checked. Whole/one/zero budgets cover remainders from real warning/throw cuts, not whole-program equality."
+  ],
+  "maintenance": {
+    "source": {
+      "report": "maintenance-source/report.json",
+      "sha256": "fc08e4a2baf4e9ee80a3f47e4d76efc6ad04145fc591105d34c622e60d5eb281",
+      "revision": "608dc3da2421dcffc9e8fb2446d13f38e87526ad",
+      "source_mappings": 2,
+      "distinct_source_bodies": 1,
+      "normal_agreements": 1,
+      "historical_renewal": 0
+    },
+    "predicate": {
+      "report": "maintenance-predicate/report.json",
+      "sha256": "1c3674f913e9f2c87c1edbc0e534e167ac1539b750da148e1f22d6f325bbf1da",
+      "revision": "608dc3da2421dcffc9e8fb2446d13f38e87526ad",
+      "reached_checks": 1,
+      "changed_predicates": 2,
+      "premises": 21,
+      "agreement_credit": 0,
+      "historical_renewal": 0
+    },
+    "scope": "Old119/120 source bodies are byte-identical09b3678c; both refusal mappings are removed and one representative now agrees exactly B|H|-1. One minimal old120 prefix checks both positive payload helpers. No historical campaign replay."
+  },
+  "failures": [
+    {
+      "report": "peer-state-original/report.json",
+      "sha256": "dcbd072cd08f466182fdd776bee39e863d77ec2e8f83c87199e654b03fe86036",
+      "revision": "6415a493ac82e77b562b620870e6e620e8adec0f",
+      "fixture_premises": 262,
+      "agreement_credit": 0,
+      "cause": "Original shared core exceeded2GiB. Exact original-index union split into109 domain and225 lifetime premises with72 common-front duplicates; no condition dropped."
+    },
+    {
+      "report": "peer-state-partitioned/report.json",
+      "sha256": "c3058707f2f59b82def8b381e98b5a2f6e2ac7532cbc688ee42d264e9effe977",
+      "revision": "28fca727022b46822b3bfdd2d70a1955dc37e9bf",
+      "failed_selector": "alias-dag-shared-cell-replacement-budget",
+      "fixture_premises": 28,
+      "agreement_credit": 0,
+      "cause": "Only the budget allocation abort is zero-credit; accepted109/225 records are retained."
+    },
+    {
+      "report": "peer-state-budget-fixed/report.json",
+      "sha256": "6555bb2d22ec7ae8ef89f4c625d7134b7459bc2c1f3d30ce32c1800ca50a2765",
+      "revision": "b09799e65d314be29b58a6522f31ba1ad74e6328",
+      "fixture_premises": 39,
+      "agreement_credit": 0,
+      "cause": "Sequential reached-cut setup preserves every original tail assertion but still exceeds2GiB."
+    },
+    {
+      "report": "peer-state-budget-scoped/report.json",
+      "sha256": "a61e9ff0cbdd675bd0639502989c28baf76bbfa3ede5c1179c30bf056ffa90a4",
+      "revision": "a3c46d3c52327c4d71ec9bf1ebe1b23ebda8767e",
+      "fixture_premises": 39,
+      "agreement_credit": 0,
+      "cause": "Scoped setup preserves12 main plus27 local conditions but still exceeds2GiB. A reach-only observation passes; even the first whole remainder exhausts2GiB. One reviewed4GiB retry passes with unchanged time limits."
+    },
+    {
+      "report": "author-state-original/report.json",
+      "sha256": "2a45c7824c7824925e4b654f2b546af6c8b57865d8499bcda6038b7d8134620b",
+      "revision": "a3c46d3c52327c4d71ec9bf1ebe1b23ebda8767e",
+      "fixture_premises": 249,
+      "agreement_credit": 0,
+      "cause": "Pre-main non-invertible indexing: payload identity used before its cell-store binding. Dependency order alone is corrected."
+    },
+    {
+      "report": "author-state-binding-fixed/report.json",
+      "sha256": "36a8e8f1aa3c721c94d2e263d6c5c72e4c7f3aec247cc8b6d0b1f3aed5fd8663",
+      "revision": "113166d882e12b51497035657a28a701471a9af4",
+      "failed_selector": "alias-dag-live-held-snapshot-state",
+      "fixture_premises": 248,
+      "agreement_credit": 0,
+      "cause": "Resumed mutant state reused a front-bound fixture name. Only that state variable is alpha-renamed; accepted captured249+39 stay closed."
+    }
+  ],
+  "observations": [
+    {
+      "process": "review-drivers/budget-reach-observe.exit.json",
+      "sha256": "29a7ac28a36335508e0e905c1344e14d1e896df0c78dc54a70b2b1f0e84bf8bb",
+      "agreement_credit": 0,
+      "result": "Reached-cut-only setup true at2GiB."
+    },
+    {
+      "process": "review-drivers/budget-whole-observe.exit.json",
+      "sha256": "bf816d82059ce554814d4679bd53f712ec58c0a13a54bb63a33f1801c30d53b8",
+      "agreement_credit": 0,
+      "result": "First whole remainder allocation abort at2GiB; memory samples preserved. Equality-arm partition was not executed."
+    }
+  ],
+  "validation": "Serial/fail-first CPU4, full reap and stable HEAD/inputs. Accepted numeric children retain120s; all use2GiB except the sole shared39 at4GiB with145s outer/160s watchdog. Source CLI limits and raw commands remain in the reports. Core, scoped-budget and partition counts retain their own tested revisions; accepted groups are never replayed after a later failure.",
+  "divergences": [],
+  "remaining": [
+    "Descendant aliases/INDIRECT/UNINITIALIZED, array-edge cycles, internal/enum/Stringable leaves, wider producers and owning histories remain partial. Paused COMP88 is untouched.",
+    "Ordinary objects remain leaves; this adds no object-property-cycle or general collection-history claim. Comparison still observes outer truth against frozen NULL."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-121",
+  "artifact_manifest_sha256": "bc882008f58a899dc6b406a6afea7383e9f0675a56907be1f1fdd879946e8f6d",
+  "independent_reviewer": "/root/comp118_review",
+  "independent_review": {
+    "report": "actors-and-initial/independent-review.json",
+    "sha256": "11867099af06cc479c05669187a8099929c039290cf91503cdbc4055d181109a"
+  },
+  "reproduction": [
+    "python3 tests/semantics/undefined_comparison_alias_direct_dag_sources.py --phase native --output .tools/comp121-source-new",
+    "python3 tests/semantics/undefined_comparison_alias_direct_dag_sources.py --phase model --output .tools/comp121-source-new",
+    "python3 tests/semantics/undefined_comparison_alias_direct_dag_review_sources.py --phase native --output .tools/comp121-peer-source-new",
+    "python3 tests/semantics/undefined_comparison_alias_direct_dag_review_sources.py --phase model --output .tools/comp121-peer-source-new",
+    "python3 tests/semantics/undefined_comparison_alias_direct_dag_state.py --output .tools/comp121-state-new",
+    "python3 tests/semantics/undefined_comparison_alias_direct_dag_review_state.py --output .tools/comp121-peer-state-new"
+  ],
+  "integration": {
+    "parent": "d953f6e786214a53ae41f1ca62b107dd829fa05e",
+    "publication": "af0ad7a228da320f12da519884693d0fc24e4eac",
+    "modules": 411,
+    "tested_modules": 410,
+    "combined_runtime_sha256": {
+      "spec/semantics/207-error-handler-runtime.watsup": "caf11215dd1408f1257791a5c403098313ea2dba930dbab0739145b43f0c1d8e"
+    },
+    "runtime": "207 is publication-exact; replacing only its payload-helper delegation and comment with the base restores the full incoming207. All11 changed tests are publication-exact. Every other spec/schema/root/default/ordered411/pipeline byte remains parent-exact.",
+    "compatibility": "Incoming Generator/Fiber, WeakMap traversal/collection, NaN/casts, undefined/NULL-key literals, captured Stringable queries and CONFIG Aggregate producers require distinct source/value paths absent from these originals and narrow maintenance fixtures. Ordinary comparison arrays, implicit integer keys, plain initialized public fields and normal handler registration select no joined producer.",
+    "progress": "Update the actual compact checkpoint, comparison row and own active/completed status in place; incoming family, remaining and paused content stays intact.",
+    "evidence": "Source10+2 retainc48/410; peer334 retain28f, throw203 b097, shared39 and author288 retain113, final author287/maintenance retain608. All failures/probes stay0. Shared39 alone uses4GiB at unchanged time limits; no joined execution, native replay or historical renewal."
+  }
+}

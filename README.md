@@ -47,15 +47,17 @@ can run the last-owned object destructor before the outer store or catch.
 Outside aliases delay that release. See the
 [reference-array review](coverage/semantics/undefined-comparison-reference-array-review.json)
 and [object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json).
-Reference cells may also hold one flat child array of DIRECT primitives or
-ordinary non-Stringable objects. Outer copying and inner COW preserve separate tables while
-object identities stay shared. Saved chains and outside aliases preserve child
-destructor timing; empty children leave outer array truth unchanged. See the
-[child-array review](coverage/semantics/undefined-comparison-array-payload-review.json).
+Reference-cell array payloads admit finite acyclic DIRECT array-edge graphs with
+primitive or ordinary non-Stringable object leaves. Singleton outer COW unwraps
+the cell; deep COW preserves snapshots and shared object identity. Shared cells
+follow replacement graphs while ordinary value copies retain old payloads.
+Saved chains and outside aliases preserve final child destruction before
+store/catch or after the result. See the [child-array review](coverage/semantics/undefined-comparison-array-payload-review.json)
+and [ALIAS DAG review](coverage/semantics/undefined-comparison-alias-direct-dag-review.json).
 DIRECT child entries now admit recursive acyclic graphs of DIRECT array edges,
 with primitive or ordinary non-Stringable object leaves. Path-local checks allow
 shared subtrees; deep COW and final graph release preserve object identity and
-destructor timing. Nested aliases and deeper ALIAS payloads remain partial. See the
+destructor timing. Descendant aliases remain partial. See the
 [DIRECT graph review](coverage/semantics/undefined-comparison-direct-array-graph-review.json).
 Both-missing pairs, including one missing name twice, can resume if the first
 handler defines the later scalar, admitted array or ordinary object. `$x == $x` can

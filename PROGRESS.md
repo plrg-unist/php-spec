@@ -8,21 +8,22 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
-CONFIG INI_SET now acquires an externally retained initialized user Iterator
-through a real ordinary IteratorAggregate getIterator callback. The Aggregate
-receiver is borrowed; its owned return transfers into DATA without an extra pin
-or unpack ARRAY. Producer/Iterator effects preserve selected-setter history.
-A supplied producer Exception cancels DATA/API entry with its genuine method
-trace, assignment/identity preservation, cleanup and saved-setter recovery.
+ALIAS cells in seven missing-CV comparisons now admit finite acyclic DIRECT
+array-edge DAGs, reusing path-local validation. Singleton/shared deep COW,
+held old payloads and outside aliases preserve object identity and final release
+inside callbacks, before result store/catch, or after the result.
 
-Native3/genuine Unsupported0 retain `ac41bce439`; strict411/source3/fixed144
-retain `a9a12a825`, runtime `387e02afd`. Remaining owned/peer parts pass at
-`1472a567d`: all513 original obligations across558 physical conditions/45 setup.
-The original owned154 timeout remains inconclusive0; no accepted/native replay.
-Raw owner-loss steps stop explicitly; wider producers, values and lifetimes
-remain partial. Composition over `0dc66635a`/410 preserves incoming ownership
-and query behavior without renewing execution.
-[Aggregate CONFIG review](coverage/semantics/config-aggregate-iterator-unpack-review.json).
+Source10+2 retain `c48be9f02`/410; focused1151 raw premises/nine groups retain
+`28fca7270`, `b09799e65`, `113166d88` and `608dc3da2`, including72 repeated
+partition-front premises. Original allocation/binding/name failures remain0.
+Only shared budget39 needed4GiB at the unchanged120-second child limit; other
+accepted numeric children retain2GiB. Two identical old mappings use one native/model
+check; one21-premise prefix checks two changed helpers, with historical renewal0.
+[ALIAS DAG review](coverage/semantics/undefined-comparison-alias-direct-dag-review.json).
+
+Composition over `d953f6e786`/411 preserves incoming Generator/Fiber, WeakMap,
+NaN, key-literal, query and CONFIG behavior; accepted410 cuts are not renewed.
+Descendant aliases/cycles and wider producers/owning histories remain partial.
 
 ## Integrated behavior and entrypoints
 
@@ -33,7 +34,7 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | --- | --- |
 | Source and compilation | Checked ASTs retain source occurrences, ordered publication, compilation phases and diagnostic priority. Dynamic source and request inputs have explicit provider boundaries. [Compiler](docs/semantics/SOURCE-COMPILER.md), [context](docs/semantics/SOURCE-CONTEXT.md), [dynamic source](docs/semantics/DYNAMIC-SOURCE.md). |
 | Operators and warning decisions | Arithmetic/casts distinguish saved values from live CVs and stage supported diagnostics through callbacks. Direct NaN Boolean NOT/Boolean cast produce stricttrue/false after a live0.0 write; NaN array casting constructs a fresh singleton from that live float. Initially-NaN LEFT logical XOR caches post-warning truth across live RIGHT conversion, including remaining default Warning before a LEFT throw unwinds. Retained-reference Boolean NOT keeps its captured inner cell across source unset/rebinding. NaN LEFT short-circuit decisions use post-callback truth to skip or enter RIGHT. Copied fractional BITNOT retains its saved integer. [Operators](docs/semantics/ORDINARY-OPERATORS.md), [truth callbacks](docs/semantics/SOURCE-WARNING-TRUTH.md), [numerics](docs/semantics/NUMERICS.md). |
-| Comparisons and arrays | Seven missing-CV comparisons admit bounded DIRECT/ALIAS arrays, including ordinary non-Stringable object leaves. Recursive acyclic DIRECT array-edge graphs preserve shared deep COW snapshots and final child release; ALIAS-held child arrays stay flat. [DIRECT graph review](coverage/semantics/undefined-comparison-direct-array-graph-review.json), [child-array review](coverage/semantics/undefined-comparison-array-payload-review.json). Undefined key variables in array literals resume Warning callbacks with a fixed empty key and live null/bool/int/float CVs; initially owning ordinary ARRAY CVs also preserve acquisition and retarget retention/debt through throw and balanced inverse writes. [Primitive review](coverage/semantics/array-literal-undefined-key-warning-review.json), [ARRAY-CV review](coverage/semantics/array-literal-undefined-key-array-cv-review.json). NULL-key literals support bounded CV, returned, temporary and pooled CONST values. Nested DIRECT TMP graphs preserve shared physical child edges and handler-time COW, cascading unowned runtime descendants while folded siblings remain pooled. [Nested TMP review](coverage/semantics/array-literal-null-key-array-tmp-subtree-review.json), [nested CONST review](coverage/semantics/array-literal-null-key-constant-subtree-review.json). [Comparisons](docs/semantics/COMPARISONS.md), [dimensions](docs/semantics/DIMENSIONS.md), [object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json). |
+| Comparisons and arrays | Seven missing-CV comparisons admit bounded DIRECT/ALIAS arrays, including ordinary non-Stringable object leaves. Recursive acyclic DIRECT array-edge graphs also pass through ALIAS payload cells, preserving deep COW snapshots, live replacements and final transitive release. [ALIAS DAG review](coverage/semantics/undefined-comparison-alias-direct-dag-review.json). [DIRECT graph review](coverage/semantics/undefined-comparison-direct-array-graph-review.json), [child-array review](coverage/semantics/undefined-comparison-array-payload-review.json). Undefined key variables in array literals resume Warning callbacks with a fixed empty key and live null/bool/int/float CVs; initially owning ordinary ARRAY CVs also preserve acquisition and retarget retention/debt through throw and balanced inverse writes. [Primitive review](coverage/semantics/array-literal-undefined-key-warning-review.json), [ARRAY-CV review](coverage/semantics/array-literal-undefined-key-array-cv-review.json). NULL-key literals support bounded CV, returned, temporary and pooled CONST values. Nested DIRECT TMP graphs preserve shared physical child edges and handler-time COW, cascading unowned runtime descendants while folded siblings remain pooled. [Nested TMP review](coverage/semantics/array-literal-null-key-array-tmp-subtree-review.json), [nested CONST review](coverage/semantics/array-literal-null-key-constant-subtree-review.json). [Comparisons](docs/semantics/COMPARISONS.md), [dimensions](docs/semantics/DIMENSIONS.md), [object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json). |
 | Calls and configuration | Ordinary/scoped/captured calls preserve selected targets, argument order, references and genuine callback frames. Two singleton INI_SET packs retain raw NULL/quiet ARRAY, callee and option through later effects. Initialized user Iterators stream integer-key/string sends into INI_SET with callback ordering, pre-API retirement and supplied-Exception recovery. Ordinary Aggregate producers call real getIterator and transfer its retained Iterator result into DATA. Bounded WeakMaps distinguish empty arity failure from occupied object-key Error before any current copy. [Calls](docs/semantics/SOURCE-CALLS.md), [include/configuration](docs/semantics/INCLUDE-SOURCES.md), [two-pack review](coverage/semantics/ini-set-two-pack-null-array-value-review.json), [Iterator CONFIG review](coverage/semantics/config-iterator-unpack-review.json), [WeakMap CONFIG review](coverage/semantics/config-weakmap-unpack-review.json), [Aggregate CONFIG review](coverage/semantics/config-aggregate-iterator-unpack-review.json). |
 | Constants and callable values | Bounded DEFINE/CONSTANT/DEFINED preserve source authority, scopes, primitive/array/object snapshots and captured intrinsic Closure identity. Captured Boolean/integer/finite-float/NULL queries preserve strict ordinary versus weak explicit reception, raw/received trace arguments and callee ownership through deprecation callbacks. Captured positional Stringable queries preserve conversion/destruction order, strict rejection and trace ownership. Destructor Exceptions keep ordinary lookup active with Error/Previous chaining; explicit cleanup omits completed API/wrapper frames. [Constant contract](docs/semantics/SOURCE-USER-CONSTANTS.md), [scalar-query review](coverage/semantics/constant-owned-scalar-query-review.json), [NULL-query review](coverage/semantics/constant-owned-null-query-review.json), [Stringable-query review](coverage/semantics/constant-owned-stringable-query-review.json), [destructor-query review](coverage/semantics/constant-owned-stringable-query-throw-review.json). |
 | Classes and properties | Visibility, references, typed writes, hooks, magic access and clone have bounded routes. Same-name implicit getter recursion delivers captured NULL for missing/untyped UNSET, declaring-class Error for public typed UNSET, and receiver-class visibility Error for actual private/protected denial; real guards survive local cleanup. [Properties](docs/semantics/SOURCE-PROPERTIES.md), [classes](docs/semantics/SOURCE-CLASSES.md), [recursion review](coverage/semantics/magic-get-recursion-review.json), [declared-UNSET review](coverage/semantics/magic-get-unset-recursion-review.json), [typed reentry review](coverage/semantics/magic-get-recursive-error-review.json), [denied reentry review](coverage/semantics/magic-get-denied-recursion-review.json). |
@@ -46,9 +47,8 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | Track | Current state |
 | --- | --- |
 | Source89 IteratorAggregate CONFIG | Source3/strict411/fixed144 accepted; original owned154 timeout retained, remaining-only partitions running. |
-| COMP121 ALIAS recursive DIRECT DAG | Source10/two controls retained; focused partition after allocation failure (zero credit). |
 
-Iterator49/50/51/52/53, V99/V100/V101/V102/V103, M132/M133/M134/M135/M136/M137/M138, A46/A47/A48/A49/A50, OP79/80/81/82/83/84, Source86/87/88/89, COMP118/119/120 and CLASS119/120/121/122 are integrated
+Iterator49/50/51/52/53, V99/V100/V101/V102/V103, M132/M133/M134/M135/M136/M137/M138, A46/A47/A48/A49/A50, OP79/80/81/82/83/84, Source86/87/88/89, COMP118/119/120/121 and CLASS119/120/121/122 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
