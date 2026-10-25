@@ -269,6 +269,12 @@ The multiple-entry WeakMap last-owner teardown proof is in
 packets, immutable author/peer snapshots and the isolated422 teardown patch.
 SHA-256 `35c83747a9c98d004d549d571678fb38c6a1a402396366428d3c451bba463b73`.
 
+The multiple-entry WeakMap foreach proof is in
+`../php-spec-evidence-archive/weakmap-multiple-entry-foreach-143/manifest.json`:
+589,652 bytes/123 members under `.tools/m143/`, six complete reports, original2
+packets, app0 preflight, immutable author/peer snapshots and the isolated30/422 patch.
+SHA-256 `29eb262d43a3fe1e17e5fa88029e22b67ab347b459f982cc1c0de1d165a2fed2`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

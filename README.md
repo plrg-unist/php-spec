@@ -2962,7 +2962,7 @@ physical Value owner per slot, including shared Values. Two originals and 286
 Boolean/five raw checks pass at `8f71bbef1`/412: one Key death transfers only its
 entry to a release job and preserves the sibling, then normalizes to old singleton
 storage. Original preflight/fixture compile failures stay zero. Other payloads,
-replacement/explicit unset, active iteration, GC/CONFIG and wider multiple-entry
+replacement/explicit unset, wider iteration, GC/CONFIG and wider multiple-entry
 Map teardown remain partial. [Review](coverage/semantics/weak-map-review.json).
 
 Last-owner multi-entry Map teardown now unregisters every Key before releasing
@@ -2970,6 +2970,13 @@ its Value slots, retaining the empty Map pin until all jobs finish. Two original
 and 300 Boolean/six raw checks pass at `61a02e28e`/412. Duplicate shared-Value jobs
 retire2→1→free, while both held Keys survive Map and Value retirement. Wider
 payload/callback and Key-lifetime combinations remain partial.
+
+Finite multi-entry by-value `foreach` now keeps one hidden Map DATA owner and
+nonowning weak Key history across target overwrites and singleton normalization.
+Two originals and 310 Boolean/seven raw checks pass at `43c9ebe17`/412: exhaustion
+retires the overwritten first pair; break bulk-cleans Map while copied targets
+survive. Explicit mutation, byref/wider payloads, active many-entry reads and
+CONFIG/GC remain partial. [Review](coverage/semantics/weak-map-review.json).
 
 An explicit array cast of a live nonfreeing map now creates a fresh empty array,
 even when populated. Results expose no entries and retain neither keys nor private

@@ -159,6 +159,32 @@ iteration/CONFIG/GC and cross-map/freeing/reentry/Fiber combinations remain part
 Keys outside the authenticated retained-live shape still refuse.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
+## Multiple-entry by-value foreach
+
+M143 adds a finite weak-Key snapshot cursor without rooting its historical IDs.
+The saved `FOREACH_NEXT` owns Map DATA once. Cursor identity, range, uniqueness
+and current-entry subsequence checks survive consumed Key death and storage
+normalization; fetch separately validates quiescent leaf storage and reuses the
+existing Value-then-Key target stores. Actual implicit Key notification retains
+its authenticated freeing-pin authority. Explicit mutators and active many-entry
+reads keep their earlier fences.
+
+Two originals and author139/4 plus peer171/3 pass 310 Boolean/seven raw transitions
+at `43c9ebe17`/412. Exhaustion overwrites the first targets, retires that Key/Value,
+and continues with the same nonowning snapshot over singleton storage. Natural
+exit retires Map while the last copied targets survive. First-body break drops
+DATA and uses bulk teardown; its fetched Value survives while the sibling retires.
+Both endings then release the copied targets. Stale singleton history after
+quiet pruning is distinguished from physical Map allocation.
+
+Heap-identical range/duplicate snapshot forgeries refuse publicly. A constructed
+registry-only query has no Map owner without its saved task. These controls add
+no PHP credit. Native/genuine refusal2 retain `f220222919`/412; strict app0 is
+separate. All repaired/focused checks pass first execution, with no replay or cap
+increase. Multiple-entry byref/wider payloads, explicit mutations, active read/API,
+CONFIG/GC and wider Key/property/callback/context histories remain partial.
+[Review and recovery](../../coverage/semantics/weak-map-review.json).
+
 ## Destructor-free singleton ephemeron collection
 
 Modules301/386 admit explicit collection for one live map, a `stdClass` leaf key
