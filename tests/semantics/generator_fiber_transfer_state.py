@@ -53,7 +53,7 @@ pfibervm.FRAMES = [pframe_resumer, pframe_root]
 pfibervm.TODO = (FIBER_CONTINUE pfiberapi) :: ptask_saved*
 pfiberapi.OBJECT = n_fiber
 pfiberapi.KIND = (INTRINSIC_FIBER_SUSPEND)
-pfiberapi.SENT = (PSTRING $ptascii("pause53"))
+pfiberapi.SENT = (PSTRING_CARRIER INTERNED_STRING $ptascii("pause53"))
 pfiberapi.SEQUENCE = pfiber.SEQUENCE
 pframe_resumer.TODO = (GENERATOR_RESUME pgeneratorop_original) :: ptask_resumer*
 pframe_resumer.CONTEXT = (pcallcontext_callback)
@@ -222,7 +222,7 @@ n_error = $(|S.OBJECTS| + 1)
   'source': ROWS[PAUSED]['source'], 'stage': STAGE,
   'checks': [*COMMON, *checks(r"""
 pgeneratorop_original.NAME = "next"
-pgenerator.VALUE = (PSTRING $ptascii("first53"))
+pgenerator.VALUE = (PSTRING_CARRIER INTERNED_STRING $ptascii("first53"))
 pgenerator.KEY = (PINT 0)
 ~pgenerator.FIRST
 """), *ENDING, *checks(r"""

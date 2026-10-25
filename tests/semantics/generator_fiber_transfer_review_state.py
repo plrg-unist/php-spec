@@ -67,7 +67,7 @@ pfibervm.TODO = (FIBER_CONTINUE pfiberapi) :: ptask_saved*
 pfiberapi.OBJECT = n_fiber
 pfiberapi.KIND = (INTRINSIC_FIBER_SUSPEND)
 pfiberapi.START = eps
-pfiberapi.SENT = (PSTRING $ptascii("pause53"))
+pfiberapi.SENT = (PSTRING_CARRIER INTERNED_STRING $ptascii("pause53"))
 pfiberapi.SEQUENCE = pfiber.SEQUENCE
 pfiber.FINISH = eps
 ~pfiber.FAILED
