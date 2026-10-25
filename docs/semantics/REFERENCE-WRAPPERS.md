@@ -187,6 +187,14 @@ checks keep this path separate from pooled constants and the two-owner returned
 VAR. Popped-marker allocation is sufficient for identity discard before normal
 pruning; no bias or count/prune algorithm changes. See the
 [NULL array-TMP ledger](../../coverage/semantics/array-literal-null-key-array-tmp-review.json).
+Nested DIRECT TMP descendants share the constant-subtree ancestor traversal:
+each child stays allocated and debt-free, with cycles, builder backedges,
+reference entries and objects refused. One pending root preserves every physical
+child edge, including repeated edges to one child; actual COW clones add edges.
+Dropping that root cascades through unowned runtime tables while folded siblings
+keep their permanent pool roots. No child task roots, count algorithm or returned
+VAR/CV/CONST readiness changes. See the
+[nested TMP ledger](../../coverage/semantics/array-literal-null-key-array-tmp-subtree-review.json).
 Pooled constant array literals instead keep their permanent pool owner plus one
 pending value edge. Exact compiled-read identity authenticates the value occurrence;
 normal insertion transfers the pending edge to DIRECT, while throw drops it and

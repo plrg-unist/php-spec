@@ -104,7 +104,11 @@ Runtime array constructors at NULL keys use one owning temporary, with no NULL
 backup or producer-variable reset. The child table freezes before the handler,
 including a scalar reference read by value or a seed increment. Normal completion
 transfers its DIRECT entry; an otherwise unowned table retires on deletion or
-supplied throw. Pooled constant array literals keep their permanent pool owner
+supplied throw. Finite nested DIRECT temporaries also retain shared child edges
+through handler-time COW. Last-entry deletion or throw cascades through unowned
+runtime descendants while folded siblings retain their pool roots. See the
+[nested TMP review](coverage/semantics/array-literal-null-key-array-tmp-subtree-review.json).
+Pooled constant array literals keep their permanent pool owner
 and one pending edge, preserving the original table across callbacks, repeated
 calls and later COW. Throw drops only the pending edge. See the
 [constant-array review](coverage/semantics/array-literal-null-key-constant-array-review.json).
