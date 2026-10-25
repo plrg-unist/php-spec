@@ -46,9 +46,10 @@ def $weakmap_entries_contents(S, n_map) = pweakmapentry*
   -- if S.OBJECTS[n_map] = WEAKMAPENTRIES pweakmapentry*
 def $weakmap_entries_contents(S, n_map) = eps -- otherwise
 
-;; Only methodless leaf values enter the new table. References/arrays keep
-;; their earlier singleton protocols, without an implicit multi-value lift.
+;; Direct methodless leaves and authenticated entry reference cells remain
+;; distinct. Array/scalar/callback payloads are outside this table slice.
 dec $weakmap_entries_value_allowed(pstate, pweakmapvalue) : bool
+dec $weakmap_entries_cell_valid(pstate, nat) : bool
 def $weakmap_entries_value_allowed(S, POBJECT n_value) = true
   -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
   -- if S.OBJECTS[n_value] = INSTANCE porigin
@@ -57,7 +58,19 @@ def $weakmap_entries_value_allowed(S, POBJECT n_value) = true
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.METHODS = eps
   -- if $destructor_method(S, n_value) = eps
+def $weakmap_entries_value_allowed(S, ALIAS n_cell) = $weakmap_entries_cell_valid(S, n_cell)
 def $weakmap_entries_value_allowed(S, pweakmapvalue) = false -- otherwise
+def $weakmap_entries_cell_valid(S, n_cell) = true
+  -- if $(n_cell < |S.STORE|) /\ n_cell <- S.REFCELLS /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_value)
+  -- if $weakmap_entries_value_allowed(S, POBJECT n_value)
+def $weakmap_entries_cell_valid(S, n_cell) = false -- otherwise
+dec $weakmap_entries_direct_values(pweakmapentry*) : bool
+def $weakmap_entries_direct_values(eps) = true
+def $weakmap_entries_direct_values(pweakmapentry :: pweakmapentry_tail*) = true
+  -- if pweakmapentry.VALUE = POBJECT n_value
+  -- if $weakmap_entries_direct_values(pweakmapentry_tail*)
+def $weakmap_entries_direct_values(pweakmapentry*) = false -- otherwise
 dec $weakmap_entries_valid(pstate, pweakmapentry*, nat, nat*) : bool
 def $weakmap_entries_valid(S, eps, n_map, n_freeing*) = true
 def $weakmap_entries_valid(S, pweakmapentry :: pweakmapentry_tail*, n_map, n_freeing*) = true
@@ -98,6 +111,7 @@ def $weakmap_entries_write_allowed(S, paccess) = true
   -- if paccess.SELECTED = $rcontainer_selected(S, paccess.RHS)
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_entries_table_valid(S, n_map, eps)
+  -- if $weakmap_entries_direct_values($weakmap_entries_contents(S, n_map))
   -- if S_base = $quiet_operand(S, poperand)
   -- if S_base.COMPLETION = NORMAL /\ S_base.RESULT = KNOWN (POBJECT n_map)
   -- if S_key = $quiet_operand(S, paccess.INPUT)
@@ -268,6 +282,7 @@ def $weakmap_entries_cursor_valid(S, n, n_map, n_position, n_keys*) = true
   -- if $weakmap_entries_snapshot_valid(S, n_keys*)
   -- if pweakmapentry_all* = $weakmap_entries_contents(S, n_map)
   -- if S.OBJECTS[n_map] = $weakmap_entries_pack(pweakmapentry_all*)
+  -- if $weakmap_entries_direct_values(pweakmapentry_all*)
   -- if $weakmap_entries_snapshot_order(pweakmapentry_all*, n_keys*)
   -- if $objectprops_at(S.OBJECTPROPS, n_map) = eps
   -- if $object_table_at(S.OBJECTTABLES, n_map) = eps
@@ -277,6 +292,7 @@ def $goto_foreach_owner_valid(S, (WEAKMAPITER n n_map n_position n_keys*), pnode
 dec $weakmap_entries_foreach_storage(pstate, nat) : bool
 def $weakmap_entries_foreach_storage(S, n_map) = true
   -- if $weakmap_entries_storage_valid(S, n_map, eps)
+  -- if $weakmap_entries_direct_values($weakmap_entries_contents(S, n_map))
 def $weakmap_entries_foreach_storage(S, n_map) = true
   -- if $weakmap_at(S, n_map) /\ ~$instance_storage_freeing(S, n_map)
   -- if S.OBJECTS[n_map] = WEAKMAP eps
@@ -306,6 +322,7 @@ def $weakmap_foreach_begin(S, n_map, statement, false, z) = S[.TODO = (FOREACH_N
   -- if $weakmap_foreach_target(S, n_key_name*) /\ $weakmap_foreach_target(S, n_value_name*)
   -- if $weakmap_entries_table_valid(S, n_map, eps)
   -- if pweakmapentry_all* = $weakmap_entries_contents(S, n_map)
+  -- if $weakmap_entries_direct_values(pweakmapentry_all*)
   -- if n = S.NEXTITER
 rule PhpStep/weakmap-entries-foreach-fetch: S ~> $weakmap_foreach_body(S[.ORIGIN = (porigin)][.ITERATORS = $iterator_set(S.ITERATORS, WEAKMAPITER n n_map n_next n_keys*)], n, n_map, statement, porigin, z, pweakmapentry_selected)
   -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z) :: ptask_tail*
@@ -319,3 +336,101 @@ rule PhpStep/weakmap-entries-foreach-end: S ~> $foreach_finish(S[.ORIGIN = (pori
   -- if $call_task_valid(S, FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z)
   -- if $weakmap_entries_foreach_storage(S, n_map)
   -- if $weakmap_entries_cursor_next($weakmap_entries_contents(S, n_map), n_position, n_keys*) = eps
+
+;; Reference traversal shares the selected entry zval. Its distinct cursor
+;; preserves the earlier by-value domain and still owns no entry/Key itself.
+def $useriter_cursor_id(WEAKMAPREFITER n n_map n_position n_keys*) = n
+def $weakmap_foreach_cursor_map(WEAKMAPREFITER n n_map n_position n_keys*, n_map) = true
+def $iterator_lookup((WEAKMAPREFITER n n_map n_position n_keys*) :: piterator_tail*, n) = (WEAKMAPREFITER n n_map n_position n_keys*)
+def $iterator_lookup((WEAKMAPREFITER n_other n_map n_position n_keys*) :: piterator_tail*, n) = $iterator_lookup(piterator_tail*, n)
+  -- if n_other =/= n
+def $iterator_remove((WEAKMAPREFITER n n_map n_position n_keys*) :: piterator_tail*, n) = piterator_tail*
+def $iterator_remove((WEAKMAPREFITER n_other n_map n_position n_keys*) :: piterator_tail*, n) = (WEAKMAPREFITER n_other n_map n_position n_keys*) :: $iterator_remove(piterator_tail*, n)
+  -- if n_other =/= n
+def $iterator_set((WEAKMAPREFITER n n_map n_position n_keys*) :: piterator_tail*, piterator_new) = piterator_new :: piterator_tail*
+  -- if $useriter_cursor_id(piterator_new) = n
+def $iterator_set((WEAKMAPREFITER n n_map n_position n_keys*) :: piterator_tail*, piterator_new) = (WEAKMAPREFITER n n_map n_position n_keys*) :: $iterator_set(piterator_tail*, piterator_new)
+  -- if $useriter_cursor_id(piterator_new) =/= n
+def $iterator_set((ITERATOR n n_array b pcursor*) :: piterator_tail*, WEAKMAPREFITER n n_map n_position n_keys*) = (WEAKMAPREFITER n n_map n_position n_keys*) :: piterator_tail*
+def $iterator_set((ITERATOR n_other n_array b pcursor*) :: piterator_tail*, WEAKMAPREFITER n n_map n_position n_keys*) = (ITERATOR n_other n_array b pcursor*) :: $iterator_set(piterator_tail*, WEAKMAPREFITER n n_map n_position n_keys*)
+  -- if n_other =/= n
+def $iterator_set((OBJECTITER n n_object n_old b_ref) :: piterator_tail*, WEAKMAPREFITER n n_map n_position n_keys*) = (WEAKMAPREFITER n n_map n_position n_keys*) :: piterator_tail*
+def $iterator_set((OBJECTITER n_other n_object n_old b_ref) :: piterator_tail*, WEAKMAPREFITER n n_map n_position n_keys*) = (OBJECTITER n_other n_object n_old b_ref) :: $iterator_set(piterator_tail*, WEAKMAPREFITER n n_map n_position n_keys*)
+  -- if n_other =/= n
+def $iterators_prune((WEAKMAPREFITER n n_map n_position n_keys*) :: piterator_tail*, pnode*) = (WEAKMAPREFITER n n_map n_position n_keys*) :: $iterators_prune(piterator_tail*, pnode*)
+  -- if $heap_member(HOBJECT n_map, pnode*)
+def $iterators_prune((WEAKMAPREFITER n n_map n_position n_keys*) :: piterator_tail*, pnode*) = $iterators_prune(piterator_tail*, pnode*)
+  -- if ~$heap_member(HOBJECT n_map, pnode*)
+def $error_keep_iterators((WEAKMAPREFITER n n_map n_position n_keys*) :: piterator_tail*, n_keep*) = (WEAKMAPREFITER n n_map n_position n_keys*) :: $error_keep_iterators(piterator_tail*, n_keep*)
+  -- if n <- n_keep*
+def $error_keep_iterators((WEAKMAPREFITER n n_map n_position n_keys*) :: piterator_tail*, n_keep*) = $error_keep_iterators(piterator_tail*, n_keep*)
+  -- if ~(n <- n_keep*)
+def $goto_iterator_mode((WEAKMAPREFITER n n_map n_position n_keys*)) = true
+dec $weakmap_entries_reference_cursor_valid(pstate, nat, nat, nat, nat*) : bool
+def $weakmap_entries_reference_cursor_valid(S, n, n_map, n_position, n_keys*) = true
+  -- if $weakmap_at(S, n_map) /\ ~$instance_storage_freeing(S, n_map)
+  -- if $(n < S.NEXTITER) /\ $(|n_keys*| >= 2) /\ $(n_position <= |n_keys*|)
+  -- if $iterator_lookup(S.ITERATORS, n) = (WEAKMAPREFITER n n_map n_position n_keys*)
+  -- if $useriter_cursor_count(S.ITERATORS, n) = 1
+  -- if $weakmap_entries_snapshot_valid(S, n_keys*)
+  -- if pweakmapentry_all* = $weakmap_entries_contents(S, n_map)
+  -- if S.OBJECTS[n_map] = $weakmap_entries_pack(pweakmapentry_all*)
+  -- if $weakmap_entries_snapshot_order(pweakmapentry_all*, n_keys*)
+  -- if $objectprops_at(S.OBJECTPROPS, n_map) = eps
+  -- if $object_table_at(S.OBJECTTABLES, n_map) = eps
+def $weakmap_entries_reference_cursor_valid(S, n, n_map, n_position, n_keys*) = false -- otherwise
+def $goto_foreach_owner_valid(S, (WEAKMAPREFITER n n_map n_position n_keys*), pnode) = (pnode = HOBJECT n_map /\ $weakmap_entries_reference_cursor_valid(S, n, n_map, n_position, n_keys*))
+dec $weakmap_entries_reference_storage(pstate, nat) : bool
+def $weakmap_entries_reference_storage(S, n_map) = ($weakmap_entries_storage_valid(S, n_map, eps) \/ $weakmap_entries_foreach_storage(S, n_map))
+
+dec $weakmap_entries_reference_slot(pweakmapentry*, nat, nat) : pweakmapentry*
+def $weakmap_entries_reference_slot(eps, n_key, n_cell) = eps
+def $weakmap_entries_reference_slot(pweakmapentry :: pweakmapentry_tail*, n_key, n_cell) = pweakmapentry[.VALUE = ALIAS n_cell] :: pweakmapentry_tail*
+  -- if pweakmapentry.KEY = n_key
+def $weakmap_entries_reference_slot(pweakmapentry :: pweakmapentry_tail*, n_key, n_cell) = pweakmapentry :: $weakmap_entries_reference_slot(pweakmapentry_tail*, n_key, n_cell)
+  -- if pweakmapentry.KEY =/= n_key
+dec $weakmap_entries_reference_acquire(pstate, nat, nat) : pstate
+def $weakmap_entries_reference_acquire(S, n_map, n_key) = S[.STORE = S.STORE ++ [DEFINED (POBJECT n_value)]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n_cell]][.REFCELLS = n_cell :: S.REFCELLS][.OBJECTS[n_map] = $weakmap_entries_pack($weakmap_entries_reference_slot(pweakmapentry_all*, n_key, n_cell))][.CELL = n_cell]
+  -- if $weakmap_entries_reference_storage(S, n_map)
+  -- if pweakmapentry_all* = $weakmap_entries_contents(S, n_map)
+  -- if $weakmap_entries_find(pweakmapentry_all*, n_key) = (pweakmapentry_selected)
+  -- if pweakmapentry_selected.VALUE = POBJECT n_value
+  -- if n_cell = |S.STORE|
+def $weakmap_entries_reference_acquire(S, n_map, n_key) = S[.CELL = n_cell]
+  -- if $weakmap_entries_reference_storage(S, n_map)
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = (pweakmapentry_selected)
+  -- if pweakmapentry_selected.VALUE = ALIAS n_cell
+  -- if $weakmap_entries_cell_valid(S, n_cell)
+
+def $weakmap_foreach_begin(S, n_map, statement, true, z) = S[.TODO = (FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z) :: ptask_tail*][.ITERATORS = S.ITERATORS ++ [WEAKMAPREFITER n n_map 0 ($weakmap_entries_keys(pweakmapentry_all*))]][.NEXTITER = $(n + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $weakmap_entries_at(S, n_map)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (statement)
+  -- if statement = NStmtForeach expression_iterable expression_key (BOOLEAN true) expression_value (SEQUENCE statement_body*) (BOOLEAN false) metadata
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 0], expression_iterable)
+  -- if $weakmap_foreach_name(expression_key) = (n_key_name*)
+  -- if $weakmap_foreach_name(expression_value) = (n_value_name*)
+  -- if n_key_name* =/= n_value_name*
+  -- if $weakmap_foreach_target(S, n_key_name*) /\ $weakmap_foreach_target(S, n_value_name*)
+  -- if $weakmap_entries_table_valid(S, n_map, eps)
+  -- if pweakmapentry_all* = $weakmap_entries_contents(S, n_map)
+  -- if n = S.NEXTITER
+rule PhpStep/weakmap-entries-reference-fetch: S ~> $weakmap_foreach_reference_body(S_ref[.ITERATORS = $iterator_set(S_ref.ITERATORS, WEAKMAPREFITER n n_map n_next n_keys*)], n, n_map, statement, porigin, z, pweakmapentry_selected)
+  -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z) :: ptask_tail*
+  -- if $iterator_lookup(S.ITERATORS, n) = (WEAKMAPREFITER n n_map n_position n_keys*)
+  -- if $call_task_valid(S, FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z)
+  -- if $weakmap_entries_reference_storage(S, n_map)
+  -- if $weakmap_entries_cursor_next($weakmap_entries_contents(S, n_map), n_position, n_keys*) = (pweakmapentry_selected, n_next)
+  -- if S_ref = $weakmap_entries_reference_acquire(S[.ORIGIN = (porigin)], n_map, pweakmapentry_selected.KEY)
+rule PhpStep/weakmap-entries-reference-end: S ~> $foreach_finish(S[.ORIGIN = (porigin)], n)
+  -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z) :: ptask_tail*
+  -- if $iterator_lookup(S.ITERATORS, n) = (WEAKMAPREFITER n n_map n_position n_keys*)
+  -- if $call_task_valid(S, FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z)
+  -- if $weakmap_entries_reference_storage(S, n_map)
+  -- if $weakmap_entries_cursor_next($weakmap_entries_contents(S, n_map), n_position, n_keys*) = eps
+rule PhpStep/weakmap-entries-reference-storage-refusal: S ~> S[.COMPLETION = UNSUPPORTED "WeakMap reference foreach entry payload or storage"]
+  -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z) :: ptask_tail*
+  -- if $iterator_lookup(S.ITERATORS, n) = (WEAKMAPREFITER n n_map n_position n_keys*)
+  -- if $call_task_valid(S, FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z)
+  -- if ~$weakmap_entries_reference_storage(S, n_map)
