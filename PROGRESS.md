@@ -20,7 +20,7 @@ symbolic skip, enter and throw, including derived truth/no-rewarning/refusals.
 Native preparation, genuine pre-H Unsupported and static checks keep zero credit.
 [Short-circuit review](coverage/semantics/short-circuit-nan-warning-review.json).
 RIGHT NaN, references/other conditional consumers and wider handlers remain partial.
-Publication is independently reviewed; actual-tail review is pending; paused boundaries remain unchanged.
+Publication and actual-tail review are independently complete; paused boundaries remain unchanged.
 
 ## Integrated behavior and entrypoints
 
