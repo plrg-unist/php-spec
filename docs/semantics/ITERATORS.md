@@ -29,6 +29,12 @@ alias disposal. Two source witnesses at separate cuts and 314 Boolean/five raw c
 records in [WeakMap](WEAK-REFERENCES.md); wider modes and mutable iteration stay
 partial.
 
+Quiet Key retirement also clears validated direct entries before by-value
+traversal starts. Two object-valued PHP witnesses reach an empty loop with NULL
+targets, independently of whether an external reference still holds Value.
+[WeakMap](WEAK-REFERENCES.md) records the 276/five focused checks and remaining
+property/payload/history bounds.
+
 Module378 adds real `IteratorAggregate` acquisition to foreach. Implicit getter
 receivers remain borrowed; each returned Aggregate occurrence owns its raw
 retval, and layers retire inside-out before terminal Iterator/Generator startup.

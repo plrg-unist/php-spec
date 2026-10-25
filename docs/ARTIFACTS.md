@@ -237,6 +237,12 @@ two application0 preflights, immutable author/peer snapshots and the isolated
 30/129/270/386/420 patch. SHA-256
 `f16ce3022c405cff998f4ade3da5866b367969e2afbe3f7545b4c1638aaadc06`.
 
+The quiet direct-entry WeakMap Key-retirement proof is in
+`../php-spec-evidence-archive/weakmap-quiet-key-retirement-138/manifest.json`:
+371,981 bytes/114 members under `.tools/m138/`, five complete reports, original2
+packets, immutable author/peer snapshots and the isolated386 guard patch.
+SHA-256 `691eac64219e670a8a38c9a5d29fda2c6c05965b43cf8400e1f3d0fa730173c8`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

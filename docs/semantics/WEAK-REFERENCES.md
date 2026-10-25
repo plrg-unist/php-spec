@@ -243,6 +243,34 @@ reference-entry ephemeron GC, explicit iterator/reference APIs, active entry
 mutation and wider Map/callback/Fiber histories remain partial.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
+## Quiet direct-entry Key notification
+
+M138 extends the retiring-Key activation to direct NULL/methodless-leaf slots.
+It removes only the ALIAS-only premise, preserving existing storage authority,
+RC pruning and cleanup continuation. Validated PHP witnesses use an
+empty-property `stdClass` Key and a parentless methodless empty-property Value.
+The held source binds an external reference only after insertion, so Map VALUE
+stays direct. Key retirement removes the entry and transfers its one direct Value
+owner to a real job; unheld Value retires, while the held Value survives until the
+external alias drops. Both sources then execute empty by-value traversal with
+unchanged NULL targets.
+
+Source2 and author131/3 plus peer145/2 pass 276 Boolean/five raw transitions at
+`c5e5661cd`/410. Entry registration precedes the Key weak wrapper, whose borrowed
+notification stays visible while the Value job runs. Value's own freeing storage
+pin hides its weak get before physical disposal; final probes see both targets
+as NULL. A restored actual Key binding and direct NULL/empty-job shapes are
+constructed controls with no extra PHP credit.
+
+Native2 and genuine stale-entry Unsupported2 retain `52af2e140`/410; unheld also
+exposes a retained-Value mismatch before refusal. All repaired/focused checks
+pass first execution without native/baseline replay, cap increase or a separate
+preflight. Wider Std Key properties/storage, other scalar/array payloads in quiet
+notification, broader method/class/callback/Fiber combinations, wider maps/graphs
+and reference/CONFIG/ephemeron-GC extensions remain partial. Existing destructor
+routes retain their earlier evidence.
+[Review and recovery](../../coverage/semantics/weak-map-review.json).
+
 ## Ordinary Std graphs beside a methodless ephemeron
 
 At `fa2e00c6`, module386 admitted allocated, nonfreeing outside `stdClass` graphs when the

@@ -3057,8 +3057,14 @@ rebinding plus escaped aliases through DATA or Key retirement. A reference
 containing NULL makes `isset` true while reads, `??` and `empty` retain their NULL
 behavior. Two sources retain separate `e975008b1`/`ae4590a36` cuts; 314 Boolean/five
 raw checks pass at `ae4590a36`/410. Original NULL mismatch and fixture failures remain
-zero; wider reference/CONFIG/GC histories and general quiet direct-entry Key
-notification remain partial. [Review](coverage/semantics/weak-map-review.json).
+zero; wider reference/CONFIG/GC histories remain partial.
+
+Quiet direct entries now also notify before Key retirement can leave a stale
+entry. Two object-valued sources and 276 Boolean/five raw checks pass at
+`c5e5661cd`/410: an unheld Value retires, an external reference protects its own
+Value, and both Maps then traverse empty. Direct NULL has a labeled constructed
+control rather than an extra PHP witness. Wider Key properties and other
+payload/context histories remain partial. [Review](coverage/semantics/weak-map-review.json).
 
 The object-valued singleton can now coexist with ordinary `stdClass` graphs.
 Two originals agree at `fa2e00c6`: an independent self-cycle collects alongside
