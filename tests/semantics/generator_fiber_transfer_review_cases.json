@@ -5,7 +5,8 @@
     "source": "<?php\nfunction GeneratorFiberHandled53() {\n    global $given;\n    echo 'G|';\n    try {\n        $value = Fiber::suspend('pause53');\n        echo 'NORMAL|', $value, '|';\n    } catch (Exception $caught) {\n        echo 'INNER|', (int) ($caught === $given), '|';\n        echo (int) ($caught->getPrevious() === null), '|';\n    } finally {\n        echo 'FINALLY|';\n    }\n    yield 'yield53';\n    echo 'AFTER-YIELD|';\n    return 73;\n}\n$given = new Exception('supplied53');\n$g = GeneratorFiberHandled53();\n$f = new Fiber(function () {\n    global $g;\n    echo 'CALL|';\n    $current = $g->current();\n    echo 'CURRENT|', $current, '|';\n    return 'done53';\n});\necho 'START|', $f->start(), '|';\necho 'PAUSED|', (int) $f->isSuspended(), '|';\necho 'THROW|';\n$reply = $f->throw($given);\necho 'DELIVERED|', (int) ($reply === null), '|';\necho 'DONE|', (int) $f->isTerminated(), '|', $f->getReturn(), '|';\necho 'VALID|', (int) $g->valid(), '|';\n$g->next();\necho 'CLOSED|', (int) $g->valid(), '|', $g->getReturn(), '|';\necho 'GIVEN|', (int) ($given->getPrevious() === null), '|';\nunset($f, $g, $given);\necho 'E';\n",
     "source_sha256": "2d2d0a16f875a954b7f31523641d91cb4b1e80739eb4d8e6d16478f286919386",
     "native_exit": 0,
-    "native_stderr": ""
+    "native_stderr": "",
+    "native_stdout": "START|CALL|G|pause53|PAUSED|1|THROW|INNER|1|1|FINALLY|CURRENT|yield53|DELIVERED|1|DONE|1|done53|VALID|1|AFTER-YIELD|CLOSED|0|73|GIVEN|1|E"
   },
   {
     "id": "review-generator-fiber-transfer-unhandled-injection",
@@ -13,6 +14,7 @@
     "source": "<?php\nfunction GeneratorFiberUnhandled53() {\n    echo 'G|';\n    try {\n        $value = Fiber::suspend('pause53');\n        echo 'NORMAL|', $value, '|';\n    } finally {\n        echo 'FINALLY|';\n    }\n    yield 'yield53';\n    echo 'AFTER-YIELD|';\n    return 73;\n}\n$given = new Exception('supplied53');\n$g = GeneratorFiberUnhandled53();\n$f = new Fiber(function () {\n    global $g;\n    echo 'CALL|';\n    $current = $g->current();\n    echo 'CURRENT|', $current, '|';\n    return 'done53';\n});\necho 'START|', $f->start(), '|';\necho 'PAUSED|', (int) $f->isSuspended(), '|';\necho 'THROW|';\ntry {\n    $f->throw($given);\n    echo 'NORMAL-RETURN|';\n} catch (Exception $caught) {\n    echo 'OUTER|', (int) ($caught === $given), '|';\n    echo (int) ($caught->getPrevious() === null), '|';\n    echo (int) ($caught->getMessage() === 'supplied53'), '|';\n}\necho 'DONE|', (int) $f->isTerminated(), '|';\necho 'CLOSED|', (int) $g->valid(), '|';\necho 'GIVEN|', (int) ($given->getPrevious() === null), '|';\nunset($caught, $f, $g, $given);\necho 'E';\n",
     "source_sha256": "3d18ab669a3962e36c2e0c0db8dcf62b2fff86fc82af8c16021c47593dd22687",
     "native_exit": 0,
-    "native_stderr": ""
+    "native_stderr": "",
+    "native_stdout": "START|CALL|G|pause53|PAUSED|1|THROW|FINALLY|OUTER|1|1|1|DONE|1|CLOSED|0|GIVEN|1|E"
   }
 ]

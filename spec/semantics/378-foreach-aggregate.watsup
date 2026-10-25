@@ -358,8 +358,11 @@ def $fiber_generator_transfer(S) = true
   -- if S_caller = $constant_frame_scope(S, pframe_close, pframe_tail*)
   -- if $generator_close_done_valid(S_caller, pgenclose)
 
-;; Saved close records remain the running Generator's unique operation owner.
+;; Saved body and close records remain unique running Generator operations.
 ;; Collect occurrences rather than erasing duplicates across real VM stacks.
+def $foreach_aggregate_close_vm_ids(S, pfibervm) = [n]
+  -- if S_view = $fiber_vm_restore(S, pfibervm)[.COMPLETION = NORMAL]
+  -- if $fiber_generator_body_id(S_view) = (n)
 def $foreach_aggregate_close_vm_ids(S, pfibervm) = [n]
   -- if $generator_resume_ids(pfibervm.TODO) = eps
   -- if $generator_saved_ids(pfibervm.FRAMES) = [n]

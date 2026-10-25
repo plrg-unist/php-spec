@@ -1836,7 +1836,7 @@ def $generator_from_update_entered(S, S_updated, pgeneratorop) = true
   -- if S_updated.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator_updated
   -- if pgenerator.PHASE = GENERATOR_DELEGATING /\ pgenerator_updated.PHASE = GENERATOR_RUNNING
 def $generator_from_update_entered(S, S_updated, pgeneratorop) = false -- otherwise
-def $generator_operate(S, pgeneratorop) = $generator_error(S, pgeneratorop, "Error", $ptascii("Cannot resume an already running generator"))
+def $generator_operate(S, pgeneratorop) = $generator_running_error(S, pgeneratorop)
   -- if $generator_from_running_conflict(S, pgeneratorop)
 def $generator_operate(S, pgeneratorop) = S_updated
   -- if ~$generator_from_running_conflict(S, pgeneratorop)

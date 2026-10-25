@@ -96,6 +96,7 @@ dec $generator_input_throw_receipt(pstate, pdestructionoperation) : bool
 dec $generator_resumed(pstate, pgeneratorop) : pstate
 dec $generator_cache_value(pvalue?) : pvalue
 dec $generator_error(pstate, pgeneratorop, text, ptbytes) : pstate
+dec $generator_running_error(pstate, pgeneratorop) : pstate
 dec $generator_result(pstate, pgeneratorop) : pstate
 dec $generator_complete(pstate, pgeneratorop) : pstate
 dec $generator_loop_body(pstate, pgeneratorop) : pstate
@@ -780,6 +781,21 @@ def $generator_operation_trace(S, pgeneratorop) = [{FILE $call_sourcefile(S.FILE
   -- if ~pgeneratorop.BORROWED
 def $generator_operation_trace(S, pgeneratorop) = eps -- if pgeneratorop.LOOP =/= eps
 def $generator_error(S, pgeneratorop, text, ptbytes) = $throwable_allocate(S, text, ptbytes, pgeneratorop.LINE, $source_trace_prefixed(S, $generator_operation_trace(S, pgeneratorop)))
+;; NEXT first ensures an undefined cache is initialized, then resumes again.
+;; Both attempts fail while this direct body is parked in another Fiber VM.
+def $generator_running_error(S, pgeneratorop) = $throwable_previous(S_second, n_second, n_first)
+  -- if pgeneratorop.NAME = "next" /\ pgeneratorop.LOOP = eps /\ pgeneratorop.ARGUMENTS = eps
+  -- if ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if $generator_operation_valid(S, pgeneratorop)
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_RUNNING /\ pgenerator.VALUE = eps
+  -- if pgenerator.DELEGATE = eps /\ pgenerator.FRAME = eps /\ pgenerator.CLOSURE = eps
+  -- if pgeneratorop.OBJECT <- $generator_saved_fiber_ids(S)
+  -- if S_first = $generator_error(S, pgeneratorop, "Error", $ptascii("Cannot resume an already running generator"))
+  -- if S_first.COMPLETION = THROWING n_first
+  -- if S_second = $generator_error(S_first[.COMPLETION = NORMAL], pgeneratorop, "Error", $ptascii("Cannot resume an already running generator"))
+  -- if S_second.COMPLETION = THROWING n_second
+def $generator_running_error(S, pgeneratorop) = $generator_error(S, pgeneratorop, "Error", $ptascii("Cannot resume an already running generator")) -- otherwise
 def $generator_argument_count(text) = 1 -- if text <- ["send", "throw"]
 def $generator_argument_count(text) = 0 -- otherwise
 def $generator_argument_error(S, pgeneratorop, poperand*) = $throwable_allocate(S, "ArgumentCountError", $ptascii("Generator::") ++ $generator_method_display(pgeneratorop.NAME) ++ $ptascii("() expects exactly ") ++ $ntunsigned($generator_argument_count(pgeneratorop.NAME)) ++ $ptascii(" argument") ++ $config_plural($generator_argument_count(pgeneratorop.NAME)) ++ $ptascii(", ") ++ $ntunsigned(|poperand*|) ++ $ptascii(" given"), pgeneratorop.LINE, $source_trace_prefixed(S, [ptraceframe[.ARGS = $trace_indexed_args($trace_extra(S, poperand*), 0)]]))
