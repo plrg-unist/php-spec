@@ -73,7 +73,7 @@ def checks(program, path, name):
         'S_dead_table = S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS,HARRAY n_array)]',
         '$error_read_valid(S_dead_table,perrorread)', '$error_read_plan(S_dead_table) = eps',
         '~$spaceship_read_array_entries(S,[ENTRY (KINT 0) (ALIAS n_current)])',
-        '~$spaceship_read_array_entries(S,[ENTRY (KINT 0) (DIRECT (PARRAY n_array))])',
+        '$spaceship_read_array_entries(S,[ENTRY (KINT 0) (DIRECT (PARRAY n_array))])',
         '~$spaceship_read_array_entries(S,[ENTRY (KINT 0) (DIRECT PUNDEFINED)])',
         '~$spaceship_read_array_entries(S,[ENTRY (KINT 0) (DIRECT (POBJECT (|S.OBJECTS|)))])',
         'S_warn_pause = $drive_steps(S,1)', 'S_warn_pause.COMPLETION = BUDGET',

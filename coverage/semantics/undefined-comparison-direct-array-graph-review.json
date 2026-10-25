@@ -1,0 +1,146 @@
+{
+  "milestone": "COMP120 recursive DIRECT comparison array graphs",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "Existing seven missing-CV comparisons admit finite acyclic DIRECT array-edge graphs of allocated tables of primitive or live ordinary non-Stringable object leaves. Sibling paths permit shared DAGs. Top-level legacy ALIAS payloads remain primitive/object/one-flat-DIRECT-child only; recursive children reject aliases.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "f428c4119c8b912be8fd097fd9562fdaddcce535",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "3a9057b33ad3257a3c68c570e48c33a0f44ab4a39d884e022f1c30ed76adfe07"
+  },
+  "tested_modules": 409,
+  "engine_basis": "zend_compare uses outer ARRAY truth against NULL without descendant comparison. zend_array_dup_value copies physical child zvals; ordinary array COW and existing graph retirement preserve shared identities and transitive release.",
+  "implementation": "Only207 changes: two recursive DIRECT predicates carry path-local ancestors; descent extends the path and each sibling keeps its original path. Allocation/bounds precede row access. The legacy flat ALIAS helper now checks scalar/ordinary-object DIRECT leaves independently, preserving its exact old domain. Source/history certificates, saved roots, schemas, restore/discard, comparison and driver bodies stay unchanged.",
+  "baseline": {
+    "report": "actors-and-initial/baseline-report.json",
+    "sha256": "eba4f430ffe8899314fe1b0a715bbfa091f5d9d9caec2813b876ab2cdb509a60",
+    "revision": "33613ffc3083783ff3e25b4e56676c9a6e0412b0",
+    "native_revision": "a384f4343d52dcbd0a5dc560ef6449870f4b2afe",
+    "agreement_credit": 0,
+    "observation": "Initial native6 retain actual a384f4343. Genuine unchanged private33613ffc3/409 accepts/checks the live original, then reports ingress Unsupported with empty streams. Initial native6 is reused without replay."
+  },
+  "accepted": [
+    {
+      "report": "author-retained-source/report.json",
+      "sha256": "25b008e5729fb42d0543f14d3db645b26ce4472226b5825d69e758281b74cbd2",
+      "revision": "54d6d1eadc907ffe5dbdb397b4444c581555681b",
+      "agreements": 2,
+      "native_replay": 0
+    },
+    {
+      "report": "author-new-source/model-report.json",
+      "sha256": "85ff5d8d5703fa5179bb4183cd447064dde493a3b08c30708af56d8ba00cdf34",
+      "revision": "b077cd7ea11495837d48f6e93c1603d791fa6294",
+      "agreements": 4,
+      "unsupported_controls": 2
+    },
+    {
+      "report": "peer-source/model.json",
+      "sha256": "33018a487c7714ed78c5869d540d939d4785dbec3030d40f17d6e069003503be",
+      "revision": "b077cd7ea11495837d48f6e93c1603d791fa6294",
+      "agreements": 4,
+      "native_replay": 0
+    },
+    {
+      "report": "peer-state-fixed/report.json",
+      "sha256": "794e0787b3662908ff3b3c0d8843b8949a36408228220c83adb848f283d3bd97",
+      "revision": "f428c4119c8b912be8fd097fd9562fdaddcce535",
+      "premises": 450,
+      "groups": 4
+    },
+    {
+      "report": "author-state/report.json",
+      "sha256": "057e65655668d61a29788d9a797891cc894631c01ef4529572b75f73d5264e60",
+      "revision": "f428c4119c8b912be8fd097fd9562fdaddcce535",
+      "premises": 475,
+      "groups": 4
+    }
+  ],
+  "totals": {
+    "source_agreements": 10,
+    "unsupported_source_controls": 2,
+    "state_premises": 925,
+    "state_groups": 8
+  },
+  "behavior": [
+    "Repeated child tables within the same subtree are admitted. Depth-four COW separates the written row while old siblings/snapshots retain physical child edges and ordinary object identity.",
+    "Captured old graphs release their last object before the outer result store; replacement graphs may die inside the callback. A live root cell follows replacement, ordinary value copies keep the old graph, and outside aliases delay final new-object destruction until after the false result store.",
+    "Supplied-handler Exception cleanup drops the captured DIRECT graph before catching the same Exception and leaves result41 untouched. Default output, all seven operators, same/both-missing creation, pooled empty children and mixed legacy ALIAS/DIRECT DAGs are source checked.",
+    "Reached state checks distinguish raw owner drops from driven destructor entry, preserve exact source/line descriptors, refuse self/cross DIRECT cycles, nested aliases/INDIRECT/UNINITIALIZED/undefined/dead children and verify whole/one-step/zero resumption from actual warning/throw cuts."
+  ],
+  "maintenance": {
+    "source": {
+      "report": "maintenance-source/report.json",
+      "sha256": "a98278e0edd366ba4d1ecfa1a90f1077c0a35c9b4c0f5b08e435f7af7507dfeb",
+      "revision": "f428c4119c8b912be8fd097fd9562fdaddcce535",
+      "selectors": 7,
+      "normal_agreements": 7,
+      "historical_renewal": 0
+    },
+    "predicates": {
+      "report": "maintenance-predicate/report.json",
+      "sha256": "b768f36c679a638e9ed1ea5ad6d20e63ed89cef1e3fc187a181838afa18ce8f4",
+      "revision": "f428c4119c8b912be8fd097fd9562fdaddcce535",
+      "reached_checks": 5,
+      "agreement_credit": 0,
+      "historical_renewal": 0
+    },
+    "reused_classification": {
+      "report": "legacy-classification/report.json",
+      "sha256": "37c4370406ccfa7149a1cb2b8574ca9a6411a4586b143b848545d5da752d477e",
+      "revision": "54d6d1eadc907ffe5dbdb397b4444c581555681b",
+      "earlier_child_admitted": true,
+      "agreement_credit": 0
+    },
+    "scope": "Seven old nested-DIRECT refusal mappings now require normal exact native/model agreement. Five minimal source-reached predicates check their changed positive domain expectations. The sixth earlier pooled empty-child predicate was observed true at54d before its one-line correction; that record is reused without replay or any historical campaign renewal."
+  },
+  "failure": {
+    "report": "peer-state-original/report.json",
+    "sha256": "81cefda7b21d021f77f5b42c32ab4664dbd32c2864bf378aedd5c449f46a7c02",
+    "revision": "e8a4bdda66d70fa9d887ba2a5bd508e40a703957",
+    "fixture_premises": 228,
+    "agreement_credit": 0,
+    "cause": "The first COW cut had PNULL result/base but still carried assignment cleanup: DESTRUCTOR_OPERATION_EXIT.VALUE owned NewO in addition to its one new-leaf edge, and a release job retained OldO. One failed owner condition stays0. A narrow prefix observation confirmed the actual2 NewO owners; only three fixture stage guards now require quiet OPERATIONS/RELEASES, preserving both owner1 assertions. Runtime/source bytes stayed exact; only the failed core and unrun groups executed atf428."
+  },
+  "observation": {
+    "fixture": "review-drivers/cow-owner-observe.watsup",
+    "fixture_sha256": "2458f85e853944eec0701303ef0ea78370d8b4c5b9a17f39f6601aee3657234b",
+    "process": "review-drivers/cow-owner-observe.exit.json",
+    "stdout_sha256": "b00061f71866ff88fa51f03e49ed451080163d2d445915f7a391130c6ba96f7e",
+    "agreement_credit": 0
+  },
+  "validation": "Serial/fail-first,2GiB,full reap. Initial CPU4 native6/per15 and genuine CLI80/record90 use130 outer. Retained source2/classifier use335 outer, CLI90/record105 and prefix80. CPU2 new native6/model6 use645 outer with130/515 phase ceilings and existing15/45-or90(+15 recorder); peer4 uses405 outer/80/95. Focused peer/author packets use515 outer/child120; original failed228 and narrow prefix80 remain0. Maintenance source755 outer preserves15 native/45 CLI/60 record and30/75 phase ceilings; predicate425 outer preserves80 children. All accepted reports retain stable input/HEAD and closed workers/groups.925 counts raw executed premises, including repeated setup in four explicit budget groups, without a distinct-obligation claim.",
+  "divergences": [],
+  "remaining": [
+    "Nested aliases/INDIRECT/UNINITIALIZED, deeper ALIAS payloads, DIRECT cycles, internal/enum/Stringable leaves and wider producers/owning histories remain partial. Paused COMP88 is untouched.",
+    "Objects remain leaves; no object-property-cycle or general collection-history claim is added. Eligibility validates the graph while comparison still tests outer truth against frozen NULL."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-120",
+  "artifact_manifest_sha256": "732f77192030af0a92b52c983a29e3ef4ed0e84523fd1abdd513bfabfc85debe",
+  "independent_reviewer": "/root/comp118_review",
+  "independent_review": {
+    "report": "actors-and-initial/independent-review.json",
+    "sha256": "3e03c6901773b2c266c583e3230c0c7fb658ad5f205ac49386cd81d825c9738f"
+  },
+  "reproduction": [
+    "python3 tests/semantics/undefined_comparison_direct_array_graph_sources.py --phase native --output .tools/comp120-source-new",
+    "python3 tests/semantics/undefined_comparison_direct_array_graph_sources.py --phase model --output .tools/comp120-source-new",
+    "python3 tests/semantics/undefined_comparison_direct_array_graph_review_sources.py --phase native --output .tools/comp120-peer-source-new",
+    "python3 tests/semantics/undefined_comparison_direct_array_graph_review_sources.py --phase model --output .tools/comp120-peer-source-new",
+    "python3 tests/semantics/undefined_comparison_direct_array_graph_state.py --output .tools/comp120-state-new",
+    "python3 tests/semantics/undefined_comparison_direct_array_graph_review_state.py --output .tools/comp120-peer-state-new"
+  ],
+  "integration": {
+    "parent": "edbb8c01f889995c9d19ae41e2853100245127a5",
+    "modules": 410,
+    "tested_modules": 409,
+    "combined_runtime_sha256": {
+      "spec/semantics/207-error-handler-runtime.watsup": "3a9057b33ad3257a3c68c570e48c33a0f44ab4a39d884e022f1c30ed76adfe07"
+    },
+    "runtime": "207 is publication c1432c30f-exact. Reversing only COMP120 restores the full incoming207 byte-for-byte. All21 changed tests remain publication-exact; every other runtime/schema/default/root/ordered410/pipeline byte remains parent-exact.",
+    "compatibility": "Incoming WeakMap reference/array backedges and foreach cleanup require actual WeakMaps/OBJECTITER; CONFIG Iterator/WeakMap unpack requires CONFIG_UNPACK_PREP; NaN logical XOR and captured Stringable queries require their distinct opcode/query/conversion paths. None occurs in these ordinary comparison sources or narrow maintenance fixtures. Implicit integer keys, initialized plain fields, by-value returns and normal handler registration introduce no joined producer.",
+    "progress": "Actual parent compact PROGRESS is updated in place: own comparison checkpoint/row, completed integration status and now-empty pending table. Incoming family/history/remaining/paused text stays intact; prior Iterator/WeakMap CONFIG reviews are linked from their family row.",
+    "evidence": "Source10+2 retain54d/b077/409;925 accepted raw premises/eight groups and maintenance7+5 retainf428/409, with earlier54d classifier reused0. Original228 and the assignment-root observation remain0. No joined execution, native replay or historical renewal is claimed."
+  }
+}

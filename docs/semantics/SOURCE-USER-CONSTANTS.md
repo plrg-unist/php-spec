@@ -965,8 +965,27 @@ binds source4/author463 at bc3590e16 and independent179 at 9fa625b8b, all runtim
 931f6caac. The sole pre-main peer frame-field assertion failure retains zero credit;
 only its one-line fixture correction repeats. Retained propertyless receivers,
 ordinary typed-string returns and existing global values bound the validated slice;
-sole-owner destruction, wider receiver/return lifetimes, NUL/HALT names and
-named/packed/owner forms remain partial. No task/schema or shared stringifier change.
+ownerless sole-owner destruction, wider receiver/return lifetimes, NUL/HALT names
+and named/packed forms remain partial. No task/schema or shared stringifier change.
+
+Captured DEFINED/CONSTANT callees also receive one positional Stringable name.
+The live matching owner and existing source/site checks authenticate the raw
+call; the argument must have no immutable compiled value fact. Selection and
+packs stay empty, PIPE is excluded, and normal conversion must return a non-NUL
+global name. Ordinary calls hand off the received string before lookup, releasing
+the raw argument while the callee stays alive. Its destructor can therefore
+publish the name that lookup reads, even after conversion rewrites caller CVs.
+Explicit `__invoke` finishes lookup with the received string while retaining the
+original object in its wrapper argument. Normal DEFINED can return false before
+destruction publishes that name; a missing Error has a string API argument and
+an object wrapper argument. The callee retires before catch, while a copied raw
+wrapper-argument array can retain the object after Error/trace release. Strict
+ordinary calls reject without method entry and retain the raw object in their
+TypeError trace. Eager release drops both explicit argument slots before its callee
+when both become unreachable together. No schema, root or receipt policy is added.
+[Captured Stringable query review](../../coverage/semantics/constant-owned-stringable-query-review.json).
+Class-qualified/HALT/NUL results, named/packed calls, known-value arguments,
+supplied conversion throws and wider receiver/return forms remain partial.
 
 Retained propertyless Stringable query names returning non-NUL class-qualified
 text now reach the existing user-class lookup guards after conversion. One finish

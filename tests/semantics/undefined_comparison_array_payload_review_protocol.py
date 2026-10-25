@@ -24,7 +24,7 @@ def controls():
     return [
         '$comparison_read_array_payload(S,PARRAY n_child_old)',
         '~$comparison_read_array_payload(S,PARRAY n_array)',
-        '~$spaceship_read_array_entries(S,[ENTRY (KINT 0) (DIRECT (PARRAY n_child_old))])',
+        '$spaceship_read_array_entries(S,[ENTRY (KINT 0) (DIRECT (PARRAY n_child_old))])',
         'S_dead_child = S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS,HARRAY n_child_old)]',
         '~$comparison_read_array_payload(S_dead_child,PARRAY n_child_old)',
         '~$spaceship_read_array(S_dead_child,perrorread)', '$error_read_valid(S_dead_child,perrorread)',
