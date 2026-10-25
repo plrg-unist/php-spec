@@ -173,17 +173,17 @@ def $weakmap_entries_present(S, (HOBJECT n) :: pnode_tail*) = $weakmap_entries_p
   -- if ~$weakmap_entries_at(S, n)
 def $weakmap_entries_present(S, (HCELL n) :: pnode_tail*) = $weakmap_entries_present(S, pnode_tail*)
 def $weakmap_entries_present(S, (HARRAY n) :: pnode_tail*) = $weakmap_entries_present(S, pnode_tail*)
-def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = $weakmap_entries_pack($weakmap_entries_delete(pweakmapentry*, n_key))][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = $weakmap_notice_wrapper(S, pweakmapentry)]) :: ptask_tail*], $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
+def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = $weakmap_entries_pack($weakmap_entries_delete(pweakmapentry*, n_key))][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = $weakmap_notice_wrapper(S, pweakmapentry_removed)]) :: ptask_tail*], $destruction_values($weakmap_value_nodes(pweakmapentry_removed.VALUE)))
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
   -- if $weakmap_entries_at(S, n_map)
   -- if $weakmap_entries_table_valid(S, n_map, [n_key])
   -- if S.OBJECTS[n_map] = WEAKMAPENTRIES pweakmapentry*
-  -- if $weakmap_entries_find(pweakmapentry*, n_key) = (pweakmapentry)
+  -- if $weakmap_entries_find(pweakmapentry*, n_key) = (pweakmapentry_removed)
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
   -- if pinstancestorage.OBJECT = n_key
   -- if $instance_storage_valid(S, pinstancestorage)
   -- if pinstancestorage.NEXT = 0 /\ pinstancestorage.SLOTS = eps /\ pinstancestorage.NOTIFY = eps
-  -- if $destructor_jobs_valid(S, $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
+  -- if $destructor_jobs_valid(S, $destruction_values($weakmap_value_nodes(pweakmapentry_removed.VALUE)))
 
 ;; Wider protocols refuse before generic tracing or storage disposal can
 ;; silently treat this table as an empty/ordinary object.
