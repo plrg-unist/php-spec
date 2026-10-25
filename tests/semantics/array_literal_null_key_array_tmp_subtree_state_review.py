@@ -10,10 +10,12 @@ from array_literal_float_wrapped_mixed_cv_state_review import empty_biases, pair
 from array_literal_null_key_array_tmp_state_review import HELPERS as BASE_HELPERS
 
 HELPERS = BASE_HELPERS + r'''
+dec $tmp_subtree_deprecated(pevent) : nat
+def $tmp_subtree_deprecated(DIAGNOSTIC "Deprecated" n_message* z) = 1
+def $tmp_subtree_deprecated(pevent) = 0 -- otherwise
 dec $tmp_subtree_deprecations(pevent*) : nat
 def $tmp_subtree_deprecations(eps) = 0
-def $tmp_subtree_deprecations((DIAGNOSTIC "Deprecated" ptbytes z) :: pevent_tail*) = $(1 + $tmp_subtree_deprecations(pevent_tail*))
-def $tmp_subtree_deprecations(pevent_head :: pevent_tail*) = $tmp_subtree_deprecations(pevent_tail*) -- otherwise
+def $tmp_subtree_deprecations(pevent :: pevent_tail*) = $($tmp_subtree_deprecated(pevent) + $tmp_subtree_deprecations(pevent_tail*))
 '''
 
 
