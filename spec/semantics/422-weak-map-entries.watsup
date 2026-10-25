@@ -142,8 +142,14 @@ def $weakmap_entries_access_allowed(S, paccess, ptbytes) = true
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_entries_at(S, n_map)
   -- if $weakmap_entries_table_valid(S, n_map, eps)
-  -- if (ptbytes = $ptascii("offsetGet") /\ $weakmap_read_allowed(S, paccess)) \/ (ptbytes = $ptascii("offsetExists") /\ ($weakmap_presence_allowed(S, paccess) \/ $weakmap_quiet_read_allowed(S, paccess)))
+  -- if (ptbytes = $ptascii("offsetGet") /\ $weakmap_read_allowed(S, paccess)) \/ (ptbytes = $ptascii("offsetExists") /\ ($weakmap_presence_allowed(S, paccess) \/ $weakmap_quiet_read_allowed(S, paccess))) \/ (ptbytes = $ptascii("offsetUnset") /\ $weakmap_unset_allowed(S, paccess))
 def $weakmap_entries_access_allowed(S, paccess, ptbytes) = false -- otherwise
+;; Explicit unset drops exactly this slot; an absent object Key is unchanged.
+;; Existing ownership cleanup retires the removed Value or reference-cell edge.
+def $access_call(S, paccess, ptbytes) = $access_done(S[.OBJECTS[n_map] = $weakmap_entries_pack($weakmap_entries_delete($weakmap_entries_contents(S, n_map), n_key))], paccess, PNULL)
+  -- if ptbytes = $ptascii("offsetUnset") /\ $weakmap_entries_access_allowed(S, paccess, ptbytes)
+  -- if paccess.OBJECT = (n_map)
+  -- if paccess.OFFSET = POBJECT n_key
 def $access_call(S, paccess, ptbytes) = $key_read_done(S, $weakmap_value(S, pweakmapentry.VALUE))
   -- if $weakmap_entries_access_allowed(S, paccess, ptbytes)
   -- if paccess.MODE = ACCESS_READ KEY_R \/ paccess.MODE = ACCESS_READ KEY_IS
