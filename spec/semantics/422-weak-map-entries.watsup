@@ -435,7 +435,7 @@ rule PhpStep/weakmap-entries-reference-storage-refusal: S ~> S[.COMPLETION = UNS
   -- if $call_task_valid(S, FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z)
   -- if ~$weakmap_entries_reference_storage(S, n_map)
 
-;; Independent destructor-free ephemeron pairs use the ordinary GC plan/count.
+;; Finite destructor-free Key permutations use the ordinary GC plan/count.
 ;; Their conditional edges never alter the physical ownership graph.
 dec $weakmap_entries_gc_nodes(pweakmapentry*) : pnode*
 def $weakmap_entries_gc_nodes(eps) = eps
@@ -464,12 +464,20 @@ def $weakmap_entries_gc_entries(S, pweakmapentry :: pweakmapentry_tail*, n_map) 
   -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.TYPE = eps
   -- if $objectprops_at(S.OBJECTPROPS, n_value) = ([ppropertyslot])
   -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN)
-  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_key))
-  -- if $node_children(S, HOBJECT n_value) = [HOBJECT n_key]
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_target))
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_target) =/= eps
+  -- if $node_children(S, HOBJECT n_value) = [HOBJECT n_target]
   -- if $weakmap_before_valid(S, pweakmapentry)
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
   -- if $weakmap_entries_gc_entries(S, pweakmapentry_tail*, n_map)
 def $weakmap_entries_gc_entries(S, pweakmapentry*, n_map) = false -- otherwise
+;; One distinct member target per entry makes every component a Key cycle.
+;; Conditional reachability therefore retains/frees complete entry pairs.
+dec $weakmap_entries_gc_targets(pstate, pweakmapentry*) : nat*
+def $weakmap_entries_gc_targets(S, eps) = eps
+def $weakmap_entries_gc_targets(S, pweakmapentry :: pweakmapentry_tail*) = n_target :: $weakmap_entries_gc_targets(S, pweakmapentry_tail*)
+  -- if pweakmapentry.VALUE = POBJECT n_value
+  -- if $node_children(S, HOBJECT n_value) = [HOBJECT n_target]
 dec $weakmap_entries_gc_objects(pstate, pnode*, nat, pnode*) : bool
 def $weakmap_entries_gc_objects(S, eps, n_map, pnode_pairs*) = true
 def $weakmap_entries_gc_objects(S, (HOBJECT n) :: pnode_tail*, n_map, pnode_pairs*) = $weakmap_entries_gc_objects(S, pnode_tail*, n_map, pnode_pairs*)
@@ -495,6 +503,7 @@ def $weakmap_entries_gc_shape(S, n_map) = true
   -- if $object_table_at(S.OBJECTTABLES, n_map) = eps
   -- if $objectprops_valid(S, S.OBJECTPROPS)
   -- if $weakmap_entries_gc_entries(S, pweakmapentry_all*, n_map)
+  -- if $destructor_unique($weakmap_entries_gc_targets(S, pweakmapentry_all*))
   -- if $weakmap_entries_gc_objects(S, S.ALLOCATIONS, n_map, $weakmap_entries_gc_nodes(pweakmapentry_all*))
   -- if H = $heap_graph(S)
   -- if $heap_valid(H)
