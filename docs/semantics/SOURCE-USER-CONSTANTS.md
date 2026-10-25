@@ -987,6 +987,33 @@ when both become unreachable together. No schema, root or receipt policy is adde
 Class-qualified/HALT/NUL results, named/packed calls, known-value arguments,
 supplied conversion throws and wider receiver/return forms remain partial.
 
+After a normal `__toString()` return, captured query callees preserve the ordinary
+API boundary when the argument destructor creates and throws an Exception. Its
+trace has an internal frame followed by
+the selected CONSTANT/DEFINED frame with its raw object argument. C lookup still
+runs after that release: successful lookup propagates the original Exception;
+a missing CONSTANT creates an Error with the converted string API argument and
+chains the destructor Exception as Previous. Its raw argument array can remain
+the object's sole owner after both throwable histories are released, with no
+second destructor call. Earlier publication survives for independent recovery.
+Explicit `__invoke` cleanup occurs after the API frame has returned. Its
+destructor frame keeps its source location; completed API/wrapper frames are
+absent, and its argument can retire before catch. Both forms preserve the caller
+destination's prior value.
+
+The saved normal `CONFIG_STRING_RESULT` operation must match the actual received
+`CONFIG_INVOKE` handoff, caller, constant context, null value/base and source
+metadata. Historical INSTANCE/public concrete `__toString` descriptors validate
+the raw argument without adding retired objects back to allocation state; the
+received call still requires a live matching callee and valid global string.
+Existing internal-site/trace hooks, scalar lookup, Previous chaining and standard
+callee retirement implement the continuation without new tasks, roots or schema.
+[Destructor-throw query review](../../coverage/semantics/constant-owned-stringable-query-throw-review.json).
+These witnesses construct Exceptions inside destructors after normal string
+returns. Ownerless sole-owner destruction, supplied conversion throws, wider
+destructor throw/reentry histories and the existing name/call exclusions remain
+partial; paused comparison and NUL-release lanes stay separate.
+
 Retained propertyless Stringable query names returning non-NUL class-qualified
 text now reach the existing user-class lookup guards after conversion. One finish
 predicate and its comment change; source/carrier/saved-site checks, the global arm

@@ -2057,6 +2057,16 @@ before callee retirement when both become unreachable together.
 This route requires mutable arguments and non-NUL global results; class names,
 packs, PIPE and supplied conversion throws remain outside its validated scope.
 
+After a normal `__toString()` return, captured query callees preserve the ordinary
+API's pending lookup when the argument destructor throws an Exception. Successful
+lookup keeps that Exception;
+missing `constant()` raises an Error with it as Previous. The original trace
+retains an internal destructor frame and raw object API argument; the replacement
+Error receives the converted string. Explicit cleanup happens after the API has
+returned, and its destructor frame retains the caller's source location. Caller
+destinations retain their prior values; an ordinary raw-argument array can delay
+final object release. [Destructor-throw query review](coverage/semantics/constant-owned-stringable-query-throw-review.json).
+
 Retained propertyless Stringable query names returning non-NUL class-qualified
 text now hand the converted API slot to existing guarded user-class lookup.
 Loaded values, `defined()` true/false and missing-member errors follow conversion;

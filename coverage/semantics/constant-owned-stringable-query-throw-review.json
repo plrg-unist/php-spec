@@ -1,0 +1,160 @@
+{
+  "status": "independently accepted bounded V103 behavior; core PHP remains partial",
+  "target": {
+    "php": "PHP 8.5.10 CLI NTS 64-bit",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "modules": 410,
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    },
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "execution": "Original PHP bytes, filenames and cwd; source SL and focused strict-SL. Full argv, caps, exits and tool/input fingerprints remain in the raw reports."
+  },
+  "base": "58246ec798ef67f6efeaa76a53531901844e0d8f",
+  "runtime": {
+    "revision": "70afe05cf64feab6ae51d0d24e0630d137a41931",
+    "path": "spec/semantics/400-dynamic-constants.watsup",
+    "delta": "+60 lines only; no existing lines removed, new task/root/state field/schema or pipeline change",
+    "sha256": "5cfb3741edda1bf87a490ba4f4b2e40b3aa85998e544f730fb0ba570f01be362"
+  },
+  "behavior": [
+    "After normal __toString return, ordinary captured CONSTANT keeps the internal destructor/API boundary and raw object argument when the argument destructor creates and throws Exception. C lookup still runs; successful lookup propagates the same Exception. Published name17 survives and an independent reader recovers17.",
+    "Explicit captured DEFINED has already produced false before cleanup. Its throwing destructor has a source-located frame with no completed API or __invoke frame; callee and argument retire before catch, destination97 is unchanged, and an independent reader recovers23.",
+    "Ordinary missing CONSTANT creates a received-string Error with the identical destructor Exception as Previous. Previous retains internal __destruct plus raw-object CONSTANT history. A copied raw argument array alone can retain the already-destructed object after both histories are released; releasing it does not call the destructor twice. Recovery23 and destination97 remain intact."
+  ],
+  "authority": [
+    "Locate the genuine converted CONFIG_INVOKE behind matching destructor ENTER/RESULT/RELEASE/OPERATION_EXIT cursors; authenticate the saved normal CONFIG_STRING_RESULT raw owned query, caller, constant context, origin, null value/base, empty cleanup/NOGC and actual source site/line.",
+    "Ordinary weak positional object input, unknown immutable argument fact, empty selection/packs and existing non-PIPE/global-name authority only. Historical INSTANCE and effective public concrete __toString descriptors validate the raw argument without reviving ALLOCATIONS; the received call requires a live matching callee.",
+    "Reuse destructor internal-site/suffix hooks for raw-object API history. Finish the authenticated converted lookup before propagating the old Exception or linking it as Previous to a new Error. A virtual converted CONFIG with null RESULT/BASE enters standard destruction_transition after pending outcome formation, retaining the pending Throwable through consumed-callee retirement.",
+    "Explicit completed cleanup and later raw-array release retain their existing routes. Unsupported results are preserved."
+  ],
+  "engine_route": "Pinned Zend zend_parse_arg_str_weak releases the object before copying the converted argument without a pending-exception check; zend_get_constant_ex continues lookup and zend_throw_exception_internal chains the old exception. zend_objects_destroy_object and Closure::__invoke distinguish internal ordinary destruction from explicit post-API cleanup (func=NULL).",
+  "source": {
+    "native_revision": "2ef7054e79a34fd06ac5c70d87176b02a9635864",
+    "native_originals": 3,
+    "native_caps_seconds": {
+      "outer_author": 45,
+      "outer_peer": 45,
+      "per_php": 15
+    },
+    "genuine": {
+      "revision": "2ef7054e79a34fd06ac5c70d87176b02a9635864",
+      "case": "owned-stringable-query-destructor-missing-error-previous",
+      "result": "normal0/quiet but wrong destructor Exception directly, missing Previous/API and wrong destructor location; source agreement0",
+      "outer_exit": 1,
+      "elapsed_seconds": 83.18027305603027,
+      "caps_seconds": {
+        "outer": 120,
+        "cli": 90,
+        "process": 105
+      }
+    },
+    "initial_failure": {
+      "revision": "9436dfbbf6b394c27251a4c651a27e246ab36ba4",
+      "result": "runner_failure before PHP evaluation: fresh INSTANCE class bound inside non-invertible conjunction; source agreement0, second author and peer unrun",
+      "preserved": "native-103/failure-9436dfbbf (nine original raw files moved intact; original main.php paths/cwd retained)",
+      "correction": "Bounds and INSTANCE binding split into separate premises at70afe; only affected first author plus unrun second/peer executed; no native/genuine replay."
+    },
+    "accepted_revision": "70afe05cf64feab6ae51d0d24e0630d137a41931",
+    "agreements": 3,
+    "cases": [
+      {
+        "id": "owned-stringable-query-returned-name-destructor-exception",
+        "source_sha256": "bb4cc158cb1e5c036e986f2ae9b21158d0bad1ebc59e14e14c57a08a669c4766",
+        "elapsed_seconds": 67.62216138839722
+      },
+      {
+        "id": "owned-stringable-query-explicit-cleanup-destructor-exception",
+        "source_sha256": "d97ae23e22ed4f97422972bccac47817ae15d7532305829a2ad6927e3278ed24",
+        "elapsed_seconds": 63.07508897781372
+      },
+      {
+        "id": "owned-stringable-query-destructor-missing-error-previous",
+        "source_sha256": "ff70298f8c88bb978eec42217093fcadf5c64d69fb7d8e2fa30d22243e379391",
+        "elapsed_seconds": 108.76220154762268
+      }
+    ],
+    "caps_seconds": {
+      "outer_author": 420,
+      "outer_peer": 210,
+      "cli": 180,
+      "process": 195
+    },
+    "outer_elapsed_seconds": [
+      130.87301898002625,
+      108.93432784080505
+    ],
+    "result": "All three exact native stdout/stderr/status agreements, normal0/quiet; input/head stable; no timeout/interruption or surviving process group. Native classification and genuine comparison remain closed."
+  },
+  "focused": {
+    "revision": "033f61ffa034b296e941ca5b901de468b463b6dd",
+    "premises": [
+      295,
+      285,
+      327
+    ],
+    "total": 907,
+    "budgets": 9,
+    "checks": [
+      "Real conversion, internal versus source-located destructor entry, Exception construction/identity, pending-operation continuation, saved result17 versus completed false, durable bindings, caller destination97 and recovery.",
+      "Replacement Error/Previous identity, received versus raw API trace arguments, physical callee retirement, raw-array-only retention and once-only final object release.",
+      "Undriven authority refusals include changed caller/origin/phase/value/base/source, wrong callee tag, non-Stringable or out-of-range historical object, class/NUL/non-string received names and missing handoff. Historical retired-object projections are classifier-only controls, not additional driven histories. Unsupported preservation is checked."
+    ],
+    "caps_seconds": {
+      "author_fixtures": 120,
+      "author_check": 900,
+      "author_each_numeric": 420,
+      "peer_fixtures": 120,
+      "peer_check": 450,
+      "peer_numeric": 420
+    },
+    "outer_elapsed_seconds": {
+      "author_fixtures": 0.23073172569274902,
+      "author_check": 245.57003784179688,
+      "peer_fixtures": 0.2199721336364746,
+      "peer_check": 223.90641713142395
+    },
+    "result": "All907 premises pass in three strict-SL410 numeric checks with exact true LF and quiet stderr; all fixtures pass, stable inputs and clean worktree runtime. No focused failure or replay; fixtures/source agreement credit remain distinct. All numeric/frontend/adapter/outer actors fully reaped, no timeout/interruption/groups; CPU5 released."
+  },
+  "inputs": {
+    "ordered_410_manifest_sha256": "b79190c93995fd2c08d1664368ebc3c72adc946a720d873e1b6523344eea4d17",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "environment": "LC_ALL=C, TZ=UTC; PHP_SPEC_SCRIPT_ENCODING absent. Full pinned profile above and raw command/input fingerprints retained in the reports."
+  },
+  "remaining": "Bounded captured positional global names after normal string returns only. Ownerless sole-owner destruction, supplied conversion/comparison throws, named/packed/PIPE calls, class/HALT/NUL names, known-value arguments, wider destructor throw/reentry and receiver forms remain partial. OP12 dimension inc/dec, Source47 low-precision DEFINE NaN, owned-NUL byte-string release, undefined by-reference LIST keys and COMP88 supplied Stringable conversion/comparison throw remain paused. Source89 and other owners remain independent. No full-core, security, unbounded equivalence or offline-completeness claim.",
+  "artifacts": {
+    "root": "/home/user/workspace/php-spec/.tools",
+    "reports_sha256": {
+      "dynamic-owned-stringable-query-throw-native-103/native-report.json": "fa62478328b57badbe4643e5f02d9933ac47fbf19de79bc9daaa6bda18898803",
+      "dynamic-owned-stringable-query-throw-peer-103/native-report.json": "9ec74271f5b109e48ee23e997ef50ddb58bd6a44315d6446165db426e524dbaf",
+      "dynamic-owned-stringable-query-throw-peer-103/model-owned-stringable-query-destructor-missing-error-previous-report.json": "b47e48c2e4f112f002d26642dc0d0979e448df667f29e037dc75930e238e293d",
+      "dynamic-owned-stringable-query-throw-native-103/failure-9436dfbbf/model-report.json": "de01ec478c625e5b60e1e66312473e88ecd90ea9d11aeaea384c3708ed9ebff3",
+      "dynamic-owned-stringable-query-throw-native-103/model-report.json": "54bf30c8007e95125fbedfedab36804a6eef4e979be53017167a593fbc4e58c2",
+      "dynamic-owned-stringable-query-throw-peer-103/model-report.json": "52820303c0daf15e69cc5100b1f87e3df7a43073aa5cc5299e0c93b1c7105d70",
+      "dynamic-owned-stringable-query-throw-state-103/fixtures-report.json": "bdcb2c75c809bede07b9d0312ed4ec2380884374b40223d45ca8a7fa4f317e93",
+      "dynamic-owned-stringable-query-throw-state-103/check-report.json": "9bac43c844ec5b1048d421c9a827e8f8e89eb91e86d55f05c961ad20167115d0",
+      "dynamic-owned-stringable-query-throw-peer-state-103/fixtures-report.json": "4151c65a30f57a788be4fba0dba4473c7006c85296297b734c11611ec905c11a",
+      "dynamic-owned-stringable-query-throw-peer-state-103/check-report.json": "8b76f273ae4e236e93dce2bf6747b90b41d19057165d7c3669e180685ea77c91"
+    },
+    "raw_policy": "Four canonical V103 roots remain outside Git, including originals, genuine mismatch, initial compiler failure, actual commands/exits and accepted source/focused outputs."
+  },
+  "recovery": "Keep original private branch semantics/dynamic-owned-stringable-query-throw-103 and recorded source/runtime/focused cuts. Recreate the recorded WT103 path with matching pinned local tools when original cwd is needed. Keep .tools/dynamic-owned-stringable-query-throw-{native,peer,state,peer-state}-103 unchanged outside Git; use fresh outputs only for affected unaccepted work. Composition preserves accepted evidence at its original410 cuts, without joined execution credit.",
+  "review": "Independent semantic/counterexample and test reliability review accepted, including actual process reaping and exact results. README/family, constants-only inventory and compact own progress edits reviewed; publication is cleared. Only targeted actual-tail selector and candidate preservation review remains before coordinated guarded integration."
+}
