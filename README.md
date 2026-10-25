@@ -2996,6 +2996,14 @@ The held source avoids protected Value reads before release. Wider backedges,
 payloads, maps, active contexts and callbacks remain partial.
 [Review](coverage/semantics/weak-map-review.json).
 
+A bounded Map/Value cycle now collects while its independent Key stays live.
+Quiet external Map protection yields 0, then 2 after release and 0 on repetition;
+unheld collection yields 2 then 0. Discovery reaches an unbuffered Value from Map;
+both objects retire after entry unregistering. Two originals and 287 Boolean/four raw
+checks pass at `93dfab694`/412; admission-only61/1 is separate zero-credit diagnosis.
+Wider maps, payloads, active contexts and callbacks remain partial.
+[Review](coverage/semantics/weak-map-review.json).
+
 An explicit array cast of a live nonfreeing map now creates a fresh empty array,
 even when populated. Results expose no entries and retain neither keys nor private
 values. Two originals and 177 premises/6 actual casts cover fresh results, real

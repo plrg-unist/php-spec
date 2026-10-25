@@ -2777,5 +2777,56 @@
     "artifact_manifest": "../php-spec-evidence-archive/weakmap-multiple-entry-ephemeron-145/manifest.json",
     "archive_sha256": "fd18be8469986efff7089777ce8f7f9522c01bad623f6c8a7d33f40629fe349a",
     "recovery": "Restore296aa24f5 at original .tools/weakmap-multiple-entry-ephemeron-145 path, or apply isolated422 patch to2ccf7e19a; restore2ccf for genuine baseline reproduction. Extract .tools/m145 and use matching project-local providers. Six complete reports preserve original2 source/path/cwd, checked/request/native/model tuples, app0 and immutable author/peer snapshots with worker120. No binaries/copied build tree or production archive dependency."
+  },
+  "unheld_map_cycle_146": {
+    "status": "independently_reviewed_partial",
+    "scope": "One global singleton Map with a DIRECT parentless methodless Value whose public untyped property directly owns that Map, and an independently live empty-property stdClass Key. Unheld collects Map+Value2 then0; quiet retained-Map control collects0 then2 after the final external Map release, then0. No protected Map/Value weak get precedes release; typed Key identity survives collection and is explicitly dropped afterward.",
+    "base_revision": "cf2f4a700f71f0938a1a94b9331c052ef8e1c5dc",
+    "runtime_revision": "93dfab6944470213442ec2ef74e0eb537bce824a",
+    "modules": 412,
+    "change": "A distinct global singleton loop shape validates a direct methodless Value-to-Map property and independently live empty-property Key. The existing ordinary-node function admits only that Map shape. Old Map-live projections stay exact; only a loop with white Map retains Map-to-Value discovery, with a complementary old strip-only guard. Canonical complete Map+Value GC_FREE authority clears the entry registration before unchanged atomic disposal; Key survives.",
+    "source_acceptance": {
+      "agreements": 2,
+      "revision": "93dfab6944470213442ec2ef74e0eb537bce824a",
+      "native_outputs": {
+        "unheld": "G1:2;M:1;V:1;K:1;G2:0;K:1;E;",
+        "held": "G1:0;P:1;G2:2;M:1;V:1;K:1;G3:0;K:1;E;"
+      },
+      "baseline": "Both genuine base cases explicitly refuse WeakMap ephemeron collection at G1; zero agreement."
+    },
+    "focused_acceptance": {
+      "revision": "93dfab6944470213442ec2ef74e0eb537bce824a",
+      "author_boolean": 126,
+      "author_raw": 2,
+      "peer_boolean": 161,
+      "peer_raw": 2,
+      "total_boolean": 287,
+      "total_raw": 4
+    },
+    "diagnostic": {
+      "revision": "bda0d3cfc92cbb3ac6dca995bc4eb51fd5530097",
+      "boolean": 61,
+      "raw": 1,
+      "source_agreements": 0,
+      "result": "The admission-only held source reaches its second TRACE with Map eligible and Value absent from the buffer; old stripping discovers only Map and yields count1 before any physical free."
+    },
+    "authority": "Author binds actual unheld TRACE/FREE, physical Map/Value owner1 each versus rooted Key owner1, canonical counted/free pair2 and registration clearing before disposal. The Key wrapper remains live while Map/Value wrappers become NULL; stale OBJECTS IDs are nonowning and Value property storage is removed. Peer proves protected FREE0, actual later Map-eligible/Value-ineligible buffer, corrected Value discovery, complete pair retirement, retained Key and full native0-to2-to0 ending. Raw steps and zero/one budgets preserve public transitions.",
+    "constructed_controls": "Added external Map root retains allocated nodes/edges while changing ROOTS/owners and makes the stale plan refuse publicly. Active-cursor and empty-Map ordinary-hook queries are constructed/helper controls. Supplied Map-only roots retain the old Key-conditional protection branch; a stripped-image query demonstrates lost Value discovery. Coherent borrowed PLAN/TODO omission of Value fails canonical authority and public free. All controls add zero PHP source credit.",
+    "compatibility": "Only386 adds67 lines; collector301, heap39, storage30,422 and ordered412 manifest are exact. Existing direct/ALIAS/array Key-backedge shapes cannot satisfy the distinct Map-loop shape; old protected/white-Key branches and old preparation stay exact. Old absent-Map helper projections retain strip-only behavior outside the new loop. No new task/schema or heap representation/collector algorithm change, count override or native fallback.",
+    "validation": "Original native/baseline retain cf2f/412. Genuine baseline refusals2 remain zero agreement. Admission-only61/1 at bda0 is a separate diagnosis, not agreement. Repaired source2 and author126/2+peer161/2 pass first execution at93df/412, without native/accepted replay, cap increase or count exception.",
+    "caps": "Native20/source120/strict45/diagnostic240/author240/peer300, jobs1. All parents/workers/groups reaped; CPU3 released.",
+    "report_sha256": {
+      ".tools/m146/diagnostic-lej15aot/report.json": "c88961b5327d97619a914f94b7a1d7e7881d85f373d7cf636c69f31348cee041",
+      ".tools/m146/model-weakmap-unheld-map-cycle-baseline-q5n0h7re/report.json": "a1fac330bf63596414f08d947cb49936a1af5aefd79c374a5f128d8679a13061",
+      ".tools/m146/model-weakmap-unheld-map-cycle-repaired-2ehxr07s/report.json": "5fea012f7f887ee550ffa9e0cc4a0a0dcb6d1af1e1db7b98f9f76a54685e0c1c",
+      ".tools/m146/native-weakmap-unheld-map-cycle-1eu9l3do/report.json": "6c13e7e33d3794ff2dbe1b7eea76cb4836c61a20fc45178369659ef79e8dabb9",
+      ".tools/m146/public-z09564vw/report.json": "8f833b8f4544d084aa87639f1af239b4401299baf1f4d72f366718c67663eb23",
+      ".tools/m146/reviewer-ehcn7lgi/report.json": "ad0f85ecea6bc7e1abb0c45331686721a6c62a986a262ee397d9f3d24f5eab1f"
+    },
+    "limits": "One global singleton direct methodless Value-to-Map loop and independently rooted empty-property Key. Other Key/Value properties, aliases/array payloads, multiple Maps/entries, callbacks, active iterators/frames/Fibers/collector workers and broader mixed/freeing/reentry graphs remain partial. Existing ordinary cells/arrays retain generic collector handling. No Countable API, engine-bug or intentional-divergence claim.",
+    "actual_parent_review": "Parent is exact native/baseline cf2f4a700f71f0938a1a94b9331c052ef8e1c5dc/412 with no incoming delta. Only386 differs and is exact tested93df; every other spec path and ordered412 manifest is parent-exact. Old ledger objects/inventory prefixes and foreign checkpoint are preserved; own compact lifetime sentence and integrated list are updated. Publication adds no execution credit.",
+    "artifact_manifest": "../php-spec-evidence-archive/weakmap-unheld-map-cycle-146/manifest.json",
+    "archive_sha256": "9a9ec06d63c31485874d12ea9811ac04f7fbd3e3051deaf3f5710e90818aa779",
+    "recovery": "Restore 93dfab694 at original .tools/weakmap-unheld-map-cycle-146 path, or apply isolated386 patch to cf2f4a700. Restore cf2f for genuine baseline and bda0d3cfc for admission-only diagnosis. Extract .tools/m146 and use matching project-local providers. Six complete reports preserve original2 source/path/cwd, checked/request/native/model tuples and immutable fixture/producer/runner snapshots. No binaries/copied build tree or production archive dependency."
   }
 }

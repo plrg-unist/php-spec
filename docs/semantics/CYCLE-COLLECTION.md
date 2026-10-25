@@ -7,8 +7,10 @@ establish complete GC, WeakMap, or request-freeing semantics.
 
 Bounded WeakMap collection also handles finite independent direct entry pairs,
 selectively retiring white pairs and normalizing the protected survivor through
-this collector's unchanged planning, counting and disposal. Singleton reference,
-array and copy/COW lanes retain their separate bounds; see the
+this collector's unchanged planning, counting and disposal. A bounded
+methodless Map/Value cycle also collects while its independent Key stays live,
+including quiet discovery of an unbuffered Value from Map. Singleton reference, array and
+copy/COW lanes retain their separate bounds; see the
 [WeakMap contract](WEAK-REFERENCES.md).
 
 `gc_collect_cycles`, `gc_enable`, `gc_disable`, and `gc_enabled` use the existing

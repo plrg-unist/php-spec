@@ -237,6 +237,29 @@ without replay or cap increase. Wider maps/backedges, ALIAS/array payloads,
 callbacks, active iterators/frames/Fibers/workers and mixed graphs remain partial.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
+## Collection of an unheld Map cycle
+
+M146 admits one global singleton Map whose direct methodless Value owns that
+Map through one public untyped property. Its empty-property stdClass Key stays
+independently live. The ordinary-node hook admits only this validated Map shape.
+White-Map tracing retains entry discovery even when Value is not buffered;
+protected and older Key-backedge projections keep their existing behavior.
+Canonical FREE authority requires both Map and Value and a retained Key, then
+unregisters the entry before unchanged301 atomic disposal and counting.
+
+Two sources and author126/2 plus peer161/2 pass 287 Boolean/four raw transitions
+at `93dfab694`/412: unheld collection returns 2 then 0; quiet Map protection returns 0,
+then 2 after release and 0 again. Key identity survives both objects and retires
+only after its explicit unset. The separate admission-only61/1 diagnosis at
+`bda0d3cfc` reaches Map-buffered/Value-absent with the old count1 plan; it adds no
+source agreement. Native/genuine refusals retain `cf2f4a700`/412.
+
+Added-root/incomplete-plan refusals and cursor/empty-hook/supplied-root/stripped
+queries are constructed or helper controls with zero PHP credit. Stale OBJECTS
+IDs remain nonowning after physical retirement. Wider maps/entries, Key/Value
+properties, aliases/arrays, callbacks and active iterator/frame/Fiber/worker
+contexts remain partial. [Review and recovery](../../coverage/semantics/weak-map-review.json).
+
 ## Destructor-free singleton ephemeron collection
 
 Modules301/386 admit explicit collection for one live map, a `stdClass` leaf key
