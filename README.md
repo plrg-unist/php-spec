@@ -3049,6 +3049,13 @@ that copy through COW permits collection of Key, Value and the original array.
 GC returns3 while the fresh NULL copy survives. The original author syntax stop
 stays zero; wider array/property graphs and callbacks remain partial.
 
+A shared entry cell can also participate in the methodless Value→Key cycle.
+Two originals and 298 Boolean/four raw checks pass at `28d3b2974`/411: an external
+entry alias protects the component, then collection counts two objects while
+also physically retiring the uncounted cell. Stale STORE/reference metadata
+remains nonowning. Wider reference-entry values, properties and callbacks remain
+partial.
+
 A singleton array entry containing one reference to its Key also supports
 collection and external-alias protection. Two originals and 306 Boolean/four raw
 checks pass at `9bf6e1399`/409: count2 includes Array/Key while the uncounted cell

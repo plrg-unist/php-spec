@@ -111,6 +111,7 @@ map and key are reachable. With a live map and white key, a virtual Key→Value
 edge instead discovers the unheld
 component; this adds no physical owner. A held key protects the value, and a held
 value reaches its key.
+Shared entries instead retain Map→HCELL→Value→Key until collection.
 An authentic destructor-free GC_FREE plan clears that entry before the unchanged
 strong resurrection guard and existing count, buffer, store and handle disposal.
 
@@ -163,6 +164,38 @@ or accepted historical replay occurred. All actors are reaped/CPU5 released.
 Typed or wider reference-property forms, ALIAS-Value destructor callbacks,
 array values/properties, wider graphs/maps,
 unheld-map and inactive contexts remain partial; count-library bodies stay excluded.
+[Review and recovery](../../coverage/semantics/weak-map-review.json).
+
+## Shared entry-cell collection
+
+M140 admits explicit collection through the actual shared entry cell. A
+by-reference foreach acquires that cell while Value's public untyped property
+is NULL, then breaks. Source writes the direct Value→Key backedge and removes
+the ordinary Value/original Key/copied Key CVs before GC. The unheld source also
+drops its loop alias; the held source keeps it through the first collection,
+then drops it without an intervening Key/Value read.
+
+Physical ownership is Map→HCELL→Value→Key. The new disjoint ALIAS-entry lane
+validates the marked/allocated/defined cell and methodless Value; conditional
+tracing strips only Map→HCELL and lets white Key discover HCELL. Protected Key
+keeps the physical graph. Prepare requires cell, Key and Value in the canonical
+unreachable free set. Existing DIRECT/ARRAY lanes and generic301/39 stay exact.
+
+Two originals and author139/2 plus peer159/2 pass 298 Boolean/four raw transitions
+at `28d3b2974`/411. Unheld GC returns2 then0; an external entry alias protects with0,
+then collection returns2 then0. COUNTED contains only the two objects while
+FREESET also contains HCELL. All three allocations end, Map survives and target
+WeakReferences become NULL; old STORE/REFCELLS rows remain nonowning. The reached
+post-alias cell is discovered despite not being buffered; no Key-only buffer
+claim is made. Exact raw/public begin/free budgets pass.
+
+Constructed missing-marker helper, added-cell-root stale-plan and coherent
+uncounted-cell omission controls refuse without extra PHP source credit. Both
+genuine baseline refusals retain `58b7dc8c62`/411; all repaired/focused checks pass
+first execution without replay, cap increase or separate preflight. NULL/scalar/
+array reference entries, reference/array property backedges in this lane, wider
+typed properties, Value callbacks, unheld/multiple Maps and active/Fiber/reentry
+GC remain partial. Acquisition/read/release APIs keep their existing bounds.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
 ## Array-property backedges and COW

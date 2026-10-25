@@ -250,6 +250,12 @@ the preserved author syntax stop), original2 packets, immutable author/peer
 snapshots and the isolated386 admission patch. SHA-256
 `d26cbd2334748526fb24f32f77dc729e3edf9fe2439f500dfc2c23cc314515f3`.
 
+The shared-entry WeakMap ephemeron proof is in
+`../php-spec-evidence-archive/weakmap-entry-reference-ephemeron-140/manifest.json`:
+360,469 bytes/114 members under `.tools/m140/`, five complete reports, original2
+packets, immutable author/peer snapshots and the isolated386 reference-entry patch.
+SHA-256 `96aadbea9e3f28b2ca3fcf7a069824fdb54cf5d389974ff01ebaadb2275cd601`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the
