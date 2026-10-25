@@ -1046,6 +1046,18 @@ pass in the [XOR ledger](../../coverage/semantics/xor-nan-warning-review.json).
 LEFT0, unchanged-NaN, representation and pending quiet/suppressed controls are
 derived. Other operand/storage/handler forms and broader lifetime remain partial.
 
+NaN Boolean NOT through an unconstrained retained reference now follows the
+saved inner cell across source CV removal or rebinding. A handler's old-alias
+`0.0` write yields stricttrue even when the source becomes a new `1.0` reference
+or stays absent. The marker adds no cell root; a surviving alias owns the old
+cell. A supplied Exception cancels result/outer assignment while keeping both
+old-alias and replacement writes. Entry authenticates the source binding; resume
+requires the captured cell to remain live and floating. Three originals and
+516 premises in three checked-source-derived recipes pass in the
+[reference BOOL_NOT ledger](../../coverage/semantics/boolnot-reference-nan-warning-review.json).
+Unchanged-NaN and zero-owner/retyped/constraint/debt refusals are derived controls.
+Freed-pointer behavior, constrained or owning forms and wider consumers remain partial.
+
 ## Evidence and remaining work
 
 `tests/semantics/ordinary.py` embeds 1,506 exact source inputs and checks 25 source
