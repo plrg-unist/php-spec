@@ -111,7 +111,6 @@ def $weakmap_entries_write_allowed(S, paccess) = true
   -- if paccess.SELECTED = $rcontainer_selected(S, paccess.RHS)
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_entries_table_valid(S, n_map, eps)
-  -- if $weakmap_entries_direct_values($weakmap_entries_contents(S, n_map))
   -- if S_base = $quiet_operand(S, poperand)
   -- if S_base.COMPLETION = NORMAL /\ S_base.RESULT = KNOWN (POBJECT n_map)
   -- if S_key = $quiet_operand(S, paccess.INPUT)
@@ -125,7 +124,7 @@ def $weakmap_entries_write_allowed(S, paccess) = true
   -- if $objectprops_at(S.OBJECTPROPS, n_key) = (eps)
   -- if $object_table_at(S.OBJECTTABLES, n_key) = eps
   -- if $node_children(S, HOBJECT n_key) = eps
-  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps
+  -- if ($weakmap_entries_direct_values($weakmap_entries_contents(S, n_map)) /\ $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps) \/ ($weakmap_entries_at(S, n_map) /\ $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) =/= eps /\ $weakmap_set_shape(paccess[.PHASE = ACCESS_CALL $ptascii("offsetSet")]))
   -- if $weakmap_entries_value_allowed(S, paccess.VALUE)
 def $weakmap_entries_write_allowed(S, paccess) = false -- otherwise
 def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = $weakmap_entries_pack(pweakmapentry* ++ [{KEY n_key, VALUE paccess.VALUE, BEFORE $weakref_find(S, S.ALLOCATIONS, n_key)}])], paccess, pvalue_result)
@@ -133,9 +132,26 @@ def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = $w
   -- if paccess.OBJECT = (n_map)
   -- if paccess.OFFSET = POBJECT n_key
   -- if pweakmapentry* = $weakmap_entries_contents(S, n_map)
+  -- if $weakmap_entries_find(pweakmapentry*, n_key) = eps
   -- if S_read = $quiet_operand(S, paccess.SELECTED)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue_result
+
+;; Occupied writes replace the stored zval, including an entry reference,
+;; while preserving registration/order. Escaped old references stay detached.
+dec $weakmap_entries_replace_value(pweakmapentry*, nat, pvalue) : pweakmapentry*
+def $weakmap_entries_replace_value(eps, n_key, pvalue) = eps
+def $weakmap_entries_replace_value(pweakmapentry :: pweakmapentry_tail*, n_key, pvalue) = pweakmapentry[.VALUE = pvalue] :: pweakmapentry_tail*
+  -- if pweakmapentry.KEY = n_key
+def $weakmap_entries_replace_value(pweakmapentry :: pweakmapentry_tail*, n_key, pvalue) = pweakmapentry :: $weakmap_entries_replace_value(pweakmapentry_tail*, n_key, pvalue)
+  -- if pweakmapentry.KEY =/= n_key
+def $access_call(S, paccess, ptbytes) = S[.OBJECTS[n_map] = $weakmap_entries_pack($weakmap_entries_replace_value(pweakmapentry_all*, n_key, paccess.VALUE))][.TODO = (ACCESS_RESUME paccess[.PHASE = ACCESS_CALL ptbytes]) :: ptask_tail*][.ORIGIN = (paccess.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ptbytes = $ptascii("offsetSet") /\ $weakmap_entries_write_allowed(S, paccess)
+  -- if paccess.OBJECT = (n_map)
+  -- if S.OBJECTS[n_map] = WEAKMAPENTRIES pweakmapentry_all*
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if $weakmap_entries_find(pweakmapentry_all*, n_key) =/= eps
+  -- if S.TODO = paccess.TASK :: ptask_tail*
 
 dec $weakmap_entries_access_allowed(pstate, paccess, ptbytes) : bool
 def $weakmap_entries_access_allowed(S, paccess, ptbytes) = true
