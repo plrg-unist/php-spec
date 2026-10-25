@@ -556,7 +556,7 @@ syntax preceivecut, pdeclcause
 syntax pevalcontext = { UNIT nat, RECEIVES preceivecut*, USERPREFIX nat, SITE porigin, BYTES nat*, FILE nat*, LEXICAL_CLASS porigin?, OWNER nat, PHASE pevalphase, TAIL ptask*, LOCATION pconstantlocation? }
 syntax pevalbinding = { UNIT nat, RECEIVES preceivecut*, USERPREFIX nat, SITE porigin, CLASS porigin?, LOCATION pconstantlocation? }
 syntax pcursor = CURSOR nat nat
-syntax piterator = GENERATORITER nat nat | ITERATOR nat nat bool pcursor* | OBJECTITER nat nat nat bool | OBJECTKEYITER nat nat nat bool nat nat
+syntax piterator = GENERATORITER nat nat | ITERATOR nat nat bool pcursor* | OBJECTITER nat nat nat bool | OBJECTKEYITER nat nat nat bool nat nat | WEAKMAPITER nat nat nat nat*
 syntax preqbytes = nat*
 syntax prequest = { ENV (preqbytes, preqbytes)*, ARGV preqbytes*, FILE preqbytes, SECONDS int, MICROSECONDS nat, VARIABLES preqbytes, JIT bool, CWD preqbytes? }
 syntax pstartup = { REPORTING preqbytes?, INCLUDEPATH preqbytes }
