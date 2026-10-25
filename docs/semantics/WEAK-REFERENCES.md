@@ -105,9 +105,10 @@ property. Insertion occurs while that property is null; the ordinary property
 write then supplies the backedge. The initial cut limited other allocated
 objects to weak wrappers.
 
-The physical graph contains Map→Value→Key, optionally through a reference cell,
-for eager ownership. GC restores Map→Value when map and key are reachable. With
-a live map and white key, a virtual Key→Value edge instead discovers the unheld
+The physical graph contains Map→Value→Key, optionally through a reference cell
+or the admitted property array, for eager ownership. GC restores Map→Value when
+map and key are reachable. With a live map and white key, a virtual Key→Value
+edge instead discovers the unheld
 component; this adds no physical owner. A held key protects the value, and a held
 value reaches its key.
 An authentic destructor-free GC_FREE plan clears that entry before the unchanged
@@ -162,6 +163,34 @@ or accepted historical replay occurred. All actors are reaped/CPU5 released.
 Typed or wider reference-property forms, ALIAS-Value destructor callbacks,
 array values/properties, wider graphs/maps,
 unheld-map and inactive contexts remain partial; count-library bodies stay excluded.
+[Review and recovery](../../coverage/semantics/weak-map-review.json).
+
+## Array-property backedges and COW
+
+M139 admits a mutable nonproxy array `[0 => $key]` in the methodless Value's
+single public untyped property, assigned after insertion while that property
+was NULL. The new admission arm authenticates the actual Key and physical
+Value→Array→Key edges. Existing conditional Key→Value discovery and generic301
+tracing, count and disposal remain unchanged; no virtual edge owns storage.
+
+Two originals and author137/2 plus peer165/2 pass 302 Boolean/four raw transitions
+at `d55d0e471`/411. Unheld GC returns3 then0. An external copy of the property
+array protects the component with0; setting only its element to NULL performs
+COW, leaving the original property array intact. The next GC returns3 then0,
+retiring Key, Value and the original array while the fresh NULL copy and Map
+survive. There is no intermediate Value weak get to seed its buffer entry.
+
+The reached proofs bind actual array owners before and after COW, conditional
+discovery, exact counted/free sets and resumption budgets. Old ARRAYS.ITEMS rows
+remain nonowning after allocation ends. Constructed external-root and coherently
+incomplete-free-plan counterstates refuse through the public driver; a valid-heap
+wrong-object singleton is a helper-only refusal. None adds PHP source credit.
+
+Native2/genuine Unsupported2 retain `d953f6e786`/411. The original author134/2
+record-syntax stop remains zero; splitting the same four fields passes137/2
+without runtime/source changes or replay. Wider array layouts, property aliases,
+proxies/immutable arrays, typed/wider properties, Value callbacks, reference
+entries, unheld/multiple Maps and general GC/Fiber/reentry remain partial.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
 ## Array-valued entries

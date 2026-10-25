@@ -243,6 +243,13 @@ The quiet direct-entry WeakMap Key-retirement proof is in
 packets, immutable author/peer snapshots and the isolated386 guard patch.
 SHA-256 `691eac64219e670a8a38c9a5d29fda2c6c05965b43cf8400e1f3d0fa730173c8`.
 
+The WeakMap array-property/COW collection proof is in
+`../php-spec-evidence-archive/weakmap-property-array-backedge-139/manifest.json`:
+424,627 bytes/122 members under `.tools/m139/`, six reports (five complete and
+the preserved author syntax stop), original2 packets, immutable author/peer
+snapshots and the isolated386 admission patch. SHA-256
+`d26cbd2334748526fb24f32f77dc729e3edf9fe2439f500dfc2c23cc314515f3`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

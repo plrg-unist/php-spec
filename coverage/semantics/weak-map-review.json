@@ -2466,5 +2466,48 @@
     "artifact_manifest": "../php-spec-evidence-archive/weakmap-quiet-key-retirement-138/manifest.json",
     "archive_sha256": "691eac64219e670a8a38c9a5d29fda2c6c05965b43cf8400e1f3d0fa730173c8",
     "recovery": "Restore c5e5661cd at original .tools/weakmap-quiet-key-retirement-138 path or apply the isolated386 patch to52af; restore52af for genuine baseline reproduction. Extract .tools/m138 and use matching project-local providers. Five closed reports preserve original2 sources/path/cwd, parsed/checked/request/native/model streams, immutable author/peer fixture/producer/runner snapshots and worker120. No binaries/copied build tree or production archive dependency."
+  },
+  "property_array_backedge_139": {
+    "status": "independently_reviewed_partial",
+    "scope": "Live singleton Map, leaf stdClass Key and parentless methodless Value with one public untyped property. After insertion while NULL, the property receives one mutable nonproxy ARRAY [0=>DIRECT Key]. Unheld and external array-copy/COW-clear PHP witnesses are validated; wider array/property graphs remain partial.",
+    "base_revision": "d953f6e786214a53ae41f1ca62b107dd829fa05e",
+    "runtime_revision": "d55d0e4719ac49d5f02f95d995d89f0a15ce013c",
+    "modules": 411,
+    "change": "386 adds one disjoint methodless property-array backedge arm (10 insertions/two deletions including comments). It validates the mutable/nonproxy singleton and exact Value-to-Array-to-actual-Key children. Old object/ALIAS arms, projection/prepare,301/39 and ordered manifest are unchanged.",
+    "source_acceptance": {
+      "agreements": 2,
+      "revision": "d55d0e4719ac49d5f02f95d995d89f0a15ce013c",
+      "native_outputs": {
+        "unheld": "G1:3;K:1;V:1;M:1;G2:0;E;",
+        "cow": "G1:0;P:1;Q:1;G2:3;K:1;V:1;M:1;G3:0;E;"
+      },
+      "baseline": "Both genuine baseline cases refuse the first GC with WeakMap ephemeron collection after G1:, preserving zero agreement."
+    },
+    "focused_acceptance": {
+      "revision": "d55d0e4719ac49d5f02f95d995d89f0a15ce013c",
+      "author_boolean": 137,
+      "author_raw": 2,
+      "peer_boolean": 165,
+      "peer_raw": 2,
+      "total_boolean": 302,
+      "total_raw": 4
+    },
+    "authority": "Actual source/current GC call, sole public untyped property, allocated mutable array and exact Key edge are bound at reached states. The external copy has a second array owner before GC; COW gives keep a fresh NULL array and leaves the original property array with one owner. Key is buffered and Value is not buffered; existing virtual tracing discovers the original array.",
+    "physical_disposal": "Key, Value and original Array allocations end; stale ARRAYS.ITEMS remains nonowning. The COW copy remains allocated/rooted with NULL and no child edge. Count3 follows generic counted-node traversal, not a fixed count exception.",
+    "constructed_controls": "An external-array-root stale plan and a heap-identical plan omitting the original array from both FREESET/COUNTED refuse through the public driver. A valid-heap wrong-object singleton is a helper-only refusal. All are labeled constructed controls and add no PHP source credit.",
+    "validation": "Original author134/2 stops before state evaluation on inline parray record syntax. The equivalent four-field split passes as137/2; original output/snapshot/report remain zero. No runtime/source/native change or replay follows this fixture correction.",
+    "caps": "Native20/source120/strict45/author240/peer300, jobs1. All parents/workers/groups reaped and CPU3 released.",
+    "report_sha256": {
+      ".tools/m139/model-weakmap-property-array-baseline-9j36tpht/report.json": "e561ec07b3f2d0f3ac325a8e136a08f459a45475a5c67817ad40718040e6e03a",
+      ".tools/m139/model-weakmap-property-array-repaired-0crjio4u/report.json": "3d1528229f6335086754e5a6234c7a56ef9a08b6302fc3f227db43fff1d755db",
+      ".tools/m139/native-weakmap-property-array-gm6qkr1o/report.json": "c39ee44810eb2a34b11a92e3abe388e64ae3cccf09fcf7266180c5c2c3b9a4e8",
+      ".tools/m139/public-ky8w_uhq/report.json": "b3d73b13024d88932a2451e0b65d0b7d03a89c981ed2c5fd664c6d6231b6ea7b",
+      ".tools/m139/public-raj201hb/report.json": "537197e7750530cef031964f703725e1c5358734de7fad6cc8add50c0377a83d",
+      ".tools/m139/reviewer-lfim247a/report.json": "1d0945491a8c7e131b6eac77ccec6a27b231c4fd9a189d104ef99c813979cf8c"
+    },
+    "limits": "Wider array layouts, ALIAS/proxy/immutable property arrays, typed or wider property forms, Value destructor callbacks, reference entries, unheld Map, multiple maps/entries and general GC/Fiber/reentry histories remain partial. No Countable API, engine-bug or intentional-divergence claim.",
+    "artifact_manifest": "../php-spec-evidence-archive/weakmap-property-array-backedge-139/manifest.json",
+    "archive_sha256": "d26cbd2334748526fb24f32f77dc729e3edf9fe2439f500dfc2c23cc314515f3",
+    "recovery": "Restore d55d0e471 at original .tools/weakmap-property-array-backedge-139 path, or apply isolated386 patch to d953; restore d953 for genuine baseline reproduction. Extract .tools/m139 and use matching project-local providers. Six reports preserve original source/path/cwd, parsed/checked/request/native/model streams, corrected and original author snapshots, independent peer snapshots and worker120. No binaries/copied build tree or production archive dependency."
   }
 }

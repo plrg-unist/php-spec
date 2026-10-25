@@ -3042,6 +3042,13 @@ objects; the reference-cell allocation disappears while its recorded identity
 remains nonowning. Wider maps, typed/wider reference-property forms, ALIAS-Value
 destructor callbacks, wider array values and other graphs remain partial. [Review](coverage/semantics/weak-map-review.json).
 
+A methodless Value can also hold a mutable singleton array containing Key in its
+public untyped property. Two originals and 302 Boolean/four raw checks pass at
+`d55d0e471`/411: an external array copy protects the component, and clearing only
+that copy through COW permits collection of Key, Value and the original array.
+GC returns3 while the fresh NULL copy survives. The original author syntax stop
+stays zero; wider array/property graphs and callbacks remain partial.
+
 A singleton array entry containing one reference to its Key also supports
 collection and external-alias protection. Two originals and 306 Boolean/four raw
 checks pass at `9bf6e1399`/409: count2 includes Array/Key while the uncounted cell
