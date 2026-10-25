@@ -1,0 +1,78 @@
+{
+  "scope": "Private/protected literal same-name implicit Get reentry raises visibility Error before inspecting hidden TYPE/STATE; allowed lexical scope and a different local receiver are separate existing agreements.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_revision": "014a08c78546ab6da0c953d8b5ef03f4cefb20e4",
+  "cases": [
+    {
+      "id": "private-propagate",
+      "source_file": "magic-get-denied-recursion-private-propagate.php",
+      "source_sha256": "22312ba049cc854abf6f61fb65c78817ac5eac99fee9e2c49349ebd028626fd1",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-denied-recursion-private-122/.tools/magic-get-denied-recursion-probes-122/private-propagate.php",
+      "stdout_base64": "UDpHfER8cHJpdmF0ZXxsaW5lfGZpbGV8NDJ8RXw=",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "426138daf1d3ff52dbf899c2b9a63ac1b0088691f0b2f9fe389c6d14d4131fa2",
+      "recursive_line": 8
+    },
+    {
+      "id": "private-unset-recover",
+      "source_file": "magic-get-denied-recursion-private-unset-recover.php",
+      "source_sha256": "8a84aea6715df38f7fbd8a83b3e5a54acd99abb6bf16b9b8259f14128293d4ec",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-denied-recursion-private-122/.tools/magic-get-denied-recursion-probes-122/private-unset-recover.php",
+      "stdout_base64": "VTpHfHByaXZhdGV8bGluZXxmaWxlfGd8QXxva3xHfHByaXZhdGV8bGluZXxmaWxlfGd8Qnxva3xEfEV8",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "07d040479f568cf20e5202b496a3006978f16cffbe9f7bb5dc41591c60a87db5",
+      "recursive_line": 7
+    },
+    {
+      "id": "protected-cleanup",
+      "source_file": "magic-get-denied-recursion-protected-cleanup.php",
+      "source_sha256": "702fcb1f3523b7b813b437dc6da7cf1f8879a442149c0feba217bd6a9646cf34",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-denied-recursion-private-122/.tools/magic-get-denied-recursion-probes-122/protected-cleanup.php",
+      "stdout_base64": "TDpHfGd8Vnxwcm90ZWN0ZWR8bGluZXxmaWxlfHZ8QXw3fEd8Z3xCfDd8RHxFfA==",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "064ff19dce536b78186e9f2a6674b08ede0585d6cd8c5f37af53bd395a7cf429",
+      "recursive_line": 8
+    }
+  ],
+  "controls": [
+    {
+      "id": "protected-allowed",
+      "source_file": "magic-get-denied-recursion-protected-allowed.php",
+      "source_sha256": "acd173c383598ec5e200e4125865ed1107da4ac0ae47ead2e9dfe489d6a99613",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-denied-recursion-private-122/.tools/magic-get-denied-recursion-probes-122/protected-allowed.php",
+      "stdout_base64": "QTpHfDN8RXw=",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "0142e4223c7e0c9274fa7402eacbd0fd791a4ba4d2b2b6b10d2f3ede6fa1d2cb",
+      "recursive_line": 6
+    },
+    {
+      "id": "private-other-receiver",
+      "source_file": "magic-get-denied-recursion-private-other-receiver.php",
+      "source_sha256": "658c152b0e0661c2a87d90f97d3cd8753f024c0a2576d6c218fc93da73769b03",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-denied-recursion-private-122/.tools/magic-get-denied-recursion-probes-122/private-other-receiver.php",
+      "stdout_base64": "TzpHfEd8QXw5fEV8",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "cc693fba452ae5524926094e9f05d03cae57187fe583a9e0a2cc68f54aa7ba4b",
+      "recursive_line": 8
+    }
+  ]
+}
