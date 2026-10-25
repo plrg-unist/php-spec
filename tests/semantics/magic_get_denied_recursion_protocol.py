@@ -59,7 +59,7 @@ def conditions(case, checked):
         'ptbytes_before_catch = ptbytes_before_error',
         'ptbytes_final = $ptascii(' + json.dumps(base64.b64decode(case['stdout_base64']).decode()) + ')',
         'ptbytes_message = $ptascii(' + json.dumps(message) + ')',
-        'pvalue_return = ' + ('PINT 7' if cleanup else 'PSTRING ($ptascii("ok"))'),
+        'pvalue_return = ' + ('PINT 7' if cleanup else 'PSTRING_CARRIER INTERNED_STRING ($ptascii("ok"))'),
         'ppropertyvisibility_expected = ' + ('PROPERTY_PROTECTED' if cleanup else 'PROPERTY_PRIVATE'),
         'ppropstate_expected = ' + ('PROP_INITIAL' if cleanup else 'PROP_UNSET'),
         f'z_inner = {case["recursive_line"]}']
