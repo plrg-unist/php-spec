@@ -21,7 +21,7 @@ def checks(text):
 
 def events(parts):
     return 'S_done.EVENTS = [' + ', '.join(
-        'OUTPUT ' + json.dumps(list(part.encode())) for part in parts) + ']'
+        'OUTPUT (' + json.dumps(list(part.encode())) + ')' for part in parts) + ']'
 
 
 STAGE = ('S.TODO = (GENERATOR_ARGS pgeneratorop eps eps) :: ptask_tail* '
