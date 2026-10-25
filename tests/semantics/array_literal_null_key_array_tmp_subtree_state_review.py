@@ -129,7 +129,7 @@ def conditions(name, program, path, stdout):
         '~$array_null_tmp_ready(S[.ALLOCATIONS = [HARRAY n_a, HARRAY n_value]], n_a, n_value)',
         'S_dag = S[.ARRAYS[n_value].ITEMS = [ENTRY (KINT 0) (DIRECT (PARRAY n_leaf0)), ENTRY (KINT 1) (DIRECT (PARRAY n_leaf0))]]',
         '$heap_valid($heap_graph(S_dag))', '$array_null_tmp_ready(S_dag, n_a, n_value)',
-        '$heap_owners($heap_graph(S_dag), HARRAY n_leaf0) = 2',
+        '$heap_owners($heap_graph(S_dag), HARRAY n_leaf0) = 3',
         'S_debt = S_dag[.LITERALARRAYDEBTS = [n_leaf0]]',
         '$heap_valid($heap_graph(S_debt))', '~$array_null_tmp_ready(S_debt, n_a, n_value)',
         '~$array_null_tmp_ready(S[.LITERALARRAYDEBTS = [n_value]], n_a, n_value)',
