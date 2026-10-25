@@ -620,7 +620,8 @@ syntax pgeneratorpendingthrow = { SOURCE pgeneratorop, LEAF nat, SITE porigin, V
 ;; SOURCE receiver/site are borrowed history; only its single argument owns.
 syntax pgeneratorinput = { OBJECT nat, SITE porigin, SOURCE pgeneratorop, LIVE bool }
 syntax pgeneratorloopretained = { OBJECT nat, SITE porigin, TASK ptask }
-syntax pweakmapentry = { KEY nat, VALUE pvalue, BEFORE nat? }
+syntax pweakmapvalue = pvalue | ALIAS nat
+syntax pweakmapentry = { KEY nat, VALUE pweakmapvalue, BEFORE nat? }
 syntax pobject = SENSITIVEUNSET porigin | SENSITIVEVALUE pvalue | WEAKREFERENCE nat? | WEAKMAP pweakmapentry? | FIBERGRACEFUL nat nat | FIBER pfiber | FIBERAPICLOSURE pfibercapture | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | FROMCALLABLEFACTORY porigin | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text pgettersource | CTORCLOSURE nat text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
 syntax pdeclautoload = (nat, pautoloadcall, pautoloadentry)
 syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)*, AUTOLOAD pdeclautoload* }

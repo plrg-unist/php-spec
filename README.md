@@ -104,7 +104,11 @@ Runtime array constructors at NULL keys use one owning temporary, with no NULL
 backup or producer-variable reset. The child table freezes before the handler,
 including a scalar reference read by value or a seed increment. Normal completion
 transfers its DIRECT entry; an otherwise unowned table retires on deletion or
-supplied throw. Pooled constant array literals keep their permanent pool owner
+supplied throw. Finite nested DIRECT temporaries also retain shared child edges
+through handler-time COW. Last-entry deletion or throw cascades through unowned
+runtime descendants while folded siblings retain their pool roots. See the
+[nested TMP review](coverage/semantics/array-literal-null-key-array-tmp-subtree-review.json).
+Pooled constant array literals keep their permanent pool owner
 and one pending edge, preserving the original table across callbacks, repeated
 calls and later COW. Throw drops only the pending edge. See the
 [constant-array review](coverage/semantics/array-literal-null-key-constant-array-review.json).
@@ -1935,6 +1939,10 @@ remain required.
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
 including eager argument and frame cleanup with pending exception chains.
+Direct named Generator bodies now preserve their literal CURRENT/NEXT resumer
+when they suspend inside a Fiber. Normal resume and supplied-Throwable injection
+restore that same stack; fresh reentry chains two Errors while cached reentry
+keeps one. [Transfer review](coverage/semantics/generator-fiber-transfer-review.json).
 [Arrow Generator311](docs/semantics/ARROW-GENERATORS.md) validates eager
 parameters, deferred captures, implicit yield/delegation returns and original
 signatures. Value warnings retain the same Throwable, cached key and closed
@@ -3021,8 +3029,16 @@ Other array layouts and replacement/callback lifetimes remain partial.
 Bounded by-value WeakMap `foreach` now retains the Map through hidden iterator
 DATA and copies its object Key/Value into ordinary CVs. Exhaustion or `break`
 retires DATA before those copies; two originals and 287 Boolean/five raw checks
-pass at `b7af270c7`/410. Active entry mutation is explicitly refused; reference,
+pass at `b7af270c7`/410. Active entry mutation is explicitly refused;
 wider target/value and map-history cases remain partial.
+
+Bounded by-reference WeakMap traversal shares the entry's cell and preserves
+rebinding plus escaped aliases through DATA or Key retirement. A reference
+containing NULL makes `isset` true while reads, `??` and `empty` retain their NULL
+behavior. Two sources retain separate `e975008b1`/`ae4590a36` cuts; 314 Boolean/five
+raw checks pass at `ae4590a36`/410. Original NULL mismatch and fixture failures remain
+zero; wider reference/CONFIG/GC histories and general quiet direct-entry Key
+notification remain partial. [Review](coverage/semantics/weak-map-review.json).
 
 The object-valued singleton can now coexist with ordinary `stdClass` graphs.
 Two originals agree at `fa2e00c6`: an independent self-cycle collects alongside
@@ -4657,7 +4673,11 @@ Public typed UNSET reentry now raises a fresh Error with the declaring class and
 inner read's file/line, including during actual local cleanup. Nullable NULL
 recovery/reset, caller-CV destruction before catch and replacement Exception's
 Previous link pass [four source agreements and 496 focused premises](coverage/semantics/magic-get-recursive-error-review.json).
-Private denial and wider typed/receiver/lifetime forms remain partial.
+Denied private/protected reentry now raises the receiver-class visibility Error,
+independently of hidden VALUE/UNSET/INITIAL storage. Ordinary source scope and
+actual Get/local-exit guards pass [three source agreements and 405 focused premises](coverage/semantics/magic-get-denied-recursion-review.json),
+including incompatible hidden-type recovery and allowed/different-object controls.
+Bound-Closure scopes and wider access/receiver/lifetime forms remain partial.
 Denied private/protected reads and inherited-private literal fallback now invoke
 the getter without applying the hidden property's type. Allowed lexical reads
 use the physical backing key or raise its initialization Error. The original

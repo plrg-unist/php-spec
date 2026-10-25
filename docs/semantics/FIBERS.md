@@ -50,9 +50,21 @@ injection keeps the exact Throwable; uncaught callback exceptions cross the Fibe
 root once. Traces include waiting Fiber API frames and their original buffers.
 Callback name errors arise before a callback frame exists; their file and line
 come from the waiting `Fiber::start` caller, and the failed Fiber terminates.
-Global Generator ownership is checked on the actual machine. Parked Fiber views
-retain their own task/frame checks and exclude active Generator resume markers;
-an unrelated Generator can run while a Fiber remains suspended.
+Global Generator ownership is checked on the actual machine. A direct named
+Generator body entered by literal zero-argument CURRENT/NEXT may now move its
+unique resumer with a Fiber VM. Local function/source/line/phase checks authenticate
+the restored pair; object, caller and closer VMs contribute occurrences without
+deduplication. No synthetic root or extra Generator frame is added. A restored
+logical owner can be physically suspended; actual main still fails this transfer
+arm, and an unrelated Generator can run while another Fiber remains suspended.
+
+Normal resume preserves a frame-owned object until natural return. Supplied
+Throwable injection retains identity through Generator catch/finally or unhandled
+Fiber completion. Fresh outside NEXT chains initialization and resume Errors;
+a cached value leaves a single resume Error. Four source agreements and 567
+source-reached premises retain their separate cuts in the
+[transfer review](../../coverage/semantics/generator-fiber-transfer-review.json).
+Constructed duplicate carrier controls add no valid copied-Fiber source claim.
 
 Private scoped descriptor validation checks shared live eval/class/directory
 contexts on the active VM. Its parked validation view clears loader contexts
@@ -753,8 +765,9 @@ initialization/source loading remain required. The first transfer domain rejects
 active or saved constant/default and autoload initialization. Module378 admits a
 retained foreach Generator's active close frame, authenticated by its genuine
 statement/line receipt and unique saved close ID while preserving one receiver
-owner. Other active Generator execution, including switches in helper calls,
-retains its previous boundary. Shared pending flags and wider parked ownership
+owner. The direct named-body CURRENT/NEXT arm additionally preserves one normal
+resumer. Other active Generator execution, including helper calls, delegation,
+by-reference caches and other API roots, retains its previous boundary. Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not
 blanket blocked at this pin. Property and broader object consumers remain tracked

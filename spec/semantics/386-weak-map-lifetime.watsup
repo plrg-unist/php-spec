@@ -9,7 +9,7 @@ def $weakmap_at(S, n) = true
 def $weakmap_at(S, n) = false -- otherwise
 ;; Cursor rows are metadata; the saved FOREACH_NEXT task alone owns DATA.
 dec $weakmap_foreach_cursor_map(piterator, nat) : bool
-def $weakmap_foreach_cursor_map(OBJECTITER n n_map n_position false, n_map) = true
+def $weakmap_foreach_cursor_map(OBJECTITER n n_map n_position b_ref, n_map) = true
 def $weakmap_foreach_cursor_map(piterator, n_map) = false -- otherwise
 dec $weakmap_foreach_active(piterator*, nat) : bool
 def $weakmap_foreach_active(eps, n_map) = false
@@ -28,7 +28,15 @@ def $typed_object_exact(S, ptbranch*, POBJECT n) = ($typed_class_type(ptbranch*,
   -- if S.OBJECTS[n] = WEAKMAP pweakmapentry?
 def $typed_given(S, POBJECT n) = $ptascii("WeakMap") -- if S.OBJECTS[n] = WEAKMAP pweakmapentry?
 def $node_children(S, HOBJECT n) = eps -- if S.OBJECTS[n] = WEAKMAP eps
-def $node_children(S, HOBJECT n) = $value_nodes(pweakmapentry.VALUE)
+dec $weakmap_value_nodes(pweakmapvalue) : pnode*
+def $weakmap_value_nodes(pvalue) = $value_nodes(pvalue)
+def $weakmap_value_nodes(ALIAS n) = [HCELL n]
+dec $weakmap_value(pstate, pweakmapvalue) : pvalue
+def $weakmap_value(S, pvalue) = pvalue
+def $weakmap_value(S, ALIAS n) = pvalue
+  -- if $(n < |S.STORE|) /\ n <- S.REFCELLS /\ (HCELL n) <- S.ALLOCATIONS
+  -- if S.STORE[n] = DEFINED pvalue
+def $node_children(S, HOBJECT n) = $weakmap_value_nodes(pweakmapentry.VALUE)
   -- if S.OBJECTS[n] = WEAKMAP (pweakmapentry)
 
 dec $weakmap_new_site(pstate) : bool
@@ -89,6 +97,28 @@ def $weakmap_array_backedge(S, n_array, n_key) = true
   -- if $node_children(S, HARRAY n_array) = [HCELL n_cell]
   -- if $node_children(S, HCELL n_cell) = [HOBJECT n_key]
 def $weakmap_array_backedge(S, n_array, n_key) = false -- otherwise
+dec $weakmap_reference_value_allowed(pstate, pvalue) : bool
+def $weakmap_reference_value_allowed(S, PNULL) = true
+def $weakmap_reference_value_allowed(S, POBJECT n_value) = true
+  -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_value] = INSTANCE porigin
+  -- if ~$instance_storage_freeing(S, n_value) /\ $node_children(S, HOBJECT n_value) = eps
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.METHODS = eps
+def $weakmap_reference_value_allowed(S, pvalue) = false -- otherwise
+dec $weakmap_reference_cell_valid(pstate, nat) : bool
+def $weakmap_reference_cell_valid(S, n_cell) = true
+  -- if $(n_cell < |S.STORE|) /\ n_cell <- S.REFCELLS /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $weakmap_reference_value_allowed(S, pvalue)
+def $weakmap_reference_cell_valid(S, n_cell) = false -- otherwise
+dec $weakmap_reference_slot_allowed(pstate, pweakmapvalue) : bool
+def $weakmap_reference_slot_allowed(S, pvalue) = $weakmap_reference_value_allowed(S, pvalue)
+def $weakmap_reference_slot_allowed(S, ALIAS n_cell) = $weakmap_reference_cell_valid(S, n_cell)
+dec $weakmap_release_slot_allowed(pstate, pweakmapvalue) : bool
+def $weakmap_release_slot_allowed(S, pvalue) = true
+def $weakmap_release_slot_allowed(S, ALIAS n_cell) = $weakmap_reference_cell_valid(S, n_cell)
+dec $weakmap_free_slot_allowed(pstate, pweakmapvalue) : bool
 dec $weakmap_write_value_allowed(pstate, paccess) : bool
 def $weakmap_write_value_allowed(S, paccess) = true
   -- if paccess.VALUE = POBJECT n_value
@@ -247,7 +277,7 @@ def $weakmap_read_allowed(S, paccess) = true
   -- if ~(n_handle <- S.DESTRUCTION.FREE)
   -- if $weakmap_read_handle_allowed(S, n_key, n_handle)
 def $weakmap_read_allowed(S, paccess) = false -- otherwise
-def $access_call(S, paccess, ptbytes) = $key_read_done(S, pweakmapentry.VALUE)
+def $access_call(S, paccess, ptbytes) = $key_read_done(S, $weakmap_value(S, pweakmapentry.VALUE))
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_at(S, n_map)
   -- if ptbytes = $ptascii("offsetGet")
@@ -285,7 +315,7 @@ def $weakmap_quiet_read_allowed(S, paccess) = true
   -- if $node_children(S, HOBJECT n_key) = eps
   -- if paccess.VALUE = PNULL
 def $weakmap_quiet_read_allowed(S, paccess) = false -- otherwise
-def $access_call(S, paccess, ptbytes) = $key_read_done(S, pweakmapentry.VALUE)
+def $access_call(S, paccess, ptbytes) = $key_read_done(S, $weakmap_value(S, pweakmapentry.VALUE))
   -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_quiet_read_allowed(S, paccess)
   -- if paccess.OBJECT = (n_map)
   -- if paccess.OFFSET = POBJECT n_key
@@ -332,7 +362,7 @@ def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, pweakmapen
   -- if paccess.OFFSET = POBJECT n_key
   -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
   -- if pweakmapentry.KEY = n_key
-def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, ~$truth(S, pweakmapentry.VALUE))
+def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, ~$truth(S, $weakmap_value(S, pweakmapentry.VALUE)))
   -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_presence_allowed(S, paccess)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST true)
   -- if paccess.OBJECT = (n_map)
@@ -481,7 +511,8 @@ def $weakmap_replace_allowed(S, paccess) = true
   -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
   -- if $node_children(S, HOBJECT n_key) = eps
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
-  -- if $weakmap_free_value_allowed(S, pweakmapentry.VALUE)
+  -- if pvalue = pweakmapentry.VALUE
+  -- if $weakmap_free_value_allowed(S, pvalue)
   -- if $weakmap_write_value_allowed(S, paccess)
 def $weakmap_replace_allowed(S, paccess) = false -- otherwise
 dec $weakmap_notice_wrapper(pstate, pweakmapentry) : nat?
@@ -515,7 +546,7 @@ def $weakmap_key_waiting(S, n_key) = ($weakmap_key_maps(S, S.ALLOCATIONS, n_key)
 
 ;; Replace the map edge by one real VALUE job before executing the callback.
 def $weakmap_key_notice(S, n_key) = S -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps
-def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = WEAKMAP eps][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = $weakmap_notice_wrapper(S, pweakmapentry)]) :: ptask_tail*], $destruction_values($value_nodes(pweakmapentry.VALUE)))
+def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = WEAKMAP eps][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = $weakmap_notice_wrapper(S, pweakmapentry)]) :: ptask_tail*], $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
   -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
   -- if $weakmap_before_valid(S, pweakmapentry)
@@ -524,8 +555,9 @@ def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] 
   -- if $instance_storage_valid(S, pinstancestorage)
   -- if pinstancestorage.NEXT = 0 /\ pinstancestorage.SLOTS = eps /\ pinstancestorage.NOTIFY = eps
   -- if S.OBJECTS[n_key] = STDINSTANCE
-  -- if $destructor_jobs_valid(S, $destruction_values($value_nodes(pweakmapentry.VALUE)))
-def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = WEAKMAP eps][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = $weakmap_notice_wrapper(S, pweakmapentry)]) :: ptask_tail*], $destruction_values($value_nodes(pweakmapentry.VALUE)))
+  -- if $weakmap_release_slot_allowed(S, pweakmapentry.VALUE)
+  -- if $destructor_jobs_valid(S, $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
+def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = WEAKMAP eps][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = $weakmap_notice_wrapper(S, pweakmapentry)]) :: ptask_tail*], $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
   -- if $weakmap_interleaved_first(S, n_key) = (n_map)
   -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
@@ -533,7 +565,8 @@ def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] 
   -- if $instance_storage_valid(S, pinstancestorage)
   -- if pinstancestorage.NEXT = 0 /\ pinstancestorage.SLOTS = eps /\ pinstancestorage.NOTIFY = eps
   -- if S.OBJECTS[n_key] = STDINSTANCE
-  -- if $destructor_jobs_valid(S, $destruction_values($value_nodes(pweakmapentry.VALUE)))
+  -- if $weakmap_release_slot_allowed(S, pweakmapentry.VALUE)
+  -- if $destructor_jobs_valid(S, $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
 def $weakmap_key_notice(S, n_key) = S[.COMPLETION = UNSUPPORTED "WeakMap key notification storage authority"] -- otherwise
 
 ;; WeakMap free_obj unregisters the entry before value destruction, but its
@@ -547,6 +580,8 @@ def $weakmap_free_value_allowed(S, pvalue) = true
   -- if $node_children(S, HOBJECT n_value) = eps
 def $weakmap_free_value_allowed(S, pvalue) = true -- if $weakmap_scalar_value(S, pvalue)
 def $weakmap_free_value_allowed(S, pvalue) = false -- otherwise
+def $weakmap_free_slot_allowed(S, pvalue) = $weakmap_free_value_allowed(S, pvalue)
+def $weakmap_free_slot_allowed(S, ALIAS n_cell) = $weakmap_reference_cell_valid(S, n_cell)
 dec $weakmap_free_allowed(pstate, nat, pdestructionrelease) : bool
 def $weakmap_free_allowed(S, n_map, pdestructionrelease) = true
   -- if $weakmap_at(S, n_map)
@@ -563,8 +598,8 @@ def $weakmap_free_allowed(S, n_map, pdestructionrelease) = true
   -- if $node_children(S, HOBJECT pweakmapentry.KEY) = eps
   -- if $($heap_owners($heap_graph(S), HOBJECT pweakmapentry.KEY) > 0)
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, pweakmapentry.KEY) = [n_map]
-  -- if $weakmap_free_value_allowed(S, pweakmapentry.VALUE)
-  -- if $destructor_jobs_valid(S, $destruction_values($value_nodes(pweakmapentry.VALUE)))
+  -- if $weakmap_free_slot_allowed(S, pweakmapentry.VALUE)
+  -- if $destructor_jobs_valid(S, $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
 def $weakmap_free_allowed(S, n_map, pdestructionrelease) = false -- otherwise
 
 def $instance_storage_basic(S, pinstancestorage) = true
@@ -580,7 +615,7 @@ def $instance_storage_basic(S, pinstancestorage) = true
   -- if ~(pinstancestorage.HANDLE <- S.DESTRUCTION.FREE)
   -- if pinstancestorage.OBJECT <- S.DESTRUCTION.CALLED
 
-def $destruction_storage_free(S, HOBJECT n_map, pdestructionrelease) = $destructor_release_begin($gc_store_retire($instance_storage_called(S[.OBJECTS[n_map] = WEAKMAP eps][.TODO = (INSTANCE_STORAGE_STEP {OBJECT n_map, HANDLE S.DESTRUCTION.HANDLES[n_map], SLOTS eps, NEXT 0, NOTIFY $weakref_find(S, S.ALLOCATIONS, n_map), CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n_map), HOBJECT n_map), $destruction_values($value_nodes(pweakmapentry.VALUE)))
+def $destruction_storage_free(S, HOBJECT n_map, pdestructionrelease) = $destructor_release_begin($gc_store_retire($instance_storage_called(S[.OBJECTS[n_map] = WEAKMAP eps][.TODO = (INSTANCE_STORAGE_STEP {OBJECT n_map, HANDLE S.DESTRUCTION.HANDLES[n_map], SLOTS eps, NEXT 0, NOTIFY $weakref_find(S, S.ALLOCATIONS, n_map), CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n_map), HOBJECT n_map), $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
   -- if $weakmap_free_allowed(S, n_map, pdestructionrelease)
   -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
 def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $destructor_release_replace(S, pdestructionrelease[.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionrelease.JOBS])[.COMPLETION = UNSUPPORTED "nonempty WeakMap storage destruction"]
@@ -850,7 +885,7 @@ def $weakmap_foreach_entries(S, n_map, (pweakmapentry)) = true
   -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
   -- if $node_children(S, HOBJECT n_key) = eps
   -- if pweakmapentry.VALUE = POBJECT n_value
-  -- if $weakmap_free_value_allowed(S, pweakmapentry.VALUE)
+  -- if $weakmap_free_value_allowed(S, POBJECT n_value)
   -- if S.OBJECTS[n_value] = INSTANCE porigin_value
   -- if $class_at(S.CLASSES, porigin_value) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.METHODS = eps
@@ -867,6 +902,45 @@ def $weakmap_foreach_storage_valid(S, n_map) = true
   -- if $objectprops_valid(S, S.OBJECTPROPS)
   -- if $weakmap_foreach_entries(S, n_map, pweakmapentry?)
 def $weakmap_foreach_storage_valid(S, n_map) = false -- otherwise
+dec $weakmap_foreach_reference_storage_valid(pstate, nat) : bool
+def $weakmap_foreach_reference_storage_valid(S, n_map) = true
+  -- if $weakmap_at(S, n_map) /\ ~$instance_storage_freeing(S, n_map)
+  -- if S.OBJECTS[n_map] = WEAKMAP pweakmapentry?
+  -- if $objectprops_at(S.OBJECTPROPS, n_map) = eps
+  -- if $object_table_at(S.OBJECTTABLES, n_map) = eps
+  -- if $objectprops_valid(S, S.OBJECTPROPS)
+  -- if pweakmapentry? = eps
+def $weakmap_foreach_reference_storage_valid(S, n_map) = true
+  -- if $weakmap_at(S, n_map) /\ ~$instance_storage_freeing(S, n_map)
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if $objectprops_at(S.OBJECTPROPS, n_map) = eps
+  -- if $object_table_at(S.OBJECTTABLES, n_map) = eps
+  -- if $objectprops_valid(S, S.OBJECTPROPS)
+  -- if n_key = pweakmapentry.KEY
+  -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
+  -- if $node_children(S, HOBJECT n_key) = eps
+  -- if $weakmap_reference_slot_allowed(S, pweakmapentry.VALUE)
+  -- if $weakmap_before_valid(S, pweakmapentry)
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
+def $weakmap_foreach_reference_storage_valid(S, n_map) = false -- otherwise
+;; Quiet RC pruning must not skip std_dtor's removal of a reference entry.
+;; Keep an initiated release operational after that entry has been detached.
+dec $weakmap_reference_key_retiring(pstate, pnode) : bool
+def $weakmap_reference_key_retiring(S, HOBJECT n_map) = true
+  -- if $weakmap_foreach_reference_storage_valid(S, n_map)
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if pweakmapentry.VALUE = ALIAS n_cell
+  -- if H = $heap_prune($heap_graph(S))
+  -- if (HOBJECT n_map) <- H.NODES /\ ~((HOBJECT pweakmapentry.KEY) <- H.NODES)
+def $weakmap_reference_key_retiring(S, pnode) = false -- otherwise
+dec $weakmap_reference_keys_retiring(pstate, pnode*) : bool
+def $weakmap_reference_keys_retiring(S, eps) = false
+def $weakmap_reference_keys_retiring(S, pnode :: pnode_tail*) = true
+  -- if $weakmap_reference_key_retiring(S, pnode)
+def $weakmap_reference_keys_retiring(S, pnode :: pnode_tail*) = $weakmap_reference_keys_retiring(S, pnode_tail*)
+  -- if ~$weakmap_reference_key_retiring(S, pnode)
+def $weakmap_reference_operational(S) = (S.DESTRUCTION.RELEASES =/= eps \/ S.DESTRUCTION.OPERATIONS =/= eps \/ $weakmap_reference_keys_retiring(S, S.ALLOCATIONS))
 dec $weakmap_foreach_cursor_valid(pstate, nat, nat, nat) : bool
 def $weakmap_foreach_cursor_valid(S, n, n_map, n_position) = true
   -- if $(n < S.NEXTITER) /\ $(n_position <= 1)
@@ -874,7 +948,9 @@ def $weakmap_foreach_cursor_valid(S, n, n_map, n_position) = true
   -- if $iterator_lookup($iterator_remove(S.ITERATORS, n), n) = eps
   -- if $weakmap_foreach_storage_valid(S, n_map)
 def $weakmap_foreach_cursor_valid(S, n, n_map, n_position) = false -- otherwise
-def $weakmap_foreach_owner_valid(S, n, n_map, n_position) = $weakmap_foreach_cursor_valid(S, n, n_map, n_position)
+def $weakmap_foreach_owner_valid(S, n, n_map, n_position, false) = $weakmap_foreach_cursor_valid(S, n, n_map, n_position)
+  -- if $weakmap_at(S, n_map)
+def $weakmap_foreach_owner_valid(S, n, n_map, n_position, true) = ($(n < S.NEXTITER) /\ $(n_position <= 1) /\ $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_map n_position true) /\ $iterator_lookup($iterator_remove(S.ITERATORS, n), n) = eps /\ $weakmap_foreach_reference_storage_valid(S, n_map))
   -- if $weakmap_at(S, n_map)
 dec $weakmap_foreach_begin(pstate, nat, statement, bool, int) : pstate
 def $weakmap_foreach_begin(S, n_map, statement, false, z) = S[.TODO = (FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z) :: ptask_tail*][.ITERATORS = S.ITERATORS ++ [OBJECTITER n n_map 0 false]][.NEXTITER = $(n + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -888,15 +964,28 @@ def $weakmap_foreach_begin(S, n_map, statement, false, z) = S[.TODO = (FOREACH_N
   -- if $weakmap_foreach_target(S, n_key_name*) /\ $weakmap_foreach_target(S, n_value_name*)
   -- if $weakmap_foreach_storage_valid(S, n_map)
   -- if n = S.NEXTITER
+def $weakmap_foreach_begin(S, n_map, statement, true, z) = S[.TODO = (FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z) :: ptask_tail*][.ITERATORS = S.ITERATORS ++ [OBJECTITER n n_map 0 true]][.NEXTITER = $(n + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (statement)
+  -- if statement = NStmtForeach expression_iterable expression_key (BOOLEAN true) expression_value (SEQUENCE statement_body*) (BOOLEAN false) metadata
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 0], expression_iterable)
+  -- if $weakmap_foreach_name(expression_key) = (n_key_name*)
+  -- if $weakmap_foreach_name(expression_value) = (n_value_name*)
+  -- if n_key_name* =/= n_value_name*
+  -- if $weakmap_foreach_target(S, n_key_name*) /\ $weakmap_foreach_target(S, n_value_name*)
+  -- if $weakmap_foreach_reference_storage_valid(S, n_map)
+  -- if n = S.NEXTITER
 def $weakmap_foreach_begin(S, n_map, statement, b, z) = S[.COMPLETION = UNSUPPORTED "WeakMap foreach mode, targets, or storage"] -- otherwise
 def $foreach_begin(S, S_read, statement, plocation, b, z) = $weakmap_foreach_begin(S_read, n_map, statement, b, z)
   -- if S_read.RESULT = KNOWN (POBJECT n_map)
   -- if $(n_map < |S_read.OBJECTS|)
   -- if $weakmap_object(S_read.OBJECTS[n_map])
 dec $weakmap_foreach_body(pstate, nat, nat, statement, porigin, int, pweakmapentry) : pstate
-def $weakmap_foreach_body(S, n, n_map, statement, porigin, z, pweakmapentry) = S[.TODO = [$foreach_value_task(S, expression_value, KNOWN pweakmapentry.VALUE, false, z), $at_task($origin_child((porigin), [PCFIELD 1]), LIST_STORE expression_key (KNOWN (POBJECT pweakmapentry.KEY)) false $runtime_line(S, [PCFIELD 1], expression_key))] ++ $statement_tasks(statement_body*, $origin_child((porigin), [PCFIELD 4]), 0) ++ [(FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z)] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $weakmap_foreach_body(S, n, n_map, statement, porigin, z, pweakmapentry) = S[.TODO = [$foreach_value_task(S, expression_value, KNOWN pvalue, false, z), $at_task($origin_child((porigin), [PCFIELD 1]), LIST_STORE expression_key (KNOWN (POBJECT pweakmapentry.KEY)) false $runtime_line(S, [PCFIELD 1], expression_key))] ++ $statement_tasks(statement_body*, $origin_child((porigin), [PCFIELD 4]), 0) ++ [(FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z)] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if statement = NStmtForeach expression_iterable expression_key (BOOLEAN false) expression_value (SEQUENCE statement_body*) (BOOLEAN false) metadata
+  -- if pvalue = pweakmapentry.VALUE
 rule PhpStep/weakmap-foreach-fetch: S ~> $weakmap_foreach_body(S[.ORIGIN = (porigin)][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_map 1 false)], n, n_map, statement, porigin, z, pweakmapentry)
   -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z) :: ptask_tail*
   -- if $weakmap_at(S, n_map)
@@ -907,6 +996,33 @@ rule PhpStep/weakmap-foreach-end: S ~> $foreach_finish(S[.ORIGIN = (porigin)], n
   -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z) :: ptask_tail*
   -- if $weakmap_at(S, n_map)
   -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_map n_position false)
+  -- if $call_task_valid(S, FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z)
+  -- if n_position = 1 \/ S.OBJECTS[n_map] = WEAKMAP eps
+;; The iterator copies DATA, while FE_FETCH_RW shares the entry's own zval.
+dec $weakmap_foreach_reference_acquire(pstate, nat) : pstate
+def $weakmap_foreach_reference_acquire(S, n_map) = S[.STORE = S.STORE ++ [DEFINED pvalue]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n_cell]][.REFCELLS = n_cell :: S.REFCELLS][.OBJECTS[n_map] = WEAKMAP (pweakmapentry[.VALUE = ALIAS n_cell])][.CELL = n_cell]
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if pvalue = pweakmapentry.VALUE
+  -- if n_cell = |S.STORE|
+def $weakmap_foreach_reference_acquire(S, n_map) = S[.CELL = n_cell]
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if pweakmapentry.VALUE = ALIAS n_cell
+  -- if $weakmap_reference_cell_valid(S, n_cell)
+dec $weakmap_foreach_reference_body(pstate, nat, nat, statement, porigin, int, pweakmapentry) : pstate
+def $weakmap_foreach_reference_body(S, n, n_map, statement, porigin, z, pweakmapentry) = S[.TODO = [$foreach_value_task(S, expression_value, REFERENCE S.CELL, true, z), $at_task($origin_child((porigin), [PCFIELD 1]), LIST_STORE expression_key (KNOWN (POBJECT pweakmapentry.KEY)) false $runtime_line(S, [PCFIELD 1], expression_key))] ++ $statement_tasks(statement_body*, $origin_child((porigin), [PCFIELD 4]), 0) ++ [(FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z)] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if statement = NStmtForeach expression_iterable expression_key (BOOLEAN true) expression_value (SEQUENCE statement_body*) (BOOLEAN false) metadata
+rule PhpStep/weakmap-foreach-reference-fetch: S ~> $weakmap_foreach_reference_body(S_ref[.ITERATORS = $iterator_set(S_ref.ITERATORS, OBJECTITER n n_map 1 true)], n, n_map, statement, porigin, z, pweakmapentry)
+  -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z) :: ptask_tail*
+  -- if $weakmap_at(S, n_map)
+  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_map 0 true)
+  -- if $call_task_valid(S, FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z)
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if S_ref = $weakmap_foreach_reference_acquire(S[.ORIGIN = (porigin)], n_map)
+rule PhpStep/weakmap-foreach-reference-end: S ~> $foreach_finish(S[.ORIGIN = (porigin)], n)
+  -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z) :: ptask_tail*
+  -- if $weakmap_at(S, n_map)
+  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_map n_position true)
   -- if $call_task_valid(S, FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z)
   -- if n_position = 1 \/ S.OBJECTS[n_map] = WEAKMAP eps
 def $property_unset_key_unshared(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "WeakMap property unset protocol"] -- if $weakmap_at(S, n)

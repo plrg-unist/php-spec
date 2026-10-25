@@ -22,6 +22,13 @@ and `break` drop DATA while assigned Key/Value CVs retain their copies. Two sour
 agreements and 287 Boolean/five raw checks pass atb7af/410. Active entry mutation
 and wider modes remain partial; [WeakMap](WEAK-REFERENCES.md) records exact limits.
 
+Its bounded by-reference mode promotes the entry to a shared HCELL and leaves
+the residual loop CV bound after exhaustion or `break`. Rebinding, raw reference
+NULL presence and Key-triggered detachment preserve physical ownership and last
+alias disposal. Two source witnesses at separate cuts and 314 Boolean/five raw checks retain their
+records in [WeakMap](WEAK-REFERENCES.md); wider modes and mutable iteration stay
+partial.
+
 Module378 adds real `IteratorAggregate` acquisition to foreach. Implicit getter
 receivers remain borrowed; each returned Aggregate occurrence owns its raw
 retval, and layers retire inside-out before terminal Iterator/Generator startup.

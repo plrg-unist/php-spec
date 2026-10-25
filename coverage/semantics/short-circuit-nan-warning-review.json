@@ -1,7 +1,7 @@
 {
   "version": 1,
   "milestone": "OP84 live NaN LEFT short-circuit decisions",
-  "status": "bounded independently reviewed semantics; private publication awaiting composition",
+  "status": "bounded independently reviewed semantics; composed over canonical parent",
   "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/ordinary precision14 profile",
   "scope": "NaN LEFT in an ordinary allocated nonreference float CV for &&/and/||/or. Named Warning callback resumes with the live truth of that same float slot, restoring the authenticated SHORT_RESULT before deciding whether RIGHT executes. RIGHT-result NaN, references/copies, changed representations, other conditional consumers and wider handlers remain partial.",
   "tested_revision": "9a14e5244d52f2156280837dcacb4179e017eff2",
@@ -137,5 +137,16 @@
       "result": "Reported CPU4 overlap resolved by actual intervals: COMP121 source packet ended140.708s before OP84 first actor. Those packets did not overlap; no timing/exclusivity semantics claim or replay."
     },
     "record": "Restore matching Git cut/local tools and retained original paths; choose fresh output directories. Focused fixtures reuse accepted source/native tuples without replay. Raw external evidence is not a build input; reused regular binaries prove no fresh offline rebuild."
+  },
+  "composition": {
+    "parent": "52af2e1408fa5a4873b2977aaaa88099cfce5a1a",
+    "private_publication": "8b476a39f998c45744417694b60f95eb9fb93ea0",
+    "modules": 410,
+    "runtime_sha256": {
+      "spec/semantics/30-storage.watsup": "12be41a78467a2b41f9ca82865dce4c0980781cf493e2b18c26941a1e510762f",
+      "spec/semantics/404-arithmetic-warning-continuations.watsup": "1c5a44f3b38744606f522e72aac98df6dd4472aff641f24ea5a098fcc1bc951d",
+      "spec/semantics/51-truth-expressions.watsup": "0851531c090fd933c10d326a68dff61a9260a98f264f9e9341b2f64bac2b002f"
+    },
+    "gate": "Tested51/404 and all six OP84 scripts remain private-exact. Removing the sole OP84 SHORT_NAN_WARNING task line from30 reproduces parent30; every other semantic path and ordered manifest stays parent-exact. Incoming I53 requires a running Generator body/saved Fiber VM; h/k/MAIN create neither. A50 needs ARRAY_VALUE NULL-key TMP tables, absent here. CLASS122 needs denied recursive property access; only builtin Throwable observers occur. M137 requires WeakMap objects/entry aliases/FOREACH or existing RELEASES/OPERATIONS histories; scalar h/k plus the retained supplied Throwable create none of those entry-release histories. Incoming30 only widens pweakmapentry.VALUE, with no pstate/default change. Therefore no selected interaction requires replay; source5/focused511 retain9a14/410 without algorithm/rebuild renewal. PROGRESS preserves actual-parent family/integrated/remaining/paused facts and current active work. Candidate review pending."
   }
 }

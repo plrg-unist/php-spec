@@ -1,0 +1,234 @@
+{
+  "milestone": "A50: nested DIRECT runtime ARRAY TMP graphs at ordinary NULL keys",
+  "status": "Reviewed composed candidate; accepted cuts and all original fixture failures retained.",
+  "target": "PHP8.5.10 CLI NTS64-bit; vendor/php-src tag34308a6666b2d489c509541ea9befea9e2b42348",
+  "cuts": {
+    "native_and_genuine": "19dda3ffcab6fb08cab3f9bccac26104958e8b94",
+    "runtime": "554da7204e6ec612f6aa632f0584d3d4796f4805",
+    "strict_source4_author473": "be1a0daed479a5c8ea2d6b8dcfb06b576efe0abb",
+    "peer542": "f342b8bdb063a770f1d2eb98cf1c24688a5faf1b"
+  },
+  "runtime": {
+    "spec/semantics/413-array-literal-key-warnings.watsup": "da2aa2f2feda35c86008873dec5f9984671f9c419dd3b96b932f64c97571dd8a"
+  },
+  "engine": "zend_compile_array emits nonconstant NExprArray as TMP. ZEND_ADD_ARRAY_ELEMENT passes its owning TMP through without addref or NULL backup/reset; NULL deprecation checks EG(exception) and drops that single value before insertion on throw. Dynamic descendants are owned through physical parent entries; folded siblings may also have permanent pool roots.",
+  "scope": "By-value checked NArrayItem with an ordinary unmarked NULL key CV and a nonconstant array-constructor TMP. Dedicated readiness retains the allocated distinct mutable nonpool root, requires debt-free allocated DIRECT descendants and uses the unchanged ancestor-path traversal. Shared sibling DAG edges are admitted; ancestor cycles, builder backedges, ALIAS entries, objects and indebted nodes are refused.",
+  "ownership": "The unchanged marker owns only builder plus one TMP root, with no child task roots, producer CELL, backup, reset, debt or retention. Moving this root into a DIRECT entry preserves every physical child edge. Actual COW clones add edges; deleting the last entry or popping the marker lets ordinary pruning cascade through unowned dynamic tables while pool-rooted sibling graphs survive.",
+  "source_lines": "Native author lines10/10 and peer10/11 precede the value AST lines. Existing outer-array first-value operation lines feed folded PFFACT descendants; ppeffective_line/ppdone retain the final folded sibling line in CODEEXPR. No compiler change is needed. Default Deprecated10 stderr is authenticated exactly at the preserved original path.",
+  "fresh_witnesses": "Three nonpool runtime levels freeze seed2 before a handler sees3/writes44; deep copies and a fresh44 graph remain independent. A shared row begins with four owners (two CVs and two saved edges); handler COW leaves two saved edges, selective root/child cloning makes three, then last-entry deletion retires the otherwise-unowned row. Independent depth4/default and depth3/supplied-throw originals distinguish selective COW and complete dynamic cascade from surviving pooled int/empty siblings, preserving given Throwable/destination99/canceled later7.",
+  "controls": "Exact source/operation receipts, single-root task/frame transfer, legacy flat readiness compatibility, pooled/out-of-range root refusal, valid ALIAS/debt/object controls, cycles/builder backedges, positive shared DAG, post-callback explicit Unsupported, popped allocated zero-owner root, pool preservation, physical COW edge counts, EOF retirement and zero/split budgets are checked. The raw constructed-DAG control retains its old orphan-parent edge until pruning, giving three incoming edges.",
+  "bounds": "Fresh payload leaves are integers and empty arrays; existing scalar/validated-byte leaf checks compose without all-values credit. Runtime diff17+/5\u2212 affects only413: one dedicated TMP ready predicate and five TMP calls. Source gates, returned VAR/CV/CONST readiness, common DIRECT traversal, marker roots, insertion/discard bodies, compiler/schema/ordered410 and generic root/count/prune algorithms stay exact. Reference/object leaves, broader producers, cycles and wider lifecycle histories remain partial; paused boundaries are untouched.",
+  "validation": {
+    "strict_modules": 410,
+    "original_native_cases": 4,
+    "checked_source_agreements": 4,
+    "author_conditions": 473,
+    "peer_conditions": 542,
+    "successful_conditions": 1015,
+    "boolean_conditions": 1006,
+    "raw_steps": 9,
+    "strict_source_author_first_executions_passed": true,
+    "postchange_failures": 3,
+    "fixture_elaboration_failures": 2,
+    "fixture_assertion_failures": 1,
+    "semantic_mismatches": 0,
+    "affected_default_retries": 3,
+    "cap_changes": 0,
+    "accepted_replay": false
+  },
+  "fixture_corrections": {
+    "failures": [
+      {
+        "report": "review-state-50",
+        "revision": "be1a0daed479a5c8ea2d6b8dcfb06b576efe0abb",
+        "case": "array-literal-null-key-array-tmp-subtree-review-delete-entry",
+        "cause": "SL empty-iteration binder",
+        "elapsed_seconds": 7.30789589881897,
+        "exit": 1,
+        "agreement_credit": 0,
+        "throw_case": "not executed"
+      },
+      {
+        "report": "review-state-corrected-50",
+        "revision": "4fc8dd0d8c6985ced75386c20e820646ed4f02af",
+        "case": "array-literal-null-key-array-tmp-subtree-review-delete-entry",
+        "cause": "SL recursive otherwise purity",
+        "elapsed_seconds": 7.780401945114136,
+        "exit": 1,
+        "agreement_credit": 0,
+        "throw_case": "not executed"
+      },
+      {
+        "report": "review-state-corrected2-50",
+        "revision": "c5095e35e995884f03f70494c7e365d9666b70b7",
+        "case": "array-literal-null-key-array-tmp-subtree-review-delete-entry",
+        "cause": "constructed raw-DAG physical owner expectation",
+        "elapsed_seconds": 16.81876516342163,
+        "exit": 1,
+        "agreement_credit": 0,
+        "throw_case": "not executed"
+      }
+    ],
+    "policy": "Only the failed default plus previously unrun throw group was executed after each reviewed test-only correction; strict/source/author and runtime bytes were not replayed or changed. The event counter now follows the existing scalar classifier/plain cons recursion pattern; the constructed unpruned-DAG expectation includes its third physical edge."
+  },
+  "genuine_baseline": {
+    "revision": "19dda3ffcab6fb08cab3f9bccac26104958e8b94",
+    "case": "array-literal-null-key-array-tmp-subtree-increment-cow",
+    "status": "unsupported",
+    "reason": "error-handler ingress requires a producer continuation",
+    "model_stdout": "P;",
+    "model_exit": 1,
+    "native_exit": 0,
+    "passed": false,
+    "agreement_credit": 0
+  },
+  "execution": {
+    "native_cpu": 2,
+    "postchange_cpu": 5,
+    "native_cap_seconds": 30,
+    "genuine_model_outer_caps": [
+      60,
+      90
+    ],
+    "strict_focused_sl_cap_seconds": 180,
+    "source_model_outer_caps": [
+      180,
+      210
+    ],
+    "strict_seconds": 9.633305549621582,
+    "source_seconds": [
+      33.367170333862305,
+      36.51262187957764,
+      40.09019947052002,
+      21.206533670425415
+    ],
+    "successful_focused_seconds": [
+      39.59289336204529,
+      40.58730506896973,
+      47.52570152282715,
+      22.255873203277588
+    ],
+    "actors": "Accepted runs have expected program stdout/default Deprecated stderr, empty tooling stderr and no timeout/interruption/surviving groups. Failed fixture streams/receipts remain distinct with zero credit; all wrappers are fully reaped and CPU5 released.",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null
+    },
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "tools": {
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    }
+  },
+  "source_sha256": {
+    "array-literal-null-key-array-tmp-subtree-increment-cow": "dfffb9c2af4351859ec5bd42fafd9d180518a1681e4e59076cc73bf272864e67",
+    "array-literal-null-key-array-tmp-subtree-shared-child": "c75657dab91c7603457e2b674ecbb221c2737af3788c4c6d3eed1e293bcad88f",
+    "array-literal-null-key-array-tmp-subtree-review-delete-entry": "0517d6acda435543cc6be056ff0f5ad803b881378fdca28a64dddfd43cab511f",
+    "array-literal-null-key-array-tmp-subtree-review-supplied-throw": "8955a6e34a747588f6dd306603572ed73212c16b1c3349b1608ce429799dcca4"
+  },
+  "commands": [
+    "taskset -c 2 python3 -B tests/semantics/array_literal_null_key_array_tmp_subtree_warnings.py --case array-literal-null-key-array-tmp-subtree-increment-cow --output .tools/array-literal-null-key-array-tmp-subtree-baseline-50",
+    "taskset -c 2 python3 -B tests/semantics/array_literal_null_key_array_tmp_subtree_warnings.py --exclude array-literal-null-key-array-tmp-subtree-increment-cow --native-only --output .tools/array-literal-null-key-array-tmp-subtree-native-rest-50",
+    "taskset -c 2 python3 -B tests/semantics/array_literal_null_key_array_tmp_subtree_review_sources.py --native-only --output .tools/array-literal-null-key-array-tmp-subtree-review-native-50",
+    "taskset -c 5 python3 .tools/array-literal-null-key-array-tmp-subtree-strict-50.py",
+    "taskset -c 5 python3 .tools/array-literal-null-key-array-tmp-subtree-reuse-50.py --group author --output .tools/array-literal-null-key-array-tmp-subtree-source-author-50",
+    "taskset -c 5 python3 .tools/array-literal-null-key-array-tmp-subtree-reuse-50.py --group review --output .tools/array-literal-null-key-array-tmp-subtree-source-review-50",
+    "taskset -c 5 python3 -B tests/semantics/array_literal_null_key_array_tmp_subtree_protocol.py --source-report .tools/array-literal-null-key-array-tmp-subtree-source-author-50/report.json --output .tools/array-literal-null-key-array-tmp-subtree-author-state-50",
+    "taskset -c 5 python3 -B tests/semantics/array_literal_null_key_array_tmp_subtree_state_review.py --source-report .tools/array-literal-null-key-array-tmp-subtree-source-review-50/report.json --output .tools/array-literal-null-key-array-tmp-subtree-review-state-50",
+    "taskset -c 5 python3 -B tests/semantics/array_literal_null_key_array_tmp_subtree_state_review.py --source-report .tools/array-literal-null-key-array-tmp-subtree-source-review-50/report.json --output .tools/array-literal-null-key-array-tmp-subtree-review-state-corrected-50",
+    "taskset -c 5 python3 -B tests/semantics/array_literal_null_key_array_tmp_subtree_state_review.py --source-report .tools/array-literal-null-key-array-tmp-subtree-source-review-50/report.json --output .tools/array-literal-null-key-array-tmp-subtree-review-state-corrected2-50",
+    "taskset -c 5 python3 -B tests/semantics/array_literal_null_key_array_tmp_subtree_state_review.py --source-report .tools/array-literal-null-key-array-tmp-subtree-source-review-50/report.json --output .tools/array-literal-null-key-array-tmp-subtree-review-state-corrected3-50"
+  ],
+  "reports": {
+    "baseline-50": {
+      "path": ".tools/array-literal-null-key-array-tmp-subtree-baseline-50/report.json",
+      "sha256": "a5923169b0c177f738cbca11c91e32f459676c601d22b4806c752caff623317a",
+      "revision": "19dda3ffcab6fb08cab3f9bccac26104958e8b94"
+    },
+    "native-rest-50": {
+      "path": ".tools/array-literal-null-key-array-tmp-subtree-native-rest-50/report.json",
+      "sha256": "fb3c2218075a077d35a2223aaaa293415c32f4e87ea7c2c5e1ba2a2a45326a58",
+      "revision": "19dda3ffcab6fb08cab3f9bccac26104958e8b94"
+    },
+    "review-native-50": {
+      "path": ".tools/array-literal-null-key-array-tmp-subtree-review-native-50/report.json",
+      "sha256": "acd230cb822d1dd50f8c7fb8b0729c113da87a45c65d134b44a62349a78c4ae7",
+      "revision": "19dda3ffcab6fb08cab3f9bccac26104958e8b94"
+    },
+    "strict-50": {
+      "path": ".tools/array-literal-null-key-array-tmp-subtree-strict-50/report.json",
+      "sha256": "65327d96a4672dc20a44ae7b8df2f29eb654a182818da3b8649ccd00536715b5",
+      "revision": "be1a0daed479a5c8ea2d6b8dcfb06b576efe0abb"
+    },
+    "source-author-50": {
+      "path": ".tools/array-literal-null-key-array-tmp-subtree-source-author-50/report.json",
+      "sha256": "46ffd50960e1b92424f21a6cf49892a551b3010495bda2ad14cd1423643fcf6c",
+      "revision": "be1a0daed479a5c8ea2d6b8dcfb06b576efe0abb"
+    },
+    "source-review-50": {
+      "path": ".tools/array-literal-null-key-array-tmp-subtree-source-review-50/report.json",
+      "sha256": "597eadc455545d28a8434b1874f913eaa8fcb668c74de091a89f82d6f6f30b07",
+      "revision": "be1a0daed479a5c8ea2d6b8dcfb06b576efe0abb"
+    },
+    "author-state-50": {
+      "path": ".tools/array-literal-null-key-array-tmp-subtree-author-state-50/report.json",
+      "sha256": "c5742bf897c7a1ec885f5b067998d4e0004f953662b31ec7b05cef7c1ad6fb16",
+      "revision": "be1a0daed479a5c8ea2d6b8dcfb06b576efe0abb"
+    },
+    "review-state-50": {
+      "path": ".tools/array-literal-null-key-array-tmp-subtree-review-state-50/report.json",
+      "sha256": "e8c08e3bb063d18f52040335b298679d685617a9c481db6f702af88628f9969a",
+      "revision": "be1a0daed479a5c8ea2d6b8dcfb06b576efe0abb"
+    },
+    "review-state-corrected-50": {
+      "path": ".tools/array-literal-null-key-array-tmp-subtree-review-state-corrected-50/report.json",
+      "sha256": "9994c0b14a777f1c1b09774c2d98184fa3eef185b57a9adfb7c9d999f41e66e4",
+      "revision": "4fc8dd0d8c6985ced75386c20e820646ed4f02af"
+    },
+    "review-state-corrected2-50": {
+      "path": ".tools/array-literal-null-key-array-tmp-subtree-review-state-corrected2-50/report.json",
+      "sha256": "75362487c671ad19f828e02ff485a2234aae4f6735b31bfc32f7beb31ece3a81",
+      "revision": "c5095e35e995884f03f70494c7e365d9666b70b7"
+    },
+    "review-state-corrected3-50": {
+      "path": ".tools/array-literal-null-key-array-tmp-subtree-review-state-corrected3-50/report.json",
+      "sha256": "151e901ee886ac8760b6ee63f08283e2d717c6308157446fc1567989e94ebc8b",
+      "revision": "f342b8bdb063a770f1d2eb98cf1c24688a5faf1b"
+    }
+  },
+  "runners": {
+    ".tools/array-literal-null-key-array-tmp-subtree-strict-50.py": "e16900db2aa996050b4036d9b63ff6574da5f9c04ecd4672364bdf22e054e8ef",
+    ".tools/array-literal-null-key-array-tmp-subtree-reuse-50.py": "25fa7501f57afd51cf2e9f3415b5a347873f8cf3bc538ba4a58144fb29726c8d"
+  },
+  "archive": {
+    "path": ".tools/array-literal-null-key-array-tmp-subtree-50-raw.tar.gz",
+    "bytes": 886844,
+    "members": 278,
+    "sha256": "1cf420186898ff7967fa06f24389e8a9cac72b8d96b779babeacf6a3e0adf151"
+  },
+  "recovery": "Canonical .tools/array-literal-null-key-array-tmp-subtree-publication-50.json and the raw archive preserve eleven reports, three preparation records, original source/native/model bytes, all three failed fixtures/streams/process receipts and strict/reuse scripts. Restore at the recorded cwd/Git cuts with original paths, profile and fingerprints; provision pinned local tools as needed. Preparation and failed/incomplete fixture groups add no accepted premises; genuine Unsupported retains zero agreement credit.",
+  "composition": {
+    "parent": "c052dc024a9fad0595905ec2e85478dfafcd118e",
+    "ordered_manifest_modules": 410,
+    "runtime_policy": "Only413 changes and remains tested-private-exact, together with all six A50 scripts. Every incoming operational/schema/ordered410 path stays parent-exact, including30/40/404/207/380/400; no pstate/heap field change.",
+    "interaction": "Incoming captured-NaN Boolean NOT, denied magic getter recursion, missing-CV comparisons and Stringable CONSTANT/DEFINED query producers are absent from these ARRAY-key originals and controls. The supplied Throwable identity is a defined-object strict comparison; static E_DEPRECATED lookup is not a query call. No selected interaction requires joined execution.",
+    "progress_policy": "Start from the actual compact parent view and preserve all current checkpoint/active/integrated facts; update only A50 array scope/link/integration and remove any stale own A49/A50 active row.",
+    "joined_execution": false,
+    "accepted_replay": false
+  }
+}

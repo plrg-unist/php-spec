@@ -211,6 +211,38 @@ other/overwritten targets, explicit getIterator, mutation and wider map/callback
 Fiber histories remain partial. Empty storage shares finish without an extra
 PHP witness. [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
+## By-reference entry cells and Key retirement
+
+M137 adds singleton by-reference `foreach` with distinct ordinary fresh/NULL CV
+targets, a leaf `stdClass` Key and NULL or a parentless methodless leaf INSTANCE
+Value. Fetch promotes the entry to one authoritative ALIAS cell and binds the
+loop CV to it. Physical ownership becomes Map→HCELL→Value; hidden DATA still
+owns Map once. Rebinding releases the old Value, and an escaped loop alias can
+retain the cell after DATA and Map retire.
+
+A direct NULL entry has false `isset`. After reference acquisition, raw
+`isset` becomes true while ordinary read remains NULL, coalesce takes its
+fallback, and `empty` stays true. The residual alias also writes back through
+Map. When quiet RC pruning would retire Key but keep a validated REF-entry Map,
+existing eager cleanup performs its notification first; active releases/operations
+stay valid through cleanup. Removing the Map edge transfers its cell owner into
+one real queued job. The surviving alias retains Value until its own unset.
+
+Two sources keep separate cuts: escaped lifetime agrees at `e975008b1`; corrected
+NULL sharing/notification agrees at `ae4590a36`, both with 410 modules. Author 155/3
+and peer 159/2 pass 314 Boolean/five raw transitions at `ae4590a36`. Valid-heap
+malformed-cell/cursor controls refuse; direct-mode/ordinary-object owner and
+CONFIG queries are constructed controls. Physical cell/referent allocation ends
+while stale OBJECTS/STORE/REFCELLS history stays nonowning.
+
+The first repair's NULL mismatch and the first author finder failure retain zero;
+its closed escaped agreement remains accepted. Only affected NULL/author checks
+repeat, at unchanged caps; two application0 preflights add no source credit.
+General quiet direct-entry Key notification, other reference/value/target forms,
+reference-entry ephemeron GC, explicit iterator/reference APIs, active entry
+mutation and wider Map/callback/Fiber histories remain partial.
+[Review and recovery](../../coverage/semantics/weak-map-review.json).
+
 ## Ordinary Std graphs beside a methodless ephemeron
 
 At `fa2e00c6`, module386 admitted allocated, nonfreeing outside `stdClass` graphs when the

@@ -1,0 +1,179 @@
+{
+  "milestone": "Iterator53: direct Generator body suspension inside a Fiber",
+  "status": "composed-accepted",
+  "scope": "A direct named Generator body entered by literal zero-argument current/next may move its authentic resumer with a running Fiber VM. Resume restores that body; supplied Throwable injection uses its actual catch/finally or unhandled completion. Fresh outside NEXT chains initialization and resume Errors, while cached reentry allocates one.",
+  "implementation": {
+    "runtime_parent": "014a08c78546ab6da0c953d8b5ef03f4cefb20e4",
+    "runtime_cut": "1ccd40114561fe4734e44bf9b7f6944fb6a38b9c",
+    "paths": {
+      "spec/semantics/280-generators.watsup": "babd4e0e078a7c7c6c86629893c5934a06ae001f64fcdc65568e31013fddddc5",
+      "spec/semantics/281-fibers.watsup": "79702b696dc09559b3fe99120a0c91a24dc16f16d15fd625ec0d055ab39c69a9",
+      "spec/semantics/289-generator-delegation.watsup": "e5762a1f7986998d76eda787efbd62bd4113a800128a61ef56f0144c41888496",
+      "spec/semantics/378-foreach-aggregate.watsup": "29647d5fa955acc2b1f2a67174e96f11553eacffd772e31b351d739c7e1d4bc0"
+    },
+    "change": "Add nonrecursive local body/resume-pair authentication and require an allocated logical ACTIVEFIBER owner in RUNNING/SUSPENDED state. The existing object/caller/closer scan collects the normal occurrence without deduplication beside its old foreach-close arm. Running NEXT with undefined cache, no Closure owner and a saved direct body uses ordinary two Error allocations plus existing Previous chaining. Existing main/initializer/loader/close/storage gates remain.",
+    "engine_evidence": [
+      "vendor/php-src/Zend/zend_generators.c: zend_generator_resume, zend_generator_ensure_initialized and Generator::next",
+      "vendor/php-src/Zend/zend_fibers.c: VM state capture/restore and zend_fiber_suspend/resume_exception"
+    ],
+    "unchanged": "No pstate/schema/root/task/adapter/compiler/API argument parsing change; existing transfer, Generator yield/return, Throwable and cleanup bodies perform the actual work.",
+    "publication_comment_only": {
+      "spec/semantics/310-generator-fiber-close.watsup": "Narrow stale blanket refusal wording to acknowledge the separately authenticated direct-body/foreach-close transfers; body unchanged."
+    }
+  },
+  "validation": {
+    "native": "Six first observations: original author2+peer2 at934c, then only corrected author2 at288d. Original author var_dump observers are not maintained source agreements. Final selected source4 uses corrected author2 and unchanged peer2 with strict value/type/NULL/status and identity/Previous observations.",
+    "pretarget_refusal": "Original unchanged comparison at934c is checked Unsupported registered builtin call with empty events: var_dump was selected before its start argument. Raw passed=false/agreement0 survives; it earns no evidence for the transfer fence.",
+    "genuine_fence": "Unchanged peer-handled comparison at288d reaches checked Unsupported Fiber switch during an initializer, source loader or Generator continuation after START|CALL|G|, exit1/no timeout/empty stderr. Raw passed=false/normal_agreements0 remains intact.",
+    "source4": "Strict410 and all four exact NORMAL stdout/stderr/exit agreements pass at1ccd, reusing captured native observations without another oracle run.",
+    "states": {
+      "author": [
+        174,
+        156
+      ],
+      "independent": [
+        124,
+        113
+      ],
+      "total": 567,
+      "local": 547,
+      "generic": 20,
+      "status": "passed"
+    },
+    "observations": "The actual parked VM holds its single Generator resumer and frame-owned Token cell; Generator.FRAME is empty and weak lookup adds no owner. Restored logical ownership authenticates that same source pair while actual main remains denied. Source-reached NEXT creates two Errors/Previous before the first yield or one Error after a cached yield. Supplied injection keeps the outside object through real THROW_SEARCH and waiting throw API; whole and public0/1/2 continuations preserve native endings.",
+    "controls": "Same-heap line/target/phase/origin/pending changes refuse. Constructed object/caller/closer duplicates preserve two occurrences and reject unique ownership; they add no valid copied-Fiber/close source coverage. Main-owner, INIT/TERMINATED, missing source and initializer controls retain their boundaries.",
+    "failure_and_correction": "Original0de gate4 elaborates, but first author168 fails before main completion on a plain PSTRING expectation for an INTERNED_STRING literal carrier. Three fixture expectations alone change at58f; its corrected gate passes. That author168 retry reaches the public1 check, where the fixture incorrectly expects immediate THROW_SEARCH. Existing eager cleanup first queues the receiver VALUE release and OP_EXIT carrying the Error. At8f only that author fixture stage changes, adding exact job/source/pending/value and release/operation admission checks. Both failed168 reports remain false/zero credit; later3 groups were unrun. Runtime/source/native and original caps remain unchanged. The8f author174 then passes the physical/Previous/budget/end conditions but fails at the final event helper because $ptascii accepts printable bytes only. The exact byte-list fix at5fd is rejected before evaluation for missing OUTPUT argument parentheses. Final886 emits parenthesized literal byte vectors and passes gate4 plus174/156/124/113. All three failed author groups and the pre-main gate remain zero credit; no runtime change, accepted group replay or cap increase follows source agreement.",
+    "maintenance": "All actors fully reaped and CPU3 released. Nineteen executed reports remain: thirteen pass and six genuine/fixture negatives retain zero agreement or focused credit. Native6 are observations only; accepted final source4 and focused567 have separate cuts. No new views or renewed historical execution credit."
+  },
+  "tested_revisions": {
+    "original_native4_pretarget_refusal": "934c0e6be303aaae7304876d566f3429865a489b",
+    "corrected_author_native2_genuine_peer_fence": "288d5e184895503a4bd731f46ff207577d714530",
+    "strict410_source4": "1ccd40114561fe4734e44bf9b7f6944fb6a38b9c",
+    "original_gate4_failed_author168": "0de6ff8cf67e2f9d368854b3e7c5a805df0413d4",
+    "bridge": "Runtime280/281/289/378 and final original source bytes retain1ccd exactly through final886. Only fixture literal carriers, public1 receiver-retirement binding and exact byte-vector event syntax change after failures. Publication310 changes comments only. Original negatives/accepted cuts keep their own bytes and classification without renewed execution credit.",
+    "corrected_gate4_failed_public_stage": "58f1117ae814fc6cb543cad8d35621614aae95a2",
+    "receiver_stage_cut_failed_event_helper": "8f2ef0ac9fbc1099268d2eadc6664fccd74f64d3",
+    "premain_byte_syntax_gate": "5fd8c97d15dc786f26471f80dd019e1675fc1226",
+    "final_gate4_focused567": "8865166b86d023040fefdaed538deea6f8592be5"
+  },
+  "commands": {
+    "original_native": "taskset -c1 python3 .tools/native.py",
+    "original_pretarget": "taskset -c1 python3 .tools/baseline.py --native-report .tools/generator-fiber-transfer-native-qhw02fo8/report.json",
+    "corrected_native": "taskset -c1 python3 .tools/native-corrected.py",
+    "genuine_peer": "taskset -c1 python3 .tools/genuine.py --native-report .tools/generator-fiber-transfer-native-qhw02fo8/report.json",
+    "strict_source": "taskset -c3 python3 .tools/source-packet.py",
+    "elaboration": "taskset -c3 python3 .tools/state-elab.py",
+    "original_focused": "taskset -c3 python3 .tools/state-packet.py",
+    "corrected_focused": "taskset -c3 python3 .tools/state-packet-bytes.py"
+  },
+  "environment": {
+    "php": "8.5.10 CLI NTS64; source34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL/cacheoff/encountered determinism",
+    "profile": "tests/semantics/profile.json; LC_ALL=C TZ=UTC, script encoding unset; serial CPU1 native/genuine and CPU3 affected source/states. Project-local tools reused, no fresh portability claim.",
+    "caps": "Native8s; source100000 steps/model100s/process120s; strict120s; gate60s; focused120s/seek4000/finish4000.",
+    "binary_identities": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "reports": {
+    ".tools/fiber-state-review-7vmuuqis/report.json": {
+      "sha256": "846bb19d99812ef6c3da289b4ed9c263e0087fb373fba12daab8c636d75404e4",
+      "passed": false
+    },
+    ".tools/fiber-state-review-_ydk8psz/report.json": {
+      "sha256": "4f2d461a7862475d33c29166ecec485fc193b6be4f0c3d70fc3e37d79c7c5f51",
+      "passed": true
+    },
+    ".tools/fiber-state-review-apruorhd/report.json": {
+      "sha256": "676bf0359ab3d198d1398e4c580e29c780a3ebbacba9c70a87a518c21f769cdd",
+      "passed": true
+    },
+    ".tools/fiber-state-review-br70n_hu/report.json": {
+      "sha256": "d4327dac5b3f0af808a2e9a7e87debf26a3228ede646e27e063ad6e7aaad5095",
+      "passed": false
+    },
+    ".tools/fiber-state-review-gv7fyrqz/report.json": {
+      "sha256": "7fa3465981112d029a69c942c5a6488b5755aff60578fa902abedae8a37c217d",
+      "passed": false
+    },
+    ".tools/fiber-state-review-n_yult9i/report.json": {
+      "sha256": "a435944a84a5f2a622b55e5dcdf82d3d1417fd89fc7629dc9bf58b0413d18085",
+      "passed": true
+    },
+    ".tools/fiber-state-review-tgifmusn/report.json": {
+      "sha256": "7ec09f99368962d5d84070abe1a7d64027451132626c697f544e8bd45c63da13",
+      "passed": true
+    },
+    ".tools/generator-fiber-transfer-author-sl-y43tr0iy/report.json": {
+      "sha256": "984f43df6853fe21cec61777f29ac608b49a33a17cea818fc7cbe405802cb8de",
+      "passed": true
+    },
+    ".tools/generator-fiber-transfer-baseline-_hor4f74/report.json": {
+      "sha256": "f94ae42fcdd92d383f3ec6d5fa861501d5ad9408572314f6d7d1119a08f9ce2a",
+      "passed": false
+    },
+    ".tools/generator-fiber-transfer-corrected-native-hcywcuk2/report.json": {
+      "sha256": "0306eaf0021ff6c8ff7b838e9e885809f766e2c630efce88a7e460fcad03160d",
+      "passed": true
+    },
+    ".tools/generator-fiber-transfer-genuine-7c8q5tu7/report.json": {
+      "sha256": "6a10181b85427caba85614a9e2df7e45f365b43112698b6dc792122066666fc1",
+      "passed": false
+    },
+    ".tools/generator-fiber-transfer-native-qhw02fo8/report.json": {
+      "sha256": "93557ffbba56133249712bc941f4d1bee7ced547b8f298af1735e0d0f9e5e8eb",
+      "passed": true
+    },
+    ".tools/generator-fiber-transfer-review-source-yz69v2yr/report.json": {
+      "sha256": "a8131184028fe9f8ca61562cb40ced7271a042e425230e5041f6ed8a8b85ed66",
+      "passed": true
+    },
+    ".tools/generator-fiber-transfer-source-_b9p9yyh/report.json": {
+      "sha256": "b2628cd7455c3efbf9933d072496ff1ea68df07baf25e2d498cf8c71a462e1e6",
+      "passed": true
+    },
+    ".tools/generator-fiber-transfer-state-elab-624sw4dw/report.json": {
+      "sha256": "a29f6780284330768b4b0052d8e074d8344e73439b6b14a5c8b5608f7918541b",
+      "passed": true
+    },
+    ".tools/generator-fiber-transfer-state-elab-80ytgvpa/report.json": {
+      "sha256": "217609e50b1e2aad45ca0a122e444938d44873863d2ed22d9661dee5e89b4a9a",
+      "passed": true
+    },
+    ".tools/generator-fiber-transfer-state-elab-a41l11sr/report.json": {
+      "sha256": "d99a433389e80b2a3afe6a7ecd9fd2ae900f0cec91acd1544c69d39e51c86d3a",
+      "passed": true
+    },
+    ".tools/generator-fiber-transfer-state-elab-bbesnogg/report.json": {
+      "sha256": "0b2ed50f8491d8ca22733699991438dca120027f2a783a51952381a96b4acbc7",
+      "passed": false
+    },
+    ".tools/generator-fiber-transfer-state-elab-wpl3r488/report.json": {
+      "sha256": "bfc999fd951c920eebb23ad006a5902e3282103820c1f30a24d49afcf14f76d5",
+      "passed": true
+    }
+  },
+  "evidence": {
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-transfer-53/private.tar.gz",
+      "bytes": 6717286,
+      "sha256": "f83b7cd6b5b643182eb7ec478908916744a43403f90419d9596645641a0b8d0a"
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-transfer-53/manifest.json",
+    "recovery": "Use matching Git cuts934c original native/pretarget,288d corrected-native/genuine,1ccd strict/source,0de/58f/8f failed fixtures and886 final fixtures. Extract raw folders/drivers into that checkout at the recorded path and supply pinned project-local tools/profile. Old cases and negative reports remain unchanged; metadata or fixture correction does not renew native/source credit. Archive has no checkout/build tree/backup."
+  },
+  "remaining": "Helper calls, other Generator API roots, Closure/method/delegated histories, reference caches, nested running Generators, abandoned parked stacks, close/request/GC and wider lifetime behavior are not validated by this slice. Paused OP12/Source47/owned-NUL/undefined-byref-LIST/COMP88 stay untouched.",
+  "independent_review": "Replacement /root/iterator49_review reviewed native-first sources/observations, observer correction, genuine transfer refusal, local pair/occurrence and Error-chain repair, strict/source/focused reliability, all fixture corrections and failure retention, constructed-carrier limits and final archive/publication; no blocker. Actual-tail selectors through2508391ad are independently disjoint; later granted-parent changes require targeted review.",
+  "composition": {
+    "private_publication": "341d5efb2f2ad95be2609f8b760eaf17bc9d63ae",
+    "actual_parent": "40b62888b412c77584f08a8384e9ec6a849a9d76",
+    "preservation": "Four semantic files280/281/289/378 and310 comment-only edit retain accepted private bytes. Every other production/shared harness/profile path retains actual-parent bytes. Six new tests and their Makefile entries retain private bytes. Inventory preserves every incoming field plus exactly25 accepted append-only fields across five obligations; compact progress preserves other family/active/integrated content. M137 owner explicitly authorized replacing its stale diagnosis row with its M138 native-first preparation row; no other foreign row changes.",
+    "interaction": "Incoming207 recursive DIRECT missing-read comparisons;400 explicit Stringable constant query;30/51/404 retained-reference NaN NOT;380 denied magic-getter reentry;413 TMP NULL-key ARRAY constructor;30/129/386 WeakMap reference-value foreach and420 direct-value compatibility require absent source producers. No arrays, missing reads, NaN/NOT/handler/query, property access, WeakMap or foreach occurs in53; internal Throwable trace arrays do not enter source constructor tasks. The270 weakmap_reference_operational predicate also admits any retained release/operation. Post-start53 states already have FIBERSEQ>1 (authors also have the Token destructor); pre-start peers have no WeakMap/release/operation, so the eager-domain decision is unchanged. Generator/Fiber interfaces remain unchanged.",
+    "credit": "Original934c/288d negatives, accepted1ccd source/runtime and final886 state cuts retain their identities. Pointwise composition adds no semantic execution or renewed credit.",
+    "review": "Independent prospective tails through250 clear; final40b delta and exact candidate require targeted review before guarded FF."
+  }
+}

@@ -19,10 +19,11 @@ links retain their existing owners; only a real last-owner release can close the
 Generator. A close exception can replace and chain the caller's pending exception
 without changing the active Fiber.
 
-Fiber switches while a Generator or close frame is running remain explicit
-Unsupported. Parked running Generators, suspension from a finalizer, terminal
-cleanup, request-end close, cyclic collection and general user destructors remain
-required. Pending eager releases without an operation or frame carrier also
+A separate [direct-body transfer arm](../../coverage/semantics/generator-fiber-transfer-review.json)
+now parks named Generators entered by literal CURRENT/NEXT; the retained foreach
+close arm also authenticates its own moved frame. Other Generator/close contexts,
+suspension from a finalizer, terminal cleanup, request-end close, cyclic collection
+and wider user destructors remain required. Pending eager releases without an operation or frame carrier also
 remain Unsupported. Held IteratorAggregate work and user-paused return validation are not
 dependencies of this increment.
 

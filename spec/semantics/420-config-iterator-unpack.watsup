@@ -105,7 +105,8 @@ def $config_weakmap_contents(S, n) = true
   -- if $node_children(S, HOBJECT pweakmapentry.KEY) = eps
   -- if $($heap_owners($heap_graph(S), HOBJECT pweakmapentry.KEY) > 0)
   -- if $weakmap_before_valid(S, pweakmapentry)
-  -- if $config_weakmap_value(S, pweakmapentry.VALUE)
+  -- if pvalue = pweakmapentry.VALUE
+  -- if $config_weakmap_value(S, pvalue)
 def $config_weakmap_contents(S, n) = false -- otherwise
 def $config_weakmap_owner(S, eps) = true
 def $config_weakmap_owner(S, (n)) = $($heap_owners($heap_graph(S), HOBJECT n) > 1)
