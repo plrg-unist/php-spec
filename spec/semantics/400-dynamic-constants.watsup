@@ -476,7 +476,8 @@ def $dynamic_query_string_release_valid(S, pdestructionoperation, pconfigcall_re
   -- if pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL) /\ pdestructionoperation.NOGC = eps
   -- if $dynamic_owned_query_string_call(pconfigcall)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
-  -- if $(n_object < |S.OBJECTS|) /\ S.OBJECTS[n_object] = INSTANCE porigin_class
+  -- if $(n_object < |S.OBJECTS|)
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_class
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
