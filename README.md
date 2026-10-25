@@ -3018,8 +3018,16 @@ Other array layouts and replacement/callback lifetimes remain partial.
 Bounded by-value WeakMap `foreach` now retains the Map through hidden iterator
 DATA and copies its object Key/Value into ordinary CVs. Exhaustion or `break`
 retires DATA before those copies; two originals and 287 Boolean/five raw checks
-pass at `b7af270c7`/410. Active entry mutation is explicitly refused; reference,
+pass at `b7af270c7`/410. Active entry mutation is explicitly refused;
 wider target/value and map-history cases remain partial.
+
+Bounded by-reference WeakMap traversal shares the entry's cell and preserves
+rebinding plus escaped aliases through DATA or Key retirement. A reference
+containing NULL makes `isset` true while reads, `??` and `empty` retain their NULL
+behavior. Two sources retain separate `e975008b1`/`ae4590a36` cuts; 314 Boolean/five
+raw checks pass at `ae4590a36`/410. Original NULL mismatch and fixture failures remain
+zero; wider reference/CONFIG/GC histories and general quiet direct-entry Key
+notification remain partial. [Review](coverage/semantics/weak-map-review.json).
 
 The object-valued singleton can now coexist with ordinary `stdClass` graphs.
 Two originals agree at `fa2e00c6`: an independent self-cycle collects alongside

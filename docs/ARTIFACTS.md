@@ -229,6 +229,14 @@ two preserved compiler stops), original3 packets, application0 preflight,
 immutable author/peer snapshots, worker120 and the isolated129/386 runtime patch,
 SHA-256 `ee02a4668b8b0c45f89d373c834bb454fb821b17a83c2ba4216c28f8d8e80b3e`.
 
+The WeakMap entry-reference lifetime proof is in
+`../php-spec-evidence-archive/weakmap-foreach-reference-137/manifest.json`:
+746,694 bytes/165 members under `.tools/m137/`, nine reports (seven complete,
+the original mixed repair packet and finder failure), two sources at separate cuts,
+two application0 preflights, immutable author/peer snapshots and the isolated
+30/129/270/386/420 patch. SHA-256
+`f16ce3022c405cff998f4ade3da5866b367969e2afbe3f7545b4c1638aaadc06`.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the
