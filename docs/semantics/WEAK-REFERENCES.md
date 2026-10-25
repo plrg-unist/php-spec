@@ -237,6 +237,28 @@ without replay or cap increase. Wider maps/backedges, ALIAS/array payloads,
 callbacks, active iterators/frames/Fibers/workers and mixed graphs remain partial.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
+## Cross-entry ephemeron dependencies
+
+M147 extends the GC-only direct-property authority to actual member-Key targets.
+Unique targets form finite Key permutations, including the old self-pairs.
+Existing conditional edges and reach closure propagate protection across entries;
+projection, complete-pair preparation, counting and collector code stay unchanged.
+Ordinary non-leaf table consumers remain outside this slice.
+
+Two crossed-entry sources and author150/1 plus peer173/2 pass 323 Boolean/three raw
+transitions at `744bb372b`/412. Unheld collection returns 4 then 0. Holding only A
+protects A-to-X-to-B-to-Y (0); after release, A is eligible while B/X/Y are absent from the eligible buffer,
+yet all four are discovered and collected (4), with a final 0. No protected Value,
+KeyB or Map weak get precedes release. The Map remains independently rooted.
+
+Added-root/incomplete-plan public refusals, active-cursor and many-to-one target
+queries are constructed/helper controls with zero PHP credit. Native and genuine
+baseline retain `2f5088dd4`/412; baseline refusals remain zero. All affected
+checks pass first execution.
+The two PHP witnesses use a two-entry swap; non-permutation targets, wider
+properties/payloads, callbacks, maps and active contexts remain partial.
+[Review and recovery](../../coverage/semantics/weak-map-review.json).
+
 ## Collection of an unheld Map cycle
 
 M146 admits one global singleton Map whose direct methodless Value owns that

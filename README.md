@@ -3004,6 +3004,15 @@ checks pass at `93dfab694`/412; admission-only61/1 is separate zero-credit diagn
 Wider maps, payloads, active contexts and callbacks remain partial.
 [Review](coverage/semantics/weak-map-review.json).
 
+Cross-entry ephemeron protection now follows finite Key permutations: a retained
+Key protects its Value, the next Key and its Value transitively. Two crossed-entry
+originals and 323 Boolean/three raw checks pass at `744bb372b`/412. Unheld collection
+gives 4 then 0; protection gives 0, then 4 after release and a final 0. Before
+discovery, only the first Key is eligible among the four cycle nodes.
+Existing projection/collector/count rules stay unchanged. Non-permutation targets,
+wider payloads, maps, consumers and active contexts remain partial.
+[Review](coverage/semantics/weak-map-review.json).
+
 An explicit array cast of a live nonfreeing map now creates a fresh empty array,
 even when populated. Results expose no entries and retain neither keys nor private
 values. Two originals and 177 premises/6 actual casts cover fresh results, real

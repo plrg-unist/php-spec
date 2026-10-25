@@ -5,8 +5,8 @@ PHP 8.5.10 CLI profile. It extends the real ownership graph and WeakReference
 protocol; unreachable cycles remain allocated until collection. It does not
 establish complete GC, WeakMap, or request-freeing semantics.
 
-Bounded WeakMap collection also handles finite independent direct entry pairs,
-selectively retiring white pairs and normalizing the protected survivor through
+Bounded WeakMap collection handles finite direct entry-Key permutations,
+including transitive cross-entry protection and selective pair normalization through
 this collector's unchanged planning, counting and disposal. A bounded
 methodless Map/Value cycle also collects while its independent Key stays live,
 including quiet discovery of an unbuffered Value from Map. Singleton reference, array and
