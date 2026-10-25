@@ -1,0 +1,16 @@
+[
+  {
+    "id": "generator-fiber-transfer-fresh-current",
+    "source": "<?php\nclass Token53 {\n    public function __destruct() { echo \"D53\\n\"; }\n}\nfunction Park53($token) {\n    echo \"B53\\n\";\n    $received = Fiber::suspend(\"pause53\");\n    echo \"R53\\n\";\n    var_dump($received);\n    yield \"cache53\";\n    echo \"E53\\n\";\n    return \"return53\";\n}\n$token = new Token53();\n$weak = WeakReference::create($token);\n$g = Park53($token);\nunset($token);\n$f = new Fiber(function () use ($g) {\n    echo \"F53\\n\";\n    var_dump($g->current());\n    echo \"C53\\n\";\n    return \"fiber53\";\n});\nvar_dump($f->start());\nvar_dump($f->isSuspended(), $weak->get() !== null);\ntry {\n    $g->next();\n} catch (Throwable $error) {\n    echo \"REENTRY53\\n\";\n    echo get_class($error), \"|\", $error->getMessage(), \"\\n\";\n    var_dump($error->getPrevious() === null);\n}\nvar_dump($f->resume(\"sent53\"));\nvar_dump($f->isTerminated(), $f->getReturn());\nvar_dump($g->current(), $weak->get() !== null);\n$g->next();\nvar_dump($g->getReturn(), $weak->get() === null);\nunset($g, $f, $weak);\necho \"END53\\n\";\n",
+    "source_sha256": "b5488521e54ad0fc85b5fedf62805f447b01f41cc284c3249707a4d5acf622ad",
+    "native_exit": 0,
+    "native_stderr": ""
+  },
+  {
+    "id": "generator-fiber-transfer-after-yield",
+    "source": "<?php\nclass Token53 {\n    public function __destruct() { echo \"D53\\n\"; }\n}\nfunction Park53($token) {\n    echo \"B53\\n\";\n    yield \"first53\";\n    echo \"A53\\n\";\n    $received = Fiber::suspend(\"pause53\");\n    echo \"R53\\n\";\n    var_dump($received);\n    yield \"cache53\";\n    echo \"E53\\n\";\n    return \"return53\";\n}\n$token = new Token53();\n$weak = WeakReference::create($token);\n$g = Park53($token);\nunset($token);\n$g->rewind();\n$f = new Fiber(function () use ($g) {\n    echo \"F53\\n\";\n    var_dump($g->next());\n    var_dump($g->current());\n    echo \"C53\\n\";\n    return \"fiber53\";\n});\nvar_dump($f->start());\nvar_dump($f->isSuspended(), $weak->get() !== null);\ntry {\n    $g->next();\n} catch (Throwable $error) {\n    echo \"REENTRY53\\n\";\n    echo get_class($error), \"|\", $error->getMessage(), \"\\n\";\n    var_dump($error->getPrevious() === null);\n}\nvar_dump($f->resume(\"sent53\"));\nvar_dump($f->isTerminated(), $f->getReturn());\nvar_dump($g->current(), $weak->get() !== null);\n$g->next();\nvar_dump($g->getReturn(), $weak->get() === null);\nunset($g, $f, $weak);\necho \"END53\\n\";\n",
+    "source_sha256": "b1905b50ee71f26ab530b546ac8918155c68cf34b3f8c1c8fb7ecd37c5ddaad3",
+    "native_exit": 0,
+    "native_stderr": ""
+  }
+]
