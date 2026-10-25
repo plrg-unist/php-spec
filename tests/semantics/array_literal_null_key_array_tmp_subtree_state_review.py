@@ -12,8 +12,8 @@ from array_literal_null_key_array_tmp_state_review import HELPERS as BASE_HELPER
 HELPERS = BASE_HELPERS + r'''
 dec $tmp_subtree_deprecations(pevent*) : nat
 def $tmp_subtree_deprecations(eps) = 0
-def $tmp_subtree_deprecations((DIAGNOSTIC "Deprecated" ptbytes z) :: pevent*) = $(1 + $tmp_subtree_deprecations(pevent*))
-def $tmp_subtree_deprecations(pevent :: pevent*) = $tmp_subtree_deprecations(pevent*) -- otherwise
+def $tmp_subtree_deprecations((DIAGNOSTIC "Deprecated" ptbytes z) :: pevent_tail*) = $(1 + $tmp_subtree_deprecations(pevent_tail*))
+def $tmp_subtree_deprecations(pevent_head :: pevent_tail*) = $tmp_subtree_deprecations(pevent_tail*) -- otherwise
 '''
 
 
