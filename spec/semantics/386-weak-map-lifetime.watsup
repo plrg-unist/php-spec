@@ -687,8 +687,8 @@ def $weakmap_gc_methods(S, n, pclassdesc) = true
   -- if $declaration_history_valid(S)
 def $weakmap_gc_methods(S, n, pclassdesc) = false -- otherwise
 
-;; The one untyped property can own Key directly or through a live reference.
-;; New reference backedges stay in the methodless Value lane.
+;; The one untyped property can own Key directly, by reference, or in an array.
+;; Reference and array backedges stay in the methodless Value lane.
 dec $weakmap_gc_backedge(pstate, nat, nat, ppropertyslot, pclassdesc) : bool
 def $weakmap_gc_backedge(S, n_value, n_key, ppropertyslot, pclassdesc) = true
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_key))
@@ -701,6 +701,14 @@ def $weakmap_gc_backedge(S, n_value, n_key, ppropertyslot, pclassdesc) = true
   -- if S.STORE[n_cell] = DEFINED (POBJECT n_key)
   -- if $node_children(S, HOBJECT n_value) = [HCELL n_cell]
   -- if $node_children(S, HCELL n_cell) = [HOBJECT n_key]
+def $weakmap_gc_backedge(S, n_value, n_key, ppropertyslot, pclassdesc) = true
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PARRAY n_array))
+  -- if pclassdesc.METHODS = eps
+  -- if $(n_array < |S.ARRAYS|) /\ (HARRAY n_array) <- S.ALLOCATIONS
+  -- if ~(n_array <- S.GC.IMMUTABLE) /\ ~$gc_proxy(S, n_array)
+  -- if S.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_key))]
+  -- if $node_children(S, HOBJECT n_value) = [HARRAY n_array]
+  -- if $node_children(S, HARRAY n_array) = [HOBJECT n_key]
 def $weakmap_gc_backedge(S, n_value, n_key, ppropertyslot, pclassdesc) = false -- otherwise
 
 ;; Array entries retain the old object-valued helper API and projection.
