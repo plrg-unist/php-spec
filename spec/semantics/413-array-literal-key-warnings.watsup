@@ -835,6 +835,7 @@ def $array_null_tmp_source(S, n, n_value, phpType13*, z) = true
   -- if $array_float_key_input_source(S, NExprArray (SEQUENCE phpType13_child*) metadata, KNOWN (PARRAY n_value))
 def $array_null_tmp_source(S, n, n_value, phpType13*, z) = false -- otherwise
 
+dec $array_null_tmp_ready(pstate, nat, nat) : bool
 dec $array_null_tmp_plan(pstate) : (nat, nat, phpType13*, int)?
 def $array_null_tmp_plan(S) = ((n, n_value, phpType13*, z))
   -- if S.TODO = (ARRAY_VALUE n (VARIABLE n_key* z_key) phpType13* z) :: ptask_tail*
@@ -843,7 +844,7 @@ def $array_null_tmp_plan(S) = ((n, n_value, phpType13*, z))
   -- if $array_float_key_item(S, phpType13*, z) = ((expression, VARIABLE n_key* z_key))
   -- if $array_float_key_value(S, VARIABLE n_key* z_key) = (PNULL)
   -- if $array_null_tmp_source(S, n, n_value, phpType13*, z)
-  -- if $array_null_value_ready(S, n, n_value)
+  -- if $array_null_tmp_ready(S, n, n_value)
 def $array_null_tmp_plan(S) = eps -- otherwise
 ;; CONST values retain their permanent pool owner and acquire one pending edge.
 dec $array_null_const_source(pstate, nat, nat, phpType13*, int) : bool
@@ -868,6 +869,17 @@ def $array_null_const_items(S, (ENTRY pkey (DIRECT (PARRAY n))) :: pentry*, n_se
 def $array_null_const_items(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*, n_seen*) = ($literal_reference_flat_leaf(S, pvalue) /\ $array_null_const_items(S, pentry*, n_seen*))
   -- if $value_nodes(pvalue) = eps
 def $array_null_const_items(S, pentry*, n_seen*) = false -- otherwise
+
+;; A nonpool TMP root owns the same DIRECT edges, including folded siblings.
+;; Its single pending owner can disappear before ordinary cascading pruning.
+def $array_null_tmp_ready(S, n, n_value) = true
+  -- if $(n < |S.ARRAYS| /\ n_value < |S.ARRAYS|) /\ n =/= n_value
+  -- if (HARRAY n) <- S.ALLOCATIONS /\ (HARRAY n_value) <- S.ALLOCATIONS
+  -- if ~$array_immutable(S, n_value) /\ $heap_count(HARRAY n_value, $pools_nodes(S.POOLS)) = 0
+  -- if ~(n_value <- S.LITERALARRAYDEBTS)
+  -- if $array_null_const_items(S, S.ARRAYS[n_value].ITEMS, [n, n_value])
+  -- if $array_float_key_plain_nodes($heap_reach([HARRAY n, HARRAY n_value], eps, $heap_graph(S).EDGES))
+def $array_null_tmp_ready(S, n, n_value) = false -- otherwise
 
 dec $array_null_const_ready(pstate, nat, nat) : bool
 def $array_null_const_ready(S, n, n_value) = true
@@ -951,12 +963,12 @@ rule PhpStep/array-null-tmp-warning: S ~> $error_dispatch(S, 8192, $list_null_ke
 rule PhpStep/array-null-tmp-result: S ~> S_out[.TODO = (ARRAY_NEXT n phpType13*) :: ptask_tail*][.RESULT = KNOWN PNULL][.ORIGIN = $origin_next_item(S.ORIGIN, phpType13*)]
   -- if S.TODO = (ARRAY_KEY_NULL_TMP_RESULT n n_value phpType13* z) :: ptask_tail*
   -- if $array_null_tmp_source(S, n, n_value, phpType13*, z)
-  -- if $array_null_value_ready(S, n, n_value)
+  -- if $array_null_tmp_ready(S, n, n_value)
   -- if S_out = $literal_insert(S, n, (KSTRING eps), PARRAY n_value, z)
 rule PhpStep/array-null-tmp-result-unsupported: S ~> S[.TODO = eps][.RESULT = KNOWN PNULL][.COMPLETION = UNSUPPORTED "array literal null-key temporary array after callback"]
   -- if S.TODO = (ARRAY_KEY_NULL_TMP_RESULT n n_value phpType13* z) :: ptask_tail*
   -- if $array_null_tmp_source(S, n, n_value, phpType13*, z)
-  -- if ~$array_null_value_ready(S, n, n_value)
+  -- if ~$array_null_tmp_ready(S, n, n_value)
 
 def $call_task_valid(S, ARRAY_KEY_NULL_TMP_RESULT n n_value phpType13* z) = $array_null_tmp_source(S, n, n_value, phpType13*, z)
 def $error_call_valid(S, perrorcall) = true
@@ -968,9 +980,9 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" $list_null_key_message() z
 def $task_nodes(ARRAY_KEY_NULL_TMP_RESULT n n_value phpType13* z) = [HARRAY n, HARRAY n_value]
 def $error_read_discard(S, ARRAY_KEY_NULL_TMP_RESULT n n_value phpType13* z) = S
-  -- if $array_null_value_ready(S, n, n_value)
+  -- if $array_null_tmp_ready(S, n, n_value)
 def $error_read_discard(S, ARRAY_KEY_NULL_TMP_RESULT n n_value phpType13* z) = S[.COMPLETION = UNSUPPORTED "array literal null-key temporary array during throw"]
-  -- if ~$array_null_value_ready(S, n, n_value)
+  -- if ~$array_null_tmp_ready(S, n, n_value)
 
 rule PhpStep/array-null-const-warning: S ~> $error_dispatch(S, 8192, $list_null_key_message(), z, DIAGNOSTIC "Deprecated" $list_null_key_message() z, ARRAY_KEY_NULL_CONST_RESULT n n_value phpType13* z)
   -- if $array_null_key_pending(S)
