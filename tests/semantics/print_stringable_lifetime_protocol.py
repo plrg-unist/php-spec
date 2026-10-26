@@ -154,11 +154,11 @@ def conditions(name, program, path, stdout):
         '~$output_string_held(S_returnS, pobstringrelease.CALLER, $(n_object + 1), (OUTPUT_STRING_RELEASE pobstringrelease) :: ptask_tail*)',
         '~$output_string_held(S_returnS[.CURRENT = (pcallcontext_f)], pobstringrelease.CALLER, n_object, (OUTPUT_STRING_RELEASE pobstringrelease) :: ptask_tail*)',
         '~$output_string_held(S_returnS, pobstringrelease.CALLER, n_object, (OUTPUT_STRING_RELEASE pobstringrelease) :: (TRUTH_RESULT false 25) :: ptask_tail*)',
-        # Derived positive-buffer view: the existing holder is neither doubled nor rejected.
+        # Derived nonempty default-buffer view: historical ownership survives it.
         'S_buffer = S_returnS[.OUTPUTBUFFERS = [{ID S_returnS.OUTPUTSEQ, HANDLER eps, CHUNK 0, FLAGS 112, SIZE 16384, BYTES eps}]][.OUTPUTSEQ = $(S_returnS.OUTPUTSEQ + 1)]',
         '$output_state_valid(S_buffer)', '$call_descriptors_valid(S_buffer)', '$heap_valid($heap_graph(S_buffer))',
         '$heap_owners($heap_prune($heap_graph(S_buffer)), HOBJECT n_object) = 2',
-        '$output_positive(S_buffer.OUTPUTBUFFERS)',
+        '~$output_positive(S_buffer.OUTPUTBUFFERS)',
         '$output_string_held(S_buffer, pobstringrelease.CALLER, n_object, (OUTPUT_STRING_RELEASE pobstringrelease) :: ptask_tail*)',
         'S_buffer_next = $stringify_return_state(S_buffer, PRINT_EMIT porigin_print 25, pvalue_text, (OUTPUT_STRING_RELEASE pobstringrelease) :: ptask_tail*)',
         'S_buffer_next.TODO = (PRINT_EMIT porigin_print 25) :: (OUTPUT_STRING_RELEASE pobstringrelease) :: ptask_tail*',
