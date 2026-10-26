@@ -1459,3 +1459,18 @@ timeouts retain zero credit. Original source failures, the recovery-frontier fix
 failure and orchestration errors are preserved. Generic355/303/270, schema and
 old evidence remain unchanged; broader owning graphs, escaping pins and paused
 finalization remain partial. Paused and held lanes stay unchanged.
+
+The [named Generator CONFIG increment](../../coverage/semantics/config-generator-named-unpack-review.json)
+accepts string keys from a direct CV Generator in the existing bounded
+`ini_set(...$generator)` consumer.
+Each yielded current is read before its key; a numeric string key becomes a
+positional argument only for the send, while `Generator::key()` retains the raw
+string. Other string keys select named parameters. The send checks unknown names,
+duplicates and positional-after-named before the next Generator resume. Thus an
+error skips later yield side effects and unwinds through the existing DATA and
+callee cleanup. History validates completed sends without broadening the user
+Iterator domain or the other existing Generator producers. Five original sources
+agree with PHP 8.5.10 at `e6213f0b9`, and 74 reached first-send/error predicates
+pass across two groups. The unchanged
+baseline is explicit Unsupported after its first yield. Non-string currents,
+other key types, wider sends and ownership/callback histories remain partial.

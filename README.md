@@ -681,6 +681,12 @@ objects die. Argument-site traces, pending Exceptions, selected-callee ownership
 and setter recovery survive. Two source agreements and 426 maintained conditions
 pass (486 physical, 60 setup); broader owning storage remains partial.
 
+[Named Generator CONFIG sends](coverage/semantics/config-generator-named-unpack-review.json)
+now check each yielded string key from a direct CV before resuming the Generator.
+Named and numeric-string positional keys preserve PHP's argument order and
+immediate duplicate/unknown errors. Five original sources and 74 focused state
+predicates pass; wider sends and producer lifetimes remain partial.
+
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
 throws the object-key `Error` before copying its current value or entering the
