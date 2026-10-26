@@ -1474,3 +1474,16 @@ agree with PHP 8.5.10 at `e6213f0b9`, and 74 reached first-send/error predicates
 pass across two groups. The unchanged
 baseline is explicit Unsupported after its first yield. Non-string currents,
 other key types, wider sends and ownership/callback histories remain partial.
+
+The [named Iterator CONFIG increment](../../coverage/semantics/config-iterator-named-unpack-review.json)
+accepts string keys from the existing initialized, direct-CV user Iterator
+consumer. `current()` runs and caches its by-value string before `key()` may
+change the backing CV. The raw key remains in the Iterator task; SEND_UNPACK
+normalizes numeric strings only for the argument. Named lookup and duplicate or
+positional-after-named errors run before `next()`, so later callback effects are
+skipped. Completed history is checked against the authentic call/site before
+API reception. An error retains CURRENT/KEY until ordinary cursor/DATA cleanup
+before catch. Five original sources agree at `c6b87f1eb`; reached first-send
+50 and duplicate-error/cleanup 109 premises pass at `c6b87f1eb`/`0b0d1620d`.
+The unchanged first-string baseline is Unsupported. Earlier integer-key paths
+remain covered; other producers, values, signatures and lifetimes remain partial.

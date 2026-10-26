@@ -1,0 +1,36 @@
+{
+  "scope": "Source99: initialized direct-CV by-value user Iterator into CONFIG ini_set(...$it), with plain string currents and integer or string key() results. Existing Iterator signatures, DATA ownership and integer-key path remain in force.",
+  "behavior": "current() is cached before key() effects. SEND_UNPACK normalizes numeric string keys for the argument while retaining raw KEY, checks named destination or positional-after-named errors before next(), and validates completed history against the authentic call. An error keeps CURRENT/KEY until ordinary cursor/DATA cleanup before catch.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+    "source_symbols": ["Zend/zend_vm_def.h:ZEND_SEND_UNPACK", "Zend/zend_interfaces.c:zend_user_it_get_current_data/get_current_key/move_forward", "Zend/zend_execute.c:zend_handle_named_arg"]
+  },
+  "cuts": {
+    "native_and_baseline": "6e4471b3475fa5a532f5107e123e42edc90759fc: five unchanged originals exit 0 with native streams; forward-case baseline exits 1 Unsupported after B|R|V0|C0|K0|, zero agreement",
+    "implementation": "c6b87f1ebb09e2ee74b826691f24ef0ce5341d6f: five exact source agreements, no timeout or surviving process group; ordered 420-module SL compile passes after the binder-sort typo correction",
+    "focused": "c6b87f1ebb09e2ee74b826691f24ef0ce5341d6f: first-send 50 reached premises pass; 0b0d1620dd978eb931850ba43a882721c3c4f34c: duplicate Error, cached CURRENT/KEY, cleanup and budget 109 reached premises pass",
+    "affected_controls": "At 0b0d1620d, older integer-key completion groups 143+158, selected-Iterator key-throw guards 76 and one original integer-key source agreement pass. The two old negative history fixtures now use invalid numeric KSTRING `0` in place of newly valid named strings.",
+    "failed_attempts": "First SL compile failed from a key-sort binder typo; corrected retry passes. First duplicate fixture stopped on THROWN before cleanup; throw-aware seek passes on retry. Both failures and the intentionally interrupted unrelated old discard group remain raw zero-credit records."
+  },
+  "input_sha256": {
+    "spec/semantics/420-config-iterator-unpack.watsup": "1d92d3698daee4240cbff0b7a676b68ffda8c488c564b96e5d0f1eb8695b107c",
+    "tests/semantics/config_iterator_named_unpack_sources.py": "71b7e36895a1951951d2047dcca3cf2384620755bd6d7d3544bfadf9519e8279",
+    "tests/semantics/config_iterator_named_unpack_protocol.py": "4cfe95a4f22ecc0a72f5097a21778e1d26c5adf83b768fecc135905f1a90a147"
+  },
+  "raw_root": "../php-spec-evidence-archive/config-iterator-named-99",
+  "reports_sha256": {
+    "native-baseline/native-report.json": "5beca5a71816b11a9e75b32963c30e8f60ef076336f03cd793fe27c1664f2917",
+    "native-baseline/baseline-report.json": "395ab9b0cc3cc4c1b277b2987fff8b6a329c43de6b03ff2975f502cdaf8cfb9a",
+    "native-baseline/model-report.json": "bf4a6424750c44e995c83db4548c38a21631cfdf357d20a9bac69e54749d1ed9",
+    "protocol/check-report.json": "5b7bbf8190eff695103b8412b15f988e58b7885abed27b4d45f9a202264cec69",
+    "protocol-duplicate-retry1/check-report.json": "b8e552ca83ac35dc1069a00b8ed10446e5c6ef8603c41ef478b4fece892970a2",
+    "old-iterator-protocol/completion/check-report.json": "360618fcd8a9040836714d0f63d52d23a493e5baa1e39d5536156f8e7587b7d0",
+    "old-iterator-review/guards/check-report.json": "24e5cdb36d588266ec38504b587d6a4d69a6c1c526491b5574fffd353af01f6d",
+    "old-integer-source/model-fixed-config-iterator-runs-all-callbacks-before-api-report.json": "0a0c5d759180d1f07561f51abfa3fc641b2af30c01671afd8b43f49117191095"
+  },
+  "recovery": "Restore listed commits and external raw root. Source runner: config_iterator_named_unpack_sources.py --phase native/baseline/model --output RAW/native-baseline. Focused state runner: config_iterator_named_unpack_protocol.py --phase prepare/check --sources RAW/native-baseline --output RAW/protocol; duplicate retry uses --case duplicate-named-stops-before-next and RAW/protocol-duplicate-retry1. Affected old controls use Source87 native originals with protocol --part completion or review --part guards. Reports pin bytes, binaries/modules, commands, exits and channels.",
+  "remaining": "Other CONFIG APIs, temporary/Aggregate Iterator producers, non-string/reference/owning currents, additional arguments or packs and wider callback/owner lifetimes remain partial. Held V110 and five paused boundaries are unchanged. No full-core or security-equivalence claim."
+}

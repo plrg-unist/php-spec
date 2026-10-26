@@ -687,6 +687,13 @@ Named and numeric-string positional keys preserve PHP's argument order and
 immediate duplicate/unknown errors. Five original sources and 74 focused state
 predicates pass; wider sends and producer lifetimes remain partial.
 
+[Named Iterator CONFIG sends](coverage/semantics/config-iterator-named-unpack-review.json)
+now check a direct CV user Iterator's string keys after its cached `current()`
+and before `next()`. Numeric strings become positional only for the send;
+duplicate, unknown and positional-after-named errors stop later callbacks.
+Five original sources agree with PHP, and reached first-send/error checks pass.
+Other Iterator producers, value shapes and lifetimes remain partial.
+
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
 throws the object-key `Error` before copying its current value or entering the
