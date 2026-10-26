@@ -43,7 +43,17 @@ $a = [11, 22]; $calls = 0; $v = 100;'''.splitlines()
     return ('\n'.join(lines) + '\n').encode()
 
 
+def dynamic_throwing():
+    source = throwing()
+    old = b'$a = [11, 22]; $calls = 0; $v = 100;'
+    assert source.count(old) == 1
+    source = source.replace(old, b'$calls = 0; $a = [11, $calls + 22]; $v = 100;')
+    assert source.splitlines()[23] == b'        $a);'
+    return source
+
+
 CASES = {
     'print-array-false-default': normal(),
     'print-array-pending-throw': throwing(),
+    'print-array-dynamic-pending-throw': dynamic_throwing(),
 }

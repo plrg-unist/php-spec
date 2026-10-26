@@ -54,7 +54,8 @@ def $print_array_seek(S, n_stage, n) = $print_array_seek($drive_steps(S[.COMPLET
 
 
 def conditions(name, program, path, stdout):
-    throwing = name == 'print-array-pending-throw'
+    throwing = name.endswith('pending-throw')
+    dynamic = name.startswith('print-array-dynamic-')
     checks = [
         'S_initial = $php_run(' + program + ', 0, ' + json.dumps(base64.b64encode(bytes(path)).decode()) + ')',
         'S_initial.COMPLETION = BUDGET',
@@ -91,7 +92,8 @@ def conditions(name, program, path, stdout):
         'S_entry.ARRAYS[n_array].ITEMS =/= eps',
         '$array_string_cast_items(S_entry.ARRAYS[n_array].ITEMS)',
         '(HARRAY n_array) <- S_entry.ALLOCATIONS',
-        '$heap_owners($heap_prune($heap_graph(S_entry)), HARRAY n_array) = 1',
+        '$heap_owners($heap_prune($heap_graph(S_entry)), HARRAY n_array) = ' + ('1' if dynamic else '2'),
+        '$heap_owners($heap_prune($heap_graph(S_entry[.POOLS = eps])), HARRAY n_array) = 1',
         'S_entry.STORE[n_v] = DEFINED (PINT 100)',
         'S_entry.STORE[n_calls] = DEFINED (PINT 0)',
         '$heap_owners($heap_prune($heap_graph(S_entry)), HCELL n_a) = 1',
@@ -150,8 +152,9 @@ def conditions(name, program, path, stdout):
             '$lookup(S_throw.ENV, $ptascii("a")) = eps',
             '$heap_owners($heap_prune($heap_graph(S_throw)), HCELL n_a) = 0',
             '~((HCELL n_a) <- S_throw.ALLOCATIONS)',
-            '$heap_owners($heap_prune($heap_graph(S_throw)), HARRAY n_array) = 0',
-            '~((HARRAY n_array) <- S_throw.ALLOCATIONS)',
+            '$heap_owners($heap_prune($heap_graph(S_throw)), HARRAY n_array) = ' + ('0' if dynamic else '1'),
+            '$heap_owners($heap_prune($heap_graph(S_throw[.POOLS = eps])), HARRAY n_array) = 0',
+            ('~' if dynamic else '') + '((HARRAY n_array) <- S_throw.ALLOCATIONS)',
             'S_throw.STORE[n_v] = DEFINED (PINT 100)',
             'S_throw.STORE[n_calls] = DEFINED (PINT 1)',
             '$lookup(S_throw.ENV, $ptascii("second")) = (n_second_cell)',
@@ -177,8 +180,9 @@ def conditions(name, program, path, stdout):
             '$lookup(S_return.ENV, $ptascii("a")) = eps',
             '$heap_owners($heap_prune($heap_graph(S_return)), HCELL n_a) = 0',
             '~((HCELL n_a) <- S_return.ALLOCATIONS)',
-            '$heap_owners($heap_prune($heap_graph(S_return)), HARRAY n_array) = 0',
-            '~((HARRAY n_array) <- S_return.ALLOCATIONS)',
+            '$heap_owners($heap_prune($heap_graph(S_return)), HARRAY n_array) = 1',
+            '$heap_owners($heap_prune($heap_graph(S_return[.POOLS = eps])), HARRAY n_array) = 0',
+            '(HARRAY n_array) <- S_return.ALLOCATIONS',
             'S_return.STORE[n_v] = DEFINED (PINT 100)',
             'S_return.STORE[n_calls] = DEFINED (PINT 1)',
             '$print_array_valid(S_return, pprintarraywarning, 1)',
