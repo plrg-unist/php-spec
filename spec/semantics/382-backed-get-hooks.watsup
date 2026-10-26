@@ -951,7 +951,7 @@ rule PhpStep/property-hook-reference-read-result: S ~> S_read[.TODO = ptask_tail
   -- if $property_hook_ref_function(S, ppropertyhook)
   -- if S.RESULT = REFERENCE n_cell
   -- if $call_reference_operand_valid(S, S.RESULT)
-  -- if S_read = $read_operand(S, S.RESULT)
+  -- if S_read = $resolve(S, S.RESULT)
 rule PhpStep/property-hook-reference-call: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_HOOK_TARGET ppropertyhook) eps 0 eps (ppropertyhook.SITE) ppropertyhook.LINE), PROPERTY_HOOK_REF_RESULT ppropertyhook text] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_PREP phpType20 z) :: ptask_tail*
   -- if $property_hook_ref_plan(S) = ((ppropertyhook, text))
