@@ -140,7 +140,6 @@ dec $trace_compare_frames(pstate, pentry*) : bool
 def $trace_compare_frames(S, eps) = true
 def $trace_compare_frames(S, (ENTRY pkey (DIRECT (PARRAY n_frame))) :: pentry_tail*) = ($trace_compare_frame(S, n_frame) /\ $trace_compare_frames(S, pentry_tail*))
 def $trace_compare_frames(S, pentry*) = false -- otherwise
-dec $trace_compare_graph(pstate, nat) : bool
 def $trace_compare_graph(S, n_trace) = $trace_compare_frames(S, S.ARRAYS[n_trace].ITEMS)
   -- if $(n_trace < |S.ARRAYS|)
   -- if (HARRAY n_trace) <- S.ALLOCATIONS

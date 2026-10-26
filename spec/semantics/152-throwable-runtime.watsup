@@ -369,6 +369,7 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*,
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
 ;; Nonempty builtin traces retain ordinary array order when their frame/args
 ;; graph has only direct scalar leaves.
+dec $trace_compare_graph(pstate, nat) : bool
 dec $throwable_scalar_trace_pair(pstate, nat, nat) : bool
 def $throwable_scalar_trace_pair(S, n_left, n_right) = true
   -- if S.COMPLETION = NORMAL
