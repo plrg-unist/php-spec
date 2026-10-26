@@ -502,6 +502,25 @@ Missing/rebound/new-reference/other late types remain partial, along with wider
 arrays, owning handlers and lifecycle forms. Existing Stringable/concat algorithms
 and the older string-only warning route are unchanged.
 
+An acquired LEFT flat array from a named noarg by-value function now keeps its
+temporary root through ordinary `.` conversion and a live Stringable RHS. In
+the runtime source-copy witnesses, the named Warning handler unsets the array
+source and changes the same RHS CV from OldText to NewText. Normal return reads
+that changed CV, calls NewText once, joins `ArrayNEW`, then releases the array
+before assignment. A supplied handler throw skips both RHS methods and the
+assignment, drops the array after handler-result cleanup, and reaches the catch
+with the same Exception. The normal and throw sources agree exactly with PHP;
+171 and 128 source-reached checks distinguish the two-owner source copy, the
+one-owner callback and RHS conversion, and retirement before store or catch.
+The scalar-return control follows the older route. Independent native-first
+controls confirm that a fresh returned array with a
+handled-true callback selects NewText, while an ineligible E_NOTICE mask leaves
+OldText and emits only the default Warning.
+This initially unbuffered nonempty flat DIRECT primitive-array slice keeps
+other producers, reference returns, wider array contents, different-cell RHS
+rebinding and buffer-changing callbacks
+partial in the [acquired LEFT array ledger](../../coverage/semantics/concat-owned-array-warning-review.json).
+
 A bounded direct no-argument, by-value/untyped named call may return the owning
 Stringable RHS before LEFT's array Warning. A dedicated consumer owns that acquired
 value through the handler, separately from the later conversion receiver. Removing

@@ -1,0 +1,69 @@
+{
+  "milestone": "OP100 acquired LEFT array concat Warning and delayed Stringable RHS",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle/profile",
+  "status": "independently reviewed bounded semantics",
+  "scope": "Initially unbuffered ordinary concat of a nonempty mutable flat DIRECT primitive array acquired from a named noarg by-value untyped user function on LEFT and a same-cell plain CV Stringable RHS. An eligible named E_WARNING handler may return or throw a supplied Exception. Normal conversion reads the post-handler RHS, concatenates interned Array with its string, then retires LEFT before assignment. Handler throw skips RHS conversion, retires LEFT after handler-result cleanup and reaches catch with the same Exception.",
+  "engine": [
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_CONCAT obtains both operand pointers and runs concat_function, then FREE_OP1/FREE_OP2 before exception check",
+    "vendor/php-src/Zend/zend_operators.c: concat_function try-converts LEFT first; a handler Exception makes array conversion fail before RHS conversion"
+  ],
+  "baseline_revision": "80d3d20350be32a3e1a9c45ee1ee1b80d4880465",
+  "semantic_revision": "2b9b2ac4a5c2a152a2e61c41a92a2ade6e159d48",
+  "tested_revision": "ff82db805792983f4ea0eb56c48e54f006afdacf",
+  "environment": {
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "modules_sha256": "de8488abd5ca58bfd455d59011ef41f48449be4699ede06af70e027075dab632",
+    "module_count": 424,
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "frozen_sources": {
+    "cases_py_sha256": "f2b516f330392956260786be94d7bb2efea5b34ebf96dd3c9bf7903d79102c79",
+    "normal_sha256": "2d14d870fe053cfaf200cc39af87f7318fa05ac3e804ed749846f67e3a136391",
+    "throw_sha256": "dad0e83d14339f9322a663d85946b166cb80a3edce894f9b2b1d6c904960f7ff",
+    "scalar_control_sha256": "44a03e4e4033b0271466acb04acfa2aadb8d8bf8731d44a37e4c63bf4ae845f5"
+  },
+  "native_pre": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-100/native-pre/report.json",
+    "sha256": "1e63459d9ced2e08d1047caa0ae4c58bef3629fe611ef22a4079ad6b1faef4cb",
+    "result": "All three pinned PHP sources exit0/reaped. LEFT producer prints P once. Array Warning is at concat line37. Normal handler changes RHS to NewText, calls NEW once after H, assigns ArrayNEW and emits one default Warning37. Supplied throw reaches same Exception34 with no OLD/NEW or result store. Scalar control calls OLD, assigns 7OLD and raises no Warning."
+  },
+  "unchanged_baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-100/baseline/report.json",
+    "sha256": "6511bad0f80a6e9bcf10f8dec938df7ddb85f279ba6fed7bb6c24b3fcf88b566",
+    "result": "At clean pinned 80d3, both array sources are frontend accepted/checked but exit1 Unsupported at handler ingress after only P; and earn zero agreement. Scalar control is exact through the prior generic route. No timeout/group residue."
+  },
+  "accepted": {
+    "source_report": "/home/user/workspace/php-spec-evidence-archive/operators-100/source-2b9b2ac4a/report.json",
+    "source_sha256": "a31ea2a785d288b3e4d475b43e841fcbbc3dac3ea828da87b5efd5b2956438aa",
+    "focused_report": "/home/user/workspace/php-spec-evidence-archive/operators-100/focused-ff82db805/report.json",
+    "focused_sha256": "03af5edffbbc68b0a364adccfbb6a583f634abb8d7b7cbf9f20336b4cfeef086",
+    "result": "Two new array sources and one prior scalar control agree raw-exact with checked/accepted normal model, exit0/no timeout/group residue. Normal171 and pending128 genuine source-reached checks verify source and line37, acquired source-copy HARRAY owners2→1 through callback and actual NewText method, owner0 after concat release before store, or after handler-result cleanup before catch. Pending skips RHS and preserves same Exception34; buffer/source refusals and budget0 hold."
+  },
+  "independent_review": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-100/review-independent/run-ff82db805/report.json",
+    "sha256": "5f7cde33c7274a924b65550f6cb868b67272121f69ede6029fce960689920fbc",
+    "cases_sha256": "ea7c82a7a97397aa87061a9149d1b29b839a822bcb0bade9fb3fcc40aac8291d",
+    "runner_sha256": "6cd7457d070c09b12de0a11e0a39e834ab51b9ad76a25040cf97ff8daf71c673",
+    "fresh_return_source_sha256": "ab82ae144184b8bbfae9f22c21c0dc008cabfaf865c158f313a29e546096bb80",
+    "ineligible_mask_source_sha256": "6fd330bfb6d9b1d131686d1d504d5af875d5ce9ec3b294a8b80baa665049555a",
+    "result": "Both frozen native-first controls agree raw-exact with checked/accepted normal model, exit0/no timeout/group residue. Fresh returned array with handled-true Warning selects NEW and ArrayNEW without default stderr. A source-copy array under ineligible E_NOTICE mask leaves RHS OldText, selects OLD and ArrayOLD with one default Warning37 and no callback. CPU5 fully reaped/released; semantic CLEAR."
+  },
+  "failed_attempts_zero_credit": [
+    "The first focused fixture assumed mutating RESULT would reject the plan. The actual plan reads the saved LEFT in CONCAT_PREP; focused-2b9b2ac4a/report.json SHA b65bb643393ac83a46dc26abc3df8b08cdb4aa9c7476ae4fb6351d2bf606bdc5 failed at this negative assertion and earns zero focused credit. Test-only ff82db805 changes it to a saved LEFT PINT7 negative; only affected focused2 was rerun."
+  ],
+  "inputs_sha256": {
+    "spec/semantics/30-storage.watsup": "c5a42848627cfce40cf9597d93f43c1316b5e09d187bc7fac7da4f3d932c34d9",
+    "spec/semantics/59-concat-expressions.watsup": "3ebc91b64b62fabf98b0a8e0e4e041c6f78370695cea50db0534c12231872d48",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "94e6772d2099539074ff4165023c101f6bb0c006c8e8262103d4a6d61239b0d7",
+    "tests/semantics/concat_owned_array_warning_cases.py": "f2b516f330392956260786be94d7bb2efea5b34ebf96dd3c9bf7903d79102c79",
+    "tests/semantics/concat_owned_array_warnings.py": "f124956f909142bf6bf79eca679da971d01d11fe7de5068cf315b201e95efe37",
+    "tests/semantics/concat_owned_array_warning_protocol.py": "1f6778d785134719eb8793e093051d3a0e5056252c469496090b8d9b7a889976"
+  },
+  "reproduce": "Restore the tested semantic/test files, pinned project-local tools/profile and source bytes. Under an exclusive CPU run concat_owned_array_warnings.py --output NEW_EXTERNAL_DIR then concat_owned_array_warning_protocol.py --output NEW_EXTERNAL_DIR. Raw reports preserve commands, source bytes, streams, exits, input hashes and process groups outside Git.",
+  "remaining": "Only the stated unbuffered, nonempty flat DIRECT primitive acquired-array LEFT, same-cell plain-CV Stringable RHS and named noarg by-value untyped producer are claimed. Empty/nested/reference-element arrays, reference/typed/argument-bearing returns, other producers, different-cell RHS rebinding, output-buffer changes, destructive Stringable lifetimes and wider callbacks remain partial."
+}
