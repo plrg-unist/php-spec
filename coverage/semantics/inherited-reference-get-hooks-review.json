@@ -1,6 +1,6 @@
 {
   "scope": "A parentless Parent declares a public sole backed block &get. A direct Child with no property redeclaration, interface or constant keeps Parent's descriptor and hook; direct CV/literal property fetches and a defined-RHS destination bind use a Child instance. Typed and untyped backing, read copies and receiver retirement are covered.",
-  "status": "partial; independent review pending",
+  "status": "partial; independently reviewed",
   "target": {
     "php": "8.5.10 CLI NTS signed64",
     "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
@@ -66,6 +66,12 @@
     "bytes": 11413998,
     "members": 292,
     "recovery": "Extract at the workspace root to restore private .tools raw runs and independent reviewer controls. The archive is outside Git."
+  },
+  "review": {
+    "reviewer": "class133_review",
+    "decision": "CLEAR",
+    "candidate": "38b4b39c7",
+    "basis": "Direct-child selector and exact inherited descriptor, three clean original-source/state groups, frozen independent typed/untyped and redeclaration controls, explicit zero-credit failures, partial inventory and external raw archive."
   },
   "remaining": "Plain/redeclared and deeper Child chains, traits, constructors with property effects, virtual/arrow/set/paired hooks, computed/dimension/quiet/compound consumers, and wider reference lifetimes remain partial."
 }
