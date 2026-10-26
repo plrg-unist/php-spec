@@ -76,16 +76,16 @@ def conditions(name, program, path, stdout):
 
     seek('S_entry', 'S_initial', 0)
     checks += [
-        'S_entry.TODO = (PRINT_EMIT porigin_print 24) :: ptask_tail*',
+        'S_entry.TODO = (PRINT_EMIT porigin_print 25) :: ptask_tail*',
         'S_entry.ORIGIN = (porigin_print)',
         'S_entry.RESULT = KNOWN (PARRAY n_array)',
         'S_entry.OUTPUTBUFFERS = eps',
         '$print_owned_array_plan(S_entry) = (pprintownedarraywarning)',
         'pprintownedarraywarning.SITE = porigin_print',
-        'pprintownedarraywarning.LINE = 24',
+        'pprintownedarraywarning.LINE = 25',
         'pprintownedarraywarning.WARNING = 25',
         'pprintownedarraywarning.ARRAY = n_array',
-        '$print_owned_source(S_entry, porigin_print, 24)',
+        '$print_owned_source(S_entry, porigin_print, 25)',
         '$print_owned_array_source(S_entry, pprintownedarraywarning)',
         '$print_owned_array_snapshot(S_entry, pprintownedarraywarning)',
         '$lookup(S_entry.ENV, $ptascii("a")) = (n_a)',
@@ -104,7 +104,7 @@ def conditions(name, program, path, stdout):
         '$print_owned_array_plan(S_entry[.CODE = eps]) = eps',
         '$print_owned_array_plan(S_entry[.RESULT = KNOWN (PINT 7)]) = eps',
         '~$print_owned_array_source(S_entry, pprintownedarraywarning[.WARNING = 24])',
-        '~$print_owned_array_source(S_entry, pprintownedarraywarning[.LINE = 25])',
+        '~$print_owned_array_source(S_entry, pprintownedarraywarning[.LINE = 24])',
         '$integer_outputs(S_entry.EVENTS) = ($ptascii("P;"))',
         '$call_descriptors_valid(S_entry)', '$heap_valid($heap_graph(S_entry))',
         'S_entry.TODO = ptask_old :: ptask_tail*',
@@ -189,7 +189,7 @@ def conditions(name, program, path, stdout):
         step('S_cached', 'S_return')
         checks += [
             '$owned_array_frontier(S_cached, 5)',
-            'S_cached.TODO = (PRINT_EMIT porigin_print 24) :: (PRINT_OWNED_ARRAY_RELEASE pprintownedarraywarning) :: ptask_tail*',
+            'S_cached.TODO = (PRINT_EMIT porigin_print 25) :: (PRINT_OWNED_ARRAY_RELEASE pprintownedarraywarning) :: ptask_tail*',
             '$heap_owners($heap_prune($heap_graph(S_cached)), HARRAY n_array) = 1',
             '$integer_outputs(S_cached.EVENTS) = ($ptascii("P;H:2:25:Array to string conversion:1;"))',
             '$call_descriptors_valid(S_cached)', '$heap_valid($heap_graph(S_cached))',
