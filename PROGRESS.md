@@ -374,6 +374,16 @@ source-reached fronts pass 293 checks. Six older V55/V56/Source113 fronts pass
 separately as preservation. Wider trait plans and reentrant links remain
 partial. [Mixed-dependency review](coverage/semantics/mixed-dependency-autoload-review.json).
 
+Accepted eval classes with a resolved parent and two distinct direct traits
+now autoload the traits in order before an interface. Missing/wrong-kind
+second traits stop later loaders; a later interface loader wins before method
+conflict binding, and the tested `insteadof`/`as` plan composes successfully.
+Four new authored and one independent source agree; an older wrong-kind-first
+control stays exact. Three reached fronts pass 428 checks, with the adapted
+front limited to source-plan structure, and two Source114 fronts pass as
+preservation. The first parser gate and a two-trait trait-declaration control
+earn zero agreement. [Two-trait review](coverage/semantics/ordered-two-trait-autoload-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |

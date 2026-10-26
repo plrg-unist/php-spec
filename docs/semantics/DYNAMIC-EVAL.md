@@ -120,5 +120,15 @@ A wrong-kind trait stops before a later interface loader. A later interface
 failure leaves an earlier eval function callable without publishing the class;
 an included failure retains the child file and line through `include_once`.
 The [mixed-dependency ledger](../../coverage/semantics/mixed-dependency-autoload-review.json)
-records seven exact source agreements and two reached fronts. Multiple traits,
-trait adaptations, longer interface lists and reentrant loaders remain partial.
+records seven exact source agreements and two reached fronts for that sole-trait
+boundary.
+
+Accepted eval class declarations now fetch two distinct direct traits in order
+after resolving the parent and before a direct interface. The second trait's
+saved autoload request remains valid after the first trait publishes; a
+wrong-kind trait prevents later dependency lookup. One tested `insteadof` and
+`as` plan resolves a method conflict after interface loading. The
+[two-trait ledger](../../coverage/semantics/ordered-two-trait-autoload-review.json)
+records five new exact sources, two full reached continuations and one
+structural adaptation front. Two-trait trait declarations, other adaptation
+plans, longer mixed lists and reentrant links remain partial.

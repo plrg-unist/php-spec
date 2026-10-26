@@ -1,0 +1,51 @@
+{
+  "status": "independently_reviewed_private",
+  "milestone": "Source116 ordered two-trait dynamic class autoload",
+  "scope": "Accepted eval class declarations with a resolved parent, two distinct direct traits, a tested direct interface, and either no trait adaptations or one first-over-second same-method precedence with an alias of the excluded method.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "private_base": "f5e5fb019c20525fe8e71e6b61fe23bcb79b2829",
+  "module_count": 424,
+  "reviewed_cuts": {
+    "author_module277_sha256": "7c00c990685c05c53fd06c56a51648058fe4e51b6679387446a36c2dd5191cd2",
+    "class_only_module277_sha256": "d49557d955c3990ba6346791557b60c1cddff38e5dcf43fa9bd17abdaa5afada",
+    "reached_protocol_sha256": "6f89283f907d4999226e59f0c5d58e434460fd14253ee486bda30dff7db66e30"
+  },
+  "environment": {"LC_ALL": "C", "TZ": "UTC"},
+  "behavior": [
+    "After parent resolution, the first missing trait starts autoload. The second trait becomes eligible only after the first is a fetched trait; a saved second-trait request remains source-valid when the callback publishes it. Interface loading waits until both traits are fetched.",
+    "A known wrong-kind first or second trait stops before later dependency loaders. A later interface-loader Exception precedes trait-method conflict binding. The tested first-over-second `insteadof` and excluded-second `as` alias reaches normal method dispatch."
+  ],
+  "accepted": {
+    "new_author_source_agreements": 4,
+    "new_independent_source_agreements": 1,
+    "retained_wrongkind_first_control": 1,
+    "new_reached_fronts": 3,
+    "new_reached_checks": [194, 154, 80],
+    "retained_source114_checks": [193, 100],
+    "class_only_positive_recheck": 1
+  },
+  "zero_credit": "Four author and one independent unchanged checked programs returned Unsupported. The first 424-module load gate failed before semantics on an inline record/list pattern. The separate native trait-declaration control is intentionally Unsupported by the class-only rule and contributes no model agreement. The final class-only positive is a duplicate recheck; sealed Source114 checks are preservation only.",
+  "engine_route": "Zend/zend_inheritance.c::zend_do_link_class fetches parent, each trait with immediate trait-kind validation, then direct interfaces before trait conflict/adaptation binding. Module277 certifies the source-backed two-trait plan and ordered saved autoload target; module228 retains trait composition.",
+  "remaining": "Two-trait trait declarations, more than two traits, duplicate names, other adaptation plans, longer interface lists combined with two traits, reentrant dependency histories, delayed variance obligations and complete dynamic-source/core behavior remain partial.",
+  "artifacts": {
+    "author_freeze": [".tools/source116-discovery/freeze.json", "154090daf1e6b3c059e53547f6d7c80d970670d723df2bbdef4ccb5ef390617c"],
+    "author_native": [".tools/source116-discovery/native-report.json", "399107367fc6423dc42a5c9d1014713893a97e443fd4a8a16d0b80c0f626868e"],
+    "author_unchanged": [".tools/source116-discovery/baseline-report.json", "c683f922bb0fd90e3ef5632f0597b94ea13cfdabdfe45c35280b6d7ae6674c82"],
+    "first_load_failure": [".tools/source116-discovery/load-report.json", "1b57bc94876fe00990bfbc5bc16cdd90f0349296757c9bc8b04dbc35d7dc0788"],
+    "corrected_load": [".tools/source116-load-v2/load-report.json", "f744a30729700594bb81744e69b8e3e7a93117588ebc30a93d5c6de66dbdfc89"],
+    "author_changed": [".tools/source116-discovery/changed-report.json", "ef78a85fb2abea06613f034a2bb21cfbade833fe84d33441c1e98182233f5f4a"],
+    "independent_freeze": [".tools/source116-reviewer-wrongkind-second-v1/freeze.json", "519a78053076d586daab70ac17966e2bf4e5580709cc69fff574ba33ff7810e8"],
+    "independent_native": [".tools/source116-reviewer-wrongkind-second-v1/native-report.json", "97c32b7eec5142d46ee1a34c202fc8ee4e89162881e44de36f62b6b6e6fd9f51"],
+    "independent_unchanged": [".tools/source116-reviewer-wrongkind-second-v1/baseline-report.json", "77912eccd4e1766ae6bcbe18286d835da79c511d55c610c025daf9c59ae7a2d0"],
+    "independent_changed": [".tools/source116-reviewer-wrongkind-second-v1/changed-report.json", "735f31b3100fb1a3ac4c6b5e2b881ea338d7abe47c713c5bf99acd49fdd31ead"],
+    "reached_fixtures": [".tools/source116-state-v1/fixtures-report.json", "fbebed3ea8ad4129d2d2db0714d1708566774bfb76ee1a933d3381ff3c2facf9"],
+    "reached_checks": [".tools/source116-state-v1/check-report.json", "b910b70cd1ccc110d6d605ea84b725e38324a3d2fafe62dff07eb071354f9d08"],
+    "retained_source114": [".tools/source116-preservation-v114/report.json", "a3a62127d4abe5f281730e2e6ccf3050671d686689408682cf1d45addd47f090"],
+    "class_only_load": [".tools/source116-load-v3/load-report.json", "286cb87985b93ba1b74787155dbb793f42b08835d3048352ca46482fef05e1e3"],
+    "trait_control_freeze": [".tools/source116-trait-control/freeze.json", "fad69e8295b275d979135bab7e9956367916b9345b3504d3b8e07ee8a3683709"],
+    "trait_control_native": [".tools/source116-trait-control/native-control-report.json", "43dd2e3647482e960d7a21381bad6f69d6b7dc109fe498b13812feb7eb0d1a87"],
+    "trait_control_unsupported": [".tools/source116-trait-control/model-control-report.json", "70ee56674981db75e3fb61995ca34cb5292a138765ed4375828b03e1ef54d370"],
+    "class_only_positive": [".tools/source116-trait-control/positive-recheck-report.json", "c453fad37e07447ac592436913ae3af936490115a165dd5ccddcdc6314e0ce2a"]
+  },
+  "recovery": "The original five-source and three-front reports bind historical uncommitted module277 SHA 7c00c990; reconstruct that cut only when replaying those receipts. The committed class-only module277 SHA d49557d9 is checked by the v3 module load and .tools/source116-trait-control/run_bound.py. Sealed Source114 protocols preserve the old branch. All raw streams and numeric output are ignored under .tools."
+}
