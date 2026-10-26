@@ -172,12 +172,20 @@ def conditions(case, program, path):
         initial, prefix = 11, 'A:G|'
     else:
         checks += lines(r'''
-        ppropertyslot_child.STATE = PROP_VALUE (DIRECT (PINT 15))
+        ppropertyslot_child.STATE = PROP_VALUE (ALIAS n_existing)
+        S_front.STORE[n_existing] = DEFINED (PINT 15)
+        $propref_at(S_front.PROPREFS,n_existing) = (ppropref_existing)
+        ppropref_existing.SOURCES = [OBJECT_PROP_SOURCE n_object ($ptascii("value")) ppropertydesc_child.ORIGIN]
         $bh_output(S_front.EVENTS) = $ptascii("W:G|read15|")
         $heap_owners($heap_graph(S_front),HOBJECT n_object) = 1
         ''')
         initial, prefix = 15, 'W:G|read15|G|'
     checks += backing()
+    if case == 'plain-child-own-write':
+        checks += lines(r'''
+        ppropertyslot_child_backing.STATE = PROP_VALUE (ALIAS n_existing)
+        S_backing.STORE[n_existing] = DEFINED (PINT 15)
+        ''')
     result = r'''
     S_result.RESULT = REFERENCE n_value
     S_result.TODO = (PROPERTY_HOOK_REF_RESULT ppropertyhook "fetch") :: (PROPERTY_REF_FETCH z) :: ptask_result_tail*
@@ -201,6 +209,7 @@ def conditions(case, program, path):
     checks += prior.budget('S_result','S_result_budget')
     if case == 'plain-child-own-write':
         checks += lines(r'''
+        n_value = n_existing
         S_done = $drive(S_alias,4000)
         S_done.COMPLETION = NORMAL
         S_done.EXITSTATUS = 0
