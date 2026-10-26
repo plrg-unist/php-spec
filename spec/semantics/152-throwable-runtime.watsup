@@ -397,6 +397,7 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*,
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
 ;; Warm cache strings may compare equal even when their captured array
 ;; arguments differ: the formatter prints every such argument as "Array".
+dec $trace_array_graph(pstate, nat) : bool
 dec $throwable_warm_trace_pair(pstate, nat, nat) : bool
 def $throwable_warm_trace_pair(S, n_left, n_right) = true
   -- if S.COMPLETION = NORMAL
@@ -452,7 +453,6 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*,
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
 ;; Finite DIRECT array arguments retain the captured trace graph's COW image.
-dec $trace_array_graph(pstate, nat) : bool
 dec $trace_array_arg_present(pstate, nat) : bool
 dec $throwable_array_trace_pair(pstate, nat, nat) : bool
 def $throwable_array_trace_pair(S, n_left, n_right) = true
