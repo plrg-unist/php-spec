@@ -5609,6 +5609,64 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pboolnotnanwarning.LINE
 
+;; ZEND_BOOL converts only a selected short-circuit RIGHT operand. A NaN
+;; Warning runs before its live double is reread; no second conversion warns.
+dec $short_right_nan_source(pstate, pboolnotnanwarning) : bool
+def $short_right_nan_source(S, pboolnotnanwarning) = true
+  -- if S.ORIGIN = (pboolnotnanwarning.SITE)
+  -- if $origin_node(S.SOURCES, pboolnotnanwarning.SITE) = (pcnode)
+  -- if $truth_short_source(pcnode) = ((b_or, expression_left, expression_right))
+  -- if $compiled_redirect(S, pboolnotnanwarning.SITE) = eps
+  -- if pboolnotnanwarning.INPUT = VARIABLE ptbytes z_input
+  -- if $integer_operand_source(S, pboolnotnanwarning.SITE, [PCFIELD 1], pboolnotnanwarning.INPUT)
+  -- if $code_expression_at_source(S, pboolnotnanwarning.SITE, [PCFIELD 1]) = (pboolnotnanwarning.LINE)
+  -- if $(pboolnotnanwarning.CELL < |S.STORE| /\ pboolnotnanwarning.BITS < 18446744073709551616)
+  -- if $fparts_nan($float_decode(pboolnotnanwarning.BITS))
+def $short_right_nan_source(S, pboolnotnanwarning) = false -- otherwise
+
+def $short_right_nan_plan(S) = (pboolnotnanwarning)
+  -- if S.TODO = (TRUTH_RESULT false z_right) :: ptask_tail*
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.RESULT = VARIABLE ptbytes z_input
+  -- if $lookup(S.ENV, ptbytes) = (n_cell)
+  -- if $(n_cell < |S.STORE|)
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if pboolnotnanwarning = {SITE porigin, LINE z_right, INPUT S.RESULT, CELL n_cell, BITS n_bits}
+  -- if $short_right_nan_source(S, pboolnotnanwarning)
+  -- if $boolnot_nan_snapshot(S, pboolnotnanwarning)
+def $short_right_nan_plan(S) = eps -- otherwise
+
+dec $short_right_nan_warning_valid(pstate, pboolnotnanwarning, nat) : bool
+def $short_right_nan_warning_valid(S, pboolnotnanwarning, n) = ($short_right_nan_source(S, pboolnotnanwarning) /\ $(n <= 1) /\ (n = 1 \/ $boolnot_nan_snapshot(S, pboolnotnanwarning)))
+
+rule PhpStep/short-right-nan-begin: S ~> S[.TODO = (SHORT_RIGHT_NAN_WARNING pboolnotnanwarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (TRUTH_RESULT false z) :: ptask_tail*
+  -- if $short_right_nan_plan(S) = (pboolnotnanwarning)
+rule PhpStep/short-right-nan-dispatch: S ~> $error_dispatch(S, 2, $ptascii("unexpected NAN value was coerced to bool"), pboolnotnanwarning.LINE, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to bool")) pboolnotnanwarning.LINE, SHORT_RIGHT_NAN_WARNING pboolnotnanwarning 1)
+  -- if S.TODO = (SHORT_RIGHT_NAN_WARNING pboolnotnanwarning 0) :: ptask_tail*
+  -- if $short_right_nan_warning_valid(S, pboolnotnanwarning, 0)
+rule PhpStep/short-right-nan-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL b)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (SHORT_RIGHT_NAN_WARNING pboolnotnanwarning 1) :: ptask_tail*
+  -- if $short_right_nan_warning_valid(S, pboolnotnanwarning, 1)
+  -- if $boolnot_nan_ready(S, pboolnotnanwarning) = (n_bits)
+  -- if (b, b_warning) = $number_bool(NFLOAT n_bits)
+rule PhpStep/short-right-nan-target-boundary: S ~> S[.COMPLETION = UNSUPPORTED "short-circuit RIGHT NaN changed CV representation"]
+  -- if S.TODO = (SHORT_RIGHT_NAN_WARNING pboolnotnanwarning 1) :: ptask_tail*
+  -- if $short_right_nan_warning_valid(S, pboolnotnanwarning, 1)
+  -- if $boolnot_nan_ready(S, pboolnotnanwarning) = eps
+
+def $task_nodes(SHORT_RIGHT_NAN_WARNING pboolnotnanwarning n) = eps
+def $call_task_valid(S, SHORT_RIGHT_NAN_WARNING pboolnotnanwarning n) = $short_right_nan_warning_valid(S, pboolnotnanwarning, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = SHORT_RIGHT_NAN_WARNING pboolnotnanwarning 1
+  -- if $short_right_nan_warning_valid(S, pboolnotnanwarning, 1)
+  -- if perrorcall.TARGET =/= eps \/ $boolnot_nan_snapshot(S, pboolnotnanwarning)
+  -- if perrorcall.SITE = pboolnotnanwarning.SITE /\ perrorcall.LINE = pboolnotnanwarning.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pboolnotnanwarning.LINE
+
 ;; JMP_SET copies the live selected value after truth conversion and Warning.
 ;; The shorthand true result is the float value, not its normalized Boolean.
 dec $ternary_nan_source(pstate, pboolnotnanwarning, ptask) : bool
