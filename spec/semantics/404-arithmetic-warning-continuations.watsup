@@ -5659,6 +5659,7 @@ def $print_owned_array_plan(S) = (pprintownedarraywarning)
   -- if S.TODO = (PRINT_EMIT porigin z) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if S.RESULT = KNOWN (PARRAY n)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 0]) = (z_call)
   -- if pprintownedarraywarning = {SITE porigin, LINE z, WARNING z_call, ARRAY n}
   -- if $print_owned_array_source(S, pprintownedarraywarning)
   -- if $print_owned_array_snapshot(S, pprintownedarraywarning)
