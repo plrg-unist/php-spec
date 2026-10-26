@@ -3170,8 +3170,11 @@ wider target/value and map-history cases remain partial. The actual bounded
 `getIterator()` factory now returns an Iterator that owns Map; outer foreach
 keeps its own DATA and current cache. Exhaustion versus an externally held
 Iterator after break preserves the copied targets until their later release.
-Two sources and 265 Boolean/four raw checks pass at `95d732f3b`/413; manual methods,
-wider histories, hidden allocation handles and GC/CONFIG remain partial.
+Two sources and 265 Boolean/four raw checks pass at `95d732f3b`/413. Manual
+zero-argument cursor methods now preserve standalone current copies, next/end
+NULL, rewind identity and empty access after Key death; two sources and 308
+Boolean/eight raw checks pass at `25ff16620`/413. Wider histories, active outer
+loops, hidden allocation handles and GC/CONFIG remain partial.
 
 Bounded by-reference WeakMap traversal shares the entry's cell and preserves
 rebinding plus escaped aliases through DATA or Key retirement. A reference
