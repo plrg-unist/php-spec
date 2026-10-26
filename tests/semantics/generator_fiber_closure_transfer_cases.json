@@ -20,6 +20,7 @@
     "source": "<?php\n$capture = 'cap57';\n$factory = function () use ($capture) {\n    echo 'GEN|', (int) ($capture === 'cap57');\n    Fiber::suspend('pause57');\n    yield 'after57';\n    return 57;\n};\n$g = $factory();\nunset($factory, $capture);\n$f = new Fiber(function () {\n    global $g;\n    return $g->current();\n});\necho 'START|';\n$pause = $f->start();\necho 'PARK|', (int) ($pause === 'pause57'), (int) $f->isSuspended();\ntry {\n    $g->next();\n    echo 'NO-ERROR|';\n} catch (Error $error) {\n    echo 'ERROR|', (int) ($error->getMessage() === 'Cannot resume an already running generator'),\n         (int) ($error->getPrevious() instanceof Error);\n}\necho 'RESUME|', (int) ($f->resume() === null);\necho 'VALUE|', (int) ($f->getReturn() === 'after57');\n$g->next();\necho 'RETURN|', (int) ($g->getReturn() === 57);\nunset($error, $g, $f, $pause);\necho 'E';\n",
     "source_sha256": "7fd383bfdfdafac3ece4cd23567c617f5eedea17b93d142f18680516ccd8decd",
     "native_exit": 0,
-    "native_stderr": ""
+    "native_stderr": "",
+    "native_stdout": "START|GEN|1PARK|11ERROR|11RESUME|1VALUE|1RETURN|1E"
   }
 ]
