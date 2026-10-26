@@ -146,6 +146,16 @@ def $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext
   -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL = eps
   -- if ~$generator_reference_producer(S, pgenerator) /\ pgenerator.CLOSURE = eps
   -- if pcallcontext.TARGET = pgenerator.FUNCTION /\ pcallcontext.INSTANCE = eps
+def $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = true
+  -- if pgeneratorop.NAME = "throw"
+  -- if pgeneratorop.ARGUMENTS = [pvalue]
+  -- if $generator_input_valid(S, pvalue)
+  -- if pgeneratorop.ADVANCE /\ pgenerator.FIRST
+  -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL = eps
+  -- if pgenerator.CLOSURE = (n_callee)
+  -- if ~$generator_reference_producer(S, pgenerator)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n_callee
+  -- if pcallcontext.INSTANCE = (n_callee) /\ pcallcontext.RECEIVER = eps
 def $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = false -- otherwise
 ;; A direct Generator body keeps its real resumer in the moved VM.
 ;; This local proof is also used on stored VMs without recursively admitting S.
