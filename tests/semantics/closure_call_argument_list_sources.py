@@ -33,8 +33,9 @@ function v108PositionalPack() {
     return $saved;
 }
 function v108MixedPack() {
-    global $mixedPack, $effects;
+    global $mixedPack, $direct, $effects;
     ++$effects;
+    $direct = '99';
     $saved = $mixedPack;
     $mixedPack[4] = 99;
     echo 'M|';
@@ -92,7 +93,7 @@ $effects = 0;
 $bodies = 0;
 $result = 97;
 $result = $call->call($receiver, $direct, ...v108MixedPack(), fourth: v108NamedTail());
-echo 'R2|', $result, '|', $effects, '|', $bodies, '|';
+echo 'R2|', $result, '|', $effects, '|', $bodies, '|', $direct, '|';
 echo $call === null && $receiver === null && $mixedPack === null ? 'currentNull|' : 'BAD|';
 echo $weakCall->get() === null ? 'calleeGone|' : 'calleeHeld|';
 echo $weakReceiver->get() === null ? 'receiverGone|' : 'receiverHeld|';
