@@ -1581,6 +1581,14 @@ The [Generator spread review](coverage/semantics/array-generator-unpack-review.j
 records acquisition-state errors, DIRECT COW copies, invalid keys and supplied
 throws. Its affected check retires the earlier Generator refusal.
 Wider payloads, operand modes, delegation and Traversable lifetimes remain partial.
+Ordinary CVs of named IteratorAggregate classes now invoke a borrowed
+`getIterator()` frame and
+transfer its owned user Iterator or named-Generator return into DATA. Genuine
+source owners retain the Aggregate through the getter; it may retire before
+the child runs. Self/CLOSED acquisition errors and getter throws keep the
+builder protected through return cleanup.
+The [Aggregate spread review](coverage/semantics/array-aggregate-unpack-review.json)
+records this bounded mechanism and its remaining producer/lifetime limits.
 Array call arguments are covered by the later call-unpack checkpoint below.
 [Iterator foreach](docs/semantics/ITERATORS.md) adds by-value source Iterator
 callbacks with effective method selection, retained current values and abrupt

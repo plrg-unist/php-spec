@@ -41,7 +41,7 @@ or flat DIRECT object-free arrays. Current may return an ordinary unconstrained
 reference cell; key remains by value. Fresh
 witnesses use integer arrays and distinguish current-copy COW from live reference
 updates. Nested ARRAY cache values and object payloads, other Iterator operand
-modes, Aggregate spread and wider callback lifetimes remain partial. Unsupported Traversables
+modes and wider callback lifetimes remain partial. Unsupported Traversables
 refuse explicitly rather than receiving a non-Traversable TypeError.
 
 `427-array-generator-unpack.watsup` adds ordinary named Generator bodies with
@@ -65,10 +65,28 @@ literal. Failure retains the partial builder through those same releases and
 real Generator finally/cache destruction, then cancels the builder. Immutable
 item/function history authenticates terminal continuations after Generator
 retirement without reading stale cached pointers as live owners. Explicit
-payload/builder refusals retain their owners and stop. Delegation, Closure/method
-and factory producers, reference-CV acquisition and wider lifetimes remain
+payload/builder refusals retain their owners and stop. Delegation, direct
+Closure/method/factory-call operands, reference-CV acquisition and wider lifetimes remain
 partial. [Generator spread review](../../coverage/semantics/array-generator-unpack-review.json)
 retains the separate source/state cuts and the retired A52 refusal control.
+
+`430-array-aggregate-unpack.watsup` adds ordinary CVs of named IteratorAggregate
+classes with a public non-generator `getIterator(): Traversable`. Genuine source owners
+keep the receiver alive through the borrowed callback. The Aggregate has no
+owning heap children or destructor; the pending task owns only the builder.
+The owned return temporary transfers into the existing user Iterator or named
+Generator DATA owner. Source-CV unset is permitted while another genuine owner
+keeps the getter live, and the Aggregate may retire before the child body runs.
+
+Returning the same Aggregate raises the native Exception only if the original
+CV still contains that same ordinary object. Changed carriers at that rejection
+point and recursive other-Aggregate returns explicitly refuse. A returned CLOSED
+Generator acquires no DATA: its owning return temporary retires under the pending Exception while
+the builder survives, including real cache destruction. Getter throws likewise
+preserve callback writes and the original Throwable before builder cancellation.
+Generator-method producers, owning Aggregate operands and wider receiver/payload
+lifetimes remain partial. The [Aggregate spread review](../../coverage/semantics/array-aggregate-unpack-review.json)
+retains the separate native/source/state evidence and counterexamples.
 
 The pinned engine routes are `zend_try_ct_eval_array` and `zend_compile_array`
 in `vendor/php-src/Zend/zend_compile.c`, `ZEND_ADD_ARRAY_UNPACK` in
@@ -76,6 +94,8 @@ in `vendor/php-src/Zend/zend_compile.c`, `ZEND_ADD_ARRAY_UNPACK` in
 `Zend/zend_generators.c` supplies Generator acquisition, resume, force-close and
 cache storage destruction.
 The user Iterator cache and callback routes are in `Zend/zend_interfaces.c`.
+Its `zend_user_it_get_new_iterator` calls the getter, acquires the returned
+object's iterator, then destroys that return temporary before the first rewind.
 The high-level rule models their observable ordering and ownership without
 requiring the engine's packed-table representation.
 
