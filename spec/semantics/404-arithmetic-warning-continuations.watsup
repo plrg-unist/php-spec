@@ -5637,8 +5637,8 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pprintarraywarning.LINE
 
-;; Each echo child has its own ZEND_ECHO. A warning in the first child writes
-;; the fixed interned string before the next child is evaluated or skipped.
+;; Each echo child has its own ZEND_ECHO. A warning in either of the first two
+;; array children writes the fixed interned string before the next child runs.
 syntax pechoarraywarning = { SITE porigin, LINE int, INPUT poperand }
 dec $echo_array_source(pstate, pechoarraywarning) : bool
 def $echo_array_source(S, pechoarraywarning) = true
@@ -5647,6 +5647,17 @@ def $echo_array_source(S, pechoarraywarning) = true
   -- if pcpath_echo = pcpath_site[0:$nabs($( |pcpath_site| - 2))]
   -- if $origin_child((PORIGIN n_unit pcpath_echo), [PCFIELD 0, PCINDEX 0]) = (pechoarraywarning.SITE)
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_echo) = (NStmtEcho (SEQUENCE (expression_first :: expression_second :: expression_tail*)) metadata)
+  -- if S.ORIGIN = (pechoarraywarning.SITE)
+  -- if $echo_emit_source(S, pechoarraywarning.SITE, pechoarraywarning.LINE)
+  -- if pechoarraywarning.INPUT = VARIABLE ptbytes z
+  -- if $integer_operand_source(S, pechoarraywarning.SITE, eps, pechoarraywarning.INPUT)
+  -- if $code_expression_at_source(S, pechoarraywarning.SITE, eps) = (pechoarraywarning.LINE)
+def $echo_array_source(S, pechoarraywarning) = true
+  -- if pechoarraywarning.SITE = PORIGIN n_unit pcpath_site
+  -- if $(|pcpath_site| >= 2)
+  -- if pcpath_echo = pcpath_site[0:$nabs($( |pcpath_site| - 2))]
+  -- if $origin_child((PORIGIN n_unit pcpath_echo), [PCFIELD 0, PCINDEX 1]) = (pechoarraywarning.SITE)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_echo) = (NStmtEcho (SEQUENCE (expression_first :: expression_second :: expression_third :: expression_tail*)) metadata)
   -- if S.ORIGIN = (pechoarraywarning.SITE)
   -- if $echo_emit_source(S, pechoarraywarning.SITE, pechoarraywarning.LINE)
   -- if pechoarraywarning.INPUT = VARIABLE ptbytes z
@@ -5680,7 +5691,7 @@ rule PhpStep/echo-array-buffer-boundary: S ~> S[.COMPLETION = UNSUPPORTED "echo 
   -- if $echo_array_valid(S, pechoarraywarning, 1)
   -- if S.OUTPUTBUFFERS =/= eps
 
-;; Pending throw writes the first child once before searching handlers. It
+;; Pending throw writes the current child once before searching handlers. It
 ;; never resumes the following EVAL/EMIT pairs.
 def $error_read_discard(S, ECHO_ARRAY_WARNING pechoarraywarning 1) = $output_write(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $ptascii("Array"))
   -- if S.COMPLETION = NORMAL
