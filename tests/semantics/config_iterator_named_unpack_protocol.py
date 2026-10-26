@@ -32,11 +32,11 @@ dec $test_named_iterator_seek(pstate, nat, nat) : pstate
 def $test_named_iterator_seek(S, n_stage, 0) = S
 def $test_named_iterator_seek(S, n_stage, n) = S
   -- if $(n > 0)
-  -- if $test_named_iterator_front(S,n_stage) \/ (S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET)
+  -- if $test_named_iterator_front(S,n_stage) \/ (S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET /\ ~$throwable_pending(S.COMPLETION))
 def $test_named_iterator_seek(S, n_stage, n) = $test_named_iterator_seek($drive_steps($test_running(S),1),n_stage,$nabs($(n - 1)))
   -- if $(n > 0)
   -- if ~$test_named_iterator_front(S,n_stage)
-  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET \/ $throwable_pending(S.COMPLETION)
 dec $test_named_iterator_step(pstate) : pstate
 def $test_named_iterator_step(S) = S_next
   -- PhpStep: S ~> S_next
@@ -146,11 +146,14 @@ def checks(program, path, name):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--phase', choices=['prepare', 'check'], required=True)
+    parser.add_argument('--case', choices=('named-option-then-value-caches-current',
+        'duplicate-named-stops-before-next'))
     parser.add_argument('--sources', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
-    sources.family.CASES = {name: sources.family.CASES[name] for name in
-        ('named-option-then-value-caches-current', 'duplicate-named-stops-before-next')}
+    selected = (args.case,) if args.case else (
+        'named-option-then-value-caches-current', 'duplicate-named-stops-before-next')
+    sources.family.CASES = {name: sources.family.CASES[name] for name in selected}
     fingerprint = sources.family.fingerprint
     sources.family.fingerprint = lambda: dict(fingerprint(), **{
         str(Path(__file__).relative_to(driver.ROOT)): sources.family.sha(__file__)})
