@@ -597,7 +597,7 @@ def $dynamic_query_nonstring_object(S, n_object) = true
 def $dynamic_query_nonstring_object(S, n_object) = false -- otherwise
 dec $dynamic_query_nonstring_valid(pstate, pconfigcall) : bool
 def $dynamic_query_nonstring_valid(S, pconfigcall) = true
-  -- if $dynamic_query_string_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
+  -- if ($dynamic_query_string_call(pconfigcall) \/ $dynamic_owned_query_string_call(pconfigcall)) /\ $config_invoke_valid(S, pconfigcall)
   -- if ~$pipe_site(S, pconfigcall.SITE)
   -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
