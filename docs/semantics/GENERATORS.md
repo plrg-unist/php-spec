@@ -178,6 +178,22 @@ this bounded shape; the direct named control is unchanged. Closure BYREF and
 fresh THROW, bound Closure, method BYREF/fresh, delegated and helper forms
 remain open. [Closure THROW review](../../coverage/semantics/generator-fiber-closure-throw-transfer-review.json).
 
+A fresh plain unbound Closure-created by-value Generator can also enter
+`throw` before its first yield and suspend in a Fiber. The original API
+Throwable stays in the advancing saved resumer, with empty cache and reference
+cell. Normal Fiber resume reaches the first yield before injecting that
+Throwable; a catch may yield a recovery value, or a `finally` may let the
+original escape. Copied captures retain an old object, while reference
+captures read their original cell after the external name is rebound. The
+closed Generator retains its Closure and object cache until its own release.
+An injected `Fiber::throw` before the first yield makes the original Throwable
+escape with the supplied one as `Previous`; an outside `current()` reentry
+produces one Error with null `Previous`. Four exact fresh originals, including
+an independent abrupt case, an unchanged primed control and 117 source-reached
+strict premises support this boundary. By-reference, method, bound Closure,
+delegated and wider lifecycle paths remain partial.
+[Fresh Closure THROW review](../../coverage/semantics/generator-fiber-fresh-closure-throw-transfer-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

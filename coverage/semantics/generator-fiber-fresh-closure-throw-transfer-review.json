@@ -1,0 +1,109 @@
+{
+  "milestone": "Iterator65 fresh unbound Closure-created by-value Generator::throw Fiber transfer",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local oracle SHA256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json; LC_ALL=C TZ=UTC; serial exclusive CPU3 for author and reviewer cuts",
+  "parent": "33550d1183428cdf8fda311ee31bb09a719f8a4c",
+  "implementation_commit": "db58032b0da21b00c8d0b61b5a05e946263741ad",
+  "scope": "A fresh direct plain unbound REALCLOSURE-created by-value Generator::throw may transfer through a Fiber pause before first yield. The saved resumer has ADVANCE/FIRST, an empty VALUE/REFCELL, and one valid owned Throwable argument. Matching Closure target, instance and absent receiver are required; existing callee, source, resumer and owner gates remain. Normal Fiber resume reaches first yield before injecting the original Throwable. Supplied Fiber::throw before that yield makes the original escape with the supplied exception as Previous.",
+  "engine_paths": [
+    "vendor/php-src/Zend/zend_generators.c::ZEND_METHOD(Generator, throw), zend_generator_ensure_initialized, zend_generator_throw_exception, zend_generator_resume, zend_generator_close, zend_generator_free_storage",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_YIELD",
+    "vendor/php-src/Zend/zend_fibers.c::ZEND_METHOD(Fiber, resume), ZEND_METHOD(Fiber, throw)",
+    "spec/semantics/281-fibers.watsup::$fiber_generator_fresh_throw_valid, $fiber_generator_callee_valid, $fiber_generator_body_id"
+  ],
+  "implementation": [
+    "spec/semantics/281-fibers.watsup"
+  ],
+  "source_catalog": "tests/semantics/generator_fiber_fresh_closure_throw_transfer_cases.json",
+  "sources": {
+    "i65-fresh-closure-copy-catch": "31e6c9101a0bed23aad48f84839056c509392d1d3af981dd78cc7da28c5db375",
+    "i65-fresh-closure-reference-catch": "eee8ab7643b6f37d57675df89085d891ac4c1756f610d306f60c26d4658173c1",
+    "i65-fresh-closure-object-finally": "dfbaf1e1affbf126609d55bd1921419b79755b589cfef5263fa6eab818fb42bd",
+    "i65-unchanged-primed-closure-control": "267c754cba8ba8714fc1fc9510d7d281b9157704b52f585f9f39817843101407",
+    "i65-fresh-closure-abrupt-independent": "cbf3d754c1195a40c57e26b420511de00724fb7c2b8018edb4e19025fe815b4e"
+  },
+  "validation": {
+    "native_first": {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/generator-fiber-fresh-closure-throw-65/.tools/i65-design/native-first/report.json",
+        "sha256": "848a285476e45bd5aff4d0f7ce8e4821fae4ebd14fc051e778e8ad3a5d5858a7"
+      },
+      "result": "Four frozen author rows exit0/empty stderr, stable source/oracle/profile/HEAD; three fresh and one byte-identical I64 primed control."
+    },
+    "unchanged_baseline": {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/generator-fiber-fresh-closure-throw-65/.tools/i65-design/unchanged-baseline/report.json",
+        "sha256": "1352a474103f2496f9e92cdc62d7152c6b2ed97b7144b7573d73416e441b8902"
+      },
+      "result": "Three fresh rows checked Unsupported at the exact Fiber switch domain with zero agreement; primed I64 control NORMAL exact; no timeout/stderr, all child PIDs reaped."
+    },
+    "strict": {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/generator-fiber-fresh-closure-throw-65/.tools/i65-design/strict-first/report.json",
+        "sha256": "d2f2c8b93a59569c1e924239b0c4320e9b2b1b500a16cbe91019e8dc77bbb699"
+      },
+      "modules": 424,
+      "exit": 0,
+      "stderr_bytes": 0
+    },
+    "author_sources": [
+      {
+        "report": {
+          "path": "/home/user/workspace/php-spec/.tools/generator-fiber-fresh-closure-throw-65/.tools/generator-fiber-fresh-closure-throw-transfer-source-9dfam3df/report.json",
+          "sha256": "b28dd27ee7f1a05e533fc8b46b4d358f968ac64c7522261cbec2506b0b77a582"
+        },
+        "result": "copied capture exact NORMAL"
+      },
+      {
+        "report": {
+          "path": "/home/user/workspace/php-spec/.tools/generator-fiber-fresh-closure-throw-65/.tools/generator-fiber-fresh-closure-throw-transfer-source-9z4ehhk4/report.json",
+          "sha256": "b9057520e6f84f6d875c1c54ab4c182774bc727f4071bdc4b61387d1a7d253e9"
+        },
+        "result": "reference capture, uncaught finally and unchanged primed control exact NORMAL"
+      }
+    ],
+    "source_reached": {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/generator-fiber-fresh-closure-throw-65/.tools/fiber-state-review-pdeoqcm7/report.json",
+        "sha256": "d9bbc3b6833201168d29016d9758e4914870428921accc6b8e09a371961d6d6c"
+      },
+      "assertions": 117,
+      "result": "one true strict-SL reached state from original copied-capture source; ADVANCE/FIRST, original temporary owner, Closure capture, malformed guards and zero/one/split/full budget completion"
+    },
+    "independent_native": {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/i65-independent-review/native-first/report.json",
+        "sha256": "6c2a97fdca167422c1469d59ff3eb9a7180954dd98190b95c3e74072d6420d9b"
+      },
+      "source_sha256": "cbf3d754c1195a40c57e26b420511de00724fb7c2b8018edb4e19025fe815b4e",
+      "result": "frozen abrupt source exit0/empty stderr; exact original/Previous/reentry/capture/drop trace"
+    },
+    "independent_model": {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/i65-independent-review/model-review/report.json",
+        "sha256": "a5dd073434b3e2b833b22153edf0fb76ce0a327a6929a9745e942aeee6ef6e48"
+      },
+      "result": "same frozen source exact NORMAL at implementation commit, stable watched inputs/HEAD, no timeout/stderr"
+    },
+    "maintained_independent_row": {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/generator-fiber-fresh-closure-throw-65/.tools/generator-fiber-fresh-closure-throw-transfer-source-uo9n4yd3/report.json",
+        "sha256": "555e476abdfb15ae973fed370d229cbacea7236f0db1bdcd74a0af84b94adc16"
+      },
+      "result": "fifth frozen independent source selected from maintained wrapper/catalog, exact NORMAL, one agreement, stable inputs/HEAD; no rerun credit for prior four rows"
+    }
+  },
+  "preservation": "The new arm requires fresh ADVANCE/FIRST, empty cache/reference cell, non-BYREF producer and matching Closure target. Old direct named fresh and primed named/method/Closure/BYREF arms are unchanged. The selected I64 primed control agreed before and after the edit; no old source/state credit is renewed.",
+  "remaining": "Fresh by-reference Closure and method THROW, bound Closure, delegated/helper resumers, collection/request and wider lifecycle remain partial. Actual-tail joined strict review pending at this record cut.",
+  "evidence_archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-closure-throw-transfer-65/raw.tar.gz",
+    "bytes": 179161,
+    "sha256": "8287c660b509f943b81217bc7d7b6b7dad8bbf6c145a38cfc0620d0111ae8367",
+    "file_members": 90
+  },
+  "evidence_manifest": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-closure-throw-transfer-65/manifest.json",
+    "sha256": "36c847d0224d816eb37be8a4f843efbbcee34f2d4ffcb0e5764af797875b7011"
+  },
+  "recovery": "Restore matching Git code/tests at db58032b0 and extract raw.tar.gz under the private I65 root; the independent native/model directory originally lived under the canonical php-spec .tools root. This raw archive is outside Git and is not a build input.",
+  "independent_review": "Independent reviewer cleared the frozen author native packet, unchanged-parent baselines, narrow 281/source/state static packet, fifth frozen row/wrapper, and exact independent abrupt native/model result at db58032b0. Actual-tail joined review remains pending."
+}
