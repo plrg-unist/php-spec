@@ -1,0 +1,10 @@
+{
+  "private-variable": "<?php\nclass PipePrivate117 { private function __invoke($x) { echo 'P', $x, '|'; return $x + 1; } }\n$f = new PipePrivate117; echo 3 |> $f, '|', 4 |> $f(...);\n",
+  "protected-inherited": "<?php\nclass PipeParent117 { protected function __invoke($x) { echo static::class, ':', $x, '|'; return $x + 2; } }\nclass PipeChild117 extends PipeParent117 {}\necho 3 |> new PipeChild117; $f = new PipeChild117; echo '|', 4 |> $f(...);\n",
+  "strict-type-error": "<?php\ndeclare(strict_types=1); class PipeStrict117 { private function __invoke(int $x) { echo 'BODY|'; } }\n$f = new PipeStrict117; try { '3' |> $f; } catch (TypeError $e) { echo 'TYPE|', $e->getMessage(); }\n",
+  "reference-result": "<?php\nclass PipeReference117 { protected function &__invoke($x) { static $v = 1; return $v; } }\n$f = new PipeReference117; function pipe_change117(&$x) { $x = 9; }\npipe_change117(2 |> $f); echo $f(0);\n",
+  "temporary-owner": "<?php\nclass PipeOwner117 { private function __invoke($x) { echo 'C|'; return $x + 1; } public function __destruct() { echo 'D|'; } }\nfunction pipe_make117() { echo 'R|'; return new PipeOwner117; }\necho 3 |> pipe_make117(), '|E';\n",
+  "byref-owned-error": "<?php\nclass PipeLeft117 { public function __destruct() { echo 'L|'; } }\nclass PipeRef117 { protected function __invoke(&$x) { echo 'BODY|'; } public function __destruct() { echo 'I|'; } }\nfunction pipe_make_ref117() { echo 'R|'; return new PipeRef117; }\ntry { (new PipeLeft117) |> pipe_make_ref117(); } catch (Error $e) { echo 'E|', $e->getMessage(), '|'; }\n",
+  "public-control": "<?php\nclass PipePublic117 { public function __invoke($x) { return $x + 2; } }\n$f = new PipePublic117; echo 3 |> $f;\n",
+  "noncallable-control": "<?php\nclass PipeNoInvoke117 {}\ntry { 3 |> new PipeNoInvoke117; } catch (Error $e) { echo $e->getMessage(); }\n"
+}

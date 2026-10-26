@@ -1,4 +1,4 @@
-;; A pipe selects a public user __invoke receiver before sending its forced value.
+;; A pipe selects a user __invoke receiver before sending its forced value.
 ;; SEND authenticates the evaluated RHS object; the target then retains that
 ;; receiver through the call even if its source variable changes.
 dec $pipe_rhs_known_nonobject(expression) : bool
@@ -43,7 +43,6 @@ def $pipe_object_target_identity(S, METHOD_TARGET n porigin_method, pobjectselec
   -- if porigin_method = pobjectselection.METHOD
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__invoke")
-  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
   -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if $effective_method(S, pobjectselection.REQUESTED, $ptascii("__invoke"), |S.CLASSES|) = (pmethoddesc)
 def $pipe_object_target_identity(S, pcalltarget, pobjectselection, b_live) = false -- otherwise
@@ -64,7 +63,6 @@ def $call_selected_valid(S, PIPE_OBJECT_TARGET pcalltarget pobjectselection, (po
 def $pipe_object_value(S, n, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.TODO = (PIPE_OBJECT_SEND (PIPE_OBJECT_TARGET (METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN) pobjectselection) pobjectselection pvalue_left z_send z_call) :: S.TODO][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if $object_invoke_method(S, n) = (pmethoddesc)
-  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if pobjectselection = {SITE porigin_site, INIT z_lookup, LINE z_call, REQUESTED porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN}
   -- if $pipe_object_site_valid(S, pobjectselection)
