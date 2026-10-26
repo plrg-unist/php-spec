@@ -4359,6 +4359,11 @@ or constants, and each redeclaring class has only that same-type public plain
 property without set restrictions, interfaces or constants. Five originals,
 449 reached premises and five raw steps pass in the
 [reference-Get chain review](coverage/semantics/reference-get-chain-review.json).
+The same selected path now admits distinct-name sibling properties, own scalar
+constants and methodless marker interfaces on linked ordinary descendants.
+Four originals and 538 reached premises/four raw steps retain the latest
+slot/type source, Parent lexical scope and leaf called scope.
+[Memberful reference-Get review](coverage/semantics/reference-get-memberful-review.json).
 Wider hook declarations and indirect consumers remain partial.
 
 Public backed by-value `get` hooks execute their block or expression body on each read,

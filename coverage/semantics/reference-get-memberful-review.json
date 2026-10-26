@@ -1,0 +1,141 @@
+{
+  "scope": "CLASS139 selected linked public backed block &get from a parentless class through ordinary descendants with distinct-name sibling properties, own scalar class constants and methodless marker interfaces. Selected plain redeclarations are separate singleton same-type public properties without set restriction; unchanged descendants have no own selected key. Other hooked/grouped/trait forms remain partial.",
+  "status": "partial; independently reviewed",
+  "target": {
+    "php": "8.5.10 CLI NTS signed64",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C; TZ=UTC; serial exclusive CPU2 native/baseline and CPU5 candidate/review; 100000 model steps, 75-second source timeout"
+  },
+  "authority": [
+    "Zend/zend_inheritance.c::do_inherit_property selects the latest same-key physical slot independently of unrelated members; inherit_property_hook carries the original getter through linked descendants.",
+    "Zend/zend_object_handlers.c::zend_std_read_property calls the selected hook on the actual receiver.",
+    "Zend/zend_execute.c::zend_assign_to_property_reference invokes Get before rejecting destination rebinding.",
+    "spec/semantics/382-backed-get-hooks.watsup checks source-authentic own selected key, absent own key on unchanged edges, linked parents and equal selected layout; spec/semantics/138-property-references.watsup attaches only the latest typed property source."
+  ],
+  "implementation": [
+    "spec/semantics/382-backed-get-hooks.watsup"
+  ],
+  "source_packet": {
+    "frozen_catalogue": "tests/semantics/reference_get_memberful_cases.json",
+    "frozen_catalogue_sha256": "a8959d9c92a7ad362db8082355db38af7adae69efdb6a52446cc944834dc873e",
+    "native_expectations": "tests/semantics/reference_get_memberful_expectations.json",
+    "native_expectations_sha256": "6d3730c0063ad8c81db6441cb2ea2aba898858cd5de0d63694920170f782a6ae",
+    "positive_ids": [
+      "memberful-unchanged",
+      "memberful-typed-redeclaration",
+      "memberful-mixed-latest",
+      "memberful-rebind-error"
+    ],
+    "control_ids": [
+      "same-name-hook-control",
+      "changed-type-control"
+    ]
+  },
+  "prechange": {
+    "revision": "a7b05025cc15579e252dbb319860ded15c4f305a",
+    "semantic_sha256": "286dcbee52efd46c897f9e4c2aeb6ce9a507804b4a8ce3db542026e386fe3b06",
+    "native_report": {
+      "member": "php-spec/.tools/class139-memberful-reference-get/.tools/class139-probes/native-first.json",
+      "sha256": "6d3730c0063ad8c81db6441cb2ea2aba898858cd5de0d63694920170f782a6ae"
+    },
+    "baseline_report": {
+      "member": "php-spec/.tools/class139-memberful-reference-get/.tools/class139-probes/unchanged-baseline.json",
+      "sha256": "a256e82e6ba9fe4be43126719a0e719b60b799ce48eae23870363d12477970fd"
+    },
+    "result": "All four positives native exit0/empty stderr. Unchanged model accepted/checked and stopped Unsupported after unrelated member output, before Get, with zero source agreement. Same-name hooked control native C|11/model Unsupported; incompatible type native fatal255/model static rejection."
+  },
+  "first_failures": [
+    {
+      "report": {
+        "member": "php-spec/.tools/class139-memberful-reference-get/.tools/reference-get-memberful-t757l1q1/report.json",
+        "sha256": "590058b08595b0b44147dc468a4922b3a1e467d5b25a464f8031d1c15faefb6b"
+      },
+      "fixture": {
+        "member": "php-spec/.tools/class139-memberful-reference-get/.tools/reference-get-memberful-t757l1q1/memberful-unchanged-state.watsup",
+        "sha256": "83221938455013ccd3f3a8b18afa525ea2765a49bcb98f7b5b4ae89ef0a8a3dd"
+      },
+      "compiler_stdout": {
+        "member": "php-spec/.tools/class139-memberful-reference-get/.tools/reference-get-memberful-t757l1q1/memberful-unchanged-algo.stdout",
+        "sha256": "4029e3c4d6bcfd1a1d3035f5b16a317ed3df001bbd832061a4de30651c049211"
+      },
+      "result": "SpecTec fixture elaboration rejected ppropertyid as porigin in test-only hook_property_at call; zero strict credit."
+    },
+    {
+      "report": {
+        "member": "php-spec/.tools/class139-memberful-reference-get/.tools/reference-get-memberful-wjqwrhvt/report.json",
+        "sha256": "815b804ffcbd202c238238d332005328949e402fac208a01999de2a43e8c92a6"
+      },
+      "fixture": {
+        "member": "php-spec/.tools/class139-memberful-reference-get/.tools/reference-get-memberful-wjqwrhvt/memberful-unchanged-state.watsup",
+        "sha256": "7fecb1100dcd7fce0d55903625ca017ac8dc35f9baf93ed2397db3d4fa2524c2"
+      },
+      "compiler_stdout": {
+        "member": "php-spec/.tools/class139-memberful-reference-get/.tools/reference-get-memberful-wjqwrhvt/memberful-unchanged-algo.stdout",
+        "sha256": "df2f1e5b8a3306b8e9be737f7edbc2b303051026bcd6b3bbc120423fd46278f8"
+      },
+      "result": "SpecTec fixture elaboration rejected test-only pconstant metavariable in class-constant list equality; zero strict credit."
+    }
+  ],
+  "affected": {
+    "semantic_sha256": "652696adc5895fe2839b9e73cc6ebfd7418d3b2a894e318ffb9498902a47cc6b",
+    "protocol_sha256": "e1dbb84de0defead4540fff1507036b13fd312b6d5fbaadb0407f0bd8c2a9795",
+    "source_only_report": {
+      "member": "php-spec/.tools/class139-memberful-reference-get/.tools/reference-get-memberful-dtfh91t5/report.json",
+      "sha256": "f0850e41d01b87c33bac372e1f45737caf27ba030dae19b9c3f79b3f8ce0c042"
+    },
+    "single_group_retry": {
+      "member": "php-spec/.tools/class139-memberful-reference-get/.tools/reference-get-memberful-k83cja19/report.json",
+      "sha256": "35d8d6536ddbc8df90e7f887a502ccc5028a172db87112460a59dfc05e151f83"
+    },
+    "full_report": {
+      "member": "php-spec/.tools/class139-memberful-reference-get/.tools/reference-get-memberful-2u3hwszc/report.json",
+      "sha256": "8bdf52d3f7fb2a229507d1f05e73cc8c046c5bb9e9ced212ad4fa8af158ef3b4"
+    },
+    "module_count": 424,
+    "source_agreements": 4,
+    "reached_premises": 538,
+    "raw_php_steps": 4,
+    "scope": "Each actual class/parent link and selected layout, own selected-key presence/absence, distinct sibling property and constant, linked marker interface, latest physical default and typed/untyped alias source, Parent lexical/leaf called scope, removed-link refusal, raw fetch/bind, completed copy/alias/lifetime/Error output. Same-name hook and changed type controls have zero runtime agreement."
+  },
+  "independent": {
+    "reviewer": "class137_review",
+    "source": {
+      "member": "php-spec/.tools/class139-review/independent-mixed.php",
+      "sha256": "6e1e0661e5ee2a00b5fb8f25aa82950ef0d9adc3dbfca8db80b405c710a5eec8"
+    },
+    "native_first": {
+      "member": "php-spec/.tools/class139-review/native-first.json",
+      "sha256": "1f8a0a4d8f0e56d76cc97fae03aec17dd9b91c29d38ad32fe80bf84130de5983"
+    },
+    "unchanged_baseline": {
+      "member": "php-spec/.tools/class139-review/unchanged-baseline.json",
+      "sha256": "eeb885751d96065b6933fc12789d43b2e141a8f6f6f685c4c3b39cf64a1ec751"
+    },
+    "candidate": {
+      "member": "php-spec/.tools/class139-review/candidate.json",
+      "sha256": "3cb65fd841ea7a931f302d6685e9c9f02506911819f207b2191b86df32febf07"
+    },
+    "result": "Frozen mixed typed chain with parent/descendant unrelated members, constant/interface, latest Leaf physical source, alias coercion, copy and disposal: native exit0/empty stderr; unchanged model accepted/checked Unsupported; candidate exact native/model normal agreement and stable input hashes."
+  },
+  "controls": {
+    "same_name_hook": "Native C|11; model checked Unsupported. No source agreement.",
+    "changed_type": "Native fatal exit255 line7; model CompileError static_rejection with matching message/line/exit. Static control only."
+  },
+  "archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/reference-get-memberful-139/evidence.tar.gz",
+    "sha256": "f1cc6e34ae5a97c6f66f0f45bd7bd7db207e0a501d53f8078e34b54067067960",
+    "bytes": 9513030,
+    "members": 350,
+    "manifest_sha256": "11f6bdddbfbd45357ed0a064861f29b780f2a57a805984dbad458ecb821ac883",
+    "recovery": "Extract at /home/user/workspace to restore raw author/reviewer runs and tested-input snapshots; archive and manifest are outside Git."
+  },
+  "review": {
+    "reviewer": "class137_review",
+    "semantic_test_decision": "CLEAR",
+    "package_decision": "CLEAR"
+  },
+  "remaining": "Same-name hooked overrides, grouped selected property declarations, trait-introduced selected properties, changed-type compatible chains, set-restricted redeclarations, virtual/arrow/set hooks, dimensions, quiet/compound consumers and wider reference lifetimes remain partial."
+}

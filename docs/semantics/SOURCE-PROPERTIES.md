@@ -98,9 +98,21 @@ called scope. The promoted Greatgrandchild, repeated untyped and typed
 redeclarations, a mixed chain and Get-before-rebind Error give five exact sources,
 449 reached premises and five raw steps in the
 [reference-Get chain review](../../coverage/semantics/reference-get-chain-review.json).
+The same linked path now permits distinct-name sibling properties, own scalar
+class constants and methodless marker interfaces on ordinary descendants. The
+selected plain redeclaration remains a separate singleton source declaration
+with the same public type and no set restriction. Its own source origin and key,
+each authentic parent link and the unchanged descendants' equal selected layout
+still determine the latest physical slot. The four new originals cover sibling
+reads, constants and interface membership before `&get`, Parent lexical scope,
+leaf called scope, typed alias coercion, independent copies, receiver retirement
+and Get-before-rebind Error. Reached checks also authenticate the sibling,
+constant and linked interface descriptors, latest default/type source, link
+removal refusals and four raw fetch/rebind steps.
+[Memberful reference-Get review](../../coverage/semantics/reference-get-memberful-review.json).
 Hook-bearing intermediate redeclarations remain Unsupported; an incompatible
 property type remains a static rejection. Different-type compatible chains,
-virtual/arrow/set/trait forms, dimensions,
+grouped selected declarations, virtual/arrow/set/trait forms, dimensions,
 quiet reads and compound consumers remain outside these slices.
 
 Public backed by-value block and expression `get` hooks compile into source functions with the

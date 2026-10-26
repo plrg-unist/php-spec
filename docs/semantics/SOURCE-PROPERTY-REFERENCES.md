@@ -38,6 +38,14 @@ only that same-type public plain property without set restrictions, interfaces
 or constants. The latest redeclaration owns the slot and type source;
 Parent's getter keeps its lexical scope while the actual receiver supplies the
 called scope. See the [chain review](../../coverage/semantics/reference-get-chain-review.json).
+Distinct-name sibling properties, own scalar constants and linked methodless
+marker interfaces now coexist with the selected reference getter on ordinary
+descendants. The separate singleton same-type plain redeclaration still supplies
+the latest physical slot and only its typed source; unchanged descendants retain
+that selected descriptor through authentic parent links. Four exact sources and
+538 reached premises with four raw steps cover aliases, copies, retirement and
+Get-before-rebind Error in the
+[memberful chain review](../../coverage/semantics/reference-get-memberful-review.json).
 
 Nonobject property writes use the pinned PHP modify or assign error and keep
 the operation's evaluation order; null and false do not create an object. The
