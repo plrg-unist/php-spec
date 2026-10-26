@@ -5636,3 +5636,70 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 2
   -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pprintarraywarning.LINE
+
+;; Each echo child has its own ZEND_ECHO. A warning in the first child writes
+;; the fixed interned string before the next child is evaluated or skipped.
+syntax pechoarraywarning = { SITE porigin, LINE int, INPUT poperand }
+dec $echo_array_source(pstate, pechoarraywarning) : bool
+def $echo_array_source(S, pechoarraywarning) = true
+  -- if pechoarraywarning.SITE = PORIGIN n_unit pcpath_site
+  -- if $(|pcpath_site| >= 2)
+  -- if pcpath_echo = pcpath_site[0:$nabs($( |pcpath_site| - 2))]
+  -- if $origin_child((PORIGIN n_unit pcpath_echo), [PCFIELD 0, PCINDEX 0]) = (pechoarraywarning.SITE)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_echo) = (NStmtEcho (SEQUENCE (expression_first :: expression_second :: expression_tail*)) metadata)
+  -- if S.ORIGIN = (pechoarraywarning.SITE)
+  -- if $echo_emit_source(S, pechoarraywarning.SITE, pechoarraywarning.LINE)
+  -- if pechoarraywarning.INPUT = VARIABLE ptbytes z
+  -- if $integer_operand_source(S, pechoarraywarning.SITE, eps, pechoarraywarning.INPUT)
+  -- if $code_expression_at_source(S, pechoarraywarning.SITE, eps) = (pechoarraywarning.LINE)
+def $echo_array_source(S, pechoarraywarning) = false -- otherwise
+def $echo_array_plan(S) = (pechoarraywarning)
+  -- if S.OUTPUTBUFFERS = eps
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.TODO = (EMIT z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if pechoarraywarning = {SITE porigin, LINE z, INPUT S.RESULT}
+  -- if $echo_array_source(S, pechoarraywarning)
+  -- if $array_string_cast_snapshot(S, pechoarraywarning.INPUT)
+def $echo_array_plan(S) = eps -- otherwise
+dec $echo_array_valid(pstate, pechoarraywarning, nat) : bool
+def $echo_array_valid(S, pechoarraywarning, n) = ($echo_array_source(S, pechoarraywarning) /\ $(n <= 1) /\ (n = 1 \/ S.OUTPUTBUFFERS = eps) /\ (n = 1 \/ $array_string_cast_snapshot(S, pechoarraywarning.INPUT)))
+
+rule PhpStep/echo-array-begin: S ~> S[.TODO = (ECHO_ARRAY_WARNING pechoarraywarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $echo_array_plan(S) = (pechoarraywarning)
+rule PhpStep/echo-array-dispatch: S ~> $error_dispatch(S, 2, $ptascii("Array to string conversion"), pechoarraywarning.LINE, DIAGNOSTIC "Warning" ($ptascii("Array to string conversion")) pechoarraywarning.LINE, ECHO_ARRAY_WARNING pechoarraywarning 1)
+  -- if S.TODO = (ECHO_ARRAY_WARNING pechoarraywarning 0) :: ptask_tail*
+  -- if $echo_array_valid(S, pechoarraywarning, 0)
+rule PhpStep/echo-array-resume: S ~> S[.TODO = (EMIT pechoarraywarning.LINE) :: ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array"))][.BASE = BASE_VALUE (KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array")))]
+  -- if S.TODO = (ECHO_ARRAY_WARNING pechoarraywarning 1) :: ptask_tail*
+  -- if $echo_array_valid(S, pechoarraywarning, 1)
+  -- if S.OUTPUTBUFFERS = eps
+rule PhpStep/echo-array-buffer-boundary: S ~> S[.COMPLETION = UNSUPPORTED "echo array output buffer changed during Warning"]
+  -- if S.TODO = (ECHO_ARRAY_WARNING pechoarraywarning 1) :: ptask_tail*
+  -- if $echo_array_valid(S, pechoarraywarning, 1)
+  -- if S.OUTPUTBUFFERS =/= eps
+
+;; Pending throw writes the first child once before searching handlers. It
+;; never resumes the following EVAL/EMIT pairs.
+def $error_read_discard(S, ECHO_ARRAY_WARNING pechoarraywarning 1) = $output_write(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $ptascii("Array"))
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
+  -- if $echo_array_valid(S, pechoarraywarning, 1)
+  -- if S.OUTPUTBUFFERS = eps
+  -- if $destructor_pending_valid(S, (n_exception))
+def $error_read_discard(S, ECHO_ARRAY_WARNING pechoarraywarning 1) = S[.COMPLETION = UNSUPPORTED "echo array output buffer changed during Warning"]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
+  -- if $echo_array_valid(S, pechoarraywarning, 1)
+  -- if S.OUTPUTBUFFERS =/= eps
+def $task_nodes(ECHO_ARRAY_WARNING pechoarraywarning n) = eps
+def $call_task_valid(S, ECHO_ARRAY_WARNING pechoarraywarning n) = $echo_array_valid(S, pechoarraywarning, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ECHO_ARRAY_WARNING pechoarraywarning 1
+  -- if $echo_array_valid(S, pechoarraywarning, 1)
+  -- if perrorcall.TARGET =/= eps \/ $array_string_cast_snapshot(S, pechoarraywarning.INPUT)
+  -- if perrorcall.SITE = pechoarraywarning.SITE /\ perrorcall.LINE = pechoarraywarning.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pechoarraywarning.LINE
