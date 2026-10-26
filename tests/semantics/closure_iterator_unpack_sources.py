@@ -7,8 +7,9 @@ import function_scope as scope
 HERE = Path(__file__).resolve().parent
 CASES = {
     name: (HERE / ('closure_iterator_unpack_' + name + '.php')).read_bytes()
-    for name in ('real_selected', 'real_named', 'named_firstclass',
-                 'named_reference', 'invalid_key', 'throwing_key')
+    for name in ('real_selected', 'real_named', 'arrow', 'named_firstclass',
+                 'named_reference', 'scoped_reference', 'invalid_key', 'throwing_key',
+                 'reference_capture')
 }
 
 
