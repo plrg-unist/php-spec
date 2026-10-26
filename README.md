@@ -5442,12 +5442,15 @@ values. Binding warnings precede inner-name errors; forwarding reference warning
 precede fresh cell allocation and preserve the captured value through callbacks.
 Finite getters and created children retain their selected scope and owners.
 
-One ARRAY pack after positional `newThis` now delivers saved positional/named
-values, fills default holes and preserves raw Error arguments after pack
-retirement. Alias capture precedes warning callbacks and detached reference-cell
-allocation; parameter conversion keeps the wrapper's original values.
+ARRAY packs after positional `newThis` support direct positional prefixes and
+named tails. Saved values forward positional-first even when a named pack came
+earlier; default holes and raw Error arguments survive source-pack retirement.
+Outer duplicate/order errors stop later producers before API entry. Alias
+capture precedes warning callbacks and detached reference-cell allocation;
+parameter conversion keeps the wrapper's original values.
 
-The [pack review](coverage/semantics/closure-call-array-pack-review.json) and
+The [argument-list review](coverage/semantics/closure-call-argument-list-review.json),
+[initial pack review](coverage/semantics/closure-call-array-pack-review.json) and
 [temporary-call review](coverage/semantics/temporary-fake-call-review.json)
 preserve separate source/state cuts; wider unpacking and REAL temporary-current
 lifetime remain required.
