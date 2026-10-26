@@ -1,0 +1,40 @@
+{
+  "scope": "Fixed call with compiled global name constant, no fallback, one raw exact __COMPILER_HALT_OFFSET__ string argument, no owner/named/pack, at an authenticated CONFIG_INVOKE. Partial dynamic-source behavior.",
+  "status": "independently_reviewed_private",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "base_revision": "9df336ae0257b6e5337fcd7ea8b2bf4e554666df",
+  "runtime_sha256": "400fbb9bdae7c1ba410c1de60e4099012342114782cec1f184935102f9bc6991",
+  "engine_routes": [
+    "Zend/zend_compile.c::zend_try_compile_special_func_ex has no constant special arm; fixed calls reach PHP_FUNCTION(constant).",
+    "ext/standard/basic_functions.c::PHP_FUNCTION(constant) calls zend_get_constant_ex; Zend/zend_constants.c::zend_get_halt_offset_constant uses the executed filename."
+  ],
+  "mechanism": "One fixed-call admission helper proves the compiled global target and exact raw literal. The existing selected-call, config validity, filename-local declaration journal, HALT_OFFSET and HALT_ABSENT/Error paths are reused. HALT_UNKNOWN and the fixed literal defined quick check are unchanged.",
+  "validation": {
+    "source": "Four original main/include/eval programs: pinned native and changed checked model both CLI0/normal, exact stdout and empty stderr. Main and child direct offsets are 76; absent Error file/line/trace argument and catch continuation agree. A separate reviewer-frozen four-source packet also agrees at this runtime hash.",
+    "baseline": "The four author originals were checked-program Unsupported in the unchanged model, including P: and I: prefixes before refusal; the failed baseline report is preserved as zero agreement.",
+    "state": "Four affected original-derived strict-SL fixtures returned true with empty stderr on 420 modules: 65+48+114+70=297 checks, including five direct fronts, filename isolation, budget0/resume, Error trace, provider/journal preservation and admitted HALT_UNKNOWN refusal. The v1 aggregate runner then stopped on duplicate fixture-directory creation after these passes; raw fixtures and output are preserved. A corrected auxiliary-only v2 passed 16+22+37=75 checks for a genuine nonliteral fixed refusal and selected/fixed-defined regressions, exit0. Independent frozen positive-source SL frontier passed 30 checks, exit0/true/empty stderr.",
+    "boundary": "One original nonliteral fixed constant($name) call has native Error with catch continuation but remains checked Unsupported in the model; it is a scoped negative, not source agreement.",
+    "inventory": "scripts/check-semantic-inventory.py passes with 169 constructors and 306 runtime obligations."
+  },
+  "environment": {
+    "profile": "tests/semantics/profile.json",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "resources": "Author CPU5 native/baseline, changed sources and focused state runs fully reaped/released; independent reviewer CPU1 source and reached-front runs fully reaped/released."
+  },
+  "raw_artifacts": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/dynamic-source-100",
+    "reports_sha256": {
+      "halt-fixed-v1/native-report.json": "e86e79df3105677795ad12535783d3cf1bf9788fedf1ee411ad2d9d8b43fd0de",
+      "halt-fixed-v1/model-report.json": "bf638c02d03af3b25e3d85366a4a0be011be64186863c481b393fd11b6626b8e",
+      "halt-fixed-implemented-v1/model-report.json": "db583df07d075a6906cb5c5f2d94b7bd3192887a70e6d30724bce427d87b9709",
+      "halt-fixed-aux-v2/report.json": "9e2a79e379802c98c81588ec89db35a30c5a54ea34c0edd1eed77807f1f9b4b3",
+      "source100-review-controls/independent-report.json": "9dea7a35c2aa5726ca19cc6ec3791784d2e9496a3442d951c059ef12643bd065",
+      "source100-review-state-v1/report.json": "9f13b3dc06c53d0e6bc99377699307cf6233d5490d417f9d0ac09de72198ee01"
+    },
+    "recovery": "Run halt_fixed_sources.py --phase native, then --phase model, with the same fresh output root. Run halt_fixed_protocol.py --sources SOURCE_ROOT --output FRESH; --case selects affected or auxiliary checks. Preserved state-v1 raw fixtures predate the duplicate-directory recorder fix, and auxiliary-v2 is the auxiliary-only retry."
+  },
+  "review": "Independent semantic, source, state and documentation review accepted on private commit 3cbfb254d and runtime hash 400fbb9b; four frozen native/model comparisons and one separate source-derived 30-check strict-SL frontier passed with stable inputs.",
+  "remaining": "Nonliteral fixed arguments, namespace fallbacks, owning/named/unpacked calls, ambiguous HALT registration and wider compiler/provider cases remain partial."
+}

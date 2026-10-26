@@ -535,6 +535,22 @@ continue into later array entries, while a nonzero result skips later casters.
 The [cold Throwable review](../../coverage/semantics/throwable-cold-comparison-review.json)
 records the normal-only boundary and the remaining wider Throwable cases.
 
+Nonempty builtin traces also compare through the seven declared slots when
+both canonical trace graphs contain only direct null, bool, int, float or string
+argument snapshots; string carriers must have valid identities. The allocated
+trace, frame and args arrays retain Zend's count, key and value order, including
+named argument keys. The path requires normal, nonpending completion, cold caches
+and null previous values; object/array arguments
+and wider Throwable graphs stay outside it. The [trace comparison review](../../coverage/semantics/throwable-trace-comparison-review.json)
+records the tested boundary.
+
+Finite acyclic `DIRECT` arrays captured inside builtin Throwable trace arguments
+also use the physical slot and array count/key/value order. Child arrays must be
+allocated, with only direct arrays or primitive/valid string-carrier leaves; a
+path-local guard rejects cycles while allowing shared children. A later source
+array write leaves the captured COW snapshot intact. Object and reference leaves
+remain outside the [array-trace review](../../coverage/semantics/throwable-trace-array-comparison-review.json).
+
 [Builtin and inherited Throwable string casts](../../coverage/semantics/pending-throwable-comparison-review.json)
 also skip their internal handler in this authenticated pending remainder. The
 failed cast gives object-after-string order without reading formatter fields,

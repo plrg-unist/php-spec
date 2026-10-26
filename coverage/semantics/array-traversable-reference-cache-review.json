@@ -1,0 +1,39 @@
+{
+  "milestone": "A57 Iterator spread cache arrays with scalar reference descendants",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local vendor/php-src",
+  "scope": "Ordinary CV user Iterator, no destructor or owning instance children, by-value current() returning a finite DIRECT ARRAY graph with ordinary defined scalar ALIAS leaves. Physical child edges survive key-time cell writes and spread insertion. A held external alias stays shared through COW; after its removal, a sole cell may unwrap on COW. A named IteratorAggregate returning an externally retained Iterator uses the same admission.",
+  "implementation": {
+    "revision": "37602e211aad98c89f42d79321a6ce00bfcdd7fd",
+    "file": "spec/semantics/426-array-iterator-unpack.watsup",
+    "sha256": "1d69e6e5c5cd61034be9fc4a80cf6db10b078cb077f558894b60af0283035c70",
+    "boundary": "Path-local cycle and builder-backedge rejection; no pool-owned reference table, debt, object, proxy or typed cell. The existing ordinary cell guards and generic COW/ownership rules are reused. Generator caches, by-reference current results and destructor-bearing Iterators keep their old admission."
+  },
+  "validation": {
+    "native_iterator2": "ef30197843aabe2698f1226beb3c15998ece7e9f; a57-native2/report.json SHA-256 c7de3b0df7f4e4edceadcdb98b940b605f2bac90a49f8001390bd0cd6a31f75d; two exact exit-0 quiet originals",
+    "native_aggregate1": "433f5b22319871675d9a6511a89d79f4f175d2b0; a57-aggregate-native1/report.json SHA-256 43f3d488816a1061fd1f58b86aa0bf360d930a10ca73ed2bdb28db8c51d6e440; one exact exit-0 quiet original",
+    "genuine_baseline": "Model-only on those same three native source paths: a57-baseline2/report.json SHA-256 894a2fe74d9ecdf346008e1ba63a3295791aad0080f7300f954cdfe1476d81c7 and a57-aggregate-baseline1/report.json SHA-256 0d279f0dcb096d9c68522022809b554bd21b7d433af06d0740b2fa0b00a953c3. All three reach Unsupported after current(), with zero agreement credit; no native replay.",
+    "strict": "At clean 37602e211: 420 modules, SL with cache disabled and determinism enabled; a57-strict/report.json SHA-256 b57a801efd3252159143fa5b8e997c3d25bc61581840311181479ff98dc242e5; PASS, exit 0, empty process group.",
+    "source": "At clean 37602e211: model-only comparison with exact original native paths, all three normal, exit 0, quiet and byte-exact; a57-source3/report.json SHA-256 dbb857b6e851516621d9919b7926beddc08cdd6b81b18a1d5ec29e8ebbeb9f09. No native replay.",
+    "focused": "At clean ec6dc0fb82d4c1e9127bdbc2f57bd6045124c706, author retained-alias 123 conditions including one raw step, a57-author-focused2/report.json SHA-256 f5470b53048ac5384e64a7e814e8708f3879e6ce6791bebf04ac3ccfbf21258f; independent dropped-alias peer 150 including two raw steps, a57-peer-focused2/report.json SHA-256 bbd795864b955d7b0cd2882367d102b1aa5528b646d83c9864fb3000916bfdea. Total 273: 270 Boolean and three raw. Both true, quiet, exit 0, under 180-second case caps and empty child/outer groups. Focused header and key-binding changes do not alter source or runtime.",
+    "original_failure": "At c900157afa7166787359c0fde53744ad144b79a0, the first author fixture's 122 conditions failed during elaboration before predicates: pvalue_key was bound in a noninvertible update. a57-author-focused/report.json SHA-256 21ebbf2554fcffe568441cbd8aaa31ddf036c5b0eca881d14ed973f7e4787101 and the generated fixture/stderr are archived; zero credit. The peer fixture was unrun then."
+  },
+  "independent_review": "lifecycle132_review accepted the source and focused mechanisms, 273-condition final receipts, external archive and publication. The disjoint incoming canonical delta through 22e3f302128eb86edff820c2be8262632489ddb9 has 421 modules; accepted A57 strict/source tests were on 420 modules and receive no joined execution credit.",
+  "execution": {
+    "profile": "tests/semantics/profile.json SHA-256 9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94; -n, opcache CLI/JIT disabled, precision 14, serialize_precision -1, UTC, error_reporting 30719, zend.assertions 1; LC_ALL=C and TZ=UTC",
+    "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "focused_commands": [
+      "taskset -c 2 timeout -s INT -k 3s 210s python3 -B tests/semantics/array_traversable_reference_cache_state.py --source-report .tools/a57-native2/report.json --output .tools/a57-author-focused2",
+      "taskset -c 2 timeout -s INT -k 3s 210s python3 -B tests/semantics/array_traversable_reference_cache_state_review.py --source-report .tools/a57-native2/report.json --output .tools/a57-peer-focused2"
+    ]
+  },
+  "archive": {
+    "location": "../php-spec-evidence-archive/array-traversable-reference-cache-57/raw.tar.xz",
+    "sha256": "86a62216289afe4ed5518f21f47edfb9ab7b3a01fc64d806c445cfb103c29598",
+    "bytes": 51320,
+    "members": 171,
+    "manifest": "../php-spec-evidence-archive/array-traversable-reference-cache-57/manifest.json",
+    "recovery": "For a selected report, recreate /home/user/workspace/php-spec/.tools/array-traversable-reference-cache-57 at its tested revision: ef30197843aabe2698f1226beb3c15998ece7e9f for Iterator native/baseline, 433f5b22319871675d9a6511a89d79f4f175d2b0 for Aggregate native/baseline, 37602e211aad98c89f42d79321a6ce00bfcdd7fd for strict/source, c900157afa7166787359c0fde53744ad144b79a0 for the failed author fixture, or ec6dc0fb82d4c1e9127bdbc2f57bd6045124c706 for corrected focus. Restore the original worktree cwd, .tools paths, and project-pinned PHP/adapter/numeric providers recorded in that report. Verify the archive SHA-256, then extract raw.tar.xz there. Use fresh output paths for any replay."
+  },
+  "remaining": "Full array spread, Traversable and PHP core semantics remain partial. No Generator or by-reference-current widening is claimed."
+}

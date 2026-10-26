@@ -1,0 +1,69 @@
+;; A method-name string on a pipe selects a public static user method before
+;; sending the forced left value. Ordinary function-name carriers stay outside
+;; this rule.
+dec $pipe_static_excluded(pstate, preqbytes) : bool
+dec $pipe_static_site(pstate, porigin) : bool
+def $pipe_static_site(S, porigin_site) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if ~$pppipe_optimized(expression_right)
+def $pipe_static_site(S, porigin_site) = false -- otherwise
+def $pipe_static_excluded(S, preqbytes) = true
+  -- if $method_string_parts(preqbytes) = ((ptbytes_class, ptbytes_method))
+  -- if $ptlc($typed_callable_name(ptbytes_class)) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $pipe_static_excluded(S, preqbytes) = true
+  -- if $method_string_parts(preqbytes) = ((ptbytes_class, ptbytes_method))
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin_class)
+  -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC \/ ~pmethoddesc.STATIC \/ pmethoddesc.ABSTRACT
+def $pipe_static_excluded(S, preqbytes) = false -- otherwise
+
+dec $pipe_static_result(pstate, parrayresolution, preqbytes, pvalue, porigin, int, int, int) : pstate
+dec $pipe_static_plain(pcalltarget) : bool
+def $pipe_static_plain(STATIC_METHOD_TARGET porigin_class porigin_method) = true
+def $pipe_static_plain(pcalltarget) = false -- otherwise
+def $pipe_static_result(S, ARRAYRESOLVED (STATIC_METHOD_TARGET porigin_class porigin_method) porigin_requested ptbytes_method, preqbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.TODO = (PIPE_STRING_SEND (STRING_METHOD_TARGET (STATIC_METHOD_TARGET porigin_class porigin_method) pstringselection) pstringselection pvalue_left z_send z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pstringselection = {SITE porigin_site, INIT z_lookup, LINE z_call, REQUESTED porigin_requested, ORIGINAL preqbytes}
+  -- if $string_site_valid(S, pstringselection, false)
+  -- if $string_target_identity(S, STATIC_METHOD_TARGET porigin_class porigin_method, pstringselection)
+def $pipe_static_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes_method, preqbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED "nonpublic static pipe string selection"]
+  -- if ~$pipe_static_plain(pcalltarget)
+def $pipe_static_result(S, ARRAYINVALID ptbytes_error, preqbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = $throw_scalar(S, "Error", ptbytes_error, z_lookup)
+def $pipe_static_result(S, ARRAYUNKNOWN text, preqbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED text]
+def $pipe_static_string(S, preqbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED "static method pipe callable"]
+  -- if ~$pipe_static_site(S, porigin_site)
+def $pipe_static_string(S, preqbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED "excluded pipe method string"]
+  -- if $pipe_static_site(S, porigin_site)
+  -- if $pipe_static_excluded(S, preqbytes)
+def $pipe_static_string(S, preqbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = $pipe_static_result(S, $string_resolve(S, preqbytes, ARRAY_DISPATCH, false), preqbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call)
+  -- if $pipe_static_site(S, porigin_site)
+  -- if ~$pipe_static_excluded(S, preqbytes)
+
+def $task_nodes(PIPE_STRING_SEND pcalltarget pstringselection pvalue_left z_send z_call) = $value_nodes(pvalue_left) ++ $target_nodes(pcalltarget)
+dec $pipe_string_send_valid(pstate, pcalltarget, pstringselection, pvalue, int, int) : bool
+def $pipe_string_send_valid(S, STRING_METHOD_TARGET (STATIC_METHOD_TARGET porigin_class porigin_method) pstringselection, pstringselection, pvalue_left, z_send, z_call) = true
+  -- if S.ORIGIN = (pstringselection.SITE)
+  -- if $pipe_lines_valid(S, pstringselection.SITE, z_send, z_call)
+  -- if pstringselection.INIT = $pipe_lookup_line(S, pstringselection.SITE)
+  -- if pstringselection.LINE = z_call
+  -- if $string_site_valid(S, pstringselection, false)
+  -- if $string_target_identity(S, STATIC_METHOD_TARGET porigin_class porigin_method, pstringselection)
+def $pipe_string_send_valid(S, pcalltarget, pstringselection, pvalue_left, z_send, z_call) = false -- otherwise
+def $call_task_valid(S, PIPE_STRING_SEND pcalltarget pstringselection pvalue_left z_send z_call) = $pipe_string_send_valid(S, pcalltarget, pstringselection, pvalue_left, z_send, z_call)
+rule PhpStep/pipe-string-send: S ~> $pipe_start($hold_task_inputs(S)[.TODO = (PIPE_STRING_RESULT pcalltarget_raw pstringselection) :: ptask_tail*], pcalltarget, pvalue_left, pstringselection.SITE, z_send, z_call)[.HELD = S.HELD]
+  -- if S.TODO = (PIPE_STRING_SEND pcalltarget pstringselection pvalue_left z_send z_call) :: ptask_tail*
+  -- if pcalltarget = STRING_METHOD_TARGET pcalltarget_raw pstringselection
+  -- if $call_task_valid(S, PIPE_STRING_SEND pcalltarget pstringselection pvalue_left z_send z_call)
+
+;; The result task contains only a historical source/target receipt. It does
+;; not own a receiver, and retains the method's VAR return mode for consumers.
+def $task_nodes(PIPE_STRING_RESULT pcalltarget pstringselection) = eps
+dec $pipe_string_result_valid(pstate, pcalltarget, pstringselection) : bool
+def $pipe_string_result_valid(S, STATIC_METHOD_TARGET porigin_class porigin_method, pstringselection) = true
+  -- if S.ORIGIN = (pstringselection.SITE)
+  -- if $string_site_valid(S, pstringselection, false)
+  -- if $string_target_identity(S, STATIC_METHOD_TARGET porigin_class porigin_method, pstringselection)
+def $pipe_string_result_valid(S, pcalltarget, pstringselection) = false -- otherwise
+def $call_task_valid(S, PIPE_STRING_RESULT pcalltarget pstringselection) = $pipe_string_result_valid(S, pcalltarget, pstringselection)
+rule PhpStep/pipe-string-result: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE S.RESULT]
+  -- if S.TODO = (PIPE_STRING_RESULT pcalltarget pstringselection) :: ptask_tail*
+  -- if $call_task_valid(S, PIPE_STRING_RESULT pcalltarget pstringselection)

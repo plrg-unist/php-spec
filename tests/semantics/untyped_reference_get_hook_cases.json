@@ -1,0 +1,62 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "backing-alias",
+      "source": "<?php\nclass RefBacking133 {\n    public $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n    public function __destruct() { echo \"D|\"; }\n}\necho \"A:\";\n$object = new RefBacking133;\n$alias =& $object->value; // READ\necho $alias === 7 ? \"alias7|\" : \"bad-alias|\";\n$alias = \"8\";\necho $alias === \"8\" ? \"untyped8|\" : \"bad-type|\";\n$copy = $object->value; // COPY_READ\n$alias = 9;\necho $copy === \"8\" ? \"copy8|\" : \"bad-copy|\";\necho $alias === 9 ? \"alias9|\" : \"bad-write|\";\nunset($object);\n$alias = \"free\";\necho $alias === \"free\" ? \"free|\" : \"bad-source|\";\necho $copy === \"8\" ? \"copy-still8|Z|\" : \"bad-copy-after|\";\n",
+      "source_sha256": "d98fe973a6248a92acf2e21f393d35c299ee4a83bd4aeb2662eba88a25525af4",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "QTpHfGFsaWFzN3x1bnR5cGVkOHxHfGNvcHk4fGFsaWFzOXxEfGZyZWV8Y29weS1zdGlsbDh8Wnw=",
+        "stderr_base64": ""
+      }
+    },
+    {
+      "id": "forbidden-rebind",
+      "source": "<?php\nclass RefRebind133 {\n    public $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n    public function __destruct() { echo \"D|\"; }\n}\necho \"R:\";\n$object = new RefRebind133;\n$replacement = 11;\ntry {\n    $object->value =& $replacement; // REBIND\n    echo \"bad-rebind|\";\n} catch (Error $error) {\n    echo $error->getMessage() === \"Cannot assign by reference to overloaded object\" ? \"blocked|\" : \"bad-message|\";\n    echo $error->getLine() === 12 ? \"line|\" : \"bad-line|\";\n    echo $error->getFile() === __FILE__ ? \"file|\" : \"bad-file|\";\n}\necho $object->value === 7 ? \"kept7|\" : \"bad-property|\"; // COPY_READ\n$replacement = 13;\necho $object->value === 7 ? \"separate7|\" : \"bad-rebound|\";\necho $replacement === 13 ? \"rhs13|\" : \"bad-rhs|\";\nunset($object);\necho \"Z|\";\n",
+      "source_sha256": "d5379c031b50d40a6c0ef57281e0eb260436044f8127a664bd3f38c312d346d8",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "UjpHfGJsb2NrZWR8bGluZXxmaWxlfEd8a2VwdDd8R3xzZXBhcmF0ZTd8cmhzMTN8RHxafA==",
+        "stderr_base64": ""
+      }
+    },
+    {
+      "id": "default-null",
+      "source": "<?php\nclass RefNull133 {\n    public $value {\n        &get { echo \"G|\"; return $this->value; }\n    }\n    public function __destruct() { echo \"D|\"; }\n}\necho \"N:\";\n$object = new RefNull133;\n$alias =& $object->value;\necho $alias === null ? \"null|\" : \"bad-null|\";\n$alias = \"first\";\n$copy = $object->value;\n$alias = \"second\";\necho $copy === \"first\" ? \"copy|\" : \"bad-copy|\";\necho $alias === \"second\" ? \"alias|\" : \"bad-alias|\";\nunset($object);\n$alias = \"after\";\necho $alias === \"after\" ? \"after|Z|\" : \"bad-after|\";\n",
+      "source_sha256": "d16f432587729bf52f4cd9366e792f56e9fb2b124f19473030478f2d8246dbbd",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "TjpHfG51bGx8R3xjb3B5fGFsaWFzfER8YWZ0ZXJ8Wnw=",
+        "stderr_base64": ""
+      }
+    }
+  ],
+  "unsupported_controls": [
+    {
+      "id": "virtual-reference-get",
+      "source": "<?php\nclass RefVirtual133 {\n    public $other = 7;\n    public $value {\n        &get { echo \"G|\"; return $this->other; }\n    }\n}\n$object = new RefVirtual133;\n$alias =& $object->value;\n$alias = 9;\necho $object->other === 9 ? \"aliased|Z|\" : \"bad-alias|\";\n",
+      "source_sha256": "6e057055ced4e5f645c286a946a9b3731835cd9fcd80f3dd422338358609d28c",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "R3xhbGlhc2VkfFp8",
+        "stderr_base64": ""
+      },
+      "model_reason": "set, by-reference, attributed or defaulted virtual property hook"
+    }
+  ]
+}

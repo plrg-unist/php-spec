@@ -92,6 +92,7 @@ rule PhpStep/pipe-force-abrupt: S ~> S_left[.TODO = eps][.HELD = S.HELD]
   -- if S_left.COMPLETION =/= NORMAL
 
 dec $pipe_start(pstate, pcalltarget, pvalue, porigin, int, int) : pstate
+dec $pipe_array_value(pstate, nat, pvalue, porigin, int, int, int) : pstate
 dec $pipe_operand(pvalue) : poperand*
 def $pipe_operand(pvalue) = (KNOWN pvalue) :: eps
 def $pipe_start(S, pcalltarget, pvalue, porigin, z_send, z_call) = $throw_scalar(S, "Error", pfunction.NAME ++ $ptascii("(): Argument #1") ++ $call_parameter_name(psparam) ++ $ptascii(" could not be passed by reference"), z_send)
@@ -103,7 +104,8 @@ def $pipe_start(S, pcalltarget, pvalue, porigin, z_send, z_call) = S[.TODO = (CA
   -- if $target_function(S, pcalltarget) = (pfunction)
 
 dec $pipe_name(pstate, preqbytes, preqbytes, preqbytes?, pvalue, porigin, int, int, int) : pstate
-def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pvalue, porigin, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED "static method pipe callable"]
+dec $pipe_static_string(pstate, preqbytes, pvalue, porigin, int, int, int) : pstate
+def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pvalue, porigin, z_send, z_lookup, z_call) = $pipe_static_string(S, preqbytes_original, pvalue, porigin, z_send, z_lookup, z_call)
   -- if $dynamic_method_scan(preqbytes_original, false, false)
 def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pvalue, porigin, z_send, z_lookup, z_call) = $pipe_start(S, pfunction.ORIGIN, pvalue, porigin, z_send, z_call)
   -- if ~$dynamic_method_scan(preqbytes_original, false, false)
@@ -126,6 +128,11 @@ def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = $
   -- if S_read = $resolve_at(S, poperand, z_lookup)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (PSTRING n*)
+def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = $pipe_name(S_read, n*, $dynamic_lookup_name(n*), eps, pvalue_left, porigin, z_send, z_lookup, z_call)
+  -- if S_read = $resolve_at(S, poperand, z_lookup)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (PSTRING_CARRIER pstringidentity n*)
+  -- if $dynamic_method_scan(n*, false, false)
 def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = $pipe_start(S_read, CLOSURE_TARGET n, pvalue_left, porigin, z_send, z_call)
   -- if S_read = $resolve_at(S, poperand, z_lookup)
   -- if S_read.COMPLETION = NORMAL
@@ -142,7 +149,7 @@ def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = S
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if ~$closure_callable(S_read, n)
   -- if ~$class_plain_instance(S_read, n)
-def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = S_read[.COMPLETION = UNSUPPORTED "array pipe callable"]
+def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = $pipe_array_value(S_read, n, pvalue_left, porigin, z_send, z_lookup, z_call)
   -- if S_read = $resolve_at(S, poperand, z_lookup)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (PARRAY n)

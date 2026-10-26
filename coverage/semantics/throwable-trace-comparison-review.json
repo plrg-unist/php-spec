@@ -1,0 +1,40 @@
+{
+  "milestone": "COMP130",
+  "status": "independently reviewed and accepted within the stated bound",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C; TZ=UTC; profile options passed after -n"
+  },
+  "engine_basis": [
+    "Zend/zend_object_handlers.c::zend_std_compare_objects checks identity and exact class, then compares initialized declared slots in physical order when neither property table is materialized.",
+    "Zend/zend_hash.c::zend_hash_compare_impl compares array counts, then each left key and value with unordered key lookup; a missing key returns +1 in either orientation.",
+    "Modules 157/163 authenticate Throwable slots and trace/frame/args shapes; module 30 strips valid string-carrier identity for ordinary byte comparison."
+  ],
+  "scope": "Distinct live canonical builtin Exception/Exception or Error/Error pairs with at least one nonempty allocated trace, cold string caches, null previous values, no materialized property table, normal nonpending completion, and DIRECT trace arguments limited to null, bool, int, float, plain strings or validated string carriers. Frame and args arrays have the existing canonical trace shape. All seven comparison operators and direct/equal-prefix aggregate leaves use the ordered physical slots and ordinary trace array count/key/value rules without a callback or heap mutation.",
+  "implementation": {
+    "reviewed_candidate": "7f965bef751eb9311108bc863e9be0891a9704f8",
+    "tested_runtime_revisions": ["e5f3fcaea", "afe21c953", "9e72af792"],
+    "files": ["spec/semantics/152-throwable-runtime.watsup", "spec/semantics/163-throwable-trace-storage.watsup"],
+    "rule": "The distinct $throwable_scalar_trace_pair and $trace_compare_graph guards admit the bounded pure $property_order path; the COMP129 $throwable_cold_pair is unchanged, and the old Throwable Unsupported guard excludes both admitted predicates.",
+    "preservation": "The six runtime/test file blobs in the rebased candidate are byte-identical to tested 9e72af792; no semantic rerun is credited to composition."
+  },
+  "native_first_baseline": "Original /tmp/comp130-trace/pairs.php (sha256 4e0dbc3bbd23cbdd66573f3002dc11031705729e69ea90fd29f712d2e61b5715) under the pinned profile exits 0 with B|1:0|A:-1:1|L:-1:1|R:-1:-1|. The unchanged c0ffd00a5 model accepts/checks the source but exits 1 Unsupported(Throwable property comparison) after B|. A cold same-kind pair remains native/model normal B|0|. Archived unchanged-baselines.json sha256 7b49b71cbd71aa33f41e0128230130ad40e98b493b86edc426bd69d6c638b52d.",
+  "validation": {
+    "native": "Nine v2 sources at 606a528d3 all exit 0 with empty stderr; eight unchanged effective originals are in comp130-native-v2-carrier/native-report.json (sha256 4152b5aaf059d482ca47ae334e0c1d0f4c2558e686667c35fb12e84d2a6b76e4). The corrected named-key original is comp130-named-v4/native-report.json at 7ab83515f (sha256 5c5e8980072353585d843cf1d2b584ccfb4112969746b75702a14dd0018e3393); the carrier state source has its own 9e72af792 native report (sha256 6faeab5f2126c66f96efb864dfff0160378b926d94600bbe7a8ed107ea52ab96). Superseded named v2/v3 rows do not establish key reach.",
+    "model": "Eight normal source agreements: scalar-operators and frame-count-and-caster at e5f3fcaea; error-scalar-args, named-argument-key, empty-nonempty-trace, state-direct-array and cold-baseline at afe21c953; state-string-carrier at 9e72af792. Two object/array-argument controls exit 1 with the expected Unsupported after B| at afe21c953 and give no agreement credit. Each effective model report passes, has stable inputs/head and matches the corresponding original source hash and native bytes/status. The corrected named model report sha256 is a7043cf56cc547de3844ffb5ee96a38d25ee8ab03daaf5a351e53ac1a941e86f; carrier model report sha256 is 5cf7043eb4277b51e150605a81c2f5e17c64fe319ab0503f4c9a32e9ee351e4c.",
+    "state": "At 9e72af792, strict SL comp130-state-v2/report.json exits 0 with stable inputs/head: 64 direct/equal-prefix array premises plus 32 reached string-carrier premises, three raw PhpStep comparisons. The fixtures check actual trace→frame→args entries and owners, valid captured carrier, unchanged physical objects/properties/arrays/allocations, cleared aggregate guard, 0/1 budget resumption and exact final stdout. Report sha256 5a955cab6a58eea1d1579945b0c604a22503dd159316c39b18e9bace5294f0aa.",
+    "original_failures": "The first model attempt at 7ab83515f failed compilation before PHP execution because $trace_compare_graph was declared after its module152 use (archived model-scalar-operators-report.json sha256 c3a97942ffef893d8b6f19d735fbc5219fd3e108d26dd0a42596e747de3e5089). At e5f3fcaea, error-scalar-args stopped at S: with Unsupported because a genuine string argument was PSTRING_CARRIER (archived comp130-native-v2-fixed/model-error-scalar-args-report.json sha256 51f25c0ae73a64ffe220a5a987c77d16dbd4de2338241c7b3f99639238c3fbcf). A reached strict-SL carrier probe established the tag and validity; only the affected source/state checks were repeated. Both failures retain zero credit."
+  },
+  "independent_review": {
+    "decision": "accept bounded normal scalar-trace Throwable comparison; both partial comparison obligations and full core remain open",
+    "semantic_check": "The new trace guard first requires the canonical allocated shape, then checks each optional frame args array and every DIRECT leaf. Object, array, reference, invalid-carrier and cyclic argument graphs cannot enter this pure path. The source cases reach trace count, scalar values and named missing keys; equal-prefix aggregate work continues and a nonzero trace result skips a later caster. The empty/nonempty source establishes admission but its sign can stop at an earlier line slot; it is not counted as a trace-count witness. Separate predicates make the old empty-trace cut disjoint and preserve its normal baseline.",
+    "actual_master_tail": "Reviewed candidate 7f965bef7 is rebased onto actual clean master c69521c589906f7b240aa34fa840ecac3c55ee8e. Modules 52, 152, 157, 163 and 394 are unchanged between tested parent c0ffd00a5 and that master. The manifest only appends module432 pipe-array-callables; incoming semantic work adds unrelated print, hook-reference, Iterator/Generator/Fiber, dynamic HALT and pipe-callable selectors, while module30 adds only unrelated warning/task syntax. No COMP130 source or reached fixture invokes those paths. The rebased PROGRESS comparison row preserves its master text plus one COMP130 sentence; inventory changes are append-only in obligations 44 and 70, with other rows and top-level fields unchanged. Composition adds no execution credit.",
+    "remaining": "Warmed caches, previous links, subclasses, cross-class pairs, object/array/reference trace arguments, materialized tables, pending comparison remainders and arbitrary recursive/callback graphs remain outside this cut. Held COMP123, paused COMP88 and the five paused lanes were not resumed."
+  },
+  "artifacts": "Raw originals, native/model process streams, strict fixtures, superseded named-key probes and both zero-credit failures are preserved outside Git at /home/user/workspace/php-spec-evidence-archive/comp130; tracked case sources and recorded revisions recover the effective source bytes.",
+  "engine_bug_or_divergence": "none claimed"
+}

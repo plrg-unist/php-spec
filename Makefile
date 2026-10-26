@@ -90,6 +90,11 @@ test-semantics: build
 		python3 tests/semantics/array_iterator_data_destructor_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
 		python3 tests/semantics/array_iterator_data_destructor_review_sources.py --output "$$out/peer-source" && \
 		python3 tests/semantics/array_iterator_data_destructor_state_review.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a57-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/array_traversable_reference_cache_sources.py --output "$$out/iterator-source" && \
+		python3 tests/semantics/array_traversable_reference_cache_state.py --source-report "$$out/iterator-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/array_traversable_reference_cache_state_review.py --source-report "$$out/iterator-source/report.json" --output "$$out/peer-state" && \
+		python3 tests/semantics/array_traversable_reference_aggregate_sources.py --output "$$out/aggregate-source"
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
 	python3 tests/semantics/globals_compiler.py
@@ -498,6 +503,8 @@ test-semantics: build
 	python3 tests/semantics/generator_fiber_reference_transfer_state.py
 	python3 tests/semantics/generator_fiber_throw_transfer_sources.py
 	python3 tests/semantics/generator_fiber_throw_transfer_state.py
+	python3 tests/semantics/generator_fiber_fresh_throw_transfer_sources.py
+	python3 tests/semantics/generator_fiber_fresh_throw_transfer_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -583,6 +590,10 @@ test-semantics: build
 	python3 tests/semantics/first_class.py
 	python3 tests/semantics/first_class_protocol.py
 	python3 tests/semantics/pipe.py
+	python3 tests/semantics/pipe_array.py
+	python3 tests/semantics/pipe_array_protocol.py
+	python3 tests/semantics/pipe_static_string.py
+	python3 tests/semantics/pipe_static_string_protocol.py
 	python3 tests/semantics/pipe_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
@@ -914,6 +925,7 @@ test-semantics: build
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/reference_get_hook_cases.json
 	python3 tests/semantics/reference_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group backing-alias
 	python3 tests/semantics/reference_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group forbidden-rebind
+	python3 tests/semantics/untyped_reference_get_hook_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/expression_get_hook_cases.json
 	python3 tests/semantics/expression_get_hook_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/virtual_get_hook_cases.json

@@ -77,11 +77,24 @@ def $string_name_site(S, porigin_site, ptbytes) = true
   -- if $firstclass_evaluated(S, porigin_site)
 def $string_name_site(S, porigin_site, ptbytes) = false -- otherwise
 dec $string_site_valid(pstate, pstringselection, bool) : bool
+dec $pipe_string_source(expression, ptbytes) : bool
+def $pipe_string_source(expression, ptbytes) = true
+  -- if $parser_literal(expression) = (PSTRING ptbytes)
+def $pipe_string_source(expression, ptbytes) = true
+  -- if $parser_literal(expression) = eps
+  -- if $string_source_possible(expression)
+def $pipe_string_source(expression, ptbytes) = false -- otherwise
 def $string_site_valid(S, pstringselection, b_capture) = true
   -- if $origin_node(S.SOURCES, pstringselection.SITE) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
   -- if $ppfirstclass(phpType7*) = b_capture
   -- if $string_name_site(S, pstringselection.SITE, pstringselection.ORIGINAL)
   -- if pstringselection.INIT = $dynamic_init_line(S, pstringselection.SITE)
+  -- if $call_line_valid(S, (pstringselection.SITE), pstringselection.LINE)
+def $string_site_valid(S, pstringselection, false) = true
+  -- if $origin_node(S.SOURCES, pstringselection.SITE) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if ~$pppipe_optimized(expression_right)
+  -- if $pipe_string_source(expression_right, pstringselection.ORIGINAL)
+  -- if pstringselection.INIT = $pipe_lookup_line(S, pstringselection.SITE)
   -- if $call_line_valid(S, (pstringselection.SITE), pstringselection.LINE)
 def $string_site_valid(S, pstringselection, b_capture) = false -- otherwise
 

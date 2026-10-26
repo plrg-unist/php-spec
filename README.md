@@ -1623,8 +1623,14 @@ throws. Its affected check retires the earlier Generator refusal.
 Wider payloads, operand modes, delegation and Traversable lifetimes remain partial.
 The [nested-cache review](coverage/semantics/array-traversable-nested-cache-review.json)
 adds live-reference/deep COW and abrupt retirement for both spread engines,
-preserving folded pool siblings and rejecting cycles, descendant references,
-objects, debt and paths back to the receiving builder.
+preserving folded pool siblings and rejecting cycles, objects, debt and paths
+back to the receiving builder. In the no-destructor, by-value Iterator current
+array scope, ordinary scalar cells inside finite DIRECT arrays retain shared
+ownership through key callbacks and COW, while
+a sole cell can unwrap after its external alias is dropped. An Aggregate-returned
+Iterator follows the same route. The [reference-cache review](coverage/semantics/array-traversable-reference-cache-review.json)
+records three exact source agreements and 273 focused conditions; Generator
+caches and by-reference current results keep their earlier scope.
 Ordinary CVs of named IteratorAggregate classes now invoke a borrowed
 `getIterator()` frame and
 transfer its owned user Iterator or named-Generator return into DATA. Genuine
@@ -3784,9 +3790,15 @@ invalid/NUL-name behavior remain partial.
 [Pipe arrow grouping](coverage/semantics/pipe-syntax-review.json) survives checked
 syntax and printing, so a bare arrow RHS receives the matching compile error
 before operand effects. [Pipe execution](docs/semantics/SOURCE-PIPE.md) forces the
-left value before selecting a named or closure callable; its
-[runtime review](coverage/semantics/pipe-review.json) binds 12 source outcomes
-and separate paused-state controls.
+left value before selecting a named, closure or public user-method array
+callable. Its [runtime review](coverage/semantics/pipe-review.json) binds 12
+earlier source outcomes; the [array review](coverage/semantics/pipe-array-callable-review.json)
+binds twelve exact CLI outcomes and reached ownership checks.
+Public static user methods named by nonoptimized string RHS values now use
+class/method selection with authenticated pipe send and result tasks;
+[the method-string review](coverage/semantics/pipe-static-method-string-review.json)
+keeps literal, variable and temporary strings, reference/lookup behavior and
+excluded selectors separate from the earlier pipe evidence.
 [Switch execution](docs/semantics/SOURCE-SWITCH.md) scans cases in source order,
 retains the subject through fallthrough, and distinguishes constant-boolean
 branching from dynamic equality; its [review](coverage/semantics/switch-review.json)
@@ -4263,6 +4275,10 @@ ordinary reads copy the value, and object retirement detaches that source.
 Destination rebinding invokes Get before raising the overloaded-object Error.
 Two originals, 251 Boolean checks and six raw transitions pass in the
 [reference-Get review](coverage/semantics/reference-get-hooks-review.json).
+The matching untyped backed form has no property type source: aliases accept
+string writes, ordinary reads copy, and Get still precedes rebinding Error.
+Three originals and 217 focused checks pass in the
+[untyped reference-Get review](coverage/semantics/untyped-reference-get-hooks-review.json).
 Wider hook declarations and indirect consumers remain partial.
 
 Public backed by-value `get` hooks execute their block or expression body on each read,
