@@ -5,9 +5,16 @@
   "implementation": "Module 385 requires the exact REALCLOSURE or NAMEDCLOSURE tag, no bindTo override, the selected function origin, a dynamic nonfixed NExprFuncCall site, and UNPACK_CV. PREP saves the authenticated origin. The retired eager-cleanup receipt rechecks raw tag, site and function without requiring retired capture cells or a pruned binding record. Scoped Warnings prefix the selected lexical class.",
   "base_revision": "853ef4f344ce98f9f8041102aa6ca1ba7015b7af",
   "private_cut": "d2ca0809c",
-  "semantic_sha256": {
+  "tested_private_semantic_sha256": {
     "spec/semantics/30-storage.watsup": "42e438d742ef471f9091bf32b39e9f12a66e22cd3c443b3f3e29cec192dcd258",
     "spec/semantics/385-call-iterator-unpack.watsup": "d32f0f32b333ccb458a53e60772dee234a09a2253b8a81ed2cd35e615939d893"
+  },
+  "actual_tail": {
+    "parent_revision": "c819000d9a749f06d5a564cec429c130daf1b20c",
+    "semantic_composition_revision": "ac90eebc5",
+    "joined_30_sha256": "10e6ba220585ee5d7e4b3d7f256031dfdf283a41fca59912f64b1827aafd2c1b",
+    "joined_385_sha256": "d32f0f32b333ccb458a53e60772dee234a09a2253b8a81ed2cd35e615939d893",
+    "seam": "Only the intervening SHORT_RIGHT_NAN_WARNING ptask union from master was composed pointwise; no joined model rerun."
   },
   "sources": {
     "runner": "tests/semantics/closure_iterator_unpack_sources.py",
