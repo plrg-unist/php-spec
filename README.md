@@ -657,6 +657,15 @@ terminal-throw cleanup, preserving the original method trace and setter recovery
 Three source agreements and 574 original conditions pass (653 physical, 79 setup).
 Wider operands, captures, values and callback lifetimes remain partial.
 
+[Temporary Generator CONFIG inputs](coverage/semantics/config-generator-call-result-review.json)
+now accept genuine noarg named user-call results, including factories returning
+a fresh named Generator. The opcode INPUT and iterator DATA are separate owners:
+DATA retires first, then INPUT before API reception or exception recovery. Factory
+effects preserve the selected setter, and weak observers confirm final death;
+the original factory Exception trace survives terminal Generator throw. Three
+source comparisons and 506 maintained conditions pass (561 physical, 55 setup).
+Wider call forms, values and callback lifetimes remain partial.
+
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
 throws the object-key `Error` before copying its current value or entering the

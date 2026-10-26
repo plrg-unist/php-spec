@@ -1289,7 +1289,8 @@ contain523 physical conditions, including56 setup with no coverage credit.
 No native/accepted/control execution is renewed. The old Source87 direct-Generator
 PHP bytes and historical ID remain exact; only its Unsupported expectation is
 removed because the current fresh-CV consumer now admits it. Generator-function
-getIterator is covered below; references/temporaries, arguments/Closure/ordinary method producers, named keys,
+getIterator and bounded temporary user-call inputs are covered below;
+references, arguments/Closure/ordinary method producers, named keys,
 more sends, owning/reference caches, delegation/Fiber/GC and wider diagnostics or
 last-owner lifetimes remain partial; paused boundaries are unchanged.
 
@@ -1319,7 +1320,7 @@ One invalid taskset wrapper stopped before Python; its log/exit remain zero-cred
 and all six parts passed their first actual evaluations with unchanged90 caps.
 Native/genuine/accepted checks were not replayed; all five original genuine files
 remain preserved. Generator-function getIterator is covered below; nonfresh or
-owning/temporary/Closure/ordinary method producers, wider sends/values/lifetimes and paused
+owning/Closure/ordinary method producers, wider sends/values/lifetimes and paused
 boundaries remain partial or unchanged.
 
 The [sole-DATA Generator increment](../../coverage/semantics/config-generator-sole-data-review.json)
@@ -1343,8 +1344,8 @@ entry48 retain `44cec5541`. Corrected completion89, owned48/127 and peer99/96
 retain `8b7b153ec`, totaling448 originals/507 physical/59 setup. Original89 failed
 because a fixture continued from raw PhpStep output before the driver's prune;
 source-driven edges correct it without runtime changes or accepted replay. Both
-that failure and all five original genuine files are preserved. Direct temporary
-call-result ingress, ordinary method/Closure producers, owning caches/returns, delegation,
+that failure and all five original genuine files are preserved. Bounded temporary
+call-result ingress is covered below; ordinary method/Closure producers, owning caches/returns, delegation,
 GC/Fiber/destructor callback histories and broader lifetimes remain partial.
 
 The [Generator-method Aggregate producer](../../coverage/semantics/config-aggregate-generator-method-review.json)
@@ -1373,6 +1374,36 @@ original conditions retain `c784daf3a`, first evaluations (653 physical,79 setup
 Five old Generator record literals gain only the required EPS receipt; all other
 assertions stay exact. Only the Source87 Aggregate control's Unsupported mapping
 retires, with its PHP bytes and historical cut unchanged; no old suite is replayed.
-Direct temporary/ordinary method/Closure ingress, nonfresh/byref producers,
+Wider temporary/ordinary method/Closure ingress, nonfresh/byref producers,
 wider sends/owning values, delegation/Fiber/destructor callback histories and
+paused boundaries remain partial or unchanged.
+
+The [temporary Generator-call input](../../coverage/semantics/config-generator-call-result-review.json)
+admits an actual result of a direct noarg nonbyref named user call with no name
+fallback. Existing emitted-call and UNPACK_VAR facts authenticate its source;
+the returned fresh named Generator retains its own independent function/frame
+origin. A factory may publish only WeakReference and return its real local value;
+no variable is invented as the unpack operand and no factory/Generator identity
+is assumed. Existing verified return types remain authoritative. The consumer
+still accepts at most two non-NULL string sends with integer keys.
+
+SEND_UNPACK keeps that opcode INPUT while its iterator separately owns DATA.
+Native resumes therefore carry two owners. Normal finish or terminal throw first
+releases DATA into a real input-release frontier with one live owner; FREE_OP1
+then retires INPUT before API entry or caller catch. Raw release equalities stay
+separate from driver-managed pruning. Historical reception validates the actual
+call source after allocation death, while active stages remain live-only. Quiet
+last-owner and captured-callee guards remain; owning RETURN children stop before
+the final INPUT release. The old CV and Aggregate modes retain their existing
+roots and lifetime behavior.
+
+Native3/genuine Unsupported0 retain `eacd3fd4e`; strict417/source3 retain
+`702d51056`. Fixed entry45 retains `1db66515c`; corrected author102/45/120 and
+peer126/123 retain `2f4052196`, totaling506 maintained conditions/561 physical/
+55 duplicated setup. Two explicit item-binding premises add no behavior credit.
+The original completion101 syntax error stopped before evaluation and stays0;
+only affected/unrun fixtures repeat. All five genuine files remain preserved.
+Factory trace23/identity/result99, source/callee effects, weak death and setter
+recovery pass. Wider calls/arguments/references, nonfresh or method/Closure
+Generators, owning caches/returns, delegation/Fiber/destructor callbacks and
 paused boundaries remain partial or unchanged.
