@@ -34,17 +34,18 @@ The continuation owns the partial builder, Iterator DATA and raw current/key
 caches. Its immutable source receipt survives source-CV unset or rebinding.
 Normal completion releases the cache before next and DATA at finish. Invalid-key
 and current/key/next failures discard pending caches, DATA and the partial builder
-within the quiet domain. This first scope requires an Iterator with no owning
+within the quiet domain. This ordinary path requires an Iterator with no owning
 heap children or destructor (primitive fields are allowed) and exact ordinary
 public method signatures. Cache values are quiet primitives, validated strings
 or finite acyclic DIRECT object-free array graphs. Current may return an ordinary
 unconstrained reference cell; key remains by value. Shared child tables contribute
 one edge per physical entry, independent of their parent's owner count. Path-local
-validation permits shared descendants but rejects cycles, descendant references,
-objects, debt and any path back to the receiving builder. Fresh integer-graph
-witnesses distinguish key-time live-reference writes from later selective COW.
-Object/reference descendants, other Iterator operand
-modes and wider callback lifetimes remain partial. Unsupported Traversables
+validation permits shared descendants but rejects cycles, objects, debt and any
+path back to the receiving builder. The no-destructor, by-value current-array
+lane admits ordinary scalar reference cells as described below. Fresh
+integer-graph witnesses distinguish key-time live-reference writes from later
+selective COW. Other Iterator operand modes, wider reference descendants and
+callback lifetimes remain partial. Unsupported Traversables
 refuse explicitly rather than receiving a non-Traversable TypeError.
 
 The bounded ordinary-CV Iterator scope now also admits a real public
@@ -60,6 +61,20 @@ the destructor; there is no intervening `THROW_SEARCH`/Iterator task cut on that
 route. The [DATA destructor review](../../coverage/semantics/array-iterator-data-destructor-review.json)
 records the distinct source and reached-state checks. Owning instance children,
 other operand modes and broader destructor reentry remain partial.
+
+For a by-value `current()` result from an ordinary user Iterator without a
+destructor, the cache also admits finite DIRECT ARRAY descendants with ordinary
+scalar reference cells. The validator follows each path to reject cycles, debt,
+pool-owned reference tables and builder backedges; shared sibling edges are
+allowed. The raw cache and copied rows keep physical cell ownership. With an
+external alias, a later COW write still reaches the shared cell. After that
+alias is unset, a sole reference can be unwrapped during COW and the detached
+row can change independently. The same Iterator mechanism applies to an
+Iterator returned by an Aggregate getter. Three exact source agreements and
+273 reached conditions (three raw steps) cover these cases in the
+[reference-cache review](../../coverage/semantics/array-traversable-reference-cache-review.json).
+By-reference current results and Generator caches retain their earlier scope;
+object, typed, proxy, cyclic and debt-bearing descendants remain partial.
 
 `427-array-generator-unpack.watsup` adds ordinary named Generator bodies with
 received parameters and reference yields, using real borrowed native resumes.

@@ -692,7 +692,16 @@ now check a direct CV user Iterator's string keys after its cached `current()`
 and before `next()`. Numeric strings become positional only for the send;
 duplicate, unknown and positional-after-named errors stop later callbacks.
 Five original sources agree with PHP, and reached first-send/error checks pass.
-Other Iterator producers, value shapes and lifetimes remain partial.
+Two Aggregate-returned Iterator cases also agree with PHP, including an early
+duplicate error; wider producer, value and lifetime histories remain partial.
+
+[Temporary Iterator CONFIG inputs](coverage/semantics/config-iterator-temp-call-review.json)
+now retain separate opcode INPUT and Iterator DATA owners for a direct noarg
+factory call. DATA retires before INPUT and before the API; a quiet sole INPUT
+dies before API entry or catch after a supplied key exception. Three original
+sources agree with PHP, and 418 reached premises check the owner transitions,
+throw cleanup and source guards. Effectful last owners and temporary string
+keys remain explicit boundaries.
 
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
@@ -1614,8 +1623,14 @@ throws. Its affected check retires the earlier Generator refusal.
 Wider payloads, operand modes, delegation and Traversable lifetimes remain partial.
 The [nested-cache review](coverage/semantics/array-traversable-nested-cache-review.json)
 adds live-reference/deep COW and abrupt retirement for both spread engines,
-preserving folded pool siblings and rejecting cycles, descendant references,
-objects, debt and paths back to the receiving builder.
+preserving folded pool siblings and rejecting cycles, objects, debt and paths
+back to the receiving builder. In the no-destructor, by-value Iterator current
+array scope, ordinary scalar cells inside finite DIRECT arrays retain shared
+ownership through key callbacks and COW, while
+a sole cell can unwrap after its external alias is dropped. An Aggregate-returned
+Iterator follows the same route. The [reference-cache review](coverage/semantics/array-traversable-reference-cache-review.json)
+records three exact source agreements and 273 focused conditions; Generator
+caches and by-reference current results keep their earlier scope.
 Ordinary CVs of named IteratorAggregate classes now invoke a borrowed
 `getIterator()` frame and
 transfer its owned user Iterator or named-Generator return into DATA. Genuine
@@ -3779,6 +3794,11 @@ left value before selecting a named, closure or public user-method array
 callable. Its [runtime review](coverage/semantics/pipe-review.json) binds 12
 earlier source outcomes; the [array review](coverage/semantics/pipe-array-callable-review.json)
 binds twelve exact CLI outcomes and reached ownership checks.
+Public static user methods named by nonoptimized string RHS values now use
+class/method selection with authenticated pipe send and result tasks;
+[the method-string review](coverage/semantics/pipe-static-method-string-review.json)
+keeps literal, variable and temporary strings, reference/lookup behavior and
+excluded selectors separate from the earlier pipe evidence.
 [Switch execution](docs/semantics/SOURCE-SWITCH.md) scans cases in source order,
 retains the subject through fallthrough, and distinguishes constant-boolean
 branching from dynamic equality; its [review](coverage/semantics/switch-review.json)

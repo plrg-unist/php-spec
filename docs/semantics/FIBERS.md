@@ -811,9 +811,18 @@ Fiber suspension in a local catch or pending finally. Normal resume preserves
 the original exception; `Fiber::throw` can replace it with that exception as
 `Previous`. The Generator retains its old by-value cache until yield or final
 release. Three primed THROW sources, one fresh CURRENT control and one
-75-premise reached state cover this bounded case; fresh THROW, by-reference,
-method, Closure and delegated variants remain open.
+75-premise reached state cover this bounded case; by-reference, method,
+Closure and delegated variants remain open.
 [THROW transfer review](../../coverage/semantics/generator-fiber-throw-transfer-review.json).
+
+Fresh direct named `Generator::throw` now also transfers a still-advancing
+pre-yield body through Fiber suspension. The saved resumer owns the temporary
+Throwable until the first yield enables injection; normal escape, caught
+recovery and an injected Fiber exception retain their distinct identities and
+`Previous` order. Three exact changed originals and 86 source-reached premises
+pass. The two post-yield fresh originals and primed control already agreed on
+the unchanged model. Wider fresh, by-reference and other callee forms remain
+partial. [Fresh THROW review](../../coverage/semantics/generator-fiber-fresh-throw-transfer-review.json).
 
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need

@@ -22,11 +22,21 @@ The invalid-lookup task validates its pipe site and lookup line. It saves the
 selected error bytes before RHS retirement; those bytes and the held left
 payload are not reconstructed from mutable history at the paused task.
 
+A nonoptimized string RHS naming a public static user method selects that
+method from the evaluated literal, variable or temporary value. A separate
+send task retains the forced left value through by-reference refusal; a
+source-bound result task preserves a reference return for its outer consumer.
+Missing methods report at RHS lookup. Private, nonstatic, magic, autoloaded,
+keyword and optimized method-string selectors remain outside this increment.
+For a dynamic RHS, the result receipt records selected bytes; it cannot
+reconstruct a past value from a later-mutated source variable.
+
 The syntax grouping and bare-arrow rejection are described in
 [the syntax review](../../coverage/semantics/pipe-syntax-review.json). Runtime
-rules are in `122-pipe-compiler.watsup`, `123-pipe-runtime.watsup` and
-`432-pipe-array-callables.watsup`, with narrow shared task and call-integrity
-changes. Matching-engine evidence starts at `zend_compile_pipe` in the pinned
+rules are in `122-pipe-compiler.watsup`, `123-pipe-runtime.watsup`,
+`432-pipe-array-callables.watsup` and
+`433-pipe-static-method-strings.watsup`, with narrow shared task and
+call-integrity changes. Matching-engine evidence starts at `zend_compile_pipe` in the pinned
 `Zend/zend_compile.c`, with value sends and calls in `Zend/zend_vm_def.h`.
 
 [The runtime review](../../coverage/semantics/pipe-review.json) binds 12
@@ -34,9 +44,10 @@ private source outcomes (7 normal, 5 PHP errors), separate original-source
 replays, and paused ownership/authentication controls. The maintained source
 and protocol checks are `tests/semantics/pipe*`. The public user-method array
 increment has twelve exact native CLI comparisons and four reached-state
-controls; its separate review records the tested revision. Builtin, direct
-method-string and other object callables remain explicit dependencies; this is
-partial pipe coverage, not a full callable-family claim.
+controls; its separate review records the tested revision. The public static
+method-string increment has its own exact native and paused-state gates.
+Builtin, scoped method-string and other object callables remain explicit
+dependencies; this is partial pipe coverage, not a full callable-family claim.
 
 [Unary CONFIG PIPE](../../coverage/semantics/include-config-pipe-review.json)
 authenticates the held left child and compiled send/call lines through Stringable

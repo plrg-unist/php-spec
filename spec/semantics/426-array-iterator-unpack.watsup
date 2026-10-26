@@ -19,6 +19,12 @@ dec $array_iterator_valid(pstate, parrayiterator, text) : bool
 dec $array_iterator_table(pstate, nat) : bool
 dec $array_iterator_value(pstate, poperand) : pvalue?
 dec $array_iterator_value_away(pstate, pvalue, nat) : bool
+dec $array_iterator_reference_items(pstate, nat, pentry*, nat*) : bool
+dec $array_iterator_reference_table(pstate, nat) : bool
+dec $array_iterator_reference_away(pstate, pvalue, nat) : bool
+dec $array_iterator_current_value(pstate, parrayiterator, poperand) : pvalue?
+dec $array_iterator_current_away(pstate, pvalue, nat) : bool
+dec $array_iterator_current_builder(pstate, parrayiterator) : bool
 dec $array_iterator_ready(pstate, parrayiterator) : bool
 dec $array_iterator_plan(pstate) : parrayiterator?
 dec $array_iterator_call(pstate, parrayiterator, text, ptask*) : pstate
@@ -180,14 +186,51 @@ def $array_iterator_value_away(S, PARRAY n, n_builder) = true
   -- if $array_null_const_items(S, S.ARRAYS[n].ITEMS, [n, n_builder])
 def $array_iterator_value_away(S, pvalue, n_builder) = ($value_nodes(pvalue) = eps) -- otherwise
 
+;; An ordinary scalar ALIAS remains a physical child edge of each array table.
+;; Copying a table root does not multiply that edge; generic COW duplication
+;; later unwraps a cell only when its physical owner count is one.
+def $array_iterator_reference_items(S, n_parent, eps, n_seen*) = true
+def $array_iterator_reference_items(S, n_parent, (ENTRY pkey (DIRECT (PARRAY n))) :: pentry*, n_seen*) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if ~(n <- n_seen*) /\ ~(n <- S.LITERALARRAYDEBTS)
+  -- if $array_iterator_reference_items(S, n, S.ARRAYS[n].ITEMS, n :: n_seen*)
+  -- if $array_iterator_reference_items(S, n_parent, pentry*, n_seen*)
+def $array_iterator_reference_items(S, n_parent, (ENTRY pkey (DIRECT pvalue)) :: pentry*, n_seen*) = ($literal_reference_flat_leaf(S, pvalue) /\ $array_iterator_reference_items(S, n_parent, pentry*, n_seen*))
+  -- if $value_nodes(pvalue) = eps
+def $array_iterator_reference_items(S, n_parent, (ENTRY pkey (ALIAS n_cell)) :: pentry*, n_seen*) = true
+  -- if ~$array_immutable(S, n_parent) /\ $heap_count(HARRAY n_parent, $pools_nodes(S.POOLS)) = 0
+  -- if $array_iterator_value(S, REFERENCE n_cell) = (pvalue)
+  -- if $literal_reference_flat_leaf(S, pvalue) /\ $value_nodes(pvalue) = eps
+  -- if $array_iterator_reference_items(S, n_parent, pentry*, n_seen*)
+def $array_iterator_reference_items(S, n_parent, pentry*, n_seen*) = false -- otherwise
+def $array_iterator_reference_table(S, n) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if ~(n <- S.LITERALARRAYDEBTS)
+  -- if ~$array_immutable(S, n) /\ $heap_count(HARRAY n, $pools_nodes(S.POOLS)) = 0
+  -- if $array_iterator_reference_items(S, n, S.ARRAYS[n].ITEMS, [n])
+def $array_iterator_reference_table(S, n) = false -- otherwise
+def $array_iterator_reference_away(S, PARRAY n, n_builder) = true
+  -- if n =/= n_builder /\ $array_iterator_reference_table(S, n)
+  -- if $array_iterator_reference_items(S, n, S.ARRAYS[n].ITEMS, [n, n_builder])
+def $array_iterator_reference_away(S, pvalue, n_builder) = false -- otherwise
+def $array_iterator_current_value(S, parrayiterator, poperand) = (pvalue)
+  -- if $array_iterator_value(S, poperand) = (pvalue)
+def $array_iterator_current_value(S, parrayiterator, KNOWN (PARRAY n)) = (PARRAY n)
+  -- if $array_iterator_value(S, KNOWN (PARRAY n)) = eps
+  -- if ~$array_iterator_destructor(S, parrayiterator.OBJECT)
+  -- if $array_iterator_reference_table(S, n)
+def $array_iterator_current_value(S, parrayiterator, poperand) = eps -- otherwise
+def $array_iterator_current_away(S, pvalue, n_builder) = ($array_iterator_value_away(S, pvalue, n_builder) \/ $array_iterator_reference_away(S, pvalue, n_builder))
+def $array_iterator_current_builder(S, parrayiterator) = ($array_null_const_items(S, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY]) \/ (~$array_iterator_destructor(S, parrayiterator.OBJECT) /\ $array_iterator_reference_items(S, parrayiterator.ARRAY, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY])))
+
 def $array_iterator_ready(S, parrayiterator) = true
   -- if $node_children(S, HOBJECT parrayiterator.OBJECT) = eps
   -- if ~$instance_storage_freeing(S, parrayiterator.OBJECT)
   -- if ~(parrayiterator.ARRAY <- S.LITERALARRAYDEBTS)
-  -- if $array_null_const_items(S, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY])
-  -- if $array_iterator_value(S, parrayiterator.CURRENT) = (pvalue_current)
+  -- if $array_iterator_current_builder(S, parrayiterator)
+  -- if $array_iterator_current_value(S, parrayiterator, parrayiterator.CURRENT) = (pvalue_current)
   -- if $array_iterator_value(S, parrayiterator.KEY) = (pvalue_key)
-  -- if $array_iterator_value_away(S, pvalue_current, parrayiterator.ARRAY) /\ $array_iterator_value_away(S, pvalue_key, parrayiterator.ARRAY)
+  -- if $array_iterator_current_away(S, pvalue_current, parrayiterator.ARRAY) /\ $array_iterator_value_away(S, pvalue_key, parrayiterator.ARRAY)
 def $array_iterator_ready(S, parrayiterator) = false -- otherwise
 
 def $array_iterator_pending(S) = true
@@ -262,10 +305,12 @@ rule PhpStep/array-iterator-valid-result: S ~> $array_iterator_clear(S, parrayit
   -- if S.RESULT = KNOWN (PBOOL b)
 
 def $array_iterator_capture(S, parrayiterator, false, ptask_tail*) = S[.TODO = (ARRAY_ITERATOR parrayiterator[.CURRENT = S.RESULT] "key-start") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if $array_iterator_value(S, S.RESULT) = (pvalue)
+  -- if $array_iterator_current_value(S, parrayiterator, S.RESULT) = (pvalue)
 def $array_iterator_capture(S, parrayiterator, true, ptask_tail*) = S[.TODO = (ARRAY_ITERATOR parrayiterator[.KEY = KNOWN pvalue] "insert") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $array_iterator_value(S, S.RESULT) = (pvalue)
-def $array_iterator_capture(S, parrayiterator, b_key, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "array Iterator unpack callback result outside quiet payload domain"]
+def $array_iterator_capture(S, parrayiterator, false, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "array Iterator unpack callback result outside quiet payload domain"]
+  -- if $array_iterator_current_value(S, parrayiterator, S.RESULT) = eps
+def $array_iterator_capture(S, parrayiterator, true, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "array Iterator unpack callback result outside quiet payload domain"]
   -- if $array_iterator_value(S, S.RESULT) = eps
 rule PhpStep/array-iterator-current-key-result: S ~> $array_iterator_capture(S, parrayiterator, b_key, ptask_tail*)
   -- if S.TODO = (ARRAY_ITERATOR parrayiterator text) :: ptask_tail*
@@ -290,13 +335,13 @@ def $array_iterator_insert(S, parrayiterator, ptask_tail*) = $throw_scalar(S, "E
 def $array_iterator_insert(S, parrayiterator, ptask_tail*) = $array_iterator_clear(S_insert, parrayiterator, "next-start", ptask_tail*)
   -- if parrayiterator.KEY = KNOWN pvalue_key
   -- if $array_iterator_key_valid(pvalue_key)
-  -- if $array_iterator_value(S, parrayiterator.CURRENT) = (pvalue)
+  -- if $array_iterator_current_value(S, parrayiterator, parrayiterator.CURRENT) = (pvalue)
   -- if S_insert = $literal_insert(S, parrayiterator.ARRAY, $array_iterator_key(pvalue_key), pvalue, parrayiterator.LINE)
   -- if S_insert.COMPLETION = NORMAL
 def $array_iterator_insert(S, parrayiterator, ptask_tail*) = S_insert
   -- if parrayiterator.KEY = KNOWN pvalue_key
   -- if $array_iterator_key_valid(pvalue_key)
-  -- if $array_iterator_value(S, parrayiterator.CURRENT) = (pvalue)
+  -- if $array_iterator_current_value(S, parrayiterator, parrayiterator.CURRENT) = (pvalue)
   -- if S_insert = $literal_insert(S, parrayiterator.ARRAY, $array_iterator_key(pvalue_key), pvalue, parrayiterator.LINE)
   -- if S_insert.COMPLETION =/= NORMAL
 rule PhpStep/array-iterator-insert: S ~> $array_iterator_insert(S, parrayiterator, ptask_tail*)

@@ -121,9 +121,20 @@ propagate the original Throwable, or replace it with a supplied Fiber throw;
 three primed THROW sources distinguish identity, `Previous`, reentry Error and
 cache release; a fresh CURRENT source preserves the earlier path. Admission
 requires one valid Throwable, a defined by-value cache and a direct named
-callee. Fresh THROW, by-reference, method, Closure and delegated transfers
-remain partial.
+callee. By-reference, method, Closure and delegated THROW transfers remain
+partial.
 [THROW transfer review](../../coverage/semantics/generator-fiber-throw-transfer-review.json).
+
+A fresh direct named `Generator::throw` can park before its first yield. Its
+saved advancing resumer owns a temporary Throwable made for the call while the
+Fiber holds the running body. On normal resume the first yield is followed by
+injection: the exception can escape or be caught and followed by a recovery
+yield. If `Fiber::throw` aborts the pre-yield pause, the original API Throwable
+escapes with the Fiber Throwable as `Previous`. Three exact pre-yield sources
+and one 86-premise reached state cover the uncached owner and resumer; two
+post-yield fresh sources and a primed source are unchanged controls. Other
+fresh call shapes and wider producer/delegation/lifecycle combinations remain
+partial. [Fresh THROW transfer review](../../coverage/semantics/generator-fiber-fresh-throw-transfer-review.json).
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;

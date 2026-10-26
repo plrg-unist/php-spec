@@ -5575,3 +5575,64 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 2
   -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to string")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pprintnanwarning.LINE
+
+;; ZEND_ECHO obtains the interned "Array" after the array conversion warning.
+;; Its direct CV is borrowed: a callback may retire the table before output.
+syntax pprintarraywarning = { SITE porigin, LINE int, INPUT poperand }
+dec $print_array_source(pstate, pprintarraywarning) : bool
+def $print_array_source(S, pprintarraywarning) = true
+  -- if $print_task_valid(S, pprintarraywarning.SITE, pprintarraywarning.LINE)
+  -- if pprintarraywarning.INPUT = VARIABLE ptbytes z
+  -- if $integer_operand_source(S, pprintarraywarning.SITE, [PCFIELD 0], pprintarraywarning.INPUT)
+  -- if $code_expression_at_source(S, pprintarraywarning.SITE, [PCFIELD 0]) = (pprintarraywarning.LINE)
+def $print_array_source(S, pprintarraywarning) = false -- otherwise
+def $print_array_plan(S) = (pprintarraywarning)
+  -- if S.OUTPUTBUFFERS = eps
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.TODO = (PRINT_EMIT porigin z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if pprintarraywarning = {SITE porigin, LINE z, INPUT S.RESULT}
+  -- if $print_array_source(S, pprintarraywarning)
+  -- if $array_string_cast_snapshot(S, pprintarraywarning.INPUT)
+def $print_array_plan(S) = eps -- otherwise
+dec $print_array_valid(pstate, pprintarraywarning, nat) : bool
+def $print_array_valid(S, pprintarraywarning, n) = ($print_array_source(S, pprintarraywarning) /\ $(n <= 1) /\ (n = 1 \/ S.OUTPUTBUFFERS = eps) /\ (n = 1 \/ $array_string_cast_snapshot(S, pprintarraywarning.INPUT)))
+
+rule PhpStep/print-array-begin: S ~> S[.TODO = (PRINT_ARRAY_WARNING pprintarraywarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $print_array_plan(S) = (pprintarraywarning)
+rule PhpStep/print-array-dispatch: S ~> $error_dispatch(S, 2, $ptascii("Array to string conversion"), pprintarraywarning.LINE, DIAGNOSTIC "Warning" ($ptascii("Array to string conversion")) pprintarraywarning.LINE, PRINT_ARRAY_WARNING pprintarraywarning 1)
+  -- if S.TODO = (PRINT_ARRAY_WARNING pprintarraywarning 0) :: ptask_tail*
+  -- if $print_array_valid(S, pprintarraywarning, 0)
+rule PhpStep/print-array-resume: S ~> S[.TODO = (PRINT_EMIT pprintarraywarning.SITE pprintarraywarning.LINE) :: ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array"))][.BASE = BASE_VALUE (KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array")))]
+  -- if S.TODO = (PRINT_ARRAY_WARNING pprintarraywarning 1) :: ptask_tail*
+  -- if $print_array_valid(S, pprintarraywarning, 1)
+  -- if S.OUTPUTBUFFERS = eps
+rule PhpStep/print-array-buffer-boundary: S ~> S[.COMPLETION = UNSUPPORTED "print array output buffer changed during Warning"]
+  -- if S.TODO = (PRINT_ARRAY_WARNING pprintarraywarning 1) :: ptask_tail*
+  -- if $print_array_valid(S, pprintarraywarning, 1)
+  -- if S.OUTPUTBUFFERS =/= eps
+
+;; A handler throw leaves the same Exception pending. The unbuffered write
+;; precedes exception search and cancels print's result and outer assignment.
+def $error_read_discard(S, PRINT_ARRAY_WARNING pprintarraywarning 1) = $output_write(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $ptascii("Array"))
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
+  -- if $print_array_valid(S, pprintarraywarning, 1)
+  -- if S.OUTPUTBUFFERS = eps
+  -- if $destructor_pending_valid(S, (n_exception))
+def $error_read_discard(S, PRINT_ARRAY_WARNING pprintarraywarning 1) = S[.COMPLETION = UNSUPPORTED "print array output buffer changed during Warning"]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
+  -- if $print_array_valid(S, pprintarraywarning, 1)
+  -- if S.OUTPUTBUFFERS =/= eps
+def $task_nodes(PRINT_ARRAY_WARNING pprintarraywarning n) = eps
+def $call_task_valid(S, PRINT_ARRAY_WARNING pprintarraywarning n) = $print_array_valid(S, pprintarraywarning, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = PRINT_ARRAY_WARNING pprintarraywarning 1
+  -- if $print_array_valid(S, pprintarraywarning, 1)
+  -- if perrorcall.TARGET =/= eps \/ $array_string_cast_snapshot(S, pprintarraywarning.INPUT)
+  -- if perrorcall.SITE = pprintarraywarning.SITE /\ perrorcall.LINE = pprintarraywarning.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pprintarraywarning.LINE

@@ -1,0 +1,43 @@
+{
+  "scope": "Fixed bare namespace constant call whose checked compiled primary is N\\constant and fallback is global constant, with one raw exact __COMPILER_HALT_OFFSET__ string argument and no user-function target, owner, named send or pack. Partial dynamic-source behavior.",
+  "status": "independently_reviewed_private",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "base_revision": "5c79091898aa6ce59766f4dbcf22e4cef94cfe44",
+  "runtime_sha256": "a27e141d567fb1a2356fa368113a0a5cb49186f19129f3488a223720c64ddbc8",
+  "engine_route": "Zend/zend_compile.c::zend_compile_ns_call emits INIT_NS_FCALL_BY_NAME. Zend/zend_vm_def.h checks the namespace function before global fallback; PHP_FUNCTION(constant) and zend_get_halt_offset_constant use the executed filename.",
+  "mechanism": "At an authenticated CONFIG_INVOKE, bind the complete checked primary/fallback option, require the exact global fallback and no user target, then reuse the Source100 filename-local HALT_OFFSET value and HALT_ABSENT Error branches. Selected calls, fixed global calls, fixed defined, HALT_UNKNOWN and provider boundaries are unchanged.",
+  "validation": {
+    "native_first": "Four frozen namespaced originals were pinned CLI0 with exact stdout and empty stderr. The unchanged checked model accepted all four; three fallback calls returned Unsupported and the namespaced user-function shadow returned USER normally.",
+    "changed_sources": "Author main absent/present and user shadow pass exact against the preserved native bytes. A copied absolute child snapshot stopped before semantics in v3 and remains zero credit; the child-only v4 rebuilt that snapshot from unchanged source bytes and passes exact. Independent reviewer frozen four-source packet passes exact, including Error file/line/trace and child-local offset 89 with main absent.",
+    "reached_state": "Three author original-derived strict-SL fixtures pass 68+55+130=253 checks on 421 modules: actual fallback CONFIG_INVOKE, no user target, local HALT offset/absence, Error trace, provider and journal preservation, budget0/resume, and an admitted HALT_UNKNOWN projection that remains Unsupported. Independent frozen absent frontier passes 69 checks.",
+    "regression": "One original Source100 fixed-global main-present source remains checked normal with exact native output. The new helper requires nonempty namespace fallback, so the unchanged selected-call and fixed-defined guards remain disjoint.",
+    "failed_attempts": "First and second model cuts had a nested optional fallback binder that failed at the actual reached descriptor; both remain zero credit. The first reviewer diagnostic had a fixture variable elaboration error, also zero credit. Its corrected guard diagnostic isolated the binder as the only failing premise."
+  },
+  "environment": {
+    "profile": "tests/semantics/profile.json",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "resources": "Author CPU4 native/baseline, changed-source, diagnostic, focused-state and regression runs fully reaped/released; reviewer CPU4 guard, frozen-source and reached-front runs fully reaped/released."
+  },
+  "raw_artifacts": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/dynamic-source-102",
+    "reports_sha256": {
+      "halt-namespace-v1/native-report.json": "e483047b7934c07bde2b15a0df6ff6d8cf47d4bc045ea03d195f22cf0e1a5922",
+      "halt-namespace-v1/model-report.json": "483162e824aded739a850ba25e7552320babe7afafbb805b272686cf0773c336",
+      "halt-namespace-implemented-v1/model-report.json": "129ca2bce1f3f06510ca050471d8662027c1fdf4d61385be22465425168e1c4b",
+      "halt-namespace-implemented-v2/model-report.json": "5b07c6f4a2a81482458c5babe86e08c72e010158232c4941f89f4ff89fb70867",
+      "halt-namespace-implemented-v3/model-report.json": "f90486df5da79007211d88a960d862b94d903aff6e099553fd711c3751812d09",
+      "halt-namespace-child-fixture-v4/retry-report.json": "d2b41916398d5a443da727080318db71e0635b1ed139a2599ed7dd96160d241b",
+      "halt-namespace-state-v1/report.json": "5fe87539fd7966d35ba9beb92d704ebc3678cceef281698d39a3bc1ef1571b19",
+      "halt-namespace-regression-v1/report.json": "17a468147236c03bffd0c59e669bd632a1dac81518b24def7f47fc7e1db43079",
+      "reviewer/guard-diagnostic-v1/report.json": "9965dc3f3c49a41984c4671e759ab579e060675dc2f06b82b42041d0015a1bbd",
+      "reviewer/guard-diagnostic-v2/report.json": "2256fdce3f206e108aff1fc6fe7e74f9197b42094a21bc368d825b2164cce235",
+      "reviewer/source-controls-v1/independent-report.json": "c334833c755664fcf373d8cc483463ebed6d785d5e89b06de17617867181d30a",
+      "reviewer/independent-state-v1/report.json": "86155e08d333a88e57eeae7d4509ded2c5867de13c2bcc37bf81f25a9e20a30c"
+    },
+    "recovery": "Run halt_namespace_sources.py --phase native then --phase model with one fresh output root. Run halt_namespace_protocol.py --sources SOURCE_ROOT --output FRESH_ROOT; --case selects one of three reached fronts. The original native root supplies exact source bytes and file snapshot. Use the archived reports for zero-credit failures and the independent frozen packet."
+  },
+  "review": "Independent semantic, source, reached-state, documentation and inventory review accepted on private behavior/tests commit a01d46aee and runtime hash a27e141d. The reviewer froze four separate originals and passed their native/model comparisons plus a separate 69-check strict-SL Error frontier.",
+  "remaining": "Variable arguments, owning/named/unpacked calls, repeated call-site cache history, ambiguous HALT registration and wider compiler/provider behavior remain partial."
+}

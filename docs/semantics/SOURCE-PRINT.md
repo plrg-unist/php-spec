@@ -57,6 +57,20 @@ and 135+120 reached-state premises are recorded in the
 References, computed producers, buffering callbacks and wider output lifetimes
 remain partial.
 
+A direct nonempty flat primitive array CV now stages its `Array to string
+conversion` Warning through a named handler. `ZEND_ECHO` uses the interned
+`Array` result after the callback: a returning false handler can unset the CV,
+then default warning and output precede print's integer `1`; a supplied throw
+still writes `Array` before exception search and leaves the outer assignment
+unchanged. A literal array retains its independent compiled-pool owner after
+source unset. A runtime-built array instead retires before the pending output;
+neither path adds a saved array owner to the print task or rereads the CV.
+Initially empty output buffers are required, and a callback-created buffer is
+explicitly Unsupported. Three exact sources and 137+122+122 reached-state
+premises are recorded in the
+[array print review](../../coverage/semantics/print-array-warning-review.json).
+Empty/nested arrays, other producers and wider output lifetimes remain partial.
+
 Validation is separate by boundary: 20 author source comparisons, ten native
 compiler/lint comparisons with 51 source projections, and 15 independent reviewer
 source comparisons. Four paused stages check 61 assertions, with an independent
