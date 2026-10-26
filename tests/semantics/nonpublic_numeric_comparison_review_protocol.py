@@ -129,7 +129,7 @@ def controls():
         '~$number_compare_valid(S,pnumbercompare[.SOURCE.LINE = 999])',
         '~$call_task_valid(S[.ORIGIN = eps],NUMBER_COMPARE_RESULT pnumbercompare)',
         'S_unset = S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS,n_right,[ppropertyslot_rightfirst[.STATE = PROP_UNSET],ppropertyslot_rightsecond])]',
-        '~$aggregate_decl_image(S_unset,n_right,ptbytes_keys*) /\\ ~$number_compare_valid(S_unset,pnumbercompare)',
+        '$aggregate_decl_image(S_unset,n_right,ptbytes_keys*) /\\ $number_compare_valid(S_unset,pnumbercompare)',
         'S_dynamic = S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS,n_right,[ppropertyslot_rightfirst[.DECL = eps],ppropertyslot_rightsecond])]',
         '~$aggregate_decl_image(S_dynamic,n_right,ptbytes_keys*)',
         'S_decl = S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS,n_right,[ppropertyslot_rightfirst[.DECL = (ppropertydesc_second.ORIGIN)],ppropertyslot_rightsecond])]',

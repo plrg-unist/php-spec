@@ -3859,6 +3859,10 @@ retain physical private/protected keys in initialized materialized declared tabl
 Normal handlers preserve live slot rereads, retained reference cells and distinct
 inherited private names. Six source agreements and 309 focused premises retain
 their recorded cuts; nonpublic Stringable callbacks remain refused.
+[Declared-slot UNDEF ordering](coverage/semantics/declared-undef-comparison-review.json)
+also preserves physical buckets when normal numeric handlers unset declared slots
+or fill initial typed holes. Surviving reference cells and inline destruction
+retain their native order; six source agreements and 420 focused premises pass.
 [Builtin stdClass numeric Notices](coverage/semantics/stdclass-numeric-comparison-review.json)
 use the same continuation with a fixed builtin class image. Restored second
 Notices retain saved 1/1.0 across stdClass/source-instance changes and late live

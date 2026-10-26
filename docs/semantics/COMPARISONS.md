@@ -471,9 +471,19 @@ the same source consumer and selected-case continuation.
 [Initialized nonpublic declared tables](../../coverage/semantics/nonpublic-numeric-comparison-review.json)
 also retain numeric Notice cursors through normal handlers. Physical mangled keys
 keep inherited private declarations distinct; scoped writes preserve live slot
-rereads and pre-unwrapped reference cells across rebinding. Fixed initialized
-layouts remain required. Nonpublic Stringable continuations, changed membership,
-uninitialized slots and property hooks remain outside this route.
+rereads and pre-unwrapped reference cells across rebinding. Fixed declared
+layouts without property hooks remain required.
+
+[Declared-slot UNDEF ordering](../../coverage/semantics/declared-undef-comparison-review.json)
+preserves physical keys and width for canonical initial/unset slots: UNDEF sorts
+before a value, and two UNDEF slots continue the scan. Normal numeric callbacks
+may unset authenticated existing declared keys; other local cursor kinds, parked
+views and pending cleanup retain their mutation boundary. Missing/dynamic names
+remain outside that exception. A detached externally owned CELL remains readable;
+a cleared DIRECT opposing slot retains the expired-operand refusal. Last-owner
+inline destruction precedes handler continuation, while an outside reference can
+delay destruction beyond result storage. Initialized public Stringable behavior
+is preserved; nonpublic or UNDEF Stringable continuations remain unsupported.
 
 The raw handler is disabled during its own body and restored before subsequent
 Notice dispatch. The original quiet-terminal cancellation remains available.

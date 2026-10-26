@@ -59,6 +59,8 @@ dec $aggregate_std_kind(paggregatekind) : bool
 dec $aggregate_decl_kind(paggregatekind) : bool
 dec $aggregate_guards_unique(pcompareguard*) : bool
 dec $aggregate_decl_rows(pstate, nat, ppropertyslot*) : bool
+dec $aggregate_decl_item(ppropstate) : pitem?
+dec $aggregate_decl_initialized(ppropertyslot*) : bool
 dec $aggregate_decl_keys(ppropertyslot*) : ptbytes*
 dec $aggregate_decl_public(ppropertydesc*) : bool
 dec $aggregate_decl_cast_order(pstate, nat, porder) : porder
@@ -199,8 +201,17 @@ def $aggregate_cached_order(S, n_left, n_right, pcompareguard_seen*) = $aggregat
 def $aggregate_cached_order(S, n_left, n_right, pcompareguard_seen*) = ORDERUNSUPPORTED "cached property-table comparison materialization"
   -- if $object_table_at(S.OBJECTTABLES, n_left) = eps \/ $object_table_at(S.OBJECTTABLES, n_right) = eps
 
-;; A declared-only hash contains indirect pointers to initialized physical slots.
+;; Declared hash buckets retain inline locations even after a slot becomes UNDEF.
 ;; Key order is captured, while selected and future slot values remain live.
+def $aggregate_decl_item(PROP_INITIAL) = (UNINITIALIZED)
+def $aggregate_decl_item(PROP_UNSET) = (UNINITIALIZED)
+def $aggregate_decl_item(PROP_VALUE pitem) = (pitem) -- if pitem =/= UNINITIALIZED
+def $aggregate_decl_item(ppropstate) = eps -- otherwise
+def $aggregate_decl_initialized(eps) = true
+def $aggregate_decl_initialized(ppropertyslot :: ppropertyslot_tail*) = $aggregate_decl_initialized(ppropertyslot_tail*)
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if pitem =/= UNINITIALIZED
+def $aggregate_decl_initialized(ppropertyslot*) = false -- otherwise
 def $aggregate_decl_rows(S, n, eps) = true
 def $aggregate_decl_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = ($aggregate_decl_rows(S, n, ppropertyslot_tail*))
   -- if S.OBJECTS[n] = INSTANCE porigin
@@ -209,17 +220,16 @@ def $aggregate_decl_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = ($aggrega
   -- if ppropertydesc.ORIGIN = ppropertyid
   -- if ppropertydesc.KEY = ppropertyslot.NAME
   -- if ~$property_hook_declared(S, n, ppropertyslot.NAME)
-  -- if ppropertyslot.STATE = PROP_VALUE pitem
-  -- if pitem =/= UNINITIALIZED
+  -- if $aggregate_decl_item(ppropertyslot.STATE) = (pitem)
 def $aggregate_decl_rows(S, n, ppropertyslot*) = false -- otherwise
 def $aggregate_decl_keys(eps) = eps
 def $aggregate_decl_keys(ppropertyslot :: ppropertyslot_tail*) = ppropertyslot.NAME :: $aggregate_decl_keys(ppropertyslot_tail*)
 def $aggregate_decl_public(eps) = true
 def $aggregate_decl_public(ppropertydesc :: ppropertydesc_tail*) = (ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ $aggregate_decl_public(ppropertydesc_tail*))
-;; Nonpublic tables admit numeric Notices; their Stringable path stays refused.
+;; Preserve the original public initialized-table Stringable domain.
 def $aggregate_decl_cast_order(S, n, ORDERSTRING paggregatecallback) = ORDERUNSUPPORTED "materialized-property Stringable comparison continuation"
   -- if S.OBJECTS[n] = INSTANCE porigin
-  -- if ~$aggregate_decl_public($property_layout(S, porigin, |S.CLASSES|))
+  -- if ~($aggregate_decl_public($property_layout(S, porigin, |S.CLASSES|)) /\ $aggregate_decl_initialized($object_table_slots_at(S, n)))
 def $aggregate_decl_cast_order(S, n, porder) = porder -- otherwise
 def $aggregate_decl_image(S, n, ptbytes*) = true
   -- if $(n < |S.OBJECTS|)
@@ -249,7 +259,7 @@ def $aggregate_decl_order(S, n_left, n_right, pcompareguard_seen*, z) = $aggrega
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_rows*)
 def $aggregate_decl_effect(S, n_left, n_right, ptbytes*, n_index, pcompareguard_seen*, z) = (S, ORDER 0)
   -- if n_index = |ptbytes*|
-def $aggregate_decl_effect(S, n_left, n_right, ptbytes*, n_index, pcompareguard_seen*, z) = $aggregate_decl_continue(S_next, $aggregate_push($aggregate_decl_cast_order(S_next, n_left, porder), paggregatecursor), n_left, n_right, ptbytes*, $(n_index + 1), pcompareguard_seen*, z)
+def $aggregate_decl_effect(S, n_left, n_right, ptbytes*, n_index, pcompareguard_seen*, z) = $aggregate_decl_continue(S_next, $aggregate_push($aggregate_decl_cast_order(S_next, n_right, $aggregate_decl_cast_order(S_next, n_left, porder)), paggregatecursor), n_left, n_right, ptbytes*, $(n_index + 1), pcompareguard_seen*, z)
   -- if $(n_index < |ptbytes*|)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left_rows*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right_rows*)
@@ -264,6 +274,16 @@ def $aggregate_decl_effect(S, n_left, n_right, ptbytes*, n_index, pcompareguard_
   -- if n_width = |ptbytes*|
   -- if pkey = KSTRING ptbytes*[n_index]
   -- if paggregatecursor = {KIND AGGREGATE_DECL_HASH ptbytes*, LEFT HOBJECT n_left, RIGHT HOBJECT n_right, INDEX n_next, WIDTH n_width, KEY pkey, LEFTITEM pitem_left, RIGHTITEM pitem_right, LEFTVALUE pvalue_left, RIGHTVALUE pvalue_right}
+def $aggregate_decl_effect(S, n_left, n_right, ptbytes*, n_index, pcompareguard_seen*, z) = $aggregate_decl_continue(S_next, porder, n_left, n_right, ptbytes*, $(n_index + 1), pcompareguard_seen*, z)
+  -- if $(n_index < |ptbytes*|)
+  -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left_rows*)
+  -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right_rows*)
+  -- if $property_slot_at(ppropertyslot_left_rows*, ptbytes*[n_index]) = (ppropertyslot_left)
+  -- if $property_slot_at(ppropertyslot_right_rows*, ptbytes*[n_index]) = (ppropertyslot_right)
+  -- if $aggregate_decl_item(ppropertyslot_left.STATE) = (pitem_left)
+  -- if $aggregate_decl_item(ppropertyslot_right.STATE) = (pitem_right)
+  -- if pitem_left = UNINITIALIZED \/ pitem_right = UNINITIALIZED
+  -- if (S_next, porder) = $aggregate_item_order_effect(S, pitem_left, pitem_right, pcompareguard_seen*, z)
 def $aggregate_decl_effect(S, n_left, n_right, ptbytes*, n_index, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "declared property-table comparison shape change") -- otherwise
 def $aggregate_decl_continue(S, ORDER 0, n_left, n_right, ptbytes*, n_index, pcompareguard_seen*, z) = $aggregate_decl_effect(S, n_left, n_right, ptbytes*, n_index, pcompareguard_seen*, z)
 def $aggregate_decl_continue(S, porder, n_left, n_right, ptbytes*, n_index, pcompareguard_seen*, z) = (S, porder) -- otherwise
