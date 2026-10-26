@@ -681,3 +681,111 @@ def $trace_object_node_present(S, n) = ($trace_object_slots_present(S, pobjectpr
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
 def $trace_object_node_present(S, n) = false -- otherwise
 def $trace_object_graph_present(S, n_trace) = $trace_object_array_present(S, n_trace)
+
+;; A property reference owns a live cell. Its current value, including a later
+;; array or object retarget, is compared through the same ordinary handlers.
+dec $trace_ref_value(pstate, pvalue, pcompareguard*) : bool
+dec $trace_ref_item(pstate, pitem, pcompareguard*) : bool
+dec $trace_ref_cell(pstate, nat, pcompareguard*) : bool
+dec $trace_ref_array_entries(pstate, pentry*, pcompareguard*) : bool
+dec $trace_ref_table_entries(pstate, pentry*, pcompareguard*) : bool
+dec $trace_ref_array(pstate, nat, pcompareguard*) : bool
+dec $trace_ref_slots(pstate, ppropertyslot*, pcompareguard*) : bool
+dec $trace_ref_node(pstate, nat, pcompareguard*) : bool
+def $trace_ref_value(S, POBJECT n, pcompareguard_seen*) = $trace_ref_node(S, n, pcompareguard_seen*)
+def $trace_ref_value(S, PARRAY n, pcompareguard_seen*) = $trace_ref_array(S, n, pcompareguard_seen*)
+def $trace_ref_value(S, pvalue, pcompareguard_seen*) = $trace_compare_scalar(S, pvalue) -- otherwise
+def $trace_ref_item(S, DIRECT pvalue, pcompareguard_seen*) = $trace_ref_value(S, pvalue, pcompareguard_seen*)
+def $trace_ref_item(S, ALIAS n_cell, pcompareguard_seen*) = $trace_ref_cell(S, n_cell, pcompareguard_seen*)
+def $trace_ref_item(S, pitem, pcompareguard_seen*) = false -- otherwise
+def $trace_ref_cell(S, n_cell, pcompareguard_seen*) = $trace_ref_value(S, pvalue, (HCELL n_cell) :: pcompareguard_seen*)
+  -- if $(n_cell < |S.STORE|)
+  -- if (HCELL n_cell) <- S.ALLOCATIONS
+  -- if n_cell <- S.REFCELLS
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if ~((HCELL n_cell) <- pcompareguard_seen*)
+  -- if $(|pcompareguard_seen*| < 16)
+def $trace_ref_cell(S, n_cell, pcompareguard_seen*) = false -- otherwise
+def $trace_ref_array_entries(S, eps, pcompareguard_seen*) = true
+def $trace_ref_array_entries(S, (ENTRY pkey pitem) :: pentry_tail*, pcompareguard_seen*) = ($trace_ref_item(S, pitem, pcompareguard_seen*) /\ $trace_ref_array_entries(S, pentry_tail*, pcompareguard_seen*))
+def $trace_ref_table_entries(S, eps, pcompareguard_seen*) = true
+def $trace_ref_table_entries(S, (ENTRY pkey pitem) :: pentry_tail*, pcompareguard_seen*) = ($trace_ref_item(S, $object_table_item(S, pitem), pcompareguard_seen*) /\ $trace_ref_table_entries(S, pentry_tail*, pcompareguard_seen*))
+def $trace_ref_array(S, n, pcompareguard_seen*) = $trace_ref_array_entries(S, S.ARRAYS[n].ITEMS, (HARRAY n) :: pcompareguard_seen*)
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if ~((HARRAY n) <- pcompareguard_seen*)
+  -- if $(|pcompareguard_seen*| < 16)
+def $trace_ref_array(S, n, pcompareguard_seen*) = false -- otherwise
+def $trace_ref_slots(S, eps, pcompareguard_seen*) = true
+def $trace_ref_slots(S, ppropertyslot :: ppropertyslot_tail*, pcompareguard_seen*) = ($trace_ref_item(S, pitem, pcompareguard_seen*) /\ $trace_ref_slots(S, ppropertyslot_tail*, pcompareguard_seen*))
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+def $trace_ref_slots(S, ppropertyslot*, pcompareguard_seen*) = false -- otherwise
+def $trace_ref_node(S, n, pcompareguard_seen*) = $trace_ref_slots(S, pobjectprops.SLOTS, (HOBJECT n) :: pcompareguard_seen*)
+  -- if $(|pcompareguard_seen*| < 16)
+  -- if ~((HOBJECT n) <- pcompareguard_seen*)
+  -- if $trace_object_class(S, n)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if $object_table_at(S.OBJECTTABLES, n) = eps
+  -- if $trace_object_inline_shape(S, n)
+def $trace_ref_node(S, n, pcompareguard_seen*) = ($trace_ref_slots(S, pobjectprops.SLOTS, (HARRAY n_table) :: (HOBJECT n) :: pcompareguard_seen*) /\ $trace_ref_table_entries(S, S.ARRAYS[n_table].ITEMS, (HARRAY n_table) :: (HOBJECT n) :: pcompareguard_seen*))
+  -- if $(|pcompareguard_seen*| < 15)
+  -- if ~((HOBJECT n) <- pcompareguard_seen*)
+  -- if $trace_object_class(S, n)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
+  -- if $aggregate_hash_image(S, n, n_table)
+  -- if ~((HARRAY n_table) <- pcompareguard_seen*)
+  -- if S.OBJECTS[n] = STDINSTANCE \/ $object_table_ordinary(S, n)
+def $trace_ref_node(S, n, pcompareguard_seen*) = false -- otherwise
+def $trace_property_ref_graph(S, n_trace) = $trace_ref_array(S, n_trace, eps)
+  -- if $trace_graph_valid(S, n_trace)
+def $trace_property_ref_graph(S, n_trace) = false -- otherwise
+
+;; A reference elsewhere in the trace does not witness this property cut.
+;; Only an ALIAS in an object slot/table or its property array does.
+dec $trace_ref_witness_value(pstate, pvalue, pcompareguard*, bool) : bool
+dec $trace_ref_witness_item(pstate, pitem, pcompareguard*, bool) : bool
+dec $trace_ref_witness_entries(pstate, pentry*, pcompareguard*, bool) : bool
+dec $trace_ref_witness_array(pstate, nat, pcompareguard*, bool) : bool
+dec $trace_ref_witness_slots(pstate, ppropertyslot*, pcompareguard*) : bool
+dec $trace_ref_witness_node(pstate, nat, pcompareguard*) : bool
+def $trace_ref_witness_value(S, POBJECT n, pcompareguard_seen*, b_property) = $trace_ref_witness_node(S, n, pcompareguard_seen*)
+def $trace_ref_witness_value(S, PARRAY n, pcompareguard_seen*, b_property) = $trace_ref_witness_array(S, n, pcompareguard_seen*, b_property)
+def $trace_ref_witness_value(S, pvalue, pcompareguard_seen*, b_property) = false -- otherwise
+def $trace_ref_witness_item(S, DIRECT pvalue, pcompareguard_seen*, b_property) = $trace_ref_witness_value(S, pvalue, pcompareguard_seen*, b_property)
+def $trace_ref_witness_item(S, ALIAS n_cell, pcompareguard_seen*, true) = $trace_ref_cell(S, n_cell, pcompareguard_seen*)
+def $trace_ref_witness_item(S, ALIAS n_cell, pcompareguard_seen*, false) = $trace_ref_witness_value(S, pvalue, (HCELL n_cell) :: pcompareguard_seen*, false)
+  -- if $(n_cell < |S.STORE|)
+  -- if (HCELL n_cell) <- S.ALLOCATIONS
+  -- if n_cell <- S.REFCELLS
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if ~((HCELL n_cell) <- pcompareguard_seen*)
+  -- if $(|pcompareguard_seen*| < 16)
+def $trace_ref_witness_item(S, pitem, pcompareguard_seen*, b_property) = false -- otherwise
+def $trace_ref_witness_entries(S, eps, pcompareguard_seen*, b_property) = false
+def $trace_ref_witness_entries(S, (ENTRY pkey pitem) :: pentry_tail*, pcompareguard_seen*, b_property) = ($trace_ref_witness_item(S, $object_table_item(S, pitem), pcompareguard_seen*, b_property) \/ $trace_ref_witness_entries(S, pentry_tail*, pcompareguard_seen*, b_property))
+def $trace_ref_witness_array(S, n, pcompareguard_seen*, b_property) = $trace_ref_witness_entries(S, S.ARRAYS[n].ITEMS, (HARRAY n) :: pcompareguard_seen*, b_property)
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if ~((HARRAY n) <- pcompareguard_seen*)
+  -- if $(|pcompareguard_seen*| < 16)
+def $trace_ref_witness_array(S, n, pcompareguard_seen*, b_property) = false -- otherwise
+def $trace_ref_witness_slots(S, eps, pcompareguard_seen*) = false
+def $trace_ref_witness_slots(S, ppropertyslot :: ppropertyslot_tail*, pcompareguard_seen*) = ($trace_ref_witness_item(S, pitem, pcompareguard_seen*, true) \/ $trace_ref_witness_slots(S, ppropertyslot_tail*, pcompareguard_seen*))
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+def $trace_ref_witness_slots(S, ppropertyslot*, pcompareguard_seen*) = false -- otherwise
+def $trace_ref_witness_node(S, n, pcompareguard_seen*) = $trace_ref_witness_slots(S, pobjectprops.SLOTS, (HOBJECT n) :: pcompareguard_seen*)
+  -- if $(|pcompareguard_seen*| < 16)
+  -- if ~((HOBJECT n) <- pcompareguard_seen*)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if $object_table_at(S.OBJECTTABLES, n) = eps
+def $trace_ref_witness_node(S, n, pcompareguard_seen*) = ($trace_ref_witness_slots(S, pobjectprops.SLOTS, (HARRAY n_table) :: (HOBJECT n) :: pcompareguard_seen*) \/ $trace_ref_witness_entries(S, S.ARRAYS[n_table].ITEMS, (HARRAY n_table) :: (HOBJECT n) :: pcompareguard_seen*, true))
+  -- if $(|pcompareguard_seen*| < 15)
+  -- if ~((HOBJECT n) <- pcompareguard_seen*)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
+  -- if $(n_table < |S.ARRAYS|)
+  -- if (HARRAY n_table) <- S.ALLOCATIONS
+  -- if ~((HARRAY n_table) <- pcompareguard_seen*)
+def $trace_ref_witness_node(S, n, pcompareguard_seen*) = false -- otherwise
+def $trace_property_ref_present(S, n_trace) = $trace_ref_witness_array(S, n_trace, eps, false)
