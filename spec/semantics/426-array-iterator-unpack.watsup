@@ -3,6 +3,14 @@ dec $array_aggregate_pending(pstate) : bool
 ;; cache survives key(), is dereferenced only afterward, and retires before next().
 dec $array_iterator_item(pstate, phpType13*, int) : (porigin, expression)?
 dec $array_iterator_methods(pstate, nat, text*) : bool
+dec $array_iterator_destructor(pstate, nat) : bool
+dec $array_iterator_destructor_allowed(pstate, nat) : bool
+dec $array_iterator_method_history(pstate, porigin, text*) : bool
+dec $array_iterator_release_ids(ptask*) : nat*
+dec $array_iterator_release_pending(pstate, ptask*, parrayiterator) : bool
+dec $array_iterator_release_valid(pstate, parrayiterator) : bool
+dec $array_iterator_release_builder(pstate, parrayiterator) : bool
+dec $array_iterator_blocked(pstate) : bool
 dec $array_iterator_source(pstate, parrayiterator) : bool
 dec $array_iterator_stage(parrayiterator, text) : bool
 dec $array_iterator_valid(pstate, parrayiterator, text) : bool
@@ -50,6 +58,50 @@ def $array_iterator_methods(S, n, text :: text_tail*) = $array_iterator_methods(
   -- if ~$function_generator(S, pmethoddesc.FUNCTION)
 def $array_iterator_methods(S, n, text*) = false -- otherwise
 
+def $array_iterator_destructor(S, n) = true
+  -- if $destructor_method(S, n) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = eps /\ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
+def $array_iterator_destructor(S, n) = false -- otherwise
+def $array_iterator_destructor_allowed(S, n) = ($destructor_method(S, n) = eps \/ $array_iterator_destructor(S, n))
+
+;; The release continuation authenticates metadata after the receiver is gone.
+;; It never makes a retired object or cached value live again.
+def $array_iterator_method_history(S, porigin_class, eps) = true
+def $array_iterator_method_history(S, porigin_class, text :: text_tail*) = $array_iterator_method_history(S, porigin_class, text_tail*)
+  -- if $effective_method(S, porigin_class, $ptascii(text), |S.CLASSES|) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if text = "current" \/ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = $useriter_signature($ptascii(text)).RETURNS
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
+def $array_iterator_method_history(S, porigin_class, text*) = false -- otherwise
+def $array_iterator_release_ids(eps) = eps
+def $array_iterator_release_ids((ARRAY_ITERATOR_RELEASE parrayiterator) :: ptask*) = parrayiterator.ITERATOR :: $array_iterator_release_ids(ptask*)
+def $array_iterator_release_ids(ptask_head :: ptask_tail*) = $array_iterator_release_ids(ptask_tail*) -- otherwise
+def $array_iterator_release_pending(S, eps, parrayiterator) = false
+def $array_iterator_release_pending(S, (THROW_SEARCH n) :: (ARRAY_ITERATOR_RELEASE parrayiterator) :: ptask*, parrayiterator) = $throwable_live(S, n)
+def $array_iterator_release_pending(S, ptask_head :: ptask_tail*, parrayiterator) = $array_iterator_release_pending(S, ptask_tail*, parrayiterator) -- otherwise
+def $array_iterator_release_valid(S, parrayiterator) = true
+  -- if S.ORIGIN = (parrayiterator.SITE)
+  -- if $array_iterator_item(S, parrayiterator.TAIL, parrayiterator.LINE) = ((parrayiterator.SITE, expression))
+  -- if parrayiterator.INPUT = VARIABLE n_name* z
+  -- if $array_float_key_input_source(S, expression, parrayiterator.INPUT)
+  -- if $(parrayiterator.ARRAY < |S.ARRAYS|) /\ (HARRAY parrayiterator.ARRAY) <- S.ALLOCATIONS
+  -- if ~$array_immutable(S, parrayiterator.ARRAY)
+  -- if $heap_count(HARRAY parrayiterator.ARRAY, $pools_nodes(S.POOLS)) = 0
+  -- if $(parrayiterator.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[parrayiterator.OBJECT] = INSTANCE porigin_class
+  -- if $class_origin_matches(S, porigin_class, $ptascii("Iterator"), |S.CLASSES|)
+  -- if $array_iterator_method_history(S, porigin_class, ["rewind", "valid", "current", "key", "next"])
+  -- if $array_iterator_destructor(S, parrayiterator.OBJECT)
+  -- if parrayiterator.CURRENT = KNOWN PNULL /\ parrayiterator.KEY = KNOWN PNULL
+  -- if $(parrayiterator.ITERATOR < S.NEXTITER) /\ $iterator_lookup(S.ITERATORS, parrayiterator.ITERATOR) = eps
+  -- if $generator_id_count($array_iterator_release_ids(S.TODO), parrayiterator.ITERATOR) = 1
+  -- if $array_iterator_release_pending(S, S.TODO, parrayiterator)
+def $array_iterator_release_valid(S, parrayiterator) = false -- otherwise
+def $array_iterator_release_builder(S, parrayiterator) = (~(parrayiterator.ARRAY <- S.LITERALARRAYDEBTS) /\ $array_null_const_items(S, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY]))
+
 ;; INPUT is a source receipt after entry, even if rewind/key unsets that CV.
 ;; Payload eligibility is separate so legal callback mutations can refuse cleanly.
 def $array_iterator_source(S, parrayiterator) = true
@@ -62,7 +114,7 @@ def $array_iterator_source(S, parrayiterator) = true
   -- if $heap_count(HARRAY parrayiterator.ARRAY, $pools_nodes(S.POOLS)) = 0
   -- if $useriter_instance(S, parrayiterator.OBJECT)
   -- if S.OBJECTS[parrayiterator.OBJECT] = INSTANCE porigin_class
-  -- if $effective_method(S, porigin_class, $ptascii("__destruct"), |S.CLASSES|) = eps
+  -- if $array_iterator_destructor_allowed(S, parrayiterator.OBJECT)
   -- if $array_iterator_methods(S, parrayiterator.OBJECT, ["rewind", "valid", "current", "key", "next"])
 def $array_iterator_source(S, parrayiterator) = false -- otherwise
 
@@ -279,6 +331,11 @@ def $error_task_iterator(ARRAY_ITERATOR parrayiterator text) = [parrayiterator.I
 
 def $array_iterator_discard(S, parrayiterator, text) = S[.ITERATORS = $iterator_remove(S.ITERATORS, parrayiterator.ITERATOR)][.ORIGIN = (parrayiterator.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $array_iterator_ready(S, parrayiterator)
+  -- if ~$array_iterator_destructor(S, parrayiterator.OBJECT)
+def $array_iterator_discard(S, parrayiterator, text) = $fiber_start_unpack_release(S[.ITERATORS = $iterator_remove(S.ITERATORS, parrayiterator.ITERATOR)][.TODO = (THROW_SEARCH n) :: (ARRAY_ITERATOR_RELEASE parrayiterator[.CURRENT = KNOWN PNULL][.KEY = KNOWN PNULL]) :: ptask*][.ORIGIN = (parrayiterator.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $operand_nodes(parrayiterator.CURRENT) ++ $operand_nodes(parrayiterator.KEY) ++ [HOBJECT parrayiterator.OBJECT])
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if $array_iterator_ready(S, parrayiterator)
+  -- if $array_iterator_destructor(S, parrayiterator.OBJECT)
 def $array_iterator_discard(S, parrayiterator, text) = S[.TODO = (THROW_SEARCH n) :: (ARRAY_ITERATOR parrayiterator text) :: ptask_tail*][.COMPLETION = UNSUPPORTED "array Iterator unpack abrupt payload outside quiet domain"]
   -- if ~$array_iterator_ready(S, parrayiterator)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
@@ -286,3 +343,48 @@ def $return_discard(S, ARRAY_ITERATOR parrayiterator text) = $array_iterator_dis
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $throwable_live(S, n)
   -- if $array_iterator_valid(S[.TODO = (THROW_SEARCH n) :: (ARRAY_ITERATOR parrayiterator text) :: ptask_tail*], parrayiterator, text)
+
+;; Cache and DATA release jobs keep the partial builder through the real Dtor.
+def $task_nodes(ARRAY_ITERATOR_RELEASE parrayiterator) = [HARRAY parrayiterator.ARRAY]
+def $call_task_valid(S, ARRAY_ITERATOR_RELEASE parrayiterator) = $array_iterator_release_valid(S, parrayiterator)
+def $return_discard(S, ARRAY_ITERATOR_RELEASE parrayiterator) = S[.ORIGIN = (parrayiterator.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if $throwable_live(S, n)
+  -- if $array_iterator_release_valid(S[.TODO = (THROW_SEARCH n) :: (ARRAY_ITERATOR_RELEASE parrayiterator) :: ptask*], parrayiterator)
+  -- if $array_iterator_release_builder(S, parrayiterator)
+def $return_discard(S, ARRAY_ITERATOR_RELEASE parrayiterator) = S[.TODO = (THROW_SEARCH n) :: (ARRAY_ITERATOR_RELEASE parrayiterator) :: ptask*][.COMPLETION = UNSUPPORTED "array Iterator release builder outside quiet domain"]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if $throwable_live(S, n)
+  -- if $array_iterator_release_valid(S[.TODO = (THROW_SEARCH n) :: (ARRAY_ITERATOR_RELEASE parrayiterator) :: ptask*], parrayiterator)
+  -- if ~$array_iterator_release_builder(S, parrayiterator)
+
+;; A refused new Dtor-bearing state must not run Dtor via terminal cleanup.
+def $array_iterator_blocked(S) = true
+  -- if ~S.COMPILESTOP
+  -- if S.COMPLETION = UNSUPPORTED "array Iterator unpack state outside quiet payload domain"
+  -- if S.TODO = (ARRAY_ITERATOR parrayiterator text) :: ptask*
+  -- if $array_iterator_valid(S, parrayiterator, text) /\ $array_iterator_destructor(S, parrayiterator.OBJECT)
+  -- if ~$array_iterator_ready(S, parrayiterator)
+def $array_iterator_blocked(S) = true
+  -- if ~S.COMPILESTOP
+  -- if S.COMPLETION = UNSUPPORTED "array Iterator unpack callback result outside quiet payload domain"
+  -- if S.TODO = (ARRAY_ITERATOR parrayiterator text) :: ptask*
+  -- if text <- ["current", "key"]
+  -- if $array_iterator_valid(S, parrayiterator, text) /\ $array_iterator_destructor(S, parrayiterator.OBJECT)
+  -- if $array_iterator_ready(S, parrayiterator) /\ $array_iterator_value(S, S.RESULT) = eps
+def $array_iterator_blocked(S) = true
+  -- if ~S.COMPILESTOP
+  -- if S.COMPLETION = UNSUPPORTED "array Iterator unpack abrupt payload outside quiet domain"
+  -- if S.TODO = (THROW_SEARCH n) :: (ARRAY_ITERATOR parrayiterator text) :: ptask*
+  -- if $throwable_live(S, n)
+  -- if $array_iterator_valid(S, parrayiterator, text) /\ $array_iterator_destructor(S, parrayiterator.OBJECT)
+  -- if ~$array_iterator_ready(S, parrayiterator)
+def $array_iterator_blocked(S) = true
+  -- if ~S.COMPILESTOP
+  -- if S.COMPLETION = UNSUPPORTED "array Iterator release builder outside quiet domain"
+  -- if S.TODO = (THROW_SEARCH n) :: (ARRAY_ITERATOR_RELEASE parrayiterator) :: ptask*
+  -- if $throwable_live(S, n) /\ $array_iterator_release_valid(S, parrayiterator)
+  -- if ~$array_iterator_release_builder(S, parrayiterator)
+def $array_iterator_blocked(S) = false -- otherwise
+def $generator_close_terminal_pending(S) = true -- if $array_iterator_blocked(S)
+def $drive_steps(S, n) = S -- if $array_iterator_blocked(S)
