@@ -11,10 +11,14 @@ import config_generator_return_storage_review_sources as sources
 
 common, text, b64 = driver.common, driver.text, driver.b64
 PREFIX = r"""
+dec $test_config_storage_peer_cfg_task(ptask) : bool
+def $test_config_storage_peer_cfg_task(CONFIG_GENERATOR pconfiggenerator text) = true
+def $test_config_storage_peer_cfg_task(ptask) = false -- otherwise
 dec $test_config_storage_peer_marker(ptask*) : bool
 def $test_config_storage_peer_marker(eps) = false
 def $test_config_storage_peer_marker((CONFIG_GENERATOR pconfiggenerator text) :: ptask*) = true
-def $test_config_storage_peer_marker(ptask :: ptask_tail*) = $test_config_storage_peer_marker(ptask_tail*) -- otherwise
+def $test_config_storage_peer_marker(ptask :: ptask_tail*) = $test_config_storage_peer_marker(ptask_tail*)
+  -- if ~$test_config_storage_peer_cfg_task(ptask)
 dec $test_config_storage_peer_front(pstate, nat) : bool
 def $test_config_storage_peer_front(S, 0) = true
   -- if S.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask*

@@ -43,7 +43,7 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| Source96 | Native2/genuine0 retain `c5809eb65`; operation-aware strict420/normal source passed at `756e1bcad`. Peer CLI timeout0 prompted an equivalent guard factor;413 original state conditions remain unrun. All prior failures preserved; no CPU or writer. |
+| Source96 | Native2/genuine0 retain `c5809eb65`; strict420/normal source accepted. Peer CLI timeout0 is preserved; a bounded probe confirms real destructor pending transfer. Required413 state conditions remain unrun after a fixture marker correction; no CPU or writer. |
 | M155 | WeakMap Iterator factory: native/genuine closed; private424 source-certificate implementation preparing. |
 | OP90 | Prefetch repair preparing after native3/genuine classification; no writer. |
 | CLASS130 | Private native-first PARAM-boundary research; no writer. |
