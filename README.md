@@ -703,6 +703,15 @@ sources agree with PHP, and 418 reached premises check the owner transitions,
 throw cleanup and source guards. Effectful last owners and temporary string
 keys remain explicit boundaries.
 
+[Invalid Iterator CONFIG keys](coverage/semantics/config-iterator-invalid-key-review.json)
+now throw PHP's key-type Error after a cached string current and before send,
+`next()` or API entry. The raw primitive key is consumed; ordinary cleanup
+retires Iterator DATA before catch, leaving a retained CV owner alive. Four
+direct-CV sources and one separately checked Aggregate-to-Iterator CV rebind
+agree with PHP. Reached checks cover the first and second key, Error line,
+unsent current and DATA cleanup. The guard requires a live CV holding the
+selected Iterator; temporary and other key/value histories remain partial.
+
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
 throws the object-key `Error` before copying its current value or entering the

@@ -1,0 +1,51 @@
+{
+  "scope": "Source104: initialized user Iterator CONFIG INI_SET unpack with quiet primitive invalid key results under a live input CV holding the selected Iterator; four direct-CV cases and one Aggregate-to-Iterator CV rebind intersection.",
+  "behavior": "After cached current and key callback, NULL/bool/float key results are consumed and raise Error at the authentic unpack line before argument binding, next or API. Existing throw cleanup releases cached CURRENT and DATA before catch; the retained CV remains one owner. The guard tests current CV identity, not historical direct-CV acquisition.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "php_file_extension_sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile": "tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+    "source_symbols": [
+      "Zend/zend_vm_def.h:ZEND_SEND_UNPACK",
+      "Zend/zend_interfaces.c:zend_user_it_get_current_data/get_current_key/dtor"
+    ]
+  },
+  "cuts": {
+    "native_and_baseline": "630ac99ce: four original-byte native sources exit0 with exact key-type Error at line23, no later next/API and unchanged result99/precision14. Genuine unchanged first-NULL model baseline is Unsupported after B|R|V0|C0|K0|, zero agreement.",
+    "source": "8e96b5431: four distinct exact model agreements with the frozen originals at tested 420 hash; first NULL and second NULL/bool/float after one integer send.",
+    "state": "9558496e4: corrected source-authenticated first-NULL89, second-bool90 and second-float90 reached premises pass (269 total). One-step Error consumes RESULT/BASE, preserves cached CURRENT and ITEMS; cleanup retires DATA from owner2 to owner1 before catch. Task/site forgery, temporary INPUT and nonselected CV controls reject the new guard.",
+    "affected_controls": "9558496e4: selected old integer-key and Source99 named-key source controls each still agree exactly with their copied native originals.",
+    "aggregate_rebind": "fe2383e59 source-only independent check, adopted unchanged as 5ccd73cf1: one Aggregate-returned retained Iterator source rebinds original input CV to that selected Iterator in second key(); native and current 420 model exit0/normal with identical stdout/stderr, Error at line21, no later next/API. Wider Aggregate histories remain partial.",
+    "failed_attempts": "Initial 8e96 reached fixture demanded a transient THROW_SEARCH::CONFIG_ITERATOR key shape and failed after the one-step Error assertions; that report retains zero credit. Only corrected affected reached groups were rerun."
+  },
+  "input_sha256": {
+    "spec/semantics/420-config-iterator-unpack.watsup": "7e690a8e7ebaff4341ae5fcf030b4429e4a16ed12155c5f550980c0dd3503b5d",
+    "tests/semantics/config_iterator_invalid_key_sources.py": "e92c259e422ffd08c086975b927d6a33d2aa366b43d7d7e67153c08c9891353a",
+    "tests/semantics/config_iterator_invalid_key_protocol.py": "cf9aa75a0a55fd2496b143d5de887801c413a236da775f7cf5741e4999d2de61",
+    "tests/semantics/config_aggregate_rebound_invalid_key_review_sources.py": "d7c758b780c03c5c2b7fd3cc5bf5b413c94313334d7d11efcc56b1fe4a4a0666",
+    "spec/semantics/modules.json": "ac05c52a3810a93a2ea40cd9f2125496b518a877d3cd27a7296266f367205a8b"
+  },
+  "raw_root": "../php-spec-evidence-archive/config-iterator-invalid-key-104",
+  "reports_sha256": {
+    "aggregate-rebound-review/model-report.json": "899143c29976430ac241ced29d91d7a73474afadc7fb4f0cb2288e5a3e114ec5",
+    "aggregate-rebound-review/native-report.json": "8fb202c411480266658b6c3fd3149d4d735b5b175b4db1bb5a92b568c91967b3",
+    "focused-8e96/strict/strict-report.json": "54a4530a2927577e97723871f26787395b7e6399e899b2319a5d904190626d06",
+    "native-baseline/baseline-report.json": "cf279a248d21bc7458e32032dbd1bb78e2b3371797fe8a15af778523d6d2d7dd",
+    "native-baseline/model-report.json": "81db368ee2f6b8a6e4edf2c4ea9fae939be6663498508c49106b39d09792271b",
+    "native-baseline/native-report.json": "51b4d47620225e273a5c52a414b427f749905c71eb1ef01f96097ed0f85b9d4b",
+    "old-source-controls/integer/model-fixed-config-iterator-runs-all-callbacks-before-api-report.json": "15fac5680bc06bb72bf4d64ef646665811f1f0ebcf57334e4b13cd3afead043e",
+    "old-source-controls/integer/native-report.json": "c6f4e1985a5f4e5ae5ef65dc6d043940ad01bcc26e1c751bd97da4b78c9bc635",
+    "old-source-controls/named/model-named-option-then-value-caches-current-report.json": "e7fd9799db115cd94782b2b3cec6cd4f81942ee1abff38addb8f04ec7ae0351c",
+    "old-source-controls/named/native-report.json": "5beca5a71816b11a9e75b32963c30e8f60ef076336f03cd793fe27c1664f2917",
+    "protocol-8e96/check-report.json": "e84902bcf7a43ed41ced655266d2e0e3c76697fed7d6e8059c26f58f99948658",
+    "protocol-8e96/prepare-report.json": "65f3ab1cefe64f5eb1b9770bb499f7928aee867c8ac91e0cce1eda35edb204ca",
+    "protocol-955/check-report.json": "c8653d12b52d105544cdd4bbdd781c87f15baa63833467bf39107c3cf5d98607",
+    "protocol-955/prepare-report.json": "48841d57e343374091bea70ad84b526567db02bf62b4b04a7ec3174b8adf4959"
+  },
+  "recovery": "Restore recorded commits and external raw root. Run config_iterator_invalid_key_sources.py --phase native/baseline/model on the frozen originals; prepare/check the reached cases with config_iterator_invalid_key_protocol.py --sources RAW/native-baseline. Run the independent Aggregate source script against the same pinned oracle and tested model. Each raw report records exact argv, cwd, process exit, stdout/stderr, source or fixture hashes, timeout and process-group reap; strict report records its ordered 422-module SL command.",
+  "remaining": "Other Iterator producer, callback, key/value and ownership histories remain partial, including temporary invalid keys and nonselected input CVs. No engine bug or intentional divergence; no full-core or BOLA claim."
+}
