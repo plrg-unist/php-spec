@@ -186,10 +186,13 @@ def $trace_array_graph(S, n_trace) = $trace_array_frames(S, S.ARRAYS[n_trace].IT
 def $trace_array_graph(S, n_trace) = false -- otherwise
 
 ;; A positive top-level array argument witnesses the new disjoint admission.
+dec $trace_array_value_tag(pvalue) : bool
+def $trace_array_value_tag(PARRAY n) = true
+def $trace_array_value_tag(pvalue) = false -- otherwise
 dec $trace_array_arg_items(pentry*) : bool
 def $trace_array_arg_items(eps) = false
-def $trace_array_arg_items((ENTRY pkey (DIRECT (PARRAY n))) :: pentry_tail*) = true
-def $trace_array_arg_items(pentry :: pentry_tail*) = $trace_array_arg_items(pentry_tail*) -- otherwise
+def $trace_array_arg_items((ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = ($trace_array_value_tag(pvalue) \/ $trace_array_arg_items(pentry_tail*))
+def $trace_array_arg_items(pentry*) = false -- otherwise
 dec $trace_frame_array_arg(pstate, nat) : bool
 def $trace_frame_array_arg(S, n_frame) = $trace_array_arg_items(S.ARRAYS[n_args].ITEMS)
   -- if $(n_frame < |S.ARRAYS|)
