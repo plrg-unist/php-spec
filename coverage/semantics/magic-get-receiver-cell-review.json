@@ -1,0 +1,90 @@
+{
+  "decision": "Independently accepted returned receiver-cell Get ownership and pending cleanup; family remains partial.",
+  "scope": "Statically named noarg nonbuiltin/nofallback nongenerator BYREF factory results retain their actual input HCELL through Get verification/COPY, independently of its live referent. Existing Get return conventions share this route; native witnesses use Get& only.",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "engine_route": "zend_std_read_property adds one receiver hold, calls Get, verifies the returned value, then OBJ_RELEASEs that hold. FETCH_OBJ_R only afterward copies/dereferences the RV, then FREE_OP1 retires the original factory result. A returned reference wrapper may still own the receiver or may have been retargeted by Get.",
+  "implementation": {
+    "revision": "9a23c6afa8e8ba4dd03590251af5263198312765",
+    "paths": [
+      "spec/semantics/30-storage.watsup",
+      "spec/semantics/380-magic-property-get.watsup"
+    ],
+    "delta_from_base": "+125/-13 lines",
+    "behavior": "Add PROPERTY_GET_INPUT ppropertyget nat, owning only HCELL. Factor the old named factory source certificate and split return conventions; authenticate a fresh REFERENCE Plan/capture and retain input-tail address/uniqueness/order through real retargeting. Normal and pending retirement occurs after COPY, before DROP/delivery.",
+    "cleanup": "Kind-authenticated release records extend existing owning-VALUE pending finish to INPUT; projected DROP and eager source guards preserve copied payloads through destructor throws.",
+    "preservation": "ppropertyget/state records, module order, compiler,384 verification/type sources and generic ownership/GC rules remain unchanged. Old BYVAL-factory predicates retain the same source tests."
+  },
+  "source_evidence": {
+    "native_baseline_revision": "248b5eb3af9aadb7170fe0e707283ee2e3fb3263",
+    "module_count": 420,
+    "classification": "Separate packets contain three scalar/reference cases and one required owning-payload case: exact normal native4, then checked Unsupported4 after W:F|/T:F|/C:F|/P:F|, reason magic getter receiver, signature or recursive access. Factory return already succeeded; all baseline agreements remain zero.",
+    "changed_revision": "9a23c6afa8e8ba4dd03590251af5263198312765",
+    "agreements": 4,
+    "observations": "Retargeted receiver: Get weakly converts actual string7 to int7, then receiver D writes string9 before COPY, caller string9. Sole factory-local cell: COPY retains int7 before input retirement/D string9; original int|string source permits later free. Conflict: original no-write TypeError at caller18/file/message precedes D source8/H.previous=TypeError, destination42. Owning payload: COPY survives D source-clear/H, then Payload C.previous=H/rootH reaches catch with destination42/sourceNULL."
+  },
+  "focused_evidence": {
+    "revision": "bfbc035d3ff00b0fe9602d09feb85fbe9a704512",
+    "module_count": 420,
+    "author": 331,
+    "independent": 383,
+    "total": 714,
+    "reached": 672,
+    "derived": 42,
+    "trajectories": "Actual returned REFERENCE/object and shared source certificate authenticate INPUT identity, whose HCELL owner replaces the operand owner while Get adds its separate object hold. Retargeted input remains live as NULL; verification precedes Get-hold D and COPY reads live9 or later8. Sole input keeps the receiver through COPY; its retirement frees the wrapper and starts D with detached VALUE7 or Payload. Pending owning-VALUE finish preserves DROP and C.previous=H.",
+    "controls": "Derived missing/duplicate INPUT, invalid address, source line and release-kind refusals preserve their positive source/history premises. KNOWN-RV/COPY input-tail checks add no BYVAL source agreement; no mutated-state reachability claim. Budget resumptions compare actual completed states.",
+    "execution": "Author AL2/SL2true and peer AL2/SL2true on first execution, quiet/stable, serial90s. All eight actual compiler/SL children sampled[1] and all PIDs/groups/wrappers reaped. Baseline/changed actual CLI adapters sampled[2] and matched to model PGIDs; native fast processes retain launcherCPU2 provenance only."
+  },
+  "preserved_failures": [],
+  "independent_review": "class119_review accepted native/baseline4, the shared foundation, changed4, author331, peer383, incoming selector/preservation reasoning and the concise documentation/archive. Original execution cuts remain closed.",
+  "raw": {
+    "manifest": "../php-spec-evidence-archive/magic-get-receiver-cell-131/manifest.json",
+    "bytes": 7894908,
+    "sha256": "e6ce489a2d513ae940c80be2627325a8cf98cdb2cafe546f6b37e2f46c2ad8e2",
+    "reports": {
+      "native3": {
+        "path": ".tools/magic-get-receiver-cell-probes-131/native-first/report.json",
+        "sha256": "075cd285d0be82f8debc6c5517e70f567bd532b76667c8e0543f6a091a2ec03b"
+      },
+      "baseline3": {
+        "path": ".tools/magic-get-receiver-cell-probes-131/accepted-current-baseline/report.json",
+        "sha256": "2450447115d8f9f554eb0447b703b3ae410ddbe1d1d6905236f40c5ded156473"
+      },
+      "native_payload1": {
+        "path": ".tools/magic-get-receiver-cell-payload-probes-131/native-first/report.json",
+        "sha256": "7167956197b4f27e3517a721bfc842c755b0daf1aa8cb689a30948ff0f0c2515"
+      },
+      "baseline_payload1": {
+        "path": ".tools/magic-get-receiver-cell-payload-probes-131/accepted-current-baseline/report.json",
+        "sha256": "75250342b754d7f9f2a63a5855de72a81db4a5d114c36c850fd7e95f3015f0cc"
+      },
+      "source3": {
+        "path": ".tools/magic-get-receiver-cell-probes-131/changed-model-tkclcvj1/report.json",
+        "sha256": "9a3ad3c5c304bc75c4f8adcba6a2ebd27b111f0b6d4490471019771e1a5b4aa7"
+      },
+      "source_payload1": {
+        "path": ".tools/magic-get-receiver-cell-payload-probes-131/changed-model-16qj_3iv/report.json",
+        "sha256": "d7fbad827536b31b8fadc120f47580a714e9beacb48d0deb95d66ac88d4b24c5"
+      },
+      "author331": {
+        "path": ".tools/magic-get-receiver-cell-protocol-zb0k5gs5/report.json",
+        "sha256": "ff3e819337e4f23cf0c6d83ba7eaf8b42181e2ffb0f906ea4f92dc0136bf38ff"
+      },
+      "independent383": {
+        "path": ".tools/magic-get-receiver-cell-review-131/execution-ly761e0d/report.json",
+        "sha256": "a2f07fa5cebfa8e8f05d7cc4b7ec59728141a8c92faa808d6038164b498f670a"
+      }
+    },
+    "recovery": "Verify SHA-256 then extract raw.tar.gz. Reports retain original file/cwd/profile/tool identities and420 cuts. Native/baseline retain248b5eb3a, changed4 retains9a23c6afa, focused714 retainsbfbc035d3. tested-inputs contains thirteen bfbc snapshots:30/380/384/modules, six maintained inputs, imported recursion/scoped-unset helpers and profile. Recover other pinned inputs through Git; later composition adds no execution credit."
+  },
+  "composition": {
+    "parent_revision": "0fd2ff9ca6bd8ac5c3e43a7a2a3d39b1aa3e87ea",
+    "module_count": 420,
+    "preservation": "Tested 30/380/384, six maintained inputs, recursion/scoped-unset helpers and profile remain exact bfbc. Incoming production paths and 420 manifest remain parent-exact.",
+    "selectors": "All original/reached/derived slots have no property hooks, so old declared-hook and new virtual-hook predicates in 261 are both false. The 394 backed-hook/Object-Stringable, 280/281 Generator/Fiber and 422 WeakMap notification guards do not select these sources/states. Get/callcontext/type-source records are unchanged. Incremental OP91 adds PRINT_EMIT/NExprPrint acquired-operand guards and OUTPUT_STRING_RELEASE handling in168/397. These four sources use primitive ECHO and no user Stringable conversion, so the shared STRINGIFY_RESULT branches and PRINT guards do not select their trajectories.",
+    "credit": "No joined execution or historical replay; original 420 evidence retains its cuts."
+  },
+  "limits": [
+    "The INPUT route admits existing Get return conventions, but four native witnesses use Get&; derived KNOWN-RV checks are not BYVAL source agreement. Wider computed/argument-bearing/suspended factories, coercions and lifetime combinations remain partial."
+  ],
+  "engine_bugs_or_intentional_divergences": []
+}

@@ -674,6 +674,19 @@ Generator rejects before DATA acquisition. Assignment, cached state, empty trace
 and setter recovery survive. Three source agreements and 361 original conditions
 pass (419 physical, 58 setup). Nonfresh temporary inputs and wider lifetimes remain partial.
 
+[CONFIG Generator return storage](coverage/semantics/config-generator-return-storage-review.json)
+now runs a bounded payload destructor before API entry or caller catch. The real
+storage pin keeps the Generator weakly visible during destruction, then both
+objects die. Argument-site traces, pending Exceptions, selected-callee ownership
+and setter recovery survive. Two source agreements and 426 maintained conditions
+pass (486 physical, 60 setup); broader owning storage remains partial.
+
+[Named Generator CONFIG sends](coverage/semantics/config-generator-named-unpack-review.json)
+now check each yielded string key from a direct CV before resuming the Generator.
+Named and numeric-string positional keys preserve PHP's argument order and
+immediate duplicate/unknown errors. Five original sources and 74 focused state
+predicates pass; wider sends and producer lifetimes remain partial.
+
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
 throws the object-key `Error` before copying its current value or entering the
@@ -2109,6 +2122,13 @@ when the outer variable changes; the callee and its captures survive CLOSED unti
 the Generator is destroyed. Supplied Throwables preserve identity through finally,
 and fresh outside NEXT retains both linked Errors.
 [Closure transfer review](coverage/semantics/generator-fiber-closure-transfer-review.json).
+Ordinary public method-created Generator bodies retain their actual receiver
+across direct Fiber suspension, resumption and supplied-Throwable injection.
+A closed self-yield cache owns the receiver independently; unhandled cleanup
+retires it before the caller's finally. Four source comparisons and 424 focused
+premises pass at their recorded cuts; the original genuine fresh-case refusal,
+fixture failure and diagnostic retain zero agreement credit.
+[Method receiver review](coverage/semantics/generator-fiber-transfer-review.json).
 [Arrow Generator311](docs/semantics/ARROW-GENERATORS.md) validates eager
 parameters, deferred captures, implicit yield/delegation returns and original
 signatures. Value warnings retain the same Throwable, cached key and closed
@@ -3137,9 +3157,25 @@ Multiple methodless leaf entries now retain separate lookup identities and one
 physical Value owner per slot, including shared Values. Two originals and 286
 Boolean/five raw checks pass at `8f71bbef1`/412: one Key death transfers only its
 entry to a release job and preserves the sibling, then normalizes to old singleton
-storage. Original preflight/fixture compile failures stay zero. Other payloads,
+storage. Original preflight/fixture compile failures stay zero. Wider payloads,
 wider replacement/unset, wider iteration, GC/CONFIG and wider multiple-entry
 Map teardown remain partial. [Review](coverage/semantics/weak-map-review.json).
+
+Finite direct callback tables now retire a real Key's selected slot while
+preserving the sibling. Early/late Key weak visibility, canonical singleton
+read/copy ownership and the same supplied Exception survive cleanup; shared
+slots plus an outside Value holder delay invocation until both Keys retire.
+Three sources and 380 Boolean/10 raw checks pass at `29beafa25`/420. Genuine 3
+retains `a70bc6c26`/420, refusing after `B;` with zero agreement. Old methodless/
+ALIAS and active-cursor behavior is unchanged; new callbacks require no cursor.
+Other callback read modes, wider reentry/mutation/escape and GC remain partial.
+
+Ordinary dimension reads now copy Values from a live still-multiple direct
+callback table with no active cursor. Independent copies survive Key or Map
+retirement and delay the callback until the last copy drops, including a supplied
+Exception and shared-slot/copy owners. Three sources and 349 Boolean/9 raw checks
+pass at `c499f12ba`/420; the original peer failure and prefix diagnostic stay zero.
+[Read/copy review](coverage/semantics/weak-map-review.json).
 
 Last-owner multi-entry Map teardown now unregisters every Key before releasing
 its Value slots, retaining the empty Map pin until all jobs finish. Two originals
@@ -3315,7 +3351,7 @@ remaining slot cleanup, while external shared holders delay invocation.
 Three sources and 307 Boolean/nine raw checks pass at `80451b539`/417. Genuine
 baseline 3 retains `8484fc071`/417 with zero agreement: callback-table insertion
 refuses before output. Original compile stops remain zero; callback-valued traversal,
-singleton/Key-death/normalization, reads/empty/mutation/escape and wider
+singleton Map teardown, broader reads/empty/mutation/escape and wider
 payload/GC histories remain partial.
 
 Bounded by-value WeakMap `foreach` now retains the Map through hidden iterator
@@ -3920,7 +3956,12 @@ read physical backing slots without calling getters. Normal Notice handlers stil
 run real setters, including writes to a selected reference cell; inline declared
 retirement and virtual-slot omission retain their distinct behavior. Six exact
 source agreements and 427 raw focused conditions pass. New backing-hook Stringable
-continuations remain refused; array-cast and foreach hook boundaries are unchanged.
+continuations remain refused; foreach hook boundaries are unchanged.
+[No-table hook projections](coverage/semantics/hook-array-projection-review.json)
+now export raw ARRAY snapshots while preserving later inline object comparison.
+Singleton references detach, shared cells stay shared, and snapshot-held objects
+retain their final-release timing. Six source comparisons, including the cached
+control, and 286 focused recipe conditions in four groups pass.
 [Builtin stdClass numeric Notices](coverage/semantics/stdclass-numeric-comparison-review.json)
 use the same continuation with a fixed builtin class image. Restored second
 Notices retain saved 1/1.0 across stdClass/source-instance changes and late live
@@ -5284,6 +5325,15 @@ and clears the receipt without attaching the requested type.
 [Three source agreements and 511 focused conditions](coverage/semantics/magic-get-param-reference-review.json)
 retain their original 419 cuts. Wider callbacks and coercions remain partial.
 
+Named noarg factories returning the receiver by reference now retain their original
+input cell through COPY, then retire it separately from Get's receiver hold.
+Retargeting that cell can run receiver destruction after verification but before
+COPY; a sole retained cell delays destruction until COPY has detached the value.
+Pending errors and copied objects preserve input retirement and destructor order.
+[Four source agreements and 714 focused conditions](coverage/semantics/magic-get-receiver-cell-review.json)
+retain 420 cuts. Native cases use reference Get; derived KNOWN-RV checks add no
+by-value source credit. Wider producers and lifetimes remain partial.
+
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference
 route. Typed object conversion remains a separate consumer.
@@ -5575,6 +5625,12 @@ returning constant integer 1, including folded expressions and reference demand.
 Source, compiler and paused ownership checks cover admitted conversions;
 user-object `__toString` now runs callbacks for echo, print and string casts,
 with other string contexts still open.
+Initially unbuffered print retains a noarg by-value untyped call's acquired
+Stringable until after text emission and before outer store; borrowed CV timing
+stays distinct. A method throw emits no print text/result and preserves the
+original Exception through retirement. Two acquired sources, one borrowed
+control and 505 recipe premises (including derived controls) pass in the
+[print lifetime review](coverage/semantics/print-stringable-lifetime-review.json).
 [Eval operand conversion](coverage/semantics/user-string-eval-author.json)
 extends that callback to checked eval source requests. Its source catalogue
 passed on the file-trace base; installed focused, paused and included-file

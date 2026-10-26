@@ -323,11 +323,11 @@ def $aggregate_frames_declared(S, pcallcontext?, eps, n) = false
 def $aggregate_frames_declared(S, pcallcontext?, pframe :: pframe_tail*, n) = (($aggregate_frame_seen(S, pcallcontext?, pframe, pframe_tail*) =/= eps /\ $aggregate_tasks_declared(pframe.TODO, n)) \/ $aggregate_frames_declared(S, pframe.CONTEXT, pframe_tail*, n))
 def $aggregate_local_declared(S, n) = (($aggregate_current_seen(S) =/= eps /\ $aggregate_tasks_declared(S.TODO, n)) \/ $aggregate_frames_declared(S, S.CURRENT, S.FRAMES, n))
 def $aggregate_decl_retained(S, n) = ($aggregate_local_declared(S, n) \/ $aggregate_views_declared(S, $aggregate_parked_views(S), n))
+;; No-table ARRAY casts copy physical storage without invoking property hooks.
 def $aggregate_projection_plain(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if ~$objectprops_materialized(S.OBJECTPROPS, n)
-  -- if ~$property_hook_instance(S, n)
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_rows*)
   -- if $property_unique_names(ppropertyslot_rows*)
 def $aggregate_projection_plain(S, n) = false -- otherwise

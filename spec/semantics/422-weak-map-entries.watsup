@@ -222,6 +222,11 @@ def $weakmap_entries_callback_slot(S, pweakmapvalue) = false -- otherwise
 dec $weakmap_entries_callbacks(pstate, pweakmapentry*) : bool
 def $weakmap_entries_callbacks(S, eps) = false
 def $weakmap_entries_callbacks(S, pweakmapentry :: pweakmapentry_tail*) = ($weakmap_entries_callback_slot(S, pweakmapentry.VALUE) \/ $weakmap_entries_callbacks(S, pweakmapentry_tail*))
+;; Preserve the old methodless notification domain, including active cursors.
+;; Callback tables use direct-payload authority and cannot invalidate a cursor.
+dec $weakmap_entries_notice_storage(pstate, nat, nat*, bool) : bool
+def $weakmap_entries_notice_storage(S, n_map, n_freeing*, false) = $weakmap_entries_storage_valid(S, n_map, n_freeing*)
+def $weakmap_entries_notice_storage(S, n_map, n_freeing*, true) = (~$weakmap_foreach_active(S.ITERATORS, n_map) /\ $weakmap_entries_storage_policy(S, n_map, n_freeing*, true))
 def $instance_storage_basic(S, pinstancestorage) = true
   -- if n_map = pinstancestorage.OBJECT
   -- if (HOBJECT n_map) <- S.ALLOCATIONS
@@ -275,11 +280,16 @@ def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, $weakmap_e
   -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_entries_clearing_presence(S, paccess)
   -- if paccess.OBJECT = (n_map)
   -- if paccess.OFFSET = POBJECT n_key
+;; Only ordinary dimension reads extend to direct callback payloads. Other
+;; modes retain the old methodless/reference and active-cursor policy.
+dec $weakmap_entries_access_storage(pstate, nat, bool) : bool
+def $weakmap_entries_access_storage(S, n_map, false) = $weakmap_entries_table_valid(S, n_map, eps)
+def $weakmap_entries_access_storage(S, n_map, true) = (~$weakmap_foreach_active(S.ITERATORS, n_map) /\ $weakmap_entries_storage_policy(S, n_map, eps, true))
 dec $weakmap_entries_access_allowed(pstate, paccess, ptbytes) : bool
 def $weakmap_entries_access_allowed(S, paccess, ptbytes) = true
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_entries_at(S, n_map)
-  -- if $weakmap_entries_table_valid(S, n_map, eps)
+  -- if $weakmap_entries_access_storage(S, n_map, ptbytes = $ptascii("offsetGet") /\ paccess.MODE = ACCESS_READ KEY_R /\ $weakmap_entries_callbacks(S, $weakmap_entries_contents(S, n_map)))
   -- if (ptbytes = $ptascii("offsetGet") /\ $weakmap_read_allowed(S, paccess)) \/ (ptbytes = $ptascii("offsetExists") /\ ($weakmap_presence_allowed(S, paccess) \/ $weakmap_quiet_read_allowed(S, paccess))) \/ (ptbytes = $ptascii("offsetUnset") /\ $weakmap_unset_allowed(S, paccess))
 def $weakmap_entries_access_allowed(S, paccess, ptbytes) = false -- otherwise
 ;; Explicit unset drops exactly this slot; an absent object Key is unchanged.
@@ -336,7 +346,7 @@ def $weakmap_entries_present(S, (HARRAY n) :: pnode_tail*) = $weakmap_entries_pr
 def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = $weakmap_entries_pack($weakmap_entries_delete(pweakmapentry*, n_key))][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = $weakmap_notice_wrapper(S, pweakmapentry_removed)]) :: ptask_tail*], $destruction_values($weakmap_value_nodes(pweakmapentry_removed.VALUE)))
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
   -- if $weakmap_entries_at(S, n_map)
-  -- if $weakmap_entries_storage_valid(S, n_map, [n_key])
+  -- if $weakmap_entries_notice_storage(S, n_map, [n_key], $weakmap_entries_callbacks(S, $weakmap_entries_contents(S, n_map)))
   -- if S.OBJECTS[n_map] = WEAKMAPENTRIES pweakmapentry*
   -- if $weakmap_entries_find(pweakmapentry*, n_key) = (pweakmapentry_removed)
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*

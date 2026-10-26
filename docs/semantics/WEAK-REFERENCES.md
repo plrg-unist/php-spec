@@ -127,9 +127,57 @@ constructed/helper controls with no extra PHP credit. Native/genuine refusals
 retain `c5ccf2792`/411. Original app0 iteration-name and author record-list syntax
 failures remain zero; only corrected preflight/author repeat, without source or
 native replay. At that cut, CONFIG/GC/foreach/teardown and old392/402/408
-new-kind fallbacks stay explicit exclusions. Wider payload/property/class/callback forms,
-wider replacement/unset and cross-map/reentry/Fiber histories remain partial.
+new-kind fallbacks stay explicit exclusions. Wider payload/property/class forms,
+callback mutation, wider replacement/unset and cross-map/Fiber histories remain partial.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
+
+Selective Key notification also admits the existing direct callback-payload
+policy while preserving the old methodless/ALIAS path exactly. Only the actual
+dying Key may use its freeing-pin exception; new callback tables require no
+active Map cursor. The existing delete/pack and one selected Value job preserve
+the sibling record and BEFORE identity without adding an owner.
+
+Three originals and author 204/6 plus independent 176/4 pass 380 Boolean/10 raw
+transitions at `29beafa25`/420. A late Key wrapper stays visible through the
+Value callback; an early wrapper is already NULL although its Key pin is still
+allocated. The normalized methodless sibling remains readable and its returned
+copy adds one owner. A supplied Exception survives Key retirement and reaches
+the original catch. Two shared slots plus an outside Value holder retain owners
+3→2→1; the sole callback runs after both Keys physically retire, with Map still live.
+All callback copies drop before return/throw.
+
+Native/genuine retain `a70bc6c26`/420; genuine 3 is Unsupported after `B;` at
+Key-notification authority, zero agreement. All actual affected checks pass first
+execution without preflight, replay or cap change. Source cuts bind pending Key
+jobs because pin creation and notification occur in one raw model step; the
+exact internal pin and active-cursor/missing-freeing controls are explicitly helper-only. The peer's
+wrong-OFFSET query also adds zero PHP credit. Other callback read modes, active
+callback cursors, freeing-Key dimensions, wider mutation/reentry/escape,
+payload/property/inheritance and GC/CONFIG remain partial.
+[Review and recovery](../../coverage/semantics/weak-map-review.json).
+
+Ordinary `KEY_R` dimension reads now admit the existing direct callback-payload
+policy on a live still-multiple table without an active cursor. Source, receiver,
+Key and selected-slot authority stay unchanged; only that read mode chooses the
+callback policy. The returned Value gains its ordinary copy owner while each Map
+slot retains its own edge. Quiet/presence/reference and mutation consumers keep
+their previous policy. Conditional tracing and ownership rules are unchanged.
+
+Three native originals and source comparisons pass at their recorded cuts.
+Native/genuine retain `7f3e454ec`/420; genuine 3 refuses after `B;` at the dimension
+protocol, zero agreement. Source 3 and author 200/5 plus corrected peer 149/4 pass
+349 Boolean/9 raw checks at `c499f12ba`/420. Actual read copies delay invocation
+through Key death or last-Map teardown. Two shared slots and two independent
+copy CVs retain the Value through separate slot/copy releases. The last-copy
+callback preserves the supplied Exception and exact native ending.
+
+The original peer incorrectly treated a nested cleanup operation as the outer
+`unset(copy)` operation. Its prefix diagnostic and failure remain zero credit.
+The corrected witness binds the actual `THROW_SEARCH` cleanup above the outer
+operation carrying the supplied Exception, validates both exit markers, and
+preserves them through physical Value disposal. Only that peer repeats. Wider
+read modes, active/freeing tables, cursor reentry, payloads and GC/CONFIG remain
+partial. [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
 ## Last-owner multiple-entry Map teardown
 
@@ -180,8 +228,8 @@ insertion, with zero agreement. The original runtime-default and author-binding 
 remain zero before application/state, with only affected corrections and no
 accepted replay. Callback-valued traversal, offset reads,
 empty/mutation/escape, wider payload/property/inheritance and GC/CONFIG remain
-partial. Callback singleton/Key-death/normalization and occupied replacement
-have no new source coverage. [Review and recovery](../../coverage/semantics/weak-map-review.json).
+partial. Callback singleton Map teardown and occupied replacement
+have no new source coverage in this teardown slice. [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
 ## Multiple-entry by-value foreach
 

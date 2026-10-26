@@ -288,8 +288,8 @@ and object-body-normalized real/named Closures. Zend selects the left comparison
 handler; Closure falls back to standard comparison when the handler pointers differ.
 Class mismatch returns +1 in both directions without inspecting captures, saved VMs,
 private entries, formatter fields or caches. An exact unchanged-state effect and
-negated guard on the older Throwable refusal keep the routes disjoint; non-map
-Throwable property comparison remains unsupported. Three exact originals and
+negated guard on the older Throwable refusal keep the routes disjoint; wider
+non-map Throwable property comparison remains unsupported. Three exact originals and
 468 Boolean premises/16 actual steps cover direct operator rows, closed and paused/
 suspended VMs, warmed Exception bytes, zero-prefix aggregates and skipped real tails.
 Other Closure representations, internal/custom counterparts and wider lifetimes
@@ -507,7 +507,7 @@ virtual declarations remain absent from physical slots. Six native/model sources
 and 427 raw conditions in four reached groups pass, including getter calibration,
 default Notice, virtual-only equality and count-first skip controls. Newly admitted
 backing-hook Stringable continuations remain Unsupported; old public virtual-only
-eligibility, ARRAY-cast projection and foreach hook boundaries stay unchanged.
+eligibility and foreach hook boundaries stay unchanged.
 
 The raw handler is disabled during its own body and restored before subsequent
 Notice dispatch. The original quiet-terminal cancellation remains available.
@@ -519,6 +519,22 @@ only events and the fatal snapshot may change. Builtin Throwable/string formatti
 materialization, cache updates, recursion and wider lifetime effects remain outside
 this adapter. Documentary receiver/leaf images add no owner;
 actual operands, cursor pins and callback selection retain their existing roots.
+
+[No-table hook projections](../../coverage/semantics/hook-array-projection-review.json)
+preserve the original inline comparison route after an ARRAY cast. The cast builds
+a raw physical snapshot without invoking getters or materializing the object;
+a later comparison of an uninitialized typed slot against a defined slot therefore
+retains inline order1. Singleton/reference snapshot and cached-table controls
+complement that source witness. Derived forced-materialization and duplicate-row
+checks remain separate from actual source execution in the bounded review.
+
+Cold, same-kind builtin `Exception` and `Error` pairs with empty traces and null
+previous values compare their seven physical declared slots in order. The string
+cache must still be empty; a warmed cache can change the result. Equal pairs
+continue into later array entries, while a nonzero result skips later casters.
+The [cold Throwable review](../../coverage/semantics/throwable-cold-comparison-review.json)
+records the normal-only boundary and the remaining wider Throwable cases.
+
 [Builtin and inherited Throwable string casts](../../coverage/semantics/pending-throwable-comparison-review.json)
 also skip their internal handler in this authenticated pending remainder. The
 failed cast gives object-after-string order without reading formatter fields,

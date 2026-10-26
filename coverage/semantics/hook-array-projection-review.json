@@ -1,0 +1,167 @@
+{
+  "milestone": "COMP128",
+  "status": "independently reviewed bounded slice",
+  "behavior": "No-table hook-bearing ARRAY casts copy physical snapshots without materializing the source or invoking getters. Singleton references unwrap, shared cells remain shared, and snapshot-held objects retain final-release timing; subsequent object comparisons retain their inline typed-UNDEF route.",
+  "implementation": {
+    "spec/semantics/394-aggregate-stringable-comparisons.watsup": "0ffce17ef2ba9d82e723357a0881848cb08b344656547c99e08f044e12a2ed5d"
+  },
+  "engine_basis": [
+    "Zend/zend_execute.h: zend_cast_zval_to_array implements explicit ARRAY casts through the same standard no-properties-hash fast path as Zend/zend_operators.c::convert_to_array, without excluding property hooks.",
+    "Zend/zend_object_handlers.h: ZEND_STD_BUILD_OBJECT_PROPERTIES_ARRAY_COMPATIBLE requires the standard handlers/no physical hash.",
+    "Zend/zend_object_handlers.c: zend_std_build_object_properties_array skips UNDEF, copies physical keys, unwraps singleton references and invokes no hook. zend_std_compare_objects retains inline one-sided UNDEF order1 when neither physical hash exists."
+  ],
+  "target": {
+    "php": "8.5.10 CLI NTS signed64",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle": ".tools/php/bin/php",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "tested_module_count": 420
+  },
+  "native": {
+    "initial_revision": "7f3e454ece146e4f9a3f3c30ebb4a2d74d758e3f",
+    "initial_cases": 6,
+    "reports": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-128/author-originals/native.json",
+        "sha256": "930320cff30923e153c4851914b99909a113d5379d22febae73042a6e0e6dfe6"
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-128/peer-originals/native.json",
+        "sha256": "3a2926beb47d09ecff654c0f86a53a1ff6045dc7ec5add9a7cd93eedf0595ebf"
+      }
+    ],
+    "derived_revision": "30cc85d7b46d8b9ea41dcea21e5825837e4573fe",
+    "derived_cases": 3,
+    "derived_report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comparison-128/peer-originals/derived/native.json",
+      "sha256": "c02f2f642405d6504f0011a0871019456d7d01d8ac97446e0d55b4ee19e91106"
+    },
+    "selection": "Only the three changed observer sources were re-oracled. The two author originals and shared-cell peer native were retained without replay.",
+    "limits": "CPU4/2GiB, native15 each; initial packet130/watch150, derived-native phase60/watch75."
+  },
+  "baseline": {
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comparison-128/private/initial-report.json",
+      "sha256": "20dc8e40ed1e4e83c65bb14d17490a2402c6fe4f98947576d674e80048d6ccec"
+    },
+    "revision": "7f3e454ece146e4f9a3f3c30ebb4a2d74d758e3f",
+    "status": "accepted/program/NORMAL, CLI0, reasonNone, exit_status0",
+    "model_stdout": "B|C:1:1:1|R:-1:0:1|A|",
+    "native_stdout": "B|C:1:1:1|R:1:1:1|A|",
+    "stderr": "",
+    "agreement_credit": 0,
+    "cause": "The exported array is already correct, but the old cast marks the source materialized, selecting materialized hash comparison\u22121 rather than later inline UNDEF order1.",
+    "limits": "Unchanged sole author original, CLI80/record90/2GiB after native6."
+  },
+  "compile": {
+    "revision": "ca893a452e1628c8d97a0980b59267d41e6a4a7f",
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comparison-128/private/source-struct-actor.exit.json",
+      "sha256": "d6c495c461b6c2b71a22c396130e48635df38dd79a573a36aef2214ca37b03d3"
+    },
+    "result": "full420 strictSL/elaboration/structuring with pure main=true",
+    "limits": "CPU4/2GiB,30/watch45",
+    "semantic_agreement_credit": 0
+  },
+  "sources": {
+    "normal_comparisons": 6,
+    "records": [
+      {
+        "report": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/comparison-128/author-originals/model.json",
+          "sha256": "ec80587f0dc953a05f84808ef85268fb0e6c82ed74f5b28bcde8ae02d7169474"
+        },
+        "revision": "ca893a452e1628c8d97a0980b59267d41e6a4a7f",
+        "cases": 2
+      },
+      {
+        "report": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/comparison-128/peer-originals/model-derived.json",
+          "sha256": "9b52ac82868a9aba7f9190df0685cf4ee928432f6f4bf641b74fa65a1ccf0f4f"
+        },
+        "revision": "30cc85d7b46d8b9ea41dcea21e5825837e4573fe",
+        "cases": 4
+      }
+    ],
+    "selection": "Six source comparisons including the cached-table control: raw mangled keys/virtual/UNDEF omission, later real Get calibration, preserved inline order1, singleton scalar isolation, snapshot-only Victim retirement, shared-cell write and unchanged cached route.",
+    "limits": "CPU4/2GiB, model90/process105; author235/watch250 then peer445/watch460."
+  },
+  "focused": {
+    "raw_conditions": 286,
+    "groups": 4,
+    "revision": "20e55394b42b58d0072f48e5bce566c736b77527",
+    "reports": [
+      {
+        "report": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/comparison-128/author-focused/report.json",
+          "sha256": "0aac1fb680739be7238ae97335181de2e51c55cf24d6cda1207cd1322dbbfcc3"
+        },
+        "conditions": [
+          98,
+          64
+        ]
+      },
+      {
+        "report": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/comparison-128/peer-focused/report.json",
+          "sha256": "3cb097d8dcadc65c82c0e0d8721a225b165ce10894338513df48fe3d0fc99a82"
+        },
+        "conditions": [
+          52,
+          72
+        ]
+      }
+    ],
+    "metric": "Four raw recipe main lists, not286 native-reached states or distinct obligations. Derived forced-materialization/duplicate-row controls and short zero/one resumption are included.",
+    "coverage": "Actual raw CAST and driven snapshots preserve original maps/flags/cells; DIRECT export preserves keys and omits virtual/UNDEF slots; real downstream comparison yields1. Singleton cell owner1 stays original while copied object edges grow1\u21922 then snapshot-only1 before actual D.",
+    "limits": "StrictSL/cachefalse/dettrue, CPU4/2GiB, child120; author/peer each275/watch290."
+  },
+  "zero_credit": {
+    "observer_failure": {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-128/peer-originals/model.json",
+        "sha256": "eb49cb3f4c33bff8aeab9cb9e2ec5f4833b814a78ad5341625ed0336d4e6239c"
+      },
+      "receipt": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-128/private/source-peer-actor.exit.json",
+        "sha256": "7b6e3c2a5b65d3c68411881183eb9b832f4841ea5764be975760255476699876"
+      },
+      "revision": "ca893a452e1628c8d97a0980b59267d41e6a4a7f",
+      "outcome": "First scalar fixture accepted/program/Unsupported: registered builtin call, stdout B|C:1:1:, quiet stderr. COUNT has no modeled execution body.",
+      "correction": "Exactly three count predicates became core strict ARRAY-shape comparisons; all old originals/native/failure files stay preserved. No COUNT body or runtime change was added. Only changed natives and failed/unrun peer models were selected.",
+      "agreement_credit": 0
+    },
+    "historical_renewal_credit": 0,
+    "historical_scope": "No prior direct projection-helper negative was selected; no historical campaign or accepted author/full420/native replay. All focused groups passed on their first execution."
+  },
+  "independent_review": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/comparison-128/private/independent-review.json",
+    "sha256": "4eb285a8dc3e3f333e86e139fa71b027ff8950bbc8a03f332a473a9626ea8022"
+  },
+  "limits": [
+    "Only the one no-table projection classifier premise changed; existing INSTANCE/nonmaterialized/unique-slot and allocation guards remain. Existing56 snapshot/merge_item rules are reused.",
+    "Cached casts, hook compiler/access/foreach, Stringable comparison dispatch, internal/custom-handler and wider lifecycle routes retain their separate contracts. Casts invoke no getter; the explicit later Get only calibrates the existing hook body.",
+    "Normal completion only. Held COMP123, paused COMP88 and all other paused boundaries were untouched. No engine bug or intentional engine divergence is claimed.",
+    "Core coverage remains partial; selected validation is not semantic equivalence, a portability rebuild or a BOLA proof."
+  ],
+  "archive": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/comparison-128",
+    "manifest_sha256": "453a93c1b3c4f049431f505a3a2d5ea42ba636423b867c4287cb41edb8428b4d",
+    "files": 215,
+    "bytes": 1774071
+  },
+  "recovery": "Restore archived original/derived source and recorder paths with the listed Git cuts and pinned tools/profile. Raw receipts preserve commands, streams/status, inputs and worker closes; no binaries or offline rebuild are archived.",
+  "composition": [
+    {
+      "parent": "c6dd7db1f87b92ab49fce5bc1151b3340daf75b9",
+      "publication": "ae83fe459379d6cfa4a32802c455c42b39c84ca4",
+      "module_count": 420,
+      "execution_credit": 0,
+      "preservation": "Sole394 implementation and eight tests are publication-exact; every other operational module, schema and ordered420 manifest remains parent-exact. Incoming magic-Get INPUT, CONFIG Generator RETURN-storage and acquired PRINT/Stringable selectors are absent from these sources, including the array-unset Victim destructor. Accepted execution retains its original cuts.",
+      "final_review": "Exact candidate c667619ea03cf9924fd40e7f487c2b430ab471d3 independently CLEAR; completion metadata preapproved.",
+      "integration_policy": "Expected-parent c6dd7db1f87b92ab49fce5bc1151b3340daf75b9 guarded fast-forward only; no execution renewal."
+    }
+  ]
+}

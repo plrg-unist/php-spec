@@ -33,9 +33,18 @@ and wider lifecycle contexts retain their existing boundaries.
 [Cached backing-hook comparisons](../../coverage/semantics/backed-hook-table-comparison-review.json)
 use these physical locators without invoking getters; normal setters and live
 backing/reference writes remain observable. Virtual declarations contribute no
-slot. This selected validation covers comparisons; ARRAY-cast projection and
-foreach hook guards remain unchanged, and new backing-hook Stringable
-continuations stay Unsupported.
+slot. This selected validation covers comparisons; foreach hook guards remain
+unchanged, and new backing-hook Stringable continuations stay Unsupported.
+
+[No-table hook projections](../../coverage/semantics/hook-array-projection-review.json)
+also use the standard physical snapshot path within the existing hook/compiler
+bounds. ARRAY casting skips getters, virtual declarations and uninitialized slots,
+preserves mangled nonpublic keys, and leaves the original object unmaterialized.
+Singleton references unwrap into copied DIRECT payloads; shared reference cells
+remain shared. A snapshot-held object survives replacement of its original slot
+until the snapshot entry is removed. The cached-table cast route is unchanged.
+Six source comparisons and 286 recipe conditions in four groups pass, including
+later explicit getter calibration and inline typed-UNDEF comparison.
 
 Source construction keeps these locators internal; ordinary array casts export
 copied values. Copied declared-bucket reference iteration and collector visitation

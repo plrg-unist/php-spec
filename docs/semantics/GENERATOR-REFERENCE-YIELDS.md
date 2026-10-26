@@ -33,8 +33,14 @@ Module340 now executes the identical active-finally request source as `C|7|F`;
 its original328 refusal and40 boundary premises retain their historical zero
 agreement. [Request cleanup](GENERATOR-FORCE-CLOSE.md) records the separate cut.
 Reference producers containing `yield from` retain the native compiler rejection.
-Wider producer/call forms, suspension during handlers, parked running Generators,
-other request/terminal paths and complete destruction/collection remain required.
+Direct named NEXT bodies now preserve an earlier cached cell across Fiber
+suspension, including source-name rebinding, copied-array COW, supplied
+Throwable cleanup and the single-Error reentry path for a defined cache.
+See [Generators](GENERATORS.md) and the
+[reference transfer review](../../coverage/semantics/generator-fiber-reference-transfer-review.json).
+Wider producer/call forms, suspension during handlers, other parked running
+Generator contexts, other request/terminal paths and complete
+destruction/collection remain required.
 
 Authority is the vendored PHP8.5.10 `Zend/zend_vm_def.h::ZEND_YIELD`,
 `zend_compile.c::zend_compile_yield`, `zend_compile_yield_from`,

@@ -68,6 +68,7 @@ dec $fiber_transfer_reason(pstate) : text
 dec $fiber_generator_transfer(pstate) : bool
 dec $fiber_generator_body_id(pstate) : nat?
 dec $fiber_generator_callee_valid(pstate, pgenerator, pcallcontext) : bool
+dec $fiber_generator_cached_reference_valid(pstate, pgenerator, pcallcontext) : bool
 ;; The five active destruction lists move with the real VM stack.
 def $fiber_transfer_reason(S) = "Fiber switch during an initializer, source loader or Generator continuation" -- otherwise
 def $fiber_transfer_context(S, eps) = true
@@ -77,6 +78,14 @@ def $fiber_transfer_frames(S, pframe :: pframe_tail*) = (pframe.CONSTCONTEXT = e
 def $fiber_generator_transfer(S) = ($generator_resume_ids(S.TODO) = eps /\ $generator_saved_ids(S.FRAMES) = eps) -- otherwise
 def $fiber_generator_callee_valid(S, pgenerator, pcallcontext) = (pcallcontext.TARGET = pgenerator.FUNCTION)
   -- if pgenerator.CLOSURE = eps
+  -- if pcallcontext.TARGET = porigin
+def $fiber_generator_callee_valid(S, pgenerator, pcallcontext) = true
+  -- if pgenerator.CLOSURE = eps
+  -- if pcallcontext.TARGET = METHOD_TARGET n pgenerator.FUNCTION
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.RECEIVER = (n)
+  -- if S.CURRENT = (pcallcontext)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if $call_current_valid(S)
 def $fiber_generator_callee_valid(S, pgenerator, pcallcontext) = true
   -- if pgenerator.CLOSURE = (n)
   -- if pcallcontext.TARGET = CLOSURE_TARGET n /\ pcallcontext.INSTANCE = (n)
@@ -85,6 +94,16 @@ def $fiber_generator_callee_valid(S, pgenerator, pcallcontext) = true
   -- if $generator_closure_valid(S, pgenerator)
   -- if $call_current_valid(S)
 def $fiber_generator_callee_valid(S, pgenerator, pcallcontext) = false -- otherwise
+def $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) = true
+  -- if pgenerator.REFCELL = eps
+def $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) = true
+  -- if pgenerator.REFCELL = (n_cell)
+  -- if pgenerator.VALUE = eps /\ pgenerator.CLOSURE = eps
+  -- if pcallcontext.TARGET = pgenerator.FUNCTION /\ pcallcontext.INSTANCE = eps
+  -- if $generator_reference_producer(S, pgenerator)
+  -- if $generator_reference_valid(S, GENERATOR pgenerator)
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+def $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) = false -- otherwise
 ;; A direct Generator body keeps its real resumer in the moved VM.
 ;; This local proof is also used on stored VMs without recursively admitting S.
 def $fiber_generator_body_id(S) = (pgeneratorop.OBJECT)
@@ -98,7 +117,7 @@ def $fiber_generator_body_id(S) = (pgeneratorop.OBJECT)
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.FRAME = eps /\ pgenerator.DELEGATE = eps /\ pgenerator.PARKED = eps
   -- if pgenerator.ACCESS = eps /\ pgenerator.RETURN = eps
-  -- if pgenerator.REFCELL = eps /\ pgenerator.BORROWED = eps /\ ~pgenerator.PENDING_INIT
+  -- if $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) /\ pgenerator.BORROWED = eps /\ ~pgenerator.PENDING_INIT
   -- if $fiber_generator_callee_valid(S, pgenerator, pcallcontext)
   -- if $generator_resume_ids(S.TODO) = eps
   -- if $generator_saved_ids(S.FRAMES) = [pgeneratorop.OBJECT]

@@ -26,6 +26,16 @@ left and right. Weak string parameter, return and property conversions invoke
 the callback; strict ones reject the object before the callback. The strictness
 of an implicit `__toString` return belongs to the method's own source unit.
 
+Used unbuffered print now keeps a direct noarg by-value untyped call's acquired
+Stringable temporary through text emission, separately from the cast receiver.
+Its nonthrowing destructor runs before the outer store, preserving print’s `1`;
+borrowed CV unset in the method retains its earlier destruction-before-text
+timing. A supplied method throw emits no text/result and keeps the same Exception
+through retirement. Source2/control1 and 505 checked recipe premises, including
+derived guards/default-buffer history, pass in the
+[print lifetime review](../../coverage/semantics/print-stringable-lifetime-review.json).
+Positive output-handler execution and wider producers/lifetimes remain partial.
+
 After a borrowed left array's Warning, concat may select an ordinary Stringable
 newly installed in its original RHS CV cell. Fresh warning capture still requires
 a quiet RHS string; only the historical return admits the new type. Real method
