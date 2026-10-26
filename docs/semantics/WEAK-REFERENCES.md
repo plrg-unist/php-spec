@@ -178,7 +178,7 @@ Constructed notice/mode refusals add zero PHP credit. Native/genuine retain
 `8484fc071`/417; genuine 3 refuses before output at the attempted second entry
 insertion, with zero agreement. The original runtime-default and author-binding compile stops
 remain zero before application/state, with only affected corrections and no
-accepted replay. Callback-valued owned Iterator/factory/traversal, offset reads,
+accepted replay. Callback-valued traversal, offset reads,
 empty/mutation/escape, wider payload/property/inheritance and GC/CONFIG remain
 partial. Callback singleton/Key-death/normalization and occupied replacement
 have no new source coverage. [Review and recovery](../../coverage/semantics/weak-map-review.json).
@@ -558,10 +558,37 @@ activation ended too soon. The correction retains ongoing destruction frames
 without weakening their authority, and reruns only affected unwind/retained.
 Constructed cursor, unrelated-row and coherent non-Throwable pending controls
 add no PHP credit. The earlier Many-refusal helper is historical for this newly
-admitted domain. Throwing Value destructors, callback/reacquisition, wider
-payload/source/outer histories, hidden handles and physical GC/CONFIG remain
-partial; there is no intermediate WI/WM observation claim.
+admitted domain. Wider payload/source/outer histories, hidden handles and physical
+GC/CONFIG remain partial; those methodless originals make no intermediate
+WI/WM observation claim.
 [Review](../../coverage/semantics/weak-map-review.json).
+
+The factory and last-owner release now also accept a canonical finite direct
+callback table through a separate lifetime certificate. It authenticates the
+initial owned-Key cursor, exact current Key history, held leaf Keys and no other
+Map cursor; existing methodless manual-method and outer-cache guards are unchanged.
+Cursor removal precedes the one Map DATA job. Wrapper and Map storage pins then
+reuse the ordered slot jobs and borrowed presence policy above.
+
+Native mixed methodless/callback Values establish independently live Iterator,
+Map and self weak gets during normal return and supplied-Exception cleanup.
+The methodless first Value is already physically gone while both `isset` probes
+still report presence. An external Wrapper first retains Map; dropping its last
+owner retires Wrapper while an external Map continues retaining shared Value
+slots. The later Map callback sees Iterator weak-null and Map/self live. Every
+callback drops its weak-get copies before return/throw; no Iterator method is
+called during backend cleanup.
+
+Three originals and author 200/7 plus independent 189/6 pass 389 Boolean/13 raw
+transitions at `135893a0a`/419. Genuine 3 retains `95d889256`/419 and refuses the
+factory before output, zero agreement. The original author parse stop stays zero;
+only its two-Key list notation was corrected. Same-heap cursor-position refusal
+restores the popped release owner; an independent notice-only query separates
+physical pin/local-copy ownership from weak visibility. These controls add no PHP
+credit. Callback cursor advancement, outer traversal, reacquisition/escape,
+mutation, singleton/Key-death/normalization, wider payload/reference/property
+contexts, hidden handles and GC/CONFIG remain partial.
+[Review and recovery](../../coverage/semantics/weak-map-review.json).
 
 ## By-reference entry cells and Key retirement
 

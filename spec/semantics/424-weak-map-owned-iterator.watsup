@@ -81,13 +81,14 @@ def $error_keep_iterators((WEAKMAPOWNEDKEYITER n n_object n_map n_position n_key
 ;; Unregister the backend cursor before releasing its sole Map DATA owner.
 ;; The existing storage pin survives that release and notifies only afterward.
 dec $weakmap_iterator_valid(pstate, nat) : bool
+dec $weakmap_iterator_callback_valid(pstate, nat) : bool
 dec $weakmap_iterator_free_allowed(pstate, nat, pdestructionrelease) : bool
 def $weakmap_iterator_free_allowed(S, n_object, pdestructionrelease) = true
   -- if $weakmap_iterator_at(S, n_object)
   -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
   -- if $weakmap_entries_at(S, n_map)
   -- if ~$instance_storage_freeing(S, n_object)
-  -- if $weakmap_iterator_valid(S, n_object)
+  -- if $weakmap_iterator_valid(S, n_object) \/ $weakmap_iterator_callback_valid(S, n_object)
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
   -- if $destructor_release_valid(S, pdestructionrelease)
   -- if $heap_owners($heap_graph(S), HOBJECT n_object) = 0
@@ -160,8 +161,31 @@ def $weakmap_iterator_valid(S, n_object) = true
   -- if $weakmap_entries_foreach_storage(S, n_map)
 def $weakmap_iterator_valid(S, n_object) = false -- otherwise
 
+;; Callback-valued Maps have lifetime authority without widening the old
+;; methodless manual-method or cached outer-foreach storage domain.
+dec $weakmap_iterator_callback_storage(pstate, nat) : bool
+def $weakmap_iterator_callback_storage(S, n_map) = true
+  -- if $weakmap_entries_at(S, n_map)
+  -- if $weakmap_entries_callbacks(S, $weakmap_entries_contents(S, n_map))
+  -- if $weakmap_entries_storage_policy(S, n_map, eps, true)
+  -- if $weakmap_entries_keys_held(S, $weakmap_entries_contents(S, n_map))
+def $weakmap_iterator_callback_storage(S, n_map) = false -- otherwise
+def $weakmap_iterator_callback_valid(S, n_object) = true
+  -- if $weakmap_iterator_at(S, n_object)
+  -- if ~$instance_storage_freeing(S, n_object)
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if $(n_inner < S.NEXTITER)
+  -- if $useriter_cursor_count(S.ITERATORS, n_inner) = 1
+  -- if $iterator_lookup(S.ITERATORS, n_inner) = (WEAKMAPOWNEDKEYITER n_inner n_object n_map 0 n_keys*)
+  -- if n_keys* = $weakmap_entries_keys($weakmap_entries_contents(S, n_map))
+  -- if ~$weakmap_foreach_active($iterator_remove(S.ITERATORS, n_inner), n_map)
+  -- if $objectprops_at(S.OBJECTPROPS, n_object) = eps
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = eps
+  -- if $weakmap_iterator_callback_storage(S, n_map)
+def $weakmap_iterator_callback_valid(S, n_object) = false -- otherwise
+
 dec $weakmap_iterator_factory_storage(pstate, nat) : bool
-def $weakmap_iterator_factory_storage(S, n_map) = ($weakmap_foreach_storage_valid(S, n_map) \/ ($weakmap_entries_at(S, n_map) /\ $weakmap_entries_foreach_storage(S, n_map)))
+def $weakmap_iterator_factory_storage(S, n_map) = ($weakmap_foreach_storage_valid(S, n_map) \/ ($weakmap_entries_at(S, n_map) /\ $weakmap_entries_foreach_storage(S, n_map)) \/ $weakmap_iterator_callback_storage(S, n_map))
 dec $weakmap_iterator_factory_cursor(pstate, nat, nat, nat) : piterator
 def $weakmap_iterator_factory_cursor(S, n_object, n_map, n_inner) = WEAKMAPOWNEDITER n_inner n_object n_map 0
   -- if S.OBJECTS[n_map] = WEAKMAP pweakmapentry?
@@ -169,7 +193,7 @@ def $weakmap_iterator_factory_cursor(S, n_object, n_map, n_inner) = WEAKMAPOWNED
   -- if S.OBJECTS[n_map] = WEAKMAPENTRIES pweakmapentry_all*
 
 ;; This nonthrowing factory is atomic only for an authentic zero-argument
-;; ordinary-CV method source and the bounded leaf storage below.
+;; ordinary-CV method source and the bounded storage policies below.
 def $weakmap_iterator_factory(S, n_map, ptbytes, eps) = true
   -- if $ptlc(ptbytes) = $ptascii("getiterator")
   -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.FIBERCALLERS = eps

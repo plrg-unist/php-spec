@@ -666,6 +666,14 @@ the original factory Exception trace survives terminal Generator throw. Three
 source comparisons and 506 maintained conditions pass (561 physical, 55 setup).
 Wider call forms, values and callback lifetimes remain partial.
 
+[CONFIG Generator initial states](coverage/semantics/config-generator-initial-state-review.json)
+now preserve an initialized CV's native acquisition order. Rewinding at the first
+yield reuses its cache without executing the body again. An advanced Generator
+acquires DATA then throws before sending even an invalid current value; a closed
+Generator rejects before DATA acquisition. Assignment, cached state, empty traces
+and setter recovery survive. Three source agreements and 361 original conditions
+pass (419 physical, 58 setup). Nonfresh temporary inputs and wider lifetimes remain partial.
+
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
 throws the object-key `Error` before copying its current value or entering the
@@ -1543,6 +1551,13 @@ retains source3/control1 and771 premises; the [dual review](coverage/semantics/c
 adds source3 and889 recipe premises, including derived controls. Late unconstrained
 reference wrapping remains readable; other owning forms and wider lifetimes stay partial.
 
+Concatenation now fetches a bounded undefined RIGHT variable before converting
+an acquired Stringable LEFT. Handler and method writes cannot replace its fixed
+fallback; LEFT stays owned until retirement before store or the same Exception
+catch. Three source agreements and 826 checked recipe premises, including derived
+controls, pass in the [prefetch review](coverage/semantics/concat-undefined-right-prefetch-review.json).
+Wider operand and handler forms remain partial.
+
 Concatenation assignment now stages a right-array warning for two bounded plain CVs.
 The first string survives handler writes and RHS removal; normal commit overwrites
 the target and detaches a late alias, while a supplied throw preserves it.
@@ -1573,6 +1588,14 @@ The [Generator spread review](coverage/semantics/array-generator-unpack-review.j
 records acquisition-state errors, DIRECT COW copies, invalid keys and supplied
 throws. Its affected check retires the earlier Generator refusal.
 Wider payloads, operand modes, delegation and Traversable lifetimes remain partial.
+Ordinary CVs of named IteratorAggregate classes now invoke a borrowed
+`getIterator()` frame and
+transfer its owned user Iterator or named-Generator return into DATA. Genuine
+source owners retain the Aggregate through the getter; it may retire before
+the child runs. Self/CLOSED acquisition errors and getter throws keep the
+builder protected through return cleanup.
+The [Aggregate spread review](coverage/semantics/array-aggregate-unpack-review.json)
+records this bounded mechanism and its remaining producer/lifetime limits.
 Array call arguments are covered by the later call-unpack checkpoint below.
 [Iterator foreach](docs/semantics/ITERATORS.md) adds by-value source Iterator
 callbacks with effective method selection, retained current values and abrupt
@@ -2067,6 +2090,11 @@ through Fiber suspension. Fresh CURRENT, cached NEXT and one-/two-link
 supplied-Throwable executions agree with PHP, including final Generator and
 object retirement. Earlier timeouts remain separate from these whole-source
 agreements. [Delegation transfer review](coverage/semantics/generator-fiber-delegation-transfer-review.json).
+Primed named Generators also retain a one-value `send` buffer across Fiber
+suspension. Clearing the delivered CV leaves that buffer alive until API return
+or unwind; object yields retain separate Generator-cache, Fiber-return and caller
+owners. Injected Throwables preserve identity through finally and buffer cleanup.
+[SEND transfer review](coverage/semantics/generator-fiber-send-transfer-review.json).
 [Arrow Generator311](docs/semantics/ARROW-GENERATORS.md) validates eager
 parameters, deferred captures, implicit yield/delegation returns and original
 signatures. Value warnings retain the same Throwable, cached key and closed
@@ -3272,7 +3300,7 @@ occupancy even after an earlier referent retires; supplied Exceptions survive
 remaining slot cleanup, while external shared holders delay invocation.
 Three sources and 307 Boolean/nine raw checks pass at `80451b539`/417. Genuine
 baseline 3 retains `8484fc071`/417 with zero agreement: callback-table insertion
-refuses before output. Original compile stops remain zero; callback-valued owned Iterator/factory/traversal,
+refuses before output. Original compile stops remain zero; callback-valued traversal,
 singleton/Key-death/normalization, reads/empty/mutation/escape and wider
 payload/GC histories remain partial.
 
@@ -3295,8 +3323,13 @@ teardown while Map still has multiple entries now transfers DATA through a
 Wrapper storage pin, preserving retained owners and supplied-Throwable helper
 unwind. Three source agreements keep mixed `e983fe7b0`/`f3623f260` cuts; 351
 Boolean/eight raw checks pass at `f3623f260`/415. Old singleton disposal is
-unchanged; wider callback/payload histories, active outer loops, hidden handles
-and GC/CONFIG remain partial.
+unchanged. Initial owned cursors on direct callback tables now use a separate
+lifetime certificate while manual/outer consumers keep their methodless guards.
+Typed Iterator/Map/self weak observations distinguish normal/supplied-Exception
+cleanup from a shared Value callback after Wrapper retirement. Three sources and
+389 Boolean/13 raw checks pass at `135893a0a`/419; the original fixture parse stop
+stays zero. Wider callback cursor/payload histories, active outer loops, hidden
+handles and GC/CONFIG remain partial.
 
 Bounded by-reference WeakMap traversal shares the entry's cell and preserves
 rebinding plus escaped aliases through DATA or Key retirement. A reference
@@ -5495,14 +5528,16 @@ values. Binding warnings precede inner-name errors; forwarding reference warning
 precede fresh cell allocation and preserve the captured value through callbacks.
 Finite getters and created children retain their selected scope and owners.
 
-ARRAY packs after positional `newThis` support direct positional prefixes and
-named tails. Saved values forward positional-first even when a named pack came
-earlier; default holes and raw Error arguments survive source-pack retirement.
-Outer duplicate/order errors stop later producers before API entry. Alias
-capture precedes warning callbacks and detached reference-cell allocation;
-parameter conversion keeps the wrapper's original values.
+ARRAY argument lists capture `newThis` from positional or named pack entries,
+or a later named send. Saved values forward positional-first even when named
+extras arrived before the receiver; default holes and raw Error arguments survive
+source-pack retirement. Outer duplicate and within-pack order errors stop later producers before API
+entry. After successful collection, missing or invalid receivers precede inner binding
+errors. Alias capture precedes warning callbacks and detached reference-cell
+allocation; parameter conversion keeps the wrapper's original values.
 
-The [argument-list review](coverage/semantics/closure-call-argument-list-review.json),
+The [outer-binding review](coverage/semantics/closure-call-outer-binding-review.json),
+[argument-list review](coverage/semantics/closure-call-argument-list-review.json),
 [initial pack review](coverage/semantics/closure-call-array-pack-review.json) and
 [temporary-call review](coverage/semantics/temporary-fake-call-review.json)
 preserve separate source/state cuts; wider unpacking and REAL temporary-current

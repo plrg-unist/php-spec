@@ -7,9 +7,13 @@ results, transformed fake bindings and finite Throwable getters. The pinned
 routes are `zend_closures.c::ZEND_METHOD(Closure, call)`,
 `zend_valid_closure_binding` and `zend_execute_API.c::zend_call_function`.
 
-Module 428 collects ARRAY packs after an ordinary positional `newThis`, with a
-direct positional prefix and named tail. Each pack resets its own named-order
-check; integer keys add consecutive positional values even after an earlier
+Module 428 collects ARRAY argument lists, including the fixed `newThis` slot.
+The receiver may arrive as an integer-keyed value, a named pack entry or a later
+direct named send. Earlier named extras do not occupy that fixed slot; once it
+is filled, later integer values forward to the inner function. Receiver capture
+is separate from canonical forwarded values and survives source-cell replacement.
+The list permits a direct positional prefix and named tail. Each pack resets its
+own named-order check; integer keys add consecutive positional values even after an earlier
 pack's named entries. API forwarding puts those positional values before named
 extras and recomputes inner binding, default holes and the first remembered
 inner error. Pack aliases are copied by value before reference-formal warnings;
@@ -85,8 +89,12 @@ Unknown inner names retain the raw receiver/named argument trace after the saved
 Closure retires. The
 [argument-list review](../../coverage/semantics/closure-call-argument-list-review.json)
 adds multiple-pack replay, mixed delivery and distinct outer versus inner error
-priority. Packed `newThis`, Traversable delivery and direct call-time references
-remain unsupported.
+priority. The
+[outer-binding review](../../coverage/semantics/closure-call-outer-binding-review.json)
+adds packed and late-named receiver capture, missing-receiver traces and invalid
+receiver priority over remembered inner errors after successful collection.
+Duplicate `newThis` stops later producers before receiver type checking.
+Traversable delivery and direct call-time references remain unsupported.
 Further internal API capture, missing core internal bodies and the REAL
 temporary-current lifetime decision remain required. Return verification remains
 paused.

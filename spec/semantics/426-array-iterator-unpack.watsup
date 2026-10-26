@@ -1,3 +1,4 @@
+dec $array_aggregate_pending(pstate) : bool
 ;; ADD_ARRAY_UNPACK owns the partial builder and Iterator DATA. Its current
 ;; cache survives key(), is dereferenced only afterward, and retires before next().
 dec $array_iterator_item(pstate, phpType13*, int) : (porigin, expression)?
@@ -152,6 +153,7 @@ rule PhpStep/array-iterator-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "array
   -- if $array_iterator_pending(S)
   -- if $array_iterator_plan(S) = eps
   -- if ~$array_generator_pending(S)
+  -- if ~$array_aggregate_pending(S)
 rule PhpStep/array-iterator-payload-boundary: S ~> S[.COMPLETION = UNSUPPORTED "array Iterator unpack state outside quiet payload domain"]
   -- if S.TODO = (ARRAY_ITERATOR parrayiterator text) :: ptask_tail*
   -- if $array_iterator_valid(S, parrayiterator, text)

@@ -5,6 +5,7 @@ dec $config_generator_input(pstate, pconfiggenerator) : bool
 dec $config_generator_start_input(pstate, poperand, nat) : bool
 dec $config_generator_owning_input(pconfiggenerator) : bool
 dec $config_generator_input_nodes(pconfiggenerator) : pnode*
+dec $config_generator_initial(poperand, pgenerator) : bool
 dec $config_generator_release_input(pstate, pconfiggenerator, ptask*) : pstate
 dec $config_generator_discard_state(pstate, pconfiggenerator, text) : pstate
 dec $config_generator_discard_nodes(pconfiggenerator, text) : pnode*
@@ -118,6 +119,14 @@ def $config_generator_stage_scope(S, pconfiggenerator, text) = $config_generator
   -- if text =/= "invoke"
 def $config_generator_callee(S, eps, n) = true
 def $config_generator_callee(S, (n_owner), n) = $($heap_owners($heap_graph(S), HOBJECT n_owner) > n)
+;; A CV keeps the outside owner needed when rewind rejects a paused Generator.
+;; Temporary INPUT still enters only fresh: its final release requires CLOSED.
+def $config_generator_initial(poperand, pgenerator) = true
+  -- if pgenerator.PHASE = GENERATOR_FRESH /\ pgenerator.DELEGATE = eps
+def $config_generator_initial(VARIABLE ptbytes z, pgenerator) = true
+  -- if pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_CLOSED]
+  -- if pgenerator.DELEGATE = eps
+def $config_generator_initial(poperand, pgenerator) = false -- otherwise
 def $config_generator_start(S, pconfigcall, poperand, n) = true
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask_tail*
@@ -125,7 +134,7 @@ def $config_generator_start(S, pconfigcall, poperand, n) = true
   -- if $config_generator_scope(S, {CALL pconfigcall, OBJECT n, INPUT poperand, ITEMS eps, PRODUCER eps})
   -- if $config_generator_start_input(S, poperand, n)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
-  -- if pgenerator.PHASE = GENERATOR_FRESH /\ pgenerator.DELEGATE = eps
+  -- if $config_generator_initial(poperand, pgenerator)
   -- if $($heap_owners($heap_graph(S), HOBJECT n) > 0)
   -- if $config_generator_callee(S, pconfigcall.OWNER, 1)
 def $config_generator_start(S, pconfigcall, poperand, n) = false -- otherwise
@@ -159,6 +168,20 @@ rule PhpStep/config-generator-start: S ~> S_value[.ORIGIN = (porigin)][.TODO = (
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN (POBJECT n)
   -- if $config_generator_start(S, pconfigcall, S.RESULT, n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE =/= GENERATOR_CLOSED
+
+;; get_iterator rejects CLOSED before acquiring DATA. Resolve only to identify
+;; the object; the original CV state retains no temporary RESULT copy or pin.
+rule PhpStep/config-generator-closed-input: S ~> $throw_scalar(S, "Exception", $ptascii("Cannot traverse an already closed generator"), z)
+  -- if S.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (POBJECT n)
+  -- if $config_generator_start(S, pconfigcall, S.RESULT, n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED
 
 ;; STARTPACK/BORROWED resumes borrow this marker's DATA and preserve the real
 ;; saved native resumer. Its trace contains no synthetic Generator method frame.
