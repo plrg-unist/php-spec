@@ -113,6 +113,18 @@ requires a named by-reference producer and live cell; method/Closure cached
 reference forms and wider helper/delegation combinations remain partial.
 [Reference transfer review](../../coverage/semantics/generator-fiber-reference-transfer-review.json).
 
+A primed direct named Generator can also suspend inside a local `catch` or
+pending `finally` while handling `Generator::throw($given)`. Its old by-value
+yield cache stays on the Generator, and the saved resumer carries the same
+Throwable through the Fiber VM. Resuming the Fiber can yield a new value,
+propagate the original Throwable, or replace it with a supplied Fiber throw;
+three primed THROW sources distinguish identity, `Previous`, reentry Error and
+cache release; a fresh CURRENT source preserves the earlier path. Admission
+requires one valid Throwable, a defined by-value cache and a direct named
+callee. Fresh THROW, by-reference, method, Closure and delegated transfers
+remain partial.
+[THROW transfer review](../../coverage/semantics/generator-fiber-throw-transfer-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

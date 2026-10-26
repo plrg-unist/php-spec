@@ -496,6 +496,8 @@ test-semantics: build
 	python3 tests/semantics/generator_fiber_method_transfer_review_state.py
 	python3 tests/semantics/generator_fiber_reference_transfer_sources.py
 	python3 tests/semantics/generator_fiber_reference_transfer_state.py
+	python3 tests/semantics/generator_fiber_throw_transfer_sources.py
+	python3 tests/semantics/generator_fiber_throw_transfer_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -909,6 +911,9 @@ test-semantics: build
 	python3 tests/semantics/allow_dynamic_properties_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/backed_get_hook_cases.json
 	python3 tests/semantics/backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/reference_get_hook_cases.json
+	python3 tests/semantics/reference_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group backing-alias
+	python3 tests/semantics/reference_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group forbidden-rebind
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/expression_get_hook_cases.json
 	python3 tests/semantics/expression_get_hook_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/virtual_get_hook_cases.json
