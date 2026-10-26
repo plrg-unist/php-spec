@@ -19,7 +19,7 @@ Three source agreements/full412 and 487 premises (166/187/134) retain
 Native preparation, genuine pre-H Unsupported and static checks keep zero credit.
 [Shorthand review](coverage/semantics/ternary-nan-warning-review.json).
 Full ternary, references/changed representations and wider handlers remain partial.
-Publication is independently reviewed; actual-tail candidate review is pending.
+Publication and actual-tail composition are independently reviewed.
 Paused boundaries remain unchanged.
 
 ## Integrated behavior and entrypoints
@@ -46,7 +46,7 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | M150 | WeakMap getIterator producer: native2/genuine refusal closed, owned InternalIterator/foreach lifetime and outer Value-cache implementation. |
 | Source90 | Named Generator CONFIG unpack: native3/genuine closed;30/405/new423 runtime preparation. |
 | A51 | String R-offset callbacks: native6/genuine Unsupported closed; protocol implementation, no404 edits. |
-| CLASS123 | Accessible private/protected UNSET Get: native4/baseline4 closed; sole380 helpers private. |
+| CLASS123 | Accessible private/protected UNSET Get: source3 accepted at `aca7fd5d4`; focused fixtures preparing, CPU5 released. |
 
 Iterator49/50/51/52/53, V99/V100/V101/V102/V103, M132/M133/M134/M135/M136/M137/M138/M139/M140/M141/M142/M143/M144/M145/M146/M147/M148/M149, A46/A47/A48/A49/A50, OP79/80/81/82/83/84/85, Source86/87/88/89, COMP118/119/120/121 and CLASS119/120/121/122 are integrated
 into this branch.
