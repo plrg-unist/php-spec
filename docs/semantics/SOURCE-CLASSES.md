@@ -259,9 +259,23 @@ Explicit constructor calls retain ordinary method return behavior. Throws retain
 the original Throwable, execute ordinary `finally` blocks and leave caller
 assignment untouched. Ordinary ownership retires unescaped failed receivers and
 preserves escaped receivers. Constructor arguments,
-parameters/types, nonpublic constructors and broader lifecycle interactions remain
-required. The [constructor review](../../coverage/semantics/anonymous-constructors-review.json)
+parameters/types, nonpublic constructors and broader lifecycle interactions remained
+required at that cut. The [constructor review](../../coverage/semantics/anonymous-constructors-review.json)
 separates original-source agreement, actual call/unwind states and pure receipt queries.
+
+Unit0 parentless anonymous classes now accept one or two direct positional/named
+`new` arguments. Public by-value constructors may have up to two required
+untyped or `int` parameters; a class without `__construct` evaluates positional
+arguments and ignores their values. Compilation publishes the anonymous class
+before argument expressions, then uses the ordinary method or no-constructor
+send tasks. An unknown named argument stops before the next value expression;
+typed reception errors leave the caller destination unchanged. The
+[argument review](../../coverage/semantics/anonymous-constructor-arguments-review.json)
+records seven native-backed sources, one independent weak int-coercion source,
+and 107 source-reached premises across constructor and no-constructor tasks.
+Dynamic-source anonymous sites with arguments, constructor by-reference/default/
+variadic/promoted or nonpublic forms, unpacking and wider object lifetimes remain
+partial.
 
 Raw `getTrace()['class']` retains the entire generated name. The shared trace
 renderer applies `c_string` only to the displayed CLASS bytes, matching Zend's

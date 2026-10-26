@@ -8,6 +8,18 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
+Bounded unit0 anonymous `new` now takes one or two direct positional/named
+arguments. Public required by-value untyped/`int` constructor formals use the
+ordinary binder; a class without a constructor evaluates positional values and
+ignores them. Class publication precedes sends, unknown named arguments stop
+before later values, and typed failure leaves assignment untouched. Six new
+originals and one unchanged zero-arg control agree with pinned PHP; one
+independent named/int coercion source also agrees. The six new originals were
+genuine Unsupported on the unchanged parent. Three source-reached groups pass
+107 premises; two initial fixture elaboration failures keep zero credit.
+[Anonymous constructor argument review](coverage/semantics/anonymous-constructor-arguments-review.json).
+Wider signatures, unpacking, dynamic units and lifecycle forms remain partial.
+
 Primed plain unbound Closure-created by-reference `Generator::throw` now
 transfers an authenticated cached cell and real Closure through Fiber catch or
 pending `finally`. Source-name rebinding preserves the old cache; copied and
