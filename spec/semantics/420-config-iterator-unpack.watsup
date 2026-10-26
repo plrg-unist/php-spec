@@ -438,6 +438,14 @@ def $config_iterator_discard_allowed(S, pconfigiterator) = true
   -- if $config_iterator_quiet_input(S, pconfigiterator)
   -- if pconfigiterator.CALL.OWNER = (n_owner)
   -- if $($heap_owners($heap_graph(S), HOBJECT n_owner) > 0)
+def $config_iterator_discard_allowed(S, pconfigiterator) = true
+  -- if $config_iterator_owning_input(pconfigiterator)
+  -- if pconfigiterator.CALL.OWNER = eps
+  -- if $heap_owners($heap_graph(S), HOBJECT pconfigiterator.OBJECT) = 0
+  -- if (HOBJECT pconfigiterator.OBJECT) <- S.ALLOCATIONS
+  -- if $config_iterator_scope(S, pconfigiterator)
+  -- if $destructor_method(S, pconfigiterator.OBJECT) = eps
+  -- if $node_children(S, HOBJECT pconfigiterator.OBJECT) = eps
 def $config_iterator_discard_allowed(S, pconfigiterator) = false -- otherwise
 ;; Generic throw search has removed the task. Restore its owners at the boundary.
 def $config_iterator_discard_state(S, pconfigiterator, text) = S[.ITERATORS = $iterator_remove(S.ITERATORS, pconfigiterator.ITERATOR)][.ORIGIN = (pconfigiterator.CALL.SITE)][.TODO = (THROW_SEARCH n) :: (CONFIG_ITERATOR pconfigiterator[.CURRENT = KNOWN PNULL][.KEY = KNOWN PNULL] "input-release") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
