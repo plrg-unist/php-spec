@@ -1,0 +1,16 @@
+[
+  {
+    "id": "generator-fiber-send-delivered-cv",
+    "source": "<?php\nclass SendToken56 {\n    public function __destruct() { echo 'D|'; }\n}\nfunction Body56() {\n    $received = yield 'seed';\n    echo 'VALUE|', (int) ($received === $GLOBALS['payload']);\n    unset($GLOBALS['payload']);\n    $reply = Fiber::suspend('pause');\n    echo 'REPLY|', (int) ($reply === 'resume');\n    unset($received);\n    echo 'BUFFER|', (int) ($GLOBALS['weak']->get() !== null);\n    yield 'done';\n    echo 'BODY-END|';\n    return 56;\n}\nfunction Run56() {\n    global $g;\n    echo 'CALL|';\n    $value = $g->send($GLOBALS['payload']);\n    echo 'SEND|', (int) ($value === 'done'), (int) ($GLOBALS['weak']->get() === null);\n    return 'fiber';\n}\n$payload = new SendToken56();\n$weak = WeakReference::create($payload);\n$g = Body56();\necho 'SEED|', (int) ($g->current() === 'seed');\n$f = new Fiber('Run56');\necho 'START|', (int) ($f->start() === 'pause');\necho 'PARKED|', (int) $f->isSuspended(), (int) ($weak->get() !== null);\necho 'RESUME|', (int) ($f->resume('resume') === null);\necho 'FIBER|', (int) ($f->getReturn() === 'fiber');\n$g->next();\necho 'RETURN|', (int) ($g->getReturn() === 56);\nunset($g, $f, $weak);\necho 'E';\n",
+    "source_sha256": "b6d038023cb7c86ff99394d478cfcaa7cab8ae0b61e20c71ff7a9f6df3eb1c81",
+    "native_exit": 0,
+    "native_stderr": ""
+  },
+  {
+    "id": "generator-fiber-send-object-return",
+    "source": "<?php\nclass SendToken56 {\n    public function __destruct() { echo 'D|'; }\n}\nfunction Body56() {\n    $received = yield 'seed';\n    echo 'VALUE|', (int) ($received === $GLOBALS['payload']);\n    unset($GLOBALS['payload']);\n    $reply = Fiber::suspend('pause');\n    echo 'REPLY|', (int) ($reply === 'resume');\n    yield $received;\n    unset($received);\n    echo 'BODY-END|';\n    return 56;\n}\nfunction Run56() {\n    global $g;\n    echo 'CALL|';\n    return $g->send($GLOBALS['payload']);\n}\n$payload = new SendToken56();\n$weak = WeakReference::create($payload);\n$g = Body56();\necho 'SEED|', (int) ($g->current() === 'seed');\n$f = new Fiber('Run56');\necho 'START|', (int) ($f->start() === 'pause');\necho 'PARKED|', (int) $f->isSuspended(), (int) ($weak->get() !== null);\necho 'RESUME|', (int) ($f->resume('resume') === null);\n$result = $f->getReturn();\necho 'RETURNED|', (int) ($weak->get() === $result);\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 56);\nunset($f, $result);\necho 'CACHE|', (int) ($weak->get() !== null);\nunset($g);\necho 'FINAL|', (int) ($weak->get() === null);\nunset($weak);\necho 'E';\n",
+    "source_sha256": "3940f5404b011023802232f318b5505e0c55c110eec72a56547366259a9b1acf",
+    "native_exit": 0,
+    "native_stderr": ""
+  }
+]
