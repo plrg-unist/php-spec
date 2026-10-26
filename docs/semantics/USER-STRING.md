@@ -43,6 +43,17 @@ the same object after that destructor and before catch. The
 records source3/state706, including derived guards. Other returned producers and
 throwing destructor/suspension histories remain partial.
 
+An acquired Stringable LEFT keeps its raw `KNOWN` temporary separately from the
+cast receiver through the remaining RIGHT conversion. The computed concatenation
+survives the temporary's nonthrowing destructor before caller store/catch. Raw
+`VARIABLE` LEFT remains borrowed and may retire after its cast, before RIGHT is
+read. The [LEFT lifetime review](../../coverage/semantics/concat-left-stringable-lifetime-review.json)
+records source3/control1 and 771 recipe premises across their reviewed cuts,
+including derived guards. Late unconstrained reference wrapping is read through
+the existing variable resolver; owning RIGHT combinations keep their earlier
+partial route. Initial reference/undefined RHS, constraints and wider lifetimes
+remain outside this new entry scope.
+
 Supplied fixed string parameters now use the same resumable callback in receive
 order. Nominal or callable membership retains the original object before string
 coercion; caller strictness rejects before conversion. By-value formals retain a
