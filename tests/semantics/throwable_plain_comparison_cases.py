@@ -64,4 +64,9 @@ echo 'B|';
 try { echo [new stdClass, $a] <=> [1, $b], '|BAD'; }
 catch (Exception $caught) { echo 'C|'; }
 ''',
+    'state-direct-array': br'''<?php
+$a = new Exception('same'); $b = new Exception('same');
+$x = [$a, 1]; $y = [$b, 3];
+echo 'B|', $a <=> $b, '|', $x <=> $y, '|';
+''',
 }

@@ -11,7 +11,6 @@ family.UNSUPPORTED = {
     'previous-control': ('Throwable property comparison', b'B|'),
     'warm-cache-control': ('Throwable property comparison', b'B|'),
     'nonempty-trace-control': ('Throwable property comparison', b'B|'),
-    'pending-notice-control': ('Throwable property comparison', b'B|H|'),
 }
 family.BASELINE = ('Throwable property comparison', b'B|')
 family.MODEL_TIMEOUTS = {name: 90 for name in CASES}
