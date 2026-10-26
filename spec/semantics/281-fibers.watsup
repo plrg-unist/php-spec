@@ -92,6 +92,27 @@ def $fiber_generator_body_id(S) = (pgeneratorop.OBJECT)
   -- if $generator_resume_ids(S.TODO) = eps
   -- if $generator_saved_ids(S.FRAMES) = [pgeneratorop.OBJECT]
   -- if $generator_resume_pairs(S, S.CURRENT, S.FRAMES)
+;; Ordinary named helper frames project their real caller scope. Keep the
+;; complete prefix flat and singleton; no resumer may disappear in the view.
+def $fiber_generator_body_id(S) = (n)
+  -- if ~$generator_active(S)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = pcallcontext.FUNCTION /\ pcallcontext.INSTANCE = eps
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if ~$function_generator(S, pfunction) /\ ~pfunction.SIGNATURE.BYREF
+  -- if $call_current_valid(S) /\ $fiber_transfer_context(S, S.CURRENT)
+  -- if S.CONSTCONTEXT = eps
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.LOCALS =/= eps /\ pframe.CONTEXT =/= eps /\ pframe.CONSTCONTEXT = eps
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if pframe.ORIGIN = (porigin)
+  -- if $generator_flat_tasks(S.TODO) /\ $generator_flat_frames(S.FRAMES)
+  -- if $generator_resume_ids(S.TODO) = eps
+  -- if $generator_resume_ids(pframe.TODO) = eps
+  -- if $generator_saved_ids(S.FRAMES) = [n]
+  -- if S_caller = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if $call_current_valid(S_caller)
+  -- if $fiber_generator_body_id(S_caller) = (n)
 def $fiber_generator_body_id(S) = eps -- otherwise
 def $fiber_generator_transfer(S) = true
   -- if S.ACTIVEFIBER = (n)
