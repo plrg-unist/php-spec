@@ -26,6 +26,9 @@ def $list_warning_frontier(S, 186) = $array_data_echo(S, $ptascii("D;"))
   -- if S.CURRENT = (pcallcontext)
   -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
 def $list_warning_frontier(S, 187) = $array_data_echo(S, $ptascii("T:"))
+def $list_warning_frontier(S, 188) = true
+  -- if S.TODO = (ARRAY_ITERATOR parrayiterator "insert") :: ptask*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
 '''
 
 
@@ -83,44 +86,69 @@ def blocked_controls():
     ]
 
 
-def pending_builder_control():
-    return [
-        'S_bad_builder = S_pending[.ARRAYS[n_target].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_object))]]',
-        '$heap_valid($heap_graph(S_bad_builder))',
-        '$array_iterator_valid(S_bad_builder, parrayiterator_pending, text_pending)',
-        '~$array_iterator_ready(S_bad_builder, parrayiterator_pending)',
-        'PhpStep: S_bad_builder ~> S_bad_builder_refused',
-        'S_bad_builder_refused = S_bad_builder[.COMPLETION = UNSUPPORTED "array Iterator unpack abrupt payload outside quiet domain"]',
-        '$array_iterator_blocked(S_bad_builder_refused)', '$drive_steps(S_bad_builder_refused, 2) = S_bad_builder_refused',
-    ]
+def invalid_key(program, path, stdout):
+    checks = entry(program, path) + seek('S_pre', 181, 'S_cache') + [
+        'S_cache.TODO = (ARRAY_ITERATOR parrayiterator_cached "key-start") :: ptask_tail*',
+        'parrayiterator_cached = parrayiterator[.CURRENT = KNOWN (PARRAY n_old)]',
+        '$array_iterator_ready(S_cache, parrayiterator_cached)',
+        '~((HCELL n_it) <- S_cache.ALLOCATIONS)', '$lookup(S_cache.ENV, $ptascii("it")) = eps',
+        '$weakref_get(S_cache, n_observer) = POBJECT n_object',
+        owners('S_cache', 'HOBJECT n_object', 1), owners('S_cache', 'HARRAY n_old', 3),
+    ] + public('S_cache') + blocked_controls() + seek('S_cache', 188, 'S_insert') + [
+        'S_insert.TODO = (ARRAY_ITERATOR parrayiterator_insert "insert") :: ptask_insert_tail*',
+        'parrayiterator_insert = parrayiterator_cached[.KEY = KNOWN (PBOOL false)]',
+        '$array_iterator_ready(S_insert, parrayiterator_insert)',
+        owners('S_insert', 'HARRAY n_target', 1), owners('S_insert', 'HARRAY n_old', 3),
+        owners('S_insert', 'HOBJECT n_object', 1),
+        'PhpStep: S_insert ~> S_raw',
+        'S_raw.TODO = S_insert.TODO',
+        'S_raw.COMPLETION = THROWN "Error" ($ptascii("Keys must be of type int|string during array unpacking")) 18',
+        'S_queued = $drive_steps(S_insert, 1)', 'S_queued.COMPLETION = BUDGET',
+        'S_queued.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*',
+        'pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HARRAY n_target),DESTRUCTION_VALUE (HOBJECT n_object),DESTRUCTION_VALUE (HARRAY n_old)]',
+        '~pdestructionrelease.USER', 'pdestructionrelease.ORIGIN = (parrayiterator.SITE)',
+        'S_queued.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*',
+        'S_queued.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*',
+        'pdestructionoperation.SOURCE = ARRAY_ITERATOR parrayiterator_insert "insert"',
+        'pdestructionoperation.COMPLETION = THROWING n_original',
+        'pdestructionoperation.PENDING = (n_original)',
+        '$throwable_field(S_queued, n_original, "previous") = PNULL',
+        '$throwable_field(S_queued, n_original, "trace") = PARRAY n_original_trace',
+        'S_queued.ARRAYS[n_original_trace].ITEMS = eps',
+        owners('S_queued', 'HARRAY n_target', 1), owners('S_queued', 'HARRAY n_old', 3),
+        owners('S_queued', 'HOBJECT n_object', 1),
+    ] + public('S_insert') + public('S_queued') + budget('S_insert', 'S_insert_budget') + seek('S_queued', 183, 'S_dtor') + [
+        'S_dtor.CURRENT = (pcallcontext_d)',
+        '$destructor_context_call(pcallcontext_d, S_dtor.CURRENT, S_dtor.FRAMES) = (pdestructorcall)',
+        'pdestructorcall.OBJECT = n_object', '~pdestructorcall.USER',
+        'pdestructorcall.SITE = eps', 'pdestructorcall.LINE = 0',
+        'pdestructorcall.ORIGIN = (parrayiterator.SITE)',
+        'pdestructorcall.OPERATION = (pdestructionoperation)',
+        'pdestructorcall.RELEASE = (pdestructionrelease_d)',
+        'pdestructionrelease_d.ORIGIN = pdestructionoperation.ORIGIN',
+        'pdestructorcall.PENDING = (n_original)',
+        '$destructor_call_live(S_dtor, pdestructorcall)',
+        '$weakref_get(S_dtor, n_observer) = POBJECT n_object',
+        'S_dtor.STORE[n_dest] = DEFINED (PINT 99)', 'S_dtor.STORE[n_tail] = DEFINED (PINT 7)',
+        'S_dtor.STORE[n_row] = DEFINED (PARRAY n_old)', pair('S_dtor', 'n_old', 2),
+        '~((HARRAY n_target) <- S_dtor.ALLOCATIONS)', owners('S_dtor', 'HARRAY n_old', 2),
+    ] + public('S_dtor') + seek('S_dtor', 185, 'S_caught') + [
+        '~((HARRAY n_target) <- S_caught.ALLOCATIONS)', '~((HARRAY n_old) <- S_caught.ALLOCATIONS)',
+        '~((HOBJECT n_object) <- S_caught.ALLOCATIONS)', '$weakref_get(S_caught, n_observer) = PNULL',
+        'S_caught.STORE[n_dest] = DEFINED (PINT 99)', 'S_caught.STORE[n_tail] = DEFINED (PINT 20)',
+        'S_caught.STORE[n_row] = DEFINED (PARRAY n_live)', 'n_live =/= n_old', pair('S_caught', 'n_live', 44),
+    ] + public('S_caught')
+    return checks + finish('S_caught', stdout, ['HOBJECT n_object', 'HOBJECT n_observer',
+        'HOBJECT n_original', 'HARRAY n_original_trace', 'HARRAY n_target', 'HARRAY n_old', 'HARRAY n_live'])
 
 
-def release_controls(mode):
-    return [
-        'S_bad_release = S_released[.ARRAYS[n_target].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_exception))]]',
-        '$heap_valid($heap_graph(S_bad_release))',
-        f'$array_iterator_release_valid(S_bad_release, parrayiterator_release, "{mode}")',
-        '~$array_iterator_release_builder(S_bad_release, parrayiterator_release)',
-        'PhpStep: S_bad_release ~> S_release_refused',
-        'S_release_refused = S_bad_release[.COMPLETION = UNSUPPORTED "array Iterator release builder outside quiet domain"]',
-        '$array_iterator_blocked(S_release_refused)', '$drive_steps(S_release_refused, 2) = S_release_refused',
-        f'~$array_iterator_release_valid(S_released[.ORIGIN = (parrayiterator.SITE)], parrayiterator_release, "{mode}")',
-        f'~$array_iterator_release_valid(S_released, parrayiterator_release[.LINE = $(parrayiterator.LINE + 1)], "{mode}")',
-        f'~$array_iterator_release_valid(S_released, parrayiterator_release[.CURRENT = KNOWN (PINT 1)], "{mode}")',
-        f'~$array_iterator_release_valid(S_released, parrayiterator_release, "invalid")',
-    ]
-
-
-def abrupt(program, path, stdout, replacement):
-    checks = entry(program, path)
-    if replacement:
-        checks += [
-            '$lookup(S_pre.ENV, $ptascii("first")) = (n_first)',
-            '$lookup(S_pre.ENV, $ptascii("second")) = (n_second)',
-            'S_pre.STORE[n_first] = DEFINED (POBJECT n_original)',
-            'S_pre.STORE[n_second] = DEFINED (POBJECT n_replacement)',
-        ]
-    checks += seek('S_pre', 181, 'S_cache') + [
+def replacement_throw(program, path, stdout):
+    checks = entry(program, path) + [
+        '$lookup(S_pre.ENV, $ptascii("first")) = (n_first)',
+        '$lookup(S_pre.ENV, $ptascii("second")) = (n_second)',
+        'S_pre.STORE[n_first] = DEFINED (POBJECT n_original)',
+        'S_pre.STORE[n_second] = DEFINED (POBJECT n_replacement)',
+    ] + seek('S_pre', 181, 'S_cache') + [
         'S_cache.TODO = (ARRAY_ITERATOR parrayiterator_cached "key-start") :: ptask_tail*',
         'parrayiterator_cached = parrayiterator[.CURRENT = KNOWN (PARRAY n_old)]',
         '$array_iterator_ready(S_cache, parrayiterator_cached)',
@@ -128,8 +156,6 @@ def abrupt(program, path, stdout, replacement):
         '$weakref_get(S_cache, n_observer) = POBJECT n_object',
         owners('S_cache', 'HOBJECT n_object', 1), owners('S_cache', 'HARRAY n_old', 3),
     ] + public('S_cache')
-    if not replacement:
-        checks += blocked_controls()
     checks += seek('S_cache', 182, 'S_pending') + [
         'S_pending.TODO = (THROW_SEARCH n_original) :: (ARRAY_ITERATOR parrayiterator_pending text_pending) :: ptask_tail*',
         'parrayiterator_pending.CURRENT = KNOWN (PARRAY n_old)',
@@ -140,13 +166,7 @@ def abrupt(program, path, stdout, replacement):
         owners('S_pending', 'HARRAY n_target', 1), owners('S_pending', 'HARRAY n_old', 3),
         owners('S_pending', 'HOBJECT n_object', 1),
     ] + public('S_pending')
-    if replacement:
-        checks += ['text_pending = "key"', 'n_exception = n_replacement']
-    else:
-        checks += ['z = 18', 'text_pending = "insert"', 'n_exception = n_original',
-            '$string_bytes($throwable_field(S_pending, n_original, "message")) = ($ptascii("Keys must be of type int|string during array unpacking"))']
-        checks += pending_builder_control()
-    checks += [
+    checks += ['text_pending = "key"', 'n_exception = n_replacement',
         'S_popped = S_pending[.TODO = (THROW_SEARCH n_original) :: ptask_tail*]',
         'PhpStep: S_pending ~> S_raw',
         'S_raw = $array_iterator_discard(S_popped, parrayiterator_pending, text_pending)',
@@ -180,12 +200,8 @@ def abrupt(program, path, stdout, replacement):
         owners('S_released', 'HARRAY n_target', 1), owners('S_released', 'HARRAY n_old', 1),
         '$throwable_field(S_released, n_original, "previous") = PNULL',
     ] + public('S_released')
-    if replacement:
-        checks += ['$throwable_field(S_released, n_exception, "previous") = POBJECT n_original',
-            '$throwable_field(S_released, n_exception, "trace") = PARRAY n_trace', 'S_released.ARRAYS[n_trace].ITEMS = eps']
-    else:
-        checks += release_controls('abrupt')
-    checks += [
+    checks += ['$throwable_field(S_released, n_exception, "previous") = POBJECT n_original',
+        '$throwable_field(S_released, n_exception, "trace") = PARRAY n_trace', 'S_released.ARRAYS[n_trace].ITEMS = eps',
         'PhpStep: S_released ~> S_discard',
         'S_discard.TODO = (THROW_SEARCH n_exception) :: ptask_tail*',
         owners('S_discard', 'HARRAY n_target', 0), owners('S_discard', 'HARRAY n_old', 1),
@@ -195,9 +211,7 @@ def abrupt(program, path, stdout, replacement):
         'S_caught.STORE[n_dest] = DEFINED (PINT 99)', 'S_caught.STORE[n_tail] = DEFINED (PINT 20)',
     ] + public('S_caught')
     retired = ['HOBJECT n_object', 'HOBJECT n_observer', 'HOBJECT n_original', 'HARRAY n_original_trace',
-        'HARRAY n_target', 'HARRAY n_old', 'HARRAY n_live']
-    if replacement:
-        retired += ['HOBJECT n_replacement', 'HARRAY n_trace']
+        'HARRAY n_target', 'HARRAY n_old', 'HARRAY n_live', 'HOBJECT n_replacement', 'HARRAY n_trace']
     return checks + finish('S_caught', stdout, retired)
 
 
@@ -249,7 +263,9 @@ def split_trace(program, path, stdout):
 def conditions(name, program, path, stdout):
     if name.endswith('split-trace'):
         return split_trace(program, path, stdout)
-    return abrupt(program, path, stdout, name.endswith('replacement-throw'))
+    if name.endswith('invalid-key'):
+        return invalid_key(program, path, stdout)
+    return replacement_throw(program, path, stdout)
 
 
 if __name__ == '__main__':
