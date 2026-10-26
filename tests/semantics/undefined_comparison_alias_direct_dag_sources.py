@@ -7,7 +7,6 @@ from undefined_comparison_alias_direct_dag_cases import CASES
 
 family.CASES = CASES
 family.UNSUPPORTED = {
-    'alias-dag-child-reference-ingress-boundary': ('error-handler ingress requires a producer continuation', b'B|'),
     'alias-dag-internal-child-resume-boundary': ('spaceship warning changed opposing scalar', b'B|H|'),
 }
 family.BASELINE = ('error-handler ingress requires a producer continuation', b'')

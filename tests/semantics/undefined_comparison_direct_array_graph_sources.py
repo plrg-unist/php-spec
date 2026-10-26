@@ -7,7 +7,6 @@ from undefined_comparison_direct_array_graph_cases import CASES
 
 family.CASES = CASES
 family.UNSUPPORTED = {
-    'direct-graph-child-alias-ingress-boundary': ('error-handler ingress requires a producer continuation', b'B|'),
 }
 family.BASELINE = ('error-handler ingress requires a producer continuation', b'')
 family.MODEL_TIMEOUTS = {

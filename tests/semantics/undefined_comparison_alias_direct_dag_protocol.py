@@ -64,8 +64,8 @@ def controls(captured):
     read = '$spaceship_read_array' if captured else '$scalar_compare_read_array'
     return [
         '$comparison_read_array_payload(S,PARRAY n_payload)',
-        '~$comparison_read_array_payload(S,PARRAY n_root)',
-        '~$comparison_read_direct_array(S,PARRAY n_root,eps)',
+        '$comparison_read_array_payload(S,PARRAY n_root)',
+        '$comparison_read_direct_array(S,PARRAY n_root,eps)',
         '$comparison_read_direct_entries(S,[ENTRY (KINT 0) (DIRECT (PARRAY n_leaf)), ENTRY (KINT 1) (DIRECT (PARRAY n_leaf))],[n_payload,n_shared])',
         '~$comparison_read_direct_array(S,PARRAY n_leaf,[n_leaf])',
         'S_dead_cell = S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS,HCELL n_cell)]',

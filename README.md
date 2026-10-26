@@ -47,17 +47,19 @@ can run the last-owned object destructor before the outer store or catch.
 Outside aliases delay that release. See the
 [reference-array review](coverage/semantics/undefined-comparison-reference-array-review.json)
 and [object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json).
-Reference-cell array payloads admit finite acyclic DIRECT array-edge graphs with
-primitive or ordinary non-Stringable object leaves. Singleton outer COW unwraps
-the cell; deep COW preserves snapshots and shared object identity. Shared cells
+Comparison arrays admit finite acyclic graphs of DIRECT array edges and live
+ALIAS cells, with primitive or ordinary non-Stringable object leaves. Singleton
+references unwrap at each copied level; deep COW preserves snapshots and shared
+object identity. Shared cells
 follow replacement graphs while ordinary value copies retain old payloads.
 Saved chains and outside aliases preserve final child destruction before
 store/catch or after the result. See the [child-array review](coverage/semantics/undefined-comparison-array-payload-review.json)
 and [ALIAS DAG review](coverage/semantics/undefined-comparison-alias-direct-dag-review.json).
-DIRECT child entries now admit recursive acyclic graphs of DIRECT array edges,
-with primitive or ordinary non-Stringable object leaves. Path-local checks allow
-shared subtrees; deep COW and final graph release preserve object identity and
-destructor timing. Descendant aliases remain partial. See the
+The ancestor path crosses both DIRECT and ALIAS descendants, allowing shared
+subtrees while refusing cycles. Deep COW and final graph release preserve
+object identity and destructor timing. See the
+[reference-graph review](coverage/semantics/undefined-comparison-reference-graph-review.json)
+and the
 [DIRECT graph review](coverage/semantics/undefined-comparison-direct-array-graph-review.json).
 Both-missing pairs, including one missing name twice, can resume if the first
 handler defines the later scalar, admitted array or ordinary object. `$x == $x` can
@@ -3199,8 +3201,12 @@ Iterator after break preserves the copied targets until their later release.
 Two sources and 265 Boolean/four raw checks pass at `95d732f3b`/413. Manual
 zero-argument cursor methods now preserve standalone current copies, next/end
 NULL, rewind identity and empty access after Key death; two sources and 308
-Boolean/eight raw checks pass at `25ff16620`/413. Wider histories, active outer
-loops, hidden allocation handles and GC/CONFIG remain partial.
+Boolean/eight raw checks pass at `25ff16620`/413. Finite manual cursors now keep
+weak Key history through entry death and singleton normalization, advancing past
+the actual surviving selection. Two new sources and 364 Boolean/eight raw checks
+pass at `a2fe0cc36`/415; original timeouts retain zero agreement. Still-Many
+wrapper teardown refuses; wider histories, active outer loops, hidden allocation
+handles and GC/CONFIG remain partial.
 
 Bounded by-reference WeakMap traversal shares the entry's cell and preserves
 rebinding plus escaped aliases through DATA or Key retirement. A reference
