@@ -34,5 +34,14 @@
     "native_exit": 0,
     "native_stdout": "PRIME|SEED|1|START|CALL|CAUGHT|1|1|PARK|1|1|ERROR|1|1|RESUME|REPLY|1|VALUE|1|1|FIBER|1|AFTER-YIELD|FIN|CLOSED|1|E",
     "native_stderr": ""
+  },
+  {
+    "id": "generator-fiber-method-throw-self-cache-replacement-review",
+    "purpose": "Independent method source: a self-yield cache keeps the receiver while parked; a recovery null yield retires that cache, but the method frame retains the receiver until Generator completion.",
+    "source": "<?php\nclass Receiver63Review {\n    public function __destruct() { echo 'DROP|'; }\n    public function work() {\n        global $weakGiven;\n        try {\n            echo 'SEED|';\n            yield $this;\n            echo 'BAD-TAIL|';\n        } catch (Exception $caught) {\n            echo 'CAUGHT|', (int) ($caught === $weakGiven->get()), '|';\n            Fiber::suspend('pause63');\n            echo 'BODY|';\n            yield null;\n            echo 'AFTER-YIELD|';\n        }\n        return 63;\n    }\n}\nfunction Make63Review() {\n    global $weakGiven;\n    $value = new Exception('given63');\n    $weakGiven = WeakReference::create($value);\n    return $value;\n}\nfunction Run63Review() {\n    global $g;\n    echo 'CALL|';\n    $value = $g->throw(Make63Review());\n    echo 'RESULT|', (int) ($value === null), '|';\n    return 'fiber63';\n}\n$owner = new Receiver63Review();\n$weakOwner = WeakReference::create($owner);\n$g = $owner->work();\n$copy = $g->current();\necho 'PRIME|', (int) ($copy === $owner), '|';\nunset($copy, $owner);\n$f = new Fiber('Run63Review');\necho 'START|', (int) ($f->start() === 'pause63'), '|';\necho 'PARK|', (int) $f->isSuspended(), '|',\n     (int) ($weakOwner->get() !== null), '|',\n     (int) ($g->current() === $weakOwner->get()), '|',\n     (int) ($weakGiven->get() !== null), '|';\necho 'RESUME|', (int) ($f->resume() === null), '|';\necho 'FIBER|', (int) ($f->getReturn() === 'fiber63'), '|',\n     (int) ($weakOwner->get() !== null), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 63), '|',\n     (int) ($weakOwner->get() === null), '|',\n     (int) ($weakGiven->get() === null), '|';\nunset($g, $f, $weakOwner, $weakGiven);\necho 'E';\n",
+    "source_sha256": "c25ecf6a36bdca44fa9016164e709538f998f01aff5719fc4bc97cdf78a99df2",
+    "native_exit": 0,
+    "native_stdout": "SEED|PRIME|1|START|CALL|CAUGHT|1|1|PARK|1|1|1|1|RESUME|BODY|RESULT|1|1|FIBER|1|1|AFTER-YIELD|DROP|CLOSED|1|1|1|E",
+    "native_stderr": ""
   }
 ]
