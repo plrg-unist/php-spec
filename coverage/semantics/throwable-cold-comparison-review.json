@@ -1,0 +1,40 @@
+{
+  "milestone": "COMP129",
+  "status": "candidate pending independent actual-tail review",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C; TZ=UTC; profile options passed after -n"
+  },
+  "engine_basis": [
+    "Zend/zend_object_handlers.c::zend_std_compare_objects checks identity/class, then scans declared slots in physical order when both property tables are absent; each initialized slot uses zend_compare.",
+    "Zend/zend_exceptions.c initializes the Exception/Error slots; the model's matching seven-slot layout and allocation are in modules 157/161. An empty trace array and null previous keep this cut callback-free."
+  ],
+  "scope": "Distinct live canonical builtin Exception/Exception or Error/Error pairs with cold string caches, null previous values, allocated empty trace arrays and normal nonpending completion. The effect returns the ordered physical-slot comparison without changing state. Direct and equal-prefix array comparisons are included.",
+  "implementation": {
+    "revision": "ad757a0ddc4ed6fb49cead5d2310af575ca7cd1b",
+    "file": "spec/semantics/152-throwable-runtime.watsup",
+    "rule": "$throwable_cold_pair and $value_order_effect; the existing Throwable Unsupported rule has a negated admission guard"
+  },
+  "unchanged_baselines": {
+    "revision": "185eb4c96a60e140a6cc81f470ee1f50f4dba13c",
+    "counterexample": "Original exception-signs bytes: native exit 0 B|100101:0|010011:1|011100:-1|0|10|; model exit 1 Unsupported(Throwable property comparison) after B|.",
+    "genuine_agreement": "Original same-object Exception/Error identity source: native and model exit 0 B|1:0|1:0|1|.",
+    "records": [
+      "unchanged-native-and-baselines/baseline.json sha256 61660b0abe308dbd77f4c57bcea60d1e32a88ffc233a205caa72a0e5e1e733a8",
+      "unchanged-native-and-baselines/identity-baseline.json sha256 a073bd04e417c1b1103d191c9bed3c0eca5f0c997e23cf9174e193abf3f8893e"
+    ]
+  },
+  "validation": {
+    "native": "At eaf54af1691326543236617cabb83d46e784408b, python3 tests/semantics/throwable_plain_comparison_sources.py --phase native --output .tools/comp129-evidence-v4: exit 0, ten source files, all native exits 0/stderr empty, input/head stable; report sha256 79e4fcc32089a19bf18cb7e3d3ea6f3fbbcb4a02da09e13fb72407913907d948.",
+    "initial_model": "At ad757a0ddc4ed6fb49cead5d2310af575ca7cd1b, --phase model --output .tools/comp129-evidence-v2: four normal exact native agreements and four expected Unsupported controls passed individually; final pending-Notice fixture expected Unsupported but actually completed with exact native B|H|C|. Aggregate command exited 1; original failure has zero credit. Report sha256 e4fa27eda7824e0989e5e4e1d83114a3a497d58ca562a4facad04d0a9ce7279d.",
+    "affected_model": "At eaf54af1691326543236617cabb83d46e784408b, --phase model --case pending-notice-control --case state-direct-array --output .tools/comp129-evidence-v4: exit 0, two normal exact native agreements, input/head stable; report sha256 1e24d0c30a96f3230f0e304fc741ffbdadbe3677767025958b9b4407d6b1dcfd.",
+    "state": "At eaf54af1691326543236617cabb83d46e784408b, python3 tests/semantics/throwable_plain_comparison_state.py --output .tools/comp129-state-v1: strict SL, exit 0, true, 49 reached conditions including two raw PhpStep transitions, exact physical object/slot/trace preservation, clear comparison guard, 0/1 budget split and B|0|-1| completion; input/head stable; report sha256 fc09293ffbd192c137e54dadb0f8e46f0bc02aa85bb9a03406ed80824b36641d."
+  },
+  "limits": "Cross-class, previous-bearing, warmed-cache and nonempty-trace pairs remain Unsupported; their native outputs are recorded but give no model agreement. The pending Notice control exits through its catch before the later pair and gives no pending-remainder coverage. Source Throwable descendants, materialized tables, callbacks, recursive graphs and other internal/custom handlers remain outside this cut.",
+  "artifacts": "Raw source, process streams, fixtures and reports are preserved outside Git under /home/user/workspace/php-spec-evidence-archive/comp129; the tracked case catalogue and revisions recover the tested source bytes. The private worktree can be removed after integration.",
+  "engine_bug_or_divergence": "none claimed"
+}
