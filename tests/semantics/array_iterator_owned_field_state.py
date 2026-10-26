@@ -105,7 +105,8 @@ def common(program, path, object_owners):
     ] + old_row('S_cache') + field('S_cache', 'n_old', 'n_old_child', 3) + [
         owners('S_cache', 'HOBJECT n_object', object_owners),
         owners('S_cache', 'HARRAY n_old', 3),
-        owners('S_cache', 'HARRAY n_old_child', 1),
+        '$heap_count(HARRAY n_old_child, $pools_nodes(S_cache.POOLS)) = 1',
+        owners('S_cache', 'HARRAY n_old_child', 2),
         owners('S_cache', 'HCELL n_leaf', 2),
     ] + public('S_cache')
     checks += seek('S_cache', 711, 'S_key') + [
@@ -120,7 +121,7 @@ def common(program, path, object_owners):
         '$array_iterator_ready(S_key, parrayiterator_key)',
     ] + old_row('S_key') + new_row('S_key', 9) + field('S_key', 'n_old', 'n_old_child', 3) + [
         owners('S_key', 'HARRAY n_old', 2),
-        owners('S_key', 'HARRAY n_old_child', 1),
+        owners('S_key', 'HARRAY n_old_child', 2),
         owners('S_key', 'HARRAY n_new', 1),
         owners('S_key', 'HCELL n_leaf', 2),
         owners('S_key', 'HCELL n_other', 2),
@@ -131,7 +132,8 @@ def common(program, path, object_owners):
         '$array_iterator_current_builder(S_insert, parrayiterator_insert)',
         owners('S_insert', 'HARRAY n_old', 2),
         owners('S_insert', 'HARRAY n_new', 2),
-        owners('S_insert', 'HARRAY n_new_child', 1),
+        '$heap_count(HARRAY n_new_child, $pools_nodes(S_insert.POOLS)) = 1',
+        owners('S_insert', 'HARRAY n_new_child', 2),
     ] + builder('S_insert') + public('S_key') + public('S_insert') + budget('S_key', 'S_insert_budget') + [
         'S_materialized = $objectprops_mark(S_cache, n_object)',
         'S_materialized.ALLOCATIONS = S_cache.ALLOCATIONS',
@@ -154,6 +156,7 @@ def common(program, path, object_owners):
         'S_finish.STORE[n_tail] = DEFINED (PINT 7)',
         owners('S_finish', 'HOBJECT n_object', object_owners),
         owners('S_finish', 'HARRAY n_old', 2),
+        owners('S_finish', 'HARRAY n_old_child', 2),
         owners('S_finish', 'HARRAY n_new', 2),
     ] + builder('S_finish') + old_row('S_finish') + new_row('S_finish', 9) + field('S_finish', 'n_old', 'n_old_child', 3) + public('S_finish')
     return checks
@@ -177,7 +180,7 @@ def last_data(program, path, stdout):
         'S_dtor.STORE[n_dest] = DEFINED (PINT 99)',
         'S_dtor.STORE[n_tail] = DEFINED (PINT 7)',
         owners('S_dtor', 'HARRAY n_old', 2),
-        owners('S_dtor', 'HARRAY n_old_child', 1),
+        owners('S_dtor', 'HARRAY n_old_child', 2),
     ] + field('S_dtor', 'n_old', 'n_old_child', 3) + public('S_dtor')
     checks += seek('S_dtor', 714, 'S_mutated') + [
         'S_mutated.STORE[n_saved] = DEFINED (PARRAY n_old)',
@@ -186,7 +189,7 @@ def last_data(program, path, stdout):
     ] + old_row('S_mutated') + field('S_mutated', 'n_field', 'n_field_child', 44) + [
         'n_field =/= n_old', 'n_field_child =/= n_old_child',
         owners('S_mutated', 'HARRAY n_old', 1),
-        owners('S_mutated', 'HARRAY n_old_child', 1),
+        owners('S_mutated', 'HARRAY n_old_child', 2),
         owners('S_mutated', 'HARRAY n_field', 1),
         owners('S_mutated', 'HARRAY n_field_child', 1),
         owners('S_mutated', 'HCELL n_leaf', 3),
@@ -203,7 +206,7 @@ def last_data(program, path, stdout):
         '$array_iterator_release_valid(S_released, parrayiterator_finish, "normal")',
         '$array_iterator_release_builder(S_released, parrayiterator_finish)',
         owners('S_released', 'HARRAY n_old', 1),
-        owners('S_released', 'HARRAY n_old_child', 1),
+        owners('S_released', 'HARRAY n_old_child', 2),
         owners('S_released', 'HCELL n_leaf', 2),
         owners('S_released', 'HARRAY n_new', 2),
         'PhpStep: S_released ~> S_next',
@@ -215,6 +218,7 @@ def last_data(program, path, stdout):
         '$weakref_get(S_read, n_observer) = PNULL',
         '~((HARRAY n_field) <- S_read.ALLOCATIONS)',
         owners('S_read', 'HARRAY n_old', 1),
+        owners('S_read', 'HARRAY n_old_child', 2),
         owners('S_read', 'HARRAY n_new', 2),
         owners('S_read', 'HCELL n_leaf', 2),
     ] + builder('S_read', 20) + old_row('S_read') + new_row('S_read', 42) + public('S_read')
@@ -266,6 +270,7 @@ def retained(program, path, stdout):
         'S_read.STORE[n_other] = DEFINED (PINT 42)',
         'S_read.STORE[n_tail] = DEFINED (PINT 20)',
         owners('S_read', 'HARRAY n_old', 1),
+        owners('S_read', 'HARRAY n_old_child', 2),
         owners('S_read', 'HARRAY n_new', 2),
         owners('S_read', 'HCELL n_leaf', 2),
     ] + builder('S_read', 7) + old_row('S_read') + new_row('S_read', 42) + public('S_read')
