@@ -1614,8 +1614,9 @@ throws. Its affected check retires the earlier Generator refusal.
 Named by-value Generator spreads also retain ordinary scalar reference cells
 inside finite array yields. Held aliases remain shared across COW; dropping the
 outside alias permits a sole cell to unwrap. The yielded array stays in the
-Generator's VALUE through CLOSED, while DATA release ends its weakly observed
-lifetime. A returned Generator from an Aggregate getter uses the same route;
+Generator's VALUE through CLOSED. When DATA is the last Generator owner,
+releasing it ends the weakly observed lifetime. A returned Generator from an
+Aggregate getter uses the same route;
 by-reference producers keep their earlier admission boundary.
 The [Generator reference-cache review](coverage/semantics/array-generator-reference-cache-review.json)
 records four exact source agreements and 367 focused premises; the first peer

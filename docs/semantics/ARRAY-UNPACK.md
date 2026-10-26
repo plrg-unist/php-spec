@@ -73,9 +73,8 @@ row can change independently. The same Iterator mechanism applies to an
 Iterator returned by an Aggregate getter. Three exact source agreements and
 273 reached conditions (three raw steps) cover these cases in the
 [reference-cache review](../../coverage/semantics/array-traversable-reference-cache-review.json).
-By-reference current results and Generator caches retained their earlier scope
-at the A57 cut;
-object, typed, proxy, cyclic and debt-bearing descendants remain partial.
+By-reference current results and object, typed, proxy, cyclic and debt-bearing
+descendants remain partial.
 
 `427-array-generator-unpack.watsup` adds ordinary named Generator bodies with
 received parameters and reference yields, using real borrowed native resumes.
