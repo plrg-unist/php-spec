@@ -789,7 +789,7 @@ def $generator_running_error(S, pgeneratorop) = $throwable_previous(S_second, n_
   -- if $generator_operation_valid(S, pgeneratorop)
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_RUNNING /\ pgenerator.VALUE = eps
-  -- if pgenerator.DELEGATE = eps /\ pgenerator.FRAME = eps /\ pgenerator.CLOSURE = eps
+  -- if pgenerator.DELEGATE = eps /\ pgenerator.FRAME = eps
   -- if pgeneratorop.OBJECT <- $generator_saved_fiber_ids(S)
   -- if S_first = $generator_error(S, pgeneratorop, "Error", $ptascii("Cannot resume an already running generator"))
   -- if S_first.COMPLETION = THROWING n_first

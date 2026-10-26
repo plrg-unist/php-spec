@@ -1579,7 +1579,8 @@ before DIRECT insertion and cache retirement. Canonical numeric-string keys appe
 current/key/next failures preserve saved values and discard partial builders.
 The [Iterator spread review](coverage/semantics/array-iterator-unpack-review.json)
 records four source agreements for instances without owning fields or a
-destructor, with quiet scalar or flat DIRECT ARRAY caches.
+destructor. Cache values now include finite acyclic DIRECT ARRAY graphs with
+shared descendants; each physical child edge is counted once across root owners.
 Ordinary named Generators now spread through real native resumes, including
 received parameters and reference yields, CV and owning call operands. Their
 cache edges persist through resumed code/CLOSED; DATA then opcode INPUT retire
@@ -1588,6 +1589,10 @@ The [Generator spread review](coverage/semantics/array-generator-unpack-review.j
 records acquisition-state errors, DIRECT COW copies, invalid keys and supplied
 throws. Its affected check retires the earlier Generator refusal.
 Wider payloads, operand modes, delegation and Traversable lifetimes remain partial.
+The [nested-cache review](coverage/semantics/array-traversable-nested-cache-review.json)
+adds live-reference/deep COW and abrupt retirement for both spread engines,
+preserving folded pool siblings and rejecting cycles, descendant references,
+objects, debt and paths back to the receiving builder.
 Ordinary CVs of named IteratorAggregate classes now invoke a borrowed
 `getIterator()` frame and
 transfer its owned user Iterator or named-Generator return into DATA. Genuine
@@ -2095,6 +2100,12 @@ suspension. Clearing the delivered CV leaves that buffer alive until API return
 or unwind; object yields retain separate Generator-cache, Fiber-return and caller
 owners. Injected Throwables preserve identity through finally and buffer cleanup.
 [SEND transfer review](coverage/semantics/generator-fiber-send-transfer-review.json).
+Plain Closure-created Generator bodies also preserve their real callee through
+Fiber transfer. Copied captures and shared reference cells retain distinct owners
+when the outer variable changes; the callee and its captures survive CLOSED until
+the Generator is destroyed. Supplied Throwables preserve identity through finally,
+and fresh outside NEXT retains both linked Errors.
+[Closure transfer review](coverage/semantics/generator-fiber-closure-transfer-review.json).
 [Arrow Generator311](docs/semantics/ARROW-GENERATORS.md) validates eager
 parameters, deferred captures, implicit yield/delegation returns and original
 signatures. Value warnings retain the same Throwable, cached key and closed
@@ -3123,9 +3134,18 @@ Multiple methodless leaf entries now retain separate lookup identities and one
 physical Value owner per slot, including shared Values. Two originals and 286
 Boolean/five raw checks pass at `8f71bbef1`/412: one Key death transfers only its
 entry to a release job and preserves the sibling, then normalizes to old singleton
-storage. Original preflight/fixture compile failures stay zero. Other payloads,
+storage. Original preflight/fixture compile failures stay zero. Wider payloads,
 wider replacement/unset, wider iteration, GC/CONFIG and wider multiple-entry
 Map teardown remain partial. [Review](coverage/semantics/weak-map-review.json).
+
+Finite direct callback tables now retire a real Key's selected slot while
+preserving the sibling. Early/late Key weak visibility, canonical singleton
+read/copy ownership and the same supplied Exception survive cleanup; shared
+slots plus an outside Value holder delay invocation until both Keys retire.
+Three sources and 380 Boolean/10 raw checks pass at `29beafa25`/420. Genuine 3
+retains `a70bc6c26`/420, refusing after `B;` with zero agreement. Old methodless/
+ALIAS and active-cursor behavior is unchanged; new callbacks require no cursor.
+Still-multiple callback reads, wider reentry/mutation/escape and GC remain partial.
 
 Last-owner multi-entry Map teardown now unregisters every Key before releasing
 its Value slots, retaining the empty Map pin until all jobs finish. Two originals
@@ -3301,7 +3321,7 @@ remaining slot cleanup, while external shared holders delay invocation.
 Three sources and 307 Boolean/nine raw checks pass at `80451b539`/417. Genuine
 baseline 3 retains `8484fc071`/417 with zero agreement: callback-table insertion
 refuses before output. Original compile stops remain zero; callback-valued traversal,
-singleton/Key-death/normalization, reads/empty/mutation/escape and wider
+singleton Map teardown, broader reads/empty/mutation/escape and wider
 payload/GC histories remain partial.
 
 Bounded by-value WeakMap `foreach` now retains the Map through hidden iterator
@@ -3901,6 +3921,12 @@ retain their native order; six source agreements and 420 focused premises pass.
 now retain nonpublic inline slots alongside dynamic buckets. A dynamic write
 copies the table while its pinned old indirections stay live; shared cells and
 last-owner destruction keep their observed order across normal numeric handlers.
+[Cached backing-hook comparisons](coverage/semantics/backed-hook-table-comparison-review.json)
+read physical backing slots without calling getters. Normal Notice handlers still
+run real setters, including writes to a selected reference cell; inline declared
+retirement and virtual-slot omission retain their distinct behavior. Six exact
+source agreements and 427 raw focused conditions pass. New backing-hook Stringable
+continuations remain refused; array-cast and foreach hook boundaries are unchanged.
 [Builtin stdClass numeric Notices](coverage/semantics/stdclass-numeric-comparison-review.json)
 use the same continuation with a fixed builtin class image. Restored second
 Notices retain saved 1/1.0 across stdClass/source-instance changes and late live
@@ -5255,6 +5281,14 @@ verification; COPY detaches it before later method writes. Pending conflicts
 retire that method receiver with the original caller-site error.
 [Three source agreements and 496 focused conditions](coverage/semantics/magic-get-this-reference-review.json)
 retain419 cuts. Computed/suspended producers and wider reference sources remain partial.
+
+Reference Get now also accepts valid historical parameter-backing receipts from
+weak Stringable reception. Exact reads preserve the receipt and real property
+sources; conflicting conversion raises the first-source TypeError without writes.
+After the real property source is detached, conversion updates the actual cell
+and clears the receipt without attaching the requested type.
+[Three source agreements and 511 focused conditions](coverage/semantics/magic-get-param-reference-review.json)
+retain their original 419 cuts. Wider callbacks and coercions remain partial.
 
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference

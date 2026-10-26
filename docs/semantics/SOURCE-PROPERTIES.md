@@ -1108,6 +1108,25 @@ controls; the original Unsupported2/wrong-PHP-error1 baselines keep zero agreeme
 No verification, COPY, frame, task, root or GC machinery changed; wider computed/
 suspended producers, PARAM sources and coercion/lifetime histories remain partial.
 
+Valid historical parameter-backing receipts now pass shared Get verification.
+Weak BYREF Stringable reception can add a real Holder:object source during its
+callback, then write the captured string7 without a second source check. That
+nonowning receipt certifies the exact value and parameter declaration, independently
+of the current function; it is not a persistent parameter-type constraint.
+
+An exact string Get preserves the receipt/source vector, while a requested int
+raises the real first-source conflict without writing either cell. A later ordinary
+write still checks Holder's object type. Unsetting that instance slot removes only
+the real source; the subsequent Get int conversion clears the receipt through the
+existing checked write, and later `'free'` proves no requested-type attachment.
+[Three source agreements and 511 focused conditions](../../coverage/semantics/magic-get-param-reference-review.json)
+retain 419 cuts, including malformed value/line/duplicate-receipt controls. The two
+fixture failures and one diagnostic keep zero credit. No producer, state, root,
+receive, COPY or type-source mechanism changed. The shared unconstrained
+numeric-string warning route also inherits valid-receipt admission and checked
+writes; constrained special-path fences remain. Wider callbacks/coercions remain
+partial.
+
 The [getter review](../../coverage/semantics/magic-property-get-review.json) records
 eight exact source agreements, 1293 setup-inclusive reached premises and the
 separate original failures. The

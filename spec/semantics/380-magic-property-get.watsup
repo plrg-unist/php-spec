@@ -629,7 +629,9 @@ rule PhpStep/property-get-recursive-denied: S ~> $property_access_error(S, n, pt
 ;; unconstrained returned cell. Integer-to-float widening and FULLNUM/NINT or
 ;; NFLOAT strings and weak booleans likewise change only that RV/cell; wider coercions remain residuals.
 def $property_get_unconstrained(S, KNOWN pvalue) = true
-def $property_get_unconstrained(S, REFERENCE n) = ($propref_at(S.PROPREFS, n) = eps /\ $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps)
+;; Parameter backing certifies a historical value, not a property type source.
+;; Existing checked conversion writes clear that receipt when changing the cell.
+def $property_get_unconstrained(S, REFERENCE n) = ($propref_at(S.PROPREFS, n) = eps /\ ($parameter_backing_at(S.PARAMETERBACKINGS, n) = eps \/ $parameter_backings_valid(S)))
 def $property_get_unconstrained(S, poperand) = false -- otherwise
 ;; History recovers the selected physical declaration from the original caller
 ;; scope, even while Get runs in Child scope or has populated the backing slot.
