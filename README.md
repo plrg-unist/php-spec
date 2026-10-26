@@ -3785,6 +3785,11 @@ left value before selecting a named, closure or public user-method array
 callable. Its [runtime review](coverage/semantics/pipe-review.json) binds 12
 earlier source outcomes; the [array review](coverage/semantics/pipe-array-callable-review.json)
 binds twelve exact CLI outcomes and reached ownership checks.
+Public static user methods named by nonoptimized string RHS values now use
+class/method selection with authenticated pipe send and result tasks;
+[the method-string review](coverage/semantics/pipe-static-method-string-review.json)
+keeps literal, variable and temporary strings, reference/lookup behavior and
+excluded selectors separate from the earlier pipe evidence.
 [Switch execution](docs/semantics/SOURCE-SWITCH.md) scans cases in source order,
 retains the subject through fallthrough, and distinguishes constant-boolean
 branching from dynamic equality; its [review](coverage/semantics/switch-review.json)

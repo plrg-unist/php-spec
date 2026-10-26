@@ -592,6 +592,8 @@ test-semantics: build
 	python3 tests/semantics/pipe.py
 	python3 tests/semantics/pipe_array.py
 	python3 tests/semantics/pipe_array_protocol.py
+	python3 tests/semantics/pipe_static_string.py
+	python3 tests/semantics/pipe_static_string_protocol.py
 	python3 tests/semantics/pipe_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
