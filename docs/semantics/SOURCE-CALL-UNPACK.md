@@ -104,7 +104,8 @@ unpack, the selected receiver can die before the caught error. Only the saved
 eager-cleanup source receipt rechecks its class and selection against a temporary
 allocation view; live target checks and heap owners stay unchanged. Six exact
 originals and seven reached stages cover normal/named sends, warning delivery,
-key failure and destructor order. The [array-callable Iterator review](../../coverage/semantics/array-callable-iterator-unpack-review.json)
+key failure and destructor order. The receipt does not reconstruct a mutable
+`$cb`'s earlier same-class member values. The [array-callable Iterator review](../../coverage/semantics/array-callable-iterator-unpack-review.json)
 records the frozen inputs and failed cuts. Scoped/private, magic and internal
 array targets, temporary Iterator operands and Closure::call remain separate.
 

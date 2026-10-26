@@ -4,7 +4,7 @@
   "engine_rule": "Zend/zend_vm_def.h ZEND_INIT_DYNAMIC_CALL selects the array callback before ZEND_SEND_UNPACK; object selection retains its receiver, class-string selection retains called scope, and the by-reference Traversable warning uses EX(call)->func->common.scope (the declaring class).",
   "implementation": "Module 385 admits only ARRAY_METHOD_TARGET with a 205-certified METHOD_TARGET or STATIC_METHOD_TARGET at the same dynamic NExprFuncCall site and a CV unpack. A retired instance receiver is reauthenticated only in the saved eager-cleanup source receipt using its retained class record and the existing 205 certificate on an ephemeral allocation view. The actual heap and live target checks are unchanged.",
   "base_revision": "738546cd7f91af8c684d31d6b565bf4cf87d6ad0",
-  "review_status": "Independent source-byte and semantic static review cleared the bounded implementation; committed-cut independent execution is pending.",
+  "review_status": "Independent source-byte and semantic static review cleared the bounded implementation; an original-path reviewer source agreed exactly on committed cut e6571e07e.",
   "tested_semantic_sha256": "d372f802e3f1cc83999fdd9a7ec620e7366655d515f6116542030d292a888897",
   "sources": {
     "runner": "tests/semantics/array_callable_iterator_unpack_sources.py",
@@ -30,6 +30,7 @@
     ]
   },
   "compatibility": "Array callable instance and inherited static non-Iterator controls, plus CALL118 directly selected method Iterator control, all pass exact native/model source comparisons at call119-author-final/user-string-8sxjb03f, user-string-zoqa93le and method-iterator-unpack-f7dpx309.",
+  "independent_final": "call119-review-native/changed-final/selected-array-byref/summary.json sha256:dcb3f2e0ec85b2183c3d0f56070ea180bc1b1dae89ed1e6d23a8f377ed312b70: frozen SHA-256 416a33a1 source on committed e6571e07e; model normal/process 0/PHP exit 0 and exact pinned native stdout, stderr and exit. CPU4 fully reaped.",
   "failed_attempts": "The first guarded candidate produced interpreter_failure for invalid-key and throwing-key originals during cleanup; the first retired EXIT reached fixture proved eager-operation source validation false after selected HOBJECT retirement. A separate first selection fixture expected two instead of three receiver owners. Raw packets are preserved under call119-author-native and call119-author-final/fiber-state-review-{3wy2rb9o,7szp5szp,y8gqc4b9}; all have zero passing credit.",
   "limits": "Same-class mutable callback history is not reconstructed by the 205 certificate. Scoped/private, magic and internal array targets, temporary Iterator operands, Closure::call, and wider unpack interactions remain outside this gate.",
   "raw_recovery": "Raw directories are under /home/user/workspace/php-spec-evidence-archive/. Reports retain the tested private-root absolute paths; use tracked source hashes and the commands inside raw reports to reproduce after rebuilding local tools. Do not count native-positive Unsupported controls as agreement."
