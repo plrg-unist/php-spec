@@ -3831,6 +3831,12 @@ nonoptimized RHS names; [the carrier review](coverage/semantics/pipe-named-carri
 records 19 exact pinned CLI outcomes, a separate request-profile pass and
 reached source/ownership checks. Method strings and builtins retain their
 separate dispatch boundaries.
+Optimized first-class pipe RHS method strings now select public static user
+methods from fixed literals, variables and temporary producers. [The optimized
+method-string review](coverage/semantics/pipe-optimized-static-review.json)
+records eleven initial direct agreements, one corrected direct agreement, a
+final 12-source request-profile pass and six reached source/ownership stages.
+The pre-fix leading-slash refusal remains preserved.
 [Switch execution](docs/semantics/SOURCE-SWITCH.md) scans cases in source order,
 retains the subject through fallthrough, and distinguishes constant-boolean
 branching from dynamic equality; its [review](coverage/semantics/switch-review.json)

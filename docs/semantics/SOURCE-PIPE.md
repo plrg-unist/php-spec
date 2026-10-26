@@ -31,6 +31,16 @@ keyword and optimized method-string selectors remain outside this increment.
 For a dynamic RHS, the result receipt records selected bytes; it cannot
 reconstruct a past value from a later-mutated source variable.
 
+Optimized first-class pipe RHS strings now select plain public static user
+methods. A fixed literal uses its compiled method name; the source certificate
+requires a real string literal whose bytes match after the compiler's optional
+single leading slash normalization. Variable and temporary names use the
+evaluated callee. Both paths reuse the pipe send and result tasks for lookup
+lines, by-reference refusal, strict arguments and reference returns. A saved
+method name survives a producer's later rebind, but the later `CALL_ARGS` task
+cannot reconstruct those saved bytes from the mutable source. Private,
+nonstatic and magic method selectors remain outside this increment.
+
 Ordinary named user-function string carriers now work as optimized first-class
 pipe callees and as nonoptimized literal, variable or temporary RHS values.
 The pipe selects the evaluated name before sending its forced left value;
@@ -58,6 +68,11 @@ and protocol checks are `tests/semantics/pipe*`. The public user-method array
 increment has twelve exact native CLI comparisons and four reached-state
 controls; its separate review records the tested revision. The public static
 method-string increment has its own exact native and paused-state gates.
+The optimized public-static method-string increment has eleven initial exact
+CLI outcomes and one corrected leading-slash direct outcome, followed by a
+final 12-source request-profile pass and six reached stages/79 assertions.
+The first leading-slash Unsupported remains a rejected cut. The nonoptimized
+method-string and ordinary named-function gates retain their earlier revisions.
 The named-carrier increment records 19 exact pinned CLI outcomes (18 normal,
 one uncaught PHP Error), a separate 19-source request-profile pass and five
 reached stages/72 assertions. The former optimized missing-function interpreter
