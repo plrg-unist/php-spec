@@ -94,6 +94,13 @@ def $array_admission(ARRAYUNKNOWN text) = eps
 
 ;; Selection owns only the selected receiver (or static class identities),
 ;; never the original array or its mutable referenced member cells.
+dec $pipe_rhs_known_nonarray(expression) : bool
+def $pipe_rhs_known_nonarray(NScalarString phpType33 metadata) = true
+def $pipe_rhs_known_nonarray(NScalarInt phpType24 metadata) = true
+def $pipe_rhs_known_nonarray(NScalarFloat phpType41 metadata) = true
+def $pipe_rhs_known_nonarray(NExprClosure phpType14 phpType4_static phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata) = true
+def $pipe_rhs_known_nonarray(NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata) = true
+def $pipe_rhs_known_nonarray(expression) = false -- otherwise
 dec $array_site_valid(pstate, parrayselection, bool) : bool
 def $array_site_valid(S, parrayselection, b_capture) = true
   -- if $origin_node(S.SOURCES, parrayselection.SITE) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
@@ -102,6 +109,12 @@ def $array_site_valid(S, parrayselection, b_capture) = true
   -- if $firstclass_evaluated(S, parrayselection.SITE)
   -- if $dynamic_fixed_name(S, parrayselection.SITE) = eps
   -- if parrayselection.INIT = $dynamic_init_line(S, parrayselection.SITE)
+  -- if $call_line_valid(S, (parrayselection.SITE), parrayselection.LINE)
+def $array_site_valid(S, parrayselection, false) = true
+  -- if $origin_node(S.SOURCES, parrayselection.SITE) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if ~$pppipe_optimized(expression_right)
+  -- if ~$pipe_rhs_known_nonarray(expression_right)
+  -- if parrayselection.INIT = $pipe_lookup_line(S, parrayselection.SITE)
   -- if $call_line_valid(S, (parrayselection.SITE), parrayselection.LINE)
 def $array_site_valid(S, parrayselection, b_capture) = false -- otherwise
 

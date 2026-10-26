@@ -90,7 +90,7 @@ def native(path, payload, output):
             'exit_status': result.returncode, 'command': command}
 
 
-def main(catalogue=CASES, campaign="function-scope", producer=Path(__file__)):
+def main(catalogue=CASES, campaign="function-scope", producer=Path(__file__), publish=True):
     parser = argparse.ArgumentParser(); parser.add_argument('--match', default=''); args = parser.parse_args()
     cases = {k: v for k, v in catalogue.items() if args.match in k}
     assert cases, 'no source controls selected'
@@ -159,7 +159,7 @@ def main(catalogue=CASES, campaign="function-scope", producer=Path(__file__)):
               'catalogue_cases': len(catalogue), 'selected_cases': len(cases), 'fingerprint': before,
               'direct_inputs': hashes, 'raw': str(out), 'records': records}
     (out / 'report.json').write_text(json.dumps(report, indent=2))
-    if report['result'] == 'pass' and not args.match:
+    if publish and report['result'] == 'pass' and not args.match:
         (ROOT / 'coverage/semantics' / (campaign+'.json')).write_text(json.dumps(report, indent=2))
     print(out, report['result']); return report['result'] == 'pass'
 

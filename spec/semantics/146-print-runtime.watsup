@@ -1,5 +1,6 @@
 ;; print shares ECHO conversion/output but its expression result is constant 1.
 ;; Save the print occurrence independently of a suspended operand's origin.
+dec $print_nan_plan(pstate) : pprintnanwarning?
 rule PhpStep/print-expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), PRINT_EMIT porigin $runtime_line(S, eps, NExprPrint expression metadata)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprPrint expression metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
@@ -16,6 +17,7 @@ rule PhpStep/print-emit: S ~> $output_vm_write(S_text, n_text*, porigin, PRINT_E
   -- if $string_bytes(pvalue_string) = (n_text*)
 rule PhpStep/print-stringify-abrupt: S ~> S_text[.TODO = eps]
   -- if S.TODO = (PRINT_EMIT porigin z) :: ptask_tail*
+  -- if $print_nan_plan(S) = eps
   -- if S_read = $resolve(S, S.RESULT)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue

@@ -805,6 +805,16 @@ returns, wider delegation, cached references outside direct named NEXT and other
 API roots retain their previous boundaries. Direct named NEXT now preserves a
 cached by-reference cell across suspension and resume; see the
 [reference transfer review](../../coverage/semantics/generator-fiber-reference-transfer-review.json).
+
+Primed direct named `Generator::throw` also carries its saved Throwable through
+Fiber suspension in a local catch or pending finally. Normal resume preserves
+the original exception; `Fiber::throw` can replace it with that exception as
+`Previous`. The Generator retains its old by-value cache until yield or final
+release. Three primed THROW sources, one fresh CURRENT control and one
+75-premise reached state cover this bounded case; fresh THROW, by-reference,
+method, Closure and delegated variants remain open.
+[THROW transfer review](../../coverage/semantics/generator-fiber-throw-transfer-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

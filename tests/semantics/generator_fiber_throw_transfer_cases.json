@@ -1,0 +1,38 @@
+[
+  {
+    "id": "generator-fiber-throw-fresh-current-control",
+    "purpose": "Unchanged fresh CURRENT transfer control with a named Generator and ordinary Fiber callback.",
+    "source": "<?php\nfunction Work60Control() {\n    echo 'BODY|';\n    $reply = Fiber::suspend('pause60');\n    echo 'REPLY|', (int) ($reply === 'go60'), '|';\n    yield 'value60';\n    echo 'END|';\n    return 60;\n}\nfunction Run60Control() {\n    global $g;\n    echo 'CALL|';\n    return $g->current();\n}\n$g = Work60Control();\n$f = new Fiber('Run60Control');\necho 'START|', (int) ($f->start() === 'pause60'), '|';\necho 'PARK|', (int) $f->isSuspended(), '|';\necho 'RESUME|', (int) ($f->resume('go60') === null), '|';\necho 'VALUE|', (int) ($f->getReturn() === 'value60'), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 60), '|';\nunset($g, $f);\necho 'E';\n",
+    "source_sha256": "fc0f6cce087419772376e86bab1d89c862b5f629c8dd2fb0ee3bab23d8864c39",
+    "native_exit": 0,
+    "native_stdout": "START|CALL|BODY|1|PARK|1|RESUME|REPLY|1|1|VALUE|1|END|CLOSED|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "generator-fiber-throw-caught-throw-resume",
+    "purpose": "A primed direct named Generator receives the same supplied Exception in catch, suspends, keeps its old cached value and single reentry Error, then yields a new value on Fiber resume.",
+    "source": "<?php\nfunction Work60Caught() {\n    global $given;\n    try {\n        echo 'SEED|';\n        yield 'seed60';\n        echo 'BAD-TAIL|';\n    } catch (Exception $caught) {\n        echo 'CAUGHT|', (int) ($caught === $given), '|';\n        $reply = Fiber::suspend('pause60');\n        echo 'REPLY|', (int) ($reply === 'go60'), '|';\n        yield 'after60';\n        echo 'AFTER-YIELD|';\n    } finally {\n        echo 'FIN|';\n    }\n    return 60;\n}\nfunction Run60Caught() {\n    global $g, $given;\n    echo 'CALL|';\n    $value = $g->throw($given);\n    echo 'VALUE|', (int) ($value === 'after60'), '|';\n    return 'fiber60';\n}\n$given = new Exception('given60');\n$g = Work60Caught();\necho 'PRIME|', (int) ($g->current() === 'seed60'), '|';\n$f = new Fiber('Run60Caught');\necho 'START|', (int) ($f->start() === 'pause60'), '|';\necho 'PARK|', (int) $f->isSuspended(), '|', (int) ($g->current() === 'seed60'), '|';\ntry {\n    $g->next();\n    echo 'BAD-REENTRY|';\n} catch (Error $error) {\n    echo 'ERROR|', (int) ($error->getMessage() === 'Cannot resume an already running generator'),\n         '|', (int) ($error->getPrevious() === null), '|';\n}\necho 'RESUME|', (int) ($f->resume('go60') === null), '|';\necho 'FIBER|', (int) ($f->getReturn() === 'fiber60'), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 60), '|';\nunset($g, $f, $given, $error);\necho 'E';\n",
+    "source_sha256": "66ec04768e75fcaf808c64d4b05fdd19ca0d47948e84fef7c124c24631b70612",
+    "native_exit": 0,
+    "native_stdout": "PRIME|SEED|1|START|CALL|CAUGHT|1|1|PARK|1|1|ERROR|1|1|RESUME|REPLY|1|VALUE|1|1|FIBER|1|AFTER-YIELD|FIN|CLOSED|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "generator-fiber-throw-pending-finally-fiber-throw",
+    "purpose": "A primed direct named Generator carries its supplied Exception into a suspended finally; Fiber::throw replaces it with Previous identity while the cached object survives until Generator release.",
+    "source": "<?php\nclass Token60 { public function __destruct() { echo 'TOKEN|'; } }\nfunction Work60Finally() {\n    try {\n        echo 'SEED|';\n        yield new Token60();\n        echo 'BAD-TAIL|';\n    } finally {\n        echo 'FIN|';\n        Fiber::suspend('pause60');\n        echo 'BAD-FIN|';\n    }\n}\nfunction Run60Finally() {\n    global $g, $given, $stop;\n    echo 'CALL|';\n    try {\n        $g->throw($given);\n        echo 'BAD-RETURN|';\n    } catch (Throwable $outside) {\n        echo 'OUTSIDE|', (int) ($outside === $stop), '|',\n             (int) ($outside->getPrevious() === $given), '|';\n    }\n    return 'fiber60';\n}\n$given = new Exception('given60');\n$stop = new RuntimeException('stop60');\n$g = Work60Finally();\n$copy = $g->current();\n$weak = WeakReference::create($copy);\nunset($copy);\n$f = new Fiber('Run60Finally');\necho 'START|', (int) ($f->start() === 'pause60'), '|';\necho 'PARK|', (int) $f->isSuspended(), '|', (int) ($weak->get() !== null), '|';\necho 'INJECT|', (int) ($f->throw($stop) === null), '|';\necho 'FIBER|', (int) ($f->getReturn() === 'fiber60'), '|';\necho 'CACHE|', (int) ($weak->get() !== null), '|';\nunset($g, $f);\necho 'DROP|', (int) ($weak->get() === null), '|';\nunset($weak, $given, $stop);\necho 'E';\n",
+    "source_sha256": "7292bda065e155ac1ef99b9bf27ed7fd84b195104382a153c453b8d0e0287880",
+    "native_exit": 0,
+    "native_stdout": "SEED|START|CALL|FIN|1|PARK|1|1|INJECT|OUTSIDE|1|1|1|FIBER|1|CACHE|1|TOKEN|DROP|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "generator-fiber-throw-pending-finally-normal-review",
+    "purpose": "A pending supplied Exception survives normal Fiber resume through finally with original identity and null Previous; the cached object remains owned until Generator release.",
+    "source": "<?php\nclass Token60Review { public function __destruct() { echo 'TOKEN|'; } }\nfunction Work60Pending() {\n    try {\n        echo 'SEED|';\n        yield new Token60Review();\n        echo 'BAD-TAIL|';\n    } finally {\n        echo 'FIN|';\n        Fiber::suspend('pause60');\n        echo 'AFTER-FIN|';\n    }\n}\nfunction Run60Pending() {\n    global $g, $given;\n    echo 'CALL|';\n    try {\n        $g->throw($given);\n        echo 'BAD-RETURN|';\n    } catch (Throwable $outside) {\n        echo 'OUTSIDE|', (int) ($outside === $given), '|',\n             (int) ($outside->getPrevious() === null), '|';\n    }\n    return 'fiber60';\n}\n$given = new Exception('given60');\n$g = Work60Pending();\n$copy = $g->current();\n$weak = WeakReference::create($copy);\nunset($copy);\n$f = new Fiber('Run60Pending');\necho 'START|', (int) ($f->start() === 'pause60'), '|';\necho 'PARK|', (int) ($f->isSuspended()), '|', (int) ($weak->get() !== null), '|';\necho 'RESUME|', (int) ($f->resume() === null), '|';\necho 'FIBER|', (int) ($f->getReturn() === 'fiber60'), '|';\necho 'CACHE|', (int) ($weak->get() !== null), '|';\nunset($g, $f);\necho 'DROP|', (int) ($weak->get() === null), '|';\nunset($weak, $given);\necho 'E';\n",
+    "source_sha256": "2fe4e83bde3b6632afb814936fdb9a469729caff0f7344221d90ef55c644e15d",
+    "native_exit": 0,
+    "native_stdout": "SEED|START|CALL|FIN|1|PARK|1|1|RESUME|AFTER-FIN|OUTSIDE|1|1|1|FIBER|1|CACHE|1|TOKEN|DROP|1|E",
+    "native_stderr": ""
+  }
+]

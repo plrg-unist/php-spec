@@ -687,6 +687,13 @@ Named and numeric-string positional keys preserve PHP's argument order and
 immediate duplicate/unknown errors. Five original sources and 74 focused state
 predicates pass; wider sends and producer lifetimes remain partial.
 
+[Named Iterator CONFIG sends](coverage/semantics/config-iterator-named-unpack-review.json)
+now check a direct CV user Iterator's string keys after its cached `current()`
+and before `next()`. Numeric strings become positional only for the send;
+duplicate, unknown and positional-after-named errors stop later callbacks.
+Five original sources agree with PHP, and reached first-send/error checks pass.
+Other Iterator producers, value shapes and lifetimes remain partial.
+
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
 throws the object-key `Error` before copying its current value or entering the
@@ -3768,9 +3775,10 @@ invalid/NUL-name behavior remain partial.
 [Pipe arrow grouping](coverage/semantics/pipe-syntax-review.json) survives checked
 syntax and printing, so a bare arrow RHS receives the matching compile error
 before operand effects. [Pipe execution](docs/semantics/SOURCE-PIPE.md) forces the
-left value before selecting a named or closure callable; its
-[runtime review](coverage/semantics/pipe-review.json) binds 12 source outcomes
-and separate paused-state controls.
+left value before selecting a named, closure or public user-method array
+callable. Its [runtime review](coverage/semantics/pipe-review.json) binds 12
+earlier source outcomes; the [array review](coverage/semantics/pipe-array-callable-review.json)
+binds twelve exact CLI outcomes and reached ownership checks.
 [Switch execution](docs/semantics/SOURCE-SWITCH.md) scans cases in source order,
 retains the subject through fallthrough, and distinguishes constant-boolean
 branching from dynamic equality; its [review](coverage/semantics/switch-review.json)

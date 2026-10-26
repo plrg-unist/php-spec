@@ -5501,3 +5501,77 @@ def $stringify_source(S, porigin_right, z, CONCAT_RETURNED_RIGHT pconcatreturned
 def $stringify_source_consumer(CONCAT_RETURNED_RIGHT pconcatreturned) = true
 def $stringify_consumer_tail_valid(S, porigin_right, z, CONCAT_RETURNED_RIGHT pconcatreturned, ptask_tail*) = $stringify_source(S, porigin_right, z, CONCAT_RETURNED_RIGHT pconcatreturned)
 def $stringify_consumer_receiver_valid(S, n, CONCAT_RETURNED_RIGHT pconcatreturned) = (n = pconcatreturned.OBJECT)
+
+;; zend_double_to_str formats NaN before warning. ZEND_ECHO writes those saved
+;; bytes after the callback, even if a supplied exception is already pending.
+syntax pprintnanwarning = { SITE porigin, LINE int, INPUT poperand, BITS nat, TEXT preqbytes }
+dec $print_nan_source(pstate, pprintnanwarning) : bool
+def $print_nan_source(S, pprintnanwarning) = true
+  -- if $print_task_valid(S, pprintnanwarning.SITE, pprintnanwarning.LINE)
+  -- if pprintnanwarning.INPUT = VARIABLE ptbytes z
+  -- if $integer_operand_source(S, pprintnanwarning.SITE, [PCFIELD 0], pprintnanwarning.INPUT)
+  -- if $code_expression_at_source(S, pprintnanwarning.SITE, [PCFIELD 0]) = (pprintnanwarning.LINE)
+  -- if $(pprintnanwarning.BITS < 18446744073709551616)
+  -- if $fparts_nan($float_decode(pprintnanwarning.BITS))
+  -- if pprintnanwarning.TEXT = $ptascii("NAN")
+def $print_nan_source(S, pprintnanwarning) = false -- otherwise
+dec $print_nan_snapshot(pstate, pprintnanwarning) : bool
+def $print_nan_snapshot(S, pprintnanwarning) = true
+  -- if pprintnanwarning.INPUT = VARIABLE ptbytes z
+  -- if $integer_pointer_select(S, pprintnanwarning.INPUT) = (INTEGER_CV ptbytes)
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes) = (PFLOAT pprintnanwarning.BITS)
+def $print_nan_snapshot(S, pprintnanwarning) = false -- otherwise
+def $print_nan_plan(S) = (pprintnanwarning)
+  -- if S.OUTPUTBUFFERS = eps
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (PRINT_EMIT porigin z) :: ptask_tail*
+  -- if S.RESULT = VARIABLE ptbytes z_input
+  -- if $integer_pointer_select(S, S.RESULT) = (INTEGER_CV ptbytes)
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes) = (PFLOAT n_bits)
+  -- if $(n_bits < 18446744073709551616)
+  -- if (n_text*, true) = $number_text(NFLOAT n_bits, $precision_value(S))
+  -- if pprintnanwarning = {SITE porigin, LINE z, INPUT S.RESULT, BITS n_bits, TEXT n_text*}
+  -- if $print_nan_source(S, pprintnanwarning)
+def $print_nan_plan(S) = eps -- otherwise
+dec $print_nan_valid(pstate, pprintnanwarning, nat) : bool
+def $print_nan_valid(S, pprintnanwarning, n) = ($print_nan_source(S, pprintnanwarning) /\ $(n <= 1) /\ (n = 1 \/ S.OUTPUTBUFFERS = eps) /\ (n = 1 \/ $print_nan_snapshot(S, pprintnanwarning)))
+
+rule PhpStep/print-nan-begin: S ~> S[.TODO = (PRINT_NAN_WARNING pprintnanwarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $print_nan_plan(S) = (pprintnanwarning)
+rule PhpStep/print-nan-dispatch: S ~> $error_dispatch(S, 2, $ptascii("unexpected NAN value was coerced to string"), pprintnanwarning.LINE, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to string")) pprintnanwarning.LINE, PRINT_NAN_WARNING pprintnanwarning 1)
+  -- if S.TODO = (PRINT_NAN_WARNING pprintnanwarning 0) :: ptask_tail*
+  -- if $print_nan_valid(S, pprintnanwarning, 0)
+rule PhpStep/print-nan-resume: S ~> S[.TODO = (PRINT_EMIT pprintnanwarning.SITE pprintnanwarning.LINE) :: ptask_tail*][.RESULT = KNOWN (PSTRING pprintnanwarning.TEXT)][.BASE = BASE_VALUE (KNOWN (PSTRING pprintnanwarning.TEXT))]
+  -- if S.TODO = (PRINT_NAN_WARNING pprintnanwarning 1) :: ptask_tail*
+  -- if $print_nan_valid(S, pprintnanwarning, 1)
+  -- if S.OUTPUTBUFFERS = eps
+rule PhpStep/print-nan-buffer-boundary: S ~> S[.COMPLETION = UNSUPPORTED "print NaN output buffer changed during Warning"]
+  -- if S.TODO = (PRINT_NAN_WARNING pprintnanwarning 1) :: ptask_tail*
+  -- if $print_nan_valid(S, pprintnanwarning, 1)
+  -- if S.OUTPUTBUFFERS =/= eps
+
+;; A handler throw is pending in THROW_SEARCH. The unbuffered write precedes
+;; that search; there is no print result or enclosing assignment on this path.
+def $error_read_discard(S, PRINT_NAN_WARNING pprintnanwarning 1) = $output_write(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pprintnanwarning.TEXT)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
+  -- if $print_nan_valid(S, pprintnanwarning, 1)
+  -- if S.OUTPUTBUFFERS = eps
+  -- if $destructor_pending_valid(S, (n_exception))
+def $error_read_discard(S, PRINT_NAN_WARNING pprintnanwarning 1) = S[.COMPLETION = UNSUPPORTED "print NaN output buffer changed during Warning"]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
+  -- if $print_nan_valid(S, pprintnanwarning, 1)
+  -- if S.OUTPUTBUFFERS =/= eps
+def $task_nodes(PRINT_NAN_WARNING pprintnanwarning n) = eps
+def $call_task_valid(S, PRINT_NAN_WARNING pprintnanwarning n) = $print_nan_valid(S, pprintnanwarning, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = PRINT_NAN_WARNING pprintnanwarning 1
+  -- if $print_nan_valid(S, pprintnanwarning, 1)
+  -- if perrorcall.TARGET =/= eps \/ $print_nan_snapshot(S, pprintnanwarning)
+  -- if perrorcall.SITE = pprintnanwarning.SITE /\ perrorcall.LINE = pprintnanwarning.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to string")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pprintnanwarning.LINE

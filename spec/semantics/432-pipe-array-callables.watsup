@@ -1,0 +1,77 @@
+;; A pipe's evaluated array selects a method before its one forced value is sent.
+;; The selected task owns the receiver independently of the retired RHS array.
+dec $pipe_array_plain(pcalltarget) : bool
+def $pipe_array_plain(METHOD_TARGET n porigin) = true
+def $pipe_array_plain(STATIC_METHOD_TARGET porigin_class porigin_method) = true
+def $pipe_array_plain(pcalltarget) = false -- otherwise
+
+dec $pipe_array_result(pstate, parrayresolution, pvalue, porigin, int, int, int) : pstate
+def $pipe_array_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.TODO = (PIPE_ARRAY_SEND (ARRAY_METHOD_TARGET pcalltarget parrayselection) parrayselection pvalue_left z_send z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $pipe_array_plain(pcalltarget)
+  -- if parrayselection = {SITE porigin_site, INIT z_lookup, LINE z_call, REQUESTED porigin_requested, NAME ptbytes}
+def $pipe_array_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED "scoped pipe array callable"]
+  -- if ~$pipe_array_plain(pcalltarget)
+def $pipe_array_result(S, ARRAYINVALID ptbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.TODO = (PIPE_ARRAY_INVALID pvalue_left porigin_site ptbytes z_lookup) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $pipe_array_result(S, ARRAYUNKNOWN text, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED text]
+def $pipe_array_value(S, n, pvalue_left, porigin, z_send, z_lookup, z_call) = $pipe_array_result(S, $array_resolve(S, n, ARRAY_DISPATCH), pvalue_left, porigin, z_send, z_lookup, z_call)
+
+def $task_nodes(PIPE_ARRAY_SEND pcalltarget parrayselection pvalue_left z_send z_call) = $value_nodes(pvalue_left) ++ $target_nodes(pcalltarget)
+dec $pipe_array_send_valid(pstate, pcalltarget, parrayselection, pvalue, int, int) : bool
+def $pipe_array_send_valid(S, ARRAY_METHOD_TARGET pcalltarget parrayselection, parrayselection, pvalue_left, z_send, z_call) = true
+  -- if S.ORIGIN = (parrayselection.SITE)
+  -- if $pipe_lines_valid(S, parrayselection.SITE, z_send, z_call)
+  -- if parrayselection.INIT = $pipe_lookup_line(S, parrayselection.SITE)
+  -- if parrayselection.LINE = z_call
+  -- if $array_site_valid(S, parrayselection, false)
+  -- if $pipe_array_plain(pcalltarget)
+  -- if $array_target_identity(S, pcalltarget, parrayselection)
+def $pipe_array_send_valid(S, pcalltarget, parrayselection, pvalue_left, z_send, z_call) = false -- otherwise
+def $call_task_valid(S, PIPE_ARRAY_SEND pcalltarget parrayselection pvalue_left z_send z_call) = $pipe_array_send_valid(S, pcalltarget, parrayselection, pvalue_left, z_send, z_call)
+
+;; A failed lookup first retires the RHS array while the forced left survives.
+;; Its already-selected error bytes remain fixed across a destructor callback.
+def $task_nodes(PIPE_ARRAY_INVALID pvalue_left porigin_site ptbytes z_lookup) = $value_nodes(pvalue_left)
+dec $pipe_array_invalid_valid(pstate, porigin, int) : bool
+def $pipe_array_invalid_valid(S, porigin_site, z_lookup) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if ~$pppipe_optimized(expression_right)
+  -- if ~$pipe_rhs_known_nonarray(expression_right)
+  -- if z_lookup = $pipe_lookup_line(S, porigin_site)
+def $pipe_array_invalid_valid(S, porigin_site, z_lookup) = false -- otherwise
+def $call_task_valid(S, PIPE_ARRAY_INVALID pvalue_left porigin_site ptbytes z_lookup) = $pipe_array_invalid_valid(S, porigin_site, z_lookup)
+rule PhpStep/pipe-array-invalid: S ~> $throw_scalar(S[.TODO = ptask_tail*], "Error", ptbytes, z_lookup)
+  -- if S.TODO = (PIPE_ARRAY_INVALID pvalue_left porigin_site ptbytes z_lookup) :: ptask_tail*
+  -- if $call_task_valid(S, PIPE_ARRAY_INVALID pvalue_left porigin_site ptbytes z_lookup)
+
+rule PhpStep/pipe-array-send: S ~> $pipe_start($hold_task_inputs(S)[.TODO = (PIPE_ARRAY_RESULT pcalltarget_raw parrayselection) :: ptask_tail*], pcalltarget, pvalue_left, parrayselection.SITE, z_send, z_call)[.HELD = S.HELD]
+  -- if S.TODO = (PIPE_ARRAY_SEND pcalltarget parrayselection pvalue_left z_send z_call) :: ptask_tail*
+  -- if pcalltarget = ARRAY_METHOD_TARGET pcalltarget_raw parrayselection
+  -- if $call_task_valid(S, PIPE_ARRAY_SEND pcalltarget parrayselection pvalue_left z_send z_call)
+
+;; The result receipt is historical metadata. It does not keep the method
+;; receiver alive after the call returns, but still binds the selected method
+;; to a real class and the original pipe site.
+dec $pipe_array_result_target(pstate, pcalltarget, parrayselection) : bool
+def $pipe_array_result_target(S, METHOD_TARGET n porigin_method, parrayselection) = true
+  -- if S.OBJECTS[n] = INSTANCE parrayselection.REQUESTED
+  -- if $class_at(S.CLASSES, parrayselection.REQUESTED) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (parrayselection.REQUESTED)
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $effective_method(S, parrayselection.REQUESTED, parrayselection.NAME, |S.CLASSES|) = (pmethoddesc)
+def $pipe_array_result_target(S, STATIC_METHOD_TARGET porigin_class porigin_method, parrayselection) = true
+  -- if porigin_class = parrayselection.REQUESTED
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $effective_method(S, porigin_class, parrayselection.NAME, |S.CLASSES|) = (pmethoddesc)
+def $pipe_array_result_target(S, pcalltarget, parrayselection) = false -- otherwise
+def $task_nodes(PIPE_ARRAY_RESULT pcalltarget parrayselection) = eps
+def $call_task_valid(S, PIPE_ARRAY_RESULT pcalltarget parrayselection) = (S.ORIGIN = (parrayselection.SITE) /\ $array_site_valid(S, parrayselection, false) /\ $pipe_array_result_target(S, pcalltarget, parrayselection))
+rule PhpStep/pipe-array-result: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE S.RESULT]
+  -- if S.TODO = (PIPE_ARRAY_RESULT pcalltarget parrayselection) :: ptask_tail*
+  -- if $call_task_valid(S, PIPE_ARRAY_RESULT pcalltarget parrayselection)

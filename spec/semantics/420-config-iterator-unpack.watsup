@@ -4,7 +4,8 @@ dec $config_iterator_scope(pstate, pconfigiterator) : bool
 dec $config_iterator_start(pstate, pconfigcall, poperand, nat) : bool
 dec $config_iterator_string(pstate, pvalue) : bool
 dec $config_iterator_string_operand(pstate, poperand) : bool
-dec $config_iterator_integer_operand(poperand) : bool
+dec $config_iterator_key(pstate, pvalue) : pkey?
+dec $config_iterator_key_operand(pstate, poperand) : bool
 dec $config_iterator_items(pstate, pentry*) : bool
 dec $config_iterator_stage(pstate, pconfigiterator, text) : bool
 dec $config_iterator_valid(pstate, pconfigiterator, text) : bool
@@ -14,6 +15,7 @@ dec $config_iterator_frame(pstate, pcallcontext, pframe) : bool
 dec $config_iterator_nodes(pconfigiterator, text) : pnode*
 dec $config_iterator_call(pstate, pconfigiterator, text, ptask*) : pstate
 dec $config_iterator_clear(pstate, pconfigiterator, text, ptask*) : pstate
+dec $config_iterator_send(pstate, pconfigiterator, ptask*) : pstate
 dec $config_iterator_finish(pstate, pconfigiterator, ptask*) : pstate
 dec $config_iterator_discard(pstate, pconfigiterator, text) : pstate
 dec $config_iterator_discard_allowed(pstate, pconfigiterator) : bool
@@ -38,10 +40,22 @@ def $config_iterator_string(S, PSTRING_CARRIER pstringidentity n*) = $string_car
 def $config_iterator_string(S, pvalue) = false -- otherwise
 def $config_iterator_string_operand(S, KNOWN pvalue) = $config_iterator_string(S, pvalue)
 def $config_iterator_string_operand(S, poperand) = false -- otherwise
-def $config_iterator_integer_operand(KNOWN (PINT z)) = true
-def $config_iterator_integer_operand(poperand) = false -- otherwise
+;; SEND_UNPACK normalizes the argument key; the Iterator's key() result stays raw.
+def $config_iterator_key(S, PINT z) = (KINT z)
+def $config_iterator_key(S, PSTRING n*) = (KINT z)
+  -- if $startup_bytes(n*)
+  -- if $string_key(n*) = INTEGERKEY z
+def $config_iterator_key(S, PSTRING n*) = (KSTRING n*)
+  -- if $startup_bytes(n*)
+  -- if $string_key(n*) = STRINGKEY
+def $config_iterator_key(S, PSTRING_CARRIER pstringidentity n*) = $config_iterator_key(S, PSTRING n*)
+  -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*)
+def $config_iterator_key(S, pvalue) = eps -- otherwise
+def $config_iterator_key_operand(S, KNOWN pvalue) = ($config_iterator_key(S, pvalue) =/= eps)
+def $config_iterator_key_operand(S, poperand) = false -- otherwise
 def $config_iterator_items(S, eps) = true
 def $config_iterator_items(S, (ENTRY (KINT z) (DIRECT pvalue)) :: pentry_tail*) = ($config_iterator_string(S, pvalue) /\ $config_iterator_items(S, pentry_tail*))
+def $config_iterator_items(S, (ENTRY (KSTRING n*) (DIRECT pvalue)) :: pentry_tail*) = ($startup_bytes(n*) /\ $string_key(n*) = STRINGKEY /\ $config_iterator_string(S, pvalue) /\ $config_iterator_items(S, pentry_tail*))
 def $config_iterator_items(S, pentry*) = false -- otherwise
 
 def $config_iterator_scope(S, pconfigiterator) = true
@@ -59,6 +73,7 @@ def $config_iterator_scope(S, pconfigiterator) = true
   -- if $useriter_instance(S, pconfigiterator.OBJECT)
   -- if $config_iterator_methods(S, pconfigiterator.OBJECT, ["rewind", "valid", "current", "key", "next"])
   -- if $config_iterator_items(S, pconfigiterator.ITEMS)
+  -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall_prefix)
 def $config_iterator_scope(S, pconfigiterator) = false -- otherwise
 def $config_iterator_start(S, pconfigcall, poperand, n) = $config_iterator_scope(S, {CALL pconfigcall, ITERATOR S.NEXTITER, OBJECT n, INPUT poperand, ITEMS eps, CURRENT (KNOWN PNULL), KEY (KNOWN PNULL)})
 
@@ -168,7 +183,8 @@ def $config_iterator_stage(S, pconfigiterator, text) = true
 def $config_iterator_stage(S, pconfigiterator, "send") = true
   -- if pconfigiterator.CURRENT = KNOWN pvalue
   -- if $config_iterator_string(S, pvalue)
-  -- if pconfigiterator.KEY = KNOWN (PINT z)
+  -- if pconfigiterator.KEY = KNOWN pvalue_key
+  -- if $config_iterator_key(S, pvalue_key) = (pkey)
 def $config_iterator_stage(S, pconfigiterator, text) = false -- otherwise
 
 def $config_iterator_valid(S, pconfigiterator, text) = true
@@ -268,16 +284,32 @@ rule PhpStep/config-iterator-current-unsupported: S ~> S[.COMPLETION = UNSUPPORT
 rule PhpStep/config-iterator-key-result: S ~> S[.TODO = (CONFIG_ITERATOR pconfigiterator[.KEY = S.RESULT] "send") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "key") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "key")
-  -- if S.RESULT = KNOWN (PINT z)
+  -- if S.RESULT = KNOWN pvalue_key
+  -- if $config_iterator_key(S, pvalue_key) = (pkey)
 rule PhpStep/config-iterator-key-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "CONFIG Iterator unpack key outside integer domain"]
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "key") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "key")
-  -- if ~$config_iterator_integer_operand(S.RESULT)
-rule PhpStep/config-iterator-send: S ~> $config_iterator_clear(S, pconfigiterator[.ITEMS = pconfigiterator.ITEMS ++ [ENTRY (KINT z) (DIRECT pvalue)]], "next-start", ptask_tail*)
+  -- if ~$config_iterator_key_operand(S, S.RESULT)
+def $config_iterator_send(S, pconfigiterator, ptask_tail*) = $config_iterator_clear(S, pconfigiterator[.ITEMS = pconfigiterator.ITEMS ++ [ENTRY pkey (DIRECT pvalue)]], "next-start", ptask_tail*)
+  -- if pconfigiterator.CURRENT = KNOWN pvalue
+  -- if pconfigiterator.KEY = KNOWN pvalue_key
+  -- if $config_iterator_key(S, pvalue_key) = (pkey)
+  -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall_prefix)
+  -- if $exit_key_name(pkey) = preqbytes?
+  -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if S_checked = $config_send_check(S, pconfigcall_prefix, preqbytes?, z)
+  -- if S_checked.COMPLETION = NORMAL
+def $config_iterator_send(S, pconfigiterator, ptask_tail*) = S_checked
+  -- if pconfigiterator.KEY = KNOWN pvalue_key
+  -- if $config_iterator_key(S, pvalue_key) = (pkey)
+  -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall_prefix)
+  -- if $exit_key_name(pkey) = preqbytes?
+  -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if S_checked = $config_send_check(S, pconfigcall_prefix, preqbytes?, z)
+  -- if S_checked.COMPLETION =/= NORMAL
+rule PhpStep/config-iterator-send: S ~> $config_iterator_send(S, pconfigiterator, ptask_tail*)
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "send") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "send")
-  -- if pconfigiterator.CURRENT = KNOWN pvalue
-  -- if pconfigiterator.KEY = KNOWN (PINT z)
 
 ;; DATA/cursor retire before API reception. The historical object and entries in
 ;; ready are nonowning; an external Iterator owner remains after DATA retirement.
