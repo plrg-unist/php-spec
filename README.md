@@ -3240,9 +3240,13 @@ NULL, rewind identity and empty access after Key death; two sources and 308
 Boolean/eight raw checks pass at `25ff16620`/413. Finite manual cursors now keep
 weak Key history through entry death and singleton normalization, advancing past
 the actual surviving selection. Two new sources and 364 Boolean/eight raw checks
-pass at `a2fe0cc36`/415; original timeouts retain zero agreement. Still-Many
-wrapper teardown refuses; wider histories, active outer loops, hidden allocation
-handles and GC/CONFIG remain partial.
+pass at `a2fe0cc36`/415; original timeouts retain zero agreement. Owned Iterator
+teardown while Map still has multiple entries now transfers DATA through a
+Wrapper storage pin, preserving retained owners and supplied-Throwable helper
+unwind. Three source agreements keep mixed `e983fe7b0`/`f3623f260` cuts; 351
+Boolean/eight raw checks pass at `f3623f260`/415. Old singleton disposal is
+unchanged; wider callback/payload histories, active outer loops, hidden handles
+and GC/CONFIG remain partial.
 
 Bounded by-reference WeakMap traversal shares the entry's cell and preserves
 rebinding plus escaped aliases through DATA or Key retirement. A reference
@@ -5405,8 +5409,16 @@ captures with temporary receiver/scope, shared source statics and original wrapp
 values. Binding warnings precede inner-name errors; forwarding reference warnings
 precede fresh cell allocation and preserve the captured value through callbacks.
 Finite getters and created children retain their selected scope and owners.
-The [new review](coverage/semantics/temporary-fake-call-review.json) preserves
-source/state cuts; unpacking and REAL temporary-current lifetime remain required.
+
+One ARRAY pack after positional `newThis` now delivers saved positional/named
+values, fills default holes and preserves raw Error arguments after pack
+retirement. Alias capture precedes warning callbacks and detached reference-cell
+allocation; parameter conversion keeps the wrapper's original values.
+
+The [pack review](coverage/semantics/closure-call-array-pack-review.json) and
+[temporary-call review](coverage/semantics/temporary-fake-call-review.json)
+preserve separate source/state cuts; wider unpacking and REAL temporary-current
+lifetime remain required.
 [Print expressions](docs/semantics/SOURCE-PRINT.md) preserve output effects while
 returning constant integer 1, including folded expressions and reference demand.
 Source, compiler and paused ownership checks cover admitted conversions;
