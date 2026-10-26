@@ -1528,3 +1528,22 @@ Reached checks cover 2-to-1-to-0 and retained 3-to-2-to-1 owners, the Error
 site, source/guard negatives, WeakReference state and budget resumes. The
 unchanged first-key baseline was Unsupported; named temporary keys, other
 producers, owning key values and effectful last owners remain partial.
+
+The [fresh Aggregate Iterator increment](../../coverage/semantics/config-aggregate-fresh-iterator-review.json)
+accepts an initialized borrowed-CV `IteratorAggregate` whose ordinary by-value
+`getIterator()` returns a fresh, unheld initialized user Iterator. The Aggregate
+is held externally; its real return temporary transfers into Iterator DATA,
+which is then the Iterator's sole owner. A nonowning producer receipt records
+that transfer without pinning either object or requiring the original Aggregate
+CV to stay bound during callbacks. The quiet Iterator has no destructor or
+child roots. After two integer-key string sends, DATA dies before `ini_set`
+receives the arguments; a saved second-key Exception instead discards DATA
+before catch. WeakReference observations, cached current despite a key callback
+changing its source variable, result/configuration and setter recovery agree
+with PHP 8.5.10 in two frozen originals. Source-reached checks cover the normal
+and abrupt owner transitions, retired ready state, and missing/wrong receipts.
+The existing retained Aggregate and CV-rebinding paths remain exact. A fresh
+Aggregate Iterator with an invalid bool key remains explicit Unsupported after
+its key callback; owning/effectful finalizers, child roots and wider keys remain
+open. The three unchanged original baselines were Unsupported with zero source
+agreement.

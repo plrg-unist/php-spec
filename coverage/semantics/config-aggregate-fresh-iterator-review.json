@@ -1,0 +1,56 @@
+{
+  "scope": "Source109: ordinary borrowed-CV IteratorAggregate::getIterator returns a fresh, unheld initialized user Iterator for ini_set(...$aggregate); external Aggregate hold, integer-key string sends, quiet sole Iterator DATA and normal/Exception cleanup.",
+  "behavior": "The real returned temporary transfers into Iterator DATA without an Aggregate owner edge. A nonowning producer identity receipt authenticates active and retired Iterator history even if callbacks rebind the Aggregate CV. No destructor or object child roots are admitted at sole-owner promotion. Normal finish retires DATA before API reception; a saved second-key Exception drains DATA before catch. Existing retained Iterator and direct/factory paths keep their separate owners.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "php_file_extension_sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile": "tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+    "source_symbols": [
+      "Zend/zend_interfaces.c:zend_user_it_get_new_iterator/zend_user_it_get_iterator/zend_user_it_dtor",
+      "Zend/zend_vm_def.h:ZEND_SEND_UNPACK"
+    ]
+  },
+  "cuts": {
+    "native_and_baseline": "d26c710a7: three distinct frozen PHP originals (source file SHA f4a0a41f6b3c43f0cb0dcff84cc3594832240e5e4194a6c5ba7e8fed9f008c31) run natively with exit0 and quiet stable streams. WeakReference is live during callbacks and dead at its first observer after API or catch; source-reached state checks establish death before API/catch. Three genuine unchanged model baselines stop Unsupported after B|G|; zero source agreement. Copied native reports in baseline directories are not new native executions.",
+    "source": "826d0639d: normal two-send and saved second-key Exception originals both exact native/model at CLI90 (two source agreements). The invalid-bool second-key original remains explicit Unsupported after its key callback and has zero agreement.",
+    "state": "826d0639d semantics, c5954c862 corrected fixture: 423-module strict SL passes. Source-reached normal126 and saved-key Exception117 premises pass at direct cap240 after driver-managed release/pruning; verify sole DATA 1-to-0, WeakReference death at ready or throw cleanup, missing/wrong producer rejection, authentic Aggregate/selected call, cached current, no added Aggregate pin and unchanged result/config. These are 243 physical premises across two distinct original sources.",
+    "affected_controls": "At 826d0639d, five copied unchanged original PHP sources remain exact: Source89 retained Aggregate Iterator, Source99 Aggregate CV-rebinding duplicate, Source101 sole temporary factory, Source104 direct invalid key, Source106 sole temporary invalid key. At c5954c862, the changed Source89 owned completion fixture passes 117 premises, including an authenticated projected owner1 result/task/receipt. That constructed owner projection is helper credit only, not an additional source agreement.",
+    "failed_attempts": "Initial strict forward-declaration failure; first target CLI45 timeout; first reached cap90 timeout; cap240 v1 raw-PhpStep ready allocation premise failure; v2 raw-step seek failure. All preserved separately with zero semantic or source credit. V3 follows the real driver transition; no failed assertion was silently dropped."
+  },
+  "input_sha256": {
+    "spec/semantics/30-storage.watsup": "ad706318113b7dbdec1b97140731d9ba17572023d7536b4bb3195c69d5538a6c",
+    "spec/semantics/420-config-iterator-unpack.watsup": "d1b99754cab9b6eaf520de606785a936e6b1f639c8534dbf436d21d964326e78",
+    "spec/semantics/421-config-aggregate-iterator-unpack.watsup": "57c17366286bc5d9def955996704324bce5acfb25d784e4fd64c7667f8213ca0",
+    "tests/semantics/config_aggregate_fresh_iterator_sources.py": "f4a0a41f6b3c43f0cb0dcff84cc3594832240e5e4194a6c5ba7e8fed9f008c31",
+    "tests/semantics/config_aggregate_fresh_iterator_model.py": "91dacebd28cb1d468ce422cc9d7b4bbd3fd5698600cabf776a0e8cce4915cf60",
+    "tests/semantics/config_aggregate_fresh_iterator_boundary.py": "4e471b2661c33c3c5bebed2265ce99dd3917bf11839ff99f9d6819f4030de8d8",
+    "tests/semantics/config_aggregate_fresh_iterator_protocol.py": "54582c4a5f35690d98219deec458cfedf9e89d0b4407c29083f9184a77c1955f",
+    "tests/semantics/config_aggregate_iterator_unpack_protocol.py": "91e746807700d224f975fcfe9cb06077ffa895539f4f406b3bf22f8b2ecc027c",
+    "spec/semantics/modules.json": "d0fb3ec94af91a7eb60c0ae42f84c3a25a41d6a798b09a963c376f1ec073c341"
+  },
+  "raw_root": "../php-spec-evidence-archive/source109-aggregate-fresh-iterator",
+  "reports_sha256": {
+    "CPU4-RELEASE.json": "d0be1dbef39d6149ca14e1a28550fda26e915f409e69e3bb533548d3bbe04381",
+    "CPU4-RELEASE-POSTEDIT.json": "5644be9949fc94c73b8b202fdcb167149e1eac265b29550547f9d3ead46d43ad",
+    "native-baseline/native-report.json": "51d841f51bc9430cba5cce91f640cffe83476179c0f9d795adf7795e75195d7e",
+    "native-baseline/baseline-report.json": "c36dddf8fd911d7b450cbe29588fe5e27323a3e125d4d63e9b02ae71b7debafb",
+    "baseline-exception/baseline-report.json": "b30f48ef6ebf2c06cca140349f0e197bef8d71400b73724a443ea95e0a64ff7d",
+    "baseline-invalid/baseline-report.json": "238c19f9e2a45313ea48191c39b0a527932060d1a930e9b044e24e68a525cce2",
+    "model-targets/model-report.json": "8e354d90f00df7489c34698524d77be6eda94032714931723aa730a15251c8cb",
+    "baseline-invalid/model-fresh-return-invalid-key-boundary-report.json": "2ca1a424a83ccebcc44835fcebe2bce091ab6d7507fad055b762105a65e4c7bd",
+    "protocol-v3/prepare-report.json": "0f82de9e93e36073634306fe384f85fcfb83e1196ab83c3c6c5dd464ff43cfb4",
+    "protocol-v3/check-report.json": "489e482595d04c7af9cfbe65ceae646cd0f9b4561f92cf414f191b92a62e3083",
+    "affected/source89-fixed/model-fixed-config-aggregate-produces-retained-user-iterator-report.json": "d15cd117bcffc129b224a7342bae27178de1240d46377ebc4d1d488f6a875b45",
+    "affected/source99-aggregate-rebind/model-aggregate-duplicate-stops-before-next-report.json": "5110362f265b6617fb34eb0d7697643cd2aab70524c74fbd617e5ef50e4fc17f",
+    "affected/source101-temp/model-sole-factory-iterator-input-retires-before-api-report.json": "a4716a68645b34ba9b79b7b291215b6a39eeb936a33ce8baf7af148c1bd97df3",
+    "affected/source104-direct-invalid/model-null-first-key-stops-before-send-report.json": "15f7c9f06ea8d2c3ca77da1581ab807440cc7f441d07e25aaaa08f20fc1e305d",
+    "affected/source106-temp-invalid/model-sole-first-null-key-retires-input-report.json": "0a0e758a2a83166fb64df1d6a40738a710f619dacb8d2ae749c7eb5f5258a0bb",
+    "affected/source89-protocol/completion/check-report.json": "097afc7c554e0ea1b980680b4a8112ec7c3ee5cefba372dae56ad1f3a5c6b93d"
+  },
+  "recovery": "Restore the private commit chain d26c710a7..c5954c862 and external raw root. Original/native/baseline/model reports retain PHP bytes, profiles, argv, revisions, streams, timeouts and process groups. Recheck target sources with config_aggregate_fresh_iterator_model.py, explicit boundary with config_aggregate_fresh_iterator_boundary.py, and prepared source-authenticated states with config_aggregate_fresh_iterator_protocol.py at recorded direct cap240. Compare immutable source hashes and use the selected affected reports. The CPU4 release audits cover all 23 recorded child groups.",
+  "remaining": "Invalid primitive key from this Aggregate-returned fresh Iterator remains Unsupported, as do owning/effectful last DATA, child roots, wider keys, methods, values and CONFIG consumers. Held V110/COMP123 and paused lanes remain unchanged. This is a bounded PHP-core semantics result, not full-core or BOLA proof."
+}
