@@ -1,0 +1,88 @@
+{
+  "scope": "A parentless Parent declares one public backed block &get. Its immediate Child plainly redeclares the same public typed-int or untyped property. An unchanged Grandchild inherits Child's physical slot and Parent's getter for direct CV/literal reads, reference fetches, own writes and a defined-RHS destination bind.",
+  "status": "partial; semantic review clear, package review pending",
+  "target": {
+    "php": "8.5.10 CLI NTS signed64",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C; TZ=UTC; serial exclusive CPU2; 100000 model steps and 75-second source timeout"
+  },
+  "authority": [
+    "Zend/zend_inheritance.c::do_inherit_property retains the Child backing slot across the unchanged Grandchild edge; inherit_property_hook duplicates the inherited getter.",
+    "Zend/zend_object_handlers.c::zend_std_read_property invokes that getter on the Grandchild receiver.",
+    "Zend/zend_execute.c::zend_assign_to_property_reference fetches Get before rejecting destination rebinding.",
+    "spec/semantics/138-property-references.watsup attaches Child's OBJECT_PROP_SOURCE only for the typed physical descriptor."
+  ],
+  "implementation": ["spec/semantics/382-backed-get-hooks.watsup"],
+  "source_packet": {
+    "frozen_catalogue_sha256": "ffed5ed7a0d18b6c5a61c6f65848984991890b114ad27ac51516e1774058b348",
+    "maintained_catalogue": "tests/semantics/grandchild_reference_get_hook_cases.json",
+    "maintained_catalogue_sha256": "7e1daf8c3fb619dd98f53be7726e0d21a09b7457509f7b813236806b75edd45d",
+    "positive_cases": {
+      "untyped-grandchild-alias": "8b2c068832c1ca637e4cd571ae8c4e0b6fdbfe3e3274c371c13e5694677bb554",
+      "untyped-grandchild-null": "4b4e64f3b42e819b4873fbf3058d55ed9767e8a74ff5eb8a68a6f973fd1c7538",
+      "untyped-grandchild-rebind-write": "4a3eb36e8c2f492a4ee5325ef5590aa1db29667135af30afb51cc9feeb8ba2e1",
+      "typed-grandchild-alias": "632944bb3023c8bbc5e7072ddbde846ffa73e11fb0f7b7d14e6f7024dfe242b5"
+    },
+    "wider_control": "1340a187159e7da9dcb2bd1f0042ffbdc1bc42e911cbe7fa2faaf800e5f60b72"
+  },
+  "prechange": {
+    "revision": "1684db2207030e5e5e2ec175bcfff38fd7074d3e",
+    "native_report_member": "php-spec/.tools/class137-grandchild-reference-get/.tools/class137-probes/native-first.json",
+    "native_report_sha256": "4cde39e850775a547fe25136f63168cc9e2346f4de92d21a219cf11d57af60ba",
+    "baseline_report_member": "php-spec/.tools/class137-grandchild-reference-get/.tools/class137-probes/native-baseline.json",
+    "baseline_report_sha256": "61d4a25f7e5e2fe4c6f0609cc8deb9504a46fd3b9327c7bfd025976ae5889b16",
+    "result": "All five native originals exit 0 with empty stderr. The unchanged model accepts/checks all five but stops Unsupported before Get; no source agreement."
+  },
+  "first_failure": {
+    "report_member": "php-spec/.tools/class137-grandchild-reference-get/.tools/grandchild-reference-get-j2_q48om/report.json",
+    "report_sha256": "c2c053dfca721ac2bb763b4affe7ad21b836d275f7329acb78e83172350caee4",
+    "result": "The first affected run stopped runner_failure during elaboration: ppropertyid was passed where porigin was required. Explicit origin extraction corrected it. Zero semantic credit."
+  },
+  "affected": {
+    "tested_worktree_head": "1684db2207030e5e5e2ec175bcfff38fd7074d3e",
+    "reviewed_semantic_test_commit": "546ce314e",
+    "dirty_at_execution": true,
+    "module_count": 423,
+    "semantic_sha256": "1b8f3a1995a5908dc5f3efd8cff88078991822280170afc73848e157f9fc9b55",
+    "protocol_sha256": "1d134d701822b99538b2caeda1b20622961ce1b3e6df524db12cef55d323f9a1",
+    "source_only_report_member": "php-spec/.tools/class137-grandchild-reference-get/.tools/grandchild-reference-get-47cxri0d/report.json",
+    "source_only_report_sha256": "43324d8fa68b843236460ba062c13efc13304ab01c58e65f6eb15824bb27894a",
+    "full_report_member": "php-spec/.tools/class137-grandchild-reference-get/.tools/grandchild-reference-get-24nxl6s0/report.json",
+    "full_report_sha256": "765708780e19f6fb14fc4ac59388b027f3acc1a239d287daad6e0a55c604520a",
+    "source_agreements": 4,
+    "focused_boolean": 392,
+    "focused_raw_php_steps": 4,
+    "reached_checks": [98, 99, 94, 101],
+    "coverage": "Authentic Grandchild→Child and Child→Parent links, Child physical descriptor/slot, Parent getter function and lexical scope, Grandchild called scope, both link-removal refusals, typed Child OBJECT_PROP_SOURCE and untyped absence, implicit-null and initialized alias/copy/lifetime, own write, and Get-before-rebind Error line/file. Both source-only and full reports include the explicit Greatgrandchild Unsupported control. The tested semantic/protocol/catalogue hashes equal commit 546ce314e; documentation and inventory changes add no execution credit."
+  },
+  "independent_control": {
+    "reviewer": "class137_review",
+    "source_sha256": "a78a4bb445d103bcf554f91e483945bb1eabaeec2aceb81c1c91e7eab37b59de",
+    "report_member": "php-spec/.tools/class137-grandchild-reference-get/.tools/class137-probes/independent-typeerror.json",
+    "report_sha256": "d4df74cf3c74478a935005a91aa98cf57ed46554b065d58bc0e472e8c999d768",
+    "result": "Independent frozen source agrees byte-for-byte: Parent lexical/Grandchild called output and TypeError names typed Child property; old value, destructor and escaped alias remain ordered."
+  },
+  "unsupported_control": {
+    "case": "untyped-greatgrandchild-boundary",
+    "native_exit": 0,
+    "model": "accepted/checked Unsupported: by-value property hook indirect access",
+    "source_agreement": false
+  },
+  "archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/grandchild-reference-get-hooks-137/evidence.tar.gz",
+    "sha256": "c0db80260510c2bae08615f801d44cc201fd6f5c3272ad147d0ef9a5616cd7d5",
+    "bytes": 9564602,
+    "members": 256,
+    "manifest_sha256": "c870536870027fe690b42a82983ea5a4e522d6e930de3dc1b5b149aab0da7e31",
+    "recovery": "Extract at /home/user/workspace to restore ignored private raw runs, source snapshots and the independent review source. The archive is outside Git."
+  },
+  "review": {
+    "reviewer": "class137_review",
+    "semantic_decision": "CLEAR",
+    "package_decision": "pending"
+  },
+  "remaining": "Greatgrandchild and wider descendant chains, changed redeclarations, virtual/arrow/set/paired/trait hooks, constructors with property effects, dimensions, quiet/compound consumers and wider reference lifetimes remain partial."
+}

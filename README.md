@@ -4318,6 +4318,11 @@ backing without a property type source. Escaped aliases accept later strings,
 ordinary reads copy, and destination rebinding still calls Get before Error.
 Three originals and 364 Boolean checks plus three raw transitions pass in the
 [untyped plain Child review](coverage/semantics/untyped-plain-child-reference-get-hooks-review.json).
+An unchanged Grandchild also uses the Child's plain backing slot and Parent's
+inherited `&get`, with Parent lexical and Grandchild called scope. Typed aliases
+retain Child's type source; untyped aliases do not. Four originals and 392 reached
+premises plus four raw steps pass in the
+[Grandchild reference-Get review](coverage/semantics/grandchild-reference-get-hooks-review.json).
 Wider hook declarations and indirect consumers remain partial.
 
 Public backed by-value `get` hooks execute their block or expression body on each read,

@@ -82,7 +82,14 @@ copy and the alias survives Child destruction. An own write precedes Get on a
 later destination `=&`, whose Error retains the selected line and file. Three
 sources and 364 Boolean checks plus three raw transitions pass in the
 [untyped plain Child review](../../coverage/semantics/untyped-plain-child-reference-get-hooks-review.json).
-Deeper Child paths, virtual/arrow/set/trait forms, dimensions,
+An unchanged Grandchild now inherits that immediate plain Child slot and
+Parent's backed `&get`. The getter keeps Parent lexical scope and the actual
+Grandchild called class; its reference carries Child's type source when typed
+and no source when untyped. Four originals, 392 reached premises and four raw
+fetch/rebind steps pass in the
+[Grandchild reference-Get review](../../coverage/semantics/grandchild-reference-get-hooks-review.json).
+The unchanged Greatgrandchild remains checked Unsupported. Deeper Child paths,
+virtual/arrow/set/trait forms, dimensions,
 quiet reads and compound consumers remain outside these slices.
 
 Public backed by-value block and expression `get` hooks compile into source functions with the
