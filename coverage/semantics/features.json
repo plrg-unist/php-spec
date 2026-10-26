@@ -2812,17 +2812,21 @@
         "tests/semantics/short_nan_warning_cases.py",
         "tests/semantics/short_nan_warnings.py",
         "tests/semantics/short_nan_warning_review_cases.py",
-        "tests/semantics/short_nan_warning_review.py"
+        "tests/semantics/short_nan_warning_review.py",
+        "tests/semantics/short_right_nan_warning_cases.py",
+        "tests/semantics/short_right_nan_warnings.py"
       ],
-      "review": "Independent bounded truth review: 854 exact sources +25 outcome negatives; 44 alternate exact sources and 44 compiler cases, five redirect/access and three grouping controls; 71 source/state cases with 1344 assertions plus four dense programs with 3316 assertions passed. See coverage/semantics/truth-review.json. Ordinary selected values copy, raw prepass redirects preserve delayed operands, and short-circuit compilation differs from constant prepass. Object/callback truth behavior, additional operand forms and full source-family closure remain pending. OP84: NaN LEFT ordinary-CV truth now resumes named Warning callbacks before &&/and/||/or decide RIGHT execution. Source5 and511 source-derived premises incl derived guards pass at9a14e5244/410; keyword forms are source-only. RHS-NaN/reference/other decisions and wider handlers remain partial. See short-circuit-nan-warning-review.json.",
+      "review": "Independent bounded truth review: 854 exact sources +25 outcome negatives; 44 alternate exact sources and 44 compiler cases, five redirect/access and three grouping controls; 71 source/state cases with 1344 assertions plus four dense programs with 3316 assertions passed. See coverage/semantics/truth-review.json. Ordinary selected values copy, raw prepass redirects preserve delayed operands, and short-circuit compilation differs from constant prepass. Object/callback truth behavior, additional operand forms and full source-family closure remain pending. OP84: NaN LEFT ordinary-CV truth now resumes named Warning callbacks before &&/and/||/or decide RIGHT execution. Source5 and511 source-derived premises incl derived guards pass at9a14e5244/410; keyword forms are source-only. References, other RIGHT producers and wider handlers remain partial. See short-circuit-nan-warning-review.json. OP104: A selected direct-CV NaN RIGHT now warns through its own TRUTH_RESULT continuation for all four forms, reads the same live float after a named callback, and cancels outer assignment on supplied throw. Eight exact source cases and 135+123 reached premises pass at b5f34326e/2797e1dbe; two skipped RIGHT controls stay silent. See short-right-nan-warning-review.json. Two independent native-first controls pass: handled-true unchanged NaN causes no rewarning; E_NOTICE mask gives one default Warning without callback.",
       "helper_tests": [
         "tests/semantics/truth_compiler.py",
         "tests/semantics/truth_expressions.py",
         "tests/semantics/short_nan_warning_protocol.py",
-        "tests/semantics/short_nan_warning_state_review.py"
+        "tests/semantics/short_nan_warning_state_review.py",
+        "tests/semantics/short_right_nan_warning_protocol.py"
       ],
       "evidence": [
-        "coverage/semantics/short-circuit-nan-warning-review.json"
+        "coverage/semantics/short-circuit-nan-warning-review.json",
+        "coverage/semantics/short-right-nan-warning-review.json"
       ]
     },
     {
@@ -2847,17 +2851,21 @@
         "tests/semantics/short_nan_warning_cases.py",
         "tests/semantics/short_nan_warnings.py",
         "tests/semantics/short_nan_warning_review_cases.py",
-        "tests/semantics/short_nan_warning_review.py"
+        "tests/semantics/short_nan_warning_review.py",
+        "tests/semantics/short_right_nan_warning_cases.py",
+        "tests/semantics/short_right_nan_warnings.py"
       ],
-      "review": "Independent bounded truth review: 854 exact sources +25 outcome negatives; 44 alternate exact sources and 44 compiler cases, five redirect/access and three grouping controls; 71 source/state cases with 1344 assertions plus four dense programs with 3316 assertions passed. See coverage/semantics/truth-review.json. Ordinary selected values copy, raw prepass redirects preserve delayed operands, and short-circuit compilation differs from constant prepass. Object/callback truth behavior, additional operand forms and full source-family closure remain pending. OP84: NaN LEFT ordinary-CV truth now resumes named Warning callbacks before &&/and/||/or decide RIGHT execution. Source5 and511 source-derived premises incl derived guards pass at9a14e5244/410; keyword forms are source-only. RHS-NaN/reference/other decisions and wider handlers remain partial. See short-circuit-nan-warning-review.json.",
+      "review": "Independent bounded truth review: 854 exact sources +25 outcome negatives; 44 alternate exact sources and 44 compiler cases, five redirect/access and three grouping controls; 71 source/state cases with 1344 assertions plus four dense programs with 3316 assertions passed. See coverage/semantics/truth-review.json. Ordinary selected values copy, raw prepass redirects preserve delayed operands, and short-circuit compilation differs from constant prepass. Object/callback truth behavior, additional operand forms and full source-family closure remain pending. OP84: NaN LEFT ordinary-CV truth now resumes named Warning callbacks before &&/and/||/or decide RIGHT execution. Source5 and511 source-derived premises incl derived guards pass at9a14e5244/410; keyword forms are source-only. References, other RIGHT producers and wider handlers remain partial. See short-circuit-nan-warning-review.json. OP104: A selected direct-CV NaN RIGHT now warns through its own TRUTH_RESULT continuation for all four forms, reads the same live float after a named callback, and cancels outer assignment on supplied throw. Eight exact source cases and 135+123 reached premises pass at b5f34326e/2797e1dbe; two skipped RIGHT controls stay silent. See short-right-nan-warning-review.json. Two independent native-first controls pass: handled-true unchanged NaN causes no rewarning; E_NOTICE mask gives one default Warning without callback.",
       "helper_tests": [
         "tests/semantics/truth_compiler.py",
         "tests/semantics/truth_expressions.py",
         "tests/semantics/short_nan_warning_protocol.py",
-        "tests/semantics/short_nan_warning_state_review.py"
+        "tests/semantics/short_nan_warning_state_review.py",
+        "tests/semantics/short_right_nan_warning_protocol.py"
       ],
       "evidence": [
-        "coverage/semantics/short-circuit-nan-warning-review.json"
+        "coverage/semantics/short-circuit-nan-warning-review.json",
+        "coverage/semantics/short-right-nan-warning-review.json"
       ]
     },
     {
@@ -3659,17 +3667,21 @@
         "tests/semantics/short_nan_warning_cases.py",
         "tests/semantics/short_nan_warnings.py",
         "tests/semantics/short_nan_warning_review_cases.py",
-        "tests/semantics/short_nan_warning_review.py"
+        "tests/semantics/short_nan_warning_review.py",
+        "tests/semantics/short_right_nan_warning_cases.py",
+        "tests/semantics/short_right_nan_warnings.py"
       ],
-      "review": "Independent bounded truth review: 854 exact sources +25 outcome negatives; 44 alternate exact sources and 44 compiler cases, five redirect/access and three grouping controls; 71 source/state cases with 1344 assertions plus four dense programs with 3316 assertions passed. See coverage/semantics/truth-review.json. Ordinary selected values copy, raw prepass redirects preserve delayed operands, and short-circuit compilation differs from constant prepass. Object/callback truth behavior, additional operand forms and full source-family closure remain pending. OP84: NaN LEFT ordinary-CV truth now resumes named Warning callbacks before &&/and/||/or decide RIGHT execution. Source5 and511 source-derived premises incl derived guards pass at9a14e5244/410; keyword forms are source-only. RHS-NaN/reference/other decisions and wider handlers remain partial. See short-circuit-nan-warning-review.json.",
+      "review": "Independent bounded truth review: 854 exact sources +25 outcome negatives; 44 alternate exact sources and 44 compiler cases, five redirect/access and three grouping controls; 71 source/state cases with 1344 assertions plus four dense programs with 3316 assertions passed. See coverage/semantics/truth-review.json. Ordinary selected values copy, raw prepass redirects preserve delayed operands, and short-circuit compilation differs from constant prepass. Object/callback truth behavior, additional operand forms and full source-family closure remain pending. OP84: NaN LEFT ordinary-CV truth now resumes named Warning callbacks before &&/and/||/or decide RIGHT execution. Source5 and511 source-derived premises incl derived guards pass at9a14e5244/410; keyword forms are source-only. References, other RIGHT producers and wider handlers remain partial. See short-circuit-nan-warning-review.json. OP104: A selected direct-CV NaN RIGHT now warns through its own TRUTH_RESULT continuation for all four forms, reads the same live float after a named callback, and cancels outer assignment on supplied throw. Eight exact source cases and 135+123 reached premises pass at b5f34326e/2797e1dbe; two skipped RIGHT controls stay silent. See short-right-nan-warning-review.json. Two independent native-first controls pass: handled-true unchanged NaN causes no rewarning; E_NOTICE mask gives one default Warning without callback.",
       "helper_tests": [
         "tests/semantics/truth_compiler.py",
         "tests/semantics/truth_expressions.py",
         "tests/semantics/short_nan_warning_protocol.py",
-        "tests/semantics/short_nan_warning_state_review.py"
+        "tests/semantics/short_nan_warning_state_review.py",
+        "tests/semantics/short_right_nan_warning_protocol.py"
       ],
       "evidence": [
-        "coverage/semantics/short-circuit-nan-warning-review.json"
+        "coverage/semantics/short-circuit-nan-warning-review.json",
+        "coverage/semantics/short-right-nan-warning-review.json"
       ]
     },
     {
@@ -3694,17 +3706,21 @@
         "tests/semantics/short_nan_warning_cases.py",
         "tests/semantics/short_nan_warnings.py",
         "tests/semantics/short_nan_warning_review_cases.py",
-        "tests/semantics/short_nan_warning_review.py"
+        "tests/semantics/short_nan_warning_review.py",
+        "tests/semantics/short_right_nan_warning_cases.py",
+        "tests/semantics/short_right_nan_warnings.py"
       ],
-      "review": "Independent bounded truth review: 854 exact sources +25 outcome negatives; 44 alternate exact sources and 44 compiler cases, five redirect/access and three grouping controls; 71 source/state cases with 1344 assertions plus four dense programs with 3316 assertions passed. See coverage/semantics/truth-review.json. Ordinary selected values copy, raw prepass redirects preserve delayed operands, and short-circuit compilation differs from constant prepass. Object/callback truth behavior, additional operand forms and full source-family closure remain pending. OP84: NaN LEFT ordinary-CV truth now resumes named Warning callbacks before &&/and/||/or decide RIGHT execution. Source5 and511 source-derived premises incl derived guards pass at9a14e5244/410; keyword forms are source-only. RHS-NaN/reference/other decisions and wider handlers remain partial. See short-circuit-nan-warning-review.json.",
+      "review": "Independent bounded truth review: 854 exact sources +25 outcome negatives; 44 alternate exact sources and 44 compiler cases, five redirect/access and three grouping controls; 71 source/state cases with 1344 assertions plus four dense programs with 3316 assertions passed. See coverage/semantics/truth-review.json. Ordinary selected values copy, raw prepass redirects preserve delayed operands, and short-circuit compilation differs from constant prepass. Object/callback truth behavior, additional operand forms and full source-family closure remain pending. OP84: NaN LEFT ordinary-CV truth now resumes named Warning callbacks before &&/and/||/or decide RIGHT execution. Source5 and511 source-derived premises incl derived guards pass at9a14e5244/410; keyword forms are source-only. References, other RIGHT producers and wider handlers remain partial. See short-circuit-nan-warning-review.json. OP104: A selected direct-CV NaN RIGHT now warns through its own TRUTH_RESULT continuation for all four forms, reads the same live float after a named callback, and cancels outer assignment on supplied throw. Eight exact source cases and 135+123 reached premises pass at b5f34326e/2797e1dbe; two skipped RIGHT controls stay silent. See short-right-nan-warning-review.json. Two independent native-first controls pass: handled-true unchanged NaN causes no rewarning; E_NOTICE mask gives one default Warning without callback.",
       "helper_tests": [
         "tests/semantics/truth_compiler.py",
         "tests/semantics/truth_expressions.py",
         "tests/semantics/short_nan_warning_protocol.py",
-        "tests/semantics/short_nan_warning_state_review.py"
+        "tests/semantics/short_nan_warning_state_review.py",
+        "tests/semantics/short_right_nan_warning_protocol.py"
       ],
       "evidence": [
-        "coverage/semantics/short-circuit-nan-warning-review.json"
+        "coverage/semantics/short-circuit-nan-warning-review.json",
+        "coverage/semantics/short-right-nan-warning-review.json"
       ]
     },
     {

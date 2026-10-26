@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "milestone": "OP104 selected RIGHT NaN short-circuit truth",
+  "status": "bounded independently reviewed semantics; private publication pending",
+  "target": "PHP 8.5.10 CLI NTS64; project-local pinned oracle and ordinary precision14 profile",
+  "scope": "Selected direct ordinary nonreference float CV on RIGHT of &&, and, || or or. Validated witnesses use a named nonconstant LEFT result and an eligible named Warning handler; the rule authenticates the parent short-circuit AST and selected RIGHT source/cell, then admits same-type float mutation or a supplied throw.",
+  "tested_revision": {
+    "semantic": "b5f34326ed96dfdf3c9123cc588533ee826c8422",
+    "focused_test_only": "2797e1dbe8ab1a0dd87d7d34f3f7efd858a79423"
+  },
+  "module_count": 424,
+  "tested_sha256": {
+    "spec/semantics/30-storage.watsup": "288cc59cc84265cb8006b325b5be563081b00784d0c5bd3c24664b40f4fb3b98",
+    "spec/semantics/51-truth-expressions.watsup": "83d9cd09adbd59448baa80f62b6ee3170ce8651cb7a6430e96784f98fb0bc886",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "029de1a81ab6b8b69dbb51be93b3bbecd9eccdc901ed2500d9f950ffb4f10ad3",
+    "tests/semantics/short_right_nan_warning_cases.py": "b8b680fa87621d1b03ea5c8b171b1e9d205d35c221185f02e03a718d1a5e9ba9",
+    "tests/semantics/short_right_nan_warnings.py": "f808089e0f85a87fd8db7b28aa78cf6ad7962b08268bd2c4e23ab28a31c4bcb5",
+    "tests/semantics/short_right_nan_warning_protocol.py": "415558cd1027efcd970071af5ff6bdc38ade6c702c4ed729796c6c79cf448982",
+    "spec/semantics/modules.json": "de8488abd5ca58bfd455d59011ef41f48449be4699ede06af70e027075dab632"
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c::zend_compile_short_circuiting emits JMPZ_EX/JMPNZ_EX for nonconstant LEFT, then ZEND_BOOL for selected RIGHT.",
+    "Zend/zend_vm_def.h::ZEND_BOOL invokes i_zend_is_true and checks exception after conversion; Zend/zend_operators.h::i_zend_is_true warns on NaN before rereading Z_DVAL_P(op)."
+  ],
+  "contract": [
+    "Source-authenticated TRUTH_RESULT false z_right saves the selected plain float CV cell and NaN bits. Stage1 reads the live float exactly once without redispatching its Warning; unchanged NaN also yields true with no second Warning.",
+    "Normal callback writes 0.0 for AND or 1.0 for OR and permits one default Warning25. A supplied Exception20 leaves outer100; two skipped RIGHT controls do not call the handler or warn."
+  ],
+  "inputs": {
+    "frozen_cases": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-104/cases.py",
+      "sha256": "b8b680fa87621d1b03ea5c8b171b1e9d205d35c221185f02e03a718d1a5e9ba9"
+    },
+    "initial_recorder_sha256": "517a315d7b79c9fa95f7ae89d2d058f3141b483b465c77e6b0556d8388fafb66",
+    "corrected_recorder_sha256": "16ea0139020e5fbed843fecea26ca0f3132ff92efaf6f66ff2d7ce5528b93486",
+    "native_first": {
+      "initial": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-104/native-pre/report.json",
+        "sha256": "541fae999cb0a581f001de19be7e52ca1ddf8c8bf74f44fccb7e638cb4ebe755"
+      },
+      "corrected_throw_only": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-104/native-throw-corrected/report.json",
+        "sha256": "3982c96a84cacdfab5e7f104c445941e9115de25cd24c184afc2f995d67cf21c"
+      }
+    },
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-104/baseline/report.json",
+      "sha256": "b37b1e5a37647779e2dcee73a023a4177287965338d37abd8cb9fc72838bff68"
+    },
+    "initial_cases_sha256": "9a025a3f8146889db6eb2a0498746f819797e500fded7c5048fe936f5978e3a6"
+  },
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-104/source-gate-b5f/report.json",
+        "sha256": "a85f13a8cf4c83205c7389a34efa82bf597276a29e7605ecf388abb55a353317",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-104/source-rest-b5f/report.json",
+        "sha256": "44d4116826a64714180deb7da862910735cbd04a9fffd6f932b6981fc87e9a18",
+        "agreements": 7
+      }
+    ],
+    "source_new_selected": 6,
+    "source_prior_skip_controls": 2,
+    "focused": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-104/focused-279/report.json",
+      "sha256": "56ebd90239a3d92c267aa61883652be686f5c9c5b7f853cc613d692caeefd518",
+      "conditions": [
+        135,
+        123
+      ],
+      "total": 258
+    }
+  },
+  "independent_review": {
+    "status": "two frozen native-first/model exact controls at clean tested 2797e1dbe; CPU4 fully reaped/released",
+    "cases_sha256": "5a379bab28f82b8c248ce48bf0fd59ad560dddbd0331b49167aa6b5f4e33e955",
+    "recorder_sha256": "e9653dea51ce14bac74fd7680b5d39cced143add7fe176ad86323e31586116ce",
+    "sources": {
+      "right-nan-keyword-and-handler-true-unchanged": "e9427d88ab5f7b39058621ba6f4257a9baa9130c21ce8374e5eade975997e2c8",
+      "right-nan-symbolic-or-ineligible-mask": "1ae1625c0c6d43ea359317a8f65c2d9d0e1eaf8d85f4f02576c7c1e73341d9ee"
+    },
+    "native_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-104/review-independent/native-pre/report.json",
+      "sha256": "0f3e0eb2109e9593a7e6baa46eca19954fcd3757077b8f91539e1ff928c876bb"
+    },
+    "model": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-104/review-independent/model/report.json",
+      "sha256": "f5441cc361516c45876950164130a61c543f94ab7a984d13a885ae128d6f5049",
+      "revision": "2797e1dbe8ab1a0dd87d7d34f3f7efd858a79423",
+      "agreements": 2
+    },
+    "result": "Unchanged NaN after a handled-true keyword AND warning yields strict true with one H and no second/default Warning. Symbolic OR under an E_NOTICE handler mask skips H and emits one default Warning. Both exact native/model checked normal exit0, no timeout/groups."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-104/native-pre/report.json",
+      "sha256": "541fae999cb0a581f001de19be7e52ca1ddf8c8bf74f44fccb7e638cb4ebe755",
+      "result": "Two throw originals parse exit255 from one missing catch brace; only corrected throw bytes received native credit."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-104/focused-b5f/report.json",
+      "sha256": "2f6f5d4ef22dfa416437d078ec9f7cc85fbbb73ffd54b2aac13aae565a056308",
+      "result": "Untyped fixture binder rejected before state evaluation."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-104/focused-401/report.json",
+      "sha256": "4987544dab4ade52c4cd8980aa8fb51b12d3c1e8e9b8ec90ec7bf8eb8238466c",
+      "result": "Nonpure recursive fixture otherwise rejected before state evaluation."
+    }
+  ],
+  "environment": {
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "cpu": "CPU1 native/baseline and CPU4 author source/focused plus independent reviewer controls; all actors reaped and leases released"
+  },
+  "limits": [
+    "Borrowed ordinary direct CV and same-type float mutation only; references/copies, changed or rebound representations, owning handlers and other RIGHT producers remain partial.",
+    "Eight original agreements include two already-supported skipped-RIGHT controls; 258 focused conditions derive from two selected originals. No full four-form state proof or NaN-bit identity claim."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-104",
+    "commands": [
+      "taskset -c 1 python3 /home/user/workspace/php-spec-evidence-archive/operators-104/record-initial.py native-pre",
+      "taskset -c 1 python3 /home/user/workspace/php-spec-evidence-archive/operators-104/record.py native-throw-corrected",
+      "taskset -c 1 python3 /home/user/workspace/php-spec-evidence-archive/operators-104/record.py baseline",
+      "taskset -c 4 python3 -B tests/semantics/short_right_nan_warnings.py --case right-nan-symbolic-and-normal --output <fresh-external-dir>",
+      "taskset -c 4 python3 -B tests/semantics/short_right_nan_warnings.py --exclude right-nan-symbolic-and-normal --output <fresh-external-dir>",
+      "taskset -c 4 python3 -B tests/semantics/short_right_nan_warning_protocol.py --output <fresh-external-dir>"
+    ],
+    "note": "Restore the recorded clean semantic/test cuts and local tool links; use fresh output directories. Raw process streams remain outside Git."
+  }
+}

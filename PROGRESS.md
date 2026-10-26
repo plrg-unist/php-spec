@@ -283,6 +283,15 @@ still validates structural history rather than proving an unforgeable return
 witness. [Retired producer review](coverage/semantics/config-aggregate-retired-producer-review.json).
 Effectful producer finalizers, child storage and wider consumers remain partial.
 
+Selected RIGHT NaN values in all four short-circuit forms now resume their
+named Warning callback before `ZEND_BOOL` reads the same live float CV. A
+returning callback supplies the final Boolean without a second Warning; a
+supplied throw cancels the outer store, while an unselected RIGHT remains silent.
+Eight original sources and 258 checked-source reached premises agree with pinned
+PHP; two independent controls check unchanged NaN and an ineligible handler mask.
+The [RIGHT NaN review](coverage/semantics/short-right-nan-warning-review.json)
+records the bounded source, cell and handler contract.
+
 ## Integrated behavior and entrypoints
 
 Each family is bounded; its linked contract and inventory entries retain the
@@ -353,7 +362,7 @@ partial. [Mixed-dependency review](coverage/semantics/mixed-dependency-autoload-
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106, CALL113, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106, CALL113, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
