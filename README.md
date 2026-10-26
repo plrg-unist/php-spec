@@ -1462,7 +1462,12 @@ a right-array warning preserves the first converted string across callback write
 Borrowed arrays gain no saved owner, and supplied throws cancel destination
 assignment. Three exact originals and 405 focused SL premises pass in the
 [concat-array ledger](coverage/semantics/concat-array-warning-review.json).
-Wider arrays/operands and RHS rebinding after a left-array warning remain partial.
+After a completed left Warning, the same ordinary RHS cell may hold a Stringable
+object. Its selected method survives source retargeting and returns `B`;
+concatenation yields `ArrayB`. A method throw preserves the completed Warning, while an earlier handler throw
+prevents that method. Three source agreements and 509 focused premises (including
+derived controls) pass in the [Stringable RHS review](coverage/semantics/concat-stringable-warning-review.json).
+Wider arrays, changed/rebound/reference RHS forms and callbacks remain partial.
 Concatenation assignment now stages a right-array warning for two bounded plain CVs.
 The first string survives handler writes and RHS removal; normal commit overwrites
 the target and detaches a late alias, while a supplied throw preserves it.

@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "milestone": "OP86 concat array Warning installs a live Stringable RHS",
+  "status": "bounded independently reviewed semantics; private publication awaiting composition",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/ordinary precision14 profile",
+  "scope": "Initially distinct ordinary CVs hold a nonempty mutable flat DIRECT scalar array and quiet string. Named Warning handler removes borrowed LEFT and installs an ordinary Stringable in the same allocated nonreference RIGHT cell. Historical resume permits that supported receiver only; fresh capture remains string-only. Wider operands/representations/handlers remain partial.",
+  "tested_revision": "28eb9cc6d811d108950a4ad34f92c6f2e3d322b0",
+  "private_modules": 412,
+  "runtime_sha256": {
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "3479121f7322b2d0bffa283a8d357b6b3df600f9156e3e1d463d771e68da0bc4"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_vm_def.h::ZEND_CONCAT calls concat_function. Zend/zend_operators.c::concat_function obtains the LEFT string before reading/converting the live RIGHT; __zval_get_string_func warns for the array and returns fixed Array only without a pending exception.",
+    "Zend/zend_object_handlers.c::zend_std_cast_object_tostring adds a receiver reference across the selected method call and releases it afterward. The method may retarget its source CV without changing the selected receiver or returned string. Supplied throws stop concatenation before caller store.",
+    "20 additions in404: same allocated ordinary-CV Stringable readiness, a separate historical stage1 resume, and boundary exclusion. Source/plan/fresh/string-cell helpers and module59/168 conversion, roots, cleanup and generic unwind remain exact. No new task/schema/field/default/module or shared numerical/formatting/CONFIG/DEFINE change."
+  ],
+  "contract": [
+    "Normal H returns false after unsetting LEFT/installing O. S confirms RIGHT===this, writes RIGHT=method/LEFT9 and returns B; result ArrayB survives later LEFT8/RIGHTend. Borrowed array gains no marker root; reached receiver roots survive source retarget until return/cleanup.",
+    "S supplied throw preserves the completed default Warning25, same Exception20/null Previous and outer100 with casts1. Earlier H supplied throw instead keeps casts0/noS/outer100 and empty stderr. Both retain source effects and EOF observers. The normal/S-throw sources exercise the new route; H-throw is the earlier-unwind control.",
+    "509 total premises in three checked-source-derived recipes (186/202/121) bind actual warning capture/callback, raw Array restoration, selected real Stringable method/receiver, retargeted source, raw B/ArrayB or no-store throw, cleanup/EOF/budgets. Isolating fresh-object, wrong-cell/retype/reference/allocation and constraint/backing refusals are derived controls with no extra native credit."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-86/source-28eb9cc6d-value/report.json",
+        "sha256": "5fa3cdba1159415ac338589caf16b98b07046cd675e37e86fc2ab7a3b28e6029",
+        "revision": "28eb9cc6d811d108950a4ad34f92c6f2e3d322b0",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-86/review-model-28eb9cc6d-stringthrow/report.json",
+        "sha256": "03cdf2ca88cb49ea4c89eed98b598b08f629fdaefadff0ac487dcbf769eb5138",
+        "revision": "28eb9cc6d811d108950a4ad34f92c6f2e3d322b0",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-86/review-model-28eb9cc6d-handlerthrow/report.json",
+        "sha256": "17064bc203c4ca2a59744662d3fbebb40f61ea54e45df08c66ff8c7d9f0f7cdc",
+        "revision": "28eb9cc6d811d108950a4ad34f92c6f2e3d322b0",
+        "agreements": 1
+      }
+    ],
+    "state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-86/focused-28eb9cc6d-three/report.json",
+      "sha256": "6ffd28d4c339770db320e170b34cf56d04f9df7fc5a9f959fac8cd57358e2c1d",
+      "revision": "28eb9cc6d811d108950a4ad34f92c6f2e3d322b0",
+      "conditions": [
+        186,
+        202,
+        121
+      ],
+      "total": 509
+    },
+    "total_source_agreements": 3,
+    "total_focused_state_conditions": 509,
+    "review": "Independent operators79_review accepted native/genuine classification, runtime/author/peer/header before execution and exact source/focused first results. Publication independently reviewed; actual-tail composition pending. Metadata changes add no execution credit."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-86/baseline-74c875a79-value/report.json",
+      "sha256": "631a7aca6c7836ab159d120d855d7a24cf0d4383c561109e903b990918337d3d",
+      "revision": "74c875a793c64f51cf05d771d052c45b29db7409",
+      "result": "Frontend-accepted/checked author reaches H and completed default Warning25, then Unsupported: concatenation selected right operand. Semantic stdout H:2:1:25; model1/rowfalse/agreement0; original evidence unchanged."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-86/native-74c875a79-value/report.json",
+        "sha256": "b42218967e165dd7494118a1bd0e232e9ff203c59e343db9af0ee99d741471f8",
+        "revision": "74c875a793c64f51cf05d771d052c45b29db7409"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-86/native-74c875a79-stringthrow/report.json",
+        "sha256": "16d12e43628d46e288fc11a5371ee5a02e1a00e71e2a668e5adbd3c501cc090a",
+        "revision": "74c875a793c64f51cf05d771d052c45b29db7409"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-86/native-74c875a79-handlerthrow/report.json",
+        "sha256": "6f4edc309ad94445cfc0331622a29d97d887ba839e67fa36fb4441cedf8b132a",
+        "revision": "74c875a793c64f51cf05d771d052c45b29db7409"
+      }
+    ],
+    "full_static": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-86/static-28eb9cc6d/report.json",
+      "sha256": "cc7b3c59dd0d7337c899ccfe1f124da80177d386171ad86f7d3a7e5308487579",
+      "revision": "28eb9cc6d811d108950a4ad34f92c6f2e3d322b0",
+      "result": "Full ordered412 struct passes; semantic credit0."
+    }
+  },
+  "limits": [
+    "Native witnesses cover same-cell installation of empty ordinary O with public __toString, B return and supplied throws after RIGHT/LEFT retargeting. Focused physical owner checks are modeled state facts supported by pinned source; no wider native destruction/allocation-timing, collector or ownership-history claim is made.",
+    "Initially object/array RIGHT, missing/rebound/reference/constrained RIGHT, other late types, wider arrays/handlers and lifetime forms remain partial. No engine bug, intentional divergence or previous-family execution renewal is claimed.",
+    "Paused OP12, Source47 low-precision DEFINE NaN, owned-NUL source-release, undefined-byref LIST key and COMP88 Stringable supplied-throw crash remain separate."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-86",
+    "environment": "LC_ALL=C,TZ=UTC,PHP_SPEC_SCRIPT_ENCODING absent; ordinary precision14 profile. Native/genuine and source/focused used serial CPU1 windows; workers/actors fully reaped and slots released. Native30/modelCLI60-process90, full412struct30, workers30/fixturestruct30/SL120 per group; no cap changes.",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "commands": [
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-86/run-native-gate.py 74c875a793c64f51cf05d771d052c45b29db7409 1",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-86/run-source-gate.py 28eb9cc6d811d108950a4ad34f92c6f2e3d322b0 1",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-86/run-focused.py 28eb9cc6d811d108950a4ad34f92c6f2e3d322b0 1"
+    ],
+    "record": "Restore matching Git cut/local tools and original retained paths; choose fresh output directories. Focused fixtures reuse accepted source/native tuples without replay. External raw evidence is not a build input; reused regular binaries prove no fresh offline rebuild."
+  }
+}

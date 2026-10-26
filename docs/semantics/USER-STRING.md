@@ -26,6 +26,13 @@ left and right. Weak string parameter, return and property conversions invoke
 the callback; strict ones reject the object before the callback. The strictness
 of an implicit `__toString` return belongs to the method's own source unit.
 
+After a borrowed left array's Warning, concat may select an ordinary Stringable
+newly installed in its original RHS CV cell. Fresh warning capture still requires
+a quiet RHS string; only the historical return admits the new type. Real method
+entry/retarget/return or throw uses the existing receiver roots and cleanup.
+The [Stringable RHS review](../../coverage/semantics/concat-stringable-warning-review.json)
+records source3/state509, including derived guards; wider source/lifetime forms remain partial.
+
 Supplied fixed string parameters now use the same resumable callback in receive
 order. Nominal or callable membership retains the original object before string
 coercion; caller strictness rejects before conversion. By-value formals retain a
