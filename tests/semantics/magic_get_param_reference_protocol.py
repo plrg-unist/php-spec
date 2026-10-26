@@ -61,7 +61,7 @@ $propref_at(S_receive.PROPREFS,n_slot) = (ppropref)
 ppropref.SOURCES = [OBJECT_PROP_SOURCE n_holder ($ptascii("value")) ppropertyid_holder]
 $propref_descriptor(S_receive,OBJECT_PROP_SOURCE n_holder ($ptascii("value")) ppropertyid_holder) = (ppropertydesc_holder)
 ppropertydesc_holder.TYPE = [PTBRANCH ([PTBUILTIN "object"])]
-$typed_object_exact(S_receive,ppropertydesc_holder.TYPE,POBJECT n_stringable)
+$typed_exact(ppropertydesc_holder.TYPE,POBJECT n_stringable)
 $proprefs_valid(S_receive)
 $parameter_backing_admission(S_receive,pparameterstring,$ptascii("7"))
 $function_at($all_functions(S_receive),porigin_driver) = (pfunction_driver)
