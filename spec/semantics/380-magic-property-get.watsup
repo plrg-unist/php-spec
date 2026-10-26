@@ -41,6 +41,9 @@ dec $property_get_base_drop(ptask*, ppropertyget) : bool
 dec $property_get_tail_valid(pstate, ppropertyget) : bool
 dec $property_get_base_valid(pstate, ppropertyget) : bool
 dec $property_get_decl(pstate, porigin, ptbytes) : ppropertyid?
+dec $property_get_access_desc(pstate, nat, ptbytes, ppropertyaccess) : ppropertydesc?
+dec $property_get_access_decl(pstate, nat, ptbytes, ppropertyaccess) : ppropertyid?
+dec $property_get_scoped_desc(pstate, ppropertyget) : ppropertydesc?
 dec $property_get_public(pstate, nat, ptbytes) : bool
 dec $property_get_access_valid(pstate, nat, ptbytes, ppropertyaccess) : bool
 dec $property_get_lookup(pstate, ppropertyget) : ppropertyaccess
@@ -134,6 +137,24 @@ def $property_get_decl(S, porigin, ptbytes) = (ppropertydesc.ORIGIN)
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
 def $property_get_decl(S, porigin, ptbytes) = eps -- otherwise
 
+;; Accessible nonpublic UNSET selects the caller's canonical key. An effective
+;; same-name Child property need not be the declaration that governs this Get.
+def $property_get_access_desc(S, n, ptbytes, PROPERTY_ACCESS ptbytes_key) = (ppropertydesc)
+  -- if ptbytes_key =/= ptbytes
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes_key) = (ppropertydesc)
+  -- if ppropertydesc.NAME = ptbytes /\ ~ppropertydesc.STATIC
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE \/ ppropertydesc.VISIBILITY = PROPERTY_PROTECTED
+def $property_get_access_desc(S, n, ptbytes, ppropertyaccess) = eps -- otherwise
+def $property_get_access_decl(S, n, ptbytes, ppropertyaccess) = (ppropertydesc.ORIGIN)
+  -- if $property_get_access_desc(S, n, ptbytes, ppropertyaccess) = (ppropertydesc)
+def $property_get_access_decl(S, n, ptbytes, ppropertyaccess) = $property_get_decl(S, porigin, ptbytes)
+  -- if $property_get_access_desc(S, n, ptbytes, ppropertyaccess) = eps
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+def $property_get_access_decl(S, n, ptbytes, ppropertyaccess) = eps -- otherwise
+
 def $property_get_source(S, ppropertyget) = true
   -- if ppropertyget.SITE = PORIGIN n pcpath
   -- if $origin_node(S.SOURCES, ppropertyget.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata)
@@ -185,6 +206,10 @@ def $property_get_access_valid(S, n, ptbytes, PROPERTY_ACCESS ptbytes) = true
 def $property_get_access_valid(S, n, ptbytes, PROPERTY_DENIED ppropertydesc) = true
   -- if ppropertydesc.NAME = ptbytes /\ ~ppropertydesc.STATIC
   -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE \/ ppropertydesc.VISIBILITY = PROPERTY_PROTECTED
+def $property_get_access_valid(S, n, ptbytes, ppropertyaccess) = true
+  -- if $property_get_access_desc(S, n, ptbytes, ppropertyaccess) = (ppropertydesc)
+  -- if $property_get_method(S, n) = (pmethoddesc)
+  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
 def $property_get_access_valid(S, n, ptbytes, ppropertyaccess) = false -- otherwise
 
 def $property_get_history(S, ppropertyget) = true
@@ -196,7 +221,7 @@ def $property_get_history(S, ppropertyget) = true
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if $ppmethod_get_signature(pmethoddesc.FUNCTION.SIGNATURE)
   -- if ~$function_generator(S, pmethoddesc.FUNCTION)
-  -- if ppropertyget.DECL = $property_get_decl(S, ppropertyget.CLASS, ppropertyget.NAME)
+  -- if ppropertyget.DECL = $property_get_access_decl(S, ppropertyget.OBJECT, ppropertyget.NAME, $property_get_lookup(S, ppropertyget))
   -- if $property_get_access_valid(S, ppropertyget.OBJECT, ppropertyget.NAME, $property_get_lookup(S, ppropertyget))
   -- if ~$property_get_owned_source(S, ppropertyget) \/ $property_get_public(S, ppropertyget.OBJECT, ppropertyget.NAME)
 def $property_get_history(S, ppropertyget) = false -- otherwise
@@ -277,7 +302,7 @@ def $property_get_plan(S) = (ppropertyget)
   -- if $property_get_access_valid(S, n, $base64(text_name), ppropertyaccess)
   -- if $property_get_public(S, n, $base64(text_name)) \/ $property_lookup_scope(S) = $closure_source_class(S, porigin)
   -- if $property_get_method(S, n) = (pmethoddesc)
-  -- if ppropertyget = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, DECL $property_get_decl(S, porigin_class, $base64(text_name))}
+  -- if ppropertyget = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, DECL $property_get_access_decl(S, n, $base64(text_name), ppropertyaccess)}
   -- if $property_get_valid(S, ppropertyget, true)
   -- if $property_get_carriers(S.TODO, n, porigin) = 0
   -- if $property_get_base_count(S.TODO, n, porigin) = 0
@@ -556,6 +581,20 @@ rule PhpStep/property-get-recursive-denied: S ~> $property_access_error(S, n, pt
 def $property_get_unconstrained(S, KNOWN pvalue) = true
 def $property_get_unconstrained(S, REFERENCE n) = ($propref_at(S.PROPREFS, n) = eps /\ $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps)
 def $property_get_unconstrained(S, poperand) = false -- otherwise
+;; History recovers the selected physical declaration from the original caller
+;; scope, even while Get runs in Child scope or has populated the backing slot.
+def $property_get_scoped_desc(S, ppropertyget) = (ppropertydesc)
+  -- if ppropertyget.DECL = (ppropertyid)
+  -- if $property_get_access_desc(S, ppropertyget.OBJECT, ppropertyget.NAME, $property_get_lookup(S, ppropertyget)) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid
+def $property_get_scoped_desc(S, ppropertyget) = eps -- otherwise
+def $property_get_verify(S, ppropertyget, KNOWN pvalue) = S
+  -- if $property_get_scoped_desc(S, ppropertyget) = (ppropertydesc)
+  -- if ppropertydesc.TYPE = eps
+def $property_get_verify(S, ppropertyget, KNOWN pvalue) = $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, pmethoddesc.FUNCTION.CODE.STRICT))
+  -- if $property_get_scoped_desc(S, ppropertyget) = (ppropertydesc)
+  -- if ppropertydesc.TYPE =/= eps
+  -- if $property_get_method(S, ppropertyget.OBJECT) = (pmethoddesc)
 def $property_get_verify(S, ppropertyget, poperand) = S -- if ppropertyget.DECL = eps
 def $property_get_verify(S, ppropertyget, poperand) = S
   -- if ppropertyget.DECL = (ppropertyid)
