@@ -9,7 +9,8 @@
   "tested_bytes": {
     "spec/semantics/383-anonymous-classes.watsup": "4c774d4255429cc2643b027b34f145017089aeb8feb972b833ac081b3e74cc70",
     "tests/semantics/anonymous_constructor_arguments_cases.json": "c4e191e4d221ddfaf37603b2ee03d52b205dd0f18a124760244175919ca501a3",
-    "tests/semantics/anonymous_constructor_arguments_protocol.py": "090662f4d2f283456a802238b790b47c06fe47bfe87030632a9eb3cfd084133b"
+    "tests/semantics/anonymous_constructor_arguments_protocol.py": "090662f4d2f283456a802238b790b47c06fe47bfe87030632a9eb3cfd084133b",
+    "tests/semantics/anonymous_constructor_arguments_unsupported.py": "0a52464172d6e2783b907ac68bc0eb1a254bd3fe442cb02bee3d9aab71a25bd4"
   },
   "scope": "Unit0 parentless ordinary anonymous classes: one or two direct positional/named arguments; public by-value no-default constructor with at most two untyped/int formals; no-constructor arguments evaluated then ignored. Existing noarg constructors and noarg function factories remain active. Class publication and allocation precede argument effects; source occurrence, compiled identity and selected method are authenticated.",
   "engine_routes": [
@@ -48,7 +49,13 @@
     ],
     "result": "107 source-reached premises, exact output, constructor/no-constructor task kinds, method identity, selected object, wrong-origin and wrong-SITE refusals, heap/descriptor validity and one-step continuation"
   },
+  "unsupported_controls": {
+    "command": "python3 tests/semantics/anonymous_constructor_arguments_unsupported.py",
+    "report": ".tools/class142-artifacts/anonymous-arguments-unsupported-hugvsiij/report.json",
+    "report_sha256": "5c6af52b6d1aac1fb764e96a7dc6efd2e84d2006737533d574938d6a6e04eb71",
+    "result": "Three frontend accepted/checked sources return explicit Unsupported: three direct arguments, a by-reference constructor formal, and an unpacked send. Status-only exclusions; no native agreement or positive semantic credit."
+  },
   "zero_credit": "First private make build failed because nested Dune worktree selected outer root; explicit --root build passed. Independent reviewer preflight used an unbuilt private adapter path. First two reached fixture elaborations failed on helper declaration order and optional origin casting; raw failures are under .tools/class142-artifacts/anonymous-arguments-anonymous-positional-typed-{huk0ja9r,a924rv9u}; only corrected affected groups passed.",
-  "recovery": "Raw commands, source bytes and reports are under the ignored project-local .tools/class142-baseline, .tools/class142-review and .tools/class142-artifacts directories. At implementation commit 0f2717b62116a690e2877d7d106cc1b6c93644c8, rebuild local tools and run the candidate_source command and each reached command with its listed CASE. Private nested worktrees need explicit `dune build --root .`.",
+  "recovery": "Raw commands, source bytes and reports are under the ignored project-local .tools/class142-baseline, .tools/class142-review and .tools/class142-artifacts directories. At implementation commit 0f2717b62116a690e2877d7d106cc1b6c93644c8, rebuild local tools and run the candidate_source command, each reached command with its listed CASE, and the unsupported_controls command. Private nested worktrees need explicit `dune build --root .`.",
   "remaining": "Dynamic include/eval anonymous sites with arguments; parent/interface/attribute classes; constructor by-reference, default, variadic, promoted, non-int and nonpublic forms; unpacking, three or more arguments, wider ownership and suspension interactions. No full class/core closure."
 }

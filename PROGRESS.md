@@ -17,6 +17,7 @@ originals and one unchanged zero-arg control agree with pinned PHP; one
 independent named/int coercion source also agrees. The six new originals were
 genuine Unsupported on the unchanged parent. Three source-reached groups pass
 107 premises; two initial fixture elaboration failures keep zero credit.
+Three off-scope status controls remain explicit Unsupported without agreement credit.
 [Anonymous constructor argument review](coverage/semantics/anonymous-constructor-arguments-review.json).
 Wider signatures, unpacking, dynamic units and lifecycle forms remain partial.
 

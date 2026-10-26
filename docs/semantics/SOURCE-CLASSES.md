@@ -275,7 +275,8 @@ records seven native-backed sources, one independent weak int-coercion source,
 and 107 source-reached premises across constructor and no-constructor tasks.
 Dynamic-source anonymous sites with arguments, constructor by-reference/default/
 variadic/promoted or nonpublic forms, unpacking and wider object lifetimes remain
-partial.
+partial. Three explicit source controls confirm Unsupported for three direct
+arguments, a by-reference constructor formal and an unpacked send.
 
 Raw `getTrace()['class']` retains the entire generated name. The shared trace
 renderer applies `c_string` only to the displayed CLASS bytes, matching Zend's
