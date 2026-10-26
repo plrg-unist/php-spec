@@ -20,10 +20,12 @@ def $np_seek(S, n_stage, n) = $np_seek($drive_steps(S[.COMPLETION = NORMAL],1), 
 def $np_seek(S, n_stage, n) = S -- otherwise
 dec $np_guard(pstate) : bool
 def $np_guard(S) = ($call_descriptors_valid(S) /\ $heap_valid($heap_prune($heap_graph(S))))
+dec $np_event_output(pevent) : ptbytes
+def $np_event_output(OUTPUT ptbytes) = ptbytes
+def $np_event_output(pevent) = eps -- otherwise
 dec $np_output(pevent*) : ptbytes
 def $np_output(eps) = eps
-def $np_output((OUTPUT ptbytes) :: pevent_tail*) = ptbytes ++ $np_output(pevent_tail*)
-def $np_output(pevent :: pevent_tail*) = $np_output(pevent_tail*) -- otherwise
+def $np_output(pevent :: pevent_tail*) = $np_event_output(pevent) ++ $np_output(pevent_tail*)
 '''
 
 
