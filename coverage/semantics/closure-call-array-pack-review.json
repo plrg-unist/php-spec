@@ -1,0 +1,260 @@
+{
+  "version": 1,
+  "status": "independently accepted privately; integration pending",
+  "behavior": "Closure::call expands one ARRAY pack after a separately evaluated positional newThis into saved by-value arguments, then reuses ordinary named/default/reference forwarding.",
+  "bounds": [
+    "Exactly positional newThis followed by one ARRAY unpack; arbitrary pack length with positional integer keys or named string keys.",
+    "Integer keys normalize to consecutive positions; named entries preserve labels, default holes and the first deferred inner binding error.",
+    "Multiple packs, direct forwarded arguments mixed with a pack, packed newThis, Traversable inputs and outer pack-binding errors remain Unsupported.",
+    "Paused conversion/comparison throws, owned-NUL query release, Source47 and REAL temporary-current lifetime decisions are unchanged. Full core remains partial."
+  ],
+  "independent_review": [
+    "PACKS are nonowning capture history. Active NEXT validates and owns its live ARRAY; completed replay uses captured DIRECT entries, source origin/line and optional immutable pool facts without rereading retired mutable arrays.",
+    "The selected Closure and separately captured newThis survive producer COW, caller clearing/rebinding and reference-warning callbacks. Old PACKS=eps paths remain disjoint.",
+    "Inner name errors stay deferred through outer delivery. Signature-consistent expanded WRAPPER shape validates ARGC, default holes and named labels/order without adding a context field or a CURRENT-derived source-shape shortcut.",
+    "Outer by-value unpack dereferences ALIAS entries before reference-formal warnings. After the real handler returns, fresh detached cells receive the frozen values; raw wrapper arguments remain independent of receive conversion and body writes.",
+    "Three originals distinguish integer-key normalization/COW and strict-source weak reception; named default17/29=>46, then unknown-name Error with raw receiver/named31 retention; alias31=>handler47=>fresh formal31/body53 while caller stays47 and recovery23.",
+    "Peer final noiseAlias output is honestly empty: local reference rebinding does not populate that imported global alias. The reached fixture proves noise71 and intervening allocation directly; no native replay or false global-alias claim.",
+    "Eight actual budget/resumption checks and undriven refusals distinguish live versus retired arrays, source/history consistency, invalid wrapper labels and caller-cell substitution. Bounded settlement drains only release/operation queues and stops at user destructor entry."
+  ],
+  "target": {
+    "php": "PHP 8.5.10 CLI NTS 64-bit",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; complete values retained in native/model reports",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    },
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "numeric_mode": "strict SL, exact true LF, exit0, quiet stderr; caches disabled and encountered determinism checks"
+  },
+  "accepted": {
+    "native": {
+      "revision": "e73b1dfa76c993e70f8aff4f1774eee2b586ed4f",
+      "module_count": 415,
+      "originals": 3,
+      "author": 2,
+      "peer": 1,
+      "normal_quiet": true,
+      "outer_seconds": [
+        45,
+        45
+      ],
+      "per_case_seconds": 15
+    },
+    "genuine_counterexample": {
+      "revision": "e73b1dfa76c993e70f8aff4f1774eee2b586ed4f",
+      "case": "closure-call-positional-array-pack-saved-receiver",
+      "reason": "Closure::call argument form",
+      "stdout": "B|",
+      "before_pack_producer": true,
+      "status": "unsupported",
+      "inner_exit": 1,
+      "source_agreement_credit": 0,
+      "caps_seconds": {
+        "outer": 90,
+        "cli": 45,
+        "recorder": 60
+      }
+    },
+    "source": {
+      "revision": "16bfd1039480e3de96bce3bedd31861ed5dc7c56",
+      "module_count": 416,
+      "source_agreements": 3,
+      "author": 2,
+      "peer": 1,
+      "normal_quiet_exact": true,
+      "stable_heads_and_inputs": true,
+      "caps_seconds": {
+        "author_outer": 420,
+        "peer_outer": 210,
+        "cli": 180,
+        "recorder": 195
+      }
+    },
+    "focused": {
+      "revision": "b10ac4f70c833929e9847b73c274671c0439f974",
+      "module_count": 416,
+      "author_premises": [
+        185,
+        275
+      ],
+      "peer_premises": [
+        244
+      ],
+      "total_premises": 704,
+      "budgets": [
+        2,
+        3,
+        3
+      ],
+      "total_budgets": 8,
+      "result": "pass",
+      "exact_true_lf_quiet_exit0": true,
+      "stable_inputs": true,
+      "caps_seconds": {
+        "fixtures_each": 120,
+        "author_outer": 900,
+        "peer_outer": 450,
+        "numeric_each": 420
+      }
+    },
+    "static_cut_bridge": {
+      "runtime_paths_byte_equal_between_source_and_focused": [
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/182-closure-call.watsup",
+        "spec/semantics/428-closure-call-array-unpack.watsup",
+        "spec/semantics/modules.json"
+      ],
+      "source_scripts_byte_equal_between_native_and_focused": [
+        "tests/semantics/closure_call_array_pack_sources.py",
+        "tests/semantics/closure_call_array_pack_review_sources.py"
+      ],
+      "no_accepted_native_source_or_runtime_replay": true
+    }
+  },
+  "preserved_failures": [
+    {
+      "revision": "a379dfa5e4b32f4aaf974e03a6f0766b48abb3df",
+      "root": ".tools/closure-call-array-pack-state-107",
+      "phase": "first positional focused check, before evaluation",
+      "reason": "generated protocol187 SLOTS record-list syntax",
+      "premises": 0,
+      "unrun": [
+        "named author",
+        "peer"
+      ],
+      "correction": "4092e8a7297e0081d42614123bdca9917130b74e grouped constructor elements only; insufficient for record-list grammar"
+    },
+    {
+      "revision": "4092e8a7297e0081d42614123bdca9917130b74e",
+      "root": ".tools/closure-call-array-pack-state-v2-107",
+      "phase": "affected positional focused check, before evaluation",
+      "reason": "same generated protocol187 SLOTS record-list syntax",
+      "premises": 0,
+      "unrun": [
+        "named author",
+        "peer"
+      ],
+      "correction": "b10ac4f70c833929e9847b73c274671c0439f974 groups whole SLOTS/NAMED record-list fields; operands, hole positions and counts unchanged"
+    }
+  ],
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "401fdefdad99f6063561653d0582685b0feb94b9275028b1984d083b9f8edace",
+    "spec/semantics/182-closure-call.watsup": "4e139f9e8ed2c333fd22838c21559405b5c0e94ca42540e48c1bebaabe16b696",
+    "spec/semantics/428-closure-call-array-unpack.watsup": "41b334a8c13f364a9c3b8b0d64693d0b7ec82478a040abd26044db778e7fae80",
+    "spec/semantics/modules.json": "1ed01d19f43be8353d4be285b40b1537ae6031421d7e1b6d89feb38ce275dc05"
+  },
+  "script_sha256": {
+    "tests/semantics/closure_call_array_pack_sources.py": "de5d3d4c723c29e2921ae8c82011cea26fe878508869f4e6d69fd599ea6b17e0",
+    "tests/semantics/closure_call_array_pack_review_sources.py": "db0f62f82834f9f69f9688d779edf686d0b5b8ac2a79536f6a517652d08f2fc6",
+    "tests/semantics/closure_call_array_pack_protocol.py": "e451107962d9a9fa702902a8a98c4f450df7cfc816a8076446bf3f9bf9d039e3",
+    "tests/semantics/closure_call_array_pack_review_protocol.py": "8053af710453fc608e6d156ffd4f1f8b809317e539a91e3744b25bb7848fae03"
+  },
+  "report_sha256": {
+    ".tools/closure-call-array-pack-native-107/native-report.json": "0fbfccf103ac7786d361c9beb6b011240f3470f12a0a5aa835f5b2157ea33015",
+    ".tools/closure-call-array-pack-native-107/baseline-report.json": "c5fffc850ca2d5b4b00d8cc03c8b7bf28d81c34f115f9659293948c6f45fdf82",
+    ".tools/closure-call-array-pack-native-107/model-report.json": "a731e37556e6ccabaa39b12e53f1bc38e118cfa851ae7a46c984b0cf658f6c3e",
+    ".tools/closure-call-array-pack-peer-107/native-report.json": "c90118ad9cc8581370ccd6f2aefc10898c7689de93c6abfc62da904272299013",
+    ".tools/closure-call-array-pack-peer-107/model-report.json": "e037c77b8cf2815e198af7ef1f5bfd0a791af07cb92ae343d2fb0e63011b142a",
+    ".tools/closure-call-array-pack-state-107/fixtures-report.json": "fa5ccdfc19160f205d89cb28131bd6c5437c5e0458f5cfd0d5b116e7f98a2c41",
+    ".tools/closure-call-array-pack-state-107/check-report.json": "26323130f8c727926a725385b53fad01c0343741f2367ef28671ba1f5646b01f",
+    ".tools/closure-call-array-pack-state-v2-107/fixtures-report.json": "82fb95beaafdd65f2bff8ad1741b5c4784a2b036374fee41c48a9ca70b2c0c78",
+    ".tools/closure-call-array-pack-state-v2-107/check-report.json": "82103e2021c18bc31b7ee8a5663c400e715edfb339d8783b445db347681fdc9a",
+    ".tools/closure-call-array-pack-state-v3-107/fixtures-report.json": "5f7f97e722cf9e756dbd6454a8971fb60171d9b814245eae983664ad1202f8c7",
+    ".tools/closure-call-array-pack-state-v3-107/check-report.json": "1e244de75820dd610591f3d62c5943b1ad4a3db5421b6215f3eb75af19cdfffc",
+    ".tools/closure-call-array-pack-peer-state-107/fixtures-report.json": "da06451b394a7b84a00ececa07090a693451e8b5edf63bb4916df9a27707161c",
+    ".tools/closure-call-array-pack-peer-state-107/check-report.json": "8e0726d79bb3b103d45177554b42c5953411037d8a1f45767f45715639e9a05c"
+  },
+  "outer_results": {
+    ".tools/closure-call-array-pack-native-107/outer-native-author.exit.json": {
+      "exit": 0,
+      "cap_seconds": 45,
+      "elapsed": 0.3706059455871582
+    },
+    ".tools/closure-call-array-pack-native-107/outer-baseline-positional.exit.json": {
+      "exit": 0,
+      "cap_seconds": 90,
+      "elapsed": 16.86778211593628
+    },
+    ".tools/closure-call-array-pack-native-107/outer-model-author.exit.json": {
+      "exit": 0,
+      "cap_seconds": 420,
+      "elapsed": 112.15207743644714
+    },
+    ".tools/closure-call-array-pack-peer-107/outer-native-peer.exit.json": {
+      "exit": 0,
+      "cap_seconds": 45,
+      "elapsed": 0.3220367431640625
+    },
+    ".tools/closure-call-array-pack-peer-107/outer-model-peer.exit.json": {
+      "exit": 0,
+      "cap_seconds": 210,
+      "elapsed": 55.42399716377258
+    },
+    ".tools/closure-call-array-pack-state-107/outer-fixtures-author.exit.json": {
+      "exit": 0,
+      "cap_seconds": 120,
+      "elapsed": 0.22635269165039062
+    },
+    ".tools/closure-call-array-pack-state-107/outer-check-author.exit.json": {
+      "exit": 1,
+      "cap_seconds": 900,
+      "elapsed": 0.612645149230957
+    },
+    ".tools/closure-call-array-pack-state-v2-107/outer-fixtures-author.exit.json": {
+      "exit": 0,
+      "cap_seconds": 120,
+      "elapsed": 0.2609555721282959
+    },
+    ".tools/closure-call-array-pack-state-v2-107/outer-check-author.exit.json": {
+      "exit": 1,
+      "cap_seconds": 900,
+      "elapsed": 0.5817375183105469
+    },
+    ".tools/closure-call-array-pack-state-v3-107/outer-fixtures-author.exit.json": {
+      "exit": 0,
+      "cap_seconds": 120,
+      "elapsed": 0.22534751892089844
+    },
+    ".tools/closure-call-array-pack-state-v3-107/outer-check-author.exit.json": {
+      "exit": 0,
+      "cap_seconds": 900,
+      "elapsed": 259.6784873008728
+    },
+    ".tools/closure-call-array-pack-peer-state-107/outer-fixtures-peer.exit.json": {
+      "exit": 0,
+      "cap_seconds": 120,
+      "elapsed": 0.20960021018981934
+    },
+    ".tools/closure-call-array-pack-peer-state-107/outer-check-peer.exit.json": {
+      "exit": 0,
+      "cap_seconds": 450,
+      "elapsed": 93.48972535133362
+    }
+  },
+  "closure": {
+    "source_and_focused_sessions_fully_reaped": true,
+    "all_recorded_groups_empty": true,
+    "peer_controller_absent": true,
+    "peer_frontend_adapter_close_exit0_final0": true,
+    "peer_frontend_adapter_stderr_and_trailing_empty": true,
+    "live_107_actors": [],
+    "cpu3_released": true,
+    "no_cpu_or_writer_claim": true
+  },
+  "artifacts": {
+    "canonical_project": "/home/user/workspace/php-spec",
+    "raw_roots": [
+      ".tools/closure-call-array-pack-native-107",
+      ".tools/closure-call-array-pack-peer-107",
+      ".tools/closure-call-array-pack-state-107",
+      ".tools/closure-call-array-pack-state-v2-107",
+      ".tools/closure-call-array-pack-state-v3-107",
+      ".tools/closure-call-array-pack-peer-state-107"
+    ],
+    "private_branch": "semantics/closure-call-array-pack-107",
+    "recovery": "Original source bytes, cwd, profile, argv, exits, raw streams, numeric inputs and worker close records remain in these ignored roots. Recreate the private checkout at the immutable tested cuts and provision its four project-local tools if future affected work requires execution. Accepted evidence stays at its original cuts; documentation/composition alone requires no semantic rerun."
+  }
+}
