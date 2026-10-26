@@ -151,7 +151,7 @@ def prefix(program, path):
     checks += [
         'S_pendingS.TODO = (CALL_ARGS (METHOD_TARGET n_object porigin_method_left) eps 0 eps (porigin_left) 25) :: (STRINGIFY_RESULT n_object porigin_left 25) :: (CONCAT_OWNED_LEFT pconcatleft) :: ptask_tail*',
         '$task_nodes(CONCAT_OWNED_LEFT pconcatleft) = [HOBJECT n_object]',
-        '$heap_count(HOBJECT n_object, $tasks_nodes(S_pendingS.TODO)) = 2',
+        '$heap_count(HOBJECT n_object, $tasks_nodes(S_pendingS.TODO)) = 3',
         '$call_descriptors_valid(S_pendingS)', '$heap_valid($heap_graph(S_pendingS))',
     ]
     seek(checks, 'S_enteredS', 'S_pendingS', 2)
