@@ -5657,6 +5657,12 @@ string split while rereading referenced method bytes; actual receiving/emitting
 frames authenticate selection, including compound foreign-`$this` API calls.
 The [keyword/compound review](coverage/semantics/keyword-compound-callables-current-review.json)
 keeps failures and later consumers visible. Magic/autoload/internal consumers remain open.
+Public user-method array callbacks now also accept initialized Iterator CV
+argument unpack. The selected object or class-string static method survives
+Iterator callbacks; inherited static calls preserve called scope and report
+the declaring class in by-reference warnings. Abrupt key cleanup uses a saved
+selection receipt after its receiver retires. Six exact originals and seven
+reached stages are in the [array-callable Iterator review](coverage/semantics/array-callable-iterator-unpack-review.json).
 Public concrete class-method strings now distinguish
 computed static dispatch from fixed calls using a compatible active receiver.
 Immutable string captures/clone retain selected descriptors, called scope and

@@ -303,6 +303,16 @@ author sources and three independent sources agree with pinned PHP; two
 source-reached fronts pass 262 checks, with 320 retained one-interface checks.
 [Ordered-interface review](coverage/semantics/multi-interface-autoload-review.json).
 
+Ordinary dynamic array callables selected as public user object or class-string
+static methods now accept initialized Iterator CV unpack. Selection survives
+callback rebinding; inherited static calls keep the child called scope while
+by-reference warnings name the declaring class. Abrupt invalid and throwing
+keys retire a selected receiver before catch. Six exact original comparisons
+and seven source-reached stages/126 assertions pass on the private tested cut;
+neighboring array and direct-method controls pass. Earlier cleanup failures
+remain zero credit. The [CALL119 review](coverage/semantics/array-callable-iterator-unpack-review.json)
+records the scope and raw evidence. Wider callable and operand forms remain open.
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
