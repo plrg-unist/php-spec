@@ -631,6 +631,21 @@ References, mixed classes, object/scalar Notices, cycles, warm caches, previous
 links and pending comparisons remain outside this bound.
 [Nested object graph review](../../coverage/semantics/throwable-trace-object-graph-comparison-review.json).
 
+Cold canonical `Exception`/`Error` trace graphs also admit live reference cells
+in a reached object property slot, table entry or property array. The paired
+callback-free `stdClass` or methodless plain objects may have an `ALIAS` on one
+side and a direct value on the other: each comparison reads the cell's current
+defined scalar, array or matched object payload. The guard authenticates live
+cells, current slots/tables and all descendants with one path-local object,
+array and cell stack capped at 16 physical nodes; repeated shared cells remain
+valid, while backedges are refused. Direct copied arrays retain COW snapshots.
+Twelve new original sources agree with PHP; three wider class, object/scalar
+Notice and cycle cases remain exact Unsupported controls. Two reached fixtures
+check 236 premises and four raw comparison steps, including scalar-to-array
+retargeting, the same cell in two slots, current tables and budget resumption.
+Warm caches, previous links, pending comparisons and callback-bearing or cyclic
+graphs remain outside this bound. [Property-reference graph review](../../coverage/semantics/throwable-trace-property-alias-comparison-review.json).
+
 Warm caches and nonempty builtin traces now meet in the same physical slot
 scan. Same-kind canonical `Exception`/`Error` pairs with null previous values
 admit finite `DIRECT` trace graphs containing primitive or valid string-carrier
