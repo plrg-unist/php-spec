@@ -183,8 +183,8 @@ def $config_iterator_stage(S, pconfigiterator, text) = true
 def $config_iterator_stage(S, pconfigiterator, "send") = true
   -- if pconfigiterator.CURRENT = KNOWN pvalue
   -- if $config_iterator_string(S, pvalue)
-  -- if pconfigiterator.KEY = KNOWN pkey_value
-  -- if $config_iterator_key(S, pkey_value) = (pkey)
+  -- if pconfigiterator.KEY = KNOWN pvalue_key
+  -- if $config_iterator_key(S, pvalue_key) = (pkey)
 def $config_iterator_stage(S, pconfigiterator, text) = false -- otherwise
 
 def $config_iterator_valid(S, pconfigiterator, text) = true
@@ -284,24 +284,24 @@ rule PhpStep/config-iterator-current-unsupported: S ~> S[.COMPLETION = UNSUPPORT
 rule PhpStep/config-iterator-key-result: S ~> S[.TODO = (CONFIG_ITERATOR pconfigiterator[.KEY = S.RESULT] "send") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "key") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "key")
-  -- if S.RESULT = KNOWN pkey_value
-  -- if $config_iterator_key(S, pkey_value) = (pkey)
+  -- if S.RESULT = KNOWN pvalue_key
+  -- if $config_iterator_key(S, pvalue_key) = (pkey)
 rule PhpStep/config-iterator-key-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "CONFIG Iterator unpack key outside integer domain"]
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "key") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "key")
   -- if ~$config_iterator_key_operand(S, S.RESULT)
 def $config_iterator_send(S, pconfigiterator, ptask_tail*) = $config_iterator_clear(S, pconfigiterator[.ITEMS = pconfigiterator.ITEMS ++ [ENTRY pkey (DIRECT pvalue)]], "next-start", ptask_tail*)
   -- if pconfigiterator.CURRENT = KNOWN pvalue
-  -- if pconfigiterator.KEY = KNOWN pkey_value
-  -- if $config_iterator_key(S, pkey_value) = (pkey)
+  -- if pconfigiterator.KEY = KNOWN pvalue_key
+  -- if $config_iterator_key(S, pvalue_key) = (pkey)
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall_prefix)
   -- if $exit_key_name(pkey) = preqbytes?
   -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
   -- if S_checked = $config_send_check(S, pconfigcall_prefix, preqbytes?, z)
   -- if S_checked.COMPLETION = NORMAL
 def $config_iterator_send(S, pconfigiterator, ptask_tail*) = S_checked
-  -- if pconfigiterator.KEY = KNOWN pkey_value
-  -- if $config_iterator_key(S, pkey_value) = (pkey)
+  -- if pconfigiterator.KEY = KNOWN pvalue_key
+  -- if $config_iterator_key(S, pvalue_key) = (pkey)
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall_prefix)
   -- if $exit_key_name(pkey) = preqbytes?
   -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
