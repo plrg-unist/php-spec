@@ -102,7 +102,7 @@ def conditions(name, program, path, stdout):
             '$task_nodes(STRINGIFY_RESULT n_right_object porigin_right 25) = [HOBJECT n_right_object]',
             '$task_nodes(CONCAT_OWNED_RIGHT pconcatleft pvalue_left (n_right_object)) = [HOBJECT n_object]',
             '$heap_count(HOBJECT n_object, $tasks_nodes(S_pendingT.TODO)) = 1',
-            '$heap_count(HOBJECT n_right_object, $tasks_nodes(S_pendingT.TODO)) = 1',
+            '$heap_count(HOBJECT n_right_object, $tasks_nodes(S_pendingT.TODO)) = 2',
             '$heap_owners($heap_prune($heap_graph(S_pendingT)), HOBJECT n_object) = 1',
             '~$stringify_consumer_receiver_valid(S_pendingT, n_object, CONCAT_OWNED_RIGHT pconcatleft pvalue_left (n_right_object))',
             '~$stringify_source(S_pendingT, porigin_left, 25, CONCAT_OWNED_RIGHT pconcatleft pvalue_left (n_right_object))',
