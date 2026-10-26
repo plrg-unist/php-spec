@@ -600,6 +600,21 @@ and empty caches; object/scalar pairs that emit a Notice, reference/object
 property values, cycles and wider callback graphs remain Unsupported.
 [StdClass trace review](../../coverage/semantics/throwable-trace-stdclass-comparison-review.json).
 
+Cold canonical builtin `Exception`/`Error` traces also admit matching direct
+ordinary user-class object arguments. Each object has the same root class,
+at least one initialized public declared property, no parent, interface,
+method, hook or readonly state, and no freeing storage. Current declared and
+dynamic values are direct primitives, valid string carriers or finite acyclic
+direct arrays. With no property table, comparison follows physical declared
+slot order; a current ordinary table follows count, key and value order.
+Captured objects keep their identity through property writes, while copied
+source arrays retain their COW separation. Both trace graphs must match at
+object positions; a positive captured user object, normal completion, cold
+cache and null previous link distinguish this route. Different paired classes,
+object/scalar pairs that emit a Notice, reference properties, cycles and
+callback-capable objects remain Unsupported.
+[User-object trace review](../../coverage/semantics/throwable-trace-instance-comparison-review.json).
+
 Warm caches and nonempty builtin traces now meet in the same physical slot
 scan. Same-kind canonical `Exception`/`Error` pairs with null previous values
 admit finite `DIRECT` trace graphs containing primitive or valid string-carrier
