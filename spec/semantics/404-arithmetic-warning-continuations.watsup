@@ -5360,12 +5360,44 @@ def $concat_returned_plan(S) = (pconcatreturned)
   -- if $concat_returned_fresh(S, pconcatreturned)
 def $concat_returned_plan(S) = eps -- otherwise
 
+;; Generic callback cleanup validates its emitter through this borrowed view.
+;; Match the real cleanup certificates; do not skip arbitrary operation tasks.
+dec $concat_returned_cleanup_pair(pstate, pconcatreturned, pdestructionoperation, perrorcall) : bool
+def $concat_returned_cleanup_pair(S, pconcatreturned, pdestructionoperation, perrorcall) = true
+  -- if perrorcall.RESUME = CONCAT_RETURNED_WARNING pconcatreturned 1
+  -- if pdestructionoperation <- S.DESTRUCTION.OPERATIONS
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup <- S.DESTRUCTION.CLEANUPS
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if ~pdestructioncleanup.RELEASED
+  -- if pdestructioncleanup.CALLER = pdestructionoperation.CALLER /\ pdestructioncleanup.ORIGIN = pdestructionoperation.ORIGIN /\ pdestructioncleanup.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
+  -- if S.CURRENT = pdestructionoperation.CALLER /\ S.ORIGIN = pdestructionoperation.ORIGIN /\ S.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
+  -- if perrorcall.TARGET = (pcalltarget)
+  -- if $consumer_producer_snapshot(pdestructioncleanup.TARGET)
+  -- if pdestructioncleanup.TARGET.TARGET = pcalltarget
+  -- if pdestructioncleanup.TARGET.SITE = eps /\ pdestructioncleanup.TARGET.INTERNAL /\ pdestructioncleanup.TARGET.CLONE = eps
+def $concat_returned_cleanup_pair(S, pconcatreturned, pdestructionoperation, perrorcall) = false -- otherwise
+dec $concat_returned_cleanup_consumer(pstate, pconcatreturned, ptask*) : bool
+def $concat_returned_cleanup_consumer(S, pconcatreturned, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: (CONCAT_RETURNED_LEFT pconcatreturned) :: ptask_tail*) = $concat_returned_cleanup_pair(S, pconcatreturned, pdestructionoperation, perrorcall)
+def $concat_returned_cleanup_consumer(S, pconcatreturned, (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: (CONCAT_RETURNED_LEFT pconcatreturned) :: ptask_tail*) = true
+  -- if $concat_returned_cleanup_pair(S, pconcatreturned, pdestructionoperation, perrorcall)
+  -- if pdestructionrelease <- S.DESTRUCTION.RELEASES
+  -- if pdestructionrelease.CALLER = pdestructionoperation.CALLER /\ pdestructionrelease.ORIGIN = pdestructionoperation.ORIGIN /\ pdestructionrelease.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
+def $concat_returned_cleanup_consumer(S, pconcatreturned, ptask*) = false -- otherwise
+dec $concat_returned_consumer(pstate, pconcatreturned, nat) : bool
+def $concat_returned_consumer(S, pconcatreturned, n) = true
+  -- if $concat_array_consumer(S.TODO, CONCAT_RETURNED_WARNING pconcatreturned n) = (CONCAT_RETURNED_LEFT pconcatreturned)
+def $concat_returned_consumer(S, pconcatreturned, 1) = true
+  -- if $concat_returned_cleanup_consumer(S, pconcatreturned, S.TODO)
+def $concat_returned_consumer(S, pconcatreturned, n) = false -- otherwise
+
 dec $concat_returned_warning_valid(pstate, pconcatreturned, nat) : bool
 def $concat_returned_warning_valid(S, pconcatreturned, n) = true
   -- if $concat_returned_live(S, pconcatreturned)
   -- if S.ORIGIN = $origin_child((pconcatreturned.SITE), [PCFIELD 0])
   -- if $(n <= 1)
-  -- if $concat_array_consumer(S.TODO, CONCAT_RETURNED_WARNING pconcatreturned n) = (CONCAT_RETURNED_LEFT pconcatreturned)
+  -- if $concat_returned_consumer(S, pconcatreturned, n)
   -- if n = 1 \/ $concat_returned_fresh(S, pconcatreturned)
 def $concat_returned_warning_valid(S, pconcatreturned, n) = false -- otherwise
 
