@@ -72,6 +72,16 @@ can additionally belong to the Generator cache, stored Fiber return and caller
 copy. This extends admission without adding roots or changing operations.
 [SEND review](../../coverage/semantics/generator-fiber-send-transfer-review.json).
 
+Plain unbound Closure-created Generators can also suspend their direct CURRENT
+body inside a Fiber. The source-authenticated raw callee moves with the real VM;
+copied captures own values separately, while reference captures share their cell
+with the outer variable. Natural completion or supplied-Throwable unwinding keeps
+the closed Generator's callee and captures until actual Generator destruction.
+Fresh outside NEXT chains initialization and resume Errors for this callee form
+as well. Existing capture and frame roots are unchanged. Method/bound wrappers,
+Closure helper/delegation combinations and wider collection remain partial.
+[Closure transfer review](../../coverage/semantics/generator-fiber-closure-transfer-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

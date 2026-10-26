@@ -2088,6 +2088,12 @@ suspension. Clearing the delivered CV leaves that buffer alive until API return
 or unwind; object yields retain separate Generator-cache, Fiber-return and caller
 owners. Injected Throwables preserve identity through finally and buffer cleanup.
 [SEND transfer review](coverage/semantics/generator-fiber-send-transfer-review.json).
+Plain Closure-created Generator bodies also preserve their real callee through
+Fiber transfer. Copied captures and shared reference cells retain distinct owners
+when the outer variable changes; the callee and its captures survive CLOSED until
+the Generator is destroyed. Supplied Throwables preserve identity through finally,
+and fresh outside NEXT retains both linked Errors.
+[Closure transfer review](coverage/semantics/generator-fiber-closure-transfer-review.json).
 [Arrow Generator311](docs/semantics/ARROW-GENERATORS.md) validates eager
 parameters, deferred captures, implicit yield/delegation returns and original
 signatures. Value warnings retain the same Throwable, cached key and closed

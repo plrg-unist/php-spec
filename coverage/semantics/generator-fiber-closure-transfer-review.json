@@ -1,0 +1,234 @@
+{
+  "milestone": "Iterator57: Closure-created Generator callee transfer and fresh reentry",
+  "status": "accepted-private",
+  "scope": "Plain unbound raw Closure-created Generator bodies entered by direct zero-argument CURRENT inside an ordinary Fiber callback. Copied and shared captures, outer retargeting, supplied-Throwable cleanup, closed-callee lifetime and fresh outside NEXT Error chaining. Wider combinations remain partial.",
+  "implementation": {
+    "parent": "4ed36e290ed7980a54ba25f8797fd8bf77f8dfbc",
+    "cut": "e33ca29e0f686f11dc7687bccecadca5ab368b5d",
+    "paths": [
+      "spec/semantics/281-fibers.watsup",
+      "spec/semantics/280-generators.watsup"
+    ],
+    "change": "281 preserves the old named-callee branch and admits allocated REALCLOSURE callees with matching target/instance/template through existing local closure/call validity. All real resumer/source/line/phase guards remain. 280 removes only CLOSURE=eps from its authenticated saved-owner fresh NEXT two-Error arm.",
+    "unchanged": "Machine fields, roots, Closure capture/closed-callee ownership, normal resume/transfer mechanics, cleanup/collection, helper/delegation scans, native/shared harness/profile and all prior named cases. No ownership repair was needed.",
+    "engine": [
+      "vendor/php-src/Zend/zend_generators.c: zend_generator_ensure_initialized, Generator::next, zend_generator_close, zend_generator_get_gc and zend_generator_free_storage",
+      "vendor/php-src/Zend/zend_closures.c: real Closure capture/callee lifetime",
+      "vendor/php-src/Zend/zend_fibers.c: saved VM/C-stack transfer"
+    ]
+  },
+  "validation": {
+    "native": "Four first observations at ca52df7de and one distinct scalar-capture reentry observation at 87c119738; native-only8/CPU2, zero model credit. Original four sources were not replayed.",
+    "genuine": [
+      {
+        "revision": "ca52df7def7520bcd5c74eb9a7faef0c1deb2010",
+        "report": ".tools/generator-fiber-closure-transfer-baseline-bcq6jull/report.json",
+        "status": "checked program Unsupported",
+        "reason": "Fiber switch during an initializer, source loader or Generator continuation",
+        "prefix": "START|CALL|GEN|",
+        "result": "exit1/no timeout/empty stderr, raw passedfalse/agreement0"
+      },
+      {
+        "revision": "87c1197384e6d440ff35a459853af3a6b7ef891b",
+        "report": ".tools/generator-fiber-closure-transfer-reentry-baseline-rz82wzfz/report.json",
+        "status": "checked NORMAL disagreement",
+        "result": "exit0/no timeout/empty stderr, native ERROR|11 vs model ERROR|10; every other stdout byte identical; raw passedfalse/agreement0"
+      }
+    ],
+    "strict": {
+      "revision": "e33ca29e0f686f11dc7687bccecadca5ab368b5d",
+      "modules": 420,
+      "mode": "SL",
+      "report": ".tools/generator-fiber-closure-transfer-author-sl-267fixfv/report.json"
+    },
+    "sources": [
+      {
+        "id": "generator-fiber-closure-byvalue",
+        "source_sha256": "90dc3880daa0e688327408e0a12f2fc8fa68fcfa445f8e7c4a633c177723fc9a",
+        "revision": "e33ca29e0f686f11dc7687bccecadca5ab368b5d",
+        "report": ".tools/generator-fiber-closure-transfer-source-sh2z1a7p/report.json",
+        "result": "NORMAL exact native agreement"
+      },
+      {
+        "id": "generator-fiber-closure-byreference",
+        "source_sha256": "7903290809ec3b7125e42232af99ad3b90365cfab149a9f7810de4d1a182d4c9",
+        "revision": "e33ca29e0f686f11dc7687bccecadca5ab368b5d",
+        "report": ".tools/generator-fiber-closure-transfer-source-sh2z1a7p/report.json",
+        "result": "NORMAL exact native agreement"
+      },
+      {
+        "id": "generator-fiber-closure-reentry-next",
+        "source_sha256": "7fd383bfdfdafac3ece4cd23567c617f5eedea17b93d142f18680516ccd8decd",
+        "revision": "e33ca29e0f686f11dc7687bccecadca5ab368b5d",
+        "report": ".tools/generator-fiber-closure-transfer-source-sh2z1a7p/report.json",
+        "result": "NORMAL exact native agreement"
+      },
+      {
+        "id": "review-generator-fiber-closure-callee-handled",
+        "source_sha256": "6d3708fe5665666a8df94f2f3b7f86f95ec971ee180d61b8598efd386aa5769a",
+        "revision": "3ce4a0146822007b819baa81ff7d11180e49de25",
+        "report": ".tools/generator-fiber-closure-transfer-review-source-1ad90pub/report.json",
+        "result": "NORMAL exact native agreement"
+      },
+      {
+        "id": "review-generator-fiber-closure-callee-unhandled",
+        "source_sha256": "8c6dc410367486b562093e14f64418832005d3f0087c297aacafbbbdacd659e7",
+        "revision": "3ce4a0146822007b819baa81ff7d11180e49de25",
+        "report": ".tools/generator-fiber-closure-transfer-review-source-1ad90pub/report.json",
+        "result": "NORMAL exact native agreement"
+      }
+    ],
+    "focused": {
+      "reported_premises": 613,
+      "local_premises": 588,
+      "generic_premises": 25,
+      "author": [
+        118,
+        117
+      ],
+      "peer": [
+        131,
+        116,
+        131
+      ],
+      "revision": "7f540429cc1c4e0da501483bd7e9c879ab81d9b3",
+      "process_seconds": 240,
+      "seek_steps": 4000,
+      "finish_steps": 4000,
+      "reports": [
+        ".tools/fiber-state-review-fwuf0k1j/report.json",
+        ".tools/fiber-state-review-_6kz89j7/report.json",
+        ".tools/fiber-state-review-3mzw6zdo/report.json",
+        ".tools/fiber-state-review-p69pc6q3/report.json",
+        ".tools/fiber-state-review-ovwd2vsv/report.json"
+      ],
+      "meaning": "Copied captures have three distinct Token edges (outer CV, local CV, callee capture); shared captures have three owners of one cell and one Token child. Peer local-unset states retain sole callee capture ownership, then Given1/3 through parking/injection. Scalar reentry binds actual receiver release/OP_EXIT with two linked Errors and real NEXT trace. Every recipe retains factored public0/1/2, whole/split equality, exact native events and final heap/control/retirement checks.",
+      "counterexamples": "Callee ID, template/type, current instance and operation-line/source mutations are explicitly constructed local refusals; these do not establish new PHP source or wrapper coverage.",
+      "gate": {
+        "revision": "7f540429cc1c4e0da501483bd7e9c879ab81d9b3",
+        "report": ".tools/generator-fiber-closure-transfer-state-elab-yqb1gi5o/report.json",
+        "recipes": 5,
+        "process_seconds": 60,
+        "credit": "All main headers and unique EOF; parse/elaboration only, zero evaluation credit."
+      }
+    },
+    "original_peer_timeout": {
+      "revision": "e33ca29e0f686f11dc7687bccecadca5ab368b5d",
+      "report": ".tools/generator-fiber-closure-transfer-review-source-z_tvwrpm/report.json",
+      "result": "Handled source internal model100 timeout; outer exit1/timeoutfalse, stable inputs/HEAD, raw passedfalse/agreement0. Unhandled was unrun.",
+      "correction": "One independently reviewed explicit peer-only model180/process200 envelope; actual process/report match, all sources/runtime/steps unchanged. Default100/120 remains; maintained Makefile opts in. No isolated cost attribution or correctness inference from timeout."
+    },
+    "original_gate_failure": {
+      "revision": "3ce4a0146822007b819baa81ff7d11180e49de25",
+      "report": ".tools/generator-fiber-closure-transfer-state-elab-089qbbs5/report.json",
+      "result": "Combined fixture line326 syntax error, outer compiler exit0 but missing all headers/EOF; failed gate credited0 and no state recipe evaluated.",
+      "correction": "Two literal REALCLOSURE capture-list arguments parenthesized at7f540429c; all613 clauses, runtime/source/caps unchanged. Only corrected gate and unrun states follow."
+    },
+    "accounting": "15 executed reports:11 raw passes and4 original false reports (reached Unsupported, genuine NORMAL Previous-chain mismatch, handled source internal100 timeout and pre-main syntax gate). Five exact NORMAL source agreements and613 physical premises; all negatives remain0. No native/strict/accepted-author-source replay; only failed/unrun work retried."
+  },
+  "target": {
+    "php": "8.5.10 CLI NTS signed64",
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "settings": "SL/cacheoff/encountered determinism; serial LC_ALL=C TZ=UTC, script encoding unset. Native/genuine CPU2; affected strict/source/focused CPU1. Pinned local tools reused; no fresh offline portability claim.",
+    "caps": "Native8; strict120; initial source100000/model100/process120; affected peers180/200; gate60; five full state recipes fixed240 with seek4000/finish4000. Global shared state120 default unchanged; finite family budget chosen before first state execution."
+  },
+  "reports": {
+    ".tools/fiber-state-review-3mzw6zdo/report.json": {
+      "sha256": "ccf813fce68546f2a0eb930c55633ba065be23c75a600e36a72d7a4b7aed2118",
+      "revision": "7f540429cc1c4e0da501483bd7e9c879ab81d9b3",
+      "passed": true
+    },
+    ".tools/fiber-state-review-_6kz89j7/report.json": {
+      "sha256": "6cd1d74f0f1a303ca29c91c82e1349aab2908bb514cffcd6ef6f54a7861b5275",
+      "revision": "7f540429cc1c4e0da501483bd7e9c879ab81d9b3",
+      "passed": true
+    },
+    ".tools/fiber-state-review-fwuf0k1j/report.json": {
+      "sha256": "39a45aefcf7252329bffd95d64eefb7cff801b46978624723783b3b05fedc413",
+      "revision": "7f540429cc1c4e0da501483bd7e9c879ab81d9b3",
+      "passed": true
+    },
+    ".tools/fiber-state-review-ovwd2vsv/report.json": {
+      "sha256": "b69da61c77fb7a802ff411ace3b1ef083374ad55271e8bb1de157ec977d7c74b",
+      "revision": "7f540429cc1c4e0da501483bd7e9c879ab81d9b3",
+      "passed": true
+    },
+    ".tools/fiber-state-review-p69pc6q3/report.json": {
+      "sha256": "7a676482ccc06f1c32a568ac8e637cded419e3a780f391601b557b57b2888e36",
+      "revision": "7f540429cc1c4e0da501483bd7e9c879ab81d9b3",
+      "passed": true
+    },
+    ".tools/generator-fiber-closure-transfer-author-sl-267fixfv/report.json": {
+      "sha256": "2307873fa7aaf6bc705fa6dfaf2698a1275824d9a2d24a3b42b53c33474608c3",
+      "revision": "e33ca29e0f686f11dc7687bccecadca5ab368b5d",
+      "passed": true
+    },
+    ".tools/generator-fiber-closure-transfer-baseline-bcq6jull/report.json": {
+      "sha256": "e603cf224b7962d8821b66e12eb8af792bbf68f10230e5d319aa4d35607db20a",
+      "revision": "ca52df7def7520bcd5c74eb9a7faef0c1deb2010",
+      "passed": false
+    },
+    ".tools/generator-fiber-closure-transfer-native-5bzkt2_r/report.json": {
+      "sha256": "bda4c5be6b4e39ca1f7fcc94ebffdecf82de10246b0b6e1b7c2ad91a5e468f4f",
+      "revision": "ca52df7def7520bcd5c74eb9a7faef0c1deb2010",
+      "passed": true
+    },
+    ".tools/generator-fiber-closure-transfer-reentry-baseline-rz82wzfz/report.json": {
+      "sha256": "0e7ccb5731c8f83396e339b736654fcf343a7a8f0f448607c2acd0e7e1061a28",
+      "revision": "87c1197384e6d440ff35a459853af3a6b7ef891b",
+      "passed": false
+    },
+    ".tools/generator-fiber-closure-transfer-reentry-native-4m8rrhus/report.json": {
+      "sha256": "78601fe8b9d6bc4d9c43bca9b0816111e47172a372db258264a2c86e37018403",
+      "revision": "87c1197384e6d440ff35a459853af3a6b7ef891b",
+      "passed": true
+    },
+    ".tools/generator-fiber-closure-transfer-review-source-1ad90pub/report.json": {
+      "sha256": "21f1774092f4f3305e98f5a440e04e3e6e710c7a41fc60cb88337e73484bc43e",
+      "revision": "3ce4a0146822007b819baa81ff7d11180e49de25",
+      "passed": true
+    },
+    ".tools/generator-fiber-closure-transfer-review-source-z_tvwrpm/report.json": {
+      "sha256": "523dc0127ed47debca037a28a09b0b87166a1545f0f5164a5df8ff9690431a3e",
+      "revision": "e33ca29e0f686f11dc7687bccecadca5ab368b5d",
+      "passed": false
+    },
+    ".tools/generator-fiber-closure-transfer-source-sh2z1a7p/report.json": {
+      "sha256": "dce083a0a0a00d055e22eed90c19ca3b9175f6bebd1fccddbf4267db141cea9d",
+      "revision": "e33ca29e0f686f11dc7687bccecadca5ab368b5d",
+      "passed": true
+    },
+    ".tools/generator-fiber-closure-transfer-state-elab-089qbbs5/report.json": {
+      "sha256": "593ccd0d2bff91cc19228e6dfa2cdab5384c56a74ad2a03f1907def7d31cd808",
+      "revision": "3ce4a0146822007b819baa81ff7d11180e49de25",
+      "passed": false
+    },
+    ".tools/generator-fiber-closure-transfer-state-elab-yqb1gi5o/report.json": {
+      "sha256": "b0db55de55ad4b01087b77fa79bb5edcbff5d6e58a961989b157eaef12ffb251",
+      "revision": "7f540429cc1c4e0da501483bd7e9c879ab81d9b3",
+      "passed": true
+    }
+  },
+  "evidence": {
+    "archive": {
+      "archive": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-closure-transfer-57/private.tar.gz",
+      "bytes": 2261677,
+      "sha256": "70cdeb3b552b77cd8bfb3e61aea26cb59e8ae4191a7a7461d23647bd1c669b21",
+      "members": 399
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-closure-transfer-57/manifest.json",
+    "manifest_sha256": "5f501023798202d30d0b09bcb6afc7ac761b8f7943dba29ab89e1a06f64e7822",
+    "recovery_input_count": 22,
+    "recovery": "Restore the safe .tools members into a checkout at the named original cut using pinned local tools. Original native4: .tools/native.py at ca52df7de; distinct native1: .tools/reentry-native.py at 87c119738; original/genuine wrappers retain their own --native-report inputs. Final strict/author3: .tools/source-packet.py at e33ca29e0 (stops on original peer negative); affected peer2: maintained review_sources.py --peer-budget-180 with both captured reports at 3ce4a0146; corrected gate and five one-case state commands: .tools/corrected-state-packet.py at 7f540429c, taskset -c 1. Reports preserve exact process arguments, streams, original PHP paths and hashes. Archive is evidence, not a build prerequisite."
+  },
+  "remaining": "Method/fake/bound wrapper producers, Closure helper/delegation combinations, broader API/reference-cache/destructor/collection histories and complete core validation remain partial.",
+  "independent_review": {
+    "reviewer": "/root/iterator49_review",
+    "status": "Final independent semantics, counterexample, fixture reliability, all source/state results and concise publication/archive review accepted with no blocker."
+  },
+  "publication_parent": "5b2a867b80d4687406e7543d53e00a3d9184a3b0"
+}
