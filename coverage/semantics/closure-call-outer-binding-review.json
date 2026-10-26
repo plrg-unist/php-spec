@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "independently accepted on the original private cuts; integration pending",
+  "status": "independently accepted on original cuts; actual-tail composition preserves them without renewed execution",
   "behavior": "Closure::call ARRAY-list collection binds fixed newThis independently of canonical forwarded arguments, including positional/named packs and a late named send. Collection errors precede API entry; after successful collection, missing/type errors precede remembered inner binding errors.",
   "bounds": [
     "Existing ARRAY legal-argument-list and receiver representation domains only; completed PACKS history is nonowning.",
@@ -178,5 +178,19 @@
       ".tools/closure-call-outer-binding-peer-state-109"
     ],
     "recovery": "Preserve original branch semantics/closure-call-outer-binding-109 and these canonical raw roots. Recreate the original local worktree/tool layout from Git if needed; original source paths/cwd and accepted revisions remain fixed."
+  },
+  "composition": {
+    "parent": "3e28a40ca0a6e78c29e2fb0b489ddcf3bbc08347",
+    "private_publication": "199b7d78a3a402cd016e0311b192372fde078006",
+    "module_count": 419,
+    "preservation": "Six tested runtime/source/helper files and both owning inventory rows are private-exact. All other runtime, storage, schema, manifest and pipeline files are parent-exact; compact PROGRESS retains the actual parent except the own Calls row/link, active-row removal and V109 marker.",
+    "interaction_review": [
+      "OP89 CONCAT ownership paths require PHP CONCAT/Stringable producers, absent from all three V109 originals.",
+      "The literal-this reference Get extension requires a real magic getter; V109 classes have initialized public tag fields and no __get.",
+      "COMP126 nonpublic/dynamic rows and ORDERSTRING aggregate continuations are absent; object observations use instanceof or strict identity.",
+      "I56 one-argument SEND transfer requires a genuine Generator resumer and Generator/Fiber state, absent from V109."
+    ],
+    "agreement_credit": 0,
+    "execution": "No joined semantic execution or renewal; original native, genuine, source and focused cuts remain unchanged."
   }
 }
