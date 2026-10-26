@@ -5256,6 +5256,14 @@ retire that method receiver with the original caller-site error.
 [Three source agreements and 496 focused conditions](coverage/semantics/magic-get-this-reference-review.json)
 retain419 cuts. Computed/suspended producers and wider reference sources remain partial.
 
+Reference Get now also accepts valid historical parameter-backing receipts from
+weak Stringable reception. Exact reads preserve the receipt and real property
+sources; conflicting conversion raises the first-source TypeError without writes.
+After the real property source is detached, conversion updates the actual cell
+and clears the receipt without attaching the requested type.
+[Three source agreements and 511 focused conditions](coverage/semantics/magic-get-param-reference-review.json)
+retain their original 419 cuts. Wider callbacks and coercions remain partial.
+
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference
 route. Typed object conversion remains a separate consumer.
