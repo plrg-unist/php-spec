@@ -1,0 +1,81 @@
+{
+  "milestone": "Iterator60 direct named Generator::throw Fiber transfer",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local oracle b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json, LC_ALL=C, TZ=UTC, CPU4",
+  "parent": "437588fb47be2c9fed59ea7225da5a438aff83b2",
+  "scope": "Only a primed by-value direct named Generator with a defined VALUE cache and one valid Throwable argument may suspend while its Generator::throw resumer is active. The same old cache stays on the Generator, and the saved resumer owns the supplied Throwable through the Fiber VM. Existing CURRENT/NEXT/SEND, by-reference cache, method and Closure arms are unchanged.",
+  "engine_paths": [
+    "Zend/zend_generators.c::ZEND_METHOD(Generator, throw)",
+    "zend_generator_throw_exception",
+    "zend_generator_resume",
+    "Zend/zend_vm_def.h::ZEND_YIELD"
+  ],
+  "implementation": [
+    "spec/semantics/281-fibers.watsup::$fiber_generator_throw_valid",
+    "$fiber_generator_body_id"
+  ],
+  "sources": {
+    "generator-fiber-throw-fresh-current-control": "fc0f6cce087419772376e86bab1d89c862b5f629c8dd2fb0ee3bab23d8864c39",
+    "generator-fiber-throw-caught-throw-resume": "66ec04768e75fcaf808c64d4b05fdd19ca0d47948e84fef7c124c24631b70612",
+    "generator-fiber-throw-pending-finally-fiber-throw": "7292bda065e155ac1ef99b9bf27ed7fd84b195104382a153c453b8d0e0287880",
+    "generator-fiber-throw-pending-finally-normal-review": "2fe4e83bde3b6632afb814936fdb9a469729caff0f7344221d90ef55c644e15d"
+  },
+  "validation": {
+    "native_first": {
+      "report": ".tools/i60-packet/native-o37g85q3/report.json",
+      "sha256": "53abedf7a67996f7ae60996d39e27e66416eeb7e81e2a56c2bff8dd57b67b3bb",
+      "result": "Three frozen originals: native exit0, empty stderr, original bytes retained."
+    },
+    "unchanged_genuine_baseline": {
+      "report": ".tools/i60-packet/unchanged-baseline-40l1w4sl/report.json",
+      "sha256": "189f852bd40c48bda8af4a018128aed02636c605043ff2402cf9bc70517db45d",
+      "result": "Fresh CURRENT exact NORMAL; caught THROW and pending-finally THROW checked Unsupported with zero agreement; original HEAD/inputs stable."
+    },
+    "initial_binding_failure": {
+      "report": ".tools/i60-packet/implemented-source-pfm2kdgr/report.json",
+      "sha256": "e401e09a6c1a7018bab6cd2752972910fa5aeb2840ca73636f818db89c4640c4",
+      "result": "First candidate had a SpecTec noninvertible binding error in the THROW helper; all three runner_failures have zero agreement."
+    },
+    "author_caught": {
+      "report": ".tools/i60-packet/caught-after-binding-hs912db9/report.json",
+      "sha256": "9181bc9cb05b366d30cb40c4461d478737ccfdddfbcfd2125ea64f5241cd791f",
+      "result": "Frozen caught THROW exact NORMAL, exit0, no timeout, stable source/runtime/modules/HEAD."
+    },
+    "author_remaining": {
+      "report": ".tools/i60-packet/remaining-after-binding-hysk675k/report.json",
+      "sha256": "e52a84dbf904c065c32b99f289d319d86fb79949474798fc42dc5d11c1d554ff",
+      "result": "Frozen fresh CURRENT and pending-finally Fiber::throw exact NORMAL, exit0, no timeout, stable inputs/HEAD."
+    },
+    "strict": {
+      "report": ".tools/i60-packet/strict-final-qjwrsdtl/report.json",
+      "sha256": "698fe5ff03a26e88f53dfe65224c52e65bb8e1c7853164805e01b8f0f2f55ddd",
+      "result": "Full 420-module algorithmic check exit0, empty stderr, no timeout, stable inputs/HEAD."
+    },
+    "independent_pending_finally": {
+      "report": ".tools/i60-independent-review/pending-normal-k80itfk5/report.json",
+      "sha256": "7151d94af306454bec14bebe4d17f1a29bf640cade4d287922a1413aafb4ba0b",
+      "result": "Frozen fourth original native/model exact NORMAL after normal Fiber resume; same supplied Exception with null Previous, cached Token remains live until Generator release."
+    },
+    "caught_state": {
+      "report": ".tools/fiber-state-review-1ck0vkfr/report.json",
+      "sha256": "194203f2790f1c498e849181a55d4b35ed70ec89ceb07a43a0b2d0e0f0158d1b",
+      "result": "75 source-reached SL assertions: exact saved THROW argument and owning Fiber VM edge, named by-value admission, local malformed controls, and 0/1/2/4000-step completion. The catalog later appended the independently frozen fourth row without changing the selected caught source or state driver; no new state execution credit is claimed."
+    },
+    "maintained_fourth_source": {
+      "report": ".tools/generator-fiber-throw-transfer-source-45cgfds9/report.json",
+      "sha256": "36d9947aafe52e37c8ec5c1def66972118a679bd4742a0f299f122154630734a",
+      "result": "Selected tracked wrapper/catalog fourth source exact NORMAL; repeats frozen reviewer behavior, not a fifth distinct case."
+    }
+  },
+  "preservation": "The new 281 helper is reached only for NAME=throw; CURRENT/NEXT/SEND and I59 REFCELL admission retain their old clauses. This cut does not renew I55-I59 executions. The first candidate runner_failure and unchanged Unsupported comparisons remain zero credit.",
+  "remaining": "Fresh pre-yield THROW, by-reference cached THROW, method/Closure-created callees, helper/delegated resumers, other API roots, GC/finalizer and request lifetimes, and complete core semantics remain partial.",
+  "evidence_archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-throw-transfer-60/raw.tar.gz",
+    "bytes": 2108810,
+    "sha256": "a2d9c957bf8f5a448ee579fa1517962eabafd83531276db336dbff268118a534",
+    "member_count": 93
+  },
+  "evidence_manifest": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-throw-transfer-60/manifest.json",
+  "recovery": "At a matching I60 worktree, extract raw.tar.gz from the project root. Reports name original ignored .tools paths. The archive retains frozen sources, scripts, stdout/stderr/status and initial zero-credit failures; pinned tools and tracked implementation/tests come from Git.",
+  "independent_review": "The reviewer cleared the frozen native packet, 281-only direct named THROW gate, three author source agreements, fourth independent pending-finally normal source and the 75-assertion reached state. Final docs and actual-tail composition remain under review.",
+  "implementation_commit": "b8b329726589ead152f6d9cbd212ca4ebfe1a33f"
+}
