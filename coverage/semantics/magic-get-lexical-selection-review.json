@@ -1,0 +1,86 @@
+{
+  "decision": "Independently accepted caller-selected getter declaration/type foundation; family remains partial.",
+  "scope": "Literal property reads through ordinary CV, literal-this BYVAL and the existing effective-public owned-factory producer. Saved source access precedes effective public fallback; fresh actual access must agree. No new fields, compiler/root/GC machinery or broader owned nonpublic producer.",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "engine_route": "vendor/php-src/Zend/zend_object_handlers.c::zend_get_property_offset handles CHANGED via zend_get_parent_private_property before accepting public Child; zend_std_read_property keeps that prop_info for post-Get verification and receiver release.",
+  "implementation": {
+    "revision": "9e09775181a5ffd300f6f3bdca870e38a522b816",
+    "path": "spec/semantics/380-magic-property-get.watsup",
+    "delta_from_base": "+12/-8 lines",
+    "behavior": "Source-scope resolution retains the selected physical key/DECL across Child Get scope. CV/this/owned entry and capture require fresh actual access agreement; equivalent access with different scope classes is allowed. Owned entry retains access_decl instead of raw Child DECL. Both legacy raw verify arms require ORIGIN=retained DECL, disjoint from the scoped Parent arm.",
+    "preservation": "Existing effective-public owned boundary and119/123/124 source/ownership contracts remain. Special coercion contexts already enforce DECL identity and remain conservative for new scoped targets; no new NaN/fractional/Stringable coercion admission.418/419 raw helper,384, schema/state/frame/root/GC remain unchanged."
+  },
+  "source_evidence": {
+    "native_baseline_revision": "d0b059d6377564da62183aad190e771d1504f026",
+    "module_count": 415,
+    "classification": "Native5 exact. CV/this stop Unsupported before Get at C:/T:. Owned factory is a genuine normal wrong-result mismatch: model string7 yields bad-inside versus native Parent int7. INITIAL/public-fallback are separate existing agreements2.",
+    "changed_revision": "9e09775181a5ffd300f6f3bdca870e38a522b816",
+    "agreements": 3,
+    "observations": "CV selects Parent private int over public Child string; this bad-RV rejects at declaring-Parent caller line/file with result42; static Parent factory converts7 before original receiver D, then caller int7. Public Child storage/bypass remains unchanged."
+  },
+  "focused_evidence": {
+    "revision": "37e704becf889a73378ef8ddfc48bd6f47fd5053",
+    "module_count": 415,
+    "author": 277,
+    "independent": 136,
+    "total": 413,
+    "reached": "Owned front1 becomes GET_RESULT+GET_BASE2, selected Parent verification converts7, COPY drops Get hold, BASE retires original receiver/D before caller reception. This read binds a fresh Parent-labelled caller-site TypeError and unchanged42. Peer reaches CV Parent selection under live Child scope, int7/external bypass, INITIAL and public fallback; weak Getter/raw Child-string proofs exclude wrong special context.",
+    "derived": "Forged Child/EPS DECL fails task/history admission despite legacy unchecked pure verify identity. Changed caller scope plus ChildUNSET keeps Get_needed=true but selects a different raw key and refuses; a different scope selecting the same public key remains admitted. Budget equality is derived; mutated states do not claim declaration validity or source reachability.",
+    "author_selection": {
+      "owned_priority": 152,
+      "this_reject": 125
+    }
+  },
+  "preserved_failures": [
+    "At2c4e28ee5, first changed CV case fails with interpreter nondeterminism: scoped Parent and legacy raw Child verification both match. Other source cases unrun; zero agreements. Existing special contexts already have the missing DECL fence; only two legacy verify arms corrected.",
+    "Peer first compilation at37e exits0/empty stderr with a fresh pitem_child binding diagnostic and no main artifact; no SL application/0 evaluations. Original prepare/run/PREPARED/fixture retained. One conjunction split into two direct premises; corrected peer136 passes. Author277/source3 not replayed."
+  ],
+  "independent_review": "class119_review accepted native/baseline classification, actual runtime/fix, corrected source3, maintained author277 and peer136, failure preservation and incoming selectors. Author AL2/SL2true; peer AL1/SL1true. All actors/groups/wrappers reaped; metadata/composition adds no execution credit.",
+  "raw": {
+    "manifest": "../php-spec-evidence-archive/magic-get-lexical-selection-125/manifest.json",
+    "bytes": 6083312,
+    "sha256": "97aa0a0579cbb26a1e7daf47d679326ba044db7a8af282d677526b277ce6f621",
+    "reports": {
+      "native5": {
+        "path": ".tools/magic-get-lexical-selection-probes-125/native-first/report.json",
+        "sha256": "e0985fa55367d9ef6f2d64d136ef78f871bce58b0927030432a4b7acff0ec018"
+      },
+      "baseline5": {
+        "path": ".tools/magic-get-lexical-selection-probes-125/accepted-current-baseline/report.json",
+        "sha256": "eda794eefd25e94bbbf41841e1f0e9fefbb7adcfb7c87f0b04ae4fb10c42cb39"
+      },
+      "original_runtime_nondeterminism": {
+        "path": ".tools/magic-get-lexical-selection-probes-125/changed-model-2zb_qhp5/report.json",
+        "sha256": "27f38342401dde557f2924fb4822f60d0d219f677b21a76fbafe3d13ca5cb4fc"
+      },
+      "source3": {
+        "path": ".tools/magic-get-lexical-selection-probes-125/changed-model-4dgnsacx/report.json",
+        "sha256": "d6f2cfef9dd0c19ff4bcbd235cc3475136f15634c19ad02c27a936d010bac9d4"
+      },
+      "author277": {
+        "path": ".tools/magic-get-lexical-selection-protocol-tgmgc7f4/report.json",
+        "sha256": "93f7157348a5662429132f5c124ca41b0de661c2edea9f46cfd9c7c0c9fe3fbb"
+      },
+      "original_peer_compiler_zero_evaluation": {
+        "path": ".tools/magic-get-lexical-selection-review-125/execution-wvwdw19u/report.json",
+        "sha256": "27f2fa0044c8370874afeccc3f10675ff946ee57f69f7b6b21f1efe22896f5fe"
+      },
+      "independent136": {
+        "path": ".tools/magic-get-lexical-selection-review-125/execution-34wcclew/report.json",
+        "sha256": "0821fe2d4103c6c76d10e975b0ad7080884ffe6687e60f56a32ec0d71f510583"
+      }
+    },
+    "recovery": "Verify SHA-256 then extract raw.tar.gz; recover tested Git revision for original415 inputs. Reports retain exact path/cwd/profile/tool identities and genuine baseline wrong result. tested-inputs/ preserves tested380/seven maintained inputs/unchanged119+123+323 helpers and the failed2c4 runtime. Peer failed-inputs retains the exact pre-main binder failure. Composition adds no execution credit."
+  },
+  "composition": {
+    "parent_revision": "8917f6f9e2b72d5531cfbf3c62b4cc92be99dbb8",
+    "module_count": 415,
+    "preservation": "Tested380, seven new maintained inputs and119/123/323 helpers remain exact; incoming281/400/421/423 and manifest stay parent-exact. No state/frame/default field lift.",
+    "selectors": "Fiber/Generator helper projections, captured CONSTANT/DEFINED ARRAY queries and CONFIG Aggregate\u2192Generator producers do not occur in these ordinary INSTANCE/Get/factory programs.",
+    "credit": "No joined execution or older getter/control replay; original415 cuts retained."
+  },
+  "limits": [
+    "Owned private/protected/denied producers without an effective-public property, reference getters/scoped constrained cells, special coercions, dynamic/bound-Closure selection disagreements, suspension and wider lifecycle histories remain partial."
+  ],
+  "engine_bugs_or_intentional_divergences": []
+}

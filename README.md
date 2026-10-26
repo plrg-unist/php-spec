@@ -4857,7 +4857,7 @@ Accessible private/protected UNSET reads through local CVs now retain the
 caller's physical declaration across Get. Parent int versus Child string shadow,
 caller-line TypeError and populated backing99/captured `'ok'` pass
 [three source agreements and 330 focused premises](coverage/semantics/magic-get-scoped-unset-review.json).
-Public-shadow selection, by-reference getters, scoped recursion,
+Wider by-reference getters, scoped recursion,
 bound-Closure scopes and wider access/receiver/lifetime forms remain partial.
 Denied private/protected reads and inherited-private literal fallback now invoke
 the getter without applying the hidden property's type. Allowed lexical reads
@@ -5075,6 +5075,14 @@ A read-method receiver outlives global-CV clearing and Get-hold release, printin
 `m` before destruction. [Four source agreements and 488 focused premises](coverage/semantics/magic-get-direct-this-review.json)
 retain414 cuts; INITIAL remains an existing control and earlier failures retain0.
 Wider receiver/signature/coercion and suspension forms remain partial.
+
+Caller-source declaration selection now also wins over a same-name public Child
+property. CV, literal-this and existing owned-factory reads agree with the fresh
+actual access, then keep Parent's type across Child Get scope. A genuine factory
+string7/int7 mismatch is fixed; receiver destruction still precedes caller use.
+[Three source agreements and 413 focused conditions](coverage/semantics/magic-get-lexical-selection-review.json)
+retain415 cuts and both original failures. Wider owned nonpublic/reference and
+special-coercion forms remain partial.
 
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference
