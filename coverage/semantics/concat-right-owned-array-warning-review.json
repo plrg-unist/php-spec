@@ -1,0 +1,97 @@
+{
+  "milestone": "OP101 acquired RIGHT array concat Warning after cached LEFT Stringable",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle/profile",
+  "status": "independently reviewed bounded semantics",
+  "scope": "Initially unbuffered ordinary concat with a completed direct-CV LEFT string and an acquired nonempty mutable flat DIRECT primitive RIGHT array returned by a named noarg by-value untyped user function. An eligible named E_WARNING handler may return or throw a supplied Exception. The source-copy witnesses use a destructor-free Stringable LEFT that rebinds its own CV before RIGHT warns. Normal return concatenates cached L and interned Array, then retires RIGHT before assignment. Handler throw skips the result and retires RIGHT after handler-result cleanup before catch.",
+  "engine": [
+    "vendor/php-src/Zend/zend_operators.c: concat_function try-converts LEFT to a retained string before try-converting RIGHT; handler Exception on RIGHT returns FAILURE without concat result",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_CONCAT evaluates operand pointers, calls concat_function, frees OP1/OP2 before exception check"
+  ],
+  "baseline_revision": "9196162b20e3a034b9334dd436670acb9822da90",
+  "semantic_revision": "378cd2bcf736ba8032a4857fc5d18b2bead1eadf",
+  "tested_revision": "69e60787b019e05f1939bd70d9a1a65b1e4c031f",
+  "environment": {
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "modules_sha256": "de8488abd5ca58bfd455d59011ef41f48449be4699ede06af70e027075dab632",
+    "module_count": 424,
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "frozen_sources": {
+    "cases_py_sha256": "5b73911bde11fc4ba46bcceb970322cc82c6030d7d953fde13bef4cfe9b79c4c",
+    "normal_sha256": "d443ce4a5aaac59b1e60f331d0dfb9d6527e31c73dfc79a392d57219e5e36c24",
+    "throw_sha256": "6efda1758137791608590c55d0f5707b3e50c3c6e58d1e57d305b305b8fc35fe",
+    "scalar_control_sha256": "4978c0e7bd531f3249228141a842e452a24be46458fedf77a92bf4a79b48e828"
+  },
+  "native_pre": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-101/native-pre/report.json",
+    "sha256": "c59f07f29650a50fcf73749138a574e0e56aa37943eff2d2669a68cd3c254096",
+    "result": "All three pinned native sources exit0/reaped. RIGHT producer P precedes LEFT method L; warning site is concat line36. Normal handler H then strict LArray assignment and one default Warning36, with no OTHER. Supplied throw H reaches the same Exception33, no assignment/OTHER/default. Scalar control yields L7 with no warning."
+  },
+  "unchanged_baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-101/baseline/report.json",
+    "sha256": "7e1b5be662c261a1aca9911918f1a2cd1ba3319b6fddbbd8c5a6854707349c6d",
+    "result": "At clean pinned 9196162b2, both array originals are frontend accepted/checked but model exit1 Unsupported at handler ingress after P;L; and earn zero agreement. Scalar RIGHT is exact through the prior generic route. No timeout/group residue."
+  },
+  "accepted": {
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-101/source-378cd2bcf/report.json",
+      "sha256": "4c85d04796328464fd634e0b3a0e3d96c1c9657c2944618fbead7438e237e48c"
+    },
+    "focused": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-101/focused-69e60787b/report.json",
+      "sha256": "a3f3a12508cacea179276aad4e3b976b21d586d8367d09ceb649a53534dd096d"
+    },
+    "result": "Two new array originals and one prior scalar control agree raw-exact with checked/accepted normal model, exit0/no timeout/group residue. Normal168 and pending146 source-reached checks authenticate LEFT method/source and RIGHT call/line36, save L despite LEFT CV rebind, retain source-copy HARRAY owners2 through method and warning, owner1 after handler unset, owner0 after concat release before store or after handler-result cleanup before catch. Pending keeps same Exception33 and no OTHER/store; source/buffer refusals and budget0 hold."
+  },
+  "failed_attempts_zero_credit": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-101/source-87e5a2c06/report.json",
+      "sha256": "0e61e639cea2b96960f266ca8a56f4035bebd49ebc6575ed9bda60e211c08200",
+      "reason": "Bare NExprVariable constructor equality failed elaboration before model execution."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-101/source-ccc89c932/report.json",
+      "sha256": "49ec21e5bf94e13bb57d864eff3f08149a74ce777ffed113f1c891db23d2cd58",
+      "reason": "Direct origin_child optional value failed elaboration before model execution."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-101/source-9988db310/report.json",
+      "sha256": "2ddc21d7678b6eef7ea5619c940eab8cbc8e3ccaeabe0c4e6cff22bd1466a612",
+      "reason": "Direct child NExprVariable pattern failed elaboration before model execution."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-101/focused-378cd2bcf/report.json",
+      "sha256": "e26457a9771a8d4be19955148973424e9329cff5a733979635f2ca8df809ce61",
+      "reason": "First focused fixture read method-local ENV for a main global cell at actual LEFT method entry; first focused row false, pending row unrun. Test-only 69e60787b uses GLOBALTABLE.ENV and reruns affected focused2."
+    }
+  ],
+  "compile_gate": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-101/source-gate-378cd2bcf/report.json",
+    "sha256": "6bbedb9084edf54f064f228759f882f18dfe29e869817dce89c4d309c9536222",
+    "result": "One normal source elaborated and matched native before full source3; it is duplicated in accepted source3 and adds no extra distinct behavior credit."
+  },
+  "inputs_sha256": {
+    "spec/semantics/30-storage.watsup": "4997db43c66359192df84c545413cd4f359bd62e46061e7c919db24aa629d2be",
+    "spec/semantics/59-concat-expressions.watsup": "f5983ada4ed68a08587bd28512d1878bf84822851487ad107789c5b9b0f151cf",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "69e615907123aeea58d61e331941f62df50f8d67eded21823348876391e478cd",
+    "tests/semantics/concat_right_owned_array_warning_cases.py": "5b73911bde11fc4ba46bcceb970322cc82c6030d7d953fde13bef4cfe9b79c4c",
+    "tests/semantics/concat_right_owned_array_warnings.py": "6c46fca0050e695e616efff1b3b956b588c1e98998ac4700a1888db935c8fa82",
+    "tests/semantics/concat_right_owned_array_warning_protocol.py": "ca98481c319afe06e2a2f52f5088b7375defc2d7b52e3b5552014bc55f1de1f8"
+  },
+  "reproduce": "Restore tested semantic/test files, frozen originals and pinned project-local tools/profile. Under an exclusive CPU run concat_right_owned_array_warnings.py --output NEW_EXTERNAL_DIR, then concat_right_owned_array_warning_protocol.py --output NEW_EXTERNAL_DIR. Raw reports retain source bytes, streams, commands, exits, input hashes and process groups outside Git.",
+  "remaining": "Only the stated initially unbuffered nonempty flat DIRECT primitive acquired RIGHT, completed direct-CV LEFT string, named noarg by-value untyped producer and named warning handler are claimed. Empty/nested/reference-element arrays, reference/typed/argument-bearing returns, other producers, output-buffer changes, destructive LEFT object lifetimes and wider handlers remain partial.",
+  "independent_review": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-101/review-independent/run-69e60787b/report.json",
+    "sha256": "28e92ff449e763da6b87425ac199b87dffe605de9412141730b8460a10f4b591",
+    "cases_sha256": "4992ee05b8db8a0db4644406a3515f47a7e6382fb386ad000ab53e91fec12ebf",
+    "runner_sha256": "1bf0d3ec471376c16a5a986e0fe4a48030971b527da71ad9d191f8a42a36710e",
+    "fresh_return_source_sha256": "6830e888f9e63a2c65c8e25d330c851e7c9008c29a0d9da5f39f556a8f90ee84",
+    "ineligible_mask_source_sha256": "063d2bc7745f2274dff95f67400f85a827ae1003f428aeae5ab625d89a974608",
+    "result": "Both frozen native-first controls agree raw-exact with frontend accepted/checked normal model, exit0/no timeout/group residue. A fresh acquired RIGHT runtime array with a handled-true Warning retains cached LEFT L and assigns LArray without default stderr. A source-copy RIGHT under an ineligible E_NOTICE mask skips the handler, assigns LArray, and emits one default Warning36. No OTHER method runs. CPU4 fully reaped/released; semantic CLEAR."
+  }
+}

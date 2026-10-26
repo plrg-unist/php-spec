@@ -521,6 +521,27 @@ other producers, reference returns, wider array contents, different-cell RHS
 rebinding and buffer-changing callbacks
 partial in the [acquired LEFT array ledger](../../coverage/semantics/concat-owned-array-warning-review.json).
 
+An acquired RIGHT flat array from a named noarg by-value function can also
+warn after the LEFT operand has already become a string. In the source-copy
+witnesses, the RIGHT producer first returns a runtime array. The LEFT
+Stringable then prints `L;` and replaces its own CV, but concat keeps the
+completed `L`. The RIGHT Warning handler unsets the source global. A returning
+handler joins `LArray`
+from the saved LEFT and interned `Array`, retiring the acquired array before
+assignment. A supplied handler throw skips the concat result and store; the
+handler-result cleanup drops the remaining array owner before catch handling.
+Two array sources agree exactly with PHP, while a scalar RIGHT follows the
+existing route. Reached checks cover owners 2→1→0, source/line and buffer
+refusals, and the same pending Exception. Independent controls confirm a fresh
+returned array with a handled-true Warning and an ineligible E_NOTICE mask
+with only the default Warning; both retain cached `L` and never call OtherText.
+The bounded route requires an
+initially unbuffered nonempty flat DIRECT primitive array, an already completed
+direct-CV LEFT conversion, and a named noarg by-value untyped RIGHT producer;
+wider arrays, producers, reference returns, output-buffer changes and
+destructive LEFT conversions remain partial in the
+[acquired RIGHT array ledger](../../coverage/semantics/concat-right-owned-array-warning-review.json).
+
 A bounded direct no-argument, by-value/untyped named call may return the owning
 Stringable RHS before LEFT's array Warning. A dedicated consumer owns that acquired
 value through the handler, separately from the later conversion receiver. Removing
