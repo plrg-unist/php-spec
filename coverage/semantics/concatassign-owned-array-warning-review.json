@@ -1,0 +1,101 @@
+{
+  "milestone": "OP102 used plain-CV concat assignment with acquired RHS array Warning",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle/profile",
+  "status": "independently reviewed bounded semantics",
+  "scope": "Initially unbuffered used plain-CV .= with a saved string LHS and nonempty mutable flat DIRECT primitive RHS array returned by a named noarg by-value untyped function. A named eligible E_WARNING handler may return or throw a supplied Exception. Normal completion writes cached initial LHS plus Array over the handler's LHS write and copies the used result; pending throw keeps that write and cancels the outer result. The acquired RHS retires after normal commit or handler-result cleanup before catch.",
+  "engine": [
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_ASSIGN_OP gets RHS TMP, selects writable LHS, applies CONCAT, copies used result, frees OP2, then checks Exception",
+    "vendor/php-src/Zend/zend_operators.c: concat_function retains initial LHS string before try-converting RHS; array conversion raises Warning and returns interned Array on normal continuation"
+  ],
+  "baseline_revision": "20fad08ee6f0443f6ca968dfbac4cd799c88efcf",
+  "tested_revision": "8a9c25c7b69be3f5135c5c43ad0c9fb77678cf6a",
+  "environment": {
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "modules_sha256": "de8488abd5ca58bfd455d59011ef41f48449be4699ede06af70e027075dab632",
+    "module_count": 424,
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "frozen_sources": {
+    "cases_py_sha256": "fc8e6ee2dd8bdbdd40f3304214a69fa524fb94cf9758a96eb5ce28773eddfe34",
+    "normal_sha256": "847001fcf820b63d21737824bd2135befe75459dc97a162fa27a1fbcf95aadcf",
+    "throw_sha256": "c9e78b2f4b2cec6dfc994d0504022c2ed89f4bd8486afb162492a08fad657410",
+    "scalar_control_sha256": "6ee25d2b4d1b9194dd1fbfbdffb2a3176ff3368a5b3c95c120b6715a3cac781a"
+  },
+  "native_pre": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-102/native-pre/report.json",
+    "sha256": "c97eda27d6dad9e95f67556d14b2a82e304fc73bfc3d6bcc50dfdd2556fe1e7c",
+    "result": "Three pinned native sources exit0/reaped. Producer P precedes Warning23. Normal false/default handler sees initial A, writes B, then strict LHS and used value become AArray with one default Warning23. Supplied throw keeps B and old outer value, catches the same Exception20 without default. Scalar RHS is quiet A7."
+  },
+  "unchanged_baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-102/baseline/report.json",
+    "sha256": "45c9ad5a636a3cf107c232a16cfeb49a18a9527da8bc9cc1458a804787bc1745",
+    "result": "At clean pinned 20fad08ee, both acquired-array originals are frontend accepted/checked but model exit1 Unsupported at handler ingress after P; zero agreement. Scalar control is exact through the prior generic route. No timeout/group residue."
+  },
+  "accepted": {
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-102/source-8a9c25c7b/report.json",
+      "sha256": "27cf5778ba59583e11f5970d7e0fb3213e7b82be4f2585d8e7c0a8cbd4d6d686"
+    },
+    "focused": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-102/focused-8a9c25c7b/report.json",
+      "sha256": "bc74287aed423e3554c7822dad6bbec63b5192e08d85c14b67bde68408e21fa7"
+    },
+    "result": "All three frozen originals agree raw-exact with frontend accepted/checked normal model exit0/no timeout/group residue. Normal154 and pending125 source-reached checks authenticate actual call/line23 and selected LHS cell, distinguish acquired HARRAY owner2 at entry, owner1 after source unset and through COMMIT, owner0 after RELEASE or handler-result cleanup, preserve same Exception20 and no outer store on throw, and reject source/line/target/buffer mutations and budget0."
+  },
+  "failed_attempts_zero_credit": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-102/source-gate-0da80e541/report.json",
+      "sha256": "495205dc7caff5fc194800c8989b45fea6aae5927b7c4f5ddb360e14d29f9c86",
+      "reason": "First one-source gate stopped at pre-semantic SpecTec elaboration of saved LEFT byte binder; model runner_failure, no agreement."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-102/source-gate-94e61f34f/report.json",
+      "sha256": "4380a1c71d254780489c585dd1c18fa1a0b1177dab0e0924347b4105beabeb28",
+      "reason": "Second one-source gate stopped at the same pre-semantic binder even with an unstarred variable; model runner_failure, no agreement."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-102/focused-6065218b3/report.json",
+      "sha256": "11481e7a9a5d5dec821663fd383d44dd8f65ee39d54f2b4f7b9c669e303082e9",
+      "reason": "First focused normal row found duplicate HARRAY task roots at S_resume (owner2 instead of owner1); pending row unrun. The corrected runtime leaves the sole root on queued RELEASE."
+    }
+  ],
+  "compile_gate": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-102/source-gate-6065218b3/report.json",
+    "sha256": "eba98895f8662abfc78442c82f57fc5424131cf18d1241be7c387f9af568dc56",
+    "result": "One normal source elaborated and matched native before full source3; duplicate behavior credit is not added."
+  },
+  "prior_cut": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-102/source-6065218b3/report.json",
+    "sha256": "83fc48fa0b925083de74157e38c6fee4887a72568392f46cc3c1d94aebc9ed23",
+    "result": "All three source originals matched before the focused owner-root defect was corrected; accepted final cut supersedes this source report without renewing its credit."
+  },
+  "owner_diagnostic": {
+    "fixture": "/home/user/workspace/php-spec-evidence-archive/operators-102/owner-probe-6065218b3/owner-probe.watsup",
+    "sha256": "afbcd4d8e277f0c218a3d551d29fa9f6bedc7cd52f9885db6d1796af5e98679c",
+    "result": "Diagnostic-only fixture showed two roots at S_resume, one on COMMIT and one on RELEASE. It earns zero agreement credit."
+  },
+  "inputs_sha256": {
+    "spec/semantics/30-storage.watsup": "d934c1a2cba3c0025c75dd4463ee141570b04bf6ed679fdcc0f8dc0d5d33d56d",
+    "spec/semantics/55-compound-assignment.watsup": "b64a63481c0f6dcc5c4760f1cf2d8dcc4502fa878f48eebb5ebb2b490ab7b09d",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "655ebabb41572ce28ca7ac8f33590fbcab0c23207cdc4317198356157fe54c95",
+    "tests/semantics/concatassign_owned_array_warning_cases.py": "fc8e6ee2dd8bdbdd40f3304214a69fa524fb94cf9758a96eb5ce28773eddfe34",
+    "tests/semantics/concatassign_owned_array_warnings.py": "a636e65c9ef7c7c2d4680204fd0a77050a064fc26111314f51dac4a9e44833a6",
+    "tests/semantics/concatassign_owned_array_warning_protocol.py": "516d1727f80f898c6ff0d62c62725e7fec5ef333aeadb6416719efbc4c74408c"
+  },
+  "reproduce": "Restore tested semantic/test files, frozen originals and pinned project-local tools/profile. Under an exclusive CPU run concatassign_owned_array_warnings.py --output NEW_EXTERNAL_DIR, then concatassign_owned_array_warning_protocol.py --output NEW_EXTERNAL_DIR. Raw reports retain source bytes, streams, commands, exits, input hashes and process groups outside Git.",
+  "remaining": "Only the stated initially unbuffered flat primitive acquired RHS, plain selected CV, named noarg by-value untyped producer and named warning handler are claimed. Empty/nested/reference-element arrays, references/typed or argument-bearing returns, retargeted/aliased/dimension/property LHS, output-buffer changes and wider callbacks/lifetimes remain partial.",
+  "independent_review": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-102/review-independent/run-8a9c25c7b/report.json",
+    "sha256": "9036987a1ec59418f0db611d1afcfa98276a2b66d5af3fbed6085516c36d885f",
+    "cases_sha256": "7cc700747016cbfb2decc41e5ae37dbeef87a6cb248acead2abc2de1d1c262f6",
+    "runner_sha256": "c3c4a04d0766234e4ce66a10ec93ce82b470aa70982c38240b0edede0b942ca6",
+    "fresh_return_source_sha256": "20be80bbbb50eb3ad68fdc44d51198404fdfecdb68052a349f1678331976331e",
+    "ineligible_mask_source_sha256": "1aa6e94e88b080a9d58a7aa1330a9ee15144dedab9f8e3a96444af656043ea8f",
+    "result": "Both frozen native-first controls agree raw-exact with frontend accepted/checked normal model, exit0/no timeout/group residue. Fresh acquired RHS with a handled-true Warning emits P;H;AArray and no default Warning. Source-copy RHS under an ineligible E_NOTICE mask emits P;AArray and one default Warning23 with no callback. CPU5 fully reaped/released; semantic/test CLEAR."
+  }
+}

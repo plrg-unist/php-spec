@@ -606,6 +606,17 @@ the store and preserves callback mutations and aliases. Three exact originals an
 Pure missing/allocation/PROPREF/owning projections are refusal checks only.
 Left-array warnings, wider operands/targets/callbacks and lifecycle forms remain partial.
 
+A named noarg by-value RHS can instead supply a nonempty mutable flat array to a
+used plain-CV `.=`. The selected LHS cell and its initial string are saved before
+the RHS Warning. A returning handler may write that cell and unset the array
+source; commit then replaces its write with the cached string plus `Array`, and
+the used result receives the same string. The acquired array has two owners at
+entry, one after source unset, and none after the queued release. A supplied
+handler throw keeps the callback's cell write and cancels the used result; its
+array owner retires after handler-result cleanup before catch. Other target and
+array shapes remain partial. Fresh-return handled-true and ineligible-mask
+controls agree independently. [Acquired concat-assignment review](../../coverage/semantics/concatassign-owned-array-warning-review.json).
+
 Concatenation has an additional compile/runtime distinction. The compiler visits
 both operands before converting known scalar operands and queuing conversion
 warnings. At execution, known array operands produce their conversion warnings
