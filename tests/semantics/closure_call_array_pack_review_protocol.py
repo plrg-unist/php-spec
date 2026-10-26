@@ -141,7 +141,7 @@ def checks(initial, stdout):
         'S_sent.TODO = (CLOSURE_CALL_UNPACK_NEXT pclosurecall_sent (KNOWN (PARRAY n_pack)) 1) :: ptask_sent*',
         'pclosurecall_sent.PACKS = [pconfigpack]',
         'pclosurecall_sent.RAW = [(KSTRING $ptascii("value"), KNOWN (PINT 31))]',
-        'pclosurecall_sent.SENT = {SLOTS [NAMED_SENT (KNOWN (PINT 31))], NAMED eps}',
+        'pclosurecall_sent.SENT = {SLOTS ([(NAMED_SENT (KNOWN (PINT 31)))]), NAMED eps}',
         'pclosurecall_sent.ERROR = eps',
         *reach('S_forward_pending','S_sent',3), *settle('S_forward','S_forward_pending'),
         'S_forward.TODO = (CLOSURE_CALL_FORWARD pclosurecall 0 pnamedargs_empty n_base) :: ptask_forward*',
