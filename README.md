@@ -674,6 +674,13 @@ Generator rejects before DATA acquisition. Assignment, cached state, empty trace
 and setter recovery survive. Three source agreements and 361 original conditions
 pass (419 physical, 58 setup). Nonfresh temporary inputs and wider lifetimes remain partial.
 
+[CONFIG Generator return storage](coverage/semantics/config-generator-return-storage-review.json)
+now runs a bounded payload destructor before API entry or caller catch. The real
+storage pin keeps the Generator weakly visible during destruction, then both
+objects die. Argument-site traces, pending Exceptions, selected-callee ownership
+and setter recovery survive. Two source agreements and 426 maintained conditions
+pass (486 physical, 60 setup); broader owning storage remains partial.
+
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
 throws the object-key `Error` before copying its current value or entering the

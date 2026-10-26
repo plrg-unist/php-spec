@@ -1432,3 +1432,30 @@ preserved; no old source/native/state suite is replayed. Only423 changes runtime
 schema, existing source receipts, generic Generator/release and all other modules
 remain exact. Nonfresh temporary/Aggregate producers, delegation, broader sends,
 owning storage and Fiber/GC/destructor callbacks remain partial; paused lanes stay unchanged.
+
+The [CLOSED RETURN-storage increment](../../coverage/semantics/config-generator-return-storage-review.json)
+retires an owning return before CONFIG reception or catch. Its existing source
+history must describe a CLOSED Generator with no frame, delegate or borrowed/reference
+cache, a string current and integer key. RETURN is a parentless INSTANCE whose
+class has no declared properties, interfaces or constants, and its only method
+is a source-authenticated public, nonstatic, concrete, zero-argument by-value
+destructor without a return type. Actual property slots are empty at admission.
+The two-string, integer-key consumer bound is unchanged.
+
+CV overwrite can leave DATA as the final owner; a genuine factory result instead
+retires DATA then its separate INPUT. Existing355 supplies the real storage pin.
+A callee-only continuation retains the unpack argument origin through callbacks,
+and an authenticated eager operation carries a destructor-thrown Exception.
+After storage drains, immutable history permits reception or pending cleanup without
+reading freed RETURN children. Normal reception restores the call site and rechecks
+the retained callee; the abrupt path preserves the same Exception and its genuine
+argument-site destructor trace. Weak observers prove both objects die before catch.
+
+Native2/genuine0 retain `c5809eb65`; normal source retains `756e1bcad`, strict420
+retains `3e2a1bbb4`, and 426 maintained conditions retain `d30eb5c3b`/`adf3abb6f`
+(486 physical,60 duplicated setup). The final peer public-CLI comparison agrees
+under a separately reviewed90-second CLI/105-second host budget; both earlier45-second
+timeouts retain zero credit. Original source failures, the recovery-frontier fixture
+failure and orchestration errors are preserved. Generic355/303/270, schema and
+old evidence remain unchanged; broader owning graphs, escaping pins and paused
+finalization remain partial. Paused and held lanes stay unchanged.
