@@ -7,6 +7,17 @@ results, transformed fake bindings and finite Throwable getters. The pinned
 routes are `zend_closures.c::ZEND_METHOD(Closure, call)`,
 `zend_valid_closure_binding` and `zend_execute_API.c::zend_call_function`.
 
+Module 428 delivers one ARRAY pack after an ordinary positional `newThis`.
+Integer keys become consecutive forwarded positions; string keys bind inner
+parameter names and may leave default holes. Pack aliases are copied by value
+before reference-formal warnings; forwarding allocates detached cells after
+any callback returns. The selected Closure
+and receiver survive pack-producer effects. Completed capture history validates
+delivery without keeping the source array alive or rereading it; pooled literal
+facts constrain the captured entries independently of later mutable-array writes.
+Expanded body wrappers retain their raw values and signature-consistent labels
+while weak reception and body writes update the separate inner arguments.
+
 The selected Closure and evaluated values stay owned during ordinary, computed
 and nullsafe method entry. Immediate simple-variable checks authenticate the
 selection; later argument effects may replace those variables. `RAW` preserves
@@ -62,6 +73,13 @@ named-forwarding and cache repairs retain their own
 [call](../../coverage/semantics/closure-call-review.json),
 [argument](../../coverage/semantics/closure-call-arguments-review.json) and
 [default-cache](../../coverage/semantics/closure-default-cache-review.json)
-ledgers; none establishes complete core. Unpacking, further internal API capture,
-missing core internal bodies and the REAL temporary-current lifetime decision
-remain required. Return verification remains paused.
+ledgers; none establishes complete core. The
+[ARRAY-pack review](../../coverage/semantics/closure-call-array-pack-review.json)
+keeps positional/COW, named-default/error and detached-reference cuts separate.
+Unknown inner names retain the raw receiver/named argument trace after the saved
+Closure retires. Multiple packs, direct forwarded arguments mixed with a pack,
+packed `newThis`, Traversable delivery, direct call-time references and outer
+pack-binding errors remain unsupported.
+Further internal API capture, missing core internal bodies and the REAL
+temporary-current lifetime decision remain required. Return verification remains
+paused.

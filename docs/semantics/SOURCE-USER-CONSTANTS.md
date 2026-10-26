@@ -915,6 +915,25 @@ The three originals and focused state checks cover these paths without extending
 name coercion, class-qualified/HALT/NUL names, packs or PIPE.
 [Captured query review](../../coverage/semantics/constant-owned-query-review.json).
 
+Captured global-string queries also accept one delivered argument from a single
+ARRAY unpack. Existing CONFIG replay normalizes integer keys positionally and
+`name`/`constant_name` keys to the matching API slot. It snapshots scalar ALIAS
+leaves by value; later reference writes cannot change the query or its raw
+API/wrapper Error arguments. A runtime source pack can retire before API entry,
+while a literal pooled pack retains its pool owner. Query admission authenticates
+the completed `PACKS` snapshot and delivered `SENT`, matching any immutable pack
+fact against the captured items rather than rereading a changed or retired source
+container. The live selected callee survives pack-producer effects and lookup
+sees definitions those effects publish. A missing-name Error retains copied
+slot-zero arguments after the source cell is rebound or unset; separate readers
+recover normally. Completed pack records remain nonowning history. The ordinary
+arm for calls without unpacking, error allocator, binding/replay, roots, tasks and schema stay
+unchanged. [Captured query-pack review](../../coverage/semantics/constant-owned-query-pack-review.json).
+This route requires a live matching intrinsic owner, empty selection, one pack
+delivering one authenticated non-NUL global string, and no PIPE. Coercion,
+Traversable or multiple packs, class/HALT/NUL names and wider query forms remain
+outside this admission.
+
 Captured query callees also receive Boolean, integer and finite-float names under
 the existing live matching-owner and source/argument-fact checks. The original
 ownerless scalar predicate stays exact; the owning route requires empty selection

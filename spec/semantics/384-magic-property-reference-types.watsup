@@ -10,9 +10,7 @@ def $property_get_propref(S, ppropertyget, n_cell) = true
   -- if $call_reference_operand_valid(S, S.RESULT)
   -- if $property_get_valid(S, ppropertyget, true)
   -- if $property_get_tail_valid(S, ppropertyget)
-  -- if ppropertyget.DECL = (ppropertyid)
-  -- if $property_desc_at($property_layout(S, ppropertyget.CLASS, |S.CLASSES|), ppropertyget.NAME) = (ppropertydesc)
-  -- if ppropertydesc.ORIGIN = ppropertyid
+  -- if $property_get_verify_desc(S, ppropertyget) = (ppropertydesc)
   -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))] \/ ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "object"]))] \/ ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "float"]))] \/ ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "string"]))] \/ ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "bool"]))]
   -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
   -- if ppropref.SOURCES =/= eps
@@ -22,7 +20,7 @@ def $property_get_propref(S, ppropertyget, n_cell) = false -- otherwise
 
 def $property_get_verify(S, ppropertyget, REFERENCE n_cell) = $property_get_propref_check(S, ppropertyget, ppropertydesc, pvalue, pproptypesource, $propref_class(S, ppropertydesc.TYPE, pvalue, pmethoddesc.FUNCTION.CODE.STRICT))
   -- if $property_get_propref(S, ppropertyget, n_cell)
-  -- if $property_desc_at($property_layout(S, ppropertyget.CLASS, |S.CLASSES|), ppropertyget.NAME) = (ppropertydesc)
+  -- if $property_get_verify_desc(S, ppropertyget) = (ppropertydesc)
   -- if $property_get_method(S, ppropertyget.OBJECT) = (pmethoddesc)
   -- if S.STORE[n_cell] = DEFINED pvalue
   -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)

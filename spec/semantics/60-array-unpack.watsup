@@ -1,5 +1,6 @@
 ;; Array-only spread transfer. Builders are fresh; scalar rejection is separate
-;; from the compiler's fully-constant-array error path. Traversables need frames.
+;; from the compiler's fully-constant-array error path. Traversables use frames.
+dec $array_unpack_traversable(pstate, pvalue) : bool
 dec $unpack_type_bytes(pvalue) : nat*
 def $unpack_type_bytes(PBOOL true) = [116,114,117,101]
 def $unpack_type_bytes(PBOOL false) = [102,97,108,115,101]
@@ -27,5 +28,9 @@ def $array_unpack(S, n_target, PARRAY n_source, z) = $array_unpack_entries(S[.HE
   -- if S.COMPLETION = NORMAL
 def $array_unpack(S, n_target, POBJECT n, z) = $throw_scalar(S, "TypeError", $ptascii("Only arrays and Traversables can be unpacked, ") ++ $object_name(S, n) ++ $ptascii(" given"), z)
   -- if S.COMPLETION = NORMAL
+  -- if ~$array_unpack_traversable(S, POBJECT n)
+def $array_unpack(S, n_target, POBJECT n, z) = S[.COMPLETION = UNSUPPORTED "array Iterator unpack outside initialized Iterator domain"]
+  -- if S.COMPLETION = NORMAL
+  -- if $array_unpack_traversable(S, POBJECT n)
 def $array_unpack(S, n_target, pvalue, z) = $throw_scalar(S, "Error", $unpack_error_bytes(pvalue), z)
   -- otherwise

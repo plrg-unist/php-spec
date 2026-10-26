@@ -1,0 +1,279 @@
+;; ADD_ARRAY_UNPACK owns the partial builder and Iterator DATA. Its current
+;; cache survives key(), is dereferenced only afterward, and retires before next().
+dec $array_iterator_item(pstate, phpType13*, int) : (porigin, expression)?
+dec $array_iterator_methods(pstate, nat, text*) : bool
+dec $array_iterator_source(pstate, parrayiterator) : bool
+dec $array_iterator_stage(parrayiterator, text) : bool
+dec $array_iterator_valid(pstate, parrayiterator, text) : bool
+dec $array_iterator_table(pstate, nat) : bool
+dec $array_iterator_value(pstate, poperand) : pvalue?
+dec $array_iterator_ready(pstate, parrayiterator) : bool
+dec $array_iterator_plan(pstate) : parrayiterator?
+dec $array_iterator_call(pstate, parrayiterator, text, ptask*) : pstate
+dec $array_iterator_call_stage(text) : text?
+dec $array_iterator_valid_stage(bool) : text
+dec $array_iterator_clear(pstate, parrayiterator, text, ptask*) : pstate
+dec $array_iterator_capture(pstate, parrayiterator, bool, ptask*) : pstate
+dec $array_iterator_key_valid(pvalue) : bool
+dec $array_iterator_key(pvalue) : pkey?
+dec $array_iterator_insert(pstate, parrayiterator, ptask*) : pstate
+dec $array_iterator_nodes(parrayiterator) : pnode*
+dec $array_iterator_target(pstate, parrayiterator, pcalltarget, text) : bool
+dec $array_iterator_frame(pstate, pcallcontext, pframe) : bool
+dec $array_iterator_discard(pstate, parrayiterator, text) : pstate
+
+def $array_unpack_traversable(S, POBJECT n) = $class_instanceof(S, POBJECT n, $ptascii("Traversable"))
+def $array_unpack_traversable(S, pvalue) = false -- otherwise
+
+def $array_iterator_item(S, phpType13*, z) = ((porigin, expression))
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
+  -- if $(z > 0)
+  -- if $reference_origin_parent(porigin, 2) = ((porigin_array, [PCFIELD 0, PCINDEX n_index]))
+  -- if $origin_node(S.SOURCES, porigin_array) = (NExprArray (SEQUENCE phpType13_all*) metadata_array)
+  -- if $(n_index < |phpType13_all*|)
+  -- if n_after = $(n_index + 1)
+  -- if n_remaining = $(|phpType13_all*| - n_after)
+  -- if phpType13* = phpType13_all*[n_after:n_remaining]
+def $array_iterator_item(S, phpType13*, z) = eps -- otherwise
+
+def $array_iterator_methods(S, n, eps) = true
+def $array_iterator_methods(S, n, text :: text_tail*) = $array_iterator_methods(S, n, text_tail*)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii(text), |S.CLASSES|) = (pmethoddesc)
+  -- if $useriter_method_selected(S, n, pmethoddesc.FUNCTION.ORIGIN, text)
+  -- if text = "current" \/ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = $useriter_signature($ptascii(text)).RETURNS
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
+def $array_iterator_methods(S, n, text*) = false -- otherwise
+
+;; INPUT is a source receipt after entry, even if rewind/key unsets that CV.
+;; Payload eligibility is separate so legal callback mutations can refuse cleanly.
+def $array_iterator_source(S, parrayiterator) = true
+  -- if S.ORIGIN = (parrayiterator.SITE)
+  -- if $array_iterator_item(S, parrayiterator.TAIL, parrayiterator.LINE) = ((parrayiterator.SITE, expression))
+  -- if parrayiterator.INPUT = VARIABLE n_name* z
+  -- if $array_float_key_input_source(S, expression, parrayiterator.INPUT)
+  -- if $(parrayiterator.ARRAY < |S.ARRAYS|) /\ (HARRAY parrayiterator.ARRAY) <- S.ALLOCATIONS
+  -- if ~$array_immutable(S, parrayiterator.ARRAY)
+  -- if $heap_count(HARRAY parrayiterator.ARRAY, $pools_nodes(S.POOLS)) = 0
+  -- if $useriter_instance(S, parrayiterator.OBJECT)
+  -- if S.OBJECTS[parrayiterator.OBJECT] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__destruct"), |S.CLASSES|) = eps
+  -- if $array_iterator_methods(S, parrayiterator.OBJECT, ["rewind", "valid", "current", "key", "next"])
+def $array_iterator_source(S, parrayiterator) = false -- otherwise
+
+def $array_iterator_stage(parrayiterator, text) = true
+  -- if text <- ["rewind-start", "rewind", "valid-start", "valid", "current-start", "current", "next-start", "next", "finish"]
+  -- if parrayiterator.CURRENT = KNOWN PNULL /\ parrayiterator.KEY = KNOWN PNULL
+def $array_iterator_stage(parrayiterator, text) = true
+  -- if text <- ["key-start", "key"]
+  -- if $key_held_operand(parrayiterator.CURRENT)
+  -- if parrayiterator.KEY = KNOWN PNULL
+def $array_iterator_stage(parrayiterator, "insert") = true
+  -- if $key_held_operand(parrayiterator.CURRENT)
+  -- if parrayiterator.KEY = KNOWN pvalue
+def $array_iterator_stage(parrayiterator, text) = false -- otherwise
+
+def $array_iterator_valid(S, parrayiterator, text) = true
+  -- if $array_iterator_source(S, parrayiterator)
+  -- if $array_iterator_stage(parrayiterator, text)
+  -- if $useriter_cursor_valid(S, parrayiterator.ITERATOR, parrayiterator.OBJECT)
+  -- if $generator_id_count($useriter_tasks_ids(S.TODO), parrayiterator.ITERATOR) = 1
+def $array_iterator_valid(S, parrayiterator, text) = false -- otherwise
+
+;; Flat cache values have no owning descendants or destructors. Allocated
+;; zero-owner nodes are permitted while an abrupt pop is about to retire them.
+def $array_iterator_table(S, n) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if ~(n <- S.LITERALARRAYDEBTS)
+  -- if $entries_nodes(S.ARRAYS[n].ITEMS) = eps
+  -- if $array_null_const_items(S, S.ARRAYS[n].ITEMS, [n])
+def $array_iterator_table(S, n) = false -- otherwise
+
+def $array_iterator_value(S, KNOWN (PARRAY n)) = (PARRAY n)
+  -- if $array_iterator_table(S, n)
+def $array_iterator_value(S, KNOWN pvalue) = (pvalue)
+  -- if $literal_reference_flat_leaf(S, pvalue)
+def $array_iterator_value(S, REFERENCE n) = (pvalue)
+  -- if $(n < |S.STORE|) /\ (HCELL n) <- S.ALLOCATIONS
+  -- if n <- S.REFCELLS /\ ~(n <- S.LITERALREFDEBTS)
+  -- if ~$foreach_released_cell(S, n) /\ ~$typed_cv_string_released_cell(S, n) /\ ~$update_released_cell(S, n)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $array_iterator_value(S, KNOWN pvalue) = (pvalue)
+def $array_iterator_value(S, poperand) = eps -- otherwise
+
+def $array_iterator_ready(S, parrayiterator) = true
+  -- if $node_children(S, HOBJECT parrayiterator.OBJECT) = eps
+  -- if ~$instance_storage_freeing(S, parrayiterator.OBJECT)
+  -- if ~(parrayiterator.ARRAY <- S.LITERALARRAYDEBTS)
+  -- if $array_null_const_items(S, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY])
+  -- if $array_iterator_value(S, parrayiterator.CURRENT) = (pvalue_current)
+  -- if $array_iterator_value(S, parrayiterator.KEY) = (pvalue_key)
+  -- if pvalue_current =/= PARRAY parrayiterator.ARRAY /\ pvalue_key =/= PARRAY parrayiterator.ARRAY
+def $array_iterator_ready(S, parrayiterator) = false -- otherwise
+
+def $array_iterator_pending(S) = true
+  -- if S.TODO = (ARRAY_UNPACK n phpType13* z) :: ptask_tail*
+  -- if S_value = $quiet_operand(S, S.RESULT)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if $array_unpack_traversable(S_value, pvalue)
+def $array_iterator_pending(S) = false -- otherwise
+
+def $array_iterator_plan(S) = (parrayiterator)
+  -- if S.TODO = (ARRAY_UNPACK n phpType13* z) :: ptask_tail*
+  -- if S.RESULT = VARIABLE n_name* z_input
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if $(n_cell < |S.STORE|)
+  -- if (HCELL n_cell) <- $heap_prune($heap_graph(S)).NODES
+  -- if ~(n_cell <- S.REFCELLS)
+  -- if ~$foreach_released_cell(S, n_cell) /\ ~$typed_cv_string_released_cell(S, n_cell) /\ ~$update_released_cell(S, n_cell)
+  -- if $propref_at(S.PROPREFS, n_cell) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_object)
+  -- if $array_iterator_item(S, phpType13*, z) = ((porigin, expression))
+  -- if parrayiterator = {SITE porigin, LINE z, ARRAY n, ITERATOR S.NEXTITER, OBJECT n_object, INPUT S.RESULT, TAIL phpType13*, CURRENT (KNOWN PNULL), KEY (KNOWN PNULL)}
+  -- if $array_iterator_source(S, parrayiterator)
+  -- if $array_iterator_ready(S, parrayiterator)
+def $array_iterator_plan(S) = eps -- otherwise
+
+rule PhpStep/array-iterator-start: S ~> S[.ITERATORS = S.ITERATORS ++ [OBJECTITER parrayiterator.ITERATOR parrayiterator.OBJECT 0 false]][.NEXTITER = $(S.NEXTITER + 1)][.TODO = (ARRAY_ITERATOR parrayiterator "rewind-start") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ARRAY_UNPACK n phpType13* z) :: ptask_tail*
+  -- if $array_iterator_pending(S)
+  -- if $array_iterator_plan(S) = (parrayiterator)
+rule PhpStep/array-iterator-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "array Iterator unpack outside initialized Iterator domain"]
+  -- if $array_iterator_pending(S)
+  -- if $array_iterator_plan(S) = eps
+  -- if ~$array_generator_pending(S)
+rule PhpStep/array-iterator-payload-boundary: S ~> S[.COMPLETION = UNSUPPORTED "array Iterator unpack state outside quiet payload domain"]
+  -- if S.TODO = (ARRAY_ITERATOR parrayiterator text) :: ptask_tail*
+  -- if $array_iterator_valid(S, parrayiterator, text)
+  -- if ~$array_iterator_ready(S, parrayiterator)
+
+def $array_iterator_call(S, parrayiterator, text, ptask_tail*) = S[.TODO = [(CALL_ARGS (UNPACK_ITERATOR_TARGET parrayiterator.OBJECT pmethoddesc.FUNCTION.ORIGIN) eps 0 eps (parrayiterator.SITE) parrayiterator.LINE), ARRAY_ITERATOR parrayiterator text] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.OBJECTS[parrayiterator.OBJECT] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii(text), |S.CLASSES|) = (pmethoddesc)
+  -- if $useriter_method_selected(S, parrayiterator.OBJECT, pmethoddesc.FUNCTION.ORIGIN, text)
+def $array_iterator_clear(S, parrayiterator, text, ptask_tail*) = S[.TODO = (ARRAY_ITERATOR parrayiterator[.CURRENT = KNOWN PNULL][.KEY = KNOWN PNULL] text) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $array_iterator_call_stage("rewind-start") = ("rewind")
+def $array_iterator_call_stage("valid-start") = ("valid")
+def $array_iterator_call_stage("current-start") = ("current")
+def $array_iterator_call_stage("key-start") = ("key")
+def $array_iterator_call_stage("next-start") = ("next")
+def $array_iterator_call_stage(text) = eps -- otherwise
+def $array_iterator_valid_stage(true) = "current-start"
+def $array_iterator_valid_stage(false) = "finish"
+
+rule PhpStep/array-iterator-call: S ~> $array_iterator_call(S, parrayiterator, text_call, ptask_tail*)
+  -- if S.TODO = (ARRAY_ITERATOR parrayiterator text) :: ptask_tail*
+  -- if $array_iterator_call_stage(text) = (text_call)
+  -- if $array_iterator_valid(S, parrayiterator, text)
+  -- if $array_iterator_ready(S, parrayiterator)
+rule PhpStep/array-iterator-rewind-next-result: S ~> $array_iterator_clear(S, parrayiterator, "valid-start", ptask_tail*)
+  -- if S.TODO = (ARRAY_ITERATOR parrayiterator text) :: ptask_tail*
+  -- if text <- ["rewind", "next"]
+  -- if $array_iterator_valid(S, parrayiterator, text)
+  -- if $array_iterator_ready(S, parrayiterator)
+rule PhpStep/array-iterator-valid-result: S ~> $array_iterator_clear(S, parrayiterator, $array_iterator_valid_stage(b), ptask_tail*)
+  -- if S.TODO = (ARRAY_ITERATOR parrayiterator "valid") :: ptask_tail*
+  -- if $array_iterator_valid(S, parrayiterator, "valid")
+  -- if $array_iterator_ready(S, parrayiterator)
+  -- if S.RESULT = KNOWN (PBOOL b)
+
+def $array_iterator_capture(S, parrayiterator, false, ptask_tail*) = S[.TODO = (ARRAY_ITERATOR parrayiterator[.CURRENT = S.RESULT] "key-start") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $array_iterator_value(S, S.RESULT) = (pvalue)
+def $array_iterator_capture(S, parrayiterator, true, ptask_tail*) = S[.TODO = (ARRAY_ITERATOR parrayiterator[.KEY = KNOWN pvalue] "insert") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $array_iterator_value(S, S.RESULT) = (pvalue)
+def $array_iterator_capture(S, parrayiterator, b_key, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "array Iterator unpack callback result outside quiet payload domain"]
+  -- if $array_iterator_value(S, S.RESULT) = eps
+rule PhpStep/array-iterator-current-key-result: S ~> $array_iterator_capture(S, parrayiterator, b_key, ptask_tail*)
+  -- if S.TODO = (ARRAY_ITERATOR parrayiterator text) :: ptask_tail*
+  -- if text <- ["current", "key"]
+  -- if b_key = (text = "key")
+  -- if $array_iterator_valid(S, parrayiterator, text)
+  -- if $array_iterator_ready(S, parrayiterator)
+
+def $array_iterator_key_valid(PINT i) = $(-9223372036854775808 <= i /\ i <= 9223372036854775807)
+def $array_iterator_key_valid(pvalue) = ($string_bytes(pvalue) =/= eps) -- otherwise
+def $array_iterator_key(PINT i) = eps
+def $array_iterator_key(pvalue) = eps
+  -- if $string_bytes(pvalue) = (n_bytes*)
+  -- if $string_key(n_bytes*) = INTEGERKEY i
+def $array_iterator_key(pvalue) = (KSTRING n_bytes*)
+  -- if $string_bytes(pvalue) = (n_bytes*)
+  -- if $string_key(n_bytes*) = STRINGKEY
+
+def $array_iterator_insert(S, parrayiterator, ptask_tail*) = $throw_scalar(S, "Error", $ptascii("Keys must be of type int|string during array unpacking"), parrayiterator.LINE)
+  -- if parrayiterator.KEY = KNOWN pvalue_key
+  -- if ~$array_iterator_key_valid(pvalue_key)
+def $array_iterator_insert(S, parrayiterator, ptask_tail*) = $array_iterator_clear(S_insert, parrayiterator, "next-start", ptask_tail*)
+  -- if parrayiterator.KEY = KNOWN pvalue_key
+  -- if $array_iterator_key_valid(pvalue_key)
+  -- if $array_iterator_value(S, parrayiterator.CURRENT) = (pvalue)
+  -- if S_insert = $literal_insert(S, parrayiterator.ARRAY, $array_iterator_key(pvalue_key), pvalue, parrayiterator.LINE)
+  -- if S_insert.COMPLETION = NORMAL
+def $array_iterator_insert(S, parrayiterator, ptask_tail*) = S_insert
+  -- if parrayiterator.KEY = KNOWN pvalue_key
+  -- if $array_iterator_key_valid(pvalue_key)
+  -- if $array_iterator_value(S, parrayiterator.CURRENT) = (pvalue)
+  -- if S_insert = $literal_insert(S, parrayiterator.ARRAY, $array_iterator_key(pvalue_key), pvalue, parrayiterator.LINE)
+  -- if S_insert.COMPLETION =/= NORMAL
+rule PhpStep/array-iterator-insert: S ~> $array_iterator_insert(S, parrayiterator, ptask_tail*)
+  -- if S.TODO = (ARRAY_ITERATOR parrayiterator "insert") :: ptask_tail*
+  -- if $array_iterator_valid(S, parrayiterator, "insert")
+  -- if $array_iterator_ready(S, parrayiterator)
+rule PhpStep/array-iterator-finish: S ~> S[.TODO = (ARRAY_NEXT parrayiterator.ARRAY parrayiterator.TAIL) :: ptask_tail*][.ITERATORS = $iterator_remove(S.ITERATORS, parrayiterator.ITERATOR)][.ORIGIN = $origin_next_item(S.ORIGIN, parrayiterator.TAIL)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ARRAY_ITERATOR parrayiterator "finish") :: ptask_tail*
+  -- if $array_iterator_valid(S, parrayiterator, "finish")
+  -- if $array_iterator_ready(S, parrayiterator)
+
+;; DATA is the sole receiver owner; the borrowed callback target adds none.
+def $array_iterator_target(S, parrayiterator, UNPACK_ITERATOR_TARGET n porigin_method, text) = (n = parrayiterator.OBJECT /\ $useriter_method_selected(S, n, porigin_method, text))
+def $array_iterator_target(S, parrayiterator, pcalltarget, text) = false -- otherwise
+def $call_line_valid(S, (porigin), z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
+def $useriter_pending(S, UNPACK_ITERATOR_TARGET n porigin_method, porigin_site) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.TODO = (CALL_ARGS (UNPACK_ITERATOR_TARGET n porigin_method) eps 0 eps (porigin_site) z) :: (ARRAY_ITERATOR parrayiterator text) :: ptask_tail*
+  -- if porigin_site = parrayiterator.SITE /\ z = parrayiterator.LINE
+  -- if $array_iterator_valid(S, parrayiterator, text)
+  -- if $array_iterator_target(S, parrayiterator, UNPACK_ITERATOR_TARGET n porigin_method, text)
+def $array_iterator_frame(S, pcallcontext, pframe) = true
+  -- if pframe.TODO = (ARRAY_ITERATOR parrayiterator text) :: ptask_tail*
+  -- if pframe.ORIGIN = (parrayiterator.SITE)
+  -- if pcallcontext.CALLSITE = pframe.ORIGIN /\ pcallcontext.LINE = parrayiterator.LINE
+  -- if pcallcontext.ARGC = 0 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps
+  -- if $array_iterator_target(S, parrayiterator, $context_target(pcallcontext), text)
+  -- if $array_iterator_valid(S[.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN], parrayiterator, text)
+def $array_iterator_frame(S, pcallcontext, pframe) = false -- otherwise
+def $useriter_frame(S, pcallcontext, pframe) = true -- if $array_iterator_frame(S, pcallcontext, pframe)
+def $useriter_marker(pframe) = true -- if pframe.TODO = (ARRAY_ITERATOR parrayiterator text) :: ptask_tail*
+def $reference_callback_used(S, pcallcontext) = (text <- ["valid", "current", "key"])
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (ARRAY_ITERATOR parrayiterator text) :: ptask_tail*
+  -- if $array_iterator_frame(S, pcallcontext, pframe)
+
+def $array_iterator_nodes(parrayiterator) = [HARRAY parrayiterator.ARRAY, HOBJECT parrayiterator.OBJECT] ++ $operand_nodes(parrayiterator.CURRENT) ++ $operand_nodes(parrayiterator.KEY)
+def $task_nodes(ARRAY_ITERATOR parrayiterator text) = $array_iterator_nodes(parrayiterator)
+def $call_task_valid(S, ARRAY_ITERATOR parrayiterator text) = $array_iterator_valid(S, parrayiterator, text)
+def $useriter_task_ids(ARRAY_ITERATOR parrayiterator text) = [parrayiterator.ITERATOR]
+def $error_task_iterator(ARRAY_ITERATOR parrayiterator text) = [parrayiterator.ITERATOR]
+
+def $array_iterator_discard(S, parrayiterator, text) = S[.ITERATORS = $iterator_remove(S.ITERATORS, parrayiterator.ITERATOR)][.ORIGIN = (parrayiterator.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $array_iterator_ready(S, parrayiterator)
+def $array_iterator_discard(S, parrayiterator, text) = S[.TODO = (THROW_SEARCH n) :: (ARRAY_ITERATOR parrayiterator text) :: ptask_tail*][.COMPLETION = UNSUPPORTED "array Iterator unpack abrupt payload outside quiet domain"]
+  -- if ~$array_iterator_ready(S, parrayiterator)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+def $return_discard(S, ARRAY_ITERATOR parrayiterator text) = $array_iterator_discard(S, parrayiterator, text)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $array_iterator_valid(S[.TODO = (THROW_SEARCH n) :: (ARRAY_ITERATOR parrayiterator text) :: ptask_tail*], parrayiterator, text)

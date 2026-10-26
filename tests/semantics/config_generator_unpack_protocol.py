@@ -76,7 +76,7 @@ def checks(program, path, name):
         '~$config_invoke_valid(S_pre,pconfigcall)', *common.public('S_pre'),
         'S_data = $test_config_generator_step(S_pre)',
         'S_data.TODO = (CONFIG_GENERATOR pconfiggenerator_initial "rewind") :: ptask_tail*',
-        'pconfiggenerator_initial = {CALL pconfigcall,OBJECT n_generator,INPUT S_pre.RESULT,ITEMS eps}',
+        'pconfiggenerator_initial = {CALL pconfigcall,OBJECT n_generator,INPUT S_pre.RESULT,ITEMS eps,PRODUCER eps}',
         '$task_nodes(CONFIG_GENERATOR pconfiggenerator_initial "rewind") = ' + roots,
         '$heap_owners($heap_graph(S_data),HOBJECT n_generator) = ' + ('3' if owned else '2'),
         'S_data.RESULT = KNOWN PNULL', 'S_data.STORE = S_pre.STORE',
@@ -139,16 +139,11 @@ def checks(program, path, name):
             '$heap_owners($heap_graph(S_last_callee),HOBJECT n_owner) = 1',
             '$config_generator_valid(S_last_callee,pconfiggenerator_finish,"finish")',
             'S_callee_stopped = $test_config_generator_step(S_last_callee)',
-            'S_callee_stopped = S_last_callee[.COMPLETION = UNSUPPORTED "CONFIG Generator unpack last DATA or callee owner"]',
-            'S_last_data = S_finish[.STORE[n_hold_cell] = DEFINED PNULL]']
+            'S_callee_stopped = S_last_callee[.COMPLETION = UNSUPPORTED "CONFIG Generator unpack last DATA or callee owner"]']
     else:
-        values += ['pconfigcall.OWNER = eps',
-            'S_last_data = S_finish[.STORE[n_generator_cell] = DEFINED PNULL]']
-    values += ['$heap_owners($heap_graph(S_last_data),HOBJECT n_generator) = 1',
-        'S_stopped = $test_config_generator_step(S_last_data)',
-        'S_stopped = S_last_data[.COMPLETION = UNSUPPORTED "CONFIG Generator unpack last DATA or callee owner"]',
-        '$drive_steps(S_stopped,4) = S_stopped',
-        '~$config_generator_start(S_pre[.ORIGIN = (porigin_argument)],pconfigcall,S_pre.RESULT,n_generator)',
+        values += ['pconfigcall.OWNER = eps']
+    # Source92 replaces the old last-DATA refusal projections with real retirement.
+    values += ['~$config_generator_start(S_pre[.ORIGIN = (porigin_argument)],pconfigcall,S_pre.RESULT,n_generator)',
         '~$config_generator_scope(S_first,pconfiggenerator_first[.INPUT = KNOWN (POBJECT n_generator)])',
         '~$config_generator_scope(S_first[.CODE = eps],pconfiggenerator_first)',
         *budget('S_pre'), *budget('S_finish'),

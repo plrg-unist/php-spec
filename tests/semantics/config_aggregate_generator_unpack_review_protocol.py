@@ -81,7 +81,7 @@ def checks(program, path, name):
         'pconfigcall.LINE = 23', 'z_argument = 24',
         'S_pre.RESULT = VARIABLE ' + text('aggregate') + ' z_argument']
     for name, cell in [('aggregate', 'n_aggregate_cell'), ('aggregateHold', 'n_aggregate_hold'),
-            ('it', 'n_generator_cell'), ('hold', 'n_generator_hold'), ('call', 'n_call_cell'),
+            ('it', 'n_generator_cell'), ('call', 'n_call_cell'),
             ('keep', 'n_keep_cell'), ('saved', 'n_saved_cell'), ('result', 'n_result_cell'),
             ('effects', 'n_effects_cell')]:
         values += ['$lookup(S_pre.ENV,' + text(name) + ') = (' + cell + ')']
@@ -120,7 +120,7 @@ def checks(program, path, name):
         *owners('S_return', 1, 3, 2), *common.public('S_return'),
         'S_data = $test_config_aggen_peer_step(S_return)',
         'S_data.TODO = (CONFIG_GENERATOR pconfiggenerator_initial "rewind") :: ptask_tail*',
-        'pconfiggenerator_initial = {CALL pconfigcall,OBJECT n_generator,INPUT pconfigaggregate.INPUT,ITEMS eps}',
+        'pconfiggenerator_initial = {CALL pconfigcall,OBJECT n_generator,INPUT pconfigaggregate.INPUT,ITEMS eps,PRODUCER eps}',
         'S_data.RESULT = KNOWN PNULL', 'S_data.STORE = S_return.STORE',
         'S_data.OBJECTS = S_return.OBJECTS', 'S_data.ARRAYS = S_return.ARRAYS',
         '$heap_graph(S_data) = $heap_graph(S_return)',
@@ -164,11 +164,8 @@ def checks(program, path, name):
         '$throwable_field(S_thrown,n_exception,"trace") = PARRAY n_trace',
         'S_thrown.ARRAYS = S_return.ARRAYS',
         *owners('S_thrown', 1, 2, 2), *common.public('S_thrown')]
-    values += ['S_last_data = S_thrown[.STORE[n_generator_hold] = DEFINED PNULL]',
-        '$heap_owners($heap_graph(S_last_data),HOBJECT n_generator) = 1',
-        'S_data_stopped = $test_config_aggen_peer_step(S_last_data)',
-        'S_data_stopped = S_last_data[.COMPLETION = UNSUPPORTED "CONFIG Generator unpack last cleanup owner"]',
-        'S_last_callee = S_thrown[.STORE[n_keep_cell] = DEFINED PNULL]',
+    # Source92 covers actual sole-DATA retirement instead of this old refusal.
+    values += ['S_last_callee = S_thrown[.STORE[n_keep_cell] = DEFINED PNULL]',
         '$heap_owners($heap_graph(S_last_callee),HOBJECT n_owner) = 1',
         'S_callee_stopped = $test_config_aggen_peer_step(S_last_callee)',
         'S_callee_stopped = S_last_callee[.COMPLETION = UNSUPPORTED "CONFIG Generator unpack last cleanup owner"]',
@@ -214,7 +211,7 @@ def partition(values, part):
     setup = [values[0], values[1], *reach('S_pre', 'S_initial', 0),
         'S_pre.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask_tail*',
         'pconfigcall.OWNER = (n_owner)']
-    for name, cell in [('hold', 'n_generator_hold'), ('keep', 'n_keep_cell'),
+    for name, cell in [('keep', 'n_keep_cell'),
             ('saved', 'n_saved_cell'), ('result', 'n_result_cell')]:
         setup += ['$lookup(S_pre.ENV,' + text(name) + ') = (' + cell + ')']
     setup += [*reach('S_return', 'S_pre', 1),

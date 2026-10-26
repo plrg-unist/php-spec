@@ -1198,8 +1198,8 @@ recorder files remain unavailable, without reconstruction or replay.
 
 Last-owner finish and cleanup stop explicitly before releasing their retained
 roots; wider retirement is partial. Both Generator controls retain their Source87
-Unsupported cuts; direct Generator CONFIG is admitted below, while a
-getIterator that is itself a generator function remains Unsupported. At the Source87 cut, builtin WeakMap still
+Unsupported cuts; direct Generators and generator-function getIterator are
+admitted by the later increments below. At the Source87 cut, builtin WeakMap still
 received a false TypeError; the increment below corrects that classification and
 bounded producers. Ordinary non-Traversable TypeError is preserved. Named keys,
 nonstring/reference/owning values, additional
@@ -1234,7 +1234,7 @@ the later full model; no accepted replay occurs. ARRAY entries, wider object/key
 forms, temporary operands, multiple packs, loss of external map/key/callee owners,
 GC callbacks and
 other CONFIG/Traversable producers remain partial. Existing stdClass TypeError
-and the generator-function getIterator Unsupported control stay disjoint;
+and the historical generator-function getIterator control stayed disjoint at that cut;
 their earlier executions are not renewed.
 
 The [Aggregate CONFIG producer](../../coverage/semantics/config-aggregate-iterator-unpack-review.json)
@@ -1278,9 +1278,9 @@ does not replace the retained Generator or selected setter.
 The terminal resume runs after both sends, before DATA retirement and API entry.
 A supplied terminal Exception keeps both sends pending, result99 and precision6,
 with only the genuine producer trace at the unpack line. Exact discard/drained
-cleanup preserve its identity and permit saved-setter recovery. Raw last-DATA or
-callee boundaries preserve the original state; explicit blocking also prevents
-terminal finalization from silently releasing those roots. Wider producer/cache
+cleanup preserve its identity and permit saved-setter recovery. At the Source90
+cut, raw last-DATA/callee boundaries preserve the original state; the sole-DATA
+quiet retirement increment below supersedes only that DATA refusal. Wider producer/cache
 modes stop explicitly and remain outside this slice.
 
 Native3/genuine Unsupported0 retain `8d2ecb421`; strict413/source3 and all467
@@ -1288,8 +1288,8 @@ original conditions retain `3e1e67dee`, first attempts. Six source-derived parts
 contain523 physical conditions, including56 setup with no coverage credit.
 No native/accepted/control execution is renewed. The old Source87 direct-Generator
 PHP bytes and historical ID remain exact; only its Unsupported expectation is
-removed because the current fresh-CV consumer now admits it. Generator-function getIterator, references/temporaries,
-arguments/Closure/method producers, named keys,
+removed because the current fresh-CV consumer now admits it. Generator-function
+getIterator is covered below; references/temporaries, arguments/Closure/ordinary method producers, named keys,
 more sends, owning/reference caches, delegation/Fiber/GC and wider diagnostics or
 last-owner lifetimes remain partial; paused boundaries are unchanged.
 
@@ -1305,8 +1305,9 @@ The new admission authenticates the Aggregate callback/source, selected callee,
 actual returned Generator, external owners and fresh phase. The old Iterator
 promotion stays exact and disjoint. Lost Aggregate/callee/returned-Generator
 owners and invalid phase/type/source stop at the raw handoff boundary with the
-original task/result. Existing Generator cleanup restoration/blocking protects
-later last-DATA/callee boundaries; driver finalization is a separate operation.
+original task/result. At the recorded Source91 cut, Generator cleanup restoration
+protects last-DATA/callee boundaries; the increment below replaces the quiet DATA
+refusal. Its separate shared-return admission guard remains intact.
 
 An Exception allocated in getIterator line14 retains its genuine method frame
 at unpack line24 when the Generator later throws it after both sends. No new
@@ -1317,6 +1318,61 @@ original conditions retain `1de318e67` (544 physical,69 source-derived setup).
 One invalid taskset wrapper stopped before Python; its log/exit remain zero-credit,
 and all six parts passed their first actual evaluations with unchanged90 caps.
 Native/genuine/accepted checks were not replayed; all five original genuine files
-remain preserved. A getIterator that is itself a generator function, nonfresh or
-owning/temporary/Closure/method producers, wider sends/values/lifetimes and paused
+remain preserved. Generator-function getIterator is covered below; nonfresh or
+owning/temporary/Closure/ordinary method producers, wider sends/values/lifetimes and paused
 boundaries remain partial or unchanged.
+
+The [sole-DATA Generator increment](../../coverage/semantics/config-generator-sole-data-review.json)
+handles existing initialized CV ingress when the body overwrites the only outside
+Generator owner. A closed named zero-argument Generator with no owning children
+can retire through the normal driver before INI_SET reception or caller catch.
+No owner is retained to keep validation alive. Existing object-slot metadata
+preserves source/function/selected-callee history after allocation retirement.
+Active rewind/next/ready/finish still require a live allocation; only invocation
+and cleanup-source validation accept the authenticated retired quiet history.
+
+WeakReference observers remain nonowning and become NULL before API success,
+post-retirement API arity traces, or caught terminal throw. Last-callee and owning
+RETURN boundaries keep exact raw Unsupported restoration; shared-owner behavior
+is unchanged. The old Source90/91 hypothetical quiet last-DATA refusals and two
+orphan hold-cell bindings are retired; all other original assertions/source bytes
+stay exact, their accepted historical counts remain, and no old suite is replayed.
+
+Native3/genuine Unsupported0 retain `d2b91bcce`; strict415/source3 and normal
+entry48 retain `44cec5541`. Corrected completion89, owned48/127 and peer99/96
+retain `8b7b153ec`, totaling448 originals/507 physical/59 setup. Original89 failed
+because a fixture continued from raw PhpStep output before the driver's prune;
+source-driven edges correct it without runtime changes or accepted replay. Both
+that failure and all five original genuine files are preserved. Direct temporary
+call-result ingress, ordinary method/Closure producers, owning caches/returns, delegation,
+GC/Fiber/destructor callback histories and broader lifetimes remain partial.
+
+The [Generator-method Aggregate producer](../../coverage/semantics/config-aggregate-generator-method-review.json)
+admits an initialized CV whose public zero-argument nonbyref getIterator has the
+exact Traversable return signature and itself yields. The implicit call still
+borrows its Aggregate; only GENERATOR_CREATE's
+copied frame gains a real receiver owner. The actual fresh return temporary then
+transfers into sole native DATA, without a fake named-function/CV certificate,
+unpack ARRAY or public cursor. Inherited method selection retains both the
+declaring function and actual receiver.
+
+An optional CONFIG producer receipt holds the original Aggregate identity,
+selected method and argument/source history without owning either object.
+Stored/paused frames authenticate that exact target; real active contexts retain
+ordinary Generator pairing. Closed reception validates immutable history after
+receiver/Generator allocation retirement, using Source92's unchanged quiet-DATA
+lifetime rule. Receiver WeakReference observers prove survival after input-CV
+replacement and death before API entry, or after a caught terminal throw releases
+the last outside hold. A method-created Exception keeps its original getIterator
+class/type/unpack-line19 trace and identity through two sends and terminal resume.
+Last-callee refusal, whole raw discard, normalized retirement and setter recovery
+remain explicit.
+
+Native3/genuine Unsupported0 retain `cd2512af4`; strict416/source3 and all574
+original conditions retain `c784daf3a`, first evaluations (653 physical,79 setup).
+Five old Generator record literals gain only the required EPS receipt; all other
+assertions stay exact. Only the Source87 Aggregate control's Unsupported mapping
+retires, with its PHP bytes and historical cut unchanged; no old suite is replayed.
+Direct temporary/ordinary method/Closure ingress, nonfresh/byref producers,
+wider sends/owning values, delegation/Fiber/destructor callback histories and
+paused boundaries remain partial or unchanged.

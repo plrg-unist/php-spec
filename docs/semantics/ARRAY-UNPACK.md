@@ -22,9 +22,60 @@ append overflow defers constant construction to execution, preserving prior
 output. The ordinary compiler treats spread operands as reads. Pooled constant
 results keep their permanent occurrence owners.
 
+Initialized user Iterators in ordinary CV spread operands now use genuine method
+frames in `426-array-iterator-unpack.watsup`. The order is rewind, valid, current,
+key, DIRECT insertion, cache release, then next. A raw current reference survives
+key callbacks before its live payload is copied; the reference wrapper itself is
+not inserted. Keys must be int|string; an invalid key raises Error before copying
+the current payload. Canonical numeric-string keys append, while noncanonical strings
+such as `"08"` retain their string identity. Existing string keys overwrite in place.
+
+The continuation owns the partial builder, Iterator DATA and raw current/key
+caches. Its immutable source receipt survives source-CV unset or rebinding.
+Normal completion releases the cache before next and DATA at finish. Invalid-key
+and current/key/next failures discard pending caches, DATA and the partial builder
+within the quiet domain. This first scope requires an Iterator with no owning
+heap children or destructor (primitive fields are allowed) and exact ordinary
+public method signatures. Cache values are quiet primitives, validated strings
+or flat DIRECT object-free arrays. Current may return an ordinary unconstrained
+reference cell; key remains by value. Fresh
+witnesses use integer arrays and distinguish current-copy COW from live reference
+updates. Nested ARRAY cache values and object payloads, other Iterator operand
+modes, Aggregate spread and wider callback lifetimes remain partial. Unsupported Traversables
+refuse explicitly rather than receiving a non-Traversable TypeError.
+
+`427-array-generator-unpack.watsup` adds ordinary named Generator bodies with
+received parameters and reference yields, using real borrowed native resumes.
+It admits ordinary unmarked CVs and owning direct named-call operands. The
+iterator owns DATA; an owning call operand keeps its separate opcode owner through
+traversal. No public cursor, PHP Generator-method frame or copied current-cache
+owner is invented. The Generator's VALUE/REFCELL/KEY edges persist during resumed
+code and after CLOSED, until actual storage destruction.
+
+Fresh and cached-first-yield inputs rewind normally. A past-first input acquires
+DATA before its rewind Exception; CLOSED acquisition throws before DATA exists.
+Valid int|string keys reuse the existing append/string replacement rules, then
+the live yielded value is dereferenced and copied into a DIRECT entry. Flat
+object-free arrays retain COW; ordinary unconstrained current-reference cells
+keep one physical payload edge regardless of wrapper multiplicity. Wider payloads
+remain partial.
+
+Completion releases DATA, then an owning opcode INPUT, before advancing the
+literal. Failure retains the partial builder through those same releases and
+real Generator finally/cache destruction, then cancels the builder. Immutable
+item/function history authenticates terminal continuations after Generator
+retirement without reading stale cached pointers as live owners. Explicit
+payload/builder refusals retain their owners and stop. Delegation, Closure/method
+and factory producers, reference-CV acquisition and wider lifetimes remain
+partial. [Generator spread review](../../coverage/semantics/array-generator-unpack-review.json)
+retains the separate source/state cuts and the retired A52 refusal control.
+
 The pinned engine routes are `zend_try_ct_eval_array` and `zend_compile_array`
 in `vendor/php-src/Zend/zend_compile.c`, `ZEND_ADD_ARRAY_UNPACK` in
 `Zend/zend_vm_def.h`, and the existing reference-copy paths in `Zend/zend_hash.c`.
+`Zend/zend_generators.c` supplies Generator acquisition, resume, force-close and
+cache storage destruction.
+The user Iterator cache and callback routes are in `Zend/zend_interfaces.c`.
 The high-level rule models their observable ordering and ownership without
 requiring the engine's packed-table representation.
 
@@ -32,8 +83,11 @@ requiring the engine's packed-table representation.
 including the 112 runtime originals and 42 compiler originals. Its 31 checked
 source state controls cover alias transfer, nested values, cycles, literal reuse,
 root cleanup and dense loop resumption; only budget-exhausted states are resumed.
-These checks do not close the array or spread families. Traversable objects,
-iterator callbacks and their failures require the later object/frame protocol.
+These checks do not close the array or spread families. The bounded Iterator
+protocol adds four exact source agreements, with
+[independent reached-state review](../../coverage/semantics/array-iterator-unpack-review.json).
+Its earlier Generator refusal retains historical zero credit; the changed control
+now exercises the Generator protocol above.
 Argument unpacking is a separate call-semantics obligation. Reports at the later
 combined container checkpoint establish the then-current broad source closure.
 

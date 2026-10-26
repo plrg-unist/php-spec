@@ -34,6 +34,7 @@ dec $property_get_string_copy_abrupt(pstate, ppropertygetstring, pvalue) : pstat
 dec $property_get_source(pstate, ppropertyget) : bool
 dec $property_get_this_source(pstate, ppropertyget) : bool
 dec $property_get_owned_source(pstate, ppropertyget) : bool
+dec $property_get_owned_access(pstate, nat, ptbytes) : bool
 dec $property_get_base_tasks(pstate, ppropertyget) : ptask*
 dec $property_get_base_carrier(ptask, nat, porigin) : nat
 dec $property_get_base_count(ptask*, nat, porigin) : nat
@@ -45,6 +46,7 @@ dec $property_get_decl(pstate, porigin, ptbytes) : ppropertyid?
 dec $property_get_access_desc(pstate, nat, ptbytes, ppropertyaccess) : ppropertydesc?
 dec $property_get_access_decl(pstate, nat, ptbytes, ppropertyaccess) : ppropertyid?
 dec $property_get_scoped_desc(pstate, ppropertyget) : ppropertydesc?
+dec $property_get_verify_desc(pstate, ppropertyget) : ppropertydesc?
 dec $property_get_public(pstate, nat, ptbytes) : bool
 dec $property_get_access_valid(pstate, nat, ptbytes, ppropertyaccess) : bool
 dec $property_get_lookup(pstate, ppropertyget) : ppropertyaccess
@@ -204,12 +206,16 @@ def $property_get_public(S, n, ptbytes) = true
 def $property_get_public(S, n, ptbytes) = (ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc.STATIC /\ ppropertydesc.KEY = ptbytes)
   -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
 
-;; The original source certifies ordinary lexical scope after callback entry.
-;; Changed Closure scope is a residual for these new nonpublic lookup forms.
-def $property_get_lookup(S, ppropertyget) = PROPERTY_ACCESS ppropertyget.NAME
-  -- if $property_get_public(S, ppropertyget.OBJECT, ppropertyget.NAME)
+;; Owned receiver history retains immutable access/signature facts, not absence.
+;; Existing public reference getters remain admitted; new nonpublic forms are BYVAL.
+def $property_get_owned_access(S, n, ptbytes) = ($property_get_public(S, n, ptbytes) \/ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF)
+  -- if $property_get_method(S, n) = (pmethoddesc)
+def $property_get_owned_access(S, n, ptbytes) = false -- otherwise
+
+;; The caller's source retains its selected key after callback entry, including
+;; a lexical private declaration hidden by an effective public Child property.
+;; Fresh entry/capture must agree with the actual caller's resolved access.
 def $property_get_lookup(S, ppropertyget) = $property_resolve_scope(S, ppropertyget.OBJECT, ppropertyget.NAME, $closure_source_class(S, ppropertyget.SITE))
-  -- if ~$property_get_public(S, ppropertyget.OBJECT, ppropertyget.NAME)
 def $property_get_access_valid(S, n, ptbytes, PROPERTY_ACCESS ptbytes) = true
   -- if $property_get_public(S, n, ptbytes)
 def $property_get_access_valid(S, n, ptbytes, PROPERTY_ACCESS ptbytes) = true
@@ -224,7 +230,6 @@ def $property_get_access_valid(S, n, ptbytes, PROPERTY_DENIED ppropertydesc) = t
 def $property_get_access_valid(S, n, ptbytes, ppropertyaccess) = true
   -- if $property_get_access_desc(S, n, ptbytes, ppropertyaccess) = (ppropertydesc)
   -- if $property_get_method(S, n) = (pmethoddesc)
-  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
 def $property_get_access_valid(S, n, ptbytes, ppropertyaccess) = false -- otherwise
 
 def $property_get_history(S, ppropertyget) = true
@@ -238,7 +243,8 @@ def $property_get_history(S, ppropertyget) = true
   -- if ~$function_generator(S, pmethoddesc.FUNCTION)
   -- if ppropertyget.DECL = $property_get_access_decl(S, ppropertyget.OBJECT, ppropertyget.NAME, $property_get_lookup(S, ppropertyget))
   -- if $property_get_access_valid(S, ppropertyget.OBJECT, ppropertyget.NAME, $property_get_lookup(S, ppropertyget))
-  -- if ~$property_get_owned_source(S, ppropertyget) \/ $property_get_public(S, ppropertyget.OBJECT, ppropertyget.NAME)
+  -- if ~$property_get_owned_source(S, ppropertyget) \/ $property_get_owned_access(S, ppropertyget.OBJECT, ppropertyget.NAME)
+  -- if ~$property_get_owned_source(S, ppropertyget) \/ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF \/ $property_get_lookup(S, ppropertyget) = PROPERTY_ACCESS ppropertyget.NAME
 def $property_get_history(S, ppropertyget) = false -- otherwise
 
 def $property_get_carrier(PROPERTY_GET_RESULT ppropertyget, n, porigin) = 1
@@ -316,7 +322,7 @@ def $property_get_plan(S) = (ppropertyget)
   -- if $property_get_needed(S, n, $base64(text_name))
   -- if ppropertyaccess = $property_resolve(S, n, $base64(text_name))
   -- if $property_get_access_valid(S, n, $base64(text_name), ppropertyaccess)
-  -- if $property_get_public(S, n, $base64(text_name)) \/ $property_lookup_scope(S) = $closure_source_class(S, porigin)
+  -- if ppropertyaccess = $property_resolve_scope(S, n, $base64(text_name), $closure_source_class(S, porigin))
   -- if $property_get_method(S, n) = (pmethoddesc)
   -- if ppropertyget = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, DECL $property_get_access_decl(S, n, $base64(text_name), ppropertyaccess)}
   -- if $property_get_valid(S, ppropertyget, true)
@@ -336,7 +342,7 @@ def $property_get_plan(S) = (ppropertyget)
   -- if $property_get_needed(S, n, $base64(text_name))
   -- if ppropertyaccess = $property_resolve(S, n, $base64(text_name))
   -- if $property_get_access_valid(S, n, $base64(text_name), ppropertyaccess)
-  -- if $property_get_public(S, n, $base64(text_name)) \/ $property_lookup_scope(S) = $closure_source_class(S, porigin)
+  -- if ppropertyaccess = $property_resolve_scope(S, n, $base64(text_name), $closure_source_class(S, porigin))
   -- if $property_get_method(S, n) = (pmethoddesc)
   -- if ppropertyget = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, DECL $property_get_access_decl(S, n, $base64(text_name), ppropertyaccess)}
   -- if $property_get_this_source(S, ppropertyget)
@@ -354,9 +360,12 @@ def $property_get_plan(S) = (ppropertyget)
   -- if (HOBJECT n) <- S.ALLOCATIONS /\ ~$instance_storage_freeing(S, n)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $property_get_needed(S, n, $base64(text_name))
-  -- if $property_get_public(S, n, $base64(text_name))
+  -- if $property_get_owned_access(S, n, $base64(text_name))
+  -- if ppropertyaccess = $property_resolve(S, n, $base64(text_name))
+  -- if ppropertyaccess = $property_resolve_scope(S, n, $base64(text_name), $closure_source_class(S, porigin))
+  -- if $property_get_access_valid(S, n, $base64(text_name), ppropertyaccess)
   -- if $property_get_method(S, n) = (pmethoddesc)
-  -- if ppropertyget = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, DECL $property_get_decl(S, porigin_class, $base64(text_name))}
+  -- if ppropertyget = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, DECL $property_get_access_decl(S, n, $base64(text_name), ppropertyaccess)}
   -- if $property_get_owned_source(S, ppropertyget)
   -- if $property_get_valid(S, ppropertyget, true)
   -- if $property_get_carriers(S.TODO, n, porigin) = 0
@@ -631,21 +640,22 @@ def $property_get_scoped_desc(S, ppropertyget) = (ppropertydesc)
   -- if $property_get_access_desc(S, ppropertyget.OBJECT, ppropertyget.NAME, $property_get_lookup(S, ppropertyget)) = (ppropertydesc)
   -- if ppropertydesc.ORIGIN = ppropertyid
 def $property_get_scoped_desc(S, ppropertyget) = eps -- otherwise
-def $property_get_verify(S, ppropertyget, KNOWN pvalue) = S
+;; Plain and constrained-reference verification share the captured declaration.
+;; The raw-key fallback remains disjoint from a selected nonpublic declaration.
+def $property_get_verify_desc(S, ppropertyget) = (ppropertydesc)
   -- if $property_get_scoped_desc(S, ppropertyget) = (ppropertydesc)
-  -- if ppropertydesc.TYPE = eps
-def $property_get_verify(S, ppropertyget, KNOWN pvalue) = $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, pmethoddesc.FUNCTION.CODE.STRICT))
-  -- if $property_get_scoped_desc(S, ppropertyget) = (ppropertydesc)
-  -- if ppropertydesc.TYPE =/= eps
-  -- if $property_get_method(S, ppropertyget.OBJECT) = (pmethoddesc)
+def $property_get_verify_desc(S, ppropertyget) = (ppropertydesc)
+  -- if $property_get_scoped_desc(S, ppropertyget) = eps
+  -- if ppropertyget.DECL = (ppropertyid)
+  -- if $property_desc_at($property_layout(S, ppropertyget.CLASS, |S.CLASSES|), ppropertyget.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid
+def $property_get_verify_desc(S, ppropertyget) = eps -- otherwise
 def $property_get_verify(S, ppropertyget, poperand) = S -- if ppropertyget.DECL = eps
 def $property_get_verify(S, ppropertyget, poperand) = S
-  -- if ppropertyget.DECL = (ppropertyid)
-  -- if $property_desc_at($property_layout(S, ppropertyget.CLASS, |S.CLASSES|), ppropertyget.NAME) = (ppropertydesc)
+  -- if $property_get_verify_desc(S, ppropertyget) = (ppropertydesc)
   -- if ppropertydesc.TYPE = eps
 def $property_get_verify(S, ppropertyget, poperand) = $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, pmethoddesc.FUNCTION.CODE.STRICT))
-  -- if ppropertyget.DECL = (ppropertyid)
-  -- if $property_desc_at($property_layout(S, ppropertyget.CLASS, |S.CLASSES|), ppropertyget.NAME) = (ppropertydesc)
+  -- if $property_get_verify_desc(S, ppropertyget) = (ppropertydesc)
   -- if ppropertydesc.TYPE =/= eps
   -- if $property_get_unconstrained(S, poperand)
   -- if S_read = $quiet_operand(S, poperand)

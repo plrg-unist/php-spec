@@ -1,6 +1,7 @@
 ;; SEND_UNPACK uses the native Generator iterator, without PHP method frames.
 ;; Its marker owns the input and acquired DATA; the resume operation borrows DATA.
 dec $generator_unpack_input(pstate, pgeneratorunpack) : bool
+dec $array_generator_operation_valid(pstate, pgeneratorop) : bool
 dec $generator_unpack_abort_input(pstate, pgeneratorunpack) : bool
 dec $generator_unpack_shape(pgeneratorunpack, text) : bool
 dec $generator_unpack_valid(pstate, pgeneratorunpack, text) : bool
@@ -204,7 +205,7 @@ def $generator_unpack_operation_tasks(S, pgeneratorop, ptask*) = false -- otherw
 def $generator_unpack_operation_frames(S, pgeneratorop, eps) = false
 def $generator_unpack_operation_frames(S, pgeneratorop, pframe :: pframe_tail*) = ($generator_unpack_operation_tasks($constant_frame_scope(S, pframe, pframe_tail*), pgeneratorop, pframe.TODO) \/ $generator_unpack_operation_frames(S, pgeneratorop, pframe_tail*))
 def $generator_unpack_operation_valid(S, pgeneratorop) = ($generator_unpack_operation_tasks(S, pgeneratorop, S.TODO) \/ $generator_unpack_operation_frames(S, pgeneratorop, S.FRAMES))
-def $generator_operation_site(S, pgeneratorop) = ($generator_unpack_operation_valid(S, pgeneratorop) \/ $config_generator_operation_valid(S, pgeneratorop))
+def $generator_operation_site(S, pgeneratorop) = ($generator_unpack_operation_valid(S, pgeneratorop) \/ $config_generator_operation_valid(S, pgeneratorop) \/ $array_generator_operation_valid(S, pgeneratorop))
   -- if pgeneratorop.STARTPACK /\ pgeneratorop.BORROWED
   -- if ~$generator_from_site(S, pgeneratorop.SITE)
 def $generator_resumption_valid(S, pgeneratorop) = ($generator_operation_valid(S, pgeneratorop) /\ $generator_resumption_stage(S, pgeneratorop))

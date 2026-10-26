@@ -1014,8 +1014,8 @@ without redirecting its interrupted `'ok'` return; history never rechecks UNSET.
 [Three source agreements and 330 focused premises](../../coverage/semantics/magic-get-scoped-unset-review.json)
 retain separate runtime/state cuts. Real caller frames, selected DECL, normal
 COPY release and caller-line rejection are reached; saved control projections
-and forged DECL/BYREF controls are derived. Raw-key public/denied behavior and
-reference384 remain fenced. Public-shadow selection, by-reference getters, owned receivers, special coercions,
+and forged DECL/BYREF controls are derived. Raw-key public/denied behavior keeps
+its separate bounds. Wider reference getters, owned receivers, special coercions,
 scoped recursive-inner Errors,
 bound-Closure scopes, quiet probes and wider lifetimes remain partial.
 
@@ -1029,6 +1029,47 @@ retains its receiver after Get clears the sole global CV and releases its hold.
 retain414 cuts; INITIAL is a separate existing control. The original false and
 shared diagnostic retain zero credit. Warning continuation validity is checked
 at its saved emitter, while Get source/history remains valid in the handler.
+
+Caller-source resolution now precedes the effective-public shortcut across the
+existing CV, literal-this and effective-public owned-factory producers. Parent's
+private int therefore governs Get even when Child has an initialized public
+string of the same name. This fixes a genuine normal wrong-result case: the owned
+factory returned raw string7 instead of converted int7. Verification still
+precedes original-receiver D and caller reception. Fresh actual access must agree
+with saved-source access; different scope classes may select the same public key.
+[Three source agreements and 413 focused conditions](../../coverage/semantics/magic-get-lexical-selection-review.json)
+retain415 cuts. INITIAL/public fallback are existing controls; the first runtime
+nondeterminism and peer pre-main binder failure retain zero credit. Raw and
+scoped verification are disjoint by retained DECL; wider scoped coercions and
+owned producers remain partial.
+
+The same named noarg owned-factory producer now also admits by-value Get for
+accessible private/protected UNSET and denied hidden properties. The owned gate
+retains immutable access/signature facts instead of rechecking absence after a
+callback. Selected private int verification converts `'7'` before COPY and receiver
+D; a protected Get can populate backing99 while returning captured `'ok'`. Denied
+private int INITIAL keeps DECL absent and returns raw `'ok'` without consulting the
+hidden type. Both receiver holds remain distinct: getter release precedes COPY,
+then BASE retires the original temporary before caller reception.
+[Three source agreements and 477 focused conditions](../../coverage/semantics/magic-get-owned-access-review.json)
+retain separate415 cuts. Existing public BYREF still detaches7 before receiver D
+changes its source cell to9; accessible INITIAL bypasses Get. Owned nonpublic
+BYREF refusal is a derived signature control. No new special-coercion route, state
+or root machinery is introduced; wider producers and lifetimes remain partial.
+
+Ordinary CV reads now also admit by-reference Get for accessible nonpublic UNSET
+properties. Plain and constrained-reference verification share the saved physical
+declaration, so Parent private int still wins over Child public string after Get
+runs in Child scope. An unconstrained returned cell changes from string7 to int7;
+COPY then releases its wrapper owner. A held string-property source instead raises
+the first-source conflict TypeError without writing the cell, at the original read
+file/line. Exact int|string sources survive COPY and later accept `'free'`: the
+requested Parent type never attaches to the referent.
+[Three source agreements and 432 focused conditions](../../coverage/semantics/magic-get-scoped-reference-review.json)
+retain416 cuts. An authentic owned factory with the same public shadow still
+refuses BYREF entry through saved mangled access, despite the old public gate.
+Literal-this BYREF, owned nonpublic BYREF, parameter backings, wider scoped
+coercions and lifetimes remain partial; no new task, state or root machinery.
 
 The [getter review](../../coverage/semantics/magic-property-get-review.json) records
 eight exact source agreements, 1293 setup-inclusive reached premises and the
@@ -1051,8 +1092,9 @@ exception, with null read registers and genuine H/B/C previous links.
 By-value and discarded getter results follow the same receiver-release order.
 The [owned-getter review](../../coverage/semantics/magic-property-owned-review.json)
 records seven source agreements and 1266 setup-inclusive reached premises at
-distinct retained cuts. By-reference factories, owned denied access and wider
-factory/receiver forms remain Unsupported; prior CV/denied evidence is unchanged.
+distinct retained cuts. By-reference factories, owned nonpublic reference getters
+and wider factory/receiver forms remain Unsupported; prior CV/denied evidence
+is unchanged.
 
 Weak MAGIC_GET verification also accepts numeric strings parsed as an in-range
 integer, using the getter declaration's strictness rather than the caller's.

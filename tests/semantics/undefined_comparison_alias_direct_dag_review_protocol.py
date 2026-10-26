@@ -54,7 +54,7 @@ def controls():
     return [
         '$comparison_read_array_payload(S,PARRAY n_payload)',
         '$comparison_read_array_payload(S,PARRAY n_middle)',
-        '~$comparison_read_array_payload(S,PARRAY n_root)',
+        '$comparison_read_array_payload(S,PARRAY n_root)',
         '$comparison_read_direct_entries(S,[ENTRY (KINT 0) (DIRECT (PARRAY n_leaf)), ENTRY (KINT 1) (DIRECT (PARRAY n_leaf))],[n_payload,n_middle])',
         '~$comparison_read_direct_array(S,PARRAY n_leaf,[n_leaf])',
         'S_self = S[.ARRAYS[n_middle].ITEMS = [ENTRY (KINT 0) (DIRECT (PARRAY n_middle))]]',

@@ -77,7 +77,7 @@ def checks(program, path, name):
         '$intrinsic_argument(S_pre,pconfigcall.SITE,0) = ((expression,true,eps,porigin_argument,z_argument))',
         'pconfigcall.LINE = 14', 'z_argument = 15',
         'S_pre.RESULT = VARIABLE ' + text('generator') + ' z_argument']
-    for name, cell in [('generator', 'n_generator_cell'), ('generatorHold', 'n_generator_hold'),
+    for name, cell in [('generator', 'n_generator_cell'),
             ('call', 'n_call_cell'), ('keep', 'n_keep_cell'), ('saved', 'n_saved_cell'),
             ('result', 'n_result_cell'), ('effects', 'n_effects_cell')]:
         values += ['$lookup(S_pre.ENV,' + text(name) + ') = (' + cell + ')']
@@ -89,7 +89,7 @@ def checks(program, path, name):
         'S_data = $test_config_generator_peer_step(S_pre)',
         'S_data.TODO = (CONFIG_GENERATOR pconfiggenerator_initial text_initial) :: ptask_tail*',
         'text_initial = "rewind"',
-        'pconfiggenerator_initial = {CALL pconfigcall,OBJECT n_generator,INPUT S_pre.RESULT,ITEMS eps}',
+        'pconfiggenerator_initial = {CALL pconfigcall,OBJECT n_generator,INPUT S_pre.RESULT,ITEMS eps,PRODUCER eps}',
         '$task_nodes(CONFIG_GENERATOR pconfiggenerator_initial text_initial) = [HOBJECT n_generator,HOBJECT n_owner]',
         'S_data.RESULT = KNOWN PNULL', 'S_data.STORE = S_pre.STORE',
         'S_data.OBJECTS = S_pre.OBJECTS', 'S_data.ARRAYS = S_pre.ARRAYS',
@@ -148,10 +148,6 @@ def checks(program, path, name):
             '~$config_generator_start(' + state + ',' + call + ',' + state + '.RESULT,n_generator)']
     values += ['S_bad_origin = S_pre[.ORIGIN = (porigin_argument)]',
         '~$config_generator_start(S_bad_origin,pconfigcall,S_bad_origin.RESULT,n_generator)',
-        'S_last_data = S_thrown[.STORE[n_generator_cell] = DEFINED PNULL][.STORE[n_generator_hold] = DEFINED PNULL]',
-        '$heap_owners($heap_graph(S_last_data),HOBJECT n_generator) = 1',
-        'S_data_stopped = $test_config_generator_peer_step(S_last_data)',
-        'S_data_stopped = S_last_data[.COMPLETION = UNSUPPORTED "CONFIG Generator unpack last cleanup owner"]',
         'S_last_callee = S_thrown[.STORE[n_keep_cell] = DEFINED PNULL]',
         '$heap_owners($heap_graph(S_last_callee),HOBJECT n_owner) = 1',
         'S_callee_stopped = $test_config_generator_peer_step(S_last_callee)',
@@ -200,7 +196,7 @@ def partition(values, part):
         'S_pre.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask_tail*',
         'pconfigcall.OWNER = (n_owner)',
         '$intrinsic_argument(S_pre,pconfigcall.SITE,0) = ((expression,true,eps,porigin_argument,z_argument))']
-    for name, cell in [('generator', 'n_generator_cell'), ('generatorHold', 'n_generator_hold'),
+    for name, cell in [('generator', 'n_generator_cell'),
             ('keep', 'n_keep_cell'), ('saved', 'n_saved_cell'), ('result', 'n_result_cell')]:
         setup += ['$lookup(S_pre.ENV,' + text(name) + ') = (' + cell + ')']
     setup += ['S_pre.STORE[n_generator_cell] = DEFINED (POBJECT n_generator)',
