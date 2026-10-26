@@ -52,6 +52,31 @@ echo "R:",$dest===99,":",$tail,":",$row[0],":",$row[1],":",$seed,":",$watch->get
 unset($e,$seed,$row,$watch,$dest,$tail,$first,$second);
 echo "U:",isset($it),":",isset($row),":",isset($e),";";
 ''',
+    'array-iterator-data-destructor-review-split-trace': b'''<?php
+class ArrayDataSplitTrace implements Iterator {
+    public int $position=0;
+    public function rewind(): void {echo "W;";$this->position=0;unset($GLOBALS["it"]);}
+    public function valid(): bool {echo "V",$this->position,";";return $this->position<1;}
+    public function current(): mixed {echo "C;";return 5;}
+    public function key(): mixed {echo "K;";return "row";}
+    public function next(): void {echo "N;";$this->position++;}
+    public function __destruct() {echo "D;";throw new Exception("fresh");}
+}
+$it=new ArrayDataSplitTrace();$dest=99;$tail=7;
+echo "P;";
+try {
+    $dest=[
+        4=>8,
+        ...$it,
+        $tail++
+    ];echo "L;";
+} catch (Exception $e) {
+    $trace=$e->getTrace();
+    echo "T:",$e->getMessage(),":",$e->getLine(),":",$trace[0]["function"],":",$trace[0]["line"],":",$trace[0]["class"],":",$trace[0]["type"],":",$trace[0]["args"]===[],":",$e->getPrevious()===null,":",$dest===99,":",$tail,";";
+}
+unset($e,$trace,$dest,$tail);
+echo "U:",isset($it),":",isset($e),":",isset($trace),";";
+''',
 }
 
 BOUNDARIES = {}
