@@ -1077,14 +1077,26 @@ def $autoload_interface_source(S, porigin, preqbytes) = true
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $autoload_interface_kind($origin_node(S.SOURCES, porigin)) = (pclassdesc.KIND)
-  -- if pclassdesc.PARENT = eps /\ $autoload_interface_prefix_known(S, pclassdesc.INTERFACES, preqbytes)
+  -- if $trait_parent_available(S, pclassdesc)
   -- if $trait_plan(S, pclassdesc).TRAITS = eps
+  -- if $autoload_interface_prefix_known(S, pclassdesc.INTERFACES, preqbytes)
+def $autoload_interface_source(S, porigin, preqbytes) = true
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $autoload_interface_kind($origin_node(S.SOURCES, porigin)) = (pclassdesc.KIND)
+  -- if $trait_parent_available(S, pclassdesc)
+  -- if ptraitplan = $trait_plan(S, pclassdesc)
+  -- if ptraitplan.TRAITS = [preqbytes_trait]
+  -- if ptraitplan.PRECEDENCES = eps /\ ptraitplan.ALIASES = eps
+  -- if $trait_fetch(S, ptraitplan.TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
+  -- if $autoload_interface_prefix_known(S, pclassdesc.INTERFACES, preqbytes)
 def $autoload_interface_source(S, porigin, preqbytes) = false -- otherwise
 
 def $autoload_interface_pending(S, pclassdesc) = true
   -- if S.COMPLETION = NORMAL
   -- if ~$autoload_parent_pending(S, pclassdesc)
   -- if ~$autoload_trait_pending(S, pclassdesc)
+  -- if $trait_fetch(S, $trait_plan(S, pclassdesc).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
   -- if ~$failed_class_pending(S, pclassdesc)
@@ -1139,7 +1151,7 @@ def $task_nodes(AUTO_INTERFACE porigin preqbytes) = eps
 dec $autoload_trait_kind(pcnode?) : text?
 dec $autoload_trait_source(pstate, porigin, preqbytes) : bool
 
-def $autoload_trait_kind((NStmtClass phpType14 phpType24 phpType3 ABSENT (SEQUENCE eps) phpType23 metadata)) = ("class")
+def $autoload_trait_kind((NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)) = ("class")
 def $autoload_trait_kind((NStmtTrait phpType14 phpType3 phpType23 metadata)) = ("trait")
 def $autoload_trait_kind(pcnode?) = eps -- otherwise
 
@@ -1147,7 +1159,7 @@ def $autoload_trait_source(S, porigin, preqbytes) = true
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $autoload_trait_kind($origin_node(S.SOURCES, porigin)) = (pclassdesc.KIND)
-  -- if pclassdesc.PARENT = eps
+  -- if $trait_parent_available(S, pclassdesc)
   -- if ptraitplan = $trait_plan(S, pclassdesc)
   -- if ptraitplan.TRAITS = [preqbytes]
   -- if ptraitplan.PRECEDENCES = eps /\ ptraitplan.ALIASES = eps
