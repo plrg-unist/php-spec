@@ -327,6 +327,22 @@ S.OBJECTS[n_weak] = WEAKREFERENCE (n_token)
 $call_descriptors_valid(S)
 $heap_valid($heap_graph(S))
 """)
+# For NORMAL input, 40-control defines public drive as these preprocessors
+# followed by drive_steps. Prove their fixed points once at each input, then
+# test the same budgets and full whole/split equality without revalidating.
+FACTORED_ENDING = []
+for clause in ENDING:
+    if clause == 'S_zero = $drive(S, 0)':
+        FACTORED_ENDING.extend([
+            '$call_entry_check(S) = S',
+            '$literal_reference_debt_check($output_guard($sensitive_trace_freeze(S))) = S',
+        ])
+    FACTORED_ENDING.append(clause.replace('$drive(', '$drive_steps('))
+    if clause == 'S_one = S_one_budget[.COMPLETION = NORMAL]':
+        FACTORED_ENDING.extend([
+            '$call_entry_check(S_one) = S_one',
+            '$literal_reference_debt_check($output_guard($sensitive_trace_freeze(S_one))) = S_one',
+        ])
 CASES = {
     'generator-fiber-helper-parked-handled-structure': {
         'source': ROWS[HANDLED]['source'],
@@ -336,7 +352,7 @@ CASES = {
     'generator-fiber-helper-parked-handled-completion': {
         'source': ROWS[HANDLED]['source'],
         'stage': PARKED_STAGE,
-        'checks': [*COMPLETION_BINDINGS, *ENDING, events(EVENTS[HANDLED])],
+        'checks': [*COMPLETION_BINDINGS, *FACTORED_ENDING, events(EVENTS[HANDLED])],
     },
     'generator-fiber-helper-injected-unhandled': {
         'source': ROWS[UNHANDLED]['source'],
