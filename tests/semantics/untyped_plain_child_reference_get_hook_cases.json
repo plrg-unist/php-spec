@@ -1,0 +1,67 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "untyped-child-alias",
+      "source": "<?php\nclass AliasParent136 {\n    public $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass AliasChild136 extends AliasParent136 {\n    public $value = 11;\n    public function __destruct() { echo \"D|\"; }\n}\necho \"A:\";\n$child = new AliasChild136;\n$alias =& $child->value;\necho $alias === 11 ? \"alias11|\" : \"bad-initial|\";\n$alias = \"word\";\necho $alias === \"word\" ? \"word|\" : \"bad-string|\";\n$copy = $child->value;\n$alias = 13;\necho $copy === \"word\" ? \"copy-word|\" : \"bad-copy|\";\necho $child->value === 13 ? \"live13|\" : \"bad-live|\";\nunset($child);\n$alias = \"free\";\necho $alias === \"free\" ? \"free|\" : \"bad-free|\";\necho $copy === \"word\" ? \"copy-still-word|Z|\" : \"bad-copy-after|\";\n",
+      "source_sha256": "dc08685b504e6c902022d3c08839822822132ab03fd60865ea4749df07716a21",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "QTpHfGFsaWFzMTF8d29yZHxHfGNvcHktd29yZHxHfGxpdmUxM3xEfGZyZWV8Y29weS1zdGlsbC13b3JkfFp8",
+        "stderr_base64": ""
+      }
+    },
+    {
+      "id": "untyped-child-null",
+      "source": "<?php\nclass NullParent136 {\n    public $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass NullChild136 extends NullParent136 {\n    public $value;\n    public function __destruct() { echo \"D|\"; }\n}\necho \"N:\";\n$child = new NullChild136;\n$alias =& $child->value;\necho $alias === null ? \"null|\" : \"bad-initial|\";\n$copy = $child->value;\n$alias = \"set\";\necho $copy === null ? \"copy-null|\" : \"bad-copy|\";\necho $child->value === \"set\" ? \"live-set|\" : \"bad-live|\";\nunset($child);\n$alias = \"post\";\necho $alias === \"post\" ? \"post|Z|\" : \"bad-post|\";\n",
+      "source_sha256": "80851a0fd56c6b4c77d08fe661243313b51fe2ef65efce032a551550140fdc10",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "TjpHfG51bGx8R3xjb3B5LW51bGx8R3xsaXZlLXNldHxEfHBvc3R8Wnw=",
+        "stderr_base64": ""
+      }
+    },
+    {
+      "id": "untyped-child-rebind-write",
+      "source": "<?php\nclass BindParent136 {\n    public $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass BindChild136 extends BindParent136 {\n    public $value = 11;\n    public function __destruct() { echo \"D|\"; }\n}\necho \"R:\";\n$child = new BindChild136;\n$child->value = \"own\";\n$replacement = 17;\ntry {\n    $child->value =& $replacement; // REBIND\n    echo \"bad-rebind|\";\n} catch (Error $error) {\n    echo $error->getMessage() === \"Cannot assign by reference to overloaded object\" ? \"blocked|\" : \"bad-message|\";\n    echo $error->getLine() === 16 ? \"line|\" : \"bad-line|\";\n    echo $error->getFile() === __FILE__ ? \"file|\" : \"bad-file|\";\n}\necho $child->value === \"own\" ? \"kept-own|\" : \"bad-property|\";\n$replacement = 19;\necho $child->value === \"own\" ? \"separate-own|\" : \"bad-rebound|\";\necho $replacement === 19 ? \"rhs19|\" : \"bad-rhs|\";\nunset($child);\necho \"Z|\";\n",
+      "source_sha256": "580d0207456da3666a1a0562aee82eba6143b51fcda844456f8a0d2de0563def",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "UjpHfGJsb2NrZWR8bGluZXxmaWxlfEd8a2VwdC1vd258R3xzZXBhcmF0ZS1vd258cmhzMTl8RHxafA==",
+        "stderr_base64": ""
+      }
+    }
+  ],
+  "unsupported_controls": [
+    {
+      "id": "untyped-grandchild-boundary",
+      "source": "<?php\nclass DeepParent136 {\n    public $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass DeepChild136 extends DeepParent136 {\n    public $value = 11;\n}\nclass DeepGrandchild136 extends DeepChild136 {\n    public function __destruct() { echo \"D|\"; }\n}\necho \"X:\";\n$child = new DeepGrandchild136;\n$alias =& $child->value;\necho $alias === 11 ? \"alias11|\" : \"bad-initial|\";\n$alias = \"word\";\necho $child->value === \"word\" ? \"live-word|\" : \"bad-live|\";\nunset($child);\necho \"Z|\";\n",
+      "source_sha256": "9d752c333ed323a2469f999dcedc54f80d30cfa81bb164d349edf5a5ef8f2b23",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "WDpHfGFsaWFzMTF8R3xsaXZlLXdvcmR8RHxafA==",
+        "stderr_base64": ""
+      },
+      "model": {
+        "status": "unsupported",
+        "reason": "inherited property hook override",
+        "stdout_base64": "",
+        "stderr_base64": ""
+      }
+    }
+  ]
+}
