@@ -640,13 +640,16 @@ def $property_get_verify(S, ppropertyget, KNOWN pvalue) = $property_get_verify_v
   -- if ppropertydesc.TYPE =/= eps
   -- if $property_get_method(S, ppropertyget.OBJECT) = (pmethoddesc)
 def $property_get_verify(S, ppropertyget, poperand) = S -- if ppropertyget.DECL = eps
+;; Raw-key verification belongs only to that retained declaration.
 def $property_get_verify(S, ppropertyget, poperand) = S
   -- if ppropertyget.DECL = (ppropertyid)
   -- if $property_desc_at($property_layout(S, ppropertyget.CLASS, |S.CLASSES|), ppropertyget.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid
   -- if ppropertydesc.TYPE = eps
 def $property_get_verify(S, ppropertyget, poperand) = $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, pmethoddesc.FUNCTION.CODE.STRICT))
   -- if ppropertyget.DECL = (ppropertyid)
   -- if $property_desc_at($property_layout(S, ppropertyget.CLASS, |S.CLASSES|), ppropertyget.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid
   -- if ppropertydesc.TYPE =/= eps
   -- if $property_get_unconstrained(S, poperand)
   -- if S_read = $quiet_operand(S, poperand)
