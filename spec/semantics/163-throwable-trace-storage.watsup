@@ -550,12 +550,22 @@ def $trace_object_class(S, n) = $trace_instance_class(S, n)
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE porigin
 def $trace_object_class(S, n) = false -- otherwise
+dec $trace_object_inline_shape(pstate, nat) : bool
+def $trace_object_inline_shape(S, n) = true
+  -- if S.OBJECTS[n] = STDINSTANCE
+def $trace_object_inline_shape(S, n) = true
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if $property_layout(S, porigin, |S.CLASSES|) = (ppropertydesc*)
+  -- if |pobjectprops.SLOTS| = |ppropertydesc*|
+def $trace_object_inline_shape(S, n) = false -- otherwise
 def $trace_object_node(S, n, pcompareguard_seen*) = $trace_object_slots(S, pobjectprops.SLOTS, (HOBJECT n) :: pcompareguard_seen*)
   -- if $(|pcompareguard_seen*| < 16)
   -- if ~((HOBJECT n) <- pcompareguard_seen*)
   -- if $trace_object_class(S, n)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $object_table_at(S.OBJECTTABLES, n) = eps
+  -- if $trace_object_inline_shape(S, n)
 def $trace_object_node(S, n, pcompareguard_seen*) = ($trace_object_slots(S, pobjectprops.SLOTS, (HARRAY n_table) :: (HOBJECT n) :: pcompareguard_seen*) /\ $trace_object_entries(S, S.ARRAYS[n_table].ITEMS, (HARRAY n_table) :: (HOBJECT n) :: pcompareguard_seen*))
   -- if $(|pcompareguard_seen*| < 15)
   -- if ~((HOBJECT n) <- pcompareguard_seen*)
@@ -629,6 +639,9 @@ dec $trace_object_slots_present(pstate, ppropertyslot*) : bool
 dec $trace_object_node_present(pstate, nat) : bool
 dec $trace_object_values_present(pstate, pentry*) : bool
 dec $trace_object_property_present(pstate, pvalue) : bool
+dec $trace_object_property_array(pstate, nat, pcompareguard*) : bool
+dec $trace_object_property_items(pstate, pentry*, pcompareguard*) : bool
+dec $trace_object_property_value_path(pstate, pvalue, pcompareguard*) : bool
 def $trace_object_value_present(S, POBJECT n) = $trace_object_node_present(S, n)
 def $trace_object_value_present(S, PARRAY n) = $trace_object_array_present(S, n)
 def $trace_object_value_present(S, pvalue) = false -- otherwise
@@ -641,8 +654,20 @@ def $trace_object_values_present(S, eps) = false
 def $trace_object_values_present(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = ($trace_object_value_present(S, pvalue) \/ $trace_object_values_present(S, pentry_tail*))
 def $trace_object_values_present(S, pentry*) = false -- otherwise
 def $trace_object_property_present(S, POBJECT n) = true
-def $trace_object_property_present(S, PARRAY n) = $trace_object_array_present(S, n)
+def $trace_object_property_present(S, PARRAY n) = $trace_object_property_array(S, n, eps)
 def $trace_object_property_present(S, pvalue) = false -- otherwise
+def $trace_object_property_value_path(S, POBJECT n, pcompareguard_seen*) = true
+def $trace_object_property_value_path(S, PARRAY n, pcompareguard_seen*) = $trace_object_property_array(S, n, pcompareguard_seen*)
+def $trace_object_property_value_path(S, pvalue, pcompareguard_seen*) = false -- otherwise
+def $trace_object_property_items(S, eps, pcompareguard_seen*) = false
+def $trace_object_property_items(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*, pcompareguard_seen*) = ($trace_object_property_value_path(S, pvalue, pcompareguard_seen*) \/ $trace_object_property_items(S, pentry_tail*, pcompareguard_seen*))
+def $trace_object_property_items(S, pentry*, pcompareguard_seen*) = false -- otherwise
+def $trace_object_property_array(S, n, pcompareguard_seen*) = $trace_object_property_items(S, S.ARRAYS[n].ITEMS, (HARRAY n) :: pcompareguard_seen*)
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if ~((HARRAY n) <- pcompareguard_seen*)
+  -- if $(|pcompareguard_seen*| < 16)
+def $trace_object_property_array(S, n, pcompareguard_seen*) = false -- otherwise
 def $trace_object_slots_present(S, eps) = false
 def $trace_object_slots_present(S, ppropertyslot :: ppropertyslot_tail*) = ($trace_object_property_present(S, pvalue) \/ $trace_object_slots_present(S, ppropertyslot_tail*))
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
