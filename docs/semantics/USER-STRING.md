@@ -50,9 +50,13 @@ survives the temporary's nonthrowing destructor before caller store/catch. Raw
 read. The [LEFT lifetime review](../../coverage/semantics/concat-left-stringable-lifetime-review.json)
 records source3/control1 and 771 recipe premises across their reviewed cuts,
 including derived guards. Late unconstrained reference wrapping is read through
-the existing variable resolver; owning RIGHT combinations keep their earlier
-partial route. Initial reference/undefined RHS, constraints and wider lifetimes
-remain outside this new entry scope.
+the existing variable resolver. Two distinct acquired Stringable operands now
+keep both temporaries through conversion and retire LEFT before RIGHT, using a
+RIGHT-only hold during normal or pending-Exception LEFT destruction. Source3 and889
+recipe premises, including reversed-allocation throws and derived controls, pass
+in the [dual lifetime review](../../coverage/semantics/concat-dual-stringable-lifetime-review.json).
+Other owning forms retain their prior partial route; initial reference/undefined
+RHS, constraints, throwing destructors and wider lifetimes remain outside this scope.
 
 Supplied fixed string parameters now use the same resumable callback in receive
 order. Nominal or callable membership retains the original object before string

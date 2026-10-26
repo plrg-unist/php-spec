@@ -5,12 +5,19 @@ syntax pconcatleft = {SITE porigin, LINE int, OBJECT nat, RIGHT poperand, RIGHTC
 dec $concat_owned_source(pstate, pconcatleft) : bool
 def $concat_owned_source(S, pconcatleft) = ($concat_site_valid(S, pconcatleft.SITE, pconcatleft.LINE, false, pconcatleft.RIGHTCONST) /\ $(pconcatleft.OBJECT < |S.OBJECTS|))
 dec $concat_owned_live(pstate, pconcatleft) : bool
-def $concat_owned_live(S, pconcatleft) = ($concat_owned_source(S, pconcatleft) /\ $operand_nodes(pconcatleft.RIGHT) = eps /\ $stringable_instance(S, pconcatleft.OBJECT))
+dec $concat_owned_dual(pstate, pconcatleft) : bool
+def $concat_owned_dual(S, pconcatleft) = $stringable_instance(S, n_right)
+  -- if pconcatleft.RIGHT = KNOWN (POBJECT n_right)
+  -- if n_right =/= pconcatleft.OBJECT
+def $concat_owned_dual(S, pconcatleft) = false -- otherwise
+dec $concat_owned_rhs_live(pstate, pconcatleft) : bool
+def $concat_owned_rhs_live(S, pconcatleft) = ($operand_nodes(pconcatleft.RIGHT) = eps \/ $concat_owned_dual(S, pconcatleft))
+def $concat_owned_live(S, pconcatleft) = ($concat_owned_source(S, pconcatleft) /\ $concat_owned_rhs_live(S, pconcatleft) /\ $stringable_instance(S, pconcatleft.OBJECT))
 def $concat_owned_plan(S) = (pconcatleft)
   -- if S.TODO = (CONCAT_PREP (KNOWN (POBJECT n)) poperand_right false b_right z) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if pconcatleft = {SITE porigin, LINE z, OBJECT n, RIGHT poperand_right, RIGHTCONST b_right}
-  -- if $operand_nodes(poperand_right) = eps
+  -- if $concat_owned_rhs_live(S, pconcatleft)
   -- if $concat_owned_source(S, pconcatleft)
   -- if $stringable_instance(S, n)
 def $concat_owned_plan(S) = eps -- otherwise
@@ -18,7 +25,7 @@ def $concat_owned_plan(S) = eps -- otherwise
 ;; ZEND_CONCAT tests undefined CV operands before calling concat_function.
 ;; Do not manufacture a later Warning or accept a newly defined fallback.
 dec $concat_owned_ready(pstate, poperand) : bool
-def $concat_owned_ready(S, KNOWN pvalue) = ($value_nodes(pvalue) = eps /\ pvalue =/= PUNDEFINED)
+def $concat_owned_ready(S, KNOWN pvalue) = (($value_nodes(pvalue) = eps /\ pvalue =/= PUNDEFINED) \/ $user_string_value(S, pvalue))
 def $concat_owned_ready(S, VARIABLE ptbytes z) = true
   -- if ~$foreach_released_name(S, ptbytes)
   -- if $integer_pointer_select(S, VARIABLE ptbytes z) = (INTEGER_CV ptbytes)
@@ -59,6 +66,8 @@ def $concat_owned_right(S, pconcatleft) = $resolve_at(S_prepared, poperand, pcon
 dec $concat_owned_selected(pstate, nat?) : bool
 def $concat_owned_selected(S, eps) = true
 def $concat_owned_selected(S, (n)) = $(n < |S.OBJECTS|)
+
+dec $concat_owned_right_release_valid(pstate, pconcatleft) : bool
 
 rule PhpStep/concat-owned-left: S ~> $user_string_begin(S[.ORIGIN = (porigin_left)], pconcatleft.OBJECT, porigin_left, pconcatleft.LINE, CONCAT_OWNED_LEFT pconcatleft, ptask_tail*)
   -- if S.TODO = ptask :: ptask_tail*
@@ -128,16 +137,27 @@ rule PhpStep/concat-owned-result: S ~> S_concat[.ORIGIN = (pconcatleft.SITE)][.T
   -- if S_concat = $string_concat(S, pvalue_left, pvalue_right, false, pconcatleft.RIGHTCONST)
 rule PhpStep/concat-owned-release: S ~> S[.TODO = (CONCAT_OWNED_DONE pconcatleft) :: ptask_tail*]
   -- if S.TODO = (CONCAT_OWNED_RELEASE pconcatleft) :: ptask_tail*
+  -- if $operand_nodes(pconcatleft.RIGHT) = eps
+;; Keep OP2's acquired zval while FREE_OP1 may run a real destructor.
+rule PhpStep/concat-owned-release-left: S ~> S[.TODO = (CONCAT_OWNED_RIGHT_RELEASE pconcatleft) :: ptask_tail*]
+  -- if S.TODO = (CONCAT_OWNED_RELEASE pconcatleft) :: ptask_tail*
+  -- if $concat_owned_dual(S, pconcatleft)
+rule PhpStep/concat-owned-release-right: S ~> S[.TODO = (CONCAT_OWNED_DONE pconcatleft) :: ptask_tail*]
+  -- if S.TODO = (CONCAT_OWNED_RIGHT_RELEASE pconcatleft) :: ptask_tail*
+  -- if $concat_owned_right_release_valid(S, pconcatleft)
 rule PhpStep/concat-owned-done: S ~> S[.TODO = ptask_tail*]
   -- if S.TODO = (CONCAT_OWNED_DONE pconcatleft) :: ptask_tail*
 
-def $task_nodes(CONCAT_OWNED_LEFT pconcatleft) = [HOBJECT pconcatleft.OBJECT]
-def $task_nodes(CONCAT_OWNED_RIGHT pconcatleft pvalue n?) = [HOBJECT pconcatleft.OBJECT]
-def $task_nodes(CONCAT_OWNED_RELEASE pconcatleft) = [HOBJECT pconcatleft.OBJECT]
+def $task_nodes(CONCAT_OWNED_LEFT pconcatleft) = [HOBJECT pconcatleft.OBJECT] ++ $operand_nodes(pconcatleft.RIGHT)
+def $task_nodes(CONCAT_OWNED_RIGHT pconcatleft pvalue n?) = [HOBJECT pconcatleft.OBJECT] ++ $operand_nodes(pconcatleft.RIGHT)
+def $task_nodes(CONCAT_OWNED_RELEASE pconcatleft) = [HOBJECT pconcatleft.OBJECT] ++ $operand_nodes(pconcatleft.RIGHT)
+def $task_nodes(CONCAT_OWNED_RIGHT_RELEASE pconcatleft) = $operand_nodes(pconcatleft.RIGHT)
 def $task_nodes(CONCAT_OWNED_DONE pconcatleft) = eps
+def $concat_owned_right_release_valid(S, pconcatleft) = ($concat_owned_source(S, pconcatleft) /\ $concat_owned_dual(S, pconcatleft) /\ (S.ORIGIN = (pconcatleft.SITE) \/ S.ORIGIN = $origin_child((pconcatleft.SITE), [PCFIELD 0]) \/ S.ORIGIN = $origin_child((pconcatleft.SITE), [PCFIELD 1])))
 def $call_task_valid(S, CONCAT_OWNED_LEFT pconcatleft) = ($concat_owned_live(S, pconcatleft) /\ S.ORIGIN = $origin_child((pconcatleft.SITE), [PCFIELD 0]))
 def $call_task_valid(S, CONCAT_OWNED_RIGHT pconcatleft pvalue n?) = ($concat_owned_live(S, pconcatleft) /\ $string_bytes(pvalue) =/= eps /\ $concat_owned_selected(S, n?) /\ S.ORIGIN = $origin_child((pconcatleft.SITE), [PCFIELD 1]))
 def $call_task_valid(S, CONCAT_OWNED_RELEASE pconcatleft) = ($concat_owned_live(S, pconcatleft) /\ S.ORIGIN = (pconcatleft.SITE))
+def $call_task_valid(S, CONCAT_OWNED_RIGHT_RELEASE pconcatleft) = $concat_owned_right_release_valid(S, pconcatleft)
 def $call_task_valid(S, CONCAT_OWNED_DONE pconcatleft) = ($concat_owned_source(S, pconcatleft) /\ S.ORIGIN = (pconcatleft.SITE))
 def $stringify_source(S, porigin_left, z, CONCAT_OWNED_LEFT pconcatleft) = ($concat_owned_live(S, pconcatleft) /\ $origin_child((pconcatleft.SITE), [PCFIELD 0]) = (porigin_left) /\ z = pconcatleft.LINE)
 def $stringify_source(S, porigin_right, z, CONCAT_OWNED_RIGHT pconcatleft pvalue (n)) = ($concat_owned_live(S, pconcatleft) /\ $origin_child((pconcatleft.SITE), [PCFIELD 1]) = (porigin_right) /\ z = pconcatleft.LINE /\ $string_bytes(pvalue) =/= eps /\ $concat_owned_selected(S, (n)))
@@ -147,3 +167,14 @@ def $stringify_consumer_tail_valid(S, porigin, z, CONCAT_OWNED_LEFT pconcatleft,
 def $stringify_consumer_tail_valid(S, porigin, z, CONCAT_OWNED_RIGHT pconcatleft pvalue n?, ptask_tail*) = $stringify_source(S, porigin, z, CONCAT_OWNED_RIGHT pconcatleft pvalue n?)
 def $stringify_consumer_receiver_valid(S, n, CONCAT_OWNED_LEFT pconcatleft) = (n = pconcatleft.OBJECT)
 def $stringify_consumer_receiver_valid(S, n, CONCAT_OWNED_RIGHT pconcatleft pvalue n_selected?) = (n_selected? = (n))
+
+;; THROW_SEARCH retains the same pending Exception. First remove only OP1's
+;; TMP root; generic eager cleanup protects OP2 through DA, then discards it.
+def $return_discard(S, CONCAT_OWNED_LEFT pconcatleft) = S[.TODO = (THROW_SEARCH n_exception) :: (CONCAT_OWNED_RIGHT_RELEASE pconcatleft) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
+  -- if $call_task_valid(S, CONCAT_OWNED_LEFT pconcatleft)
+  -- if $concat_owned_dual(S, pconcatleft)
+def $return_discard(S, CONCAT_OWNED_RIGHT pconcatleft pvalue n?) = S[.TODO = (THROW_SEARCH n_exception) :: (CONCAT_OWNED_RIGHT_RELEASE pconcatleft) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
+  -- if $call_task_valid(S, CONCAT_OWNED_RIGHT pconcatleft pvalue n?)
+  -- if $concat_owned_dual(S, pconcatleft)

@@ -487,9 +487,15 @@ root/deletion, SOURCE/line and missing/reference readiness controls in the
 Entry admits ordinary defined RHS CVs or nonowning known values; initial missing,
 referenced/constrained CVs and other unsupported read forms remain explicit boundaries.
 After LEFT, a newly wrapped unconstrained live reference cell is readable, as in
-an ordinary `global` binding. Owning RIGHT operands do not select this new route;
-their old59 body remains unchanged and wider dual-owner retirement stays partial.
-No generic Stringable/eager-unwind or numerical/formatting/CONFIG algorithm changes.
+an ordinary `global` binding. Distinct raw `KNOWN` Stringable RIGHT operands now
+retain a second temporary through both conversions. The result is computed before
+explicit LEFT-drop, RIGHT-held and RIGHT-drop phases; a pending supplied Exception
+uses the same hold through real destructors before catch. Reversed-allocation peers
+separate operand order from heap order. Source3 and889 recipe premises313/316/260
+(including derived controls) pass in the [dual lifetime review](../../coverage/semantics/concat-dual-stringable-lifetime-review.json).
+Same-object/raw-reference/ARRAY/non-Stringable owning RHS forms keep their prior
+partial route. Generic Stringable/eager-unwind and numerical/formatting/CONFIG
+algorithms remain unchanged.
 
 Plain-CV `.=` now handles a quiet first string and a supported array RHS.
 Its source-authenticated warning marker caches the exact first string carrier;
