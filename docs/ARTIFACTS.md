@@ -100,6 +100,14 @@ It preserves eleven tested-input snapshots, six supporting reports, both fixture
 failures and the zero-credit diagnostic. Detached 165 retains `706cc866f`; corrected
 conflict 169/peer 177 retain `b23055fcd`. Later composition adds no execution credit.
 
+Returned receiver-cell Get evidence is retained in
+`../php-spec-evidence-archive/magic-get-receiver-cell-131/manifest.json`: separate
+native/baseline3+payload1 packets, changed4 and 714 focused conditions at original
+420 cuts. Eight reports and thirteen tested snapshots preserve runtime/schema,
+sources, helpers, profiles and all raw processes. Every executed group passed
+first time; Unsupported baselines and derived KNOWN-RV checks add no source credit.
+Later composition adds no execution credit.
+
 Keep future compressed raw traces, source snapshots and tool copies in this
 external archive (using new paths for new evidence) or in ignored `.tools/`.
 Commit concise reports and manifests with hashes and locations. Preserve raw

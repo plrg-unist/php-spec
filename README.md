@@ -5290,6 +5290,15 @@ and clears the receipt without attaching the requested type.
 [Three source agreements and 511 focused conditions](coverage/semantics/magic-get-param-reference-review.json)
 retain their original 419 cuts. Wider callbacks and coercions remain partial.
 
+Named noarg factories returning the receiver by reference now retain their original
+input cell through COPY, then retire it separately from Get's receiver hold.
+Retargeting that cell can run receiver destruction after verification but before
+COPY; a sole retained cell delays destruction until COPY has detached the value.
+Pending errors and copied objects preserve input retirement and destructor order.
+[Four source agreements and 714 focused conditions](coverage/semantics/magic-get-receiver-cell-review.json)
+retain 420 cuts. Native cases use reference Get; derived KNOWN-RV checks add no
+by-value source credit. Wider producers and lifetimes remain partial.
+
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference
 route. Typed object conversion remains a separate consumer.
