@@ -453,6 +453,9 @@ def $trace_instance_table_entries(S, eps, n_seen*) = true
 def $trace_instance_table_entries(S, (ENTRY pkey pitem) :: pentry_tail*, n_seen*) = ($trace_array_payload_value(S, pvalue, n_seen*) /\ $trace_instance_table_entries(S, pentry_tail*, n_seen*))
   -- if $object_table_item(S, pitem) = DIRECT pvalue
 def $trace_instance_table_entries(S, pentry*, n_seen*) = false -- otherwise
+dec $trace_instance_public(ppropertydesc*) : bool
+def $trace_instance_public(eps) = true
+def $trace_instance_public(ppropertydesc :: ppropertydesc_tail*) = (ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ $trace_instance_public(ppropertydesc_tail*))
 dec $trace_instance_class(pstate, nat) : bool
 def $trace_instance_class(S, n) = true
   -- if $(n < |S.OBJECTS|)
@@ -464,7 +467,7 @@ def $trace_instance_class(S, n) = true
   -- if pclassdesc.METHODS = eps /\ ~pclassdesc.READONLY
   -- if ~$property_hook_instance(S, n)
   -- if $property_layout(S, porigin, |S.CLASSES|) = (ppropertydesc :: ppropertydesc_tail*)
-  -- if $aggregate_decl_public(ppropertydesc :: ppropertydesc_tail*)
+  -- if $trace_instance_public(ppropertydesc :: ppropertydesc_tail*)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slots_valid(S, ppropertydesc :: ppropertydesc_tail*, pobjectprops.SLOTS)
   -- if $property_unique_names(pobjectprops.SLOTS)
