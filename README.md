@@ -2082,6 +2082,12 @@ authenticated string-carrier leaves, including live scalar reference cells.
 [Four source agreements and 533 state premises](coverage/semantics/constant-query-array-name-review.json)
 cover raw array traces, caller/trace COW and shared reference updates. Nested,
 object/legacy-string leaves and wider call forms remain open.
+Captured query Closures reject the same bounded positional arrays while retaining
+their selected callee through argument effects. Raw API and explicit wrapper
+payloads preserve the captured DIRECT snapshot; COW writes separate those copies,
+while scalar ALIAS cells stay shared. Runtime arrays retire after their final
+owners, caller destinations retain their prior values, and a captured string
+reader recovers. [Captured array-query review](coverage/semantics/constant-owned-array-query-review.json).
 The same flat array-name domain now raises TypeError in positional `define()`
 with primitive candidates and omitted/primitive flags, before flag reception or
 registration. Later arguments still run and can change ordinary fields or shared
