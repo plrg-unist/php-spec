@@ -23,8 +23,6 @@ def $test_invalid_iterator_front(S, 0) = true
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "key") :: ptask*
   -- if $config_iterator_invalid_primitive_key(S.RESULT)
 def $test_invalid_iterator_front(S, 1) = true
-  -- if S.TODO = (THROW_SEARCH n) :: (CONFIG_ITERATOR pconfigiterator "key") :: ptask*
-def $test_invalid_iterator_front(S, 2) = true
   -- if S.TODO = (THROW_SEARCH n) :: ptask*
   -- if S.ITERATORS = eps
   -- if S.DESTRUCTION.OPERATIONS = eps
@@ -123,15 +121,13 @@ def checks(program, path, name):
         'S_error.EVENTS = S_key.EVENTS',
         'S_error.PRECISIONINI = S_key.PRECISIONINI',
         *budget('S_key'), *driver.common.public('S_error'),
-        *reach('S_throw','S_error',1),
-        'S_throw.TODO = (THROW_SEARCH n_error) :: (CONFIG_ITERATOR pconfigiterator "key") :: ptask_tail*',
-        '$throwable_live(S_throw,n_error)',
-        'S_throw.STORE[n_result_cell] = DEFINED (PINT 99)',
-        'S_throw.PRECISIONINI = ' + text('14'),
-        '$test_outputs(S_throw.EVENTS) = ' + text(prefix),
-        *driver.common.public('S_throw'),
-        *reach('S_disposed','S_throw',2),
+        *reach('S_disposed','S_error',1),
         'S_disposed.TODO = (THROW_SEARCH n_error) :: ptask_disposed*',
+        '$throwable_live(S_disposed,n_error)',
+        'S_disposed.OBJECTS[n_error] = THROWABLE pthrowable_error',
+        'pthrowable_error.KIND = "Error"',
+        '$string_bytes($throwable_field(S_disposed,n_error,"message")) = (' + text(message) + ')',
+        '$throwable_field(S_disposed,n_error,"line") = PINT 23',
         'S_disposed.ITERATORS = eps',
         '$test_invalid_iterator_tasks(S_disposed.TODO)',
         '$heap_owners($heap_graph(S_disposed),HOBJECT pconfigiterator.OBJECT) = 1',
