@@ -3,6 +3,7 @@ dec $bitnot_copy_plan(pstate) : pbitnotwarning?
 dec $bitnot_range_warning_plan(pstate) : pbitnotwarning?
 dec $bitnot_nan_warning_plan(pstate) : pbitnotwarning?
 dec $array_string_cast_plan(pstate) : (porigin, poperand, int)?
+dec $cast_owned_array_plan(pstate) : pcastownedarraywarning?
 dec $object_numeric_cast_plan(pstate) : (porigin, pcast, poperand, int)?
 dec $int_cast_range_plan(pstate) : pbitnotwarning?
 dec $boolcast_nan_plan(pstate) : pboolnotnanwarning?
@@ -39,6 +40,7 @@ rule PhpStep/ordinary-void: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PC
 rule PhpStep/ordinary-cast_result-value: S ~> S_out[.TODO = ptask_tail*]
   -- if S.TODO = (CAST_RESULT pcast z) :: ptask_tail*
   -- if $array_string_cast_plan(S) = eps
+  -- if $cast_owned_array_plan(S) = eps
   -- if $object_numeric_cast_plan(S) = eps
   -- if $int_cast_range_plan(S) = eps
   -- if $boolcast_nan_plan(S) = eps

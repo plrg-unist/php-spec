@@ -654,6 +654,71 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE z
 
+;; ZEND_CAST owns a by-value call result until its string conversion completes.
+;; Unlike print, it produces no output: FREE_OP1 precedes result use or throw.
+syntax pcastownedarraywarning = { SITE porigin, LINE int, ARRAY nat }
+dec $cast_owned_array_source(pstate, pcastownedarraywarning) : bool
+def $cast_owned_array_source(S, pcastownedarraywarning) = true
+  -- if pcastownedarraywarning.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, pcastownedarraywarning.SITE) = (NExprCastString expression metadata)
+  -- if $source_emission_noarg_call(S, n, pcpath ++ [PCFIELD 0], expression) = (pcastownedarraywarning.LINE)
+  -- if $code_expression_at_source(S, pcastownedarraywarning.SITE, [PCFIELD 0]) = (pcastownedarraywarning.LINE)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 0]) = ((ptbytes_name, eps))
+  -- if $call_target(S, ptbytes_name, eps) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF
+  -- if pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.SIGNATURE.RETURNS = eps
+def $cast_owned_array_source(S, pcastownedarraywarning) = false -- otherwise
+dec $cast_owned_array_snapshot(pstate, pcastownedarraywarning) : bool
+def $cast_owned_array_snapshot(S, pcastownedarraywarning) = true
+  -- if $(pcastownedarraywarning.ARRAY < |S.ARRAYS|)
+  -- if (HARRAY pcastownedarraywarning.ARRAY) <- S.ALLOCATIONS
+  -- if ~(pcastownedarraywarning.ARRAY <- S.GC.IMMUTABLE)
+  -- if S.ARRAYS[pcastownedarraywarning.ARRAY].ITEMS =/= eps
+  -- if $array_string_cast_items(S.ARRAYS[pcastownedarraywarning.ARRAY].ITEMS)
+def $cast_owned_array_snapshot(S, pcastownedarraywarning) = false -- otherwise
+def $cast_owned_array_plan(S) = (pcastownedarraywarning)
+  -- if S.OUTPUTBUFFERS = eps
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.TODO = (CAST_RESULT CASTSTRING z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if S.RESULT = KNOWN (PARRAY n)
+  -- if pcastownedarraywarning = {SITE porigin, LINE z, ARRAY n}
+  -- if $cast_owned_array_source(S, pcastownedarraywarning)
+  -- if $cast_owned_array_snapshot(S, pcastownedarraywarning)
+def $cast_owned_array_plan(S) = eps -- otherwise
+dec $cast_owned_array_valid(pstate, pcastownedarraywarning, nat) : bool
+def $cast_owned_array_valid(S, pcastownedarraywarning, n) = ($cast_owned_array_source(S, pcastownedarraywarning) /\ $(n <= 1) /\ (n = 1 \/ S.OUTPUTBUFFERS = eps) /\ (n = 1 \/ $cast_owned_array_snapshot(S, pcastownedarraywarning)))
+rule PhpStep/cast-owned-array-begin: S ~> S[.TODO = (CAST_OWNED_ARRAY_WARNING pcastownedarraywarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $cast_owned_array_plan(S) = (pcastownedarraywarning)
+rule PhpStep/cast-owned-array-dispatch: S ~> $error_dispatch(S, 2, $ptascii("Array to string conversion"), pcastownedarraywarning.LINE, DIAGNOSTIC "Warning" ($ptascii("Array to string conversion")) pcastownedarraywarning.LINE, CAST_OWNED_ARRAY_WARNING pcastownedarraywarning 1)
+  -- if S.TODO = (CAST_OWNED_ARRAY_WARNING pcastownedarraywarning 0) :: ptask_tail*
+  -- if $cast_owned_array_valid(S, pcastownedarraywarning, 0)
+rule PhpStep/cast-owned-array-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array"))][.BASE = BASE_VALUE (KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array")))]
+  -- if S.TODO = (CAST_OWNED_ARRAY_WARNING pcastownedarraywarning 1) :: ptask_tail*
+  -- if $cast_owned_array_valid(S, pcastownedarraywarning, 1)
+  -- if S.OUTPUTBUFFERS = eps
+rule PhpStep/cast-owned-array-buffer-boundary: S ~> S[.COMPLETION = UNSUPPORTED "owned array string cast buffer changed during Warning"]
+  -- if S.TODO = (CAST_OWNED_ARRAY_WARNING pcastownedarraywarning 1) :: ptask_tail*
+  -- if $cast_owned_array_valid(S, pcastownedarraywarning, 1)
+  -- if S.OUTPUTBUFFERS =/= eps
+def $error_read_discard(S, CAST_OWNED_ARRAY_WARNING pcastownedarraywarning 1) = S[.COMPLETION = UNSUPPORTED "owned array string cast buffer changed during Warning"]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
+  -- if $cast_owned_array_valid(S, pcastownedarraywarning, 1)
+  -- if S.OUTPUTBUFFERS =/= eps
+def $task_nodes(CAST_OWNED_ARRAY_WARNING pcastownedarraywarning n) = [HARRAY pcastownedarraywarning.ARRAY]
+def $call_task_valid(S, CAST_OWNED_ARRAY_WARNING pcastownedarraywarning n) = $cast_owned_array_valid(S, pcastownedarraywarning, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = CAST_OWNED_ARRAY_WARNING pcastownedarraywarning 1
+  -- if $cast_owned_array_valid(S, pcastownedarraywarning, 1)
+  -- if perrorcall.TARGET =/= eps \/ $cast_owned_array_snapshot(S, pcastownedarraywarning)
+  -- if perrorcall.SITE = pcastownedarraywarning.SITE /\ perrorcall.LINE = pcastownedarraywarning.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pcastownedarraywarning.LINE
+
 ;; ZEND_CONCAT converts one borrowed array to the fixed string, preserving the
 ;; other operand's conversion order. No array value or heap owner is retained.
 dec $concat_array_source(pstate, porigin, poperand, poperand, int) : bool
