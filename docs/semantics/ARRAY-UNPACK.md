@@ -34,17 +34,18 @@ The continuation owns the partial builder, Iterator DATA and raw current/key
 caches. Its immutable source receipt survives source-CV unset or rebinding.
 Normal completion releases the cache before next and DATA at finish. Invalid-key
 and current/key/next failures discard pending caches, DATA and the partial builder
-within the quiet domain. This first scope requires an Iterator with no owning
+within the quiet domain. This ordinary path requires an Iterator with no owning
 heap children or destructor (primitive fields are allowed) and exact ordinary
 public method signatures. Cache values are quiet primitives, validated strings
 or finite acyclic DIRECT object-free array graphs. Current may return an ordinary
 unconstrained reference cell; key remains by value. Shared child tables contribute
 one edge per physical entry, independent of their parent's owner count. Path-local
-validation permits shared descendants but initially rejects cycles, descendant references,
-objects, debt and any path back to the receiving builder. Fresh integer-graph
-witnesses distinguish key-time live-reference writes from later selective COW.
-Object and wider reference descendants, other Iterator operand
-modes and wider callback lifetimes remain partial. Unsupported Traversables
+validation permits shared descendants but rejects cycles, objects, debt and any
+path back to the receiving builder. The no-destructor, by-value current-array
+lane admits ordinary scalar reference cells as described below. Fresh
+integer-graph witnesses distinguish key-time live-reference writes from later
+selective COW. Other Iterator operand modes, wider reference descendants and
+callback lifetimes remain partial. Unsupported Traversables
 refuse explicitly rather than receiving a non-Traversable TypeError.
 
 The bounded ordinary-CV Iterator scope now also admits a real public
@@ -107,9 +108,7 @@ edge retires; folded siblings retain their permanent pool owners. The
 [nested-cache review](../../coverage/semantics/array-traversable-nested-cache-review.json)
 adds two normal COW/DAG originals and two supplied-throw originals. Iterator quiet
 discard removes its pending roots together; Generator retirement preserves the
-builder through real finally and VALUE/storage release before cancellation. Its
-original descendant-reference refusal remains historical for the newer bounded
-Iterator-only reference-cell scope above.
+builder through real finally and VALUE/storage release before cancellation.
 
 `430-array-aggregate-unpack.watsup` adds ordinary CVs of named IteratorAggregate
 classes with a public non-generator `getIterator(): Traversable`. Genuine source owners

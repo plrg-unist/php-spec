@@ -1615,9 +1615,9 @@ Wider payloads, operand modes, delegation and Traversable lifetimes remain parti
 The [nested-cache review](coverage/semantics/array-traversable-nested-cache-review.json)
 adds live-reference/deep COW and abrupt retirement for both spread engines,
 preserving folded pool siblings and rejecting cycles, objects, debt and paths
-back to the receiving builder. Its descendant-reference refusal is historical
-for the newer bounded Iterator scope: ordinary scalar cells inside finite
-DIRECT arrays now retain shared ownership through key callbacks and COW, while
+back to the receiving builder. In the no-destructor, by-value Iterator current
+array scope, ordinary scalar cells inside finite DIRECT arrays retain shared
+ownership through key callbacks and COW, while
 a sole cell can unwrap after its external alias is dropped. An Aggregate-returned
 Iterator follows the same route. The [reference-cache review](coverage/semantics/array-traversable-reference-cache-review.json)
 records three exact source agreements and 273 focused conditions; Generator
