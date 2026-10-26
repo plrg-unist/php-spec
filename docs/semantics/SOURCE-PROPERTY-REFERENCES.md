@@ -46,6 +46,15 @@ that selected descriptor through authentic parent links. Four exact sources and
 538 reached premises with four raw steps cover aliases, copies, retirement and
 Get-before-rebind Error in the
 [memberful chain review](../../coverage/semantics/reference-get-memberful-review.json).
+The declaring getter class may itself extend one linked, parentless ordinary Base.
+When Base has no selected key, the getter's own slot is selected; when Base has
+a same-name public plain singleton nonstatic property of the same type, the
+hooked child keeps its own slot and default. Descendant plain redeclarations still select the latest
+slot and type source. The getter reads inherited unrelated Base members with
+its declaring lexical scope and the leaf receiver's called scope. Typed and
+untyped aliases, implicit null, independent copies, retirement and
+Get-before-rebind Error are checked in the
+[parented reference-Get review](../../coverage/semantics/reference-get-parented-review.json).
 
 Nonobject property writes use the pinned PHP modify or assign error and keep
 the operation's evaluation order; null and false do not create an object. The

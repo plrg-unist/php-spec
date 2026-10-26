@@ -57,6 +57,19 @@ remain Unsupported and static rejection with zero runtime credit. Two first
 fixture compiler stops retain zero strict credit.
 [Memberful reference-Get review](coverage/semantics/reference-get-memberful-review.json).
 
+A backed block `&get` may now be declared in a class with one linked parentless
+Base. Base may lack the selected key or declare a same-name public plain property
+of the same type; in the latter case the hooked child keeps its own slot and
+default. Existing linked descendants still select the latest plain slot and
+its typed source or untyped absence. Four frozen native/model sources and a
+separate independent same-name chain agree, with 417 source-reached premises
+and four raw fetch/rebind steps in the author packet. The initial two
+Unsupported stops, one timeout and one semantic helper elaboration failure
+retain zero full-packet credit.
+[Parented reference-Get review](coverage/semantics/reference-get-parented-review.json).
+Deeper Base ancestry, hooked/trait-selected Base properties and wider hook
+shapes remain partial.
+
 Canonical same-kind builtin `Exception`/`Error` pairs now compare nonempty trace
 arrays when captured arguments are direct primitive scalars or authenticated
 string carriers. Eight source agreements, two object/array-argument refusals and

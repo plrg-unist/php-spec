@@ -1,0 +1,30 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "baseline_revision": "20334b95d77cc512661e24f7bee50ca0521e4117",
+  "cases": [
+    {
+      "id": "parented-typed-latest",
+      "kind": "positive",
+      "source": "<?php\nclass BaseA140 {\n    public string $baseSide = \"B\";\n    public const TAG = \"T\";\n}\nclass GetterA140 extends BaseA140 {\n    public int $value = 7 {\n        &get { echo \"G:\", __CLASS__, \"/\", static::class, \"/\", $this->baseSide, \"|\"; return $this->value; }\n    }\n}\nclass ChildA140 extends GetterA140 {\n    public int $value = 11;\n    public $side = \"S\";\n}\nclass LeafA140 extends ChildA140 {\n    public function __destruct() { echo \"D|\"; }\n}\necho \"A:\", LeafA140::TAG, \"/\";\n$object = new LeafA140;\necho $object->baseSide, \"/\", $object->side, \"|\";\n$alias =& $object->value;\necho $alias === 11 ? \"alias11|\" : \"bad-alias|\";\n$alias = \"12\";\necho $alias === 12 ? \"typed12|\" : \"bad-type|\";\n$copy = $object->value;\n$alias = 13;\necho $copy === 12 ? \"copy12|\" : \"bad-copy|\";\necho $alias === 13 ? \"live13|\" : \"bad-live|\";\nunset($object);\n$alias = \"free\";\necho $alias === \"free\" ? \"free|Z|\" : \"bad-free|\";\n",
+      "source_sha256": "af26dfa3975276523b66d2e1c20aa2611a2686ec57f045582b4b1ded5155fd0b"
+    },
+    {
+      "id": "parented-untyped-null",
+      "kind": "positive",
+      "source": "<?php\nclass BaseB140 {\n    public $baseSide = \"B\";\n}\nclass GetterB140 extends BaseB140 {\n    public $value {\n        &get { echo \"G:\", __CLASS__, \"/\", static::class, \"/\", $this->baseSide, \"|\"; return $this->value; }\n    }\n}\nclass ChildB140 extends GetterB140 {}\nclass LeafB140 extends ChildB140 {\n    public function __destruct() { echo \"D|\"; }\n}\necho \"B:\";\n$object = new LeafB140;\n$alias =& $object->value;\necho $alias === null ? \"null|\" : \"bad-null|\";\n$alias = \"first\";\n$copy = $object->value;\n$alias = \"second\";\necho $copy === \"first\" ? \"copy|\" : \"bad-copy|\";\necho $object->value === \"second\" ? \"live|\" : \"bad-live|\";\nunset($object);\n$alias = \"after\";\necho $alias === \"after\" ? \"after|Z|\" : \"bad-after|\";\n",
+      "source_sha256": "582343cb91ad970737061db2dd6a1ba495e2ff50198fbd8346e227002dc367ee"
+    },
+    {
+      "id": "parented-rebind-error",
+      "kind": "positive",
+      "source": "<?php\nclass BaseC140 {\n    public $baseSide = \"B\";\n}\nclass GetterC140 extends BaseC140 {\n    public int $value = 7 {\n        &get { echo \"G:\", __CLASS__, \"/\", static::class, \"/\", $this->baseSide, \"|\"; return $this->value; }\n    }\n}\nclass ChildC140 extends GetterC140 {\n    public int $value = 11;\n}\nclass LeafC140 extends ChildC140 {\n    public function __destruct() { echo \"D|\"; }\n}\necho \"R:\";\n$object = new LeafC140;\n$replacement = 23;\ntry { $object->value =& $replacement; echo \"bad-rebind|\"; }\ncatch (Error $error) {\n    echo $error->getMessage(), \"|\";\n    echo $error->getFile() === __FILE__ ? \"file|\" : \"bad-file|\";\n    echo $error->getLine(), \"|\";\n}\necho $object->value === 11 ? \"kept11|\" : \"bad-value|\";\n$replacement = 29;\necho $object->value === 11 ? \"separate|\" : \"bad-rebound|\";\nunset($object);\necho \"Z|\";\n",
+      "source_sha256": "6979bdb01db442844fd93cfa25c3059bd2137d2abcb92455609d38b6eba481e5"
+    },
+    {
+      "id": "ordinary-override-control",
+      "kind": "candidate",
+      "source": "<?php\nclass BaseD140 {\n    public int $value = 3;\n    public $baseSide = \"B\";\n}\nclass GetterD140 extends BaseD140 {\n    public int $value = 7 {\n        &get { echo \"G:\", __CLASS__, \"/\", static::class, \"/\", $this->baseSide, \"|\"; return $this->value; }\n    }\n}\nclass LeafD140 extends GetterD140 {\n    public function __destruct() { echo \"D|\"; }\n}\necho \"O:\";\n$object = new LeafD140;\n$alias =& $object->value;\necho $alias === 7 ? \"child7|\" : \"bad-default|\";\n$alias = \"8\";\necho $object->value === 8 ? \"child8|\" : \"bad-write|\";\nunset($object);\n$alias = \"free\";\necho $alias === \"free\" ? \"free|Z|\" : \"bad-free|\";\n",
+      "source_sha256": "2adc97d8283fdd67ca5d4899387a91d2d0904fb41dbc8450f0ff30c69b59f300"
+    }
+  ]
+}

@@ -110,6 +110,17 @@ and Get-before-rebind Error. Reached checks also authenticate the sibling,
 constant and linked interface descriptors, latest default/type source, link
 removal refusals and four raw fetch/rebind steps.
 [Memberful reference-Get review](../../coverage/semantics/reference-get-memberful-review.json).
+The getter-declaring class may now have one linked parentless ordinary Base.
+An absent selected key in Base leaves the getter's own backing slot; a
+same-name public plain equal-type singleton nonstatic Base property is
+overridden by the getter's own separate slot and default. Existing linked descendants may retain or
+plainly redeclare the selected key; the last redeclaration supplies the typed
+source or untyped absence. The getter can read an inherited unrelated Base
+property, while `__CLASS__` names the declaring class and `static::class` names
+the leaf receiver. Four frozen originals and source-reached checks cover the
+two Base shapes, typed coercion, implicit null, copies, alias retirement and
+Get-before-rebind Error. This is still a bounded `&get` subset; see the
+[parented reference-Get review](../../coverage/semantics/reference-get-parented-review.json).
 Hook-bearing intermediate redeclarations remain Unsupported; an incompatible
 property type remains a static rejection. Different-type compatible chains,
 grouped selected declarations, virtual/arrow/set/trait forms, dimensions,
