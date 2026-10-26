@@ -51,11 +51,11 @@ that throws a supplied Exception still permits the cached `NAN` write before
 exception search, while the enclosing assignment stays unchanged. The saved
 bytes model the prepared string; its allocation identity cannot be observed in
 this scalar, initially and finally unbuffered route. The one-default-buffer
-callback route below is separate; other buffer changes remain Unsupported. Two exact sources
-and 135+120 reached-state premises are recorded in the
+callback route below is separate; other buffer changes remain Unsupported. Two
+exact sources and 135+120 reached-state premises are recorded in the
 [NaN print review](../../coverage/semantics/print-nan-warning-review.json).
-References, computed producers, buffering callbacks and wider output lifetimes
-remain partial.
+References, computed producers, user output-handler callbacks and wider output
+lifetimes remain partial.
 
 A direct nonempty flat primitive array CV now stages its `Array to string
 conversion` Warning through a named handler. `ZEND_ECHO` uses the interned
