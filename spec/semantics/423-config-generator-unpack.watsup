@@ -120,7 +120,8 @@ def $config_generator_return_history(S, pconfiggenerator) = true
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.FRAME = eps
   -- if pgenerator.DELEGATE = eps /\ pgenerator.BORROWED = eps /\ pgenerator.REFCELL = eps
-  -- if pgenerator.VALUE = (PSTRING n*)
+  -- if pgenerator.VALUE = (pvalue_cache)
+  -- if $string_bytes(pvalue_cache) = (n*)
   -- if pgenerator.KEY = (PINT z)
   -- if pgenerator.RETURN = (POBJECT n_return)
   -- if $ref_return_retire_method(S, n_return) = (pmethoddesc)

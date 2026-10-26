@@ -43,7 +43,7 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| Source96 | Native2/genuine Unsupported0 closed at `c5809eb65`/420;423 RETURN-storage/ARG-history bridge and398 original state conditions are pair-reviewed/frozen, affected packet pending. No writer. |
+| Source96 | Native2/genuine0 retain `c5809eb65`/420; strict420 passed at `e6ac741ed`, first model source failed0 on an interned-carrier guard. Reviewed string-bytes correction/fresh affected packet pending;398 original state conditions remain unrun. No CPU or writer. |
 | M155 | WeakMap Iterator factory: native/genuine closed; private424 source-certificate implementation preparing. |
 | OP90 | Prefetch repair preparing after native3/genuine classification; no writer. |
 | CLASS130 | Private native-first PARAM-boundary research; no writer. |
