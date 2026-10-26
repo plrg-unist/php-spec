@@ -1,3 +1,4 @@
+dec $array_aggregate_selected(pstate, pcalltarget, porigin) : bool
 ;; SEND_UNPACK uses native Generator hooks or real Iterator callbacks. Its
 ;; operand and iterator data are distinct owners; completed history owns neither.
 dec $fiber_traversal_object(pstate, nat, bool) : bool
@@ -297,7 +298,7 @@ def $target_called_class(S, AGGREGATE_METHOD_TARGET n porigin) = $target_called_
 def $target_function(S, AGGREGATE_METHOD_TARGET n porigin) = $target_function(S, METHOD_TARGET n porigin)
   -- if $generator_from_aggregate(S, POBJECT n)
   -- if $fiber_traversal_method_selected(S, n, porigin, "getIterator")
-def $call_selected_valid(S, AGGREGATE_METHOD_TARGET n porigin_method, (porigin_call)) = ($fiber_traversal_selected(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin_call) \/ $foreach_aggregate_selected(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin_call) \/ $yield_from_aggregate_selected(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin_call) \/ $config_aggregate_selected(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin_call))
+def $call_selected_valid(S, AGGREGATE_METHOD_TARGET n porigin_method, (porigin_call)) = ($fiber_traversal_selected(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin_call) \/ $foreach_aggregate_selected(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin_call) \/ $yield_from_aggregate_selected(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin_call) \/ $config_aggregate_selected(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin_call) \/ $array_aggregate_selected(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin_call))
 ;; GENERATOR_CREATE copies the borrowed callback frame and adds one This owner.
 ;; Its retained receipt authenticates the original unpack even without a caller.
 def $generator_creation_target(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin?) = $call_selected_valid(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin?)

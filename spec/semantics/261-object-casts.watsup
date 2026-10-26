@@ -58,6 +58,15 @@ def $object_table_item(S, DIRECT pvalue) = DIRECT pvalue
 def $object_table_item(S, ALIAS n) = ALIAS n
 def $object_table_item(S, UNINITIALIZED) = UNINITIALIZED
 
+;; A dynamic slot record keeps mixed-table identity after its value is unset.
+;; Declared-only nonpublic layouts retain their separate comparison route.
+dec $object_table_dynamic_history(ppropertyslot*) : bool
+def $object_table_dynamic_history(eps) = false
+def $object_table_dynamic_history(ppropertyslot :: ppropertyslot_tail*) = true
+  -- if ppropertyslot.DECL = eps
+def $object_table_dynamic_history(ppropertyslot :: ppropertyslot_tail*) = $object_table_dynamic_history(ppropertyslot_tail*)
+  -- if ppropertyslot.DECL =/= eps
+
 dec $object_table_ordinary_rows(pstate, nat, ppropertyslot*) : bool
 dec $object_table_ordinary_entries(nat, ppropertyslot*) : pentry*
 def $object_table_ordinary_rows(S, n, eps) = true
@@ -73,7 +82,7 @@ def $object_table_ordinary_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = $o
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
   -- if ppropertydesc.ORIGIN = ppropertyid
-  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC \/ $object_table_dynamic_history($object_table_slots_at(S, n))
   -- if ppropertydesc.KEY = ppropertyslot.NAME
   -- if ~$property_hook_declared(S, n, ppropertyslot.NAME)
   -- if ppropertyslot.STATE = PROP_VALUE pitem
@@ -83,7 +92,7 @@ def $object_table_ordinary_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = $o
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
   -- if ppropertydesc.ORIGIN = ppropertyid
-  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC \/ $object_table_dynamic_history($object_table_slots_at(S, n))
   -- if ppropertydesc.KEY = ppropertyslot.NAME
   -- if ~$property_hook_declared(S, n, ppropertyslot.NAME)
   -- if ppropertyslot.STATE = PROP_UNSET

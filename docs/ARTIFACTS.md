@@ -85,6 +85,14 @@ cuts. The archive preserves380/384/manifest, nine maintained inputs, unchanged
 helpers, raw processes and the three Unsupported/two genuine wrong-PHP-error
 baselines. Composition over419 adds no execution credit.
 
+Literal-this reference Get evidence is retained in
+`../php-spec-evidence-archive/magic-get-this-reference-129/manifest.json`: native3/
+baseline3, changed source3 and496 focused conditions at their original419 cuts.
+It preserves380/384/manifest, six maintained inputs, the imported recursion/
+scoped-unset/owned-reference helpers and raw processes. Native/baseline launcher
+provenance stays distinct from changed/focused actual affinity samples. Later
+composition adds no execution credit.
+
 Keep future compressed raw traces, source snapshots and tool copies in this
 external archive (using new paths for new evidence) or in ignored `.tools/`.
 Commit concise reports and manifests with hashes and locations. Preserve raw

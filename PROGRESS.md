@@ -45,7 +45,7 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | OP90 | Source3/full419 and focused826 accepted; publication review preparing, no writer. |
-| M155 | WeakMap Iterator factory: source3/focused389 across13 parts accepted; publication preparing, CPU1 released. |
+| M155 | WeakMap Iterator factory: source3/focused389 across13 parts accepted; publication in review, queued after OP90. |
 | CLASS130 | PARAM-backed Get receipt admission: source3 accepted at37ead28b8; focused author/peer preparation, CPU3 released. |
 | Iterator57 | Closure-created Generator instances through Fiber transfer; native-first scope review. |
 | Source96 | CLOSED Generator return-storage retirement before CONFIG/catch; native-first scope review. |

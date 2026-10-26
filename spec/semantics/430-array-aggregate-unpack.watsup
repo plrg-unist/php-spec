@@ -1,0 +1,221 @@
+;; getIterator borrows the original CV receiver; genuine source owners retain
+;; the Aggregate. Its owned return temporary becomes Iterator/Generator DATA.
+dec $array_aggregate_method(pstate, nat) : pmethoddesc?
+dec $array_aggregate_source(pstate, parrayaggregate) : bool
+dec $array_aggregate_receiver(pstate, parrayaggregate) : bool
+dec $array_aggregate_builder(pstate, parrayaggregate) : bool
+dec $array_aggregate_at(ptask, porigin) : bool
+dec $array_aggregate_count(ptask*, porigin) : nat
+dec $array_aggregate_valid(pstate, parrayaggregate) : bool
+dec $array_aggregate_plan(pstate) : parrayaggregate?
+dec $array_aggregate_target(pstate, parrayaggregate, pcalltarget) : bool
+dec $array_aggregate_pending_site(pstate, porigin) : bool
+dec $array_aggregate_frame(pstate, pcallcontext, pframe) : bool
+dec $array_aggregate_entered(pstate, pcallcontext?, pframe*, pcalltarget, porigin) : bool
+dec $array_aggregate_context(pstate, pcallcontext) : bool
+dec $array_aggregate_call(pstate, parrayaggregate, ptask*) : pstate
+dec $array_aggregate_iterator(pstate, parrayaggregate) : parrayiterator?
+dec $array_aggregate_generator(pstate, parrayaggregate) : parraygenerator?
+dec $array_aggregate_self(pstate, parrayaggregate) : bool
+dec $array_aggregate_ready(pstate, parrayaggregate) : bool
+dec $array_aggregate_promote(pstate, parrayaggregate, ptask*) : pstate
+dec $array_aggregate_discard(pstate, parrayaggregate) : pstate
+dec $array_aggregate_blocked(pstate) : bool
+
+;; Historical class/method authority is independent of live receiver ownership.
+def $array_aggregate_method(S, n) = (pmethoddesc)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $class_origin_matches(S, porigin_class, $ptascii("IteratorAggregate"), |S.CLASSES|)
+  -- if $class_links_valid(S)
+  -- if $effective_method(S, porigin_class, $ptascii("getIterator"), |S.CLASSES|) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if pmethoddesc.FUNCTION.SIGNATURE = $useriter_signature($ptascii("getIterator"))
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
+  -- if $effective_method(S, porigin_class, $ptascii("__destruct"), |S.CLASSES|) = eps
+def $array_aggregate_method(S, n) = eps -- otherwise
+def $array_aggregate_source(S, parrayaggregate) = true
+  -- if S.ORIGIN = (parrayaggregate.SITE)
+  -- if $array_iterator_item(S, parrayaggregate.TAIL, parrayaggregate.LINE) = ((parrayaggregate.SITE, expression))
+  -- if parrayaggregate.INPUT = VARIABLE ptbytes z
+  -- if $array_float_key_input_source(S, expression, parrayaggregate.INPUT)
+  -- if $(parrayaggregate.ARRAY < |S.ARRAYS|) /\ (HARRAY parrayaggregate.ARRAY) <- S.ALLOCATIONS
+  -- if ~$array_immutable(S, parrayaggregate.ARRAY)
+  -- if $heap_count(HARRAY parrayaggregate.ARRAY, $pools_nodes(S.POOLS)) = 0
+  -- if $array_aggregate_method(S, parrayaggregate.OBJECT) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = parrayaggregate.METHOD
+def $array_aggregate_source(S, parrayaggregate) = false -- otherwise
+def $array_aggregate_receiver(S, parrayaggregate) = true
+  -- if (HOBJECT parrayaggregate.OBJECT) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, parrayaggregate.OBJECT)
+  -- if $node_children(S, HOBJECT parrayaggregate.OBJECT) = eps
+  -- if $($heap_owners($heap_graph(S), HOBJECT parrayaggregate.OBJECT) > 0)
+def $array_aggregate_receiver(S, parrayaggregate) = false -- otherwise
+def $array_aggregate_builder(S, parrayaggregate) = true
+  -- if $(parrayaggregate.ARRAY < |S.ARRAYS|) /\ (HARRAY parrayaggregate.ARRAY) <- S.ALLOCATIONS
+  -- if ~(parrayaggregate.ARRAY <- S.LITERALARRAYDEBTS)
+  -- if $array_null_const_items(S, S.ARRAYS[parrayaggregate.ARRAY].ITEMS, [parrayaggregate.ARRAY])
+def $array_aggregate_builder(S, parrayaggregate) = false -- otherwise
+def $array_aggregate_at(ARRAY_AGGREGATE parrayaggregate, porigin) = (parrayaggregate.SITE = porigin)
+def $array_aggregate_at(ptask, porigin) = false -- otherwise
+def $array_aggregate_count(eps, porigin) = 0
+def $array_aggregate_count(ptask :: ptask_tail*, porigin) = $(1 + $array_aggregate_count(ptask_tail*, porigin)) -- if $array_aggregate_at(ptask, porigin)
+def $array_aggregate_count(ptask :: ptask_tail*, porigin) = $array_aggregate_count(ptask_tail*, porigin) -- if ~$array_aggregate_at(ptask, porigin)
+def $array_aggregate_valid(S, parrayaggregate) = ($array_aggregate_source(S, parrayaggregate) /\ $array_aggregate_count(S.TODO, parrayaggregate.SITE) = 1)
+def $array_aggregate_plan(S) = (parrayaggregate)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (ARRAY_UNPACK n_array phpType13* z) :: ptask*
+  -- if S.RESULT = VARIABLE ptbytes z_input
+  -- if S_value = $quiet_operand(S, S.RESULT)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (POBJECT n_object)
+  -- if $array_iterator_item(S, phpType13*, z) = ((porigin, expression))
+  -- if $array_aggregate_method(S, n_object) = (pmethoddesc)
+  -- if parrayaggregate = {SITE porigin, LINE z, ARRAY n_array, OBJECT n_object, METHOD pmethoddesc.FUNCTION.ORIGIN, INPUT S.RESULT, TAIL phpType13*}
+  -- if $array_aggregate_source(S, parrayaggregate) /\ $array_aggregate_builder(S, parrayaggregate)
+  -- if $array_aggregate_receiver(S, parrayaggregate)
+  -- if $array_generator_input_live(S, parrayaggregate.INPUT, n_object)
+def $array_aggregate_plan(S) = eps -- otherwise
+def $array_aggregate_pending(S) = ($array_aggregate_plan(S) =/= eps)
+
+def $array_aggregate_call(S, parrayaggregate, ptask*) = S[.TODO = (CALL_ARGS (AGGREGATE_METHOD_TARGET parrayaggregate.OBJECT parrayaggregate.METHOD) eps 0 eps (parrayaggregate.SITE) parrayaggregate.LINE) :: (ARRAY_AGGREGATE parrayaggregate) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/array-aggregate-start: S ~> $array_aggregate_call(S, parrayaggregate, ptask*)
+  -- if S.TODO = (ARRAY_UNPACK n phpType13* z) :: ptask*
+  -- if $array_aggregate_plan(S) = (parrayaggregate)
+
+;; The pending task or its real caller frame certifies the borrowed method.
+def $array_aggregate_target(S, parrayaggregate, AGGREGATE_METHOD_TARGET n porigin_method) = true
+  -- if n = parrayaggregate.OBJECT /\ porigin_method = parrayaggregate.METHOD
+  -- if $array_aggregate_method(S, n) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
+def $array_aggregate_target(S, parrayaggregate, pcalltarget) = false -- otherwise
+def $array_aggregate_pending_site(S, porigin) = true
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 0 eps (porigin) z) :: (ARRAY_AGGREGATE parrayaggregate) :: ptask*
+  -- if porigin = parrayaggregate.SITE /\ z = parrayaggregate.LINE
+  -- if $array_aggregate_valid(S, parrayaggregate)
+  -- if $array_aggregate_target(S, parrayaggregate, pcalltarget)
+def $array_aggregate_pending_site(S, porigin) = false -- otherwise
+def $array_aggregate_frame(S, pcallcontext, pframe) = true
+  -- if pframe.TODO = (ARRAY_AGGREGATE parrayaggregate) :: ptask*
+  -- if pframe.ORIGIN = (parrayaggregate.SITE)
+  -- if pcallcontext.CALLSITE = (parrayaggregate.SITE) /\ pcallcontext.LINE = parrayaggregate.LINE
+  -- if pcallcontext.ARGC = 0 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps
+  -- if $array_aggregate_target(S, parrayaggregate, $context_target(pcallcontext))
+  -- if $array_aggregate_valid(S[.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN], parrayaggregate)
+def $array_aggregate_frame(S, pcallcontext, pframe) = false -- otherwise
+def $array_aggregate_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin) = $array_aggregate_frame(S, pcallcontext, pframe)
+  -- if $context_target(pcallcontext) = pcalltarget /\ pcallcontext.CALLSITE = (porigin)
+def $array_aggregate_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin) = $array_aggregate_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin)
+  -- if ~($context_target(pcallcontext) = pcalltarget /\ pcallcontext.CALLSITE = (porigin))
+def $array_aggregate_entered(S, eps, pframe :: pframe_tail*, pcalltarget, porigin) = $array_aggregate_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin)
+def $array_aggregate_entered(S, pcallcontext?, eps, pcalltarget, porigin) = false
+def $array_aggregate_selected(S, pcalltarget, porigin) = true
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 0 eps (porigin) z) :: ptask*
+  -- if $array_aggregate_pending_site(S, porigin)
+def $array_aggregate_selected(S, pcalltarget, porigin) = true -- if $array_aggregate_entered(S, S.CURRENT, S.FRAMES, pcalltarget, porigin)
+def $array_aggregate_selected(S, pcalltarget, porigin) = false -- otherwise
+def $array_aggregate_context(S, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if $array_aggregate_entered(S, S.CURRENT, S.FRAMES, $context_target(pcallcontext), porigin)
+def $array_aggregate_context(S, pcallcontext) = false -- otherwise
+def $call_arguments_valid(S, (porigin), 0, eps, eps, 0) = true -- if $array_aggregate_pending_site(S, porigin)
+def $call_arity_valid(S, pcallcontext) = true -- if $array_aggregate_context(S, pcallcontext)
+def $call_extent_valid(S, pcallcontext) = true -- if $array_aggregate_context(S, pcallcontext)
+def $named_context_valid(S, pcallcontext) = true -- if $array_aggregate_context(S, pcallcontext)
+def $useriter_frame(S, pcallcontext, pframe) = true -- if $array_aggregate_frame(S, pcallcontext, pframe)
+def $useriter_marker(pframe) = true -- if pframe.TODO = (ARRAY_AGGREGATE parrayaggregate) :: ptask*
+def $reference_callback_used(S, pcallcontext) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $array_aggregate_context(S, pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (ARRAY_AGGREGATE parrayaggregate) :: ptask*
+
+;; Promotion transfers the actual return owner. INPUT remains the original CV
+;; receipt, which both existing consumers already authenticate historically.
+def $array_aggregate_iterator(S, parrayaggregate) = (parrayiterator)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if parrayiterator = {SITE parrayaggregate.SITE, LINE parrayaggregate.LINE, ARRAY parrayaggregate.ARRAY, ITERATOR S.NEXTITER, OBJECT n, INPUT parrayaggregate.INPUT, TAIL parrayaggregate.TAIL, CURRENT (KNOWN PNULL), KEY (KNOWN PNULL)}
+  -- if $array_iterator_source(S, parrayiterator) /\ $array_iterator_ready(S, parrayiterator)
+def $array_aggregate_iterator(S, parrayaggregate) = eps -- otherwise
+def $array_aggregate_generator(S, parrayaggregate) = (parraygenerator)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE <- [GENERATOR_FRESH, GENERATOR_PAUSED, GENERATOR_CLOSED]
+  -- if pgenerator.DELEGATE = eps /\ ~$generator_storage_active(S, n)
+  -- if parraygenerator = {SITE parrayaggregate.SITE, LINE parrayaggregate.LINE, ARRAY parrayaggregate.ARRAY, OBJECT n, FUNCTION pgenerator.FUNCTION, INPUT parrayaggregate.INPUT, TAIL parrayaggregate.TAIL}
+  -- if $array_generator_source(S, parraygenerator)
+  -- if (pgenerator.PHASE = GENERATOR_FRESH /\ pgenerator.VALUE = eps /\ pgenerator.REFCELL = eps /\ pgenerator.KEY = eps) \/ $array_generator_ready(S, parraygenerator)
+def $array_aggregate_generator(S, parrayaggregate) = eps -- otherwise
+;; interfaces.c compares against the live original OP1 zval only for Aggregate
+;; returns. Rebound/unset/reference CVs do not justify captured-self rejection.
+def $array_aggregate_self(S, parrayaggregate) = true
+  -- if S.RESULT = KNOWN (POBJECT parrayaggregate.OBJECT)
+  -- if $array_generator_input_live(S, parrayaggregate.INPUT, parrayaggregate.OBJECT)
+def $array_aggregate_self(S, parrayaggregate) = false -- otherwise
+def $array_aggregate_ready(S, parrayaggregate) = ($array_aggregate_receiver(S, parrayaggregate) /\ $array_aggregate_builder(S, parrayaggregate) /\ ($array_aggregate_iterator(S, parrayaggregate) =/= eps \/ $array_aggregate_generator(S, parrayaggregate) =/= eps \/ $array_aggregate_self(S, parrayaggregate)))
+def $array_aggregate_promote(S, parrayaggregate, ptask*) = S[.ITERATORS = S.ITERATORS ++ [OBJECTITER parrayiterator.ITERATOR parrayiterator.OBJECT 0 false]][.NEXTITER = $(S.NEXTITER + 1)][.TODO = (ARRAY_ITERATOR parrayiterator "rewind-start") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $array_aggregate_iterator(S, parrayaggregate) = (parrayiterator)
+def $array_aggregate_promote(S, parrayaggregate, ptask*) = S[.TODO = (ARRAY_GENERATOR parraygenerator "rewind") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $array_aggregate_generator(S, parrayaggregate) = (parraygenerator)
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE =/= GENERATOR_CLOSED
+def $array_aggregate_promote(S, parrayaggregate, ptask*) = $throw_scalar(S[.TODO = (ARRAY_GENERATOR parraygenerator "data-released") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], "Exception", $ptascii("Cannot traverse an already closed generator"), parrayaggregate.LINE)
+  -- if $array_aggregate_generator(S, parrayaggregate) = (parraygenerator)
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED
+def $array_aggregate_promote(S, parrayaggregate, ptask*) = $throw_scalar(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], "Exception", $ptascii("Objects returned by ") ++ pclassdesc.NAME ++ $ptascii("::getIterator() must be traversable or implement interface Iterator"), parrayaggregate.LINE)
+  -- if $array_aggregate_self(S, parrayaggregate)
+  -- if S.OBJECTS[parrayaggregate.OBJECT] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+rule PhpStep/array-aggregate-return: S ~> $array_aggregate_promote(S, parrayaggregate, ptask*)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (ARRAY_AGGREGATE parrayaggregate) :: ptask*
+  -- if $array_aggregate_valid(S, parrayaggregate) /\ $array_aggregate_ready(S, parrayaggregate)
+rule PhpStep/array-aggregate-return-boundary: S ~> S[.COMPLETION = UNSUPPORTED "array Aggregate unpack return outside admitted domain"]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (ARRAY_AGGREGATE parrayaggregate) :: ptask*
+  -- if $array_aggregate_valid(S, parrayaggregate) /\ ~$array_aggregate_ready(S, parrayaggregate)
+
+def $task_nodes(ARRAY_AGGREGATE parrayaggregate) = [HARRAY parrayaggregate.ARRAY]
+def $call_task_valid(S, ARRAY_AGGREGATE parrayaggregate) = $array_aggregate_valid(S, parrayaggregate)
+def $generator_internal_task(ARRAY_AGGREGATE parrayaggregate) = true
+def $eager_explicit_task(ARRAY_AGGREGATE parrayaggregate) = true
+def $array_aggregate_discard(S, parrayaggregate) = S[.ORIGIN = (parrayaggregate.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $array_aggregate_receiver(S, parrayaggregate) /\ $array_aggregate_builder(S, parrayaggregate)
+def $array_aggregate_discard(S, parrayaggregate) = S[.TODO = (THROW_SEARCH n) :: (ARRAY_AGGREGATE parrayaggregate) :: ptask*][.COMPLETION = UNSUPPORTED "array Aggregate abrupt receiver or builder outside admitted domain"]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if ~$array_aggregate_receiver(S, parrayaggregate) \/ ~$array_aggregate_builder(S, parrayaggregate)
+def $return_discard(S, ARRAY_AGGREGATE parrayaggregate) = $array_aggregate_discard(S, parrayaggregate)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if $throwable_live(S, n)
+  -- if $array_aggregate_valid(S[.ORIGIN = (parrayaggregate.SITE)][.TODO = (THROW_SEARCH n) :: (ARRAY_AGGREGATE parrayaggregate) :: ptask*], parrayaggregate)
+def $throwable_same_frame_continuation(S, S_next, ptask*) = S_next
+  -- if S.TODO = (ARRAY_AGGREGATE parrayaggregate) :: ptask*
+  -- if $array_aggregate_valid(S, parrayaggregate)
+  -- if S_next.TODO = S.TODO /\ $throwable_pending(S_next.COMPLETION)
+def $throwable_same_frame_continuation(S, S_next, ptask*) = S_next
+  -- if S.TODO = (ARRAY_AGGREGATE parrayaggregate) :: ptask*
+  -- if $array_aggregate_valid(S, parrayaggregate) /\ $array_aggregate_ready(S, parrayaggregate)
+  -- if $array_aggregate_generator(S, parrayaggregate) = (parraygenerator)
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED
+  -- if S_next = $array_aggregate_promote(S, parrayaggregate, ptask*)
+
+;; Refusals stop with real return/builder owners intact, before speculative
+;; cleanup could acquire or close an out-of-domain returned Traversable.
+def $array_aggregate_blocked(S) = true
+  -- if S.COMPLETION = UNSUPPORTED "array Aggregate unpack return outside admitted domain"
+  -- if ~S.COMPILESTOP
+  -- if S.TODO = (ARRAY_AGGREGATE parrayaggregate) :: ptask*
+  -- if $array_aggregate_valid(S, parrayaggregate) /\ ~$array_aggregate_ready(S, parrayaggregate)
+def $array_aggregate_blocked(S) = true
+  -- if S.COMPLETION = UNSUPPORTED "array Aggregate abrupt receiver or builder outside admitted domain"
+  -- if ~S.COMPILESTOP
+  -- if S.TODO = (THROW_SEARCH n) :: (ARRAY_AGGREGATE parrayaggregate) :: ptask*
+  -- if $array_aggregate_valid(S, parrayaggregate) /\ $throwable_live(S, n)
+  -- if ~$array_aggregate_receiver(S, parrayaggregate) \/ ~$array_aggregate_builder(S, parrayaggregate)
+def $array_aggregate_blocked(S) = false -- otherwise
+def $generator_close_terminal_pending(S) = true -- if $array_aggregate_blocked(S)
+def $drive_steps(S, n) = S -- if $array_aggregate_blocked(S)

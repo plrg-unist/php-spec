@@ -483,7 +483,20 @@ remain outside that exception. A detached externally owned CELL remains readable
 a cleared DIRECT opposing slot retains the expired-operand refusal. Last-owner
 inline destruction precedes handler continuation, while an outside reference can
 delay destruction beyond result storage. Initialized public Stringable behavior
-is preserved; nonpublic or UNDEF Stringable continuations remain unsupported.
+is preserved; nonpublic or UNDEF Stringable continuations on this abstract
+declared-table route remain unsupported.
+
+[Mixed nonpublic/dynamic tables](../../coverage/semantics/mixed-property-table-numeric-comparison-review.json)
+use concrete pinned tables for normal numeric Notice callbacks. Old INDIRECT
+buckets follow live inline slots, while dynamic writes copy into a new table;
+that copy contains DIRECT snapshots of declared values. Dynamic reference cells
+remain shared, including after the corresponding property is unset. A sole
+ordinary object retained only by the old dynamic bucket dies during cursor
+retirement after the handler and before result storage. Dynamic slot metadata
+keeps this representation stable after the last dynamic value is removed;
+declared-only nonpublic layouts retain their original route. New nonpublic
+Stringable continuations remain refused, and prior public/stdClass behavior is
+unchanged. Six exact sources and 462 raw conditions in four reached groups pass.
 
 The raw handler is disabled during its own body and restored before subsequent
 Notice dispatch. The original quiet-terminal cancellation remains available.

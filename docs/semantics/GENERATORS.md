@@ -64,6 +64,14 @@ also agree under a fixed, separately recorded 180-second model limit. Their
 earlier 100-second timeouts retain zero credit; sources and operational rules
 are unchanged. [Review and reproductions](../../coverage/semantics/generator-fiber-delegation-transfer-review.json).
 
+A primed named Generator entered by one-value `send` also retains its authentic
+resumer across Fiber suspension. The native argument buffer owns its value
+separately from the delivered CV, survives that CV's unset and retires before
+the caller continues, including supplied-Throwable unwinding. An object yield
+can additionally belong to the Generator cache, stored Fiber return and caller
+copy. This extends admission without adding roots or changing operations.
+[SEND review](../../coverage/semantics/generator-fiber-send-transfer-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

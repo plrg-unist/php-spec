@@ -1404,6 +1404,31 @@ peer126/123 retain `2f4052196`, totaling506 maintained conditions/561 physical/
 The original completion101 syntax error stopped before evaluation and stays0;
 only affected/unrun fixtures repeat. All five genuine files remain preserved.
 Factory trace23/identity/result99, source/callee effects, weak death and setter
-recovery pass. Wider calls/arguments/references, nonfresh or method/Closure
+recovery pass. Wider calls/arguments/references, nonfresh returned or method/Closure
 Generators, owning caches/returns, delegation/Fiber/destructor callbacks and
 paused boundaries remain partial or unchanged.
+
+The [initial-state CONFIG consumer](../../coverage/semantics/config-generator-initial-state-review.json)
+extends direct initialized CV ingress to nondelegating PAUSED and CLOSED named
+zero-argument nonbyref Generators. Known temporary call-result ingress remains
+FRESH-only; no paused temporary finalizer or new producer receipt is introduced.
+At the first yield, native rewind preserves the whole cached state and sends that
+value once before continuing. Later resume may replace the source CV; existing
+quiet sole-DATA retirement still precedes API entry.
+
+An advanced Generator acquires DATA before native rewind rejects it. Its integer17
+current never reaches the string-send gate or API; the complete paused frame/cache,
+assignment, configuration and empty native Exception trace survive DATA cleanup.
+An already CLOSED Generator rejects before acquiring DATA, throwing from the
+original CV state without a resolved RESULT pin or API/Generator-method frame.
+Both error paths use the unpack line and permit subsequent retirement and setter
+recovery. Loss of the outside advanced-CV owner retains exact raw Unsupported
+restoration rather than silently forcing a paused finalizer.
+
+Native3/genuine Unsupported0 retain `75a3e8efd`; strict419/source3 and all361
+original state conditions retain `a8492e0ca` (419 physical,58 duplicated setup),
+first evaluations with unchanged90 state caps. All five genuine files remain
+preserved; no old source/native/state suite is replayed. Only423 changes runtime;
+schema, existing source receipts, generic Generator/release and all other modules
+remain exact. Nonfresh temporary/Aggregate producers, delegation, broader sends,
+owning storage and Fiber/GC/destructor callbacks remain partial; paused lanes stay unchanged.
