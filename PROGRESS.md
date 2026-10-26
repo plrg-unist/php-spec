@@ -88,6 +88,17 @@ The initial pre-execution witness-helper compiler failure retains zero credit.
 [Trace-alias review](coverage/semantics/throwable-trace-alias-comparison-review.json).
 Warm, previous, materialized, pending and callback-bearing graphs remain partial.
 
+Public user `__invoke` instances now serve as ordinary or optimized pipe RHS
+callables. Eight new original-source comparisons agreed with pinned PHP at the
+first direct cut, including strict type checks and reference returns; noncallable
+and Closure controls were already normal. A later result-receipt correction
+passes five reached stages/54 assertions for selected receiver, retired result
+receipt, forged source/target rejection and left-before-right by-reference
+refusal cleanup. The direct and corrected protocol cuts remain
+separate; the two failed protocol attempts retain zero full credit.
+[Object pipe review](coverage/semantics/pipe-object-callable-review.json).
+Nonpublic and wider object callables remain partial.
+
 ## Integrated behavior and entrypoints
 
 Each family is bounded; its linked contract and inventory entries retain the
