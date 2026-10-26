@@ -535,6 +535,15 @@ continue into later array entries, while a nonzero result skips later casters.
 The [cold Throwable review](../../coverage/semantics/throwable-cold-comparison-review.json)
 records the normal-only boundary and the remaining wider Throwable cases.
 
+An explicit builtin `__toString()` writes the private `string` slot. Distinct,
+same-kind builtin `Exception`/`Error` pairs with at least one nonempty string
+cache, empty allocated traces and null previous values compare that slot before
+the later line slot. Both caches must be physical strings; the comparison itself
+does not call the formatter. One-sided warmth gives opposite signed orders,
+while equal warm prefixes continue into later array entries. This normal,
+nonpending bound leaves populated traces, previous links and cross-kind pairs
+outside the [warm Throwable review](../../coverage/semantics/throwable-warm-comparison-review.json).
+
 Nonempty builtin traces also compare through the seven declared slots when
 both canonical trace graphs contain only direct null, bool, int, float or string
 argument snapshots; string carriers must have valid identities. The allocated
