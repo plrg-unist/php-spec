@@ -3906,6 +3906,12 @@ retain their native order; six source agreements and 420 focused premises pass.
 now retain nonpublic inline slots alongside dynamic buckets. A dynamic write
 copies the table while its pinned old indirections stay live; shared cells and
 last-owner destruction keep their observed order across normal numeric handlers.
+[Cached backing-hook comparisons](coverage/semantics/backed-hook-table-comparison-review.json)
+read physical backing slots without calling getters. Normal Notice handlers still
+run real setters, including writes to a selected reference cell; inline declared
+retirement and virtual-slot omission retain their distinct behavior. Six exact
+source agreements and 427 raw focused conditions pass. New backing-hook Stringable
+continuations remain refused; array-cast and foreach hook boundaries are unchanged.
 [Builtin stdClass numeric Notices](coverage/semantics/stdclass-numeric-comparison-review.json)
 use the same continuation with a fixed builtin class image. Restored second
 Notices retain saved 1/1.0 across stdClass/source-instance changes and late live

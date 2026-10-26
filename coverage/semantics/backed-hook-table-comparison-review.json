@@ -1,0 +1,121 @@
+{
+  "milestone": "COMP127",
+  "status": "independently reviewed bounded slice",
+  "behavior": "Materialized backed-hook property tables compare raw physical slots without invoking getters. Normal numeric Notice handlers still invoke real setters, whose backing writes and selected-CELL mutation remain live; virtual-only omission and count-first skip retain their previous behavior.",
+  "implementation": {
+    "spec/semantics/261-object-casts.watsup": "4116ac08f53f5a87c9a6b4ffb0e9b27fa6882790f73f26f8fee8574c8a1f49af",
+    "spec/semantics/394-aggregate-stringable-comparisons.watsup": "a9c4bb2e04220b2676eb45892f7bde51b89bb5060ef29caf9042988b0b8a4137"
+  },
+  "engine_basis": [
+    "Zend/zend_object_handlers.c: rebuild_object_properties_internal builds physical INDIRECT entries and zend_std_compare_objects reads physical slots/tables without GET dispatch.",
+    "Zend/zend_operators.c: zend_compare_symbol_tables retains both tables during comparison; existing setters and declared-slot release retain their ordinary dispatch and lifetime semantics."
+  ],
+  "target": {
+    "php": "8.5.10 CLI NTS signed64",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle": ".tools/php/bin/php",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "tested_module_count": 420
+  },
+  "native": {
+    "revision": "4ed36e290ed7980a54ba25f8797fd8bf77f8dfbc",
+    "cases": 6,
+    "reports": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-127/author-originals/native.json",
+        "sha256": "8cf81904847d386ac60fe26202590beccb9e278ee18f9feb0a668e7e2b407e93"
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-127/peer-originals/native.json",
+        "sha256": "c6f1266ca553ff96817db444eadc91d952c730955acca873c8be37aceebaa19f"
+      }
+    ],
+    "limits": "CPU4/2GiB; serial native15 each, exact originals/path/cwd/profile/streams and intent flags."
+  },
+  "baseline": {
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comparison-127/private/initial-report.json",
+      "sha256": "968f0e33dcc64e196fdd8d8d19f2069be716f88c216d4c4f32b9494bd528359e"
+    },
+    "revision": "4ed36e290ed7980a54ba25f8797fd8bf77f8dfbc",
+    "outcome": "accepted/program/Unsupported: materialized-property numeric comparison continuation",
+    "stdout": "B|",
+    "stderr": "",
+    "agreement_credit": 0,
+    "limits": "CLI80/record90 after native6; packet130/watch150/2GiB."
+  },
+  "sources": {
+    "revision": "25cb3abed03bab1c536de26b0372df5e8996ffc4",
+    "normal_agreements": 6,
+    "reports": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-127/author-originals/model.json",
+        "sha256": "4420376aa81882081123c9caabeec4904d25a29760bfc23ad0600c6a21506c65"
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-127/peer-originals/model.json",
+        "sha256": "7ccfa36a4db26db8f3bf3d8ecadfa2a5061339fe57c9496e8f56140e1c144d37"
+      }
+    ],
+    "selection": "Retained author2 then peer4 only; no native replay. Spaceship/LE numeric Notice paths, real setter/CELL/getter calibration, default float Notice and inline private-tail retirement; EQ virtual-only and Less count-first controls invoke no Notice.",
+    "limits": "CPU5/2GiB, CLI90/record105; author235/watch250 then peer445/watch460."
+  },
+  "focused": {
+    "raw_conditions": 427,
+    "groups": 4,
+    "metric": "Raw declared main conditions, not distinct obligations. Short one/zero resumption checks start from reached Num/EQUAL cuts; no whole-origin equality campaign.",
+    "records": [
+      {
+        "report": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/comparison-127/author-focused/report.json",
+          "sha256": "f3373bb1b3a2bfe56be0b894e68ff366508eca1df8740a95fed1fa67c464b2ec"
+        },
+        "revision": "12dbb45a3e8fcceefcd90e4d55ea993363946869",
+        "conditions": [
+          129,
+          133
+        ]
+      },
+      {
+        "report": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/comparison-127/peer-focused/report.json",
+          "sha256": "0f78f798581ad639487026c628a498169ff609d57f85c9e8204368f928e0a88b"
+        },
+        "revision": "12dbb45a3e8fcceefcd90e4d55ea993363946869",
+        "conditions": [
+          111,
+          54
+        ]
+      }
+    ],
+    "coverage": "Actual public backing-hook descriptors and setter frames; unchanged cached INDIRECT buckets reading backing7\u21920, GET0/SET1 plus real getter calibration, selected CELL0\u21921, inline declared-slot destruction, raw scalar versus deferred driver retirement, virtual physical-row rejection and pure backed/virtual-only Stringable filter classification.",
+    "limits": "StrictSL/cachefalse/dettrue, CPU2/2GiB, child120; author/peer each275/watch290."
+  },
+  "zero_credit": {
+    "genuine_baseline": 0,
+    "failed_groups": 0,
+    "retries": 0,
+    "historical_renewal_credit": 0,
+    "historical_scope": "No old changed refusal mapping or negative selected; declared-only/nonpublic, malformed dynamic-row and existing public virtual-only boundaries are retained. No historical campaign replay."
+  },
+  "independent_review": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/comparison-127/private/independent-review.json",
+    "sha256": "a11a0e4c2571549527f473661d9272c0fbc0570dc295df991ef7437bad3a4783"
+  },
+  "limits": [
+    "Only authenticated nonvirtual physical backing rows gain comparison eligibility, within existing visibility/mixed/storage/type/compiler bounds.",
+    "New backed-hook ORDERSTRING continuations remain Unsupported; old public virtual-only eligibility stays exact. Pure classification checks invoke no Stringable callback.",
+    "ARRAY-cast projection, object-foreach hook guards, property write/unset and source compiler bodies are unchanged. Wider hook layouts and lifecycle contexts remain partial.",
+    "Only ordinary normal completion was selected. Held COMP123 and paused COMP88 plus other paused lanes remain untouched.",
+    "Selected source agreement and state checks are bounded validation, not full-core semantic equivalence or a BOLA proof."
+  ],
+  "archive": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/comparison-127",
+    "manifest_sha256": "07c107f4dc60c3802550c7134c5636fc6d0a8abde120c07711d7b4f546435cfe",
+    "files": 173,
+    "bytes": 1909497
+  },
+  "recovery": "Restore archived originals/recorders and private outputs at their recorded paths, using the listed Git cuts and pinned local tools/profile. Raw receipts retain commands, streams/status, inputs and worker closes. No binaries or offline rebuild claim."
+}

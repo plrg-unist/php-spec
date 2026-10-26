@@ -27,8 +27,15 @@ also admit authenticated nonpublic declarations beside dynamic buckets. The
 dynamic slot record survives unset and preserves the concrete-table image;
 declared-only nonpublic layouts stay separate. Normal callbacks distinguish old
 live indirections, copied declared values and owning dynamic snapshots using
-the existing concrete-table ownership rules. This comparison slice retains the existing boundaries for property
-hooks, copied-declared reference iteration and wider lifecycle contexts.
+the existing concrete-table ownership rules. Copied-declared reference iteration
+and wider lifecycle contexts retain their existing boundaries.
+
+[Cached backing-hook comparisons](../../coverage/semantics/backed-hook-table-comparison-review.json)
+use these physical locators without invoking getters; normal setters and live
+backing/reference writes remain observable. Virtual declarations contribute no
+slot. This extends comparison admission only: ARRAY-cast projection and foreach
+hook boundaries remain unchanged, and new backing-hook Stringable continuations
+stay Unsupported.
 
 Source construction keeps these locators internal; ordinary array casts export
 copied values. Copied declared-bucket reference iteration and collector visitation
