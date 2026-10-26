@@ -379,16 +379,16 @@ def $fiber_generator_chain_active(S) = true
   -- if pgenerator.REFCELL = eps /\ pgenerator.BORROWED = eps
 def $fiber_generator_chain_active(S) = false -- otherwise
 def $fiber_generator_chain_ids(S) = [pgeneratorop.OBJECT]
-  -- if $fiber_generator_chain_active(S)
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask_tail*
   -- if ~$generator_from_site(S, pgeneratorop.SITE)
+  -- if $fiber_generator_chain_active(S)
   -- if $generator_resume_ids(S.TODO) = eps
   -- if $generator_saved_ids(S.FRAMES) = [pgeneratorop.OBJECT]
 def $fiber_generator_chain_ids(S) = n_child :: n_parent :: n_tail*
-  -- if $fiber_generator_chain_active(S)
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: (GENERATOR_FROM_RESULT n_parent porigin n_child) :: ptask_tail*
+  -- if $fiber_generator_chain_active(S)
   -- if $generator_from_operation_owner(S, pgeneratorop, n_parent, porigin, n_child, pframe.CONTEXT)
   -- if pframe.ORIGIN = (porigin)
   -- if pframe.LOCALS =/= eps /\ pframe.CONTEXT =/= eps /\ pframe.CONSTCONTEXT = eps
