@@ -42,6 +42,13 @@ $left = new stdClass; $right = new stdClass; $lc = new stdClass; $rc = new stdCl
 echo 'B|', $a<=>$b, '|';
 $lp->x = 3; echo 'M|', $a<=>$b, ':', $b<=>$a, '|';
 ''',
+    'array-property-object-only': br'''<?php
+class ArrayLeaf140 { public int $x = 0; }
+function ex140($x): Exception { return new Exception('same', 7); }
+$left = new stdClass; $right = new stdClass; $lc = new ArrayLeaf140; $rc = new ArrayLeaf140; $lc->x = 1; $rc->x = 2; $left->payload = [0, $lc]; $right->payload = [0, $rc]; $a = ex140($left); $b = ex140($right);
+echo 'B|', $a<=>$b, '|';
+$lc->x = 3; echo 'M|', $a<=>$b, ':', $b<=>$a, '|';
+''',
     'shared-child-dag': br'''<?php
 function ex140($x): Exception { return new Exception('same', 7); }
 $left = new stdClass; $right = new stdClass; $lc = new stdClass; $rc = new stdClass; $lc->x = 1; $rc->x = 1; $left->first = $lc; $left->second = $lc; $right->first = $rc; $right->second = $rc; $a = ex140($left); $b = ex140($right);
