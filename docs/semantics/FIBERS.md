@@ -843,8 +843,22 @@ times, and normal versus supplied Fiber exceptions retain native identity and
 `Previous` order. Four new source agreements, including independent cache
 replacement, and 157 source-reached assertions cover this bounded transfer;
 the direct named control agreed before the edit.
-Method by-reference/fresh, Closure and delegated forms remain open.
+Method by-reference/fresh, Closure and delegated forms remained open at that cut.
 [Method THROW review](../../coverage/semantics/generator-fiber-method-throw-transfer-review.json).
+
+Primed by-value `Generator::throw` also moves a plain unbound Closure-created
+Generator through a Fiber catch or pending finally. The saved VM keeps the
+temporary Throwable and authenticated `CLOSURE_TARGET`; copied captures keep
+their old object, while reference captures keep the original cell across an
+external source-name rebind. The Generator's old by-value cache stays readable
+while parked. Normal resume retains the original Exception and null
+`Previous`; a supplied Fiber exception replaces it with the original as
+`Previous`. The closed Generator retains its Closure and object cache until
+release, including after a recovery yield retires the old cache. Five new
+exact sources and three reached states/302 assertions support this bounded
+transfer; the old direct named source remains an unchanged control. Closure
+BYREF/fresh, bound, delegated and wider helper/lifecycle forms remain open.
+[Closure THROW review](../../coverage/semantics/generator-fiber-closure-throw-transfer-review.json).
 
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
