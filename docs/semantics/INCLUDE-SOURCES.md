@@ -1197,8 +1197,9 @@ genuine report preserves the initial false TypeError; overwritten auxiliary CLI
 recorder files remain unavailable, without reconstruction or replay.
 
 Last-owner finish and cleanup stop explicitly before releasing their retained
-roots; wider retirement is partial. Generator and Generator-producing user
-IteratorAggregate unpack controls are explicitly Unsupported. At the Source87 cut, builtin WeakMap still
+roots; wider retirement is partial. Both Generator controls retain their Source87
+Unsupported cuts; direct Generator CONFIG is admitted below, while a
+Generator-producing IteratorAggregate remains Unsupported. At the Source87 cut, builtin WeakMap still
 received a false TypeError; the increment below corrects that classification and
 bounded producers. Ordinary non-Traversable TypeError is preserved. Named keys,
 nonstring/reference/owning values, additional
@@ -1233,7 +1234,7 @@ the later full model; no accepted replay occurs. ARRAY entries, wider object/key
 forms, temporary operands, multiple packs, loss of external map/key/callee owners,
 GC callbacks and
 other CONFIG/Traversable producers remain partial. Existing stdClass TypeError
-and Generator/Generator-producing Aggregate Unsupported controls are preserved by disjoint guards;
+and Generator-producing Aggregate Unsupported control stay disjoint;
 their earlier executions are not renewed.
 
 The [Aggregate CONFIG producer](../../coverage/semantics/config-aggregate-iterator-unpack-review.json)
@@ -1264,3 +1265,30 @@ observations were not replayed. References/temporaries, recursive or invalid
 returns, Generator/owning currents, named keys, extra packs/arguments, other
 callees and wider cleanup/GC/diagnostic histories remain partial. Existing direct
 Iterator, WeakMap and Generator-producing Aggregate controls keep their cuts.
+
+The [native Generator CONFIG consumer](../../coverage/semantics/config-generator-unpack-review.json)
+admits one initialized CV containing a fresh, named, zero-argument, non-byref
+Generator. A source-authenticated CONFIG record retains the original INI_SET
+selection, borrowed historical CV and up to two string sends with integer keys.
+Native STARTPACK/BORROWED operations borrow the marker's single DATA owner;
+no PHP Generator method frame, public iterator cursor, NEXTITER increment or PHP
+ARRAY represents the traversal. Rebinding the input or callee during the body
+does not replace the retained Generator or selected setter.
+
+The terminal resume runs after both sends, before DATA retirement and API entry.
+A supplied terminal Exception keeps both sends pending, result99 and precision6,
+with only the genuine producer trace at the unpack line. Exact discard/drained
+cleanup preserve its identity and permit saved-setter recovery. Raw last-DATA or
+callee boundaries preserve the original state; explicit blocking also prevents
+terminal finalization from silently releasing those roots. Wider producer/cache
+modes stop explicitly and remain outside this slice.
+
+Native3/genuine Unsupported0 retain `8d2ecb421`; strict413/source3 and all467
+original conditions retain `3e1e67dee`, first attempts. Six source-derived parts
+contain523 physical conditions, including56 setup with no coverage credit.
+No native/accepted/control execution is renewed. The old Source87 direct-Generator
+PHP bytes and historical ID remain exact; only its Unsupported expectation is
+removed because the current fresh-CV consumer now admits it. Generator-producing
+Aggregate, references/temporaries, arguments/Closure/method producers, named keys,
+more sends, owning/reference caches, delegation/Fiber/GC and wider diagnostics or
+last-owner lifetimes remain partial; paused boundaries are unchanged.

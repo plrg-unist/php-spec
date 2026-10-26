@@ -8,18 +8,21 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
-CLASS123 retains the caller-selected physical declaration for accessible
-private/protected UNSET Get reads through local CVs. Parent int governs a Child
-private-string shadow; external denied Get still returns an unverified string.
-Caller-line TypeError occurs after Get returns, while untyped backing population
-cannot redirect the interrupted value.
+Fresh named zero-argument Generators now stream into CONFIG INI_SET through
+real native resumes. DATA preserves the selected Generator across live input
+and callee rebinding; repeated integer keys remain separate sends. Terminal
+resume completes before DATA retirement/API reception. A supplied terminal
+Exception cancels reception with its genuine producer trace, existing assignment
+and identity preserved, then permits saved-setter recovery.
 
-Three source agreements retain `aca7fd5d4`/412; 229 author and 101 independent
-premises retain `bdbd10f19`/412. INITIAL is a separate existing agreement, and
-saved control projections/forged DECL or BYREF cases remain derived.
-[Scoped getter review](coverage/semantics/magic-get-scoped-unset-review.json).
-Public-shadow/direct-This entry, by-reference getters, scoped recursion, special coercions
-and wider lifetimes remain partial. Accepted older cuts are not renewed.
+Native3/genuine Unsupported0 retain `8d2ecb421`; strict413/source3 and all467
+original state conditions pass first attempts at `3e1e67dee` (523 physical/56
+source-derived setup). No accepted/native/control replay. Raw last-owner refusal
+and blocking retain roots; wider producers/caches/lifetimes remain partial.
+[Generator CONFIG review](coverage/semantics/config-generator-unpack-review.json).
+
+Composition over `ad957e8bc`/413 preserves incoming WeakMap/InternalIterator,
+NaN and property selectors; accepted cuts keep their original revisions.
 
 ## Integrated behavior and entrypoints
 
@@ -31,7 +34,7 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | Source and compilation | Checked ASTs retain source occurrences, ordered publication, compilation phases and diagnostic priority. Dynamic source and request inputs have explicit provider boundaries. [Compiler](docs/semantics/SOURCE-COMPILER.md), [context](docs/semantics/SOURCE-CONTEXT.md), [dynamic source](docs/semantics/DYNAMIC-SOURCE.md). |
 | Operators and warning decisions | Arithmetic/casts distinguish saved values from live CVs and stage supported diagnostics through callbacks. Direct NaN Boolean NOT/Boolean cast produce stricttrue/false after a live0.0 write; NaN array casting constructs a fresh singleton from that live float. Initially-NaN LEFT logical XOR caches post-warning truth across live RIGHT conversion, including remaining default Warning before a LEFT throw unwinds. Retained-reference Boolean NOT keeps its captured inner cell across source unset/rebinding. NaN LEFT short-circuit decisions use post-callback truth to skip or enter RIGHT. NaN shorthand ternary preserves the live selected value after its callback. Copied fractional BITNOT retains its saved integer. [Operators](docs/semantics/ORDINARY-OPERATORS.md), [truth callbacks](docs/semantics/SOURCE-WARNING-TRUTH.md), [numerics](docs/semantics/NUMERICS.md). |
 | Comparisons and arrays | Seven missing-CV comparisons admit bounded DIRECT/ALIAS arrays, including ordinary non-Stringable object leaves. Recursive acyclic DIRECT array-edge graphs also pass through ALIAS payload cells, preserving deep COW snapshots, live replacements and final transitive release. [ALIAS DAG review](coverage/semantics/undefined-comparison-alias-direct-dag-review.json). [DIRECT graph review](coverage/semantics/undefined-comparison-direct-array-graph-review.json), [child-array review](coverage/semantics/undefined-comparison-array-payload-review.json). Undefined key variables in array literals resume Warning callbacks with a fixed empty key and live null/bool/int/float CVs; initially owning ordinary ARRAY CVs also preserve acquisition and retarget retention/debt through throw and balanced inverse writes. [Primitive review](coverage/semantics/array-literal-undefined-key-warning-review.json), [ARRAY-CV review](coverage/semantics/array-literal-undefined-key-array-cv-review.json). NULL-key literals support bounded CV, returned, temporary and pooled CONST values. Nested DIRECT TMP graphs preserve shared physical child edges and handler-time COW, cascading unowned runtime descendants while folded siblings remain pooled. [Nested TMP review](coverage/semantics/array-literal-null-key-array-tmp-subtree-review.json), [nested CONST review](coverage/semantics/array-literal-null-key-constant-subtree-review.json). [Comparisons](docs/semantics/COMPARISONS.md), [dimensions](docs/semantics/DIMENSIONS.md), [object-reference review](coverage/semantics/undefined-comparison-object-reference-array-review.json). |
-| Calls and configuration | Ordinary/scoped/captured calls preserve selected targets, argument order, references and genuine callback frames. Two singleton INI_SET packs retain raw NULL/quiet ARRAY, callee and option through later effects. Initialized user Iterators stream integer-key/string sends into INI_SET with callback ordering, pre-API retirement and supplied-Exception recovery. Ordinary Aggregate producers call real getIterator and transfer its retained Iterator result into DATA. Bounded WeakMaps distinguish empty arity failure from occupied object-key Error before any current copy. [Calls](docs/semantics/SOURCE-CALLS.md), [include/configuration](docs/semantics/INCLUDE-SOURCES.md), [two-pack review](coverage/semantics/ini-set-two-pack-null-array-value-review.json), [Iterator CONFIG review](coverage/semantics/config-iterator-unpack-review.json), [WeakMap CONFIG review](coverage/semantics/config-weakmap-unpack-review.json), [Aggregate CONFIG review](coverage/semantics/config-aggregate-iterator-unpack-review.json). |
+| Calls and configuration | Ordinary/scoped/captured calls preserve selected targets, argument order, references and genuine callback frames. Two singleton INI_SET packs retain raw NULL/quiet ARRAY, callee and option through later effects. Initialized user Iterators stream integer-key/string sends into INI_SET with callback ordering, pre-API retirement and supplied-Exception recovery. Ordinary Aggregate producers call real getIterator and transfer its retained Iterator result into DATA. Fresh named Generator consumers retain DATA and finish native resumes before API reception. Bounded WeakMaps distinguish empty arity failure from occupied object-key Error before any current copy. [Calls](docs/semantics/SOURCE-CALLS.md), [include/configuration](docs/semantics/INCLUDE-SOURCES.md), [two-pack review](coverage/semantics/ini-set-two-pack-null-array-value-review.json), [Iterator CONFIG review](coverage/semantics/config-iterator-unpack-review.json), [WeakMap CONFIG review](coverage/semantics/config-weakmap-unpack-review.json), [Aggregate CONFIG review](coverage/semantics/config-aggregate-iterator-unpack-review.json), [Generator CONFIG review](coverage/semantics/config-generator-unpack-review.json). |
 | Constants and callable values | Bounded DEFINE/CONSTANT/DEFINED preserve source authority, scopes, primitive/array/object snapshots and captured intrinsic Closure identity. Captured Boolean/integer/finite-float/NULL queries preserve strict ordinary versus weak explicit reception, raw/received trace arguments and callee ownership through deprecation callbacks. Captured positional Stringable queries preserve conversion/destruction order, strict rejection and trace ownership. Destructor Exceptions keep ordinary lookup active with Error/Previous chaining; explicit cleanup omits completed API/wrapper frames. [Constant contract](docs/semantics/SOURCE-USER-CONSTANTS.md), [scalar-query review](coverage/semantics/constant-owned-scalar-query-review.json), [NULL-query review](coverage/semantics/constant-owned-null-query-review.json), [Stringable-query review](coverage/semantics/constant-owned-stringable-query-review.json), [destructor-query review](coverage/semantics/constant-owned-stringable-query-throw-review.json). |
 | Classes and properties | Visibility, references, typed writes, hooks, magic access and clone have bounded routes. Accessible nonpublic UNSET Get retains the caller-selected physical DECL/type across Child scope and backing population. Bounded same-name recursion distinguishes captured NULL, typed Error and visibility Error; real guards survive local cleanup. [Properties](docs/semantics/SOURCE-PROPERTIES.md), [classes](docs/semantics/SOURCE-CLASSES.md), [recursion review](coverage/semantics/magic-get-recursion-review.json), [declared-UNSET review](coverage/semantics/magic-get-unset-recursion-review.json), [typed reentry review](coverage/semantics/magic-get-recursive-error-review.json), [denied reentry review](coverage/semantics/magic-get-denied-recursion-review.json), [scoped getter review](coverage/semantics/magic-get-scoped-unset-review.json). |
 | Generators and Fibers | Direct named bodies entered by CURRENT/NEXT preserve their authentic resumer across Fiber suspension and supplied-Throwable injection, with distinct fresh/cached reentry Errors. [Transfer review](coverage/semantics/generator-fiber-transfer-review.json). Shared delegation, initialization history, unused snapshots and abrupt SEND cleanup retain their bounded contracts. [Generators](docs/semantics/GENERATORS.md), [Fibers](docs/semantics/FIBERS.md), [delegation](docs/semantics/GENERATOR-DELEGATION.md), [refresh review](coverage/semantics/generator-refresh-unused-current-review.json). |
@@ -42,10 +45,9 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| Source90 | Named Generator CONFIG unpack: native3/genuine closed;30/405/new423 runtime preparation. |
 | A51 | String R-offset callbacks: native6/genuine Unsupported closed; protocol implementation, no404 edits. |
 
-Iterator49/50/51/52/53, V99/V100/V101/V102/V103, M132/M133/M134/M135/M136/M137/M138/M139/M140/M141/M142/M143/M144/M145/M146/M147/M148/M149/M150, A46/A47/A48/A49/A50, OP79/80/81/82/83/84/85, Source86/87/88/89, COMP118/119/120/121 and CLASS119/120/121/122/123 are integrated
+Iterator49/50/51/52/53, V99/V100/V101/V102/V103, M132/M133/M134/M135/M136/M137/M138/M139/M140/M141/M142/M143/M144/M145/M146/M147/M148/M149/M150, A46/A47/A48/A49/A50, OP79/80/81/82/83/84/85, Source86/87/88/89/90, COMP118/119/120/121 and CLASS119/120/121/122/123 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
@@ -67,7 +69,7 @@ for private changes.
   physical collection, weak-reference/WeakMap, output/shutdown/tick and other
   required lifecycle behavior.
 - Extend remaining Traversable CONFIG producers, consumers and lifetimes beyond
-  initialized user Iterators, their bounded Aggregate producer and the empty/singleton WeakMap slice.
+  initialized user Iterators, their bounded Aggregate producer, fresh named Generators and the empty/singleton WeakMap slice.
 - Extend dynamic compilation, startup/configuration profiles, environment and
   provider consumers within the agreed core/intrinsic boundary. Ordinary external
   libraries/services are separate; builtin presence alone supplies no semantics.

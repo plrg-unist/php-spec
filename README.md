@@ -596,7 +596,8 @@ the Iterator cursor releases before API entry. A key callback throw leaves its
 current value unsent, preserves the same Exception and cancels the assignment.
 The first slice uses borrowed CV operands, plain string values and external
 Iterator/callee owners. Four source agreements and 742 original state premises
-pass; two Generator/Generator-producing Aggregate controls remain Unsupported. Earlier
+pass at their recorded Source87 cuts. Source90 admits the old direct Generator
+control; Generator-producing Aggregate remains Unsupported. Earlier
 fixture/timeouts retain zero credit. Builtin Traversable classification and wider
 producers remain open.
 
@@ -609,6 +610,16 @@ entry, retains its identity and genuine trace, then permits setter recovery.
 Three source agreements, strict411 and 513 original state obligations pass
 (558 physical conditions, 45 repeated setup). The original owned-case timeout
 keeps zero credit; wider producers, values and owner-loss lifetimes remain partial.
+
+[Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
+now streams fresh named zero-argument Generators into INI_SET through real native
+resumes. DATA retains the selected Generator across live input/callee rebinding;
+duplicate integer keys stay separate positional sends. Final resume completes
+before DATA retirement and API entry. A terminal supplied Exception cancels
+reception with its genuine producer trace and preserved assignment/identity,
+then permits saved-setter recovery. Native3/source3, strict413 and 467 original
+state conditions pass (523 physical, 56 setup), with no retry. The initial
+Unsupported comparison remains zero; wider caches, producers and lifetimes remain partial.
 
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map

@@ -65,8 +65,10 @@ $result = ini_set(...$it); echo 'A|', $result, '|', ini_get('precision');
 }
 family.UNSUPPORTED = {
     name: ('CONFIG Traversable unpack outside initialized Iterator domain', b'B|')
-    for name in family.CASES if name.endswith('remains-explicitly-unsupported')
+    for name in family.CASES if name == 'config-aggregate-unpack-remains-explicitly-unsupported'
 }
+# The historical direct-Generator control ID keeps its old Source87 cut; Source90
+# now admits that source and expects normal native agreement without replay.
 family_fingerprint = family.fingerprint
 
 
