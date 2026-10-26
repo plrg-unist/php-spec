@@ -11,8 +11,6 @@ dec $array_iterator_release_ids(ptask*) : nat*
 dec $array_iterator_release_pair(pstate, ptask*, parrayiterator, text) : bool
 dec $array_iterator_release_pending(pstate, ptask*, parrayiterator, text) : bool
 dec $array_iterator_release_valid(pstate, parrayiterator, text) : bool
-dec $array_iterator_release_head_line(pstate, ptask) : int?
-dec $array_iterator_release_line(pstate, ptask*) : int?
 dec $array_iterator_release_builder(pstate, parrayiterator) : bool
 dec $array_iterator_blocked(pstate) : bool
 dec $array_iterator_source(pstate, parrayiterator) : bool
@@ -94,9 +92,11 @@ def $array_iterator_release_pending(S, ptask_head :: ptask_tail*, parrayiterator
   -- if $array_iterator_release_pair(S, ptask_head :: ptask_tail*, parrayiterator, text)
 def $array_iterator_release_pending(S, ptask_head :: ptask_tail*, parrayiterator, text) = $array_iterator_release_pending(S, ptask_tail*, parrayiterator, text)
   -- if ~$array_iterator_release_pair(S, ptask_head :: ptask_tail*, parrayiterator, text)
+;; Cleanup executes at the checked value expression; SITE retains the array item
+;; receipt needed to validate the original tail and resume or cancel afterward.
 def $array_iterator_release_valid(S, parrayiterator, text) = true
-  -- if S.ORIGIN = (parrayiterator.SITE)
-  -- if $array_iterator_item(S, parrayiterator.TAIL, parrayiterator.LINE) = ((parrayiterator.SITE, expression))
+  -- if S.ORIGIN = $origin_child((parrayiterator.SITE), [PCFIELD 1])
+  -- if $array_iterator_item(S[.ORIGIN = (parrayiterator.SITE)], parrayiterator.TAIL, parrayiterator.LINE) = ((parrayiterator.SITE, expression))
   -- if parrayiterator.INPUT = VARIABLE n_name* z
   -- if $array_float_key_input_source(S, expression, parrayiterator.INPUT)
   -- if $(parrayiterator.ARRAY < |S.ARRAYS|) /\ (HARRAY parrayiterator.ARRAY) <- S.ALLOCATIONS
@@ -113,17 +113,6 @@ def $array_iterator_release_valid(S, parrayiterator, text) = true
   -- if text <- ["normal", "abrupt"]
   -- if text = "normal" \/ $array_iterator_release_pending(S, S.TODO, parrayiterator, text)
 def $array_iterator_release_valid(S, parrayiterator, text) = false -- otherwise
-def $array_iterator_release_head_line(S, ARRAY_ITERATOR_RELEASE parrayiterator text) = (parrayiterator.LINE)
-  -- if $array_iterator_release_valid(S, parrayiterator, text)
-def $array_iterator_release_head_line(S, ptask) = eps -- otherwise
-def $array_iterator_release_line(S, eps) = eps
-def $array_iterator_release_line(S, ptask_head :: ptask_tail*) = (z)
-  -- if $array_iterator_release_head_line(S, ptask_head) = (z)
-def $array_iterator_release_line(S, ptask_head :: ptask_tail*) = $array_iterator_release_line(S, ptask_tail*)
-  -- if $array_iterator_release_head_line(S, ptask_head) = eps
-def $destructor_source_line(S) = z
-  -- if $destructor_operation_for(S) = eps
-  -- if $array_iterator_release_line(S, S.TODO) = (z)
 def $array_iterator_release_builder(S, parrayiterator) = (~(parrayiterator.ARRAY <- S.LITERALARRAYDEBTS) /\ $array_null_const_items(S, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY]))
 
 ;; INPUT is a source receipt after entry, even if rewind/key unsets that CV.
@@ -319,7 +308,7 @@ rule PhpStep/array-iterator-finish: S ~> S[.TODO = (ARRAY_NEXT parrayiterator.AR
   -- if $array_iterator_valid(S, parrayiterator, "finish")
   -- if $array_iterator_ready(S, parrayiterator)
   -- if ~$array_iterator_destructor(S, parrayiterator.OBJECT)
-rule PhpStep/array-iterator-finish-destructor: S ~> $fiber_start_unpack_release(S[.TODO = (ARRAY_ITERATOR_RELEASE parrayiterator "normal") :: ptask_tail*][.ITERATORS = $iterator_remove(S.ITERATORS, parrayiterator.ITERATOR)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], [HOBJECT parrayiterator.OBJECT])
+rule PhpStep/array-iterator-finish-destructor: S ~> $fiber_start_unpack_release(S[.TODO = (ARRAY_ITERATOR_RELEASE parrayiterator "normal") :: ptask_tail*][.ITERATORS = $iterator_remove(S.ITERATORS, parrayiterator.ITERATOR)][.ORIGIN = $origin_child((parrayiterator.SITE), [PCFIELD 1])][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], [HOBJECT parrayiterator.OBJECT])
   -- if S.TODO = (ARRAY_ITERATOR parrayiterator "finish") :: ptask_tail*
   -- if $array_iterator_valid(S, parrayiterator, "finish") /\ $array_iterator_ready(S, parrayiterator)
   -- if $array_iterator_destructor(S, parrayiterator.OBJECT)
@@ -361,7 +350,7 @@ def $error_task_iterator(ARRAY_ITERATOR parrayiterator text) = [parrayiterator.I
 def $array_iterator_discard(S, parrayiterator, text) = S[.ITERATORS = $iterator_remove(S.ITERATORS, parrayiterator.ITERATOR)][.ORIGIN = (parrayiterator.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $array_iterator_ready(S, parrayiterator)
   -- if ~$array_iterator_destructor(S, parrayiterator.OBJECT)
-def $array_iterator_discard(S, parrayiterator, text) = $fiber_start_unpack_release(S[.ITERATORS = $iterator_remove(S.ITERATORS, parrayiterator.ITERATOR)][.TODO = (THROW_SEARCH n) :: (ARRAY_ITERATOR_RELEASE parrayiterator[.CURRENT = KNOWN PNULL][.KEY = KNOWN PNULL] "abrupt") :: ptask*][.ORIGIN = (parrayiterator.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $operand_nodes(parrayiterator.CURRENT) ++ $operand_nodes(parrayiterator.KEY) ++ [HOBJECT parrayiterator.OBJECT])
+def $array_iterator_discard(S, parrayiterator, text) = $fiber_start_unpack_release(S[.ITERATORS = $iterator_remove(S.ITERATORS, parrayiterator.ITERATOR)][.TODO = (THROW_SEARCH n) :: (ARRAY_ITERATOR_RELEASE parrayiterator[.CURRENT = KNOWN PNULL][.KEY = KNOWN PNULL] "abrupt") :: ptask*][.ORIGIN = $origin_child((parrayiterator.SITE), [PCFIELD 1])][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $operand_nodes(parrayiterator.CURRENT) ++ $operand_nodes(parrayiterator.KEY) ++ [HOBJECT parrayiterator.OBJECT])
   -- if S.TODO = (THROW_SEARCH n) :: ptask*
   -- if $array_iterator_ready(S, parrayiterator)
   -- if $array_iterator_destructor(S, parrayiterator.OBJECT)
@@ -376,7 +365,7 @@ def $return_discard(S, ARRAY_ITERATOR parrayiterator text) = $array_iterator_dis
 ;; Cache and DATA release jobs keep the partial builder through the real Dtor.
 def $task_nodes(ARRAY_ITERATOR_RELEASE parrayiterator text) = [HARRAY parrayiterator.ARRAY]
 def $call_task_valid(S, ARRAY_ITERATOR_RELEASE parrayiterator text) = $array_iterator_release_valid(S, parrayiterator, text)
-rule PhpStep/array-iterator-release-continue: S ~> S[.TODO = (ARRAY_NEXT parrayiterator.ARRAY parrayiterator.TAIL) :: ptask*][.ORIGIN = $origin_next_item(S.ORIGIN, parrayiterator.TAIL)]
+rule PhpStep/array-iterator-release-continue: S ~> S[.TODO = (ARRAY_NEXT parrayiterator.ARRAY parrayiterator.TAIL) :: ptask*][.ORIGIN = $origin_next_item((parrayiterator.SITE), parrayiterator.TAIL)]
   -- if S.TODO = (ARRAY_ITERATOR_RELEASE parrayiterator "normal") :: ptask*
   -- if $array_iterator_release_valid(S, parrayiterator, "normal") /\ $array_iterator_release_builder(S, parrayiterator)
 rule PhpStep/array-iterator-release-boundary: S ~> S[.COMPLETION = UNSUPPORTED "array Iterator release builder outside quiet domain"]
