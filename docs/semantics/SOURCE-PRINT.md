@@ -24,14 +24,24 @@ At runtime the operand evaluates once before conversion and output. Successful
 conversion emits its bytes and yields integer 1. Conversion warnings and abrupt
 completion use the existing stringify rules; an abrupt operand produces no print
 output or result. Admitted scalar, array-warning and object-error behavior shares
-echo's conversion. User-defined `__toString` and method-handler behavior remain
-explicit Unsupported dependencies. Output callbacks and lifecycle protocols
-remain separate core work.
+echo's conversion. User-defined `__toString` uses the shared resumable method
+rules; wider output callbacks and lifecycle protocols remain partial.
 
 A suspended `PRINT_EMIT` retains the print occurrence and its compiler completion
 line. Its entry guard checks the active origin, source node, compiled read value
 and line. The ordinary source/descriptor guard also checks direct print entry.
 Child calls and saved tasks use the existing origin and ownership machinery.
+
+An initially unbuffered print of a direct noarg by-value untyped function's
+Stringable result retains its temporary separately from the cast receiver.
+Text is written before temporary retirement; the nonthrowing destructor runs
+before outer assignment while print's integer `1` remains protected. A borrowed CV
+unset inside the method instead retires before text. A supplied method throw
+emits neither text nor print’s `1` and retains its Exception through destruction.
+Two acquired source agreements, one borrowed control and 505 recipe premises
+(including derived guards/default-buffer history) pass in the
+[lifetime review](../../coverage/semantics/print-stringable-lifetime-review.json).
+Other producer forms, positive-handler execution and wider lifetimes remain partial.
 
 Validation is separate by boundary: 20 author source comparisons, ten native
 compiler/lint comparisons with 51 source projections, and 15 independent reviewer

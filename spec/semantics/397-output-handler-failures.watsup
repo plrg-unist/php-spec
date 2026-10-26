@@ -204,16 +204,21 @@ def $output_string_borrowed(S, pobcaller) = true
   -- if $output_string_operand(pobcaller) = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprVariable (BYTES text) metadata)
 def $output_string_borrowed(S, pobcaller) = false -- otherwise
+dec $output_string_held(pstate, pobcaller, nat, ptask*) : bool
+def $output_string_held(S, pobcaller, n, (OUTPUT_STRING_RELEASE pobstringrelease) :: ptask_tail*) = (pobstringrelease.OBJECT = n /\ pobstringrelease.CALLER = pobcaller /\ pobstringrelease.CONTEXT = S.CURRENT /\ pobstringrelease.TAIL = ptask_tail*)
+def $output_string_held(S, pobcaller, n, ptask*) = false -- otherwise
 def $stringify_return_state(S, ptask, pvalue_text, ptask_tail*) = S[.TODO = ptask :: (OUTPUT_STRING_RELEASE pobstringrelease) :: ptask_tail*][.RESULT = KNOWN pvalue_text][.BASE = BASE_VALUE (KNOWN pvalue_text)]
   -- if S.TODO = (STRINGIFY_RESULT n porigin z) :: ptask :: ptask_tail*
   -- if $output_string_caller(porigin, z, ptask) = (pobcaller)
   -- if $output_positive(S.OUTPUTBUFFERS)
+  -- if ~$output_string_held(S, pobcaller, n, ptask_tail*)
   -- if $output_string_owned(S, pobcaller, n)
   -- if pobstringrelease = {OBJECT n, CALLER pobcaller, CONTEXT S.CURRENT, TAIL ptask_tail*}
 def $stringify_return_state(S, ptask, pvalue_text, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "owned Stringable output operand outside direct named construction"]
   -- if S.TODO = (STRINGIFY_RESULT n porigin z) :: ptask :: ptask_tail*
   -- if $output_string_caller(porigin, z, ptask) = (pobcaller)
   -- if $output_positive(S.OUTPUTBUFFERS)
+  -- if ~$output_string_held(S, pobcaller, n, ptask_tail*)
   -- if ~$output_string_owned(S, pobcaller, n) /\ ~$output_string_borrowed(S, pobcaller)
 def $output_string_certificate(S, pobstringrelease) = true
   -- if S_history = S[.CURRENT = pobstringrelease.CONTEXT][.ORIGIN = ($output_caller_site(pobstringrelease.CALLER))][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT pobstringrelease.OBJECT]]
@@ -234,3 +239,36 @@ def $output_string_exit_frames(pframe :: pframe_tail*, pdestructionoperation, po
 def $output_string_exit(S, pdestructionoperation, pobstringrelease) = ((S.CURRENT = pobstringrelease.CONTEXT /\ S.ORIGIN = ($output_caller_site(pobstringrelease.CALLER)) /\ $source_operand_suffix(S.TODO, DESTRUCTOR_OPERATION_EXIT pdestructionoperation, pobstringrelease.TAIL)) \/ $output_string_exit_frames(S.FRAMES, pdestructionoperation, pobstringrelease))
 def $eager_operation_source_guard(S, pdestructionoperation) = ($output_string_certificate(S, pobstringrelease) /\ $output_string_exit(S, pdestructionoperation, pobstringrelease) /\ pdestructionoperation.CALLER = pobstringrelease.CONTEXT /\ pdestructionoperation.ORIGIN = ($output_caller_site(pobstringrelease.CALLER)) /\ pdestructionoperation.COMPLETION = NORMAL)
   -- if pdestructionoperation.SOURCE = OUTPUT_STRING_RELEASE pobstringrelease
+
+;; A noarg call's acquired PRINT operand outlives its separate cast pin.
+;; Keep the existing release in the real producer tail before conversion.
+dec $print_owned_source(pstate, porigin, int) : bool
+def $print_owned_source(S, PORIGIN n pcpath, z) = true
+  -- if $print_task_valid(S[.ORIGIN = (PORIGIN n pcpath)], PORIGIN n pcpath, z)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPrint expression metadata)
+  -- if $source_emission_noarg_call(S, n, pcpath ++ [PCFIELD 0], expression) = (z_call)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 0]) = ((ptbytes_name, eps))
+  -- if $call_target(S, ptbytes_name, eps) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF
+  -- if pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.SIGNATURE.RETURNS = eps
+def $print_owned_source(S, porigin, z) = false -- otherwise
+def $print_owned_plan(S) = (pobstringrelease)
+  -- if S.TODO = (PRINT_EMIT porigin z) :: ptask_tail*
+  -- if S.OUTPUTBUFFERS = eps
+  -- if S.ORIGIN = (porigin)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $stringable_instance(S, n)
+  -- if $print_owned_source(S, porigin, z)
+  -- if pobstringrelease = {OBJECT n, CALLER (OUTPUT_VM porigin (PRINT_EMIT porigin z) z), CONTEXT S.CURRENT, TAIL ptask_tail*}
+def $print_owned_plan(S) = eps -- otherwise
+rule PhpStep/print-owned-call: S ~> $user_string_begin(S_read, pobstringrelease.OBJECT, porigin, z, PRINT_EMIT porigin z, (OUTPUT_STRING_RELEASE pobstringrelease) :: ptask_tail*)
+  -- if $print_owned_plan(S) = (pobstringrelease)
+  -- if S.TODO = (PRINT_EMIT porigin z) :: ptask_tail*
+  -- if S_read = $resolve(S, S.RESULT)
+def $output_string_certificate(S, pobstringrelease) = true
+  -- if pobstringrelease.CALLER = OUTPUT_VM porigin (PRINT_EMIT porigin z) z
+  -- if S_history = S[.CURRENT = pobstringrelease.CONTEXT][.ORIGIN = (porigin)]
+  -- if $print_owned_source(S_history, porigin, z)
+  -- if $(pobstringrelease.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pobstringrelease.OBJECT] = INSTANCE porigin_class
