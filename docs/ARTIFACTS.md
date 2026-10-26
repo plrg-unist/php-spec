@@ -71,6 +71,13 @@ The archive preserves tested380/manifest, exact maintained inputs, unchanged
 helpers, raw processes and zero-credit preparation stops. Composition over416
 adds no execution credit.
 
+Scoped CV Get reference verification is retained in
+`../php-spec-evidence-archive/magic-get-scoped-reference-127/manifest.json`:
+native4/baseline4, new source3 and432 focused conditions at their original416 cuts.
+The archive preserves380/384/manifest, exact maintained inputs, unchanged helpers
+and all raw processes. The native-only owned-BYREF boundary remains excluded;
+composition over417 adds no execution credit.
+
 Keep future compressed raw traces, source snapshots and tool copies in this
 external archive (using new paths for new evidence) or in ignored `.tools/`.
 Commit concise reports and manifests with hashes and locations. Preserve raw

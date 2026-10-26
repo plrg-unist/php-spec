@@ -1,0 +1,81 @@
+{
+  "decision": "Independently accepted retained-declaration verification of scoped CV Get references; family remains partial.",
+  "scope": "Ordinary CV literal reads of accessible nonpublic UNSET properties with existing BYREF Get signatures. Shared saved descriptor drives both unconstrained verification380 and existing constrained-source checking384; no new coercion algorithm or type-source attachment.",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "engine_route": "Zend/zend_object_handlers.c::zend_std_read_property retains caller-selected prop_info across Get. Zend/zend_execute.c::zend_verify_prop_assignable_by_ref_ex tests existing sources before conversion; a TMP weak probe chooses the first-source conflict diagnostic without changing the referent. An unconstrained reference is dereferenced and converted in place. No requested-property type source is added.",
+  "implementation": {
+    "revision": "66df771c14d00f2c8811971fdefc47c252288636",
+    "paths": [
+      "spec/semantics/380-magic-property-get.watsup",
+      "spec/semantics/384-magic-property-reference-types.watsup"
+    ],
+    "delta_from_base": "+14/-17 lines",
+    "behavior": "verify_desc selects retained scoped DECL first, then a disjoint retained raw-key fallback. Untyped/unconstrained verification and constrained384 share it. Scoped access admits existing BYREF getters; owned BYREF history additionally requires saved raw-key access, preventing a public Child shadow from admitting Parent-private owned BYREF.",
+    "preservation": "126 owned_access helper API, direct-this BYVAL source fence, special-coercion DECL guards, PARAM and384 source/type guards remain. No new task/state/root/GC fields or generic write/coercion/lifetime change."
+  },
+  "source_evidence": {
+    "native_baseline_revision": "150c2806ad7c6a7527d5039be023a1d4b5f3b7a4",
+    "module_count": 416,
+    "classification": "Native4 exact. All unchanged cases are genuine checked Unsupported/0 agreements: new CV streams U:/C:/K: and owned-control O:D| retain original cleanup. The owned control is native-only and remains excluded; changed source phase executes new3 only.",
+    "changed_revision": "66df771c14d00f2c8811971fdefc47c252288636",
+    "agreements": 3,
+    "observations": "Parent private int overrides Child public string for verification. Unconstrained global string7 becomes int7 then accepts free; Holder:string conflict preserves7, destination42, caller line7/file and later source8; exact Holder:int|string retains its source and later accepts free. Child public hidden value and final destructor streams stay exact."
+  },
+  "focused_evidence": {
+    "revision": "d032f99ae747643dd6b1784b8035963b75c334d9",
+    "module_count": 416,
+    "author": 280,
+    "independent": 152,
+    "total": 432,
+    "reached": 411,
+    "derived": 21,
+    "author_selection": {
+      "weak_cell": 138,
+      "source_conflict": 142
+    },
+    "trajectories": "Actual Get scope sees raw Child public access while saved lookup/verify_desc stays Parent private. Weak verification changes the real cell, preserves PROPREFS and releases Get hold before COPY detaches int7 (HCELL2-to1). Constrained PROP_POSSIBLE verification leaves STORE/PROPREFS unchanged, materializes a fresh caller-site TypeError, retains the raw COPY reference through unwind and reaches catch42/source7 (HCELL3-to2). Peer exact union-source reference-to-COPY keeps the same source vector through later free and public Child bypass.",
+    "controls": "Authentic owned/public-shadow front satisfies old owned_access, ordinary Get flags/signature and selected access/DECL, but saved mangled BYREF access rejects history/capture/plan. Forged Child/EPS helpers are unchecked while actual task/history refuses. Synthetic PARAM selector refusal retains positive operand/descriptor/history/source checks, without mutated state-validity/source-reachability claims. Six author budget conditions establish final-state resumption equality.",
+    "execution": "Author AL2/SL2true, peer AL1/SL1true; first-pass/quiet/stable, no timeout/interruption/live group. Serial CPU1 with actual child affinity samples; all actors/groups/wrappers reaped."
+  },
+  "preserved_failures": [],
+  "independent_review": "class119_review accepted native/baseline classification, runtime/source3, maintained author280, peer152, actual-parent selector/preservation reasoning and concise documentation/archive. No execution renewal.",
+  "raw": {
+    "manifest": "../php-spec-evidence-archive/magic-get-scoped-reference-127/manifest.json",
+    "bytes": 5984682,
+    "sha256": "0c751ef94221a59519aecf364cbecf80b43021db5e16fc8adc168a0293241bac",
+    "reports": {
+      "native4": {
+        "path": ".tools/magic-get-scoped-reference-probes-127/native-first/report.json",
+        "sha256": "771fb34786b82377bb7b027d1a3866d5585e901afff4dee45bfd1a5b6d06c947"
+      },
+      "baseline4": {
+        "path": ".tools/magic-get-scoped-reference-probes-127/accepted-current-baseline/report.json",
+        "sha256": "b4867e805acc3ad1c69c56b3e6bc43774b669c541c35338009d3d393e896fcbb"
+      },
+      "source3": {
+        "path": ".tools/magic-get-scoped-reference-probes-127/changed-model-qzvbqkf2/report.json",
+        "sha256": "a7c3b2c29224acd1cf885fd2b2a77f695281fa78565057fe7ce1492ea64e4e8a"
+      },
+      "author280": {
+        "path": ".tools/magic-get-scoped-reference-protocol-smzl_yj1/report.json",
+        "sha256": "59b92080756fa8526ea3b29dfb3ce7b369bd7c8d4ecb25a1ea7f6e11e332a3fc"
+      },
+      "independent152": {
+        "path": ".tools/magic-get-scoped-reference-review-127/execution-otk90euy/report.json",
+        "sha256": "83f4a2bd9bf8a8d6ec401b1ae284f990e7c5f4c5f524f68cb04358a6ec6cf180"
+      }
+    },
+    "recovery": "Verify SHA-256 then extract raw.tar.gz; recover tested Git revision for original416 inputs. Reports retain original file/cwd/profile/tool identities. tested-inputs preserves380/384/manifest, six maintained inputs and unchanged119/123/323 helpers. Native/baseline retain150c2806a; source3 retains66df771c1; focused432 retainsd032f99ae. Composition over8484fc071/417 adds no execution credit."
+  },
+  "composition": {
+    "parent_revision": "8484fc071e7653009bfb5459026acad251333c75",
+    "module_count": 417,
+    "preservation": "Tested380/384, six maintained inputs and119/123/323 helpers remain exact. Incoming parent runtime paths/417 manifest remain parent-exact;30 changes only pclosurecall PACKS/new alternatives, with no Get record-field change.",
+    "selectors": "182/428 Closure::call/pack and424 WEAKMAPITERATOR/WEAKREFERENCE selectors are absent.386 now activates weakmap_reference_operational on FRAMES, including ordinary destructors; its sole destructor_operational consumer was already true through destructor_classes for these Child::__destruct paths. Before class installation no destruction frame exists, so the operational result is pointwise unchanged.",
+    "credit": "No joined execution or earlier getter/native/control replay; original416 cuts retained."
+  },
+  "limits": [
+    "Owned nonpublic BYREF, including Parent-private access under public Child shadow, literal-this BYREF, parameter backings, wider scoped coercions/returned constraints and callback/suspension/lifetime histories remain partial."
+  ],
+  "engine_bugs_or_intentional_divergences": []
+}

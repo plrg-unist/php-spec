@@ -5135,8 +5135,16 @@ private/protected UNSET and denied hidden properties. Saved declaration/type
 survives backing99; hidden denied int remains unverified. COPY precedes original
 receiver destruction and caller delivery. [Three source agreements and 477 focused
 conditions](coverage/semantics/magic-get-owned-access-review.json) retain415 cuts,
-including existing public BYREF and accessible INITIAL boundaries. Nonpublic
+including existing public BYREF and accessible INITIAL boundaries. Owned nonpublic
 BYREF, wider producers and special coercions remain partial.
+
+Ordinary CV nonpublic UNSET Get now verifies returned references against the saved
+caller declaration. Weak string7 converts the actual unconstrained cell; a typed
+string source raises a conflict without writing it. Exact int|string sources keep
+their original constraint and accept later `'free'`, with no requested type attached.
+[Three source agreements and 432 focused conditions](coverage/semantics/magic-get-scoped-reference-review.json)
+retain416 cuts. Owned nonpublic BYREF, including a public Child shadow, and
+literal-this BYREF remain fenced; wider parameter/coercion/lifetime forms are partial.
 
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference
