@@ -3805,6 +3805,11 @@ Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0
 and aggregate guards and cursors survive callback mutation and throw. Four exact
 sources and 482 reached premises/26 raw steps pass. That cut admits a quiet
 terminal remainder; wider handlers and lifetimes remain open.
+[Nonpublic numeric comparison cursors](coverage/semantics/nonpublic-numeric-comparison-review.json)
+retain physical private/protected keys in initialized materialized declared tables.
+Normal handlers preserve live slot rereads, retained reference cells and distinct
+inherited private names. Six source agreements and 309 focused premises retain
+their recorded cuts; nonpublic Stringable callbacks remain refused.
 [Builtin stdClass numeric Notices](coverage/semantics/stdclass-numeric-comparison-review.json)
 use the same continuation with a fixed builtin class image. Restored second
 Notices retain saved 1/1.0 across stdClass/source-instance changes and late live
