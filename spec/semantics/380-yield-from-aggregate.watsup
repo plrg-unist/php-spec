@@ -555,6 +555,9 @@ def $yield_from_iterator_warning_transfer(S) = false -- otherwise
 def $fiber_generator_transfer(S) = true -- if $yield_from_iterator_warning_transfer(S)
 def $yield_from_iterator_warning_vm_claims(S, pfibervm) = $generator_from_claims(pfibervm.TODO) ++ $generator_from_saved_claims(pfibervm.FRAMES)
   -- if S_view = $fiber_vm_restore(S, pfibervm)[.COMPLETION = NORMAL]
+  -- if $fiber_generator_delegation_ids(S_view) =/= eps
+def $yield_from_iterator_warning_vm_claims(S, pfibervm) = $generator_from_claims(pfibervm.TODO) ++ $generator_from_saved_claims(pfibervm.FRAMES)
+  -- if S_view = $fiber_vm_restore(S, pfibervm)[.COMPLETION = NORMAL]
   -- if $yield_from_iterator_warning_transfer(S_view)
 def $yield_from_iterator_warning_vm_claims(S, pfibervm) = eps -- otherwise
 def $yield_from_iterator_warning_object_claims(S, eps) = eps
