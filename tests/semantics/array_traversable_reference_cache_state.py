@@ -64,6 +64,7 @@ def conditions(name, program, path, stdout):
     ] + pair('S_cache', 2) + public('S_cache')
     checks += seek('S_cache', 191, 'S_key') + [
         'S_key.TODO = (ARRAY_ITERATOR parrayiterator_key "insert") :: ptask_tail*',
+        'parrayiterator_key.KEY = KNOWN pvalue_key',
         'parrayiterator_key = parrayiterator_cached[.KEY = KNOWN pvalue_key]',
         '$string_bytes(pvalue_key) = ($ptascii("ref"))',
         '$array_iterator_ready(S_key, parrayiterator_key)',
