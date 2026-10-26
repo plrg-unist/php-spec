@@ -606,8 +606,8 @@ the Iterator cursor releases before API entry. A key callback throw leaves its
 current value unsent, preserves the same Exception and cancels the assignment.
 The first slice uses borrowed CV operands, plain string values and external
 Iterator/callee owners. Four source agreements and 742 original state premises
-pass at their recorded Source87 cuts. Source90 admits the old direct Generator
-control; generator-function getIterator remains Unsupported. Earlier
+pass at their recorded Source87 cuts. Source90/93 admit the old direct Generator
+and generator-function getIterator controls without renewing those executions. Earlier
 fixture/timeouts retain zero credit. Builtin Traversable classification and wider
 producers remain open.
 
@@ -647,6 +647,15 @@ without an extra owner; WeakReference observers confirm retirement. Normal retur
 post-retirement API arity traces and supplied-Exception recovery pass three source
 comparisons and 448 original conditions (507 physical, 59 setup). Owning returns,
 last callee retirement and wider producers remain partial.
+
+[Generator-method CONFIG producers](coverage/semantics/config-aggregate-generator-method-review.json)
+now create a genuine fresh Generator from `getIterator()` itself. Its stored
+frame owns the selected receiver through source replacement, including inherited
+methods; a nonowning producer receipt preserves method/source authority after
+receiver and Generator death. Native resumes drain before API reception or
+terminal-throw cleanup, preserving the original method trace and setter recovery.
+Three source agreements and 574 original conditions pass (653 physical, 79 setup).
+Wider operands, captures, values and callback lifetimes remain partial.
 
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
@@ -3805,6 +3814,11 @@ Live CV/cell reads remain distinct from copies; a second Notice uses saved 1/1.0
 and aggregate guards and cursors survive callback mutation and throw. Four exact
 sources and 482 reached premises/26 raw steps pass. That cut admits a quiet
 terminal remainder; wider handlers and lifetimes remain open.
+[Nonpublic numeric comparison cursors](coverage/semantics/nonpublic-numeric-comparison-review.json)
+retain physical private/protected keys in initialized materialized declared tables.
+Normal handlers preserve live slot rereads, retained reference cells and distinct
+inherited private names. Six source agreements and 309 focused premises retain
+their recorded cuts; nonpublic Stringable callbacks remain refused.
 [Builtin stdClass numeric Notices](coverage/semantics/stdclass-numeric-comparison-review.json)
 use the same continuation with a fixed builtin class image. Restored second
 Notices retain saved 1/1.0 across stdClass/source-instance changes and late live

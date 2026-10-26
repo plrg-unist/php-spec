@@ -91,7 +91,7 @@ def checks(program, path, name):
         *common.public('S_return'),
         'S_data = $test_config_aggregate_generator_step(S_return)',
         'S_data.TODO = (CONFIG_GENERATOR pconfiggenerator "rewind") :: ptask_tail*',
-        'pconfiggenerator = {CALL pconfigcall,OBJECT n_generator,INPUT S_pre.RESULT,ITEMS eps}',
+        'pconfiggenerator = {CALL pconfigcall,OBJECT n_generator,INPUT S_pre.RESULT,ITEMS eps,PRODUCER eps}',
         'S_data = S_return[.TODO = (CONFIG_GENERATOR pconfiggenerator "rewind") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]',
         '$heap_graph(S_data) = $heap_graph(S_return)',
         '$task_nodes(CONFIG_GENERATOR pconfiggenerator "rewind") = ' + roots,

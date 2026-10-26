@@ -120,7 +120,7 @@ def checks(program, path, name):
         *owners('S_return', 1, 3, 2), *common.public('S_return'),
         'S_data = $test_config_aggen_peer_step(S_return)',
         'S_data.TODO = (CONFIG_GENERATOR pconfiggenerator_initial "rewind") :: ptask_tail*',
-        'pconfiggenerator_initial = {CALL pconfigcall,OBJECT n_generator,INPUT pconfigaggregate.INPUT,ITEMS eps}',
+        'pconfiggenerator_initial = {CALL pconfigcall,OBJECT n_generator,INPUT pconfigaggregate.INPUT,ITEMS eps,PRODUCER eps}',
         'S_data.RESULT = KNOWN PNULL', 'S_data.STORE = S_return.STORE',
         'S_data.OBJECTS = S_return.OBJECTS', 'S_data.ARRAYS = S_return.ARRAYS',
         '$heap_graph(S_data) = $heap_graph(S_return)',

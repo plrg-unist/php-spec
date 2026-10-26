@@ -468,6 +468,13 @@ Aggregate cursors retain their original arrays/declared slots and guards across
 the callback; only zero resumes later entries. Notice↔Stringable handoffs preserve
 the same source consumer and selected-case continuation.
 
+[Initialized nonpublic declared tables](../../coverage/semantics/nonpublic-numeric-comparison-review.json)
+also retain numeric Notice cursors through normal handlers. Physical mangled keys
+keep inherited private declarations distinct; scoped writes preserve live slot
+rereads and pre-unwrapped reference cells across rebinding. Fixed initialized
+layouts remain required. Nonpublic Stringable continuations, changed membership,
+uninitialized slots and property hooks remain outside this route.
+
 The raw handler is disabled during its own body and restored before subsequent
 Notice dispatch. The original quiet-terminal cancellation remains available.
 A [bounded pending-exception remainder](../../coverage/semantics/pending-exception-comparison-review.json)
