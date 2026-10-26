@@ -1,0 +1,197 @@
+{
+  "milestone": "Iterator56: one-value Generator SEND across Fiber transfer",
+  "status": "accepted-private",
+  "scope": "Primed direct named Generator bodies entered by literal one-value SEND. Native argument buffers remain distinct from delivered CVs, yield caches, stored Fiber returns and caller copies; normal and supplied-Throwable retirement are validated. Wider Generator/Fiber families remain partial.",
+  "implementation": {
+    "parent": "b7e1d4461097a010f80b85924e4bf038a3355b4e",
+    "cut": "805ec28f85467e1aa4676b31d443ba817f8fb0cd",
+    "path": "spec/semantics/281-fibers.watsup",
+    "change": "Two existing guards now admit CURRENT/NEXT with no arguments or SEND with exactly one argument. Nonadvance, no-loop, nonborrowed/non-STARTPACK, named/direct/without delegation phase checks and authentic resume-pair/source/line checks remain exact. Existing helper projection/parked scans reuse that local proof.",
+    "unchanged": "All machine fields, roots, ARGUMENTS ownership, operational send/switch/resume/yield/throw/return/cleanup/GC rules, original noarg admission, native/shared harness/profile. No ownership repair was needed.",
+    "engine": [
+      "vendor/php-src/Zend/zend_generators.c: Generator::send, ZVAL_COPY(send_target), zend_generator_resume, RETURN_COPY_DEREF",
+      "vendor/php-src/Zend/zend_vm_def.h: DO_FCALL argument/receiver retirement",
+      "vendor/php-src/Zend/zend_fibers.c: saved VM/C-stack transfer"
+    ]
+  },
+  "validation": {
+    "native": "Four first observations at a5ba09428, original8s/CPU5, no stdout forecasts and zero model/source agreement credit.",
+    "genuine": {
+      "revision": "a5ba094280225ea6275f4cbff65037b8aa83bd26",
+      "report": ".tools/generator-fiber-send-transfer-baseline-m_f412qk/report.json",
+      "status": "checked program Unsupported",
+      "reason": "Fiber switch during an initializer, source loader or Generator continuation",
+      "prefix": "SEED|1START|CALL|VALUE|1",
+      "process": "exit1/no timeout/empty stderr; inputs and HEAD stable",
+      "passed": false,
+      "normal_agreements": 0
+    },
+    "strict": {
+      "revision": "805ec28f85467e1aa4676b31d443ba817f8fb0cd",
+      "modules": 419,
+      "mode": "SL",
+      "report": ".tools/generator-fiber-send-transfer-author-sl-_n5t2t15/report.json"
+    },
+    "sources": [
+      {
+        "id": "generator-fiber-send-delivered-cv",
+        "source_sha256": "b6d038023cb7c86ff99394d478cfcaa7cab8ae0b61e20c71ff7a9f6df3eb1c81",
+        "revision": "805ec28f85467e1aa4676b31d443ba817f8fb0cd",
+        "report": ".tools/generator-fiber-send-transfer-source-bocq1rim/report.json",
+        "result": "NORMAL exact native agreement"
+      },
+      {
+        "id": "generator-fiber-send-object-return",
+        "source_sha256": "3940f5404b011023802232f318b5505e0c55c110eec72a56547366259a9b1acf",
+        "revision": "805ec28f85467e1aa4676b31d443ba817f8fb0cd",
+        "report": ".tools/generator-fiber-send-transfer-source-bocq1rim/report.json",
+        "result": "NORMAL exact native agreement"
+      },
+      {
+        "id": "review-generator-fiber-send-transfer-buffer-handled",
+        "source_sha256": "77d70671cf1846fc8654a45d20a4056a085ada4432f964eb1ac0526fd802b87e",
+        "revision": "805ec28f85467e1aa4676b31d443ba817f8fb0cd",
+        "report": ".tools/generator-fiber-send-transfer-review-source-_753nxaq/report.json",
+        "result": "NORMAL exact native agreement"
+      },
+      {
+        "id": "review-generator-fiber-send-transfer-buffer-unhandled",
+        "source_sha256": "c65ed5c5a8a246eaf8af7f7aad3528de3162e8e05db024b6ee1b66af6f842a31",
+        "revision": "805ec28f85467e1aa4676b31d443ba817f8fb0cd",
+        "report": ".tools/generator-fiber-send-transfer-review-source-_753nxaq/report.json",
+        "result": "NORMAL exact native agreement"
+      }
+    ],
+    "focused": {
+      "reported_premises": 426,
+      "local_premises": 406,
+      "generic_premises": 20,
+      "author": {
+        "revision": "c773285976ed7d9326e9fd0cef09e8926dd11c14",
+        "premises": [
+          109,
+          74
+        ],
+        "process_seconds": 120,
+        "reports": [
+          ".tools/fiber-state-review-f0mzbbx4/report.json",
+          ".tools/fiber-state-review-_qxfmaaf/report.json"
+        ]
+      },
+      "peer": {
+        "revision": "3bcc83611fe10c7aa55d029b646d87a757600149",
+        "premises": [
+          132,
+          111
+        ],
+        "process_seconds": 240,
+        "reports": [
+          ".tools/fiber-state-review-uamh0kgt/report.json",
+          ".tools/fiber-state-review-n6t3fsoc/report.json"
+        ]
+      },
+      "gate": {
+        "revision": "c773285976ed7d9326e9fd0cef09e8926dd11c14",
+        "recipes": 4,
+        "process_seconds": 60,
+        "report": ".tools/generator-fiber-send-transfer-state-elab-57y9akck/report.json",
+        "credit": "Parse/elaboration only; all main headers and unique EOF, zero evaluation credit."
+      },
+      "meaning": "Actual delivered HCELL plus native SEND buffer give Token2 while parked; received HCELL/Gen cache/Fiber VALUE/main result give Token4 after used return. Peer CV-unset states retain sole buffer Token1, then Given roots1/3 across parking/injection. Each recipe retains public0/1/2 and exact whole/split/native endings with final heap/control/retirement checks.",
+      "counterexamples": "Wrong arity/current method, source line/origin and pending phase are scoped metadata refusals. Copied VM controls are explicitly constructed duplicate-occurrence refusals, not valid PHP Fiber-copy coverage."
+    },
+    "original_timeout": {
+      "report": ".tools/fiber-state-review-pz4r5865/report.json",
+      "revision": "c773285976ed7d9326e9fd0cef09e8926dd11c14",
+      "premises_credited": 0,
+      "result": "Peer132 process120 timeout/exit-9/empty streams, stable inputs/HEAD; source/author checks closed and111 unrun at that stop.",
+      "correction": "One finite peer-only240 attempt, independently reviewed without a diagnostic/checkpoint cycle. One caller line uses existing process_seconds in both actual process and report. All source/stage/check dictionaries stay c773-exact; author/global120 defaults and step/memory limits remain unchanged. Same handled source was already NORMAL100; no isolated query-cost attribution is claimed."
+    },
+    "accounting": "11 executed reports:9 raw passes and2 original false reports (genuine Unsupported and peer120 timeout), both zero agreement/coverage. Four exact NORMAL source agreements and426 physical focused premises. No native/source/strict/gate/accepted-author replay."
+  },
+  "target": {
+    "php": "8.5.10 CLI NTS signed64",
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "settings": "SL/cacheoff/encountered determinism, serial LC_ALL=C TZ=UTC, script encoding unset. Native/strict/source CPU5; focused CPU2. Pinned local tools reused, no fresh offline portability claim.",
+    "caps": "Native8; strict120; source100000/model100/process120; gate60; state seek4000/finish4000, author120 and peer240. Original peer120 negative stays false."
+  },
+  "reports": {
+    ".tools/generator-fiber-send-transfer-native-esbeivm7/report.json": {
+      "sha256": "47c3b4faa4714ca8bead3dd804b252d35cdd9db096e0cf75868662b7a7573600",
+      "revision": "a5ba094280225ea6275f4cbff65037b8aa83bd26",
+      "passed": true
+    },
+    ".tools/generator-fiber-send-transfer-baseline-m_f412qk/report.json": {
+      "sha256": "31d034d640943cb9e1d78239dccb4a63bf9374dadbd86322f72e8bbd217fc3ff",
+      "revision": "a5ba094280225ea6275f4cbff65037b8aa83bd26",
+      "passed": false
+    },
+    ".tools/generator-fiber-send-transfer-author-sl-_n5t2t15/report.json": {
+      "sha256": "ab0c438535259c6889baeed49d1ee26bf24dd60d935b5647d832477450fea9cc",
+      "revision": "805ec28f85467e1aa4676b31d443ba817f8fb0cd",
+      "passed": true
+    },
+    ".tools/generator-fiber-send-transfer-source-bocq1rim/report.json": {
+      "sha256": "23c6c105a066c758aebd52fd05e4dbe1b48e07005965e3dc931aaf35654df57a",
+      "revision": "805ec28f85467e1aa4676b31d443ba817f8fb0cd",
+      "passed": true
+    },
+    ".tools/generator-fiber-send-transfer-review-source-_753nxaq/report.json": {
+      "sha256": "56806d938fb9e0b0182f8397e58ef3b20d19d9c2d6a8a2bff5e57f01d83917d9",
+      "revision": "805ec28f85467e1aa4676b31d443ba817f8fb0cd",
+      "passed": true
+    },
+    ".tools/generator-fiber-send-transfer-state-elab-57y9akck/report.json": {
+      "sha256": "9d1a3170e4cff6fcdfb5f3f7985e1d88bc56fa4ec3d28aa024a4015616c65ffb",
+      "revision": "c773285976ed7d9326e9fd0cef09e8926dd11c14",
+      "passed": true
+    },
+    ".tools/fiber-state-review-f0mzbbx4/report.json": {
+      "sha256": "fc16b5f22755e9970ce69a86438d9ed66505526ade7707dd4c9c0fcfeb6b3e60",
+      "revision": "c773285976ed7d9326e9fd0cef09e8926dd11c14",
+      "passed": true
+    },
+    ".tools/fiber-state-review-_qxfmaaf/report.json": {
+      "sha256": "5cba1d08024268d39d7ad245481c2f08372ff7132b4c1f9ead5938ea6b85a00d",
+      "revision": "c773285976ed7d9326e9fd0cef09e8926dd11c14",
+      "passed": true
+    },
+    ".tools/fiber-state-review-pz4r5865/report.json": {
+      "sha256": "140ab4f6420775fd063244203b18092a17bcf5d00da847ba5f3dd81373d5f737",
+      "revision": "c773285976ed7d9326e9fd0cef09e8926dd11c14",
+      "passed": false
+    },
+    ".tools/fiber-state-review-uamh0kgt/report.json": {
+      "sha256": "8428c24c22d0195a86265bb910f715d2abae9859c88a88d702ea0ba289fcfc83",
+      "revision": "3bcc83611fe10c7aa55d029b646d87a757600149",
+      "passed": true
+    },
+    ".tools/fiber-state-review-n6t3fsoc/report.json": {
+      "sha256": "60592814765cac318fee61006539d778bf1eac59ca70476d876447d0a8e9706a",
+      "revision": "3bcc83611fe10c7aa55d029b646d87a757600149",
+      "passed": true
+    }
+  },
+  "evidence": {
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-send-transfer-56/private.tar.gz",
+      "bytes": 1971242,
+      "sha256": "f1d556400968253ff106124479b0cd60198be2e73430e656305875761ee98fa4"
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-send-transfer-56/manifest.json",
+    "recovery": "Restore matching Git cuts a5ba native/genuine,805ec strict/source4,c773 gate/author183/originalpeer120timeout,3bcc peer243 at240. Extract this archive at the recorded WT56 path, link the pinned project-local tools/profile and run recorded commands; no native replay or build/Git/worktree backup is included."
+  },
+  "commands": {
+    "native": "taskset -c5 python3 .tools/native.py",
+    "genuine": "taskset -c5 python3 .tools/baseline.py --native-report .tools/generator-fiber-send-transfer-native-esbeivm7/report.json",
+    "affected_source": "taskset -c5 python3 .tools/source-packet.py .tools/generator-fiber-send-transfer-native-esbeivm7/report.json",
+    "gate_and_first_packet": "taskset -c2 python3 .tools/state-elab.py && taskset -c2 python3 .tools/state-packet.py",
+    "affected_peer_only": "taskset -c2 python3 .tools/peer-state-packet.py"
+  },
+  "remaining": "No pending reproducer in this packet. Fresh/pending/shared/delegated/method/Closure/reference-cache SEND, other Generator APIs/argument forms, helper combinations and wider close/request/GC/context lifetimes still require separate coverage. No family/core/BOLA closure is claimed; paused OP12/Source47/owned-NUL/undefined-byref-LIST/COMP88 and held COMP123 remain untouched.",
+  "independent_review": "/root/iterator49_review independently cleared native-first scope/source reliability, observations and genuine refusal, the two-guard source-authority proof, four exact source agreements, all ownership/counterexample/whole-ending fixtures, gate and426 results, and one fixed peer240 correction with identical clauses. Final human docs, five still-partial append-only inventory entries, compact PROGRESS and eleven-report archive are accepted; no pending reproducer or blocker remains in this bounded packet."
+}

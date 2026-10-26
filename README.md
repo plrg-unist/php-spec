@@ -2066,6 +2066,11 @@ through Fiber suspension. Fresh CURRENT, cached NEXT and one-/two-link
 supplied-Throwable executions agree with PHP, including final Generator and
 object retirement. Earlier timeouts remain separate from these whole-source
 agreements. [Delegation transfer review](coverage/semantics/generator-fiber-delegation-transfer-review.json).
+Primed named Generators also retain a one-value `send` buffer across Fiber
+suspension. Clearing the delivered CV leaves that buffer alive until API return
+or unwind; object yields retain separate Generator-cache, Fiber-return and caller
+owners. Injected Throwables preserve identity through finally and buffer cleanup.
+[SEND transfer review](coverage/semantics/generator-fiber-send-transfer-review.json).
 [Arrow Generator311](docs/semantics/ARROW-GENERATORS.md) validates eager
 parameters, deferred captures, implicit yield/delegation returns and original
 signatures. Value warnings retain the same Throwable, cached key and closed

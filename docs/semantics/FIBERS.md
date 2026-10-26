@@ -84,6 +84,13 @@ sources pass with a fixed 180-second model budget; original 100-second timeouts
 and component diagnostics keep their separate zero-credit status.
 [Delegation transfer review](../../coverage/semantics/generator-fiber-delegation-transfer-review.json).
 
+Direct one-value Generator `send` calls now move their original argument buffer
+with the Fiber VM. The buffer remains a distinct owner after delivery into a CV;
+normal return or injected-Throwable cleanup retires it before caller finally.
+Object yields also retain separate cache, Fiber-return and caller-copy owners.
+The existing source/resumer proof and task roots are reused; no operational
+switch or cleanup rule changes. [SEND review](../../coverage/semantics/generator-fiber-send-transfer-review.json).
+
 Private scoped descriptor validation checks shared live eval/class/directory
 contexts on the active VM. Its parked validation view clears loader contexts
 and separately rejects direct, wrapped and saved-frame markers; VM restoration
