@@ -1,0 +1,38 @@
+{
+  "scope": "Fixed compiled-global constant with no namespace fallback and one positional ordinary CV argument carrying the exact __COMPILER_HALT_OFFSET__ string as a plain value or authenticated carrier. No owner, named send or pack. Partial dynamic-source behavior.",
+  "status": "independently_reviewed_private",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "base_revision": "051fd3bcbf34845809e527a06f834bc43d600b83",
+  "behavior_commit": "5fa868f4ba474100009afda250991b2dc07e1eb3",
+  "runtime_sha256": "67f9298a4fb81db0bc4650118ace6a2eccc2eacf86360f2fd790e4e7751621c1",
+  "engine_route": "ext/standard/basic_functions.c::PHP_FUNCTION(constant) calls zend_get_constant_ex with ZEND_FETCH_CLASS_EXCEPTION. Zend/zend_constants.c::zend_get_halt_offset_constant uses the executed filename. Zend/zend_compile.c has no constant special compiler arm, so an ordinary CV reaches the builtin.",
+  "mechanism": "At authentic CONFIG_INVOKE, require fixed compiled-global constant, one raw NExprVariable positional argument, the exact captured HALT string in a plain value or valid carrier, and existing call/source/value guards. Reuse the filename-local declaration journal and the existing offset or absent Error result arms; preserve the Error's original argument trace.",
+  "validation": {
+    "native_first": "Four frozen author originals passed pinned CLI0 with exact stdout and empty stderr. The genuine unchanged checked model accepted all four but returned Unsupported: halt offset constant query. This baseline has zero agreement credit.",
+    "changed_sources": "All four author originals passed exact checked model comparison against unchanged native bytes and source paths, including absent Error file/line/trace, main offset, child-local offset with caller absence, and eval-file absence despite main HALT. Four separately frozen reviewer originals also passed native/model exact with stable inputs.",
+    "reached_state": "Author strict-SL fronts passed 71 absent Error, 58 main offset and 136 child offset/caller absent checks (265 total). They bind genuine fixed CV CONFIG_INVOKE, captured authenticated HALT carrier, filename journal, HALT_UNKNOWN refusal, budget0/resume, Error trace and provider preservation. Independent reviewer absent-Error CV frontier passed 69 checks.",
+    "failed_attempts": "The unchanged model's four Unsupported results are zero agreement credit; no changed-cut or state test failed."
+  },
+  "environment": {
+    "profile": "tests/semantics/profile.json",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "resources": "Author CPU3 native/baseline, changed-source and reached-state runs and reviewer CPU3 frozen-source and independent-frontier runs were serial and fully reaped/released."
+  },
+  "raw_artifacts": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/dynamic-source-105",
+    "reports_sha256": {
+      "constant-cv-baseline-v1/native-report.json": "bce82e0890e3aae2eaf38186269ced6e4ebb183b1fb7e8ee96851a0c9dfaa499",
+      "constant-cv-baseline-v1/model-report.json": "92b9591fcf8d07d4f041c7ab47b112832e7561bbbfa37d5dac579f2a1b622852",
+      "constant-cv-v1/model-report.json": "c0bb179794baa5bad5478d6380832d3ab9f2b165558e734b73e86374a322a7f4",
+      "constant-cv-state-v1/report.json": "9ff8d7fe9b1bd54a2c2e11402fa09807c0d51da5a962126a38130069600d775f",
+      "reviewer-frozen-v1/native-report.json": "ad6417a88b55be0d5b660b81f4c9dd80a55a70a71596cb73d07bf04c77dff47e",
+      "reviewer-frozen-v1/model-report.json": "a02cc5777cc98b8cc5a8530505a8e5a1dc39167aa87f840918c2925a8757392f",
+      "reviewer-frontier-v1/report.json": "edd247fa532aeef70135ed13d87648b967bfe6f4612e5a041e42c201422d5b64"
+    },
+    "recovery": "Run halt_constant_cv_sources.py --phase native then --phase model against the same fresh output root, retaining its version-2 child snapshot. Run halt_constant_cv_protocol.py --sources SOURCE_ROOT --output FRESH for the three reached fronts. The baseline raw directory is preserved separately; changed model output uses the original native source paths."
+  },
+  "review": "Independent semantic, source, reached-state, documentation and inventory review accepted at behavior/tests commit 5fa868f4b. Four separately frozen originals passed exact native/model comparison (reports ad6417a8... and a02cc577...), and a distinct 69-check absent-Error CV frontier passed (report edd247fa...). The fixed literal Source100 path was also exercised by the independent same-file positive original; its raw AST admission remains disjoint.",
+  "remaining": "Other fixed constant/defined argument shapes, owning/named/unpacked calls, repeated call-site cache history, ambiguous HALT registration and wider compiler/provider behavior remain partial."
+}

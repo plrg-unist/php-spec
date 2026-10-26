@@ -75,7 +75,14 @@ names Child in the TypeError; ordinary reads copy, escaped aliases outlive Child
 and destination rebinding still calls Get before Error. Three source agreements
 and 341 Boolean checks plus three raw transitions are in the
 [plain Child reference-Get review](../../coverage/semantics/plain-child-reference-get-hooks-review.json).
-Untyped plain redeclaration, deeper Child paths, virtual/arrow/set/trait forms, dimensions,
+The matching immediate untyped plain Child redeclaration uses Child's own scalar
+or implicit-null slot under Parent's inherited `&get`. Its live alias has no
+property type source, so string writes remain unconstrained; ordinary reads
+copy and the alias survives Child destruction. An own write precedes Get on a
+later destination `=&`, whose Error retains the selected line and file. Three
+sources and 364 Boolean checks plus three raw transitions pass in the
+[untyped plain Child review](../../coverage/semantics/untyped-plain-child-reference-get-hooks-review.json).
+Deeper Child paths, virtual/arrow/set/trait forms, dimensions,
 quiet reads and compound consumers remain outside these slices.
 
 Public backed by-value block and expression `get` hooks compile into source functions with the

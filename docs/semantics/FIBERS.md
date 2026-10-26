@@ -832,8 +832,19 @@ the old cache. Normal and abrupt Fiber resume preserve the native Exception
 identity and `Previous` order. Four new sources, including an independent
 cache-only retirement probe, and 102 author reached-state assertions pass;
 the old by-value THROW source remains an unchanged control.
-Method, Closure, delegated and wider lifetime forms remain open.
+At that cut, method, Closure, delegated and wider lifetime forms remained open.
 [Reference THROW review](../../coverage/semantics/generator-fiber-reference-throw-transfer-review.json).
+
+Primed by-value `Generator::throw` can also suspend inside an ordinary public
+method-created Generator. The parked Fiber VM keeps one saved Throwable and
+the authentic `METHOD_TARGET` receiver; a running reentry sees one Error with
+null `Previous`. Scalar and self-yield caches have different receiver release
+times, and normal versus supplied Fiber exceptions retain native identity and
+`Previous` order. Four new source agreements, including independent cache
+replacement, and 157 source-reached assertions cover this bounded transfer;
+the direct named control agreed before the edit.
+Method by-reference/fresh, Closure and delegated forms remain open.
+[Method THROW review](../../coverage/semantics/generator-fiber-method-throw-transfer-review.json).
 
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need

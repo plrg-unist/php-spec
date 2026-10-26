@@ -68,6 +68,12 @@ def $array_generator_source(S, parraygenerator) = ($array_generator_history(S, p
 def $array_generator_builder(S, parraygenerator) = true
   -- if ~(parraygenerator.ARRAY <- S.LITERALARRAYDEBTS)
   -- if $array_null_const_items(S, S.ARRAYS[parraygenerator.ARRAY].ITEMS, [parraygenerator.ARRAY])
+def $array_generator_builder(S, parraygenerator) = true
+  -- if ~(parraygenerator.ARRAY <- S.LITERALARRAYDEBTS)
+  -- if ~$array_null_const_items(S, S.ARRAYS[parraygenerator.ARRAY].ITEMS, [parraygenerator.ARRAY])
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if ~$generator_reference_producer(S, pgenerator)
+  -- if $array_iterator_reference_items(S, parraygenerator.ARRAY, S.ARRAYS[parraygenerator.ARRAY].ITEMS, [parraygenerator.ARRAY])
 def $array_generator_builder(S, parraygenerator) = false -- otherwise
 def $array_generator_stage(S, parraygenerator, text) = $array_generator_source(S, parraygenerator)
   -- if text <- ["rewind", "next", "ready"]
@@ -93,10 +99,18 @@ def $array_generator_valid(S, parraygenerator, text) = ($array_generator_history
 def $array_generator_value(S, parraygenerator) = $array_iterator_value(S, REFERENCE n_cell)
   -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.REFCELL = (n_cell)
-def $array_generator_value(S, parraygenerator) = $array_iterator_value(S, KNOWN pvalue)
+def $array_generator_value(S, parraygenerator) = (pvalue)
   -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.REFCELL = eps
   -- if pgenerator.VALUE = (pvalue)
+  -- if $array_iterator_value(S, KNOWN pvalue) = (pvalue)
+def $array_generator_value(S, parraygenerator) = (PARRAY n)
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.REFCELL = eps
+  -- if ~$generator_reference_producer(S, pgenerator)
+  -- if pgenerator.VALUE = (PARRAY n)
+  -- if $array_iterator_value(S, KNOWN (PARRAY n)) = eps
+  -- if $array_iterator_reference_table(S, n)
 def $array_generator_value(S, parraygenerator) = eps -- otherwise
 def $array_generator_cache(S, parraygenerator) = true
   -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
@@ -107,7 +121,7 @@ def $array_generator_cache(S, parraygenerator) = true
   -- if $array_generator_value(S, parraygenerator) = (pvalue)
   -- if pgenerator.KEY = (pvalue_key)
   -- if $array_iterator_value(S, KNOWN pvalue_key) = (pvalue_key)
-  -- if $array_iterator_value_away(S, pvalue, parraygenerator.ARRAY) /\ $array_iterator_value_away(S, pvalue_key, parraygenerator.ARRAY)
+  -- if $array_iterator_current_away(S, pvalue, parraygenerator.ARRAY) /\ $array_iterator_value_away(S, pvalue_key, parraygenerator.ARRAY)
 def $array_generator_cache(S, parraygenerator) = false -- otherwise
 def $array_generator_ready(S, parraygenerator) = true
   -- if $array_generator_source(S, parraygenerator)

@@ -95,6 +95,11 @@ test-semantics: build
 		python3 tests/semantics/array_traversable_reference_cache_state.py --source-report "$$out/iterator-source/report.json" --output "$$out/author-state" && \
 		python3 tests/semantics/array_traversable_reference_cache_state_review.py --source-report "$$out/iterator-source/report.json" --output "$$out/peer-state" && \
 		python3 tests/semantics/array_traversable_reference_aggregate_sources.py --output "$$out/aggregate-source"
+	@out="$$(mktemp -d .tools/a58-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/array_generator_reference_cache_sources.py --output "$$out/generator-source" && \
+		python3 tests/semantics/array_generator_reference_cache_state.py --source-report "$$out/generator-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/array_generator_reference_cache_state_review.py --source-report "$$out/generator-source/report.json" --output "$$out/peer-state" && \
+		python3 tests/semantics/array_generator_reference_aggregate_sources.py --output "$$out/aggregate-source"
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
 	python3 tests/semantics/globals_compiler.py
@@ -507,6 +512,8 @@ test-semantics: build
 	python3 tests/semantics/generator_fiber_fresh_throw_transfer_state.py
 	python3 tests/semantics/generator_fiber_reference_throw_transfer_sources.py
 	python3 tests/semantics/generator_fiber_reference_throw_transfer_state.py
+	python3 tests/semantics/generator_fiber_method_throw_transfer_sources.py
+	python3 tests/semantics/generator_fiber_method_throw_transfer_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -932,6 +939,7 @@ test-semantics: build
 	python3 tests/semantics/untyped_reference_get_hook_protocol.py
 	python3 tests/semantics/inherited_reference_get_hook_protocol.py
 	python3 tests/semantics/plain_child_reference_get_hook_protocol.py
+	python3 tests/semantics/untyped_plain_child_reference_get_hook_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/expression_get_hook_cases.json
 	python3 tests/semantics/expression_get_hook_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/virtual_get_hook_cases.json

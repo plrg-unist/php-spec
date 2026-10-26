@@ -1514,5 +1514,17 @@ Four direct-CV originals and one separately tested Aggregate-produced Iterator
 whose input CV is rebound to that same Iterator agree with PHP 8.5.10. Reached
 first/second-key checks cover the untouched API, Error site, cached current,
 2-to-1 owner change and source/guard negatives. The original first-key model
-baseline remained Unsupported; temporary and other producer/key histories
-remain partial.
+baseline remained Unsupported; other producer/key histories remain partial.
+
+The [temporary invalid Iterator key increment](../../coverage/semantics/config-iterator-temp-invalid-key-review.json)
+accepts quiet NULL, bool and float keys from the same direct noarg USER factory
+and authenticated `UNPACK_VAR` input as the temporary Iterator path above.
+The key-type Error consumes the raw key after cached `current()` and before
+argument binding, `next()` or API entry. During throw search, Iterator DATA
+retires before the distinct temporary INPUT; a sole owner dies before catch,
+while an external hold keeps the returned Iterator live. Three PHP 8.5.10
+sources agree, including a rejected second key after one positional send.
+Reached checks cover 2-to-1-to-0 and retained 3-to-2-to-1 owners, the Error
+site, source/guard negatives, WeakReference state and budget resumes. The
+unchanged first-key baseline was Unsupported; named temporary keys, other
+producers, owning key values and effectful last owners remain partial.

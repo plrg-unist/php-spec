@@ -17,6 +17,7 @@ dec $config_iterator_send_key(pstate, pconfigiterator, pvalue) : pkey?
 dec $config_iterator_key_operand(pstate, pconfigiterator, poperand) : bool
 dec $config_iterator_invalid_primitive_key(poperand) : bool
 dec $config_iterator_live_cv_primitive_key(pstate, pconfigiterator, poperand) : bool
+dec $config_iterator_temp_primitive_key(pstate, pconfigiterator, poperand) : bool
 dec $config_iterator_items(pstate, pconfigiterator, pentry*) : bool
 dec $config_iterator_stage(pstate, pconfigiterator, text) : bool
 dec $config_iterator_valid(pstate, pconfigiterator, text) : bool
@@ -135,6 +136,12 @@ def $config_iterator_live_cv_primitive_key(S, pconfigiterator, poperand) = true
   -- if S.STORE[n_cell] = DEFINED (POBJECT pconfigiterator.OBJECT)
   -- if $config_iterator_invalid_primitive_key(poperand)
 def $config_iterator_live_cv_primitive_key(S, pconfigiterator, poperand) = false -- otherwise
+def $config_iterator_temp_primitive_key(S, pconfigiterator, poperand) = true
+  -- if $config_iterator_owning_input(pconfigiterator)
+  -- if $config_iterator_invalid_primitive_key(poperand)
+  -- if $destructor_method(S, pconfigiterator.OBJECT) = eps
+  -- if $node_children(S, HOBJECT pconfigiterator.OBJECT) = eps
+def $config_iterator_temp_primitive_key(S, pconfigiterator, poperand) = false -- otherwise
 def $config_iterator_items(S, pconfigiterator, eps) = true
 def $config_iterator_items(S, pconfigiterator, (ENTRY (KINT z) (DIRECT pvalue)) :: pentry_tail*) = ($config_iterator_string(S, pvalue) /\ $config_iterator_items(S, pconfigiterator, pentry_tail*))
 def $config_iterator_items(S, pconfigiterator, (ENTRY (KSTRING n*) (DIRECT pvalue)) :: pentry_tail*) = ($config_iterator_key_input(pconfigiterator, PSTRING n*) /\ $startup_bytes(n*) /\ $string_key(n*) = STRINGKEY /\ $config_iterator_string(S, pvalue) /\ $config_iterator_items(S, pconfigiterator, pentry_tail*))
@@ -391,13 +398,14 @@ rule PhpStep/config-iterator-key-result: S ~> S[.TODO = (CONFIG_ITERATOR pconfig
 rule PhpStep/config-iterator-key-invalid-primitive: S ~> $throw_scalar(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], "Error", $ptascii("Keys must be of type int|string during argument unpacking"), z)
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "key") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "key")
-  -- if $config_iterator_live_cv_primitive_key(S, pconfigiterator, S.RESULT)
+  -- if $config_iterator_live_cv_primitive_key(S, pconfigiterator, S.RESULT) \/ $config_iterator_temp_primitive_key(S, pconfigiterator, S.RESULT)
   -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
 rule PhpStep/config-iterator-key-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "CONFIG Iterator unpack key outside integer domain"]
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "key") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "key")
   -- if ~$config_iterator_key_operand(S, pconfigiterator, S.RESULT)
   -- if ~$config_iterator_live_cv_primitive_key(S, pconfigiterator, S.RESULT)
+  -- if ~$config_iterator_temp_primitive_key(S, pconfigiterator, S.RESULT)
 def $config_iterator_send(S, pconfigiterator, ptask_tail*) = $config_iterator_clear(S, pconfigiterator[.ITEMS = pconfigiterator.ITEMS ++ [ENTRY pkey (DIRECT pvalue)]], "next-start", ptask_tail*)
   -- if pconfigiterator.CURRENT = KNOWN pvalue
   -- if pconfigiterator.KEY = KNOWN pvalue_key

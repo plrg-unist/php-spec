@@ -710,7 +710,15 @@ retires Iterator DATA before catch, leaving a retained CV owner alive. Four
 direct-CV sources and one separately checked Aggregate-to-Iterator CV rebind
 agree with PHP. Reached checks cover the first and second key, Error line,
 unsent current and DATA cleanup. The guard requires a live CV holding the
-selected Iterator; temporary and other key/value histories remain partial.
+selected Iterator; other key/value histories remain partial.
+
+[Temporary Iterator invalid keys](coverage/semantics/config-iterator-temp-invalid-key-review.json)
+now raise the same unpack Error for a quiet primitive key returned by a direct
+noarg factory's Iterator. The key is consumed before a send, `next()` or API
+entry; on throw, DATA and then the separate temporary INPUT retire before
+catch. Three original sources agree with PHP, and 449 reached premises check
+sole and retained owner transitions, cached currents and source guards. Named
+temporary keys and effectful final owners remain open.
 
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
@@ -1629,6 +1637,16 @@ while the builder remains protected through finally and storage cleanup.
 The [Generator spread review](coverage/semantics/array-generator-unpack-review.json)
 records acquisition-state errors, DIRECT COW copies, invalid keys and supplied
 throws. Its affected check retires the earlier Generator refusal.
+Named by-value Generator spreads also retain ordinary scalar reference cells
+inside finite array yields. Held aliases remain shared across COW; dropping the
+outside alias permits a sole cell to unwrap. The yielded array stays in the
+Generator's VALUE through CLOSED. When DATA is the last Generator owner,
+releasing it ends the weakly observed lifetime. A returned Generator from an
+Aggregate getter uses the same route;
+by-reference producers keep their earlier admission boundary.
+The [Generator reference-cache review](coverage/semantics/array-generator-reference-cache-review.json)
+records four exact source agreements and 367 focused premises; the first peer
+storage-frontier assertion remains a preserved zero-credit failure.
 Wider payloads, operand modes, delegation and Traversable lifetimes remain partial.
 The [nested-cache review](coverage/semantics/array-traversable-nested-cache-review.json)
 adds live-reference/deep COW and abrupt retirement for both spread engines,
@@ -4303,6 +4321,11 @@ slot and type source govern the inherited Parent `&get`. Parent lexical scope,
 Child receiver, alias lifetime, ordinary copies and Get-before-rebind order remain
 observable. Three originals and 341 Boolean checks plus three raw transitions
 pass in the [plain Child reference-Get review](coverage/semantics/plain-child-reference-get-hooks-review.json).
+The matching untyped plain Child redeclaration uses its own scalar or implicit-null
+backing without a property type source. Escaped aliases accept later strings,
+ordinary reads copy, and destination rebinding still calls Get before Error.
+Three originals and 364 Boolean checks plus three raw transitions pass in the
+[untyped plain Child review](coverage/semantics/untyped-plain-child-reference-get-hooks-review.json).
 Wider hook declarations and indirect consumers remain partial.
 
 Public backed by-value `get` hooks execute their block or expression body on each read,

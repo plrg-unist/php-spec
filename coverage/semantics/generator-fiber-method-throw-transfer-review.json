@@ -1,0 +1,101 @@
+{
+  "milestone": "Iterator63 primed public method Generator::throw Fiber transfer",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local oracle b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json, LC_ALL=C, TZ=UTC; exclusive CPU3 author native/baseline, CPU4 reviewer native, CPU2 affected/reviewer model and CPU5 selected wrapper",
+  "parent": "4940ed6367cd76d260d48c1e198aed5e2a84594c",
+  "private_implementation_commit": "a28d6bfe59570bec333eaab448f423395ce61072",
+  "scope": "A primed ordinary public method-created non-BYREF Generator::throw with one valid Throwable and a defined by-value cache may transfer its running body through a Fiber catch or pending finally. Its saved resumer owns the supplied temporary Throwable, and the authenticated METHOD_TARGET retains the actual receiver. A scalar cache permits receiver retirement at Generator completion; a self-yield cache retains the receiver after close until Generator release. Normal propagation preserves the original exception and null Previous; Fiber::throw supplies a replacement with the original as Previous.",
+  "engine_paths": [
+    "Zend/zend_generators.c::ZEND_METHOD(Generator, throw)",
+    "zend_generator_throw_exception",
+    "zend_generator_resume",
+    "zend_generator_ensure_initialized",
+    "Zend/zend_vm_def.h::ZEND_YIELD"
+  ],
+  "implementation": [
+    "spec/semantics/281-fibers.watsup::$fiber_generator_throw_valid"
+  ],
+  "sources": {
+    "generator-fiber-method-throw-method-scalar-recovery": "15bd4cbc298b895b2971408c35780a460ceeb01c5ae8f2b4ee668c89c694ac74",
+    "generator-fiber-method-throw-method-self-finally-normal": "23a4dade31d9eddea3dba7e56f8076525513d583a929ac9384f1966d0c42ce83",
+    "generator-fiber-method-throw-method-self-finally-abrupt": "fa7121a6b7dc679ab144088313ade276ad008ff8de4211551a00410202f91cf4",
+    "generator-fiber-method-throw-primed-byvalue-control": "66ec04768e75fcaf808c64d4b05fdd19ca0d47948e84fef7c124c24631b70612",
+    "generator-fiber-method-throw-self-cache-replacement-review": "c25ecf6a36bdca44fa9016164e709538f998f01aff5719fc4bc97cdf78a99df2"
+  },
+  "validation": {
+    "native_first": {
+      "report": ".tools/i63-packet/native-v5sqag7d/report.json",
+      "sha256": "373421de3f4c94f2e28658f5d3e31eed20ced9319a2a25859fd33133311af01a",
+      "result": "Four frozen originals: three method-created THROW and byte-identical I60 direct named by-value control, all native exit0/empty stderr with stable source/runtime/profile/HEAD."
+    },
+    "unchanged_genuine_baseline": {
+      "report": ".tools/i63-packet/unchanged-baseline-cbxqhg_4/report.json",
+      "sha256": "7f3127068803068853ec78ecacb3dd96dc3cf592d39fc8598902e3377e6250c9",
+      "result": "Three new method THROW sources reach checked Fiber-switch Unsupported, zero agreement; I60 direct named control exact NORMAL."
+    },
+    "strict": {
+      "report": ".tools/i63-packet/strict-tpflouw5/report.json",
+      "sha256": "f306f4b5f2ceb4aba5251a170922a0c5448a5667da72e16e19bddb407f205e6f",
+      "result": "Private 422-module algorithmic compile exit0, empty stderr, no timeout, stable HEAD/inputs."
+    },
+    "affected_author_source": {
+      "report": ".tools/i63-packet/implemented-source-rd08c3kq/report.json",
+      "sha256": "47c7e346107d1ae18b246a557a825e3e0b9eb272bb44cf6d0d854cf4a6e2663f",
+      "result": "All three frozen method THROW originals exact NORMAL with exit0, empty stderr and stable original source/runtime/modules/HEAD."
+    },
+    "reached_states": {
+      "report": ".tools/fiber-state-review-tp4x_u_t/report.json",
+      "sha256": "5a9efdcb13b0862df5efc42fd9b452b9c74be536d70ee74d378f5535116fc8b5",
+      "result": "Two source-reached SL cases pass 105 parked receiver/Throwable/resumer and 52 closed self-cache assertions, including malformed argument/receiver/target/BYREF/ADVANCE controls, physical receiver owner, destructor order and 0/1/2/4000-step completion."
+    },
+    "author_catalog_wiring": {
+      "report": ".tools/generator-fiber-method-throw-transfer-source-rmtfv8b6/report.json",
+      "sha256": "dce510c065b4635b8f75ff77474fc36eebcf3818bfeef19849106d343c111aed",
+      "result": "Selected tracked scalar recovery source exact NORMAL; repeats an authored original."
+    },
+    "reviewer_native": {
+      "report": ".tools/i63-independent-review/native-review/report.json",
+      "sha256": "ee01b2b6256397d68ba4dd060d564b723158c4856fe1004a7896b7b2ba3dcd1e",
+      "result": "Independently frozen method self-cache replacement source native exit0/empty stderr; recovery null yield retires the self cache while the method frame still owns receiver, then Generator completion destroys it."
+    },
+    "reviewer_model": {
+      "report": ".tools/i63-independent-review/model-review/report.json",
+      "sha256": "6001cc193556ed7e4986bee37b21637b04d8816f8f084c9cf212943adf5d6338",
+      "result": "Same independent source exact NORMAL model agreement with stable HEAD/inputs and no timeout."
+    },
+    "reviewer_catalog_wiring": {
+      "report": ".tools/generator-fiber-method-throw-transfer-source-6h7cdnbu/report.json",
+      "sha256": "022f42c285a51bee224eb290329f2d343ef354ae411d8db808f5da40048e16f8",
+      "result": "Selected fifth catalog source byte-identical to frozen reviewer original and exact NORMAL; stable HEAD/inputs."
+    },
+    "joined_strict": {
+      "report": ".tools/i63-joined/strict-d18ohtet/report.json",
+      "sha256": "efe6f75966e1aeb1c68939a74a183b0fd278f15b6ce8a24aef2f3c67893f9fac",
+      "result": "Exact actual-tail 423-module algorithmic compile exit0, empty stderr, no timeout, stable HEAD/inputs at tested candidate 20b690616."
+    }
+  },
+  "preservation": "I60 direct named by-value, I61 fresh advancing and I62 direct named BYREF THROW arms remain byte-unchanged. New arm requires primed VALUE, empty REFCELL/CLOSURE, non-BYREF producer, METHOD_TARGET with matching RECEIVER and empty INSTANCE. Existing callee/current/source, saved resumer, unique owner and transfer-domain checks authenticate the rest. The old I60 control agreed before edits; no renewal of earlier I58\u2013I62 source/state credit is claimed.",
+  "remaining": "Method BYREF/fresh, Closure, delegated and helper THROW call shapes; source-loader/initializer crossings, wider receiver/request/GC lifetime and complete core semantics remain partial.",
+  "evidence_archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-method-throw-transfer-63/raw.tar.gz",
+    "bytes": 2059853,
+    "sha256": "69e41aec7f6b25ee0cf27a5998d5ec039f0c8a47d4a9b85874fed7ace0e45dcb",
+    "member_count": 95
+  },
+  "evidence_manifest": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-method-throw-transfer-63/manifest.json",
+  "evidence_manifest_sha256": "4fe09cba17d0507769937cce6690d9a8e56594a4286109e9773e52f6c4946813",
+  "recovery": "Extract raw.tar.gz at a reconstructed I63 worktree root. Reports retain historical absolute original paths; the catalog has exact maintained source bytes and manifest.json lists every report hash. Raw outputs are external, while pinned tools and implementation/tests come from Git.",
+  "independent_review": "Independent reviewer cleared private semantic evidence, the fifth method cache-replacement source, docs/inventory, and the joined strict423 seam; I63 was published by guarded fast-forward at 7d0f97483.",
+  "actual_tail": {
+    "parent": "03969429cd805e7c11866e33a73803905067139f",
+    "tested_candidate": "20b69061627a7d2dd6eb66691e1d37f5207c1d6b",
+    "composition": "Reviewed private 281/tests/docs copied byte-identically. Four inventory obligations preserve all actual-parent prefixes; PROGRESS preserves incoming Source105 content and adds I63. Incoming semantic changes in 123/152/382/400/404/420/new434 do not select the five I63 originals: they use identity/getPrevious rather than Throwable object ordering, with no pipe, hook, HALT, arithmetic Warning, CONFIG or Iterator spread. The new module manifest is covered by joined strict; prior source/state cuts are not renewed."
+  },
+  "joined_archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-method-throw-transfer-63/joined-strict.tar.gz",
+    "bytes": 1859116,
+    "sha256": "76cbe93ffb29cd204296ab68f75b30ee49aa4f9ce2c77b4ed84bb0ed9b0a6be4",
+    "member_count": 4
+  },
+  "joined_manifest": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-method-throw-transfer-63/joined-manifest.json",
+  "joined_manifest_sha256": "230aa325c3672b81e845693d95ab14190656ab46d7173da8ba5fabcaa1285d5b"
+}

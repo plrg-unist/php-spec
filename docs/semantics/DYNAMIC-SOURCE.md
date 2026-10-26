@@ -64,17 +64,27 @@ A fixed call with compiled global name `constant`, no namespace fallback and one
 raw `'__COMPILER_HALT_OFFSET__'` string argument now uses the same filename-local
 offset or absent-registration `Error`. The
 [fixed-call ledger](../../coverage/semantics/halt-fixed-review.json) records four
-new exact source agreements and reached main/include/eval call fronts. Other
-fixed arguments, owning/named/unpacked calls and broader
-compiler-failure/reentry behavior remain open. A bare `constant` call in an
-ordinary namespace also uses that path when its compiled primary name has no
-user-function target and its compiled fallback is global `constant`. The
+new exact source agreements and reached main/include/eval call fronts. A bare
+`constant` call in an ordinary namespace also uses that path when its compiled
+primary name has no user-function target and its compiled fallback is global
+`constant`. The
 namespaced user function takes priority when present. The
 [namespace-call ledger](../../coverage/semantics/halt-namespace-review.json)
 records main/child filename isolation, the absent Error and its trace, and
-three reached fallback fronts. Variable `constant` arguments, other fixed `defined`
-argument shapes, repeated call-site cache history and ambiguous HALT
-registration remain partial. The
+three reached fallback fronts. A fixed compiled-global `constant($name)` with
+one ordinary CV argument carrying the exact HALT name also uses the
+filename-local offset or absent-registration Error. Its captured string can be
+plain or an authenticated carrier; the Error trace retains the argument. The
+[CV-constant ledger](../../coverage/semantics/halt-constant-cv-review.json)
+records main, child and eval source isolation and reached call fronts. A direct
+fixed compiled-global call with one raw `name:` argument containing the exact
+HALT string also follows that filename-local lookup. The named slot is
+authenticated by the existing CONFIG call shape; an unknown name fails during
+argument binding before HALT lookup. The
+[named-call ledger](../../coverage/semantics/halt-named-review.json) records the
+positive and absent sources, original Error trace and wrong-name control. Other
+fixed argument shapes, owning/unpacked calls, wider named forms, repeated
+call-site cache history and ambiguous HALT registration remain partial. The
 [lookup ledger](../../coverage/semantics/halt-lookup-review.json) binds two original
 sources and their reached state checks, keeping counterfactual history/source
 projections separate from execution.
