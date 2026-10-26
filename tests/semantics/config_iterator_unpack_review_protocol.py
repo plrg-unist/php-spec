@@ -194,7 +194,7 @@ def checks(program, path, name):
             '.CURRENT = KNOWN (POBJECT n_object)', '.KEY = KNOWN (PINT 5)',
             '.ITEMS = [ENTRY (KINT 5) (ALIAS n_iterator_cell)]',
             '.ITEMS = [ENTRY (KINT 5) (DIRECT PNULL)]',
-            '.ITEMS = [ENTRY (KSTRING ' + text('option') + ') (DIRECT pvalue_option)]'):
+            '.ITEMS = [ENTRY (KSTRING ' + text('0') + ') (DIRECT pvalue_option)]'):
         values += ['~$config_iterator_valid(S_key,pconfigiterator_key[' + field + '],"key-start")']
     values += ['~$config_iterator_valid(S_key[.CODE = eps],pconfigiterator_key,"key-start")',
         '~$config_iterator_valid(S_key,pconfigiterator_key,"ready")',

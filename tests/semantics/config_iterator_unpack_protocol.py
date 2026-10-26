@@ -180,7 +180,7 @@ def checks(program, path, name):
     for field in ('.INPUT = KNOWN (POBJECT n_object)', '.INPUT = VARIABLE ' + text('missing_iterator') + ' z_argument',
             '.INPUT = VARIABLE ' + text('it') + ' $(z_argument + 1)', '.OBJECT = |S_key.OBJECTS|',
             '.ITERATOR = S_key.NEXTITER', '.ITEMS = [ENTRY (KINT 3) (DIRECT PNULL)]',
-            '.ITEMS = [ENTRY (KSTRING ' + text('value') + ') (DIRECT pvalue_value)]',
+            '.ITEMS = [ENTRY (KSTRING ' + text('0') + ') (DIRECT pvalue_value)]',
             '.CURRENT = KNOWN PNULL', '.KEY = KNOWN (PINT 0)'):
         values += ['~$config_iterator_valid(S_key,pconfigiterator_key[' + field + '],"key-start")']
     values += ['~$config_iterator_valid(S_key[.ITERATORS = eps],pconfigiterator_key,"key-start")',
