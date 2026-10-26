@@ -59,6 +59,7 @@ def $iterator_unpack_plain(S, punpackcall) = true
   -- if $call_selected_valid(S, punpackcall.FUNCTION, punpackcall.CALLSITE)
 def $iterator_unpack_plain(S, punpackcall) = true
   -- if punpackcall.FUNCTION = METHOD_TARGET n porigin_method
+  -- if $unpack_class(S, punpackcall) = (UNPACK_CV)
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
   -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT

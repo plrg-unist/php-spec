@@ -248,6 +248,7 @@ test-semantics: build
 	python3 tests/semantics/method_iterator_unpack_sources.py
 	python3 tests/semantics/method_iterator_unpack_clean_sources.py
 	python3 tests/semantics/method_iterator_unpack_protocol.py
+	python3 tests/semantics/method_iterator_unpack_boundary.py
 	python3 tests/semantics/iterator_call_unpack_nan_sources.py
 	python3 tests/semantics/iterator_call_unpack_nan_review.py
 	python3 tests/semantics/iterator_call_unpack_string_sources.py
