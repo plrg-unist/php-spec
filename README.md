@@ -1545,9 +1545,15 @@ before DIRECT insertion and cache retirement. Canonical numeric-string keys appe
 current/key/next failures preserve saved values and discard partial builders.
 The [Iterator spread review](coverage/semantics/array-iterator-unpack-review.json)
 records four source agreements for instances without owning fields or a
-destructor, with quiet scalar or flat DIRECT ARRAY caches. A Generator control
-remains explicitly Unsupported.
-Wider payloads, operand modes and Traversable lifetimes remain partial.
+destructor, with quiet scalar or flat DIRECT ARRAY caches.
+Ordinary named Generators now spread through real native resumes, including
+received parameters and reference yields, CV and owning call operands. Their
+cache edges persist through resumed code/CLOSED; DATA then opcode INPUT retire
+while the builder remains protected through finally and storage cleanup.
+The [Generator spread review](coverage/semantics/array-generator-unpack-review.json)
+records acquisition-state errors, DIRECT COW copies, invalid keys and supplied
+throws. Its affected check retires the earlier Generator refusal.
+Wider payloads, operand modes, delegation and Traversable lifetimes remain partial.
 Array call arguments are covered by the later call-unpack checkpoint below.
 [Iterator foreach](docs/semantics/ITERATORS.md) adds by-value source Iterator
 callbacks with effective method selection, retained current values and abrupt
