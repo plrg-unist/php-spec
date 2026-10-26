@@ -61,8 +61,15 @@ and earlier copy distinct. Destination rebinding still calls Get before its
 overloaded-object Error. Three original-source agreements and 214 Boolean checks
 plus three raw transitions are in the
 [untyped reference-Get review](../../coverage/semantics/untyped-reference-get-hooks-review.json).
-Inherited reference getters, virtual/arrow/set/trait forms, dimensions, quiet
-reads and compound consumers remain outside these slices.
+The same Parent declaration now serves a direct Child with no property
+redeclaration. The Parent getter runs with the Child receiver and Parent lexical
+scope; the inherited physical slot carries a typed source only when Parent's
+declaration has a type. An ordinary read copies, an escaped alias survives Child
+destruction, and destination rebinding calls Get before Error. Three source
+agreements and 271 Boolean checks plus three raw transitions are in the
+[inherited reference-Get review](../../coverage/semantics/inherited-reference-get-hooks-review.json).
+Redeclared or deeper Child paths, virtual/arrow/set/trait forms, dimensions,
+quiet reads and compound consumers remain outside these slices.
 
 Public backed by-value block and expression `get` hooks compile into source functions with the
 property's return type. Literal reads through an ordinary CV or `$this` execute

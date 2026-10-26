@@ -4259,6 +4259,11 @@ The matching untyped backed form has no property type source: aliases accept
 string writes, ordinary reads copy, and Get still precedes rebinding Error.
 Three originals and 217 focused checks pass in the
 [untyped reference-Get review](coverage/semantics/untyped-reference-get-hooks-review.json).
+An unchanged direct Child of the declaring Parent now uses the Parent's backed
+`&get` with the Child receiver. Typed and untyped aliases retain their respective
+property-source rules, ordinary reads copy, and destination rebinding calls Get
+before Error. Three originals and 271 Boolean checks plus three raw transitions
+pass in the [inherited reference-Get review](coverage/semantics/inherited-reference-get-hooks-review.json).
 Wider hook declarations and indirect consumers remain partial.
 
 Public backed by-value `get` hooks execute their block or expression body on each read,
