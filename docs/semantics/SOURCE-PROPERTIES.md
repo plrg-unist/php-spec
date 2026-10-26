@@ -68,7 +68,14 @@ declaration has a type. An ordinary read copies, an escaped alias survives Child
 destruction, and destination rebinding calls Get before Error. Three source
 agreements and 271 Boolean checks plus three raw transitions are in the
 [inherited reference-Get review](../../coverage/semantics/inherited-reference-get-hooks-review.json).
-Redeclared or deeper Child paths, virtual/arrow/set/trait forms, dimensions,
+For an immediate Child that plainly redeclares the same public `int` property,
+the inherited Parent `&get` uses Parent lexical scope and Child receiver, but
+returns Child's own backing slot. Its typed source constrains alias writes and
+names Child in the TypeError; ordinary reads copy, escaped aliases outlive Child,
+and destination rebinding still calls Get before Error. Three source agreements
+and 341 Boolean checks plus three raw transitions are in the
+[plain Child reference-Get review](../../coverage/semantics/plain-child-reference-get-hooks-review.json).
+Untyped plain redeclaration, deeper Child paths, virtual/arrow/set/trait forms, dimensions,
 quiet reads and compound consumers remain outside these slices.
 
 Public backed by-value block and expression `get` hooks compile into source functions with the

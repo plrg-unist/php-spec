@@ -4284,6 +4284,11 @@ An unchanged direct Child of the declaring Parent now uses the Parent's backed
 property-source rules, ordinary reads copy, and destination rebinding calls Get
 before Error. Three originals and 271 Boolean checks plus three raw transitions
 pass in the [inherited reference-Get review](coverage/semantics/inherited-reference-get-hooks-review.json).
+When that direct Child plainly redeclares the same public `int` property, its own
+slot and type source govern the inherited Parent `&get`. Parent lexical scope,
+Child receiver, alias lifetime, ordinary copies and Get-before-rebind order remain
+observable. Three originals and 341 Boolean checks plus three raw transitions
+pass in the [plain Child reference-Get review](coverage/semantics/plain-child-reference-get-hooks-review.json).
 Wider hook declarations and indirect consumers remain partial.
 
 Public backed by-value `get` hooks execute their block or expression body on each read,
