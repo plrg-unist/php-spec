@@ -138,7 +138,7 @@ def severity_checks(program, path):
         '$objectprops_record_at(S.OBJECTPROPS,n_a) = (pobjectprops_a)',
         '$property_slot_at(pobjectprops_a.SLOTS,$throwable_key("ErrorException","severity")) = (ppropertyslot_severity)',
         'ppropertyslot_severity.STATE = PROP_VALUE (DIRECT (PINT 8))',
-        '$throwable_field(S,n_a,"file") = PSTRING $ptascii("custom.php")',
+        '$string_plain($throwable_field(S,n_a,"file")) = PSTRING $ptascii("custom.php")',
         '$throwable_field(S,n_a,"line") = PINT $(-2)',
         '$throwable_field(S,n_a,"previous") = POBJECT n_previous',
         '$throwable_object_image_valid(S,n_previous)',
