@@ -4247,6 +4247,10 @@ ordinary reads copy the value, and object retirement detaches that source.
 Destination rebinding invokes Get before raising the overloaded-object Error.
 Two originals, 251 Boolean checks and six raw transitions pass in the
 [reference-Get review](coverage/semantics/reference-get-hooks-review.json).
+The matching untyped backed form has no property type source: aliases accept
+string writes, ordinary reads copy, and Get still precedes rebinding Error.
+Three originals and 217 focused checks pass in the
+[untyped reference-Get review](coverage/semantics/untyped-reference-get-hooks-review.json).
 Wider hook declarations and indirect consumers remain partial.
 
 Public backed by-value `get` hooks execute their block or expression body on each read,

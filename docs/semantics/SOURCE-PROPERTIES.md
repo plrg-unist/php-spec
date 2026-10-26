@@ -53,8 +53,16 @@ backing fetch retains the existing pending-base route. One receiver hold moves
 from the call target into the frame; the new result marker owns nothing.
 Two source agreements and 251 Boolean checks plus six raw transitions are in the
 [reference-Get review](../../coverage/semantics/reference-get-hooks-review.json).
-Untyped, inherited reference getters, virtual/arrow/set/trait forms, dimensions,
-quiet reads and compound consumers remain outside this slice.
+The same parentless, public, sole backed block shape also admits untyped `&get`.
+An initialized scalar or implicit-null backing becomes a live reference cell
+without a property type source. Alias writes remain unconstrained, an ordinary
+read copies the current value, and receiver retirement leaves an escaped alias
+and earlier copy distinct. Destination rebinding still calls Get before its
+overloaded-object Error. Three original-source agreements and 214 Boolean checks
+plus three raw transitions are in the
+[untyped reference-Get review](../../coverage/semantics/untyped-reference-get-hooks-review.json).
+Inherited reference getters, virtual/arrow/set/trait forms, dimensions, quiet
+reads and compound consumers remain outside these slices.
 
 Public backed by-value block and expression `get` hooks compile into source functions with the
 property's return type. Literal reads through an ordinary CV or `$this` execute
