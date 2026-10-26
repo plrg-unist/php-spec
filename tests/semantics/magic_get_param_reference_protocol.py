@@ -181,7 +181,11 @@ $throwable_field(S_material,n_error,"line") = PINT z_read
 $throwable_object_image_valid(S_material,n_error)
 S_pending = $gr_after(S_result,S_verified_raw)
 """)
-        reached += reach('S_throw_copy','S_pending','PC_THROW_COPY ppropertyget n_error') + common.lines(r"""
+        reached += common.lines(r"""
+S_pending.COMPLETION = THROWING n_error
+S_throw_copy = $throwable_begin(S_pending)
+S_throw_copy.COMPLETION = NORMAL
+$pc_stage(S_throw_copy,PC_THROW_COPY ppropertyget n_error)
 S_throw_copy.CURRENT = (pcallcontext_reader)
 S_throw_copy.PARAMETERBACKINGS = [pparameterbacking]
 n_copy_cell_owners = $heap_owners($heap_graph(S_throw_copy),HCELL n_slot)
