@@ -372,3 +372,73 @@ def $trace_array_cell_present(S, n_trace) = $trace_array_cell_frames_present(S, 
   -- if (HARRAY n_trace) <- S.ALLOCATIONS
   -- if $trace_graph_valid(S, n_trace)
 def $trace_array_cell_present(S, n_trace) = false -- otherwise
+
+;; A captured stdClass argument keeps its object identity. Its current property
+;; slots or already materialized table may contain only direct finite values.
+dec $trace_std_slots(pstate, ppropertyslot*) : bool
+def $trace_std_slots(S, eps) = true
+def $trace_std_slots(S, ppropertyslot :: ppropertyslot_tail*) = ($trace_array_payload_value(S, pvalue, eps) /\ $trace_std_slots(S, ppropertyslot_tail*))
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+def $trace_std_slots(S, ppropertyslot*) = false -- otherwise
+dec $trace_std_object(pstate, nat) : bool
+def $trace_std_object(S, n) = $trace_std_slots(S, pobjectprops.SLOTS)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = STDINSTANCE
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, n)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if $stdclass_slots_valid(S, pobjectprops.SLOTS)
+  -- if $object_table_at(S.OBJECTTABLES, n) = eps
+def $trace_std_object(S, n) = $trace_array_payload_entries(S, S.ARRAYS[n_table].ITEMS, [n_table])
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = STDINSTANCE
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, n)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if $stdclass_slots_valid(S, pobjectprops.SLOTS)
+  -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
+  -- if $aggregate_hash_image(S, n, n_table)
+def $trace_std_object(S, n) = false -- otherwise
+
+;; Match the two captured array shapes before using the callback-free effect
+;; comparator. In particular, an object/number pair cannot suppress its Notice.
+dec $trace_std_value_pair(pstate, pvalue, pvalue, nat*, nat*) : bool
+dec $trace_std_entries_pair(pstate, pentry*, pentry*, nat*, nat*) : bool
+dec $trace_std_array_pair(pstate, nat, nat, nat*, nat*) : bool
+def $trace_std_value_pair(S, POBJECT n_left, POBJECT n_right, n_seen_left*, n_seen_right*) = ($trace_std_object(S, n_left) /\ $trace_std_object(S, n_right))
+def $trace_std_value_pair(S, PARRAY n_left, PARRAY n_right, n_seen_left*, n_seen_right*) = $trace_std_array_pair(S, n_left, n_right, n_seen_left*, n_seen_right*)
+def $trace_std_value_pair(S, pvalue_left, pvalue_right, n_seen_left*, n_seen_right*) = ($trace_compare_scalar(S, pvalue_left) /\ $trace_compare_scalar(S, pvalue_right)) -- otherwise
+def $trace_std_entries_pair(S, eps, eps, n_seen_left*, n_seen_right*) = true
+def $trace_std_entries_pair(S, (ENTRY pkey_left (DIRECT pvalue_left)) :: pentry_left*, (ENTRY pkey_right (DIRECT pvalue_right)) :: pentry_right*, n_seen_left*, n_seen_right*) = ($trace_std_value_pair(S, pvalue_left, pvalue_right, n_seen_left*, n_seen_right*) /\ $trace_std_entries_pair(S, pentry_left*, pentry_right*, n_seen_left*, n_seen_right*))
+  -- if pkey_left = pkey_right
+def $trace_std_entries_pair(S, pentry_left*, pentry_right*, n_seen_left*, n_seen_right*) = false -- otherwise
+def $trace_std_array_pair(S, n_left, n_right, n_seen_left*, n_seen_right*) = $trace_std_entries_pair(S, S.ARRAYS[n_left].ITEMS, S.ARRAYS[n_right].ITEMS, n_left :: n_seen_left*, n_right :: n_seen_right*)
+  -- if $(n_left < |S.ARRAYS| /\ n_right < |S.ARRAYS|)
+  -- if $heap_subset([HARRAY n_left, HARRAY n_right], S.ALLOCATIONS)
+  -- if ~(n_left <- n_seen_left* \/ n_right <- n_seen_right*)
+def $trace_std_array_pair(S, n_left, n_right, n_seen_left*, n_seen_right*) = false -- otherwise
+dec $trace_std_graph_pair(pstate, nat, nat) : bool
+def $trace_std_graph_pair(S, n_left, n_right) = $trace_std_array_pair(S, n_left, n_right, eps, eps)
+  -- if $trace_graph_valid(S, n_left) /\ $trace_graph_valid(S, n_right)
+def $trace_std_graph_pair(S, n_left, n_right) = false -- otherwise
+
+;; The positive witness is read from the captured trace, not a source CV.
+dec $trace_std_value_present(pstate, pvalue, nat*) : bool
+dec $trace_std_entries_present(pstate, pentry*, nat*) : bool
+dec $trace_std_array_present(pstate, nat, nat*) : bool
+def $trace_std_value_present(S, POBJECT n, n_seen*) = true
+def $trace_std_value_present(S, PARRAY n, n_seen*) = $trace_std_array_present(S, n, n_seen*)
+def $trace_std_value_present(S, pvalue, n_seen*) = false -- otherwise
+def $trace_std_entries_present(S, eps, n_seen*) = false
+def $trace_std_entries_present(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*, n_seen*) = ($trace_std_value_present(S, pvalue, n_seen*) \/ $trace_std_entries_present(S, pentry_tail*, n_seen*))
+def $trace_std_entries_present(S, pentry*, n_seen*) = false -- otherwise
+def $trace_std_array_present(S, n, n_seen*) = $trace_std_entries_present(S, S.ARRAYS[n].ITEMS, n :: n_seen*)
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if ~(n <- n_seen*)
+def $trace_std_array_present(S, n, n_seen*) = false -- otherwise
+dec $trace_std_present(pstate, nat) : bool
+def $trace_std_present(S, n_trace) = $trace_std_array_present(S, n_trace, eps)
+  -- if $(n_trace < |S.ARRAYS|)
+  -- if (HARRAY n_trace) <- S.ALLOCATIONS
+def $trace_std_present(S, n_trace) = false -- otherwise
