@@ -33,8 +33,8 @@ echo 'S:', $d<=>$e, ':', $e<=>$d, '|';
     'named-argument-key': br'''<?php
 function named130($a, ...$rest): Exception { return new Exception('same', 7); }
 $a = named130(a: 1, extra: 2); $b = named130(a: 1, extra: 2);
-$c = named130(a: 1, extra: 3);
-echo 'B|', $a<=>$b, ':', $a<=>$c, ':', $c<=>$a, '|';
+$c = named130(a: 1, extra: 3); $d = named130(a: 1, other: 2);
+echo 'B|', $a<=>$b, ':', $a<=>$c, ':', $c<=>$a, ':', $a<=>$d, ':', $d<=>$a, '|';
 ''',
     'empty-nonempty-trace': br'''<?php
 function trace130($x): Exception { return new Exception('same', 7); }
