@@ -319,8 +319,10 @@ rule PhpStep/user-string-echo-call: S ~> $user_string_begin(S_read, n, porigin_s
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $stringable_instance(S_read, n)
 
+dec $print_owned_plan(pstate) : pobstringrelease?
 rule PhpStep/user-string-print-call: S ~> $user_string_begin(S_read, n, porigin_site, z, PRINT_EMIT porigin_site z, ptask_tail*)
   -- if S.TODO = (PRINT_EMIT porigin_site z) :: ptask_tail*
+  -- if $print_owned_plan(S) = eps
   -- if S.ORIGIN = (porigin_site)
   -- if $stringify_source(S, porigin_site, z, PRINT_EMIT porigin_site z)
   -- if S_read = $resolve(S, S.RESULT)

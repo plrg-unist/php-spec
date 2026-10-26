@@ -1,0 +1,66 @@
+{
+  "scope": "Returned receiver-cell Get preserves original HCELL ownership through COPY, independent of retargeting. Native Get& cases distinguish early receiver destruction, sole-cell retirement, pending conflict and protected owning-COPY cleanup. Derived KNOWN-RV checks add no BYVAL source credit. Wider producers/coercions/lifetimes remain partial.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_revision": "248b5eb3af9aadb7170fe0e707283ee2e3fb3263",
+  "cases": [
+    {
+      "id": "weak-retarget",
+      "source_file": "magic-get-receiver-cell-weak-retarget.php",
+      "source_sha256": "47f20f1c7eab7e44dff4cdf58d0ba58196f0e8f01f9ce8500d88a629874775df",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-receiver-cell-private-131/.tools/magic-get-receiver-cell-probes-131/weak-retarget.php",
+      "stdout_base64": "VzpGfEd8RHx2ZXJpZmllZDd8ZHxzdHJpbmc5fG51bGx8ZnJlZXxafA==",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "51dfc1543bcadb982eda245b7a55c2f86df7e31c8154deccb2c2c774440b4433",
+      "read_line": 13
+    },
+    {
+      "id": "sole-cell-exact",
+      "source_file": "magic-get-receiver-cell-sole-cell-exact.php",
+      "source_sha256": "694a44e442c08add79ecbc032241c087b1f0e16100cbf104877e4085b42ef28f",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-receiver-cell-private-131/.tools/magic-get-receiver-cell-probes-131/sole-cell-exact.php",
+      "stdout_base64": "VDpGfEd8RHxleGFjdDd8ZHxpbnQ3fHN0cmluZzl8ZnJlZXxoZWxkZnJlZXxafA==",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "7f673e41fc301b4734d29b8c8b366eb1d7be213476ffa3c679e0b037649c105c",
+      "read_line": 14
+    },
+    {
+      "id": "conflict-retarget",
+      "source_file": "magic-get-receiver-cell-conflict-retarget.php",
+      "source_sha256": "6b445e1ada972646ee92d13e357982433157fb35abb228bf866abd399d5e48d0",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-receiver-cell-private-131/.tools/magic-get-receiver-cell-probes-131/conflict-retarget.php",
+      "stdout_base64": "QzpGfEd8RHxrZXB0N3xkfHNhbWV8dHlwZWR8bWVzc2FnZXxsaW5lfGZpbGV8NDJ8Y2VsbDh8bnVsbHxafA==",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "46f20451ceedaed59981c84b470863b4d2ce7bc8e270a45a14da6747aa6c7db5",
+      "read_line": 18
+    },
+    {
+      "id": "payload-retirement",
+      "source_file": "magic-get-receiver-cell-payload-retirement.php",
+      "source_sha256": "7355344b57d6b31c94f763d97b0c69fe0bd2e9f9334617d65f9519621633d6af",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-receiver-cell-private-131/.tools/magic-get-receiver-cell-payload-probes-131/payload-retirement.php",
+      "stdout_base64": "UDpGfEd8RHxkfFB8c2FtZUN8cHJldmlvdXNIfHJvb3RIfDQyfG51bGx8Wnw=",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "688dfb728cfe68e21bdf5fc1fa7802d00413ec63ddd8a9265c02b4932480a462",
+      "read_line": 15
+    }
+  ],
+  "controls": []
+}

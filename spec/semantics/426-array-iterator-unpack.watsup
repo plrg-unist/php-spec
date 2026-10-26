@@ -8,6 +8,7 @@ dec $array_iterator_stage(parrayiterator, text) : bool
 dec $array_iterator_valid(pstate, parrayiterator, text) : bool
 dec $array_iterator_table(pstate, nat) : bool
 dec $array_iterator_value(pstate, poperand) : pvalue?
+dec $array_iterator_value_away(pstate, pvalue, nat) : bool
 dec $array_iterator_ready(pstate, parrayiterator) : bool
 dec $array_iterator_plan(pstate) : parrayiterator?
 dec $array_iterator_call(pstate, parrayiterator, text, ptask*) : pstate
@@ -84,12 +85,11 @@ def $array_iterator_valid(S, parrayiterator, text) = true
   -- if $generator_id_count($useriter_tasks_ids(S.TODO), parrayiterator.ITERATOR) = 1
 def $array_iterator_valid(S, parrayiterator, text) = false -- otherwise
 
-;; Flat cache values have no owning descendants or destructors. Allocated
+;; Finite DIRECT cache graphs have no objects or reference descendants. Allocated
 ;; zero-owner nodes are permitted while an abrupt pop is about to retire them.
 def $array_iterator_table(S, n) = true
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
   -- if ~(n <- S.LITERALARRAYDEBTS)
-  -- if $entries_nodes(S.ARRAYS[n].ITEMS) = eps
   -- if $array_null_const_items(S, S.ARRAYS[n].ITEMS, [n])
 def $array_iterator_table(S, n) = false -- otherwise
 
@@ -108,6 +108,13 @@ def $array_iterator_value(S, REFERENCE n) = (pvalue)
   -- if $array_iterator_value(S, KNOWN pvalue) = (pvalue)
 def $array_iterator_value(S, poperand) = eps -- otherwise
 
+;; Inserting a cached graph must not make the builder its own descendant.
+def $array_iterator_value_away(S, PARRAY n, n_builder) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if n =/= n_builder /\ ~(n <- S.LITERALARRAYDEBTS)
+  -- if $array_null_const_items(S, S.ARRAYS[n].ITEMS, [n, n_builder])
+def $array_iterator_value_away(S, pvalue, n_builder) = ($value_nodes(pvalue) = eps) -- otherwise
+
 def $array_iterator_ready(S, parrayiterator) = true
   -- if $node_children(S, HOBJECT parrayiterator.OBJECT) = eps
   -- if ~$instance_storage_freeing(S, parrayiterator.OBJECT)
@@ -115,7 +122,7 @@ def $array_iterator_ready(S, parrayiterator) = true
   -- if $array_null_const_items(S, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY])
   -- if $array_iterator_value(S, parrayiterator.CURRENT) = (pvalue_current)
   -- if $array_iterator_value(S, parrayiterator.KEY) = (pvalue_key)
-  -- if pvalue_current =/= PARRAY parrayiterator.ARRAY /\ pvalue_key =/= PARRAY parrayiterator.ARRAY
+  -- if $array_iterator_value_away(S, pvalue_current, parrayiterator.ARRAY) /\ $array_iterator_value_away(S, pvalue_key, parrayiterator.ARRAY)
 def $array_iterator_ready(S, parrayiterator) = false -- otherwise
 
 def $array_iterator_pending(S) = true

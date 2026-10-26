@@ -107,7 +107,7 @@ def $array_generator_cache(S, parraygenerator) = true
   -- if $array_generator_value(S, parraygenerator) = (pvalue)
   -- if pgenerator.KEY = (pvalue_key)
   -- if $array_iterator_value(S, KNOWN pvalue_key) = (pvalue_key)
-  -- if pvalue =/= PARRAY parraygenerator.ARRAY /\ pvalue_key =/= PARRAY parraygenerator.ARRAY
+  -- if $array_iterator_value_away(S, pvalue, parraygenerator.ARRAY) /\ $array_iterator_value_away(S, pvalue_key, parraygenerator.ARRAY)
 def $array_generator_cache(S, parraygenerator) = false -- otherwise
 def $array_generator_ready(S, parraygenerator) = true
   -- if $array_generator_source(S, parraygenerator)

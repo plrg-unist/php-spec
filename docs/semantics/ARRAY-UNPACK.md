@@ -37,10 +37,13 @@ and current/key/next failures discard pending caches, DATA and the partial build
 within the quiet domain. This first scope requires an Iterator with no owning
 heap children or destructor (primitive fields are allowed) and exact ordinary
 public method signatures. Cache values are quiet primitives, validated strings
-or flat DIRECT object-free arrays. Current may return an ordinary unconstrained
-reference cell; key remains by value. Fresh
-witnesses use integer arrays and distinguish current-copy COW from live reference
-updates. Nested ARRAY cache values and object payloads, other Iterator operand
+or finite acyclic DIRECT object-free array graphs. Current may return an ordinary
+unconstrained reference cell; key remains by value. Shared child tables contribute
+one edge per physical entry, independent of their parent's owner count. Path-local
+validation permits shared descendants but rejects cycles, descendant references,
+objects, debt and any path back to the receiving builder. Fresh integer-graph
+witnesses distinguish key-time live-reference writes from later selective COW.
+Object/reference descendants, other Iterator operand
 modes and wider callback lifetimes remain partial. Unsupported Traversables
 refuse explicitly rather than receiving a non-Traversable TypeError.
 
@@ -55,8 +58,8 @@ code and after CLOSED, until actual storage destruction.
 Fresh and cached-first-yield inputs rewind normally. A past-first input acquires
 DATA before its rewind Exception; CLOSED acquisition throws before DATA exists.
 Valid int|string keys reuse the existing append/string replacement rules, then
-the live yielded value is dereferenced and copied into a DIRECT entry. Flat
-object-free arrays retain COW; ordinary unconstrained current-reference cells
+the live yielded value is dereferenced and copied into a DIRECT entry. Finite
+DIRECT object-free array graphs retain COW; ordinary unconstrained current-reference cells
 keep one physical payload edge regardless of wrapper multiplicity. Wider payloads
 remain partial.
 
@@ -69,6 +72,14 @@ payload/builder refusals retain their owners and stop. Delegation, direct
 Closure/method/factory-call operands, reference-CV acquisition and wider lifetimes remain
 partial. [Generator spread review](../../coverage/semantics/array-generator-unpack-review.json)
 retains the separate source/state cuts and the retired A52 refusal control.
+
+The shared cache validator also admits nested graphs returned through the existing
+Aggregate promotions below. Runtime descendants cascade when their last physical
+edge retires; folded siblings retain their permanent pool owners. The
+[nested-cache review](../../coverage/semantics/array-traversable-nested-cache-review.json)
+adds two normal COW/DAG originals and two supplied-throw originals. Iterator quiet
+discard removes its pending roots together; Generator retirement preserves the
+builder through real finally and VALUE/storage release before cancellation.
 
 `430-array-aggregate-unpack.watsup` adds ordinary CVs of named IteratorAggregate
 classes with a public non-generator `getIterator(): Traversable`. Genuine source owners

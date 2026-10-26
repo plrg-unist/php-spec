@@ -120,6 +120,13 @@ kept separate from raw-step credit. Other producers/lifetimes remain partial.
 Missing-CV read continuations suspend the existing consumer and retain a null
 result even if the callback defines the variable. The admitted consumers are
 output, simple assignment, unary signs and six arithmetic/identity operators.
+CONCAT also prefetches a bounded direct missing RIGHT CV before converting an
+acquired Stringable LEFT. Its fixed fallback survives handler and method writes;
+the acquired owner survives the handler, then retires before store or the same
+Exception catch. Native's selected uninitialized fallback is modeled as null,
+whose string conversion is empty. Source3 and 826 checked recipe premises,
+including derived controls, pass in the
+[prefetch review](../../coverage/semantics/concat-undefined-right-prefetch-review.json).
 Scalar `<=>` additionally admits a missing left CV with a captured primitive or
 defined direct-CV right operand, and a captured primitive or defined scalar
 direct-CV left with a missing right CV. The latter follows the current left

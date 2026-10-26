@@ -1108,6 +1108,44 @@ controls; the original Unsupported2/wrong-PHP-error1 baselines keep zero agreeme
 No verification, COPY, frame, task, root or GC machinery changed; wider computed/
 suspended producers, PARAM sources and coercion/lifetime histories remain partial.
 
+Valid historical parameter-backing receipts now pass shared Get verification.
+Weak BYREF Stringable reception can add a real Holder:object source during its
+callback, then write the captured string7 without a second source check. That
+nonowning receipt certifies the exact value and parameter declaration, independently
+of the current function; it is not a persistent parameter-type constraint.
+
+An exact string Get preserves the receipt/source vector, while a requested int
+raises the real first-source conflict without writing either cell. A later ordinary
+write still checks Holder's object type. Unsetting that instance slot removes only
+the real source; the subsequent Get int conversion clears the receipt through the
+existing checked write, and later `'free'` proves no requested-type attachment.
+[Three source agreements and 511 focused conditions](../../coverage/semantics/magic-get-param-reference-review.json)
+retain 419 cuts, including malformed value/line/duplicate-receipt controls. The two
+fixture failures and one diagnostic keep zero credit. No producer, state, root,
+receive, COPY or type-source mechanism changed. The shared unconstrained
+numeric-string warning route also inherits valid-receipt admission and checked
+writes; constrained special-path fences remain. Wider callbacks/coercions remain
+partial.
+
+Named noarg factories returning a receiver by reference now preserve the original
+input cell through a distinct `PROPERTY_GET_INPUT` tail. Fresh admission checks
+its actual reference/object value; immutable source/DECL history then survives
+retargeting. This task owns the cell, while RESULT supplies Get's separate receiver
+hold. COPY reads the live returned reference before retiring the input cell.
+
+If Get clears the receiver cell, its last hold can run D after int7 verification;
+D writes string9 before COPY, so the caller receives string9. A factory-local sole
+cell instead keeps the receiver alive through COPY, preserving caller int7 while
+D later writes string9. A constrained conflict keeps its original caller-site
+TypeError through replacement H and captures the later source8 before pending
+INPUT/DROP. Copied owning payloads survive input-time source clearing/H, then
+retire with C.previous=H before the unchanged destination42 reaches catch.
+[Four source agreements and 714 focused conditions](../../coverage/semantics/magic-get-receiver-cell-review.json)
+retain 420 cuts. Missing/duplicate/address/line/release-kind controls are derived;
+KNOWN-RV/COPY checks add no by-value Get source agreement. Existing verification,
+reference sources, state fields and generic ownership/GC rules remain unchanged; wider
+producer/coercion/lifetime combinations remain partial.
+
 The [getter review](../../coverage/semantics/magic-property-get-review.json) records
 eight exact source agreements, 1293 setup-inclusive reached premises and the
 separate original failures. The
@@ -1129,8 +1167,10 @@ exception, with null read registers and genuine H/B/C previous links.
 By-value and discarded getter results follow the same receiver-release order.
 The [owned-getter review](../../coverage/semantics/magic-property-owned-review.json)
 records seven source agreements and 1266 setup-inclusive reached premises at
-distinct retained cuts. By-reference factories and wider factory/receiver forms
-remain Unsupported; prior CV/denied evidence keeps its original cuts.
+distinct retained cuts. Named noarg by-reference factories have separate input-cell
+coverage in the [receiver-cell review](../../coverage/semantics/magic-get-receiver-cell-review.json).
+Wider factory/receiver forms remain partial; prior CV/denied evidence keeps its
+original cuts.
 
 Weak MAGIC_GET verification also accepts numeric strings parsed as an in-range
 integer, using the getter declaration's strictness rather than the caller's.

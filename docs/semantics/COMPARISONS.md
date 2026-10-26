@@ -471,8 +471,8 @@ the same source consumer and selected-case continuation.
 [Initialized nonpublic declared tables](../../coverage/semantics/nonpublic-numeric-comparison-review.json)
 also retain numeric Notice cursors through normal handlers. Physical mangled keys
 keep inherited private declarations distinct; scoped writes preserve live slot
-rereads and pre-unwrapped reference cells across rebinding. Fixed declared
-layouts without property hooks remain required.
+rereads and pre-unwrapped reference cells across rebinding. The abstract
+declared-table route retains its property-hook boundary.
 
 [Declared-slot UNDEF ordering](../../coverage/semantics/declared-undef-comparison-review.json)
 preserves physical keys and width for canonical initial/unset slots: UNDEF sorts
@@ -497,6 +497,17 @@ keeps this representation stable after the last dynamic value is removed;
 declared-only nonpublic layouts retain their original route. New nonpublic
 Stringable continuations remain refused, and prior public/stdClass behavior is
 unchanged. Six exact sources and 462 raw conditions in four reached groups pass.
+
+[Cached backing-hook tables](../../coverage/semantics/backed-hook-table-comparison-review.json)
+also compare authenticated nonvirtual physical slots without invoking getters.
+Normal numeric Notice handlers invoke real setters: backing writes affect later
+live INDIRECT reads, and setter writes to the selected opposing CELL affect the
+current comparison. A declared last-owner value still dies inline during unset;
+virtual declarations remain absent from physical slots. Six native/model sources
+and 427 raw conditions in four reached groups pass, including getter calibration,
+default Notice, virtual-only equality and count-first skip controls. Newly admitted
+backing-hook Stringable continuations remain Unsupported; old public virtual-only
+eligibility, ARRAY-cast projection and foreach hook boundaries stay unchanged.
 
 The raw handler is disabled during its own body and restored before subsequent
 Notice dispatch. The original quiet-terminal cancellation remains available.

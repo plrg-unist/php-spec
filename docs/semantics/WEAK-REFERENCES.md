@@ -127,8 +127,33 @@ constructed/helper controls with no extra PHP credit. Native/genuine refusals
 retain `c5ccf2792`/411. Original app0 iteration-name and author record-list syntax
 failures remain zero; only corrected preflight/author repeat, without source or
 native replay. At that cut, CONFIG/GC/foreach/teardown and old392/402/408
-new-kind fallbacks stay explicit exclusions. Wider payload/property/class/callback forms,
-wider replacement/unset and cross-map/reentry/Fiber histories remain partial.
+new-kind fallbacks stay explicit exclusions. Wider payload/property/class forms,
+callback mutation, wider replacement/unset and cross-map/Fiber histories remain partial.
+[Review and recovery](../../coverage/semantics/weak-map-review.json).
+
+Selective Key notification also admits the existing direct callback-payload
+policy while preserving the old methodless/ALIAS path exactly. Only the actual
+dying Key may use its freeing-pin exception; new callback tables require no
+active Map cursor. The existing delete/pack and one selected Value job preserve
+the sibling record and BEFORE identity without adding an owner.
+
+Three originals and author 204/6 plus independent 176/4 pass 380 Boolean/10 raw
+transitions at `29beafa25`/420. A late Key wrapper stays visible through the
+Value callback; an early wrapper is already NULL although its Key pin is still
+allocated. The normalized methodless sibling remains readable and its returned
+copy adds one owner. A supplied Exception survives Key retirement and reaches
+the original catch. Two shared slots plus an outside Value holder retain owners
+3→2→1; the sole callback runs after both Keys physically retire, with Map still live.
+All callback copies drop before return/throw.
+
+Native/genuine retain `a70bc6c26`/420; genuine 3 is Unsupported after `B;` at
+Key-notification authority, zero agreement. All actual affected checks pass first
+execution without preflight, replay or cap change. Source cuts bind pending Key
+jobs because pin creation and notification occur in one raw model step; the
+exact internal pin and active-cursor/missing-freeing controls are explicitly helper-only. The peer's
+wrong-OFFSET query also adds zero PHP credit. Callback-valued reads from a still-
+multiple table, active callback cursors, freeing-Key dimensions, wider mutation/
+reentry/escape, payload/property/inheritance and GC/CONFIG remain partial.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
 ## Last-owner multiple-entry Map teardown
@@ -178,10 +203,10 @@ Constructed notice/mode refusals add zero PHP credit. Native/genuine retain
 `8484fc071`/417; genuine 3 refuses before output at the attempted second entry
 insertion, with zero agreement. The original runtime-default and author-binding compile stops
 remain zero before application/state, with only affected corrections and no
-accepted replay. Callback-valued owned Iterator/factory/traversal, offset reads,
+accepted replay. Callback-valued traversal, offset reads,
 empty/mutation/escape, wider payload/property/inheritance and GC/CONFIG remain
-partial. Callback singleton/Key-death/normalization and occupied replacement
-have no new source coverage. [Review and recovery](../../coverage/semantics/weak-map-review.json).
+partial. Callback singleton Map teardown and occupied replacement
+have no new source coverage in this teardown slice. [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
 ## Multiple-entry by-value foreach
 
@@ -558,10 +583,37 @@ activation ended too soon. The correction retains ongoing destruction frames
 without weakening their authority, and reruns only affected unwind/retained.
 Constructed cursor, unrelated-row and coherent non-Throwable pending controls
 add no PHP credit. The earlier Many-refusal helper is historical for this newly
-admitted domain. Throwing Value destructors, callback/reacquisition, wider
-payload/source/outer histories, hidden handles and physical GC/CONFIG remain
-partial; there is no intermediate WI/WM observation claim.
+admitted domain. Wider payload/source/outer histories, hidden handles and physical
+GC/CONFIG remain partial; those methodless originals make no intermediate
+WI/WM observation claim.
 [Review](../../coverage/semantics/weak-map-review.json).
+
+The factory and last-owner release now also accept a canonical finite direct
+callback table through a separate lifetime certificate. It authenticates the
+initial owned-Key cursor, exact current Key history, held leaf Keys and no other
+Map cursor; existing methodless manual-method and outer-cache guards are unchanged.
+Cursor removal precedes the one Map DATA job. Wrapper and Map storage pins then
+reuse the ordered slot jobs and borrowed presence policy above.
+
+Native mixed methodless/callback Values establish independently live Iterator,
+Map and self weak gets during normal return and supplied-Exception cleanup.
+The methodless first Value is already physically gone while both `isset` probes
+still report presence. An external Wrapper first retains Map; dropping its last
+owner retires Wrapper while an external Map continues retaining shared Value
+slots. The later Map callback sees Iterator weak-null and Map/self live. Every
+callback drops its weak-get copies before return/throw; no Iterator method is
+called during backend cleanup.
+
+Three originals and author 200/7 plus independent 189/6 pass 389 Boolean/13 raw
+transitions at `135893a0a`/419. Genuine 3 retains `95d889256`/419 and refuses the
+factory before output, zero agreement. The original author parse stop stays zero;
+only its two-Key list notation was corrected. Same-heap cursor-position refusal
+restores the popped release owner; an independent notice-only query separates
+physical pin/local-copy ownership from weak visibility. These controls add no PHP
+credit. Callback cursor advancement, outer traversal, reacquisition/escape,
+mutation, singleton/Key-death/normalization, wider payload/reference/property
+contexts, hidden handles and GC/CONFIG remain partial.
+[Review and recovery](../../coverage/semantics/weak-map-review.json).
 
 ## By-reference entry cells and Key retirement
 
