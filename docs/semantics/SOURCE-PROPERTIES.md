@@ -1053,9 +1053,8 @@ hidden type. Both receiver holds remain distinct: getter release precedes COPY,
 then BASE retires the original temporary before caller reception.
 [Three source agreements and 477 focused conditions](../../coverage/semantics/magic-get-owned-access-review.json)
 retain separate415 cuts. Existing public BYREF still detaches7 before receiver D
-changes its source cell to9; accessible INITIAL bypasses Get. Owned nonpublic
-BYREF refusal is a derived signature control. No new special-coercion route, state
-or root machinery is introduced; wider producers and lifetimes remain partial.
+changes its source cell to9; accessible INITIAL bypasses Get. Wider producers and
+special coercions remain partial; owned references have separate coverage below.
 
 Ordinary CV reads now also admit by-reference Get for accessible nonpublic UNSET
 properties. Plain and constrained-reference verification share the saved physical
@@ -1066,10 +1065,28 @@ the first-source conflict TypeError without writing the cell, at the original re
 file/line. Exact int|string sources survive COPY and later accept `'free'`: the
 requested Parent type never attaches to the referent.
 [Three source agreements and 432 focused conditions](../../coverage/semantics/magic-get-scoped-reference-review.json)
-retain416 cuts. An authentic owned factory with the same public shadow still
-refuses BYREF entry through saved mangled access, despite the old public gate.
-Literal-this BYREF, owned nonpublic BYREF, parameter backings, wider scoped
-coercions and lifetimes remain partial; no new task, state or root machinery.
+retain416 cuts. Literal-this BYREF, parameter backings, wider scoped coercions
+and lifetimes remain partial; no new task, state or root machinery.
+
+The existing named noarg owned-factory route now also admits reference Get for
+nonpublic/public-shadow and denied access. It retains the same selected declaration
+and access history while accepting either return convention. The reference stays
+live through getter-local cleanup: a local destructor's string7-to9 write precedes
+selected private-int verification of the actual cell. COPY then detaches int9 before
+BASE releases the receiver and its destructor writes `'free'`. Exact constrained
+sources keep their original vector; the requested type never attaches. A denied
+hidden INITIAL/int slot keeps DECL absent and returns constrained string7 unchanged.
+
+On a typed-source conflict, COPY captures raw7 under the pending TypeError before
+receiver destruction. Its supplied replacement preserves the original caller-site
+TypeError as Previous and leaves destination42 unchanged. A copied object payload
+also survives receiver-time source clearing, then retires under pending H and
+chains its supplied C to H. These are actual reference/COPY/destruction trajectories,
+using existing RESULT/COPY/BASE/DROP rules.
+[Five source agreements and 586 focused conditions](../../coverage/semantics/magic-get-owned-reference-review.json)
+retain417 cuts; the original Unsupported3 and wrong-PHP-error2 baselines retain
+zero agreement. Wider factories, literal-this BYREF, PARAM sources and broader
+coercion/callback/lifetime histories remain partial.
 
 The [getter review](../../coverage/semantics/magic-property-get-review.json) records
 eight exact source agreements, 1293 setup-inclusive reached premises and the
@@ -1092,9 +1109,8 @@ exception, with null read registers and genuine H/B/C previous links.
 By-value and discarded getter results follow the same receiver-release order.
 The [owned-getter review](../../coverage/semantics/magic-property-owned-review.json)
 records seven source agreements and 1266 setup-inclusive reached premises at
-distinct retained cuts. By-reference factories, owned nonpublic reference getters
-and wider factory/receiver forms remain Unsupported; prior CV/denied evidence
-is unchanged.
+distinct retained cuts. By-reference factories and wider factory/receiver forms
+remain Unsupported; prior CV/denied evidence keeps its original cuts.
 
 Weak MAGIC_GET verification also accepts numeric strings parsed as an in-range
 integer, using the getter declaration's strictness rather than the caller's.
