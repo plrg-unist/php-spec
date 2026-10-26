@@ -1524,14 +1524,15 @@ and 706 focused premises, including derived controls, pass in the
 [acquired RHS review](coverage/semantics/concat-returned-stringable-warning-review.json).
 Wider returned operands and destructor-throw histories remain partial.
 
-An acquired Stringable LEFT now retains its temporary through the delayed RIGHT
-read/conversion, separately from the method receiver. A method write of `fresh`
-therefore supplies `Lfresh` before the destructor writes `retired`; a borrowed CV
-control instead retires early and yields `Lretired`. Three acquired-source
-comparisons, one borrowed control and 771 focused recipe premises (including
-derived controls) pass in the [LEFT lifetime review](coverage/semantics/concat-left-stringable-lifetime-review.json).
-Owning RIGHT combinations retain the earlier partial route. Late unconstrained
-reference wrapping remains readable; wider constraints and lifetimes stay partial.
+Concatenation keeps acquired Stringable temporaries separate from cast receivers.
+An acquired LEFT survives the remaining RIGHT conversion; borrowed CV timing stays
+distinct. With two distinct acquired Stringables, normal completion finishes both conversions
+before ordered LEFT then RIGHT retirement. Nonthrowing destructors run before caller
+store or the same supplied-Exception catch, including reversed allocation order.
+The [LEFT review](coverage/semantics/concat-left-stringable-lifetime-review.json)
+retains source3/control1 and771 premises; the [dual review](coverage/semantics/concat-dual-stringable-lifetime-review.json)
+adds source3 and889 recipe premises, including derived controls. Late unconstrained
+reference wrapping remains readable; other owning forms and wider lifetimes stay partial.
 
 Concatenation assignment now stages a right-array warning for two bounded plain CVs.
 The first string survives handler writes and RHS removal; normal commit overwrites
