@@ -88,18 +88,20 @@ exact HALT string with either positional key `0` or named key `name`. The
 compiled array value and completed pack receipt must agree; wrong or duplicate
 named arguments fail during binding before the lookup. The
 [literal-pack ledger](../../coverage/semantics/halt-pack-review.json) records
-filename-local results, Error traces and the unpack boundaries. One ordinary
-nonreference CV holding a singleton array may also supply key `0` or `name`:
-its current defined array identity must equal the completed pack's array, with
-one direct HALT string item and the same captured entry. COW separation and key
-changes before the call therefore use the live CV array; two calls at one
-compiled site can use different keys. Reference-cell array leaves remain
-`Unsupported`. The
-[CV-pack ledger](../../coverage/semantics/halt-cv-pack-review.json) records
-the bounded source and reached checks. Other fixed argument shapes, selected
-or owning packed calls, multiple, multi-item or Traversable packs, wider named
-forms, general call-site cache history and ambiguous HALT registration remain
-partial. The
+filename-local results, Error traces and the unpack boundaries. An ordinary
+variable expression holding a singleton array may also supply key `0` or
+`name`: its live array identity must equal the completed pack's array. A direct
+item uses its captured HALT string; a reference-backed item uses the current
+value of the array's retained cell, which can survive rebinding or unsetting
+the original variable name. The captured pack item and sent argument must
+match that value. COW separation, key changes and two calls at one compiled
+site use the corresponding live array and fresh receipt. The
+[CV-pack ledger](../../coverage/semantics/halt-cv-pack-review.json) and
+[alias-pack ledger](../../coverage/semantics/halt-alias-pack-review.json) record
+the separate source and reached checks. Other fixed argument shapes, selected
+or owning packed calls, multiple, multi-item or Traversable packs, indirect
+array leaves, general call-site cache history and ambiguous HALT registration
+remain partial. The
 [lookup ledger](../../coverage/semantics/halt-lookup-review.json) binds two original
 sources and their reached state checks, keeping counterfactual history/source
 projections separate from execution.

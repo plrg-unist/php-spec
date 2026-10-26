@@ -1,0 +1,41 @@
+{
+  "scope": "Fixed compiled-global constant(...$a) with one source-authenticated ordinary variable-expression unpack. The current CV holds the packed array, whose only entry is an ALIAS reference cell at positional key 0 or named key name. The live cell, captured DIRECT pack item and normalized sent argument hold the exact HALT name. No owner, selection, fallback or later argument; partial dynamic-source behavior.",
+  "status": "independently_reviewed_private",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "base_revision": "e4b92e30651f43de9a9e0cbb52bdb54a9d5b4d26",
+  "behavior_commit": "f55cb4f7cf4f41fb485c73d97fc1f8d82e146195",
+  "runtime_sha256": "db51d65709cfd9edafb6d902125c56a6d6446db7d10ddf515be6be9d65bf979c",
+  "engine_route": "Zend/zend_compile.c emits SEND_UNPACK. Zend/zend_vm_def.h::ZEND_SEND_UNPACK copies and dereferences a by-value constant argument. ext/standard/basic_functions.c::PHP_FUNCTION(constant) calls zend_get_constant_ex; Zend/zend_constants.c::zend_get_halt_offset_constant uses the executed filename.",
+  "mechanism": "At a genuine CONFIG_INVOKE, one raw NExprVariable unpack must lead through ENV/STORE to the same allocated PARRAY as the source-valid pack. Its singleton ALIAS cell must be a live allocated REFCELL with a defined exact string; current capture yields the same DIRECT entry and SENT. The existing filename-local declaration journal returns an offset or the ordinary absent-registration Error. The array retains the cell if the original variable name moves.",
+  "validation": {
+    "native_first": "Six frozen author originals match pinned native stdout/stderr and exit 0; the genuine unchanged checked model reaches Unsupported at the HALT lookup in all six, with zero agreement credit.",
+    "changed_sources": "All six author originals now match native exactly: live cell write, old cell retained after variable rebinding, named cell write, absent Error trace/catch, two fresh receipts at one compiled site, and child-file absence versus main-file offset.",
+    "reached_state": "Five checked original-derived strict-SL fronts pass 88+87+83+96+161=515 checks on 424 modules. They bind live ALIAS and captured pack/SENT, filename journal, Error trace, budget0/resume and real steps; malformed cell, reference membership, pack metadata and HALT_UNKNOWN refuse.",
+    "independent": "A separately frozen eval source unsets its original variable, then gets an absent-registration Error from the eval filename and a positive offset from the main filename. Native and changed model agree exactly; its unchanged model was Unsupported with zero credit.",
+    "failed_attempts": "No changed-cut or focused fixture failed. Seven genuine unchanged Unsupported outcomes remain zero-credit baselines."
+  },
+  "environment": {
+    "profile": "tests/semantics/profile.json",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "resources": "Author and reviewer used serial numbered CPU leases, fully reaped and released. Raw reports contain exact command, cwd, inputs, stream hashes, exits and stable runtime identities."
+  },
+  "raw_artifacts": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/dynamic-source-112",
+    "reports_sha256": {
+      "author-alias-v1/freeze.json": "e422ad51172e2b02d60efe7436fd0d6470b2d617b18f0c341be0b7db62f0dd8a",
+      "author-alias-v1/native-exact-report.json": "919b00b00c89c13311237962a2e890e3132f8d4b7b314aae88bb125f3b93057f",
+      "author-baseline-v1/model-unsupported-report.json": "49c32488f4d4abcd1f7008be09430a1544ad5103d9b3fbb97fb88f737f83c437",
+      "author-alias-v1/model-normal-report.json": "a6131a4b73e1516e7d4906af922d2a67b739c3bd16996803778dff8437c322d0",
+      "author-state-v1/report.json": "e548867eb7bdb39efb832c711506c739091bec94fd6edb7c4d654ed2000811e9",
+      "reviewer-eval-unset-v1/freeze.json": "bf01fb8930b7979dc554ab81ad33e8d789eee6632c20b6ba2bdcba087eed66bb",
+      "reviewer-eval-unset-v1/native-report.json": "13e87bf0fc10aa42a3507326d73fb9e2f56429afb3fd93ab03714bc983175ab6",
+      "reviewer-eval-unset-v1/baseline-report.json": "144f27d9aaa75bf932abe3429ee9da29e9100dffd929706a10013f06826240f8",
+      "reviewer-eval-unset-v1/changed-report.json": "a5a70cb0d251b5db30909b26620fdc6537ddd1c5f5fdd6851ca07a86a69ddd55"
+    },
+    "recovery": "Run halt_alias_pack_sources.py --phase freeze in a fresh archive root, then --phase native, then --phase model --expected-status unsupported before the rule and --expected-status normal after it. Preserve baseline raw before changed model writes per-case streams. Run halt_alias_pack_protocol.py --sources SOURCE_ROOT --output FRESH for five reached fronts."
+  },
+  "review": "Independent semantic/test/docs review accepted runtime db51d657, six author agreements, one independent eval agreement and the 515-check reached packet. Seven unchanged Unsupported baselines retain zero credit; the partial inventory and exact raw hashes were checked.",
+  "remaining": "INDIRECT and wider reference wrappers, selected or owning calls, multiple or multi-item packs, Traversable, effectful later arguments, general call-site cache history, ambiguous HALT registration and wider source/provider contexts remain partial."
+}
