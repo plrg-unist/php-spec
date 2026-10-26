@@ -89,7 +89,7 @@ pgenerator.BORROWED = eps
 pgenerator.ACCESS = eps
 ~pgenerator.PENDING_INIT
 pgenerator.CLOSURE = (n_callee)
-S.OBJECTS[n_callee] = REALCLOSURE porigin_template [DIRECT (POBJECT n_token)] eps
+S.OBJECTS[n_callee] = REALCLOSURE porigin_template ([DIRECT (POBJECT n_token)]) eps
 pgenerator.FUNCTION = porigin_template
 pcallcontext_generator.FUNCTION = porigin_template
 pcallcontext_generator.TARGET = CLOSURE_TARGET n_callee
@@ -239,7 +239,7 @@ pfiber.VM = (pfibervm)
 pfibervm.CURRENT = (pcallcontext_generator)
 pcallcontext_generator.TARGET = CLOSURE_TARGET n_callee
 pcallcontext_generator.INSTANCE = (n_callee)
-S.OBJECTS[n_callee] = REALCLOSURE pgenerator.FUNCTION [DIRECT pvalue_capture] eps
+S.OBJECTS[n_callee] = REALCLOSURE pgenerator.FUNCTION ([DIRECT pvalue_capture]) eps
 $string_bytes(pvalue_capture) = ($ptascii("cap57"))
 $value_nodes(pvalue_capture) = eps
 pfibervm.FRAMES = [pframe_generator, pframe_fiber]
