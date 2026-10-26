@@ -19,7 +19,7 @@ at `c7d8cdc95`, including derived source/hold controls. Native preparation and t
 original NORMAL early-LEFT mismatch retain `dfe99c39d` with zero credit. Prior
 borrowed/nonowning behavior and same-object legacy admission remain separate.
 [Dual lifetime review](coverage/semantics/concat-dual-stringable-lifetime-review.json).
-Publication is independently reviewed; actual-tail composition review is pending. Accepted cuts stay immutable.
+Publication and actual-tail composition are independently reviewed; accepted cuts stay immutable.
 
 ## Integrated behavior and entrypoints
 
@@ -42,7 +42,6 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| OP89 | Source3/focused889 and bounded publication independently reviewed; actual-tail review pending. |
 | A54 | IteratorAggregate literal-spread acquisition into existing Iterator/Generator DATA; native-first preparation, new430 reserved. |
 | CLASS129 | Literal-this BYREF Get through local cleanup/selected nonpublic declaration; native3/genuine gap classified, private380 repair next. |
 | COMP126 | Native6/genuine gap classified; mixed-storage comparison/filter repair in261/394 preparing, held123/COMP88 separate. |
@@ -52,7 +51,7 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | M155 | Callback-valued owned WeakMap Iterator factory/release; native-first scope preparing. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108, M132–M154, A46/A47/A48/A49/A50/A51/A52/A53, OP79/80/81/82/83/84/85/86/87/88, Source86/87/88/89/90/91/92/93/94, COMP118/119/120/121/122/124/125 and CLASS119/120/121/122/123/124/125/126/127/128 are integrated
+Iterator49/50/51/52/53/54/55, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108, M132–M154, A46/A47/A48/A49/A50/A51/A52/A53, OP79/80/81/82/83/84/85/86/87/88/89, Source86/87/88/89/90/91/92/93/94, COMP118/119/120/121/122/124/125 and CLASS119/120/121/122/123/124/125/126/127/128 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation

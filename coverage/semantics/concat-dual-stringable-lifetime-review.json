@@ -1,7 +1,7 @@
 {
   "version": 1,
   "milestone": "OP89 two acquired CONCAT Stringables retain ordered temporary lifetimes",
-  "status": "bounded semantics, results and publication independently reviewed; actual-tail review pending",
+  "status": "bounded semantics, results, publication and actual-tail composition independently reviewed",
   "target": "PHP8.5.10 CLI NTS64, pinned project-local oracle and ordinary precision14 profile",
   "scope": "Authentic CONCAT_PREP with distinct raw KNOWN Stringable object operands. Each acquired zval is separate from its cast receiver/prepared method target. Existing nonowning RHS and borrowed LEFT routes retain their behavior; same-object, raw-reference, ARRAY and non-Stringable owning RHS forms keep the prior partial route.",
   "runtime_revision": "880a5af2ab103bef27b3ef3e95288b29bef0c8df",
@@ -40,7 +40,7 @@
       },
       "checks": "All three full419 fixture structs and SL120 return exacttrue; workers/actors reaped, no timeout/interruption."
     },
-    "review": "operators79_review independently accepted scope/native/genuine, runtime, author/peer recipes and headers, source3 and focused889. Publication independently reviewed; actual-tail review pending."
+    "review": "operators79_review independently accepted scope/native/genuine, runtime, author/peer recipes and headers, source3 and focused889. Publication and exact actual-tail candidatec41fd1fd6 independently reviewed."
   },
   "preserved_zero_credit": {
     "native_author": {
@@ -79,6 +79,6 @@
     "private_publication": "cc40f3f543cb63edbf4e9ed680ed7f00cffde70f",
     "modules": 419,
     "preservation": "429 and six new tests are private-publication-exact;30 is parent plus the sole B-only task tag; every other semantic module and manifest is parent-exact. Nine append-only partial inventory deltas preserve incoming facts.",
-    "gate": "Exact actual-tail candidate review pending. Accepted880/c7d runtime/source/focused cuts remain unrenewed."
+    "gate": "Exact candidatec41fd1fd6 independently clear over b7e1d44610/419: incoming property, declared-table comparison and CONFIG_GENERATOR selectors are disjoint. Tested429/new tests remain private-exact; accepted880/c7d runtime/source/focused cuts retain their identities without execution renewal."
   }
 }
