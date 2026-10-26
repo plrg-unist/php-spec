@@ -31,6 +31,9 @@ dec $foreach_aggregate_frame(pstate, pcallcontext, pframe) : bool
 dec $foreach_aggregate_entered(pstate, pcallcontext?, pframe*, pcalltarget, porigin) : bool
 dec $foreach_aggregate_generator_context(pstate, pcallcontext) : bool
 dec $foreach_aggregate_close_vm_ids(pstate, pfibervm) : nat*
+dec $fiber_generator_chain_active(pstate) : bool
+dec $fiber_generator_chain_ids(pstate) : nat*
+dec $fiber_generator_delegation_ids(pstate) : nat*
 dec $foreach_aggregate_close_object_ids(pstate, pnode*) : nat*
 dec $foreach_aggregate_close_node_ids(pstate, pnode) : nat*
 dec $foreach_aggregate_close_caller_ids(pstate, pfibercaller*) : nat*
@@ -358,8 +361,66 @@ def $fiber_generator_transfer(S) = true
   -- if S_caller = $constant_frame_scope(S, pframe_close, pframe_tail*)
   -- if $generator_close_done_valid(S_caller, pgenclose)
 
+;; A native delegation chain retains every real resumer and FROM_RESULT claim.
+;; Caller projection removes only the already-authenticated pair in the proof.
+def $fiber_generator_chain_active(S) = true
+  -- if $generator_active(S)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = pcallcontext.FUNCTION /\ pcallcontext.INSTANCE = eps
+  -- if $call_current_valid(S)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask_tail*
+  -- if pgeneratorop.NAME <- ["current", "next"] /\ ~pgeneratorop.ADVANCE
+  -- if pgeneratorop.LOOP = eps /\ pgeneratorop.ARGUMENTS = eps
+  -- if ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.FRAME = eps /\ pgenerator.PARKED = eps /\ pgenerator.RETURN = eps
+  -- if pgenerator.CLOSURE = eps /\ pgenerator.ACCESS = eps
+  -- if pgenerator.REFCELL = eps /\ pgenerator.BORROWED = eps
+def $fiber_generator_chain_active(S) = false -- otherwise
+def $fiber_generator_chain_ids(S) = [pgeneratorop.OBJECT]
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask_tail*
+  -- if ~$generator_from_site(S, pgeneratorop.SITE)
+  -- if $fiber_generator_chain_active(S)
+  -- if $generator_resume_ids(S.TODO) = eps
+  -- if $generator_saved_ids(S.FRAMES) = [pgeneratorop.OBJECT]
+def $fiber_generator_chain_ids(S) = n_child :: n_parent :: n_tail*
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: (GENERATOR_FROM_RESULT n_parent porigin n_child) :: ptask_tail*
+  -- if $fiber_generator_chain_active(S)
+  -- if $generator_from_operation_owner(S, pgeneratorop, n_parent, porigin, n_child, pframe.CONTEXT)
+  -- if pframe.ORIGIN = (porigin)
+  -- if pframe.LOCALS =/= eps /\ pframe.CONTEXT =/= eps /\ pframe.CONSTCONTEXT = eps
+  -- if S_parent = $constant_frame_scope(S, pframe, pframe_tail*)[.TODO = ptask_tail*]
+  -- if n_parent :: n_tail* = $fiber_generator_chain_ids(S_parent)
+  -- if ~(n_child <- (n_parent :: n_tail*))
+def $fiber_generator_chain_ids(S) = eps -- otherwise
+def $fiber_generator_delegation_ids(S) = n_child :: n_parent :: n_tail*
+  -- if $generator_active(S)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask_tail*
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = eps
+  -- if $generator_flat_tasks(S.TODO) /\ $generator_flat_frames(S.FRAMES)
+  -- if $generator_resume_ids(S.TODO) = eps
+  -- if n_child :: n_parent :: n_tail* = $fiber_generator_chain_ids(S)
+  -- if $generator_saved_ids(S.FRAMES) = n_child :: n_parent :: n_tail*
+  -- if $generator_from_claims(S.TODO) ++ $generator_from_saved_claims(S.FRAMES) = n_parent :: n_tail*
+  -- if $generator_resume_pairs(S, S.CURRENT, S.FRAMES)
+def $fiber_generator_delegation_ids(S) = eps -- otherwise
+def $fiber_generator_transfer(S) = true
+  -- if S.ACTIVEFIBER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.STATUS <- [FIBER_RUNNING, FIBER_SUSPENDED]
+  -- if $fiber_generator_delegation_ids(S) =/= eps
+
 ;; Saved body and close records remain unique running Generator operations.
 ;; Collect occurrences rather than erasing duplicates across real VM stacks.
+def $foreach_aggregate_close_vm_ids(S, pfibervm) = n*
+  -- if S_view = $fiber_vm_restore(S, pfibervm)[.COMPLETION = NORMAL]
+  -- if n* = $fiber_generator_delegation_ids(S_view)
+  -- if n* =/= eps
 def $foreach_aggregate_close_vm_ids(S, pfibervm) = [n]
   -- if S_view = $fiber_vm_restore(S, pfibervm)[.COMPLETION = NORMAL]
   -- if $fiber_generator_body_id(S_view) = (n)

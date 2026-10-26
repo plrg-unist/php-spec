@@ -1,0 +1,249 @@
+;; ARRAY packs follow separately evaluated positional newThis and direct values.
+;; PACKS retain source-indexed capture history; only active NEXT owns its ARRAY.
+dec $closure_call_list_source(phpType7*, bool, bool) : bool
+def $closure_call_list_source(eps, b_pack, b_named) = true
+def $closure_call_list_source((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, false, false) = $closure_call_list_source(phpType7*, false, false)
+def $closure_call_list_source((NArg ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType7*, b_pack, false) = $closure_call_list_source(phpType7*, true, false)
+def $closure_call_list_source((NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, b_pack, b_named) = $closure_call_list_source(phpType7*, b_pack, true)
+def $closure_call_list_source(phpType7*, b_pack, b_named) = false -- otherwise
+def $closure_call_array_pack_site(S, porigin) = true
+  -- if $closure_call_args_at(S, porigin) = (NArg ABSENT expression_first (BOOLEAN false) (BOOLEAN false) metadata_first) :: phpType7_tail*
+  -- if $call_unpack_present(phpType7_tail*)
+  -- if $closure_call_list_source(phpType7_tail*, false, false)
+def $closure_call_array_pack_site(S, porigin) = false -- otherwise
+
+dec $closure_call_pack_source_valid(pstate, pclosurecall, pconfigpack) : bool
+def $closure_call_pack_source_valid(S, pclosurecall, pconfigpack) = true
+  -- if $closure_call_array_pack_site(S, pclosurecall.SITE)
+  -- if $(pconfigpack.INDEX > 0)
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
+  -- if $(pconfigpack.INDEX < |phpType7*|)
+  -- if phpType7*[pconfigpack.INDEX] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata
+  -- if $origin_child((pclosurecall.SITE), [PCFIELD 2, PCINDEX pconfigpack.INDEX, PCFIELD 1]) = (pconfigpack.SITE)
+  -- if pconfigpack.LINE = $named_line(S, (pclosurecall.SITE), pconfigpack.INDEX)
+  -- if $call_line_valid(S, (pconfigpack.SITE), pconfigpack.LINE)
+  -- if $(pconfigpack.ARRAY < |S.ARRAYS|)
+  -- if $config_pack_items_valid(pconfigpack.ITEMS)
+  -- if $config_ini_pack_known(S, pconfigpack.ITEMS, $compiled_read(S, pconfigpack.SITE))
+def $closure_call_pack_source_valid(S, pclosurecall, pconfigpack) = false -- otherwise
+
+dec $closure_call_pack_named((pkey, poperand)*) : bool
+def $closure_call_pack_named(eps) = false
+def $closure_call_pack_named((KSTRING preqbytes, poperand) :: (pkey, poperand_tail)*) = true
+def $closure_call_pack_named((KINT z, poperand) :: (pkey, poperand_tail)*) = $closure_call_pack_named((pkey, poperand_tail)*)
+dec $closure_call_pack_outer_valid((pkey, poperand)*, pkey) : bool
+def $closure_call_pack_outer_valid((pkey, poperand)*, KINT z) = true
+def $closure_call_pack_outer_valid((pkey, poperand)*, KSTRING preqbytes) = (preqbytes =/= $ptascii("newThis") /\ ~$closure_call_named_seen((pkey, poperand)*, preqbytes))
+dec $closure_call_pack_key(pkey, nat) : pkey
+def $closure_call_pack_key(KINT z, n) = KINT $(n + 1)
+def $closure_call_pack_key(KSTRING preqbytes, n) = KSTRING preqbytes
+dec $closure_call_pack_error(pnamedtarget, pkey) : preqbytes
+def $closure_call_pack_error(NAMED_UNKNOWN preqbytes, pkey) = $ptascii("Unknown named parameter $") ++ $c_string(preqbytes)
+def $closure_call_pack_error(NAMED_POSITION n, KSTRING preqbytes) = $ptascii("Named parameter $") ++ $c_string(preqbytes) ++ $ptascii(" overwrites previous argument")
+def $closure_call_pack_error(NAMED_EXTRA preqbytes_extra, KSTRING preqbytes) = $ptascii("Named parameter $") ++ $c_string(preqbytes) ++ $ptascii(" overwrites previous argument")
+
+;; C forwards positional storage before named extras, independently of send order.
+dec $closure_call_list_raw((pkey, poperand)*, pkey, pvalue) : (pkey, poperand)*
+def $closure_call_list_raw((pkey, poperand)*, KINT z, pvalue) = (pkey, poperand)*[0:n] ++ [($closure_call_pack_key(KINT z, n), KNOWN pvalue)] ++ (pkey, poperand)*[n:$nabs($(|(pkey, poperand)*| - n))]
+  -- if n = |$closure_call_wrapper((pkey, poperand)*).SLOTS|
+def $closure_call_list_raw((pkey, poperand)*, KSTRING preqbytes, pvalue) = (pkey, poperand)* ++ [(KSTRING preqbytes, KNOWN pvalue)]
+dec $closure_call_list_bind(psparam*, pclosurecall, (pkey, poperand)*, nat) : pclosurecall
+def $closure_call_list_bind(psparam*, pclosurecall, eps, n) = pclosurecall
+def $closure_call_list_bind(psparam*, pclosurecall, (pkey, KNOWN pvalue) :: (pkey_tail, poperand_tail)*, n) = $closure_call_list_bind(psparam*, pclosurecall[.SENT = $named_store(pclosurecall.SENT, pnamedtarget, KNOWN pvalue)], (pkey_tail, poperand_tail)*, $(n + 1))
+  -- if pclosurecall.ERROR = eps
+  -- if pnamedtarget = $unpack_target(psparam*, pkey, n)
+  -- if $named_can_store(pclosurecall.SENT, pnamedtarget)
+def $closure_call_list_bind(psparam*, pclosurecall, (pkey, KNOWN pvalue) :: (pkey_tail, poperand_tail)*, n) = pclosurecall[.SENT = {SLOTS eps, NAMED eps}][.ERROR = ($closure_call_pack_error(pnamedtarget, pkey))]
+  -- if pclosurecall.ERROR = eps
+  -- if pnamedtarget = $unpack_target(psparam*, pkey, n)
+  -- if ~$named_can_store(pclosurecall.SENT, pnamedtarget)
+
+dec $closure_call_pack_append(psparam*, pclosurecall, pkey, pvalue) : pclosurecall?
+def $closure_call_pack_append(psparam*, pclosurecall, pkey, pvalue) = ($closure_call_list_bind(psparam*, pclosurecall[.RAW = (pkey_raw, poperand)*][.SENT = {SLOTS eps, NAMED eps}][.ERROR = eps], (pkey_raw, poperand)*, 0))
+  -- if $closure_call_pack_outer_valid(pclosurecall.RAW, pkey)
+  -- if (pkey_raw, poperand)* = $closure_call_list_raw(pclosurecall.RAW, pkey, pvalue)
+def $closure_call_pack_append(psparam*, pclosurecall, pkey, pvalue) = eps -- otherwise
+dec $closure_call_pack_fold(psparam*, pclosurecall, pentry*, bool) : pclosurecall?
+def $closure_call_pack_fold(psparam*, pclosurecall, eps, b_named) = (pclosurecall)
+def $closure_call_pack_fold(psparam*, pclosurecall, (ENTRY (KINT z) (DIRECT pvalue)) :: pentry*, false) = $closure_call_pack_fold(psparam*, pclosurecall_next, pentry*, false)
+  -- if $closure_call_pack_append(psparam*, pclosurecall, KINT z, pvalue) = (pclosurecall_next)
+def $closure_call_pack_fold(psparam*, pclosurecall, (ENTRY (KSTRING preqbytes) (DIRECT pvalue)) :: pentry*, b_named) = $closure_call_pack_fold(psparam*, pclosurecall_next, pentry*, true)
+  -- if $closure_call_pack_append(psparam*, pclosurecall, KSTRING preqbytes, pvalue) = (pclosurecall_next)
+def $closure_call_pack_fold(psparam*, pclosurecall, pentry*, b_named) = eps -- otherwise
+dec $closure_call_pack_prefix(psparam*, pclosurecall, pentry*) : pclosurecall?
+def $closure_call_pack_prefix(psparam*, pclosurecall, pentry*) = $closure_call_pack_fold(psparam*, pclosurecall, pentry*, false)
+
+dec $closure_call_raw_operand((pkey, poperand)*, pkey) : poperand?
+def $closure_call_raw_operand(eps, pkey) = eps
+def $closure_call_raw_operand((pkey, poperand) :: (pkey_tail, poperand_tail)*, pkey) = (poperand)
+def $closure_call_raw_operand((pkey_other, poperand) :: (pkey_tail, poperand_tail)*, pkey) = $closure_call_raw_operand((pkey_tail, poperand_tail)*, pkey)
+  -- if pkey_other =/= pkey
+dec $closure_call_pack_seed(pclosurecall) : pclosurecall
+def $closure_call_pack_seed(pclosurecall) = pclosurecall[.INDEX = 1][.SENT = {SLOTS eps, NAMED eps}][.RAW = eps][.ERROR = eps][.PACKS = eps]
+dec $closure_call_source_replay(pstate, pclosurecall, pclosurecall, pconfigpack*) : (pclosurecall, pconfigpack*)?
+def $closure_call_source_replay(S, pclosurecall, pclosurecall_prefix, pconfigpack*) = ((pclosurecall_prefix, pconfigpack*))
+  -- if pclosurecall_prefix.INDEX = pclosurecall.INDEX
+def $closure_call_source_replay(S, pclosurecall, pclosurecall_prefix, pconfigpack*) = $closure_call_source_replay(S, pclosurecall, pclosurecall_next[.INDEX = $(pclosurecall_prefix.INDEX + 1)], pconfigpack*)
+  -- if $(pclosurecall_prefix.INDEX < pclosurecall.INDEX)
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
+  -- if phpType7*[pclosurecall_prefix.INDEX] = NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata
+  -- if pkey = $closure_call_arg_key(phpType3, |$closure_call_wrapper(pclosurecall_prefix.RAW).SLOTS|)
+  -- if $closure_call_raw_operand(pclosurecall.RAW, pkey) = (KNOWN pvalue)
+  -- if $closure_call_pack_append($closure_call_parameters(S, pclosurecall.SOURCE), pclosurecall_prefix, pkey, pvalue) = (pclosurecall_next)
+def $closure_call_source_replay(S, pclosurecall, pclosurecall_prefix, pconfigpack :: pconfigpack_tail*) = $closure_call_source_replay(S, pclosurecall, pclosurecall_next[.INDEX = $(pclosurecall_prefix.INDEX + 1)], pconfigpack_tail*)
+  -- if $(pclosurecall_prefix.INDEX < pclosurecall.INDEX)
+  -- if pconfigpack.INDEX = pclosurecall_prefix.INDEX
+  -- if $closure_call_pack_source_valid(S, pclosurecall, pconfigpack)
+  -- if $closure_call_pack_prefix($closure_call_parameters(S, pclosurecall.SOURCE), pclosurecall_prefix, pconfigpack.ITEMS) = (pclosurecall_next)
+def $closure_call_source_replay(S, pclosurecall, pclosurecall_prefix, pconfigpack*) = eps -- otherwise
+
+dec $closure_call_pack_replay(pstate, pclosurecall, nat) : bool
+def $closure_call_pack_replay(S, pclosurecall, n_cursor) = true
+  -- if $closure_call_source_replay(S, pclosurecall, $closure_call_pack_seed(pclosurecall), pclosurecall.PACKS) = ((pclosurecall_prefix, eps))
+  -- if pclosurecall_prefix = pclosurecall[.PACKS = eps]
+  -- if pclosurecall.PACKS =/= eps
+  -- if n_last = $nabs($(|pclosurecall.PACKS| - 1))
+  -- if pconfigpack = pclosurecall.PACKS[n_last]
+  -- if n_cursor = |pconfigpack.ITEMS|
+def $closure_call_pack_replay(S, pclosurecall, n_cursor) = true
+  -- if $closure_call_source_replay(S, pclosurecall, $closure_call_pack_seed(pclosurecall), pclosurecall.PACKS) = ((pclosurecall_prefix, [pconfigpack]))
+  -- if pconfigpack.INDEX = pclosurecall.INDEX
+  -- if $closure_call_pack_source_valid(S, pclosurecall, pconfigpack)
+  -- if $(n_cursor <= |pconfigpack.ITEMS|)
+  -- if $closure_call_pack_prefix($closure_call_parameters(S, pclosurecall.SOURCE), pclosurecall_prefix, pconfigpack.ITEMS[0:n_cursor]) = (pclosurecall[.PACKS = eps])
+def $closure_call_pack_replay(S, pclosurecall, n_cursor) = false -- otherwise
+def $closure_call_progress_valid(S, pclosurecall) = true
+  -- if $closure_call_array_pack_site(S, pclosurecall.SITE)
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
+  -- if $(pclosurecall.INDEX > 0) /\ $(pclosurecall.INDEX <= |phpType7*|)
+  -- if $closure_call_source(S, pclosurecall.SOURCE)
+  -- if $closure_call_positional_receiver_valid(S, pclosurecall)
+  -- if $closure_call_source_replay(S, pclosurecall, $closure_call_pack_seed(pclosurecall), pclosurecall.PACKS) = ((pclosurecall_prefix, eps))
+  -- if pclosurecall_prefix = pclosurecall[.PACKS = eps]
+
+dec $closure_call_unpack_valid(pstate, pclosurecall, poperand, nat) : bool
+def $closure_call_unpack_valid(S, pclosurecall, KNOWN (PARRAY n_array), n_cursor) = true
+  -- if $call_line_valid(S, (pclosurecall.SITE), pclosurecall.LINE)
+  -- if $closure_call_source(S, pclosurecall.SOURCE)
+  -- if $closure_call_positional_receiver_valid(S, pclosurecall)
+  -- if $closure_call_raw_evaluated(pclosurecall.RAW)
+  -- if $unpack_container_valid(S, KNOWN (PARRAY n_array))
+  -- if pclosurecall.PACKS =/= eps
+  -- if n_last = $nabs($(|pclosurecall.PACKS| - 1))
+  -- if pconfigpack = pclosurecall.PACKS[n_last]
+  -- if pconfigpack.INDEX = pclosurecall.INDEX
+  -- if pconfigpack.ARRAY = n_array
+  -- if pconfigpack.ITEMS = $config_pack_capture(S, S.ARRAYS[n_array].ITEMS)
+  -- if $closure_call_pack_replay(S, pclosurecall, n_cursor)
+def $closure_call_unpack_valid(S, pclosurecall, poperand, n_cursor) = false -- otherwise
+def $call_task_valid(S, CLOSURE_CALL_UNPACK_PREP pclosurecall) = true
+  -- if $closure_call_task_valid(S, pclosurecall)
+  -- if $closure_call_array_pack_site(S, pclosurecall.SITE)
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
+  -- if $(pclosurecall.INDEX < |phpType7*|)
+  -- if phpType7*[pclosurecall.INDEX] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata
+def $call_task_valid(S, CLOSURE_CALL_UNPACK_NEXT pclosurecall poperand n_cursor) = $closure_call_unpack_valid(S, pclosurecall, poperand, n_cursor)
+def $task_nodes(CLOSURE_CALL_UNPACK_PREP pclosurecall) = $task_nodes(CLOSURE_CALL_ARGS pclosurecall)
+def $task_nodes(CLOSURE_CALL_UNPACK_NEXT pclosurecall poperand n_cursor) = $task_nodes(CLOSURE_CALL_ARGS pclosurecall) ++ $operand_nodes(poperand)
+
+rule PhpStep/closure-call-unpack-start: S ~> S[.TODO = [$at_task((porigin_pack), EVAL expression_pack), CLOSURE_CALL_UNPACK_PREP pclosurecall] ++ ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (CLOSURE_CALL_ARGS pclosurecall) :: ptask_tail*
+  -- if $closure_call_array_pack_site(S, pclosurecall.SITE)
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
+  -- if $(pclosurecall.INDEX < |phpType7*|)
+  -- if phpType7*[pclosurecall.INDEX] = NArg ABSENT expression_pack (BOOLEAN false) (BOOLEAN true) metadata_pack
+  -- if $origin_child((pclosurecall.SITE), [PCFIELD 2, PCINDEX pclosurecall.INDEX, PCFIELD 1]) = (porigin_pack)
+rule PhpStep/closure-call-unpack-array: S ~> S_read[.TODO = (CLOSURE_CALL_UNPACK_NEXT pclosurecall[.PACKS = pclosurecall.PACKS ++ [pconfigpack]] (KNOWN (PARRAY n_array)) 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CLOSURE_CALL_UNPACK_PREP pclosurecall) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, $named_line(S, (pclosurecall.SITE), pclosurecall.INDEX))
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (PARRAY n_array)
+  -- if $unpack_container_valid(S_read, KNOWN (PARRAY n_array))
+  -- if $origin_child((pclosurecall.SITE), [PCFIELD 2, PCINDEX pclosurecall.INDEX, PCFIELD 1]) = (porigin_pack)
+  -- if pconfigpack = {INDEX pclosurecall.INDEX, SITE porigin_pack, LINE $named_line(S, (pclosurecall.SITE), pclosurecall.INDEX), ARRAY n_array, ITEMS $config_pack_capture(S_read, S_read.ARRAYS[n_array].ITEMS)}
+rule PhpStep/closure-call-unpack-abrupt: S ~> S_read
+  -- if S.TODO = (CLOSURE_CALL_UNPACK_PREP pclosurecall) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, $named_line(S, (pclosurecall.SITE), pclosurecall.INDEX))
+  -- if S_read.COMPLETION =/= NORMAL
+rule PhpStep/closure-call-unpack-source-unsupported: S ~> S_read[.COMPLETION = UNSUPPORTED "Closure::call unpack source outside ARRAY domain"]
+  -- if S.TODO = (CLOSURE_CALL_UNPACK_PREP pclosurecall) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, $named_line(S, (pclosurecall.SITE), pclosurecall.INDEX))
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if ~$is_array_value(pvalue)
+
+dec $closure_call_pack_outer_error((pkey, poperand)*, pentry*, pkey) : preqbytes?
+def $closure_call_pack_outer_error((pkey, poperand)*, pentry*, KSTRING preqbytes) = ($ptascii("Named parameter $") ++ $c_string(preqbytes) ++ $ptascii(" overwrites previous argument"))
+  -- if ~$closure_call_pack_outer_valid((pkey, poperand)*, KSTRING preqbytes)
+def $closure_call_pack_outer_error((pkey, poperand)*, pentry*, KINT z) = ($ptascii("Cannot use positional argument after named argument during unpacking"))
+  -- if $config_pack_named(pentry*)
+def $closure_call_pack_outer_error((pkey, poperand)*, pentry*, pkey_next) = eps -- otherwise
+rule PhpStep/closure-call-unpack-next: S ~> S[.TODO = (CLOSURE_CALL_UNPACK_NEXT pclosurecall_next poperand $(n_cursor + 1)) :: ptask_tail*]
+  -- if S.TODO = (CLOSURE_CALL_UNPACK_NEXT pclosurecall poperand n_cursor) :: ptask_tail*
+  -- if $closure_call_unpack_valid(S, pclosurecall, poperand, n_cursor)
+  -- if n_last = $nabs($(|pclosurecall.PACKS| - 1))
+  -- if pconfigpack = pclosurecall.PACKS[n_last]
+  -- if $(n_cursor < |pconfigpack.ITEMS|)
+  -- if pconfigpack.ITEMS[n_cursor] = ENTRY pkey (DIRECT pvalue)
+  -- if $closure_call_pack_outer_error(pclosurecall.RAW, pconfigpack.ITEMS[0:n_cursor], pkey) = eps
+  -- if $closure_call_pack_append($closure_call_parameters(S, pclosurecall.SOURCE), pclosurecall, pkey, pvalue) = (pclosurecall_next)
+rule PhpStep/closure-call-unpack-outer-error: S ~> $throwable_allocate(S[.TODO = ptask_tail*][.ORIGIN = (pclosurecall.SITE)], "Error", preqbytes, pconfigpack.LINE, $eval_exception_trace_raw(S))
+  -- if S.TODO = (CLOSURE_CALL_UNPACK_NEXT pclosurecall poperand n_cursor) :: ptask_tail*
+  -- if $closure_call_unpack_valid(S, pclosurecall, poperand, n_cursor)
+  -- if n_last = $nabs($(|pclosurecall.PACKS| - 1))
+  -- if pconfigpack = pclosurecall.PACKS[n_last]
+  -- if $(n_cursor < |pconfigpack.ITEMS|)
+  -- if pconfigpack.ITEMS[n_cursor] = ENTRY pkey (DIRECT pvalue)
+  -- if $closure_call_pack_outer_error(pclosurecall.RAW, pconfigpack.ITEMS[0:n_cursor], pkey) = (preqbytes)
+rule PhpStep/closure-call-unpack-done: S ~> S[.TODO = (CLOSURE_CALL_ARGS pclosurecall[.INDEX = $(pclosurecall.INDEX + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CLOSURE_CALL_UNPACK_NEXT pclosurecall poperand n_cursor) :: ptask_tail*
+  -- if $closure_call_unpack_valid(S, pclosurecall, poperand, n_cursor)
+  -- if n_last = $nabs($(|pclosurecall.PACKS| - 1))
+  -- if pconfigpack = pclosurecall.PACKS[n_last]
+  -- if n_cursor = |pconfigpack.ITEMS|
+
+;; Expanded body contexts validate signature-consistent raw shape, not old ARRAYs.
+dec $closure_call_pack_shape_slots(psparam*, pnamedslot*, nat, pnamedargs) : pnamedargs?
+def $closure_call_pack_shape_slots(psparam*, eps, n, pnamedargs) = (pnamedargs)
+def $closure_call_pack_shape_slots(psparam*, (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*, n, pnamedargs) = $closure_call_pack_shape_slots(psparam*, pnamedslot*, $(n + 1), $named_store(pnamedargs, pnamedtarget, KNOWN PNULL))
+  -- if pnamedtarget = $unpack_target(psparam*, KINT n, n)
+  -- if $named_can_store(pnamedargs, pnamedtarget)
+def $closure_call_pack_shape_slots(psparam*, pnamedslot*, n, pnamedargs) = eps -- otherwise
+dec $closure_call_pack_shape_names(psparam*, (preqbytes, poperand)*, nat, pnamedargs) : pnamedargs?
+def $closure_call_pack_shape_names(psparam*, eps, n, pnamedargs) = (pnamedargs)
+def $closure_call_pack_shape_names(psparam*, (preqbytes, KNOWN pvalue) :: (preqbytes_tail, poperand)*, n, pnamedargs) = $closure_call_pack_shape_names(psparam*, (preqbytes_tail, poperand)*, n, $named_store(pnamedargs, pnamedtarget, KNOWN PNULL))
+  -- if preqbytes =/= $ptascii("newThis")
+  -- if pnamedtarget = $unpack_target(psparam*, KSTRING preqbytes, n)
+  -- if $named_can_store(pnamedargs, pnamedtarget)
+def $closure_call_pack_shape_names(psparam*, (preqbytes, poperand)*, n, pnamedargs) = eps -- otherwise
+dec $closure_call_pack_shape(psparam*, pnamedargs) : pnamedargs?
+def $closure_call_pack_shape(psparam*, pnamedargs) = $closure_call_pack_shape_names(psparam*, pnamedargs.NAMED, |pnamedargs.SLOTS|, pnamedargs_slots)
+  -- if $closure_call_pack_shape_slots(psparam*, pnamedargs.SLOTS, 0, {SLOTS eps, NAMED eps}) = (pnamedargs_slots)
+def $closure_call_pack_shape(psparam*, pnamedargs) = eps -- otherwise
+def $closure_call_enter(S, pfunction, pclosurecall, n_receiver) = S_entered[.CURRENT = (pcallcontext[.WRAPPER = ($closure_call_wrapper(pclosurecall.RAW))])]
+  -- if pclosurecall.PACKS =/= eps
+  -- if $closure_call_pack_named(pclosurecall.RAW)
+  -- if S_entered = $target_after_enter($named_enter(S, pfunction, pclosurecall.SENT, (pclosurecall.SITE), pclosurecall.LINE), CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver)
+  -- if S_entered.CURRENT = (pcallcontext)
+def $closure_call_enter(S, pfunction, pclosurecall, n_receiver) = $call_arity(S_entered[.CURRENT = (pcallcontext[.WRAPPER = ($closure_call_wrapper(pclosurecall.RAW))])], pfunction, |$named_operands(pclosurecall.SENT.SLOTS)|, (pclosurecall.SITE), pclosurecall.LINE)
+  -- if pclosurecall.PACKS =/= eps
+  -- if ~$closure_call_pack_named(pclosurecall.RAW)
+  -- if S_entered = $target_after_enter($call_enter(S, pfunction, $named_operands(pclosurecall.SENT.SLOTS), (pclosurecall.SITE), pclosurecall.LINE), CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver)
+  -- if S_entered.CURRENT = (pcallcontext)
+def $named_call_valid(S, CLOSURE_CALL_TARGET n_source n_receiver, (porigin_site)) = true
+  -- if $closure_call_array_pack_site(S, porigin_site)
+dec $closure_call_pack_names((preqbytes, poperand)*, (preqbytes, poperand)*) : bool
+def $closure_call_pack_names(eps, eps) = true
+def $closure_call_pack_names((preqbytes, poperand) :: (preqbytes_tail, poperand_tail)*, (preqbytes, poperand_shape) :: (preqbytes_shape, poperand_shape_tail)*) = $closure_call_pack_names((preqbytes_tail, poperand_tail)*, (preqbytes_shape, poperand_shape_tail)*)
+def $closure_call_pack_names((preqbytes, poperand)*, (preqbytes_shape, poperand_shape)*) = false -- otherwise
+def $wrapper_context_valid(S, pcallcontext) = true
+  -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $closure_call_array_pack_site(S, porigin_site)
+  -- if pcallcontext.WRAPPER = (pnamedargs)
+  -- if $target_function(S, CLOSURE_CALL_TARGET n_source n_receiver) = (pfunction)
+  -- if $closure_call_pack_shape(pfunction.SIGNATURE.PARAMETERS, pnamedargs) = (pnamedargs_shape)
+  -- if pcallcontext.ARGC = |pnamedargs_shape.SLOTS|
+  -- if n_received = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if pcallcontext.HOLES = $named_holes(pnamedargs_shape.SLOTS[0:n_received], 0)
+  -- if $closure_call_pack_names(pcallcontext.NAMED, pnamedargs_shape.NAMED)

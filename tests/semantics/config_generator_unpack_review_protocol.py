@@ -89,7 +89,7 @@ def checks(program, path, name):
         'S_data = $test_config_generator_peer_step(S_pre)',
         'S_data.TODO = (CONFIG_GENERATOR pconfiggenerator_initial text_initial) :: ptask_tail*',
         'text_initial = "rewind"',
-        'pconfiggenerator_initial = {CALL pconfigcall,OBJECT n_generator,INPUT S_pre.RESULT,ITEMS eps}',
+        'pconfiggenerator_initial = {CALL pconfigcall,OBJECT n_generator,INPUT S_pre.RESULT,ITEMS eps,PRODUCER eps}',
         '$task_nodes(CONFIG_GENERATOR pconfiggenerator_initial text_initial) = [HOBJECT n_generator,HOBJECT n_owner]',
         'S_data.RESULT = KNOWN PNULL', 'S_data.STORE = S_pre.STORE',
         'S_data.OBJECTS = S_pre.OBJECTS', 'S_data.ARRAYS = S_pre.ARRAYS',

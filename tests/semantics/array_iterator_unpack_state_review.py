@@ -168,8 +168,8 @@ def finish(start, stdout):
     ] + public('S_done')
 
 
-def boundary_checks(program, path):
-    return [
+def generator_checks(program, path, stdout):
+    checks = [
         'S_initial = $php_run(' + program + ', 0, ' + json.dumps(base64.b64encode(bytes(path)).decode()) + ')',
         'S_initial.COMPLETION = BUDGET',
     ] + seek('S_initial', 10, 'S') + [
@@ -178,16 +178,42 @@ def boundary_checks(program, path):
         '$lookup(S.ENV, $ptascii("it")) = (n_it)', 'S.STORE[n_it] = DEFINED (POBJECT n_object)',
         'S.OBJECTS[n_object] = GENERATOR pgenerator', '$config_traversable_value(S, POBJECT n_object)',
         '~$useriter_instance(S, n_object)', '$array_iterator_plan(S) = eps',
+        '$array_generator_plan(S) = (parraygenerator)', '$array_generator_pending(S)',
+        'parraygenerator.ARRAY = n_target', 'parraygenerator.OBJECT = n_object',
+        'parraygenerator.INPUT = S.RESULT', 'parraygenerator.TAIL = eps',
+        'parraygenerator.FUNCTION = pgenerator.FUNCTION', 'parraygenerator.LINE = z',
+        'pgenerator.PHASE = GENERATOR_FRESH',
         '$lookup(S.ENV, $ptascii("out")) = (n_out)', 'S.STORE[n_out] = DEFINED (PINT 100)',
         '$lookup(S.ENV, $ptascii("later")) = (n_later)', 'S.STORE[n_later] = DEFINED (PINT 7)',
         'S.ARRAYS[n_target].ITEMS = eps', 'S.ITERATORS = eps',
         '$list_warning_outputs(S.EVENTS) = ($ptascii("P;"))',
-        'PhpStep: S ~> S_boundary',
-        'S_boundary.COMPLETION = UNSUPPORTED "array Iterator unpack outside initialized Iterator domain"',
-        'S_boundary.STORE = S.STORE', 'S_boundary.ARRAYS = S.ARRAYS',
-        'S_boundary.OBJECTS = S.OBJECTS', 'S_boundary.ITERATORS = eps',
-        '$list_warning_outputs(S_boundary.EVENTS) = ($ptascii("P;"))',
-    ] + public('S_boundary')
+        owners('S', 'HOBJECT n_object', 1), owners('S', 'HARRAY n_target', 1),
+        'PhpStep: S ~> S_started',
+        'S_started.TODO = (ARRAY_GENERATOR parraygenerator "rewind") :: ptask_tail*',
+        '$array_generator_valid(S_started, parraygenerator, "rewind")',
+        '$task_nodes(ARRAY_GENERATOR parraygenerator "rewind") = [HARRAY n_target, HOBJECT n_object]',
+        owners('S_started', 'HOBJECT n_object', 2), owners('S_started', 'HARRAY n_target', 1),
+        'S_started.STORE = S.STORE', 'S_started.ARRAYS = S.ARRAYS',
+        'S_started.OBJECTS = S.OBJECTS', 'S_started.ITERATORS = eps',
+        'S_started.NEXTITER = S.NEXTITER',
+        '$list_warning_outputs(S_started.EVENTS) = ($ptascii("P;"))',
+    ] + public('S_started') + seek('S_started', 16, 'S_read') + [
+        'S_read.STORE[n_out] = DEFINED (PARRAY n_target)',
+        'S_read.ARRAYS[n_target].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 3))]',
+        'S_read.STORE[n_later] = DEFINED (PINT 88)',
+        'S_read.OBJECTS[n_object] = GENERATOR pgenerator_closed',
+        'pgenerator_closed.PHASE = GENERATOR_CLOSED', 'pgenerator_closed.VALUE = (PINT 3)',
+        'pgenerator_closed.KEY = (PINT 0)', 'pgenerator_closed.RETURN = (PNULL)',
+        owners('S_read', 'HOBJECT n_object', 1), owners('S_read', 'HARRAY n_target', 1),
+        '$list_warning_outputs(S_read.EVENTS) = ($ptascii("P;G;"))',
+    ] + public('S_read') + [
+        'S_done = $drive_steps(S_read, 4000)', 'S_done.COMPLETION = NORMAL',
+        'S_done.TODO = eps', 'S_done.CURRENT = eps', 'S_done.FRAMES = eps',
+        'S_done.ITERATORS = eps', 'S_done.RESULT = KNOWN PNULL',
+        '$list_warning_outputs(S_done.EVENTS) = ([' + ','.join(map(str, stdout)) + '])',
+        '~((HOBJECT n_object) <- S_done.ALLOCATIONS)', '~((HARRAY n_target) <- S_done.ALLOCATIONS)',
+    ] + public('S_done')
+    return checks
 
 
 def invalid_checks(program, path, stdout):
@@ -434,7 +460,7 @@ def conditions(name, program, path, stdout):
     if THROW_PART is not None:
         assert name.endswith('supplied-throw'), '--throw-part requires the supplied-throw case'
     if name.endswith('generator-boundary'):
-        return boundary_checks(program, path)
+        return generator_checks(program, path, stdout)
     if name.endswith('invalid-bool-key'):
         return invalid_checks(program, path, stdout)
     assert name.endswith('supplied-throw')

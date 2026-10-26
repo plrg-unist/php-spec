@@ -75,6 +75,14 @@ unchanged. Four originals preserve normal one/two-level returns and supplied
 Throwable finally unwinding, where two or three distinct parameter cells own the
 same Token. [Helper transfer review](../../coverage/semantics/generator-fiber-helper-transfer-review.json).
 
+Native named Generator delegation uses a structural chain proof instead of a
+single-resumer bound. Each actual parent/child/source pair is checked before a
+local caller projection; real VM scans keep all resumer and delegation-claim
+occurrences. Source agreement currently covers one-link CURRENT normal return
+and supplied-Throwable abort. Cached NEXT and two-link handled whole executions
+remain required and inconclusive; component diagnostics do not close them.
+[Delegation transfer review](../../coverage/semantics/generator-fiber-delegation-transfer-review.json).
+
 Private scoped descriptor validation checks shared live eval/class/directory
 contexts on the active VM. Its parked validation view clears loader contexts
 and separately rejects direct, wrapped and saved-frame markers; VM restoration
@@ -775,8 +783,9 @@ active or saved constant/default and autoload initialization. Module378 admits a
 retained foreach Generator's active close frame, authenticated by its genuine
 statement/line receipt and unique saved close ID while preserving one receiver
 owner. The direct named-body CURRENT/NEXT arm additionally preserves one normal
-resumer, now also below ordinary named helper frames. Method/Closure helpers,
-by-reference returns, delegation, by-reference caches and other API roots retain
+resumer, now also below ordinary named helper frames. Native named delegation
+has the bounded chain support above. Method/Closure helpers, by-reference
+returns, wider delegation, by-reference caches and other API roots retain
 their previous boundaries. Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

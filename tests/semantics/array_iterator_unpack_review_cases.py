@@ -82,7 +82,3 @@ unset($it,$out,$later);
 echo "U:",isset($it),":",isset($out),";";
 ''',
 }
-
-BOUNDARIES = {
-    'array-iterator-unpack-review-generator-boundary': 'array Iterator unpack outside initialized Iterator domain',
-}

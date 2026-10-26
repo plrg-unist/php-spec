@@ -1,0 +1,258 @@
+{
+  "milestone": "Iterator55: native Generator delegation across Fiber transfer",
+  "status": "accepted-bounded",
+  "scope": "Structural named Generator resumer/claim chains entered by direct zero-argument CURRENT/NEXT. Source agreement currently covers fresh one-link normal return and one-link supplied-Throwable abort; pending whole-source cases remain required for core closure.",
+  "implementation": {
+    "parent": "8917f6f9e2b72d5531cfbf3c62b4cc92be99dbb8",
+    "semantic_cut": "809770171f5f1d5a74ffd6b2f5be659db9e93b43",
+    "equivalent_guard_order_cut": "cea09f8375b0d46e4707a563cc1dc3f85d45549b",
+    "paths": [
+      "spec/semantics/378-foreach-aggregate.watsup",
+      "spec/semantics/380-yield-from-aggregate.watsup"
+    ],
+    "change": "64 additive lines authenticate each real FROM_RESULT parent/site/child pair, project one actual caller frame locally and recurse to the native root. Complete-prefix flatness, exact resumer multiplicities, source claims and resume pairs remain required. VM collectors preserve actual ordered occurrences without deduplication. Two later premise moves check disjoint frame/source shapes before expensive context authority; predicates/results are unchanged.",
+    "unchanged": "All machine fields/roots and operational switch/resume/yield/throw/return/close/GC bodies; original direct/helper/close/warning proofs; native/shared harness/profile. Pending-initialization bits are preserved. Method/Closure/reference carriers and STARTPACK/BORROWED CONFIG roots remain outside this proof.",
+    "engine_evidence": [
+      "vendor/php-src/Zend/zend_generators.c: zend_generator_resume, executing leaf and parent exception propagation",
+      "vendor/php-src/Zend/zend_fibers.c: zend_fiber_capture_vm_state, zend_fiber_restore_vm_state, zend_fiber_switch_context"
+    ]
+  },
+  "validation": {
+    "native": "Four first observations at a98f7e71b: fresh CURRENT/cached NEXT and one-/two-link supplied-Throwable sources. No stdout forecasts or model credit. Affected compact cached-output native1 is first captured at47580c81f; all five exact source identities remain separate.",
+    "genuine": "First unchanged fresh source reaches checked Unsupported Fiber switch during an initializer, source loader or Generator continuation after START|CALL|CHILD|. Original reportfalse/normal_agreements0 at a98f, exit1/no timeout/empty stderr/stable inputs and HEAD, is preserved.",
+    "accepted_sources": [
+      {
+        "id": "generator-fiber-delegation-fresh-current",
+        "source_sha256": "f8ab1366faff2e4924badb3eae2b0c68cba5f74a74a7a83f79cc95d10979f59b",
+        "revision": "809770171f5f1d5a74ffd6b2f5be659db9e93b43",
+        "report": ".tools/generator-fiber-delegation-transfer-source-134irpb6/report.json"
+      },
+      {
+        "id": "review-generator-fiber-delegation-transfer-unhandled",
+        "source_sha256": "16499e90ff2cac8c3e570824e5ff2a30410c93de52a4b67fe9772fb89cc545ce",
+        "revision": "bbc9ef46c8d7385aadc4b7b68b15a8f657c0b8de",
+        "report": ".tools/generator-fiber-delegation-transfer-review-source-jaysrp9b/report.json"
+      }
+    ],
+    "source_credit": "Two exact NORMAL agreements. The first is retained inside an original mixed author report whose overall passed flag is false because its cached case times out; no failure is relabeled.",
+    "strict": "415 modules pass SL at809770171. Later guard ordering is independently equivalent; no accepted strict/fresh/native/genuine replay.",
+    "focused": {
+      "status": "passed bounded components",
+      "default_selection": {
+        "fresh_structure_and_short_budgets": 105,
+        "two_edge_structure_and_short_budgets": 207,
+        "unhandled_structure_and_short_budgets": 147
+      },
+      "reported_default_premises": 459,
+      "partition": "All original clauses are retained across default structures+existing0/1/2 prefixes and named intact whole completions with minimal repeated source-ID bindings. Different seeks establish no cross-recipe identity. Default reported459 = 105 +207 +147; source agreement and pending whole endings remain separate.",
+      "fixture_cut": "3a551c0f0b465f18f0775af75b991ab2f753b7b8",
+      "gate": "All six recipes elaborate at3a with six named headers and unique EOF; three pending completions have zero evaluation credit.",
+      "pending_completions": {
+        "fresh": 43,
+        "two_edge_handled": 49,
+        "one_edge_unhandled": 43
+      },
+      "first_attempt": "At2dc, gate4 passes, then fresh125 reaches120s/exit-9/empty streams with stable inputs/HEAD. Zero premise credit; packet stops before unrun peer194/166. A common partition retains every original clause: defaults cover structure+existing0/1/2 prefix, named completion recipes retain intact whole/split/native endings with minimal repeated source-ID bindings. No cross-recipe identity or cap change.",
+      "reports": [
+        ".tools/fiber-state-review-0pgjcxm3/report.json",
+        ".tools/fiber-state-review-sy681cml/report.json",
+        ".tools/fiber-state-review-xts0jwon/report.json"
+      ],
+      "gate_report": ".tools/generator-fiber-delegation-transfer-components-elab-hl0076yq/report.json"
+    },
+    "report_accounting": "23 executed reports:16 raw passes and7 raw failures. Mixed author report remains false but its exact fresh NORMAL record gives one agreement; unhandled gives the second. Natives/localizations never become source agreements; full completions remain unrun."
+  },
+  "cost_investigation": {
+    "source_negatives": "Original cached1226 at809, compact cachede327 atbbc9, and handledd063 atbbc9 hit the unchanged internal model100s limit. Outer processes exit1 with timeoutfalse/empty stderr; no agreement is credited.",
+    "raw_negatives": "Exact cached raw drive_steps4000 diagnostics at809 andcea each reach their100s process cap, exit-9/empty streams; both remain diagnostic-only0/inconclusive.",
+    "measured_boundaries": "Separate zero-credit checks establish original cached pre-Fiber CURRENT completion; intended suspend dispatch boundary; one chain query; one real suspend step; real parked ID/claim scans; normal Fiber return. Compact source also reaches the final main NEXT before dispatch. These are component facts, not whole-source agreement.",
+    "format_correction": "Only18 node-free literal separator echo operands are deleted from old1226 to forme327 under a distinct ID/hash. Every nonliteral operand/API/cast/order/owner and line is unchanged; positional boolean flags and lifetime markers remain. First changed native observation passes, but changed model100 still times out. Original and changed negatives remain separate."
+  },
+  "pending_core_closure": [
+    {
+      "id": "generator-fiber-delegation-cached-next",
+      "source_sha256": "1226c408b80cf89d3057bec842eec5a8bd16ef4ca60e223209a2477f2a610f44",
+      "required_for_core_closure": true,
+      "status": "inconclusive model100 timeout; no agreement",
+      "report": ".tools/generator-fiber-delegation-transfer-source-134irpb6/report.json",
+      "command": "python3 tests/semantics/generator_fiber_delegation_transfer_sources.py --case generator-fiber-delegation-cached-next --native-report .tools/generator-fiber-delegation-transfer-native-dmns1org/report.json"
+    },
+    {
+      "id": "generator-fiber-delegation-cached-next-compact-output",
+      "source_sha256": "e32779a74756b22beb05540bff86173d5e45490442477cee13040449b441203b",
+      "required_for_core_closure": true,
+      "status": "inconclusive model100 timeout; no agreement",
+      "report": ".tools/generator-fiber-delegation-transfer-source-8hpojpbh/report.json",
+      "command": "python3 tests/semantics/generator_fiber_delegation_transfer_sources.py --case generator-fiber-delegation-cached-next-compact-output --native-report .tools/generator-fiber-delegation-transfer-corrected-native-kje9b95o/report.json"
+    },
+    {
+      "id": "review-generator-fiber-delegation-transfer-handled",
+      "source_sha256": "d063746ea8d6a2c776be754cf2762b85857f754abcfa1a24b7ca273836a1e38d",
+      "required_for_core_closure": true,
+      "status": "inconclusive model100 timeout; no agreement",
+      "report": ".tools/generator-fiber-delegation-transfer-review-source-d7q080wy/report.json",
+      "command": "python3 tests/semantics/generator_fiber_delegation_transfer_review_sources.py --case review-generator-fiber-delegation-transfer-handled --native-report .tools/generator-fiber-delegation-transfer-native-dmns1org/report.json"
+    },
+    {
+      "id": "generator-fiber-delegation-two-edge-parked-completion",
+      "required_for_core_closure": true,
+      "status": "unrun; no focused credit",
+      "command": "python3 tests/semantics/generator_fiber_delegation_transfer_review_state.py --case generator-fiber-delegation-two-edge-parked-completion",
+      "budgets": "SL120s/seek4000/finish4000"
+    },
+    {
+      "id": "generator-fiber-fresh-native-link-completion",
+      "required_for_core_closure": true,
+      "status": "unrun; no focused credit",
+      "premises": 43,
+      "command": "python3 tests/semantics/generator_fiber_delegation_transfer_state.py --case generator-fiber-fresh-native-link-completion",
+      "budgets": "SL120s/seek4000/finish4000"
+    },
+    {
+      "id": "generator-fiber-delegation-one-edge-injected-completion",
+      "required_for_core_closure": true,
+      "status": "unrun; no focused credit",
+      "premises": 43,
+      "command": "python3 tests/semantics/generator_fiber_delegation_transfer_review_state.py --case generator-fiber-delegation-one-edge-injected-completion",
+      "budgets": "SL120s/seek4000/finish4000"
+    }
+  ],
+  "default_policy": "Source defaults explicitly select accepted fresh/unhandled cases. Original cached, compact cached and handled rows stay cataloged and explicitly selectable. All pending whole-source and completion reproducers are required for core closure; neither expected-timeout passes nor diagnostic agreement is used.",
+  "environment": {
+    "php": "8.5.10 CLI NTS64; source34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL/cacheoff/encountered determinism",
+    "settings": "Serial CPU5; LC_ALL=C TZ=UTC, script encoding unset. Pinned project-local tools reused; no fresh portability claim.",
+    "caps": "Native8s; source100000 steps/model100s/process120s; strict120s; gate60s; focused120s/seek4000/finish4000; localization100s/0credit.",
+    "binary_identities": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "reports": {
+    ".tools/fiber-state-review-0pgjcxm3/report.json": {
+      "sha256": "391c708ed0fed062293ed6a048854da28eaa96c3c2d4be421fe7faf1b64c59fe",
+      "passed": true
+    },
+    ".tools/fiber-state-review-1rn7rp3n/report.json": {
+      "sha256": "2517ff39ef03ba8f8a80791fde6f80ea730c9416ca5b46a08160d8506dbaadab",
+      "passed": true
+    },
+    ".tools/fiber-state-review-81ngp9jf/report.json": {
+      "sha256": "4c3a8e8a6e0c421e74709d0b483d421cdae15e949248cec02ff6eb5fa7e38b1c",
+      "passed": true
+    },
+    ".tools/fiber-state-review-831sxbcf/report.json": {
+      "sha256": "4902f7c69b75548c01af8de7d9b9e1bb60406dcd3afa45ea8d7f186695a04a81",
+      "passed": false
+    },
+    ".tools/fiber-state-review-b_ygkylk/report.json": {
+      "sha256": "ee03aab16d2764f2ec55d22588443834d7bb50b5e4792847852f9e8cacf04e99",
+      "passed": false
+    },
+    ".tools/fiber-state-review-c01vp3jc/report.json": {
+      "sha256": "539374799dbf609b9a3879e10734ab38351230307f21974e1d675468c8a3f034",
+      "passed": true
+    },
+    ".tools/fiber-state-review-esh_vnmh/report.json": {
+      "sha256": "e4da02d06e6d81fff215064d12cb6b2a31a572adb9f8b3d886572fb5ceef8146",
+      "passed": true
+    },
+    ".tools/fiber-state-review-lu55wrvf/report.json": {
+      "sha256": "dbd1476eeddfbd1110ebea25b688f4d71bf5bbe534fb5e4ebc152b2f6bd7f0c7",
+      "passed": true
+    },
+    ".tools/fiber-state-review-om52bcz3/report.json": {
+      "sha256": "79486864c1fdfeb4daaba7931c904417e2cbbfc91f536f84696bc62e194681bc",
+      "passed": true
+    },
+    ".tools/fiber-state-review-phss260n/report.json": {
+      "sha256": "5f800607bc4f63cf670c0a7fc6e0a1dbd2d1b168b78c3fd5013df4ed2ab469a1",
+      "passed": true
+    },
+    ".tools/fiber-state-review-sy681cml/report.json": {
+      "sha256": "ff27447277dd0152049b5c017c6f6984c9dcb1d274151981045fe7bb322af375",
+      "passed": true
+    },
+    ".tools/fiber-state-review-teq39q2i/report.json": {
+      "sha256": "1d72a8f6be536b95b22c3f47abbe2d0acb1d07a11663b84f23854f3dbd7d020b",
+      "passed": false
+    },
+    ".tools/fiber-state-review-xts0jwon/report.json": {
+      "sha256": "232f4bdb35bfd054c2ff149fb4e41fcec14c0f3b381cf502dc5379464951e292",
+      "passed": true
+    },
+    ".tools/generator-fiber-delegation-transfer-author-sl-9t9ru613/report.json": {
+      "sha256": "f31de2b5664a819b6d2d38a93bef8490886136aa067b22f97e8d1bbb7d237dd1",
+      "passed": true
+    },
+    ".tools/generator-fiber-delegation-transfer-baseline-bsvl9wck/report.json": {
+      "sha256": "2129d7890d0b7c4685bbe6ffa881cbcdfa7bcbc7e47242eeba87fb29fcef4773",
+      "passed": false
+    },
+    ".tools/generator-fiber-delegation-transfer-components-elab-hl0076yq/report.json": {
+      "sha256": "e4fe09ee5975fc400c01eb5ff45b84f6cb42e85f402f5cacf9ef67419a96151f",
+      "passed": true
+    },
+    ".tools/generator-fiber-delegation-transfer-corrected-native-kje9b95o/report.json": {
+      "sha256": "d305f5fcbfe5aa677bf4da634b5f3776572cd2f0bdef68178d485c948b75c3c9",
+      "passed": true
+    },
+    ".tools/generator-fiber-delegation-transfer-native-dmns1org/report.json": {
+      "sha256": "12688c41c4501bbd18a8ef09970da9d1b51b652bdfadfe3fb0efabcd7140e031",
+      "passed": true
+    },
+    ".tools/generator-fiber-delegation-transfer-review-source-d7q080wy/report.json": {
+      "sha256": "f4e1b24c0dcbb24ae25e2ae16a9f9186e89c8c84f965d939475d90f52eba88fb",
+      "passed": false
+    },
+    ".tools/generator-fiber-delegation-transfer-review-source-jaysrp9b/report.json": {
+      "sha256": "bf6db7c9a03207c9ef2e74a64d43da5b876ce14312e20f7fa390d160acff1838",
+      "passed": true
+    },
+    ".tools/generator-fiber-delegation-transfer-source-134irpb6/report.json": {
+      "sha256": "594ec20aa29b290c012672df5a4bc8920efb283f1e9de23b210440ed7381a63f",
+      "passed": false
+    },
+    ".tools/generator-fiber-delegation-transfer-source-8hpojpbh/report.json": {
+      "sha256": "226c1f6aa3a06a59ce00a06ad817b3dadfa0209ec35dce7786cea654fead7e96",
+      "passed": false
+    },
+    ".tools/generator-fiber-delegation-transfer-state-elab-4s4nou_6/report.json": {
+      "sha256": "515ecf89847d0f4fa23e8abf08b7dfb9d0adb0c2ff2203fb4db3addd57531636",
+      "passed": true
+    }
+  },
+  "evidence": {
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-delegation-transfer-55/private-partial.tar.gz",
+      "bytes": 4155564,
+      "sha256": "babedeabe1f10d1a08487c9501058d25cb5c5531bcb26fff068c8fa4902e98ed"
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-delegation-transfer-55/manifest.json",
+    "recovery": "Restore matching Git cuts a98f native/genuine,809 strict/mixedsource,cea localizations,4758 compact native,bbc9 compact/peer sources,2dc initial gate/125 timeout and3a common fixtures. Extract raw directories and drivers at recorded private paths with pinned local tools/profile. Original gate/state drivers remain alongside distinct component drivers. No checkout/build/Git tree/backup is included."
+  },
+  "remaining": "Resolve all retained cached/two-edge whole-source and completion cases before the next language feature. Method/Closure/helpers-above-delegation/reference-cache/other-API histories, CONFIG, close/request/GC and wider ownership remain open. Paused OP12/Source47/owned-NUL/undefined-byref-LIST/COMP88 boundaries are untouched.",
+  "independent_review": "/root/iterator49_review independently reviewed native-first scope/sources/observations, genuine refusal, structural source/occurrence/claim proof, equivalent guard ordering, all localizations and preserved negatives, output-only correction, accepted source outcomes, explicit bounded defaults, all six core-required pending reproducers, common fixture partition, gate6/459 results, inventory, compact PROGRESS and final archive/publication; no blocker for this bounded partial milestone. Whole-source/completion closure remains pending and is required before a new feature.",
+  "commands": {
+    "native4": "taskset -c5 python3 .tools/native.py",
+    "genuine": "taskset -c5 python3 .tools/baseline.py --native-report .tools/generator-fiber-delegation-transfer-native-dmns1org/report.json",
+    "original_strict_source": "taskset -c5 python3 .tools/source-packet.py .tools/generator-fiber-delegation-transfer-native-dmns1org/report.json",
+    "compact_native1": "taskset -c5 python3 .tools/native-corrected.py",
+    "compact_source": "taskset -c5 python3 tests/semantics/generator_fiber_delegation_transfer_sources.py --case generator-fiber-delegation-cached-next-compact-output --native-report .tools/generator-fiber-delegation-transfer-corrected-native-kje9b95o/report.json",
+    "unhandled_source": "taskset -c5 python3 tests/semantics/generator_fiber_delegation_transfer_review_sources.py --case review-generator-fiber-delegation-transfer-unhandled --native-report .tools/generator-fiber-delegation-transfer-native-dmns1org/report.json",
+    "component_gate": "taskset -c5 python3 .tools/state-components-elab.py",
+    "components": "taskset -c5 python3 .tools/state-components-packet.py"
+  },
+  "next_required_work": "Before any new language feature, resolve retained cached-original/compact and two-edge handled whole sources, then all three whole-completion recipes. Use one measured retirement/performance plan; original100s/120s negatives stay zero. A packet-specific time-budget proposal must be reviewed/authorized separately; none is silently raised here.",
+  "composition": {
+    "parent": "b0f30af8e0788fe42276b78a23253fe91380973d",
+    "parent_modules": 418,
+    "private_publication": "13d70018a81041b1a0bf3c997822105106e7df11",
+    "tested_modules": 415,
+    "bridge": "Independent actual-tail review preserves incoming CONFIG/method, array/Closure::call spread, magic/concat/comparison and WeakMap selectors. Source55 has no selected array/spread, property/getter, configuration or warning producer; STARTPACK/BORROWED consumers remain excluded. Incoming386 destruction-frame activation is redundant on reached55 states through Token destructor classes, then FIBERSEQ>1. New427 requires ARRAY_UNPACK/ARRAY_GENERATOR or STARTPACK+BORROWED operations; its exact blocked/task states are absent. No Generator/Fiber/frame field or shared378/380-yield change selects this packet.",
+    "credit": "Original415 source/strict/component cuts stay unchanged; all pending whole cases remain required. No joined execution or new source credit; actual parent inventory/progress content is preserved."
+  }
+}

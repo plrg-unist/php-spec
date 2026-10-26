@@ -151,6 +151,7 @@ rule PhpStep/array-iterator-start: S ~> S[.ITERATORS = S.ITERATORS ++ [OBJECTITE
 rule PhpStep/array-iterator-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "array Iterator unpack outside initialized Iterator domain"]
   -- if $array_iterator_pending(S)
   -- if $array_iterator_plan(S) = eps
+  -- if ~$array_generator_pending(S)
 rule PhpStep/array-iterator-payload-boundary: S ~> S[.COMPLETION = UNSUPPORTED "array Iterator unpack state outside quiet payload domain"]
   -- if S.TODO = (ARRAY_ITERATOR parrayiterator text) :: ptask_tail*
   -- if $array_iterator_valid(S, parrayiterator, text)
