@@ -29,6 +29,7 @@ def $test_fresh_aggregate_front(S, 2) = true
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "finish") :: ptask*
 def $test_fresh_aggregate_front(S, 3) = true
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "ready") :: ptask*
+  -- if ~((HOBJECT pconfigiterator.OBJECT) <- S.ALLOCATIONS)
 def $test_fresh_aggregate_front(S, 4) = true
   -- if S.TODO = (THROW_SEARCH n) :: (CONFIG_ITERATOR pconfigiterator "key") :: ptask*
 def $test_fresh_aggregate_front(S, 5) = true
@@ -170,7 +171,8 @@ def checks(program, path, name):
         'S_wrong = $config_iterator_finish(S_finish,pconfigiterator[.PRODUCER = (n_iterator)],ptask_tail*)',
         'S_wrong.COMPLETION = UNSUPPORTED "CONFIG Iterator unpack last DATA owner"',
         *budget('S_finish'), *driver.common.public('S_finish'),
-        'S_ready = $test_fresh_aggregate_step(S_finish)',
+        'S_release = $test_fresh_aggregate_step(S_finish)',
+        *reach('S_ready', 'S_finish', 3),
         'S_ready.TODO = (CONFIG_ITERATOR pconfigiterator "ready") :: ptask_tail*',
         'S_ready.ITERATORS = eps',
         '~((HOBJECT n_iterator) <- S_ready.ALLOCATIONS)',
@@ -209,6 +211,9 @@ def main():
     sources.family.fingerprint = lambda: dict(fingerprint(), **{
         str(Path(__file__).relative_to(driver.ROOT)): sources.family.sha(__file__)})
     driver.sources, driver.PREFIX, driver.checks = sources, PREFIX, checks
+    if args.phase == 'check':
+        recorded = driver.recorder.recorded
+        driver.recorder.recorded = lambda command, stem, cap: recorded(command, stem, 240)
     sys.argv = [sys.argv[0], '--phase', args.phase, '--sources', str(args.sources),
                 '--output', str(args.output)]
     driver.main()

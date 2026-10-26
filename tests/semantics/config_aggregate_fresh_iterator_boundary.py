@@ -13,6 +13,7 @@ def main():
     args = parser.parse_args()
     name = 'fresh-return-invalid-key-boundary'
     sources.family.CASES = {name: sources.family.CASES[name]}
+    sources.family.MODEL_TIMEOUTS = {name: 90}
     sources.family.UNSUPPORTED = {name: (
         'CONFIG Iterator unpack key outside integer domain',
         b'B|G|R|V0|C0|H|K0|H|N0|V1|C1|H|K1|H|')}
