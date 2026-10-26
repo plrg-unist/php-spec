@@ -73,8 +73,11 @@ def conditions(name, program, path, stdout):
 
     seek('S_entry', 'S_initial', 0)
     checks += [
-        'S_entry.TODO = (EMIT 24) :: (AT porigin_separator (EVAL expression_separator)) :: (AT porigin_separator (EMIT 25)) :: (AT porigin_later (EVAL expression_later)) :: (AT porigin_later (EMIT 26)) :: ptask_rest*',
+        'S_entry.TODO = (EMIT 24) :: (ORIGIN_RETURN (porigin_echo)) :: (AT porigin_separator (EVAL expression_separator)) :: (AT porigin_separator (EMIT 25)) :: (AT porigin_later (EVAL expression_later)) :: (AT porigin_later (EMIT 26)) :: ptask_rest*',
         'S_entry.ORIGIN = (porigin_first)',
+        '$origin_child((porigin_echo), [PCFIELD 0, PCINDEX 0]) = (porigin_first)',
+        '$origin_child((porigin_echo), [PCFIELD 0, PCINDEX 1]) = (porigin_separator)',
+        '$origin_child((porigin_echo), [PCFIELD 0, PCINDEX 2]) = (porigin_later)',
         'S_entry.OUTPUTBUFFERS = eps',
         '$echo_array_plan(S_entry) = (pechoarraywarning)',
         'pechoarraywarning.SITE = porigin_first',
@@ -220,7 +223,7 @@ def conditions(name, program, path, stdout):
         step('S_first_output', 'S_cached')
         checks += [
             'S_first_output.RESULT = KNOWN PNULL',
-            'S_first_output.TODO = (AT porigin_separator (EVAL expression_separator)) :: (AT porigin_separator (EMIT 25)) :: (AT porigin_later (EVAL expression_later)) :: (AT porigin_later (EMIT 26)) :: ptask_rest*',
+            'S_first_output.TODO = (ORIGIN_RETURN (porigin_echo)) :: (AT porigin_separator (EVAL expression_separator)) :: (AT porigin_separator (EMIT 25)) :: (AT porigin_later (EVAL expression_later)) :: (AT porigin_later (EMIT 26)) :: ptask_rest*',
             'S_first_output.STORE[n_later_calls] = DEFINED (PINT 0)',
             '$integer_outputs(S_first_output.EVENTS) = ($ptascii("H:2:24:Array to string conversion:1;Array"))',
             '$call_descriptors_valid(S_first_output)', '$heap_valid($heap_graph(S_first_output))',
