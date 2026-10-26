@@ -5852,7 +5852,7 @@ def $print_nan_plan(S) = (pprintnanwarning)
   -- if $print_nan_source(S, pprintnanwarning)
 def $print_nan_plan(S) = eps -- otherwise
 dec $print_nan_valid(pstate, pprintnanwarning, nat) : bool
-def $print_nan_valid(S, pprintnanwarning, n) = ($print_nan_source(S, pprintnanwarning) /\ $(n <= 1) /\ (n = 1 \/ $(S.OUTPUTBUFFERS = eps /\ S.OUTPUTSEQ = pprintnanwarning.BUFFERSEQ)) /\ (n = 1 \/ $print_nan_snapshot(S, pprintnanwarning)))
+def $print_nan_valid(S, pprintnanwarning, n) = ($print_nan_source(S, pprintnanwarning) /\ $(n <= 1) /\ (n = 1 \/ (S.OUTPUTBUFFERS = eps /\ S.OUTPUTSEQ = pprintnanwarning.BUFFERSEQ)) /\ (n = 1 \/ $print_nan_snapshot(S, pprintnanwarning)))
 
 rule PhpStep/print-nan-begin: S ~> S[.TODO = (PRINT_NAN_WARNING pprintnanwarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
@@ -5913,7 +5913,7 @@ def $print_array_plan(S) = (pprintarraywarning)
   -- if $array_string_cast_snapshot(S, pprintarraywarning.INPUT)
 def $print_array_plan(S) = eps -- otherwise
 dec $print_array_valid(pstate, pprintarraywarning, nat) : bool
-def $print_array_valid(S, pprintarraywarning, n) = ($print_array_source(S, pprintarraywarning) /\ $(n <= 1) /\ (n = 1 \/ $(S.OUTPUTBUFFERS = eps /\ S.OUTPUTSEQ = pprintarraywarning.BUFFERSEQ)) /\ (n = 1 \/ $array_string_cast_snapshot(S, pprintarraywarning.INPUT)))
+def $print_array_valid(S, pprintarraywarning, n) = ($print_array_source(S, pprintarraywarning) /\ $(n <= 1) /\ (n = 1 \/ (S.OUTPUTBUFFERS = eps /\ S.OUTPUTSEQ = pprintarraywarning.BUFFERSEQ)) /\ (n = 1 \/ $array_string_cast_snapshot(S, pprintarraywarning.INPUT)))
 
 rule PhpStep/print-array-begin: S ~> S[.TODO = (PRINT_ARRAY_WARNING pprintarraywarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
@@ -6064,7 +6064,7 @@ def $echo_array_plan(S) = (pechoarraywarning)
   -- if $array_string_cast_snapshot(S, pechoarraywarning.INPUT)
 def $echo_array_plan(S) = eps -- otherwise
 dec $echo_array_valid(pstate, pechoarraywarning, nat) : bool
-def $echo_array_valid(S, pechoarraywarning, n) = ($echo_array_source(S, pechoarraywarning) /\ $(n <= 1) /\ (n = 1 \/ $(S.OUTPUTBUFFERS = eps /\ S.OUTPUTSEQ = pechoarraywarning.BUFFERSEQ)) /\ (n = 1 \/ $array_string_cast_snapshot(S, pechoarraywarning.INPUT)))
+def $echo_array_valid(S, pechoarraywarning, n) = ($echo_array_source(S, pechoarraywarning) /\ $(n <= 1) /\ (n = 1 \/ (S.OUTPUTBUFFERS = eps /\ S.OUTPUTSEQ = pechoarraywarning.BUFFERSEQ)) /\ (n = 1 \/ $array_string_cast_snapshot(S, pechoarraywarning.INPUT)))
 
 rule PhpStep/echo-array-begin: S ~> S[.TODO = (ECHO_ARRAY_WARNING pechoarraywarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
