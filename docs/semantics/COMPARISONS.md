@@ -560,6 +560,18 @@ path-local guard rejects cycles while allowing shared children. A later source
 array write leaves the captured COW snapshot intact. Object and reference leaves
 remain outside the [array-trace review](../../coverage/semantics/throwable-trace-array-comparison-review.json).
 
+Captured array arguments can also retain `ALIAS` entries below their direct
+top-level argument. Backtrace capture copies the top-level value; it does not
+dereference its child arrays. In a normal, nonpending cold same-kind builtin
+Throwable pair with null previous links, each descendant array must be live,
+allocated and acyclic. Direct leaves must be primitive or valid string carriers;
+an alias must name a live reference cell with a defined leaf of the same kinds.
+A path-local guard admits shared child arrays. Comparison reads that cell's
+current value, while direct siblings keep their captured COW snapshot, then
+uses ordinary array count/key/value order. Object or array-valued cells,
+callbacks, cycles, warm caches and wider Throwable graphs remain outside the
+[trace-alias review](../../coverage/semantics/throwable-trace-alias-comparison-review.json).
+
 Warm caches and nonempty builtin traces now meet in the same physical slot
 scan. Same-kind canonical `Exception`/`Error` pairs with null previous values
 admit finite `DIRECT` trace graphs containing primitive or valid string-carrier
