@@ -6087,6 +6087,9 @@ inherited source object invocation and Stringable SET ownership; broader
 Generator and unfinished callback interactions remain open. Live
 [Fiber transfers](docs/semantics/FIBERS.md) now retain separate VM continuations,
 shared globals and handlers, cached callbacks and original C argument buffers.
+Primed method-created by-reference `Generator::throw` transfers also preserve
+the cached cell, receiver and pending exception through Fiber suspension;
+see the [method reference THROW review](coverage/semantics/generator-fiber-method-reference-throw-transfer-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

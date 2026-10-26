@@ -1,0 +1,87 @@
+{
+  "milestone": "I68 primed public method by-reference Generator::throw Fiber transfer",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local PHP SHA256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json, LC_ALL=C, TZ=UTC",
+  "parent": "00dba423d",
+  "implementation_commit": "9c8d74dbec485ca31dc8d500cdfc57c541261c7c",
+  "corrected_state_commit": "f56febeb55231882afd0e5d6f86b5a93d593aa7c",
+  "scope": "Only a primed ordinary public METHOD_TARGET by-reference Generator::throw with one valid Throwable and an authenticated cached REFCELL transfers through a Fiber pause. The matching receiver, empty INSTANCE, actual by-reference producer/cell and THROW operation are required; cached method CURRENT/NEXT/SEND remain excluded. The saved resumer retains the supplied Throwable and old cell after an external source-name rebind. Normal and supplied Fiber::throw continuations preserve native exception identity, Previous and separate receiver/cache lifetimes.",
+  "engine_paths": [
+    "vendor/php-src/Zend/zend_generators.c::ZEND_METHOD(Generator, throw), zend_generator_throw_exception, zend_generator_resume",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_YIELD by-reference CV path",
+    "vendor/php-src/Zend/zend_fibers.c::ZEND_METHOD(Fiber, throw), zend_fiber_resume_internal"
+  ],
+  "implementation": [
+    "spec/semantics/281-fibers.watsup"
+  ],
+  "source_catalog": "tests/semantics/generator_fiber_method_reference_throw_transfer_cases.json",
+  "sources_sha256": {
+    "i68-method-byref-catch-rebind": "f005fff624de95be16c0824202cf75ddbf1f83b462fa54cbd998af64c7210001",
+    "i68-method-byref-finally-normal-separate-cache": "7042b5294a5b285e039b3f348f6f5039fd5cc0351c6afa84eebb992f4b43e7c8",
+    "i68-method-byref-finally-abrupt-self-cache": "d165d107a55b93f3e2bdb353d309e9eb992bbeb5d72dd01f9c515ca90ab31426",
+    "i68-unchanged-direct-byref-control": "50f4c93d8a601c6d09694d30a808eb446e4f660a50560e581ed00f29ab70a54d",
+    "i68-unchanged-method-byvalue-control": "15bd4cbc298b895b2971408c35780a460ceeb01c5ae8f2b4ee668c89c694ac74",
+    "i68-method-byref-cache-replacement-abrupt-independent": "2d73bc48ca827c9fff7e55852907cb1a0893ebb067c55e9bec1bb15bf6ebd01e"
+  },
+  "validation": {
+    "native_first": {
+      "report": "source-packet/native-first/report.json",
+      "sha256": "e42d605ba6d2cd53df264f165ab0d12d5cae976811fba88a04775c2ded846984",
+      "result": "Three frozen new sources and two byte-identical I62/I63 controls: pinned native exit0, empty stderr, stable bytes; CPU3."
+    },
+    "unchanged_baseline": {
+      "report": "source-packet/unchanged-baseline/report.json",
+      "sha256": "8fddb489f75ff5c64dcd96dc1c1f840f42271984b36ccd3ab40e9fe74009fe0b",
+      "result": "Three new sources checked Unsupported at Fiber transfer; both controls exact NORMAL. No timeout; stable HEAD/inputs; CPU3."
+    },
+    "strict": {
+      "report": "strict-private/report.json",
+      "sha256": "c468a1ec9016c34f5c5eabb5ff3d44f531071b74d5adee7d5b6b3032aac79c73",
+      "result": "424 ordered modules, algorithmic strict compile exit0, empty stderr, stable HEAD/inputs; CPU1."
+    },
+    "affected_sources": {
+      "report": "generator-fiber-method-reference-throw-transfer-source-62q6e1zl/report.json",
+      "sha256": "5e80d157241f3525fbec0fca90cf66a410f5d0e7da2754612f8ff82e074895d9",
+      "result": "Three authored new sources and two unchanged controls exact NORMAL with exit0/no timeout/empty stderr, stable HEAD/inputs; CPU1. The independent source was appended to the catalog later and was validated separately."
+    },
+    "reached_first_failed": {
+      "report": "fiber-state-review-3zu9cyw0/report.json",
+      "sha256": "85fac780d07594980bbc76ae4581d4b906cdd0746ce9c0fa0743231bca8e5cea",
+      "result": "Zero credit: false sole-owner premise for Given ignored its caught local alongside the saved THROW task."
+    },
+    "reached_second_failed": {
+      "report": "fiber-state-review-edqgx0rc/report.json",
+      "sha256": "88692827bd4fc2544c5c8168a62054b7a2f2f49fb811f5d33a9d5a549e3c1f02",
+      "result": "Zero credit: synthetic direct-target helper negative contradicted the preexisting I62 direct named arm."
+    },
+    "reached_corrected": {
+      "report": "fiber-state-review-x61rprz7/report.json",
+      "sha256": "f6d68b3d41d0011bb16d14394cb771074b08d09c2f9cff76707dc5b639f8fb95",
+      "result": "One actual parked source, 129 custom/134 reported checks, SL exit0/true/no timeout/empty stderr, stable author inputs/HEAD; CPU3."
+    },
+    "independent_native": {
+      "report": "independent/native-first/report.json",
+      "sha256": "62951d5aa321754b54ede57bfc61da0c0dddf9aac32683fc391ee95163dd461e",
+      "result": "Reviewer-frozen distinct cache-replacement/abrupt source, exit0/no timeout/empty stderr, stable source/PHP/profile; CPU3."
+    },
+    "independent_initial_recorder_error": {
+      "report": "independent/model-review/report.json",
+      "sha256": "a9a254ebdd67294545fb7f30cf5a69205fc965aa2fc498a8f29f7392cdf7c573",
+      "result": "Zero agreement credit: first receipt compared model JSON envelope bytes with native raw stdout."
+    },
+    "independent_corrected_extraction": {
+      "report": "independent/model-review/report-corrected.json",
+      "sha256": "37fbd62f0d211ab41ff5be8704dcd5f3635a30bc1e3dd945a667fe894ef2fb73",
+      "result": "Extraction only from unchanged raw model envelope: exit0/NORMAL, decoded stdout exactly native 139 bytes, empty stderr, no timeout, stable HEAD/11 inputs; no rerun; CPU3."
+    }
+  },
+  "preservation": "Existing direct named cached BYREF I62 and method BYVAL I63 arms remain intact. New cached-reference helper arm and THROW arm require METHOD_TARGET with the same real receiver and empty INSTANCE; the body-id reference guard keeps direct named cached NEXT while limiting method/Closure cached references to THROW. Two I62/I63 controls were exact at the unchanged and affected cuts.",
+  "remaining": "Fresh method by-reference THROW, bound Closure, helper/delegated resumers, request/collection and wider lifecycle remain partial. No BOLA property is stated or proved.",
+  "independent_review": "Reviewer byte-CLEARed authored packet before native; static-CLEARed both 281 gates and corrected reached checks; independently froze a fourth source and verified exact native/model raw outcomes. The sixth catalog row was appended byte-identically after independent direct model validation; no redundant selected-wrapper rerun.",
+  "evidence_directory": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-method-reference-throw-68",
+    "manifest": "manifest.json",
+    "manifest_sha256": "674e4a6204121647a487325c84dc0169ca4ef24d0990fd01919c003afaf62d12",
+    "format": "Uncompressed raw reports, streams and frozen source packet outside Git; no build input."
+  },
+  "recovery": "Read manifest.json under evidence_directory and compare the ten report hashes. Raw reports retain their historical absolute private-worktree paths; the six maintained source bytes are in source_catalog. Earlier failed reached and recorder reports retain zero credit."
+}
