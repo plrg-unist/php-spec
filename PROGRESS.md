@@ -329,7 +329,7 @@ and stamp change precede API/catch in three byte-exact PHP 8.5.10 agreements;
 operation exit. Strict compilation passes on 424 modules. The unchanged model
 was Unsupported on all three originals, and the first incomplete candidate's
 saved-throw failure has zero whole-packet credit. The destructor is bounded to
-an ordinary no-argument, by-value, nongenerator method with no child roots.
+a public no-argument, by-value, nongenerator method with no child roots.
 [Returned Iterator finalizer review](coverage/semantics/config-aggregate-iterator-finalizer-review.json).
 Destructor throws/reentrancy, wider values and the structural retired-producer
 receipt limit remain partial.
