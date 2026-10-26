@@ -117,7 +117,7 @@ def conditions(name, program, path, stdout):
         '$heap_owners($heap_prune($heap_graph(S_entry)), HARRAY n_array) = 2',
         '$integer_outputs(S_entry.EVENTS) = ($ptascii("P;"))',
         '$concat_owned_array_plan(S_entry[.ORIGIN = eps]) = eps',
-        '$concat_owned_array_plan(S_entry[.RESULT = KNOWN (PINT 7)]) = eps',
+        '$concat_owned_array_plan(S_entry[.TODO = (CONCAT_PREP (KNOWN (PINT 7)) poperand_right false false 37) :: ptask_tail*]) = eps',
         '~$concat_owned_array_source(S_entry, pconcatownedarraywarning[.LINE = 36])',
         '$call_descriptors_valid(S_entry)', '$heap_valid($heap_graph(S_entry))',
         'S_entry.TODO = ptask_old :: ptask_tail*',
