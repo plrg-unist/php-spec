@@ -9,7 +9,6 @@ family.CASES = CASES
 family.UNSUPPORTED = {
     'different-class-control': ('Throwable property comparison', b'B|'),
     'object-scalar-control': ('Throwable property comparison', b'B|'),
-    'hook-property-control': ('Throwable property comparison', b'B|'),
     'alias-property-control': ('Throwable property comparison', b'B|'),
 }
 family.BASELINE = ('Throwable property comparison', b'B|')

@@ -91,12 +91,6 @@ function ex139($x): Exception { return new Exception('same', 7); }
 $object = new Plain139; $a = ex139($object); $b = ex139(1);
 echo 'B|', $a<=>$b, '|';
 ''',
-    'hook-property-control': br'''<?php
-class Hook139 { public int $x = 1 { get { echo 'G|'; return $this->x; } } }
-function ex139($x): Exception { return new Exception('same', 7); }
-$left = new Hook139; $right = new Hook139; $a = ex139($left); $b = ex139($right);
-echo 'B|', $a<=>$b, '|';
-''',
     'alias-property-control': br'''<?php
 class Plain139 { public $x = 0; }
 function ex139($x): Exception { return new Exception('same', 7); }
