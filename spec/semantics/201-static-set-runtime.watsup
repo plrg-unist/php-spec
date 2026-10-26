@@ -196,7 +196,9 @@ def $property_writer_tail(UNSET_ARRAY :: ptask_tail*) = true
 def $property_writer_tail(ptask*) = false -- otherwise
 dec $property_instance_chain(expression) : bool
 def $property_instance_chain(expression) = false -- otherwise
-def $property_pending_receiver(S, expression) = (($property_static_chain(expression) \/ $property_instance_chain(NExprPropertyFetch expression phpType20 metadata)) /\ $property_writer_tail(ptask_tail*))
+dec $property_hook_ref_receiver(pstate, expression) : bool
+def $property_hook_ref_receiver(S, expression) = false -- otherwise
+def $property_pending_receiver(S, expression) = (($property_static_chain(expression) \/ $property_instance_chain(NExprPropertyFetch expression phpType20 metadata)) /\ $property_writer_tail(ptask_tail*) /\ ~$property_hook_ref_receiver(S, expression))
   -- if S.TODO = (DIM_PREP (NExprPropertyFetch expression phpType20 metadata)) :: ptask_tail*
 def $property_pending_receiver(S, expression) = false -- otherwise
 
