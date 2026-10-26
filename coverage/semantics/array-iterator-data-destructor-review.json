@@ -1,0 +1,37 @@
+{
+  "milestone": "A56 ordinary-CV Iterator DATA destructor during array spread",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local vendor/php-src",
+  "runtime": {
+    "accepted_revision": "d6f278e674b216e133012c391bfae59aa92a4f25",
+    "426_sha256": "17af123913c422dd7c9fd9abfc4685a2d6ff5d8560d61da5e120470a05c62e78",
+    "scope": "Ordinary CV of a named user Iterator with a real public non-generator __destruct and no owning instance children. Normal last-DATA release and supplied key throw retain the partial builder through the destructor. Invalid bool-key insert instead enters generic eager cleanup: builder, DATA, then current cache are released in that order; the builder is gone before the destructor while the cache remains owned."
+  },
+  "engine": "Project-pinned Zend/zend_vm_def.h::ZEND_ADD_ARRAY_UNPACK and Zend/zend_interfaces.c::zend_user_it_dtor/invalidate_current; the external archive contains source specimens and records, not the engine tree.",
+  "validation": {
+    "strict": "420 modules, SL/cache off/determinism checks on, PASS at d6f278e67; strict-corrected2-56/report.json sha256 bc59beff1c26df133f87a95df4c5cdf6734dea093c971b85217945bc72294943",
+    "native": "Five exact native originals at their original e1e60d57/fd6aac68 cuts; no native replay after the fixture correction.",
+    "genuine_baseline": "Only normal1 at e1e60d57: model Unsupported after P; (initialized Iterator domain), zero agreement credit. The baseline is retained in .tools/array-iterator-data-destructor-baseline-56/report.json.",
+    "source": "Two normal/normal-throw and three independent peer checked-source agreements at d6f278e67 (five total); source-corrected-56/report.json sha256 6ce6b4704d245243706052067c177bdb41d9af02ecfe9d1fbabff0ada5fc4647 and review-source-56/report.json sha256 3467419e7d4887a7df5f1ee7164d874964e214963691f32c0b3761304bca52b5. No source replay after the fixture correction.",
+    "author_cut": "Clean 39d537bbf1e986f70a18dc78c810eb0337e96cd1; author fixture sha256 7f355827b047e25bfd323b2a88fba531018f20b4c3e2bc5ada3ca41b03457712",
+    "peer_cut": "39d537bbf1e986f70a18dc78c810eb0337e96cd1 plus one dirty corrected fixture sha256 711307bbdb5e02ce1442027af02786909415645171e740db9f845c446ee68ea2, later committed as c7c00e70a9b8e85bed3b005a939ce7098b04874f",
+    "author": "148+154=302 conditions, 4 raw steps, PASS; focused-author-56-actor.packet.json sha256 d93f9eaa05b2bf61e34e392a8f90f8ac78c7da69c1027be5fb6b77b9a62c5778",
+    "peer": "Invalid-key 164/3 raw, replacement-throw 175/2, split-trace 115/1: 454 conditions and 6 raw steps, PASS. Total accepted focused conditions 756, including 10 raw and 746 Boolean. Corrected peer actor exit 0, 232.22 s under 570 s cap, no timeout or remaining process group, stable inputs/HEAD; focused-peer2-56-actor.packet.json sha256 fd3addd6406bede0cbe882d860ea5e1152a3d152eadcd10a4bd3957e5a83b7a6",
+    "original_failure": "First peer 209-condition invalid-key fixture failed at frontier182 expecting THROW_SEARCH then ARRAY_ITERATOR; exit 1, zero credit. focused-peer-56-actor.packet.json sha256 b66e550c7618c5ad13f2781c6319afe7f19a39e02e8dd23e48906bdc1163dcb0. The original report, generated fixture, stderr and process remain archived.",
+    "diagnostic": "Actual one-step insert/false-key transition has BUDGET with DESTRUCTOR_RELEASE then DESTRUCTOR_OPERATION_EXIT, release jobs builder/DATA/cache, original THROWING Error and physical owners 1/3/1. Diagnostic exit 0 with stable pins and empty process group; a56-insert-diagnostic-56-actor.packet.json sha256 3502171aef372a03fe9b13e816783b7447da04c9101580b9dedbf6457b900e12. This diagnostic earns no source agreement credit."
+  },
+  "execution": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "model_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile": "tests/semantics/profile.json: -n, opcache CLI disabled, JIT disabled, precision 14, serialize_precision -1, UTC, error_reporting 30719, zend.assertions 1; LC_ALL=C and TZ=UTC",
+    "focused_command": "python3 .tools/a56-focused-peer2-56.py (CPU1 affinity, 2 GiB address-space cap, 570 s actor cap); the actor requires original clean 39d plus the reviewed fixture as its sole dirty file",
+    "replay_command": "python3 tests/semantics/array_iterator_data_destructor_state_review.py --source-report .tools/array-iterator-data-destructor-review-native-56/report.json --source-report .tools/array-iterator-data-destructor-split-native-56/report.json --output .tools/<fresh-output>"
+  },
+  "raw_archive": {
+    "location": "../php-spec-evidence-archive/array-iterator-data-destructor-56/raw.tar.xz",
+    "sha256": "3c36282587aa9116bba60a79841a26d86c888c1e8fe51c31e0bdfb2b460e2662",
+    "bytes": 88492,
+    "manifest": "../php-spec-evidence-archive/array-iterator-data-destructor-56/manifest.json",
+    "recovery": "Recreate the original worktree path /home/user/workspace/php-spec/.tools/array-iterator-data-destructor-56 at 39d537bbf1e986f70a18dc78c810eb0337e96cd1; saved native filenames and cwd depend on it. Run git show c7c00e70a9b8e85bed3b005a939ce7098b04874f:tests/semantics/array_iterator_data_destructor_state_review.py > tests/semantics/array_iterator_data_destructor_state_review.py and verify SHA-256 711307bbdb5e02ce1442027af02786909415645171e740db9f845c446ee68ea2. Verify raw.tar.xz SHA-256 and extract it into that worktree for inspection. To rerun, use replay_command with a fresh output path; the archived focused actor is one-shot and its original output already exists."
+  },
+  "remaining": "Owning instance children, non-CV operands, broader destructor reentry and full Traversable/literal spread semantics remain open. The accepted evidence does not prove full PHP core semantics."
+}

@@ -288,8 +288,8 @@ and object-body-normalized real/named Closures. Zend selects the left comparison
 handler; Closure falls back to standard comparison when the handler pointers differ.
 Class mismatch returns +1 in both directions without inspecting captures, saved VMs,
 private entries, formatter fields or caches. An exact unchanged-state effect and
-negated guard on the older Throwable refusal keep the routes disjoint; non-map
-Throwable property comparison remains unsupported. Three exact originals and
+negated guard on the older Throwable refusal keep the routes disjoint; wider
+non-map Throwable property comparison remains unsupported. Three exact originals and
 468 Boolean premises/16 actual steps cover direct operator rows, closed and paused/
 suspended VMs, warmed Exception bytes, zero-prefix aggregates and skipped real tails.
 Other Closure representations, internal/custom counterparts and wider lifetimes
@@ -527,6 +527,13 @@ a later comparison of an uninitialized typed slot against a defined slot therefo
 retains inline order1. Singleton/reference snapshot and cached-table controls
 complement that source witness. Derived forced-materialization and duplicate-row
 checks remain separate from actual source execution in the bounded review.
+
+Cold, same-kind builtin `Exception` and `Error` pairs with empty traces and null
+previous values compare their seven physical declared slots in order. The string
+cache must still be empty; a warmed cache can change the result. Equal pairs
+continue into later array entries, while a nonzero result skips later casters.
+The [cold Throwable review](../../coverage/semantics/throwable-cold-comparison-review.json)
+records the normal-only boundary and the remaining wider Throwable cases.
 
 [Builtin and inherited Throwable string casts](../../coverage/semantics/pending-throwable-comparison-review.json)
 also skip their internal handler in this authenticated pending remainder. The

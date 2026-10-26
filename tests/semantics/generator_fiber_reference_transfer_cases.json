@@ -1,0 +1,47 @@
+[
+  {
+    "id": "generator-fiber-reference-fresh-control",
+    "purpose": "Unchanged pre-yield direct CURRENT transfer control: the later by-reference yield reads the live global after Fiber resume.",
+    "source": "<?php\nfunction &Work59Fresh() {\n    global $slot;\n    echo 'ENTER|';\n    $reply = Fiber::suspend('pause59');\n    echo 'REPLY|', (int) ($reply === 'go59'), '|';\n    yield $slot;\n    echo 'END|';\n    return 59;\n}\n$slot = 'first59';\n$g = Work59Fresh();\n$f = new Fiber(function () use ($g) {\n    echo 'CALL|';\n    return $g->current();\n});\necho 'START|', (int) ($f->start() === 'pause59'), '|';\n$slot = 'second59';\necho 'PARK|', (int) $f->isSuspended(), '|';\necho 'RESUME|', (int) ($f->resume('go59') === null), '|';\necho 'VALUE|', (int) ($f->getReturn() === 'second59'), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 59), '|';\nunset($f, $g, $slot);\necho 'E';\n",
+    "source_sha256": "53ac34c24864ab7528e84f1c448235e6e84ca834e023c88b8943e37e1d4a3a66",
+    "native_exit": 0,
+    "native_stdout": "START|CALL|ENTER|1|PARK|1|RESUME|REPLY|1|1|VALUE|1|END|CLOSED|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "generator-fiber-reference-cached-array",
+    "purpose": "An old reference cache survives parked NEXT; current reads the live array while a prior by-value copy keeps its old object and COW lifetime.",
+    "source": "<?php\nclass Old59 { public function __destruct() { echo 'OLD|'; } }\nclass New59 { public function __destruct() { echo 'NEW|'; } }\nfunction &Work59Array() {\n    global $slot;\n    echo 'SEED|';\n    yield $slot;\n    echo 'BODY|';\n    $reply = Fiber::suspend('pause59');\n    echo 'REPLY|', (int) ($reply === 'go59'), '|';\n    yield $slot;\n    echo 'END|';\n    return 59;\n}\n$slot = [new Old59()];\n$g = Work59Array();\n$copy = $g->current();\necho 'PRIME|', (int) ($copy[0] === $slot[0]), '|';\n$f = new Fiber(function () use ($g) {\n    echo 'CALL|';\n    $g->next();\n    echo 'AFTER|';\n    return $g->current();\n});\necho 'START|', (int) ($f->start() === 'pause59'), '|';\necho 'PARK|', (int) $f->isSuspended(), '|';\n$slot[0] = new New59();\necho 'LIVE|', (int) ($g->current()[0] === $slot[0]), '|', (int) ($copy[0] instanceof Old59), '|';\necho 'RESUME|', (int) ($f->resume('go59') === null), '|';\necho 'RESULT|', (int) ($f->getReturn()[0] === $slot[0]), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 59), '|';\nunset($copy);\necho 'COPY-DROP|';\nunset($f, $g, $slot);\necho 'E';\n",
+    "source_sha256": "a881816263c3a1bb413e539b246a8a2694eed945f5f182ace3b8a3c8b4940b07",
+    "native_exit": 0,
+    "native_stdout": "SEED|PRIME|1|START|CALL|BODY|1|PARK|1|LIVE|1|1|RESUME|REPLY|1|AFTER|1|RESULT|1|END|CLOSED|1|OLD|COPY-DROP|NEW|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "generator-fiber-reference-cached-rebind",
+    "purpose": "A parameter and cache retain the original reference cell after the external variable name is rebound to a different cell.",
+    "source": "<?php\nfunction &Work59Rebind(&$cell) {\n    echo 'SEED|';\n    yield $cell;\n    echo 'BODY|';\n    $reply = Fiber::suspend('pause59');\n    echo 'REPLY|', (int) ($reply === 'go59'), '|';\n    yield $cell;\n    echo 'END|';\n    return 59;\n}\n$slot = 5;\n$old =& $slot;\n$g = Work59Rebind($slot);\necho 'PRIME|', (int) ($g->current() === 5), '|';\n$f = new Fiber(function () use ($g) {\n    echo 'CALL|';\n    $g->next();\n    echo 'AFTER|';\n    return $g->current();\n});\necho 'START|', (int) ($f->start() === 'pause59'), '|';\n$replacement = 9;\n$slot =& $replacement;\n$old = 7;\necho 'PARK|', (int) $f->isSuspended(), '|';\necho 'CELLS|', (int) ($g->current() === 7), '|', (int) ($slot === 9), '|';\necho 'RESUME|', (int) ($f->resume('go59') === null), '|';\necho 'RESULT|', (int) ($f->getReturn() === 7), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 59), '|';\nunset($f, $g, $slot, $old, $replacement);\necho 'E';\n",
+    "source_sha256": "ace4d9f5bb3a76f9a873ceaebd17731dcbeb29349aacdfe7d303afb24a5d38a5",
+    "native_exit": 0,
+    "native_stdout": "PRIME|SEED|1|START|CALL|BODY|1|PARK|1|CELLS|1|1|RESUME|REPLY|1|AFTER|1|RESULT|1|END|CLOSED|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "generator-fiber-reference-cached-throw",
+    "purpose": "A supplied Exception traverses the parked Generator and finally; the closed reference cache owns its object after the global is unset.",
+    "source": "<?php\nclass Token59 { public function __destruct() { echo 'TOKEN|'; } }\nfunction &Work59Throw() {\n    global $slot, $given;\n    try {\n        echo 'SEED|';\n        yield $slot;\n        echo 'BODY|';\n        Fiber::suspend('pause59');\n        echo 'BAD-BODY|';\n        yield $slot;\n    } catch (Exception $caught) {\n        echo 'CAUGHT|', (int) ($caught === $given), '|';\n        throw $caught;\n    } finally {\n        echo 'FIN|';\n    }\n}\n$slot = new Token59();\n$weak = WeakReference::create($slot);\n$g = Work59Throw();\n$g->current();\n$f = new Fiber(function () use ($g) { echo 'CALL|'; $g->next(); echo 'BAD-CALL|'; });\n$given = new Exception('injected59');\necho 'START|', (int) ($f->start() === 'pause59'), '|';\necho 'PARK|', (int) $f->isSuspended(), '|', (int) ($g->current() === $slot), '|';\ntry {\n    $f->throw($given);\n    echo 'BAD-RETURN|';\n} catch (Exception $outside) {\n    echo 'OUTSIDE|', (int) ($outside === $given), '|', (int) ($outside->getPrevious() === null), '|';\n}\necho 'CLOSED|', (int) $f->isTerminated(), '|';\nunset($slot);\necho 'SLOT-DROP|', (int) ($weak->get() !== null), '|';\nunset($g, $f, $outside, $given);\necho 'CACHE-DROP|', (int) ($weak->get() === null), '|';\nunset($weak);\necho 'E';\n",
+    "source_sha256": "8bb34db334b3e4a88b2d34ee565f7ca1d9ce3881f9eb1691a6a46fba6af78575",
+    "native_exit": 0,
+    "native_stdout": "SEED|START|CALL|BODY|1|PARK|1|1|CAUGHT|1|FIN|OUTSIDE|1|1|CLOSED|1|SLOT-DROP|1|TOKEN|CACHE-DROP|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "generator-fiber-reference-sole-cache-reentry",
+    "purpose": "A cached cell alone owns its object while NEXT is parked; outside NEXT gets one Error with no Previous, and the next yield releases the object before caller continuation.",
+    "source": "<?php\nclass Sole59 { public function __destruct() { echo 'DROP|'; } }\nfunction &SoleCache59() {\n    $value = new Sole59();\n    echo 'SEED|';\n    yield $value;\n    unset($value);\n    echo 'BODY|';\n    Fiber::suspend('pause59');\n    echo 'RESUMED|';\n    $next = null;\n    yield $next;\n    echo 'TAIL|';\n}\n$g = SoleCache59();\n$copy = $g->current();\n$weak = WeakReference::create($copy);\nunset($copy);\n$f = new Fiber(function () use ($g) {\n    echo 'CALL|';\n    $g->next();\n    echo 'AFTER|';\n});\necho 'START|', (int) ($f->start() === 'pause59'), '|';\necho 'PARK|', (int) ($weak->get() !== null), '|';\ntry {\n    $g->next();\n    echo 'BAD-REENTRY|';\n} catch (Error $error) {\n    echo 'ERROR|', (int) ($error->getMessage() === 'Cannot resume an already running generator'),\n         '|', (int) ($error->getPrevious() === null), '|';\n}\necho 'STILL|', (int) ($weak->get() !== null), '|';\necho 'RESUME|', (int) ($f->resume() === null), '|';\necho 'RELEASED|', (int) ($weak->get() === null), '|';\n$g->next();\necho 'END|', (int) !$g->valid(), '|';\nunset($g, $f, $weak, $error);\necho 'E';\n",
+    "source_sha256": "0045ec22d8a8ae4b9a1b3850ab1a4f56a9202f373d5ec8997123534dcb049921",
+    "native_exit": 0,
+    "native_stdout": "SEED|START|CALL|BODY|1|PARK|1|ERROR|1|1|STILL|1|RESUME|RESUMED|DROP|AFTER|1|RELEASED|1|TAIL|END|1|E",
+    "native_stderr": ""
+  }
+]

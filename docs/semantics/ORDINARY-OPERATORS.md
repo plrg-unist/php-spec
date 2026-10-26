@@ -376,7 +376,7 @@ writes no source cell. Two originals and 140+139 focused premises cover source/b
 authority, real callbacks, cancellation, raw versus driven result, EOF and budgets
 in the [copy BITNOT ledger](../../coverage/semantics/bitnot-copy-warning-review.json).
 Old producer lowering, conversion/complement, dispatch, roots and unwind stay
-unchanged. Other producers, copied range and owning/constrained histories remain
+unchanged. Other producers and owning/constrained histories remain
 partial; paused and active selectors are untouched.
 
 Evaluated NaN copies now enter the same two-notice BITNOT continuation as a
@@ -388,8 +388,20 @@ Three exact originals and two reached paths (116 and 125 conditions) cover the
 cached copy, callback order, pending Exception, source ownership and output in
 the [copied NaN ledger](../../coverage/semantics/bitnot-copy-nan-warning-review.json).
 The existing numeric conversion, CV NaN route and finite-copy route are reused;
-copied range-only values, reference results, other producers and wider lifetime
+reference results, other producers and wider lifetime
 behavior remain partial.
+
+Evaluated range-only float copies now use BITNOT's single Warning continuation.
+A by-value `INF` result prints before its handler throws the supplied Exception,
+so neither complement nor outer assignment occurs. A selected `2^63` copy keeps
+its wrapped long after the handler unsets the source and reverses the condition;
+one default Warning precedes strict `PHP_INT_MAX`. Source authentication and the
+copy snapshot remain valid after the old source cell is released. Two exact
+originals and 102+111 reached conditions cover warning order, real handler
+frames, result cancellation or delivery, ownership and budgets in the
+[copied range ledger](../../coverage/semantics/bitnot-copy-range-warning-review.json).
+Reference results, other producers, owning replacements and wider lifetimes
+remain partial.
 
 Bitwise NOT now retains a finite in-range fractional float's converted long before its
 precision-loss deprecation. The bounded producer accepts a defined non-reference

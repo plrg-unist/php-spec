@@ -1601,6 +1601,9 @@ The [Iterator spread review](coverage/semantics/array-iterator-unpack-review.jso
 records four source agreements for instances without owning fields or a
 destructor. Cache values now include finite acyclic DIRECT ARRAY graphs with
 shared descendants; each physical child edge is counted once across root owners.
+The [DATA destructor review](coverage/semantics/array-iterator-data-destructor-review.json)
+adds bounded ordinary-CV Iterators with real `__destruct`, covering last-DATA
+normal and abrupt cleanup, exception replacement, and invalid-key eager release.
 Ordinary named Generators now spread through real native resumes, including
 received parameters and reference yields, CV and owning call operands. Their
 cache edges persist through resumed code/CLOSED; DATA then opcode INPUT retire

@@ -204,7 +204,7 @@ def conditions(name, program, path, stdout):
     ]
 
 
-def run(source_cases, make_conditions, helpers=HELPERS, expected_stderr=None):
+def run(source_cases, make_conditions, helpers=HELPERS, expected_stderr=None, extra_inputs=()):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source-report', type=Path, action='append', required=True)
     parser.add_argument('--case', choices=tuple(source_cases.CASES))
@@ -259,7 +259,7 @@ def run(source_cases, make_conditions, helpers=HELPERS, expected_stderr=None):
                ROOT / '_build/default/adapter/main.exe', ROOT / '.tools/php/bin/php', ROOT / '.tools/php-file.so',
                ROOT / 'tests/semantics/profile.json', ROOT / 'tests/semantics/error_handler_run.py',
                ROOT / 'tests/semantics/recorded_worker.py', *source_reports, *originals,
-               *[out / (name + '.watsup') for name in selected]]
+               *[out / (name + '.watsup') for name in selected], *extra_inputs]
     before = {str(path): digest(path) for path in watched}
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     if not args.prepare_only:

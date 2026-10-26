@@ -801,8 +801,11 @@ statement/line receipt and unique saved close ID while preserving one receiver
 owner. The direct named-body CURRENT/NEXT arm additionally preserves one normal
 resumer, now also below ordinary named helper frames. Native named delegation
 has the bounded chain support above. Method/Closure helpers, by-reference
-returns, wider delegation, by-reference caches and other API roots retain
-their previous boundaries. Shared pending flags and wider parked ownership
+returns, wider delegation, cached references outside direct named NEXT and other
+API roots retain their previous boundaries. Direct named NEXT now preserves a
+cached by-reference cell across suspension and resume; see the
+[reference transfer review](../../coverage/semantics/generator-fiber-reference-transfer-review.json).
+Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not
 blanket blocked at this pin. Property and broader object consumers remain tracked

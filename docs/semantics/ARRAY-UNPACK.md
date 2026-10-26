@@ -47,6 +47,20 @@ Object/reference descendants, other Iterator operand
 modes and wider callback lifetimes remain partial. Unsupported Traversables
 refuse explicitly rather than receiving a non-Traversable TypeError.
 
+The bounded ordinary-CV Iterator scope now also admits a real public
+`__destruct` with no owning instance children. Normal finish releases the last
+DATA owner while the builder remains protected, so the destructor can mutate
+globals or throw before the next literal item. A key callback's supplied
+exception likewise retains the builder through DATA destruction; a destructor
+exception replaces it with the original as `previous`. For an invalid bool key,
+the insert step instead produces a raw Error. Same-frame throwable continuation
+removes that producer, and generic eager cleanup releases the partial builder
+before DATA and the cached current array. The cached array remains owned during
+the destructor; there is no intervening `THROW_SEARCH`/Iterator task cut on that
+route. The [DATA destructor review](../../coverage/semantics/array-iterator-data-destructor-review.json)
+records the distinct source and reached-state checks. Owning instance children,
+other operand modes and broader destructor reentry remain partial.
+
 `427-array-generator-unpack.watsup` adds ordinary named Generator bodies with
 received parameters and reference yields, using real borrowed native resumes.
 It admits ordinary unmarked CVs and owning direct named-call operands. The
