@@ -16,6 +16,7 @@ rule PhpStep/print-emit: S ~> $output_vm_write(S_text, n_text*, porigin, PRINT_E
   -- if $string_bytes(pvalue_string) = (n_text*)
 rule PhpStep/print-stringify-abrupt: S ~> S_text[.TODO = eps]
   -- if S.TODO = (PRINT_EMIT porigin z) :: ptask_tail*
+  -- if $print_nan_plan(S) = eps
   -- if S_read = $resolve(S, S.RESULT)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
