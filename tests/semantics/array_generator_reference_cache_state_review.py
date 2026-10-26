@@ -28,9 +28,6 @@ def $list_warning_frontier(S, 222) = $generator_reference_echo(S, $ptascii("F:")
 def $list_warning_frontier(S, 223) = true
   -- if S.TODO = (THROW_SEARCH n) :: (ARRAY_GENERATOR parraygenerator "next") :: ptask*
   -- if S.CURRENT = eps /\ S.FRAMES = eps
-def $list_warning_frontier(S, 224) = true
-  -- if S.TODO = (GENERATOR_STORAGE_STEP pgenstorage) :: ptask*
-  -- if pgenstorage.NEXT = 1
 def $list_warning_frontier(S, 225) = true
   -- if S.TODO = (THROW_SEARCH n) :: (ARRAY_GENERATOR parraygenerator "data-released") :: ptask*
   -- if S.CURRENT = eps /\ S.FRAMES = eps
@@ -124,23 +121,9 @@ def conditions(name, program, path, stdout):
         owners('S_pending', 'HOBJECT n_object', 1), owners('S_pending', 'HARRAY n_target', 1),
         owners('S_pending', 'HARRAY n_row', 2), owners('S_pending', 'HCELL n_leaf', 1),
     ] + public('S_pending')
-    checks += seek('S_pending', 224, 'S_storage') + [
-        'S_storage.TODO = (GENERATOR_STORAGE_STEP pgenstorage) :: ptask_storage_tail*',
-        'pgenstorage.OBJECT = n_object', 'pgenstorage.NEXT = 1',
-        '$generator_storage_valid(S_storage, pgenstorage)',
-        'S_storage.OBJECTS[n_object] = GENERATOR pgenerator_closed',
-        '$node_children(S_storage, HOBJECT n_object) = [HARRAY n_row]',
-        owners('S_storage', 'HOBJECT n_object', 1), owners('S_storage', 'HARRAY n_row', 2),
-        owners('S_storage', 'HCELL n_leaf', 1),
-        # Storage-pin ownership does not assert a PHP weak-get observation.
-        'PhpStep: S_storage ~> S_transfer',
-        'S_transfer = $generator_storage_release(S_storage[.TODO = (GENERATOR_STORAGE_STEP pgenstorage[.NEXT = 2]) :: ptask_storage_tail*], $destruction_values([HARRAY n_row]))',
-        '$node_children(S_transfer, HOBJECT n_object) = eps',
-        'S_transfer.OBJECTS[n_object] = GENERATOR pgenerator_closed',
-        owners('S_transfer', 'HOBJECT n_object', 1), owners('S_transfer', 'HARRAY n_row', 2),
-        owners('S_transfer', 'HCELL n_leaf', 1),
-    ] + public('S_storage') + public('S_transfer') + budget('S_storage', 'S_storage_budget')
-    checks += seek('S_transfer', 225, 'S_data') + [
+    # Quiet consumed DATA is pruned by the driver; no public storage-pin step
+    # is required. Keep the actual post-release builder/row/cell obligations.
+    checks += seek('S_pending', 225, 'S_data') + [
         'S_data.TODO = (THROW_SEARCH n_exception) :: (ARRAY_GENERATOR parraygenerator "data-released") :: ptask_tail*',
         '~((HOBJECT n_object) <- S_data.ALLOCATIONS)',
         '$weakref_get(S_data, n_observer) = PNULL',
