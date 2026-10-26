@@ -256,12 +256,15 @@ def $trace_alias_graph(S, n_trace) = $trace_alias_frames(S, S.ARRAYS[n_trace].IT
 def $trace_alias_graph(S, n_trace) = false -- otherwise
 
 ;; The witness is searched from captured args, with a path-local array stack.
+dec $trace_alias_value_present(pstate, pvalue, nat*) : bool
 dec $trace_alias_items_present(pstate, pentry*, nat*) : bool
 dec $trace_alias_node_present(pstate, nat, nat*) : bool
+def $trace_alias_value_present(S, PARRAY n, n_seen*) = $trace_alias_node_present(S, n, n_seen*)
+def $trace_alias_value_present(S, pvalue, n_seen*) = false -- otherwise
 def $trace_alias_items_present(S, eps, n_seen*) = false
 def $trace_alias_items_present(S, (ENTRY pkey (ALIAS n_cell)) :: pentry_tail*, n_seen*) = true
-def $trace_alias_items_present(S, (ENTRY pkey (DIRECT (PARRAY n))) :: pentry_tail*, n_seen*) = ($trace_alias_node_present(S, n, n_seen*) \/ $trace_alias_items_present(S, pentry_tail*, n_seen*))
-def $trace_alias_items_present(S, (ENTRY pkey pitem) :: pentry_tail*, n_seen*) = $trace_alias_items_present(S, pentry_tail*, n_seen*) -- otherwise
+def $trace_alias_items_present(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*, n_seen*) = ($trace_alias_value_present(S, pvalue, n_seen*) \/ $trace_alias_items_present(S, pentry_tail*, n_seen*))
+def $trace_alias_items_present(S, pentry*, n_seen*) = false -- otherwise
 def $trace_alias_node_present(S, n, n_seen*) = $trace_alias_items_present(S, S.ARRAYS[n].ITEMS, n :: n_seen*)
   -- if $(n < |S.ARRAYS|)
   -- if (HARRAY n) <- S.ALLOCATIONS
