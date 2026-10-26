@@ -22,6 +22,14 @@ live slots, while copied declared buckets keep their values. Property reads can
 therefore differ from foreach and copied array views of the new table. Physical
 old-table bucket count includes an INDIRECT whose slot becomes unset.
 
+[Mixed numeric comparisons](../../coverage/semantics/mixed-property-table-numeric-comparison-review.json)
+also admit authenticated nonpublic declarations beside dynamic buckets. The
+dynamic slot record survives unset and preserves the concrete-table image;
+declared-only nonpublic layouts stay separate. Normal callbacks distinguish old
+live indirections, copied declared values and owning dynamic snapshots using
+the existing concrete-table ownership rules. This comparison slice retains the existing boundaries for property
+hooks, copied-declared reference iteration and wider lifecycle contexts.
+
 Source construction keeps these locators internal; ordinary array casts export
 copied values. Copied declared-bucket reference iteration and collector visitation
 remain explicit Unsupported boundaries. At that original table cut, mixed cached

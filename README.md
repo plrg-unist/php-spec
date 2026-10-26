@@ -3864,6 +3864,10 @@ their recorded cuts; nonpublic Stringable callbacks remain refused.
 also preserves physical buckets when normal numeric handlers unset declared slots
 or fill initial typed holes. Surviving reference cells and inline destruction
 retain their native order; six source agreements and 420 focused premises pass.
+[Mixed property-table comparisons](coverage/semantics/mixed-property-table-numeric-comparison-review.json)
+now retain nonpublic inline slots alongside dynamic buckets. A dynamic write
+copies the table while its pinned old indirections stay live; shared cells and
+last-owner destruction keep their observed order across normal numeric handlers.
 [Builtin stdClass numeric Notices](coverage/semantics/stdclass-numeric-comparison-review.json)
 use the same continuation with a fixed builtin class image. Restored second
 Notices retain saved 1/1.0 across stdClass/source-instance changes and late live
