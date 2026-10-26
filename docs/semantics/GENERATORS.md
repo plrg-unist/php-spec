@@ -39,7 +39,7 @@ An outside NEXT before the first yield fails both native initialization and resu
 chaining two Errors; with an existing cache only resume fails. The
 [transfer review](../../coverage/semantics/generator-fiber-transfer-review.json)
 keeps the original pre-target observer refusal separate from the reached transfer
-fence. Method/Closure helpers, delegated contexts, reference caches and wider
+fence. Method/Closure helpers, wider delegation, reference caches and wider
 close/collection histories remain unvalidated.
 
 Ordinary named helpers above that body also survive Fiber transfer. Each genuine
@@ -50,8 +50,19 @@ frames retain two/three independent parameter cells for the same object; normal
 returns or supplied-Throwable unwinding retire them in actual order. The
 [helper review](../../coverage/semantics/generator-fiber-helper-transfer-review.json)
 keeps native discovery, the genuine refusal and source/state cuts separate.
-Method/Closure helpers, by-reference returns, delegated/cache/other-API histories,
+Method/Closure helpers, by-reference returns, wider delegation/cache/other-API histories,
 CONFIG consumers and wider close/collection remain unvalidated.
+
+Named native `yield from` chains also retain every real resumer and source claim
+when the active leaf suspends in a Fiber. A local proof follows authenticated
+`FROM_RESULT` pairs to the direct CURRENT/NEXT root; full-prefix checks prevent
+hidden or duplicate carriers. Stored VM scans preserve occurrences without
+deduplicating them, and the actual machine and pending-initialization bits stay
+unchanged. Fresh one-link normal return and supplied-Throwable abort have source
+agreement. Cached NEXT retirement and the two-link caught-Throwable whole source
+also agree under a fixed, separately recorded 180-second model limit. Their
+earlier 100-second timeouts retain zero credit; sources and operational rules
+are unchanged. [Review and reproductions](../../coverage/semantics/generator-fiber-delegation-transfer-review.json).
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;

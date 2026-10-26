@@ -262,6 +262,7 @@ def $closure_call_progress_valid(S, pclosurecall) = true
   -- if pclosurecall.ERROR = eps
 def $closure_call_progress_valid(S, pclosurecall) = true
   -- if pclosurecall.PACKS = eps
+  -- if ~$closure_call_array_pack_site(S, pclosurecall.SITE)
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7_all*
   -- if $closure_call_named_form(phpType7_all*)
   -- if $(pclosurecall.INDEX > 0)
@@ -275,6 +276,7 @@ def $closure_call_progress_valid(S, pclosurecall) = true
   -- if $closure_call_invalid_sent_valid(S, $closure_call_parameters(S, pclosurecall.SOURCE), pclosurecall, phpType7_forward*)
 def $closure_call_progress_valid(S, pclosurecall) = true
   -- if pclosurecall.PACKS = eps
+  -- if ~$closure_call_array_pack_site(S, pclosurecall.SITE)
   -- if $closure_call_args_at(S, pclosurecall.SITE) = (NArg ABSENT expression_first (BOOLEAN false) (BOOLEAN false) metadata_first) :: phpType7_tail*
   -- if $(pclosurecall.INDEX > 0)
   -- if $(pclosurecall.INDEX <= |phpType7_tail*| + 1)

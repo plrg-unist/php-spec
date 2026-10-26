@@ -1,0 +1,278 @@
+;; The native iterator owns DATA; resume operations borrow it. VALUE/REFCELL/KEY remain in the
+;; Generator through resumed code and CLOSED, until its real storage retires.
+dec $array_generator_input_source(pstate, expression, poperand, nat, porigin) : bool
+dec $array_generator_input_live(pstate, poperand, nat) : bool
+dec $array_generator_history(pstate, parraygenerator) : bool
+dec $array_generator_source(pstate, parraygenerator) : bool
+dec $array_generator_builder(pstate, parraygenerator) : bool
+dec $array_generator_stage(pstate, parraygenerator, text) : bool
+dec $array_generator_at(ptask, porigin) : bool
+dec $array_generator_count(ptask*, porigin) : nat
+dec $array_generator_valid(pstate, parraygenerator, text) : bool
+dec $array_generator_value(pstate, parraygenerator) : pvalue?
+dec $array_generator_cache(pstate, parraygenerator) : bool
+dec $array_generator_ready(pstate, parraygenerator) : bool
+dec $array_generator_plan(pstate) : parraygenerator?
+dec $array_generator_header(pstate, pgeneratorop, parraygenerator, text) : bool
+dec $array_generator_operation_tasks(pstate, pgeneratorop, ptask*) : bool
+dec $array_generator_operation_frames(pstate, pgeneratorop, pframe*) : bool
+dec $array_generator_run(pstate, parraygenerator, text, ptask*) : pstate
+dec $array_generator_insert(pstate, parraygenerator, ptask*) : pstate
+dec $array_generator_nodes(parraygenerator, text) : pnode*
+dec $array_generator_finish(pstate, parraygenerator, ptask*) : pstate
+dec $array_generator_discard(pstate, parraygenerator, text) : pstate
+dec $array_generator_blocked(pstate) : bool
+
+def $array_generator_input_source(S, expression, VARIABLE n_name* z, n, porigin) = $array_float_key_input_source(S, expression, VARIABLE n_name* z)
+def $array_generator_input_source(S, NExprFuncCall name (SEQUENCE phpType7*) metadata, KNOWN (POBJECT n), n, porigin_function) = true
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1]) = ((z, false))
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 1]) = ((n_name*, eps))
+  -- if $call_target(S, n_name*, eps) = (pfunction)
+  -- if pfunction.ORIGIN = porigin_function
+  -- if $function_generator(S, pfunction)
+def $array_generator_input_source(S, expression, poperand, n, porigin) = false -- otherwise
+def $array_generator_input_live(S, KNOWN (POBJECT n), n) = true
+def $array_generator_input_live(S, VARIABLE n_name* z, n) = true
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if $(n_cell < |S.STORE|)
+  -- if (HCELL n_cell) <- $heap_prune($heap_graph(S)).NODES
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n)
+  -- if ~(n_cell <- S.REFCELLS)
+  -- if ~$foreach_released_cell(S, n_cell) /\ ~$typed_cv_string_released_cell(S, n_cell) /\ ~$update_released_cell(S, n_cell)
+  -- if $propref_at(S.PROPREFS, n_cell) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps
+def $array_generator_input_live(S, poperand, n) = false -- otherwise
+
+;; Retired object slots retain source metadata, not live cache ownership. Never
+;; dereference their VALUE/REFCELL/KEY to authenticate a terminal continuation.
+def $array_generator_history(S, parraygenerator) = true
+  -- if S.ORIGIN = (parraygenerator.SITE)
+  -- if $array_iterator_item(S, parraygenerator.TAIL, parraygenerator.LINE) = ((parraygenerator.SITE, expression))
+  -- if $(parraygenerator.ARRAY < |S.ARRAYS|) /\ (HARRAY parraygenerator.ARRAY) <- S.ALLOCATIONS
+  -- if ~$array_immutable(S, parraygenerator.ARRAY)
+  -- if $heap_count(HARRAY parraygenerator.ARRAY, $pools_nodes(S.POOLS)) = 0
+  -- if $(parraygenerator.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.FUNCTION = parraygenerator.FUNCTION
+  -- if pgenerator.CLOSURE = eps /\ pgenerator.ACCESS = eps
+  -- if $function_at($all_functions(S), parraygenerator.FUNCTION) = (pfunction)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata)
+  -- if $function_generator(S, pfunction)
+  -- if $array_generator_input_source(S, expression, parraygenerator.INPUT, parraygenerator.OBJECT, parraygenerator.FUNCTION)
+def $array_generator_history(S, parraygenerator) = false -- otherwise
+def $array_generator_source(S, parraygenerator) = ($array_generator_history(S, parraygenerator) /\ (HOBJECT parraygenerator.OBJECT) <- S.ALLOCATIONS)
+def $array_generator_builder(S, parraygenerator) = true
+  -- if ~(parraygenerator.ARRAY <- S.LITERALARRAYDEBTS)
+  -- if $array_null_const_items(S, S.ARRAYS[parraygenerator.ARRAY].ITEMS, [parraygenerator.ARRAY])
+def $array_generator_builder(S, parraygenerator) = false -- otherwise
+def $array_generator_stage(S, parraygenerator, text) = $array_generator_source(S, parraygenerator)
+  -- if text <- ["rewind", "next", "ready"]
+def $array_generator_stage(S, parraygenerator, text) = true
+  -- if text <- ["data-released", "input-released"]
+  -- if (HOBJECT parraygenerator.OBJECT) <- S.ALLOCATIONS
+def $array_generator_stage(S, parraygenerator, text) = true
+  -- if text <- ["data-released", "input-released"]
+  -- if ~((HOBJECT parraygenerator.OBJECT) <- S.ALLOCATIONS)
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED
+  -- if ~$generator_storage_active(S, parraygenerator.OBJECT)
+def $array_generator_stage(S, parraygenerator, text) = false -- otherwise
+def $array_generator_at(ARRAY_GENERATOR parraygenerator text, porigin) = (parraygenerator.SITE = porigin)
+def $array_generator_at(ptask, porigin) = false -- otherwise
+def $array_generator_count(eps, porigin) = 0
+def $array_generator_count(ptask :: ptask_tail*, porigin) = $(1 + $array_generator_count(ptask_tail*, porigin))
+  -- if $array_generator_at(ptask, porigin)
+def $array_generator_count(ptask :: ptask_tail*, porigin) = $array_generator_count(ptask_tail*, porigin)
+  -- if ~$array_generator_at(ptask, porigin)
+def $array_generator_valid(S, parraygenerator, text) = ($array_generator_history(S, parraygenerator) /\ $array_generator_stage(S, parraygenerator, text) /\ $array_generator_count(S.TODO, parraygenerator.SITE) = 1)
+
+def $array_generator_value(S, parraygenerator) = $array_iterator_value(S, REFERENCE n_cell)
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.REFCELL = (n_cell)
+def $array_generator_value(S, parraygenerator) = $array_iterator_value(S, KNOWN pvalue)
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.REFCELL = eps
+  -- if pgenerator.VALUE = (pvalue)
+def $array_generator_value(S, parraygenerator) = eps -- otherwise
+def $array_generator_cache(S, parraygenerator) = true
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED
+  -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL = eps /\ pgenerator.KEY = eps
+def $array_generator_cache(S, parraygenerator) = true
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if $array_generator_value(S, parraygenerator) = (pvalue)
+  -- if pgenerator.KEY = (pvalue_key)
+  -- if $array_iterator_value(S, KNOWN pvalue_key) = (pvalue_key)
+  -- if pvalue =/= PARRAY parraygenerator.ARRAY /\ pvalue_key =/= PARRAY parraygenerator.ARRAY
+def $array_generator_cache(S, parraygenerator) = false -- otherwise
+def $array_generator_ready(S, parraygenerator) = true
+  -- if $array_generator_source(S, parraygenerator)
+  -- if $array_generator_builder(S, parraygenerator)
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_CLOSED]
+  -- if pgenerator.DELEGATE = eps /\ ~$generator_storage_active(S, parraygenerator.OBJECT)
+  -- if $array_generator_cache(S, parraygenerator)
+def $array_generator_ready(S, parraygenerator) = false -- otherwise
+
+def $array_generator_plan(S) = (parraygenerator)
+  -- if S.TODO = (ARRAY_UNPACK n_array phpType13* z) :: ptask_tail*
+  -- if $array_iterator_item(S, phpType13*, z) = ((porigin, expression))
+  -- if S_value = $quiet_operand(S, S.RESULT)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (POBJECT n_object)
+  -- if $(n_object < |S.OBJECTS|)
+  -- if S.OBJECTS[n_object] = GENERATOR pgenerator
+  -- if pgenerator.PHASE <- [GENERATOR_FRESH, GENERATOR_PAUSED, GENERATOR_CLOSED]
+  -- if pgenerator.DELEGATE = eps
+  -- if parraygenerator = {SITE porigin, LINE z, ARRAY n_array, OBJECT n_object, FUNCTION pgenerator.FUNCTION, INPUT S.RESULT, TAIL phpType13*}
+  -- if $array_generator_source(S, parraygenerator) /\ $array_generator_builder(S, parraygenerator)
+  -- if $array_generator_input_live(S, parraygenerator.INPUT, n_object)
+def $array_generator_plan(S) = eps -- otherwise
+def $array_generator_pending(S) = ($array_generator_plan(S) =/= eps)
+rule PhpStep/array-generator-start: S ~> S[.TODO = (ARRAY_GENERATOR parraygenerator "rewind") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ARRAY_UNPACK n phpType13* z) :: ptask_tail*
+  -- if $array_generator_plan(S) = (parraygenerator)
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE =/= GENERATOR_CLOSED
+rule PhpStep/array-generator-closed-acquisition: S ~> $throw_scalar(S[.TODO = (ARRAY_GENERATOR parraygenerator "data-released") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], "Exception", $ptascii("Cannot traverse an already closed generator"), parraygenerator.LINE)
+  -- if S.TODO = (ARRAY_UNPACK n phpType13* z) :: ptask_tail*
+  -- if $array_generator_plan(S) = (parraygenerator)
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED
+
+def $array_generator_header(S, pgeneratorop, parraygenerator, text) = true
+  -- if pgeneratorop.STARTPACK /\ pgeneratorop.BORROWED
+  -- if pgeneratorop.OBJECT = parraygenerator.OBJECT
+  -- if pgeneratorop.SITE = parraygenerator.SITE /\ pgeneratorop.LINE = parraygenerator.LINE
+  -- if pgeneratorop.LOOP = eps /\ pgeneratorop.ARGUMENTS = eps /\ ~pgeneratorop.ADVANCE
+  -- if pgeneratorop.NAME = text /\ text <- ["rewind", "next"]
+  -- if $array_generator_source(S, parraygenerator)
+def $array_generator_header(S, pgeneratorop, parraygenerator, text) = false -- otherwise
+def $array_generator_operation_tasks(S, pgeneratorop, (GENERATOR_RESUME pgeneratorop) :: (ARRAY_GENERATOR parraygenerator text) :: ptask*) = true
+  -- if $array_generator_header(S, pgeneratorop, parraygenerator, text)
+  -- if $array_generator_valid(S, parraygenerator, text)
+  -- if $generator_flat_tasks(S.TODO)
+def $array_generator_operation_tasks(S, pgeneratorop, (THROW_SEARCH n) :: ptask*) = $array_generator_operation_tasks(S, pgeneratorop, ptask*)
+def $array_generator_operation_tasks(S, pgeneratorop, ptask*) = false -- otherwise
+def $array_generator_operation_frames(S, pgeneratorop, eps) = false
+def $array_generator_operation_frames(S, pgeneratorop, pframe :: pframe_tail*) = ($array_generator_operation_tasks($constant_frame_scope(S, pframe, pframe_tail*), pgeneratorop, pframe.TODO) \/ $array_generator_operation_frames(S, pgeneratorop, pframe_tail*))
+def $array_generator_operation_valid(S, pgeneratorop) = ($array_generator_operation_tasks(S, pgeneratorop, S.TODO) \/ $array_generator_operation_frames(S, pgeneratorop, S.FRAMES))
+def $array_generator_run(S, parraygenerator, text, ptask*) = $generator_operate(S[.TODO = (ARRAY_GENERATOR parraygenerator text) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], {OBJECT parraygenerator.OBJECT, NAME text, SITE parraygenerator.SITE, LINE parraygenerator.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true, BORROWED true})
+  -- if $array_generator_valid(S, parraygenerator, text)
+rule PhpStep/array-generator-resume: S ~> $array_generator_run(S, parraygenerator, text, ptask*)
+  -- if S.TODO = (ARRAY_GENERATOR parraygenerator text) :: ptask*
+  -- if text <- ["rewind", "next"]
+  -- if $array_generator_valid(S, parraygenerator, text)
+def $fiber_traversal_complete(S, pgeneratorop) = S[.TODO = (ARRAY_GENERATOR parraygenerator "ready") :: ptask*]
+  -- if S.TODO = (ARRAY_GENERATOR parraygenerator text) :: ptask*
+  -- if $array_generator_header(S, pgeneratorop, parraygenerator, text)
+  -- if $array_generator_valid(S, parraygenerator, text)
+
+def $array_generator_insert(S, parraygenerator, ptask*) = $throw_scalar(S, "Error", $ptascii("Keys must be of type int|string during array unpacking"), parraygenerator.LINE)
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.KEY = (pvalue_key)
+  -- if ~$array_iterator_key_valid(pvalue_key)
+def $array_generator_insert(S, parraygenerator, ptask*) = S_insert[.TODO = (ARRAY_GENERATOR parraygenerator "next") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.KEY = (pvalue_key)
+  -- if $array_iterator_key_valid(pvalue_key)
+  -- if $array_generator_value(S, parraygenerator) = (pvalue)
+  -- if S_insert = $literal_insert(S, parraygenerator.ARRAY, $array_iterator_key(pvalue_key), pvalue, parraygenerator.LINE)
+  -- if S_insert.COMPLETION = NORMAL
+def $array_generator_insert(S, parraygenerator, ptask*) = S_insert
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.KEY = (pvalue_key)
+  -- if $array_iterator_key_valid(pvalue_key)
+  -- if $array_generator_value(S, parraygenerator) = (pvalue)
+  -- if S_insert = $literal_insert(S, parraygenerator.ARRAY, $array_iterator_key(pvalue_key), pvalue, parraygenerator.LINE)
+  -- if S_insert.COMPLETION =/= NORMAL
+rule PhpStep/array-generator-item: S ~> $array_generator_insert(S, parraygenerator, ptask*)
+  -- if S.TODO = (ARRAY_GENERATOR parraygenerator "ready") :: ptask*
+  -- if $array_generator_valid(S, parraygenerator, "ready")
+  -- if $array_generator_ready(S, parraygenerator)
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_PAUSED
+
+;; Release DATA before an owning opcode input. Both stages keep the builder,
+;; including its copied ARRAY edges, throughout Generator finally/storage work.
+def $array_generator_finish(S, parraygenerator, ptask*) = $fiber_start_unpack_release(S[.TODO = (ARRAY_GENERATOR parraygenerator "data-released") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], [HOBJECT parraygenerator.OBJECT])
+rule PhpStep/array-generator-finish: S ~> $array_generator_finish(S, parraygenerator, ptask*)
+  -- if S.TODO = (ARRAY_GENERATOR parraygenerator "ready") :: ptask*
+  -- if $array_generator_valid(S, parraygenerator, "ready")
+  -- if $array_generator_ready(S, parraygenerator)
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED
+rule PhpStep/array-generator-input-release: S ~> $fiber_start_unpack_release(S[.TODO = (ARRAY_GENERATOR parraygenerator "input-released") :: ptask*], $operand_nodes(parraygenerator.INPUT))
+  -- if S.TODO = (ARRAY_GENERATOR parraygenerator "data-released") :: ptask*
+  -- if $array_generator_valid(S, parraygenerator, "data-released")
+  -- if $array_generator_builder(S, parraygenerator)
+rule PhpStep/array-generator-done: S ~> S[.TODO = (ARRAY_NEXT parraygenerator.ARRAY parraygenerator.TAIL) :: ptask*][.ORIGIN = $origin_next_item((parraygenerator.SITE), parraygenerator.TAIL)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ARRAY_GENERATOR parraygenerator "input-released") :: ptask*
+  -- if $array_generator_valid(S, parraygenerator, "input-released")
+  -- if $array_generator_builder(S, parraygenerator)
+
+def $array_generator_nodes(parraygenerator, "data-released") = [HARRAY parraygenerator.ARRAY] ++ $operand_nodes(parraygenerator.INPUT)
+def $array_generator_nodes(parraygenerator, "input-released") = [HARRAY parraygenerator.ARRAY]
+def $array_generator_nodes(parraygenerator, text) = [HARRAY parraygenerator.ARRAY, HOBJECT parraygenerator.OBJECT] ++ $operand_nodes(parraygenerator.INPUT) -- otherwise
+def $task_nodes(ARRAY_GENERATOR parraygenerator text) = $array_generator_nodes(parraygenerator, text)
+def $call_task_valid(S, ARRAY_GENERATOR parraygenerator text) = $array_generator_valid(S, parraygenerator, text)
+def $generator_internal_task(ARRAY_GENERATOR parraygenerator text) = true
+def $eager_explicit_task(ARRAY_GENERATOR parraygenerator text) = true
+def $return_discard(S, GENERATOR_RESUME pgeneratorop) = S[.ORIGIN = (pgeneratorop.SITE)]
+  -- if pgeneratorop.STARTPACK /\ pgeneratorop.BORROWED
+  -- if S.TODO = (THROW_SEARCH n) :: (ARRAY_GENERATOR parraygenerator text) :: ptask*
+  -- if $array_generator_header(S, pgeneratorop, parraygenerator, text)
+  -- if $array_generator_valid(S, parraygenerator, text)
+def $array_generator_discard(S, parraygenerator, text) = $fiber_start_unpack_release(S[.TODO = (THROW_SEARCH n) :: (ARRAY_GENERATOR parraygenerator "data-released") :: ptask*][.ORIGIN = (parraygenerator.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], [HOBJECT parraygenerator.OBJECT])
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if text <- ["rewind", "next", "ready"]
+  -- if $array_generator_builder(S, parraygenerator)
+def $array_generator_discard(S, parraygenerator, "data-released") = $fiber_start_unpack_release(S[.TODO = (THROW_SEARCH n) :: (ARRAY_GENERATOR parraygenerator "input-released") :: ptask*][.ORIGIN = (parraygenerator.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $operand_nodes(parraygenerator.INPUT))
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if $array_generator_builder(S, parraygenerator)
+def $array_generator_discard(S, parraygenerator, "input-released") = S[.ORIGIN = (parraygenerator.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $array_generator_builder(S, parraygenerator)
+def $array_generator_discard(S, parraygenerator, text) = S[.TODO = (THROW_SEARCH n) :: (ARRAY_GENERATOR parraygenerator text) :: ptask*][.COMPLETION = UNSUPPORTED "array Generator abrupt builder outside direct domain"]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if ~$array_generator_builder(S, parraygenerator)
+def $return_discard(S, ARRAY_GENERATOR parraygenerator text) = $array_generator_discard(S, parraygenerator, text)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if $throwable_live(S, n)
+  -- if $array_generator_valid(S[.TODO = (THROW_SEARCH n) :: (ARRAY_GENERATOR parraygenerator text) :: ptask*], parraygenerator, text)
+def $throwable_same_frame_continuation(S, S_next, ptask*) = S_next
+  -- if S.TODO = (ARRAY_UNPACK n phpType13* z) :: ptask*
+  -- if $array_generator_plan(S) = (parraygenerator)
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED
+  -- if S_next = $throw_scalar(S[.TODO = (ARRAY_GENERATOR parraygenerator "data-released") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], "Exception", $ptascii("Cannot traverse an already closed generator"), parraygenerator.LINE)
+def $throwable_same_frame_continuation(S, S_next, ptask*) = S_next
+  -- if S.TODO = (ARRAY_GENERATOR parraygenerator text) :: ptask*
+  -- if $array_generator_valid(S, parraygenerator, text)
+  -- if S_next.TODO = S.TODO /\ $throwable_pending(S_next.COMPLETION)
+rule PhpStep/array-generator-ready-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "array Generator cache or builder outside direct domain"]
+  -- if S.TODO = (ARRAY_GENERATOR parraygenerator "ready") :: ptask*
+  -- if $array_generator_valid(S, parraygenerator, "ready")
+  -- if ~$array_generator_ready(S, parraygenerator)
+
+;; A partial semantic boundary retains its real owners; it must not trigger
+;; generic temporary release and accidentally run a suspended Generator finally.
+def $array_generator_blocked(S) = true
+  -- if S.COMPLETION = UNSUPPORTED "array Generator cache or builder outside direct domain"
+  -- if ~S.COMPILESTOP
+  -- if S.TODO = (ARRAY_GENERATOR parraygenerator "ready") :: ptask*
+  -- if $array_generator_valid(S, parraygenerator, "ready")
+  -- if ~$array_generator_ready(S, parraygenerator)
+def $array_generator_blocked(S) = true
+  -- if S.COMPLETION = UNSUPPORTED "array Generator abrupt builder outside direct domain"
+  -- if ~S.COMPILESTOP
+  -- if S.TODO = (THROW_SEARCH n) :: (ARRAY_GENERATOR parraygenerator text) :: ptask*
+  -- if $array_generator_valid(S, parraygenerator, text)
+  -- if $throwable_live(S, n)
+  -- if ~$array_generator_builder(S, parraygenerator)
+def $array_generator_blocked(S) = false -- otherwise
+def $generator_close_terminal_pending(S) = true -- if $array_generator_blocked(S)
+def $drive_steps(S, n) = S -- if $array_generator_blocked(S)

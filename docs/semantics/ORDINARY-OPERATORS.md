@@ -473,6 +473,24 @@ premises (268/251/187, including derived cleanup/source/receiver refusals) pass 
 Reference/typed/argument-bearing returns, other owning operands and wider destructor
 or suspension histories remain partial.
 
+Raw `KNOWN` Stringable LEFT operands now retain one temporary owner through the
+whole concatenation. The cast receiver and prepared method target are separate
+owners; resolving a borrowed `VARIABLE` to an object adds no temporary. After
+LEFT returns, the current available RIGHT is read/converted and the joined value
+is computed before `FREE_OP1` retirement. A real nonthrowing destructor therefore
+runs before caller store or the original supplied-Exception catch. Source3 plus a
+separate borrowed-control1 distinguish `Lfresh` from `Lretired` and both throw
+priorities. Final 771 premises across four checked-source-derived recipes include
+root/deletion, SOURCE/line and missing/reference readiness controls in the
+[LEFT lifetime review](../../coverage/semantics/concat-left-stringable-lifetime-review.json).
+
+Entry admits ordinary defined RHS CVs or nonowning known values; initial missing,
+referenced/constrained CVs and other unsupported read forms remain explicit boundaries.
+After LEFT, a newly wrapped unconstrained live reference cell is readable, as in
+an ordinary `global` binding. Owning RIGHT operands do not select this new route;
+their old59 body remains unchanged and wider dual-owner retirement stays partial.
+No generic Stringable/eager-unwind or numerical/formatting/CONFIG algorithm changes.
+
 Plain-CV `.=` now handles a quiet first string and a supported array RHS.
 Its source-authenticated warning marker caches the exact first string carrier;
 fresh capture/dispatch proves initial plain selections, while historical return

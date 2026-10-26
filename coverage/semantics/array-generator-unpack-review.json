@@ -1,0 +1,310 @@
+{
+  "milestone": "A53 ordinary named Generator array-literal spread",
+  "status": "Implemented, independently reviewed and validated; actual-tail composition retains original tested cuts.",
+  "target": "PHP8.5.10 CLI NTS64; vendor/php-src tag34308a6666b2d489c509541ea9befea9e2b42348",
+  "cuts": {
+    "base": "73c447992362f4ebdb9d85b5d87e55a7f31bfc54",
+    "native": "01e22e7ed7b5aaeb4732a0f454a0417ff919386f",
+    "strict_source": "151c5f454990c0a03843697dd192b87683fc05c6",
+    "blocked_boundary": "4f8e606c7e608a32252baefe4c2ff8d8ba92d171",
+    "final_fixtures": "ad904d6475ae27318a9974cb47534b5efb597881"
+  },
+  "runtime": {
+    "spec/semantics/30-storage.watsup": "97d362f30ed8a6db1704dd4fefb2b355162d6ef555f64548fee8f755a7bb6836",
+    "spec/semantics/61-array-unpack-control.watsup": "4acdcaf0693c9a7c7f0e32ae2a433f77c3d794b256b3aa3c0361475669f96810",
+    "spec/semantics/405-call-generator-unpack.watsup": "f918adc422ee03aca2a2b71129cfa6153b47b398d1c54c5203e547c5f2fe5f88",
+    "spec/semantics/426-array-iterator-unpack.watsup": "344ecc67c2da6dac13c52ed2734b1b3935fad794388ecfed4b353f7a8895da48",
+    "spec/semantics/427-array-generator-unpack.watsup": "ccb5951fa106447f72f6e1b25fb9972ba4e709ddfe741e0075715a0709913c56",
+    "spec/semantics/modules.json": "c4d6e140b91a114f9789d2e3873a26a55cc6eb538068ba417495b1293e311597"
+  },
+  "source_runtime": "All six changed runtime inputs are source-cut exact except427: the later source-certified Unsupported fixed-state helper preserves roots only at two refused boundaries. NORMAL source paths are unchanged; focused fixtures strictly load all417 modules, including that helper.",
+  "source_427_sha256": "1f554d378543fbf32973f544220d500b8df0f4b58175ef4591a0eedec9f4f571",
+  "scripts": {
+    "tests/semantics/array_generator_unpack_cases.py": "04b7c256fdf6b186e2ced8449b0a38372ba41d1e54686213a1db00ca6ec62265",
+    "tests/semantics/array_generator_unpack_sources.py": "5a703462bd4c4054265796a74ad6916102d6065a6594b11e1b51ec820150e018",
+    "tests/semantics/array_generator_unpack_review_cases.py": "3abf46abb244281ab1ee993d210b077a21e9969d182878cc23eb751a5d9a0c5e",
+    "tests/semantics/array_generator_unpack_review_sources.py": "2ed04ab1439899afc34ffc779176097411e58a3d41d38d66443a9b4e89c1d146",
+    "tests/semantics/array_generator_unpack_protocol.py": "5e507c800a01a940ca288f880d4a075849dfecbb116e64aa0b266af3f7a23427",
+    "tests/semantics/array_generator_unpack_state_review.py": "719d070722955dc4eb0089ad39df85f83bdeced37d0ec408619e5bc0dadcc2cc",
+    "tests/semantics/array_iterator_unpack_review_cases.py": "44f8d50b6c7dd90aac8f810ca1dbdfede88b2aa3bd0051c6b0057efe7778fb23",
+    "tests/semantics/array_iterator_unpack_state_review.py": "4693a8bfd3eceb71690d432314b19ce6bae4cbb27383fe6413a840c8e8370f3a"
+  },
+  "engine": "Zend/zend_vm_def.h::ZEND_ADD_ARRAY_UNPACK; Zend/zend_generators.c::zend_generator_get_iterator, iterator rewind, native resume, close and free_storage. DATA retires before FREE_OP1; VALUE/REFCELL/KEY survive next-body execution and CLOSED until actual storage destruction.",
+  "scope": "Direct named Generator bodies with received parameters and reference yields; ordinary unmarked CV or owning direct named-call operand. Fresh, cached-first, past-first and CLOSED acquisition are distinguished. Existing finite DIRECT object-free builder graph; quiet primitive/string or flat DIRECT object-free ARRAY cache and ordinary unconstrained current-reference cells.",
+  "ownership": "Iterator owns DATA; native resumes borrow it. Owning call INPUT remains a separate opcode owner through traversal. KEY validation precedes live value dereference and DIRECT insertion. Generator cache edges persist through resumed code/CLOSED. DATA then INPUT retire while the partial builder stays protected through real303 finally/storage cleanup, before literal continuation or builder cancellation. Immutable item/function history authenticates terminal release without stale cache ownership.",
+  "bounds": "Delegation, Closure/method/factory producers, reference-CV acquisition, nested ARRAY/object cache payloads and wider lifetimes remain partial. Five user-paused lanes are unchanged. Source92 is an integrated dependency/contrast, not the ARRAY consumer certificate. No generic Generator/release or CONFIG-body change; no frontend AST/schema change.",
+  "validation": {
+    "native_originals": 6,
+    "source_agreements": 6,
+    "strict_modules": 417,
+    "focused_clauses": 1276,
+    "raw_steps": 31,
+    "author": 453,
+    "peer": 748,
+    "affected_legacy": 75,
+    "legacy": "Only A52 Generator state expectations/boundary mapping changed; every original source byte and native receipt retained. Its historical Unsupported0 remains historical; the new75 numeric clauses add no source agreement."
+  },
+  "corrections": [
+    "Pre-execution review added the disjoint fallback/CV gates, closed-acquisition throw continuation and source-certified blocked-owner helper. No native/source replay.",
+    "Focused last-DATA149 first failed only the fixture CLOSING expectation; actual303 finally-frame phase is RUNNING. Corrected149 passed atcacc70dbc.",
+    "First peer acquisition294 failed the fixture line10 expectation; the frozen spread occurrence is line9. Only that argument changed.",
+    "Next acquisition294 failed public descriptor validity: raw THROWN followed by drive_steps(...,0) materialized a Throwable without normal transition/pruning registration of its destruction handle. Peer pending seeks now start from real NORMAL predecessors, preserving raw assertions and public validity. The same related author frontier was corrected to150 with explicit public validation; prior149 proof remains recorded under its earlier harness.",
+    "Final affected150, failed294 and first242/212/75 all passed atad904d647 with original180 caps. Original146/157, source/native and standalone strict cuts remain accepted without replay. No timeout/cap increase/runtime failure."
+  ],
+  "genuine_baseline": {
+    "status": "checked Unsupported",
+    "reason": "array Iterator unpack outside initialized Iterator domain",
+    "stdout": "P;",
+    "agreement_credit": 0,
+    "report": ".tools/array-generator-unpack-baseline-53/report.json"
+  },
+  "execution": {
+    "cpu": 4,
+    "native_cap_seconds": 30,
+    "genuine_model_outer_caps": [
+      60,
+      90
+    ],
+    "strict_focused_sl_cap_seconds": 180,
+    "source_model_outer_caps": [
+      180,
+      210
+    ],
+    "focused": [
+      {
+        "report": "author-state",
+        "case": "array-generator-unpack-value-cow-keys",
+        "revision": "4f8e606c7e608a32252baefe4c2ff8d8ba92d171",
+        "clauses": 146,
+        "raw_steps": 2,
+        "seconds": 26.891058921813965
+      },
+      {
+        "report": "author-state",
+        "case": "array-generator-unpack-reference-current",
+        "revision": "4f8e606c7e608a32252baefe4c2ff8d8ba92d171",
+        "clauses": 157,
+        "raw_steps": 3,
+        "seconds": 29.146066665649414
+      },
+      {
+        "report": "author-public-state",
+        "case": "array-generator-unpack-last-data-finally",
+        "revision": "ad904d6475ae27318a9974cb47534b5efb597881",
+        "clauses": 150,
+        "raw_steps": 4,
+        "seconds": 18.949143409729004
+      },
+      {
+        "report": "peer-public-state",
+        "case": "array-generator-unpack-review-acquisition-states",
+        "revision": "ad904d6475ae27318a9974cb47534b5efb597881",
+        "clauses": 294,
+        "raw_steps": 11,
+        "seconds": 36.47869682312012
+      },
+      {
+        "report": "peer-public-state",
+        "case": "array-generator-unpack-review-shared-invalid-key",
+        "revision": "ad904d6475ae27318a9974cb47534b5efb597881",
+        "clauses": 242,
+        "raw_steps": 6,
+        "seconds": 31.237172603607178
+      },
+      {
+        "report": "peer-public-state",
+        "case": "array-generator-unpack-review-body-supplied-throw",
+        "revision": "ad904d6475ae27318a9974cb47534b5efb597881",
+        "clauses": 212,
+        "raw_steps": 4,
+        "seconds": 26.91179060935974
+      },
+      {
+        "report": "retired-a52-state",
+        "case": "array-iterator-unpack-review-generator-boundary",
+        "revision": "ad904d6475ae27318a9974cb47534b5efb597881",
+        "clauses": 75,
+        "raw_steps": 1,
+        "seconds": 11.547442197799683
+      }
+    ],
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null
+    },
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "tools": {
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f"
+    },
+    "resources": "Every wrapper/child group reaped. Failed focused wrappers exit1; native/source/final affected wrapper exit0. CPU4 released after closure; no actor remains.",
+    "tool_reuse": "Existing local tools reused; no fresh offline rebuild claim."
+  },
+  "source_sha256": {
+    "array-generator-unpack-value-cow-keys": "f730e2fca3bb115776ed14c29ea5e7a4dc9c87c81f1c3bae22fdc46cbfeaeda2",
+    "array-generator-unpack-reference-current": "6bafc1e8e73219ebaa4e7d69058cf24fad02c0c8cafdb59a85fec8db2dd404b2",
+    "array-generator-unpack-last-data-finally": "ecc388d4c474ddb39a3d8739a1a7530b0c4efe51091ca6b9d38ce264ceefa8f0",
+    "array-generator-unpack-review-acquisition-states": "78107a15403b62cf90a233d8dcc29994a591829918b3745aa06a9685620f8ca5",
+    "array-generator-unpack-review-shared-invalid-key": "693642bd8a7c924c568bb058486696a857e4816159a3f13cd47db25d128a4a61",
+    "array-generator-unpack-review-body-supplied-throw": "caee5f1aed7ca8c873e07ae290c1812ba2e1f0abc7a85834cafb8b3e5b467d71",
+    "array-iterator-unpack-review-generator-boundary": "2741316e3114262e103777478944239e5a2c72d7e0fab0d931046fcce962e4a9"
+  },
+  "commands": [
+    "taskset -c 4 python3 -B .tools/array-generator-unpack-native-queue-53.py",
+    "taskset -c 4 python3 -B .tools/array-generator-unpack-source-queue-53.py",
+    "taskset -c 4 python3 -B .tools/array-generator-unpack-focused-queue-53.py",
+    "taskset -c 4 python3 -B .tools/array-generator-unpack-focused-corrected-queue-53.py",
+    "taskset -c 4 python3 -B .tools/array-generator-unpack-focused-corrected2-queue-53.py",
+    "taskset -c 4 python3 -B .tools/array-generator-unpack-public-queue-53.py"
+  ],
+  "reports": [
+    {
+      "path": ".tools/array-generator-unpack-author-public-state-53/report.json",
+      "revision": "ad904d6475ae27318a9974cb47534b5efb597881",
+      "sha256": "0688eaa44f907ba7bbf7f6324d78106387ef3d52a4c4173fb12678cff60ed134"
+    },
+    {
+      "path": ".tools/array-generator-unpack-author-state-53/report.json",
+      "revision": "4f8e606c7e608a32252baefe4c2ff8d8ba92d171",
+      "sha256": "95204d0ff6890b086dce36dd6e1dfa5c94359579d2d3169bc2ba132c1dcd7879"
+    },
+    {
+      "path": ".tools/array-generator-unpack-author-state-corrected-53/report.json",
+      "revision": "cacc70dbc3c500d0f74a6d3419101a3fa37c09d2",
+      "sha256": "284f8e25381e4beb1dda47c6c09487b4637d32952fa0d208e80c56619307ff68"
+    },
+    {
+      "path": ".tools/array-generator-unpack-baseline-53/report.json",
+      "revision": "01e22e7ed7b5aaeb4732a0f454a0417ff919386f",
+      "sha256": "8c68e77b8a1697ee66a2fbd4f5e65b65d379a6a84e46c3bfd935e8cfd62a309e"
+    },
+    {
+      "path": ".tools/array-generator-unpack-native-rest-53/report.json",
+      "revision": "01e22e7ed7b5aaeb4732a0f454a0417ff919386f",
+      "sha256": "58cb848e0f268d403484f09b48d92aa6f70f457a39b4a5303b94514da631e45e"
+    },
+    {
+      "path": ".tools/array-generator-unpack-peer-public-state-53/report.json",
+      "revision": "ad904d6475ae27318a9974cb47534b5efb597881",
+      "sha256": "9148c58cfb90c2e4dcf471d7c88565e142aab6c5c2e7c89f5f349b5fced754d5"
+    },
+    {
+      "path": ".tools/array-generator-unpack-peer-state-53/report.json",
+      "revision": "cacc70dbc3c500d0f74a6d3419101a3fa37c09d2",
+      "sha256": "fc79066535bf9c22a0ca975ba5bc1744be8da8a4deb62171c94037779ea90e6b"
+    },
+    {
+      "path": ".tools/array-generator-unpack-peer-state-corrected-53/report.json",
+      "revision": "87726a46070362cbb2064023a40af4d448266fdd",
+      "sha256": "d093cf87e8d5a3c76e4fecb466ac7d549e016447627144da11f8b6a9625ce90b"
+    },
+    {
+      "path": ".tools/array-generator-unpack-retired-a52-native-53/report.json",
+      "revision": "d03431fbf0a07891c0eece0533f99662feef2c1f",
+      "sha256": "897a1f8aa585009c3a3804c45f2ba03100fb38c6278cda73dd9b14987f6a3b7b"
+    },
+    {
+      "path": ".tools/array-generator-unpack-retired-a52-state-53/report.json",
+      "revision": "ad904d6475ae27318a9974cb47534b5efb597881",
+      "sha256": "93c485742347851f1a7e73e40745c2b6fc7bb8aabccec82a475aaa14e80aaec7"
+    },
+    {
+      "path": ".tools/array-generator-unpack-review-native-53/report.json",
+      "revision": "01e22e7ed7b5aaeb4732a0f454a0417ff919386f",
+      "sha256": "45cec9ebed80e9ce44c1aa83bb427c051495d21ac29976401c6bd2bf859d26ff"
+    },
+    {
+      "path": ".tools/array-generator-unpack-review-source-53/report.json",
+      "revision": "151c5f454990c0a03843697dd192b87683fc05c6",
+      "sha256": "6f15ebb51bb9ee0b218c34ab77378fcc1085f3298d37f0ee8d0d2ad59fb91ba9"
+    },
+    {
+      "path": ".tools/array-generator-unpack-source-53/report.json",
+      "revision": "151c5f454990c0a03843697dd192b87683fc05c6",
+      "sha256": "13c8b2ae0ff2d4c5ead4b48eb4d59e01fad0e3ff1b71a8720adcfaaee27e2fb5"
+    },
+    {
+      "path": ".tools/array-generator-unpack-strict-53/report.json",
+      "revision": "151c5f454990c0a03843697dd192b87683fc05c6",
+      "sha256": "006cafc0d98f8a8f02a7ab79d7929ff39fff2ddabfca083b1f8f2c6b8952d643"
+    }
+  ],
+  "preparations": [
+    {
+      "path": ".tools/array-generator-unpack-author-prepared-53/report.json",
+      "revision": "151c5f454990c0a03843697dd192b87683fc05c6",
+      "sha256": "0b952a7aa1ab8935856ef2fabb120692fff48131a10ec8d28683dca26b0b8722"
+    },
+    {
+      "path": ".tools/array-generator-unpack-author-public-prepared-53/report.json",
+      "revision": "b3aa1d1eb95dd0d3c540d163f51dad41d5e71cff",
+      "sha256": "cc38a34443f0d8b8d9c821dbae955e70bf760bbefdf290368c85013da5719dbc"
+    },
+    {
+      "path": ".tools/array-generator-unpack-peer-prepared-53/report.json",
+      "revision": "01e22e7ed7b5aaeb4732a0f454a0417ff919386f",
+      "sha256": "b42923ffced7ad50222007ce750b8efd897e4d50e72249ce516d12a47265f456"
+    },
+    {
+      "path": ".tools/array-generator-unpack-peer-prepared2-53/report.json",
+      "revision": "151c5f454990c0a03843697dd192b87683fc05c6",
+      "sha256": "dde14d259baf7668a5237f1c4506ac3cf3d10fc440c8faaca3fe11be1d7d21c8"
+    },
+    {
+      "path": ".tools/array-generator-unpack-peer-prepared3-53/report.json",
+      "revision": "151c5f454990c0a03843697dd192b87683fc05c6",
+      "sha256": "9c2cad2e273a8ffd0babfc50661dff3733fd75c3fe7588359e5742526a93e6e7"
+    },
+    {
+      "path": ".tools/array-generator-unpack-peer-prepared4-53/report.json",
+      "revision": "b2e144588e6ca99aa04f742982b036650685d999",
+      "sha256": "4b22fbfa0c2dedc7ea75779ed292757304fa110250801789f9f107b1728ba564"
+    },
+    {
+      "path": ".tools/array-generator-unpack-peer-public-prepared-53/report.json",
+      "revision": "b3aa1d1eb95dd0d3c540d163f51dad41d5e71cff",
+      "sha256": "d2ab91eb400100db83246d2219e05d4a5a6792c678ee167afd5c81bbe7d369c2"
+    },
+    {
+      "path": ".tools/array-generator-unpack-retired-a52-prepared-53/report.json",
+      "revision": "b2e144588e6ca99aa04f742982b036650685d999",
+      "sha256": "ff6a6a9e327ae2f9b5c36a994697efc1a27d0a571a345d8634895c65f0605e34"
+    }
+  ],
+  "raw_archive": {
+    "path": ".tools/array-generator-unpack-53-raw.tar.gz",
+    "bytes": 1578097,
+    "members": 465,
+    "sha256": "cb0c508cc5f67763cfee88505e92c78a002133929002cef0886614449a793f62"
+  },
+  "recovery": "The ignored canonical archive has relative .tools paths, originals/receipts/streams, generated fixtures, all three executed failures, eight preparation records and source/focused input snapshots. Restore under the recorded WT53 cwd with local tools at the selected Git cut; originals retain their source path/cwd. Recovered A52 native data/recovery.json identifies the exact temporary raw-only WT52 receipt provider; no Git worktree/tools were recreated, and that provider was removed after the changed numeric case passed and process/file consumers were absent. Ordinary builds require no external archive.",
+  "independent_review": "array46_review independently checked runtime/native/source, physical ownership/counterexamples, fixture reliability, final actual streams/exits/reaping and publication metadata/archive. Exact actual-tail candidate review precedes guarded canonical fast-forward.",
+  "composition": {
+    "parent": "cf394412950771df56da5e9fcf429e202d785183",
+    "private_publication": "03f346605cfca41b8257ba37ad385fbd549ae8a0",
+    "base": "73c447992362f4ebdb9d85b5d87e55a7f31bfc54",
+    "manifest": "Ordered actual parent417 plus427 =418; frontend AST/schema parent-exact.",
+    "runtime": "61/405/426/427 and eight scripts are tested-private-exact. Shared30 is actual parent plus only the tested parraygenerator declaration and ARRAY_GENERATOR task. Incoming CONFIG producer/target, Closure::call PACKS/task additions and every other spec path are parent-exact.",
+    "shared30_sha256": "082a7864208ffa5bc86692e2dfcfdf2b02f1ac5cc3161b12e8cf07008abb5fa6",
+    "incoming": "182/428 select Closure::call ARRAY packs;380/384 select scoped owned magic-property Get/verification;394 extends nonpublic declared-property numeric comparisons while Stringable continuation remains refused;421/423 select CONFIG Aggregate/Generator producers. Six originals and focused controls produce none of these selectors.",
+    "lifetime_seam": "Incoming M153424 requires owned WeakMap InternalIterator teardown;386 adds DESTRUCTION.FRAMES as its continuation witness. A53 native/focused bodies have no WeakMap or user destructor frames;303 Generator force-close/finally/cache storage and all generic heap/Generator/release helpers are unchanged. Generator objects also cannot enter current WeakMap Key producers, which require STDINSTANCE. Source92 CONFIG history is not borrowed as ARRAY authority.",
+    "execution": "No selected incoming interaction; no joined execution or renewed accepted evidence. Foreign compact checkpoint/active rows and inventory prefixes preserved; only own A53 family/link/integrated marker and stale active-row removal applied."
+  }
+}
