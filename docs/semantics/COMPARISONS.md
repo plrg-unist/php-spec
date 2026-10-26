@@ -568,9 +568,23 @@ allocated and acyclic. Direct leaves must be primitive or valid string carriers;
 an alias must name a live reference cell with a defined leaf of the same kinds.
 A path-local guard admits shared child arrays. Comparison reads that cell's
 current value, while direct siblings keep their captured COW snapshot, then
-uses ordinary array count/key/value order. Object or array-valued cells,
-callbacks, cycles, warm caches and wider Throwable graphs remain outside the
-[trace-alias review](../../coverage/semantics/throwable-trace-alias-comparison-review.json).
+uses ordinary array count/key/value order. That primitive-cell bound leaves
+object or array-valued cells, callbacks, cycles, warm caches and wider Throwable
+graphs outside the [trace-alias review](../../coverage/semantics/throwable-trace-alias-comparison-review.json).
+
+An array-valued nested `ALIAS` now reads its current live array through the
+same captured trace. The cell must be allocated, marked as a reference and
+defined; its current array and every descendant must be allocated and acyclic,
+with only direct arrays, references to arrays, or primitive/valid string-carrier
+leaves. One path-local array-ID stack crosses both direct and reference edges,
+rejecting backedges while allowing repeated shared children. A source write or
+whole-array retarget changes the referenced value at comparison time; direct
+siblings still use their saved COW table. The physical trace comparison then
+continues through nested count, key and value order without a callback. This
+normal, nonpending cold same-kind builtin bound requires null previous links and
+an array-valued reference reachable from captured args. Object leaves, cycles,
+warm caches and wider [array-cell traces](../../coverage/semantics/throwable-trace-array-cell-comparison-review.json)
+remain Unsupported.
 
 Warm caches and nonempty builtin traces now meet in the same physical slot
 scan. Same-kind canonical `Exception`/`Error` pairs with null previous values
