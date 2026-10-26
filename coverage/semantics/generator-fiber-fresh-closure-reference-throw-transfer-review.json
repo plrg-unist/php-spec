@@ -1,0 +1,90 @@
+{
+  "milestone": "I67 fresh unbound Closure-created by-reference Generator::throw Fiber transfer",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local binary SHA256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json; LC_ALL=C TZ=UTC; CPU2 native/unchanged, CPU3 private strict/affected/reached and independent model",
+  "parent": "97dc1dc040bd6f4ac614c03527433fb4f8276589",
+  "implementation_commit": "a88eaaf31",
+  "scope": "A fresh plain unbound REALCLOSURE-created BYREF Generator::throw may transfer through Fiber suspension before its first yield only with an advancing FIRST resumer, empty VALUE/REFCELL, one valid Throwable and matching Closure target/instance without receiver. The saved VM owns the original Throwable; later BYREF yield makes a live cell, while throw() returns its dereferenced snapshot. Copied/reference captures and normal catch/finally or supplied Fiber::throw cleanup retain their observed identities and lifetimes.",
+  "engine_paths": [
+    "vendor/php-src/Zend/zend_generators.c::ZEND_METHOD(Generator, throw), zend_generator_ensure_initialized, zend_generator_throw_exception, zend_generator_resume",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_YIELD by-reference CV path",
+    "vendor/php-src/Zend/zend_fibers.c::ZEND_METHOD(Fiber, throw), zend_fiber_resume_internal"
+  ],
+  "implementation": [
+    "spec/semantics/281-fibers.watsup"
+  ],
+  "source_catalog": "tests/semantics/generator_fiber_fresh_closure_reference_throw_transfer_cases.json",
+  "source_sha256": {
+    "i67-fresh-closure-byref-copy-catch": "b7e47f703a6b179bfed220b5f2da4672678a37f92426f8f950122046c6f56029",
+    "i67-fresh-closure-byref-reference-catch": "3027e36038d378f7acdf4f7b8752fcc5577adca98a2d26782afdf5f036a6d437",
+    "i67-fresh-closure-byref-object-finally": "2874a4da1de7153e364b083ddb37bbfb936e283e266ed8af9884c813199ec3b8",
+    "i67-unchanged-fresh-closure-byvalue-control": "31e6c9101a0bed23aad48f84839056c509392d1d3af981dd78cc7da28c5db375",
+    "i67-unchanged-primed-closure-byref-control": "913aa4788a48cab200872c9eb2ff80ad9e5e4f2d26946dcbe433b15ce7c27756",
+    "i67-fresh-closure-byref-abrupt-independent": "34d0562e43abca9f8f21571b8e7a02fa30c45a2542686eb9abe8ff870d4203f0"
+  },
+  "validation": {
+    "native_first": {
+      "archive_member": "native-first/report.json",
+      "sha256": "706cb48e76826d5c2f8bb22281e060c2734c0df25e968d5a3e4c603f397c07ee",
+      "result": "Five frozen authored/control sources exited 0 with empty stderr; native output fixes expected bytes."
+    },
+    "native_postflight": {
+      "archive_member": "native-first/postflight.json",
+      "sha256": "c78a64df9e61e15b9bff64ba9f1a8e7b1b0c07da712805dfc878afa7482c2c18",
+      "result": "HEAD, PHP binary, profile and five embedded/raw source bytes stayed stable after native discovery."
+    },
+    "unchanged_baseline": {
+      "archive_member": "unchanged-baseline/report.json",
+      "sha256": "96b3d901eb79950ef6b1e0612057558867c5cabaaded1ebf4a84bbbc4d72351b",
+      "result": "Copy and object/finally reached checked Unsupported; reference-capture reached internal 75-second timeout, zero credit."
+    },
+    "unchanged_reference_selected": {
+      "archive_member": "unchanged-baseline-reference-240/report.json",
+      "sha256": "6e62b542c93f53a1f452adad558219f39db8ae4cf16dbb422ad25ba8e9c670db",
+      "result": "Same frozen reference source reached checked Unsupported at 240/260, no timeout or stderr."
+    },
+    "unchanged_postflight": {
+      "archive_member": "unchanged-baseline/postflight.json",
+      "sha256": "45fe8bf76f8754cb24c8324b70b5f14715ec42eb6b5a88934863d3b2291663c5",
+      "result": "Baseline and selected run retained HEAD, CLI/adapter/PHP/profile and raw source bytes."
+    },
+    "private_strict": {
+      "archive_member": "strict-private/report.json",
+      "sha256": "0d84bdf210d3203e2b4cf3dc5f6785d635560a466f39e473bd4148792365f22e",
+      "result": "424 ordered modules, SL strict, exit 0, true, empty stderr, stable inputs."
+    },
+    "affected_sources": {
+      "archive_member": "affected-sources/report.json",
+      "sha256": "e984689b3752021ead61f4a0abbd5517dd78cf668d0e5253c133da70d5f913bf",
+      "result": "Six exact NORMAL agreements: four new fresh BYREF Closure sources including independent abrupt, two byte-identical I65/I66 controls; 240/260, stable inputs/HEAD."
+    },
+    "source_reached": {
+      "archive_member": "reached-state/report.json",
+      "sha256": "8d964f143987bc93ded3b30a65b52adb8906a8de4bb9a6b8ad3b0224bbf673d7",
+      "result": "One actual copied-capture park checks 118 custom premises/123 reported assertions, malformed guards and budgeted completion; strict SL, exit 0, stable inputs/HEAD."
+    },
+    "independent_native": {
+      "archive_member": "independent/native-first/report.json",
+      "sha256": "74bff17bafe85d8e0a8782347e47b51d67be9c10bc11d8be77b50bd65ffc3906",
+      "result": "Reviewer source frozen before model; exit 0, empty stderr, stable source/PHP/profile/HEAD."
+    },
+    "independent_model": {
+      "archive_member": "independent/model-review/report.json",
+      "sha256": "384965d54c31ec0cc21124ef9cb4963df676df7f79d238d7d12b0ecb8cfe5098",
+      "result": "Same frozen abrupt source exact NORMAL at a88eaaf31; exit 0, empty stderr, stable watched code/test/runtime inputs."
+    }
+  },
+  "preservation": "The new arm is disjoint from I65 fresh BYVAL and I66 primed cached BYREF: it requires BYREF producer and VALUE=REFCELL=eps with ADVANCE/FIRST. The inherited cached-reference, authentic callee/body, frame/owner and THROW-only gates remain unchanged. Both historical controls agreed at the affected cut; no historical credit was renewed.",
+  "remaining": "Method-created BYREF/fresh THROW, bound Closure, helper/delegated resumers, request/collection and wider lifecycle remain partial.",
+  "evidence_archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-closure-reference-throw-67/raw.tar.gz",
+    "bytes": 132673,
+    "sha256": "9b37762902064c7d42e175a09edc224b27177c31a5e7486be25fd9e809ee8dac",
+    "file_members": 108
+  },
+  "evidence_manifest": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-closure-reference-throw-67/manifest.json",
+    "sha256": "f15b2db7e838616b5dc097768327cf1e23cad13286615d39b1eb31f2cc1a0980"
+  },
+  "recovery": "Check out implementation commit a88eaaf31 in a private php-spec worktree and extract raw.tar.gz there or to an external directory; archive members hold the original sources, raw streams/status and reports. The archive is outside Git and is not a build input.",
+  "independent_review": "Reviewer byte-CLEARed the source-only native-first packet and the fixed 281/catalog/wrapper/reached cut; checked pinned native, unchanged Unsupported, affected exact source and reached-state reports; independently froze, ran and compared the abrupt pre-yield Fiber::throw source at committed a88eaaf31. No semantic counterexample or guard gap found."
+}
