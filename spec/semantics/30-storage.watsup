@@ -153,6 +153,7 @@ syntax parithmeticphase
 syntax punarywarning
 syntax pbitnotwarning
 syntax pprintnanwarning
+syntax pprintarraywarning
 syntax pboolnotnanwarning
 syntax pconcatreturned
 syntax pconcatleft
@@ -571,7 +572,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | SHELL_INVOKE porigin int | SHELL_AWAIT pshellcontext | SHELL_WARNING_RESULT pshellcontext
   | OB_PARSE pconfigcall nat pvalue* | OB_PARSE_DEPRECATED pconfigcall nat pvalue* | OB_NOTICE_RESULT pobnotice
   | SOURCE_ARRAY_RESULT psourceoperand | SOURCE_READ_RESULT psourceoperand | SOURCE_NAME_RESULT psourceoperand int | SOURCE_STRING_RESULT psourceoperand nat | SOURCE_STRING_READY psourceoperand nat preqbytes | SOURCE_STRING_PENDING psourceoperand preqbytes nat | SOURCE_STRING_PROPAGATE psourceoperand preqbytes nat | SOURCE_OPERAND_FAST psourceoperand nat | SOURCE_FAST_FINISH psourceoperand nat | SOURCE_HELPER_RELEASE psourceoperand psourcehelper | SOURCE_HELPER_FINISH psourceoperand psourcehelper | SOURCE_OPERAND_RELEASE psourceoperand | SOURCE_OPERAND_ENTER psourceoperand nat | SOURCE_OPERAND_THROW psourceoperand nat
-  | BINARY_LEFT pbin expression int | BINARY_RIGHT pbin poperand int | UNARY punary int | STMT statement | EVAL expression | EMIT int | ECHO_CALL_RESULT pechoresult | ECHO_CALL_PENDING pechoresult preqbytes nat | STRINGIFY_RESULT nat porigin int | TERMINAL_STRING nat | PRINT_EMIT porigin int | PRINT_NAN_WARNING pprintnanwarning nat | CLONE_RESULT porigin int | NAME_READ int
+  | BINARY_LEFT pbin expression int | BINARY_RIGHT pbin poperand int | UNARY punary int | STMT statement | EVAL expression | EMIT int | ECHO_CALL_RESULT pechoresult | ECHO_CALL_PENDING pechoresult preqbytes nat | STRINGIFY_RESULT nat porigin int | TERMINAL_STRING nat | PRINT_EMIT porigin int | PRINT_NAN_WARNING pprintnanwarning nat | PRINT_ARRAY_WARNING pprintarraywarning nat | CLONE_RESULT porigin int | NAME_READ int
   | WRITE_NAME nat* int | PREP_ASSIGN expression int | WRITE_DYNAMIC poperand int
   | REF_NAME nat* | REF_CAPTURE poperand int | REF_DYNAMIC poperand nat int | REF_DYNAMIC_CV poperand nat* int | PREP_REF expression int
   | ACQUIRE_CALL | ACQUIRE expression | ACQUIRE_DYNAMIC int | ACQUIRE_ARRAY int | UNSET expression | UNSET_DYNAMIC int
