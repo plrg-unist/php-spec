@@ -15,7 +15,7 @@ def $property_get_propref(S, ppropertyget, n_cell) = true
   -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
   -- if ppropref.SOURCES =/= eps
   -- if $proprefs_valid(S)
-  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps \/ $parameter_backings_valid(S)
 def $property_get_propref(S, ppropertyget, n_cell) = false -- otherwise
 
 def $property_get_verify(S, ppropertyget, REFERENCE n_cell) = $property_get_propref_check(S, ppropertyget, ppropertydesc, pvalue, pproptypesource, $propref_class(S, ppropertydesc.TYPE, pvalue, pmethoddesc.FUNCTION.CODE.STRICT))
