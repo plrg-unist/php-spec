@@ -1282,6 +1282,18 @@ def $dynamic_owned_global_query_valid(S, pconfigcall) = true
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_query)]
   -- if $string_plain(pvalue_query) = pvalue_query \/ $string_carrier_valid(S, pvalue_query)
   -- if $dynamic_define_value_matches(pvalue_query, $dynamic_global_constant_known(S, pconfigcall.SITE))
+;; Completed packs authenticate the delivered value, not their retired container.
+def $dynamic_owned_global_query_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND <- [INTRINSIC_CONSTANT, INTRINSIC_DEFINED]
+  -- if pconfigcall.OWNER =/= eps /\ pconfigcall.SELECTION = eps /\ pconfigcall.INDEX = 1
+  -- if pconfigcall.PACKS = [pconfigpack] /\ pconfigpack.INDEX = 0
+  -- if pconfigpack.ITEMS = [ENTRY pkey (DIRECT pvalue_query)]
+  -- if ~$pipe_site(S, pconfigcall.SITE)
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $dynamic_global_constant_call(pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_query)]
+  -- if $string_plain(pvalue_query) = pvalue_query \/ $string_carrier_valid(S, pvalue_query)
+  -- if $config_ini_pack_known(S, pconfigpack.ITEMS, $compiled_read(S, pconfigpack.SITE))
 def $dynamic_owned_global_query_valid(S, pconfigcall) = false -- otherwise
 def $dynamic_global_constant_valid(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_CONSTANT
