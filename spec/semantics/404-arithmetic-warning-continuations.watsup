@@ -1115,8 +1115,8 @@ def $concatassign_owned_array_source(S, pconcatassignownedarraywarning) = true
   -- if $call_target(S, ptbytes_name, eps) = (pfunction)
   -- if ~pfunction.SIGNATURE.BYREF
   -- if pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.SIGNATURE.RETURNS = eps
-  -- if $string_bytes(pconcatassignownedarraywarning.LEFT) = (text_left*)
-  -- if text_left* =/= eps
+  -- if $string_bytes(pconcatassignownedarraywarning.LEFT) = (text_left)
+  -- if text_left =/= eps
 def $concatassign_owned_array_source(S, pconcatassignownedarraywarning) = false -- otherwise
 dec $concatassign_owned_array_snapshot(pstate, pconcatassignownedarraywarning) : bool
 def $concatassign_owned_array_snapshot(S, pconcatassignownedarraywarning) = true
