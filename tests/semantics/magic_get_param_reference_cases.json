@@ -1,0 +1,58 @@
+{
+  "scope": "Authenticated parameter-string receipts survive exact and source-conflicting Get without writes; after real property-source removal existing checked conversion clears the receipt. Ordinary writes retain their property-type checks. Wider callbacks/coercions and source combinations remain partial.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_revision": "9b6e95596255764bde65acd6a6f8d20862286c91",
+  "cases": [
+    {
+      "id": "exact-receipt",
+      "source_file": "magic-get-param-reference-exact-receipt.php",
+      "source_sha256": "4ea95578b8e13cc0b4bd8e3ac01e838861191bdeb5905079b649e273859118bb",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-param-reference-private-130/.tools/magic-get-param-reference-probes-130/exact-receipt.php",
+      "stdout_base64": "RTpTfFJ8R3xzdHJpbmc3fGJsb2NrZWR8Y2VsbDd8cmVzdWx0N3xoZWxkN3xafA==",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "f3cfee74e93450e6b33ffa2978df48ac3c9ac9527a19f8feed6000ac93aeec90",
+      "read_line": 13,
+      "parameter_line": 11
+    },
+    {
+      "id": "source-conflict",
+      "source_file": "magic-get-param-reference-source-conflict.php",
+      "source_sha256": "75189f50cb9030991a2cc51ab73e11a0ea1247e490c0a0d1f9ec095fb9d4d7c6",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-param-reference-private-130/.tools/magic-get-param-reference-probes-130/source-conflict.php",
+      "stdout_base64": "QzpTfFJ8R3x0eXBlZHxtZXNzYWdlfGxpbmV8ZmlsZXw0MnxjZWxsN3xyZXN1bHQ0MnxoZWxkN3xafA==",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "4cae2f02040a3c8a917215493a7eeeb09190f4c85bea3c5be499a87b84b8f9c1",
+      "read_line": 14,
+      "parameter_line": 11
+    },
+    {
+      "id": "detached-conversion",
+      "source_file": "magic-get-param-reference-detached-conversion.php",
+      "source_sha256": "a251fc69fe111e9e8ff98724727906e52771345d9be238ce5ebfe74e3f811e48",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-param-reference-private-130/.tools/magic-get-param-reference-probes-130/detached-conversion.php",
+      "stdout_base64": "RDpTfFJ8dXxHfGludDd8Y2VsbDd8d3JpdGV8cmVzdWx0N3xmcmVlfFp8",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "277c78250ba59999e121cba5457af95676f0a035300b0248b1ddd52a4813282a",
+      "read_line": 16,
+      "parameter_line": 11
+    }
+  ],
+  "controls": []
+}
