@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "milestone": "OP91 used print retains an acquired Stringable through text emission",
+  "status": "bounded semantics, results and publication independently reviewed; actual-tail review pending",
+  "target": "PHP8.5.10 CLI NTS64, pinned project-local oracle and ordinary precision14 profile",
+  "scope": "Initially unbuffered used PRINT with a raw KNOWN Stringable from a direct noarg by-value untyped named function. The acquired temporary stays separate from its cast receiver/prepared target until after emission. Literal borrowed VARIABLE timing remains unchanged.",
+  "runtime_revision": "fd1e99e855344efcaf0c9112388c366acd5fd36c",
+  "focused_revision": "136383d11c9a29a936877b30a3834f1027e64b19",
+  "modules": 420,
+  "runtime_sha256": {
+    "spec/semantics/168-user-string-runtime.watsup": "89791594453d5ec8fe82ae788fded1cc7b7a1e579678a19a75df28cd2d0d9c73",
+    "spec/semantics/397-output-handler-failures.watsup": "9d9da23198ee17a4488586b0b98355430ed68454a8c86d9a3d5869cea9cfdfb6",
+    "spec/semantics/modules.json": "f6abdff55b4c11646ce77ad6c86a8118c96a728d104ada85d595116f33542b71"
+  },
+  "engine_basis": [
+    "Pinned zend_compile_print evaluates the child, emits ZEND_ECHO with extended_value1 and returns CONST1. ZEND_ECHO writes converted text before FREE_OP1 and the pending-exception check. zend_std_cast_object_tostring retains a separate cast receiver through the method.",
+    "Forty additive lines in168/397 install the existing OUTPUT_STRING_RELEASE in the real PRINT tail before conversion. Fresh admission checks raw ownership, empty initial buffers, compiled print1/source/line and the actual noarg by-value untyped function. The old borrowed rule is selected by planEPS.",
+    "A separate historical call certificate preserves the existing output_string_owned domain. Exact held caller/object/context/tail excludes duplicate/rejecting positive-buffer return hooks. Release drops only its TODO owner; RESULT1 and the converted-text scratch BASE survive real normal D. Supplied throw cleanup uses that same release source and original pending Exception.",
+    "No task tag, pstate field/default, module manifest or generic270/396 rule changes. Historical source validation permits retired A and nonempty buffers; active release still requires its live allocation and authentic tail."
+  ],
+  "contract": [
+    "Acquired normal prints P/S/X before D(v100,casts1), then delivers strictint1 to the caller. Borrowed CV unset during S instead retires its last cast pin and runs D before X. EOF keeps distinct source/result writes and one destruction.",
+    "Acquired Sthrow emits no X and delivers no print1, retaining outer100. The sole TMP retires through real D before catching the same Exception20/null Previous.",
+    "505 checked-source-derived recipe premises = acquired197 + borrowed142 + acquired throw166, including derived guards. They bind actual f result, separate target/cast/TMP roots, text-before-retirement versus borrowed early D, raw root loss, protected RESULT1 versus text BASE, same-Exception cleanup, dead A, EOF and budgets. A valid default-buffer history and tuple refusals are derived; no positive user-handler execution is claimed."
+  ],
+  "accepted": {
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-91/source-fd1e99e85-two-control/report.json",
+      "sha256": "baa205967e8c81943d2f570512c51f2517f5184706d487320b84c7625e7e1449",
+      "source_agreements": 2,
+      "borrowed_control_agreements": 1,
+      "revision": "fd1e99e855344efcaf0c9112388c366acd5fd36c",
+      "checks": "Full420 struct30 then first model-only source2/control1 at CLI60/process90 against retained exact f5 native tuples, all normal0/exact stdout/empty stderr."
+    },
+    "focused": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-91/focused-136383d11-three-base-fixed/report.json",
+      "sha256": "4eaed8f0532d0d9a5072a5cd79b792011ce664dd3f82e2395e397b04946afecb",
+      "conditions": {
+        "acquired": 197,
+        "borrowed_control": 142,
+        "acquired_throw": 166
+      },
+      "checks": "All505 SL120 exacttrue; fresh author struct and two byte-identical peer structs retained from070 with exact source/kernel/parser bridge. Seven fresh processes fully reaped; no timeout/interruption. Peer SL first executions; author passes after the preserved fixture corrections."
+    },
+    "review": "operators79_review independently accepted scope/native/genuine, runtime, reciprocal recipes/headers, source2/control1, focused505 and publication. Actual-tail review pending."
+  },
+  "preserved_zero_credit": {
+    "native_author": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-91/native-f5a495382-author/report.json",
+      "sha256": "c73f570fd63aa53209ed8df18bfaab920ae2831bb2ede964ee2ef0b58cd5fc86"
+    },
+    "native_peer": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-91/native-f5a495382-peer/report.json",
+      "sha256": "68126db66d38c471c4da20d207971a3df27bf51d2ace51491600f974c488ba03"
+    },
+    "genuine": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-91/baseline-f5a495382-print-acquired/report.json",
+      "sha256": "d8a137c1fd04d073e69c5ac41fb5b9c51819008bad5a8155bf705582b98dccc1",
+      "result": "Checked NORMAL/model0/comparisonfalse: actual P;S;D:1:1;X; precedes otherwise true R/EOF observers. Native is P;S;X;D:1:1;. This is early acquired-TMP retirement, not Unsupported ingress or a wrong print1."
+    },
+    "fixture_failures": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-91/focused-0bf363238-three/report.json",
+        "sha256": "885d50615626e1444daa32fb06f59ed79bb218b83859b30bfc4a9559eae66b70",
+        "result": "Author static failure: new variables were bound inside Boolean conjunctions; no SL ran. Author/peer helper binders were split."
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-91/focused-070e6a10c-three-corrected/report.json",
+        "sha256": "61ccec6e1342b94f6707c39366e8ca8202ffaeb8aca098bb882d0293fd1256c5",
+        "result": "All3 structs passed; author SL failed because a default buffer was mistaken for a positive user-handler buffer; peer SL unrun."
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-91/focused-46579d98d-three-author-fixed/report.json",
+        "sha256": "350d46840bda7110078e3d6ce206002087108ad854f8ad494895f6842fde9f89",
+        "result": "Fresh author struct/retained peer structs passed; author SL incorrectly expected scratch BASE1 instead of preserved converted text; peer SL unrun."
+      }
+    ]
+  },
+  "compatibility": "Raw VARIABLE print keeps the literal old path, verified by the separate source/control recipe. Scalar, buffered-entry and other producer domains retain their prior routes. Fresh selection uses source/compiled function facts, never the test name f. Corrected state checks reuse exact accepted source/native tuples; runtime/source/native campaigns were not renewed for fixture fixes.",
+  "limits": [
+    "Reference/typed/argument-bearing or other acquired producers, positive output-handler execution/reentry, destructor throws/chaining and suspension remain partial. The derived nonempty default-buffer view is not a native callback agreement.",
+    "No engine bug or intentional divergence is claimed. Paused OP12/Source47/owned-NUL/undefined-byref LIST/COMP88 and held COMP123 remain untouched; full core, final combined validation and fresh copied-path network-isolated offline rebuild remain open."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-91",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C,TZ=UTC,PHP_SPEC_SCRIPT_ENCODING absent; ordinary precision14. Native30/modelCLI60-process90; fixturestruct30/SL120, serial full reap/release. Regular local tool reuse is not a fresh offline rebuild.",
+    "headers": [
+      "run-native-gate.py",
+      "run-source-gate.py",
+      "run-focused-base-fixed.py"
+    ],
+    "record": "Reports preserve original source/path/cwd, streams/status, commands and runtime/tool inputs. Restore matching Git cuts/paths and use fresh output names; raw artifacts stay external."
+  },
+  "composition": {
+    "parent": null,
+    "private_publication": null,
+    "modules": null,
+    "preservation": "Actual-tail composition pending; tested168/397 and six tests must remain private-exact, with incoming semantic paths/manifest preserved.",
+    "gate": "Pending independent actual-tail review; accepted420 execution cuts retain their identities without renewal."
+  }
+}

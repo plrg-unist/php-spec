@@ -5547,6 +5547,12 @@ returning constant integer 1, including folded expressions and reference demand.
 Source, compiler and paused ownership checks cover admitted conversions;
 user-object `__toString` now runs callbacks for echo, print and string casts,
 with other string contexts still open.
+Initially unbuffered print retains a noarg by-value untyped call's acquired
+Stringable until after text emission and before outer store; borrowed CV timing
+stays distinct. A method throw emits no print text/result and preserves the
+original Exception through retirement. Two acquired sources, one borrowed
+control and 505 recipe premises (including derived controls) pass in the
+[print lifetime review](coverage/semantics/print-stringable-lifetime-review.json).
 [Eval operand conversion](coverage/semantics/user-string-eval-author.json)
 extends that callback to checked eval source requests. Its source catalogue
 passed on the file-trace base; installed focused, paused and included-file
