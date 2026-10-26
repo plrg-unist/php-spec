@@ -2742,13 +2742,17 @@
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/58-ordinary-expressions.watsup",
-        "spec/semantics/54-binary-operators.watsup"
+        "spec/semantics/54-binary-operators.watsup",
+        "spec/semantics/387-integer-operator-warnings.watsup"
       ],
       "source_tests": [
         "tests/semantics/ordinary.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/bitwise_computed_warning_cases.py",
+        "tests/semantics/bitwise_computed_warnings.py",
+        "tests/semantics/bitwise_computed_warning_protocol.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open. OP105 adds authenticated nonfolded Plus/Mul/Div LEFT TMP2 results in ordinary numeric bitwise operations with direct RIGHT CV8: physical RHS-first conversion, two saved fractional-to-int notices and second-handler cancellation. Eight new warning originals and one already quiet control agree; four source-reached recipes check 579 conditions, including wrong-order/source and pending no-store checks. Two independently frozen controls confirm the opposite CV8/TMP2 warning order and an ineligible handler mask. Other producers and object conversion remain partial; see bitwise-computed-warning-review.json."
     },
     {
       "node": "Expr_BinaryOp_BitwiseOr",
@@ -2762,13 +2766,17 @@
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/58-ordinary-expressions.watsup",
-        "spec/semantics/54-binary-operators.watsup"
+        "spec/semantics/54-binary-operators.watsup",
+        "spec/semantics/387-integer-operator-warnings.watsup"
       ],
       "source_tests": [
         "tests/semantics/ordinary.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/bitwise_computed_warning_cases.py",
+        "tests/semantics/bitwise_computed_warnings.py",
+        "tests/semantics/bitwise_computed_warning_protocol.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open. OP105 adds authenticated nonfolded Plus/Mul/Div LEFT TMP2 results in ordinary numeric bitwise operations with direct RIGHT CV8: physical RHS-first conversion, two saved fractional-to-int notices and second-handler cancellation. Eight new warning originals and one already quiet control agree; four source-reached recipes check 579 conditions, including wrong-order/source and pending no-store checks. Two independently frozen controls confirm the opposite CV8/TMP2 warning order and an ineligible handler mask. Other producers and object conversion remain partial; see bitwise-computed-warning-review.json."
     },
     {
       "node": "Expr_BinaryOp_BitwiseXor",
@@ -2782,13 +2790,17 @@
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/58-ordinary-expressions.watsup",
-        "spec/semantics/54-binary-operators.watsup"
+        "spec/semantics/54-binary-operators.watsup",
+        "spec/semantics/387-integer-operator-warnings.watsup"
       ],
       "source_tests": [
         "tests/semantics/ordinary.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/bitwise_computed_warning_cases.py",
+        "tests/semantics/bitwise_computed_warnings.py",
+        "tests/semantics/bitwise_computed_warning_protocol.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open. OP105 adds authenticated nonfolded Plus/Mul/Div LEFT TMP2 results in ordinary numeric bitwise operations with direct RIGHT CV8: physical RHS-first conversion, two saved fractional-to-int notices and second-handler cancellation. Eight new warning originals and one already quiet control agree; four source-reached recipes check 579 conditions, including wrong-order/source and pending no-store checks. Two independently frozen controls confirm the opposite CV8/TMP2 warning order and an ineligible handler mask. Other producers and object conversion remain partial; see bitwise-computed-warning-review.json."
     },
     {
       "node": "Expr_BinaryOp_BooleanAnd",
