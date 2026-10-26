@@ -3142,7 +3142,12 @@ Bounded by-value WeakMap `foreach` now retains the Map through hidden iterator
 DATA and copies its object Key/Value into ordinary CVs. Exhaustion or `break`
 retires DATA before those copies; two originals and 287 Boolean/five raw checks
 pass at `b7af270c7`/410. Active entry mutation is explicitly refused;
-wider target/value and map-history cases remain partial.
+wider target/value and map-history cases remain partial. The actual bounded
+`getIterator()` factory now returns an Iterator that owns Map; outer foreach
+keeps its own DATA and current cache. Exhaustion versus an externally held
+Iterator after break preserves the copied targets until their later release.
+Two sources and 265 Boolean/four raw checks pass at `95d732f3b`/413; manual methods,
+wider histories, hidden allocation handles and GC/CONFIG remain partial.
 
 Bounded by-reference WeakMap traversal shares the entry's cell and preserves
 rebinding plus escaped aliases through DATA or Key retirement. A reference
