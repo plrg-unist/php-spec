@@ -3199,8 +3199,12 @@ Iterator after break preserves the copied targets until their later release.
 Two sources and 265 Boolean/four raw checks pass at `95d732f3b`/413. Manual
 zero-argument cursor methods now preserve standalone current copies, next/end
 NULL, rewind identity and empty access after Key death; two sources and 308
-Boolean/eight raw checks pass at `25ff16620`/413. Wider histories, active outer
-loops, hidden allocation handles and GC/CONFIG remain partial.
+Boolean/eight raw checks pass at `25ff16620`/413. Finite manual cursors now keep
+weak Key history through entry death and singleton normalization, advancing past
+the actual surviving selection. Two new sources and 364 Boolean/eight raw checks
+pass at `a2fe0cc36`/415; original timeouts retain zero agreement. Still-Many
+wrapper teardown refuses; wider histories, active outer loops, hidden allocation
+handles and GC/CONFIG remain partial.
 
 Bounded by-reference WeakMap traversal shares the entry's cell and preserves
 rebinding plus escaped aliases through DATA or Key retirement. A reference
