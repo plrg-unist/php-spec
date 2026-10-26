@@ -1,0 +1,43 @@
+{
+  "milestone": "A59 named by-reference Generator array spread with an outer reference cell and scalar aliases",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local vendor/php-src",
+  "scope": "A named by-reference Generator yields a real ordinary global-bound array cell containing defined scalar reference leaves. Spread dereferences the outer cell into a DIRECT copied row; later outer-cell rebinding leaves the copied row intact while inner aliases remain shared. A retained old row exposes COW singleton-reference unwrapping after the outside leaf alias is removed. A borrowed Aggregate getter may return the same named Generator. A supplied body throw retires the outer cell at DATA/storage release before canceling the builder-held old row and inner leaf.",
+  "implementation": {
+    "source_revision": "7fd5651bb6417a1a9418cf5de5dafe1c2b69fadf",
+    "runtime_revision": "1d5a7ea2703be2623faf876d5f5cb08464a78ad6",
+    "fixture_revision": "d0d2cc1911b5ea6c65030cefc95d0eff6c60d960",
+    "runtime_files": {
+      "spec/semantics/426-array-iterator-unpack.watsup": "6e540f04d037401e7a2a0f99857911140fd40baf7429280edb2d834648b0f4c5",
+      "spec/semantics/427-array-generator-unpack.watsup": "c313a6dec9ef24237109b9a736200d662b3c940f12e27599e993bfc8b17a76ff"
+    },
+    "boundary": "426 factors the preexisting complete ordinary-cell authority without widening Iterator behavior. 427 adds a by-reference-producer arm only for a genuine guarded REFCELL pointing to an authenticated finite scalar-reference array. Old successes and new old-validator-eps admission are disjoint. The builder uses saved producer history after outer-cell retirement; no stale cache pointer is treated as an owner. By-value and temporary-by-value yields, key/resume/release, generic ownership and schema are unchanged. Owning/special cells, objects, cycles, debt, manual methods and wider producer forms remain partial."
+  },
+  "validation": {
+    "native_direct3": ".tools/a59-native3/report.json SHA-256 aebb01375fa89cd1897040b360185a6413c385c3e1924a6bc3a5660d6c664d20 at clean 7fd5651bb; three exact quiet exit-0 originals: outer rebind, dropped leaf/COW, supplied throw/finally.",
+    "native_aggregate1": ".tools/a59-aggregate-native1/report.json SHA-256 ff2906999fcc1b5eaa2ac6e9d2862bc6c3fd06e45099a1530d5c75e6beb43f78 at clean 7fd5651bb; one exact quiet exit-0 Aggregate-returned named Generator original.",
+    "genuine_baseline": ".tools/a59-baseline4/report.json SHA-256 aed269ff163c65679a4893c10b6da76936176429a95ded77a4c76bb975383856 at clean 7fd5651bb; model-only on the same four original source paths. All four stop at the old explicit Generator cache/builder Unsupported after their authentic prefixes; zero agreement credit, no duplicate native execution.",
+    "strict": ".tools/a59-strict/report.json SHA-256 48de8c2bdf107c6f9e91dac813358a3e89547bd4133c8bf28d47c365a8d579a0 at clean 1d5a7ea2703/423 modules; SL/cache disabled/determinism enabled, PASS/exit0/quiet, 10.806<180s, empty group.",
+    "source4": ".tools/a59-source4/report.json SHA-256 dd73885a9da853764524e763e1dfdab021ca2ff2e62476a422ac5a1902d617f6 at clean 1d5a7ea2703/423; model-only on all four exact native paths, normal/exit0/quiet/byte-exact, agreement credit1 each, empty groups; only 426/427 changed from native cut.",
+    "focused_preparation": ".tools/a59-author-prepare/report.json SHA-256 a3f5c311182360745f47bcdf716b2c62b74e85063e33004b1d4c379ab7429efa and .tools/a59-peer-prepare/report.json SHA-256 d93aae402c845991809ba1b5db354e2125c20d1990beee26229a124b1c4392f9 at clean d0d2cc191; checked fixtures only, zero semantic credit.",
+    "focused": ".tools/a59-author-focused/report.json SHA-256 3da3fda70c084f9da541ab03d86a34430025f55d3de46bc47457e2d6317f2932 and .tools/a59-peer-focused/report.json SHA-256 e55bc65b2f89a4be60348a3655e1b8452074a45d0d2f9f834c063370735993cb at clean d0d2cc191/423. Rebound176, dropped181, supplied throw231 =588 premises, 582 Boolean plus six raw PhpStep transitions. All three true/quiet/exit0 under 180s, no timeout/interruption, child and outer groups empty, frontend/adapter final exits0.",
+    "control": "The absent-outer-marker projection preserves the same physical graph but refuses the helper-only by-reference value; it is a focused control, not an additional PHP source agreement."
+  },
+  "independent_review": "lifecycle132_review accepted the native/baseline discriminants, 426/427 domain and old-route preservation, strict423/source4, generated fixture identities, and all 588 reached premises with full process closure. No joined execution credit is inferred from eventual integration.",
+  "execution": {
+    "profile": "tests/semantics/profile.json SHA-256 9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94; -n, opcache CLI/JIT disabled, precision 14, serialize_precision -1, UTC, error_reporting 30719, zend.assertions 1; LC_ALL=C and TZ=UTC",
+    "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "focused_header_sha256": "68838daa6a1ece43e2a6936035ecca989b603f8405b55a7439b12ee9e79637bd",
+    "focused_command": "taskset -c 2 python3 -B .tools/a59-focused-actor.py 2; the reviewed header runs only author2 then peer1 under 400/210s outer and 2GiB caps"
+  },
+  "archive": {
+    "location": "../php-spec-evidence-archive/array-generator-byref-reference-cache-59/raw.tar.xz",
+    "sha256": "91166518342297a21af3f19020e1451591213b1025fd60611a46ce78b93d2e35",
+    "bytes": 64856,
+    "members": 173,
+    "manifest": "../php-spec-evidence-archive/array-generator-byref-reference-cache-59/manifest.json",
+    "recovery": "For a selected report, recreate /home/user/workspace/php-spec/.tools/array-generator-reference-cache-59 at its tested revision: 7fd5651bb6417a1a9418cf5de5dafe1c2b69fadf for native/baseline, 1d5a7ea2703be2623faf876d5f5cb08464a78ad6 for strict/source, or d0d2cc1911b5ea6c65030cefc95d0eff6c60d960 for focused preparation/numeric. Restore original cwd and .tools paths plus project-pinned PHP/adapter/numeric providers from report inputs. Verify archive SHA-256, extract raw.tar.xz there, and choose fresh output paths for replay. The archive holds originals and records, not the engine or executables."
+  },
+  "remaining": "Complete array spread, Traversable, Generator ownership and PHP core semantics remain partial. Temporary by-value yields of by-reference functions, owning/typed/proxy/object/cyclic/debt payloads, broader operands, delegation and reentrant lifetimes keep explicit boundaries.",
+  "engine_routes": "vendor/php-src/Zend/zend_vm_def.h ZEND_ADD_ARRAY_UNPACK dereferences/copies the yielded value before move_forward; Zend/zend_generators.c zend_generator_close and zend_generator_free_storage distinguish frame closure from VALUE/REFCELL retirement; Zend/zend_hash.c zend_array_dup_value unwraps a singleton inner reference on COW. These are the project-pinned engine sources, not an external execution oracle."
+}

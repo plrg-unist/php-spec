@@ -1,0 +1,168 @@
+{
+  "milestone": "Iterator64 primed unbound Closure-created Generator::throw Fiber transfer",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local PHP SHA256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json; LC_ALL=C; TZ=UTC; exclusive CPU5; exclusive CPU1 for actual-tail joined strict424",
+  "parent": "7d0f97483a30d4c4a5bc327765f73b1c9cfc8c82",
+  "private_implementation_commit": "4ea47ae1467bfb6c72cf107af3a7ff9746a85886",
+  "scope": "One primed, by-value, non-BYREF Generator::throw with a defined cache and one valid Throwable enters the Fiber transfer domain when its callee is a plain unbound, live REALCLOSURE with matching CLOSURE_TARGET, INSTANCE and no receiver. Existing saved resumer, capture, owner and source validation remain in force.",
+  "engine_paths": [
+    "vendor/php-src/Zend/zend_generators.c: ZEND_METHOD(Generator, throw), zend_generator_throw_exception, zend_generator_resume, zend_generator_close, zend_generator_get_gc",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_YIELD old-cache retirement",
+    "spec/semantics/281-fibers.watsup: $fiber_generator_throw_valid, $fiber_generator_callee_valid, $fiber_generator_body_id"
+  ],
+  "implementation": [
+    "spec/semantics/281-fibers.watsup"
+  ],
+  "source_catalog": "tests/semantics/generator_fiber_closure_throw_transfer_cases.json",
+  "sources": {
+    "generator-fiber-closure-throw-closure-copy-catch": "267c754cba8ba8714fc1fc9510d7d281b9157704b52f585f9f39817843101407",
+    "generator-fiber-closure-throw-closure-reference-catch": "26fd3845ea1f3bbcf2f944769b548d1966e87b12c914c7682f08cae7cee4e9ef",
+    "generator-fiber-closure-throw-closure-object-finally-normal": "8d47226603399c73424c4a7ac487ee9311740786917ac84986ee7179b9bf3f50",
+    "generator-fiber-closure-throw-closure-object-finally-abrupt": "0d1dfc6d69188c9810ca7e6276067b3a8f168e853576d685cce9e0f9dfeed9ac",
+    "generator-fiber-closure-throw-direct-control": "66ec04768e75fcaf808c64d4b05fdd19ca0d47948e84fef7c124c24631b70612",
+    "generator-fiber-closure-throw-cache-replacement-review": "b687c7550c5d8cd507609b88b5a3797c460210937f829e1fe4d845b32f33cb6c"
+  },
+  "validation": {
+    "native_first": {
+      "report": {
+        "archive_member": ".tools/i64-native-first/native-hwl_4zdb/report.json",
+        "sha256": "59118c527a6563d42b80b7458f92d22960d0def1e9154bb5e2c4b492f865da8c"
+      },
+      "result": "five frozen originals exit0, empty stderr, stable HEAD/inputs and pinned binary"
+    },
+    "unchanged_genuine_baseline": {
+      "report": {
+        "archive_member": ".tools/i64-native-first/unchanged-baseline-kmrpg3kk/report.json",
+        "sha256": "2049bfac2890091da9a9b42a15569928da54ba7c6cb6d37d2cf9a04f26df9c89"
+      },
+      "result": "four new Closure THROW originals checked Unsupported with zero agreement; direct I60 control exact NORMAL"
+    },
+    "strict_corrected": {
+      "report": {
+        "archive_member": ".tools/i64-native-first/strict-moxb7zoc/report.json",
+        "sha256": "86c866366c83d2479268d74c7b4e92bac3a6b991b9774e5cf656998e363c0d04"
+      },
+      "modules": 423,
+      "exit": 0,
+      "stderr_bytes": 0
+    },
+    "affected_source": {
+      "report": {
+        "archive_member": ".tools/i64-native-first/corrected-source-ztsw3lcb/report.json",
+        "sha256": "c6783ba7679197e469f0b38c9bec234e273901847bd0c83c2013117cbfd106df"
+      },
+      "result": "four changed originals exact NORMAL, exit0, stable HEAD/inputs"
+    },
+    "source_reached_states": {
+      "copied_capture": {
+        "report": {
+          "archive_member": ".tools/fiber-state-review-mi3ycsdr/report.json",
+          "sha256": "3b8d170e35a5c71b4faae8a0f29260d82998c4d32d86f8c447ad8bc1df695ee2"
+        },
+        "assertions": 123,
+        "sl": true,
+        "exit": 0,
+        "timeout": false,
+        "passed": true
+      },
+      "original_reference_cell": {
+        "report": {
+          "archive_member": ".tools/fiber-state-review-rjwd6zdg/report.json",
+          "sha256": "8d0f74f3ee80c8a8f66140e087afa7089dffe0744f62ef5c70209704f5440c5f"
+        },
+        "assertions": 122,
+        "sl": true,
+        "exit": 0,
+        "timeout": false,
+        "passed": true
+      },
+      "closed_object_cache": {
+        "report": {
+          "archive_member": ".tools/fiber-state-review-y43926sa/report.json",
+          "sha256": "91336ece97dc0fd85598f66614cae29af045303b21ebfe06524c16fb5d6f9c09"
+        },
+        "assertions": 57,
+        "sl": true,
+        "exit": 0,
+        "timeout": false,
+        "passed": true
+      }
+    },
+    "independent_native": {
+      "report": {
+        "archive_member": ".tools/i64-independent-review/native-review/report.json",
+        "sha256": "ed55286a139c2195993cda8e53b4164c0470d504d1f667f774889cf0c82253c6"
+      },
+      "source_sha256": "b687c7550c5d8cd507609b88b5a3797c460210937f829e1fe4d845b32f33cb6c",
+      "result": "cache-replacement source exit0, empty stderr"
+    },
+    "independent_model": {
+      "report": {
+        "archive_member": ".tools/i64-independent-review/model-review/report.json",
+        "sha256": "7a188e165c19e05ff90e43af6dfabc487170d6ea15c15641265f7b14d5a015b0"
+      },
+      "result": "same frozen source exact NORMAL, exit0, stable HEAD/inputs"
+    },
+    "maintained_sixth_wiring": {
+      "report": {
+        "archive_member": ".tools/generator-fiber-closure-throw-transfer-source-5892f6ri/report.json",
+        "sha256": "e66910d0d9c009de9a21cc3abd7707f7cf1ee60b5326547e753469a2470cad61"
+      },
+      "result": "selected maintained row exact NORMAL, native/model exit0, stable HEAD/inputs"
+    },
+    "zero_credit": [
+      {
+        "report": {
+          "archive_member": ".tools/i64-native-first/implemented-source-h802r1sz/report.json",
+          "sha256": "a46a48cf933dd4d4f9cb721c30eec34161532c33e945a51776c73e73d9fca6e0"
+        },
+        "reason": "first 281 candidate used n_callee inside a noninvertible conjunction; four SL runner_failure rows before evaluation"
+      },
+      {
+        "report": {
+          "archive_member": ".tools/i64-native-first/strict-smh2qpx8/report.json",
+          "sha256": "9b63a79583d657c17ba3af694fbd0f3e376e6be32f432016f276036c16921aca"
+        },
+        "reason": "algorithmic pass at first nonexecutable candidate does not validate SL execution"
+      },
+      {
+        "archive_member": ".tools/i64-native-first/state-setup-failure.json",
+        "reason": "first focused state invocation lacked private numeric_runner.exe path and stopped before semantic evaluation; read-only pinned symlink repaired the fixture"
+      }
+    ]
+  },
+  "preservation": "The accepted I57 Closure CURRENT/NEXT and I60-I63 direct/fresh/BYREF/method THROW arms remain unchanged; no new VM root, heap edge, transfer operation or schema field.",
+  "remaining": "Closure BYREF/fresh THROW, bound Closure and Closure::call variants, method BYREF/fresh, delegated/helper THROW, request/GC and wider lifecycle remain partial.",
+  "evidence_archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-closure-throw-transfer-64/raw.tar.gz",
+    "bytes": 2222120,
+    "sha256": "8604e0f1e733f36aa765d38f70a6d021450bfdd6dfbc15a9df38c46780faba32",
+    "file_members": 126
+  },
+  "evidence_manifest": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-closure-throw-transfer-64/manifest.json",
+  "evidence_manifest_sha256": "2055fdcc73bca6e41ba061fca5105365c2057a9d7f294580a70a741691987245",
+  "recovery": "Extract raw.tar.gz at a reconstructed private I64 worktree root. Original report paths remain historical; catalog embeds exact source bytes.",
+  "independent_review": "Independent reviewer cleared private semantics/docs, the exact-tail seam and joined strict424 composition for guarded fast-forward over c901290da4a93e599a8cfa71a471449a79a084a2.",
+  "actual_tail": {
+    "parent": "c901290da4a93e599a8cfa71a471449a79a084a2",
+    "tested_candidate": "a1fc800e29451a8e2547fd55303b884f2dacdfdc",
+    "composition": "Incoming 123/146/152/163/210/30/382/400/404/420/427/433/435 selectors do not run in the six I64 originals: no pipe, print, loose Throwable comparison/trace read, hooks, HALT or traversable unpack. Added 30 task/target grammar and module435 compile together at the joined candidate; no source/state evidence is renewed.",
+    "joined_strict": {
+      "report_archive_member": ".tools/i64-joined/strict-mg1wi8u4/report.json",
+      "report_sha256": "fc0018de4e13a508e04e0792a364a04693c67d0f258722bf88279836c220ade1",
+      "modules": 424,
+      "exit": 0,
+      "timeout": false,
+      "stderr_bytes": 0,
+      "head_stable": true,
+      "inputs_stable": true
+    }
+  },
+  "joined_archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-closure-throw-transfer-64/joined-strict.tar.gz",
+    "bytes": 1895095,
+    "sha256": "8509bd9e470ba15ea67d1686144f13fdbb134eb2ff713644c2a317ba870e6641",
+    "file_members": 4
+  },
+  "joined_manifest": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-closure-throw-transfer-64/joined-manifest.json",
+  "joined_manifest_sha256": "b3ef236ef48e35fe7b959d0817e3bd113c674341f3d735312c03b47ad4b6c1f6"
+}

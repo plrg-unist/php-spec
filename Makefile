@@ -100,6 +100,11 @@ test-semantics: build
 		python3 tests/semantics/array_generator_reference_cache_state.py --source-report "$$out/generator-source/report.json" --output "$$out/author-state" && \
 		python3 tests/semantics/array_generator_reference_cache_state_review.py --source-report "$$out/generator-source/report.json" --output "$$out/peer-state" && \
 		python3 tests/semantics/array_generator_reference_aggregate_sources.py --output "$$out/aggregate-source"
+	@out="$$(mktemp -d .tools/a59-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/array_generator_byref_reference_cache_sources.py --output "$$out/generator-source" && \
+		python3 tests/semantics/array_generator_byref_reference_cache_state.py --source-report "$$out/generator-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/array_generator_byref_reference_cache_state_review.py --source-report "$$out/generator-source/report.json" --output "$$out/peer-state" && \
+		python3 tests/semantics/array_generator_byref_reference_aggregate_sources.py --output "$$out/aggregate-source"
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
 	python3 tests/semantics/globals_compiler.py
@@ -514,6 +519,8 @@ test-semantics: build
 	python3 tests/semantics/generator_fiber_reference_throw_transfer_state.py
 	python3 tests/semantics/generator_fiber_method_throw_transfer_sources.py
 	python3 tests/semantics/generator_fiber_method_throw_transfer_state.py
+	python3 tests/semantics/generator_fiber_closure_throw_transfer_sources.py
+	python3 tests/semantics/generator_fiber_closure_throw_transfer_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -607,6 +614,8 @@ test-semantics: build
 	python3 tests/semantics/pipe_named_carrier_protocol.py
 	python3 tests/semantics/pipe_optimized_static.py
 	python3 tests/semantics/pipe_optimized_static_protocol.py
+	python3 tests/semantics/pipe_object.py
+	python3 tests/semantics/pipe_object_protocol.py
 	python3 tests/semantics/pipe_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py

@@ -125,6 +125,15 @@ def $fiber_generator_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = tr
   -- if pgeneratorop.NAME = "throw"
   -- if pgeneratorop.ARGUMENTS = [pvalue]
   -- if $generator_input_valid(S, pvalue)
+  -- if pgenerator.VALUE =/= eps /\ pgenerator.REFCELL = eps
+  -- if pgenerator.CLOSURE = (n_callee)
+  -- if ~$generator_reference_producer(S, pgenerator)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n_callee
+  -- if pcallcontext.INSTANCE = (n_callee) /\ pcallcontext.RECEIVER = eps
+def $fiber_generator_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = true
+  -- if pgeneratorop.NAME = "throw"
+  -- if pgeneratorop.ARGUMENTS = [pvalue]
+  -- if $generator_input_valid(S, pvalue)
   -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL =/= eps
   -- if $generator_reference_producer(S, pgenerator) /\ pgenerator.CLOSURE = eps
   -- if pcallcontext.TARGET = pgenerator.FUNCTION /\ pcallcontext.INSTANCE = eps

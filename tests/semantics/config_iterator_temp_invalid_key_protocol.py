@@ -103,7 +103,7 @@ def checks(program, path, name):
         '$lookup(S_pre.ENV,' + text('result') + ') = (n_result_cell)',
         'S_pre.STORE[n_result_cell] = DEFINED (PINT 99)',
         '$heap_owners($heap_graph(S_pre),HOBJECT n_object) = ' + owners_pre,
-        'pconfigiterator_initial = {CALL pconfigcall,ITERATOR S_pre.NEXTITER,OBJECT n_object,INPUT S_pre.RESULT,ITEMS eps,CURRENT (KNOWN PNULL),KEY (KNOWN PNULL)}',
+        'pconfigiterator_initial = {CALL pconfigcall,ITERATOR S_pre.NEXTITER,OBJECT n_object,INPUT S_pre.RESULT,PRODUCER eps,ITEMS eps,CURRENT (KNOWN PNULL),KEY (KNOWN PNULL)}',
         '$config_iterator_input(S_pre,pconfigiterator_initial)',
         '$config_iterator_start(S_pre,pconfigcall,S_pre.RESULT,n_object)',
         '$config_iterator_owning_input(pconfigiterator_initial)',

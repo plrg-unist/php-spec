@@ -52,12 +52,24 @@ checks byte well-formedness, and a later `CALL_ARGS` task cannot reconstruct
 selected name bytes after a source variable changes. Method strings, builtins
 and Closure operands keep their separate dispatch and exclusions.
 
+A public user `__invoke` instance can now be the evaluated RHS of an ordinary
+or optimized first-class pipe. At the send task, the evaluated RHS must still
+be the selected object; the selected method is its public, concrete effective
+`__invoke`. The call owns that receiver through body execution, even after a
+source variable is rebound. A result receipt keeps only the source and method
+history after the receiver retires, so a by-reference result remains usable.
+The forced left value is still sent by value: a by-reference first parameter
+is refused before method entry, with left and right temporary cleanup in
+native order. User-method type checks use the pipe caller's strictness.
+Nonpublic, internal and other object-callable forms remain separate work.
+
 The syntax grouping and bare-arrow rejection are described in
 [the syntax review](../../coverage/semantics/pipe-syntax-review.json). Runtime
 rules are in `122-pipe-compiler.watsup`, `123-pipe-runtime.watsup`,
 `432-pipe-array-callables.watsup` and
 `433-pipe-static-method-strings.watsup` and
-`434-pipe-named-string-carriers.watsup`, with narrow shared task and
+`434-pipe-named-string-carriers.watsup` and
+`435-pipe-object-callables.watsup`, with narrow shared task and
 call-integrity changes. Matching-engine evidence starts at `zend_compile_pipe` in the pinned
 `Zend/zend_compile.c`, with value sends and calls in `Zend/zend_vm_def.h`.
 
@@ -77,7 +89,14 @@ The named-carrier increment records 19 exact pinned CLI outcomes (18 normal,
 one uncaught PHP Error), a separate 19-source request-profile pass and five
 reached stages/72 assertions. The former optimized missing-function interpreter
 failure is one current agreement, with its old failure retained as zero credit.
-Builtin, scoped method-string and other object callables remain explicit
+The [public object-callable review](../../coverage/semantics/pipe-object-callable-review.json)
+records eight new exact original-source agreements and two unchanged controls
+at the first direct cut. A later result-validator correction passes five
+reached stages and 54 assertions; the review keeps the two tested cuts and
+the failed initial protocol fixtures separate. The send certificate checks
+the actual evaluated RHS object, while the later receipt cannot reconstruct
+a mutable source variable's past value. Builtin, scoped method-string and
+other object callables remain explicit
 dependencies; this is partial pipe coverage, not a full callable-family claim.
 
 [Unary CONFIG PIPE](../../coverage/semantics/include-config-pipe-review.json)

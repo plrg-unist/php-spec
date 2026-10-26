@@ -1643,10 +1643,18 @@ outside alias permits a sole cell to unwrap. The yielded array stays in the
 Generator's VALUE through CLOSED. When DATA is the last Generator owner,
 releasing it ends the weakly observed lifetime. A returned Generator from an
 Aggregate getter uses the same route;
-by-reference producers keep their earlier admission boundary.
+the by-reference producer route below has its own bounded admission.
 The [Generator reference-cache review](coverage/semantics/array-generator-reference-cache-review.json)
 records four exact source agreements and 367 focused premises; the first peer
 storage-frontier assertion remains a preserved zero-credit failure.
+Named by-reference Generator spread now dereferences a real outer cell into a
+copied `DIRECT` row. Later rebinding changes that cell's row while shared inner
+scalar aliases remain live; a retained old row also exposes singleton-reference
+unwrapping on COW. With external owners gone, a supplied body throw retires
+the outer cell when DATA releases its last owner, before the builder-held old
+row. An Aggregate-returned Generator follows the same
+route. Four original sources and 588 reached premises pass in the
+[by-reference Generator cache review](coverage/semantics/array-generator-byref-reference-cache-review.json).
 Wider payloads, operand modes, delegation and Traversable lifetimes remain partial.
 The [nested-cache review](coverage/semantics/array-traversable-nested-cache-review.json)
 adds live-reference/deep COW and abrupt retirement for both spread engines,

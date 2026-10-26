@@ -455,9 +455,28 @@ Three exact originals and 213 author plus 113 independent SL premises check
 owner one to zero, real saved TARGET/caller-throw fronts, default Warning at the
 operand line, public guard rejection and budget continuation in the
 [array-cast ledger](../../coverage/semantics/array-string-cast-warning-review.json).
-Empty/immutable/nested/reference-element/owning arrays, copied/reference operands,
+Empty/immutable/nested/reference-element/owning arrays, other producers and reference operands,
 wider callbacks and lifecycle forms remain partial. Pure refusal projections
 are not executed typed or owning array cases.
+
+A separate explicit `(string)` cast route owns a nonempty mutable flat DIRECT
+array returned by a named noarg by-value untyped function. `ZEND_CAST` warns at
+the call line after the producer runs. Its temporary array survives the named
+handler even when the source global is unset: the runtime source-copy witness
+has two owners at conversion, one during the callback and none after the
+handler result is discarded. A returning handler delivers interned `Array` to
+the assignment without writing those bytes to output. A supplied throw drops
+the temporary after handler-result cleanup and before the catch. It skips the
+assignment and preserves the same Exception. Two new source agreements, a prior
+scalar-return control, and 125 normal plus 124 pending reached-state checks cover
+this unbuffered route.
+Independent native-first controls confirm a fresh returned array without a
+source global under a handled-true Warning, and an ineligible handler mask with
+one default Warning; both assign `Array` without printing it.
+The first pending owner-timing fixture and two affected fixture retries retain
+zero credit. Empty/nested/reference-element arrays, reference returns, other
+producers and buffer-changing callbacks remain partial in the
+[acquired-cast ledger](../../coverage/semantics/cast-owned-array-warning-review.json).
 
 Ordinary `.` also stages array warnings for two distinct defined plain CVs,
 with one nonempty mutable flat DIRECT scalar array and one quiet string. Both

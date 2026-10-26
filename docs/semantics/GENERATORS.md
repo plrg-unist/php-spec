@@ -160,8 +160,23 @@ with the original as `Previous`. Four exact new sources, including an
 independent cache-replacement probe, and two source-reached states/157 checks
 distinguish these owners; the direct named by-value source remains an
 unchanged control. By-reference method, fresh method, Closure and delegated
-THROW forms remain partial.
+THROW forms remained partial at that cut.
 [Method THROW review](../../coverage/semantics/generator-fiber-method-throw-transfer-review.json).
+
+A primed plain unbound Closure-created Generator can now enter by-value
+`Generator::throw` while its body suspends in a Fiber. The saved resumer owns
+the temporary Throwable, and the real `CLOSURE_TARGET` retains the selected
+Closure and its copied or reference capture. Rebinding an external variable
+name leaves the old captured cell intact; a copied capture retains its old
+object while an original reference cell observes later writes. The old yield
+cache remains readable while parked. A recovery yield retires that cache, and
+a closed Generator retains both an object cache and its Closure capture until
+release. Normal and supplied-Fiber-Throwable paths preserve the native
+exception identity and `Previous` order. Five new exact sources, including
+independent cache replacement, and three reached states/302 assertions cover
+this bounded shape; the direct named control is unchanged. Closure BYREF and
+fresh THROW, bound Closure, method BYREF/fresh, delegated and helper forms
+remain open. [Closure THROW review](../../coverage/semantics/generator-fiber-closure-throw-transfer-review.json).
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;

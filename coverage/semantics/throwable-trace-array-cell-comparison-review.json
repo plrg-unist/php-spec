@@ -1,0 +1,35 @@
+{
+  "milestone": "COMP137",
+  "status": "independently reviewed and accepted within the stated bound",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C; TZ=UTC; profile options after -n"
+  },
+  "engine_basis": "Zend/zend_builtin_functions.c::debug_backtrace_get_args dereferences each top-level argument but preserves nested array references. Zend/zend_hash.c::zend_hash_compare_impl and Zend/zend_operators.c::zend_compare descend through array count/key/value and dereference the reached cell. The model's $entry_value reads the current defined ALIAS cell; a captured DIRECT sibling retains its COW value.",
+  "scope": "Normal nonpending loose/ordered comparison of distinct live canonical same-kind builtin Exception/Exception or Error/Error pairs with cold physical string caches, null previous links and captured DIRECT top-level trace arguments. Both trace graphs must have allocated, finite, path-locally acyclic descendant arrays. DIRECT leaves are primitive, valid string carriers or arrays; ALIAS descendants name allocated live REFCELLs holding defined primitive, valid carrier or array values. At least one reachable ALIAS cell currently contains an array. Shared child DAGs are allowed. Object leaves, cycles, warm caches, previous links, materialized objects and callbacks remain outside this cut.",
+  "implementation": {
+    "reviewed_candidate": "955e384edb7e88a48fd04d201f586a91f2eaa1db",
+    "tested_revision": "b9d20cbb802c11ebfb333a3f8e117411b7ac080d",
+    "runtime_files": ["spec/semantics/152-throwable-runtime.watsup", "spec/semantics/163-throwable-trace-storage.watsup"],
+    "rule": "Module163 authenticates the graph and threads one array-ID path through DIRECT children and current ALIAS->PARRAY payloads, then separately requires a captured array-valued ALIAS witness. Module152 admits only the bounded canonical pair and reuses physical property order and live entry reads; its old Throwable refusal excludes the new pair. The COMP129-136 admission rules remain unchanged.",
+    "preservation": "The two runtime and four tracked test blobs in the actual-tail candidate match tested b9d20cbb8 byte-for-byte; composition and documentation edits add no execution credit."
+  },
+  "native_first": "Ten author PHP sources were frozen at source-only 3344fc986 before runtime edits. All native rows exit 0 with empty stderr (native-report.json sha256 d4417f23ba414ca788fb78dd18e8a5f16cb1685e2d86ae57f5293c874f1bf485). The live-array-and-cow source gives B|-1|M|3:9:0|R|1:-1|; unchanged master gives explicit Unsupported(Throwable property comparison) after B| (baseline-report.json sha256 5deb85af9a0411ea19a7382e921e947f6d2ee95e561b982276571bf223ae7b2c). The reviewer independently froze array-cell-cow.php sha256 fb94a39d84f354b91661323c71b66dcbccdc72a1fb249947eb66e3324c19573c before any affected-model outcome; native output is B|0|M|1:9|R|0| (reviewer-native/report.json sha256 05b8e65094e7dbb83cd1bd38a08e2b95296258ad7aa3fcd9db338c6a67976871).",
+  "validation": {
+    "source": "At b9d20cbb8, seven new author sources agree exactly with pinned PHP, as does the unchanged primitive-cell control. Object-cell and same-cell cyclic controls remain exact Unsupported after B|, with zero agreement credit. Author model reports sha256 034c382e861550a37300ad7d9903bb6e1050ed0eb8720e96169c172f7c1c0244 and c17a21cacb4e9ccb1e658d73a936973f6fc5ec3c1873c90403028794c4d67c27 retain stable inputs/head, accepted checked programs and outputs. The independent source also matches its frozen native B|0|M|1:9|R|0|, normal exit 0 and empty stderr (reviewer-independent/report.json sha256 462ac9ca50c8bca7c34d36a72ec7d8a383d25d1f3be345a19cf29992a9c0056f); it is a separate eighth new normal source.",
+    "state": "Source-reached strict-SL state-v1/report.json sha256 70e01e4d4646c58f53aeb71354321ea2a9b0340ff5202dbfffd4fcf86e4b385b passes 82 live-array/COW premises with two raw comparisons and 49 shared-child premises with one raw comparison. It authenticates the live ALIAS cell, whole-array retarget, saved DIRECT versus source sibling values, repeated physical child ID and owner counts, comparison front, guard clearance, budget resumption and final bytes. Total accepted state credit is 131 premises/three raw steps. No edited-model or strict fixture failure occurred.",
+    "controls": "The object-valued cell and same-cell cyclic graph have native B|0| but are explicit refusal controls; the cyclic case does not claim to exercise a native recursion error. Count/key/value signs, all seven operators, Error, shared children and aggregate continuation/skip have distinct positive sources."
+  },
+  "independent_review": {
+    "decision": "accept this bounded live array-cell Throwable trace comparison; comparison inventory obligations and complete core PHP remain partial",
+    "semantic_check": "The positive captured ALIAS->PARRAY witness separates this route from COMP136's primitive-cell route. Allocation, cell-definition and path-local cycle guards precede comparison reads. Native mutation/COW witnesses and raw reached states distinguish current referenced array values from saved direct snapshots and repeated child identity.",
+    "actual_master_tail": "Candidate 955e384edb7e88a48fd04d201f586a91f2eaa1db is composed on clean master 80d3d20350be32a3e1a9c45ee1ee1b80d4880465. Incoming semantic work since the tested base changes pipe/cast task variants, Generator/Fiber and dynamic-constant paths, but not modules36, 52, 152 or 163; the module manifest only appends pipe callable rules. The frozen sources do not use those incoming paths. PROGRESS preserves incoming master facts plus the COMP137 checkpoint, comparison row and integrated list; inventory changes only partial obligations 44 and 70 with append-only fields. No semantic rerun is credited to this seam.",
+    "remaining": "Object/cyclic or callback-capable trace graphs, warm caches, previous links, materialized objects and pending comparisons remain partial. Held COMP123 and paused COMP88 and other paused lanes were not resumed."
+  },
+  "artifacts": "Raw sources, native/model streams, state reports and independent reviewer evidence remain outside Git at /home/user/workspace/php-spec-evidence-archive/comp137. Reports record source/profile identities, commands, revisions, exits and raw outputs.",
+  "engine_bug_or_divergence": "none claimed"
+}

@@ -1,0 +1,43 @@
+{
+  "scope": "Direct fixed compiled-global constant with one source-authenticated singleton literal ARRAY unpack: positional key 0 or named key name, with the exact HALT string. No owner, selected call, fallback, variable pack or Traversable. Partial dynamic-source behavior.",
+  "status": "independently_reviewed_private",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "base_revision": "08d126b63e2d4c69220b80fcdd958731ab7f461a",
+  "behavior_commit": "fd2602c66",
+  "runtime_sha256": "4b80b764ee4123d982d3ee1874975273032c7d99a6c74c870d76b25d8a1e0ae4",
+  "engine_route": "Zend/zend_compile.c::zend_compile_args emits SEND_UNPACK; Zend/zend_vm_def.h::ZEND_SEND_UNPACK binds integer or named keys before the API. ext/standard/basic_functions.c::PHP_FUNCTION(constant) calls zend_get_constant_ex; Zend/zend_constants.c::zend_get_halt_offset_constant uses the executed filename.",
+  "mechanism": "At authentic CONFIG_INVOKE, bind one raw NExprArray singleton with exact literal HALT value and omitted or literal name key. Require fixed global constant, empty selection/owner, one pack matching the argument origin, valid source line, captured entry/key and one normalized SENT, plus agreement with an allocated permanent compiled array. Only constant HALT_OFFSET and HALT_ABSENT Error arms add this admission; selected and direct-value paths retain their separate gates.",
+  "validation": {
+    "native_first": "Eight frozen author originals passed pinned CLI0 with exact stdout and empty stderr. In the genuine unchanged checked model, five packed HALT sources were Unsupported with zero agreement credit; wrong-key and duplicate-binding errors already matched before HALT, while variable pack stayed Unsupported.",
+    "changed_sources": "Five packed HALT originals now agree exactly: same-file positional and named offset, two absent Error traces, child offset with caller absence, and eval absence with main offset. Wrong-key and duplicate-binding diagnostics remain exact. The variable-pack control remains Unsupported and has zero agreement credit.",
+    "reached_state": "Five genuine checked strict-SL fixtures pass 123+79+79+152+14=447 checks. They bind positional and named singleton pack receipts to real CONFIG_INVOKE sites, compiled literal pool roots, filename-local journal, budget0/resume and actual result/Error steps; reject forged site/line/key/value/owner metadata and HALT_UNKNOWN; and reach a variable-pack Unsupported front. The 14 control checks have zero native agreement credit.",
+    "independent": "A separately frozen included child function with an absent HALT lookup, later called from a HALT main, matches native exactly, distinguishing the compiled child call-site filename from the active caller filename.",
+    "failed_attempts": "Two changed-model runs and one module-load gate stopped before semantics on the new SpecTec singleton SEQUENCE pattern; their raw reports retain zero credit. The corrected 423-module strict load gate passed before the affected source and state runs."
+  },
+  "environment": {
+    "profile": "tests/semantics/profile.json",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "resources": "Author native/baseline, changed-source and reached-state runs and the independent reviewer source run used serial numbered CPU leases; every actor was fully reaped and the lease released."
+  },
+  "raw_artifacts": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/dynamic-source-108",
+    "reports_sha256": {
+      "author-freeze.json": "4dfdf51b9c664644752802a983634c5513477346bec873ca5148d9a56b16278a",
+      "pack-baseline-v1/model-report.json": "436989fe4fe7b3800efcbcd5fe8ea6501f6018ce5c6f2b09971cc1090542387b",
+      "pack-v1/native-report.json": "dd2a600b17288e8d752f6d1c957b8e171069f921f2ae29064f940de29460caf6",
+      "pack-v1/model-report.json": "8dbd61c174699d1c0ff1644251bcb7f545808cb0f88c64ed6769c50802584407",
+      "pack-state-v1/report.json": "8c824ae302222c77724ffa864c0d511fa90d8fe12c604638f40a0db9262984cd",
+      "reviewer-child-call-v1/native-report.json": "29a4de4e94414fb52812a3099cd828dd48f78461c5b8e9c981d80264bcc4b2c4",
+      "reviewer-child-call-v1/model-report.json": "5b18b7c1deac26fd5f181b4fe6876626d2f2e68e91d645f034258878fe429f16",
+      "compile-gate-v2/report.json": "566f4b73743f28d70f1dc6428d50466df9cec39e94083566b38055545e593044",
+      "pack-syntax-failure-v1/model-report.json": "969c793d1871af544b207726977be775cfe5ebde804318aaddd90b7530eae0d4",
+      "pack-syntax-failure-v2/model-report.json": "2d7d5c37f19b8bef6b21e3d25442d0e8627b8fe53cdfd94f6156301db8fe2a22",
+      "compile-gate-v1/report.json": "080b35455a88ba86d46d1784c6193a35b56cd178bdb5ef861e6c83eacb6b2c76"
+    },
+    "recovery": "Run halt_pack_sources.py --phase native then --phase model on the same fresh output root with its generated version-2 child snapshot. Run halt_pack_protocol.py --sources SOURCE_ROOT --output FRESH for five reached fronts. Keep unchanged Unsupported and pre-semantics failures outside agreement totals."
+  },
+  "review": "Independent semantic/test/docs review accepted behavior commit fd2602c66 and the 447-check author state packet. The separately frozen child-function original passed exact native/model, while the variable-pack front and pre-semantic failures retain zero agreement credit. Inventory and scoped documentation were reviewed.",
+  "remaining": "Variable/multiple/Traversable packs, owning or selected packed calls, other named keys, repeated call-site cache history, ambiguous HALT registration and wider dynamic-source/provider behavior remain partial."
+}

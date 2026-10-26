@@ -122,6 +122,7 @@ def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pva
 
 dec $pipe_value(pstate, poperand, pvalue, porigin, int, int, int) : pstate
 dec $pipe_named_carrier_site(pstate, porigin, ptbytes) : bool
+dec $pipe_object_value(pstate, nat, pvalue, porigin, int, int, int) : pstate
 def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = S_read
   -- if S_read = $resolve_at(S, poperand, z_lookup)
   -- if S_read.COMPLETION =/= NORMAL
@@ -146,11 +147,24 @@ def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = $
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $closure_callable(S_read, n)
+def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = $pipe_object_value(S_read, n, pvalue_left, porigin, z_send, z_lookup, z_call)
+  -- if S_read = $resolve_at(S, poperand, z_lookup)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $object_invoke_method(S_read, n) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
 def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = $throw_scalar(S_read, "Error", $ptascii("Object of type ") ++ $object_name(S_read, n) ++ $ptascii(" is not callable"), z_lookup)
   -- if S_read = $resolve_at(S, poperand, z_lookup)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $class_plain_instance(S_read, n)
+  -- if $object_invoke_method(S_read, n) = eps
+def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = S_read[.COMPLETION = UNSUPPORTED "nonpublic object pipe callable"]
+  -- if S_read = $resolve_at(S, poperand, z_lookup)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $object_invoke_method(S_read, n) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
 def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = S_read[.COMPLETION = UNSUPPORTED "object pipe callable"]
   -- if S_read = $resolve_at(S, poperand, z_lookup)
   -- if S_read.COMPLETION = NORMAL

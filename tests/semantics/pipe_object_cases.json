@@ -1,0 +1,12 @@
+{
+  "variable-basic": "<?php\nclass PipeInvoker116 { public function __invoke($x) { echo 'B', $x, '|'; return $x + 4; } }\n$f = new PipeInvoker116; echo 3 |> $f;\n",
+  "optimized-variable": "<?php\nclass PipeOptimizedInvoker116 { public function __invoke($x) { echo 'O', $x, '|'; return $x + 5; } }\n$f = new PipeOptimizedInvoker116; echo 3 |> $f(...);\n",
+  "temporary-selected": "<?php\nclass PipeSelectedInvoker116 { public function __construct(public int $id) {} public function __invoke($x) { echo $this->id, ':', $x, '|'; return $x + $this->id; } }\n$source = new PipeSelectedInvoker116(2); function choose116() { global $source; $old = $source; $source = new PipeSelectedInvoker116(9); echo 'R|'; return $old; }\necho 3 |> choose116(); echo '|', $source->id;\n",
+  "reference-result": "<?php\nclass PipeReferenceInvoker116 { public function &__invoke($x) { static $v = 1; return $v; } }\n$f = new PipeReferenceInvoker116; function change116(&$x) { $x = 9; }\nchange116(2 |> $f); echo $f(0);\n",
+  "strict-type-error": "<?php\ndeclare(strict_types=1); class PipeStrictInvoker116 { public function __invoke(int $x) { echo 'BAD'; } }\ntry { '3' |> new PipeStrictInvoker116; } catch (TypeError $e) { echo $e->getMessage(); }\n",
+  "weak-type-conversion": "<?php\nclass PipeWeakInvoker116 { public function __invoke(int $x) { echo $x === 3 ? 'W' : 'BAD'; } }\n'3' |> new PipeWeakInvoker116;\n",
+  "temporary-owner": "<?php\nclass PipeOwnerInvoker116 { public function __destruct() { echo 'D|'; } public function __invoke($x) { echo 'C|'; return $x + 1; } }\nfunction make116() { echo 'R|'; return new PipeOwnerInvoker116; }\necho 3 |> make116(); echo '|E';\n",
+  "noncallable-control": "<?php\nclass PipeNoncallable116 {}\ntry { 3 |> new PipeNoncallable116; } catch (Error $e) { echo $e->getMessage(); }\n",
+  "closure-control": "<?php\n$f = fn($x) => $x + 7; echo 3 |> $f;\n",
+  "temporary-byref": "<?php\nclass L { public function __destruct() { echo 'L|'; } }\nclass I {\n    public function __destruct() { echo 'I|'; }\n    public function __invoke(&$x) { echo 'BODY|'; }\n}\nfunction make() { echo 'R|'; return new I; }\ntry { (new L) |> make(); }\ncatch (Throwable $e) { echo 'E|', $e->getMessage(), '|'; }\n"
+}

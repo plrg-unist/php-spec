@@ -82,8 +82,15 @@ HALT string also follows that filename-local lookup. The named slot is
 authenticated by the existing CONFIG call shape; an unknown name fails during
 argument binding before HALT lookup. The
 [named-call ledger](../../coverage/semantics/halt-named-review.json) records the
-positive and absent sources, original Error trace and wrong-name control. Other
-fixed argument shapes, owning/unpacked calls, wider named forms, repeated
+positive and absent sources, original Error trace and wrong-name control. A
+single unpack of a source-authenticated singleton array literal also admits the
+exact HALT string with either positional key `0` or named key `name`. The
+compiled array value and completed pack receipt must agree; wrong or duplicate
+named arguments fail during binding before the lookup. A variable holding the
+same array remains outside this bounded admission. The
+[literal-pack ledger](../../coverage/semantics/halt-pack-review.json) records
+filename-local results, Error traces and the unpack boundaries. Other fixed
+argument shapes, owning or variable unpacked calls, wider named forms, repeated
 call-site cache history and ambiguous HALT registration remain partial. The
 [lookup ledger](../../coverage/semantics/halt-lookup-review.json) binds two original
 sources and their reached state checks, keeping counterfactual history/source

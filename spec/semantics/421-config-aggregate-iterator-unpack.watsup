@@ -2,12 +2,10 @@
 ;; transferred into Iterator DATA; the historical Aggregate identity owns nothing.
 dec $config_aggregate_method(pstate, nat) : pmethoddesc?
 dec $config_aggregate_source(pstate, pconfigaggregate) : bool
-dec $config_aggregate_scope(pstate, pconfigaggregate) : bool
 dec $config_aggregate_generator_producer_valid(pstate, pconfiggeneratorproducer) : bool
 dec $config_aggregate_generator_context(pstate, pcallcontext) : bool
 dec $config_aggregate_generator_capture(pstate, pconfiggeneratorproducer, nat) : bool
 dec $config_aggregate_method_generator_return_allowed(pstate, pconfigaggregate) : bool
-dec $config_aggregate_owners(pstate, pconfigaggregate, nat) : bool
 dec $config_aggregate_at(ptask, porigin) : bool
 dec $config_aggregate_count(ptask*, porigin) : nat
 dec $config_aggregate_valid(pstate, pconfigaggregate) : bool
@@ -229,6 +227,14 @@ def $config_aggregate_return_allowed(S, pconfigaggregate) = true
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if $($heap_owners($heap_graph(S), HOBJECT n) > 1)
   -- if $config_iterator_start(S, pconfigaggregate.CALL, pconfigaggregate.INPUT, n)
+def $config_aggregate_return_allowed(S, pconfigaggregate) = true
+  -- if $config_aggregate_valid(S, pconfigaggregate)
+  -- if $config_aggregate_owners(S, pconfigaggregate, 1)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $heap_owners($heap_graph(S), HOBJECT n) = 1
+  -- if $destructor_method(S, n) = eps
+  -- if $node_children(S, HOBJECT n) = eps
+  -- if $config_iterator_start(S, pconfigaggregate.CALL, pconfigaggregate.INPUT, n)
 def $config_aggregate_return_allowed(S, pconfigaggregate) = false -- otherwise
 ;; The owned return temporary becomes Generator DATA after native get_iterator
 ;; copies it and retires that temporary. INPUT remains the historical Aggregate CV.
@@ -252,7 +258,7 @@ def $config_aggregate_method_generator_return_allowed(S, pconfigaggregate) = tru
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_FRESH /\ pgenerator.DELEGATE = eps
 def $config_aggregate_method_generator_return_allowed(S, pconfigaggregate) = false -- otherwise
-def $config_aggregate_promote(S, pconfigaggregate, ptask_tail*) = S[.ITERATORS = S.ITERATORS ++ [OBJECTITER S.NEXTITER n 0 false]][.NEXTITER = $(S.NEXTITER + 1)][.TODO = (CONFIG_ITERATOR {CALL pconfigaggregate.CALL, ITERATOR S.NEXTITER, OBJECT n, INPUT pconfigaggregate.INPUT, ITEMS eps, CURRENT (KNOWN PNULL), KEY (KNOWN PNULL)} "rewind-start") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $config_aggregate_promote(S, pconfigaggregate, ptask_tail*) = S[.ITERATORS = S.ITERATORS ++ [OBJECTITER S.NEXTITER n 0 false]][.NEXTITER = $(S.NEXTITER + 1)][.TODO = (CONFIG_ITERATOR {CALL pconfigaggregate.CALL, ITERATOR S.NEXTITER, OBJECT n, INPUT pconfigaggregate.INPUT, PRODUCER (pconfigaggregate.OBJECT), ITEMS eps, CURRENT (KNOWN PNULL), KEY (KNOWN PNULL)} "rewind-start") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_aggregate_return_allowed(S, pconfigaggregate)
   -- if S.RESULT = KNOWN (POBJECT n)
 def $config_aggregate_promote(S, pconfigaggregate, ptask_tail*) = S[.TODO = (CONFIG_GENERATOR {CALL pconfigaggregate.CALL, OBJECT n, INPUT pconfigaggregate.INPUT, ITEMS eps, PRODUCER eps} "rewind") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
