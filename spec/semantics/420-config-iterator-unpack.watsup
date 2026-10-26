@@ -2,6 +2,7 @@
 ;; keeps a separate opcode INPUT until after DATA; ITEMS owns no PHP ARRAY.
 dec $config_aggregate_scope(pstate, pconfigaggregate) : bool
 dec $config_aggregate_owners(pstate, pconfigaggregate, nat) : bool
+dec $config_aggregate_source(pstate, pconfigaggregate) : bool
 dec $config_iterator_input(pstate, pconfigiterator) : bool
 dec $config_iterator_owning_input(pconfigiterator) : bool
 dec $config_iterator_input_nodes(pconfigiterator) : pnode*
@@ -113,6 +114,24 @@ def $config_iterator_producer_valid(S, pconfigiterator) = true
   -- if pconfigaggregate = {CALL pconfigiterator.CALL, OBJECT n_aggregate, INPUT pconfigiterator.INPUT}
   -- if $config_aggregate_scope(S, pconfigaggregate)
   -- if $config_aggregate_owners(S, pconfigaggregate, 0)
+;; Receiver retirement removes its allocation, but not its class/source record.
+def $config_iterator_producer_valid(S, pconfigiterator) = true
+  -- if pconfigiterator.PRODUCER = (n_aggregate)
+  -- if n_aggregate =/= pconfigiterator.OBJECT
+  -- if pconfigaggregate = {CALL pconfigiterator.CALL, OBJECT n_aggregate, INPUT pconfigiterator.INPUT}
+  -- if $config_aggregate_source(S, pconfigaggregate)
+  -- if $(n_aggregate < |S.OBJECTS|)
+  -- if ~((HOBJECT n_aggregate) <- S.ALLOCATIONS)
+  -- if S.OBJECTS[n_aggregate] = INSTANCE porigin_class
+  -- if $generator_from_aggregate(S, POBJECT n_aggregate)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
+  -- if $class_links_valid(S)
+  -- if $effective_method(S, porigin_class, $ptascii("getIterator"), |S.CLASSES|) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if pmethoddesc.FUNCTION.SIGNATURE = $useriter_signature($ptascii("getIterator"))
+  -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata)
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
 def $config_iterator_producer_valid(S, pconfigiterator) = false -- otherwise
 def $config_iterator_quiet_aggregate_data(S, pconfigiterator) = true
   -- if pconfigiterator.PRODUCER = (n_aggregate)
