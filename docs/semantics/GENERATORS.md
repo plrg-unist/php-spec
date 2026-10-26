@@ -101,6 +101,18 @@ zero credit. Scoped/static/bound/accessor wrappers, wider helper/delegation,
 reference and collection combinations remain partial.
 [Method receiver evidence and recovery](../../coverage/semantics/generator-fiber-transfer-review.json).
 
+Direct named by-reference Generators can also park during NEXT with a cached
+reference cell from an earlier yield. The Generator keeps the original cell
+while the Fiber VM owns the running frame; rebinding its source variable name
+does not retarget the cache. `current()` reads the live cell while the Fiber is
+parked, and the next yield retires the old cache before caller continuation.
+An outside NEXT sees one running-Generator Error when this cache is defined;
+the fresh, uncached path retains its two-Error chain. Supplied Throwable
+unwinding and a closed cache keep their existing cell ownership. Admission
+requires a named by-reference producer and live cell; method/Closure cached
+reference forms and wider helper/delegation combinations remain partial.
+[Reference transfer review](../../coverage/semantics/generator-fiber-reference-transfer-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter
