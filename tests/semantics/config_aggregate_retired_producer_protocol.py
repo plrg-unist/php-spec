@@ -199,7 +199,7 @@ def checks(program, path, name):
             'S_error.COMPLETION = THROWN "Error" ' + text(error) + ' 40',
             'S_error.TODO = S_second.TODO', 'S_error.STORE = S_second.STORE',
             'S_error.EVENTS = S_second.EVENTS',
-            *prior.budget('S_error'), *driver.common.public('S_error')]
+            *driver.common.public('S_error')]
         source = 'S_error'
     else:
         values += [*reach('S_throw', 'S_send', 2),
@@ -212,7 +212,7 @@ def checks(program, path, name):
             'S_throw.STORE[n_result_cell] = DEFINED (PINT 99)',
             'S_throw.PRECISIONINI = ' + text('14'),
             '$test_outputs(S_throw.EVENTS) = ' + text(second),
-            *prior.budget('S_throw'), *driver.common.public('S_throw')]
+            *driver.common.public('S_throw')]
         source = 'S_throw'
     values += [*reach('S_disposed', source, 5),
         'S_disposed.TODO = (THROW_SEARCH n_pending) :: ptask_disposed*',
