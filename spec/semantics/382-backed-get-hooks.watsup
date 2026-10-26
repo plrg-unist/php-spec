@@ -880,7 +880,8 @@ def $property_hook_ref_plan(S) = ((ppropertyhook, text))
   -- if $property_resolve(S, n, $base64(text_name)) = PROPERTY_ACCESS $base64(text_name)
   -- if $property_effective_desc(S, n, $base64(text_name)) = (ppropertydesc)
   -- if $property_hook_effective_origin(S, ppropertydesc) = (porigin_hook)
-  -- if ppropertyhook = {SITE porigin_site, OBJECT n, PROPERTY ppropertydesc.ORIGIN, HOOK porigin_hook, LINE z}
+  -- if ppropertydesc.ORIGIN = porigin_property
+  -- if ppropertyhook = {SITE porigin_site, OBJECT n, PROPERTY porigin_property, HOOK porigin_hook, LINE z}
   -- if $property_hook_valid(S, ppropertyhook, true) /\ $property_hook_ref_function(S, ppropertyhook)
   -- if $property_hook_ref_tail(S, ppropertyhook, text, ptask_tail*)
   -- if $property_hook_ref_input(S, text, ptask_tail*)
