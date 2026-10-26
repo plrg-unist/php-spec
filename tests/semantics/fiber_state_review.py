@@ -756,7 +756,7 @@ CASES.update({
 })
 
 
-def run(selected):
+def run(selected, *, process_seconds=120):
     assert not selected or set(selected) <= CASES.keys(), 'unknown Fiber state case'
     cases = {key: value for key, value in CASES.items() if not selected or key in selected}
     out = Path(tempfile.mkdtemp(prefix='fiber-state-review-', dir=ROOT / '.tools'))
@@ -810,7 +810,7 @@ def run(selected):
             '  -- if ' + case['stage'] + '\n'
             + ''.join('  -- if ' + clause + '\n' for clause in case['checks']))
         process = recorded([ROOT / 'tests/semantics/_build/default/numeric_runner.exe',
-                            '--sl', *modules, fixture], directory, 'model', environment, 120)
+                            '--sl', *modules, fixture], directory, 'model', environment, process_seconds)
         passed = (not process['timeout'] and process['exit'] == 0 and
                   (directory / 'model.stdout').read_bytes() == b'true\n' and
                   not (directory / 'model.stderr').read_bytes())
@@ -825,7 +825,7 @@ def run(selected):
               'compiler': {'spectec_source_commit': 'da36ac3c434cd291940293a63da64544307730a3', 'ocaml_switch': '5.1.0', 'semantic_mode': 'SL'},
               'runtime': {'source_commit': '34308a6666b2d489c509541ea9befea9e2b42348', 'version': '8.5.10', 'sapi': 'cli', 'int_size': 8, 'zts': False},
               'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'PHP_SPEC_SCRIPT_ENCODING_removed': True},
-              'budgets': {'seek_steps': 4000, 'finish_steps': 4000, 'process_seconds': 120},
+              'budgets': {'seek_steps': 4000, 'finish_steps': 4000, 'process_seconds': process_seconds},
               'raw': str(out), 'passed': all(row['passed'] for row in records)}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     return report['passed']
