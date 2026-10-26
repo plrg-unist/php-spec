@@ -20,8 +20,8 @@ one pre-test tool-key guard failure and two fixture-static failures keep zero
 credit. The accepted corrected packet has no timeout/interruption.
 [Prefetch review](coverage/semantics/concat-undefined-right-prefetch-review.json).
 
-Publication is independently reviewed; actual-tail composition over released
-`4ed36e290`/420 is pending. Accepted419 execution identities will be preserved without renewal.
+Composition over actual `4ed36e290`/420 is independently reviewed. Accepted419
+execution identities retain their original cuts without renewal.
 
 ## Integrated behavior and entrypoints
 
@@ -44,8 +44,8 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| OP90 | Source3/full419 and focused826 accepted; publication review preparing, no writer. |
-| M155 | WeakMap Iterator factory: source3/focused389 across13 parts accepted; publication in review, queued after OP90. |
+| A55 | Array/storage scope selection after A54 closure; no packet or actor. |
+| M155 | WeakMap Iterator factory: source3/focused389 accepted; reviewed publication8fa01912f queued next. |
 | CLASS130 | PARAM-backed Get receipt admission: source3 accepted at37ead28b8; focused author/peer preparation, CPU3 released. |
 | Iterator57 | Closure-created Generator instances through Fiber transfer; native-first scope review. |
 | Source96 | CLOSED Generator return-storage retirement before CONFIG/catch; native-first scope review. |
@@ -53,7 +53,7 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | COMP127 | Normal-completion comparison/storage scoping; no packet or actor. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M154, A46/A47/A48/A49/A50/A51/A52/A53/A54, OP79/80/81/82/83/84/85/86/87/88/89, Source86/87/88/89/90/91/92/93/94/95, COMP118/119/120/121/122/124/125/126 and CLASS119/120/121/122/123/124/125/126/127/128/129 are integrated
+Iterator49/50/51/52/53/54/55/56, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M154, A46/A47/A48/A49/A50/A51/A52/A53/A54, OP79/80/81/82/83/84/85/86/87/88/89/90, Source86/87/88/89/90/91/92/93/94/95, COMP118/119/120/121/122/124/125/126 and CLASS119/120/121/122/123/124/125/126/127/128/129 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
