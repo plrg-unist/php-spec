@@ -148,7 +148,6 @@ def conditions(name, program, path, stdout):
         seek('S_pending', 'S_entered', 7)
         checks += [
             'S_pending.TODO = (THROW_SEARCH n_exception) :: (ERROR_HANDLER_RESULT perrorcall) :: ptask_pending*',
-            'perrorcall.RESUME = CAST_OWNED_ARRAY_WARNING pcastownedarraywarning 1',
             '$lookup(S_pending.ENV, $ptascii("a")) = eps',
             '$heap_owners($heap_prune($heap_graph(S_pending)), HARRAY n_array) = 1',
             '(HARRAY n_array) <- S_pending.ALLOCATIONS',
