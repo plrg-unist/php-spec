@@ -2264,6 +2264,15 @@ lookup sees constants registered by those effects. Queried readers preserve
 identity, array results retain query COW, and missing-name Errors release the
 callee while retaining raw API/wrapper arguments for later recovery.
 [Captured query review](coverage/semantics/constant-owned-query-review.json).
+
+Captured global-string queries also bind a singleton ARRAY unpack. Integer keys
+map to the positional slot; `name`/`constant_name` keys bind the matching API
+parameter. Scalar references deliver copied strings; retiring the source pack or
+writing the reference later leaves the query and raw Error traces unchanged.
+Literal facts constrain the captured snapshot; mutable pack effects can publish
+the queried constant before lookup. Completed pack history adds no root owner.
+[Captured query-pack review](coverage/semantics/constant-owned-query-pack-review.json).
+
 Captured query callees also receive Boolean, integer and finite-float names.
 Strict ordinary calls reject them with raw scalar TypeError arguments; explicit
 `__invoke` converts weakly even in strict source. An explicit missing-name Error
