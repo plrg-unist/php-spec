@@ -154,11 +154,11 @@ def prefix(program, path):
                '$call_descriptors_valid(S_dispatch)', '$heap_valid($heap_graph(S_dispatch))']
     seek(checks, 'S_enteredH', 'S_dispatch', 2)
     checks += ['S_enteredH.CURRENT = (pcallcontext_h)',
-               'pcallcontext_h.TARGET = FUNCTION_TARGET porigin_h',
+               'pcallcontext_h.TARGET = porigin_h',
                'pcallcontext_h.RECEIVER = eps', 'pcallcontext_h.CALLSITE = (porigin_parent)',
                'S_enteredH.FRAMES = pframe_h :: pframe_h_tail*',
                'pframe_h.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*',
-               'perrorcall = perrorcall_initial[.TARGET = (FUNCTION_TARGET porigin_h)]',
+               'perrorcall = perrorcall_initial[.TARGET = (porigin_h)]',
                '$heap_count(HOBJECT n_object, $tasks_nodes(pframe_h.TODO)) = 1',
                '$heap_owners($heap_prune($heap_graph(S_enteredH)), HOBJECT n_object) = 1',
                'S_enteredH.STORE[n_calls] = DEFINED (PINT 0)',
