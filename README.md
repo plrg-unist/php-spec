@@ -3254,6 +3254,17 @@ checks pass at `9bf6e1399`/409: count2 includes Array/Key while the uncounted ce
 is physically retired. Old array/reference rows remain nonowning history.
 Other array layouts and replacement/callback lifetimes remain partial.
 
+Last-owner Map teardown with multiple entries now admits fieldless
+public-destructor Values.
+Callbacks observe actual Map/self weak-get visibility and borrowed `isset`
+occupancy even after an earlier referent retires; supplied Exceptions survive
+remaining slot cleanup, while external shared holders delay invocation.
+Three sources and 307 Boolean/nine raw checks pass at `80451b539`/417. Genuine
+baseline 3 retains `8484fc071`/417 with zero agreement: callback-table insertion
+refuses before output. Original compile stops remain zero; callback-valued owned Iterator/factory/traversal,
+singleton/Key-death/normalization, reads/empty/mutation/escape and wider
+payload/GC histories remain partial.
+
 Bounded by-value WeakMap `foreach` now retains the Map through hidden iterator
 DATA and copies its object Key/Value into ordinary CVs. Exhaustion or `break`
 retires DATA before those copies; two originals and 287 Boolean/five raw checks
