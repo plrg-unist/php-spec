@@ -12,6 +12,12 @@ import config_iterator_temp_call_sources as sources
 
 text, b64 = driver.text, driver.b64
 PREFIX = r"""
+dec $test_temp_iterator_task(ptask) : bool
+def $test_temp_iterator_task(CONFIG_ITERATOR pconfigiterator text) = true
+def $test_temp_iterator_task(ptask) = false -- otherwise
+dec $test_temp_iterator_tasks(ptask*) : bool
+def $test_temp_iterator_tasks(eps) = true
+def $test_temp_iterator_tasks(ptask :: ptask_tail*) = (~$test_temp_iterator_task(ptask) /\ $test_temp_iterator_tasks(ptask_tail*))
 dec $test_temp_iterator_front(pstate, nat) : bool
 def $test_temp_iterator_front(S, 0) = true
   -- if S.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask*
@@ -32,6 +38,7 @@ def $test_temp_iterator_front(S, 6) = true
   -- if S.TODO = (THROW_SEARCH n) :: ptask*
   -- if S.ITERATORS = eps
   -- if $useriter_tasks_ids(S.TODO) = eps
+  -- if $test_temp_iterator_tasks(S.TODO)
 def $test_temp_iterator_front(S, n_stage) = false -- otherwise
 dec $test_temp_iterator_seek(pstate, nat, nat) : pstate
 def $test_temp_iterator_seek(S, n_stage, 0) = S
