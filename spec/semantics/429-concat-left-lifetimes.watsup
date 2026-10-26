@@ -134,4 +134,4 @@ def $stringify_source_consumer(CONCAT_OWNED_RIGHT pconcatleft pvalue n?) = true
 def $stringify_consumer_tail_valid(S, porigin, z, CONCAT_OWNED_LEFT pconcatleft, ptask_tail*) = $stringify_source(S, porigin, z, CONCAT_OWNED_LEFT pconcatleft)
 def $stringify_consumer_tail_valid(S, porigin, z, CONCAT_OWNED_RIGHT pconcatleft pvalue n?, ptask_tail*) = $stringify_source(S, porigin, z, CONCAT_OWNED_RIGHT pconcatleft pvalue n?)
 def $stringify_consumer_receiver_valid(S, n, CONCAT_OWNED_LEFT pconcatleft) = (n = pconcatleft.OBJECT)
-def $stringify_consumer_receiver_valid(S, n, CONCAT_OWNED_RIGHT pconcatleft pvalue n?) = (n? = (n))
+def $stringify_consumer_receiver_valid(S, n, CONCAT_OWNED_RIGHT pconcatleft pvalue n_selected?) = (n_selected? = (n))
