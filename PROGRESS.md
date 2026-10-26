@@ -108,7 +108,17 @@ receipt, forged source/target rejection and left-before-right by-reference
 refusal cleanup. The direct and corrected protocol cuts remain
 separate; the two failed protocol attempts retain zero full credit.
 [Object pipe review](coverage/semantics/pipe-object-callable-review.json).
-Nonpublic and wider object callables remain partial.
+Nonpublic and wider object callables were separate at that cut.
+
+Private and inherited protected user `__invoke` methods now serve as ordinary
+and optimized pipe RHS callables despite their declaration visibility Warnings.
+Six new source comparisons and two unchanged controls agree exactly with PHP;
+five source-reached stages check private/protected target identity, retired
+result receipt and left/right owner cleanup. A separate inherited protected
+by-reference refusal also agrees exactly. The six unchanged-baseline
+Unsupported outcomes and failed fixture/affinity attempts retain zero credit.
+[Nonpublic object pipe review](coverage/semantics/pipe-nonpublic-object-review.json).
+Internal and wider object callables remain partial.
 
 Canonical cold builtin Throwable traces now compare finite array-valued live
 reference cells inside captured array arguments. Eight new source agreements

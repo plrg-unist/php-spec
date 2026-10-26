@@ -52,16 +52,19 @@ checks byte well-formedness, and a later `CALL_ARGS` task cannot reconstruct
 selected name bytes after a source variable changes. Method strings, builtins
 and Closure operands keep their separate dispatch and exclusions.
 
-A public user `__invoke` instance can now be the evaluated RHS of an ordinary
+A user `__invoke` instance can be the evaluated RHS of an ordinary
 or optimized first-class pipe. At the send task, the evaluated RHS must still
-be the selected object; the selected method is its public, concrete effective
-`__invoke`. The call owns that receiver through body execution, even after a
-source variable is rebound. A result receipt keeps only the source and method
-history after the receiver retires, so a by-reference result remains usable.
+be the selected object; the selected method is its concrete effective
+`__invoke`, including private methods and protected methods inherited by the
+receiver class. PHP emits the declaration visibility Warning but still invokes
+the method from outside the class. The call owns that receiver through body
+execution, even after a source variable is rebound. A result receipt keeps
+only the source and method history after the receiver retires, so a
+by-reference result remains usable.
 The forced left value is still sent by value: a by-reference first parameter
 is refused before method entry, with left and right temporary cleanup in
 native order. User-method type checks use the pipe caller's strictness.
-Nonpublic, internal and other object-callable forms remain separate work.
+Internal and wider object-callable forms remain separate work.
 
 The syntax grouping and bare-arrow rejection are described in
 [the syntax review](../../coverage/semantics/pipe-syntax-review.json). Runtime
@@ -95,7 +98,12 @@ at the first direct cut. A later result-validator correction passes five
 reached stages and 54 assertions; the review keeps the two tested cuts and
 the failed initial protocol fixtures separate. The send certificate checks
 the actual evaluated RHS object, while the later receipt cannot reconstruct
-a mutable source variable's past value. Builtin, scoped method-string and
+a mutable source variable's past value. The
+[nonpublic object-callable review](../../coverage/semantics/pipe-nonpublic-object-review.json)
+records six newly supported exact original sources, two unchanged controls,
+five source-reached stages and a separate inherited protected by-reference
+source. It preserves the six original Unsupported outcomes and failed fixture
+attempts at zero credit. Builtin, scoped method-string and
 other object callables remain explicit
 dependencies; this is partial pipe coverage, not a full callable-family claim.
 
