@@ -10,6 +10,7 @@ def $concat_owned_plan(S) = (pconcatleft)
   -- if S.TODO = (CONCAT_PREP (KNOWN (POBJECT n)) poperand_right false b_right z) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if pconcatleft = {SITE porigin, LINE z, OBJECT n, RIGHT poperand_right, RIGHTCONST b_right}
+  -- if $operand_nodes(poperand_right) = eps
   -- if $concat_owned_source(S, pconcatleft)
   -- if $stringable_instance(S, n)
 def $concat_owned_plan(S) = eps -- otherwise
@@ -49,10 +50,6 @@ rule PhpStep/concat-owned-left: S ~> $user_string_begin(S[.ORIGIN = (porigin_lef
   -- if $concat_owned_plan(S) = (pconcatleft)
   -- if $concat_owned_ready(S, pconcatleft.RIGHT)
   -- if $origin_child((pconcatleft.SITE), [PCFIELD 0]) = (porigin_left)
-rule PhpStep/concat-owned-right-boundary: S ~> S[.COMPLETION = UNSUPPORTED "owning concatenation right operand"]
-  -- if S.TODO = ptask :: ptask_tail*
-  -- if $concat_owned_plan(S) = (pconcatleft)
-  -- if $operand_nodes(pconcatleft.RIGHT) =/= eps
 rule PhpStep/concat-owned-entry-boundary: S ~> S[.COMPLETION = UNSUPPORTED "concatenation acquired left unavailable right operand"]
   -- if S.TODO = ptask :: ptask_tail*
   -- if $concat_owned_plan(S) = (pconcatleft)
