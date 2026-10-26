@@ -208,7 +208,7 @@ def conditions(name, program, path, stdout):
     ]
     if throws:
         checks += [
-            'S_post.TODO = (THROW_SEARCH n_failure) :: ptask_tail*',
+            'S_post.TODO = (THROW_SEARCH n_failure) :: ptask_throw_tail*',
             '$throwable_live(S_post, n_failure)',
             '$throwable_field(S_post, n_failure, "line") = PINT 20',
         ]
