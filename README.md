@@ -4838,7 +4838,7 @@ Accessible private/protected UNSET reads through local CVs now retain the
 caller's physical declaration across Get. Parent int versus Child string shadow,
 caller-line TypeError and populated backing99/captured `'ok'` pass
 [three source agreements and 330 focused premises](coverage/semantics/magic-get-scoped-unset-review.json).
-Public-shadow selection, direct-This entry, by-reference getters, scoped recursion,
+Public-shadow selection, by-reference getters, scoped recursion,
 bound-Closure scopes and wider access/receiver/lifetime forms remain partial.
 Denied private/protected reads and inherited-private literal fallback now invoke
 the getter without applying the hidden property's type. Allowed lexical reads
@@ -5048,6 +5048,14 @@ Released-CV mutation, raw retired-container reads, wider wrapper-pointer consume
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
 full foreach coverage remains required.
+
+Literal `$this` also enters bounded by-value Get with a source certificate and
+current receiver identity. Saved declaration/history survives a global Warning
+handler with no `$this`; captured NULL survives backing9 and a later reset.
+A read-method receiver outlives global-CV clearing and Get-hold release, printing
+`m` before destruction. [Four source agreements and 488 focused premises](coverage/semantics/magic-get-direct-this-review.json)
+retain414 cuts; INITIAL remains an existing control and earlier failures retain0.
+Wider receiver/signature/coercion and suspension forms remain partial.
 
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference

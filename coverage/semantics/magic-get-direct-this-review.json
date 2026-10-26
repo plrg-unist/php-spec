@@ -1,0 +1,95 @@
+{
+  "decision": "Independently accepted bounded literal-this BYVAL getter foundation; family remains partial.",
+  "scope": "Ordinary INSTANCE, literal property name and actual current this receiver. Existing accessible selected-DECL/type and denied Get behavior are consumed; no new compiler, machine field, root or GC rule.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json",
+  "engine_route": [
+    "vendor/php-src/Zend/zend_compile.c::zend_delayed_compile_prop selects current this/explicit FETCH_THIS rather than an ordinary CV.",
+    "vendor/php-src/Zend/zend_object_handlers.c::zend_std_read_property / zend_std_call_getter hold the receiver, set/clear IN_GET, verify the selected property using getter strictness, then release."
+  ],
+  "implementation": {
+    "revision": "ce3f1b081f026594238aa3cd0bfcbebb5684522a",
+    "path": "spec/semantics/380-magic-property-get.watsup",
+    "delta": "+43 lines",
+    "behavior": "Immutable this-source certification reuses323; KNOWN-object entry and pending capture require this_receiver identity. The old CV arm explicitly excludes literal this, preventing forged raw-this ENV bypass. Saved source/DECL history has no current-this reread; the Get hold replaces the transient KNOWN root with zero owner delta and no GET_BASE.",
+    "preservation": "Existing reachable CV/factory paths and Warning/typed/denied/verification bodies stay pointwise unchanged; new literal-this admission is BYVAL-only. Module323, helpers119/123,384, root/GC/schema and state/frame fields remain unchanged."
+  },
+  "source_evidence": {
+    "native_and_baseline_revision": "dd7a03e396b74c405d4aef47b7aa14b34ad29007",
+    "module_count": 414,
+    "classification": "All native5 exact. New4 genuine Unsupported before Get at S:/B:/R:/L:; INITIAL is a separate existing agreement1.",
+    "changed_revision": "ce3f1b081f026594238aa3cd0bfcbebb5684522a",
+    "agreements": 4,
+    "observations": "Parent private int weak7 versus Child hidden/external raw7; declaring-Parent caller-line TypeError; recursive Warning/capturedNULL despite live9 plus reset; Get clears globalchild but method prints m before receiver D."
+  },
+  "focused_evidence": {
+    "revision": "171a2dbc2503c8c8f0f08a28ddfbade2ab1c3d86",
+    "module_count": 414,
+    "author": 356,
+    "independent": 132,
+    "total": 488,
+    "reached": "Source-authenticated entry/pending/frame, global Handler with no receiver and valid saved Get history; saved error-emitter anchor, capturedNULL/live9 and same-site reset; method RECEIVER remains after global CV and Get-hold release, then m before D. Peer covers real private-shadow selected declaration/int7, eligible other receiver and INITIAL bypass.",
+    "derived": "Wrong RESULT/current receiver or missing current, fake raw-this ENV/CV, line and BYREF method admission refusals; zero-budget resumption equality. These mutations do not claim source reachability.",
+    "author_selection": {
+      "recursive_handler": 213,
+      "borrowed_lifetime": 143
+    },
+    "limits": "Private rejection has source evidence; its full Error trajectory is not renewed. Initial control and historical getter suites retain their own cuts."
+  },
+  "preserved_failures": [
+    "Original author first group211 at4119da22d compiled but returned quietfalse/exit0; lifetime and peer were unrun. Direct Warning-history assertion in actual Handler body used the wrong origin.",
+    "First shared diagnostic had a blank premise paragraph syntax error before main:0 evaluation/0 credit. Corrected sole shared61 diagnostic has0 acceptance credit.",
+    "Diagnostic isolates only handler_warning_history=false:353 requires current ORIGIN=warning READ.SITE.207 error_context_anchor validates the saved emitter; restored-emitter HANDLER/RESUME history remains true. Fixture-only3+/1- correction at171a2dbc2; no runtime/source replay."
+  ],
+  "independent_review": "class119_review accepted native/baseline, actual runtime and old-CV fence, source4, author356/peer132, fixture correction and disjoint incoming selectors. AL2/SL2true author and AL1/SL1true peer; all processes/groups/wrappers reaped. No metadata/composition execution renewal.",
+  "raw": {
+    "manifest": "../php-spec-evidence-archive/magic-get-direct-this-124/manifest.json",
+    "bytes": 8069742,
+    "sha256": "498c90233aba3d7c5f5b71871772b47efa60067a9b2693e8ce213e52c4e6c085",
+    "reports": {
+      "native5": {
+        "path": ".tools/magic-get-direct-this-probes-124/native-first/report.json",
+        "sha256": "4c54136dd25bbf30d99be1c699519bd46349de1a53f019eccef37a1502df937a"
+      },
+      "baseline5": {
+        "path": ".tools/magic-get-direct-this-probes-124/accepted-current-baseline/report.json",
+        "sha256": "f5207660483568745e6d07fee907ad053f7dbf8d24debf8684aa5d643c43dbe8"
+      },
+      "source4": {
+        "path": ".tools/magic-get-direct-this-probes-124/changed-model-nwa36llt/report.json",
+        "sha256": "e6691e3cc27e675ad4a531ede83f026f6475e49884472b3931902455d8c4daf7"
+      },
+      "original_author211_false": {
+        "path": ".tools/magic-get-direct-this-protocol-he2s65li/report.json",
+        "sha256": "d0af002e8e9c7c6ab49bc48bd47ea2e53c3b662ed2475d82781e2cc3ac17beeb"
+      },
+      "diagnostic_syntax_zero_evaluation": {
+        "path": ".tools/magic-get-direct-this-probes-124/shared-diagnostic-first/report.json",
+        "sha256": "999a5350df88f3a8d3cca56c91f0036e13e3fe5700986f02ea611771482b2180"
+      },
+      "shared61_zero_credit": {
+        "path": ".tools/magic-get-direct-this-probes-124/shared-diagnostic-corrected/report.json",
+        "sha256": "0d8cf2731d8e73912e82d3457cf13eafc16edccec0252925775d07c1e80eb32d"
+      },
+      "author356": {
+        "path": ".tools/magic-get-direct-this-protocol-vhtz3x5i/report.json",
+        "sha256": "94d766cc8641de71a062bacb0110b7ac78b721fcb4112b35e3091813435cad1a"
+      },
+      "independent132": {
+        "path": ".tools/magic-get-direct-this-review-124/execution-3ugfpeap/report.json",
+        "sha256": "307354871b64b0bf7f29524522066a88050b0fd0b2cb96648ab7f9f7344a0684"
+      }
+    },
+    "recovery": "Verify SHA-256 and extract raw.tar.gz; recover tested Git revision for the original414 module manifest. Raw reports preserve original path/cwd/profile/tool identities and original failure. tested-inputs/ snapshots the selected runtime,323 source certificate, seven maintained inputs, unchanged119/123 helpers and recording/profile inputs. Composition over415 adds no execution credit."
+  },
+  "composition": {
+    "parent_revision": "6ecf7ab24a9cea48b416809b0c0a136657d9b5a8",
+    "module_count": 415,
+    "preservation": "Tested380, seven new maintained inputs and unchanged119/123/323 helpers remain exact; all incoming runtime modules and ordered manifest stay parent-exact. Added30 alternatives introduce no state/frame/default field, so fixtures need no lift.",
+    "selectors": "OP86 array-CONCAT/RIGHT Stringable, A51 string-dimension KEY_READ_DIM, M151 WeakMap wrapper manual cursors and V104 captured CONSTANT/DEFINED object queries have no producer here.",
+    "credit": "Accepted414 cuts stay closed; no joined execution or older-suite replay."
+  },
+  "limits": [
+    "Public-shadow lookup, by-reference getters, owning return/coercion families, scoped recursive-inner Errors, bound-Closure scopes, quiet/computed names, suspension and wider lifetimes remain partial."
+  ],
+  "engine_bugs_or_intentional_divergences": []
+}
