@@ -856,8 +856,9 @@ while parked. Normal resume retains the original Exception and null
 `Previous`. The closed Generator retains its Closure and object cache until
 release, including after a recovery yield retires the old cache. Five new
 exact sources and three reached states/302 assertions support this bounded
-transfer; the old direct named source remains an unchanged control. Closure
-BYREF/fresh, bound, delegated and wider helper/lifecycle forms remain open.
+transfer; the old direct named source remains an unchanged control. At that
+cut, Closure BYREF/fresh, bound, delegated and wider helper/lifecycle forms
+remained open.
 [Closure THROW review](../../coverage/semantics/generator-fiber-closure-throw-transfer-review.json).
 
 Fresh by-value `Generator::throw` now moves a plain unbound Closure-created

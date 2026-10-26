@@ -174,9 +174,9 @@ a closed Generator retains both an object cache and its Closure capture until
 release. Normal and supplied-Fiber-Throwable paths preserve the native
 exception identity and `Previous` order. Five new exact sources, including
 independent cache replacement, and three reached states/302 assertions cover
-this bounded shape; the direct named control is unchanged. Closure BYREF and
-fresh THROW, bound Closure, method BYREF/fresh, delegated and helper forms
-remain open. [Closure THROW review](../../coverage/semantics/generator-fiber-closure-throw-transfer-review.json).
+this bounded shape; the direct named control is unchanged. At that cut,
+Closure BYREF and fresh THROW, bound Closure, method BYREF/fresh, delegated
+and helper forms remained open. [Closure THROW review](../../coverage/semantics/generator-fiber-closure-throw-transfer-review.json).
 
 A fresh plain unbound Closure-created by-value Generator can also enter
 `throw` before its first yield and suspend in a Fiber. The original API

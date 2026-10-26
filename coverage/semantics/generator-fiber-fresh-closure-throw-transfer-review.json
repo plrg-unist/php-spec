@@ -1,6 +1,6 @@
 {
   "milestone": "Iterator65 fresh unbound Closure-created by-value Generator::throw Fiber transfer",
-  "target": "PHP 8.5.10 CLI NTS signed64; project-local oracle SHA256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json; LC_ALL=C TZ=UTC; serial exclusive CPU3 for author and reviewer cuts",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local oracle SHA256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json; LC_ALL=C TZ=UTC; serial exclusive CPU3 for author and reviewer cuts; CPU4 for the selected fifth maintained-wrapper check",
   "parent": "33550d1183428cdf8fda311ee31bb09a719f8a4c",
   "implementation_commit": "db58032b0da21b00c8d0b61b5a05e946263741ad",
   "scope": "A fresh direct plain unbound REALCLOSURE-created by-value Generator::throw may transfer through a Fiber pause before first yield. The saved resumer has ADVANCE/FIRST, an empty VALUE/REFCELL, and one valid owned Throwable argument. Matching Closure target, instance and absent receiver are required; existing callee, source, resumer and owner gates remain. Normal Fiber resume reaches first yield before injecting the original Throwable. Supplied Fiber::throw before that yield makes the original escape with the supplied exception as Previous.",
@@ -93,7 +93,7 @@
     }
   },
   "preservation": "The new arm requires fresh ADVANCE/FIRST, empty cache/reference cell, non-BYREF producer and matching Closure target. Old direct named fresh and primed named/method/Closure/BYREF arms are unchanged. The selected I64 primed control agreed before and after the edit; no old source/state credit is renewed.",
-  "remaining": "Fresh by-reference Closure and method THROW, bound Closure, delegated/helper resumers, collection/request and wider lifecycle remain partial. Actual-tail joined strict review pending at this record cut.",
+  "remaining": "Closure by-reference THROW at fresh or primed entry, method by-reference/fresh THROW, bound Closure, delegated/helper resumers, collection/request and wider lifecycle remain partial. Actual-tail composition review remains pending at this record cut.",
   "evidence_archive": {
     "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-closure-throw-transfer-65/raw.tar.gz",
     "bytes": 179161,
@@ -105,5 +105,5 @@
     "sha256": "36c847d0224d816eb37be8a4f843efbbcee34f2d4ffcb0e5764af797875b7011"
   },
   "recovery": "Restore matching Git code/tests at db58032b0 and extract raw.tar.gz under the private I65 root; the independent native/model directory originally lived under the canonical php-spec .tools root. This raw archive is outside Git and is not a build input.",
-  "independent_review": "Independent reviewer cleared the frozen author native packet, unchanged-parent baselines, narrow 281/source/state static packet, fifth frozen row/wrapper, and exact independent abrupt native/model result at db58032b0. Actual-tail joined review remains pending."
+  "independent_review": "Independent reviewer cleared the frozen author native packet, unchanged-parent baselines, narrow 281/source/state static packet, fifth frozen row/wrapper, and exact independent abrupt native/model result at db58032b0. Actual-tail composition review remains pending."
 }
