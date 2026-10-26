@@ -61,6 +61,21 @@ echo "R:",$got===null,":",$text,":",$key,":",$tail,":",$later,":",$calls,";";
 unset($prefix,$text,$key,$tail,$calls,$got,$later);
 echo "U:",isset($text),":",isset($got),":",isset($calls),";";
 ''',
+    'string-offset-read-warning-review-borrowed-bounds-unset': b'''<?php
+function string_read_borrowed_bounds($n,$m,$f,$l) {
+    $GLOBALS["calls"]++;echo "D:",$n,":",$GLOBALS["calls"],":",$m,":",$l,";";
+    unset($GLOBALS["text"],$GLOBALS["key"]);$GLOBALS["tail"]=66;return true;
+}
+$prefix="a";$text=$prefix."bc";$key=7;$tail=7;$calls=0;$got=100;
+set_error_handler("string_read_borrowed_bounds",E_WARNING);
+$got=$text[
+    $key
+];
+restore_error_handler();
+echo "R:",$got==="",":",isset($text),":",isset($key),":",$tail,":",$calls,";";
+unset($prefix,$tail,$calls,$got);
+echo "U:",isset($text),":",isset($got),":",isset($calls),";";
+''',
 }
 
 BOUNDARIES = {
