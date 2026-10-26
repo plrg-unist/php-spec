@@ -1,6 +1,6 @@
 {
   "scope": "A parentless Parent declares one public backed block &get. Its immediate Child plainly redeclares the same public typed-int or untyped property. An unchanged Grandchild inherits Child's physical slot and Parent's getter for direct CV/literal reads, reference fetches, own writes and a defined-RHS destination bind.",
-  "status": "partial; semantic review clear, package review pending",
+  "status": "partial; independently reviewed",
   "target": {
     "php": "8.5.10 CLI NTS signed64",
     "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
@@ -86,7 +86,7 @@
   "review": {
     "reviewer": "class137_review",
     "semantic_decision": "CLEAR",
-    "package_decision": "pending"
+    "package_decision": "CLEAR"
   },
   "remaining": "Greatgrandchild and wider descendant chains, changed redeclarations, virtual/arrow/set/paired/trait hooks, constructors with property effects, dimensions, quiet/compound consumers and wider reference lifetimes remain partial."
 }
