@@ -197,6 +197,8 @@ def conditions(name, program, path, stdout):
         step('S_resume', 'S_return')
         checks += [
             '$concatassign_owned_frontier(S_resume, 5)',
+            '$task_nodes(CONCATASSIGN_OWNED_ARRAY_COMMIT pconcatassignownedarraywarning) = eps',
+            '$task_nodes(CONCATASSIGN_OWNED_ARRAY_RELEASE pconcatassignownedarraywarning) = [HARRAY n_array] ++ $value_nodes(pconcatassignownedarraywarning.LEFT)',
             'S_resume.STORE[n_lhs] = DEFINED pvalue_B',
             'S_resume.STORE[n_value] = DEFINED pvalue_old',
             '$heap_owners($heap_prune($heap_graph(S_resume)), HARRAY n_array) = 1',

@@ -1178,7 +1178,7 @@ def $error_read_discard(S, CONCATASSIGN_OWNED_ARRAY_WARNING pconcatassignownedar
   -- if $concatassign_owned_array_valid(S, pconcatassignownedarraywarning, 1)
   -- if S.OUTPUTBUFFERS =/= eps
 def $task_nodes(CONCATASSIGN_OWNED_ARRAY_WARNING pconcatassignownedarraywarning n) = [HARRAY pconcatassignownedarraywarning.ARRAY] ++ $value_nodes(pconcatassignownedarraywarning.LEFT)
-def $task_nodes(CONCATASSIGN_OWNED_ARRAY_COMMIT pconcatassignownedarraywarning) = [HARRAY pconcatassignownedarraywarning.ARRAY] ++ $value_nodes(pconcatassignownedarraywarning.LEFT)
+def $task_nodes(CONCATASSIGN_OWNED_ARRAY_COMMIT pconcatassignownedarraywarning) = eps
 def $task_nodes(CONCATASSIGN_OWNED_ARRAY_RELEASE pconcatassignownedarraywarning) = [HARRAY pconcatassignownedarraywarning.ARRAY] ++ $value_nodes(pconcatassignownedarraywarning.LEFT)
 def $call_task_valid(S, CONCATASSIGN_OWNED_ARRAY_WARNING pconcatassignownedarraywarning n) = $concatassign_owned_array_valid(S, pconcatassignownedarraywarning, n)
 def $call_task_valid(S, CONCATASSIGN_OWNED_ARRAY_COMMIT pconcatassignownedarraywarning) = ($concatassign_owned_array_source(S, pconcatassignownedarraywarning) /\ $concatassign_owned_array_snapshot(S, pconcatassignownedarraywarning))
