@@ -287,3 +287,88 @@ def $trace_alias_present(S, n_trace) = $trace_alias_frames_present(S, S.ARRAYS[n
   -- if (HARRAY n_trace) <- S.ALLOCATIONS
   -- if $trace_graph_valid(S, n_trace)
 def $trace_alias_present(S, n_trace) = false -- otherwise
+
+;; A nested reference cell may itself hold a live array. Carry the same
+;; path-local array stack across DIRECT edges and the cell's current value.
+dec $trace_array_cell_value(pstate, pvalue, nat*) : bool
+dec $trace_array_cell_entries(pstate, pentry*, nat*) : bool
+dec $trace_array_cell_node(pstate, nat, nat*) : bool
+def $trace_array_cell_value(S, PARRAY n, n_seen*) = $trace_array_cell_node(S, n, n_seen*)
+def $trace_array_cell_value(S, pvalue, n_seen*) = $trace_compare_scalar(S, pvalue) -- otherwise
+def $trace_array_cell_entries(S, eps, n_seen*) = true
+def $trace_array_cell_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*, n_seen*) = ($trace_array_cell_value(S, pvalue, n_seen*) /\ $trace_array_cell_entries(S, pentry_tail*, n_seen*))
+def $trace_array_cell_entries(S, (ENTRY pkey (ALIAS n_cell)) :: pentry_tail*, n_seen*) = ($trace_array_cell_value(S, pvalue, n_seen*) /\ $trace_array_cell_entries(S, pentry_tail*, n_seen*))
+  -- if $(n_cell < |S.STORE|)
+  -- if (HCELL n_cell) <- S.ALLOCATIONS
+  -- if n_cell <- S.REFCELLS
+  -- if S.STORE[n_cell] = DEFINED pvalue
+def $trace_array_cell_entries(S, pentry*, n_seen*) = false -- otherwise
+def $trace_array_cell_node(S, n, n_seen*) = $trace_array_cell_entries(S, S.ARRAYS[n].ITEMS, n :: n_seen*)
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if ~(n <- n_seen*)
+def $trace_array_cell_node(S, n, n_seen*) = false -- otherwise
+
+dec $trace_array_cell_frame(pstate, nat, nat) : bool
+def $trace_array_cell_frame(S, n_frame, n_trace) = true
+  -- if $(n_frame < |S.ARRAYS|)
+  -- if (HARRAY n_frame) <- S.ALLOCATIONS
+  -- if $entry_lookup(S.ARRAYS[n_frame].ITEMS, KSTRING $ptascii("args")) = eps
+def $trace_array_cell_frame(S, n_frame, n_trace) = $trace_array_cell_entries(S, S.ARRAYS[n_args].ITEMS, [n_trace, n_frame, n_args])
+  -- if $(n_frame < |S.ARRAYS|)
+  -- if (HARRAY n_frame) <- S.ALLOCATIONS
+  -- if $entry_lookup(S.ARRAYS[n_frame].ITEMS, KSTRING $ptascii("args")) = (DIRECT (PARRAY n_args))
+  -- if $(n_args < |S.ARRAYS|)
+  -- if (HARRAY n_args) <- S.ALLOCATIONS
+def $trace_array_cell_frame(S, n_frame, n_trace) = false -- otherwise
+dec $trace_array_cell_frames(pstate, pentry*, nat) : bool
+def $trace_array_cell_frames(S, eps, n_trace) = true
+def $trace_array_cell_frames(S, (ENTRY pkey (DIRECT (PARRAY n_frame))) :: pentry_tail*, n_trace) = ($trace_array_cell_frame(S, n_frame, n_trace) /\ $trace_array_cell_frames(S, pentry_tail*, n_trace))
+def $trace_array_cell_frames(S, pentry*, n_trace) = false -- otherwise
+def $trace_array_cell_graph(S, n_trace) = $trace_array_cell_frames(S, S.ARRAYS[n_trace].ITEMS, n_trace)
+  -- if $(n_trace < |S.ARRAYS|)
+  -- if (HARRAY n_trace) <- S.ALLOCATIONS
+  -- if $trace_graph_valid(S, n_trace)
+def $trace_array_cell_graph(S, n_trace) = false -- otherwise
+
+;; Admission requires an array-valued reference in captured argument storage.
+dec $trace_array_cell_value_present(pstate, pvalue, nat*) : bool
+dec $trace_array_cell_items_present(pstate, pentry*, nat*) : bool
+dec $trace_array_cell_node_present(pstate, nat, nat*) : bool
+dec $trace_array_cell_alias_present(pstate, nat) : bool
+def $trace_array_cell_value_present(S, PARRAY n, n_seen*) = $trace_array_cell_node_present(S, n, n_seen*)
+def $trace_array_cell_value_present(S, pvalue, n_seen*) = false -- otherwise
+def $trace_array_cell_items_present(S, eps, n_seen*) = false
+def $trace_array_cell_items_present(S, (ENTRY pkey (ALIAS n_cell)) :: pentry_tail*, n_seen*) = ($trace_array_cell_alias_present(S, n_cell) \/ $trace_array_cell_items_present(S, pentry_tail*, n_seen*))
+def $trace_array_cell_items_present(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*, n_seen*) = ($trace_array_cell_value_present(S, pvalue, n_seen*) \/ $trace_array_cell_items_present(S, pentry_tail*, n_seen*))
+def $trace_array_cell_items_present(S, pentry*, n_seen*) = false -- otherwise
+def $trace_array_cell_node_present(S, n, n_seen*) = $trace_array_cell_items_present(S, S.ARRAYS[n].ITEMS, n :: n_seen*)
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if ~(n <- n_seen*)
+def $trace_array_cell_node_present(S, n, n_seen*) = false -- otherwise
+def $trace_array_cell_alias_present(S, n_cell) = true
+  -- if $(n_cell < |S.STORE|)
+  -- if (HCELL n_cell) <- S.ALLOCATIONS
+  -- if n_cell <- S.REFCELLS
+  -- if S.STORE[n_cell] = DEFINED (PARRAY n)
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+def $trace_array_cell_alias_present(S, n_cell) = false -- otherwise
+dec $trace_array_cell_frame_present(pstate, nat, nat) : bool
+def $trace_array_cell_frame_present(S, n_frame, n_trace) = $trace_array_cell_items_present(S, S.ARRAYS[n_args].ITEMS, [n_trace, n_frame, n_args])
+  -- if $(n_frame < |S.ARRAYS|)
+  -- if (HARRAY n_frame) <- S.ALLOCATIONS
+  -- if $entry_lookup(S.ARRAYS[n_frame].ITEMS, KSTRING $ptascii("args")) = (DIRECT (PARRAY n_args))
+  -- if $(n_args < |S.ARRAYS|)
+  -- if (HARRAY n_args) <- S.ALLOCATIONS
+def $trace_array_cell_frame_present(S, n_frame, n_trace) = false -- otherwise
+dec $trace_array_cell_frames_present(pstate, pentry*, nat) : bool
+def $trace_array_cell_frames_present(S, eps, n_trace) = false
+def $trace_array_cell_frames_present(S, (ENTRY pkey (DIRECT (PARRAY n_frame))) :: pentry_tail*, n_trace) = ($trace_array_cell_frame_present(S, n_frame, n_trace) \/ $trace_array_cell_frames_present(S, pentry_tail*, n_trace))
+def $trace_array_cell_frames_present(S, pentry*, n_trace) = false -- otherwise
+def $trace_array_cell_present(S, n_trace) = $trace_array_cell_frames_present(S, S.ARRAYS[n_trace].ITEMS, n_trace)
+  -- if $(n_trace < |S.ARRAYS|)
+  -- if (HARRAY n_trace) <- S.ALLOCATIONS
+  -- if $trace_graph_valid(S, n_trace)
+def $trace_array_cell_present(S, n_trace) = false -- otherwise
