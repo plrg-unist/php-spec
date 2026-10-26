@@ -308,15 +308,35 @@ EVENTS = {
                 '1', '|', 'GEN-DONE|', '0', '|', 'DROPPED|', '1', '|', 'GIVEN|',
                 '1', '|', 'E'],
 }
+PARKED_STAGE = ('S.ACTIVEFIBER = eps -- if $lookup(S.ENV, $ptascii("f")) = (n_fiber_cell) '
+                '-- if S.STORE[n_fiber_cell] = DEFINED (POBJECT n_fiber) '
+                '-- if S.OBJECTS[n_fiber] = FIBER pfiber '
+                '-- if pfiber.STATUS = FIBER_SUSPENDED')
+# Both recipes seek the original source. Their states have distinct file paths;
+# completion compares whole/split execution only within its own reached state.
+COMPLETION_BINDINGS = checks(r"""
+pfiber.VM = (pfibervm)
+pfibervm.FRAMES = [pframe_helper, pframe_resumer, pframe_root]
+pframe_resumer.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask_generator*
+n_generator = pgeneratorop.OBJECT
+$lookup(S.ENV, $ptascii("given")) = (n_given_cell)
+S.STORE[n_given_cell] = DEFINED (POBJECT n_given)
+$lookup(S.ENV, $ptascii("weak")) = (n_weak_cell)
+S.STORE[n_weak_cell] = DEFINED (POBJECT n_weak)
+S.OBJECTS[n_weak] = WEAKREFERENCE (n_token)
+$call_descriptors_valid(S)
+$heap_valid($heap_graph(S))
+""")
 CASES = {
-    'generator-fiber-helper-parked-handled': {
+    'generator-fiber-helper-parked-handled-structure': {
         'source': ROWS[HANDLED]['source'],
-        'stage': ('S.ACTIVEFIBER = eps -- if $lookup(S.ENV, $ptascii("f")) = (n_fiber_cell) '
-                  '-- if S.STORE[n_fiber_cell] = DEFINED (POBJECT n_fiber) '
-                  '-- if S.OBJECTS[n_fiber] = FIBER pfiber '
-                  '-- if pfiber.STATUS = FIBER_SUSPENDED'),
-        'checks': [*PARKED, f'pgeneratorop.LINE = {CURRENT_LINES[HANDLED]}',
-                   *ENDING, events(EVENTS[HANDLED])],
+        'stage': PARKED_STAGE,
+        'checks': [*PARKED, f'pgeneratorop.LINE = {CURRENT_LINES[HANDLED]}'],
+    },
+    'generator-fiber-helper-parked-handled-completion': {
+        'source': ROWS[HANDLED]['source'],
+        'stage': PARKED_STAGE,
+        'checks': [*COMPLETION_BINDINGS, *ENDING, events(EVENTS[HANDLED])],
     },
     'generator-fiber-helper-injected-unhandled': {
         'source': ROWS[UNHANDLED]['source'],
