@@ -90,7 +90,8 @@ def $pipe_optimized_method_source(S, porigin_site, ptbytes) = true
   -- if $pppipe_optimized(NExprFuncCall expression_callee (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_call)
   -- if $pipe_fixed_name(S, porigin_site) = ((ptbytes_fixed, preqbytes_fallback?))
   -- if ptbytes = ptbytes_fixed
-  -- if $parser_literal(expression_callee) = (PSTRING ptbytes)
+  -- if $parser_literal(expression_callee) = (PSTRING ptbytes_literal)
+  -- if ptbytes = $ppcall_literal_name(ptbytes_literal)
 def $pipe_optimized_method_source(S, porigin_site, ptbytes) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprBinaryOpPipe expression_left (NExprFuncCall expression_callee (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_call) metadata)
   -- if $pppipe_optimized(NExprFuncCall expression_callee (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_call)
