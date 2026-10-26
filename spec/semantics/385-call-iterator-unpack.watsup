@@ -39,6 +39,7 @@ dec $iterator_unpack_warning_resume(ptask) : bool
 dec $iterator_unpack_discard_nodes(pstate, piteratorunpack) : pnode*
 dec $iterator_unpack_discard(pstate, piteratorunpack, text) : pstate
 dec $iterator_unpack_abort_input(pstate, piteratorunpack) : bool
+dec $iterator_unpack_abort_plain(pstate, punpackcall) : bool
 
 def $unpack_iterator_value(S, POBJECT n) = ($useriter_instance(S, n) \/ $generator_object(S, n))
 def $unpack_prepare(S, punpackcall) = S_read
@@ -67,6 +68,20 @@ def $iterator_unpack_plain(S, punpackcall) = true
   -- if pfunction.ORIGIN = porigin_method
   -- if punpackcall.CALLSITE = (porigin_site)
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $call_selected_valid(S, punpackcall.FUNCTION, punpackcall.CALLSITE)
+def $iterator_unpack_plain(S, punpackcall) = true
+  -- if punpackcall.FUNCTION = ARRAY_METHOD_TARGET (METHOD_TARGET n porigin_method) parrayselection
+  -- if $unpack_class(S, punpackcall) = (UNPACK_CV)
+  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
+  -- if pfunction.ORIGIN = porigin_method
+  -- if punpackcall.CALLSITE = (parrayselection.SITE)
+  -- if $call_selected_valid(S, punpackcall.FUNCTION, punpackcall.CALLSITE)
+def $iterator_unpack_plain(S, punpackcall) = true
+  -- if punpackcall.FUNCTION = ARRAY_METHOD_TARGET (STATIC_METHOD_TARGET porigin_class porigin_method) parrayselection
+  -- if $unpack_class(S, punpackcall) = (UNPACK_CV)
+  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
+  -- if pfunction.ORIGIN = porigin_method
+  -- if punpackcall.CALLSITE = (parrayselection.SITE)
   -- if $call_selected_valid(S, punpackcall.FUNCTION, punpackcall.CALLSITE)
 def $iterator_unpack_plain(S, punpackcall) = false -- otherwise
 def $iterator_unpack_input(S, punpackcall, VARIABLE ptbytes z) = true
@@ -499,6 +514,10 @@ def $iterator_unpack_warning_hold(S, piteratorunpack) = eps -- otherwise
 def $iterator_unpack_warning_target(S, METHOD_TARGET n porigin_method) = pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+def $iterator_unpack_warning_target(S, STATIC_METHOD_TARGET porigin_class porigin_method) = pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+def $iterator_unpack_warning_target(S, ARRAY_METHOD_TARGET pcalltarget parrayselection) = $iterator_unpack_warning_target(S, pcalltarget)
 def $iterator_unpack_warning_target(S, porigin_function) = pfunction.NAME
   -- if $target_function(S, porigin_function) = (pfunction)
   -- if pfunction.ORIGIN = porigin_function
@@ -627,6 +646,17 @@ def $iterator_unpack_abort_input(S, piteratorunpack) = true
   -- if $unpack_class(S, piteratorunpack.CALL) =/= (UNPACK_CV)
   -- if $unpack_class(S, piteratorunpack.CALL) =/= eps
 def $iterator_unpack_abort_input(S, piteratorunpack) = false -- otherwise
+;; The selected receiver may have retired during this cleanup operation. Restore
+;; its allocation only in the saved-source certificate check, never in the heap.
+def $iterator_unpack_abort_plain(S, punpackcall) = true
+  -- if $iterator_unpack_plain(S, punpackcall)
+def $iterator_unpack_abort_plain(S, punpackcall) = true
+  -- if punpackcall.FUNCTION = ARRAY_METHOD_TARGET (METHOD_TARGET n porigin_method) parrayselection
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE parrayselection.REQUESTED
+  -- if ~((HOBJECT n) <- S.ALLOCATIONS)
+  -- if $iterator_unpack_plain(S[.ALLOCATIONS = (HOBJECT n) :: S.ALLOCATIONS], punpackcall)
+def $iterator_unpack_abort_plain(S, punpackcall) = false -- otherwise
 def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.SOURCE = ITERATOR_UNPACK piteratorunpack text
   -- if text <- ["rewind-start", "rewind", "valid-start", "valid", "valid-nan", "current-start", "current", "key-start", "key", "send", "error", "byref", "next-start", "next", "finish"]
@@ -640,7 +670,7 @@ def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.ORIGIN = (porigin)
   -- if S_scope = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = (porigin)][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
   -- if $iterator_unpack_hold_allowed(S_scope, piteratorunpack, text)
-  -- if $iterator_unpack_plain(S_scope, piteratorunpack.CALL)
+  -- if $iterator_unpack_abort_plain(S_scope, piteratorunpack.CALL)
   -- if $call_unpack_site(S_scope, (porigin))
   -- if $call_line_valid(S_scope, (porigin), piteratorunpack.CALL.LINE)
   -- if $call_argument_source(S_scope, porigin) = PCALLARGUMENTS phpType7* n_field
