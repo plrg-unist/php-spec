@@ -40,10 +40,10 @@ public method signatures. Cache values are quiet primitives, validated strings
 or finite acyclic DIRECT object-free array graphs. Current may return an ordinary
 unconstrained reference cell; key remains by value. Shared child tables contribute
 one edge per physical entry, independent of their parent's owner count. Path-local
-validation permits shared descendants but rejects cycles, descendant references,
+validation permits shared descendants but initially rejects cycles, descendant references,
 objects, debt and any path back to the receiving builder. Fresh integer-graph
 witnesses distinguish key-time live-reference writes from later selective COW.
-Object/reference descendants, other Iterator operand
+Object and wider reference descendants, other Iterator operand
 modes and wider callback lifetimes remain partial. Unsupported Traversables
 refuse explicitly rather than receiving a non-Traversable TypeError.
 
@@ -60,6 +60,20 @@ the destructor; there is no intervening `THROW_SEARCH`/Iterator task cut on that
 route. The [DATA destructor review](../../coverage/semantics/array-iterator-data-destructor-review.json)
 records the distinct source and reached-state checks. Owning instance children,
 other operand modes and broader destructor reentry remain partial.
+
+For a by-value `current()` result from an ordinary user Iterator without a
+destructor, the cache also admits finite DIRECT ARRAY descendants with ordinary
+scalar reference cells. The validator follows each path to reject cycles, debt,
+pool-owned reference tables and builder backedges; shared sibling edges are
+allowed. The raw cache and copied rows keep physical cell ownership. With an
+external alias, a later COW write still reaches the shared cell. After that
+alias is unset, a sole reference can be unwrapped during COW and the detached
+row can change independently. The same Iterator mechanism applies to an
+Iterator returned by an Aggregate getter. Three exact source agreements and
+273 reached conditions (three raw steps) cover these cases in the
+[reference-cache review](../../coverage/semantics/array-traversable-reference-cache-review.json).
+By-reference current results and Generator caches retain their earlier scope;
+object, typed, proxy, cyclic and debt-bearing descendants remain partial.
 
 `427-array-generator-unpack.watsup` adds ordinary named Generator bodies with
 received parameters and reference yields, using real borrowed native resumes.
@@ -93,7 +107,9 @@ edge retires; folded siblings retain their permanent pool owners. The
 [nested-cache review](../../coverage/semantics/array-traversable-nested-cache-review.json)
 adds two normal COW/DAG originals and two supplied-throw originals. Iterator quiet
 discard removes its pending roots together; Generator retirement preserves the
-builder through real finally and VALUE/storage release before cancellation.
+builder through real finally and VALUE/storage release before cancellation. Its
+original descendant-reference refusal remains historical for the newer bounded
+Iterator-only reference-cell scope above.
 
 `430-array-aggregate-unpack.watsup` adds ordinary CVs of named IteratorAggregate
 classes with a public non-generator `getIterator(): Traversable`. Genuine source owners
