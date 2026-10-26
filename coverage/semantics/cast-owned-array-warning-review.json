@@ -1,8 +1,8 @@
 {
   "milestone": "OP99 acquired array explicit string cast Warning and temporary release",
   "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle/profile",
-  "status": "author source and focused checks passed; independent controls pending",
-  "scope": "Initially unbuffered explicit (string) cast of a nonempty mutable flat DIRECT primitive array returned by a named noarg by-value untyped user function. An eligible named E_WARNING handler may return false or throw a supplied Exception. The cast result is interned Array, with no implicit Array output; the acquired table retires before normal assignment or pending exception search.",
+  "status": "independently reviewed bounded semantics",
+  "scope": "Initially unbuffered explicit (string) cast of a nonempty mutable flat DIRECT primitive array returned by a named noarg by-value untyped user function. An eligible named E_WARNING handler may return false or throw a supplied Exception. The cast result is interned Array, with no implicit Array output; the acquired table retires before normal assignment or, after handler-result cleanup, before catch handling.",
   "engine": [
     "vendor/php-src/Zend/zend_vm_def.h: ZEND_CAST IS_STRING calls zval_get_string, then FREE_OP1, then NEXT_OPCODE_CHECK_EXCEPTION",
     "vendor/php-src/Zend/zend_operators.c: __zval_get_string_func warns for IS_ARRAY and returns interned Array even with EG(exception)"
@@ -44,13 +44,23 @@
     "normal_focused_sha256": "caf8641e83025ae2af6f55a2ee7a8a849c6e3946aabeb67a8c3f56ab87fb181b",
     "pending_focused_report": "/home/user/workspace/php-spec-evidence-archive/operators-99/focused-pending-a3d6b8d3f/report.json",
     "pending_focused_sha256": "caff24e7799bc64ca4b39f0d0efd63fe32987351266752198aecf200347f5830",
-    "result": "Three checked source cases raw-exact/native-model exit0, of which two are new array agreement and scalar is prior control. Normal125 and pending124 genuine reached checks verify source/line, two acquired owners at entry, one after source unset, handler-result root drop before canceled assignment/THROW_SEARCH, strict assigned Array only normally, same Exception20, buffer refusal and budget0. All children reaped/no timeout."
+    "result": "Three checked source cases raw-exact/native-model exit0, of which two are new array agreement and scalar is prior control. Normal125 and pending124 genuine reached checks verify source/line, two acquired owners at entry, one after source unset, owner1 at the first THROW_SEARCH and owner0 after handler-result cleanup before catch handling, strict assigned Array only normally, same Exception20, buffer refusal and budget0. All children reaped/no timeout."
+  },
+  "independent_review": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-99/review-independent/run-a3d6b8d3f-reviewwt/report.json",
+    "sha256": "d2469510b62161d63040da1d7c0b2ab79bd63bc64d8a48e1774a9d8c87f77a26",
+    "cases_sha256": "377407b3ad1d2292aa5a69f1dcdf4b1919d574db2854265b89c89c3257cf590f",
+    "runner_sha256": "2ceebbc6b8fb42be1dcf8d1f8edf01da1290bd0217b90973986ecda50e9d7d89",
+    "fresh_return_source_sha256": "cb08d793d3e931177382bd8a47b423a078c424efdb2473343dca06300ef5b744",
+    "ineligible_mask_source_sha256": "11af8523bdf72ac962e74ea8bbbd78b03e78bb55682d38ecd6b49c02f7afbf7e",
+    "result": "Both frozen native-first controls agree with checked/accepted normal model, exit0/raw-exact/no timeout/group residue. Fresh runtime array without a source global and handled-true callback assigns strict Array without default stderr; ineligible E_DEPRECATED mask skips callback and emits one default Warning18. Neither cast writes Array to stdout. CPU3 fully reaped/released; semantic CLEAR."
   },
   "failed_attempts_zero_credit": [
     "First unchanged baseline used canonical master while it fast-forwarded from e7 to 08; no final report or baseline credit. Raw attempt remains in operators-99/baseline. Stable private-e7 recorder reran only the baseline.",
     "First pending focused fixture expected owner0 at the early THROW_SEARCH while ERROR_HANDLER_RESULT still held the acquired table. Its row in focused-73ab51769/report.json failed; normal125 passed separately. A read-only state probe showed owner1 before and owner0 after one cleanup transition.",
     "First corrected pending-only retry stopped in Python fixture generation on a duplicated condition before semantic execution; raw directory focused-pending-378364571 remains, no report or focused credit.",
-    "Second pending-only retry reused the dispatch descriptor TARGET eps for the entered handler-result descriptor with selected TARGET. focused-pending-e4629e703/report.json SHA8aa1d37f6b02049dcbce99dfadfc2fbf54ea11a49ea4164fea452ec4f425fff7 failed; distinct descriptor binding was rerun only for pending."
+    "Second pending-only retry reused the dispatch descriptor TARGET eps for the entered handler-result descriptor with selected TARGET. focused-pending-e4629e703/report.json SHA8aa1d37f6b02049dcbce99dfadfc2fbf54ea11a49ea4164fea452ec4f425fff7 failed; distinct descriptor binding was rerun only for pending.",
+    "The first independent runner preflight stopped before any native/model child because the author WT briefly contained uncommitted metadata. Its empty review-independent/run-a3d6b8d3f directory has zero execution credit; the reviewer used a separate clean detached WT for the accepted controls."
   ],
   "inputs_sha256": {
     "spec/semantics/30-storage.watsup": "18b3d8279cbf076556fa4a3b84fd7f845941b754fc732ab4798e538f1dbc7b60",

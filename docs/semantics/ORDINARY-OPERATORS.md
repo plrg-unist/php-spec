@@ -466,9 +466,13 @@ handler even when the source global is unset: the runtime source-copy witness
 has two owners at conversion, one during the callback and none after the
 handler result is discarded. A returning handler delivers interned `Array` to
 the assignment without writing those bytes to output. A supplied throw drops
-the temporary before exception search, skips the assignment and preserves the
-same Exception. Two new source agreements, a prior scalar-return control, and
-125 normal plus 124 pending reached-state checks cover this unbuffered route.
+the temporary after handler-result cleanup and before the catch. It skips the
+assignment and preserves the same Exception. Two new source agreements, a prior
+scalar-return control, and 125 normal plus 124 pending reached-state checks cover
+this unbuffered route.
+Independent native-first controls confirm a fresh returned array without a
+source global under a handled-true Warning, and an ineligible handler mask with
+one default Warning; both assign `Array` without printing it.
 The first pending owner-timing fixture and two affected fixture retries retain
 zero credit. Empty/nested/reference-element arrays, reference returns, other
 producers and buffer-changing callbacks remain partial in the
