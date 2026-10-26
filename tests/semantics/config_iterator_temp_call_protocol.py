@@ -37,11 +37,11 @@ dec $test_temp_iterator_seek(pstate, nat, nat) : pstate
 def $test_temp_iterator_seek(S, n_stage, 0) = S
 def $test_temp_iterator_seek(S, n_stage, n) = S
   -- if $(n > 0)
-  -- if $test_temp_iterator_front(S,n_stage) \/ (S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET) \/ (S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps)
+  -- if $test_temp_iterator_front(S,n_stage) \/ (S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET /\ ~$throwable_pending(S.COMPLETION)) \/ (S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps)
 def $test_temp_iterator_seek(S, n_stage, n) = $test_temp_iterator_seek($drive_steps($test_running(S),1),n_stage,$nabs($(n - 1)))
   -- if $(n > 0)
   -- if ~$test_temp_iterator_front(S,n_stage)
-  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET \/ $throwable_pending(S.COMPLETION)
   -- if ~(S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps)
 dec $test_temp_iterator_step(pstate) : pstate
 def $test_temp_iterator_step(S) = S_next
