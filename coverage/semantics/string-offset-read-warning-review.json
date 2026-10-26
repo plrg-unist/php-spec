@@ -1,0 +1,244 @@
+{
+  "milestone": "A51 ordinary STRING R-offset Warning continuations",
+  "status": "Implemented and independently validated; canonical composition recorded below when integrated.",
+  "target": "PHP8.5.10 CLI NTS64-bit; vendor/php-src tag34308a6666b2d489c509541ea9befea9e2b42348",
+  "cuts": {
+    "native5_and_genuine": "adb05a646a4f90397cc968c7528e280a07c5fd0e",
+    "supplemental_native_only": "e2e5ac262bb6fc1a2114b071e1e47a03fb68a1ca",
+    "initial_runtime": "e20a546f6fb41b079b754e0933714ec920c306b3",
+    "initial_strict_and_failed_source": "3587dfebf6ee45ec3fb371e790e735c23fcc1c20",
+    "typed_option_repair_and_strict_source6": "92f758a52b666a9be4d26e820acfcd5c3adbe254",
+    "focused1142": "84046e1c57052c6eaef6a4a28c7bb262ce769bcf"
+  },
+  "runtime": {
+    "spec/semantics/30-storage.watsup": "d2f2550609f28dd0f6a52d171e93d85d7c2eef8e2d0076b7ece737acc8b447e9",
+    "spec/semantics/30-string-carriers.watsup": "3c25c65f7a318e066df65b5734298364d74bff1daf280486ba1a20cb7c883512",
+    "spec/semantics/233-dimension-key-continuations.watsup": "9f1aa2decf91e0f254eedbdffb8140d9ebd52625b6941d9094a8a69b248ea2f5",
+    "spec/semantics/425-string-offset-read-continuations.watsup": "176bb763485e3319422afaf13858b6019c2983e32be8d92a2f7c51eb9be5e2f3"
+  },
+  "scripts": {
+    "tests/semantics/string_offset_read_warning_cases.py": "401ffacd7c23d6ebb255a45d99b1dc5200f1f0bb5314317d997916c4e7145daa",
+    "tests/semantics/string_offset_read_warning_protocol.py": "f7cc844086b775ff512d8955f79b3114d434fe4153b1c6ad8ccba2c7c445e6ee",
+    "tests/semantics/string_offset_read_warning_review_cases.py": "0555c257a58e6147a55c056120a805d80c0eaea9cabf2c48b74ff0a078d8163e",
+    "tests/semantics/string_offset_read_warning_review_sources.py": "432d185aa1055f3e9e1768a6b0cb13100b444be13939c4c93db1cf538e6b8145",
+    "tests/semantics/string_offset_read_warning_sources.py": "cdc515c5feab44cf1e1d2b0587f327c1185344f8156885fa7ad251ae69abcb26",
+    "tests/semantics/string_offset_read_warning_state_review.py": "17e9bc14eec32951d6590842444ca4ccf86646195e558ea8a6f9529681eb76f2"
+  },
+  "engine": "Zend/zend_vm_def.h::ZEND_FETCH_DIM_R and Zend/zend_execute.c::zend_fetch_dimension_address_read select old str before conversion. A cast Warning temporarily protects noninterned str, then detects zero on DELREF before reading live dim; surviving strings use the live primitive offset (float silently). A fixed bounds Warning returns empty without accessing str/dim afterward. Pending exceptions suppress an eligible handler or permit default reporting before unwind.",
+  "scope": "Ordinary R-fetch with an authenticated carrier and initial null/bool/int/float key, an ordinary unmarked borrowed CV or genuine owning KNOWN source operand, and source-certified KEY_READ_DIM/KEY_READ_FINISH context. CAST reuses existing silent primitive conversion and samples the live key in its same ordinary cell. BOUNDS returns the fixed empty string after arbitrary source/key writes or retirement.",
+  "ownership": "Saved BASECELL/KEYCELL indices never become CELL roots. Interned strings survive independently; genuine owning REQUEST operands retain their opcode owner. A borrowed REQUEST carrier requires exact old identity in the same logically-live ordinary unmarked selected cell with no property/coercion/backing/released records. STRINGDATA is immutable metadata, not an owner; equal bytes with a different identity do not establish survival. Source validity remains true after a locator changes/retires; CAST readiness then refuses explicitly. No string-owner scan or heap/pstate field is added.",
+  "source_lines": {
+    "interned_live_key": [
+      9
+    ],
+    "runtime_carriers": [
+      11,
+      13
+    ],
+    "default_bounds": [
+      9
+    ],
+    "supplied_throw": [
+      12,
+      22
+    ],
+    "borrowed_drop": [
+      9
+    ],
+    "borrowed_bounds_unset": [
+      9
+    ]
+  },
+  "fresh_witnesses": "Selected interned old byte despite source replacement; stable REQUEST plus live -1.7; owning concatenation cast-to-bounds; fixed OOB7 after handler writes/default false or unset of both borrowed operands; supplied same Throwable with registered suppression versus restore-before-throw default bounds3. Fresh initial cast keys are1.5/NULL and bounds keys are integers; BOOL/silent numeric leaves compose existing helpers rather than new all-key source credit.",
+  "controls": "Independent source/line/context/phase/locator negatives, legal marked key refusal, exact same-byte/different-carrier refusal, persistent old REQUEST metadata despite changed or retired selected names, no CELL task roots, pending cleanup/canceled destination and later effects, COW byte snapshot, EOF and split budget checks. Peer125-condition borrowed-CAST boundary remains explicit Unsupported with zero source agreement.",
+  "bounds": "Leading/nonnumeric text conversion callbacks, undefined/marked/constrained key locators, changed borrowed CAST carriers and wider external-holder/owner histories remain partial. Objects/arrays as live offsets are outside this continuation. OP12, Source47, owned-NUL source-release, undefined-byref LIST and COMP88 remain paused; no404/compiler/422 change or full-core claim.",
+  "validation": {
+    "private_strict_modules": 413,
+    "original_native_cases": 6,
+    "checked_source_agreements": 5,
+    "explicit_unsupported_source_controls": 1,
+    "author_conditions": 446,
+    "peer_conditions": 696,
+    "successful_conditions": 1142,
+    "boolean_conditions": 1125,
+    "raw_steps": 17,
+    "focused_first_executions_passed": true,
+    "postchange_source_interpreter_failures": 1,
+    "fixture_execution_failures": 0,
+    "affected_source_retries": 1,
+    "strict_repeated_after_runtime_repair": true,
+    "cap_changes": 0,
+    "native_or_genuine_replay": false,
+    "unrelated_accepted_semantic_replay": false
+  },
+  "corrections": [
+    "First source at3587dfebf failed before callbacks: nested tuple return attempted to upcast bare nat0 to nat?. Repair carries typed n_cell? from lookup/eps and compares typed BASECELL; the intended transition/ownership policy is unchanged. Original failure/streams retained0; only changed strict and failed/unrun source cases execute afterward.",
+    "Preparation only: author plain PSTRING write expectation follows unchanged37; peer throw checks restore the handler after popping its marker before testing eligibility/discard, matching207. Four preparation records (author446 twice, peer692 then696) remain preserved; no fixture executed before these corrections."
+  ],
+  "genuine_baseline": {
+    "revision": "adb05a646a4f90397cc968c7528e280a07c5fd0e",
+    "status": "unsupported",
+    "reason": "error-handler ingress requires a producer continuation",
+    "stdout_base64": "UDs=",
+    "stderr_base64": "",
+    "agreement_credit": 0
+  },
+  "execution": {
+    "cpu": 4,
+    "native_cap_seconds": 30,
+    "genuine_model_outer_caps": [
+      60,
+      90
+    ],
+    "strict_focused_sl_cap_seconds": 180,
+    "source_model_outer_caps": [
+      180,
+      210
+    ],
+    "source_seconds": [
+      15.229081869125366,
+      24.02343511581421,
+      15.600297927856445,
+      33.05943155288696,
+      14.741685152053833,
+      15.417038440704346
+    ],
+    "focused_seconds": [
+      16.694331407546997,
+      28.320324420928955,
+      17.037108898162842,
+      38.44804620742798,
+      15.977015018463135,
+      16.887160539627075
+    ],
+    "actors": "All wrappers and child groups fully reaped; no timeouts/interruption/survivors. Expected native/program default Warning stderr is separate from empty tool stderr. CPU4 released after focused closure; no additional semantic actor remains.",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null
+    },
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "tools": {
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f"
+    },
+    "tool_reuse": "Existing project-local tools reused in the private worktree; no new offline copied-path rebuild claim."
+  },
+  "source_sha256": {
+    "string-offset-read-warning-interned-live-key": "fd74f10083977cacc053d894822ee10920c6abc9ddec446ba07d4586d7ebe0a8",
+    "string-offset-read-warning-runtime-carriers": "72127c53c781fb09dc7382cba7a3d3714d13e662089d1c7a20a4237609fea5cb",
+    "string-offset-read-warning-review-default-bounds": "887e27b85a8659f319e5e3a8f91aaa5c09f7b013c19ec9bfe30efda7c47f14f4",
+    "string-offset-read-warning-review-supplied-throw": "aa529ed76fad66ba4852f860bde83f70b2a29234602d8ebc230623cce4b3960c",
+    "string-offset-read-warning-review-borrowed-drop": "ec4a9c86f015e1d93d6d90bf648f3a540db89d807f6ac8d4355bec520ad5004c",
+    "string-offset-read-warning-review-borrowed-bounds-unset": "f1cd761b7c9e7838e5fd82f1e2f4dd255ce91ca5f5dc5a001d45a8cc6f4b6067"
+  },
+  "commands": [
+    "taskset -c 4 python3 -B tests/semantics/string_offset_read_warning_sources.py --case string-offset-read-warning-interned-live-key --output .tools/string-offset-read-warning-baseline-51",
+    "taskset -c 4 python3 -B tests/semantics/string_offset_read_warning_sources.py --exclude string-offset-read-warning-interned-live-key --native-only --output .tools/string-offset-read-warning-native-rest-51",
+    "taskset -c 4 python3 -B tests/semantics/string_offset_read_warning_review_sources.py --native-only --output .tools/string-offset-read-warning-review-native-51",
+    "taskset -c 4 python3 -B tests/semantics/string_offset_read_warning_review_sources.py --case string-offset-read-warning-review-borrowed-bounds-unset --native-only --output .tools/string-offset-read-warning-review-native-supplement-51",
+    "taskset -c 4 python3 -B .tools/string-offset-read-warning-source-queue-51.py",
+    "taskset -c 4 python3 -B .tools/string-offset-read-warning-source-corrected-queue-51.py",
+    "taskset -c 4 python3 -B .tools/string-offset-read-warning-focused-queue-51.py"
+  ],
+  "reports": {
+    "baseline": {
+      "path": ".tools/string-offset-read-warning-baseline-51/report.json",
+      "sha256": "6bde59ed5f0a8413e017a8219658242c90387d554b1b088642c3ad1de6dca2de",
+      "revision": "adb05a646a4f90397cc968c7528e280a07c5fd0e"
+    },
+    "native-rest": {
+      "path": ".tools/string-offset-read-warning-native-rest-51/report.json",
+      "sha256": "20bd87c41e60d15bd48f0c54c5eed57cb2d71e97beb1d203060104e1dad0df34",
+      "revision": "adb05a646a4f90397cc968c7528e280a07c5fd0e"
+    },
+    "review-native": {
+      "path": ".tools/string-offset-read-warning-review-native-51/report.json",
+      "sha256": "d3c64c1498393aaa6be1a5263d9480f2c847f5cd8cc51ec1aa9d07ece94355a4",
+      "revision": "adb05a646a4f90397cc968c7528e280a07c5fd0e"
+    },
+    "review-native-supplement": {
+      "path": ".tools/string-offset-read-warning-review-native-supplement-51/report.json",
+      "sha256": "6968ed22b0a2f4ebc0a8537eb448d4583cf5a6becd0bb6c10fdbd13671c4db14",
+      "revision": "e2e5ac262bb6fc1a2114b071e1e47a03fb68a1ca"
+    },
+    "strict": {
+      "path": ".tools/string-offset-read-warning-strict-51/report.json",
+      "sha256": "6308acdc59db746ae6f3a3d9c9754094444b7de7700aaccdbfc5bfa8caa85535",
+      "revision": "3587dfebf6ee45ec3fb371e790e735c23fcc1c20"
+    },
+    "source": {
+      "path": ".tools/string-offset-read-warning-source-51/report.json",
+      "sha256": "097fd015eda23417feb043c127f97bfbb35e5dabad37dbf37d7d94a7f49cae78",
+      "revision": "3587dfebf6ee45ec3fb371e790e735c23fcc1c20"
+    },
+    "strict-corrected": {
+      "path": ".tools/string-offset-read-warning-strict-corrected-51/report.json",
+      "sha256": "664ea11e7a694f6153449a49c65b5fda126a5fbad95343c5b9ea71f499b9f04e",
+      "revision": "92f758a52b666a9be4d26e820acfcd5c3adbe254"
+    },
+    "source-corrected": {
+      "path": ".tools/string-offset-read-warning-source-corrected-51/report.json",
+      "sha256": "f2100a4695ae332a8bf5bd2d6e2b99e8d49d4a181031860bb894b27bcc6ff86c",
+      "revision": "92f758a52b666a9be4d26e820acfcd5c3adbe254"
+    },
+    "review-source": {
+      "path": ".tools/string-offset-read-warning-review-source-51/report.json",
+      "sha256": "b89591daca0ae32fb0033d3621dd6bce4d4ab20c5d08c9385f071c4d9053e788",
+      "revision": "92f758a52b666a9be4d26e820acfcd5c3adbe254"
+    },
+    "author-state": {
+      "path": ".tools/string-offset-read-warning-author-state-51/report.json",
+      "sha256": "a3646c69313b1ab17de2966257b53368bec9542ba3c8b4107b46829eb14f3364",
+      "revision": "84046e1c57052c6eaef6a4a28c7bb262ce769bcf"
+    },
+    "peer-state": {
+      "path": ".tools/string-offset-read-warning-peer-state-51/report.json",
+      "sha256": "3c80d70d90a4d270e1feaa93f009479e54c847e6534c0fb0c1d78615f6c4eda7",
+      "revision": "84046e1c57052c6eaef6a4a28c7bb262ce769bcf"
+    }
+  },
+  "runners": {
+    ".tools/string-offset-read-warning-focused-queue-51.py": "0129173bd98bc32be7cd8dd7e38e87e01f31d71e74503b6d7d07bed83dc2946a",
+    ".tools/string-offset-read-warning-publish-51.py": "56e55432b381869d5aa0b1f50aac2191c5dc5ed72e52963c4ef7c4cb698b3c35",
+    ".tools/string-offset-read-warning-reuse-51.py": "ddeabc52a241daadc1c0bfb36c007866a0637b2fd70e1027055c27f3bf9b1d06",
+    ".tools/string-offset-read-warning-source-corrected-queue-51.py": "120bf1df0db7e57a03dacfe64c1f91557e668bad9d843da5f25d11a776d1e468",
+    ".tools/string-offset-read-warning-source-queue-51.py": "55f89ecbefb38cddfe83bdf1b21e0ad40f67a43d262c592ff8b5f55bcd76a92c",
+    ".tools/string-offset-read-warning-strict-51.py": "9cccb65a28c1230d342dd2d2e0752e2869e174a66b889eceaae721e369e83086",
+    ".tools/string-offset-read-warning-strict-corrected-51.py": "55f657afa38b79c05a1af4997ad736f7b278e63f0de55d6623380677b9ef680c"
+  },
+  "archive": {
+    "path": ".tools/string-offset-read-warning-51-raw.tar.gz",
+    "bytes": 756002,
+    "members": 302,
+    "sha256": "41119202dbf3278c7d7b7b178901e555c0dd9ea01b0be0b99541b5ab114a43d8"
+  },
+  "recovery": "Canonical .tools/string-offset-read-warning-publication-51.json and the raw archive preserve eleven reports, four preparation records, original native/source/model/fixture bytes, the original interpreter failure and every process receipt, plus strict/reuse/queue scripts. Restore at the recorded Git cuts/cwd with original paths/profile and pinned project-local tools. The first five natives/genuine retain adb05a646; the added sixth native alone retains e2e5ac262. Unsupported/preparation/failure records give zero source agreement. Metadata/composition does not renew execution credit.",
+  "composition": {
+    "parent": "19e34c971c69f21bd18eba8edb053c095ac1d2ec",
+    "immutable_private_publication": "460dcc5767843d30ed1401c28ca56707c8d4c859",
+    "ordered_manifest_modules": 415,
+    "runtime_policy": "Shared30 preserves every incoming alternative and adds only the tested pstringread domains/task. Existing233/carrier modules and new425 remain tested-private-exact, together with all six A51 scripts. Every other incoming spec/schema path remains parent-exact; ordered414 manifest is retained before appending425. No compiler/404/422 or pstate/heap field change.",
+    "interaction": "Incoming OP85 requires NaN shorthand ternary; OP86 requires a LEFT CONCAT Warning before live RIGHT conversion. These originals contain neither ternary nor a warning-producing concatenation (their concatenation operands are strings). CLASS123 requires accessible private/protected UNSET magic getters, M149/150 require WeakMap entry/iterator objects, and Source90 requires Generator CONFIG argument unpack; no such producers occur in the A51 sources or controls. Exception getPrevious is an ordinary builtin method, not a magic property/WeakMap producer. No selected interaction warrants joined execution.",
+    "progress_policy": "Start from the actual compact parent; preserve its current checkpoint, foreign active rows and integrated facts. Add only A51 family link/integrated marker and remove its stale active row.",
+    "joined_execution": false,
+    "accepted_execution_cuts_remain_fixed": true,
+    "accepted_semantic_replay": false
+  }
+}

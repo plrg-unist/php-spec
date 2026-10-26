@@ -52,6 +52,18 @@ Caller-scoped UNSET getter selection is retained in
 unchanged baseline4, source3, 330 focused premises and tested-input snapshots.
 The same-object scoped/denied distinction and INITIAL control keep separate credit.
 
+Literal-this Get entry/history/lifetime evidence is retained in
+`../php-spec-evidence-archive/magic-get-direct-this-124/manifest.json`: native5,
+unchanged baseline5, source4, 488 focused premises, original false and both
+diagnostic attempts. Tested414 snapshots retain the two unchanged fixture helpers
+and323 certificate;415 composition adds no execution credit.
+
+Caller-selected Get declaration/type evidence is retained in
+`../php-spec-evidence-archive/magic-get-lexical-selection-125/manifest.json`:
+native5/baseline5 (including genuine normal wrong result), source3, 413 focused
+conditions, original runtime nondeterminism and peer pre-main binder failure.
+Tested415 snapshots retain the failed runtime and exact helper/input identities.
+
 Keep future compressed raw traces, source snapshots and tool copies in this
 external archive (using new paths for new evidence) or in ignored `.tools/`.
 Commit concise reports and manifests with hashes and locations. Preserve raw

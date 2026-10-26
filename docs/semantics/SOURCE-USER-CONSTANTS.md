@@ -214,8 +214,25 @@ No copy fold, task/schema or shared trace/ownership rule changes. The
 binds four exact originals and 533 premises at 46a59b565/runtime38e5756d: five real
 CONFIG errors, actual caller/snapshot/trace COW endings and two reached reference
 updates. All checks pass on their first attempts; the unchanged Unsupported baseline
-retains zero credit. Nested arrays, objects, legacy PSTRING leaves and
-owner/named/packed/FCC forms remain partial.
+retains zero credit. This ownerless validation leaves nested arrays, objects,
+legacy PSTRING leaves and other owner/FCC, named or packed forms partial.
+
+Captured intrinsic query Closures now reject the same bounded positional ARRAY
+names through a disjoint owning classifier and the existing live/source/payload
+guards. Selection and packs stay empty, and owning PIPE calls are excluded.
+Strict ordinary, weak ordinary and explicit weak reception retain the raw array
+in the TypeError API trace; explicit calls also retain it in the wrapper frame.
+The selected callee survives argument effects, then its saved owner retires before
+catch. Captured DIRECT fields keep their earlier values across caller COW, while
+scalar ALIAS cells reflect shared writes. Independent API/wrapper payload copies
+can COW without changing the original trace. Runtime arrays and embedded reference
+cells retire when their last owners disappear; string birth records remain
+nonowning history. Caller destinations retain their prior values and a separate
+captured string reader recovers. Existing ownerless behavior, literal-fact checks,
+error allocation, roots, tasks and schema are unchanged.
+[Captured array-query review](../../coverage/semantics/constant-owned-array-query-review.json).
+Nested/object/legacy-string leaves and named/packed/PIPE or wider call forms stay
+outside this captured route.
 
 Positional `define` with two/three arguments now rejects the same bounded flat
 array-name domain before optional flag reception or registration. Candidates and
@@ -898,6 +915,25 @@ The three originals and focused state checks cover these paths without extending
 name coercion, class-qualified/HALT/NUL names, packs or PIPE.
 [Captured query review](../../coverage/semantics/constant-owned-query-review.json).
 
+Captured global-string queries also accept one delivered argument from a single
+ARRAY unpack. Existing CONFIG replay normalizes integer keys positionally and
+`name`/`constant_name` keys to the matching API slot. It snapshots scalar ALIAS
+leaves by value; later reference writes cannot change the query or its raw
+API/wrapper Error arguments. A runtime source pack can retire before API entry,
+while a literal pooled pack retains its pool owner. Query admission authenticates
+the completed `PACKS` snapshot and delivered `SENT`, matching any immutable pack
+fact against the captured items rather than rereading a changed or retired source
+container. The live selected callee survives pack-producer effects and lookup
+sees definitions those effects publish. A missing-name Error retains copied
+slot-zero arguments after the source cell is rebound or unset; separate readers
+recover normally. Completed pack records remain nonowning history. The ordinary
+arm for calls without unpacking, error allocator, binding/replay, roots, tasks and schema stay
+unchanged. [Captured query-pack review](../../coverage/semantics/constant-owned-query-pack-review.json).
+This route requires a live matching intrinsic owner, empty selection, one pack
+delivering one authenticated non-NUL global string, and no PIPE. Coercion,
+Traversable or multiple packs, class/HALT/NUL names and wider query forms remain
+outside this admission.
+
 Captured query callees also receive Boolean, integer and finite-float names under
 the existing live matching-owner and source/argument-fact checks. The original
 ownerless scalar predicate stays exact; the owning route requires empty selection
@@ -1046,8 +1082,23 @@ at 7e8/runtime6282a8468. The original peer's `__call` declaration stops before B
 in the existing method-compiler boundary and retains zero agreement; only that peer
 changes to an ordinary `toString()` method, followed by previously unrun state checks.
 Source53's conversion/trace/lifetime rules and accepted642 cuts stay unchanged.
-Propertyless retained receivers bound this validation; sole-owner destruction,
+Propertyless retained receivers bound this ownerless validation; sole-owner destruction,
 other internal objects, `__call` declarations and wider forms remain partial.
+
+Captured intrinsic `constant`/`defined` Closures now admit the same positional
+nonStringable rejection through their existing live-owner and source checks.
+Strict ordinary and weak ordinary/explicit reception preserve the raw object in
+the TypeError API trace; explicit calls also retain it in the `Closure->__invoke`
+frame. Rebinding the caller's callee/name during argument evaluation does not
+replace the selected target. The saved callee owner retires before catch, while a copied raw
+API or wrapper argument array can keep the object alive after Error/trace removal;
+when present, its ordinary destructor runs once at final release, permitting a separate captured
+string-reader recovery. No conversion runs, an ordinary `toString()` is uncalled,
+and caller destinations retain their prior values. The implementation reuses the
+existing object classifier, error allocator and root policy without new task or
+schema fields. [Captured nonStringable review](../../coverage/semantics/constant-owned-nonstringable-query-review.json).
+Named/packed/PIPE calls, other internal object kinds and wider receiver forms
+remain outside this captured route.
 
 Retained propertyless Stringable names now convert before positional `define`
 registration with primitive candidates and an omitted/bool-false flag. Dedicated

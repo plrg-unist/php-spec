@@ -1,0 +1,202 @@
+{
+  "milestone": "COMP122 acyclic comparison array/reference graphs",
+  "status": "bounded independent source/state review passed; comparison family remains partial",
+  "scope": "Existing seven missing-CV comparisons admit finite acyclic array graphs with DIRECT values and descendant ALIAS cells containing primitives, ordinary non-Stringable objects or further arrays. Shared cells/subtrees are permitted; every cell retains its live defined-reference checks.",
+  "target": "PHP 8.5.10 CLI NTS64; ordinary profile; LC_ALL=C TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "runtime_revision": "6d5b8a0f7733c3ba31d6d3e2dd626071fcc10131",
+  "runtime_sha256": {
+    "spec/semantics/207-error-handler-runtime.watsup": "895463dd97d1e5f534d3043f4de32e1fb4ef4c881ac88705efe82ef7090a6cb2"
+  },
+  "tested_modules": 414,
+  "implementation": "Only207 changes: one recursive ALIAS-entry arm and its comment. Allocation/bounds and reference/DEFINED checks precede payload access. Both payload descent and sibling recursion preserve the existing ancestor ARRAY path. Cell slots hold values, so every cycle must repeat an ARRAY; shared siblings retain independent paths. Source/history, schemas, roots, restore/discard, comparison and ownership drivers stay unchanged.",
+  "engine_basis": "zend_compare uses only outer ARRAY truth against NULL. zend_array_dup_value unwraps singleton cells at copied levels and preserves shared cells; physical child edges and ordinary COW determine replacement, snapshots and last release.",
+  "baseline": {
+    "report": "actors-and-initial/baseline-report.json",
+    "sha256": "90c01c2efcdf383fc5b84577c46607709684cf3ac6c789b5f43d20c10e689fd9",
+    "revision": "dd7a03e396b74c405d4aef47b7aa14b34ad29007",
+    "agreement_credit": 0,
+    "observation": "Native6 pass at actual19e34c971. Genuine unchanged private dd7a/414 accepts/checks the live original, then reports ingress Unsupported with empty streams/events. Both native6 and this control remain closed."
+  },
+  "source_acceptance": [
+    {
+      "report": "author-source/model.json",
+      "sha256": "840f2400907a973027ce31eea41849764c543e62f711368ed50824c89a7688c3",
+      "revision": "f8205519ff82f932ae98098710f5b0d30950d06c",
+      "agreements": 2,
+      "native_replay": 0
+    },
+    {
+      "report": "peer-source-and-review/model.json",
+      "sha256": "b30a2d3a2e13520f834d3bd04abb889766db34d6548f47f3435bbc196701366a",
+      "revision": "f8205519ff82f932ae98098710f5b0d30950d06c",
+      "agreements": 4,
+      "native_replay": 0
+    },
+    {
+      "report": "author-new-source/model-report.json",
+      "sha256": "c4a0efa1b87791c3c2f648cc3f6e21ac77ada828051a5e9adcfabbd2e7db0a33",
+      "revision": "063cfe861955f0318974fd7c7a8ed34f2e0fd8e6",
+      "agreements": 4,
+      "unsupported_controls": 2
+    }
+  ],
+  "focused_acceptance": [
+    {
+      "report": "peer-state-core-original/report.json",
+      "sha256": "35dec91ed1a0c2d692bbbf56771ca74fc1ad117bbd0ef4c5c124a0fe9669b5d7",
+      "revision": "063cfe861955f0318974fd7c7a8ed34f2e0fd8e6",
+      "accepted_records": [
+        "reference-graph-shared-descendant-replacement-domain"
+      ],
+      "premises": 110,
+      "groups": 1,
+      "top_report_passed": false,
+      "memory_bytes": 2147483648
+    },
+    {
+      "report": "peer-state-lifetime-memory4g/report.json",
+      "sha256": "c0ca216f7f30726c020df93de31c6bbc98e98a43e8bcdb5b46426f36147e3774",
+      "revision": "063cfe861955f0318974fd7c7a8ed34f2e0fd8e6",
+      "premises": 205,
+      "groups": 1,
+      "memory_bytes": 4294967296
+    },
+    {
+      "report": "peer-state-budget-memory4g/report.json",
+      "sha256": "5a610d3ae49fb46ef87d95dcbb28f6ce737b4013f51f50366c806edfa20a34c1",
+      "revision": "063cfe861955f0318974fd7c7a8ed34f2e0fd8e6",
+      "premises": 39,
+      "groups": 1,
+      "memory_bytes": 4294967296
+    },
+    {
+      "report": "peer-state-throw/report.json",
+      "sha256": "f3047bd885c9c12a5740a652d88a2874c27a4007779a1b1072e5504299155707",
+      "revision": "063cfe861955f0318974fd7c7a8ed34f2e0fd8e6",
+      "premises": 155,
+      "groups": 2,
+      "memory_bytes": 2147483648
+    },
+    {
+      "report": "author-state-captured-memory4g/report.json",
+      "sha256": "325ace7a1c4a89ddb47c7514aed62b2299c44107bce6cd04780ab9a6c9d376e8",
+      "revision": "063cfe861955f0318974fd7c7a8ed34f2e0fd8e6",
+      "premises": 225,
+      "groups": 1,
+      "memory_bytes": 4294967296
+    },
+    {
+      "report": "author-state-remaining-memory4g/report.json",
+      "sha256": "232cf066732a9c99128e700c88d17cf5899a3e645226e4023bff67fca92b2998",
+      "revision": "063cfe861955f0318974fd7c7a8ed34f2e0fd8e6",
+      "premises": 278,
+      "groups": 3,
+      "memory_bytes": 4294967296
+    }
+  ],
+  "totals": {
+    "source_agreements": 10,
+    "unsupported_source_controls": 2,
+    "state_premises": 1012,
+    "state_groups": 9,
+    "counting": "Declared raw premises, including69 repeated peer front conditions and explicit12 main+27 scoped setup for each heavy39 budget; no distinct-obligation claim."
+  },
+  "behavior": [
+    "Two distinct singleton cells on one captured path unwrap successively during copied-branch COW, despite repeated incoming array paths. Old snapshots and object identity survive; New dies inline and Old after callback return before result store.",
+    "Shared descendant cells survive COW of distinct outer/branch tables and follow payload replacement. Held value snapshots retain Old; an outside cell delays New until after the comparison result. Physical paths do not multiply embedded edges.",
+    "The same supplied Exception reaches catch after final captured ARRAY-to-CELL-to-ARRAY release, preserving result41. All seven operators, same/both-missing creation, pooled/empty descendants and default diagnostics are source checked.",
+    "State proofs separate raw owner drops from driven destructors, authenticate source/line/code/origin and refuse dead/unmarked/undefined/out-of-bounds cells, unsupported leaves and direct or multi-cell backedges. Whole/one/zero budgets cover remainders from genuine reached warning/throw cuts."
+  ],
+  "maintenance": {
+    "source": {
+      "report": "maintenance-source/report.json",
+      "sha256": "38127e2da496904d06981ae405d326ecc27f07dd702da65eec4fd134da993220",
+      "revision": "670fbf29803cd5b30cdf010ddb67116b747acfc5",
+      "normal_agreements": 3,
+      "distinct_source_bodies": 3,
+      "historical_renewal": 0
+    },
+    "classifier": {
+      "report": "maintenance-classifier/report.json",
+      "sha256": "4343caf5a204c176aa0acd53a0f8a15bb639f7c6fc00ee6473e047bcf44ae024",
+      "revision": "063cfe861955f0318974fd7c7a8ed34f2e0fd8e6",
+      "observed_bool": true,
+      "agreement_credit": 0,
+      "historical_renewal": 0
+    },
+    "roots": {
+      "report": "maintenance-predicate/report.json",
+      "sha256": "54e2043f5ef44a02379617bcead258f0ee39c54b54d331234be7567a64219cb4",
+      "revision": "670fbf29803cd5b30cdf010ddb67116b747acfc5",
+      "premises": 19,
+      "changed_predicates": 2,
+      "static_changed_lines": 5,
+      "agreement_credit": 0,
+      "historical_renewal": 0
+    },
+    "scope": "Only three old119/120/121 reference-entry source selectors now require normal B|H|-1. One old121 root prefix checks two reusable helpers and maps to five known expectation flips. The old120 isolated ALIAS-entry predicate is observed directly before deciding its one affected expectation. No historical full campaign is renewed."
+  },
+  "failures": [
+    {
+      "report": "peer-state-core-original/report.json",
+      "sha256": "35dec91ed1a0c2d692bbbf56771ca74fc1ad117bbd0ef4c5c124a0fe9669b5d7",
+      "revision": "063cfe861955f0318974fd7c7a8ed34f2e0fd8e6",
+      "failed_selector": "reference-graph-shared-descendant-replacement-lifetime",
+      "fixture_premises": 205,
+      "agreement_credit": 0,
+      "cause": "Minor-GC allocation abort at2GiB; domain110 row retained separately. Exact205 passes at4GiB with unchanged time limits and source/conditions."
+    },
+    {
+      "report": "peer-state-tail-original/report.json",
+      "sha256": "0a68813dfdb6ef5e92377346e6aa3649f672db691e638271abda50db303a3c0a",
+      "revision": "063cfe861955f0318974fd7c7a8ed34f2e0fd8e6",
+      "fixture_premises": 39,
+      "agreement_credit": 0,
+      "cause": "Minor-GC allocation abort at2GiB; exact scoped39 passes at4GiB with unchanged time limits and source/conditions. Later throw groups were still unrun."
+    },
+    {
+      "report": "author-state-original/report.json",
+      "sha256": "822665dbc456d28fd118d3d1098ae4ba4eb0b188e70d07cd77a494feb05effa3",
+      "revision": "063cfe861955f0318974fd7c7a8ed34f2e0fd8e6",
+      "fixture_premises": 225,
+      "agreement_credit": 0,
+      "cause": "First author core allocation-aborts at2GiB without assertion disagreement; exact225 passes at4GiB. Remaining groups run once under a reviewed milestone-specific4GiB profile."
+    }
+  ],
+  "validation": "Serial/fail-first CPU1 initial/retained sources, CPU5 new sources/state, and CPU2 affected maintenance; stable inputs/HEAD and full worker/group reap. Numeric children retain120s. Domain110 and throw128+27 pass at2GiB; exact205/39/225 retries and remaining author39+200+39 use4GiB. The remaining profile follows measured fixture cost under a milestone-specific allowance, with no time-limit increase or blanket policy. The known shared39 profile carries forward for that workload. Original2GiB aborts remain inconclusive0; accepted groups/native observations are never replayed.",
+  "divergences": [],
+  "remaining": [
+    "Array/reference cycles, INDIRECT/uninitialized/undefined entries, internal/enum/Stringable leaves, wider producers and owning histories remain partial. Paused COMP88 is untouched.",
+    "Objects remain leaves; no object-property-cycle or general collection-history claim is added. Comparison still tests only outer truth against frozen NULL."
+  ],
+  "artifact_root": "../php-spec-evidence-archive/comparison-122",
+  "artifact_manifest_sha256": "76ef3c8dca8af1b1fe6ab99d418c291d5d55f488fcc8d5fb232a319d22402c59",
+  "independent_reviewer": "/root/comp118_review",
+  "independent_review": {
+    "report": "actors-and-initial/independent-review.json",
+    "sha256": "4fb6aa3f549523388a372ef7339ce3792a5805b1600b9b240fbdba9367324467"
+  },
+  "reproduction": [
+    "python3 tests/semantics/undefined_comparison_reference_graph_sources.py --phase native --output .tools/comp122-source-new",
+    "python3 tests/semantics/undefined_comparison_reference_graph_sources.py --phase model --output .tools/comp122-source-new",
+    "python3 tests/semantics/undefined_comparison_reference_graph_review_sources.py --phase native --output .tools/comp122-peer-source-new",
+    "python3 tests/semantics/undefined_comparison_reference_graph_review_sources.py --phase model --output .tools/comp122-peer-source-new",
+    "python3 tests/semantics/undefined_comparison_reference_graph_state.py --output .tools/comp122-state-new",
+    "python3 tests/semantics/undefined_comparison_reference_graph_review_state.py --output .tools/comp122-peer-state-new"
+  ],
+  "integration": {
+    "parent": "68754ae2a8637e4f9b9b5fadab6de97887b9e493",
+    "publication": "6f9c36f0e67cde9b5e062d2ad945bc673885f4ca",
+    "modules": 415,
+    "tested_modules": 414,
+    "combined_runtime_sha256": {
+      "spec/semantics/207-error-handler-runtime.watsup": "895463dd97d1e5f534d3043f4de32e1fb4ef4c881ac88705efe82ef7090a6cb2"
+    },
+    "runtime": "207 is publication-exact. Reversing only its comment and recursive ALIAS arm restores full incoming207. All16 changed tests are publication-exact; all other spec/schema/default/root/ordered415/pipeline bytes remain parent-exact.",
+    "compatibility": "Incoming saved Generator helpers, string-carrier R-offset reads, owned WeakMap Iterator/manual cursor routes, NaN, nonpublic UNSET getters, captured queries and CONFIG producers require distinct source/value paths absent here. WeakMap activation keeps equal Boolean values while short-circuiting. Our sources use ordinary ARRAY/GLOBALS dimensions, implicit integer/constant keys, initialized public fields and ordinary handler registration.",
+    "progress": "Actual compact checkpoint and comparison row updated in place. Seven root-requested active rows are refreshed; COMP122 leaves the active table and remains visible as the integrated checkpoint. Incoming family, remaining and paused content is preserved.",
+    "evidence": "Source10+2 retain f820/063 and focused1012/nine groups retain063, all with414 modules. Classifier15 retains063; only its observed-positive expectation edit and source3/roots19 retain670. Original failures and per-group memory profiles remain intact; no joined execution, native replay or historical renewal."
+  }
+}

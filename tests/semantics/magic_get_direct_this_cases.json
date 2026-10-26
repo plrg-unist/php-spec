@@ -1,0 +1,79 @@
+{
+  "scope": "Literal-this BYVAL Get authenticates actual current receiver; saved source and caller-selected declaration survive callbacks. Borrowed read-method lifetime remains distinct from the Get hold; wider BYREF/computed/suspended forms stay partial.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_revision": "dd7a03e396b74c405d4aef47b7aa14b34ad29007",
+  "cases": [
+    {
+      "id": "private-shadow",
+      "source_file": "magic-get-direct-this-private-shadow.php",
+      "source_sha256": "f4d57f8342ec1438126d517bf35c6af387b92774712f9d328f4e6c06707dc758",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-direct-this-private-124/.tools/magic-get-direct-this-probes-124/private-shadow.php",
+      "stdout_base64": "UzpHfGludDd8aGlkZGVufEd8cmF3N3xEfER8RXw=",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "970653cf6a5961e037c6f933c77f6a63ea53a3f33723da9a834d02a8c36f44fa",
+      "read_line": 7
+    },
+    {
+      "id": "private-reject",
+      "source_file": "magic-get-direct-this-private-reject.php",
+      "source_sha256": "b5152f1d6b2a4e60437ee6501a186860d5844b3c3fbf542c52a923610c9099bb",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-direct-this-private-124/.tools/magic-get-direct-this-probes-124/private-reject.php",
+      "stdout_base64": "QjpHfHR5cGVkfGxpbmV8ZmlsZXw0MnxEfEV8",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "800472f222d044b9c9d626802b96401597b9120d984d596e912f17cb7f971d2a",
+      "read_line": 7
+    },
+    {
+      "id": "recursive-handler",
+      "source_file": "magic-get-direct-this-recursive-handler.php",
+      "source_sha256": "7704eafa04e783d6eece3a2880019e491f6c3150d435e60e12d4a7c9124fe2b4",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-direct-this-private-124/.tools/magic-get-direct-this-probes-124/recursive-handler.php",
+      "stdout_base64": "UjpHfFd8c2V2ZXJpdHl8bWVzc2FnZXxsaW5lfGZpbGV8d3xnfEF8bnVsbHw5fEd8V3xzZXZlcml0eXxtZXNzYWdlfGxpbmV8ZmlsZXx3fGd8QnxudWxsfDl8RHxFfA==",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "2ef45ea0216708355f341f6c5551aeb435429467584a16800d6113de6bc43329",
+      "read_line": 19,
+      "outer_line": 16
+    },
+    {
+      "id": "borrowed-lifetime",
+      "source_file": "magic-get-direct-this-borrowed-lifetime.php",
+      "source_sha256": "7cc39ad0d7a643d1bcc161690c83eee6c282d7e74fc3fc4f4a27b2ebff1f0d79",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-direct-this-private-124/.tools/magic-get-direct-this-probes-124/borrowed-lifetime.php",
+      "stdout_base64": "TDpHfGd8bXxEfDd8bnVsbHxFfA==",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "cae3721afb95bee58ebdb21724bc33dd32d6e004d0b456fe47c3d26721454123",
+      "read_line": 7
+    }
+  ],
+  "controls": [
+    {
+      "id": "private-initial",
+      "source_file": "magic-get-direct-this-private-initial.php",
+      "source_sha256": "01976863ab3ddac3d6db44d32c8125df24128c207bb90bf0a1f4df07a4ad2812",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-direct-this-private-124/.tools/magic-get-direct-this-probes-124/private-initial.php",
+      "stdout_base64": "STppbml0aWFsfGxpbmV8ZmlsZXw0MnxEfEV8",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "01fc597d9a85cfe3d3e01f38f4a0a60a9a7bbe23dc0e5478ce9e65b380b6dd4f",
+      "read_line": 6
+    }
+  ]
+}

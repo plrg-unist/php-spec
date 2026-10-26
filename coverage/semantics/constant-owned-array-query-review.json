@@ -1,0 +1,130 @@
+{
+  "status": "V105 independently accepted bounded behavior and pointwise composition; core PHP remains partial",
+  "target": {
+    "php": "PHP 8.5.10 CLI NTS 64-bit",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "modules": 415,
+    "environment": "LC_ALL=C, TZ=UTC, PHP_SPEC_SCRIPT_ENCODING absent; pinned local profile. Original PHP bytes, filenames and cwd retained."
+  },
+  "base": "6ecf7ab24a9cea48b416809b0c0a136657d9b5a8",
+  "runtime": {
+    "revision": "2db7df08227b081be672ae686690ea7685ceae98",
+    "path": "spec/semantics/400-dynamic-constants.watsup",
+    "sha256": "e2d7a7cce2193094267b6f29539a3f196ed10bf422bdf4cb9493a1e236220e34",
+    "delta": "9 additions/1 deletion: disjoint owned ARRAY classifier, shared validation and owning non-PIPE fence, pure owned exclusion from generic class dispatch. Ownerless classifier, leaf/fact checks, TypeError allocator, roots/tasks/schema/pipeline remain exact."
+  },
+  "behavior": [
+    "Strict captured CONSTANT rejects a runtime DIRECT array before lookup. Argument effects COW the live caller array while captured/snapshot fields retain their old values; a separate raw payload copy COWs independently. Last owners retire each runtime array; caller97 is unchanged and a fresh reader recovers17.",
+    "Explicit captured DEFINED in strict source keeps the same raw payload in distinct API/Closure->__invoke argument vectors. Independent API/wrapper copies COW to different fields without changing the trace. Original, API-copy and final wrapper-copy ARRAY nodes retire in order; string birth history remains nonowning and recovery23 succeeds.",
+    "Weak captured DEFINED keeps DIRECT17 through caller29/copy47 COW while one ALIAS cell shares31/53/59. Three then two physical ARRAY edges retain that cell. Raw args alone retain the original after Error/trace disposal; final copy/current/cell release precedes reader23. Selected callee survives argument effects and retires before catch."
+  ],
+  "authority": "One positional ARRAY, live matching intrinsic owner, empty selection/packs and non-PIPE. Existing config/source/site/count/line validation enforces live ARRAY bounds, immutable literal facts and flat primitive/authenticated-string DIRECT or live scalar ALIAS leaves. Raw payload is never converted or deep-copied by reception. Zend Z_PARAM_STR rejects arrays in weak/strict calls; existing raw TypeError and Closure trace/retirement paths implement the error.",
+  "source": {
+    "native_revision": "79afc0d76dcfd21fa1f3de907ea2dc6e56abb150",
+    "native_originals": 3,
+    "accepted_revision": "2db7df08227b081be672ae686690ea7685ceae98",
+    "agreements": 3,
+    "cases": [
+      {
+        "id": "owned-array-query-strict-captured-direct-cow",
+        "source_sha256": "f825b4b5797f26892959acdeac1b291c8ffc101782581bde0709b060ae18ae85",
+        "model_seconds": 36.77872562408447
+      },
+      {
+        "id": "owned-array-query-explicit-api-wrapper-cow",
+        "source_sha256": "413ced2e101efb052d218e7764485973008a0340f7596c4931c9676a399265fb",
+        "model_seconds": 56.16058325767517
+      },
+      {
+        "id": "owned-array-query-weak-defined-reference-cow",
+        "source_sha256": "8f0e142eb964a5db9d10e889a76e138e55e55c44a2973cc58ca994088811c5d0",
+        "model_seconds": 45.298028230667114
+      }
+    ],
+    "genuine": {
+      "case": "owned-array-query-strict-captured-direct-cow",
+      "revision": "79afc0d76dcfd21fa1f3de907ea2dc6e56abb150",
+      "result": "Expected Unsupported class constant value query after B|N|held|; model exit1/outer0, agreement0",
+      "outer_seconds": 20.501514673233032,
+      "caps_seconds": [
+        90,
+        45,
+        60
+      ]
+    },
+    "caps_seconds": {
+      "native_author_peer_each_outer": 45,
+      "native_process": 15,
+      "model_author_outer": 420,
+      "model_peer_outer": 210,
+      "model_cli": 180,
+      "model_process": 195
+    },
+    "outer_seconds": [
+      93.11194086074829,
+      45.47248959541321
+    ],
+    "result": "First changed executions match exact native normal0/quiet streams; stable head/inputs. Native/genuine/source closed without replay."
+  },
+  "focused": {
+    "revision": "4a1545c5d32a169ba10c1094f364181cd955a67d",
+    "premises": [
+      240,
+      270,
+      280
+    ],
+    "total": 790,
+    "budgets": [
+      3,
+      4,
+      3
+    ],
+    "caps_seconds": {
+      "fixtures_each": 120,
+      "author_check": 900,
+      "author_each_numeric": 420,
+      "peer_check": 450,
+      "peer_numeric": 420
+    },
+    "outer_seconds": {
+      "author_fixtures": 0.2634623050689697,
+      "author_check": 168.43812918663025,
+      "peer_fixtures": 0.2462155818939209,
+      "peer_check": 75.61316847801208
+    },
+    "checks": "Reached live capture, raw API/wrapper TypeErrors, DIRECT COW versus shared scalar ALIAS, original/clone/embedded-cell physical retirement, recovery and EOF. Source/owner/shape/dead-node/nested/object/legacy-string/carrier refusals are undriven projections. Settlement is bounded and stops at user destructor entry.",
+    "result": "All fixtures and three strict-SL415 numeric checks pass first execution, exact true LF/quiet/stable. No executed failure or correction; an author tool dispatch aborted before launch created no actor or evidence. All outer/numeric/frontend/adapter actors fully reaped, no timeout/interruption/groups; CPU4 released. Fixture credit is separate from source agreements."
+  },
+  "inputs": {
+    "manifest_sha256": "a8b75c8b4094af23711bf97d2c2914e6e362338e942b47af0546b5a2dc73098e",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "remaining": "Nested/object/legacy-string leaves, wider reference/lifetime domains, named/packed/PIPE and other owner/FCC forms stay partial. Paused OP12 dimension inc/dec, Source47 low-precision DEFINE NaN, owned-NUL release, undefined by-reference LIST keys and COMP88 supplied Stringable conversion/comparison throw are unchanged. Source91/other active owners remain separate; no full-core, security or equivalence claim.",
+  "artifacts": {
+    "root_pattern": "/home/user/workspace/php-spec/.tools/dynamic-owned-array-query-{native,peer,state,peer-state}-105",
+    "reports_sha256": {
+      "native/native-report.json": "a540d98d6b4cbabd29c10e8e1569d1a81d1e55bfd403d94c2edaa7253dc683af",
+      "peer/native-report.json": "fe8636f21c37ee57c67613a3a9dc2704144f59185d3f09248b4f96c96a7c8f0c",
+      "native/baseline-report.json": "4498ae534203c1b98154fa636fd9fb21edbff71b77e9d3a4361c9e4db7825fd8",
+      "native/model-report.json": "c69cef0f66d7fffc59b44222eec9a0ef44a4a66b504c5ddf8ecfc8ccfc0ada87",
+      "peer/model-report.json": "712ab8d7441f6f850568921ac365a80df126fddb931972b7340f269792533690",
+      "state/fixtures-report.json": "7ad0217dc244a367f9f5ab1a4bbccd4839e888a66e7d27c380190004ccadbd21",
+      "state/check-report.json": "02d069572f00933222cce3a9fc873f7c87a18f285b2c0ae0e99298b3c051d77f",
+      "peer-state/fixtures-report.json": "a29dc85dd125537b15b315be88e7928581e8a614e20bf0d4d5ccf39474b91119",
+      "peer-state/check-report.json": "3d4f26d63bdb6198b4b6c9063f3a97d824c36beffdad1eb47883b03541ea7f8a"
+    },
+    "recovery": "Keep the four canonical roots outside Git, with raw commands/argv/cwd/environment, streams, exits and full input fingerprints. Original private branch semantics/dynamic-owned-array-query-105 retains79af/2db7/4a cuts. Recreate recorded WT105 with matching local pinned tools for original cwd; fresh outputs only for affected unaccepted work. Accepted execution keeps original415 identities. Integration branch semantics/integrate-dynamic-owned-array-query-105 retains the actual415 parent and all original415 execution cuts."
+  },
+  "review": "Independent semantic/counterexample, source/focused reliability and actual reaping review CLEAR. README/family, constants-only inventory and compact own progress edits CLEAR for private publication. Coordinate exclusive actual-tail preservation review and guarded integration without renewing accepted execution.",
+  "composition": {
+    "parent": "395d5cb3cb15776609dd8ffd86e8a3b696540593",
+    "private_publication": "390f28f64d05005c124f49ca13998a5b5af2a87d",
+    "modules": 415,
+    "incoming": "CLASS124 direct-This/magic-Get selectors require property fetches absent from V105; Source91 Aggregate-to-fresh-Generator promotion and declaration relocation require INI_SET unpack/getIterator/Generator producers, also absent. No state/schema/manifest lift or interaction requiring joined execution.",
+    "preservation": "Tested400 and all four scripts remain private-exact. Inventory keeps the actual parent except the private-exact constants row; compact PROGRESS changes only own constants behavior/link and V105 marker, removing an own active row if present. Other current/active/remaining/paused rows and incoming runtime/schema/pipeline/manifest are preserved exactly. Accepted native/source/focused/genuine cuts and raw reports are unchanged; no renewed execution credit.",
+    "coordination": "Root queued CLASS124 then Source91 then V105; Source91 factual release at395d5cb3c establishes this exclusive guarded window. Independent final candidate CLEAR precedes expected-parent FF, immediate writer release and idle WT removal."
+  }
+}

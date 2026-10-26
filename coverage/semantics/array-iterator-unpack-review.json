@@ -1,0 +1,296 @@
+{
+  "milestone": "A52 initialized user Iterator array-literal spread",
+  "status": "Integrated after independent runtime/source/focused review and targeted actual-tail composition; complete core remains partial.",
+  "target": "PHP8.5.10 CLI NTS64; vendor/php-src tag34308a6666b2d489c509541ea9befea9e2b42348",
+  "cuts": {
+    "native4_and_genuine": "2f83b54bc23dbfb11ff89d8d3f2571f6465d1a9a",
+    "supplemental_generator_native": "d03431fbf0a07891c0eece0533f99662feef2c1f",
+    "initial_runtime_and_failed_strict": "189036be04b6c5133d201b42f20ec13b27a54501",
+    "corrected_runtime_strict_source5": "63ae228caf3cf4828e91e29f190546e160565900",
+    "author350_and_failed_reference_fixture": "16151915aee5c730a0e5dc5c3fe3af84c6ba7153",
+    "corrected_reference220_peer292_and_first_timeout": "aa967809abd8c5c19cd669a2223f58d08a2197b9",
+    "query_sharing_timeout": "64ee716c356be47b10975b70a16e20be9c53021e",
+    "partitioned_throw690_and_generator30": "31947f50aaf4f39d1d1ce2b6198359854a42b014"
+  },
+  "runtime": {
+    "spec/semantics/30-storage.watsup": "9053447f2e7dae810e031fa2b3b0225ce81ff706e27078be004820e7518bac8d",
+    "spec/semantics/60-array-unpack.watsup": "ad9b0306aab32879355db01f81375ec27f0406c215999865e61529982afbf3cf",
+    "spec/semantics/61-array-unpack-control.watsup": "573fd26217ae25078a0d5979adf02ad01e49e1b1847445430672ea9516ca6479",
+    "spec/semantics/426-array-iterator-unpack.watsup": "cbc1365a9cb4ca59bbbd9a0b7f45323a95db3be3a104c23373d8c7726906a287"
+  },
+  "scripts": {
+    "tests/semantics/array_iterator_unpack_cases.py": "194da687eaf0e1c3386dcef9de8325bbe1188e733758b1013330bf6d97cf3585",
+    "tests/semantics/array_iterator_unpack_protocol.py": "c46d3c7a61885a391bed0603222f281bd6e0b77a194586f924379ab8abe18d36",
+    "tests/semantics/array_iterator_unpack_review_cases.py": "13179a4cd422adb9f87e60674133ac2c0a21bfefdb0a9dc9d20c6fc60f9b9a2b",
+    "tests/semantics/array_iterator_unpack_review_sources.py": "b9b94659b56f2350993db714ab5f8412b2f3b1af536460f8e3941448c52c26c9",
+    "tests/semantics/array_iterator_unpack_sources.py": "4d33556004f97d77b9f240b00e2f0d7e5350852205727263f9e6b7ff8e42f0f0",
+    "tests/semantics/array_iterator_unpack_state_review.py": "57ea1af8bb3fd924c01a1bcfa1cc4ac51815ba501e428757ae8dcb421e86aafe"
+  },
+  "engine": "Zend/zend_vm_def.h::ZEND_ADD_ARRAY_UNPACK drives rewind/valid/current/key, validates int|string keys before dereferencing/copying current, then inserts and advances. Zend/zend_interfaces.c caches the raw current retval through key, invalidates it before next and before DATA retirement.",
+  "scope": "Initialized ordinary CV user Iterators with exact ordinary public Iterator method signatures, no owning heap children or destructor. Current cache admits quiet primitives, validated strings and flat DIRECT object-free arrays, including an ordinary unconstrained raw current-reference cell; key stays by value. The builder admits the existing finite DIRECT object-free graph domain. Broader cache values and lifetimes remain partial.",
+  "ownership": "The task owns builder and Iterator DATA once, plus raw current/key operands. INPUT remains an immutable compiled source receipt after source-CV unset/rebinding. A reference cache owns its CELL once; wrapper multiplicity does not multiply payload ARRAY edges. Key callbacks may COW a copied current or mutate a retained current cell; insertion dereferences/copies afterward into DIRECT entries. Cache release precedes next. Quiet abrupt disposal drops cache/DATA/builder roots and ordinary pruning retires unowned allocations.",
+  "fresh_witnesses": "By-value integer ARRAY currents with source unset, callback COW and canonical numeric string 8 append, slot overwrite, noncanonical 08 string key and trailing next index. By-reference current survives source unset/rebinding and later outside COW. Invalid bool key raises Error at operation line13 before copy; supplied current/key/next throws preserve the same Throwable, destination and canceled later effects. Fresh payload witnesses are integer arrays, not all-leaf credit.",
+  "controls": "Exact source/line/origin/tail/cursor identity, receiver/cache roots and physical counts, nested/object/debt current refusals, legacy flat ARRAY spread fallback, raw discard versus driver prune, full one-step/split-budget equality and EOF retirement. The native Generator control succeeds but the model explicitly refuses after P; before G; with zero source credit. Other Traversables now refuse explicitly rather than receiving the old bogus non-Traversable TypeError.",
+  "bounds": "Other operand modes, owning/nested/ALIAS cache graphs, destructor/reentrant callback lifetimes, wider Iterator signatures and Generator/Aggregate/other Traversable literal spread remain partial. Argument/CONFIG/foreach consumers keep their separate contracts. No compiler/schema/heap-field or224/385/425 implementation change; paused OP12/Source47/owned-NUL/undefined-byref LIST/COMP88 untouched.",
+  "validation": {
+    "private_strict_modules": 416,
+    "native_originals": 5,
+    "source_agreements": 4,
+    "explicit_unsupported_source_controls": 1,
+    "author_original_clauses": 570,
+    "peer_original_clauses": 1012,
+    "original_focused_clauses": 1582,
+    "original_boolean_clauses": 1564,
+    "raw_steps": 18,
+    "partition_bootstrap_clauses": 39,
+    "executed_successful_clauses": 1621,
+    "strict_elaboration_failures": 1,
+    "focused_assertion_failures": 1,
+    "focused_timeouts": 2,
+    "cap_changes": 0,
+    "native_or_genuine_replay": false,
+    "unrelated_accepted_replay": false
+  },
+  "corrections": [
+    "Initial strict189 failed on a boolean predicate attempting to bind a free descriptor. Replace the single-use wrapper with explicit pending and plan-result equality; only changed strict and still-unrun source5 execute at63ae. Original failure stays zero-credit.",
+    "First byref fixture1615 stopped at an unchecked GC-immutable assumption for nonempty pooled [88,7]. Flip only that polarity; pool1/value-helper/EOF-owner1 and every other check stay fixed. Corrected220 alone passes ataa967; accepted350 is not replayed.",
+    "Combined three-throw690 exceeded unchanged SL180 twice (aa967 original and64ee pure graph-sharing710). Both timeouts remain zero-credit; the ineffective hoist is removed. Current193/key220/next277 preserve all original690 clauses byte-exact once/in order, raw6 and budgets unchanged. Key8/next31 source-only bootstrap clauses add no behavior credit; each existing frontier is checked under the same SL180 cap. Accepted292 and other checks are not replayed."
+  ],
+  "genuine_baseline": {
+    "revision": "2f83b54bc23dbfb11ff89d8d3f2571f6465d1a9a",
+    "status": "php_error",
+    "class": "TypeError",
+    "program_exit_status": 255,
+    "stdout_base64": "UDs=",
+    "agreement_credit": 0,
+    "reason": "The earlier model rejects a real user Iterator as non-Traversable before callbacks."
+  },
+  "execution": {
+    "native_genuine_cpu": 1,
+    "generator_supplement_cpu": 4,
+    "postchange_cpu": 4,
+    "native_cap_seconds": 30,
+    "genuine_model_outer_caps": [
+      60,
+      90
+    ],
+    "strict_focused_sl_cap_seconds": 180,
+    "source_model_outer_caps": [
+      180,
+      210
+    ],
+    "focused": [
+      {
+        "report": "author-state",
+        "case": "array-iterator-unpack-value-cow-keys",
+        "clauses": 350,
+        "raw_steps": 4,
+        "seconds": 106.37225914001465
+      },
+      {
+        "report": "author-state-corrected",
+        "case": "array-iterator-unpack-reference-current",
+        "clauses": 220,
+        "raw_steps": 2,
+        "seconds": 64.31911158561707
+      },
+      {
+        "report": "peer-state",
+        "case": "array-iterator-unpack-review-invalid-bool-key",
+        "clauses": 292,
+        "raw_steps": 5,
+        "seconds": 67.7488305568695
+      },
+      {
+        "report": "peer-throw-current",
+        "case": "array-iterator-unpack-review-supplied-throw",
+        "clauses": 193,
+        "raw_steps": 2,
+        "seconds": 73.50896334648132
+      },
+      {
+        "report": "peer-throw-key",
+        "case": "array-iterator-unpack-review-supplied-throw",
+        "clauses": 228,
+        "raw_steps": 2,
+        "seconds": 99.60720205307007
+      },
+      {
+        "report": "peer-throw-next",
+        "case": "array-iterator-unpack-review-supplied-throw",
+        "clauses": 308,
+        "raw_steps": 2,
+        "seconds": 137.34393000602722
+      },
+      {
+        "report": "peer-generator-state",
+        "case": "array-iterator-unpack-review-generator-boundary",
+        "clauses": 30,
+        "raw_steps": 1,
+        "seconds": 10.428486108779907
+      }
+    ],
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null
+    },
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "tools": {
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f"
+    },
+    "tool_reuse": "Existing project-local tools reused; no fresh offline rebuild claim.",
+    "resources": "All wrappers/child groups fully reaped; timeout receipts are separate from accepted results. CPU4 released after final closure; no semantic actor remains."
+  },
+  "source_sha256": {
+    "array-iterator-unpack-value-cow-keys": "805f9b5460180634a0cb329b6eab64497dcc1c121bceb3f7114d4a7e4f3696c6",
+    "array-iterator-unpack-reference-current": "782af02103c083e13ed31a6856317b662db59009375c394994f13f2d08566d16",
+    "array-iterator-unpack-review-invalid-bool-key": "b762990850750c6777f1fb24a4742f21e5b29e4306212c5d731a2a35175b396c",
+    "array-iterator-unpack-review-supplied-throw": "7904c60dc49d844813fdf6a4d67a8b23c03ca0e2ade985a9c20af6e712e7ee8e",
+    "array-iterator-unpack-review-generator-boundary": "2741316e3114262e103777478944239e5a2c72d7e0fab0d931046fcce962e4a9"
+  },
+  "commands": [
+    "taskset -c 1 python3 -B tests/semantics/array_iterator_unpack_sources.py --case array-iterator-unpack-value-cow-keys --output .tools/array-iterator-unpack-baseline-52",
+    "taskset -c 1 python3 -B tests/semantics/array_iterator_unpack_sources.py --exclude array-iterator-unpack-value-cow-keys --native-only --output .tools/array-iterator-unpack-native-rest-52",
+    "taskset -c 1 python3 -B tests/semantics/array_iterator_unpack_review_sources.py --native-only --output .tools/array-iterator-unpack-review-native-52",
+    "taskset -c 4 python3 -B tests/semantics/array_iterator_unpack_review_sources.py --case array-iterator-unpack-review-generator-boundary --native-only --output .tools/array-iterator-unpack-generator-native-52",
+    "taskset -c 4 python3 -B .tools/array-iterator-unpack-source-queue-52.py",
+    "taskset -c 4 python3 -B .tools/array-iterator-unpack-source-corrected-queue-52.py",
+    "taskset -c 4 python3 -B .tools/array-iterator-unpack-focused-queue-52.py",
+    "taskset -c 4 python3 -B .tools/array-iterator-unpack-focused-corrected-queue-52.py",
+    "taskset -c 4 python3 -B .tools/array-iterator-unpack-peer-corrected-queue-52.py",
+    "taskset -c 4 python3 -B .tools/array-iterator-unpack-peer-partitioned-queue-52.py"
+  ],
+  "reports": {
+    "baseline": {
+      "path": ".tools/array-iterator-unpack-baseline-52/report.json",
+      "sha256": "c5ed97b5c904f5e079e3be90121da5789d4895228384b482680cfbf77fcc0466",
+      "revision": "2f83b54bc23dbfb11ff89d8d3f2571f6465d1a9a"
+    },
+    "native-rest": {
+      "path": ".tools/array-iterator-unpack-native-rest-52/report.json",
+      "sha256": "3436e6d9e65ef9b189a6c6559d2fffd568bc632ba3e9b7f5d2aadecaf6a53ee1",
+      "revision": "2f83b54bc23dbfb11ff89d8d3f2571f6465d1a9a"
+    },
+    "review-native": {
+      "path": ".tools/array-iterator-unpack-review-native-52/report.json",
+      "sha256": "0b0dc3ce18ff529428c551ccec932367619acadb611397b1ed99e5e461ead53f",
+      "revision": "2f83b54bc23dbfb11ff89d8d3f2571f6465d1a9a"
+    },
+    "generator-native": {
+      "path": ".tools/array-iterator-unpack-generator-native-52/report.json",
+      "sha256": "897a1f8aa585009c3a3804c45f2ba03100fb38c6278cda73dd9b14987f6a3b7b",
+      "revision": "d03431fbf0a07891c0eece0533f99662feef2c1f"
+    },
+    "strict": {
+      "path": ".tools/array-iterator-unpack-strict-52/report.json",
+      "sha256": "364c29fa53d97ded40f09a08e354a30b75398e2f8b923edb4bfbc5d03507e3fc",
+      "revision": "189036be04b6c5133d201b42f20ec13b27a54501"
+    },
+    "strict-corrected": {
+      "path": ".tools/array-iterator-unpack-strict-corrected-52/report.json",
+      "sha256": "d97c1172fece755c78707d3e82462724087a54ce5faeadd37faa61adab627034",
+      "revision": "63ae228caf3cf4828e91e29f190546e160565900"
+    },
+    "source": {
+      "path": ".tools/array-iterator-unpack-source-52/report.json",
+      "sha256": "c7264d047ee1cc4d70ed05d5ef05a7188442a83d515ee9ae99283ce145e97a03",
+      "revision": "63ae228caf3cf4828e91e29f190546e160565900"
+    },
+    "review-source": {
+      "path": ".tools/array-iterator-unpack-review-source-52/report.json",
+      "sha256": "e14a5a168da9f9c4d902156644e335e4b3ed7f726b7d8e75599cfef8a47e25d2",
+      "revision": "63ae228caf3cf4828e91e29f190546e160565900"
+    },
+    "author-state": {
+      "path": ".tools/array-iterator-unpack-author-state-52/report.json",
+      "sha256": "89ba5a38789ca7e211f8da4ae96123db1b4daa2976ae6115b55096871865c8a0",
+      "revision": "16151915aee5c730a0e5dc5c3fe3af84c6ba7153"
+    },
+    "author-state-corrected": {
+      "path": ".tools/array-iterator-unpack-author-state-corrected-52/report.json",
+      "sha256": "187bf13ab8a0ca4b6830e8bb9f03d705e261a683a8061b5868525bd677299c2d",
+      "revision": "aa967809abd8c5c19cd669a2223f58d08a2197b9"
+    },
+    "peer-state": {
+      "path": ".tools/array-iterator-unpack-peer-state-52/report.json",
+      "sha256": "2ebebf1d5cb875aa2f62031b383e8f75295fcec7c2bfe7ee18d6c58cf41b6baf",
+      "revision": "aa967809abd8c5c19cd669a2223f58d08a2197b9"
+    },
+    "peer-throw-corrected": {
+      "path": ".tools/array-iterator-unpack-peer-throw-corrected-52/report.json",
+      "sha256": "2231b40007a21f03747e938473739aea14e3d503df17ccfd806b7f207537fac0",
+      "revision": "64ee716c356be47b10975b70a16e20be9c53021e"
+    },
+    "peer-throw-current": {
+      "path": ".tools/array-iterator-unpack-peer-throw-current-52/report.json",
+      "sha256": "c144a944d85b71d6265089b350b250cd601277b7a4bd3bd2aa19d468c069faac",
+      "revision": "31947f50aaf4f39d1d1ce2b6198359854a42b014"
+    },
+    "peer-throw-key": {
+      "path": ".tools/array-iterator-unpack-peer-throw-key-52/report.json",
+      "sha256": "ec1e140627fe485e690ce44c5d7603a09ad8c700345fb50de70d1eff11874504",
+      "revision": "31947f50aaf4f39d1d1ce2b6198359854a42b014"
+    },
+    "peer-throw-next": {
+      "path": ".tools/array-iterator-unpack-peer-throw-next-52/report.json",
+      "sha256": "a36372011d6832f04d43e226f64f5a7aaeb2f0e8829793caa4cd97291c9d443a",
+      "revision": "31947f50aaf4f39d1d1ce2b6198359854a42b014"
+    },
+    "peer-generator-state": {
+      "path": ".tools/array-iterator-unpack-peer-generator-state-52/report.json",
+      "sha256": "1009387946a49d7a48c9f2346a25202e7d80f9049471a9869908f2526769d9b4",
+      "revision": "31947f50aaf4f39d1d1ce2b6198359854a42b014"
+    }
+  },
+  "preparations": {
+    "records": [
+      ".tools/array-iterator-unpack-author-prepared-52/report.json",
+      ".tools/array-iterator-unpack-author-prepared2-52/report.json",
+      ".tools/array-iterator-unpack-author-prepared3-52/report.json",
+      ".tools/array-iterator-unpack-peer-throw-current-prepared-52/report.json",
+      ".tools/array-iterator-unpack-peer-throw-key-prepared-52/report.json",
+      ".tools/array-iterator-unpack-peer-throw-next-prepared-52/report.json",
+      ".tools/array-iterator-unpack-peer-throw-shared-prepared-52/report.json",
+      ".tools/array-iterator-unpack-review-state-prepared-52/report.json",
+      ".tools/array-iterator-unpack-review-state-prepared2-52/report.json"
+    ],
+    "scope": "Syntax-only drafts and partition preparation; no numeric execution credit. Original failed assumptions/drafts remain preserved."
+  },
+  "raw_archive": {
+    "path": ".tools/array-iterator-unpack-52-raw.tar.gz",
+    "bytes": 1523342,
+    "members": 414,
+    "sha256": "fd204f48a9930914df0941418bf910557170eca4c02e196cd39dff7eca369134"
+  },
+  "recovery": "The ignored canonical archive stores relative .tools paths, original PHP/cwd/streams/receipts, generated fixtures, preparations, runners and every failure. Restore its members in a checkout at the selected tested cut with project-local tools from docs/ARTIFACTS.md; original paths remain recorded. Fixture-only repairs do not renew source/native/strict credit.",
+  "independent_review": "array46_review checked runtime semantics, original native/genuine classification, actual source/focused streams, counterexamples and fixture reliability. Final metadata and exact composition receive separate targeted review.",
+  "composition": {
+    "parent": "52ab6659b2a5078bb4a5d31f054564de1f67fc01",
+    "private_publication": "84617aeae5deff88973a184834b18cd17f24b1ae",
+    "base": "6ecf7ab24a9cea48b416809b0c0a136657d9b5a8",
+    "manifest": "Ordered actual parent415 plus426 =416; schema unchanged.",
+    "runtime": "60/61/426 and six scripts are tested-private-exact. Shared30 is actual parent plus only the tested parrayiterator declaration and ptask alternative; incoming piterator alternatives preserved.",
+    "incoming": "All nine incoming spec paths preserved. New207 ALIAS descendant comparison requires a missing-CV read;281 requires a Generator resumer;380 requires magic property access;400 requires owned CONSTANT/DEFINED queries;421/423 require CONFIG Aggregate/Generator acquisition;424 requires a WeakMap InternalIterator. These selectors are unproduced here.",
+    "shared_root_seam": "M152386 is pointwise the same R-or-O-or-Many-or-retiring-Key activation; graph/root/job rules are unchanged. Its new cursor lookup/remove/prune/ID clauses preserve existing OBJECTITER rows and add no roots. WeakMap insertion/finite-table producers require STDINSTANCE Keys; A52 DATA is a user INSTANCE and cannot be inserted through those admitted paths, so Iterator-as-Key callbacks remain behind the existing insertion refusal.",
+    "shared30_sha256": "a03105766f860a4a0f4ff1692d1383b3d96ad9350324dc5db5ca7a8830a668e8",
+    "execution": "No selected incoming semantic interaction; no joined execution or renewed accepted source/native/focused credit. Foreign compact checkpoint/active rows and inventory data preserved; only A52 family/status/link and seven append-only inventory additions applied."
+  }
+}

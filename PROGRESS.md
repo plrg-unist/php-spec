@@ -17,8 +17,8 @@ Three source agreements and 706 focused premises (268/251/187, including derived
 controls) retain `adf2f6d8f`/414. The original source failure, helper/diagnostic
 failures and H-caller120 cap retain zero credit. The
 [acquired RHS review](coverage/semantics/concat-returned-stringable-warning-review.json)
-records scope and recovery. Publication is independently reviewed; actual-tail composition
-will preserve incoming evidence without execution renewal.
+records scope and recovery. Publication is independently reviewed; actual-tail candidate review
+is pending over `3c094f41d`/416; incoming evidence receives no execution renewal.
 
 ## Integrated behavior and entrypoints
 

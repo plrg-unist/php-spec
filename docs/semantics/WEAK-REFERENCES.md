@@ -471,11 +471,51 @@ Two originals and 133/2 author plus 132/2 peer checks pass 265/4 at `95d732f3b`/
 Same-heap missing/retargeted cursor controls and a missing-cache-root control
 refuse through public descriptor validation with zero PHP credit. Native and
 genuine baseline retain `77988f229`/412; baseline refusals remain 0, with no failed
-repaired/fixture run or replay. Strict application0 is separate. Manual methods,
-by-reference/nested or wider traversal, current-entry death, callbacks, hidden
+repaired/fixture run or replay. Strict application0 is separate. Wider manual methods,
+by-reference/nested or wider traversal, current-entry death in a cached outer
+loop, callbacks, hidden
 native allocation-handle histories and GC/CONFIG remain partial. There is no
 intermediate cache-before-DATA release-order claim for the atomic leaf drop.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
+
+Manual zero-argument `rewind`, `valid`, `current`, `key` and `next` now use the
+same owned cursor without an outer foreach cache. Authentic global CV calls
+require its sole validated row and no pending cleanup. `current`/`key` copy the
+live value/Key; invalid or empty access returns NULL. Next reaches end without
+removing the entry, and rewind restores its original identities. A copied Value
+also survives real Key-owner release and entry removal while Iterator retains
+Map; later Iterator/Map retirement leaves only that copy. Positions 0/1 abstract
+unobserved native index/rewind history without explicit entry mutation.
+
+Two sources and 142/4 author plus 166/4 peer checks pass 308/8 at `25ff16620`/413.
+The returned current result adds an ordinary owner; subsequent copies have no
+hidden current-cache root. Cursor/source refusals are constructed helper controls
+with zero PHP credit. Native and genuine baseline retain `27042e9a7`/413;
+baseline refusals remain zero and all affected checks pass first execution.
+Active outer loops, wider argument/source/payload/reference/callback contexts,
+mutation, hidden handles and GC/CONFIG remain partial. Existing factory and
+outer-foreach semantics are unchanged. [Review](../../coverage/semantics/weak-map-review.json).
+
+Finite direct-leaf Maps now use a nonowning snapshot of original Key IDs for
+owned manual traversal. Current/valid resolve the next surviving entry; next
+advances past that resolved selection, and rewind starts at the original history.
+Deleting a consumed or current head can normalize Map to the exact surviving
+singleton without rebasing the cursor or retaining dead Keys. Both originals
+normalize before wrapper teardown; still-Many teardown restores its popped
+release owner and explicitly refuses.
+
+Two sources and 190/4 author plus 174/4 peer checks pass 364/8 at `a2fe0cc36`/415.
+They observe B before deleting A behind it, or remove selected A with a shared
+Value, then distinguish preserved selection, next/end, rewind and copied-owner
+retirement. Constructed history, teardown and duplicate self-edge controls add
+zero PHP credit. Two original advanced 120-second timeouts retain zero agreement;
+their late normal responses are postmortem only. A separate timing diagnostic
+also stays zero. It motivated an equivalent cleanup-activation shortcut for
+well-formed states: pending releases/operations or a Many table already prove
+activation, otherwise the unchanged retiring-Key scan runs. Admission, physical
+edges and collector rules remain unchanged. Explicit mutation, wider payloads or
+contexts, active outer traversal, tail-death source histories, hidden native
+handles and GC/CONFIG remain partial. [Review](../../coverage/semantics/weak-map-review.json).
 
 ## By-reference entry cells and Key retirement
 

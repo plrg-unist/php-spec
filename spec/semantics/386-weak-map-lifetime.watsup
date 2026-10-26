@@ -1103,7 +1103,12 @@ def $weakmap_reference_keys_retiring(S, pnode :: pnode_tail*) = true
   -- if $weakmap_reference_key_retiring(S, pnode)
 def $weakmap_reference_keys_retiring(S, pnode :: pnode_tail*) = $weakmap_reference_keys_retiring(S, pnode_tail*)
   -- if ~$weakmap_reference_key_retiring(S, pnode)
-def $weakmap_reference_operational(S) = (S.DESTRUCTION.RELEASES =/= eps \/ S.DESTRUCTION.OPERATIONS =/= eps \/ $weakmap_reference_keys_retiring(S, S.ALLOCATIONS) \/ $weakmap_entries_present(S, S.ALLOCATIONS))
+;; A registered Many table or pending cleanup already proves activation;
+;; scan RC candidates only when none of those witnesses is present.
+dec $weakmap_reference_active(pstate, bool) : bool
+def $weakmap_reference_active(S, true) = true
+def $weakmap_reference_active(S, false) = $weakmap_reference_keys_retiring(S, S.ALLOCATIONS)
+def $weakmap_reference_operational(S) = $weakmap_reference_active(S, S.DESTRUCTION.RELEASES =/= eps \/ S.DESTRUCTION.OPERATIONS =/= eps \/ $weakmap_entries_present(S, S.ALLOCATIONS))
 dec $weakmap_foreach_cursor_valid(pstate, nat, nat, nat) : bool
 def $weakmap_foreach_cursor_valid(S, n, n_map, n_position) = true
   -- if $(n < S.NEXTITER) /\ $(n_position <= 1)

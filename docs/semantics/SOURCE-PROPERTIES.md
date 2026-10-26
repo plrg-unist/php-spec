@@ -1015,9 +1015,33 @@ without redirecting its interrupted `'ok'` return; history never rechecks UNSET.
 retain separate runtime/state cuts. Real caller frames, selected DECL, normal
 COPY release and caller-line rejection are reached; saved control projections
 and forged DECL/BYREF controls are derived. Raw-key public/denied behavior and
-reference384 remain fenced. Public-shadow selection, direct-This entry,
-by-reference getters, owned receivers, special coercions, scoped recursive-inner Errors,
+reference384 remain fenced. By-reference getters, wider owned receivers, special coercions,
+scoped recursive-inner Errors,
 bound-Closure scopes, quiet probes and wider lifetimes remain partial.
+
+Literal `$this` now enters bounded by-value Get through the existing323 source
+certificate and the actual current receiver. Pending capture rebuilds KNOWN;
+source and selected DECL remain valid after Get/callback entry. The transient
+receiver root becomes the Get hold without an extra BASE owner. A global handler
+with no `$this` preserves captured NULL after live9, while an ordinary read method
+retains its receiver after Get clears the sole global CV and releases its hold.
+[Four source agreements and 488 focused premises](../../coverage/semantics/magic-get-direct-this-review.json)
+retain414 cuts; INITIAL is a separate existing control. The original false and
+shared diagnostic retain zero credit. Warning continuation validity is checked
+at its saved emitter, while Get source/history remains valid in the handler.
+
+Caller-source resolution now precedes the effective-public shortcut across the
+existing CV, literal-this and effective-public owned-factory producers. Parent's
+private int therefore governs Get even when Child has an initialized public
+string of the same name. This fixes a genuine normal wrong-result case: the owned
+factory returned raw string7 instead of converted int7. Verification still
+precedes original-receiver D and caller reception. Fresh actual access must agree
+with saved-source access; different scope classes may select the same public key.
+[Three source agreements and 413 focused conditions](../../coverage/semantics/magic-get-lexical-selection-review.json)
+retain415 cuts. INITIAL/public fallback are existing controls; the first runtime
+nondeterminism and peer pre-main binder failure retain zero credit. Raw and
+scoped verification are disjoint by retained DECL; wider scoped coercions and
+owned nonpublic producers remain partial.
 
 The [getter review](../../coverage/semantics/magic-property-get-review.json) records
 eight exact source agreements, 1293 setup-inclusive reached premises and the

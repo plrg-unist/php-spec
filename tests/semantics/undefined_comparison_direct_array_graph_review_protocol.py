@@ -69,7 +69,7 @@ def controls():
         '~$spaceship_read_array(S_cross,perrorread)', '$error_read_valid(S_cross,perrorread)',
         'S_alias = S[.ARRAYS[n_leaf].ITEMS = [ENTRY (KINT 0) (ALIAS n_source)]]',
         '~$comparison_read_direct_array(S_alias,PARRAY n_branch,eps)',
-        '~$comparison_read_direct_entries(S,[ENTRY (KINT 0) (ALIAS n_source)],eps)',
+        '$comparison_read_direct_entries(S,[ENTRY (KINT 0) (ALIAS n_source)],eps)',
         '~$spaceship_read_array(S_alias,perrorread)',
         '~$comparison_read_direct_entries(S,[ENTRY (KINT 0) UNINITIALIZED],eps)',
         '~$comparison_read_direct_entries(S,[ENTRY (KINT 0) (INDIRECT n_old ($ptascii("tag")))],eps)',

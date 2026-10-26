@@ -120,10 +120,10 @@ saved cell. Last ARRAY-to-CELL-to-OBJECT release runs destruction before the
 outer store or catch only when no other owner remains. The
 [object-reference review](../../coverage/semantics/undefined-comparison-object-reference-array-review.json)
 checks these orders, shared property writes, outside aliases and throw cleanup.
-ALIAS array payloads admit allocated recursive acyclic DIRECT array-edge graphs
-of primitives or ordinary non-Stringable objects, including empty and pooled
-arrays. Their helper delegates to the same path-local DIRECT validator. Singleton outer
-copies unwrap the reference; inner COW separates child tables while their object
+ALIAS array payloads and DIRECT child tables admit allocated finite acyclic
+graphs of DIRECT array edges and live ALIAS cells, with primitive or ordinary
+non-Stringable leaves, including empty and pooled arrays. Singleton references
+unwrap at each copied table; inner COW separates child tables while their object
 identities remain shared. Shared cells follow child replacement, while an ordinary
 inner snapshot keeps its old table. Last saved ARRAY-to-CELL-to-ARRAY-to-OBJECT
 release can run destruction before store/catch; surviving aliases delay it. The
@@ -132,14 +132,16 @@ checks the original flat-child owners and budgets. The
 [ALIAS DAG review](../../coverage/semantics/undefined-comparison-alias-direct-dag-review.json)
 checks deep singleton/shared COW, retained old payloads, physical child edges
 and final graph destruction before store/catch or after outside release.
-Descendant aliases, cycles and wider owning histories remain partial.
-DIRECT array entries additionally admit allocated child tables whose
-entries are DIRECT primitives, ordinary non-Stringable objects or further child
-tables. An ancestor path rejects DIRECT array cycles; each sibling keeps the
-original path, allowing repeated/shared subtrees without a fixed depth limit.
-Allocation and bounds precede row access. ALIAS array payloads reuse this same
-DIRECT graph bound; each outer cell retains its independent liveness/reference
-checks. Descendant ALIAS/INDIRECT/uninitialized entries remain refused.
+Cycles and wider owning histories remain partial.
+The recursive entry validator carries one path of ancestor ARRAY IDs through
+both DIRECT values and ALIAS cell payloads. Cell slots contain values, so every
+cycle must repeat an ARRAY. Siblings retain their original path, admitting
+shared cells/subtrees without a depth limit. Allocation/bounds and live defined
+reference-cell checks precede access; INDIRECT, uninitialized/undefined and
+internal/Stringable leaves remain refused. The
+[reference-graph review](../../coverage/semantics/undefined-comparison-reference-graph-review.json)
+checks successive singleton unwrapping, shared descendant-cell replacement,
+retained old payloads, physical edges and exact normal/throw release order.
 Comparison against frozen NULL still tests only outer array truth. Existing
 physical child edges preserve deep COW snapshots and last-object destruction
 before store/catch; live root aliases follow replacements while value copies

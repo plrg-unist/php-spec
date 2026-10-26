@@ -48,6 +48,47 @@ def $iterators_prune((WEAKMAPOWNEDITER n n_object n_map n_position) :: piterator
   -- if ~((HOBJECT n_object) <- pnode*)
 def $error_keep_iterators((WEAKMAPOWNEDITER n n_object n_map n_position) :: piterator_tail*, n_keep*) = (WEAKMAPOWNEDITER n n_object n_map n_position) :: $error_keep_iterators(piterator_tail*, n_keep*)
 
+;; Multiple-entry cursors retain weak insertion identities after normalization.
+;; The wrapper owns Map; these IDs and the registry row add no heap roots.
+def $useriter_cursor_id(WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) = n
+def $weakmap_foreach_cursor_map(WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*, n_map) = true
+def $iterator_lookup((WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) :: piterator_tail*, n) = (WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*)
+def $iterator_lookup((WEAKMAPOWNEDKEYITER n_other n_object n_map n_position n_keys*) :: piterator_tail*, n) = $iterator_lookup(piterator_tail*, n)
+  -- if n_other =/= n
+def $iterator_remove((WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) :: piterator_tail*, n) = piterator_tail*
+def $iterator_remove((WEAKMAPOWNEDKEYITER n_other n_object n_map n_position n_keys*) :: piterator_tail*, n) = (WEAKMAPOWNEDKEYITER n_other n_object n_map n_position n_keys*) :: $iterator_remove(piterator_tail*, n)
+  -- if n_other =/= n
+def $iterator_set((WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) :: piterator_tail*, piterator_new) = piterator_new :: piterator_tail*
+  -- if $useriter_cursor_id(piterator_new) = n
+def $iterator_set((WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) :: piterator_tail*, piterator_new) = (WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) :: $iterator_set(piterator_tail*, piterator_new)
+  -- if $useriter_cursor_id(piterator_new) =/= n
+def $iterator_set((ITERATOR n n_array b pcursor*) :: piterator_tail*, WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) = (WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) :: piterator_tail*
+def $iterator_set((ITERATOR n_other n_array b pcursor*) :: piterator_tail*, WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) = (ITERATOR n_other n_array b pcursor*) :: $iterator_set(piterator_tail*, WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*)
+  -- if n_other =/= n
+def $iterator_set((OBJECTITER n n_old n_old_position b_ref) :: piterator_tail*, WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) = (WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) :: piterator_tail*
+def $iterator_set((OBJECTITER n_other n_old n_old_position b_ref) :: piterator_tail*, WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) = (OBJECTITER n_other n_old n_old_position b_ref) :: $iterator_set(piterator_tail*, WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*)
+  -- if n_other =/= n
+def $iterators_prune((WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) :: piterator_tail*, pnode*) = (WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) :: $iterators_prune(piterator_tail*, pnode*)
+  -- if (HOBJECT n_object) <- pnode*
+def $iterators_prune((WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) :: piterator_tail*, pnode*) = $iterators_prune(piterator_tail*, pnode*)
+  -- if ~((HOBJECT n_object) <- pnode*)
+def $error_keep_iterators((WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) :: piterator_tail*, n_keep*) = (WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) :: $error_keep_iterators(piterator_tail*, n_keep*)
+
+;; Retain the popped owner rather than approximate the still-Many free_obj path.
+def $destruction_storage_free(S, HOBJECT n_object, pdestructionrelease) = $destructor_release_replace(S, pdestructionrelease[.JOBS = (DESTRUCTION_VALUE (HOBJECT n_object)) :: pdestructionrelease.JOBS])[.COMPLETION = UNSUPPORTED "owned multiple-entry WeakMap iterator teardown"]
+  -- if $weakmap_iterator_at(S, n_object)
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if $weakmap_entries_at(S, n_map)
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
+  -- if $destructor_release_valid(S, pdestructionrelease)
+  -- if $heap_owners($heap_graph(S), HOBJECT n_object) = 0
+
+dec $weakmap_iterator_single_cursor(pstate, nat) : bool
+def $weakmap_iterator_single_cursor(S, n_object) = true
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if $iterator_lookup(S.ITERATORS, n_inner) = (WEAKMAPOWNEDITER n_inner n_object n_map n_position)
+def $weakmap_iterator_single_cursor(S, n_object) = false -- otherwise
+
 dec $weakmap_iterator_valid(pstate, nat) : bool
 def $weakmap_iterator_valid(S, n_object) = true
   -- if $weakmap_iterator_at(S, n_object)
@@ -59,7 +100,27 @@ def $weakmap_iterator_valid(S, n_object) = true
   -- if $objectprops_at(S.OBJECTPROPS, n_object) = eps
   -- if $object_table_at(S.OBJECTTABLES, n_object) = eps
   -- if $weakmap_foreach_storage_valid(S, n_map)
+def $weakmap_iterator_valid(S, n_object) = true
+  -- if $weakmap_iterator_at(S, n_object)
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if $(n_inner < S.NEXTITER)
+  -- if $useriter_cursor_count(S.ITERATORS, n_inner) = 1
+  -- if $iterator_lookup(S.ITERATORS, n_inner) = (WEAKMAPOWNEDKEYITER n_inner n_object n_map n_position n_keys*)
+  -- if $(|n_keys*| >= 2) /\ $(n_position <= |n_keys*|)
+  -- if $weakmap_entries_snapshot_valid(S, n_keys*)
+  -- if $weakmap_entries_snapshot_order($weakmap_entries_contents(S, n_map), n_keys*)
+  -- if $objectprops_at(S.OBJECTPROPS, n_object) = eps
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = eps
+  -- if $weakmap_entries_foreach_storage(S, n_map)
 def $weakmap_iterator_valid(S, n_object) = false -- otherwise
+
+dec $weakmap_iterator_factory_storage(pstate, nat) : bool
+def $weakmap_iterator_factory_storage(S, n_map) = ($weakmap_foreach_storage_valid(S, n_map) \/ ($weakmap_entries_at(S, n_map) /\ $weakmap_entries_foreach_storage(S, n_map)))
+dec $weakmap_iterator_factory_cursor(pstate, nat, nat, nat) : piterator
+def $weakmap_iterator_factory_cursor(S, n_object, n_map, n_inner) = WEAKMAPOWNEDITER n_inner n_object n_map 0
+  -- if S.OBJECTS[n_map] = WEAKMAP pweakmapentry?
+def $weakmap_iterator_factory_cursor(S, n_object, n_map, n_inner) = WEAKMAPOWNEDKEYITER n_inner n_object n_map 0 ($weakmap_entries_keys(pweakmapentry_all*))
+  -- if S.OBJECTS[n_map] = WEAKMAPENTRIES pweakmapentry_all*
 
 ;; This nonthrowing factory is atomic only for an authentic zero-argument
 ;; ordinary-CV method source and the bounded leaf storage below.
@@ -73,9 +134,9 @@ def $weakmap_iterator_factory(S, n_map, ptbytes, eps) = true
   -- if $weakmap_foreach_name(expression_receiver) = (n_name*)
   -- if S_receiver = $quiet_operand(S, VARIABLE n_name* 0)
   -- if S_receiver.COMPLETION = NORMAL /\ S_receiver.RESULT = KNOWN (POBJECT n_map)
-  -- if $weakmap_foreach_storage_valid(S, n_map)
+  -- if $weakmap_iterator_factory_storage(S, n_map)
   -- if ~$weakmap_foreach_active(S.ITERATORS, n_map)
-def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.OBJECTS = S_read.OBJECTS ++ [WEAKMAPITERATOR n_map n_inner]][.ALLOCATIONS = S_read.ALLOCATIONS ++ [HOBJECT n_object]][.ITERATORS = S_read.ITERATORS ++ [WEAKMAPOWNEDITER n_inner n_object n_map 0]][.NEXTITER = $(n_inner + 1)][.TODO = METHOD_RESULT :: ptask_tail*][.RESULT = KNOWN (POBJECT n_object)][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.OBJECTS = S_read.OBJECTS ++ [WEAKMAPITERATOR n_map n_inner]][.ALLOCATIONS = S_read.ALLOCATIONS ++ [HOBJECT n_object]][.ITERATORS = S_read.ITERATORS ++ [$weakmap_iterator_factory_cursor(S_read, n_object, n_map, n_inner)]][.NEXTITER = $(n_inner + 1)][.TODO = METHOD_RESULT :: ptask_tail*][.RESULT = KNOWN (POBJECT n_object)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n_map)
@@ -89,6 +150,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.OBJECTS = S_rea
 dec $weakmap_iterator_outer_valid(pstate, nat, nat, statement, porigin, int) : bool
 def $weakmap_iterator_outer_valid(S, n, n_object, statement, porigin_site, z) = true
   -- if $weakmap_iterator_valid(S, n_object)
+  -- if $weakmap_iterator_single_cursor(S, n_object)
   -- if $useriter_site(S, statement, porigin_site, z)
   -- if $useriter_cursor_valid(S, n, n_object)
 def $weakmap_iterator_outer_valid(S, n, n_object, statement, porigin_site, z) = false -- otherwise
@@ -152,9 +214,87 @@ def $useriter_call(S, n, n_object, statement, porigin_site, z, "next", KNOWN PNU
   -- if $weakmap_iterator_outer_valid(S, n, n_object, statement, porigin_site, z)
   -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
 
-;; Other wrapper methods/consumers remain explicit rather than silently using
-;; ordinary object properties or the old non-Traversable CONFIG path.
-def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.COMPLETION = UNSUPPORTED "WeakMap InternalIterator method protocol outside foreach"]
+;; Manual methods own only their ordinary result. The factory's inner cursor
+;; remains, but an active outer cache must not be retargeted through this API.
+dec $weakmap_iterator_api_allowed(pstate, nat, ptbytes, phpType7*) : bool
+def $weakmap_iterator_api_allowed(S, n_object, ptbytes, eps) = true
+  -- if $ptlc(ptbytes) <- [$ptascii("rewind"), $ptascii("valid"), $ptascii("current"), $ptascii("key"), $ptascii("next")]
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.FIBERCALLERS = eps
+  -- if S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.OPERATIONS = eps
+  -- if $weakmap_iterator_valid(S, n_object)
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if |S.ITERATORS| = 1
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression_receiver phpType20 (SEQUENCE eps) metadata)
+  -- if $method_source_task(S, NExprMethodCall expression_receiver phpType20 (SEQUENCE eps) metadata)
+  -- if $method_source_name(phpType20, ptbytes)
+  -- if $weakmap_foreach_name(expression_receiver) = (n_name*)
+  -- if S_receiver = $quiet_operand(S, VARIABLE n_name* 0)
+  -- if S_receiver.COMPLETION = NORMAL /\ S_receiver.RESULT = KNOWN (POBJECT n_object)
+def $weakmap_iterator_api_allowed(S, n_object, ptbytes, phpType7*) = false -- otherwise
+dec $weakmap_iterator_api_done(pstate, pvalue) : pstate
+def $weakmap_iterator_api_done(S, pvalue) = S[.TODO = METHOD_RESULT :: ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+dec $weakmap_iterator_many_current(pstate, nat) : (pweakmapentry, nat)?
+def $weakmap_iterator_many_current(S, n_object) = $weakmap_entries_cursor_next($weakmap_entries_contents(S, n_map), n_position, n_keys*)
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if $iterator_lookup(S.ITERATORS, n_inner) = (WEAKMAPOWNEDKEYITER n_inner n_object n_map n_position n_keys*)
+def $weakmap_iterator_many_current(S, n_object) = eps -- otherwise
+dec $weakmap_iterator_api_value(pstate, nat, bool) : pvalue
+def $weakmap_iterator_api_value(S, n_object, false) = pvalue
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if $iterator_lookup(S.ITERATORS, n_inner) = (WEAKMAPOWNEDITER n_inner n_object n_map 0)
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if pvalue = pweakmapentry.VALUE
+def $weakmap_iterator_api_value(S, n_object, true) = POBJECT pweakmapentry.KEY
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if $iterator_lookup(S.ITERATORS, n_inner) = (WEAKMAPOWNEDITER n_inner n_object n_map 0)
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+def $weakmap_iterator_api_value(S, n_object, false) = pvalue
+  -- if $weakmap_iterator_many_current(S, n_object) = (pweakmapentry_selected, n_next)
+  -- if pvalue = pweakmapentry_selected.VALUE
+def $weakmap_iterator_api_value(S, n_object, true) = POBJECT pweakmapentry_selected.KEY
+  -- if $weakmap_iterator_many_current(S, n_object) = (pweakmapentry_selected, n_next)
+def $weakmap_iterator_api_value(S, n_object, b_key) = PNULL -- otherwise
+dec $weakmap_iterator_api(pstate, nat, ptbytes) : pstate
+def $weakmap_iterator_api(S, n_object, ptbytes) = $weakmap_iterator_api_done(S, $weakmap_iterator_api_value(S, n_object, ptbytes = $ptascii("key")))
+  -- if ptbytes <- [$ptascii("current"), $ptascii("key")]
+def $weakmap_iterator_api(S, n_object, ptbytes) = $weakmap_iterator_api_done(S[.ITERATORS = [WEAKMAPOWNEDITER n_inner n_object n_map 0]], PNULL)
+  -- if ptbytes = $ptascii("rewind")
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if $weakmap_iterator_single_cursor(S, n_object)
+def $weakmap_iterator_api(S, n_object, ptbytes) = $weakmap_iterator_api_done(S[.ITERATORS = [WEAKMAPOWNEDITER n_inner n_object n_map 1]], PNULL)
+  -- if ptbytes = $ptascii("next")
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if $weakmap_iterator_single_cursor(S, n_object)
+def $weakmap_iterator_api(S, n_object, ptbytes) = $weakmap_iterator_api_done(S, PBOOL (n_position = 0 /\ S.OBJECTS[n_map] =/= WEAKMAP eps))
+  -- if ptbytes = $ptascii("valid")
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if $iterator_lookup(S.ITERATORS, n_inner) = (WEAKMAPOWNEDITER n_inner n_object n_map n_position)
+def $weakmap_iterator_api(S, n_object, ptbytes) = $weakmap_iterator_api_done(S[.ITERATORS = [WEAKMAPOWNEDKEYITER n_inner n_object n_map 0 n_keys*]], PNULL)
+  -- if ptbytes = $ptascii("rewind")
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if $iterator_lookup(S.ITERATORS, n_inner) = (WEAKMAPOWNEDKEYITER n_inner n_object n_map n_position n_keys*)
+def $weakmap_iterator_api(S, n_object, ptbytes) = $weakmap_iterator_api_done(S[.ITERATORS = [WEAKMAPOWNEDKEYITER n_inner n_object n_map n_next n_keys*]], PNULL)
+  -- if ptbytes = $ptascii("next")
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if $iterator_lookup(S.ITERATORS, n_inner) = (WEAKMAPOWNEDKEYITER n_inner n_object n_map n_position n_keys*)
+  -- if $weakmap_iterator_many_current(S, n_object) = (pweakmapentry_selected, n_next)
+def $weakmap_iterator_api(S, n_object, ptbytes) = $weakmap_iterator_api_done(S[.ITERATORS = [WEAKMAPOWNEDKEYITER n_inner n_object n_map n_end n_keys*]], PNULL)
+  -- if ptbytes = $ptascii("next")
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if $iterator_lookup(S.ITERATORS, n_inner) = (WEAKMAPOWNEDKEYITER n_inner n_object n_map n_position n_keys*)
+  -- if $weakmap_iterator_many_current(S, n_object) = eps
+  -- if n_end = |n_keys*|
+def $weakmap_iterator_api(S, n_object, ptbytes) = $weakmap_iterator_api_done(S, PBOOL ($weakmap_iterator_many_current(S, n_object) =/= eps))
+  -- if ptbytes = $ptascii("valid")
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if $iterator_lookup(S.ITERATORS, n_inner) = (WEAKMAPOWNEDKEYITER n_inner n_object n_map n_position n_keys*)
+;; Compute the source/storage certificate once before the complementary result.
+dec $weakmap_iterator_api_dispatch(pstate, nat, ptbytes, bool) : pstate
+def $weakmap_iterator_api_dispatch(S, n_object, ptbytes, true) = $weakmap_iterator_api(S, n_object, $ptlc(ptbytes))
+def $weakmap_iterator_api_dispatch(S, n_object, ptbytes, false) = S[.COMPLETION = UNSUPPORTED "WeakMap InternalIterator method source or storage"]
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $weakmap_iterator_api_dispatch(S_read, n_object, ptbytes, $weakmap_iterator_api_allowed(S_read, n_object, ptbytes, phpType7*))
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n_object)
