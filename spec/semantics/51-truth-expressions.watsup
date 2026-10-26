@@ -53,6 +53,7 @@ def $selected_branch(S, phpType5, expression, pvalue, z_true, z_false) = $select
   -- if S.RESULT = KNOWN (PBOOL true)
 def $selected_branch(S, phpType5, expression, pvalue, z_true, z_false) = S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 2]), EVAL expression), VALUE_COPY z_false] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.RESULT = KNOWN (PBOOL false)
+dec $ternary_nan_plan(pstate) : (pboolnotnanwarning, ptask)?
 dec $select_value(pstate, phpType5, expression, int, int, int) : pstate
 def $select_value(S, phpType5, expression, z_cond, z_true, z_false) = S_read[.TODO = eps]
   -- if S_read = $resolve_at(S, S.RESULT, z_cond)
@@ -68,6 +69,7 @@ rule PhpStep/ternary: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 
   -- if S.TODO = (EVAL (NExprTernary expression_1 phpType5 expression_2 metadata)) :: ptask_tail*
 rule PhpStep/select-value: S ~> $select_value(S[.TODO = ptask_tail*], phpType5, expression, z_cond, z_true, z_false)
   -- if S.TODO = (SELECT_VALUE phpType5 expression z_cond z_true z_false) :: ptask_tail*
+  -- if $ternary_nan_plan(S) = eps
 
 ;; XOR retains ordinary delayed binary reads, then coerces left before right.
 def $binary_apply(S, LOGICALXOR, pvalue_left, pvalue_right, z) = S_right[.RESULT = KNOWN (PBOOL (b_left =/= b_right))]

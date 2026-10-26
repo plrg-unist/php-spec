@@ -1415,6 +1415,13 @@ and late aliases survive without a compound store; two live strings cannot retry
 bitwise string specialization. Ten originals and 566 focused SL premises pass in the
 [delayed failure ledger](coverage/semantics/delayed-type-failure-review.json).
 
+NaN shorthand ternary now copies the live selected float after its Warning
+callback. A `1.0` write delivers float `1.0`; a `0.0` write enters fallback and
+copies integer `7`; a supplied throw cancels both fallback and outer store.
+Three originals and 487 focused premises pass in the
+[shorthand ledger](coverage/semantics/ternary-nan-warning-review.json).
+Full ternary, references/changed representations and wider handlers remain partial.
+
 NaN LEFT short-circuit decisions now read the live float CV after a Warning
 callback. A `0.0` write skips `&&`/`and` RIGHT and enters `||`/`or` RIGHT; a supplied
 throw prevents RIGHT and outer assignment even after a truthy write. Five originals
@@ -2962,7 +2969,7 @@ physical Value owner per slot, including shared Values. Two originals and 286
 Boolean/five raw checks pass at `8f71bbef1`/412: one Key death transfers only its
 entry to a release job and preserves the sibling, then normalizes to old singleton
 storage. Original preflight/fixture compile failures stay zero. Other payloads,
-replacement/wider explicit unset, wider iteration, GC/CONFIG and wider multiple-entry
+wider replacement/unset, wider iteration, GC/CONFIG and wider multiple-entry
 Map teardown remain partial. [Review](coverage/semantics/weak-map-review.json).
 
 Last-owner multi-entry Map teardown now unregisters every Key before releasing
@@ -3076,14 +3083,21 @@ value and preserves key registration. A receiver continuation retains the map
 through cleanup; unused results add no owner, and used results copy the selected
 RHS value afterward. Owned key temporaries release after the receiver.
 Six originals agree across `70bf0c4`/`302b5c9`; 642 reached checks pass with prior
-cuts retained.
+cuts retained. Multiple-entry replacement now also publishes a direct new value
+without writing through an escaped old cell. Two originals and 297 Boolean/six
+raw checks pass at `4035dd2cf`/412, preserving sibling/registration, real old-owner
+cleanup, receiver retention and deferred used-result copying. A later old-cell
+rewrite leaves Map unchanged; Map/new values retire before that detached cell.
+Both original finder failures stay zero; only the author fixture was corrected.
+Wider payloads, callbacks and active/freeing contexts remain partial.
+
 Supported scalar values now also replace an occupied entry. Replacement publishes
 the captured new entry before the old destructor runs; if it changes the RHS variable, the
 used assignment result reads that changed variable after cleanup. Two originals
 agree and 147 focused checks pass at `5dd834c5`, including scalar-only replacement
 without a value release and object result ownership. Wider replacement remains
 required.
-Wider entries, freeing mutation, reference/iteration and ephemeron protocols remain
+Wider entry/reference graphs, freeing or active mutation and ephemeron protocols remain
 open.
 
 `WeakReference::create` now reuses or recreates a wrapper during a live map

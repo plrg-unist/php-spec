@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "milestone": "OP85 NaN shorthand conditional live value",
+  "status": "bounded independently reviewed semantics and actual-tail composition",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/ordinary precision14 profile",
+  "scope": "Shorthand ternary with ABSENT true arm and an ordinary allocated nonreference float CV initially NaN. Named Warning callback resumes from the same live float slot; true copies that float, false evaluates/copies the fallback, and supplied throw cancels both. Full ternary, references/copies, changed representations and wider handlers remain partial.",
+  "tested_revision": "a9a29c4c40442eb1969dcdab244b6ca56d24c159",
+  "private_modules": 412,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "5899138421e22adb43a3540d420bfd61a1fce2b34fbcd71188e0140150dee5bf",
+    "spec/semantics/51-truth-expressions.watsup": "f1b7824b4079ea4c90147f960c1256986ec434b328c39dd7aaaa8c1df892cc48",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "07c3a7e4809b6a50acafa0b45bd7abc87ca3e928279dcbe9fe2c51ac14597904"
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_compile.c::zend_compile_shorthand_conditional emits JMP_SET after the condition and before fallback compilation, yielding LEFT24/FALSE25. Zend/zend_vm_def.h::ZEND_JMP_SET calls i_zend_is_true, checks pending exception, then copies the current pointed value into the true result. A pre-Warning value snapshot or normalized Boolean loses this live selected value.",
+    "Separate TERNARY_NAN_WARNING source/plan authenticates exact SELECT_VALUE ABSENT, zero true-arm line and fallback metadata. Resume reads the same live float once, computes truth and calls existing selected_branch with that live PFLOAT; it does not feed NaN through truth conversion again. Generic handler unwind discards the nonowning marker before fallback/store.",
+    "69 additions:30 task1,51 declaration/EPS gate2,404 appended source/plan/validity/dispatch/typed selection/boundary66. Old404 is an exact prefix; slot helpers, existing branch/value-copy bodies, Boolean NOT/casts/XOR/short-circuit, shared truth/numeric/formatting, CONFIG/DEFINE and generic unwind remain exact. The marker adds no cell root."
+  ],
+  "contract": [
+    "Author H writes float1 and returns false. Shorthand result is strictfloat1 with no k; after x becomes integer8 the result stays float1, discriminating frozen initial NaN, PBOOL delivery and alias delivery. One default Warning uses condition24.",
+    "Independent H writes float0; fallback k runs once, writes x2 and returns strictint7. That value is copied to the caller and survives later x8. Supplied-throw H0 instead keeps the same Exception20/null Previous, outer100/rhs0/calls1 and EOF, with no fallback or default Warning.",
+    "487 premises in three checked-source-derived recipes (166 live-value,187 fallback,134 throw) bind actual H, raw typed result before outer store, raw fallback scheduling, real k entry/returned PINT7/value copy, roots/EOF/budgets. Unchanged NaN/opposite truth, source/ABSENT/line guards and retyped/rebound refusals are derived controls with no additional native credit. Owner1 is checked at selected reached cuts, not every transient callback step."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-85/source-a9a29c4c4-live/report.json",
+        "sha256": "062393413438f2d77f4579d8f8083079f4e0676fe8c538ed1cb46c21619c4c6c",
+        "revision": "a9a29c4c40442eb1969dcdab244b6ca56d24c159",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-85/review-model-a9a29c4c4-fallback/report.json",
+        "sha256": "d26bbe1eb636bc4c527d12da657e38bf0c6bcc72051a5eaa849bbf322974d542",
+        "revision": "a9a29c4c40442eb1969dcdab244b6ca56d24c159",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-85/review-model-a9a29c4c4-throw/report.json",
+        "sha256": "600594ab83f4e389dc669809236c5e275c6152f8960ed117d2453d13e76da059",
+        "revision": "a9a29c4c40442eb1969dcdab244b6ca56d24c159",
+        "agreements": 1
+      }
+    ],
+    "state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-85/focused-a9a29c4c4-three/report.json",
+      "sha256": "33c65a40112f8b97627f9c68420d47be10d9db9631d43a349f9c614712a99d39",
+      "revision": "a9a29c4c40442eb1969dcdab244b6ca56d24c159",
+      "conditions": [
+        166,
+        187,
+        134
+      ],
+      "total": 487
+    },
+    "total_source_agreements": 3,
+    "total_focused_state_conditions": 487,
+    "review": "Independent operators79_review accepted native/genuine classification, runtime/author/peer/header before execution and exact source/focused first results. Publication and actual-tail candidate independently reviewed; accepted execution retains its original cuts. Metadata changes add no execution credit."
+  },
+  "preserved_zero_credit": {
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-85/baseline-57eadcbee-live/report.json",
+      "sha256": "be2a084bb746406a4406473345093ceceec9220a1229a5bb7a9f90c1f2174766",
+      "revision": "57eadcbeeedce1a877bc5a80a69e93be4d35a1bb",
+      "result": "Frontend-accepted/checked original stops Unsupported before H: error-handler ingress requires a producer continuation. Empty semantic streams/model1/rowfalse/agreement0; raw files unchanged."
+    },
+    "native_observations": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-85/native-57eadcbee-live/report.json",
+        "sha256": "765bfe0bd7c792eee11eff59aa7c626f9249cdf818ac242bb65bd5cac9c6f62e",
+        "revision": "57eadcbeeedce1a877bc5a80a69e93be4d35a1bb"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-85/native-57eadcbee-fallback/report.json",
+        "sha256": "4208dee28e37b921326de30bbd7451f921e378c8b3da6ffb6560e65118b294aa",
+        "revision": "57eadcbeeedce1a877bc5a80a69e93be4d35a1bb"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-85/native-57eadcbee-throw/report.json",
+        "sha256": "9aecfbb790588751fa3b21a095f87f650840d3e254205c32319ce51f36a85070",
+        "revision": "57eadcbeeedce1a877bc5a80a69e93be4d35a1bb"
+      }
+    ],
+    "full_static": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-85/static-a9a29c4c4/report.json",
+      "sha256": "e026bb0f69c4efb1e08484a22588d43bae2f1c9c653e15b66af0cfc8ef4d48d4",
+      "revision": "a9a29c4c40442eb1969dcdab244b6ca56d24c159",
+      "result": "Full ordered412 struct passes; semantic credit0."
+    }
+  },
+  "limits": [
+    "Native witnesses cover selected float1, fallback int7 after false condition0 and supplied throw. Other still-float payloads use existing pure number_bool reasoning; unchanged-NaN/opposite-truth/retype/rebind controls are derived. Native NaN-bit identity is unclaimed.",
+    "Only shorthand ABSENT-arm selection is admitted. Full ternary/other conditions, copied/reference/owning or changed/rebound representations, constrained sources and wider handlers/lifetimes remain partial. No engine bug, intentional divergence or old branch/Boolean/numeric algorithm renewal is claimed.",
+    "Paused OP12, Source47 low-precision DEFINE NaN, owned-NUL source-release, undefined-byref LIST key and COMP88 Stringable supplied-throw crash remain separate."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-85",
+    "environment": "LC_ALL=C,TZ=UTC,PHP_SPEC_SCRIPT_ENCODING absent; ordinary precision14 profile. Native/genuine and source/focused used serial CPU1 windows; all actors reaped and slots released. Native30/modelCLI60-process90, full412struct30, checked workers30/fixturestruct30/SL120 per group; no cap changes.",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "tool_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88"
+    },
+    "commands": [
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-85/run-native-gate.py 57eadcbeeedce1a877bc5a80a69e93be4d35a1bb 1",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-85/run-source-gate.py a9a29c4c40442eb1969dcdab244b6ca56d24c159 1",
+      "taskset -c 1 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-85/run-focused.py a9a29c4c40442eb1969dcdab244b6ca56d24c159 1"
+    ],
+    "record": "Restore matching Git cut/local tools and retained original paths; choose fresh output directories. Focused fixtures reuse accepted source/native tuples without replay. Raw external evidence is not a build input; reused regular binaries prove no fresh offline rebuild."
+  },
+  "composition": {
+    "parent": "77988f2291755f0ec9347a764f5eb50ae6dd087d",
+    "private_publication": "369b963445a8d1ddeb89d46fac1286fe8a0a50ca",
+    "modules": 412,
+    "preservation": "30/51/404 and six OP85 scripts remain private-publication exact. Incoming422, other runtime modules and module manifest remain parent-exact. Removing the one TERNARY_NAN_WARNING task declaration from combined30 reproduces parent30. Accepted a9a29 source/focused cuts and their credit are unchanged.",
+    "interaction": "The incoming occupied WeakMap-entry offsetSet replacement requires a certified WEAKMAPENTRIES table and object key. None of the three OP85 sources creates a WeakMap, object key or offsetSet access; scalar GLOBALS writes and retained Throwable observers cannot select that validator. No shared field/default/manifest changes occur.",
+    "gate": "Exact candidate5e2e95f006547cb6e2decb0d7276f177d5d52de5 independently CLEAR over parent77988f2291755f0ec9347a764f5eb50ae6dd087d. Runtime/test identities, incoming inventory and pointwise disjoint selector review are preserved. No semantic execution renewal."
+  }
+}

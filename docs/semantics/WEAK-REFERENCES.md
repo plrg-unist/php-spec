@@ -128,7 +128,7 @@ retain `c5ccf2792`/411. Original app0 iteration-name and author record-list synt
 failures remain zero; only corrected preflight/author repeat, without source or
 native replay. At that cut, CONFIG/GC/foreach/teardown and old392/402/408
 new-kind fallbacks stay explicit exclusions. Wider payload/property/class/callback forms,
-replacement/wider explicit unset and cross-map/reentry/Fiber histories remain partial.
+wider replacement/unset and cross-map/reentry/Fiber histories remain partial.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
 ## Last-owner multiple-entry Map teardown
@@ -154,7 +154,7 @@ allocated nodes/edges; the generic retained-release branch keeps the table and
 Values. It adds no PHP source credit. Native/genuine teardown refusals retain
 `70b7d5a0c`/412. All repaired/focused checks pass first execution, with no replay,
 cap increase or separate preflight. Wider Key properties/classes, non-leaf,
-reference/array/callback Values, multiple-entry replacement/wider explicit unset,
+reference/array/callback Values, wider multiple-entry replacement/unset,
 iteration/CONFIG/GC and cross-map/freeing/reentry/Fiber combinations remain partial.
 Keys outside the authenticated retained-live shape still refuse.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
@@ -919,7 +919,7 @@ Constructed NULL-table, captured-OFFSET and ghost-cursor helper refusals add no
 PHP credit. Native and genuine baseline retain `9b3f9adf3`/412; baseline refusals
 remain zero, and all affected checks pass first execution without activation lift.
 Public method dispatch, wider payload/callback/freeing/active-context and
-replacement/CONFIG/GC consumers remain partial.
+wider replacement/CONFIG/GC consumers remain partial.
 
 The engine basis is `zend_weakmap_unset_dimension` and `zend_weakref_unregister`
 in `Zend/zend_weakrefs.c`: absent object keys are no-ops; matching removal releases
@@ -930,7 +930,7 @@ mutation during freeing stays Unsupported. Earlier evidence retains its cuts.
 
 ## Occupied entry replacement
 
-Module386 admits same-key replacement in one map with a leaf `stdClass` key and
+The singleton module386 admits same-key replacement with a leaf `stdClass` key and
 ordinary leaf old/new INSTANCE values. Only VALUE changes: KEY and BEFORE preserve
 the original registration, and the old callback observes the new entry.
 Existing eager release handles shared and same-value owners. ACCESS_RESUME
@@ -948,12 +948,29 @@ pending Exception transfer and map storage pin creation; originals supply ending
 The original budget-resume fixture failure and key-order mismatch retain zero
 credit; the old 74-check preparation was never run.
 
+Module422 also admits occupied finite-table replacement with direct or validated
+leaf-object entry cells. Shared source authority keeps fresh-key DIRECT insertion
+separate from an actual Many member; VALUE-only update preserves KEY/BEFORE/order.
+The mature receiver continuation defers used-result copying until cleanup ends.
+Two sources and author128/3 plus peer169/3 pass 297 Boolean/six raw transitions at
+`4035dd2cf`/412: direct X retires; an old entry HCELL detaches and retains X while
+Map receives direct Z. A separate old-cell rewrite leaves Map/sibling unchanged;
+Map/Z/Y retire before the escaped cell/S and final Keys.
+
+Receiver/new-Value deltas, real VALUE/HCELL jobs and used/z/Map owner3 sharing are
+reached checks. Singleton-domain/tail-update and OFFSET/marker queries are
+helper-only, with zero PHP credit. Native and genuine baseline retain `8b86fb948`;
+baseline refusals and both original127/3 finder failures remain zero. The exact
+fixture cause was BUDGET input to a NORMAL-only capture; only affected author
+checks repeated after normalization and a paused-stage control. The earlier
+stage2 scheduling forecast was wrong. Source/runtime evidence was not renewed.
+
 The engine basis is `zend_weakmap_write_dimension` in `Zend/zend_weakrefs.c` and
 `zend_assign_to_object_dim`/`ZEND_ASSIGN_DIM` in `Zend/zend_execute.c` and
 `Zend/zend_vm_def.h`. Replacement publishes before old destruction without key
 re-registration; assignment result copying follows the handler. Other key/value
-shapes, wider entries, mutation during freeing, reference/method/iteration and
-ephemeron protocols remain required. Countable stays nominal-only, with count
+shapes, wider entry graphs/reference payloads, mutation during freeing, public
+methods, active iteration and ephemeron protocols remain required. Countable stays nominal-only, with count
 execution excluded/Unsupported per CORE.
 
 ## Scalar occupied entry replacement
