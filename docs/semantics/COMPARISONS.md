@@ -560,6 +560,16 @@ path-local guard rejects cycles while allowing shared children. A later source
 array write leaves the captured COW snapshot intact. Object and reference leaves
 remain outside the [array-trace review](../../coverage/semantics/throwable-trace-array-comparison-review.json).
 
+Warm caches and nonempty builtin traces now meet in the same physical slot
+scan. Same-kind canonical `Exception`/`Error` pairs with null previous values
+admit finite `DIRECT` trace graphs containing primitive or valid string-carrier
+leaves and allocated acyclic child arrays. The string cache is compared first;
+one-sided warmth or unequal formatted text can stop there. Two different array
+arguments both format as `Array`, so equal warm caches continue through captured
+trace count, key and value order, including a source COW snapshot. This
+normal, nonpending path excludes object/reference/cyclic trace leaves and
+wider [warm trace graphs](../../coverage/semantics/throwable-warm-trace-comparison-review.json).
+
 [Builtin and inherited Throwable string casts](../../coverage/semantics/pending-throwable-comparison-review.json)
 also skip their internal handler in this authenticated pending remainder. The
 failed cast gives object-after-string order without reading formatter fields,
