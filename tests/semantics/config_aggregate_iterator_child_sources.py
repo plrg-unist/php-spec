@@ -81,6 +81,7 @@ family.CASES = {
     for name, tail in TAILS.items()
 }
 family.UNSUPPORTED = {}
+family.BASELINE = ('CONFIG Aggregate return outside shared initialized Iterator domain', b'B|G|')
 family.MODEL_TIMEOUTS = {name: 180 for name in family.CASES}
 EXPECTED_SHA256 = {
     'iterator-child-normal': '0fcdb875b39447335576cc474a354d710cdc63011814d4fdfabfed9e782e34e6',
