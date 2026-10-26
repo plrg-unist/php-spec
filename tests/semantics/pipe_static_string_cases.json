@@ -1,0 +1,11 @@
+{
+  "variable_basic": "<?php\nclass C { public static function twice($x) { echo \"M|$x|\"; return $x * 2; } }\n$f = 'C::twice';\necho (7 |> $f), '|';\n",
+  "literal_basic": "<?php\nclass C { public static function twice($x) { echo \"M|$x|\"; return $x * 2; } }\necho (8 |> 'C::twice'), '|';\n",
+  "variable_byref_send": "<?php\nclass C { public static function set(&$x) { echo 'ENTER|'; } }\n$f = 'C::set';\ntry {\n    5 |> $f;\n} catch (Error $e) {\n    echo get_class($e), '|', $e->getMessage(), '|', $e->getLine(), '|';\n}\n",
+  "variable_lookup_line": "<?php\nclass C {}\n$f = 'C::missing';\ntry {\n    4 |>\n        $f;\n} catch (Error $e) {\n    echo get_class($e), '|', $e->getMessage(), '|', $e->getLine(), '|';\n}\n",
+  "variable_strict": "<?php\ndeclare(strict_types=1);\nclass C { public static function take(int $x) { echo 'ENTER|'; } }\n$f = 'C::take';\ntry {\n    '3' |> $f;\n} catch (TypeError $e) {\n    echo get_class($e), '|', $e->getMessage(), '|', $e->getLine(), '|';\n}\n",
+  "variable_ref_return": "<?php\n$v = 0;\nclass C { public static function &slot($x) { global $v; echo \"S|$x|\"; return $v; } }\nfunction set(&$x) { $x = 9; echo 'T|'; }\n$f = 'C::slot';\nset(1 |> $f);\necho $v, '|';\n",
+  "variable_inherited": "<?php\nclass A { public static function who($x) { echo static::class, '|', $x, '|'; } }\nclass B extends A {}\n$f = 'B::who';\n0 |> $f;\n",
+  "independent_byref_owner": "<?php\nclass L { public function __destruct() { echo 'L|'; } }\nclass C { public static function set(&$x) { echo 'ENTER|'; } }\n$f = 'C::set';\ntry {\n    (new L) |> $f;\n} catch (Error $e) {\n    echo 'E|', $e->getMessage(), '|';\n}\n",
+  "factory_temporary": "<?php\nclass C { public static function f($x) { echo \"M|$x|\"; return $x + 1; } }\nfunction choose() { echo 'R|'; $m = 'f'; return 'C::' . $m; }\necho (7 |> choose()), '|';\n"
+}
