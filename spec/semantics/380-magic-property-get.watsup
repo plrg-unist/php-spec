@@ -34,6 +34,7 @@ dec $property_get_string_copy_abrupt(pstate, ppropertygetstring, pvalue) : pstat
 dec $property_get_source(pstate, ppropertyget) : bool
 dec $property_get_this_source(pstate, ppropertyget) : bool
 dec $property_get_owned_source(pstate, ppropertyget) : bool
+dec $property_get_owned_access(pstate, nat, ptbytes) : bool
 dec $property_get_base_tasks(pstate, ppropertyget) : ptask*
 dec $property_get_base_carrier(ptask, nat, porigin) : nat
 dec $property_get_base_count(ptask*, nat, porigin) : nat
@@ -204,6 +205,12 @@ def $property_get_public(S, n, ptbytes) = true
 def $property_get_public(S, n, ptbytes) = (ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc.STATIC /\ ppropertydesc.KEY = ptbytes)
   -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
 
+;; Owned receiver history retains immutable access/signature facts, not absence.
+;; Existing public reference getters remain admitted; new nonpublic forms are BYVAL.
+def $property_get_owned_access(S, n, ptbytes) = ($property_get_public(S, n, ptbytes) \/ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF)
+  -- if $property_get_method(S, n) = (pmethoddesc)
+def $property_get_owned_access(S, n, ptbytes) = false -- otherwise
+
 ;; The caller's source retains its selected key after callback entry, including
 ;; a lexical private declaration hidden by an effective public Child property.
 ;; Fresh entry/capture must agree with the actual caller's resolved access.
@@ -236,7 +243,7 @@ def $property_get_history(S, ppropertyget) = true
   -- if ~$function_generator(S, pmethoddesc.FUNCTION)
   -- if ppropertyget.DECL = $property_get_access_decl(S, ppropertyget.OBJECT, ppropertyget.NAME, $property_get_lookup(S, ppropertyget))
   -- if $property_get_access_valid(S, ppropertyget.OBJECT, ppropertyget.NAME, $property_get_lookup(S, ppropertyget))
-  -- if ~$property_get_owned_source(S, ppropertyget) \/ $property_get_public(S, ppropertyget.OBJECT, ppropertyget.NAME)
+  -- if ~$property_get_owned_source(S, ppropertyget) \/ $property_get_owned_access(S, ppropertyget.OBJECT, ppropertyget.NAME)
 def $property_get_history(S, ppropertyget) = false -- otherwise
 
 def $property_get_carrier(PROPERTY_GET_RESULT ppropertyget, n, porigin) = 1
@@ -352,7 +359,7 @@ def $property_get_plan(S) = (ppropertyget)
   -- if (HOBJECT n) <- S.ALLOCATIONS /\ ~$instance_storage_freeing(S, n)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $property_get_needed(S, n, $base64(text_name))
-  -- if $property_get_public(S, n, $base64(text_name))
+  -- if $property_get_owned_access(S, n, $base64(text_name))
   -- if ppropertyaccess = $property_resolve(S, n, $base64(text_name))
   -- if ppropertyaccess = $property_resolve_scope(S, n, $base64(text_name), $closure_source_class(S, porigin))
   -- if $property_get_access_valid(S, n, $base64(text_name), ppropertyaccess)
