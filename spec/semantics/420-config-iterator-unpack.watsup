@@ -18,7 +18,7 @@ dec $config_iterator_finish(pstate, pconfigiterator, ptask*) : pstate
 dec $config_iterator_discard(pstate, pconfigiterator, text) : pstate
 dec $config_iterator_discard_allowed(pstate, pconfigiterator) : bool
 
-def $config_traversable_value(S, POBJECT n) = ($useriter_instance(S, n) \/ $generator_object(S, n) \/ $generator_from_aggregate(S, POBJECT n) \/ $weakmap_at(S, n))
+def $config_traversable_value(S, POBJECT n) = ($useriter_instance(S, n) \/ $generator_object(S, n) \/ $generator_from_aggregate(S, POBJECT n) \/ $weakmap_at(S, n) \/ $weakmap_iterator_at(S, n))
   -- if $(n < |S.OBJECTS|)
   -- if HOBJECT n <- S.ALLOCATIONS
 def $config_traversable_value(S, pvalue) = false -- otherwise

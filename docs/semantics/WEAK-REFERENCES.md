@@ -454,9 +454,28 @@ delete/reinsert control emits `B;E;`; its reached offsetUnset refusal retains
 zero agreement. The original normal-but-skipped baselines and two compiler stops
 also stay zero. A strict application0 preflight and corrected affected source2
 keep their separate records. Reference traversal, scalar/array or wider values,
-other/overwritten targets, explicit getIterator, mutation and wider map/callback/
+other/overwritten targets, wider getIterator histories, mutation and wider map/callback/
 Fiber histories remain partial. Empty storage shares finish without an extra
 PHP witness. [Review and recovery](../../coverage/semantics/weak-map-review.json).
+
+Module 424 also admits the actual zero-argument `WeakMap::getIterator()` factory
+for an ordinary Map CV in this methodless singleton lane. Its returned
+`InternalIterator` owns Map once; the factory cursor row is nonowning and fences
+explicit entry mutation from creation. Foreach owns the wrapper as DATA and
+retains a separate current-value cache through the body. The cache adds one
+Value owner; next or atomic methodless break removes it. An external Iterator
+can retain Map after break; otherwise exhaustion retires both while copied
+Key/Value CVs survive until their later unset. Stale object/store rows add no owner.
+
+Two originals and 133/2 author plus 132/2 peer checks pass 265/4 at `95d732f3b`/413.
+Same-heap missing/retargeted cursor controls and a missing-cache-root control
+refuse through public descriptor validation with zero PHP credit. Native and
+genuine baseline retain `77988f229`/412; baseline refusals remain 0, with no failed
+repaired/fixture run or replay. Strict application0 is separate. Manual methods,
+by-reference/nested or wider traversal, current-entry death, callbacks, hidden
+native allocation-handle histories and GC/CONFIG remain partial. There is no
+intermediate cache-before-DATA release-order claim for the atomic leaf drop.
+[Review and recovery](../../coverage/semantics/weak-map-review.json).
 
 ## By-reference entry cells and Key retirement
 

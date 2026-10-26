@@ -2962,5 +2962,66 @@
     "artifact_manifest": "../php-spec-evidence-archive/weakmap-multiple-entry-replacement-149/manifest.json",
     "archive_sha256": "2d81fcce30d7f69584863be1f37ff0f59a42fec389a550448116c10eaea47b2f",
     "recovery": "Restore 4035dd2cf at original .tools/weakmap-multiple-entry-replacement-149 path, or apply isolated422 patch to 8b86fb94; restore 8b86 for genuine baseline reproduction. Extract .tools/m149 and use matching project-local providers. Seven reports/five complete preserve original2 source/path/cwd, checked/request/native/model tuples, both zero-credit failure snapshots and immutable accepted fixture/producer/runner bytes. No binaries/copied build tree or production archive dependency."
+  },
+  "owned_iterator_factory_150": {
+    "status": "implemented-bounded; independently reviewed; selected source agreement only",
+    "tested_revision": "95d732f3bf6ddd31f4797293f3c89876ab3efba8",
+    "module_count": 413,
+    "native_baseline_revision": "77988f2291755f0ec9347a764f5eb50ae6dd087d",
+    "native_baseline_module_count": 412,
+    "implementation": "Module 30 adds WEAKMAPITERATOR(Map,innerID) and nonowning WEAKMAPOWNEDITER metadata; module 386 makes its old method refusal complementary; module 424 authenticates an atomic zero-argument CV factory and preserves Map ownership through the wrapper. Existing outer OBJECTITER/USERITER_RESULT/USERITER_NEXT retain DATA and a separate current cache. Module 420 adds only default-false wrapper Traversable classification, reaching existing CONFIG Unsupported. Old user classes, modules 69/129/224/301/39 and all other spec paths remain exact.",
+    "source_result": "Native 2 normal/quiet; genuine unchanged model 2 explicitly refuses WeakMap method protocol before output, agreement 0. Repaired original 2 normal/exact at 95d732/413: DATA-held exhaustion and externally held first-body break, then typed copied-Key/Value retention and staged retirement. Original bytes/path/cwd/profile and checked/request facts are exact.",
+    "source_outputs": {
+      "data": "I:1;B:1111;A:1111;K:11;V:1;E;",
+      "held": "I:1;B:1111;A:1111;D:11;K:11;V:1;E;"
+    },
+    "focused": "Author 133 Boolean/2 raw plus independent peer 132/2 = 265/4, first execution PASS. Factory adds wrapper-to-Map ownership without adding a Value owner; inner metadata adds no roots. The body cache gives Value 3, next/break reduce it to 2; DATA-only versus externally held Iterator ownership determines Map retirement while copied Key/Value CVs remain live. Physical wrapper/Map/copies and cursor rows retire; stale STORE/OBJECTS history is nonowning.",
+    "controls": "Constructed missing-cache control preserves allocated nodes/edges while removing one Value root/owner. Missing/retargeted inner metadata preserves the entire physical heap. Public drive refuses each invalid compiled descriptor with unchanged events/allocations. These controls and old FOREACH_NEXT-owner query add zero PHP credit; no intermediate cache-before-DATA order is claimed for the atomic methodless drop.",
+    "limits": "Authentic global ordinary-CV zero-argument WeakMap::getIterator on empty/singleton direct methodless-leaf storage; by-value traversal with distinct initially empty ordinary targets. Cache-bearing traversal requires the validated current singleton entry and its held Key copy. Explicit mutation is fenced from factory cursor creation until wrapper retirement. Manual methods, by-reference/nested/wider traversal, current-entry death, callbacks/Fiber/function histories, broader payloads, hidden native allocation-handle histories and GC/CONFIG remain partial. Methodless break drops cache/DATA atomically; no intermediate release-order claim.",
+    "validation": {
+      "source_agreements": 2,
+      "focused_boolean": 265,
+      "focused_raw_steps": 4,
+      "preflight_application_evaluations": 0,
+      "reports": {
+        "native": {
+          "path": ".tools/m150/native-weakmap-getiterator-155gfk51/report.json",
+          "sha256": "0c004fbdb22900d256a006ffeee80bde74a455b4d840fa9de0d1c90db829033b"
+        },
+        "baseline": {
+          "path": ".tools/m150/model-weakmap-getiterator-baseline-guqrdjmd/report.json",
+          "sha256": "f667a3bcd5e270926c8e4af04b06c4ba125a8e3b258f502d9ad6c3c9c126181c"
+        },
+        "preflight": {
+          "path": ".tools/m150/preflight-904jsx9z/report.json",
+          "sha256": "6ee4c1548ad17fbc5f2b51f0bdb38a5ec21063159668524a99e73c7ee039f2b1"
+        },
+        "source": {
+          "path": ".tools/m150/model-weakmap-getiterator-repaired-k7j_btis/report.json",
+          "sha256": "68f4d8c75cc2c79fa2674910f9589c842526a368ecb5e68fc96c04570728675e"
+        },
+        "author": {
+          "path": ".tools/m150/public-np2402t8/report.json",
+          "sha256": "1b3affe14df5140a948b32bef956a4bdb531d645b2cd95725d22043c099b2828"
+        },
+        "peer": {
+          "path": ".tools/m150/reviewer-7_kvuibl/report.json",
+          "sha256": "ad77af573699216a735f0fe9988dac0f5cc60bd125400e70e06db553eaf52250"
+        }
+      },
+      "caps_environment": "CPU3/jobs1/LC_ALL=C/TZ=UTC/script encoding removed; native20, original/repaired worker120, strict45, author240, peer300. Every accepted parent and recorded group fully reaped; exact quiet true for state fixtures, stable head/inputs. Native/baseline source bytes, paths, cwd, profile and checked/request packets preserved. No accepted replay or cap lift.",
+      "failures": 0
+    },
+    "engine": "Pinned Zend/zend_weakrefs.c: WeakMap::getIterator, zend_weakmap_get_iterator and cursor/data/key/dtor functions; Zend/zend_interfaces.c: zend_create_internal_iterator_zval, InternalIterator methods and zend_user_it_get_current_data/move_forward/dtor. Zend/zend_iterators.c owns hidden native wrappers; handle-history/GC observations remain separate.",
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/weakmap-getiterator-lifetime-150/evidence.tar.gz",
+      "sha256": "fc896b44153c7ffafc52ca106c596e6b4745de411b41176990fd993ae7af142c",
+      "bytes": 534033,
+      "members": 124,
+      "reports": 6,
+      "complete_reports": 6
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/weakmap-getiterator-lifetime-150/manifest.json",
+    "actual_parent_review": "Actual parent is clean 7e7e2792e1ace2ebef91adadc3512dd429629ad5/412. Its OP85 additions to30/51/404 select a NaN shorthand-conditional Warning route absent from both originals; preserve the incoming30 task constructor. Tested386/420/424 bytes are exact95d732;30 adds only the tested wrapper/cursor alternatives to parent, and ordered413 equals parent412 plus424. All other spec paths are parent-exact. Historical ledger objects and both inventory prefixes remain exact; compact PROGRESS changes only the lifetime clause, own active-row removal and integrated-list addition, preserving the foreign checkpoint/rows. Accepted77988/412 and95d732/413 cuts retain their identities; no joined actor or new execution credit."
   }
 }
