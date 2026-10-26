@@ -231,6 +231,17 @@ sources and five reached fronts/515 checks; wider packs remain partial.
 [CV-pack review](coverage/semantics/halt-cv-pack-review.json),
 [alias-pack review](coverage/semantics/halt-alias-pack-review.json).
 
+Direct public instance-method calls now accept an initialized user Iterator CV
+unpack. They retain the selected receiver across key callbacks, bind positional
+and named values, report the declaring class in by-reference warnings, and
+preserve invalid-key, throwing-key and warning-handler cleanup order. Five new
+author method originals and a destructor-bearing handler original agree with
+PHP; six source-reached stages check selected targets, saved origins, owners and
+cleanup. Earlier failed fixture cuts retain zero credit. A temporary Iterator
+method operand remains explicit Unsupported; other callable targets and wider
+argument sources remain partial.
+[Method Iterator review](coverage/semantics/method-iterator-unpack-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
