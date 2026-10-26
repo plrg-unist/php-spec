@@ -117,7 +117,7 @@ def layout(shadow):
 def controls():
     return [
         '~$aggregate_cursor_valid(S,paggregatecursor[.KEY = KSTRING ($ptascii("same"))])',
-        '~$aggregate_cursor_valid(S,paggregatecursor[.KIND = AGGREGATE_DECL_HASH [ptbytes_second,ptbytes_first]])',
+        '~$aggregate_cursor_valid(S,paggregatecursor[.KIND = AGGREGATE_DECL_HASH ([ptbytes_second,ptbytes_first])])',
         '~$aggregate_cursor_valid(S,paggregatecursor[.INDEX = 0])',
         '~$aggregate_cursor_valid(S,paggregatecursor[.WIDTH = 1])',
         'pnumbercompare.SOURCE.CAST.RECEIVER = n_number',
