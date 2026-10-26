@@ -37,6 +37,13 @@ reads still fold the current AST's offset, so repeated eval can return different
 runtime and direct values. A fixed builtin `defined` with one raw string literal
 and no namespace fallback follows Zend's ordinary-table quick check and returns
 false, even in a HALT file.
+A fixed compiled-global `defined($name)` with one ordinary CV argument carrying
+the exact HALT name instead calls the builtin lookup. Its captured string may be
+plain or an authenticated carrier; the result is true for a completed HALT in
+the call site's filename and false when that filename has no registration.
+The [CV-defined ledger](../../coverage/semantics/halt-defined-cv-review.json)
+records the literal/CV contrast, child and eval isolation, and reached call
+fronts.
 
 The existing authenticated declaration journal supplies chronology. Accepted
 HALT occurrences outside the canonical root shape, or earlier incomplete/failed
@@ -65,8 +72,9 @@ user-function target and its compiled fallback is global `constant`. The
 namespaced user function takes priority when present. The
 [namespace-call ledger](../../coverage/semantics/halt-namespace-review.json)
 records main/child filename isolation, the absent Error and its trace, and
-three reached fallback fronts. Variable arguments, repeated call-site cache
-history and ambiguous HALT registration remain partial. The
+three reached fallback fronts. Variable `constant` arguments, other fixed `defined`
+argument shapes, repeated call-site cache history and ambiguous HALT
+registration remain partial. The
 [lookup ledger](../../coverage/semantics/halt-lookup-review.json) binds two original
 sources and their reached state checks, keeping counterfactual history/source
 projections separate from execution.
