@@ -1,5 +1,7 @@
 ;; A user Iterator's DATA owns the selected object once. A temporary call result
 ;; keeps a separate opcode INPUT until after DATA; ITEMS owns no PHP ARRAY.
+dec $config_aggregate_scope(pstate, pconfigaggregate) : bool
+dec $config_aggregate_owners(pstate, pconfigaggregate, nat) : bool
 dec $config_iterator_input(pstate, pconfigiterator) : bool
 dec $config_iterator_owning_input(pconfigiterator) : bool
 dec $config_iterator_input_nodes(pconfigiterator) : pnode*
