@@ -391,6 +391,18 @@ The existing numeric conversion, CV NaN route and finite-copy route are reused;
 copied range-only values, reference results, other producers and wider lifetime
 behavior remain partial.
 
+Evaluated range-only float copies now use BITNOT's single Warning continuation.
+A by-value `INF` result prints before its handler throws the supplied Exception,
+so neither complement nor outer assignment occurs. A selected `2^63` copy keeps
+its wrapped long after the handler unsets the source and reverses the condition;
+one default Warning precedes strict `PHP_INT_MAX`. Source authentication and the
+copy snapshot remain valid after the old source cell is released. Two exact
+originals and 102+111 reached conditions cover warning order, real handler
+frames, result cancellation or delivery, ownership and budgets in the
+[copied range ledger](../../coverage/semantics/bitnot-copy-range-warning-review.json).
+Reference results, other producers, owning replacements and wider lifetimes
+remain partial.
+
 Bitwise NOT now retains a finite in-range fractional float's converted long before its
 precision-loss deprecation. The bounded producer accepts a defined non-reference
 CV and named handler. Fresh capture/dispatch equals the CV; saved callback frames

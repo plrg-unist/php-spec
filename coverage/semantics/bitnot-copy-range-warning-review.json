@@ -1,0 +1,50 @@
+{
+  "milestone": "OP93 copied range-only bitwise NOT Warning",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle and profile",
+  "status": "author validated; independent review pending",
+  "scope": "An evaluated nonreference PFLOAT copy whose safe integer conversion emits exactly one RANGEWARNING enters the existing BITNOT_RANGE_WARNING continuation. Checked BITNOT source, compiled operand line and immutable bits authenticate entry. Callback writes or source retirement cannot replace the saved integer; a supplied throw cancels complement and delivery.",
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_unary_op",
+    "vendor/php-src/Zend/zend_operators.h:zend_dval_to_lval_safe",
+    "vendor/php-src/Zend/zend_operators.c:bitwise_not_function/zend_dval_to_lval_slow",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_BW_NOT"
+  ],
+  "tested_revision": "5affe8014d500be85d29b8ee22dc87c05945562d",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "modules_sha256": "f6abdff55b4c11646ce77ad6c86a8118c96a728d104ada85d595116f33542b71",
+    "module_count": 420
+  },
+  "native_pre": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-93/native-pre/report.json",
+    "sha256": "6eb86473de3aff91e4893bb511115436ea70162464a30db75eb9b619312b667c",
+    "result": "Two original PHP process0 observations, no model agreement credit. A by-value INF producer prints P; before one range Warning handler throws the same Exception20, leaving outer100. A selected 2^63 copy yields strict PHP_INT_MAX after x unset and condition reversal, with one default Warning25 and no Deprecated."
+  },
+  "unchanged_baseline": {
+    "revision": "0afa39309def3dc1cf9743885622d33b6046fada",
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-93/baseline/report.json",
+    "sha256": "e769c06bcca629b77a62f9090d0334c551b2f528d069b94855a5ac0d45b7a34d",
+    "result": "Both checked/frontend-accepted model executions stop as Unsupported: error-handler ingress requires a producer continuation. INF has only partial P; output and selected has none; zero agreements."
+  },
+  "accepted": {
+    "source_command": "python3 tests/semantics/bitnot_copy_range_warnings.py --output /home/user/workspace/php-spec-evidence-archive/operators-93/source-5affe8014",
+    "source_report": "/home/user/workspace/php-spec-evidence-archive/operators-93/source-5affe8014/report.json",
+    "source_sha256": "e34c14184a03ede6e8a927a91e68641c2bfa5456308a0c56fba916d2fdc5f776",
+    "source": "Two exact original stdout/stderr, normal completion and exit-0 agreements; native/model processes completed without timeout or remaining group members.",
+    "focused_command": "python3 tests/semantics/bitnot_copy_range_warning_protocol.py --output /home/user/workspace/php-spec-evidence-archive/operators-93/focused-5affe8014",
+    "focused_report": "/home/user/workspace/php-spec-evidence-archive/operators-93/focused-5affe8014/report.json",
+    "focused_sha256": "cb856981b65ac56af3943c2c9d06ea46330fca8f91d0c81b89e503b89c669f8c",
+    "focused": "Two genuine reached groups, 102 INF-throw and 111 selected-wrap conditions (213 total): fresh copied-input source/line/bits, finite/NaN negative plan controls, raw Warning dispatch, real handler frames, immutable copy after old cell owner0/unallocated, same supplied Exception ownership or cached PHP_INT_MAX, final output and zero-step budgets."
+  },
+  "inputs_sha256": {
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "9f4e2a41545a30893c511e04261610371f123954589bf0348729af943748a841",
+    "tests/semantics/bitnot_copy_range_warning_cases.py": "10de83df2ac9d86f333cb1dafb4949d0f7bfdc61df9c951cb93a623a3ce28704",
+    "tests/semantics/bitnot_copy_range_warning_protocol.py": "08911273938ce649e20cda8e79c4690ccec2772ba734711520642e9a0d856f40"
+  },
+  "remaining": "Copied values with other notice vectors, reference results, other evaluated producers, owning replacements and wider callbacks/lifetimes remain partial. No numeric conversion, plain-CV range, finite-fractional or NaN implementation is renewed; no complete BITNOT family claim."
+}
