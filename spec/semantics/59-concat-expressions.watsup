@@ -6,6 +6,7 @@ dec $concat_array_plan(pstate) : (porigin, ptask, ptask)?
 dec $concat_returned_plan(pstate) : pconcatreturned?
 dec $concat_owned_plan(pstate) : pconcatleft?
 dec $concat_owned_array_plan(pstate) : pconcatownedarraywarning?
+dec $concat_right_array_plan(pstate) : pconcatrightarraywarning?
 def $concat_precision(S) = $compiled_precision(S, $origin_child(S.ORIGIN, [PCFIELD 0]))
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpConcat expression_left expression_right metadata)
@@ -99,6 +100,7 @@ rule PhpStep/concat-right-call: S ~> $user_string_begin(S_right, n, porigin_righ
   -- if $stringable_instance(S_right, n)
 rule PhpStep/concat-right-scalar: S ~> S_string[.TODO = (CONCAT_AFTER_RIGHT porigin_parent pvalue_left z) :: ptask_tail*]
   -- if S.TODO = (CONCAT_AFTER_LEFT porigin_parent poperand_right b_right z) :: ptask_tail*
+  -- if $concat_right_array_plan(S) = eps
   -- if S.ORIGIN = (porigin_left)
   -- if $concat_left_child_valid(S, porigin_parent, porigin_left, z, b_right)
   -- if porigin_right = $origin_child((porigin_parent), [PCFIELD 1])
@@ -134,6 +136,7 @@ rule PhpStep/concat-right-read-abrupt: S ~> S_right[.ORIGIN = (porigin_parent)][
   -- if S_right.COMPLETION =/= NORMAL
 rule PhpStep/concat-right-string-abrupt: S ~> S_string[.ORIGIN = (porigin_parent)][.TODO = eps]
   -- if S.TODO = (CONCAT_AFTER_LEFT porigin_parent poperand_right b_right z) :: ptask_tail*
+  -- if $concat_right_array_plan(S) = eps
   -- if S.ORIGIN = (porigin_left)
   -- if $concat_left_child_valid(S, porigin_parent, porigin_left, z, b_right)
   -- if porigin_right = $origin_child((porigin_parent), [PCFIELD 1])

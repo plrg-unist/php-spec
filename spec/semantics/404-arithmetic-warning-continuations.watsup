@@ -953,6 +953,77 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pconcatownedarraywarning.LINE
 
+;; The acquired RIGHT array survives an earlier LEFT __toString() and its own
+;; warning callback. The already converted LEFT string is historical.
+syntax pconcatrightarraywarning = { SITE porigin, LINE int, LEFT pvalue, ARRAY nat }
+dec $concat_right_array_source(pstate, pconcatrightarraywarning) : bool
+def $concat_right_array_source(S, pconcatrightarraywarning) = true
+  -- if pconcatrightarraywarning.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, pconcatrightarraywarning.SITE) = (NExprBinaryOpConcat expression_left expression_right metadata)
+  -- if expression_left = NExprVariable (BYTES ptbytes_left) metadata_left
+  -- if $concat_site_valid(S, pconcatrightarraywarning.SITE, pconcatrightarraywarning.LINE, false, false)
+  -- if $source_emission_noarg_call(S, n, pcpath ++ [PCFIELD 1], expression_right) = (pconcatrightarraywarning.LINE)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 1]) = ((ptbytes_name, eps))
+  -- if $call_target(S, ptbytes_name, eps) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF
+  -- if pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.SIGNATURE.RETURNS = eps
+  -- if $string_bytes(pconcatrightarraywarning.LEFT) = (ptbytes_left_string)
+def $concat_right_array_source(S, pconcatrightarraywarning) = false -- otherwise
+dec $concat_right_array_snapshot(pstate, pconcatrightarraywarning) : bool
+def $concat_right_array_snapshot(S, pconcatrightarraywarning) = true
+  -- if $(pconcatrightarraywarning.ARRAY < |S.ARRAYS|)
+  -- if (HARRAY pconcatrightarraywarning.ARRAY) <- S.ALLOCATIONS
+  -- if ~(pconcatrightarraywarning.ARRAY <- S.GC.IMMUTABLE)
+  -- if S.ARRAYS[pconcatrightarraywarning.ARRAY].ITEMS =/= eps
+  -- if $array_string_cast_items(S.ARRAYS[pconcatrightarraywarning.ARRAY].ITEMS)
+def $concat_right_array_snapshot(S, pconcatrightarraywarning) = false -- otherwise
+def $concat_right_array_plan(S) = (pconcatrightarraywarning)
+  -- if S.TODO = (CONCAT_AFTER_LEFT porigin (KNOWN (PARRAY n)) false z) :: ptask_tail*
+  -- if S.ORIGIN = $origin_child((porigin), [PCFIELD 0])
+  -- if S.RESULT = KNOWN pvalue_left
+  -- if S.OUTPUTBUFFERS = eps
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if pconcatrightarraywarning = {SITE porigin, LINE z, LEFT pvalue_left, ARRAY n}
+  -- if $concat_right_array_source(S, pconcatrightarraywarning)
+  -- if $concat_right_array_snapshot(S, pconcatrightarraywarning)
+def $concat_right_array_plan(S) = eps -- otherwise
+dec $concat_right_array_valid(pstate, pconcatrightarraywarning, nat) : bool
+def $concat_right_array_valid(S, pconcatrightarraywarning, n) = ($concat_right_array_source(S, pconcatrightarraywarning) /\ S.ORIGIN = $origin_child((pconcatrightarraywarning.SITE), [PCFIELD 1]) /\ $(n <= 1) /\ $concat_right_array_snapshot(S, pconcatrightarraywarning) /\ (n = 1 \/ S.OUTPUTBUFFERS = eps))
+rule PhpStep/concat-right-array-begin: S ~> S[.ORIGIN = $origin_child((pconcatrightarraywarning.SITE), [PCFIELD 1])][.TODO = (CONCAT_RIGHT_ARRAY_WARNING pconcatrightarraywarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $concat_right_array_plan(S) = (pconcatrightarraywarning)
+rule PhpStep/concat-right-array-dispatch: S ~> $error_dispatch(S, 2, $ptascii("Array to string conversion"), pconcatrightarraywarning.LINE, DIAGNOSTIC "Warning" ($ptascii("Array to string conversion")) pconcatrightarraywarning.LINE, CONCAT_RIGHT_ARRAY_WARNING pconcatrightarraywarning 1)
+  -- if S.TODO = (CONCAT_RIGHT_ARRAY_WARNING pconcatrightarraywarning 0) :: ptask_tail*
+  -- if $concat_right_array_valid(S, pconcatrightarraywarning, 0)
+rule PhpStep/concat-right-array-resume: S ~> S[.ORIGIN = $origin_child((pconcatrightarraywarning.SITE), [PCFIELD 1])][.TODO = (CONCAT_AFTER_RIGHT pconcatrightarraywarning.SITE pconcatrightarraywarning.LEFT pconcatrightarraywarning.LINE) :: (CONCAT_RIGHT_ARRAY_RELEASE pconcatrightarraywarning) :: ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array"))][.BASE = BASE_VALUE (KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array")))]
+  -- if S.TODO = (CONCAT_RIGHT_ARRAY_WARNING pconcatrightarraywarning 1) :: ptask_tail*
+  -- if $concat_right_array_valid(S, pconcatrightarraywarning, 1)
+  -- if S.OUTPUTBUFFERS = eps
+rule PhpStep/concat-right-array-boundary: S ~> S[.COMPLETION = UNSUPPORTED "concatenation acquired right changed output buffer"]
+  -- if S.TODO = (CONCAT_RIGHT_ARRAY_WARNING pconcatrightarraywarning 1) :: ptask_tail*
+  -- if $concat_right_array_valid(S, pconcatrightarraywarning, 1)
+  -- if S.OUTPUTBUFFERS =/= eps
+rule PhpStep/concat-right-array-release: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (CONCAT_RIGHT_ARRAY_RELEASE pconcatrightarraywarning) :: ptask_tail*
+  -- if $call_task_valid(S, CONCAT_RIGHT_ARRAY_RELEASE pconcatrightarraywarning)
+def $error_read_discard(S, CONCAT_RIGHT_ARRAY_WARNING pconcatrightarraywarning 1) = S[.COMPLETION = UNSUPPORTED "concatenation acquired right output buffer changed during Warning"]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
+  -- if $concat_right_array_valid(S, pconcatrightarraywarning, 1)
+  -- if S.OUTPUTBUFFERS =/= eps
+def $task_nodes(CONCAT_RIGHT_ARRAY_WARNING pconcatrightarraywarning n) = [HARRAY pconcatrightarraywarning.ARRAY] ++ $value_nodes(pconcatrightarraywarning.LEFT)
+def $task_nodes(CONCAT_RIGHT_ARRAY_RELEASE pconcatrightarraywarning) = [HARRAY pconcatrightarraywarning.ARRAY] ++ $value_nodes(pconcatrightarraywarning.LEFT)
+def $call_task_valid(S, CONCAT_RIGHT_ARRAY_WARNING pconcatrightarraywarning n) = $concat_right_array_valid(S, pconcatrightarraywarning, n)
+def $call_task_valid(S, CONCAT_RIGHT_ARRAY_RELEASE pconcatrightarraywarning) = ($concat_right_array_source(S, pconcatrightarraywarning) /\ $concat_right_array_snapshot(S, pconcatrightarraywarning))
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = CONCAT_RIGHT_ARRAY_WARNING pconcatrightarraywarning 1
+  -- if $concat_right_array_valid(S, pconcatrightarraywarning, 1)
+  -- if perrorcall.SITE = $origin_child((pconcatrightarraywarning.SITE), [PCFIELD 1])
+  -- if perrorcall.LINE = pconcatrightarraywarning.LINE /\ perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pconcatrightarraywarning.LINE
+
 ;; ASSIGN_OP caches its first string before the borrowed array warns. Success
 ;; replaces the selected plain CV; a supplied throw leaves callback writes intact.
 dec $concatassign_array_source(pstate, porigin, poperand, poperand, int) : bool
