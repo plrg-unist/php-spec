@@ -1512,7 +1512,17 @@ Object/frame-dependent targets remain unfinished.
 [Array unpacking](docs/semantics/ARRAY-UNPACK.md) now preserves key order, copied
 values, reference history and compiler/runtime rejection phases. Its
 [independent review](coverage/semantics/array-unpack-review.json) audits 155 exact
-sources; Traversable objects remain unfinished. Array call arguments are covered by the later call-unpack checkpoint below.
+array-valued sources. Initialized user Iterator CV operands now run genuine
+rewind/valid/current/key/next frames, keeping raw current references through key
+before DIRECT insertion and cache retirement. Canonical numeric-string keys append;
+`"08"` remains a string, and overwrites preserve bucket order. COW and
+current/key/next failures preserve saved values and discard partial builders.
+The [Iterator spread review](coverage/semantics/array-iterator-unpack-review.json)
+records four source agreements for instances without owning fields or a
+destructor, with quiet scalar or flat DIRECT ARRAY caches. A Generator control
+remains explicitly Unsupported.
+Wider payloads, operand modes and Traversable lifetimes remain partial.
+Array call arguments are covered by the later call-unpack checkpoint below.
 [Iterator foreach](docs/semantics/ITERATORS.md) adds by-value source Iterator
 callbacks with effective method selection, retained current values and abrupt
 cleanup. Tentative-return declarations use real prototype order and runtime/file

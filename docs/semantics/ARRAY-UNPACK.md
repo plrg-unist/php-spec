@@ -22,9 +22,32 @@ append overflow defers constant construction to execution, preserving prior
 output. The ordinary compiler treats spread operands as reads. Pooled constant
 results keep their permanent occurrence owners.
 
+Initialized user Iterators in ordinary CV spread operands now use genuine method
+frames in `426-array-iterator-unpack.watsup`. The order is rewind, valid, current,
+key, DIRECT insertion, cache release, then next. A raw current reference survives
+key callbacks before its live payload is copied; the reference wrapper itself is
+not inserted. Keys must be int|string; an invalid key raises Error before copying
+the current payload. Canonical numeric-string keys append, while noncanonical strings
+such as `"08"` retain their string identity. Existing string keys overwrite in place.
+
+The continuation owns the partial builder, Iterator DATA and raw current/key
+caches. Its immutable source receipt survives source-CV unset or rebinding.
+Normal completion releases the cache before next and DATA at finish. Invalid-key
+and current/key/next failures discard pending caches, DATA and the partial builder
+within the quiet domain. This first scope requires an Iterator with no owning
+heap children or destructor (primitive fields are allowed) and exact ordinary
+public method signatures. Cache values are quiet primitives, validated strings
+or flat DIRECT object-free arrays. Current may return an ordinary unconstrained
+reference cell; key remains by value. Fresh
+witnesses use integer arrays and distinguish current-copy COW from live reference
+updates. Nested/owning cache payloads, other operand modes, Generator/Aggregate
+spread and wider callback lifetimes remain partial; unsupported Traversables
+refuse explicitly rather than receiving a non-Traversable TypeError.
+
 The pinned engine routes are `zend_try_ct_eval_array` and `zend_compile_array`
 in `vendor/php-src/Zend/zend_compile.c`, `ZEND_ADD_ARRAY_UNPACK` in
 `Zend/zend_vm_def.h`, and the existing reference-copy paths in `Zend/zend_hash.c`.
+The user Iterator cache and callback routes are in `Zend/zend_interfaces.c`.
 The high-level rule models their observable ordering and ownership without
 requiring the engine's packed-table representation.
 
@@ -32,8 +55,9 @@ requiring the engine's packed-table representation.
 including the 112 runtime originals and 42 compiler originals. Its 31 checked
 source state controls cover alias transfer, nested values, cycles, literal reuse,
 root cleanup and dense loop resumption; only budget-exhausted states are resumed.
-These checks do not close the array or spread families. Traversable objects,
-iterator callbacks and their failures require the later object/frame protocol.
+These checks do not close the array or spread families. The bounded Iterator
+protocol adds four exact source agreements and one explicit Generator refusal,
+with [independent reached-state review](../../coverage/semantics/array-iterator-unpack-review.json).
 Argument unpacking is a separate call-semantics obligation. Reports at the later
 combined container checkpoint establish the then-current broad source closure.
 
