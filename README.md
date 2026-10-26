@@ -2124,6 +2124,13 @@ effects; an ordinary `toString()` method is never invoked as a cast.
 [Four source agreements and 508 state premises](coverage/semantics/constant-query-nonstringable-name-review.json)
 cover errors and normal recovery. Other internal objects and wider forms stay partial.
 
+Captured intrinsic query Closures also reject positional nonStringable instances
+and `stdClass` with raw TypeError arguments. Explicit `__invoke` keeps the object
+in both API and wrapper frames; the callee can retire while a copied raw-argument
+array retains the object until its final release. Ordinary `toString()` remains
+uncalled, caller destinations retain their prior values, and a separate captured
+string query recovers. [Captured nonStringable query review](coverage/semantics/constant-owned-nonstringable-query-review.json).
+
 Retained propertyless Stringable names with non-NUL global results now convert
 before positional `define()` registration with primitive candidates and
 omitted/bool-false flags. A callback can
