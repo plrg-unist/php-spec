@@ -899,11 +899,12 @@ def $error_cleanup_valid(S, perrorcall) = true
   -- if $error_call_valid(S, perrorcall)
 def $error_cleanup_valid(S, perrorcall) = false -- otherwise
 def $call_task_valid(S, ERROR_HANDLER_CLEAN perrorcall) = $error_cleanup_valid(S, perrorcall)
+dec $iterator_unpack_warning_tail_origin(pstate, ptask) : porigin?
 rule PhpStep/error-handler-restore-after-retval: S ~> $error_handler_restore(S[.TODO = perrorcall.RESUME :: ptask*][.DESTRUCTION.CLEANUPS = pdestructioncleanup_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], perrorcall.CALLBACK)
   -- if S.TODO = (ERROR_HANDLER_CLEAN perrorcall) :: ptask*
   -- if $error_cleanup_valid(S, perrorcall)
   -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
-def $call_after_origin(S, ERROR_HANDLER_CLEAN perrorcall) = S[.DESTRUCTION.CLEANUPS = pdestructioncleanup_tail*]
+def $call_after_origin(S, ERROR_HANDLER_CLEAN perrorcall) = S[.DESTRUCTION.CLEANUPS = pdestructioncleanup_tail*][.ORIGIN = $iterator_unpack_warning_tail_origin(S, perrorcall.RESUME)]
   -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
   -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
 def $return_discard(S, ERROR_HANDLER_CLEAN perrorcall) = $error_read_discard($error_handler_restore($identity_read_discard(S[.DESTRUCTION.CLEANUPS = pdestructioncleanup_tail*], perrorcall.RESUME), perrorcall.CALLBACK), perrorcall.RESUME)
