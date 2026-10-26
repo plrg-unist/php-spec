@@ -605,6 +605,8 @@ test-semantics: build
 	python3 tests/semantics/pipe_static_string_protocol.py
 	python3 tests/semantics/pipe_named_carrier.py
 	python3 tests/semantics/pipe_named_carrier_protocol.py
+	python3 tests/semantics/pipe_optimized_static.py
+	python3 tests/semantics/pipe_optimized_static_protocol.py
 	python3 tests/semantics/pipe_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py

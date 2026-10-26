@@ -481,18 +481,23 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*,
   -- if $throwable_array_trace_pair(S, n_left, n_right)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
-;; The previous slot can hold another Throwable. Authenticate the whole cold,
-;; empty-trace chain before descending through distinct object identities.
-dec $throwable_previous_node_valid(pstate, nat, text) : bool
-def $throwable_previous_node_valid(S, n, text_kind) = true
+;; The previous slot can hold another Throwable. Authenticate each physical
+;; node before descending through distinct object identities.
+dec $throwable_previous_node_pstring_valid(pstate, nat, text) : bool
+def $throwable_previous_node_pstring_valid(S, n, text_kind) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if pthrowable.KIND = text_kind
   -- if ~$instance_storage_freeing(S, n)
   -- if $throwable_object_image_valid(S, n)
-  -- if $throwable_field(S, n, "string") = PSTRING eps
+  -- if $throwable_field(S, n, "string") = PSTRING preqbytes
   -- if $throwable_field(S, n, "trace") = PARRAY n_trace
   -- if S.ARRAYS[n_trace].ITEMS = eps
+def $throwable_previous_node_pstring_valid(S, n, text_kind) = false -- otherwise
+dec $throwable_previous_node_valid(pstate, nat, text) : bool
+def $throwable_previous_node_valid(S, n, text_kind) = true
+  -- if $throwable_previous_node_pstring_valid(S, n, text_kind)
+  -- if $throwable_field(S, n, "string") = PSTRING eps
 def $throwable_previous_node_valid(S, n, text_kind) = false -- otherwise
 dec $throwable_previous_chain_valid(pstate, nat, text, nat*) : bool
 def $throwable_previous_chain_valid(S, n, text_kind, n_seen*) = true
@@ -541,6 +546,46 @@ def $throwable_previous_order(S, n_left, n_right, pcompareguard_seen*) = $throwa
   -- if $property_order(S, ppropertyslot_left*[0:6], ppropertyslot_right*[0:6], (HOBJECT n_left) :: pcompareguard_seen*) = ORDER 0
 def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S, $throwable_previous_order(S, n_left, n_right, pcompareguard_seen*))
   -- if $throwable_previous_pair(S, n_left, n_right)
+;; A warmed cache can occur at any node in the chain. Its physical string
+;; slot is compared before the later previous link, even if both cache bytes
+;; happen to be equal.
+dec $throwable_warm_previous_chain_valid(pstate, nat, text, nat*) : bool
+def $throwable_warm_previous_chain_valid(S, n, text_kind, n_seen*) = true
+  -- if $(|n_seen*| < 16)
+  -- if ~(n <- n_seen*)
+  -- if $throwable_previous_node_pstring_valid(S, n, text_kind)
+  -- if $throwable_field(S, n, "previous") = PNULL
+def $throwable_warm_previous_chain_valid(S, n, text_kind, n_seen*) = $throwable_warm_previous_chain_valid(S, n_previous, text_kind, n :: n_seen*)
+  -- if $(|n_seen*| < 16)
+  -- if ~(n <- n_seen*)
+  -- if $throwable_previous_node_pstring_valid(S, n, text_kind)
+  -- if $throwable_field(S, n, "previous") = POBJECT n_previous
+def $throwable_warm_previous_chain_valid(S, n, text_kind, n_seen*) = false -- otherwise
+dec $throwable_previous_cache_present(pstate, nat) : bool
+def $throwable_previous_cache_present(S, n) = true
+  -- if $throwable_field(S, n, "string") = PSTRING preqbytes
+  -- if preqbytes =/= eps
+def $throwable_previous_cache_present(S, n) = $throwable_previous_cache_present(S, n_previous)
+  -- if $throwable_field(S, n, "string") = PSTRING eps
+  -- if $throwable_field(S, n, "previous") = POBJECT n_previous
+def $throwable_previous_cache_present(S, n) = false -- otherwise
+dec $throwable_warm_previous_pair(pstate, nat, nat) : bool
+def $throwable_warm_previous_pair(S, n_left, n_right) = true
+  -- if S.COMPLETION = NORMAL
+  -- if ~$number_compare_exception_pending(S)
+  -- if n_left =/= n_right
+  -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)
+  -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
+  -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
+  -- if pthrowable_left.KIND = pthrowable_right.KIND
+  -- if pthrowable_left.KIND <- ["Exception", "Error"]
+  -- if $throwable_warm_previous_chain_valid(S, n_left, pthrowable_left.KIND, eps)
+  -- if $throwable_warm_previous_chain_valid(S, n_right, pthrowable_left.KIND, eps)
+  -- if $throwable_previous_id(S, n_left) =/= eps \/ $throwable_previous_id(S, n_right) =/= eps
+  -- if $throwable_previous_cache_present(S, n_left) \/ $throwable_previous_cache_present(S, n_right)
+def $throwable_warm_previous_pair(S, n_left, n_right) = false -- otherwise
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S, $throwable_previous_order(S, n_left, n_right, pcompareguard_seen*))
+  -- if $throwable_warm_previous_pair(S, n_left, n_right)
 def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S[.COMPLETION = UNSUPPORTED "Throwable property comparison"], ORDER 0)
   -- if n_left =/= n_right
   -- if $throwable_object(S, n_left) \/ $throwable_object(S, n_right)
@@ -551,6 +596,7 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*,
   -- if ~$throwable_scalar_trace_pair(S, n_left, n_right)
   -- if ~$throwable_array_trace_pair(S, n_left, n_right)
   -- if ~$throwable_previous_pair(S, n_left, n_right)
+  -- if ~$throwable_warm_previous_pair(S, n_left, n_right)
 
 def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
   -- if $(n < |S.OBJECTS|)

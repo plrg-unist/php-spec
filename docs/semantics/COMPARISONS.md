@@ -581,6 +581,18 @@ normal, nonpending bound leaves warm or nonempty traces, mixed kinds, longer or
 cyclic chains, materialized tables and pending comparisons Unsupported.
 [Previous-chain review](../../coverage/semantics/throwable-previous-comparison-review.json).
 
+A physical `string` cache may also be warm at any node of those finite
+same-kind builtin chains. Every node still needs an allocated empty trace,
+canonical live unmaterialized slots and a physical string; the root pair needs
+a `previous` link and at least one nonempty cache. An unequal root or child
+cache decides before deeper code or links. The builtin formatter omits `code`,
+so equal warmed text can still descend into a different previous node's code.
+Six new source agreements cover root and child warmth, Error, equality operators
+and array tail continuation or skip. This normal, nonpending path retains the
+16-node acyclic cap and leaves nonempty traces, mixed kinds, materialized or
+pending comparisons Unsupported.
+[Warm previous-chain review](../../coverage/semantics/throwable-warm-previous-comparison-review.json).
+
 [Builtin and inherited Throwable string casts](../../coverage/semantics/pending-throwable-comparison-review.json)
 also skip their internal handler in this authenticated pending remainder. The
 failed cast gives object-after-string order without reading formatter fields,

@@ -84,6 +84,21 @@ def $pipe_string_source(expression, ptbytes) = true
   -- if $parser_literal(expression) = eps
   -- if $string_source_possible(expression)
 def $pipe_string_source(expression, ptbytes) = false -- otherwise
+dec $pipe_optimized_method_source(pstate, porigin, ptbytes) : bool
+def $pipe_optimized_method_source(S, porigin_site, ptbytes) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprBinaryOpPipe expression_left (NExprFuncCall expression_callee (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_call) metadata)
+  -- if $pppipe_optimized(NExprFuncCall expression_callee (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_call)
+  -- if $pipe_fixed_name(S, porigin_site) = ((ptbytes_fixed, preqbytes_fallback?))
+  -- if ptbytes = ptbytes_fixed
+  -- if $parser_literal(expression_callee) = (PSTRING ptbytes_literal)
+  -- if ptbytes = $ppcall_literal_name(ptbytes_literal)
+def $pipe_optimized_method_source(S, porigin_site, ptbytes) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprBinaryOpPipe expression_left (NExprFuncCall expression_callee (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_call) metadata)
+  -- if $pppipe_optimized(NExprFuncCall expression_callee (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_call)
+  -- if $pipe_fixed_name(S, porigin_site) = eps
+  -- if $firstclass_evaluated(S, $pipe_rhs_origin(porigin_site))
+  -- if $pipe_string_source(expression_callee, ptbytes)
+def $pipe_optimized_method_source(S, porigin_site, ptbytes) = false -- otherwise
 def $string_site_valid(S, pstringselection, b_capture) = true
   -- if $origin_node(S.SOURCES, pstringselection.SITE) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
   -- if $ppfirstclass(phpType7*) = b_capture
@@ -94,6 +109,10 @@ def $string_site_valid(S, pstringselection, false) = true
   -- if $origin_node(S.SOURCES, pstringselection.SITE) = (NExprBinaryOpPipe expression_left expression_right metadata)
   -- if ~$pppipe_optimized(expression_right)
   -- if $pipe_string_source(expression_right, pstringselection.ORIGINAL)
+  -- if pstringselection.INIT = $pipe_lookup_line(S, pstringselection.SITE)
+  -- if $call_line_valid(S, (pstringselection.SITE), pstringselection.LINE)
+def $string_site_valid(S, pstringselection, false) = true
+  -- if $pipe_optimized_method_source(S, pstringselection.SITE, pstringselection.ORIGINAL)
   -- if pstringselection.INIT = $pipe_lookup_line(S, pstringselection.SITE)
   -- if $call_line_valid(S, (pstringselection.SITE), pstringselection.LINE)
 def $string_site_valid(S, pstringselection, b_capture) = false -- otherwise

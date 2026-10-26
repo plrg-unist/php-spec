@@ -5637,6 +5637,79 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pprintarraywarning.LINE
 
+;; A noarg by-value function return is an acquired ECHO operand. The warning
+;; callback may unset its source CV, but the temporary survives the Array write.
+syntax pprintownedarraywarning = { SITE porigin, LINE int, WARNING int, ARRAY nat }
+dec $print_owned_array_source(pstate, pprintownedarraywarning) : bool
+def $print_owned_array_source(S, pprintownedarraywarning) = true
+  -- if $print_owned_source(S, pprintownedarraywarning.SITE, pprintownedarraywarning.LINE)
+  -- if $code_expression_at_source(S, pprintownedarraywarning.SITE, [PCFIELD 0]) = (pprintownedarraywarning.WARNING)
+def $print_owned_array_source(S, pprintownedarraywarning) = false -- otherwise
+dec $print_owned_array_snapshot(pstate, pprintownedarraywarning) : bool
+def $print_owned_array_snapshot(S, pprintownedarraywarning) = true
+  -- if $(pprintownedarraywarning.ARRAY < |S.ARRAYS|)
+  -- if (HARRAY pprintownedarraywarning.ARRAY) <- S.ALLOCATIONS
+  -- if ~(pprintownedarraywarning.ARRAY <- S.GC.IMMUTABLE)
+  -- if S.ARRAYS[pprintownedarraywarning.ARRAY].ITEMS =/= eps
+  -- if $array_string_cast_items(S.ARRAYS[pprintownedarraywarning.ARRAY].ITEMS)
+def $print_owned_array_snapshot(S, pprintownedarraywarning) = false -- otherwise
+def $print_owned_array_plan(S) = (pprintownedarraywarning)
+  -- if S.OUTPUTBUFFERS = eps
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.TODO = (PRINT_EMIT porigin z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if S.RESULT = KNOWN (PARRAY n)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 0]) = (z_call)
+  -- if pprintownedarraywarning = {SITE porigin, LINE z, WARNING z_call, ARRAY n}
+  -- if $print_owned_array_source(S, pprintownedarraywarning)
+  -- if $print_owned_array_snapshot(S, pprintownedarraywarning)
+def $print_owned_array_plan(S) = eps -- otherwise
+dec $print_owned_array_valid(pstate, pprintownedarraywarning, nat) : bool
+def $print_owned_array_valid(S, pprintownedarraywarning, n) = ($print_owned_array_source(S, pprintownedarraywarning) /\ $(n <= 1) /\ (n = 1 \/ S.OUTPUTBUFFERS = eps) /\ (n = 1 \/ $print_owned_array_snapshot(S, pprintownedarraywarning)))
+rule PhpStep/print-owned-array-begin: S ~> S[.TODO = (PRINT_OWNED_ARRAY_WARNING pprintownedarraywarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $print_owned_array_plan(S) = (pprintownedarraywarning)
+rule PhpStep/print-owned-array-dispatch: S ~> $error_dispatch(S, 2, $ptascii("Array to string conversion"), pprintownedarraywarning.WARNING, DIAGNOSTIC "Warning" ($ptascii("Array to string conversion")) pprintownedarraywarning.WARNING, PRINT_OWNED_ARRAY_WARNING pprintownedarraywarning 1)
+  -- if S.TODO = (PRINT_OWNED_ARRAY_WARNING pprintownedarraywarning 0) :: ptask_tail*
+  -- if $print_owned_array_valid(S, pprintownedarraywarning, 0)
+rule PhpStep/print-owned-array-resume: S ~> S[.TODO = (PRINT_EMIT pprintownedarraywarning.SITE pprintownedarraywarning.LINE) :: (PRINT_OWNED_ARRAY_RELEASE pprintownedarraywarning) :: ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array"))][.BASE = BASE_VALUE (KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array")))]
+  -- if S.TODO = (PRINT_OWNED_ARRAY_WARNING pprintownedarraywarning 1) :: ptask_tail*
+  -- if $print_owned_array_valid(S, pprintownedarraywarning, 1)
+  -- if S.OUTPUTBUFFERS = eps
+rule PhpStep/print-owned-array-buffer-boundary: S ~> S[.COMPLETION = UNSUPPORTED "print owned array output buffer changed during Warning"]
+  -- if S.TODO = (PRINT_OWNED_ARRAY_WARNING pprintownedarraywarning 1) :: ptask_tail*
+  -- if $print_owned_array_valid(S, pprintownedarraywarning, 1)
+  -- if S.OUTPUTBUFFERS =/= eps
+rule PhpStep/print-owned-array-release: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (PRINT_OWNED_ARRAY_RELEASE pprintownedarraywarning) :: ptask_tail*
+  -- if $call_task_valid(S, PRINT_OWNED_ARRAY_RELEASE pprintownedarraywarning)
+  -- if S.RESULT = KNOWN (PINT 1)
+
+;; ZEND_ECHO writes even with a handler exception pending, then frees OP1.
+def $error_read_discard(S, PRINT_OWNED_ARRAY_WARNING pprintownedarraywarning 1) = $output_write(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $ptascii("Array"))
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
+  -- if $print_owned_array_valid(S, pprintownedarraywarning, 1)
+  -- if S.OUTPUTBUFFERS = eps
+  -- if $destructor_pending_valid(S, (n_exception))
+def $error_read_discard(S, PRINT_OWNED_ARRAY_WARNING pprintownedarraywarning 1) = S[.COMPLETION = UNSUPPORTED "print owned array output buffer changed during Warning"]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
+  -- if $print_owned_array_valid(S, pprintownedarraywarning, 1)
+  -- if S.OUTPUTBUFFERS =/= eps
+def $task_nodes(PRINT_OWNED_ARRAY_WARNING pprintownedarraywarning n) = [HARRAY pprintownedarraywarning.ARRAY]
+def $task_nodes(PRINT_OWNED_ARRAY_RELEASE pprintownedarraywarning) = [HARRAY pprintownedarraywarning.ARRAY]
+def $call_task_valid(S, PRINT_OWNED_ARRAY_WARNING pprintownedarraywarning n) = $print_owned_array_valid(S, pprintownedarraywarning, n)
+def $call_task_valid(S, PRINT_OWNED_ARRAY_RELEASE pprintownedarraywarning) = ($print_owned_array_source(S, pprintownedarraywarning) /\ $print_owned_array_snapshot(S, pprintownedarraywarning))
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = PRINT_OWNED_ARRAY_WARNING pprintownedarraywarning 1
+  -- if $print_owned_array_valid(S, pprintownedarraywarning, 1)
+  -- if perrorcall.TARGET =/= eps \/ $print_owned_array_snapshot(S, pprintownedarraywarning)
+  -- if perrorcall.SITE = pprintownedarraywarning.SITE /\ perrorcall.LINE = pprintownedarraywarning.WARNING
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pprintownedarraywarning.WARNING
+
 ;; Each echo child has its own ZEND_ECHO. A warning in either of the first two
 ;; array children writes the fixed interned string before the next child runs.
 syntax pechoarraywarning = { SITE porigin, LINE int, INPUT poperand }

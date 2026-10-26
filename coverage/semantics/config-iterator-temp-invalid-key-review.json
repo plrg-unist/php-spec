@@ -1,0 +1,50 @@
+{
+  "scope": "Source106: quiet invalid primitive key from an initialized user Iterator returned by a direct named noarg by-value USER factory into INI_SET(...factory()). Exact UNPACK_VAR source and distinct temporary INPUT/Iterator DATA owners.",
+  "behavior": "After cached current and by-value key(), a NULL/bool/float key is consumed and raises Error at the unpack site before send, next or API. The pending Error drains Iterator DATA and then temporary INPUT before catch. No inherited destructor or object child roots are admitted; an external hold can preserve the returned Iterator.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "php_file_extension_sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile": "tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+    "source_symbols": [
+      "Zend/zend_vm_def.h:ZEND_SEND_UNPACK",
+      "Zend/zend_interfaces.c:zend_user_it_get_current_data/get_current_key/dtor"
+    ]
+  },
+  "cuts": {
+    "native_and_baseline": "9f079fcad: three original-byte native sources exit0 with Error at line31, no later next/API, result99/precision14; sole first NULL and sole second float see WeakReference dead at catch, retained second bool sees it live. Genuine unchanged first-NULL model baseline is Unsupported after B|P|R|V0|C0|K0|H|, zero agreement.",
+    "source": "ffd114c44: three distinct exact model agreements with frozen native originals at the tested 420 hash.",
+    "state": "ffd114c44: immutable source-authenticated first-NULL149, retained-second-bool150 and sole-second-float150 premises pass via direct ordered 423-module SL with predeclared cap240. One-step Error consumes key RESULT/BASE while retaining unsent cached CURRENT/ITEMS; staged throw cleanup retires DATA then INPUT with sole 2\u21921\u21920 and retained 3\u21922\u21921 owners, WeakReference/catch, exact site, malformed factory/site/INPUT/PINT controls and budget resume.",
+    "affected_controls": "ffd114c44: copied original native bytes for Source104 direct-CV invalid first key (one exact model agreement) and Source101 temporary sole normal plus supplied key-throw (two exact model agreements). No unrelated historical cuts renewed.",
+    "failed_attempts": "An initial baseline recorder invocation selected all three cases and failed its single-case assertion before any PHP execution. Its raw selection-failure record has zero semantic credit; only the same first case was then run as genuine baseline."
+  },
+  "input_sha256": {
+    "spec/semantics/420-config-iterator-unpack.watsup": "06814e6ecc6c3448c66376d47d246852675459dd05f164391159c8dcdd72d064",
+    "tests/semantics/config_iterator_temp_invalid_key_sources.py": "b42daf52d9c3a51fae25c8d44f462a7a87ecf8083edde5ed792c336856f0a55f",
+    "tests/semantics/config_iterator_temp_invalid_key_protocol.py": "7bb99af0bd21547e3533be15f12df68b8fe00b94c17c27151d8c67779c2db168",
+    "spec/semantics/modules.json": "d0fb3ec94af91a7eb60c0ae42f84c3a25a41d6a798b09a963c376f1ec073c341"
+  },
+  "raw_root": "../php-spec-evidence-archive/config-iterator-temp-invalid-key-106",
+  "reports_sha256": {
+    "focused-ffd/strict/strict-report.json": "93bc7fe4a48391128522680e13b0fe2ec756da4ae66d3347daf487096dc6793e",
+    "native-baseline/baseline-report.json": "5deff44f197ba08188bcd923f7d30cea892f88f64c6dbad5e88b7c218e87a354",
+    "native-baseline/model-report.json": "b390ffd17d4ca8162708761939c4bff624ac564c4e69e5c744640b82c1c9fd0b",
+    "native-baseline/native-report.json": "21dbaa09b3afe1a7541a680c19bd8d0df82b7dee831c3e6924f70f70b96b291d",
+    "old-controls/source101/model-sole-factory-iterator-input-retires-before-api-factory-iterator-key-throw-cancels-api-report.json": "442081a2ca120a77f0ad564d2f8832ef9601c61bbb89ef940e6b30f445a88cc4",
+    "old-controls/source101/native-report.json": "62a050307eb9d401f49968716797c1bf8b01e76a24c907a013e2182db61efba8",
+    "old-controls/source104/model-null-first-key-stops-before-send-report.json": "e0dbc7cfc16d95aced2d8ec724fdceb8575bcd3b368b25ba8b7ccb31606d0d2e",
+    "old-controls/source104/native-report.json": "51b4d47620225e273a5c52a414b427f749905c71eb1ef01f96097ed0f85b9d4b",
+    "protocol-ffd/prepare-report.json": "28be50a395b80004b5745e3b70d7245a0fb6387612f21484047ad04a7615d14e",
+    "protocol-ffd/retained-second-bool-key-keeps-input/direct-report.json": "8d0c3f005cf94f117c79af5c32a2562bddf5afa1f545698af3f40f413d9491ce",
+    "protocol-ffd/sole-first-null-key-retires-input/direct-report.json": "0e1f817bb6cdc10830215a2e27597f109a404cdd139d279bbe894456e453fabe",
+    "protocol-ffd/sole-second-float-key-retires-input/direct-report.json": "7350665d41563ddfec3cb05e81a7a871a65b166640b4143ce35ce11e2a96ac6e"
+  },
+  "other_raw_sha256": {
+    "native-baseline/baseline-selection-failure.json": "e22d78c32b2faf0ccdba688d5616195f41f14c31c4bacb9a80b69268a814f5f9"
+  },
+  "recovery": "Restore the recorded commits and external raw root. Run config_iterator_temp_invalid_key_sources.py --phase native/model for all three unchanged originals and --phase baseline --case sole-first-null-key-retires-input for the unchanged baseline. Prepare source-authenticated states with config_iterator_temp_invalid_key_protocol.py --sources RAW/native-baseline, then execute each immutable fixture with the exact direct numeric_runner --sl argv and cap240 stored in its report. Old controls use copied original native reports/source bytes. Reports retain revision, hashes, argv/cwd, process exits, streams, timeouts and reap results.",
+  "remaining": "Temporary named keys, other producer/current/key and owning payload histories, effectful finalizers/child roots, and wider CONFIG calls remain partial. Held V110/COMP123 and five paused lanes unchanged. No engine bug, intentional divergence, full-core or BOLA claim."
+}

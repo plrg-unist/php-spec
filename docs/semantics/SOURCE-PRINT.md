@@ -71,6 +71,21 @@ premises are recorded in the
 [array print review](../../coverage/semantics/print-array-warning-review.json).
 Empty/nested arrays, other producers and wider output lifetimes remain partial.
 
+A named noarg by-value function can instead return a nonempty flat primitive
+array as an acquired print operand. Its own `ZEND_ECHO` conversion warns at the
+call's compiled line. The print continuation owns that array through the
+warning and interned `Array` write, then releases the temporary before
+delivering integer `1` to the outer assignment. In the source-copy witnesses,
+the handler unsets the global. If the handler throws a
+supplied Exception, the write still occurs before the temporary retires and
+exception search begins; the outer assignment stays unchanged. A runtime-built
+source copy has two owners at entry, one after source unset and through output,
+and none after release. A fresh returned array with a handled-true callback
+also agrees, without a source-global owner. This initially unbuffered route is
+limited to the authenticated named function call and flat array. Other
+producers, nested or empty arrays, output-buffer changes and wider lifetimes
+remain partial.
+
 Validation is separate by boundary: 20 author source comparisons, ten native
 compiler/lint comparisons with 51 source projections, and 15 independent reviewer
 source comparisons. Four paused stages check 61 assertions, with an independent

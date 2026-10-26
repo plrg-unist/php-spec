@@ -1,0 +1,88 @@
+{
+  "milestone": "OP98 acquired array used-print Warning and temporary release",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle/profile",
+  "status": "independently reviewed bounded semantics",
+  "scope": "Initially unbuffered used print of a nonempty flat primitive array returned by a named noarg by-value untyped user function. The acquired array survives a named E_WARNING handler and the interned Array write, then releases before print1 reaches the outer store. A supplied handler throw still writes Array before the same Exception search and cancels the store. Source and diagnostic line are authenticated; callback-created buffers remain Unsupported.",
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_print",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_ECHO",
+    "vendor/php-src/Zend/zend_operators.c:__zval_get_string_func"
+  ],
+  "base_revision": "2b96ed8280af55bf1cb6aaf2e1c4c32b7ec634c1",
+  "semantic_revision": "4bbb47ac02f25dfb29515d5ccdb469ad5dba73f1",
+  "tested_revision": "121d5467fb686e7ba66d45118cc9b29a6aceca03",
+  "environment": {
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "modules_sha256": "d0fb3ec94af91a7eb60c0ae42f84c3a25a41d6a798b09a963c376f1ec073c341",
+    "module_count": 423,
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "private_ignored_tool_links": [
+      "_build -> /home/user/workspace/php-spec/_build",
+      ".tools/php -> /home/user/workspace/php-spec/.tools/php",
+      ".tools/php-file.so -> /home/user/workspace/php-spec/.tools/php-file.so",
+      "tests/semantics/_build -> /home/user/workspace/php-spec/tests/semantics/_build"
+    ]
+  },
+  "frozen_sources": {
+    "cases_py_sha256": "f6a438ea08b85e5020e2b3fe0f7b52a0ec0fc992c19dbc5712eefa0bac9b2a90",
+    "normal_sha256": "dab4a276739704add19ebaee917112b7d6e93abc2074780ca9b249b1a706e736",
+    "throw_sha256": "5147eaa8fa1305b1431e07a72faab3abcbcbf3069416d61da8f974153887c36e",
+    "scalar_control_sha256": "e4b0494e4a4ee2b6e732028086c5cf05f2f9a47df390c9ff374d30ab17c4929f"
+  },
+  "native_pre": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-98/native-pre/report.json",
+    "sha256": "c242dde84ee49f7b6b3272261a21521165458173a454383a418923f8ae12fcf4",
+    "result": "Three pinned native exits0/reaped. The function writes P; once. Array warnings occur at call line25 after P; normal/default writes Array then stores strict print1, pending throw writes Array before same Exception20 catch with outer100 unchanged; scalar control writes 7 without a Warning."
+  },
+  "unchanged_baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-98/baseline/report.json",
+    "sha256": "2f25d5eab810ce0277f507ba522a7e7c53c7aac7af74401c4969a2b2c372ab69",
+    "result": "Both array sources frontend accepted/checked then exit1 Unsupported at producer handler ingress, zero agreement; scalar control was already exact through the generic route. No timeout or process-group residue."
+  },
+  "accepted": {
+    "source_command": "taskset -c 5 python3 tests/semantics/print_owned_array_warnings.py --output /home/user/workspace/php-spec-evidence-archive/operators-98/source-4bbb47ac0",
+    "source_report": "/home/user/workspace/php-spec-evidence-archive/operators-98/source-4bbb47ac0/report.json",
+    "source_sha256": "111c7b2c8e72b82c8504230761b9e1e2944a55c372ce6efbc961063842d8c259",
+    "focused_command": "taskset -c 2 python3 tests/semantics/print_owned_array_warning_protocol.py --output /home/user/workspace/php-spec-evidence-archive/operators-98/focused-121d5467f",
+    "focused_report": "/home/user/workspace/php-spec-evidence-archive/operators-98/focused-121d5467f/report.json",
+    "focused_sha256": "59d1ffbcb4317e5c86958884a0bfa2b3db7180be83ecec6665527ed749c442ac",
+    "result": "Three source cases exit0 with checked/accepted raw-exact native/model streams; two acquired-array cases are new agreement and scalar is prior control. Normal143 and throw112 genuine reached assertions check source/line, acquired owner2 at entry, owner1 after unset and through Array write, owner0 after release or first THROW_SEARCH, default/output order, strict print1 versus no outer store, same Exception20, buffer refusal and budget0. All processes exit0/no timeout/reaped."
+  },
+  "failed_attempts": [
+    {
+      "revision": "796cfec3a29aab315f45b8ba3aa74d955accc7f3",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-98/source-796cfec3a/report.json",
+      "sha256": "9cba3ef0d6682b1c446618152b7e9247a91a64f2e264a729782ba0c442fb5718",
+      "reason": "An unbound z_call descriptor equality failed SpecTec elaboration before model execution. One source row was attempted; no agreement credit. Bound z_call from the compiled child call line and reran affected source cases."
+    },
+    {
+      "revision": "4bbb47ac02f25dfb29515d5ccdb469ad5dba73f1",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-98/focused-4bbb47ac0/report.json",
+      "sha256": "31f6b2c6c67b18e9f0efc3e913b34a79605c39cd7dc24af64ddf85e8b5af7417",
+      "reason": "First reached fixture expected PRINT_EMIT line24 from the print token; an authentic state dump showed the compiled print task uses call/end line25. No focused credit. Corrected five line assertions only, then reran focused2."
+    }
+  ],
+  "independent_review": {
+    "cases_sha256": "ebbda3700c0ad1595ce35a3767a0847a0e1aa2bdc78d95c814c86aea7ca30280",
+    "runner_sha256": "07a59097cdccd5297579df71c650fe37a831f0517461d9670af05ace3f000624",
+    "fresh_array_sha256": "de5cd64acad3b927286d94d1d714a18b8edace51ad9242a55b7a390f6800451f",
+    "ineligible_mask_sha256": "ee42b7540a5935891e826b5224498cb207ec80313c5ee20e207c1618895d63ea",
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-98/review-independent/run-121d5467f/report.json",
+    "sha256": "8bfbf5d2630cac084e4c9e1cbd9ac55d85ef393711663b1eb8939fd311bda6e6",
+    "result": "Two frozen native-first exact controls: a fresh acquired runtime array with handled-true callback writes Array/print1 without default; copied global array under an ineligible mask skips the handler, defaults once at line18, writes Array/print1. Both checked/accepted normal exit0, no timeout/group residue. Semantic CLEAR."
+  },
+  "inputs_sha256": {
+    "spec/semantics/30-storage.watsup": "dfc3e8dc8c50246d488d88942c1122278c4c3b74a0747ce47c8333813137c056",
+    "spec/semantics/146-print-runtime.watsup": "ba0165438989e4a66b7000356b242d3135dcca44772869f2f184b47d7b666fa6",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "245dbf7510dd88040ea7f57e74b9d367720fc09ab92ef9fcdeb15a5ba2c9435a",
+    "tests/semantics/print_owned_array_warning_cases.py": "f6a438ea08b85e5020e2b3fe0f7b52a0ec0fc992c19dbc5712eefa0bac9b2a90",
+    "tests/semantics/print_owned_array_warnings.py": "c80c58976445301e25cb5602aca8be3dff71fda0fa82c01cc316fbf1e84e9bda",
+    "tests/semantics/print_owned_array_warning_protocol.py": "db5a5b90abeca90a97880d7ed0a826508e1058f00c51f3d34c4b435ae22ea29e"
+  },
+  "remaining": "Only the authenticated noarg by-value untyped function's nonempty flat primitive array in initially empty buffers is claimed. Reference returns, nested/empty arrays, other producers, callback-created buffers/output handlers and wider lifetimes remain partial."
+}
