@@ -151,10 +151,33 @@ Key-notification authority, zero agreement. All actual affected checks pass firs
 execution without preflight, replay or cap change. Source cuts bind pending Key
 jobs because pin creation and notification occur in one raw model step; the
 exact internal pin and active-cursor/missing-freeing controls are explicitly helper-only. The peer's
-wrong-OFFSET query also adds zero PHP credit. Callback-valued reads from a still-
-multiple table, active callback cursors, freeing-Key dimensions, wider mutation/
-reentry/escape, payload/property/inheritance and GC/CONFIG remain partial.
+wrong-OFFSET query also adds zero PHP credit. Other callback read modes, active
+callback cursors, freeing-Key dimensions, wider mutation/reentry/escape,
+payload/property/inheritance and GC/CONFIG remain partial.
 [Review and recovery](../../coverage/semantics/weak-map-review.json).
+
+Ordinary `KEY_R` dimension reads now admit the existing direct callback-payload
+policy on a live still-multiple table without an active cursor. Source, receiver,
+Key and selected-slot authority stay unchanged; only that read mode chooses the
+callback policy. The returned Value gains its ordinary copy owner while each Map
+slot retains its own edge. Quiet/presence/reference and mutation consumers keep
+their previous policy. Conditional tracing and ownership rules are unchanged.
+
+Three native originals and source comparisons pass at their recorded cuts.
+Native/genuine retain `7f3e454ec`/420; genuine 3 refuses after `B;` at the dimension
+protocol, zero agreement. Source 3 and author 200/5 plus corrected peer 149/4 pass
+349 Boolean/9 raw checks at `c499f12ba`/420. Actual read copies delay invocation
+through Key death or last-Map teardown. Two shared slots and two independent
+copy CVs retain the Value through separate slot/copy releases. The last-copy
+callback preserves the supplied Exception and exact native ending.
+
+The original peer incorrectly treated a nested cleanup operation as the outer
+`unset(copy)` operation. Its prefix diagnostic and failure remain zero credit.
+The corrected witness binds the actual `THROW_SEARCH` cleanup above the outer
+operation carrying the supplied Exception, validates both exit markers, and
+preserves them through physical Value disposal. Only that peer repeats. Wider
+read modes, active/freeing tables, cursor reentry, payloads and GC/CONFIG remain
+partial. [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
 ## Last-owner multiple-entry Map teardown
 
