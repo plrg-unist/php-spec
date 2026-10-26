@@ -1,0 +1,79 @@
+{
+  "milestone": "Iterator61 fresh direct named Generator::throw Fiber transfer",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local oracle b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json, LC_ALL=C, TZ=UTC, CPU2 native/baseline and CPU3 affected checks/reviewer",
+  "parent": "51fdff07f1ec76515555f2ae51f7f67d72cf7549",
+  "scope": "A fresh direct named non-BYREF Generator::throw with one valid temporary Throwable may transfer its running body through Fiber::suspend before the first yield. The saved ADVANCE=true/FIRST=true resumer owns the argument while VALUE and REFCELL are empty. Normal resume can propagate or catch the original after the first yield; Fiber::throw before that yield gives the original Throwable the supplied one as Previous. The old nonadvancing CURRENT/NEXT/SEND and primed THROW arm is unchanged.",
+  "engine_paths": [
+    "Zend/zend_generators.c::ZEND_METHOD(Generator, throw)",
+    "zend_generator_ensure_initialized",
+    "zend_generator_throw_exception",
+    "zend_generator_resume",
+    "Zend/zend_vm_def.h::ZEND_YIELD"
+  ],
+  "implementation": [
+    "spec/semantics/281-fibers.watsup::$fiber_generator_fresh_throw_valid",
+    "$fiber_generator_body_id"
+  ],
+  "sources": {
+    "generator-fiber-fresh-throw-fresh-before-first-yield": "16239b78b5f10e549002184d6655defd4e689ec8a054d6b67476a42838faacae",
+    "generator-fiber-fresh-throw-fresh-before-first-yield-recover": "5dedeaf76d3548cc6d6deb734918bdfcbf4b68ddc33dca02ecf2964d06651c06",
+    "generator-fiber-fresh-throw-fresh-caught-after-first-yield": "b785045729708d19b517ce33191e0952048ff6aa050c17e2bcf03dab44afa0c2",
+    "generator-fiber-fresh-throw-fresh-pending-finally": "c5cf794a9dbb71a9ca121a77279b8bb34ff0ec9d1ce7674304b49260fbbf40ef",
+    "generator-fiber-fresh-throw-primed-control": "66ec04768e75fcaf808c64d4b05fdd19ca0d47948e84fef7c124c24631b70612",
+    "generator-fiber-fresh-throw-pre-yield-abrupt-review": "748f90d8a470c883c768cac81dcc1ac8608fdd304bd30483155ef6330cf9c399"
+  },
+  "validation": {
+    "native_first": {
+      "report": ".tools/i61-packet/native-r8cjb9m5/report.json",
+      "sha256": "5e4bee8d31125c76270327c32568b7d1975a77760f904a62ca762f9761753bfe",
+      "result": "Five frozen originals: four fresh and one exact I60 primed control, native exit0/empty stderr; source bytes, profile and binary stable."
+    },
+    "unchanged_genuine_baseline": {
+      "report": ".tools/i61-packet/unchanged-baseline-nb7ep08l/report.json",
+      "sha256": "fbcc91d4ac52a899ea8eea04ae4ca26d30976ce642573a0a4a86eee65668ddc0",
+      "result": "Two pre-first-yield fresh sources checked Fiber-switch Unsupported with zero agreement; caught/finally post-first-yield fresh and primed control exact NORMAL on unchanged parent."
+    },
+    "strict": {
+      "report": ".tools/i61-packet/strict-3tpamsvp/report.json",
+      "sha256": "f581ab474b7794fc67da20f44bfb1ecb1c29a824a9fa6bfc937401e01f330e2d",
+      "result": "Private 420-module algorithmic check exit0, empty stderr, no timeout, stable HEAD/inputs."
+    },
+    "affected_author_source": {
+      "report": ".tools/i61-packet/implemented-preyield-sb8z_o22/report.json",
+      "sha256": "a87eae36f1baa731b054349d2e55a322deb5718b474d3bcce9035df568ad3c7b",
+      "result": "Both frozen pre-first-yield originals exact NORMAL, exit0/no timeout, stable original source/runtime/modules/HEAD."
+    },
+    "pre_yield_state": {
+      "report": ".tools/fiber-state-review-9ppfczug/report.json",
+      "sha256": "c8d200849b8a30b5bd98de5446c02b2200494ef7e99a1c26900134e0d51cc405",
+      "result": "86 source-reached SL assertions: exact saved ADVANCE/FIRST THROW argument, one physical model heap owner through Fiber VM, nonowning WeakReference, local malformed controls and 0/1/2/4000-step completion. The catalog later appended the independently frozen sixth row without changing the selected recovery source or driver; no extra state execution credit is claimed."
+    },
+    "reviewer_native": {
+      "report": ".tools/i61-independent-review/native-report.json",
+      "sha256": "6e9f81dd54f0ebe1d1df348e405aeb7527acc1c33cfb75024c61a161095d6a40",
+      "result": "Frozen sixth abrupt pre-yield source: original given escapes with injected stop as Previous; WeakReference observes release by caller completion, exit0/empty stderr."
+    },
+    "reviewer_model": {
+      "report": ".tools/i61-independent-review/model-report.json",
+      "sha256": "d633b9f657b07982bd51a302b3ec139df778d905f113cfeca216feaa8c6a3ffb",
+      "result": "Same sixth original exact NORMAL model agreement, exit0/empty stderr, stable inputs/HEAD."
+    },
+    "maintained_sixth_source": {
+      "report": ".tools/generator-fiber-fresh-throw-transfer-source-rfxv2_qe/report.json",
+      "sha256": "40fd9571d61d3c7a3937a303a8c9f1e8a2524bd758cccbfa9ff4765fd490fc6c",
+      "result": "Selected tracked wrapper/catalog sixth source exact NORMAL; repeats frozen reviewer behavior, not a seventh distinct case."
+    }
+  },
+  "preservation": "The new 281 helper is reached only for THROW with ADVANCE=true, FIRST=true and absent VALUE/REFCELL. All previous CURRENT/NEXT/SEND and I60 primed THROW operations still require the identical ~ADVANCE arm. The two post-first-yield fresh and primed control agreements stay at the unchanged baseline cut, without renewed execution credit. Original pre-yield Unsupported cases remain zero agreement.",
+  "remaining": "Other fresh caller shapes, by-reference cached THROW, method/Closure/delegated/helper resumers, source-loader/initializer crossings, collection/finalizer/request lifetimes and complete core semantics remain partial.",
+  "evidence_archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-throw-transfer-61/raw.tar.gz",
+    "bytes": 2042095,
+    "sha256": "9937de485bd214b0f90b4b35897ce6b9d4810ddc1ae22305dfead02b002b17a3",
+    "member_count": 88
+  },
+  "evidence_manifest": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-throw-transfer-61/manifest.json",
+  "recovery": "At a matching I61 worktree, extract raw.tar.gz from the project root. Reports name original ignored .tools paths. The archive retains frozen sources, harnesses, raw stdout/stderr/status and the two zero-credit baseline refusals; pinned tools and tracked implementation/tests come from Git.",
+  "independent_review": "Reviewer cleared frozen native packet, narrow 281 helper and 86-assertion reached-state recipe, independently supplied and ran the abrupt pre-yield source, and checked exact source/catalog hashes. Final docs and actual-tail composition remain under review.",
+  "implementation_commit": "a9343372b62b9543475ce2ca5b27741d7b2d757c"
+}
