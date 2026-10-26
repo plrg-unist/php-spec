@@ -109,6 +109,26 @@ key failure and destructor order. The receipt does not reconstruct a mutable
 records the frozen inputs and failed cuts. Scoped/private, magic and internal
 array targets, temporary Iterator operands and Closure::call remain separate.
 
+Ordinary dynamic calls through a real Closure without a `bindTo` override, an
+arrow Closure, or a named user-function first-class Closure now accept an
+initialized Iterator CV.
+The selected `CLOSURE_TARGET` owns the original Closure through iterator
+callbacks, even if its source variable is replaced. Traversable by-reference
+Warnings use the selected function name, including the source file and line for
+a real Closure and the lexical class prefix for a class-scoped Closure. PREP
+records the selected unbound Closure origin; live stages
+recheck it against the exact object tag and binding state. After an invalid key,
+the selected Closure and its captured reference cells may retire before its
+captured object's destructor finishes. The saved origin authenticates that
+cleanup without requiring retired captures or a pruned binding record to be
+live again. After pruning, the retired state cannot independently recover the
+old binding or source-variable value; the PREP-created witness carries that
+history while the raw tag, call site and function origin are rechecked. A
+class-scoped Closure can still have a `CLOSURESCOPES` record.
+The [Closure Iterator review](../../coverage/semantics/closure-iterator-unpack-review.json)
+records exact source and reached checks. `bindTo` clones, first-class method
+wrappers, `Closure::call`, and non-CV Iterator operands remain separate.
+
 The unpack marker owns selected Iterator DATA independently of raw
 temporary/reference INPUT; its cursor tracks traversal. A source CV stays borrowed.
 The actual argument origin, emitted line, callee, source remainder and destination

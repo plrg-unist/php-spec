@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous.constructor_arguments",
+  "status": "partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; oracle SHA256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "source_pin": "vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation_commit": "0f2717b62116a690e2877d7d106cc1b6c93644c8",
+  "tested_parent": "6ef64289430fe4d5f0e285db88570eb86c327f1f",
+  "tested_bytes": {
+    "spec/semantics/383-anonymous-classes.watsup": "4c774d4255429cc2643b027b34f145017089aeb8feb972b833ac081b3e74cc70",
+    "tests/semantics/anonymous_constructor_arguments_cases.json": "c4e191e4d221ddfaf37603b2ee03d52b205dd0f18a124760244175919ca501a3",
+    "tests/semantics/anonymous_constructor_arguments_protocol.py": "090662f4d2f283456a802238b790b47c06fe47bfe87030632a9eb3cfd084133b",
+    "tests/semantics/anonymous_constructor_arguments_unsupported.py": "0a52464172d6e2783b907ac68bc0eb1a254bd3fe442cb02bee3d9aab71a25bd4"
+  },
+  "scope": "Unit0 parentless ordinary anonymous classes: one or two direct positional/named arguments; public by-value no-default constructor with at most two untyped/int formals; no-constructor arguments evaluated then ignored. Existing noarg constructors and noarg function factories remain active. Class publication and allocation precede argument effects; source occurrence, compiled identity and selected method are authenticated.",
+  "engine_routes": [
+    "Zend/zend_compile.c::zend_compile_new declares anonymous class before zend_compile_call_common arguments",
+    "Zend/zend_vm_def.h::ZEND_NEW allocates and selects a real constructor or a dummy pass function",
+    "Zend/zend_execute.c::zend_handle_named_arg rejects unknown name at its reached send"
+  ],
+  "native_first": {
+    "packet": ".tools/class142-packet.json",
+    "packet_sha256": "8d61b491eaa7a6d0f0077df8d18e162e1087d64287fe5c70d659c15e2bade841",
+    "report": ".tools/class142-baseline/report.json",
+    "report_sha256": "129701b6ada265dcbc3cb487b85a1a26f8a68c36c4763eb89fd90b80834c9f94",
+    "result": "Seven pinned native sources exit 0 with empty stderr. Six nonempty-argument sources are genuine unchanged-model Unsupported; the zero-argument control agrees. Unknown-name case evaluates its first argument and skips the second."
+  },
+  "candidate_source": {
+    "command": "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/anonymous_constructor_arguments_cases.json --match anonymous-",
+    "report": ".tools/class142-artifacts/method-runtime-v43ws7ag/report.json",
+    "report_sha256": "eb080d93a3ff26584edbbac19d7c93402677ee8a33d377443e03e9c9dc8c8e79",
+    "result": "7/7 exact native-backed checked-source outcomes; stable inputs; 424 semantic modules"
+  },
+  "independent": {
+    "source": ".tools/class142-review/named-typed-coercion.php",
+    "source_sha256": "1c805bb77d9b18c309d50e95f71a181ebc3e5481bf573379d91104b2222f0d10",
+    "native_report_sha256": "dd826b142632242319f9eef631595e5e082c39ae9d7add99f0ad18e4fa04d1c0",
+    "unchanged_report_sha256": "bf974fc3cb85f6fc0f7575c0864c294dbad6f7e3e44cab8d51a879e362e24b50",
+    "candidate_report": ".tools/class142-review/candidate-model.json",
+    "candidate_report_sha256": "e5f07247b17e5129e411484e57c61596b60dc75448bb4e2fd4b4eafddf94d06d",
+    "result": "Original named reverse-order weak int coercion: native and candidate BA|C:5/3/4|R:34|; unchanged model Unsupported; stable inputs"
+  },
+  "reached": {
+    "command": "python3 tests/semantics/anonymous_constructor_arguments_protocol.py --case CASE",
+    "cases": [
+      ["anonymous-positional-typed", 36, ".tools/class142-artifacts/anonymous-arguments-anonymous-positional-typed-fe9psmks/report.json", "8afef3044351e67e2887e8055f3ceb755d460fa6b7680e9fd4e18b0c224f3898"],
+      ["anonymous-named-reorder", 36, ".tools/class142-artifacts/anonymous-arguments-anonymous-named-reorder-hy8zj14r/report.json", "5a394494d7b12da23403d1080f8d3d9f5ac4c98e744fe80dacedbe6813c71b19"],
+      ["anonymous-no-constructor-arguments", 35, ".tools/class142-artifacts/anonymous-arguments-anonymous-no-constructor-arguments-koup3h9r/report.json", "7734bd0308cee7832d5bff95d31f7115926991795be36c65b4cb40d5f63f7698"]
+    ],
+    "result": "107 source-reached premises, exact output, constructor/no-constructor task kinds, method identity, selected object, wrong-origin and wrong-SITE refusals, heap/descriptor validity and one-step continuation"
+  },
+  "unsupported_controls": {
+    "command": "python3 tests/semantics/anonymous_constructor_arguments_unsupported.py",
+    "report": ".tools/class142-artifacts/anonymous-arguments-unsupported-hugvsiij/report.json",
+    "report_sha256": "5c6af52b6d1aac1fb764e96a7dc6efd2e84d2006737533d574938d6a6e04eb71",
+    "result": "Three frontend accepted/checked sources return explicit Unsupported: three direct arguments, a by-reference constructor formal, and an unpacked send. Status-only exclusions; no native agreement or positive semantic credit."
+  },
+  "zero_credit": "First private make build failed because nested Dune worktree selected outer root; explicit --root build passed. Independent reviewer preflight used an unbuilt private adapter path. First two reached fixture elaborations failed on helper declaration order and optional origin casting; raw failures are under .tools/class142-artifacts/anonymous-arguments-anonymous-positional-typed-{huk0ja9r,a924rv9u}; only corrected affected groups passed.",
+  "recovery": "Raw commands, source bytes and reports are under the ignored project-local .tools/class142-baseline, .tools/class142-review and .tools/class142-artifacts directories. At implementation commit 0f2717b62116a690e2877d7d106cc1b6c93644c8, rebuild local tools and run the candidate_source command, each reached command with its listed CASE, and the unsupported_controls command. Private nested worktrees need explicit `dune build --root .`.",
+  "remaining": "Dynamic include/eval anonymous sites with arguments; parent/interface/attribute classes; constructor by-reference, default, variadic, promoted, non-int and nonpublic forms; unpacking, three or more arguments, wider ownership and suspension interactions. No full class/core closure."
+}

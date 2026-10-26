@@ -4177,6 +4177,11 @@ untyped constructors now initialize defaults before the body, ignore automatic
 return values and preserve shared Throwable identity through ordinary unwind.
 [Four further originals](coverage/semantics/anonymous-constructors-review.json)
 also check explicit calls, factory effects and constructor `finally` blocks.
+One or two direct positional/named anonymous `new` arguments now use ordinary
+constructor binding, including required untyped or `int` formals; constructorless
+classes evaluate positional arguments and ignore their values. [The argument
+review](coverage/semantics/anonymous-constructor-arguments-review.json) records
+seven original source agreements, an independent coercion case and reached tasks.
 Plain empty named classes can share those units globally and in valid named
 namespace sections, including repeated unbracketed sections and bracketed global
 bodies. Eligible root/actual-block classes consume no RTD key; deferred classes

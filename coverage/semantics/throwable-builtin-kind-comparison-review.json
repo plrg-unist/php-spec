@@ -1,0 +1,34 @@
+{
+  "milestone": "COMP143",
+  "status": "independently reviewed and accepted within the stated bound",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C; TZ=UTC; tests/semantics/profile.json after -n"
+  },
+  "engine_basis": "zend_std_compare_objects checks stack depth and identity, then returns ZEND_UNCOMPARABLE (=1) when class entries differ, before property slots or tables. Parent/child and sibling builtin Throwable classes therefore take the same early branch; PHP's relational operators stay false in both orientations.",
+  "scope": "Normal nonpending loose/ordered comparison of distinct allocated, nonfreeing, exact builtin Throwable kinds recognized by $throwable_kind, excluding generated-only FiberError and the previously admitted Exception/Error pair. Both roots need authentic canonical unmaterialized images and fewer than 16 model comparison-guard entries. The branch does not read severity, warm cache, trace, previous link or later aggregate payloads. Same-kind, user subclasses, materialized roots, deeper stacks and pending states remain partial.",
+  "implementation": {
+    "reviewed_candidate": "279e6201fbc03d1b834342f90dc8ed53c18cb9ab",
+    "tested_semantic_revision": "e7a8784cc",
+    "accepted_fixture_revision": "76619878092162900587c080fd40cea16330e42a",
+    "runtime_file": "spec/semantics/152-throwable-runtime.watsup",
+    "rule": "$throwable_builtin_kind_pair authenticates both images and returns (S, ORDER 1) before the existing Throwable refusal; it explicitly excludes the COMP142 Exception/Error pair and FiberError. The refusal negates this new admission.",
+    "preservation": "The runtime and four source/fixture blobs in the actual-tail candidate are byte-identical to accepted 766198780; metadata and rebase add no execution credit."
+  },
+  "native_first": "Seven author sources were frozen at source-only 027229f8bd5908c13c5a64072924687d85eb4c2b before runtime edits; all pinned PHP originals exit 0 with empty stderr (native report sha256 dda89a17681e1b9b96da9ba9dd219cbb7d8f763fb426513a86a587a8f4eec247). Genuine unchanged seven-operator model stops after B| with explicit Unsupported (baseline sha256 1404444c1662ce443a33b374938d809ed8593e8d7ed5f8d92cefd59ee8a2b950). Additional unchanged exception-lineage, error-lineage and ErrorException severity sources each reach that refusal after their initial output (report sha256 2185f3ac3d80fdf4a6572239e39789e0ab618f43f7dc98497fc0a69cbe9a35ef, ebfa8c00a6ac6f2a9df7d7633c0f1a5505c1e64bc2164cb7c23e3f7c5963345d and c9f5f540f6e13f8df3f8efbbb11acc0069c53a3d26492bde029c5f852f3fce23). The independent parent-child-skip.php source was frozen separately at sha256 7a54c3f880f19d74d3d03987e7cb942dc7020567c57e166bbcf45af7945ced2f; pinned PHP exits 0/empty stderr with B|010000:1:1|A|1|X|1:1| (report sha256 12d4e4640a7f08dd1dbf1088ae3c362b15852d8ef863016358b0f96b1b3cd2cf).",
+  "validation": {
+    "source": "At semantic e7a8784cc, five authored new normal sources exactly match pinned PHP: parent/child and sibling builtin kinds, seven loose operators and both orientations, ErrorException severity with warm cache/previous, and cyclic trace with aggregate callback skip. The previous Exception/Error source remains normal and the same-kind RuntimeException source remains exact Unsupported. Seven-operator and remaining five source reports have sha256 e2811a0ff957bea2e199301ca1b621e8f3448c0cd63bf6eeea0c5a0b7002c2c7 and 440e9567af74e7d3f6a02696333606809f118ce405803b6587b0be733d830865. The independent source at fixture-only 766198780 matches native exactly, accepted/checked, exit 0, stable HEAD/source, empty process group; its Python parent and model child both had asserted CPU3 affinity (report sha256 eb46b9acf79b8167fd68e3d6c33d00177019ca1e4d370ab0a9165d29ce893017). It is a separate sixth new normal source.",
+    "state": "state-v2/report.json sha256 57e7274841d447720231b2cd83f41f0b04e48c77ff73fc57bb967ac94ef6d220 passes 39 ErrorException severity/previous/cache and 86 cyclic-trace/aggregate-tail source-reached premises, four raw PhpSteps, exact unchanged physical storage/events, guard and 0/1 budget. The original state-v1/report.json sha256 fb61b20205d8fcbd75bda1392019767866570179777d0e62123edfc3751a186c failed an overly exact PSTRING tag premise for a valid string carrier; its overall result has zero credit. The fixture-only correction uses $string_plain on the reached file slot.",
+    "zero_credit": "An extra-baseline attempt without the source copied into its output root failed before execution (sha256 bac807cb01510fadbdbf052a49088262804dbc28c4a9e7c3710bed38c5787b9a). The reviewer's first independent model run produced the expected bytes but launched its Python parent with broad CPU affinity; its report sha256 691f32335a1da0cd580edcf4c6e1ffc41420496e902dbda0cc526c598f3a153c has zero process-discipline and agreement credit. Only the later parent-and-child-pinned rerun is accepted."
+  },
+  "independent_review": {
+    "decision": "accept this exact builtin class-mismatch branch; the comparison inventory and complete core PHP remain partial",
+    "semantic_check": "Class-entry mismatch precedes severity, cache, trace and previous traversal, so a cyclic captured object and an unselected callback-capable aggregate tail cannot affect the result. Both order orientations and same-kind refusal distinguish this branch from a signed property comparison or an overbroad Throwable admission.",
+    "actual_master_tail": "Candidate 279e6201fbc03d1b834342f90dc8ed53c18cb9ab is composed on clean master 79c39e313ed044dee40d8fa743cc0a75f68fd5d2. Incoming semantics since tested base change autoload, short-right NaN task/truth selection, arithmetic warnings and Iterator CONFIG unpack, with no changes to modules 52/152/157/161/163/169/394 or the module manifest. Frozen sources construct known builtin classes and use comparison/echo, not those new routes. PROGRESS retains incoming facts plus the COMP143 paragraph, comparison phrase and integrated-list entry; inventory changes only partial obligations 44/70 by append. This pointwise seam adds no semantic test credit.",
+    "remaining": "FiberError generation, user subclasses, materialized roots, deeper comparison stacks, pending completion and broader same-kind property/callback comparisons remain open. Held COMP123, paused COMP88 and other paused lanes were not resumed."
+  },
+  "artifacts": "Original source, native/model streams, unchanged baselines, accepted and failed strict reports, independent pinned and uncredited reviewer attempts remain outside Git at /home/user/workspace/php-spec-evidence-archive/comp143.",
+  "engine_bug_or_divergence": "none claimed"
+}

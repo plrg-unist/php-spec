@@ -660,6 +660,20 @@ array mismatch both leave physical storage/events unchanged and skip a later
 caster. Deeper comparison stacks, subclass pairs, materialized roots and pending
 states remain outside this bound. [Cross-kind Throwable review](../../coverage/semantics/throwable-cross-kind-comparison-review.json).
 
+The same early class-mismatch order now covers distinct exact source-constructible
+builtin Throwable kinds beyond `Exception`/`Error`, including parent/child and
+sibling classes and `ErrorException` with its extra severity slot. Both roots
+must be live canonical unmaterialized images under normal nonpending completion
+and a comparison guard below 16 entries; generated-only `FiberError` is outside
+this cut. Order `1` in both orientations skips cached strings, previous links,
+captured cyclic objects and later aggregate casters without reading their
+values. Six new normal sources agree with PHP, one earlier cross-kind control
+still agrees, and a same-kind `RuntimeException` pair remains Unsupported. Two
+source-reached fixtures check 125 premises and four raw comparisons, including
+the actual severity slot and a skipped cyclic trace/tail. Materialized roots,
+subclasses, deeper stacks and pending states remain partial.
+[Builtin-kind comparison review](../../coverage/semantics/throwable-builtin-kind-comparison-review.json).
+
 Warm caches and nonempty builtin traces now meet in the same physical slot
 scan. Same-kind canonical `Exception`/`Error` pairs with null previous values
 admit finite `DIRECT` trace graphs containing primitive or valid string-carrier
