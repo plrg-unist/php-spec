@@ -1,0 +1,103 @@
+{
+  "milestone": "OP95 direct-CV array used-print Warning and output",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle/profile",
+  "status": "independently reviewed bounded semantics",
+  "scope": "A named E_WARNING handler for a direct, nonempty flat primitive array CV in initially unbuffered used print. The warning precedes the fixed interned Array result. Returning false defaults once, writes Array and yields integer 1; a supplied throw still writes Array before exception search and cancels the outer store. Stage 1 authenticates source without rereading the CV. A callback-created buffer is explicit Unsupported.",
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_print",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_ECHO",
+    "vendor/php-src/Zend/zend_operators.c:__zval_get_string_func"
+  ],
+  "semantic_revision": "552a14298101bdc5213b023db52369078576a6e6",
+  "tested_revision": "82daf1ffee0bb0d438e3fb823e14a5433c911b43",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "modules_sha256": "2a8321a8f20026268fdb4b4dbbb4756a0265c16f297b54b2536c9af571ac3300",
+    "module_count": 420,
+    "private_ignored_tool_links": [
+      "_build -> /home/user/workspace/php-spec/_build",
+      ".tools/php -> /home/user/workspace/php-spec/.tools/php",
+      ".tools/php-file.so -> /home/user/workspace/php-spec/.tools/php-file.so",
+      "tests/semantics/_build -> /home/user/workspace/php-spec/tests/semantics/_build"
+    ]
+  },
+  "native_pre": {
+    "original_report": "/home/user/workspace/php-spec-evidence-archive/operators-95/native-pre/report.json",
+    "original_sha256": "c00c48de28dfec30cc5b37aeada24a3934d0f8bf744555a05253d227a31627a6",
+    "dynamic_report": "/home/user/workspace/php-spec-evidence-archive/operators-95/dynamic-native-pre/report.json",
+    "dynamic_sha256": "4137bfe80434a55b33e6a05b5c11a886ab50c91f84a1e17d58a404d3444095f3",
+    "result": "Three exit0/reaped sources. The false handler defaults once, then prints Array and stores strict integer1. Both throw sources print Array before catching the identical supplied Exception20 with outer100 unchanged."
+  },
+  "unchanged_baseline": {
+    "original_revision": "c69521c589906f7b240aa34fa840ecac3c55ee8e",
+    "original_report": "/home/user/workspace/php-spec-evidence-archive/operators-95/baseline/report.json",
+    "original_sha256": "47f2759422bffd8f38e8a6075a84cc18538dc62d2dc5ed637649e1be82b98add",
+    "dynamic_revision": "5c79091898aa6ce59766f4dbcf22e4cef94cfe44",
+    "dynamic_report": "/home/user/workspace/php-spec-evidence-archive/operators-95/dynamic-baseline/report.json",
+    "dynamic_sha256": "a7627f7c399501f8f8591b5cfe68dc6d4e14719d9a356b4e969b414beda958ed",
+    "result": "All three originals checked/frontend accepted but model exit1 Unsupported exactly at error-handler producer ingress; zero agreement."
+  },
+  "accepted": {
+    "original_source_command": "taskset -c 5 python3 tests/semantics/print_array_warnings.py --output /home/user/workspace/php-spec-evidence-archive/operators-95/source-552a14298",
+    "original_source_report": "/home/user/workspace/php-spec-evidence-archive/operators-95/source-552a14298/report.json",
+    "original_source_sha256": "6c2b76ce149c4bb9eff07d2b255d286eb3c4d862ab39b016dea9e602d07c54a0",
+    "dynamic_source_command": "taskset -c 5 python3 tests/semantics/print_array_warnings.py --case print-array-dynamic-pending-throw --output /home/user/workspace/php-spec-evidence-archive/operators-95/source-dynamic-82daf1ffe",
+    "dynamic_source_report": "/home/user/workspace/php-spec-evidence-archive/operators-95/source-dynamic-82daf1ffe/report.json",
+    "dynamic_source_sha256": "92883a5d01ffe23d2951b1fef9f7792feb8aedc6ebb798c17671e01662e35d7c",
+    "source": "Three checked/accepted byte-exact native/model normal exits0; raw stdout/stderr match and all process groups reaped.",
+    "focused_commands": [
+      "taskset -c 5 python3 tests/semantics/print_array_warning_protocol.py --case print-array-false-default --output /home/user/workspace/php-spec-evidence-archive/operators-95/focused-normal-82daf1ffe",
+      "taskset -c 5 python3 tests/semantics/print_array_warning_protocol.py --case print-array-pending-throw --output /home/user/workspace/php-spec-evidence-archive/operators-95/focused-pooled-throw-82daf1ffe",
+      "taskset -c 5 python3 tests/semantics/print_array_warning_protocol.py --case print-array-dynamic-pending-throw --output /home/user/workspace/php-spec-evidence-archive/operators-95/focused-dynamic-throw-82daf1ffe"
+    ],
+    "focused_reports": [
+      ["print-array-false-default", "focused-normal-82daf1ffe", "09cfe77aa7e104986bf2a04a3915f38c34536b80cbf93cc26d633fecfe2a97b9", 137],
+      ["print-array-pending-throw", "focused-pooled-throw-82daf1ffe", "51b43b4a0b5ec8f37a2654d231beeef6eef7c1afa92d05a6272de6cb1997faea", 122],
+      ["print-array-dynamic-pending-throw", "focused-dynamic-throw-82daf1ffe", "32f7aae8fbb71209c195ff968100ba0909b626078035ebb71365cbe3ddf808f1", 122]
+    ],
+    "focused": "Three genuine reached groups. Print source/line, live flat-array stage0, real handler, callback-retired source cell, fixed interned Array, default/output order, same live Exception/no outer store, explicit buffer refusal and EOF/budget0. Literal tables have 2→1 owners because POOLS retains one root; runtime-built table has 1→0 and is unallocated after unset. All focused native/model exits0, no timeout/groups."
+  },
+  "failed_attempts": [
+    {
+      "revision": "552a14298101bdc5213b023db52369078576a6e6",
+      "reason": "First source invocation failed before any PHP/model child because the new private worktree lacked ignored tool/build links; zero agreement. Corrected by linking pinned canonical tools only."
+    },
+    {
+      "revision": "552a14298101bdc5213b023db52369078576a6e6",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-95/focused-552a14298/report.json",
+      "sha256": "79e6e9b637ac234fb418d59cb9546166bcc71f6cbea0aadb4ff9fc8b173742bd",
+      "reason": "First focused recipe falsely expected the literal table's owner count to fall 1→0. Narrow probes isolated its independent compiled-pool root: actual 2→1, while a runtime-built array proves 1→0. The failed recipe earns no focused credit."
+    }
+  ],
+  "source_sha256": {
+    "original_cases.py": "a8ecb86269580f3fafa79af7f77daec314272d2bdfc197221db18747175d0c5b",
+    "print-array-false-default": "31a2a6acca7afc6e67831b05b07adc842383efe4cf36bc52f5b6457e89f498ee",
+    "print-array-pending-throw": "79e5d063d53d2ce2a94c3247a3b72bec01aaabad2e93850bbcde5c042576f1f9",
+    "print-array-dynamic-pending-throw": "0b41b90b61e89b67bc50aa01608cab4e821b3f0e6caa3b35656414c87af41d4a"
+  },
+  "inputs_sha256": {
+    "spec/semantics/30-storage.watsup": "870b7cb120e80ea6827bbd500366964f3e0825e49296c7bcfe7d93b39ae615ac",
+    "spec/semantics/146-print-runtime.watsup": "fea258642076df80324852cf3cc70af33c4bbadb5406a6883c3ced3b17bbccbe",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "7df330068e241c6c4726662dcf64f697e174275a8ae0f4c78945218c4a4dafb0",
+    "tests/semantics/print_array_warning_cases.py": "e85f0745b22661c3a916fec35dbd600373d3cd6eb7e1d2bcc24cc744950b17bc",
+    "tests/semantics/print_array_warning_protocol.py": "e1a7026981196b29129efab55806394f786466907ba5774f8a74121cfd48259c",
+    "tests/semantics/print_array_warnings.py": "083feae9f5fd1a69052dd5204dd9e2fa9ae72045423e611086145a8ff6b29e0c"
+  },
+  "independent_review": {
+    "semantic_revision": "82daf1ffee0bb0d438e3fb823e14a5433c911b43",
+    "cases": "/home/user/workspace/php-spec-evidence-archive/operators-95/review-independent/cases.py",
+    "cases_sha256": "d5565a262082b38582dff0adebc4b96a30cc8293fd6938696215a18c94402a3e",
+    "runner": "/home/user/workspace/php-spec-evidence-archive/operators-95/review-independent/run.py",
+    "runner_sha256": "b6fa188c047db59305d2822088c0ac1031aae88753171161743a6990cbaf2481",
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-95/review-independent/run-82daf1ffe/report.json",
+    "sha256": "8645d22ba96633ae6e0b0ab9a738758f9dcb1af12c99480aa840a1355d1ea5d6",
+    "result": "Two fresh native-first exact normal sources: a handled-true shared alias survives source unset with one handler and no default; an ineligible mask skips the callback and defaults once at line9. Both emit Array and strict print1, with exit0/no timeout/reaped. Independent semantic CLEAR."
+  },
+  "remaining": "Only direct nonempty flat primitive array CVs with a named Warning handler and empty buffers are claimed. Empty/nested arrays, references, computed producers, changed buffers/output callbacks, echo and wider lifetimes remain partial."
+}
