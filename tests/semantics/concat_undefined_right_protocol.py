@@ -92,10 +92,14 @@ def $concat_missing_seek(S, n_stage, n) = $concat_missing_seek($drive_steps(S[.C
   -- if S.TODO =/= eps
   -- if $(n > 0)
 dec $concat_missing_warnings(pevent*) : nat
+dec $concat_missing_is_warning(pevent) : bool
+def $concat_missing_is_warning(WARNING ptbytes z) = true
+def $concat_missing_is_warning(WARNING_SOURCE n_unit ptbytes z) = true
+def $concat_missing_is_warning(pevent) = false -- otherwise
 def $concat_missing_warnings(eps) = 0
 def $concat_missing_warnings((WARNING ptbytes z) :: pevent_tail*) = $(1 + $concat_missing_warnings(pevent_tail*))
 def $concat_missing_warnings((WARNING_SOURCE n_unit ptbytes z) :: pevent_tail*) = $(1 + $concat_missing_warnings(pevent_tail*))
-def $concat_missing_warnings(pevent :: pevent_tail*) = $concat_missing_warnings(pevent_tail*) -- otherwise
+def $concat_missing_warnings(pevent :: pevent_tail*) = $concat_missing_warnings(pevent_tail*) -- if ~$concat_missing_is_warning(pevent)
 '''
 
 
