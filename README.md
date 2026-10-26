@@ -1664,8 +1664,16 @@ array scope, ordinary scalar cells inside finite DIRECT arrays retain shared
 ownership through key callbacks and COW, while
 a sole cell can unwrap after its external alias is dropped. An Aggregate-returned
 Iterator follows the same route. The [reference-cache review](coverage/semantics/array-traversable-reference-cache-review.json)
-records three exact source agreements and 273 focused conditions; Generator
-caches and by-reference current results keep their earlier scope.
+records three exact source agreements and 273 focused conditions for the
+bounded by-value current route.
+For an ordinary no-destructor Iterator whose `&current()` returns a real
+outer array cell, a key callback may rebind that cell before spread copies
+the row. The copied entry then contains the new row while a separately saved
+old row stays intact. Held and dropped inner scalar aliases distinguish
+shared COW from singleton unwrapping; a supplied key throw checks real
+no-insert cleanup and last-owner lifetime. The same path accepts an
+Aggregate-returned Iterator. Four source agreements and 528 focused premises
+are recorded in the [by-reference Iterator cache review](coverage/semantics/array-iterator-byref-reference-cache-review.json).
 Ordinary CVs of named IteratorAggregate classes now invoke a borrowed
 `getIterator()` frame and
 transfer its owned user Iterator or named-Generator return into DATA. Genuine

@@ -73,8 +73,24 @@ row can change independently. The same Iterator mechanism applies to an
 Iterator returned by an Aggregate getter. Three exact source agreements and
 273 reached conditions (three raw steps) cover these cases in the
 [reference-cache review](../../coverage/semantics/array-traversable-reference-cache-review.json).
-By-reference current results and object, typed, proxy, cyclic and debt-bearing
-descendants remain partial.
+The by-reference current route below has its own bounded admission; object,
+typed, proxy, cyclic and debt-bearing descendants remain partial.
+
+For an ordinary no-destructor Iterator whose `current()` returns a genuine
+reference to an array, the raw outer cell survives `key()` and is dereferenced
+when the spread entry is inserted. A key callback may rebind that cell to a
+new finite row with ordinary scalar reference leaves. The spread entry copies
+the new row as `DIRECT`; an independently saved old row remains unchanged.
+Keeping the new row's external scalar alias shares later writes across COW;
+removing it lets a sole inner reference unwrap in the detached copy. An
+Aggregate getter returning the same Iterator follows this route. If `key()`
+instead throws a supplied Exception after removing external names, it inserts
+no entry. Quiet methodless cleanup discards the raw current, DATA and partial
+builder together, then prunes their unowned nodes before catch. Four original
+sources and 528 reached premises (four raw steps) are recorded in the
+[by-reference Iterator cache review](../../coverage/semantics/array-iterator-byref-reference-cache-review.json).
+Owning Iterator fields, destructors, special cells and wider graphs remain
+outside this admission.
 
 `427-array-generator-unpack.watsup` adds ordinary named Generator bodies with
 received parameters and reference yields, using real borrowed native resumes.

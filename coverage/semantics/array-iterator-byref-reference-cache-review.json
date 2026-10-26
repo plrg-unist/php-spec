@@ -1,0 +1,41 @@
+{
+  "milestone": "A60 by-reference Iterator current array spread with key-time outer-cell rebinding",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local vendor/php-src",
+  "scope": "An ordinary no-destructor user Iterator returns a genuine reference to a global-bound ARRAY cell from current(). The raw current cell survives key(), which may rebind it to a different finite row with ordinary scalar reference leaves. Spread dereferences and inserts the new row as DIRECT while a separately saved old row remains distinct. Held and dropped external inner aliases distinguish shared COW from singleton unwrapping. A borrowed Aggregate getter can return the same Iterator. A supplied key throw after external it/row/leaf removal inserts no entry and reaches authentic atomic methodless discard/prune with weak Iterator death before catch.",
+  "implementation": {
+    "source_revision": "d7be03782c4f80e033dfedff36e15151ff85c74e",
+    "runtime_revision": "ffcc43dc1293de2b33c332e36e4db1dc4edbdf2e",
+    "fixture_revision": "063f9675f9247fb71a536636d916e105c26db6b8",
+    "runtime_file": "spec/semantics/426-array-iterator-unpack.watsup",
+    "runtime_sha256": "1f1a5fec3872926495ff894bb2fbec2d529018956c55a0450fc8d8db4499d2ff",
+    "boundary": "One new raw REFERENCE-array current arm requires the complete existing ordinary-cell authority, old validator eps, finite scalar-reference table and no destructor. It rechecks the same live cell after key at insertion. Old raw/KNOWN successes are disjoint; builder, key, generic release, ownership, 427/430 and schema remain unchanged. No owning instance fields/destructor or typed/proxy/object/cyclic/debt descendants are admitted."
+  },
+  "engine_routes": "vendor/php-src/Zend/zend_interfaces.c zend_user_it_get_current_data caches the raw current result and zend_user_it_get_current_key invokes key afterward; Zend/zend_vm_def.h ZEND_ADD_ARRAY_UNPACK dereferences/addrefs val only after key. Zend/zend_hash.c zend_array_dup_value can unwrap a singleton inner reference on COW. These are matching project-pinned sources.",
+  "validation": {
+    "native_direct3": ".tools/a60-native3/report.json SHA-256 06502c6d78fa5e1876e0b98fd61d680b2e1c97c79448232b0296dee2996eebb5 at clean d7be03782; three exact quiet exit-0 originals: held alias, dropped alias, supplied key throw.",
+    "native_aggregate1": ".tools/a60-aggregate-native1/report.json SHA-256 f79622c9a828a3f68c81271acc411de0d12f6df659573d02b7caa38e7e58464d at clean d7be03782; one exact quiet exit-0 Aggregate-returned Iterator original.",
+    "genuine_baseline": ".tools/a60-baseline4/report.json SHA-256 4f43fc68c961324734398c0b00b58a25db3e50cc89e153ae1aacb32e438fbb01 at clean d7be03782; unchanged model-only on those four exact native source paths. All explicitly Unsupported after the authentic pre-key current prefix; zero agreement credit, no native replay.",
+    "strict": ".tools/a60-strict/report.json SHA-256 ab4fa8c8c71c432e0edc3f9f484e7f6222e2ea18bd8e3e75f64baf96c5150cf2 at clean ffcc43dc/424 modules; SL/cache disabled/determinism enabled, PASS/exit0/quiet, 11.113<180s, group empty.",
+    "source4": ".tools/a60-source4/report.json SHA-256 88f6d7aec25b8738338b020591ebc298abd5f6576bdc0ff9dadafeaf86606cd0 at clean ffcc43dc/424; model-only on exact originals, four normal/exit0/quiet/byte-exact agreements, credit1 each, empty groups; only 426 input changed from native cut.",
+    "focused_preparation": ".tools/a60-author-prepare/report.json SHA-256 57d28a614bae4f8ff11167bf85cc3d99e6e08dcc3714afc2a77a1add41f45969 and .tools/a60-peer-prepare/report.json SHA-256 ca0c8b5edaba289144ce98b3d07be2a0a5a0267619fbd2ce0f25203bcecf9dac at clean 063f9675; checked fixtures only, zero semantic credit.",
+    "focused": ".tools/a60-author-focused/report.json SHA-256 546eb7551f08cb13d5f2ada52986bd4f7857ef1c159d4fe3ca216bedc3c56f7a and .tools/a60-peer-focused/report.json SHA-256 9a40ed54dcac167801e471866dcbdc51b756fb5c07a81544006cae6d34aed2dd at clean 063f9675/424. Held160, dropped162, supplied key throw206 =528 premises, 524 Boolean plus four raw PhpStep transitions. All three true/quiet/exit0 under 180s, no timeout/interruption, child and outer groups empty, frontend/adapter final exits0.",
+    "control": "Removing the outer reference marker while preserving the same physical graph refuses the helper-only current value; this is no additional PHP source agreement."
+  },
+  "independent_review": "lifecycle132_review accepted the native/baseline discriminants, 426 old-route separation, strict424/source4, exact generated fixture identities and all 528 reached premises with full process closure. No joined execution credit is inferred from eventual integration.",
+  "execution": {
+    "profile": "tests/semantics/profile.json SHA-256 9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94; -n, opcache CLI/JIT disabled, precision 14, serialize_precision -1, UTC, error_reporting 30719, zend.assertions 1; LC_ALL=C and TZ=UTC",
+    "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "focused_header_sha256": "6825aade23c45e48cb6cb89188b89bf6b34056262813252140b690dee2602572",
+    "focused_command": "taskset -c 1 python3 -B .tools/a60-focused-actor.py 1; reviewed header runs author2 then peer1 under 400/210s outer and 2GiB caps"
+  },
+  "archive": {
+    "location": "../php-spec-evidence-archive/array-iterator-byref-reference-cache-60/raw.tar.xz",
+    "sha256": "5f37b3a6743c70de2de6728a254b09b45cf7044eda608716926da55a6e1118bc",
+    "bytes": 65980,
+    "members": 174,
+    "manifest": "../php-spec-evidence-archive/array-iterator-byref-reference-cache-60/manifest.json",
+    "recovery": "For a selected report, recreate /home/user/workspace/php-spec/.tools/array-iterator-byref-reference-cache-60 at its tested revision: d7be03782c4f80e033dfedff36e15151ff85c74e for native/baseline, ffcc43dc1293de2b33c332e36e4db1dc4edbdf2e for strict/source, or 063f9675f9247fb71a536636d916e105c26db6b8 for focused preparation/numeric. Restore original cwd and .tools paths plus project-pinned PHP/adapter/numeric providers from report inputs. Verify archive SHA-256, extract raw.tar.xz there, and choose fresh output paths for replay. The archive holds originals and records, not the engine or executables."
+  },
+  "remaining": "Complete array spread, Traversable, Iterator ownership and PHP core semantics remain partial. Owning fields/destructors, special/typed/proxy/object/cyclic/debt payloads, other operands, callbacks and reentrant lifetimes keep explicit boundaries."
+}
