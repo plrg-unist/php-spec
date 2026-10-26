@@ -1293,6 +1293,8 @@ test-semantics: build
 	python3 tests/semantics/mixed_cached_clone_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/mixed_cached_clone_callback_cases.json
 	python3 tests/semantics/mixed_cached_clone_callback_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/dynamic_only_cached_clone_sources.py
+	python3 tests/semantics/dynamic_only_cached_clone_state.py
 	python3 tests/semantics/clone_controls.py
 	python3 tests/semantics/get_class_intrinsic.py
 	python3 tests/semantics/get_class_protocol.py

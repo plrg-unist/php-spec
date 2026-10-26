@@ -84,6 +84,19 @@ retain zero full-packet credit.
 Deeper Base ancestry, hooked/trait-selected Base properties and wider hook
 shapes remain partial.
 
+Parentless, trait-free `#[AllowDynamicProperties]` classes with no declared
+instance slots and a dynamic history now materialize a validated ordinary
+property table. Cloning without an effective `__clone` shares it, so a later
+by-reference foreach bucket promotion reaches both objects; writable lookup
+still splits the table. An effective callback takes a separate copy, including
+after the last dynamic property is unset. One frozen live-foreach source exposed
+the unchanged model's mismatch; the other thirteen frozen sources were already
+exact. Reached checks exercise sharing, mirrors, source-driven COW,
+non-clone table images and both all-unset branches. Earlier fixture/compiler
+failures retain zero credit. [Dynamic-only cached clone review](coverage/semantics/dynamic-only-cached-clone-review.json).
+Inherited/trait-composed classes, active collection and wider table layouts
+remain partial.
+
 Canonical same-kind builtin `Exception`/`Error` pairs now compare nonempty trace
 arrays when captured arguments are direct primitive scalars or authenticated
 string carriers. Eight source agreements, two object/array-argument refusals and

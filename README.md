@@ -6037,6 +6037,16 @@ window. A supplied throw instead destroys the failed copy/Payload before the sam
 catch and unchanged destination `42`. Four originals and 756 focused checks pass.
 Readonly, active collection, zero-declared and wider callback histories remain partial.
 
+The [dynamic-only cached clone review](coverage/semantics/dynamic-only-cached-clone-review.json)
+admits parentless, trait-free `#[AllowDynamicProperties]` classes with no declared
+instance slots and a dynamic property history. With no effective `__clone`, a
+cached source and its clone share one table. A later by-reference foreach fetch
+promotes a bucket for both, while a writable property lookup separates the
+writer's table. An effective callback copies the dynamic table before it runs,
+including the all-unset history case. Source comparisons also cover scalar and
+alias writes, shallow Payload lifetime, callback throw cleanup, array casts and
+empty-table boundaries. Other class shapes and active collection remain partial.
+
 [`get_class` testing support](docs/semantics/GET-CLASS.md) observes finite live
 object names and executing lexical scope through direct and callable invocation.
 [Labels and goto](docs/semantics/SOURCE-GOTO.md) now resolve within each callable,

@@ -60,6 +60,19 @@ separate cuts. Only the mixed callback exclusion in module 150 changes; modules
 300/261/138, access, ownership and generic cleanup stay exact. Wider layouts,
 readonly, zero-declared sharing, copied-declared DIRECT images and GC remain partial.
 
+[Dynamic-only cached clones](../../coverage/semantics/dynamic-only-cached-clone-review.json)
+now use an ordinary property table for a parentless, trait-free source class
+with an exact `#[AllowDynamicProperties]` attribute, no declared instance
+properties and a dynamic slot history. A clone without an effective `__clone`
+shares the cached table. A later FE_FETCH_RW promotion reaches both objects'
+dynamic mirrors; a writable lookup separates the writer first. If an effective
+`__clone` exists, the copy gets a separate table before the callback, even when
+the source's last dynamic bucket has been unset. The empty never-written class
+keeps its existing no-table route. The source and reached checks also cover
+non-clone foreach/cast observations, alias and Payload ownership, callback
+mutation/throw and actual COW after cloning. Linked parents, trait-composed
+classes, active collection, readonly and wider table layouts remain partial.
+
 Module300 executes genuine `__clone` callbacks with the selected method's
 declaring scope and the copy's called class. Access is checked before allocation;
 intrinsic access errors retain the authentic `clone()` trace frame. Fixed formal

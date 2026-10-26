@@ -1,0 +1,19 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "baseline_revision": "065ac2df834607204cc60f741f680106168813ea",
+  "scope": "CLASS141 live by-reference object foreach clone before next dynamic bucket promotion; prior ordinary declared+dynamic control.",
+  "cases": [
+    {
+      "id": "dynamic-only-live-foreach-clone",
+      "kind": "candidate",
+      "source": "<?php\n#[AllowDynamicProperties]\nclass DynamicFetch141 {}\n$source = new DynamicFetch141;\n$source->alpha = 7;\n$source->beta = 9;\necho \"D:\";\nforeach ($source as $key => &$value) {\n    echo $key, \"=\", $value, \"|\";\n    if ($key === \"alpha\") {\n        $copy = clone $source;\n        echo \"cloned|\";\n    } else {\n        $value = 19;\n        echo \"wrote|\";\n    }\n}\nunset($key, $value);\necho \"values:\", $source->alpha, \"/\", $source->beta, \"/\", $copy->alpha, \"/\", $copy->beta, \"|\";\necho \"copy:\";\nforeach ($copy as $key => $value) { echo $key, \"=\", $value, \"|\"; }\necho \"Z|\";\n",
+      "source_sha256": "cd187790beeee292a2b8af4b356d5fda1ff2f002267bd12143bebcdba02b1c3f"
+    },
+    {
+      "id": "declared-dynamic-live-control",
+      "kind": "control",
+      "source": "<?php\n#[AllowDynamicProperties]\nclass DeclaredFetch141 { public $alpha = 7; }\n$source = new DeclaredFetch141;\n$source->beta = 9;\necho \"M:\";\nforeach ($source as $key => &$value) {\n    echo $key, \"=\", $value, \"|\";\n    if ($key === \"alpha\") {\n        $copy = clone $source;\n        echo \"cloned|\";\n    } else {\n        $value = 19;\n        echo \"wrote|\";\n    }\n}\nunset($key, $value);\necho \"values:\", $source->alpha, \"/\", $source->beta, \"/\", $copy->alpha, \"/\", $copy->beta, \"|\";\necho \"copy:\";\nforeach ($copy as $key => $value) { echo $key, \"=\", $value, \"|\"; }\necho \"Z|\";\n",
+      "source_sha256": "483e10f79f2392d8eb928b9a0614f2cd95c9307f9214ded21915f0bc57cfeae8"
+    }
+  ]
+}

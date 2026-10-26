@@ -1,0 +1,19 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "baseline_revision": "065ac2df834607204cc60f741f680106168813ea",
+  "scope": "CLASS141 source-authentic dynamic-only ordinary property table non-clone observations: foreach, array cast independence, by-reference promotion, and empty-history rematerialization.",
+  "cases": [
+    {
+      "id": "dynamic-only-cast-foreach",
+      "kind": "control",
+      "source": "<?php\n#[AllowDynamicProperties]\nclass TableObserve141 {}\n$source = new TableObserve141;\n$source->alpha = 7;\n$source->beta = 9;\necho \"before:\";\nforeach ($source as $key => $value) { echo $key, \"=\", $value, \"|\"; }\nunset($key, $value);\n$array = (array) $source;\n$array[\"alpha\"] = 11;\n$source->beta = 13;\necho \"after:\", $source->alpha, \"/\", $source->beta, \"/\", $array[\"alpha\"], \"/\", $array[\"beta\"], \"|\";\nforeach ($source as $key => &$value) { if ($key === \"beta\") $value = 17; }\nunset($key, $value);\necho \"ref:\", $source->alpha, \"/\", $source->beta, \"/\", $array[\"beta\"], \"|Z|\";\n",
+      "source_sha256": "4ee00090d37e677e4f5570c1fd7ab8ca753c81c2525b6538a65dfee8d8c61760"
+    },
+    {
+      "id": "dynamic-only-unset-history",
+      "kind": "control",
+      "source": "<?php\n#[AllowDynamicProperties]\nclass HistoryObserve141 {}\n$source = new HistoryObserve141;\n$source->alpha = 7;\nforeach ($source as $key => $value) { echo \"first:\", $key, \"=\", $value, \"|\"; }\nunset($key, $value);\nunset($source->alpha);\necho \"empty:\";\nforeach ($source as $key => $value) { echo \"bad|\"; }\n$source->beta = 9;\necho \"later:\";\nforeach ($source as $key => &$value) { echo $key, \"=\", $value, \"|\"; $value = 19; }\nunset($key, $value);\n$array = (array) $source;\necho \"final:\", $source->beta, \"/\", $array[\"beta\"], \"|Z|\";\n",
+      "source_sha256": "83d89426a7c8fa21053c9e114e3342495f7b5890a594a70543d95f95983261e4"
+    }
+  ]
+}
