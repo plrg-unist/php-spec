@@ -39,4 +39,9 @@ echo 'B|', $a <=> $b, '|';
 $a = new Exception('top', 7, new Exception('inner', 3)); $b = new Exception('top', 7, new Error('inner', 3));
 echo 'B|', $a <=> $b, ':', $b <=> $a, '|';
 ''',
+    'state-direct-array': br'''<?php
+$a = new Exception('top', 7, new Exception('inner', 3)); $b = new Exception('top', 7, new Exception('inner', 3));
+$x = [$a, 1]; $y = [$b, 3];
+echo 'B|', $a <=> $b, '|', $x <=> $y, '|';
+''',
 }
