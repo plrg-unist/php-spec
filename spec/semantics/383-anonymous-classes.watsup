@@ -17,6 +17,16 @@ def $anonymous_property_items((NPropertyItem phpType40 expression metadata) :: p
   -- if $parser_literal(expression) =/= eps
 def $anonymous_property_items(phpType57*) = false -- otherwise
 
+dec $anonymous_constructor_parameter(phpType17) : bool
+def $anonymous_constructor_parameter(NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text) metadata_name) ABSENT (SEQUENCE eps) metadata) = $ptvalidname($base64(text), false)
+def $anonymous_constructor_parameter(NParam (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_type) metadata_type) (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text) metadata_name) ABSENT (SEQUENCE eps) metadata) = ($ptlc($base64(text_type)) = $ptascii("int") /\ $ptvalidname($base64(text), false))
+def $anonymous_constructor_parameter(phpType17) = false -- otherwise
+dec $anonymous_constructor_parameters(phpType16) : bool
+def $anonymous_constructor_parameters(SEQUENCE eps) = true
+def $anonymous_constructor_parameters(SEQUENCE ([phpType17])) = $anonymous_constructor_parameter(phpType17)
+def $anonymous_constructor_parameters(SEQUENCE ([phpType17_1, phpType17_2])) = ($anonymous_constructor_parameter(phpType17_1) /\ $anonymous_constructor_parameter(phpType17_2))
+def $anonymous_constructor_parameters(phpType16) = false -- otherwise
+
 dec $anonymous_member(statement) : bool
 def $anonymous_member(NStmtProperty (SEQUENCE eps) (INTEGER flags) ABSENT (SEQUENCE phpType57*) (SEQUENCE eps) metadata) = $anonymous_property_items(phpType57*)
   -- if flags <- [0,1]
@@ -25,7 +35,7 @@ def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN f
   -- if $ptvalidname($base64(text), false)
   -- if $ptlc($base64(text)) =/= $ptascii("__construct")
   -- if ~$ppmethod_magic($base64(text))
-def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) (SEQUENCE eps) ABSENT (SEQUENCE statement*) metadata) = true
+def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 ABSENT (SEQUENCE statement*) metadata) = $anonymous_constructor_parameters(phpType16)
   -- if flags <- [0,1]
   -- if $ptlc($base64(text)) = $ptascii("__construct")
 def $anonymous_member(statement) = false -- otherwise
@@ -275,6 +285,13 @@ def $ppanonymous_class(P, pcpath, statement) = P_next[.EARLY = P.EARLY][.LOCATIO
   -- if P_next = $ppclass_result(P_class, pcpath ++ [PCFIELD 0], PCHOK { KIND "class", NAME ptbytes_name, ABSTRACT false, FINAL false, READONLY false, PARENT eps, INTERFACES eps, BODY pchraw.BODY } eps)
 def $ppanonymous_class(P, pcpath, statement) = $ppunsupported(P, "anonymous class RTD, body, or compiler publication context") -- otherwise
 def $ppdispatch(P, pcpath, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata, PPR) = $ppanonymous_class(P, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class)
+dec $anonymous_new_arguments(phpType7*) : bool
+def $anonymous_new_arguments(eps) = true
+def $anonymous_new_arguments((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = $anonymous_new_arguments(phpType7*)
+def $anonymous_new_arguments((NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = ($ptvalidname($base64(text), false) /\ $anonymous_new_arguments(phpType7*))
+def $anonymous_new_arguments(phpType7*) = false -- otherwise
+def $ppdispatch(P, pcpath, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppanonymous_class(P, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class), pcpath ++ [PCFIELD 1], 0, phpType7*, PNUNSUPPORTED "constructor has deferred argument modes")
+  -- if phpType7* =/= eps /\ $(|phpType7*| <= 2) /\ $anonymous_new_arguments(phpType7*)
 
 ;; The live name already exists before the first NEW. Recompute the installed
 ;; source descriptor to authenticate the site, filename, line and counter.
@@ -282,7 +299,8 @@ dec $anonymous_new_name(pstate, porigin) : ptbytes?
 def $anonymous_new_name(S, PORIGIN 0 pcpath) = (pclassdesc.NAME)
   -- if $source_unit(S.SOURCES, 0) = (pcunit)
   -- if $anonymous_unit(pcunit)
-  -- if $origin_node(S.SOURCES, PORIGIN 0 pcpath) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN 0 pcpath) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
+  -- if $(|phpType7*| <= 2) /\ $anonymous_new_arguments(phpType7*)
   -- if $compilation_projection(S, pcunit) = (ppinstalled)
   -- if $class_at(ppinstalled.CLASSES, PORIGIN 0 (pcpath ++ [PCFIELD 0])) = (pclassdesc)
   -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
@@ -296,6 +314,11 @@ def $anonymous_new_name(S, porigin) = eps -- otherwise
 def $new_source_name(S, porigin) = (ptbytes_name)
   -- if $anonymous_new_name(S, porigin) = (ptbytes_name)
   -- if $new_has_ctor(S, ptbytes_name)
+def $new_source_name(S, porigin) = (ptbytes_name)
+  -- if $anonymous_new_name(S, porigin) = (ptbytes_name)
+  -- if ~$new_has_ctor(S, ptbytes_name)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
+  -- if phpType7* =/= eps
 
 rule PhpStep/anonymous-new: S ~> $new_class(S[.TODO = ptask_tail*], ptbytes_name, $runtime_line(S, eps, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata))
   -- if S.TODO = (EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)) :: ptask_tail*
@@ -309,14 +332,35 @@ rule PhpStep/anonymous-new-constructor: S ~> $constructor_start(S[.TODO = ptask_
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)
   -- if $anonymous_new_name(S, porigin) = (ptbytes_name)
   -- if $new_has_ctor(S, ptbytes_name)
+rule PhpStep/anonymous-new-arguments: S ~> $noctor_start(S[.TODO = ptask_tail*], ptbytes_name, phpType7*, $runtime_line(S, eps, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata))
+  -- if S.TODO = (EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if phpType7* =/= eps
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
+  -- if $anonymous_new_name(S, porigin) = (ptbytes_name)
+  -- if ~$new_has_ctor(S, ptbytes_name)
+rule PhpStep/anonymous-new-constructor-arguments: S ~> $constructor_start(S[.TODO = ptask_tail*], ptbytes_name, phpType7*, $runtime_line(S, eps, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata))
+  -- if S.TODO = (EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if phpType7* =/= eps
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
+  -- if $anonymous_new_name(S, porigin) = (ptbytes_name)
+  -- if $new_has_ctor(S, ptbytes_name)
 
 dec $anonymous_new_task_valid(pstate, expression) : bool
 def $anonymous_new_task_valid(S, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata) = true
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)
   -- if $anonymous_new_name(S, porigin) =/= eps
+def $anonymous_new_task_valid(S, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata) = true
+  -- if phpType7* =/= eps
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
+  -- if $anonymous_new_name(S, porigin) =/= eps
 def $anonymous_new_task_valid(S, expression) = false -- otherwise
 def $call_task_valid(S, EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)) = $anonymous_new_task_valid(S, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)
+def $call_task_valid(S, EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)) = $anonymous_new_task_valid(S, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
+  -- if phpType7* =/= eps
 
 ;; Dynamic units continue the request compiler's RTD sequence. Only closed,
 ;; successful compilation history is counted; runtime NEW visits do not count.
