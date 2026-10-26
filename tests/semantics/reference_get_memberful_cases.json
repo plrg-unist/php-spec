@@ -1,0 +1,42 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "baseline_revision": "a7b05025cc15579e252dbb319860ded15c4f305a",
+  "cases": [
+    {
+      "id": "memberful-unchanged",
+      "kind": "positive",
+      "source": "<?php\ninterface MarkA139 {}\nclass ParentA139 {\n    public $value = 7 {\n        &get { echo \"G:\", __CLASS__, \"/\", static::class, \"|\"; return $this->value; }\n    }\n}\nclass ChildA139 extends ParentA139 implements MarkA139 {\n    public $side = \"side\";\n    private $hidden = 19;\n    public const TAG = \"child-tag\";\n}\nclass LeafA139 extends ChildA139 {\n    public $leaf = 23;\n    public function __destruct() { echo \"D|\"; }\n}\n$object = new LeafA139;\necho $object instanceof MarkA139 ? \"interface|\" : \"bad-interface|\";\necho LeafA139::TAG, \"|\", $object->side, \"|\", $object->leaf, \"|\";\n$alias =& $object->value;\necho $alias === 7 ? \"alias7|\" : \"bad-alias|\";\n$alias = \"live\";\n$copy = $object->value;\n$alias = \"new\";\necho $copy === \"live\" ? \"copy|\" : \"bad-copy|\";\nunset($object);\n$alias = \"free\";\necho $alias === \"free\" ? \"free|Z|\" : \"bad-free|\";\n",
+      "source_sha256": "95efdcd17ab60f91809b8325c4d0b42bfa0d7f5eb36616f372e34915eff24f24"
+    },
+    {
+      "id": "memberful-typed-redeclaration",
+      "kind": "positive",
+      "source": "<?php\ninterface MarkB139 {}\nclass ParentB139 {\n    public int $value = 7 {\n        &get { echo \"G:\", __CLASS__, \"/\", static::class, \"|\"; return $this->value; }\n    }\n}\nclass ChildB139 extends ParentB139 implements MarkB139 {\n    public string $side = \"side\";\n    public int $value = 11;\n    public const TAG = 31;\n}\nclass LeafB139 extends ChildB139 {\n    private $hidden = \"hidden\";\n    public function __destruct() { echo \"D|\"; }\n}\n$object = new LeafB139;\necho $object instanceof MarkB139 ? \"interface|\" : \"bad-interface|\";\necho LeafB139::TAG === 31 ? \"constant|\" : \"bad-constant|\";\necho $object->side, \"|\";\n$alias =& $object->value;\necho $alias === 11 ? \"alias11|\" : \"bad-alias|\";\n$alias = \"12\";\necho $alias === 12 ? \"coerced12|\" : \"bad-coercion|\";\ntry { $alias = []; echo \"bad-array|\"; }\ncatch (TypeError $error) { echo \"type:\", $error->getMessage(), \"|\"; }\necho $object->value === 12 ? \"kept12|\" : \"bad-value|\";\nunset($object);\n$alias = \"free\";\necho $alias === \"free\" ? \"free|Z|\" : \"bad-free|\";\n",
+      "source_sha256": "ab326a6828d5bdf09038806847baec236c28b34060c92ab9caa5eaee7c95651b"
+    },
+    {
+      "id": "memberful-mixed-latest",
+      "kind": "positive",
+      "source": "<?php\ninterface MarkC139 {}\nclass ParentC139 {\n    public $value = 7 {\n        &get { echo \"G:\", __CLASS__, \"/\", static::class, \"|\"; return $this->value; }\n    }\n}\nclass FirstC139 extends ParentC139 {\n    public $first = \"first\";\n    public const FIRST = \"F\";\n}\nclass SecondC139 extends FirstC139 implements MarkC139 {\n    public $value = 17;\n    private $hidden = 29;\n}\nclass ThirdC139 extends SecondC139 {\n    public $third = \"third\";\n    public const THIRD = \"T\";\n}\nclass LeafC139 extends ThirdC139 {\n    public $value = 41;\n    public $last = \"last\";\n    public function __destruct() { echo \"D|\"; }\n}\n$object = new LeafC139;\necho $object instanceof MarkC139 ? \"interface|\" : \"bad-interface|\";\necho LeafC139::FIRST, LeafC139::THIRD, \"|\";\necho $object->first, \"/\", $object->third, \"/\", $object->last, \"|\";\n$alias =& $object->value;\necho $alias === 41 ? \"latest41|\" : \"bad-latest|\";\n$alias = \"word\";\n$copy = $object->value;\n$alias = 43;\necho $copy === \"word\" ? \"copy-word|\" : \"bad-copy|\";\necho $object->value === 43 ? \"live43|\" : \"bad-live|\";\nunset($object);\n$alias = \"free\";\necho $alias === \"free\" ? \"free|Z|\" : \"bad-free|\";\n",
+      "source_sha256": "7a71d0e1e5cfc2b1157e11134228f23f1db04458f0ae66cf26ec3a51ebdf5e34"
+    },
+    {
+      "id": "memberful-rebind-error",
+      "kind": "positive",
+      "source": "<?php\ninterface MarkD139 {}\nclass ParentD139 {\n    public $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass ChildD139 extends ParentD139 implements MarkD139 {\n    public $side = 5;\n    public const TAG = 6;\n}\nclass MiddleD139 extends ChildD139 {\n    public $value = 11;\n    public $extra = 13;\n}\nclass LeafD139 extends MiddleD139 {\n    private $hidden = 17;\n    public function __destruct() { echo \"D|\"; }\n}\n$object = new LeafD139;\n$replacement = 23;\necho $object instanceof MarkD139 ? \"interface|\" : \"bad-interface|\";\necho LeafD139::TAG, \"|\", $object->side, \"/\", $object->extra, \"|\";\ntry { $object->value =& $replacement; echo \"bad-rebind|\"; }\ncatch (Error $error) {\n    echo \"error:\", $error->getMessage(), \"|\";\n    echo $error->getFile() === __FILE__ ? \"file|\" : \"bad-file|\";\n}\necho $object->value === 11 ? \"kept11|\" : \"bad-value|\";\n$replacement = 29;\necho $object->value === 11 ? \"separate|\" : \"bad-rebound|\";\nunset($object);\necho \"Z|\";\n",
+      "source_sha256": "e412686efb8982af687cb33e6925a8a39eec85e21d7b867dfd12d588bae82846"
+    },
+    {
+      "id": "same-name-hook-control",
+      "kind": "boundary",
+      "source": "<?php\nclass ParentHook139 {\n    public $value = 7 {\n        &get { echo \"P|\"; return $this->value; }\n    }\n}\nclass ChildHook139 extends ParentHook139 {\n    public $other = 9;\n    public $value = 11 {\n        &get { echo \"C|\"; return $this->value; }\n    }\n}\nclass LeafHook139 extends ChildHook139 { public const TAG = 13; }\n$object = new LeafHook139;\n$alias =& $object->value;\necho $alias;\n",
+      "source_sha256": "a05942eb0c9b590cc03994aaa6f61ff5bfccbef76b1bb0943f09d81f5f91523a"
+    },
+    {
+      "id": "changed-type-control",
+      "kind": "boundary",
+      "source": "<?php\nclass ParentType139 {\n    public int $value = 7 {\n        &get { return $this->value; }\n    }\n}\nclass ChildType139 extends ParentType139 {\n    public const TAG = 13;\n    public string $value = \"bad\";\n}\n$object = new ChildType139;\necho $object->value;\n",
+      "source_sha256": "26ca8bcfcd304c0e975a34c9008db7bd9f7ad3459d0ffeec4401fcf33cc26ae1"
+    }
+  ]
+}

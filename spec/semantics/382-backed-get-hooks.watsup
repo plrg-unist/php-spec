@@ -540,7 +540,8 @@ def $property_hook_plain_grandchild_reference(S, porigin_class, porigin_owner, p
   -- if $property_hook_plain_child_reference(S, porigin_child, porigin_owner, ppropertydesc_child, ppropertydesc_parent)
 def $property_hook_plain_grandchild_reference(S, porigin_class, porigin_owner, ppropertydesc_child, ppropertydesc_parent) = false -- otherwise
 ;; Follow physical storage from the actual receiver, then each authentic plain
-;; redeclaration back to the sole backed reference getter. Every walk is finite.
+;; redeclaration back to the backed reference getter. Unrelated members do not
+;; alter the selected slot. Every walk is finite.
 def $property_hook_reference_plain_chain(S, ppropertydesc, ppropertydesc, n) = true
   -- if $(n > 0)
   -- if $property_hook_reference_decl(S, ppropertydesc)
@@ -550,8 +551,8 @@ def $property_hook_reference_plain_chain(S, ppropertydesc, ppropertydesc_getter,
   -- if $property_declaring_class(S.CLASSES, porigin_property) = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT =/= eps
-  -- if pclassdesc.PROPERTIES = [ppropertydesc] /\ pclassdesc.INTERFACES = eps /\ pclassdesc.CONSTANTS = eps
   -- if $hook_property_at(pclassdesc.PROPERTIES, porigin_property) = (ppropertydesc)
+  -- if $property_desc_at(pclassdesc.PROPERTIES, ppropertydesc.KEY) = (ppropertydesc)
   -- if $class_link_at(S.LINKEDPARENTS, porigin_class) = (SOURCE_PARENT porigin_parent)
   -- if $property_hook_ordinary_parent(S, ppropertydesc, n) = (ppropertydesc_parent)
   -- if $property_desc_at($property_layout(S, porigin_parent, |S.CLASSES|), ppropertydesc.KEY) = (ppropertydesc_parent)
@@ -570,7 +571,7 @@ def $property_hook_reference_receiver_chain(S, porigin_class, ppropertydesc, ppr
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT =/= eps
-  -- if pclassdesc.PROPERTIES = eps /\ pclassdesc.INTERFACES = eps /\ pclassdesc.CONSTANTS = eps
+  -- if $property_desc_at(pclassdesc.PROPERTIES, ppropertydesc.KEY) = eps
   -- if $class_link_at(S.LINKEDPARENTS, porigin_class) = (SOURCE_PARENT porigin_parent)
   -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertydesc.KEY) = (ppropertydesc)
   -- if $property_desc_at($property_layout(S, porigin_parent, |S.CLASSES|), ppropertydesc.KEY) = (ppropertydesc)
