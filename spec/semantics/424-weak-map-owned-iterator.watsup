@@ -5,6 +5,10 @@ def $weakmap_iterator_at(S, n) = true
   -- if S.OBJECTS[n] = WEAKMAPITERATOR n_map n_inner
 def $node_children(S, HOBJECT n) = [HOBJECT n_map]
   -- if S.OBJECTS[n] = WEAKMAPITERATOR n_map n_inner
+  -- if ~$instance_storage_freeing(S, n)
+def $node_children(S, HOBJECT n) = eps
+  -- if S.OBJECTS[n] = WEAKMAPITERATOR n_map n_inner
+  -- if $instance_storage_freeing(S, n)
 def $object_name(S, n) = $ptascii("InternalIterator")
   -- if S.OBJECTS[n] = WEAKMAPITERATOR n_map n_inner
 def $getclass_live_object(S, n) = true -- if $weakmap_iterator_at(S, n)
@@ -74,7 +78,49 @@ def $iterators_prune((WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) :
   -- if ~((HOBJECT n_object) <- pnode*)
 def $error_keep_iterators((WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) :: piterator_tail*, n_keep*) = (WEAKMAPOWNEDKEYITER n n_object n_map n_position n_keys*) :: $error_keep_iterators(piterator_tail*, n_keep*)
 
-;; Retain the popped owner rather than approximate the still-Many free_obj path.
+;; Unregister the backend cursor before releasing its sole Map DATA owner.
+;; The existing storage pin survives that release and notifies only afterward.
+dec $weakmap_iterator_valid(pstate, nat) : bool
+dec $weakmap_iterator_free_allowed(pstate, nat, pdestructionrelease) : bool
+def $weakmap_iterator_free_allowed(S, n_object, pdestructionrelease) = true
+  -- if $weakmap_iterator_at(S, n_object)
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if $weakmap_entries_at(S, n_map)
+  -- if ~$instance_storage_freeing(S, n_object)
+  -- if $weakmap_iterator_valid(S, n_object)
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
+  -- if $destructor_release_valid(S, pdestructionrelease)
+  -- if $heap_owners($heap_graph(S), HOBJECT n_object) = 0
+  -- if $destructor_jobs_valid(S, [DESTRUCTION_VALUE (HOBJECT n_map)])
+def $weakmap_iterator_free_allowed(S, n_object, pdestructionrelease) = false -- otherwise
+
+def $instance_storage_basic(S, pinstancestorage) = true
+  -- if $weakmap_iterator_at(S, pinstancestorage.OBJECT)
+  -- if S.OBJECTS[pinstancestorage.OBJECT] = WEAKMAPITERATOR n_map n_inner
+  -- if $(n_inner < S.NEXTITER)
+  -- if $iterator_lookup(S.ITERATORS, n_inner) = eps
+  -- if pinstancestorage.SLOTS = eps /\ pinstancestorage.NEXT = 0
+  -- if $objectprops_at(S.OBJECTPROPS, pinstancestorage.OBJECT) = eps
+  -- if $object_table_at(S.OBJECTTABLES, pinstancestorage.OBJECT) = eps
+  -- if $weakmap_storage_notice_valid(S, pinstancestorage)
+  -- if $(pinstancestorage.OBJECT < |S.DESTRUCTION.HANDLES|)
+  -- if S.DESTRUCTION.HANDLES[pinstancestorage.OBJECT] = pinstancestorage.HANDLE
+  -- if $(pinstancestorage.HANDLE > 0) /\ $(pinstancestorage.HANDLE < S.DESTRUCTION.NEXT)
+  -- if ~(pinstancestorage.HANDLE <- S.DESTRUCTION.FREE)
+  -- if pinstancestorage.OBJECT <- S.DESTRUCTION.CALLED
+
+def $weakmap_storage_notice_valid(S, pinstancestorage) = true
+  -- if $weakmap_iterator_at(S, pinstancestorage.OBJECT)
+  -- if pinstancestorage.SLOTS = eps /\ pinstancestorage.NEXT = 0
+  -- if pinstancestorage.NOTIFY = (n_wrapper)
+  -- if $(n_wrapper < |S.OBJECTS|) /\ $(pinstancestorage.OBJECT < n_wrapper)
+  -- if S.OBJECTS[n_wrapper] = WEAKREFERENCE (pinstancestorage.OBJECT)
+
+def $destruction_storage_free(S, HOBJECT n_object, pdestructionrelease) = $destructor_release_begin($gc_store_retire($instance_storage_called(S[.ITERATORS = $iterator_remove(S.ITERATORS, n_inner)][.TODO = (INSTANCE_STORAGE_STEP {OBJECT n_object, HANDLE S.DESTRUCTION.HANDLES[n_object], SLOTS eps, NEXT 0, NOTIFY $weakref_find(S, S.ALLOCATIONS, n_object), CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n_object), HOBJECT n_object), [DESTRUCTION_VALUE (HOBJECT n_map)])
+  -- if $weakmap_iterator_free_allowed(S, n_object, pdestructionrelease)
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+
+;; Keep excluded shapes owned until their explicit refusal is observed.
 def $destruction_storage_free(S, HOBJECT n_object, pdestructionrelease) = $destructor_release_replace(S, pdestructionrelease[.JOBS = (DESTRUCTION_VALUE (HOBJECT n_object)) :: pdestructionrelease.JOBS])[.COMPLETION = UNSUPPORTED "owned multiple-entry WeakMap iterator teardown"]
   -- if $weakmap_iterator_at(S, n_object)
   -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
@@ -82,6 +128,7 @@ def $destruction_storage_free(S, HOBJECT n_object, pdestructionrelease) = $destr
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
   -- if $destructor_release_valid(S, pdestructionrelease)
   -- if $heap_owners($heap_graph(S), HOBJECT n_object) = 0
+  -- if ~$weakmap_iterator_free_allowed(S, n_object, pdestructionrelease)
 
 dec $weakmap_iterator_single_cursor(pstate, nat) : bool
 def $weakmap_iterator_single_cursor(S, n_object) = true
@@ -89,7 +136,6 @@ def $weakmap_iterator_single_cursor(S, n_object) = true
   -- if $iterator_lookup(S.ITERATORS, n_inner) = (WEAKMAPOWNEDITER n_inner n_object n_map n_position)
 def $weakmap_iterator_single_cursor(S, n_object) = false -- otherwise
 
-dec $weakmap_iterator_valid(pstate, nat) : bool
 def $weakmap_iterator_valid(S, n_object) = true
   -- if $weakmap_iterator_at(S, n_object)
   -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner

@@ -500,9 +500,9 @@ Finite direct-leaf Maps now use a nonowning snapshot of original Key IDs for
 owned manual traversal. Current/valid resolve the next surviving entry; next
 advances past that resolved selection, and rewind starts at the original history.
 Deleting a consumed or current head can normalize Map to the exact surviving
-singleton without rebasing the cursor or retaining dead Keys. Both originals
-normalize before wrapper teardown; still-Many teardown restores its popped
-release owner and explicitly refuses.
+singleton without rebasing the cursor or retaining dead Keys. Those cursor
+originals normalize before teardown; the finite-table release path below also
+handles a still-populated Map.
 
 Two sources and 190/4 author plus 174/4 peer checks pass 364/8 at `a2fe0cc36`/415.
 They observe B before deleting A behind it, or remove selected A with a shared
@@ -516,6 +516,28 @@ activation, otherwise the unchanged retiring-Key scan runs. Admission, physical
 edges and collector rules remain unchanged. Explicit mutation, wider payloads or
 contexts, active outer traversal, tail-death source histories, hidden native
 handles and GC/CONFIG remain partial. [Review](../../coverage/semantics/weak-map-review.json).
+
+Owned Iterator teardown while Map still has multiple entries now unregisters
+its backend cursor and transfers Map DATA into one real release job. Old
+singleton disposal is unchanged. An existing storage pin keeps Wrapper allocated
+through that job, whether an external Map owner retains the table or the last
+owner unregisters every Key and destroys each Value slot. Duplicate slots remain
+separate owners/jobs. Wrapper notification and storage completion follow Map
+cleanup; CALLED history alone does not detach its DATA edge.
+
+Three originals agree across `e983fe7b0`/`f3623f260` with 415 modules; author 185/4
+and independent 166/4 pass 351/8 at the latter cut. Normal unset, real supplied-
+Exception helper unwind, retained Wrapper and external Map/shared Value cases
+preserve typed identities and full endings. The original repaired packet keeps
+normal1 but failed unwind0; a diagnostic0 isolates the valid final frame whose
+activation ended too soon. The correction retains ongoing destruction frames
+without weakening their authority, and reruns only affected unwind/retained.
+Constructed cursor, unrelated-row and coherent non-Throwable pending controls
+add no PHP credit. The earlier Many-refusal helper is historical for this newly
+admitted domain. Throwing Value destructors, callback/reacquisition, wider
+payload/source/outer histories, hidden handles and physical GC/CONFIG remain
+partial; there is no intermediate WI/WM observation claim.
+[Review](../../coverage/semantics/weak-map-review.json).
 
 ## By-reference entry cells and Key retirement
 

@@ -3240,9 +3240,13 @@ NULL, rewind identity and empty access after Key death; two sources and 308
 Boolean/eight raw checks pass at `25ff16620`/413. Finite manual cursors now keep
 weak Key history through entry death and singleton normalization, advancing past
 the actual surviving selection. Two new sources and 364 Boolean/eight raw checks
-pass at `a2fe0cc36`/415; original timeouts retain zero agreement. Still-Many
-wrapper teardown refuses; wider histories, active outer loops, hidden allocation
-handles and GC/CONFIG remain partial.
+pass at `a2fe0cc36`/415; original timeouts retain zero agreement. Owned Iterator
+teardown while Map still has multiple entries now transfers DATA through a
+Wrapper storage pin, preserving retained owners and supplied-Throwable helper
+unwind. Three source agreements keep mixed `e983fe7b0`/`f3623f260` cuts; 351
+Boolean/eight raw checks pass at `f3623f260`/415. Old singleton disposal is
+unchanged; wider callback/payload histories, active outer loops, hidden handles
+and GC/CONFIG remain partial.
 
 Bounded by-reference WeakMap traversal shares the entry's cell and preserves
 rebinding plus escaped aliases through DATA or Key retirement. A reference
