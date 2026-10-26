@@ -1611,6 +1611,12 @@ while the builder remains protected through finally and storage cleanup.
 The [Generator spread review](coverage/semantics/array-generator-unpack-review.json)
 records acquisition-state errors, DIRECT COW copies, invalid keys and supplied
 throws. Its affected check retires the earlier Generator refusal.
+Named by-value Generator spreads also retain ordinary scalar reference cells
+inside finite array yields. Held aliases remain shared across COW; dropping the
+outside alias permits a sole cell to unwrap. The yielded array stays in the
+Generator's VALUE through CLOSED, while DATA release ends its weakly observed
+lifetime. A returned Generator from an Aggregate getter uses the same route;
+by-reference producers keep their earlier admission boundary.
 Wider payloads, operand modes, delegation and Traversable lifetimes remain partial.
 The [nested-cache review](coverage/semantics/array-traversable-nested-cache-review.json)
 adds live-reference/deep COW and abrupt retirement for both spread engines,
