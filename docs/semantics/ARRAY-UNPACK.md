@@ -89,8 +89,26 @@ no entry. Quiet methodless cleanup discards the raw current, DATA and partial
 builder together, then prunes their unowned nodes before catch. Four original
 sources and 528 reached premises (four raw steps) are recorded in the
 [by-reference Iterator cache review](../../coverage/semantics/array-iterator-byref-reference-cache-review.json).
-Owning Iterator fields, destructors, special cells and wider graphs remain
-outside this admission.
+The destructor-bearing by-reference route below has its own bounded admission;
+owning Iterator fields, special cells and wider graphs remain outside both.
+
+An ordinary Iterator with `&current()` and a real `__destruct` can return the
+same outer array cell. After `key()` rebinds that cell, the spread entry takes
+the new row with its scalar alias. When DATA is the last Iterator owner, the
+partial builder and alias remain protected through the destructor. Its alias
+and tail writes precede assignment and the next literal item. A retained
+external Iterator delays the destructor until explicit `unset` after assignment;
+the shared alias then updates the assigned row. A supplied key exception with
+an earlier ALIAS entry keeps that partial builder until the raw current cell
+and DATA retire, runs the destructor, and cancels the builder before catch.
+The release continuation checks class and method history plus the builder graph
+after the cached current has been cleared. A separately tested Aggregate getter
+can promote the same Iterator. Four exact original source agreements include
+that Aggregate promotion; strict424 and 670 reached premises (664 Boolean and
+six raw steps) cover the three direct Iterator sources in the
+[by-reference destructor review](../../coverage/semantics/array-iterator-byref-destructor-review.json).
+Owning instance fields and special, typed, proxy, object, cyclic or debt-bearing
+descendants remain partial.
 
 `427-array-generator-unpack.watsup` adds ordinary named Generator bodies with
 received parameters and reference yields, using real borrowed native resumes.
