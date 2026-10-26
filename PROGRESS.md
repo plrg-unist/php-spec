@@ -18,7 +18,7 @@ Source3/full412 and509 premises (186/202/121) retain `28eb9cc6d`/412,
 including derived fresh/metadata/refusal controls. Genuine author Unsupported
 occurs after H/default Warning; native preparation, baseline and static retain0.
 [Delayed Stringable RHS review](coverage/semantics/concat-stringable-warning-review.json).
-Publication independently reviewed; exact actual-tail candidate review pending.
+Publication and exact actual-tail composition are independently reviewed.
 Incoming414 composition retains the original tested412 cuts without renewal.
 Paused boundaries remain unchanged.
 
@@ -44,7 +44,7 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | M151 | WeakMap InternalIterator manual rewind/valid/current/key/next: native2/genuine refusal closed;424-only source2 packet on CPU3. |
-| A51 | String R-offset callbacks: corrected strict413/source6 closed; focused1142 freezing on retained CPU4. |
+| A51 | String R-offset callbacks: source6/strict413 retain `92f758a52`; focused1142/raw17 PASS/reaped, CPU4 released; publication preparing. |
 | CLASS124 | Direct-This Get entry: native-first scoping, no WT/actor/CPU. |
 
 Iterator49/50/51/52/53, V99/V100/V101/V102/V103, M132/M133/M134/M135/M136/M137/M138/M139/M140/M141/M142/M143/M144/M145/M146/M147/M148/M149/M150, A46/A47/A48/A49/A50, OP79/80/81/82/83/84/85/86, Source86/87/88/89/90, COMP118/119/120/121 and CLASS119/120/121/122/123 are integrated
