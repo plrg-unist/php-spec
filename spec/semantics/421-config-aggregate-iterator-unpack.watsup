@@ -239,9 +239,7 @@ def $config_aggregate_return_allowed(S, pconfigaggregate) = true
   -- if $config_aggregate_owners(S, pconfigaggregate, 1)
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if $heap_owners($heap_graph(S), HOBJECT n) = 1
-  -- if $destructor_method(S, n) = (pmethoddesc)
-  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
-  -- if $node_children(S, HOBJECT n) = eps
+  -- if $config_iterator_finalizer(S, n)
   -- if $config_iterator_start(S, pconfigaggregate.CALL, pconfigaggregate.INPUT, n)
 def $config_aggregate_return_allowed(S, pconfigaggregate) = false -- otherwise
 ;; The owned return temporary becomes Generator DATA after native get_iterator

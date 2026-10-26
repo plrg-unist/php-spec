@@ -9,6 +9,7 @@ dec $config_iterator_input_nodes(pconfigiterator) : pnode*
 dec $config_iterator_quiet_input(pstate, pconfigiterator) : bool
 dec $config_iterator_producer_valid(pstate, pconfigiterator) : bool
 dec $config_iterator_quiet_aggregate_data(pstate, pconfigiterator) : bool
+dec $config_iterator_finalizer(pstate, nat) : bool
 dec $config_iterator_finalizable_aggregate_data(pstate, pconfigiterator) : bool
 dec $config_iterator_aggregate_data(pstate, pconfigiterator) : bool
 dec $config_iterator_history(pstate, pconfigiterator) : bool
@@ -142,13 +143,18 @@ def $config_iterator_quiet_aggregate_data(S, pconfigiterator) = true
   -- if $destructor_method(S, pconfigiterator.OBJECT) = eps
   -- if $node_children(S, HOBJECT pconfigiterator.OBJECT) = eps
 def $config_iterator_quiet_aggregate_data(S, pconfigiterator) = false -- otherwise
+def $config_iterator_finalizer(S, n) = true
+  -- if $destructor_method(S, n) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = eps /\ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
+  -- if $node_children(S, HOBJECT n) = eps
+def $config_iterator_finalizer(S, n) = false -- otherwise
 def $config_iterator_finalizable_aggregate_data(S, pconfigiterator) = true
   -- if pconfigiterator.PRODUCER = (n_aggregate)
   -- if ~$config_iterator_owning_input(pconfigiterator)
   -- if $config_iterator_producer_valid(S, pconfigiterator)
-  -- if $destructor_method(S, pconfigiterator.OBJECT) = (pmethoddesc)
-  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
-  -- if $node_children(S, HOBJECT pconfigiterator.OBJECT) = eps
+  -- if $config_iterator_finalizer(S, pconfigiterator.OBJECT)
 def $config_iterator_finalizable_aggregate_data(S, pconfigiterator) = false -- otherwise
 def $config_iterator_aggregate_data(S, pconfigiterator) = ($config_iterator_quiet_aggregate_data(S, pconfigiterator) \/ $config_iterator_finalizable_aggregate_data(S, pconfigiterator))
 

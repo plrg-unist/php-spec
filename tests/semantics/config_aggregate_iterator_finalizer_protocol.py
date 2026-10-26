@@ -34,6 +34,11 @@ def $test_retired_front(S, 5) = true
   -- if S.TODO = (THROW_SEARCH n) :: ptask*
   -- if S.ITERATORS = eps
   -- if $test_fresh_aggregate_tasks(S.TODO)
+def $test_retired_front(S, 6) = true
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask*
+  -- if pdestructionoperation.SOURCE = CONFIG_ITERATOR pconfigiterator "key"
+  -- if pdestructionoperation.PENDING = (n_pending)
+  -- if ~((HOBJECT pconfigiterator.OBJECT) <- S.ALLOCATIONS)
 def $test_retired_front(S, n_stage) = false -- otherwise
 dec $test_retired_seek(pstate, nat, nat) : pstate
 def $test_retired_seek(S, n_stage, 0) = S
@@ -172,7 +177,6 @@ def checks(program, path, name):
             '$heap_owners($heap_graph(S_finish),HOBJECT n_iterator) = 1',
             '$weakref_get(S_finish,n_iterator_watch) = POBJECT n_iterator',
             *prior.budget('S_finish'), *driver.common.public('S_finish'),
-            'S_release = $test_fresh_aggregate_step(S_finish)',
             *reach('S_ready', 'S_finish', 4),
             'S_ready.TODO = (CONFIG_ITERATOR pconfigiterator_ready "ready") :: ptask_ready*',
             'pconfigiterator_ready.PRODUCER = (n_aggregate)',
@@ -220,8 +224,25 @@ def checks(program, path, name):
             'S_throw.STORE[n_stamp_cell] = DEFINED (PINT 0)',
             'S_throw.PRECISIONINI = ' + text('14'),
             '$test_outputs(S_throw.EVENTS) = ' + text(second),
-            *driver.common.public('S_throw')]
-        source = 'S_throw'
+            *driver.common.public('S_throw'),
+            *reach('S_exit', 'S_throw', 6),
+            'S_exit.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_exit*',
+            'pdestructionoperation.SOURCE = CONFIG_ITERATOR pconfigiterator_exit "key"',
+            'pconfigiterator_exit.OBJECT = n_iterator',
+            'pconfigiterator_exit.PRODUCER = (n_aggregate)',
+            'pdestructionoperation.PENDING = (n_saved)',
+            'n_iterator <- S_exit.DESTRUCTION.CALLED',
+            '$config_iterator_finalizable_aggregate_data(S_exit,pconfigiterator_exit)',
+            '$config_iterator_retired_scope(S_exit,pconfigiterator_exit)',
+            '$eager_operation_source_valid(S_exit,pdestructionoperation)',
+            '$destructor_operation_valid(S_exit,pdestructionoperation)',
+            '$useriter_cursor_count(S_exit.ITERATORS,pconfigiterator_exit.ITERATOR) = 0',
+            '~((HOBJECT n_iterator) <- S_exit.ALLOCATIONS)',
+            '$weakref_get(S_exit,n_iterator_watch) = PNULL',
+            'S_exit.STORE[n_stamp_cell] = DEFINED (PINT 1)',
+            '$test_outputs(S_exit.EVENTS) = ' + text(second + 'D|'),
+            *prior.budget('S_exit'), *driver.common.public('S_exit')]
+        source = 'S_exit'
     values += [*reach('S_disposed', source, 5),
         'S_disposed.TODO = (THROW_SEARCH n_pending) :: ptask_disposed*',
         'S_disposed.ITERATORS = eps',
