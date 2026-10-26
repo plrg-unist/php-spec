@@ -504,7 +504,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | GENERATOR_UNPACK pgeneratorunpack text
   | USERITER_RESULT nat nat statement porigin int text poperand | USERITER_NEXT nat nat statement porigin int poperand
   | ARRAY_ITERATOR parrayiterator text
-  | ARRAY_ITERATOR_RELEASE parrayiterator
+  | ARRAY_ITERATOR_RELEASE parrayiterator text
   | ARRAY_GENERATOR parraygenerator text
   | ARRAY_AGGREGATE parrayaggregate
   | EVAL_COMPILE_RESUME pevalcompile | EVAL_COMPILE_END nat | EVAL_COMPILE_EXIT int | EVAL_COMPILE_FORMAT_EXIT int | EVAL_COMPILE_FATAL pevalcompilefatal | EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender
