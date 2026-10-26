@@ -16,7 +16,7 @@ $temporary =& $box->plain;
 unset($temporary);
 echo 'B|';
 $copy = (array)$box; // CAST
-echo 'C:', $copy['plain'] === 2, ':', $copy['value'] === 7, ':', count($copy) === 2, '|';
+echo 'C:', $copy['plain'] === 2, ':', $copy['value'] === 7, ':', ($copy === ['plain'=>2,'value'=>7]), '|';
 $copy['plain'] = 9;
 echo 'R:', $box->plain === 2, ':', $copy['plain'] === 9, '|';
 unset($copy, $box);
@@ -38,7 +38,7 @@ $temporary =& $box->plain;
 unset($temporary);
 echo 'B|';
 $copy = (array)$box; // CAST
-echo 'C:', count($copy) === 2, ':', $copy['value'] === 7, '|';
+echo 'C:', ($copy === ['plain'=>$copy['plain'],'value'=>7]), ':', $copy['value'] === 7, '|';
 $box->plain = 0;
 echo 'K:', $box->plain === 0, '|';
 unset($box);
@@ -78,7 +78,7 @@ echo 'B|';
 $copy = (array)$box; // CAST
 $copy['plain'] = 9;
 $box->plain = 3;
-echo 'R:', $box->plain === 3, ':', $copy['plain'] === 9, ':', $copy['value'] === 7, ':', $copy['tag'] === 5, ':', count($copy) === 3, '|';
+echo 'R:', $box->plain === 3, ':', $copy['plain'] === 9, ':', $copy['value'] === 7, ':', $copy['tag'] === 5, ':', ($copy === ['plain'=>9,'value'=>7,'tag'=>5]), '|';
 unset($copy, $box);
 echo 'A|';
 ''',
