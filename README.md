@@ -1617,6 +1617,9 @@ outside alias permits a sole cell to unwrap. The yielded array stays in the
 Generator's VALUE through CLOSED, while DATA release ends its weakly observed
 lifetime. A returned Generator from an Aggregate getter uses the same route;
 by-reference producers keep their earlier admission boundary.
+The [Generator reference-cache review](coverage/semantics/array-generator-reference-cache-review.json)
+records four exact source agreements and 367 focused premises; the first peer
+storage-frontier assertion remains a preserved zero-credit failure.
 Wider payloads, operand modes, delegation and Traversable lifetimes remain partial.
 The [nested-cache review](coverage/semantics/array-traversable-nested-cache-review.json)
 adds live-reference/deep COW and abrupt retirement for both spread engines,

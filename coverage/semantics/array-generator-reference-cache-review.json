@@ -1,0 +1,39 @@
+{
+  "milestone": "A58 named Generator spread cache arrays with scalar reference descendants",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local vendor/php-src",
+  "scope": "Ordinary named by-value Generator yields a finite DIRECT ARRAY graph with defined scalar ALIAS leaves. Its VALUE retains the row through PAUSED and CLOSED; the sole DATA owner retires before the partial builder. Held and dropped outside aliases distinguish shared-cell COW from singleton unwrapping. A borrowed Aggregate getter may return the same kind of named Generator.",
+  "implementation": {
+    "revision": "459060f1d764dd7feb53c32e875465f4624a0c5d",
+    "file": "spec/semantics/427-array-generator-unpack.watsup",
+    "sha256": "28f0ed853c0db7893c6587dd0eac97e8e73f6b58250a3c5a84bd5d3a0a3dc3cc",
+    "boundary": "The old value success and new array arm are disjoint. Saved producer metadata fences by-reference Generator functions, including temporary by-value yields. The new builder arm reuses the existing scalar-cell graph validator. No key, resume, storage, release, generic ownership or schema change. Objects, cycles, debt, manual methods and wider operands remain outside this admission."
+  },
+  "validation": {
+    "native_direct3": "Clean f2906a397f4a7878fabc91226f03d191c16a0e50; .tools/a58-native3/report.json SHA-256 ad065289fa14cd561393f3da9928887d94379c9dca032fdd57ec186312075a80; three exact exit-0 quiet originals.",
+    "native_aggregate1": "Clean 4b35e800073dd514aed55e3e98d07d19e7d27e77; .tools/a58-aggregate-native1/report.json SHA-256 71df852db0caf41235c8933ebc2e748ca4e1adce30843059ad8d8bcfceb88863; one exact exit-0 quiet original.",
+    "genuine_baseline": "Model-only on those four original native source paths, .tools/a58-baseline3/report.json SHA-256 49cb5b82750aded503849b9b0b3d04158742ad91a2e5732b1b2a54f5b05dcb83 and .tools/a58-aggregate-baseline1/report.json SHA-256 19f6ed8ae398a65b6b75b62b280c6bb682494abfd23547571c066d26a751e005. All four reach the old cache/builder Unsupported after their discriminating prefixes; zero agreement credit, no duplicate native run.",
+    "strict": "Clean d116754ffad23520a03c4de95d26697439499051, 421 modules, SL/cache disabled/determinism enabled: .tools/a58-strict/report.json SHA-256 a7ae6e6ecf3cf902d1b7288dea713361f441bf0732d29b47ee8687b85522c8cd; PASS, exit 0, quiet, group empty.",
+    "source": "Same clean d116 cut, model-only on the four exact native originals: .tools/a58-source4/report.json SHA-256 03b722692211b3a4cf9d8acf08e31ac1da6f0def3f358a3096cff610c170c659; all four normal, exit 0, byte-exact, quiet, groups empty. No native replay.",
+    "focused": "Retained-alias author172 including two raw steps passed at d116: .tools/a58-author-focused/report.json SHA-256 852fa0c45b8bb10d63bffb1f652f2ca7b8d5cc90caba8af37d059c4e9eaed34f. Corrected abrupt peer195 including two raw steps passed at clean 124dad576295731daf4ef144335b1acb91ace8f5: .tools/a58-peer-focused2/report.json SHA-256 5d8f865ea6e107e0ef6e8ea8379be6adbc31f9853f06fcd6c193b3b4665516f9. Total 367 premises: 363 Boolean and four raw. Both exact true, quiet, under 180-second case caps, with empty child and outer process groups. Only the peer fixture and later docs changed between cuts; runtime and accepted sources did not.",
+    "original_failure": "At d116, first peer226 including three raw steps failed at unreachable public GENERATOR_STORAGE_STEP NEXT1 after the authentic pending throw. .tools/a58-peer-focused/report.json SHA-256 5819dbfb01320dab4c630be55bab0450eb9ee41bf60ff2be412bbe06b782a96a and its original generated fixture/streams are archived with zero credit. Quiet generic cleanup may prune DATA without that public storage frontier; the corrected peer follows the actual data-released transition."
+  },
+  "independent_review": "lifecycle132_review accepted source scope, runtime domain, strict421/source4 and both focused groups. The first peer frontier failure keeps zero credit; no joined execution credit is inferred from later integration.",
+  "execution": {
+    "profile": "tests/semantics/profile.json SHA-256 9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94; -n, opcache CLI/JIT disabled, precision 14, serialize_precision -1, UTC, error_reporting 30719, zend.assertions 1; LC_ALL=C and TZ=UTC",
+    "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "focused_commands": [
+      "taskset -c 4 timeout -s INT -k 3s 210s prlimit --as=2147483648 -- python3 -B tests/semantics/array_generator_reference_cache_state.py --source-report .tools/a58-native3/report.json --output .tools/a58-author-focused",
+      "taskset -c 4 timeout -s INT -k 3s 210s prlimit --as=2147483648 -- python3 -B tests/semantics/array_generator_reference_cache_state_review.py --source-report .tools/a58-native3/report.json --output .tools/a58-peer-focused2"
+    ]
+  },
+  "archive": {
+    "location": "../php-spec-evidence-archive/array-generator-reference-cache-58/raw.tar.xz",
+    "sha256": "22d53e8baa66117fa0b66ffa3bf12bc90033ed7f93d259bd79b61aad23003f41",
+    "bytes": 63596,
+    "members": 174,
+    "manifest": "../php-spec-evidence-archive/array-generator-reference-cache-58/manifest.json",
+    "recovery": "For a selected report, recreate /home/user/workspace/php-spec/.tools/array-generator-reference-cache-58 at its tested revision: f2906a397f4a7878fabc91226f03d191c16a0e50 for direct native/baseline, 4b35e800073dd514aed55e3e98d07d19e7d27e77 for Aggregate native/baseline, d116754ffad23520a03c4de95d26697439499051 for strict/source/author/original failed peer, or 124dad576295731daf4ef144335b1acb91ace8f5 for corrected peer. Restore the original worktree cwd, .tools paths and project-pinned PHP/adapter/numeric providers recorded in that report. Verify the archive SHA-256, extract raw.tar.xz there, and use fresh output paths for any replay."
+  },
+  "remaining": "Full array spread, Traversable, Generator ownership and PHP core semantics remain partial; by-reference Generator producers and owning/cyclic/debt payloads keep their old admission."
+}

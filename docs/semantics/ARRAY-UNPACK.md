@@ -115,6 +115,8 @@ finally runs with the Generator live, then cleanup retires DATA and the partial
 builder and its scalar cell. An Aggregate getter returning a named Generator
 follows the same bounded route. Manual Generator methods, owning cached objects,
 cyclic/debt graphs and wider producer forms remain partial.
+Four original sources and 367 focused premises (four raw steps) are recorded in
+the [Generator reference-cache review](../../coverage/semantics/array-generator-reference-cache-review.json).
 
 The shared cache validator also admits nested graphs returned through the existing
 Aggregate promotions below. Runtime descendants cascade when their last physical
