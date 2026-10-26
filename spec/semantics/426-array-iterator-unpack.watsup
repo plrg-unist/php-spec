@@ -17,6 +17,7 @@ dec $array_iterator_source(pstate, parrayiterator) : bool
 dec $array_iterator_stage(parrayiterator, text) : bool
 dec $array_iterator_valid(pstate, parrayiterator, text) : bool
 dec $array_iterator_table(pstate, nat) : bool
+dec $array_iterator_reference_cell(pstate, nat) : pvalue?
 dec $array_iterator_value(pstate, poperand) : pvalue?
 dec $array_iterator_value_away(pstate, pvalue, nat) : bool
 dec $array_iterator_reference_items(pstate, nat, pentry*, nat*) : bool
@@ -168,7 +169,7 @@ def $array_iterator_value(S, KNOWN (PARRAY n)) = (PARRAY n)
   -- if $array_iterator_table(S, n)
 def $array_iterator_value(S, KNOWN pvalue) = (pvalue)
   -- if $literal_reference_flat_leaf(S, pvalue)
-def $array_iterator_value(S, REFERENCE n) = (pvalue)
+def $array_iterator_reference_cell(S, n) = (pvalue)
   -- if $(n < |S.STORE|) /\ (HCELL n) <- S.ALLOCATIONS
   -- if n <- S.REFCELLS /\ ~(n <- S.LITERALREFDEBTS)
   -- if ~$foreach_released_cell(S, n) /\ ~$typed_cv_string_released_cell(S, n) /\ ~$update_released_cell(S, n)
@@ -176,6 +177,9 @@ def $array_iterator_value(S, REFERENCE n) = (pvalue)
   -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
   -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
   -- if S.STORE[n] = DEFINED pvalue
+def $array_iterator_reference_cell(S, n) = eps -- otherwise
+def $array_iterator_value(S, REFERENCE n) = (pvalue)
+  -- if $array_iterator_reference_cell(S, n) = (pvalue)
   -- if $array_iterator_value(S, KNOWN pvalue) = (pvalue)
 def $array_iterator_value(S, poperand) = eps -- otherwise
 

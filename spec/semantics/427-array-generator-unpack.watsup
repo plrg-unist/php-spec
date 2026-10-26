@@ -74,6 +74,12 @@ def $array_generator_builder(S, parraygenerator) = true
   -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
   -- if ~$generator_reference_producer(S, pgenerator)
   -- if $array_iterator_reference_items(S, parraygenerator.ARRAY, S.ARRAYS[parraygenerator.ARRAY].ITEMS, [parraygenerator.ARRAY])
+def $array_generator_builder(S, parraygenerator) = true
+  -- if ~(parraygenerator.ARRAY <- S.LITERALARRAYDEBTS)
+  -- if ~$array_null_const_items(S, S.ARRAYS[parraygenerator.ARRAY].ITEMS, [parraygenerator.ARRAY])
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if $generator_reference_producer(S, pgenerator)
+  -- if $array_iterator_reference_items(S, parraygenerator.ARRAY, S.ARRAYS[parraygenerator.ARRAY].ITEMS, [parraygenerator.ARRAY])
 def $array_generator_builder(S, parraygenerator) = false -- otherwise
 def $array_generator_stage(S, parraygenerator, text) = $array_generator_source(S, parraygenerator)
   -- if text <- ["rewind", "next", "ready"]
@@ -96,9 +102,17 @@ def $array_generator_count(ptask :: ptask_tail*, porigin) = $array_generator_cou
   -- if ~$array_generator_at(ptask, porigin)
 def $array_generator_valid(S, parraygenerator, text) = ($array_generator_history(S, parraygenerator) /\ $array_generator_stage(S, parraygenerator, text) /\ $array_generator_count(S.TODO, parraygenerator.SITE) = 1)
 
-def $array_generator_value(S, parraygenerator) = $array_iterator_value(S, REFERENCE n_cell)
+def $array_generator_value(S, parraygenerator) = (pvalue)
   -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.REFCELL = (n_cell)
+  -- if $array_iterator_value(S, REFERENCE n_cell) = (pvalue)
+def $array_generator_value(S, parraygenerator) = (PARRAY n)
+  -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
+  -- if $generator_reference_producer(S, pgenerator)
+  -- if pgenerator.REFCELL = (n_cell)
+  -- if $array_iterator_reference_cell(S, n_cell) = (PARRAY n)
+  -- if $array_iterator_value(S, REFERENCE n_cell) = eps
+  -- if $array_iterator_reference_table(S, n)
 def $array_generator_value(S, parraygenerator) = (pvalue)
   -- if S.OBJECTS[parraygenerator.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.REFCELL = eps
