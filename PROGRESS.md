@@ -18,8 +18,8 @@ transitions pass at the corrected runtime. Earlier compilation/ingress failures
 and the finite entry diagnostic remain zero credit. The maintained runners also
 pass preparation-only checks; those add no semantic agreements.
 [Reference-Get review](coverage/semantics/reference-get-hooks-review.json).
-Publication is independently reviewed; actual-tail integration is pending and
-wider hooks remain partial.
+Publication and exact composition over the released Source98 tail are
+independently reviewed and integrated. Wider hooks remain partial.
 
 ## Integrated behavior and entrypoints
 
@@ -43,10 +43,9 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
-| CLASS132 | Source2/focused251 Boolean+six raw and maintained preparation pass; publication reviewed, actual-tail preservation review pending. No CPU. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93, Source86/87/88/89/90/91/92/93/94/95/96/97, COMP118/119/120/121/122/124/125/126/127/128 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93, Source86/87/88/89/90/91/92/93/94/95/96/97, COMP118/119/120/121/122/124/125/126/127/128 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
