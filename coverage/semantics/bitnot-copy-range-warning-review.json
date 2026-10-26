@@ -1,7 +1,7 @@
 {
   "milestone": "OP93 copied range-only bitwise NOT Warning",
   "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle and profile",
-  "status": "author validated; independent review pending",
+  "status": "independently reviewed bounded semantics",
   "scope": "An evaluated nonreference PFLOAT copy whose safe integer conversion emits exactly one RANGEWARNING enters the existing BITNOT_RANGE_WARNING continuation. Checked BITNOT source, compiled operand line and immutable bits authenticate entry. Callback writes or source retirement cannot replace the saved integer; a supplied throw cancels complement and delivery.",
   "engine": [
     "vendor/php-src/Zend/zend_compile.c:zend_compile_unary_op",
@@ -46,5 +46,12 @@
     "tests/semantics/bitnot_copy_range_warning_cases.py": "10de83df2ac9d86f333cb1dafb4949d0f7bfdc61df9c951cb93a623a3ce28704",
     "tests/semantics/bitnot_copy_range_warning_protocol.py": "08911273938ce649e20cda8e79c4690ccec2772ba734711520642e9a0d856f40"
   },
-  "remaining": "Copied values with other notice vectors, reference results, other evaluated producers, owning replacements and wider callbacks/lifetimes remain partial. No numeric conversion, plain-CV range, finite-fractional or NaN implementation is renewed; no complete BITNOT family claim."
+  "remaining": "Copied values with other notice vectors, reference results, other evaluated producers, owning replacements and wider callbacks/lifetimes remain partial. No numeric conversion, plain-CV range, finite-fractional or NaN implementation is renewed; no complete BITNOT family claim.",
+  "independent_review": {
+    "revision": "427da68f17878c0b92db26f179141968cabd56aa",
+    "semantic_revision": "5affe8014d500be85d29b8ee22dc87c05945562d",
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-93/review-independent-5affe8014/report.json",
+    "sha256": "2a8a1888606145664e1f3555d606c4a109d3038d8d1c44942899b0ee11e6dd39",
+    "result": "Two fresh exact native/model cross-combinations: INF by-value with returning false handler gives cached -1 and one default Warning after source unset; finite 2^63 by-value with supplied throw cancels result and outer store. Both exit0/no timeout/reaped. Independent reviewer checked disjoint route, 213 reached conditions, ledger and metadata."
+  }
 }
