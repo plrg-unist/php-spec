@@ -1,0 +1,21 @@
+{
+  "optimized_variable_basic": "<?php\nfunction f($x) { echo \"F|$x|\"; return $x + 1; }\n$n = 'f';\necho (2 |> $n(...)), '|';\n",
+  "optimized_rebound_name": "<?php\nfunction f($x) { echo 'F|'; return $x; }\nfunction g($x) { echo 'G|'; return $x + 1; }\n$n = 'f';\nfunction left() { global $n; $n = 'g'; echo 'L|'; return 2; }\necho (left() |> $n(...)), '|';\n",
+  "optimized_temporary_name": "<?php\nfunction f($x) { echo \"F|$x|\"; return $x + 1; }\nfunction choose() { echo 'R|'; $tail = 'f'; return '' . $tail; }\necho (3 |> choose()(...)), '|';\n",
+  "optimized_missing_line": "<?php\nfunction name($x) { return 'missing'; }\ntry {\n    2 |> name(\n      1\n    )(...);\n} catch (Error $e) {\n    echo $e->getMessage(), '|', $e->getLine(), '|';\n}\n",
+  "optimized_byref_send": "<?php\nfunction set(&$x) { echo 'ENTER|'; }\n$n = 'set';\ntry {\n    5 |> $n(...);\n} catch (Error $e) {\n    echo $e->getMessage(), '|', $e->getLine(), '|';\n}\n",
+  "optimized_strict": "<?php\ndeclare(strict_types=1);\nfunction take(int $x) { echo 'ENTER|'; }\n$n = 'take';\ntry {\n    '3' |> $n(...);\n} catch (TypeError $e) {\n    echo $e->getMessage(), '|', $e->getLine(), '|';\n}\n",
+  "optimized_ref_return": "<?php\n$v = 0;\nfunction &slot($x) { global $v; echo \"S|$x|\"; return $v; }\nfunction set(&$x) { $x = 9; echo 'T|'; }\n$n = 'slot';\nset(1 |> $n(...));\necho $v, '|';\n",
+  "optimized_owned_missing": "<?php\nclass L { public function __destruct() { echo 'L|'; } }\n$n = 'missing';\ntry {\n    (new L) |> $n(...);\n} catch (Error $e) {\n    echo 'E|', $e->getMessage(), '|';\n}\n",
+  "optimized_owned_byref": "<?php\nclass L { public function __destruct() { echo 'L|'; } }\nfunction set(&$x) { echo 'ENTER|'; }\n$n = 'set';\ntry {\n    (new L) |> $n(...);\n} catch (Error $e) {\n    echo 'E|', $e->getMessage(), '|';\n}\n",
+  "optimized_original_missing": "<?php\nfunction n($x) { return \"missing\"; }\necho 2 |> n(\n 1\n)(...);\n",
+  "nonoptimized_string_control": "<?php\nfunction f($x) { echo \"F|$x|\"; return $x + 1; }\n$n = 'f';\necho (7 |> $n), '|';\n",
+  "selected_name": "<?php\nfunction f($x) { echo \"F|$x|\"; return $x + 1; }\nfunction g($x) { echo \"G|$x|\"; return $x + 2; }\n$n = 'f';\nfunction choose() { global $n; $old = $n; $n = 'g'; echo 'R|'; return $old; }\necho (3 |> choose()(...)), '|', $n, '|';\n",
+  "owned_missing_rhs": "<?php\nclass L { public function __destruct() { echo 'L|'; } }\nfunction choose() { echo 'R|'; return 'missing'; }\ntry {\n    (new L) |> choose()(...);\n} catch (Error $e) {\n    echo 'E|', $e->getMessage(), '|', $e->getLine(), '|';\n}\n",
+  "existing_evaluated_name": "<?php\nfunction f($x) { echo \"F\"; echo $x; return $x + 1; }\nfunction left() { echo \"L\"; return 2; }\n$name = \"f\";\necho left() |> $name(...);\n",
+  "nonoptimized_byref_send": "<?php\nfunction set(&$x) { echo 'ENTER|'; }\n$n = 'set';\ntry {\n    5 |> $n;\n} catch (Error $e) {\n    echo $e->getMessage(), '|', $e->getLine(), '|';\n}\n",
+  "nonoptimized_missing_line": "<?php\n$n = 'missing';\ntry {\n    4 |>\n        $n;\n} catch (Error $e) {\n    echo $e->getMessage(), '|', $e->getLine(), '|';\n}\n",
+  "nonoptimized_ref_return": "<?php\n$v = 0;\nfunction &slot($x) { global $v; echo \"S|$x|\"; return $v; }\nfunction set(&$x) { $x = 9; echo 'T|'; }\n$n = 'slot';\nset(1 |> $n);\necho $v, '|';\n",
+  "nonoptimized_temporary_name": "<?php\nfunction f($x) { echo \"F|$x|\"; return $x + 1; }\nfunction choose() { echo 'R|'; $tail = 'f'; return '' . $tail; }\necho (3 |> choose()), '|';\n",
+  "nonoptimized_literal": "<?php\nfunction f($x) { echo \"F|$x|\"; return $x + 1; }\necho (3 |> 'f'), '|';\n"
+}
