@@ -960,8 +960,7 @@ dec $concat_right_array_source(pstate, pconcatrightarraywarning) : bool
 def $concat_right_array_source(S, pconcatrightarraywarning) = true
   -- if pconcatrightarraywarning.SITE = PORIGIN n pcpath
   -- if $origin_node(S.SOURCES, pconcatrightarraywarning.SITE) = (NExprBinaryOpConcat expression_left expression_right metadata)
-  -- if $origin_child((pconcatrightarraywarning.SITE), [PCFIELD 0]) = (porigin_left)
-  -- if $origin_node(S.SOURCES, porigin_left) = (NExprVariable (BYTES ptbytes_left) metadata_left)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], expression_left)
   -- if $concat_site_valid(S, pconcatrightarraywarning.SITE, pconcatrightarraywarning.LINE, false, false)
   -- if $source_emission_noarg_call(S, n, pcpath ++ [PCFIELD 1], expression_right) = (pconcatrightarraywarning.LINE)
   -- if $code_at(S.CODE, n) = (pcode)
