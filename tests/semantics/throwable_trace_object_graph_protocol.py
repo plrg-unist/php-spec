@@ -47,14 +47,14 @@ def front(state, label):
     ]
 
 
-def child(state, dag):
+def child(state, label, dag):
     rows = [
-        f'$objectprops_record_at({state}.OBJECTPROPS,n_left) = (pobjectprops_left_{state})',
-        f'$objectprops_record_at({state}.OBJECTPROPS,n_right) = (pobjectprops_right_{state})',
-        f'$property_slot_at(pobjectprops_left_{state}.SLOTS,$ptascii("{"first" if dag else "child"}")) = (ppropertyslot_left_{state})',
-        f'$property_slot_at(pobjectprops_right_{state}.SLOTS,$ptascii("{"first" if dag else "child"}")) = (ppropertyslot_right_{state})',
-        f'ppropertyslot_left_{state}.STATE = PROP_VALUE (DIRECT (POBJECT n_child_left))',
-        f'ppropertyslot_right_{state}.STATE = PROP_VALUE (DIRECT (POBJECT n_child_right))',
+        f'$objectprops_record_at({state}.OBJECTPROPS,n_left) = (pobjectprops_left_{label})',
+        f'$objectprops_record_at({state}.OBJECTPROPS,n_right) = (pobjectprops_right_{label})',
+        f'$property_slot_at(pobjectprops_left_{label}.SLOTS,$ptascii("{"first" if dag else "child"}")) = (ppropertyslot_left_{label})',
+        f'$property_slot_at(pobjectprops_right_{label}.SLOTS,$ptascii("{"first" if dag else "child"}")) = (ppropertyslot_right_{label})',
+        f'ppropertyslot_left_{label}.STATE = PROP_VALUE (DIRECT (POBJECT n_child_left))',
+        f'ppropertyslot_right_{label}.STATE = PROP_VALUE (DIRECT (POBJECT n_child_right))',
         'n_child_left =/= n_child_right',
         f'{state}.OBJECTS[n_child_left] = STDINSTANCE',
         f'{state}.OBJECTS[n_child_right] = STDINSTANCE',
@@ -62,10 +62,10 @@ def child(state, dag):
     ]
     if dag:
         rows += [
-            f'$property_slot_at(pobjectprops_left_{state}.SLOTS,$ptascii("second")) = (ppropertyslot_second_left_{state})',
-            f'$property_slot_at(pobjectprops_right_{state}.SLOTS,$ptascii("second")) = (ppropertyslot_second_right_{state})',
-            f'ppropertyslot_second_left_{state}.STATE = PROP_VALUE (DIRECT (POBJECT n_child_left))',
-            f'ppropertyslot_second_right_{state}.STATE = PROP_VALUE (DIRECT (POBJECT n_child_right))',
+            f'$property_slot_at(pobjectprops_left_{label}.SLOTS,$ptascii("second")) = (ppropertyslot_second_left_{label})',
+            f'$property_slot_at(pobjectprops_right_{label}.SLOTS,$ptascii("second")) = (ppropertyslot_second_right_{label})',
+            f'ppropertyslot_second_left_{label}.STATE = PROP_VALUE (DIRECT (POBJECT n_child_left))',
+            f'ppropertyslot_second_right_{label}.STATE = PROP_VALUE (DIRECT (POBJECT n_child_right))',
         ]
     return rows
 
@@ -81,7 +81,7 @@ def checks(program, path, name):
         '$tog_stage(S_first_found)',
         'S_first = S_first_found[.COMPLETION = NORMAL]',
         *front('S_first', 'first'),
-        *child('S_first', dag),
+        *child('S_first', 'first', dag),
         '$object_table_at(S_first.OBJECTTABLES,n_left) = eps',
         '$object_table_at(S_first.OBJECTTABLES,n_right) = eps',
         '$object_table_at(S_first.OBJECTTABLES,n_child_left) = eps',
@@ -122,7 +122,7 @@ def checks(program, path, name):
         '$tog_stage(S_second_found)',
         'S_second = S_second_found[.COMPLETION = NORMAL]',
         *front('S_second', 'second'),
-        *child('S_second', dag),
+        *child('S_second', 'second', dag),
         '$objectprops_record_at(S_second.OBJECTPROPS,n_child_left) = (pchildprops_second_left)',
         '$objectprops_record_at(S_second.OBJECTPROPS,n_child_right) = (pchildprops_second_right)',
         '$property_slot_at(pchildprops_second_left.SLOTS,$ptascii("x")) = (ppropertyslot_x_second_left)',
