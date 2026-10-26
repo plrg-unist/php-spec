@@ -1041,7 +1041,21 @@ with saved-source access; different scope classes may select the same public key
 retain415 cuts. INITIAL/public fallback are existing controls; the first runtime
 nondeterminism and peer pre-main binder failure retain zero credit. Raw and
 scoped verification are disjoint by retained DECL; wider scoped coercions and
-owned nonpublic producers remain partial.
+owned producers remain partial.
+
+The same named noarg owned-factory producer now also admits by-value Get for
+accessible private/protected UNSET and denied hidden properties. The owned gate
+retains immutable access/signature facts instead of rechecking absence after a
+callback. Selected private int verification converts `'7'` before COPY and receiver
+D; a protected Get can populate backing99 while returning captured `'ok'`. Denied
+private int INITIAL keeps DECL absent and returns raw `'ok'` without consulting the
+hidden type. Both receiver holds remain distinct: getter release precedes COPY,
+then BASE retires the original temporary before caller reception.
+[Three source agreements and 477 focused conditions](../../coverage/semantics/magic-get-owned-access-review.json)
+retain separate415 cuts. Existing public BYREF still detaches7 before receiver D
+changes its source cell to9; accessible INITIAL bypasses Get. Nonpublic BYREF
+refusal is a derived signature control. No new special-coercion route, state or
+root machinery is introduced; wider producers and lifetimes remain partial.
 
 The [getter review](../../coverage/semantics/magic-property-get-review.json) records
 eight exact source agreements, 1293 setup-inclusive reached premises and the
@@ -1064,8 +1078,8 @@ exception, with null read registers and genuine H/B/C previous links.
 By-value and discarded getter results follow the same receiver-release order.
 The [owned-getter review](../../coverage/semantics/magic-property-owned-review.json)
 records seven source agreements and 1266 setup-inclusive reached premises at
-distinct retained cuts. By-reference factories, owned denied access and wider
-factory/receiver forms remain Unsupported; prior CV/denied evidence is unchanged.
+distinct retained cuts. By-reference factories, nonpublic reference getters and
+wider factory/receiver forms remain Unsupported; prior CV/denied evidence is unchanged.
 
 Weak MAGIC_GET verification also accepts numeric strings parsed as an in-range
 integer, using the getter declaration's strictness rather than the caller's.

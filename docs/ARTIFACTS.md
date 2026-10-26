@@ -64,6 +64,13 @@ native5/baseline5 (including genuine normal wrong result), source3, 413 focused
 conditions, original runtime nondeterminism and peer pre-main binder failure.
 Tested415 snapshots retain the failed runtime and exact helper/input identities.
 
+Owned-factory nonpublic/denied Get evidence is retained in
+`../php-spec-evidence-archive/magic-get-owned-access-126/manifest.json`: native5,
+unchanged baseline5, source3 and477 focused conditions at their original415 cuts.
+The archive preserves tested380/manifest, exact maintained inputs, unchanged
+helpers, raw processes and zero-credit preparation stops. Composition over416
+adds no execution credit.
+
 Keep future compressed raw traces, source snapshots and tool copies in this
 external archive (using new paths for new evidence) or in ignored `.tools/`.
 Commit concise reports and manifests with hashes and locations. Preserve raw

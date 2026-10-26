@@ -1,0 +1,78 @@
+{
+  "decision": "Independently accepted bounded owned-factory nonpublic/denied Get; family remains partial.",
+  "scope": "Literal BP_VAR_R from the existing statically named ordinary noarg BYVAL nongenerator factory. Newly admitted getters are BYVAL for accessible private/protected UNSET and denied hidden properties; existing effective-public BYREF remains admitted.",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "engine_route": "vendor/php-src/Zend/zend_object_handlers.c::zend_get_property_offset retains accessible prop_info but leaves denied hidden type absent; zend_std_read_property captures that access, does not call Get for accessible typed INITIAL, calls Get under one receiver hold and verifies before OBJ_RELEASE. FETCH_OBJ_R copies before FREE_OP1.",
+  "implementation": {
+    "revision": "beb4b0833584c9afa94053d03782323dd70e42f7",
+    "path": "spec/semantics/380-magic-property-get.watsup",
+    "delta_from_base": "+9/-2 lines",
+    "behavior": "Shared owned-access gate accepts effective-public access or a BYVAL getter. Fresh owned entry and saved history use that immutable gate; absence is tested only for fresh admission. Saved caller access/DECL and GET_RESULT/COPY/BASE lifetime machinery are unchanged.",
+    "preservation": "No new special-coercion admission, task/state/root/GC/compiler fields or changes to418/419/384. Nonpublic BYREF stays fenced; public BYREF remains supported."
+  },
+  "source_evidence": {
+    "native_baseline_revision": "52ab6659b2a5078bb4a5d31f054564de1f67fc01",
+    "module_count": 415,
+    "classification": "Native5 exact. New private/protected/denied sources are genuine checked Unsupported3 on the unchanged model, with zero agreement credit; public owned BYREF and private INITIAL are separate existing agreements2.",
+    "changed_revision": "beb4b0833584c9afa94053d03782323dd70e42f7",
+    "agreements": 3,
+    "observations": "Private V:G|D|int7|E|; protected P:G|g|D99|ok|E|; denied X:G|D|rawok|E|. Exact normal stdout/stderr/exit; original receiver cleanup precedes caller reception."
+  },
+  "focused_evidence": {
+    "revision": "96514db18e8cd23b09b97d59ab0a86335d61590f",
+    "module_count": 415,
+    "author": 318,
+    "independent": 159,
+    "total": 477,
+    "reached": 457,
+    "derived": 20,
+    "author_selection": {
+      "protected_population": 165,
+      "denied_hidden_type": 153
+    },
+    "trajectories": "Protected UNSET becomes backing99 under active Get while selected DECL/history stays valid; returnedok survives getter-hold retirement, COPY and sole BASE/D99 before caller. Denied private int INITIAL retains DECL eps despite Get scope access and bypasses hidden-type verification through the same lifetime. Peer reaches private weak7-to-int7 verification, public BYREF cell7-to-detached COPY before BASE/D writes9, and actual accessible/denied INITIAL fronts.",
+    "derived_controls": "Denied BYREF changes only the selected method signature, preserving ordinary Get-signature/nongenerator/source/access/needed premises; owned gate/plan/capture/history refuse. No declaration-validity or source-reachability claim for this mutation. Six author budget conditions establish resumed final-state equality.",
+    "execution": "Author AL2/SL2true, peer AL1/SL1true; all quiet/stable, no timeout/interruption/live group. CPU3 serial; actual SL and peer compiler/SL affinity sampled. All actor/group/wrappers reaped."
+  },
+  "preparation_stops": "Incorrect/short exact revision and transient untracked-status preconditions stopped before compiler/model launch. An archive input-snapshot filename correction preceded archive creation. Originals/notes retained; zero execution credit and no runtime/source/fixture failure.",
+  "independent_review": "class119_review accepted runtime/source3, maintained author318, peer159, actual-parent selectors/preservation and concise documentation/archive. No renewed execution.",
+  "raw": {
+    "manifest": "../php-spec-evidence-archive/magic-get-owned-access-126/manifest.json",
+    "bytes": 5923821,
+    "sha256": "49bfb3b905967bc8e9bfa3078fa72b3a4f6e87793d9f57aa79e51157f8ef0333",
+    "reports": {
+      "native5": {
+        "path": ".tools/magic-get-owned-access-probes-126/native-first/report.json",
+        "sha256": "3e61980de45722aa3ad32b53bd7d74c969cade4c797d49da5a29ea3ca4a7daed"
+      },
+      "baseline5": {
+        "path": ".tools/magic-get-owned-access-probes-126/accepted-current-baseline/report.json",
+        "sha256": "4acc31e9081bb7c94264092c445a6c5a5ebb6e403fa7de633655cf3dac397f60"
+      },
+      "source3": {
+        "path": ".tools/magic-get-owned-access-probes-126/changed-model-1w6uiwlp/report.json",
+        "sha256": "9f30a8def95049fa5223f5391138215296b4f2fc38231d5a097407795393b19e"
+      },
+      "author318": {
+        "path": ".tools/magic-get-owned-access-protocol-bztl7n8o/report.json",
+        "sha256": "3dfd46960bafbc99aacc31eec63c578c755e135782ee7a48f3c8e7ebdfddb70d"
+      },
+      "independent159": {
+        "path": ".tools/magic-get-owned-access-review-126/execution-p07fp03k/report.json",
+        "sha256": "e5d5eca4baa9f486f8d9aceee01027a2162834955b3fd07461fe7eaab179126d"
+      }
+    },
+    "recovery": "Verify SHA-256 then extract raw.tar.gz. Recover tested Git revision for the original415 module closure; reports retain original path/cwd/profile/tool identities. tested-inputs preserves tested380/manifest/seven maintained inputs and unchanged119/123/323 helpers. Native5/baseline5 retain52ab6659b; changed source3 retainsbeb4b0833; state477 retains96514db18. Composition over73c447/416 adds no execution credit."
+  },
+  "composition": {
+    "parent_revision": "73c447992362f4ebdb9d85b5d87e55a7f31bfc54",
+    "module_count": 416,
+    "preservation": "Tested380, seven maintained inputs and119/123/323 helpers remain exact. Incoming runtime paths and416 manifest are parent-exact;30 only adds task/type alternatives without changing existing record fields.",
+    "selectors": "Incoming CONCAT_PREP/acquired Stringable Warning, CONFIG_GENERATOR/history and ARRAY_UNPACK/ARRAY_ITERATOR selectors are absent from these Get/COPY/BASE/destructor trajectories and derived controls. Sole runtime difference from actual parent is380.",
+    "credit": "No joined execution or older getter/native/control replay; original415 cuts retained."
+  },
+  "limits": [
+    "Nonpublic BYREF, by-reference factories, wider factory/receiver/name/call forms, special scoped coercions, callbacks/throws/suspension and wider lifetime histories remain partial."
+  ],
+  "engine_bugs_or_intentional_divergences": []
+}

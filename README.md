@@ -5123,8 +5123,16 @@ property. CV, literal-this and existing owned-factory reads agree with the fresh
 actual access, then keep Parent's type across Child Get scope. A genuine factory
 string7/int7 mismatch is fixed; receiver destruction still precedes caller use.
 [Three source agreements and 413 focused conditions](coverage/semantics/magic-get-lexical-selection-review.json)
-retain415 cuts and both original failures. Wider owned nonpublic/reference and
+retain415 cuts and both original failures. Wider scoped reference and
 special-coercion forms remain partial.
+
+Named noarg owned factories now also support bounded by-value Get for accessible
+private/protected UNSET and denied hidden properties. Saved declaration/type
+survives backing99; hidden denied int remains unverified. COPY precedes original
+receiver destruction and caller delivery. [Three source agreements and 477 focused
+conditions](coverage/semantics/magic-get-owned-access-review.json) retain415 cuts,
+including existing public BYREF and accessible INITIAL boundaries. Nonpublic
+BYREF, wider producers and special coercions remain partial.
 
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference
