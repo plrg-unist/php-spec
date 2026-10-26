@@ -8,16 +8,6 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
-Named by-reference Generator array spread now dereferences a real global-bound
-outer cell into a copied row. Rebinding the outer cell leaves that spread row
-intact while inner scalar aliases remain shared; a retained old row exposes
-singleton unwrapping on COW. A supplied body throw retires the outer cell before
-the builder-held row, and an Aggregate-returned Generator follows the same
-bounded route. Four exact original sources, strict423 and 588 focused premises
-(six raw steps) pass at separate cuts; the unchanged baseline is Unsupported
-with zero agreement credit. [By-reference Generator cache review](coverage/semantics/array-generator-byref-reference-cache-review.json).
-Wider producers, payloads and lifetimes remain partial.
-
 Selected public untyped backed block `&get` hooks now preserve the real backing
 reference without attaching a property type source. The initial backing may be
 an explicit scalar or implicit null. Alias writes, independent ordinary copies,

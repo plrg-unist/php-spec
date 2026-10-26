@@ -1650,8 +1650,9 @@ storage-frontier assertion remains a preserved zero-credit failure.
 Named by-reference Generator spread now dereferences a real outer cell into a
 copied `DIRECT` row. Later rebinding changes that cell's row while shared inner
 scalar aliases remain live; a retained old row also exposes singleton-reference
-unwrapping on COW. A supplied body throw retires the outer cell before the
-builder-held old row, and an Aggregate-returned Generator follows the same
+unwrapping on COW. With external owners gone, a supplied body throw retires
+the outer cell when DATA releases its last owner, before the builder-held old
+row. An Aggregate-returned Generator follows the same
 route. Four original sources and 588 reached premises pass in the
 [by-reference Generator cache review](coverage/semantics/array-generator-byref-reference-cache-review.json).
 Wider payloads, operand modes, delegation and Traversable lifetimes remain partial.

@@ -124,9 +124,10 @@ then-current row. Rebinding the outer cell later changes its row without
 retargeting the spread entry; its inner scalar aliases can still share writes.
 When an external leaf alias is removed, a separately retained old row makes a
 later COW copy unwrap the sole inner reference. The same route accepts an
-Aggregate getter returning the named Generator. A supplied body throw runs
-`finally`, retires the outer cell with Generator DATA, then discards the
-builder-held old row and inner cell. Terminal builder checks use saved producer
+Aggregate getter returning the named Generator. With external outer-cell
+owners removed, a supplied body throw runs `finally`; last-DATA release then
+retires the outer cell before discarding the builder-held old row and inner
+cell. Terminal builder checks use saved producer
 history without dereferencing the retired outer cell. Four exact originals and
 588 reached premises (six raw steps) cover this bounded mechanism in the
 [by-reference Generator cache review](../../coverage/semantics/array-generator-byref-reference-cache-review.json).
