@@ -160,6 +160,7 @@ syntax pcastownedarraywarning
 syntax pechoarraywarning
 syntax pboolnotnanwarning
 syntax pconcatreturned
+syntax pconcatownedarraywarning
 syntax pconcatleft
 syntax pboolxoroperation, pboolxorphase
 syntax pstringcompare
@@ -433,6 +434,8 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | CONCAT_RETURNED_RIGHT pconcatreturned
   | CONCAT_RETURNED_RELEASE pconcatreturned
   | CONCAT_RETURNED_DONE pconcatreturned
+  | CONCAT_OWNED_ARRAY_WARNING pconcatownedarraywarning nat
+  | CONCAT_OWNED_ARRAY_RELEASE pconcatownedarraywarning
   | CONCAT_OWNED_LEFT pconcatleft
   | CONCAT_OWNED_RIGHT pconcatleft pvalue nat?
   | CONCAT_OWNED_RELEASE pconcatleft
