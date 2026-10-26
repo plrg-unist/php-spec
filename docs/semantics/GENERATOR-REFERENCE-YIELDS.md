@@ -38,6 +38,11 @@ suspension, including source-name rebinding, copied-array COW, supplied
 Throwable cleanup and the single-Error reentry path for a defined cache.
 See [Generators](GENERATORS.md) and the
 [reference transfer review](../../coverage/semantics/generator-fiber-reference-transfer-review.json).
+The same direct named cached cell can now survive a `Generator::throw` Fiber
+pause. The saved THROW argument remains owned by the parked Fiber; the
+Generator keeps its cell across catch, pending finally and source-name rebind.
+Normal or supplied-Throwable resume follows native identity and cleanup order.
+See the [reference THROW review](../../coverage/semantics/generator-fiber-reference-throw-transfer-review.json).
 Wider producer/call forms, suspension during handlers, other parked running
 Generator contexts, other request/terminal paths and complete
 destruction/collection remain required.

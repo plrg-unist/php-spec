@@ -121,8 +121,8 @@ propagate the original Throwable, or replace it with a supplied Fiber throw;
 three primed THROW sources distinguish identity, `Previous`, reentry Error and
 cache release; a fresh CURRENT source preserves the earlier path. Admission
 requires one valid Throwable, a defined by-value cache and a direct named
-callee. By-reference, method, Closure and delegated THROW transfers remain
-partial.
+callee. At that cut, by-reference, method, Closure and delegated THROW
+transfers remained partial.
 [THROW transfer review](../../coverage/semantics/generator-fiber-throw-transfer-review.json).
 
 A fresh direct named `Generator::throw` can park before its first yield. Its
@@ -135,6 +135,20 @@ and one 86-premise reached state cover the uncached owner and resumer; two
 post-yield fresh sources and a primed source are unchanged controls. Other
 fresh call shapes and wider producer/delegation/lifecycle combinations remain
 partial. [Fresh THROW transfer review](../../coverage/semantics/generator-fiber-fresh-throw-transfer-review.json).
+
+A primed direct named by-reference Generator can also enter `throw` with a
+cached reference cell. Its saved resumer owns the supplied Throwable, while the
+Generator retains the original cell through a catch or pending-finally Fiber
+pause. `current()` dereferences that cell without resuming; rebinding the
+source name leaves the cache intact. A later yield or Generator release retires
+the old cell. Normal resume preserves the original Exception, and
+`Fiber::throw` makes it the replacement's `Previous`. Four original sources,
+including an independent cache-only release probe, agree with PHP 8.5.10,
+with 102 author source-reached state assertions and an unchanged by-value
+control. Admission requires a live cell, by-reference
+producer, one valid Throwable and direct named target. Other producer,
+callee and delegated THROW forms remain partial.
+[Reference THROW review](../../coverage/semantics/generator-fiber-reference-throw-transfer-review.json).
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;

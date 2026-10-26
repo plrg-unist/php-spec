@@ -34,5 +34,14 @@
     "native_exit": 0,
     "native_stdout": "PRIME|SEED|1|START|CALL|CAUGHT|1|1|PARK|1|1|ERROR|1|1|RESUME|REPLY|1|VALUE|1|1|FIBER|1|AFTER-YIELD|FIN|CLOSED|1|E",
     "native_stderr": ""
+  },
+  {
+    "id": "generator-fiber-reference-throw-sole-cache-replacement-review",
+    "purpose": "Independent source: after catch unsets the old producer CV, a primed named by-reference THROW keeps the old object cache while parked and retires it at the next yield before caller continuation.",
+    "source": "<?php\nclass Old62Review {\n    public function __destruct() { echo 'DROP|'; }\n}\nfunction &Work62Review() {\n    global $given;\n    $old = new Old62Review();\n    try {\n        echo 'SEED|';\n        yield $old;\n        echo 'BAD-TAIL|';\n    } catch (Exception $caught) {\n        echo 'CAUGHT|', (int) ($caught === $given), '|';\n        unset($old);\n        Fiber::suspend('park62');\n        echo 'BODY|';\n        $new = null;\n        yield $new;\n        echo 'END|';\n    }\n    return 62;\n}\nfunction Run62Review() {\n    global $g, $given;\n    echo 'CALL|';\n    $value = $g->throw($given);\n    echo 'RESULT|', (int) ($value === null), '|';\n    return 'fiber62';\n}\n$given = new Exception('given62');\n$g = Work62Review();\n$copy = $g->current();\n$weak = WeakReference::create($copy);\nunset($copy);\n$f = new Fiber('Run62Review');\necho 'START|', (int) ($f->start() === 'park62'), '|';\necho 'PARK|', (int) $f->isSuspended(), '|',\n     (int) ($weak->get() !== null), '|',\n     (int) ($g->current() === $weak->get()), '|';\necho 'RESUME|', (int) ($f->resume() === null), '|';\necho 'FIBER|', (int) ($f->getReturn() === 'fiber62'), '|',\n     (int) ($weak->get() === null), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 62), '|';\nunset($g, $f, $weak, $given);\necho 'E';\n",
+    "source_sha256": "06f2e966c6c510508ff872eda1c6e3702dc4e279973e2a69a928325a41ecde0b",
+    "native_exit": 0,
+    "native_stdout": "SEED|START|CALL|CAUGHT|1|1|PARK|1|1|1|RESUME|BODY|DROP|RESULT|1|1|FIBER|1|1|END|CLOSED|1|E",
+    "native_stderr": ""
   }
 ]
