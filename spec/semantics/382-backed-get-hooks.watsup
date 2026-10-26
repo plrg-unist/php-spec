@@ -109,7 +109,7 @@ def $ppproperty_hook_group(P, pcpath, statement, ppropertydesc*, pchheader) = PP
 def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN b) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) (SEQUENCE statement*) metadata, pchheader) = $pphook_finish(P, $ppgoto_finish($ppstatements(P_hook, pcpath ++ [PCFIELD 5], 0, statement*)), pcpath, ppropertydesc, b, metadata, pchheader)
   -- if $ptlc($base64(text_get)) = $ptascii("get")
   -- if ~$generator_statements(statement*)
-  -- if ~b \/ (pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ ppropertydesc.TYPE =/= eps /\ $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME))
+  -- if ~b \/ (pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME))
   -- if ($hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME) \/ ppropertydesc.DEFAULT = PROP_NULL \/ ppropertydesc.DEFAULT = PROP_UNINITIALIZED)
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
@@ -523,7 +523,6 @@ def $property_hook_reference_decl(S, ppropertydesc) = true
   -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_owner)
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps
-  -- if ppropertydesc.TYPE =/= eps
   -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
   -- if $(|pcpath| >= 2)
   -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
