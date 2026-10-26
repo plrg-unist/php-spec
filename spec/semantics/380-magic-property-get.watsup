@@ -178,8 +178,7 @@ def $property_get_this_source(S, ppropertyget) = true
   -- if S_view = S[.ORIGIN = (ppropertyget.SITE)]
   -- if $property_prep_task(S_view, NIdentifier (BYTES text_name) metadata_name, ppropertyget.LINE)
   -- if $compiled_effects(S, ppropertyget.SITE) = eps
-  -- if $property_get_method(S, ppropertyget.OBJECT) = (pmethoddesc)
-  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if $property_get_method(S, ppropertyget.OBJECT) =/= eps
 def $property_get_this_source(S, ppropertyget) = false -- otherwise
 def $property_get_source(S, ppropertyget) = true -- if $property_get_this_source(S, ppropertyget)
 ;; A by-value factory result owns its original receiver zval independently of
