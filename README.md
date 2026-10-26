@@ -3799,6 +3799,11 @@ class/method selection with authenticated pipe send and result tasks;
 [the method-string review](coverage/semantics/pipe-static-method-string-review.json)
 keeps literal, variable and temporary strings, reference/lookup behavior and
 excluded selectors separate from the earlier pipe evidence.
+Ordinary named function string carriers now select evaluated optimized and
+nonoptimized RHS names; [the carrier review](coverage/semantics/pipe-named-carrier-review.json)
+records 19 exact pinned CLI outcomes, a separate request-profile pass and
+reached source/ownership checks. Method strings and builtins retain their
+separate dispatch boundaries.
 [Switch execution](docs/semantics/SOURCE-SWITCH.md) scans cases in source order,
 retains the subject through fallthrough, and distinguishes constant-boolean
 branching from dynamic equality; its [review](coverage/semantics/switch-review.json)

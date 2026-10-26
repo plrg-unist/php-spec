@@ -1,0 +1,29 @@
+{
+  "scope": "Ordinary named user-function string carriers on optimized first-class and nonoptimized pipe RHS; literal, variable and temporary names, one forced positional send and reference result",
+  "tested_code_revision": "edd6125c6",
+  "unchanged_baseline": "Clean 2acf1420ddc5c8634818db5151fae9d5278c5173 interpreter-failed on optimized_variable_basic, optimized_temporary_name, optimized_original_missing, nonoptimized_string_control, existing_evaluated_name and nonoptimized_missing_line. Fixed-name control was normal; optimized method-string control was explicit Unsupported. Other sources were not baseline-run. Original failures retain zero agreement credit.",
+  "identity": {
+    "php": "Pinned PHP 8.5.10 CLI NTS; exact -n profile and source paths in native/*/command.json and extension-native/*/command.json",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "php_src_commit": "1364de0472b859917f5bc0be9193bd8068fc2061",
+    "p4_spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "source_catalog_sha256": "c54a9a129060f9ad00c819723778edf23dafa99a27a009aa4a5314e1e8190113",
+    "modules_sha256": "d0fb3ec94af91a7eb60c0ae42f84c3a25a41d6a798b09a963c376f1ec073c341"
+  },
+  "native_first": "Fifteen author sources and five supplemental sources were frozen and reviewer-CLEAR before model comparison; reviewer-frozen selected_name, owned_missing_rhs and nonoptimized_literal were run on their exact bytes. Zend zend_compile_pipe and INIT_DYNAMIC_CALL/zend_init_dynamic_call_string distinguish evaluated callee names from fixed CODE names.",
+  "direct_cli": "Nineteen exact native/model stdout, stderr and rendered exit agreements: 18 normal, one uncaught PHP Error (the previously failing optimized-multiline-missing source). Per-source commands, raw streams and statuses are in native/, extension-native/ and changed-first/; final-manifest.json binds source hashes and results.",
+  "request_profile": "Separate explicit-request source run passes 19/19, fingerprint fd55aa12acacf89ca92f2ba1de7c682787ac9f696fb0d5949c45cce4f228ad2a; final/request-profile/report.json retains request facts and exact native/model observations.",
+  "reached_protocol": "Five reached AL stages and 72 assertions: selected carrier and source shape, saved f after RHS rebinds global to g, literal byte mismatch, invalid request-string identity, held left owner through missing lookup and post-catch owner zero, and the nonstring RHS admission guard. final/protocol retains each fixture, command, stdout, stderr and exit.",
+  "focused_compatibility": "CALL113 nonoptimized public-static method-string variable_basic passes exact native comparison; old pipe_protocol.py passes five stages/89 assertions. Fixed-name and Closure controls remain native-exact. Optimized method-string and registered builtin controls remain explicit Unsupported with zero native agreement credit.",
+  "boundary": "The source AST and carrier validity gate admission at PIPE_APPLY; INTERNED_STRING validity proves byte well-formedness, not dynamic producer history. The later CALL_ARGS pipe-site validity does not reconstruct selected name bytes after a mutable source changes. Builtins, scoped/magic methods, object variants and excluded optimized method strings remain separate work.",
+  "commands": [
+    "taskset -c 3 ./scripts/opam-exec.sh dune build --root . -j 1",
+    "taskset -c 5 python3 tests/semantics/pipe_named_carrier.py",
+    "taskset -c 5 python3 tests/semantics/pipe_named_carrier_protocol.py",
+    "taskset -c 5 python3 tests/semantics/pipe_static_string.py --match variable_basic",
+    "taskset -c 5 python3 tests/semantics/pipe_protocol.py"
+  ],
+  "direct_cli_command_pattern": "bin/php-semantics SOURCE --steps 100000 --timeout 90; exact executable commands and source paths are in changed-first/*/command.json",
+  "raw_archive": "/home/user/workspace/php-spec-evidence-archive/call114-optimized-string",
+  "archive_manifest_sha256": "6828e9dc186c5fb757807c477ec1a17c8c9941adf375580cd060bf067e0c5421"
+}
