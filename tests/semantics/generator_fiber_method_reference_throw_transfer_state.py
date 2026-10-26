@@ -87,7 +87,6 @@ pcallcontext_generator.INSTANCE = eps
 pcallcontext_generator.RECEIVER = (n_receiver)
 $call_context_roots((pcallcontext_generator)) = [HOBJECT n_receiver]
 $heap_owners($heap_graph(S), HOBJECT n_receiver) = 1
-$heap_owners($heap_graph(S), HOBJECT n_given) = 1
 S_view = $fiber_vm_restore(S, pfibervm)[.ACTIVEFIBER = (n_fiber)][.COMPLETION = NORMAL]
 $generator_reference_producer(S_view, pgenerator)
 $generator_reference_valid(S_view, GENERATOR pgenerator)
@@ -108,7 +107,6 @@ $generator_owners_valid(S)
 ~$fiber_generator_throw_valid(S_view, pgeneratorop, pgenerator, pcallcontext_generator[.RECEIVER = eps])
 ~$fiber_generator_throw_valid(S_view, pgeneratorop, pgenerator, pcallcontext_generator[.RECEIVER = (n_fiber)])
 ~$fiber_generator_throw_valid(S_view, pgeneratorop, pgenerator, pcallcontext_generator[.TARGET = METHOD_TARGET n_fiber pgenerator.FUNCTION])
-~$fiber_generator_throw_valid(S_view, pgeneratorop, pgenerator, pcallcontext_generator[.TARGET = pgenerator.FUNCTION])
 ~$fiber_generator_throw_valid(S_view, pgeneratorop, pgenerator, pcallcontext_generator[.INSTANCE = (n_receiver)])
 ~$fiber_generator_cached_reference_valid(S_view, pgenerator, pcallcontext_generator[.RECEIVER = (n_fiber)])
 ~$fiber_generator_cached_reference_valid(S_view, pgenerator, pcallcontext_generator[.INSTANCE = (n_receiver)])
