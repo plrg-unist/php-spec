@@ -53,8 +53,13 @@ registration does not supply an eval unit's lookup. The
 [absent-lookup ledger](../../coverage/semantics/halt-absent-review.json) records
 four native/model source agreements and three reached-state checks. Incomplete
 or ambiguous registration remains `Unsupported`.
-Direct fixed syntax and owning/named/unpacked calls
-and broader compiler-failure/reentry behavior remain open. The
+A fixed call with compiled global name `constant`, no namespace fallback and one
+raw `'__COMPILER_HALT_OFFSET__'` string argument now uses the same filename-local
+offset or absent-registration `Error`. The
+[fixed-call ledger](../../coverage/semantics/halt-fixed-review.json) records four
+new exact source agreements and reached main/include/eval call fronts. Other
+fixed arguments, namespace fallbacks, owning/named/unpacked calls and broader
+compiler-failure/reentry behavior remain open. The
 [lookup ledger](../../coverage/semantics/halt-lookup-review.json) binds two original
 sources and their reached state checks, keeping counterfactual history/source
 projections separate from execution.
