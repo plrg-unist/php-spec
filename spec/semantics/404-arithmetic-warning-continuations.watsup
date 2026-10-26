@@ -5521,7 +5521,6 @@ def $print_nan_snapshot(S, pprintnanwarning) = true
   -- if $integer_pointer_select(S, pprintnanwarning.INPUT) = (INTEGER_CV ptbytes)
   -- if $integer_pointer_value(S, INTEGER_CV ptbytes) = (PFLOAT pprintnanwarning.BITS)
 def $print_nan_snapshot(S, pprintnanwarning) = false -- otherwise
-dec $print_nan_plan(pstate) : pprintnanwarning?
 def $print_nan_plan(S) = (pprintnanwarning)
   -- if S.OUTPUTBUFFERS = eps
   -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
