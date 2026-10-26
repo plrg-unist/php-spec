@@ -1,0 +1,97 @@
+{
+  "decision": "Independently accepted valid parameter-backing receipts in reference Get verification; family remains partial.",
+  "scope": "Existing shared Get verifier accepts a present receipt only when module 216 validates its exact historical value, authentic declaration/line and uniqueness. Ordinary parameter hints are not persistent type sources.",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "engine_route": "zend_check_type_slow checks existing reference sources before Stringable receive. Callback-added sources are not rechecked when the captured string is written. zend_verify_prop_assignable_by_ref_ex accepts exact values, probes conversion only to choose the first-source conflict, or converts the actual unconstrained cell. Requested property types never attach.",
+  "implementation": {
+    "revision": "37ead28b8161c8f06a0e7bb171bc066aa31a363a",
+    "paths": [
+      "spec/semantics/380-magic-property-get.watsup",
+      "spec/semantics/384-magic-property-reference-types.watsup"
+    ],
+    "delta_from_base": "+4/-2 lines",
+    "behavior": "Replace PARAM absence with absence OR complete parameter_backings_valid in unconstrained and real-property-source verification. Absence keeps the previous path pointwise. Existing 138 checked writes clear committed conversions; exact/conflict paths preserve receipts.",
+    "preservation": "Source/access/DECL/history/type-source/coercion/ownership guards remain. No receive, task/state/root, COPY, compiler or GC mechanism changes."
+  },
+  "source_evidence": {
+    "native_baseline_revision": "9b6e95596255764bde65acd6a6f8d20862286c91",
+    "module_count": 419,
+    "classification": "Native 3 exact normal; baseline 3 checked Unsupported at reached Get verification, exact reason magic getter typed reference sources, prefixes E:S|R|G| / C:S|R|G| / D:S|R|u|G|. Baseline agreements: zero.",
+    "changed_revision": "37ead28b8161c8f06a0e7bb171bc066aa31a363a",
+    "agreements": 3,
+    "observations": "Exact target-string preserves receipt and Holder:object source, then ordinary write rejects. Requested-int conflict reports the real Holder source at caller14/file/message, leaves string7 and destination42. Instance-slot detach leaves the receipt; actual-cell int7 conversion clears it and later free succeeds without target attachment."
+  },
+  "focused_evidence": {
+    "module_count": 419,
+    "author": 334,
+    "independent": 177,
+    "total": 511,
+    "reached": 484,
+    "derived": 27,
+    "cuts": {
+      "detached165": "706cc866f0f1cc694054b566f29985241edf1a5a",
+      "conflict169_and_independent177": "b23055fcd20e8e3998618cda0a527ec787ffb069"
+    },
+    "trajectories": "Actual 214 pre-store PARAMETER_STRING_RESULT owns the original object/cell; receipt creation writes captured 7 and drops one HCELL owner. Validity survives a different current Get and later function return. Exact/conflict preserve real source/receipt; detached conversion has whole-state equality to receipt clear plus STORE int7. COPY releases its cell owner, pending conflict captures DROP before local catch, later ordinary write still checks real Holder:object.",
+    "controls": "Derived bad VALUE/LINE and duplicate receipts preserve authentic detached operand/PROPREFS/history positives while rejecting admission. Six author budget premises and peer controls retain their reached/derived distinction; no mutated-state reachability claim.",
+    "execution": "Detached AL1/SL1true retained from stable mixed 706 report; only that selected subgroup earns 165. Corrected conflict AL1/SL1true and peerAL1/SL1true at b230. All original caps 90/quiet/stable/full reaping. Native fast children have launcher CPU3 provenance only; baseline/changed actual adapters[3], accepted detached actual children[3], final conflict/peer actual children[5]."
+  },
+  "preserved_failures": [
+    {
+      "revision": "299c1dc20443fc46276efdc35e50e93205b582af",
+      "result": "First detached ALpass/quietSLfalse; builtin object positive used class-aware helper. No credit."
+    },
+    {
+      "revision": "706cc866f0f1cc694054b566f29985241edf1a5a",
+      "result": "Detached165 passes; conflict ALpass/quietSLfalse because seeking pending state with one step skipped COPY. Conflict keeps0; retained detached subgroup remains accepted."
+    },
+    {
+      "revision": "706cc866f0f1cc694054b566f29985241edf1a5a",
+      "result": "One debug-index-only conflict evaluation finds first failure129; zero credit. Unrun detached debug preparation has zero evaluations."
+    }
+  ],
+  "independent_review": "class119_review accepted runtime, native/baseline/source3, all focused cuts, actual incoming selectors/preservation and the concise documentation/archive. Original execution cuts remain closed.",
+  "raw": {
+    "manifest": "../php-spec-evidence-archive/magic-get-param-reference-130/manifest.json",
+    "bytes": 11782582,
+    "sha256": "370751fc8640723aceff78f77abbac3c2972c019adb540f82a3e6d229395e250",
+    "reports": {
+      "native3": {
+        "path": ".tools/magic-get-param-reference-probes-130/native-first/report.json",
+        "sha256": "dabb5f91c3922d9d0bf821cd7566c9bb1e803e0949962ef45605d5e236b4be4d"
+      },
+      "baseline3": {
+        "path": ".tools/magic-get-param-reference-probes-130/accepted-current-baseline/report.json",
+        "sha256": "25104f7e3a8dc8656a404054705fb8300327271c78ab656400e0c3818c647e20"
+      },
+      "source3": {
+        "path": ".tools/magic-get-param-reference-probes-130/changed-model-w6jicb52/report.json",
+        "sha256": "c777ae31254bb74c7387e97ac92250bfdb5f2bf66107261be0bec32fa582f23e"
+      },
+      "detached165": {
+        "path": ".tools/magic-get-param-reference-protocol-cbo9wy1q/report.json",
+        "sha256": "07897e8877aa6f06f8da4dd3b3d7bc4e9a9d8218ba41b049572accc466e7ca4f"
+      },
+      "conflict169": {
+        "path": ".tools/magic-get-param-reference-probes-130/conflict-focused-zq1ftjj4/report.json",
+        "sha256": "aea5737c2e3c6330e322991d12498548fea5c0c1e1055c50c6167c248706716c"
+      },
+      "independent177": {
+        "path": ".tools/magic-get-param-reference-review-130/execution-9ay56q4i/report.json",
+        "sha256": "b6d6eca6174d02a58e223422cbb3fa935634b570124eb38b706f2e5cab0e497f"
+      }
+    },
+    "recovery": "Verify SHA-256 then extract raw.tar.gz. Original reports retain file/cwd/profile/tool identities and tested419 revisions; native/baseline retain9b6e95596, source3 retains37ead28b8, detached165 retains706cc866f, conflict169/peer177 retainb23055fcd. tested-inputs contains eleven b230 snapshots:380/384/modules, five maintained inputs, imported recursion/scoped-unset helpers and profile. Detached generated fixture is byte-exact to its accepted706 cut. Recover other pinned inputs through Git; later composition adds no execution credit."
+  },
+  "composition": {
+    "parent_revision": "a70bc6c26d5e62d39e885a828ca75afe5b68d979",
+    "module_count": 420,
+    "preservation": "Tested380/384, five maintained inputs and imported recursion/scoped-unset helpers remain exact b230. Incoming production paths and 420 manifest remain parent-exact. Detached 165 generated fixture is byte-exact to passing 706.",
+    "selectors": "Incoming tasks/records are Closure::call packs, aggregate/Generator/Fiber/WeakMap iteration and CONCAT missing-CV handling. Their target/task guards do not match these PARAMETER_STRING_RESULT/Get/reference trajectories or derived receipt mutations; normal parameter Stringable conversion is not CONCAT_PREP. Get/callcontext/type-source records remain unchanged.",
+    "credit": "No joined execution or historical replay; original419 evidence retains its cuts."
+  },
+  "limits": [
+    "Shared unconstrained numeric-string warning admission also accepts valid receipts and commits through checked writes; constrained-special receipt-absence fences remain. Wider callback/coercion and producer/lifetime coverage remains partial."
+  ],
+  "engine_bugs_or_intentional_divergences": []
+}

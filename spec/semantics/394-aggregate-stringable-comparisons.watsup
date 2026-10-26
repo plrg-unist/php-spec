@@ -65,6 +65,8 @@ dec $aggregate_decl_keys(ppropertyslot*) : ptbytes*
 dec $aggregate_decl_public(ppropertydesc*) : bool
 dec $aggregate_decl_cast_order(pstate, nat, porder) : porder
 dec $aggregate_std_cast_order(pstate, nat, porder) : porder
+dec $aggregate_backed_hook_slot(pstate, nat, ppropertyslot) : bool
+dec $aggregate_backed_hook_rows(pstate, nat, ppropertyslot*) : bool
 dec $aggregate_decl_image(pstate, nat, ptbytes*) : bool
 dec $aggregate_decl_effect(pstate, nat, nat, ptbytes*, nat, pcompareguard*, int) : (pstate, porder)
 dec $aggregate_decl_continue(pstate, porder, nat, nat, ptbytes*, nat, pcompareguard*, int) : (pstate, porder)
@@ -232,11 +234,22 @@ def $aggregate_decl_cast_order(S, n, ORDERSTRING paggregatecallback) = ORDERUNSU
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if ~($aggregate_decl_public($property_layout(S, porigin, |S.CLASSES|)) /\ $aggregate_decl_initialized($object_table_slots_at(S, n)))
 def $aggregate_decl_cast_order(S, n, porder) = porder -- otherwise
-;; Only newly concrete nonpublic layouts gain numeric callbacks. Keep every
-;; existing public/stdClass Stringable continuation unchanged.
+;; Only actual backed hooked rows extend concrete-table eligibility. Virtual
+;; metadata has no slot and preserves the prior public Stringable route.
+def $aggregate_backed_hook_slot(S, n, ppropertyslot) = true
+  -- if ppropertyslot.DECL = (ppropertyid)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid
+  -- if ppropertydesc.KEY = ppropertyslot.NAME
+  -- if ~$property_hook_virtual(S, ppropertydesc)
+  -- if $property_hook_declared(S, n, ppropertyslot.NAME)
+def $aggregate_backed_hook_slot(S, n, ppropertyslot) = false -- otherwise
+def $aggregate_backed_hook_rows(S, n, eps) = false
+def $aggregate_backed_hook_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = ($aggregate_backed_hook_slot(S, n, ppropertyslot) \/ $aggregate_backed_hook_rows(S, n, ppropertyslot_tail*))
 def $aggregate_std_cast_order(S, n, ORDERSTRING paggregatecallback) = ORDERUNSUPPORTED "materialized-property Stringable comparison continuation"
   -- if S.OBJECTS[n] = INSTANCE porigin
-  -- if ~$aggregate_decl_public($property_layout(S, porigin, |S.CLASSES|))
+  -- if ~$aggregate_decl_public($property_layout(S, porigin, |S.CLASSES|)) \/ $aggregate_backed_hook_rows(S, n, $object_table_slots_at(S, n))
 def $aggregate_std_cast_order(S, n, porder) = porder -- otherwise
 def $aggregate_decl_image(S, n, ptbytes*) = true
   -- if $(n < |S.OBJECTS|)

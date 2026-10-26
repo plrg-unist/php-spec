@@ -178,3 +178,43 @@ def $return_discard(S, CONCAT_OWNED_RIGHT pconcatleft pvalue n?) = S[.TODO = (TH
   -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
   -- if $call_task_valid(S, CONCAT_OWNED_RIGHT pconcatleft pvalue n?)
   -- if $concat_owned_dual(S, pconcatleft)
+
+;; ZVAL_UNDEFINED_OP2 precedes concat_function. The selected uninitialized
+;; fallback is modeled as NULL; defining the CV during H does not replace it.
+;; ERROR_READ_RESULT owns only TASK, preserving A through H and its cleanup.
+dec $concat_undefined_missing(pstate, poperand) : bool
+def $concat_undefined_missing(S, VARIABLE ptbytes z) = true
+  -- if $lookup(S.ENV, ptbytes) = eps
+  -- if ~$foreach_released_name(S, ptbytes)
+  -- if $error_missing_operand(S, VARIABLE ptbytes z)
+def $concat_undefined_missing(S, VARIABLE ptbytes z) = true
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if $(n < |S.STORE|)
+  -- if (HCELL n) <- S.ALLOCATIONS
+  -- if ~(n <- S.REFCELLS)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if ~$foreach_released_name(S, ptbytes)
+  -- if $error_missing_operand(S, VARIABLE ptbytes z)
+def $concat_undefined_missing(S, poperand) = false -- otherwise
+
+;; ORIGINAL/INPUT are historical provenance, not roots or later CV reads.
+;; An abandoned read may still authenticate callback cleanup after A retires.
+def $error_read_state_shape(S, CONCAT_PREP (KNOWN (POBJECT n)) (VARIABLE ptbytes z_input) false false z, VARIABLE ptbytes z_input, BASE_VALUE (KNOWN PNULL)) = ({ORIGINAL CONCAT_PREP (KNOWN (POBJECT n)) (VARIABLE ptbytes z_input) false false z, INPUT VARIABLE ptbytes z_input, BASE BASE_VALUE (KNOWN PNULL), NAME ptbytes, LINE z, TASK CONCAT_PREP (KNOWN (POBJECT n)) (KNOWN PNULL) false false z, RESULT KNOWN PNULL})
+  -- if $(n < |S.OBJECTS|)
+def $error_read_source(S, perrorread) = true
+  -- if perrorread.ORIGINAL = CONCAT_PREP (KNOWN (POBJECT n)) (VARIABLE ptbytes z_input) false false z
+  -- if S.ORIGIN = (porigin)
+  -- if $concat_site_valid(S, porigin, z, false, false)
+  -- if $error_variable_source(S, (porigin), [PCFIELD 1], ptbytes)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z_input)
+  -- if perrorread.NAME = ptbytes /\ perrorread.LINE = z
+def $error_read_plan(S) = (perrorread)
+  -- if S.TODO = (CONCAT_PREP (KNOWN (POBJECT n)) (VARIABLE ptbytes z_input) false false z) :: ptask_tail*
+  -- if S.RESULT = KNOWN PNULL
+  -- if $error_read_state_shape(S, CONCAT_PREP (KNOWN (POBJECT n)) (VARIABLE ptbytes z_input) false false z, VARIABLE ptbytes z_input, S.BASE) = (perrorread)
+  -- if $error_read_source(S, perrorread)
+  -- if $concat_undefined_missing(S, VARIABLE ptbytes z_input)
+  -- if $stringable_instance(S, n)
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)

@@ -484,8 +484,9 @@ priorities. Final 771 premises across four checked-source-derived recipes includ
 root/deletion, SOURCE/line and missing/reference readiness controls in the
 [LEFT lifetime review](../../coverage/semantics/concat-left-stringable-lifetime-review.json).
 
-Entry admits ordinary defined RHS CVs or nonowning known values; initial missing,
-referenced/constrained CVs and other unsupported read forms remain explicit boundaries.
+Entry admits ordinary defined RHS CVs or nonowning known values. Initial missing
+names outside the prefetch slice below, referenced/constrained CVs and other
+unsupported read forms remain explicit boundaries.
 After LEFT, a newly wrapped unconstrained live reference cell is readable, as in
 an ordinary `global` binding. Distinct raw `KNOWN` Stringable RIGHT operands now
 retain a second temporary through both conversions. The result is computed before
@@ -496,6 +497,19 @@ separate operand order from heap order. Source3 and889 recipe premises313/316/26
 Same-object/raw-reference/ARRAY/non-Stringable owning RHS forms keep their prior
 partial route. Generic Stringable/eager-unwind and numerical/formatting/CONFIG
 algorithms remain unchanged.
+
+An acquired Stringable LEFT with a direct missing ordinary RIGHT CV now reports
+the undefined-variable Warning before LEFT conversion. The named handler may
+define RIGHT and LEFT's method may change it again; the selected fallback still
+converts to empty bytes. The model uses fixed null for Zend's selected
+uninitialized fallback. LEFT remains owned through H, conversion and retirement
+before caller store or the original supplied-Exception catch. Hthrow skips the
+method/default Warning; Sthrow preserves the already completed Warning. Source3
+and 826 source-derived recipe premises (328/208/290), including derived source and
+defined-CV compatibility controls, pass in the
+[prefetch review](../../coverage/semantics/concat-undefined-right-prefetch-review.json).
+Wider reference/constrained operands, handlers and destructor histories remain
+partial; generic error-read and eager-cleanup algorithms stay unchanged.
 
 Plain-CV `.=` now handles a quiet first string and a supported array RHS.
 Its source-authenticated warning marker caches the exact first string carrier;
