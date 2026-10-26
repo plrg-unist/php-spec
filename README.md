@@ -3165,7 +3165,14 @@ slots plus an outside Value holder delay invocation until both Keys retire.
 Three sources and 380 Boolean/10 raw checks pass at `29beafa25`/420. Genuine 3
 retains `a70bc6c26`/420, refusing after `B;` with zero agreement. Old methodless/
 ALIAS and active-cursor behavior is unchanged; new callbacks require no cursor.
-Still-multiple callback reads, wider reentry/mutation/escape and GC remain partial.
+Other callback read modes, wider reentry/mutation/escape and GC remain partial.
+
+Ordinary dimension reads now copy Values from a live still-multiple direct
+callback table with no active cursor. Independent copies survive Key or Map
+retirement and delay the callback until the last copy drops, including a supplied
+Exception and shared-slot/copy owners. Three sources and 349 Boolean/9 raw checks
+pass at `c499f12ba`/420; the original peer failure and prefix diagnostic stay zero.
+[Read/copy review](coverage/semantics/weak-map-review.json).
 
 Last-owner multi-entry Map teardown now unregisters every Key before releasing
 its Value slots, retaining the empty Map pin until all jobs finish. Two originals

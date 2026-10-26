@@ -280,11 +280,16 @@ def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, $weakmap_e
   -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_entries_clearing_presence(S, paccess)
   -- if paccess.OBJECT = (n_map)
   -- if paccess.OFFSET = POBJECT n_key
+;; Only ordinary dimension reads extend to direct callback payloads. Other
+;; modes retain the old methodless/reference and active-cursor policy.
+dec $weakmap_entries_access_storage(pstate, nat, bool) : bool
+def $weakmap_entries_access_storage(S, n_map, false) = $weakmap_entries_table_valid(S, n_map, eps)
+def $weakmap_entries_access_storage(S, n_map, true) = (~$weakmap_foreach_active(S.ITERATORS, n_map) /\ $weakmap_entries_storage_policy(S, n_map, eps, true))
 dec $weakmap_entries_access_allowed(pstate, paccess, ptbytes) : bool
 def $weakmap_entries_access_allowed(S, paccess, ptbytes) = true
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_entries_at(S, n_map)
-  -- if $weakmap_entries_table_valid(S, n_map, eps)
+  -- if $weakmap_entries_access_storage(S, n_map, ptbytes = $ptascii("offsetGet") /\ paccess.MODE = ACCESS_READ KEY_R /\ $weakmap_entries_callbacks(S, $weakmap_entries_contents(S, n_map)))
   -- if (ptbytes = $ptascii("offsetGet") /\ $weakmap_read_allowed(S, paccess)) \/ (ptbytes = $ptascii("offsetExists") /\ ($weakmap_presence_allowed(S, paccess) \/ $weakmap_quiet_read_allowed(S, paccess))) \/ (ptbytes = $ptascii("offsetUnset") /\ $weakmap_unset_allowed(S, paccess))
 def $weakmap_entries_access_allowed(S, paccess, ptbytes) = false -- otherwise
 ;; Explicit unset drops exactly this slot; an absent object Key is unchanged.
