@@ -34,6 +34,9 @@ its pool root (owners 2→1); the new runtime table retires (1→0) in the secon
 handler. Three source comparisons, including the previously supported
 first-handler throw control, and 167+151 reached-state checks are recorded in
 the [two-array review](../../coverage/semantics/echo-two-array-warning-review.json).
+Two fresh scalar-prefix controls also agree: a handled child-1 Warning uses the
+changed array without a default Warning, while an ineligible mask skips the
+handler and reports the default Warning at child 1.
 
 Empty or nested arrays, other producers, changed output buffers and wider
 output lifetimes remain partial.
