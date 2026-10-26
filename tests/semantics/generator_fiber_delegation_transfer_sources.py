@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run accepted fresh transfer; cached NEXT remains an explicit pending case."""
+"""Run fresh transfer; retained cached cases use the separate fixed-budget entrypoint."""
 from pathlib import Path
 import sys
 import fiber_static_api_sources as source

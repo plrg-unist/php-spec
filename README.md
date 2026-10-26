@@ -2044,9 +2044,10 @@ scopes across Fiber transfer. Distinct parameter cells preserve a shared object
 through normal returns or supplied-Throwable finally unwinding. [Helper transfer
 review](coverage/semantics/generator-fiber-helper-transfer-review.json).
 Named native delegation now transports its actual resumers and source claims
-through Fiber suspension. Fresh one-link normal return and supplied-Throwable
-abort agree; cached and two-link handled whole-source runs remain required,
-inconclusive work. [Delegation transfer review](coverage/semantics/generator-fiber-delegation-transfer-review.json).
+through Fiber suspension. Fresh CURRENT, cached NEXT and one-/two-link
+supplied-Throwable executions agree with PHP, including final Generator and
+object retirement. Earlier timeouts remain separate from these whole-source
+agreements. [Delegation transfer review](coverage/semantics/generator-fiber-delegation-transfer-review.json).
 [Arrow Generator311](docs/semantics/ARROW-GENERATORS.md) validates eager
 parameters, deferred captures, implicit yield/delegation returns and original
 signatures. Value warnings retain the same Throwable, cached key and closed

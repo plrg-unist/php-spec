@@ -78,9 +78,10 @@ same Token. [Helper transfer review](../../coverage/semantics/generator-fiber-he
 Native named Generator delegation uses a structural chain proof instead of a
 single-resumer bound. Each actual parent/child/source pair is checked before a
 local caller projection; real VM scans keep all resumer and delegation-claim
-occurrences. Source agreement currently covers one-link CURRENT normal return
-and supplied-Throwable abort. Cached NEXT and two-link handled whole executions
-remain required and inconclusive; component diagnostics do not close them.
+occurrences. Source agreement covers fresh CURRENT, cached NEXT and one-/two-link
+supplied-Throwable executions through final retirement. The retained whole
+sources pass with a fixed 180-second model budget; original 100-second timeouts
+and component diagnostics keep their separate zero-credit status.
 [Delegation transfer review](../../coverage/semantics/generator-fiber-delegation-transfer-review.json).
 
 Private scoped descriptor validation checks shared live eval/class/directory

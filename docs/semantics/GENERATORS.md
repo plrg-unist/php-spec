@@ -60,8 +60,9 @@ hidden or duplicate carriers. Stored VM scans preserve occurrences without
 deduplicating them, and the actual machine and pending-initialization bits stay
 unchanged. Fresh one-link normal return and supplied-Throwable abort have source
 agreement. Cached NEXT retirement and the two-link caught-Throwable whole source
-remain required, inconclusive work at their recorded budgets; diagnostics give
-no source agreement. [Review and pending reproducers](../../coverage/semantics/generator-fiber-delegation-transfer-review.json).
+also agree under a fixed, separately recorded 180-second model limit. Their
+earlier 100-second timeouts retain zero credit; sources and operational rules
+are unchanged. [Review and reproductions](../../coverage/semantics/generator-fiber-delegation-transfer-review.json).
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
