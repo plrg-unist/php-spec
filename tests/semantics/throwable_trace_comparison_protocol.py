@@ -22,8 +22,43 @@ def $ttc_output(pevent :: pevent_tail*) = $ttc_event(pevent) ++ $ttc_output(peve
 
 
 def checks(program, path, name):
-    assert name == 'state-direct-array'
     source_path = json.dumps(base64.b64encode(str(path).encode()).decode())
+    if name == 'state-string-carrier':
+        return [
+            'S_initial = $php_run(' + program + ',0,' + source_path + ')',
+            'S_initial.COMPLETION = BUDGET',
+            'S_found = $ttc_seek(S_initial[.COMPLETION = NORMAL],1000)',
+            '$ttc_stage(S_found)',
+            'S = S_found[.COMPLETION = NORMAL]',
+            'S.TODO = (BINARY_RIGHT SPACESHIP poperand z) :: ptask*',
+            '$lookup(S.ENV,$ptascii("d")) = (n_dcv)',
+            '$lookup(S.ENV,$ptascii("e")) = (n_ecv)',
+            'S.STORE[n_dcv] = DEFINED (POBJECT n_d)',
+            'S.STORE[n_ecv] = DEFINED (POBJECT n_e)',
+            '$throwable_scalar_trace_pair(S,n_d,n_e)',
+            '$throwable_field(S,n_e,"trace") = PARRAY n_trace',
+            '$entry_lookup(S.ARRAYS[n_trace].ITEMS,KINT 0) = (DIRECT (PARRAY n_frame))',
+            '$entry_lookup(S.ARRAYS[n_frame].ITEMS,KSTRING $ptascii("args")) = (DIRECT (PARRAY n_args))',
+            '$entry_lookup(S.ARRAYS[n_args].ITEMS,KINT 0) = (DIRECT (PSTRING_CARRIER pstringidentity_e ($ptascii("x"))))',
+            '$string_carrier_valid(S,PSTRING_CARRIER pstringidentity_e ($ptascii("x")))',
+            '$trace_compare_graph(S,n_trace)',
+            '$heap_owners($heap_prune($heap_graph(S)),HARRAY n_trace) = 1',
+            '$heap_owners($heap_prune($heap_graph(S)),HARRAY n_frame) = 1',
+            '$heap_owners($heap_prune($heap_graph(S)),HARRAY n_args) = 1',
+            '$value_order_effect(S,POBJECT n_d,POBJECT n_e,eps,z) = (S,ORDER $(-1))',
+            'PhpStep: S ~> S_raw',
+            'S_raw.RESULT = KNOWN (PINT $(-1))',
+            'S_raw.TODO = ptask*',
+            r'S_raw.OBJECTS = S.OBJECTS /\ S_raw.OBJECTPROPS = S.OBJECTPROPS',
+            r'S_raw.ARRAYS = S.ARRAYS /\ S_raw.ALLOCATIONS = S.ALLOCATIONS',
+            '$aggregate_compare_seen(S_raw) = eps',
+            '$drive_steps(S,0) = S[.COMPLETION = BUDGET]',
+            '$drive_steps(S,1) = S_raw[.COMPLETION = BUDGET]',
+            'S_done = $drive_steps(S_raw,1000)',
+            r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps',
+            '$ttc_output(S_done.EVENTS) = $ptascii("B|-1|")',
+        ]
+    assert name == 'state-direct-array'
     return [
         'S_initial = $php_run(' + program + ',0,' + source_path + ')',
         'S_initial.COMPLETION = BUDGET',

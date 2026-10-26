@@ -46,6 +46,11 @@ $a = trace130(1); $b = trace130(1);
 $x = [$a, 1]; $y = [$b, 3];
 echo 'B|', $a<=>$b, '|', $x<=>$y, '|';
 ''',
+    'state-string-carrier': br'''<?php
+function error130($x): Error { return new Error('same', 7); }
+$d = error130(1.5); $e = error130('x');
+echo 'B|', $d<=>$e, '|';
+''',
     'object-arg-control': br'''<?php
 function trace130($x): Exception { return new Exception('same', 7); }
 $object = new stdClass;
