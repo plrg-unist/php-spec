@@ -17,8 +17,8 @@ exception and `Previous` order, with separate receiver/cache retirement. Three
 authored and one independent source agree exactly with pinned PHP; two I62/I63
 controls remain exact. The three new authored sources were checked
 `Unsupported` on the unchanged model. Strict compilation of 424 modules and
-one reached state with 129 custom checks pass. Two overstrong reached-state
-premises and an independent recorder comparison error retain zero credit.
+one reached state with 129 custom checks pass. Joined strict compilation
+over the actual tail also passes. Two overstrong reached-state premises and an independent recorder comparison error retain zero credit.
 Fresh method THROW, bound/delegated resumers and wider lifetimes remain partial.
 [Method reference THROW review](coverage/semantics/generator-fiber-method-reference-throw-transfer-review.json).
 

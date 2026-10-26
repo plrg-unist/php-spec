@@ -116,8 +116,9 @@ The coverage compression patterns in `.gitignore` guard against reintroduction.
 
 I68 method by-reference Generator THROW evidence is retained uncompressed under
 `../php-spec-evidence-archive/generator-fiber-method-reference-throw-68/`.
-Its `manifest.json` identifies ten raw reports, including both failed reached
-fixtures and the independent recorder correction, with SHA-256 hashes.
+Its `manifest.json` identifies eleven raw reports, including both failed reached
+fixtures, the independent recorder correction and joined strict compilation,
+with SHA-256 hashes.
 
 M106's normal partial-pair cleanup evidence is in
 `../php-spec-evidence-archive/lifecycle-normal-partial-pair-106/manifest.json`.
