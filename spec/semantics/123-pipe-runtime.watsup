@@ -104,7 +104,8 @@ def $pipe_start(S, pcalltarget, pvalue, porigin, z_send, z_call) = S[.TODO = (CA
   -- if $target_function(S, pcalltarget) = (pfunction)
 
 dec $pipe_name(pstate, preqbytes, preqbytes, preqbytes?, pvalue, porigin, int, int, int) : pstate
-def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pvalue, porigin, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED "static method pipe callable"]
+dec $pipe_static_string(pstate, preqbytes, pvalue, porigin, int, int, int) : pstate
+def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pvalue, porigin, z_send, z_lookup, z_call) = $pipe_static_string(S, preqbytes_original, pvalue, porigin, z_send, z_lookup, z_call)
   -- if $dynamic_method_scan(preqbytes_original, false, false)
 def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pvalue, porigin, z_send, z_lookup, z_call) = $pipe_start(S, pfunction.ORIGIN, pvalue, porigin, z_send, z_call)
   -- if ~$dynamic_method_scan(preqbytes_original, false, false)
@@ -120,6 +121,7 @@ def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pva
   -- if ~$call_builtin(preqbytes_lookup, preqbytes_fallback?)
 
 dec $pipe_value(pstate, poperand, pvalue, porigin, int, int, int) : pstate
+dec $pipe_named_carrier_site(pstate, porigin, ptbytes) : bool
 def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = S_read
   -- if S_read = $resolve_at(S, poperand, z_lookup)
   -- if S_read.COMPLETION =/= NORMAL
@@ -127,6 +129,18 @@ def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = $
   -- if S_read = $resolve_at(S, poperand, z_lookup)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (PSTRING n*)
+def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = $pipe_name(S_read, n*, $dynamic_lookup_name(n*), eps, pvalue_left, porigin, z_send, z_lookup, z_call)
+  -- if S_read = $resolve_at(S, poperand, z_lookup)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (PSTRING_CARRIER pstringidentity n*)
+  -- if $dynamic_method_scan(n*, false, false)
+def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = $pipe_name(S_read, n*, $dynamic_lookup_name(n*), eps, pvalue_left, porigin, z_send, z_lookup, z_call)
+  -- if S_read = $resolve_at(S, poperand, z_lookup)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (PSTRING_CARRIER pstringidentity n*)
+  -- if ~$dynamic_method_scan(n*, false, false)
+  -- if $string_carrier_valid(S_read, PSTRING_CARRIER pstringidentity n*)
+  -- if $pipe_named_carrier_site(S_read, porigin, n*)
 def $pipe_value(S, poperand, pvalue_left, porigin, z_send, z_lookup, z_call) = $pipe_start(S_read, CLOSURE_TARGET n, pvalue_left, porigin, z_send, z_call)
   -- if S_read = $resolve_at(S, poperand, z_lookup)
   -- if S_read.COMPLETION = NORMAL

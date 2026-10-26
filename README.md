@@ -692,7 +692,25 @@ now check a direct CV user Iterator's string keys after its cached `current()`
 and before `next()`. Numeric strings become positional only for the send;
 duplicate, unknown and positional-after-named errors stop later callbacks.
 Five original sources agree with PHP, and reached first-send/error checks pass.
-Other Iterator producers, value shapes and lifetimes remain partial.
+Two Aggregate-returned Iterator cases also agree with PHP, including an early
+duplicate error; wider producer, value and lifetime histories remain partial.
+
+[Temporary Iterator CONFIG inputs](coverage/semantics/config-iterator-temp-call-review.json)
+now retain separate opcode INPUT and Iterator DATA owners for a direct noarg
+factory call. DATA retires before INPUT and before the API; a quiet sole INPUT
+dies before API entry or catch after a supplied key exception. Three original
+sources agree with PHP, and 418 reached premises check the owner transitions,
+throw cleanup and source guards. Effectful last owners and temporary string
+keys remain explicit boundaries.
+
+[Invalid Iterator CONFIG keys](coverage/semantics/config-iterator-invalid-key-review.json)
+now throw PHP's key-type Error after a cached string current and before send,
+`next()` or API entry. The raw primitive key is consumed; ordinary cleanup
+retires Iterator DATA before catch, leaving a retained CV owner alive. Four
+direct-CV sources and one separately checked Aggregate-to-Iterator CV rebind
+agree with PHP. Reached checks cover the first and second key, Error line,
+unsent current and DATA cleanup. The guard requires a live CV holding the
+selected Iterator; temporary and other key/value histories remain partial.
 
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
@@ -3795,6 +3813,16 @@ left value before selecting a named, closure or public user-method array
 callable. Its [runtime review](coverage/semantics/pipe-review.json) binds 12
 earlier source outcomes; the [array review](coverage/semantics/pipe-array-callable-review.json)
 binds twelve exact CLI outcomes and reached ownership checks.
+Public static user methods named by nonoptimized string RHS values now use
+class/method selection with authenticated pipe send and result tasks;
+[the method-string review](coverage/semantics/pipe-static-method-string-review.json)
+keeps literal, variable and temporary strings, reference/lookup behavior and
+excluded selectors separate from the earlier pipe evidence.
+Ordinary named function string carriers now select evaluated optimized and
+nonoptimized RHS names; [the carrier review](coverage/semantics/pipe-named-carrier-review.json)
+records 19 exact pinned CLI outcomes, a separate request-profile pass and
+reached source/ownership checks. Method strings and builtins retain their
+separate dispatch boundaries.
 [Switch execution](docs/semantics/SOURCE-SWITCH.md) scans cases in source order,
 retains the subject through fallthrough, and distinguishes constant-boolean
 branching from dynamic equality; its [review](coverage/semantics/switch-review.json)
@@ -4275,6 +4303,16 @@ The matching untyped backed form has no property type source: aliases accept
 string writes, ordinary reads copy, and Get still precedes rebinding Error.
 Three originals and 217 focused checks pass in the
 [untyped reference-Get review](coverage/semantics/untyped-reference-get-hooks-review.json).
+An unchanged direct Child of the declaring Parent now uses the Parent's backed
+`&get` with the Child receiver. Typed and untyped aliases retain their respective
+property-source rules, ordinary reads copy, and destination rebinding calls Get
+before Error. Three originals and 271 Boolean checks plus three raw transitions
+pass in the [inherited reference-Get review](coverage/semantics/inherited-reference-get-hooks-review.json).
+When that direct Child plainly redeclares the same public `int` property, its own
+slot and type source govern the inherited Parent `&get`. Parent lexical scope,
+Child receiver, alias lifetime, ordinary copies and Get-before-rebind order remain
+observable. Three originals and 341 Boolean checks plus three raw transitions
+pass in the [plain Child reference-Get review](coverage/semantics/plain-child-reference-get-hooks-review.json).
 Wider hook declarations and indirect consumers remain partial.
 
 Public backed by-value `get` hooks execute their block or expression body on each read,

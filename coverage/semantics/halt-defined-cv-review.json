@@ -1,0 +1,40 @@
+{
+  "scope": "Fixed compiled-global defined with no namespace fallback and one positional ordinary CV argument carrying the exact __COMPILER_HALT_OFFSET__ string as a plain value or authenticated carrier. No owner, named send or pack. Partial dynamic-source behavior.",
+  "status": "independently_reviewed_private",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "base_revision": "2acf1420ddc5c8634818db5151fae9d5278c5173",
+  "runtime_sha256": "263e4480c72f2d7cc3b79b5570eab118ef8386c3a93bee895793763324162d3d",
+  "engine_route": "Zend/zend_compile.c::zend_compile_func_defined emits ZEND_DEFINED only for one ZVAL argument. An ordinary CV reaches Zend/zend_builtin_functions.c::ZEND_FUNCTION(defined), whose SILENT zend_get_constant_ex lookup uses the executed filename for HALT registration. The literal quick check remains false in a HALT file.",
+  "mechanism": "At authentic CONFIG_INVOKE, bind the fixed global defined target, one raw NExprVariable argument and captured exact valid string value; reuse the existing filename-local declaration journal and HALT_ABSENT/HALT_OFFSET Boolean result arms. The fixed raw literal, selected calls, constant arms, provider boundary and HALT_UNKNOWN refusal remain separate.",
+  "validation": {
+    "native_first": "Four frozen original programs had exact CLI0/empty-stderr observations: same-file literal false versus CV true, main absent false, child present/main absent, and main present/eval absent. The unchanged checked model accepted all four but returned Unsupported at the CV query, preserving V:/A:/I:/E: prefixes. This baseline is zero agreement credit.",
+    "changed_sources": "The corrected model agrees exactly on all four author originals against unchanged native source paths and a v2 child snapshot, with checked program/normal0/empty stderr. The independently frozen reviewer packet also agrees on four distinct originals with stable runtime and inputs.",
+    "reached_state": "Author strict-SL main literal/CV contrast passes 89 checks; corrected child/main and eval/main fixtures pass 120+110, totaling 319 reached conditions. They bind authentic CV CONFIG_INVOKEs, captured interned HALT string carriers, filename-local true/false, literal quick-check false, budget0/resume, provider/journal preservation and admitted HALT_UNKNOWN refusal. The reviewer independently passed an 83-check literal/CV frontier.",
+    "failed_attempts": "The first changed cut required a plain pvalue; a genuine CV delivered an authenticated INTERNED_STRING carrier, so all four runs remained Unsupported. One reached diagnostic isolated that sole premise. The first author state aggregate passed its main fixture then stopped because child/main raw binders shared names; its failed aggregate has zero credit and only the affected child/eval fixtures were rerun."
+  },
+  "environment": {
+    "profile": "tests/semantics/profile.json",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "resources": "Author CPU4 native/baseline, failed changed cut, diagnostic, corrected source and focused-state runs fully reaped/released; reviewer CPU4 frozen-source and independent-frontier runs fully reaped/released."
+  },
+  "raw_artifacts": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/dynamic-source-103",
+    "reports_sha256": {
+      "defined-cv-v1/native-report.json": "0dab94f1cceed0b5da1ff1a8d026063e85fdeb92feb398c6bf70b878bb44cb0d",
+      "defined-cv-v1/model-report.json": "8c581b1b3e60b02125839010afef2fa94ed4a2cbd2e8090851c28af857c27f77",
+      "defined-cv-implemented-v1/native-report.json": "d3759ea267381a8a1e71b892bac2aeba02aabc9f01a7aee5a7b550897df571b6",
+      "defined-cv-implemented-v1/model-report.json": "2cc05d43ac88048883ada54c87987d2816d38dc9ed0c2a335e75762aa6189e34",
+      "defined-cv-diagnostic-v1/report.json": "740be1826bcf73b517889b2117e0190fe4d308fed1b7db1db4509eceb004ff68",
+      "defined-cv-implemented-v2/report.json": "bea4793774df7200eb2ed948d647b66277ab3502c6f65a481dcc44f3aa03a84b",
+      "defined-cv-state-v1/report.json": "469952125650cbcb18e1c7e3a8891db6a98af02d887ec10ebf60443a7a154360",
+      "defined-cv-state-v2/report.json": "5fa85e3e8ee6096fcdd997ab3dc542c6991f131c00c78d445927012bc144c7aa",
+      "reviewer-frozen-v1/report.json": "0b4a3f5f39788bcd32043c05bcf1a1902536e97e794682c0baab2ad7efffc542",
+      "reviewer-frontier-v1/report.json": "039c55a62d89b9dad946aa831a91d89b03e6b46cfc8dbad521aba6391061f36e"
+    },
+    "recovery": "Run halt_defined_cv_sources.py --phase native then --phase model with the same fresh output root for the four original programs. Run halt_defined_cv_protocol.py --sources SOURCE_ROOT --output FRESH; --case selects a reached front. Corrected model v2 ran retry-v2.py against unchanged implemented-v1 native paths, preserving its first failed model result. State-v2 reran only child and eval after a fixture-binder correction."
+  },
+  "review": "Independent semantic, source, reached-state, documentation and inventory review accepted on private behavior/tests commit 14c51a540 and runtime hash 263e4480. Four separately frozen originals passed exact native/model comparison (report 0b4a3f5f...) and a distinct 83-check literal/CV frontier passed (report 039c55a6...).",
+  "remaining": "Other fixed defined arguments, variable constant arguments, owning/named/unpacked calls, repeated call-site cache history, ambiguous HALT registration and wider compiler/provider behavior remain partial."
+}

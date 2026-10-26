@@ -1,0 +1,13 @@
+;; A string carrier can select an ordinary named function only at the pipe
+;; source that evaluated it. Fixed first-class names use compiled CODE instead.
+def $pipe_named_carrier_site(S, porigin, ptbytes) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left (NExprFuncCall expression_callee (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_call) metadata)
+  -- if $pppipe_optimized(NExprFuncCall expression_callee (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_call)
+  -- if $pipe_fixed_name(S, porigin) = eps
+  -- if $firstclass_evaluated(S, $pipe_rhs_origin(porigin))
+  -- if $pipe_string_source(expression_callee, ptbytes)
+def $pipe_named_carrier_site(S, porigin, ptbytes) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if ~$pppipe_optimized(expression_right)
+  -- if $pipe_string_source(expression_right, ptbytes)
+def $pipe_named_carrier_site(S, porigin, ptbytes) = false -- otherwise
