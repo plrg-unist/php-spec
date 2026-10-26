@@ -16,6 +16,7 @@ dec $iterator_unpack_send(pstate, piteratorunpack, ptask*) : pstate
 dec $iterator_unpack_store(pstate, piteratorunpack, poperand, ptask*) : pstate
 dec $iterator_unpack_named_target(pstate, piteratorunpack) : pnamedtarget
 dec $iterator_unpack_warning_message(pstate, piteratorunpack) : ptbytes
+dec $iterator_unpack_warning_target(pstate, pcalltarget) : ptbytes
 dec $iterator_unpack_scalar(pvalue) : bool
 dec $iterator_unpack_scalar_operand(pstate, poperand) : bool
 dec $iterator_unpack_known_hold(poperand) : bool
@@ -55,6 +56,17 @@ def $iterator_unpack_plain(S, punpackcall) = true
   -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if punpackcall.FUNCTION = pfunction.ORIGIN
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata)
+  -- if $call_selected_valid(S, punpackcall.FUNCTION, punpackcall.CALLSITE)
+def $iterator_unpack_plain(S, punpackcall) = true
+  -- if punpackcall.FUNCTION = METHOD_TARGET n porigin_method
+  -- if $unpack_class(S, punpackcall) = (UNPACK_CV)
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
+  -- if pfunction.ORIGIN = porigin_method
+  -- if punpackcall.CALLSITE = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if $call_selected_valid(S, punpackcall.FUNCTION, punpackcall.CALLSITE)
 def $iterator_unpack_plain(S, punpackcall) = false -- otherwise
 def $iterator_unpack_input(S, punpackcall, VARIABLE ptbytes z) = true
@@ -220,6 +232,7 @@ def $reference_callback_used(S, pcallcontext) = (text <- ["valid", "current", "k
 def $iterator_unpack_nodes(piteratorunpack) = $operand_nodes(piteratorunpack.KEY) ++ $operand_nodes(piteratorunpack.CURRENT) ++ [HOBJECT piteratorunpack.OBJECT] ++ $operand_nodes(piteratorunpack.INPUT) ++ $operand_nodes(piteratorunpack.HOLD)
 def $task_nodes(ITERATOR_UNPACK piteratorunpack text) = $iterator_unpack_nodes(piteratorunpack) ++ $unpack_call_roots(piteratorunpack.CALL)
 def $call_task_valid(S, ITERATOR_UNPACK piteratorunpack text) = $iterator_unpack_result_valid(S, piteratorunpack, text)
+def $call_after_origin(S, ITERATOR_UNPACK piteratorunpack text) = S[.ORIGIN = piteratorunpack.CALL.CALLSITE]
 def $useriter_task_ids(ITERATOR_UNPACK piteratorunpack text) = [piteratorunpack.ITERATOR]
 def $error_task_iterator(ITERATOR_UNPACK piteratorunpack text) = [piteratorunpack.ITERATOR]
 def $generator_internal_task(ITERATOR_UNPACK piteratorunpack text) = true
@@ -483,7 +496,13 @@ def $iterator_unpack_warning_hold(S, piteratorunpack) = (piteratorunpack.CURRENT
 def $iterator_unpack_warning_hold(S, piteratorunpack) = (KNOWN PNULL)
   -- if $iterator_unpack_scalar_operand(S, piteratorunpack.CURRENT)
 def $iterator_unpack_warning_hold(S, piteratorunpack) = eps -- otherwise
-def $iterator_unpack_warning_message(S, piteratorunpack) = $ptascii("Cannot pass by-reference argument ") ++ $ntunsigned($(n + 1)) ++ $ptascii(" of ") ++ pfunction.NAME ++ $ptascii("() by unpacking a Traversable, passing by-value instead")
+def $iterator_unpack_warning_target(S, METHOD_TARGET n porigin_method) = pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+def $iterator_unpack_warning_target(S, porigin_function) = pfunction.NAME
+  -- if $target_function(S, porigin_function) = (pfunction)
+  -- if pfunction.ORIGIN = porigin_function
+def $iterator_unpack_warning_message(S, piteratorunpack) = $ptascii("Cannot pass by-reference argument ") ++ $ntunsigned($(n + 1)) ++ $ptascii(" of ") ++ $iterator_unpack_warning_target(S, piteratorunpack.CALL.FUNCTION) ++ $ptascii("() by unpacking a Traversable, passing by-value instead")
   -- if $target_function(S, piteratorunpack.CALL.FUNCTION) = (pfunction)
   -- if n = $named_index(pfunction.SIGNATURE.PARAMETERS, $iterator_unpack_named_target(S, piteratorunpack))
 def $iterator_unpack_send(S, piteratorunpack, ptask_tail*) = $throw_scalar(S_error, "Error", $ptascii("Keys must be of type int|string during argument unpacking"), $unpack_line(S, piteratorunpack.CALL))
@@ -557,6 +576,15 @@ rule PhpStep/iterator-unpack-byref-snapshot: S ~> S[.COMPLETION = UNSUPPORTED "I
 def $iterator_unpack_warning_resume(ITERATOR_UNPACK piteratorunpack "byref") = true
 def $iterator_unpack_warning_resume(ITERATOR_UNPACK piteratorunpack "valid-nan") = true
 def $iterator_unpack_warning_resume(ptask) = false -- otherwise
+def $iterator_unpack_warning_tail_origin(S, ITERATOR_UNPACK piteratorunpack text) = piteratorunpack.CALL.CALLSITE
+  -- if $iterator_unpack_warning_resume(ITERATOR_UNPACK piteratorunpack text)
+def $iterator_unpack_warning_tail_origin(S, ptask) = S.ORIGIN -- otherwise
+def $call_after_origin(S, ERROR_HANDLER_INVOKE perrorcall) = S[.ORIGIN = piteratorunpack.CALL.CALLSITE]
+  -- if perrorcall.RESUME = ITERATOR_UNPACK piteratorunpack text
+  -- if $iterator_unpack_warning_resume(perrorcall.RESUME)
+def $call_after_origin(S, ERROR_HANDLER_RESULT perrorcall) = S[.ORIGIN = piteratorunpack.CALL.CALLSITE]
+  -- if perrorcall.RESUME = ITERATOR_UNPACK piteratorunpack text
+  -- if $iterator_unpack_warning_resume(perrorcall.RESUME)
 def $useriter_task_ids(ERROR_HANDLER_INVOKE perrorcall) = $useriter_task_ids(perrorcall.RESUME) -- if $iterator_unpack_warning_resume(perrorcall.RESUME)
 def $useriter_task_ids(ERROR_HANDLER_RESULT perrorcall) = $useriter_task_ids(perrorcall.RESUME) -- if $iterator_unpack_warning_resume(perrorcall.RESUME)
 def $useriter_task_ids(ERROR_HANDLER_CLEAN perrorcall) = $useriter_task_ids(perrorcall.RESUME) -- if $iterator_unpack_warning_resume(perrorcall.RESUME)

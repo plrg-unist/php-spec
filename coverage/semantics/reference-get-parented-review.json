@@ -1,0 +1,104 @@
+{
+  "scope": "CLASS140 selected public backed block &get declared in a class with one authentic linked parentless Base. Base either lacks the selected key or owns a same-name public plain equal-type singleton nonstatic property; in the latter case the hooked child owns its separate slot/default. Existing bounded linked descendants select the latest plain slot. Other getter and ancestor shapes remain partial.",
+  "status": "partial; independently reviewed",
+  "target": {
+    "php": "8.5.10 CLI NTS signed64",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C; TZ=UTC; serial exclusive CPU5 native/baseline and CPU2 candidate/review; 100000 model steps, 75-second source timeout"
+  },
+  "authority": [
+    "Zend/zend_inheritance.c::do_inherit_property chooses the hooked child slot when an ordinary same-name parent has no hooks, and inherit_property_hook carries linked descendant getters.",
+    "Zend/zend_object_handlers.c::zend_std_read_property calls the selected getter on the actual receiver.",
+    "Zend/zend_execute.c::zend_assign_to_property_reference calls Get before raising overloaded-object Error.",
+    "spec/semantics/382-backed-get-hooks.watsup authenticates SOURCE_PARENT, parent selected-key absence or plain same-name source, and child own declaration; spec/semantics/138-property-references.watsup attaches only the latest typed property source."
+  ],
+  "implementation": [
+    "spec/semantics/382-backed-get-hooks.watsup"
+  ],
+  "source_packet": {
+    "frozen_catalogue": "tests/semantics/reference_get_parented_cases.json",
+    "frozen_catalogue_sha256": "ab46a74bc213d5dd6ce0ba6ce94e8dea095aa98b44cc5621326bcc3165d48563",
+    "native_expectations": "tests/semantics/reference_get_parented_expectations.json",
+    "native_expectations_sha256": "50d8179973b026cbaac7306dd6f60a09df0b518ed3925f072b5c288667f5fac9",
+    "positive_ids": [
+      "parented-typed-latest",
+      "parented-untyped-null",
+      "parented-rebind-error",
+      "ordinary-override-control"
+    ],
+    "note": "ordinary-override-control was frozen as prospective candidate before native; native proved it legal and it is a positive in this reviewed increment."
+  },
+  "prechange": {
+    "revision": "20334b95d77cc512661e24f7bee50ca0521e4117",
+    "semantic_sha256": "652696adc5895fe2839b9e73cc6ebfd7418d3b2a894e318ffb9498902a47cc6b",
+    "native_baseline_report_member": "author/class140-probes/report.json",
+    "native_baseline_report_sha256": "80157269e2029165d82f4a9b7e4fbac817e9cc6349046e81e68421af80c02687",
+    "result": "All four original sources native exit0/empty stderr. Unchanged model accepted/checked then Unsupported at by-reference hook gate; zero source agreement."
+  },
+  "first_failures": [
+    {
+      "member": "author/reference-get-parented-zupbuxs3/report.json",
+      "sha256": "ad934a1f5a768fa074c089aa9c77e13f3ff6156d5e34a6d60fa09f05e74e5ae5",
+      "result": "Parented by-reference hook compile stayed Unsupported.",
+      "full_packet_credit": 0
+    },
+    {
+      "member": "author/reference-get-parented-ihzgnd7b/report.json",
+      "sha256": "a14867bc6ca85dfca9887470178d85021de8593fecd312b82dee896123a8aeb8",
+      "result": "Linked child hook override stayed Unsupported.",
+      "full_packet_credit": 0
+    },
+    {
+      "member": "author/reference-get-parented-sbus6jag/report.json",
+      "sha256": "3090be8844ff7d6aced5301c189eaf6fda3216f6eb73e7850062577c43d7a03d",
+      "result": "Same-name certificate recursion timed out after three source successes; incomplete packet.",
+      "full_packet_credit": 0
+    },
+    {
+      "member": "author/reference-get-parented-91fa8z3m/report.json",
+      "sha256": "7884c4d499353472f1dc670b874cc6ce482874fef7762fc93d47833c66a2b69e",
+      "result": "Semantic helper elaboration during a source-only run rejected ppropertyid as porigin before execution.",
+      "full_packet_credit": 0
+    }
+  ],
+  "affected": {
+    "semantic_sha256": "a95b62c12e78a4f91c56467f2d9b4777679080c852902c682708f643743369d3",
+    "protocol_sha256": "587784a4a5d7ea454a45cf61aa3b3afefa4da0221bd6954c6e4c9c446b55624e",
+    "report_member": "author/reference-get-parented-91cgta2m/report.json",
+    "report_sha256": "1a7eb72f02a3fa32bd08595e340fcc287ceffebc05c9a7fd10a55b9d2978d6ee",
+    "module_count": 424,
+    "source_agreements": 4,
+    "reached_premises": 417,
+    "raw_php_steps": 4,
+    "scope": "Own Base and selected-key layout, authentic getter SOURCE_PARENT and link-removal refusal, inherited unrelated property/constant, Base own singleton nonstatic ordinary same-key default3 versus Getter hooked default7, latest Child slot and typed source or untyped absence, lexical/called scopes, alias coercion/copy/retirement, Get-before-rebind Error and raw fetch/bind."
+  },
+  "independent": {
+    "reviewer": "class137_review",
+    "source_member": "reviewer/ancestor-override-chain.php",
+    "source_sha256": "c4e393988c449c62655944b31f32ace57686a796059e806e673ba1b6c31afbd3",
+    "native_report_member": "reviewer/native-first.json",
+    "native_report_sha256": "46bbe36810601fe0871250c15cf149b3330b93fa380e962be3a53ded8a8a6748",
+    "unchanged_baseline_member": "reviewer/unchanged-baseline.json",
+    "unchanged_baseline_sha256": "25f07f8abd238830a77047f0bfe320df5e671718bde9abdac4030f076735ee55",
+    "candidate_report_member": "reviewer/candidate.json",
+    "candidate_report_sha256": "86428bbc2814edad79e66adc8e364d299570f978c83ae04289339a6d34a6ad3d",
+    "result": "Frozen Base ordinary int default3 to Getter own backed &get default7, unchanged Middle and Leaf plain redecl default11; latest Leaf type source, inherited Base member/constant, Getter lexical versus Leaf called, copy and retirement agree exactly. Candidate inputs unchanged; native/baseline were not replayed."
+  },
+  "archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/reference-get-parented-140/evidence.tar.gz",
+    "sha256": "982abc7c768d90207aac8acfe71124f732391b81db26fc378f919f795fdf717a",
+    "bytes": 12066155,
+    "members": 274,
+    "manifest_sha256": "a3a3da6a4f10ea67fb2ac1f90a86b4fcc7a21180441b34a161e875713854487a",
+    "recovery": "Extract at any path; author/, reviewer/ and inputs/ retain raw runs, failed attempts and tested snapshots. Archive and manifest are outside Git."
+  },
+  "review": {
+    "reviewer": "class137_review",
+    "semantic_test_decision": "CLEAR",
+    "package_decision": "CLEAR"
+  },
+  "remaining": "Deeper getter-declaring ancestry, hooked or trait-selected Base properties, grouped declarations, virtual/arrow/set hooks, dimensions, quiet/compound consumers and wider reference lifetimes remain partial."
+}

@@ -4364,6 +4364,12 @@ constants and methodless marker interfaces on linked ordinary descendants.
 Four originals and 538 reached premises/four raw steps retain the latest
 slot/type source, Parent lexical scope and leaf called scope.
 [Memberful reference-Get review](coverage/semantics/reference-get-memberful-review.json).
+A getter-declaring class may now extend one linked parentless Base with no
+selected key or a same-name public plain equal-type singleton property. The
+hooked child keeps its own slot/default in the latter case; linked descendants
+still select the latest slot/type source. Four originals, 417 reached premises,
+four raw steps and an independent chain pass in the
+[parented reference-Get review](coverage/semantics/reference-get-parented-review.json).
 Wider hook declarations and indirect consumers remain partial.
 
 Public backed by-value `get` hooks execute their block or expression body on each read,

@@ -109,7 +109,7 @@ def $ppproperty_hook_group(P, pcpath, statement, ppropertydesc*, pchheader) = PP
 def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN b) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) (SEQUENCE statement*) metadata, pchheader) = $pphook_finish(P, $ppgoto_finish($ppstatements(P_hook, pcpath ++ [PCFIELD 5], 0, statement*)), pcpath, ppropertydesc, b, metadata, pchheader)
   -- if $ptlc($base64(text_get)) = $ptascii("get")
   -- if ~$generator_statements(statement*)
-  -- if ~b \/ (pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME))
+  -- if ~b \/ (pchheader.KIND = "class" /\ $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME))
   -- if ($hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME) \/ ppropertydesc.DEFAULT = PROP_NULL \/ ppropertydesc.DEFAULT = PROP_UNINITIALIZED)
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
@@ -599,11 +599,54 @@ def $property_hook_function(S, ppropertyhook) = (pfunction)
   -- if ~$function_generator(S, pfunction)
 def $property_hook_function(S, ppropertyhook) = eps -- otherwise
 
-;; Reference hooks remain sole backed statement hooks on a parentless class.
+;; A selected reference getter may be declared without a parent or over one
+;; linked ordinary class. A same-name plain parent uses the child's own slot.
+dec $property_hook_reference_plain_parent(pstate, ppropertydesc, ppropertydesc) : bool
+def $property_hook_reference_plain_parent(S, ppropertydesc_parent, ppropertydesc_child) = true
+  -- if ppropertydesc_parent.NAME = ppropertydesc_child.NAME /\ ppropertydesc_parent.KEY = ppropertydesc_child.KEY /\ ppropertydesc_parent.TYPE = ppropertydesc_child.TYPE
+  -- if ppropertydesc_parent.ORIGIN =/= ppropertydesc_child.ORIGIN
+  -- if ppropertydesc_parent.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc_parent.STATIC /\ ~ppropertydesc_parent.READONLY /\ ~ppropertydesc_parent.FINAL /\ ppropertydesc_parent.SETVISIBILITY = eps
+  -- if ppropertydesc_parent.ORIGIN = porigin_parent_property
+  -- if $property_declaring_class(S.CLASSES, porigin_parent_property) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if $hook_property_at(pclassdesc_parent.PROPERTIES, porigin_parent_property) = (ppropertydesc_parent)
+  -- if porigin_parent_property = PORIGIN n_parent pcpath_parent
+  -- if $(|pcpath_parent| >= 2)
+  -- if pcpath_group = pcpath_parent[0:$nabs($( |pcpath_parent| - 2))]
+  -- if pcpath_parent = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n_parent pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE eps) metadata)
+  -- if flags <- [0,1] /\ ppropertydesc_parent.NAME = $base64(text_name)
+def $property_hook_reference_plain_parent(S, ppropertydesc_parent, ppropertydesc_child) = false -- otherwise
+dec $property_hook_reference_ancestor(pstate, porigin, ppropertydesc) : bool
+def $property_hook_reference_ancestor(S, porigin_owner, ppropertydesc) = true
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if pclassdesc.PARENT = eps
+def $property_hook_reference_ancestor(S, porigin_owner, ppropertydesc) = true
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if pclassdesc.PARENT =/= eps
+  -- if ppropertydesc.ORIGIN = porigin_property
+  -- if $hook_property_at(pclassdesc.PROPERTIES, porigin_property) = (ppropertydesc)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_owner) = (SOURCE_PARENT porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class" /\ pclassdesc_parent.PARENT = eps
+  -- if $property_desc_at($property_layout(S, porigin_parent, |S.CLASSES|), ppropertydesc.KEY) = eps
+def $property_hook_reference_ancestor(S, porigin_owner, ppropertydesc) = true
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if pclassdesc.PARENT =/= eps
+  -- if ppropertydesc.ORIGIN = porigin_property
+  -- if $hook_property_at(pclassdesc.PROPERTIES, porigin_property) = (ppropertydesc)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_owner) = (SOURCE_PARENT porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class" /\ pclassdesc_parent.PARENT = eps
+  -- if $property_desc_at($property_layout(S, porigin_parent, |S.CLASSES|), ppropertydesc.KEY) = (ppropertydesc_parent)
+  -- if $property_hook_reference_plain_parent(S, ppropertydesc_parent, ppropertydesc)
+def $property_hook_reference_ancestor(S, porigin_owner, ppropertydesc) = false -- otherwise
+
+;; Reference hooks remain sole backed statement hooks with an authentic slot.
 def $property_hook_reference_decl(S, ppropertydesc) = true
   -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_owner)
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
-  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps
+  -- if pclassdesc.KIND = "class" /\ $property_hook_reference_ancestor(S, porigin_owner, ppropertydesc)
   -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
   -- if $(|pcpath| >= 2)
   -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
@@ -1293,7 +1336,7 @@ def $property_hook_backed_over_ordinary(S, ppropertydesc_parent, ppropertydesc_c
   -- if flags <- [0,1] /\ ppropertydesc_parent.NAME = $base64(text_name) /\ ppropertydesc_parent.KEY = ppropertydesc_parent.NAME
   -- if $property_hook_override_backed(S, ppropertydesc_child)
   -- if $property_hook_origin(S, ppropertydesc_child) = (porigin_child_hook)
-  -- if $origin_node(S.SOURCES, porigin_child_hook) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get_name) (SEQUENCE eps) phpType39 metadata_hook)
+  -- if $origin_node(S.SOURCES, porigin_child_hook) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN b) (NIdentifier (BYTES text_get) metadata_get_name) (SEQUENCE eps) phpType39 metadata_hook)
   -- if $ptlc($base64(text_get)) = $ptascii("get")
   -- if ppropertydesc_child.ORIGIN = porigin_child_property
   -- if $property_declaring_class(S.CLASSES, porigin_child_property) = (porigin_child)
@@ -1574,7 +1617,7 @@ dec $property_hook_parent_overlap(pstate, ppropertydesc*, ppropertydesc*) : bool
 dec $property_hook_parent_match(pstate, ppropertydesc, ppropertydesc?) : bool
 def $property_hook_parent_overlap(S, eps, ppropertydesc_parent*) = false
 def $property_hook_parent_overlap(S, ppropertydesc :: ppropertydesc_tail*, ppropertydesc_parent*) = ($property_hook_parent_match(S, ppropertydesc, $property_desc_at(ppropertydesc_parent*, ppropertydesc.KEY)) \/ $property_hook_parent_overlap(S, ppropertydesc_tail*, ppropertydesc_parent*))
-def $property_hook_parent_match(S, ppropertydesc, eps) = (($property_hook_effective_origin(S, ppropertydesc) =/= eps /\ $property_hook_trait_origin(S, ppropertydesc) = eps) \/ $property_set_origin(S, ppropertydesc) =/= eps)
+def $property_hook_parent_match(S, ppropertydesc, eps) = ((($property_hook_effective_origin(S, ppropertydesc) =/= eps /\ $property_hook_trait_origin(S, ppropertydesc) = eps) \/ $property_set_origin(S, ppropertydesc) =/= eps) /\ ~$property_hook_reference_decl(S, ppropertydesc))
 def $property_hook_parent_match(S, ppropertydesc, (ppropertydesc_inherited)) = ((($property_set_origin(S, ppropertydesc_inherited) =/= eps \/ $property_set_origin(S, ppropertydesc) =/= eps) /\ ~$property_set_virtual_edge(S, ppropertydesc_inherited, ppropertydesc)) \/ (($property_hook_effective_origin(S, ppropertydesc_inherited) =/= eps \/ $property_hook_effective_origin(S, ppropertydesc) =/= eps) /\ ~$property_hook_override_pair(S, ppropertydesc_inherited, ppropertydesc)))
 def $property_hook_link_finish(S, pclassdesc, S_linked) = $trait_restore(S, S_linked[.COMPLETION = UNSUPPORTED "inherited property hook override"])
   -- if S_linked.COMPLETION = NORMAL

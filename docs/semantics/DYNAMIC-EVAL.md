@@ -92,7 +92,8 @@ callback bridge checks pass; the earlier 71-row retained eval run remains
 include-base evidence. Remaining obligations are
 generic imported-name `::class` evaluation; accepted-AST catchable
 `CompileError` cases and class-link errors beyond the modeled missing-parent
-`Error`. The installed [finite file provider](INCLUDE-SOURCES.md) gives
+`Error` and ordered interface-autoload cases. The installed
+[finite file provider](INCLUDE-SOURCES.md) gives
 include/require/once units their own source-kind and binding records; the eval
 binding invariant applies only to accepted eval units. Wider file-provider
 behavior remains open under that separate contract.
@@ -101,3 +102,13 @@ Native-accepted invalid namespace structure now reaches the checked AST and the
 authored source compiler; the [parser recovery review](../../coverage/dynamic-eval-namespace-recovery-review.json)
 keeps its five exact static outcomes separate from the native parse-time
 `CompileError` path.
+
+Parentless, trait-free class and interface declarations in accepted eval or
+included units now autoload missing direct interfaces in declaration order
+before linking the target. A resumed lookup keeps its source origin and may
+advance to the next name only after earlier names are published. A later miss
+raises at the dynamic declaration site without publishing the target; an
+earlier eval function remains callable. Include-once keeps the opened file's
+identity. The [ordered-interface ledger](../../coverage/semantics/multi-interface-autoload-review.json)
+records the source and reached-state checks. Parent, trait, reentrant and
+variance-obligation combinations remain partial.

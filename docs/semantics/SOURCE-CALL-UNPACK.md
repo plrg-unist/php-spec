@@ -84,7 +84,16 @@ source profiles, failed originals, immutable inputs, and raw process closures.
 
 ## Direct user Iterators
 
-Module385 admits direct user Iterators in ordinary source-function call unpack.
+Module385 admits direct user Iterators in ordinary source-function call unpack
+and direct public nonstatic instance-method calls. For the method form, the
+selected `METHOD_TARGET` owns its receiver before the Iterator callbacks run;
+a later write to the receiver variable does not change that target. The
+method's declaring class prefixes the by-reference Traversable Warning, as
+`ZEND_SEND_UNPACK` formats the selected function scope. Admission requires the
+actual `NExprMethodCall` source and the effective selected method. Other
+callable forms and non-CV method unpack operands remain separate. The
+source-site and selected-target checks do not reconstruct the previous value
+of a mutable receiver variable.
 The unpack marker owns selected Iterator DATA independently of raw
 temporary/reference INPUT; its cursor tracks traversal. A source CV stays borrowed.
 The actual argument origin, emitted line, callee, source remainder and destination
@@ -129,6 +138,17 @@ records the bounded source and independent state cuts.
 The [interned reference review](../../coverage/semantics/iterator-call-unpack-interned-reference-review.json)
 retains the two affected originals' earlier native bytes without replaying the
 four copied-string agreements or six unaffected state groups.
+
+Method targets preserve the declaration's class in the by-reference Warning.
+Validation projects an Iterator task's saved callsite onto its following
+`METHOD_RESULT`; warning invoke/result/cleanup wrappers do the same after their
+active argument-site checks. Cleanup still removes its handler-return record.
+Five direct-method originals and one destructor-bearing handler original agree
+with native PHP, with six separate source-reached stages. The direct-function
+warning control retains its own agreement. The
+[method Iterator review](../../coverage/semantics/method-iterator-unpack-review.json)
+records original inputs, tested rule hashes, failed fixture cuts and remaining
+callable forms.
 
 The first copied KNOWN object slice acquires an explicit HOLD before the warning
 when SENT is empty. This matches SEND_UNPACK's Z_TRY_ADDREF_P before zend_error,

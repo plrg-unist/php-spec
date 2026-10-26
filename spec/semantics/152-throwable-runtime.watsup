@@ -566,6 +566,29 @@ def $throwable_std_trace_pair(S, n_left, n_right) = true
   -- if $trace_std_graph_pair(S, n_trace_left, n_trace_right)
   -- if $trace_std_present(S, n_trace_left)
 def $throwable_std_trace_pair(S, n_left, n_right) = false -- otherwise
+dec $trace_instance_graph_pair(pstate, nat, nat) : bool
+dec $trace_instance_present(pstate, nat) : bool
+dec $throwable_instance_trace_pair(pstate, nat, nat) : bool
+def $throwable_instance_trace_pair(S, n_left, n_right) = true
+  -- if S.COMPLETION = NORMAL
+  -- if ~$number_compare_exception_pending(S)
+  -- if n_left =/= n_right
+  -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)
+  -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
+  -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
+  -- if pthrowable_left.KIND = pthrowable_right.KIND
+  -- if pthrowable_left.KIND <- ["Exception", "Error"]
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
+  -- if $throwable_object_image_valid(S, n_left) /\ $throwable_object_image_valid(S, n_right)
+  -- if $throwable_field(S, n_left, "string") = PSTRING eps
+  -- if $throwable_field(S, n_right, "string") = PSTRING eps
+  -- if $throwable_field(S, n_left, "previous") = PNULL
+  -- if $throwable_field(S, n_right, "previous") = PNULL
+  -- if $throwable_field(S, n_left, "trace") = PARRAY n_trace_left
+  -- if $throwable_field(S, n_right, "trace") = PARRAY n_trace_right
+  -- if $trace_instance_graph_pair(S, n_trace_left, n_trace_right)
+  -- if $trace_instance_present(S, n_trace_left)
+def $throwable_instance_trace_pair(S, n_left, n_right) = false -- otherwise
 dec $throwable_std_slot_effect(pstate, ppropertyslot*, ppropertyslot*, pcompareguard*, int) : (pstate, porder)
 dec $throwable_std_slot_continue(pstate, porder, ppropertyslot*, ppropertyslot*, pcompareguard*, int) : (pstate, porder)
 def $throwable_std_slot_effect(S, eps, eps, pcompareguard_seen*, z) = (S, ORDER 0)
@@ -579,6 +602,10 @@ def $throwable_std_slot_continue(S, ORDER 0, ppropertyslot_left*, ppropertyslot_
 def $throwable_std_slot_continue(S, porder, ppropertyslot_left*, ppropertyslot_right*, pcompareguard_seen*, z) = (S, porder) -- otherwise
 def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = $throwable_std_slot_effect(S, ppropertyslot_left*, ppropertyslot_right*, (HOBJECT n_left) :: pcompareguard_seen*, z)
   -- if $throwable_std_trace_pair(S, n_left, n_right)
+  -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
+  -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = $throwable_std_slot_effect(S, ppropertyslot_left*, ppropertyslot_right*, (HOBJECT n_left) :: pcompareguard_seen*, z)
+  -- if $throwable_instance_trace_pair(S, n_left, n_right)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
 ;; The previous slot can hold another Throwable. Authenticate each physical
@@ -698,6 +725,7 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*,
   -- if ~$throwable_alias_trace_pair(S, n_left, n_right)
   -- if ~$throwable_array_cell_trace_pair(S, n_left, n_right)
   -- if ~$throwable_std_trace_pair(S, n_left, n_right)
+  -- if ~$throwable_instance_trace_pair(S, n_left, n_right)
   -- if ~$throwable_previous_pair(S, n_left, n_right)
   -- if ~$throwable_warm_previous_pair(S, n_left, n_right)
 
