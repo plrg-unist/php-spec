@@ -692,7 +692,16 @@ now check a direct CV user Iterator's string keys after its cached `current()`
 and before `next()`. Numeric strings become positional only for the send;
 duplicate, unknown and positional-after-named errors stop later callbacks.
 Five original sources agree with PHP, and reached first-send/error checks pass.
-Other Iterator producers, value shapes and lifetimes remain partial.
+Two Aggregate-returned Iterator cases also agree with PHP, including an early
+duplicate error; wider producer, value and lifetime histories remain partial.
+
+[Temporary Iterator CONFIG inputs](coverage/semantics/config-iterator-temp-call-review.json)
+now retain separate opcode INPUT and Iterator DATA owners for a direct noarg
+factory call. DATA retires before INPUT and before the API; a quiet sole INPUT
+dies before API entry or catch after a supplied key exception. Three original
+sources agree with PHP, and 418 reached premises check the owner transitions,
+throw cleanup and source guards. Effectful last owners and temporary string
+keys remain explicit boundaries.
 
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map

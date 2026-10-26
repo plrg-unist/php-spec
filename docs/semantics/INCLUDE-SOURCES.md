@@ -1486,4 +1486,20 @@ API reception. An error retains CURRENT/KEY until ordinary cursor/DATA cleanup
 before catch. Five original sources agree at `c6b87f1eb`; reached first-send
 50 and duplicate-error/cleanup 109 premises pass at `c6b87f1eb`/`0b0d1620d`.
 The unchanged first-string baseline is Unsupported. Earlier integer-key paths
-remain covered; other producers, values, signatures and lifetimes remain partial.
+remain covered. Two source-checked Aggregate-returned Iterator named cases
+inherit this send path, including duplicate rejection before `next()`; wider
+Aggregate histories, values, signatures and lifetimes remain partial.
+
+The [temporary Iterator CONFIG increment](../../coverage/semantics/config-iterator-temp-call-review.json)
+accepts a direct noarg by-value named user factory returning an initialized
+Iterator into `ini_set(...factory())`. The emitted `UNPACK_VAR` call site
+authenticates a separate opcode INPUT owner in addition to Iterator DATA.
+DATA and the cursor retire before INPUT; quiet final INPUT death precedes
+normal API reception or catch after a supplied key exception. The exception
+leaves the current unsent and the selected API untouched. Factory key results
+stay integer in this slice; string keys and effectful last owners remain
+Unsupported. Three original PHP 8.5.10 sources agree across retained,
+sole-owner and abrupt paths, with 142+145+131 reached predicates. The
+unchanged factory baseline stopped Unsupported after `B|P|`; the Source99
+Aggregate inheritance check adds two exact native/model source cases and a
+current-rule duplicate control without claiming wider histories.
