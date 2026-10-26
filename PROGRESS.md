@@ -158,10 +158,12 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | Returns and lifetime | Bounded by-reference return/finally chains retain remaining owners, local catches and consumed recovery through normal/throw retirement. First C retirement with one REF/object remainder preserves local catch, the computed-return Notice and a detached caller cell. Bounded WeakMap slots preserve Value/reference-cell ownership, Key notification and selective mutation. Finite traversal, owned Iterator DATA and manual weak-Key cursors preserve copied targets, escaped aliases, normalization and staged cleanup. Selective Key retirement and last-owner finite Map or owned Iterator cleanup preserve observed weak-reference visibility, ordinary Value copies, retained sibling storage, bounded `isset` reentry and pending Exceptions. Conditional GC supports canonical reference/array backedges and copy/COW protection, transitive entry-Key protection with selective multi-entry normalization, and bounded Map/Value cycles with an independently live Key. [WeakMap review](coverage/semantics/weak-map-review.json). The finite `returns_verify` work is complete; wider PHP return and lifetime coverage remains open. [Return contract](docs/semantics/SOURCE-REFERENCE-RETURNS.md), [eager cleanup](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md), [return review](coverage/semantics/reference-return-local-cv-lifetime-review.json). |
 | Diagnostics and environment | Supported warning/exception handlers retain raw registration, selected callback and emitting frame. Multi-expression echo writes a flat-array operand after its Warning callback, then evaluates or skips later siblings. A second array operand reads a CV built by the first handler, raises its own Warning and writes before either later evaluation or the supplied Exception search. [Echo](docs/semantics/SOURCE-ECHO.md), [handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md), [exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md), [request inputs](docs/semantics/REQUEST-INPUTS.md). |
 
-One direct `constant` call with a singleton literal ARRAY unpack now resolves the
-filename-local HALT offset through positional key `0` or named key `name`; five
-exact originals and 447 reached checks retain variable packs as Unsupported.
-[Literal-pack review](coverage/semantics/halt-pack-review.json).
+Direct `constant` calls with a singleton ARRAY unpack from a raw literal or one
+live ordinary nonreference CV resolve the filename-local HALT offset through
+key `0` or `name`. The CV increment has six exact sources and 397 admitted/31
+refusal reached checks; wider packs remain partial.
+[Literal-pack review](coverage/semantics/halt-pack-review.json),
+[CV-pack review](coverage/semantics/halt-cv-pack-review.json).
 
 ## Active and unintegrated work
 

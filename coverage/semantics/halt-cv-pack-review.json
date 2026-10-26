@@ -1,0 +1,41 @@
+{
+  "scope": "One direct fixed compiled-global constant call with a single unpack of an ordinary nonreference CV holding a singleton ARRAY. The live CV array and captured pack have one DIRECT exact HALT string at positional key 0 or named key name. No owner, selection, namespace fallback, later argument, reference-cell leaf or Traversable. Partial dynamic-source behavior.",
+  "status": "independently_reviewed_private",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "base_revision": "c901290da4a93e599a8cfa71a471449a79a084a2",
+  "behavior_commit": "32b68cfc15c0ac1cc4e3a4f66909bb84ab1e5974",
+  "runtime_sha256": "8e150705001341bbbacccf2322304543d2e4d9c13a94e9995576ad6576e7efcb",
+  "engine_route": "Zend/zend_compile.c::zend_compile_args emits SEND_UNPACK; Zend/zend_vm_def.h::ZEND_SEND_UNPACK binds current array entries before the API. ext/standard/basic_functions.c::PHP_FUNCTION(constant) calls zend_get_constant_ex; Zend/zend_constants.c::zend_get_halt_offset_constant uses the executed filename.",
+  "mechanism": "At authentic CONFIG_INVOKE, bind one raw ordinary NExprVariable unpack, fixed global constant, no owner/selection/fallback, one pack and no later argument. Its ENV cell must hold a defined allocated PARRAY identical to pack.ARRAY. The current ARRAY has exactly one DIRECT string item, and its capture equals pack.ITEMS, normalized SENT and positional/named key. Existing call/source/carrier guards and filename-local HALT journal decide offset or absent Error. The single by-value pack has no intervening callback between capture and invocation.",
+  "validation": {
+    "native_first": "Nine frozen author originals pass pinned CLI0 with exact stdout and empty stderr. The unchanged checked model accepts all but returns Unsupported at six candidate HALT CV-pack calls, preserving earlier output prefixes; wrong-key and duplicate binding errors already match, and the ALIAS-leaf control remains Unsupported. These seven Unsupported outcomes have zero new agreement credit.",
+    "changed_sources": "Six CV-pack originals now agree exactly: COW sibling with live positional rewrite, key rewrite to named, absent Error file/line/trace and catch continuation, child-declared function absence versus HALT main, main HALT versus eval absence, and two invocations of one function call site with positional then named packs. Two binding diagnostics remain exact; ALIAS leaf remains Unsupported with zero agreement credit.",
+    "reached_state": "Five checked original-derived strict-SL fixtures pass 85+80+88+144+31=428 conditions: 397 admitted checks prove live ENV/STORE identity, captured pack, COW sibling, named rewrite, absent Error, HALT_UNKNOWN refusal, budget0/resume, real result steps and two distinct pack receipts at one compiled site. The 31-check ALIAS front proves valid source/captured HALT receipt but Unsupported admission and has zero native agreement credit.",
+    "independent": "A separately frozen child-declared function COW-separates its CV array, then raises an absent HALT Error after a HALT main calls it; the main later resolves its own named CV pack offset. Native/model match exactly on file/line, output and continuation.",
+    "failed_attempts": "No changed-cut or focused fixture failed. Genuine unchanged Unsupported outcomes remain separate from the new agreements."
+  },
+  "environment": {
+    "profile": "tests/semantics/profile.json",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "resources": "Author CPU1 native/baseline, changed-source and reached-state runs and reviewer CPU5/CPU1 independent runs were serial, fully reaped and released."
+  },
+  "raw_artifacts": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/dynamic-source-110",
+    "reports_sha256": {
+      "author-freeze.json": "404731d3072a73c406c0b33c69bd0262961ffbe4ba50e22831e8059ff14f38e0",
+      "cv-pack-v1/native-report.json": "6531061cb9e223212ecf10f4fbebfec74881794a7623830f71bac4cd1aa07007",
+      "cv-pack-baseline-v1/model-report.json": "1263370b117a862152eac18aa641f58de76348520d18e3bcfbfb494af6c96aa4",
+      "cv-pack-v1/model-report.json": "097d164dc206a86ad1d01ae5f72bcd96e562d5d0d0d221fa4affb3f030ce0785",
+      "cv-pack-state-v1/report.json": "442419583fed1bda7a4224d6dd17ec4654703d3ce022431009735caff049c1fc",
+      "reviewer-child-cow-v1/freeze.json": "145b05dce818377a00602eece4c8c3c3fc2fda6fc2218133db62ae3c12376fa5",
+      "reviewer-child-cow-v1/native-report.json": "414356a99a4c72f37570bb59dd6a8fb0a545c8cf32e1560402ed33b9fa64dee7",
+      "reviewer-child-cow-v1/baseline-report.json": "d53df56c27a939c1ce49c67414c5a9a479dfea409aeb7c0973970ab4f9907713",
+      "reviewer-child-cow-v1/changed-report.json": "9270682dbcdedcf238279f96a1ab55b655f504d7c2f565c8edb156a6246ee013"
+    },
+    "recovery": "Run halt_cv_pack_sources.py --phase native, then --phase model against that fresh root with its version-2 child snapshot; the separately retained baseline report was copied before the changed-model replay on original paths. Run halt_cv_pack_protocol.py --sources SOURCE_ROOT --output FRESH for five reached fronts. Keep the six unchanged Unsupported outcomes and ALIAS control outside agreement totals."
+  },
+  "review": "Independent semantic/test/docs review accepted runtime 8e150705, the 428-check author reached packet and the exact child-COW source. The seven unchanged Unsupported outcomes and 31 ALIAS-front checks retain zero agreement credit; the partial inventory, concise documentation and raw report hashes were reviewed.",
+  "remaining": "Selected or owning packed calls, multiple or multi-item packs, ALIAS/INDIRECT leaves, Traversable, broader call-site cache history, ambiguous HALT registration and wider dynamic-source/provider behavior remain partial."
+}

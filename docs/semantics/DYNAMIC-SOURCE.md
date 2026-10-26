@@ -86,12 +86,20 @@ positive and absent sources, original Error trace and wrong-name control. A
 single unpack of a source-authenticated singleton array literal also admits the
 exact HALT string with either positional key `0` or named key `name`. The
 compiled array value and completed pack receipt must agree; wrong or duplicate
-named arguments fail during binding before the lookup. A variable holding the
-same array remains outside this bounded admission. The
+named arguments fail during binding before the lookup. The
 [literal-pack ledger](../../coverage/semantics/halt-pack-review.json) records
-filename-local results, Error traces and the unpack boundaries. Other fixed
-argument shapes, owning or variable unpacked calls, wider named forms, repeated
-call-site cache history and ambiguous HALT registration remain partial. The
+filename-local results, Error traces and the unpack boundaries. One ordinary
+nonreference CV holding a singleton array may also supply key `0` or `name`:
+its current defined array identity must equal the completed pack's array, with
+one direct HALT string item and the same captured entry. COW separation and key
+changes before the call therefore use the live CV array; two calls at one
+compiled site can use different keys. Reference-cell array leaves remain
+`Unsupported`. The
+[CV-pack ledger](../../coverage/semantics/halt-cv-pack-review.json) records
+the bounded source and reached checks. Other fixed argument shapes, selected
+or owning packed calls, multiple, multi-item or Traversable packs, wider named
+forms, general call-site cache history and ambiguous HALT registration remain
+partial. The
 [lookup ledger](../../coverage/semantics/halt-lookup-review.json) binds two original
 sources and their reached state checks, keeping counterfactual history/source
 projections separate from execution.
