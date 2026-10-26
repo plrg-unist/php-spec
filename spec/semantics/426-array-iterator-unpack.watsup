@@ -6,9 +6,12 @@ dec $array_iterator_methods(pstate, nat, text*) : bool
 dec $array_iterator_destructor(pstate, nat) : bool
 dec $array_iterator_destructor_allowed(pstate, nat) : bool
 dec $array_iterator_method_history(pstate, porigin, text*) : bool
+dec $array_iterator_release_id(ptask) : nat?
 dec $array_iterator_release_ids(ptask*) : nat*
+dec $array_iterator_release_pair(pstate, ptask*, parrayiterator, text) : bool
 dec $array_iterator_release_pending(pstate, ptask*, parrayiterator, text) : bool
 dec $array_iterator_release_valid(pstate, parrayiterator, text) : bool
+dec $array_iterator_release_head_line(pstate, ptask) : int?
 dec $array_iterator_release_line(pstate, ptask*) : int?
 dec $array_iterator_release_builder(pstate, parrayiterator) : bool
 dec $array_iterator_blocked(pstate) : bool
@@ -77,12 +80,20 @@ def $array_iterator_method_history(S, porigin_class, text :: text_tail*) = $arra
   -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = $useriter_signature($ptascii(text)).RETURNS
   -- if ~$function_generator(S, pmethoddesc.FUNCTION)
 def $array_iterator_method_history(S, porigin_class, text*) = false -- otherwise
+def $array_iterator_release_id(ARRAY_ITERATOR_RELEASE parrayiterator text) = (parrayiterator.ITERATOR)
+def $array_iterator_release_id(ptask) = eps -- otherwise
 def $array_iterator_release_ids(eps) = eps
-def $array_iterator_release_ids((ARRAY_ITERATOR_RELEASE parrayiterator text) :: ptask*) = parrayiterator.ITERATOR :: $array_iterator_release_ids(ptask*)
-def $array_iterator_release_ids(ptask_head :: ptask_tail*) = $array_iterator_release_ids(ptask_tail*) -- otherwise
+def $array_iterator_release_ids(ptask_head :: ptask_tail*) = n :: $array_iterator_release_ids(ptask_tail*)
+  -- if $array_iterator_release_id(ptask_head) = (n)
+def $array_iterator_release_ids(ptask_head :: ptask_tail*) = $array_iterator_release_ids(ptask_tail*)
+  -- if $array_iterator_release_id(ptask_head) = eps
+def $array_iterator_release_pair(S, (THROW_SEARCH n) :: (ARRAY_ITERATOR_RELEASE parrayiterator text) :: ptask*, parrayiterator, text) = $throwable_live(S, n)
+def $array_iterator_release_pair(S, ptask*, parrayiterator, text) = false -- otherwise
 def $array_iterator_release_pending(S, eps, parrayiterator, text) = false
-def $array_iterator_release_pending(S, (THROW_SEARCH n) :: (ARRAY_ITERATOR_RELEASE parrayiterator text) :: ptask*, parrayiterator, text) = $throwable_live(S, n)
-def $array_iterator_release_pending(S, ptask_head :: ptask_tail*, parrayiterator, text) = $array_iterator_release_pending(S, ptask_tail*, parrayiterator, text) -- otherwise
+def $array_iterator_release_pending(S, ptask_head :: ptask_tail*, parrayiterator, text) = true
+  -- if $array_iterator_release_pair(S, ptask_head :: ptask_tail*, parrayiterator, text)
+def $array_iterator_release_pending(S, ptask_head :: ptask_tail*, parrayiterator, text) = $array_iterator_release_pending(S, ptask_tail*, parrayiterator, text)
+  -- if ~$array_iterator_release_pair(S, ptask_head :: ptask_tail*, parrayiterator, text)
 def $array_iterator_release_valid(S, parrayiterator, text) = true
   -- if S.ORIGIN = (parrayiterator.SITE)
   -- if $array_iterator_item(S, parrayiterator.TAIL, parrayiterator.LINE) = ((parrayiterator.SITE, expression))
@@ -102,10 +113,14 @@ def $array_iterator_release_valid(S, parrayiterator, text) = true
   -- if text <- ["normal", "abrupt"]
   -- if text = "normal" \/ $array_iterator_release_pending(S, S.TODO, parrayiterator, text)
 def $array_iterator_release_valid(S, parrayiterator, text) = false -- otherwise
-def $array_iterator_release_line(S, eps) = eps
-def $array_iterator_release_line(S, (ARRAY_ITERATOR_RELEASE parrayiterator text) :: ptask*) = (parrayiterator.LINE)
+def $array_iterator_release_head_line(S, ARRAY_ITERATOR_RELEASE parrayiterator text) = (parrayiterator.LINE)
   -- if $array_iterator_release_valid(S, parrayiterator, text)
-def $array_iterator_release_line(S, ptask_head :: ptask_tail*) = $array_iterator_release_line(S, ptask_tail*) -- otherwise
+def $array_iterator_release_head_line(S, ptask) = eps -- otherwise
+def $array_iterator_release_line(S, eps) = eps
+def $array_iterator_release_line(S, ptask_head :: ptask_tail*) = (z)
+  -- if $array_iterator_release_head_line(S, ptask_head) = (z)
+def $array_iterator_release_line(S, ptask_head :: ptask_tail*) = $array_iterator_release_line(S, ptask_tail*)
+  -- if $array_iterator_release_head_line(S, ptask_head) = eps
 def $destructor_source_line(S) = z
   -- if $destructor_operation_for(S) = eps
   -- if $array_iterator_release_line(S, S.TODO) = (z)
