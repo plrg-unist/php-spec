@@ -85,6 +85,11 @@ test-semantics: build
 	python3 tests/semantics/array_omissions.py
 	python3 tests/semantics/array_unpack.py
 	python3 tests/semantics/array_unpack_compiler.py
+	@out="$$(mktemp -d .tools/a56-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/array_iterator_data_destructor_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/array_iterator_data_destructor_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/array_iterator_data_destructor_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/array_iterator_data_destructor_state_review.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
 	python3 tests/semantics/globals_compiler.py
