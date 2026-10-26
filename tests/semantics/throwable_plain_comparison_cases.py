@@ -37,4 +37,31 @@ $previous = new Exception('old');
 $a = new Exception('same', 7, $previous); $b = new Exception('same', 7, $previous);
 echo 'B|', $a <=> $b, '|';
 ''',
+    'skip-later-caster': br'''<?php
+class LaterCaster129 {
+    public function __toString(): string { echo 'CAST|'; return 'x'; }
+}
+$a = new Exception('same'); $b = new Exception('same'); $c = new Exception('other');
+$later = new LaterCaster129;
+echo 'B|';
+echo 'E:', [$a, $later] <=> [$b, 'x'], '|';
+echo 'N:', [$a, $later] <=> [$c, 'x'], '|';
+''',
+    'warm-cache-control': br'''<?php
+$a = new Exception('same'); $b = new Exception('same');
+$cache = (string)$a;
+echo 'B|', $a <=> $b, '|';
+''',
+    'nonempty-trace-control': br'''<?php
+function make129(): Exception { return new Exception('same'); }
+$a = make129(); $b = make129();
+echo 'B|', $a <=> $b, '|';
+''',
+    'pending-notice-control': br'''<?php
+set_error_handler(function (int $level, string $text): void { echo 'H|'; throw new Exception('stop'); });
+$a = new Exception('same'); $b = new Exception('same');
+echo 'B|';
+try { echo [new stdClass, $a] <=> [1, $b], '|BAD'; }
+catch (Exception $caught) { echo 'C|'; }
+''',
 }
