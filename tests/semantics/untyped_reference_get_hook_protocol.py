@@ -258,7 +258,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--group', choices=['backing-alias','forbidden-rebind','default-null'])
     parser.add_argument('--source-only', action='store_true')
+    parser.add_argument('--control-only', action='store_true')
     args = parser.parse_args()
+    assert not (args.group and args.control_only)
     data = json.loads((HERE/'untyped_reference_get_hook_cases.json').read_text())
     profile = json.loads((HERE/'profile.json').read_text())
     assert profile == data['native_profile']
@@ -273,10 +275,13 @@ def main():
                   ROOT/'_build/default/adapter/main.exe', HERE/'_build/default/numeric_runner.exe',
                   ROOT/'spec/semantics/modules.json', ROOT/'spec/semantics/382-backed-get-hooks.watsup',
                   HERE/'untyped_reference_get_hook_cases.json', Path(__file__)]},
-              'profile':profile,'module_count':len(modules),'groups':[],'passed':False}
+              'profile':profile,'module_count':len(modules),'groups':[],
+              'unsupported_controls':[],'passed':False}
     print(out, flush=True)
     (out/'report.json').write_text(json.dumps(report,indent=2)+'\n')
     for case in data['cases']:
+        if args.control_only:
+            break
         if args.group and case['id'] != args.group:
             continue
         group = case['id']
@@ -321,6 +326,28 @@ def main():
         report['groups'].append(row)
         (out/'report.json').write_text(json.dumps(report,indent=2)+'\n')
         print(group,row,flush=True)
+    if not args.group:
+        flags = [part for key,value in profile.items() for part in ('-d',key+'='+value)]
+        for case in data['unsupported_controls']:
+            group = case['id']
+            source = out/(group+'.php')
+            source.write_bytes(case['source'].encode())
+            assert sha(source) == case['source_sha256']
+            native = run([str(php),'-n',*flags,str(source)],out/(group+'-native'),20)
+            assert native.returncode == case['native']['exit_status']
+            assert base64.b64encode(native.stdout).decode() == case['native']['stdout_base64']
+            assert base64.b64encode(native.stderr).decode() == case['native']['stderr_base64']
+            model = run([str(ROOT/'bin/php-semantics'),str(source),'--steps','100000','--timeout','75'],out/(group+'-model'),90)
+            outcome = json.loads(model.stdout)
+            assert model.returncode == 1 and model.stderr == b''
+            assert outcome['status'] == 'unsupported' and outcome['reason'] == case['model_reason']
+            assert outcome['frontend'] == 'accepted' and outcome['checked'] == 'program'
+            assert outcome['stdout'] == '' and outcome['stderr'] == ''
+            row = {'group':group,'source_sha256':sha(source),'native_exit':native.returncode,
+                   'model_status':'unsupported','source_agreement':False}
+            report['unsupported_controls'].append(row)
+            (out/'report.json').write_text(json.dumps(report,indent=2)+'\n')
+            print(group,row,flush=True)
     report['passed'] = True
     (out/'report.json').write_text(json.dumps(report,indent=2)+'\n')
 

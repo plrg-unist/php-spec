@@ -45,5 +45,18 @@
         "stderr_base64": ""
       }
     }
+  ],
+  "unsupported_controls": [
+    {
+      "id": "virtual-reference-get",
+      "source": "<?php\nclass RefVirtual133 {\n    public $other = 7;\n    public $value {\n        &get { echo \"G|\"; return $this->other; }\n    }\n}\n$object = new RefVirtual133;\n$alias =& $object->value;\n$alias = 9;\necho $object->other === 9 ? \"aliased|Z|\" : \"bad-alias|\";\n",
+      "source_sha256": "6e057055ced4e5f645c286a946a9b3731835cd9fcd80f3dd422338358609d28c",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "R3xhbGlhc2VkfFp8",
+        "stderr_base64": ""
+      },
+      "model_reason": "set, by-reference, attributed or defaulted virtual property hook"
+    }
   ]
 }
