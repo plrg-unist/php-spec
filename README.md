@@ -4795,7 +4795,12 @@ Denied private/protected reentry now raises the receiver-class visibility Error,
 independently of hidden VALUE/UNSET/INITIAL storage. Ordinary source scope and
 actual Get/local-exit guards pass [three source agreements and 405 focused premises](coverage/semantics/magic-get-denied-recursion-review.json),
 including incompatible hidden-type recovery and allowed/different-object controls.
-Bound-Closure scopes and wider access/receiver/lifetime forms remain partial.
+Accessible private/protected UNSET reads through local CVs now retain the
+caller's physical declaration across Get. Parent int versus Child string shadow,
+caller-line TypeError and populated backing99/captured `'ok'` pass
+[three source agreements and 330 focused premises](coverage/semantics/magic-get-scoped-unset-review.json).
+Public-shadow selection, direct-This entry, by-reference getters, scoped recursion,
+bound-Closure scopes and wider access/receiver/lifetime forms remain partial.
 Denied private/protected reads and inherited-private literal fallback now invoke
 the getter without applying the hidden property's type. Allowed lexical reads
 use the physical backing key or raise its initialization Error. The original
@@ -4998,7 +5003,7 @@ The `fd7eae1` composition preserves the newer storage/lifecycle rules and 376 mo
 Private cuts and the retained parent compiler are reused; fresh executions remain0.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
-access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
+access, wider scoped UNSET forms, changed Closure scopes for nonpublic access, guarded
 recursion, computed names, hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
