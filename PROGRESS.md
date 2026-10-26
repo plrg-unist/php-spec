@@ -19,7 +19,7 @@ borrowed107/peer250/176 at `ff375fcd2`, with an independently reviewed compatibi
 bridge. Owning-RHS legacy and late-reference `global` behavior are preserved.
 Original normal mismatch and local static/fixture failures retain zero credit.
 [LEFT lifetime review](coverage/semantics/concat-left-stringable-lifetime-review.json).
-Publication is independently reviewed; actual-tail review is pending. No source/native evidence renewal.
+Publication and actual-tail composition are independently reviewed. Accepted evidence retains its original cuts.
 
 ## Integrated behavior and entrypoints
 
@@ -43,14 +43,13 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | Iterator55 pending retirement/performance | Retained cached and two-link whole-source/completion reproducers; resolve before a new feature. |
-| OP88 | Source3/control1 and final771 accepted; independently reviewed publication, actual-tail review pending. |
 | M154 | Source3/focused307 accepted; reviewed immutable publication `4827996f454` follows OP88. |
 | Source94 | Strict/source3/entry45 accepted; corrected completion and remaining state packet frozen after preserved fixture syntax failure. |
 | COMP125 | Declared-UNDEF source6 closed; focused390 plus affected63 prefix freezing. COMP123 held work stays separate. |
 | CLASS128 | Owned nonpublic/public-shadow/denied BYREF Get source5 accepted at `d19042042`/417; author live-reference/conflict fixtures preparing, peer262 ready. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55 bounded, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108, M132/M133/M134/M135/M136/M137/M138/M139/M140/M141/M142/M143/M144/M145/M146/M147/M148/M149/M150/M151/M152/M153, A46/A47/A48/A49/A50/A51/A52/A53, OP79/80/81/82/83/84/85/86/87, Source86/87/88/89/90/91/92/93, COMP118/119/120/121/122/124 and CLASS119/120/121/122/123/124/125/126/127 are integrated
+Iterator49/50/51/52/53/54/55 bounded, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108, M132/M133/M134/M135/M136/M137/M138/M139/M140/M141/M142/M143/M144/M145/M146/M147/M148/M149/M150/M151/M152/M153, A46/A47/A48/A49/A50/A51/A52/A53, OP79/80/81/82/83/84/85/86/87/88, Source86/87/88/89/90/91/92/93, COMP118/119/120/121/122/124 and CLASS119/120/121/122/123/124/125/126/127 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
