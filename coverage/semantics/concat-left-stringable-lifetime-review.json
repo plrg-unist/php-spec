@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "milestone": "OP88 acquired LEFT survives delayed RIGHT conversion and retires before caller delivery",
+  "status": "bounded independently reviewed semantics, publication and actual-tail composition",
+  "target": "PHP8.5.10 CLI NTS64, pinned project-local engine/ordinary precision14 profile",
+  "scope": "Raw KNOWN Stringable LEFT at authentic CONCAT_PREP and nonowning RHS operands. Available defined ordinary CV/known-value entry; current unconstrained reference wrapping is readable after LEFT. Raw VARIABLE LEFT remains borrowed. Owning RHS uses the literal prior59 route; broader dual-owner retirement remains partial.",
+  "source_revision": "522429e38c21870dbd157568d31e60da3bb337b6",
+  "current_runtime_revision": "6aff495b80d841a458097652a610c269c60244ff",
+  "private_modules": 417,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "dd9702b251431f2243e1aa1f44e834d04a95ba7b298a093649a7786faa5b4053",
+    "spec/semantics/59-concat-expressions.watsup": "acd83009b33daa50d9f41e637923b69aa5768adac8fc4e09114aceb2bedbc6a5",
+    "spec/semantics/429-concat-left-lifetimes.watsup": "aff10c15b89eb8e36d423653fddad05026f9960d7e13d3e83d25107498099aad",
+    "spec/semantics/modules.json": "5d0d4bade1f398a216ccf7f6c8bf0295e589d8d6d966db3783c979b34957fee4"
+  },
+  "engine_basis": [
+    "ZEND_CONCAT calls concat_function, then FREE_OP1/FREE_OP2 before checking exceptions. The acquired op1 zval survives the whole function; zend_std_cast_object_tostring separately retains its receiver.",
+    "GET_OP2_ZVAL_PTR_UNDEF checks missing CV before concat_function. The op2 loop in concat_function dereferences reference wrapping after op1 conversion. Native f().right therefore uses the method write before the later destructor write; borrowed left CV may retire during cast completion.",
+    "New429/30 tags plus one59 admission gate retain raw ownership in LEFT/RIGHT/RELEASE and rootless DONE, using unchanged Stringable/concat/eager-unwind algorithms. No pstate field/default change and no270/404/168 edit. Only429 is appended to the module manifest."
+  ],
+  "contract": [
+    "Acquired normal f returns fresh A; S writes right=fresh, removes any left name and returns L. Joined Lfresh is computed before actual D writes right=retired, while outer v is still100. Borrowed-control S removes its only CV owner; D runs from STRINGIFY_RESULT before RIGHT read and gives Lretired.",
+    "RIGHT supplied throw enters real B after S; LEFT supplied throw skips B conversion. Both execute nonthrowing A::D before the same Exception20/null Previous catch, preserve outer100/source effects and retire A/B before EOF.",
+    "Final771 premises are recipe counts including derived controls: acquired238/250/176 plus borrowed107. Actual f/S/T/D, TMP/cast/prepared-target ownership, cached value/retirement, pending exception/EOF/budgets and source/readiness/root-deletion refusals are checked. They are not771 native-reached states."
+  ],
+  "accepted": {
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-88/source-522429e38-four/report.json",
+      "sha256": "be9c9ec0484a3cbbd7ec92168a9658d240b9cd0c7f70ba4387e6c84018ddb58e",
+      "acquired_agreements": 3,
+      "borrowed_control_agreements": 1
+    },
+    "current_author": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-88/focused-6aff495b8-compatibility/report.json",
+      "sha256": "4f64640dde28f7b135b5a8207d9e9bd4d25d07e031cf2d8c9cc16b83d28e29cc",
+      "revision": "6aff495b80d841a458097652a610c269c60244ff",
+      "conditions": 238
+    },
+    "retained_state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-88/focused-ff375fcd2-affected/report.json",
+      "sha256": "3f4c939fa263cbe76870d33a9646e6a3904a9e0783aa5d65c3e9e82299df869b",
+      "revision": "ff375fcd29bd856b36ad996f09b9b76f56324878",
+      "retained_conditions": {
+        "borrowed_control": 107,
+        "right_throw": 250,
+        "left_throw": 176
+      }
+    },
+    "total_focused_conditions": 771,
+    "review": "Independent operators79_review accepted native/genuine classification, runtime/author/control/peer/header, source3/control1 and focused results. Final compatibility guards and author238 are accepted; publication and exact actual-tail candidate12a2252eb independently reviewed."
+  },
+  "compatibility_bridge": {
+    "changes": "Plan excludes owning RHS, restoring unchanged old59 successor. New post-S reference branch accepts the live unconstrained cell; plain states fall back to the identical prior guard. Initial entry/read diagnostics stay distinct.",
+    "basis": "All retained source/control/peer descriptors have VARIABLE RHS, and their cells stay plain; added plan EPS is true and post-S read falls back exactly. Existing concat-string-temp-captured legacy admission and concat-string-cv-late global binding were checked statically against the selected corpus/pinned engine. Author derived pair proves exact old59 successor; positive ref state proves current read/PhpStep. No old source/native/peer campaign is replayed.",
+    "cuts": "Sources retain522; borrowed107/peers250/176 retainff; author238 and full417 checks retain6aff. This is explicit compatibility, not renewed execution credit."
+  },
+  "preserved_zero_credit": {
+    "native_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-88/native-402624921-author/report.json",
+        "sha256": "cdd64367b1ee3cb9600738a2dcfefd1945ba84bec03aba24bd51a7417c962c05"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-88/native-402624921-peer/report.json",
+        "sha256": "137c3ae08928adf40777892b1ab3028abc368d2f0f6d135b1120ee440176f16f"
+      }
+    ],
+    "genuine": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-88/baseline-402624921-acquired/report.json",
+      "sha256": "fe76c63af379de6bc5fdcceca128509da28068d804d0e06e5b4f01b51ba0113b",
+      "revision": "4026249218efbcc5430c795ef4167df96dd4c1a8",
+      "result": "Checked NORMAL/model0, empty stderr, comparisonfalse/agreement0: P;S;D:1:0;R::1:1:1:1:1;F;END::1:1:1:1:1;. False Lfresh observers are directly observed. Lretired follows from the prior early-retirement/read rule; the value itself was not printed."
+    },
+    "static_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-88/source-36856e395-four/report.json",
+      "sha256": "01399743aaa9386f1f657a7b0a58a0f111026c8784f7e3e2aecf176b924a69ef",
+      "result": "Empty iteration in optional receiver binding; compiler exit0 but diagnostic stdout, caught before any model. Corrected scalar/optional names; original0."
+    },
+    "fixture_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-88/focused-f85782486-four/report.json",
+      "sha256": "681cc04701507a09234e783eaa6a2b133566c5fd99a1c4ae676318217a277576",
+      "result": "Author232 first SL expected pending target+cast+TMP count2 rather than3; peer pendingB count1 rather than2 corrected before its first SL. All four structs passed; original failed packet0, untouched borrowed struct retained byte-exact."
+    }
+  },
+  "limits": [
+    "Entry excludes initial missing/referenced/constrained CVs and other unavailable RHS forms; missing delayed reads remain Unsupported. Transient body writes do not invalidate history. Late unconstrained reference wrapping is supported without a new native reference witness; its positive control is derived and backed by pinned source/old selected behavior.",
+    "Owning-RHS combinations keep prior partial semantics; this milestone neither rejects them as a new boundary nor claims dual retirement. Raw reference/copy variants beyond known-object LEFT, destructor throws/chaining, wider suspension/collector forms remain partial. Paused OP12, Source47, owned-NUL, undefined-byref LIST and COMP88 remain separate; no engine bug or intentional divergence."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-88",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C,TZ=UTC,PHP_SPEC_SCRIPT_ENCODING absent; ordinary precision14. Native30/modelCLI60-process90, kernel/fixturestruct30 and SL120. Serial CPU3 original/first affected, CPU4 final compatibility; all actors/workers reaped and slots released.",
+    "headers": [
+      "run-native-gate.py",
+      "run-source-gate.py",
+      "run-focused.py",
+      "run-focused-affected.py",
+      "run-focused-compatibility.py"
+    ],
+    "record": "Reports retain inputs/tools/commands/raw tuples; restore matching Git cut and original retained paths, with fresh output names. Large evidence remains external; reused local binaries establish no new offline rebuild."
+  },
+  "composition": {
+    "parent": "ee4d9a2665ad687c53978bd0712da03737a423ca",
+    "private_publication": "ba5454e1d4782e1762ecb01e17ce414f1a7a6678",
+    "modules": 419,
+    "preservation": "59/429 and all six OP88 tests remain private-publication-exact;30 contains only the five OP88 additions over parent; manifest is parent plus429. Other semantics are parent-exact; incoming inventory/family facts retained.",
+    "interaction": "Incoming Generator/Fiber/ARRAY_UNPACK/CONFIG, Closure::call, property Get/nonpublic comparison and WeakMap iterator selectors have no producer in OP88 f/A/B/GLOBALS observers. The386 FRAMES activation addition is pointwise unchanged because A has __destruct at reached callback/retirement cuts. No pstate/default change.",
+    "gate": "Incoming selectors and exact candidate12a2252eb independently clear over ee4d9a2665/418;419-module composition preserves the tested implementation and incoming semantics. Accepted417 cuts retain original identities, with no execution renewal."
+  }
+}

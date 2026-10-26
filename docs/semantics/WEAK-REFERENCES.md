@@ -154,10 +154,34 @@ allocated nodes/edges; the generic retained-release branch keeps the table and
 Values. It adds no PHP source credit. Native/genuine teardown refusals retain
 `70b7d5a0c`/412. All repaired/focused checks pass first execution, with no replay,
 cap increase or separate preflight. Wider Key properties/classes, non-leaf,
-reference/array/callback Values, wider multiple-entry replacement/unset,
+reference/array Values, wider multiple-entry replacement/unset,
 iteration/CONFIG/GC and cross-map/freeing/reentry/Fiber combinations remain partial.
 Keys outside the authenticated retained-live shape still refuse.
-[Review and recovery](../../coverage/semantics/weak-map-review.json).
+
+Last-owner tables that still have multiple entries admit direct fieldless
+parentless Values whose sole method is a public noarg destructor through shared
+construction/free policy in 422; ordinary traversal, reference, factory
+and GC consumers keep their methodless policy. Under the real Map storage pin,
+all Key registrations are removed while physical Value edges transfer to the
+same per-slot jobs. Hash rows
+remain borrowed occupancy until cleanup ends: source-authenticated `isset` can
+report a consumed object slot without copying its retired referent. Old
+methodless empty-Map teardown is unchanged.
+
+Three originals and author 142/5 plus independent 165/4 pass 307 Boolean/nine raw
+transitions at `80451b539`/417. Typed native Map/self weak gets stay live through
+normal and throwing callbacks; both presence probes remain true during Y after
+X physically retires. The supplied Exception survives Y and reaches its catch
+after Map cleanup. An external shared-Value holder instead delays its callback
+until Map weak-get is NULL. Callback-local strong copies drop before return/throw.
+Constructed notice/mode refusals add zero PHP credit. Native/genuine retain
+`8484fc071`/417; genuine 3 refuses before output at the attempted second entry
+insertion, with zero agreement. The original runtime-default and author-binding compile stops
+remain zero before application/state, with only affected corrections and no
+accepted replay. Callback-valued owned Iterator/factory/traversal, offset reads,
+empty/mutation/escape, wider payload/property/inheritance and GC/CONFIG remain
+partial. Callback singleton/Key-death/normalization and occupied replacement
+have no new source coverage. [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
 ## Multiple-entry by-value foreach
 

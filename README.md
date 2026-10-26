@@ -1524,6 +1524,15 @@ and 706 focused premises, including derived controls, pass in the
 [acquired RHS review](coverage/semantics/concat-returned-stringable-warning-review.json).
 Wider returned operands and destructor-throw histories remain partial.
 
+An acquired Stringable LEFT now retains its temporary through the delayed RIGHT
+read/conversion, separately from the method receiver. A method write of `fresh`
+therefore supplies `Lfresh` before the destructor writes `retired`; a borrowed CV
+control instead retires early and yields `Lretired`. Three acquired-source
+comparisons, one borrowed control and 771 focused recipe premises (including
+derived controls) pass in the [LEFT lifetime review](coverage/semantics/concat-left-stringable-lifetime-review.json).
+Owning RIGHT combinations retain the earlier partial route. Late unconstrained
+reference wrapping remains readable; wider constraints and lifetimes stay partial.
+
 Concatenation assignment now stages a right-array warning for two bounded plain CVs.
 The first string survives handler writes and RHS removal; normal commit overwrites
 the target and detaches a late alias, while a supplied throw preserves it.
@@ -3245,6 +3254,17 @@ collection and external-alias protection. Two originals and 306 Boolean/four raw
 checks pass at `9bf6e1399`/409: count2 includes Array/Key while the uncounted cell
 is physically retired. Old array/reference rows remain nonowning history.
 Other array layouts and replacement/callback lifetimes remain partial.
+
+Last-owner Map teardown with multiple entries now admits fieldless
+public-destructor Values.
+Callbacks observe actual Map/self weak-get visibility and borrowed `isset`
+occupancy even after an earlier referent retires; supplied Exceptions survive
+remaining slot cleanup, while external shared holders delay invocation.
+Three sources and 307 Boolean/nine raw checks pass at `80451b539`/417. Genuine
+baseline 3 retains `8484fc071`/417 with zero agreement: callback-table insertion
+refuses before output. Original compile stops remain zero; callback-valued owned Iterator/factory/traversal,
+singleton/Key-death/normalization, reads/empty/mutation/escape and wider
+payload/GC histories remain partial.
 
 Bounded by-value WeakMap `foreach` now retains the Map through hidden iterator
 DATA and copies its object Key/Value into ordinary CVs. Exhaustion or `break`
@@ -5443,12 +5463,15 @@ values. Binding warnings precede inner-name errors; forwarding reference warning
 precede fresh cell allocation and preserve the captured value through callbacks.
 Finite getters and created children retain their selected scope and owners.
 
-One ARRAY pack after positional `newThis` now delivers saved positional/named
-values, fills default holes and preserves raw Error arguments after pack
-retirement. Alias capture precedes warning callbacks and detached reference-cell
-allocation; parameter conversion keeps the wrapper's original values.
+ARRAY packs after positional `newThis` support direct positional prefixes and
+named tails. Saved values forward positional-first even when a named pack came
+earlier; default holes and raw Error arguments survive source-pack retirement.
+Outer duplicate/order errors stop later producers before API entry. Alias
+capture precedes warning callbacks and detached reference-cell allocation;
+parameter conversion keeps the wrapper's original values.
 
-The [pack review](coverage/semantics/closure-call-array-pack-review.json) and
+The [argument-list review](coverage/semantics/closure-call-argument-list-review.json),
+[initial pack review](coverage/semantics/closure-call-array-pack-review.json) and
 [temporary-call review](coverage/semantics/temporary-fake-call-review.json)
 preserve separate source/state cuts; wider unpacking and REAL temporary-current
 lifetime remain required.

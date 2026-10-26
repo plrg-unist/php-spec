@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "status": "independently accepted; composed over the current canonical parent without renewed execution",
+  "behavior": "Closure::call collects legal ARRAY-unpack argument lists after a positional newThis, preserving source evaluation order while forwarding canonical positional storage before named extras.",
+  "bounds": [
+    "Positional direct prefix, any number of ARRAY packs, then named tail; source collection and canonical forwarding have separate orders.",
+    "Packed newThis, Traversable delivery and direct call-time reference forms remain outside this route. Held COMP123 and all five paused boundaries are unchanged. Full core remains partial."
+  ],
+  "independent_review": [
+    "Module428 generalizes existing source-indexed PACKS and RAW;182 adds only disjoint legacy-progress guards. No new schema, task, context or root field is introduced.",
+    "Each pack resets its local named-order flag. Integer entries insert into the positional prefix ahead of earlier named extras; all inner SENT/default-hole/first-error binding is recomputed after insertion. Global duplicate names remain outer errors.",
+    "Source-prefix replay consumes ordered pack histories exactly and retrieves ordinary captured values through stable canonical RAW keys. Later producer/CVAR/reference-cell writes cannot change saved values; completed arrays are never reread.",
+    "Outer duplicate/order rejection consumes the pending call before API entry, preserving caller-only traces and skipping later producers. Reference warnings and inner errors occur only after successful collection in canonical order.",
+    "Author NORMAL distinguishes named-first/positional-later default36 plus mixed direct/pack/named-tail variadics121; a producer writes direct99 while the body still receives saved5. Author OUTER distinguishes cross-pack duplicate, within-pack integer-after-name and duplicate named tail, all with skipped0/body0/result97 and no API frame.",
+    "Peer proves named17 was valid before a later producer writes29 and delivers positional31. Canonical insertion creates an inner duplicate; the real reference-warning handler writes caller47/53, then a detached31 cell precedes Error56. Raw positional31/named17 survive caller-cell unset and retain the receiver after the selected Closure retires until final raw-vector disposal; recovery23 follows.",
+    "Eleven reached budget/resumption checks and undriven controls reject missing/extra/reordered histories, noncanonical RAW, stale error state and same-valued caller-cell substitution. Bounded settlement drains release/operation queues without advancing user destructor entry."
+  ],
+  "target": {
+    "php": "PHP 8.5.10 CLI NTS 64-bit",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; exact values in native/model reports",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    },
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "mode": "strict SL, exact true LF/quiet stderr/exit0; caches disabled and encountered determinism checks"
+  },
+  "accepted": {
+    "native": {
+      "revision": "0d219ec6abef3c7dbc2da758c51c0a703c8396c4",
+      "module_count": 417,
+      "original_programs": 3,
+      "author": 2,
+      "peer": 1,
+      "Closure_call_scenarios": 6,
+      "normal_quiet": true,
+      "caps_seconds": {
+        "author_outer": 45,
+        "peer_outer": 45,
+        "each_native": 15
+      }
+    },
+    "genuine_counterexample": {
+      "revision": "0d219ec6abef3c7dbc2da758c51c0a703c8396c4",
+      "case": "closure-call-list-canonical-order-and-mixed-delivery",
+      "status": "unsupported",
+      "reason": "Closure::call argument form",
+      "stdout": "B|",
+      "before_first_pack_producer": true,
+      "inner_exit": 1,
+      "source_agreement_credit": 0,
+      "caps_seconds": {
+        "outer": 90,
+        "cli": 45,
+        "recorder": 60
+      }
+    },
+    "source": {
+      "revision": "9094b2ce76477f4721fce3a6864ccaec8c693762",
+      "module_count": 417,
+      "source_agreements": 3,
+      "author": 2,
+      "peer": 1,
+      "normal_quiet_exact": true,
+      "stable_heads_and_inputs": true,
+      "caps_seconds": {
+        "author_outer": 420,
+        "peer_outer": 210,
+        "cli": 180,
+        "recorder": 195
+      }
+    },
+    "focused": {
+      "revision": "e99a1aecce9f404cf85792bc93dea64b4a7e95a4",
+      "module_count": 417,
+      "author_premises": [
+        273,
+        258
+      ],
+      "peer_premises": [
+        281
+      ],
+      "total_premises": 812,
+      "budgets": [
+        4,
+        3,
+        4
+      ],
+      "total_budgets": 11,
+      "result": "pass",
+      "exact_true_lf_quiet_exit0": true,
+      "stable_inputs": true,
+      "caps_seconds": {
+        "fixtures_each": 120,
+        "author_outer": 900,
+        "peer_outer": 450,
+        "numeric_each": 420
+      }
+    },
+    "static_cut_bridge": {
+      "runtime_paths_byte_equal_between_source_and_focused": [
+        "spec/semantics/182-closure-call.watsup",
+        "spec/semantics/428-closure-call-array-unpack.watsup"
+      ],
+      "source_scripts_byte_equal_between_native_and_focused": [
+        "tests/semantics/closure_call_argument_list_sources.py",
+        "tests/semantics/closure_call_argument_list_review_sources.py"
+      ],
+      "no_accepted_native_source_or_focused_replay": true
+    }
+  },
+  "preserved_failures": [],
+  "preparation": "The earlier8adcc6b source freeze had no actor. Before native launch,0d219 added only the direct-CV later-write observation requested by independent review. Native/model/focused execution then passed on first attempts; no failed execution or fixture correction is hidden.",
+  "runtime_sha256": {
+    "spec/semantics/182-closure-call.watsup": "6446ee746881ba4b7f1b1aa18377e50cb10ae5f161f6b420a67d80d5cdceedd7",
+    "spec/semantics/428-closure-call-array-unpack.watsup": "8216266fabb6a07026050eaa39afc5f802b6d976383105ee5e7491dc4a6fd3f9"
+  },
+  "script_sha256": {
+    "tests/semantics/closure_call_argument_list_sources.py": "3fc92a7ecd62e156bb35295844952f86ba5894b98fe00a8fef27d999207b7a57",
+    "tests/semantics/closure_call_argument_list_review_sources.py": "19eaba21f7466b29b71624903b98b8a6b587cac30a3eec7089f8fc6bd6cee008",
+    "tests/semantics/closure_call_argument_list_protocol.py": "10787c57481277a6d701c994441ff4fb72134a822088b4945a34fd28b78fcc14",
+    "tests/semantics/closure_call_argument_list_review_protocol.py": "4e55b3ef7fee4a1a09c97147a0c284f6a399494ec96b394dcd2e08c77e007105"
+  },
+  "report_sha256": {
+    ".tools/closure-call-argument-list-native-108/native-report.json": "1d19da14a99e8b0e703809308c3d3e9e8cbfe20d3e248acff611c0c846c7af0f",
+    ".tools/closure-call-argument-list-native-108/baseline-report.json": "5490d66aa60e9b57dc65610d90f134511302d57c83e21e0e8737878ac64d85f1",
+    ".tools/closure-call-argument-list-native-108/model-report.json": "cc1288f5e0132c47817e2bfef127f127c199b28624474f30e26381a35d0a2b61",
+    ".tools/closure-call-argument-list-peer-108/native-report.json": "ba9aacd3599018ab49cb3c32acebb03bc32f815707c9fdb7e417e8908baf6b1c",
+    ".tools/closure-call-argument-list-peer-108/model-report.json": "611e60c6a8b21f5d6eb97fb6ee7029f30b5c34cacb8359ff16daf98cf128d9be",
+    ".tools/closure-call-argument-list-state-108/fixtures-report.json": "14db9dd2a0890c85f2d69d2a0fefd89a5aeb7594534cbc41883e8a511e4becb1",
+    ".tools/closure-call-argument-list-state-108/check-report.json": "dc975f303f7d67e75ad40232e8b564d1691ed1a40899102a9527ff4756c46532",
+    ".tools/closure-call-argument-list-peer-state-108/fixtures-report.json": "5f51f42280bf6b3e213961a6f60fd80db4d1f8ab5994e379a5f3d76027d768b2",
+    ".tools/closure-call-argument-list-peer-state-108/check-report.json": "a128132a0c302a84686f8195dead129959544637f28ddaa9522540c440470525"
+  },
+  "outer_results": {
+    ".tools/closure-call-argument-list-native-108/outer-baseline-normal.exit.json": {
+      "exit": 0,
+      "cap_seconds": 90,
+      "elapsed": 34.75835156440735
+    },
+    ".tools/closure-call-argument-list-native-108/outer-model-author.exit.json": {
+      "exit": 0,
+      "cap_seconds": 420,
+      "elapsed": 226.0496757030487
+    },
+    ".tools/closure-call-argument-list-native-108/outer-native-author.exit.json": {
+      "exit": 0,
+      "cap_seconds": 45,
+      "elapsed": 0.3798034191131592
+    },
+    ".tools/closure-call-argument-list-peer-108/outer-model-peer.exit.json": {
+      "exit": 0,
+      "cap_seconds": 210,
+      "elapsed": 117.32671284675598
+    },
+    ".tools/closure-call-argument-list-peer-108/outer-native-peer.exit.json": {
+      "exit": 0,
+      "cap_seconds": 45,
+      "elapsed": 0.32645702362060547
+    },
+    ".tools/closure-call-argument-list-state-108/outer-check-author.exit.json": {
+      "exit": 0,
+      "cap_seconds": 900,
+      "elapsed": 580.6758632659912
+    },
+    ".tools/closure-call-argument-list-state-108/outer-fixtures-author.exit.json": {
+      "exit": 0,
+      "cap_seconds": 120,
+      "elapsed": 0.23421525955200195
+    },
+    ".tools/closure-call-argument-list-peer-state-108/outer-check-peer.exit.json": {
+      "exit": 0,
+      "cap_seconds": 450,
+      "elapsed": 284.2927596569061
+    },
+    ".tools/closure-call-argument-list-peer-state-108/outer-fixtures-peer.exit.json": {
+      "exit": 0,
+      "cap_seconds": 120,
+      "elapsed": 0.21986746788024902
+    }
+  },
+  "closure": {
+    "all_source_and_focused_sessions_reaped": true,
+    "all_recorded_groups_empty": true,
+    "peer_controller_absent": true,
+    "peer_frontend_adapter_close0_final0_quiet": true,
+    "live_108_actors": [],
+    "cpu3_released": true,
+    "no_cpu_or_writer_claim": true
+  },
+  "artifacts": {
+    "canonical_project": "/home/user/workspace/php-spec",
+    "raw_roots": [
+      ".tools/closure-call-argument-list-native-108",
+      ".tools/closure-call-argument-list-peer-108",
+      ".tools/closure-call-argument-list-state-108",
+      ".tools/closure-call-argument-list-peer-state-108"
+    ],
+    "private_branch": "semantics/closure-call-argument-list-108",
+    "recovery": "These ignored roots preserve original bytes/path/cwd/profile, commands, exits, streams, numeric assertions and worker close records. Recreate the private checkout at immutable tested cuts with four local tools if future affected work requires execution; accepted cuts remain fixed. Metadata and disjoint actual-parent composition alone require no semantic replay."
+  },
+  "composition": {
+    "parent": "1be8e2d7cfe60aa8c2057c227e6d57a62cf4d2dc",
+    "private_publication": "7db580dff1356e963cf7d715a93facf53b5e9bdf",
+    "branch": "integration/closure-call-argument-list-108",
+    "module_count": 418,
+    "preservation": "Tested182/428 and all four scripts are private-exact. Every other incoming runtime, storage, schema, manifest and pipeline path is parent-exact; two owning inventory rows preserve the reviewed private delta. Compact current/active/remaining/paused progress facts, including held COMP123, are preserved outside the own Calls row and V108 marker.",
+    "interaction_review": "Incoming magic-Get/typed-reference, aggregate-comparison, CONFIG-Generator, NArrayItem-spread and Generator/Fiber delegation selectors require producers or saved VM/resumer tags absent from these originals and reached states. Ordinary producer/warning frames do not match GENERATOR_RESUME/FROM_RESULT or ACTIVEFIBER. No joined execution is required.",
+    "execution_credit_added": 0
+  }
+}
