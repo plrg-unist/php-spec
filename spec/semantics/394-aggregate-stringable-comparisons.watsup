@@ -60,6 +60,8 @@ dec $aggregate_decl_kind(paggregatekind) : bool
 dec $aggregate_guards_unique(pcompareguard*) : bool
 dec $aggregate_decl_rows(pstate, nat, ppropertyslot*) : bool
 dec $aggregate_decl_keys(ppropertyslot*) : ptbytes*
+dec $aggregate_decl_public(ppropertydesc*) : bool
+dec $aggregate_decl_cast_order(pstate, nat, porder) : porder
 dec $aggregate_decl_image(pstate, nat, ptbytes*) : bool
 dec $aggregate_decl_effect(pstate, nat, nat, ptbytes*, nat, pcompareguard*, int) : (pstate, porder)
 dec $aggregate_decl_continue(pstate, porder, nat, nat, ptbytes*, nat, pcompareguard*, int) : (pstate, porder)
@@ -197,7 +199,7 @@ def $aggregate_cached_order(S, n_left, n_right, pcompareguard_seen*) = $aggregat
 def $aggregate_cached_order(S, n_left, n_right, pcompareguard_seen*) = ORDERUNSUPPORTED "cached property-table comparison materialization"
   -- if $object_table_at(S.OBJECTTABLES, n_left) = eps \/ $object_table_at(S.OBJECTTABLES, n_right) = eps
 
-;; A declared-only hash contains indirect pointers to initialized public slots.
+;; A declared-only hash contains indirect pointers to initialized physical slots.
 ;; Key order is captured, while selected and future slot values remain live.
 def $aggregate_decl_rows(S, n, eps) = true
 def $aggregate_decl_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = ($aggregate_decl_rows(S, n, ppropertyslot_tail*))
@@ -205,7 +207,6 @@ def $aggregate_decl_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = ($aggrega
   -- if ppropertyslot.DECL = (ppropertyid)
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
   -- if ppropertydesc.ORIGIN = ppropertyid
-  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
   -- if ppropertydesc.KEY = ppropertyslot.NAME
   -- if ~$property_hook_declared(S, n, ppropertyslot.NAME)
   -- if ppropertyslot.STATE = PROP_VALUE pitem
@@ -213,6 +214,13 @@ def $aggregate_decl_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = ($aggrega
 def $aggregate_decl_rows(S, n, ppropertyslot*) = false -- otherwise
 def $aggregate_decl_keys(eps) = eps
 def $aggregate_decl_keys(ppropertyslot :: ppropertyslot_tail*) = ppropertyslot.NAME :: $aggregate_decl_keys(ppropertyslot_tail*)
+def $aggregate_decl_public(eps) = true
+def $aggregate_decl_public(ppropertydesc :: ppropertydesc_tail*) = (ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ $aggregate_decl_public(ppropertydesc_tail*))
+;; Nonpublic tables admit numeric Notices; their Stringable path stays refused.
+def $aggregate_decl_cast_order(S, n, ORDERSTRING paggregatecallback) = ORDERUNSUPPORTED "materialized-property Stringable comparison continuation"
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if ~$aggregate_decl_public($property_layout(S, porigin, |S.CLASSES|))
+def $aggregate_decl_cast_order(S, n, porder) = porder -- otherwise
 def $aggregate_decl_image(S, n, ptbytes*) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
@@ -241,7 +249,7 @@ def $aggregate_decl_order(S, n_left, n_right, pcompareguard_seen*, z) = $aggrega
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_rows*)
 def $aggregate_decl_effect(S, n_left, n_right, ptbytes*, n_index, pcompareguard_seen*, z) = (S, ORDER 0)
   -- if n_index = |ptbytes*|
-def $aggregate_decl_effect(S, n_left, n_right, ptbytes*, n_index, pcompareguard_seen*, z) = $aggregate_decl_continue(S_next, $aggregate_push(porder, paggregatecursor), n_left, n_right, ptbytes*, $(n_index + 1), pcompareguard_seen*, z)
+def $aggregate_decl_effect(S, n_left, n_right, ptbytes*, n_index, pcompareguard_seen*, z) = $aggregate_decl_continue(S_next, $aggregate_push($aggregate_decl_cast_order(S_next, n_left, porder), paggregatecursor), n_left, n_right, ptbytes*, $(n_index + 1), pcompareguard_seen*, z)
   -- if $(n_index < |ptbytes*|)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left_rows*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right_rows*)
