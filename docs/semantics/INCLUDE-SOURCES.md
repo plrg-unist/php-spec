@@ -1562,6 +1562,26 @@ named-key controls and four adjacent older paths remain exact. Three
 source-reached fixtures pass 404 premises and six raw promotion/Error steps.
 The existing receipt validator checks live structural identity, not an
 unforgeable historical return witness. If a sole Aggregate CV is rebound and
-the producer dies during iteration, the measured model currently reports an
+the producer dies during iteration, the model at this cut reported an
 interpreter failure; that native-normal case has zero agreement. Effectful
 finalizers, child roots, wider keys and producer lifetimes remain partial.
+
+The [retired Aggregate producer increment](../../coverage/semantics/config-aggregate-retired-producer-review.json)
+keeps the same nonowning Iterator receipt when a first `key()` callback clears
+the only Aggregate CV. The live validation arm remains unchanged; a disjoint
+retired arm checks the still-recorded Aggregate class, original source/call
+site, nominal `IteratorAggregate`, and linked public `getIterator` signature
+without adding an owner. Zend's returned Iterator temporary has already been
+copied into Iterator DATA before the producer dies. Three byte-frozen
+model-compatible originals agree on normal completion, a second invalid bool
+key Error at unpack line 40, and a saved second-key Exception. Source-reached
+fixtures start from the checked original calls, authenticate the actual getter
+return and DATA promotion, then check dead producer and live sole DATA after
+the first key, both WeakReferences dead before API/catch, and unchanged result
+and INI state on abrupt paths. Normal 177, invalid 163 and Exception 146
+premises pass at separate cuts. The unchanged three-source interpreter-failure
+baseline and first erroneous abrupt-budget assertion keep zero agreement.
+The receipt remains structurally forgeable by another retired same-class
+object; reached-source tests establish its genuine provenance only for these
+programs. Effectful producer finalizers, child storage, wider Iterator values
+and other CONFIG consumers are still open.
