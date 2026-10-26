@@ -98,8 +98,10 @@ def checks(program, path, name):
             '$aggregate_std_pair(S_first,n_left,n_right)',
             '$entry_lookup(S_first.ARRAYS[n_tableleft].ITEMS,KSTRING $ptascii("payload")) = (DIRECT (PARRAY n_saved))',
             '$entry_lookup(S_first.ARRAYS[n_tableright].ITEMS,KSTRING $ptascii("payload")) = (DIRECT (PARRAY n_other))',
-            '$heap_owners($heap_prune($heap_graph(S_first)),HARRAY n_tableleft) = 2',
-            '$heap_owners($heap_prune($heap_graph(S_first)),HARRAY n_tableright) = 2',
+            '$heap_owners($heap_prune($heap_graph(S_first)),HARRAY n_tableleft) = 1',
+            '$heap_owners($heap_prune($heap_graph(S_first)),HARRAY n_tableright) = 1',
+            '$heap_count(HARRAY n_tableleft,$pools_nodes(S_first.POOLS)) = 0',
+            '$heap_count(HARRAY n_tableright,$pools_nodes(S_first.POOLS)) = 0',
             '$value_order_effect(S_first,POBJECT n_a,POBJECT n_b,eps,z_first) = (S_first,ORDER $(-1))',
         ]
     lines += [
