@@ -340,10 +340,38 @@ def $assign_array(S, BASE_PROPERTY (POBJECT n) ptbytes, poperand, z) = S[.COMPLE
   -- if $throwable_object(S, n)
 def $property_store_value(S, n, ptbytes, pvalue, z) = S[.COMPLETION = UNSUPPORTED "Throwable property access"]
   -- if $throwable_object(S, n)
+;; zend_std_compare_objects compares same-class declared slots in physical
+;; order. Cold builtin pairs have no callback-capable values in those slots.
+dec $throwable_cold_pair(pstate, nat, nat) : bool
+def $throwable_cold_pair(S, n_left, n_right) = true
+  -- if S.COMPLETION = NORMAL
+  -- if ~$number_compare_exception_pending(S)
+  -- if n_left =/= n_right
+  -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)
+  -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
+  -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
+  -- if pthrowable_left.KIND = pthrowable_right.KIND
+  -- if pthrowable_left.KIND <- ["Exception", "Error"]
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
+  -- if $throwable_object_image_valid(S, n_left) /\ $throwable_object_image_valid(S, n_right)
+  -- if $throwable_field(S, n_left, "string") = PSTRING eps
+  -- if $throwable_field(S, n_right, "string") = PSTRING eps
+  -- if $throwable_field(S, n_left, "previous") = PNULL
+  -- if $throwable_field(S, n_right, "previous") = PNULL
+  -- if $throwable_field(S, n_left, "trace") = PARRAY n_trace_left
+  -- if $throwable_field(S, n_right, "trace") = PARRAY n_trace_right
+  -- if S.ARRAYS[n_trace_left].ITEMS = eps
+  -- if S.ARRAYS[n_trace_right].ITEMS = eps
+def $throwable_cold_pair(S, n_left, n_right) = false -- otherwise
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S, $property_order(S, ppropertyslot_left*, ppropertyslot_right*, (HOBJECT n_left) :: pcompareguard_seen*))
+  -- if $throwable_cold_pair(S, n_left, n_right)
+  -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
+  -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
 def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S[.COMPLETION = UNSUPPORTED "Throwable property comparison"], ORDER 0)
   -- if n_left =/= n_right
   -- if $throwable_object(S, n_left) \/ $throwable_object(S, n_right)
   -- if ~$weakmap_standard_mismatch(S, n_left, n_right)
+  -- if ~$throwable_cold_pair(S, n_left, n_right)
 
 def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
   -- if $(n < |S.OBJECTS|)

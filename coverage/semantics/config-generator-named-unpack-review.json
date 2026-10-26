@@ -1,0 +1,32 @@
+{
+  "scope": "Source97: INI_SET CONFIG unpack of an authenticated named zero-argument non-by-reference direct-CV Generator with at most two non-NULL string currents. Existing integer-key producer modes remain unchanged; arbitrary Traversables and wider sends remain partial.",
+  "behavior": "SEND_UNPACK checks each current key before advancing. A numeric string key becomes a positional argument without mutating Generator::key(); other string keys use named parameter lookup. Successful sends enter nonowning history. Unknown names, duplicate destinations and positional-after-named raise at the unpack line before any later yield. The original Unsupported reason remains for nonadmitted key/value shapes.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+    "source_symbols": ["Zend/zend_vm_def.h:ZEND_SEND_UNPACK", "Zend/zend_execute.c:zend_handle_named_arg"]
+  },
+  "cuts": {
+    "native_and_baseline": "cd0c661dc2557824e1dcc0f652c4cf508cea4b4d: five original sources exit 0 with exact raw streams; one unchanged forward-case model baseline exits 1 Unsupported after B|Y0|, zero agreement",
+    "implementation": "e6213f0b9d41a90766eeee251bc291988053724c: all five original sources agree with native PHP, exit 0, no timeout or surviving process group",
+    "focused": "e6213f0b9d41a90766eeee251bc291988053724c: all 420 ordered modules in SL mode; 45 reached first-send and 29 reached duplicate-error premises pass, including direct-CV/history/site/callee refusals, raw THROWN state and budget resume",
+    "regression": "The earlier fixed integer-key CONFIG Generator source completes with B|Y0|Y1|F|A|14|8|E on e6213f0b9; no prior accepted campaign was replayed."
+  },
+  "input_sha256": {
+    "spec/semantics/423-config-generator-unpack.watsup": "bf8fe23e1057712ea662a12dc5c3dfc434b61f167ad0fa0e5a6e2ed520200775",
+    "tests/semantics/config_generator_named_unpack_sources.py": "54b7fe0af543ed54c62c1dc995c340140945e1034a4d59228c71599b1edb67d5",
+    "tests/semantics/config_generator_named_unpack_protocol.py": "ef216f471ace02d092722cdb6c7a471d248c9d0114b10c02d9af0b4c201c95ff"
+  },
+  "raw_root": "../php-spec-evidence-archive/config-generator-named-97",
+  "reports_sha256": {
+    "native-baseline/native-report.json": "61f046b34327d91ce1e05b9d72dc4fde99e5d871c82d648523b91472de887111",
+    "native-baseline/baseline-report.json": "800ea7c6ac214775d8216d52f11a65aa21182eeaeb20bb456c7b13abe9268d0d",
+    "post-guard-source/model-report.json": "60f5214dfae5d4dca1260d920b7fb09c0d6f689f8ddb3f98e987d35e0bbba7cb",
+    "post-guard-protocol/check-report.json": "8ad7db0a3a39b80186b8847d0709e1db48debd88169e4f3ca55b4bda3ff3c501",
+    "old-integer-control-post-guard.json": "be22c6220cb3a8e83b115104410d770968bd8c448bb6375348cbe9fa698f381e"
+  },
+  "recovery": "Restore the listed commits and the external raw root. Native/baseline use config_generator_named_unpack_sources.py --phase native/baseline --output RAW/native-baseline; final model uses --phase model --output RAW/post-guard-source; protocol uses config_generator_named_unpack_protocol.py --phase prepare/check --sources RAW/native-baseline --output RAW/post-guard-protocol. Each report pins the exact command, source bytes, binary/module hashes, process exit and channels.",
+  "remaining": "More than two sends, non-string current values, non-int/string keys, other CONFIG APIs, wider Generator/callee/ownership histories and lifecycle callbacks remain partial. Held V110 and the five paused boundaries are untouched. No full-core, security or equivalence claim."
+}

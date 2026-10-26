@@ -4776,6 +4776,50 @@ rule PhpStep/bitnot-copy-begin: S ~> S[.TODO = (BITNOT_WARNING pbitnotwarning 0)
   -- if S.TODO = ptask :: ptask_tail*
   -- if $bitnot_copy_plan(S) = (pbitnotwarning)
 
+;; A completed NaN operand retains its bits without a live CV. Reuse the
+;; two-notice continuation, including its pending-exception decision.
+def $bitnot_nan_source_valid(S, pbitnotwarning) = true
+  -- if S.ORIGIN = (pbitnotwarning.SITE)
+  -- if $origin_node(S.SOURCES, pbitnotwarning.SITE) = (NExprBitwiseNot expression metadata)
+  -- if pbitnotwarning.INPUT = KNOWN (PFLOAT pbitnotwarning.BITS)
+  -- if $integer_operand_source(S, pbitnotwarning.SITE, [PCFIELD 0], pbitnotwarning.INPUT)
+  -- if $code_expression_at_source(S, pbitnotwarning.SITE, [PCFIELD 0]) = (pbitnotwarning.LINE)
+  -- if $(pbitnotwarning.BITS < 18446744073709551616)
+  -- if $float_long(pbitnotwarning.BITS, true) = (pbitnotwarning.VALUE, [RANGEWARNING, PRECISIONLOSS])
+def $bitnot_snapshot(S, pbitnotwarning) = true
+  -- if pbitnotwarning.INPUT = KNOWN (PFLOAT pbitnotwarning.BITS)
+  -- if $bitnot_nan_source_valid(S, pbitnotwarning)
+def $bitnot_nan_warning_plan(S) = (pbitnotwarning)
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (BITNOT_RESULT z) :: ptask_tail*
+  -- if S.RESULT = KNOWN (PFLOAT n_bits)
+  -- if $float_long(n_bits, true) = (i, [RANGEWARNING, PRECISIONLOSS])
+  -- if pbitnotwarning = {SITE porigin, LINE z, INPUT S.RESULT, BITS n_bits, VALUE i}
+  -- if $bitnot_nan_source_valid(S, pbitnotwarning)
+
+;; A copied range-only float keeps its original bits through the single Warning.
+;; Its converted long is historical after callback writes or source retirement.
+def $bitnot_range_source_valid(S, pbitnotwarning) = true
+  -- if S.ORIGIN = (pbitnotwarning.SITE)
+  -- if $origin_node(S.SOURCES, pbitnotwarning.SITE) = (NExprBitwiseNot expression metadata)
+  -- if pbitnotwarning.INPUT = KNOWN (PFLOAT pbitnotwarning.BITS)
+  -- if $integer_operand_source(S, pbitnotwarning.SITE, [PCFIELD 0], pbitnotwarning.INPUT)
+  -- if $code_expression_at_source(S, pbitnotwarning.SITE, [PCFIELD 0]) = (pbitnotwarning.LINE)
+  -- if $(pbitnotwarning.BITS < 18446744073709551616)
+  -- if $float_long(pbitnotwarning.BITS, true) = (pbitnotwarning.VALUE, [RANGEWARNING])
+def $bitnot_snapshot(S, pbitnotwarning) = true
+  -- if pbitnotwarning.INPUT = KNOWN (PFLOAT pbitnotwarning.BITS)
+  -- if $bitnot_range_source_valid(S, pbitnotwarning)
+def $bitnot_range_warning_plan(S) = (pbitnotwarning)
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (BITNOT_RESULT z) :: ptask_tail*
+  -- if S.RESULT = KNOWN (PFLOAT n_bits)
+  -- if $float_long(n_bits, true) = (i, [RANGEWARNING])
+  -- if pbitnotwarning = {SITE porigin, LINE z, INPUT S.RESULT, BITS n_bits, VALUE i}
+  -- if $bitnot_range_source_valid(S, pbitnotwarning)
+
 ;; BOOL_NOT keeps the original CV pointer: NaN warns before rereading its double.
 ;; Keep that slot live and floating here; no copied source or cell root is held.
 syntax pboolnotnanwarning = { SITE porigin, LINE int, INPUT poperand, CELL nat, BITS nat }

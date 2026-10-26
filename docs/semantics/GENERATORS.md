@@ -82,6 +82,37 @@ as well. Existing capture and frame roots are unchanged. Method/bound wrappers,
 Closure helper/delegation combinations and wider collection remain partial.
 [Closure transfer review](../../coverage/semantics/generator-fiber-closure-transfer-review.json).
 
+Ordinary public instance-method Generator bodies also move their real
+`METHOD_TARGET` callee with the VM. The receiver remains one physical callee
+owner while parked; admission validates its live receiver and original class,
+source and call context. No roots or transfer operations change. A scalar-yield
+body releases its receiver at completion, while a closed self-yield cache keeps
+one owner until Generator destruction. Supplied Throwables preserve identity
+through caught or unhandled retirement and the caller's finally.
+
+Four native originals and four source comparisons pass. The genuine baseline
+selects only the fresh CURRENT original and explicitly refuses Fiber transfer,
+with zero agreement. Strict/source results retain `3eedf46ed`; 335 focused
+premises retain `0c0079651`, and only the corrected 89 retain `aa0534778`.
+The original fixture incorrectly required an empty WeakReference row after
+retirement. Its diagnostic confirms nonowning target history with public NULL,
+physical receiver absence and owner zero; that failure and diagnostic remain
+zero credit. Scoped/static/bound/accessor wrappers, wider helper/delegation,
+reference and collection combinations remain partial.
+[Method receiver evidence and recovery](../../coverage/semantics/generator-fiber-transfer-review.json).
+
+Direct named by-reference Generators can also park during NEXT with a cached
+reference cell from an earlier yield. The Generator keeps the original cell
+while the Fiber VM owns the running frame; rebinding its source variable name
+does not retarget the cache. `current()` reads the live cell while the Fiber is
+parked, and the next yield retires the old cache before caller continuation.
+An outside NEXT sees one running-Generator Error when this cache is defined;
+the fresh, uncached path retains its two-Error chain. Supplied Throwable
+unwinding and a closed cache keep their existing cell ownership. Admission
+requires a named by-reference producer and live cell; method/Closure cached
+reference forms and wider helper/delegation combinations remain partial.
+[Reference transfer review](../../coverage/semantics/generator-fiber-reference-transfer-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

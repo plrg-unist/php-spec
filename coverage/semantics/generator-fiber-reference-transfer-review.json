@@ -1,0 +1,105 @@
+{
+  "milestone": "Iterator59 cached reference Generator Fiber transfer",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local oracle b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json, LC_ALL=C, TZ=UTC, CPU3",
+  "parent": "185eb4c96a60e140a6cc81f470ee1f50f4dba13c",
+  "implementation_commit": "b8c1725fa",
+  "scope": "Only a direct named by-reference Generator entered by NEXT with a valid old REFCELL cache may transfer its running frame through Fiber::suspend; the old cell stays a Generator outgoing HCELL. Empty-cache direct/method/Closure arms stay unchanged. A defined REFCELL cache makes outside NEXT throw one Error rather than the fresh-cache two-Error chain.",
+  "engine_paths": [
+    "Zend/zend_vm_def.h::ZEND_YIELD",
+    "Zend/zend_generators.c::zend_generator_ensure_initialized",
+    "zend_generator_resume",
+    "ZEND_METHOD(Generator, current)",
+    "ZEND_METHOD(Generator, next)"
+  ],
+  "implementation": [
+    "spec/semantics/281-fibers.watsup::$fiber_generator_cached_reference_valid",
+    "$fiber_generator_body_id",
+    "spec/semantics/280-generators.watsup::$generator_running_error"
+  ],
+  "sources": {
+    "generator-fiber-reference-fresh-control": "53ac34c24864ab7528e84f1c448235e6e84ca834e023c88b8943e37e1d4a3a66",
+    "generator-fiber-reference-cached-array": "a881816263c3a1bb413e539b246a8a2694eed945f5f182ace3b8a3c8b4940b07",
+    "generator-fiber-reference-cached-rebind": "ace4d9f5bb3a76f9a873ceaebd17731dcbeb29349aacdfe7d303afb24a5d38a5",
+    "generator-fiber-reference-cached-throw": "8bb34db334b3e4a88b2d34ee565f7ca1d9ce3881f9eb1691a6a46fba6af78575",
+    "generator-fiber-reference-sole-cache-reentry": "0045ec22d8a8ae4b9a1b3850ab1a4f56a9202f373d5ec8997123534dcb049921"
+  },
+  "validation": {
+    "native_first": {
+      "report": ".tools/i59-packet/native-first/report.json",
+      "sha256": "dae5395c1840853f206ac99db129ed84bb4243c4aeefb46c74bf9c1e21c092f5",
+      "result": "Four frozen originals exit0, empty stderr; raw streams kept."
+    },
+    "unchanged_genuine_baseline": {
+      "report": ".tools/i59-packet/unchanged-baseline-lnbr777i/report.json",
+      "sha256": "1d02a847ff21410d03778649511741465bfa5f2c935a6fbc1da5aab57b7a029b",
+      "result": "Original HEAD/input stable: fresh control exact NORMAL; cached array/rebind/throw each checked Unsupported, zero agreement."
+    },
+    "author_source": {
+      "report": ".tools/i59-packet/implemented-source-9o6u8v3w/report.json",
+      "sha256": "5958b262f6eafb85a82c22e777adcf5117961ea1832f4446194b35c8c81a64ef",
+      "result": "Four exact NORMAL agreements with original bytes; source/runtime/module/binary inputs stable."
+    },
+    "strict": {
+      "report": ".tools/i59-packet/strict-5i0wp3fi/report.json",
+      "sha256": "f389fba9ebea875290e3c240ee5488291b40a0fff9cbaca144827c0842aaf536",
+      "result": "Full 420-module algorithmic check exit0, empty stderr, no timeout, stable inputs; raw 17,808,765-byte output."
+    },
+    "reviewer_native": {
+      "report": ".tools/i59-independent-review/native-ggzttj38/report.json",
+      "sha256": "524da4b34d2f7671d93a96e335420df6f3c59554f7eec514077a85355e901b92",
+      "result": "Frozen fifth source exit0, empty stderr; cache-only object lifetime and one-Error reentry."
+    },
+    "reviewer_initial_mismatch": {
+      "report": ".tools/i59-independent-review/model-nrlmzst2/report.json",
+      "sha256": "a4cbd49c2862f3f3b27c4810f8f52a1e51b5f9c0fcbafdac2a9cbf12354836c7",
+      "result": "Original model NORMAL but Error Previous nonnull against native null; failure preserved with zero agreement."
+    },
+    "reviewer_fixed": {
+      "report": ".tools/i59-independent-review/model-6lgpmq1r/report.json",
+      "sha256": "91c8afef11f2aa6fbad45aa07c5bbec488d38079a3add05a4e9fd70d43e94a98",
+      "result": "Same frozen fifth original exact NORMAL after VALUE-or-REFCELL cache guard; stable inputs."
+    },
+    "rebind_state": {
+      "report": ".tools/fiber-state-review-q5adcnzv/report.json",
+      "sha256": "1e806189b08d6f7a4cf689ccbfbb16915d6a3c2e04e5afac3fa1b2d17cc17a2e",
+      "result": "83 reached SL assertions: old/rebound cells, Generator HCELL, named resumer, malformed cell/target/producer controls and 0/1/2/4000-step resumption."
+    },
+    "sole_owner_state": {
+      "report": ".tools/fiber-state-review-9gcfye_6/report.json",
+      "sha256": "4561064a635f84656a5644a851e49b1be1e232002802c39bbefd8e0eef6406bf",
+      "result": "72 reached SL assertions: sole Generator\u2192HCELL\u2192object path, nonowning WeakReference, null Error Previous, release and 0/1/2/4000-step resumption."
+    },
+    "maintained_fifth_source": {
+      "report": ".tools/generator-fiber-reference-transfer-source-p4davnjn/report.json",
+      "sha256": "39fe138a99a9bcbb0188a27fc9772bb5ee76125d17cdf39dbf6b54e8e439cb1a",
+      "result": "Tracked wrapper/catalog selected fifth source exact NORMAL; repeats the same original, not an additional distinct behavior."
+    }
+  },
+  "preservation": "The 280 guard changes only running NEXT with VALUE absent and REFCELL present. Author four sources have no outside running NEXT; accepted I55\u2013I58 empty-cache or VALUE-cache behavior follows the identical prior arm. Earlier cuts gain no renewed execution credit.",
+  "remaining": "Method/Closure cached references, helper/delegation combinations, nonreferenceable Notice callbacks, broader API roots, finalizer/GC/request lifetimes and complete core remain partial.",
+  "evidence_archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-reference-transfer-59/raw.tar.gz",
+    "bytes": 3977777,
+    "sha256": "9724a9cc2c6857d45667e34071e60d4799e7b81762449170df76df425bb9e5b1"
+  },
+  "evidence_manifest": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-reference-transfer-59/manifest.json",
+  "recovery": "At a matching I59 worktree, extract raw.tar.gz from the project root. Paths in reports refer to original ignored .tools files. The archive holds source bytes, scripts, raw streams and status; pinned project-local tools and tracked implementation/tests are restored from Git. Initial reviewer model mismatch remains separate from the fixed match.",
+  "independent_review": "I59 reviewer independently cleared the frozen native packet, narrow 280/281 semantics, all five exact source behaviors, two reached state cuts, zero-credit initial mismatch, docs/inventory, and the actual-tail 404/422/423 selector bridge at c12011986. Published by guarded fast-forward at 437588fb4; the metadata-only verdict adds no execution credit.",
+  "composition": {
+    "parent": "f8f9e3b3b5f51ee24313b4343b8bc589b6a60a82",
+    "code_commit": "75d68ed1f",
+    "reviewed_candidate": "c12011986",
+    "modules": 420,
+    "joined_strict": {
+      "report": ".tools/i59-composition/strict-i_rpi02t/report.json",
+      "sha256": "b4c8ab52db0f62f49a33524c41b16e1a0c6c2375652017f2a7bfca2d2651e0a0",
+      "result": "exit0, empty stderr, no timeout, stable HEAD/inputs, 17,817,706 output bytes"
+    },
+    "joined_archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-reference-transfer-59/joined-strict.tar.gz",
+      "sha256": "677e856883d23c1cc3ce917a10d8d19fa68fd48ffa4417cc395bf403ea93be17"
+    },
+    "bridge": "The incoming 423 named CONFIG Generator branch requires REFCELL=eps; none of the five I59 originals uses CONFIG. Incoming 404 copied-NaN BITNOT and 422 WeakMap Value-copy sources are absent. Source-tested 280/281 and maintained test bytes are identical across private and joined commits; PROGRESS preserves M157/OP92/Source97 and inventory keeps all incoming prefixes.",
+    "credit": "Joined strict compilation adds no new source/state agreement or renewal of earlier I55-I58 cuts."
+  }
+}

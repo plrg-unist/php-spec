@@ -31,6 +31,10 @@ dec $config_generator_operation_frames(pstate, pgeneratorop, pframe*) : bool
 dec $config_generator_run(pstate, pconfiggenerator, text, ptask*) : pstate
 dec $config_generator_send_allowed(pstate, pconfiggenerator) : bool
 dec $config_generator_send(pstate, pconfiggenerator, ptask*) : pstate
+dec $config_generator_key(pstate, pvalue) : pkey?
+dec $config_generator_string_key_input(pconfiggenerator) : bool
+dec $config_generator_key_input(pconfiggenerator, pvalue) : bool
+dec $config_generator_items(pstate, pconfiggenerator, pentry*) : bool
 dec $config_generator_nodes(pconfiggenerator, text) : pnode*
 dec $config_generator_finish(pstate, pconfiggenerator, ptask*) : pstate
 dec $config_generator_invoke(pstate, pconfiggenerator) : pstate
@@ -87,6 +91,30 @@ def $config_generator_origin(S, pconfiggenerator, pgenerator, pfunction) = true
   -- if $config_aggregate_generator_producer_valid(S, pconfiggeneratorproducer)
   -- if $config_aggregate_generator_capture(S, pconfiggeneratorproducer, pconfiggenerator.OBJECT)
 def $config_generator_origin(S, pconfiggenerator, pgenerator, pfunction) = false -- otherwise
+;; SEND_UNPACK normalizes a numeric string key for the argument, not the
+;; Generator's cached key. Other string keys remain named arguments.
+def $config_generator_key(S, PINT z) = (KINT z)
+def $config_generator_key(S, PSTRING n*) = (KINT z)
+  -- if $startup_bytes(n*)
+  -- if $string_key(n*) = INTEGERKEY z
+def $config_generator_key(S, PSTRING n*) = (KSTRING n*)
+  -- if $startup_bytes(n*)
+  -- if $string_key(n*) = STRINGKEY
+def $config_generator_key(S, PSTRING_CARRIER pstringidentity n*) = $config_generator_key(S, PSTRING n*)
+  -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*)
+def $config_generator_key(S, pvalue) = eps -- otherwise
+def $config_generator_string_key_input(pconfiggenerator) = true
+  -- if pconfiggenerator.PRODUCER = eps
+  -- if pconfiggenerator.INPUT = VARIABLE ptbytes z
+def $config_generator_string_key_input(pconfiggenerator) = false -- otherwise
+def $config_generator_key_input(pconfiggenerator, PINT z) = true
+def $config_generator_key_input(pconfiggenerator, PSTRING n*) = $config_generator_string_key_input(pconfiggenerator)
+def $config_generator_key_input(pconfiggenerator, PSTRING_CARRIER pstringidentity n*) = $config_generator_string_key_input(pconfiggenerator)
+def $config_generator_key_input(pconfiggenerator, pvalue) = false -- otherwise
+def $config_generator_items(S, pconfiggenerator, eps) = true
+def $config_generator_items(S, pconfiggenerator, (ENTRY (KINT z) (DIRECT pvalue)) :: pentry*) = ($config_iterator_string(S, pvalue) /\ $config_generator_items(S, pconfiggenerator, pentry*))
+def $config_generator_items(S, pconfiggenerator, (ENTRY (KSTRING n*) (DIRECT pvalue)) :: pentry*) = ($config_generator_string_key_input(pconfiggenerator) /\ $string_key(n*) = STRINGKEY /\ $config_iterator_string(S, pvalue) /\ $config_generator_items(S, pconfiggenerator, pentry*))
+def $config_generator_items(S, pconfiggenerator, pentry*) = false -- otherwise
 def $config_generator_history(S, pconfiggenerator) = true
   -- if pconfiggenerator.CALL.KIND = INTRINSIC_INI_SET
   -- if pconfiggenerator.CALL.INDEX = 0 /\ pconfiggenerator.CALL.SENT = eps
@@ -103,7 +131,8 @@ def $config_generator_history(S, pconfiggenerator) = true
   -- if $function_generator(S, pfunction)
   -- if pfunction.SIGNATURE.PARAMETERS = eps /\ ~pfunction.SIGNATURE.BYREF
   -- if $(|pconfiggenerator.ITEMS| <= 2)
-  -- if $config_iterator_items(S, pconfiggenerator.ITEMS)
+  -- if $config_generator_items(S, pconfiggenerator, pconfiggenerator.ITEMS)
+  -- if $config_pack_prefix(pconfiggenerator.CALL, pconfiggenerator.ITEMS, false) = (pconfigcall_prefix)
 def $config_generator_history(S, pconfiggenerator) = false -- otherwise
 def $config_generator_scope(S, pconfiggenerator) = ($config_generator_history(S, pconfiggenerator) /\ ((HOBJECT pconfiggenerator.OBJECT) <- S.ALLOCATIONS))
 def $config_generator_quiet_closed(S, pconfiggenerator) = true
@@ -255,15 +284,33 @@ def $config_generator_send_allowed(S, pconfiggenerator) = true
   -- if pgenerator.PHASE = GENERATOR_PAUSED /\ pgenerator.DELEGATE = eps
   -- if pgenerator.BORROWED = eps /\ pgenerator.REFCELL = eps
   -- if pgenerator.VALUE = (pvalue)
-  -- if pgenerator.KEY = (PINT z)
+  -- if pgenerator.KEY = (pvalue_key)
+  -- if $config_generator_key_input(pconfiggenerator, pvalue_key)
+  -- if $config_generator_key(S, pvalue_key) = (pkey)
   -- if $config_iterator_string(S, pvalue)
   -- if $(|pconfiggenerator.ITEMS| < 2)
 def $config_generator_send_allowed(S, pconfiggenerator) = false -- otherwise
-def $config_generator_send(S, pconfiggenerator, ptask*) = S[.TODO = (CONFIG_GENERATOR pconfiggenerator[.ITEMS = pconfiggenerator.ITEMS ++ [ENTRY (KINT z) (DIRECT pvalue)]] "next") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $config_generator_send(S, pconfiggenerator, ptask*) = S[.TODO = (CONFIG_GENERATOR pconfiggenerator[.ITEMS = pconfiggenerator.ITEMS ++ [ENTRY pkey (DIRECT pvalue)]] "next") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_generator_send_allowed(S, pconfiggenerator)
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.VALUE = (pvalue)
-  -- if pgenerator.KEY = (PINT z)
+  -- if pgenerator.KEY = (pvalue_key)
+  -- if $config_generator_key(S, pvalue_key) = (pkey)
+  -- if $config_pack_prefix(pconfiggenerator.CALL, pconfiggenerator.ITEMS, false) = (pconfigcall_prefix)
+  -- if $exit_key_name(pkey) = preqbytes?
+  -- if $intrinsic_argument(S, pconfiggenerator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if S_checked = $config_send_check(S, pconfigcall_prefix, preqbytes?, z)
+  -- if S_checked.COMPLETION = NORMAL
+def $config_generator_send(S, pconfiggenerator, ptask*) = S_checked
+  -- if $config_generator_send_allowed(S, pconfiggenerator)
+  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.KEY = (pvalue_key)
+  -- if $config_generator_key(S, pvalue_key) = (pkey)
+  -- if $config_pack_prefix(pconfiggenerator.CALL, pconfiggenerator.ITEMS, false) = (pconfigcall_prefix)
+  -- if $exit_key_name(pkey) = preqbytes?
+  -- if $intrinsic_argument(S, pconfiggenerator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if S_checked = $config_send_check(S, pconfigcall_prefix, preqbytes?, z)
+  -- if S_checked.COMPLETION =/= NORMAL
 def $config_generator_send(S, pconfiggenerator, ptask*) = S[.COMPLETION = UNSUPPORTED "CONFIG Generator unpack send outside two-string integer-key domain"]
   -- if ~$config_generator_send_allowed(S, pconfiggenerator)
 rule PhpStep/config-generator-item: S ~> $config_generator_send(S, pconfiggenerator, ptask*)
