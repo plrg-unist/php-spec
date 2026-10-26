@@ -29,12 +29,14 @@ def $string_read_cell(S, n) = true
   -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
   -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
 def $string_read_cell(S, n) = false -- otherwise
-def $string_read_capture(S, VARIABLE n_name* z) = ((pvalue, (n)))
+def $string_read_capture(S, VARIABLE n_name* z) = ((pvalue, n_cell?))
   -- if ~$environment_blocked(S, n_name*)
-  -- if $lookup(S.ENV, n_name*) = (n)
+  -- if n_cell? = $lookup(S.ENV, n_name*)
+  -- if n_cell? = (n)
   -- if $string_read_cell(S, n)
   -- if S.STORE[n] = DEFINED pvalue
-def $string_read_capture(S, KNOWN pvalue) = ((pvalue, eps))
+def $string_read_capture(S, KNOWN pvalue) = ((pvalue, n_cell?))
+  -- if n_cell? = eps
 def $string_read_capture(S, poperand) = eps -- otherwise
 def $string_read_offset(PINT i) = (i)
 def $string_read_offset(pvalue) = $offset_cast_integer(pvalue) -- otherwise
@@ -108,7 +110,7 @@ def $string_read_provider_ready(S, pstringread) = true
   -- if pstringread.READ.BASE = PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*
   -- if pstringread.READ.OWNERS = BASE_VALUE (VARIABLE n_name* z)
   -- if pstringread.BASECELL = (n)
-  -- if $string_read_capture(S, VARIABLE n_name* z) = ((pstringread.READ.BASE, (n)))
+  -- if $string_read_capture(S, VARIABLE n_name* z) = ((pstringread.READ.BASE, pstringread.BASECELL))
 def $string_read_provider_ready(S, pstringread) = false -- otherwise
 def $string_read_key_current(S, pstringread) = (pvalue)
   -- if $string_read_capture(S, pstringread.READ.INPUT) = ((pvalue, pstringread.KEYCELL))
