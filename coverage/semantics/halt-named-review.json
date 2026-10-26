@@ -1,0 +1,39 @@
+{
+  "scope": "Direct fixed compiled-global constant with exactly one source-authenticated named name: argument containing the raw __COMPILER_HALT_OFFSET__ string, normalized into one captured slot. No owner, pack or namespace fallback. Partial dynamic-source behavior.",
+  "status": "independently_reviewed_private",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "base_revision": "03969429cd805e7c11866e33a73803905067139f",
+  "behavior_commit": "40516c82bf83cf47b3e4d267a14e9ed403e6b033",
+  "runtime_sha256": "dc741f864ea0a1a199b61ced7779af7c22a365b18c41059a12417e254c2f056b",
+  "engine_route": "ext/standard/basic_functions.stub.php names constant's argument $name. ext/standard/basic_functions.c::PHP_FUNCTION(constant) calls zend_get_constant_ex with ZEND_FETCH_CLASS_EXCEPTION; Zend/zend_constants.c::zend_get_halt_offset_constant uses the executed filename. Existing CONFIG named-send validation normalizes name into slot zero before invocation.",
+  "mechanism": "At authentic CONFIG_INVOKE, bind the fixed global constant target, exactly one raw named NArg whose literal string is the HALT name, NAMED=true and the matching captured slot. The shared call, carrier, source, owner and pack guards remain; only the existing constant offset/absent Error arms add this admission. The Error trace keeps numeric argument key zero and the original string.",
+  "validation": {
+    "native_first": "Five frozen author originals passed pinned CLI0 with exact stdout and empty stderr. The genuine unchanged checked model accepted all, but four named HALT calls returned Unsupported: halt offset constant query; those are zero agreement credit. Wrong bad: already matched its earlier binding Error and remains a separate negative.",
+    "changed_sources": "Four named HALT author originals agree exactly with native on Error file/line/trace and catch continuation, main offset, child offset with caller absence, and eval absence with main offset. The wrong bad: binding Error still agrees. Five separately frozen reviewer originals also agree exactly with stable inputs.",
+    "reached_state": "Author strict-SL absent Error, main offset and child offset/caller absent fronts pass 74+61+142=277 conditions. They bind genuine checked named CONFIG_INVOKEs, raw name option and normalized slot, filename journal, admitted HALT_UNKNOWN refusal, budget0/resume, Error trace, provider fields and exact final output. The reviewer independently passed an 80-check same-file named-then-positional frontier.",
+    "failed_attempts": "The unchanged model's four Unsupported outcomes have zero HALT agreement credit. No changed-cut or reached-state run failed."
+  },
+  "environment": {
+    "profile": "tests/semantics/profile.json",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "resources": "Author CPU4 native/baseline, changed-source and reached-state runs and reviewer CPU4 frozen-source and reached-frontier runs were serial and fully reaped/released."
+  },
+  "raw_artifacts": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/dynamic-source-107",
+    "reports_sha256": {
+      "author-freeze.json": "3947dc99d2e310477aae8102f8e43ca4b460c512b1ddd8aabd7471b04ca5d5f2",
+      "named-baseline-v1/native-report.json": "7b3994705820666feb33559d4d8309a6fa1b36c89acceed9e1df070a98552e71",
+      "named-baseline-v1/model-report.json": "a9246fe293f59f5f998115d2d94595fe06cfb6960e243744be3f9802616cf470",
+      "named-v1/model-report.json": "61addaec53484ad42b406d5334deec6e2786f501639535ec63a96a3e0f90df4a",
+      "named-state-v1/report.json": "124c1b8068b162c2bc55bbd36bcb5ec70d640fc3ed092ce44acc341d429bad50",
+      "reviewer-frozen-v1/native-report.json": "c59db1220da273beda416f68c00243b63fe674c18852fe84ac6e19299df2aff0",
+      "reviewer-frozen-v1/model-report.json": "d1636c044486bd29b559f11d605554b69cb6e3dbdbe3fbf1597a7b8eb7ce60d3",
+      "reviewer-frontier-v1/report.json": "7a477a677e5203ee68d0be39e45e118d4df5efebe14d1acd9a7cc6ef8b817175"
+    },
+    "recovery": "Run halt_named_sources.py --phase native then --phase model with the same fresh output root and generated version-2 child snapshot; the trace observer records numeric versus named args without changing source bytes. Run halt_named_protocol.py --sources SOURCE_ROOT --output FRESH for three reached fronts. Preserve the first unchanged Unsupported baseline separately before changed model output on the original native paths."
+  },
+  "review": "Independent semantic, source, reached-state, documentation and inventory review accepted at behavior/tests commit 40516c82b. The five-case frozen native/model packet passed exact (reports c59db122... and d1636c04...), including the separate wrong-name negative, and an 80-check named-then-positional frontier passed (report 7a477a67...). The four unchanged Unsupported named-HALT results remain zero agreement credit.",
+  "remaining": "Other fixed or named argument shapes, owning/unpacked calls, repeated call-site cache history, ambiguous HALT registration and wider compiler/provider behavior remain partial."
+}
