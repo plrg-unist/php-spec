@@ -3775,9 +3775,10 @@ invalid/NUL-name behavior remain partial.
 [Pipe arrow grouping](coverage/semantics/pipe-syntax-review.json) survives checked
 syntax and printing, so a bare arrow RHS receives the matching compile error
 before operand effects. [Pipe execution](docs/semantics/SOURCE-PIPE.md) forces the
-left value before selecting a named or closure callable; its
-[runtime review](coverage/semantics/pipe-review.json) binds 12 source outcomes
-and separate paused-state controls.
+left value before selecting a named, closure or public user-method array
+callable. Its [runtime review](coverage/semantics/pipe-review.json) binds 12
+earlier source outcomes; the [array review](coverage/semantics/pipe-array-callable-review.json)
+binds twelve exact CLI outcomes and reached ownership checks.
 [Switch execution](docs/semantics/SOURCE-SWITCH.md) scans cases in source order,
 retains the subject through fallthrough, and distinguishes constant-boolean
 branching from dynamic equality; its [review](coverage/semantics/switch-review.json)

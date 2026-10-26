@@ -1,0 +1,38 @@
+{
+  "scope": "PHP 8.5 pipe RHS arrays selecting plain public user instance or static methods; one forced positional value, selected receiver ownership, method result, lookup and by-reference errors",
+  "tested_code_revision": "71d6c1e55d5efe126f21abdfacfd8b19643bbe76",
+  "baseline": {
+    "revision": "185eb4c96 for the first nine sources; c0ffd00a5 for the three added supported boundaries and scoped-private control",
+    "result": "All twelve supported sources were explicit Unsupported before CALL112. The accessible scoped-private control remains explicit Unsupported after CALL112 and receives zero agreement credit."
+  },
+  "identity": {
+    "php": "PHP 8.5.10 CLI NTS, pinned -n profile in raw native.command.json",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "php_src_commit": "1364de0472b859917f5bc0be9193bd8068fc2061",
+    "p4_spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "source_catalog_sha256": "91dbffe945e6df23abc1d87bf4dc1394fae2fe5565108b4d9a5e5727a6706261",
+    "modules_sha256": "2a8321a8f20026268fdb4b4dbbb4756a0265c16f297b54b2536c9af571ac3300"
+  },
+  "direct_cli": {
+    "original_nine": "9/9 normal, exact stdout/stderr/exit against frozen native; raw direct-model/summary.json",
+    "public_byref_return": "1/1 normal and exact: method reference result remains writable through outer by-reference call; raw boundary/byref_method_return",
+    "invalid_lookup": "2/2 final-cut normal and exact: quiet RHS R|L|E| and throwing RHS D|L|E|Exception|d|; raw final-invalid/ and boundary/",
+    "total_exact": 12
+  },
+  "rejected_pre_fix": "boundary/invalid_owned_lookup/changed.stdout preserves the earlier L|R|E| model mismatch with zero credit; only final-invalid/invalid_owned_lookup/stdout records the corrected R|L|E| agreement.",
+  "request_profile_source": "Separate explicit-request comparisons: nine original sources together, then byref return, quiet invalid lookup and throwing invalid lookup each targeted; all 12 pass. Raw source-request-* reports retain distinct fingerprints and requests.",
+  "reached_protocol": "4 stages, 69 assertions: selected receiver after RHS retirement, historical result after receiver retirement, forged result/invalid task on literal-string RHS, and RHS-before-left invalid lookup with site/line negatives",
+  "focused_compatibility": "Existing dynamic-arrow source exact; existing pipe protocol 5 stages/89 assertions pass. Optimized-multiline-missing reaches a preexisting PSTRING_CARRIER RHS gap and interpreter-fails on clean 185eb4c96 and current no-CALL112 master; zero credit.",
+  "commands": [
+    "./scripts/opam-exec.sh dune build --root . -j 1",
+    "bin/php-semantics SOURCE --steps 100000 --timeout 90",
+    "python3 tests/semantics/pipe_array.py",
+    "python3 tests/semantics/pipe_array_protocol.py",
+    "python3 tests/semantics/pipe.py --match dynamic-arrow",
+    "python3 tests/semantics/pipe_protocol.py"
+  ],
+  "boundary": "Scoped, magic, autoloaded and internal method selectors remain open. The paused invalid-lookup task authenticates pipe site and lookup line; its saved error bytes and held left value are historical task data, not reconstructed from mutable RHS history.",
+  "raw_archive": "/home/user/workspace/php-spec-evidence-archive/call112-pipe-array-112",
+  "selected_archive_manifest_sha256": "38db8a6dc2fad3375379954e3a06bf87e65070f976dae430b340bb30f124ab93",
+  "recovery": "Use tested_code_revision and the pinned PHP/profile commands in native/*.command.json; source-request-*/inputs.json records omitted duplicate original-input snapshots. All raw outputs, stderr, status, checked source reports and selected hashes are outside Git."
+}
