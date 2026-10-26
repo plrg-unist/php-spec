@@ -95,7 +95,7 @@ def checks(program, path, name):
         'S_second_raw.EVENTS = S_second.EVENTS',
         '$aggregate_compare_seen(S_second_raw) = eps',
         '$drive_steps(S_second,0) = S_second[.COMPLETION = BUDGET]',
-        '$drive_steps(S_second,1) = $prune_allocations(S_second_raw)[.COMPLETION = BUDGET]',
+        '$drive_steps(S_second,1) = $literal_reference_debt_step(S_second,$sensitive_trace_freeze($source_exception_transition(S_second,$throwable_transition(S_second,S_second_raw))))[.COMPLETION = BUDGET]',
         'S_done = $drive_steps(S_second_raw,1000)',
         r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps',
         '$tck_output(S_done.EVENTS) = $ptascii("B|1|A|1|")',
