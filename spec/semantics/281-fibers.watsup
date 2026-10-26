@@ -81,8 +81,8 @@ def $fiber_generator_body_id(S) = (pgeneratorop.OBJECT)
   -- if S.CURRENT = (pcallcontext)
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask_tail*
-  -- if pgeneratorop.NAME <- ["current", "next"] /\ ~pgeneratorop.ADVANCE
-  -- if pgeneratorop.LOOP = eps /\ pgeneratorop.ARGUMENTS = eps
+  -- if ((pgeneratorop.NAME <- ["current", "next"] /\ pgeneratorop.ARGUMENTS = eps) \/ (pgeneratorop.NAME = "send" /\ |pgeneratorop.ARGUMENTS| = 1)) /\ ~pgeneratorop.ADVANCE
+  -- if pgeneratorop.LOOP = eps
   -- if ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.FRAME = eps /\ pgenerator.DELEGATE = eps /\ pgenerator.PARKED = eps
