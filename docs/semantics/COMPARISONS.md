@@ -586,6 +586,20 @@ an array-valued reference reachable from captured args. Object leaves, cycles,
 warm caches and wider [array-cell traces](../../coverage/semantics/throwable-trace-array-cell-comparison-review.json)
 remain Unsupported.
 
+Canonical cold `Exception`/`Error` traces now admit a captured direct `stdClass`
+argument at any matching frame/argument position, including inside a finite
+direct array. Both trace graphs must have matching keys and object/object leaf
+positions; each live `stdClass` has direct primitive, valid string-carrier or
+finite direct-array property values. The model's physical Throwable slot walk
+materializes an object table
+only when comparison reaches that object. Later comparisons read its current
+table after property writes, while a separate source array keeps its COW
+snapshot. Property count, key and nested value order use the ordinary object
+handler. This normal, nonpending same-kind bound requires null previous links
+and empty caches; object/scalar pairs that emit a Notice, reference/object
+property values, cycles and wider callback graphs remain Unsupported.
+[StdClass trace review](../../coverage/semantics/throwable-trace-stdclass-comparison-review.json).
+
 Warm caches and nonempty builtin traces now meet in the same physical slot
 scan. Same-kind canonical `Exception`/`Error` pairs with null previous values
 admit finite `DIRECT` trace graphs containing primitive or valid string-carrier
