@@ -583,13 +583,18 @@ def $trace_object_graph(S, n_trace) = false -- otherwise
 ;; Compare paired positions only after both full graphs have been checked.
 ;; Count and absent-key decisions stop before any later property value.
 dec $trace_object_current_entries(pstate, nat) : pentry*
+dec $trace_object_inline_entries(nat, ppropertyslot*) : pentry*
+def $trace_object_inline_entries(n, eps) = eps
+def $trace_object_inline_entries(n, ppropertyslot :: ppropertyslot_tail*) = (ENTRY (KSTRING ppropertyslot.NAME) (INDIRECT n ppropertyslot.NAME)) :: $trace_object_inline_entries(n, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL =/= eps
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
 def $trace_object_current_entries(S, n) = S.ARRAYS[n_table].ITEMS
   -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
 def $trace_object_current_entries(S, n) = $property_entries(pobjectprops.SLOTS)
   -- if S.OBJECTS[n] = STDINSTANCE
   -- if $object_table_at(S.OBJECTTABLES, n) = eps
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
-def $trace_object_current_entries(S, n) = $object_table_ordinary_entries(n, pobjectprops.SLOTS)
+def $trace_object_current_entries(S, n) = $trace_object_inline_entries(n, pobjectprops.SLOTS)
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $object_table_at(S.OBJECTTABLES, n) = eps
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
