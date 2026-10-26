@@ -103,7 +103,7 @@ def checks(program, path, name):
         'S_pre.STORE[n_hold_cell] = DEFINED ' + ('(POBJECT n_object)' if retained else 'PNULL'),
         '$heap_owners($heap_graph(S_pre),HOBJECT n_object) = ' + first,
         'n_iterator = S_pre.NEXTITER',
-        'pconfigiterator_initial = {CALL pconfigcall,ITERATOR n_iterator,OBJECT n_object,INPUT S_pre.RESULT,ITEMS eps,CURRENT (KNOWN PNULL),KEY (KNOWN PNULL)}',
+        'pconfigiterator_initial = {CALL pconfigcall,ITERATOR n_iterator,OBJECT n_object,INPUT S_pre.RESULT,PRODUCER eps,ITEMS eps,CURRENT (KNOWN PNULL),KEY (KNOWN PNULL)}',
         '$config_iterator_input(S_pre,pconfigiterator_initial)',
         '$config_iterator_start(S_pre,pconfigcall,S_pre.RESULT,n_object)',
         '$config_iterator_owning_input(pconfigiterator_initial)',
