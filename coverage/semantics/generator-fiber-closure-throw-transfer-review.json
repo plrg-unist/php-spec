@@ -1,6 +1,6 @@
 {
   "milestone": "Iterator64 primed unbound Closure-created Generator::throw Fiber transfer",
-  "target": "PHP 8.5.10 CLI NTS signed64; project-local PHP SHA256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json; LC_ALL=C; TZ=UTC; exclusive CPU5",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local PHP SHA256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json; LC_ALL=C; TZ=UTC; exclusive CPU5; exclusive CPU1 for actual-tail joined strict424",
   "parent": "7d0f97483a30d4c4a5bc327765f73b1c9cfc8c82",
   "private_implementation_commit": "4ea47ae1467bfb6c72cf107af3a7ff9746a85886",
   "scope": "One primed, by-value, non-BYREF Generator::throw with a defined cache and one valid Throwable enters the Fiber transfer domain when its callee is a plain unbound, live REALCLOSURE with matching CLOSURE_TARGET, INSTANCE and no receiver. Existing saved resumer, capture, owner and source validation remain in force.",
@@ -141,8 +141,28 @@
   "evidence_manifest": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-closure-throw-transfer-64/manifest.json",
   "evidence_manifest_sha256": "2055fdcc73bca6e41ba061fca5105365c2057a9d7f294580a70a741691987245",
   "recovery": "Extract raw.tar.gz at a reconstructed private I64 worktree root. Original report paths remain historical; catalog embeds exact source bytes.",
-  "independent_review": "Private semantic packet and independent cache-replacement source are CLEAR; docs/inventory and exact-tail composition will receive separate review before publication.",
+  "independent_review": "Private semantic/docs and prestrict actual-tail seam received independent CLEAR. Joined strict424 passed at the tested candidate; final publication verdict will be recorded before guarded fast-forward.",
   "actual_tail": {
-    "status": "private"
-  }
+    "parent": "c901290da4a93e599a8cfa71a471449a79a084a2",
+    "tested_candidate": "a1fc800e29451a8e2547fd55303b884f2dacdfdc",
+    "composition": "Incoming 123/146/152/163/210/30/382/400/404/420/427/433/435 selectors do not run in the six I64 originals: no pipe, print, loose Throwable comparison/trace read, hooks, HALT or traversable unpack. Added 30 task/target grammar and module435 compile together at the joined candidate; no source/state evidence is renewed.",
+    "joined_strict": {
+      "report_archive_member": ".tools/i64-joined/strict-mg1wi8u4/report.json",
+      "report_sha256": "fc0018de4e13a508e04e0792a364a04693c67d0f258722bf88279836c220ade1",
+      "modules": 424,
+      "exit": 0,
+      "timeout": false,
+      "stderr_bytes": 0,
+      "head_stable": true,
+      "inputs_stable": true
+    }
+  },
+  "joined_archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-closure-throw-transfer-64/joined-strict.tar.gz",
+    "bytes": 1895095,
+    "sha256": "8509bd9e470ba15ea67d1686144f13fdbb134eb2ff713644c2a317ba870e6641",
+    "file_members": 4
+  },
+  "joined_manifest": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-closure-throw-transfer-64/joined-manifest.json",
+  "joined_manifest_sha256": "b3ef236ef48e35fe7b959d0817e3bd113c674341f3d735312c03b47ad4b6c1f6"
 }
