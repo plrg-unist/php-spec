@@ -60,7 +60,7 @@ def conditions(name, program, path, stdout):
     throwing = name.endswith('pending-throw')
     echo = name.startswith('echo-')
     nan = name.startswith('print-nan-')
-    warning = 'pnan' if nan else ('pecho' if echo else 'pprint')
+    warning = 'pprintnanwarning' if nan else ('pechoarraywarning' if echo else 'pprintarraywarning')
     plan = '$print_nan_plan' if nan else ('$echo_array_plan' if echo else '$print_array_plan')
     valid = '$print_nan_valid' if nan else ('$echo_array_valid' if echo else '$print_array_valid')
     source = '$print_nan_source' if nan else ('$echo_array_source' if echo else '$print_array_source')
@@ -154,12 +154,12 @@ def conditions(name, program, path, stdout):
         seek('S_throw', 'S_dispatch', 5)
         checks += [
             'S_throw.TODO = (THROW_SEARCH n_exception) :: ptask_throw_tail*',
-            'S_throw.OUTPUTBUFFERS = pbuffer_throw :: eps',
+            'S_throw.OUTPUTBUFFERS = poutputbuffer_throw :: eps',
             f'S_throw.OUTPUTSEQ = $({warning}.BUFFERSEQ + 1)',
-            f'pbuffer_throw.ID = {warning}.BUFFERSEQ',
-            'pbuffer_throw.HANDLER = eps', 'pbuffer_throw.CHUNK = 0',
-            'pbuffer_throw.FLAGS = 112',
-            'pbuffer_throw.BYTES = $ptascii("I;Array")',
+            f'poutputbuffer_throw.ID = {warning}.BUFFERSEQ',
+            'poutputbuffer_throw.HANDLER = eps', 'poutputbuffer_throw.CHUNK = 0',
+            'poutputbuffer_throw.FLAGS = 112',
+            'poutputbuffer_throw.BYTES = $ptascii("I;Array")',
             '$output_state_valid(S_throw)',
             f'$warning_output_buffer(S_throw, {warning}.BUFFERSEQ)',
             '$lookup(S_throw.ENV, $ptascii("a")) = eps',
@@ -172,15 +172,15 @@ def conditions(name, program, path, stdout):
             '$throwable_previous_id(S_throw, n_exception) = eps',
             '$throwable_field(S_throw, n_exception, "line") = PINT 20',
             f'$integer_outputs(S_throw.EVENTS) = ($ptascii("{output}"))',
-            f'S_before_write = S_throw[.ORIGIN = ({warning}.SITE)][.OUTPUTBUFFERS = (pbuffer_throw[.BYTES = $ptascii("I;")]) :: eps]',
+            f'S_before_write = S_throw[.ORIGIN = ({warning}.SITE)][.OUTPUTBUFFERS = (poutputbuffer_throw[.BYTES = $ptascii("I;")]) :: eps]',
             f'{valid}(S_before_write, {warning}, 1)',
             f'S_after_write = $error_read_discard(S_before_write, {task} {warning} 1)',
-            'S_after_write.OUTPUTBUFFERS = pbuffer_after :: eps',
-            'pbuffer_after.BYTES = $ptascii("I;Array")',
+            'S_after_write.OUTPUTBUFFERS = poutputbuffer_after :: eps',
+            'poutputbuffer_after.BYTES = $ptascii("I;Array")',
             'S_after_write.TODO = S_before_write.TODO',
             'S_after_write.STORE = S_before_write.STORE',
             'S_after_write.EVENTS = S_before_write.EVENTS',
-            f'S_invalid_throw = S_before_write[.OUTPUTBUFFERS = (pbuffer_throw[.CHUNK = 8][.BYTES = $ptascii("I;")]) :: eps]',
+            f'S_invalid_throw = S_before_write[.OUTPUTBUFFERS = (poutputbuffer_throw[.CHUNK = 8][.BYTES = $ptascii("I;")]) :: eps]',
             '$output_state_valid(S_invalid_throw)',
             f'~$warning_output_buffer(S_invalid_throw, {warning}.BUFFERSEQ)',
             f'S_refused_throw = $error_read_discard(S_invalid_throw, {task} {warning} 1)',
@@ -194,12 +194,12 @@ def conditions(name, program, path, stdout):
         seek('S_return', 'S_dispatch', 3)
         checks += [
             f'S_return.TODO = ({task} {warning} 1) :: ptask_return_tail*',
-            'S_return.OUTPUTBUFFERS = pbuffer_return :: eps',
+            'S_return.OUTPUTBUFFERS = poutputbuffer_return :: eps',
             f'S_return.OUTPUTSEQ = $({warning}.BUFFERSEQ + 1)',
-            f'pbuffer_return.ID = {warning}.BUFFERSEQ',
-            'pbuffer_return.HANDLER = eps', 'pbuffer_return.CHUNK = 0',
-            'pbuffer_return.FLAGS = 112',
-            'pbuffer_return.BYTES = $ptascii("I;")',
+            f'poutputbuffer_return.ID = {warning}.BUFFERSEQ',
+            'poutputbuffer_return.HANDLER = eps', 'poutputbuffer_return.CHUNK = 0',
+            'poutputbuffer_return.FLAGS = 112',
+            'poutputbuffer_return.BYTES = $ptascii("I;")',
             '$output_state_valid(S_return)',
             f'$warning_output_buffer(S_return, {warning}.BUFFERSEQ)',
             f'{valid}(S_return, {warning}, 1)',
@@ -227,15 +227,15 @@ def conditions(name, program, path, stdout):
                        '~((HARRAY n_array) <- S_return.ALLOCATIONS)']
         seek('S_cached', 'S_return', 4)
         checks += [
-            'S_cached.OUTPUTBUFFERS = pbuffer_cached :: eps',
-            'pbuffer_cached.BYTES = $ptascii("I;")',
+            'S_cached.OUTPUTBUFFERS = poutputbuffer_cached :: eps',
+            'poutputbuffer_cached.BYTES = $ptascii("I;")',
             f'$integer_outputs(S_cached.EVENTS) = ($ptascii("{output}"))',
             '$call_descriptors_valid(S_cached)', '$heap_valid($heap_graph(S_cached))',
         ]
         step('S_written', 'S_cached')
         checks += [
-            'S_written.OUTPUTBUFFERS = pbuffer_written :: eps',
-            f'pbuffer_written.BYTES = $ptascii("I;{cached}")',
+            'S_written.OUTPUTBUFFERS = poutputbuffer_written :: eps',
+            f'poutputbuffer_written.BYTES = $ptascii("I;{cached}")',
             f'$integer_outputs(S_written.EVENTS) = ($ptascii("{output}"))',
             'S_written.STORE[n_later] = DEFINED (PINT 0)',
             '$call_descriptors_valid(S_written)', '$heap_valid($heap_graph(S_written))',
