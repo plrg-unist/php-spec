@@ -30,6 +30,8 @@ def $review_stage(S, 1) = true
   -- if S.TODO = (PIPE_ARRAY_RESULT (METHOD_TARGET n_receiver porigin_method) parrayselection) :: ptask*
 def $review_stage(S, 2) = true
   -- if S.TODO = (PIPE_APPLY porigin (KNOWN (PINT 5)) z_send z_call) :: ptask*
+def $review_stage(S, 3) = true
+  -- if S.TODO = (PIPE_ARRAY_INVALID (POBJECT n_left) porigin_site ptbytes z_lookup) :: ptask*
 def $review_stage(S, n) = false -- otherwise
 dec $review_seek(pstate, nat, nat) : pstate
 def $review_seek(S, n_stage, n_left) = S -- if $review_stage(S, n_stage)
@@ -132,6 +134,25 @@ run_case('nonarray-right', 2, [
     '$effective_method(S, porigin_class, $ptascii("run"), |S.CLASSES|) = (pmethoddesc)',
     'parrayselection = {SITE porigin, INIT $pipe_lookup_line(S, porigin), LINE z_call, REQUESTED porigin_class, NAME $ptascii("run")}',
     '~$call_task_valid(S, PIPE_ARRAY_RESULT (METHOD_TARGET 0 pmethoddesc.FUNCTION.ORIGIN) parrayselection)',
+    '~$call_task_valid(S, PIPE_ARRAY_INVALID (PINT 5) porigin $ptascii("bad") $pipe_lookup_line(S, porigin))',
+])
+run_case('invalid_owned_lookup', 3, [
+    'S.TODO = (PIPE_ARRAY_INVALID (POBJECT n_left) porigin_site ptbytes z_lookup) :: ptask_tail*',
+    '$call_descriptors_valid(S)', '$heap_valid($heap_graph(S))',
+    '$call_task_valid(S, PIPE_ARRAY_INVALID (POBJECT n_left) porigin_site ptbytes z_lookup)',
+    '$task_nodes(PIPE_ARRAY_INVALID (POBJECT n_left) porigin_site ptbytes z_lookup) = [HOBJECT n_left]',
+    'S.ARRAYS[0] = parray_rhs',
+    '$entry_lookup(parray_rhs.ITEMS, KINT 0) = (pitem_receiver)',
+    '$entry_value(S, pitem_receiver) = POBJECT n_receiver',
+    'n_left =/= n_receiver',
+    '(HOBJECT n_left) <- S.ALLOCATIONS',
+    '~((HOBJECT n_receiver) <- S.ALLOCATIONS)',
+    '~((HARRAY 0) <- S.ALLOCATIONS)',
+    '$outputs(S.EVENTS) = $ptascii("R|")',
+    '~$call_task_valid(S, PIPE_ARRAY_INVALID (POBJECT n_left) (PORIGIN 999 eps) ptbytes z_lookup)',
+    '~$call_task_valid(S, PIPE_ARRAY_INVALID (POBJECT n_left) porigin_site ptbytes $(z_lookup + 1))',
+    'S_done = $drive(S, 2000)', 'S_done.COMPLETION = NORMAL',
+    '$outputs(S_done.EVENTS) = $ptascii("R|L|E|")',
 ])
 assert FINGERPRINT == request.t.syntax_validation.implementation_fingerprint()
-print('PASS pipe array protocol: 3 reached stages', OUTPUT, flush=True)
+print('PASS pipe array protocol: 4 reached stages', OUTPUT, flush=True)

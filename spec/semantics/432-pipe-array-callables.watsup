@@ -11,7 +11,7 @@ def $pipe_array_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, p
   -- if parrayselection = {SITE porigin_site, INIT z_lookup, LINE z_call, REQUESTED porigin_requested, NAME ptbytes}
 def $pipe_array_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED "scoped pipe array callable"]
   -- if ~$pipe_array_plain(pcalltarget)
-def $pipe_array_result(S, ARRAYINVALID ptbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = $throw_scalar(S[.RESULT = KNOWN PNULL], "Error", ptbytes, z_lookup)
+def $pipe_array_result(S, ARRAYINVALID ptbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.TODO = (PIPE_ARRAY_INVALID pvalue_left porigin_site ptbytes z_lookup) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 def $pipe_array_result(S, ARRAYUNKNOWN text, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED text]
 def $pipe_array_value(S, n, pvalue_left, porigin, z_send, z_lookup, z_call) = $pipe_array_result(S, $array_resolve(S, n, ARRAY_DISPATCH), pvalue_left, porigin, z_send, z_lookup, z_call)
 
@@ -27,6 +27,22 @@ def $pipe_array_send_valid(S, ARRAY_METHOD_TARGET pcalltarget parrayselection, p
   -- if $array_target_identity(S, pcalltarget, parrayselection)
 def $pipe_array_send_valid(S, pcalltarget, parrayselection, pvalue_left, z_send, z_call) = false -- otherwise
 def $call_task_valid(S, PIPE_ARRAY_SEND pcalltarget parrayselection pvalue_left z_send z_call) = $pipe_array_send_valid(S, pcalltarget, parrayselection, pvalue_left, z_send, z_call)
+
+;; A failed lookup first retires the RHS array while the forced left survives.
+;; Its already-selected error bytes remain fixed across a destructor callback.
+def $task_nodes(PIPE_ARRAY_INVALID pvalue_left porigin_site ptbytes z_lookup) = $value_nodes(pvalue_left)
+dec $pipe_array_invalid_valid(pstate, porigin, int) : bool
+def $pipe_array_invalid_valid(S, porigin_site, z_lookup) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if ~$pppipe_optimized(expression_right)
+  -- if ~$pipe_rhs_known_nonarray(expression_right)
+  -- if z_lookup = $pipe_lookup_line(S, porigin_site)
+def $pipe_array_invalid_valid(S, porigin_site, z_lookup) = false -- otherwise
+def $call_task_valid(S, PIPE_ARRAY_INVALID pvalue_left porigin_site ptbytes z_lookup) = $pipe_array_invalid_valid(S, porigin_site, z_lookup)
+rule PhpStep/pipe-array-invalid: S ~> $throw_scalar(S[.TODO = ptask_tail*], "Error", ptbytes, z_lookup)
+  -- if S.TODO = (PIPE_ARRAY_INVALID pvalue_left porigin_site ptbytes z_lookup) :: ptask_tail*
+  -- if $call_task_valid(S, PIPE_ARRAY_INVALID pvalue_left porigin_site ptbytes z_lookup)
 
 rule PhpStep/pipe-array-send: S ~> $pipe_start($hold_task_inputs(S)[.TODO = (PIPE_ARRAY_RESULT pcalltarget_raw parrayselection) :: ptask_tail*], pcalltarget, pvalue_left, parrayselection.SITE, z_send, z_call)[.HELD = S.HELD]
   -- if S.TODO = (PIPE_ARRAY_SEND pcalltarget parrayselection pvalue_left z_send z_call) :: ptask_tail*

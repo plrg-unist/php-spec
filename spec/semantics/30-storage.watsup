@@ -532,7 +532,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | SCOPED_CLASS phpType19 phpType20 phpType7* int | SCOPED_NAME phpType19 poperand phpType7* int
   | DYNAMIC_NEW_CLASS int int | DYNAMIC_NEW_START pdynamicnew | DYNAMIC_NEW_FINISH pdynamicnew
   | NOCTOR_ARGS pnoctorcall | NOCTOR_SEND pnoctorcall | NOCTOR_UNPACK_PREP pnoctorcall | NOCTOR_UNPACK_NEXT pnoctorcall poperand nat
-  | PIPE_FORCE porigin int int int | PIPE_APPLY porigin poperand int int | PIPE_ARRAY_SEND pcalltarget parrayselection pvalue int int | PIPE_ARRAY_RESULT pcalltarget parrayselection
+  | PIPE_FORCE porigin int int int | PIPE_APPLY porigin poperand int int | PIPE_ARRAY_SEND pcalltarget parrayselection pvalue int int | PIPE_ARRAY_RESULT pcalltarget parrayselection | PIPE_ARRAY_INVALID pvalue porigin ptbytes int
   | SWITCH_START statement porigin | SWITCH_SCAN statement porigin poperand nat | SWITCH_COMPARE statement porigin poperand nat int | SWITCH_NEXT statement porigin poperand | SWITCH_REPLAY_END porigin | SWITCH_REPLAY_PHASE porigin | RETIRED_SWITCH_END pretiredowner | RETIRED_FOREACH_NEXT pretiredowner | RETIRED_OWNER_PHASE pretiredowner
   | INSTANCEOF_RESULT int
   | INSTANCEOF_DYNAMIC_LEFT int | INSTANCEOF_DYNAMIC_CLASS poperand int | INSTANCEOF_DYNAMIC_RESULT poperand pvalue int
