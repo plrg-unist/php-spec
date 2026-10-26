@@ -112,10 +112,8 @@ def assertions(initial, target, dependency, kind, stdout):
     checks += ['pclassdesc_list = pclassdesc_target[.INTERFACES = pclassdesc_target.INTERFACES ++ [$ptascii("OtherInterface")]]',
         'S_list = S_decl[.CLASSES = $test_iface_replace(S_decl.CLASSES,pclassdesc_list)]',
         '$autoload_interface_pending(S_list,pclassdesc_list)',
-        '~$autoload_interface_source(S_list,porigin_target,pclassdesc_dependency.NAME)',
-        'S_list_result = $activate_class(S_list,pclassdesc_list)',
-        'S_list_result.COMPLETION = UNSUPPORTED "interface autoload declaration source domain"',
-        'S_list_result = S_list[.COMPLETION = UNSUPPORTED "interface autoload declaration source domain"]',
+        '$autoload_interface_source(S_list,porigin_target,pclassdesc_dependency.NAME)',
+        '~$autoload_interface_source(S_list,porigin_target,$ptascii("OtherInterface"))',
         'pclassdesc_internal = pclassdesc_target[.NAME = $ptascii("Exception")]',
         'S_internal = S_decl[.CLASSES = $test_iface_replace(S_decl.CLASSES,pclassdesc_internal)]',
         '~$autoload_interface_source(S_internal,porigin_target,pclassdesc_dependency.NAME)']

@@ -1053,6 +1053,7 @@ def $autoload_snapshot(S, pconfigcall, pcalltarget) = $shutdown_snapshot(S, $err
 ;; missing-interface Error for a source shape not yet admitted here.
 dec $autoload_interface_missing(pstate, preqbytes*) : preqbytes?
 dec $autoload_interface_kind(pcnode?) : text?
+dec $autoload_interface_prefix_known(pstate, preqbytes*, preqbytes) : bool
 dec $autoload_interface_source(pstate, porigin, preqbytes) : bool
 
 def $autoload_interface_missing(S, eps) = eps
@@ -1064,11 +1065,19 @@ def $autoload_interface_kind((NStmtClass phpType14 phpType24 phpType3 phpType44 
 def $autoload_interface_kind((NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata)) = ("interface")
 def $autoload_interface_kind(pcnode?) = eps -- otherwise
 
+def $autoload_interface_prefix_known(S, eps, preqbytes_target) = false
+def $autoload_interface_prefix_known(S, preqbytes_first :: preqbytes_tail*, preqbytes_target) = true
+  -- if preqbytes_first = preqbytes_target
+def $autoload_interface_prefix_known(S, preqbytes_first :: preqbytes_tail*, preqbytes_target) = $autoload_interface_prefix_known(S, preqbytes_tail*, preqbytes_target)
+  -- if preqbytes_first =/= preqbytes_target
+  -- if $dynamic_new_known(S, preqbytes_first)
+def $autoload_interface_prefix_known(S, preqbytes_names*, preqbytes_target) = false -- otherwise
+
 def $autoload_interface_source(S, porigin, preqbytes) = true
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $autoload_interface_kind($origin_node(S.SOURCES, porigin)) = (pclassdesc.KIND)
-  -- if pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = [preqbytes]
+  -- if pclassdesc.PARENT = eps /\ $autoload_interface_prefix_known(S, pclassdesc.INTERFACES, preqbytes)
   -- if $trait_plan(S, pclassdesc).TRAITS = eps
 def $autoload_interface_source(S, porigin, preqbytes) = false -- otherwise
 
