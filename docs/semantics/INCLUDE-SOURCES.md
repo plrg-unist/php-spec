@@ -1542,8 +1542,26 @@ before catch. WeakReference observations, cached current despite a key callback
 changing its source variable, result/configuration and setter recovery agree
 with PHP 8.5.10 in two frozen originals. Source-reached checks cover the normal
 and abrupt owner transitions, retired ready state, and missing/wrong receipts.
-The existing retained Aggregate and CV-rebinding paths remain exact. A fresh
-Aggregate Iterator with an invalid bool key remains explicit Unsupported after
-its key callback; owning/effectful finalizers, child roots and wider keys remain
+The existing retained Aggregate and CV-rebinding paths remain exact. At this
+cut, a fresh Aggregate Iterator with an invalid bool key was Unsupported after
+its key callback; owning/effectful finalizers, child roots and wider keys were
 open. The three unchanged original baselines were Unsupported with zero source
 agreement.
+
+The [fresh Aggregate invalid-key increment](../../coverage/semantics/config-aggregate-fresh-invalid-key-review.json)
+recognizes NULL, bool and float keys from that receipt-backed, sole-DATA user
+Iterator when its Aggregate producer remains live. `current()` stays cached;
+`key()` completes, then `SEND_UNPACK` raises the Error at the call site before
+binding the invalid item, calling `next()` or entering `ini_set`. Throw cleanup
+retires DATA and clears its WeakReference before catch. Three frozen originals
+agree with PHP across first and second keys, including an Aggregate CV rebind
+while another variable holds the producer. A stable sole-CV Aggregate also
+agrees, and the formerly Unsupported Source109 invalid-bool original now agrees;
+the prior Unsupported observation keeps its original zero credit. Two fresh
+named-key controls and four adjacent older paths remain exact. Three
+source-reached fixtures pass 404 premises and six raw promotion/Error steps.
+The existing receipt validator checks live structural identity, not an
+unforgeable historical return witness. If a sole Aggregate CV is rebound and
+the producer dies during iteration, the measured model currently reports an
+interpreter failure; that native-normal case has zero agreement. Effectful
+finalizers, child roots, wider keys and producer lifetimes remain partial.

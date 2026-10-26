@@ -1,0 +1,49 @@
+{
+  "scope": "Source111: a fresh initialized user Iterator returned by an ordinary borrowed-CV IteratorAggregate getter has sole quiet CONFIG DATA ownership and a live producer receipt. NULL, bool and float key() results raise the native unpack Error after current() and before send/next/API; DATA dies before catch.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+    "source_symbols": [
+      "Zend/zend_vm_def.h:ZEND_SEND_UNPACK",
+      "Zend/zend_interfaces.c:zend_user_it_get_new_iterator/zend_user_it_get_iterator/zend_user_it_dtor"
+    ]
+  },
+  "cuts": {
+    "frozen_native_and_unchanged_baseline": "709ca268cdafe87a116c227cba23a3a68bf11fc3: six distinct originals run natively at pinned CLI with exit0 and empty stderr. Three held invalid-key cases stop at genuine unchanged-model Unsupported after key(), with zero source agreement. Two fresh named forward/duplicate controls already agree. An unheld Aggregate CV rebind has native normal completion but unchanged-model interpreter_failure, not Unsupported; it has zero agreement. The prior Source109 invalid-bool Unsupported report retains its original zero credit.",
+    "implementation": "16d80886e33f41613dad3b4410e3537a7e0ccab9: 424-module strict SL passes. Three Source111 held invalid-key originals agree exactly, as do both already-agree named controls. A separate stable live but unheld Aggregate first-NULL original matches independent frozen native bytes and agrees. The exact former Source109 invalid-bool original also agrees after the rule; its earlier Unsupported classification is retired at this cut.",
+    "reached": "Three checked-source fixtures pass 134+135+135=404 premises, with Aggregate promotion and raw Error PhpSteps in each plus budget resumption. They authenticate actual Aggregate return/producer receipt, sole Iterator DATA owner, cached current, first versus second invalid key, Aggregate CV rebinding while externally held, Error message and line33 before send/next/API, DATA death/WeakReference null before catch, unchanged result/configuration, and setter recovery. Missing/self receipt and wrong-site projections are rejected only under the stated helper guards; structural validation is not a proof against another live same-class forged producer identity.",
+    "affected_controls": "The unchanged Source109 normal and saved-key-Exception originals, Source104 direct-CV invalid key, and Source106 temporary-Iterator invalid key remain exact native/model. The new helper is disjoint from those old guards.",
+    "remaining": "A producer that dies when its sole Aggregate CV is rebound during iteration remains a separately measured native-normal/model-interpreter_failure boundary with zero credit. Effectful final DATA owners, object children, wider key values, producer histories and CONFIG consumers remain partial. The helper's producer guard requires liveness; a stable sole Aggregate CV can satisfy it without an external hold."
+  },
+  "input_sha256": {
+    "spec/semantics/420-config-iterator-unpack.watsup": "644ef47049d7c4b8c13be966d60e5ec2bb4d6467ca19ca2b32fd25a2bfe7747a",
+    "spec/semantics/421-config-aggregate-iterator-unpack.watsup": "57c17366286bc5d9def955996704324bce5acfb25d784e4fd64c7667f8213ca0",
+    "spec/semantics/modules.json": "de8488abd5ca58bfd455d59011ef41f48449be4699ede06af70e027075dab632",
+    "tests/semantics/config_aggregate_fresh_invalid_key_sources.py": "db8160f17e4b2ae5e425de3b52e3dc7f8a2f9d29976110e724c6292db0cd778a",
+    "tests/semantics/config_aggregate_fresh_invalid_key_model.py": "f90d964528a56b7e7855deea8268c95efbf98f0d7d2a79aedb2f1cc7db876a51",
+    "tests/semantics/config_aggregate_fresh_invalid_key_protocol.py": "27f83d96cdf176233e5dd65c7d786aef658c1b5425b229b3ed296784cf73e7c0",
+    "tests/semantics/config_aggregate_fresh_invalid_key_stable_sources.py": "57afacca63d41c33778ebcedfb23eb60ee4a6ba1b03608ab3e7b00c4953c25ea"
+  },
+  "raw_root": "../php-spec-evidence-archive/source111-aggregate-fresh-invalid-key",
+  "reports_sha256": {
+    "native-baseline/native-report.json": "e3cfa82a45f0bf1b812cf3303176eae011cd11337f290e33ae537d0b748f6de0",
+    "native-baseline/baseline-survey-report.json": "e3942590c9f69e453e93dcd2930f4486dbceacb6b6771d225cd3332dff0c6840",
+    "native-baseline/model-report.json": "5dbdfdf9786a9471f3d467f18a3332959b419982e534f8d438ed89f048fa2d24",
+    "stable-unheld/native-report.json": "e76e6c52bdbe59bbe13dc9d3c1c6680315d9a0240fb4b0f167e7d9521b72e8d8",
+    "stable-unheld/model-report.json": "fd876717f0bc4212cd691c0cf4e786d61823fde61607c1eb008f558dca3234d0",
+    "strict/report.json": "6db3ee293b0c1224237bfe1b9cf7b70a1eccc17a65a24f760ba32110e1908109",
+    "protocol/prepare-report.json": "3364f9fd741bbfc75b49c57ab3f43b5c794c39e1d59e332560eb8311ff1dc63c",
+    "protocol/check-report.json": "92e58e6dd8fa008aec02e43937a5bc0c543c5e3ca80ee5a8311598d7df0f4e6f",
+    "affected/source109/model-report.json": "8323910d47864cd42427bbfcc98c863c52309f6878f6d01380d3de557889ac4a",
+    "affected/source104/model-null-first-key-stops-before-send-report.json": "7f9737dccc6705119514d7c7c05a61ba64239ec0c335be52e80e6c505a9161e3",
+    "affected/source106/model-sole-first-null-key-retires-input-report.json": "04945231cdc6fba3a48eb6f4fd8805e82050ea29d6570ea9e57f4fc9cfd765f0",
+    "affected/source109-invalid/native-report.json": "dda81c280198041ea989f775c168ccd9b733871e396c071cb7d6101424e3fbc9",
+    "affected/source109-invalid/model-fresh-return-invalid-key-boundary-report.json": "2c25fca793d62c67992adef8c78d96e3bc57f6798669188e8137bfd4140aaeeb",
+    "CPU4-NATIVE-BASELINE-RELEASE.json": "6eb24ed3d5d015e66673c210c8b7673280429e8238c900d079300928e9e9ac0b",
+    "CPU2-TEST-RELEASE.json": "5612202292adaa79ec550fa2aa4fdb08860be81e985b899c7d417f420358b516",
+    "CPU2-SOURCE109-INVALID-RELEASE.json": "777280f3bc49d58743641c589dc2330a948aa585b2d1c5c2b55a0d6936658ca3"
+  },
+  "recovery": "Restore private commits 709ca268c..16d80886e and the external raw root. Native and unchanged baseline were recorded before the rule edit. Recheck selected held cases with config_aggregate_fresh_invalid_key_model.py and source-reached states with config_aggregate_fresh_invalid_key_protocol.py; run the stable-unheld source separately. Read the three CPU release manifests for recorded process groups. Preserve the unheld-rebound interpreter_failure and prior Source109 Unsupported as distinct zero-credit observations. No accepted historical state or native cut was silently replayed."
+}
