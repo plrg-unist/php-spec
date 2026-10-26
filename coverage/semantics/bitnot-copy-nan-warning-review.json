@@ -1,7 +1,7 @@
 {
   "milestone": "OP92 copied NaN bitwise NOT notices",
   "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle and profile",
-  "status": "author validated; independent review pending",
+  "status": "independently reviewed bounded semantics",
   "scope": "A nonreference evaluated PFLOAT NaN copy enters the existing BITNOT_NAN_WARNING continuation. Exact checked BITNOT source/operand line and immutable bits authenticate entry. The first range Warning and second precision Deprecated use existing handler, pending-Exception, complement and cleanup rules.",
   "engine": [
     "vendor/php-src/Zend/zend_compile.c:zend_compile_unary_op",
@@ -46,5 +46,12 @@
     "tests/semantics/bitnot_copy_nan_warning_cases.py": "c59c167da979f712431df87d731e29d1a725059465b677eb46aa33e037ac5fc1",
     "tests/semantics/bitnot_copy_nan_warning_protocol.py": "b037dbd3530173dc22964e7cac2e2f91c5c664e1e9097d3cb0d7954b263785ba"
   },
-  "remaining": "Copied range-only values, reference results, other evaluated producers and wider ownership/callback lifetimes remain partial. No numeric-conversion, CV NaN or finite-copy implementation is renewed; no complete BITNOT family claim."
+  "remaining": "Copied range-only values, reference results, other evaluated producers and wider ownership/callback lifetimes remain partial. No numeric-conversion, CV NaN or finite-copy implementation is renewed; no complete BITNOT family claim.",
+  "independent_review": {
+    "revision": "211deea47d8be43a8ecce2ae04ef9f37eb8c9438",
+    "semantic_revision": "60d3a53bfd9477b7ebefea5b4bcc8ebd0302b7c8",
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-92/review-independent-60d3a53bf/report.json",
+    "sha256": "954b46ccbe9048d15bc152cfaa9d427b55e9fbb696c78e8fa0118c24cca53638",
+    "result": "Two new exact native/model agreements: by-value NaN copy with returning range and precision handlers still yields int -1 from cached bits, while finite 12.5 copy remains int -13 after one Deprecated. Both process groups reaped; no timeout. Independent reviewer checked disjoint route, 241 reached conditions, ledger and metadata."
+  }
 }
