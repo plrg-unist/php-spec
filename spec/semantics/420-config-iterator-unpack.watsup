@@ -583,7 +583,8 @@ def $eager_operation_source_valid(S, pdestructionoperation) = true
 def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.SOURCE = CONFIG_ITERATOR pconfigiterator "key"
   -- if pdestructionoperation.CLEANUP = eps /\ pdestructionoperation.NOGC = eps
-  -- if pdestructionoperation.PENDING = (n_pending) /\ pdestructionoperation.COMPLETION = NORMAL
+  -- if pdestructionoperation.PENDING = (n_pending)
+  -- if pdestructionoperation.COMPLETION = NORMAL
   -- if pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)
   -- if pdestructionoperation.ORIGIN = (pconfigiterator.CALL.SITE)
   -- if S_scope = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
