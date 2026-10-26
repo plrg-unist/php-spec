@@ -30,6 +30,23 @@ echo 'F:', $a<=>$c, ':', $c<=>$a, '|';
 echo 'D:', $c<=>$d, ':', $d<=>$c, '|';
 echo 'S:', $d<=>$e, ':', $e<=>$d, '|';
 ''',
+    'named-argument-key': br'''<?php
+function named130($a, ...$rest): Exception { return new Exception('same', 7); }
+$a = named130(a: 1, extra: 2); $b = named130(a: 1, extra: 2);
+$c = named130(a: 1, extra: 3);
+echo 'B|', $a<=>$b, ':', $a<=>$c, ':', $c<=>$a, '|';
+''',
+    'empty-nonempty-trace': br'''<?php
+function trace130($x): Exception { return new Exception('same', 7); }
+$a = new Exception('same', 7); $b = trace130(1);
+echo 'B|', $a<=>$b, ':', $b<=>$a, '|';
+''',
+    'state-direct-array': br'''<?php
+function trace130($x): Exception { return new Exception('same', 7); }
+$a = trace130(1); $b = trace130(1);
+$x = [$a, 1]; $y = [$b, 3];
+echo 'B|', $a<=>$b, '|', $x<=>$y, '|';
+''',
     'object-arg-control': br'''<?php
 function trace130($x): Exception { return new Exception('same', 7); }
 $object = new stdClass;

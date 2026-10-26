@@ -110,3 +110,39 @@ def $trace_graph_valid(S, n_trace) = $trace_frames_valid(S, S.ARRAYS[n_trace].IT
   -- if $(n_trace < |S.ARRAYS|)
   -- if (HARRAY n_trace) <- S.ALLOCATIONS
 def $trace_graph_valid(S, n_trace) = false -- otherwise
+
+;; Pure comparison may descend through canonical frame/args arrays only when
+;; every captured argument is a direct scalar (no callbacks or graph cycles).
+dec $trace_compare_scalar(pvalue) : bool
+def $trace_compare_scalar(PNULL) = true
+def $trace_compare_scalar(PBOOL b) = true
+def $trace_compare_scalar(PINT z) = true
+def $trace_compare_scalar(PFLOAT n) = true
+def $trace_compare_scalar(PSTRING preqbytes) = true
+def $trace_compare_scalar(pvalue) = false -- otherwise
+dec $trace_compare_args(pentry*) : bool
+def $trace_compare_args(eps) = true
+def $trace_compare_args((ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = ($trace_compare_scalar(pvalue) /\ $trace_compare_args(pentry_tail*))
+def $trace_compare_args(pentry*) = false -- otherwise
+dec $trace_compare_frame(pstate, nat) : bool
+def $trace_compare_frame(S, n_frame) = true
+  -- if $(n_frame < |S.ARRAYS|)
+  -- if (HARRAY n_frame) <- S.ALLOCATIONS
+  -- if $entry_lookup(S.ARRAYS[n_frame].ITEMS, KSTRING $ptascii("args")) = eps
+def $trace_compare_frame(S, n_frame) = $trace_compare_args(S.ARRAYS[n_args].ITEMS)
+  -- if $(n_frame < |S.ARRAYS|)
+  -- if (HARRAY n_frame) <- S.ALLOCATIONS
+  -- if $entry_lookup(S.ARRAYS[n_frame].ITEMS, KSTRING $ptascii("args")) = (DIRECT (PARRAY n_args))
+  -- if $(n_args < |S.ARRAYS|)
+  -- if (HARRAY n_args) <- S.ALLOCATIONS
+def $trace_compare_frame(S, n_frame) = false -- otherwise
+dec $trace_compare_frames(pstate, pentry*) : bool
+def $trace_compare_frames(S, eps) = true
+def $trace_compare_frames(S, (ENTRY pkey (DIRECT (PARRAY n_frame))) :: pentry_tail*) = ($trace_compare_frame(S, n_frame) /\ $trace_compare_frames(S, pentry_tail*))
+def $trace_compare_frames(S, pentry*) = false -- otherwise
+dec $trace_compare_graph(pstate, nat) : bool
+def $trace_compare_graph(S, n_trace) = $trace_compare_frames(S, S.ARRAYS[n_trace].ITEMS)
+  -- if $(n_trace < |S.ARRAYS|)
+  -- if (HARRAY n_trace) <- S.ALLOCATIONS
+  -- if $trace_graph_valid(S, n_trace)
+def $trace_compare_graph(S, n_trace) = false -- otherwise
