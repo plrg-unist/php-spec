@@ -3933,7 +3933,12 @@ read physical backing slots without calling getters. Normal Notice handlers stil
 run real setters, including writes to a selected reference cell; inline declared
 retirement and virtual-slot omission retain their distinct behavior. Six exact
 source agreements and 427 raw focused conditions pass. New backing-hook Stringable
-continuations remain refused; array-cast and foreach hook boundaries are unchanged.
+continuations remain refused; foreach hook boundaries are unchanged.
+[No-table hook projections](coverage/semantics/hook-array-projection-review.json)
+now export raw ARRAY snapshots while preserving later inline object comparison.
+Singleton references detach, shared cells stay shared, and snapshot-held objects
+retain their final-release timing. Six source comparisons, including the cached
+control, and 286 focused recipe conditions in four groups pass.
 [Builtin stdClass numeric Notices](coverage/semantics/stdclass-numeric-comparison-review.json)
 use the same continuation with a fixed builtin class image. Restored second
 Notices retain saved 1/1.0 across stdClass/source-instance changes and late live
