@@ -1,0 +1,46 @@
+{
+  "scope": "Source115: a fresh Aggregate-returned user Iterator with sole CONFIG DATA and a public no-parameter by-value nongenerator destructor, no child roots; the sole Aggregate producer dies at first key. Normal completion, invalid second bool key, and saved second-key Exception.",
+  "target": {
+    "runtime": "PHP 8.5.10 CLI NTS 64-bit",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+    "engine_sources": [
+      "Zend/zend_interfaces.c:zend_user_it_get_new_iterator/zend_user_it_dtor",
+      "Zend/zend_vm_def.h:ZEND_SEND_UNPACK"
+    ]
+  },
+  "behavior": "The returned Iterator DATA owns the object after the quiet producer retires. Last-DATA release runs __destruct before INI_SET entry or catch, exposing D| and stamp1; a saved key Exception remains pending through retired DESTRUCTOR_OPERATION_EXIT. The live/retired historical Aggregate receipt remains nonowning.",
+  "frozen_php_sha256": {
+    "normal": "5f9b9a44ef2cf3be6588d929487783f6bf64a6e8641e836d003dee00f2856b4b",
+    "invalid": "f238ffb19da5596dbe21a5b882891549715defa081ae18772048811bb261196f",
+    "throw": "64dc22dee89c69651ce75046e1f006df88823084d7b21cacef5867636802b66d"
+  },
+  "validation": {
+    "unchanged_baseline": "Immutable 6529f689f: all three model sources exited 1 with explicit Unsupported at Aggregate return, zero agreements. Independent native originals exit 0, empty stderr, and show D| before API/catch.",
+    "candidate3": "At immutable 79265b9b7, strict SL compiles 424 modules and returns true; three source cases have byte-exact stdout/stderr/exit, no timeout or group residue, stable input/HEAD; reached normal/invalid/throw checks pass 183+169+178 premises, including original source/getter promotion, producer death, finalizer/stamp/weak lifetime and saved-Throwable retired operation-source validity.",
+    "rebase": "Private branch rebased onto master b05b1ce87 as 359a7369e; five strict-input hashes for 420, 421, modules, source and reached helper remain identical to candidate3. A focused actual-tail check remains to be recorded separately."
+  },
+  "failed_cuts": "Candidate1 normal/invalid matched, saved throw interpreter_failure; whole three-source packet false. Its first strict fixture omitted main.watsup. Diagnostic prefix checks and a first candidate2 strict binding error receive no whole-packet credit. Candidate2 repaired the saved throw in a stable one-source cut before signature guards and retired-state checks were added.",
+  "limits": "The retired Aggregate receipt is structurally forgeable by a same-class object in constructed states; source-reached checks establish genuine provenance for these originals. Destructor throw/reentrancy, child storage, wider current/key/destructor effects and other CONFIG consumers remain partial.",
+  "recovery": "Raw artifacts live under ../php-spec-evidence-archive. Generate/check sources with tests/semantics/config_aggregate_iterator_finalizer_sources.py --phase native|model --output PATH and reached states with tests/semantics/config_aggregate_iterator_finalizer_protocol.py --phase prepare|check --sources PATH --output PATH; use a CPU lease and pin parent and children.",
+  "raw_root": "../php-spec-evidence-archive",
+  "reports_sha256": {
+    "config115-iterator-finalizer-probes/CPU1-RELEASE.json": "a6324fdfdb5e23b574803f56c26e05960aad1f05365cf21c4edb45f0e94de80e",
+    "config115-iterator-finalizer-probes/native-report.json": "2e2301f7515335a553e4996f16d9e96e08bad54b06ba5868545cb67435705a41",
+    "config115-iterator-finalizer-probes/baseline-report.json": "349a4468306972b2b00395e4ea914d3c062cb5c10b60809d98064093abb02518",
+    "config115-development/candidate1/sources/model-report.json": "f9a673a8defbb70c66ba47db4c8b476e8deb53018bd9e00d0d48afbcae7f1d1f",
+    "config115-development/candidate2/sources/model-iterator-finalizer-throw-report.json": "ef3eb3e939bd1331f022a0e53a3af0418c39af09a7038718288a29e509c44d47",
+    "config115-development/candidate3/strict/report.json": "65ce80a1abba47a1ed97eb3c59ae85989bfc60cc7cb65d711ed83a47844ecc08",
+    "config115-development/candidate3/sources/native-report.json": "25077323772be80c73c8c236f821130540717678cc85fb5d053cefbb40ee9b36",
+    "config115-development/candidate3/sources/model-report.json": "fb6e70c6b848f0d45d438a433169e08da9bac5047c9abfac65fb25a1eb9207cd",
+    "config115-development/candidate3/protocol/check-report.json": "c1bd18219e99b20d000a7fc71b7046d0ab984d98582eab457baa56f62416aa0c"
+  },
+  "candidate3_input_sha256": {
+    "spec/semantics/modules.json": "de8488abd5ca58bfd455d59011ef41f48449be4699ede06af70e027075dab632",
+    "spec/semantics/420-config-iterator-unpack.watsup": "f1e68c0a7c354b52ab55d97754f2a00db6db84c6576f24ca53cdd51a5f688f2d",
+    "spec/semantics/421-config-aggregate-iterator-unpack.watsup": "42fabd8a0d7ea87d4a0bafc587dcee7e909b6ed930eb70f0d50ab5bd7b74d53d",
+    "tests/semantics/config_aggregate_iterator_finalizer_sources.py": "c54e5d95a26dc766ace7f80429f9fe6fc6d78f54ba416bebf0956646f93f4180",
+    "tests/semantics/config_aggregate_iterator_finalizer_protocol.py": "446beb182abf526b74935e123e45a8097ab37692cdc1a13cd2bd7df3623161ee"
+  }
+}
