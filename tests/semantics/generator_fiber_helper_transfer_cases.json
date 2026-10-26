@@ -1,0 +1,16 @@
+[
+  {
+    "id": "generator-fiber-helper-one-current",
+    "source": "<?php\nclass HelperToken54 {\n    public function __destruct() { echo 'D|'; }\n}\nfunction Pause54($token) {\n    echo 'H|';\n    $received = Fiber::suspend('pause54');\n    echo 'R|';\n    return $received;\n}\nfunction Work54($token) {\n    echo 'G|';\n    $received = Pause54($token);\n    echo 'VALUE|', (int) ($received === 'sent54'), '|';\n    yield 'cache54';\n    echo 'AFTER|';\n    return 54;\n}\n$token = new HelperToken54();\n$weak = WeakReference::create($token);\n$g = Work54($token);\nunset($token);\n$f = new Fiber(function () {\n    global $g;\n    echo 'F|';\n    echo 'CURRENT|', (int) ($g->current() === 'cache54'), '|';\n    echo 'CALLER|';\n    return 'fiber54';\n});\necho 'START|', (int) ($f->start() === 'pause54'), '|';\necho 'PARKED|', (int) $f->isSuspended(), '|', (int) ($weak->get() !== null), '|';\necho 'RESUME|', (int) ($f->resume('sent54') === null), '|';\necho 'FIBER|', (int) $f->isTerminated(), '|', (int) ($f->getReturn() === 'fiber54'), '|';\necho 'CACHE|', (int) ($g->current() === 'cache54'), '|', (int) ($weak->get() !== null), '|';\n$g->next();\necho 'RETURN|', (int) ($g->getReturn() === 54), '|', (int) ($weak->get() === null), '|';\nunset($g, $f, $weak);\necho 'E';\n",
+    "source_sha256": "85757e3a72f754d31b79753ec75ed01da6c192fba1b28007a6f02fe864da6929",
+    "native_exit": 0,
+    "native_stderr": ""
+  },
+  {
+    "id": "generator-fiber-helper-two-next",
+    "source": "<?php\nclass HelperToken54 {\n    public function __destruct() { echo 'D|'; }\n}\nfunction Pause54($token) {\n    echo 'H|';\n    $received = Fiber::suspend('pause54');\n    echo 'R|';\n    return $received;\n}\nfunction OuterPause54($token) {\n    echo 'O|';\n    return Pause54($token);\n}\nfunction Work54($token) {\n    echo 'G|';\n    yield 'first54';\n    $received = OuterPause54($token);\n    echo 'VALUE|', (int) ($received === 'sent54'), '|';\n    yield 'cache54';\n    echo 'AFTER|';\n    return 54;\n}\n$token = new HelperToken54();\n$weak = WeakReference::create($token);\n$g = Work54($token);\nunset($token);\n$g->rewind();\n$f = new Fiber(function () {\n    global $g;\n    echo 'F|';\n    echo 'NEXT|', (int) ($g->next() === null), '|';\n    echo 'CURRENT|', (int) ($g->current() === 'cache54'), '|';\n    echo 'CALLER|';\n    return 'fiber54';\n});\necho 'START|', (int) ($f->start() === 'pause54'), '|';\necho 'PARKED|', (int) $f->isSuspended(), '|', (int) ($weak->get() !== null), '|';\necho 'RESUME|', (int) ($f->resume('sent54') === null), '|';\necho 'FIBER|', (int) $f->isTerminated(), '|', (int) ($f->getReturn() === 'fiber54'), '|';\necho 'CACHE|', (int) ($g->current() === 'cache54'), '|', (int) ($weak->get() !== null), '|';\n$g->next();\necho 'RETURN|', (int) ($g->getReturn() === 54), '|', (int) ($weak->get() === null), '|';\nunset($g, $f, $weak);\necho 'E';\n",
+    "source_sha256": "d7667024f43670006224b1201abb1d96c98ab6920c20fbc27e9df51cbf951ffb",
+    "native_exit": 0,
+    "native_stderr": ""
+  }
+]
