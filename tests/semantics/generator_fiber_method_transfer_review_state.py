@@ -177,7 +177,7 @@ S.DESTRUCTION.CALLED = [n_receiver]
 S.OBJECTS[n_receiver] = INSTANCE porigin_class
 $object_name(S, n_receiver) = $ptascii("FiberMethodReceiver58")
 ~((HOBJECT n_receiver) <- S.ALLOCATIONS)
-S.OBJECTS[n_weak] = WEAKREFERENCE eps
+S.OBJECTS[n_weak] = WEAKREFERENCE (n_receiver)
 $weakref_get(S, n_weak) = PNULL
 $node_children(S, HOBJECT n_generator) = eps
 $heap_owners(H, HOBJECT n_generator) = 1
