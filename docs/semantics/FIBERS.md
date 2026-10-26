@@ -801,9 +801,9 @@ statement/line receipt and unique saved close ID while preserving one receiver
 owner. The direct named-body CURRENT/NEXT arm additionally preserves one normal
 resumer, now also below ordinary named helper frames. Native named delegation
 has the bounded chain support above. Method/Closure helpers, by-reference
-returns, wider delegation, cached references outside direct named NEXT and other
-API roots retain their previous boundaries. Direct named NEXT now preserves a
-cached by-reference cell across suspension and resume; see the
+returns, wider delegation, cached references outside direct named NEXT/primed
+THROW and other API roots retain their previous boundaries. Direct named NEXT
+now preserves a cached by-reference cell across suspension and resume; see the
 [reference transfer review](../../coverage/semantics/generator-fiber-reference-transfer-review.json).
 
 Primed direct named `Generator::throw` also carries its saved Throwable through
@@ -811,8 +811,8 @@ Fiber suspension in a local catch or pending finally. Normal resume preserves
 the original exception; `Fiber::throw` can replace it with that exception as
 `Previous`. The Generator retains its old by-value cache until yield or final
 release. Three primed THROW sources, one fresh CURRENT control and one
-75-premise reached state cover this bounded case; by-reference, method,
-Closure and delegated variants remain open.
+75-premise reached state cover this bounded case; at that cut, by-reference,
+method, Closure and delegated variants remained open.
 [THROW transfer review](../../coverage/semantics/generator-fiber-throw-transfer-review.json).
 
 Fresh direct named `Generator::throw` now also transfers a still-advancing
@@ -821,8 +821,19 @@ Throwable until the first yield enables injection; normal escape, caught
 recovery and an injected Fiber exception retain their distinct identities and
 `Previous` order. Three exact changed originals and 86 source-reached premises
 pass. The two post-yield fresh originals and primed control already agreed on
-the unchanged model. Wider fresh, by-reference and other callee forms remain
-partial. [Fresh THROW review](../../coverage/semantics/generator-fiber-fresh-throw-transfer-review.json).
+the unchanged model. At that cut, wider fresh, by-reference and other callee
+forms remained partial. [Fresh THROW review](../../coverage/semantics/generator-fiber-fresh-throw-transfer-review.json).
+
+Primed direct named by-reference `Generator::throw` now transfers a defined
+reference-cell cache through a catch or suspended finally. The saved Fiber VM
+retains the exact temporary Throwable; an outside `next()` sees one running
+Generator Error with null `Previous`. A source-name rebind does not retarget
+the old cache. Normal and abrupt Fiber resume preserve the native Exception
+identity and `Previous` order. Four new sources, including an independent
+cache-only retirement probe, and 102 author reached-state assertions pass;
+the old by-value THROW source remains an unchanged control.
+Method, Closure, delegated and wider lifetime forms remain open.
+[Reference THROW review](../../coverage/semantics/generator-fiber-reference-throw-transfer-review.json).
 
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need

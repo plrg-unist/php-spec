@@ -1,0 +1,108 @@
+{
+  "milestone": "OP96 multi-expression echo array Warning and sibling order",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle/profile",
+  "status": "independently reviewed bounded semantics",
+  "scope": "Initially unbuffered multi-expression echo, first direct plain CV containing a nonempty flat primitive array, named E_WARNING handler. Normal/default writes interned Array then evaluates later literal and function in order; supplied throw writes Array but skips siblings before same-Exception catch. Callback-created output buffer is explicit Unsupported.",
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_echo",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_ECHO",
+    "vendor/php-src/Zend/zend_operators.c:__zval_get_string_func"
+  ],
+  "semantic_revision": "984f38945eb49af656647caf991ff2140ebaf73a",
+  "tested_revision": "3677bf6d3521a77bb2de7907789b0f4ce4f7e5fd",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "modules_sha256": "2a8321a8f20026268fdb4b4dbbb4756a0265c16f297b54b2536c9af571ac3300",
+    "module_count": 421
+  },
+  "native_pre": {
+    "first_attempt": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-96/native-pre/report.json",
+      "sha256": "461742f43ec4d88f6305d9054076d251ad082ad7f1d0c5e692bc37cdc22e9f4b"
+    },
+    "corrected_throw": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-96/native-pre-corrected/report.json",
+      "sha256": "713fd328a302adc64732a8ad96d42e9ae32ff7c5d399b9b6cb94d0067589c8cc"
+    },
+    "result": "Corrected pair native exit0/reaped: normal H;Array|L;after with one default Warning24; throw H;ArrayC with empty stderr and supplied Exception20. First uncorrected throw parsed exit255 and earns zero credit."
+  },
+  "unchanged_baseline": {
+    "revision": "22e3f302128eb86edff820c2be8262632489ddb9",
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-96/baseline/report.json",
+    "sha256": "ae900bfd3956b8b6c04bf6891218de962c8ef081530c7665c622fcf591b01f1d",
+    "result": "Both frozen sources frontend accepted/checked, model exit1 Unsupported exactly at error-handler ingress; zero agreement."
+  },
+  "accepted": {
+    "source_command": "taskset -c 3 python3 tests/semantics/echo_array_warnings.py --output /home/user/workspace/php-spec-evidence-archive/operators-96/source-984f38945",
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-96/source-984f38945/report.json",
+      "sha256": "b4c085a60fa476f1e4cf627622f67ce2ca9edb4c3d9487c7c902d424c48246ed"
+    },
+    "focused_command": "taskset -c 3 python3 tests/semantics/echo_array_warning_protocol.py --output /home/user/workspace/php-spec-evidence-archive/operators-96/focused-3677bf6d3",
+    "focused": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-96/focused-3677bf6d3/report.json",
+      "sha256": "186820e578b46449d062f9f9684e7438e79ab67e227724bbb278df967186cc80"
+    },
+    "result": "Two byte-exact native/model source agreements at semantic revision, plus genuine reached normal153 and throw137 premises at test-only revision. Native/model exit0, no timeout/groups. Focused checks authenticate first echo child and sibling origins, pool-backed table owners2\u21921, handler/default/output order, same live Exception, later-call count, buffer refusals and EOF/budget0."
+  },
+  "failed_attempts": [
+    {
+      "revision": "22e3f302128eb86edff820c2be8262632489ddb9",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-96/native-pre/report.json",
+      "sha256": "461742f43ec4d88f6305d9054076d251ad082ad7f1d0c5e692bc37cdc22e9f4b",
+      "reason": "First generated throw omitted catch closing brace; parse exit255, zero credit. Source-only correction retained normal original bytes and line sites."
+    },
+    {
+      "revision": "984f38945eb49af656647caf991ff2140ebaf73a",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-96/focused-984f38945/report.json",
+      "sha256": "cd9d3ead8de0147bff6be4d2fe144cfe84eb30ed748c407ff17a03f2b145b2aa",
+      "reason": "Bare NExprFuncCall fixture pattern failed elaboration before reached-state assertions; zero focused credit."
+    },
+    {
+      "revision": "f0eda23de",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-96/focused-f0eda23de/report.json",
+      "sha256": "49a2faebbd6ef224b1198bd5859bcc698567e53afbf8d01e160d2830a148b3f2",
+      "reason": "Direct constructor pattern likewise failed elaboration; zero focused credit."
+    },
+    {
+      "revision": "fdb9fb554c923ad79109fbacbe6bf6f371880d7a",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-96/focused-fdb9fb554/report.json",
+      "sha256": "e24b669cb8b7f1994fc29bf6efcbf8553d982760d2328e539f00a877a1fdbe8b",
+      "reason": "Reached-state TODO premise omitted authentic ORIGIN_RETURN before sibling tasks; zero focused credit. Diagnostic state dump isolated the marker; test-only correction binds it and all three child origins."
+    }
+  ],
+  "source_sha256": {
+    "cases.py": "cc5baf1ba15f002c69195ce2428ea82d5c2eed419adc7a2e3e1571f52d67b279",
+    "echo-array-first-false-default": "9a42cf0ce36b20f0e6e8892f4a9d21a5ee1c0da0aa7e01250b681a1254fe2ae4",
+    "echo-array-first-pending-throw": "cdc5844581834845e80506f9382870aec5c3bf42feb9f36ce2a5c70e1d3bf70e"
+  },
+  "inputs_sha256": {
+    "spec/semantics/30-storage.watsup": "6adef21478e214f1f7357a79b510aa83e02cedd5d008899abd19272f4817a382",
+    "spec/semantics/40-control.watsup": "904d5d7cfa403f56744428806a71c99ceadfe5336920b7c3c8dd90c8b0877626",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "74b670d773619b90f0e6eb3239923da4073b1571759f10208b4979308dabae7c",
+    "tests/semantics/echo_array_warning_cases.py": "cc5baf1ba15f002c69195ce2428ea82d5c2eed419adc7a2e3e1571f52d67b279",
+    "tests/semantics/echo_array_warnings.py": "0236dc1ecbc32a1edd73d0e31a91c4b8d180882b0cd8519545cfdf79f36cd4ad",
+    "tests/semantics/echo_array_warning_protocol.py": "7159207c4f3a488ad523aa30b7f795f33c423c7deb988b99581f7fd80bf00e94"
+  },
+  "remaining": "Only first direct plain-CV nonempty flat primitive arrays with named Warning handlers and unchanged empty output buffers are claimed. Empty/nested arrays, references, other producers, changed buffers/output callbacks and wider lifetimes remain partial.",
+  "independent_review": {
+    "revision": "69893f7c3e42c2a4c5006ad6824d97c005055a4b",
+    "cases": "/home/user/workspace/php-spec-evidence-archive/operators-96/review-independent/cases.py",
+    "cases_sha256": "d2e8c7911af688ff9c6016f62530a042185d0067ab59c7881e56fc2c26522895",
+    "runner": "/home/user/workspace/php-spec-evidence-archive/operators-96/review-independent/run.py",
+    "runner_sha256": "ea8a660b0bcd1fbd2906e0d507a122e631e6bffdf29c85c552895e4035a24c48",
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-96/review-independent/run-69893f7c3/report.json",
+    "sha256": "ac6d657798d098afd5f029fe68f057acbf99837285aea300bb22d1b794582b30",
+    "source_sha256": {
+      "handled_true_dynamic": "02ecae49168a8b1d71d9ade117a39b9a338078594fdba8655b7281043ce8ff38",
+      "ineligible_mask": "46737977f981d842d9a343cd0acb5c44508b4935d93358813f6fba3fed8e333e"
+    },
+    "result": "Two fresh native-first byte-exact checked/accepted normal agreements, exit0/no timeout/reaped. Handled true suppresses default stderr and later() reads the handler-mutated CV; an ineligible mask skips the callback, emits one default Warning18 and later() reads the original CV. Independent semantic CLEAR."
+  }
+}

@@ -3808,6 +3808,11 @@ class/method selection with authenticated pipe send and result tasks;
 [the method-string review](coverage/semantics/pipe-static-method-string-review.json)
 keeps literal, variable and temporary strings, reference/lookup behavior and
 excluded selectors separate from the earlier pipe evidence.
+Ordinary named function string carriers now select evaluated optimized and
+nonoptimized RHS names; [the carrier review](coverage/semantics/pipe-named-carrier-review.json)
+records 19 exact pinned CLI outcomes, a separate request-profile pass and
+reached source/ownership checks. Method strings and builtins retain their
+separate dispatch boundaries.
 [Switch execution](docs/semantics/SOURCE-SWITCH.md) scans cases in source order,
 retains the subject through fallthrough, and distinguishes constant-boolean
 branching from dynamic equality; its [review](coverage/semantics/switch-review.json)
@@ -4288,6 +4293,16 @@ The matching untyped backed form has no property type source: aliases accept
 string writes, ordinary reads copy, and Get still precedes rebinding Error.
 Three originals and 217 focused checks pass in the
 [untyped reference-Get review](coverage/semantics/untyped-reference-get-hooks-review.json).
+An unchanged direct Child of the declaring Parent now uses the Parent's backed
+`&get` with the Child receiver. Typed and untyped aliases retain their respective
+property-source rules, ordinary reads copy, and destination rebinding calls Get
+before Error. Three originals and 271 Boolean checks plus three raw transitions
+pass in the [inherited reference-Get review](coverage/semantics/inherited-reference-get-hooks-review.json).
+When that direct Child plainly redeclares the same public `int` property, its own
+slot and type source govern the inherited Parent `&get`. Parent lexical scope,
+Child receiver, alias lifetime, ordinary copies and Get-before-rebind order remain
+observable. Three originals and 341 Boolean checks plus three raw transitions
+pass in the [plain Child reference-Get review](coverage/semantics/plain-child-reference-get-hooks-review.json).
 Wider hook declarations and indirect consumers remain partial.
 
 Public backed by-value `get` hooks execute their block or expression body on each read,

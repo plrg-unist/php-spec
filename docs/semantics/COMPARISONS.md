@@ -535,6 +535,15 @@ continue into later array entries, while a nonzero result skips later casters.
 The [cold Throwable review](../../coverage/semantics/throwable-cold-comparison-review.json)
 records the normal-only boundary and the remaining wider Throwable cases.
 
+An explicit builtin `__toString()` writes the private `string` slot. Distinct,
+same-kind builtin `Exception`/`Error` pairs with at least one nonempty string
+cache, empty allocated traces and null previous values compare that slot before
+the later line slot. Both caches must be physical strings; the comparison itself
+does not call the formatter. One-sided warmth gives opposite signed orders,
+while equal warm prefixes continue into later array entries. This normal,
+nonpending bound leaves populated traces, previous links and cross-kind pairs
+outside the [warm Throwable review](../../coverage/semantics/throwable-warm-comparison-review.json).
+
 Nonempty builtin traces also compare through the seven declared slots when
 both canonical trace graphs contain only direct null, bool, int, float or string
 argument snapshots; string carriers must have valid identities. The allocated
@@ -550,6 +559,16 @@ allocated, with only direct arrays or primitive/valid string-carrier leaves; a
 path-local guard rejects cycles while allowing shared children. A later source
 array write leaves the captured COW snapshot intact. Object and reference leaves
 remain outside the [array-trace review](../../coverage/semantics/throwable-trace-array-comparison-review.json).
+
+Warm caches and nonempty builtin traces now meet in the same physical slot
+scan. Same-kind canonical `Exception`/`Error` pairs with null previous values
+admit finite `DIRECT` trace graphs containing primitive or valid string-carrier
+leaves and allocated acyclic child arrays. The string cache is compared first;
+one-sided warmth or unequal formatted text can stop there. Two different array
+arguments both format as `Array`, so equal warm caches continue through captured
+trace count, key and value order, including a source COW snapshot. This
+normal, nonpending path excludes object/reference/cyclic trace leaves and
+wider [warm trace graphs](../../coverage/semantics/throwable-warm-trace-comparison-review.json).
 
 [Builtin and inherited Throwable string casts](../../coverage/semantics/pending-throwable-comparison-review.json)
 also skip their internal handler in this authenticated pending remainder. The

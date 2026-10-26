@@ -31,11 +31,23 @@ keyword and optimized method-string selectors remain outside this increment.
 For a dynamic RHS, the result receipt records selected bytes; it cannot
 reconstruct a past value from a later-mutated source variable.
 
+Ordinary named user-function string carriers now work as optimized first-class
+pipe callees and as nonoptimized literal, variable or temporary RHS values.
+The pipe selects the evaluated name before sending its forced left value;
+missing lookup, by-reference refusal, strict typing and reference returns use
+the ordinary call path. The new branch requires a real pipe source shape,
+matching literal bytes when present, and a valid string carrier. This is not a
+historical value certificate for a dynamic producer: interned carrier validity
+checks byte well-formedness, and a later `CALL_ARGS` task cannot reconstruct
+selected name bytes after a source variable changes. Method strings, builtins
+and Closure operands keep their separate dispatch and exclusions.
+
 The syntax grouping and bare-arrow rejection are described in
 [the syntax review](../../coverage/semantics/pipe-syntax-review.json). Runtime
 rules are in `122-pipe-compiler.watsup`, `123-pipe-runtime.watsup`,
 `432-pipe-array-callables.watsup` and
-`433-pipe-static-method-strings.watsup`, with narrow shared task and
+`433-pipe-static-method-strings.watsup` and
+`434-pipe-named-string-carriers.watsup`, with narrow shared task and
 call-integrity changes. Matching-engine evidence starts at `zend_compile_pipe` in the pinned
 `Zend/zend_compile.c`, with value sends and calls in `Zend/zend_vm_def.h`.
 
@@ -46,6 +58,10 @@ and protocol checks are `tests/semantics/pipe*`. The public user-method array
 increment has twelve exact native CLI comparisons and four reached-state
 controls; its separate review records the tested revision. The public static
 method-string increment has its own exact native and paused-state gates.
+The named-carrier increment records 19 exact pinned CLI outcomes (18 normal,
+one uncaught PHP Error), a separate 19-source request-profile pass and five
+reached stages/72 assertions. The former optimized missing-function interpreter
+failure is one current agreement, with its old failure retained as zero credit.
 Builtin, scoped method-string and other object callables remain explicit
 dependencies; this is partial pipe coverage, not a full callable-family claim.
 

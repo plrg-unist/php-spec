@@ -367,6 +367,63 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*,
   -- if $throwable_cold_pair(S, n_left, n_right)
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
+;; Builtin __toString writes its result into the second declared slot. With
+;; empty traces and null previous links, warm pairs still compare purely.
+dec $throwable_warm_pair(pstate, nat, nat) : bool
+def $throwable_warm_pair(S, n_left, n_right) = true
+  -- if S.COMPLETION = NORMAL
+  -- if ~$number_compare_exception_pending(S)
+  -- if n_left =/= n_right
+  -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)
+  -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
+  -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
+  -- if pthrowable_left.KIND = pthrowable_right.KIND
+  -- if pthrowable_left.KIND <- ["Exception", "Error"]
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
+  -- if $throwable_object_image_valid(S, n_left) /\ $throwable_object_image_valid(S, n_right)
+  -- if $throwable_field(S, n_left, "string") = PSTRING preqbytes_left
+  -- if $throwable_field(S, n_right, "string") = PSTRING preqbytes_right
+  -- if preqbytes_left =/= eps \/ preqbytes_right =/= eps
+  -- if $throwable_field(S, n_left, "previous") = PNULL
+  -- if $throwable_field(S, n_right, "previous") = PNULL
+  -- if $throwable_field(S, n_left, "trace") = PARRAY n_trace_left
+  -- if $throwable_field(S, n_right, "trace") = PARRAY n_trace_right
+  -- if S.ARRAYS[n_trace_left].ITEMS = eps
+  -- if S.ARRAYS[n_trace_right].ITEMS = eps
+def $throwable_warm_pair(S, n_left, n_right) = false -- otherwise
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S, $property_order(S, ppropertyslot_left*, ppropertyslot_right*, (HOBJECT n_left) :: pcompareguard_seen*))
+  -- if $throwable_warm_pair(S, n_left, n_right)
+  -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
+  -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
+;; Warm cache strings may compare equal even when their captured array
+;; arguments differ: the formatter prints every such argument as "Array".
+dec $trace_array_graph(pstate, nat) : bool
+dec $throwable_warm_trace_pair(pstate, nat, nat) : bool
+def $throwable_warm_trace_pair(S, n_left, n_right) = true
+  -- if S.COMPLETION = NORMAL
+  -- if ~$number_compare_exception_pending(S)
+  -- if n_left =/= n_right
+  -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)
+  -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
+  -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
+  -- if pthrowable_left.KIND = pthrowable_right.KIND
+  -- if pthrowable_left.KIND <- ["Exception", "Error"]
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
+  -- if $throwable_object_image_valid(S, n_left) /\ $throwable_object_image_valid(S, n_right)
+  -- if $throwable_field(S, n_left, "string") = PSTRING preqbytes_left
+  -- if $throwable_field(S, n_right, "string") = PSTRING preqbytes_right
+  -- if preqbytes_left =/= eps \/ preqbytes_right =/= eps
+  -- if $throwable_field(S, n_left, "previous") = PNULL
+  -- if $throwable_field(S, n_right, "previous") = PNULL
+  -- if $throwable_field(S, n_left, "trace") = PARRAY n_trace_left
+  -- if $throwable_field(S, n_right, "trace") = PARRAY n_trace_right
+  -- if $trace_array_graph(S, n_trace_left) /\ $trace_array_graph(S, n_trace_right)
+  -- if S.ARRAYS[n_trace_left].ITEMS =/= eps \/ S.ARRAYS[n_trace_right].ITEMS =/= eps
+def $throwable_warm_trace_pair(S, n_left, n_right) = false -- otherwise
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S, $property_order(S, ppropertyslot_left*, ppropertyslot_right*, (HOBJECT n_left) :: pcompareguard_seen*))
+  -- if $throwable_warm_trace_pair(S, n_left, n_right)
+  -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
+  -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
 ;; Nonempty builtin traces retain ordinary array order when their frame/args
 ;; graph has only direct scalar leaves.
 dec $trace_compare_graph(pstate, nat) : bool
@@ -396,7 +453,6 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*,
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
 ;; Finite DIRECT array arguments retain the captured trace graph's COW image.
-dec $trace_array_graph(pstate, nat) : bool
 dec $trace_array_arg_present(pstate, nat) : bool
 dec $throwable_array_trace_pair(pstate, nat, nat) : bool
 def $throwable_array_trace_pair(S, n_left, n_right) = true
@@ -430,6 +486,8 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*,
   -- if $throwable_object(S, n_left) \/ $throwable_object(S, n_right)
   -- if ~$weakmap_standard_mismatch(S, n_left, n_right)
   -- if ~$throwable_cold_pair(S, n_left, n_right)
+  -- if ~$throwable_warm_pair(S, n_left, n_right)
+  -- if ~$throwable_warm_trace_pair(S, n_left, n_right)
   -- if ~$throwable_scalar_trace_pair(S, n_left, n_right)
   -- if ~$throwable_array_trace_pair(S, n_left, n_right)
 

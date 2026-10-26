@@ -1,0 +1,96 @@
+{
+  "scope": "A parentless Parent declares a public typed int property with a sole backed block &get. Its immediate Child plainly redeclares the same public int property with its own default and no hook, interface, trait or constructor effect. Direct CV/literal reads, reference fetches, own writes and a defined-RHS destination bind use a Child receiver.",
+  "status": "partial; independently reviewed",
+  "target": {
+    "php": "8.5.10 CLI NTS signed64",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "environment": "LC_ALL=C; TZ=UTC; serial exclusive CPU; 100000 model steps and 75-second source timeout"
+  },
+  "authority": [
+    "Zend/zend_inheritance.c::do_inherit_property and inherit_property_hook retain Parent's getter while installing the plain Child's physical descriptor.",
+    "Zend/zend_object_handlers.c::zend_std_read_property invokes that getter on Child's receiver and returns its by-reference result.",
+    "Zend/zend_execute.c::zend_assign_to_property_reference fetches Get before rejecting destination rebinding.",
+    "spec/semantics/138-property-references.watsup attaches the selected Child property type source to its backing alias."
+  ],
+  "implementation": [
+    "spec/semantics/382-backed-get-hooks.watsup"
+  ],
+  "source_packet": {
+    "frozen_catalogue_sha256": "82788811acf41f7146921d8c6269c5dd7bbdda2330907f25de57e8e1a21d9484",
+    "maintained_catalogue": "tests/semantics/plain_child_reference_get_hook_cases.json",
+    "maintained_catalogue_sha256": "2dba463b0125843568a40c363f71a668c5319e5892b9496a36efa7e58d0f1517",
+    "positive_cases": {
+      "plain-child-alias": "488a2a8636301000d5e059777a207b9966723e1c7a2c7b5c2d0a729f927e06b1",
+      "plain-child-rebind-error": "be64141c54e4ea3204686b545766208b657ce8a8d6e486ecb8fedc6094320dc7",
+      "plain-child-own-write": "beaa24dc7db9558b271e178608a6f4ee6c8043a82d42e20314b6a59dd4bc0bfd"
+    }
+  },
+  "prechange": {
+    "native_report_member": "php-spec/.tools/class135-plain-child-reference-get/.tools/class135-probes/native-first.json",
+    "native_report_sha256": "471e4af85090c6824237029cccaffca5350a7f092fb902a6b32064758bae334a",
+    "baseline_report_member": "php-spec/.tools/class135-plain-child-reference-get/.tools/class135-probes/native-baseline.json",
+    "baseline_report_sha256": "83221e1fbc4216b05e87e88c5c68d3a755ac920ab9b9a52e99e8a35049e584e6",
+    "result": "All three positive PHP sources exit 0 with empty stderr. The unchanged model accepted and checked them, then stopped Unsupported at inherited property hook override before program output; zero agreement credit."
+  },
+  "accepted": {
+    "revision": "ab54459aa24f55e26069e62a88147f41fbe5cefe",
+    "dirty": false,
+    "module_count": 422,
+    "source_agreements": 3,
+    "focused_boolean": 341,
+    "focused_raw_php_steps": 3,
+    "reached_checks": [
+      127,
+      110,
+      104
+    ],
+    "report_member": "php-spec/.tools/class135-plain-child-reference-get/.tools/plain-child-reference-get-m78ysdfh/report.json",
+    "report_sha256": "e18fef949332aa685c46c8c5f0cbe2ed59a3277b61e302aeec59b03a36c2a343",
+    "coverage": "Parent getter origin versus Child physical descriptor and slot, Parent lexical/Child called target, Child OBJECT_PROP_SOURCE and exact alias cell, copy/detachment after Child retirement, own write through a preexisting alias, Get-before-rebind Error file/line, and direct-child/unlinked selector counterfactuals."
+  },
+  "unsupported_controls": [
+    {
+      "case": "grandchild-no-redeclaration",
+      "source_sha256": "a54d1b049a35f230b11b97656f7c2a29b45d6c331bf30e9e02968366fa46bd0a",
+      "native_exit": 0,
+      "model": "accepted/checked Unsupported: by-value property hook indirect access",
+      "source_agreement": false
+    },
+    {
+      "case": "untyped-plain-boundary",
+      "source_sha256": "5d4506c56a42d39dfce0b03bc72b218e0070841554af1fb1688b2e6f835887d6",
+      "native_exit": 0,
+      "model": "accepted/checked Unsupported: inherited property hook override",
+      "source_agreement": false
+    }
+  ],
+  "independent_controls": {
+    "reviewer": "class133_review",
+    "native_member": "php-spec/.tools/class135-review-controls/native-controls.json",
+    "native_sha256": "a9b638f30ffa0219919b40d2bdabda0d50880006f3be91638dcfbeaa05119e12",
+    "native_untyped_member": "php-spec/.tools/class135-review-controls/native-untyped-boundary.json",
+    "native_untyped_sha256": "079c40b250996e6ab21536aefce1322e62980e271c3995d695ce374570294b94",
+    "model_member": "php-spec/.tools/class135-review-controls/model-controls.json",
+    "model_sha256": "77011a5d8d324c3525aca745ae0fab35f914e18543b81b4588e66a3d26e1bc1a",
+    "result": "Two frozen typed Child alias/copy/lifetime and TypeChild135::$value TypeError sources match pinned PHP byte-for-byte at clean ab54459aa. The native-supported untyped plain Child source remains checked Unsupported and earns zero agreement."
+  },
+  "preserved_zero_credit": {
+    "fixture": "The first own-write reached-state attempt assumed a DIRECT Child slot after an earlier ordinary read. The read ran &get and converted that backing to ALIAS while returning a copy. Its failed raw run remains archived; the corrected fixture checks the existing Child alias and was rerun before the clean full packet."
+  },
+  "archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/plain-child-reference-get-hooks-135/evidence.tar.gz",
+    "sha256": "858d134dffe19df984c6e066f93f0e430ad5ff2e8447feeb0166e5065f04721d",
+    "bytes": 13323118,
+    "members": 319,
+    "recovery": "Extract at /home/user/workspace to restore ignored private .tools raw runs and independent reviewer controls. The archive is outside Git."
+  },
+  "review": {
+    "reviewer": "class133_review",
+    "decision": "CLEAR",
+    "candidate": "65d5878921d60454ab0ef3583c2a306ac2d4a023",
+    "basis": "Typed plain Child selector and Child source, three clean original-source/state groups, frozen independent alias and Child TypeError agreements, explicit zero-credit boundaries and failed fixture, partial inventory and external raw archive."
+  },
+  "remaining": "Untyped plain and deeper Child redeclarations, changed type/visibility, virtual/arrow/set/paired hooks, traits, constructors with property effects, dimensions, quiet/compound consumers and wider reference lifetimes remain partial."
+}

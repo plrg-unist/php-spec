@@ -1,0 +1,62 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "typed-child-alias",
+      "source": "<?php\nclass RefParent134 {\n    public int $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass RefChild134 extends RefParent134 {\n    public function __destruct() { echo \"D|\"; }\n}\necho \"T:\";\n$object = new RefChild134;\n$alias =& $object->value;\necho $alias === 7 ? \"alias7|\" : \"bad-alias|\";\n$alias = \"8\";\necho $alias === 8 ? \"typed8|\" : \"bad-type|\";\n$copy = $object->value;\n$alias = 9;\necho $copy === 8 ? \"copy8|\" : \"bad-copy|\";\necho $alias === 9 ? \"alias9|\" : \"bad-write|\";\nunset($object);\n$alias = \"free\";\necho $alias === \"free\" ? \"free|Z|\" : \"bad-source|\";\n",
+      "source_sha256": "b831ee25139860187aa421beb2bc14d078c313244acb4f720ca0b5118fcd3d9a",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "VDpHfGFsaWFzN3x0eXBlZDh8R3xjb3B5OHxhbGlhczl8RHxmcmVlfFp8",
+        "stderr_base64": ""
+      }
+    },
+    {
+      "id": "untyped-child-null",
+      "source": "<?php\nclass RawParent134 {\n    public $value {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass RawChild134 extends RawParent134 {\n    public function __destruct() { echo \"D|\"; }\n}\necho \"U:\";\n$object = new RawChild134;\n$alias =& $object->value;\necho $alias === null ? \"null|\" : \"bad-null|\";\n$alias = \"first\";\n$copy = $object->value;\n$alias = \"second\";\necho $copy === \"first\" ? \"copy|\" : \"bad-copy|\";\necho $alias === \"second\" ? \"alias|\" : \"bad-alias|\";\nunset($object);\n$alias = \"after\";\necho $alias === \"after\" ? \"after|Z|\" : \"bad-after|\";\n",
+      "source_sha256": "bb039e186da1a0e028fb98d51305b9ab9d0dfc30fc8d624d17fef485e0332f11",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "VTpHfG51bGx8R3xjb3B5fGFsaWFzfER8YWZ0ZXJ8Wnw=",
+        "stderr_base64": ""
+      }
+    },
+    {
+      "id": "child-rebind-error",
+      "source": "<?php\nclass BindParent134 {\n    public int $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass BindChild134 extends BindParent134 {\n    public function __destruct() { echo \"D|\"; }\n}\necho \"R:\";\n$object = new BindChild134;\n$replacement = 11;\ntry {\n    $object->value =& $replacement; // REBIND\n    echo \"bad-rebind|\";\n} catch (Error $error) {\n    echo $error->getMessage() === \"Cannot assign by reference to overloaded object\" ? \"blocked|\" : \"bad-message|\";\n    echo $error->getLine() === 14 ? \"line|\" : \"bad-line|\";\n    echo $error->getFile() === __FILE__ ? \"file|\" : \"bad-file|\";\n}\necho $object->value === 7 ? \"kept7|\" : \"bad-property|\";\n$replacement = 13;\necho $object->value === 7 ? \"separate7|\" : \"bad-rebound|\";\necho $replacement === 13 ? \"rhs13|\" : \"bad-rhs|\";\nunset($object);\necho \"Z|\";\n",
+      "source_sha256": "5d4a625ed831f889f1cbbfe45402a5cae099c1301bc77f2963c193e9bc0578d7",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "UjpHfGJsb2NrZWR8bGluZXxmaWxlfEd8a2VwdDd8R3xzZXBhcmF0ZTd8cmhzMTN8RHxafA==",
+        "stderr_base64": ""
+      }
+    }
+  ],
+  "unsupported_controls": [
+    {
+      "id": "redeclared-child-boundary",
+      "source": "<?php\nclass RedeclareParent134 {\n    public int $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass RedeclareChild134 extends RedeclareParent134 {\n    public int $value = 11;\n}\necho \"R:\";\n$child = new RedeclareChild134;\n$alias =& $child->value;\n$alias = 12;\necho $child->value === 12 ? \"live12|Z|\" : \"bad-live|\";\n",
+      "source_sha256": "36c536cdc02a3d314dcd57416f5b0644664e465bba1b45ef6607838c4ffa3221",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "UjpHfEd8bGl2ZTEyfFp8",
+        "stderr_base64": ""
+      },
+      "model_reason": "inherited property hook override"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "plain-child-alias",
+      "source": "<?php\nclass AliasParent135 {\n    public int $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass AliasChild135 extends AliasParent135 {\n    public int $value = 11;\n    public function __destruct() { echo \"D|\"; }\n}\necho \"A:\";\n$child = new AliasChild135;\n$alias =& $child->value;\necho $alias === 11 ? \"alias11|\" : \"bad-initial|\";\n$alias = \"12\";\necho $alias === 12 ? \"typed12|\" : \"bad-typed|\";\n$copy = $child->value;\n$alias = 13;\necho $copy === 12 ? \"copy12|\" : \"bad-copy|\";\necho $alias === 13 ? \"alias13|\" : \"bad-alias|\";\nunset($child);\n$alias = \"free\";\necho $alias === \"free\" ? \"free|\" : \"bad-free|\";\necho $copy === 12 ? \"copy-still12|Z|\" : \"bad-copy-after|\";\n",
+      "source_sha256": "488a2a8636301000d5e059777a207b9966723e1c7a2c7b5c2d0a729f927e06b1",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "QTpHfGFsaWFzMTF8dHlwZWQxMnxHfGNvcHkxMnxhbGlhczEzfER8ZnJlZXxjb3B5LXN0aWxsMTJ8Wnw=",
+        "stderr_base64": ""
+      }
+    },
+    {
+      "id": "plain-child-rebind-error",
+      "source": "<?php\nclass BindParent135 {\n    public int $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass BindChild135 extends BindParent135 {\n    public int $value = 11;\n    public function __destruct() { echo \"D|\"; }\n}\necho \"R:\";\n$child = new BindChild135;\n$replacement = 17;\ntry {\n    $child->value =& $replacement; // REBIND\n    echo \"bad-rebind|\";\n} catch (Error $error) {\n    echo $error->getMessage() === \"Cannot assign by reference to overloaded object\" ? \"blocked|\" : \"bad-message|\";\n    echo $error->getLine() === 15 ? \"line|\" : \"bad-line|\";\n    echo $error->getFile() === __FILE__ ? \"file|\" : \"bad-file|\";\n}\necho $child->value === 11 ? \"kept11|\" : \"bad-property|\";\n$replacement = 19;\necho $child->value === 11 ? \"separate11|\" : \"bad-rebound|\";\necho $replacement === 19 ? \"rhs19|\" : \"bad-rhs|\";\nunset($child);\necho \"Z|\";\n",
+      "source_sha256": "be64141c54e4ea3204686b545766208b657ce8a8d6e486ecb8fedc6094320dc7",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "UjpHfGJsb2NrZWR8bGluZXxmaWxlfEd8a2VwdDExfEd8c2VwYXJhdGUxMXxyaHMxOXxEfFp8",
+        "stderr_base64": ""
+      }
+    },
+    {
+      "id": "plain-child-own-write",
+      "source": "<?php\nclass WriteParent135 {\n    public int $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass WriteChild135 extends WriteParent135 {\n    public int $value = 11;\n    public function __destruct() { echo \"D|\"; }\n}\necho \"W:\";\n$child = new WriteChild135;\n$child->value = 15;\necho $child->value === 15 ? \"read15|\" : \"bad-read|\";\n$alias =& $child->value;\necho $alias === 15 ? \"alias15|\" : \"bad-alias|\";\n$alias = 16;\necho $child->value === 16 ? \"read16|\" : \"bad-write|\";\nunset($child);\necho \"Z|\";\n",
+      "source_sha256": "beaa24dc7db9558b271e178608a6f4ee6c8043a82d42e20314b6a59dd4bc0bfd",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "VzpHfHJlYWQxNXxHfGFsaWFzMTV8R3xyZWFkMTZ8RHxafA==",
+        "stderr_base64": ""
+      }
+    }
+  ],
+  "unsupported_controls": [
+    {
+      "id": "grandchild-no-redeclaration",
+      "source": "<?php\nclass DeepParent135 {\n    public int $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass DeepChild135 extends DeepParent135 {\n    public int $value = 11;\n}\nclass DeepGrandchild135 extends DeepChild135 {\n    public function __destruct() { echo \"D|\"; }\n}\necho \"N:\";\n$child = new DeepGrandchild135;\n$alias =& $child->value;\necho $alias === 11 ? \"alias11|\" : \"bad-alias|\";\n$alias = 12;\necho $child->value === 12 ? \"read12|\" : \"bad-read|\";\nunset($child);\necho \"Z|\";\n",
+      "source_sha256": "a54d1b049a35f230b11b97656f7c2a29b45d6c331bf30e9e02968366fa46bd0a",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "TjpHfGFsaWFzMTF8R3xyZWFkMTJ8RHxafA==",
+        "stderr_base64": ""
+      },
+      "model": {
+        "status": "unsupported",
+        "reason": "by-value property hook indirect access",
+        "stdout_base64": "Tjo=",
+        "stderr_base64": ""
+      }
+    },
+    {
+      "id": "untyped-plain-boundary",
+      "source": "<?php\nclass RawParent135 {\n    public $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass RawChild135 extends RawParent135 {\n    public $value = 11;\n    public function __destruct() { echo \"D|\"; }\n}\necho \"U:\";\n$child = new RawChild135;\n$alias =& $child->value;\necho $alias === 11 ? \"child11|\" : \"bad-initial|\";\n$alias = \"word\";\necho $child->value === \"word\" ? \"live-word|\" : \"bad-write|\";\nunset($child);\necho \"Z|\";\n",
+      "source_sha256": "5d4506c56a42d39dfce0b03bc72b218e0070841554af1fb1688b2e6f835887d6",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "VTpHfGNoaWxkMTF8R3xsaXZlLXdvcmR8RHxafA==",
+        "stderr_base64": ""
+      },
+      "model": {
+        "status": "unsupported",
+        "reason": "inherited property hook override",
+        "stdout_base64": "",
+        "stderr_base64": ""
+      }
+    }
+  ]
+}

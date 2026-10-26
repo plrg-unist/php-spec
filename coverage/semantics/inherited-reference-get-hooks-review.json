@@ -1,0 +1,77 @@
+{
+  "scope": "A parentless Parent declares a public sole backed block &get. A direct Child with no property redeclaration, interface or constant keeps Parent's descriptor and hook; direct CV/literal property fetches and a defined-RHS destination bind use a Child instance. Typed and untyped backing, read copies and receiver retirement are covered.",
+  "status": "partial; independently reviewed",
+  "target": {
+    "php": "8.5.10 CLI NTS signed64",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "environment": "LC_ALL=C; TZ=UTC; serial exclusive CPU; 100000 model steps and 75-second source timeout"
+  },
+  "authority": [
+    "Zend/zend_inheritance.c::do_inherit_property and inherit_property_hook distinguish inherited descriptors from Child redeclarations.",
+    "Zend/zend_object_handlers.c::zend_std_read_property invokes the inherited Get on the Child receiver and returns its by-reference result.",
+    "Zend/zend_execute.c::zend_assign_to_property_reference fetches Get before rejecting a hooked destination.",
+    "spec/semantics/138-property-references.watsup::$propref_attach_slot retains the Parent type source only for a typed declaration."
+  ],
+  "implementation": ["spec/semantics/382-backed-get-hooks.watsup"],
+  "source_packet": {
+    "frozen_catalogue_sha256": "73bd9cf9a11589c29aaedb0ab87642b16cff3a73c971e2a6ad5b03326dcf1aad",
+    "maintained_catalogue": "tests/semantics/inherited_reference_get_hook_cases.json",
+    "cases": {
+      "typed-child-alias": "b831ee25139860187aa421beb2bc14d078c313244acb4f720ca0b5118fcd3d9a",
+      "untyped-child-null": "bb039e186da1a0e028fb98d51305b9ab9d0dfc30fc8d624d17fef485e0332f11",
+      "child-rebind-error": "5d4a625ed831f889f1cbbfe45402a5cae099c1301bc77f2963c193e9bc0578d7"
+    }
+  },
+  "prechange": {
+    "native_report_member": ".tools/class134-probes/native-first.json",
+    "native_report_sha256": "5da6a9f5ee16752108c25fe0f3b916728a19014e7c236b8b61c0fd00173a5202",
+    "baseline_report_member": ".tools/class134-probes/native-baseline.json",
+    "baseline_report_sha256": "add27c3e02da0d217780b31c5e8148cf5fca8d994367264183505f86941307fd",
+    "result": "All three PHP sources exit 0 with empty stderr. The unchanged model accepted/checked each source but stopped Unsupported at by-value property hook indirect access after the initial output prefix; zero agreement credit."
+  },
+  "accepted": {
+    "revision": "ac234efb2c67323965586d4cb4825a7d6a2ddc97",
+    "module_count": 421,
+    "source_agreements": 3,
+    "focused_boolean": 271,
+    "focused_raw_php_steps": 3,
+    "reached_checks": [97, 94, 80],
+    "report_member": ".tools/inherited-reference-get-d_61e9cx/report.json",
+    "report_sha256": "7b1be771fa14219e42b3b6ce2e65fc7f2bb6652a3583fbd314d47fc80e3c9c6e",
+    "coverage": "Child receiver with Parent lexical/called target distinction, direct linked parent and exact Parent physical descriptor, typed OBJECT_PROP_SOURCE versus untyped absence, alias and by-value copy separation, receiver death with escaped alias, Get-before-rebind Error message/file/line, and a counterfactual unlinked state rejected by the helper."
+  },
+  "unsupported_control": {
+    "source_sha256": "36c536cdc02a3d314dcd57416f5b0644664e465bba1b45ef6607838c4ffa3221",
+    "native_stdout": "R:G|G|live12|Z|",
+    "model_status": "Unsupported: inherited property hook override",
+    "source_agreement": false,
+    "reason": "A plain Child redeclaration remains outside the no-redeclaration selector; its checked model compile refusal is zero credit."
+  },
+  "independent_controls": {
+    "reviewer": "class133_review",
+    "native_member": ".tools/class134-review-controls/native-controls.json",
+    "native_sha256": "aa49046e408db6cd5997ad0a3782884ac1a39401a66ae8484fd886c2bbc4a446",
+    "model_member": ".tools/class134-review-controls/model-controls.json",
+    "model_sha256": "de7632f71e1f07b3b0c6d22e3dfd609499881d2778428d2c3181779ba0ffb26a",
+    "result": "Frozen typed and untyped unchanged-Child sources match pinned native exactly at code/test HEAD ac234efb2. The plain-redeclaration source remains checked Unsupported, with zero agreement. The model-control report marks dirty only because documentation was being edited concurrently; semantic and test inputs stayed at ac234efb2."
+  },
+  "preserved_zero_credit": {
+    "fixture_compiler": "The first typed reached-state attempt failed because a property-id union was passed where a source origin was required. Its raw compiler diagnostic is retained; the corrected fixture binds the authentic property origin before lookup and was rerun."
+  },
+  "archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/inherited-reference-get-hooks-134/evidence.tar.gz",
+    "sha256": "b4bdd4b16284bfe220cd19d115c447381faf95520e563f2790b55cf1b7d7fb7a",
+    "bytes": 11413998,
+    "members": 292,
+    "recovery": "Extract at the workspace root to restore private .tools raw runs and independent reviewer controls. The archive is outside Git."
+  },
+  "review": {
+    "reviewer": "class133_review",
+    "decision": "CLEAR",
+    "candidate": "38b4b39c7",
+    "basis": "Direct-child selector and exact inherited descriptor, three clean original-source/state groups, frozen independent typed/untyped and redeclaration controls, explicit zero-credit failures, partial inventory and external raw archive."
+  },
+  "remaining": "Plain/redeclared and deeper Child chains, traits, constructors with property effects, virtual/arrow/set/paired hooks, computed/dimension/quiet/compound consumers, and wider reference lifetimes remain partial."
+}

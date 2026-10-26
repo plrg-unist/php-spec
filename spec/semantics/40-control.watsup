@@ -127,8 +127,10 @@ rule PhpStep/name-read-abrupt: S ~> S_name[.TODO = eps]
   -- if ~$computed_string_name_pending(S)
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION =/= NORMAL
+dec $echo_array_plan(pstate) : pechoarraywarning?
 rule PhpStep/emit: S ~> $output_vm_write(S_text, n_text*, porigin, EMIT z, z)
   -- if S.TODO = (EMIT z) :: ptask_tail*
+  -- if $echo_array_plan(S) = eps
   -- if S.ORIGIN = (porigin)
   -- if S_read = $resolve(S, S.RESULT)
   -- if S_read.COMPLETION = NORMAL
@@ -140,6 +142,7 @@ rule PhpStep/emit: S ~> $output_vm_write(S_text, n_text*, porigin, EMIT z, z)
   -- if $string_bytes(pvalue_text) = (n_text*)
 rule PhpStep/emit-stringify-abrupt: S ~> S_text[.TODO = eps]
   -- if S.TODO = (EMIT z) :: ptask_tail*
+  -- if $echo_array_plan(S) = eps
   -- if S_read = $resolve(S, S.RESULT)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
