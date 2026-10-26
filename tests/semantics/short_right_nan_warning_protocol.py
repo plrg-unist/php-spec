@@ -18,13 +18,15 @@ def $right_nan_task(ptask) = false -- otherwise
 dec $right_nan_tasks(ptask*) : bool
 def $right_nan_tasks(eps) = false
 def $right_nan_tasks(ptask :: ptask_tail*) = ($right_nan_task(ptask) \/ $right_nan_tasks(ptask_tail*))
-dec $right_nan_entered(pframe*) : bool
-def $right_nan_entered(eps) = false
-def $right_nan_entered(pframe :: pframe_tail*) = true
+dec $right_nan_handler_frame(pframe) : bool
+def $right_nan_handler_frame(pframe) = true
   -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
   -- if perrorcall.RESUME = SHORT_RIGHT_NAN_WARNING pboolnotnanwarning 1
   -- if perrorcall.TARGET =/= eps
-def $right_nan_entered(pframe :: pframe_tail*) = $right_nan_entered(pframe_tail*) -- otherwise
+def $right_nan_handler_frame(pframe) = false -- otherwise
+dec $right_nan_entered(pframe*) : bool
+def $right_nan_entered(eps) = false
+def $right_nan_entered(pframe :: pframe_tail*) = ($right_nan_handler_frame(pframe) \/ $right_nan_entered(pframe_tail*))
 dec $right_nan_frontier(pstate, nat) : bool
 def $right_nan_frontier(S, 0) = ($short_right_nan_plan(S) =/= eps)
 def $right_nan_frontier(S, 1) = true
