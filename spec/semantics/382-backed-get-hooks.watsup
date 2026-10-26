@@ -523,6 +523,20 @@ def $property_hook_plain_child_reference(S, porigin_class, porigin_owner, pprope
   -- if $property_hook_plain_edge(S, ppropertydesc_parent, ppropertydesc_child, |S.CLASSES|)
   -- if $property_hook_reference_decl(S, ppropertydesc_parent)
 def $property_hook_plain_child_reference(S, porigin_class, porigin_owner, ppropertydesc_child, ppropertydesc_parent) = false -- otherwise
+dec $property_hook_plain_grandchild_reference(pstate, porigin, porigin, ppropertydesc, ppropertydesc) : bool
+def $property_hook_plain_grandchild_reference(S, porigin_class, porigin_owner, ppropertydesc_child, ppropertydesc_parent) = true
+  -- if porigin_class =/= porigin_owner
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc_grandchild)
+  -- if pclassdesc_grandchild.KIND = "class" /\ pclassdesc_grandchild.PARENT =/= eps
+  -- if pclassdesc_grandchild.PROPERTIES = eps /\ pclassdesc_grandchild.INTERFACES = eps /\ pclassdesc_grandchild.CONSTANTS = eps
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_class) = (SOURCE_PARENT porigin_child)
+  -- if porigin_child =/= porigin_owner
+  -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
+  -- if ppropertydesc_child.ORIGIN = porigin_child_property
+  -- if $hook_property_at(pclassdesc_child.PROPERTIES, porigin_child_property) = (ppropertydesc_child)
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertydesc_child.KEY) = (ppropertydesc_child)
+  -- if $property_hook_plain_child_reference(S, porigin_child, porigin_owner, ppropertydesc_child, ppropertydesc_parent)
+def $property_hook_plain_grandchild_reference(S, porigin_class, porigin_owner, ppropertydesc_child, ppropertydesc_parent) = false -- otherwise
 def $property_hook_function(S, ppropertyhook) = (pfunction)
   -- if $(ppropertyhook.OBJECT < |S.OBJECTS|)
   -- if S.OBJECTS[ppropertyhook.OBJECT] = INSTANCE porigin_class
@@ -539,7 +553,7 @@ def $property_hook_function(S, ppropertyhook) = (pfunction)
   -- if pfunction.NAME = pclassdesc_owner.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)
   -- if pfunction.SIGNATURE = {PARAMETERS eps, RETURNS ppropertydesc_getter.TYPE, BYREF b}
   -- if $origin_node(S.SOURCES, $origin_source(pfunction.ORIGIN)) = (NPropertyHook phpType14 phpType24 (BOOLEAN b) phpType11 phpType16 phpType39 metadata)
-  -- if ~b \/ porigin_class = porigin_owner \/ $property_hook_direct_child_reference(S, porigin_class, porigin_owner, ppropertydesc_getter) \/ $property_hook_plain_child_reference(S, porigin_class, porigin_owner, ppropertydesc, ppropertydesc_getter)
+  -- if ~b \/ porigin_class = porigin_owner \/ $property_hook_direct_child_reference(S, porigin_class, porigin_owner, ppropertydesc_getter) \/ $property_hook_plain_child_reference(S, porigin_class, porigin_owner, ppropertydesc, ppropertydesc_getter) \/ $property_hook_plain_grandchild_reference(S, porigin_class, porigin_owner, ppropertydesc, ppropertydesc_getter)
   -- if pfunction.DEFAULTS = eps /\ ~pfunction.EARLY
   -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_hook
   -- if pfunction.BODY = pcpath_hook ++ [PCFIELD 5]

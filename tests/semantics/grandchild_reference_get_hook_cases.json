@@ -1,0 +1,77 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "untyped-grandchild-alias",
+      "source": "<?php\nclass AliasParent137 {\n    public $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass AliasChild137 extends AliasParent137 {\n    public $value = 11;\n    public function __destruct() { echo \"D|\"; }\n}\n\nclass AliasGrandchild137 extends AliasChild137 {}\necho \"A:\";\n$child = new AliasGrandchild137;\n$alias =& $child->value;\necho $alias === 11 ? \"alias11|\" : \"bad-initial|\";\n$alias = \"word\";\necho $alias === \"word\" ? \"word|\" : \"bad-string|\";\n$copy = $child->value;\n$alias = 13;\necho $copy === \"word\" ? \"copy-word|\" : \"bad-copy|\";\necho $child->value === 13 ? \"live13|\" : \"bad-live|\";\nunset($child);\n$alias = \"free\";\necho $alias === \"free\" ? \"free|\" : \"bad-free|\";\necho $copy === \"word\" ? \"copy-still-word|Z|\" : \"bad-copy-after|\";\n",
+      "source_sha256": "8b2c068832c1ca637e4cd571ae8c4e0b6fdbfe3e3274c371c13e5694677bb554",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "QTpHfGFsaWFzMTF8d29yZHxHfGNvcHktd29yZHxHfGxpdmUxM3xEfGZyZWV8Y29weS1zdGlsbC13b3JkfFp8",
+        "stderr_base64": ""
+      }
+    },
+    {
+      "id": "untyped-grandchild-null",
+      "source": "<?php\nclass NullParent137 {\n    public $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass NullChild137 extends NullParent137 {\n    public $value;\n    public function __destruct() { echo \"D|\"; }\n}\n\nclass NullGrandchild137 extends NullChild137 {}\necho \"N:\";\n$child = new NullGrandchild137;\n$alias =& $child->value;\necho $alias === null ? \"null|\" : \"bad-initial|\";\n$copy = $child->value;\n$alias = \"set\";\necho $copy === null ? \"copy-null|\" : \"bad-copy|\";\necho $child->value === \"set\" ? \"live-set|\" : \"bad-live|\";\nunset($child);\n$alias = \"post\";\necho $alias === \"post\" ? \"post|Z|\" : \"bad-post|\";\n",
+      "source_sha256": "4b4e64f3b42e819b4873fbf3058d55ed9767e8a74ff5eb8a68a6f973fd1c7538",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "TjpHfG51bGx8R3xjb3B5LW51bGx8R3xsaXZlLXNldHxEfHBvc3R8Wnw=",
+        "stderr_base64": ""
+      }
+    },
+    {
+      "id": "untyped-grandchild-rebind-write",
+      "source": "<?php\nclass BindParent137 {\n    public $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass BindChild137 extends BindParent137 {\n    public $value = 11;\n    public function __destruct() { echo \"D|\"; }\n}\n\nclass BindGrandchild137 extends BindChild137 {}\necho \"R:\";\n$child = new BindGrandchild137;\n$child->value = \"own\";\n$replacement = 17;\ntry {\n    $child->value =& $replacement; // REBIND\n    echo \"bad-rebind|\";\n} catch (Error $error) {\n    echo $error->getMessage() === \"Cannot assign by reference to overloaded object\" ? \"blocked|\" : \"bad-message|\";\n    echo $error->getLine() === 18 ? \"line|\" : \"bad-line|\";\n    echo $error->getFile() === __FILE__ ? \"file|\" : \"bad-file|\";\n}\necho $child->value === \"own\" ? \"kept-own|\" : \"bad-property|\";\n$replacement = 19;\necho $child->value === \"own\" ? \"separate-own|\" : \"bad-rebound|\";\necho $replacement === 19 ? \"rhs19|\" : \"bad-rhs|\";\nunset($child);\necho \"Z|\";\n",
+      "source_sha256": "4a3eb36e8c2f492a4ee5325ef5590aa1db29667135af30afb51cc9feeb8ba2e1",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "UjpHfGJsb2NrZWR8bGluZXxmaWxlfEd8a2VwdC1vd258R3xzZXBhcmF0ZS1vd258cmhzMTl8RHxafA==",
+        "stderr_base64": ""
+      }
+    },
+    {
+      "id": "typed-grandchild-alias",
+      "source": "<?php\nclass AliasParent137 {\n    public int $value = 7 {\n        &get { echo \"G:\", __CLASS__, \"/\", static::class, \"|\"; return $this->value; }\n    }\n}\nclass AliasChild137 extends AliasParent137 {\n    public int $value = 11;\n    public function __destruct() { echo \"D|\"; }\n}\n\nclass AliasGrandchild137 extends AliasChild137 {}\necho \"A:\";\n$child = new AliasGrandchild137;\n$alias =& $child->value;\necho $alias === 11 ? \"alias11|\" : \"bad-initial|\";\n$alias = \"12\";\necho $alias === 12 ? \"typed12|\" : \"bad-typed|\";\n$copy = $child->value;\n$alias = 13;\necho $copy === 12 ? \"copy12|\" : \"bad-copy|\";\necho $alias === 13 ? \"alias13|\" : \"bad-alias|\";\nunset($child);\n$alias = \"free\";\necho $alias === \"free\" ? \"free|\" : \"bad-free|\";\necho $copy === 12 ? \"copy-still12|Z|\" : \"bad-copy-after|\";\n",
+      "source_sha256": "632944bb3023c8bbc5e7072ddbde846ffa73e11fb0f7b7d14e6f7024dfe242b5",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "QTpHOkFsaWFzUGFyZW50MTM3L0FsaWFzR3JhbmRjaGlsZDEzN3xhbGlhczExfHR5cGVkMTJ8RzpBbGlhc1BhcmVudDEzNy9BbGlhc0dyYW5kY2hpbGQxMzd8Y29weTEyfGFsaWFzMTN8RHxmcmVlfGNvcHktc3RpbGwxMnxafA==",
+        "stderr_base64": ""
+      }
+    }
+  ],
+  "unsupported_controls": [
+    {
+      "id": "untyped-greatgrandchild-boundary",
+      "source": "<?php\nclass DeepParent137 {\n    public $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass DeepChild137 extends DeepParent137 {\n    public $value = 11;\n}\nclass DeepGrandchild137 extends DeepChild137 {\n    public function __destruct() { echo \"D|\"; }\n}\nclass DeepGreatgrandchild137 extends DeepGrandchild137 {}\necho \"X:\";\n$child = new DeepGreatgrandchild137;\n$alias =& $child->value;\necho $alias === 11 ? \"alias11|\" : \"bad-initial|\";\n$alias = \"word\";\necho $child->value === \"word\" ? \"live-word|\" : \"bad-live|\";\nunset($child);\necho \"Z|\";\n",
+      "source_sha256": "1340a187159e7da9dcb2bd1f0042ffbdc1bc42e911cbe7fa2faaf800e5f60b72",
+      "native": {
+        "exit_status": 0,
+        "stdout_base64": "WDpHfGFsaWFzMTF8R3xsaXZlLXdvcmR8RHxafA==",
+        "stderr_base64": ""
+      },
+      "model": {
+        "status": "unsupported",
+        "reason": "by-value property hook indirect access",
+        "stdout_base64": "WDo=",
+        "stderr_base64": ""
+      }
+    }
+  ]
+}
