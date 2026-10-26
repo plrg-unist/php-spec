@@ -43,6 +43,7 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
+| Source96 | Native-first CONFIG CLOSED Generator RETURN payload retirement; source packet preparing, no CPU or writer. |
 | M155 | WeakMap Iterator factory: native/genuine closed; private424 source-certificate implementation preparing. |
 | OP90 | Prefetch repair preparing after native3/genuine classification; no writer. |
 | CLASS130 | Private native-first PARAM-boundary research; no writer. |
