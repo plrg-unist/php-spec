@@ -22,5 +22,18 @@ normal path. A callback-created output buffer is explicitly Unsupported.
 Two source agreements and 153+137 reached-state checks, including authentic
 first-child and sibling origins, are recorded in the
 [echo array review](../../coverage/semantics/echo-array-warning-review.json).
+
+The same continuation now admits a direct flat-array CV at child 1 of an echo
+with a later child. Child 0 must finish before this CV is read. In the reviewed
+two-array sequence, the first handler changes child 1 from integer 7 to a
+runtime-built array; the second child therefore raises its own Warning. A
+returning second handler unsets that array, then writes the fixed interned
+`Array` and continues to the later call. A throw from either handler writes its
+current `Array` and skips every remaining child. The first literal table keeps
+its pool root (owners 2→1); the new runtime table retires (1→0) in the second
+handler. Three source comparisons, including the previously supported
+first-handler throw control, and 167+151 reached-state checks are recorded in
+the [two-array review](../../coverage/semantics/echo-two-array-warning-review.json).
+
 Empty or nested arrays, other producers, changed output buffers and wider
 output lifetimes remain partial.
