@@ -1,0 +1,68 @@
+{
+  "scope": "Existing initialized CV containing fresh named zeroarg nonbyref Generator; body overwrites only outside owner. Quiet closed sole DATA retires before CONFIG INI_SET reception or terminal-throw catch. Existing up-to-two string sends/integer keys retained; no arity-specific admission.",
+  "status": "integrated reviewed bounded lifetime",
+  "reviewer": "/root/source86_review",
+  "base_revision": "a1c37edab85b4cf2b9739a8074014e10714144b2",
+  "source_only_revision": "d2b91bccef989195104fa6cf9b18ce58897e0faa",
+  "runtime_strict_source_entry_revision": "44cec55412d27efe79d7fee2e9e41a898948057d",
+  "corrected_fixture_revision": "8b7b153ec88fecec9ef69c5f693c3e9a7910c708",
+  "ordered_modules": 415,
+  "private_semantic_sha256": {
+    "spec/semantics/423-config-generator-unpack.watsup": "0ec4ab50aec4986dd829ae12adf980a96b672431f81844b3095ea17d88429e6d"
+  },
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; exact flags in reports",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "primary": "Pinned SEND_UNPACK calls ce->get_iterator, iterates, then zend_iterator_dtor before FREE_OP1/exception check/API. zend_generator_get_iterator owns one DATA copy; its dtor releases it. CV overwrite leaves exactly DATA. Physical retirement therefore precedes API entry and caller catch even after terminal throw.",
+  "implementation": "Only423 changes runtime. Factor original source/named-Gen header into history; live scope still requires allocation. Retired scope requires authenticated history, CLOSED/no active storage pin/empty owning children/no allocation. Only invoke and eager cleanup-source accept it, never active stages. Disjoint stage/allocation selection preserves reviewed truth conditions without duplicate header scans. Shared-owner behavior and callee guards remain; last DATA allowed only quiet closed. Existing normal driver post-transition pruning physically retires Gen; immutable object slots retain nonowning function/source metadata. No new schema, record, cursor, owner, module, generic release/WeakReference/WeakMap edit.",
+  "accepted": [
+    "Native3 PASS atd2b/415, exit0/quiet/stable/reaped/cap15. Fixed yields→EOF→API14/8/CV17/watchNULL. Owned one-send EOF precedes exact ArgumentCountError parent12/API ini_set+wrapper __invoke args precision, result99/precision7/watchNULL/recovery7→9. Peer terminal supplied throw retains original empty trace/identity/result99/effects3/precision6/CV17/watchNULL/recovery6→9.",
+    "Strict415 PASS9.859s/cap90; source3 normal/CLI0 native-exact PASS14.461/23.476/24.967s at44c with CLI45/host60, stable/quiet/no survivors. Native/genuine unchanged.",
+    "All448 original conditions pass across507 physical/59 setup. Normal entry48 stays44c(13.470s); corrected completion89(15.109s), owned48/127(17.656/28.203s), peer99/96(22.929/28.332s) retain8b7, each unchanged90cap/true LF/empty stderr/exit0/stable/groups[]. Setup derives real source cuts without coverage credit.",
+    "States prove live allocation until closed sole DATA, weak observer nonowning/alive, actual dead allocation/weakNULL before API or catch, retired history true/active scope false/no reactivation, selected callee, real post-retirement API/wrapper trace primitive args, same supplied Exception/empty trace, exact raw discard and normalized drain/recovery, source/origin/phase refusals, valid derived owning RETURN/watch edge refusal, last-callee exact restoration and budgets."
+  ],
+  "conditions": {
+    "normal_original": 117,
+    "owned_arity_original": 156,
+    "peer_original": 175,
+    "original_total": 448,
+    "author_parts": [
+      48,
+      89,
+      48,
+      127
+    ],
+    "author_setup": 39,
+    "peer_parts": [
+      99,
+      96
+    ],
+    "peer_setup": 20,
+    "physical_total": 507
+  },
+  "zero_credit": [
+    "Untouchedd2b fixed model accepted/program Unsupported after B|Y0|Y1|F|, CONFIG Generator unpack last DATA or callee owner, CLI1/outer1/agreement0,12.947799s/cap60, quiet/stable/groups[]. Original report/process/exit/stdout/stderr hash-preserved after models/archive, no repair before classification or replay.",
+    "Original normal completion89 at44c failed14.360s/exit1/no timeout/groups[] at dead-invoke frontier. Fixture continued from raw PhpStep state before required driver pruning. Corrected seek starts from source S_finish (peer from S_thrown, excluding original marker), retains raw helper equality/counts, and adds case selection to avoid accepted entry replay. Runtime/source/strict/entry remain unchanged; failed root preserved."
+  ],
+  "legacy_expectation_retirement": "Source90 author131→126/145→140 and peer191→186; Source91 peer213→208. Static ordered comparison preserves every other original assertion, last-callee/source guards and Source91 shared-return admission. Removed18 obsolete quiet-DATA projections plus2 orphan original hold lookups/2 setup bindings; new92 real-source coverage replaces them. Original90/91 accepted counts/cuts remain historical, no old sources/native/state suite replay.",
+  "execution": "Native/genuine CPU4; initial and corrected affected packet CPU2, AS3221225472/envC+UTC. State/strict90, modelCLI45/host60/10000steps, SL/cachefalse/encountered determinism true. Exact argv/cwd/start/exits in native/outer-commands.json and check-commands-92.json; all sessions/groups reaped, direct actor probe empty and CPU2 released.",
+  "raw_root": "../php-spec-evidence-archive/config-generator-sole-data-92",
+  "manifest_sha256": "a824f84f90616a64274973051c779bacdd7870a2e3ce004f662ba50e9ecdc61d",
+  "recovery": "Manifest maps24 moved roots/logs/commands/private-reference record and hashes24 reports (22PASS/genuine0/failed89). Restore original recorded cuts/WT92 paths/cwd, provision project-local tools/private references, verify hashes and exact commands. RAW STOP/no actors preceded one relocation; no backup checkout or evidence build dependency.",
+  "remaining": "Direct temporary call-result ingress, method/Closure/nonfresh/byref producers, owning cached/return children, last-callee lifetimes, delegation/Fiber/GC/destructor callback histories and broader send/reception domains stay partial. Paused OP12/Source47 lowprecision DEFINE NaN/ownedNUL/undefined-byrefLIST/COMP88 untouched. No engine bug, deliberate divergence, full-core/equivalence/BOLA claim.",
+  "composition": {
+    "actual_parent": "93dcaafb4db7d21c387e24d868edb3b002bdf501",
+    "immutable_publication": "c9b69e26e645cfd23de83da8a8d8d26bbacd8302",
+    "joined_ordered_modules": 416,
+    "preservation": "423 and seven changed test scripts match immutable publication; every other runtime/schema/pipeline and ordered manifest match actual parent. Actual inventory prefixes and foreign compact documentation are preserved.",
+    "incoming_review": "Independent CLEAR: earlier comparison/Generator-Fiber/property/query/WeakMap/ARRAY_UNPACK paths are disjoint or truth-equivalent. OP87 adds only acquired-Stringable CONCAT_PREP plans and tagged cleanup; Source92 produces no CONCAT, flat-array LEFT or Stringable, so all new plans remain EPS. No selected interaction or execution renewal.",
+    "candidate_review": "Independent final CLEAR at staged335f9a8a over actual93dcaafb4:423/seven scripts publication-exact, all other runtime/schema/pipeline/416 manifest parent-exact; two inventory suffixes and foreign compact documentation preserved. No selected interaction or execution renewal."
+  }
+}

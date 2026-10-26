@@ -640,6 +640,14 @@ assignment and setter recovery survive. Native3/source3, strict414 and 475 origi
 state conditions pass (544 physical, 69 setup). Wider producers and lifetimes
 remain partial.
 
+[Sole Generator DATA](coverage/semantics/config-generator-sole-data-review.json)
+now retires before CONFIG API entry or terminal-throw catch when the input CV is
+replaced. Historical source/callee authority survives physical Generator death
+without an extra owner; WeakReference observers confirm retirement. Normal return,
+post-retirement API arity traces and supplied-Exception recovery pass three source
+comparisons and 448 original conditions (507 physical, 59 setup). Owning returns,
+last callee retirement and wider producers remain partial.
+
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
 throws the object-key `Error` before copying its current value or entering the
