@@ -21,10 +21,27 @@ The source anchors are pinned `Zend/zend_execute.c`:
 `zend_fetch_dimension_address_read`, `zend_illegal_string_offset`, and
 `Zend/zend_API.c::zend_zval_value_name`. The helper consumes already captured
 container values and resolves delayed/reference key operands. It does not prune
-inside helpers or invoke callbacks. Future warning handlers require explicit
-resumable ownership: the engine holds a string while a handler may replace it.
-No handler, object dimension, isset/empty, list, or write-context behavior follows
-from these R-fetch rules.
+inside helpers or invoke callbacks. Source callbacks use the separate continuation
+below; object dimensions, isset/empty, list and write contexts retain their own rules.
+
+Module425 stages ordinary string R-offset cast and bounds Warnings. It keeps the
+selected old carrier while a cast callback changes the live primitive offset;
+float conversion stays silent. Interned carriers and authenticated owning
+temporaries survive independently. A borrowed REQUEST carrier must still occupy
+the same live ordinary unmarked CV cell with exact identity after the cast.
+Immutable STRINGDATA records add no owner; changed carriers explicitly refuse.
+Neither the base-cell nor key-cell locator becomes a heap root.
+
+Once an out-of-range offset is selected, completion returns the fixed empty
+string even if the bounds callback unsets both operands. A cast-handler throw
+still converts the live key and checks old bounds: an eligible registered handler
+suppresses the remaining Warning, while an absent handler permits its default
+display before the original Throwable unwinds. Source validity survives callback
+writes and retired cells, separately from cast readiness. Leading/nonnumeric text,
+undefined or marked keys, constrained locators and wider string-owner histories
+remain partial. The [string-read review](../../coverage/semantics/string-offset-read-warning-review.json)
+retains source and independent reached-state evidence, including the zero-credit
+borrowed-carrier release control.
 
 `$string_constant_read(bytes, key_value)` is a distinct compiler leaf returning
 an optional value. It implements only `zend_eval_const_expr`'s string DIM fold:

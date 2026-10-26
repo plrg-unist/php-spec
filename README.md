@@ -290,6 +290,14 @@ An undefined ordinary CV used as a computed variable name now warns before conve
 
 [First dimension reads](coverage/semantics/source-dimension-emission-review.json) now retire owned include/eval operands at the key compiler line before reading an ordinary CV base and CV or literal key. A narrow writable array-property receiver separates the protected array; a later literal property warning resumes with fixed null. Seven exact originals and245 independent premises retain their private336 cuts; actual340 passes strict compilation. Wider emission and receiver forms remain required.
 
+[String R-offset callbacks](coverage/semantics/string-offset-read-warning-review.json)
+preserve selected old bytes while a cast Warning uses the live primitive key.
+Interned and owning temporary carriers survive independently; a borrowed runtime
+carrier requires exact identity in its surviving ordinary CV. Bounds completion
+keeps its fixed empty result even after both names are unset. Pending throws
+retain default-versus-suppressed bounds reporting. Wider keys and ownership
+histories remain partial; the dropped borrowed-carrier control keeps zero credit.
+
 [Named noarg DIM key calls](coverage/semantics/source-call-key-emission-review.json)
 now retire owned include/eval operands at the first INIT line. The ordinary CV
 base stays borrowed through the call; the returned key is fixed before live base
