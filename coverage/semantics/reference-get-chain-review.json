@@ -1,0 +1,98 @@
+{
+  "scope": "Parentless Parent sole public backed block &get; bounded linked descendants. Unchanged descendants have no properties/interfaces/constants. Each redeclaring descendant has only the same-type public plain property, no set visibility restriction, interfaces or constants; methods may exist. The actual receiver and latest physical property govern calls and references.",
+  "status": "partial; independently reviewed",
+  "target": {
+    "php": "8.5.10 CLI NTS signed64",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C; TZ=UTC; exclusive serial CPU5; 100000 model steps, 75-second source timeout"
+  },
+  "authority": [
+    "Zend/zend_inheritance.c::do_inherit_property selects the latest plain redeclaration storage and inherit_property_hook carries the Parent getter through linked descendants.",
+    "Zend/zend_object_handlers.c::zend_std_read_property dispatches the inherited getter on the actual receiver.",
+    "Zend/zend_execute.c::zend_assign_to_property_reference calls Get before rejecting destination rebinding.",
+    "spec/semantics/138-property-references.watsup attaches the latest typed physical OBJECT_PROP_SOURCE only; an untyped slot adds no source."
+  ],
+  "implementation": [
+    "spec/semantics/382-backed-get-hooks.watsup"
+  ],
+  "source_packet": {
+    "frozen_catalogue": "tests/semantics/reference_get_chain_cases.json",
+    "frozen_catalogue_sha256": "7ec6a17e1e781751687abd9f9940466692cbcd50a040d03d3e3bd93784bcafdd",
+    "native_expectations": "tests/semantics/reference_get_chain_expectations.json",
+    "native_expectations_sha256": "18f907ee62fd9e8c14fee1b2e643c8c179186a082595269ffff8526691c4726f",
+    "positive_ids": [
+      "greatgrandchild-promoted",
+      "untyped-latest-redeclaration",
+      "typed-latest-type-source",
+      "mixed-unchanged-redeclaration",
+      "deep-rebind-error"
+    ],
+    "control_ids": [
+      "hook-bearing-intermediate-control",
+      "changed-type-static-control"
+    ]
+  },
+  "prechange": {
+    "revision": "1d6f6682ee713e8ac316611567be343ccf57b07e",
+    "native_report_member": "php-spec/.tools/class138-reference-get-chain/.tools/class138-probes/native-first.json",
+    "native_report_sha256": "efd00fe23851aaa0307d1b3d89b1f69ed2a27958f53eb7a05e921a1d2a868d67",
+    "baseline_report_member": "php-spec/.tools/class138-reference-get-chain/.tools/class138-probes/native-baseline.json",
+    "baseline_report_sha256": "90d100b95b829a61799ba573dddcd6502e2d0953a6dab63085cd7c88e0dfd217",
+    "result": "All five positives native exit0/empty stderr; unchanged model accepted/checked and stopped Unsupported before Get. Hook-bearing control native C|11/model Unsupported; changed-type control native fatal255/model static_rejection. Positive baseline agreement zero."
+  },
+  "first_failure": {
+    "report_member": "php-spec/.tools/class138-reference-get-chain/.tools/reference-get-chain-fddhupjv/report.json",
+    "report_sha256": "44a59807e3425b8effdbd2614433eb31cf46bf5fa59ce9fe68a9be99d66efc55",
+    "fixture_member": "php-spec/.tools/class138-reference-get-chain/.tools/reference-get-chain-fddhupjv/greatgrandchild-promoted-state.watsup",
+    "fixture_sha256": "aee708a80803609a6347d45a1da462048bb909e026357f464361551dfd4da436",
+    "result": "Reached fixture failed after source agreement: it reused one tail variable for both the whole and post-FETCH tail, making the second equality impossible. Protocol-only correction; zero strict credit."
+  },
+  "affected": {
+    "tested_semantic_test_commit": "97776728a",
+    "source_only_report_member": "php-spec/.tools/class138-reference-get-chain/.tools/class138-affected-source/report.json",
+    "source_only_report_sha256": "529ec4f75b66f064bb5c7bc0a8c49e049c53e5ba3022711af4538ced802fd530",
+    "full_report_member": "php-spec/.tools/class138-reference-get-chain/.tools/reference-get-chain-aqd21sym/report.json",
+    "full_report_sha256": "37b98b0d7228524086bed716a800f349e1e0659cb9ecb30f561f7d78aae16ea1",
+    "semantic_sha256": "286dcbee52efd46c897f9e4c2aeb6ce9a507804b4a8ce3db542026e386fe3b06",
+    "protocol_sha256": "57d86427401963430411700ccc04b524bdee0d22ef8598d7792832f23c79302d",
+    "module_count": 423,
+    "source_agreements": 5,
+    "reached_premises": 449,
+    "raw_php_steps": 5,
+    "scope": "Authentic receiver-to-storage links and strict same-type plain redeclaration edges, latest physical slot/default/typed source, old Child default exclusion, Parent lexical/leaf called scope, two link-removal refusals per reached case, Get backing, raw fetch/bind, split budgets, completed alias/copy/destructor/Error output. The old direct-depth disjuncts remain exact, including their broader protected(set) admission. Two controls are checked but carry zero runtime agreement."
+  },
+  "independent": {
+    "reviewer": "class137_review",
+    "frozen_source_member": "php-spec/.tools/class138-review-controls/multiredeclaration-type-source.php",
+    "frozen_source_sha256": "79b91da0941642ef2043953b1dd8b753b8549ea21c44874cda1736e5dc3cb70a",
+    "native_report_member": "php-spec/.tools/class138-review-controls/native-first.json",
+    "native_report_sha256": "a1c115aeda000f5d264cb391c067af4b3490c910883632f41d4d754de9c2bdfd",
+    "unchanged_baseline_member": "php-spec/.tools/class138-review-controls/unchanged-baseline.json",
+    "unchanged_baseline_sha256": "d8f13d8644c48dd119b9daeaeb7d4eb6bf96c1b995730d3d9bf4facdc7b8e8c9",
+    "candidate_report_member": "php-spec/.tools/class138-review-controls/candidate.json",
+    "candidate_report_sha256": "c22f37e71ee0fa0f6e6dc7e1c30927cc177eb8108f734c2833616a1fd8b5bdff",
+    "result": "Three plain redeclarations with unchanged interleaves: final ReviewD138 typed source and TypeError, Parent lexical/leaf called scope, copy and destructor. Frozen native bytes match candidate exactly; unchanged model was Unsupported before Get."
+  },
+  "controls": {
+    "hook_bearing": "Native C|11; model checked Unsupported for set, by-reference, attributed or defaulted virtual property hook. Zero source agreement.",
+    "changed_type": "Native fatal exit255; model CompileError static_rejection with matching message/line7/exit255. Static control only, zero runtime agreement."
+  },
+  "archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/reference-get-chain-138/evidence.tar.gz",
+    "sha256": "89c43c66eb9ec4c4e0b2e31efb5ef667a5be46fa553558d4e747b9b5130eae7d",
+    "bytes": 19443016,
+    "members": 315,
+    "raw_files": 294,
+    "manifest_sha256": "43d1903406ef0b1c81003283be625def93961bebf6b509fa5c9daa9604497359",
+    "recovery": "Extract at /home/user/workspace to restore ignored raw runs and independent reviewer controls. The archive and its manifest are outside Git."
+  },
+  "review": {
+    "reviewer": "class137_review",
+    "semantic_test_decision": "CLEAR",
+    "package_decision": "CLEAR"
+  },
+  "remaining": "Other property/interface/constant members on intermediate classes, changed-type or set-restricted redeclarations, hooked intermediate overrides, virtual/arrow/set/trait hooks, dimensions, quiet/compound consumers and broader reference lifetimes remain partial."
+}

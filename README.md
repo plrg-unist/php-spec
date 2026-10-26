@@ -4337,6 +4337,12 @@ inherited `&get`, with Parent lexical and Grandchild called scope. Typed aliases
 retain Child's type source; untyped aliases do not. Four originals and 392 reached
 premises plus four raw steps pass in the
 [Grandchild reference-Get review](coverage/semantics/grandchild-reference-get-hooks-review.json).
+Selected linked chains now select the latest physical slot/type source under
+Parent's sole backed `&get`: unchanged classes have no properties, interfaces
+or constants, and each redeclaring class has only that same-type public plain
+property without set restrictions, interfaces or constants. Five originals,
+449 reached premises and five raw steps pass in the
+[reference-Get chain review](coverage/semantics/reference-get-chain-review.json).
 Wider hook declarations and indirect consumers remain partial.
 
 Public backed by-value `get` hooks execute their block or expression body on each read,

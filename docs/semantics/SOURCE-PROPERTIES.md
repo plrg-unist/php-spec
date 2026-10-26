@@ -88,7 +88,18 @@ Grandchild called class; its reference carries Child's type source when typed
 and no source when untyped. Four originals, 392 reached premises and four raw
 fetch/rebind steps pass in the
 [Grandchild reference-Get review](../../coverage/semantics/grandchild-reference-get-hooks-review.json).
-The unchanged Greatgrandchild remains checked Unsupported. Deeper Child paths,
+The linked reference-Get route now follows bounded chains back to that sole
+backed Parent getter. Unchanged descendants declare no properties, interfaces
+or constants; each redeclaring descendant declares only the same-type public
+plain property, with no set restriction, interfaces or constants. Methods may
+also be declared. The last redeclaration supplies the physical slot and any
+typed reference source; the getter keeps Parent lexical scope and the receiver's
+called scope. The promoted Greatgrandchild, repeated untyped and typed
+redeclarations, a mixed chain and Get-before-rebind Error give five exact sources,
+449 reached premises and five raw steps in the
+[reference-Get chain review](../../coverage/semantics/reference-get-chain-review.json).
+Hook-bearing intermediate redeclarations remain Unsupported; an incompatible
+property type remains a static rejection. Different-type compatible chains,
 virtual/arrow/set/trait forms, dimensions,
 quiet reads and compound consumers remain outside these slices.
 

@@ -32,6 +32,12 @@ reference to the hooked destination runs Get, then raises the overloaded-object
 Error without rebinding the property or RHS. The bounded declaration/consumer
 scope and source/state evidence are in the
 [reference-Get review](../../coverage/semantics/reference-get-hooks-review.json).
+Selected linked descendants retain this reference behavior when unchanged
+classes have no properties/interfaces/constants and each redeclaration has
+only that same-type public plain property without set restrictions, interfaces
+or constants. The latest redeclaration owns the slot and type source;
+Parent's getter keeps its lexical scope while the actual receiver supplies the
+called scope. See the [chain review](../../coverage/semantics/reference-get-chain-review.json).
 
 Nonobject property writes use the pinned PHP modify or assign error and keep
 the operation's evaluation order; null and false do not create an object. The
