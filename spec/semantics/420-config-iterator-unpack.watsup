@@ -9,6 +9,8 @@ dec $config_iterator_input_nodes(pconfigiterator) : pnode*
 dec $config_iterator_quiet_input(pstate, pconfigiterator) : bool
 dec $config_iterator_producer_valid(pstate, pconfigiterator) : bool
 dec $config_iterator_quiet_aggregate_data(pstate, pconfigiterator) : bool
+dec $config_iterator_finalizable_aggregate_data(pstate, pconfigiterator) : bool
+dec $config_iterator_aggregate_data(pstate, pconfigiterator) : bool
 dec $config_iterator_history(pstate, pconfigiterator) : bool
 dec $config_iterator_scope(pstate, pconfigiterator) : bool
 dec $config_iterator_retired_scope(pstate, pconfigiterator) : bool
@@ -140,6 +142,15 @@ def $config_iterator_quiet_aggregate_data(S, pconfigiterator) = true
   -- if $destructor_method(S, pconfigiterator.OBJECT) = eps
   -- if $node_children(S, HOBJECT pconfigiterator.OBJECT) = eps
 def $config_iterator_quiet_aggregate_data(S, pconfigiterator) = false -- otherwise
+def $config_iterator_finalizable_aggregate_data(S, pconfigiterator) = true
+  -- if pconfigiterator.PRODUCER = (n_aggregate)
+  -- if ~$config_iterator_owning_input(pconfigiterator)
+  -- if $config_iterator_producer_valid(S, pconfigiterator)
+  -- if $destructor_method(S, pconfigiterator.OBJECT) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if $node_children(S, HOBJECT pconfigiterator.OBJECT) = eps
+def $config_iterator_finalizable_aggregate_data(S, pconfigiterator) = false -- otherwise
+def $config_iterator_aggregate_data(S, pconfigiterator) = ($config_iterator_quiet_aggregate_data(S, pconfigiterator) \/ $config_iterator_finalizable_aggregate_data(S, pconfigiterator))
 
 def $config_iterator_string(S, PSTRING n*) = $startup_bytes(n*)
 def $config_iterator_string(S, PSTRING_CARRIER pstringidentity n*) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*)
@@ -188,7 +199,7 @@ def $config_iterator_temp_primitive_key(S, pconfigiterator, poperand) = false --
 def $config_iterator_fresh_aggregate_primitive_key(S, pconfigiterator, poperand) = true
   -- if pconfigiterator.PRODUCER = (n_aggregate)
   -- if ~$config_iterator_owning_input(pconfigiterator)
-  -- if $config_iterator_quiet_aggregate_data(S, pconfigiterator)
+  -- if $config_iterator_aggregate_data(S, pconfigiterator)
   -- if $heap_owners($heap_graph(S), HOBJECT pconfigiterator.OBJECT) = 1
   -- if $config_iterator_invalid_primitive_key(poperand)
 def $config_iterator_fresh_aggregate_primitive_key(S, pconfigiterator, poperand) = false -- otherwise
@@ -216,7 +227,7 @@ def $config_iterator_scope(S, pconfigiterator) = true
 def $config_iterator_scope(S, pconfigiterator) = false -- otherwise
 def $config_iterator_retired_scope(S, pconfigiterator) = true
   -- if $config_iterator_history(S, pconfigiterator)
-  -- if $config_iterator_owning_input(pconfigiterator) \/ $config_iterator_quiet_aggregate_data(S, pconfigiterator)
+  -- if $config_iterator_owning_input(pconfigiterator) \/ $config_iterator_aggregate_data(S, pconfigiterator)
   -- if $(pconfigiterator.OBJECT < |S.OBJECTS|)
   -- if ~((HOBJECT pconfigiterator.OBJECT) <- S.ALLOCATIONS)
   -- if S.OBJECTS[pconfigiterator.OBJECT] = INSTANCE porigin_class
@@ -489,10 +500,10 @@ def $config_iterator_finish(S, pconfigiterator, ptask_tail*) = $fiber_start_unpa
   -- if $($heap_owners($heap_graph(S), HOBJECT pconfigiterator.OBJECT) > 1)
 def $config_iterator_finish(S, pconfigiterator, ptask_tail*) = $fiber_start_unpack_release(S[.ITERATORS = $iterator_remove(S.ITERATORS, pconfigiterator.ITERATOR)][.ORIGIN = (pconfigiterator.CALL.SITE)][.TODO = (CONFIG_ITERATOR pconfigiterator "ready") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], [HOBJECT pconfigiterator.OBJECT])
   -- if $heap_owners($heap_graph(S), HOBJECT pconfigiterator.OBJECT) = 1
-  -- if $config_iterator_quiet_aggregate_data(S, pconfigiterator)
+  -- if $config_iterator_aggregate_data(S, pconfigiterator)
 def $config_iterator_finish(S, pconfigiterator, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "CONFIG Iterator unpack last DATA owner"]
   -- if $($heap_owners($heap_graph(S), HOBJECT pconfigiterator.OBJECT) <= 1)
-  -- if $heap_owners($heap_graph(S), HOBJECT pconfigiterator.OBJECT) = 0 \/ ~$config_iterator_quiet_aggregate_data(S, pconfigiterator)
+  -- if $heap_owners($heap_graph(S), HOBJECT pconfigiterator.OBJECT) = 0 \/ ~$config_iterator_aggregate_data(S, pconfigiterator)
 rule PhpStep/config-iterator-finish: S ~> $config_iterator_finish(S, pconfigiterator, ptask_tail*)
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "finish") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "finish")
@@ -532,7 +543,7 @@ def $config_iterator_discard_allowed(S, pconfigiterator) = true
   -- if $heap_owners($heap_graph(S), HOBJECT pconfigiterator.OBJECT) = 0
   -- if (HOBJECT pconfigiterator.OBJECT) <- S.ALLOCATIONS
   -- if $config_iterator_scope(S, pconfigiterator)
-  -- if $config_iterator_quiet_aggregate_data(S, pconfigiterator)
+  -- if $config_iterator_aggregate_data(S, pconfigiterator)
   -- if pconfigiterator.CALL.OWNER = eps
 def $config_iterator_discard_allowed(S, pconfigiterator) = false -- otherwise
 ;; Generic throw search has removed the task. Restore its owners at the boundary.

@@ -76,6 +76,7 @@ family.CASES = {
     for name, tail in TAILS.items()
 }
 family.UNSUPPORTED = {}
+family.MODEL_TIMEOUTS = {name: 180 for name in family.CASES}
 EXPECTED_SHA256 = {
     'iterator-finalizer-normal': '5f9b9a44ef2cf3be6588d929487783f6bf64a6e8641e836d003dee00f2856b4b',
     'iterator-finalizer-invalid': 'f238ffb19da5596dbe21a5b882891549715defa081ae18772048811bb261196f',
