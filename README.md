@@ -1415,6 +1415,13 @@ and late aliases survive without a compound store; two live strings cannot retry
 bitwise string specialization. Ten originals and 566 focused SL premises pass in the
 [delayed failure ledger](coverage/semantics/delayed-type-failure-review.json).
 
+NaN shorthand ternary now copies the live selected float after its Warning
+callback. A `1.0` write delivers float `1.0`; a `0.0` write enters fallback and
+copies integer `7`; a supplied throw cancels both fallback and outer store.
+Three originals and 487 focused premises pass in the
+[shorthand ledger](coverage/semantics/ternary-nan-warning-review.json).
+Full ternary, references/changed representations and wider handlers remain partial.
+
 NaN LEFT short-circuit decisions now read the live float CV after a Warning
 callback. A `0.0` write skips `&&`/`and` RIGHT and enters `||`/`or` RIGHT; a supplied
 throw prevents RIGHT and outer assignment even after a truthy write. Five originals

@@ -39,6 +39,17 @@ Keyword forms have source agreements; focused states cover symbolic skip, enter
 and throw. Opposite-truth/no-rewarning/refusal controls are derived. RIGHT NaN,
 reference operands, other conditional consumers and wider handlers remain partial.
 
+Shorthand ternary with an ordinary NaN float CV now reads both live truth and
+the selected value after its named Warning callback. Writing `1.0` delivers a
+float `1.0` while skipping fallback; writing `0.0` runs fallback and copies its
+integer `7` after the fallback changes the original CV to `2.0`. Later source
+writes leave both result values unchanged. A supplied throw prevents fallback
+and outer assignment. The nonowning marker reuses typed branch/value-copy rules.
+Three originals and 487 premises in three checked-source-derived recipes pass
+in the [shorthand ledger](../../coverage/semantics/ternary-nan-warning-review.json).
+Unchanged-NaN/opposite-truth/source/refusal controls are derived. Full ternary,
+references, changed representations and wider handlers/lifetimes remain partial.
+
 Module209 resumes source-certified missing-CV decisions with the original null,
 even when an error handler defines the same variable. It covers `if`/`elseif`,
 `while`/`do`/`for`, both Boolean and keyword short-circuit operators, Boolean NOT,
