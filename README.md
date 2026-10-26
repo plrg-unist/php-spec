@@ -290,6 +290,14 @@ An undefined ordinary CV used as a computed variable name now warns before conve
 
 [First dimension reads](coverage/semantics/source-dimension-emission-review.json) now retire owned include/eval operands at the key compiler line before reading an ordinary CV base and CV or literal key. A narrow writable array-property receiver separates the protected array; a later literal property warning resumes with fixed null. Seven exact originals and245 independent premises retain their private336 cuts; actual340 passes strict compilation. Wider emission and receiver forms remain required.
 
+[String R-offset callbacks](coverage/semantics/string-offset-read-warning-review.json)
+preserve selected old bytes while a cast Warning uses the live primitive key.
+Interned and owning temporary carriers survive independently; a borrowed runtime
+carrier requires exact identity in its surviving ordinary CV. Bounds completion
+keeps its fixed empty result even after both names are unset. Pending throws
+retain default-versus-suppressed bounds reporting. Wider keys and ownership
+histories remain partial; the dropped borrowed-carrier control keeps zero credit.
+
 [Named noarg DIM key calls](coverage/semantics/source-call-key-emission-review.json)
 now retire owned include/eval operands at the first INIT line. The ordinary CV
 base stays borrowed through the call; the returned key is fixed before live base
@@ -597,7 +605,7 @@ current value unsent, preserves the same Exception and cancels the assignment.
 The first slice uses borrowed CV operands, plain string values and external
 Iterator/callee owners. Four source agreements and 742 original state premises
 pass at their recorded Source87 cuts. Source90 admits the old direct Generator
-control; Generator-producing Aggregate remains Unsupported. Earlier
+control; generator-function getIterator remains Unsupported. Earlier
 fixture/timeouts retain zero credit. Builtin Traversable classification and wider
 producers remain open.
 
@@ -620,6 +628,15 @@ reception with its genuine producer trace and preserved assignment/identity,
 then permits saved-setter recovery. Native3/source3, strict413 and 467 original
 state conditions pass (523 physical, 56 setup), with no retry. The initial
 Unsupported comparison remains zero; wider caches, producers and lifetimes remain partial.
+
+[Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
+now transfer a real non-generator getIterator result into native Generator DATA.
+Both producer and Generator effects preserve the selected setter and historical
+input, and terminal resume finishes before API entry. An Exception allocated in
+getIterator keeps that original trace when the Generator later throws it; identity,
+assignment and setter recovery survive. Native3/source3, strict414 and 475 original
+state conditions pass (544 physical, 69 setup). Wider producers and lifetimes
+remain partial.
 
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
@@ -1473,7 +1490,12 @@ a right-array warning preserves the first converted string across callback write
 Borrowed arrays gain no saved owner, and supplied throws cancel destination
 assignment. Three exact originals and 405 focused SL premises pass in the
 [concat-array ledger](coverage/semantics/concat-array-warning-review.json).
-Wider arrays/operands and RHS rebinding after a left-array warning remain partial.
+After a completed left Warning, the same ordinary RHS cell may hold a Stringable
+object. Its selected method survives source retargeting and returns `B`;
+concatenation yields `ArrayB`. A method throw preserves the completed Warning, while an earlier handler throw
+prevents that method. Three source agreements and 509 focused premises (including
+derived controls) pass in the [Stringable RHS review](coverage/semantics/concat-stringable-warning-review.json).
+Wider arrays, changed/rebound/reference RHS forms and callbacks remain partial.
 Concatenation assignment now stages a right-array warning for two bounded plain CVs.
 The first string survives handler writes and RHS removal; normal commit overwrites
 the target and detaches a late alias, while a supplied throw preserves it.
@@ -2064,6 +2086,12 @@ authenticated string-carrier leaves, including live scalar reference cells.
 [Four source agreements and 533 state premises](coverage/semantics/constant-query-array-name-review.json)
 cover raw array traces, caller/trace COW and shared reference updates. Nested,
 object/legacy-string leaves and wider call forms remain open.
+Captured query Closures reject the same bounded positional arrays while retaining
+their selected callee through argument effects. Raw API and explicit wrapper
+payloads preserve the captured DIRECT snapshot; COW writes separate those copies,
+while scalar ALIAS cells stay shared. Runtime arrays retire after their final
+owners, caller destinations retain their prior values, and a captured string
+reader recovers. [Captured array-query review](coverage/semantics/constant-owned-array-query-review.json).
 The same flat array-name domain now raises TypeError in positional `define()`
 with primitive candidates and omitted/primitive flags, before flag reception or
 registration. Later arguments still run and can change ordinary fields or shared
@@ -2114,6 +2142,13 @@ and strict code. Raw receiver traces and selected callees survive later argument
 effects; an ordinary `toString()` method is never invoked as a cast.
 [Four source agreements and 508 state premises](coverage/semantics/constant-query-nonstringable-name-review.json)
 cover errors and normal recovery. Other internal objects and wider forms stay partial.
+
+Captured intrinsic query Closures also reject positional nonStringable instances
+and `stdClass` with raw TypeError arguments. Explicit `__invoke` keeps the object
+in both API and wrapper frames; the callee can retire while a copied raw-argument
+array retains the object until its final release. Ordinary `toString()` remains
+uncalled, caller destinations retain their prior values, and a separate captured
+string query recovers. [Captured nonStringable query review](coverage/semantics/constant-owned-nonstringable-query-review.json).
 
 Retained propertyless Stringable names with non-NUL global results now convert
 before positional `define()` registration with primitive candidates and
@@ -3161,8 +3196,11 @@ wider target/value and map-history cases remain partial. The actual bounded
 `getIterator()` factory now returns an Iterator that owns Map; outer foreach
 keeps its own DATA and current cache. Exhaustion versus an externally held
 Iterator after break preserves the copied targets until their later release.
-Two sources and 265 Boolean/four raw checks pass at `95d732f3b`/413; manual methods,
-wider histories, hidden allocation handles and GC/CONFIG remain partial.
+Two sources and 265 Boolean/four raw checks pass at `95d732f3b`/413. Manual
+zero-argument cursor methods now preserve standalone current copies, next/end
+NULL, rewind identity and empty access after Key death; two sources and 308
+Boolean/eight raw checks pass at `25ff16620`/413. Wider histories, active outer
+loops, hidden allocation handles and GC/CONFIG remain partial.
 
 Bounded by-reference WeakMap traversal shares the entry's cell and preserves
 rebinding plus escaped aliases through DATA or Key retirement. A reference
@@ -4819,7 +4857,7 @@ Accessible private/protected UNSET reads through local CVs now retain the
 caller's physical declaration across Get. Parent int versus Child string shadow,
 caller-line TypeError and populated backing99/captured `'ok'` pass
 [three source agreements and 330 focused premises](coverage/semantics/magic-get-scoped-unset-review.json).
-Public-shadow selection, direct-This entry, by-reference getters, scoped recursion,
+Public-shadow selection, by-reference getters, scoped recursion,
 bound-Closure scopes and wider access/receiver/lifetime forms remain partial.
 Denied private/protected reads and inherited-private literal fallback now invoke
 the getter without applying the hidden property's type. Allowed lexical reads
@@ -5029,6 +5067,14 @@ Released-CV mutation, raw retired-container reads, wider wrapper-pointer consume
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
 full foreach coverage remains required.
+
+Literal `$this` also enters bounded by-value Get with a source certificate and
+current receiver identity. Saved declaration/history survives a global Warning
+handler with no `$this`; captured NULL survives backing9 and a later reset.
+A read-method receiver outlives global-CV clearing and Get-hold release, printing
+`m` before destruction. [Four source agreements and 488 focused premises](coverage/semantics/magic-get-direct-this-review.json)
+retain414 cuts; INITIAL remains an existing control and earlier failures retain0.
+Wider receiver/signature/coercion and suspension forms remain partial.
 
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference

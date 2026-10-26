@@ -446,8 +446,18 @@ A supplied throw cancels the assignment and removes both warning/legacy markers.
 Three exact originals and 270 author plus 135 independent SL premises pass in the
 [concat-array ledger](../../coverage/semantics/concat-array-warning-review.json).
 Pruned/missing-name and RHS projections are pure refusals, never driven.
-After a left-array warning, missing/rebound/new-reference/non-string later RHS
-remain partial, along with wider arrays/operands, callbacks and lifecycle forms.
+A completed left-array Warning now also admits an ordinary Stringable object
+installed in the same allocated nonreference RHS cell. Fresh capture remains
+string-only. The unchanged right-conversion machinery selects and roots that
+receiver across its method's source retargeting, then joins returned `B` with
+cached `Array`. A supplied method throw keeps the completed default Warning;
+a handler throw prevents method entry and cancels the caller store. Three source
+agreements and 509 premises in three checked-source-derived recipes include
+isolating fresh-versus-historical and metadata/refusal controls in the
+[Stringable RHS review](../../coverage/semantics/concat-stringable-warning-review.json).
+Missing/rebound/new-reference/other late types remain partial, along with wider
+arrays, owning handlers and lifecycle forms. Existing Stringable/concat algorithms
+and the older string-only warning route are unchanged.
 
 Plain-CV `.=` now handles a quiet first string and a supported array RHS.
 Its source-authenticated warning marker caches the exact first string carrier;

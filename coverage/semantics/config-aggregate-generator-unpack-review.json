@@ -1,0 +1,68 @@
+{
+  "scope": "A borrowed initialized Aggregate CV whose real non-generator by-value getIterator returns an externally retained fresh named zero-argument nonbyref Generator; existing CONFIG INI_SET streams up to two plain strings/integer keys.",
+  "status": "integrated; independently reviewed bounded Aggregate-returned Generator CONFIG",
+  "reviewer": "/root/source86_review",
+  "base_revision": "dd7a03e396b74c405d4aef47b7aa14b34ad29007",
+  "source_only_revision": "98c81eb73d0576e9edfe75e2920c0c04c157264e",
+  "runtime_revision": "8404a12da72f00d85e606fbe48db916dc4302917",
+  "strict_source_state_revision": "1de318e67db8b9fb97dc754a0b1639929a34aef9",
+  "ordered_modules": 414,
+  "private_semantic_sha256": {
+    "spec/semantics/421-config-aggregate-iterator-unpack.watsup": "ae789a781b0b8c15c9c1854ba1eafe560b93df16d8088a6a032ea863c0e6794b",
+    "spec/semantics/423-config-generator-unpack.watsup": "e0fc3a513594a3c0d365e3aaeecd011093f61f3ef63a537a47c2dfd19f7400af"
+  },
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json, exact flags in reports",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "primary": "Pinned Zend/zend_interfaces.c zend_user_it_new_iterator borrows getIterator receiver. zend_user_it_get_new_iterator calls the actual returned object get_iterator then destroys its return temporary; zend_generator_get_iterator owns one DATA copy. Atomic RESULT→DATA transfer preserves this net ownership. Rewind/next use the native Generator engine without PHP method frames.",
+  "implementation": "421 adds a separate real returned-Generator predicate/promotion requiring original callback/source/callee authority, actual RESULT, external Aggregate/callee/Generator owners and existing fresh named0arg Generator scope. INPUT remains original Aggregate CV, never a fabricated live Generator operand. Old Iterator predicate/arm stay exact; default refuses both. Only existing scope declaration moves423→421; all423 bodies/schema/30/420/manifest/GC/WeakMap code stay base-exact. No new record, ARRAY traversal receipt, public cursor or NEXTITER mutation.",
+  "accepted": [
+    "Native author2/peer1 PASS at98c81, quiet/stable/reaped/cap15. Fixed G→Y0→Y1→F precedes API14→8. Retained producer sets Aggregate23/callee getter/precision6; Gen sets its CV17, precision7/final8, then old setter returns8/new11 and recovery11→9.",
+    "Strict414 PASS9.759s/cap90; source3 normal/CLI0 native-exact PASS14.305/21.747/37.354s at1de318 with CLI45/host60, stable/quiet/no survivors. Peer saved Exception originates in getIterator line14/frame24, then terminal Gen throw retains that exact trace/identity/result99/effects4/precision7 and recovery7→9.",
+    "All475 original state conditions PASS at1de318 across544 physical/69 setup: author fixed56/91 (20.239/22.731s), retained56/103 (24.822/32.062s), peer136/102 (47.354/51.364s), each unchanged90cap/true LF/empty stderr/exit0/stable/groups[]. Six parts pass first actual evaluations; setup recomputes real source cuts and adds no coverage.",
+    "Reached states prove real returned fresh Gen, no Aggregate pin, RESULT3→DATA3 whole-state/heap transfer, historical scalar input replacement, no fake direct-CV authority, terminal resume/retirement before API, selected setter, original saved trace ARRAYs during active Gen/current THROW and after close, exact discard/drained owners, cancellation/recovery/budgets and new return/owner/type/phase/source refusals. Raw refusal and driver finalization remain distinct."
+  ],
+  "conditions": {
+    "fixed_original": 125,
+    "retained_original": 137,
+    "peer_original": 213,
+    "original_total": 475,
+    "author_parts": [
+      56,
+      91,
+      56,
+      103
+    ],
+    "author_setup": 44,
+    "peer_parts": [
+      136,
+      102
+    ],
+    "peer_setup": 25,
+    "physical_total": 544
+  },
+  "zero_credit": [
+    "Untouched98c81 fixed model is accepted/program Unsupported after B|G| with CONFIG Aggregate return outside shared initialized Iterator domain, CLI1/outer1/agreement0,12.885s/cap60, quiet/stable/reaped. Original report/process/exit/stdout/stderr are listed in genuine-preserved.json and remained hash-identical after models/archive; no repair before classification or replay.",
+    "Initial peer wrapper used taskset -c3 and exited1 before Python/any proof evaluation; commands[6]/original actor log preserved, no check-report. Only argv changed to separate -c and3 in fresh commands[7]/cpu-list-fixed log; same HEAD/fixtures/caps, corrected outer session45284 reaped0. No accepted part repeated."
+  ],
+  "execution": "Native/genuine wrappers use CPU1; affected preparation/strict/source/author/peer use CPU3, AS3221225472 and LC_ALL=C/TZ=UTC. Original state/strict90 caps, model CLI45/host60,10000 steps; SL/cachefalse/encountered determinism true. Exact argv/cwd/start/exits are in native/outer-commands.json and check-commands-91.json. All outer sessions/groups fully reaped; actor probe empty and CPU3 released.",
+  "raw_root": "../php-spec-evidence-archive/config-aggregate-generator-unpack-91",
+  "manifest_sha256": "a90eb0110f4dc5881466a05482cb9c2e1bfd39deb8e004e189f7f60b5cc911f3",
+  "recovery": "External manifest maps18 moved roots/logs/command records/private-reference record and hashes18 reports (17PASS/one genuine0). Restore original recorded cuts/WT91 paths/cwd, provision project-local tools/private references, verify hashes and use exact commands. RAW STOP/no actors preceded one relocation; no backup worktree or evidence build dependency.",
+  "remaining": "Generator-function getIterator old control stays Unsupported with exact original PHP bytes/mapping and historical credit; no old controls replay. Nonfresh, recursive/invalid returns, sole returned ownership, temporary/reference/Closure/method producers, owning/reference currents, wider sends/keys/receivers/callees/diagnostics/GC/Fiber lifetimes remain partial. Paused OP12/Source47 lowprecision DEFINE NaN/ownedNUL/undefined-byref LIST/COMP88 untouched. No engine bug, deliberate divergence, full-core/equivalence/BOLA claim.",
+  "composition": {
+    "actual_parent": "d0b059d6377564da62183aad190e771d1504f026",
+    "immutable_publication": "705a97ed415c452108bd431fbe1030d46d1785e0",
+    "ordered_modules": 415,
+    "preservation": "421/423 and four scripts are publication-exact. All other runtime/schema/manifest/pipeline bytes stay actual-parent exact; actual415 module order preserved. Inventory appends only own helper/source/ledger paths and review suffixes to actual two-row prefixes; foreign docs/compact progress preserved.",
+    "incoming_review": "Independent CLEAR by /root/source86_review:424 manual methods require WeakMapIterator;400 nonstring queries require constant/defined+OBJECT;404 resume requires Array-left warning/Stringable;233/425 reads require string base (trace reads here use ARRAY); CLASS124380 requires literal-this INSTANCE/__get property access.30 string-read additions are disjoint, string-carrier delta comments only. No selected interaction or renewed execution.",
+    "candidate_review": "Independent final CLEAR by /root/source86_review:421/423/four scripts publication-exact; every other runtime/schema/pipeline/manifest actual-parent exact,415 order unchanged. Actual inventory prefixes/private suffixes and foreign README/family/active progress rows preserved; ledger only status/composition. Diffcheck PASS, no execution or raw renewal."
+  }
+}

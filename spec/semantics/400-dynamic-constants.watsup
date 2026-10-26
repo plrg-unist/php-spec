@@ -347,6 +347,12 @@ def $dynamic_define_arity_message(pconfigcall) = $ptascii("define() expects at m
 
 ;; Array names fail string reception without copying their trace-owned payload.
 dec $dynamic_query_array_call(pconfigcall) : bool
+dec $dynamic_owned_query_array_call(pconfigcall) : bool
+def $dynamic_owned_query_array_call(pconfigcall) = true
+  -- if pconfigcall.KIND <- [INTRINSIC_CONSTANT, INTRINSIC_DEFINED]
+  -- if pconfigcall.OWNER =/= eps /\ pconfigcall.SELECTION = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PARRAY n_array))]
+def $dynamic_owned_query_array_call(pconfigcall) = false -- otherwise
 def $dynamic_query_array_call(pconfigcall) = true
   -- if pconfigcall.KIND <- [INTRINSIC_CONSTANT, INTRINSIC_DEFINED]
   -- if pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
@@ -363,7 +369,8 @@ def $dynamic_query_array_entries(S, (ENTRY pkey (ALIAS n_cell)) :: pentry*) = $d
 def $dynamic_query_array_entries(S, pentry*) = false -- otherwise
 dec $dynamic_query_array_valid(pstate, pconfigcall) : bool
 def $dynamic_query_array_valid(S, pconfigcall) = true
-  -- if $dynamic_query_array_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
+  -- if ($dynamic_query_array_call(pconfigcall) \/ $dynamic_owned_query_array_call(pconfigcall)) /\ $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.OWNER = eps \/ ~$pipe_site(S, pconfigcall.SITE)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PARRAY n_array))]
   -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, eps, porigin_argument, z_argument))
   -- if $dynamic_array_known_matches(S, PARRAY n_array, $compiled_read(S, porigin_argument))
@@ -597,7 +604,7 @@ def $dynamic_query_nonstring_object(S, n_object) = true
 def $dynamic_query_nonstring_object(S, n_object) = false -- otherwise
 dec $dynamic_query_nonstring_valid(pstate, pconfigcall) : bool
 def $dynamic_query_nonstring_valid(S, pconfigcall) = true
-  -- if $dynamic_query_string_call(pconfigcall) /\ $config_invoke_valid(S, pconfigcall)
+  -- if ($dynamic_query_string_call(pconfigcall) \/ $dynamic_owned_query_string_call(pconfigcall)) /\ $config_invoke_valid(S, pconfigcall)
   -- if ~$pipe_site(S, pconfigcall.SITE)
   -- if $dynamic_scalar_define_arguments(S, pconfigcall, 0)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
@@ -731,6 +738,7 @@ def $dynamic_constant_receive(S, pconfigcall) = $dynamic_class_constant_receive(
   -- if ~$dynamic_halt_call(pconfigcall)
   -- if ~$dynamic_query_arity_call(pconfigcall)
   -- if ~$dynamic_query_array_call(pconfigcall)
+  -- if ~$dynamic_owned_query_array_call(pconfigcall)
   -- if ~$dynamic_query_string_valid(S, pconfigcall)
   -- if ~$dynamic_query_nonstring_valid(S, pconfigcall)
 def $dynamic_constant_receive(S, pconfigcall) = $dynamic_halt_receive(S, pconfigcall)

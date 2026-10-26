@@ -152,12 +152,64 @@ def $useriter_call(S, n, n_object, statement, porigin_site, z, "next", KNOWN PNU
   -- if $weakmap_iterator_outer_valid(S, n, n_object, statement, porigin_site, z)
   -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
 
+;; Manual methods own only their ordinary result. The factory's inner cursor
+;; remains, but an active outer cache must not be retargeted through this API.
+dec $weakmap_iterator_api_allowed(pstate, nat, ptbytes, phpType7*) : bool
+def $weakmap_iterator_api_allowed(S, n_object, ptbytes, eps) = true
+  -- if $ptlc(ptbytes) <- [$ptascii("rewind"), $ptascii("valid"), $ptascii("current"), $ptascii("key"), $ptascii("next")]
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.FIBERCALLERS = eps
+  -- if S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.OPERATIONS = eps
+  -- if $weakmap_iterator_valid(S, n_object)
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if S.ITERATORS = [WEAKMAPOWNEDITER n_inner n_object n_map n_position]
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression_receiver phpType20 (SEQUENCE eps) metadata)
+  -- if $method_source_task(S, NExprMethodCall expression_receiver phpType20 (SEQUENCE eps) metadata)
+  -- if $method_source_name(phpType20, ptbytes)
+  -- if $weakmap_foreach_name(expression_receiver) = (n_name*)
+  -- if S_receiver = $quiet_operand(S, VARIABLE n_name* 0)
+  -- if S_receiver.COMPLETION = NORMAL /\ S_receiver.RESULT = KNOWN (POBJECT n_object)
+def $weakmap_iterator_api_allowed(S, n_object, ptbytes, phpType7*) = false -- otherwise
+dec $weakmap_iterator_api_done(pstate, pvalue) : pstate
+def $weakmap_iterator_api_done(S, pvalue) = S[.TODO = METHOD_RESULT :: ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+dec $weakmap_iterator_api_value(pstate, nat, bool) : pvalue
+def $weakmap_iterator_api_value(S, n_object, false) = pvalue
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if $iterator_lookup(S.ITERATORS, n_inner) = (WEAKMAPOWNEDITER n_inner n_object n_map 0)
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if pvalue = pweakmapentry.VALUE
+def $weakmap_iterator_api_value(S, n_object, true) = POBJECT pweakmapentry.KEY
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if $iterator_lookup(S.ITERATORS, n_inner) = (WEAKMAPOWNEDITER n_inner n_object n_map 0)
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+def $weakmap_iterator_api_value(S, n_object, b_key) = PNULL -- otherwise
+dec $weakmap_iterator_api(pstate, nat, ptbytes) : pstate
+def $weakmap_iterator_api(S, n_object, ptbytes) = $weakmap_iterator_api_done(S, $weakmap_iterator_api_value(S, n_object, ptbytes = $ptascii("key")))
+  -- if ptbytes <- [$ptascii("current"), $ptascii("key")]
+def $weakmap_iterator_api(S, n_object, ptbytes) = $weakmap_iterator_api_done(S[.ITERATORS = [WEAKMAPOWNEDITER n_inner n_object n_map 0]], PNULL)
+  -- if ptbytes = $ptascii("rewind")
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+def $weakmap_iterator_api(S, n_object, ptbytes) = $weakmap_iterator_api_done(S[.ITERATORS = [WEAKMAPOWNEDITER n_inner n_object n_map 1]], PNULL)
+  -- if ptbytes = $ptascii("next")
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+def $weakmap_iterator_api(S, n_object, ptbytes) = $weakmap_iterator_api_done(S, PBOOL (n_position = 0 /\ S.OBJECTS[n_map] =/= WEAKMAP eps))
+  -- if ptbytes = $ptascii("valid")
+  -- if S.OBJECTS[n_object] = WEAKMAPITERATOR n_map n_inner
+  -- if $iterator_lookup(S.ITERATORS, n_inner) = (WEAKMAPOWNEDITER n_inner n_object n_map n_position)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $weakmap_iterator_api(S_read, n_object, $ptlc(ptbytes))
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n_object)
+  -- if $weakmap_iterator_api_allowed(S_read, n_object, ptbytes, phpType7*)
+
 ;; Other wrapper methods/consumers remain explicit rather than silently using
 ;; ordinary object properties or the old non-Traversable CONFIG path.
-def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.COMPLETION = UNSUPPORTED "WeakMap InternalIterator method protocol outside foreach"]
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.COMPLETION = UNSUPPORTED "WeakMap InternalIterator method source or storage"]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n_object)
   -- if $weakmap_iterator_at(S_read, n_object)
+  -- if ~$weakmap_iterator_api_allowed(S_read, n_object, ptbytes, phpType7*)
 def $clone_value(S, POBJECT n_object, z) = S[.COMPLETION = UNSUPPORTED "WeakMap InternalIterator clone protocol"]
   -- if $weakmap_iterator_at(S, n_object)
