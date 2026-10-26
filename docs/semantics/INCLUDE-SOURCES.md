@@ -1278,9 +1278,9 @@ does not replace the retained Generator or selected setter.
 The terminal resume runs after both sends, before DATA retirement and API entry.
 A supplied terminal Exception keeps both sends pending, result99 and precision6,
 with only the genuine producer trace at the unpack line. Exact discard/drained
-cleanup preserve its identity and permit saved-setter recovery. Raw last-DATA or
-callee boundaries preserve the original state; explicit blocking also prevents
-terminal finalization from silently releasing those roots. Wider producer/cache
+cleanup preserve its identity and permit saved-setter recovery. At the Source90
+cut, raw last-DATA/callee boundaries preserve the original state; the sole-DATA
+quiet retirement increment below supersedes only that DATA refusal. Wider producer/cache
 modes stop explicitly and remain outside this slice.
 
 Native3/genuine Unsupported0 retain `8d2ecb421`; strict413/source3 and all467
@@ -1305,8 +1305,9 @@ The new admission authenticates the Aggregate callback/source, selected callee,
 actual returned Generator, external owners and fresh phase. The old Iterator
 promotion stays exact and disjoint. Lost Aggregate/callee/returned-Generator
 owners and invalid phase/type/source stop at the raw handoff boundary with the
-original task/result. Existing Generator cleanup restoration/blocking protects
-later last-DATA/callee boundaries; driver finalization is a separate operation.
+original task/result. At the recorded Source91 cut, Generator cleanup restoration
+protects last-DATA/callee boundaries; the increment below replaces the quiet DATA
+refusal. Its separate shared-return admission guard remains intact.
 
 An Exception allocated in getIterator line14 retains its genuine method frame
 at unpack line24 when the Generator later throws it after both sends. No new
@@ -1320,3 +1321,28 @@ Native/genuine/accepted checks were not replayed; all five original genuine file
 remain preserved. A getIterator that is itself a generator function, nonfresh or
 owning/temporary/Closure/method producers, wider sends/values/lifetimes and paused
 boundaries remain partial or unchanged.
+
+The [sole-DATA Generator increment](../../coverage/semantics/config-generator-sole-data-review.json)
+handles existing initialized CV ingress when the body overwrites the only outside
+Generator owner. A closed named zero-argument Generator with no owning children
+can retire through the normal driver before INI_SET reception or caller catch.
+No owner is retained to keep validation alive. Existing object-slot metadata
+preserves source/function/selected-callee history after allocation retirement.
+Active rewind/next/ready/finish still require a live allocation; only invocation
+and cleanup-source validation accept the authenticated retired quiet history.
+
+WeakReference observers remain nonowning and become NULL before API success,
+post-retirement API arity traces, or caught terminal throw. Last-callee and owning
+RETURN boundaries keep exact raw Unsupported restoration; shared-owner behavior
+is unchanged. The old Source90/91 hypothetical quiet last-DATA refusals and two
+orphan hold-cell bindings are retired; all other original assertions/source bytes
+stay exact, their accepted historical counts remain, and no old suite is replayed.
+
+Native3/genuine Unsupported0 retain `d2b91bcce`; strict415/source3 and normal
+entry48 retain `44cec5541`. Corrected completion89, owned48/127 and peer99/96
+retain `8b7b153ec`, totaling448 originals/507 physical/59 setup. Original89 failed
+because a fixture continued from raw PhpStep output before the driver's prune;
+source-driven edges correct it without runtime changes or accepted replay. Both
+that failure and all five original genuine files are preserved. Direct temporary
+call-result ingress, method/Closure producers, owning caches/returns, delegation,
+GC/Fiber/destructor callback histories and broader lifetimes remain partial.

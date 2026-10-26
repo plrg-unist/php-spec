@@ -33,6 +33,16 @@ entry/retarget/return or throw uses the existing receiver roots and cleanup.
 The [Stringable RHS review](../../coverage/semantics/concat-stringable-warning-review.json)
 records source3/state509, including derived guards; wider source/lifetime forms remain partial.
 
+Concat also admits a bounded no-argument named call's acquired Stringable result
+before the borrowed LEFT-array Warning. Its temporary owner and cast receiver are
+separate: replacing the original source during H does not lose the saved object.
+The normal result is computed before temporary retirement, whose nonthrowing
+`__destruct` runs before caller assignment; pending handler/method exceptions remain
+the same object after that destructor and before catch. The
+[acquired RHS review](../../coverage/semantics/concat-returned-stringable-warning-review.json)
+records source3/state706, including derived guards. Other returned producers and
+throwing destructor/suspension histories remain partial.
+
 Supplied fixed string parameters now use the same resumable callback in receive
 order. Nominal or callable membership retains the original object before string
 coercion; caller strictness rejects before conversion. By-value formals retain a

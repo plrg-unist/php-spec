@@ -640,6 +640,14 @@ assignment and setter recovery survive. Native3/source3, strict414 and 475 origi
 state conditions pass (544 physical, 69 setup). Wider producers and lifetimes
 remain partial.
 
+[Sole Generator DATA](coverage/semantics/config-generator-sole-data-review.json)
+now retires before CONFIG API entry or terminal-throw catch when the input CV is
+replaced. Historical source/callee authority survives physical Generator death
+without an extra owner; WeakReference observers confirm retirement. Normal return,
+post-retirement API arity traces and supplied-Exception recovery pass three source
+comparisons and 448 original conditions (507 physical, 59 setup). Owning returns,
+last callee retirement and wider producers remain partial.
+
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
 throws the object-key `Error` before copying its current value or entering the
@@ -1498,6 +1506,15 @@ concatenation yields `ArrayB`. A method throw preserves the completed Warning, w
 prevents that method. Three source agreements and 509 focused premises (including
 derived controls) pass in the [Stringable RHS review](coverage/semantics/concat-stringable-warning-review.json).
 Wider arrays, changed/rebound/reference RHS forms and callbacks remain partial.
+
+A direct no-argument call may also supply an acquired Stringable RHS before the
+left-array Warning. Its saved value survives source replacement; a separate cast
+receiver stays live through `__toString`. The temporary's destructor runs before
+caller assignment or the original supplied-exception catch. Three source agreements
+and 706 focused premises, including derived controls, pass in the
+[acquired RHS review](coverage/semantics/concat-returned-stringable-warning-review.json).
+Wider returned operands and destructor-throw histories remain partial.
+
 Concatenation assignment now stages a right-array warning for two bounded plain CVs.
 The first string survives handler writes and RHS removal; normal commit overwrites
 the target and detaches a late alias, while a supplied throw preserves it.
@@ -1512,7 +1529,17 @@ Object/frame-dependent targets remain unfinished.
 [Array unpacking](docs/semantics/ARRAY-UNPACK.md) now preserves key order, copied
 values, reference history and compiler/runtime rejection phases. Its
 [independent review](coverage/semantics/array-unpack-review.json) audits 155 exact
-sources; Traversable objects remain unfinished. Array call arguments are covered by the later call-unpack checkpoint below.
+array-valued sources. Initialized user Iterator CV operands now run genuine
+rewind/valid/current/key/next frames, keeping raw current references through key
+before DIRECT insertion and cache retirement. Canonical numeric-string keys append;
+`"08"` remains a string, and overwrites preserve bucket order. COW and
+current/key/next failures preserve saved values and discard partial builders.
+The [Iterator spread review](coverage/semantics/array-iterator-unpack-review.json)
+records four source agreements for instances without owning fields or a
+destructor, with quiet scalar or flat DIRECT ARRAY caches. A Generator control
+remains explicitly Unsupported.
+Wider payloads, operand modes and Traversable lifetimes remain partial.
+Array call arguments are covered by the later call-unpack checkpoint below.
 [Iterator foreach](docs/semantics/ITERATORS.md) adds by-value source Iterator
 callbacks with effective method selection, retained current values and abrupt
 cleanup. Tentative-return declarations use real prototype order and runtime/file

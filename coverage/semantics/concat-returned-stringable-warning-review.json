@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "milestone": "OP87 acquired Stringable RHS survives array Warning and retires before caller delivery",
+  "status": "bounded independently reviewed semantics, publication and actual-tail composition",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/ordinary precision14 profile",
+  "scope": "Ordinary nonempty mutable flat DIRECT scalar-array LEFT CV and a direct no-argument by-value/untyped named call returning an allocated supported Stringable. The acquired value survives H source removal/replacement, uses a separate cast receiver, and retires through existing eager cleanup before store/catch. Wider operands/callbacks/lifetimes remain partial.",
+  "tested_revision": "adf2f6d8f0e779135ace232ac52e14b77ea17ebb",
+  "private_modules": 414,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "c0591608b79528d37794ba3f7babfc5bb2efc59aebdd7ba4da04e8b4e59fb31c",
+    "spec/semantics/59-concat-expressions.watsup": "7b123a4f4535fb566d7c43233ff939fbc7fabf6691c293b8839f8325357727c4",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "eccceaa51a8179e6c7223aacaa3a4f40f5d6aa62f54f12f639fdf8487d104e83"
+  },
+  "engine_basis": [
+    "Pinned zend_compile_binary_op compiles both expressions before ZEND_CONCAT. The handler calls concat_function and FREE_OP2 even on failure, before the next-opcode exception check.",
+    "zend_std_cast_object_tostring retains its selected receiver separately from the acquired TMP. zend_objects_destroy_object temporarily clears/restores an existing exception during a nonthrowing destructor.",
+    "142 runtime additions in30/59/404 supply authenticated source ingress, one acquired owner in LEFT/RIGHT/RELEASE, rootless WARNING/DONE, and a certified callback cleanup view. Existing168 Stringable conversion and270 eager cleanup/unwind are unchanged;298 dynamic-source authority is not reused. No pstate field/default or module-manifest change; shared numerical/formatting/CONFIG/DEFINE behavior is unchanged."
+  ],
+  "contract": [
+    "Normal P returns O; H removes LEFT and replaces seed, then default Warning25 completes. Actual S returns B, ArrayB is computed, and actual D sees outer100/casts1 before R/store. Later writes cannot alter the result or trigger a second D.",
+    "S supplied throw keeps the prior default Warning25; H supplied throw has casts0/noS/no default. Both execute D before the same Exception20/null Previous catch with outer100, drops1 and retained source effects.",
+    "706 total premises in three checked-source-derived recipes (268/251/187) bind actual f/H/S/D calls, distinct cast/TMP roots, raw ArrayB before release/rootless DONE, pending Exception restoration, EOF/budgets and derived source/receiver/cleanup capsule refusals. Constructed controls add no native credit."
+  ],
+  "accepted": {
+    "source": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-87/model-correction-adf2f6d8f-value/report.json",
+        "sha256": "a0f601378a62fe84856820e48a2c6dae1fac5450cd0706bbe6fee7dbb5494d50",
+        "agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-87/model-correction-adf2f6d8f-peers/report.json",
+        "sha256": "4bdb822f0971258f3773d310f5b00f67402a030ce507a51ac0b393940a86ddd1",
+        "agreements": 2
+      }
+    ],
+    "state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-87/focused-adf2f6d8f-three/report.json",
+      "sha256": "f58f8f042e105bfcfb70b56df1a74ce1ad6d6b98c0373d45191508fd0ed99d9b",
+      "conditions": [
+        268,
+        251,
+        187
+      ],
+      "total": 706
+    },
+    "total_source_agreements": 3,
+    "total_focused_state_conditions": 706,
+    "review": "Independent operators79_review accepted native/genuine classification, runtime/author/peer/header, corrected source3 and focused706. Publication independently reviewed; exact actual-tail composition independently reviewed. Accepted packet actors/workers fully reaped without timeout/interruption; Corrected models/focused checks reused retained native tuples; earlier records remain unchanged."
+  },
+  "preserved_zero_credit": {
+    "baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-87/baseline-831b6c356-value/report.json",
+      "sha256": "723c80b24c953d191fbd71676569ef80be516ecb67450de97622c86b91f2c3ad",
+      "revision": "831b6c356f30002263245bda4f4cfaf32a795226",
+      "result": "Checked Unsupported after P only, before H: error-handler ingress requires a producer continuation. Empty semantic stderr/model1/rowfalse/agreement0."
+    },
+    "native_preparation": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-87/native-831b6c356-value/report.json",
+        "sha256": "ff6121ee6ca12cba2507a416b63074503f1bc6f5c7fe2c6519e01d65b4d536fc"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-87/native-831b6c356-stringthrow/report.json",
+        "sha256": "ca28209319a8d254ed5d2ebd8bd767a770ddd7ba279f414e87cf6bc851c91a6c"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-87/native-831b6c356-handlerthrow/report.json",
+        "sha256": "c74d3f874c1bc3dbe9e5ec29ad9ebf56f1534f3b7d033fc62da0b89b46a2deb7"
+      }
+    ],
+    "first_source_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-87/source-16d28898c-value/report.json",
+      "sha256": "557996095f633e2f5783ecfd809b0cf895752e3f31e936fbcff1658e75936285",
+      "revision": "16d28898ca4925787c95a5c73afa0c6d7a58800e",
+      "result": "First normal model interpreter_failure/no-rule-match, not timeout. Retained successful native tuple is reused by corrected model only. Original failed model stays0; peer models and focused fixtures were unrun."
+    },
+    "diagnostics": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-87/diagnostic-16d28898c-first/report.json",
+        "sha256": "4a693759aad926f786ea491069eb2041f9fee85edf3045aab25753bc58d4d98d"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-87/diagnostic-449e50e3e-H-body/report.json",
+        "sha256": "0524163593c165acde3e7d8045d40dc5e98ae0346ca18780e79a182ecf0e1503"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-87/diagnostic-449e50e3e-H-body-fixed/report.json",
+        "sha256": "74e64001a1fca1b765e3fe6b6176553b917a75d660597d9b2ecf7da9db0781b8"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-87/diagnostic-449e50e3e-H-caller/report.json",
+        "sha256": "3b67312301430eff2b71810a7ae4a70daf54e6ecd1754865159957e245694a88"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-87/diagnostic-449e50e3e-capture-to-S/report.json",
+        "sha256": "c1d5e4171b369a2e2fe1659b8d651d103bc39d7f3c6fc635594c30e58af5d9f0"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-87/diagnostic-449e50e3e-helper-fixed/report.json",
+        "sha256": "748ef7338990df6da875c36578cc6927f5d4a142bbd09c89dc9416e820dab639"
+      }
+    ],
+    "diagnostic_scope": "All diagnostics have zero agreement credit. Original noninvertible helper binding, external algorithmic/nondeterministic fixtures and H-caller120 cap remain preserved. Valid capture/H unset/seed-retarget projections localized callback cleanup; they establish no source agreement."
+  },
+  "limits": [
+    "Native witnesses cover the three stated normal/nonthrowing-D and supplied-H/S-throw paths. Exact owner counts and cleanup/source/receiver refusals are model-state facts supported by pinned source; they do not establish arbitrary allocation/collector/exception-chain behavior.",
+    "Reference/typed/argument-bearing or other returned producers, wider arrays/Stringable/destructor/suspension forms remain partial. No engine bug, intentional divergence or previous-family execution renewal is claimed. Paused OP12, Source47 low-precision DEFINE NaN, owned-NUL, undefined-byref LIST and COMP88 remain separate."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-87",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C,TZ=UTC,PHP_SPEC_SCRIPT_ENCODING absent; ordinary precision14. Corrected normal/peer models use retained original paths/native streams; only new model runs. Native30/modelCLI60-process90/full414struct30/fixturestruct30/SL120 caps unchanged; serial CPU1 native/genuine and CPU3 affected work, both fully released.",
+    "commands": [
+      "run-native-gate.py 831b6c356f30002263245bda4f4cfaf32a795226 1",
+      "run-normal-correction.py adf2f6d8f0e779135ace232ac52e14b77ea17ebb 3",
+      "run-peer-models.py adf2f6d8f0e779135ace232ac52e14b77ea17ebb 3",
+      "run-focused-correction.py adf2f6d8f0e779135ace232ac52e14b77ea17ebb 3"
+    ],
+    "record": "Headers and raw tuples retain tool/input hashes and commands. Restore the matching Git cut/local tools and original retained paths; use fresh output directories. Raw archives are not build inputs; reused binaries prove no fresh offline rebuild."
+  },
+  "composition": {
+    "parent": "3c094f41d96648e7c9a13365e1a1b94e72c5aff3",
+    "private_publication": "e15327870f258b233afd09587042a50522e3e331",
+    "modules": 416,
+    "preservation": "Tested59/404 and six OP87 scripts remain private-publication exact. Incoming other runtime modules and ordered416 manifest remain parent-exact; combined30 adds only the six OP87 forward/task lines. Incoming inventory/publication facts remain preserved; accepted414 execution is not renewed.",
+    "gate": "Exact candidatee8bc0ac9c9bd4ad91fabd42cc7c645bda5ea1545 independently CLEAR over held parent3c094f41d96648e7c9a13365e1a1b94e72c5aff3. Private/parent code identities, incoming inventory and current scope are preserved. No semantic replay or new agreement credit; accepted414 cuts remain unchanged.",
+    "interaction": "Incoming207 requires missing-CV reference-array comparisons;380 property Get;400/421/423 constant/CONFIG packs;281 Generator/Fiber history;424 WeakMap/owned iterator;425 string KEY_READ_DIM;426 array spread/Iterator. OP87 creates none of those producers; its GLOBALS reads use the global path. Shared386 is a Boolean-equivalent activation shortcut: pending cleanup already yielded true, otherwise the same RC scan remains; ordinary O/no WeakMap result is unchanged."
+  }
+}

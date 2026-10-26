@@ -5324,3 +5324,136 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 2
   -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pboolnotnanwarning.LINE
+
+
+;; A returned op2 is acquired before CONCAT converts the borrowed LEFT array.
+;; The warning id is documentary; exactly one consumer owns the saved TMP.
+syntax pconcatreturned = {SITE porigin, LINE int, LEFT poperand, OBJECT nat}
+
+dec $concat_returned_source(pstate, pconcatreturned) : bool
+def $concat_returned_source(S, pconcatreturned) = true
+  -- if $origin_node(S.SOURCES, pconcatreturned.SITE) = (NExprBinaryOpConcat expression_left expression_right metadata)
+  -- if pconcatreturned.LEFT = VARIABLE ptbytes_left z_left
+  -- if $integer_operand_source(S, pconcatreturned.SITE, [PCFIELD 0], pconcatreturned.LEFT)
+  -- if $concat_site_valid(S, pconcatreturned.SITE, pconcatreturned.LINE, false, false)
+  -- if $compiled_redirect(S, pconcatreturned.SITE) = eps
+  -- if $origin_child((pconcatreturned.SITE), [PCFIELD 1]) = (PORIGIN n_unit pcpath)
+  -- if expression_right = NExprFuncCall name (SEQUENCE eps) metadata_call
+  -- if $source_emission_noarg_call(S, n_unit, pcpath, expression_right) = (pconcatreturned.LINE)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $call_target(S, preqbytes, eps) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF
+  -- if pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.SIGNATURE.RETURNS = eps
+  -- if $(pconcatreturned.OBJECT < |S.OBJECTS|)
+def $concat_returned_source(S, pconcatreturned) = false -- otherwise
+
+dec $concat_returned_live(pstate, pconcatreturned) : bool
+def $concat_returned_live(S, pconcatreturned) = ($concat_returned_source(S, pconcatreturned) /\ $stringable_instance(S, pconcatreturned.OBJECT))
+dec $concat_returned_fresh(pstate, pconcatreturned) : bool
+def $concat_returned_fresh(S, pconcatreturned) = ($concat_returned_live(S, pconcatreturned) /\ $array_string_cast_snapshot(S, pconcatreturned.LEFT))
+def $concat_returned_plan(S) = (pconcatreturned)
+  -- if S.TODO = (CONCAT_PREP poperand_left (KNOWN (POBJECT n_object)) false false z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if pconcatreturned = {SITE porigin, LINE z, LEFT poperand_left, OBJECT n_object}
+  -- if $concat_returned_fresh(S, pconcatreturned)
+def $concat_returned_plan(S) = eps -- otherwise
+
+;; Generic callback cleanup validates its emitter through this borrowed view.
+;; Match the real cleanup certificates; do not skip arbitrary operation tasks.
+dec $concat_returned_cleanup_pair(pstate, pconcatreturned, pdestructionoperation, perrorcall) : bool
+def $concat_returned_cleanup_pair(S, pconcatreturned, pdestructionoperation, perrorcall) = true
+  -- if perrorcall.RESUME = CONCAT_RETURNED_WARNING pconcatreturned 1
+  -- if pdestructionoperation <- S.DESTRUCTION.OPERATIONS
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup <- S.DESTRUCTION.CLEANUPS
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if ~pdestructioncleanup.RELEASED
+  -- if pdestructioncleanup.CALLER = pdestructionoperation.CALLER /\ pdestructioncleanup.ORIGIN = pdestructionoperation.ORIGIN /\ pdestructioncleanup.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
+  -- if S.CURRENT = pdestructionoperation.CALLER /\ S.ORIGIN = pdestructionoperation.ORIGIN /\ S.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
+  -- if perrorcall.TARGET = (pcalltarget)
+  -- if $consumer_producer_snapshot(pdestructioncleanup.TARGET)
+  -- if pdestructioncleanup.TARGET.TARGET = pcalltarget
+  -- if pdestructioncleanup.TARGET.SITE = eps /\ pdestructioncleanup.TARGET.INTERNAL /\ pdestructioncleanup.TARGET.CLONE = eps
+def $concat_returned_cleanup_pair(S, pconcatreturned, pdestructionoperation, perrorcall) = false -- otherwise
+dec $concat_returned_cleanup_consumer(pstate, pconcatreturned, ptask*) : bool
+def $concat_returned_cleanup_consumer(S, pconcatreturned, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: (CONCAT_RETURNED_LEFT pconcatreturned) :: ptask_tail*) = $concat_returned_cleanup_pair(S, pconcatreturned, pdestructionoperation, perrorcall)
+def $concat_returned_cleanup_consumer(S, pconcatreturned, (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: (CONCAT_RETURNED_LEFT pconcatreturned) :: ptask_tail*) = true
+  -- if $concat_returned_cleanup_pair(S, pconcatreturned, pdestructionoperation, perrorcall)
+  -- if pdestructionrelease <- S.DESTRUCTION.RELEASES
+  -- if pdestructionrelease.CALLER = pdestructionoperation.CALLER /\ pdestructionrelease.ORIGIN = pdestructionoperation.ORIGIN /\ pdestructionrelease.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
+def $concat_returned_cleanup_consumer(S, pconcatreturned, ptask*) = false -- otherwise
+dec $concat_returned_consumer(pstate, pconcatreturned, nat) : bool
+def $concat_returned_consumer(S, pconcatreturned, n) = true
+  -- if $concat_array_consumer(S.TODO, CONCAT_RETURNED_WARNING pconcatreturned n) = (CONCAT_RETURNED_LEFT pconcatreturned)
+def $concat_returned_consumer(S, pconcatreturned, 1) = true
+  -- if $concat_returned_cleanup_consumer(S, pconcatreturned, S.TODO)
+def $concat_returned_consumer(S, pconcatreturned, n) = false -- otherwise
+
+dec $concat_returned_warning_valid(pstate, pconcatreturned, nat) : bool
+def $concat_returned_warning_valid(S, pconcatreturned, n) = true
+  -- if $concat_returned_live(S, pconcatreturned)
+  -- if S.ORIGIN = $origin_child((pconcatreturned.SITE), [PCFIELD 0])
+  -- if $(n <= 1)
+  -- if $concat_returned_consumer(S, pconcatreturned, n)
+  -- if n = 1 \/ $concat_returned_fresh(S, pconcatreturned)
+def $concat_returned_warning_valid(S, pconcatreturned, n) = false -- otherwise
+
+rule PhpStep/concat-returned-begin: S ~> S[.ORIGIN = $origin_child((pconcatreturned.SITE), [PCFIELD 0])][.TODO = [CONCAT_RETURNED_WARNING pconcatreturned 0, CONCAT_RETURNED_LEFT pconcatreturned] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $concat_returned_plan(S) = (pconcatreturned)
+rule PhpStep/concat-returned-warning: S ~> $error_dispatch(S, 2, $ptascii("Array to string conversion"), pconcatreturned.LINE, DIAGNOSTIC "Warning" $ptascii("Array to string conversion") pconcatreturned.LINE, CONCAT_RETURNED_WARNING pconcatreturned 1)
+  -- if S.TODO = (CONCAT_RETURNED_WARNING pconcatreturned 0) :: ptask_tail*
+  -- if $concat_returned_warning_valid(S, pconcatreturned, 0)
+  -- if ~$error_handler_eligible(S, 2) \/ $arithmetic_add_named(S)
+rule PhpStep/concat-returned-owning-handler: S ~> S[.COMPLETION = UNSUPPORTED "concatenation acquired owning warning callback"]
+  -- if S.TODO = (CONCAT_RETURNED_WARNING pconcatreturned 0) :: ptask_tail*
+  -- if $concat_returned_warning_valid(S, pconcatreturned, 0)
+  -- if $error_handler_eligible(S, 2) /\ ~$arithmetic_add_named(S)
+rule PhpStep/concat-returned-warning-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array"))][.BASE = BASE_VALUE (KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array")))]
+  -- if S.TODO = (CONCAT_RETURNED_WARNING pconcatreturned 1) :: ptask_tail*
+  -- if $concat_returned_warning_valid(S, pconcatreturned, 1)
+rule PhpStep/concat-returned-call: S ~> $user_string_begin(S[.ORIGIN = (porigin_right)], pconcatreturned.OBJECT, porigin_right, pconcatreturned.LINE, CONCAT_RETURNED_RIGHT pconcatreturned, ptask_tail*)
+  -- if S.TODO = (CONCAT_RETURNED_LEFT pconcatreturned) :: ptask_tail*
+  -- if S.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array"))
+  -- if $concat_returned_live(S, pconcatreturned)
+  -- if $origin_child((pconcatreturned.SITE), [PCFIELD 1]) = (porigin_right)
+rule PhpStep/concat-returned-result: S ~> S_concat[.ORIGIN = (pconcatreturned.SITE)][.TODO = (CONCAT_RETURNED_RELEASE pconcatreturned) :: ptask_tail*][.BASE = BASE_VALUE S_concat.RESULT]
+  -- if S.TODO = (CONCAT_RETURNED_RIGHT pconcatreturned) :: ptask_tail*
+  -- if S.RESULT = KNOWN pvalue_right
+  -- if $string_bytes(pvalue_right) = (ptbytes_right)
+  -- if S_concat = $string_concat(S, PSTRING_CARRIER INTERNED_STRING $ptascii("Array"), pvalue_right, false, false)
+rule PhpStep/concat-returned-release: S ~> S[.TODO = (CONCAT_RETURNED_DONE pconcatreturned) :: ptask_tail*]
+  -- if S.TODO = (CONCAT_RETURNED_RELEASE pconcatreturned) :: ptask_tail*
+rule PhpStep/concat-returned-done: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (CONCAT_RETURNED_DONE pconcatreturned) :: ptask_tail*
+
+def $task_nodes(CONCAT_RETURNED_WARNING pconcatreturned n) = eps
+def $task_nodes(CONCAT_RETURNED_LEFT pconcatreturned) = [HOBJECT pconcatreturned.OBJECT]
+def $task_nodes(CONCAT_RETURNED_RIGHT pconcatreturned) = [HOBJECT pconcatreturned.OBJECT]
+def $task_nodes(CONCAT_RETURNED_RELEASE pconcatreturned) = [HOBJECT pconcatreturned.OBJECT]
+def $task_nodes(CONCAT_RETURNED_DONE pconcatreturned) = eps
+def $call_task_valid(S, CONCAT_RETURNED_WARNING pconcatreturned n) = $concat_returned_warning_valid(S, pconcatreturned, n)
+def $call_task_valid(S, CONCAT_RETURNED_LEFT pconcatreturned) = ($concat_returned_live(S, pconcatreturned) /\ S.ORIGIN = $origin_child((pconcatreturned.SITE), [PCFIELD 0]))
+def $call_task_valid(S, CONCAT_RETURNED_RIGHT pconcatreturned) = ($concat_returned_live(S, pconcatreturned) /\ S.ORIGIN = $origin_child((pconcatreturned.SITE), [PCFIELD 1]))
+def $call_task_valid(S, CONCAT_RETURNED_RELEASE pconcatreturned) = ($concat_returned_live(S, pconcatreturned) /\ S.ORIGIN = (pconcatreturned.SITE))
+def $call_task_valid(S, CONCAT_RETURNED_DONE pconcatreturned) = ($concat_returned_source(S, pconcatreturned) /\ S.ORIGIN = (pconcatreturned.SITE))
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = CONCAT_RETURNED_WARNING pconcatreturned 1
+  -- if $concat_returned_warning_valid(S, pconcatreturned, 1)
+  -- if perrorcall.TARGET =/= eps \/ $concat_returned_fresh(S, pconcatreturned)
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.LINE = pconcatreturned.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pconcatreturned.LINE
+
+def $stringify_source(S, porigin_right, z, CONCAT_RETURNED_RIGHT pconcatreturned) = true
+  -- if $concat_returned_live(S, pconcatreturned)
+  -- if $origin_child((pconcatreturned.SITE), [PCFIELD 1]) = (porigin_right)
+  -- if z = pconcatreturned.LINE
+def $stringify_source_consumer(CONCAT_RETURNED_RIGHT pconcatreturned) = true
+def $stringify_consumer_tail_valid(S, porigin_right, z, CONCAT_RETURNED_RIGHT pconcatreturned, ptask_tail*) = $stringify_source(S, porigin_right, z, CONCAT_RETURNED_RIGHT pconcatreturned)
+def $stringify_consumer_receiver_valid(S, n, CONCAT_RETURNED_RIGHT pconcatreturned) = (n = pconcatreturned.OBJECT)
