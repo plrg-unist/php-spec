@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """A real dropped alias makes COW unwrap a scalar reference in a spread cache."""
+from pathlib import Path
 from types import SimpleNamespace
 
 import array_traversable_reference_cache_cases as cases
@@ -118,4 +119,8 @@ def conditions(name, program, path, stdout):
 
 
 if __name__ == '__main__':
-    raise SystemExit(0 if shared.run(PEER, conditions, HELPERS) else 1)
+    raise SystemExit(0 if shared.run(PEER, conditions, HELPERS, extra_inputs=(
+        Path(__file__),
+        Path(__file__).with_name('array_aggregate_unpack_state_review.py'),
+        Path(__file__).with_name('array_generator_unpack_state_review.py'),
+    )) else 1)
