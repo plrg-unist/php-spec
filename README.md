@@ -710,7 +710,15 @@ retires Iterator DATA before catch, leaving a retained CV owner alive. Four
 direct-CV sources and one separately checked Aggregate-to-Iterator CV rebind
 agree with PHP. Reached checks cover the first and second key, Error line,
 unsent current and DATA cleanup. The guard requires a live CV holding the
-selected Iterator; temporary and other key/value histories remain partial.
+selected Iterator; other key/value histories remain partial.
+
+[Temporary Iterator invalid keys](coverage/semantics/config-iterator-temp-invalid-key-review.json)
+now raise the same unpack Error for a quiet primitive key returned by a direct
+noarg factory's Iterator. The key is consumed before a send, `next()` or API
+entry; on throw, DATA and then the separate temporary INPUT retire before
+catch. Three original sources agree with PHP, and 449 reached premises check
+sole and retained owner transitions, cached currents and source guards. Named
+temporary keys and effectful final owners remain open.
 
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
