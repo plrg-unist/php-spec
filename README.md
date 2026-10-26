@@ -1579,7 +1579,8 @@ before DIRECT insertion and cache retirement. Canonical numeric-string keys appe
 current/key/next failures preserve saved values and discard partial builders.
 The [Iterator spread review](coverage/semantics/array-iterator-unpack-review.json)
 records four source agreements for instances without owning fields or a
-destructor, with quiet scalar or flat DIRECT ARRAY caches.
+destructor. Cache values now include finite acyclic DIRECT ARRAY graphs with
+shared descendants; each physical child edge is counted once across root owners.
 Ordinary named Generators now spread through real native resumes, including
 received parameters and reference yields, CV and owning call operands. Their
 cache edges persist through resumed code/CLOSED; DATA then opcode INPUT retire
@@ -1588,6 +1589,10 @@ The [Generator spread review](coverage/semantics/array-generator-unpack-review.j
 records acquisition-state errors, DIRECT COW copies, invalid keys and supplied
 throws. Its affected check retires the earlier Generator refusal.
 Wider payloads, operand modes, delegation and Traversable lifetimes remain partial.
+The [nested-cache review](coverage/semantics/array-traversable-nested-cache-review.json)
+adds live-reference/deep COW and abrupt retirement for both spread engines,
+preserving folded pool siblings and rejecting cycles, descendant references,
+objects, debt and paths back to the receiving builder.
 Ordinary CVs of named IteratorAggregate classes now invoke a borrowed
 `getIterator()` frame and
 transfer its owned user Iterator or named-Generator return into DATA. Genuine

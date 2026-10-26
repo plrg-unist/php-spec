@@ -1,0 +1,244 @@
+{
+  "milestone": "A55: nested DIRECT Traversable cache graphs in array-literal spread",
+  "status": "independently reviewed and validated; composed for guarded integration",
+  "target": {
+    "php": "8.5.10 CLI NTS64",
+    "engine": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle": ".tools/php/bin/php",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null
+    },
+    "tools": "Existing project-local tools reused; no fresh offline rebuild claimed."
+  },
+  "cuts": {
+    "base": "a70bc6c26d5e62d39e885a828ca75afe5b68d979",
+    "native_and_genuine": "dc8bd13a673fdebf624a3ce3d84e593301fd2371",
+    "strict_and_source": "5c61c0d0be3b739d1f79c2aa1b058a646359167d",
+    "author_and_first_peer": "f28d8735e7893368248185ddaeed2d7f3ce398e9",
+    "peer_property_correction": "ef72a83df7150f85facff8f3dbde5c8471cf9a69",
+    "peer_final": "a6aa1f39cced9d901b8b14ff4f13a6307a42ca88",
+    "immutable_publication": "bee8664b08825d1e6a64969cef56d25f863dbdf7"
+  },
+  "runtime": {
+    "spec/semantics/426-array-iterator-unpack.watsup": "2d713a064178673a6c1345109b36030fc0bc2365ce34b04f36f2cd4d8182e695",
+    "spec/semantics/427-array-generator-unpack.watsup": "dafe2aec3e7de8ea57b269ffce2262caaa12f4778434eb8a58859315c6fbc897"
+  },
+  "scripts": {
+    "tests/semantics/array_traversable_nested_cache_cases.py": "3099d64ed54ba4338f0c6647e5598967a3c0c12f20716420c9edba7fd3438236",
+    "tests/semantics/array_traversable_nested_cache_sources.py": "3be9094f40180e55754d4be81adca733ede66482c480503fdf2c07e81dbbe176",
+    "tests/semantics/array_traversable_nested_cache_review_cases.py": "5cb6ea863db8c0c6a27874114e53723bdd3bbe95ee76f102f0b42052fd9c3435",
+    "tests/semantics/array_traversable_nested_cache_review_sources.py": "fbc8260c5c730ceee787f754f7d89a104fed2a06ffee70db0bfdd6b09d302063",
+    "tests/semantics/array_traversable_nested_cache_state.py": "f4976c8f9739de3804e6815fe5262d6ff1953ee8d6dc828e5ce291db748c323e",
+    "tests/semantics/array_traversable_nested_cache_state_review.py": "a86ed38d2d3327b8cce244e08356fe74c7a7c83695f8189f85587fcb8431f480"
+  },
+  "engine": [
+    "Zend/zend_vm_def.h: ZEND_ADD_ARRAY_UNPACK copies dereferenced current only after key, and ZEND_YIELD replaces the Generator cache.",
+    "Zend/zend_interfaces.c: user-Iterator current cache survives key and is invalidated before next/dtor.",
+    "Zend/zend_generators.c: native resumes and actual storage destruction retain then retire VALUE/KEY/reference edges. Existing generic array COW and graph pruning supply child-edge transfer/retirement."
+  ],
+  "scope": [
+    "426 removes only the flat entries_nodes fence. Existing ancestor-path DIRECT traversal admits finite acyclic object-free ARRAY graphs, including shared siblings, allocated nodes and permanent pool roots.",
+    "New value_away rejects a root or descendant equal to the receiving builder; 426 readiness and 427 cache validation use it for their already-resolved values. All allocation, debt, leaf, reference-cell and source constraints remain.",
+    "Iterator current references stay raw through key-time mutation, then insert DIRECT; Generator parameter/cache/builder root multiplicity does not multiply physical child edges. Existing Aggregate promotions compose through the same validators without new Aggregate source credit.",
+    "Fresh native witnesses use integer DIRECT graphs, ordinary reference-return Iterator current and by-value Generator yields. Existing scalar/validated-byte and outer-reference helpers compose unchanged."
+  ],
+  "ownership": [
+    "One child edge per physical table entry, including repeated edges to one child; copying a root owner alone creates no child edges. Selective COW creates physical tables/edges.",
+    "Iterator quiet abrupt discard removes cache/DATA/builder roots together, then ordinary pruning cascades runtime descendants. Its raw refusal is exact; the existing terminal driver may perform quiet temporary cleanup.",
+    "Generator VALUE survives resumed body/finally/CLOSED. DATA/storage release leaves the nested graph protected by the partial builder; cancellation then cascades. Folded siblings keep permanent pool roots."
+  ],
+  "bounds": [
+    "No descendant ALIAS/reference cells, objects, debt, cycles or builder backedges. Ordinary unconstrained outer current-reference cells retain their existing admission.",
+    "No producer, callback, continuation, generic lifetime, AST/schema, compiler or module-manifest change. Iterator owning fields/destructors, wider producers, delegation and callback/lifetime boundaries remain partial.",
+    "Paused OP12, Source47, owned-NUL, undefined-byref LIST, COMP88 and held COMP123 remain untouched."
+  ],
+  "validation": {
+    "strict_modules": 420,
+    "source_agreements": 4,
+    "focused_conditions": 836,
+    "Boolean_conditions": 825,
+    "raw_transitions": 11,
+    "author": {
+      "conditions": 384,
+      "cases": [
+        178,
+        206
+      ],
+      "revision": "f28d8735e7893368248185ddaeed2d7f3ce398e9"
+    },
+    "peer": {
+      "conditions": 452,
+      "cases": [
+        193,
+        259
+      ],
+      "revision": "a6aa1f39cced9d901b8b14ff4f13a6307a42ca88"
+    },
+    "result": "All accepted models exit0, no timeout/interruption/survivors; exact native stdout/stderr for source4, true stdout/empty stderr for strict/focused."
+  },
+  "controls": [
+    "Real source graphs authenticate shared child identity, mutable runtime origin, pool origin, root/edge counts, live reference key writes, selective COW, final retirement and pool survival.",
+    "Legal constructed cache cycles, descendant ALIAS/object/debt and cache-to-builder graphs refuse; builder graph remains table-valid but readiness fails, with exact raw Unsupported. Only Generator has its existing source-certified blocked fixed state.",
+    "Zero/one split budgets equal whole budgets at entry/insertion/discard; public heap/call descriptors and full native output/EOF remain checked."
+  ],
+  "genuine_baseline": {
+    "case": "array-traversable-nested-cache-iterator-reference",
+    "status": "unsupported",
+    "reason": "array Iterator unpack callback result outside quiet payload domain",
+    "stdout_prefix": "P;W;V0;C;",
+    "agreement_credit": 0,
+    "revision": "dc8bd13a673fdebf624a3ce3d84e593301fd2371"
+  },
+  "failures_and_corrections": [
+    {
+      "revision": "f28d8735e7893368248185ddaeed2d7f3ce398e9",
+      "report": "peer-state",
+      "classification": "SL elaboration failure before predicates: nonexistent pthrowable.MESSAGE/PREVIOUS/TRACE fields",
+      "credit": 0,
+      "correction": "Read existing Throwable backing slots through throwable_field; empty trace requires a separate ARRAY-items clause."
+    },
+    {
+      "revision": "ef72a83df7150f85facff8f3dbde5c8471cf9a69",
+      "report": "peer-corrected",
+      "classification": "Fixture condition failure at drive_steps(S_cross_refused,2)=S_cross_refused for Iterator; no timeout",
+      "credit": 0,
+      "correction": "Apply the fixed-state assertion only to Generator, whose blocked override supplies it; retain exact raw Iterator refusal and all graph/owner assertions."
+    }
+  ],
+  "execution": {
+    "native_cpu": 5,
+    "postchange_cpu": 3,
+    "caps_seconds": {
+      "native": 30,
+      "genuine_CLI": 60,
+      "genuine_outer": 90,
+      "strict_SL": 180,
+      "source_CLI": 180,
+      "source_outer": 210,
+      "focused_SL": 180
+    },
+    "order": "Native/genuine author then remaining native3; strict then source author2/peer2; focused author2 then first peer elaboration failure; corrected peer condition failure; final affected Iterator and previously unrun Generator. No accepted replay or cap increase.",
+    "outer_sessions": {
+      "native": 68017,
+      "strict_source": 36612,
+      "first_focused": 39247,
+      "peer_correction": 16545,
+      "peer_final": 23132
+    },
+    "resources": "All outer sessions/recorded children/groups reaped and CPUs released; guarded writer acquired after active-pair holds."
+  },
+  "commands": [
+    "taskset -c 5 python3 -B .tools/array-traversable-nested-cache-native-queue-55.py > .tools/array-traversable-nested-cache-native-actor-55.log 2>&1",
+    "taskset -c 3 python3 -B .tools/array-traversable-nested-cache-source-queue-55.py > .tools/array-traversable-nested-cache-source-actor-55.log 2>&1",
+    "taskset -c 3 python3 -B .tools/array-traversable-nested-cache-focused-queue-55.py > .tools/array-traversable-nested-cache-focused-actor-55.log 2>&1",
+    "taskset -c 3 python3 -B tests/semantics/array_traversable_nested_cache_state_review.py --source-report .tools/array-traversable-nested-cache-review-source-55/report.json --output .tools/array-traversable-nested-cache-peer-corrected-55 > .tools/array-traversable-nested-cache-peer-corrected-actor-55.log 2>&1",
+    "taskset -c 3 python3 -B tests/semantics/array_traversable_nested_cache_state_review.py --source-report .tools/array-traversable-nested-cache-review-source-55/report.json --output .tools/array-traversable-nested-cache-peer-corrected2-55 > .tools/array-traversable-nested-cache-peer-corrected2-actor-55.log 2>&1"
+  ],
+  "reports": {
+    "baseline": {
+      "path": ".tools/array-traversable-nested-cache-baseline-55/report.json",
+      "sha256": "533f074b6d8cb7e179606a3675ec3371470ae7e784fc8de73b346dcc474df44a",
+      "revision": "dc8bd13a673fdebf624a3ce3d84e593301fd2371"
+    },
+    "native-rest": {
+      "path": ".tools/array-traversable-nested-cache-native-rest-55/report.json",
+      "sha256": "394085aa46743dc6e6f71276c7592070b1a4a42b11d85ed57c7e49a147631876",
+      "revision": "dc8bd13a673fdebf624a3ce3d84e593301fd2371"
+    },
+    "review-native": {
+      "path": ".tools/array-traversable-nested-cache-review-native-55/report.json",
+      "sha256": "eeb2c30d98f4efd2d630c7771fe4d30cce023c5af5a84fc1b405ac12fa41865e",
+      "revision": "dc8bd13a673fdebf624a3ce3d84e593301fd2371"
+    },
+    "strict": {
+      "path": ".tools/array-traversable-nested-cache-strict-55/report.json",
+      "sha256": "257c6d9b7fffc39dbff46d16bf41632555450f32fb9f341e8dfb010dfe153e82",
+      "revision": "5c61c0d0be3b739d1f79c2aa1b058a646359167d"
+    },
+    "source": {
+      "path": ".tools/array-traversable-nested-cache-source-55/report.json",
+      "sha256": "6a0785a3bdeb506eb2dc000e8ac47672b1c0aedd6440391bbfafad384b4f0265",
+      "revision": "5c61c0d0be3b739d1f79c2aa1b058a646359167d"
+    },
+    "review-source": {
+      "path": ".tools/array-traversable-nested-cache-review-source-55/report.json",
+      "sha256": "1a44c7a581ec88efb62721157dfcc31e54ac107729f63cb3db321ec0f04fb582",
+      "revision": "5c61c0d0be3b739d1f79c2aa1b058a646359167d"
+    },
+    "author-state": {
+      "path": ".tools/array-traversable-nested-cache-author-state-55/report.json",
+      "sha256": "8f4822762cafbfde746c5e770dcb85901000bcc4e34f5e3903a73a4d8f276871",
+      "revision": "f28d8735e7893368248185ddaeed2d7f3ce398e9"
+    },
+    "peer-state": {
+      "path": ".tools/array-traversable-nested-cache-peer-state-55/report.json",
+      "sha256": "245dc88a4ee7a6c6f7c649e405a95a024f45fd83aeab7f75ebef25e43b251e39",
+      "revision": "f28d8735e7893368248185ddaeed2d7f3ce398e9"
+    },
+    "peer-corrected": {
+      "path": ".tools/array-traversable-nested-cache-peer-corrected-55/report.json",
+      "sha256": "c58881e7d13c907e34eb0373d3622ce8c17832ef5c0eaced229d7370c576025a",
+      "revision": "ef72a83df7150f85facff8f3dbde5c8471cf9a69"
+    },
+    "peer-corrected2": {
+      "path": ".tools/array-traversable-nested-cache-peer-corrected2-55/report.json",
+      "sha256": "ef8aebe6d387086cfe05ddf1a3276f2568278d6ecc2625bd351e4410aededaf1",
+      "revision": "a6aa1f39cced9d901b8b14ff4f13a6307a42ca88"
+    }
+  },
+  "preparations": {
+    "author-prepared": {
+      "path": ".tools/array-traversable-nested-cache-author-prepared-55/report.json",
+      "sha256": "786cb712156986e97d7e14fc592d673619607e5c5e873eb6bdc4b7d6c6c3aa16",
+      "revision": "5c61c0d0be3b739d1f79c2aa1b058a646359167d"
+    },
+    "peer-prepared": {
+      "path": ".tools/array-traversable-nested-cache-peer-prepared-55/report.json",
+      "sha256": "1bb78755614b264bd079536d3d9a0b7b34b46ffde0853ee1793502f1c325cd8e",
+      "revision": "dc8bd13a673fdebf624a3ce3d84e593301fd2371"
+    },
+    "peer-prepared2": {
+      "path": ".tools/array-traversable-nested-cache-peer-prepared2-55/report.json",
+      "sha256": "527039081798778f2f1e8f99c4f9edb7469108aa128ebf7efbd59a976900a714",
+      "revision": "f28d8735e7893368248185ddaeed2d7f3ce398e9"
+    },
+    "peer-prepared3": {
+      "path": ".tools/array-traversable-nested-cache-peer-prepared3-55/report.json",
+      "sha256": "4fb93dcea531e9e056ee02142a2a86e36f80bb6812036751a30e07481f376fae",
+      "revision": "ef72a83df7150f85facff8f3dbde5c8471cf9a69"
+    }
+  },
+  "source_sha256": {
+    "array-traversable-nested-cache-iterator-reference": "508609fd7e8ae3fbe713f5211194060cb6cba2f8f800a1afc5acba1329cb5cc6",
+    "array-traversable-nested-cache-generator-value": "069c22e6401bc035869e80e0e50239f90804547015b3a978021fbd1e5a5e4b28",
+    "array-traversable-nested-cache-review-key-throw": "d4a418cd17fe48c79aa1858121f3c274a7fcd0900c86d0414969e24b7ce2e40f",
+    "array-traversable-nested-cache-review-body-throw": "2750f6cb8987006a0dbca884890771dbb518a7629b9e60b03373db0b1e35b14f"
+  },
+  "raw_archive": {
+    "path": ".tools/array-traversable-nested-cache-55-raw.tar.gz",
+    "sha256": "80cd8d0df9a3c63aab30d658a24558f24ed819989d20f134dbd972aa82aabfe1",
+    "bytes": 870909,
+    "members": 246
+  },
+  "recovery": "Recover tracked inputs from the stated Git cuts. Extract the single ignored archive under php-spec to restore relative raw paths, original native source/cwd receipts, generated fixtures, failed/success streams, four preparations, fingerprints and outer queue scripts/logs. Do not recreate a removed worktree or replay accepted executions for metadata.",
+  "independent_review": "array46_review independently reviewed runtime, author384, peer452, native/source/strict/focused actuals, both fixture-only corrections, docs and seven append-only partial inventory records; final publication/archive review CLEAR; actual-tail interaction review CLEAR; exact candidate preservation review pending.",
+  "composition": {
+    "parent": "0c374b4aa157d28d430df40d82c6921ec3324e67",
+    "modules": 420,
+    "private_publication": "bee8664b08825d1e6a64969cef56d25f863dbdf7",
+    "incoming_runtime": [
+      "spec/semantics/380-magic-property-get.watsup",
+      "spec/semantics/384-magic-property-reference-types.watsup"
+    ],
+    "interaction": "CLASS130 admits PARAM-backed magic-Get receipts only. A55 sources use ordinary unbacked current cells, and unchanged array_iterator_value requires parameter_backing_at=eps (also propref/coercion eps). No new producer, generic roots/release or selected interaction.",
+    "preservation": "Only tested426/427 runtime and six scripts added; all incoming runtime/schema/ordered420, foreign compact PROGRESS facts and existing inventory prefixes/statuses preserved.",
+    "validation_policy": "Accepted cuts remain original. Pointwise disjoint composition adds no execution credit; no joined run selected."
+  }
+}
