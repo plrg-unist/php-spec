@@ -5,6 +5,7 @@ dec $array_iterator_item(pstate, phpType13*, int) : (porigin, expression)?
 dec $array_iterator_methods(pstate, nat, text*) : bool
 dec $array_iterator_destructor(pstate, nat) : bool
 dec $array_iterator_destructor_allowed(pstate, nat) : bool
+dec $array_iterator_destructor_byref_current(pstate, parrayiterator) : bool
 dec $array_iterator_method_history(pstate, porigin, text*) : bool
 dec $array_iterator_release_id(ptask) : nat?
 dec $array_iterator_release_ids(ptask*) : nat*
@@ -74,6 +75,12 @@ def $array_iterator_destructor(S, n) = true
   -- if ~$function_generator(S, pmethoddesc.FUNCTION)
 def $array_iterator_destructor(S, n) = false -- otherwise
 def $array_iterator_destructor_allowed(S, n) = ($destructor_method(S, n) = eps \/ $array_iterator_destructor(S, n))
+def $array_iterator_destructor_byref_current(S, parrayiterator) = true
+  -- if $array_iterator_destructor(S, parrayiterator.OBJECT)
+  -- if S.OBJECTS[parrayiterator.OBJECT] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("current"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.SIGNATURE.BYREF
+def $array_iterator_destructor_byref_current(S, parrayiterator) = false -- otherwise
 
 ;; The release continuation authenticates metadata after the receiver is gone.
 ;; It never makes a retired object or cached value live again.
@@ -120,7 +127,9 @@ def $array_iterator_release_valid(S, parrayiterator, text) = true
   -- if text <- ["normal", "abrupt"]
   -- if text = "normal" \/ $array_iterator_release_pending(S, S.TODO, parrayiterator, text)
 def $array_iterator_release_valid(S, parrayiterator, text) = false -- otherwise
-def $array_iterator_release_builder(S, parrayiterator) = (~(parrayiterator.ARRAY <- S.LITERALARRAYDEBTS) /\ $array_null_const_items(S, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY]))
+;; CURRENT is cleared before the destructor runs; validate its method history
+;; and the protected builder without dereferencing the retired current cell.
+def $array_iterator_release_builder(S, parrayiterator) = (~(parrayiterator.ARRAY <- S.LITERALARRAYDEBTS) /\ ($array_null_const_items(S, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY]) \/ ($array_iterator_destructor_byref_current(S, parrayiterator) /\ $array_iterator_reference_items(S, parrayiterator.ARRAY, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY]))))
 
 ;; INPUT is a source receipt after entry, even if rewind/key unsets that CV.
 ;; Payload eligibility is separate so legal callback mutations can refuse cleanly.
@@ -230,9 +239,14 @@ def $array_iterator_current_value(S, parrayiterator, REFERENCE n_cell) = (PARRAY
   -- if $array_iterator_reference_cell(S, n_cell) = (PARRAY n)
   -- if $array_iterator_value(S, REFERENCE n_cell) = eps
   -- if $array_iterator_reference_table(S, n)
+def $array_iterator_current_value(S, parrayiterator, REFERENCE n_cell) = (PARRAY n)
+  -- if $array_iterator_destructor_byref_current(S, parrayiterator)
+  -- if $array_iterator_reference_cell(S, n_cell) = (PARRAY n)
+  -- if $array_iterator_value(S, REFERENCE n_cell) = eps
+  -- if $array_iterator_reference_table(S, n)
 def $array_iterator_current_value(S, parrayiterator, poperand) = eps -- otherwise
 def $array_iterator_current_away(S, pvalue, n_builder) = ($array_iterator_value_away(S, pvalue, n_builder) \/ $array_iterator_reference_away(S, pvalue, n_builder))
-def $array_iterator_current_builder(S, parrayiterator) = ($array_null_const_items(S, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY]) \/ (~$array_iterator_destructor(S, parrayiterator.OBJECT) /\ $array_iterator_reference_items(S, parrayiterator.ARRAY, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY])))
+def $array_iterator_current_builder(S, parrayiterator) = ($array_null_const_items(S, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY]) \/ ((~$array_iterator_destructor(S, parrayiterator.OBJECT) \/ $array_iterator_destructor_byref_current(S, parrayiterator)) /\ $array_iterator_reference_items(S, parrayiterator.ARRAY, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY])))
 
 def $array_iterator_ready(S, parrayiterator) = true
   -- if $node_children(S, HOBJECT parrayiterator.OBJECT) = eps
@@ -451,7 +465,7 @@ def $array_iterator_blocked(S) = true
   -- if S.TODO = (ARRAY_ITERATOR parrayiterator text) :: ptask*
   -- if text <- ["current", "key"]
   -- if $array_iterator_valid(S, parrayiterator, text) /\ $array_iterator_destructor(S, parrayiterator.OBJECT)
-  -- if $array_iterator_ready(S, parrayiterator) /\ $array_iterator_value(S, S.RESULT) = eps
+  -- if $array_iterator_ready(S, parrayiterator) /\ ((text = "current" /\ $array_iterator_current_value(S, parrayiterator, S.RESULT) = eps) \/ (text = "key" /\ $array_iterator_value(S, S.RESULT) = eps))
 def $array_iterator_blocked(S) = true
   -- if ~S.COMPILESTOP
   -- if S.COMPLETION = UNSUPPORTED "array Iterator unpack abrupt payload outside quiet domain"

@@ -90,10 +90,25 @@ selected `METHOD_TARGET` owns its receiver before the Iterator callbacks run;
 a later write to the receiver variable does not change that target. The
 method's declaring class prefixes the by-reference Traversable Warning, as
 `ZEND_SEND_UNPACK` formats the selected function scope. Admission requires the
-actual `NExprMethodCall` source and the effective selected method. Other
-callable forms and non-CV method unpack operands remain separate. The
+actual `NExprMethodCall` source and the effective selected method. Non-CV
+method unpack operands remain separate. The
 source-site and selected-target checks do not reconstruct the previous value
 of a mutable receiver variable.
+
+Ordinary dynamic array callbacks now admit a public user instance or static
+method selected before an initialized Iterator CV is traversed. The saved
+`ARRAY_METHOD_TARGET` retains its 205 selection site, requested class, method
+and receiver or called class. An inherited static method keeps the child called
+class while a by-reference Warning names the declaring parent. On an abrupt
+unpack, the selected receiver can die before the caught error. Only the saved
+eager-cleanup source receipt rechecks its class and selection against a temporary
+allocation view; live target checks and heap owners stay unchanged. Six exact
+originals and seven reached stages cover normal/named sends, warning delivery,
+key failure and destructor order. The receipt does not reconstruct a mutable
+`$cb`'s earlier same-class member values. The [array-callable Iterator review](../../coverage/semantics/array-callable-iterator-unpack-review.json)
+records the frozen inputs and failed cuts. Scoped/private, magic and internal
+array targets, temporary Iterator operands and Closure::call remain separate.
+
 The unpack marker owns selected Iterator DATA independently of raw
 temporary/reference INPUT; its cursor tracks traversal. A source CV stays borrowed.
 The actual argument origin, emitted line, callee, source remainder and destination

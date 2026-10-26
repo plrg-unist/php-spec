@@ -105,6 +105,15 @@ def $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) = true
   -- if $generator_reference_producer(S, pgenerator)
   -- if $generator_reference_valid(S, GENERATOR pgenerator)
   -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+def $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) = true
+  -- if pgenerator.REFCELL = (n_cell)
+  -- if pgenerator.VALUE = eps
+  -- if pgenerator.CLOSURE = (n_callee)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n_callee
+  -- if pcallcontext.INSTANCE = (n_callee) /\ pcallcontext.RECEIVER = eps
+  -- if $generator_reference_producer(S, pgenerator)
+  -- if $generator_reference_valid(S, GENERATOR pgenerator)
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
 def $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) = false -- otherwise
 def $fiber_generator_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = true
   -- if pgeneratorop.NAME = "throw"
@@ -137,6 +146,15 @@ def $fiber_generator_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = tr
   -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL =/= eps
   -- if $generator_reference_producer(S, pgenerator) /\ pgenerator.CLOSURE = eps
   -- if pcallcontext.TARGET = pgenerator.FUNCTION /\ pcallcontext.INSTANCE = eps
+def $fiber_generator_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = true
+  -- if pgeneratorop.NAME = "throw"
+  -- if pgeneratorop.ARGUMENTS = [pvalue]
+  -- if $generator_input_valid(S, pvalue)
+  -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL =/= eps
+  -- if pgenerator.CLOSURE = (n_callee)
+  -- if $generator_reference_producer(S, pgenerator)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n_callee
+  -- if pcallcontext.INSTANCE = (n_callee) /\ pcallcontext.RECEIVER = eps
 def $fiber_generator_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = false -- otherwise
 def $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = true
   -- if pgeneratorop.NAME = "throw"
@@ -168,6 +186,7 @@ def $fiber_generator_body_id(S) = (pgeneratorop.OBJECT)
   -- if ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if (((pgeneratorop.NAME <- ["current", "next"] /\ pgeneratorop.ARGUMENTS = eps) \/ (pgeneratorop.NAME = "send" /\ |pgeneratorop.ARGUMENTS| = 1) \/ $fiber_generator_throw_valid(S, pgeneratorop, pgenerator, pcallcontext)) /\ ~pgeneratorop.ADVANCE) \/ $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext)
+  -- if pgenerator.CLOSURE = eps \/ pgenerator.REFCELL = eps \/ pgeneratorop.NAME = "throw"
   -- if pgenerator.FRAME = eps /\ pgenerator.DELEGATE = eps /\ pgenerator.PARKED = eps
   -- if pgenerator.ACCESS = eps /\ pgenerator.RETURN = eps
   -- if $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) /\ pgenerator.BORROWED = eps /\ ~pgenerator.PENDING_INIT

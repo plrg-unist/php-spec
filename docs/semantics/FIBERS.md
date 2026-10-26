@@ -873,8 +873,24 @@ the first yield gives the original Exception the supplied one as `Previous`;
 an outside reentry produces one Error with null `Previous`. Four fresh original
 sources, including an independent abrupt case, one unchanged primed Closure
 control and a 117-premise source-reached strict state cover this bounded
-transfer. Method, by-reference, bound and wider lifecycle forms remain
-partial. [Fresh Closure THROW review](../../coverage/semantics/generator-fiber-fresh-closure-throw-transfer-review.json).
+transfer. Method, by-reference, bound and wider lifecycle forms remained
+partial at that cut. [Fresh Closure THROW review](../../coverage/semantics/generator-fiber-fresh-closure-throw-transfer-review.json).
+
+Primed unbound Closure-created by-reference `Generator::throw` may now pause
+inside a Fiber with an old cached reference cell and one saved temporary
+Throwable. The callee must still be the real Closure, and the cached cell must
+be the Generator's authentic reference producer. Rebinding the external name
+does not retarget the cache; copied and reference Closure captures remain
+distinct. A parked `current()` sees the old cell, and outside reentry yields
+one running-generator Error with null `Previous`. Normal and supplied
+`Fiber::throw` continuations preserve the native original/`Previous` order;
+the closed Generator keeps its cache and Closure until release. Three authored
+exact sources, one independent normal-finally source, two unchanged controls
+and 136 custom reached-state checks
+cover this path. A first 180-second reference-capture timeout stays zero
+credit; a selected 240-second run passed. Fresh by-reference Closure THROW,
+method by-reference/fresh, bound/delegated and wider lifetimes remain partial.
+[Closure reference THROW review](../../coverage/semantics/generator-fiber-closure-reference-throw-transfer-review.json).
 
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need

@@ -191,8 +191,26 @@ escape with the supplied one as `Previous`; an outside `current()` reentry
 produces one Error with null `Previous`. Four exact fresh originals, including
 an independent abrupt case, an unchanged primed control and 117 source-reached
 strict premises support this boundary. By-reference, method, bound Closure,
-delegated and wider lifecycle paths remain partial.
+delegated and wider lifecycle paths remained partial at that cut.
 [Fresh Closure THROW review](../../coverage/semantics/generator-fiber-fresh-closure-throw-transfer-review.json).
+
+A primed plain unbound Closure-created by-reference `Generator::throw` now
+transfers an authenticated cached reference cell and Closure target through a
+Fiber catch or pending `finally`. The Generator keeps the old cell when an
+external source name is rebound; a copied Closure capture and an original
+reference capture remain distinct. While parked, `current()` reads the old
+cell and an outside `next()` gets one running-generator Error with null
+`Previous`. The saved temporary Exception reaches the catch or survives a
+normal `finally`; a supplied `Fiber::throw` replaces it with the original as
+`Previous`. Weak references show the cache and Closure remain live through
+close and retire when the Generator is dropped. Three authored exact sources,
+one independent normal-finally source, two unchanged direct/by-value controls
+and 136 custom source-reached checks
+support this bounded path. The reference-capture source first timed out at
+180 seconds with zero credit, then passed a selected 240-second budget. Fresh
+by-reference Closure THROW, method by-reference/fresh, bound/delegated and
+wider lifecycle paths remain partial.
+[Closure reference THROW review](../../coverage/semantics/generator-fiber-closure-reference-throw-transfer-review.json).
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;

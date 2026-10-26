@@ -1,0 +1,41 @@
+{
+  "milestone": "A61 by-reference Iterator current array spread through a real destructor",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local vendor/php-src",
+  "scope": "An ordinary user Iterator with &current() returning a real global-bound ARRAY cell and a public no-argument __destruct has no owning instance fields. key() rebinds the raw current cell to a finite row with ordinary scalar reference leaves before spread dereferences and inserts it. If DATA is the last Iterator owner, the builder stays protected through __destruct, whose alias and tail writes occur before assignment and the next literal item. A retained external Iterator owner defers __destruct until after assignment. A supplied key throw with a preexisting ALIAS builder preserves its Throwable, runs the destructor, and cancels the builder. One separate Aggregate getter returns the same Iterator.",
+  "implementation": {
+    "source_revision": "7329903b68562e8d4e88e218c2bf938f062ad545",
+    "runtime_revision": "04a65d6fd1cc3877376a58f5814b146e66f96ebf",
+    "fixture_revision": "a347add3a1f0ab5141866e0678855d863b88f23b",
+    "runtime_file": "spec/semantics/426-array-iterator-unpack.watsup",
+    "runtime_sha256": "aaf969b7a30b98dc87a45d11bd6c59963f32482f48a5d1ec0e05a3f8112f7f0e",
+    "boundary": "The Dtor by-reference current arm reuses the existing complete ordinary-cell and finite scalar-reference table checks. The class/current-BYREF method predicate authenticates reference-bearing builder states, including a preexisting ALIAS prefix, and survives receiver allocation retirement. Normal/abrupt release validates the protected builder from class history without dereferencing cleared CURRENT. Callback-result terminal blocking distinguishes current from key, preserving old key refusal. Existing no-Dtor and by-value Dtor routes remain disjoint; 39 ownership, 430 promotion, schema and module order are unchanged. Owning fields, special/typed/proxy/object/cyclic/debt descendants remain outside this admission."
+  },
+  "engine_routes": "vendor/php-src/Zend/zend_interfaces.c zend_user_it_get_current_data caches raw current and zend_user_it_get_current_key invokes key afterward; Zend/zend_vm_def.h ZEND_ADD_ARRAY_UNPACK dereferences/addrefs the value after key. Zend/zend_objects.c and zend_objects_API.c release the last Iterator owner and call __destruct before later literal continuation. Zend/zend_hash.c preserves shared scalar references within copied array rows.",
+  "validation": {
+    "native_direct3": ".tools/a61-native3/report.json SHA-256 b6965aef5f88d423d791573fdb910ecb646b3f1454f353d61090810e5d7cccc8 at clean 7329903b; three exact quiet exit-0 originals. Last DATA: D:1:1:7 before R alias42/tail20/21; retained owner: B alias9/tail7/8 then D at explicit unset and R alias42/tail20; supplied key throw: Q then D then same-Exception E with no insertion.",
+    "native_aggregate1": ".tools/a61-aggregate-native1/report.json SHA-256 f694da59795b9e495018e8a2524274e6321b82c4a70a27baec710e75ad006664 at clean 7329903b; one quiet exit-0 Aggregate-returned Iterator original with G before last-DATA D.",
+    "genuine_baseline": ".tools/a61-baseline4/report.json SHA-256 a3cf26085e6149c09cb8165ffd9bc3023cc41df4bfcd9a88b0985e50f50a6071 at clean 7329903b; unchanged model-only on exact four native paths. Three callback-result Unsupported after C, key-throw initialized-domain Unsupported at P:1; all zero agreement credit and no duplicate native.",
+    "strict": ".tools/a61-strict/report.json SHA-256 de01b49e01b5bfb26c396d7dcc4a4c28370155498887be41bac665cf0c59145c at clean 04a65d6f/424; SL/cache disabled/determinism enabled PASS/exit0/quiet, 10.836s outer, groups empty.",
+    "source4": ".tools/a61-source4/report.json SHA-256 c65155f824e777f30877d740cb065069c3a871702105308426c69654a89a748f at clean 04a65d6f/424; model-only exact four original native paths, normal/exit0/quiet/byte-exact agreements, credit1 each; only 426 input changed from native cut. Per-model 40.815/46.044/41.800/46.355s and outer175.454s, groups empty.",
+    "focused_preparation": ".tools/a61-author-prepare/report.json SHA-256 953a9200e0a25ab4b3fc5dcde52320bd184c0760869dd799768ccbc052eecea0 and .tools/a61-peer-prepare/report.json SHA-256 fe92c76a914f046069a3d557be6ba37095a4aaa9ddfb079884e88fb7a2ac0c91 at clean a347add3; exact generated fixture identities checked, zero numeric/semantic credit.",
+    "focused": ".tools/a61-author-focused/report.json SHA-256 5a6923d023580655be53c60b6a5e67d8f439f41da157b7dade8cc0e9e4d71e70 and .tools/a61-peer-focused/report.json SHA-256 886793503e3d2517679dc2f56b7a70c6040fe50a26ca0f7361315079957f97e2 at clean a347add3/424. Last DATA239/3raw, retained213/1raw, supplied key throw218/2raw =670 premises (664 Boolean, six raw PhpStep). All true/quiet/exit0 under180s, no timeout/interruption, child and outer groups empty.",
+    "control": "A constructed key callback result moves the raw reference root to RESULT with the same allocation edges, then proves the old key-result refusal fixedpoint while the new current helper accepts the array. Helper-only, no additional PHP agreement."
+  },
+  "independent_review": "lifecycle132_review independently cleared scope, source and runtime semantics, native/genuine baseline, strict/source, both focused producers and exact generated fixture identities. array61_review2 independently accepted the 670 numeric premises, raw archive and private publication, and bounded incoming selectors through canonical d9903aa6/424. No joined execution credit is inferred from integration.",
+  "execution": {
+    "profile": "tests/semantics/profile.json SHA-256 9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94; -n, opcache CLI/JIT disabled, precision 14, serialize_precision -1, UTC, error_reporting 30719, zend.assertions 1; LC_ALL=C and TZ=UTC",
+    "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "focused_header_sha256": "a0c63cd0c7c593f5cff463443f6e7c81f3f4d8159128d19f98eef28eb09c8efa",
+    "focused_command": "taskset -c 5 python3 -B .tools/a61-focused-actor.py 5; reviewed actor runs author2 then peer1 under 400/210s outer and 2GiB caps"
+  },
+  "archive": {
+    "location": "../php-spec-evidence-archive/array-iterator-byref-destructor-61/raw.tar.xz",
+    "sha256": "f1ed732b9a912f5a05dbca4b96ee86e648752bf4c30fc261cbf4d7b7b6a2040a",
+    "bytes": 68092,
+    "members": 173,
+    "manifest": "../php-spec-evidence-archive/array-iterator-byref-destructor-61/manifest.json",
+    "recovery": "For a selected report, recreate /home/user/workspace/php-spec/.tools/array-iterator-byref-destructor-61 at its tested revision: 7329903b68562e8d4e88e218c2bf938f062ad545 for native/baseline, 04a65d6fd1cc3877376a58f5814b146e66f96ebf for strict/source, or a347add3a1f0ab5141866e0678855d863b88f23b for focused preparation/numeric. Restore original cwd and .tools paths plus project-pinned PHP/adapter/numeric providers from report inputs. Verify archive SHA-256, extract raw.tar.xz there, and choose fresh output paths for replay. The archive holds originals and records, not the engine or executables."
+  },
+  "remaining": "Complete array spread, Traversable, Iterator ownership and PHP core semantics remain partial. Owning fields/destructors in other protocols, special/typed/proxy/object/cyclic/debt payloads, reentrant callbacks and other operands keep explicit boundaries."
+}

@@ -1,0 +1,37 @@
+{
+  "scope": "Ordinary dynamic array callable of a public user instance or static method, called with one initialized user Iterator CV unpack",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, -n plus tests/semantics/profile.json, LC_ALL=C, TZ=UTC",
+  "engine_rule": "Zend/zend_vm_def.h ZEND_INIT_DYNAMIC_CALL selects the array callback before ZEND_SEND_UNPACK; object selection retains its receiver, class-string selection retains called scope, and the by-reference Traversable warning uses EX(call)->func->common.scope (the declaring class).",
+  "implementation": "Module 385 admits only ARRAY_METHOD_TARGET with a 205-certified METHOD_TARGET or STATIC_METHOD_TARGET at the same dynamic NExprFuncCall site and a CV unpack. A retired instance receiver is reauthenticated only in the saved eager-cleanup source receipt using its retained class record and the existing 205 certificate on an ephemeral allocation view. The actual heap and live target checks are unchanged.",
+  "base_revision": "738546cd7f91af8c684d31d6b565bf4cf87d6ad0",
+  "review_status": "Independent source-byte and semantic static review cleared the bounded implementation; an original-path reviewer source agreed exactly on committed cut e6571e07e.",
+  "tested_semantic_sha256": "d372f802e3f1cc83999fdd9a7ec620e7366655d515f6116542030d292a888897",
+  "sources": {
+    "runner": "tests/semantics/array_callable_iterator_unpack_sources.py",
+    "runner_sha256": "a78a5c77325e9d0834757a58d4b469d089aa8ac3249167a4e7d47876ff27dbb4",
+    "author_native_first": "call119-author-native/native-summary.json sha256:be6c8c22d5834b9eb150e57465fdd3b63989e699b25a84eccc4f66260f39f213",
+    "author_unchanged_baseline": "call119-author-native/baseline-summary.json sha256:3080a460ed686aefbd11dbc00011a75481831f68ec2634d72994171a9ce8bd2f",
+    "independent_native_first": "call119-review-native/summary.json sha256:60c7b0ff71f8c37744f7905cbd9b487c68447ed96819b9c351793a3d87d5e535",
+    "final_report": "call119-author-final/array-callable-iterator-unpack-egjbzhd_/report.json sha256:b1d82d91d80ca6ec9811c174ee51a50781a352ab392b52f14df208829761485f",
+    "result": "Six exact normal agreements: selected object survives callback/owner rebinding and destructor cleanup; inherited static called scope and named keys; declaring-parent by-reference warning; invalid key and throwing key cleanup; independent combined selection/by-reference case. Five author cases had genuine unchanged explicit Unsupported baselines, with zero agreement credit."
+  },
+  "reached": {
+    "runner": "tests/semantics/array_callable_iterator_unpack_protocol.py",
+    "runner_sha256": "1439c19121122c8a75597da863b432b6d2be32162c608e5b59f2d7f405c80783",
+    "result": "Seven source-reached SL fixtures, 126 reported assertions, all process 0 and true. They check the two saved array target forms, post-key receiver root, warning origin and line, invalid-key pre-discard, and two retired eager-operation receipts. Retired receipt controls reject wrong selected line, call site, requested class, method name and nonarray target.",
+    "reports": [
+      "fiber-state-review-_9u_6llg/report.json sha256:0e796588c5ff9c0ecb8a73dd8caf14f9a5352ea97b954e5d5f31419cbe5f0893",
+      "fiber-state-review-_n09vgog/report.json sha256:18902462d0dc76adad28eb5c8d6be423f49d52ed70b29e77b76cbc14fdc90a18",
+      "fiber-state-review-zakm_rd0/report.json sha256:1ec6413bcbad672b77e4c3cfa63b965e67e96cb015aff49aaf1b9380048b00e6",
+      "fiber-state-review-orubtl1e/report.json sha256:02eab803a1925dce90c6ddf2e23385334cf802e4593a53ad6a825c23b06576b8",
+      "fiber-state-review-zxnvw1zv/report.json sha256:e32df228a29a16e87d47952c3512d08876163c689bd8cb6c795bab76550c3535",
+      "fiber-state-review-qy_pcmq8/report.json sha256:4d85a61d0fc7e820df6c10ae61c13df68f6ef28c949b468bed57381295d9c72a",
+      "fiber-state-review-sqk7ux69/report.json sha256:2c4cbce42ac23f1d49e4201f61958092f668f15891c012ce3d2343df8d6dabac"
+    ]
+  },
+  "compatibility": "Array callable instance and inherited static non-Iterator controls, plus CALL118 directly selected method Iterator control, all pass exact native/model source comparisons at call119-author-final/user-string-8sxjb03f, user-string-zoqa93le and method-iterator-unpack-f7dpx309.",
+  "independent_final": "call119-review-native/changed-final/selected-array-byref/summary.json sha256:dcb3f2e0ec85b2183c3d0f56070ea180bc1b1dae89ed1e6d23a8f377ed312b70: frozen SHA-256 416a33a1 source on committed e6571e07e; model normal/process 0/PHP exit 0 and exact pinned native stdout, stderr and exit. CPU4 fully reaped.",
+  "failed_attempts": "The first guarded candidate produced interpreter_failure for invalid-key and throwing-key originals during cleanup; the first retired EXIT reached fixture proved eager-operation source validation false after selected HOBJECT retirement. A separate first selection fixture expected two instead of three receiver owners. Raw packets are preserved under call119-author-native and call119-author-final/fiber-state-review-{3wy2rb9o,7szp5szp,y8gqc4b9}; all have zero passing credit.",
+  "limits": "Same-class mutable callback history is not reconstructed by the 205 certificate. Scoped/private, magic and internal array targets, temporary Iterator operands, Closure::call, and wider unpack interactions remain outside this gate.",
+  "raw_recovery": "Raw directories are under /home/user/workspace/php-spec-evidence-archive/. Reports retain the tested private-root absolute paths; use tracked source hashes and the commands inside raw reports to reproduce after rebuilding local tools. Do not count native-positive Unsupported controls as agreement."
+}

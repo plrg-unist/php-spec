@@ -1674,6 +1674,15 @@ shared COW from singleton unwrapping; a supplied key throw checks real
 no-insert cleanup and last-owner lifetime. The same path accepts an
 Aggregate-returned Iterator. Four source agreements and 528 focused premises
 are recorded in the [by-reference Iterator cache review](coverage/semantics/array-iterator-byref-reference-cache-review.json).
+For the same bounded `&current()` array cell in an ordinary Iterator with
+`__destruct`, last-DATA release keeps the spread builder and scalar alias live
+while the destructor changes the alias and next literal input before assignment.
+Retaining an external Iterator owner delays the destructor until after
+assignment; a supplied key throw preserves the original exception while
+cleaning up the partial builder.
+An Aggregate-returned Iterator has its own source agreement. Four exact sources
+and 670 reached premises for the three direct Iterator sources are recorded in
+the [by-reference destructor review](coverage/semantics/array-iterator-byref-destructor-review.json).
 Ordinary CVs of named IteratorAggregate classes now invoke a borrowed
 `getIterator()` frame and
 transfer its owned user Iterator or named-Generator return into DATA. Genuine
@@ -5648,6 +5657,12 @@ string split while rereading referenced method bytes; actual receiving/emitting
 frames authenticate selection, including compound foreign-`$this` API calls.
 The [keyword/compound review](coverage/semantics/keyword-compound-callables-current-review.json)
 keeps failures and later consumers visible. Magic/autoload/internal consumers remain open.
+Public user-method array callbacks now also accept initialized Iterator CV
+argument unpack. The selected object or class-string static method survives
+Iterator callbacks; inherited static calls preserve called scope and report
+the declaring class in by-reference warnings. Abrupt key cleanup uses a saved
+selection receipt after its receiver retires. Six exact originals and seven
+reached stages are in the [array-callable Iterator review](coverage/semantics/array-callable-iterator-unpack-review.json).
 Public concrete class-method strings now distinguish
 computed static dispatch from fixed calls using a compatible active receiver.
 Immutable string captures/clone retain selected descriptors, called scope and

@@ -110,6 +110,11 @@ test-semantics: build
 		python3 tests/semantics/array_iterator_byref_reference_cache_state.py --source-report "$$out/iterator-source/report.json" --output "$$out/author-state" && \
 		python3 tests/semantics/array_iterator_byref_reference_cache_state_review.py --source-report "$$out/iterator-source/report.json" --output "$$out/peer-state" && \
 		python3 tests/semantics/array_iterator_byref_reference_aggregate_sources.py --output "$$out/aggregate-source"
+	@out="$$(mktemp -d .tools/a61-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/array_iterator_byref_destructor_sources.py --output "$$out/iterator-source" && \
+		python3 tests/semantics/array_iterator_byref_destructor_state.py --source-report "$$out/iterator-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/array_iterator_byref_destructor_state_review.py --source-report "$$out/iterator-source/report.json" --output "$$out/peer-state" && \
+		python3 tests/semantics/array_iterator_byref_destructor_aggregate_sources.py --output "$$out/aggregate-source"
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
 	python3 tests/semantics/globals_compiler.py
@@ -249,6 +254,8 @@ test-semantics: build
 	python3 tests/semantics/method_iterator_unpack_clean_sources.py
 	python3 tests/semantics/method_iterator_unpack_protocol.py
 	python3 tests/semantics/method_iterator_unpack_boundary.py
+	python3 tests/semantics/array_callable_iterator_unpack_sources.py
+	python3 tests/semantics/array_callable_iterator_unpack_protocol.py
 	python3 tests/semantics/iterator_call_unpack_nan_sources.py
 	python3 tests/semantics/iterator_call_unpack_nan_review.py
 	python3 tests/semantics/iterator_call_unpack_string_sources.py
@@ -532,6 +539,8 @@ test-semantics: build
 	python3 tests/semantics/generator_fiber_closure_throw_transfer_state.py
 	python3 tests/semantics/generator_fiber_fresh_closure_throw_transfer_sources.py
 	python3 tests/semantics/generator_fiber_fresh_closure_throw_transfer_state.py
+	python3 tests/semantics/generator_fiber_closure_reference_throw_transfer_sources.py
+	python3 tests/semantics/generator_fiber_closure_reference_throw_transfer_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
