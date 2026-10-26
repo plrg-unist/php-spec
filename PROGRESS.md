@@ -44,12 +44,12 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | --- | --- |
 | OP89 | Source3/focused889 and bounded publication independently reviewed; actual-tail review pending. |
 | A54 | IteratorAggregate literal-spread acquisition into existing Iterator/Generator DATA; native-first preparation, new430 reserved. |
-| CLASS129 | Literal-this BYREF Get through local cleanup/selected nonpublic declaration; native3/genuine packet running. |
-| COMP126 | Native6/genuine gap classified; private storage repair preparing, held123/COMP88 separate. |
+| CLASS129 | Literal-this BYREF Get through local cleanup/selected nonpublic declaration; native3/genuine gap classified, private380 repair next. |
+| COMP126 | Native6/genuine gap classified; mixed-storage comparison/filter repair in261/394 preparing, held123/COMP88 separate. |
 | V109 | General Closure::call fixed-formal newThis binder gap; native originals preparing. |
-| Iterator56 | Direct SEND argument/yield-CV ownership across Fiber suspension; native4/genuine transfer-fence gap classified. |
+| Iterator56 | Direct SEND argument/yield-CV ownership across Fiber suspension; runtime proof frozen, first affected strict/source packet ready. |
 | Source95 | Nonfresh Generator CONFIG acquisition: cached, advanced and closed cases; native3/genuine closed, private423 initial-state implementation. |
-| M155 | Next WeakMap lifetime fence assigned; scope/status reply pending after same-model capacity restart. |
+| M155 | Callback-valued owned WeakMap Iterator factory/release; native-first scope preparing. |
 | COMP123 | Held unrun; no actor. |
 
 Iterator49/50/51/52/53/54/55, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108, M132–M154, A46/A47/A48/A49/A50/A51/A52/A53, OP79/80/81/82/83/84/85/86/87/88, Source86/87/88/89/90/91/92/93/94, COMP118/119/120/121/122/124/125 and CLASS119/120/121/122/123/124/125/126/127/128 are integrated

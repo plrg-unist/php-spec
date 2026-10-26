@@ -1,0 +1,88 @@
+{
+  "decision": "Independently accepted owned nonpublic/public-shadow and denied Get references with existing verification and lifetime rules; family remains partial.",
+  "scope": "Literal BP_VAR_R reads on existing authenticated statically named ordinary noarg BYVAL factory results. Existing BYREF Get signatures now use retained declaration/access history without a public/raw-key restriction.",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "engine_route": "zend_std_read_property retains caller-selected prop_info across Get and local cleanup. zend_verify_prop_assignable_by_ref_ex converts an unconstrained real cell or checks its existing sources without attaching the requested type. FETCH_OBJ_R in zend_vm_def.h copies/dereferences the returned operand before FREE_OP1 and CHECK_EXCEPTION, including pending errors.",
+  "implementation": {
+    "revision": "d19042042bf6d092d3fda61cfd2ba7bc839c927c",
+    "paths": [
+      "spec/semantics/380-magic-property-get.watsup"
+    ],
+    "delta_from_base": "+3/-4 lines",
+    "behavior": "owned_access retains Get metadata for either return convention; history no longer rejects owned BYREF saved mangled access. Retained selected DECL, signature/source/access/history and allocation/liveness checks remain.",
+    "preservation": "Existing RESULT-to-COPY-to-BASE and throwing COPY-to-DROP rules provide live-reference verification then detached value ownership.384, direct-this BYVAL fence, PARAM/coercion limits, state/tasks/roots/GC and compiler remain unchanged."
+  },
+  "source_evidence": {
+    "native_baseline_revision": "cf394412950771df56da5e9fcf429e202d785183",
+    "module_count": 417,
+    "classification": "Native5 exact normal tuples. Unchanged model has checked Unsupported3 (W:D|bad-source|, T:D|exact7|, X:) and genuine php_error255 conflict/payload mismatches (C:D|kept7| and P:D|P|; semantic stderr377/365 bytes). All baseline outcomes retain zero agreement.",
+    "changed_revision": "d19042042bf6d092d3fda61cfd2ba7bc839c927c",
+    "agreements": 5,
+    "observations": [
+      "Get-local Probe destruction changes the referenced string7 to9; selected private int verification changes the actual cell to int9, COPY captures9 before receiver D writes free.",
+      "Exact Holder:int|string source retains its vector and accepts free/later after receiver D; Parent private int wins over public Child string without attaching the Parent constraint.",
+      "Holder:string conflict preserves7 until D changes8 and throws supplied H; catch sees H.previous equal fresh caller-line6/file/message TypeError and destination42 unchanged.",
+      "Copied Payload survives source=NULL inside receiver D, then retires under pending H; supplied cleanup C.previous=H, H.previous=NULL and unchanged42/NULL distinguish COPY/BASE/drop timing.",
+      "Denied hidden private int INITIAL retains absent DECL despite Get scope; constrained string7 is unverified, detached before receiver D changes source8."
+    ]
+  },
+  "focused_evidence": {
+    "revision": "c0cd1484290448d8644d0f5cb2bbab7940c2df3a",
+    "module_count": 417,
+    "author": 319,
+    "independent": 267,
+    "total": 586,
+    "reached": 568,
+    "derived": 18,
+    "groups": {
+      "weak_local": 168,
+      "source_conflict": 151,
+      "exact_source_and_denied_cut": 141,
+      "payload_drop": 126
+    },
+    "trajectories": "Actual owned front/hold/Get frames retain physical selected declaration and source origin. Local destruction frame keeps REFERENCE through7-to9 before verification; pending conflict captures raw7 into DROP before receiver D. Peer exact path preserves existing type sources and detached7 across D/free, and denied cut proves hidden INITIAL/int with DECL absent. Payload COPY owns the object across source clear, then pending H and C retirement reach the same catch with both objects dead.",
+    "controls": "Derived missing/duplicate BASE and PARAM refusals isolate tail/source guards; PARAM has positive operand/descriptor/history/tail/source premises and makes no mutated-state validity or reachability claim. Six author budget premises prove final-state resumption equality.",
+    "execution": "AL4/SL4true, first-pass/quiet/stable; serial90s groups on CPU1, all actors/groups/wrappers reaped. Both author SL and second compiler sampled live; all four peer children sampled live. Changed source5 retains launcherCPU5 provenance only, with an empty late child sample."
+  },
+  "preserved_failures": [],
+  "independent_review": "class119_review accepted native/baseline classifications, minimal runtime/source5, maintained author319, peer267, actual-parent selector/preservation reasoning and concise documentation/archive. No execution renewal.",
+  "raw": {
+    "manifest": "../php-spec-evidence-archive/magic-get-owned-reference-128/manifest.json",
+    "bytes": 7796184,
+    "sha256": "4a7f39e076f7901b95f28aa059e825603125d9927d9503c5d77f8c0c5a668cc4",
+    "reports": {
+      "native5": {
+        "path": ".tools/magic-get-owned-reference-probes-128/native-first/report.json",
+        "sha256": "c27ada62b5462559c7b4e95e8f2953c9b9d0c4743688fa921b0b64452ce2232b"
+      },
+      "baseline5": {
+        "path": ".tools/magic-get-owned-reference-probes-128/accepted-current-baseline/report.json",
+        "sha256": "54304ba27b8d393ea3394af7bc0f447ccb0f7adba238d67aa97886b158f50f4f"
+      },
+      "source5": {
+        "path": ".tools/magic-get-owned-reference-probes-128/changed-model-hcieynhp/report.json",
+        "sha256": "e51657f70fa5c186fc38042498a9f595db768b5520149d19c4d7e5eb2084ef20"
+      },
+      "author319": {
+        "path": ".tools/magic-get-owned-reference-protocol-ifxomhzb/report.json",
+        "sha256": "71df95c61dbc1503d7e2e1625a45e15ae4171c1507256aff95446413941594ba"
+      },
+      "independent267": {
+        "path": ".tools/magic-get-owned-reference-review-128/execution-iwj5nbpq/report.json",
+        "sha256": "2f9342ebddfd0beef5b5a92b53ea1bc71a133af9e8d20c3a985b11ebadbd2519"
+      }
+    },
+    "recovery": "Verify SHA-256 then extract raw.tar.gz; recover original Git revisions for tested417 inputs. Reports preserve original path/cwd/profile/tool identities. tested-inputs contains380/384/manifest, nine maintained inputs and unchanged magic_get_recursion_protocol.py, magic_get_scoped_unset_protocol.py and magic_get_direct_this_protocol.py helper bytes. Native/baseline retaincf394; source5 retainsd190; focused586 retainsc0cd. Later composition adds no execution credit."
+  },
+  "composition": {
+    "parent_revision": "616c187737ddc8b00327250c86e6701fcdf0def3",
+    "module_count": 419,
+    "preservation": "Tested380/384, nine maintained inputs andrecursion/scoped-unset/direct-this Python helpers remain exact. Other incoming runtime paths and419 manifest remain parent-exact; Get/callcontext/type-source records are unchanged.",
+    "selectors": "30 only adds array-generator/concat task/type alternatives.378/380-yield require active Generator/Fiber/delegation;405/426/427/61 require unpack/Generator operations;182/428 require Closure::call/pack targets;59/429 require CONCAT_PREP/Stringable sources. None occurs here.422 storage/edge hooks require WEAKMAPENTRIES, absent from original/reached/derived states; fieldless destructor eligibility alone cannot select them. Iterator closure publication adds records/tests only, with production paths parent-exact. Source94 changes only423: new INPUT ownership/release/throw continuations require CONFIG_GENERATOR/GENERATOR_RESUME or CONFIG_UNPACK_PREP plus authenticated intrinsic unpack. None occurs in these class sources/reached/derived states; Get/callcontext/type-source records stay unchanged.",
+    "credit": "No joined execution or earlier getter/native/control replay; original417 cuts retained."
+  },
+  "limits": [
+    "Literal-this BYREF, reference/effectful/argument-bearing or other factory forms, PARAM-backed reference sources, wider coercions, recursive/suspending callbacks and wider ownership histories remain partial."
+  ],
+  "engine_bugs_or_intentional_divergences": []
+}

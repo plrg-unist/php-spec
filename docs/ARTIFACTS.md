@@ -75,8 +75,15 @@ Scoped CV Get reference verification is retained in
 `../php-spec-evidence-archive/magic-get-scoped-reference-127/manifest.json`:
 native4/baseline4, new source3 and432 focused conditions at their original416 cuts.
 The archive preserves380/384/manifest, exact maintained inputs, unchanged helpers
-and all raw processes. The native-only owned-BYREF boundary remains excluded;
-composition over417 adds no execution credit.
+and all raw processes. Its native-only owned-BYREF boundary keeps zero credit
+at that cut; composition over417 adds no execution credit.
+
+Owned nonpublic/reference Get lifetime evidence is retained in
+`../php-spec-evidence-archive/magic-get-owned-reference-128/manifest.json`:
+native5/baseline5, changed source5 and586 focused conditions at their original417
+cuts. The archive preserves380/384/manifest, nine maintained inputs, unchanged
+helpers, raw processes and the three Unsupported/two genuine wrong-PHP-error
+baselines. Composition over419 adds no execution credit.
 
 Keep future compressed raw traces, source snapshots and tool copies in this
 external archive (using new paths for new evidence) or in ignored `.tools/`.

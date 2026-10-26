@@ -1,4 +1,5 @@
 dec $aggregate_decl_retained(pstate, nat) : bool
+dec $number_compare_decl_unset_allowed(pstate, nat, ptbytes) : bool
 dec $aggregate_membership_boundary(pstate) : pstate
 dec $aggregate_creation_blocked(pstate, nat) : bool
 def $aggregate_creation_blocked(S, n) = $aggregate_decl_retained(S, n)
@@ -681,9 +682,10 @@ def $property_unset_key(S, pvalue, ptbytes, z) = $object_table_sync_value($prope
 def $property_unset_key_unshared(S, POBJECT n, ptbytes, z) = $aggregate_membership_boundary(S)
   -- if ~$instance_storage_freeing(S, n)
   -- if $aggregate_decl_retained(S, n)
+  -- if ~$number_compare_decl_unset_allowed(S, n, ptbytes)
 def $property_unset_key_unshared(S, POBJECT n, ptbytes, z) = $clone_unset_committed(S_detached[.OBJECTPROPS = $objectprops_set(S_detached.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_UNSET))][.RESULT = KNOWN PNULL], n, ptbytes, ppropertyslot.STATE)
   -- if ~$instance_storage_freeing(S, n)
-  -- if ~$aggregate_decl_retained(S, n)
+  -- if ~$aggregate_decl_retained(S, n) \/ $number_compare_decl_unset_allowed(S, n, ptbytes)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.DECL = (ppropertyid)

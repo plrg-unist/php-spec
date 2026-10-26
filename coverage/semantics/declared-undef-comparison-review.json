@@ -1,0 +1,169 @@
+{
+  "milestone": "COMP125",
+  "status": "independently reviewed bounded slice",
+  "behavior": "Normal numeric Notice callbacks may unset existing declared slots while fixed physical comparison keys remain. Canonical initial/unset slots compare as UNDEF; selected reference cells and last-owner retirement keep their distinct lifetimes.",
+  "implementation": {
+    "spec/semantics/136-property-runtime.watsup": "d5c90f4136bbbfdc4bb7d4f711e6169e90a4b8714639133ed79df8ef30fafe54",
+    "spec/semantics/394-aggregate-stringable-comparisons.watsup": "5bf1fb0c2b1da99b8f948f163051b54904ff504411a56d4d535349c61b601f47",
+    "spec/semantics/402-object-numeric-comparisons.watsup": "9cb348649ea638170160bc6b684548105272f79b16299a1ea08bc5654f50171c"
+  },
+  "engine_basis": [
+    "Zend/zend_object_handlers.c: rebuild_object_properties_internal and zend_std_unset_property retain INDIRECT buckets for UNDEF slots.",
+    "Zend/zend_hash.c: zend_hash_compare_impl orders deindirected UNDEF before a value and continues when both are UNDEF."
+  ],
+  "target": {
+    "php": "8.5.10 CLI NTS signed64",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle": ".tools/php/bin/php",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "tested_module_count": 417
+  },
+  "native": {
+    "revision": "cf394412950771df56da5e9fcf429e202d785183",
+    "cases": 6,
+    "reports": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-125/author-originals/native.json",
+        "sha256": "f02edbec44b5606e0534fbf12c92434294222fa0937d7805c0959be597e1cb76"
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-125/peer-originals/native.json",
+        "sha256": "078858ccae67b8aed6263df5f4a3deb73d3facbfb79cf05711266e038919c93a"
+      }
+    ],
+    "limits": "CPU2/2GiB, serial native15 each; exact originals/path/cwd/profile/streams and explicit intended flags."
+  },
+  "baseline": {
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comparison-125/private/initial-report.json",
+      "sha256": "528c40db99e0abbe96860fb6895cd01b4d312b33d7f862c4aa9fd5d0fe8a39b8"
+    },
+    "revision": "cf394412950771df56da5e9fcf429e202d785183",
+    "outcome": "accepted/program/Unsupported: retained declared property-table membership mutation",
+    "stdout": "B|H:1|",
+    "agreement_credit": 0,
+    "limits": "CLI80/record90; native6 then sole genuine baseline, packet130/watch150/2GiB."
+  },
+  "sources": {
+    "revision": "5ee5e281f949e4d2394afe1ac037d3a7c3dccfd6",
+    "normal_agreements": 6,
+    "reports": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-125/author-originals/model.json",
+        "sha256": "edfe3e7363030015b49cf15cba2514179805e106b6c5d935fcaf6a10701c9d91"
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-125/peer-originals/model.json",
+        "sha256": "c4cb0a02279a65177e689bbb1785fe0f8450a3a1ecef3d097a5f09ef62faa6e6"
+      }
+    ],
+    "selection": "Retained author2 then peer4; no native replay. Observed operators ==, <=>, <= and > cover int/float, initial typed hole, selected reference removal, inline last-owner destruction and delayed outside release.",
+    "limits": "CPU2/2GiB, CLI90/record105; author235/watch250, peer445/watch460."
+  },
+  "focused": {
+    "premises": 420,
+    "groups": 4,
+    "metric": "Raw declared conditions, not distinct obligations. Author retirement assertions replace an invalid one-step RESULT assumption; peer pending-base selection adds four resolver facts without changing its existing checks.",
+    "records": [
+      {
+        "report": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/comparison-125/author-accepted/report.json",
+          "sha256": "f83aaaf0c6ea950c563de1ca7e4d4a23f69c0ef1e58ee3d8809c91120f068b1c"
+        },
+        "revision": "bfdf479a2be5f558479e1c5ef27fb1b38c0df7e9",
+        "premises": [
+          98,
+          103
+        ]
+      },
+      {
+        "report": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/comparison-125/peer-accepted/report.json",
+          "sha256": "4356b3566df4fa5f05c72878f5de4e92cf55ff11a6f6799922b1776f421e891c"
+        },
+        "revision": "7befdea55425ccf64c1447996f68b72baa1b2e79",
+        "premises": [
+          124,
+          95
+        ]
+      }
+    ],
+    "coverage": "Source-reached physical rows/keys, UNDEF -1/0/1, numeric-only/key-qualified mutation admission, canonical INITIAL versus invalid PROP_VALUE UNINITIALIZED, live selected CELL after slot removal, actual raw/driven results, saved scalar retirement/restoration before store, inline/outside destruction and short-tail one/zero restart.",
+    "limits": "StrictSL/cachefalse/dettrue, CPU2/2GiB, child120; author275/watch290 and peer275/watch290."
+  },
+  "affected": {
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comparison-125/maintenance/report.json",
+      "sha256": "ae59fae294025059bbd35a9c20dd1fef12804282dd6755a66b0a9613aabdae70"
+    },
+    "revision": "7befdea55425ccf64c1447996f68b72baa1b2e79",
+    "premises": 63,
+    "groups": 1,
+    "scope": "One old shadow-source prefix verifies newly admitted UNSET image/Number validity while DIRECT opposing expiry remains Unsupported. No native/source or historical-campaign replay.",
+    "historical_renewal_credit": 0,
+    "limits": "CPU2/2GiB, child120, outer145/watch160."
+  },
+  "zero_credit": {
+    "fixtures": [
+      {
+        "report": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/comparison-125/author-failed/report.json",
+          "sha256": "33469147cbf327d9a0f74800014a237a7de1a8b42b7cf5aa7aa3646a21a896a6"
+        },
+        "revision": "29e40f0b74a62932cc77b5fb866698b75273e9a2",
+        "fixture_premises": 85,
+        "reason": "Expected driven RESULT1 while the scalar was saved in cursor-owner retirement."
+      },
+      {
+        "report": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/comparison-125/peer-failed/report.json",
+          "sha256": "ad182b60eb5de972f5f1b953d5cf1b3f18c0e857a3a6989818bfe210d68b6f54"
+        },
+        "revision": "bfdf479a2be5f558479e1c5ef27fb1b38c0df7e9",
+        "fixture_premises": 120,
+        "reason": "Sought an already-resolved property base; actual literal-this UNSET consumes the pending wrapper in the same raw step."
+      }
+    ],
+    "observation": {
+      "receipt": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-125/private/author-driver-observe/observe.exit.json",
+        "sha256": "af1ba8c78710d1d30c1d44b845303372f8de5dfacdccb2cb00ca11f00d659fbe"
+      },
+      "stdout": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-125/private/author-driver-observe/observe.stdout",
+        "sha256": "fcda44e5f4e07eb157da351199b501c7272102172f42e8a2be6b1c7b2118e7b0"
+      },
+      "agreement_credit": 0,
+      "result": "One exact failed-prefix projection confirmed saved scalar1, original NUMBER_COMPARE_RESULT source and left/right cursor-release jobs."
+    }
+  },
+  "independent_review": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/comparison-125/private/independent-review.json",
+    "sha256": "ef68bfdcfe866eaed1a3e57f8345d1541f14608459d2d2466bcf82be4bc8dc99"
+  },
+  "limits": [
+    "Only fixed declared layouts without property hooks; dynamic membership and missing names retain their mutation boundary.",
+    "New UNSET permission requires active authenticated numeric-only normal retention, with no nonnumeric/parked view or saved pending cleanup. Pre-existing pending-exception bodies are unchanged.",
+    "Nonpublic or UNDEF Stringable continuations remain Unsupported; initialized public Stringable behavior is preserved. Pure classification checks execute no Stringable callback.",
+    "Cleared DIRECT opposing operands still refuse; a separately owned selected CELL can survive its property slot.",
+    "Held COMP123 packet and paused COMP88 are untouched. Selected agreement does not establish complete core semantics, equivalence or BOLA freedom."
+  ],
+  "archive": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/comparison-125",
+    "manifest_sha256": "96269763b4726af6bacd0fda3dd4913df227add3ef3ce89b00b791c362f98337",
+    "files": 248,
+    "bytes": 3136284
+  },
+  "recovery": "Restore archived originals/recorders and private output directories at their recorded paths; use the listed Git cuts and pinned local tools/profile. Raw receipts retain commands, streams, statuses, inputs and worker finalization. No archived binary or offline rebuild claim.",
+  "composition": [
+    {
+      "parent": "cf6f58a94087a9871fddf6cc90d5215d3f895218",
+      "publication": "f66ffb47c59f91e2f025fb0d29513e3d95f432d1",
+      "module_count": 419,
+      "execution_credit": 0,
+      "preservation": "Three changed operational modules and ten tests are publication-exact. Other operational modules, schema and ordered419 manifest retain the actual parent. Source and focused evidence keeps its original417 cuts; this composition adds no execution credit."
+    }
+  ]
+}

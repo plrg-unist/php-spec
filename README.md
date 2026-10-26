@@ -657,6 +657,15 @@ terminal-throw cleanup, preserving the original method trace and setter recovery
 Three source agreements and 574 original conditions pass (653 physical, 79 setup).
 Wider operands, captures, values and callback lifetimes remain partial.
 
+[Temporary Generator CONFIG inputs](coverage/semantics/config-generator-call-result-review.json)
+now accept genuine noarg named user-call results, including factories returning
+a fresh named Generator. The opcode INPUT and iterator DATA are separate owners:
+DATA retires first, then INPUT before API reception or exception recovery. Factory
+effects preserve the selected setter, and weak observers confirm final death;
+the original factory Exception trace survives terminal Generator throw. Three
+source comparisons and 506 maintained conditions pass (561 physical, 55 setup).
+Wider call forms, values and callback lifetimes remain partial.
+
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
 throws the object-key `Error` before copying its current value or entering the
@@ -2054,9 +2063,10 @@ scopes across Fiber transfer. Distinct parameter cells preserve a shared object
 through normal returns or supplied-Throwable finally unwinding. [Helper transfer
 review](coverage/semantics/generator-fiber-helper-transfer-review.json).
 Named native delegation now transports its actual resumers and source claims
-through Fiber suspension. Fresh one-link normal return and supplied-Throwable
-abort agree; cached and two-link handled whole-source runs remain required,
-inconclusive work. [Delegation transfer review](coverage/semantics/generator-fiber-delegation-transfer-review.json).
+through Fiber suspension. Fresh CURRENT, cached NEXT and one-/two-link
+supplied-Throwable executions agree with PHP, including final Generator and
+object retirement. Earlier timeouts remain separate from these whole-source
+agreements. [Delegation transfer review](coverage/semantics/generator-fiber-delegation-transfer-review.json).
 [Arrow Generator311](docs/semantics/ARROW-GENERATORS.md) validates eager
 parameters, deferred captures, implicit yield/delegation returns and original
 signatures. Value warnings retain the same Throwable, cached key and closed
@@ -3850,6 +3860,10 @@ retain physical private/protected keys in initialized materialized declared tabl
 Normal handlers preserve live slot rereads, retained reference cells and distinct
 inherited private names. Six source agreements and 309 focused premises retain
 their recorded cuts; nonpublic Stringable callbacks remain refused.
+[Declared-slot UNDEF ordering](coverage/semantics/declared-undef-comparison-review.json)
+also preserves physical buckets when normal numeric handlers unset declared slots
+or fill initial typed holes. Surviving reference cells and inline destruction
+retain their native order; six source agreements and 420 focused premises pass.
 [Builtin stdClass numeric Notices](coverage/semantics/stdclass-numeric-comparison-review.json)
 use the same continuation with a fixed builtin class image. Restored second
 Notices retain saved 1/1.0 across stdClass/source-instance changes and late live
@@ -5180,16 +5194,24 @@ private/protected UNSET and denied hidden properties. Saved declaration/type
 survives backing99; hidden denied int remains unverified. COPY precedes original
 receiver destruction and caller delivery. [Three source agreements and 477 focused
 conditions](coverage/semantics/magic-get-owned-access-review.json) retain415 cuts,
-including existing public BYREF and accessible INITIAL boundaries. Owned nonpublic
-BYREF, wider producers and special coercions remain partial.
+including existing public BYREF and accessible INITIAL boundaries. Wider producers
+and special coercions remain partial.
 
 Ordinary CV nonpublic UNSET Get now verifies returned references against the saved
 caller declaration. Weak string7 converts the actual unconstrained cell; a typed
 string source raises a conflict without writing it. Exact int|string sources keep
 their original constraint and accept later `'free'`, with no requested type attached.
 [Three source agreements and 432 focused conditions](coverage/semantics/magic-get-scoped-reference-review.json)
-retain416 cuts. Owned nonpublic BYREF, including a public Child shadow, and
-literal-this BYREF remain fenced; wider parameter/coercion/lifetime forms are partial.
+retain416 cuts. Literal-this BYREF and wider parameter/coercion/lifetime forms
+remain partial.
+
+Named noarg owned factories now also admit nonpublic/public-shadow and denied
+reference Get. A returned cell stays live through getter-local destruction and
+selected-type verification; COPY then detaches its value before receiver cleanup.
+Existing type sources remain unchanged. Pending conflicts and copied object
+payloads preserve receiver/destructor exception order and the unchanged destination.
+[Five source agreements and 586 focused conditions](coverage/semantics/magic-get-owned-reference-review.json)
+retain417 cuts. Wider producers, PARAM sources and literal-this BYREF remain partial.
 
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference

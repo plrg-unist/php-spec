@@ -18,6 +18,8 @@ INPUT_BYTES = {p: p.read_bytes() for p in (Path(__file__), CATALOG, Path(review.
 ROWS = {row['id']: row for row in json.loads(INPUT_BYTES[CATALOG])}
 HANDLED = 'review-generator-fiber-delegation-transfer-handled'
 UNHANDLED = 'review-generator-fiber-delegation-transfer-unhandled'
+PENDING_COMPLETIONS = {'generator-fiber-delegation-two-edge-parked-completion',
+                       'generator-fiber-delegation-one-edge-injected-completion'}
 CURRENT_LINES = {name: next(i for i, line in enumerate(row['source'].splitlines(), 1)
                             if '$current = $parent->current();' in line)
                  for name, row in ROWS.items()}
@@ -340,7 +342,8 @@ CASES = {
 }
 
 
-def run(selected):
+def run(selected, *, pending_completion=False):
+    assert not pending_completion or selected and set(selected) <= PENDING_COMPLETIONS
     assert all(''.join(parts) == ROWS[name]['native_stdout'] for name, parts in EVENTS.items())
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=review.ROOT, text=True).strip()
     review.CASES = CASES
@@ -354,7 +357,7 @@ def run(selected):
 
     review.recorded = recorded
     try:
-        passed = review.run(selected)
+        passed = review.run(selected, process_seconds=240 if pending_completion else 120)
     finally:
         review.recorded = original
     stable = INPUT_BYTES == {p: p.read_bytes() for p in INPUT_BYTES}
@@ -371,9 +374,14 @@ def run(selected):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--case', action='append')
-    selected = parser.parse_args().case
+    parser.add_argument('--pending-completion', action='store_true',
+                        help='Use the fixed 240s budget for explicitly selected pending completions')
+    args = parser.parse_args()
+    selected = args.case
+    if args.pending_completion and (not selected or not set(selected) <= PENDING_COMPLETIONS):
+        parser.error('--pending-completion requires explicit completion --case selections only')
     if selected is None:
         # Whole completions remain core-required, explicitly selectable.
         selected = ['generator-fiber-delegation-two-edge-parked-structure',
                     'generator-fiber-delegation-one-edge-injected-unhandled']
-    raise SystemExit(0 if run(selected) else 1)
+    raise SystemExit(0 if run(selected, pending_completion=args.pending_completion) else 1)

@@ -438,3 +438,31 @@ def $aggregate_frame_seen(S, (pcallcontext), pframe, pframe_tail*) = $aggregate_
   -- if $error_context_receiving_function(S, pcallcontext) =/= eps
 def $aggregate_tasks_declared(ptask :: ptask_tail*, n) = $aggregate_cursor_declared(pnumbercompare.SOURCE.CAST.STACK, n)
   -- if $number_compare_task(ptask) = (pnumbercompare)
+
+;; Only active numeric handlers may clear an inline declared slot. Retained
+;; Stringable/parked views and saved exceptional cleanup remain protected.
+dec $number_compare_other_tasks(ptask*, nat) : bool
+dec $number_compare_other_frames(pstate, pcallcontext?, pframe*, nat) : bool
+dec $number_compare_other_local(pstate, nat) : bool
+def $number_compare_other_tasks(eps, n) = false
+def $number_compare_other_tasks(ptask :: ptask_tail*, n) = ($number_compare_task(ptask) = eps /\ $aggregate_tasks_declared(ptask :: ptask_tail*, n))
+def $number_compare_other_frames(S, pcallcontext?, eps, n) = false
+def $number_compare_other_frames(S, pcallcontext?, pframe :: pframe_tail*, n) = (($aggregate_frame_seen(S, pcallcontext?, pframe, pframe_tail*) =/= eps /\ $number_compare_other_tasks(pframe.TODO, n)) \/ $number_compare_other_frames(S, pframe.CONTEXT, pframe_tail*, n))
+def $number_compare_other_local(S, n) = (($aggregate_current_seen(S) =/= eps /\ $number_compare_other_tasks(S.TODO, n)) \/ $number_compare_other_frames(S, S.CURRENT, S.FRAMES, n))
+def $number_compare_decl_unset_allowed(S, n, ptbytes) = true
+  -- if S.COMPLETION = NORMAL
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_rows*)
+  -- if $property_slot_at(ppropertyslot_rows*, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.DECL =/= eps
+  -- if $eager_operation_pending(S) = eps
+  -- if $destructor_selected_pending(S, $destructor_selected_frame(S)) = eps
+  -- if pdestructionoperation* = S.DESTRUCTION.OPERATIONS
+  -- if (pdestructionoperation.PENDING = eps)*
+  -- if pdestructionframe* = S.DESTRUCTION.FRAMES
+  -- if (pdestructionframe.PENDING = eps)*
+  -- if pdestructorcall* = S.DESTRUCTION.CALLS
+  -- if (pdestructorcall.PENDING = eps)*
+  -- if $aggregate_local_declared(S, n)
+  -- if ~$number_compare_other_local(S, n)
+  -- if ~$aggregate_views_declared(S, $aggregate_parked_views(S), n)
+def $number_compare_decl_unset_allowed(S, n, ptbytes) = false -- otherwise

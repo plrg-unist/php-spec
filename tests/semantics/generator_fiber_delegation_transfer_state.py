@@ -12,6 +12,7 @@ CATALOG = Path(__file__).with_name('generator_fiber_delegation_transfer_cases.js
 INPUT_BYTES = {p: p.read_bytes() for p in (Path(__file__), CATALOG, Path(review.__file__))}
 ROWS = {row['id']: row for row in json.loads(INPUT_BYTES[CATALOG])}
 FRESH = 'generator-fiber-delegation-fresh-current'
+PENDING_COMPLETIONS = {'generator-fiber-fresh-native-link-completion'}
 
 
 def checks(text):
@@ -182,7 +183,8 @@ CASES = {
 }
 
 
-def run(selected):
+def run(selected, *, pending_completion=False):
+    assert not pending_completion or selected and set(selected) <= PENDING_COMPLETIONS
     revision = subprocess.check_output(['git','rev-parse','HEAD'],cwd=review.ROOT,text=True).strip()
     review.CASES = CASES
     original = review.recorded
@@ -193,7 +195,7 @@ def run(selected):
         return original(command,directory,stem,environment,cap)
     review.recorded = recorded
     try:
-        passed = review.run(selected)
+        passed = review.run(selected, process_seconds=240 if pending_completion else 120)
     finally:
         review.recorded = original
     stable = INPUT_BYTES == {p:p.read_bytes() for p in INPUT_BYTES}
@@ -208,7 +210,12 @@ def run(selected):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--case',action='append')
-    selected = parser.parse_args().case
+    parser.add_argument('--pending-completion', action='store_true',
+                        help='Use the fixed 240s budget for explicit pending whole completions.')
+    args = parser.parse_args()
+    selected = args.case
+    if args.pending_completion and (not selected or not set(selected) <= PENDING_COMPLETIONS):
+        parser.error('--pending-completion requires only explicit pending completion --case IDs')
     if selected is None:
         selected = ['generator-fiber-fresh-native-link-parked-structure']
-    raise SystemExit(0 if run(selected) else 1)
+    raise SystemExit(0 if run(selected, pending_completion=args.pending_completion) else 1)

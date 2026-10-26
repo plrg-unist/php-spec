@@ -1,5 +1,13 @@
 ;; Native Generator unpack owns DATA once, with no PHP Generator-method frame
-;; or public iterator cursor. INPUT and completed string sends are nonowning.
+;; or public cursor. CV INPUT and completed sends are nonowning; a call-result
+;; INPUT keeps its separate opcode owner until DATA dtor then FREE_OP1.
+dec $config_generator_input(pstate, pconfiggenerator) : bool
+dec $config_generator_start_input(pstate, poperand, nat) : bool
+dec $config_generator_owning_input(pconfiggenerator) : bool
+dec $config_generator_input_nodes(pconfiggenerator) : pnode*
+dec $config_generator_release_input(pstate, pconfiggenerator, ptask*) : pstate
+dec $config_generator_discard_state(pstate, pconfiggenerator, text) : pstate
+dec $config_generator_discard_nodes(pconfiggenerator, text) : pnode*
 dec $config_generator_origin(pstate, pconfiggenerator, pgenerator, pfunction) : bool
 dec $config_generator_history(pstate, pconfiggenerator) : bool
 dec $config_generator_quiet_closed(pstate, pconfiggenerator) : bool
@@ -25,6 +33,42 @@ dec $config_generator_discard_allowed(pstate, pconfiggenerator) : bool
 dec $config_generator_discard(pstate, pconfiggenerator, text) : pstate
 dec $config_generator_blocked(pstate) : bool
 
+;; A VAR call result is a real opcode INPUT owner, distinct from iterator DATA.
+;; Its emitted noarg USER call remains the factory source; the returned named
+;; Generator retains its own independently authenticated function/frame origin.
+def $config_generator_input(S, pconfiggenerator) = true
+  -- if $intrinsic_argument(S, pconfiggenerator.CALL.SITE, 0) = ((expression, true, eps, PORIGIN n_source pcpath, z))
+  -- if pconfiggenerator.INPUT = VARIABLE ptbytes z
+  -- if $code_at(S.CODE, n_source) = (pcode)
+  -- if $source_unit(S.SOURCES, n_source) = (pcunit)
+  -- if $unpack_cv_at(pcode, pcunit, pcpath) = (ptbytes)
+def $config_generator_input(S, pconfiggenerator) = true
+  -- if pconfiggenerator.INPUT = KNOWN (POBJECT pconfiggenerator.OBJECT)
+  -- if pconfiggenerator.PRODUCER = eps
+  -- if $intrinsic_argument(S, pconfiggenerator.CALL.SITE, 0) = ((expression, true, eps, PORIGIN n_source pcpath, z))
+  -- if expression = NExprFuncCall name (SEQUENCE eps) metadata
+  -- if $source_emission_noarg_call(S, n_source, pcpath, expression) = (z_call)
+  -- if $code_at(S.CODE, n_source) = (pcode)
+  -- if $source_unit(S.SOURCES, n_source) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath) = (UNPACK_VAR)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $call_target(S, preqbytes, eps) = (pfunction_call)
+  -- if $origin_node(S.SOURCES, pfunction_call.ORIGIN) = (NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata_call)
+  -- if pfunction_call.SIGNATURE.PARAMETERS = eps /\ ~pfunction_call.SIGNATURE.BYREF
+def $config_generator_input(S, pconfiggenerator) = false -- otherwise
+def $config_generator_start_input(S, VARIABLE ptbytes z, n) = true
+  -- if $lookup(S.ENV, ptbytes) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n)
+def $config_generator_start_input(S, KNOWN (POBJECT n), n) = true
+def $config_generator_start_input(S, poperand, n) = false -- otherwise
+def $config_generator_owning_input(pconfiggenerator) = (n = pconfiggenerator.OBJECT)
+  -- if pconfiggenerator.INPUT = KNOWN (POBJECT n)
+def $config_generator_owning_input(pconfiggenerator) = false -- otherwise
+def $config_generator_input_nodes(pconfiggenerator) = [HOBJECT pconfiggenerator.OBJECT]
+  -- if $config_generator_owning_input(pconfiggenerator)
+def $config_generator_input_nodes(pconfiggenerator) = eps
+  -- if ~$config_generator_owning_input(pconfiggenerator)
+
 ;; Object slots retain historical metadata after physical allocation retirement.
 ;; Active stages still require the live allocation through scope below.
 def $config_generator_origin(S, pconfiggenerator, pgenerator, pfunction) = true
@@ -45,11 +89,7 @@ def $config_generator_history(S, pconfiggenerator) = true
   -- if ~$pipe_site(S, pconfiggenerator.CALL.SITE)
   -- if $intrinsic_count(S, pconfiggenerator.CALL.SITE) = (1)
   -- if $config_pending_valid(S[.ORIGIN = (pconfiggenerator.CALL.SITE)], pconfiggenerator.CALL, true)
-  -- if $intrinsic_argument(S, pconfiggenerator.CALL.SITE, 0) = ((expression, true, eps, PORIGIN n_source pcpath, z))
-  -- if pconfiggenerator.INPUT = VARIABLE ptbytes z
-  -- if $code_at(S.CODE, n_source) = (pcode)
-  -- if $source_unit(S.SOURCES, n_source) = (pcunit)
-  -- if $unpack_cv_at(pcode, pcunit, pcpath) = (ptbytes)
+  -- if $config_generator_input(S, pconfiggenerator)
   -- if $(pconfiggenerator.OBJECT < |S.OBJECTS|)
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.CLOSURE = eps /\ pgenerator.ACCESS = eps
@@ -83,9 +123,7 @@ def $config_generator_start(S, pconfigcall, poperand, n) = true
   -- if S.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask_tail*
   -- if $config_pending_valid(S, pconfigcall, true)
   -- if $config_generator_scope(S, {CALL pconfigcall, OBJECT n, INPUT poperand, ITEMS eps, PRODUCER eps})
-  -- if poperand = VARIABLE ptbytes z
-  -- if $lookup(S.ENV, ptbytes) = (n_cell)
-  -- if S.STORE[n_cell] = DEFINED (POBJECT n)
+  -- if $config_generator_start_input(S, poperand, n)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_FRESH /\ pgenerator.DELEGATE = eps
   -- if $($heap_owners($heap_graph(S), HOBJECT n) > 0)
@@ -97,6 +135,10 @@ def $config_generator_stage(S, pconfiggenerator, "ready") = true
 def $config_generator_stage(S, pconfiggenerator, text) = (pgenerator.PHASE = GENERATOR_CLOSED)
   -- if text <- ["finish", "invoke"]
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
+def $config_generator_stage(S, pconfiggenerator, "input-release") = true
+  -- if $config_generator_owning_input(pconfiggenerator)
+  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED
 def $config_generator_stage(S, pconfiggenerator, text) = false -- otherwise
 def $config_generator_at(CONFIG_GENERATOR pconfiggenerator text, porigin) = (pconfiggenerator.CALL.SITE = porigin)
 def $config_generator_at(ptask, porigin) = false -- otherwise
@@ -107,7 +149,7 @@ def $config_generator_valid(S, pconfiggenerator, text) = true
   -- if $config_generator_stage_scope(S, pconfiggenerator, text)
   -- if $config_generator_stage(S, pconfiggenerator, text)
   -- if $intrinsic_argument(S, pconfiggenerator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
-  -- if (text = "invoke" /\ S.ORIGIN = (pconfiggenerator.CALL.SITE)) \/ (text =/= "invoke" /\ S.ORIGIN = (porigin))
+  -- if ((text <- ["invoke", "input-release"]) /\ S.ORIGIN = (pconfiggenerator.CALL.SITE)) \/ (~(text <- ["invoke", "input-release"]) /\ S.ORIGIN = (porigin))
   -- if $config_generator_count(S.TODO, pconfiggenerator.CALL.SITE) = 1
 def $config_generator_valid(S, pconfiggenerator, text) = false -- otherwise
 rule PhpStep/config-generator-start: S ~> S_value[.ORIGIN = (porigin)][.TODO = (CONFIG_GENERATOR {CALL pconfigcall, OBJECT n, INPUT S.RESULT, ITEMS eps, PRODUCER eps} "rewind") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -183,7 +225,9 @@ rule PhpStep/config-generator-closed: S ~> S[.TODO = (CONFIG_GENERATOR pconfigge
   -- if pgenerator.PHASE = GENERATOR_CLOSED
 
 def $config_generator_nodes(pconfiggenerator, "invoke") = $config_nodes(pconfiggenerator.CALL)
-def $config_generator_nodes(pconfiggenerator, text) = [HOBJECT pconfiggenerator.OBJECT] ++ $config_nodes(pconfiggenerator.CALL) -- if text =/= "invoke"
+def $config_generator_nodes(pconfiggenerator, "input-release") = $config_generator_input_nodes(pconfiggenerator) ++ $config_nodes(pconfiggenerator.CALL)
+def $config_generator_nodes(pconfiggenerator, text) = [HOBJECT pconfiggenerator.OBJECT] ++ $config_generator_input_nodes(pconfiggenerator) ++ $config_nodes(pconfiggenerator.CALL)
+  -- if ~(text <- ["invoke", "input-release"])
 def $task_nodes(CONFIG_GENERATOR pconfiggenerator text) = $config_generator_nodes(pconfiggenerator, text)
 def $call_task_valid(S, CONFIG_GENERATOR pconfiggenerator text) = $config_generator_valid(S, pconfiggenerator, text)
 def $selected_task_nonce(CONFIG_GENERATOR pconfiggenerator text) = pconfiggenerator.CALL.SELECTION
@@ -192,11 +236,23 @@ def $eager_explicit_task(CONFIG_GENERATOR pconfiggenerator text) = true
 def $config_generator_finish_allowed(S, pconfiggenerator) = ($config_generator_callee(S, pconfiggenerator.CALL.OWNER, 1) /\ ($($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1) \/ $config_generator_quiet_closed(S, pconfiggenerator)))
 def $config_generator_finish(S, pconfiggenerator, ptask*) = $fiber_start_unpack_release(S[.ORIGIN = (pconfiggenerator.CALL.SITE)][.TODO = (CONFIG_GENERATOR pconfiggenerator "invoke") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], [HOBJECT pconfiggenerator.OBJECT])
   -- if $config_generator_finish_allowed(S, pconfiggenerator)
+  -- if ~$config_generator_owning_input(pconfiggenerator)
+def $config_generator_finish(S, pconfiggenerator, ptask*) = $fiber_start_unpack_release(S[.ORIGIN = (pconfiggenerator.CALL.SITE)][.TODO = (CONFIG_GENERATOR pconfiggenerator "input-release") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], [HOBJECT pconfiggenerator.OBJECT])
+  -- if $config_generator_finish_allowed(S, pconfiggenerator)
+  -- if $config_generator_owning_input(pconfiggenerator)
 def $config_generator_finish(S, pconfiggenerator, ptask*) = S[.COMPLETION = UNSUPPORTED "CONFIG Generator unpack last DATA or callee owner"]
   -- if ~$config_generator_finish_allowed(S, pconfiggenerator)
 rule PhpStep/config-generator-finish: S ~> $config_generator_finish(S, pconfiggenerator, ptask*)
   -- if S.TODO = (CONFIG_GENERATOR pconfiggenerator "finish") :: ptask*
   -- if $config_generator_valid(S, pconfiggenerator, "finish")
+;; SEND_UNPACK destroys iterator DATA first, then FREE_OP1 drops INPUT.
+def $config_generator_release_input(S, pconfiggenerator, ptask*) = $fiber_start_unpack_release(S[.ORIGIN = (pconfiggenerator.CALL.SITE)][.TODO = (CONFIG_GENERATOR pconfiggenerator "invoke") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $config_generator_input_nodes(pconfiggenerator))
+  -- if $config_generator_finish_allowed(S, pconfiggenerator)
+def $config_generator_release_input(S, pconfiggenerator, ptask*) = S[.COMPLETION = UNSUPPORTED "CONFIG Generator unpack last INPUT or callee owner"]
+  -- if ~$config_generator_finish_allowed(S, pconfiggenerator)
+rule PhpStep/config-generator-input-release: S ~> $config_generator_release_input(S, pconfiggenerator, ptask*)
+  -- if S.TODO = (CONFIG_GENERATOR pconfiggenerator "input-release") :: ptask*
+  -- if $config_generator_valid(S, pconfiggenerator, "input-release")
 def $config_generator_invoke(S, pconfiggenerator) = $config_receive(S, pconfigcall[.INDEX = 1])
   -- if $config_pack_prefix(pconfiggenerator.CALL, pconfiggenerator.ITEMS, false) = (pconfigcall)
 def $config_generator_invoke(S, pconfiggenerator) = S[.COMPLETION = UNSUPPORTED "CONFIG Generator unpack argument prefix outside domain"]
@@ -210,15 +266,26 @@ def $return_discard(S, GENERATOR_RESUME pgeneratorop) = S[.ORIGIN = (pgeneratoro
   -- if S.TODO = (THROW_SEARCH n) :: (CONFIG_GENERATOR pconfiggenerator text) :: ptask*
   -- if $config_generator_header(S, pgeneratorop, pconfiggenerator, text)
   -- if $config_generator_valid(S, pconfiggenerator, text)
+def $config_generator_discard_state(S, pconfiggenerator, text) = S[.TODO = (THROW_SEARCH n) :: (CONFIG_GENERATOR pconfiggenerator "input-release") :: ptask*][.ORIGIN = (pconfiggenerator.CALL.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $config_generator_owning_input(pconfiggenerator)
+  -- if ~(text <- ["input-release", "invoke"])
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+def $config_generator_discard_state(S, pconfiggenerator, text) = S[.ORIGIN = (pconfiggenerator.CALL.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~$config_generator_owning_input(pconfiggenerator) \/ (text <- ["input-release", "invoke"])
+def $config_generator_discard_nodes(pconfiggenerator, text) = [HOBJECT pconfiggenerator.OBJECT]
+  -- if $config_generator_owning_input(pconfiggenerator)
+  -- if ~(text <- ["input-release", "invoke"])
+def $config_generator_discard_nodes(pconfiggenerator, text) = $config_generator_nodes(pconfiggenerator, text)
+  -- if ~$config_generator_owning_input(pconfiggenerator) \/ (text <- ["input-release", "invoke"])
 def $config_generator_discard_allowed(S, pconfiggenerator) = (($($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 0) \/ $config_generator_quiet_closed(S, pconfiggenerator)) /\ $config_generator_callee(S, pconfiggenerator.CALL.OWNER, 0))
 def $config_generator_discard(S, pconfiggenerator, text) = S[.TODO = (THROW_SEARCH n) :: (CONFIG_GENERATOR pconfiggenerator text) :: ptask*][.COMPLETION = UNSUPPORTED "CONFIG Generator unpack last cleanup owner"]
   -- if ~$config_generator_discard_allowed(S, pconfiggenerator)
   -- if S.TODO = (THROW_SEARCH n) :: ptask*
-def $config_generator_discard(S, pconfiggenerator, text) = $eager_operation_begin(S_clean, S, CONFIG_GENERATOR pconfiggenerator text, $config_generator_nodes(pconfiggenerator, text))
+def $config_generator_discard(S, pconfiggenerator, text) = $eager_operation_begin(S_clean, S, CONFIG_GENERATOR pconfiggenerator text, $config_generator_discard_nodes(pconfiggenerator, text))
   -- if $config_generator_discard_allowed(S, pconfiggenerator)
   -- if $destructor_operational(S) /\ $eager_operation_pending(S) =/= eps
-  -- if S_clean = S[.ORIGIN = (pconfiggenerator.CALL.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-def $config_generator_discard(S, pconfiggenerator, text) = $fiber_start_unpack_release(S[.ORIGIN = (pconfiggenerator.CALL.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $config_generator_nodes(pconfiggenerator, text))
+  -- if S_clean = $config_generator_discard_state(S, pconfiggenerator, text)
+def $config_generator_discard(S, pconfiggenerator, text) = $fiber_start_unpack_release($config_generator_discard_state(S, pconfiggenerator, text), $config_generator_discard_nodes(pconfiggenerator, text))
   -- if $config_generator_discard_allowed(S, pconfiggenerator)
   -- if ~$destructor_operational(S) \/ $eager_operation_pending(S) = eps
 def $eager_operation_source_valid(S, pdestructionoperation) = true
@@ -241,12 +308,12 @@ def $throwable_same_frame_continuation(S, S_next, ptask*) = S_next
   -- if $throwable_pending(S_next.COMPLETION)
 def $config_generator_blocked(S) = true
   -- if S.COMPLETION = UNSUPPORTED text_reason
-  -- if text_reason <- ["CONFIG Generator unpack producer outside direct domain", "CONFIG Generator unpack send outside two-string integer-key domain", "CONFIG Generator unpack last DATA or callee owner", "CONFIG Generator unpack argument prefix outside domain", "CONFIG Generator unpack last cleanup owner"]
+  -- if text_reason <- ["CONFIG Generator unpack producer outside direct domain", "CONFIG Generator unpack send outside two-string integer-key domain", "CONFIG Generator unpack last DATA or callee owner", "CONFIG Generator unpack last INPUT or callee owner", "CONFIG Generator unpack argument prefix outside domain", "CONFIG Generator unpack last cleanup owner"]
   -- if S.TODO = (CONFIG_GENERATOR pconfiggenerator text) :: ptask*
   -- if $config_generator_valid(S, pconfiggenerator, text)
 def $config_generator_blocked(S) = true
   -- if S.COMPLETION = UNSUPPORTED text_reason
-  -- if text_reason <- ["CONFIG Generator unpack producer outside direct domain", "CONFIG Generator unpack send outside two-string integer-key domain", "CONFIG Generator unpack last DATA or callee owner", "CONFIG Generator unpack argument prefix outside domain", "CONFIG Generator unpack last cleanup owner"]
+  -- if text_reason <- ["CONFIG Generator unpack producer outside direct domain", "CONFIG Generator unpack send outside two-string integer-key domain", "CONFIG Generator unpack last DATA or callee owner", "CONFIG Generator unpack last INPUT or callee owner", "CONFIG Generator unpack argument prefix outside domain", "CONFIG Generator unpack last cleanup owner"]
   -- if S.TODO = (THROW_SEARCH n) :: (CONFIG_GENERATOR pconfiggenerator text) :: ptask*
   -- if $config_generator_valid(S, pconfiggenerator, text)
 def $config_generator_blocked(S) = false -- otherwise

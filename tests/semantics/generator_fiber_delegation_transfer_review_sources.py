@@ -2,7 +2,7 @@
 """Observe Throwable injection through a native Generator delegation link.
 
 Default: accepted one-edge unhandled source. The two-edge handled reproducer
-remains core-required and selectable by its existing --case ID.
+uses the separate fixed-budget entrypoint; its historical --case stays available.
 """
 from pathlib import Path
 import sys
