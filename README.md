@@ -2100,6 +2100,12 @@ suspension. Clearing the delivered CV leaves that buffer alive until API return
 or unwind; object yields retain separate Generator-cache, Fiber-return and caller
 owners. Injected Throwables preserve identity through finally and buffer cleanup.
 [SEND transfer review](coverage/semantics/generator-fiber-send-transfer-review.json).
+Plain Closure-created Generator bodies also preserve their real callee through
+Fiber transfer. Copied captures and shared reference cells retain distinct owners
+when the outer variable changes; the callee and its captures survive CLOSED until
+the Generator is destroyed. Supplied Throwables preserve identity through finally,
+and fresh outside NEXT retains both linked Errors.
+[Closure transfer review](coverage/semantics/generator-fiber-closure-transfer-review.json).
 [Arrow Generator311](docs/semantics/ARROW-GENERATORS.md) validates eager
 parameters, deferred captures, implicit yield/delegation returns and original
 signatures. Value warnings retain the same Throwable, cached key and closed
@@ -3128,9 +3134,18 @@ Multiple methodless leaf entries now retain separate lookup identities and one
 physical Value owner per slot, including shared Values. Two originals and 286
 Boolean/five raw checks pass at `8f71bbef1`/412: one Key death transfers only its
 entry to a release job and preserves the sibling, then normalizes to old singleton
-storage. Original preflight/fixture compile failures stay zero. Other payloads,
+storage. Original preflight/fixture compile failures stay zero. Wider payloads,
 wider replacement/unset, wider iteration, GC/CONFIG and wider multiple-entry
 Map teardown remain partial. [Review](coverage/semantics/weak-map-review.json).
+
+Finite direct callback tables now retire a real Key's selected slot while
+preserving the sibling. Early/late Key weak visibility, canonical singleton
+read/copy ownership and the same supplied Exception survive cleanup; shared
+slots plus an outside Value holder delay invocation until both Keys retire.
+Three sources and 380 Boolean/10 raw checks pass at `29beafa25`/420. Genuine 3
+retains `a70bc6c26`/420, refusing after `B;` with zero agreement. Old methodless/
+ALIAS and active-cursor behavior is unchanged; new callbacks require no cursor.
+Still-multiple callback reads, wider reentry/mutation/escape and GC remain partial.
 
 Last-owner multi-entry Map teardown now unregisters every Key before releasing
 its Value slots, retaining the empty Map pin until all jobs finish. Two originals
@@ -3306,7 +3321,7 @@ remaining slot cleanup, while external shared holders delay invocation.
 Three sources and 307 Boolean/nine raw checks pass at `80451b539`/417. Genuine
 baseline 3 retains `8484fc071`/417 with zero agreement: callback-table insertion
 refuses before output. Original compile stops remain zero; callback-valued traversal,
-singleton/Key-death/normalization, reads/empty/mutation/escape and wider
+singleton Map teardown, broader reads/empty/mutation/escape and wider
 payload/GC histories remain partial.
 
 Bounded by-value WeakMap `foreach` now retains the Map through hidden iterator
@@ -3906,6 +3921,12 @@ retain their native order; six source agreements and 420 focused premises pass.
 now retain nonpublic inline slots alongside dynamic buckets. A dynamic write
 copies the table while its pinned old indirections stay live; shared cells and
 last-owner destruction keep their observed order across normal numeric handlers.
+[Cached backing-hook comparisons](coverage/semantics/backed-hook-table-comparison-review.json)
+read physical backing slots without calling getters. Normal Notice handlers still
+run real setters, including writes to a selected reference cell; inline declared
+retirement and virtual-slot omission retain their distinct behavior. Six exact
+source agreements and 427 raw focused conditions pass. New backing-hook Stringable
+continuations remain refused; array-cast and foreach hook boundaries are unchanged.
 [Builtin stdClass numeric Notices](coverage/semantics/stdclass-numeric-comparison-review.json)
 use the same continuation with a fixed builtin class image. Restored second
 Notices retain saved 1/1.0 across stdClass/source-instance changes and late live

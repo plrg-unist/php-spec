@@ -91,6 +91,14 @@ Object yields also retain separate cache, Fiber-return and caller-copy owners.
 The existing source/resumer proof and task roots are reused; no operational
 switch or cleanup rule changes. [SEND review](../../coverage/semantics/generator-fiber-send-transfer-review.json).
 
+Direct CURRENT calls into plain unbound Generator Closures now authenticate the
+allocated callee, matching template and real call context before moving the VM.
+By-value and reference captures preserve their distinct object/cell edges across
+outer retargeting; a locally unset capture can remain owned by the callee through
+CLOSED. Supplied-Throwable transfer and fresh outside NEXT retain ordinary
+identity/Previous behavior. No new roots or switch/cleanup operations are added.
+[Closure transfer review](../../coverage/semantics/generator-fiber-closure-transfer-review.json).
+
 Private scoped descriptor validation checks shared live eval/class/directory
 contexts on the active VM. Its parked validation view clears loader contexts
 and separately rejects direct, wrapped and saved-frame markers; VM restoration
