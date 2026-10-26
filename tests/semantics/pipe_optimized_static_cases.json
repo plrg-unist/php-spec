@@ -1,0 +1,13 @@
+{
+  "fixed_literal": "<?php\nclass C { public static function f($x) { echo 'M|', $x, '|'; return $x + 1; } }\necho (3 |> 'C::f'(...)), '|';\n",
+  "variable_basic": "<?php\nclass C { public static function f($x) { echo 'M|', $x, '|'; return $x + 1; } }\n$f = 'C::f';\necho (3 |> $f(...)), '|';\n",
+  "temporary_name": "<?php\nclass C { public static function f($x) { echo 'M|', $x, '|'; return $x + 1; } }\nfunction choose() { echo 'R|'; $m = 'f'; return 'C::' . $m; }\necho (4 |> choose()(...)), '|';\n",
+  "inherited_called": "<?php\nclass A { public static function who($x) { echo static::class, '|', $x, '|'; } }\nclass B extends A {}\n$f = 'B::who';\n0 |> $f(...);\n",
+  "missing_line": "<?php\nclass C {}\n$f = 'C::missing';\ntry {\n    4 |>\n        $f(...);\n} catch (Error $e) {\n    echo $e->getMessage(), '|', $e->getLine(), '|';\n}\n",
+  "byref_owned_left": "<?php\nclass L { public function __destruct() { echo 'L|'; } }\nclass C { public static function set(&$x) { echo 'ENTER|'; } }\n$f = 'C::set';\ntry {\n    (new L) |> $f(...);\n} catch (Error $e) {\n    echo 'E|', $e->getMessage(), '|';\n}\n",
+  "ref_return": "<?php\n$v = 0;\nclass C { public static function &slot($x) { global $v; echo \"S|$x|\"; return $v; } }\nfunction set(&$x) { $x = 9; echo 'T|'; }\n$f = 'C::slot';\nset(1 |> $f(...));\necho $v, '|';\n",
+  "strict_argument": "<?php\ndeclare(strict_types=1);\nclass C { public static function take(int $x) { echo 'ENTER|'; } }\n$f = 'C::take';\ntry {\n    '3' |> $f(...);\n} catch (TypeError $e) {\n    echo $e->getMessage(), '|', $e->getLine(), '|';\n}\n",
+  "selected_name": "<?php\nclass C { public static function f($x) { echo 'F|', $x, '|'; return $x + 1; }\n          public static function g($x) { echo 'G|', $x, '|'; return $x + 2; } }\n$f = 'C::f';\nfunction choose() { global $f; $saved = $f; $f = 'C::g'; echo 'R|'; return $saved; }\necho (3 |> choose()(...)), '|', $f, '|';\n",
+  "selected_method_after_rebind": "<?php\nclass C {\n    public static function m($x) { echo \"M|$x|\"; return $x + 1; }\n    public static function n($x) { echo \"N|$x|\"; return $x + 9; }\n}\n$name = 'C::m';\nfunction choose() { global $name; $old = $name; $name = 'C::n'; echo 'R|'; return $old; }\necho (3 |> choose()(...)), '|', $name, '|';\n",
+  "owned_missing_method": "<?php\nclass L { public function __destruct() { echo 'L|'; } }\nclass C {}\n$f = 'C::missing';\ntry {\n    (new L) |> $f(...);\n} catch (Error $e) {\n    echo 'E|', $e->getMessage(), '|';\n}\n"
+}
