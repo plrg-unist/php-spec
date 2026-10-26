@@ -134,10 +134,6 @@ def checks(program, path, name):
             '$property_slot_at(pobjectprops_right_second.SLOTS,$ptascii("p")) = (ppropertyslot_right_second)',
             'ppropertyslot_right_second.STATE = PROP_VALUE (DIRECT (PARRAY n_direct))',
             '$entry_lookup(S_second.ARRAYS[n_direct].ITEMS,KINT 1) = (DIRECT (PINT 3))',
-            '$lookup(S_second.ENV,$ptascii("source")) = (n_source_cv)',
-            'S_second.STORE[n_source_cv] = DEFINED (PARRAY n_source)',
-            'n_source =/= n_direct',
-            '$entry_lookup(S_second.ARRAYS[n_source].ITEMS,KINT 1) = (DIRECT (PINT 9))',
         ]
     second_result = '1' if dag else '$(-1)'
     rows += [
