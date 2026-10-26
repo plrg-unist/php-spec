@@ -1,0 +1,88 @@
+{
+  "scope": "A parentless Parent declares a public untyped property with a sole backed block &get. Its immediate Child plainly redeclares the same public untyped property, initialized to 11 or implicitly null, with no own hook, trait, interface or constructor effect. Direct CV/literal Child fetches, own writes and a defined-RHS destination bind are covered.",
+  "status": "partial; independent package review pending",
+  "target": {
+    "php": "8.5.10 CLI NTS signed64",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C; TZ=UTC; serial exclusive CPU; 100000 model steps and 75-second source timeout"
+  },
+  "authority": [
+    "Zend/zend_inheritance.c::do_inherit_property and inherit_property_hook install the plain Child's physical slot while duplicating Parent's getter.",
+    "Zend/zend_object_handlers.c::zend_std_read_property invokes that getter on a Child receiver and returns its by-reference result.",
+    "Zend/zend_execute.c::zend_assign_to_property_reference fetches Get before rejecting destination rebinding.",
+    "spec/semantics/138-property-references.watsup attaches no OBJECT_PROP_SOURCE when the selected Child descriptor has no type."
+  ],
+  "implementation": ["spec/semantics/382-backed-get-hooks.watsup"],
+  "source_packet": {
+    "frozen_catalogue_sha256": "08723d2ba8acd16d13bd0e8332b3346540d6dc2c1ca7385353c3ce7433b9ec96",
+    "maintained_catalogue": "tests/semantics/untyped_plain_child_reference_get_hook_cases.json",
+    "maintained_catalogue_sha256": "dfca9416200d6d3429289d7a75e5d2951faf133e5092d2e26abecbe06e60edad",
+    "positive_cases": {
+      "untyped-child-alias": "dc08685b504e6c902022d3c08839822822132ab03fd60865ea4749df07716a21",
+      "untyped-child-null": "80851a0fd56c6b4c77d08fe661243313b51fe2ef65efce032a551550140fdc10",
+      "untyped-child-rebind-write": "580d0207456da3666a1a0562aee82eba6143b51fcda844456f8a0d2de0563def"
+    }
+  },
+  "prechange": {
+    "native_report_member": "php-spec/.tools/class136-untyped-plain-child-reference-get/.tools/class136-probes/native-first.json",
+    "native_report_sha256": "d96c1bbf026e1e09eb880834d864a4b6c91b412fc30f3cc1e0353a9a2cfd8514",
+    "baseline_report_member": "php-spec/.tools/class136-untyped-plain-child-reference-get/.tools/class136-probes/native-baseline.json",
+    "baseline_report_sha256": "11bf7c1c2e4c459307877289aaa39571c7af94f5500445fffc5d61a54c7de5ea",
+    "result": "All four native sources exit 0 with empty stderr. The unchanged model accepted/checked each but stopped Unsupported at inherited property hook override before output; zero agreement credit."
+  },
+  "affected_source": {
+    "revision": "89026a4dc627b294823bcdb237ca0c3ea34bd0c5",
+    "report_member": "php-spec/.tools/class136-untyped-plain-child-reference-get/.tools/class136-probes/changed.json",
+    "report_sha256": "7216bba05c1dcea0506f8a7b6d8ec3d39c1d64adb90f6a818aeb5c34c0e2da23",
+    "result": "Three positive original sources match pinned PHP byte-for-byte at clean semantic commit 89026a4dc; the deeper Grandchild is checked Unsupported with zero agreement."
+  },
+  "accepted": {
+    "revision": "26ca27290931cbbacc19cc29786f677c3faaea02",
+    "dirty": false,
+    "module_count": 423,
+    "source_agreements": 3,
+    "focused_boolean": 364,
+    "focused_raw_php_steps": 3,
+    "reached_checks": [129, 122, 113],
+    "report_member": "php-spec/.tools/class136-untyped-plain-child-reference-get/.tools/untyped-plain-child-reference-get-4lr84hf0/report.json",
+    "report_sha256": "bcd2e6ee34e18d10e28715b47a9f8b82d290b2caf113b7affb9336232e525552",
+    "coverage": "Child own physical descriptor and DECL versus Parent getter origin, equal absent types and direct plain edge, Parent lexical/Child called target, Child implicit PROP_NULL before first Get, entered backing bypass, live ALIAS with absent PROPREF source, copied value and escaped alias after Child retirement, own write and Get-before-rebind Error message/file/line, unlinked selector negative and split budgets."
+  },
+  "unsupported_control": {
+    "case": "untyped-grandchild-boundary",
+    "source_sha256": "9d752c333ed323a2469f999dcedc54f80d30cfa81bb164d349edf5a5ef8f2b23",
+    "native_exit": 0,
+    "model": "accepted/checked Unsupported: by-value property hook indirect access",
+    "source_agreement": false
+  },
+  "independent_controls": {
+    "reviewer": "class133_review",
+    "native_member": "php-spec/.tools/class136-review-controls/native-controls.json",
+    "native_sha256": "7d92b26b8667121325d4c3e8caa8c684ffd551a33d37f4137bcd4e3b0d766ac9",
+    "model_member": "php-spec/.tools/class136-review-controls/model-controls.json",
+    "model_sha256": "b543204d10e9c9d7df5dab677402023e9fa9173cebafdf3eae0f7e5e3ff05501",
+    "source_sha256": {
+      "null-child-copy.php": "b6a35be04e2914e4e02e35eab8349f0639f41352c0cec2990201b3fcf950365f",
+      "live-child-alias.php": "212e621a3e0fc7651abd9827573201bf659bb0849311165c05212d12383febc5"
+    },
+    "result": "Both frozen sources match pinned PHP byte-for-byte at clean 26ca27290, including implicit-null copy and post-destructor alias lifetime."
+  },
+  "preserved_zero_credit": "The unchanged-model four Unsupported outcomes and the changed-model Grandchild refusal are explicit zero-agreement observations. All focused reached fixtures passed on first execution; no fixture failure was discarded.",
+  "archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/untyped-plain-child-reference-get-hooks-136/evidence.tar.gz",
+    "sha256": "642b99d0ad8c0a4f38a24868bee4d09c0221d4e86652fb89d0187bc73107f0f3",
+    "bytes": 11442485,
+    "members": 273,
+    "recovery": "Extract at /home/user/workspace to restore ignored private .tools raw runs and independent reviewer controls. The archive is outside Git."
+  },
+  "review": {
+    "reviewer": "class133_review",
+    "decision": "pending package review",
+    "candidate": "26ca27290931cbbacc19cc29786f677c3faaea02",
+    "basis": "Two-line semantic gate and three clean source/reached groups have semantic CLEAR; documentation and evidence package await final independent review."
+  },
+  "remaining": "Deeper Child chains, mixed/changed type and visibility redeclarations, virtual/arrow/set/paired hooks, traits, constructors with property effects, dimensions, quiet/compound consumers and wider reference lifetimes remain partial."
+}

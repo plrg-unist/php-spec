@@ -4294,6 +4294,11 @@ slot and type source govern the inherited Parent `&get`. Parent lexical scope,
 Child receiver, alias lifetime, ordinary copies and Get-before-rebind order remain
 observable. Three originals and 341 Boolean checks plus three raw transitions
 pass in the [plain Child reference-Get review](coverage/semantics/plain-child-reference-get-hooks-review.json).
+The matching untyped plain Child redeclaration uses its own scalar or implicit-null
+backing without a property type source. Escaped aliases accept later strings,
+ordinary reads copy, and destination rebinding still calls Get before Error.
+Three originals and 364 Boolean checks plus three raw transitions pass in the
+[untyped plain Child review](coverage/semantics/untyped-plain-child-reference-get-hooks-review.json).
 Wider hook declarations and indirect consumers remain partial.
 
 Public backed by-value `get` hooks execute their block or expression body on each read,

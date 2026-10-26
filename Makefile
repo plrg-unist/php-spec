@@ -932,6 +932,7 @@ test-semantics: build
 	python3 tests/semantics/untyped_reference_get_hook_protocol.py
 	python3 tests/semantics/inherited_reference_get_hook_protocol.py
 	python3 tests/semantics/plain_child_reference_get_hook_protocol.py
+	python3 tests/semantics/untyped_plain_child_reference_get_hook_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/expression_get_hook_cases.json
 	python3 tests/semantics/expression_get_hook_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/virtual_get_hook_cases.json
