@@ -507,6 +507,22 @@ def $property_hook_direct_child_reference(S, porigin_class, porigin_owner, pprop
   -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertydesc.KEY) = (ppropertydesc)
   -- if $property_hook_reference_decl(S, ppropertydesc)
 def $property_hook_direct_child_reference(S, porigin_class, porigin_owner, ppropertydesc) = false -- otherwise
+dec $property_hook_plain_child_reference(pstate, porigin, porigin, ppropertydesc, ppropertydesc) : bool
+def $property_hook_plain_child_reference(S, porigin_class, porigin_owner, ppropertydesc_child, ppropertydesc_parent) = true
+  -- if porigin_class =/= porigin_owner
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc_child)
+  -- if pclassdesc_child.KIND = "class" /\ pclassdesc_child.PARENT =/= eps
+  -- if pclassdesc_child.PROPERTIES = [ppropertydesc_child] /\ pclassdesc_child.INTERFACES = eps /\ pclassdesc_child.CONSTANTS = eps
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_class) = (SOURCE_PARENT porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc_parent)
+  -- if pclassdesc_parent.PARENT = eps
+  -- if ppropertydesc_child.TYPE = ppropertydesc_parent.TYPE /\ ppropertydesc_child.TYPE =/= eps
+  -- if ppropertydesc_parent.ORIGIN = porigin_parent_property
+  -- if $hook_property_at(pclassdesc_parent.PROPERTIES, porigin_parent_property) = (ppropertydesc_parent)
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertydesc_child.KEY) = (ppropertydesc_child)
+  -- if $property_hook_plain_edge(S, ppropertydesc_parent, ppropertydesc_child, |S.CLASSES|)
+  -- if $property_hook_reference_decl(S, ppropertydesc_parent)
+def $property_hook_plain_child_reference(S, porigin_class, porigin_owner, ppropertydesc_child, ppropertydesc_parent) = false -- otherwise
 def $property_hook_function(S, ppropertyhook) = (pfunction)
   -- if $(ppropertyhook.OBJECT < |S.OBJECTS|)
   -- if S.OBJECTS[ppropertyhook.OBJECT] = INSTANCE porigin_class
@@ -523,7 +539,7 @@ def $property_hook_function(S, ppropertyhook) = (pfunction)
   -- if pfunction.NAME = pclassdesc_owner.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)
   -- if pfunction.SIGNATURE = {PARAMETERS eps, RETURNS ppropertydesc_getter.TYPE, BYREF b}
   -- if $origin_node(S.SOURCES, $origin_source(pfunction.ORIGIN)) = (NPropertyHook phpType14 phpType24 (BOOLEAN b) phpType11 phpType16 phpType39 metadata)
-  -- if ~b \/ porigin_class = porigin_owner \/ $property_hook_direct_child_reference(S, porigin_class, porigin_owner, ppropertydesc_getter)
+  -- if ~b \/ porigin_class = porigin_owner \/ $property_hook_direct_child_reference(S, porigin_class, porigin_owner, ppropertydesc_getter) \/ $property_hook_plain_child_reference(S, porigin_class, porigin_owner, ppropertydesc, ppropertydesc_getter)
   -- if pfunction.DEFAULTS = eps /\ ~pfunction.EARLY
   -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_hook
   -- if pfunction.BODY = pcpath_hook ++ [PCFIELD 5]
@@ -1333,8 +1349,9 @@ def $property_hook_plain_getter_walk(S, ppropertydesc, n) = (ppropertydesc)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if $hook_property_at(pclassdesc_parent.PROPERTIES, porigin_property) = (ppropertydesc)
   -- if $property_hook_origin(S, ppropertydesc) = (porigin_hook)
-  -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) phpType39 metadata_hook)
+  -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN b) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) phpType39 metadata_hook)
   -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $hook_body_supported(phpType39) /\ ($hook_body_backed(phpType39, ppropertydesc.NAME) \/ $property_hook_ordinary_backing(S, ppropertydesc, n) \/ $property_hook_inherited_backing_walk(S, ppropertydesc, n) \/ $property_hook_virtual_chain(S, ppropertydesc, n))
+  -- if ~b \/ (ppropertydesc.TYPE =/= eps /\ $property_hook_reference_decl(S, ppropertydesc))
 def $property_hook_plain_getter_walk(S, ppropertydesc, n) = (ppropertydesc_getter)
   -- if $(n > 0)
   -- if $property_hook_origin(S, ppropertydesc) = eps
