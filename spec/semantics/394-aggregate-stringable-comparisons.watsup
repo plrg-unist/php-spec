@@ -64,6 +64,7 @@ dec $aggregate_decl_initialized(ppropertyslot*) : bool
 dec $aggregate_decl_keys(ppropertyslot*) : ptbytes*
 dec $aggregate_decl_public(ppropertydesc*) : bool
 dec $aggregate_decl_cast_order(pstate, nat, porder) : porder
+dec $aggregate_std_cast_order(pstate, nat, porder) : porder
 dec $aggregate_decl_image(pstate, nat, ptbytes*) : bool
 dec $aggregate_decl_effect(pstate, nat, nat, ptbytes*, nat, pcompareguard*, int) : (pstate, porder)
 dec $aggregate_decl_continue(pstate, porder, nat, nat, ptbytes*, nat, pcompareguard*, int) : (pstate, porder)
@@ -120,7 +121,7 @@ def $aggregate_std_stack(paggregatecursor :: paggregatecursor_tail*, n_left, n_r
 def $aggregate_std_order_result(ORDERSTRING paggregatecallback, n_left, n_right, n_tableleft, n_tableright) = ORDERSTRING paggregatecallback[.STACK = $aggregate_std_stack(paggregatecallback.STACK, n_left, n_right, n_tableleft, n_tableright)]
 def $aggregate_std_order_result(ORDERNOTICE paggregatecallback pvalue, n_left, n_right, n_tableleft, n_tableright) = ORDERNOTICE paggregatecallback[.STACK = $aggregate_std_stack(paggregatecallback.STACK, n_left, n_right, n_tableleft, n_tableright)] pvalue
 def $aggregate_std_order_result(porder, n_left, n_right, n_tableleft, n_tableright) = porder -- otherwise
-def $aggregate_std_effect(S, n_left, n_right, n_tableleft, n_tableright, n_index, n_width, pcompareguard_seen*, z) = (S_next, $aggregate_std_order_result(porder, n_left, n_right, n_tableleft, n_tableright))
+def $aggregate_std_effect(S, n_left, n_right, n_tableleft, n_tableright, n_index, n_width, pcompareguard_seen*, z) = (S_next, $aggregate_std_order_result($aggregate_std_cast_order(S_next, n_right, $aggregate_std_cast_order(S_next, n_left, porder)), n_left, n_right, n_tableleft, n_tableright))
   -- if (S_next, porder) = $aggregate_array_effect(S, n_tableleft, n_tableright, n_index, n_width, pcompareguard_seen*, z)
 def $aggregate_std_tables(S, n_left, n_right, n_table, n_table, pcompareguard_seen*, z) = (S, ORDER 0)
 def $aggregate_std_tables(S, n_left, n_right, n_tableleft, n_tableright, pcompareguard_seen*, z) = (S, ORDERRECURSIVE)
@@ -231,6 +232,12 @@ def $aggregate_decl_cast_order(S, n, ORDERSTRING paggregatecallback) = ORDERUNSU
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if ~($aggregate_decl_public($property_layout(S, porigin, |S.CLASSES|)) /\ $aggregate_decl_initialized($object_table_slots_at(S, n)))
 def $aggregate_decl_cast_order(S, n, porder) = porder -- otherwise
+;; Only newly concrete nonpublic layouts gain numeric callbacks. Keep every
+;; existing public/stdClass Stringable continuation unchanged.
+def $aggregate_std_cast_order(S, n, ORDERSTRING paggregatecallback) = ORDERUNSUPPORTED "materialized-property Stringable comparison continuation"
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if ~$aggregate_decl_public($property_layout(S, porigin, |S.CLASSES|))
+def $aggregate_std_cast_order(S, n, porder) = porder -- otherwise
 def $aggregate_decl_image(S, n, ptbytes*) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS

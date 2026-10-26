@@ -1065,8 +1065,8 @@ the first-source conflict TypeError without writing the cell, at the original re
 file/line. Exact int|string sources survive COPY and later accept `'free'`: the
 requested Parent type never attaches to the referent.
 [Three source agreements and 432 focused conditions](../../coverage/semantics/magic-get-scoped-reference-review.json)
-retain416 cuts. Literal-this BYREF, parameter backings, wider scoped coercions
-and lifetimes remain partial; no new task, state or root machinery.
+retain416 cuts. Parameter backings, wider scoped coercions and lifetimes remain
+partial; no new task, state or root machinery.
 
 The existing named noarg owned-factory route now also admits reference Get for
 nonpublic/public-shadow and denied access. It retains the same selected declaration
@@ -1085,8 +1085,28 @@ chains its supplied C to H. These are actual reference/COPY/destruction trajecto
 using existing RESULT/COPY/BASE/DROP rules.
 [Five source agreements and 586 focused conditions](../../coverage/semantics/magic-get-owned-reference-review.json)
 retain417 cuts; the original Unsupported3 and wrong-PHP-error2 baselines retain
-zero agreement. Wider factories, literal-this BYREF, PARAM sources and broader
-coercion/callback/lifetime histories remain partial.
+zero agreement. Wider factories, PARAM sources and broader coercion/callback/
+lifetime histories remain partial.
+
+Literal `$this` now also admits reference Get through the same source certificate.
+Actual current receiver identity still gates Plan/capture; immutable source/access/
+DECL history survives Get entry and callbacks. Get adds no duplicate method receiver
+or BASE owner: its result hold replaces the transient read root, while the ordinary
+read-method RECEIVER remains owned through return or unwind.
+
+A Get-local destructor changes the returned cell from string7 to9 before selected
+Parent-int verification under a public Child-string shadow. COPY then detaches int9;
+the enclosing method can clear its last global receiver alias and write `'free'`
+while that receiver remains live. A real int|string source keeps its original type
+vector through COPY and later writes. A string-source conflict leaves7 unchanged,
+materializes the caller-line10/file TypeError, and captures raw7 into DROP before
+ordinary method-frame retirement. Its destructor can replace that error while
+preserving it as Previous, changing source8 and leaving destination42 unchanged.
+[Three source agreements and 496 focused conditions](../../coverage/semantics/magic-get-this-reference-review.json)
+retain419 cuts. Missing current receiver and forged DECL are derived admission
+controls; the original Unsupported2/wrong-PHP-error1 baselines keep zero agreement.
+No verification, COPY, frame, task, root or GC machinery changed; wider computed/
+suspended producers, PARAM sources and coercion/lifetime histories remain partial.
 
 The [getter review](../../coverage/semantics/magic-property-get-review.json) records
 eight exact source agreements, 1293 setup-inclusive reached premises and the

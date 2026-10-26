@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "milestone": "OP89 two acquired CONCAT Stringables retain ordered temporary lifetimes",
+  "status": "bounded semantics, results, publication and actual-tail composition independently reviewed",
+  "target": "PHP8.5.10 CLI NTS64, pinned project-local oracle and ordinary precision14 profile",
+  "scope": "Authentic CONCAT_PREP with distinct raw KNOWN Stringable object operands. Each acquired zval is separate from its cast receiver/prepared method target. Existing nonowning RHS and borrowed LEFT routes retain their behavior; same-object, raw-reference, ARRAY and non-Stringable owning RHS forms keep the prior partial route.",
+  "runtime_revision": "880a5af2ab103bef27b3ef3e95288b29bef0c8df",
+  "focused_revision": "c7d8cdc95f18112335114974bc657340507b1f99",
+  "modules": 419,
+  "runtime_sha256": {
+    "spec/semantics/30-storage.watsup": "f17ae5f36a1f0fda2c5e89686524b6fe0a3ed5dd797a60019babb06d08f878fd",
+    "spec/semantics/429-concat-left-lifetimes.watsup": "26369fa5e278091708aafa05ad1638f5fa2f63aaa7b6dc820ec5f68295101fd6",
+    "spec/semantics/modules.json": "4562c540b1641307f42c12b75ec1c423e56e1011278e65b3b8a77c3de88166cb"
+  },
+  "engine_basis": [
+    "ZEND_CONCAT obtains both operands, calls concat_function, then FREE_OP1 followed by FREE_OP2 before NEXT_OPCODE_CHECK_EXCEPTION. The op1 and op2 zvals survive their conversions; zend_std_cast_object_tostring separately retains its receiver.",
+    "Module429 owns both saved raw operands during LEFT/RIGHT conversion and until the result is computed. One B-only RIGHT_RELEASE task stages OP1 retirement before OP2. return_discard inserts the same hold behind an authentic THROW_SEARCH; generic eager cleanup captures that pending Exception while only LEFT loses its root.",
+    "Only one task tag in30 and the shared429 rules change. Existing59/168/270/404 bodies, pstate fields/defaults and module manifest remain unchanged. Nonselected owning forms still use the literal prior route."
+  ],
+  "contract": [
+    "Normal f/g acquire fresh A/B, S/T produce L/R with A alive during T, and LR is computed while outer v remains100. Nonthrowing DA and DB then run in operand order before caller assignment.",
+    "Both peer sources allocate B before A, transfer its seed through a real g local/copy/unset/by-value return, and have sole raw TMP owners at CONCAT. RIGHT and LEFT supplied throws retire A before B despite reverse allocation IDs; LEFT throw skips T. The original Exception20/null Previous, outer100, counters, absent seed and later EOF writes agree.",
+    "Focused889 is the total of three checked-source-derived recipes313/316/260, including transformed guard controls. They bind actual f/g acquisition, separate TMP/cast/target roots, raw LR and A-drop/B-hold/B-drop phases, real normal/pending destructors, dead objects, EOF and budgets. This is not889 native-reached states."
+  ],
+  "accepted": {
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-89/source-880a5af2a-three/report.json",
+      "sha256": "c6095b5b3cb8fa3ff908cea2330fdfc4a73309110fe67de9566116886ca4d8f2",
+      "agreements": 3,
+      "revision": "880a5af2ab103bef27b3ef3e95288b29bef0c8df",
+      "checks": "Full419 struct30 and three first affected model-only comparisons at CLI60/process90 against exact retained native tuples; normal0/empty stderr."
+    },
+    "focused": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-89/focused-c7d8cdc95-three/report.json",
+      "sha256": "4806325e5c964d5b1552116741c826decf8494eef05450ac0e976b07b9e6237d",
+      "conditions": {
+        "normal": 313,
+        "right_throw": 316,
+        "left_throw": 260
+      },
+      "checks": "All three full419 fixture structs and SL120 return exacttrue; workers/actors reaped, no timeout/interruption."
+    },
+    "review": "operators79_review independently accepted scope/native/genuine, runtime, author/peer recipes and headers, source3 and focused889. Publication and exact actual-tail candidatec41fd1fd6 independently reviewed."
+  },
+  "preserved_zero_credit": {
+    "native_author": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-89/native-dfe99c39d-author/report.json",
+      "sha256": "5a4e54a22fa4e377d03b53ccaf93eefb544cf26e6529a668f4ded3513cf75915"
+    },
+    "native_peer": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-89/native-dfe99c39d-peer/report.json",
+      "sha256": "39c721dd170dd42e9c005a17c83470d08274b247cb19c7b857dc56016ce43804"
+    },
+    "genuine": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-89/baseline-dfe99c39d-dual-acquired/report.json",
+      "sha256": "6f8287af984e477f5ae01d973d7b777a9cfd9768fa03695d00b7a71ad0e745d4",
+      "revision": "dfe99c39d69770b7bd11d1a76507c5f928654503",
+      "result": "Checked NORMAL/model0/comparisonfalse: A:1:1:1:0 appears before T and strict LR observers are false; empty stderr. The resulting string itself was not printed. This is an ordinary lifetime disagreement, not Unsupported ingress."
+    }
+  },
+  "compatibility": "The earlier nonowning RIGHT tasks have operand_nodes=eps, so their roots and RELEASE successor remain pointwise identical. OP88 same-object pair control remains planEPS and uses the literal legacy59 successor. No OP88/historical source or focused campaign was replayed; new dual sources exercise the newly selected owning route.",
+  "limits": [
+    "Same-object dual TMPs, other owning RHS representations, broader reference/copy/constrained producers, destructor throws/chaining and suspension/collector interactions remain partial. Existing initial missing/reference RHS boundaries and late unconstrained global wrapping retain their prior contracts.",
+    "No engine bug or intentional divergence is claimed. Paused OP12/Source47/owned-NUL/undefined-byref LIST/COMP88 and held COMP123 remain untouched; full core and final combined/offline rebuild obligations remain open."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-89",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C,TZ=UTC,PHP_SPEC_SCRIPT_ENCODING absent; ordinary precision14. Native30/modelCLI60-process90; kernel/fixturestruct30 and SL120, serial CPU3 with full reap/release.",
+    "headers": [
+      "run-native-gate.py",
+      "run-source-gate.py",
+      "run-focused.py"
+    ],
+    "record": "Reports retain original source/path/cwd, streams/status, tool/runtime inputs and commands. Restore the matching Git cut and retained paths with fresh output names; raw evidence stays external. Reused regular local tools establish no fresh offline rebuild."
+  },
+  "composition": {
+    "parent": "b7e1d4461097a010f80b85924e4bf038a3355b4e",
+    "private_publication": "cc40f3f543cb63edbf4e9ed680ed7f00cffde70f",
+    "modules": 419,
+    "preservation": "429 and six new tests are private-publication-exact;30 is parent plus the sole B-only task tag; every other semantic module and manifest is parent-exact. Nine append-only partial inventory deltas preserve incoming facts.",
+    "gate": "Exact candidatec41fd1fd6 independently clear over b7e1d44610/419: incoming property, declared-table comparison and CONFIG_GENERATOR selectors are disjoint. Tested429/new tests remain private-exact; accepted880/c7d runtime/source/focused cuts retain their identities without execution renewal."
+  }
+}

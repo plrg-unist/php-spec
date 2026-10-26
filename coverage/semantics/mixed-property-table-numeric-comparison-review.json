@@ -1,0 +1,139 @@
+{
+  "milestone": "COMP126",
+  "status": "independently reviewed bounded slice",
+  "behavior": "Concrete mixed nonpublic declared/dynamic property tables retain old dynamic snapshots and live INDIRECT inline slots through normal numeric Notice callbacks. COW creates DIRECT declared snapshots; shared cells and old-table last-owner retirement retain their distinct lifetimes.",
+  "implementation": {
+    "spec/semantics/261-object-casts.watsup": "19423ef61d094a3e5d1e28bfd5c3e705bf837959deb70c04bb22f80e5686fbcf",
+    "spec/semantics/394-aggregate-stringable-comparisons.watsup": "d1e4a4e3f82090dbd4f0164e58f7f6bb5936bc1915ed24a89f42c4d47217ab74"
+  },
+  "engine_basis": [
+    "Zend/zend_object_handlers.c: rebuild_object_properties_internal, zend_std_write_property and zend_std_unset_property keep physical declared locators and separate shared tables on dynamic lookup.",
+    "Zend/zend_operators.c: zend_compare_symbol_tables pins both actual tables while zend_hash_compare scans.",
+    "Zend/zend_hash.c: zend_array_dup_value deindirects copied declared buckets and preserves shared reference wrappers."
+  ],
+  "target": {
+    "php": "8.5.10 CLI NTS signed64",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle": ".tools/php/bin/php",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "tested_module_count": 419
+  },
+  "native": {
+    "revision": "b7e1d4461097a010f80b85924e4bf038a3355b4e",
+    "cases": 6,
+    "reports": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-126/author-originals/native.json",
+        "sha256": "d40e73de26dc2e9346b0157d161e8c2bb11f07ad41bab8a3889f5731b7f90428"
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-126/peer-originals/native.json",
+        "sha256": "d73c1ed241985fb3f6959482010fd7c9d679f638504f23e452b2c68b093fa951"
+      }
+    ],
+    "limits": "CPU3/2GiB, serial native15 each; exact original paths/cwd/profile/streams and intended flags."
+  },
+  "baseline": {
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comparison-126/private/initial-report.json",
+      "sha256": "2507d655a47c4832cb3591cdb8eccc0b8f07a0726ce6c2ce5a80cd1cccda9322"
+    },
+    "revision": "b7e1d4461097a010f80b85924e4bf038a3355b4e",
+    "outcome": "accepted/program/Unsupported: materialized-property numeric comparison continuation",
+    "stdout": "B|",
+    "agreement_credit": 0,
+    "limits": "CLI80/record90 after native6; independent packet130/watch150/2GiB."
+  },
+  "sources": {
+    "revision": "abd3d2d13220bafaff7ce2a48ce1f899ef882652",
+    "normal_agreements": 6,
+    "reports": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-126/author-originals/model.json",
+        "sha256": "e4a7228cdcbec5488173072a4959169a1a68034cc77369516716d6ef763e9ff1"
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-126/peer-originals/model.json",
+        "sha256": "2a93b720cb0d3e733bcfbbaf20109a5334a48b562de652a6f6bd9dbe07900b3c"
+      }
+    ],
+    "selection": "Retained author2 then peer4 only; no native replay. Both mutation orientations, int/float/default Notice, detached dynamic CELL, direct-object final retirement and count-first skip.",
+    "limits": "CPU3/2GiB, CLI90/record105; author235/watch250, peer445/watch460."
+  },
+  "focused": {
+    "premises": 462,
+    "groups": 4,
+    "metric": "Raw declared main conditions, not distinct obligations. Short one/zero resumption is checked from actual Num continuation cuts; no whole-origin equality campaign.",
+    "records": [
+      {
+        "report": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/comparison-126/author-focused/report.json",
+          "sha256": "ca597acd93d0f07d8c769aac6e602c3d9b4e27aeee6eeb973f017943ed85c0fb"
+        },
+        "revision": "301f000dbb2b52fe31653b8baab294a9b084ca4f",
+        "premises": [
+          100,
+          121
+        ]
+      },
+      {
+        "report": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/comparison-126/peer-focused/report.json",
+          "sha256": "0c13234c0075b1204d8bdbf48c6449617e8c93707c0ddac2e19261abc2246f04"
+        },
+        "revision": "301f000dbb2b52fe31653b8baab294a9b084ca4f",
+        "premises": [
+          122,
+          119
+        ]
+      }
+    ],
+    "coverage": "Actual old/new table identities and ownership; old INDIRECT live versus new copied DIRECT values, stable mixed marker after last dynamic unset, CELL3\u21923\u21922, raw scalar versus driver retirement/restored scalar before store, authenticated source/callback/cursor, marker/invalid-row controls and pure public/nonpublic order-filter classification.",
+    "limits": "StrictSL/cachefalse/dettrue, CPU5/2GiB, child120; each author/peer packet275/watch290."
+  },
+  "zero_credit": {
+    "provisioning": {
+      "receipt": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-126/private/initial-actor.exit.json",
+        "sha256": "f26f2e48559f009ee58b208ac414e12be6e753161085cd46f062b1d2de38e9c9"
+      },
+      "stderr": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comparison-126/private/initial-actor.stderr",
+        "sha256": "58ad3b1f2dbce7b6a988e5d1f86c85e1a79bdaff065dfbdf02fcab89ba920675"
+      },
+      "reason": "Initial family fingerprint stopped at missing private .tools/php-file.so before any PHP/native/model evaluation. Existing project helper was provisioned and fresh prepared actor used; original receipts retained.",
+      "agreement_credit": 0
+    },
+    "historical_renewal_credit": 0,
+    "historical_scope": "No changed old source mapping or helper negative selected. Declared-only nonpublic eligibility remains pointwise false; existing public/stdClass routes remain exact. No old campaign replay."
+  },
+  "independent_review": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/comparison-126/private/independent-review.json",
+    "sha256": "f026179dbabd9e15f82f185a217d452ddef16a47239b57f57b1c28ed3f7dddfb"
+  },
+  "limits": [
+    "Only authenticated non-readonly ordinary layouts with a dynamic slot record gain nonpublic concrete storage; the marker includes unset records, while declared-only nonpublic layouts retain their existing route.",
+    "Property hooks, malformed rows, copied-declared reference iteration, GC construction and wider lifecycle contexts retain their existing bounded contracts.",
+    "New nonpublic ORDERSTRING continuations remain Unsupported; prior public/stdClass behavior is unchanged. Pure classification checks execute no Stringable callback.",
+    "Validation covers ordinary normal completion. Held COMP123 pending-Exception/recursive-Error packet and paused COMP88 remain untouched.",
+    "Partial core coverage; selected agreement is not a semantic equivalence or BOLA proof."
+  ],
+  "archive": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/comparison-126",
+    "manifest_sha256": "eb3e90961fbd7dbbc560701f15a53114b32e7f32adde6ede0098b2b88a08b7a4",
+    "files": 174,
+    "bytes": 1803307
+  },
+  "recovery": "Restore archived originals/recorders and private output directories at their recorded paths; use the listed Git cuts and pinned local tools/profile. Raw receipts retain commands, streams/status, inputs and worker finalization. No archived binaries or offline rebuild claim.",
+  "composition": [
+    {
+      "parent": "6fcdeefc701bb2f395fc405933dd5c7b5fa6c89b",
+      "publication": "e79f47c2ede31dabf2e11d8e7cc9f805c023625c",
+      "module_count": 419,
+      "execution_credit": 0,
+      "preservation": "Two tested runtime modules and eight tests are publication-exact. Every other operational module, schema and ordered419 manifest remains parent-exact. Incoming CONCAT and literal-this reference getter paths have no producer in these six originals; accepted execution keeps its original cuts."
+    }
+  ]
+}

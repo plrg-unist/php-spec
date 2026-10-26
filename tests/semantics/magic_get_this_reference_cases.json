@@ -1,0 +1,55 @@
+{
+  "scope": "Literal-this BYREF Get retains the caller-selected declaration and live reference through local cleanup. COPY detaches before later source writes while the actual ordinary method receiver survives alias removal; constrained conflict and method-unwind replacement retain their pending error. Wider producers/coercions remain partial.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_revision": "b7e1d4461097a010f80b85924e4bf038a3355b4e",
+  "cases": [
+    {
+      "id": "weak-local",
+      "source_file": "magic-get-this-reference-weak-local.php",
+      "source_sha256": "5b09f7995c05abe9ec8fb77a2af64f285af08672222ca76d7a3dda31e5a74b0f",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-this-reference-private-129/.tools/magic-get-this-reference-probes-129/weak-local.php",
+      "stdout_base64": "VzpHfEx8cnxjb3BpZWQ5fER8ZnJlZXxpbnQ5fG51bGx8RXw=",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "3c4c5db86e9cb133bd4e0904009fb02f73d7277bc098bb60482b3bb526e9484c",
+      "read_line": 8
+    },
+    {
+      "id": "source-conflict",
+      "source_file": "magic-get-this-reference-source-conflict.php",
+      "source_sha256": "16e5b387b76809dde320d6c855820e83df1ed14d6738e534a371af949095c875",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-this-reference-private-129/.tools/magic-get-this-reference-probes-129/source-conflict.php",
+      "stdout_base64": "QzpyfEd8RHxrZXB0N3xzYW1lfHR5cGVkfG1lc3NhZ2V8bGluZXxmaWxlfDQyfGhlbGQ4fG51bGx8RXw=",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "b35d000fc9473c089042e2d3a0dfd44b023a48e22145463a39eca012c4b2ba3c",
+      "read_line": 10
+    },
+    {
+      "id": "exact-source",
+      "source_file": "magic-get-this-reference-exact-source.php",
+      "source_sha256": "8831ba1a545236c1e5ef83d2b6c8fbb6b8a9fc20a9cbd476df195cbc737a09f7",
+      "original_source": "/home/user/workspace/php-spec/.tools/magic-get-this-reference-private-129/.tools/magic-get-this-reference-probes-129/exact-source.php",
+      "stdout_base64": "VDpHfHJ8Y29waWVkN3xEfGxhdGVyfGludDd8aGVsZGxhdGVyfG51bGx8RXw=",
+      "stderr_base64": "",
+      "exit_status": 0,
+      "native_raw_sha256": "019ecba5083327e27c7fdc1ea81cde9b8d7cc62d12d2829cce880455fa1fd157",
+      "read_line": 8
+    }
+  ],
+  "controls": []
+}

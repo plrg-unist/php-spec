@@ -1533,14 +1533,15 @@ and 706 focused premises, including derived controls, pass in the
 [acquired RHS review](coverage/semantics/concat-returned-stringable-warning-review.json).
 Wider returned operands and destructor-throw histories remain partial.
 
-An acquired Stringable LEFT now retains its temporary through the delayed RIGHT
-read/conversion, separately from the method receiver. A method write of `fresh`
-therefore supplies `Lfresh` before the destructor writes `retired`; a borrowed CV
-control instead retires early and yields `Lretired`. Three acquired-source
-comparisons, one borrowed control and 771 focused recipe premises (including
-derived controls) pass in the [LEFT lifetime review](coverage/semantics/concat-left-stringable-lifetime-review.json).
-Owning RIGHT combinations retain the earlier partial route. Late unconstrained
-reference wrapping remains readable; wider constraints and lifetimes stay partial.
+Concatenation keeps acquired Stringable temporaries separate from cast receivers.
+An acquired LEFT survives the remaining RIGHT conversion; borrowed CV timing stays
+distinct. With two distinct acquired Stringables, normal completion finishes both conversions
+before ordered LEFT then RIGHT retirement. Nonthrowing destructors run before caller
+store or the same supplied-Exception catch, including reversed allocation order.
+The [LEFT review](coverage/semantics/concat-left-stringable-lifetime-review.json)
+retains source3/control1 and771 premises; the [dual review](coverage/semantics/concat-dual-stringable-lifetime-review.json)
+adds source3 and889 recipe premises, including derived controls. Late unconstrained
+reference wrapping remains readable; other owning forms and wider lifetimes stay partial.
 
 Concatenation assignment now stages a right-array warning for two bounded plain CVs.
 The first string survives handler writes and RHS removal; normal commit overwrites
@@ -3868,6 +3869,10 @@ their recorded cuts; nonpublic Stringable callbacks remain refused.
 also preserves physical buckets when normal numeric handlers unset declared slots
 or fill initial typed holes. Surviving reference cells and inline destruction
 retain their native order; six source agreements and 420 focused premises pass.
+[Mixed property-table comparisons](coverage/semantics/mixed-property-table-numeric-comparison-review.json)
+now retain nonpublic inline slots alongside dynamic buckets. A dynamic write
+copies the table while its pinned old indirections stay live; shared cells and
+last-owner destruction keep their observed order across normal numeric handlers.
 [Builtin stdClass numeric Notices](coverage/semantics/stdclass-numeric-comparison-review.json)
 use the same continuation with a fixed builtin class image. Restored second
 Notices retain saved 1/1.0 across stdClass/source-instance changes and late live
@@ -5206,8 +5211,7 @@ caller declaration. Weak string7 converts the actual unconstrained cell; a typed
 string source raises a conflict without writing it. Exact int|string sources keep
 their original constraint and accept later `'free'`, with no requested type attached.
 [Three source agreements and 432 focused conditions](coverage/semantics/magic-get-scoped-reference-review.json)
-retain416 cuts. Literal-this BYREF and wider parameter/coercion/lifetime forms
-remain partial.
+retain416 cuts. Wider parameter/coercion/lifetime forms remain partial.
 
 Named noarg owned factories now also admit nonpublic/public-shadow and denied
 reference Get. A returned cell stays live through getter-local destruction and
@@ -5215,7 +5219,14 @@ selected-type verification; COPY then detaches its value before receiver cleanup
 Existing type sources remain unchanged. Pending conflicts and copied object
 payloads preserve receiver/destructor exception order and the unchanged destination.
 [Five source agreements and 586 focused conditions](coverage/semantics/magic-get-owned-reference-review.json)
-retain417 cuts. Wider producers, PARAM sources and literal-this BYREF remain partial.
+retain417 cuts. Wider producers and PARAM sources remain partial.
+
+Literal `$this` also admits reference Get while retaining the actual read-method
+receiver. A local destructor can change the referenced cell before selected-type
+verification; COPY detaches it before later method writes. Pending conflicts
+retire that method receiver with the original caller-site error.
+[Three source agreements and 496 focused conditions](coverage/semantics/magic-get-this-reference-review.json)
+retain419 cuts. Computed/suspended producers and wider reference sources remain partial.
 
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference
