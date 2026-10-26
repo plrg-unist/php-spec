@@ -180,14 +180,14 @@ def conditions(name, program, path, stdout):
     seek(checks, 'S_printed', 'S_text', 5)
     checks += [
         'S_printed.TODO = (OUTPUT_STRING_RELEASE pobstringrelease) :: ptask_tail*',
-        'S_printed.RESULT = KNOWN (PINT 1)', 'S_printed.BASE = BASE_VALUE (KNOWN (PINT 1))',
+        'S_printed.RESULT = KNOWN (PINT 1)', 'S_printed.BASE = BASE_VALUE (KNOWN pvalue_text)',
         'S_printed.STORE[n_v] = DEFINED (PINT 100)', 'S_printed.STORE[n_drops] = DEFINED (PINT 0)',
         '$integer_outputs(S_printed.EVENTS) = ($ptascii("P;S;X;"))',
         '$heap_owners($heap_prune($heap_graph(S_printed)), HOBJECT n_object) = 1',
         '$call_descriptors_valid(S_printed)', '$heap_valid($heap_graph(S_printed))',
         # Inspect root loss while retaining print1; drive the genuine eager path below.
         'S_raw = S_printed[.TODO = ptask_tail*]', 'PhpStep: S_printed ~> S_raw',
-        'S_raw.RESULT = KNOWN (PINT 1)', 'S_raw.BASE = BASE_VALUE (KNOWN (PINT 1))',
+        'S_raw.RESULT = KNOWN (PINT 1)', 'S_raw.BASE = BASE_VALUE (KNOWN pvalue_text)',
         'S_raw.EVENTS = S_printed.EVENTS',
         '$heap_count(HOBJECT n_object, $tasks_nodes(S_raw.TODO)) = 0',
         '$heap_owners($heap_prune($heap_graph(S_raw)), HOBJECT n_object) = 0',
@@ -199,7 +199,7 @@ def conditions(name, program, path, stdout):
         'pdestructorcall.OBJECT = n_object', 'pdestructorcall.OPERATION = (pdestructionoperation)',
         'pdestructionoperation.SOURCE = OUTPUT_STRING_RELEASE pobstringrelease',
         'pdestructionoperation.PENDING = eps',
-        'pdestructionoperation.VALUE = KNOWN (PINT 1)', 'pdestructionoperation.BASE = BASE_VALUE (KNOWN (PINT 1))',
+        'pdestructionoperation.VALUE = KNOWN (PINT 1)', 'pdestructionoperation.BASE = BASE_VALUE (KNOWN pvalue_text)',
         'S_dtor.STORE[n_v] = DEFINED (PINT 100)',
         'S_dtor.STORE[n_casts] = DEFINED (PINT 1)', 'S_dtor.STORE[n_drops] = DEFINED (PINT 0)',
         '$integer_outputs(S_dtor.EVENTS) = ($ptascii("P;S;X;"))',
@@ -209,7 +209,7 @@ def conditions(name, program, path, stdout):
     seek(checks, 'S_released', 'S_dtor', 7)
     checks += [
         'S_released.TODO = ptask_tail*',
-        'S_released.RESULT = KNOWN (PINT 1)', 'S_released.BASE = BASE_VALUE (KNOWN (PINT 1))',
+        'S_released.RESULT = KNOWN (PINT 1)', 'S_released.BASE = BASE_VALUE (KNOWN pvalue_text)',
         'S_released.STORE[n_v] = DEFINED (PINT 100)',
         'S_released.STORE[n_casts] = DEFINED (PINT 1)', 'S_released.STORE[n_drops] = DEFINED (PINT 1)',
         '~((HOBJECT n_object) <- S_released.ALLOCATIONS)',
