@@ -255,6 +255,13 @@ method operand remains explicit Unsupported; other callable targets and wider
 argument sources remain partial.
 [Method Iterator review](coverage/semantics/method-iterator-unpack-review.json).
 
+Accepted eval and included class/interface declarations now autoload multiple
+direct interfaces in order before target publication. A later miss preserves
+earlier eval functions and reports the dynamic declaration origin. Five new
+author sources and three independent sources agree with pinned PHP; two
+source-reached fronts pass 262 checks, with 320 retained one-interface checks.
+[Ordered-interface review](coverage/semantics/multi-interface-autoload-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |

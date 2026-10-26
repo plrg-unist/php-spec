@@ -1,0 +1,52 @@
+{
+  "status": "independently_reviewed_private",
+  "milestone": "Source113 ordered direct-interface autoload",
+  "scope": "Parentless, trait-free accepted eval/include class or interface declarations with ordered direct interfaces, registered loaders, and source-authenticated AUTO_INTERFACE resume.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "private_base": "20334b95d77cc512661e24f7bee50ca0521e4117",
+  "module_count": 424,
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+  "environment": {"LC_ALL": "C", "TZ": "UTC"},
+  "reviewed_cut": {
+    "module277_sha256": "862c8475166566f24028ef411deeccf66ced2009f780aedffa5a5ccd31273036",
+    "semantic_diff_sha256": "9f2e86c48243eeac7e6dbe233e2a7eb2b624d4b1b7de5c6a81622ad0f3e17d46",
+    "new_protocol_sha256": "79eaff97b6ef0a2641b747b0feb0e2a53101c1654814b0c011076e1c66ac6d9d",
+    "retained_protocol_sha256": "21caa6d9084c05bb8c65e3e40d0786e90a09a57a614790461458ec34a3dfa275"
+  },
+  "behavior": [
+    "The first unknown direct interface starts the registered lookup. A saved AUTO_INTERFACE origin and name may resume after publication; a later interface is eligible only when every earlier direct name is already known. Parent and trait priority and source/history replay remain independent guards.",
+    "Eval-created functions published before a later interface failure remain callable, while the target class remains unpublished. Included class-link Errors retain the child filename and line, and include_once keeps opened-file identity. A known wrong-kind first name does not suppress the later name's loader Exception."
+  ],
+  "accepted": {
+    "new_author_source_agreements": 5,
+    "new_independent_source_agreements": 3,
+    "retained_single_interface_source_control": 1,
+    "new_reached_fronts": 2,
+    "new_reached_checks": [135, 127],
+    "retained_one_interface_checks": [167, 153]
+  },
+  "preserved_zero_credit": [
+    "Five unchanged multi-interface checked programs returned Unsupported. The independent unpublished-class companion also returned Unsupported before the change. These are genuine baselines, not agreements.",
+    "The first changed author packet stopped before semantics with runner_failure at the new recursive helper. A corrected 424-module load gate preceded the exact changed-v2 source packet. The first two-case state run passed 135 checks but its second fixture failed elaboration on a quoted Error-message literal; its aggregate and second case have zero credit. A byte-safe second-only fixture then passed 127 checks."
+  ],
+  "engine_route": "Zend/zend_inheritance.c::zend_do_link_class fetches direct interface names in order before later binding checks; zend_fetch_class_by_name may invoke SPL autoload. The checked foreign parser supplies each dynamic unit; module277 retains the declaration origin and resumes the existing link/publication path.",
+  "remaining": "Three-or-longer direct-interface lists are untested. Parented, trait-bearing, internal and reentrant declaration combinations, delayed variance obligations, broader loader failure histories and complete dynamic-source/core behavior remain partial.",
+  "artifacts": {
+    "author_freeze": [".tools/source113-discovery/freeze.json", "4aee935b69262c7a536df85577f1735a6138e0fb4f6742a170a3ab7e42594bcc"],
+    "author_native": [".tools/source113-discovery/native-report.json", "91c517655505d7d0d8c3f714441385d299dc2c88945c4fe297a6aa0a2906a9d1"],
+    "author_unchanged": [".tools/source113-discovery/baseline-report.json", "b0cdfe15c3d8646023bb79ce310428378093f547187947b349637b94f3b8d1c8"],
+    "first_changed_failure": [".tools/source113-discovery/changed-report.json", "d04f24b4ab59ade6c869261ca407799fe7f76854a41d54edcdd8c8438f5d41e8"],
+    "module_load_gate": [".tools/source113-discovery/load-report.json", "c2ea3bfb6d4d77daa34ee41deeeece2b602f55efb6861d8ee93f37a024ff0f00"],
+    "author_changed": [".tools/source113-discovery/changed-v2-report.json", "6a20fbf7dcccfb0b116fc8a2b08514e3ed005dd63126282cf9bbd1e29c5b9cc1"],
+    "unpublished_native": [".tools/source113-reviewer-unpublished-v1/native-report.json", "fcbf82ade7fc788770881db403742d9cb9d15ccb30937d847c6debd3a808087f"],
+    "unpublished_unchanged": [".tools/source113-reviewer-unpublished-v1/baseline-report.json", "35ea932bc37eab0973493cafe1eadeb2eab49fe7fa1a0cf9975ffa42d6a478f5"],
+    "unpublished_changed": [".tools/source113-reviewer-unpublished-v1/changed-report.json", "07861065197e32ae8ec2925d785a4701423a1619a2d84b0dc5dbad54c5d6bdf4"],
+    "independent_native": [".tools/source113-reviewer-native-report.json", "2430ea1cbf062e55fbc22b7dba87e7f2ab47865438360400233947b064021b22"],
+    "independent_changed": [".tools/source113-reviewer-changed-report.json", "2d95cd822661c018f158836779600b569000e423d7a73ca710579df08c7ed1de"],
+    "first_state_attempt": [".tools/source113-state-v1/check-report.json", "a1c5d4f6c94385de39c0bea23a12d58a6447cf8c14f3d5770e7f1b7b7ab143f8"],
+    "affected_second_state": [".tools/source113-state-v2/check-report.json", "bf2b1550f1f844ad0c7ca49de682ed6e2597eb51dd90c4109c2d4b0a14cb0a84"],
+    "retained_interface_state": [".tools/source113-v55-compat-v1/check-report.json", "211ea115249b5119465a5b2074cd95b7d1143a37ecb0614a5948ab3485eda3e4"]
+  },
+  "recovery": "Run the frozen .tools/source113-discovery/run.py on its exact source packet for native/baseline/changed-v2. Generate and check only the two new checked fronts with tests/semantics/multi_interface_autoload_protocol.py; use --case eval-second-missing for the corrected second-only cut. The retained V55 protocol uses .tools/dynamic-review-02. All raw streams, worker packets and numeric commands remain in ignored .tools, outside Git."
+}
