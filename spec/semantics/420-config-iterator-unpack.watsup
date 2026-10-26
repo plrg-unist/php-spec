@@ -18,7 +18,7 @@ dec $config_iterator_finish(pstate, pconfigiterator, ptask*) : pstate
 dec $config_iterator_discard(pstate, pconfigiterator, text) : pstate
 dec $config_iterator_discard_allowed(pstate, pconfigiterator) : bool
 
-def $config_traversable_value(S, POBJECT n) = ($useriter_instance(S, n) \/ $generator_object(S, n) \/ $generator_from_aggregate(S, POBJECT n) \/ $weakmap_at(S, n))
+def $config_traversable_value(S, POBJECT n) = ($useriter_instance(S, n) \/ $generator_object(S, n) \/ $generator_from_aggregate(S, POBJECT n) \/ $weakmap_at(S, n) \/ $weakmap_iterator_at(S, n))
   -- if $(n < |S.OBJECTS|)
   -- if HOBJECT n <- S.ALLOCATIONS
 def $config_traversable_value(S, pvalue) = false -- otherwise
@@ -80,6 +80,7 @@ rule PhpStep/config-traversable-unsupported: S ~> S_value[.COMPLETION = UNSUPPOR
   -- if ~$weakmap_at(S_value, n_object)
   -- if ~$config_iterator_start(S_value, pconfigcall, S.RESULT, n_object)
   -- if ~$config_aggregate_start(S, pconfigcall, S.RESULT, n_object)
+  -- if ~$config_generator_start(S, pconfigcall, S.RESULT, n_object)
 
 ;; With external map/key owners and a quiet current, WeakMap's DATA/key pins
 ;; retire silently. The current table pointer is borrowed, never copied/sent.

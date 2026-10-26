@@ -47,6 +47,11 @@ Denied getter-reentry visibility Errors are retained in
 native5/baseline5, three source agreements, the original false/carrier diagnostic,
 405 focused premises and tested-input snapshots.
 
+Caller-scoped UNSET getter selection is retained in
+`../php-spec-evidence-archive/magic-get-scoped-unset-123/manifest.json`: native4,
+unchanged baseline4, source3, 330 focused premises and tested-input snapshots.
+The same-object scoped/denied distinction and INITIAL control keep separate credit.
+
 Keep future compressed raw traces, source snapshots and tool copies in this
 external archive (using new paths for new evidence) or in ignored `.tools/`.
 Commit concise reports and manifests with hashes and locations. Preserve raw

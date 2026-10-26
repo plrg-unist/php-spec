@@ -1,0 +1,95 @@
+{
+  "decision": "accepted-partial",
+  "scope": "Ordinary local-CV receiver, literal property name, source-authenticated accessible private/protected UNSET and BYVAL non-generator Get. Caller ACCESS-key selects the physical DECL; later Child getter scope and live backing population cannot replace that declaration.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json",
+  "engine_route": "vendor/php-src/Zend/zend_object_handlers.c::zend_std_read_property retains accessible prop_info through Get, clears IN_GET after zend_std_call_getter, verifies using Get strictness, then OBJ_RELEASE. zend_magic_get_property_type_inconsistency_error uses the declaring property class twice; the Error belongs to the caller property-read file/line, unlike inner recursive-read Errors.",
+  "implementation": {
+    "revision": "aca7fd5d48e0cf5d3d1d591b3b6bd5f324eac9ff",
+    "file": "spec/semantics/380-magic-property-get.watsup",
+    "sha256": "c98f2bed194029b0758c21a18f55ad798e309e68f23de3b3e60c2a1b974f5f69",
+    "delta": "41 additions/2 replacements. Canonical-key access_desc/access_decl bind Plan/History to source-selected DECL; scoped_desc checks retained ORIGIN and disjoint KNOWN-RV verify arms reuse existing conversion. New admission is BYVAL. Old decl helper for418/419 and public/denied verify bodies remain exact; no384, compiler, root, GC, task, schema or manifest edit."
+  },
+  "independent_review": {
+    "reviewer": "class119_review",
+    "test_revision": "bdbd10f19b9dbf3c050816a303e3d5039bf84380",
+    "decision": "Accepted runtime/source3/author229/peer101. Real caller frames and Child-live-scope versus saved Parent declaration are reached; saved control projection, forged Child/EPS/raw-name records and BYREF signature controls are derived. Legacy pure verify(EPS) identity remains distinct from RESULT admission."
+  },
+  "source_evidence": {
+    "catalogue": "tests/semantics/magic_get_scoped_unset_cases.json",
+    "initial_revision": "8b86fb948774561beee1e91dd5ff3366c7b15758",
+    "native_cases": 4,
+    "new_case_baseline": "All three new originals genuinely stop Unsupported before Get at S:, B: or T:, with magic getter receiver/signature reason; new agreements0.",
+    "controls": "Private INITIAL bypass already agrees in the unchanged model (separate existing control1), with no Get output.",
+    "model_revision": "aca7fd5d48e0cf5d3d1d591b3b6bd5f324eac9ff",
+    "new_agreements": 3,
+    "modes": "Original bytes/path/cwd/profile; strict SL412. Native45s/model60s/outer75s caps,100000steps,serial.",
+    "evidence_levels": "All three originals agree. Author full trajectories select caller-line rejection and protected population; peer follows actual private-shadow weak conversion through the later denied external front and checks INITIAL.",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "focused_evidence": {
+    "revision": "bdbd10f19b9dbf3c050816a303e3d5039bf84380",
+    "module_count": 412,
+    "author": {
+      "command": "taskset -c 5 python3 tests/semantics/magic_get_scoped_unset_protocol.py --revision bdbd10f19b9dbf3c050816a303e3d5039bf84380",
+      "groups": {
+        "private-reject": 109,
+        "protected-populate": 120
+      },
+      "premises": 229,
+      "reached_premises": 223,
+      "derived_premises": 6,
+      "algorithmic_gates": 2,
+      "strict_SL_true": 2,
+      "cap_seconds": 90
+    },
+    "independent": {
+      "command": "taskset -c 5 python3 .tools/magic-get-scoped-unset-review-123/run.py --revision bdbd10f19b9dbf3c050816a303e3d5039bf84380",
+      "premises": 101,
+      "reached_premises": 81,
+      "derived_premises": 20,
+      "algorithmic_gates": 1,
+      "strict_SL_true": 1,
+      "cap_seconds": 90
+    },
+    "total_premises": 330,
+    "properties": "Actual Parent caller/Get frame chain and relative +1 hold; mangled KEY/DECL versus effective Child metadata and live Child getter scope; weak int7 stored before same-object DENIED DECLeps, Child storage unchanged; population99 preserves immutable history although capture/UNSET is false; raw verify/COPY then genuine release recovery; fresh Parent-labelled caller-site TypeError after guard clear, untouched42 and budget equality.",
+    "processes": "Serial CPU5; all actors/groups fully reaped, inputs/head/status stable. Peer compiler/runner sampled CPU5; taskset/wrapper provenance does not imply live-child observation for other runs.",
+    "failed_semantic_runs": 0
+  },
+  "raw": {
+    "manifest": "../php-spec-evidence-archive/magic-get-scoped-unset-123/manifest.json",
+    "archive_bytes": 7385420,
+    "archive_sha256": "04ee146f945d6e806094933ccdbc789aeffe8f22ceec04cc67503be09d655b2d",
+    "reports": {
+      "native4": {
+        "path": ".tools/magic-get-scoped-unset-probes-123/native-first/report.json",
+        "sha256": "9a8d9eb05af80d072dcfce5cb5f4962453240f90596f346e17e272ffb70881cd"
+      },
+      "baseline4": {
+        "path": ".tools/magic-get-scoped-unset-probes-123/accepted-current-baseline/report.json",
+        "sha256": "802c6affd05d19057b2abec44e88310d5328aa20b3e534846c2424b95760f590"
+      },
+      "source3": {
+        "path": ".tools/magic-get-scoped-unset-probes-123/changed-model-dzy7abqy/report.json",
+        "sha256": "74e924dfbecacf9fc36a52faf74a95b82fe4c9afcfb8a30ac644e4afa771b36b"
+      },
+      "author229": {
+        "path": ".tools/magic-get-scoped-unset-protocol-56rj58zq/report.json",
+        "sha256": "2eca880d4fbcd66bb46c5e7916dfe429f9ffe2084d31293242c6554daa85f808"
+      },
+      "independent101": {
+        "path": ".tools/magic-get-scoped-unset-review-123/execution-hs1hx_63/report.json",
+        "sha256": "a39058244a254d8d175fcfa0ff0ebf554a65cd8648334026619b5af8e2fcb102"
+      }
+    }
+  },
+  "composition": {
+    "parent_revision": "27042e9a75dce22090e1956fb41f1d5f87b7e99d",
+    "module_count": 413,
+    "preservation": "Tested380, six new maintained inputs and unchanged119 helper remain exact. Incoming422/30/51/404/386/420/424 and ordered413 manifest remain parent-exact. Added task/object/iterator alternatives introduce no state/frame/default fields; tested412 fixtures need no field lift.",
+    "independent_selector_review": "M149 occupied WeakMap entry offsetSet/reference replacement has no producer. OP85 shorthand-ternary NaN selection is absent: these originals use full ternaries over comparison Booleans and no floating/NaN values. M150 WeakMap getIterator/wrapper dispatch and foreach/CONFIG consumers are absent: these programs construct only ordinary INSTANCE and Throwable objects, with no WeakMap/iterator producer.",
+    "credit": "No joined execution or older-source replay. Public/denied fallback remains pointwise unchanged; prior class/operator/lifecycle evidence keeps original cuts."
+  },
+  "limits": "Public Child shadow selection, direct-This Get entry, by-reference getters, owned receivers, special coercions, scoped recursive-inner Errors, bound-Closure scopes, quiet probes, owning returned values and wider lifetimes remain partial. No family/full-core closure; paused lanes untouched.",
+  "engine_bugs_or_intentional_divergences": []
+}

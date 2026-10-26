@@ -932,7 +932,7 @@ properties. Denied private/protected reads and ancestor-private literal fallback
 also invoke the getter, with no hidden property type verification,
 even for INITIAL or initialized typed backing. Allowed lexical VALUE reads the
 physical key; accessible typed INITIAL raises Error without invoking the getter.
-Lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, writes, quiet probes,
+Wider lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, writes, quiet probes,
 wider signatures and recursion beyond the bounded cases below
 remain explicit Unsupported.
 
@@ -1000,9 +1000,24 @@ separate cuts; private VALUE propagation has source and an independent reached
 cut, while recovery/local cleanup have full author trajectories. The original
 plain-string fixture assumption and its carrier diagnostic retain zero credit.
 The earlier class-level comment Nop remains a compiler residual; these multiline
-witnesses do not expand that compiler route. Lexically accessible nonpublic UNSET,
-bound-Closure scopes, by-reference getters, quiet probes, owned receivers,
-computed names, suspension and wider lifetime combinations remain partial.
+witnesses do not expand that compiler route. Wider scoped access and lifetime
+combinations remain partial.
+
+Ordinary local-CV reads of accessible private/protected UNSET now retain the
+caller's selected canonical declaration. Parent's private int wins over a
+same-name Child private string during Parent's read, even while Get runs in
+Child scope. Weak `'7'` becomes int7 internally; the same object's external denied
+Get still returns raw string `'7'`, and Child backing remains unchanged.
+An incompatible RV raises the declaring Parent's TypeError at the caller read
+site after the Get guard clears. Untyped protected Get can populate backing99
+without redirecting its interrupted `'ok'` return; history never rechecks UNSET.
+[Three source agreements and 330 focused premises](../../coverage/semantics/magic-get-scoped-unset-review.json)
+retain separate runtime/state cuts. Real caller frames, selected DECL, normal
+COPY release and caller-line rejection are reached; saved control projections
+and forged DECL/BYREF controls are derived. Raw-key public/denied behavior and
+reference384 remain fenced. Public-shadow selection, direct-This entry,
+by-reference getters, owned receivers, special coercions, scoped recursive-inner Errors,
+bound-Closure scopes, quiet probes and wider lifetimes remain partial.
 
 The [getter review](../../coverage/semantics/magic-property-get-review.json) records
 eight exact source agreements, 1293 setup-inclusive reached premises and the

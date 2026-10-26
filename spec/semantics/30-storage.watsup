@@ -127,6 +127,7 @@ syntax pfiberpack = FIBER_ARRAY_PACK pconfigpack | FIBER_TRAVERSABLE_PACK ptrave
 syntax pconfigcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT pnamedslot*, NAMED bool, OWNER nat?, SELECTION nat?, LINE int, PACKS pconfigpack* }
 syntax pconfigiterator = { CALL pconfigcall, ITERATOR nat, OBJECT nat, INPUT poperand, ITEMS pentry*, CURRENT poperand, KEY poperand }
 syntax pconfigaggregate = { CALL pconfigcall, OBJECT nat, INPUT poperand }
+syntax pconfiggenerator = { CALL pconfigcall, OBJECT nat, INPUT poperand, ITEMS pentry* }
 syntax pfiberfactory = { CALL pconfigcall, ITEMS pentry* }
 syntax pfiberarray = { SITE porigin, INIT int, LINE int, ARRAY nat, ITEMS pentry*, KIND pintrinsic, NAME ptbytes, INPUT nat? }
 syntax pfiberrawapi = { ITEMS pentry*, KIND pintrinsic, NAME ptbytes, INPUT nat? }
@@ -479,6 +480,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | ITERATOR_UNPACK piteratorunpack text
   | CONFIG_ITERATOR pconfigiterator text
   | CONFIG_AGGREGATE pconfigaggregate
+  | CONFIG_GENERATOR pconfiggenerator text
   | GENERATOR_UNPACK pgeneratorunpack text
   | USERITER_RESULT nat nat statement porigin int text poperand | USERITER_NEXT nat nat statement porigin int poperand
   | EVAL_COMPILE_RESUME pevalcompile | EVAL_COMPILE_END nat | EVAL_COMPILE_EXIT int | EVAL_COMPILE_FORMAT_EXIT int | EVAL_COMPILE_FATAL pevalcompilefatal | EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender
@@ -557,7 +559,7 @@ syntax preceivecut, pdeclcause
 syntax pevalcontext = { UNIT nat, RECEIVES preceivecut*, USERPREFIX nat, SITE porigin, BYTES nat*, FILE nat*, LEXICAL_CLASS porigin?, OWNER nat, PHASE pevalphase, TAIL ptask*, LOCATION pconstantlocation? }
 syntax pevalbinding = { UNIT nat, RECEIVES preceivecut*, USERPREFIX nat, SITE porigin, CLASS porigin?, LOCATION pconstantlocation? }
 syntax pcursor = CURSOR nat nat
-syntax piterator = GENERATORITER nat nat | ITERATOR nat nat bool pcursor* | OBJECTITER nat nat nat bool | OBJECTKEYITER nat nat nat bool nat nat | WEAKMAPITER nat nat nat nat* | WEAKMAPREFITER nat nat nat nat*
+syntax piterator = GENERATORITER nat nat | ITERATOR nat nat bool pcursor* | OBJECTITER nat nat nat bool | OBJECTKEYITER nat nat nat bool nat nat | WEAKMAPITER nat nat nat nat* | WEAKMAPREFITER nat nat nat nat* | WEAKMAPOWNEDITER nat nat nat nat
 syntax preqbytes = nat*
 syntax prequest = { ENV (preqbytes, preqbytes)*, ARGV preqbytes*, FILE preqbytes, SECONDS int, MICROSECONDS nat, VARIABLES preqbytes, JIT bool, CWD preqbytes? }
 syntax pstartup = { REPORTING preqbytes?, INCLUDEPATH preqbytes }
@@ -625,7 +627,7 @@ syntax pgeneratorinput = { OBJECT nat, SITE porigin, SOURCE pgeneratorop, LIVE b
 syntax pgeneratorloopretained = { OBJECT nat, SITE porigin, TASK ptask }
 syntax pweakmapvalue = pvalue | ALIAS nat
 syntax pweakmapentry = { KEY nat, VALUE pweakmapvalue, BEFORE nat? }
-syntax pobject = SENSITIVEUNSET porigin | SENSITIVEVALUE pvalue | WEAKREFERENCE nat? | WEAKMAP pweakmapentry? | WEAKMAPENTRIES pweakmapentry* | FIBERGRACEFUL nat nat | FIBER pfiber | FIBERAPICLOSURE pfibercapture | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | FROMCALLABLEFACTORY porigin | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text pgettersource | CTORCLOSURE nat text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
+syntax pobject = SENSITIVEUNSET porigin | SENSITIVEVALUE pvalue | WEAKREFERENCE nat? | WEAKMAP pweakmapentry? | WEAKMAPENTRIES pweakmapentry* | WEAKMAPITERATOR nat nat | FIBERGRACEFUL nat nat | FIBER pfiber | FIBERAPICLOSURE pfibercapture | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | FROMCALLABLEFACTORY porigin | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text pgettersource | CTORCLOSURE nat text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
 syntax pdeclautoload = (nat, pautoloadcall, pautoloadentry)
 syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)*, AUTOLOAD pdeclautoload* }
 syntax pcompilestop = PCSREJECT | PCSMAINREJECT program | PCSCOMPLETE | PCSCOMPILER | PCSLINK nat | PCSUNSUPPORTED nat
@@ -1299,6 +1301,8 @@ dec $foreach_aggregate_selected(pstate, pcalltarget, porigin) : bool
 dec $config_aggregate_selected(pstate, pcalltarget, porigin) : bool
 dec $config_aggregate_pending_site(pstate, porigin) : bool
 dec $config_aggregate_start(pstate, pconfigcall, poperand, nat) : bool
+dec $config_generator_start(pstate, pconfigcall, poperand, nat) : bool
+dec $config_generator_operation_valid(pstate, pgeneratorop) : bool
 dec $foreach_aggregate_pending_site(pstate, porigin) : bool
 dec $foreach_aggregate_context(pstate, pcallcontext) : bool
 dec $fiber_traversal_selected(pstate, pcalltarget, porigin) : bool

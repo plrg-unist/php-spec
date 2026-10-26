@@ -596,7 +596,8 @@ the Iterator cursor releases before API entry. A key callback throw leaves its
 current value unsent, preserves the same Exception and cancels the assignment.
 The first slice uses borrowed CV operands, plain string values and external
 Iterator/callee owners. Four source agreements and 742 original state premises
-pass; two Generator/Generator-producing Aggregate controls remain Unsupported. Earlier
+pass at their recorded Source87 cuts. Source90 admits the old direct Generator
+control; Generator-producing Aggregate remains Unsupported. Earlier
 fixture/timeouts retain zero credit. Builtin Traversable classification and wider
 producers remain open.
 
@@ -609,6 +610,16 @@ entry, retains its identity and genuine trace, then permits setter recovery.
 Three source agreements, strict411 and 513 original state obligations pass
 (558 physical conditions, 45 repeated setup). The original owned-case timeout
 keeps zero credit; wider producers, values and owner-loss lifetimes remain partial.
+
+[Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
+now streams fresh named zero-argument Generators into INI_SET through real native
+resumes. DATA retains the selected Generator across live input/callee rebinding;
+duplicate integer keys stay separate positional sends. Final resume completes
+before DATA retirement and API entry. A terminal supplied Exception cancels
+reception with its genuine producer trace and preserved assignment/identity,
+then permits saved-setter recovery. Native3/source3, strict413 and 467 original
+state conditions pass (523 physical, 56 setup), with no retry. The initial
+Unsupported comparison remains zero; wider caches, producers and lifetimes remain partial.
 
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
@@ -3147,7 +3158,12 @@ Bounded by-value WeakMap `foreach` now retains the Map through hidden iterator
 DATA and copies its object Key/Value into ordinary CVs. Exhaustion or `break`
 retires DATA before those copies; two originals and 287 Boolean/five raw checks
 pass at `b7af270c7`/410. Active entry mutation is explicitly refused;
-wider target/value and map-history cases remain partial.
+wider target/value and map-history cases remain partial. The actual bounded
+`getIterator()` factory now returns an Iterator that owns Map; outer foreach
+keeps its own DATA and current cache. Exhaustion versus an externally held
+Iterator after break preserves the copied targets until their later release.
+Two sources and 265 Boolean/four raw checks pass at `95d732f3b`/413; manual methods,
+wider histories, hidden allocation handles and GC/CONFIG remain partial.
 
 Bounded by-reference WeakMap traversal shares the entry's cell and preserves
 rebinding plus escaped aliases through DATA or Key retirement. A reference
@@ -4800,7 +4816,12 @@ Denied private/protected reentry now raises the receiver-class visibility Error,
 independently of hidden VALUE/UNSET/INITIAL storage. Ordinary source scope and
 actual Get/local-exit guards pass [three source agreements and 405 focused premises](coverage/semantics/magic-get-denied-recursion-review.json),
 including incompatible hidden-type recovery and allowed/different-object controls.
-Bound-Closure scopes and wider access/receiver/lifetime forms remain partial.
+Accessible private/protected UNSET reads through local CVs now retain the
+caller's physical declaration across Get. Parent int versus Child string shadow,
+caller-line TypeError and populated backing99/captured `'ok'` pass
+[three source agreements and 330 focused premises](coverage/semantics/magic-get-scoped-unset-review.json).
+Public-shadow selection, direct-This entry, by-reference getters, scoped recursion,
+bound-Closure scopes and wider access/receiver/lifetime forms remain partial.
 Denied private/protected reads and inherited-private literal fallback now invoke
 the getter without applying the hidden property's type. Allowed lexical reads
 use the physical backing key or raise its initialization Error. The original
@@ -5003,7 +5024,7 @@ The `fd7eae1` composition preserves the newer storage/lifecycle rules and 376 mo
 Private cuts and the retained parent compiler are reused; fresh executions remain0.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
-access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
+access, wider scoped UNSET forms, changed Closure scopes for nonpublic access, guarded
 recursion, computed names, hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
