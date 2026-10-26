@@ -1543,6 +1543,13 @@ retains source3/control1 and771 premises; the [dual review](coverage/semantics/c
 adds source3 and889 recipe premises, including derived controls. Late unconstrained
 reference wrapping remains readable; other owning forms and wider lifetimes stay partial.
 
+Concatenation now fetches a bounded undefined RIGHT variable before converting
+an acquired Stringable LEFT. Handler and method writes cannot replace its fixed
+fallback; LEFT stays owned until retirement before store or the same Exception
+catch. Three source agreements and 826 checked recipe premises, including derived
+controls, pass in the [prefetch review](coverage/semantics/concat-undefined-right-prefetch-review.json).
+Wider operand and handler forms remain partial.
+
 Concatenation assignment now stages a right-array warning for two bounded plain CVs.
 The first string survives handler writes and RHS removal; normal commit overwrites
 the target and detaches a late alias, while a supplied throw preserves it.

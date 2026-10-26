@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "milestone": "OP90 CONCAT prefetches undefined RIGHT before LEFT conversion",
+  "status": "bounded semantics, results and publication independently reviewed; actual-tail composition pending",
+  "target": "PHP8.5.10 CLI NTS64, pinned project-local oracle and ordinary precision14 profile",
+  "scope": "Acquired raw KNOWN Stringable LEFT plus direct ordinary missing RIGHT CV, with an eligible named error handler. Warning25 precedes LEFT conversion; callback writes cannot replace the selected fixed fallback. Existing defined-CV, dual-owned and borrowed routes retain their contracts.",
+  "runtime_revision": "3274c8fa92f6c423904e79729f151e3298a5ae02",
+  "focused_revision": "dd0a3f9bf4fca4ce609742e18cdc4c4013567d00",
+  "modules": 419,
+  "runtime_sha256": {
+    "spec/semantics/429-concat-left-lifetimes.watsup": "29fd378d900132a8fe49030953efdd763808d5987fefa919d242e9638055717e",
+    "spec/semantics/modules.json": "4562c540b1641307f42c12b75ec1c423e56e1011278e65b3b8a77c3de88166cb"
+  },
+  "engine_basis": [
+    "Pinned ZEND_CONCAT fetches both operands and applies ZVAL_UNDEFINED_OP2 before concat_function. zval_undefined_cv reports Warning and returns EG(uninitialized_zval); later CV definition cannot replace that selected fallback. __zval_get_string_func converts it to empty bytes. Model PNULL is this bounded abstraction, not a claim that Zend writes NULL into the CV.",
+    "Only 40 appended lines in429 reuse the existing missing-read source/shape/plan interface. ERROR_READ_RESULT owns its fixed CPP TASK once; dispatch/handler cleanup retains that owner and normal resume transfers it to CONCAT_PREP A/KNOWN PNULL. Original VAR metadata is nonowning and never reread.",
+    "Hthrow discards ERROR_HANDLER_RESULT with callback restoration; Sthrow discards the fixed-NULL LEFT consumer. Existing eager cleanup retains the original pending Exception through real D. Generic207/270/59/168/404, pstate fields/defaults and module manifest are unchanged. Historical source validity may outlive A; active task roots remain subject to heap validity."
+  ],
+  "contract": [
+    "Normal P/H/S/D before caller store yields strictL although H installs right='handler' and S changes it to'method'. D sees outer100/casts1; later right8 leaves the result unchanged.",
+    "Hthrow skips S/default Warning, while Sthrow retains the completed Warning25. Both retire A before catching the same Exception20/null Previous with outer100 and the correct source/counter facts.",
+    "826 premises = 328 normal + 208 Hthrow + 290 Sthrow checked-source-derived recipe premises, including transformed controls. These bind original versus fixed descriptors, actual callbacks/default order, separate TMP/cast/target roots, raw result/root loss, real D, dead A, EOF and budgets. Defined-CV nonselection, late-reference history and malformed source/shape checks are derived, not additional native coverage."
+  ],
+  "accepted": {
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-90/source-3274c8fa9-three-corrected/report.json",
+      "sha256": "a3313e91b7e89bb144213728a950a673ce2b91db0a833a874b426598d9f75254",
+      "agreements": 3,
+      "revision": "3274c8fa92f6c423904e79729f151e3298a5ae02",
+      "checks": "Full419 struct30 then three first model-only comparisons at CLI60/process90 against retained exact native080 tuples; normal0 with exact Warning25 or empty Hthrow stderr."
+    },
+    "focused": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-90/focused-dd0a3f9bf-three-corrected/report.json",
+      "sha256": "ca77e049896944e3c4f3a13428679b536c0d2949b72d23f1bb08c0a1fbd6c9ce",
+      "conditions": {
+        "normal": 328,
+        "handler_throw": 208,
+        "stringable_throw": 290
+      },
+      "checks": "All three full419 fixture structs and first SL120 checks pass exacttrue; workers/actors reaped, no timeout/interruption."
+    },
+    "review": "operators79_review independently accepted scope/native/genuine, runtime, reciprocal author/peer recipes, headers, source3 and focused826. Publication independently reviewed; actual-tail review pending."
+  },
+  "preserved_zero_credit": {
+    "native_author": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-90/native-080a57ad7-author/report.json",
+      "sha256": "11e0aa1723d29d1bf5c000211d6a93783b786741656105372f4d6f54ebee2b27"
+    },
+    "native_peer": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-90/native-080a57ad7-peer/report.json",
+      "sha256": "42e54970a8fffc5fbc30ff7ed8f0d806bf306f253f47351237413ce0f2a49de0"
+    },
+    "genuine": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-90/baseline-080a57ad7-undefined-right/report.json",
+      "sha256": "9d2cba82061fdf20368bc01c2a32b860d70e030901412e6976f3d440a2e4faf6",
+      "result": "Checked Unsupported after P only/before H, reason concatenation acquired left unavailable right operand; model1/comparisonfalse, empty semantic stderr."
+    },
+    "tool_guard_failure": {
+      "exit_record": "/home/user/workspace/php-spec-evidence-archive/operators-90/source-gate-3274c8fa9.exit.json",
+      "sha256": "2a248987c788aedd6a4a87338871ffac56a6677a856f79657c7cc4cbc8bef90c",
+      "result": "Pre-test header KeyError for php-file lookup in inner native inputs; no struct/model actor. Corrected guard uses the existing outer genuine absolute-key proof; original header and failure remain unchanged."
+    },
+    "fixture_static_failures": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-90/focused-3f262eb7d-three/report.json",
+        "sha256": "ea1b23e537479110ab90ca8a18eafdbc4c05c6fdbac643db024ef7910d9037a2",
+        "result": "Nonexistent FUNCTION_TARGET fixture spelling; no SL ran."
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/operators-90/focused-f8810b82c-three-corrected/report.json",
+        "sha256": "a91dde70d71d3015c006a768d59c8c54e64d45d96dc8b34cf1be5d4daa9fcb01",
+        "result": "Recursive warning fold used otherwise with a non-pure premise; no SL ran."
+      }
+    ]
+  },
+  "compatibility": "The new plan requires the genuine direct missing-CV CPP plus eligible named handler. Defined-CV nonselection is checked explicitly; existing source/focused campaigns were not renewed. Source comparisons reuse retained native tuples, and focused checks reuse the accepted source report with exact runtime/profile/tool/source identities.",
+  "limits": [
+    "Wider initial references/constrained or released locations, handler/callable producers, other missing operand forms, owning handler lifetimes, destructor throws/chaining and suspension remain partial. This bounded consumer does not close general undefined reads or CONCAT.",
+    "No engine bug or intentional divergence is claimed. Paused OP12/Source47/owned-NUL/undefined-byref LIST/COMP88 and held COMP123 remain untouched. Full core, final combined validation and copied-path network-isolated offline rebuild remain open."
+  ],
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-90",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C,TZ=UTC,PHP_SPEC_SCRIPT_ENCODING absent; ordinary precision14. Native30/modelCLI60-process90; struct30/SL120 serial with full reap/release. Reused regular local tools establish no fresh offline rebuild.",
+    "headers": [
+      "run-native-gate.py",
+      "run-source-gate-corrected.py",
+      "run-focused-fixed.py"
+    ],
+    "record": "Reports retain exact original source/path/cwd, streams/status, tool/runtime inputs and commands. Restore matching Git cuts and retained paths with fresh output names; raw evidence remains external."
+  },
+  "composition": {
+    "parent": null,
+    "private_publication": null,
+    "modules": null,
+    "preservation": "Actual-tail composition pending; tested429/six tests must remain private-exact and every incoming semantic module/manifest must be preserved.",
+    "gate": "Pending independent actual-tail review; no execution renewal for metadata."
+  }
+}
