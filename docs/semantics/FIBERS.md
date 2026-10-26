@@ -888,9 +888,26 @@ the closed Generator keeps its cache and Closure until release. Three authored
 exact sources, one independent normal-finally source, two unchanged controls
 and 136 custom reached-state checks
 cover this path. A first 180-second reference-capture timeout stays zero
-credit; a selected 240-second run passed. Fresh by-reference Closure THROW,
-method by-reference/fresh, bound/delegated and wider lifetimes remain partial.
+credit; a selected 240-second run passed. At that cut, fresh by-reference
+Closure THROW, method by-reference/fresh, bound/delegated and wider lifetimes
+remained partial.
 [Closure reference THROW review](../../coverage/semantics/generator-fiber-closure-reference-throw-transfer-review.json).
+
+Fresh unbound Closure-created by-reference Generator::throw now transfers
+before its first yield with an empty value and reference cache. The saved
+resumer owns the original temporary Throwable; after resume, the first
+by-reference yield creates a live cell and throw injects into it. The returned
+value is a dereferenced snapshot, while later current() observes writes to
+the original cell even after its external name is rebound. Copied and
+reference Closure captures stay distinct. An independent pre-yield
+Fiber::throw retires the item on abort and makes the original Exception
+escape with the supplied one as Previous. Four new exact sources, two
+unchanged I65/I66 controls and 118 custom reached-state checks cover this
+bounded transfer. Three authored sources were Unsupported on the unchanged
+parent; the first reference-capture run timed out at 75 seconds without
+credit, then reached Unsupported at 240 seconds. Method by-reference/fresh,
+bound/delegated and wider lifecycle forms remain partial.
+[Fresh Closure reference THROW review](../../coverage/semantics/generator-fiber-fresh-closure-reference-throw-transfer-review.json).
 
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
