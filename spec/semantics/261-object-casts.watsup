@@ -84,7 +84,7 @@ def $object_table_ordinary_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = $o
   -- if ppropertydesc.ORIGIN = ppropertyid
   -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC \/ $object_table_dynamic_history($object_table_slots_at(S, n))
   -- if ppropertydesc.KEY = ppropertyslot.NAME
-  -- if ~$property_hook_declared(S, n, ppropertyslot.NAME)
+  -- if ~$property_hook_virtual(S, ppropertydesc)
   -- if ppropertyslot.STATE = PROP_VALUE pitem
   -- if ~$indirect_item(pitem)
 def $object_table_ordinary_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = $object_table_ordinary_rows(S, n, ppropertyslot_tail*)
@@ -94,7 +94,7 @@ def $object_table_ordinary_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = $o
   -- if ppropertydesc.ORIGIN = ppropertyid
   -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC \/ $object_table_dynamic_history($object_table_slots_at(S, n))
   -- if ppropertydesc.KEY = ppropertyslot.NAME
-  -- if ~$property_hook_declared(S, n, ppropertyslot.NAME)
+  -- if ~$property_hook_virtual(S, ppropertydesc)
   -- if ppropertyslot.STATE = PROP_UNSET
 def $object_table_ordinary_rows(S, n, ppropertyslot*) = false -- otherwise
 def $object_table_ordinary(S, n) = true
