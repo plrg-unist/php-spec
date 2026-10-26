@@ -48,6 +48,7 @@ dec $key_read_owners_source(pstate, pkeyread) : bool
 dec $key_read_valid(pstate, pkeyread) : bool
 dec $rcontainer_base_pending(pstate, pbase, poperand, int, pkeymode) : bool
 dec $rcontainer_pending(pstate, poperand, int, pkeymode) : bool
+dec $string_read_pending(pstate) : bool
 
 def $key_selected_key(PNULL) = (KSTRING eps)
 def $key_selected_key(PBOOL false) = (KINT 0)
@@ -294,6 +295,7 @@ rule PhpStep/key-read-dimension: S ~> $key_read_dimension(S, poperand, z, pkeymo
   -- if S.TODO = (KEY_READ_DIM poperand z pkeymode) :: ptask_tail*
   -- if ~$rcontainer_pending(S, poperand, z, pkeymode)
   -- if ~$access_dimension_pending(S)
+  -- if ~$string_read_pending(S)
 
 ;; The extra root exists exactly while an array conversion callback is active.
 def $key_read_protect(pkeyread) = true

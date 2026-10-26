@@ -1046,8 +1046,23 @@ at 7e8/runtime6282a8468. The original peer's `__call` declaration stops before B
 in the existing method-compiler boundary and retains zero agreement; only that peer
 changes to an ordinary `toString()` method, followed by previously unrun state checks.
 Source53's conversion/trace/lifetime rules and accepted642 cuts stay unchanged.
-Propertyless retained receivers bound this validation; sole-owner destruction,
+Propertyless retained receivers bound this ownerless validation; sole-owner destruction,
 other internal objects, `__call` declarations and wider forms remain partial.
+
+Captured intrinsic `constant`/`defined` Closures now admit the same positional
+nonStringable rejection through their existing live-owner and source checks.
+Strict ordinary and weak ordinary/explicit reception preserve the raw object in
+the TypeError API trace; explicit calls also retain it in the `Closure->__invoke`
+frame. Rebinding the caller's callee/name during argument evaluation does not
+replace the selected target. The saved callee owner retires before catch, while a copied raw
+API or wrapper argument array can keep the object alive after Error/trace removal;
+when present, its ordinary destructor runs once at final release, permitting a separate captured
+string-reader recovery. No conversion runs, an ordinary `toString()` is uncalled,
+and caller destinations retain their prior values. The implementation reuses the
+existing object classifier, error allocator and root policy without new task or
+schema fields. [Captured nonStringable review](../../coverage/semantics/constant-owned-nonstringable-query-review.json).
+Named/packed/PIPE calls, other internal object kinds and wider receiver forms
+remain outside this captured route.
 
 Retained propertyless Stringable names now convert before positional `define`
 registration with primitive candidates and an omitted/bool-false flag. Dedicated

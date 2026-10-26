@@ -681,6 +681,21 @@ dec $concat_array_right_cell(pstate, poperand, nat) : bool
 def $concat_array_right_cell(S, poperand, n) = true -- if $concat_array_string(S, poperand) = (n, pvalue)
 def $concat_array_right_cell(S, poperand, n) = false -- otherwise
 
+;; Only a historical LEFT-warning return admits the newly installed receiver.
+;; Fresh capture still requires the original quiet string in this same CV cell.
+dec $concat_array_right_stringable(pstate, poperand, nat) : bool
+def $concat_array_right_stringable(S, VARIABLE ptbytes z, n) = true
+  -- if ~$foreach_released_name(S, ptbytes)
+  -- if $integer_pointer_select(S, VARIABLE ptbytes z) = (INTEGER_CV ptbytes)
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if (HCELL n) <- S.ALLOCATIONS
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if $integer_pointer_value(S, INTEGER_CV ptbytes) = (POBJECT n_object)
+  -- if $stringable_instance(S, n_object)
+def $concat_array_right_stringable(S, poperand, n) = false -- otherwise
+
 dec $concat_array_left_fresh(pstate, poperand, poperand, nat) : bool
 def $concat_array_left_fresh(S, poperand_left, poperand_right, n) = ($array_string_cast_snapshot(S, poperand_left) /\ $concat_array_right_cell(S, poperand_right, n))
 
@@ -758,10 +773,15 @@ rule PhpStep/concat-array-left-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNO
   -- if S.TODO = (CONCAT_ARRAY_LEFT_WARNING porigin poperand_left poperand_right n z 1) :: ptask_tail*
   -- if $concat_array_left_valid(S, porigin, poperand_left, poperand_right, n, z, 1)
   -- if $concat_array_right_cell(S, poperand_right, n)
+rule PhpStep/concat-array-left-stringable-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array"))][.BASE = BASE_VALUE (KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array")))]
+  -- if S.TODO = (CONCAT_ARRAY_LEFT_WARNING porigin poperand_left poperand_right n z 1) :: ptask_tail*
+  -- if $concat_array_left_valid(S, porigin, poperand_left, poperand_right, n, z, 1)
+  -- if $concat_array_right_stringable(S, poperand_right, n)
 rule PhpStep/concat-array-left-boundary: S ~> S[.COMPLETION = UNSUPPORTED "concatenation selected right operand"]
   -- if S.TODO = (CONCAT_ARRAY_LEFT_WARNING porigin poperand_left poperand_right n z 1) :: ptask_tail*
   -- if $concat_array_left_valid(S, porigin, poperand_left, poperand_right, n, z, 1)
   -- if ~$concat_array_right_cell(S, poperand_right, n)
+  -- if ~$concat_array_right_stringable(S, poperand_right, n)
 rule PhpStep/concat-array-right-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array"))][.BASE = BASE_VALUE (KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array")))]
   -- if S.TODO = (CONCAT_ARRAY_RIGHT_WARNING porigin poperand_left poperand_right z 1) :: ptask_tail*
   -- if $concat_array_right_valid(S, porigin, poperand_left, poperand_right, z, 1)

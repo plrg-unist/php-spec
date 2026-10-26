@@ -290,6 +290,14 @@ An undefined ordinary CV used as a computed variable name now warns before conve
 
 [First dimension reads](coverage/semantics/source-dimension-emission-review.json) now retire owned include/eval operands at the key compiler line before reading an ordinary CV base and CV or literal key. A narrow writable array-property receiver separates the protected array; a later literal property warning resumes with fixed null. Seven exact originals and245 independent premises retain their private336 cuts; actual340 passes strict compilation. Wider emission and receiver forms remain required.
 
+[String R-offset callbacks](coverage/semantics/string-offset-read-warning-review.json)
+preserve selected old bytes while a cast Warning uses the live primitive key.
+Interned and owning temporary carriers survive independently; a borrowed runtime
+carrier requires exact identity in its surviving ordinary CV. Bounds completion
+keeps its fixed empty result even after both names are unset. Pending throws
+retain default-versus-suppressed bounds reporting. Wider keys and ownership
+histories remain partial; the dropped borrowed-carrier control keeps zero credit.
+
 [Named noarg DIM key calls](coverage/semantics/source-call-key-emission-review.json)
 now retire owned include/eval operands at the first INIT line. The ordinary CV
 base stays borrowed through the call; the returned key is fixed before live base
@@ -1473,7 +1481,12 @@ a right-array warning preserves the first converted string across callback write
 Borrowed arrays gain no saved owner, and supplied throws cancel destination
 assignment. Three exact originals and 405 focused SL premises pass in the
 [concat-array ledger](coverage/semantics/concat-array-warning-review.json).
-Wider arrays/operands and RHS rebinding after a left-array warning remain partial.
+After a completed left Warning, the same ordinary RHS cell may hold a Stringable
+object. Its selected method survives source retargeting and returns `B`;
+concatenation yields `ArrayB`. A method throw preserves the completed Warning, while an earlier handler throw
+prevents that method. Three source agreements and 509 focused premises (including
+derived controls) pass in the [Stringable RHS review](coverage/semantics/concat-stringable-warning-review.json).
+Wider arrays, changed/rebound/reference RHS forms and callbacks remain partial.
 Concatenation assignment now stages a right-array warning for two bounded plain CVs.
 The first string survives handler writes and RHS removal; normal commit overwrites
 the target and detaches a late alias, while a supplied throw preserves it.
@@ -2110,6 +2123,13 @@ and strict code. Raw receiver traces and selected callees survive later argument
 effects; an ordinary `toString()` method is never invoked as a cast.
 [Four source agreements and 508 state premises](coverage/semantics/constant-query-nonstringable-name-review.json)
 cover errors and normal recovery. Other internal objects and wider forms stay partial.
+
+Captured intrinsic query Closures also reject positional nonStringable instances
+and `stdClass` with raw TypeError arguments. Explicit `__invoke` keeps the object
+in both API and wrapper frames; the callee can retire while a copied raw-argument
+array retains the object until its final release. Ordinary `toString()` remains
+uncalled, caller destinations retain their prior values, and a separate captured
+string query recovers. [Captured nonStringable query review](coverage/semantics/constant-owned-nonstringable-query-review.json).
 
 Retained propertyless Stringable names with non-NUL global results now convert
 before positional `define()` registration with primitive candidates and
@@ -3157,8 +3177,11 @@ wider target/value and map-history cases remain partial. The actual bounded
 `getIterator()` factory now returns an Iterator that owns Map; outer foreach
 keeps its own DATA and current cache. Exhaustion versus an externally held
 Iterator after break preserves the copied targets until their later release.
-Two sources and 265 Boolean/four raw checks pass at `95d732f3b`/413; manual methods,
-wider histories, hidden allocation handles and GC/CONFIG remain partial.
+Two sources and 265 Boolean/four raw checks pass at `95d732f3b`/413. Manual
+zero-argument cursor methods now preserve standalone current copies, next/end
+NULL, rewind identity and empty access after Key death; two sources and 308
+Boolean/eight raw checks pass at `25ff16620`/413. Wider histories, active outer
+loops, hidden allocation handles and GC/CONFIG remain partial.
 
 Bounded by-reference WeakMap traversal shares the entry's cell and preserves
 rebinding plus escaped aliases through DATA or Key retirement. A reference
