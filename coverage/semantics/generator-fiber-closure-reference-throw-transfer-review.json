@@ -1,0 +1,118 @@
+{
+  "milestone": "Iterator66 primed cached by-reference unbound Closure Generator::throw Fiber transfer",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local oracle SHA256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json; LC_ALL=C TZ=UTC; CPU2 author native/baseline, CPU3 affected strict/source/state, reviewer CPU1 native and CPU5 model, CPU1 selected sixth wrapper launch",
+  "parent": "f55d554690376c0e516df924ee9f90321eccb1db",
+  "implementation_commit": "5bd040681889e8c5322799abca94133638d7f93a",
+  "maintained_row_commit": "452b4f516afb77c2519c68c0a392c129a25db2be",
+  "scope": "A primed plain unbound REALCLOSURE-created by-reference Generator::throw may transfer through a Fiber catch or pending finally when its nonempty cached reference cell, reference producer, REALCLOSURE callee, matching CLOSURE_TARGET/instance and one valid Throwable are authenticated. The shared cached-reference helper admits this shape, and body_id confines its transfer to THROW; CURRENT/NEXT/SEND remain excluded for the same cached Closure reference shape. The saved Fiber VM carries the original temporary Throwable while the Generator cache remains the old cell after external source-name rebinding. Copied and reference Closure captures remain distinct. Normal resume and supplied Fiber::throw preserve observed exception identity/Previous ordering.",
+  "engine_paths": [
+    "vendor/php-src/Zend/zend_generators.c::ZEND_METHOD(Generator, throw), zend_generator_throw_exception, zend_generator_resume, zend_generator_close, zend_generator_free_storage",
+    "vendor/php-src/Zend/zend_fibers.c::ZEND_METHOD(Fiber, resume), ZEND_METHOD(Fiber, throw)",
+    "spec/semantics/281-fibers.watsup::$fiber_generator_cached_reference_valid, $fiber_generator_throw_valid, $fiber_generator_body_id"
+  ],
+  "implementation": [
+    "spec/semantics/281-fibers.watsup"
+  ],
+  "source_catalog": "tests/semantics/generator_fiber_closure_reference_throw_transfer_cases.json",
+  "sources": {
+    "i66-closure-byref-copy-catch": "913aa4788a48cab200872c9eb2ff80ad9e5e4f2d26946dcbe433b15ce7c27756",
+    "i66-closure-byref-reference-catch": "f0b753430eac3426be7cd4ab4c43796446e30128ef0e3542632bc2c17a12b783",
+    "i66-closure-byref-object-finally-abrupt": "a4d15523700b48ef84d2ecf1418dfa0c16e22680eec00368b2938af497a8cc98",
+    "i66-unchanged-direct-byref-control": "50f4c93d8a601c6d09694d30a808eb446e4f660a50560e581ed00f29ab70a54d",
+    "i66-unchanged-closure-byvalue-control": "267c754cba8ba8714fc1fc9510d7d281b9157704b52f585f9f39817843101407",
+    "i66-closure-byref-finally-normal-independent": "2eb52c2f9502ec68fae16d39f54db3910ee23735a17b3b26b36f79a2d4b37cd2"
+  },
+  "validation": {
+    "native_first": {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/generator-fiber-closure-reference-throw-66/.tools/i66-design/native-first/report.json",
+        "sha256": "d220a393e8a67b427eae44a9d0478847882ebabb2a4027d647028d06029cac26"
+      },
+      "result": "Five frozen author rows exit0/empty stderr with stable source/oracle/profile/HEAD; three new BYREF Closure sources plus byte-identical I62 direct BYREF and I64 Closure by-value controls."
+    },
+    "unchanged_baseline": {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/generator-fiber-closure-reference-throw-66/.tools/i66-design/unchanged-baseline/report.json",
+        "sha256": "85aa77ec3f009f57057782636fe07e24e3934ed6b8980f8c7306bcce5fe029f7"
+      },
+      "result": "Three new rows checked Unsupported at the exact Fiber switch domain with zero agreement; both unchanged controls exact NORMAL; no timeout/stderr and all children reaped."
+    },
+    "strict": {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/generator-fiber-closure-reference-throw-66/.tools/i66-design/strict-first/report.json",
+        "sha256": "e78ef480ff796ae0c3e3e91d128703518bef1723fa7c732a2d4152e310d115a5"
+      },
+      "modules": 424,
+      "mode": "SL",
+      "exit": 0,
+      "timeout": false,
+      "stderr_bytes": 0
+    },
+    "original_affected_180": {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/generator-fiber-closure-reference-throw-66/.tools/generator-fiber-closure-reference-throw-transfer-source-aqa64ce1/report.json",
+        "sha256": "dbf673608d9b7ef7ca1b707a2743835fbaae45107c28b30a3a76c47f6e3757e4"
+      },
+      "result": "First copy/rebind exact NORMAL; second reference-capture reached internal 180-second model timeout; zero credit for that row and remaining rows unexecuted in this batch."
+    },
+    "selected_reference_240": {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/generator-fiber-closure-reference-throw-66/.tools/generator-fiber-closure-reference-throw-transfer-source-udkj6biu/report.json",
+        "sha256": "a9d6776ed63eb03f9308175007c2364589df77b22c00dc3c40cc145bad1c099b"
+      },
+      "result": "Same frozen reference-capture source exact NORMAL at model240/process260, stable watched inputs/HEAD; first timeout retained separately."
+    },
+    "remaining_author_sources": {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/generator-fiber-closure-reference-throw-66/.tools/generator-fiber-closure-reference-throw-transfer-source-vhsui50f/report.json",
+        "sha256": "979f598f4dc5975e71f5d1d147f9c520beb6f234f3e789fb9b21f62b923757cb"
+      },
+      "result": "Abrupt pending-finally BYREF Closure row and both unchanged controls exact NORMAL at model240/process260, stable watched inputs/HEAD."
+    },
+    "source_reached": {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/generator-fiber-closure-reference-throw-66/.tools/fiber-state-review-3hipu781/report.json",
+        "sha256": "5f1bd3e69c392dd8aae4e29879aa11480cc19d12e132644ff125cb744399f3b8"
+      },
+      "custom_checks": 136,
+      "reported_assertions": 141,
+      "result": "One true strict-SL reached copy/rebind state checks old cached HCELL versus rebound external name, copied Closure capture, saved Throwable, authentic reference/callee gates, malformed argument/cell/callee, CURRENT/NEXT/SEND refusal and zero/one/split/full completion."
+    },
+    "independent_native": {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/i66-independent-review/native-first/report.json",
+        "sha256": "22a47914b3b4c38f187520e5538c3785b34e0f4fdf330491e6643739bc41f78a"
+      },
+      "source_sha256": "2eb52c2f9502ec68fae16d39f54db3910ee23735a17b3b26b36f79a2d4b37cd2",
+      "result": "Frozen before any model outcome; exit0/empty stderr with original Exception/null Previous, old Token and distinct Closure Capture retention/retirement. WeakReference observations do not establish physical sole ownership."
+    },
+    "independent_model": {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/i66-independent-review/model-review/report.json",
+        "sha256": "966595911b75345f8f74201ff68e4990542302a4a5f5ac397346b1dea063b3de"
+      },
+      "result": "Same frozen source exact NORMAL and byte-for-byte native stdout at fixed implementation commit, no timeout/stderr, stable watched inputs/HEAD."
+    },
+    "maintained_independent_row": {
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/generator-fiber-closure-reference-throw-66/.tools/generator-fiber-closure-reference-throw-transfer-source-8meecw1q/report.json",
+        "sha256": "afdc0752b8ce6c0f8c7b97cc7673d9e72433a90e902089207c6d45253c53fedd"
+      },
+      "result": "Sixth independently frozen source selected from maintained catalog/wrapper, exact NORMAL, stable inputs/HEAD; CPU1 launch/lease was separately probed, not recorded in the wrapper report."
+    }
+  },
+  "preservation": "The new arms require nonempty cached REFCELL, genuine reference producer, valid cached cell, matching Closure target/instance and THROW-only operation. Direct BYREF and Closure by-value transfer arms are unchanged; fresh BYREF Closure THROW stays excluded. Both selected controls agreed on the unchanged parent and after the edit; no earlier source/state credit is renewed.",
+  "remaining": "Fresh by-reference Closure THROW, method by-reference/fresh THROW, bound Closure, delegated/helper resumers, collection/request and wider lifecycle remain partial.",
+  "evidence_archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-closure-reference-throw-transfer-66/raw.tar.gz",
+    "bytes": 218639,
+    "sha256": "5796ab0a407e20abb29348631c3359c27d140821562dd024e9e982dacd4892ca",
+    "file_members": 111
+  },
+  "evidence_manifest": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-closure-reference-throw-transfer-66/manifest.json",
+    "sha256": "9e2138d388aede14dcefeac65b02d67ac817003f0f4611f49464550f70f94470"
+  },
+  "recovery": "Restore matching private Git code/tests at 452b4f516 and extract raw.tar.gz under that private I66 root; the independent review directory originally lived under canonical php-spec/.tools. This archive is outside Git and is not a build input.",
+  "independent_review": "Reviewer byte-CLEARed the five-row frozen author packet, inspected pinned native/unchanged baselines, requested the THROW-only body_id guard, then static-CLEARed corrected 281/catalog/wrapper/reached state and the 240/260 budget-only change. Reviewer independently froze and ran the normal-finally source, reported exact native/model agreement at 5bd040681, and byte-CLEARed the sixth maintained row. Selected sixth wrapper passed at 452b4f516; private docs/inventory/archive and actual-tail composition still await final review."
+}
