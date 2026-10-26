@@ -621,6 +621,11 @@ Three source agreements, strict411 and 513 original state obligations pass
 (558 physical conditions, 45 repeated setup). The original owned-case timeout
 keeps zero credit; wider producers, values and owner-loss lifetimes remain partial.
 
+A [fresh returned Iterator with a destructor](coverage/semantics/config-aggregate-iterator-finalizer-review.json)
+now releases its sole CONFIG DATA after its Aggregate producer has died. Its
+public no-argument `__destruct` runs before INI_SET or error recovery, with
+three exact PHP source agreements and separate reached cleanup checks.
+
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
 resumes. DATA retains the selected Generator across live input/callee rebinding;

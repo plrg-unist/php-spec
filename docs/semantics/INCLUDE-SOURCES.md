@@ -1585,3 +1585,18 @@ The receipt remains structurally forgeable by another retired same-class
 object; reached-source tests establish its genuine provenance only for these
 programs. Effectful producer finalizers, child storage, wider Iterator values
 and other CONFIG consumers are still open.
+
+The [returned Iterator finalizer increment](../../coverage/semantics/config-aggregate-iterator-finalizer-review.json)
+allows that fresh, sole-DATA Iterator to run a public `__destruct`
+after its Aggregate producer has retired. The destructor has no parameters,
+reference return, generator body or child roots in this scope. On normal
+completion it runs after the final `valid()` and before `ini_set` receives the
+arguments. An invalid second bool key or saved second-key Exception instead
+releases DATA and runs the destructor before catch; the saved Exception keeps
+its identity through destructor operation exit. Three frozen originals match
+PHP 8.5.10 byte for byte, including the destructor output, changed stamp,
+WeakReferences, Error line and INI/result state. Separate source-reached
+checks cover 183+169+178 premises, including retired operation-source validity
+after the destructor. The unchanged model rejected all three at Aggregate
+return. Destructor throws/reentrancy, child storage, wider values and the
+structurally forgeable same-class producer receipt remain open.

@@ -770,6 +770,43 @@ def $throwable_warm_previous_pair(S, n_left, n_right) = true
 def $throwable_warm_previous_pair(S, n_left, n_right) = false -- otherwise
 def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S, $throwable_previous_order(S, n_left, n_right, pcompareguard_seen*))
   -- if $throwable_warm_previous_pair(S, n_left, n_right)
+;; Standard handlers reject different exact builtin classes before inspecting
+;; either object's physical properties or captured trace arguments.
+dec $throwable_cross_kind_pair(pstate, nat, nat, pcompareguard*) : bool
+def $throwable_cross_kind_pair(S, n_left, n_right, pcompareguard_seen*) = true
+  -- if S.COMPLETION = NORMAL
+  -- if ~$number_compare_exception_pending(S)
+  -- if $(|pcompareguard_seen*| < 16)
+  -- if n_left =/= n_right
+  -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)
+  -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
+  -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
+  -- if pthrowable_left.KIND <- ["Exception", "Error"]
+  -- if pthrowable_right.KIND <- ["Exception", "Error"]
+  -- if pthrowable_left.KIND =/= pthrowable_right.KIND
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
+  -- if $throwable_object_image_valid(S, n_left) /\ $throwable_object_image_valid(S, n_right)
+def $throwable_cross_kind_pair(S, n_left, n_right, pcompareguard_seen*) = false -- otherwise
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S, ORDER 1)
+  -- if $throwable_cross_kind_pair(S, n_left, n_right, pcompareguard_seen*)
+dec $throwable_builtin_kind_pair(pstate, nat, nat, pcompareguard*) : bool
+def $throwable_builtin_kind_pair(S, n_left, n_right, pcompareguard_seen*) = true
+  -- if S.COMPLETION = NORMAL
+  -- if ~$number_compare_exception_pending(S)
+  -- if $(|pcompareguard_seen*| < 16)
+  -- if n_left =/= n_right
+  -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)
+  -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
+  -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
+  -- if $throwable_kind(pthrowable_left.KIND) /\ $throwable_kind(pthrowable_right.KIND)
+  -- if pthrowable_left.KIND =/= "FiberError" /\ pthrowable_right.KIND =/= "FiberError"
+  -- if pthrowable_left.KIND =/= pthrowable_right.KIND
+  -- if ~$throwable_cross_kind_pair(S, n_left, n_right, pcompareguard_seen*)
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
+  -- if $throwable_object_image_valid(S, n_left) /\ $throwable_object_image_valid(S, n_right)
+def $throwable_builtin_kind_pair(S, n_left, n_right, pcompareguard_seen*) = false -- otherwise
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S, ORDER 1)
+  -- if $throwable_builtin_kind_pair(S, n_left, n_right, pcompareguard_seen*)
 def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S[.COMPLETION = UNSUPPORTED "Throwable property comparison"], ORDER 0)
   -- if n_left =/= n_right
   -- if $throwable_object(S, n_left) \/ $throwable_object(S, n_right)
@@ -787,6 +824,8 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*,
   -- if ~$throwable_property_ref_pair(S, n_left, n_right)
   -- if ~$throwable_previous_pair(S, n_left, n_right)
   -- if ~$throwable_warm_previous_pair(S, n_left, n_right)
+  -- if ~$throwable_cross_kind_pair(S, n_left, n_right, pcompareguard_seen*)
+  -- if ~$throwable_builtin_kind_pair(S, n_left, n_right, pcompareguard_seen*)
 
 def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
   -- if $(n < |S.OBJECTS|)

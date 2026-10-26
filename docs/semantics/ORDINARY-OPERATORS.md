@@ -1223,8 +1223,17 @@ source-authenticated short-circuit task with its Boolean result. Five exact
 originals and 511 premises in three checked-source-derived recipes pass in the
 [short-circuit ledger](../../coverage/semantics/short-circuit-nan-warning-review.json).
 Keyword forms have source agreements; focused states cover symbolic skip, enter
-and throw. Opposite-truth/no-rewarning/refusal controls are derived. RIGHT NaN,
-reference operands, other conditional consumers and wider handlers remain partial.
+and throw. Opposite-truth/no-rewarning/refusal controls are derived. Reference
+operands, other conditional consumers and wider handlers remain partial.
+
+Selected RIGHT NaN values in all four short-circuit forms now warn through a
+separate source-authenticated `TRUTH_RESULT` continuation. A named handler can
+change the same float CV before `ZEND_BOOL` reads its truth; a supplied throw
+cancels the outer store, and a skipped RIGHT stays silent. Eight original sources
+and 258 reached-state premises agree with the pinned engine. The bounded
+[RIGHT NaN review](../../coverage/semantics/short-right-nan-warning-review.json)
+also checks unchanged NaN without rewarning and an ineligible handler mask.
+Copied/reference operands and wider handlers remain partial.
 
 Shorthand ternary with an ordinary NaN float CV now reads both live truth and
 the selected value after its named Warning callback. Writing `1.0` delivers a
