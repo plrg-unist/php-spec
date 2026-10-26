@@ -353,7 +353,7 @@ rule PhpStep/closure-call-send-named-this: S ~> S_read[.TODO = (CLOSURE_CALL_ARG
   -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
   -- if pclosurecall.FIRST = eps
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
-  -- if $closure_call_named_form(phpType7*)
+  -- if $closure_call_named_form(phpType7*) \/ $closure_call_array_pack_site(S, pclosurecall.SITE)
   -- if phpType7*[pclosurecall.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if $base64(text) = $ptascii("newThis")
   -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
@@ -364,7 +364,7 @@ rule PhpStep/closure-call-send-named-this-invalid: S ~> S_read[.TODO = (CLOSURE_
   -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
   -- if pclosurecall.FIRST = eps
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
-  -- if $closure_call_named_form(phpType7*)
+  -- if $closure_call_named_form(phpType7*) \/ $closure_call_array_pack_site(S, pclosurecall.SITE)
   -- if phpType7*[pclosurecall.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if $base64(text) = $ptascii("newThis")
   -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
@@ -375,7 +375,7 @@ rule PhpStep/closure-call-send-named-this-unsupported: S ~> S_read[.TODO = eps][
   -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
   -- if pclosurecall.FIRST = eps
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
-  -- if $closure_call_named_form(phpType7*)
+  -- if $closure_call_named_form(phpType7*) \/ $closure_call_array_pack_site(S, pclosurecall.SITE)
   -- if phpType7*[pclosurecall.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if $base64(text) = $ptascii("newThis")
   -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
