@@ -1,0 +1,32 @@
+{
+  "scope": "Ordinary dynamic invocation of a real or named user-function first-class Closure with one initialized user Iterator CV unpack; includes arrow Closures and naturally class-scoped real Closures.",
+  "target": "Pinned PHP 8.5.10 CLI NTS 64-bit, -n plus tests/semantics/profile.json, LC_ALL=C, TZ=UTC",
+  "engine_rule": "ZEND_INIT_DYNAMIC_CALL selects and retains the Closure before SEND_UNPACK; the Traversable by-reference Warning uses the selected function and lexical class scope.",
+  "implementation": "Module 385 requires the exact REALCLOSURE or NAMEDCLOSURE tag, no bindTo override, the selected function origin, a dynamic nonfixed NExprFuncCall site, and UNPACK_CV. PREP saves the authenticated origin. The retired eager-cleanup receipt rechecks raw tag, site and function without requiring retired capture cells or a pruned binding record. Scoped Warnings prefix the selected lexical class.",
+  "base_revision": "853ef4f344ce98f9f8041102aa6ca1ba7015b7af",
+  "private_cut": "d2ca0809c",
+  "semantic_sha256": {
+    "spec/semantics/30-storage.watsup": "42e438d742ef471f9091bf32b39e9f12a66e22cd3c443b3f3e29cec192dcd258",
+    "spec/semantics/385-call-iterator-unpack.watsup": "d32f0f32b333ccb458a53e60772dee234a09a2253b8a81ed2cd35e615939d893"
+  },
+  "sources": {
+    "runner": "tests/semantics/closure_iterator_unpack_sources.py",
+    "runner_sha256": "522ba7d1d6b119fb44c8d17b67105cf0d35ec5ba38f3c3938dc63c7a56a32ed9",
+    "native_first_and_unchanged": "call120-author-native/native-summary.json and baseline-summary.json",
+    "first_eight": "call120-author-native/final-source/report.json sha256:4322d1a7f9443fec8904615925a2677b1aac79570e6d9e83ccca42a8ca289ab6: eight byte-exact normal agreements on 385 SHA986a before the scoped-only warning correction",
+    "scoped_ninth": "call120-author-native/final-scoped/closure-iterator-unpack-row84rt4/report.json sha256:d9b9ebc5e4f27ee82484be7754530e44c4f7e18ffb41d9195d339d30b852a0e2: byte-exact normal agreement on final 385 SHAd32f",
+    "final_unscoped_neighbor": "call120-author-native/final-neighbors/closure-iterator-unpack-gmazzqbi/report.json sha256:db650f49f4d6703cc37ea62b929f449645408affae2ecff9358afb86ab445b11: named user-function first-class Closure Warning remains byte-exact on final cut",
+    "boundaries": "Array first-class method wrapper and bindTo clone are native-positive but remain explicit Unsupported; zero supported agreement credit."
+  },
+  "reached": {
+    "runner": "tests/semantics/closure_iterator_unpack_protocol.py",
+    "runner_sha256": "6b3876f9ad16be669f62cd7e86f5c7005d763dd4ef610ae71ded8f036e6b2c6d",
+    "result": "Twelve passing source-reached fixture cuts, 224 assertions, each process 0 and true. They cover saved selection and live roots, named/arrow origins, scoped/unscoped warnings, wrapper exclusions, invalid-key pre-discard, and authentic retired eager-cleanup receipts with tampered origin/site/tag/target negatives.",
+    "raw": "call120-author-native/reached-final: twelve passing reports and two earlier failed boundary-fixture cuts with zero credit; final unscoped neighbor repeated at call120-author-native/final-neighbors/fiber-state-review-2e0j90s1/report.json sha256:f9aa684c7de1fb1269017803e3bc2b3582e6e03386f4faa4b9fa8cdc281c77b1"
+  },
+  "compatibility": "CALL118 selected-receiver source remains byte-exact on final cut: call120-author-native/final-neighbors/method-iterator-unpack-y324i8df/report.json sha256:f99fe33677d337e474db77efd2f5850bd4b9f70c4326889600b341487508e18b. CALL119 object-selection is byte-exact through direct checked runner on the same native-frozen source/request: call120-author-native/compatibility-array-control/summary.json sha256:d3c2bb1b1ee67792e3169ac936e1d4ffd9cd94ab794214ed4f994c8c67d00bc4. The older fixed 30-second Worker harness timed out and has zero credit; raw late response is preserved.",
+  "independent_final": "call120-review-native/pinned-cpu4/summary.json sha256:e19f31dbca663b68a96642a93fe6aa09bc07a286988f3e0dea4f3e844351edee: frozen alias-capture invalid-key and class-scoped Warning originals, pinned parent/children, native-first then immutable unchanged Unsupported and final-cut model; both final stdout/stderr/PHP exit byte-exact native.",
+  "failed_attempts": "The first candidate failed invalid-key cleanup; the first saved-origin candidate failed factory-local reference-capture cleanup. Two early boundary fixtures had contradictory expected shapes and failed. Earlier independent runs with an unpinned orchestrator parent and the CALL119 control's fixed-timer harness failure retain zero passing credit. Raw failures remain under call120-author-native and call120-review-native.",
+  "limits": "Arbitrary forged historical unbound status cannot be reconstructed after pruning; the PREP-created witness carries it in reachable states. bindTo overrides, first-class method wrappers, Closure::call, and non-CV Iterator operands remain outside this gate.",
+  "raw_recovery": "Paths above are relative to /home/user/workspace/php-spec-evidence-archive/. Raw reports include commands, exits, source bytes, tool identities and environment; rebuild the local tools to reproduce them."
+}

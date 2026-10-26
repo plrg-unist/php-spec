@@ -434,6 +434,16 @@ front limited to source-plan structure, and two Source114 fronts pass as
 preservation. The first parser gate and a two-trait trait-declaration control
 earn zero agreement. [Two-trait review](coverage/semantics/ordered-two-trait-autoload-review.json).
 
+Ordinary dynamic real, arrow and named user-function first-class Closures now
+accept initialized Iterator CV unpack. The selected Closure survives callback
+rebinding; scoped and unscoped by-reference Warnings name the selected function.
+Invalid-key cleanup uses a PREP-created origin witness after the Closure and
+captured cells retire. Nine source outcomes agree exactly with PHP,
+and twelve reached fixtures pass 224 checks, including wrapper exclusions and
+retired cleanup negatives. Earlier failed cuts retain zero credit. `bindTo`
+clones, method wrappers, `Closure::call` and non-CV operands remain open.
+[CALL120 review](coverage/semantics/closure-iterator-unpack-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
