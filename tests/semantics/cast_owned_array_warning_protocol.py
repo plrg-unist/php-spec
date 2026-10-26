@@ -33,7 +33,12 @@ def $cast_owned_frontier(S, 5) = true
   -- if S.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array"))
 def $cast_owned_frontier(S, 6) = true
   -- if S.CURRENT = eps /\ S.FRAMES = eps
-  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if S.TODO = (THROW_SEARCH n) :: (ORIGIN_RETURN porigin) :: (WRITE_NAME ptbytes z) :: ptask_tail*
+  -- if $integer_outputs(S.EVENTS) = ($ptascii("P;H:2:25:Array to string conversion:1;"))
+def $cast_owned_frontier(S, 7) = true
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.TODO = (THROW_SEARCH n) :: (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if perrorcall.RESUME = CAST_OWNED_ARRAY_WARNING pcastownedarraywarning 1
   -- if $integer_outputs(S.EVENTS) = ($ptascii("P;H:2:25:Array to string conversion:1;"))
 def $cast_owned_frontier(S, n) = false -- otherwise
 dec $cast_owned_seek(pstate, nat, nat) : pstate
@@ -140,8 +145,19 @@ def conditions(name, program, path, stdout):
         '$call_descriptors_valid(S_entered)', '$heap_valid($heap_graph(S_entered))',
     ]
     if throwing:
-        seek('S_throw', 'S_entered', 6)
+        seek('S_pending', 'S_entered', 7)
         checks += [
+            'S_pending.TODO = (THROW_SEARCH n_exception) :: (ERROR_HANDLER_RESULT perrorcall) :: ptask_pending*',
+            'perrorcall.RESUME = CAST_OWNED_ARRAY_WARNING pcastownedarraywarning 1',
+            '$lookup(S_pending.ENV, $ptascii("a")) = eps',
+            '$heap_owners($heap_prune($heap_graph(S_pending)), HARRAY n_array) = 1',
+            '(HARRAY n_array) <- S_pending.ALLOCATIONS',
+            '$integer_outputs(S_pending.EVENTS) = ($ptascii("P;H:2:25:Array to string conversion:1;"))',
+            '$call_descriptors_valid(S_pending)', '$heap_valid($heap_graph(S_pending))',
+        ]
+        step('S_throw', 'S_pending')
+        checks += [
+            '$cast_owned_frontier(S_throw, 6)',
             'S_throw.TODO = (THROW_SEARCH n_exception) :: ptask_caller*',
             '$lookup(S_throw.ENV, $ptascii("a")) = eps',
             '$heap_owners($heap_prune($heap_graph(S_throw)), HCELL n_a) = 0',
