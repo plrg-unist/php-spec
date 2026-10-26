@@ -459,6 +459,20 @@ Missing/rebound/new-reference/other late types remain partial, along with wider
 arrays, owning handlers and lifecycle forms. Existing Stringable/concat algorithms
 and the older string-only warning route are unchanged.
 
+A bounded direct no-argument, by-value/untyped named call may return the owning
+Stringable RHS before LEFT's array Warning. A dedicated consumer owns that acquired
+value through the handler, separately from the later conversion receiver. Removing
+LEFT and replacing the return source cannot select another object. After `B`
+returns, concatenation computes `ArrayB`, then retires the temporary through the
+existing eager cleanup before caller storage. A nonthrowing destructor also runs
+before the original handler/method Exception reaches catch. The callback-return
+view authenticates the exact cleanup operation/source/resume certificates; it adds
+no owner and leaves generic cleanup and old consumers unchanged. Source3 and 706
+premises (268/251/187, including derived cleanup/source/receiver refusals) pass in the
+[acquired RHS review](../../coverage/semantics/concat-returned-stringable-warning-review.json).
+Reference/typed/argument-bearing returns, other owning operands and wider destructor
+or suspension histories remain partial.
+
 Plain-CV `.=` now handles a quiet first string and a supported array RHS.
 Its source-authenticated warning marker caches the exact first string carrier;
 fresh capture/dispatch proves initial plain selections, while historical return

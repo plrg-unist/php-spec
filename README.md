@@ -1479,6 +1479,15 @@ concatenation yields `ArrayB`. A method throw preserves the completed Warning, w
 prevents that method. Three source agreements and 509 focused premises (including
 derived controls) pass in the [Stringable RHS review](coverage/semantics/concat-stringable-warning-review.json).
 Wider arrays, changed/rebound/reference RHS forms and callbacks remain partial.
+
+A direct no-argument call may also supply an acquired Stringable RHS before the
+left-array Warning. Its saved value survives source replacement; a separate cast
+receiver stays live through `__toString`. The temporary's destructor runs before
+caller assignment or the original supplied-exception catch. Three source agreements
+and 706 focused premises, including derived controls, pass in the
+[acquired RHS review](coverage/semantics/concat-returned-stringable-warning-review.json).
+Wider returned operands and destructor-throw histories remain partial.
+
 Concatenation assignment now stages a right-array warning for two bounded plain CVs.
 The first string survives handler writes and RHS removal; normal commit overwrites
 the target and detaches a late alias, while a supplied throw preserves it.
