@@ -1,0 +1,186 @@
+;; FETCH_DIM_R keeps the selected string, rereads a primitive CV after its cast
+;; Warning, and never rereads either operand after a fixed bounds Warning.
+dec $string_read_cell(pstate, nat) : bool
+dec $string_read_capture(pstate, poperand) : (pvalue, nat?)?
+dec $string_read_offset(pvalue) : int?
+dec $string_read_in_range(pvalue, int) : bool
+dec $string_read_phase(pvalue, pvalue) : pstringreadphase?
+dec $string_read_plan(pstate) : pstringread?
+dec $string_read_locator(pstate, poperand, nat?) : bool
+dec $string_read_shape(pstate, pstringread) : bool
+dec $string_read_source(pstate, pstringread) : bool
+dec $string_read_provider_ready(pstate, pstringread) : bool
+dec $string_read_key_current(pstate, pstringread) : pvalue?
+dec $string_read_ready(pstate, pstringread) : bool
+dec $string_read_message(pstringread) : nat*
+dec $string_read_event(pstringread) : pevent
+dec $string_read_dispatch(pstate, pstringread) : pstate
+dec $string_read_resume(pstate, pstringread) : pstate
+dec $string_read_selected(pstate, pstringread, int) : pstate
+dec $string_read_discard(pstate, pstringread) : pstate
+
+;; Locators are borrowed. In particular, neither saved CELL index becomes a root.
+def $string_read_cell(S, n) = true
+  -- if $(n < |S.STORE|)
+  -- if (HCELL n) <- $heap_prune($heap_graph(S)).NODES
+  -- if ~(n <- S.REFCELLS)
+  -- if ~$foreach_released_cell(S, n) /\ ~$typed_cv_string_released_cell(S, n) /\ ~$update_released_cell(S, n)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+def $string_read_cell(S, n) = false -- otherwise
+def $string_read_capture(S, VARIABLE n_name* z) = ((pvalue, (n)))
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n)
+  -- if $string_read_cell(S, n)
+  -- if S.STORE[n] = DEFINED pvalue
+def $string_read_capture(S, KNOWN pvalue) = ((pvalue, eps))
+def $string_read_capture(S, poperand) = eps -- otherwise
+def $string_read_offset(PINT i) = (i)
+def $string_read_offset(pvalue) = $offset_cast_integer(pvalue) -- otherwise
+def $string_read_in_range(pvalue, i) = $(i >= 0 /\ i < |n_bytes*|) \/ $(i < 0 /\ -i <= |n_bytes*|)
+  -- if $string_bytes(pvalue) = (n_bytes*)
+def $string_read_in_range(pvalue, i) = false -- otherwise
+def $string_read_phase(pvalue, PINT i) = (STRING_BOUNDS i)
+  -- if ~$string_read_in_range(pvalue, i)
+def $string_read_phase(pvalue, pvalue_key) = (STRING_CAST)
+  -- if $offset_cast_integer(pvalue_key) = (i)
+def $string_read_phase(pvalue, pvalue_key) = eps -- otherwise
+
+def $string_read_plan(S) = (pstringread)
+  -- if S.TODO = (KEY_READ_DIM poperand z KEY_R) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $string_read_capture(S, S.RESULT) = ((pvalue_base, n_base?))
+  -- if $string_carrier_valid(S, pvalue_base)
+  -- if $string_read_capture(S, poperand) = ((pvalue_key, n_key?))
+  -- if $array_float_key_scalar(S, pvalue_key)
+  -- if $string_read_phase(pvalue_base, pvalue_key) = (pstringreadphase)
+  -- if pkeyread = {SITE porigin, GLOBAL false, MODE KEY_R, INPUT poperand, VALUE pvalue_key, BASE pvalue_base, OWNERS BASE_VALUE S.RESULT, LINE z, PHASE KEY_NULL, KEY KSTRING eps, NAME eps}
+  -- if pstringread = {READ pkeyread, BASECELL n_base?, KEYCELL n_key?, PHASE pstringreadphase}
+  -- if $string_read_source(S, pstringread)
+def $string_read_plan(S) = eps -- otherwise
+def $string_read_pending(S) = ($error_handler_eligible(S, 2) /\ $string_read_plan(S) =/= eps)
+rule PhpStep/string-read-warning: S ~> $string_read_dispatch(S, pstringread)
+  -- if $error_handler_eligible(S, 2)
+  -- if $string_read_plan(S) = (pstringread)
+
+;; Source/phase validity survives callback writes, unsets and retired locators.
+def $string_read_locator(S, VARIABLE n_name* z, (n)) = $(n < |S.STORE|)
+def $string_read_locator(S, KNOWN pvalue, eps) = true
+def $string_read_locator(S, poperand, n?) = false -- otherwise
+def $string_read_shape(S, pstringread) = true
+  -- if pstringread.PHASE = STRING_CAST
+  -- if $offset_cast_integer(pstringread.READ.VALUE) = (i)
+def $string_read_shape(S, pstringread) = true
+  -- if pstringread.PHASE = STRING_BOUNDS i
+  -- if $array_float_key_scalar(S, PINT i)
+  -- if ~$string_read_in_range(pstringread.READ.BASE, i)
+  -- if pstringread.READ.VALUE = PINT i \/ $offset_cast_integer(pstringread.READ.VALUE) =/= eps
+  -- if pstringread.KEYCELL =/= eps \/ $string_read_offset(pstringread.READ.VALUE) = (i)
+def $string_read_shape(S, pstringread) = false -- otherwise
+def $string_read_source(S, pstringread) = true
+  -- if S.ORIGIN = (pstringread.READ.SITE)
+  -- if $origin_node(S.SOURCES, pstringread.READ.SITE) = (NExprArrayDimFetch expression phpType5 metadata)
+  -- if ~pstringread.READ.GLOBAL /\ pstringread.READ.MODE = KEY_R
+  -- if pstringread.READ.PHASE = KEY_NULL /\ pstringread.READ.KEY = KSTRING eps /\ pstringread.READ.NAME = eps
+  -- if $string_carrier_valid(S, pstringread.READ.BASE)
+  -- if $array_float_key_scalar(S, pstringread.READ.VALUE)
+  -- if $key_value_selected(pstringread.READ.INPUT, pstringread.READ.VALUE)
+  -- if $code_expression_at_source(S, pstringread.READ.SITE, [PCFIELD 1]) = (pstringread.READ.LINE)
+  -- if $key_context_tasks(S, S.TODO, pstringread.READ.SITE, KEY_R)
+  -- if $key_read_input_source(S, pstringread.READ)
+  -- if $key_read_owners_source(S, pstringread.READ)
+  -- if pstringread.READ.OWNERS = BASE_VALUE poperand_base
+  -- if $string_read_locator(S, poperand_base, pstringread.BASECELL)
+  -- if $string_read_locator(S, pstringread.READ.INPUT, pstringread.KEYCELL)
+  -- if $string_read_shape(S, pstringread)
+def $string_read_source(S, pstringread) = false -- otherwise
+
+;; Interned bytes and genuine owning operands survive the cast callback. For a
+;; REQUEST CV, exact identity in the same live selected cell is a sufficient owner.
+def $string_read_provider_ready(S, pstringread) = true
+  -- if pstringread.READ.BASE = PSTRING_CARRIER INTERNED_STRING n_bytes*
+def $string_read_provider_ready(S, pstringread) = true
+  -- if pstringread.READ.BASE = PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*
+  -- if pstringread.READ.OWNERS = BASE_VALUE (KNOWN pstringread.READ.BASE)
+  -- if pstringread.BASECELL = eps
+def $string_read_provider_ready(S, pstringread) = true
+  -- if pstringread.READ.BASE = PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*
+  -- if pstringread.READ.OWNERS = BASE_VALUE (VARIABLE n_name* z)
+  -- if pstringread.BASECELL = (n)
+  -- if $string_read_capture(S, VARIABLE n_name* z) = ((pstringread.READ.BASE, (n)))
+def $string_read_provider_ready(S, pstringread) = false -- otherwise
+def $string_read_key_current(S, pstringread) = (pvalue)
+  -- if $string_read_capture(S, pstringread.READ.INPUT) = ((pvalue, pstringread.KEYCELL))
+  -- if $array_float_key_scalar(S, pvalue)
+def $string_read_key_current(S, pstringread) = eps -- otherwise
+def $string_read_ready(S, pstringread) = true -- if pstringread.PHASE = STRING_BOUNDS i
+def $string_read_ready(S, pstringread) = ($string_read_provider_ready(S, pstringread) /\ $string_read_key_current(S, pstringread) =/= eps)
+  -- if pstringread.PHASE = STRING_CAST
+
+def $string_read_message(pstringread) = $ptascii("String offset cast occurred")
+  -- if pstringread.PHASE = STRING_CAST
+def $string_read_message(pstringread) = $ptascii("Uninitialized string offset ") ++ $decimal_integer(i)
+  -- if pstringread.PHASE = STRING_BOUNDS i
+def $string_read_event(pstringread) = DIAGNOSTIC "Warning" $string_read_message(pstringread) pstringread.READ.LINE
+def $string_read_dispatch(S, pstringread) = $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, $string_read_message(pstringread), pstringread.READ.LINE, $string_read_event(pstringread), STRING_READ_RESULT pstringread)
+def $string_read_selected(S, pstringread, i) = $key_read_done(S_byte, pvalue)
+  -- if $string_read_in_range(pstringread.READ.BASE, i)
+  -- if $string_bytes(pstringread.READ.BASE) = (n_bytes*)
+  -- if S_byte = $string_byte_read(S, n_bytes*, i, pstringread.READ.LINE)
+  -- if S_byte.RESULT = KNOWN pvalue
+def $string_read_selected(S, pstringread, i) = $string_read_dispatch(S, pstringread[.PHASE = STRING_BOUNDS i])
+  -- if ~$string_read_in_range(pstringread.READ.BASE, i)
+def $string_read_resume(S, pstringread) = $key_read_done(S, PSTRING_CARRIER INTERNED_STRING eps)
+  -- if pstringread.PHASE = STRING_BOUNDS i
+def $string_read_resume(S, pstringread) = S[.COMPLETION = UNSUPPORTED "string offset borrowed carrier after callback"]
+  -- if pstringread.PHASE = STRING_CAST
+  -- if ~$string_read_provider_ready(S, pstringread)
+def $string_read_resume(S, pstringread) = S[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
+  -- if pstringread.PHASE = STRING_CAST
+  -- if $string_read_provider_ready(S, pstringread)
+  -- if $string_read_key_current(S, pstringread) = eps
+def $string_read_resume(S, pstringread) = $string_read_selected(S, pstringread, i)
+  -- if pstringread.PHASE = STRING_CAST
+  -- if $string_read_provider_ready(S, pstringread)
+  -- if $string_read_key_current(S, pstringread) = (pvalue)
+  -- if $string_read_offset(pvalue) = (i)
+rule PhpStep/string-read-resume: S ~> $string_read_resume(S, pstringread)
+  -- if S.TODO = (STRING_READ_RESULT pstringread) :: ptask_tail*
+  -- if $string_read_source(S, pstringread)
+
+;; Pure primitive conversion still runs with a pending Throwable. An eligible
+;; handler suppresses the remaining Warning; otherwise the default event precedes
+;; the original THROW_SEARCH. BOUNDS completion never touches either operand.
+def $string_read_discard(S, pstringread) = S -- if pstringread.PHASE = STRING_BOUNDS i
+def $string_read_discard(S, pstringread) = S[.COMPLETION = UNSUPPORTED "string offset borrowed carrier after callback"]
+  -- if pstringread.PHASE = STRING_CAST
+  -- if ~$string_read_provider_ready(S, pstringread)
+def $string_read_discard(S, pstringread) = S[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
+  -- if pstringread.PHASE = STRING_CAST
+  -- if $string_read_provider_ready(S, pstringread)
+  -- if $string_read_key_current(S, pstringread) = eps
+def $string_read_discard(S, pstringread) = S[.ERRORFATALTRACE = eps]
+  -- if pstringread.PHASE = STRING_CAST
+  -- if $string_read_ready(S, pstringread)
+  -- if $string_read_key_current(S, pstringread) = (pvalue)
+  -- if $string_read_offset(pvalue) = (i)
+  -- if $string_read_in_range(pstringread.READ.BASE, i) \/ $error_handler_eligible(S, 2)
+def $string_read_discard(S, pstringread) = $error_default(S[.ERRORFATALTRACE = eps], $string_read_event(pstringread[.PHASE = STRING_BOUNDS i]), 2)
+  -- if pstringread.PHASE = STRING_CAST
+  -- if $string_read_ready(S, pstringread)
+  -- if $string_read_key_current(S, pstringread) = (pvalue)
+  -- if $string_read_offset(pvalue) = (i)
+  -- if ~$string_read_in_range(pstringread.READ.BASE, i)
+  -- if ~$error_handler_eligible(S, 2)
+def $error_read_discard(S, STRING_READ_RESULT pstringread) = $string_read_discard(S, pstringread)
+
+def $task_nodes(STRING_READ_RESULT pstringread) = $base_nodes(pstringread.READ.OWNERS) ++ $operand_nodes(pstringread.READ.INPUT)
+def $call_task_valid(S, STRING_READ_RESULT pstringread) = $string_read_source(S, pstringread)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = STRING_READ_RESULT pstringread
+  -- if $string_read_source(S, pstringread)
+  -- if perrorcall.SITE = pstringread.READ.SITE /\ perrorcall.LINE = pstringread.READ.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $string_read_message(pstringread)
+  -- if perrorcall.EVENT = $string_read_event(pstringread)

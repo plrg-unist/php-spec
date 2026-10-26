@@ -259,6 +259,8 @@ syntax pshutdown = { ENTRIES pshutdownentry*, INDEX nat, PHASE pshutdownphase, S
 syntax pkeymode = KEY_R | KEY_IS | KEY_TEST bool
 syntax pkeyphase = KEY_CV | KEY_NULL | KEY_FLOAT castnotice castnotice* | KEY_ARRAY_NAME | KEY_MISSING
 syntax pkeyread = { SITE porigin, GLOBAL bool, MODE pkeymode, INPUT poperand, VALUE pvalue, BASE pvalue, OWNERS pbase, LINE int, PHASE pkeyphase, KEY pkey, NAME nat* }
+syntax pstringreadphase = STRING_CAST | STRING_BOUNDS int
+syntax pstringread = { READ pkeyread, BASECELL nat?, KEYCELL nat?, PHASE pstringreadphase }
 syntax pkeywriter = { SITE porigin, TARGET porigin, TASK ptask, BASE pbase, RHS poperand, TEMP (porigin, nat)? }
 syntax pkeywrite = { READ pkeyread, PLACE plocation, RW bool }
 syntax pappendread = { WRITER pkeywriter, PLACE plocation, ARRAY nat, NAME ptbytes, LINE int }
@@ -370,6 +372,7 @@ syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND pt
   | PROPERTY_PUBLIC_NAN ppropertypublicnan
   | NAME_STRING_RESULT pnamestring | NAME_STRING_READY pnamestring preqbytes | NAME_STRING_PENDING pnamestring preqbytes nat
   | KEY_READ_BASE pbase pkeymode | KEY_READ_DIM poperand int pkeymode | KEY_READ_GLOBAL poperand int pkeymode | KEY_READ_RESULT pkeyread | KEY_READ_FINISH porigin ptask
+  | STRING_READ_RESULT pstringread
   | KEY_WRITE_BASE pbase bool | KEY_WRITE_DIM poperand int bool | KEY_WRITE_APPEND int bool | KEY_WRITE_GLOBAL poperand int bool | KEY_WRITE_RESULT pkeywrite | KEY_WRITE_FINISH pkeywriter
   | CONTAINER_WRITE_RESULT pcontainerwrite
   | CONTAINER_READ_RESULT pcontainerread | ACCESS_RESULT paccess | ACCESS_RESUME paccess
