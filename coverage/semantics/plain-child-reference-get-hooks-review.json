@@ -1,6 +1,6 @@
 {
   "scope": "A parentless Parent declares a public typed int property with a sole backed block &get. Its immediate Child plainly redeclares the same public int property with its own default and no hook, interface, trait or constructor effect. Direct CV/literal reads, reference fetches, own writes and a defined-RHS destination bind use a Child receiver.",
-  "status": "partial; independent review pending",
+  "status": "partial; independently reviewed",
   "target": {
     "php": "8.5.10 CLI NTS signed64",
     "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
@@ -14,7 +14,9 @@
     "Zend/zend_execute.c::zend_assign_to_property_reference fetches Get before rejecting destination rebinding.",
     "spec/semantics/138-property-references.watsup attaches the selected Child property type source to its backing alias."
   ],
-  "implementation": ["spec/semantics/382-backed-get-hooks.watsup"],
+  "implementation": [
+    "spec/semantics/382-backed-get-hooks.watsup"
+  ],
   "source_packet": {
     "frozen_catalogue_sha256": "82788811acf41f7146921d8c6269c5dd7bbdda2330907f25de57e8e1a21d9484",
     "maintained_catalogue": "tests/semantics/plain_child_reference_get_hook_cases.json",
@@ -39,7 +41,11 @@
     "source_agreements": 3,
     "focused_boolean": 341,
     "focused_raw_php_steps": 3,
-    "reached_checks": [127, 110, 104],
+    "reached_checks": [
+      127,
+      110,
+      104
+    ],
     "report_member": "php-spec/.tools/class135-plain-child-reference-get/.tools/plain-child-reference-get-m78ysdfh/report.json",
     "report_sha256": "e18fef949332aa685c46c8c5f0cbe2ed59a3277b61e302aeec59b03a36c2a343",
     "coverage": "Parent getter origin versus Child physical descriptor and slot, Parent lexical/Child called target, Child OBJECT_PROP_SOURCE and exact alias cell, copy/detachment after Child retirement, own write through a preexisting alias, Get-before-rebind Error file/line, and direct-child/unlinked selector counterfactuals."
@@ -82,9 +88,9 @@
   },
   "review": {
     "reviewer": "class133_review",
-    "decision": "pending",
-    "candidate": "ab54459aa24f55e26069e62a88147f41fbe5cefe",
-    "basis": "Three clean original-source/state groups and frozen independent controls await final package review."
+    "decision": "CLEAR",
+    "candidate": "65d5878921d60454ab0ef3583c2a306ac2d4a023",
+    "basis": "Typed plain Child selector and Child source, three clean original-source/state groups, frozen independent alias and Child TypeError agreements, explicit zero-credit boundaries and failed fixture, partial inventory and external raw archive."
   },
   "remaining": "Untyped plain and deeper Child redeclarations, changed type/visibility, virtual/arrow/set/paired hooks, traits, constructors with property effects, dimensions, quiet/compound consumers and wider reference lifetimes remain partial."
 }
