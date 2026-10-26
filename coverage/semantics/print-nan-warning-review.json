@@ -1,7 +1,7 @@
 {
   "milestone": "OP94 direct-CV NaN used-print Warning and output",
   "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle/profile",
-  "status": "author source/focused passed; independent review pending",
+  "status": "independently reviewed bounded semantics",
   "scope": "A named E_WARNING handler for a direct plain-CV NaN used-print operand. Cache formatted NAN bytes before warning; after a returning callback emit once and deliver print1. After a supplied throw, emit once before exception search and cancel the outer store. Both entry and completion require no output buffer; a callback-created buffer is explicit Unsupported.",
   "engine": [
     "vendor/php-src/Zend/zend_compile.c:zend_compile_print",
@@ -63,5 +63,13 @@
     "tests/semantics/print_nan_warning_protocol.py": "9e32a93efd02d21998bf46a66fd6f967c0afca6d24fc5984cad5970cf6f7b652",
     "tests/semantics/print_nan_warnings.py": "015ecf28dd6c6928158f74f30777c051caf1d4223e37f2bab93abcd417df907c"
   },
-  "remaining": "Only direct plain-CV NaN with a named handler and empty output buffers is claimed. Other producers, references, changed buffers/output callbacks, echo and broader lifetimes remain partial. The prepared zend_string identity is unobservable in this scalar/no-buffer slice; only its bytes are modeled."
+  "remaining": "Only direct plain-CV NaN with a named handler and empty output buffers is claimed. Other producers, references, changed buffers/output callbacks, echo and broader lifetimes remain partial. The prepared zend_string identity is unobservable in this scalar/no-buffer slice; only its bytes are modeled.",
+  "independent_review": {
+    "semantic_revision": "008798902e372af4c0ca1eff8cffcfd821200f83",
+    "cases": "/home/user/workspace/php-spec-evidence-archive/operators-94/review-independent/cases.py",
+    "cases_sha256": "e6c5027c30a04446ea790c2bbeca7755b2a81d44f0aecb549e908fd4882ee820",
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-94/review-independent/run-008798902/report.json",
+    "sha256": "d08a430b94c1be00dfb0aa5f832e671b88a7c9c7d910b40aecd5df3da86bd457",
+    "result": "Two fresh native-first exact normal source agreements: handled-true NaN has one H2:11, no default stderr, cached NAN after CV unset and strict print1; ineligible E_DEPRECATED mask has no callback, default Warning9, NAN and strict print1. Both exit0/no timeout/reaped. Independent reviewer cleared source/focused author packet and bounded semantic rule."
+  }
 }
