@@ -1,7 +1,12 @@
 ;; getIterator borrows the source Aggregate. Only its owned return temporary is
 ;; transferred into Iterator DATA; the historical Aggregate identity owns nothing.
 dec $config_aggregate_method(pstate, nat) : pmethoddesc?
+dec $config_aggregate_source(pstate, pconfigaggregate) : bool
 dec $config_aggregate_scope(pstate, pconfigaggregate) : bool
+dec $config_aggregate_generator_producer_valid(pstate, pconfiggeneratorproducer) : bool
+dec $config_aggregate_generator_context(pstate, pcallcontext) : bool
+dec $config_aggregate_generator_capture(pstate, pconfiggeneratorproducer, nat) : bool
+dec $config_aggregate_method_generator_return_allowed(pstate, pconfigaggregate) : bool
 dec $config_aggregate_owners(pstate, pconfigaggregate, nat) : bool
 dec $config_aggregate_at(ptask, porigin) : bool
 dec $config_aggregate_count(ptask*, porigin) : nat
@@ -25,9 +30,8 @@ def $config_aggregate_method(S, n) = (pmethoddesc)
   -- if $effective_method(S, porigin, $ptascii("getIterator"), |S.CLASSES|) = (pmethoddesc)
   -- if $fiber_traversal_method_selected(S, n, pmethoddesc.FUNCTION.ORIGIN, "getIterator")
   -- if pmethoddesc.FUNCTION.SIGNATURE = $useriter_signature($ptascii("getIterator"))
-  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
 def $config_aggregate_method(S, n) = eps -- otherwise
-def $config_aggregate_scope(S, pconfigaggregate) = true
+def $config_aggregate_source(S, pconfigaggregate) = true
   -- if pconfigaggregate.CALL.KIND = INTRINSIC_INI_SET
   -- if pconfigaggregate.CALL.INDEX = 0 /\ pconfigaggregate.CALL.SENT = eps
   -- if ~pconfigaggregate.CALL.NAMED /\ pconfigaggregate.CALL.PACKS = eps
@@ -39,6 +43,9 @@ def $config_aggregate_scope(S, pconfigaggregate) = true
   -- if $code_at(S.CODE, n_source) = (pcode)
   -- if $source_unit(S.SOURCES, n_source) = (pcunit)
   -- if $unpack_cv_at(pcode, pcunit, pcpath) = (ptbytes)
+def $config_aggregate_source(S, pconfigaggregate) = false -- otherwise
+def $config_aggregate_scope(S, pconfigaggregate) = true
+  -- if $config_aggregate_source(S, pconfigaggregate)
   -- if $config_aggregate_method(S, pconfigaggregate.OBJECT) = (pmethoddesc)
 def $config_aggregate_scope(S, pconfigaggregate) = false -- otherwise
 def $config_aggregate_owners(S, pconfigaggregate, n) = true
@@ -52,6 +59,7 @@ def $config_aggregate_owners(S, pconfigaggregate, n) = false -- otherwise
 def $config_aggregate_start(S, pconfigcall, poperand, n) = true
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask_tail*
+  -- if $config_pending_valid(S, pconfigcall, true)
   -- if pconfigaggregate = {CALL pconfigcall, OBJECT n, INPUT poperand}
   -- if $config_aggregate_scope(S, pconfigaggregate)
   -- if poperand = VARIABLE ptbytes z
@@ -80,6 +88,40 @@ rule PhpStep/config-aggregate-start: S ~> $config_aggregate_call(S, {CALL pconfi
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN (POBJECT n)
   -- if $config_aggregate_start(S, pconfigcall, S.RESULT, n)
+
+;; The receipt owns nothing. Immutable instance/class/source metadata remains
+;; available after both receiver and Generator allocations have retired.
+def $config_aggregate_generator_producer_valid(S, pconfiggeneratorproducer) = true
+  -- if $config_aggregate_source(S, pconfiggeneratorproducer.AGGREGATE)
+  -- if $(pconfiggeneratorproducer.AGGREGATE.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pconfiggeneratorproducer.AGGREGATE.OBJECT] = INSTANCE porigin_class
+  -- if $generator_from_aggregate(S, POBJECT pconfiggeneratorproducer.AGGREGATE.OBJECT)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
+  -- if $class_links_valid(S)
+  -- if $effective_method(S, porigin_class, $ptascii("getIterator"), |S.CLASSES|) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if pmethoddesc.FUNCTION.ORIGIN = pconfiggeneratorproducer.METHOD
+  -- if pmethoddesc.FUNCTION.SIGNATURE = $useriter_signature($ptascii("getIterator"))
+  -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata)
+  -- if $function_generator(S, pmethoddesc.FUNCTION)
+def $config_aggregate_generator_producer_valid(S, pconfiggeneratorproducer) = false -- otherwise
+def $config_aggregate_generator_capture(S, pconfiggeneratorproducer, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.FUNCTION = pconfiggeneratorproducer.METHOD
+  -- if pgenerator.PHASE <- [GENERATOR_FRESH, GENERATOR_PAUSED, GENERATOR_DELEGATING]
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.CONTEXT = (pcallcontext)
+  -- if pcallcontext.TARGET = CONFIG_AGGREGATE_GENERATOR_TARGET pconfiggeneratorproducer
+  -- if pcallcontext.FUNCTION = pconfiggeneratorproducer.METHOD
+def $config_aggregate_generator_capture(S, pconfiggeneratorproducer, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.FUNCTION = pconfiggeneratorproducer.METHOD
+  -- if pgenerator.PHASE <- [GENERATOR_RUNNING, GENERATOR_CLOSED]
+  -- if pgenerator.FRAME = eps
+def $config_aggregate_generator_capture(S, pconfiggeneratorproducer, n) = false -- otherwise
 
 ;; The real borrowed callback is authorized by its pending task or caller frame.
 def $config_aggregate_target(S, pconfigaggregate, AGGREGATE_METHOD_TARGET n porigin_method) = true
@@ -117,6 +159,7 @@ def $config_aggregate_selected(S, pcalltarget, porigin) = false -- otherwise
 def $config_aggregate_context(S, pcallcontext) = true
   -- if pcallcontext.CALLSITE = (porigin)
   -- if $config_aggregate_entered(S, S.CURRENT, S.FRAMES, $context_target(pcallcontext), porigin)
+def $config_aggregate_context(S, pcallcontext) = true -- if $config_aggregate_generator_context(S, pcallcontext)
 def $config_aggregate_context(S, pcallcontext) = false -- otherwise
 def $call_arguments_valid(S, (porigin), 0, eps, eps, 0) = true -- if $config_aggregate_pending_site(S, porigin)
 def $call_arity_valid(S, pcallcontext) = true -- if $config_aggregate_context(S, pcallcontext)
@@ -129,6 +172,51 @@ def $reference_callback_used(S, pcallcontext) = true
   -- if $config_aggregate_context(S, pcallcontext)
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.TODO = (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*
+
+;; GENERATOR_CREATE alone copies the borrowed receiver into an owned frame.
+;; Its CONFIG receipt names the actual argument, not a Fiber/foreach caller.
+def $generator_creation_frame(S, pfunction) = pframe[.CONTEXT = (pcallcontext[.TARGET = CONFIG_AGGREGATE_GENERATOR_TARGET {AGGREGATE pconfigaggregate, METHOD pfunction.ORIGIN}])]
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = pframe_caller :: pframe_tail*
+  -- if pframe_caller.TODO = (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*
+  -- if pcallcontext.TARGET = AGGREGATE_METHOD_TARGET pconfigaggregate.OBJECT pfunction.ORIGIN
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $config_aggregate_frame(S, pcallcontext, pframe_caller)
+  -- if pframe = $generator_frame(S, $function_body_tasks(S, pfunction))
+def $target_nodes(CONFIG_AGGREGATE_GENERATOR_TARGET pconfiggeneratorproducer) = [HOBJECT pconfiggeneratorproducer.AGGREGATE.OBJECT]
+def $target_instance(CONFIG_AGGREGATE_GENERATOR_TARGET pconfiggeneratorproducer) = eps
+def $target_receiver(S, CONFIG_AGGREGATE_GENERATOR_TARGET pconfiggeneratorproducer) = $target_receiver(S, METHOD_TARGET pconfiggeneratorproducer.AGGREGATE.OBJECT pconfiggeneratorproducer.METHOD)
+def $target_lexical_class(S, CONFIG_AGGREGATE_GENERATOR_TARGET pconfiggeneratorproducer) = $target_lexical_class(S, METHOD_TARGET pconfiggeneratorproducer.AGGREGATE.OBJECT pconfiggeneratorproducer.METHOD)
+def $target_called_class(S, CONFIG_AGGREGATE_GENERATOR_TARGET pconfiggeneratorproducer) = $target_called_class(S, METHOD_TARGET pconfiggeneratorproducer.AGGREGATE.OBJECT pconfiggeneratorproducer.METHOD)
+def $target_function(S, CONFIG_AGGREGATE_GENERATOR_TARGET pconfiggeneratorproducer) = (pmethoddesc.FUNCTION)
+  -- if $config_aggregate_generator_producer_valid(S, pconfiggeneratorproducer)
+  -- if $config_aggregate_method(S, pconfiggeneratorproducer.AGGREGATE.OBJECT) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = pconfiggeneratorproducer.METHOD
+def $config_aggregate_generator_context(S, pcallcontext) = true
+  -- if pcallcontext.TARGET = CONFIG_AGGREGATE_GENERATOR_TARGET pconfiggeneratorproducer
+  -- if $intrinsic_argument(S, pconfiggeneratorproducer.AGGREGATE.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if pcallcontext.CALLSITE = (porigin) /\ pcallcontext.LINE = z
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.RECEIVER = (pconfiggeneratorproducer.AGGREGATE.OBJECT)
+  -- if pcallcontext.ARGC = 0 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $generator_context_retained(S, pcallcontext)
+def $config_aggregate_generator_context(S, pcallcontext) = false -- otherwise
+def $call_selected_valid(S, CONFIG_AGGREGATE_GENERATOR_TARGET pconfiggeneratorproducer, (porigin)) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CONFIG_AGGREGATE_GENERATOR_TARGET pconfiggeneratorproducer
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if $config_aggregate_generator_context(S, pcallcontext)
+def $named_receives_ready(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = AGGREGATE_METHOD_TARGET n porigin_method
+  -- if S.FRAMES = pframe_caller :: pframe_tail*
+  -- if pframe_caller.TODO = (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*
+  -- if $config_aggregate_frame(S, pcallcontext, pframe_caller)
+  -- if $receiving_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $function_generator(S, pfunction)
+  -- if n_received = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $unpack_defined_prefix(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), n_received)
 
 def $task_nodes(CONFIG_AGGREGATE pconfigaggregate) = $config_nodes(pconfigaggregate.CALL)
 def $call_task_valid(S, CONFIG_AGGREGATE pconfigaggregate) = $config_aggregate_valid(S, pconfigaggregate)
@@ -149,18 +237,33 @@ def $config_aggregate_generator_return_allowed(S, pconfigaggregate) = true
   -- if $config_aggregate_owners(S, pconfigaggregate, 1)
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if $($heap_owners($heap_graph(S), HOBJECT n) > 1)
-  -- if $config_generator_scope(S, {CALL pconfigaggregate.CALL, OBJECT n, INPUT pconfigaggregate.INPUT, ITEMS eps})
+  -- if $config_generator_scope(S, {CALL pconfigaggregate.CALL, OBJECT n, INPUT pconfigaggregate.INPUT, ITEMS eps, PRODUCER eps})
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_FRESH /\ pgenerator.DELEGATE = eps
 def $config_aggregate_generator_return_allowed(S, pconfigaggregate) = false -- otherwise
+def $config_aggregate_method_generator_return_allowed(S, pconfigaggregate) = true
+  -- if $config_aggregate_valid(S, pconfigaggregate)
+  -- if $config_aggregate_owners(S, pconfigaggregate, 1)
+  -- if $config_aggregate_method(S, pconfigaggregate.OBJECT) = (pmethoddesc)
+  -- if $function_generator(S, pmethoddesc.FUNCTION)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $($heap_owners($heap_graph(S), HOBJECT n) > 0)
+  -- if $config_generator_scope(S, {CALL pconfigaggregate.CALL, OBJECT n, INPUT pconfigaggregate.INPUT, ITEMS eps, PRODUCER ({AGGREGATE pconfigaggregate, METHOD pmethoddesc.FUNCTION.ORIGIN})})
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_FRESH /\ pgenerator.DELEGATE = eps
+def $config_aggregate_method_generator_return_allowed(S, pconfigaggregate) = false -- otherwise
 def $config_aggregate_promote(S, pconfigaggregate, ptask_tail*) = S[.ITERATORS = S.ITERATORS ++ [OBJECTITER S.NEXTITER n 0 false]][.NEXTITER = $(S.NEXTITER + 1)][.TODO = (CONFIG_ITERATOR {CALL pconfigaggregate.CALL, ITERATOR S.NEXTITER, OBJECT n, INPUT pconfigaggregate.INPUT, ITEMS eps, CURRENT (KNOWN PNULL), KEY (KNOWN PNULL)} "rewind-start") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_aggregate_return_allowed(S, pconfigaggregate)
   -- if S.RESULT = KNOWN (POBJECT n)
-def $config_aggregate_promote(S, pconfigaggregate, ptask_tail*) = S[.TODO = (CONFIG_GENERATOR {CALL pconfigaggregate.CALL, OBJECT n, INPUT pconfigaggregate.INPUT, ITEMS eps} "rewind") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $config_aggregate_promote(S, pconfigaggregate, ptask_tail*) = S[.TODO = (CONFIG_GENERATOR {CALL pconfigaggregate.CALL, OBJECT n, INPUT pconfigaggregate.INPUT, ITEMS eps, PRODUCER eps} "rewind") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_aggregate_generator_return_allowed(S, pconfigaggregate)
   -- if S.RESULT = KNOWN (POBJECT n)
+def $config_aggregate_promote(S, pconfigaggregate, ptask_tail*) = S[.TODO = (CONFIG_GENERATOR {CALL pconfigaggregate.CALL, OBJECT n, INPUT pconfigaggregate.INPUT, ITEMS eps, PRODUCER ({AGGREGATE pconfigaggregate, METHOD pmethoddesc.FUNCTION.ORIGIN})} "rewind") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $config_aggregate_method_generator_return_allowed(S, pconfigaggregate)
+  -- if $config_aggregate_method(S, pconfigaggregate.OBJECT) = (pmethoddesc)
+  -- if S.RESULT = KNOWN (POBJECT n)
 def $config_aggregate_promote(S, pconfigaggregate, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "CONFIG Aggregate return outside shared initialized Iterator domain"]
-  -- if ~$config_aggregate_return_allowed(S, pconfigaggregate) /\ ~$config_aggregate_generator_return_allowed(S, pconfigaggregate)
+  -- if ~$config_aggregate_return_allowed(S, pconfigaggregate) /\ ~$config_aggregate_generator_return_allowed(S, pconfigaggregate) /\ ~$config_aggregate_method_generator_return_allowed(S, pconfigaggregate)
 rule PhpStep/config-aggregate-result: S ~> $config_aggregate_promote(S, pconfigaggregate, ptask_tail*)
   -- if S.TODO = (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*
 

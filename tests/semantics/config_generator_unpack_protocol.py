@@ -76,7 +76,7 @@ def checks(program, path, name):
         '~$config_invoke_valid(S_pre,pconfigcall)', *common.public('S_pre'),
         'S_data = $test_config_generator_step(S_pre)',
         'S_data.TODO = (CONFIG_GENERATOR pconfiggenerator_initial "rewind") :: ptask_tail*',
-        'pconfiggenerator_initial = {CALL pconfigcall,OBJECT n_generator,INPUT S_pre.RESULT,ITEMS eps}',
+        'pconfiggenerator_initial = {CALL pconfigcall,OBJECT n_generator,INPUT S_pre.RESULT,ITEMS eps,PRODUCER eps}',
         '$task_nodes(CONFIG_GENERATOR pconfiggenerator_initial "rewind") = ' + roots,
         '$heap_owners($heap_graph(S_data),HOBJECT n_generator) = ' + ('3' if owned else '2'),
         'S_data.RESULT = KNOWN PNULL', 'S_data.STORE = S_pre.STORE',

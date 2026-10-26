@@ -95,7 +95,7 @@ def checks(program, path, name):
         '$config_generator_start(S_pre,pconfigcall,S_pre.RESULT,n_generator)',
         *owners('S_pre', 1, 3), *common.public('S_pre'),
         'S_data = $test_config_sole_peer_step(S_pre)',
-        'pconfiggenerator_initial = {CALL pconfigcall,OBJECT n_generator,INPUT S_pre.RESULT,ITEMS eps}',
+        'pconfiggenerator_initial = {CALL pconfigcall,OBJECT n_generator,INPUT S_pre.RESULT,ITEMS eps,PRODUCER eps}',
         'S_data = S_pre[.ORIGIN = (porigin_argument)][.TODO = (CONFIG_GENERATOR pconfiggenerator_initial "rewind") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]',
         '$task_nodes(CONFIG_GENERATOR pconfiggenerator_initial "rewind") = [HOBJECT n_generator,HOBJECT n_owner]',
         *owners('S_data', 2, 3), *common.public('S_data'),

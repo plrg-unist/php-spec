@@ -1,0 +1,75 @@
+{
+  "scope": "Initialized CV IteratorAggregate with public zeroarg nonbyref exact getIterator(): Traversable signature whose body is a Generator method. Actual fresh return becomes sole DATA; real copied frame owns selected receiver through CV/callee replacement, inherited selection, normal retirement and terminal supplied throw.",
+  "status": "integrated reviewed bounded producer",
+  "reviewer": "/root/source86_review",
+  "base_revision": "73c447992362f4ebdb9d85b5d87e55a7f31bfc54",
+  "source_only_revision": "cd2512af45917d84957886f271c3c181dfd44906",
+  "validation_revision": "c784daf3a966306681cfb2362ee917f3e9b418c3",
+  "ordered_modules": 416,
+  "private_semantic_sha256": {
+    "spec/semantics/30-storage.watsup": "9cb72f33350b79274132d10f207530332f197161ba4f48d3ebab410c25d257b9",
+    "spec/semantics/421-config-aggregate-iterator-unpack.watsup": "306e1bd2f6426731afc363a2abd7343863dc68f35ce5580971e378b9d3ef642e",
+    "spec/semantics/423-config-generator-unpack.watsup": "dd792a6b869d22748bfd798c0a663b28776460553b18aa780a9bfb259a0b9a77"
+  },
+  "engine": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; exact flags in reports",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "compiler": {
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "mode": "SL/cachefalse/encountered determinism true; all416 ordered modules"
+  },
+  "primary": "Pinned zend_user_it_get_new_iterator calls getIterator with borrowed This; ZEND_GENERATOR_CREATE copies its execute frame and retains This. Returned Generator get_iterator acquires DATA then drops the return temporary. SEND_UNPACK drains terminal move_forward and destroys iterator DATA before exception/API handling. No PHP Generator-method resume frame is introduced.",
+  "implementation": "Only30/421/423 change runtime. Add optional nonowning CONFIG producer receipt and owned stored calltarget. Borrowed getIterator remains unpinned until actual copied frame creation; target_nodes owns only receiver, not embedded callee metadata. Separate method promotion transfers actual RESULT into DATA with whole heap equality; old Iterator/shared named-return arms stay disjoint. Historical source/selected public method/function remain valid after receiver death, while target_function stays live-only. Fresh/paused frames authenticate exact target; projected RUNNING/CLOSED views use receipt+function with global active context/Generator pairing. Existing quiet retirement/release bodies remain exact. No PHP AST/frontend/adapter, pvalue/pgenerator/global-state-field, public cursor, fake unpack ARRAY or generic release change.",
+  "accepted": [
+    "Native3 PASS atcd2512af/416, actualPHPexit0/cap15/quiet/stable/reaped. Fixed no-hold receiver CV17 survives real This then weakNULL before API14→8. Inherited Parent method/Child receiver CV23 and callee replacement retain selected setter, precision6→7 before API11 and recovery11→9. Peer terminal same-Exception retains original getIterator class/type/unpack19/args[] trace, result99/effects3/precision7 and recovery7→9; external hold then NULL proves no trace/receipt receiver root.",
+    "Strict416 PASS9.960s/cap90; source3 normal/native-exact CLI0 PASS17.286/25.455/40.293s, CLI45/host60, all atc784/416 with stable inputs/HEAD and no timeout/survivors.",
+    "All574 original conditions PASS across653 physical/79 setup, first evaluations atc784. Author69/125/69/134 take21.403/27.542/28.480/44.895s; peer140/116 take47.920/63.138s, each90cap/exit0/true LF/empty stderr/stable/groups[]. Source-derived duplicated setup adds no coverage.",
+    "Reached states distinguish borrowed acquisition from owned method frame, sole returned Gen RESULT→DATA with exact full heap equality, no eager body/API, receiver ownership3→2→1 or2→1→0, matching-task absent/wrong method receipt refusal, nonAggregate source refusal, original-origin acquisition refusal, last-callee finish/discard restoration, real native resume and old trace preservation, normalized Gen/receiver retirement, dead historical reception, same Exception/captured setter recovery and budget equivalence."
+  ],
+  "conditions": {
+    "author_original": [
+      169,
+      177
+    ],
+    "author_parts": [
+      69,
+      125,
+      69,
+      134
+    ],
+    "author_setup": [
+      25,
+      26
+    ],
+    "peer_original": 228,
+    "peer_parts": [
+      140,
+      116
+    ],
+    "peer_setup": 28,
+    "original_total": 574,
+    "physical_total": 653
+  },
+  "genuine_zero": "Untouched fixed comparison atcd2512af accepted/program Unsupported after B|, old CONFIG Traversable unpack outside initialized Iterator domain; CLI1/outer1/13.039712s/cap60/quiet/stable/groups[], agreement0. Five original report/process/exit/stdout/stderr files hash-preserved through models and relocation; no pre-classification repair or native/genuine replay.",
+  "legacy_compatibility": "Five old Generator record literals gain only PRODUCER eps; stripping that field reconstructs exact prior files, all assertion counts unchanged. Only the Source87 Aggregate control Unsupported mapping retires; every original PHP byte remains exact. Historical accepted counts/cuts remain, with no old source/native/state suite replay. Direct/nongenerator named paths still use EPS and shared-return admission remains unchanged.",
+  "execution": "Native/genuine and affected packetCPU1, AS3221225472/envC+UTC. Native15; modelCLI45/host60/10000steps; strict/state90. Exact argv/cwd/start/exits in native/outer-commands.json and check-commands-93.json. Author33334 and peer97370 reaped0; direct process probe empty, reviewer RAW STOP and CPU1 released before one relocation.",
+  "raw_root": "../php-spec-evidence-archive/config-aggregate-generator-method-93",
+  "manifest_sha256": "35aac909c5f9fac5dc94246f7965cd30013e875496e74e8c40b0a37dd6a74ac7",
+  "recovery": "Manifest maps13 moved roots/logs/commands/private-reference record and hashes18 reports (17PASS plus genuine0), including five original genuine hashes. Restore recorded cd251/c784 cuts and original WT93 paths/cwd, provision project-local tools, verify hashes/exact commands. RAW STOP/no actors preceded one move; no backup worktree or evidence build dependency.",
+  "remaining": "Wider signatures/arguments, direct temporary/ordinary method/Closure ingress, nonfresh/byref producers, owning cached/return children, last-callee retirement, wider sends/values and delegation/Fiber/GC/destructor callback histories stay partial. Paused OP12/Source47 lowprecision DEFINE NaN/ownedNUL/undefined-byrefLIST/COMP88 untouched. No engine bug, deliberate divergence, full-core/equivalence/BOLA claim.",
+  "composition": {
+    "actual_parent": "657abee627af6e920d6f7d476e120cdf017f9da2",
+    "immutable_publication": "f11b1a16541ef893a0fc092461261e074e8902cd",
+    "joined_ordered_modules": 417,
+    "preservation": "30 preserves actual parent except only own forward declaration/receipt/producer field/stored target alternative;421/423 and ten changed test scripts match immutable publication. All other runtime/PHP AST/schema/frontend/adapter/pipeline and ordered manifest stay parent-exact; two inventory suffixes and foreign compact documentation preserved.",
+    "incoming_review": "Independent73c→8484 CLEAR: pclosurecall PACKS/Closure::call sites differ from CONFIG method/intrinsic __invoke; property-get paths absent; M153 requires WeakMap/owned Iterator teardown and DESTRUCTION.FRAMES remains empty here. Independent8484→657 COMP124394 CLEAR: nonpublic physical-property numeric comparison/cast paths cannot match method-only receivers, strict same-object identity, instanceof or empty trace-args arrays. No selected interaction or execution renewal.",
+    "candidate_review": "Independent final CLEAR at stagedd82f35e2 over actual657abee627: own4 storage additions preserve all incoming30 fields/tags,421/423+ten scripts publication-exact, all other runtime/PHP AST/schema/pipeline/417 manifest parent-exact, two inventory suffixes and all foreign compact documentation/held boundaries preserved. No selected interaction or execution renewal."
+  }
+}
