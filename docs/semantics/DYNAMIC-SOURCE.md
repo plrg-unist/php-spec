@@ -44,7 +44,16 @@ or reentrant HALT compilations, yield `Unsupported`; completion is sufficient
 evidence here, not a claim that registration always waits for compilation to end.
 Genuine parser rejection contributes no registration. Captured query strings and
 selected-call receipts retain the existing structural variable-input policy.
-Other direct forms, absent `constant` lookup Errors, owning/named/unpacked calls
+An authenticated absent registration for the call site's filename raises the
+ordinary `Error` for a nonowning positional call through a selected `constant`
+callable with `'__COMPILER_HALT_OFFSET__'` as its argument. The Error has its
+`constant` frame and original argument. An included
+file's registration does not supply the caller's lookup; a main-file
+registration does not supply an eval unit's lookup. The
+[absent-lookup ledger](../../coverage/semantics/halt-absent-review.json) records
+four native/model source agreements and three reached-state checks. Incomplete
+or ambiguous registration remains `Unsupported`.
+Direct fixed syntax and owning/named/unpacked calls
 and broader compiler-failure/reentry behavior remain open. The
 [lookup ledger](../../coverage/semantics/halt-lookup-review.json) binds two original
 sources and their reached state checks, keeping counterfactual history/source

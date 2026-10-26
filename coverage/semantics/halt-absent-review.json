@@ -1,0 +1,42 @@
+{
+  "scope": "Nonowning positional call through a selected constant callable with the exact __COMPILER_HALT_OFFSET__ name and authenticated filename-local HALT_ABSENT. Partial dynamic source/core semantics.",
+  "status": "independently_reviewed_private",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "base_revision": "0afa39309def3dc1cf9743885622d33b6046fada",
+  "engine_routes": [
+    "ext/standard/basic_functions.c::PHP_FUNCTION(constant) invokes zend_get_constant_ex with ZEND_FETCH_CLASS_EXCEPTION.",
+    "Zend/zend_constants.c::zend_get_halt_offset_constant reads the executed filename and returns no offset when its registration is absent; zend_get_constant_ex throws Error with Undefined constant message."
+  ],
+  "mechanism": "One new disjoint HALT_ABSENT arm in dynamic_halt_receive reuses dynamic_halt_valid, the chronological journal and config_error. HALT_UNKNOWN remains Unsupported; fixed direct constant calls and owning/named/unpacked calls are unchanged.",
+  "validation": {
+    "source": "Three original selected-call comparisons plus one trace observer: all exact native/model stdout, empty stderr, CLI0/normal, checked main and dynamic parsers. Child offset97 is present while main is absent; main HALT does not supply eval filename. Each catch continues to |A.",
+    "state": "Three source-derived strict SL fixtures, 420 modules, 68+95+73=236 passing premises in current-script v6; real selected CONFIG_INVOKE, original argument/API trace, Error message/file/line, caller/source registry and provider preservation, budget0 resume, HALT_UNKNOWN refusal and malformed call guards.",
+    "baseline": "Three revised selected originals and three initial fixed-call originals preserved as unchanged-model Unsupported, not counted as agreement. Source-derived state v1-v4 fixture failures preserved as zero credit; v5 passes with its earlier script and v6 confirms the maintained selector.",
+    "inventory": "scripts/check-semantic-inventory.py passes: 169 constructors and 306 obligations."
+  },
+  "environment": {
+    "profile": "tests/semantics/profile.json",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "oracle": ".tools/php/bin/php from vendor/php-src 8.5.10",
+    "resources": "Source98 CPU3 and CPU4 serial leases were fully reaped/released; reviewer CPU3 independent check is separate."
+  },
+  "raw_artifacts": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/dynamic-source-98",
+    "reports_sha256": {
+      "halt-absent-v1/native-report.json": "a415ea9d58ea4636acaf4ac78e8155041f3ec5c3c3cadcef52fedfed34c52fcf",
+      "halt-absent-v1/model-report.json": "e3d866aaffe0acff00b6009473976e63f352308bb9a6affe3298d32df20d0017",
+      "halt-absent-state-v5/report.json": "9a95c5acdf1f4696b6fa55575bfec4d90f473e841fdc9106422557b567da9db8",
+      "halt-absent-state-v6/report.json": "a21f4e3cbfe091cadd6afff38f3c5afe3a03a05bdd24432ed7250fd45872c98e",
+      "halt-absent-trace-v1/native-report.json": "69afb23263c521a2752c745b6a8d094e9577cb1a8f4919a315b3410de0308cd5",
+      "halt-absent-trace-v1/model-report.json": "1d5b5d23ee0172d795d3648c14ebe8c2b384c98f6d015aae99f2dd31e38c8e19",
+      "dynamic-source-halt-absent-selected-98/baseline-report.json": "723c836a3d401ab10dff9747fde6887d810265fbcf570a0808b7ba8c46c82aa5",
+      "dynamic-source-halt-absent-native-98/baseline-report.json": "a9c5ddc3327dda0d04e324350fe4120fb7372241244144c666f1329c91f65eb5",
+      "halt-absent-review-cpu3/sl-child/report.json": "1a8edcd1d76f81a04745eecb8d35d623be7c48604c5fd1c9e082dd51bfab5dc7",
+      "halt-absent-review-cpu3/source/native-report.json": "4602df7a37e07d731e3f20f978ff8fb34f9efcf66655db5bf6fd9dc341a109e5",
+      "halt-absent-review-cpu3/source/model-report.json": "ad0793357f688d8fe90623e3ba8490a27aedb325e70361a8f890454b49c1f585"
+    },
+    "recovery": "Run halt_absent_sources.py --phase native with three --case selectors, then --phase model at the same output; run the trace selector separately. Run halt_absent_protocol.py --sources SOURCE_OUTPUT --output FRESH with the three original selectors. Raw stdout/stderr, commands, checked fixtures and failed attempts are in this external archive."
+  },
+  "review": "Independent semantic review accepted: fresh affected trace source native/model exact, child-present/main-absent strict-SL fixture exit0/true/empty stderr on 420 modules with stable watched hashes, and current-script v6 replay of all three cases."
+}
