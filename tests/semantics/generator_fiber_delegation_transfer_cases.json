@@ -14,5 +14,13 @@
     "native_exit": 0,
     "native_stderr": "",
     "native_stdout": "SEED|CHILD|1START|CALL|AFTER-SEED|PAUSE|11OWNERS|11RESUME|RESUMED|1VALUE|11FINISH|11CACHE|11NEXT|LEAF-END|ROOT-RETURN|1ROOT-KEEPER|1ROOT-FINALLY|RETURN|11D|WEAK|11E"
+  },
+  {
+    "id": "generator-fiber-delegation-cached-next",
+    "source": "<?php\nclass Token55 { function __destruct() { echo \"D|\"; } }\nfunction child55($token) {\n    echo \"CHILD|\";\n    yield \"seed55\";\n    echo \"AFTER-SEED|\";\n    $received = Fiber::suspend(\"pause55\");\n    echo \"RESUMED|\", (int)($received === \"resume55\"), \"|\";\n    yield $token;\n    echo \"LEAF-END|\";\n    return \"leaf55\";\n}\nfunction parent55($child, $keeper) {\n    try {\n        $returned = yield from $child;\n        echo \"ROOT-RETURN|\", (int)($returned === \"leaf55\"), \"|\";\n        echo \"ROOT-KEEPER|\", (int)($keeper !== null), \"|\";\n        return \"root55\";\n    } finally { echo \"ROOT-FINALLY|\"; }\n}\nfunction worker55() {\n    global $parent, $weak;\n    echo \"CALL|\";\n    $parent->next();\n    $value = $parent->current();\n    echo \"VALUE|\", (int)($value !== null), \"|\", (int)($value === $weak->get()), \"|\";\n    return \"fiber55\";\n}\n$token = new Token55();\n$weak = WeakReference::create($token);\n$child = child55($token);\n$childWeak = WeakReference::create($child);\n$parent = parent55($child, $token);\nunset($token);\necho \"SEED|\", (int)($parent->current() === \"seed55\"), \"|\";\n$fiber = new Fiber(\"worker55\");\necho \"START|\";\n$first = $fiber->start();\necho \"PAUSE|\", (int)($first === \"pause55\"), \"|\", (int)$fiber->isSuspended(), \"|\";\nunset($child);\necho \"OWNERS|\", (int)($childWeak->get() !== null), \"|\", (int)($weak->get() !== null), \"|\";\necho \"RESUME|\";\n$fiber->resume(\"resume55\");\necho \"FINISH|\", (int)$fiber->isTerminated(), \"|\", (int)($fiber->getReturn() === \"fiber55\"), \"|\";\necho \"CACHE|\", (int)($parent->current() !== null), \"|\", (int)($parent->current() === $weak->get()), \"|\";\necho \"NEXT|\";\n$parent->next();\necho \"RETURN|\", (int)($parent->valid() === false), \"|\", (int)($parent->getReturn() === \"root55\"), \"|\";\nunset($parent);\necho \"WEAK|\", (int)($childWeak->get() === null), \"|\", (int)($weak->get() === null), \"|\";\nunset($fiber);\necho \"E\";\n",
+    "source_sha256": "1226c408b80cf89d3057bec842eec5a8bd16ef4ca60e223209a2477f2a610f44",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "SEED|CHILD|1|START|CALL|AFTER-SEED|PAUSE|1|1|OWNERS|1|1|RESUME|RESUMED|1|VALUE|1|1|FINISH|1|1|CACHE|1|1|NEXT|LEAF-END|ROOT-RETURN|1|ROOT-KEEPER|1|ROOT-FINALLY|RETURN|1|1|D|WEAK|1|1|E"
   }
 ]
