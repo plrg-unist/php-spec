@@ -496,6 +496,8 @@ def $property_hook_read_needed(S, n, ptbytes) = false -- otherwise
 dec $property_hook_function(pstate, ppropertyhook) : pfunction?
 dec $property_hook_ref_function(pstate, ppropertyhook) : bool
 dec $property_hook_direct_child_reference(pstate, porigin, porigin, ppropertydesc) : bool
+dec $property_hook_reference_plain_chain(pstate, ppropertydesc, ppropertydesc, nat) : bool
+dec $property_hook_reference_receiver_chain(pstate, porigin, ppropertydesc, ppropertydesc, nat) : bool
 def $property_hook_direct_child_reference(S, porigin_class, porigin_owner, ppropertydesc) = true
   -- if porigin_class =/= porigin_owner
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc_child)
@@ -537,6 +539,42 @@ def $property_hook_plain_grandchild_reference(S, porigin_class, porigin_owner, p
   -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertydesc_child.KEY) = (ppropertydesc_child)
   -- if $property_hook_plain_child_reference(S, porigin_child, porigin_owner, ppropertydesc_child, ppropertydesc_parent)
 def $property_hook_plain_grandchild_reference(S, porigin_class, porigin_owner, ppropertydesc_child, ppropertydesc_parent) = false -- otherwise
+;; Follow physical storage from the actual receiver, then each authentic plain
+;; redeclaration back to the sole backed reference getter. Every walk is finite.
+def $property_hook_reference_plain_chain(S, ppropertydesc, ppropertydesc, n) = true
+  -- if $(n > 0)
+  -- if $property_hook_reference_decl(S, ppropertydesc)
+def $property_hook_reference_plain_chain(S, ppropertydesc, ppropertydesc_getter, n) = $property_hook_reference_plain_chain(S, ppropertydesc_parent, ppropertydesc_getter, $nabs($(n - 1)))
+  -- if $(n > 0) /\ ppropertydesc =/= ppropertydesc_getter
+  -- if ppropertydesc.ORIGIN = porigin_property
+  -- if $property_declaring_class(S.CLASSES, porigin_property) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT =/= eps
+  -- if pclassdesc.PROPERTIES = [ppropertydesc] /\ pclassdesc.INTERFACES = eps /\ pclassdesc.CONSTANTS = eps
+  -- if $hook_property_at(pclassdesc.PROPERTIES, porigin_property) = (ppropertydesc)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_class) = (SOURCE_PARENT porigin_parent)
+  -- if $property_hook_ordinary_parent(S, ppropertydesc, n) = (ppropertydesc_parent)
+  -- if $property_desc_at($property_layout(S, porigin_parent, |S.CLASSES|), ppropertydesc.KEY) = (ppropertydesc_parent)
+  -- if ppropertydesc.TYPE = ppropertydesc_parent.TYPE /\ ppropertydesc.SETVISIBILITY = eps
+  -- if $property_hook_plain_edge(S, ppropertydesc_parent, ppropertydesc, n)
+def $property_hook_reference_plain_chain(S, ppropertydesc, ppropertydesc_getter, n) = false -- otherwise
+def $property_hook_reference_receiver_chain(S, porigin_class, ppropertydesc, ppropertydesc_getter, n) = $property_hook_reference_plain_chain(S, ppropertydesc, ppropertydesc_getter, |S.CLASSES|)
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if ppropertydesc.ORIGIN = porigin_property
+  -- if $property_declaring_class(S.CLASSES, porigin_property) = (porigin_class)
+  -- if $hook_property_at(pclassdesc.PROPERTIES, porigin_property) = (ppropertydesc)
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertydesc.KEY) = (ppropertydesc)
+def $property_hook_reference_receiver_chain(S, porigin_class, ppropertydesc, ppropertydesc_getter, n) = $property_hook_reference_receiver_chain(S, porigin_parent, ppropertydesc, ppropertydesc_getter, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT =/= eps
+  -- if pclassdesc.PROPERTIES = eps /\ pclassdesc.INTERFACES = eps /\ pclassdesc.CONSTANTS = eps
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_class) = (SOURCE_PARENT porigin_parent)
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertydesc.KEY) = (ppropertydesc)
+  -- if $property_desc_at($property_layout(S, porigin_parent, |S.CLASSES|), ppropertydesc.KEY) = (ppropertydesc)
+def $property_hook_reference_receiver_chain(S, porigin_class, ppropertydesc, ppropertydesc_getter, n) = false -- otherwise
 def $property_hook_function(S, ppropertyhook) = (pfunction)
   -- if $(ppropertyhook.OBJECT < |S.OBJECTS|)
   -- if S.OBJECTS[ppropertyhook.OBJECT] = INSTANCE porigin_class
@@ -553,7 +591,7 @@ def $property_hook_function(S, ppropertyhook) = (pfunction)
   -- if pfunction.NAME = pclassdesc_owner.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)
   -- if pfunction.SIGNATURE = {PARAMETERS eps, RETURNS ppropertydesc_getter.TYPE, BYREF b}
   -- if $origin_node(S.SOURCES, $origin_source(pfunction.ORIGIN)) = (NPropertyHook phpType14 phpType24 (BOOLEAN b) phpType11 phpType16 phpType39 metadata)
-  -- if ~b \/ porigin_class = porigin_owner \/ $property_hook_direct_child_reference(S, porigin_class, porigin_owner, ppropertydesc_getter) \/ $property_hook_plain_child_reference(S, porigin_class, porigin_owner, ppropertydesc, ppropertydesc_getter) \/ $property_hook_plain_grandchild_reference(S, porigin_class, porigin_owner, ppropertydesc, ppropertydesc_getter)
+  -- if ~b \/ porigin_class = porigin_owner \/ $property_hook_direct_child_reference(S, porigin_class, porigin_owner, ppropertydesc_getter) \/ $property_hook_plain_child_reference(S, porigin_class, porigin_owner, ppropertydesc, ppropertydesc_getter) \/ $property_hook_plain_grandchild_reference(S, porigin_class, porigin_owner, ppropertydesc, ppropertydesc_getter) \/ $property_hook_reference_receiver_chain(S, porigin_class, ppropertydesc, ppropertydesc_getter, |S.CLASSES|)
   -- if pfunction.DEFAULTS = eps /\ ~pfunction.EARLY
   -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_hook
   -- if pfunction.BODY = pcpath_hook ++ [PCFIELD 5]

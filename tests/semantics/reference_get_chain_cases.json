@@ -1,0 +1,48 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "baseline_revision": "1d6f6682ee713e8ac316611567be343ccf57b07e",
+  "cases": [
+    {
+      "id": "greatgrandchild-promoted",
+      "kind": "positive",
+      "source": "<?php\nclass DeepParent137 {\n    public $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass DeepChild137 extends DeepParent137 {\n    public $value = 11;\n}\nclass DeepGrandchild137 extends DeepChild137 {\n    public function __destruct() { echo \"D|\"; }\n}\nclass DeepGreatgrandchild137 extends DeepGrandchild137 {}\necho \"X:\";\n$child = new DeepGreatgrandchild137;\n$alias =& $child->value;\necho $alias === 11 ? \"alias11|\" : \"bad-initial|\";\n$alias = \"word\";\necho $child->value === \"word\" ? \"live-word|\" : \"bad-live|\";\nunset($child);\necho \"Z|\";\n",
+      "source_sha256": "1340a187159e7da9dcb2bd1f0042ffbdc1bc42e911cbe7fa2faaf800e5f60b72"
+    },
+    {
+      "id": "untyped-latest-redeclaration",
+      "kind": "positive",
+      "source": "<?php\nclass ChainParent138 {\n    public $value = 7 {\n        &get { echo \"G:\", __CLASS__, \"/\", static::class, \"|\"; return $this->value; }\n    }\n}\nclass ChainChild138 extends ChainParent138 { public $value = 11; }\nclass ChainMiddle138 extends ChainChild138 {}\nclass ChainLeaf138 extends ChainMiddle138 {\n    public $value = 21;\n    public function __destruct() { echo \"D|\"; }\n}\necho \"U:\";\n$object = new ChainLeaf138;\n$alias =& $object->value;\necho $alias === 21 ? \"alias21|\" : \"bad-alias|\";\n$alias = \"word\";\n$copy = $object->value;\n$alias = 23;\necho $copy === \"word\" ? \"copy-word|\" : \"bad-copy|\";\necho $object->value === 23 ? \"live23|\" : \"bad-live|\";\nunset($object);\n$alias = \"free\";\necho $alias === \"free\" ? \"free|\" : \"bad-free|\";\necho $copy === \"word\" ? \"copy-still-word|Z|\" : \"bad-copy-after|\";\n",
+      "source_sha256": "d0cd29b0374752542980af861955ad2c094e60bb6a974c2d4e0455c1f51b3f78"
+    },
+    {
+      "id": "typed-latest-type-source",
+      "kind": "positive",
+      "source": "<?php\nclass TypedParent138 {\n    public int $value = 7 {\n        &get { echo \"G:\", __CLASS__, \"/\", static::class, \"|\"; return $this->value; }\n    }\n}\nclass TypedChild138 extends TypedParent138 { public int $value = 11; }\nclass TypedMiddle138 extends TypedChild138 {}\nclass TypedLeaf138 extends TypedMiddle138 {\n    public int $value = 21;\n    public function __destruct() { echo \"D|\"; }\n}\necho \"T:\";\n$object = new TypedLeaf138;\n$alias =& $object->value;\necho $alias === 21 ? \"alias21|\" : \"bad-alias|\";\n$alias = \"22\";\necho $alias === 22 ? \"coerced22|\" : \"bad-coercion|\";\ntry {\n    $alias = [];\n    echo \"bad-array|\";\n} catch (TypeError $error) {\n    echo \"type:\", $error->getMessage(), \"|\";\n}\necho $alias === 22 ? \"kept22|\" : \"bad-value|\";\nunset($object);\n$alias = \"free\";\necho $alias === \"free\" ? \"free|Z|\" : \"bad-free|\";\n",
+      "source_sha256": "dc44ba66c293a5e541c55d4c3f3d2a119e3ea1bd0e1f1620d41a80a68c54e23b"
+    },
+    {
+      "id": "mixed-unchanged-redeclaration",
+      "kind": "positive",
+      "source": "<?php\nclass MixedParent138 {\n    public $value = 7 {\n        &get { echo \"G:\", __CLASS__, \"/\", static::class, \"|\"; return $this->value; }\n    }\n}\nclass MixedChild138 extends MixedParent138 {}\nclass MixedMiddle138 extends MixedChild138 { public $value = 31; }\nclass MixedLeaf138 extends MixedMiddle138 {\n    public function __destruct() { echo \"D|\"; }\n}\necho \"M:\";\n$object = new MixedLeaf138;\n$alias =& $object->value;\necho $alias === 31 ? \"alias31|\" : \"bad-alias|\";\n$object->value = 32;\necho $alias === 32 ? \"alias32|\" : \"bad-write|\";\nunset($object);\n$alias = \"free\";\necho $alias === \"free\" ? \"free|Z|\" : \"bad-free|\";\n",
+      "source_sha256": "5d77ccd72db776da0ef199e0a87ff355e49cba9c7c732921425cad512e38c946"
+    },
+    {
+      "id": "deep-rebind-error",
+      "kind": "positive",
+      "source": "<?php\nclass RebindParent138 {\n    public $value = 7 {\n        &get { echo \"G|\"; return $this->value; }\n    }\n}\nclass RebindChild138 extends RebindParent138 {}\nclass RebindMiddle138 extends RebindChild138 { public $value = 41; }\nclass RebindLeaf138 extends RebindMiddle138 {\n    public function __destruct() { echo \"D|\"; }\n}\necho \"R:\";\n$object = new RebindLeaf138;\n$replacement = 17;\ntry {\n    $object->value =& $replacement;\n    echo \"bad-rebind|\";\n} catch (Error $error) {\n    echo \"error:\", $error->getMessage(), \"|\";\n    echo $error->getLine() === 16 ? \"line|\" : \"bad-line|\";\n    echo $error->getFile() === __FILE__ ? \"file|\" : \"bad-file|\";\n}\necho $object->value === 41 ? \"kept41|\" : \"bad-value|\";\n$replacement = 19;\necho $object->value === 41 ? \"separate41|\" : \"bad-rebound|\";\necho $replacement === 19 ? \"rhs19|\" : \"bad-rhs|\";\nunset($object);\necho \"Z|\";\n",
+      "source_sha256": "5f17033f51a7efd58a479a92139c411f5b9f6c72b42fa59cabf3789028b7ea41"
+    },
+    {
+      "id": "hook-bearing-intermediate-control",
+      "kind": "boundary",
+      "source": "<?php\nclass HookParent138 {\n    public $value = 7 {\n        &get { echo \"P|\"; return $this->value; }\n    }\n}\nclass HookChild138 extends HookParent138 {\n    public $value = 11 {\n        &get { echo \"C|\"; return $this->value; }\n    }\n}\nclass HookLeaf138 extends HookChild138 {}\n$object = new HookLeaf138;\n$alias =& $object->value;\necho $alias;\n",
+      "source_sha256": "19c996a186748f0b720c3a92fbe36aba63bbdc861afad8474a82d4e6a465c978"
+    },
+    {
+      "id": "changed-type-static-control",
+      "kind": "boundary",
+      "source": "<?php\nclass TypeParent138 {\n    public int $value = 7 {\n        &get { return $this->value; }\n    }\n}\nclass TypeChild138 extends TypeParent138 { public string $value = \"bad\"; }\n$object = new TypeChild138;\necho $object->value;\n",
+      "source_sha256": "93bf7e852dce89788d075e8d0ae93cb41ab55bfda94eed3bfde3e8a65cc1952b"
+    }
+  ]
+}
