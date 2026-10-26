@@ -214,8 +214,25 @@ No copy fold, task/schema or shared trace/ownership rule changes. The
 binds four exact originals and 533 premises at 46a59b565/runtime38e5756d: five real
 CONFIG errors, actual caller/snapshot/trace COW endings and two reached reference
 updates. All checks pass on their first attempts; the unchanged Unsupported baseline
-retains zero credit. Nested arrays, objects, legacy PSTRING leaves and
-owner/named/packed/FCC forms remain partial.
+retains zero credit. This ownerless validation leaves nested arrays, objects,
+legacy PSTRING leaves and other owner/FCC, named or packed forms partial.
+
+Captured intrinsic query Closures now reject the same bounded positional ARRAY
+names through a disjoint owning classifier and the existing live/source/payload
+guards. Selection and packs stay empty, and owning PIPE calls are excluded.
+Strict ordinary, weak ordinary and explicit weak reception retain the raw array
+in the TypeError API trace; explicit calls also retain it in the wrapper frame.
+The selected callee survives argument effects, then its saved owner retires before
+catch. Captured DIRECT fields keep their earlier values across caller COW, while
+scalar ALIAS cells reflect shared writes. Independent API/wrapper payload copies
+can COW without changing the original trace. Runtime arrays and embedded reference
+cells retire when their last owners disappear; string birth records remain
+nonowning history. Caller destinations retain their prior values and a separate
+captured string reader recovers. Existing ownerless behavior, literal-fact checks,
+error allocation, roots, tasks and schema are unchanged.
+[Captured array-query review](../../coverage/semantics/constant-owned-array-query-review.json).
+Nested/object/legacy-string leaves and named/packed/PIPE or wider call forms stay
+outside this captured route.
 
 Positional `define` with two/three arguments now rejects the same bounded flat
 array-name domain before optional flag reception or registration. Candidates and

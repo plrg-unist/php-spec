@@ -12,6 +12,8 @@ dec $config_aggregate_entered(pstate, pcallcontext?, pframe*, pcalltarget, porig
 dec $config_aggregate_context(pstate, pcallcontext) : bool
 dec $config_aggregate_call(pstate, pconfigaggregate, ptask*) : pstate
 dec $config_aggregate_return_allowed(pstate, pconfigaggregate) : bool
+dec $config_aggregate_generator_return_allowed(pstate, pconfigaggregate) : bool
+dec $config_generator_scope(pstate, pconfiggenerator) : bool
 dec $config_aggregate_promote(pstate, pconfigaggregate, ptask*) : pstate
 dec $config_aggregate_discard(pstate, pconfigaggregate) : pstate
 
@@ -140,11 +142,25 @@ def $config_aggregate_return_allowed(S, pconfigaggregate) = true
   -- if $($heap_owners($heap_graph(S), HOBJECT n) > 1)
   -- if $config_iterator_start(S, pconfigaggregate.CALL, pconfigaggregate.INPUT, n)
 def $config_aggregate_return_allowed(S, pconfigaggregate) = false -- otherwise
+;; The owned return temporary becomes Generator DATA after native get_iterator
+;; copies it and retires that temporary. INPUT remains the historical Aggregate CV.
+def $config_aggregate_generator_return_allowed(S, pconfigaggregate) = true
+  -- if $config_aggregate_valid(S, pconfigaggregate)
+  -- if $config_aggregate_owners(S, pconfigaggregate, 1)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $($heap_owners($heap_graph(S), HOBJECT n) > 1)
+  -- if $config_generator_scope(S, {CALL pconfigaggregate.CALL, OBJECT n, INPUT pconfigaggregate.INPUT, ITEMS eps})
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_FRESH /\ pgenerator.DELEGATE = eps
+def $config_aggregate_generator_return_allowed(S, pconfigaggregate) = false -- otherwise
 def $config_aggregate_promote(S, pconfigaggregate, ptask_tail*) = S[.ITERATORS = S.ITERATORS ++ [OBJECTITER S.NEXTITER n 0 false]][.NEXTITER = $(S.NEXTITER + 1)][.TODO = (CONFIG_ITERATOR {CALL pconfigaggregate.CALL, ITERATOR S.NEXTITER, OBJECT n, INPUT pconfigaggregate.INPUT, ITEMS eps, CURRENT (KNOWN PNULL), KEY (KNOWN PNULL)} "rewind-start") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_aggregate_return_allowed(S, pconfigaggregate)
   -- if S.RESULT = KNOWN (POBJECT n)
+def $config_aggregate_promote(S, pconfigaggregate, ptask_tail*) = S[.TODO = (CONFIG_GENERATOR {CALL pconfigaggregate.CALL, OBJECT n, INPUT pconfigaggregate.INPUT, ITEMS eps} "rewind") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $config_aggregate_generator_return_allowed(S, pconfigaggregate)
+  -- if S.RESULT = KNOWN (POBJECT n)
 def $config_aggregate_promote(S, pconfigaggregate, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "CONFIG Aggregate return outside shared initialized Iterator domain"]
-  -- if ~$config_aggregate_return_allowed(S, pconfigaggregate)
+  -- if ~$config_aggregate_return_allowed(S, pconfigaggregate) /\ ~$config_aggregate_generator_return_allowed(S, pconfigaggregate)
 rule PhpStep/config-aggregate-result: S ~> $config_aggregate_promote(S, pconfigaggregate, ptask_tail*)
   -- if S.TODO = (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*
 

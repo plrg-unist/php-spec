@@ -39,8 +39,19 @@ An outside NEXT before the first yield fails both native initialization and resu
 chaining two Errors; with an existing cache only resume fails. The
 [transfer review](../../coverage/semantics/generator-fiber-transfer-review.json)
 keeps the original pre-target observer refusal separate from the reached transfer
-fence. Helper/delegated contexts, reference caches and wider close/collection histories
-remain unvalidated.
+fence. Method/Closure helpers, delegated contexts, reference caches and wider
+close/collection histories remain unvalidated.
+
+Ordinary named helpers above that body also survive Fiber transfer. Each genuine
+caller frame is projected only for local validation; the real VM keeps all helper
+locals, parameters and continuations. Full-prefix flatness and one resumer prevent
+a duplicate or nested marker from disappearing during the query. One/two helper
+frames retain two/three independent parameter cells for the same object; normal
+returns or supplied-Throwable unwinding retire them in actual order. The
+[helper review](../../coverage/semantics/generator-fiber-helper-transfer-review.json)
+keeps native discovery, the genuine refusal and source/state cuts separate.
+Method/Closure helpers, by-reference returns, delegated/cache/other-API histories,
+CONFIG consumers and wider close/collection remain unvalidated.
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;

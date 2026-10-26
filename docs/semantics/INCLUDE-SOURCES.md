@@ -1199,7 +1199,7 @@ recorder files remain unavailable, without reconstruction or replay.
 Last-owner finish and cleanup stop explicitly before releasing their retained
 roots; wider retirement is partial. Both Generator controls retain their Source87
 Unsupported cuts; direct Generator CONFIG is admitted below, while a
-Generator-producing IteratorAggregate remains Unsupported. At the Source87 cut, builtin WeakMap still
+getIterator that is itself a generator function remains Unsupported. At the Source87 cut, builtin WeakMap still
 received a false TypeError; the increment below corrects that classification and
 bounded producers. Ordinary non-Traversable TypeError is preserved. Named keys,
 nonstring/reference/owning values, additional
@@ -1234,7 +1234,7 @@ the later full model; no accepted replay occurs. ARRAY entries, wider object/key
 forms, temporary operands, multiple packs, loss of external map/key/callee owners,
 GC callbacks and
 other CONFIG/Traversable producers remain partial. Existing stdClass TypeError
-and Generator-producing Aggregate Unsupported control stay disjoint;
+and the generator-function getIterator Unsupported control stay disjoint;
 their earlier executions are not renewed.
 
 The [Aggregate CONFIG producer](../../coverage/semantics/config-aggregate-iterator-unpack-review.json)
@@ -1264,7 +1264,7 @@ The original owned154 timeout remains inconclusive0; accepted cases and native
 observations were not replayed. References/temporaries, recursive or invalid
 returns, Generator/owning currents, named keys, extra packs/arguments, other
 callees and wider cleanup/GC/diagnostic histories remain partial. Existing direct
-Iterator, WeakMap and Generator-producing Aggregate controls keep their cuts.
+Iterator, WeakMap and generator-function getIterator controls keep their cuts.
 
 The [native Generator CONFIG consumer](../../coverage/semantics/config-generator-unpack-review.json)
 admits one initialized CV containing a fresh, named, zero-argument, non-byref
@@ -1288,7 +1288,35 @@ original conditions retain `3e1e67dee`, first attempts. Six source-derived parts
 contain523 physical conditions, including56 setup with no coverage credit.
 No native/accepted/control execution is renewed. The old Source87 direct-Generator
 PHP bytes and historical ID remain exact; only its Unsupported expectation is
-removed because the current fresh-CV consumer now admits it. Generator-producing
-Aggregate, references/temporaries, arguments/Closure/method producers, named keys,
+removed because the current fresh-CV consumer now admits it. Generator-function getIterator, references/temporaries,
+arguments/Closure/method producers, named keys,
 more sends, owning/reference caches, delegation/Fiber/GC and wider diagnostics or
 last-owner lifetimes remain partial; paused boundaries are unchanged.
+
+The [Aggregate-returned Generator bridge](../../coverage/semantics/config-aggregate-generator-unpack-review.json)
+admits a non-generator by-value getIterator returning an externally retained
+fresh named zero-argument Generator. The real returned RESULT owner transfers
+into the existing Generator DATA record; no Aggregate pin, fake PHP ARRAY, public
+cursor or direct-Generator CV certificate is added. Historical INPUT remains the
+original Aggregate CV even after it becomes23, while the Generator CV can become17.
+Existing integer-key/string streaming, terminal resume and reception then apply.
+
+The new admission authenticates the Aggregate callback/source, selected callee,
+actual returned Generator, external owners and fresh phase. The old Iterator
+promotion stays exact and disjoint. Lost Aggregate/callee/returned-Generator
+owners and invalid phase/type/source stop at the raw handoff boundary with the
+original task/result. Existing Generator cleanup restoration/blocking protects
+later last-DATA/callee boundaries; driver finalization is a separate operation.
+
+An Exception allocated in getIterator line14 retains its genuine method frame
+at unpack line24 when the Generator later throws it after both sends. No new
+Generator/API/__invoke frame replaces that saved trace. Same identity/result99,
+precision7, discarded DATA and saved-setter recovery7→9 are validated.
+Native3/genuine Unsupported0 retain `98c81eb73`; strict414/source3 and all475
+original conditions retain `1de318e67` (544 physical,69 source-derived setup).
+One invalid taskset wrapper stopped before Python; its log/exit remain zero-credit,
+and all six parts passed their first actual evaluations with unchanged90 caps.
+Native/genuine/accepted checks were not replayed; all five original genuine files
+remain preserved. A getIterator that is itself a generator function, nonfresh or
+owning/temporary/Closure/method producers, wider sends/values/lifetimes and paused
+boundaries remain partial or unchanged.

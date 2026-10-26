@@ -605,7 +605,7 @@ current value unsent, preserves the same Exception and cancels the assignment.
 The first slice uses borrowed CV operands, plain string values and external
 Iterator/callee owners. Four source agreements and 742 original state premises
 pass at their recorded Source87 cuts. Source90 admits the old direct Generator
-control; Generator-producing Aggregate remains Unsupported. Earlier
+control; generator-function getIterator remains Unsupported. Earlier
 fixture/timeouts retain zero credit. Builtin Traversable classification and wider
 producers remain open.
 
@@ -628,6 +628,15 @@ reception with its genuine producer trace and preserved assignment/identity,
 then permits saved-setter recovery. Native3/source3, strict413 and 467 original
 state conditions pass (523 physical, 56 setup), with no retry. The initial
 Unsupported comparison remains zero; wider caches, producers and lifetimes remain partial.
+
+[Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
+now transfer a real non-generator getIterator result into native Generator DATA.
+Both producer and Generator effects preserve the selected setter and historical
+input, and terminal resume finishes before API entry. An Exception allocated in
+getIterator keeps that original trace when the Generator later throws it; identity,
+assignment and setter recovery survive. Native3/source3, strict414 and 475 original
+state conditions pass (544 physical, 69 setup). Wider producers and lifetimes
+remain partial.
 
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
@@ -1986,6 +1995,10 @@ Direct named Generator bodies now preserve their literal CURRENT/NEXT resumer
 when they suspend inside a Fiber. Normal resume and supplied-Throwable injection
 restore that same stack; fresh reentry chains two Errors while cached reentry
 keeps one. [Transfer review](coverage/semantics/generator-fiber-transfer-review.json).
+Ordinary named helper frames above that Generator now retain their real caller
+scopes across Fiber transfer. Distinct parameter cells preserve a shared object
+through normal returns or supplied-Throwable finally unwinding. [Helper transfer
+review](coverage/semantics/generator-fiber-helper-transfer-review.json).
 [Arrow Generator311](docs/semantics/ARROW-GENERATORS.md) validates eager
 parameters, deferred captures, implicit yield/delegation returns and original
 signatures. Value warnings retain the same Throwable, cached key and closed
@@ -2073,6 +2086,12 @@ authenticated string-carrier leaves, including live scalar reference cells.
 [Four source agreements and 533 state premises](coverage/semantics/constant-query-array-name-review.json)
 cover raw array traces, caller/trace COW and shared reference updates. Nested,
 object/legacy-string leaves and wider call forms remain open.
+Captured query Closures reject the same bounded positional arrays while retaining
+their selected callee through argument effects. Raw API and explicit wrapper
+payloads preserve the captured DIRECT snapshot; COW writes separate those copies,
+while scalar ALIAS cells stay shared. Runtime arrays retire after their final
+owners, caller destinations retain their prior values, and a captured string
+reader recovers. [Captured array-query review](coverage/semantics/constant-owned-array-query-review.json).
 The same flat array-name domain now raises TypeError in positional `define()`
 with primitive candidates and omitted/primitive flags, before flag reception or
 registration. Later arguments still run and can change ordinary fields or shared
