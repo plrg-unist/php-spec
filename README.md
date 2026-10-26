@@ -2113,6 +2113,13 @@ when the outer variable changes; the callee and its captures survive CLOSED unti
 the Generator is destroyed. Supplied Throwables preserve identity through finally,
 and fresh outside NEXT retains both linked Errors.
 [Closure transfer review](coverage/semantics/generator-fiber-closure-transfer-review.json).
+Ordinary public method-created Generator bodies retain their actual receiver
+across direct Fiber suspension, resumption and supplied-Throwable injection.
+A closed self-yield cache owns the receiver independently; unhandled cleanup
+retires it before the caller's finally. Four source comparisons and 424 focused
+premises pass at their recorded cuts; the original genuine fresh-case refusal,
+fixture failure and diagnostic retain zero agreement credit.
+[Method receiver review](coverage/semantics/generator-fiber-transfer-review.json).
 [Arrow Generator311](docs/semantics/ARROW-GENERATORS.md) validates eager
 parameters, deferred captures, implicit yield/delegation returns and original
 signatures. Value warnings retain the same Throwable, cached key and closed
