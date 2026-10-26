@@ -615,6 +615,22 @@ object/scalar pairs that emit a Notice, reference properties, cycles and
 callback-capable objects remain Unsupported.
 [User-object trace review](../../coverage/semantics/throwable-trace-instance-comparison-review.json).
 
+Cold canonical `Exception`/`Error` traces also admit finite current object-valued
+property graphs below captured arguments, including objects inside a direct
+property array. Paired nodes are `stdClass` or the same methodless root source
+class with initialized public declared slots; their live slots and optional
+tables hold only direct primitive, valid string-carrier, array or object values.
+One path-local object/array stack, capped at 16 physical nodes including trace
+and table arrays, rejects cycles but admits shared children. Paired object
+classes and object/scalar positions are checked before the effectful physical
+Throwable slot walk. Standard handlers compare reached child tables by count,
+key and current value; later writes stay visible while copied source arrays
+retain COW snapshots. Thirteen new native/model normal sources and four exact
+Unsupported controls pass, with 286 source-reached premises and four raw steps.
+References, mixed classes, object/scalar Notices, cycles, warm caches, previous
+links and pending comparisons remain outside this bound.
+[Nested object graph review](../../coverage/semantics/throwable-trace-object-graph-comparison-review.json).
+
 Warm caches and nonempty builtin traces now meet in the same physical slot
 scan. Same-kind canonical `Exception`/`Error` pairs with null previous values
 admit finite `DIRECT` trace graphs containing primitive or valid string-carrier
