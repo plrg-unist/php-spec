@@ -538,10 +538,11 @@ records the normal-only boundary and the remaining wider Throwable cases.
 Nonempty builtin traces also compare through the seven declared slots when
 both canonical trace graphs contain only direct null, bool, int, float or string
 argument snapshots; string carriers must have valid identities. The allocated
-trace, frame and args arrays retain Zend's
-count, key and value order, including named argument keys. This remains a
-normal, nonpending, cold-cache and null-previous path; object/array arguments
-and wider Throwable graphs stay outside it.
+trace, frame and args arrays retain Zend's count, key and value order, including
+named argument keys. The path requires normal, nonpending completion, cold caches
+and null previous values; object/array arguments
+and wider Throwable graphs stay outside it. The [trace comparison review](../../coverage/semantics/throwable-trace-comparison-review.json)
+records the tested boundary.
 
 [Builtin and inherited Throwable string casts](../../coverage/semantics/pending-throwable-comparison-review.json)
 also skip their internal handler in this authenticated pending remainder. The
