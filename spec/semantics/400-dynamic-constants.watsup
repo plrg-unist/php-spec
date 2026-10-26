@@ -1286,7 +1286,8 @@ def $dynamic_owned_global_query_valid(S, pconfigcall) = true
 def $dynamic_owned_global_query_valid(S, pconfigcall) = true
   -- if pconfigcall.KIND <- [INTRINSIC_CONSTANT, INTRINSIC_DEFINED]
   -- if pconfigcall.OWNER =/= eps /\ pconfigcall.SELECTION = eps /\ pconfigcall.INDEX = 1
-  -- if pconfigcall.PACKS = [pconfigpack] /\ pconfigpack.INDEX = 0
+  -- if pconfigcall.PACKS = [pconfigpack]
+  -- if pconfigpack.INDEX = 0
   -- if pconfigpack.ITEMS = [ENTRY pkey (DIRECT pvalue_query)]
   -- if ~$pipe_site(S, pconfigcall.SITE)
   -- if $config_invoke_valid(S, pconfigcall)
