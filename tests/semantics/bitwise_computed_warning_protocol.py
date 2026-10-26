@@ -144,33 +144,33 @@ def conditions(name, program, path, stdout):
     checks += ['S_begin = S_begin_atomic', '$call_descriptors_valid(S_begin)']
     seek('S_first', 'S_begin', 1)
     checks += [
-        'S_first.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation INTEGER_LEFT pconversion_first 0) :: ptask_tail*',
-        'pconversion_first.INPUT = PFLOAT ' + str(RIGHT_BITS),
-        'pconversion_first.VALUE = 5', '|pconversion_first.NOTICES| = 1',
-        '$integer_warning_valid(S_first, pintegeroperation, INTEGER_LEFT, pconversion_first, 0)',
-        '~$integer_warning_valid(S_first, pintegeroperation, INTEGER_LEFT, pconversion_first[.VALUE = 6], 0)',
-        '$task_nodes(INTEGER_OPERATOR_WARNING pintegeroperation INTEGER_LEFT pconversion_first 0) = eps',
+        'S_first.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation INTEGER_LEFT pintegerconversion_first 0) :: ptask_tail*',
+        'pintegerconversion_first.INPUT = PFLOAT ' + str(RIGHT_BITS),
+        'pintegerconversion_first.VALUE = 5', '|pintegerconversion_first.NOTICES| = 1',
+        '$integer_warning_valid(S_first, pintegeroperation, INTEGER_LEFT, pintegerconversion_first, 0)',
+        '~$integer_warning_valid(S_first, pintegeroperation, INTEGER_LEFT, pintegerconversion_first[.VALUE = 6], 0)',
+        '$task_nodes(INTEGER_OPERATOR_WARNING pintegeroperation INTEGER_LEFT pintegerconversion_first 0) = eps',
     ]
     step('S_dispatch_first', 'S_first')
     checks += [
         '$computed_frontier(S_dispatch_first, 2)',
-        'S_dispatch_first.TODO = (ERROR_HANDLER_INVOKE pcall_first) :: ptask_tail*',
-        'pcall_first.RESUME = INTEGER_OPERATOR_WARNING pintegeroperation INTEGER_LEFT pconversion_first 1',
-        'pcall_first.LINE = 24', 'pcall_first.LEVEL = 8192',
-        'pcall_first.MESSAGE = $ptascii("Implicit conversion from float 5.5 to int loses precision")',
-        '$error_call_valid(S_dispatch_first, pcall_first)',
-        '~$error_call_valid(S_dispatch_first, pcall_first[.LINE = 25])',
+        'S_dispatch_first.TODO = (ERROR_HANDLER_INVOKE perrorcall_first) :: ptask_tail*',
+        'perrorcall_first.RESUME = INTEGER_OPERATOR_WARNING pintegeroperation INTEGER_LEFT pintegerconversion_first 1',
+        'perrorcall_first.LINE = 24', 'perrorcall_first.LEVEL = 8192',
+        'perrorcall_first.MESSAGE = $ptascii("Implicit conversion from float 5.5 to int loses precision")',
+        '$error_call_valid(S_dispatch_first, perrorcall_first)',
+        '~$error_call_valid(S_dispatch_first, perrorcall_first[.LINE = 25])',
     ]
     seek('S_entered_first', 'S_dispatch_first', 9)
     checks += ['$computed_frames(S_entered_first.FRAMES, 1)', 'S_entered_first.CURRENT =/= eps']
     seek('S_return_first', 'S_entered_first', 3)
     checks += [
-        'S_return_first.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation INTEGER_LEFT pconversion_first 1) :: ptask_tail*',
+        'S_return_first.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation INTEGER_LEFT pintegerconversion_first 1) :: ptask_tail*',
         'S_return_first.STORE[n_left] = DEFINED (PINT 99)',
         'S_return_first.STORE[n_right] = DEFINED (PFLOAT ' + str(CHANGED_BITS) + ')',
         'S_return_first.STORE[n_calls] = DEFINED (PINT 1)',
         'S_return_first.STORE[n_v] = DEFINED (PINT 100)',
-        '$integer_warning_valid(S_return_first, pintegeroperation, INTEGER_LEFT, pconversion_first, 1)',
+        '$integer_warning_valid(S_return_first, pintegeroperation, INTEGER_LEFT, pintegerconversion_first, 1)',
         '$integer_pointer_value(S_return_first, pintegeroperation.RIGHTPOINTER) = (PFLOAT ' + str(CHANGED_BITS) + ')',
         '$integer_pointer_value(S_return_first, pintegeroperation.LEFTPOINTER) = (PFLOAT ' + str(LEFT_BITS) + ')',
         '$computed_diagnostics(S_return_first.EVENTS) = 1',
@@ -178,22 +178,22 @@ def conditions(name, program, path, stdout):
     ]
     seek('S_second', 'S_return_first', 5)
     checks += [
-        'S_second.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation (INTEGER_RIGHT 5) pconversion_second 0) :: ptask_tail*',
-        'pconversion_second.INPUT = PFLOAT ' + str(LEFT_BITS),
-        'pconversion_second.VALUE = 12', '|pconversion_second.NOTICES| = 1',
-        '$integer_warning_valid(S_second, pintegeroperation, INTEGER_RIGHT 5, pconversion_second, 0)',
-        '$task_nodes(INTEGER_OPERATOR_WARNING pintegeroperation (INTEGER_RIGHT 5) pconversion_second 0) = eps',
+        'S_second.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation (INTEGER_RIGHT 5) pintegerconversion_second 0) :: ptask_tail*',
+        'pintegerconversion_second.INPUT = PFLOAT ' + str(LEFT_BITS),
+        'pintegerconversion_second.VALUE = 12', '|pintegerconversion_second.NOTICES| = 1',
+        '$integer_warning_valid(S_second, pintegeroperation, INTEGER_RIGHT 5, pintegerconversion_second, 0)',
+        '$task_nodes(INTEGER_OPERATOR_WARNING pintegeroperation (INTEGER_RIGHT 5) pintegerconversion_second 0) = eps',
         '$integer_pointer_value(S_second, pintegeroperation.LEFTPOINTER) = (PFLOAT ' + str(LEFT_BITS) + ')',
     ]
     step('S_dispatch_second', 'S_second')
     checks += [
         '$computed_frontier(S_dispatch_second, 6)',
-        'S_dispatch_second.TODO = (ERROR_HANDLER_INVOKE pcall_second) :: ptask_tail*',
-        'pcall_second.RESUME = INTEGER_OPERATOR_WARNING pintegeroperation (INTEGER_RIGHT 5) pconversion_second 1',
-        'pcall_second.LINE = 24', 'pcall_second.LEVEL = 8192',
-        'pcall_second.MESSAGE = $ptascii("Implicit conversion from float 12.5 to int loses precision")',
-        '$error_call_valid(S_dispatch_second, pcall_second)',
-        '~$error_call_valid(S_dispatch_second, pcall_second[.MESSAGE = pcall_first.MESSAGE])',
+        'S_dispatch_second.TODO = (ERROR_HANDLER_INVOKE perrorcall_second) :: ptask_tail*',
+        'perrorcall_second.RESUME = INTEGER_OPERATOR_WARNING pintegeroperation (INTEGER_RIGHT 5) pintegerconversion_second 1',
+        'perrorcall_second.LINE = 24', 'perrorcall_second.LEVEL = 8192',
+        'perrorcall_second.MESSAGE = $ptascii("Implicit conversion from float 12.5 to int loses precision")',
+        '$error_call_valid(S_dispatch_second, perrorcall_second)',
+        '~$error_call_valid(S_dispatch_second, perrorcall_second[.MESSAGE = perrorcall_first.MESSAGE])',
     ]
     seek('S_entered_second', 'S_dispatch_second', 10)
     checks += ['$computed_frames(S_entered_second.FRAMES, 2)', 'S_entered_second.CURRENT =/= eps']
@@ -214,8 +214,8 @@ def conditions(name, program, path, stdout):
         ]
     else:
         checks += [
-            'S_post.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation (INTEGER_RIGHT 5) pconversion_second 1) :: ptask_tail*',
-            '$integer_warning_valid(S_post, pintegeroperation, INTEGER_RIGHT 5, pconversion_second, 1)',
+            'S_post.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation (INTEGER_RIGHT 5) pintegerconversion_second 1) :: ptask_tail*',
+            '$integer_warning_valid(S_post, pintegeroperation, INTEGER_RIGHT 5, pintegerconversion_second, 1)',
             '$integer_binary(' + op + ', 12, 5) = IRESULT ' + str(result),
             '$integer_binary(' + op + ', 12, 2) = IRESULT ' + str({'BITAND': 0, 'BITOR': 14, 'BITXOR': 14}[op]),
         ]
