@@ -73,8 +73,8 @@ row can change independently. The same Iterator mechanism applies to an
 Iterator returned by an Aggregate getter. Three exact source agreements and
 273 reached conditions (three raw steps) cover these cases in the
 [reference-cache review](../../coverage/semantics/array-traversable-reference-cache-review.json).
-By-reference current results and Generator caches retain their earlier scope;
-object, typed, proxy, cyclic and debt-bearing descendants remain partial.
+By-reference current results and object, typed, proxy, cyclic and debt-bearing
+descendants remain partial.
 
 `427-array-generator-unpack.watsup` adds ordinary named Generator bodies with
 received parameters and reference yields, using real borrowed native resumes.
@@ -101,6 +101,21 @@ payload/builder refusals retain their owners and stop. Delegation, direct
 Closure/method/factory-call operands, reference-CV acquisition and wider lifetimes remain
 partial. [Generator spread review](../../coverage/semantics/array-generator-unpack-review.json)
 retains the separate source/state cuts and the retired A52 refusal control.
+
+For a named by-value Generator, a yielded finite DIRECT array may also contain
+ordinary defined scalar reference cells. The old value validator and the new
+array branch are disjoint, and saved producer metadata excludes by-reference
+Generator functions even when one yield is by value. A held outside alias stays
+shared through COW; removing it permits a sole reference to unwrap in the
+detached copy. The Generator retains its yielded VALUE through CLOSED. Normal
+DATA release removes the final Generator owner after the body has unset its
+source CV; a WeakReference observes that retirement. On a supplied body throw,
+finally runs with the Generator live, then cleanup retires DATA and the partial
+builder and its scalar cell. An Aggregate getter returning a named Generator
+follows the same bounded route. Manual Generator methods, owning cached objects,
+cyclic/debt graphs and wider producer forms remain partial.
+Four original sources and 367 focused premises (four raw steps) are recorded in
+the [Generator reference-cache review](../../coverage/semantics/array-generator-reference-cache-review.json).
 
 The shared cache validator also admits nested graphs returned through the existing
 Aggregate promotions below. Runtime descendants cascade when their last physical

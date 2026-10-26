@@ -570,6 +570,17 @@ trace count, key and value order, including a source COW snapshot. This
 normal, nonpending path excludes object/reference/cyclic trace leaves and
 wider [warm trace graphs](../../coverage/semantics/throwable-warm-trace-comparison-review.json).
 
+Cold builtin `Exception`/`Error` pairs also compare finite `previous` chains.
+Every reached node must be a live, unmaterialized object of the same builtin
+kind with a physical empty string cache and allocated empty trace; each chain
+is acyclic and at most 16 nodes. The first six declared slots compare before
+`previous`. Null sorts below a link, shared object identity compares equal,
+and distinct links descend through the same slot order. Equal chains continue
+into later array entries; a nonzero inner result skips later casters. This
+normal, nonpending bound leaves warm or nonempty traces, mixed kinds, longer or
+cyclic chains, materialized tables and pending comparisons Unsupported.
+[Previous-chain review](../../coverage/semantics/throwable-previous-comparison-review.json).
+
 [Builtin and inherited Throwable string casts](../../coverage/semantics/pending-throwable-comparison-review.json)
 also skip their internal handler in this authenticated pending remainder. The
 failed cast gives object-after-string order without reading formatter fields,

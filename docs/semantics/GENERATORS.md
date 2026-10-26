@@ -146,9 +146,22 @@ the old cell. Normal resume preserves the original Exception, and
 including an independent cache-only release probe, agree with PHP 8.5.10,
 with 102 author source-reached state assertions and an unchanged by-value
 control. Admission requires a live cell, by-reference
-producer, one valid Throwable and direct named target. Other producer,
-callee and delegated THROW forms remain partial.
+producer, one valid Throwable and direct named target. At that cut, other
+producer, callee and delegated THROW forms remained partial.
 [Reference THROW review](../../coverage/semantics/generator-fiber-reference-throw-transfer-review.json).
+
+A primed ordinary public method Generator can now enter `throw` with a
+by-value cache. The saved resumer owns the temporary Throwable and the
+authenticated `METHOD_TARGET` retains the actual receiver across the Fiber
+pause. A scalar-yield receiver dies at Generator completion; a self-yield
+cache retains it after close until Generator release. Normal pending-finally
+resume preserves the original exception, while `Fiber::throw` replaces it
+with the original as `Previous`. Four exact new sources, including an
+independent cache-replacement probe, and two source-reached states/157 checks
+distinguish these owners; the direct named by-value source remains an
+unchanged control. By-reference method, fresh method, Closure and delegated
+THROW forms remain partial.
+[Method THROW review](../../coverage/semantics/generator-fiber-method-throw-transfer-review.json).
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;

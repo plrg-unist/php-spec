@@ -76,9 +76,15 @@ one ordinary CV argument carrying the exact HALT name also uses the
 filename-local offset or absent-registration Error. Its captured string can be
 plain or an authenticated carrier; the Error trace retains the argument. The
 [CV-constant ledger](../../coverage/semantics/halt-constant-cv-review.json)
-records main, child and eval source isolation and reached call fronts. Other
-fixed argument shapes, owning/named/unpacked calls, repeated call-site cache
-history and ambiguous HALT registration remain partial. The
+records main, child and eval source isolation and reached call fronts. A direct
+fixed compiled-global call with one raw `name:` argument containing the exact
+HALT string also follows that filename-local lookup. The named slot is
+authenticated by the existing CONFIG call shape; an unknown name fails during
+argument binding before HALT lookup. The
+[named-call ledger](../../coverage/semantics/halt-named-review.json) records the
+positive and absent sources, original Error trace and wrong-name control. Other
+fixed argument shapes, owning/unpacked calls, wider named forms, repeated
+call-site cache history and ambiguous HALT registration remain partial. The
 [lookup ledger](../../coverage/semantics/halt-lookup-review.json) binds two original
 sources and their reached state checks, keeping counterfactual history/source
 projections separate from execution.
