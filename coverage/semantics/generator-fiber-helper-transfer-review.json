@@ -1,0 +1,153 @@
+{
+  "milestone": "Iterator54: ordinary helper frames above a Generator Fiber resumer",
+  "status": "accepted-private",
+  "scope": "Ordinary named nongenerator helpers with by-value returns can suspend inside a direct named Generator entered by zero-argument CURRENT/NEXT. Each genuine caller scope is projected locally while the real VM retains its full helper prefix and parameter cells.",
+  "implementation": {
+    "parent": "dd7a03e396b74c405d4aef47b7aa14b34ad29007",
+    "runtime_cut": "d5bfb71f1882bd8c21621d8b6ef345ee3ba81505",
+    "path": "spec/semantics/281-fibers.watsup",
+    "change": "Add one 21-line helper arm to fiber_generator_body_id. Named nongenerator/non-byref-return current and caller contexts must be source-valid; CALLSITE equals saved ORIGIN and caller locals/context are present. The complete prefix stays flat with one resumer, and neither current TODO nor the removed frame may contain a resume ID. constant_frame_scope drops exactly one helper frame only in the proof, then uses the unchanged direct endpoint recursively.",
+    "unchanged": "Original direct arm, ACTIVEFIBER admission, whole-VM validation, occurrence scans, roots, machine/schema/task layout, switch/resume/yield/return/throw/close/scheduler/collector bodies and CONFIG consumers remain unchanged. STARTPACK/BORROWED still fail the direct endpoint.",
+    "engine_evidence": [
+      "vendor/php-src/Zend/zend_fibers.c: executor-state capture/restore and suspend/resume_exception",
+      "vendor/php-src/Zend/zend_generators.c: zend_generator_resume keeps the executing call stack until yield/completion"
+    ]
+  },
+  "validation": {
+    "native": "Four first observations without stdout forecasts at6c9e. One helper above fresh CURRENT and two helpers above cached NEXT preserve strict normal resume/return/status and weak lifetime observations. Peer supplied Exception crosses helper finally into Generator catch/finally or both finally blocks and caller catch, with identical object/message/PreviousNULL. Token retires on actual natural or abrupt frame cleanup.",
+    "genuine": "Unchanged first source reaches checked Unsupported Fiber switch during an initializer, source loader or Generator continuation after START|F|CURRENT|G|H|. Original passedfalse/normal_agreements0, exit1/no timeout/empty stderr and stable inputs/HEAD are preserved; no agreement is credited.",
+    "source4": "Strict414 and four exact NORMAL stdout/stderr/exit agreements pass first attempts atd5b, reusing captured native4 without replay.",
+    "states": {
+      "author": [
+        165,
+        181
+      ],
+      "independent": [
+        138,
+        48,
+        134
+      ],
+      "original_planned": 646,
+      "original_local": 626,
+      "repeated_source_setup": 11,
+      "generic": 25,
+      "reported_total": 666,
+      "status": "passed",
+      "public_preprocessing_proofs": 4
+    },
+    "observations": "Real parked VMs contain three/four frames above the Fiber root, one underlying resumer and two/three distinct parameter cells owning the same Token. Each cell has one owner. Pure caller projections preserve shared STORE/OBJECTS/ALLOCATIONS and reach the original direct Generator proof; actual helper locals remain in the VM. Injection keeps Givenowner3 across real THROW_SEARCH/waiting throw API. Public0/1/2 and whole/split endings retain native cleanup order.",
+    "controls": "Same-heap origin, line, target and source-callsite corruptions refuse; missing locals/context, initializer and absent main owner keep their boundaries. Constructed duplicate or AT-hidden prefix resumers cannot vanish during projection. Duplicate stored VM occurrences reject uniqueness and add no valid copied-Fiber source claim.",
+    "maintenance": "No runtime correction follows source agreement. No cap change, native/source/historical replay or recorder view is used. All final reported666 premises pass at their original cuts.",
+    "fixture_timeout": "At b37 the original independent parked166 hits its unchanged120-second process cap, exit-9/timeouttrue with empty streams; reportfalse remains inconclusive/zero credit. Author165/181 already pass and remain closed; independent134 was unrun. At6d only that peer fixture is partitioned into structure138 and completion44. Every original166 condition is statically retained across the same source/stage; eleven minimal repeated bindings authenticate the completion recipe and its own whole/split equality. Each recipe seeks its own source state, with no cross-recipe identity claim. The unhandled134 source/checks remain unchanged. Affected peer gate3 passes; caps/code/source/native are unchanged. Structure138 passes at6d, while isolated completion44 also reaches120 seconds, with exit-9/timeouttrue and empty streams; that second report stays zero. An ignored, hash-bound diagnostic from the exact source/stage executes one drive_steps4000 and all original terminal/retirement/native-event checks within the unchanged120s cap. It is diagnostic-only/accepted_focused_credit0 and localizes cumulative public-entry preprocessing rather than a source/runtime discrepancy. No accepted author/structure/source group repeats. At151 only completion44 becomes48: four explicit call_entry_check and debt/output/freeze fixed-point conditions for NORMAL S/S_one precede raw drive_steps0/2/4000 comparisons. By40-control drive/drive_checked definitions these retain the original public semantic claims, including the completion recipe's exact whole/split equality; no budget, state/stage, source or runtime changes. Accepted structure138 and original unhandled134 assertions remain unchanged. Affected gate2, completion48 and previously unrun134 pass at151. Both original timeouts retain zero credit; the diagnostic adds no focused coverage credit.",
+    "report_accounting": "Sixteen executed reports: thirteen raw passes, the genuine Unsupported and two timeouts. Native-only and the diagnostic pass each have zero model/focused credit. Accepted focused666 = original626 local +11 repeated source bindings +4 preprocessing proofs +25 generic; all original646 planned premises are retained."
+  },
+  "tested_revisions": {
+    "native4_genuine_refusal": "6c9e9d215007e58ae212f1144836065bd154bdbb",
+    "strict414_source4": "d5bfb71f1882bd8c21621d8b6ef345ee3ba81505",
+    "bridge": "Runtime281 and four original source bytes retain d5b exactly across b37/6d/151. Accepted author346 stays b37 and structure138 stays6d. Only the timed-out completion recipe is equivalently factored at151; previously unrun134 first executes there. No accepted native/source/author/structure group repeats.",
+    "gate4_author346_peer166timeout": "b37ef5e8696031144d7fc30d6b2f591a2ed2dd49",
+    "factored_peer_gate2_completion48_injected134": "1511ab12351f50bee32ec377afb4abdf3fc73a7a",
+    "peer_gate3_structure138_completion44timeout_diagnostic0": "6d751153096717864ccb726046cbab907e2ad8e9"
+  },
+  "commands": {
+    "native": "taskset -c2 python3 .tools/native.py",
+    "genuine": "taskset -c2 python3 .tools/baseline.py --native-report .tools/generator-fiber-helper-transfer-native-ot8a3hx0/report.json",
+    "strict_source": "taskset -c2 python3 .tools/source-packet.py",
+    "gate": "taskset -c2 python3 .tools/state-elab.py",
+    "focused": "taskset -c2 python3 .tools/peer-completion-packet.py",
+    "original_focused": "taskset -c2 python3 .tools/state-packet.py",
+    "peer_gate": "taskset -c2 python3 .tools/peer-state-elab.py",
+    "diagnostic": "taskset -c2 python3 .tools/peer-continuation-diagnostic.py",
+    "factored_peer_gate": "taskset -c2 python3 .tools/peer-completion-elab.py"
+  },
+  "environment": {
+    "php": "8.5.10 CLI NTS64; source34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec": "da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL/cacheoff/encountered determinism",
+    "settings": "Serial CPU2; LC_ALL=C TZ=UTC, script encoding unset; project-local tools reused, no fresh portability claim.",
+    "caps": "Native8s; source100000 steps/model100s/process120s; strict120s; gate60s; focused120s/seek4000/finish4000.",
+    "binary_identities": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "reports": {
+    ".tools/fiber-state-review-0dbr21rk/report.json": {
+      "sha256": "fb7fbb3efda6f47c3487ad9ee4ae02565276f1fb79e5f3c25b7f6ef0f240e654",
+      "passed": false
+    },
+    ".tools/fiber-state-review-0fu_6m8m/report.json": {
+      "sha256": "89df51b76409f206fee9d0d6bba5dbb27cb4c9089a7fd1a2677eb86e200e1ca4",
+      "passed": true
+    },
+    ".tools/fiber-state-review-9w6y8_1m/report.json": {
+      "sha256": "2261bf9dd046c59576cb4b881ebccdf125550d6c36c6b22fa49cec1965016dea",
+      "passed": true
+    },
+    ".tools/fiber-state-review-aja9ejew/report.json": {
+      "sha256": "ff0d2232576a5a8d943f7be0aaa0c93d687effabf069fc159443f08d5ba715b8",
+      "passed": true
+    },
+    ".tools/fiber-state-review-anakpuvq/report.json": {
+      "sha256": "a08f3cdbca2495227fff46bbe54f5fb811d96ef646d66d57c8012797250e8e5f",
+      "passed": true
+    },
+    ".tools/fiber-state-review-m_591z5c/report.json": {
+      "sha256": "144fd0611772ce8670f669958b40814a3e89a613be3e3c46c72f80809971ecf6",
+      "passed": true
+    },
+    ".tools/fiber-state-review-orrecyz4/report.json": {
+      "sha256": "8761dd274840a356bd10e0ee5a580947a78877086b39c4392dcda2ede3fb123d",
+      "passed": true
+    },
+    ".tools/fiber-state-review-w5_x7uyg/report.json": {
+      "sha256": "f24ab00278620d67a3c7aec3ff1d501cbb00eab06ac1a0895cc442c127a98fb7",
+      "passed": false
+    },
+    ".tools/generator-fiber-helper-transfer-author-sl-x0b31vfv/report.json": {
+      "sha256": "60c4e13d2c9cdf9d2b4be6c5ebfbf48a2869ac4aaf5a6d673b65a3cb0cca2517",
+      "passed": true
+    },
+    ".tools/generator-fiber-helper-transfer-baseline-8f8pgjz5/report.json": {
+      "sha256": "6e36bab2baa4f3444be3cbda0c3459dd03a9a12459722024ddfd2711e4f862a4",
+      "passed": false
+    },
+    ".tools/generator-fiber-helper-transfer-completion-state-elab-bmm_or_h/report.json": {
+      "sha256": "4db87fc9f306c0c85d09240f5ac40b581cf6e7f2bd12582be8f690c079b91b9d",
+      "passed": true
+    },
+    ".tools/generator-fiber-helper-transfer-native-ot8a3hx0/report.json": {
+      "sha256": "27742a08ca0bfdd4ac91dec20c9a549b3a025a1c3d5f5c5035043084bf78ce58",
+      "passed": true
+    },
+    ".tools/generator-fiber-helper-transfer-peer-state-elab-yv6k09em/report.json": {
+      "sha256": "5a3f35b22fb693a6190d6282db9db57ee5e889066f2c0094ad176411b9f011b8",
+      "passed": true
+    },
+    ".tools/generator-fiber-helper-transfer-review-source-3nsu7qtt/report.json": {
+      "sha256": "d3541ba4c1e127383668c73352a70c58b1cda908634edd431e98cfd7c029dbf6",
+      "passed": true
+    },
+    ".tools/generator-fiber-helper-transfer-source-94o1spcn/report.json": {
+      "sha256": "59310e88c485f7891cbc1e229f7cb7d71ae7592df0edc30e2ff73f34907406a8",
+      "passed": true
+    },
+    ".tools/generator-fiber-helper-transfer-state-elab-2e0t1zfk/report.json": {
+      "sha256": "93574f43ab210b244ff0001295fa06fe6b03af9f09c31731b7f45fd4e0d89cfc",
+      "passed": true
+    }
+  },
+  "evidence": {
+    "archive": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-helper-transfer-54/private.tar.gz",
+      "bytes": 5090139,
+      "sha256": "6a99015571fd1f93fe56d0d379b011333c34599ad375e4148bb3cf868f4c0f6a"
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-helper-transfer-54/manifest.json",
+    "recovery": "Recover maintained sources/fixtures from Git6c9e/d5b/b37/6d/151; extract raw report folders and drivers at the recorded private path. No checkout, build tree or backup is included."
+  },
+  "remaining": "Method/Closure helpers, by-reference returns, delegated/reference-cache/other-API histories, CONFIG consumers, helper switching in close/request/GC and wider ownership remain unvalidated. Paused OP12/Source47/owned-NUL/undefined-byref-LIST/COMP88 remain untouched.",
+  "independent_review": "Replacement /root/iterator49_review independently reviewed native-first sources and observations, genuine reached refusal, helper/direct disjointness, full-prefix source/flatness/occurrence proof, strict/source/focused reliability, both timeout records, equivalent fixture factoring, bounded docs/inventory and final archive/publication; no blocker. Actual-tail selectors through a1c37edab/415 are disjoint; later composition requires only targeted interaction review."
+}

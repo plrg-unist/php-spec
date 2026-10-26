@@ -66,6 +66,15 @@ source-reached premises retain their separate cuts in the
 [transfer review](../../coverage/semantics/generator-fiber-transfer-review.json).
 Constructed duplicate carrier controls add no valid copied-Fiber source claim.
 
+Ordinary named, nongenerator helpers with by-value returns may now sit above that
+resumer. The local proof checks each function/callsite/saved-origin scope and
+projects exactly one present caller frame, while the actual VM and heap stay
+unchanged. Singleton/flatness checks cover the complete helper prefix, including
+nested task markers. The existing direct endpoint and occurrence scan remain
+unchanged. Four originals preserve normal one/two-level returns and supplied
+Throwable finally unwinding, where two or three distinct parameter cells own the
+same Token. [Helper transfer review](../../coverage/semantics/generator-fiber-helper-transfer-review.json).
+
 Private scoped descriptor validation checks shared live eval/class/directory
 contexts on the active VM. Its parked validation view clears loader contexts
 and separately rejects direct, wrapped and saved-frame markers; VM restoration
@@ -766,8 +775,9 @@ active or saved constant/default and autoload initialization. Module378 admits a
 retained foreach Generator's active close frame, authenticated by its genuine
 statement/line receipt and unique saved close ID while preserving one receiver
 owner. The direct named-body CURRENT/NEXT arm additionally preserves one normal
-resumer. Other active Generator execution, including helper calls, delegation,
-by-reference caches and other API roots, retains its previous boundary. Shared pending flags and wider parked ownership
+resumer, now also below ordinary named helper frames. Method/Closure helpers,
+by-reference returns, delegation, by-reference caches and other API roots retain
+their previous boundaries. Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not
 blanket blocked at this pin. Property and broader object consumers remain tracked

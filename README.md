@@ -1973,6 +1973,10 @@ Direct named Generator bodies now preserve their literal CURRENT/NEXT resumer
 when they suspend inside a Fiber. Normal resume and supplied-Throwable injection
 restore that same stack; fresh reentry chains two Errors while cached reentry
 keeps one. [Transfer review](coverage/semantics/generator-fiber-transfer-review.json).
+Ordinary named helper frames above that Generator now retain their real caller
+scopes across Fiber transfer. Distinct parameter cells preserve a shared object
+through normal returns or supplied-Throwable finally unwinding. [Helper transfer
+review](coverage/semantics/generator-fiber-helper-transfer-review.json).
 [Arrow Generator311](docs/semantics/ARROW-GENERATORS.md) validates eager
 parameters, deferred captures, implicit yield/delegation returns and original
 signatures. Value warnings retain the same Throwable, cached key and closed
