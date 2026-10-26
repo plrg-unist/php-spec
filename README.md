@@ -666,6 +666,14 @@ the original factory Exception trace survives terminal Generator throw. Three
 source comparisons and 506 maintained conditions pass (561 physical, 55 setup).
 Wider call forms, values and callback lifetimes remain partial.
 
+[CONFIG Generator initial states](coverage/semantics/config-generator-initial-state-review.json)
+now preserve an initialized CV's native acquisition order. Rewinding at the first
+yield reuses its cache without executing the body again. An advanced Generator
+acquires DATA then throws before sending even an invalid current value; a closed
+Generator rejects before DATA acquisition. Assignment, cached state, empty traces
+and setter recovery survive. Three source agreements and 361 original conditions
+pass (419 physical, 58 setup). Nonfresh temporary inputs and wider lifetimes remain partial.
+
 [WeakMap CONFIG unpacking](coverage/semantics/config-weakmap-unpack-review.json)
 now reaches INI_SET's zero-argument arity check for empty maps. A singleton map
 throws the object-key `Error` before copying its current value or entering the
