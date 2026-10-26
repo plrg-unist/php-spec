@@ -6,7 +6,7 @@
     "spec/semantics/394-aggregate-stringable-comparisons.watsup": "0ffce17ef2ba9d82e723357a0881848cb08b344656547c99e08f044e12a2ed5d"
   },
   "engine_basis": [
-    "Zend/zend_operators.c: convert_to_array uses the standard no-properties-hash builder without a property-hook exclusion.",
+    "Zend/zend_execute.h: zend_cast_zval_to_array implements explicit ARRAY casts through the same standard no-properties-hash fast path as Zend/zend_operators.c::convert_to_array, without excluding property hooks.",
     "Zend/zend_object_handlers.h: ZEND_STD_BUILD_OBJECT_PROPERTIES_ARRAY_COMPATIBLE requires the standard handlers/no physical hash.",
     "Zend/zend_object_handlers.c: zend_std_build_object_properties_array skips UNDEF, copies physical keys, unwraps singleton references and invokes no hook. zend_std_compare_objects retains inline one-sided UNDEF order1 when neither physical hash exists."
   ],
@@ -52,7 +52,7 @@
     "native_stdout": "B|C:1:1:1|R:1:1:1|A|",
     "stderr": "",
     "agreement_credit": 0,
-    "cause": "The exported array is already correct, but the old cast marks the source materialized, selecting hash count order\u22121 rather than later inline UNDEF order1.",
+    "cause": "The exported array is already correct, but the old cast marks the source materialized, selecting materialized hash comparison\u22121 rather than later inline UNDEF order1.",
     "limits": "Unchanged sole author original, CLI80/record90/2GiB after native6."
   },
   "compile": {

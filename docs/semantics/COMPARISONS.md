@@ -509,14 +509,6 @@ default Notice, virtual-only equality and count-first skip controls. Newly admit
 backing-hook Stringable continuations remain Unsupported; old public virtual-only
 eligibility and foreach hook boundaries stay unchanged.
 
-[No-table hook projections](../../coverage/semantics/hook-array-projection-review.json)
-preserve the original inline comparison route after an ARRAY cast. The cast builds
-a raw physical snapshot without invoking getters or materializing the object;
-a later comparison of an uninitialized typed slot against a defined slot therefore
-retains inline order1. Singleton/reference snapshot and cached-table controls
-complement that source witness. Derived forced-materialization and duplicate-row
-checks remain separate from actual source execution in the bounded review.
-
 The raw handler is disabled during its own body and restored before subsequent
 Notice dispatch. The original quiet-terminal cancellation remains available.
 A [bounded pending-exception remainder](../../coverage/semantics/pending-exception-comparison-review.json)
@@ -527,6 +519,15 @@ only events and the fatal snapshot may change. Builtin Throwable/string formatti
 materialization, cache updates, recursion and wider lifetime effects remain outside
 this adapter. Documentary receiver/leaf images add no owner;
 actual operands, cursor pins and callback selection retain their existing roots.
+
+[No-table hook projections](../../coverage/semantics/hook-array-projection-review.json)
+preserve the original inline comparison route after an ARRAY cast. The cast builds
+a raw physical snapshot without invoking getters or materializing the object;
+a later comparison of an uninitialized typed slot against a defined slot therefore
+retains inline order1. Singleton/reference snapshot and cached-table controls
+complement that source witness. Derived forced-materialization and duplicate-row
+checks remain separate from actual source execution in the bounded review.
+
 [Builtin and inherited Throwable string casts](../../coverage/semantics/pending-throwable-comparison-review.json)
 also skip their internal handler in this authenticated pending remainder. The
 failed cast gives object-after-string order without reading formatter fields,
