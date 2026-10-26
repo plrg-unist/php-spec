@@ -20,9 +20,9 @@ matcher/default-buffer controls. Two peer structs retain byte-identical070
 passes; three original fixture failures and genuine early-retirement0 stay
 separate. [Print lifetime review](coverage/semantics/print-stringable-lifetime-review.json).
 
-Publication is independently reviewed; composition over the released M156
-parent is awaiting exact candidate review. Private420 execution identities
-retain their accepted cuts. No positive-handler execution is claimed.
+Publication and exact composition over the released M156 parent are
+independently reviewed and integrated. Private420 execution identities retain
+their accepted cuts. No positive-handler execution is claimed.
 
 ## Integrated behavior and entrypoints
 
@@ -45,17 +45,16 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| OP91 | Source2/control1 and focused505 accepted; reviewed publication773e4e8a0 composed over7f3e, exact candidate review pending; writer only. |
-| CLASS131 | BYREF factory receiver cells: source4 and focused714 accepted; concise archive/publication preparing, no CPU/writer. |
+| CLASS131 | BYREF factory receiver cells: source4/focused714 and publication reviewed; next guarded writer window, no CPU. |
 | V110 | Iterator CV Closure::call431: source3 accepted; focused767/ten running serially onCPU3, no writer. |
-| Source96 | CLOSED Generator return-storage cleanup: source2 and426 maintained conditions accepted; archive/publication preparing, no CPU/writer. |
+| Source96 | CLOSED Generator return-storage cleanup: source2/426 accepted; publication handoff to OP implementer and class reviewer after CLASS131, no CPU/writer. |
 | A56 | CV Iterator last-DATA destructor lifetime: native4/genuine closed; runtime preparation, no CPU/writer. |
 | Iterator58 | Object-method Generator/Fiber: strict/author2 pass; peer2 source checks onCPU2, then direct full-reap handoff to M157. |
 | COMP128 | Hook-bearing raw ARRAY cast snapshot: native6/genuine packet onCPU4, no runtime edit/writer. |
 | M157 | Still-Many WeakMap KEY_R copies: frozen native3/genuine packet onCPU5 after A56's full release; no runtime edit/writer. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M156, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55, OP79/80/81/82/83/84/85/86/87/88/89/90, Source86/87/88/89/90/91/92/93/94/95, COMP118/119/120/121/122/124/125/126/127 and CLASS119/120/121/122/123/124/125/126/127/128/129/130 are integrated
+Iterator49/50/51/52/53/54/55/56/57, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M156, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55, OP79/80/81/82/83/84/85/86/87/88/89/90/91, Source86/87/88/89/90/91/92/93/94/95, COMP118/119/120/121/122/124/125/126/127 and CLASS119/120/121/122/123/124/125/126/127/128/129/130 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
