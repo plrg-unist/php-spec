@@ -7040,7 +7040,9 @@
         "spec/semantics/146-print-runtime.watsup",
         "spec/semantics/391-output-buffers.watsup",
         "spec/semantics/168-user-string-runtime.watsup",
-        "spec/semantics/397-output-handler-failures.watsup"
+        "spec/semantics/397-output-handler-failures.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/404-arithmetic-warning-continuations.watsup"
       ],
       "source_tests": [
         "tests/semantics/print_expressions.py",
@@ -7051,15 +7053,19 @@
         "tests/semantics/print_stringable_lifetime_cases.py",
         "tests/semantics/print_stringable_lifetimes.py",
         "tests/semantics/print_stringable_lifetime_review_cases.py",
-        "tests/semantics/print_stringable_lifetime_review.py"
+        "tests/semantics/print_stringable_lifetime_review.py",
+        "tests/semantics/print_nan_warning_cases.py",
+        "tests/semantics/print_nan_warnings.py"
       ],
-      "review": "Bounded ordinary print execution: constant integer1 retains ordered output effects through folding, nesting and reference-result demand; source-authenticated conversion lines and paused ownership guards. See print-review.json and SOURCE-PRINT.md. User-defined __toString, conversion callbacks and output-handler/lifecycle protocols remain core dependencies; no family closure. Default buffering391 adds shared byte routing; an actual PRINT_EMIT carrier frontier corrects146 to use string_bytes while retaining PINT1. The original interpreter failure remains zero credit and the affected original now agrees. Wider print consumers remain partial. OP91 retains a raw acquired Stringable from a noarg by-value untyped function through initially unbuffered used print emission, separately from cast/target owners. Text precedes real D, then protected print1 reaches the caller; borrowed VARIABLE unset in S keeps D-before-text timing, and supplied Sthrow has no text/print1 before same-Exception catch. Source2/control1/full420 retain fd1e99e85;505 recipe premises197/142/166 retain136383d11, including derived tuple/default-buffer controls. Three fixture failures remain0; no positive-handler execution or broader lifetime closure. See print-stringable-lifetime-review.json.",
+      "review": "Bounded ordinary print execution: constant integer1 retains ordered output effects through folding, nesting and reference-result demand; source-authenticated conversion lines and paused ownership guards. See print-review.json and SOURCE-PRINT.md. User-defined __toString, conversion callbacks and output-handler/lifecycle protocols remain core dependencies; no family closure. Default buffering391 adds shared byte routing; an actual PRINT_EMIT carrier frontier corrects146 to use string_bytes while retaining PINT1. The original interpreter failure remains zero credit and the affected original now agrees. Wider print consumers remain partial. OP91 retains a raw acquired Stringable from a noarg by-value untyped function through initially unbuffered used print emission, separately from cast/target owners. Text precedes real D, then protected print1 reaches the caller; borrowed VARIABLE unset in S keeps D-before-text timing, and supplied Sthrow has no text/print1 before same-Exception catch. Source2/control1/full420 retain fd1e99e85;505 recipe premises197/142/166 retain136383d11, including derived tuple/default-buffer controls. Three fixture failures remain0; no positive-handler execution or broader lifetime closure. See print-stringable-lifetime-review.json. OP94: Direct plain-CV NaN under named E_WARNING handler retains preformatted NAN bytes across source unset. Returning false defaults once then emits NAN and delivers strict print1; a supplied throw still emits NAN before catch but cancels outer assignment. Two exact originals and 135+120 genuine reached checks at 008798902 bind source/bits/line, handlers, default/output order, same Exception and explicit buffer-change refusal. See print-nan-warning-review.json. Reference/copied operands, buffer-changing callbacks and wider output lifetimes remain partial.",
       "helper_tests": [
         "tests/semantics/print_stringable_lifetime_protocol.py",
-        "tests/semantics/print_stringable_lifetime_state_review.py"
+        "tests/semantics/print_stringable_lifetime_state_review.py",
+        "tests/semantics/print_nan_warning_protocol.py"
       ],
       "evidence": [
-        "coverage/semantics/print-stringable-lifetime-review.json"
+        "coverage/semantics/print-stringable-lifetime-review.json",
+        "coverage/semantics/print-nan-warning-review.json"
       ]
     },
     {

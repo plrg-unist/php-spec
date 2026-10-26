@@ -1,0 +1,67 @@
+{
+  "milestone": "OP94 direct-CV NaN used-print Warning and output",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle/profile",
+  "status": "author source/focused passed; independent review pending",
+  "scope": "A named E_WARNING handler for a direct plain-CV NaN used-print operand. Cache formatted NAN bytes before warning; after a returning callback emit once and deliver print1. After a supplied throw, emit once before exception search and cancel the outer store. Both entry and completion require no output buffer; a callback-created buffer is explicit Unsupported.",
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_print",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_ECHO",
+    "vendor/php-src/Zend/zend_operators.c:__zval_get_string_func/zend_double_to_str"
+  ],
+  "tested_revision": "008798902e372af4c0ca1eff8cffcfd821200f83",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "modules_sha256": "f6abdff55b4c11646ce77ad6c86a8118c96a728d104ada85d595116f33542b71",
+    "module_count": 420
+  },
+  "native_pre": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-94/native-pre/report.json",
+    "sha256": "b647fc5016d648a53c325b8f85b6d927b8666e4fc1c202c63927176a5ff51603",
+    "result": "Two exit0/reaped originals. Returning false gives handler output, default Warning24, NAN then strict stored int1 after source unset. Supplied Exception20 gives handler output then NAN before catch, same object, unchanged outer100 and no default stderr."
+  },
+  "unchanged_baseline": {
+    "revision": "c0ffd00a5849a8a56ad66c231acf47b359b258d7",
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-94/baseline/report.json",
+    "sha256": "b96a5f2ade6e0c7cc0d3d3fffe9f71fbc29b0ecb132b212d1602932064975348",
+    "result": "Both original sources checked/frontend accepted, then model exit1 Unsupported exactly at error-handler ingress; zero agreement."
+  },
+  "accepted": {
+    "source_command": "python3 tests/semantics/print_nan_warnings.py --output /home/user/workspace/php-spec-evidence-archive/operators-94/source-008798902",
+    "source_report": "/home/user/workspace/php-spec-evidence-archive/operators-94/source-008798902/report.json",
+    "source_sha256": "3985c8472b1a4a0c091df5c3b01affe41a735819b4eaf0d0e01ee77db531e233",
+    "source": "Two original byte-exact stdout/stderr, checked/accepted normal exit0 agreements; no timeout or remaining process group.",
+    "focused_command": "python3 tests/semantics/print_nan_warning_protocol.py --output /home/user/workspace/php-spec-evidence-archive/operators-94/focused-008798902",
+    "focused_report": "/home/user/workspace/php-spec-evidence-archive/operators-94/focused-008798902/report.json",
+    "focused_sha256": "c7736b6a544d581fdd4d01a6a55faa3df81e13b0f6a083548914a2df8c90f7d6",
+    "focused": "Two genuine reached groups, 135 returning-false and 120 pending-throw conditions. Fresh source/bits/line, stage0 real CV and handler, stage1 historical bytes after source owner0/unallocated, default/output order, same live Exception through post-output THROW_SEARCH, no outer store, raw print1 and final EOF/budget0. Derived valid buffer states reject stage0 and return explicit Unsupported on normal/pending stage1."
+  },
+  "failed_attempts": [
+    {
+      "revision": "52e414e09",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-94/source-52e414e09/report.json",
+      "sha256": "619dd815005ee3f431973c9f3d4ef2409b83b739384b5deb573fd771cbb91831",
+      "reason": "SpecTec parser rejected missing forward pprintnanwarning syntax; zero agreement."
+    },
+    {
+      "revision": "cb94b4931",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-94/source-cb94b4931/report.json",
+      "sha256": "b1698998feb18dd76caab257f0536ddfcc72119e442503bdbd7b123c6c2a9051",
+      "reason": "SpecTec parser rejected print_nan_plan declaration after module146 use; zero agreement."
+    }
+  ],
+  "inputs_sha256": {
+    "spec/semantics/30-storage.watsup": "1d165c62de392be9dbb588243d0897d47ac4c9ea2a92198f7af77183fb897957",
+    "spec/semantics/146-print-runtime.watsup": "7ac36f687e27a97b4c01042c90d10cca7ac7e03d3622549ca8a6cfbf5fdfa5a7",
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "ed305fdc942d04066aee8512920b36e401dcc53ba4759eb51e7e019ed09fdb50",
+    "tests/semantics/print_nan_warning_cases.py": "e55cf52b01f9f247d9b14c02f5a4b29238906d79e53853df7b6ea57fabed685e",
+    "tests/semantics/print_nan_warning_protocol.py": "9e32a93efd02d21998bf46a66fd6f967c0afca6d24fc5984cad5970cf6f7b652",
+    "tests/semantics/print_nan_warnings.py": "015ecf28dd6c6928158f74f30777c051caf1d4223e37f2bab93abcd417df907c"
+  },
+  "remaining": "Only direct plain-CV NaN with a named handler and empty output buffers is claimed. Other producers, references, changed buffers/output callbacks, echo and broader lifetimes remain partial. The prepared zend_string identity is unobservable in this scalar/no-buffer slice; only its bytes are modeled."
+}

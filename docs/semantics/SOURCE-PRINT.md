@@ -43,6 +43,20 @@ Two acquired source agreements, one borrowed control and 505 recipe premises
 [lifetime review](../../coverage/semantics/print-stringable-lifetime-review.json).
 Other producer forms, positive-handler execution and wider lifetimes remain partial.
 
+A direct plain-CV NaN operand now stages its string-conversion Warning through a
+named handler. Zend formats `NAN` before the callback, and unbuffered `ZEND_ECHO`
+writes those bytes after it. A returning false handler can unset the CV: one
+default Warning precedes `NAN`, then used print delivers integer `1`. A handler
+that throws a supplied Exception still permits the cached `NAN` write before
+exception search, while the enclosing assignment stays unchanged. The saved
+bytes model the prepared string; its allocation identity cannot be observed in
+this scalar, initially and finally unbuffered route. If the callback changes
+output buffering, execution explicitly remains Unsupported. Two exact sources
+and 135+120 reached-state premises are recorded in the
+[NaN print review](../../coverage/semantics/print-nan-warning-review.json).
+References, computed producers, buffering callbacks and wider output lifetimes
+remain partial.
+
 Validation is separate by boundary: 20 author source comparisons, ten native
 compiler/lint comparisons with 51 source projections, and 15 independent reviewer
 source comparisons. Four paused stages check 61 assertions, with an independent
