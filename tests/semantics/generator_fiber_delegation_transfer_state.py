@@ -159,10 +159,28 @@ $heap_valid($heap_graph(S_done))
 $generator_saved_fiber_ids(S_done) = eps
 $generator_from_saved_fiber_claims(S_done) = eps
 ''')
-CASES = {'generator-fiber-fresh-native-link-parked-owners': {
+# Retain the full whole/split ending as a named core-required recipe. The
+# default tests structure and its real public 0/1/2 prefix without long completion.
+SHORT = ENDING[:ENDING.index('S_done = $drive_steps(S_one, 4000)')]
+COMPLETION_BINDINGS = checks(r"""
+pfiber.VM = (pfibervm)
+pfibervm.FRAMES = [pframe_parent, pframe_api, pframe_base]
+pframe_parent.TODO = (GENERATOR_RESUME pgeneratorop_child) :: (GENERATOR_FROM_RESULT n_parent porigin n_child) :: ptask_parent*
+$lookup(S.ENV, $ptascii("weak")) = (n_weak_cell)
+S.STORE[n_weak_cell] = DEFINED (POBJECT n_weak)
+S.OBJECTS[n_weak] = WEAKREFERENCE (n_token)
+""")
+CASES = {
+ 'generator-fiber-fresh-native-link-parked-structure': {
     'source': ROWS[FRESH]['source'], 'stage': STAGE,
-    'checks': [*BINDINGS, *REFUSALS, *ENDING, EVENTS],
-}}
+    'checks': [*BINDINGS, *REFUSALS, *SHORT],
+ },
+ 'generator-fiber-fresh-native-link-completion': {
+    'source': ROWS[FRESH]['source'], 'stage': STAGE,
+    'checks': [*COMPLETION_BINDINGS, *ENDING, EVENTS],
+ },
+}
+
 
 def run(selected):
     revision = subprocess.check_output(['git','rev-parse','HEAD'],cwd=review.ROOT,text=True).strip()
@@ -190,4 +208,7 @@ def run(selected):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--case',action='append')
-    raise SystemExit(0 if run(parser.parse_args().case) else 1)
+    selected = parser.parse_args().case
+    if selected is None:
+        selected = ['generator-fiber-fresh-native-link-parked-structure']
+    raise SystemExit(0 if run(selected) else 1)

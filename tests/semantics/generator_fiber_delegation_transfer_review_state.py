@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Reach native delegation resumers and claims across real Fiber transfers.
 
-Defaults cover parked two-edge structure and one-edge unhandled injection.
-The core-required two-edge completion recipe remains selectable with --case.
+Defaults cover structure and short budgets for parked two-edge delegation and
+one-edge unhandled injection. Both whole completions remain core-required and
+explicitly selectable with --case.
 """
 import argparse
 import hashlib
@@ -85,6 +86,8 @@ $generator_saved_fiber_ids(S_done) = eps
 $generator_from_saved_fiber_claims(S_done) = eps
 """)
 
+
+SHORT_ENDING = ENDING[:ENDING.index('S_done = $drive_steps(S_one, 4000)')]
 
 def chain(middle, name):
     levels = ['child', 'middle', 'parent'] if middle else ['child', 'parent']
@@ -300,7 +303,7 @@ CASES = {
                   '-- if S.STORE[n_fiber_cell] = DEFINED (POBJECT n_fiber) '
                   '-- if S.OBJECTS[n_fiber] = FIBER pfiber '
                   '-- if pfiber.STATUS = FIBER_SUSPENDED'),
-        'checks': [*PARKED, '$call_descriptors_valid(S)', '$heap_valid(H)'],
+        'checks': [*PARKED, '$call_descriptors_valid(S)', '$heap_valid(H)', *SHORT_ENDING],
     },
     'generator-fiber-delegation-two-edge-parked-completion': {
         'source': ROWS[HANDLED]['source'],
@@ -318,7 +321,21 @@ CASES = {
                   '-- if S.FIBERCALLERS = [pfibercaller] '
                   '-- if S.CURRENT = (pcallcontext_child) '
                   '-- if pcallcontext_child.NAME = $ptascii("DelegationLeaf55")'),
-        'checks': [*INJECTED, *ENDING, events(EVENTS[UNHANDLED])],
+        'checks': [*INJECTED, '$call_descriptors_valid(S)', '$heap_valid(H)', *SHORT_ENDING],
+    },
+    'generator-fiber-delegation-one-edge-injected-completion': {
+        'source': ROWS[UNHANDLED]['source'],
+        'stage': ('S.TODO = (THROW_SEARCH n_given) :: ptask_tail* '
+                  '-- if S.ACTIVEFIBER = (n_fiber) '
+                  '-- if S.FIBERCALLERS = [pfibercaller] '
+                  '-- if S.CURRENT = (pcallcontext_child) '
+                  '-- if pcallcontext_child.NAME = $ptascii("DelegationLeaf55")'),
+        'checks': [
+            'S.FRAMES = [pframe_child, pframe_parent, pframe_fiber]',
+            'pframe_child.TODO = (GENERATOR_RESUME pgeneratorop_child) :: (GENERATOR_FROM_RESULT n_parent porigin_parent n_child) :: ptask_child*',
+            '$lookup(S.ENV, $ptascii("token")) = (n_token_cell)',
+            'S.STORE[n_token_cell] = DEFINED (POBJECT n_token)',
+            *ENDING, events(EVENTS[UNHANDLED])],
     },
 }
 
@@ -356,7 +373,7 @@ if __name__ == '__main__':
     parser.add_argument('--case', action='append')
     selected = parser.parse_args().case
     if selected is None:
-        # Full two-edge completion remains core-required, explicitly selectable.
+        # Whole completions remain core-required, explicitly selectable.
         selected = ['generator-fiber-delegation-two-edge-parked-structure',
                     'generator-fiber-delegation-one-edge-injected-unhandled']
     raise SystemExit(0 if run(selected) else 1)
