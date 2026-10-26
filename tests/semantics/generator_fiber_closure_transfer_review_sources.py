@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-"""Compare captured Closure callee ownership across Generator/Fiber transfer."""
+"""Compare Closure callee transfer; --peer-budget-180 opts into fixed 180/200s caps."""
+import argparse
 from pathlib import Path
+import sys
 
 import fiber_static_api_sources as source
 
@@ -12,4 +14,11 @@ source.PROCESS_SECONDS = 120
 source.__doc__ = __doc__
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--peer-budget-180', action='store_true')
+    args, remaining = parser.parse_known_args()
+    if args.peer_budget_180:
+        source.MODEL_SECONDS = 180
+        source.PROCESS_SECONDS = 200
+    sys.argv[1:] = remaining
     raise SystemExit(0 if source.main() else 1)
