@@ -223,6 +223,13 @@ def $array_iterator_current_value(S, parrayiterator, KNOWN (PARRAY n)) = (PARRAY
   -- if $array_iterator_value(S, KNOWN (PARRAY n)) = eps
   -- if ~$array_iterator_destructor(S, parrayiterator.OBJECT)
   -- if $array_iterator_reference_table(S, n)
+;; A raw by-reference current stays a cell through key(). Validate the cell's
+;; current row at capture and again when insert dereferences it after key().
+def $array_iterator_current_value(S, parrayiterator, REFERENCE n_cell) = (PARRAY n)
+  -- if ~$array_iterator_destructor(S, parrayiterator.OBJECT)
+  -- if $array_iterator_reference_cell(S, n_cell) = (PARRAY n)
+  -- if $array_iterator_value(S, REFERENCE n_cell) = eps
+  -- if $array_iterator_reference_table(S, n)
 def $array_iterator_current_value(S, parrayiterator, poperand) = eps -- otherwise
 def $array_iterator_current_away(S, pvalue, n_builder) = ($array_iterator_value_away(S, pvalue, n_builder) \/ $array_iterator_reference_away(S, pvalue, n_builder))
 def $array_iterator_current_builder(S, parrayiterator) = ($array_null_const_items(S, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY]) \/ (~$array_iterator_destructor(S, parrayiterator.OBJECT) /\ $array_iterator_reference_items(S, parrayiterator.ARRAY, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY])))
