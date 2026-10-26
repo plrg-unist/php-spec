@@ -1,0 +1,75 @@
+{
+  "milestone": "OP97 sequential echo array Warning callbacks",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle/profile",
+  "status": "independently reviewed bounded semantics",
+  "scope": "Initially unbuffered multi-expression echo with a direct nonempty flat primitive array CV at child1 and at least one following child. Child1 is read after child0 completes. Main witnesses have child0 array Warning create child1 runtime array from scalar sentinel; child1 raises its own Warning. Returning handlers write both interned Arrays then later() runs; a supplied first or second throw writes its current Array before skipping all later children. Changed output buffers are explicit Unsupported.",
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_echo",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_ECHO",
+    "vendor/php-src/Zend/zend_operators.c:__zval_get_string_func"
+  ],
+  "semantic_revision": "93a6d8057691076292e0a25ad81fbc6353227983",
+  "tested_revision": "93a6d8057691076292e0a25ad81fbc6353227983",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "modules_sha256": "ac05c52a3810a93a2ea40cd9f2125496b518a877d3cd27a7296266f367205a8b",
+    "module_count": 422
+  },
+  "native_pre": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-97/native-pre/report.json",
+    "sha256": "d66dcf82ff845392f38cee591735d7d18130d6480141bff9467f92bc70abb56c",
+    "result": "Three frozen sources native exit0/reaped. Both-default gives ordered Warning32/33 and two Array writes; first throw gives only first Array and no default; second throw gives two Array writes but only first default. Both throws catch the identical supplied Exception28 with later_calls0."
+  },
+  "unchanged_baseline": {
+    "revision": "4940ed6367cd76d260d48c1e198aed5e2a84594c",
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-97/baseline/report.json",
+    "sha256": "236ee4ae07d707ff12c0726a78326e48f2a61f4ef5a982375d3844fc295940a0",
+    "result": "All three checked/frontend accepted. Both-default and second-throw model exit1 Unsupported at child1 handler ingress after first H1;Array (zero agreement); first-throw exact exit0 is only an OP96 control."
+  },
+  "accepted": {
+    "source_command": "taskset -c 3 python3 tests/semantics/echo_two_array_warnings.py --output /home/user/workspace/php-spec-evidence-archive/operators-97/source-93a6d8057",
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-97/source-93a6d8057/report.json",
+      "sha256": "36a1a66eba31b2788f3aabd87df5e56781c8216a2ef6d6400b2adc877951cff6"
+    },
+    "focused_command": "taskset -c 3 python3 tests/semantics/echo_two_array_warning_protocol.py --output /home/user/workspace/php-spec-evidence-archive/operators-97/focused-93a6d8057",
+    "focused": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-97/focused-93a6d8057/report.json",
+      "sha256": "da9ae9ad9b03a0b5e74c4185cd119ce5ea96c779e232530a504647cf2a95af84"
+    },
+    "result": "All three native/model source runs byte-exact normal exit0/no timeout/groups; first-throw is a prior-rule control. Two genuine reached-state recipes pass 167 and 151 premises. They bind first/second source origins and Warning lines, live b scalar\u2192runtime array read, pooled a table2\u21921, runtime b table1\u21920 after its own callback, ordered default/output, supplied Exception identity, skip/continuation, buffer/source negatives and EOF/budget0."
+  },
+  "source_sha256": {
+    "cases.py": "1e0a35fc9dccbda3299f62d880d71ccd9bb4c94127de3a8398c54084cd6e282f",
+    "echo-two-arrays-both-default": "3e7f649b5fa3969d5073a071279f71b66815f3a10775f25d1fadc4317852839d",
+    "echo-two-arrays-first-throw": "1aa9abf76ee2f5a21199e9927fe764ca91dbbb7181b5ab346438df0186b796f9",
+    "echo-two-arrays-second-throw": "e1042b477e98f05536d0be040c450b50294f729e51ebe6c6dc8a25eb7bce6c92"
+  },
+  "inputs_sha256": {
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "72b974030a4421399ce9ba783a32f9826c18535c1c012f77f3a478bad54be4a0",
+    "tests/semantics/echo_two_array_warning_cases.py": "1e0a35fc9dccbda3299f62d880d71ccd9bb4c94127de3a8398c54084cd6e282f",
+    "tests/semantics/echo_two_array_warnings.py": "27b75bbac468e41d6c73776aa430e71b85bdc848589847612aab45c8331834b8",
+    "tests/semantics/echo_two_array_warning_protocol.py": "1b4f95083c39f7d12f9eb9813cfe34ddd9ea5111b3fcf90d51bf42aa2367190e"
+  },
+  "remaining": "Only a direct nonempty flat primitive array CV at authenticated child1 of an echo with a later child is newly admitted. Empty/nested arrays, references, other operands/producers, changed buffers/output callbacks and wider lifetimes remain partial.",
+  "independent_review": {
+    "revision": "5f28a8b599ff7a943f8b59449444dd953eaa9f80",
+    "cases": "/home/user/workspace/php-spec-evidence-archive/operators-97/review-independent/cases.py",
+    "cases_sha256": "f27ae9ae948fb5b2b08412fcac797415519faf5df6cf10cab1366b227ae1d00d",
+    "runner": "/home/user/workspace/php-spec-evidence-archive/operators-97/review-independent/run.py",
+    "runner_sha256": "178d2d655cf4bcec5a428cbafce73076218c43918001da33b6d4e40f1fedd285",
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-97/review-independent/run-5f28a8b59/report.json",
+    "sha256": "00500e20ab1070f1c775bf6d82328858a786206455879c53a60e0cd4caa15fa5",
+    "source_sha256": {
+      "scalar_prefix_handled_true": "618c4c768fca8b4f7e06dd6ddeef26b50e5b8e6ab116a5ef017d9aeedd3e6fba",
+      "scalar_prefix_ineligible_mask": "32647665ac9b8751835076f1290f2086193e19724d640fcc400b5428ccd09085"
+    },
+    "result": "Two fresh native-first checked/accepted byte-exact normal agreements, exit0/no timeout/reaped. After a scalar P child0, handled true writes cached Array after its handler unsets the child1 CV, with no default Warning, and later() sees after; ineligible mask skips callback, defaults once at child1 line19 and later() sees before. Independent semantic CLEAR."
+  }
+}

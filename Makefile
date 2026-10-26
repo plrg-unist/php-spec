@@ -505,6 +505,8 @@ test-semantics: build
 	python3 tests/semantics/generator_fiber_throw_transfer_state.py
 	python3 tests/semantics/generator_fiber_fresh_throw_transfer_sources.py
 	python3 tests/semantics/generator_fiber_fresh_throw_transfer_state.py
+	python3 tests/semantics/generator_fiber_reference_throw_transfer_sources.py
+	python3 tests/semantics/generator_fiber_reference_throw_transfer_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -594,6 +596,8 @@ test-semantics: build
 	python3 tests/semantics/pipe_array_protocol.py
 	python3 tests/semantics/pipe_static_string.py
 	python3 tests/semantics/pipe_static_string_protocol.py
+	python3 tests/semantics/pipe_named_carrier.py
+	python3 tests/semantics/pipe_named_carrier_protocol.py
 	python3 tests/semantics/pipe_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py

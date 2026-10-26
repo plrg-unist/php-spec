@@ -1,0 +1,121 @@
+{
+  "milestone": "Iterator62 cached direct named by-reference Generator::throw Fiber transfer",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local oracle b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json, LC_ALL=C, TZ=UTC; exclusive CPU2 native/baseline, CPU5 affected checks and reviewer",
+  "parent": "8fa2d61bf1244be8ad6268763bb7d6497b32da47",
+  "private_implementation_commit": "59cf3569bb32db992d470632ef7329fe2412c0ca",
+  "scope": "A primed direct named BYREF Generator::throw with one valid Throwable and a live REFCELL may transfer its running body through a Fiber catch or pending finally. The Generator retains the original cell while its saved THROW resumer owns the argument in the parked Fiber VM. VALUE is empty, ADVANCE is false, and the existing cached-cell/callee/resumer/owner gates remain. Current dereferences the cell without resume; rebinding the source name does not retarget it. Normal and supplied Fiber exceptions retain native identity and Previous order.",
+  "engine_paths": [
+    "Zend/zend_generators.c::ZEND_METHOD(Generator, throw)",
+    "zend_generator_ensure_initialized",
+    "zend_generator_throw_exception",
+    "zend_generator_resume",
+    "Zend/zend_vm_def.h::ZEND_YIELD"
+  ],
+  "implementation": [
+    "spec/semantics/281-fibers.watsup::$fiber_generator_throw_valid"
+  ],
+  "sources": {
+    "generator-fiber-reference-throw-cached-reference-rebind": "50f4c93d8a601c6d09694d30a808eb446e4f660a50560e581ed00f29ab70a54d",
+    "generator-fiber-reference-throw-cached-reference-finally-normal": "5975cfd4b776d2628756bd1b1637ecf9a0a591449d4f36986b91dd631ce40b98",
+    "generator-fiber-reference-throw-cached-reference-finally-abrupt": "d855945625e43f8ee206635964fb7ac19a6e23368bc9f107c2622e305d200173",
+    "generator-fiber-reference-throw-primed-byvalue-control": "66ec04768e75fcaf808c64d4b05fdd19ca0d47948e84fef7c124c24631b70612",
+    "generator-fiber-reference-throw-sole-cache-replacement-review": "06f2e966c6c510508ff872eda1c6e3702dc4e279973e2a69a928325a41ecde0b"
+  },
+  "validation": {
+    "native_first": {
+      "report": ".tools/i62-packet/native-sxrz760z/report.json",
+      "sha256": "221e825519689f160b3856dd93af987133867bede9eca0c280249fb7c397c641",
+      "result": "Four frozen originals: three BYREF cases and a byte-identical I60 by-value control. All native exit0, empty stderr, pinned binary/profile and stable source/HEAD inputs."
+    },
+    "unchanged_genuine_baseline": {
+      "report": ".tools/i62-packet/unchanged-baseline-vil_pckl/report.json",
+      "sha256": "4d96766d73320f0e3a2fdca70c03c7aea0eda32a7532964220c60c31e6e67cd2",
+      "result": "Three new BYREF paths reached checked Fiber-switch Unsupported with zero agreement; the I60 by-value control remained exact NORMAL."
+    },
+    "initial_strict": {
+      "report": ".tools/i62-packet/strict-vghwt4qp/report.json",
+      "sha256": "7f3f0d882b5a56fb91d13245af962a4279a03577e15ca6019f8faf06f0b6a1b1",
+      "result": "Initial 421-module algorithmic compile exit0; no semantic credit because the first source run then exposed an invalid unused-cell binding."
+    },
+    "initial_runner_failure": {
+      "report": ".tools/i62-packet/implemented-source-gk8t9wvl/report.json",
+      "sha256": "8be3971e0e43e4dfd9fda9e500a3de8bfe44c454e08e85b494f2ad63a3de95ff",
+      "result": "All three changed sources failed in the SL runner at new 281 unused n_cell binding inside a noninvertible conjunction; zero agreement. The corrected premise checks nonempty REFCELL, with downstream cell authenticity unchanged."
+    },
+    "corrected_strict": {
+      "report": ".tools/i62-packet/strict-56_wvzjn/report.json",
+      "sha256": "83a468b9a18605d9d8ea1705b27bdc253abf5007144da10bb0d7cf06b9f42331",
+      "result": "Corrected 421-module algorithmic compile exit0, empty stderr, no timeout, stable HEAD/inputs."
+    },
+    "affected_author_source": {
+      "report": ".tools/i62-packet/implemented-source-corrected-btp_d53o/report.json",
+      "sha256": "dfcf3f394852d27de26e5e924e888f1b07d4503d196def76fbafe98557e435d5",
+      "result": "All three frozen changed originals exact NORMAL with exit0, empty stderr, stable original source/runtime/modules/HEAD."
+    },
+    "author_reached_state": {
+      "report": ".tools/fiber-state-review-1brqw7c_/report.json",
+      "sha256": "a5231dcb9fa4a45b231d210113fc75de7d18ebda0a3457ad1a7ddf79b9f3fc39",
+      "result": "102 source-reached SL assertions at outside Fiber::resume: saved exact Throwable/WeakReference/Fiber task owner, old HCELL versus rebound slot, null-Previous reentry Error, local malformed refusals and 0/1/2/4000-step completion."
+    },
+    "author_catalog_wiring": {
+      "report": ".tools/generator-fiber-reference-throw-transfer-source-7ere0mrt/report.json",
+      "sha256": "817e7d131d943576edd34d006d25bfb2b141099462889c70c903938a64ffba5e",
+      "result": "Selected tracked rebind catalog source exact NORMAL; repeats an authored original, not an extra behavior."
+    },
+    "reviewer_native": {
+      "report": ".tools/i62-independent-review/native-review/report.json",
+      "sha256": "04d1a645a84ccd114d30719ddf71705a84b6812dc9f6e50e46572e7fd2b7cd57",
+      "result": "Independently frozen cache-only old Token source native exit0, empty stderr; old cell survives the park and its destructor runs at the replacement yield before THROW caller continuation."
+    },
+    "reviewer_model": {
+      "report": ".tools/i62-independent-review/model-review/report.json",
+      "sha256": "15d0b479a63d59a0f7c3c2f190f3eb624214005fef673771ff77c0f6dbeb8275",
+      "result": "Same independent source exact NORMAL under private implementation, stable HEAD/inputs."
+    },
+    "reviewer_state_unstable": {
+      "report": ".tools/fiber-state-review-ynmyf3z2/report.json",
+      "sha256": "734ac3c16a9339776542698b06b94a0a6c803986291a052a54dc522f0f926f0c",
+      "result": "All 102 clauses reached, but catalog bytes changed during execution; wrapper failed input stability, so zero credit."
+    },
+    "reviewer_state_stable": {
+      "report": ".tools/fiber-state-review-_wbufjrv/report.json",
+      "sha256": "40ab20ce4c1083e409ce8817df0b06a0bf2dbb4643b65951ffc2dc2b88ae9193",
+      "result": "One affected rerun of the same 102 clauses passed with stable author inputs/HEAD, exit0 and no timeout; independent repeat, not additional clauses."
+    },
+    "reviewer_catalog_wiring": {
+      "report": ".tools/generator-fiber-reference-throw-transfer-source-l8qzo0xh/report.json",
+      "sha256": "e9e5a05f0f398cb367086112ff5b34748b3ff179b743128078ba8d7b759daaf5",
+      "result": "Selected fifth tracked catalog source byte-identical to frozen reviewer original and exact NORMAL, stable HEAD/inputs."
+    },
+    "joined_strict": {
+      "report": ".tools/i62-joined/strict-oj5xxand/report.json",
+      "sha256": "5f117c00a6ebec9f75adc221bc00b78054be1ab236f9f045bf0b0145f9544419",
+      "result": "Exact actual-tail 422-module algorithmic compile exit0, empty stderr, no timeout, stable HEAD/inputs at tested candidate 54fe55ff4."
+    }
+  },
+  "preservation": "The prior I60 by-value THROW arm and I61 fresh advancing THROW arm are byte-unchanged. The new branch requires cached BYREF direct named THROW; old CURRENT/NEXT/SEND admission, cached-cell authenticity, unique saved resumer, owner and transfer-domain guards remain unchanged. Native control agreed before any edit. Earlier I59/I60/I61 source/state cuts keep their original evidence; no historical rerun credit is claimed.",
+  "remaining": "Method, Closure, delegated, helper and other BYREF THROW call shapes; nonreferenceable Notice yields; wider source-loader/initializer crossings and lifetime/GC cases; complete core semantics remain partial.",
+  "evidence_archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-reference-throw-transfer-62/raw.tar.gz",
+    "bytes": 2179323,
+    "sha256": "a8895271ef4135ac37ef51e05693148f37236fce99d3dedaca6cc9a952422b9c",
+    "member_count": 124
+  },
+  "evidence_manifest": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-reference-throw-transfer-62/manifest.json",
+  "evidence_manifest_sha256": "5a6d5abd793561a85112d651b02d3d8f9a86d7cf182ee29cd65810b16bee05d9",
+  "recovery": "Extract raw.tar.gz at a reconstructed I62 worktree root. Reports retain historical absolute original paths; catalog has exact maintained source bytes, and manifest.json lists every report hash. Raw outputs, failures and run scripts are external, while pinned tools and implementation/tests come from Git.",
+  "independent_review": "Independent reviewer cleared private semantics/docs, the fifth source, and joined strict 422-module validation. I62 was published by guarded fast-forward at 4940ed636; the initial runner failure and unstable reviewer state retain zero credit.",
+  "actual_tail": {
+    "parent": "9e464a42b832ed6d8b97f9ed40fb1620fc6c0187",
+    "tested_candidate": "54fe55ff4a2d47d17fac79426cfb2368a55a6b2b",
+    "composition": "Reviewed private 281/tests/docs copied byte-identically. Five inventory obligations preserve all actual-parent prefixes; PROGRESS retains OP96 and adds I62. Incoming semantic changes in 123/146/152/163/210/30/382/40/400/404/420/426/new433 do not select any of the five I62 source shapes: output is scalar, Throwable checks use identity/getPrevious rather than comparison, and no pipe, HALT, hooks, CONFIG or Iterator spread occurs. Shared task grammar and module manifest are covered by the joined strict check; no earlier source/state cuts are renewed."
+  },
+  "joined_archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-reference-throw-transfer-62/joined-strict.tar.gz",
+    "bytes": 1858311,
+    "sha256": "61777395e668ede32547b7ecbe5a7193b77623ae9f3d5232a07dcf60b69f0ddb",
+    "member_count": 4
+  },
+  "joined_manifest": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-reference-throw-transfer-62/joined-manifest.json",
+  "joined_manifest_sha256": "a900bcaa74b86d30067e4b32513f94f34480d7227f20d1afac2e36786a071230"
+}
