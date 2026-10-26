@@ -17,8 +17,8 @@ Three source agreements and 706 focused premises (268/251/187, including derived
 controls) retain `adf2f6d8f`/414. The original source failure, helper/diagnostic
 failures and H-caller120 cap retain zero credit. The
 [acquired RHS review](coverage/semantics/concat-returned-stringable-warning-review.json)
-records scope and recovery. Publication is independently reviewed; actual-tail candidate review
-is pending over `3c094f41d`/416; incoming evidence receives no execution renewal.
+records scope and recovery. Publication and actual-tail candidate are independently reviewed over
+`3c094f41d`/416; incoming evidence receives no execution renewal.
 
 ## Integrated behavior and entrypoints
 
@@ -47,10 +47,9 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | V107 | General arity versus Closure::call-pack scoping. |
 | Iterator55 | Cached NEXT timeout; pre-Fiber diagnostic0. |
 | M153 | Native/genuine closed;424 finite-Many teardown implementation. |
-| Source92 | Strict/source/entry accepted; corrected remaining focused packet. |
-| OP87 | Source3/focused706 accepted; actual-tail review pending. |
+| Source92 | Reviewed publication `c9b69e26e` queued next. |
 
-Iterator49/50/51/52/53/54, V99/V100/V101/V102/V103/V104/V105/V106, M132/M133/M134/M135/M136/M137/M138/M139/M140/M141/M142/M143/M144/M145/M146/M147/M148/M149/M150/M151/M152, A46/A47/A48/A49/A50/A51/A52, OP79/80/81/82/83/84/85/86, Source86/87/88/89/90/91, COMP118/119/120/121/122 and CLASS119/120/121/122/123/124/125 are integrated
+Iterator49/50/51/52/53/54, V99/V100/V101/V102/V103/V104/V105/V106, M132/M133/M134/M135/M136/M137/M138/M139/M140/M141/M142/M143/M144/M145/M146/M147/M148/M149/M150/M151/M152, A46/A47/A48/A49/A50/A51/A52, OP79/80/81/82/83/84/85/86/87, Source86/87/88/89/90/91, COMP118/119/120/121/122 and CLASS119/120/121/122/123/124/125 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
