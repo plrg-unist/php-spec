@@ -117,6 +117,22 @@ cyclic/debt graphs and wider producer forms remain partial.
 Four original sources and 367 focused premises (four raw steps) are recorded in
 the [Generator reference-cache review](../../coverage/semantics/array-generator-reference-cache-review.json).
 
+For a named Generator function declared by reference, a real global-bound
+outer reference cell may yield a finite array with ordinary scalar reference
+leaves. Spread dereferences that outer cell and inserts a `DIRECT` copy of the
+then-current row. Rebinding the outer cell later changes its row without
+retargeting the spread entry; its inner scalar aliases can still share writes.
+When an external leaf alias is removed, a separately retained old row makes a
+later COW copy unwrap the sole inner reference. The same route accepts an
+Aggregate getter returning the named Generator. A supplied body throw runs
+`finally`, retires the outer cell with Generator DATA, then discards the
+builder-held old row and inner cell. Terminal builder checks use saved producer
+history without dereferencing the retired outer cell. Four exact originals and
+588 reached premises (six raw steps) cover this bounded mechanism in the
+[by-reference Generator cache review](../../coverage/semantics/array-generator-byref-reference-cache-review.json).
+Temporary by-value yields, owning or special reference cells, cycles and wider
+producers retain their earlier boundary.
+
 The shared cache validator also admits nested graphs returned through the existing
 Aggregate promotions below. Runtime descendants cascade when their last physical
 edge retires; folded siblings retain their permanent pool owners. The
