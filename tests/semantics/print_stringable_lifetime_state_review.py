@@ -25,13 +25,15 @@ def $print_peer_frontier(S, 1) = true
   -- if S.TODO = (CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_print) z) :: (STRINGIFY_RESULT n porigin_print z) :: (PRINT_EMIT porigin_print z) :: ptask*
 def $print_peer_frontier(S, 2) = true
   -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.TARGET = METHOD_TARGET n porigin_method /\ pcallcontext.RECEIVER = (n)
+  -- if pcallcontext.TARGET = METHOD_TARGET n porigin_method
+  -- if pcallcontext.RECEIVER = (n)
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.TODO = (STRINGIFY_RESULT n porigin_print z) :: (PRINT_EMIT porigin_print z) :: ptask*
 def $print_peer_frontier(S, 3) = true
   -- if S.CURRENT = eps /\ S.FRAMES = eps
   -- if S.TODO = (STRINGIFY_RESULT n porigin_print z) :: (PRINT_EMIT porigin_print z) :: ptask*
-  -- if S.RESULT = KNOWN pvalue /\ $string_bytes(pvalue) = ($ptascii("X;"))
+  -- if S.RESULT = KNOWN pvalue
+  -- if $string_bytes(pvalue) = ($ptascii("X;"))
 def $print_peer_frontier(S, 4) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
@@ -41,7 +43,8 @@ def $print_peer_frontier(S, 4) = true
 def $print_peer_frontier(S, 5) = true
   -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps
   -- if S.TODO = (PRINT_EMIT porigin z) :: ptask*
-  -- if S.RESULT = KNOWN pvalue /\ $string_bytes(pvalue) = ($ptascii("X;"))
+  -- if S.RESULT = KNOWN pvalue
+  -- if $string_bytes(pvalue) = ($ptascii("X;"))
   -- if $integer_outputs(S.EVENTS) = ($ptascii("S;D:1:1;"))
 def $print_peer_frontier(S, 6) = true
   -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps
