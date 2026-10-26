@@ -485,6 +485,10 @@ test-semantics: build
 	python3 tests/semantics/generator_fiber_closure_transfer_state.py
 	python3 tests/semantics/generator_fiber_closure_transfer_review_sources.py --peer-budget-180
 	python3 tests/semantics/generator_fiber_closure_transfer_review_state.py
+	python3 tests/semantics/generator_fiber_method_transfer_sources.py
+	python3 tests/semantics/generator_fiber_method_transfer_state.py
+	python3 tests/semantics/generator_fiber_method_transfer_review_sources.py
+	python3 tests/semantics/generator_fiber_method_transfer_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
