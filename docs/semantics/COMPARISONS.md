@@ -674,6 +674,23 @@ the actual severity slot and a skipped cyclic trace/tail. Materialized roots,
 subclasses, deeper stacks and pending states remain partial.
 [Builtin-kind comparison review](../../coverage/semantics/throwable-builtin-kind-comparison-review.json).
 
+Distinct same-kind exact builtin Throwables beyond `Exception`/`Error` now
+compare all inline physical slots under normal nonpending completion. Both
+roots must be live canonical unmaterialized images with null `previous`, cold
+or warmed `PSTRING` caches and finite allocated `DIRECT` trace graphs containing
+only primitive, valid string-carrier or acyclic array values. The comparison
+guard stays below 16 entries. This covers the 12 source-constructible kinds in
+that bound; `ErrorException` compares its severity after the seven inherited
+slots. Equal formatted strings still descend to severity, and finite TypeError
+trace arrays retain count/key/value order. Seven new normal sources (five main
+author cases, one focused reached source and one independent source), three
+explicit Unsupported controls and an unchanged `Exception` control pass. Two
+reached fixtures check 137 premises and four raw steps, including warm severity
+order and a skipped aggregate caster. Aliased/object/cyclic trace payloads,
+previous links, materialized roots, generated-only `FiberError`, subclasses and
+pending comparisons remain outside this cut.
+[Same-kind builtin review](../../coverage/semantics/throwable-builtin-same-comparison-review.json).
+
 Warm caches and nonempty builtin traces now meet in the same physical slot
 scan. Same-kind canonical `Exception`/`Error` pairs with null previous values
 admit finite `DIRECT` trace graphs containing primitive or valid string-carrier
