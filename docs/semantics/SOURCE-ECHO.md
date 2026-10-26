@@ -17,7 +17,8 @@ evaluates the remaining siblings in order. The next function call sees the
 handler's mutation of a separate CV. A handler throwing a supplied Exception
 still writes `Array` before exception search and never enters that later call.
 The saved source-origin return and later EVAL/EMIT pairs remain intact on the
-normal path. A callback-created output buffer is explicitly Unsupported.
+normal path. The one-default-buffer callback route below is admitted; other
+buffer changes remain Unsupported.
 
 Two source agreements and 153+137 reached-state checks, including authentic
 first-child and sibling origins, are recorded in the
@@ -39,5 +40,15 @@ cached `Array` after its handler unsets the source CV, without a default
 Warning. An ineligible mask skips the handler and reports the default Warning
 at child 1.
 
-Empty or nested arrays, other producers, changed output buffers and wider
+With an initially empty output stack, the first child's named Warning handler
+may print its `H` marker, start one default chunk-zero buffer, and write `I;` into it.
+The saved output sequence authenticates that buffer at resume. Normal echo
+appends cached `Array` before evaluating the next child; `later()` sees
+`I;Array|` before it writes `L;Z`. A supplied handler throw still appends
+`Array` into the buffer before the same Exception is caught and skips every
+later child. `ob_get_clean()` observes the accumulated bytes. The shared
+[buffered warning review](../../coverage/semantics/buffered-output-warning-review.json)
+records five print/echo source agreements and 591 reached premises.
+
+Empty or nested arrays, other producers, other buffer changes and wider
 output lifetimes remain partial.
