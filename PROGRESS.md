@@ -313,6 +313,14 @@ neighboring array and direct-method controls pass. Earlier cleanup failures
 remain zero credit. The [CALL119 review](coverage/semantics/array-callable-iterator-unpack-review.json)
 records the scope and raw evidence. Wider callable and operand forms remain open.
 
+Mixed dynamic class dependencies now fetch a parent, one direct trait, then
+ordered interfaces before publication. A wrong-kind trait prevents later
+interface lookup; later link failure preserves an early eval function and
+child-file Error origin. Seven distinct sources agree with pinned PHP, and two
+source-reached fronts pass 293 checks. Six older V55/V56/Source113 fronts pass
+separately as preservation. Wider trait plans and reentrant links remain
+partial. [Mixed-dependency review](coverage/semantics/mixed-dependency-autoload-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |

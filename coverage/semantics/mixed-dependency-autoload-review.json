@@ -1,0 +1,42 @@
+{
+  "status": "independently_reviewed_private",
+  "milestone": "Source114 mixed class dependency autoload",
+  "scope": "Accepted eval/include class declarations with one direct trait, no trait adaptations, an optional parent resolved before trait fetch, and ordered direct interfaces; source-authenticated parent, trait and interface waits retain publication order.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "private_base": "3aa45bd6a692b3ad7feee1885158b6fe3da78875",
+  "module_count": 424,
+  "module277_sha256": "6b86267880189a2beea4b759f4f52138d9534567d010591299d9f660cc364bc0",
+  "new_protocol_sha256": "d88450abb7e3d56d00d3a12ae507a51288c2d925ed425bc76ddb584c449dcba1",
+  "environment": {"LC_ALL": "C", "TZ": "UTC"},
+  "behavior": [
+    "A mixed class fetches its parent, sole direct trait, then direct interfaces in order. Interface lookup waits until trait fetch succeeds; a known wrong-kind trait fails before a later interface loader runs.",
+    "An early eval function survives a later interface-link Error while the target class remains unpublished. Included failures retain the child file and line, and include_once retains opened-file identity."
+  ],
+  "accepted": {
+    "new_author_source_agreements": 6,
+    "new_independent_source_agreements": 1,
+    "new_reached_fronts": 2,
+    "new_reached_checks": [193, 100],
+    "preservation_checks": [167, 153, 205, 175, 135, 127]
+  },
+  "zero_credit": "All six unchanged author programs and the independent companion returned Unsupported. The 962 V55/V56/Source113 strict-SL premises preserve older behavior and are not new Source114 agreement credit.",
+  "engine_route": "Zend/zend_inheritance.c::zend_do_link_class fetches parent, traits and direct interfaces before binding; Zend checks trait kind before a later interface fetch. The checked PHP parser supplies the dynamic unit, and module277 keeps the original class descriptor and declaration source through existing autoload resumes.",
+  "remaining": "Multiple traits, trait adaptations, longer direct-interface lists, reentrant loaders, delayed variance obligations, and complete dynamic-source/core behavior remain partial.",
+  "artifacts": {
+    "author_freeze": [".tools/source114-mixed-discovery/freeze.json", "2246c52ae6604d6f05d54fb2368913c6a925ff0e6344a7ff4522c6e1819635a4"],
+    "author_native": [".tools/source114-mixed-discovery/native-report.json", "d5288a85a104e48ff6fa8e1c465932793b15495adb3c2c6f1ae7ae1625cd164e"],
+    "author_unchanged": [".tools/source114-mixed-discovery/baseline-report.json", "e772c6f5e594279c721e531d653c1a8b9765df4c4b339bf86e5ec72c29dfcd26"],
+    "module_load": [".tools/source114-mixed-discovery/load-report.json", "92086dcf9af31c0c76d1ea352114c0a370246145514032276fe440427bfac3d0"],
+    "author_changed": [".tools/source114-mixed-discovery/changed-report.json", "439410602b4c0604baef17b67732ac54744cb04afa412e5d2c51bb706dd2511b"],
+    "independent_freeze": [".tools/source114-reviewer-parent-kind-v1/freeze.json", "9a1e391f5864ed69fa1c02c4b62ccbb4344bf2779424ef21b01381602bff3892"],
+    "independent_native": [".tools/source114-reviewer-parent-kind-v1/native-report.json", "382352f7b45ed62762944824bbc09c5bac07382797441714111f747b0f0dd8c6"],
+    "independent_unchanged": [".tools/source114-reviewer-parent-kind-v1/baseline-report.json", "75abd7d02bba864fb062862fb7d385725ee74a41fb6548a8d7249944757efab2"],
+    "independent_changed": [".tools/source114-reviewer-parent-kind-v1/changed-report.json", "0900fe11434c4377157f5435c011eff8e17197052f06b4f0de785b9a9b6a9c43"],
+    "reached_fixtures": [".tools/source114-state-v1/fixtures-report.json", "35a4a0b949fae270eda5c38042db462fff89b42a233eddf32e8d11e076c3acc3"],
+    "reached_checks": [".tools/source114-state-v1/check-report.json", "7549c155f8d5c007d9f24650b5ca3a856c300fb6133a664e3d3e584c93e1a60c"],
+    "preserved_v55": [".tools/source114-preservation-v55/check-report.json", "2e888791db3f4936f402886d460a8d17f9119cb8ada6474796fdffa033ea09f8"],
+    "preserved_v56": [".tools/source114-preservation-v56/check-report.json", "f90be9a99a4e1c64c91089d7f7f142039a1f196a5c071a5788f62b9683fcfb61"],
+    "preserved_source113": [".tools/source114-preservation-v113/report.json", "a7b146021017f6f9d0f20421ee4f7987eb9a03bd8ebc2a1d03c593548f6b738e"]
+  },
+  "recovery": "Use the exact frozen author packet with .tools/source114-mixed-discovery/run.py and the reviewed tests/semantics/mixed_dependency_autoload_protocol.py. V55/V56 use their maintained protocol scripts and archived original files; run the two sealed Source113 protocol.watsup files against this 424-module list. Raw packets and numeric output are ignored under .tools, outside Git."
+}

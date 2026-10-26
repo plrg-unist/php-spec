@@ -110,5 +110,15 @@ advance to the next name only after earlier names are published. A later miss
 raises at the dynamic declaration site without publishing the target; an
 earlier eval function remains callable. Include-once keeps the opened file's
 identity. The [ordered-interface ledger](../../coverage/semantics/multi-interface-autoload-review.json)
-records the source and reached-state checks. Parent, trait, reentrant and
-variance-obligation combinations remain partial.
+records the source and reached-state checks for declarations without parents
+or traits.
+
+For a class with a parent resolved through an existing definition or autoload,
+one direct trait without adaptations, and
+ordered direct interfaces, linking now fetches parent, trait, then interfaces.
+A wrong-kind trait stops before a later interface loader. A later interface
+failure leaves an earlier eval function callable without publishing the class;
+an included failure retains the child file and line through `include_once`.
+The [mixed-dependency ledger](../../coverage/semantics/mixed-dependency-autoload-review.json)
+records seven exact source agreements and two reached fronts. Multiple traits,
+trait adaptations, longer interface lists and reentrant loaders remain partial.
