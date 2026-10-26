@@ -66,6 +66,18 @@ def $test_config_storage_peer_seek(S, n_stage, n) = $test_config_storage_peer_se
 dec $test_config_storage_peer_step(pstate) : pstate
 def $test_config_storage_peer_step(S) = S_next
   -- PhpStep: S ~> S_next
+dec $test_config_storage_peer_recovery_done(pstate, ptask*, porigin?) : bool
+def $test_config_storage_peer_recovery_done(S, ptask*, porigin?) = (S.TODO = ptask* /\ S.ORIGIN = porigin? /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps)
+dec $test_config_storage_peer_recovery_seek(pstate, ptask*, porigin?, nat) : pstate
+def $test_config_storage_peer_recovery_seek(S, ptask*, porigin?, 0) = S
+def $test_config_storage_peer_recovery_seek(S, ptask*, porigin?, n) = S
+  -- if $(n > 0)
+  -- if $test_config_storage_peer_recovery_done(S,ptask*,porigin?) \/ (S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET) \/ (S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps)
+def $test_config_storage_peer_recovery_seek(S, ptask*, porigin?, n) = $test_config_storage_peer_recovery_seek($drive_steps($test_running(S),1),ptask*,porigin?,$nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if ~$test_config_storage_peer_recovery_done(S,ptask*,porigin?)
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+  -- if ~(S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps)
 """
 
 
@@ -251,7 +263,20 @@ def checks(program, path, name):
         '$weakref_get(S_recovery,n_watch_return) = PNULL',
         'S_recovery.PRECISIONINI = ' + text('6'),
         *owners('S_recovery', 0, 2), *common.public('S_recovery'),
-        *common.step('S_recovered', 'S_recovery'),
+        'S_raw_recovery = $test_config_storage_peer_step(S_recovery)',
+        'S_raw_recovery.TODO = ptask_recovery*',
+        'S_raw_recovery.ORIGIN = S_recovery.ORIGIN',
+        'S_raw_recovery.RESULT = KNOWN pvalue_old',
+        *common.step('S_after_api', 'S_recovery'),
+        'S_after_api.DESTRUCTION.OPERATIONS = [pdestructionoperation_recovery]',
+        'pdestructionoperation_recovery.SOURCE = CONFIG_INVOKE pconfigcall_recovery',
+        'pdestructionoperation_recovery.VALUE = KNOWN pvalue_old',
+        'S_recovered_found = $test_config_storage_peer_recovery_seek(S_after_api,ptask_recovery*,S_recovery.ORIGIN,80)',
+        r'S_recovered_found.COMPLETION = NORMAL \/ S_recovered_found.COMPLETION = BUDGET',
+        'S_recovered = S_recovered_found[.COMPLETION = NORMAL]',
+        '$test_config_storage_peer_recovery_done(S_recovered,ptask_recovery*,S_recovery.ORIGIN)',
+        'S_recovered.TODO = ptask_recovery*',
+        'S_recovered.ORIGIN = S_recovery.ORIGIN',
         'S_recovered.RESULT = KNOWN pvalue_old',
         '$string_bytes(pvalue_old) = (' + text('6') + ')',
         'S_recovered.PRECISIONINI = ' + text('9'),
