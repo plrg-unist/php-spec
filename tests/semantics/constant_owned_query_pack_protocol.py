@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Query binding replays a captured pack after its runtime container retires."""
+import argparse
 from pathlib import Path
+import sys
 
 import constant_owned_stringable_query_protocol as lifetime
 import typed_static_invoke_set_protocol as process_base
@@ -65,7 +67,8 @@ def packed(label, start, kind, key, name, prefix, literal=False):
         f'pconfigcall_pre_{label}.SENT = eps', f'pconfigcall_pre_{label}.PACKS = [{pack}]',
         f'{pack}.INDEX = 0', f'{pack}.ARRAY = {array}',
         f'{pack}.ITEMS = [ENTRY ({key}) (DIRECT {value})]',
-        f'$string_bytes({value}) = ({text(name)})', f'$string_carrier_valid({unpack},{value})',
+        f'$string_bytes({value}) = ({text(name)})',
+        f'$string_plain({value}) = {value}' if literal else f'$string_carrier_valid({unpack},{value})',
         f'$config_unpack_valid({unpack},pconfigcall_pre_{label},KNOWN (PARRAY {array}),0)',
         f'$config_pack_source_valid({unpack},pconfigcall_pre_{label},{pack})',
         f'$task_nodes(CONFIG_UNPACK_NEXT pconfigcall_pre_{label} (KNOWN (PARRAY {array})) 0) = [HOBJECT n_owner,HARRAY {array}]',
@@ -214,4 +217,10 @@ def fingerprint():
 sources.family.fingerprint = fingerprint
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--case', choices=sources.family.CASES)
+    args, remaining = parser.parse_known_args()
+    if args.case:
+        sources.family.CASES = {args.case: sources.family.CASES[args.case]}
+    sys.argv = [sys.argv[0], *remaining]
     raise SystemExit(0 if packet.main() else 1)
