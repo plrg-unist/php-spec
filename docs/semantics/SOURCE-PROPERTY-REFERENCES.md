@@ -25,6 +25,14 @@ error and preserves the old integer. Null or false array auto-initialization
 checks property constraints before allocating an array. String-offset writes
 retain the assigned character as the expression result.
 
+Selected public typed backed `&get` hooks return the real backing cell to a
+reference fetch. Its type-source survives alias writes and detaches on object
+retirement; an ordinary read produces an independent value copy. Assigning a
+reference to the hooked destination runs Get, then raises the overloaded-object
+Error without rebinding the property or RHS. The bounded declaration/consumer
+scope and source/state evidence are in the
+[reference-Get review](../../coverage/semantics/reference-get-hooks-review.json).
+
 Nonobject property writes use the pinned PHP modify or assign error and keep
 the operation's evaluation order; null and false do not create an object. The
 compiler and runtime changes are in modules 137 and 138, with central writer
@@ -33,4 +41,4 @@ their respective modules. [Property visibility](SOURCE-PROPERTY-VISIBILITY.md)
 uses physical slot keys for constraints and raw names for diagnostics, including
 independent same-name private slots. [Class static sources](SOURCE-CLASS-STATICS.md)
 share the constraint writer through distinct declaration IDs. Resumable string
-conversion, readonly, hooked and magic property access remain dependencies.
+conversion, readonly, wider hooked and magic property access remain dependencies.

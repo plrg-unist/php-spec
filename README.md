@@ -4213,6 +4213,14 @@ classes and descendants while ordinary classes retain deprecation. Invalid
 trait/interface/readonly targets preserve diagnostic priority and keyword lines;
 ten sources and 131 derived/reached checks are recorded in the
 [attribute review](coverage/semantics/allow-dynamic-properties-review.json).
+Selected public typed backed block `&get` hooks now return their actual backing
+reference through a direct CV receiver. Typed writes retain the property source;
+ordinary reads copy the value, and object retirement detaches that source.
+Destination rebinding invokes Get before raising the overloaded-object Error.
+Two originals, 251 Boolean checks and six raw transitions pass in the
+[reference-Get review](coverage/semantics/reference-get-hooks-review.json).
+Wider hook declarations and indirect consumers remain partial.
+
 Public backed by-value `get` hooks execute their block or expression body on each read,
 use the property's return type and retain ordinary writes to the backing slot.
 Only the active hook on the same receiver bypasses dispatch; nested calls and

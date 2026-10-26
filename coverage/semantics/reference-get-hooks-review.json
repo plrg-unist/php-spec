@@ -1,0 +1,110 @@
+{
+  "scope": "Selected public typed backed sole block &get on a parentless direct class; literal property through an ordinary CV. Reference fetch retains the actual backing HCELL/type-source, ordinary read copies after hook cleanup, and destination rebind invokes Get then raises the overloaded-object Error. Bind entry requires an initially defined literal RHS CV.",
+  "status": "partial; publication independently reviewed; actual-tail integration pending",
+  "target": {
+    "php": "8.5.10 CLI NTS signed64",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "environment": "LC_ALL=C; TZ=UTC; serial CPU5, 2GiB for focused fixtures"
+  },
+  "implementation": [
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/201-static-set-runtime.watsup",
+    "spec/semantics/382-backed-get-hooks.watsup"
+  ],
+  "authority": [
+    "Zend/zend_object_handlers.c::zend_call_get_hook and zend_std_read_property preserve the hook receiver and reference result.",
+    "Zend/zend_execute.c::zend_assign_to_property_reference fetches first, then rejects a non-indirect hooked destination and destroys the returned rv.",
+    "Zend/tests/property_hooks/bug007.phpt supplies the Get-before-rebind-Error distinction."
+  ],
+  "ownership": "PROPERTY_HOOK_REF_RESULT is nonowning. Existing target/frame receiver holds and module138 backing HCELL/property type-sources remain shared; ordinary copies dereference only after hook-frame cleanup. Inner $this backing fetch stays on PROPERTY_BASE_PREP.",
+  "accepted": {
+    "tested_revision": "e704cab78e85a5a87e288cfdfffc80084fc3719c",
+    "modules": 420,
+    "source_agreements": 2,
+    "focused_boolean": 251,
+    "focused_raw_php_steps": 6,
+    "focused_total_premises": 257,
+    "author": [
+      139,
+      4
+    ],
+    "peer": [
+      112,
+      2
+    ],
+    "coverage": "Actual hook calls, backing-cell/type-source identities, alias coercion, independent copy, source detach, Get-before-destination Error and full native endings; same-heap wrong-mode refusal and split/zero budget controls are derived.",
+    "source_caps": "model60/process75,100000 steps",
+    "focused_caps": "algorithmic120/strictSL120 per group",
+    "review": "Independent class132_review2 accepts runtime, source2, both state groups and byte-exact maintained packaging."
+  },
+  "preserved_zero_credit": {
+    "native": "Two exact originals at c6dd7db1f87b92ab49fce5bc1151b3340daf75b9 establish the oracle only.",
+    "genuine_baseline": "Both originals are checked Unsupported at hook compilation; zero agreements.",
+    "a354": "First changed attempt fails during compilation on an unbound descriptor origin; second original unrun.",
+    "fb657": "Explicit origin binding compiles, but first source is Unsupported before Get because writer ingress selects the old pending base; second original unrun.",
+    "entry_diagnostic": "Finite seek fails to reach the assumed PROPERTY_PREP entry; no semantic agreement.",
+    "maintained_preflight": "A short revision argument is rejected before workers; corrected full-revision preparation passes with zero application or semantic evaluations."
+  },
+  "maintained_tests": {
+    "revision": "f259ca28fd9399c6ae5a78e3928f64f4c3f827b4",
+    "catalogue": "tests/semantics/reference_get_hook_cases.json",
+    "state": [
+      "tests/semantics/reference_get_hook_protocol.py",
+      "tests/semantics/reference_get_hook_state_review.py"
+    ],
+    "bridge": "Both catalogue sources/streams and generated accepted fixtures are byte-exact; runtime remains e704-exact. New group runners pass prepare-only frontend/adapter smoke without repeating semantics. Makefile registers source and both state groups."
+  },
+  "reports": {
+    "native": {
+      "archive_member": "probes/native-first/report.json",
+      "sha256": "eac69c280bb810b1a1130426e48612c28352b1ac07cb4c289b165fc2ab6bc6fb"
+    },
+    "baseline": {
+      "archive_member": "probes/accepted-current-baseline/report.json",
+      "sha256": "c38d78fa181def40596d3437d093486999b77e9d9a12f6047235aadccb63a7ec"
+    },
+    "compiler_failure": {
+      "archive_member": "probes/changed-model-fid0xs0n/report.json",
+      "sha256": "2935047fcfe9f23076d1fde6d3375a8e3b18b559c5645e8bb39e9298f1e77d33"
+    },
+    "ingress_unsupported": {
+      "archive_member": "probes/changed-model-r9z1je1b/report.json",
+      "sha256": "d582ebdf1be6b1119b7fe0567683899a9c5532ce020427e036f924030adc1047"
+    },
+    "entry_diagnostic": {
+      "archive_member": "probes/entry-diagnostic-report.json",
+      "sha256": "820ba87abfdb84193607b36bfa97dfa52096a2564b8a598a921282e7ef65381d"
+    },
+    "source": {
+      "archive_member": "probes/changed-model-z3m0xbhx/report.json",
+      "sha256": "265014fb2533fa55376da03edebb39debe3ab8af5c44531d37496b616f47894e"
+    },
+    "author": {
+      "archive_member": "probes/author-state-ph710jem/report.json",
+      "sha256": "cd209047fe5fcb4b86b8b4480b029ac7ee985cd5fc3d1ab8a20dcd341eb588d3"
+    },
+    "peer": {
+      "archive_member": "probes/reviewer/independent-rebind-yt8p20gh/report.json",
+      "sha256": "c2027b8079ab06d3a7068d1be551f7700787e7c076593c9dd71f55894c4434b8"
+    }
+  },
+  "archive": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/reference-get-hooks-132/evidence.tar.gz",
+    "bytes": 4015115,
+    "members": 192,
+    "sha256": "34de4b0f57bf1f0eb64223acd9536490628ed83c8583fc6399a75d1f31784536",
+    "manifest_sha256": "bde7939e5b76281c2744c628a4dca9d936c0ffc373f0b801d5ae99b997ae7861",
+    "uncompressed_bytes": 38209212
+  },
+  "maintained_smoke": {
+    "file": "/home/user/workspace/php-spec-evidence-archive/reference-get-hooks-132/maintained-smoke.tar.gz",
+    "bytes": 75129,
+    "members": 32,
+    "sha256": "7b8eee31cfa6b425f012fef06802e6829cf9c447f36786e242bb7e9663b2f397",
+    "semantic_evaluations": 0
+  },
+  "remaining": "Untyped or inherited reference getters, virtual/arrow/set/trait/paired forms, reference-return bodies beyond this backed slice, dimensions, quiet/compound/coalesce consumers, undefined bind RHS and wider receiver/callback/lifecycle forms remain partial. By-value hook paths retain their existing guards.",
+  "composition": "Actual-tail interaction and exact preservation review pending; integration adds no execution credit."
+}

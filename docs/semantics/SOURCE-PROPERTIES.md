@@ -43,6 +43,19 @@ earlier direct-slot evidence is not rerun. Retired or nonfloat old cells, sole-o
 receiver retirement and wider quiet-CV GC remain open.
 [Reference NaN review](../../coverage/semantics/quiet-public-reference-nan-review.json).
 
+Selected public typed backed sole block `&get` hooks on a parentless class now
+admit literal reads and reference fetches through a direct ordinary CV receiver.
+The real hook returns the backing cell with its property type-source; an ordinary
+read dereferences after hook-frame cleanup. Destination `=&` invokes Get first,
+then raises `Cannot assign by reference to overloaded object`, preserving the
+original property and initially defined RHS cell. The active hook's `$this`
+backing fetch retains the existing pending-base route. One receiver hold moves
+from the call target into the frame; the new result marker owns nothing.
+Two source agreements and 251 Boolean checks plus six raw transitions are in the
+[reference-Get review](../../coverage/semantics/reference-get-hooks-review.json).
+Untyped, inherited reference getters, virtual/arrow/set/trait forms, dimensions,
+quiet reads and compound consumers remain outside this slice.
+
 Public backed by-value block and expression `get` hooks compile into source functions with the
 property's return type. Literal reads through an ordinary CV or `$this` execute
 the hook each time. Direct backing access requires the same property and receiver
