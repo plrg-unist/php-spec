@@ -1,7 +1,7 @@
 {
   "version": 1,
   "milestone": "OP85 NaN shorthand conditional live value",
-  "status": "bounded independently reviewed semantics; private publication awaiting composition",
+  "status": "bounded independently reviewed semantics; actual-tail candidate review pending",
   "target": "PHP8.5.10 CLI NTS64; pinned project-local engine/ordinary precision14 profile",
   "scope": "Shorthand ternary with ABSENT true arm and an ordinary allocated nonreference float CV initially NaN. Named Warning callback resumes from the same live float slot; true copies that float, false evaluates/copies the fallback, and supplied throw cancels both. Full ternary, references/copies, changed representations and wider handlers remain partial.",
   "tested_revision": "a9a29c4c40442eb1969dcdab244b6ca56d24c159",
@@ -110,5 +110,13 @@
       "taskset -c 1 env LC_ALL=C TZ=UTC python3 -B /home/user/workspace/php-spec-evidence-archive/operators-85/run-focused.py a9a29c4c40442eb1969dcdab244b6ca56d24c159 1"
     ],
     "record": "Restore matching Git cut/local tools and retained original paths; choose fresh output directories. Focused fixtures reuse accepted source/native tuples without replay. Raw external evidence is not a build input; reused regular binaries prove no fresh offline rebuild."
+  },
+  "composition": {
+    "parent": "77988f2291755f0ec9347a764f5eb50ae6dd087d",
+    "private_publication": "369b963445a8d1ddeb89d46fac1286fe8a0a50ca",
+    "modules": 412,
+    "preservation": "30/51/404 and six OP85 scripts remain private-publication exact. Incoming422, other runtime modules and module manifest remain parent-exact. Removing the one TERNARY_NAN_WARNING task declaration from combined30 reproduces parent30. Accepted a9a29 source/focused cuts and their credit are unchanged.",
+    "interaction": "The incoming occupied WeakMap-entry offsetSet replacement requires a certified WEAKMAPENTRIES table and object key. None of the three OP85 sources creates a WeakMap, object key or offsetSet access; scalar GLOBALS writes and retained Throwable observers cannot select that validator. No shared field/default/manifest changes occur.",
+    "gate": "Incoming selector review is independently clear; exact combined candidate review pending. No semantic execution renewal."
   }
 }
