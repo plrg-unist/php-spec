@@ -3300,7 +3300,7 @@ occupancy even after an earlier referent retires; supplied Exceptions survive
 remaining slot cleanup, while external shared holders delay invocation.
 Three sources and 307 Boolean/nine raw checks pass at `80451b539`/417. Genuine
 baseline 3 retains `8484fc071`/417 with zero agreement: callback-table insertion
-refuses before output. Original compile stops remain zero; callback-valued owned Iterator/factory/traversal,
+refuses before output. Original compile stops remain zero; callback-valued traversal,
 singleton/Key-death/normalization, reads/empty/mutation/escape and wider
 payload/GC histories remain partial.
 
@@ -3323,8 +3323,13 @@ teardown while Map still has multiple entries now transfers DATA through a
 Wrapper storage pin, preserving retained owners and supplied-Throwable helper
 unwind. Three source agreements keep mixed `e983fe7b0`/`f3623f260` cuts; 351
 Boolean/eight raw checks pass at `f3623f260`/415. Old singleton disposal is
-unchanged; wider callback/payload histories, active outer loops, hidden handles
-and GC/CONFIG remain partial.
+unchanged. Initial owned cursors on direct callback tables now use a separate
+lifetime certificate while manual/outer consumers keep their methodless guards.
+Typed Iterator/Map/self weak observations distinguish normal/supplied-Exception
+cleanup from a shared Value callback after Wrapper retirement. Three sources and
+389 Boolean/13 raw checks pass at `135893a0a`/419; the original fixture parse stop
+stays zero. Wider callback cursor/payload histories, active outer loops, hidden
+handles and GC/CONFIG remain partial.
 
 Bounded by-reference WeakMap traversal shares the entry's cell and preserves
 rebinding plus escaped aliases through DATA or Key retirement. A reference
