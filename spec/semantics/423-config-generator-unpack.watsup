@@ -388,8 +388,8 @@ def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if $intrinsic_argument(S, pconfiggenerator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
   -- if pdestructionoperation.ORIGIN = (porigin)
   -- if S_scope = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
-  -- if $config_generator_saved_scope(S_scope, pconfiggenerator)
-  -- if $config_generator_stage(S_scope, pconfiggenerator, "storage-released")
+  -- if $config_generator_return_history(S_scope, pconfiggenerator)
+  -- if (HOBJECT pconfiggenerator.OBJECT) <- S_scope.ALLOCATIONS \/ ~$generator_storage_active(S_scope, pconfiggenerator.OBJECT)
 def $return_discard(S, CONFIG_GENERATOR pconfiggenerator text) = $config_generator_discard(S, pconfiggenerator, text)
   -- if S.TODO = (THROW_SEARCH n) :: ptask*
   -- if $throwable_live(S, n)
