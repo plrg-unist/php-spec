@@ -417,7 +417,6 @@ def $trace_std_array_pair(S, n_left, n_right, n_seen_left*, n_seen_right*) = $tr
   -- if $heap_subset([HARRAY n_left, HARRAY n_right], S.ALLOCATIONS)
   -- if ~(n_left <- n_seen_left* \/ n_right <- n_seen_right*)
 def $trace_std_array_pair(S, n_left, n_right, n_seen_left*, n_seen_right*) = false -- otherwise
-dec $trace_std_graph_pair(pstate, nat, nat) : bool
 def $trace_std_graph_pair(S, n_left, n_right) = $trace_std_array_pair(S, n_left, n_right, eps, eps)
   -- if $trace_graph_valid(S, n_left) /\ $trace_graph_valid(S, n_right)
 def $trace_std_graph_pair(S, n_left, n_right) = false -- otherwise
@@ -437,7 +436,6 @@ def $trace_std_array_present(S, n, n_seen*) = $trace_std_entries_present(S, S.AR
   -- if (HARRAY n) <- S.ALLOCATIONS
   -- if ~(n <- n_seen*)
 def $trace_std_array_present(S, n, n_seen*) = false -- otherwise
-dec $trace_std_present(pstate, nat) : bool
 def $trace_std_present(S, n_trace) = $trace_std_array_present(S, n_trace, eps)
   -- if $(n_trace < |S.ARRAYS|)
   -- if (HARRAY n_trace) <- S.ALLOCATIONS
