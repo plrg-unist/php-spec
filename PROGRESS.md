@@ -44,9 +44,9 @@ implemented cases, exclusions, exact tested revisions and independent reviews.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
-| CLASS132 | Private native-first class/property source preparation; no CPU or writer. |
+| CLASS132 | Native2 exact/baseline2 Unsupported; private reference-Get foundation pending review, no CPU or writer. |
 | A56 | Last-DATA destructor lifetime: strict/source5 accepted; 302+499 state recipes reviewed. COMP implementer/class reviewer take recorder watches and focused validation next; no CPU. |
-| Iterator58 | Object-method Generator/Fiber: strict/author2 pass; peer2 source checks onCPU2, no writer. |
+| Iterator58 | Object-method Generator/Fiber: source4/strict420/focused424 accepted; publication ready/next, no CPU. |
 | M157 | Still-Many WeakMap KEY_R copies: native3/genuine3 closed; repaired source3 validating onCPU5, no writer. |
 | COMP123 | Held unrun; no actor. |
 
