@@ -321,8 +321,9 @@ rule PhpStep/config-generator-input-release: S ~> $config_generator_release_inpu
 
 ;; Native storage callbacks belong to SEND_UNPACK's argument site. The CFG
 ;; continuation owns only callee; GENERATOR_STORAGE_STEP supplies the real pin.
-def $config_generator_storage_release(S, pconfiggenerator, ptask*) = $fiber_start_unpack_release(S[.ORIGIN = (porigin)][.TODO = (CONFIG_GENERATOR pconfiggenerator "storage-released") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], [HOBJECT pconfiggenerator.OBJECT])
+def $config_generator_storage_release(S, pconfiggenerator, ptask*) = $eager_operation_begin(S_ready, S_ready, CONFIG_GENERATOR pconfiggenerator "storage-released", [HOBJECT pconfiggenerator.OBJECT])
   -- if $intrinsic_argument(S, pconfiggenerator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if S_ready = S[.ORIGIN = (porigin)][.TODO = (CONFIG_GENERATOR pconfiggenerator "storage-released") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 def $config_generator_storage_finish(S, pconfiggenerator, ptask*) = S[.ORIGIN = (pconfiggenerator.CALL.SITE)][.TODO = (CONFIG_GENERATOR pconfiggenerator "invoke") :: ptask*]
   -- if $config_generator_callee(S, pconfiggenerator.CALL.OWNER, 1)
 def $config_generator_storage_finish(S, pconfiggenerator, ptask*) = S[.COMPLETION = UNSUPPORTED "CONFIG Generator unpack last storage callee owner"]
@@ -382,7 +383,7 @@ def $eager_operation_source_valid(S, pdestructionoperation) = true
 def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.SOURCE = CONFIG_GENERATOR pconfiggenerator "storage-released"
   -- if pdestructionoperation.CLEANUP = eps /\ pdestructionoperation.NOGC = eps
-  -- if pdestructionoperation.PENDING =/= eps /\ pdestructionoperation.COMPLETION = NORMAL
+  -- if pdestructionoperation.COMPLETION = NORMAL
   -- if pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)
   -- if $intrinsic_argument(S, pconfiggenerator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
   -- if pdestructionoperation.ORIGIN = (porigin)

@@ -155,6 +155,12 @@ def checks(program, path, name):
         'S_pinned.TODO = (GENERATOR_STORAGE_STEP pgenstorage) :: ptask_storage_tail*',
         'pgenstorage.OBJECT = n_generator', 'pgenstorage.NEXT = 0', 'pgenstorage.USER',
         'pgenstorage.ORIGIN = (porigin_argument)',
+        'S_pinned.DESTRUCTION.OPERATIONS = [pdestructionoperation]',
+        'pdestructionoperation.SOURCE = CONFIG_GENERATOR pconfiggenerator "storage-released"',
+        'pdestructionoperation.PENDING = eps',
+        'pdestructionoperation.ORIGIN = (porigin_argument)',
+        '$eager_operation_source_valid(S_pinned,pdestructionoperation)',
+        '$task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = eps',
         '$generator_storage_valid(S_pinned,pgenstorage)',
         '$generator_storage_state_valid(S_pinned)',
         '$task_nodes(GENERATOR_STORAGE_STEP pgenstorage) = [HOBJECT n_generator]',
@@ -166,6 +172,9 @@ def checks(program, path, name):
         'S_throw.CURRENT = (pcallcontext_dtor)',
         'pcallcontext_dtor.TARGET = METHOD_TARGET n_payload pmethoddesc.FUNCTION.ORIGIN',
         '$destructor_context_valid(S_throw,pcallcontext_dtor)',
+        'S_throw.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*',
+        'pdestructorcall.OPERATION = (pdestructionoperation)',
+        'pdestructorcall.PENDING = eps',
         '$generator_storage_for(S_throw,n_generator) = (pgenstorage[.NEXT = 4])',
         '$task_nodes(GENERATOR_STORAGE_STEP pgenstorage[.NEXT = 4]) = [HOBJECT n_generator]',
         'S_throw.OBJECTS[n_generator] = GENERATOR pgenerator_closed',
@@ -204,6 +213,7 @@ def checks(program, path, name):
         'S_retired.OBJECTS[n_generator] = GENERATOR pgenerator_closed',
         '$task_nodes(CONFIG_GENERATOR pconfiggenerator text_retired) = [HOBJECT n_owner]',
         '$throwable_field(S_retired,n_exception,"trace") = PARRAY n_trace',
+        '$throwable_field(S_retired,n_exception,"previous") = PNULL',
         'S_retired.ARRAYS[n_trace] = S_throw.ARRAYS[n_trace]',
         'S_retired.ARRAYS[n_trace_frame] = S_throw.ARRAYS[n_trace_frame]',
         'S_retired.ARRAYS[n_trace_args] = S_throw.ARRAYS[n_trace_args]',
@@ -274,7 +284,8 @@ def partition(values, part):
         '$ref_return_retire_method(S_input,n_payload) = (pmethoddesc)',
         'S_input.STORE[n_watch_return_cell] = DEFINED (POBJECT n_watch_return)',
         *reach('S_pinned', 'S_input', 3),
-        'S_pinned.TODO = (GENERATOR_STORAGE_STEP pgenstorage) :: ptask_storage_tail*']
+        'S_pinned.TODO = (GENERATOR_STORAGE_STEP pgenstorage) :: ptask_storage_tail*',
+        'S_pinned.DESTRUCTION.OPERATIONS = [pdestructionoperation]']
     return setup + values[cut:]
 
 
