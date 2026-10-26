@@ -33,9 +33,9 @@ and wider lifecycle contexts retain their existing boundaries.
 [Cached backing-hook comparisons](../../coverage/semantics/backed-hook-table-comparison-review.json)
 use these physical locators without invoking getters; normal setters and live
 backing/reference writes remain observable. Virtual declarations contribute no
-slot. This extends comparison admission only: ARRAY-cast projection and foreach
-hook boundaries remain unchanged, and new backing-hook Stringable continuations
-stay Unsupported.
+slot. This selected validation covers comparisons; ARRAY-cast projection and
+foreach hook guards remain unchanged, and new backing-hook Stringable
+continuations stay Unsupported.
 
 Source construction keeps these locators internal; ordinary array casts export
 copied values. Copied declared-bucket reference iteration and collector visitation
