@@ -1,0 +1,81 @@
+{
+  "decision": "Independently accepted literal-this Get references with ordinary method-receiver ownership; family remains partial.",
+  "scope": "Existing authenticated literal-this BP_VAR_R producer now admits either Get return convention. Caller-selected nonpublic declaration and real method receiver remain authoritative across Get/local cleanup and COPY.",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "engine_route": "zend_std_read_property retains caller-selected prop_info and its Get hold through local cleanup and verification. zend_verify_prop_assignable_by_ref_ex changes an unconstrained real cell or checks existing sources without attaching the requested type. FETCH_OBJ_R dereferences/copies the returned operand before FREE_OP1 and CHECK_EXCEPTION; the ordinary method frame still owns its receiver until return/unwind cleanup.",
+  "implementation": {
+    "revision": "453d2a717ba2b2c54add46382d5847340a19a747",
+    "paths": [
+      "spec/semantics/380-magic-property-get.watsup"
+    ],
+    "delta_from_base": "+1/-2 lines",
+    "behavior": "this_source retains method presence via =/= eps and removes only its BYREF exclusion. Live-this identity, source emission/line, access, selected DECL, history, signature and allocation guards remain.",
+    "preservation": "Verification380/384, normal and pending COPY/DROP, method-frame cleanup, state/tasks/roots/GC and compiler are unchanged. No owned BASE path is introduced for literal-this."
+  },
+  "source_evidence": {
+    "native_baseline_revision": "b7e1d4461097a010f80b85924e4bf038a3355b4e",
+    "module_count": 419,
+    "classification": "Native3 exact normal. Unchanged model has checked Unsupported2 W:/T: and genuine php_error255 conflict C:r|D|kept7| plus367 semantic-stderr bytes (uncaught replacement); all baseline outcomes retain zero agreement.",
+    "changed_revision": "453d2a717ba2b2c54add46382d5847340a19a747",
+    "agreements": 3,
+    "observations": "Local Get destructor string7-to9 precedes selected private-int verification; COPY captures int9 before method writes free. Exact Holder:int|string preserves its original constraint through free/later. Conflict keeps string7 and caller-line10/file/message TypeError before read-method receiver D writes8 and supplies replacement H.previous=TypeError; result42 and ownerNULL remain exact. Public Child string shadow never supplies the requested type."
+  },
+  "focused_evidence": {
+    "revision": "e9fecc2ca6ffc57f0f6acb057a17ed7b1cbca9ec",
+    "module_count": 419,
+    "author": 332,
+    "independent": 164,
+    "total": 496,
+    "reached": 476,
+    "derived": 20,
+    "groups": {
+      "weak_local": 174,
+      "source_conflict": 158,
+      "exact_source": 164
+    },
+    "trajectories": "Actual METHOD_TARGET/RECEIVER and absent this CV authenticate entry; the transient receiver root becomes the single Get hold with entry delta0 and no BASE. Local Get destruction frame keeps REFERENCE through7-to9 before STORE-only int9 verification. COPY releases its reference-cell owner; the later method marker has sole RECEIVER ownership after ownerNULL/free. Pending conflict preserves STORE/PROPREFS, materializes a fresh TypeError, captures raw7 into DROP (HCELL3-to2), then retires the read-method frame under that error. Both D anchors carry actual read-function frame VALUE9 or pending TypeError and OPERATION eps. Peer exact source retains its original vector and detached7 through later writes.",
+    "controls": "Derived no-current-receiver keeps immutable source/history/access positive while fresh Plan/capture refuses. Forged Child DECL keeps this_source positive but fails history/task admission; no mutated-state validity or reachability claim. Six author plus three peer budget premises verify final-state resumption equality.",
+    "execution": "Author AL2/SL2true, peerAL1/SL1true, first application/quiet/stable; serial90s groups. All six actual compiler/SL children sampled[1] and all actors/groups/wrappers reaped. Initial native/baseline has launcherCPU5 provenance only; changed actual CLI adapters sampled[1]."
+  },
+  "preserved_failures": [],
+  "independent_review": "class119_review accepted native/baseline classifications, minimal runtime/source3, author332, peer164, incoming selector/preservation reasoning and concise documentation/archive. No execution renewal.",
+  "raw": {
+    "manifest": "../php-spec-evidence-archive/magic-get-this-reference-129/manifest.json",
+    "bytes": 5965883,
+    "sha256": "cad02e038c7e0cb39be19a73fccc1dc2363ed6be5784de48ec6f187c7e49be42",
+    "reports": {
+      "native3": {
+        "path": ".tools/magic-get-this-reference-probes-129/native-first/report.json",
+        "sha256": "2a5f173655f65277e20426a5d645d5559cba44773cc0598b3e0d760d53a897b3"
+      },
+      "baseline3": {
+        "path": ".tools/magic-get-this-reference-probes-129/accepted-current-baseline/report.json",
+        "sha256": "2d1c914beba32a797fd73b6d88d9eb0d95739f107b2965eece35ab6aef68a697"
+      },
+      "source3": {
+        "path": ".tools/magic-get-this-reference-probes-129/changed-model-6nxetddx/report.json",
+        "sha256": "be10292f4d8465124264bd2daef0aca90900dbf5cf14764d91a016deee892f85"
+      },
+      "author332": {
+        "path": ".tools/magic-get-this-reference-protocol-r63aufvg/report.json",
+        "sha256": "d329d0f773525a2e05a8bc2bdbe1de7b514cf293768fb155ab0a836f6027526f"
+      },
+      "independent164": {
+        "path": ".tools/magic-get-this-reference-review-129/execution-boospi36/report.json",
+        "sha256": "c520dbbd22fdcceec185ef5d5d625140b2bd6475bfc4f4abdf14c60388fe247a"
+      }
+    },
+    "recovery": "Verify SHA-256 then extract raw.tar.gz; recover original Git revisions for tested419 inputs. Reports retain original file/cwd/profile/tool identities. tested-inputs contains380/384/manifest, six maintained inputs and imported recursion/scoped-unset/owned-reference Python helpers. Native/baseline retainb7e1d4461, changedsource3 retains453d2a717, focused496 retainse9fecc2ca. Later composition adds no execution credit."
+  },
+  "composition": {
+    "parent_revision": "95d889256a7fa378755f5c8475037ce47800674a",
+    "module_count": 419,
+    "preservation": "Tested380/384, six maintained inputs and imported recursion/scoped-unset/owned-reference Python helpers remain exact. Incoming production paths and419 manifest remain parent-exact.",
+    "selectors": "30 only adds CONCAT_OWNED_RIGHT_RELEASE.429 extends CONCAT_PREP/Stringable lifetime/release/discard and task validators; Get/callcontext/type-source/receiver fields are unchanged. PHP originals contain no CONCAT/Stringable operations and derived mutations add no such tasks; specification-built TypeError bytes are not PHP CONCAT.",
+    "credit": "No joined execution or older getter/native/control replay; original419 cuts retained."
+  },
+  "limits": [
+    "Wider computed or suspended receiver producers, PARAM-backed sources, broader coercion/type-source and callback/lifetime histories remain partial."
+  ],
+  "engine_bugs_or_intentional_divergences": []
+}
