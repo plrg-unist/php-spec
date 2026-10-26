@@ -1,0 +1,50 @@
+{
+  "milestone": "OP92 copied NaN bitwise NOT notices",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle and profile",
+  "status": "author validated; independent review pending",
+  "scope": "A nonreference evaluated PFLOAT NaN copy enters the existing BITNOT_NAN_WARNING continuation. Exact checked BITNOT source/operand line and immutable bits authenticate entry. The first range Warning and second precision Deprecated use existing handler, pending-Exception, complement and cleanup rules.",
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_unary_op",
+    "vendor/php-src/Zend/zend_operators.h:zend_dval_to_lval_safe",
+    "vendor/php-src/Zend/zend_operators.c:bitwise_not_function",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_BW_NOT"
+  ],
+  "revision": "60d3a53bfd9477b7ebefea5b4bcc8ebd0302b7c8",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+    "module_count": 420
+  },
+  "native_pre": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-92/native-pre/report.json",
+    "sha256": "f273b7d859b0b20ce7fec59820c465a80354378cd9be3d10aea7bd4c31a49512",
+    "result": "Three exit-0 original PHP executions; no model agreement credit. The first handler throws after the by-value producer prints P;. Mask 2 defaults the remaining Deprecated, mask 8194 suppresses it. The selected ternary runs two handlers and returns strict int -1 after source unset and condition reversal."
+  },
+  "unchanged_baseline": {
+    "revision": "185eb4c96a60e140a6cc81f470ee1f50f4dba13c",
+    "report": "/home/user/workspace/php-spec-evidence-archive/operators-92/baseline/report.json",
+    "sha256": "254b24fb7c29c72dfe715ee9d0db9e1763a52d134afd83cf23956466d24ea5d4",
+    "result": "All three checked/frontend-accepted model executions stop as Unsupported: error-handler ingress requires a producer continuation. Zero source agreements; partial stdout/stderr has no agreement credit."
+  },
+  "accepted": {
+    "source_command": "python3 tests/semantics/bitnot_copy_nan_warnings.py --output /home/user/workspace/php-spec-evidence-archive/operators-92/source-60d3a53bf",
+    "source_report": "/home/user/workspace/php-spec-evidence-archive/operators-92/source-60d3a53bf/report.json",
+    "source_sha256": "9579d820196dadc3a0205c9378e8ff2e7a894650d019555993e0baaaa70d3b70",
+    "source": "Three exact original stdout/stderr, normal completion and exit-0 agreements; each native/model process completed, timed out false and group_after empty.",
+    "focused_command": "python3 tests/semantics/bitnot_copy_nan_warning_protocol.py --output /home/user/workspace/php-spec-evidence-archive/operators-92/focused-60d3a53bf-retry",
+    "focused_report": "/home/user/workspace/php-spec-evidence-archive/operators-92/focused-60d3a53bf-retry/report.json",
+    "focused_sha256": "767c7f04d6bc80a797d404b51d458bebb45ccc00cedd51ef1647cf2c5d69e750",
+    "focused": "Two genuine reached groups, 116 pending-mask-2 and 125 selected-normal conditions (241 total). They check fresh copied-input source/line/bits, raw first dispatch, actual handler frames, historical copy after old cell owner0/unallocated, live pending Exception, default Deprecated or strict -1 result, final state/output and zero-step budgets. The eligible-mask pending suppression case has source agreement only."
+  },
+  "preserved_failure": "The first focused invocation at /home/user/workspace/php-spec-evidence-archive/operators-92/focused-60d3a53bf failed before model execution because the private numeric_runner.exe was absent. The private runner was then built with scripts/opam-exec.sh dune build --root tests/semantics numeric_runner.exe; the successful retry is the sole focused credit.",
+  "inputs_sha256": {
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "2fcdfdeba34fe8785b3d5f9d422fe91f0360bf6d90e97bdbfde4b68d8ff87840",
+    "tests/semantics/bitnot_copy_nan_warning_cases.py": "c59c167da979f712431df87d731e29d1a725059465b677eb46aa33e037ac5fc1",
+    "tests/semantics/bitnot_copy_nan_warning_protocol.py": "b037dbd3530173dc22964e7cac2e2f91c5c664e1e9097d3cb0d7954b263785ba"
+  },
+  "remaining": "Copied range-only values, reference results, other evaluated producers and wider ownership/callback lifetimes remain partial. No numeric-conversion, CV NaN or finite-copy implementation is renewed; no complete BITNOT family claim."
+}

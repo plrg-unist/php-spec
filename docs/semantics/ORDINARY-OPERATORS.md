@@ -376,8 +376,20 @@ writes no source cell. Two originals and 140+139 focused premises cover source/b
 authority, real callbacks, cancellation, raw versus driven result, EOF and budgets
 in the [copy BITNOT ledger](../../coverage/semantics/bitnot-copy-warning-review.json).
 Old producer lowering, conversion/complement, dispatch, roots and unwind stay
-unchanged. Other producers, copied range/NaN and owning/constrained histories remain
+unchanged. Other producers, copied range and owning/constrained histories remain
 partial; paused and active selectors are untouched.
+
+Evaluated NaN copies now enter the same two-notice BITNOT continuation as a
+plain CV. A by-value function result retains its NaN bits after its source is
+unset: a first-handler throw still permits the precision default with mask 2,
+while mask 8194 suppresses it. A selected ternary copy survives condition
+reversal and source removal, and returns integer `-1` after both handlers.
+Three exact originals and two reached paths (116 and 125 conditions) cover the
+cached copy, callback order, pending Exception, source ownership and output in
+the [copied NaN ledger](../../coverage/semantics/bitnot-copy-nan-warning-review.json).
+The existing numeric conversion, CV NaN route and finite-copy route are reused;
+copied range-only values, reference results, other producers and wider lifetime
+behavior remain partial.
 
 Bitwise NOT now retains a finite in-range fractional float's converted long before its
 precision-loss deprecation. The bounded producer accepts a defined non-reference
