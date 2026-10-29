@@ -17,7 +17,8 @@ named magic-method classes retain implicit-interface metadata and RTD costs.
 Eleven native-first originals and the promoted historical OP110 context witness
 match pinned PHP across separate cuts. Strict425 and 162 source-reached conditions
 pass, including exact raw counters and authentic autoload causes; two retained
-counter controls also pass without native replay. The earlier duplicate-branch
+counter controls also pass without native replay. Joined strict425 on the actual
+tail passes. The earlier duplicate-branch
 interpreter failure and 45s timeout retain zero affected credit. Namespace/import,
 dynamic-source parent/interface dependencies and wider anonymous bodies remain
 partial. [Dependency review](coverage/semantics/anonymous-dependencies-review.json).
@@ -759,12 +760,11 @@ original cuts. Wider producers, handlers, references and lifetimes remain partia
 | Enum core | Full four-group enum core work. |
 | A65 | BYVAL Iterator field states. |
 | CALL126 | Target-neutral Aggregate unpack. |
-| CLASS146 | Private source12/reached162/count2/status3 accepted; actual-tail integration review. |
 | I74 | Generic fresh NEXT/SEND ADVANCE phase; source/static preparation. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64/A65, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110/111, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148/149 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64/A65, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110/111, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148/149 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145/146 are integrated
 into this branch.
 GC physical01 is integrated on this tail; its private source/state cuts and the
 joined strict gate retain their separate tested identities.
