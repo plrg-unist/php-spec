@@ -128,10 +128,11 @@ def $pmcat(PMDISPLAYUNSUPPORTED text, pmdisplay) = PMDISPLAYUNSUPPORTED text
 def $pmcat(PMTEXT ptbytes, PMDISPLAYUNSUPPORTED text) = PMDISPLAYUNSUPPORTED text
 def $pmif(true, ptbytes) = ptbytes
 def $pmif(false, ptbytes) = eps
-def $pmtypeatom(PTSELF, pvclass) = PTCLASS pvclass.NAME
-def $pmtypeatom(PTPARENT, pvclass) = PTCLASS ($pvname(PTPARENT, pvclass))
+def $pmtypeatom(PTSELF, pvclass) = PTCLASS ($pmcstring(pvclass.NAME))
+def $pmtypeatom(PTPARENT, pvclass) = PTCLASS ($pmcstring($pvname(PTPARENT, pvclass)))
+def $pmtypeatom(PTCLASS ptbytes, pvclass) = PTCLASS ($pmcstring(ptbytes))
 def $pmtypeatom(ptatom, pvclass) = ptatom
-  -- if ptatom =/= PTSELF /\ ptatom =/= PTPARENT
+  -- otherwise
 def $pmtypebranch(PTBRANCH ptatom*, pvclass) = PTBRANCH (($pmtypeatom(ptatom, pvclass))*)
 def $pmtypename(ptbranch*, pvclass) = $pttypename(($pmtypebranch(ptbranch, pvclass))*)
 
@@ -181,9 +182,9 @@ def $pmparameter(psparam, pvclass, ptcontext, int) = $pmcat(PMTEXT ($pmtypename(
   -- if ~psparam.REQUIRED /\ ~psparam.VARIADIC
 def $pmparameters(eps, pvclass, ptcontext, int) = PMTEXT eps
 def $pmparameters(psparam :: psparam_rest*, pvclass, ptcontext, int) = $pmcat($pmparameter(psparam, pvclass, ptcontext, int), $pmcat(PMTEXT ($pmif(psparam_rest* =/= eps, $ptascii(", "))), $pmparameters(psparam_rest*, pvclass, ptcontext, int)))
-def $pmdeclaration(pmmethod, pvclass, int) = PMDISPLAYUNSUPPORTED "method declaration display requires a named nonanonymous owner"
-  -- if pmmethod.OWNER = eps \/ pmmethod.NAME = eps \/ 0 <- pmmethod.OWNER
-def $pmdeclaration(pmmethod, pvclass, int) = $pmcat(PMTEXT ($pmif(pmmethod.SIGNATURE.BYREF, $ptascii("& ")) ++ pmmethod.OWNER ++ $ptascii("::") ++ pmmethod.NAME ++ [40]), $pmcat($pmparameters(pmmethod.SIGNATURE.PARAMETERS, pvclass, pmmethod.CONTEXT, int), PMTEXT ([41] ++ $pmif(pmmethod.SIGNATURE.RETURNS =/= eps, $ptascii(": ")) ++ $pmtypename(pmmethod.SIGNATURE.RETURNS, pvclass))))
+def $pmdeclaration(pmmethod, pvclass, int) = PMDISPLAYUNSUPPORTED "method declaration display requires an owner and method name"
+  -- if pmmethod.OWNER = eps \/ pmmethod.NAME = eps
+def $pmdeclaration(pmmethod, pvclass, int) = $pmcat(PMTEXT ($pmif(pmmethod.SIGNATURE.BYREF, $ptascii("& ")) ++ $pmcstring(pmmethod.OWNER) ++ $ptascii("::") ++ pmmethod.NAME ++ [40]), $pmcat($pmparameters(pmmethod.SIGNATURE.PARAMETERS, pvclass, pmmethod.CONTEXT, int), PMTEXT ([41] ++ $pmif(pmmethod.SIGNATURE.RETURNS =/= eps, $ptascii(": ")) ++ $pmtypename(pmmethod.SIGNATURE.RETURNS, pvclass))))
   -- otherwise
 
 def $pmfatal(PMDISPLAYUNSUPPORTED text, ptcontext) = PMDIAGUNSUPPORTED text

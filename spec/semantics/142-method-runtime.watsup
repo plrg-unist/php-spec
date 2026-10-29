@@ -94,7 +94,7 @@ def $method_accessible(S, pmethoddesc, (porigin_scope)) = true
   -- if $class_origin_matches(S, porigin_scope, pclassdesc_prototype.NAME, |S.CLASSES|) \/ $class_origin_matches(S, porigin_prototype, pclassdesc_scope.NAME, |S.CLASSES|)
 def $method_accessible(S, pmethoddesc, porigin?) = false -- otherwise
 dec $method_scope_suffix(pstate, porigin?) : ptbytes
-def $method_scope_suffix(S, (porigin_scope)) = $ptascii(" from scope ") ++ pclassdesc_scope.NAME
+def $method_scope_suffix(S, (porigin_scope)) = $ptascii(" from scope ") ++ $c_string(pclassdesc_scope.NAME)
   -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc_scope)
 def $method_scope_suffix(S, porigin?) = $ptascii(" from global scope") -- otherwise
 dec $method_visibility_name(ppropertyvisibility) : ptbytes
@@ -102,9 +102,9 @@ def $method_visibility_name(PROPERTY_PRIVATE) = $ptascii("private")
 def $method_visibility_name(PROPERTY_PROTECTED) = $ptascii("protected")
 def $method_visibility_name(PROPERTY_PUBLIC) = $ptascii("public")
 dec $method_denied(pstate, pmethoddesc, ptbytes, porigin?, bool, int) : pstate
-def $method_denied(S, pmethoddesc, ptbytes, porigin?, false, z) = $throw_scalar(S, "Error", $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ $ptascii(" method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()") ++ $method_scope_suffix(S, porigin?), z)
+def $method_denied(S, pmethoddesc, ptbytes, porigin?, false, z) = $throw_scalar(S, "Error", $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ $ptascii(" method ") ++ $c_string(pclassdesc.NAME) ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()") ++ $method_scope_suffix(S, porigin?), z)
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
-def $method_denied(S, pmethoddesc, ptbytes, porigin?, true, z) = $throw_scalar(S, "Error", $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ $ptascii(" ") ++ pclassdesc.NAME ++ $ptascii("::__construct()") ++ $method_scope_suffix(S, porigin?), z)
+def $method_denied(S, pmethoddesc, ptbytes, porigin?, true, z) = $throw_scalar(S, "Error", $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ $ptascii(" ") ++ $c_string(pclassdesc.NAME) ++ $ptascii("::__construct()") ++ $method_scope_suffix(S, porigin?), z)
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
 
 def $new_has_ctor(S, preqbytes) = true
@@ -1287,7 +1287,7 @@ def $method_ancestor_names(S, porigin, n) = [$ptascii(text_kind), $ptascii("Thro
 def $method_ancestor_names(S, porigin, n) = eps -- otherwise
 def $method_all_ancestor_names(S, porigin, n) = $method_ancestor_names(S, porigin, n) ++ $pil_ancestor_names(S, porigin, n)
 dec $method_active_registry(pstate, (preqbytes, porigin)*) : pvclasses
-def $method_active_registry(S, eps) = [($ptascii("stringable"), {NAME $ptascii("Stringable"), PARENT eps, ANCESTORS eps, FINAL false}), ($ptascii("throwable"), $pil_internal_scope($ptascii("Throwable"))), ($ptascii("exception"), $pil_internal_scope($ptascii("Exception"))), ($ptascii("error"), $pil_internal_scope($ptascii("Error"))), ($ptascii("errorexception"), $pil_internal_scope($ptascii("ErrorException"))), ($ptascii("stdclass"), {NAME $ptascii("stdClass"), PARENT eps, ANCESTORS eps, FINAL false}), ($ptascii("traversable"), {NAME $ptascii("Traversable"), PARENT eps, ANCESTORS eps, FINAL false}), ($ptascii("iterator"), {NAME $ptascii("Iterator"), PARENT eps, ANCESTORS ([$ptascii("Traversable")]), FINAL false}), ($ptascii("iteratoraggregate"), {NAME $ptascii("IteratorAggregate"), PARENT eps, ANCESTORS ([$ptascii("Traversable")]), FINAL false}), ($ptascii("generator"), {NAME $ptascii("Generator"), PARENT eps, ANCESTORS ([$ptascii("Iterator"), $ptascii("Traversable")]), FINAL true})]
+def $method_active_registry(S, eps) = [($ptascii("stringable"), {NAME $ptascii("Stringable"), PARENT eps, ANCESTORS eps, FINAL false}), ($ptascii("throwable"), $pil_internal_scope($ptascii("Throwable"))), ($ptascii("exception"), $pil_internal_scope($ptascii("Exception"))), ($ptascii("error"), $pil_internal_scope($ptascii("Error"))), ($ptascii("errorexception"), $pil_internal_scope($ptascii("ErrorException"))), ($ptascii("stdclass"), {NAME $ptascii("stdClass"), PARENT eps, ANCESTORS eps, FINAL false}), ($ptascii("traversable"), {NAME $ptascii("Traversable"), PARENT eps, ANCESTORS eps, FINAL false}), ($ptascii("iterator"), {NAME $ptascii("Iterator"), PARENT eps, ANCESTORS ([$ptascii("Traversable")]), FINAL false}), ($ptascii("iteratoraggregate"), {NAME $ptascii("IteratorAggregate"), PARENT eps, ANCESTORS ([$ptascii("Traversable")]), FINAL false}), ($ptascii("generator"), {NAME $ptascii("Generator"), PARENT eps, ANCESTORS ([$ptascii("Iterator"), $ptascii("Traversable")]), FINAL true}), ($ptascii("unitenum"), $pil_internal_scope($ptascii("UnitEnum"))), ($ptascii("backedenum"), $pil_internal_scope($ptascii("BackedEnum")))]
 def $method_active_registry(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = [($ptlc(pclassdesc.NAME), $pmethod_scope(pclassdesc, $method_all_ancestor_names(S, porigin, |S.CLASSES|)))] ++ $method_active_registry(S, (preqbytes_tail, porigin_tail)*)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
 
