@@ -228,8 +228,7 @@ def $iterator_unpack_valid(S, piteratorunpack, text) = true
   -- if piteratorunpack.CLOSUREORIGIN = $iterator_unpack_closure_source(S, piteratorunpack.CALL)
   -- if $unpack_pending_valid(S[.ORIGIN = piteratorunpack.CALL.CALLSITE], piteratorunpack.CALL, 1)
   -- if $unpack_source_kind(S, piteratorunpack.CALL, true)
-  -- if $iterator_unpack_input(S, piteratorunpack.CALL, piteratorunpack.INPUT)
-  -- if $iterator_unpack_original(piteratorunpack)
+  -- if $call_aggregate_iterator_input(S, piteratorunpack)
   -- if $useriter_instance(S, piteratorunpack.OBJECT)
   -- if $useriter_cursor_valid(S, piteratorunpack.ITERATOR, piteratorunpack.OBJECT)
   -- if $iterator_unpack_stage(S, piteratorunpack, text)
@@ -675,7 +674,7 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
 
-def $iterator_unpack_finish(S, piteratorunpack, ptask_tail*) = $fiber_start_unpack_release(S[.ITERATORS = $iterator_remove(S.ITERATORS, piteratorunpack.ITERATOR)][.ORIGIN = piteratorunpack.CALL.CALLSITE][.TODO = (UNPACK_ARGS $unpack_advance(piteratorunpack.CALL, piteratorunpack.CALL.SENT)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $iterator_unpack_nodes(piteratorunpack))
+def $iterator_unpack_finish(S, piteratorunpack, ptask_tail*) = $fiber_start_unpack_release(S[.ITERATORS = $iterator_remove(S.ITERATORS, piteratorunpack.ITERATOR)][.ORIGIN = piteratorunpack.CALL.CALLSITE][.TODO = (UNPACK_ARGS $unpack_advance(piteratorunpack.CALL, piteratorunpack.CALL.SENT)) :: $call_aggregate_tail(piteratorunpack.CALL, piteratorunpack.INPUT, piteratorunpack.OBJECT, ptask_tail*)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $iterator_unpack_nodes(piteratorunpack))
 rule PhpStep/iterator-unpack-finish: S ~> $iterator_unpack_finish(S, piteratorunpack, ptask_tail*)
   -- if S.TODO = (ITERATOR_UNPACK piteratorunpack "finish") :: ptask_tail*
 ;; Native iterator teardown continues after a key/cache/DATA destructor throws.
@@ -762,8 +761,8 @@ def $iterator_unpack_discard_nodes(S, piteratorunpack) = $iterator_unpack_nodes(
 def $iterator_unpack_discard(S, piteratorunpack, text) = $eager_operation_begin(S_clean, S, ITERATOR_UNPACK piteratorunpack text, $iterator_unpack_discard_nodes(S, piteratorunpack))
   -- if $destructor_operational(S)
   -- if $eager_operation_pending(S) =/= eps
-  -- if S_clean = S[.ITERATORS = $iterator_remove(S.ITERATORS, piteratorunpack.ITERATOR)][.ORIGIN = piteratorunpack.CALL.CALLSITE][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-def $iterator_unpack_discard(S, piteratorunpack, text) = $fiber_start_unpack_release(S[.ITERATORS = $iterator_remove(S.ITERATORS, piteratorunpack.ITERATOR)][.ORIGIN = piteratorunpack.CALL.CALLSITE][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $iterator_unpack_discard_nodes(S, piteratorunpack))
+  -- if S_clean = S[.ITERATORS = $iterator_remove(S.ITERATORS, piteratorunpack.ITERATOR)][.ORIGIN = piteratorunpack.CALL.CALLSITE][.TODO = $call_aggregate_abort_tail(piteratorunpack.CALL, piteratorunpack.INPUT, piteratorunpack.OBJECT, S.TODO)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $iterator_unpack_discard(S, piteratorunpack, text) = $fiber_start_unpack_release(S[.ITERATORS = $iterator_remove(S.ITERATORS, piteratorunpack.ITERATOR)][.ORIGIN = piteratorunpack.CALL.CALLSITE][.TODO = $call_aggregate_abort_tail(piteratorunpack.CALL, piteratorunpack.INPUT, piteratorunpack.OBJECT, S.TODO)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $iterator_unpack_discard_nodes(S, piteratorunpack))
   -- if ~$destructor_operational(S) \/ $eager_operation_pending(S) = eps
 def $return_discard(S, ITERATOR_UNPACK piteratorunpack text) = $iterator_unpack_discard(S, piteratorunpack, text)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*

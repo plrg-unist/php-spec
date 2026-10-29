@@ -1,0 +1,316 @@
+;; SEND_UNPACK acquires a terminal Iterator/Generator recursively. Getter frames
+;; borrow the original operand or returned layer; only the terminal DATA owns
+;; the acquired leaf. The leaf receipt records history without adding owners.
+dec $call_aggregate_method(pstate, nat) : pmethoddesc?
+dec $call_aggregate_input(pstate, pcallaggregate) : bool
+dec $call_aggregate_source(pstate, pcallaggregate) : bool
+dec $call_aggregate_chain(pstate, nat, nat*) : bool
+dec $call_aggregate_history(pstate, pcallaggregate) : bool
+dec $call_aggregate_acquisition(pstate, pcallaggregate) : bool
+dec $call_aggregate_self(pstate, pcallaggregate) : nat?
+dec $call_aggregate_stage(pstate, pcallaggregate, text) : bool
+dec $call_aggregate_valid(pstate, pcallaggregate, text) : bool
+dec $call_aggregate_count(ptask*, porigin?) : nat
+dec $call_aggregate_at(ptask, porigin?) : bool
+dec $call_aggregate_call(pstate, pcallaggregate, ptask*) : pstate
+dec $call_aggregate_acquire(pstate, pcallaggregate, ptask*) : pstate
+dec $call_aggregate_error(pstate, pcallaggregate, ptbytes, ptask*) : pstate
+dec $call_aggregate_ready(pstate, pcallaggregate, ptask*) : pstate
+dec $call_aggregate_promote(pstate, pcallaggregate, ptask*) : pstate
+dec $call_aggregate_nodes(pcallaggregate, text) : pnode*
+dec $call_aggregate_target(pstate, pcallaggregate, pcalltarget) : bool
+dec $call_aggregate_pending(pstate, porigin) : bool
+dec $call_aggregate_frame(pstate, pcallcontext, pframe) : bool
+dec $call_aggregate_entered(pstate, pcallcontext?, pframe*, pcalltarget, porigin) : bool
+dec $call_aggregate_context(pstate, pcallcontext) : bool
+dec $call_aggregate_same(punpackcall, punpackcall) : bool
+dec $call_aggregate_match(pcallaggregate, punpackcall, poperand, nat) : bool
+dec $call_aggregate_receipt(pstate, punpackcall, poperand, nat, ptask*) : bool
+dec $call_aggregate_receipt_at(pstate, punpackcall, poperand, nat, ptask) : bool
+dec $call_aggregate_marker(punpackcall, ptask*) : bool
+dec $call_aggregate_marker_at(punpackcall, ptask) : bool
+dec $call_aggregate_leaf_task(ptask, pcallaggregate) : bool
+dec $call_aggregate_leaf_active(pcallaggregate, ptask*) : bool
+dec $call_aggregate_leaf_head(pcallaggregate, ptask, ptask*) : bool
+dec $call_aggregate_leaf_saved(pcallaggregate, pdestructionoperation*) : bool
+dec $call_aggregate_leaf_source(pcallaggregate, ptask) : bool
+dec $call_aggregate_source_task(ptask, pcallaggregate) : bool
+
+;; This increment uses ordinary public, zero-argument, by-value getters. A
+;; generator getter or reference-returning getter remains an explicit boundary.
+def $call_aggregate_method(S, n) = (pmethoddesc)
+  -- if $(n < |S.OBJECTS|)
+  -- if $generator_from_aggregate(S, POBJECT n)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $effective_method(S, porigin, $ptascii("getIterator"), |S.CLASSES|) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC
+  -- if ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if pmethoddesc.FUNCTION.SIGNATURE = $useriter_signature($ptascii("getIterator"))
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
+def $call_aggregate_method(S, n) = eps -- otherwise
+def $call_aggregate_input(S, pcallaggregate) = $iterator_unpack_input(S, pcallaggregate.CALL, pcallaggregate.INPUT)
+  -- if pcallaggregate.INPUT = VARIABLE ptbytes z
+def $call_aggregate_input(S, pcallaggregate) = true
+  -- if pcallaggregate.INPUT = KNOWN (POBJECT pcallaggregate.AGGREGATE)
+  -- if $unpack_class(S, pcallaggregate.CALL) =/= (UNPACK_CV)
+  -- if $unpack_class(S, pcallaggregate.CALL) =/= eps
+def $call_aggregate_input(S, pcallaggregate) = true
+  -- if pcallaggregate.INPUT = REFERENCE n
+  -- if $(n < |S.STORE|)
+  -- if $unpack_class(S, pcallaggregate.CALL) =/= (UNPACK_CV)
+  -- if $unpack_class(S, pcallaggregate.CALL) =/= eps
+def $call_aggregate_input(S, pcallaggregate) = false -- otherwise
+def $call_aggregate_source(S, pcallaggregate) = true
+  -- if pcallaggregate.CALL.CALLSITE = (porigin)
+  -- if $call_unpack_site(S, (porigin))
+  -- if $call_line_valid(S, (porigin), pcallaggregate.CALL.LINE)
+  -- if $unpack_origin(S, pcallaggregate.CALL) =/= eps
+  -- if $unpack_source_kind(S, pcallaggregate.CALL, true)
+  -- if $call_argument_source(S, porigin) = PCALLARGUMENTS phpType7* n_field
+  -- if n_offset = $(pcallaggregate.CALL.INDEX + 1)
+  -- if $(n_offset <= |phpType7*|)
+  -- if n_remaining = $(|phpType7*| - n_offset)
+  -- if pcallaggregate.CALL.ARGUMENTS = phpType7*[n_offset:n_remaining]
+  -- if $call_aggregate_input(S, pcallaggregate)
+def $call_aggregate_source(S, pcallaggregate) = false -- otherwise
+def $call_aggregate_chain(S, n, eps) = true
+def $call_aggregate_chain(S, n, n_next :: nat*) = (n_next =/= n /\ $call_aggregate_method(S, n_next) =/= eps /\ $call_aggregate_chain(S, n_next, nat*))
+def $call_aggregate_history(S, pcallaggregate) = ($call_aggregate_source(S, pcallaggregate) /\ $call_aggregate_method(S, pcallaggregate.AGGREGATE) =/= eps /\ $call_aggregate_chain(S, pcallaggregate.AGGREGATE, nat*))
+  -- if pcallaggregate.ACQUIRED = pcallaggregate.AGGREGATE :: nat*
+  -- if $foreach_aggregate_mutable_input(pcallaggregate.INPUT)
+def $call_aggregate_history(S, pcallaggregate) = ($call_aggregate_source(S, pcallaggregate) /\ $call_aggregate_method(S, pcallaggregate.AGGREGATE) =/= eps /\ $call_aggregate_chain(S, pcallaggregate.AGGREGATE, pcallaggregate.ACQUIRED)) -- otherwise
+def $call_aggregate_acquisition(S, pcallaggregate) = $fiber_traversal_acquisition_valid(S, pcallaggregate.AGGREGATE, nat*)
+  -- if pcallaggregate.ACQUIRED = pcallaggregate.AGGREGATE :: nat*
+  -- if $foreach_aggregate_mutable_input(pcallaggregate.INPUT)
+  -- if (HOBJECT pcallaggregate.AGGREGATE) <- S.ALLOCATIONS
+def $call_aggregate_acquisition(S, pcallaggregate) = $fiber_traversal_acquisition_valid(S, pcallaggregate.AGGREGATE, pcallaggregate.ACQUIRED) -- otherwise
+def $call_aggregate_self(S, pcallaggregate) = (pcallaggregate.OBJECT)
+  -- if pcallaggregate.ACQUIRED =/= eps
+def $call_aggregate_self(S, pcallaggregate) = (n)
+  -- if pcallaggregate.ACQUIRED = eps
+  -- if pcallaggregate.INPUT = KNOWN (POBJECT n)
+def $call_aggregate_self(S, pcallaggregate) = (n)
+  -- if pcallaggregate.ACQUIRED = eps
+  -- if pcallaggregate.INPUT = REFERENCE n_cell
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n)
+def $call_aggregate_self(S, pcallaggregate) = (n)
+  -- if pcallaggregate.ACQUIRED = eps
+  -- if pcallaggregate.INPUT = VARIABLE ptbytes z
+  -- if $lookup(S.ENV, ptbytes) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n)
+def $call_aggregate_self(S, pcallaggregate) = eps -- otherwise
+
+def $call_aggregate_stage(S, pcallaggregate, text) = true
+  -- if text <- ["getIterator", "getIterator-error"]
+  -- if pcallaggregate.OBJECT = $fiber_traversal_acquisition_last(pcallaggregate.AGGREGATE, pcallaggregate.ACQUIRED)
+  -- if $call_aggregate_method(S, pcallaggregate.OBJECT) =/= eps
+  -- if $call_aggregate_acquisition(S, pcallaggregate)
+  -- if text =/= "getIterator" \/ pcallaggregate.CURRENT = KNOWN PNULL
+  -- if $call_reference_operand_valid(S, pcallaggregate.CURRENT)
+def $call_aggregate_stage(S, pcallaggregate, "ready") = true
+  -- if pcallaggregate.CURRENT = KNOWN PNULL
+  -- if $unpack_iterator_value(S, POBJECT pcallaggregate.OBJECT)
+  -- if (HOBJECT pcallaggregate.OBJECT) <- S.ALLOCATIONS
+def $call_aggregate_stage(S, pcallaggregate, text) = false -- otherwise
+def $call_aggregate_at(UNPACK_AGGREGATE pcallaggregate text, porigin?) = (pcallaggregate.CALL.CALLSITE = porigin?)
+def $call_aggregate_at(ptask, porigin?) = false -- otherwise
+def $call_aggregate_count(eps, porigin?) = 0
+def $call_aggregate_count(ptask :: ptask_tail*, porigin?) = $(1 + $call_aggregate_count(ptask_tail*, porigin?)) -- if $call_aggregate_at(ptask, porigin?)
+def $call_aggregate_count(ptask :: ptask_tail*, porigin?) = $call_aggregate_count(ptask_tail*, porigin?) -- if ~$call_aggregate_at(ptask, porigin?)
+def $call_aggregate_valid(S, pcallaggregate, text) = true
+  -- if S.ORIGIN = $unpack_origin(S, pcallaggregate.CALL)
+  -- if $call_aggregate_history(S, pcallaggregate)
+  -- if $iterator_unpack_plain(S, pcallaggregate.CALL)
+  -- if $unpack_pending_valid(S[.ORIGIN = pcallaggregate.CALL.CALLSITE], pcallaggregate.CALL, 1)
+  -- if $call_reference_operand_valid(S, pcallaggregate.INPUT)
+  -- if $call_aggregate_stage(S, pcallaggregate, text)
+  -- if $call_aggregate_count(S.TODO, pcallaggregate.CALL.CALLSITE) = 1
+def $call_aggregate_valid(S, pcallaggregate, text) = false -- otherwise
+
+def $unpack_prepared(S, S_prepared, punpackcall, ptask_tail*) = $call_aggregate_call(S_prepared[.HELD = S.HELD], pcallaggregate, ptask_tail*)
+  -- if S_prepared.RESULT = KNOWN (POBJECT n)
+  -- if $generator_from_aggregate(S_prepared, POBJECT n)
+  -- if pcallaggregate = {CALL punpackcall, AGGREGATE n, OBJECT n, ACQUIRED eps, INPUT S.RESULT, CURRENT (KNOWN PNULL)}
+  -- if $iterator_unpack_plain(S, punpackcall)
+  -- if $call_aggregate_history(S_prepared, pcallaggregate)
+def $unpack_prepared(S, S_prepared, punpackcall, ptask_tail*) = S_prepared[.COMPLETION = UNSUPPORTED "Aggregate unpack target, getter or operand ownership"][.HELD = S.HELD]
+  -- if S_prepared.RESULT = KNOWN (POBJECT n)
+  -- if $generator_from_aggregate(S_prepared, POBJECT n)
+  -- if pcallaggregate = {CALL punpackcall, AGGREGATE n, OBJECT n, ACQUIRED eps, INPUT S.RESULT, CURRENT (KNOWN PNULL)}
+  -- if ~($iterator_unpack_plain(S, punpackcall) /\ $call_aggregate_history(S_prepared, pcallaggregate))
+def $call_aggregate_call(S, pcallaggregate, ptask_tail*) = S[.ORIGIN = $unpack_origin(S, pcallaggregate.CALL)][.TODO = (CALL_ARGS (AGGREGATE_METHOD_TARGET pcallaggregate.OBJECT pmethoddesc.FUNCTION.ORIGIN) eps 0 eps $unpack_origin(S, pcallaggregate.CALL) $unpack_line(S, pcallaggregate.CALL)) :: (UNPACK_AGGREGATE pcallaggregate "getIterator") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $call_aggregate_method(S, pcallaggregate.OBJECT) = (pmethoddesc)
+def $call_aggregate_error(S, pcallaggregate, ptbytes, ptask_tail*) = $throw_scalar(S[.TODO = (UNPACK_AGGREGATE pcallaggregate[.CURRENT = S.RESULT] "getIterator-error") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], "Exception", ptbytes, $unpack_line(S, pcallaggregate.CALL))
+def $call_aggregate_acquire(S, pcallaggregate, ptask_tail*) = $call_aggregate_ready(S, pcallaggregate[.OBJECT = n], ptask_tail*)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $useriter_instance(S, n)
+def $call_aggregate_acquire(S, pcallaggregate, ptask_tail*) = $call_aggregate_error(S, pcallaggregate, $ptascii("Cannot traverse an already closed generator"), ptask_tail*)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED
+def $call_aggregate_acquire(S, pcallaggregate, ptask_tail*) = $call_aggregate_ready(S, pcallaggregate[.OBJECT = n], ptask_tail*)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE =/= GENERATOR_CLOSED
+def $call_aggregate_acquire(S, pcallaggregate, ptask_tail*) = $call_aggregate_call(S, pcallaggregate[.OBJECT = n][.ACQUIRED = pcallaggregate.ACQUIRED ++ [n]], ptask_tail*)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $generator_from_aggregate(S, POBJECT n)
+  -- if $call_aggregate_self(S, pcallaggregate) = (n_self)
+  -- if n =/= n_self
+  -- if $call_aggregate_method(S, n) =/= eps
+def $call_aggregate_acquire(S, pcallaggregate, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "Aggregate unpack recursive getter or changed original operand"]
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $generator_from_aggregate(S, POBJECT n)
+  -- if $call_aggregate_self(S, pcallaggregate) = eps
+def $call_aggregate_acquire(S, pcallaggregate, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "Aggregate unpack recursive getter or changed original operand"]
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $generator_from_aggregate(S, POBJECT n)
+  -- if $call_aggregate_self(S, pcallaggregate) = (n_self)
+  -- if n =/= n_self
+  -- if $call_aggregate_method(S, n) = eps
+def $call_aggregate_acquire(S, pcallaggregate, ptask_tail*) = $call_aggregate_error(S, pcallaggregate, $ptascii("Objects returned by ") ++ $object_name(S, pcallaggregate.OBJECT) ++ $ptascii("::getIterator() must be traversable or implement interface Iterator"), ptask_tail*) -- otherwise
+rule PhpStep/call-aggregate-return: S ~> $call_aggregate_acquire(S, pcallaggregate, ptask_tail*)
+  -- if S.TODO = (UNPACK_AGGREGATE pcallaggregate "getIterator") :: ptask_tail*
+def $call_aggregate_ready(S, pcallaggregate, ptask_tail*) = $fiber_start_unpack_release(S[.TODO = (UNPACK_AGGREGATE pcallaggregate "ready") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $fiber_traversal_acquisition_nodes(pcallaggregate.ACQUIRED))
+def $call_aggregate_promote(S, pcallaggregate, ptask_tail*) = S[.ITERATORS = S.ITERATORS ++ [OBJECTITER S.NEXTITER pcallaggregate.OBJECT 0 false]][.NEXTITER = $(S.NEXTITER + 1)][.TODO = (ITERATOR_UNPACK {CALL pcallaggregate.CALL, ITERATOR S.NEXTITER, OBJECT pcallaggregate.OBJECT, INPUT pcallaggregate.INPUT, CURRENT (KNOWN PNULL), KEY (KNOWN PNULL), HOLD (KNOWN PNULL), SNAPSHOT eps, NAMED false, CLOSUREORIGIN $iterator_unpack_closure_source(S, pcallaggregate.CALL)} "rewind-start") :: (UNPACK_AGGREGATE pcallaggregate "leaf") :: ptask_tail*]
+  -- if $useriter_instance(S, pcallaggregate.OBJECT)
+def $call_aggregate_promote(S, pcallaggregate, ptask_tail*) = S[.TODO = (GENERATOR_UNPACK {CALL pcallaggregate.CALL, OBJECT pcallaggregate.OBJECT, INPUT pcallaggregate.INPUT, COUNT 0, NAMED false} "rewind") :: (UNPACK_AGGREGATE pcallaggregate "leaf") :: ptask_tail*]
+  -- if $generator_object(S, pcallaggregate.OBJECT)
+rule PhpStep/call-aggregate-promote: S ~> $call_aggregate_promote(S, pcallaggregate, ptask_tail*)
+  -- if S.TODO = (UNPACK_AGGREGATE pcallaggregate "ready") :: ptask_tail*
+
+def $call_aggregate_nodes(pcallaggregate, "leaf") = eps
+def $call_aggregate_nodes(pcallaggregate, "ready") = [HOBJECT pcallaggregate.OBJECT] ++ $operand_nodes(pcallaggregate.INPUT) ++ $unpack_call_roots(pcallaggregate.CALL)
+def $call_aggregate_nodes(pcallaggregate, text) = $operand_nodes(pcallaggregate.CURRENT) ++ $fiber_traversal_acquisition_nodes(pcallaggregate.ACQUIRED) ++ $operand_nodes(pcallaggregate.INPUT) ++ $unpack_call_roots(pcallaggregate.CALL) -- otherwise
+def $task_nodes(UNPACK_AGGREGATE pcallaggregate text) = $call_aggregate_nodes(pcallaggregate, text)
+def $call_task_valid(S, UNPACK_AGGREGATE pcallaggregate text) = $call_aggregate_valid(S, pcallaggregate, text) -- if text =/= "leaf"
+def $call_task_valid(S, UNPACK_AGGREGATE pcallaggregate "leaf") = ($call_aggregate_history(S, pcallaggregate) /\ ($call_aggregate_leaf_active(pcallaggregate, S.TODO) \/ $call_aggregate_leaf_saved(pcallaggregate, S.DESTRUCTION.OPERATIONS)))
+def $call_after_origin(S, UNPACK_AGGREGATE pcallaggregate text) = S[.ORIGIN = pcallaggregate.CALL.CALLSITE]
+def $generator_internal_task(UNPACK_AGGREGATE pcallaggregate text) = true
+def $eager_explicit_task(UNPACK_AGGREGATE pcallaggregate text) = true
+def $return_discard(S, UNPACK_AGGREGATE pcallaggregate "leaf") = S
+def $return_discard(S, UNPACK_AGGREGATE pcallaggregate text) = $fiber_start_unpack_release(S[.ORIGIN = pcallaggregate.CALL.CALLSITE][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $call_aggregate_nodes(pcallaggregate, text)) -- if text =/= "leaf"
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.TODO = (UNPACK_AGGREGATE pcallaggregate "getIterator") :: ptask_tail*
+  -- if $call_aggregate_valid(S, pcallaggregate, "getIterator")
+  -- if S_next = $call_aggregate_acquire(S, pcallaggregate, ptask_tail*)
+  -- if $throwable_pending(S_next.COMPLETION)
+
+;; Getter authority comes from its exact pending marker or entered caller.
+def $call_aggregate_target(S, pcallaggregate, AGGREGATE_METHOD_TARGET n porigin) = true
+  -- if n = pcallaggregate.OBJECT
+  -- if $call_aggregate_method(S, n) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin
+def $call_aggregate_target(S, pcallaggregate, pcalltarget) = false -- otherwise
+def $call_aggregate_pending(S, porigin) = true
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 0 eps (porigin) z) :: (UNPACK_AGGREGATE pcallaggregate "getIterator") :: ptask_tail*
+  -- if $unpack_origin(S, pcallaggregate.CALL) = (porigin)
+  -- if $unpack_line(S, pcallaggregate.CALL) = z
+  -- if $call_aggregate_target(S, pcallaggregate, pcalltarget)
+  -- if $call_aggregate_valid(S, pcallaggregate, "getIterator")
+def $call_aggregate_pending(S, porigin) = false -- otherwise
+;; The implicit getter's argument site may itself be a zero-argument NEW/call.
+;; Classify it before the ordinary source-argument rule can also claim that site.
+def $useriter_pending(S, pcalltarget, porigin) = true
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 0 eps (porigin) z) :: (UNPACK_AGGREGATE pcallaggregate "getIterator") :: ptask_tail*
+  -- if $call_aggregate_pending(S, porigin)
+def $call_aggregate_frame(S, pcallcontext, pframe) = true
+  -- if pframe.TODO = (UNPACK_AGGREGATE pcallaggregate "getIterator") :: ptask_tail*
+  -- if pframe.ORIGIN = $unpack_origin(S, pcallaggregate.CALL)
+  -- if pcallcontext.CALLSITE = pframe.ORIGIN
+  -- if pcallcontext.LINE = $unpack_line(S, pcallaggregate.CALL)
+  -- if pcallcontext.ARGC = 0
+  -- if pcallcontext.EXTRA = eps
+  -- if pcallcontext.NAMED = eps
+  -- if $call_aggregate_target(S, pcallaggregate, $context_target(pcallcontext))
+  -- if $call_aggregate_valid(S[.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN], pcallaggregate, "getIterator")
+def $call_aggregate_frame(S, pcallcontext, pframe) = false -- otherwise
+def $call_aggregate_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin) = $call_aggregate_frame(S, pcallcontext, pframe)
+  -- if $context_target(pcallcontext) = pcalltarget
+  -- if pcallcontext.CALLSITE = (porigin)
+def $call_aggregate_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin) = $call_aggregate_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin)
+  -- if ~($context_target(pcallcontext) = pcalltarget /\ pcallcontext.CALLSITE = (porigin))
+def $call_aggregate_entered(S, eps, pframe :: pframe_tail*, pcalltarget, porigin) = $call_aggregate_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin)
+def $call_aggregate_entered(S, pcallcontext?, eps, pcalltarget, porigin) = false
+def $call_aggregate_selected(S, pcalltarget, porigin) = true
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 0 eps (porigin) z) :: ptask_tail*
+  -- if $call_aggregate_pending(S, porigin)
+def $call_aggregate_selected(S, pcalltarget, porigin) = true -- if $call_aggregate_entered(S, S.CURRENT, S.FRAMES, pcalltarget, porigin)
+def $call_aggregate_selected(S, pcalltarget, porigin) = false -- otherwise
+def $call_aggregate_context(S, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if $call_aggregate_entered(S, S.CURRENT, S.FRAMES, $context_target(pcallcontext), porigin)
+def $call_aggregate_context(S, pcallcontext) = false -- otherwise
+def $useriter_context_kind(S, pcallcontext) = true -- if $call_aggregate_context(S, pcallcontext)
+def $useriter_frame(S, pcallcontext, pframe) = true -- if $call_aggregate_frame(S, pcallcontext, pframe)
+def $useriter_marker(pframe) = true -- if pframe.TODO = (UNPACK_AGGREGATE pcallaggregate "getIterator") :: ptask_tail*
+def $reference_callback_used(S, pcallcontext) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $call_aggregate_context(S, pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (UNPACK_AGGREGATE pcallaggregate "getIterator") :: ptask_tail*
+
+;; The send buffer evolves; the receipt fixes only selection and source cursor.
+def $call_aggregate_same(punpackcall, punpackcall_other) = (punpackcall.FUNCTION = punpackcall_other.FUNCTION /\ punpackcall.ARGUMENTS = punpackcall_other.ARGUMENTS /\ punpackcall.INDEX = punpackcall_other.INDEX /\ punpackcall.CALLSITE = punpackcall_other.CALLSITE /\ punpackcall.LINE = punpackcall_other.LINE)
+def $call_aggregate_match(pcallaggregate, punpackcall, poperand, n) = ($call_aggregate_same(pcallaggregate.CALL, punpackcall) /\ pcallaggregate.INPUT = poperand /\ pcallaggregate.OBJECT = n /\ pcallaggregate.CURRENT = KNOWN PNULL)
+def $call_aggregate_marker(punpackcall, eps) = false
+def $call_aggregate_marker(punpackcall, ptask :: ptask_tail*) = ($call_aggregate_marker_at(punpackcall, ptask) \/ $call_aggregate_marker(punpackcall, ptask_tail*))
+def $call_aggregate_marker_at(punpackcall, UNPACK_AGGREGATE pcallaggregate "leaf") = $call_aggregate_same(pcallaggregate.CALL, punpackcall)
+def $call_aggregate_marker_at(punpackcall, ptask) = false -- otherwise
+def $call_aggregate_receipt(S, punpackcall, poperand, n, eps) = false
+def $call_aggregate_receipt(S, punpackcall, poperand, n, ptask :: ptask_tail*) = ($call_aggregate_receipt_at(S, punpackcall, poperand, n, ptask) \/ $call_aggregate_receipt(S, punpackcall, poperand, n, ptask_tail*))
+def $call_aggregate_receipt_at(S, punpackcall, poperand, n, UNPACK_AGGREGATE pcallaggregate "leaf") = ($call_aggregate_match(pcallaggregate, punpackcall, poperand, n) /\ $call_aggregate_history(S, pcallaggregate))
+def $call_aggregate_receipt_at(S, punpackcall, poperand, n, ptask) = false -- otherwise
+def $call_aggregate_iterator_input(S, piteratorunpack) = ($iterator_unpack_input(S, piteratorunpack.CALL, piteratorunpack.INPUT) /\ $iterator_unpack_original(piteratorunpack))
+  -- if ~$call_aggregate_marker(piteratorunpack.CALL, S.TODO)
+def $call_aggregate_iterator_input(S, piteratorunpack) = ($call_aggregate_receipt(S, piteratorunpack.CALL, piteratorunpack.INPUT, piteratorunpack.OBJECT, S.TODO) /\ $call_reference_operand_valid(S, piteratorunpack.INPUT)) -- otherwise
+def $call_aggregate_generator_input(S, pgeneratorunpack) = $generator_unpack_input(S, pgeneratorunpack)
+  -- if ~$call_aggregate_marker(pgeneratorunpack.CALL, S.TODO)
+def $call_aggregate_generator_input(S, pgeneratorunpack) = ($call_aggregate_receipt(S, pgeneratorunpack.CALL, pgeneratorunpack.INPUT, pgeneratorunpack.OBJECT, S.TODO) /\ $call_reference_operand_valid(S, pgeneratorunpack.INPUT)) -- otherwise
+def $call_aggregate_tail(punpackcall, poperand, n, (UNPACK_AGGREGATE pcallaggregate "leaf") :: ptask_tail*) = ptask_tail*
+  -- if $call_aggregate_match(pcallaggregate, punpackcall, poperand, n)
+def $call_aggregate_tail(punpackcall, poperand, n, ptask_tail*) = ptask_tail* -- otherwise
+;; Once a producer is discarded, SOURCE carries the history through cleanup.
+;; Its active leaf receipt must not outlive the operation that authenticates it.
+def $call_aggregate_abort_tail(punpackcall, poperand, n, (THROW_SEARCH n_error) :: ptask_tail*) = (THROW_SEARCH n_error) :: $call_aggregate_tail(punpackcall, poperand, n, ptask_tail*)
+def $call_aggregate_abort_tail(punpackcall, poperand, n, ptask_tail*) = $call_aggregate_tail(punpackcall, poperand, n, ptask_tail*) -- otherwise
+def $call_aggregate_leaf_task(ITERATOR_UNPACK piteratorunpack text, pcallaggregate) = $call_aggregate_match(pcallaggregate, piteratorunpack.CALL, piteratorunpack.INPUT, piteratorunpack.OBJECT)
+def $call_aggregate_leaf_task(GENERATOR_UNPACK pgeneratorunpack text, pcallaggregate) = $call_aggregate_match(pcallaggregate, pgeneratorunpack.CALL, pgeneratorunpack.INPUT, pgeneratorunpack.OBJECT)
+def $call_aggregate_leaf_task(ptask, pcallaggregate) = false -- otherwise
+def $call_aggregate_leaf_active(pcallaggregate, eps) = false
+def $call_aggregate_leaf_active(pcallaggregate, ptask :: ptask_tail*) = ($call_aggregate_leaf_head(pcallaggregate, ptask, ptask_tail*) \/ $call_aggregate_leaf_active(pcallaggregate, ptask_tail*))
+def $call_aggregate_leaf_head(pcallaggregate, ptask, (UNPACK_AGGREGATE pcallaggregate_other "leaf") :: ptask_tail*) = (pcallaggregate = pcallaggregate_other /\ $call_aggregate_leaf_task(ptask, pcallaggregate))
+def $call_aggregate_leaf_head(pcallaggregate, ptask, ptask_tail*) = false -- otherwise
+def $call_aggregate_leaf_saved(pcallaggregate, eps) = false
+def $call_aggregate_leaf_saved(pcallaggregate, pdestructionoperation :: pdestructionoperation_tail*) = ($call_aggregate_leaf_source(pcallaggregate, pdestructionoperation.SOURCE) \/ $call_aggregate_leaf_saved(pcallaggregate, pdestructionoperation_tail*))
+def $call_aggregate_leaf_source(pcallaggregate, UNPACK_AGGREGATE_SOURCE pcallaggregate_other ptask) = (pcallaggregate = pcallaggregate_other /\ $call_aggregate_leaf_task(ptask, pcallaggregate))
+def $call_aggregate_leaf_source(pcallaggregate, ptask) = false -- otherwise
+def $magic_unpack_raw_task(UNPACK_AGGREGATE pcallaggregate text, pcalltarget) = (pcallaggregate.CALL.FUNCTION = pcalltarget) -- if text =/= "leaf"
+def $call_aggregate_magic_suffix(ptask, (UNPACK_AGGREGATE pcallaggregate "leaf") :: ptask_tail*, pcalltarget) = true
+  -- if $call_aggregate_leaf_task(ptask, pcallaggregate)
+  -- if pcallaggregate.CALL.FUNCTION = pcalltarget
+  -- if pcallaggregate.CALL.CALLSITE = ($magic_unpack_site(pcalltarget))
+  -- if ptask_tail* = METHOD_RESULT :: $magic_unpack_tail(pcalltarget)
+def $call_aggregate_magic_suffix(ptask, ptask_tail*, pcalltarget) = false -- otherwise
+
+;; Eager abort SOURCE retains the receipt after the leaf marker/input disappear.
+;; It never owns the original Aggregate or any intermediate returned layer.
+def $call_aggregate_source_task(ptask, pcallaggregate) = $call_aggregate_leaf_task(ptask, pcallaggregate)
+def $eager_operation_source(S, ptask) = UNPACK_AGGREGATE_SOURCE pcallaggregate ptask
+  -- if S.TODO = ptask :: (UNPACK_AGGREGATE pcallaggregate "leaf") :: ptask_tail*
+  -- if $call_aggregate_source_task(ptask, pcallaggregate)
+def $eager_operation_source(S, ptask) = UNPACK_AGGREGATE_SOURCE pcallaggregate ptask
+  -- if S.TODO = (THROW_SEARCH n) :: (UNPACK_AGGREGATE pcallaggregate "leaf") :: ptask_tail*
+  -- if $call_aggregate_source_task(ptask, pcallaggregate)
+def $eager_explicit_task(UNPACK_AGGREGATE_SOURCE pcallaggregate ptask) = true
+def $eager_operation_source_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.SOURCE = UNPACK_AGGREGATE_SOURCE pcallaggregate ptask
+  -- if $call_aggregate_source_task(ptask, pcallaggregate)
+  -- if $call_aggregate_history(S, pcallaggregate)
+  -- if $eager_operation_source_valid(S[.TODO = (UNPACK_AGGREGATE pcallaggregate "leaf") :: S.TODO], pdestructionoperation[.SOURCE = ptask])
+def $iterator_unpack_abort_input(S, piteratorunpack) = true
+  -- if $call_aggregate_receipt(S, piteratorunpack.CALL, piteratorunpack.INPUT, piteratorunpack.OBJECT, S.TODO)
+def $generator_unpack_abort_input(S, pgeneratorunpack) = true
+  -- if $call_aggregate_receipt(S, pgeneratorunpack.CALL, pgeneratorunpack.INPUT, pgeneratorunpack.OBJECT, S.TODO)

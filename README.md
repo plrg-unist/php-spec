@@ -5806,6 +5806,10 @@ spreads through the real zero-formal magic trampoline before invoking `__call` o
 `__callStatic`. Shared send mapping preserves copied values, named order and
 producer/receiver cleanup. The [producer review](coverage/semantics/magic-producer-unpack-review.json)
 extends the earlier [Iterator cut](coverage/semantics/magic-iterator-unpack-review.json).
+Existing ordinary and magic targets also acquire argument user Iterators or Generators
+through public Aggregate getters, including finite nested acquisition, live-CV
+self checks and separate input/DATA cleanup.
+See the [Aggregate call review](coverage/semantics/aggregate-call-unpack-review.json).
 Public concrete class-method strings now distinguish
 computed static dispatch from fixed calls using a compatible active receiver.
 Immutable string captures/clone retain selected descriptors, called scope and

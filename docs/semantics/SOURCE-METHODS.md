@@ -92,6 +92,9 @@ records by-value sends, named buffering, real handler dispatch and cleanup;
 the [producer review](../../coverage/semantics/magic-producer-unpack-review.json)
 keeps the shared array/Generator source and reached cuts separate from the earlier
 [Iterator evidence](../../coverage/semantics/magic-iterator-unpack-review.json).
+Public Aggregate getters can also acquire these argument producers before the
+same sends; the [acquisition review](../../coverage/semantics/aggregate-call-unpack-review.json)
+keeps their original input owners and selected targets separate from leaf DATA.
 
 ## Descriptors and dispatch
 

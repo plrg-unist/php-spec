@@ -210,7 +210,15 @@ rule PhpStep/unpack-container-done: S ~> S[.TODO = (UNPACK_ARGS $unpack_advance(
   -- if n_cursor = |S.ARRAYS[n_array].ITEMS|
 
 dec $unpack_call_roots(punpackcall) : pnode*
-def $unpack_call_roots(punpackcall) = $target_nodes(punpackcall.FUNCTION) ++ $named_slots_roots(punpackcall.SENT.SLOTS) ++ $named_roots(punpackcall.SENT.NAMED)
+;; Unfinished call frames release positional args, This, then extra names.
+;; The selected Closure object is released afterwards; other target protocols
+;; retain their existing root contract.
+dec $unpack_target_roots(pcalltarget, pnamedargs) : pnode*
+def $unpack_target_roots(METHOD_TARGET n porigin, pnamedargs) = $named_slots_roots(pnamedargs.SLOTS) ++ $target_nodes(METHOD_TARGET n porigin) ++ $named_roots(pnamedargs.NAMED)
+def $unpack_target_roots(ARRAY_METHOD_TARGET pcalltarget parrayselection, pnamedargs) = $unpack_target_roots(pcalltarget, pnamedargs)
+def $unpack_target_roots(CLOSURE_TARGET n, pnamedargs) = $named_slots_roots(pnamedargs.SLOTS) ++ $named_roots(pnamedargs.NAMED) ++ $target_nodes(CLOSURE_TARGET n)
+def $unpack_target_roots(pcalltarget, pnamedargs) = $target_nodes(pcalltarget) ++ $named_slots_roots(pnamedargs.SLOTS) ++ $named_roots(pnamedargs.NAMED) -- otherwise
+def $unpack_call_roots(punpackcall) = $unpack_target_roots(punpackcall.FUNCTION, punpackcall.SENT)
   -- if ~$magic_unpack_collecting(punpackcall.FUNCTION)
 def $task_nodes(UNPACK_ARGS punpackcall) = $unpack_call_roots(punpackcall)
 def $task_nodes(UNPACK_SEND punpackcall) = $unpack_call_roots(punpackcall)

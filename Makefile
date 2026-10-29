@@ -284,6 +284,9 @@ test-semantics: build
 	python3 tests/semantics/magic_iterator_unpack_protocol.py
 	python3 tests/semantics/magic_producer_unpack_sources.py
 	python3 tests/semantics/magic_producer_unpack_protocol.py
+	python3 tests/semantics/aggregate_call_unpack_sources.py
+	python3 tests/semantics/aggregate_call_unpack_protocol.py
+	python3 tests/semantics/aggregate_call_unpack_review_protocol.py
 	python3 tests/semantics/array_callable_iterator_unpack_sources.py
 	python3 tests/semantics/array_callable_iterator_unpack_protocol.py
 	python3 tests/semantics/closure_iterator_unpack_sources.py
