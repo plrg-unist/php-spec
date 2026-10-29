@@ -715,7 +715,8 @@ shared DAGs compare normally without memoizing a repeated pair as equal.
 Identity precedes the existing aggregate/active-left recursion guard, which
 precedes count; key lookup precedes cell dereference. Reached same-class bodies
 include `stdClass` and parentless source instances with initialized public
-properties, no interfaces/hooks/readonly state, and ordinary current tables.
+properties, locally authenticated interfaces, no hooks/readonly state, and
+ordinary current tables.
 Their methods are not invoked by comparison. Reached tables materialize through the usual comparer; only
 normal equality continues with the resulting state.
 An authentic active-left recurrence now produces the existing recursive-dependency
@@ -800,21 +801,29 @@ other held contexts are untouched.
 [Captured-Throwable review](../../coverage/semantics/throwable-captured-comparison-review.json).
 
 The visited ordinary image admits method-bearing source classes with the same
-nonempty, initialized public layout. Published/live class checks, no parent or
-interfaces, nonreadonly state, no property hooks and exact inline or ordinary
+nonempty, initialized public layout. Published/live class checks, no parent,
+nonreadonly state, no property hooks and exact inline or ordinary
 cached-table authentication remain required. Methods, including magic get/isset
 traps, are not invoked by object/object comparison. Older fully authenticated
 walkers stay methodless; only the visited image changes. Current ALIAS contents,
 DIRECT copies, table locators, early count/key decisions and real active-left
 recursion Error retain the existing fold and ownership rules.
 
+Nonempty interface lists require unique names, matching builtin or published
+source-interface targets, and the existing publication order in local
+`LINKEDINTERFACES` metadata. This admits implicit `Stringable` and declared source
+interfaces without invoking their methods. Missing, mismatched or reordered
+local authority refuses a reached image; earlier identity and class decisions
+still skip later image validation. Current cells, copied siblings, physical
+tables and recursion use the same visited fold.
+[Interface-image review](../../coverage/semantics/throwable-trace-interfaces-comparison-review.json).
+
 Legal `__isset` declarations may omit the parameter type while keeping the
 existing arity/reference/default/return restrictions. The language-triggered
 magic consumers still require their existing typed-string source AST, so this
-declaration dependency does not admit an untyped magic callback. Implicit
-Stringable classes still have a nonempty interface list and remain outside this
-image, alongside private/uninitialized/empty layouts, inheritance, hooks,
-readonly and wider callback/lifetime contexts. Held lanes are unchanged.
+declaration dependency does not admit an untyped magic callback.
+Private/uninitialized/empty layouts, inheritance, hooks, readonly and wider
+callback/lifetime contexts remain partial. Held lanes are unchanged.
 [Method-image review](../../coverage/semantics/throwable-trace-methods-comparison-review.json).
 
 The older fully authenticated warm route puts nonempty traces in the physical slot

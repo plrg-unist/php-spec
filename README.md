@@ -4330,9 +4330,11 @@ eager; invalid/cyclic paths, reached callbacks and wider layouts remain partial.
 [Linked-base review](coverage/semantics/throwable-base-previous-comparison-review.json).
 [Captured-Throwable review](coverage/semantics/throwable-captured-comparison-review.json).
 Visited comparison also admits ordinary method declarations on supported
-initialized public field layouts, without invoking those methods. Implicit
-Stringable/interfaces, inheritance, hooks and wider layouts retain their limits.
+initialized public field layouts, including locally authenticated source and
+implicit `Stringable` interfaces, without invoking their methods. Inheritance,
+hooks, readonly state and wider layouts/lifetimes retain their limits.
 [Method-image review](coverage/semantics/throwable-trace-methods-comparison-review.json).
+[Interface-image review](coverage/semantics/throwable-trace-interfaces-comparison-review.json).
 Builtin `#[NoDiscard]` now validates bounded declarations and warns on unused
 ordinary source calls after sends and named defaults, before reception or body.
 Handlers preserve selected arguments, references, receiver ownership and VM
