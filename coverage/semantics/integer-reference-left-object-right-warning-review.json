@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "milestone": "OP108 shared LEFT conversion snapshot and selected old-cell error types",
+  "status": "bounded independently reviewed semantics at the private tested revision",
+  "target": "PHP 8.5.10 CLI NTS64; project-local oracle and ordinary precision14 profile",
+  "scope": "Ordinary %, <<, >>, &, | and ^ with a direct LEFT CV initially selecting a shared finite fractional reference cell (at least two real owners), a surviving outside alias, and a defined initially plain RIGHT CV holding empty live stdClass without property slots/materialized table. Old LEFT scalar mutations/name rebinds preserve its conversion snapshot.",
+  "tested_revision": "a0f922ba82c3b44dd13a72ead8ae150685fec1b8",
+  "unchanged_revision": "0cd3304a061874aa7652e8cae96bb40a7eafca42",
+  "module_count": 424,
+  "tested_sha256": {
+    "spec/semantics/387-integer-operator-warnings.watsup": "c0011dda7c921b28d0d837d48d467b72fabe6d0555329b7d0aa9e34b32870d9c",
+    "tests/semantics/integer_reference_left_object_right_warning_cases.py": "e71d75c506ebdf6c82f5fdbf4691481bda8880d40764d2ae294627fe397918d0",
+    "tests/semantics/integer_reference_left_object_right_warnings.py": "230d2dd9f638f1006cec94cf400d03a060f955f859c9bd4edbe31b6997f67f8d",
+    "tests/semantics/integer_reference_left_object_right_warning_protocol.py": "4820083214d12b01a33de97bb2999b4bc984997d008095e3d040f3e7402c6ff2",
+    "spec/semantics/modules.json": "de8488abd5ca58bfd455d59011ef41f48449be4699ede06af70e027075dab632"
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c::zend_compile_binary_op and CV lowering retain CV8/CV8; COMMUTATIVE does not swap equal slot ranks.",
+    "Zend/zend_operators.c::convert_op1_op2_long and bitwise_*_function dereference LEFT before zendi_try_get_long. Its double/long locals are saved before zend_dval_to_lval_safe emits the Deprecated callback.",
+    "On later failed RIGHT conversion, zend_binop_error/zend_zval_type_name inspect the old selected LEFT pointer, including NULL/string changes, rather than the rebound CV. An existing Exception suppresses replacement errors and skips unfinished conversion."
+  ],
+  "contract": [
+    "The handler rebinds LEFT to a separate booltrue cell and optionally changes its old alias to99. Saved12 still produces strict integers2/384/0/4/13/9 after RIGHT repair5, independently of old/current LEFT values.",
+    "Retained stdClass RIGHT reports the selected old LEFT payload type (float/int in authored sources, null independently), not the new live CV type. Independent old nonnumeric string and old7/newstring99 cases preserve the cached long. Supplied Exception skips RIGHT, including a repaired negative shift count.",
+    "The existing borrowed-pointer predicate applies to both selected sides; at least one pointer must remain an INTEGER_CV at entry. No root/task/acquisition or post-callback validity/failure bypass was added. Old CELL owners2-to1 and new CELL2 remain separate; RIGHT object1-to0 on repair is unchanged."
+  ],
+  "preparation": {
+    "frozen_cases": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-108/cases.py",
+      "sha256": "e71d75c506ebdf6c82f5fdbf4691481bda8880d40764d2ae294627fe397918d0"
+    },
+    "recorder_sha256": "8430972c9e7dee85565cb54e35903535344993afd343feaa02a111c92a7061ef",
+    "native_first": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-108/native-pre/report.json",
+      "sha256": "ddf7af5738e225212b0ec8c98c87df1bc88e6699e02f5aff6123d4f6c5f1ac91"
+    },
+    "unchanged_baseline": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-108/baseline/report.json",
+      "sha256": "65a681314e89335d7156384255f9ec354dfa5bb0c3b076e70fd7c04f48ec0574"
+    },
+    "result": "All17 native predictions exact. Sixteen positive sources are accepted/checked Unsupported at handler ingress, exit1/credit0; the separate both-CELL native-positive exclusion also remains Unsupported/credit0. No OP107 original was replayed."
+  },
+  "accepted": {
+    "strict": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-108/strict-a0f922ba8/report.json",
+      "sha256": "f8a5545c34bf4218c8bea0ffd9d4ee38a495be3b6237302d1e9cd3cff1bd64e7"
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-108/source-a0f922ba8/report.json",
+      "sha256": "2a3958b91889406c696586c89e7e1f583fb2110da9edce34a62081e8ca355b34"
+    },
+    "author_source_agreements": 16,
+    "formerly_unsupported_author_sources": 16,
+    "source_boundary_assertions": 1,
+    "source_boundary_agreement_credit": 0,
+    "focused": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-108/focused-a0f922ba8/report.json",
+      "sha256": "a9121f277d7d1582fbe91bb95a67dd6900bdb203abfd94db5750f552862a581e"
+    },
+    "focused_launcher": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-108/focused-a0f922ba8/launch.json",
+      "sha256": "866650277144048e99ab5002421436cb080ca9f47ec87d8dae58c06da6322d75"
+    },
+    "positive_rows": [
+      [
+        "mod-write-repair",
+        115
+      ],
+      [
+        "and-retain-int-typeerror",
+        117
+      ],
+      [
+        "xor-repair",
+        115
+      ],
+      [
+        "shl-handler-throw",
+        99
+      ]
+    ],
+    "positive_conditions": 446,
+    "boundary_rows": [
+      [
+        "both-shared-boundary",
+        29
+      ]
+    ],
+    "boundary_conditions": 29,
+    "total_checked_conditions": 475,
+    "focused_contract": "Four guarded genuine positive source fronts inspect original CELL selection, saved12 versus old99/12.5 and rebound bool CV, CELL2-to1/new2, RHS object1-to0, selected old-cell TypeError and same supplied Exception/no store. A separate real both-CELL BINARY_RIGHT frontier proves both owners2/borrowed predicates true, initial admission false, and explicit Unsupported/no output/old store; this is an exclusion, not native agreement."
+  },
+  "independent_review": {
+    "reviewer": "/root/op106_resume_review",
+    "status": "Exact runtime/source/protocol CLEAR; native-first, genuine unchanged gaps and candidate4 all accepted",
+    "frozen_cases_sha256": "72c5730076d993aebcd4b7502983db2afcd13887cdf334065c9db898bef22889",
+    "recorder_sha256": "9304a96e63d1576572127df9b741516c6ddb14b7586f6ac5a9083f2db4374cba",
+    "native_first": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-108/review-independent/native-pre/report.json",
+      "sha256": "514ccb8af08800853d2b77d1727fc6bae8055a755a4df99e7885081218eb59b2"
+    },
+    "unchanged_baseline": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-108/review-independent/baseline/report.json",
+      "sha256": "497a8d042e86c08e8ae154a6d57a10f24685867eecbc7618304f018a416d1cb4"
+    },
+    "changed_models": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-108/review-independent/model/report.json",
+      "sha256": "0beb5d51fdabbaa46255aa59bbd7aa60f85946c7574759002efb324a8e19d8f6"
+    },
+    "source_agreements": 4,
+    "formerly_unsupported_sources": 4,
+    "result": "Four true-handler originals distinguish cached12 after old nonnumeric string/new99/rightnumericstring5, AND cache from old7/newstring99, selected old NULL TypeError from newLEFTint, and original SHL Exception before negative RIGHT. All exact normal/exit_status0/reasonNone, exit0/no raw stderr/no timeout/interruption/group residue."
+  },
+  "preserved_zero_credit": [],
+  "environment": {
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "php_file_bridge_sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "cpu": "All new packets serial on CPU1, inherited or sampled affinity[1]; every process group reaped. The lease was released during implementation and after independent models."
+  },
+  "limits": "Both initially wrapped operands remain explicit Unsupported. Initial sole-owner/expired cells, memberful/materialized RIGHT objects and wider reference/owning histories remain partial. By inspection the existing failure guard still refuses an object substituted into selected old LEFT while RIGHT stays object; no extra native/model probe or agreement is claimed for that case. No OP107 execution credit or paused lane was renewed.",
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-108",
+    "commands": [
+      "taskset -c 1 python3 tests/semantics/integer_reference_left_object_right_warnings.py --output <fresh-external-directory>",
+      "taskset -c 1 python3 tests/semantics/integer_reference_left_object_right_warning_protocol.py --output <fresh-external-directory>"
+    ],
+    "note": "Use an isolated worktree at the recorded revision with its project-local pinned tools. Frozen recorders retain original roots/commands; recreate that root or adapt only its location. Reports preserve exact source bytes, identities, profiles, raw streams, exits and strict wrapper/fixture hashes. Metadata-only changes add no execution credit."
+  }
+}

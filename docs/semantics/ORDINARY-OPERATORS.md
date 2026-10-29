@@ -81,6 +81,19 @@ sole-owner cells, expired pointers, memberful objects and wider reference
 producers remain partial. See the
 [reference-object RIGHT review](../../coverage/semantics/integer-reference-object-right-warning-review.json).
 
+A shared fractional LEFT cell with an outside alias now keeps its saved integer
+across a handler's name rebind, with an initially plain empty `stdClass` RIGHT CV.
+Changing the old LEFT payload to `99` still uses cached `12` after RIGHT repair;
+retaining RIGHT instead reports the old cell's current raw type, not the rebound
+CV's type. Independent old-string and old-null cases preserve that distinction.
+Entry requires two real owners; the old cell remains borrowed with one owner
+after rebinding. Supplied throws skip RIGHT and cancel delivery. Sixteen author
+and four independent new originals agree exactly; four positive reached fronts
+pass 446 checks. A fresh two-CELL source and 29-check reached front stay explicit
+Unsupported with zero agreement. Retained-object failure after an old LEFT
+object substitution is still Unsupported; wider owning substitutions remain
+partial. See the [shared LEFT review](../../coverage/semantics/integer-reference-left-object-right-warning-review.json).
+
 Plain-CV NaN `%` now preserves the remaining precision Deprecated after its
 range Warning handler throws. With mask `2`, the default Deprecated on line 25
 precedes the same supplied Exception from line 20; mask `8194` runs neither a
