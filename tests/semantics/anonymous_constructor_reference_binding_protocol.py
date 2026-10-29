@@ -93,7 +93,7 @@ def assertions(fixture, filename, stdout):
         '$call_reference_operand_valid(S_pos,REFERENCE n_pos_old)',
         '$call_descriptors_valid(S_pos)',
         '~$call_task_valid(S_pos,CALL_ARGS (METHOD_TARGET n_pos_object porigin_pos_ctor) eps 1 poperand* (porigin_pos_site) z_pos)',
-        '~$call_task_valid(S_pos,CALL_ARGS (METHOD_TARGET n_pos_object porigin_pos_ctor) eps 2 [KNOWN (PINT 7),KNOWN (PINT 30)] (porigin_pos_site) z_pos)',
+        '~$call_task_valid(S_pos,CALL_ARGS (METHOD_TARGET n_pos_object porigin_pos_ctor) eps 2 ([KNOWN (PINT 7),KNOWN (PINT 30)]) (porigin_pos_site) z_pos)',
         'S_pos_enter_raw = $drive_steps(S_pos,1)',
         r'S_pos_enter_raw.COMPLETION = NORMAL \/ S_pos_enter_raw.COMPLETION = BUDGET',
         'S_pos_enter = S_pos_enter_raw[.COMPLETION = NORMAL]',
