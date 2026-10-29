@@ -187,8 +187,10 @@ def $config_generator_reference_history(S, pconfiggenerator) = true
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.FRAME = eps
   -- if pgenerator.DELEGATE = eps /\ pgenerator.BORROWED = eps
-  -- if pgenerator.VALUE = eps /\ pgenerator.RETURN = eps
-  -- if pgenerator.REFCELL = (n_cell) /\ pgenerator.KEY = (PINT z)
+  -- if pgenerator.VALUE = eps
+  -- if pgenerator.RETURN = eps \/ pgenerator.RETURN = (PNULL)
+  -- if pgenerator.REFCELL = (n_cell)
+  -- if pgenerator.KEY = (PINT z)
   -- if $generator_reference_producer(S, pgenerator)
 def $config_generator_reference_history(S, pconfiggenerator) = false -- otherwise
 def $config_generator_reference_storage(S, pconfiggenerator) = true
