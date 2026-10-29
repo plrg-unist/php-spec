@@ -224,8 +224,12 @@ callee-only reference wrappers, a normal-return certificate and borrowed method
 receivers. Body throws retain the distinct failed-buffer protocol.
 Module401 releases the original prepared reference prefix when an explicit API's
 argument-warning handler throws before callback entry, then uses that protocol.
+Module441 adds normal EOF and saved integer/string EXIT dispatch after real
+shutdown/object retirement, including globals without user destructors. It reuses
+weak callback/diagnostic receives, lower WRITE cascades and sole-owner release;
+callback-local destructors remain operational under authenticated final frames.
 Callback exit, wider warning-handler throws,
-other byte producers, request-end dispatch,
+other byte producers, abnormal request-end/fatal dispatch,
 wider returns/mutation/Fiber switching and buffered stdout diagnostic rendering
 remain dependencies; masking and handler-true cases preserve ordinary execution.
 Wider startup/SAPI output effects remain required.

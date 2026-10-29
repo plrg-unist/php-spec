@@ -38,6 +38,7 @@ dec $ob_user_begin(pstate, pconfigcall, poutputbuffer) : pstate
 dec $ob_user_phase(pintrinsic, int) : int
 dec $ob_user_invoke_valid(pstate, pobinvoke) : bool
 dec $ob_user_live(pstate, pobinvoke) : bool
+dec $ob_user_buffer_live(pobinvoke, poutputbuffer) : bool
 dec $ob_user_send_valid(pstate, pobinvoke, nat) : bool
 dec $ob_user_entry_supported(pstate, pobinvoke) : bool
 dec $ob_user_target(pcalltarget) : pcalltarget
@@ -51,6 +52,8 @@ dec $ob_user_context_valid(pstate, pcallcontext) : bool
 dec $ob_user_api(pstate, pcallcontext) : pconfigcall?
 dec $ob_user_resume_api(ptask) : pconfigcall?
 dec $ob_user_deprecation(pobinvoke) : preqbytes
+dec $ob_call_diagnostic_prefix(pobcall) : preqbytes
+dec $ob_call_event(pobcall, text, preqbytes, int) : pevent
 dec $ob_user_nodes(pobinvoke) : pnode*
 dec $ob_user_scalar(pvalue) : bool
 dec $ob_user_bytes(pvalue, int) : preqbytes
@@ -248,12 +251,15 @@ def $ob_user_copy_valid(S, pvalue, n_bytes*, n_input) = false -- otherwise
 def $ob_user_live(S, pobinvoke) = true
   -- if $ob_user_invoke_valid(S, pobinvoke)
   -- if $output_selected(S, pobinvoke) = (poutputbuffer)
+  -- if $ob_user_buffer_live(pobinvoke, poutputbuffer)
+def $ob_user_live(S, pobinvoke) = false -- otherwise
+def $ob_user_buffer_live(pobinvoke, poutputbuffer) = true
   -- if poutputbuffer.ID = pobinvoke.BUFFER.ID /\ poutputbuffer.HANDLER = pobinvoke.BUFFER.HANDLER
   -- if poutputbuffer.CHUNK = pobinvoke.BUFFER.CHUNK
   -- if $long_and(poutputbuffer.FLAGS, $(-40961)) = $long_and(pobinvoke.BUFFER.FLAGS, $(-40961))
   -- if $(|pobinvoke.BUFFER.BYTES| <= |poutputbuffer.BYTES|)
   -- if poutputbuffer.BYTES[0:|pobinvoke.BUFFER.BYTES|] = pobinvoke.BUFFER.BYTES
-def $ob_user_live(S, pobinvoke) = false -- otherwise
+def $ob_user_buffer_live(pobinvoke, poutputbuffer) = false -- otherwise
 def $ob_user_fci_arguments(pobinvoke) = (pobinvoke.SENT = [KNOWN pobinvoke.INPUT, KNOWN (PINT pobinvoke.PHASE)])
 def $ob_user_argument(pobinvoke, 0) = pobinvoke.INPUT
 def $ob_user_argument(pobinvoke, 1) = PINT pobinvoke.PHASE
@@ -299,7 +305,7 @@ def $ob_user_reference_message(S, pobinvoke, n) = pfunction.NAME ++ $ptascii("()
   -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
   -- if $target_function(S, poutputhandler.ENTRY.TARGET) = (pfunction)
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
-rule PhpStep/ob-user-reference-warning: S ~> $error_dispatch(S, 2, n_message*, $ob_call_line(pobinvoke.CALL), DIAGNOSTIC "Warning" n_message* $ob_call_line(pobinvoke.CALL), OB_USER_REFERENCE pobinvoke n)
+rule PhpStep/ob-user-reference-warning: S ~> $error_dispatch(S, 2, n_message*, $ob_call_line(pobinvoke.CALL), $ob_call_event(pobinvoke.CALL, "Warning", n_message*, $ob_call_line(pobinvoke.CALL)), OB_USER_REFERENCE pobinvoke n)
   -- if S.TODO = (OB_USER_SEND pobinvoke n) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_SEND pobinvoke n) /\ $(n < 2)
   -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
@@ -373,8 +379,8 @@ def $ob_user_bytes(PFLOAT n, z) = n_text* -- if (n_text*, b) = $number_text(NFLO
 def $ob_user_bytes(pvalue, z) = n* -- if $string_bytes(pvalue) = (n*)
 def $ob_user_output(S, pvalue) = {VALUE pvalue, BYTES $ob_user_bytes(pvalue, $precision_value(S)), PRECISION $precision_value(S), FAILED (pvalue = PBOOL false)}
 def $ob_user_output_valid(S, poboutput) = ($ob_user_scalar(poboutput.VALUE) /\ $config_slots_valid(S, [NAMED_SENT (KNOWN poboutput.VALUE)]) /\ $precision_ini_valid($decimal_integer(poboutput.PRECISION)) /\ poboutput.BYTES = $ob_user_bytes(poboutput.VALUE, poboutput.PRECISION) /\ poboutput.FAILED = (poboutput.VALUE = PBOOL false))
-def $ob_user_deprecation(pobinvoke) = $ob_call_docref(pobinvoke.CALL) ++ $ptascii("(): Producing output from user output handler ") ++ $ob_buffer_name(pobinvoke.BUFFER) ++ $ptascii(" is deprecated")
-rule PhpStep/ob-user-produced: S ~> $error_dispatch(S[.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer[.FLAGS = $long_or($long_and(poutputbuffer.FLAGS, $(-32769)), 8192)])], 8192, $ob_user_deprecation(pobinvoke), $ob_call_line(pobinvoke.CALL), DIAGNOSTIC "Deprecated" $ob_user_deprecation(pobinvoke) $ob_call_line(pobinvoke.CALL), OB_USER_DEPRECATED pobinvoke pvalue)
+def $ob_user_deprecation(pobinvoke) = $ob_call_diagnostic_prefix(pobinvoke.CALL) ++ $ptascii("Producing output from user output handler ") ++ $ob_buffer_name(pobinvoke.BUFFER) ++ $ptascii(" is deprecated")
+rule PhpStep/ob-user-produced: S ~> $error_dispatch(S[.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer[.FLAGS = $long_or($long_and(poutputbuffer.FLAGS, $(-32769)), 8192)])], 8192, $ob_user_deprecation(pobinvoke), $ob_call_line(pobinvoke.CALL), $ob_call_event(pobinvoke.CALL, "Deprecated", $ob_user_deprecation(pobinvoke), $ob_call_line(pobinvoke.CALL)), OB_USER_DEPRECATED pobinvoke pvalue)
   -- if S.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_RESULT pobinvoke)
   -- if S.COMPLETION = NORMAL
@@ -408,13 +414,13 @@ def $error_call_valid(S, perrorcall) = true
   -- if $call_task_valid(S, OB_USER_REFERENCE pobinvoke n)
   -- if perrorcall.SITE = $ob_call_site(pobinvoke.CALL) /\ perrorcall.LINE = $ob_call_line(pobinvoke.CALL)
   -- if perrorcall.LEVEL = 2 /\ perrorcall.MESSAGE = $ob_user_reference_message(S, pobinvoke, n)
-  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+  -- if perrorcall.EVENT = $ob_call_event(pobinvoke.CALL, "Warning", perrorcall.MESSAGE, perrorcall.LINE)
 def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = OB_USER_DEPRECATED pobinvoke pvalue
   -- if $call_task_valid(S, OB_USER_DEPRECATED pobinvoke pvalue)
   -- if perrorcall.SITE = $ob_call_site(pobinvoke.CALL) /\ perrorcall.LINE = $ob_call_line(pobinvoke.CALL)
   -- if perrorcall.LEVEL = 8192 /\ perrorcall.MESSAGE = $ob_user_deprecation(pobinvoke)
-  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+  -- if perrorcall.EVENT = $ob_call_event(pobinvoke.CALL, "Deprecated", perrorcall.MESSAGE, perrorcall.LINE)
 
 ;; Arguments/retval are destroyed with running still true, then bytes reset.
 ;; A pop writes lower layers before dropping its sole zoh owner.

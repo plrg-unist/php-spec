@@ -1,0 +1,279 @@
+{
+  "milestone": "OB01",
+  "status": "private-validated; actual-tail integration pending",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "zts": false,
+    "int_size": 8,
+    "oracle_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "semantic_mode": "SL"
+  },
+  "tested_semantic_revision": "9fa5333439ee0280594cb74bc2e9918450783b48",
+  "scope": "Normal EOF and integer/string EXIT drain existing scalar-result user handlers after real shutdown and object retirement. FINAL uses the existing weak callback ABI; lower writes precede zoh release. Copied source/continuation metadata is nonowning, and one drain tail owns saved completion operands. Callback-local destructors may run after request destruction without repeating it.",
+  "implementation": [
+    "spec/semantics/441-output-finalization.watsup"
+  ],
+  "native_originals": 17,
+  "native_reports": [
+    {
+      "report": "ob01-author-native/native-d4cd6280a/report.json",
+      "sha256": "08d5d8a4d48b18891109e87ca13ed72fad82b91813ddc6589754f1d1d0ddf543",
+      "head": "d4cd6280a38b8864adab8694116c79ce785b3fd4",
+      "originals": 12
+    },
+    {
+      "report": "ob01-author-native/native-extra-d4cd6280a/report.json",
+      "sha256": "a9a138d66d11e2cd78b1f84511d92296f2e089e153045d6e7938bb12dc1620a5",
+      "head": "d4cd6280a38b8864adab8694116c79ce785b3fd4",
+      "originals": 3
+    },
+    {
+      "report": "ob01-author-native/native-typed-f7e6cc11a/report.json",
+      "sha256": "ffdf19f2e6fa655b19ae7d554c532cc6537df4b32e18072ff889231e19dc017f",
+      "head": "f7e6cc11a8c4a836f080af162c125dcc17b73b9e",
+      "originals": 1
+    },
+    {
+      "report": "ob01-author-native/native-global-6308f9c9d/report.json",
+      "sha256": "1d0a651125cbf289e339edd627d6253e42996c0dc4cdbb36d7718b611ccbc7a2",
+      "head": "6308f9c9ddd07dff45c0aaa78f3b869838e8adda",
+      "originals": 1
+    }
+  ],
+  "normal_sources": {
+    "total": 15,
+    "authored": 10,
+    "independent": 5,
+    "reports": [
+      {
+        "report": "ob01-author-native/candidate-named-2e6d8df42/report.json",
+        "sha256": "40de0117c3ae7ef388c488a2a001873aac400aac13a082493b69e6eabc378c90",
+        "head": "2e6d8df42eb845031ae93d033069a9f627fe514a",
+        "packet_passed": true,
+        "accepted_cases": [
+          "named_force"
+        ],
+        "workers_reaped": true,
+        "worker_exits": [
+          0,
+          0
+        ],
+        "native_replayed": false
+      },
+      {
+        "report": "ob01-author-native/candidate-thresholds-3ac23720b/report.json",
+        "sha256": "c16109274cfed46d6ae6218fe5ccf79745e2035b2f7843f46a8b17fa8b546018",
+        "head": "3ac23720ba3d1cd7d5f63a1ddbadbe9c8a7bd681",
+        "packet_passed": true,
+        "accepted_cases": [
+          "disabled",
+          "peer_default_to_positive",
+          "positive_empty",
+          "positive_tail"
+        ],
+        "workers_reaped": true,
+        "worker_exits": [
+          0,
+          0
+        ],
+        "native_replayed": false
+      },
+      {
+        "report": "ob01-author-native/candidate-peer4-statusfix-3ac23720b/report.json",
+        "sha256": "cf53f474e916fca173f282a13640dafac627f54e65acaab8f97aa75e04a07faf",
+        "head": "3ac23720ba3d1cd7d5f63a1ddbadbe9c8a7bd681",
+        "packet_passed": false,
+        "accepted_cases": [
+          "peer_exit_string",
+          "peer_nested_invokable",
+          "peer_positive_nested"
+        ],
+        "workers_reaped": true,
+        "worker_exits": [
+          0,
+          0
+        ],
+        "native_replayed": false
+      },
+      {
+        "report": "ob01-author-native/candidate-warning-f7e6cc11a/report.json",
+        "sha256": "d8ec56e1c117f6993fe790cf6e50167e4d8500dfc1fdd6c06de16b31c55421c2",
+        "head": "f7e6cc11a8c4a836f080af162c125dcc17b73b9e",
+        "packet_passed": true,
+        "accepted_cases": [
+          "peer_warning_callback"
+        ],
+        "workers_reaped": true,
+        "worker_exits": [
+          0,
+          0
+        ],
+        "native_replayed": false
+      },
+      {
+        "report": "ob01-author-native/candidate-typed-6308f9c9d/report.json",
+        "sha256": "f66a657a7bf00e29f82ea2b1a0b21b1d65f6d1e55352d68ae88727c4ea0790a8",
+        "head": "6308f9c9ddd07dff45c0aaa78f3b869838e8adda",
+        "packet_passed": true,
+        "accepted_cases": [
+          "final_typed_diagnostic"
+        ],
+        "workers_reaped": true,
+        "worker_exits": [
+          0,
+          0
+        ],
+        "native_replayed": false
+      },
+      {
+        "report": "ob01-author-native/candidate-global-9fa533343/report.json",
+        "sha256": "8a8bb9243bb5a16e393f90c707f44c10d1912d0179960b561eef04c2851018e9",
+        "head": "9fa5333439ee0280594cb74bc2e9918450783b48",
+        "packet_passed": true,
+        "accepted_cases": [
+          "final_global_retirement"
+        ],
+        "workers_reaped": true,
+        "worker_exits": [
+          0,
+          0
+        ],
+        "native_replayed": false
+      },
+      {
+        "report": "ob01-author-native/candidate-author-tail-9fa533343/report.json",
+        "sha256": "9ea476f5bef78815ed20c36029d8a83a3226196e3a0ed3e70bfc56d724f3d0ce",
+        "head": "9fa5333439ee0280594cb74bc2e9918450783b48",
+        "packet_passed": true,
+        "accepted_cases": [
+          "exit_integer",
+          "final_local_destructor",
+          "method_shutdown",
+          "nested_closure"
+        ],
+        "workers_reaped": true,
+        "worker_exits": [
+          0,
+          0
+        ],
+        "native_replayed": false
+      }
+    ]
+  },
+  "reached": {
+    "groups": 6,
+    "assertions": 238,
+    "author_assertions": 139,
+    "independent_assertions": 99,
+    "records": [
+      {
+        "owner": "author",
+        "outer": "ob01-author-native/reached-exit-9fa533343/process.json",
+        "outer_sha256": "621fd54a005f892306ad022ae4a55bb045b91a3ba4c397004475bdb0132edc5c",
+        "head": "9fa5333439ee0280594cb74bc2e9918450783b48",
+        "assertions": 48,
+        "archived_raw": "ob01-author-native/reached-raw/fiber-state-review-b_n97rzq",
+        "raw_report_sha256": "a96fcae55bc7df5dc1f892420ab3bec11397c6e87126611fe791a3948563eb42"
+      },
+      {
+        "owner": "author",
+        "outer": "ob01-author-native/reached-local-destructor-9fa533343/process.json",
+        "outer_sha256": "1e62f9a29c15b147243a36ca2ed69af8332c4d78b6e81150583c3a4010a1b768",
+        "head": "9fa5333439ee0280594cb74bc2e9918450783b48",
+        "assertions": 43,
+        "archived_raw": "ob01-author-native/reached-raw/fiber-state-review-lvxu5rdn",
+        "raw_report_sha256": "6fceb52ef5c22c2d5fd062dc6ad10efefec5f404094006f3c15820bbbc016e58"
+      },
+      {
+        "owner": "author",
+        "outer": "ob01-author-native/reached-global-retirement-9fa533343/process.json",
+        "outer_sha256": "a9edc76953d6d2b9b4f944e7f86d05e6fb98ad0b613b7b774f8e6887718ade82",
+        "head": "9fa5333439ee0280594cb74bc2e9918450783b48",
+        "assertions": 48,
+        "archived_raw": "ob01-author-native/reached-raw/fiber-state-review-r2vejf22",
+        "raw_report_sha256": "a2190cc35c07fbd7770798d9f598da0a9b38e1f55001feb5472e025b27d2bf75"
+      },
+      {
+        "owner": "independent",
+        "outer": "ob01-review-native/reached-entered-9fa533343/process.json",
+        "outer_sha256": "254b6904363251ffedac86fadd182c933b0b18fc417738a597371e9eec4b3ab1",
+        "head": "9fa5333439ee0280594cb74bc2e9918450783b48",
+        "assertions": 37,
+        "archived_raw": "ob01-review-native/reached-raw/fiber-state-review-b3tddo_s",
+        "raw_report_sha256": "7692554490520ddaf4b5c8296f690ec44b680ca75914637945c366984ad0aafc"
+      },
+      {
+        "owner": "independent",
+        "outer": "ob01-review-native/reached-postpop-9fa533343/process.json",
+        "outer_sha256": "adbf33a468f77d048d9cdeaa0423e1f7825c8986653ba31302e0a5031b9f9726",
+        "head": "9fa5333439ee0280594cb74bc2e9918450783b48",
+        "assertions": 34,
+        "archived_raw": "ob01-review-native/reached-raw/fiber-state-review-5nfwl6sn",
+        "raw_report_sha256": "c4f1d4ee1d809d1577ca87da3ca2c134175253f7fc017c836fa94e98f90ad8b6"
+      },
+      {
+        "owner": "independent",
+        "outer": "ob01-review-native/reached-lower-write-9fa533343/process.json",
+        "outer_sha256": "c10a30d64762e7193d6fb84de21ceec430c8dbef6e75645ba43d5846569df478",
+        "head": "9fa5333439ee0280594cb74bc2e9918450783b48",
+        "assertions": 28,
+        "archived_raw": "ob01-review-native/reached-raw/fiber-state-review-a4v8e3h9",
+        "raw_report_sha256": "e58565fbdfd417d65598d6e8a9631fdb4b625b1a2768d3106f8da12777b2c997"
+      }
+    ]
+  },
+  "strict": {
+    "report": "ob01-author-native/strict-9fa533343/report.json",
+    "sha256": "a034898816f1fb97d8ddb2a4eb879e40730f0da0ccd1d357628725e39627e195",
+    "module_count": 427,
+    "passed": true
+  },
+  "unchanged_baselines": {
+    "report": "ob01-author-native/baseline-two-d4cd6280a/report.json",
+    "sha256": "22a634438ea8cebea09c0c727898729bd519864d16d5814b3d997e3d89c59a75",
+    "cases": [
+      "named_force",
+      "positive_tail"
+    ],
+    "credit": "genuine intended Unsupported, not agreement"
+  },
+  "corrected_counterexamples": [
+    {
+      "report": "ob01-author-native/candidate-typed-before-f7e6cc11a/report.json",
+      "case": "final_typed_diagnostic",
+      "result": "Unsupported, zero agreement before weak diagnostic hook"
+    },
+    {
+      "report": "ob01-author-native/candidate-global-before-6308f9c9d/report.json",
+      "case": "final_global_retirement",
+      "result": "normal tuple mismatch live|S|[X|] versus native gone|S|[X|], zero agreement before real global retirement"
+    }
+  ],
+  "held_abnormal_boundaries": {
+    "native_originals": [
+      "held_throw",
+      "peer_captured_throw"
+    ],
+    "first_native": "global Exception retired before FINAL; callback throws null and native raises Error",
+    "second_native": "Closure retains supplied Exception, native uncaught Exception supplied-final",
+    "model_report": "ob01-author-native/boundaries-9fa533343/report.json",
+    "model_result": "held_throw request timed out90s, adapter killed and reaped; no records or credit; peer_captured_throw unrun",
+    "reduced_report": "ob01-author-native/diagnose-held-reduced-9fa533343/report.json",
+    "reduced_result": "first120-step request timed out40s before state, adapter killed and reaped; no phase classification or credit",
+    "controlled_unsupported_claim": false
+  },
+  "credit_policy": "Only selected exact source rows are credited from the stopped peer packet; its packet_passed remains false. Failed/stopped packets retain zero whole-packet credit; diagnostics are not reached-group credit. Raw failures remain intact externally.",
+  "preservation": "The shared selected-buffer helper retains ordinary checks pointwise; ordinary diagnostic events are unchanged. Final diagnostic/file/weak-receive hooks require authentic final continuations. The request capability admits terminal user-buffer roots and persists through GLOBALS/STORE; DONE retains the original destructor-capability requirement. Prior exact source cuts are preserved by the independent bridge; only affected discrepancies were rerun.",
+  "maintained_harness": "function_scope now admits explicit_exit only with exact stdout, stderr and exit status; the two observed EXIT sources cover that classification. Later catalog formatting and docs/inventory do not renew semantic credit.",
+  "remaining": "Escaping/abnormal FINAL continuation, fatal rendering/drain, callback exit, wider byte/callable/mutation/Fiber forms and buffered stdout diagnostics remain partial.",
+  "archive": {
+    "summary": "ob01-author-native/accepted-summary.json",
+    "sha256": "0ba6a8547eb7d318acc3b83834183865855d14254f670811e687b4fa56460864",
+    "root": "../php-spec-evidence-archive/",
+    "recovery": "Recreate the original WT path at a recorded tested revision, install the existing project-local tool symlinks, then reuse the retained exact worker request packets/native tuples and listed commands. Metadata-only records do not renew semantic execution."
+  },
+  "integration": {
+    "status": "pending actual-tail review and joined strict"
+  }
+}

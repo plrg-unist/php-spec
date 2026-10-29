@@ -496,3 +496,11 @@ updated submodule pointer. Existing clones must adopt the rewritten history;
 merging or fetching old refs can bring the removed objects back. Keep the backup
 until that coordination is complete. The pinned corpus still contains a 96 MiB
 TeamPass database log, so this cleanup does not eliminate every large-file warning.
+
+OB01 request-end output evidence is retained uncompressed under
+`../php-spec-evidence-archive/ob01-author-native/` and `ob01-review-native/`.
+The [review](../coverage/semantics/output-request-end-review.json) binds the
+15 exact normal source cuts, six reached groups/238 assertions and strict427.
+`accepted-summary.json` maps all nine original state directories to their intact
+external locations. The failed/stopped packets, 90/40-second abnormal timeouts
+and model-unrun captured-throw boundary retain their separate zero-credit status.

@@ -245,9 +245,11 @@ def $error_handler_target(S, pvalue) = (pcalltarget)
   -- if $error_handler_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
 def $error_handler_target(S, pvalue) = eps -- otherwise
 def $generator_request_render_warning_resume(ptask) = false -- otherwise
+dec $output_drain_warning_resume(ptask) : bool
 def $error_handler_file(S, perrorcall) = $call_sourcefile(S.FILES, porigin)
   -- if ~$iterator_notice_resume(perrorcall.RESUME)
   -- if ~$generator_request_render_warning_resume(perrorcall.RESUME)
+  -- if ~$output_drain_warning_resume(perrorcall.RESUME)
   -- if $class_constant_error_origin(S) = (porigin)
 def $error_handler_file(S, perrorcall) = $call_sourcefile(S.FILES, perrorcall.SITE) -- otherwise
 def $error_callback_line(S, perrorcall) = perrorcall.LINE -- otherwise

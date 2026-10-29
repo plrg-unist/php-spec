@@ -36848,7 +36848,8 @@
         "spec/semantics/397-output-handler-failures.watsup",
         "spec/semantics/398-output-api-failures.watsup",
         "spec/semantics/399-output-result-cleanup.watsup",
-        "spec/semantics/401-output-reference-warning.watsup"
+        "spec/semantics/401-output-reference-warning.watsup",
+        "spec/semantics/441-output-finalization.watsup"
       ],
       "helper_tests": [
         "tests/semantics/output_buffer_state.py",
@@ -36857,7 +36858,9 @@
         "tests/semantics/output_abrupt_state.py",
         "tests/semantics/output_api_failure_state.py",
         "tests/semantics/output_result_cleanup_state.py",
-        "tests/semantics/output_reference_warning_state.py"
+        "tests/semantics/output_reference_warning_state.py",
+        "tests/semantics/output_final_protocol.py",
+        "tests/semantics/output_final_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/output_buffer_sources.py",
@@ -36872,7 +36875,23 @@
         "tests/semantics/output_result_cleanup_sources.py",
         "tests/semantics/output_result_cleanup_review_sources.py",
         "tests/semantics/output_reference_warning_sources.py",
-        "tests/semantics/output_reference_warning_review_sources.py"
+        "tests/semantics/output_reference_warning_review_sources.py",
+        "tests/semantics/output_request_end_sources.py",
+        "tests/semantics/output_request_end_disabled.php",
+        "tests/semantics/output_request_end_exit_integer.php",
+        "tests/semantics/output_request_end_final_global_retirement.php",
+        "tests/semantics/output_request_end_final_local_destructor.php",
+        "tests/semantics/output_request_end_final_typed_diagnostic.php",
+        "tests/semantics/output_request_end_method_shutdown.php",
+        "tests/semantics/output_request_end_named_force.php",
+        "tests/semantics/output_request_end_nested_closure.php",
+        "tests/semantics/output_request_end_peer_default_to_positive.php",
+        "tests/semantics/output_request_end_peer_exit_string.php",
+        "tests/semantics/output_request_end_peer_nested_invokable.php",
+        "tests/semantics/output_request_end_peer_positive_nested.php",
+        "tests/semantics/output_request_end_peer_warning_callback.php",
+        "tests/semantics/output_request_end_positive_empty.php",
+        "tests/semantics/output_request_end_positive_tail.php"
       ],
       "evidence": [
         "vendor/php-src/main/output.c",
@@ -36893,9 +36912,11 @@
         "coverage/semantics/output-result-cleanup-author.json",
         "coverage/semantics/output-result-cleanup-review.json",
         "coverage/semantics/output-reference-warning-author.json",
-        "coverage/semantics/output-reference-warning-review.json"
+        "coverage/semantics/output-reference-warning-review.json",
+        "vendor/php-src/main/main.c",
+        "coverage/semantics/output-request-end-review.json"
       ],
-      "review": "Modules391\u2013399 retain their separately accepted output cuts, including defined scalar cleanup and borrowed receivers. Module401 releases the exact scalar prepared prefix when a direct explicit-API reference warning throws before callback entry, then reuses undefined-result failure cleanup. Three distinct originals agree at 35a9. Two genuine fronts pass 106 physical premises (61 at e13, 45 at 4f; 16 shared setup), checking sole reference ownership, exact contents, retired metadata versus live owners, malformed index/tail/value/ownership and overlong-prefix refusals, plus fuel0. Original baseline/fixture and same-cap memory failures retain 0. Full completion stays covered by the exact source; the bounded retired state claims no destructor-operation SOURCE. The obsolete Module398 warning-throw control is retired without renewing old campaigns. Automatic pre-entry warnings, produced-warning throws, owning warning-handler cleanup, exit, other producers/request-end/fatal drains and wider conversion/callable/capability/mutation/Fiber/stdout protocols remain required; the obligation stays partial."
+      "review": "Modules391\u2013399 retain their separately accepted output cuts, including defined scalar cleanup and borrowed receivers. Module401 releases the exact scalar prepared prefix when a direct explicit-API reference warning throws before callback entry, then reuses undefined-result failure cleanup. Three distinct originals agree at 35a9. Two genuine fronts pass 106 physical premises (61 at e13, 45 at 4f; 16 shared setup), checking sole reference ownership, exact contents, retired metadata versus live owners, malformed index/tail/value/ownership and overlong-prefix refusals, plus fuel0. Original baseline/fixture and same-cap memory failures retain 0. Full completion stays covered by the exact source; the bounded retired state claims no destructor-operation SOURCE. The obsolete Module398 warning-throw control is retired without renewing old campaigns. Automatic pre-entry warnings, produced-warning throws, owning warning-handler cleanup, exit, other producers/abnormal request-end/fatal drains and wider conversion/callable/capability/mutation/Fiber/stdout protocols remain required. OB01 adds normal EOF/EXIT user drain after real object retirement, weak FINAL diagnostics and post-request local destructors: 15 exact normal originals and six reached groups/238 checks pass. Escaping FINAL throws remain unresolved (90/40s timeout; captured throw unrun), with zero credit. The obligation stays partial."
     },
     {
       "id": "environment.request-inputs",
@@ -37289,7 +37310,8 @@
         "spec/semantics/207-error-handler-runtime.watsup",
         "bin/php-semantics",
         "adapter/main.ml",
-        "spec/semantics/391-output-buffers.watsup"
+        "spec/semantics/391-output-buffers.watsup",
+        "spec/semantics/441-output-finalization.watsup"
       ],
       "helper_tests": [
         "tests/semantics/display_errors_protocol.py",
@@ -37297,15 +37319,17 @@
       ],
       "source_tests": [
         "tests/semantics/display_errors.py",
-        "tests/semantics/output_buffer_sources.py"
+        "tests/semantics/output_buffer_sources.py",
+        "tests/semantics/output_request_end_sources.py"
       ],
       "evidence": [
         "vendor/php-src/main/main.c",
         "coverage/semantics/display-errors-review.json",
         "coverage/semantics/output-buffer-author.json",
-        "coverage/semantics/output-buffer-review.json"
+        "coverage/semantics/output-buffer-review.json",
+        "coverage/semantics/output-request-end-review.json"
       ],
-      "review": "Live display_errors237 adds nullable original/live raw get/set/Restore and captured ordinary text-CLI destinations;11 exact profile/source comparisons,76 state premises and17 transport controls pass at b8e8/223. Actualddb6/233 preservation adds no execution credit. Actual231/237 held-original fatal freezing agrees atccd900 after rendering and before queue mode writes; shutdown-functions-review.json records that separate composition. Wider display/configuration and later request stages remain required. Module391 routes PHP bytes through default output buffers. Selected stdout diagnostics with active buffers retain an explicit sticky Unsupported boundary through compiler/resume/lifecycle resets; masked and handler-true stdout cases remain normal. Buffered diagnostic rendering and wider SAPI effects stay open."
+      "review": "Live display_errors237 adds nullable original/live raw get/set/Restore and captured ordinary text-CLI destinations;11 exact profile/source comparisons,76 state premises and17 transport controls pass at b8e8/223. Actualddb6/233 preservation adds no execution credit. Actual231/237 held-original fatal freezing agrees atccd900 after rendering and before queue mode writes; shutdown-functions-review.json records that separate composition. Wider display/configuration and later request stages remain required. Module391 routes PHP bytes through default output buffers. Selected stdout diagnostics with active buffers retain an explicit sticky Unsupported boundary through compiler/resume/lifecycle resets; masked and handler-true stdout cases remain normal. Buffered diagnostic rendering and wider SAPI effects stay open. OB01 normal final diagnostics use Unknown:0 and preserve the sticky buffered-stdout boundary; selected handlers retain weak reception. Abnormal/fatal finalization stays open."
     },
     {
       "id": "environment.finite-fixtures",
