@@ -70,8 +70,9 @@ GC08 skips potential-root buffering for enum cases, following Zend's
 WeakReference identity; ordinary collectable objects still enter the physical
 buffer in real order. One native-first source agrees exactly and a native status
 witness plus two strict reached groups (47 checks) distinguish the buffer slots.
-Graph traversal and owner counting are unchanged. Other builtin eligibility and
-wider collection contexts remain partial.
+Joined actual-tail strict432 compilation passes; graph traversal and owner
+counting are unchanged. Other builtin eligibility and wider collection contexts
+remain partial.
 [GC08 review](coverage/semantics/gc-enum-collectability-review.json).
 
 Immediate identity cleanup now validates a sole produced right object/array
