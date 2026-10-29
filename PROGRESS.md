@@ -298,9 +298,8 @@ reentrant/abrupt raw-owner teardown remain partial.
 | ATTR07 | Builtin attributes on real Closure/arrow expressions; separate producer preparation. |
 | CLASS154 | Variadic reference constructor implementation. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
-| GC08 | Enum possible-root admission fix. |
 | Enum M3/M4 | Generated array-capture preparation; no new validation credit. Other string consumers, backing dependencies and the default loader remain partial. |
-| A76 | BYVAL factory returning a BYREF Generator; privately validated, integration queued. |
+| A77 | Retained Generator owning ARRAY/INSTANCE option sends; four frozen originals and old refusal, implementation preparation. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
