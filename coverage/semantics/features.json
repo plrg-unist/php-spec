@@ -28387,54 +28387,88 @@
     {
       "id": "declarations.enums",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_attributes.c"
+      "implementation": [
+        "spec/semantics/436-enum-compiler.watsup",
+        "spec/semantics/437-enum-runtime.watsup",
+        "spec/semantics/277-autoload.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/enum_core_review_protocol.py",
+        "tests/semantics/enum_magic_review_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/enum_review_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_enum.c",
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": "Private unit/backed enum compiler and link slice with genuine implicit interfaces and dependency replay; independent reached checks are summarized in PROGRESS.md. Case attributes and wider link interactions remain open."
     },
     {
       "id": "declarations.cases",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_attributes.c"
+      "implementation": [
+        "spec/semantics/436-enum-compiler.watsup",
+        "spec/semantics/437-enum-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/enum_core_review_protocol.py",
+        "tests/semantics/enum_query_review_protocol.py",
+        "tests/semantics/enum_default_review_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/enum_review_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_enum.c"
+      ],
+      "review": "Cached singleton case objects, name/value slots, lazy initialization, unit-case defaults and individual constant queries have source and state checks in PROGRESS.md. Case attributes and wider consumers remain open."
     },
     {
       "id": "declarations.backed-enums",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_attributes.c"
+      "implementation": [
+        "spec/semantics/436-enum-compiler.watsup",
+        "spec/semantics/437-enum-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/enum_core_review_protocol.py",
+        "tests/semantics/enum_generated_review_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/enum_review_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_enum.c"
+      ],
+      "review": "Direct from/tryFrom parsing, backing-table checks, singleton lookup and BackedEnum typed parameters have bounded exact source/state evidence in PROGRESS.md. Generated callable and broader type contexts remain open."
     },
     {
       "id": "declarations.generated-enum-methods",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_attributes.c"
+      "implementation": [
+        "spec/semantics/437-enum-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/enum_generated_review_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/enum_review_protocol.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_enum.c"
+      ],
+      "review": "Direct cases/from/tryFrom and user magic method calls are source/state checked; generated callable targets remain explicit Unsupported pending M3. See PROGRESS.md for exact cuts."
     },
     {
       "id": "declarations.attribute-metadata",
