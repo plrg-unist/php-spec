@@ -461,6 +461,7 @@ rule PhpStep/closure-call-named-error: S ~> $throwable_allocate(S[.TODO = ptask_
   -- if pclosurecall.RECEIVER = (n_receiver)
   -- if $target_function(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver) = (pfunction)
   -- if $closure_call_warning(S, pclosurecall.SOURCE, n_receiver) = eps
+  -- if $deprecated_api_allowed(S, pfunction)
   -- if ~$closure_call_reference_formal(pfunction.SIGNATURE.PARAMETERS)
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pclosurecall.SITE), LINE pclosurecall.LINE, FUNCTION $ptascii("call"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS ((KINT 0, POBJECT n_receiver) :: $closure_call_trace_raw(S, pclosurecall.RAW)), HASARGS true}
 
@@ -490,7 +491,15 @@ rule PhpStep/closure-call-invoke: S ~> $closure_call_enter(S[.TODO = ptask_tail*
   -- if pclosurecall.RECEIVER = (n_receiver)
   -- if $target_function(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver) = (pfunction)
   -- if $closure_call_warning(S, pclosurecall.SOURCE, n_receiver) = eps
+  -- if $deprecated_api_allowed(S, pfunction)
   -- if ~$closure_call_reference_formal(pfunction.SIGNATURE.PARAMETERS)
+rule PhpStep/closure-call-deprecated-api: S ~> S[.COMPLETION = UNSUPPORTED "Deprecated internal API timing"]
+  -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
+  -- if $call_task_valid(S, CLOSURE_CALL_INVOKE pclosurecall)
+  -- if pclosurecall.RECEIVER = (n_receiver)
+  -- if $target_function(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver) = (pfunction)
+  -- if $closure_call_warning(S, pclosurecall.SOURCE, n_receiver) = eps
+  -- if ~$deprecated_api_allowed(S, pfunction)
 
 ;; The internal API forwards values in outer source order. Reference formals
 ;; warn and receive fresh cells, never the caller's reference operands.
@@ -557,6 +566,7 @@ rule PhpStep/closure-call-forward-start: S ~> S[.TODO = (CLOSURE_CALL_FORWARD pc
   -- if pclosurecall.RECEIVER = (n_receiver)
   -- if $target_function(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver) = (pfunction)
   -- if $closure_call_warning(S, pclosurecall.SOURCE, n_receiver) = eps
+  -- if $deprecated_api_allowed(S, pfunction)
   -- if $closure_call_reference_formal(pfunction.SIGNATURE.PARAMETERS)
 rule PhpStep/closure-call-forward-next: S ~> S_value[.TODO = (CLOSURE_CALL_FORWARD pclosurecall $(n + 1) $named_store(pnamedargs, pnamedtarget, S_value.RESULT) n_base) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CLOSURE_CALL_FORWARD pclosurecall n pnamedargs n_base) :: ptask_tail*

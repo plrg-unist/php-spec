@@ -28860,15 +28860,28 @@
     {
       "id": "declarations.Deprecated",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_attributes.c"
+      "implementation": [
+        "spec/semantics/17-signatures.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/440-builtin-function-attributes.watsup",
+        "spec/semantics/80-call-control.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/deprecated_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/deprecated_sources.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "coverage/semantics/builtin-deprecated-review.json",
+        "docs/semantics/BUILTIN-ATTRIBUTES.md"
+      ],
+      "review": "ATTR02 admits literal/NULL message and since on named user functions and ordinary methods. VM calls warn before NoDiscard and reception, retaining selected references, arguments, receiver and abrupt cleanup. Thirteen exact source agreements, two explicit API exclusions, four reached fronts with 314 conditions (278 source-reached checks, 24 derived guards, 12 raw API projections), and private strict430 retain separate cuts in builtin-deprecated-review.json. Internal API warning timing, wider messages, targets and wrappers remain partial."
     },
     {
       "id": "declarations.NoDiscard",

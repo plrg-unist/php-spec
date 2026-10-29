@@ -1,0 +1,82 @@
+{
+  "milestone": "ATTR02",
+  "status": "Independently reviewed private implementation; actual-tail integration pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle and SL semantics",
+  "scope": "Literal/NULL Deprecated message and since on named user functions and ordinary source methods; VM warning before NoDiscard and receive, selected call owners, declaration errors and explicit early internal-API timing refusal. Wider attributes and API timing remain partial.",
+  "raw_root": "../php-spec-evidence-archive/builtin-attributes-02",
+  "production": {
+    "base": "d2f1186b20263cd5ae5758b5c593513f36ec55c6",
+    "semantic_change": "4154ba668dbf062c1a3118cc38e26daf261d7fe0",
+    "binder_fix": "ca0d768dbd4aefcbb99dd4d4724cd440ac374d31",
+    "private_tip": "3c396eab2d7d84b75f7a646d6c35deb44b573d27",
+    "later_changes": "00ce559cb, 4094469d5 and 3c396eab2 change tests or observers only"
+  },
+  "evidence": {
+    "native_author": {
+      "path": "native/report.json",
+      "sha256": "f088a2c4d3537ad605bffbba6dbffc56474d11bbcec86ea52d86b4f01527528f",
+      "originals": 9
+    },
+    "unchanged_model": {
+      "path": "baseline/report.json",
+      "sha256": "946535a64591f08460d535790dda715a32fa0e958dde0f734840ee8c29b7eb34",
+      "measured_unsupported": 3,
+      "ordinary_exact_control": 1
+    },
+    "changed_author": {
+      "path": "model-00ce559cb/report.json",
+      "sha256": "e3fe0831ac140d63a03f11d9d03f2fa3bcf907b23c4975fb6a9881ea9d8de0fd",
+      "revision": "00ce559cb209addb53f4dadac6b9087d6d74a387",
+      "exact_agreements": 9
+    },
+    "native_peer": {
+      "path": "review-independent/native/report.json",
+      "sha256": "62c07193c30334049fb5ee34e88dd64ab2818f6b7cc5297347bbf9c4515f6da3",
+      "originals": 5
+    },
+    "peer_index": {
+      "path": "review-independent/model-current.json",
+      "sha256": "78db6d015a3f732b9a0aaada240585ddfe090ebe7b539f6b11b2383821f41615",
+      "exact_vm_agreements": 4,
+      "explicit_api_exclusions": 2,
+      "api_agreement_credit": 0
+    },
+    "strict": {
+      "path": "strict-ca0d768db/report.json",
+      "sha256": "161ce22164d311ee4bc61ac6898cf0d4b53849343f87f120bb32b1f218a78e98",
+      "revision": "ca0d768dbd4aefcbb99dd4d4724cd440ac374d31",
+      "modules": 430,
+      "passed": true
+    },
+    "reached_first_three": {
+      "path": "state-4094469d5/report.json",
+      "sha256": "9edad2ef3c8d6161ee69774b94f3532af54ee24c2c98b25bc0099b51abea2667",
+      "revision": "4094469d5bfa188c6e48767fbd1cd893b7a95b62",
+      "passed_conditions": [82, 57, 90],
+      "overall_packet_passed": false
+    },
+    "reached_fourth": {
+      "path": "state-handler-3c396eab2/report.json",
+      "sha256": "7b2b06c874683302456595f750a0f582302415ffc17a031188ee8354c417ee7b",
+      "revision": "3c396eab2d7d84b75f7a646d6c35deb44b573d27",
+      "passed_conditions": 85,
+      "passed": true
+    },
+    "total_exact_source_agreements": 13,
+    "total_focused_conditions": 314,
+    "derived_guards_within_conditions": 24,
+    "raw_api_projections_within_conditions": 12,
+    "source_reached_checks_within_conditions": 278
+  },
+  "api_boundary": "VM and internal callback timing differ. The selected Closure->__invoke and assert callback source cases return Unsupported Deprecated internal API timing; the Closure model refuses before either native warning with empty modeled stdout/stderr. The assert case has corrected native/model streams with zero agreement credit. The peer index names both raw cuts.",
+  "preserved_failures": {
+    "strict_binder": ["strict-4878cae31/report.json", "305fbf52fdb7aea55af70b47ca117df91cc067a791af93bdf610b89a1f682550"],
+    "first_state_fixture": ["state-00ce559cb/report.json", "2be927c167d3132edfb58cda2911f76cf5d718b929e8483c2b7753f2b4d051fd"],
+    "fourth_state_fixture": ["state-4094469d5/report.json", "9edad2ef3c8d6161ee69774b94f3532af54ee24c2c98b25bc0099b51abea2667"],
+    "assert_observer": ["review-independent/assert-api-boundary/native-message-observer-original/report.json", "fac4ecfb4ae73dda78ba64a2d31e985cdd27c942668ef262ac72edaee45d6e5d"],
+    "assert_ini_domain": ["review-independent/assert-api-boundary/model-assert-api-byref-throw-priority-boundary-00ce559cb/report.json", "1bbd60a1a3f2e213b839366a563c7565d81a3148e1f0fa6280f849c74fb8b6e7"]
+  },
+  "source": "vendor/php-src Zend/zend_compile.c attribute/call lowering; Zend/zend_attributes.c Deprecated validation; Zend/zend_vm_def.h DO_FCALL and BY_NAME warnings; Zend/zend_execute_API.c zend_call_function; Zend/zend_closures.c wrapper flags",
+  "recovery": "Raw reports record input hashes, binary/profile, commands, exits, affinity and reaped groups. Focused commands: python3 tests/semantics/deprecated_sources.py --output OUT; python3 tests/semantics/deprecated_protocol.py --output OUT. No accepted source, strict, state or original native packet was replayed for this metadata.",
+  "integration": "Pending actual-tail composition and joined validation; private results do not establish canonical compatibility."
+}

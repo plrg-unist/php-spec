@@ -861,7 +861,7 @@ rule PhpStep/autoload-next-value: S ~> S[.TODO = (AUTO_ENTER pautoloadcall[.INDE
   -- if S.AUTOLOAD.ENTRIES[n] = (pautoloadentry)
   -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
   -- if ~$call_parameter_reference(S, pcalltarget, 0)
-rule PhpStep/autoload-next-reference-warning: S ~> $error_dispatch(S, 2, ptbytes, $autoload_reference_line(pautoloadcall), $autoload_reference_event(pautoloadcall, ptbytes), AUTO_REFERENCE pautoloadcall[.INDEX = n][.BIRTH = S.AUTOLOAD.BIRTHS[n]] pautoloadentry)
+rule PhpStep/autoload-next-reference-warning: S ~> $deprecated_api_reference(S, pfunction, ptbytes, $autoload_reference_line(pautoloadcall), $autoload_reference_event(pautoloadcall, ptbytes), AUTO_REFERENCE pautoloadcall[.INDEX = n][.BIRTH = S.AUTOLOAD.BIRTHS[n]] pautoloadentry)
   -- if S.TODO = (AUTO_NEXT pautoloadcall) :: ptask_tail*
   -- if pautoloadcall.BIRTH = eps
   -- if $autoload_call_valid(S, pautoloadcall)
@@ -869,6 +869,7 @@ rule PhpStep/autoload-next-reference-warning: S ~> $error_dispatch(S, 2, ptbytes
   -- if S.AUTOLOAD.ENTRIES[n] = (pautoloadentry)
   -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
   -- if $call_parameter_reference(S, pcalltarget, 0)
+  -- if $target_function(S, pcalltarget) = (pfunction)
   -- if ptbytes = $autoload_reference_message(S, pautoloadentry)
 rule PhpStep/autoload-reference-return: S ~> S_cell[.TODO = (AUTO_ENTER pautoloadcall pautoloadentry S_cell.RESULT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (AUTO_REFERENCE pautoloadcall pautoloadentry) :: ptask_tail*

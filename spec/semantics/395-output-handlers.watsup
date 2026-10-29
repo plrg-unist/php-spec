@@ -305,11 +305,12 @@ def $ob_user_reference_message(S, pobinvoke, n) = pfunction.NAME ++ $ptascii("()
   -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
   -- if $target_function(S, poutputhandler.ENTRY.TARGET) = (pfunction)
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
-rule PhpStep/ob-user-reference-warning: S ~> $error_dispatch(S, 2, n_message*, $ob_call_line(pobinvoke.CALL), $ob_call_event(pobinvoke.CALL, "Warning", n_message*, $ob_call_line(pobinvoke.CALL)), OB_USER_REFERENCE pobinvoke n)
+rule PhpStep/ob-user-reference-warning: S ~> $deprecated_api_reference(S, pfunction, n_message*, $ob_call_line(pobinvoke.CALL), $ob_call_event(pobinvoke.CALL, "Warning", n_message*, $ob_call_line(pobinvoke.CALL)), OB_USER_REFERENCE pobinvoke n)
   -- if S.TODO = (OB_USER_SEND pobinvoke n) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_SEND pobinvoke n) /\ $(n < 2)
   -- if pobinvoke.BUFFER.HANDLER = (poutputhandler)
   -- if $call_parameter_reference(S, poutputhandler.ENTRY.TARGET, n)
+  -- if $target_function(S, poutputhandler.ENTRY.TARGET) = (pfunction)
   -- if n_message* = $ob_user_reference_message(S, pobinvoke, n)
 rule PhpStep/ob-user-reference: S ~> S_cell[.TODO = (OB_USER_SEND pobinvoke[.SENT = pobinvoke.SENT ++ [S_cell.RESULT]] $(n + 1)) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (OB_USER_REFERENCE pobinvoke n) :: ptask_tail*

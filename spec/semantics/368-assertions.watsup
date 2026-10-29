@@ -984,10 +984,13 @@ def $assertion_callback_valid(S, passertcall) = true
   -- if ~pfunction.SIGNATURE.BYREF
 def $assertion_callback_valid(S, passertcall) = false -- otherwise
 def $assertion_callback_enter(S, passertcall, pcalltarget, pfunction) = $call_arity($target_after_enter($call_enter(S_args, pfunction, poperand*, (passertcall.FAILURE.CALL.SITE), passertcall.FAILURE.CALL.LINE), pcalltarget), pfunction, |pvalue*|, (passertcall.FAILURE.CALL.SITE), passertcall.FAILURE.CALL.LINE)
+  -- if $deprecated_api_allowed(S, pfunction)
   -- if S.TODO = (ASSERT_CALLBACK_INVOKE passertcall) :: ptask_tail*
   -- if pvalue* = $assertion_callback_values(S, passertcall.FAILURE)
   -- if S_pending = S[.TODO = (ASSERT_CALLBACK_RESULT passertcall[.TARGET = (pcalltarget)]) :: ptask_tail*]
   -- if $error_handler_operands(S_pending, pcalltarget, pvalue*, 0, passertcall.FAILURE.CALL.LINE) = (S_args, poperand*)
+def $assertion_callback_enter(S, passertcall, pcalltarget, pfunction) = S[.COMPLETION = UNSUPPORTED "Deprecated internal API timing"]
+  -- if ~$deprecated_api_allowed(S, pfunction)
 rule PhpStep/assert-callback-enter: S ~> $assertion_callback_enter(S, passertcall, pcalltarget, pfunction)
   -- if S.TODO = (ASSERT_CALLBACK_INVOKE passertcall) :: ptask_tail*
   -- if $call_task_valid(S, ASSERT_CALLBACK_INVOKE passertcall)

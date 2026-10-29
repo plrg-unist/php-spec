@@ -274,10 +274,13 @@ def $error_handler_operands(S, pcalltarget, pvalue :: pvalue_tail*, n, z) = (S_n
   -- if S_cell.RESULT = REFERENCE n_cell
   -- if $error_handler_operands(S_cell, pcalltarget, pvalue_tail*, $(n + 1), z) = (S_next, poperand*)
 def $error_handler_enter(S, perrorcall, pcalltarget, pfunction) = $call_arity($target_after_enter($call_enter(S_args, pfunction, poperand*, (perrorcall.SITE), $error_callback_line(S, perrorcall)), pcalltarget), pfunction, 4, (perrorcall.SITE), $error_callback_line(S, perrorcall))
+  -- if $deprecated_api_allowed(S, pfunction)
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
   -- if perrorcall_entered = perrorcall[.TARGET = (pcalltarget)]
   -- if S_pending = S[.ERRORHANDLER.CALLBACK = eps][.TODO = (ERROR_HANDLER_RESULT perrorcall_entered) :: ptask_tail*]
   -- if $error_handler_operands(S_pending, pcalltarget, $error_handler_values(S, perrorcall), 0, $error_callback_line(S, perrorcall)) = (S_args, poperand*)
+def $error_handler_enter(S, perrorcall, pcalltarget, pfunction) = S[.COMPLETION = UNSUPPORTED "Deprecated internal API timing"]
+  -- if ~$deprecated_api_allowed(S, pfunction)
 def $error_handler_invoke_known(S, perrorcall) = ($error_handler_enter(S, perrorcall, pcalltarget, pfunction))
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
   -- if perrorcall.TARGET = eps

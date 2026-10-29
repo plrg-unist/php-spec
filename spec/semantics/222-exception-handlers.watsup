@@ -249,7 +249,7 @@ def $exception_reference_warning(S, pexceptioncall) = pfunction.NAME ++ $ptascii
   -- if pexceptioncall.TARGET = (pcalltarget)
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, 0) = (psparam)
-rule PhpStep/exception-handler-reference-warning: S ~> $error_dispatch(S[.ORIGIN = (pfunction.ORIGIN)], 2, $exception_reference_warning(S, pexceptioncall_entered), 0, DIAGNOSTIC_INTERNAL "Warning" ($exception_reference_warning(S, pexceptioncall_entered)) 0, EXCEPTION_HANDLER_ENTER pexceptioncall_entered)
+rule PhpStep/exception-handler-reference-warning: S ~> $deprecated_api_reference(S[.ORIGIN = (pfunction.ORIGIN)], pfunction, $exception_reference_warning(S, pexceptioncall_entered), 0, DIAGNOSTIC_INTERNAL "Warning" ($exception_reference_warning(S, pexceptioncall_entered)) 0, EXCEPTION_HANDLER_ENTER pexceptioncall_entered)
   -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
   -- if $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall)
   -- if ~$exception_deprecated_raw(S, pexceptioncall.CALLBACK)

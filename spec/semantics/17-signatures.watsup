@@ -22,8 +22,11 @@ syntax pbuiltinattributes = BUILTIN_ATTRIBUTES pbuiltinattribute* | BUILTIN_ATTR
 syntax pnodiscardattribute = NO_NODISCARD | NODISCARD_ATTRIBUTE ptbytes nat
   | NODISCARD_ATTRIBUTE_ERROR text ptbytes nat | NODISCARD_ATTRIBUTE_UNSUPPORTED text
 syntax pnodiscardmessage = NODISCARD_MESSAGE ptbytes | NODISCARD_MESSAGE_UNSUPPORTED
+syntax pdeprecatedmessage = DEPRECATED_MESSAGE ptbytes ptbytes | DEPRECATED_MESSAGE_UNSUPPORTED
+syntax pdeprecatedattribute = NO_DEPRECATED | DEPRECATED_ATTRIBUTE ptbytes ptbytes
+  | DEPRECATED_ATTRIBUTE_UNSUPPORTED
 dec $builtin_attributes(ptcontext, phpType14) : pbuiltinattributes
-dec $nodiscard_groups(ptcontext, phpType14) : bool
+dec $builtin_callable_groups(ptcontext, phpType14) : bool
 dec $nodiscard_name(ptcontext, phpType14) : ptbytes?
 dec $nodiscard_attribute(ptcontext, phpType14, text) : pnodiscardattribute
 
@@ -146,6 +149,8 @@ def $psattribute_target(ptcontext, psraw, phpType14) = (ptbytes)
 def $psattribute_target(ptcontext, psraw, phpType14) = eps -- otherwise
 def $psattribute_message(ptbytes) = $ptascii("Attribute \"") ++ ptbytes ++ $ptascii("\" cannot target parameter (allowed targets: function, method)")
   -- if $ptlc(ptbytes) = $ptascii("nodiscard")
+def $psattribute_message(ptbytes) = $ptascii("Attribute \"") ++ ptbytes ++ $ptascii("\" cannot target parameter (allowed targets: class, function, method, class constant, constant)")
+  -- if $ptlc(ptbytes) = $ptascii("deprecated")
 def $psattribute_message(ptbytes) = $ptascii("Attribute \"") ++ ptbytes ++ $ptascii("\" cannot target parameter (allowed targets: method, property)") -- otherwise
 def $psattribute_result(pscontinuation, phpType14, PSDEFAULTUNSUPPORTED text) = PSUNSUPPORTED text
 def $psattribute_result(pscontinuation, phpType14, psdefault) = PSUNSUPPORTED "missing deferred default compiler line"
