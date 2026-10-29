@@ -4308,8 +4308,12 @@ and [review](coverage/semantics/builtin-nodiscard-review.json).
 Bounded `#[Deprecated]` on named user functions and ordinary methods now warns
 on prepared VM calls after sends and named-hole completion, before NoDiscard
 or reception, for used and discarded results. Selected arguments, references
-and receivers survive handlers. Internal callback API
-timing remains explicit Unsupported; see the [Deprecated review](coverage/semantics/builtin-deprecated-review.json).
+and receivers survive handlers. Selected error-handler and `assert` callbacks
+now warn at the internal API phase before argument copies and by-reference
+warnings. Their borrowed selected target and
+early-throw cleanup are covered by ten native-first originals and four reached
+fronts; wider API consumers remain partial. See the [VM review](coverage/semantics/builtin-deprecated-review.json)
+and [API review](coverage/semantics/builtin-deprecated-api-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The

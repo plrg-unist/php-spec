@@ -54,13 +54,25 @@ functions and ordinary methods. Prepared VM calls warn after sends and named-hol
 completion, before NoDiscard and reception, for used and discarded results.
 Selected arguments, references and receivers survive handlers and abrupt cleanup.
 Thirteen originals agree exactly (nine authored, four independent);
-two internal API cases remain explicit Unsupported with zero agreement credit.
+at the ATTR02 cut, two internal API cases were explicit Unsupported with zero
+agreement credit.
 Four reached fronts pass 314 conditions: 278 source-reached checks, 24 derived
 guards and 12 raw API projections. Private and actual-tail joined strict430
 pass; earlier failed fixtures retain zero credit. Wider messages, targets,
-wrappers and internal API timing remain partial.
+wrappers and other internal API consumers remain partial.
 [Attribute contract](docs/semantics/BUILTIN-ATTRIBUTES.md),
 [ATTR02 review](coverage/semantics/builtin-deprecated-review.json).
+
+ATTR03 stages selected error-handler and `assert` callbacks at the internal API
+phase: Deprecated precedes copies, by-reference warnings and reception. Error
+handlers run with their registry disabled; `assert` warnings retain the active
+handler, saved target and live failure policy. Captured Closure targets stay
+borrowed until one call owner starts at entry. Ten new native-first originals
+agree exactly, including one unmarked control; four reached fronts pass 179
+conditions (172 reached, seven derived guards), and private strict431 passes.
+The maintained ATTR02 `assert` boundary is promoted without replay or new
+agreement credit. Explicit captured-Closure `__invoke()` and wider API consumers
+remain partial. [ATTR03 review](coverage/semantics/builtin-deprecated-api-review.json).
 
 GC05 admits public destructors on quiet, canonical materialized ordinary cycles
 when the legacy callback walk and claimed walk agree on ordered visits and

@@ -1,0 +1,45 @@
+{
+  "milestone": "ATTR03",
+  "status": "Independently reviewed private semantics and source/state validation; actual-tail joined gate pending",
+  "target": "Pinned PHP 8.5.10 CLI NTS 64-bit and project-local SL semantics",
+  "scope": "Selected error-handler and assert callbacks stage Deprecated before argument copies, by-reference warnings and reception. Error callback registry disabled; assert warning handler active. Selected FCC target borrowed until call entry; Closure gains one call owner at entry. Unmarked callbacks use the same preparation cursor. Wider internal API consumers and explicit captured Closure->__invoke wrapper remain partial.",
+  "raw_root": "../php-spec-evidence-archive/builtin-attributes-03",
+  "production": {
+    "base": "0d33c8ee2048da8d052574fd95882b289c84dd33",
+    "private_semantic_cut": "92b82f43707e7b51bcca342d548d040d0e04624e",
+    "private_fixture_cut": "fe8c37db7a4ffef4c55cae004b4491caf039430b",
+    "maintained_fixtures": ["tests/semantics/deprecated_api_cases.py", "tests/semantics/deprecated_api_review_cases.py", "tests/semantics/deprecated_api_native.py"],
+    "module": "spec/semantics/442-deprecated-api-callbacks.watsup",
+    "shared_inputs": ["spec/semantics/30-storage.watsup", "spec/semantics/152-throwable-runtime.watsup", "spec/semantics/207-error-handler-runtime.watsup", "spec/semantics/247-handler-callable-consumers.watsup", "spec/semantics/368-assertions.watsup", "spec/semantics/391-output-buffers.watsup"]
+  },
+  "evidence": {
+    "native_author": ["native-author-cafc6d60/report.json", "5c7173abdfb2216b6836f685f1a8449170ecf9391230bc3731ecbd559d6eb502", 4],
+    "native_peer": ["review-independent/native/report.json", "d8ee83fe2410446b2cb423f123f5def226220767e090c6711650b26b5b819daa", 3],
+    "native_fresh_controls": [
+      ["review-independent/unmarked-control/native/report.json", "780ec8bcb713f5e2b9ae00c33f9fb12aa1d71ca7f7a469b915d1b1ac1201a828"],
+      ["review-independent/closure-entry/native/report.json", "9ebc03d1601d0e900011d97b4423d5e6ac53c682cb329658b51cac9faf12d5e6"],
+      ["review-independent/flags-on-throw/native/report.json", "a9ca5035eb49777a4a6e5996289283bcc5c2b61e45ef89205e642d1943bc6f0b"]
+    ],
+    "measured_old_boundary": ["old-boundary-cafc6d60/report.json", "637f3bfea348892c8e18f35ef15f05bb726beb24d6c12823045a7a053d54418d", "Unsupported Deprecated internal API timing", 0],
+    "strict_431": ["strict-92b82f4370/report.json", "1ff0a12271f20fbf1605b0c68aac5dfc8a650cd097d491f6f712a71ac5208744"],
+    "source_first": ["model-e54b70519-first/report.json", "53332c8df770e1c2c3f48b36a4a7d90ee385bee84f0c3c1eeaacdf5c6d10b665", 1],
+    "source_author_remainder": ["model-4a6d95fc-rest/report.json", "66836b3a93b031a15774408b23502135c373e88ae7319e7575b77c27b640df9d", 3, "packet overall false because following peer case failed; these three rows passed"],
+    "source_peer_first": ["model-92b82f437-peer1/report.json", "a0ac9a154ea10bc63c69bf78d34a9111277df3729be32566ce0b55369b13114c", 1],
+    "source_remaining": ["model-92b82f437-rest/report.json", "434666a3093fb6045eaba29409cc68c79ffbeb4c3ba505a405c553f1bb11e3d9", 5],
+    "focused_states": ["state-fe8c37db7/report.json", "2a0d4851c5a2d054bb7cdad720189afb9e48511a34909602b13e7436b3fed113", [67, 36, 39, 37]],
+    "exact_source_agreements": 10,
+    "focused_conditions": 179,
+    "source_reached_conditions": 172,
+    "derived_guard_assertions": 7
+  },
+  "maintained_recovery": "The ATTR02 assert-api-byref-throw-priority-boundary expectation is now supported by the shared selected error/assert path and promoted in deprecated_review_cases.py without historical replay or new agreement credit. Its original ATTR02 report remains an explicit exclusion at that cut. Explicit captured Closure->__invoke still refuses before either native warning.",
+  "preserved_failures": {
+    "initial_strict": ["strict-f8b52bf4b/report.json", "36eb16d0417f91a420b28f657ea2fa46feb2d0bb2b5d8f6dd1519f25c5256214"],
+    "other_strict_repairs": ["strict-d09295460", "strict-d5744b7ae", "strict-a27cb55bd", "strict-ea39f6357", "strict-9e7dafbc00", "strict-45cd5d597a"],
+    "first_model": ["model-c2b05ec05/report.json", "98569fd87a082be10cb15d4bd0b0b9f26499401a5ffe28620ca4b1747dfdcd34"],
+    "selector_model": ["model-847b09daf-first/report.json", "02438a403e7b5330a824dc234752bc2de194586f2e5ab5ffa33bd770bb9a9c67"],
+    "trace_model": ["model-4a6d95fc-rest/report.json", "66836b3a93b031a15774408b23502135c373e88ae7319e7575b77c27b640df9d"]
+  },
+  "source": "vendor/php-src Zend/zend_execute_API.c zend_call_function warning before argv copy and Closure retain; Zend/zend.c error handler moved owner; ext/standard/assert.c callback registry; Zend/zend_API.c callable selection; Zend/zend_closures.c Closure entry",
+  "recovery": "All ten frozen PHP payloads and native expectations are tracked in the authored and independent case files. deprecated_api_native.py selects either group or all ten on one allowed CPU and writes a new external native report; deprecated_api_models.py and deprecated_api_protocol.py consume listed --native-report inputs and a new external --output directory. Raw reports bind original source bytes, pinned PHP and tool identities, profile, command, exit, affinity and process-group reap. No accepted historical native, ATTR01 or ATTR02 packet was replayed."
+}

@@ -9,10 +9,12 @@ from pathlib import Path
 import subprocess
 
 import deprecated_api_cases as cases
+import deprecated_api_review_cases as reviewed
 from error_handler_run import ENV, recorded
 
 
 ROOT = Path(__file__).resolve().parents[2]
+CASES = {**cases.CASES, **reviewed.CASES}
 
 
 def digest(path):
@@ -22,31 +24,33 @@ def digest(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True, type=Path)
-    parser.add_argument('--case', choices=tuple(cases.CASES))
+    parser.add_argument('--case', choices=tuple(CASES))
     args = parser.parse_args()
-    assert sorted(os.sched_getaffinity(0)) == [4]
+    affinity = sorted(os.sched_getaffinity(0))
+    assert len(affinity) == 1 and affinity[0] in range(1, 6)
     assert not subprocess.check_output(['git', 'status', '--porcelain=v1'], cwd=ROOT)
     output = args.output.resolve()
     output.mkdir(parents=True)
-    watched = [Path(__file__), Path(cases.__file__), ROOT / '.tools/php/bin/php',
+    watched = [Path(__file__), Path(cases.__file__), Path(reviewed.__file__), ROOT / '.tools/php/bin/php',
                ROOT / 'tests/semantics/profile.json', ROOT / 'tests/semantics/error_handler_run.py']
     inputs = {str(path): digest(path) for path in watched}
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     profile = json.loads((ROOT / 'tests/semantics/profile.json').read_bytes())
     flags = [item for key, value in profile.items() for item in ('-d', key + '=' + value)]
-    selected = (args.case,) if args.case else tuple(cases.CASES)
+    selected = (args.case,) if args.case else tuple(CASES)
     rows = []
     for name in selected:
         folder = output / name
         folder.mkdir()
         source = folder / 'source.php'
-        source.write_bytes(cases.CASES[name])
+        source.write_bytes(CASES[name])
         process = recorded([str(ROOT / '.tools/php/bin/php'), '-n', *flags, str(source)], folder / 'native', 30)
         stdout = (folder / 'native.stdout').read_bytes()
         stderr = (folder / 'native.stderr').read_bytes()
-        expected_stdout = cases.EXPECTED_STDOUT[name]
-        expected_stderr = cases.expected_stderr(name, os.fsencode(source))
-        passed = (process['exit'] == cases.EXIT_CODES[name] and not process['timeout']
+        expected = cases if name in cases.CASES else reviewed
+        expected_stdout = expected.EXPECTED_STDOUT[name]
+        expected_stderr = expected.expected_stderr(name, source)
+        passed = (process['exit'] == expected.EXIT_CODES[name] and not process['timeout']
                   and process['interruption'] is None and not process['group_after']
                   and stdout == expected_stdout and stderr == expected_stderr)
         rows.append({'id': name, 'source_sha256': digest(source), 'native': process,
@@ -61,7 +65,7 @@ def main():
     assert not subprocess.check_output(['git', 'status', '--porcelain=v1'], cwd=ROOT)
     report = {'revision': revision, 'inputs': inputs, 'profile': profile,
               'environment': {key: ENV.get(key) for key in ('LC_ALL', 'TZ', 'PHP_SPEC_SCRIPT_ENCODING')},
-              'affinity': sorted(os.sched_getaffinity(0)), 'selection': selected,
+              'affinity': affinity, 'selection': selected,
               'rows': rows, 'passed': all(row['passed'] for row in rows)}
     (output / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     return report['passed']
