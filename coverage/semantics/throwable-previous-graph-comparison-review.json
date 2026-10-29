@@ -1,0 +1,44 @@
+{
+  "milestone": "COMP146",
+  "status": "independently reviewed and accepted within the stated bound",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C; TZ=UTC; tests/semantics/profile.json after -n"
+  },
+  "scope": "The twelve non-base root kinds and admission bounds of COMP145 are unchanged: normal nonpending same-kind roots, at least one previous link, guard below 16, and at most 16 canonical live nonfreeing unmaterialized builtin nodes per previous path, excluding FiberError. A reached distinct same-kind node admits either its existing DIRECT trace graph or the existing callback-free current stdClass/plain methodless object, array and defined live-cell graphs plus paired-position/class checks. The additional mode retains its 16-node physical array/object/cell path cap; DIRECT traces retain their prior depth. Throwable identity/class mismatch still skips captured payloads. Captured graph cycles, callbacks, unsupported paired positions/classes, materialized Throwables and wider root/pending states remain partial.",
+  "engine_basis": "The physical Throwable slot order remains message/string/code/file/line/trace/previous, followed by ErrorException severity, as registered in Zend/zend_exceptions_arginfo.h and compared by zend_std_compare_objects. Existing COMP140/141 graph comparers preserve current ordinary-object slots/tables, reference dereferencing and copied array COW. COMP146 composes those effects through previous nodes instead of replacing them with a pure order result; no native evaluator supplies semantic answers.",
+  "implementation": {
+    "tested_revision": "b5f66e61f2dfda92dcc58678eb3e4740c8087f6d",
+    "reviewed_actual_tail": "141dd396da9a075bc963f83b19d97f815782b79b",
+    "runtime": "spec/semantics/152-throwable-runtime.watsup",
+    "runtime_sha256": "f552f7ba1bfcf29018df2be6a43c973bc4c0791df23d47e181864a9acac6090e",
+    "rule": "$throwable_builtin_previous_effect threads reached ordinary comparison effects through a full physical-slot scan. Object/object previous values recurse; other slots use the existing value-order effect. Continuation requires both ORDER 0 and NORMAL. Early shared identity/class mismatch remains before graph checking. The pure COMP145 helper and base/root admission rules are unchanged.",
+    "guard_correction": "Independent source review found that the first draft put graph authentication and the recursive pair walker inside one Boolean expression. SpecTec SL/AL eval_bin_exp eagerly evaluates both operands, so a rejected cycle could still reach the unguarded pair walker. The corrected disjoint clauses retain the DIRECT branch and authenticate left then right graphs as ordered premises before paired recursion. Actual and forged cyclic controls exercise this correction."
+  },
+  "native_first": {
+    "author": "Nine originals were frozen at source-only dbc8564b6ffad5c2042f700635267bb522d76d3d. Native report sha256 7b9611013e1f64122b7fdc970e87f60fda3b916f30cfa6b4347758967d9ad2ed; the selected unchanged std-live/COW source is genuinely Unsupported(Throwable property comparison), prefix B|, report sha256 41a0a222d8be0566d70566afa9a51fab7a526d4695d9694d2762c875244408b0. Retained COMP145 native controls were reused without duplicate native execution.",
+    "independent": "nested-object-cow.php sha256 b97281098a110951a075f6e3e71e6105e729e382f40cdb05e0cbe9e666ddb4a3 and nested-alias-severity.php sha256 1e4971998d943487e217a6204ea108b80314baafee82aff108935b8c5ff5a64d were frozen before outcomes. Both native originals exit 0 with empty stderr. The first unchanged model accepts/checks the original and stops at Unsupported with prefix B|. Combined native/baseline report sha256 0ca02588828620edc62bd3f923e93661daae419548bbf59868330cd1964c5825."
+  },
+  "validation": {
+    "source": "At corrected b5f66e61f, five new authored and two independent originals exactly agree with PHP. Two previously Unsupported object/alias originals now agree normally as B|0|; three unchanged pure-order/shared-identity/mixed-child sources remain exact. Four different-captured-class, object/scalar, callback-class and cell-cycle controls remain Unsupported without agreement credit. Native controls retain their Notice/caught recursion observations. New cases cover live tables, COW, array/object cell retarget, root and nested traces, warm caches, trace-before-previous-before-severity, and aggregate continuation/skip.",
+    "source_reports": {
+      "author_five_and_four_boundaries": "de582a5b3900f6a6988feb3d26073750eb088a58cb44cf858a4bcd130cbf88c6",
+      "independent_two": "b4a6584a4f3b5e7af2130cfb1d6aa92d46a7ed26983f86910fcf10b83876dfbd",
+      "promoted_two_and_pure_preservation": "886965338278c24c070949d708b39345facccdc43addf0db938be30c51a84c4b",
+      "shared_and_mixed_preservation": "ced35c5e7c3ddec548d6a49aca562d4e43a5258256bccbc0e98e75d0b37cd738"
+    },
+    "state": "Four reached fixtures pass 133+112+122+59 = 426 premises and eleven raw PhpSteps. They bind actual trace/frame/args/object/table/cell identities, two reached table allocations and owners, current writes, COW snapshots, whole-cell retarget, trace/previous/severity priority, aggregate continuation, unchanged non-table state/events, guard release and zero/one-step budgets. The alias fixture rejects a forged cycle; the promoted owned-object fixture retains the old pure Unsupported result while verifying the new normal stateful result. Reports: state-std-v1 88639f09b40a2e9373d4164995572138d6a37b5c5e438207da53a3e8c042fc1d; state-rest-v1 e075db6fec2b098a99afd97bfce9f6e095e8d87266f4ffb37859856290e500f4; promoted-state-v1 7eb6858ad4f5a2300133e82d49b3e0a713be26f8df7405613d2b8920ae121065.",
+    "strict": "Corrected SL compilation/checking of all 424 modules passes, report sha256 b3bd10514d2552575d0ab2901676a9f7e96af165a00cf14ce3f72f8e5a5b2f58. Joined strict424 also passes at actual-tail141dd396d, report sha256 69ae29fcce737fe9db67c0087570ed42ee05a9718bde6d6473c43b9af152823c. Author and independent runs bind stable inputs/HEAD and numbered pinned CPU lanes with fully reaped process groups."
+  },
+  "independent_review": {
+    "decision": "accept the composed callback-free graph extension within its dependency bounds; complete core and wider comparison graphs remain partial",
+    "counterexamples": "The first independent original places stdClass-to-declared-object-to-array values below a TypeError previous node: source-array mutation preserves the captured COW value, live writes oppose root ErrorException severity, equal graph values reach severity, and a warm root versus a cold peer decides before an aggregate tail. The second retargets an object-property ALIAS array below an ErrorException previous node; direct copied data stays old while live graph changes oppose that child's severity, including after equal cache warming.",
+    "actual_tail": "Candidate141dd396d is composed on clean master0cd3304a061874aa7652e8cae96bb40a7eafca42. Incoming modules260/277/281/385/387/420/426 change dynamic NEW/autoload, Fiber transfer, Iterator unpack/lifetime and integer-warning paths; the frozen cases select none. Modules152/157/163/52/394, manifest and runner/frontend/profile are unchanged by the incoming tail. Seven tested runtime/source/fixture blobs are byte-identical to b5f66e61f; composition adds no source/state replay credit.",
+    "metadata": "README/family scope distinguishes previous-path and captured-graph bounds, preserved DIRECT depth, paired class/position restrictions and Throwable early skips. Inventory only appends to partial obligations44/70. PROGRESS preserves incoming active work, held COMP123/V110 and all paused boundaries, including COMP88, while retaining historical COMP145 control status at its tested cut.",
+    "draft_disposition": "The eager-guard draft's strict/one-valid-source passes remain at ecad6a798 and receive no corrected whole-packet credit. No invalid graph execution occurred on that draft. The corrected cyclic source and forged-cycle fixture both passed. No engine bug or intentional divergence is claimed."
+  },
+  "artifacts": "Originals, raw streams, fingerprints and process/state records remain outside Git under /home/user/workspace/php-spec-evidence-archive/comp146; author-results-summary.json locates the selected author reports and retained COMP145 results. Independent reports are reviewer-native-baseline-v1/report.json and reviewer-changed-v1/report.json. Local tags evidence/comp146-tested-b5f66e61f and evidence/comp146-eager-guard-ecad6a798 retain the corrected tested and earlier draft cuts after worktree cleanup."
+}

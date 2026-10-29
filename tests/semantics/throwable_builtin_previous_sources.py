@@ -6,10 +6,7 @@ import global_constant_sources as family
 from throwable_builtin_previous_cases import CASES
 
 family.CASES = CASES
-family.UNSUPPORTED = {
-    'previous-object-trace-control': ('Throwable property comparison', b'B|'),
-    'previous-alias-trace-control': ('Throwable property comparison', b'B|'),
-}
+family.UNSUPPORTED = {}
 family.BASELINE = ('Throwable property comparison', b'B|')
 family.MODEL_TIMEOUTS = {name: 120 for name in CASES}
 base_fingerprint = family.fingerprint

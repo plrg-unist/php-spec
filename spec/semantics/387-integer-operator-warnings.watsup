@@ -154,10 +154,18 @@ def $integer_plain_stdclass(S, POBJECT n) = true
   -- if $object_table_at(S.OBJECTTABLES, n) = eps
 def $integer_plain_stdclass(S, pvalue) = false -- otherwise
 
+;; A selected CELL borrows an outside owner. Only entry needs two owners;
+;; after callback rebinding the existing pointer-use check requires one live owner.
+dec $integer_object_right_borrowed(pstate, pintegerpointer) : bool
+def $integer_object_right_borrowed(S, INTEGER_CV ptbytes) = true
+def $integer_object_right_borrowed(S, INTEGER_CELL n) = $($heap_owners($heap_prune($heap_graph(S)), HCELL n) >= 2)
+def $integer_object_right_borrowed(S, pintegerpointer) = false -- otherwise
+
 dec $integer_object_right_initial(pstate, poperand, poperand, pvalue, pvalue, bool) : bool
 def $integer_object_right_initial(S, VARIABLE ptbytes_left z_left, VARIABLE ptbytes_right z_right, PFLOAT n_float, pvalue_right, false) = true
   -- if $integer_pointer_select(S, VARIABLE ptbytes_left z_left) = (INTEGER_CV ptbytes_left)
-  -- if $integer_pointer_select(S, VARIABLE ptbytes_right z_right) = (INTEGER_CV ptbytes_right)
+  -- if $integer_pointer_select(S, VARIABLE ptbytes_right z_right) = (pintegerpointer_right)
+  -- if $integer_object_right_borrowed(S, pintegerpointer_right)
   -- if $float_long(n_float, true) = (i, [PRECISIONLOSS])
   -- if $integer_plain_stdclass(S, pvalue_right)
 def $integer_object_right_initial(S, poperand_left, poperand_right, pvalue_left, pvalue_right, b_swapped) = false -- otherwise

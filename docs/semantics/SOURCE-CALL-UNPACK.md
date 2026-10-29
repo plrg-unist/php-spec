@@ -91,7 +91,7 @@ a later write to the receiver variable does not change that target. The
 method's declaring class prefixes the by-reference Traversable Warning, as
 `ZEND_SEND_UNPACK` formats the selected function scope. Admission requires the
 actual `NExprMethodCall` source and the effective selected method. Non-CV
-method unpack operands remain separate. The
+method unpack operands use the shared checked INPUT rules below. The
 source-site and selected-target checks do not reconstruct the previous value
 of a mutable receiver variable.
 
@@ -107,7 +107,7 @@ originals and seven reached stages cover normal/named sends, warning delivery,
 key failure and destructor order. The receipt does not reconstruct a mutable
 `$cb`'s earlier same-class member values. The [array-callable Iterator review](../../coverage/semantics/array-callable-iterator-unpack-review.json)
 records the frozen inputs and failed cuts. Scoped/private, magic and internal
-array targets, temporary Iterator operands and Closure::call remain separate.
+array targets and Closure::call remain separate.
 
 Ordinary dynamic calls through a real Closure without a `bindTo` override, an
 arrow Closure, or a named user-function first-class Closure now accept an
@@ -127,21 +127,46 @@ history while the raw tag, call site and function origin are rechecked. A
 class-scoped Closure can still have a `CLOSURESCOPES` record.
 The [Closure Iterator review](../../coverage/semantics/closure-iterator-unpack-review.json)
 records exact source and reached checks. `bindTo` clones, first-class method
-wrappers, `Closure::call`, and non-CV Iterator operands remain separate.
+wrappers and `Closure::call` remain separate.
 
-A dynamic call through an initialized object CV also accepts its selected public
-user `__invoke` method with an initialized Iterator CV unpack. The call frame
-retains the selected receiver while key callbacks may replace the original CV.
+Dynamic calls through supported checked expressions accept their selected public
+user `__invoke` method with an initialized direct Iterator operand. INIT validates
+the borrowed or owning callee, consumes non-CV object/reference results before
+argument evaluation, and transfers one selected receiver owner to ordinary call
+tasks. Direct construction, factory returns and conditional values share this
+path. The call retains that receiver while key callbacks may replace the original
+source value, including a reference-return callee's source cell.
 Inherited named parameters bind to the effective method; a Traversable
 by-reference Warning names its declaring class. On invalid or throwing keys,
 the selected receiver can retire before its destructor exits. The cleanup
-receipt checks the saved target against the dynamic CV callsite and effective
+receipt checks the saved target against the dynamic callsite and effective
 `__invoke` using a temporary allocation view, without adding a heap owner.
 The saved target ID carries the original selection: a retired state cannot
-reconstruct which same-class object the mutable CV held earlier. A temporary
-callee remains `Unsupported` on a native-positive control. The
+reconstruct an arbitrary earlier computed result or which same-class object a
+mutable CV held. The
 [invokable Iterator review](../../coverage/semantics/invokable-iterator-unpack-review.json)
-records the exact sources, reached states and this boundary.
+records the earlier CV-callee cut. Six new/promoted computed-callee originals and
+two independent reference-return originals agree with PHP; four already exact
+controls retain their baseline cut. Source-reached checks cover INIT transfer,
+inherited Warning scope and outer unpack line, callback mutation, and retired
+cleanup. The [computed-callee review](../../coverage/semantics/computed-callee-unpack-review.json)
+records the generalization and promotes the earlier temporary-callee boundary.
+
+These existing ordinary targets share checked CV, VAR and VALUE Iterator INPUT
+handling. A CV stays borrowed; a supported non-CV result retains its raw owning
+object or reference cell separately from Iterator DATA. A key callback may
+retarget the input reference cell without replacing DATA. Normal teardown
+releases DATA then INPUT before target reception; abrupt teardown also preserves
+current-cache, selected-callee and sent-argument retirement order. Retired direct
+method and Closure cleanup authenticate the original source/classifier and saved
+selection without restoring heap owners. Existing producer expressions, builtin
+lowering and lifecycle limits still apply.
+Eight new authored originals and the promoted CALL118 temporary boundary agree
+with retained request-profile PHP observations; two independent raw-reference
+originals agree under the ordinary CLI profile. Source-reached checks distinguish
+INPUT, DATA, selected targets and fresh received cells. The
+[owned-INPUT review](../../coverage/semantics/owned-iterator-unpack-review.json)
+records the exact cuts and remaining boundaries.
 
 The unpack marker owns selected Iterator DATA independently of raw
 temporary/reference INPUT; its cursor tracks traversal. A source CV stays borrowed.

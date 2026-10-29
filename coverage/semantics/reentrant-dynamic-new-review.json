@@ -1,0 +1,133 @@
+{
+  "status": "independently_reviewed_integrated",
+  "milestone": "Source118 ordinary dynamic-name NEW during unlinked class autoload",
+  "scope": "Existing ordinary dynamic string selectors during a source class dependency-link interval, with genuine post-unwind and unrelated lookup paths. Validated producers include plain/reference CVs, a named noarg producer, concat held in a CV and a direct concat temporary.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "private_base": "16e9de2326303c53feb6afaa4d43a7311ab042d4",
+  "implementation_commit": "a4de0ec0a",
+  "test_commit": "375000119",
+  "module_count": 424,
+  "reviewed_cuts": {
+    "spec/semantics/260-dynamic-new.watsup": "4667068b9f8e8adb1da7f992c8866b13fd7b5d97c36bf8f7e78c967832ab284b",
+    "spec/semantics/277-autoload.watsup": "dd6894c4bfc958ce3ea0ecf1a933a87c38707141751c8f00d6e314a87ab85916"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "profile": "tests/semantics/profile.json; exact command/profile and executable hashes are in each raw report.",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "behavior": [
+    "Both dynamic missing-class and lookup-acquisition branches use the constructor-specific unlinked-class guard. Dependency fetches and explicit lookup keep their existing guards. An active unlinked class errors before arguments and without a redundant loader call; a genuine later retry loads normally after unwind.",
+    "Acquisition accepts the existing string-byte interface and records the actual plain or carrier value. Normalized CLASS drives lookup; captured raw SOURCE bytes preserve case and a leading backslash in Error text and keep the compiled fetch line and main-file origin.",
+    "Suppressed lookup creates no DYNAMIC_NEW_FINISH. A real dynamic lookup retains its authenticated selected value across loader-time alias rebinding, then finishes on the allocated object. Strings are immutable identity metadata with empty heap roots, not new heap owners."
+  ],
+  "accepted": {
+    "new_author_source_agreements": 4,
+    "new_independent_source_agreements": 2,
+    "unchanged_same_name_dynamic_control": 1,
+    "strict_SL_modules": 424,
+    "author_reached_premises_at_v1": [
+      67,
+      67,
+      100
+    ],
+    "corrected_independent_premises_at_v2": 117,
+    "temporary_carrier_premises_at_v3": 117
+  },
+  "zero_credit": [
+    "All six repaired originals were genuine interpreter_failure outcomes on unchanged16e9; none is an Unsupported or ordinary wrong-output baseline. The new same-name dynamic recursion control was already exact.",
+    "The first acquisition source omitted global $hits in its loader and raised an unrelated Warning. Its raw native/baseline packet stays intact with zero corrected-source agreement. Only that original was corrected and replayed; initial native/unchanged reports supply the other three repaired author originals and the unchanged control.",
+    "The first independent fixture assumed a plain PSTRING where execution produced interned string metadata, stopping before completion. Its109-premise attempt has zero credit. The first report retains three passing authored rows at67+67+100 despite its overall failure; corrected117 and new temporary117 are separate later cuts."
+  ],
+  "engine_route": "Zend/zend_compile.c::zend_compile_new fetches the class reference with EXCEPTION before constructor sends. ZEND_FETCH_CLASS in Zend/zend_vm_def.h dereferences reference CVs, calls zend_fetch_class and frees the temporary before NEW. Zend/zend_execute_API.c::zend_lookup_class_ex returns NULL for an unlinked CE before autoload; report_class_fetch_error retains the requested raw spelling.",
+  "independent_review": "The existing Source117 reviewer checked the complementary guards, actual selected carrier, diagnostic bytes, targeted argument skip, genuine finish-context negatives and nonowning identity. Two separately frozen interface/alias sources distinguish ordinary and direct temporary carriers, unrelated lookup after rebinding and authentic saved caller scope.",
+  "remaining": "Other declaration kinds and broader reentrant class/link histories, producer/lifecycle forms and complete core remain partial. No engine bug or intentional divergence is claimed.",
+  "artifacts": {
+    "author_initial_native": {
+      "path": "raw/source118-acquired-correction-v1/native-report.json",
+      "sha256": "68fd7a59ee409964c6944c0d63ea4da9d38d98a9b37a0ddf29ed23e3425f02cc"
+    },
+    "author_initial_unchanged": {
+      "path": "raw/source118-acquired-correction-v1/baseline-report.json",
+      "sha256": "75dd24ba0231a48d5bc4b954ee25b22781aa61a4819cdacffc29afbb3c325f13"
+    },
+    "acquisition_corrected_native": {
+      "path": "raw/source118-acquired-correction-v2/native-report.json",
+      "sha256": "c19005d3c952daf8437434863f4f060d639378e95f75056d0ffae1e45e846568"
+    },
+    "acquisition_corrected_unchanged": {
+      "path": "raw/source118-acquired-correction-v2/baseline-report.json",
+      "sha256": "ca24a5368dc8b9ba1d0ad61b13a320b0853e3cf367f6555869e98f67f015b1d0"
+    },
+    "author_changed": {
+      "path": "raw/source118-discovery/changed-report.json",
+      "sha256": "68ae85763983fba8b15dc6d8202c9c27de0336555d223f00fa11e8b1d823ad29"
+    },
+    "independent_native": {
+      "path": "raw/source118-reviewer-interface-alias-v1/native-report.json",
+      "sha256": "0a1592a2b93a54daa5202f30f746d8f1dac8b33169bc105521912ca90cd36f60"
+    },
+    "independent_unchanged": {
+      "path": "raw/source118-reviewer-interface-alias-v1/baseline-report.json",
+      "sha256": "a5e1cadd18e0191eb56bff061769b3a819d2179f3f5a9769e9da4fc1f227f492"
+    },
+    "independent_changed": {
+      "path": "raw/source118-reviewer-interface-alias-v1/changed-report.json",
+      "sha256": "3cd56fb301ba6f64765605a1fe865d66146220f71a0d96624059cfb97e45d133"
+    },
+    "temporary_native": {
+      "path": "raw/source118-reviewer-temporary-carrier-v1/native-report.json",
+      "sha256": "92f2997489574376de550a653d0d2c17efe72a274f8e13c9764c20020b13f098"
+    },
+    "temporary_unchanged": {
+      "path": "raw/source118-reviewer-temporary-carrier-v1/baseline-report.json",
+      "sha256": "c3bc8da682668417495a70bbfb208441e06c3f154daa786878bfec63863975cb"
+    },
+    "temporary_changed": {
+      "path": "raw/source118-reviewer-temporary-carrier-v1/changed-report.json",
+      "sha256": "c5add1290a29c1bd3277fb45028092c4a3db3cf98d30e8fd461a1c00ccb40b75"
+    },
+    "strict_load": {
+      "path": "raw/source118-load-v1/load-report.json",
+      "sha256": "57a5e3507fd348bb2347f95e724064b9092fbba67f4aab6fd8dfff3000bc843e"
+    },
+    "author_rows_and_failed_independent": {
+      "path": "raw/source118-state-v1/check-report.json",
+      "sha256": "bcd34e728722a118676ffc6f514390ca920302ceb72e8e85a427b1998698cc1c"
+    },
+    "corrected_independent": {
+      "path": "raw/source118-state-v2/check-report.json",
+      "sha256": "611e5e526027c77dd45fc2678e256c440ce10b4478934ebedfb9fc8764883674"
+    },
+    "temporary_reached": {
+      "path": "raw/source118-state-v3-temporary/check-report.json",
+      "sha256": "b6a6c045a99f9ab3a4606db791db51dae42c91ce80cf29767029bf7ff5b52833"
+    }
+  },
+  "recovery": {
+    "root": "../php-spec-evidence-archive/source118-reentrant-dynamic-new",
+    "manifest_sha256": "6d8032ccd6b6224c146f8330cfa076d4946990c9620f460490875addb961bca2",
+    "author_generator_compatibility": "The current driver adds explicit independent/temporary selection and affinity metadata; author PREFIX and assertions are AST-identical to the tested v1 snapshot. Accepted author semantics are not rerun or renewed.",
+    "replay": "Recover raw/source118-discovery and either independent source directory locally. Run tests/semantics/reentrant_dynamic_new_protocol.py --phase fixtures --sources DIR --reviewer-sources REVIEW_DIR --output NEW_DIR, then --phase check with the same paths. Select --case independent-interface-alias for each independent variant; its freeze flag selects the temporary path. Reconstruct unchanged16e9 for baseline replay; raw commands retain their historical paths."
+  },
+  "integration": {
+    "base": "6fc2006a897a0ee4f1c18fe5008aa3fa4500a68f",
+    "code_commit": "ecb01939b",
+    "test_commit": "4dd735cca",
+    "tested_candidate": "582e9967b5653e3860bf3a4235bcf1db9c8d9059",
+    "joined_strict_SL_modules": 424,
+    "result": "pass",
+    "affinity": [
+      1
+    ],
+    "stable_inputs": true,
+    "group_alive_after": false,
+    "report": {
+      "path": "raw/source118-joined/load-report.json",
+      "sha256": "0c8e241be490f7e02a9aa0c6dfc1a707cc03b8aac52382d44420722f86e9b693"
+    },
+    "review": "The composed semantic delta is the reviewed 260/277 change. Inspected storage/string, ownership, frame, construction/constant/eval dependencies and module order are unchanged since the private base. Current PROGRESS retains newer checkpoints and all held/paused boundaries.",
+    "credit": "This joined check adds compilation credit only; source and 234+117+117 reached results retain their original separate cuts without replay."
+  }
+}

@@ -918,9 +918,33 @@ replacement's `Previous`. A scalar cache releases the receiver at method-frame
 retirement, while a self cache can retain it until Generator release. Three
 authored and one independently frozen source agree with pinned PHP, alongside
 two unchanged controls and 129 source-reached checks. The three authored
-sources were `Unsupported` on the unchanged model. Fresh method THROW,
-bound/delegated resumers and wider lifetime paths remain partial.
+sources were `Unsupported` on the unchanged model. At that cut, fresh method
+THROW, bound/delegated resumers and wider lifetime paths remained partial.
 [Method reference THROW review](../../coverage/semantics/generator-fiber-method-reference-throw-transfer-review.json).
+
+Fresh by-reference method `Generator::throw` may now park before its first
+yield with an advancing saved resumer, empty caches, the original temporary
+Throwable and its authenticated receiver. The parameter's old cell survives
+external name rebinding; the first yield installs a live reference cache while
+the API returns a snapshot. Normal resume and supplied throws preserve the
+distinct receiver/cache lifetimes and the pre-yield versus pending-finally
+`Previous` order. At that cut, fresh by-value method THROW, bound/delegated
+and wider lifecycle forms remained partial.
+Four new originals agree exactly with PHP; two source-reached cuts check
+229 custom premises for admission, cache ownership and cleanup.
+[Fresh method reference THROW review](../../coverage/semantics/generator-fiber-fresh-method-reference-throw-transfer-review.json).
+
+Fresh ordinary public instance-method by-value `Generator::throw` now uses the
+same authenticated empty-cache transfer. Inherited methods retain Parent lexical
+scope, Leaf called scope and the real receiver; copied parameters remain separate
+from caller writes. Resuming to a yield installs a value cache. Normal and supplied
+throws preserve distinct Token versus self-cache lifetimes and the pre-yield versus
+pending-finally `Previous` order. Four new originals agree exactly with PHP;
+three source-reached fronts check 307 custom premises. Two I63/I61 controls retain
+their parent cuts, and I69 BYREF evidence is not replayed. Fresh direct named
+BYREF THROW, static/scoped method targets, bound/delegated and wider lifecycle
+forms remain partial.
+[Fresh method THROW review](../../coverage/semantics/generator-fiber-fresh-method-throw-transfer-review.json).
 
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
