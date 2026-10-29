@@ -102,7 +102,7 @@ def checks(program, path, name):
             '$tbp_output(S_done.EVENTS) = $ptascii("B|-1|")',
         ]
     if name == 'private-layout-control':
-        rows += [
+        return rows + [
             '~$trace_visit_object_class(S,n_left)',
             '~$trace_visit_object_image(S,n_left)',
             '$property_layout(S,porigin_class,|S.CLASSES|) = (ppropertydesc_first :: ppropertydesc_tail*)',
