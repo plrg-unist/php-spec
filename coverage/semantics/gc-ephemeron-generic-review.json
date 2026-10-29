@@ -1,16 +1,17 @@
 {
   "scope": "Callback-free explicit collection of finite ordinary INSTANCE/ARRAY/CELL graphs with multiple WeakMaps and entries, materialized ordinary tables, outside roots, shared payloads and repeated ordinary allocation/collection.",
-  "tested_revision": "source-only a893ac736088e7334d8889812aa3611391b2e71a plus the recorded 301/386/422 runtime inputs and fixture",
+  "tested_revision": "source-only a893ac736088e7334d8889812aa3611391b2e71a plus recorded initial 301/386/422 inputs, then the focused phase correction inputs",
   "target": "PHP 8.5.10 CLI NTS signed 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
   "engine_sources": ["Zend/zend_gc.c:gc_mark_grey,gc_scan_black,gc_collect_white", "Zend/zend_weakrefs.c:zend_weakmap_get_gc,zend_weakmap_get_key_entry_gc,zend_weakmap_get_object_key_entry_gc"],
-  "behavior": "A canonical monotone least fixed point starts at ordinary live roots and exposes an entry payload only when its Map and Key are live. Membership strictly grows within current GC nodes, bounding finite iteration by their number. Separate white discovery retains both Key and Map incidences, with duplicate edges and property-table proxy count roles. GC_FREE removes dead-Key entries from surviving Maps without requiring their shared payloads to die. Physical 39 ownership and old callback/shape-specific projection remain unchanged.",
+  "behavior": "A canonical monotone least fixed point starts at ordinary live roots and exposes an entry payload only when its Map and Key are live. Membership strictly grows within current GC nodes, bounding finite iteration by their number. Separate white discovery retains both Key and Map incidences, with duplicate edges and property-table proxy count roles. GC_FREE removes dead-Key entries from surviving Maps without requiring their shared payloads to die. A pure phase fence confines this projection to fresh inactive or callback-free PASS0 collection. Physical 39 ownership and old callback/shape-specific projection remain unchanged.",
   "validation": {
     "native_first": "Three authored originals and one independent original were frozen and captured on unchanged source-only a893ac736 before runtime edits. One representative old WeakMap gate returned genuine Unsupported; it has zero agreement credit.",
     "source_agreement": "Three changed originals match exact native stdout, stderr and exit: branching transitive entry protection0 then collection7; live Key with unheld Map collection3; independent outside Value protects a two-Map ARRAY/CELL cascade while a third Map's dead Key retires alone/count1, then release collects5. One repeated materialized ordinary history control is exact on unchanged runtime and needs no new GC rule. All accepted model actors were stable, normal, exit0, fully reaped and without timeout.",
-    "reached_state": "Four source-reached explicit --sl groups pass separately, 25+18+30+54=127 reported checks (115 custom): fixed-point growth and stability, actual released proxy count7, unheld-Map and derived both-white incidences, actual peer GC_FREE partial entry removal with shared payload owners3-to2 and outside scalar cell survival. Reverse-entry order, BEFORE order and unknown-proxy controls are derived helper checks, not extra PHP agreements. All pass true newline, empty stderr, exit0 and no timeout. Private 425-module --sl compilation also passes; no actual joined-master gate has run for this milestone.",
+    "phase_compatibility": "The accepted changed sources and earlier first three reached fronts enter fresh inactive collection, then only PASS0 with no plan or a matching DTORS=eps plan. The new phase predicate is pointwise true at those states; their prior cuts remain accepted without replay.",
+    "reached_state": "Four source-reached explicit --sl groups pass separately, 25+18+30+63=136 reported checks (124 custom): fixed-point growth and stability, actual released proxy count7, unheld-Map and derived both-white incidences, actual peer GC_FREE partial entry removal with shared payload owners3-to2 and outside scalar cell survival. The peer group was narrowly renewed from 54 to 63 checks for derived PASS1 and nonempty-destructor-plan phase negatives. Reverse-entry order, BEFORE order and unknown-proxy controls are derived helper checks, not extra PHP agreements. All pass true newline, empty stderr, exit0 and no timeout. Corrected private 425-module --sl compilation also passes; no actual joined-master gate has run for this milestone.",
     "preserved_failures": "The first changed branching interpreter run overlapped the old 386 trace refusal and has zero credit; its one-rule guard correction was followed by the affected successful run. Two fixture binding/grammar compile stops and one 180-second AL timeout also have zero credit. The later script-local explicit --sl runner changes no shared test driver. No source/native/control replay was used to relabel them."
   },
-  "limits": "Admission requires a quiet unmarked buffer, no cached collector worker, no current called or uncalled destructor, ordinary canonical locators and supported finite node kinds, no hooks, active Fiber/frames/iterators or freeing Map/Key. Unknown same-Key registration order with possible proxy tables remains Unsupported. Destructor callbacks, resurrection, reentry, residual tags and wider active collection remain open. This does not establish full PHP GC or interaction-tree semantics.",
+  "limits": "Admission requires a fresh inactive or PASS0 collector with no plan or a matching empty-DTORS plan, a quiet unmarked buffer, no cached collector worker, no current called or uncalled destructor, ordinary canonical locators and supported finite node kinds, no hooks, active Fiber/frames/iterators or freeing Map/Key. Unknown same-Key registration order with possible proxy tables remains Unsupported. Destructor callbacks, resurrection, reentry, residual tags and wider active collection remain open. This does not establish full PHP GC or interaction-tree semantics.",
   "engine_bugs_or_departures": "None identified in this increment.",
   "raw_root": "../php-spec-evidence-archive",
   "raw": {
@@ -26,6 +27,8 @@
     "branching_released_sl": "gc-ephemeron-author/packet4/branching-released-proxy-count-sl/report.json",
     "unheld_sl": "gc-ephemeron-author/packet4/unheld-map-dual-incidence-sl/report.json",
     "peer_partial_sl": "gc-ephemeron-author/packet4/peer-partial-entry-free-sl/report.json",
+    "phase_private_strict": "gc-ephemeron-author/packet5/phase-strict/strict-report.json",
+    "phase_peer_partial_sl": "gc-ephemeron-author/packet5/phase-peer-partial-sl/report.json",
     "first_branching_failure": "gc-ephemeron-author/packet1/first-branching-interpreter-failure/report.json",
     "first_fixture_stop": "gc-ephemeron-author/packet4/first-compile-stop/report.json",
     "second_fixture_stop": "gc-ephemeron-author/packet4/second-binding-stop/report.json",
@@ -43,7 +46,9 @@
     "branching_live_sl": "e3b06d168532410a1bf91bb685dfe94a3e7c42222e9b0e2c2998a5a068bc1c8c",
     "branching_released_sl": "d5c9b895a058a59986c00dfbcf1e712d5644c104f1695f9915712c5fa81d413f",
     "unheld_sl": "0e7748495eb3fd434189348b6c152d894227d1c43aaae47e34c2e6a652b779cf",
-    "peer_partial_sl": "6c3ef0cdf29021f9cb0ee7864ddaba7fa01d0591f4c0decbabe62be0845bfa92"
+    "peer_partial_sl": "6c3ef0cdf29021f9cb0ee7864ddaba7fa01d0591f4c0decbabe62be0845bfa92",
+    "phase_private_strict": "96fe3b1bfaef74d296d5a3e40cf0a89066639a0aae46fa20138bd4bac23d0179",
+    "phase_peer_partial_sl": "8528e434b4c3e035ae9ac225fb5f0d89c67858821bfe717570d497ff6d7df2e0"
   },
   "candidate_input_sha256": {
     "spec/semantics/301-cycle-collection.watsup": "cbd349dd45e694aeecb485ca0aeaf2238a38c9e3b01b4c8cf215d772bbe26450",
@@ -52,6 +57,11 @@
     "tests/semantics/gc_ephemeron_generic_sources.py": "6abb6dc2b3258dd3152769c00f166469eb1e5b200900975f25aa28246f021817",
     "tests/semantics/gc_ephemeron_generic_state.py": "772854bacefd5b0a2e8d7bba01144f1e647727b3c6578bd7941049ee56c988cf",
     "independent_php_source": "b1532e60a6f1de82c3389ad44b8ac2aa04e480d9e3fb4404f0de604d09ca5f4e"
+  },
+  "phase_correction_input_sha256": {
+    "spec/semantics/301-cycle-collection.watsup": "5ef3ce4e704f9dc8e3ee799a539c4448faaaf1fe92ac19b3dc4e2a8a1b25c536",
+    "spec/semantics/422-weak-map-entries.watsup": "fbb844c1a02b6f8333d83e3c4cac5b6124a0feb35d4686a58badbf5841f6604a",
+    "tests/semantics/gc_ephemeron_generic_state.py": "1c55a6af5fc6a03454b337a1943abc6fcd08c3c63bba43787b5d455cad6502bb"
   },
   "recovery": "Run gc_ephemeron_generic_sources.py with --phase native|baseline|model, --case and a fresh --output; the baseline was recorded on source-only a893 before runtime edits. Run gc_ephemeron_generic_state.py --case for each explicit --sl reached group. The independent source and run.py remain under gc-ephemeron-review-probes; use native|model --cpu N --output PATH --root WT. Use an exclusive pinned CPU lease. Raw reports retain source bytes/path/cwd, oracle/profile, commands, streams, exits, status and process-group reaping."
 }

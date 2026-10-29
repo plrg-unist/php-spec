@@ -40,7 +40,8 @@ objects, arrays and cells, including materialized tables, multiple Maps,
 conditional transitive reachability and dead-Key removal with a shared live
 payload. Three changed native-first originals agree exactly; a repeated
 ordinary allocation/collection history also agrees on the unchanged path.
-Four source-reached strict SL groups pass 127 checks at separate cuts. Callback,
+Four source-reached strict SL groups pass 136 checks at separate cuts. A phase
+guard limits the new projection to fresh callback-free PASS0 collection. Callback,
 residual, worker, hook and uncertain same-Key proxy order paths remain open;
 actual-tail integration is pending. [Review](coverage/semantics/gc-ephemeron-generic-review.json).
 

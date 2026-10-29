@@ -3581,7 +3581,8 @@ Quiet finite WeakMap ephemerons now use a live fixed point over ordinary
 object/array/cell edges, with separate white discovery and selective dead-Key
 entry removal. Three changed native-first originals agree, alongside a repeated
 ordinary-history control on the unchanged path; four source-reached strict SL
-groups pass 127 checks at private cuts. Callback, residual, worker, hook and
+groups pass 136 checks at private cuts. A phase guard confines this projection
+to fresh callback-free PASS0 collection. Callback, residual, worker, hook and
 uncertain same-Key proxy-order paths remain open. The
 [generic ephemeron review](coverage/semantics/gc-ephemeron-generic-review.json)
 records the separate evidence and limits.

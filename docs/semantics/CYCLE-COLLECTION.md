@@ -207,12 +207,13 @@ are live. Canonical membership grows only within current GC nodes, bounding
 the number of rounds. White discovery retains Map-side and Key-side entry
 incidences, even when one side was not buffered. Edges keep repeated
 occurrences and materialized table proxy count roles; physical ownership is
-unchanged. GC_FREE removes a
-dead Key's entry from a surviving Map without requiring a shared payload to die.
+unchanged. GC_FREE removes a dead Key's entry from a surviving Map without
+requiring a shared payload to die.
 Three changed originals and an unchanged repeated-history control agree with
 native PHP. Four source-reached strict SL groups cover the fixed point, actual
-counts, partial entry removal and derived order/incidence controls (127 reported
-checks at separate cuts). The lane requires quiet unmarked collector state,
+counts, partial entry removal and derived order/incidence controls (136 reported
+checks at separate cuts). The lane
+requires fresh callback-free PASS0, quiet unmarked collector state,
 canonical ordinary locators and known count-sensitive same-Key registration
 order. Destructors, callbacks, resurrection, reentry, residual tags, cached
 workers, property hooks and active Fiber/frame/iterator contexts remain open.
