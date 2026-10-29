@@ -26,17 +26,33 @@ I69–I71 retain their original evidence without replay. Keyword-forwarded creat
 static CURRENT/NEXT/SEND transfer and wider callee/lifecycle forms remain partial.
 [Static THROW review](coverage/semantics/generator-fiber-static-throw-transfer-review.json).
 
+A fresh sole-DATA CONFIG Iterator now validates its actual declared physical
+fields without fixed names or an edge-count limit. Supported scalars, ordinary
+reference cells, arrays and finite ordinary Child graphs retain repeated edges
+and outside owners. Four originals agree exactly with PHP: one primitive-field
+source and three nested-graph normal/invalid/saved-Exception sources. An independent
+public-parent-destructor saved-Exception source also agrees, including alias
+null/restore through the outside owner. Strict
+compilation of 424 modules, 38+190 new reached premises and 33 checks at the
+affected CONFIG117 return front pass.
+The separate shared authentication extraction preserves A64's policy and has
+landed after joined strict compilation of 425 modules. Historical 678/149/156
+whole-tail cuts are not renewed.
+[Descriptor-backed field review](coverage/semantics/config-aggregate-iterator-layout-review.json).
+Dynamic/materialized layouts, special cells, builtin descendants, cycles,
+shutdown and wider destructor effects remain partial.
+
 A fresh sole-DATA CONFIG Iterator may now share its declared Child with an
 outside CV. Parent destruction and storage retirement precede API entry or
 catch; the Child stays live and uncalled until the actual outside `unset`.
 Three originals whose Iterator has no destructor and one independent saved-Exception
 source with a public parent destructor agree exactly with PHP. Strict compilation of 424 modules,
 156 new lifetime premises and two affected return-front groups of 67+33 pass.
-Only four former extra-owner refusals were promoted; extra-edge refusals remain,
-and the old 678/149 whole-tail evidence retains its original cuts.
+At that cut, four former extra-owner refusals were promoted and extra-edge refusals remained.
+The old 678/149 whole-tail evidence retains its original cuts.
 Joined strict compilation over the actual 424-module tail also passes.
 [Retained Child review](coverage/semantics/config-aggregate-iterator-retained-child-review.json).
-Wider edges/storage, owner forms, shutdown release and destructor throws/reentry remain partial.
+Other owner forms, dynamic/materialized storage, shutdown release and destructor throws/reentry remain partial.
 
 Ordinary `%`, shifts and bitwise operators now accept two borrowed reference
 cells with surviving outside aliases, initially fractional LEFT and an empty,
@@ -62,7 +78,7 @@ compilation passes on 424 modules; 149 reached premises check the real pin,
 weak visibility, pending identity and rejection without the storage marker.
 Joined strict compilation over the actual tail also passes.
 [Child-only Iterator review](coverage/semantics/config-aggregate-iterator-child-only-review.json).
-Extra child edges, wider graphs and destructor throws/reentry remain partial.
+Cyclic/materialized storage and destructor throws/reentry remain partial.
 
 Ordinary Iterator array spread with by-reference `current()` now admits multiple
 initialized inline declared owning fields. Public untyped mutable slots retain
@@ -122,7 +138,7 @@ premises check ownership, order, weak death and pending identity. Joined strict
 compilation over the actual tail also passes. Earlier
 fixture compiler, timeout and stopped attempts retain zero credit.
 [Returned Iterator child review](coverage/semantics/config-aggregate-iterator-child-review.json).
-Wider child graphs and destructor throws/reentry remain partial.
+Cyclic/materialized Child graphs and destructor throws/reentry remain partial.
 
 Bounded unit0 anonymous `new` now takes one or two direct positional/named
 arguments. Public required by-value untyped/`int` constructor formals use the

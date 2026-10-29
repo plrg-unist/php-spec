@@ -627,13 +627,22 @@ public no-argument `__destruct` runs before INI_SET or error recovery, with
 three exact PHP source agreements and separate reached cleanup checks.
 It may also own [one declared child](coverage/semantics/config-aggregate-iterator-child-review.json):
 the parent destructor sees the child live; if it owns the child alone, the child's
-destructor follows before API entry or catch. Wider child graphs remain partial.
+destructor follows before API entry or catch. Wider child graphs were outside that cut.
 When it owns the child alone, a [destructor-free Iterator](coverage/semantics/config-aggregate-iterator-child-only-review.json)
 also finalizes the child through ordinary storage release, preserving
 parent weak death and the saved Exception before catch.
 An [outside Child owner](coverage/semantics/config-aggregate-iterator-retained-child-review.json)
 keeps the Child live after parent retirement and API/catch; an actual outside
 `unset` then runs its destructor once, with the parent already gone.
+
+[Descriptor-backed CONFIG fields](coverage/semantics/config-aggregate-iterator-layout-review.json)
+now derive the complete physical layout without fixed field names or counts.
+Scalars, ordinary reference cells, arrays and finite ordinary Child graphs retain
+duplicate edges and outside owners. Typed/private direct slots keep their existing
+validation; path ancestry rejects cycles while allowing shared descendants.
+The optional parent destructor, real storage pin and saved Exception use the
+existing lifecycle. Materialized layouts, special cells, builtin descendants,
+shutdown release and wider destructor effects remain partial.
 
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native

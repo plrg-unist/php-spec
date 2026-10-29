@@ -1646,5 +1646,20 @@ independent parent-destructor saved-Exception source agree with PHP. New reached
 checks pass 156 premises through real storage, pending exit and outside UNSET;
 67+33 affected legacy return-front checks promote only the former extra-owner
 refusals and retain their extra-edge negatives. Historical whole-tail cuts stay
-unchanged. Generic storage/destructor rules are unchanged; wider edges/storage,
-owner forms, shutdown release and destructor throws/reentry remain open.
+unchanged. Generic storage/destructor rules were unchanged; at that cut, wider
+edges/storage, owner forms, shutdown release and destructor throws/reentry remained open.
+
+The [descriptor-backed field increment](../../coverage/semantics/config-aggregate-iterator-layout-review.json)
+replaces the literal `child` and single-edge restriction with the actual declared
+physical layout. Shared descriptor authentication retains each consumer's policy;
+CONFIG folds supported scalar, ordinary CELL, ARRAY and ordinary-instance fields,
+including typed/private direct storage and genuinely initial or cleared slots.
+Path ancestry rejects ARRAY/CELL/object backedges while allowing repeated roots
+and shared descendants. Existing edge extraction preserves every owning edge;
+the parent storage pin and saved-Exception operation authority are unchanged.
+An outside owner can keep a descendant alive after parent retirement until an
+actual outside `unset`. Dynamic/materialized layouts, special cells, builtin
+descendants, shutdown release and wider destructor effects remain partial.
+Four authored originals and one independent public-parent-destructor saved-Exception
+source agree exactly; new reached checks pass 38+190 premises and the affected
+CONFIG117 return front passes 33. Earlier whole-tail cuts retain their identities.
