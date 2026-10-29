@@ -219,7 +219,7 @@ $fiber_generator_throw_valid(S_view, pgeneratorop, pgenerator, pcallcontext_gene
 # The frozen source's PRIME expression is an authentic existing CURRENT site.
 CURRENT_LINE = next(i for i,line in enumerate(ROWS['i72-primed-static-byval-token-finally']['source'].splitlines(),1) if line.startswith("echo 'PRIME|'"))
 THROW_BOUNDARY = checks(r'''
-porigin_current = PORIGIN 0 [(PCINDEX 12), (PCFIELD 0), (PCINDEX 1), (PCFIELD 0), (PCFIELD 0)]
+porigin_current = PORIGIN 0 ([PCINDEX 12, PCFIELD 0, PCINDEX 1, PCFIELD 0, PCFIELD 0])
 $generator_source_method(S_view, porigin_current, $ptascii("current"))
 ''') + [f'pgeneratorop_current = pgeneratorop[.NAME = "current"][.ARGUMENTS = eps][.SITE = porigin_current][.LINE = {CURRENT_LINE}]'] + checks(r'''
 S_current = S_view[.FRAMES = pframe_generator[.TODO = (GENERATOR_RESUME pgeneratorop_current) :: ptask_generator*][.ORIGIN = (porigin_current)] :: pframe_tail*]
