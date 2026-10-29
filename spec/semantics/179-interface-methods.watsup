@@ -1,4 +1,10 @@
 ;; Linked interface prototypes retain their declaring owner and direct-list order.
+syntax pilmethod = { DECLARATION pmmethod, SCOPE pvclass, STATIC bool,
+  VISIBILITY ppropertyvisibility, ABSTRACT bool, TENTATIVE bool, ORIGIN porigin? }
+syntax pilheaders = PILHEADERS pilmethod* | PILHEADERSUNSUPPORTED text
+syntax pdeclnoticeplan = DECLNOTICES pdeclnotice* | DECLNOTICESUNSUPPORTED text
+syntax pilinherit = PILINHERITED pilmethod* pdeclnoticeplan | PILINHERITISSUE pmethodissue pdeclnoticeplan
+syntax pilwork = PILWORK pilmethod* pilref* pdeclnoticeplan | PILWORKISSUE pmethodissue pdeclnoticeplan
 dec $pil_proto_source(pstate, porigin, nat) : ppmethodinherited*
 dec $pil_proto_refs(pstate, pilref*, nat) : ppmethodinherited*
 dec $pil_info_named(ppmethodinherited*, ptbytes) : bool
@@ -39,10 +45,7 @@ def $pil_info_extra(S, porigin, ppmethodinherited*, n) = eps -- otherwise
 
 def $pil_ref_names(S, eps, n) = eps
 def $pil_ref_names(S, (PILSOURCE ptbytes porigin) :: pilref_tail*, n) = [ptbytes] ++ $pil_ancestor_names(S, porigin, n) ++ $pil_ref_names(S, pilref_tail*, n)
-def $pil_ref_names(S, (PILBUILTIN ptbytes) :: pilref_tail*, n) = [ptbytes, $ptascii("Stringable")] ++ $pil_ref_names(S, pilref_tail*, n)
-  -- if $ptlc(ptbytes) = $ptascii("throwable")
-def $pil_ref_names(S, (PILBUILTIN ptbytes) :: pilref_tail*, n) = [ptbytes] ++ $pil_ref_names(S, pilref_tail*, n)
-  -- if $ptlc(ptbytes) =/= $ptascii("throwable") /\ ~($ptlc(ptbytes) <- [$ptascii("iterator"), $ptascii("iteratoraggregate")])
+def $pil_ref_names(S, (PILBUILTIN ptbytes) :: pilref_tail*, n) = [ptbytes] ++ $pil_builtin_ancestors(ptbytes) ++ $pil_ref_names(S, pilref_tail*, n)
 def $pil_ancestor_names(S, porigin, 0) = eps
 def $pil_ancestor_names(S, porigin, n) = $pil_ref_names(S, pilref*, $nabs($(n - 1))) ++ $pil_ancestor_names(S, porigin_parent, $nabs($(n - 1)))
   -- if $(n > 0)
@@ -67,6 +70,10 @@ dec $pil_selected(pstate, pclassdesc, ptbytes, ppmethodinherited*) : ppmethodinh
 dec $pil_method_one(pstate, pclassdesc, ppmethodinherited, ppmethodinherited*) : pmethodissue
 dec $pil_method_items(pstate, pclassdesc, ppmethodinherited*, ppmethodinherited*) : pmethodissue
 dec $pil_method_issue(pstate, pclassdesc) : pmethodissue
+dec $pil_ordered_issue(pstate, pclassdesc) : pmethodissue
+dec $pil_post_interfaces(pstate, pclassdesc) : pmethodissue
+dec $pil_issue_state(pstate, pclassdesc, pmethodissue) : pstate
+dec $pil_post_result(pstate, pstate, pclassdesc, pmethodissue) : pstate
 dec $pil_order_items(pstate, pclassdesc, pilref*, ppmethodinherited*) : pmethodissue
 dec $pil_order_one(pstate, pclassdesc, pilref, pilref*, ppmethodinherited*) : pmethodissue
 dec $pil_order_source(pstate, pclassdesc, pilref, pilref*, ppmethodinherited*) : pmethodissue
@@ -105,11 +112,11 @@ def $pil_selected(S, pclassdesc, ptbytes, ppmethodinherited*) = $pil_info_pick(p
   -- if pclassdesc.KIND = "interface"
   -- if $method_named(pclassdesc.METHODS, ptbytes) = eps
 def $pil_selected(S, pclassdesc, ptbytes, ppmethodinherited*) = (PPMINHERITED pmethoddesc pclassdesc_method)
-  -- if pclassdesc.KIND = "class"
+  -- if pclassdesc.KIND <- ["class", "enum"]
   -- if $effective_method(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = (pmethoddesc)
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_method)
 def $pil_selected(S, pclassdesc, ptbytes, ppmethodinherited*) = eps
-  -- if pclassdesc.KIND = "class"
+  -- if pclassdesc.KIND <- ["class", "enum"]
   -- if $effective_method(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = eps
 
 def $pil_scope(S, pclassdesc) = $pmethod_scope(pclassdesc, $method_all_ancestor_names(S, pclassdesc.ORIGIN, |S.CLASSES|))
@@ -126,7 +133,7 @@ def $pil_reline(pclassdesc, pmethoddesc, METHOD_OK) = METHOD_OK
 def $pil_reline(pclassdesc, pmethoddesc, METHOD_UNSUPPORTED text) = METHOD_UNSUPPORTED text
 
 def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited*) = $pil_internal_selected(S, pclassdesc, pclassdesc_proto, pmethoddesc_proto, text_kind)
-  -- if pclassdesc.KIND = "class"
+  -- if pclassdesc.KIND <- ["class", "enum"]
   -- if $pil_selected(S, pclassdesc, pmethoddesc_proto.NAME, ppmethodinherited*) = eps
   -- if $class_throwable_kind(S, pclassdesc.ORIGIN, |S.CLASSES|) = (text_kind)
   -- if $pil_concrete_signature(text_kind, pmethoddesc_proto.NAME) = (pssignature)
@@ -144,7 +151,7 @@ def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_pro
   -- if $pil_selected(S, pclassdesc, pmethoddesc_proto.NAME, ppmethodinherited*) = (PPMINHERITED pmethoddesc_selected pclassdesc_selected)
   -- if pmethoddesc_selected.FUNCTION.ORIGIN =/= pmethoddesc_proto.FUNCTION.ORIGIN
   -- if $pmethod_static_issue(pclassdesc_selected, pmethoddesc_selected, pclassdesc_proto, pmethoddesc_proto) = (ptbytes_message)
-def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited*) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ pclassdesc_selected.NAME ++ $ptascii("::") ++ pmethoddesc_selected.NAME ++ $ptascii("() must be public (as in class ") ++ pclassdesc_proto.NAME ++ [41]) $pil_issue_line(pclassdesc, pmethoddesc_selected) pmethoddesc_selected.FUNCTION.ORIGIN
+def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited*) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ $c_string(pclassdesc_selected.NAME) ++ $ptascii("::") ++ pmethoddesc_selected.NAME ++ $ptascii("() must be public (as in class ") ++ $c_string(pclassdesc_proto.NAME) ++ [41]) $pil_issue_line(pclassdesc, pmethoddesc_selected) pmethoddesc_selected.FUNCTION.ORIGIN
   -- if $pil_selected(S, pclassdesc, pmethoddesc_proto.NAME, ppmethodinherited*) = (PPMINHERITED pmethoddesc_selected pclassdesc_selected)
   -- if pmethoddesc_selected.FUNCTION.ORIGIN =/= pmethoddesc_proto.FUNCTION.ORIGIN
   -- if $pmethod_static_issue(pclassdesc_selected, pmethoddesc_selected, pclassdesc_proto, pmethoddesc_proto) = eps
@@ -171,7 +178,7 @@ def $pil_order_source_nominal(S, pclassdesc, porigin, pilref_seen*, ppmethodinhe
 def $pil_order_source_stringable(S, pclassdesc, porigin, true) = $useriter_source_after(S, pclassdesc, porigin, $pil_stringable_issue(S, pclassdesc))
 def $pil_order_source_stringable(S, pclassdesc, porigin, false) = $useriter_source_contract(S, pclassdesc, porigin)
 def $pil_parent_source_infos(S, pclassdesc) = $method_info_layout(S, porigin_parent, |S.CLASSES|)
-  -- if pclassdesc.KIND = "class"
+  -- if pclassdesc.KIND <- ["class", "enum"]
   -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
 def $pil_parent_source_infos(S, pclassdesc) = eps -- otherwise
 def $pil_order_throwable(S, pclassdesc) = $pil_order_throwable_seen(S, pclassdesc, eps)
@@ -182,8 +189,8 @@ def $pil_order_throwable_seen(S, pclassdesc, pilref_seen*) = $pil_stringable_iss
   -- if $pil_internal_source_infos(S, $pil_info_missing(eps, $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $pil_parent_source_infos(S, pclassdesc) ++ $pil_proto_refs(S, pilref_seen*, |S.CLASSES|))) = METHOD_OK
 def $pil_order_rooted(S, pclassdesc, pmethodissue) = pmethodissue
   -- if pmethodissue =/= METHOD_OK
-def $pil_order_rooted(S, pclassdesc, METHOD_OK) = METHOD_RUNTIMEISSUE ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot implement interface Throwable, extend Exception or Error instead")) pclassdesc.LINE
-  -- if pclassdesc.KIND = "class"
+def $pil_order_rooted(S, pclassdesc, METHOD_OK) = METHOD_RUNTIMEISSUE ($pil_role(pclassdesc) ++ [32] ++ $c_string(pclassdesc.NAME) ++ $ptascii(" cannot implement interface Throwable, extend Exception or Error instead")) pclassdesc.LINE
+  -- if pclassdesc.KIND <- ["class", "enum"]
   -- if ~$pil_throwable_allowed(S, pclassdesc)
 def $pil_order_rooted(S, pclassdesc, METHOD_OK) = METHOD_OK
   -- if pclassdesc.KIND = "interface" \/ $pil_throwable_allowed(S, pclassdesc)
@@ -219,21 +226,18 @@ def $pil_order_items_seen(S, pclassdesc, pilref_seen*, pilref :: pilref_tail*, p
   -- if $pil_order_checked(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited_all*) = pmethodissue
   -- if pmethodissue =/= METHOD_OK
 def $pil_order_items(S, pclassdesc, pilref*, ppmethodinherited_all*) = $pil_order_items_seen(S, pclassdesc, eps, pilref*, ppmethodinherited_all*)
-def $pil_method_issue(S, pclassdesc) = $pil_order_items(S, pclassdesc, pilref*, ppmethodinherited*)
-  -- if $pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = (PILTARGETS pilref*)
-  -- if ppmethodinherited* = $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $pil_proto_refs(S, pilref*, |S.CLASSES|)
-def $pil_method_issue(S, pclassdesc) = METHOD_OK -- otherwise
+def $pil_method_issue(S, pclassdesc) = $pil_ordered_issue(S, pclassdesc)
 
 def $pil_stringable_issue(S, pclassdesc) = METHOD_OK
   -- if pclassdesc.KIND = "interface"
 def $pil_stringable_issue(S, pclassdesc) = $pil_stringable_nominal(S, pclassdesc, $class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Stringable"), |S.CLASSES|))
-  -- if pclassdesc.KIND = "class"
+  -- if pclassdesc.KIND <- ["class", "enum"]
 def $pil_stringable_nominal(S, pclassdesc, false) = METHOD_OK
 def $pil_stringable_nominal(S, pclassdesc, true) = $pil_stringable_method(S, pclassdesc, $effective_method(S, pclassdesc.ORIGIN, $ptascii("__toString"), |S.CLASSES|))
 def $pil_stringable_method(S, pclassdesc, eps) = METHOD_OK
 def $pil_stringable_method(S, pclassdesc, pmethoddesc) = METHOD_OK
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
-def $pil_stringable_method(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ pclassdesc_method.NAME ++ $ptascii("::__toString() must be public (as in class Stringable)")) $pil_issue_line(pclassdesc, pmethoddesc) pmethoddesc.FUNCTION.ORIGIN
+def $pil_stringable_method(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ $c_string(pclassdesc_method.NAME) ++ $ptascii("::__toString() must be public (as in class Stringable)")) $pil_issue_line(pclassdesc, pmethoddesc) pmethoddesc.FUNCTION.ORIGIN
   -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_method)
 def $pil_contract_issue(S, pclassdesc) = pmethodissue
@@ -241,6 +245,10 @@ def $pil_contract_issue(S, pclassdesc) = pmethodissue
   -- if pmethodissue =/= METHOD_OK
 def $pil_contract_issue(S, pclassdesc) = $arrayaccess_after_issue(S, pclassdesc, $useriter_after_issue(S, pclassdesc, $pil_stringable_issue(S, pclassdesc)))
   -- if $pil_method_issue(S, pclassdesc) = METHOD_OK
+  -- if pclassdesc.KIND =/= "interface"
+def $pil_contract_issue(S, pclassdesc) = METHOD_OK
+  -- if $pil_method_issue(S, pclassdesc) = METHOD_OK
+  -- if pclassdesc.KIND = "interface"
 
 def $pil_methods_valid(S, eps) = true
 def $pil_methods_valid(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = $pil_methods_valid(S, (preqbytes_tail, porigin_tail)*)
@@ -249,29 +257,31 @@ def $pil_methods_valid(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)
   -- if $pil_contract_issue(S, pclassdesc) = METHOD_OK
 def $pil_methods_valid(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = $pil_methods_valid(S, (preqbytes_tail, porigin_tail)*)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-  -- if pclassdesc.KIND = "class"
+  -- if pclassdesc.KIND <- ["class", "enum"]
   -- if $pil_contract_issue(S, pclassdesc) = METHOD_OK
   -- if $pil_abstract_message(S, pclassdesc) = eps
+  -- if $pil_post_interfaces(S, pclassdesc) = METHOD_OK
 def $pil_methods_valid(S, (preqbytes, porigin)*) = false -- otherwise
 
 def $pil_method_fatal(S, PORIGIN n pcpath, ptbytes_message, z) = S[.COMPLETION = STATICBYTES ptbytes_message z][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, STATICBYTES ptbytes_message z, n)][.TRACE = $eval_exception_trace(S)]
-def $pil_method_publish_result(S, S_candidate, pclassdesc) = $class_constant_link_error(S, pclassdesc.ORIGIN, ptbytes_message, z)
-  -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_COMPILEISSUE ptbytes_message z
-def $pil_method_publish_result(S, S_candidate, pclassdesc) = $pil_method_fatal(S, porigin_selected, ptbytes_message, z)
-  -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_FILEISSUE ptbytes_message z porigin_selected
-def $pil_method_publish_result(S, S_candidate, pclassdesc) = $pil_fatal(S, pclassdesc, ptbytes_message)
-  -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_RUNTIMEISSUE ptbytes_message z
-def $pil_method_publish_result(S, S_candidate, pclassdesc) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes_message, z)
-  -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_ISSUE ptbytes_message z
-def $pil_method_publish_result(S, S_candidate, pclassdesc) = S[.COMPLETION = UNSUPPORTED text]
-  -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_UNSUPPORTED text
+def $pil_issue_state(S, pclassdesc, METHOD_COMPILEISSUE ptbytes_message z) = $class_constant_link_error(S, pclassdesc.ORIGIN, ptbytes_message, z)
+def $pil_issue_state(S, pclassdesc, METHOD_FILEISSUE ptbytes_message z porigin_selected) = $pil_method_fatal(S, porigin_selected, ptbytes_message, z)
+def $pil_issue_state(S, pclassdesc, METHOD_RUNTIMEISSUE ptbytes_message z) = $pil_fatal(S, pclassdesc, ptbytes_message)
+def $pil_issue_state(S, pclassdesc, METHOD_ISSUE ptbytes_message z) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes_message, z)
+def $pil_issue_state(S, pclassdesc, METHOD_UNSUPPORTED text) = S[.COMPLETION = UNSUPPORTED text]
+def $pil_method_publish_result(S, S_candidate, pclassdesc) = $pil_issue_state(S, pclassdesc, pmethodissue)
+  -- if pmethodissue = $pil_contract_issue(S_candidate, pclassdesc)
+  -- if pmethodissue =/= METHOD_OK
 def $pil_method_publish_result(S, S_candidate, pclassdesc) = $pil_fatal(S, pclassdesc, ptbytes_message)
   -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_OK
-  -- if pclassdesc.KIND = "class"
+  -- if pclassdesc.KIND <- ["class", "enum"]
   -- if $pil_abstract_message(S_candidate, pclassdesc) = (ptbytes_message)
-def $pil_method_publish_result(S, S_candidate, pclassdesc) = S_candidate
+def $pil_method_publish_result(S, S_candidate, pclassdesc) = $pil_post_result(S, S_candidate, pclassdesc, $pil_post_interfaces(S_candidate, pclassdesc))
   -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_OK
   -- if pclassdesc.KIND = "interface" \/ $pil_abstract_message(S_candidate, pclassdesc) = eps
+def $pil_post_result(S, S_candidate, pclassdesc, METHOD_OK) = S_candidate
+def $pil_post_result(S, S_candidate, pclassdesc, pmethodissue) = $pil_issue_state(S, pclassdesc, pmethodissue)
+  -- if pmethodissue =/= METHOD_OK
 
 ;; Each interface's constants precede its methods; later interfaces stay later.
 def $pil_order_checked(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*) = pmethodissue
@@ -282,3 +292,233 @@ def $pil_order_checked(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*) 
 
 ;; Imported methods keep the original trait diagnostic file.
 def $pil_method_fatal(S, TRAIT_ORIGIN porigin_owner porigin_source ptbytes, ptbytes_message, z) = $pil_method_fatal(S, $origin_source(porigin_source), ptbytes_message, z)
+
+;; These are real normalized method headers, never synthetic user functions.
+;; A pure view lets each interface see only the table inherited so far.
+dec $pil_source_headers(pstate, pclassdesc, pmethoddesc*) : pilmethod*
+dec $pil_header_at(pilmethod*, ptbytes) : pilmethod?
+dec $pil_headers_merge(pilmethod*, pilmethod*) : pilmethod*
+dec $pil_headers_join(pilheaders, pilmethod*) : pilheaders
+dec $pil_implicit_headers(pstate, pclassdesc) : pilmethod*
+dec $pil_builtin_headers(pstate, ptbytes) : pilheaders
+dec $pil_builtin_header(ptbytes, ptbytes, pssignature, bool, bool) : pilmethod
+dec $pil_throwable_headers(text) : pilmethod*
+dec $pil_parent_headers(pstate, pclassdesc, nat) : pilheaders
+dec $pil_seed_headers(pstate, pclassdesc, nat) : pilheaders
+dec $pil_type_headers(pstate, porigin, nat) : pilheaders
+dec $pil_type_headers_after(pstate, porigin, nat, pilheaders) : pilheaders
+dec $pil_interface_headers(pstate, pilref, nat) : pilheaders
+dec $pil_derived_headers(pstate, pilmethod*, pilref*, nat) : pilheaders
+dec $pil_derived_headers_after(pstate, pilmethod*, pilref*, nat, pilheaders) : pilheaders
+
+def $pil_source_headers(S, pclassdesc, eps) = eps
+def $pil_source_headers(S, pclassdesc, pmethoddesc :: pmethoddesc_tail*) = [{ DECLARATION $pmethod_user(pmethoddesc, pclassdesc, $call_sourcefile(S.FILES, pmethoddesc.FUNCTION.ORIGIN)), SCOPE $pil_scope(S, pclassdesc), STATIC pmethoddesc.STATIC, VISIBILITY pmethoddesc.VISIBILITY, ABSTRACT pmethoddesc.ABSTRACT, TENTATIVE false, ORIGIN (pmethoddesc.FUNCTION.ORIGIN) }] ++ $pil_source_headers(S, pclassdesc, pmethoddesc_tail*)
+def $pil_header_at(eps, ptbytes) = eps
+def $pil_header_at(pilmethod :: pilmethod_tail*, ptbytes) = (pilmethod)
+  -- if $ptlc(pilmethod.DECLARATION.NAME) = $ptlc(ptbytes)
+def $pil_header_at(pilmethod :: pilmethod_tail*, ptbytes) = $pil_header_at(pilmethod_tail*, ptbytes)
+  -- if $ptlc(pilmethod.DECLARATION.NAME) =/= $ptlc(ptbytes)
+def $pil_headers_merge(pilmethod_existing*, eps) = pilmethod_existing*
+def $pil_headers_merge(pilmethod_existing*, pilmethod :: pilmethod_tail*) = $pil_headers_merge(pilmethod_existing*, pilmethod_tail*)
+  -- if $pil_header_at(pilmethod_existing*, pilmethod.DECLARATION.NAME) =/= eps
+def $pil_headers_merge(pilmethod_existing*, pilmethod :: pilmethod_tail*) = $pil_headers_merge(pilmethod_existing* ++ [pilmethod], pilmethod_tail*)
+  -- if $pil_header_at(pilmethod_existing*, pilmethod.DECLARATION.NAME) = eps
+def $pil_headers_join(PILHEADERS pilmethod_parent*, pilmethod*) = PILHEADERS ($pil_headers_merge(pilmethod*, pilmethod_parent*))
+def $pil_headers_join(PILHEADERSUNSUPPORTED text, pilmethod*) = PILHEADERSUNSUPPORTED text
+def $pil_implicit_headers(S, pclassdesc) = eps -- if pclassdesc.KIND =/= "enum"
+def $pil_parent_headers(S, pclassdesc, n) = $pil_type_headers(S, porigin_parent, n)
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
+def $pil_parent_headers(S, pclassdesc, n) = PILHEADERS ($pil_throwable_headers(text_kind))
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (INTERNAL_THROWABLE_PARENT text_kind)
+def $pil_parent_headers(S, pclassdesc, n) = PILHEADERS eps
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = eps \/ $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (STDCLASS_PARENT)
+def $pil_seed_headers(S, pclassdesc, n) = $pil_headers_join($pil_parent_headers(S, pclassdesc, n), $pil_headers_merge($pil_source_headers(S, pclassdesc, pclassdesc.METHODS), $pil_implicit_headers(S, pclassdesc)))
+def $pil_type_headers(S, porigin, 0) = PILHEADERS eps
+def $pil_type_headers(S, porigin, n) = $pil_type_headers_after(S, porigin, $nabs($(n - 1)), $pil_seed_headers(S, pclassdesc, $nabs($(n - 1))))
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $pil_type_headers_after(S, porigin, n, PILHEADERS pilmethod*) = $pil_derived_headers(S, pilmethod*, pilref*, n)
+  -- if $pil_at(S.LINKEDINTERFACES, porigin) = (PILTARGETS pilref*)
+def $pil_type_headers_after(S, porigin, n, PILHEADERS pilmethod*) = PILHEADERS pilmethod*
+  -- if $pil_at(S.LINKEDINTERFACES, porigin) = eps
+def $pil_type_headers_after(S, porigin, n, PILHEADERSUNSUPPORTED text) = PILHEADERSUNSUPPORTED text
+def $pil_interface_headers(S, PILSOURCE ptbytes porigin, n) = $pil_type_headers(S, porigin, n)
+def $pil_interface_headers(S, PILBUILTIN ptbytes, n) = $pil_builtin_headers(S, ptbytes)
+def $pil_derived_headers(S, pilmethod*, eps, n) = PILHEADERS pilmethod*
+def $pil_derived_headers(S, pilmethod*, pilref :: pilref_tail*, n) = $pil_derived_headers_after(S, pilmethod*, pilref_tail*, n, $pil_interface_headers(S, pilref, n))
+def $pil_derived_headers_after(S, pilmethod*, pilref*, n, PILHEADERS pilmethod_incoming*) = $pil_derived_headers(S, $pil_headers_merge(pilmethod*, pilmethod_incoming*), pilref*, n)
+def $pil_derived_headers_after(S, pilmethod*, pilref*, n, PILHEADERSUNSUPPORTED text) = PILHEADERSUNSUPPORTED text
+def $pil_post_interfaces(S, pclassdesc) = METHOD_OK
+  -- if pclassdesc.KIND =/= "enum"
+
+dec $pil_header_problem(pclassdesc, pilmethod, ptbytes) : pmethodissue
+dec $pil_header_parent(pilmethod) : pmmethod
+dec $pil_header_check(pstate, pclassdesc, pilmethod, pilmethod) : pmethodissue
+dec $pil_header_compared(pclassdesc, pilmethod, pilmethod, pmcheck) : pmethodissue
+dec $pil_header_notices(pstate, pclassdesc, pilmethod, pilmethod) : pdeclnoticeplan
+dec $iterator_notice_join(pdeclnoticeplan, pdeclnoticeplan) : pdeclnoticeplan
+dec $pil_inherit_headers(pstate, pclassdesc, pilmethod*, pilmethod*, pdeclnoticeplan) : pilinherit
+dec $pil_inherit_header_after(pstate, pclassdesc, pilmethod*, pilmethod, pilmethod, pilmethod*, pdeclnoticeplan, pmethodissue) : pilinherit
+
+def $pil_header_problem(pclassdesc, pilmethod, ptbytes) = METHOD_FILEISSUE ptbytes pilmethod.DECLARATION.CONTEXT.LINE porigin
+  -- if pilmethod.ORIGIN = (porigin)
+def $pil_header_problem(pclassdesc, pilmethod, ptbytes) = METHOD_ISSUE ptbytes 0
+  -- if pilmethod.ORIGIN = eps
+def $pil_header_parent(pilmethod) = pilmethod.DECLARATION[.SIGNATURE = pilmethod.DECLARATION.SIGNATURE[.RETURNS = eps]]
+  -- if pilmethod.TENTATIVE
+def $pil_header_parent(pilmethod) = pilmethod.DECLARATION -- if ~pilmethod.TENTATIVE
+def $pil_header_check(S, pclassdesc, pilmethod_child, pilmethod_parent) = METHOD_OK
+  -- if pilmethod_child = pilmethod_parent
+def $pil_header_check(S, pclassdesc, pilmethod_child, pilmethod_parent) = $pil_header_problem(pclassdesc, pilmethod_child, $ptascii("Cannot make ") ++ $pmif(~pilmethod_parent.STATIC, $ptascii("non ")) ++ $ptascii("static method ") ++ $c_string(pilmethod_parent.DECLARATION.OWNER) ++ $ptascii("::") ++ pilmethod_child.DECLARATION.NAME ++ $ptascii("() ") ++ $pmif(~pilmethod_child.STATIC, $ptascii("non ")) ++ $ptascii("static in class ") ++ $c_string(pilmethod_child.DECLARATION.OWNER))
+  -- if pilmethod_child =/= pilmethod_parent /\ pilmethod_child.STATIC =/= pilmethod_parent.STATIC
+def $pil_header_check(S, pclassdesc, pilmethod_child, pilmethod_parent) = $pil_header_problem(pclassdesc, pilmethod_child, $ptascii("Access level to ") ++ $c_string(pilmethod_child.DECLARATION.OWNER) ++ $ptascii("::") ++ pilmethod_child.DECLARATION.NAME ++ $ptascii("() must be public (as in class ") ++ $c_string(pilmethod_parent.DECLARATION.OWNER) ++ [41])
+  -- if pilmethod_child =/= pilmethod_parent /\ pilmethod_child.STATIC = pilmethod_parent.STATIC
+  -- if pilmethod_child.VISIBILITY =/= PROPERTY_PUBLIC
+def $pil_header_check(S, pclassdesc, pilmethod_child, pilmethod_parent) = $pil_header_compared(pclassdesc, pilmethod_child, pilmethod_parent, $pmcompare(PMUSER pilmethod_child.DECLARATION, pilmethod_child.SCOPE, PMUSER $pil_header_parent(pilmethod_parent), pilmethod_parent.SCOPE, $method_active_registry(S, S.CLASSNAMES)))
+  -- if pilmethod_child =/= pilmethod_parent /\ pilmethod_child.STATIC = pilmethod_parent.STATIC
+  -- if pilmethod_child.VISIBILITY = PROPERTY_PUBLIC
+def $pil_header_compared(pclassdesc, pilmethod_child, pilmethod_parent, PMCHECK PVYES ptbytes*) = METHOD_OK
+def $pil_header_compared(pclassdesc, pilmethod_child, pilmethod_parent, PMCHECK PVNO ptbytes*) = $pil_header_problem(pclassdesc, pilmethod_child, pmdiagnostic.MESSAGE)
+  -- if $pmmismatch(pilmethod_child.DECLARATION, pilmethod_child.SCOPE, pilmethod_parent.DECLARATION, pilmethod_parent.SCOPE, 14) = PMDIAGNOSTIC pmdiagnostic
+def $pil_header_compared(pclassdesc, pilmethod_child, pilmethod_parent, PMCHECK PVUNRESOLVED ptbytes_missing*) = $pil_header_problem(pclassdesc, pilmethod_child, pmdiagnostic.MESSAGE)
+  -- if $pmunavailable(pilmethod_child.DECLARATION, pilmethod_child.SCOPE, pilmethod_parent.DECLARATION, pilmethod_parent.SCOPE, ptbytes_missing*, 14) = PMDIAGNOSTIC pmdiagnostic
+def $pil_header_compared(pclassdesc, pilmethod_child, pilmethod_parent, PMUNSUPPORTED text) = METHOD_UNSUPPORTED text
+def $pil_inherit_headers(S, pclassdesc, pilmethod*, eps, pdeclnoticeplan) = PILINHERITED pilmethod* pdeclnoticeplan
+def $pil_inherit_headers(S, pclassdesc, pilmethod*, pilmethod_parent :: pilmethod_tail*, pdeclnoticeplan) = $pil_inherit_headers(S, pclassdesc, pilmethod* ++ [pilmethod_parent], pilmethod_tail*, pdeclnoticeplan)
+  -- if $pil_header_at(pilmethod*, pilmethod_parent.DECLARATION.NAME) = eps
+def $pil_inherit_headers(S, pclassdesc, pilmethod*, pilmethod_parent :: pilmethod_tail*, pdeclnoticeplan) = $pil_inherit_header_after(S, pclassdesc, pilmethod*, pilmethod_child, pilmethod_parent, pilmethod_tail*, pdeclnoticeplan, $pil_header_check(S, pclassdesc, pilmethod_child, pilmethod_parent))
+  -- if $pil_header_at(pilmethod*, pilmethod_parent.DECLARATION.NAME) = (pilmethod_child)
+def $pil_inherit_header_after(S, pclassdesc, pilmethod*, pilmethod_child, pilmethod_parent, pilmethod_tail*, pdeclnoticeplan, METHOD_OK) = $pil_inherit_headers(S, pclassdesc, pilmethod*, pilmethod_tail*, $iterator_notice_join(pdeclnoticeplan, $pil_header_notices(S, pclassdesc, pilmethod_child, pilmethod_parent)))
+def $pil_inherit_header_after(S, pclassdesc, pilmethod*, pilmethod_child, pilmethod_parent, pilmethod_tail*, pdeclnoticeplan, pmethodissue) = PILINHERITISSUE pmethodissue pdeclnoticeplan
+  -- if pmethodissue =/= METHOD_OK
+
+dec $pil_same_ref(pstate, pilref, pilref) : bool
+dec $pil_refs_have(pstate, pilref*, pilref) : bool
+dec $pil_refs_merge(pstate, pilref*, pilref*) : pilref*
+dec $pil_refs_reverse(pilref*) : pilref*
+dec $pil_builtin_refs(ptbytes*) : pilref*
+dec $pil_parent_interfaces(pstate, pclassdesc, nat) : pilref*
+dec $pil_resolved_interfaces(pstate, porigin, nat) : pilref*
+dec $pil_interface_refs(pstate, pilref, nat) : pilref*
+dec $pil_expand_refs(pstate, pilref*, pilref*, nat) : pilref*
+
+def $pil_same_ref(S, PILSOURCE ptbytes porigin, PILSOURCE ptbytes_other porigin_other) = (porigin = porigin_other)
+def $pil_same_ref(S, PILBUILTIN ptbytes, PILBUILTIN ptbytes_other) = ($pil_key(S, PILBUILTIN ptbytes) = $pil_key(S, PILBUILTIN ptbytes_other))
+def $pil_same_ref(S, pilref, pilref_other) = false -- otherwise
+def $pil_refs_have(S, eps, pilref) = false
+def $pil_refs_have(S, pilref :: pilref_tail*, pilref_other) = ($pil_same_ref(S, pilref, pilref_other) \/ $pil_refs_have(S, pilref_tail*, pilref_other))
+def $pil_refs_merge(S, pilref_existing*, eps) = pilref_existing*
+def $pil_refs_merge(S, pilref_existing*, pilref :: pilref_tail*) = $pil_refs_merge(S, pilref_existing*, pilref_tail*)
+  -- if $pil_refs_have(S, pilref_existing*, pilref)
+def $pil_refs_merge(S, pilref_existing*, pilref :: pilref_tail*) = $pil_refs_merge(S, pilref_existing* ++ [pilref], pilref_tail*)
+  -- if ~$pil_refs_have(S, pilref_existing*, pilref)
+def $pil_refs_reverse(eps) = eps
+def $pil_refs_reverse(pilref :: pilref_tail*) = $pil_refs_reverse(pilref_tail*) ++ [pilref]
+def $pil_builtin_refs(eps) = eps
+def $pil_builtin_refs(ptbytes :: ptbytes_tail*) = (PILBUILTIN ptbytes) :: $pil_builtin_refs(ptbytes_tail*)
+def $pil_parent_interfaces(S, pclassdesc, n) = $pil_resolved_interfaces(S, porigin_parent, n)
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
+def $pil_parent_interfaces(S, pclassdesc, n) = [PILBUILTIN $ptascii("Throwable"), PILBUILTIN $ptascii("Stringable")]
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (INTERNAL_THROWABLE_PARENT text_kind)
+def $pil_parent_interfaces(S, pclassdesc, n) = eps
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = eps \/ $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (STDCLASS_PARENT)
+def $pil_resolved_interfaces(S, porigin, 0) = eps
+def $pil_resolved_interfaces(S, porigin, n) = $pil_expand_refs(S, $pil_refs_merge(S, pilref_parent*, pilref*), pilref*, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pilref_parent* = $pil_parent_interfaces(S, pclassdesc, $nabs($(n - 1)))
+  -- if $pil_at(S.LINKEDINTERFACES, porigin) = (PILTARGETS pilref*)
+def $pil_resolved_interfaces(S, porigin, n) = $pil_parent_interfaces(S, pclassdesc, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $pil_at(S.LINKEDINTERFACES, porigin) = eps
+def $pil_interface_refs(S, PILSOURCE ptbytes porigin, n) = $pil_resolved_interfaces(S, porigin, n)
+def $pil_interface_refs(S, PILBUILTIN ptbytes, n) = $pil_builtin_refs($pil_builtin_ancestors(ptbytes))
+def $pil_expand_refs(S, pilref_view*, eps, n) = pilref_view*
+def $pil_expand_refs(S, pilref_view*, pilref :: pilref_tail*, n) = $pil_expand_refs(S, $pil_refs_merge(S, pilref_view*, $pil_refs_reverse($pil_interface_refs(S, pilref, n))), pilref_tail*, n)
+
+dec $pil_direct_interfaces(pstate, pclassdesc) : pilref*
+dec $pil_refs_added(pstate, pilref*, pilref*) : pilref*
+dec $pil_view_builtin(pilref*, ptbytes) : bool
+dec $pil_callback(pstate, pclassdesc, pilref, pilref*) : pmethodissue
+dec $pil_callback_builtin(pstate, pclassdesc, ptbytes, pilref*, ptbytes?) : pmethodissue
+dec $pil_callbacks(pstate, pclassdesc, pilref*, pilref*) : pmethodissue
+dec $pil_callback_work(pilmethod*, pilref*, pdeclnoticeplan, pmethodissue) : pilwork
+dec $pil_ordered_start(pstate, pclassdesc, pilheaders) : pilwork
+dec $pil_ordered_result(pilwork) : pmethodissue
+dec $pil_ordered_notices(pstate, pclassdesc) : pdeclnoticeplan
+dec $pil_work_notices(pilwork) : pdeclnoticeplan
+dec $pil_order_direct(pstate, pclassdesc, pilref*, pilref*, pilref*, pilwork, nat) : pilwork
+dec $pil_order_constant_after(pstate, pclassdesc, pilref, pilref*, pilmethod*, pilref*, nat, pdeclnoticeplan, pmethodissue) : pilwork
+dec $pil_order_member_after(pstate, pclassdesc, pilref, pilref*, nat, pdeclnoticeplan, pilinherit) : pilwork
+dec $pil_order_members(pstate, pclassdesc, pilmethod*, pilheaders) : pilinherit
+dec $pil_order_callback_after(pstate, pclassdesc, pilref, pilmethod*, pilref*, nat, pdeclnoticeplan, pmethodissue) : pilwork
+
+def $pil_direct_interfaces(S, pclassdesc) = pilref*
+  -- if $pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = (PILTARGETS pilref*)
+def $pil_direct_interfaces(S, pclassdesc) = eps
+  -- if $pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = eps
+def $pil_refs_added(S, pilref_old*, eps) = eps
+def $pil_refs_added(S, pilref_old*, pilref :: pilref_tail*) = $pil_refs_added(S, pilref_old*, pilref_tail*)
+  -- if $pil_refs_have(S, pilref_old*, pilref)
+def $pil_refs_added(S, pilref_old*, pilref :: pilref_tail*) = pilref :: $pil_refs_added(S, pilref_old*, pilref_tail*)
+  -- if ~$pil_refs_have(S, pilref_old*, pilref)
+def $pil_view_builtin(eps, ptbytes) = false
+def $pil_view_builtin((PILBUILTIN ptbytes_ref) :: pilref*, ptbytes) = ($ptlc(ptbytes_ref) = $ptlc(ptbytes) \/ $pil_view_builtin(pilref*, ptbytes))
+def $pil_view_builtin((PILSOURCE ptbytes_ref porigin) :: pilref*, ptbytes) = $pil_view_builtin(pilref*, ptbytes)
+def $pil_callback(S, pclassdesc, pilref, pilref_view*) = METHOD_OK
+  -- if pclassdesc.KIND = "interface"
+def $pil_callback(S, pclassdesc, PILSOURCE ptbytes porigin, pilref_view*) = METHOD_OK
+  -- if pclassdesc.KIND =/= "interface"
+def $pil_callback(S, pclassdesc, PILBUILTIN ptbytes, pilref_view*) = $pil_callback_builtin(S, pclassdesc, ptbytes, pilref_view*, $enum_implements_issue(S, pclassdesc, ptbytes))
+  -- if pclassdesc.KIND =/= "interface"
+def $pil_callback_builtin(S, pclassdesc, ptbytes, pilref_view*, (ptbytes_message)) = METHOD_RUNTIMEISSUE ptbytes_message pclassdesc.LINE
+def $pil_callback_builtin(S, pclassdesc, ptbytes, pilref_view*, eps) = $pil_order_rooted(S, pclassdesc, METHOD_OK)
+  -- if $ptlc(ptbytes) = $ptascii("throwable")
+def $pil_callback_builtin(S, pclassdesc, ptbytes, pilref_view*, eps) = METHOD_RUNTIMEISSUE ($ptascii("Class ") ++ $c_string(pclassdesc.NAME) ++ $ptascii(" cannot implement both Iterator and IteratorAggregate at the same time")) pclassdesc.LINE
+  -- if ($ptlc(ptbytes) = $ptascii("iterator") /\ $pil_view_builtin(pilref_view*, $ptascii("IteratorAggregate"))) \/ ($ptlc(ptbytes) = $ptascii("iteratoraggregate") /\ $pil_view_builtin(pilref_view*, $ptascii("Iterator")))
+def $pil_callback_builtin(S, pclassdesc, ptbytes, pilref_view*, eps) = METHOD_UNSUPPORTED "concrete Traversable-only class core fatal"
+  -- if $ptlc(ptbytes) = $ptascii("traversable") /\ ~pclassdesc.ABSTRACT
+  -- if ~$pil_view_builtin(pilref_view*, $ptascii("Iterator")) /\ ~$pil_view_builtin(pilref_view*, $ptascii("IteratorAggregate"))
+def $pil_callback_builtin(S, pclassdesc, ptbytes, pilref_view*, eps) = METHOD_OK
+  -- if $ptlc(ptbytes) =/= $ptascii("throwable")
+  -- if ~(($ptlc(ptbytes) = $ptascii("iterator") /\ $pil_view_builtin(pilref_view*, $ptascii("IteratorAggregate"))) \/ ($ptlc(ptbytes) = $ptascii("iteratoraggregate") /\ $pil_view_builtin(pilref_view*, $ptascii("Iterator"))))
+  -- if ~($ptlc(ptbytes) = $ptascii("traversable") /\ ~pclassdesc.ABSTRACT /\ ~$pil_view_builtin(pilref_view*, $ptascii("Iterator")) /\ ~$pil_view_builtin(pilref_view*, $ptascii("IteratorAggregate")))
+def $pil_callbacks(S, pclassdesc, eps, pilref_view*) = METHOD_OK
+def $pil_callbacks(S, pclassdesc, pilref :: pilref_tail*, pilref_view*) = $pil_callbacks(S, pclassdesc, pilref_tail*, pilref_view*)
+  -- if $pil_callback(S, pclassdesc, pilref, pilref_view*) = METHOD_OK
+def $pil_callbacks(S, pclassdesc, pilref :: pilref_tail*, pilref_view*) = pmethodissue
+  -- if pmethodissue = $pil_callback(S, pclassdesc, pilref, pilref_view*)
+  -- if pmethodissue =/= METHOD_OK
+def $pil_callback_work(pilmethod*, pilref_view*, pdeclnoticeplan, METHOD_OK) = PILWORK pilmethod* pilref_view* pdeclnoticeplan
+def $pil_callback_work(pilmethod*, pilref_view*, pdeclnoticeplan, pmethodissue) = PILWORKISSUE pmethodissue pdeclnoticeplan
+  -- if pmethodissue =/= METHOD_OK
+def $pil_ordered_issue(S, pclassdesc) = $pil_ordered_result($pil_ordered_start(S, pclassdesc, $pil_seed_headers(S, pclassdesc, $(|S.CLASSES| + 2))))
+def $pil_ordered_notices(S, pclassdesc) = $pil_work_notices($pil_ordered_start(S, pclassdesc, $pil_seed_headers(S, pclassdesc, $(|S.CLASSES| + 2))))
+def $pil_ordered_start(S, pclassdesc, PILHEADERSUNSUPPORTED text) = PILWORKISSUE (METHOD_UNSUPPORTED text) (DECLNOTICES eps)
+def $pil_ordered_start(S, pclassdesc, PILHEADERS pilmethod*) = $pil_order_direct(S, pclassdesc, pilref_parent*, eps, pilref_direct*, $pil_callback_work(pilmethod*, pilref_view*, DECLNOTICES eps, $pil_callbacks(S, pclassdesc, pilref_parent*, pilref_view*)), $(|S.CLASSES| + 2))
+  -- if pilref_parent* = $pil_parent_interfaces(S, pclassdesc, $(|S.CLASSES| + 2))
+  -- if pilref_direct* = $pil_direct_interfaces(S, pclassdesc)
+  -- if pilref_view* = $pil_refs_merge(S, pilref_parent*, pilref_direct*)
+def $pil_ordered_result(PILWORK pilmethod* pilref* pdeclnoticeplan) = METHOD_OK
+def $pil_ordered_result(PILWORKISSUE pmethodissue pdeclnoticeplan) = pmethodissue
+def $pil_work_notices(PILWORK pilmethod* pilref* pdeclnoticeplan) = pdeclnoticeplan
+def $pil_work_notices(PILWORKISSUE pmethodissue pdeclnoticeplan) = pdeclnoticeplan
+def $pil_order_direct(S, pclassdesc, pilref_parent*, pilref_seen*, pilref*, PILWORKISSUE pmethodissue pdeclnoticeplan, n) = PILWORKISSUE pmethodissue pdeclnoticeplan
+def $pil_order_direct(S, pclassdesc, pilref_parent*, pilref_seen*, eps, PILWORK pilmethod* pilref_view* pdeclnoticeplan, n) = PILWORK pilmethod* pilref_view* pdeclnoticeplan
+def $pil_order_direct(S, pclassdesc, pilref_parent*, pilref_seen*, pilref :: pilref_tail*, PILWORK pilmethod* pilref_view* pdeclnoticeplan, n) = $pil_order_direct(S, pclassdesc, pilref_parent*, pilref_seen* ++ [pilref], pilref_tail*, $pil_order_constant_after(S, pclassdesc, pilref, pilref_parent*, pilmethod*, pilref_view*, n, pdeclnoticeplan, $class_constant_interface_issue(S, pclassdesc, pilref, pilref_seen*)), n)
+def $pil_order_constant_after(S, pclassdesc, pilref, pilref_parent*, pilmethod*, pilref_view*, n, pdeclnoticeplan, pmethodissue) = PILWORKISSUE pmethodissue pdeclnoticeplan
+  -- if pmethodissue =/= METHOD_OK
+def $pil_order_constant_after(S, pclassdesc, pilref, pilref_parent*, pilmethod*, pilref_view*, n, pdeclnoticeplan, METHOD_OK) = PILWORK pilmethod* pilref_view* pdeclnoticeplan
+  -- if $pil_refs_have(S, pilref_parent*, pilref)
+def $pil_order_constant_after(S, pclassdesc, pilref, pilref_parent*, pilmethod*, pilref_view*, n, pdeclnoticeplan, METHOD_OK) = $pil_order_member_after(S, pclassdesc, pilref, pilref_view*, n, pdeclnoticeplan, $pil_order_members(S, pclassdesc, pilmethod*, $pil_interface_headers(S, pilref, n)))
+  -- if ~$pil_refs_have(S, pilref_parent*, pilref)
+def $pil_order_member_after(S, pclassdesc, pilref, pilref_view*, n, pdeclnoticeplan_prefix, PILINHERITISSUE pmethodissue pdeclnoticeplan) = PILWORKISSUE pmethodissue ($iterator_notice_join(pdeclnoticeplan_prefix, pdeclnoticeplan))
+def $pil_order_member_after(S, pclassdesc, pilref, pilref_view*, n, pdeclnoticeplan_prefix, PILINHERITED pilmethod* pdeclnoticeplan) = $pil_order_callback_after(S, pclassdesc, pilref, pilmethod*, pilref_view*, n, $iterator_notice_join(pdeclnoticeplan_prefix, pdeclnoticeplan), $pil_callback(S, pclassdesc, pilref, pilref_view*))
+def $pil_order_members(S, pclassdesc, pilmethod*, PILHEADERS pilmethod_parent*) = $pil_inherit_headers(S, pclassdesc, pilmethod*, pilmethod_parent*, DECLNOTICES eps)
+def $pil_order_members(S, pclassdesc, pilmethod*, PILHEADERSUNSUPPORTED text) = PILINHERITISSUE (METHOD_UNSUPPORTED text) (DECLNOTICES eps)
+def $pil_order_callback_after(S, pclassdesc, pilref, pilmethod*, pilref_view*, n, pdeclnoticeplan, pmethodissue) = PILWORKISSUE pmethodissue pdeclnoticeplan
+  -- if pmethodissue =/= METHOD_OK
+def $pil_order_callback_after(S, pclassdesc, pilref, pilmethod*, pilref_view*, n, pdeclnoticeplan, METHOD_OK) = $pil_callback_work(pilmethod*, pilref_new*, pdeclnoticeplan, $pil_callbacks(S, pclassdesc, $pil_refs_added(S, pilref_view*, pilref_inherited*), pilref_new*))
+  -- if pilref_inherited* = $pil_refs_reverse($pil_interface_refs(S, pilref, n))
+  -- if pilref_new* = $pil_refs_merge(S, pilref_view*, pilref_inherited*)

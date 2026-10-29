@@ -1,0 +1,74 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "interface-callback-inherited-unit",
+      "source": "<?php\ninterface ReviewUnitI extends UnitEnum {}\necho \"BEFORE|\";\nclass ReviewUnitC implements ReviewUnitI {}\necho \"AFTER|\";\n",
+      "source_sha256": "a8c84e56c80d0bf6ef5553b34ae32b9c51cb6890ecced6950e000ccf4bfc864c",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "QkVGT1JFfA==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IE5vbi1lbnVtIGNsYXNzIFJldmlld1VuaXRDIGNhbm5vdCBpbXBsZW1lbnQgaW50ZXJmYWNlIFVuaXRFbnVtIGluIHtGSUxFfSBvbiBsaW5lIDQKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "native_group": "inherited-unit",
+      "native_raw_sha256": "3f4de3aa4351a4fc5d34a50669ecaa7c45600c97827e53a6f8ee7bcc65125d2f"
+    },
+    {
+      "id": "interface-callback-inherited-backed",
+      "source": "<?php\ninterface ReviewBackedI extends BackedEnum {}\necho \"BEFORE|\";\nclass ReviewBackedC implements ReviewBackedI {}\necho \"AFTER|\";\n",
+      "source_sha256": "23faa7c53a4935f24096016b9aac403ad62f9fcc2fd22531637eb35a34db9d23",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "QkVGT1JFfA==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IE5vbi1lbnVtIGNsYXNzIFJldmlld0JhY2tlZEMgY2Fubm90IGltcGxlbWVudCBpbnRlcmZhY2UgVW5pdEVudW0gaW4ge0ZJTEV9IG9uIGxpbmUgNApTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "native_group": "inherited-backed",
+      "native_raw_sha256": "3f4de3aa4351a4fc5d34a50669ecaa7c45600c97827e53a6f8ee7bcc65125d2f"
+    },
+    {
+      "id": "interface-callback-later-wrong-kind",
+      "source": "<?php\necho \"BEFORE|\";\nclass ReviewKindC implements UnitEnum, stdClass {}\necho \"AFTER|\";\n",
+      "source_sha256": "3b41ee1bfe6e321bc0d29b8683a2c92342120969c2aca4c88d5b6b901c70f42e",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "QkVGT1JFfA==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFJldmlld0tpbmRDIGNhbm5vdCBpbXBsZW1lbnQgc3RkQ2xhc3MgLSBpdCBpcyBub3QgYW4gaW50ZXJmYWNlIGluIHtGSUxFfSBvbiBsaW5lIDMKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "native_group": "later-wrong-kind",
+      "native_raw_sha256": "3f4de3aa4351a4fc5d34a50669ecaa7c45600c97827e53a6f8ee7bcc65125d2f"
+    },
+    {
+      "id": "interface-callback-later-duplicate",
+      "source": "<?php\necho \"BEFORE|\";\nclass ReviewDuplicateC implements UnitEnum, UnitEnum {}\necho \"AFTER|\";\n",
+      "source_sha256": "99461247517682a4cca0f9a8107eb91900443c5ec2615cae24ac253c7bcc8137",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "QkVGT1JFfA==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENsYXNzIFJldmlld0R1cGxpY2F0ZUMgY2Fubm90IGltcGxlbWVudCBwcmV2aW91c2x5IGltcGxlbWVudGVkIGludGVyZmFjZSBVbml0RW51bSBpbiB7RklMRX0gb24gbGluZSAzClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "native_group": "later-duplicate",
+      "native_raw_sha256": "3f4de3aa4351a4fc5d34a50669ecaa7c45600c97827e53a6f8ee7bcc65125d2f"
+    },
+    {
+      "id": "interface-callback-inherited-method-conflict",
+      "source": "<?php\ninterface ReviewConflictI extends UnitEnum {}\necho \"BEFORE|\";\nclass ReviewConflictC implements ReviewConflictI {\n    public static function cases(): int { return 1; }\n}\necho \"AFTER|\";\n",
+      "source_sha256": "e870e47bb5317f7199da6f02b6a86744a3b4de8e3849507ec812bb61638e2f0a",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "QkVGT1JFfA==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IERlY2xhcmF0aW9uIG9mIFJldmlld0NvbmZsaWN0Qzo6Y2FzZXMoKTogaW50IG11c3QgYmUgY29tcGF0aWJsZSB3aXRoIFVuaXRFbnVtOjpjYXNlcygpOiBhcnJheSBpbiB7RklMRX0gb24gbGluZSA1ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "native_group": "inherited-method-conflict",
+      "native_raw_sha256": "3f4de3aa4351a4fc5d34a50669ecaa7c45600c97827e53a6f8ee7bcc65125d2f"
+    }
+  ]
+}

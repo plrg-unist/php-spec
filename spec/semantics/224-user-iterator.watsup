@@ -29,6 +29,16 @@ dec $useriter_member_name(ptbytes) : ptbytes
 def $useriter_member_name(ptbytes) = $ptascii("getIterator") -- if $ptlc(ptbytes) = $ptascii("getiterator")
 def $useriter_member_name(ptbytes) = $ptlc(ptbytes) -- otherwise
 
+dec $pil_iterator_headers(ptbytes, ptbytes*) : pilmethod*
+def $pil_iterator_headers(ptbytes_owner, eps) = eps
+def $pil_iterator_headers(ptbytes_owner, ptbytes :: ptbytes_tail*) = [$pil_builtin_header(ptbytes_owner, $useriter_member_name(ptbytes), $useriter_signature(ptbytes), false, true)] ++ $pil_iterator_headers(ptbytes_owner, ptbytes_tail*)
+def $pil_builtin_headers(S, ptbytes) = PILHEADERS ($pil_iterator_headers($ptascii("Iterator"), $useriter_members()))
+  -- if $ptlc(ptbytes) = $ptascii("iterator")
+def $pil_builtin_headers(S, ptbytes) = PILHEADERS ($pil_iterator_headers($ptascii("IteratorAggregate"), [$ptascii("getIterator")]))
+  -- if $ptlc(ptbytes) = $ptascii("iteratoraggregate")
+def $pil_builtin_headers(S, ptbytes) = PILHEADERS eps
+  -- if $ptlc(ptbytes) = $ptascii("traversable")
+
 dec $useriter_method_issue(pstate, pclassdesc, pmethoddesc) : pmethodissue
 dec $useriter_method_compared(pstate, pclassdesc, pmethoddesc, pmmethod, pmmethod, pmcheck) : pmethodissue
 dec $useriter_return_compared(pmethoddesc, pmcheck) : pmethodissue
@@ -89,8 +99,6 @@ def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinhe
   -- if $ptlc(ptbytes) = $ptascii("traversable")
 def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited*) = $useriter_methods(S, pclassdesc, [$ptascii("getIterator")], ppmethodinherited*)
   -- if $ptlc(ptbytes) = $ptascii("iteratoraggregate")
-def $pil_ref_names(S, (PILBUILTIN ptbytes) :: pilref_tail*, n) = [ptbytes, $ptascii("Traversable")] ++ $pil_ref_names(S, pilref_tail*, n)
-  -- if $ptlc(ptbytes) <- [$ptascii("iterator"), $ptascii("iteratoraggregate")]
 dec $useriter_abstract(pstate, pclassdesc, ptbytes*, pilabstract*) : pilabstract*
 def $useriter_abstract(S, pclassdesc, eps, pilabstract*) = pilabstract*
 def $useriter_abstract(S, pclassdesc, ptbytes :: ptbytes_tail*, pilabstract*) = $useriter_abstract(S, pclassdesc, ptbytes_tail*, $pil_abs_add(S, pclassdesc, ptbytes, $ptascii("Iterator::") ++ ptbytes, pilabstract*))

@@ -211,3 +211,37 @@ def $pil_parent_wakeup_notice(S, pclassdesc, porigin_parent) = $pil_root_wakeup_
   -- if ~$pil_info_named($pil_class_infos($method_info_layout(S, porigin_parent, |S.CLASSES|)), $ptascii("__wakeup"))
   -- if $method_override_items($method_link_state(S, pclassdesc, porigin_parent), pclassdesc, $pil_class_infos($method_info_layout(S, porigin_parent, |S.CLASSES|))) = METHOD_OK
 def $pil_parent_wakeup_notice(S, pclassdesc, porigin_parent) = S -- otherwise
+
+;; Header-only prototypes come from the pinned internal interface stubs.
+;; They carry no fabricated source body or declaration-history entry.
+dec $pil_enum_signature(ptbytes) : pssignature
+dec $pil_internal_headers(ptbytes, ptbytes*) : pilmethod*
+dec $pil_throwable_header_items(text, ptbytes*) : pilmethod*
+def $pil_internal_scope(ptbytes) = { NAME ptbytes, PARENT eps, ANCESTORS $pil_builtin_ancestors(ptbytes), FINAL false }
+  -- if $ptlc(ptbytes) <- [$ptascii("unitenum"), $ptascii("backedenum"), $ptascii("iterator"), $ptascii("iteratoraggregate"), $ptascii("traversable"), $ptascii("arrayaccess")]
+def $pil_builtin_header(ptbytes_owner, ptbytes_name, pssignature, b_static, b_tentative) = { DECLARATION $pil_signature_method(ptbytes_owner, ptbytes_name, $ptascii("[internal]"), pssignature), SCOPE $pil_internal_scope(ptbytes_owner), STATIC b_static, VISIBILITY PROPERTY_PUBLIC, ABSTRACT true, TENTATIVE b_tentative, ORIGIN eps }
+def $pil_enum_signature(ptbytes) = { PARAMETERS eps, RETURNS ([(PTBRANCH ([PTBUILTIN "array"]))]), BYREF false }
+  -- if $ptlc(ptbytes) = $ptascii("cases")
+def $pil_enum_signature(ptbytes) = { PARAMETERS ([{ NAME $ptascii("value"), TYPE ([(PTBRANCH ([PTBUILTIN "string"])), (PTBRANCH ([PTBUILTIN "int"]))]), BYREF false, VARIADIC false, REQUIRED true, DEFAULT PSNONE }]), RETURNS ([(PTBRANCH ([PTSTATIC]))]), BYREF false }
+  -- if $ptlc(ptbytes) = $ptascii("from")
+def $pil_enum_signature(ptbytes) = { PARAMETERS ([{ NAME $ptascii("value"), TYPE ([(PTBRANCH ([PTBUILTIN "string"])), (PTBRANCH ([PTBUILTIN "int"]))]), BYREF false, VARIADIC false, REQUIRED true, DEFAULT PSNONE }]), RETURNS ([(PTBRANCH ([PTSTATIC])), (PTBRANCH ([PTBUILTIN "null"]))]), BYREF false }
+  -- if $ptlc(ptbytes) = $ptascii("tryfrom")
+def $pil_builtin_headers(S, ptbytes) = PILHEADERS ([$pil_builtin_header($ptascii("UnitEnum"), $ptascii("cases"), $pil_enum_signature($ptascii("cases")), true, false)])
+  -- if $ptlc(ptbytes) = $ptascii("unitenum")
+def $pil_builtin_headers(S, ptbytes) = PILHEADERS ([$pil_builtin_header($ptascii("BackedEnum"), $ptascii("from"), $pil_enum_signature($ptascii("from")), true, false), $pil_builtin_header($ptascii("BackedEnum"), $ptascii("tryFrom"), $pil_enum_signature($ptascii("tryFrom")), true, false), $pil_builtin_header($ptascii("UnitEnum"), $ptascii("cases"), $pil_enum_signature($ptascii("cases")), true, false)])
+  -- if $ptlc(ptbytes) = $ptascii("backedenum")
+def $pil_builtin_headers(S, ptbytes) = PILHEADERS ($pil_internal_headers($ptascii("Stringable"), [$ptascii("__toString")]))
+  -- if $ptlc(ptbytes) = $ptascii("stringable")
+def $pil_builtin_headers(S, ptbytes) = PILHEADERS ($pil_internal_headers($ptascii("Throwable"), [$ptascii("getMessage"), $ptascii("getCode"), $ptascii("getFile"), $ptascii("getLine"), $ptascii("getTrace"), $ptascii("getPrevious"), $ptascii("getTraceAsString")]) ++ $pil_internal_headers($ptascii("Stringable"), [$ptascii("__toString")]))
+  -- if $ptlc(ptbytes) = $ptascii("throwable")
+def $pil_builtin_headers(S, ptbytes) = PILHEADERSUNSUPPORTED "internal interface method contract"
+  -- if ~($ptlc(ptbytes) <- [$ptascii("unitenum"), $ptascii("backedenum"), $ptascii("stringable"), $ptascii("throwable"), $ptascii("iterator"), $ptascii("iteratoraggregate"), $ptascii("traversable"), $ptascii("arrayaccess")])
+def $pil_internal_headers(ptbytes_owner, eps) = eps
+def $pil_internal_headers(ptbytes_owner, ptbytes_name :: ptbytes_tail*) = [$pil_builtin_header(ptbytes_owner, ptbytes_name, pssignature, false, false)] ++ $pil_internal_headers(ptbytes_owner, ptbytes_tail*)
+  -- if $pil_internal_signature(ptbytes_name) = (pssignature)
+def $pil_throwable_headers(text_kind) = $pil_throwable_header_items(text_kind, [$ptascii("__construct"), $ptascii("__wakeup"), $ptascii("getMessage"), $ptascii("getCode"), $ptascii("getFile"), $ptascii("getLine"), $ptascii("getTrace"), $ptascii("getPrevious"), $ptascii("getTraceAsString"), $ptascii("__toString"), $ptascii("getSeverity")])
+def $pil_throwable_header_items(text_kind, eps) = eps
+def $pil_throwable_header_items(text_kind, ptbytes :: ptbytes_tail*) = [$pil_builtin_header($pil_concrete_owner(text_kind, ptbytes), $pil_internal_name(ptbytes), pssignature, false, $ptlc(ptbytes) = $ptascii("__wakeup"))[.ABSTRACT = false]] ++ $pil_throwable_header_items(text_kind, ptbytes_tail*)
+  -- if $pil_concrete_signature(text_kind, ptbytes) = (pssignature)
+def $pil_throwable_header_items(text_kind, ptbytes :: ptbytes_tail*) = $pil_throwable_header_items(text_kind, ptbytes_tail*)
+  -- if $pil_concrete_signature(text_kind, ptbytes) = eps

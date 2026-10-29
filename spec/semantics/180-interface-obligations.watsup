@@ -11,6 +11,9 @@ dec $pil_abs_link(pstate, pclassdesc, porigin, nat, pilabstract*) : pilabstract*
 dec $pil_abs_refs(pstate, pclassdesc, pilref*, nat, pilabstract*) : pilabstract*
 dec $pil_abs_names(pilabstract*, nat) : ptbytes
 dec $pil_abstract_from(pclassdesc, pilabstract*) : ptbytes?
+dec $pil_anonymous_class(pstate, pclassdesc) : bool
+dec $pil_abstract_required(pclassdesc, pilabstract*) : ptbytes?
+dec $pil_headers_abstract(pilmethod*) : pilabstract*
 
 def $pil_abs_seen(eps, ptbytes) = false
 def $pil_abs_seen((PILABSTRACT ptbytes_name ptbytes_label) :: pilabstract_tail*, ptbytes) = true
@@ -43,7 +46,7 @@ def $pil_abs_add(S, pclassdesc_child, ptbytes_name, ptbytes_label, pilabstract*)
   -- if pmethoddesc.ABSTRACT
 
 def $pil_abs_own(S, pclassdesc_child, pclassdesc_owner, eps, pilabstract*) = pilabstract*
-def $pil_abs_own(S, pclassdesc_child, pclassdesc_owner, pmethoddesc :: pmethoddesc_tail*, pilabstract*) = $pil_abs_own(S, pclassdesc_child, pclassdesc_owner, pmethoddesc_tail*, $pil_abs_add(S, pclassdesc_child, pmethoddesc.NAME, pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME, pilabstract*))
+def $pil_abs_own(S, pclassdesc_child, pclassdesc_owner, pmethoddesc :: pmethoddesc_tail*, pilabstract*) = $pil_abs_own(S, pclassdesc_child, pclassdesc_owner, pmethoddesc_tail*, $pil_abs_add(S, pclassdesc_child, pmethoddesc.NAME, $c_string(pclassdesc_owner.NAME) ++ $ptascii("::") ++ pmethoddesc.NAME, pilabstract*))
   -- if pmethoddesc.ABSTRACT
 def $pil_abs_own(S, pclassdesc_child, pclassdesc_owner, pmethoddesc :: pmethoddesc_tail*, pilabstract*) = $pil_abs_own(S, pclassdesc_child, pclassdesc_owner, pmethoddesc_tail*, pilabstract*)
   -- if ~pmethoddesc.ABSTRACT
@@ -88,8 +91,26 @@ def $pil_abs_names((PILABSTRACT ptbytes_name ptbytes_label) :: pilabstract_tail*
   -- if $(n > 0) /\ pilabstract_tail* =/= eps
 def $pil_abstract_message(S, pclassdesc) = eps
   -- if pclassdesc.ABSTRACT
-def $pil_abstract_message(S, pclassdesc) = $pil_abstract_from(pclassdesc, $pil_abs_class(S, pclassdesc, pclassdesc.ORIGIN, |S.CLASSES|, eps))
-  -- if ~pclassdesc.ABSTRACT
+def $pil_abstract_message(S, pclassdesc) = $pil_abstract_from(pclassdesc, $pil_headers_abstract(pilmethod*))
+  -- if ~pclassdesc.ABSTRACT /\ pclassdesc.KIND =/= "enum" /\ ~$pil_anonymous_class(S, pclassdesc)
+  -- if $pil_type_headers(S, pclassdesc.ORIGIN, $(|S.CLASSES| + 2)) = PILHEADERS pilmethod*
+def $pil_abstract_message(S, pclassdesc) = $pil_abstract_required(pclassdesc, $pil_headers_abstract(pilmethod*))
+  -- if ~pclassdesc.ABSTRACT /\ (pclassdesc.KIND = "enum" \/ $pil_anonymous_class(S, pclassdesc))
+  -- if $pil_type_headers(S, pclassdesc.ORIGIN, $(|S.CLASSES| + 2)) = PILHEADERS pilmethod*
+def $pil_headers_abstract(eps) = eps
+def $pil_headers_abstract(pilmethod :: pilmethod_tail*) = (PILABSTRACT pilmethod.DECLARATION.NAME ($c_string(pilmethod.DECLARATION.OWNER) ++ $ptascii("::") ++ pilmethod.DECLARATION.NAME)) :: $pil_headers_abstract(pilmethod_tail*)
+  -- if pilmethod.ABSTRACT
+def $pil_headers_abstract(pilmethod :: pilmethod_tail*) = $pil_headers_abstract(pilmethod_tail*)
+  -- if ~pilmethod.ABSTRACT
+def $pil_anonymous_class(S, pclassdesc) = true
+  -- if pclassdesc.KIND = "class"
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14 phpType24 ABSENT phpType44 phpType42 phpType23 metadata)
+def $pil_anonymous_class(S, pclassdesc) = false -- otherwise
+def $pil_abstract_required(pclassdesc, eps) = eps
+def $pil_abstract_required(pclassdesc, pilabstract*) = ($pil_role(pclassdesc) ++ [32] ++ $c_string(pclassdesc.NAME) ++ $ptascii(" must implement 1 abstract method (") ++ $pil_abs_names(pilabstract*, 3) ++ [41])
+  -- if |pilabstract*| = 1
+def $pil_abstract_required(pclassdesc, pilabstract*) = ($pil_role(pclassdesc) ++ [32] ++ $c_string(pclassdesc.NAME) ++ $ptascii(" must implement ") ++ $ntunsigned(|pilabstract*|) ++ $ptascii(" abstract methods (") ++ $pil_abs_names(pilabstract*, 3) ++ [41])
+  -- if $(|pilabstract*| > 1)
 def $pil_abstract_from(pclassdesc, eps) = eps
 def $pil_abstract_from(pclassdesc, pilabstract*) = ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" contains 1 abstract method and must therefore be declared abstract or implement the remaining method (") ++ $pil_abs_names(pilabstract*, 3) ++ [41])
   -- if |pilabstract*| = 1

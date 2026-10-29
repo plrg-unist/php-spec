@@ -1,10 +1,8 @@
 dec $trait_notice_items(pdeclnoticeitem*) : bool
 ;; Zend 8.5.10 checks the actual inherited/interface entry. A source method
 ;; replaces its tentative prototype; a fresh direct Iterator link restores it.
-syntax pdeclnoticeplan = DECLNOTICES pdeclnotice* | DECLNOTICESUNSUPPORTED text
 dec $arrayaccess_notice_parent(pstate, pclassdesc, ppmethodinherited*) : pdeclnoticeplan
 dec $arrayaccess_notice_source(pstate, pclassdesc, porigin, ppmethodinherited*) : pdeclnoticeplan
-dec $iterator_notice_join(pdeclnoticeplan, pdeclnoticeplan) : pdeclnoticeplan
 def $iterator_notice_join(DECLNOTICES pdeclnotice*, DECLNOTICES pdeclnotice_tail*) = DECLNOTICES (pdeclnotice* ++ pdeclnotice_tail*)
 def $iterator_notice_join(DECLNOTICESUNSUPPORTED text, pdeclnoticeplan) = DECLNOTICESUNSUPPORTED text
 def $iterator_notice_join(DECLNOTICES pdeclnotice*, DECLNOTICESUNSUPPORTED text) = DECLNOTICESUNSUPPORTED text
@@ -89,11 +87,27 @@ def $iterator_notice_refs(S, pclassdesc, pilref_seen*, pilref :: pilref_tail*, p
   -- if $pil_order_checked(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*) =/= METHOD_OK
 
 dec $iterator_notice_plan(pstate, pclassdesc) : pdeclnoticeplan
-def $iterator_notice_plan(S, pclassdesc) = $iterator_notice_join($iterator_notice_join($iterator_notice_parent(S, pclassdesc, ppmethodinherited*), $arrayaccess_notice_parent(S, pclassdesc, ppmethodinherited*)), $iterator_notice_refs(S, pclassdesc, eps, pilref*, ppmethodinherited*))
-  -- if $pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = (PILTARGETS pilref*)
-  -- if ppmethodinherited* = $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $pil_proto_refs(S, pilref*, |S.CLASSES|)
-def $iterator_notice_plan(S, pclassdesc) = $iterator_notice_join($iterator_notice_parent(S, pclassdesc, $ppmethod_own(pclassdesc, pclassdesc.METHODS)), $arrayaccess_notice_parent(S, pclassdesc, $ppmethod_own(pclassdesc, pclassdesc.METHODS)))
-  -- if $pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = eps
+def $iterator_notice_plan(S, pclassdesc) = $iterator_notice_join($iterator_notice_join($iterator_notice_parent(S, pclassdesc, $ppmethod_own(pclassdesc, pclassdesc.METHODS)), $arrayaccess_notice_parent(S, pclassdesc, $ppmethod_own(pclassdesc, pclassdesc.METHODS))), $pil_ordered_notices(S, pclassdesc))
+
+;; Only tentative comparisons actually visited by the ordered linker contribute.
+;; The selected source origin is retained for suppression, line and trace data.
+dec $pil_header_notice_result(pstate, pclassdesc, pilmethod, pilmethod, pmethoddesc, pmcheck) : pdeclnoticeplan
+def $pil_header_notices(S, pclassdesc, pilmethod_child, pilmethod_parent) = DECLNOTICES eps
+  -- if ~pilmethod_parent.TENTATIVE \/ pilmethod_child.ORIGIN = eps
+def $pil_header_notices(S, pclassdesc, pilmethod_child, pilmethod_parent) = $pil_header_notice_result(S, pclassdesc, pilmethod_child, pilmethod_parent, pmethoddesc, $pmcompare(PMUSER pilmethod_child.DECLARATION, pilmethod_child.SCOPE, PMUSER pilmethod_parent.DECLARATION, pilmethod_parent.SCOPE, $method_active_registry(S, S.CLASSNAMES)))
+  -- if pilmethod_parent.TENTATIVE
+  -- if pilmethod_child.ORIGIN = (porigin)
+  -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
+def $pil_header_notice_result(S, pclassdesc, pilmethod_child, pilmethod_parent, pmethoddesc, PMCHECK PVYES ptbytes*) = DECLNOTICES eps
+def $pil_header_notice_result(S, pclassdesc, pilmethod_child, pilmethod_parent, pmethoddesc, PMCHECK PVNO ptbytes*) = DECLNOTICES eps
+  -- if $iterator_notice_suppressed(S, pmethoddesc)
+def $pil_header_notice_result(S, pclassdesc, pilmethod_child, pilmethod_parent, pmethoddesc, PMCHECK PVNO ptbytes*) = DECLNOTICES ([{CLASS pclassdesc.ORIGIN, METHOD pmethoddesc.FUNCTION.ORIGIN, LINE pilmethod_child.DECLARATION.CONTEXT.LINE, MESSAGE ($ptascii("Return type of ") ++ ptbytes_child ++ $ptascii(" should either be compatible with ") ++ ptbytes_parent ++ $ptascii(", or the #[\\ReturnTypeWillChange] attribute should be used to temporarily suppress the notice"))}])
+  -- if ~$iterator_notice_suppressed(S, pmethoddesc)
+  -- if $pmcdisplay($pmdeclaration(pilmethod_child.DECLARATION, pilmethod_child.SCOPE, 14)) = PMTEXT ptbytes_child
+  -- if $pmcdisplay($pmdeclaration(pilmethod_parent.DECLARATION, pilmethod_parent.SCOPE, 14)) = PMTEXT ptbytes_parent
+def $pil_header_notice_result(S, pclassdesc, pilmethod_child, pilmethod_parent, pmethoddesc, PMCHECK PVUNRESOLVED ptbytes*) = DECLNOTICESUNSUPPORTED "tentative return availability"
+def $pil_header_notice_result(S, pclassdesc, pilmethod_child, pilmethod_parent, pmethoddesc, PMUNSUPPORTED text) = DECLNOTICESUNSUPPORTED text
+def $pil_header_notice_result(S, pclassdesc, pilmethod_child, pilmethod_parent, pmethoddesc, pmcheck) = DECLNOTICESUNSUPPORTED "tentative declaration display" -- otherwise
 
 dec $iterator_notice_items(pdeclnotice*) : pdeclnoticeitem*
 def $iterator_notice_items(pdeclnotice*) = (METHOD_NOTICE pdeclnotice)*
@@ -174,6 +188,9 @@ def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = $eval_comp
   -- if $eval_compile_recorded_error(S_result, 64)
   -- if $iterator_notice_link_fatal(S_result.COMPLETION)
   -- if $iterator_notice_plan(S_candidate, pclassdesc) = DECLNOTICES pdeclnotice*
+def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = S_result[.COMPLETION = UNSUPPORTED text]
+  -- if $iterator_notice_link_fatal(S_result.COMPLETION)
+  -- if $iterator_notice_plan(S_candidate, pclassdesc) = DECLNOTICESUNSUPPORTED text
 def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = S_result -- otherwise
 def $iterator_notice_compile_stop(S) = $eval_compile_record_prefix($iterator_notice_default(S, $iterator_notice_seeds(S.TODO)), $iterator_notice_seeds(S.TODO))
   -- if S.COMPLETION =/= NORMAL

@@ -71,6 +71,11 @@ def $arrayaccess_signature(ptbytes) = { PARAMETERS ([$arrayaccess_parameter("off
 def $arrayaccess_signature(ptbytes) = { PARAMETERS ([$arrayaccess_parameter("offset")]), RETURNS ([(PTBRANCH ([PTBUILTIN "void"]))]), BYREF false }
   -- if $ptlc(ptbytes) = $ptascii("offsetunset")
 def $arrayaccess_scope() = { NAME $ptascii("ArrayAccess"), PARENT eps, ANCESTORS eps, FINAL false }
+dec $pil_arrayaccess_headers(ptbytes*) : pilmethod*
+def $pil_arrayaccess_headers(eps) = eps
+def $pil_arrayaccess_headers(ptbytes :: ptbytes_tail*) = [$pil_builtin_header($ptascii("ArrayAccess"), ptbytes, $arrayaccess_signature(ptbytes), false, true)] ++ $pil_arrayaccess_headers(ptbytes_tail*)
+def $pil_builtin_headers(S, ptbytes) = PILHEADERS ($pil_arrayaccess_headers($arrayaccess_members()))
+  -- if $ptlc(ptbytes) = $ptascii("arrayaccess")
 def $arrayaccess_member_name(ptbytes) = $ptascii("offsetExists") -- if $ptlc(ptbytes) = $ptascii("offsetexists")
 def $arrayaccess_member_name(ptbytes) = $ptascii("offsetGet") -- if $ptlc(ptbytes) = $ptascii("offsetget")
 def $arrayaccess_member_name(ptbytes) = $ptascii("offsetSet") -- if $ptlc(ptbytes) = $ptascii("offsetset")
