@@ -37157,7 +37157,8 @@
         "spec/semantics/398-output-api-failures.watsup",
         "spec/semantics/399-output-result-cleanup.watsup",
         "spec/semantics/401-output-reference-warning.watsup",
-        "spec/semantics/441-output-finalization.watsup"
+        "spec/semantics/441-output-finalization.watsup",
+        "spec/semantics/30-storage.watsup"
       ],
       "helper_tests": [
         "tests/semantics/output_buffer_state.py",
@@ -37168,7 +37169,9 @@
         "tests/semantics/output_result_cleanup_state.py",
         "tests/semantics/output_reference_warning_state.py",
         "tests/semantics/output_final_protocol.py",
-        "tests/semantics/output_final_review_protocol.py"
+        "tests/semantics/output_final_review_protocol.py",
+        "tests/semantics/output_final_throw_protocol.py",
+        "tests/semantics/output_final_throw_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/output_buffer_sources.py",
@@ -37199,7 +37202,12 @@
         "tests/semantics/output_request_end_peer_positive_nested.php",
         "tests/semantics/output_request_end_peer_warning_callback.php",
         "tests/semantics/output_request_end_positive_empty.php",
-        "tests/semantics/output_request_end_positive_tail.php"
+        "tests/semantics/output_request_end_positive_tail.php",
+        "tests/semantics/output_final_throw_sources.py",
+        "tests/semantics/output_request_end_held_throw.php",
+        "tests/semantics/output_request_end_peer_captured_throw.php",
+        "tests/semantics/output_final_throw_fresh.php",
+        "tests/semantics/output_final_throw_late_capture.php"
       ],
       "evidence": [
         "vendor/php-src/main/output.c",
@@ -37222,9 +37230,11 @@
         "coverage/semantics/output-reference-warning-author.json",
         "coverage/semantics/output-reference-warning-review.json",
         "vendor/php-src/main/main.c",
-        "coverage/semantics/output-request-end-review.json"
+        "coverage/semantics/output-request-end-review.json",
+        "vendor/php-src/Zend/zend_exceptions.c",
+        "coverage/semantics/output-final-throw-review.json"
       ],
-      "review": "Modules391\u2013399 retain their separately accepted output cuts, including defined scalar cleanup and borrowed receivers. Module401 releases the exact scalar prepared prefix when a direct explicit-API reference warning throws before callback entry, then reuses undefined-result failure cleanup. Three distinct originals agree at 35a9. Two genuine fronts pass 106 physical premises (61 at e13, 45 at 4f; 16 shared setup), checking sole reference ownership, exact contents, retired metadata versus live owners, malformed index/tail/value/ownership and overlong-prefix refusals, plus fuel0. Original baseline/fixture and same-cap memory failures retain 0. Full completion stays covered by the exact source; the bounded retired state claims no destructor-operation SOURCE. The obsolete Module398 warning-throw control is retired without renewing old campaigns. Automatic pre-entry warnings, produced-warning throws, owning warning-handler cleanup, exit, other producers/abnormal request-end/fatal drains and wider conversion/callable/capability/mutation/Fiber/stdout protocols remain required. OB01 adds normal EOF/EXIT user drain after real object retirement, weak FINAL diagnostics and post-request local destructors: 15 exact normal originals and six reached groups/238 checks pass. Escaping FINAL throws remain unresolved (90/40s timeout; captured throw unrun), with zero credit. The obligation stays partial."
+      "review": "Modules391\u2013399 retain their separately accepted output cuts, including defined scalar cleanup and borrowed receivers. Module401 releases the exact scalar prepared prefix when a direct explicit-API reference warning throws before callback entry, then reuses undefined-result failure cleanup. Three distinct originals agree at 35a9. Two genuine fronts pass 106 physical premises (61 at e13, 45 at 4f; 16 shared setup), checking sole reference ownership, exact contents, retired metadata versus live owners, malformed index/tail/value/ownership and overlong-prefix refusals, plus fuel0. Original baseline/fixture and same-cap memory failures retain 0. Full completion stays covered by the exact source; the bounded retired state claims no destructor-operation SOURCE. The obsolete Module398 warning-throw control is retired without renewing old campaigns. Automatic pre-entry warnings, produced-warning throws, owning warning-handler cleanup, exit, other producers/wider request-end fatal paths and wider conversion/callable/capability/mutation/Fiber/stdout protocols remain required. OB01 adds normal EOF/EXIT user drain after real object retirement, weak FINAL diagnostics and post-request local destructors: 15 exact normal originals and six reached groups/238 checks pass. OB02 adds authentic default FINAL fatal takeover for builtin scalar-message/NULL-previous Throwables, stored internal traces, builtin string cache and fatal status 255 and inactive top-first raw-zoh release: four originals agree and three reached groups/131 checks pass. Pending Throwable release must be nonfinal or destructor-inactive; effectful final pending cleanup, selected handlers, wider rendering and reentrant/abrupt deactivation remain required. Original 90/40-second and later 30-second timeouts retain zero failed-packet credit. The obligation stays partial."
     },
     {
       "id": "environment.request-inputs",

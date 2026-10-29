@@ -1,0 +1,190 @@
+{
+  "milestone": "OB02",
+  "status": "private semantics accepted; actual-tail validation pending",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "zts": false,
+    "int_size": 8,
+    "oracle_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_source_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml_switch": "5.1.0",
+    "semantic_mode": "SL"
+  },
+  "scope": "Default FINAL fatal takeover for a builtin Throwable with scalar message, NULL previous and no selected exception handler. Preserve stored trace, fill builtin string cache, freeze fatal255, deactivate live buffers and release only the unpopped raw-zoh suffix top first. No lower output routing or repeated FINAL. Pending Throwable decrement must be nonfinal or destructor-inactive.",
+  "implementation": [
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/391-output-buffers.watsup",
+    "spec/semantics/441-output-finalization.watsup"
+  ],
+  "source_outcomes": {
+    "total": 4,
+    "exact": 4,
+    "cuts": [
+      {
+        "report": "ob02-author-native/candidate-held-a1b876e3a/report.json",
+        "sha256": "b5b4de26906a9e3077687dcaa649a40910ec6a9557465bd5fc7efc941cf64cb3",
+        "head": "a1b876e3a7282f1cb88602ab9f6252808457e80e",
+        "packet_passed": true,
+        "accepted_cases": [
+          "held_throw"
+        ],
+        "worker_exits": [
+          0,
+          0
+        ],
+        "groups_reaped": [
+          true,
+          true
+        ],
+        "inputs_stable": true,
+        "native_replayed": false
+      },
+      {
+        "report": "ob02-author-native/candidate-pending3-a1b876e3a/report.json",
+        "sha256": "01bc705c54c15a227e5dd438968d128a88f2bf76be870a385177656562ac27da",
+        "head": "a1b876e3a7282f1cb88602ab9f6252808457e80e",
+        "packet_passed": false,
+        "accepted_cases": [
+          "fresh_inside_final",
+          "peer_captured_throw"
+        ],
+        "worker_exits": [
+          0,
+          -9
+        ],
+        "groups_reaped": [
+          true,
+          true
+        ],
+        "inputs_stable": true,
+        "native_replayed": false
+      },
+      {
+        "report": "ob02-author-native/candidate-late75-b41e61e7d/report.json",
+        "sha256": "c69f320bb02ecf37f389ab8c860734dd2ef08d1ecc6d2f36372a553414effcd0",
+        "head": "b41e61e7d5ae099f33e26985464c318d707a1e91",
+        "packet_passed": true,
+        "accepted_cases": [
+          "late_cache_deactivate"
+        ],
+        "worker_exits": [
+          0,
+          0
+        ],
+        "groups_reaped": [
+          true,
+          true
+        ],
+        "inputs_stable": true,
+        "native_replayed": false
+      }
+    ]
+  },
+  "reached": {
+    "groups": 3,
+    "assertions": 131,
+    "cuts": [
+      {
+        "report": "ob02-author-native/reached-raw/fiber-state-review-_3qyoo35/report.json",
+        "sha256": "2da30bae2aced541d0b6dc58735947a622f5d35a555800d5d4fdf12ecc8270d7",
+        "head": "b41e61e7d5ae099f33e26985464c318d707a1e91",
+        "selection": [
+          "late-fatal-cache-before-active-off-release"
+        ],
+        "assertions": 33,
+        "outer": {
+          "report": "ob02-author-native/reached-peer-initial-b41e61e7d/process.json",
+          "sha256": "dd3b75647196e2e393f4b7be2bb5f331fa6478d64162ffa13042a067c76bb9bf",
+          "head": "b41e61e7d5ae099f33e26985464c318d707a1e91"
+        }
+      },
+      {
+        "report": "ob02-author-native/reached-raw/fiber-state-review-pd6fon02/report.json",
+        "sha256": "5192a48ef4ca0679fe67668e0419d219dd293e72cb8006fbf68141cf831ea929",
+        "head": "b41e61e7d5ae099f33e26985464c318d707a1e91",
+        "selection": [
+          "late-fatal-upper-retired-before-lower"
+        ],
+        "assertions": 28,
+        "outer": {
+          "report": "ob02-author-native/reached-peer-postupper-b41e61e7d/process.json",
+          "sha256": "da2cb3967dd0a19d835f252e114af1b9b6343522e34ed91f1159c299987ea42d",
+          "head": "b41e61e7d5ae099f33e26985464c318d707a1e91"
+        }
+      },
+      {
+        "report": "ob02-author-native/reached-raw/fiber-state-review-zhp40wxb/report.json",
+        "sha256": "cdb178f1c9331634434020b3e1ed756c0b6cd886feb395ba4c2396f00372ae70",
+        "head": "b41e61e7d5ae099f33e26985464c318d707a1e91",
+        "selection": [
+          "restored-final-error-takes-over-and-resumes-fatal"
+        ],
+        "assertions": 70,
+        "outer": {
+          "report": "ob02-author-native/reached-author-guard-b41e61e7d/process.json",
+          "sha256": "17e4657aff63c6ee5a2e3b836d733714eb0a836b0ed6ddd1f8386075f3802476",
+          "head": "b41e61e7d5ae099f33e26985464c318d707a1e91"
+        }
+      }
+    ]
+  },
+  "strict": {
+    "report": "ob02-author-native/strict-a1b876e3a/report.json",
+    "sha256": "4639b9df52ffdaca3257851c785206461a97ebd541f631a5e75e8e6c196378fd",
+    "head": "a1b876e3a7282f1cb88602ab9f6252808457e80e",
+    "module_count": 429,
+    "passed": true
+  },
+  "summary": {
+    "path": "ob02-author-native/accepted-summary.json",
+    "sha256": "2da45ea084ba29a8aedf751fd3adda23448c42e641dfae709d8de40e7295e95e"
+  },
+  "authority": [
+    "vendor/php-src/main/main.c::php_request_shutdown",
+    "vendor/php-src/main/output.c::php_output_stack_pop/php_output_deactivate/php_output_handler_dtor",
+    "vendor/php-src/Zend/zend_execute_API.c::zend_call_known_fcc_ex",
+    "vendor/php-src/Zend/zend_exceptions.c::zend_throw_exception_internal/zend_exception_error"
+  ],
+  "remaining": [
+    "Effectful final pending-Throwable release before buffer deactivation (prioritized next).",
+    "Selected exception-handler FINAL continuation.",
+    "Previous chains, source Throwable overrides and effectful/nonscalar rendering.",
+    "Late ob_start or abrupt/destructor-throw deactivation, callback exit and wider warning/fatal producers.",
+    "Existing buffered-stdout diagnostics and all global held boundaries."
+  ],
+  "preserved_failures": [
+    {
+      "report": "ob01-author-native/boundaries-9fa533343/report.json",
+      "credit": 0,
+      "kind": "original90s timeout; captured throw then unrun"
+    },
+    {
+      "report": "ob01-author-native/diagnose-held-reduced-9fa533343/report.json",
+      "credit": 0,
+      "kind": "original40s timeout"
+    },
+    {
+      "report": "ob02-author-native/native-late-d42d2fea7/report.json",
+      "credit": 0,
+      "kind": "illegal destructor return type; compile fatal, no FINAL execution"
+    },
+    {
+      "report": "ob02-author-native/strict-187fb4f42/report.json",
+      "credit": 0,
+      "kind": "slice arithmetic parse rejection"
+    },
+    {
+      "report": "ob02-author-native/candidate-pending3-a1b876e3a/report.json",
+      "credit": 0,
+      "kind": "whole packet failed on late eval30 timeout; two separately exact rows credited above"
+    }
+  ],
+  "compatibility": "Guard3dbfc39b5 admits held/fresh destructor-inactive sole Throwables and captured/late retained Throwables. Normal OB01 has no new deactivation task; source4/state131 cuts remain applicable. Actual-tail affected guard checks are separate.",
+  "harness": "Maintained scope.main uses model request90 plus30 seconds parse/outer margin; default30 still yields60. Retained external source comparisons, not metadata-only reruns, establish acceptance.",
+  "recovery": "Raw below ../php-spec-evidence-archive/. Git private branch output/request-end-throw-ob02 retains tested a1b/b41 and frozen originals; maintained source/protocol commands regenerate checks. External evidence is not a build input.",
+  "integration": {
+    "base": "d10c7afea96992b80754b8c963826c7465a00be4",
+    "status": "pending joined431 and affected guard checks"
+  }
+}

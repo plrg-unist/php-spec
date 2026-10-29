@@ -236,9 +236,13 @@ throws release only the prepared prefix before failed-buffer cleanup.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)
-records the bounded normal cut. Callback exit, wider warning-handler throws,
-other byte producers, abnormal/fatal finalization and buffered stdout diagnostics
-remain dependencies.
+records the bounded normal cut. [OB02](coverage/semantics/output-final-throw-review.json)
+adds builtin FINAL throws with scalar messages, NULL previous and no selected
+exception handler: stored traces and the string cache precede fatal reporting,
+then inactive buffers release raw owners
+without forwarding bytes. Effectful final pending-Throwable release, selected
+exception handlers, wider rendering/cleanup throws, other byte producers and
+buffered stdout diagnostics remain dependencies.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback

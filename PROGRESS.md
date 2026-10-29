@@ -155,18 +155,31 @@ output handlers after real shutdown/global/store retirement. Nested lower writes
 weak diagnostics and callback-local destructors preserve saved completion and the
 sole handler owner. Fifteen native-first normal originals agree, six reached
 groups pass 238 assertions, private strict427 and joined actual-tail strict429
-pass. The first abnormal model timed out at 90 seconds and at reduced fuel/40
-seconds before returning a state; the captured-throw model is unrun. Both remain
-unresolved with zero model credit. [OB01 review](coverage/semantics/output-request-end-review.json).
+pass. Its original 90/40-second abnormal timeouts and then-unrun captured throw
+retain their historical zero-credit status. OB02 now covers those sources at
+new tested cuts. [OB01 review](coverage/semantics/output-request-end-review.json).
+
+OB02 admits default fatal takeover from builtin FINAL throws with scalar messages
+and NULL previous. Stored traces and cache mutation precede fatal reporting;
+inactive buffers then release raw owners without lower writes. Four originals
+match PHP and three reached groups pass 131 assertions. A pending-Throwable
+decrement must be nonfinal or destructor-inactive; effectful final pending cleanup
+is the next buffering dependency. Selected exception handlers, wider rendering
+and reentrant/abrupt deactivation remain partial.
+[OB02 review](coverage/semantics/output-final-throw-review.json).
 
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| OB02 | Restored FINAL callback-failure boundary; default fatal reporting and buffer/owner cleanup implementation. |
-| COMP155 | Method-bearing captured-object comparisons; native/source preparation. |
-| GC06 | Materialized destructor GC count/buffer correction; produced-identity/root-order discrepancy under focused diagnosis. |
-| Enum M3/M4 | Captured generated calls and direct/negated enum-case conditional transfers are integrated for reviewed sources. Wider conditional sources, generated dispatch, backing dependency and default-loader contexts remain partial. |
+| OB02 | Private fatal4/state131 accepted; actual-tail composition and joined/affected guard checks. |
+| CLASS151 | Recoverable rejected eval/include histories. |
+| COMP155/156 | Method-bearing comparisons privately complete; interface-bearing preparation. |
+| GC06 | Collector counts and buffer correction. |
+| ATTR04 | Selected exception-handler Deprecated API entry. |
+| I80 | Captured ordinary-method Generator factories. |
+| Enum | Generated array-callable dispatch. |
+| CONFIG | Continuation preparation after integrated A70. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 

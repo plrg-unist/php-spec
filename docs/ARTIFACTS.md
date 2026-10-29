@@ -573,3 +573,12 @@ and actual-tail joined strict429.
 `accepted-summary.json` maps all nine original state directories to their intact
 external locations. The failed/stopped packets, 90/40-second abnormal timeouts
 and model-unrun captured-throw boundary retain their separate zero-credit status.
+
+OB02 evidence is under `../php-spec-evidence-archive/ob02-author-native/` and
+`ob02-review-native/`. The [review](../coverage/semantics/output-final-throw-review.json)
+links four exact fatal sources, three reached groups/131 assertions and the
+original failed packets. `accepted-summary.json` maps the three intact state
+directories under `reached-raw/`. Earlier stage/timing probes are diagnostic-only;
+the late full-source timeout retains zero credit alongside its later justified
+75-second exact comparison. Maintained sources/protocols regenerate the behavior;
+external archives are evidence, not build inputs.

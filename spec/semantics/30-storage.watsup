@@ -149,7 +149,7 @@ syntax passertmode = { INPUT pvalue, VALUE int }
 syntax passertiniphase = ASSERTION_CONVERT | ASSERTION_PARSE | ASSERTION_REFUSE int
 syntax ptask
 syntax pshellcontext
-syntax poutputbuffer, pobdrain, pobnotice, pobinvoke, poboutput, pobrelease, pobcall, pobwrite, pobfinish, pobcaller, pobstringrelease, pobapimode
+syntax poutputbuffer, pobdrain, pobdeactivate, pobnotice, pobinvoke, poboutput, pobrelease, pobcall, pobwrite, pobfinish, pobcaller, pobstringrelease, pobapimode
 syntax ptickmarker, ptickentry, ptickdispatch
 syntax pintegeroperation
 syntax pintegerphase
@@ -342,7 +342,7 @@ syntax pforeachaggregate = { STATEMENT statement, SITE porigin, LINE int, AGGREG
 syntax pfibertraversal = { CAPTURE nat?, START pfiberstart, OBJECT nat, AGGREGATE nat?, ACQUIRED nat*, INPUT poperand, SITE porigin, LINE int, CURRENT poperand, SENT pnamedargs, ITEMS pentry* }
 syntax pfiberfinish = { OBJECT nat, PENDING nat?, SEQUENCE nat, PROTECTED (nat, nat)? }
 syntax ptask = ENUM_CASE_INIT porigin | ENUM_CONST_FETCH porigin ptbytes ptbytes int | ENUM_CASES pconfigcall porigin* pvalue* | ENUM_CASES_VALUE pconfigcall porigin* pvalue* | ENUM_QUERY_RESULT pconfigcall porigin | ENUM_FROM_CONVERT pconfigcall pvalue | ENUM_FROM_FETCH pconfigcall pvalue | ENUM_FROM_LOSSY pconfigcall pvalue int | ENUM_FROM_NULL pconfigcall | ENUM_FROM_STRING_RESULT pconfigcall nat porigin int int | TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND ptickdispatch nat | TICK_REFERENCE ptickdispatch nat | TICK_ENTER ptickdispatch | TICK_RESULT ptickdispatch | TICK_UNREGISTER_RELEASE pshutdownentry ptickentry
-  | OUTPUT_WRITE pobwrite | OUTPUT_FINISH pobwrite | OUTPUT_DRAIN pobdrain | OUTPUT_DRAIN_RELEASE pobdrain poutputbuffer
+  | OUTPUT_WRITE pobwrite | OUTPUT_FINISH pobwrite | OUTPUT_DRAIN pobdrain | OUTPUT_DRAIN_RELEASE pobdrain poutputbuffer | OUTPUT_FINAL_DEACTIVATE pobdeactivate
   | OB_USER_FAIL_ARGS pobinvoke nat | OB_USER_FAIL_DONE pobinvoke | OB_USER_FAIL_COMMIT pobinvoke nat | OUTPUT_FAIL_WRITE pobwrite nat | OUTPUT_FAIL_FINISH pobwrite nat
   | OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask* nat | OB_API_FAIL_DONE pobrelease pcallcontext? ptask*
   | OB_USER_NORMAL_RESULT pobinvoke pdestructionframe | OB_USER_NORMAL_PENDING pobinvoke pdestructionframe | OB_USER_NORMAL_COMMIT pobinvoke pdestructionframe poboutput
@@ -702,6 +702,7 @@ syntax pobwrite = { CALLER pobcaller, CONTEXT pcallcontext?, IDS nat*, INDEX nat
 syntax pobcall = OB_API pconfigcall | OB_WRITE pobwrite | OB_API_FAILED pconfigcall pcallcontext? ptask* | OB_FINAL pobdrain
 syntax pobapimode = OB_API_RETAIN | OB_API_RESTORE | OB_API_RELEASE
 syntax pobinvoke = { CALL pobcall, BUFFER poutputbuffer, VALUE pvalue, INPUT pvalue, PHASE int, SENT poperand* }
+syntax pobdeactivate = { CALL pobinvoke, BUFFERS poutputbuffer*, INDEX nat, COMPLETION pcompletion }
 syntax poboutput = { VALUE pvalue, BYTES preqbytes, PRECISION int, FAILED bool }
 syntax pobrelease = { CALL pconfigcall, BUFFER poutputbuffer, VALUE pvalue }
 syntax pobnotice = { CALL pconfigcall, VALUE pvalue, SECOND bool, WRAPPER bool, LEVEL nat?, OWNER nat, TAIL ptask* }

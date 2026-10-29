@@ -70,6 +70,9 @@ test-semantics: build
 	python3 tests/semantics/output_request_end_sources.py
 	python3 tests/semantics/output_final_protocol.py
 	python3 tests/semantics/output_final_review_protocol.py
+	python3 tests/semantics/output_final_throw_sources.py
+	python3 tests/semantics/output_final_throw_protocol.py
+	python3 tests/semantics/output_final_throw_review_protocol.py
 	python3 tests/semantics/request_provider.py
 	python3 tests/semantics/evidence.py
 	python3 tests/semantics/source_occurrences.py
