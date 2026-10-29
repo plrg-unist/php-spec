@@ -22,19 +22,14 @@ dec $call_aggregate_target(pstate, pcallaggregate, pcalltarget) : bool
 dec $call_aggregate_pending(pstate, porigin) : bool
 dec $call_aggregate_frame(pstate, pcallcontext, pframe) : bool
 dec $call_aggregate_entered(pstate, pcallcontext?, pframe*, pcalltarget, porigin) : bool
-dec $call_aggregate_selected(pstate, pcalltarget, porigin) : bool
 dec $call_aggregate_context(pstate, pcallcontext) : bool
 dec $call_aggregate_same(punpackcall, punpackcall) : bool
 dec $call_aggregate_match(pcallaggregate, punpackcall, poperand, nat) : bool
 dec $call_aggregate_receipt(pstate, punpackcall, poperand, nat, ptask*) : bool
 dec $call_aggregate_marker(punpackcall, ptask*) : bool
-dec $call_aggregate_iterator_input(pstate, piteratorunpack) : bool
-dec $call_aggregate_generator_input(pstate, pgeneratorunpack) : bool
-dec $call_aggregate_tail(punpackcall, poperand, nat, ptask*) : ptask*
 dec $call_aggregate_leaf_task(ptask, pcallaggregate) : bool
 dec $call_aggregate_leaf_active(pcallaggregate, ptask*) : bool
 dec $call_aggregate_leaf_saved(pcallaggregate, pdestructionoperation*) : bool
-dec $call_aggregate_magic_suffix(ptask, ptask*, pcalltarget) : bool
 dec $call_aggregate_source_task(ptask, pcallaggregate) : bool
 
 ;; This increment uses ordinary public, zero-argument, by-value getters. A

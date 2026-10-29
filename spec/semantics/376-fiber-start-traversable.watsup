@@ -1,3 +1,8 @@
+dec $call_aggregate_selected(pstate, pcalltarget, porigin) : bool
+dec $call_aggregate_iterator_input(pstate, piteratorunpack) : bool
+dec $call_aggregate_generator_input(pstate, pgeneratorunpack) : bool
+dec $call_aggregate_tail(punpackcall, poperand, nat, ptask*) : ptask*
+dec $call_aggregate_magic_suffix(ptask, ptask*, pcalltarget) : bool
 dec $array_aggregate_selected(pstate, pcalltarget, porigin) : bool
 ;; SEND_UNPACK uses native Generator hooks or real Iterator callbacks. Its
 ;; operand and iterator data are distinct owners; completed history owns neither.
