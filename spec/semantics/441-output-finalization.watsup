@@ -271,6 +271,8 @@ dec $output_deactivate_pending(pstate) : bool
 dec $output_deactivate_task(ptask) : pobdeactivate?
 dec $output_deactivate_pending_tasks(pstate, ptask*) : bool
 dec $output_deactivate_pending_frames(pstate, pframe*) : bool
+dec $output_executor_finish(pstate) : pstate
+def $output_executor_finish(S) = S -- otherwise
 
 ;; Reporting precedes the pending Throwable decrement. Its dedicated task keeps
 ;; the active/running output stack visible throughout ordinary child release.
@@ -376,7 +378,7 @@ rule PhpStep/output-final-deactivate-pop: S ~> S[.TODO = [OUTPUT_FINAL_DEACTIVAT
   -- if ptask_tail* = eps
   -- if $call_task_valid(S, OUTPUT_FINAL_DEACTIVATE pobdeactivate)
   -- if $(pobdeactivate.INDEX < |pobdeactivate.BUFFERS|)
-rule PhpStep/output-final-deactivate-done: S ~> S[.TODO = eps][.COMPLETION = pobdeactivate.COMPLETION]
+rule PhpStep/output-final-deactivate-done: S ~> $output_executor_finish(S[.TODO = eps][.COMPLETION = pobdeactivate.COMPLETION])
   -- if S.TODO = (OUTPUT_FINAL_DEACTIVATE pobdeactivate) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $call_task_valid(S, OUTPUT_FINAL_DEACTIVATE pobdeactivate)
@@ -508,6 +510,7 @@ def $output_final_exception_ready(S, pobinvoke, n) = true
   -- if S.COMPLETION = NORMAL /\ ~S.OUTPUTBLOCKED
   -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.EXCEPTIONHANDLER =/= eps
   -- if $call_task_valid(S, OB_USER_RESULT pobinvoke)
+  -- if $output_final_exception_valid(S[.TODO = [THROW_SEARCH n, OUTPUT_FINAL_EXCEPTION pobinvoke true, OUTPUT_DRAIN pobdrain]][.ORIGIN = eps], pobinvoke, true)
   -- if $throwable_live(S, n)
 def $output_final_exception_ready(S, pobinvoke, n) = false -- otherwise
 def $ob_user_result_discard(S, pobinvoke) = S[.TODO = [THROW_SEARCH n, OUTPUT_FINAL_EXCEPTION pobinvoke true, OUTPUT_DRAIN pobdrain]][.ORIGIN = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
