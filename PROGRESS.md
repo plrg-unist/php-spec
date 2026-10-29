@@ -104,6 +104,8 @@ Outside aliases can now retain an ordinary scalar cell after that Generator dies
 copied sends and retired source history survive later writes to the cell.
 A direct temporary zero-argument BYREF Generator call keeps separate INPUT and DATA
 owners; DATA drops first, then final INPUT/storage cleanup precedes API or catch.
+A distinct BYVAL factory can return that BYREF Generator while publishing only a
+weak observer; its source, owner transitions and weak death have private validation.
 Typed Generator cells, owning copied arguments, effectful casts, wider
 last-DATA reference graphs and lifecycles remain partial.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
@@ -113,6 +115,7 @@ last-DATA reference graphs and lifecycles remain partial.
 [Sole-DATA reference cleanup](coverage/semantics/config-generator-reference-sole-data-review.json),
 [Surviving-alias cleanup](coverage/semantics/config-generator-reference-outside-alias-review.json),
 [Temporary reference cleanup](coverage/semantics/config-generator-temporary-reference-review.json),
+[Factory reference cleanup](coverage/semantics/config-generator-factory-reference-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
@@ -297,7 +300,7 @@ reentrant/abrupt raw-owner teardown remain partial.
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
 | GC08 | Enum possible-root admission fix. |
 | Enum M3/M4 | Generated array-capture preparation; no new validation credit. Other string consumers, backing dependencies and the default loader remain partial. |
-| A76 | BYVAL factory returning a BYREF Generator; frozen new-source preparation. |
+| A76 | BYVAL factory returning a BYREF Generator; privately validated, integration queued. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 

@@ -737,8 +737,18 @@ the existing storage pin, drops the cached-cell edge and retires the Generator
 before API. Quiet terminal throw prunes after DATA/INPUT discards and before
 catch. In the four local-cell originals, the cell also dies during cleanup.
 Four new sources agree with PHP, including copied NULL/value arguments and a
-saved terminal throw. Indirect factories, typed/owning cells and wider producers
-remain partial.
+saved terminal throw. The distinct BYVAL factory route follows below;
+typed/owning cells and wider producers remain partial.
+
+[Factory-returned BYREF Generator unpack](coverage/semantics/config-generator-factory-reference-review.json)
+admits a named zero-argument BYVAL factory whose actual result is a separate
+BYREF Generator. The emitted factory call and returned Generator function are
+authenticated independently; a weak observer adds no strong owner. Four new
+sources agree with PHP. Normal cleanup drops DATA before INPUT and the existing
+storage pin, while quiet throw consumes both owners before catch. The weak
+observer sees the Generator live through the final INPUT stage and null before
+the NULL handler or catch. Owning sends, typed cells and wider factories remain
+partial.
 
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.

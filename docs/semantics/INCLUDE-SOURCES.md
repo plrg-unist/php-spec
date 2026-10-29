@@ -1831,7 +1831,7 @@ effectful cleanup and wider return/key/lifetime forms remain separate.
 The [temporary reference Generator increment](../../coverage/semantics/config-generator-temporary-reference-review.json)
 admits a direct named zero-argument BYREF Generator call as an unpack VAR
 expression. The exact emitted noarg call target must be the returned Generator's
-own function; a BYVAL factory returning a BYREF Generator remains excluded.
+own function; the distinct BYVAL factory route follows below.
 The existing flat ordinary scalar reader and final integer-key/return gates
 stay in force. The temporary owns distinct INPUT and DATA edges. On normal
 completion, DATA drops from two Generator owners to one; final INPUT release
@@ -1845,6 +1845,22 @@ Four frozen PHP originals agree through model-only comparisons; strict431 and
 316 reached conditions (312 premises, four raw transitions) verify source
 authority, copied sends, physical cleanup and later NULL-handler/API order.
 The old CONFIG Traversable Unsupported at prefix `B;` retains zero credit.
-Indirect factories, typed/backed/debt/released or owning cells, owning sends,
+Other factories, typed/backed/debt/released or owning cells, owning sends,
 Aggregate/Closure/method producers and wider key/return/lifetime forms remain
+separate.
+
+The [BYVAL factory reference increment](../../coverage/semantics/config-generator-factory-reference-review.json)
+admits an actual named zero-argument BYVAL factory result that is a distinct
+named BYREF Generator. The source call must emit `UNPACK_VAR`; its resolved
+factory descriptor and the returned Generator's descriptor are checked
+separately. The real result supplies both INPUT and DATA owners, while the
+factory's `WeakReference` supplies no strong owner. Normal completion drops
+DATA from two owners to one, then the existing355 pin releases the cached-cell
+edge and Generator before INI_SET. Quiet terminal throw discards DATA and INPUT
+separately, retaining the saved Throwable until catch. Four frozen originals
+agree through model-only comparisons; strict432 and 353 reached conditions
+(349 premises, four raw transitions) verify copied sends, weak visibility,
+retired source history and handler order. The old `B;P;` Unsupported remains
+zero credit. Typed/backed/debt/released or owning cells, owning sends/RETURN,
+Aggregate/Closure/method producers and wider factories/keys/lifetimes remain
 separate.
