@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Keep wider inheritance refusals and the promoted interface status control."""
+"""Keep the dynamic inheritance refusal and promoted parent/interface status controls."""
 import hashlib
 import json
 import os
@@ -10,9 +10,9 @@ import typed_static_ini_prefix_protocol as cross
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
-    'forward-parent': (b'<?php $o = new class extends Base143 {}; class Base143 {}', 'unsupported'),
+    # Historical boundaries now checked by status, without a new native comparison.
+    'forward-parent': (b'<?php $o = new class extends Base143 {}; class Base143 {}', 'normal'),
     'dynamic-unit': (b"<?php class Base143 {} eval('$o = new class extends Base143 {};');", 'unsupported'),
-    # This historical boundary is now a normal status control, not a native comparison.
     'interface': (b'<?php interface I143 {} $o = new class implements I143 {};', 'normal'),
 }
 

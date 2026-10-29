@@ -1,0 +1,156 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-dependency-author-duplicate-interface-and-autoload",
+      "source": "<?php\ninterface Known146Duplicate {}\nspl_autoload_register(function($name) { echo 'LOAD:', $name, '|'; eval('interface Later146Duplicate {}'); });\nfunction argument146Duplicate() { echo 'ARG|'; return 3; }\necho 'before|';\n$o = new class(argument146Duplicate()) implements Known146Duplicate, Known146Duplicate, Later146Duplicate {};\necho 'after';\n",
+      "source_sha256": "c8fc1de114ea361213698b3a72624fcf95c87a9fb7903a686907606ea824c41c",
+      "stdout_base64": "YmVmb3JlfExPQUQ6TGF0ZXIxNDZEdXBsaWNhdGV8",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENsYXNzIEtub3duMTQ2RHVwbGljYXRlQGFub255bW91cyBjYW5ub3QgaW1wbGVtZW50IHByZXZpb3VzbHkgaW1wbGVtZW50ZWQgaW50ZXJmYWNlIEtub3duMTQ2RHVwbGljYXRlIGluIHtGSUxFfSBvbiBsaW5lIDYKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "class146-frozen-native11",
+      "native_raw_sha256": "4a35d337dbc71a98f9b828681ddabd8df2437f9740af34b046aad5c390aa6ec0"
+    },
+    {
+      "id": "anonymous-dependency-author-missing-interface-before-argument",
+      "source": "<?php\nfunction argument146AbsentInterface() { echo 'ARG|'; return 3; }\necho 'before|';\ntry { $o = new class(argument146AbsentInterface()) implements Absent146Interface {}; }\ncatch (Error $e) { echo $e->getMessage(), '|'; }\necho 'after';\n",
+      "source_sha256": "efc15dd87d432936f01da564035ac7f6edba1423535f557e0b6e6b7bc8d5e326",
+      "stdout_base64": "YmVmb3JlfEludGVyZmFjZSAiQWJzZW50MTQ2SW50ZXJmYWNlIiBub3QgZm91bmR8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class146-frozen-native11",
+      "native_raw_sha256": "761e7b892aef76dc2cae1839af5fc48bc8b80393abc84b1cd74890447a7b3a0e"
+    },
+    {
+      "id": "anonymous-dependency-author-missing-parent-before-argument",
+      "source": "<?php\nfunction argument146AbsentBase() { echo 'ARG|'; return 3; }\necho 'before|';\ntry { $o = new class(argument146AbsentBase()) extends Absent146Base {}; }\ncatch (Error $e) { echo $e->getMessage(), '|'; }\necho 'after';\n",
+      "source_sha256": "0aed801f23b41b15e5fc3ba09c730bc0fe209425a8b68d4288f9578026bf92f8",
+      "stdout_base64": "YmVmb3JlfENsYXNzICJBYnNlbnQxNDZCYXNlIiBub3QgZm91bmR8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class146-frozen-native11",
+      "native_raw_sha256": "b2c3912a974dedd3e881d550a5ee2040fb12d0be64979c50a4fce07134cc42e8"
+    },
+    {
+      "id": "anonymous-dependency-author-multiple-dependency-autoload-order",
+      "source": "<?php\nspl_autoload_register(function($name) {\n    echo 'L:', $name, '|';\n    if ($name === 'Base146Many') { eval('class Base146Many { public int $n = 1; public function __construct(int $n) { echo \"CTOR|\"; $this->n = $n; } }'); }\n    elseif ($name === 'Read146Many') { eval('interface Read146Many { public function read(): int; }'); }\n    elseif ($name === 'Tag146Many') { eval('interface Tag146Many { public function tag(): string; }'); }\n});\nfunction argument146Many() { echo 'ARG|'; return 7; }\nfunction make146Many() { return new class(argument146Many()) extends Base146Many implements Read146Many, Tag146Many {\n    public function read(): int { return $this->n; }\n    public function tag(): string { return 'tag'; }\n}; }\n$a = make146Many(); $b = make146Many();\necho $a->read(), '/', $b->read(), '|', $a->tag(), '|';\necho $a !== $b ? 'fresh|' : 'bad|';\necho $a::class === $b::class ? 'same|' : 'bad|';\necho $a::class;\n",
+      "source_sha256": "28c278e834ac3f54e6d61e01a301ca08f3d7957393d70c6f463712dad931964a",
+      "stdout_base64": "TDpCYXNlMTQ2TWFueXxMOlJlYWQxNDZNYW55fEw6VGFnMTQ2TWFueXxBUkd8Q1RPUnxBUkd8Q1RPUnw3Lzd8dGFnfGZyZXNofHNhbWV8QmFzZTE0Nk1hbnlAYW5vbnltb3VzAC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE0Ni1hdXRob3IvbXVsdGlwbGUtZGVwZW5kZW5jeS1hdXRvbG9hZC1vcmRlci5waHA6OSQw",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class146-frozen-native11",
+      "native_raw_sha256": "0dc6d111c904bcd5b7f9008d5ae5e43fc7237631c96aa12ccfd806a6b68d851c",
+      "stdout_template_base64": "TDpCYXNlMTQ2TWFueXxMOlJlYWQxNDZNYW55fEw6VGFnMTQ2TWFueXxBUkd8Q1RPUnxBUkd8Q1RPUnw3Lzd8dGFnfGZyZXNofHNhbWV8QmFzZTE0Nk1hbnlAYW5vbnltb3VzAHtGSUxFfTo5JDA="
+    },
+    {
+      "id": "anonymous-dependency-author-wrong-interface-and-later-autoload",
+      "source": "<?php\nclass Wrong146Interface {}\nspl_autoload_register(function($name) { echo 'LOAD:', $name, '|'; eval('interface Later146WrongInterface {}'); });\nfunction argument146WrongInterface() { echo 'ARG|'; return 3; }\necho 'before|';\n$o = new class(argument146WrongInterface()) implements Wrong146Interface, Later146WrongInterface {};\necho 'after';\n",
+      "source_sha256": "a0508aafb70a8e38d185123d4d8c95cd1b6ce985e304b81f87f2d8ea8e56b420",
+      "stdout_base64": "YmVmb3JlfExPQUQ6TGF0ZXIxNDZXcm9uZ0ludGVyZmFjZXw=",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFdyb25nMTQ2SW50ZXJmYWNlQGFub255bW91cyBjYW5ub3QgaW1wbGVtZW50IFdyb25nMTQ2SW50ZXJmYWNlIC0gaXQgaXMgbm90IGFuIGludGVyZmFjZSBpbiB7RklMRX0gb24gbGluZSA2ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "class146-frozen-native11",
+      "native_raw_sha256": "af46d8aefeed3f41a7ee07e2b261fa4c778bc3e3c24c3a8fa81544fa037aed47"
+    },
+    {
+      "id": "anonymous-dependency-author-wrong-parent-and-interface-autoload",
+      "source": "<?php\ninterface Wrong146Base {}\nspl_autoload_register(function($name) { echo 'LOAD:', $name, '|'; eval('interface Later146ParentInterface {}'); });\nfunction argument146WrongBase() { echo 'ARG|'; return 3; }\necho 'before|';\n$o = new class(argument146WrongBase()) extends Wrong146Base implements Later146ParentInterface {};\necho 'after';\n",
+      "source_sha256": "58e2cb5c935376c5b9fc3e0bcece7af68f637b99c2b28553970d9e223fa616d0",
+      "stdout_base64": "YmVmb3JlfExPQUQ6TGF0ZXIxNDZQYXJlbnRJbnRlcmZhY2V8",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENsYXNzIFdyb25nMTQ2QmFzZUBhbm9ueW1vdXMgY2Fubm90IGV4dGVuZCBpbnRlcmZhY2UgV3JvbmcxNDZCYXNlIGluIHtGSUxFfSBvbiBsaW5lIDYKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "class146-frozen-native11",
+      "native_raw_sha256": "1a6d6a50356ff96a0236c9e5ebb1df155d8995292479f43b43c1af42a691e9c1"
+    },
+    {
+      "id": "anonymous-dependency-autoload-parent-then-interface-throw-retry",
+      "source": "<?php\n$attempt = 0;\nfunction review146_loader($name) {\n    global $attempt;\n    echo 'load:', $name, '|';\n    if ($name === 'Review146LoadBase') {\n        eval('class Review146LoadBase { public function __construct($v) { echo \"ctor:\", $v, \"|\"; } }');\n    } elseif ($name === 'Review146LoadRead') {\n        $attempt = $attempt + 1;\n        if ($attempt === 1) { throw new Exception('pause'); }\n        eval('interface Review146LoadRead { public function value(): int; }');\n    }\n}\nspl_autoload_register('review146_loader');\nfunction review146_arg() { echo 'arg|'; return 7; }\nfunction review146_load_make() {\n    $made = new class(review146_arg()) extends Review146LoadBase implements Review146LoadRead {\n        public int $number = 8;\n        public function value(): int { return $this->number; }\n    };\n    return $made;\n}\ntry { $a = review146_load_make(); } catch (Exception $e) { echo $e->getMessage(), '|'; }\n$b = review146_load_make();\n$c = review146_load_make();\necho $b::class, '|', ($b::class === $c::class ? 'same' : 'different'), '|', ($b === $c ? 'alias' : 'fresh'), '|', $c->value(), '/', $attempt;\n",
+      "source_sha256": "61f255bfe3a666804fa7fe3ecef79bfc1004af831bd61610c5cc460a9c15603a",
+      "stdout_base64": "bG9hZDpSZXZpZXcxNDZMb2FkQmFzZXxsb2FkOlJldmlldzE0NkxvYWRSZWFkfHBhdXNlfGxvYWQ6UmV2aWV3MTQ2TG9hZFJlYWR8YXJnfGN0b3I6N3xhcmd8Y3Rvcjo3fFJldmlldzE0NkxvYWRCYXNlQGFub255bW91cwAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY2xhc3MxNDYtcmV2aWV3L2F1dG9sb2FkLXBhcmVudC10aGVuLWludGVyZmFjZS10aHJvdy1yZXRyeS5waHA6MTckMHxzYW1lfGZyZXNofDgvMg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class146-frozen-native11",
+      "native_raw_sha256": "816fd0fe578ac2e8c456a7add47edb4ca33d23b13394e29bc119d3b5d88c7ba6",
+      "stdout_template_base64": "bG9hZDpSZXZpZXcxNDZMb2FkQmFzZXxsb2FkOlJldmlldzE0NkxvYWRSZWFkfHBhdXNlfGxvYWQ6UmV2aWV3MTQ2TG9hZFJlYWR8YXJnfGN0b3I6N3xhcmd8Y3Rvcjo3fFJldmlldzE0NkxvYWRCYXNlQGFub255bW91cwB7RklMRX06MTckMHxzYW1lfGZyZXNofDgvMg=="
+    },
+    {
+      "id": "anonymous-dependency-forward-factory-full-identity",
+      "source": "<?php\nfunction review146_forward_make() {\n    $made = new class extends Review146ForwardBase implements Review146ForwardRead {\n        public int $number = 5;\n        public function read(): int { return $this->number; }\n    };\n    return $made;\n}\necho \"before|\";\n$a = review146_forward_make();\nclass Review146ForwardBase {\n    public function __construct() { echo \"ctor|\"; }\n}\ninterface Review146ForwardRead { public function read(): int; }\n$b = review146_forward_make();\necho $a::class, '|', ($a::class === $b::class ? 'same' : 'different'), '|', ($a === $b ? 'alias' : 'fresh'), '|', $b->read();\n",
+      "source_sha256": "759237aa4e31735b684053f535985a31825b2bd707f4b967164c46805b166b6c",
+      "stdout_base64": "YmVmb3JlfGN0b3J8Y3RvcnxSZXZpZXcxNDZGb3J3YXJkQmFzZUBhbm9ueW1vdXMAL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTQ2LXJldmlldy9mb3J3YXJkLWZhY3RvcnktZnVsbC1pZGVudGl0eS5waHA6MyQwfHNhbWV8ZnJlc2h8NQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class146-frozen-native11",
+      "native_raw_sha256": "7f5c6985be8d48f467d6888cb600f5456cb50f9b11d7050dfcc174f1b4f3aa11",
+      "stdout_template_base64": "YmVmb3JlfGN0b3J8Y3RvcnxSZXZpZXcxNDZGb3J3YXJkQmFzZUBhbm9ueW1vdXMAe0ZJTEV9OjMkMHxzYW1lfGZyZXNofDU="
+    },
+    {
+      "id": "anonymous-dependency-skipped-unresolved-invalid-default",
+      "source": "<?php\necho \"before|\";\nif (false) {\n    $o = new class extends Review146BadMissingBase implements Review146BadMissingRead {\n        public int $number = \"bad\";\n    };\n}\necho \"after\";\n",
+      "source_sha256": "a0c4f80e3934b67b5c6409050787c98579c864d9be81a1c3aaa015706baec3fc",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIGRlZmF1bHQgdmFsdWUgZm9yIHByb3BlcnR5IFJldmlldzE0NkJhZE1pc3NpbmdCYXNlQGFub255bW91czo6JG51bWJlciBvZiB0eXBlIGludCBpbiB7RklMRX0gb24gbGluZSA1ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "class146-frozen-native11",
+      "native_raw_sha256": "3d711a4f124d2102ff576b3dcb5e2e1dadf2387e66d54d1093e81eec3e30cb56"
+    },
+    {
+      "id": "anonymous-dependency-skipped-unresolved-parent-type",
+      "source": "<?php\necho \"before|\";\nif (false) {\n    $o = new class extends Review146MissingBase implements Review146MissingRead {\n        public parent $parentSlot;\n        public int $number = 3;\n    };\n}\necho \"after\";\n",
+      "source_sha256": "b05aad97a6a83767657d15c8399c7f00121213dd8d3ea1e1b24d820c5c77ad2a",
+      "stdout_base64": "YmVmb3JlfGFmdGVy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class146-frozen-native11",
+      "native_raw_sha256": "ccb4a6b31fff8aca01bc11e3f6d3ef68669013b1000ac85cf5137e9c38abe70d"
+    },
+    {
+      "id": "anonymous-dependency-unused-magic-full-identity",
+      "source": "<?php\nclass Review146UnusedString { public function __toString(): string { return 'BAD-S'; } }\nclass Review146UnusedDestructor { public function __destruct() { echo 'BAD-D'; } }\n$o = new class {};\necho $o::class;\n",
+      "source_sha256": "3ef5b7c3ccb48db1ae8194a3a84c88fa8cf7bf1b35bda367b12c718f7cc2af05",
+      "stdout_base64": "Y2xhc3NAYW5vbnltb3VzAC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE0Ni1yZXZpZXcvdW51c2VkLW1hZ2ljLWZ1bGwtaWRlbnRpdHkucGhwOjQkMQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class146-frozen-native11",
+      "native_raw_sha256": "a03a55e7b39536c8483c395d0b224496bf03cc5b9283014ad8c1c92bd6b6ec03",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo0JDE="
+    },
+    {
+      "id": "anonymous-dependency-promoted-op110-unused-magic-context",
+      "source": "<?php\nclass LateLeft {\n    public function __toString() { $GLOBALS['stringCalls']++; echo 'BAD-S;'; return '17'; }\n    public function __destruct() { echo 'DL:', $GLOBALS['v'] === $GLOBALS['expectedFinal'], ';'; }\n}\nclass OwnedToken {\n    public function __destruct() { echo 'DT:', $GLOBALS['v'] === $GLOBALS['expectedFinal'], ';'; }\n}\nfunction independent_owning_handler($level, $message, $file, $line) {\n    $GLOBALS['calls']++;\n    echo 'H:', $level === E_DEPRECATED, ':', $message === 'Implicit conversion from float 12.5 to int loses precision', ':', $file === __FILE__, ':', $line === 40, ':', $GLOBALS['left'] === 12.5, ':', $GLOBALS['right'] instanceof stdClass, ':', $GLOBALS['v'] === 100, ':', $GLOBALS['calls'] === 1, ';';\n    $GLOBALS['left'] = $GLOBALS['anonymousReplacement'];\n    $GLOBALS['anonymousReplacement'] = null;\n    $GLOBALS['weakLeft'] = WeakReference::create($GLOBALS['left']);\n    $GLOBALS['right'] = [7];\n    return true;\n}\n$anonymousReplacement = new class {}; $left = 12.5; $right = new stdClass(); $weakRight = WeakReference::create($right);\n$calls = 0; $stringCalls = 0; $v = 100; $expectedFinal = 100;\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n$failure = new Exception('OP110-independent');\nset_error_handler('independent_owning_handler');\ntry {\n    $v =\n        $left % $right;\n    echo 'BAD-R;';\n} catch (TypeError $e) {\n    echo 'C:', $e->getMessage() === 'Unsupported operand types: class@anonymous % array', ':', $e->getLine() === 40, ':', $e->getPrevious() === null, ':', $v === 100, ':', $calls === 1, ':', $stringCalls === 0, ':', get_class($left) !== 'LateLeft', ':', $weakLeft->get() === $left, ':', $right === [7], ':', $right[0] === 7, ':', $weakRight->get() === null, ':', get_class($left) !== 'class@anonymous', ':', $anonymousReplacement === null, ';';\n}\nfinally { echo 'F;'; }\nrestore_error_handler();\n$left = null; echo 'A:', $weakLeft->get() === null, ':', $right[0] === 7, ':', $weakRight->get() === null, ';';\necho 'END:', $v === 100, ':', $calls === 1, ':', $stringCalls === 0, ';';\n",
+      "source_sha256": "5fb15ab9b2d3540817566e1498ef4c0369abaa384685d3f8b809e22a3ec56f67",
+      "stdout_base64": "SDoxOjE6MToxOjE6MToxOjE7QzoxOjE6MToxOjE6MToxOjE6MToxOjE6MToxO0Y7QToxOjE6MTtFTkQ6MToxOjE7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "OP110 frozen context original, reused native before new candidate; prior Unsupported retains zero original credit",
+      "native_raw_sha256": "9535eaf2cf584cdc02ca1fbd803461d3948e0b0c33b83e243eff2eb8dcc9357b",
+      "model_timeout_seconds": 180
+    }
+  ]
+}

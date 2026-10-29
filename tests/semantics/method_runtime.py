@@ -56,8 +56,9 @@ def run(match, catalogue=DEFAULT_CASES):
         source = directory / 'source.php'
         source.write_bytes(row['source'].encode())
         assert sha(source) == row['source_sha256'], row['id']
+        timeout = row.get('model_timeout_seconds', 45)
         command = [str(ROOT / 'bin/php-semantics'), str(source),
-                   '--steps', '100000', '--timeout', '45']
+                   '--steps', '100000', '--timeout', str(timeout)]
         if 'startup_ini' in row:
             startup = directory / 'startup-ini.json'
             startup.write_text(json.dumps(row['startup_ini']) + '\n')
@@ -82,7 +83,7 @@ def run(match, catalogue=DEFAULT_CASES):
             command += ['--file-snapshot', str(snapshot)]
         stdout_path, stderr_path = directory / 'runner.stdout', directory / 'runner.stderr'
         producer = {'supplied_argv': command, 'supplied_cwd': str(directory),
-                    'supplied_environment': environment, 'host_timeout_seconds': 55,
+                    'supplied_environment': environment, 'host_timeout_seconds': timeout + 10,
                     'observed_exit': None, 'cleanup_exit': None, 'status': 'prepared'}
         command_path = directory / 'runner.command.json'
         command_path.write_text(json.dumps(producer, indent=2) + '\n')
@@ -94,7 +95,7 @@ def run(match, catalogue=DEFAULT_CASES):
                 producer.update(popen_args=process.args, pid=process.pid,
                                 owned_pgid=process.pid, status='running')
                 command_path.write_text(json.dumps(producer, indent=2) + '\n')
-                producer['observed_exit'] = process.wait(timeout=55)
+                producer['observed_exit'] = process.wait(timeout=timeout + 10)
             except subprocess.TimeoutExpired:
                 producer['timeout_expired'] = True
             finally:
