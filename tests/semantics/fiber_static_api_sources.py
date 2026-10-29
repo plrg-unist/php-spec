@@ -39,18 +39,30 @@ def main():
     for path in args.native_report:
         path = path.resolve()
         report = json.loads(path.read_bytes())
-        assert report['profile'] == profile and report['mode'] == 'native-only'
+        assert report['profile'] == profile and report['mode'] in ('native-only', 'native-first')
         assert report.get('runtime_sha256', report.get('runtime', {}).get('binary_sha256')) == runtime['binary_sha256']
-        for row in report.get('rows', report.get('results', [])):
+        if report['mode'] == 'native-first':
+            assert report['passed'] and report['inputs_stable'] and report['head_stable']
+        rows = report['records'] if report['mode'] == 'native-first' else report.get('rows', report.get('results', []))
+        for row in rows:
             if row['id'] not in {case['id'] for case in cases} or not row.get('passed', row.get('pass')):
                 continue
             assert row['id'] not in native_previous
-            directory = Path(report.get('raw', path.parent)) / row['id']
-            if 'actual_stdout' in row:
-                native = dict(row['process'], stdout=row['actual_stdout'], stderr=row['actual_stderr'])
+            if report['mode'] == 'native-first':
+                original = Path(row['command'][-1])
+                assert digest(original) == row['source_sha256']
+                stdout, stderr = row['actual_stdout'].encode(), row['actual_stderr'].encode()
+                assert Path(row['stdout']).read_bytes() == stdout and Path(row['stderr']).read_bytes() == stderr
+                native = {'command': row['command'], 'exit': row['exit'], 'timeout': row['timeout'],
+                          'stdout': base64.b64encode(stdout).decode(), 'stderr': base64.b64encode(stderr).decode()}
             else:
-                native = json.loads((directory / 'native.json').read_bytes())
-            native_previous[row['id']] = (path, directory / 'source.php', native)
+                directory = Path(report.get('raw', path.parent)) / row['id']
+                original = directory / 'source.php'
+                if 'actual_stdout' in row:
+                    native = dict(row['process'], stdout=row['actual_stdout'], stderr=row['actual_stderr'])
+                else:
+                    native = json.loads((directory / 'native.json').read_bytes())
+            native_previous[row['id']] = (path, original, native)
     if args.native_report:
         assert set(native_previous) == {row['id'] for row in cases}
     out = Path(tempfile.mkdtemp(prefix=PREFIX, dir=ROOT / '.tools'))
