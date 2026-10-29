@@ -175,6 +175,8 @@ dec $gc_materialized_callback_context(pstate) : bool
 dec $gc_materialized_caller_target(pstate, pcalltarget, porigin?) : bool
 dec $gc_materialized_caller(pstate, pcallcontext?) : bool
 dec $gc_materialized_caller_frames(pstate, pframe*) : bool
+dec $gc_materialized_caller_site(pstate, pcallcontext?, porigin) : bool
+dec $gc_callback_caller_valid(pstate, pgccall) : bool
 dec $gc_callback_count_source(pstate, pobjecttable*, pnode*) : pobjecttable?
 dec $gc_callback_count_head(pstate, pobjecttable, pnode*) : bool
 dec $gc_callback_count_origin(pstate) : pgccountsource?
@@ -1254,6 +1256,7 @@ def $gc_weak_plan_valid(S, pgcplan) = false -- otherwise
 def $gc_call_live(S, pgccall) = true
   -- if S.GC.ACTIVE = (pgccall) /\ $(pgccall.NONCE < S.GC.NEXT)
   -- if $gc_callback_count_valid(S, pgccall)
+  -- if $gc_callback_caller_valid(S, pgccall)
   -- if pgccall.CALL.KIND = INTRINSIC_GC_COLLECT /\ pgccall.CALL.SENT = eps
   -- if pgccall.ORIGIN = (pgccall.CALL.SITE) /\ $(pgccall.PASS <= 1)
   -- if $config_invoke_valid($gc_call_scope(S, pgccall), pgccall.CALL)
@@ -1533,7 +1536,16 @@ def $gc_materialized_caller(S, pcallcontext?) = false -- otherwise
 def $gc_materialized_caller_frames(S, eps) = true
 def $gc_materialized_caller_frames(S, pframe :: pframe_tail*) = ($gc_materialized_caller(S_scope, pframe.CONTEXT) /\ $call_saved_context_valid(S_scope, pframe) /\ $gc_materialized_caller_frames(S, pframe_tail*))
   -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
-def $gc_materialized_callback_context(S) = (S.ACTIVEFIBER = eps /\ S.ITERATORS = eps /\ $gc_materialized_quiet(S) /\ $call_current_valid(S) /\ $gc_materialized_caller(S, S.CURRENT) /\ $gc_materialized_caller_frames(S, S.FRAMES))
+def $gc_materialized_caller_site(S, pcallcontext?, PORIGIN n pcpath) = $goto_owner_scope(pcallcontext?, $goto_source_owner($all_functions(S), n, pcpath))
+def $gc_callback_caller_valid(S, pgccall) = true -- if pgccall.COUNT_SOURCE = eps
+def $gc_callback_caller_valid(S, pgccall) = ($gc_materialized_caller(S, pgccall.CALLER) /\ $gc_materialized_caller_site(S, pgccall.CALLER, pgccall.CALL.SITE))
+  -- if pgccall.COUNT_SOURCE =/= eps
+def $gc_materialized_callback_context(S) = true
+  -- if S.ACTIVEFIBER = eps /\ S.ITERATORS = eps /\ $gc_materialized_quiet(S)
+  -- if $call_current_valid(S) /\ $gc_materialized_caller(S, S.CURRENT) /\ $gc_materialized_caller_frames(S, S.FRAMES)
+  -- if S.ORIGIN = (porigin)
+  -- if $gc_materialized_caller_site(S, S.CURRENT, porigin)
+def $gc_materialized_callback_context(S) = false -- otherwise
 def $gc_prior_ordinary_table_head(S, pobjecttable, pnode*) = true
   -- if $(pobjecttable.OBJECT < |S.OBJECTS|)
   -- if (HOBJECT pobjecttable.OBJECT) <- pnode*
@@ -1546,7 +1558,6 @@ def $gc_prior_ordinary_table(S, pobjecttable :: pobjecttable_tail*, pnode*) = ($
 ;; a coherently erased receipt without reclassifying worker/residual plans.
 def $gc_callback_count_required_plan(S, pgcplan) = true
   -- if S.GC.WORKER = eps /\ pgcplan.SCAN = eps
-  -- if $gc_materialized_caller(S, pgcplan.CALL.CALLER)
   -- if pgcplan.WEAK = eps
   -- if $gc_callback_plain_slots(pgcplan.BUFFER)
   -- if pgcplan.BUFFER = $gc_unmarked_slots(pgcplan.BUFFER)
