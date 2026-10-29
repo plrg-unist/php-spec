@@ -43,5 +43,14 @@
     "native_exit": 0,
     "native_stdout": "START|CALL|ENTER|1|PARK|1|1|RESUME|FIRST|CAUGHT|1|VALUE|1|1|FIBER|1|AFTER-YIELD|FIN|CLOSED|1|1|E",
     "native_stderr": ""
+  },
+  {
+    "id": "i70-fresh-inherited-method-abort-independent",
+    "purpose": "Independent inherited Parent lexical/Leaf called method scope survives pre-yield Fiber::throw and finally; uncached receiver retires before catch while original Given escapes with supplied stop as Previous.",
+    "source": "<?php\nclass Parent70Review {\n    public function __destruct() { echo 'OWNER-DROP|'; }\n    public function stream() {\n        echo 'LEXICAL|', (int) (__CLASS__ === 'Parent70Review'), '|',\n             (int) (static::class === 'Leaf70Review'), '|';\n        try {\n            echo 'ENTER|';\n            Fiber::suspend('before70');\n            echo 'BAD-RESUME|';\n            yield $this;\n        } finally {\n            echo 'FIN|', (int) (__CLASS__ === 'Parent70Review'), '|',\n                 (int) (static::class === 'Leaf70Review'), '|';\n        }\n    }\n}\nclass Leaf70Review extends Parent70Review {}\nfunction Given70Review() {\n    global $weakGiven;\n    $value = new Exception('given70');\n    $weakGiven = WeakReference::create($value);\n    return $value;\n}\nfunction Run70Review() {\n    global $g, $stop, $weakGiven, $weakOwner;\n    echo 'CALL|';\n    try {\n        $g->throw(Given70Review());\n        echo 'BAD-RETURN|';\n    } catch (Throwable $outside) {\n        echo 'OUTSIDE|', (int) ($outside === $weakGiven->get()), '|',\n             (int) ($outside->getPrevious() === $stop), '|',\n             (int) ($outside === $stop), '|',\n             (int) ($weakOwner->get() === null), '|';\n    }\n    return 'fiber70';\n}\n$owner = new Leaf70Review();\n$weakOwner = WeakReference::create($owner);\n$g = $owner->stream();\nunset($owner);\n$stop = new RuntimeException('stop70');\n$f = new Fiber('Run70Review');\necho 'START|', (int) ($f->start() === 'before70'), '|';\necho 'PARK|', (int) $f->isSuspended(), '|',\n     (int) ($weakOwner->get() !== null), '|',\n     (int) ($weakGiven->get() !== null), '|';\necho 'INJECT|', (int) ($f->throw($stop) === null), '|';\necho 'FIBER|', (int) ($f->getReturn() === 'fiber70'), '|',\n     (int) !$g->valid(), '|';\necho 'CLOSED|', (int) ($weakOwner->get() === null), '|',\n     (int) ($weakGiven->get() === null), '|';\nunset($g, $f, $stop);\necho 'E';\nunset($weakOwner, $weakGiven);\n",
+    "source_sha256": "25b0d18d39655bea9547636f9a607d2c4defb7eb81671d92b7cac65123fb0230",
+    "native_exit": 0,
+    "native_stdout": "START|CALL|LEXICAL|1|1|ENTER|1|PARK|1|1|1|INJECT|FIN|1|1|OWNER-DROP|OUTSIDE|1|1|0|1|1|FIBER|1|1|CLOSED|1|1|E",
+    "native_stderr": ""
   }
 ]
