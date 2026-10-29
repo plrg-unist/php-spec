@@ -37,7 +37,8 @@ compilation of 424 modules, 38+190 new reached premises and 33 checks at the
 affected CONFIG117 return front pass.
 The separate shared authentication extraction preserves A64's policy and has
 landed after joined strict compilation of 425 modules. Historical 678/149/156
-whole-tail cuts are not renewed.
+whole-tail cuts are not renewed. The full graph change also passes joined strict
+compilation of 425 modules on the actual tail.
 [Descriptor-backed field review](coverage/semantics/config-aggregate-iterator-layout-review.json).
 Dynamic/materialized layouts, special cells, builtin descendants, cycles,
 shutdown and wider destructor effects remain partial.
@@ -705,7 +706,7 @@ producers, signatures, references and lifetimes remain partial.
 | CALL125 | ARRAY/Generator magic argument packs. |
 | CLASS145 | Ordered interfaces and anonymous `implements`. |
 | COMP149 | Next: generic captured-graph depth-cap removal; previous-path admission stays separate. |
-| CFG119 | Generic Iterator field graphs. |
+| I73 | Static Generator/Fiber CURRENT/NEXT/SEND transfer. |
 | OP110 | Late LEFT-object diagnosis. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
