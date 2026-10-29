@@ -23,6 +23,7 @@ dec $config_iterator_quiet_aggregate_data(pstate, pconfigiterator) : bool
 dec $config_iterator_finalizer(pstate, nat) : bool
 dec $config_iterator_destructor(pstate, nat) : bool
 dec $config_iterator_owned_fields(pstate, nat) : bool
+dec $config_iterator_reference_value(pstate, nat) : pvalue?
 dec $config_iterator_data_node(pstate, pnode, pnode*) : bool
 dec $config_iterator_data_value(pstate, pvalue, pnode*) : bool
 dec $config_iterator_data_item(pstate, pitem, pnode*) : bool
@@ -37,7 +38,10 @@ dec $config_iterator_retired_scope(pstate, pconfigiterator) : bool
 dec $config_iterator_retired_methods(pstate, nat, text*) : bool
 dec $config_iterator_start(pstate, pconfigcall, poperand, nat) : bool
 dec $config_iterator_string(pstate, pvalue) : bool
-dec $config_iterator_string_operand(pstate, poperand) : bool
+dec $config_iterator_byref_current(pstate, pconfigiterator) : bool
+dec $config_iterator_current_receipt(pstate, pconfigiterator, poperand) : bool
+dec $config_iterator_current_value(pstate, pconfigiterator, poperand) : pvalue?
+dec $config_iterator_current_string(pstate, pconfigiterator) : bool
 dec $config_iterator_key(pstate, pvalue) : pkey?
 dec $config_iterator_key_input(pconfigiterator, pvalue) : bool
 dec $config_iterator_send_key(pstate, pconfigiterator, pvalue) : pkey?
@@ -73,7 +77,7 @@ def $config_iterator_methods(S, n, text :: text_tail*) = $config_iterator_method
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $effective_method(S, porigin_class, $ptascii(text), |S.CLASSES|) = (pmethoddesc)
   -- if $useriter_method_selected(S, n, pmethoddesc.FUNCTION.ORIGIN, text)
-  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if text = "current" \/ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
   -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = $useriter_signature($ptascii(text)).RETURNS
   -- if ~$function_generator(S, pmethoddesc.FUNCTION)
 def $config_iterator_methods(S, n, text*) = false -- otherwise
@@ -83,7 +87,7 @@ def $config_iterator_retired_methods(S, n, text :: text_tail*) = $config_iterato
   -- if $effective_method(S, porigin_class, $ptascii(text), |S.CLASSES|) = (pmethoddesc)
   -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
-  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if text = "current" \/ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
   -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = $useriter_signature($ptascii(text)).RETURNS
   -- if ~$function_generator(S, pmethoddesc.FUNCTION)
 def $config_iterator_retired_methods(S, n, text*) = false -- otherwise
@@ -183,6 +187,21 @@ def $config_iterator_finalizer(S, n) = true
 def $config_iterator_finalizer(S, n) = false -- otherwise
 
 def $config_iterator_owned_fields(S, n) = $config_iterator_data_node(S, HOBJECT n, eps)
+;; Live typed sources constrain writes. Reading validates their actual source
+;; table and returns the stored value without conversion or another owner.
+def $config_iterator_reference_value(S, n) = (pvalue)
+  -- if $ordinary_reference_value(S, n) = (pvalue)
+def $config_iterator_reference_value(S, n) = (pvalue)
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if ~(n <- S.LITERALREFDEBTS)
+  -- if ~$foreach_released_cell(S, n) /\ ~$typed_cv_string_released_cell(S, n) /\ ~$update_released_cell(S, n)
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if $propref_at(S.PROPREFS, n) =/= eps
+  -- if $proprefs_valid(S)
+  -- if S.STORE[n] = DEFINED pvalue
+def $config_iterator_reference_value(S, n) = eps -- otherwise
+
 def $config_iterator_data_node(S, HOBJECT n, pnode_seen*) = true
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
   -- if ~$heap_member(HOBJECT n, pnode_seen*)
@@ -203,7 +222,7 @@ def $config_iterator_data_node(S, HARRAY n, pnode_seen*) = true
   -- if $config_iterator_data_items(S, S.ARRAYS[n].ITEMS, (HARRAY n) :: pnode_seen*)
 def $config_iterator_data_node(S, HCELL n, pnode_seen*) = true
   -- if ~$heap_member(HCELL n, pnode_seen*)
-  -- if $ordinary_reference_value(S, n) = (pvalue)
+  -- if $config_iterator_reference_value(S, n) = (pvalue)
   -- if $config_iterator_data_value(S, pvalue, (HCELL n) :: pnode_seen*)
 def $config_iterator_data_node(S, pnode, pnode_seen*) = false -- otherwise
 ;; Each sibling follows its own ancestry, so repeated edges and DAG sharing
@@ -238,8 +257,28 @@ def $config_iterator_aggregate_data(S, pconfigiterator) = ($config_iterator_quie
 def $config_iterator_string(S, PSTRING n*) = $startup_bytes(n*)
 def $config_iterator_string(S, PSTRING_CARRIER pstringidentity n*) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*)
 def $config_iterator_string(S, pvalue) = false -- otherwise
-def $config_iterator_string_operand(S, KNOWN pvalue) = $config_iterator_string(S, pvalue)
-def $config_iterator_string_operand(S, poperand) = false -- otherwise
+;; A raw current CELL stays selected through key(); its current contents are
+;; checked at acquisition/send, not while authenticating callback/history frames.
+def $config_iterator_byref_current(S, pconfigiterator) = true
+  -- if $(pconfigiterator.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pconfigiterator.OBJECT] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("current"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.SIGNATURE.BYREF
+def $config_iterator_byref_current(S, pconfigiterator) = false -- otherwise
+def $config_iterator_current_receipt(S, pconfigiterator, KNOWN pvalue) = $config_iterator_string(S, pvalue)
+def $config_iterator_current_receipt(S, pconfigiterator, REFERENCE n) = $config_iterator_byref_current(S, pconfigiterator)
+def $config_iterator_current_receipt(S, pconfigiterator, poperand) = false -- otherwise
+def $config_iterator_current_value(S, pconfigiterator, KNOWN pvalue) = (pvalue)
+  -- if $config_iterator_string(S, pvalue)
+def $config_iterator_current_value(S, pconfigiterator, REFERENCE n) = (pvalue)
+  -- if $config_iterator_byref_current(S, pconfigiterator)
+  -- if $config_iterator_reference_value(S, n) = (pvalue)
+  -- if $config_iterator_data_value(S, pvalue, [HCELL n])
+def $config_iterator_current_value(S, pconfigiterator, poperand) = eps -- otherwise
+def $config_iterator_current_string(S, pconfigiterator) = true
+  -- if $config_iterator_current_value(S, pconfigiterator, pconfigiterator.CURRENT) = (pvalue)
+  -- if $config_iterator_string(S, pvalue)
+def $config_iterator_current_string(S, pconfigiterator) = false -- otherwise
 ;; SEND_UNPACK normalizes the argument key; the Iterator's key() result stays raw.
 def $config_iterator_key(S, PINT z) = (KINT z)
 def $config_iterator_key(S, PSTRING n*) = (KINT z)
@@ -422,12 +461,10 @@ def $config_iterator_stage(S, pconfigiterator, "input-release") = true
   -- if pconfigiterator.CURRENT = KNOWN PNULL /\ pconfigiterator.KEY = KNOWN PNULL
 def $config_iterator_stage(S, pconfigiterator, text) = true
   -- if text <- ["key-start", "key"]
-  -- if pconfigiterator.CURRENT = KNOWN pvalue
-  -- if $config_iterator_string(S, pvalue)
+  -- if $config_iterator_current_receipt(S, pconfigiterator, pconfigiterator.CURRENT)
   -- if pconfigiterator.KEY = KNOWN PNULL
 def $config_iterator_stage(S, pconfigiterator, "send") = true
-  -- if pconfigiterator.CURRENT = KNOWN pvalue
-  -- if $config_iterator_string(S, pvalue)
+  -- if $config_iterator_current_receipt(S, pconfigiterator, pconfigiterator.CURRENT)
   -- if pconfigiterator.KEY = KNOWN pvalue_key
   -- if $config_iterator_send_key(S, pconfigiterator, pvalue_key) = (pkey)
 def $config_iterator_stage(S, pconfigiterator, text) = false -- otherwise
@@ -476,6 +513,11 @@ def $config_iterator_frame(S, pcallcontext, pframe) = true
 def $config_iterator_frame(S, pcallcontext, pframe) = false -- otherwise
 def $useriter_frame(S, pcallcontext, pframe) = true -- if $config_iterator_frame(S, pcallcontext, pframe)
 def $useriter_marker(pframe) = true -- if pframe.TODO = (CONFIG_ITERATOR pconfigiterator text) :: ptask_tail*
+def $reference_callback_used(S, pcallcontext) = (text <- ["valid", "current", "key"])
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (CONFIG_ITERATOR pconfigiterator text) :: ptask_tail*
+  -- if $config_iterator_frame(S, pcallcontext, pframe)
 
 def $config_iterator_nodes(pconfigiterator, "ready") = $config_nodes(pconfigiterator.CALL)
 def $config_iterator_nodes(pconfigiterator, "input-release") = $config_iterator_input_nodes(pconfigiterator) ++ $config_nodes(pconfigiterator.CALL)
@@ -529,12 +571,11 @@ rule PhpStep/config-iterator-valid-finish: S ~> $config_iterator_clear(S, pconfi
 rule PhpStep/config-iterator-current-result: S ~> S[.TODO = (CONFIG_ITERATOR pconfigiterator[.CURRENT = S.RESULT] "key-start") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "current") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "current")
-  -- if S.RESULT = KNOWN pvalue
-  -- if $config_iterator_string(S, pvalue)
+  -- if $config_iterator_current_value(S, pconfigiterator, S.RESULT) = (pvalue)
 rule PhpStep/config-iterator-current-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "CONFIG Iterator unpack current outside string domain"]
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "current") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "current")
-  -- if ~$config_iterator_string_operand(S, S.RESULT)
+  -- if $config_iterator_current_value(S, pconfigiterator, S.RESULT) = eps
 rule PhpStep/config-iterator-key-result: S ~> S[.TODO = (CONFIG_ITERATOR pconfigiterator[.KEY = S.RESULT] "send") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "key") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "key")
@@ -553,7 +594,8 @@ rule PhpStep/config-iterator-key-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "
   -- if ~$config_iterator_temp_primitive_key(S, pconfigiterator, S.RESULT)
   -- if ~$config_iterator_fresh_aggregate_primitive_key(S, pconfigiterator, S.RESULT)
 def $config_iterator_send(S, pconfigiterator, ptask_tail*) = $config_iterator_clear(S, pconfigiterator[.ITEMS = pconfigiterator.ITEMS ++ [ENTRY pkey (DIRECT pvalue)]], "next-start", ptask_tail*)
-  -- if pconfigiterator.CURRENT = KNOWN pvalue
+  -- if $config_iterator_current_value(S, pconfigiterator, pconfigiterator.CURRENT) = (pvalue)
+  -- if $config_iterator_string(S, pvalue)
   -- if pconfigiterator.KEY = KNOWN pvalue_key
   -- if $config_iterator_send_key(S, pconfigiterator, pvalue_key) = (pkey)
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall_prefix)
@@ -569,6 +611,15 @@ def $config_iterator_send(S, pconfigiterator, ptask_tail*) = S_checked
   -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
   -- if S_checked = $config_send_check(S, pconfigcall_prefix, preqbytes?, z)
   -- if S_checked.COMPLETION =/= NORMAL
+def $config_iterator_send(S, pconfigiterator, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "CONFIG Iterator unpack current outside string domain"]
+  -- if pconfigiterator.KEY = KNOWN pvalue_key
+  -- if $config_iterator_send_key(S, pconfigiterator, pvalue_key) = (pkey)
+  -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall_prefix)
+  -- if $exit_key_name(pkey) = preqbytes?
+  -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if S_checked = $config_send_check(S, pconfigcall_prefix, preqbytes?, z)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if ~$config_iterator_current_string(S, pconfigiterator)
 rule PhpStep/config-iterator-send: S ~> $config_iterator_send(S, pconfigiterator, ptask_tail*)
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "send") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "send")

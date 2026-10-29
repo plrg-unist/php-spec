@@ -45,6 +45,17 @@ rows, the failed budget seeker and its corrected independent cut. The
 [construction lookup review](../coverage/semantics/reentrant-nominal-new-review.json)
 records hashes, tested inputs and recovery commands.
 
+Enum core raw cuts are retained under
+`../php-spec-evidence-archive/enum-core-stable-117/`. Its `manifest.json`
+(SHA-256 `32dde8a4e1e9cdcbac019ef98f5df4ae4060e2a2765a0b2afe438bd3d1266f1e`)
+lists 60 small report/source/state directories and selected report hashes. It
+preserves failed and partial M4 attempts without promoting them to agreement;
+copy a required `raw/enum-*` directory back into ignored `.tools/` for recovery.
+The final joined gate's argv used `taskset -c 1`, the project numeric runner,
+`--sl`, all 428 absolute module paths in `spec/semantics/modules.json` order,
+then `raw/enum-joined-strict-428-final/main.watsup`; its `result.json` binds
+the tested tip/base, exit and output. The runner group was fully reaped.
+
 The guarded getter-recursion milestone retains source/native observations,
 focused checks, all fixture failures and diagnostics in
 `../php-spec-evidence-archive/magic-get-recursion-119/manifest.json`.

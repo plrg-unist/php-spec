@@ -84,16 +84,14 @@ runtime visit count. Namespace scope does not prefix the name, and distinct site
 on one physical line remain distinct. Each visit allocates a fresh object from
 the same class, with independent property storage and the real lexical scope.
 
-Later include/eval units also derive their starting suffix from authentic completed
+Later include/eval units derive their starting suffix from authenticated completed
 compilations, beginning with unit0 and preserving chronological source history.
-Fresh checked ASTs count the admitted anonymous sites; runtime visits do not
-advance the counter. Recompilation of the same file or eval occurrence gets a new
-name, while repeated execution shares its compiled class and include_once skips
-preserve the image. This slice requires direct CV-assignment statements, closed
-prior units and no pre-name diagnostics. Other class-like forms, named-function
-and Closure/arrow source shapes, skipped-expression sites and ambiguous/failed
-compilation histories remain Unsupported. Two exact originals and 254 SL premises
-are recorded in the [dynamic-unit review](../../coverage/semantics/anonymous-dynamic-units-review.json).
+Compiler-derived class descriptors determine each unit's cost; functions, Closures
+and arrows do not themselves consume class RTD keys. Recompilation gets a new
+name, repeated execution shares its compiled class, and include_once skips preserve
+the image. The original parentless checks remain in the
+[dynamic-unit review](../../coverage/semantics/anonymous-dynamic-units-review.json);
+the dependency extension is described below.
 
 Module383 admits authentic unit0 contexts with plain empty named classes globally
 or in valid named namespace sections (bracketed or unbracketed), including an
@@ -278,8 +276,8 @@ variadic/promoted or nonpublic forms, unpacking and wider object lifetimes remai
 partial. Three explicit source controls confirm Unsupported for three direct
 arguments, a by-reference constructor formal and an unpacked send.
 
-Unit0 global anonymous classes may now extend an ordinary named class through an
-unqualified name. Parent declarations follow the existing normal compiler/linker,
+Unit0 anonymous classes may now extend an ordinary named class through the
+ordinary class-reference forms. Parent declarations follow the normal compiler/linker,
 including its supported ancestor and member forms. The anonymous class keeps the
 existing bounded member and argument grammar. Its compiler name starts with the resolved parent
 reference spelling followed by `@anonymous`, NUL, file, line and RTD counter;
@@ -297,10 +295,10 @@ The [parent review](../../coverage/semantics/anonymous-parent-review.json)
 retains its historical source comparisons, reached states and wrong-prefix
 counterexample. The [typed-property review](../../coverage/semantics/anonymous-typed-properties-review.json)
 records the corrected first-NEW publication phase and typed extension.
-Dynamic-source parented sites, namespaced parents and wider inheritance remain
-partial or explicit Unsupported.
+Wider inheritance remains partial or explicit Unsupported; later-unit dependency
+sites retain the placement and argument limits described below.
 
-Unit0 global anonymous classes may implement a finite list of
+Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
 Base. The generated prefix uses the Base reference when present, otherwise the
 first resolved interface reference, preserving its spelling. Ordinary interface
@@ -315,9 +313,8 @@ visits reuse the published identity. Interface identity, type checks, inherited
 constructors and typed slots use the shared machinery. Ordinary private helpers
 also compose with existing parentless eval assignment sites. The
 [interface review](../../coverage/semantics/anonymous-interfaces-review.json)
-records these source and publication checks. Namespace/import interface
-dependencies, dynamic-source `implements`, traits and wider member forms
-remain partial or Unsupported.
+records these source and publication checks. Traits and wider member forms remain
+partial or Unsupported; later-unit interface sites follow the bounded extension below.
 
 Compiled anonymous identity is independent of dependency availability and source
 order. Forward declarations can supply the Base and interfaces; a skipped site
@@ -332,6 +329,33 @@ in the shared counter walk, including implicit Stringable on an unused `__toStri
 helper. This permits unrelated magic-method classes without broadening anonymous
 bodies. The [dependency review](../../coverage/semantics/anonymous-dependencies-review.json)
 records the native-first sources and reached compilation/autoload states.
+
+Namespace and import contexts now use the same dependency route. Ordinary class
+resolution handles plain, qualified, namespace-relative and fully qualified names,
+including grouped imports and alias prefixes. Class references consult class
+imports independently of function/constant imports and have no global fallback.
+Each namespace block and factory keeps the imports visible at its source position;
+repeated namespace names do not merge their import tables. Generated prefixes,
+dependency links and declared property types keep resolved full byte names.
+The [namespace dependency review](../../coverage/semantics/anonymous-namespace-dependencies-review.json)
+records exact names/counters, ordinary named-header replay and autoload retry/cause
+checks.
+
+Successfully compiled include/eval units also admit dependent anonymous classes at
+the existing direct CV-assignment, no-argument sites. Each unit uses its own
+namespace/import environment; eval does not inherit caller imports. Ordinary named
+loader callbacks can load dependencies through nested units. First-NEW staging,
+retained loads after a throw, same-site retry and publication before construction
+use the existing declaration continuations with the actual unit/class-child cause.
+The compiler replays the live parent bindings captured at that unit's entry, so a
+later named subclass of an already-live Base can bind early without consuming an
+RTD key. Later loads cannot change that frozen entry view. Local class cost is
+added once to the request seed, independently of runtime visits.
+The [dynamic dependency review](../../coverage/semantics/anonymous-dynamic-dependencies-review.json)
+records these source, entry-view and history checks. Closed successful compilation
+history and absence of pre-name diagnostics remain required; failed/open or
+reentered compilation histories, wider later-unit placements/arguments, and
+co-resident enum/trait key accounting remain Unsupported.
 
 Plain anonymous and Base property types use the ordinary normalizer, invariant
 link checks and typed storage. An absent typed default starts uninitialized,

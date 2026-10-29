@@ -79,8 +79,12 @@ def $scope_array_method(S, porigin_requested, n_receiver?, ptbytes, ARRAY_ADMISS
   -- if $scope_method(S, porigin_requested, ptbytes, n_receiver? =/= eps, $method_current_scope(S)) = (pmethoddesc)
 def $scope_array_method(S, porigin_requested, n_receiver?, ptbytes, ARRAY_DISPATCH) = $scope_array_dispatch(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes)
   -- if $scope_method(S, porigin_requested, ptbytes, n_receiver? =/= eps, $method_current_scope(S)) = (pmethoddesc)
+def $scope_array_method(S, porigin_requested, n_receiver?, ptbytes, parraymode) = ARRAYUNKNOWN "enum generated callable target"
+  -- if $scope_method(S, porigin_requested, ptbytes, n_receiver? =/= eps, $method_current_scope(S)) = eps
+  -- if $enum_generated(S, porigin_requested, ptbytes)
 def $scope_array_method(S, porigin_requested, n_receiver?, ptbytes, parraymode) = ARRAYINVALID ($ptascii("Call to undefined method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"))
   -- if $scope_method(S, porigin_requested, ptbytes, n_receiver? =/= eps, $method_current_scope(S)) = eps
+  -- if ~$enum_generated(S, porigin_requested, ptbytes)
   -- if ~$array_magic(S, porigin_requested)
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
 def $scope_array_method(S, porigin_requested, n_receiver?, ptbytes, parraymode) = ARRAYUNKNOWN "magic array callable method" -- otherwise

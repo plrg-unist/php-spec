@@ -1,0 +1,197 @@
+{
+  "milestone": "A67 CONFIG Iterator typed-reference current capture",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "scope": "Existing CONFIG Iterator consumers accept selected ordinary or constrained reference cells. A constrained read validates live instance/static type sources without conversion or another owner. Typed owning DATA fields use the same reader, retaining existing descriptor/DAG policy and post-key string send snapshots.",
+  "implementation": {
+    "file": "spec/semantics/420-config-iterator-unpack.watsup",
+    "source_freeze": "0819ca257ef63b95be71213e876877bfba26763d",
+    "policy_revision": "8ba6c05df0efe6a57b6c75960af16584eba4c785",
+    "state_revision": "5c31abe2ade06e1c27aec5797f61267cda786f78",
+    "runtime_sha256": "a7fb48799696d01c679dfb7f4047f05a49c456c640fbdd1aef1b03c03435b259",
+    "change": "Add one CONFIG-local reference-value reader with unchanged ordinary fast path and a disjoint typed arm requiring a real nonempty source row plus existing proprefs_valid. Only CURRENT and DATA HCELL reads change; source attach/detach/coercion, structural receipts, owner edges, lifecycle and A65 behavior are unchanged."
+  },
+  "engine_routes": [
+    {
+      "file": "vendor/php-src/Zend/zend_vm_def.h",
+      "symbol": "ZEND_SEND_UNPACK",
+      "contract": "Read raw current before key, resolve send destination before dereference, copy argument before next; retire DATA/INPUT before API."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_interfaces.c",
+      "symbols": [
+        "zend_user_it_get_current_data",
+        "zend_user_it_invalidate_current"
+      ],
+      "contract": "The current cache owns the selected reference until invalidation; source rebinding does not reselect it."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_execute.c",
+      "symbols": [
+        "zend_verify_ref_assignable_zval",
+        "zend_assign_to_variable_reference",
+        "zend_ref_add_type_source",
+        "zend_ref_del_type_source"
+      ],
+      "contract": "Typed reference sources constrain assignments and attach/detach through real source binding; consumer reads do not coerce."
+    }
+  ],
+  "validation": {
+    "native": {
+      "path": "native-source-freeze/report.json",
+      "sha256": "a6f3e13f2b44ad1cd36d1f3c0f37f5ed3ad96c50ded8113cb77f7a9203c39a13",
+      "result": "Four manually frozen new originals captured once before policy changes. The promoted A66 typed-control native remains at its original A66 source-freeze path; no native replay."
+    },
+    "old_gate": {
+      "path": "old-gate-owned-0819ca257/report.json",
+      "sha256": "dc0944362b5878518578129e4d66ae862c387b0cf3d8b2841ac0efc16ce41de2",
+      "result": "Genuine checked Unsupported CONFIG Aggregate return outside shared initialized Iterator domain after B;G;,33.405s,zero agreement. The original A66 CURRENT refusal retains its own cut; no duplicate old gate."
+    },
+    "sources": [
+      {
+        "path": "candidate-8ba6c05df/config-reference-current-typed-cell-boundary/report.json",
+        "sha256": "9ac43bbd35093a9e2646425d60b5457f2e3fa36ea141f83686109f1cf079f087",
+        "id": "config-reference-current-typed-cell-boundary",
+        "source_sha256": "28aae67e70e7b808d7d280e1a7a09673a94f1e6e52bae8cd70136c6579c20e53",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 24.282644271850586,
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/config-iterator-reference-current-66/native-source-freeze/report.json"
+      },
+      {
+        "path": "candidate-8ba6c05df/config-typed-current-owned-aggregate/report.json",
+        "sha256": "6b218a661bfb4f9ebbfffc5aa21078f4d8f4a1883842ecc4f7bd008ec974c769",
+        "id": "config-typed-current-owned-aggregate",
+        "source_sha256": "da6b3b33e2d0e5728271f8f92fb5376caaf142f7598caaa8f16b04f5a7c5e392",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 82.38537359237671,
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/config-iterator-typed-current-67/native-source-freeze/report.json"
+      },
+      {
+        "path": "candidate-8ba6c05df/config-typed-current-review-instance-static-detach-snapshot/report.json",
+        "sha256": "827111fc225499a539e7b8eea561e0c3362e12278ce51603a965d609f13a4883",
+        "id": "config-typed-current-review-instance-static-detach-snapshot",
+        "source_sha256": "3dd6a8a9259bdd107fbd69f6bff2206bbd560b5171d3914b403f1b82c97663ec",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 55.31400680541992,
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/config-iterator-typed-current-67/native-source-freeze/report.json"
+      },
+      {
+        "path": "candidate-8ba6c05df/config-typed-current-review-instance-static-detach-throw/report.json",
+        "sha256": "0739524e65f5918be2640a9ae64a4cc2684ca5a05032e9e4e1bb5bc3c1ce128e",
+        "id": "config-typed-current-review-instance-static-detach-throw",
+        "source_sha256": "462ac4fdb9b95f9bd37925f783bbd73ff4b6259061b4974310fca553e2716c52",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 61.50666809082031,
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/config-iterator-typed-current-67/native-source-freeze/report.json"
+      },
+      {
+        "path": "candidate-8ba6c05df/config-typed-current-temporary-type-error/report.json",
+        "sha256": "88d652caa61c2813fd5f31791e2773a4f5b9c58730bac1e79cc7e4f6a7e6c33c",
+        "id": "config-typed-current-temporary-type-error",
+        "source_sha256": "c899f2a8db6dc0467f97cfb593663b9754f6bfb0f5c2b254b6f0db60e16bb3de",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 34.97784113883972,
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/config-iterator-typed-current-67/native-source-freeze/report.json"
+      }
+    ],
+    "states": [
+      {
+        "path": "state-author-5c31abe2a/config-typed-current-owned-aggregate/report.json",
+        "sha256": "7e60df664af010b72912931cd3404456afd9b6d371289554ddb9eaf70f26fdae",
+        "id": "config-typed-current-owned-aggregate",
+        "conditions": 200,
+        "raw_steps": 1,
+        "seconds": 147.82059407234192
+      },
+      {
+        "path": "state-peer-5c31abe2a/config-typed-current-review-instance-static-detach-snapshot/report.json",
+        "sha256": "3b418e09574a9470469f5b8e6282b032b198a827005ce53d0bbb6ad46f94ef3c",
+        "id": "config-typed-current-review-instance-static-detach-snapshot",
+        "conditions": 135,
+        "raw_steps": 0,
+        "seconds": 85.46746039390564
+      },
+      {
+        "path": "state-peer-5c31abe2a/config-typed-current-review-instance-static-detach-throw/report.json",
+        "sha256": "5fcb0079115b4810b1673aa91ef7f3024dbb3c1f992f146f181021b402936ecc",
+        "id": "config-typed-current-review-instance-static-detach-throw",
+        "conditions": 131,
+        "raw_steps": 0,
+        "seconds": 95.24605751037598
+      }
+    ],
+    "totals": {
+      "source_agreements": 5,
+      "new_sources": 4,
+      "promoted_prior_control": 1,
+      "state_conditions": 466,
+      "boolean_conditions": 465,
+      "raw_steps": 1
+    },
+    "private_strict": {
+      "path": "private-strict-8ba6c05df/report.json",
+      "sha256": "00fa9dd944bb2ccd659616ed465b2cad01bc33113ea2399f8162cc070f6ecf11",
+      "modules": 426,
+      "result": "SL/cachefalse/determinismtrue, true stdout, empty stderr, normal0;10.614s at8ba."
+    },
+    "preserved_failure": {
+      "path": "state-author-7b4875db5/config-typed-current-owned-aggregate/report.json",
+      "sha256": "eb1f3c5805ac18ac75c9c19ff80ab16ae2eecfff22018fcb16bccc0f660a19d9",
+      "agreement_credit": 0,
+      "result": "Author187 passed source/type/cache/API and object/CELL checks, then wrongly required pooled literal arrays to retire. Raw138.806s failure retained. Fixture-only5c31 replaces three false array frees with pool-only ownership/content invariants; affected author200 rerun, peer135+131 first executions."
+    }
+  },
+  "execution": {
+    "cpu": [
+      2
+    ],
+    "source_internal_seconds": 240,
+    "source_process_seconds": 270,
+    "state_process_seconds": 300,
+    "strict_seconds": 180,
+    "result": "All credited processes completed without timeout/interruption, quiet stderr, reaped groups and immutable inputs/revision. Commands, raw streams, compiler/runtime hashes and profiles stay in the original reports. Four source natives plus one reused A66 native are five distinct agreements, not native/model executions added together."
+  },
+  "limits": [
+    "Post-key CONFIG sends still require strings. Null and other valid typed values may be acquired before key repairs them; scalar API coercion is a separate milestone.",
+    "Constrained cells require actual nonempty unique live instance/static source rows and type-correct stored values. Literal debts, released cells, active REFCOERCIONS and PARAMETERBACKINGS remain excluded.",
+    "Capture retains existing descriptor-backed finite graph guards; materialized/special/cyclic/builtin graphs and wider destructor/reentry/shutdown behavior retain their existing boundaries. Abrupt retirement uses unchanged generic lifecycle, not a live consumer-policy guard.",
+    "Ordinary_reference_value, A65, scalar invalid-key cleanup, storage/ownership algorithms and source type-write enforcement are unchanged. Type-source metadata contributes no heap owners."
+  ],
+  "related_reviews": [
+    "coverage/semantics/config-iterator-reference-current-review.json",
+    "coverage/semantics/config-aggregate-iterator-layout-review.json",
+    "coverage/semantics/array-iterator-invalid-key-cleanup-review.json"
+  ],
+  "evidence": {
+    "directory": "/home/user/workspace/php-spec-evidence-archive/config-iterator-typed-current-67",
+    "archive": "raw.tar",
+    "sha256": "4b25c5eba9f10b35f53a81bc79ee994b13bfebd5182e1142dde2887080a5ba73",
+    "bytes": 3696640,
+    "files": 146,
+    "manifest": "manifest.json",
+    "manifest_sha256": "79b3beb97b657f3306b9dc9affc9dc66b2b97b53ae8296cade5939c9c1448b8c",
+    "recovery": "Extract raw.tar under this directory and recover tested private cuts from Git before replay. The promoted typed-control native is recovered from the separately retained A66 archive at its original path. Full reports preserve exact source/cwd/command identities; no historical agreement is renewed."
+  },
+  "integration": {
+    "base": "2a2c493d25f0d20e9c501e5b0f9bbb6ead2f33df",
+    "candidate": "f214ac553b4ea0adf660fe49c3c9c068bcc25110",
+    "strict_report": "/home/user/workspace/php-spec-evidence-archive/config-iterator-typed-current-67/joined-strict-f214ac553/report.json",
+    "strict_report_sha256": "50870c9830b0475a005c3572b323c0bc8164788221e55c02e06f402c88636a0f",
+    "modules": 428,
+    "seconds": 10.770973205566406,
+    "cpu": [
+      2
+    ],
+    "result": "Full actual428-manifest SL/cachefalse/determinismtrue is true/quiet0, with stable inputs/private HEAD/canonical base and fully reaped groups. Private426, source8ba and state5c31 retain their original identities; no accepted replay.",
+    "review": "Independent actual-tail read clears ordinary INSTANCE/type-source behavior against enum/class acquisition changes; no GC/WeakMap path is entered. All eight A67 runtime/test blobs equal the accepted private package, manifest equals actual2a2, and latest inventory/active/held/paused content is preserved in condensed current-behavior PROGRESS."
+  }
+}

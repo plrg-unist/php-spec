@@ -223,6 +223,7 @@ dec $weakmap_object(pobject) : bool
 dec $clone_value(pstate, pvalue, int) : pstate
 def $clone_value(S, POBJECT n, z) = $clone_object(S, n)
   -- if ~$instance_storage_freeing(S, n)
+  -- if $enum_case_object(S, n) = eps
   -- if ~$throwable_object(S, n) /\ ~$fiber_object(S.OBJECTS[n])
   -- if ~$weakref_object(S.OBJECTS[n])
   -- if ~$weakmap_object(S.OBJECTS[n])

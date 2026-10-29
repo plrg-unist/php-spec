@@ -1755,3 +1755,9 @@ def $pcprogram(ENCODEDPROGRAM text_1 text_2 text_3 text_4 text? statement*) = st
 def $pcwalk(eps) = eps
 def $pcwalk((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = [(PCOCCURRENCE pcpath pcnode)] ++ $pcwalk($pcchildren(pcnode, pcpath)) ++ $pcwalk(pcoccurrence*)
 def $pcsource(pci, program) = { ID pci, AST program, OCCURRENCES $pcwalk($pclist_phpType23($pcprogram(program), eps, 0)) }
+
+dec $occurrence_node(pcoccurrence*, pcpath) : pcnode?
+def $occurrence_node(eps, pcpath) = eps
+def $occurrence_node((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*, pcpath) = (pcnode)
+def $occurrence_node((PCOCCURRENCE pcpath_other pcnode) :: pcoccurrence*, pcpath) = $occurrence_node(pcoccurrence*, pcpath)
+  -- if pcpath_other =/= pcpath

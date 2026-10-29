@@ -598,6 +598,115 @@ def $autoload_new_unlinked_head(S, ptask :: ptask_tail*, pframe, pframe_tail*, p
 def $autoload_new_unlinked_frames(S, eps, ptbytes) = false
 def $autoload_new_unlinked_frames(S, pframe :: pframe_tail*, ptbytes) = ($autoload_new_unlinked_head(S, pframe.TODO, pframe, pframe_tail*, ptbytes) \/ $autoload_new_unlinked_frames(S, pframe_tail*, ptbytes))
 def $autoload_new_pending(S, ptbytes) = ($autoload_pending(S, ptbytes) /\ ~$autoload_new_unlinked_frames(S, S.FRAMES, ptbytes))
+dec $autoload_scoped_class_site(pstate, porigin, pvalue, int) : bool
+def $autoload_scoped_class_site(S, porigin, pvalue, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if ~$scoped_class_literal(S[.ORIGIN = (porigin)], phpType19)
+  -- if ~$parent_hook_syntax(NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $string_bytes(pvalue) = (ptbytes_raw)
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+  -- if $call_line_valid(S, (porigin), z)
+def $autoload_scoped_class_site(S, porigin, pvalue, z) = false -- otherwise
+def $autoload_scoped_class_pending(S, phpType19, z) = true
+  -- if S.TODO = (SCOPED_CLASS phpType19 phpType20 phpType7* z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue_string
+  -- if $autoload_scoped_class_site(S_read, porigin, pvalue_string, z)
+  -- if $string_bytes(pvalue_string) = (ptbytes_raw)
+  -- if $autoload_new_pending(S_read, $ppcall_literal_name(ptbytes_raw))
+def $autoload_scoped_class_pending(S, phpType19, z) = false -- otherwise
+dec $autoload_scoped_literal_name(pstate, porigin, phpType19) : ptbytes?
+def $autoload_scoped_literal_name(S, porigin, phpType19) = $scoped_source_name(S[.ORIGIN = (porigin)], phpType19)
+  -- if $ppscoped_named(phpType19)
+def $autoload_scoped_literal_name(S, porigin, phpType19) = (ptbytes_class)
+  -- if ~$ppscoped_named(phpType19)
+  -- if $scoped_compiled_keyword(S[.ORIGIN = (porigin)], phpType19) = eps
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $compiled_read(S, porigin_child) = (PSTRING ptbytes_raw)
+  -- if ptbytes_class = $ppcall_literal_name(ptbytes_raw)
+def $autoload_scoped_literal_name(S, porigin, phpType19) = eps -- otherwise
+dec $autoload_scoped_selected_site(pstate, porigin, poperand, ptbytes, int) : bool
+def $autoload_scoped_selected_site(S, porigin, KNOWN (PSTRING ptbytes_class), ptbytes_method, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $autoload_scoped_literal_name(S, porigin, phpType19) = (ptbytes_class)
+  -- if ptbytes_method = $base64(text)
+  -- if $call_line_valid(S, (porigin), z)
+def $autoload_scoped_selected_site(S, porigin, KNOWN (PSTRING ptbytes_class), ptbytes_method, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 expression_name (SEQUENCE phpType7*) metadata)
+  -- if $autoload_scoped_literal_name(S, porigin, phpType19) = (ptbytes_class)
+  -- if $property_computed_name(expression_name)
+  -- if $call_line_valid(S, (porigin), z)
+def $autoload_scoped_selected_site(S, porigin, poperand, ptbytes_method, z) = false -- otherwise
+def $autoload_scoped_selected_start(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes_method, phpType7*, z) = $autoload_begin(S[.TODO = ptask_tail*], porigin, ptbytes_lookup, $ptlc(ptbytes_lookup), z, AUTO_LOOKUP, AUTO_SCOPED_SELECTED porigin (KNOWN (PSTRING ptbytes_class)) ptbytes_method z)
+  -- if S.TODO = (SCOPED_CLASS phpType19 (NIdentifier (BYTES text) metadata_name) phpType7* z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $autoload_scoped_selected_site(S, porigin, KNOWN (PSTRING ptbytes_class), ptbytes_method, z)
+  -- if ptbytes_method = $base64(text)
+  -- if ptbytes_lookup = $ppcall_literal_name(ptbytes_class)
+def $autoload_scoped_selected_start(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes_method, phpType7*, z) = $autoload_begin(S[.TODO = ptask_tail*], porigin, ptbytes_lookup, $ptlc(ptbytes_lookup), z, AUTO_LOOKUP, AUTO_SCOPED_SELECTED porigin (KNOWN (PSTRING ptbytes_class)) ptbytes_method z)
+  -- if S.TODO = (SCOPED_NAME phpType19 (KNOWN (PSTRING ptbytes_class)) phpType7* z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $autoload_scoped_selected_site(S, porigin, KNOWN (PSTRING ptbytes_class), ptbytes_method, z)
+  -- if ptbytes_lookup = $ppcall_literal_name(ptbytes_class)
+def $autoload_scoped_selected_start(S, phpType19, poperand, ptbytes_method, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "scoped class autoload"] -- otherwise
+dec $autoload_class_constant_class_site(pstate, porigin, pvalue, int) : bool
+def $autoload_class_constant_class_site(S, porigin, pvalue, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprClassConstFetch phpType19 phpType20 metadata)
+  -- if ~$pfclassname_member(phpType20)
+  -- if ~$class_constant_literal(S[.ORIGIN = (porigin)], phpType19)
+  -- if $string_bytes(pvalue) = (ptbytes_raw)
+  -- if $string_plain(pvalue) = pvalue \/ $string_carrier_valid(S, pvalue)
+  -- if $call_line_valid(S, (porigin), z)
+def $autoload_class_constant_class_site(S, porigin, pvalue, z) = false -- otherwise
+def $autoload_class_constant_class_pending(S, phpType19, z) = true
+  -- if S.TODO = (CLASS_CONST_CLASS phpType19 phpType20 z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue_string
+  -- if $autoload_class_constant_class_site(S_read, porigin, pvalue_string, z)
+  -- if $string_bytes(pvalue_string) = (ptbytes_raw)
+  -- if $autoload_new_pending(S_read, $ppcall_literal_name(ptbytes_raw))
+def $autoload_class_constant_class_pending(S, phpType19, z) = false -- otherwise
+dec $autoload_class_constant_literal_name(pstate, porigin, phpType19) : ptbytes?
+def $autoload_class_constant_literal_name(S, porigin, phpType19) = $scoped_source_name(S[.ORIGIN = (porigin)], phpType19)
+  -- if $ppscoped_named(phpType19)
+def $autoload_class_constant_literal_name(S, porigin, phpType19) = ($ppcall_literal_name(ptbytes_class))
+  -- if ~$ppscoped_named(phpType19)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $compiled_read(S, porigin_child) = (PSTRING ptbytes_class)
+def $autoload_class_constant_literal_name(S, porigin, phpType19) = eps -- otherwise
+dec $autoload_class_constant_selected_site(pstate, porigin, poperand, ptbytes, int) : bool
+def $autoload_class_constant_selected_site(S, porigin, KNOWN (PSTRING ptbytes_class), ptbytes_member, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprClassConstFetch phpType19 (NIdentifier (BYTES text) metadata_name) metadata)
+  -- if ~$pfclassname_member(NIdentifier (BYTES text) metadata_name)
+  -- if $class_constant_literal(S[.ORIGIN = (porigin)], phpType19)
+  -- if $autoload_class_constant_literal_name(S, porigin, phpType19) = (ptbytes_class)
+  -- if ptbytes_member = $base64(text)
+  -- if $call_line_valid(S, (porigin), z)
+def $autoload_class_constant_selected_site(S, porigin, KNOWN (PSTRING ptbytes_class), ptbytes_member, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprClassConstFetch phpType19 expression_member metadata)
+  -- if $property_computed_name(expression_member)
+  -- if $class_constant_literal(S[.ORIGIN = (porigin)], phpType19)
+  -- if $autoload_class_constant_literal_name(S, porigin, phpType19) = (ptbytes_class)
+  -- if $call_line_valid(S, (porigin), z)
+def $autoload_class_constant_selected_site(S, porigin, poperand, ptbytes_member, z) = false -- otherwise
+def $autoload_class_constant_selected_pending(S, poperand_class, pvalue_member, z) = true
+  -- if S.CONSTCONTEXT = eps
+  -- if S.ORIGIN = (porigin)
+  -- if $string_bytes(pvalue_member) = (ptbytes_member)
+  -- if $autoload_class_constant_selected_site(S, porigin, poperand_class, ptbytes_member, z)
+  -- if poperand_class = KNOWN (PSTRING ptbytes_class)
+  -- if $autoload_new_pending(S, $ppcall_literal_name(ptbytes_class))
+def $autoload_class_constant_selected_pending(S, poperand_class, pvalue_member, z) = false -- otherwise
+def $autoload_class_constant_selected_start(S, KNOWN (PSTRING ptbytes_class), ptbytes_member, z) = $autoload_begin(S, porigin, ptbytes_lookup, $ptlc(ptbytes_lookup), z, AUTO_LOOKUP, AUTO_CLASS_CONST_SELECTED porigin (KNOWN (PSTRING ptbytes_class)) ptbytes_member z)
+  -- if S.ORIGIN = (porigin)
+  -- if $autoload_class_constant_selected_site(S, porigin, KNOWN (PSTRING ptbytes_class), ptbytes_member, z)
+  -- if $autoload_new_pending(S, $ppcall_literal_name(ptbytes_class))
+  -- if ptbytes_lookup = $ppcall_literal_name(ptbytes_class)
+def $autoload_class_constant_selected_start(S, poperand_class, ptbytes_member, z) = S[.COMPLETION = UNSUPPORTED "class constant autoload"] -- otherwise
 def $autoload_pending(S, ptbytes) = true
   -- if ~$dynamic_new_known(S, $autoload_lookup_name(ptbytes))
   -- if $autoload_class_name(ptbytes)
@@ -647,6 +756,75 @@ rule PhpStep/autoload-new-missing: S ~> $throw_scalar(S, "Error", $ptascii("Clas
   -- if S.TODO = (AUTO_NEW ptbytes phpType7* z z_fetch) :: ptask_tail*
   -- if ~$dynamic_new_known(S, ptbytes)
   -- if ptbytes_raw = $autoload_new_diagnostic(S, ptbytes)
+rule PhpStep/autoload-scoped-class: S ~> $autoload_begin(S_read[.TODO = ptask_tail*], porigin, ptbytes_lookup, $ptlc(ptbytes_lookup), z, AUTO_LOOKUP, AUTO_SCOPED_CLASS porigin pvalue_string z)
+  -- if S.TODO = (SCOPED_CLASS phpType19 phpType20 phpType7* z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $autoload_scoped_class_pending(S, phpType19, z)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes_raw)
+  -- if ptbytes_lookup = $ppcall_literal_name(ptbytes_raw)
+rule PhpStep/autoload-scoped-class-loaded: S ~> $scoped_name_prepare(S_class, phpType19, S_class.RESULT, phpType20, phpType7*, z)
+  -- if S.TODO = (AUTO_SCOPED_CLASS porigin pvalue_string z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $autoload_scoped_class_site(S, porigin, pvalue_string, z)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $string_bytes(pvalue_string) = (ptbytes_raw)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) =/= eps
+  -- if S_class = $scoped_class_prepare(S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue_string], phpType19, z)
+  -- if S_class.COMPLETION = NORMAL
+rule PhpStep/autoload-scoped-class-missing: S ~> $throw_scalar(S[.TODO = eps], "Error", $ptascii("Class \"") ++ $c_string(ptbytes_raw) ++ $ptascii("\" not found"), z)
+  -- if S.TODO = (AUTO_SCOPED_CLASS porigin pvalue_string z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $autoload_scoped_class_site(S, porigin, pvalue_string, z)
+  -- if $string_bytes(pvalue_string) = (ptbytes_raw)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = eps
+rule PhpStep/autoload-scoped-selected-loaded: S ~> $scoped_select(S[.TODO = ptask_tail*], phpType19, poperand_class, ptbytes_method, phpType7*, z)
+  -- if S.TODO = (AUTO_SCOPED_SELECTED porigin poperand_class ptbytes_method z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $autoload_scoped_selected_site(S, porigin, poperand_class, ptbytes_method, z)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if poperand_class = KNOWN (PSTRING ptbytes_class)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_class))) =/= eps
+rule PhpStep/autoload-scoped-selected-missing: S ~> $throw_scalar(S[.TODO = eps], "Error", $ptascii("Class \"") ++ $c_string(ptbytes_class) ++ $ptascii("\" not found"), z)
+  -- if S.TODO = (AUTO_SCOPED_SELECTED porigin (KNOWN (PSTRING ptbytes_class)) ptbytes_method z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $autoload_scoped_selected_site(S, porigin, KNOWN (PSTRING ptbytes_class), ptbytes_method, z)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_class))) = eps
+rule PhpStep/autoload-class-constant-class: S ~> $autoload_begin(S_read[.TODO = ptask_tail*], porigin, ptbytes_lookup, $ptlc(ptbytes_lookup), z, AUTO_LOOKUP, AUTO_CLASS_CONST_CLASS porigin pvalue_string z)
+  -- if S.TODO = (CLASS_CONST_CLASS phpType19 phpType20 z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $autoload_class_constant_class_pending(S, phpType19, z)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes_raw)
+  -- if ptbytes_lookup = $ppcall_literal_name(ptbytes_raw)
+rule PhpStep/autoload-class-constant-class-loaded: S ~> $class_constant_member_tasks(S_class, phpType19, S_class.RESULT, phpType20, z)
+  -- if S.TODO = (AUTO_CLASS_CONST_CLASS porigin pvalue_string z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $autoload_class_constant_class_site(S, porigin, pvalue_string, z)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprClassConstFetch phpType19 phpType20 metadata)
+  -- if $string_bytes(pvalue_string) = (ptbytes_raw)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) =/= eps
+  -- if S_class = $class_constant_selector(S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue_string], phpType19, z)
+  -- if S_class.COMPLETION = NORMAL
+rule PhpStep/autoload-class-constant-class-missing: S ~> $throw_scalar(S[.TODO = eps], "Error", $ptascii("Class \"") ++ $c_string(ptbytes_raw) ++ $ptascii("\" not found"), z)
+  -- if S.TODO = (AUTO_CLASS_CONST_CLASS porigin pvalue_string z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $autoload_class_constant_class_site(S, porigin, pvalue_string, z)
+  -- if $string_bytes(pvalue_string) = (ptbytes_raw)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = eps
+rule PhpStep/autoload-class-constant-selected-loaded: S ~> $class_constant_member_typed(S[.TODO = ptask_tail*], poperand_class, PSTRING ptbytes_member, z)
+  -- if S.TODO = (AUTO_CLASS_CONST_SELECTED porigin poperand_class ptbytes_member z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $autoload_class_constant_selected_site(S, porigin, poperand_class, ptbytes_member, z)
+  -- if poperand_class = KNOWN (PSTRING ptbytes_class)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_class))) =/= eps
+rule PhpStep/autoload-class-constant-selected-missing: S ~> $throw_scalar(S[.TODO = eps], "Error", $ptascii("Class \"") ++ $c_string(ptbytes_class) ++ $ptascii("\" not found"), z)
+  -- if S.TODO = (AUTO_CLASS_CONST_SELECTED porigin (KNOWN (PSTRING ptbytes_class)) ptbytes_member z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $autoload_class_constant_selected_site(S, porigin, KNOWN (PSTRING ptbytes_class), ptbytes_member, z)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_class))) = eps
 def $autoload_new_diagnostic(S, ptbytes) = ptbytes_raw -- if S.TODO = ptask :: (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail* -- if $string_bytes(pdynamicnew.SOURCE) = (ptbytes_raw)
 def $autoload_new_diagnostic(S, ptbytes) = ptbytes -- otherwise
 rule PhpStep/autoload-publish-resume: S ~> $activate_class(S[.TODO = ptask_tail*], pclassdesc)
@@ -744,6 +922,38 @@ def $autoload_resume_valid(S, pautoloadcall) = true
   -- if z_fetch = z \/ $dynamic_new_site(S, pautoloadcall.SITE, z, z_fetch)
 def $autoload_resume_valid(S, pautoloadcall) = true
   -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if pautoloadcall.RESUME = AUTO_SCOPED_CLASS porigin pvalue_string z
+  -- if S.ORIGIN = (porigin) /\ pautoloadcall.SITE = porigin
+  -- if $autoload_scoped_class_site(S, porigin, pvalue_string, z)
+  -- if $string_bytes(pvalue_string) = (ptbytes_raw)
+  -- if pautoloadcall.NAME = $ppcall_literal_name(ptbytes_raw)
+  -- if pautoloadcall.KEY = $ptlc(pautoloadcall.NAME) /\ pautoloadcall.LINE = z
+def $autoload_resume_valid(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if pautoloadcall.RESUME = AUTO_SCOPED_SELECTED porigin poperand_class ptbytes_method z
+  -- if S.ORIGIN = (porigin) /\ pautoloadcall.SITE = porigin
+  -- if $autoload_scoped_selected_site(S, porigin, poperand_class, ptbytes_method, z)
+  -- if poperand_class = KNOWN (PSTRING ptbytes_class)
+  -- if pautoloadcall.NAME = $ppcall_literal_name(ptbytes_class)
+  -- if pautoloadcall.KEY = $ptlc(pautoloadcall.NAME) /\ pautoloadcall.LINE = z
+def $autoload_resume_valid(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if pautoloadcall.RESUME = AUTO_CLASS_CONST_CLASS porigin pvalue_string z
+  -- if S.ORIGIN = (porigin) /\ pautoloadcall.SITE = porigin
+  -- if $autoload_class_constant_class_site(S, porigin, pvalue_string, z)
+  -- if $string_bytes(pvalue_string) = (ptbytes_raw)
+  -- if pautoloadcall.NAME = $ppcall_literal_name(ptbytes_raw)
+  -- if pautoloadcall.KEY = $ptlc(pautoloadcall.NAME) /\ pautoloadcall.LINE = z
+def $autoload_resume_valid(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if pautoloadcall.RESUME = AUTO_CLASS_CONST_SELECTED porigin poperand_class ptbytes_member z
+  -- if S.ORIGIN = (porigin) /\ pautoloadcall.SITE = porigin
+  -- if $autoload_class_constant_selected_site(S, porigin, poperand_class, ptbytes_member, z)
+  -- if poperand_class = KNOWN (PSTRING ptbytes_class)
+  -- if pautoloadcall.NAME = $ppcall_literal_name(ptbytes_class)
+  -- if pautoloadcall.KEY = $ptlc(pautoloadcall.NAME) /\ pautoloadcall.LINE = z
+def $autoload_resume_valid(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
   -- if pautoloadcall.RESUME = AUTO_PUBLISH porigin
   -- if pautoloadcall.SITE = porigin /\ S.ORIGIN = (porigin)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
@@ -836,6 +1046,38 @@ def $autoload_declaration_resume(S, pautoloadcall) = true
   -- if $autoload_class_name(pautoloadcall.NAME) /\ pautoloadcall.LINE = z_fetch
 def $autoload_declaration_resume(S, pautoloadcall) = true
   -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if pautoloadcall.RESUME = AUTO_SCOPED_CLASS porigin pvalue_string z
+  -- if pautoloadcall.SITE = porigin
+  -- if $autoload_scoped_class_site(S, porigin, pvalue_string, z)
+  -- if $string_bytes(pvalue_string) = (ptbytes_raw)
+  -- if pautoloadcall.NAME = $ppcall_literal_name(ptbytes_raw)
+  -- if pautoloadcall.KEY = $ptlc(pautoloadcall.NAME) /\ pautoloadcall.LINE = z
+def $autoload_declaration_resume(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if pautoloadcall.RESUME = AUTO_SCOPED_SELECTED porigin poperand_class ptbytes_method z
+  -- if pautoloadcall.SITE = porigin
+  -- if $autoload_scoped_selected_site(S, porigin, poperand_class, ptbytes_method, z)
+  -- if poperand_class = KNOWN (PSTRING ptbytes_class)
+  -- if pautoloadcall.NAME = $ppcall_literal_name(ptbytes_class)
+  -- if pautoloadcall.KEY = $ptlc(pautoloadcall.NAME) /\ pautoloadcall.LINE = z
+def $autoload_declaration_resume(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if pautoloadcall.RESUME = AUTO_CLASS_CONST_CLASS porigin pvalue_string z
+  -- if pautoloadcall.SITE = porigin
+  -- if $autoload_class_constant_class_site(S, porigin, pvalue_string, z)
+  -- if $string_bytes(pvalue_string) = (ptbytes_raw)
+  -- if pautoloadcall.NAME = $ppcall_literal_name(ptbytes_raw)
+  -- if pautoloadcall.KEY = $ptlc(pautoloadcall.NAME) /\ pautoloadcall.LINE = z
+def $autoload_declaration_resume(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if pautoloadcall.RESUME = AUTO_CLASS_CONST_SELECTED porigin poperand_class ptbytes_member z
+  -- if pautoloadcall.SITE = porigin
+  -- if $autoload_class_constant_selected_site(S, porigin, poperand_class, ptbytes_member, z)
+  -- if poperand_class = KNOWN (PSTRING ptbytes_class)
+  -- if pautoloadcall.NAME = $ppcall_literal_name(ptbytes_class)
+  -- if pautoloadcall.KEY = $ptlc(pautoloadcall.NAME) /\ pautoloadcall.LINE = z
+def $autoload_declaration_resume(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
   -- if pautoloadcall.RESUME = AUTO_PUBLISH porigin
   -- if pautoloadcall.SITE = porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
@@ -895,6 +1137,10 @@ def $call_task_valid(S, AUTO_REFERENCE pautoloadcall pautoloadentry) = $autoload
 def $call_task_valid(S, AUTO_ENTER pautoloadcall pautoloadentry poperand) = $autoload_sent_valid(S, pautoloadcall, pautoloadentry, poperand)
 def $call_task_valid(S, AUTO_RESULT pautoloadcall pautoloadentry poperand) = $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
 def $call_task_valid(S, AUTO_NEW ptbytes phpType7* z z_fetch) = true -- if S.ORIGIN = (porigin) -- if $autoload_ordinary_new_source(S, porigin) -- if $origin_node(S.SOURCES, porigin) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata) -- if $new_source_name(S, porigin) = (ptbytes) -- if $call_line_valid(S, (porigin), z) \/ $dynamic_new_site(S, porigin, z, z_fetch) -- if z_fetch = z \/ $dynamic_new_site(S, porigin, z, z_fetch)
+def $call_task_valid(S, AUTO_SCOPED_CLASS porigin pvalue_string z) = (S.ORIGIN = (porigin) /\ $autoload_scoped_class_site(S, porigin, pvalue_string, z))
+def $call_task_valid(S, AUTO_SCOPED_SELECTED porigin poperand_class ptbytes_method z) = (S.ORIGIN = (porigin) /\ $autoload_scoped_selected_site(S, porigin, poperand_class, ptbytes_method, z))
+def $call_task_valid(S, AUTO_CLASS_CONST_CLASS porigin pvalue_string z) = (S.ORIGIN = (porigin) /\ $autoload_class_constant_class_site(S, porigin, pvalue_string, z))
+def $call_task_valid(S, AUTO_CLASS_CONST_SELECTED porigin poperand_class ptbytes_member z) = (S.ORIGIN = (porigin) /\ $autoload_class_constant_selected_site(S, porigin, poperand_class, ptbytes_member, z))
 def $call_task_valid(S, AUTO_PUBLISH porigin) = true -- if $class_at(S.CLASSES, porigin) = (pclassdesc) -- if pclassdesc.PARENT =/= eps -- if S.ORIGIN = (porigin)
 def $call_task_valid(S, AUTO_EXPLICIT_DONE pconfigcall) = ($config_invoke_valid(S, pconfigcall) /\ pconfigcall.KIND = INTRINSIC_AUTO_CALL)
 def $task_nodes(AUTO_REGISTER_RECEIVE pautoloadregistration) = $config_nodes(pautoloadregistration.ENTRY.CALL) ++ $autoload_entry_nodes(pautoloadregistration.ENTRY)
@@ -908,6 +1154,10 @@ def $task_nodes(AUTO_REFERENCE pautoloadcall pautoloadentry) = $autoload_explici
 def $task_nodes(AUTO_ENTER pautoloadcall pautoloadentry poperand) = $autoload_explicit_nodes(pautoloadcall.MODE) ++ $autoload_entry_nodes(pautoloadentry) ++ $operand_nodes(poperand)
 def $task_nodes(AUTO_RESULT pautoloadcall pautoloadentry poperand) = $autoload_explicit_nodes(pautoloadcall.MODE)
 def $task_nodes(AUTO_NEW ptbytes phpType7* z z_fetch) = eps
+def $task_nodes(AUTO_SCOPED_CLASS porigin pvalue_string z) = $value_nodes(pvalue_string)
+def $task_nodes(AUTO_SCOPED_SELECTED porigin poperand_class ptbytes_method z) = $operand_nodes(poperand_class)
+def $task_nodes(AUTO_CLASS_CONST_CLASS porigin pvalue_string z) = $value_nodes(pvalue_string)
+def $task_nodes(AUTO_CLASS_CONST_SELECTED porigin poperand_class ptbytes_member z) = $operand_nodes(poperand_class)
 def $task_nodes(AUTO_PUBLISH porigin) = eps
 def $task_nodes(AUTO_EXPLICIT_DONE pconfigcall) = $config_nodes(pconfigcall)
 def $autoload_explicit_nodes(AUTO_LOOKUP) = eps
@@ -1092,6 +1342,7 @@ def $autoload_interface_missing(S, preqbytes :: preqbytes_tail*) = $autoload_int
 def $autoload_interface_missing(S, preqbytes :: preqbytes_tail*) = (preqbytes)
   -- if ~$dynamic_new_known(S, preqbytes)
 def $autoload_interface_kind((NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)) = ("class")
+def $autoload_interface_kind((NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata)) = ("enum")
 def $autoload_interface_kind((NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata)) = ("interface")
 def $autoload_interface_kind(pcnode?) = eps -- otherwise
 
@@ -1216,6 +1467,7 @@ def $task_nodes(AUTO_INTERFACE porigin preqbytes) = eps
 dec $autoload_trait_source(pstate, porigin, preqbytes) : bool
 
 def $autoload_trait_kind((NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)) = ("class")
+def $autoload_trait_kind((NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata)) = ("enum")
 def $autoload_trait_kind((NStmtTrait phpType14 phpType3 phpType23 metadata)) = ("trait")
 def $autoload_trait_kind(pcnode?) = eps -- otherwise
 

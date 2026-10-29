@@ -1084,12 +1084,12 @@ def $dynamic_defined_finish(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "class
 def $dynamic_defined_receive(S, pconfigcall) = $autoload_begin(S[.TODO = ptask_tail*], pconfigcall.SITE, preqbytes_class, $ptlc(preqbytes_class), pconfigcall.LINE, AUTO_EXPLICIT pconfigcall, DYNAMIC_DEFINED_RESUME pconfigcall)
   -- if $dynamic_defined_valid(S, pconfigcall)
   -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
-  -- if $autoload_pending(S, preqbytes_class)
+  -- if $autoload_new_pending(S, preqbytes_class)
   -- if S.TODO = ptask :: ptask_tail*
 def $dynamic_defined_receive(S, pconfigcall) = $dynamic_defined_finish(S, pconfigcall)
   -- if $dynamic_defined_valid(S, pconfigcall)
   -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
-  -- if ~$autoload_pending(S, preqbytes_class)
+  -- if ~$autoload_new_pending(S, preqbytes_class)
 def $dynamic_defined_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "class constant defined query"] -- otherwise
 def $task_nodes(DYNAMIC_DEFINED_RESUME pconfigcall) = $config_nodes(pconfigcall)
 def $selected_task_nonce(DYNAMIC_DEFINED_RESUME pconfigcall) = pconfigcall.SELECTION
@@ -1219,12 +1219,12 @@ def $dynamic_class_constant_finish(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED
 def $dynamic_class_constant_receive(S, pconfigcall) = $autoload_begin(S[.TODO = ptask_tail*], pconfigcall.SITE, preqbytes_class, $ptlc(preqbytes_class), pconfigcall.LINE, AUTO_EXPLICIT pconfigcall, DYNAMIC_CLASS_CONSTANT_RESUME pconfigcall)
   -- if $dynamic_class_constant_valid(S, pconfigcall)
   -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
-  -- if $autoload_pending(S, preqbytes_class)
+  -- if $autoload_new_pending(S, preqbytes_class)
   -- if S.TODO = ptask :: ptask_tail*
 def $dynamic_class_constant_receive(S, pconfigcall) = $dynamic_class_constant_finish(S, pconfigcall)
   -- if $dynamic_class_constant_valid(S, pconfigcall)
   -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
-  -- if ~$autoload_pending(S, preqbytes_class)
+  -- if ~$autoload_new_pending(S, preqbytes_class)
 def $dynamic_class_constant_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "class constant value query"] -- otherwise
 def $task_nodes(DYNAMIC_CLASS_CONSTANT_RESUME pconfigcall) = $config_nodes(pconfigcall)
 def $selected_task_nonce(DYNAMIC_CLASS_CONSTANT_RESUME pconfigcall) = pconfigcall.SELECTION

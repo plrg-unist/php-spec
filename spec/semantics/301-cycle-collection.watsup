@@ -58,6 +58,7 @@ dec $gc_white(hgraph, pnode*) : pnode*
 dec $gc_collectable(pstate, pnode*, pnode*) : pnode*
 dec $gc_uncalled(pstate, pnode*) : pnode*
 dec $gc_plan(pstate, pgccall) : pgcplan
+dec $gc_plan_graph(pstate, pgccall, hgraph, hedge*?) : pgcplan
 dec $gc_call_scope(pstate, pgccall) : pstate
 dec $gc_call_live(pstate, pgccall) : bool
 dec $gc_trace_valid(pstate, pgccall) : bool
@@ -116,6 +117,15 @@ dec $gc_child_visits(pnode, pnode*, hedge*) : pgcvisit*
 dec $gc_visit_reverse(pgcvisit*) : pgcvisit*
 dec $gc_visit_order(pgcvisit*) : pgcvisit*
 dec $gc_walk(hgraph, hedge*, pgcvisit*, pnode*, pnode*, pnode*) : (pnode*, pnode*)
+dec $gc_count_walk(hgraph, hedge*, hedge*?, pgcvisit*, pnode*) : (pnode*, pnode*)
+dec $gc_weak_prefix(pnode*, pnode*) : pnode*
+dec $gc_weak_prefix_ok(pnode*, pnode*) : bool
+dec $gc_weak_prefix_valid(hgraph, hedge*, pnode*) : bool
+dec $gc_claim_weak(pnode*, pnode*, pnode*, pgcvisit*) : (pnode*, pgcvisit*)
+dec $gc_claim_tail(pnode, hedge*, pnode*, pnode*, pnode*, pgcvisit*) : (pnode*, pgcvisit*)
+dec $gc_claim_first(pnode, hedge*, pnode*, pnode*, pnode*, pgcvisit*) : (pnode*, pgcvisit*)
+dec $gc_walk_claimed(hgraph, hedge*, hedge*, pgcvisit*, pnode*, pnode*, pnode*, pnode*) : (pnode*, pnode*, pnode*)
+dec $gc_walk_roots(hgraph, hedge*, hedge*, pgcvisit*, pnode*, pnode*, pnode*, pnode*) : (pnode*, pnode*, pnode*)
 dec $gc_count_visit(pnode, bool) : pnode*
 dec $gc_free_order(pgcplan, pnode*) : pnode*
 dec $gc_called_subset(nat*, nat*) : bool
@@ -149,8 +159,15 @@ dec $gc_indirect_arrays_valid(pstate, pnode*) : bool
 dec $gc_declared_locators(pstate, nat, nat, ppropertyslot*) : bool
 dec $gc_materialized_locators(pstate, pobjecttable*) : bool
 dec $gc_hook_nodes(pstate, pnode*) : bool
+dec $gc_materialized_base_quiet(pstate) : bool
 dec $gc_materialized_quiet(pstate) : bool
 dec $gc_materialized_begin(pstate, pgccall) : pstate
+dec $gc_ephemeron_phase(pstate) : bool
+dec $gc_ephemeron_policy(pstate) : bool
+dec $gc_ephemeron_graph(pstate) : hgraph
+dec $gc_ephemeron_weak_edges(pstate, hgraph) : hedge*
+dec $gc_ephemeron_prepare(pstate, pgcplan) : pstate?
+dec $gc_weak_plan_valid(pstate, pgcplan) : bool
 dec $gc_finally_ref_task(ptask) : pnode*
 dec $gc_finally_ref_tasks(ptask*) : pnode*
 dec $gc_finally_ref_frames(pframe*) : pnode*
@@ -304,6 +321,50 @@ def $gc_walk(H, hedge_proxy*, (GC_VISIT pnode b) :: pgcvisit*, pnode_white*, pno
   -- if ~(pnode <- pnode_white*) \/ pnode <- pnode_seen*
 def $gc_walk(H, hedge_proxy*, (GC_VISIT pnode b) :: pgcvisit*, pnode_white*, pnode_seen*, pnode_counted*) = $gc_walk(H, hedge_proxy*, $gc_visit_order($gc_child_visits(pnode, $heap_children(pnode, H.EDGES), hedge_proxy*)) ++ pgcvisit*, pnode_white*, pnode_seen* ++ [pnode], pnode_counted* ++ $gc_count_visit(pnode, b))
   -- if pnode <- pnode_white* /\ ~(pnode <- pnode_seen*)
+;; zend_gc.c marks weak-entry values black while pushing all of them. Their
+;; stack is then popped last-first; a proxy table keeps its first claim role.
+;; This walk is used only by quiet ephemeron plans. Legacy callback walks keep
+;; the preceding traversal and its existing snapshots.
+def $gc_weak_prefix(eps, pnode_child*) = pnode_child*
+def $gc_weak_prefix(pnode :: pnode_weak*, pnode :: pnode_child*) = $gc_weak_prefix(pnode_weak*, pnode_child*)
+def $gc_weak_prefix_ok(eps, pnode_child*) = true
+def $gc_weak_prefix_ok(pnode :: pnode_weak*, pnode :: pnode_child*) = $gc_weak_prefix_ok(pnode_weak*, pnode_child*)
+def $gc_weak_prefix_ok(pnode_weak*, pnode_child*) = false -- otherwise
+def $gc_weak_prefix_valid(H, hedge_weak*, eps) = true
+def $gc_weak_prefix_valid(H, hedge_weak*, pnode :: pnode_tail*) = ($gc_weak_prefix_ok($heap_children(pnode, hedge_weak*), $heap_children(pnode, H.EDGES)) /\ $gc_weak_prefix_valid(H, hedge_weak*, pnode_tail*))
+def $gc_claim_weak(eps, pnode_white*, pnode_claimed*, pgcvisit*) = (pnode_claimed*, pgcvisit*)
+def $gc_claim_weak(pnode :: pnode_tail*, pnode_white*, pnode_claimed*, pgcvisit*) = $gc_claim_weak(pnode_tail*, pnode_white*, pnode_claimed*, pgcvisit*)
+  -- if ~(pnode <- pnode_white*) \/ pnode <- pnode_claimed*
+def $gc_claim_weak(pnode :: pnode_tail*, pnode_white*, pnode_claimed*, pgcvisit*) = $gc_claim_weak(pnode_tail*, pnode_white*, pnode_claimed* ++ [pnode], (GC_VISIT pnode true) :: pgcvisit*)
+  -- if pnode <- pnode_white* /\ ~(pnode <- pnode_claimed*)
+def $gc_claim_tail(pnode_parent, hedge_proxy*, eps, pnode_white*, pnode_claimed*, pgcvisit*) = (pnode_claimed*, pgcvisit*)
+def $gc_claim_tail(pnode_parent, hedge_proxy*, pnode :: pnode_tail*, pnode_white*, pnode_claimed*, pgcvisit*) = $gc_claim_tail(pnode_parent, hedge_proxy*, pnode_tail*, pnode_white*, pnode_claimed*, pgcvisit*)
+  -- if ~(pnode <- pnode_white*) \/ pnode <- pnode_claimed*
+def $gc_claim_tail(pnode_parent, hedge_proxy*, pnode :: pnode_tail*, pnode_white*, pnode_claimed*, pgcvisit*) = $gc_claim_tail(pnode_parent, hedge_proxy*, pnode_tail*, pnode_white*, pnode_claimed* ++ [pnode], (GC_VISIT pnode (~((HEDGE pnode_parent pnode) <- hedge_proxy*))) :: pgcvisit*)
+  -- if pnode <- pnode_white* /\ ~(pnode <- pnode_claimed*)
+def $gc_claim_first(pnode_parent, hedge_proxy*, eps, pnode_white*, pnode_claimed*, pgcvisit*) = (pnode_claimed*, pgcvisit*)
+def $gc_claim_first(pnode_parent, hedge_proxy*, pnode :: pnode_tail*, pnode_white*, pnode_claimed*, pgcvisit*) = $gc_claim_first(pnode_parent, hedge_proxy*, pnode_tail*, pnode_white*, pnode_claimed*, pgcvisit*)
+  -- if ~(pnode <- pnode_white*) \/ pnode <- pnode_claimed*
+def $gc_claim_first(pnode_parent, hedge_proxy*, pnode :: pnode_tail*, pnode_white*, pnode_claimed*, pgcvisit*) = (pnode_next*, (GC_VISIT pnode (~((HEDGE pnode_parent pnode) <- hedge_proxy*))) :: pgcvisit_next*)
+  -- if pnode <- pnode_white* /\ ~(pnode <- pnode_claimed*)
+  -- if (pnode_next*, pgcvisit_next*) = $gc_claim_tail(pnode_parent, hedge_proxy*, pnode_tail*, pnode_white*, pnode_claimed* ++ [pnode], pgcvisit*)
+def $gc_walk_claimed(H, hedge_weak*, hedge_proxy*, eps, pnode_white*, pnode_claimed*, pnode_done*, pnode_counted*) = (pnode_claimed*, pnode_done*, pnode_counted*)
+def $gc_walk_claimed(H, hedge_weak*, hedge_proxy*, (GC_VISIT pnode b) :: pgcvisit*, pnode_white*, pnode_claimed*, pnode_done*, pnode_counted*) = $gc_walk_claimed(H, hedge_weak*, hedge_proxy*, pgcvisit_next*, pnode_white*, pnode_after*, pnode_done* ++ [pnode], pnode_counted* ++ $gc_count_visit(pnode, b))
+  -- if pnode <- pnode_claimed* /\ ~(pnode <- pnode_done*)
+  -- if (pnode_weak*, pgcvisit_weak*) = $gc_claim_weak($heap_children(pnode, hedge_weak*), pnode_white*, pnode_claimed*, pgcvisit*)
+  -- if pnode_ordinary* = $gc_weak_prefix($heap_children(pnode, hedge_weak*), $heap_children(pnode, H.EDGES))
+  -- if (pnode_after*, pgcvisit_next*) = $gc_claim_first(pnode, hedge_proxy*, pnode_ordinary*, pnode_white*, pnode_weak*, pgcvisit_weak*)
+def $gc_walk_roots(H, hedge_weak*, hedge_proxy*, eps, pnode_white*, pnode_claimed*, pnode_done*, pnode_counted*) = (pnode_claimed*, pnode_done*, pnode_counted*)
+def $gc_walk_roots(H, hedge_weak*, hedge_proxy*, (GC_VISIT pnode b) :: pgcvisit*, pnode_white*, pnode_claimed*, pnode_done*, pnode_counted*) = $gc_walk_roots(H, hedge_weak*, hedge_proxy*, pgcvisit*, pnode_white*, pnode_claimed*, pnode_done*, pnode_counted*)
+  -- if ~(pnode <- pnode_white*) \/ pnode <- pnode_claimed*
+def $gc_walk_roots(H, hedge_weak*, hedge_proxy*, (GC_VISIT pnode b) :: pgcvisit*, pnode_white*, pnode_claimed*, pnode_done*, pnode_counted*) = $gc_walk_roots(H, hedge_weak*, hedge_proxy*, pgcvisit*, pnode_white*, pnode_next*, pnode_done_next*, pnode_counted_next*)
+  -- if pnode <- pnode_white* /\ ~(pnode <- pnode_claimed*)
+  -- if (pnode_next*, pnode_done_next*, pnode_counted_next*) = $gc_walk_claimed(H, hedge_weak*, hedge_proxy*, [GC_VISIT pnode b], pnode_white*, pnode_claimed* ++ [pnode], pnode_done*, pnode_counted*)
+def $gc_count_walk(H, hedge_proxy*, eps, pgcvisit*, pnode_white*) = $gc_walk(H, hedge_proxy*, pgcvisit*, pnode_white*, eps, eps)
+def $gc_count_walk(H, hedge_proxy*, (hedge_weak*), pgcvisit*, pnode_white*) = (pnode_done*, pnode_counted*)
+  -- if $heap_live_edges(hedge_weak*, H.NODES) = hedge_weak*
+  -- if $gc_weak_prefix_valid(H, hedge_weak*, H.NODES)
+  -- if (pnode_claimed*, pnode_done*, pnode_counted*) = $gc_walk_roots(H, hedge_weak*, hedge_proxy*, pgcvisit*, pnode_white*, eps, eps, eps)
 def $gc_free_order(pgcplan, pnode_live*) = $heap_intersect(pgcplan.CANDIDATES, pnode_free*) ++ $destruction_nodes_delete(pnode_free*, pgcplan.CANDIDATES)
   -- if pnode_free* = $heap_intersect(pgcplan.FREESET, pnode_live*)
 def $gc_ordinary_node(S, HCELL n) = true
@@ -839,15 +900,20 @@ def $gc_nested_removed(pgcplan) = $destruction_nodes_delete($gc_nodes(pgcplan.BU
   -- if (pgcslot*, nat_free*, n_debit) = $gc_nested_image(pgcplan)
 def $gc_nested_removed(pgcplan) = eps -- otherwise
 
-def $gc_plan(S, pgccall) = {CALL pgccall, GRAPH H, TABLES S.OBJECTTABLES, CALLED S.DESTRUCTION.CALLED, PROXIES hedge_proxy*, COUNTED pnode_counted*, BUFFER pgc_white.BUFFER, CANDIDATES pnode_candidates*, DTORS pnode_dtors*, FREESET pnode_free*, SCAN eps, INDEX 0, STEPS eps, DONE eps}
-  -- if H = $gc_graph(S)
+def $gc_plan(S, pgccall) = $gc_plan_graph(S, pgccall, H, (hedge_weak*))
+  -- if $gc_ephemeron_policy(S)
+  -- if H = $gc_ephemeron_graph(S)
+  -- if hedge_weak* = $gc_ephemeron_weak_edges(S, H)
+def $gc_plan(S, pgccall) = $gc_plan_graph(S, pgccall, $gc_graph(S), eps)
+  -- if ~$gc_ephemeron_policy(S)
+def $gc_plan_graph(S, pgccall, H, hedge_weak*?) = {CALL pgccall, GRAPH H, TABLES S.OBJECTTABLES, CALLED S.DESTRUCTION.CALLED, PROXIES hedge_proxy*, WEAK hedge_weak*?, COUNTED pnode_counted*, BUFFER pgc_white.BUFFER, CANDIDATES pnode_candidates*, DTORS pnode_dtors*, FREESET pnode_free*, SCAN eps, INDEX 0, STEPS eps, DONE eps}
   -- if hedge_proxy* = $gc_proxy_edges(S.OBJECTTABLES, H.NODES)
   -- if pgc_start = $gc_compact(S.GC)
   -- if pnode_white* = $gc_white(H, $gc_eligible_nodes(pgc_start.BUFFER))
   -- if pnode_residual* = $destruction_nodes_delete($gc_nodes(pgc_start.BUFFER), $gc_eligible_nodes(pgc_start.BUFFER))
   -- if pnode_black* = $destruction_nodes_delete($destruction_nodes_delete($gc_physical_nodes(pgc_start.BUFFER), pnode_residual*), pnode_white*)
   -- if pgc_black_removed = $gc_compact($gc_buffer_drop_nodes(pgc_start, pnode_black*))
-  -- if (pnode_visit*, pnode_counted*) = $gc_walk(H, hedge_proxy*, $gc_root_visits($gc_eligible_nodes(pgc_black_removed.BUFFER)), pnode_white*, eps, eps)
+  -- if (pnode_visit*, pnode_counted*) = $gc_count_walk(H, hedge_proxy*, hedge_weak*?, $gc_root_visits($gc_eligible_nodes(pgc_black_removed.BUFFER)), pnode_white*)
   -- if pgc_white = $gc_buffer_add_nodes(pgc_black_removed, $gc_collectable(S, pnode_visit*, pnode_counted*))
   -- if pnode_candidates* = $gc_nodes(pgc_white.BUFFER)
   -- if pnode_dtors* = $gc_uncalled(S, $gc_eligible_nodes(pgc_white.BUFFER))
@@ -910,6 +976,14 @@ def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S[.GC.BUFFER = pgcplan.
 def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S[.GC.BUFFER = $gc_snapshot_slots(S.GC.BUFFER, pgcplan.DTORS)], pgcplan.CALL))
   -- if $gc_snapshot_fresh(S, pgcplan) /\ ~$gc_snapshot_nested(S, pgcplan)
 def $gc_snapshot_valid(S, pgcplan) = $gc_tables_valid(S, pgcplan.TABLES, pgcplan.GRAPH.NODES) -- if ~$gc_snapshot_fresh(S, pgcplan)
+def $gc_weak_plan_valid(S, pgcplan) = true -- if pgcplan.WEAK = eps
+def $gc_weak_plan_valid(S, pgcplan) = true
+  -- if pgcplan.WEAK = (hedge_weak*)
+  -- if pgcplan.CALL.PASS = 0 /\ pgcplan.DTORS = eps
+  -- if $gc_snapshot_fresh(S, pgcplan) /\ $gc_ephemeron_policy(S)
+  -- if $heap_live_edges(hedge_weak*, pgcplan.GRAPH.NODES) = hedge_weak*
+  -- if $gc_weak_prefix_valid(pgcplan.GRAPH, hedge_weak*, pgcplan.GRAPH.NODES)
+def $gc_weak_plan_valid(S, pgcplan) = false -- otherwise
 def $gc_call_live(S, pgccall) = true
   -- if S.GC.ACTIVE = (pgccall) /\ $(pgccall.NONCE < S.GC.NEXT)
   -- if pgccall.CALL.KIND = INTRINSIC_GC_COLLECT /\ pgccall.CALL.SENT = eps
@@ -942,13 +1016,14 @@ def $gc_plan_live(S, pgcplan) = true
   -- if $gc_called_subset(pgcplan.CALLED, S.DESTRUCTION.CALLED)
   -- if pgcplan.DTORS = $gc_uncalled_snapshot(S, $gc_eligible_nodes(pgcplan.BUFFER), pgcplan.CALLED)
   -- if $heap_unique(pgcplan.FREESET) /\ $heap_subset(pgcplan.FREESET, pgcplan.GRAPH.NODES)
-  -- if pgcplan.FREESET = $destruction_nodes_delete($gc_visit(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER), $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER)), eps), $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES))
   -- if pgcplan.PROXIES = $gc_proxy_edges(pgcplan.TABLES, pgcplan.GRAPH.NODES)
   -- if $gc_proxy_edges_valid(pgcplan.GRAPH, pgcplan.PROXIES)
+  -- if $gc_weak_plan_valid(S, pgcplan)
   -- if $gc_overlap_refstate(S, pgcplan)
   -- if $gc_snapshot_valid($gc_call_scope(S, pgcplan.CALL), pgcplan)
   -- if $($gc_plan_consumer_count(S.TODO, pgcplan) + $gc_plan_frame_count(S.FRAMES, pgcplan) + $gc_parked_plan_count(S, pgcplan)) = 1
-  -- if $gc_walk(pgcplan.GRAPH, pgcplan.PROXIES, $gc_root_visits($gc_eligible_nodes(pgcplan.BUFFER)), $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER)), eps, eps) = (pnode_visit*, pgcplan.COUNTED)
+  -- if $gc_count_walk(pgcplan.GRAPH, pgcplan.PROXIES, pgcplan.WEAK, $gc_root_visits($gc_eligible_nodes(pgcplan.BUFFER)), $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER))) = (pnode_visit*, pgcplan.COUNTED)
+  -- if pgcplan.FREESET = $destruction_nodes_delete(pnode_visit*, $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES))
   -- if $gc_done_prefix(S, pgcplan)
 def $gc_plan_live(S, pgcplan) = false -- otherwise
 def $gc_plan_valid(S, pgcplan) = ($gc_plan_live(S, pgcplan) /\ $gc_scope_valid(S, pgcplan.CALL))
@@ -1042,6 +1117,20 @@ def $gc_begin(S, pconfigcall) = S[.GC.NEXT = $(S.GC.NEXT + 1)][.GC.ACTIVE = (pgc
   -- if ~$generator_return_waiting_any(S, S.ALLOCATIONS)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*
   -- if pgccall = {NONCE S.GC.NEXT, CALL pconfigcall, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, PASS 0, TOTAL 0, PENDING eps}
+def $gc_begin(S, pconfigcall) = S_started
+  -- if $gc_ephemeron_policy(S)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pgccall = {NONCE S.GC.NEXT, CALL pconfigcall, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, PASS 0, TOTAL 0, PENDING eps}
+  -- if S_started = S[.GC.NEXT = $(S.GC.NEXT + 1)][.GC.ACTIVE = (pgccall)][.TODO = (GC_TRACE pgccall) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $gc_ephemeron_policy(S_started)
+  -- if pgcplan = $gc_plan(S_started, pgccall)
+  -- if pgcplan.DTORS = eps
+def $gc_begin(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "WeakMap ephemeron collection"]
+  -- if $gc_ephemeron_policy(S)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pgccall = {NONCE S.GC.NEXT, CALL pconfigcall, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, PASS 0, TOTAL 0, PENDING eps}
+  -- if S_started = S[.GC.NEXT = $(S.GC.NEXT + 1)][.GC.ACTIVE = (pgccall)][.TODO = (GC_TRACE pgccall) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~$gc_ephemeron_policy(S_started)
 def $gc_begin(S, pconfigcall) = $gc_materialized_begin(S, pgccall)
   -- if ~$weakmap_nonempty(S, S.ALLOCATIONS) \/ $weakmap_gc_map(S, S.ALLOCATIONS) =/= eps
   -- if $object_table_gc_boundary(S)
@@ -1055,7 +1144,8 @@ def $gc_hook_nodes(S, eps) = false
 def $gc_hook_nodes(S, (HOBJECT n) :: pnode_tail*) = ($property_hook_instance(S, n) \/ $gc_hook_nodes(S, pnode_tail*))
 def $gc_hook_nodes(S, (HARRAY n) :: pnode_tail*) = $gc_hook_nodes(S, pnode_tail*)
 def $gc_hook_nodes(S, (HCELL n) :: pnode_tail*) = $gc_hook_nodes(S, pnode_tail*)
-def $gc_materialized_quiet(S) = (~$weakmap_nonempty(S, S.ALLOCATIONS) /\ ~$gc_hook_nodes(S, S.ALLOCATIONS) /\ S.GC.WORKER = eps /\ S.GC.BUFFER = $gc_unmarked_slots(S.GC.BUFFER) /\ $gc_nodes(S.GC.BUFFER) = $gc_physical_nodes(S.GC.BUFFER))
+def $gc_materialized_base_quiet(S) = (~$gc_hook_nodes(S, S.ALLOCATIONS) /\ S.GC.WORKER = eps /\ S.GC.BUFFER = $gc_unmarked_slots(S.GC.BUFFER) /\ $gc_nodes(S.GC.BUFFER) = $gc_physical_nodes(S.GC.BUFFER))
+def $gc_materialized_quiet(S) = (~$weakmap_nonempty(S, S.ALLOCATIONS) /\ $gc_materialized_base_quiet(S))
 def $gc_materialized_begin(S, pgccall) = S_started
   -- if $gc_materialized_quiet(S)
   -- if $object_tables_valid(S) /\ $gc_indirect_arrays_valid(S, S.ALLOCATIONS) /\ $gc_materialized_locators(S, S.OBJECTTABLES)
@@ -1142,7 +1232,7 @@ def $gc_trace(S, pgccall) = S[.COMPLETION = UNSUPPORTED "residual destructor tag
 rule PhpStep/gc-trace: S ~> $gc_trace(S, pgccall)
   -- if S.TODO = (GC_TRACE pgccall) :: ptask*
   -- if $call_task_valid(S, GC_TRACE pgccall)
-  -- if ~$weakmap_nonempty(S, S.ALLOCATIONS) \/ $weakmap_gc_map(S, S.ALLOCATIONS) =/= eps
+  -- if ~$weakmap_nonempty(S, S.ALLOCATIONS) \/ $weakmap_gc_map(S, S.ALLOCATIONS) =/= eps \/ $gc_ephemeron_policy(S)
 rule PhpStep/gc-dtors-done: S ~> S[.TODO = (GC_FREE pgcplan) :: ptask*]
   -- if S.TODO = (GC_DTORS pgcplan) :: ptask*
   -- if $gc_plan_valid(S, pgcplan) /\ pgcplan.INDEX = |pgcplan.DTORS|
@@ -1185,6 +1275,11 @@ def $gc_terminal_park(S, pgcplan) = (pgcplan.CALL.PASS = 1 /\ $destruction_zero(
 def $gc_terminal_prepare(S, pgcplan) = (S) -- if ~$gc_terminal_park(S, pgcplan)
 def $gc_terminal_prepare(S, pgcplan) = eps -- otherwise
 def $gc_free_prepare(S, pgcplan) = (S_prepared)
+  -- if $gc_ephemeron_policy(S)
+  -- if $gc_ephemeron_prepare(S, pgcplan) = (S_prepared)
+  -- if ~$gc_nested_boundary(S_prepared, pgcplan)
+def $gc_free_prepare(S, pgcplan) = (S_prepared)
+  -- if ~$gc_ephemeron_policy(S)
   -- if S_prepared = $weakmap_gc_prepare(S, pgcplan)
   -- if ~$gc_nested_boundary(S_prepared, pgcplan)
 def $gc_free_prepare(S, pgcplan) = eps -- otherwise

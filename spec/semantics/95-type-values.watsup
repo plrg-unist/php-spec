@@ -165,7 +165,7 @@ dec $typed_object_exact(pstate, ptbranch*, pvalue) : bool
 def $typed_object_exact(S, ptbranch*, POBJECT n) = ($typed_closure_type(ptbranch*) /\ $typed_closure(S, n))
   -- if $typed_closure(S, n)
 def $typed_object_exact(S, ptbranch*, POBJECT n) = ($typed_class_chain(S, ptbranch*, porigin, |S.CLASSES|) \/ ($typed_class_type(ptbranch*, $ptascii("Stringable")) /\ $stringable_instance(S, n)))
-  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $object_class_origin(S, n) = (porigin)
 def $typed_object_exact(S, ptbranch*, pvalue) = false -- otherwise
 
 dec $user_string_coercion(pstate, ptbranch*, pvalue, bool) : bool
@@ -208,7 +208,7 @@ def $typed_conversion_at(S, ptbranch*, pvalue, b) = $typed_conversion(ptbranch*,
 dec $typed_given(pstate, pvalue) : ptbytes
 def $typed_given(S, POBJECT n) = $ptascii("Closure") -- if $typed_closure(S, n)
 def $typed_given(S, POBJECT n) = $c_string(pclassdesc.NAME)
-  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $object_class_origin(S, n) = (porigin)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
 def $typed_given(S, pvalue) = $ptascii($typed_tag(pvalue)) -- otherwise
 def $typed_apply(S, TYPEDEPENDENT text, z) = S[.COMPLETION = UNSUPPORTED text]

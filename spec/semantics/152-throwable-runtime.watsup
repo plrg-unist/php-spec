@@ -685,12 +685,10 @@ def $throwable_previous_node_valid(S, n, text_kind) = true
 def $throwable_previous_node_valid(S, n, text_kind) = false -- otherwise
 dec $throwable_previous_chain_valid(pstate, nat, text, nat*) : bool
 def $throwable_previous_chain_valid(S, n, text_kind, n_seen*) = true
-  -- if $(|n_seen*| < 16)
   -- if ~(n <- n_seen*)
   -- if $throwable_previous_node_valid(S, n, text_kind)
   -- if $throwable_field(S, n, "previous") = PNULL
 def $throwable_previous_chain_valid(S, n, text_kind, n_seen*) = $throwable_previous_chain_valid(S, n_previous, text_kind, n :: n_seen*)
-  -- if $(|n_seen*| < 16)
   -- if ~(n <- n_seen*)
   -- if $throwable_previous_node_valid(S, n, text_kind)
   -- if $throwable_field(S, n, "previous") = POBJECT n_previous
@@ -735,12 +733,10 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*,
 ;; happen to be equal.
 dec $throwable_warm_previous_chain_valid(pstate, nat, text, nat*) : bool
 def $throwable_warm_previous_chain_valid(S, n, text_kind, n_seen*) = true
-  -- if $(|n_seen*| < 16)
   -- if ~(n <- n_seen*)
   -- if $throwable_previous_node_pstring_valid(S, n, text_kind)
   -- if $throwable_field(S, n, "previous") = PNULL
 def $throwable_warm_previous_chain_valid(S, n, text_kind, n_seen*) = $throwable_warm_previous_chain_valid(S, n_previous, text_kind, n :: n_seen*)
-  -- if $(|n_seen*| < 16)
   -- if ~(n <- n_seen*)
   -- if $throwable_previous_node_pstring_valid(S, n, text_kind)
   -- if $throwable_field(S, n, "previous") = POBJECT n_previous
@@ -776,7 +772,6 @@ dec $throwable_cross_kind_pair(pstate, nat, nat, pcompareguard*) : bool
 def $throwable_cross_kind_pair(S, n_left, n_right, pcompareguard_seen*) = true
   -- if S.COMPLETION = NORMAL
   -- if ~$number_compare_exception_pending(S)
-  -- if $(|pcompareguard_seen*| < 16)
   -- if n_left =/= n_right
   -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)
   -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
@@ -793,7 +788,6 @@ dec $throwable_builtin_kind_pair(pstate, nat, nat, pcompareguard*) : bool
 def $throwable_builtin_kind_pair(S, n_left, n_right, pcompareguard_seen*) = true
   -- if S.COMPLETION = NORMAL
   -- if ~$number_compare_exception_pending(S)
-  -- if $(|pcompareguard_seen*| < 16)
   -- if n_left =/= n_right
   -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)
   -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
@@ -813,7 +807,6 @@ dec $throwable_builtin_same_pair(pstate, nat, nat, pcompareguard*) : bool
 def $throwable_builtin_same_pair(S, n_left, n_right, pcompareguard_seen*) = true
   -- if S.COMPLETION = NORMAL
   -- if ~$number_compare_exception_pending(S)
-  -- if $(|pcompareguard_seen*| < 16)
   -- if n_left =/= n_right
   -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)
   -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
@@ -849,12 +842,10 @@ def $throwable_builtin_previous_node_valid(S, n) = true
 def $throwable_builtin_previous_node_valid(S, n) = false -- otherwise
 dec $throwable_builtin_previous_chain_valid(pstate, nat, nat*) : bool
 def $throwable_builtin_previous_chain_valid(S, n, n_seen*) = true
-  -- if $(|n_seen*| < 16)
   -- if ~(n <- n_seen*)
   -- if $throwable_builtin_previous_node_valid(S, n)
   -- if $throwable_field(S, n, "previous") = PNULL
 def $throwable_builtin_previous_chain_valid(S, n, n_seen*) = $throwable_builtin_previous_chain_valid(S, n_previous, n :: n_seen*)
-  -- if $(|n_seen*| < 16)
   -- if ~(n <- n_seen*)
   -- if $throwable_builtin_previous_node_valid(S, n)
   -- if $throwable_field(S, n, "previous") = POBJECT n_previous
@@ -863,7 +854,6 @@ dec $throwable_builtin_previous_pair(pstate, nat, nat, pcompareguard*) : bool
 def $throwable_builtin_previous_pair(S, n_left, n_right, pcompareguard_seen*) = true
   -- if S.COMPLETION = NORMAL
   -- if ~$number_compare_exception_pending(S)
-  -- if $(|pcompareguard_seen*| < 16)
   -- if n_left =/= n_right
   -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)
   -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left

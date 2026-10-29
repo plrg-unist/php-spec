@@ -1173,7 +1173,7 @@ do not imply those trace/root facts. Raw records are external with original path
 and hashes. Additional groups/entries, PIPE, wider ARRAY leaves and sole-owner
 lifetimes remain partial; paused boundaries remain unchanged.
 
-The [Iterator CONFIG bridge](../../coverage/semantics/config-iterator-unpack-review.json)
+The original [Iterator CONFIG bridge](../../coverage/semantics/config-iterator-unpack-review.json)
 streams one borrowed CV holding an initialized user Iterator into INI_SET. The
 Iterator methods have exact signatures, return by value and are non-generators;
 current returns plain strings and key returns integers. Rewind, valid, current, key and next execute through genuine callback frames;
@@ -1663,3 +1663,35 @@ descendants, shutdown release and wider destructor effects remain partial.
 Four authored originals and one independent public-parent-destructor saved-Exception
 source agree exactly; new reached checks pass 38+190 premises and the affected
 CONFIG117 return front passes 33. Earlier whole-tail cuts retain their identities.
+
+The [reference-current increment](../../coverage/semantics/config-iterator-reference-current-review.json)
+retains the genuine ordinary reference cell returned by `current()` through
+`key()`. Key-time writes affect the selected cell; rebinding its source name or
+property does not reselect the cache. Acquisition and send-time reads use the
+shared ordinary-cell helper and existing descriptor-backed graph policy.
+Sending copies a string into a DIRECT argument before `next()` or DATA/INPUT
+retirement, so later writes and destructors cannot change the API arguments.
+Other Iterator methods retain their by-value contract.
+
+Callback and cleanup history authenticate the raw cache shape and actual current
+return mode independently of the cell's later contents or allocation. Ordinary
+release retires a cache-only payload before DATA/INPUT, preserving the supplied
+Exception and pending result. Retired stable cell markers own nothing and cannot
+authenticate a live value. Original ordinary-cell source/state cuts, including
+the then-refused typed control, retain their identities in the linked review.
+
+The [typed-current increment](../../coverage/semantics/config-iterator-typed-current-review.json)
+adds a disjoint source-authenticated read for constrained cells. A real nonempty
+source row must pass the existing unique/live instance and static source checks,
+including declaration, selected slot, alias identity and stored-value type.
+The same reader validates CURRENT and DATA HCELL nodes. Reads perform no
+conversion and create no owner; normal property/static writes, rebinding and
+retirement attach or detach constraints. Cached cell selection and the DIRECT
+post-key string snapshot remain independent of later source/name changes.
+
+Five source agreements include one newly promoted original typed control; new
+reached recipes check source rows, nullable capture, rebind/detach, pending throw,
+actual owner transitions and pooled literal retention. Literal-reference debts,
+released cells, active coercion/parameter-backing authorities, nonstring sends
+and wider graph/lifetime contexts retain their existing boundaries. The ordinary
+helper, A65 and scalar invalid-key cleanup remain unchanged.

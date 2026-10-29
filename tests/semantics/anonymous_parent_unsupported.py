@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Keep the dynamic inheritance refusal and promoted parent/interface status controls."""
+"""Check promoted parent/interface boundaries by status without renewing native credit."""
 import hashlib
 import json
 import os
@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 CASES = {
     # Historical boundaries now checked by status, without a new native comparison.
     'forward-parent': (b'<?php $o = new class extends Base143 {}; class Base143 {}', 'normal'),
-    'dynamic-unit': (b"<?php class Base143 {} eval('$o = new class extends Base143 {};');", 'unsupported'),
+    'dynamic-unit': (b"<?php class Base143 {} eval('$o = new class extends Base143 {};');", 'normal'),
     'interface': (b'<?php interface I143 {} $o = new class implements I143 {};', 'normal'),
 }
 

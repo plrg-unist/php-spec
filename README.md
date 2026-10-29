@@ -644,6 +644,18 @@ The optional parent destructor, real storage pin and saved Exception use the
 existing lifecycle. Materialized layouts, special cells, builtin descendants,
 shutdown release and wider destructor effects remain partial.
 
+[Reference-current CONFIG caches](coverage/semantics/config-iterator-reference-current-review.json)
+keep the cell selected by `current()` through key-time writes and source rebinding,
+then copy its string value before `next()`, Iterator destruction and API entry.
+Temporary and Aggregate inputs retain their real owners through normal or
+supplied-Exception cleanup, preserving the existing field/graph policy.
+
+[Typed-current CONFIG values](coverage/semantics/config-iterator-typed-current-review.json)
+validate live instance/static reference sources without coercion or extra owners.
+Existing writes and retirement detach constraints; the cached cell and copied
+arguments survive source rebinding. Transient/special cells and nonstring sends
+retain their boundaries. Original ordinary-cell cuts remain in their review.
+
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
 resumes. DATA retains the selected Generator across live input/callee rebinding;
@@ -3570,6 +3582,27 @@ ordinary casts may share that table. Four native-first originals agree, and
 86 reached AL checks plus one private typed strict SL cut pass at their recorded
 cuts. Callback, ephemeron, hook, worker and residual paths remain partial;
 see the [materialized-table review](coverage/semantics/gc-materialized-table-review.json).
+Quiet finite WeakMap ephemerons now use a live fixed point over ordinary
+object/array/cell edges, with separate white discovery and selective dead-Key
+entry removal. Three changed native-first originals agree, alongside a repeated
+ordinary-history control on the unchanged path; four source-reached strict SL
+groups pass 136 checks at private cuts. A phase guard confines this projection
+to fresh callback-free PASS0 collection. That second cut left callback,
+residual, worker, hook and uncertain same-Key proxy order paths open. The
+[generic ephemeron review](coverage/semantics/gc-ephemeron-generic-review.json)
+records the separate evidence and limits.
+
+The next quiet WeakMap GC cut records the current registration order for every
+Key: replacement keeps its place, removal retires it, and reinsertion appends.
+White collection marks all eligible entry values when pushed, then processes
+that stack last-first, keeping a shared property table's first claim count
+role. Four native-first originals agree, including two independent permutations
+that count 5 and 4; 184 private strict SL reached checks cover the actual
+consumer and invalid metadata. Discarded insertion results no longer copy a
+false value owner. Leaf/methodless insertion, fresh callback-free PASS0 and the
+existing callback/worker/hook fences still bound this cut. See the
+[registration-order GC review](coverage/semantics/gc-registration-order-review.json).
+
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
 reuse only when destructor preparation leaves the state identical.
@@ -4202,10 +4235,14 @@ at visited nodes. Reached ordinary recursion raises a catchable Error with its
 source, trace and normal unwind cleanup. The visited captured walk has no fixed
 depth limit: active-left guards and the finite heap bound traversal while shared
 DAG branches compare normally. Callback and wider-layout boundaries and finite
-previous-path authentication remain separate.
+acyclic previous-path authentication remain separate.
 [Visited-trace review](coverage/semantics/throwable-trace-visited-comparison-review.json).
 [Recursion Error review](coverage/semantics/throwable-trace-recursion-comparison-review.json).
 [Finite-heap traversal review](coverage/semantics/throwable-trace-unbounded-comparison-review.json).
+Canonical root contexts and previous paths also have no numeric depth ceiling.
+Visited object IDs bound pure path authentication by the finite heap; whole-path
+acyclicity and the existing layout restrictions remain required.
+[Finite previous-path review](coverage/semantics/throwable-previous-finite-comparison-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The
@@ -4269,7 +4306,7 @@ constructor binding, including required untyped or `int` formals; constructorles
 classes evaluate positional arguments and ignore their values. [The argument
 review](coverage/semantics/anonymous-constructor-arguments-review.json) records
 seven original source agreements, an independent coercion case and reached tasks.
-Unit0 global anonymous classes may also extend an ordinary Base.
+Unit0 anonymous classes may also extend an ordinary Base.
 Inherited or overridden constructors see Base property defaults; inherited
 methods preserve lexical and called scopes, and private Base slots remain
 separate from public child shadows. Generated names use the resolved parent
@@ -4281,7 +4318,7 @@ arguments; body/default errors still arise during compilation. Same-type
 redeclarations and private shadows keep their physical identities, and error
 messages preserve source `self`/`parent` spelling.
 [Typed-property review](coverage/semantics/anonymous-typed-properties-review.json).
-Unit0 global anonymous classes may implement interfaces,
+Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
 Base. First-`new` linking precedes arguments; kind/duplicate checks, method
 compatibility and implementation callbacks retain native order and tentative-notice
@@ -4295,8 +4332,18 @@ A throwing loader preserves successful earlier loads for retry; skipped sites ke
 their compiled identity without loading anything. Ordinary unused named classes,
 including magic-method helpers, share the authenticated compiler counter.
 [Dependency review](coverage/semantics/anonymous-dependencies-review.json).
-Namespace/import and dynamic-source parent/interface dependencies remain partial,
-as do wider anonymous members and inheritance contexts.
+Namespaces and class imports now use the ordinary resolver for those dependencies,
+including grouped imports, qualified aliases, relative and fully qualified names.
+Each source block retains its own imports; class lookup has no global fallback.
+Generated prefixes and declared property types retain the resolved full names.
+[Namespace dependency review](coverage/semantics/anonymous-namespace-dependencies-review.json).
+Successful include/eval units now admit dependent anonymous classes at existing
+no-argument CV-assignment sites, using each unit's imports, frozen source-entry
+parent bindings and compiler-derived request-wide counters. Ordinary loader
+callbacks preserve retained loads, retry and unit-specific publication causes.
+[Dynamic dependency review](coverage/semantics/anonymous-dynamic-dependencies-review.json).
+Failed/open compilation histories, wider dynamic placements/arguments, enum/trait
+co-residence and wider anonymous members remain partial.
 Plain empty named classes can share those units globally and in valid named
 namespace sections, including repeated unbracketed sections and bracketed global
 bodies. Eligible root/actual-block classes consume no RTD key; deferred classes
@@ -6103,6 +6150,13 @@ records four new exact originals and source-reached publication/retry checks.
 Earlier [fixed-name](coverage/semantics/reentrant-unlinked-new-review.json) and
 [dynamic-name](coverage/semantics/reentrant-dynamic-new-review.json) evidence keeps
 its original cuts; wider reentrant histories and enum dependencies remain partial.
+
+Unit and backed enums now link with their implicit interfaces and cached singleton
+cases. Direct `cases()`, `from()`, `tryFrom()`, case slots and constant queries have
+source and state checks. Registered-loader first-use static calls and class-constant
+fetches retain selected class/member order through loader replay. Case attributes,
+generated callable targets, the default loader and wider acquisition remain
+partial; see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
 now loads a sole missing user interface before a parentless class or interface is

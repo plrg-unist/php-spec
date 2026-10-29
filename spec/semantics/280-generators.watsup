@@ -384,7 +384,7 @@ def $generator_creator_target_valid(S, pgeneratorcreation, pmethoddesc, porigin_
   -- if ~$ppfirstclass(phpType7*) /\ ~$ppscoped_keyword(phpType19)
   -- if $scoped_source_method_origin(S, porigin_site, phpType20, pmethoddesc.NAME)
   -- if $scoped_requested_scope(S, porigin_site, phpType19, porigin_requested, eps, eps)
-  -- if $scoped_called_scope(S, phpType19, porigin_requested, porigin_called, eps, pmethoddesc, eps)
+  -- if $scoped_called_scope(S, porigin_site, phpType19, porigin_requested, porigin_called, eps, pmethoddesc, eps)
   -- if $method_accessible(S, pmethoddesc, $closure_source_class(S, porigin_site))
 def $generator_creator_target_valid(S, pgeneratorcreation, pmethoddesc, porigin_site) = false -- otherwise
 
@@ -416,7 +416,7 @@ def $generator_creation_scope_valid(S, pgeneratorcreation) = true
   -- if ~$ppfirstclass(phpType7*) /\ ~$scoped_ctor_arm_at(S, pgeneratorcreation.SITE)
   -- if $scoped_source_method_origin(S, pgeneratorcreation.SITE, phpType20, pmethoddesc.NAME)
   -- if $scoped_requested_scope(S, pgeneratorcreation.SITE, phpType19, porigin_requested, pgeneratorcreation.CREATOR.LEXICAL_CLASS, pgeneratorcreation.CREATOR.CALLED_CLASS)
-  -- if $scoped_called_scope(S, phpType19, porigin_requested, porigin_called, pgeneratorcreation.CREATOR.CALLED_CLASS, pmethoddesc, eps)
+  -- if $scoped_called_scope(S, pgeneratorcreation.SITE, phpType19, porigin_requested, porigin_called, pgeneratorcreation.CREATOR.CALLED_CLASS, pmethoddesc, eps)
   -- if $method_accessible(S, pmethoddesc, pgeneratorcreation.CREATOR.LEXICAL_CLASS)
 def $generator_creation_scope_valid(S, pgeneratorcreation) = false -- otherwise
 

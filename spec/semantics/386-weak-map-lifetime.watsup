@@ -145,6 +145,8 @@ def $weakmap_write_value_allowed(S, paccess) = true
   -- if paccess.RHS = S.RESULT
   -- if paccess.SELECTED = $rcontainer_selected(S, paccess.RHS)
 def $weakmap_write_value_allowed(S, paccess) = false -- otherwise
+dec $weakmap_shared_registration(pstate, nat, nat, pweakmapvalue) : bool
+dec $weakmap_shared_replacement(pstate, nat, nat, pweakmapvalue) : bool
 dec $weakmap_write_allowed(pstate, paccess) : bool
 def $weakmap_write_allowed(S, paccess) = true
   -- if paccess.MODE = ACCESS_SET /\ ~paccess.LATCH /\ ~paccess.KEYHOLE
@@ -169,20 +171,29 @@ def $weakmap_write_allowed(S, paccess) = true
   -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
   -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
   -- if $node_children(S, HOBJECT n_key) = eps
-  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps \/ $weakmap_shared_registration(S, n_map, n_key, paccess.VALUE)
   -- if $weakmap_write_value_allowed(S, paccess)
 def $weakmap_write_allowed(S, paccess) = false -- otherwise
 dec $weakmap_free_value_allowed(pstate, pvalue) : bool
 dec $weakmap_replace_allowed(pstate, paccess) : bool
 dec $weakmap_second_write_allowed(pstate, paccess) : bool
-def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = WEAKMAP ({KEY n_key, VALUE paccess.VALUE, BEFORE $weakref_find(S, S.ALLOCATIONS, n_key)})], paccess, pvalue_result)
+dec $weakmap_registration_next(pstate, nat) : nat
+dec $weakmap_insert_result(pstate, paccess) : (pstate, pvalue)
+def $weakmap_insert_result(S, paccess) = (S, PNULL)
+  -- if S.TODO = paccess.TASK :: ptask_tail*
+  -- if $destructor_return_discarded(ptask_tail*)
+def $weakmap_insert_result(S, paccess) = (S_read, pvalue_result)
+  -- if S.TODO = paccess.TASK :: ptask_tail*
+  -- if ~$destructor_return_discarded(ptask_tail*)
+  -- if S_read = $quiet_operand(S, paccess.SELECTED)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue_result
+def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = WEAKMAP ({KEY n_key, VALUE paccess.VALUE, BEFORE $weakref_find(S, S.ALLOCATIONS, n_key), ORDER $weakmap_registration_next(S, n_key)})], paccess, pvalue_result)
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_at(S, n_map)
   -- if ptbytes = $ptascii("offsetSet") /\ ($weakmap_write_allowed(S, paccess) \/ $weakmap_second_write_allowed(S, paccess))
   -- if paccess.OFFSET = POBJECT n_key
-  -- if S_read = $quiet_operand(S, paccess.SELECTED)
-  -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN pvalue_result
+  -- if (S_read, pvalue_result) = $weakmap_insert_result(S, paccess)
 ;; Replacing an existing key keeps its registration and publishes the new
 ;; value before ordinary eager release of the old value.
 def $access_call(S, paccess, ptbytes) = S[.OBJECTS[n_map] = WEAKMAP (pweakmapentry[.VALUE = paccess.VALUE])][.TODO = (ACCESS_RESUME paccess[.PHASE = ACCESS_CALL ptbytes]) :: ptask_tail*][.ORIGIN = (paccess.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -519,7 +530,7 @@ def $weakmap_replace_allowed(S, paccess) = true
   -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
   -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
   -- if $node_children(S, HOBJECT n_key) = eps
-  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map] \/ $weakmap_shared_replacement(S, n_map, n_key, paccess.VALUE)
   -- if pvalue = pweakmapentry.VALUE
   -- if $weakmap_free_value_allowed(S, pvalue)
   -- if $weakmap_write_value_allowed(S, paccess)
@@ -1007,7 +1018,7 @@ def $weakmap_gc_prepare(S, pgcplan) = S[.OBJECTS[n_map] = WEAKMAP eps]
   -- if $heap_intersect([HOBJECT n_map, HOBJECT n_value], pnode_live*) = eps
 def $weakmap_gc_prepare(S, pgcplan) = S -- otherwise
 
-def $gc_begin(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "WeakMap ephemeron collection"] -- if $weakmap_nonempty(S, S.ALLOCATIONS) /\ $weakmap_gc_map(S, S.ALLOCATIONS) = eps
+def $gc_begin(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "WeakMap ephemeron collection"] -- if $weakmap_nonempty(S, S.ALLOCATIONS) /\ $weakmap_gc_map(S, S.ALLOCATIONS) = eps /\ ~$gc_ephemeron_policy(S)
 
 dec $weakmap_iterator_at(pstate, nat) : bool
 def $weakmap_iterator_at(S, n) = false -- otherwise
@@ -1255,6 +1266,7 @@ def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDE
   -- if n_left =/= n_right
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if $weakmap_at(S, n_left) =/= $weakmap_at(S, n_right)
+  -- if $enum_case_object(S, n_left) = eps /\ $enum_case_object(S, n_right) = eps
   -- if ~$weakmap_standard_mismatch(S, n_left, n_right)
 
 ;; A retired wrapper is harmless borrowed history; a live GET additionally
@@ -1347,3 +1359,4 @@ rule PhpStep/weak-map-gc-trace-shape-refused: S ~> S[.COMPLETION = UNSUPPORTED "
   -- if $call_task_valid(S, GC_TRACE pgccall)
   -- if $weakmap_nonempty(S, S.ALLOCATIONS)
   -- if $weakmap_gc_map(S, S.ALLOCATIONS) = eps
+  -- if ~$gc_ephemeron_policy(S)
