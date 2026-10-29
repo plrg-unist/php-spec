@@ -1,6 +1,6 @@
 {
   "milestone": "I81 captured array/string user-method Generator factories",
-  "status": "private technical acceptance; actual released-tail composition and joined compilation pending",
+  "status": "private source/state cuts accepted; actual-tail composition and joined strict accepted",
   "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
   "private_base": "baaf33b5c9daff48615de8e10dececa4c115ecee",
   "private_implementation": [
@@ -122,7 +122,15 @@
         "report": "../php-spec-evidence-archive/generator-array-string-factory-81-review/independent/state-reviewed-gu4_9rkc/report.json",
         "sha256": "11446fb722dded2852fe7abe776252de85ada6ef3c2f74320369dd13b7d19c8c"
       }
-    ]
+    ],
+    "strict_joined": {
+      "revision": "578349bc73c70312b4fb950c109ddf72ac0b07b3",
+      "modules": 431,
+      "passed": true,
+      "report": "../php-spec-evidence-archive/generator-array-string-factory-81/strict-joined-b7de/report.json",
+      "sha256": "0b0d7728cb15c7ee9c3f6a5ae25b66e336113f623cc3b8f34fa4e9cbc37d199a",
+      "result": "SL/cache disabled/determinism enabled; CPU4, LC_ALL=C, TZ=UTC; exit 0, true newline, empty stderr, no timeout, stable watched inputs and HEAD; actors fully reaped."
+    }
   },
   "counts": {
     "new_author_native_normal": 3,
@@ -147,5 +155,15 @@
     "revision": "232738ee63fe7fac1c0519f69cee29704cf4bdbe",
     "scope": "Before first execution, the peer stage was tightened from alias lookup absence to the actual root CONFIG_INVOKE Fiber::throw with its real receiver, after eager alias release and PARK/ABORT output. All 131 custom assertions are unchanged.",
     "credit": "No semantic/source changes and no execution replay; original source and two reached cuts retain their identities."
+  },
+  "composition": {
+    "released_tail": "b7de03343209d73536b54d89948e0d651e4f32bc",
+    "private_package": "9e1ed54afb7cf2d105cdb815f0dfae5fa69706d3",
+    "tested_candidate": "578349bc73c70312b4fb950c109ddf72ac0b07b3",
+    "net_spec_delta": [
+      "spec/semantics/280-generators.watsup"
+    ],
+    "review": "The original 15-line Generator delta composes with the exact incoming identity-receipt helper, schema and module list. Existing call-source, selected-method and physical receiver/cache/input owner routes remain intact. New header/constructor/comparison/CONFIG/exception/output routes are not reached by these originals. Current checkpoints, identity-helper note and held/paused union are preserved.",
+    "execution_credit": "Only joined strict compilation is renewed; native, differential and reached cuts retain their recorded inputs and counts."
   }
 }

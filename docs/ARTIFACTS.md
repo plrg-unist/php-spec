@@ -215,8 +215,8 @@ independent by-reference SEND/Fiber-abort peer is under
 The [captured factory ledger](../coverage/semantics/generator-captured-factory-review.json)
 binds revisions, hashes and remaining scope.
 
-I81 array/string factory native, unchanged gate/projection, private strict and
-new-only model/state evidence is under
+I81 array/string factory native, unchanged gate/projection, private/actual-tail
+joined strict and new-only model/state evidence is under
 `../php-spec-evidence-archive/generator-array-string-factory-81/`; the independent
 private-array BYREF SEND peer is under
 `../php-spec-evidence-archive/generator-array-string-factory-81-review/`.

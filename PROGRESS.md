@@ -14,8 +14,8 @@ A bounded borrowed lookup view reuses the existing source/access/scope proof;
 actual Generator ownership stays separate. Three authored and one independent
 original agree at their recorded cuts; four reached fronts pass 343 custom/363
 reported checks, including private access, real receiver/cache/input owners,
-forged-receipt refusal and budget continuation. Private strict431 passes at its
-recorded cut. The shared identity-receipt predicate normalization fixes the
+forged-receipt refusal and budget continuation. Private and actual-tail joined
+strict431 pass at their recorded cuts. The shared identity-receipt predicate normalization fixes the
 initial independent interpreter failure; that earlier cut retains zero credit.
 Broader factory, binding, wrapper/API and lifecycle forms remain partial.
 [I81 review](coverage/semantics/generator-array-string-factory-review.json).

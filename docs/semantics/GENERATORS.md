@@ -423,8 +423,8 @@ receipt and physical owners. Three authored and one independent original agree
 at their recorded cuts; four reached fronts pass 343 custom/363 reported checks.
 These distinguish a retired maker from a retained body receiver, actual receipt
 from a fresh sibling, private access/certificate forgeries and parked BYREF cache
-versus SEND-input owners, with budget continuation. Private strict431 passes at
-its recorded cut. The independent original passes after shared identity-receipt
+versus SEND-input owners, with budget continuation. Private and actual-tail
+joined strict431 pass at their recorded cuts. The independent original passes after shared identity-receipt
 predicate normalization; its earlier failed cut retains zero agreement credit.
 Wider callable factories, binding/wrapper/API and lifecycle forms remain partial.
 [Array/string factory review](../../coverage/semantics/generator-array-string-factory-review.json).
