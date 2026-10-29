@@ -8,6 +8,20 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
+Unit0 global anonymous classes may now extend a previously compiled plain
+parentless Base through an unqualified reference. Inherited and overridden
+constructors see Base property defaults; inherited methods keep Base lexical
+scope and the anonymous called scope, and private Base/public child slots stay
+distinct. Generated names use the resolved parent reference spelling before
+`@anonymous`. Four new author originals and one independent name-visible source
+agree exactly with pinned PHP; one unchanged parentless control stays exact.
+Two source-reached states pass 88 premises, including full generated names, and
+joined strict SL compilation passes all 424 modules. Independent review exposed
+and corrected the initial wrong-prefix candidate; its mismatch and two earlier
+runner stops retain zero agreement credit. Typed Base properties, forward or
+autoloaded parents, dynamic units, interfaces and wider inheritance remain partial.
+[Parented anonymous class review](coverage/semantics/anonymous-parent-review.json).
+
 Primed public method-created by-reference `Generator::throw` now carries its
 cached reference cell, authenticated receiver and saved Throwable through a
 Fiber catch or pending `finally`. An external name rebind leaves the old cell

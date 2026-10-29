@@ -4182,6 +4182,12 @@ constructor binding, including required untyped or `int` formals; constructorles
 classes evaluate positional arguments and ignore their values. [The argument
 review](coverage/semantics/anonymous-constructor-arguments-review.json) records
 seven original source agreements, an independent coercion case and reached tasks.
+Unit0 global anonymous classes may also extend a previously compiled plain Base.
+Inherited or overridden constructors see Base property defaults; inherited
+methods preserve lexical and called scopes, and private Base slots remain
+separate from public child shadows. Generated names use the resolved parent
+reference spelling before `@anonymous`. [The parent review](coverage/semantics/anonymous-parent-review.json)
+keeps this bounded inheritance slice and its original naming counterexample.
 Plain empty named classes can share those units globally and in valid named
 namespace sections, including repeated unbracketed sections and bracketed global
 bodies. Eligible root/actual-block classes consume no RTD key; deferred classes
