@@ -302,9 +302,9 @@ def $deprecated_attribute(ptcontext, phpType14) = NO_DEPRECATED
   -- if $builtin_attributes(ptcontext, phpType14) = BUILTIN_ATTRIBUTES pbuiltinattribute*
   -- if $builtin_named_attributes(pbuiltinattribute*, $ptascii("deprecated")) = eps
 def $deprecated_attribute(ptcontext, phpType14) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
-  -- if $builtin_attributes(ptcontext, phpType14) = BUILTIN_ATTRIBUTES pbuiltinattribute*
-  -- if $builtin_callable_only(pbuiltinattribute*) /\ $builtin_callable_arguments(ptcontext, pbuiltinattribute*)
-  -- if $builtin_named_attributes(pbuiltinattribute*, $ptascii("deprecated")) = [pbuiltinattribute]
+  -- if $builtin_attributes(ptcontext, phpType14) = BUILTIN_ATTRIBUTES pbuiltinattribute_all*
+  -- if $builtin_callable_only(pbuiltinattribute_all*) /\ $builtin_callable_arguments(ptcontext, pbuiltinattribute_all*)
+  -- if $builtin_named_attributes(pbuiltinattribute_all*, $ptascii("deprecated")) = [pbuiltinattribute]
   -- if $deprecated_message(ptcontext, pbuiltinattribute.ARGUMENTS) = DEPRECATED_MESSAGE ptbytes_message ptbytes_since
 def $deprecated_attribute(ptcontext, phpType14) = DEPRECATED_ATTRIBUTE_UNSUPPORTED -- otherwise
 def $deprecated_api_allowed(S, pfunction) = ($function_deprecated(S, pfunction) = NO_DEPRECATED)
