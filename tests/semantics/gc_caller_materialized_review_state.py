@@ -10,6 +10,89 @@ NESTED = sources.family.CASES['nested-caller-local-protects-sibling'].decode()
 RESURRECT = sources.family.CASES['function-caller-mutation-resurrection'].decode()
 
 CASES = {
+    'create-copied-argument-no-gc': {
+        'source': RESURRECT,
+        'stage': 'S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail* '
+        '-- if pconfigcall.KIND = INTRINSIC_WEAKREF_CREATE -- if S.GC.NEXT = 0 '
+        '-- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_root))] '
+        '-- if $lookup(S.ENV, $ptascii("root")) = (n_root_cell) '
+        '-- if S.STORE[n_root_cell] = DEFINED (POBJECT n_root)',
+        'checks': [
+            '$config_invoke_valid(S, pconfigcall)',
+            '$intrinsic_count(S, pconfigcall.SITE) = (1)',
+            'ptask_tail* = METHOD_RESULT :: ptask_after*',
+            'S.GC.BUFFER = eps',
+            '$heap_owners($heap_graph(S), HOBJECT n_root) = 3',
+            'S_step = $drive_steps(S, 1)',
+            'S_step.COMPLETION = BUDGET',
+            'S_step.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: '
+            '(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*',
+            'pdestructionrelease.JOBS = [DESTRUCTION_TEMP (HOBJECT n_root)]',
+            'pdestructionoperation.SOURCE = CONFIG_INVOKE pconfigcall',
+            'pdestructionoperation.VALUE = KNOWN (POBJECT n_wrapper)',
+            '$weakref_at(S_step, n_wrapper) = (WEAKREFERENCE (n_root))',
+            'pdestructionoperation.NOGC = eps',
+            'pdestructionoperation.NOGCEXTRA = [pgctemporary]',
+            'pgctemporary.OPERAND = KNOWN (POBJECT n_root)',
+            'pgctemporary.PENDING',
+            '$heap_owners($heap_graph(S_step), HOBJECT n_root) = 3',
+            '$gc_operation_metadata_valid(S_step[.COMPLETION = NORMAL], pdestructionoperation)',
+            '~$gc_operation_metadata_valid(S_step[.COMPLETION = NORMAL], '
+            'pdestructionoperation[.SOURCE = CONFIG_INVOKE pconfigcall[.INDEX = 0]])',
+            '~$gc_operation_metadata_valid(S_step[.COMPLETION = NORMAL], '
+            'pdestructionoperation[.SOURCE = CONFIG_INVOKE pconfigcall[.LINE = 0]])',
+            '~$gc_operation_metadata_valid(S_step[.COMPLETION = NORMAL], '
+            'pdestructionoperation[.SOURCE = CONFIG_INVOKE pconfigcall[.KIND = INTRINSIC_WEAKREF_GET]])',
+            '~$gc_operation_metadata_valid(S_step[.COMPLETION = NORMAL], '
+            'pdestructionoperation[.NOGCEXTRA = '
+            '[pgctemporary[.OPERAND = KNOWN (POBJECT n_wrapper)]]])',
+            'S_release = $drive_steps(S_step[.COMPLETION = NORMAL], 1)',
+            'S_release.COMPLETION = BUDGET',
+            'S_release.GC.BUFFER = eps',
+            '$heap_owners($heap_graph(S_release), HOBJECT n_root) = 2',
+            'pdestructionoperation_consumed = pdestructionoperation[.NOGCEXTRA = '
+            '[pgctemporary[.PENDING = false]]]',
+            'pdestructionoperation_consumed <- S_release.DESTRUCTION.OPERATIONS',
+            '$gc_operation_metadata_valid(S_release[.COMPLETION = NORMAL], '
+            'pdestructionoperation_consumed)',
+            'S_done = $drive_steps(S, 4)',
+            'S_done.COMPLETION = BUDGET',
+            'S_done.TODO = ptask_tail*',
+            'S_done.RESULT = KNOWN (POBJECT n_wrapper)',
+            'S_done.GC.BUFFER = eps',
+            '$drive_steps(S_step[.COMPLETION = NORMAL], 3) = S_done',
+        ], 'timeout': 240,
+    },
+    'weakref-unused-cv-borrowed-base': {
+        'source': RESURRECT,
+        'stage': 'S.TODO = METHOD_RESULT :: ptask_tail* -- if S.GC.NEXT = 0 '
+        '-- if S.RESULT = KNOWN (POBJECT n_wrapper) '
+        '-- if $weakref_at(S, n_wrapper) = (WEAKREFERENCE (n_root)) '
+        '-- if $lookup(S.ENV, $ptascii("root")) = (n_root_cell) '
+        '-- if S.STORE[n_root_cell] = DEFINED (POBJECT n_root)',
+        'checks': [
+            'S.BASE = BASE_VALUE (KNOWN PNULL)',
+            'S.GC.BUFFER = eps',
+            '$heap_owners($heap_graph(S), HOBJECT n_wrapper) = 1',
+            'S_step = $drive_steps(S, 1)',
+            'S_step.COMPLETION = BUDGET',
+            'S_step.RESULT = KNOWN (POBJECT n_wrapper)',
+            'S_step.BASE = BASE_VALUE (KNOWN (POBJECT n_wrapper))',
+            '$gc_weakref_write_cache(S_step, S_step.TODO, S_step.ORIGIN)',
+            '$machine_base_roots(S_step) = eps',
+            '$heap_owners($heap_graph(S_step), HOBJECT n_wrapper) = 1',
+            'S_step.GC.BUFFER = eps',
+            '$machine_base_roots(S_step[.SOURCES = eps]) = [HOBJECT n_wrapper]',
+            '$machine_base_roots(S_step[.RESULT = KNOWN PNULL]) = [HOBJECT n_wrapper]',
+            '$machine_base_roots(S_step[.BASE = BASE_VALUE (KNOWN (POBJECT n_root))]) = '
+            '[HOBJECT n_root]',
+            '$machine_base_roots(S_step[.BASE = BASE_NAME (KNOWN (POBJECT n_wrapper)) 0]) = '
+            '[HOBJECT n_wrapper]',
+            'S_paused = $drive_steps(S, 0)',
+            'S_paused.COMPLETION = BUDGET',
+            '$drive_steps(S_paused[.COMPLETION = NORMAL], 1) = S_step',
+        ], 'timeout': 240,
+    },
     'saved-caller-local-root': {
         'source': NESTED,
         'stage': 'S.TODO = (GC_TRACE pgccall) :: ptask_tail* '
