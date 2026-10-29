@@ -155,6 +155,10 @@ EXPECTED_STDOUT = {
 }
 
 EXIT_CODES = {name: 0 for name in CASES}
+BOUNDARIES = {
+    'invoke-unused-owning-result-retires-between-raw-argument-and-receiver':
+        ('unused owning explicit Closure wrapper result', b'O:1:1:1;I:1:1;B:1:1:1;'),
+}
 
 
 def expected_stderr(name, path):

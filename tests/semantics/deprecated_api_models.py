@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Check selected API callbacks against frozen pinned-PHP native reports."""
 import argparse
+import base64
 import hashlib
 import json
 import os
@@ -8,6 +9,7 @@ from pathlib import Path
 import subprocess
 
 from error_handler_run import ENV, recorded
+from deprecated_closure_invoke_review_cases import BOUNDARIES
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -32,6 +34,7 @@ def main():
     php = ROOT / '.tools/php/bin/php'
     php_sha256 = digest(php)
     watched = [Path(__file__), ROOT / 'tests/semantics/error_handler_run.py',
+               ROOT / 'tests/semantics/deprecated_closure_invoke_review_cases.py',
                ROOT / 'tests/semantics/profile.json', ROOT / 'spec/semantics/modules.json',
                ROOT / 'spec/semantics/30-storage.watsup',
                ROOT / 'spec/semantics/79-call-frames.watsup',
@@ -85,17 +88,27 @@ def main():
             outcome = json.loads((directory / 'model.stdout').read_bytes())
         except ValueError:
             outcome = {}
-        passed = (model['exit'] == 0 and not model['timeout'] and model['interruption'] is None
+        finished = (not model['timeout'] and model['interruption'] is None
                   and not model['group_after'] and not (directory / 'model.stderr').read_bytes()
-                  and outcome.get('frontend') == 'accepted' and outcome.get('checked') == 'program'
-                  and outcome.get('status') == ('php_error' if native_row['native']['exit'] == 255 else 'normal')
-                  and outcome.get('reason') is None
-                  and outcome.get('exit_status') == native_row['native']['exit']
-                  and outcome.get('stdout') == native_row['stdout_b64']
-                  and outcome.get('stderr') == native_row['stderr_b64'])
+                  and outcome.get('frontend') == 'accepted' and outcome.get('checked') == 'program')
+        boundary = BOUNDARIES.get(native_row['id'])
+        if boundary:
+            reason, prefix = boundary
+            passed = (finished and model['exit'] == 1 and outcome.get('status') == 'unsupported'
+                      and outcome.get('reason') == reason and outcome.get('exit_status') is None
+                      and outcome.get('stdout') == base64.b64encode(prefix).decode()
+                      and outcome.get('stderr') == '')
+        else:
+            passed = (finished and model['exit'] == 0
+                      and outcome.get('status') == ('php_error' if native_row['native']['exit'] == 255 else 'normal')
+                      and outcome.get('reason') is None
+                      and outcome.get('exit_status') == native_row['native']['exit']
+                      and outcome.get('stdout') == native_row['stdout_b64']
+                      and outcome.get('stderr') == native_row['stderr_b64'])
         rows.append({'id': native_row['id'], 'native_report': str(report_path),
                      'source_sha256': native_row['source_sha256'], 'model': model,
-                     'outcome': outcome, 'passed': passed, 'agreement_credit': int(passed)})
+                     'outcome': outcome, 'passed': passed,
+                     'agreement_credit': int(passed and not boundary), 'explicit_boundary': bool(boundary)})
         print(native_row['id'], passed, flush=True)
         if not passed:
             break

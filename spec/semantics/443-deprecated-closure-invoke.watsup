@@ -20,6 +20,15 @@ def $wrapper_receiver_roots(pcallcontext) = eps -- otherwise
 def $call_receiver_roots(pcallcontext) = eps
   -- if pcallcontext.TARGET = CLOSURE_TARGET n
   -- if pcallcontext.WRAPPER =/= eps
+;; The outer unused retval must retire between its raw arguments and Closure
+;; receiver. Keep this combination explicit until that release stage is modeled.
+def $closure_invoke_owning_discarded(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.WRAPPER =/= eps
+  -- if $wrapper_site(S, pcallcontext.TARGET, pcallcontext.CALLSITE)
+  -- if $destructor_unused_return(S)
+def $closure_invoke_owning_discarded(S) = false -- otherwise
 
 def $closure_invoke_source(CALL_ARGS pcalltarget eps n poperand* (porigin) z) = ((pcalltarget, {SLOTS (NAMED_SENT poperand)*, NAMED eps}, porigin, z))
 def $closure_invoke_source(NAMED_ARGS pcalltarget eps n pnamedargs (porigin) z) = ((pcalltarget, pnamedargs, porigin, z))

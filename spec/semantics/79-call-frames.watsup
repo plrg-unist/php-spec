@@ -50,7 +50,11 @@ dec $parameter_receive_restored(pstate, pstate) : pstate
 dec $restore_frame_locals(pstate, pframe, pframe*, psymboltable?) : pstate
 dec $frame_release(pstate, pstate) : pstate
 dec $generator_frame_release(pstate, pstate) : pstate
+dec $closure_invoke_owning_discarded(pstate) : bool
+def $restore_frame(S) = S[.COMPLETION = UNSUPPORTED "unused owning explicit Closure wrapper result"]
+  -- if $closure_invoke_owning_discarded(S)
 def $restore_frame(S) = $generator_frame_release(S, $frame_release(S, $restore_frame_raw(S)))
+  -- if ~$closure_invoke_owning_discarded(S)
 def $restore_frame_raw(S) = $parameter_receive_restored(S, $restore_frame_locals(S, pframe, pframe_tail*, pframe.LOCALS))
   -- if S.FRAMES = pframe :: pframe_tail*
 def $restore_frame_locals(S, pframe, eps, eps) = $set_active_table(S[.GLOBALTABLE = eps][.FRAMES = eps][.SILENCES = pframe.SILENCES][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.CURRENT = pframe.CONTEXT][.RETIREDOWNERS = pframe.RETIREDOWNERS][.BORROWEDREAD = pframe.BORROWEDREAD][.OBJECTCAST = pframe.OBJECTCAST][.CONSTCONTEXT = pframe.CONSTCONTEXT][.BASE = BASE_VALUE (KNOWN PNULL)], psymboltable)
