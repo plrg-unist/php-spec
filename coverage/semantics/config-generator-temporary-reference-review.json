@@ -1,6 +1,6 @@
 {
   "milestone": "A75 direct temporary BYREF Generator INPUT and DATA cleanup",
-  "status": "privately implemented, independently reviewed and validated; integration queued",
+  "status": "integrated after independent actual-tail review and joined validation",
   "scope": {
     "consumer": "Existing INI_SET unpack from a direct named zero-argument BYREF Generator call emitted as UNPACK_VAR, with at most two copied scalar sends, an integer final key and absent or implicit-NULL return.",
     "behavior": "The temporary Generator has separate INPUT and DATA owners. Normal completion drops DATA from two owners to one, then final INPUT release uses the existing storage pin to release its cached-cell edge and retire the Generator before API reception. Quiet terminal throw consumes DATA and INPUT in two discards, preserving the same supplied Throwable through catch. The four local-cell originals also retire the cell; an outside alias could retain it under the accepted A74 gate. Copied NULL/value sends and selected callee remain historical through a later handler.",
@@ -72,6 +72,17 @@
     "notes": "Raw sources, streams, exits, checked fixtures and reports are outside Git; no executables/providers. Tested revision and original process identities remain historical."
   },
   "integration": {
-    "status": "pending actual-tail composition and one full-manifest joined strict check"
+    "status": "actual-tail composition independently cleared; sole joined strict432 passed",
+    "base": "4a783a00cd8166edf89b242165b6d5cdf03bafee",
+    "composition": "d991a90a03e5c135b59accd65906a464b5cb4767",
+    "joined_strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-temporary-reference-75/joined-d991a90a0/report.json",
+      "sha256": "0954058256a879c771715e6957d4dafec48850a0fc755b8bd5d9256ee4f693e2",
+      "revision": "d991a90a03e5c135b59accd65906a464b5cb4767",
+      "modules": 432,
+      "seconds": 13.2313346863
+    },
+    "compatibility": "Runtime423 and source/state fixtures exactly match private A75. Generic355/301, schema and ordered manifest match the current parent; enum string-capture selection is KIND-disjoint from INI_SET. GC07, CLASS153 and ATTR05 additions preserve the named Generator/INI/selected-callee paths. Frozen native4/old Unsupported0, private strict431, source4 and reached316 retain their original cuts; no accepted A74 replay.",
+    "review": "Independent actual-parent semantic seams, docs/inventory union and joined compiler review by config71_recover_review."
   }
 }
