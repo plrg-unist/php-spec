@@ -157,10 +157,8 @@ def $return_discard(S, API_CALLBACK_REF papiargcursor) = $api_callback_discard(S
 ;; saved cursor back under THROW_SEARCH, then discard its prepared prefix once.
 def $error_read_discard(S, API_CALLBACK_SEND papiargcursor) = S[.TODO = (THROW_SEARCH n) :: (API_CALLBACK_SEND papiargcursor) :: ptask_tail*]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
-def $error_read_discard(S, API_CALLBACK_SEND papiargcursor) = S[.COMPLETION = UNSUPPORTED "API callback abrupt handler completion"] -- otherwise
 def $error_read_discard(S, API_CALLBACK_REF papiargcursor) = S[.TODO = (THROW_SEARCH n) :: (API_CALLBACK_REF papiargcursor) :: ptask_tail*]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
-def $error_read_discard(S, API_CALLBACK_REF papiargcursor) = S[.COMPLETION = UNSUPPORTED "API callback abrupt handler completion"] -- otherwise
 def $call_after_origin(S, API_CALLBACK_SEND papiargcursor) = S[.ORIGIN = (papiargcursor.SITE)]
 def $call_after_origin(S, API_CALLBACK_REF papiargcursor) = S[.ORIGIN = (papiargcursor.SITE)]
 def $error_context_trigger(S, pcallcontext) = (passertcall.FAILURE.CALL)
