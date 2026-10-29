@@ -294,21 +294,24 @@ checked the authority and THROW-only boundary. Keyword-forwarded creation, stati
 CURRENT/NEXT/SEND transfer and wider callable/lifecycle forms remained partial.
 [Static THROW review](../../coverage/semantics/generator-fiber-static-throw-transfer-review.json).
 
-Static-method `current()` now transfers before first yield, and existing
-non-ADVANCE `next()`/`send()` phases transfer both value and reference caches.
-The common callee/cache/resumer proof preserves inherited scope without receiver
-roots; parameter aliases, snapshot/live current, COW and argument/local owners
-retain their ordinary behavior. Sole value caches retire at replacement, while
-supplied SEND throws retire Delivered before catch and retain the remaining
-value/reference cache.
-Six authored and one independent exact sources, three selected unchanged-model
-refusals, a named positive, private/joined strict 425 and 522 custom reached checks
-support this scope. I72 is not replayed; its CURRENT compatibility assertion is
-maintained through a new source front. Shared fresh NEXT/SEND pre-yield ADVANCE
-still refuses both native-positive gates with zero agreement; the next generic
-milestone addresses that phase across applicable callees. Keyword-forwarded
-creation and wider helper/delegation/callee/lifecycle behavior remain partial.
-[Static transfer review](../../coverage/semantics/generator-fiber-static-transfer-review.json).
+Fresh `next()`/`send()` now transfer through Fiber before first yield across
+already-authenticated named functions, methods, receiver-free nonkeyword static
+methods and real unbound Closures. The actual resumer continues through first
+yield and SEND delivery; methods and Closures also reuse the existing reference
+cache proof in primed phases. SEND keeps its argument buffer through initialization,
+then retains the received local separately. Name rebinding, local promotion,
+snapshots/live current and normal or supplied-throw retirement keep their ordinary
+ownership.
+Nine authored, one independent and two promoted I73 anchors agree exactly with
+PHP; six representative new originals had checked Unsupported baselines.
+Strict compilation of 425 private/426 joined modules and 470 custom checks at
+four reached fronts pass. Original selector/240-second stops retain zero credit;
+the peer's fixed 600/620 limits apply to that source alone. THROW conditions are unchanged. Earlier
+[static transfer cuts](../../coverage/semantics/generator-fiber-static-transfer-review.json)
+retain their identities; the two phase anchors use retained native bytes.
+Keyword-forwarded creation, bound/changed callees, wider helper/delegation and
+lifecycle forms remain partial.
+[Fresh advance review](../../coverage/semantics/generator-fiber-fresh-advance-review.json).
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;

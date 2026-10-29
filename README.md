@@ -6248,8 +6248,10 @@ Fresh named by-reference THROW also transfers before first yield, preserving sha
 parameter cells and promoted local caches. [Named reference review](coverage/semantics/generator-fiber-fresh-reference-throw-transfer-review.json).
 Static-method THROW now preserves inherited scope without receiver owners across
 fresh/primed value/reference caches. [Static review](coverage/semantics/generator-fiber-static-throw-transfer-review.json).
-Static CURRENT/NEXT/SEND also use the shared callee/cache proof in existing phases;
-fresh NEXT/SEND ADVANCE remains partial. [Transfer review](coverage/semantics/generator-fiber-static-transfer-review.json).
+Fresh NEXT/SEND now share authenticated pre-first-yield Fiber transfer across
+ordinary callees and existing value/reference caches. Argument buffers, captures
+and supplied-throw cleanup retain real owners. Keyword-forwarded static creation
+and wider lifecycles remain partial. [Fresh advance review](coverage/semantics/generator-fiber-fresh-advance-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

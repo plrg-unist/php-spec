@@ -590,6 +590,8 @@ test-semantics: build
 	python3 tests/semantics/generator_fiber_static_throw_transfer_state.py
 	python3 tests/semantics/generator_fiber_static_transfer_sources.py
 	python3 tests/semantics/generator_fiber_static_transfer_state.py
+	python3 tests/semantics/generator_fiber_fresh_advance_sources.py
+	python3 tests/semantics/generator_fiber_fresh_advance_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
