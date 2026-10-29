@@ -189,7 +189,7 @@ def $ppmethod_invoke(flags, ptbytes) = ($ptlc(ptbytes) = $ptascii("__invoke") /\
 def $ppmethod_one(P, pcpath, NStmtClassMethod phpType14 (INTEGER flags) (BOOLEAN b) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata, ppropertydesc*, pmethoddesc*, pchheader) = $ppmethod_checked($pplocate(P, pcpath, z_line), pcpath, flags, b, $base64(text), phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader)
   -- if z_line = $declaration_method_keyword_line(metadata, metadata_name)
   -- if $(z_line > 0)
-  -- if $iterator_notice_attributes(P.ENV, phpType14) \/ (pchheader.KIND = "class" /\ ~($ppproperty_flag(flags, 8) /\ $ptlc($base64(text)) = $ptascii("__construct")) /\ $nodiscard_groups($ppmethod_context(P, pchheader, $base64(text), z_line), phpType14))
+  -- if $iterator_notice_attributes(P.ENV, phpType14) \/ (pchheader.KIND = "class" /\ ~($ppproperty_flag(flags, 8) /\ $ptlc($base64(text)) = $ptascii("__construct")) /\ $builtin_callable_groups($ppmethod_context(P, pchheader, $base64(text), z_line), phpType14))
   -- if pchheader.KIND = "class" \/ pchheader.KIND = "trait" \/ pchheader.KIND = "enum"
 def $ppmethod_one(P, pcpath, statement, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppunsupported(P, "method attributes, name, or line")) ppropertydesc* pmethoddesc* -- otherwise
 

@@ -1,8 +1,28 @@
 ;; Builtin declaration metadata is read from authenticated original nodes. The
-;; first attribute consumer is NoDiscard; other attribute protocols stay separate.
+;; callable consumers are NoDiscard and Deprecated; other protocols stay separate.
 dec $builtin_attribute_groups(ptcontext, phpType15*) : pbuiltinattributes
 dec $builtin_attribute_group(ptcontext, phpType9*) : pbuiltinattributes
 dec $builtin_attribute_append(pbuiltinattributes, pbuiltinattributes) : pbuiltinattributes
+dec $builtin_named_attributes(pbuiltinattribute*, ptbytes) : pbuiltinattribute*
+dec $builtin_deprecated_groups(ptcontext, phpType14) : bool
+dec $builtin_callable_arguments(ptcontext, pbuiltinattribute*) : bool
+dec $builtin_callable_plan(ptcontext, pbuiltinattribute*, text) : pnodiscardattribute
+dec $builtin_callable_plan_after(ptcontext, pbuiltinattribute*, text, pnodiscardattribute) : pnodiscardattribute
+dec $builtin_callable_validate(ptcontext, pbuiltinattribute*, pbuiltinattribute*, text) : pnodiscardattribute
+dec $builtin_callable_validate_after(ptcontext, pbuiltinattribute*, pbuiltinattribute*, text, pnodiscardattribute) : pnodiscardattribute
+dec $builtin_callable_single(ptcontext, pbuiltinattribute, pbuiltinattribute*, text) : pnodiscardattribute
+dec $deprecated_declaration(ptcontext, pbuiltinattribute, pbuiltinattribute*, text) : pnodiscardattribute
+dec $deprecated_position(phpType3, int) : int
+dec $deprecated_named(phpType3) : bool
+dec $deprecated_message(ptcontext, phpType6) : pdeprecatedmessage
+dec $deprecated_message_list(ptcontext, phpType7*) : pdeprecatedmessage
+dec $deprecated_one(ptcontext, phpType7) : pdeprecatedmessage
+dec $deprecated_two(ptcontext, phpType7, phpType7) : pdeprecatedmessage
+dec $nodiscard_entry_ready(pstate, pfunction, nat, porigin?, int) : pstate
+dec $function_deprecated(pstate, pfunction) : pdeprecatedattribute
+dec $deprecated_attribute(ptcontext, phpType14) : pdeprecatedattribute
+dec $call_warning_phase_valid(pstate, pfunction, pframe, pcallcontext) : bool
+dec $call_warning_matches(pstate, pfunction, pframe, perrorcall) : bool
 def $builtin_attributes(ptcontext, SEQUENCE phpType15*) = $builtin_attribute_groups(ptcontext, phpType15*)
 def $builtin_attribute_groups(ptcontext, eps) = BUILTIN_ATTRIBUTES eps
 def $builtin_attribute_groups(ptcontext, (NAttributeGroup (SEQUENCE phpType9*) metadata) :: phpType15*) = $builtin_attribute_append($builtin_attribute_group(ptcontext, phpType9*), $builtin_attribute_groups(ptcontext, phpType15*))
@@ -20,9 +40,12 @@ def $builtin_attribute_append(BUILTIN_ATTRIBUTES pbuiltinattribute*, BUILTIN_ATT
 dec $nodiscard_only(pbuiltinattribute*) : bool
 def $nodiscard_only(eps) = true
 def $nodiscard_only(pbuiltinattribute :: pbuiltinattribute_tail*) = ($ptlc(pbuiltinattribute.NAME) = $ptascii("nodiscard") /\ $nodiscard_only(pbuiltinattribute_tail*))
-def $nodiscard_groups(ptcontext, phpType14) = (pbuiltinattribute* =/= eps /\ $nodiscard_only(pbuiltinattribute*))
+dec $builtin_callable_only(pbuiltinattribute*) : bool
+def $builtin_callable_only(eps) = true
+def $builtin_callable_only(pbuiltinattribute :: pbuiltinattribute_tail*) = ($ptlc(pbuiltinattribute.NAME) <- [$ptascii("nodiscard"), $ptascii("deprecated")] /\ $builtin_callable_only(pbuiltinattribute_tail*))
+def $builtin_callable_groups(ptcontext, phpType14) = (pbuiltinattribute* =/= eps /\ $builtin_callable_only(pbuiltinattribute*))
   -- if $builtin_attributes(ptcontext, phpType14) = BUILTIN_ATTRIBUTES pbuiltinattribute*
-def $nodiscard_groups(ptcontext, phpType14) = false -- otherwise
+def $builtin_callable_groups(ptcontext, phpType14) = false -- otherwise
 
 dec $nodiscard_message(ptcontext, phpType6) : pnodiscardmessage
 dec $nodiscard_message_argument(phpType3) : bool
@@ -46,12 +69,12 @@ def $nodiscard_arguments(ptcontext, pbuiltinattribute :: pbuiltinattribute_tail*
 def $nodiscard_arguments(ptcontext, pbuiltinattribute*) = false -- otherwise
 def $nodiscard_name(ptcontext, phpType14) = (pbuiltinattribute.NAME)
   -- if $builtin_attributes(ptcontext, phpType14) = BUILTIN_ATTRIBUTES (pbuiltinattribute :: pbuiltinattribute_tail*)
-  -- if $nodiscard_only(pbuiltinattribute :: pbuiltinattribute_tail*)
-  -- if $nodiscard_arguments(ptcontext, pbuiltinattribute :: pbuiltinattribute_tail*)
+  -- if $builtin_callable_only(pbuiltinattribute :: pbuiltinattribute_tail*)
+  -- if $builtin_callable_arguments(ptcontext, pbuiltinattribute :: pbuiltinattribute_tail*)
 def $nodiscard_name(ptcontext, phpType14) = eps -- otherwise
 
 dec $nodiscard_validated(ptcontext, pbuiltinattribute*, text) : pnodiscardattribute
-def $nodiscard_attribute(ptcontext, phpType14, text_target) = $nodiscard_validated(ptcontext, pbuiltinattribute*, text_target)
+def $nodiscard_attribute(ptcontext, phpType14, text_target) = $builtin_callable_plan(ptcontext, pbuiltinattribute*, text_target)
   -- if $builtin_attributes(ptcontext, phpType14) = BUILTIN_ATTRIBUTES pbuiltinattribute*
 def $nodiscard_attribute(ptcontext, phpType14, text_target) = NODISCARD_ATTRIBUTE_UNSUPPORTED text
   -- if $builtin_attributes(ptcontext, phpType14) = BUILTIN_ATTRIBUTES_UNSUPPORTED text
@@ -79,6 +102,90 @@ def $nodiscard_validated(ptcontext, pbuiltinattribute :: pbuiltinattribute_tail*
   -- if text_target <- ["function", "method"]
   -- if $nodiscard_message(ptcontext, pbuiltinattribute.ARGUMENTS) = NODISCARD_MESSAGE ptbytes_message
 
+;; The two literal/null constructor fields have no owning or effectful values.
+;; Their eventual suffix still follows constructor parameter order, not source order.
+def $deprecated_position(ABSENT, z) = z
+def $deprecated_position(NIdentifier (BYTES text) metadata, z) = 0
+  -- if $base64(text) = $ptascii("message")
+def $deprecated_position(NIdentifier (BYTES text) metadata, z) = 1
+  -- if $base64(text) = $ptascii("since")
+def $deprecated_position(phpType3, z) = $(-1) -- otherwise
+def $deprecated_named(ABSENT) = false
+def $deprecated_named(phpType3) = true -- otherwise
+def $deprecated_message(ptcontext, SEQUENCE phpType7*) = $deprecated_message_list(ptcontext, phpType7*)
+def $deprecated_message(ptcontext, phpType6) = DEPRECATED_MESSAGE_UNSUPPORTED -- otherwise
+def $deprecated_message_list(ptcontext, eps) = DEPRECATED_MESSAGE eps eps
+def $deprecated_message_list(ptcontext, phpType7 :: phpType7_tail*) = $deprecated_one(ptcontext, phpType7)
+  -- if phpType7_tail* = eps
+def $deprecated_message_list(ptcontext, phpType7 :: phpType7_tail*) = $deprecated_two(ptcontext, phpType7, phpType7_second)
+  -- if phpType7_tail* = [phpType7_second]
+def $deprecated_message_list(ptcontext, phpType7*) = DEPRECATED_MESSAGE_UNSUPPORTED -- otherwise
+def $deprecated_one(ptcontext, NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata) = DEPRECATED_MESSAGE ptbytes eps
+  -- if $deprecated_position(phpType3, 0) = 0
+  -- if $nodiscard_literal(ptcontext, expression) = NODISCARD_MESSAGE ptbytes
+def $deprecated_one(ptcontext, NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata) = DEPRECATED_MESSAGE eps ptbytes
+  -- if $deprecated_position(phpType3, 0) = 1
+  -- if $nodiscard_literal(ptcontext, expression) = NODISCARD_MESSAGE ptbytes
+def $deprecated_one(ptcontext, phpType7) = DEPRECATED_MESSAGE_UNSUPPORTED -- otherwise
+def $deprecated_two(ptcontext, NArg phpType3_first expression_first (BOOLEAN false) (BOOLEAN false) metadata_first, NArg phpType3_second expression_second (BOOLEAN false) (BOOLEAN false) metadata_second) = DEPRECATED_MESSAGE ptbytes_message ptbytes_since
+  -- if $deprecated_position(phpType3_first, 0) = 0 /\ $deprecated_position(phpType3_second, 1) = 1
+  -- if ~$deprecated_named(phpType3_first) \/ $deprecated_named(phpType3_second)
+  -- if $nodiscard_literal(ptcontext, expression_first) = NODISCARD_MESSAGE ptbytes_message
+  -- if $nodiscard_literal(ptcontext, expression_second) = NODISCARD_MESSAGE ptbytes_since
+def $deprecated_two(ptcontext, NArg phpType3_first expression_first (BOOLEAN false) (BOOLEAN false) metadata_first, NArg phpType3_second expression_second (BOOLEAN false) (BOOLEAN false) metadata_second) = DEPRECATED_MESSAGE ptbytes_message ptbytes_since
+  -- if $deprecated_position(phpType3_first, 0) = 1 /\ $deprecated_position(phpType3_second, 1) = 0
+  -- if $deprecated_named(phpType3_first) /\ $deprecated_named(phpType3_second)
+  -- if $nodiscard_literal(ptcontext, expression_second) = NODISCARD_MESSAGE ptbytes_message
+  -- if $nodiscard_literal(ptcontext, expression_first) = NODISCARD_MESSAGE ptbytes_since
+def $deprecated_two(ptcontext, phpType7_first, phpType7_second) = DEPRECATED_MESSAGE_UNSUPPORTED -- otherwise
+
+def $builtin_named_attributes(eps, ptbytes) = eps
+def $builtin_named_attributes(pbuiltinattribute :: pbuiltinattribute_tail*, ptbytes) = pbuiltinattribute :: $builtin_named_attributes(pbuiltinattribute_tail*, ptbytes)
+  -- if $ptlc(pbuiltinattribute.NAME) = ptbytes
+def $builtin_named_attributes(pbuiltinattribute :: pbuiltinattribute_tail*, ptbytes) = $builtin_named_attributes(pbuiltinattribute_tail*, ptbytes)
+  -- if $ptlc(pbuiltinattribute.NAME) =/= ptbytes
+def $builtin_deprecated_groups(ptcontext, phpType14) = ($builtin_named_attributes(pbuiltinattribute*, $ptascii("deprecated")) =/= eps)
+  -- if $builtin_attributes(ptcontext, phpType14) = BUILTIN_ATTRIBUTES pbuiltinattribute*
+def $builtin_deprecated_groups(ptcontext, phpType14) = false -- otherwise
+def $builtin_callable_arguments(ptcontext, eps) = true
+def $builtin_callable_arguments(ptcontext, pbuiltinattribute :: pbuiltinattribute_tail*) = $builtin_callable_arguments(ptcontext, pbuiltinattribute_tail*)
+  -- if $ptlc(pbuiltinattribute.NAME) = $ptascii("nodiscard")
+  -- if $nodiscard_message(ptcontext, pbuiltinattribute.ARGUMENTS) = NODISCARD_MESSAGE ptbytes
+def $builtin_callable_arguments(ptcontext, pbuiltinattribute :: pbuiltinattribute_tail*) = $builtin_callable_arguments(ptcontext, pbuiltinattribute_tail*)
+  -- if $ptlc(pbuiltinattribute.NAME) = $ptascii("deprecated")
+  -- if $deprecated_message(ptcontext, pbuiltinattribute.ARGUMENTS) = DEPRECATED_MESSAGE ptbytes_message ptbytes_since
+def $builtin_callable_arguments(ptcontext, pbuiltinattribute*) = false -- otherwise
+
+;; Preserve the old NoDiscard-only path, and check mixed attributes in original
+;; order before selecting the independent runtime flags from that same syntax.
+def $builtin_callable_plan(ptcontext, pbuiltinattribute*, text_target) = $nodiscard_validated(ptcontext, pbuiltinattribute*, text_target)
+  -- if $builtin_named_attributes(pbuiltinattribute*, $ptascii("deprecated")) = eps
+def $builtin_callable_plan(ptcontext, pbuiltinattribute*, text_target) = $builtin_callable_plan_after(ptcontext, pbuiltinattribute*, text_target, $builtin_callable_validate(ptcontext, pbuiltinattribute*, pbuiltinattribute*, text_target))
+  -- if $builtin_named_attributes(pbuiltinattribute*, $ptascii("deprecated")) =/= eps
+  -- if $builtin_callable_only(pbuiltinattribute*) /\ $builtin_callable_arguments(ptcontext, pbuiltinattribute*)
+def $builtin_callable_plan(ptcontext, pbuiltinattribute*, text_target) = NODISCARD_ATTRIBUTE_UNSUPPORTED "builtin callable attributes require supported literal or null arguments" -- otherwise
+def $builtin_callable_plan_after(ptcontext, pbuiltinattribute*, text_target, NO_NODISCARD) = $nodiscard_validated(ptcontext, $builtin_named_attributes(pbuiltinattribute*, $ptascii("nodiscard")), text_target)
+def $builtin_callable_plan_after(ptcontext, pbuiltinattribute*, text_target, pnodiscardattribute) = pnodiscardattribute -- otherwise
+def $builtin_callable_validate(ptcontext, eps, pbuiltinattribute_all*, text_target) = NO_NODISCARD
+def $builtin_callable_validate(ptcontext, pbuiltinattribute :: pbuiltinattribute_tail*, pbuiltinattribute_all*, text_target) = $builtin_callable_validate_after(ptcontext, pbuiltinattribute_tail*, pbuiltinattribute_all*, text_target, $builtin_callable_single(ptcontext, pbuiltinattribute, pbuiltinattribute_all*, text_target))
+def $builtin_callable_single(ptcontext, pbuiltinattribute, pbuiltinattribute_all*, text_target) = $nodiscard_validated(ptcontext, $builtin_named_attributes(pbuiltinattribute_all*, $ptascii("nodiscard")), text_target)
+  -- if $ptlc(pbuiltinattribute.NAME) = $ptascii("nodiscard")
+def $builtin_callable_single(ptcontext, pbuiltinattribute, pbuiltinattribute_all*, text_target) = $deprecated_declaration(ptcontext, pbuiltinattribute, pbuiltinattribute_all*, text_target)
+  -- if $ptlc(pbuiltinattribute.NAME) = $ptascii("deprecated")
+def $builtin_callable_single(ptcontext, pbuiltinattribute, pbuiltinattribute_all*, text_target) = NODISCARD_ATTRIBUTE_UNSUPPORTED "other builtin callable attribute" -- otherwise
+def $builtin_callable_validate_after(ptcontext, pbuiltinattribute*, pbuiltinattribute_all*, text_target, NO_NODISCARD) = $builtin_callable_validate(ptcontext, pbuiltinattribute*, pbuiltinattribute_all*, text_target)
+def $builtin_callable_validate_after(ptcontext, pbuiltinattribute*, pbuiltinattribute_all*, text_target, NODISCARD_ATTRIBUTE ptbytes n) = $builtin_callable_validate(ptcontext, pbuiltinattribute*, pbuiltinattribute_all*, text_target)
+def $builtin_callable_validate_after(ptcontext, pbuiltinattribute*, pbuiltinattribute_all*, text_target, pnodiscardattribute) = pnodiscardattribute -- otherwise
+def $deprecated_declaration(ptcontext, pbuiltinattribute, pbuiltinattribute_all*, text_target) = NODISCARD_ATTRIBUTE_ERROR "error" ($ptascii("Attribute \"") ++ pbuiltinattribute.NAME ++ $ptascii("\" must not be repeated")) ptcontext.LINE
+  -- if n_deprecated = |$builtin_named_attributes(pbuiltinattribute_all*, $ptascii("deprecated"))|
+  -- if $(n_deprecated > 1)
+def $deprecated_declaration(ptcontext, pbuiltinattribute, pbuiltinattribute_all*, "class") = NODISCARD_ATTRIBUTE_ERROR "fatal" ($ptascii("Cannot apply #[\\Deprecated] to class ") ++ ptcontext.OWNER) ptcontext.LINE
+  -- if |$builtin_named_attributes(pbuiltinattribute_all*, $ptascii("deprecated"))| = 1
+def $deprecated_declaration(ptcontext, pbuiltinattribute, pbuiltinattribute_all*, text_target) = NO_NODISCARD
+  -- if text_target <- ["function", "method"]
+  -- if |$builtin_named_attributes(pbuiltinattribute_all*, $ptascii("deprecated"))| = 1
+def $deprecated_declaration(ptcontext, pbuiltinattribute, pbuiltinattribute_all*, text_target) = NODISCARD_ATTRIBUTE_UNSUPPORTED "Deprecated declaration target" -- otherwise
+
 ;; The compiler applies attribute validation before signature receives. Return
 ;; restrictions follow signature diagnostics and precede the body.
 dec $ppnodiscard_apply(ppstate, pnodiscardattribute) : ppstate
@@ -98,7 +205,7 @@ def $ppfunction_declaration_line(P, pcpath, metadata) = $psline(metadata) -- oth
 dec $ppnodiscard_function(ppstate, pcpath, bool, ptbytes, phpType16, phpType18, statement*, metadata, phpType14) : ppstate
 def $ppstatement(P, pcpath, NStmtFunction phpType14 (BOOLEAN b) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = $ppnodiscard_function($ppfunction_name($pplocate(P, pcpath, z_keyword), $base64(text)), pcpath, b, $ptjoin(P.ENV.NAMESPACE, $base64(text)), phpType16, phpType18, statement*, metadata, phpType14)
   -- if P.COMPLETION = PPCNORMAL
-  -- if $nodiscard_groups($ppfunction_context(P, $base64(text)), phpType14)
+  -- if $builtin_callable_groups($ppfunction_context(P, $base64(text)), phpType14)
   -- if z_keyword = $declaration_method_keyword_line(metadata, metadata_name)
   -- if $(z_keyword > 0)
 def $ppnodiscard_function(P, pcpath, b, ptbytes, phpType16, phpType18, statement*, metadata, phpType14) = P
@@ -163,14 +270,18 @@ def $ppmethod_finish(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metad
 ;; Header target errors happen before the ordinary members. Property hooks use
 ;; their existing property-header stage, then reject before compiling a body.
 dec $pchnodiscard(pnodiscardattribute, ptcontext) : pchresult
-def $pchattributes(pchraw, pchheader, ptcontext) = $pchnodiscard($nodiscard_attribute(ptcontext, pchraw.ATTRIBUTES, "class"), ptcontext)
-  -- if $nodiscard_groups(ptcontext, pchraw.ATTRIBUTES)
+def $pchattributes(pchraw, pchheader, ptcontext) = $pchnodiscard($nodiscard_attribute(ptcontext[.OWNER = pchheader.NAME], pchraw.ATTRIBUTES, "class"), ptcontext)
+  -- if $builtin_callable_groups(ptcontext, pchraw.ATTRIBUTES)
+  -- if pchheader.KIND = "class" \/ ~$builtin_deprecated_groups(ptcontext, pchraw.ATTRIBUTES)
+def $pchattributes(pchraw, pchheader, ptcontext) = PCHUNSUPPORTED "Deprecated class-like target"
+  -- if $builtin_callable_groups(ptcontext, pchraw.ATTRIBUTES)
+  -- if pchheader.KIND =/= "class" /\ $builtin_deprecated_groups(ptcontext, pchraw.ATTRIBUTES)
 def $pchnodiscard(NODISCARD_ATTRIBUTE_ERROR text_level ptbytes n, ptcontext) = PCHERROR ([$pchissue(ptcontext[.LINE = n], text_level, "builtin-attribute", [ptbytes])])
 def $pchnodiscard(NODISCARD_ATTRIBUTE_UNSUPPORTED text, ptcontext) = PCHUNSUPPORTED text
 def $pchnodiscard(pnodiscardattribute, ptcontext) = PCHUNSUPPORTED "class NoDiscard target validation" -- otherwise
 def $pchmessage(PCHDIAGNOSTIC text_level "builtin-attribute" ([ptbytes]) ptcontext) = ptbytes
 def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook phpType14 (INTEGER 0) (BOOLEAN b) (NIdentifier (BYTES text) metadata_name) (SEQUENCE eps) phpType39 metadata, pchheader) = $ppnodiscard_apply(P, $nodiscard_attribute($ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_name)), phpType14, "hook"))
-  -- if $nodiscard_groups($ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_name)), phpType14)
+  -- if $builtin_callable_groups($ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_name)), phpType14)
   -- if $ptlc($base64(text)) = $ptascii("get") /\ phpType39 =/= ABSENT
 
 ;; Source metadata remains available after trait import and fake Closure capture.
@@ -182,6 +293,25 @@ def $function_nodiscard(S, pfunction) = $nodiscard_attribute($function_attribute
 def $function_nodiscard(S, pfunction) = $nodiscard_attribute($function_attribute_context(pfunction), phpType14, "method")
   -- if $origin_node(S.SOURCES, $origin_source(pfunction.ORIGIN)) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata)
 def $function_nodiscard(S, pfunction) = NO_NODISCARD -- otherwise
+def $function_deprecated(S, pfunction) = $deprecated_attribute($function_attribute_context(pfunction), phpType14)
+  -- if $origin_node(S.SOURCES, $origin_source(pfunction.ORIGIN)) = (NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata)
+def $function_deprecated(S, pfunction) = $deprecated_attribute($function_attribute_context(pfunction), phpType14)
+  -- if $origin_node(S.SOURCES, $origin_source(pfunction.ORIGIN)) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata)
+def $function_deprecated(S, pfunction) = NO_DEPRECATED -- otherwise
+def $deprecated_attribute(ptcontext, phpType14) = NO_DEPRECATED
+  -- if $builtin_attributes(ptcontext, phpType14) = BUILTIN_ATTRIBUTES pbuiltinattribute*
+  -- if $builtin_named_attributes(pbuiltinattribute*, $ptascii("deprecated")) = eps
+def $deprecated_attribute(ptcontext, phpType14) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+  -- if $builtin_attributes(ptcontext, phpType14) = BUILTIN_ATTRIBUTES pbuiltinattribute*
+  -- if $builtin_callable_only(pbuiltinattribute*) /\ $builtin_callable_arguments(ptcontext, pbuiltinattribute*)
+  -- if $builtin_named_attributes(pbuiltinattribute*, $ptascii("deprecated")) = [pbuiltinattribute]
+  -- if $deprecated_message(ptcontext, pbuiltinattribute.ARGUMENTS) = DEPRECATED_MESSAGE ptbytes_message ptbytes_since
+def $deprecated_attribute(ptcontext, phpType14) = DEPRECATED_ATTRIBUTE_UNSUPPORTED -- otherwise
+def $deprecated_api_allowed(S, pfunction) = ($function_deprecated(S, pfunction) = NO_DEPRECATED)
+def $deprecated_api_reference(S, pfunction, ptbytes, z, pevent, ptask) = $error_dispatch(S, 2, ptbytes, z, pevent, ptask)
+  -- if $deprecated_api_allowed(S, pfunction)
+def $deprecated_api_reference(S, pfunction, ptbytes, z, pevent, ptask) = S[.COMPLETION = UNSUPPORTED "Deprecated internal API timing"]
+  -- if ~$deprecated_api_allowed(S, pfunction)
 
 ;; A prepared call frame is moved through the warning; it is never copied as an owner.
 syntax pnodiscardusage = NODISCARD_USED | NODISCARD_UNUSED | NODISCARD_USAGE_UNKNOWN
@@ -240,7 +370,7 @@ dec $nodiscard_frame_shape(pframe) : bool
 def $nodiscard_frame_shape(pframe) = true
   -- if pframe.LOCALS = (psymboltable)
   -- if pframe.CONTEXT = (pcallcontext)
-  -- if pframe.TODO = [NODISCARD_RECEIVE pcallcontext.FUNCTION]
+  -- if pframe.TODO = [NODISCARD_RECEIVE pcallcontext.FUNCTION] \/ pframe.TODO = [DEPRECATED_RECEIVE pcallcontext.FUNCTION]
   -- if pframe.ORIGIN = (pcallcontext.FUNCTION)
   -- if pcallcontext.DEFAULTRECEIVE = eps /\ pcallcontext.WRAPPER = eps
   -- if pframe.SILENCES = eps /\ pframe.HELD = eps /\ pframe.RETIREDOWNERS = eps
@@ -260,13 +390,20 @@ def $nodiscard_frame_valid(S, pframe) = true
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
-  -- if $function_nodiscard(S, pfunction) = NODISCARD_ATTRIBUTE ptbytes n
   -- if S_view = $nodiscard_frame_scope(S, pframe)
   -- if $nodiscard_prepared_valid(S_view, pfunction)
   -- if $nodiscard_dispatch(S_view, pcallcontext) = NODISCARD_VM
-  -- if pcallcontext.CALLSITE = (porigin)
-  -- if $nodiscard_usage(S_view, porigin) = NODISCARD_UNUSED
+  -- if $call_warning_phase_valid(S_view, pfunction, pframe, pcallcontext)
 def $nodiscard_frame_valid(S, pframe) = false -- otherwise
+def $call_warning_phase_valid(S, pfunction, pframe, pcallcontext) = true
+  -- if pframe.TODO = [NODISCARD_RECEIVE pfunction.ORIGIN]
+  -- if $function_nodiscard(S, pfunction) = NODISCARD_ATTRIBUTE ptbytes n
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if $nodiscard_usage(S, porigin) = NODISCARD_UNUSED
+def $call_warning_phase_valid(S, pfunction, pframe, pcallcontext) = true
+  -- if pframe.TODO = [DEPRECATED_RECEIVE pfunction.ORIGIN]
+  -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+def $call_warning_phase_valid(S, pfunction, pframe, pcallcontext) = false -- otherwise
 
 ;; DO_FCALL releases a captured Closure first on this exception path, then all
 ;; positional slots, extra names and This. This is not unfinished SEND cleanup.
@@ -276,6 +413,7 @@ def $nodiscard_frame_nodes(pframe) = $instance_roots(pcallcontext.INSTANCE) ++ $
 def $nodiscard_frame_nodes(pframe) = $frames_roots([pframe]) -- otherwise
 def $task_nodes(NODISCARD_RESUME pframe) = $nodiscard_frame_nodes(pframe)
 def $task_nodes(NODISCARD_RECEIVE porigin) = eps
+def $task_nodes(DEPRECATED_RECEIVE porigin) = eps
 
 dec $nodiscard_park(pstate, pfunction) : pstate
 def $nodiscard_park(S, pfunction) = S_caller[.TODO = (NODISCARD_RESUME pframe_pending) :: S_caller.TODO][.ORIGIN = pcallcontext.CALLSITE][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -319,25 +457,64 @@ def $nodiscard_begin(S, pfunction, ptbytes_message) = $error_dispatch(S_caller, 
   -- if S_caller = $nodiscard_park(S, pfunction)
   -- if ptbytes_warning = $nodiscard_warning_message(S, pfunction, $nodiscard_message_suffix(ptbytes_message))
 
+;; VM sends and named holes are complete. Deprecated runs for every result use,
+;; then the existing NoDiscard stage decides whether its second warning applies.
+dec $deprecated_since_suffix(ptbytes) : ptbytes
+dec $deprecated_warning_message(pstate, pfunction, ptbytes, ptbytes) : ptbytes
+dec $deprecated_warning_kind(pstate, pfunction) : ptbytes
+dec $deprecated_frame_capture(pstate, pfunction) : pframe
+dec $deprecated_begin(pstate, pfunction, ptbytes, ptbytes) : pstate
+def $deprecated_since_suffix(eps) = eps
+def $deprecated_since_suffix(ptbytes) = $ptascii(" since ") ++ ptbytes -- if ptbytes =/= eps
+def $deprecated_warning_kind(S, pfunction) = $ptascii("Method ")
+  -- if $nodiscard_warning_kind(S, pfunction) = $ptascii("method ")
+def $deprecated_warning_kind(S, pfunction) = $ptascii("Function ") -- otherwise
+def $deprecated_warning_message(S, pfunction, ptbytes_message, ptbytes_since) = $deprecated_warning_kind(S, pfunction) ++ $c_string(pfunction.NAME) ++ $ptascii("() is deprecated") ++ $deprecated_since_suffix(ptbytes_since) ++ $nodiscard_message_suffix(ptbytes_message)
+def $deprecated_frame_capture(S, pfunction) = pframe[.TODO = ([DEPRECATED_RECEIVE pfunction.ORIGIN])]
+  -- if pframe = $nodiscard_frame_capture(S, pfunction)
+def $deprecated_begin(S, pfunction, ptbytes_message, ptbytes_since) = $error_dispatch(S_caller, 16384, ptbytes_warning, pcallcontext.LINE, DIAGNOSTIC "Deprecated" ptbytes_warning pcallcontext.LINE, NODISCARD_RESUME pframe)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pframe = $deprecated_frame_capture(S, pfunction)
+  -- if S_caller_raw = $nodiscard_park(S, pfunction)
+  -- if S_caller_raw.TODO = (NODISCARD_RESUME pframe_nodiscard) :: ptask_tail*
+  -- if S_caller = S_caller_raw[.TODO = (NODISCARD_RESUME pframe) :: ptask_tail*]
+  -- if ptbytes_warning = $deprecated_warning_message(S, pfunction, ptbytes_message, ptbytes_since)
+def $call_entry_ready(S, pfunction, n, porigin?, z) = S -- if S.COMPLETION =/= NORMAL
+def $call_entry_ready(S, pfunction, n, porigin?, z) = $nodiscard_entry_ready(S, pfunction, n, porigin?, z)
+  -- if S.COMPLETION = NORMAL
+  -- if $function_deprecated(S, pfunction) = NO_DEPRECATED
+def $call_entry_ready(S, pfunction, n, porigin?, z) = $deprecated_begin(S, pfunction, ptbytes_message, ptbytes_since)
+  -- if S.COMPLETION = NORMAL
+  -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+  -- if S.CURRENT = (pcallcontext)
+  -- if $nodiscard_dispatch(S, pcallcontext) = NODISCARD_VM
+  -- if $nodiscard_prepared_valid(S, pfunction)
+def $call_entry_ready(S, pfunction, n, porigin?, z) = S[.COMPLETION = UNSUPPORTED "Deprecated internal API timing"]
+  -- if S.COMPLETION = NORMAL
+  -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+  -- if S.CURRENT = (pcallcontext)
+  -- if $nodiscard_dispatch(S, pcallcontext) = NODISCARD_API
+def $call_entry_ready(S, pfunction, n, porigin?, z) = S[.COMPLETION = UNSUPPORTED "Deprecated source flags, prepared frame, or attributes"] -- otherwise
+
 ;; Unused source VM calls warn before reception. Raw API callbacks, used
 ;; results and explicitly void-cast results keep their ordinary entry.
-def $call_entry_ready(S, pfunction, n, porigin?, z) = S -- if S.COMPLETION =/= NORMAL
-def $call_entry_ready(S, pfunction, n, porigin?, z) = $call_arity(S, pfunction, n, porigin?, z)
+def $nodiscard_entry_ready(S, pfunction, n, porigin?, z) = S -- if S.COMPLETION =/= NORMAL
+def $nodiscard_entry_ready(S, pfunction, n, porigin?, z) = $call_arity_raw(S, pfunction, n, porigin?, z)
   -- if S.COMPLETION = NORMAL
   -- if $function_nodiscard(S, pfunction) = NO_NODISCARD
-def $call_entry_ready(S, pfunction, n, porigin?, z) = $call_arity(S, pfunction, n, porigin?, z)
+def $nodiscard_entry_ready(S, pfunction, n, porigin?, z) = $call_arity_raw(S, pfunction, n, porigin?, z)
   -- if S.COMPLETION = NORMAL
   -- if $function_nodiscard(S, pfunction) = NODISCARD_ATTRIBUTE ptbytes n_attribute
   -- if S.CURRENT = (pcallcontext)
   -- if $nodiscard_dispatch(S, pcallcontext) = NODISCARD_API
-def $call_entry_ready(S, pfunction, n, porigin?, z) = $call_arity(S, pfunction, n, porigin?, z)
+def $nodiscard_entry_ready(S, pfunction, n, porigin?, z) = $call_arity_raw(S, pfunction, n, porigin?, z)
   -- if S.COMPLETION = NORMAL
   -- if $function_nodiscard(S, pfunction) = NODISCARD_ATTRIBUTE ptbytes n_attribute
   -- if S.CURRENT = (pcallcontext)
   -- if $nodiscard_dispatch(S, pcallcontext) = NODISCARD_VM
   -- if pcallcontext.CALLSITE = (porigin_site)
   -- if $nodiscard_usage(S, porigin_site) = NODISCARD_USED
-def $call_entry_ready(S, pfunction, n, porigin?, z) = $nodiscard_begin(S, pfunction, ptbytes)
+def $nodiscard_entry_ready(S, pfunction, n, porigin?, z) = $nodiscard_begin(S, pfunction, ptbytes)
   -- if S.COMPLETION = NORMAL
   -- if $function_nodiscard(S, pfunction) = NODISCARD_ATTRIBUTE ptbytes n_attribute
   -- if S.CURRENT = (pcallcontext)
@@ -345,13 +522,20 @@ def $call_entry_ready(S, pfunction, n, porigin?, z) = $nodiscard_begin(S, pfunct
   -- if pcallcontext.CALLSITE = (porigin_site)
   -- if $nodiscard_usage(S, porigin_site) = NODISCARD_UNUSED
   -- if $nodiscard_prepared_valid(S, pfunction)
-def $call_entry_ready(S, pfunction, n, porigin?, z) = S[.COMPLETION = UNSUPPORTED "NoDiscard source flags, prepared frame, or result-use context"] -- otherwise
+def $nodiscard_entry_ready(S, pfunction, n, porigin?, z) = S[.COMPLETION = UNSUPPORTED "NoDiscard source flags, prepared frame, or result-use context"] -- otherwise
 
 rule PhpStep/nodiscard-resume: S ~> $nodiscard_reenter(S, pframe, ptask_tail*)
   -- if S.TODO = (NODISCARD_RESUME pframe) :: ptask_tail*
   -- if $nodiscard_frame_valid(S, pframe)
-rule PhpStep/nodiscard-receive: S ~> $call_arity(S[.TODO = eps], pfunction, pcallcontext.ARGC, pcallcontext.CALLSITE, pcallcontext.LINE)
+rule PhpStep/nodiscard-receive: S ~> $call_arity_raw(S[.TODO = eps], pfunction, pcallcontext.ARGC, pcallcontext.CALLSITE, pcallcontext.LINE)
   -- if S.TODO = (NODISCARD_RECEIVE porigin) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = porigin
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $nodiscard_prepared_valid(S, pfunction)
+rule PhpStep/deprecated-receive: S ~> $nodiscard_entry_ready(S[.TODO = eps], pfunction, pcallcontext.ARGC, pcallcontext.CALLSITE, pcallcontext.LINE)
+  -- if S.TODO = (DEPRECATED_RECEIVE porigin) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = porigin
@@ -367,6 +551,15 @@ def $nodiscard_receive_valid(S, porigin) = true
   -- if $function_nodiscard(S, pfunction) = NODISCARD_ATTRIBUTE ptbytes n_attribute
   -- if $nodiscard_prepared_valid(S, pfunction)
 def $nodiscard_receive_valid(S, porigin) = false -- otherwise
+dec $deprecated_receive_valid(pstate, porigin) : bool
+def $call_task_valid(S, DEPRECATED_RECEIVE porigin) = $deprecated_receive_valid(S, porigin)
+def $deprecated_receive_valid(S, porigin) = true
+  -- if S.TODO = [DEPRECATED_RECEIVE porigin]
+  -- if S.ORIGIN = (porigin)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+  -- if $nodiscard_prepared_valid(S, pfunction)
+def $deprecated_receive_valid(S, porigin) = false -- otherwise
 
 def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = NODISCARD_RESUME pframe
@@ -374,10 +567,21 @@ def $error_call_valid(S, perrorcall) = true
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pcallcontext.CALLSITE = (perrorcall.SITE)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if perrorcall.LINE = pcallcontext.LINE
+  -- if $call_warning_matches(S, pfunction, pframe, perrorcall)
+def $call_warning_matches(S, pfunction, pframe, perrorcall) = true
+  -- if pframe.TODO = [NODISCARD_RECEIVE pfunction.ORIGIN]
   -- if $function_nodiscard(S, pfunction) = NODISCARD_ATTRIBUTE ptbytes n_attribute
-  -- if perrorcall.LEVEL = 512 /\ perrorcall.LINE = pcallcontext.LINE
+  -- if perrorcall.LEVEL = 512
   -- if perrorcall.MESSAGE = $nodiscard_warning_message(S, pfunction, $nodiscard_message_suffix(ptbytes))
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+def $call_warning_matches(S, pfunction, pframe, perrorcall) = true
+  -- if pframe.TODO = [DEPRECATED_RECEIVE pfunction.ORIGIN]
+  -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+  -- if perrorcall.LEVEL = 16384
+  -- if perrorcall.MESSAGE = $deprecated_warning_message(S, pfunction, ptbytes_message, ptbytes_since)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+def $call_warning_matches(S, pfunction, pframe, perrorcall) = false -- otherwise
 def $iterator_unpack_warning_tail_origin(S, NODISCARD_RESUME pframe) = pcallcontext.CALLSITE
   -- if pframe.CONTEXT = (pcallcontext)
 
