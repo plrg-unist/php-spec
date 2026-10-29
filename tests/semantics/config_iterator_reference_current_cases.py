@@ -106,6 +106,4 @@ EXPECTED = {
 BOUNDARIES = {
     'config-reference-current-post-key-integer-boundary':
         'CONFIG Iterator unpack current outside string domain',
-    'config-reference-current-typed-cell-boundary':
-        'CONFIG Iterator unpack current outside string domain',
 }
