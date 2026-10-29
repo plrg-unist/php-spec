@@ -397,6 +397,17 @@ def $array_iterator_key(pvalue) = (KSTRING n_bytes*)
   -- if $string_bytes(pvalue) = (n_bytes*)
   -- if $string_key(n_bytes*) = STRINGKEY
 
+;; Keep the genuine invalid-key producer until ordinary THROW_SEARCH discards
+;; it. Cache release then precedes DATA, while RELEASE protects the builder.
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (ARRAY_ITERATOR parrayiterator "insert") :: ptask_tail*
+  -- if $array_iterator_valid(S, parrayiterator, "insert") /\ $array_iterator_ready(S, parrayiterator)
+  -- if parrayiterator.KEY = KNOWN pvalue_key
+  -- if ~$array_iterator_key_valid(pvalue_key)
+  -- if S_next.COMPLETION = THROWN "Error" ($ptascii("Keys must be of type int|string during array unpacking")) parrayiterator.LINE
+  -- if S_next = $array_iterator_insert(S, parrayiterator, ptask_tail*)
+
 def $array_iterator_insert(S, parrayiterator, ptask_tail*) = $throw_scalar(S, "Error", $ptascii("Keys must be of type int|string during array unpacking"), parrayiterator.LINE)
   -- if parrayiterator.KEY = KNOWN pvalue_key
   -- if ~$array_iterator_key_valid(pvalue_key)
