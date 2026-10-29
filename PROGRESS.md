@@ -489,7 +489,8 @@ Iterator CV unpack. A selected receiver survives key-time CV rebinding; inherite
 named and by-reference parameters keep their effective method and declaring-class
 Warning. Invalid and throwing keys retain authentic retired-receiver cleanup.
 Five authored and one independent frozen source agree byte-for-byte with pinned
-PHP; seven source-reached fixtures pass 146 assertions. A native-positive
+PHP; seven source-reached fixtures pass 146 assertions. Independently reviewed
+actual-tail composition passes strict compilation of 424 modules. A native-positive
 temporary callee remains explicit `Unsupported`. The earlier fixture failures
 and all unchanged Unsupported baselines have zero agreement credit. The saved
 target ID carries original selection after retirement; same-class historical

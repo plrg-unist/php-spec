@@ -7,6 +7,12 @@
     "spec/semantics/385-call-iterator-unpack.watsup": "6f792cebc9ddea9a4eeeae1e6705c5814d9f7898c6d1844ce6397c67be9dc0b6",
     "spec/semantics/30-storage.watsup": "10e6ba220585ee5d7e4b3d7f256031dfdf283a41fca59912f64b1827aafd2c1b"
   },
+  "actual_tail": {
+    "parent_revision": "181f3ba1b3261dff00d55b7365b45ed57264e53e",
+    "composition_revision": "56f3c6ecd5ed0addfb295322e15b7b17f5ae4c56",
+    "review": "Independent seam CLEAR. The intervening semantic changes touch only modules152/281/387 and are pointwise disjoint from these sources/reached states; modules385/30 and both test runners retain the accepted hashes. V110/COMP123 and paused boundaries are preserved. No source/reached replay or renewed agreement credit.",
+    "joined_strict": "call121-author-native/joined-strict/report.json sha256:f669437d4dce07fdca69d078445b0a7fe8a0d1a540287a04ebac9927b52cc922; SL strict424, parent and child CPU5, exit0, stdout true, stderr0, inputs/revision stable, fully reaped in10.66s"
+  },
   "implementation": "Module385 admits only a dynamic nonfixed source callee classified as a CV, an Iterator CV operand, and the selected public effective __invoke METHOD_TARGET. An abrupt eager-cleanup receipt may temporarily restore the saved receiver allocation to recheck that source/target after destruction; this adds no heap owner.",
   "author_sources": {
     "runner": "taskset -c 5 python3 tests/semantics/invokable_iterator_unpack_sources.py",
