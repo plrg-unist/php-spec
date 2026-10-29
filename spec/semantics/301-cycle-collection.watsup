@@ -789,6 +789,7 @@ def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.CLEANUP = eps
   -- if pdestructionoperation.SOURCE = CONFIG_INVOKE pconfigcall
   -- if pconfigcall.KIND = INTRINSIC_WEAKREF_CREATE /\ pconfigcall.INDEX = 1
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (1)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_target))]
   -- if pdestructionoperation.ORIGIN = (pconfigcall.SITE)
   -- if $config_selected_valid(S, pconfigcall) /\ $config_sent_shape(S, pconfigcall)
