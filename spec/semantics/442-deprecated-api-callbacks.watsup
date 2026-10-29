@@ -36,8 +36,9 @@ def $target_called_class(S, API_BORROWED_TARGET pshutdownproducer) = $target_cal
 ;; argument sends and body reads use S and its live allocation set.
 def $api_callback_result_scope(S, API_BORROWED_TARGET pshutdownproducer) = $consumer_producer_history(S, pshutdownproducer)
 def $target_function(S, API_BORROWED_TARGET pshutdownproducer) = $target_function($api_callback_result_scope(S, API_BORROWED_TARGET pshutdownproducer), pshutdownproducer.TARGET)
+def $handler_method_tag(API_BORROWED_TARGET pshutdownproducer) = true
 def $error_handler_selected(S, pvalue, API_BORROWED_TARGET pshutdownproducer) = $error_handler_selected(S, pvalue, pshutdownproducer.TARGET)
-def $exception_raw_selected(S, pvalue, parray?, API_BORROWED_TARGET pshutdownproducer) = $exception_raw_selected(S, pvalue, parray?, pshutdownproducer.TARGET)
+def $exception_raw_selected(S, pvalue, (parray), API_BORROWED_TARGET pshutdownproducer) = $exception_raw_selected(S, pvalue, (parray), pshutdownproducer.TARGET)
 def $handler_emitter_valid(S, API_BORROWED_TARGET pshutdownproducer) = $handler_emitter_valid(S, pshutdownproducer.TARGET)
 def $handler_emitter_valid(S, API_METHOD_TARGET papiquery porigin_method ptbytes b_static) = true
   -- if papiquery.SOURCE = ERROR_HANDLER_INVOKE perrorcall
