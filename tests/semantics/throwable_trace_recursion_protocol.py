@@ -59,6 +59,7 @@ def error_rows():
         'S_error = $throwable_transition(S,S_raw)',
         'n_error = |S.OBJECTS|',
         'S_error.COMPLETION = THROWING n_error',
+        'S_error.OBJECTS[n_error] = THROWABLE pthrowable_error',
         'S_error.OBJECTS = S.OBJECTS ++ [THROWABLE pthrowable_error]',
         'pthrowable_error.KIND = "Error"',
         r'pthrowable_error.ORIGIN = S.ORIGIN /\ pthrowable_error.FILEORIGIN = S.ORIGIN',
