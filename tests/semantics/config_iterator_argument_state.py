@@ -45,7 +45,7 @@ def trace(state, error, value):
     return [f'$throwable_field({state}, {error}, "previous") = PNULL',
             f'$throwable_field({state}, {error}, "trace") = PARRAY n_trace',
             f'{state}.ARRAYS[n_trace].ITEMS[0] = ENTRY (KINT 0) (DIRECT (PARRAY n_trace_frame))',
-            f'(ENTRY (KSTRING ($ptascii("args"))) (DIRECT (PARRAY n_args))) <- {state}.ARRAYS[n_trace_frame].ITEMS',
+            f'$trace_array_field({state}, n_trace_frame, $ptascii("args")) = PARRAY n_args',
             f'{state}.ARRAYS[n_args].ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_option), ENTRY (KINT 1) (DIRECT ({value}))]',
             '$string_bytes(pvalue_option) = ($ptascii("precision"))']
 
@@ -132,7 +132,7 @@ def array(program, path, stdout):
         'S_null_error.COMPLETION = THROWING n_null_error',
         '$throwable_field(S_null_error, n_null_error, "trace") = PARRAY n_null_trace',
         'S_null_error.ARRAYS[n_null_trace].ITEMS[0] = ENTRY (KINT 0) (DIRECT (PARRAY n_null_frame))',
-        '(ENTRY (KSTRING ($ptascii("args"))) (DIRECT (PARRAY n_null_args))) <- S_null_error.ARRAYS[n_null_frame].ITEMS',
+        '$trace_array_field(S_null_error, n_null_frame, $ptascii("args")) = PARRAY n_null_args',
         'S_null_error.ARRAYS[n_null_args].ITEMS = [ENTRY (KINT 0) (DIRECT (PSTRING eps)), ENTRY (KINT 1) (DIRECT (PARRAY n_argument))]',
         owners('S_null_error', 'HARRAY n_argument', 2),
         'S_null_flat = S_null[.ARRAYS[n_argument].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 17))]]',
