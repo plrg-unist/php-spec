@@ -198,7 +198,7 @@ and reentrant/abrupt deactivation remain partial.
 | COMP157 | Inherited ordinary initialized-public images; independent packet frozen, source preparation. |
 | ATTR05 | Explicit captured-Closure `__invoke()` warning phases; five native-first originals frozen, private preparation. |
 | Enum M3/M4 | Published-enum array dispatch is integrated for reviewed class-string and case-object sources, including named Stringable arguments. String callable routes, wider generated dispatch, backing dependency and the default loader remain partial. |
-| A72 | Reference-cell CONFIG Generator scalar sends; privately validated, joined integration under review. |
+| A73 | Quiet CLOSED scalar REFCELL retirement from sole Generator DATA; native-first preparation. |
 | OB03 | Effectful pending Throwable before output deactivation. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
