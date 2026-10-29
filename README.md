@@ -650,15 +650,23 @@ shutdown release and wider destructor effects remain partial.
 
 [Reference-current CONFIG caches](coverage/semantics/config-iterator-reference-current-review.json)
 keep the cell selected by `current()` through key-time writes and source rebinding,
-then copy its string value before `next()`, Iterator destruction and API entry.
+then copy its value before `next()`, Iterator destruction and API entry.
 Temporary and Aggregate inputs retain their real owners through normal or
 supplied-Exception cleanup, preserving the existing field/graph policy.
 
 [Typed-current CONFIG values](coverage/semantics/config-iterator-typed-current-review.json)
 validate live instance/static reference sources without coercion or extra owners.
 Existing writes and retirement detach constraints; the cached cell and copied
-arguments survive source rebinding. Transient/special cells and nonstring sends
-retain their boundaries. Original ordinary-cell cuts remain in their review.
+arguments survive source rebinding. Transient/special cells retain their
+boundaries; original ordinary-cell and typed-current cuts remain in their reviews.
+
+[Scalar CONFIG sends](coverage/semantics/config-iterator-scalar-review.json)
+copy raw NULL/bool/int/float/string values before `next()` and cleanup. INI_SET
+binds its string option afterward: weak coercion/NULL deprecation or strict
+rejection. Its scalar/null value is accepted even strict and converted inside
+the API using live precision. Persistent source/callee receipts validate handler
+return or supplied throw after DATA death. Owning argument buffers and other
+CONFIG consumer/value policies remain partial.
 
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native

@@ -1,0 +1,230 @@
+{
+  "milestone": "A68 ordinary scalar CONFIG Iterator sends and deferred INI_SET binding",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "scope": "Existing authenticated INI_SET Iterator consumers copy raw ordinary scalars through key, next and DATA/INPUT retirement. API172 retains actual option/value parsing, strictness, diagnostics and live-precision conversion. Other CONFIG intrinsic/Generator acquisition and owning argument buffers are separate boundaries.",
+  "implementation": {
+    "file": "spec/semantics/420-config-iterator-unpack.watsup",
+    "source_freeze": "db27fd06756769bfef653473ea222aff0e812031",
+    "source_correction": "1d1c79e0421fef1ab1ec6ea3e5d15dcef26b91e6",
+    "policy_revision": "1983f9c486e27c8d4307f32c23b7001e90afb872",
+    "state_revision": "3784c187412aea417c962a7c36d2ff068f2f0727",
+    "runtime_sha256": "cf970fabfb357a383e98d9a0f5d99bbf935d88fc6bc45a3b785b7523a83e0d42",
+    "change": "Reuse literal_reference_flat_leaf for bounded scalar KNOWN capture/receipts, copied ITEMS and SEND; preserve A67 reference/type-source reads and graph policies. A completed scalar NULL-option call validates source/callee/copied slots without invoke_valid or live Iterator lookup, so the existing error handler and CONFIG_INI_NULL_RESULT can resume after DATA death. Existing API conversion/strictness and all storage/lifecycle algorithms are unchanged."
+  },
+  "engine_routes": [
+    {
+      "file": "vendor/php-src/Zend/zend_vm_def.h",
+      "symbol": "ZEND_SEND_UNPACK",
+      "contract": "Acquire current before key, resolve destination before dereference, copy raw value before next; retire DATA/INPUT before intrinsic entry."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_interfaces.c",
+      "symbols": [
+        "zend_user_it_get_current_data",
+        "zend_user_it_invalidate_current",
+        "zend_user_it_move_forward"
+      ],
+      "contract": "Current cache retains its real reference through key and invalidates before move_forward; source rebinding does not reselect it."
+    },
+    {
+      "file": "vendor/php-src/ext/standard/basic_functions.c",
+      "symbol": "PHP_FUNCTION(ini_set)",
+      "contract": "Option uses Z_PARAM_STR (weak conversion/NULL deprecation or strict rejection). Value accepts string|int|float|bool|null even strict, then zval_get_tmp_string uses live state inside the API; old INI value is read after traversal/cleanup."
+    }
+  ],
+  "validation": {
+    "native_initial": {
+      "path": "native-source-freeze/report.json",
+      "sha256": "68860f7e079e90b33f7cdf1415543bacf11d1fc2f70c860eb3172e440810df67",
+      "result": "Stopped after three captures: first two exact accepted original rows, third normal/quiet but expected-message assertion interpolated $option. The failed third retains zero credit; four later sources were unrun."
+    },
+    "native_followup": {
+      "path": "native-followup-source-freeze/report.json",
+      "sha256": "931dda858c389142d465a84a8b4190155a1cb8eae761b066ccfe447b049baddc",
+      "result": "Only corrected third plus four previously unrun originals captured; all five exactly match unchanged manual EXPECTED. First two accepted paths remain original. Seven distinct accepted new programs, not eight capture attempts."
+    },
+    "old_gates": {
+      "path": "old-gates-1d1c79e04/report.json",
+      "sha256": "42fc5c0dd59867681eda61c41155f881695be7c6409e3070cea170cb859dff07",
+      "result": "Two genuine checked Unsupported/quiet1 boundaries before policy changes: KNOWN scalar acquisition26.074s and REFERENCE scalar SEND44.632s, with exact intended prefixes; zero agreement."
+    },
+    "sources": [
+      {
+        "path": "candidate-1983f9c48/config-reference-current-post-key-integer-boundary/report.json",
+        "sha256": "dae9620a45542660c0bfa4fd9a7c923d4b0ac97ac957b91cc5fad4ba6bc76c61",
+        "id": "config-reference-current-post-key-integer-boundary",
+        "source_sha256": "52a25d47bc2f8bbb6d42da1daad7f0f17b8ee52638f5e0193c0b269f7553efcf",
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/config-iterator-reference-current-66/native-followup-source-freeze/report.json",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 41.10521125793457
+      },
+      {
+        "path": "candidate-1983f9c48/config-scalar-current-float-api-after-data-destructor/report.json",
+        "sha256": "b629681b3fb0af45d25dac4128dcb8e2c55d14d78ba0fafec91b48554f006043",
+        "id": "config-scalar-current-float-api-after-data-destructor",
+        "source_sha256": "1addaa519316aeabe19595102cd8e09f60e6eec38ad8307c5dd747552ddb7f73",
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/config-iterator-scalars-68/native-followup-source-freeze/report.json",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 69.05041742324829
+      },
+      {
+        "path": "candidate-1983f9c48/config-scalar-current-strict-option-explicit-invoke/report.json",
+        "sha256": "bfd55002108c4e9d19137e80a7c6a4e14360812d3608d3b964cd6b34269f6d39",
+        "id": "config-scalar-current-strict-option-explicit-invoke",
+        "source_sha256": "40152b1a0e9d90475063051184836b8fbf96184921c1af8dde164f44d5839ec2",
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/config-iterator-scalars-68/native-followup-source-freeze/report.json",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 47.71544909477234
+      },
+      {
+        "path": "candidate-1983f9c48/config-scalar-current-strict-value-matrix/report.json",
+        "sha256": "8d047bcf1206850f47e816d59100bb24f5caf484e7b627519d84c71a26f0f9c1",
+        "id": "config-scalar-current-strict-value-matrix",
+        "source_sha256": "ab6bbb31bcaacaacf04e724164d7c60e392075a7db81026008f98b0f5dfa0124",
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/config-iterator-scalars-68/native-source-freeze/report.json",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 98.74911737442017
+      },
+      {
+        "path": "candidate-1983f9c48/config-scalar-current-weak-option-matrix/report.json",
+        "sha256": "042c921761e053d7be308c5017aa601db8797d020e42766f3ecbd39fde0a3292",
+        "id": "config-scalar-current-weak-option-matrix",
+        "source_sha256": "20d4f79b0c9185f1dc2b5a25e4db9535f848703e8b128ac2ef9dbc701b170a6f",
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/config-iterator-scalars-68/native-source-freeze/report.json",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 62.10902738571167
+      },
+      {
+        "path": "candidate-1983f9c48/config-scalar-review-null-option-handler-return/report.json",
+        "sha256": "0fe5e0691c48c9ba0ecd10fa27702ac03e4a87040e2e0d3c8b782e97d17da170",
+        "id": "config-scalar-review-null-option-handler-return",
+        "source_sha256": "d714305c0ed7043c11bea924ee16e37d93021d1a1c8bd766bc27534780494f4d",
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/config-iterator-scalars-68/native-followup-source-freeze/report.json",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 85.84579348564148
+      },
+      {
+        "path": "candidate-1983f9c48/config-scalar-review-null-option-handler-throw/report.json",
+        "sha256": "bbbab505995b5a1b759ef11297cb3c372df8b05357d106fbb6f3501fd063059c",
+        "id": "config-scalar-review-null-option-handler-throw",
+        "source_sha256": "c287c07aa3de23dffe0ab5d90e5586638086b2a00f7a8841fce4a318050a4ddc",
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/config-iterator-scalars-68/native-followup-source-freeze/report.json",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 87.94553399085999
+      },
+      {
+        "path": "candidate-1983f9c48/config-scalar-review-null-option-strict-type-error/report.json",
+        "sha256": "f11677ed9ee2a4798ffd96a2ac8b9f855c84d5a7b01934b8cec22c013d2ab8ea",
+        "id": "config-scalar-review-null-option-strict-type-error",
+        "source_sha256": "112b5858ef79bf5385b6ec7a49b4669044861fefe1a8ac209de20fd5f4bcb1bc",
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/config-iterator-scalars-68/native-followup-source-freeze/report.json",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 77.04034185409546
+      }
+    ],
+    "new_states": [
+      {
+        "path": "state-author-3784c1874/config-scalar-current-float-api-after-data-destructor/report.json",
+        "sha256": "e4cd8659f68f635d15ec151c92ea19ed016c8f0a3d0176fc887ceeea2c5889cb",
+        "id": "config-scalar-current-float-api-after-data-destructor",
+        "conditions": 186,
+        "raw_steps": 4,
+        "seconds": 118.44733595848083
+      },
+      {
+        "path": "state-peer-3784c1874/config-scalar-review-null-option-handler-return/report.json",
+        "sha256": "1bec732c64dab47db16ed9c4d05c0f06e1c908c90ad6c64e00422cad705dbcf8",
+        "id": "config-scalar-review-null-option-handler-return",
+        "conditions": 140,
+        "raw_steps": 1,
+        "seconds": 138.03135228157043
+      },
+      {
+        "path": "state-peer-3784c1874/config-scalar-review-null-option-handler-throw/report.json",
+        "sha256": "2598eba9f64e3b1182328a69dd225965c248f4da97b5afe84d24438ed7a688a1",
+        "id": "config-scalar-review-null-option-handler-throw",
+        "conditions": 146,
+        "raw_steps": 0,
+        "seconds": 136.4014596939087
+      }
+    ],
+    "affected_legacy": [
+      {
+        "path": "state-affected-3784c1874/config-reference-current-selected-global-cells/report.json",
+        "sha256": "7eef71f28979b49175b26035309044dfe6b60e05935f76da96ef38d43c3bcaea",
+        "id": "config-reference-current-selected-global-cells",
+        "conditions": 178,
+        "raw_steps": 5,
+        "seconds": 78.94990873336792
+      }
+    ],
+    "totals": {
+      "source_agreements": 8,
+      "new_programs": 7,
+      "promoted_A66_integer_control": 1,
+      "new_state_conditions": 472,
+      "new_boolean_conditions": 467,
+      "new_raw_steps": 5,
+      "affected_legacy_conditions": 178,
+      "affected_legacy_raw_steps": 5
+    },
+    "private_strict": {
+      "path": "private-strict-1983f9c48/report.json",
+      "sha256": "27327acdcc710afa3f639c2c8ee56a660c8d6607aff5f7e1331009af24c217c1",
+      "modules": 428,
+      "seconds": 10.724821329116821,
+      "result": "SL/cachefalse/determinismtrue, true stdout, empty stderr, normal0 at1983."
+    },
+    "fixture_scope": "A66 integer control removes only boundary metadata; original corrected fbd native is reused. The affected A66 selected recipe changes only KNOWN-int and post-key copied-int assertions, preserving all other checks and the original175 cut. New states pass first executions; no A67 source/state/native replay."
+  },
+  "execution": {
+    "native_initial_cpu": [
+      3
+    ],
+    "remaining_cpu": [
+      2
+    ],
+    "source_internal_seconds": 240,
+    "source_process_seconds": 270,
+    "state_process_seconds": 300,
+    "strict_process_seconds": 180,
+    "result": "Serial pinned process trees, no timeout/interruption, quiet stderr and fully reaped groups for every credited result. Inputs/revisions remain immutable per original reports. Source1983/state3784/private428 cuts retain their identities."
+  },
+  "limits": [
+    "Current bridge remains INI_SET only. Other CONFIG callees and Generator value policies are unchanged.",
+    "Known capture and successful SEND admit ordinary scalar tags; existing reference payload graphs may still be repaired by key. Array/object sends need real owning argument buffers and effectful coercion/lifetime integration.",
+    "A67 live instance/static type-source authority, transient-cell exclusions, descriptor/DAG policy, source rebinding, callbacks and scalar invalid-key cleanup are unchanged. Type coercion never writes back through the cached source cell.",
+    "All paused/held boundaries remain untouched, including Source47 low-precision DEFINE-name NaN; no DEFINE/NaN probe was executed."
+  ],
+  "related_reviews": [
+    "coverage/semantics/config-iterator-typed-current-review.json",
+    "coverage/semantics/config-iterator-reference-current-review.json",
+    "coverage/semantics/config-aggregate-iterator-layout-review.json"
+  ],
+  "evidence": {
+    "directory": "/home/user/workspace/php-spec-evidence-archive/config-iterator-scalars-68",
+    "archive": "raw.tar",
+    "sha256": "e36d896b8ea4b895091288f22c8b217a94c376383829dec122d464e49f223200",
+    "bytes": 4044800,
+    "files": 195,
+    "manifest": "manifest.json",
+    "manifest_sha256": "afd489597d2e3d0cddf2375c2f1b64d2136de9e5007e95f66a9d86975d150e0c",
+    "recovery": "Extract raw.tar under this directory and recover tested Git cuts before replay. Promoted integer control and affected selected recipe reuse original A66 corrected native-followup paths, recovered from the separately retained A66 archive. All source/path/cwd/command/tool identities and the original bad-message attempt remain in raw reports."
+  },
+  "integration": {
+    "status": "Pending actual-tail composition and one full current-manifest joined compilation."
+  }
+}

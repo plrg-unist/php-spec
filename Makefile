@@ -153,6 +153,11 @@ test-semantics: build
 		python3 tests/semantics/config_iterator_reference_current_sources.py --case config-reference-current-typed-cell-boundary --output "$$out/promoted-source" && \
 		python3 tests/semantics/config_iterator_typed_current_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
 		python3 tests/semantics/config_iterator_typed_current_state_review.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a68-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_iterator_scalar_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_iterator_scalar_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/config_iterator_scalar_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_iterator_scalar_state_review.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
 	python3 tests/semantics/globals_compiler.py
