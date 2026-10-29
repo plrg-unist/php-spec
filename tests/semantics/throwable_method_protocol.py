@@ -83,20 +83,32 @@ def checks(program, path, name):
         rows += trace('S', 'n_a', 'a', 'POBJECT n_left')[:4]
         rows += trace('S', 'n_b', 'b', 'POBJECT n_right')[:4]
     rows += method_pair(normal=name not in CONTROLS)
-    if name in CONTROLS:
+    if name == 'implicit-stringable-control':
+        rows += [
+            'pclassdesc_method.INTERFACES = [$ptascii("Stringable")]',
+            '$pil_at(S.LINKEDINTERFACES,porigin_class) = (PILTARGETS pilref_implicit*)',
+            'pilref_implicit* = [PILBUILTIN $ptascii("Stringable")]',
+            '$pil_targets_valid(S,pclassdesc_method.INTERFACES,pilref_implicit*)',
+            '$pil_targets_ordered(S,porigin_class,pilref_implicit*)',
+            '$trace_visit_interfaces(S,pclassdesc_method)',
+            '$trace_visit_object_class(S,n_left)',
+            '$trace_visit_object_image(S,n_left)',
+            '$trace_visit_object_image(S,n_right)',
+        ]
+        rows += raw('S', -1)
+        return rows + [
+            'S_done = $drive_steps(S_raw,6000)',
+            r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps',
+            '$tbp_output(S_done.EVENTS) = $ptascii("B|-1|")',
+        ]
+    if name == 'private-layout-control':
         rows += [
             '~$trace_visit_object_class(S,n_left)',
             '~$trace_visit_object_image(S,n_left)',
             '$property_layout(S,porigin_class,|S.CLASSES|) = (ppropertydesc_first :: ppropertydesc_tail*)',
-        ]
-        if name == 'implicit-stringable-control':
-            rows += ['pclassdesc_method.INTERFACES = [$ptascii("Stringable")]',
-                     '$trace_instance_public(ppropertydesc_first :: ppropertydesc_tail*)']
-        else:
-            rows += ['pclassdesc_method.INTERFACES = eps',
-                     'ppropertydesc_first.VISIBILITY = PROPERTY_PRIVATE',
-                     '~$trace_instance_public(ppropertydesc_first :: ppropertydesc_tail*)']
-        return rows + [
+            'pclassdesc_method.INTERFACES = eps',
+            'ppropertydesc_first.VISIBILITY = PROPERTY_PRIVATE',
+            '~$trace_instance_public(ppropertydesc_first :: ppropertydesc_tail*)',
             '$value_order_effect(S,POBJECT n_a,POBJECT n_b,eps,z_S) = (S,ORDERUNSUPPORTED "Throwable property comparison")',
             'PhpStep: S ~> S_raw',
             'S_raw.COMPLETION = UNSUPPORTED "Throwable property comparison"',

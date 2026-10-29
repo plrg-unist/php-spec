@@ -865,6 +865,7 @@ dec $trace_visit_key(pkey) : bool
 dec $trace_visit_entries_header(pentry*) : bool
 dec $trace_visit_array_header(pstate, nat) : bool
 dec $trace_visit_object_header(pstate, nat) : bool
+dec $trace_visit_interfaces(pstate, pclassdesc) : bool
 dec $trace_visit_object_class(pstate, nat) : bool
 dec $trace_visit_object_image(pstate, nat) : bool
 dec $trace_visit_captured_same_kind(pstate, nat, nat) : bool
@@ -911,6 +912,15 @@ def $trace_visit_captured_same_kind(S, n_left, n_right) = true
   -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
   -- if pthrowable_left.KIND = pthrowable_right.KIND
 def $trace_visit_captured_same_kind(S, n_left, n_right) = false -- otherwise
+def $trace_visit_interfaces(S, pclassdesc) = true
+  -- if pclassdesc.INTERFACES = eps
+def $trace_visit_interfaces(S, pclassdesc) = true
+  -- if pclassdesc.INTERFACES =/= eps
+  -- if $pil_unique_names(pclassdesc.INTERFACES, eps)
+  -- if $pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = (PILTARGETS pilref*)
+  -- if $pil_targets_valid(S, pclassdesc.INTERFACES, pilref*)
+  -- if $pil_targets_ordered(S, pclassdesc.ORIGIN, pilref*)
+def $trace_visit_interfaces(S, pclassdesc) = false -- otherwise
 ;; Ordinary methods do not participate in standard object/object comparison.
 ;; Retain the existing layout and lifecycle bounds without whole-graph admission.
 def $trace_visit_object_class(S, n) = $trace_object_class(S, n)
@@ -921,7 +931,8 @@ def $trace_visit_object_class(S, n) = true
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $trace_visit_object_header(S, n)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = eps
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps
+  -- if $trace_visit_interfaces(S, pclassdesc)
   -- if ~pclassdesc.READONLY
   -- if ~$property_hook_instance(S, n)
   -- if $property_layout(S, porigin, |S.CLASSES|) = (ppropertydesc :: ppropertydesc_tail*)
