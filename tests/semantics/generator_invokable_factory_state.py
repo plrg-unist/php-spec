@@ -66,7 +66,9 @@ n_unbounded = |S.OBJECTS|
 ~$generator_implicit_invoke_target(S, METHOD_TARGET pgenclose.OBJECT porigin_invoke, porigin_call)
 ~$generator_implicit_invoke_target(S, STATIC_METHOD_TARGET porigin_called porigin_invoke, porigin_call)
 ~$generator_implicit_invoke_target(S, METHOD_TARGET n_maker porigin_invoke, pgeneratorcreation.SITE)
-~$generator_implicit_invoke_target(S[.CODE = eps], METHOD_TARGET n_maker porigin_invoke, porigin_call)
+porigin_call = PORIGIN n_unit pcpath_call
+$code_at(S.CODE, n_unit) = (pcode)
+~$generator_implicit_invoke_target(S[.CODE = [pcode[.EXPRESSIONS = eps]]], METHOD_TARGET n_maker porigin_invoke, porigin_call)
 pgeneratorcreation_bad_called = pgeneratorcreation[.CREATOR = pgeneratorcreation.CREATOR[.CALLED_CLASS = (porigin_factory)]]
 ~$generator_creator_valid(S, pgeneratorcreation_bad_called)
 pgenerator_missing = pgenerator[.CREATION = eps]
