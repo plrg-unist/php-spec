@@ -458,7 +458,8 @@ unchanged same-name recursion control remains exact. All three repaired-source
 baselines completed normally with wrong output. Strict compilation of 424
 modules and two reached fronts with 67+73 premises pass. Separately, 26 recursion
 assertions and 19 linked class-constant/new predicates pass as preservation.
-Earlier predictions, candidate mismatches and fixture elaboration failures keep
+Joined strict compilation over the actual tail also passes. Earlier predictions,
+candidate mismatches and fixture elaboration failures keep
 zero credit. Dynamic-name `new`, other declaration kinds and wider reentry
 remain partial. [Reentrant lookup review](coverage/semantics/reentrant-unlinked-new-review.json).
 

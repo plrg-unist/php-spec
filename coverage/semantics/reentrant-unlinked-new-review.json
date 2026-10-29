@@ -1,5 +1,5 @@
 {
-  "status": "independently_reviewed_private",
+  "status": "independently_reviewed_integrated",
   "milestone": "Source117 fixed ordinary NEW during reentrant unlinked class autoload",
   "scope": "Fixed-name ordinary NEW of a named source class while an entered dependency loader is linking that unpublished class. Parent dependency and interface dependency examples are validated; wider reentry remains partial.",
   "target": "PHP 8.5.10 CLI NTS 64-bit",
@@ -104,5 +104,23 @@
     "fixture_interface_change": "The maintained script only replaces the private-layout source constant with required --sources plumbing. PREFIX and assertions are byte-identical to the tested script; accepted semantic results retain their original hash and are not renewed.",
     "replay": "Recover raw/source117-discovery locally, then run tests/semantics/reentrant_unlinked_new_protocol.py --phase fixtures --sources DIR --output NEW_DIR followed by --phase check with the same paths. Tested inputs and original failing outputs are preserved; old commands retain historical absolute paths."
   },
-  "implementation_commit": "396d666a2"
+  "implementation_commit": "396d666a2",
+  "integration": {
+    "base": "6fbc3fdf0706cc29bc369d0f83458b5d9b3ce125",
+    "code_commit": "2ef1089d5",
+    "tested_candidate": "da0a836d38e227400971b29a13e0ac3a1bb1f2da",
+    "joined_strict_SL_modules": 424,
+    "result": "pass",
+    "affinity": [
+      4
+    ],
+    "stable_inputs": true,
+    "group_alive_after": false,
+    "report": {
+      "path": "raw/source117-joined/load-report.json",
+      "sha256": "733eecdd14157a16a86a2d98415f71bcde19b2a2a016764015fa5586c6423889"
+    },
+    "review": "The actual-tail semantic diff is the reviewed three-file change. Existing storage additions, caller/class/autoload dependencies and module order are preserved. PROGRESS retains newer checkpoints, held/paused boundaries and the root-confirmed active snapshot while consolidating older Source-family status.",
+    "credit": "This joined gate adds strict compilation credit only; original source, reached and preservation results retain their private identities without replay."
+  }
 }
