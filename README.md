@@ -3284,7 +3284,7 @@ class, autoload, precision and Fiber checks retain separate cuts in the
 [author ledger](coverage/semantics/eager-destructors-review.json).
 The actual Array operand warning/cleanup interaction now matches the original
 lifetime stream and rejects a forged source-marker suffix in reached states.
-Active automatic-destruction Fiber transfer, compound Stringable reception, GC,
+Active automatic-destruction Fiber transfer, compound Stringable arguments to captured lookups, GC,
 output buffers and later request cleanup remain required.
 Full core and a fresh combined offline rebuild remain required.
 
@@ -5687,7 +5687,7 @@ retire that method receiver with the original caller-site error.
 retain419 cuts. Computed/suspended producers and wider reference sources remain partial.
 
 Reference Get now also accepts valid historical parameter-backing receipts from
-weak Stringable reception. Exact reads preserve the receipt and real property
+weak Stringable arguments to captured lookups. Exact reads preserve the receipt and real property
 sources; conflicting conversion raises the first-source TypeError without writes.
 After the real property source is detached, conversion updates the actual cell
 and clears the receipt without attaching the requested type.
@@ -6216,9 +6216,9 @@ fetches retain selected class/member order through loader replay. Captured
 owner is retired. Captured `from(...)`/`tryFrom(...)` also preserve cold backing
 initialization, scalar parsing and cached cases after their closure owners retire;
 ordinary and inherited enum constant aliases retain their declaration owners.
-Stringable reception and conditional constant transfers remain Unsupported;
-other generated callable routes, case attributes, the default loader and wider
-acquisition remain partial;
+Stringable arguments to captured lookups and conditional constant transfers
+remain Unsupported. Other generated callable routes, case attributes, the
+default loader and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
