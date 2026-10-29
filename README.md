@@ -4232,6 +4232,15 @@ arguments; body/default errors still arise during compilation. Same-type
 redeclarations and private shadows keep their physical identities, and error
 messages preserve source `self`/`parent` spelling.
 [Typed-property review](coverage/semantics/anonymous-typed-properties-review.json).
+Unit0 global anonymous classes may implement previously declared interfaces,
+including several interfaces and inherited contracts, with or without the admitted
+Base. First-`new` linking precedes arguments; kind/duplicate checks, method
+compatibility and implementation callbacks retain native order and tentative-notice
+prefixes. The first interface supplies the generated prefix when no Base is present.
+Repeated visits preserve one published class, including after an argument throws.
+[Interface review](coverage/semantics/anonymous-interfaces-review.json).
+Forward/autoloaded, namespace/import and dynamic-source interface dependencies
+remain partial, as do wider anonymous members and inheritance contexts.
 Plain empty named classes can share those units globally and in valid named
 namespace sections, including repeated unbracketed sections and bracketed global
 bodies. Eligible root/actual-block classes consume no RTD key; deferred classes

@@ -8,6 +8,21 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
+Global anonymous classes now admit prior interface lists and inherited contracts,
+with or without the bounded Base. Generated names use the Base or first-interface
+reference; first-`new` linking precedes allocation/arguments, while bodies/defaults
+compile eagerly. Shared interface linking retains all-direct kind/duplicate checks,
+staged real method headers, concrete callback order and visited tentative notices.
+Eighteen anonymous source observations and nine generic ordering/callback cases
+match pinned PHP; 177 reached conditions validate publication, retry, saved constructor
+cause and checked eval composition with an explicit raw unit1 counter. Strict424
+passes. A separate 56-condition cut validates genuine UnitEnum/BackedEnum source
+interface publication after the two-name target-validity correction.
+The ordinary18 aggregate inventory failure was independently reassessed
+without rewriting its raw result; executable inputs were unchanged.
+Forward/autoload, namespace/import, dynamic `implements` and wider anonymous
+contexts remain partial. [Interface review](coverage/semantics/anonymous-interfaces-review.json).
+
 A fresh sole-DATA CONFIG Iterator may now share its declared Child with an
 outside CV. Parent destruction and storage retirement precede API entry or
 catch; the Child stays live and uncalled until the actual outside `unset`.
@@ -671,6 +686,7 @@ remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
+| CLASS145 | Private interface linkage validated/reviewed: anonymous18 + ordering/callback9, reached177+56, affected7/status3; preparing actual-tail join. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 

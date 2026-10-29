@@ -280,8 +280,8 @@ arguments, a by-reference constructor formal and an unpacked send.
 
 Unit0 global anonymous classes may now extend an already compiled, parentless
 ordinary named class through an unqualified name. The parent may declare plain
-typed or untyped public/private properties with scalar or null literal defaults, public ordinary
-zero-argument methods and a public required by-value untyped/`int` constructor
+typed or untyped public/private properties with scalar or null literal defaults, ordinary
+public/protected/private zero-argument methods and a public required by-value untyped/`int` constructor
 with at most two parameters. The anonymous class keeps the existing bounded
 member and argument grammar. Its compiler name starts with the resolved parent
 reference spelling followed by `@anonymous`, NUL, file, line and RTD counter;
@@ -299,8 +299,27 @@ The [parent review](../../coverage/semantics/anonymous-parent-review.json)
 retains its historical source comparisons, reached states and wrong-prefix
 counterexample. The [typed-property review](../../coverage/semantics/anonymous-typed-properties-review.json)
 records the corrected first-NEW publication phase and typed extension. Forward
-or autoloaded parents, dynamic-source parented sites, interfaces, namespaced
+or autoloaded parents, dynamic-source parented sites, namespaced
 parents and wider inheritance remain partial or explicit Unsupported.
+
+Unit0 global anonymous classes may implement a finite list of previously declared
+interfaces, including inherited interface contracts, with or without the admitted
+Base. The generated prefix uses the Base reference when present, otherwise the
+first resolved interface reference, preserving its spelling. Ordinary interface
+linking checks all direct kinds and duplicates before inheriting each interface's
+members and calling its implementation handler. Method visibility, staticness and
+signature checks use real source or internal prototype headers; later interfaces
+cannot affect earlier failures or tentative-return notices. Both parentless and
+Base-backed interface classes link at the first reached `new`, before arguments;
+skipped sites leave their interface obligations unchecked. Bodies and defaults
+still compile eagerly. A successful link survives an argument throw and later
+visits reuse the published identity. Interface identity, type checks, inherited
+constructors and typed slots use the shared machinery. Ordinary private helpers
+also compose with existing parentless eval assignment sites. The
+[interface review](../../coverage/semantics/anonymous-interfaces-review.json)
+records these source and publication checks. Forward/autoloaded or namespace/import
+interface dependencies, dynamic-source `implements`, traits and wider member forms
+remain partial or Unsupported.
 
 Plain anonymous and Base property types use the ordinary normalizer, invariant
 link checks and typed storage. An absent typed default starts uninitialized,
@@ -317,8 +336,8 @@ asymmetric/static properties and wider defaults retain their existing boundaries
 Raw `getTrace()['class']` retains the entire generated name. The shared trace
 renderer applies `c_string` only to the displayed CLASS bytes, matching Zend's
 `TRACE_APPEND_KEY`; `getTraceAsString()` therefore prints the prefix before NUL:
-`class@anonymous` for parentless classes, or the resolved parent name followed
-by `@anonymous` for this parented slice.
+`class@anonymous` without dependencies, or the resolved parent/first-interface
+reference followed by `@anonymous` for the admitted dependent classes.
 Stored names and trace arrays remain intact. The
 [anonymous class review](../../coverage/semantics/anonymous-classes-review.json)
 keeps five exact originals and publication/allocation, factory and trace frontiers
