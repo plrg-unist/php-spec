@@ -711,7 +711,16 @@ now copy ordinary live reference-cell scalars from named zero-argument Generator
 CVs. Later cell writes and live aliases stay distinct from saved DIRECT arguments;
 terminal effects and DATA retirement precede reception through the selected setter.
 The Generator keeps an outside owner. Typed/backed cells, owning sends, temporary
-or Aggregate reference producers and last-DATA reference retirement remain partial.
+or Aggregate reference producers and wider last-DATA reference retirement remain partial.
+
+[Sole-DATA reference Generator cleanup](coverage/semantics/config-generator-reference-sole-data-review.json)
+now retires a CLOSED Generator whose last cached child is one ordinary scalar
+reference cell from a local yield. Its source CV may be replaced before the
+last DATA release. The existing storage pin drops that cell before INI_SET
+reception; quiet terminal throw prunes it before catch. Four new sources agree
+with PHP, and reached checks cover the physical cell/Generator deaths and the
+later NULL-option handler. Typed/backed or owning cells and wider producers
+remain partial.
 
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.

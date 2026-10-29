@@ -54,12 +54,15 @@ Owning Iterator aborts release CURRENT, DATA/INPUT, then the copied prefix. Admi
 last-owner temporary Iterator INPUT finalizers keep live copied arguments protected.
 Typed-source reads and existing producer/key/finite-graph policies stay intact;
 named direct-CV Generator reference yields now copy scalars from authenticated
-ordinary cells before later writes. Last-DATA reference retirement, typed Generator
-cells, owning Generator arguments, effectful casts and wider lifecycles remain partial.
+ordinary cells before later writes. One local scalar-cell route retires a CLOSED
+Generator from sole DATA through the normal storage pin or quiet terminal cleanup.
+Typed Generator cells, owning Generator arguments, effectful casts, wider
+last-DATA reference graphs and lifecycles remain partial.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
 [Generator reference scalars](coverage/semantics/config-generator-reference-scalar-review.json),
+[Sole-DATA reference cleanup](coverage/semantics/config-generator-reference-sole-data-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
@@ -215,7 +218,7 @@ reentrant/abrupt raw-owner teardown remain partial.
 | COMP157 | Inherited ordinary initialized-public images; independent packet frozen, source preparation. |
 | ATTR05 | Explicit captured-Closure `__invoke()` warning phases; five native-first originals frozen, private preparation. |
 | Enum M3/M4 | Published-enum array dispatch is integrated for reviewed class-string and case-object sources, including named Stringable arguments. String callable routes, wider generated dispatch, backing dependency and the default loader remain partial. |
-| A73 | Quiet CLOSED scalar REFCELL retirement from sole Generator DATA; native-first preparation. |
+| A73 | Quiet CLOSED scalar REFCELL retirement from sole Generator DATA; privately validated, integration queued. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
