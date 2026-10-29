@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous.predeclared_parent",
+  "status": "partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; oracle SHA256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "source_pin": "vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation_commit": "d52765a6791fb2078cdc38d4ee97bbe61ebe4870",
+  "joined_revision": "2727df4f41d1161ad2fda0a8c23389a12571178a",
+  "joined_master": "6fbc3fdf0706cc29bc369d0f83458b5d9b3ce125",
+  "tested_bytes": {
+    "spec/semantics/383-anonymous-classes.watsup": "bf2e193859af28006eae46f105fb346c839bd882939dc28e286447b0c4a847f2",
+    "tests/semantics/anonymous_parent_cases.json": "c6c2b20d0ee167a398d1937b350c2b84cedc846b8b6e3b7d2051aded6f1b2ca1",
+    "tests/semantics/anonymous_parent_protocol.py": "4c16b9ec6c2df044a6dbcca039c83ef1c688424ade0c54152b647cd0021455ba",
+    "tests/semantics/anonymous_parent_unsupported.py": "e97d41827d54718b25735461308d9a46473d218b696323e27fbf45c000af695a"
+  },
+  "scope": "Unit0 global anonymous new class extends an already compiled parentless ordinary named Base through an unqualified reference. Base has plain untyped public/private properties with optional literal property defaults, public zero-argument ordinary methods and a bounded public required by-value untyped/int constructor. Anonymous members and zero-to-two direct arguments keep the existing bounded grammar. Constructors, source-parent linking, lexical/called scope, private shadow slots and resolved-reference name prefixes are exercised. Constructor parameter defaults remain excluded.",
+  "engine_routes": [
+    "Zend/zend_compile.c::zend_compile_new declares the anonymous class before argument compilation",
+    "Zend/zend_compile.c::zend_compile_class_decl resolves anonymous parent name and generated class identity",
+    "Zend/zend_vm_def.h::ZEND_NEW allocates and selects the effective constructor",
+    "Zend/zend_inheritance.c::zend_do_link_class establishes inherited members",
+    "Zend/zend_compile.c::zend_generate_anon_class_name uses the resolved parent reference spelling before @anonymous, NUL/file/line/RTD suffix"
+  ],
+  "native_first": {
+    "command": "taskset -c 2 python3 .tools/class143-baseline/run_native_pinned.py 2",
+    "selection": "Five author originals retained in tests/semantics/anonymous_parent_cases.json: four parented cases and one unchanged parentless control; the independent name-visible case has a separate native receipt.",
+    "result": "Five pinned native outcomes exit 0 with empty stderr; each PHP child attested CPU2 before exec and each group was fully reaped. Initial fast-sampler first-source failure is retained with zero process-discipline credit.",
+    "raw": ".tools/class143-baseline; source hashes, profiles and individual native receipt hashes are retained in the catalogue"
+  },
+  "unchanged_parent": {
+    "command": "taskset -c 3 python3 .tools/class143-baseline/run_pinned.py",
+    "result": "Four parented sources frontend accepted/checked then explicit Unsupported at the anonymous compiler boundary; parentless control normal exact. Every sampled owned parent/child affinity was CPU3 and no group survived.",
+    "raw": ".tools/class143-baseline"
+  },
+  "candidate_source": {
+    "command": "taskset -c 2 timeout --signal=TERM --kill-after=5s 420s python3 tests/semantics/method_runtime.py --catalogue tests/semantics/anonymous_parent_cases.json --match anonymous-parent-",
+    "report": ".tools/class143-artifacts/method-runtime-la3oyevk/report.json",
+    "sha256": "e2817d75f494e38873ac4a6bf62fef5f6703b00e35e232776c4943b5f3d6f608",
+    "owned_process_record": {
+      "report": ".tools/class143-artifacts/fixed-source5.json",
+      "sha256": "09bdd8a7f2f40edbcc5303334b5a0934204c6768b553cd8ca4393d8268b84873"
+    },
+    "result": "5/5 exact checked-source/native-backed outcomes on the joined revision: four new parented sources plus one unchanged parentless control. Stable inputs; CPU2 parent/children; no surviving owned processes."
+  },
+  "reached": {
+    "command": "taskset -c 2 timeout --signal=TERM --kill-after=5s 300s python3 tests/semantics/anonymous_parent_protocol.py --case CASE",
+    "cases": [
+      {
+        "id": "anonymous-parent-inherited-constructor",
+        "premises": 44,
+        "report": ".tools/class143-artifacts/anonymous-parent-anonymous-parent-inherited-constructor-_4_fito9/report.json",
+        "sha256": "76232d72af50398a8b7d5f7751b869c239c8afeae1c58541031ec25a001a99eb",
+        "owned_process_record": {
+          "report": ".tools/class143-artifacts/fixed-reached-inherited.json",
+          "sha256": "373e425981d00d00e8ebb6c4dfb4b280546c502171a23b12778a96a9bbd5a92b"
+        }
+      },
+      {
+        "id": "anonymous-parent-override-parent-constructor",
+        "premises": 44,
+        "report": ".tools/class143-artifacts/anonymous-parent-anonymous-parent-override-parent-constructor-lysujt9l/report.json",
+        "sha256": "ab42283ac69fa552b2a41fad2e8fd34d389c2ef24fdb91712bf12570043315fa",
+        "owned_process_record": {
+          "report": ".tools/class143-artifacts/fixed-reached-override.json",
+          "sha256": "10dddbd47a44dcb47f76f577aafc83b92e9734211769d7ef0cb43957446927b7"
+        }
+      }
+    ],
+    "result": "88 source-reached premises check Base/anonymous descriptors, early publication, exact parent@anonymous NUL/file/line/$0 identity, SOURCE_PARENT link, inherited versus override constructor origin, selected allocation, wrong-origin refusal, heap/class validity and final output. The two names and link states are reached from the retained source originals."
+  },
+  "strict_sl": {
+    "report": ".tools/class143-artifacts/fixed-joined-strict.json",
+    "sha256": "8af95c291770db980727e10feb968edc3ae70dc0a4291f2dfb7d953a14ac7570",
+    "command": "taskset -c 2 tests/semantics/_build/default/numeric_runner.exe --sl <424 modules from spec/semantics/modules.json> .tools/class143-artifacts/strict.watsup",
+    "result": "SL elaboration, algorithmic checks, structuring and encountered determinism pass for all 424 modules with the trivial true fixture on joined2727df4f4; exit0, stdout true, stderr empty; CPU2 and fully reaped."
+  },
+  "independent": {
+    "verdict": "PASS for the bounded implemented slice; independent static review traced the pinned engine and exposed the rejected pre-fix naming defect",
+    "source_sha256": "64aef6547ec34b0c14c9a13aeb3fe0a7e505d1417e998f33c47766bb78fc59a7",
+    "source": ".tools/class143-review/parented-factory-name.php",
+    "maintained_case": "tests/semantics/anonymous_parent_cases.json::independent-parented-factory-name",
+    "native_first": {
+      "report": ".tools/class143-review/parented-factory-name.native-first.json",
+      "sha256": "72f93252c74a8f775db4a6e73a669c817b95d4ed49fd6bfac9884c6c48183947"
+    },
+    "pre_fix_counterexample": {
+      "report": ".tools/class143-review/parented-factory-name.candidate-before-fix.json",
+      "sha256": "bdfc4f5a2a5715269d10d1981b9eaff50378d3995bdf59acd787ab4b97396cd0"
+    },
+    "corrected_candidate": {
+      "report": ".tools/class143-review/parented-factory-name.candidate-corrected.json",
+      "sha256": "3afd7dca0a3be3986cd9a5ffa573e0c976a6d7f2b61216f797c46c37d0b1f4e1"
+    },
+    "result": "Normal exact stdout, empty stderr and exit0, including Base property defaults, parent/override constructor order, repeated factory identity, inherited called scope and the complete Base143@anonymous NUL/file:12$0 class name. Native bytes were frozen before model outcomes; the corrected candidate uses joined2727df4f4/383bf2e1938 with stable inputs, CPU2 parent/children and no survivors.",
+    "typed_boundary": {
+      "source_sha256": "e5153385563a4829e82a1f42ebc11423a6ef6b82b49c604fd4cd40a330bca7b9",
+      "report": ".tools/class143-review/parented-factory-typed.candidate-corrected-status.json",
+      "sha256": "f3f1bed5d9e8a2ad140899b9c187df0161011efec030aa3212c82fe02ea456f4",
+      "result": "Frontend accepted and checked, explicit Unsupported; typed Base property lies outside this bounded grammar. Status-only, zero runtime agreement."
+    },
+    "earlier_companion": "Untyped SHA4f85b79e5c669e5e50397d62a78a86a50017c7a2fe326abb69eee44bf9bbd43f retains only its original native/unchanged Unsupported records. The stronger name-visible source subsumes its observations; no companion candidate agreement is claimed.",
+    "summary": ".tools/class143-review/corrected-summary.json"
+  },
+  "earlier_controls": {
+    "unsupported": {
+      "command": "taskset -c 2 timeout --signal=TERM --kill-after=5s 210s python3 tests/semantics/anonymous_parent_unsupported.py",
+      "report": ".tools/class143-artifacts/anonymous-parent-unsupported-p09nwfq7/report.json",
+      "report_sha256": "e4c3efa2c38537ea626712a8735835ff36951c11349304baf16059dc29e9d5c7",
+      "result": "Forward parent, dynamic eval unit and interface anonymous form stay explicit Unsupported; no runtime agreement credit"
+    },
+    "parentless_preservation": {
+      "command": "taskset -c 2 timeout --signal=TERM --kill-after=5s 600s python3 tests/semantics/method_runtime.py --catalogue tests/semantics/anonymous_constructor_arguments_cases.json --match anonymous-",
+      "report": ".tools/class143-artifacts/method-runtime-x6id60vm/report.json",
+      "report_sha256": "8d564d236e414df94a5381f1383734866c38ff583696fa8abdc0cf94da17a326",
+      "result": "7/7 CLASS142 parentless argument sources remain exact"
+    },
+    "compatibility": "These controls keep their pre-fix c819000d9+383 SHA96c914f3 identities. The prefix correction only adds a parent-name helper and switches successful parented generation/count arms; parentless naming and all eligibility guards are byte-for-byte unchanged. No renewed execution credit is claimed."
+  },
+  "pre_fix": {
+    "implementation_sha256": "96c914f3c8e35df17a902a746ef3d6d69fbb0164b5d1164b370e0b6e5ed5698d",
+    "snapshot": ".tools/class143-artifacts/pre-fix-383-anonymous-classes.watsup",
+    "source_report": {
+      "command": "taskset -c 2 timeout --signal=TERM --kill-after=5s 420s python3 tests/semantics/method_runtime.py --catalogue tests/semantics/anonymous_parent_cases.json --match anonymous-parent-",
+      "report": ".tools/class143-artifacts/method-runtime-w0nfxdzk/report.json",
+      "report_sha256": "265ef3fb0392fa7de5561853d0505789c2f6bfdd7331a7ac8fbb884910cf4c2a",
+      "result": "5/5 exact native-backed checked-source outcomes; stable inputs, no surviving owned groups"
+    },
+    "reached_report": {
+      "command": "taskset -c 2 timeout --signal=TERM --kill-after=5s 300s python3 tests/semantics/anonymous_parent_protocol.py --case CASE",
+      "cases": [
+        [
+          "anonymous-parent-inherited-constructor",
+          43,
+          ".tools/class143-artifacts/anonymous-parent-anonymous-parent-inherited-constructor-84pzpo9e/report.json",
+          "3daabf68e6aeaf0017967de20e4c452519910d8fac7ec6ae07899e7abecc70e4"
+        ],
+        [
+          "anonymous-parent-override-parent-constructor",
+          43,
+          ".tools/class143-artifacts/anonymous-parent-anonymous-parent-override-parent-constructor-u7_fyy4m/report.json",
+          "0189bb8e020d0103965f325db6f28366c55ac98f7ebbdae642832f9c8a8b824a"
+        ]
+      ],
+      "result": "86 source-reached checks cover Base and anonymous descriptors, prior early publication, SOURCE_PARENT link, inherited versus override constructor origin, selected allocated object, wrong-origin refusal, heap/class validity and exact final output"
+    },
+    "disposition": "The five source tuples and 86 premises passed but underobserved generated names. Independent review exposed native Base143@anonymous versus model class@anonymous; that candidate is rejected. Preserve these earlier observations without treating them as acceptance of the corrected implementation."
+  },
+  "zero_credit": "Unpinned initial native/model observations retain only observational status. First pinned native sampler missed a fast child; corrected pre-exec attestation passed. First candidate run failed an empty-iteration equality premise; second failed invalid pcnode-to-statement cast. Both raw failures remain under .tools/class143-artifacts and carry zero agreement or reached credit. The independent name-visible pre-fix mismatch and its first comparison-wrapper decoding error retain zero agreement credit; the mismatch is present in the preserved raw bytes. The typed outside-scope baseline observed unrelated HEAD movement with stable recorded semantic inputs and is status-only.",
+  "recovery": "Raw records, sources, failed attempts and tested-input snapshots remain under ignored .tools/class143-baseline, .tools/class143-artifacts and .tools/class143-review. Current author raw directories were copied from the private worktree without altering bytes; command/cwd records preserve their original location. Rebuild local adapter/numeric runner and run the listed focused commands at the implementation/joined revision; native receipt paths are evidence metadata, not runtime dependencies. No bulky evidence is tracked.",
+  "remaining": "Forward/autoloaded or namespaced parents, dynamic units, interfaces/traits/attributes, typed or wider Base members, constructor by-reference/default/variadic/promoted forms, unpacking and wider ownership/lifecycle remain partial.",
+  "actual_tail_integration": {
+    "master_base": "c833e1dbf5512373b8eff2c1db863b49e4cfdb33",
+    "joined_revision": "a9eae0e083a2a2320b2a9731a5f77aacbe9ef12a",
+    "strict_report": ".tools/class143-artifacts/actual-tail-strict424.json",
+    "strict_report_sha256": "fb7dec9ff5403ab253eb67e45782602d66927c46ce1b0aa7cbe5732da9b0efd4",
+    "result": "One joined strict SL424 check passes with stdout true, empty stderr, exit0, stable inputs, CPU4 parent/children and no surviving owned processes. This checks composed declarations and adds no source/reached agreement credit.",
+    "independent_seam_review": "CLEAR: authenticated anonymous classes are already in CLASSNAMES with SOURCE_PARENT before NEW, so dynamic_new_known is true and both autoload_pending and the new autoload_new_pending guard are false. The new CONFIG420 child-finalizer predicate is outside this bounded grammar. Existing parent/link/method/anonymous-new modules and tested383 bytes are unchanged.",
+    "progress_resolution": "Retained both CLASS143 and current CONFIG116 checkpoint paragraphs; removed only completed CLASS143 from the active table and added its integrated marker. All other active and paused boundaries remain unchanged."
+  }
+}

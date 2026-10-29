@@ -143,6 +143,25 @@ def $integer_right_pointer(pbin, poperand, pintegerpointer) = pintegerpointer --
 dec $integer_operation_valid(pstate, pintegeroperation) : bool
 def $integer_operation_valid(S, pintegeroperation) = ($integer_operation_source(S, pintegeroperation) /\ $integer_pointer_source(S, pintegeroperation.LEFTPOINTER, pintegeroperation.LEFT) /\ $integer_pointer_source(S, pintegeroperation.RIGHTPOINTER, pintegeroperation.RIGHT) /\ pintegeroperation.RIGHTPOINTER = $integer_right_pointer(pintegeroperation.OP, pintegeroperation.RIGHT, pintegeroperation.RIGHTPOINTER) /\ $call_reference_operand_valid(S, pintegeroperation.LEFT) /\ $call_reference_operand_valid(S, pintegeroperation.RIGHT) /\ $heap_subset($operand_nodes(pintegeroperation.LEFT) ++ $operand_nodes(pintegeroperation.RIGHT), S.ALLOCATIONS))
 
+;; The standard stdClass handler has no integer cast or binary overload.
+dec $integer_plain_stdclass(pstate, pvalue) : bool
+def $integer_plain_stdclass(S, POBJECT n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = STDINSTANCE
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+  -- if ppropertyslot* = eps
+  -- if $object_table_at(S.OBJECTTABLES, n) = eps
+def $integer_plain_stdclass(S, pvalue) = false -- otherwise
+
+dec $integer_object_right_initial(pstate, poperand, poperand, pvalue, pvalue, bool) : bool
+def $integer_object_right_initial(S, VARIABLE ptbytes_left z_left, VARIABLE ptbytes_right z_right, PFLOAT n_float, pvalue_right, false) = true
+  -- if $integer_pointer_select(S, VARIABLE ptbytes_left z_left) = (INTEGER_CV ptbytes_left)
+  -- if $integer_pointer_select(S, VARIABLE ptbytes_right z_right) = (INTEGER_CV ptbytes_right)
+  -- if $float_long(n_float, true) = (i, [PRECISIONLOSS])
+  -- if $integer_plain_stdclass(S, pvalue_right)
+def $integer_object_right_initial(S, poperand_left, poperand_right, pvalue_left, pvalue_right, b_swapped) = false -- otherwise
+
 def $integer_operator_plan(S) = (pintegeroperation)
   -- if $error_handler_eligible(S, 2) \/ $error_handler_eligible(S, 8192)
   -- if S.ORIGIN = (porigin)
@@ -154,10 +173,10 @@ def $integer_operator_plan(S) = (pintegeroperation)
   -- if $integer_pointer_select(S, poperand_right) = (pintegerpointer_right)
   -- if $integer_pointer_value(S, pintegerpointer_left) = (pvalue_left)
   -- if $integer_pointer_value(S, pintegerpointer_right) = (pvalue_right)
-  -- if ~$cast_object_value(pvalue_left) /\ ~$cast_object_value(pvalue_right)
   -- if ~$byte_operator(pbin, pvalue_left, pvalue_right)
   -- if pintegerpointer_saved = $integer_right_pointer(pbin, poperand_right, pintegerpointer_right)
   -- if $integer_source_swapped(S, porigin, pbin, poperand_left, poperand_right) = (b_swapped)
+  -- if (~$cast_object_value(pvalue_left) /\ ~$cast_object_value(pvalue_right)) \/ $integer_object_right_initial(S, poperand_left, poperand_right, pvalue_left, pvalue_right, b_swapped)
   -- if pintegeroperation = {SITE porigin, OP pbin, LINE z, SWAPPED b_swapped, LEFT poperand_left, RIGHT poperand_right, LEFTPOINTER pintegerpointer_left, RIGHTPOINTER pintegerpointer_saved}
   -- if $integer_operation_valid(S, pintegeroperation)
 def $integer_operator_plan(S) = eps -- otherwise
@@ -202,6 +221,14 @@ def $integer_failure(S, pintegeroperation) = $type_failure(S[.TODO = ptask_tail*
   -- if $integer_pointer_value(S, $integer_phase_pointer(pintegeroperation, INTEGER_LEFT)) = (pvalue_left)
   -- if $integer_pointer_value(S, $integer_phase_pointer(pintegeroperation, INTEGER_RIGHT 0)) = (pvalue_right)
   -- if ~$cast_object_value(pvalue_left) /\ ~$cast_object_value(pvalue_right)
+def $integer_failure(S, pintegeroperation) = $type_failure(S[.TODO = ptask_tail*], pintegeroperation.OP, pvalue_left, pvalue_right, pintegeroperation.LINE)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if pintegeroperation.SWAPPED = false
+  -- if pintegeroperation.RIGHT = VARIABLE ptbytes z
+  -- if $integer_pointer_value(S, pintegeroperation.LEFTPOINTER) = (pvalue_left)
+  -- if ~$cast_object_value(pvalue_left)
+  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (pvalue_right)
+  -- if $integer_plain_stdclass(S, pvalue_right)
 def $integer_failure(S, pintegeroperation) = S[.COMPLETION = UNSUPPORTED "integer operator object or expired pointer"] -- otherwise
 dec $integer_warning_valid(pstate, pintegeroperation, pintegerphase, pintegerconversion, nat) : bool
 def $integer_warning_valid(S, pintegeroperation, pintegerphase, pintegerconversion, n) = ($integer_operation_valid(S, pintegeroperation) /\ $integer_phase_valid(pintegerphase) /\ $integer_conversion(pintegerconversion.INPUT) = (pintegerconversion) /\ $(n <= |pintegerconversion.NOTICES|))

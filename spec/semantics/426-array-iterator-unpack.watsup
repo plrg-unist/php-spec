@@ -27,6 +27,11 @@ dec $array_iterator_reference_away(pstate, pvalue, nat) : bool
 dec $array_iterator_current_value(pstate, parrayiterator, poperand) : pvalue?
 dec $array_iterator_current_away(pstate, pvalue, nat) : bool
 dec $array_iterator_current_builder(pstate, parrayiterator) : bool
+dec $array_iterator_field_plain_slot(pstate, nat, ppropertyslot) : bool
+dec $array_iterator_field_plain_slots(pstate, nat, ppropertyslot*) : bool
+dec $array_iterator_field_slot(pstate, nat, ppropertyslot*) : nat?
+dec $array_iterator_owned_field(pstate, parrayiterator) : bool
+dec $array_iterator_object_ready(pstate, parrayiterator) : bool
 dec $array_iterator_ready(pstate, parrayiterator) : bool
 dec $array_iterator_plan(pstate) : parrayiterator?
 dec $array_iterator_call(pstate, parrayiterator, text, ptask*) : pstate
@@ -248,8 +253,48 @@ def $array_iterator_current_value(S, parrayiterator, poperand) = eps -- otherwis
 def $array_iterator_current_away(S, pvalue, n_builder) = ($array_iterator_value_away(S, pvalue, n_builder) \/ $array_iterator_reference_away(S, pvalue, n_builder))
 def $array_iterator_current_builder(S, parrayiterator) = ($array_null_const_items(S, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY]) \/ ((~$array_iterator_destructor(S, parrayiterator.OBJECT) \/ $array_iterator_destructor_byref_current(S, parrayiterator)) /\ $array_iterator_reference_items(S, parrayiterator.ARRAY, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY])))
 
-def $array_iterator_ready(S, parrayiterator) = true
+;; One inline declared field may own a finite scalar-reference array graph.
+;; Other declared slots own only scalars; materialized tables and hooks are out.
+def $array_iterator_field_plain_slot(S, n_object, ppropertyslot) = true
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_class
+  -- if ppropertyslot.DECL = (ppropertyid)
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid /\ ppropertydesc.KEY = ppropertyslot.NAME /\ ~ppropertydesc.STATIC
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if $value_nodes(pvalue) = eps /\ $literal_reference_flat_leaf(S, pvalue)
+def $array_iterator_field_plain_slot(S, n_object, ppropertyslot) = false -- otherwise
+def $array_iterator_field_plain_slots(S, n_object, eps) = true
+def $array_iterator_field_plain_slots(S, n_object, ppropertyslot :: ppropertyslot_tail*) = ($array_iterator_field_plain_slot(S, n_object, ppropertyslot) /\ $array_iterator_field_plain_slots(S, n_object, ppropertyslot_tail*))
+def $array_iterator_field_slot(S, n_object, ppropertyslot :: ppropertyslot_tail*) = (n_field)
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_class
+  -- if ppropertyslot.DECL = (ppropertyid)
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid /\ ppropertydesc.KEY = ppropertyslot.NAME
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.TYPE = eps
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PARRAY n_field))
+  -- if $array_iterator_field_plain_slots(S, n_object, ppropertyslot_tail*)
+def $array_iterator_field_slot(S, n_object, ppropertyslot :: ppropertyslot_tail*) = $array_iterator_field_slot(S, n_object, ppropertyslot_tail*)
+  -- if $array_iterator_field_plain_slot(S, n_object, ppropertyslot)
+def $array_iterator_field_slot(S, n_object, ppropertyslot*) = eps -- otherwise
+def $array_iterator_owned_field(S, parrayiterator) = true
+  -- if $(parrayiterator.OBJECT < |S.OBJECTS|) /\ (HOBJECT parrayiterator.OBJECT) <- S.ALLOCATIONS
+  -- if $array_iterator_destructor_byref_current(S, parrayiterator)
+  -- if $objectprops_record_at(S.OBJECTPROPS, parrayiterator.OBJECT) = (pobjectprops)
+  -- if ~pobjectprops.MATERIALIZED /\ $object_table_at(S.OBJECTTABLES, parrayiterator.OBJECT) = eps
+  -- if ~$property_hook_instance(S, parrayiterator.OBJECT)
+  -- if $array_iterator_field_slot(S, parrayiterator.OBJECT, pobjectprops.SLOTS) = (n_field)
+  -- if $node_children(S, HOBJECT parrayiterator.OBJECT) = [HARRAY n_field]
+  -- if n_field =/= parrayiterator.ARRAY /\ $array_iterator_reference_table(S, n_field)
+  -- if $array_iterator_reference_items(S, n_field, S.ARRAYS[n_field].ITEMS, [n_field, parrayiterator.ARRAY])
+def $array_iterator_owned_field(S, parrayiterator) = false -- otherwise
+def $array_iterator_object_ready(S, parrayiterator) = true
   -- if $node_children(S, HOBJECT parrayiterator.OBJECT) = eps
+def $array_iterator_object_ready(S, parrayiterator) = true
+  -- if $array_iterator_owned_field(S, parrayiterator)
+def $array_iterator_object_ready(S, parrayiterator) = false -- otherwise
+def $array_iterator_ready(S, parrayiterator) = true
+  -- if $array_iterator_object_ready(S, parrayiterator)
   -- if ~$instance_storage_freeing(S, parrayiterator.OBJECT)
   -- if ~(parrayiterator.ARRAY <- S.LITERALARRAYDEBTS)
   -- if $array_iterator_current_builder(S, parrayiterator)

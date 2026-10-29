@@ -1,0 +1,87 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-parent-inherited-constructor",
+      "source": "<?php\nclass Base143A { public $value = 4; public function __construct($n) { echo 'B', $this->value, '|'; $this->value += $n; } public function read() { return $this->value; } }\n$o = new class(3) extends Base143A {};\necho $o->read(), '|', ($o instanceof Base143A ? 'yes' : 'no');\n",
+      "source_sha256": "8beee628fd7825eab740ce6f888e283b452c51f57e46d5f9b726c3b0360c9439",
+      "stdout_base64": "QjR8N3x5ZXM=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class143-baseline/inherited-constructor.native-pinned.json",
+      "native_raw_sha256": "866d1e2085944c8a46ac51ce49675170489eb157b0ef5d19265a7928d34ce541"
+    },
+    {
+      "id": "anonymous-parent-override-parent-constructor",
+      "source": "<?php\nclass Base143B { public $value = 5; public function __construct($n) { echo 'B', $this->value, '|'; $this->value += $n; } public function read() { return $this->value; } }\n$o = new class(3) extends Base143B { public function __construct($n) { echo 'C', $this->value, '|'; parent::__construct($n); echo 'D', $this->value, '|'; } };\necho $o->read();\n",
+      "source_sha256": "6d59c5750bce6e1776d7dd13a0c27b308c6a6b806c56c701f906086a441d7e6b",
+      "stdout_base64": "QzV8QjV8RDh8OA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class143-baseline/override-parent-constructor.native-pinned.json",
+      "native_raw_sha256": "32bb8070108efd14ad6e9ceb23ffdba60c2f811527c7cb7070bb38c6851d45f2"
+    },
+    {
+      "id": "anonymous-parent-inherited-method-called-class",
+      "source": "<?php\nclass Base143C { public $value = 8; public function who() { return static::class; } public function base() { return self::class; } }\nfunction make143() { return new class extends Base143C {}; }\n$a = make143(); $b = make143();\necho ($a !== $b ? 'fresh|' : 'bad|'), ($a::class === $b::class ? 'same|' : 'bad|'), ($a->who() === $a::class ? 'called|' : 'bad|'), $a->base(), '|', $a->value;\n",
+      "source_sha256": "938c4b07c4da05e0e1c25cd069520b5ddce3dc7aad3affedd6c4d8e2a3fda743",
+      "stdout_base64": "ZnJlc2h8c2FtZXxjYWxsZWR8QmFzZTE0M0N8OA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class143-baseline/inherited-method-called-class.native-pinned.json",
+      "native_raw_sha256": "3d9646aa5e14728429030e228d26df122411138e218d3cc8b9eafc5a428a69ea"
+    },
+    {
+      "id": "anonymous-parent-private-parent-shadow",
+      "source": "<?php\nclass Base143D { private $value = 9; public function parentValue() { return $this->value; } }\n$o = new class extends Base143D { public $value = 2; public function childValue() { return $this->value; } };\necho $o->parentValue(), '|', $o->childValue(), '|', $o->value;\n",
+      "source_sha256": "a2baca728d962ec65b1c56a57474cdffbc55dda214b9cbb3f76cc8df98870c7c",
+      "stdout_base64": "OXwyfDI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class143-baseline/private-parent-shadow.native-pinned.json",
+      "native_raw_sha256": "7cc0ec4b5a42e632d9d63d94189ba17848fae3e0df64b5db3ba4be43305a2054"
+    },
+    {
+      "id": "anonymous-parent-no-parent-control",
+      "source": "<?php\n$o = new class(3) { public $value = 0; public function __construct($n) { $this->value = $n; } }; echo $o->value;\n",
+      "source_sha256": "7ed5b237388f0e7c76d82879a9510b6b01ff2274efb5343a9138b8343d01e5c8",
+      "stdout_base64": "Mw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class143-baseline/no-parent-control.native-pinned.json",
+      "native_raw_sha256": "1c6396fe8f5289ccfd82adc1ac17d89a2a26bb6abaae78710a1e50a449b5c3d5"
+    },
+    {
+      "id": "independent-parented-factory-name",
+      "source": "<?php\nclass Base143 {\n    public $seed = 5;\n    public function __construct(int $step) {\n        echo 'B', $step, '|';\n        $this->seed += $step;\n    }\n    public function label() { return static::class; }\n}\nfunction make143() {\n    global $input143;\n    return new class($input143) extends Base143 {\n        public function __construct(int $step) {\n            echo 'A', $this->seed, '|';\n            parent::__construct($step);\n            echo 'C', $this->seed, '|';\n        }\n    };\n}\n$input143 = 3; $first = make143();\n$input143 = 4; $second = make143();\necho $first !== $second ? 'different|' : 'same-object|';\necho $first::class === $second::class ? 'same-class|' : 'different-class|';\necho $first->label() === $first::class ? 'called|' : 'wrong-called|';\necho $first->seed, '/', $second->seed;\n\necho '|', $first::class;\n",
+      "source_sha256": "64aef6547ec34b0c14c9a13aeb3fe0a7e505d1417e998f33c47766bb78fc59a7",
+      "stdout_base64": "QTV8QjN8Qzh8QTV8QjR8Qzl8ZGlmZmVyZW50fHNhbWUtY2xhc3N8Y2FsbGVkfDgvOXxCYXNlMTQzQGFub255bW91cwAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY2xhc3MxNDMtcmV2aWV3L3BhcmVudGVkLWZhY3RvcnktbmFtZS5waHA6MTIkMA==",
+      "stdout_template_base64": "QTV8QjN8Qzh8QTV8QjR8Qzl8ZGlmZmVyZW50fHNhbWUtY2xhc3N8Y2FsbGVkfDgvOXxCYXNlMTQzQGFub255bW91cwB7RklMRX06MTIkMA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class143-review/parented-factory-name.native-first.json",
+      "native_raw_sha256": "72f93252c74a8f775db4a6e73a669c817b95d4ed49fd6bfac9884c6c48183947",
+      "provenance": "Independent reviewer source frozen before native and pre-fix candidate outcomes; exposes resolved-parent anonymous name prefix."
+    }
+  ]
+}

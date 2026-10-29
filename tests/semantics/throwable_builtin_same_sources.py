@@ -9,7 +9,6 @@ family.CASES = CASES
 family.UNSUPPORTED = {
     'alias-control': ('Throwable property comparison', b'B|'),
     'cycle-control': ('Throwable property comparison', b'B|'),
-    'previous-control': ('Throwable property comparison', b'B|'),
 }
 family.BASELINE = ('Throwable property comparison', b'B|')
 family.MODEL_TIMEOUTS = {name: 120 for name in CASES}

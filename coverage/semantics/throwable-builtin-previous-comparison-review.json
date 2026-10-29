@@ -1,0 +1,49 @@
+{
+  "milestone": "COMP145",
+  "status": "independently reviewed and accepted within the stated bound",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C; TZ=UTC; tests/semantics/profile.json after -n"
+  },
+  "engine_basis": "zend_std_compare_objects in Zend/zend_object_handlers.c returns equality for shared identity and ZEND_UNCOMPARABLE (order 1) for different classes before scanning properties. Distinct same-class unmaterialized objects compare inline declaration slots in order. Zend/zend_exceptions_arginfo.h registers previous seventh and appends ErrorException severity eighth. The same order applies recursively to a previous Throwable; formatted cache text omits severity and code.",
+  "scope": {
+    "root_kinds": ["RuntimeException", "ErrorException", "ClosedGeneratorException", "CompileError", "ParseError", "TypeError", "ArgumentCountError", "ValueError", "ArithmeticError", "DivisionByZeroError", "UnhandledMatchError", "AssertionError"],
+    "admission": "Normal nonpending comparison of distinct exact same-kind roots with at least one previous link and a root comparison guard below 16 entries. Both previous paths have at most 16 live nonfreeing canonical unmaterialized builtin nodes, excluding FiberError, with physical cold or warm PSTRING caches. Nested Exception/Error nodes are admitted without broadening the existing base-root rules.",
+    "payloads": "A reached distinct same-kind node requires an allocated finite DIRECT trace graph with primitive, valid string-carrier or acyclic array payloads. Shared identity and different exact child classes skip captured payload validation; object or cyclic trace payloads can therefore remain unvisited. Their canonical images and finite previous paths are still authenticated. Materialized/freeing nodes, longer or cyclic previous paths, subclasses, FiberError, deeper root guards and pending states remain partial."
+  },
+  "implementation": {
+    "tested_revision": "016c4139675c49639e753db2e17c42fb487e9809",
+    "reviewed_actual_tail": "17553c78fa9e4743e3c539074fb2aa89812765d5",
+    "runtime": "spec/semantics/152-throwable-runtime.watsup",
+    "runtime_sha256": "99e007e0dddda00a34b7d6d640159ac0e2bb366abc775fe4a8cc3c745b78b7f9",
+    "rule": "$throwable_builtin_previous_pair authenticates both finite paths. A pure physical-slot fold recursively handles object/object previous values and uses the existing value order otherwise. It continues only after ORDER 0, so previous order precedes severity at every node and nonzero or Unsupported results skip the remaining slots and aggregate tail.",
+    "preservation": "The 72 runtime lines are additive. COMP134/135 helper bodies remain byte-identical; the new root admission excludes Exception/Error and null/null previous pairs. The retained COMP144 previous-control is reclassified as supported and checked separately."
+  },
+  "native_first": {
+    "author": "The original ten sources were frozen at source-only 0fcc3f3eb before runtime edits; native-report.json sha256 b1fcb345c5969b4f55e5ad03562be636cb5e0292ebd0f6a8bd28bf52d876160b records all ten. The unchanged first original reaches Unsupported(Throwable property comparison), prefix B|, report sha256 20be6a7e7b7f5c580c5120a3e7598b631a815d123b6bebacdae67439070b5fff. Two additional sources were frozen at source-only de0ac0369 before model outcomes; their native report sha256 is 968e82a281cf375e91ad4aab2a90b6bf05b525a8b7ff901d4615607c98aad64f.",
+    "independent": "previous-before-severity.php sha256 c6a9dcd9db063d5e6063ebbef3c61f3da39d5fba138a7ed37f00a28afa175dc9 was frozen before outcomes. Pinned native gives B|1:-1:-1:0|W|1:1:1:1:-1:0|A|-1:1|; unchanged master181f3ba1b accepts/checks it and stops at Unsupported with prefix B|. Report sha256 a3d638289ab0f62d7d6167ccb6071e9b699e9ac5a3f55423844992ca37534736 retains both runs. A second independently frozen nested-severity-before-root.php sha256 1e727a7f8d1c46951f5715cb163374c3ee9b33096ef8f043fba8e77ff8b40533 gives the same output signs through unequal nested severity opposing root severity; native report sha256 5f84eb5cd6d39c99689fdb1a095d1581df5ee0501131509ffc0c64f1f5a7658c."
+  },
+  "validation": {
+    "source": "At 016c41396, eight new author originals and both independent originals exactly agree with pinned PHP. Two unchanged normal controls remain exact; object-trace and alias-trace controls remain explicit Unsupported with no agreement credit. The separately retained COMP144 previous-control now agrees normally as B|0|. Coverage includes null/link signs, all seven operators for mixed children, depth three, twelve root kinds, warm equal-cache descent, finite child trace arrays, shared identity, cyclic payload skip and aggregate continuation/skip.",
+    "source_reports": {
+      "author_previous_first": "755e22c8ead33ee381ea85eccaffe34fbb4dbd9088f2fb49e4ab68ab4c2d8e47",
+      "author_remaining_originals": "cc0810290c57a2c1e46a0caa34b38be1241ff90a6c1d14f565ecb159b5e690d3",
+      "author_added_originals": "4b8da229cc082a96a7537cc61226fcf41c49c7605ebdc6852507fdc6ace13f42",
+      "retained_comp144_control": "3c563c3a28384723e86fb8e8a092bcd9a09fc6d56f0d028849e4d271d91538b1",
+      "independent_two": "5afa7506d727e64e276d52eacf9407eefb422288635c2aa3037a38112210b7c8"
+    },
+    "state": "Six source-reached strict-SL rows pass 76+88+56+53+45+39 = 357 premises with ten raw PhpSteps. They bind physical root/child slots and actual trace/frame/args/payload IDs, owners, cold/warm order, equal-chain continuation, skipped caster effects, shared/mixed identity and actual Unsupported propagation. Raw steps preserve object/property/array/table/store/allocation images and events. Guard16, remaining path capacity, materialized child, forged previous cycle and zero/one-step budget checks pass. Reports: state-v1 ec338aa2fb7e9d5596a7da4b3430920c3b340383254270520647f22bf1189c96; state-rest-v1 6ee605a1c6dba81425fafc432769b3a77955aee607cf1ca1ca59997e50758196.",
+    "strict": "SL compilation/checking of all 424 modules passes at 016c41396, caches disabled and encountered determinism enabled, report sha256 922c50388aa2a325df2d6c63c0888a8f8b007ca6b20af311659ed7ebd90058fc. Joined strict424 also passes at actual-tail17553c78f, report sha256 edb5abbc457fbc421e8ed43cd6980523cf356a2b80cabb5152fe6e33b9816723. Author and independent executions retain stable inputs/HEAD, pinned numbered CPU lanes and empty final process groups."
+  },
+  "independent_review": {
+    "decision": "accept finite builtin previous comparison within the stated bound; complete comparison and core PHP remain partial",
+    "counterexamples": "The first independent source reverses child code order against root severity. The second reverses nested ErrorException severity against root severity after an equal shared deep child. Equal warmed cache bytes must still descend; distinct equal children must continue to root severity and array tails. These discriminate a root-only severity fix and use of the generic distinct-object order fallback.",
+    "actual_tail": "Candidate17553c78f is composed on clean master1bac4a1d1. Incoming changes since base7546f1001 affect modules30/184/277/281/383/385/387/420: unlinked-class autoload, Generator/Fiber reference transfer, anonymous-parent construction, Iterator unpack/child cleanup and integer-warning operations. COMP145 sources use known named constructors, no anonymous new, no autoload/Iterator/Fiber or bitwise-warning operations. Their comparison modules52/157/163, manifest, runner/frontend/profile and tested runtime/source/driver blobs are unchanged by that seam. Joined strict checks the resulting declarations; composition adds no source/state replay credit.",
+    "metadata": "README and the family contract match the implemented bound. Inventory updates only partial obligations44/70. PROGRESS preserves incoming active work, V110/COMP123 and paused boundaries, removes only the stale COMP145 active row and appends COMP145 to the integrated list. The fixture escape cleanup has an independently identical Python AST and identical PREFIX/all six generated condition lists, bridge sha256 1ad089ae11733e927f871531f083436f80e873af35023fa6c397d0bb59168f6c; it needs no semantic rerun.",
+    "zero_credit": "Two earlier missing-worktree-link setup errors retain zero execution credit. Fifteen invalid-escape SyntaxWarnings came from the original Python launcher; generated DSL and runner true/empty stdout/stderr were correct. Original exec output and the explicit bridge note retain that distinction. No engine bug or deliberate divergence is claimed."
+  },
+  "artifacts": "Originals, native/model streams, fingerprints, process records, strict fixtures and bridge remain outside Git under /home/user/workspace/php-spec-evidence-archive/comp145. Independent reports are reviewer-native-baseline-v1/report.json, reviewer-nested-native-v1/report.json and reviewer-changed-v1/report.json. The separately affected control remains in /home/user/workspace/php-spec-evidence-archive/comp144/author/model-previous-control-report.json. Local tag evidence/comp145-tested-016c41396 retains the tested cut after worktree cleanup."
+}

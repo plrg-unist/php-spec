@@ -625,6 +625,9 @@ A [fresh returned Iterator with a destructor](coverage/semantics/config-aggregat
 now releases its sole CONFIG DATA after its Aggregate producer has died. Its
 public no-argument `__destruct` runs before INI_SET or error recovery, with
 three exact PHP source agreements and separate reached cleanup checks.
+It may also own [one declared child](coverage/semantics/config-aggregate-iterator-child-review.json):
+the parent destructor sees the child live, then the child's destructor runs
+before API entry or catch. Wider child graphs remain partial.
 
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
@@ -1141,6 +1144,12 @@ preserve reference cells across rebinding; bitwise conversion follows Zend's
 compiler slot order. [Direct-CV](coverage/semantics/integer-operator-warning-review.json)
 and [copied-operand](coverage/semantics/integer-operator-copy-review.json) evidence
 retain separate cuts. Wider producers and object conversion remain open.
+With an empty, unmaterialized `stdClass` RIGHT CV, a fractional LEFT's Deprecated
+handler can now repair RIGHT before `%`, shifts or numeric bitwise conversion.
+LEFT keeps its saved integer; an unrepaired RIGHT uses the live raw types in
+TypeError, and a supplied throw cancels delivery. The
+[bounded object-RIGHT ledger](coverage/semantics/integer-object-right-warning-review.json)
+retains the original Unsupported baselines and wider object limits.
 Leading-numeric-string `+` now suspends through named warning handlers for two
 direct CVs with preexisting untyped reference cells. Both cells are selected before
 conversion; cached numbers survive handler writes, while the next conversion reads
@@ -1688,6 +1697,13 @@ cleaning up the partial builder.
 An Aggregate-returned Iterator has its own source agreement. Four exact sources
 and 670 reached premises for the three direct Iterator sources are recorded in
 the [by-reference destructor review](coverage/semantics/array-iterator-byref-destructor-review.json).
+That destructor route also accepts one plain declared ARRAY field with an
+unpooled runtime root and finite scalar-reference graph. Nested destructor writes
+preserve the field's independent COW snapshot and shared leaf aliases; storage
+retirement releases the field while normal or abrupt spread cleanup keeps its
+own builder lifetime.
+The [owning-field review](coverage/semantics/array-iterator-owned-field-review.json)
+records held and sole reference leaves, nested COW and the separate tested cuts.
 Ordinary CVs of named IteratorAggregate classes now invoke a borrowed
 `getIterator()` frame and
 transfer its owned user Iterator or named-Generator return into DATA. Genuine
@@ -4119,6 +4135,13 @@ and paused-state checks. [Generated Throwable objects](docs/semantics/THROWABLES
 now support ordered no-finally try/catch and throw/rethrow, internal constructors,
 getters and structured traces. The distinct `ErrorException` constructor and
 `getSeverity` have a separate [bounded review](coverage/semantics/error-exception-review.json).
+Same-kind comparisons for twelve exact builtin Throwable root kinds now follow
+finite `previous` chains, with `previous` before `ErrorException` severity at
+every node. Warm caches, finite direct trace arrays, shared child identity and
+nested class mismatch preserve physical order. Equal chains continue through
+array tails; nonzero results skip later casters. The
+[comparison review](coverage/semantics/throwable-builtin-previous-comparison-review.json)
+records the bounded scope and validation.
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The
@@ -4182,6 +4205,12 @@ constructor binding, including required untyped or `int` formals; constructorles
 classes evaluate positional arguments and ignore their values. [The argument
 review](coverage/semantics/anonymous-constructor-arguments-review.json) records
 seven original source agreements, an independent coercion case and reached tasks.
+Unit0 global anonymous classes may also extend a previously compiled plain Base.
+Inherited or overridden constructors see Base property defaults; inherited
+methods preserve lexical and called scopes, and private Base slots remain
+separate from public child shadows. Generated names use the resolved parent
+reference spelling before `@anonymous`. [The parent review](coverage/semantics/anonymous-parent-review.json)
+keeps this bounded inheritance slice and its original naming counterexample.
 Plain empty named classes can share those units globally and in valid named
 namespace sections, including repeated unbracketed sections and bracketed global
 bodies. Eligible root/actual-block classes consume no RTD key; deferred classes
@@ -5963,6 +5992,15 @@ Thirty-six private source agreements and one current global-constant loader
 interaction retain separate cuts. The 263 original finite premises pass with
 seven typing bindings and eight repeated compaction setup premises; the split
 compaction groups use the existing strict SL runner at the unchanged120s cap.
+
+Fixed-name ordinary `new` of a class being linked now raises the missing-class
+Error without calling its loader again during an entered dependency callback.
+After failed linking unwinds, later construction can autoload it normally.
+The [reentrant lookup review](coverage/semantics/reentrant-unlinked-new-review.json)
+records two repaired author sources, one unchanged recursion control, an
+independent interface-loader source and 140 reached checks; dynamic-name `new`
+and wider reentrant histories remain partial.
+
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
 now loads a sole missing user interface before a parentless class or interface is
 linked and published. Two exact originals and 324 SL premises distinguish cached
