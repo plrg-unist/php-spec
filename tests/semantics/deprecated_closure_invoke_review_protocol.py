@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[2]
 CASES = (
     'invoke-reference-slot-live-through-both-warnings',
     'invoke-body-return-retires-raw-argument-before-outer-receiver',
+    'invoke-inner-warning-throw-keeps-raw-wrapper-owners',
 )
 HELPERS = r'''
 dec $ci_review_front(pstate, nat) : bool
@@ -39,6 +40,11 @@ def $ci_review_front(S, 4) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = METHOD_TARGET n porigin
   -- if $object_name(S, n) = $ptascii("ReturnCarrier")
+def $ci_review_front(S, 5) = true
+  -- if S.TODO = (THROW_SEARCH n) :: (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if perrorcall.RESUME = CLOSURE_INVOKE_ENTER ptask_source
+def $ci_review_front(S, 6) = true
+  -- if S.TODO = (THROW_SEARCH n) :: (CLOSURE_INVOKE_ENTER ptask_source) :: ptask_tail*
 def $ci_review_front(S, n) = false -- otherwise
 dec $ci_review_seek(pstate, nat, nat) : pstate
 def $ci_review_seek(S, n_stage, n) = S -- if $ci_review_front(S, n_stage)
@@ -84,6 +90,36 @@ def conditions(name, program, source, expected_stdout):
         '$closure_invoke_valid(S_outer, ptask_source)',
         'S_outer.CURRENT = eps', 'S_outer.FRAMES = eps',
     ]
+    if name == CASES[2]:
+        checks += ['pnamedargs.SLOTS = [NAMED_SENT (KNOWN (POBJECT n_argument))]']
+        reach('S_inner', 'S_outer', 1)
+        checks += [
+            'S_inner.TODO = (ERROR_HANDLER_INVOKE perrorcall_inner) :: ptask_inner_tail*',
+            'perrorcall_inner.RESUME = CLOSURE_INVOKE_ENTER ptask_source',
+            'S_inner.CURRENT = eps', 'S_inner.FRAMES = eps',
+            '$ci_review_output(S_inner.EVENTS) = $ptascii("O:1:1;")',
+        ]
+        reach('S_throw', 'S_inner', 5)
+        checks += [
+            'S_throw.TODO = (THROW_SEARCH n_saved) :: (ERROR_HANDLER_RESULT perrorcall_throw) :: ptask_throw_tail*',
+            'perrorcall_throw.RESUME = CLOSURE_INVOKE_ENTER ptask_source',
+            'S_throw.CURRENT = eps', 'S_throw.FRAMES = eps',
+            '$throwable_live(S_throw, n_saved)',
+            '$heap_owners($heap_prune($heap_graph(S_throw)), HOBJECT n_closure) = 1',
+            '$heap_owners($heap_prune($heap_graph(S_throw)), HOBJECT n_argument) = 1',
+            '$ci_review_output(S_throw.EVENTS) = $ptascii("O:1:1;I:1:1:1:1:1:1:1;")',
+            'PhpStep: S_throw ~> S_restored',
+            'S_restored.COMPLETION = NORMAL',
+            '$ci_review_front(S_restored, 6)',
+            'S_restored.TODO = (THROW_SEARCH n_saved) :: (CLOSURE_INVOKE_ENTER ptask_source) :: ptask_throw_tail*',
+            '$call_descriptors_valid(S_restored)', '$heap_valid($heap_graph(S_restored))',
+            'S_drop = $drive_steps(S_restored, 1)',
+            r'S_drop.COMPLETION = NORMAL \/ S_drop.COMPLETION = BUDGET',
+            '~$ci_review_front(S_drop, 6)',
+            '$call_descriptors_valid(S_drop)', '$heap_valid($heap_graph(S_drop))',
+            '$ci_review_output(S_drop.EVENTS) = $ptascii("O:1:1;I:1:1:1:1:1:1:1;")',
+        ]
+        return checks
     if name == CASES[0]:
         checks += [
             'pnamedargs.SLOTS = (NAMED_SENT (REFERENCE n_cell)) :: pnamedslot_tail*',
@@ -233,7 +269,8 @@ def main():
         checks = conditions(name, programs[name], source, base64.b64decode(native_row['stdout_b64']))
         fixture = out / (name + '.watsup')
         fixture.write_text(HELPERS + '\ndec $main() : bool\ndef $main() = true\n' + ''.join(
-            '  -- if ' + condition + '\n' for condition in checks))
+            '  -- ' + ('' if condition.startswith('PhpStep:') else 'if ') + condition + '\n'
+            for condition in checks))
         before[str(fixture)] = digest(fixture)
         process = recorded([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'),
                             '--sl', *map(str, modules), str(fixture)], out / (name + '-model'), 300)
@@ -243,7 +280,9 @@ def main():
                   and not (out / (name + '-model.stderr')).read_bytes())
         rows.append({'id': name, 'source_sha256': digest(source),
                      'fixture_sha256': digest(fixture), 'conditions': len(checks),
-                     'derived_guard_assertions': 1, 'model': process, 'passed': passed})
+                     'derived_guard_assertions': 0 if name == CASES[2] else 1,
+                     'diagnostic_only': name == CASES[2],
+                     'model': process, 'passed': passed})
         print(name, passed, flush=True)
         if not passed:
             break
@@ -254,7 +293,7 @@ def main():
     (out / 'report.json').write_text(json.dumps({'revision': revision, 'profile': profile,
         'inputs': before, 'selection': selected, 'affinity': affinity,
         'rows': rows, 'passed': passed,
-        'scope': 'Two independent source groups with reached owner/cell checks and derived line guards; no native execution'}, indent=2) + '\n')
+        'scope': 'Two reached owner/cell groups with derived line guards and one bounded inner-throw diagnostic; no source agreement credit or native execution'}, indent=2) + '\n')
     return passed
 
 
