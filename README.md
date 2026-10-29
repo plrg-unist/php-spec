@@ -3587,10 +3587,22 @@ object/array/cell edges, with separate white discovery and selective dead-Key
 entry removal. Three changed native-first originals agree, alongside a repeated
 ordinary-history control on the unchanged path; four source-reached strict SL
 groups pass 136 checks at private cuts. A phase guard confines this projection
-to fresh callback-free PASS0 collection. Callback, residual, worker, hook and
-uncertain same-Key proxy-order paths remain open. The
+to fresh callback-free PASS0 collection. That second cut left callback,
+residual, worker, hook and uncertain same-Key proxy order paths open. The
 [generic ephemeron review](coverage/semantics/gc-ephemeron-generic-review.json)
 records the separate evidence and limits.
+
+The next quiet WeakMap GC cut records the current registration order for every
+Key: replacement keeps its place, removal retires it, and reinsertion appends.
+White collection marks all eligible entry values when pushed, then processes
+that stack last-first, keeping a shared property table's first claim count
+role. Four native-first originals agree, including two independent permutations
+that count 5 and 4; 184 private strict SL reached checks cover the actual
+consumer and invalid metadata. Discarded insertion results no longer copy a
+false value owner. Leaf/methodless insertion, fresh callback-free PASS0 and the
+existing callback/worker/hook fences still bound this cut. See the
+[registration-order GC review](coverage/semantics/gc-registration-order-review.json).
+
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
 reuse only when destructor preparation leaves the state identical.

@@ -213,11 +213,32 @@ Three changed originals and an unchanged repeated-history control agree with
 native PHP. Four source-reached strict SL groups cover the fixed point, actual
 counts, partial entry removal and derived order/incidence controls (136 reported
 checks at separate cuts). The lane
-requires fresh callback-free PASS0, quiet unmarked collector state,
-canonical ordinary locators and known count-sensitive same-Key registration
-order. Destructors, callbacks, resurrection, reentry, residual tags, cached
-workers, property hooks and active Fiber/frame/iterator contexts remain open.
+requires fresh callback-free PASS0, quiet unmarked collector state and
+canonical ordinary locators. At this earlier cut, count-sensitive same-Key
+registration order remained fenced. Destructors, callbacks, resurrection,
+reentry, residual tags, cached workers, property hooks and active
+Fiber/frame/iterator contexts remain open.
 See the [generic ephemeron review](../../coverage/semantics/gc-ephemeron-generic-review.json).
+
+For quiet same-Key WeakMap associations, each current entry stores its relative
+registration rank. Replacement preserves the rank; unset removes it and a new
+registration follows the surviving entries. The white collector now claims
+eligible weak entry values when pushing them in that order, then processes the
+stack last-first. Ordinary children retain their first-child descent, and a
+materialized object table keeps the count role from its first claim. Each
+white child is claimed and enqueued once, each node is processed at most once, and
+finite current nodes and shrinking rank folds bound the walk without a depth
+cap. Two independent three-Map permutations produce native counts 5 and 4 for the
+same shared-table graph. An unused dimension assignment result carries no
+extra value owner. Four native-first originals and 184 source-reached strict
+SL checks agree at separate private cuts; the first model count mismatch and
+the representative old refusal retain zero agreement credit. Physical owner
+extraction in module39, legacy callback plans and WeakReference `BEFORE`
+notification metadata are unchanged. Leaf/methodless registration, fresh
+callback-free PASS0, canonical ordinary tables and quiet collector state
+remain required; clone, nonleaf insertion/replacement,
+destructor/resurrection/reentry, residual, worker, hook and active
+context cases remain open. See the [registration-order review](../../coverage/semantics/gc-registration-order-review.json).
 
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;
