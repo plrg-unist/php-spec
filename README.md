@@ -3622,8 +3622,18 @@ agree at count 3; the unchanged model counted 2 on the inline author case.
 The 106 private strict SL
 reached checks cover the actual collector consumer, physical owners and plan
 authentication. An unrelated held destructor remains outside the collected
-component. Callback, residual, worker, hook and active-context collection
+component. At that cut, callback, residual, worker, hook and active-context collection
 remain partial. See the [ordinary claim review](coverage/semantics/gc-ordinary-claim-review.json).
+
+Materialized ordinary cycles with public destructors now use the existing
+callback and single-retrace protocol when the legacy and claimed walks agree
+on ordered visits and counted nodes in the actual plan. The agreement is
+rechecked after callbacks and for fresh already-called survivors; a mismatch
+is refused. Two native-first sources agree, including a callback resurrection
+then later count 3, and four strict SL groups pass 151 reached checks. Quiet
+canonical tables, no WeakMap and no active worker/context/residual overlap
+remain required. Count-ambiguous callbacks and wider reentry are still open.
+See the [materialized callback review](coverage/semantics/gc-materialized-callback-review.json).
 
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with

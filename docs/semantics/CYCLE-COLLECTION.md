@@ -258,9 +258,29 @@ marker. Existing callback and overlap walkers, physical owner extraction in
 module39, and the finite claimed-worklist bound are unchanged. The new lane
 requires canonical ordinary nodes/tables, a quiet unmarked buffer, fresh PASS0,
 no current called target, and no worker, hook or active Fiber/frame/iterator
-context. Destructors inside the collected component, callback/reentry,
+context. At that cut, destructors inside the collected component, callback/reentry,
 residual tags and wider contexts remain open. See the
 [ordinary claim review](../../coverage/semantics/gc-ordinary-claim-review.json).
+
+Materialized ordinary cycles can now invoke a public destructor during explicit
+collection. For a fresh no-WeakMap plan with canonical property locators, the
+legacy callback walk and claimed mark-on-push walk must agree on the ordered
+visit and counted nodes of the actual compacted plan. The existing destructor
+return, protected free and single retrace then run unchanged. The collector
+checks that agreement again after callback mutation, and on a fresh collection
+of an already-called survivor; disagreement is explicitly Unsupported. One source
+runs the destructor and frees a shared-table cycle for count 3; an independent
+CELL/ARRAY source resurrects its graph during the callback, returns 0, then
+frees it for count 3 after the outside hold is dropped. Four strict SL groups
+pass 151 reached checks, including actual GC consumers and derived count 2/3
+order-refusal controls. The prior-table selector excludes stdClass-only callback
+plans. This cut needs a quiet unmarked buffer, no cached worker,
+hooks, active Fiber/frame/iterator context or residual overlap. Count-ambiguous
+callback graphs, WeakMap callbacks, worker/reentry histories and wider callback
+effects remain open. Both node-seen walks and the shrinking prior-table fold
+terminate on finite graphs; the pinned collector retraces at most once, while
+callback execution retains the ordinary evaluator fuel. See the
+[materialized callback review](../../coverage/semantics/gc-materialized-callback-review.json).
 
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;
