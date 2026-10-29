@@ -14,8 +14,9 @@ first-claim count roles. Four native-first originals agree exactly, including
 independent same-graph counts 5 and 4. Four private strict SL reached groups
 pass 184 checks at separate cuts; private strict426 also passes. Discarded
 insertion results no longer copy a false value owner. The first count mismatch
-and representative old refusal retain zero agreement credit. Actual-tail
-joined compilation remains pending. Leaf/methodless insertion, fresh
+and representative old refusal retain zero agreement credit. Joined strict428
+compilation passes at the composed actual tail; source and reached gates retain
+their original tested cuts. Leaf/methodless insertion, fresh
 callback-free PASS0 and quiet canonical tables remain required; callbacks,
 residual histories, workers, hooks and active contexts remain open.
 [GC03 review](coverage/semantics/gc-registration-order-review.json).
@@ -69,7 +70,6 @@ not repeat historical receipt counts or renew their execution credit.
 | COMP151 | Canonical same-kind non-base builtin Throwable captured graphs without a non-NULL Previous prerequisite; base Exception/Error dispatch stays separate. |
 | OB01 | Output-buffering frontier preparation. |
 | CLASS148 | Dependent anonymous sites in successful include/eval units. |
-| GC03 | Private source/reached acceptance; actual-tail joined compilation pending. |
 | ATTR01 | NoDiscard; compile validation. |
 | I75 | Keyword-forwarded static Generator factories; declaration/called-scope proof. |
 | Enum M4 | Generic static/FCC/class-constant first-use acquisition; private. |
