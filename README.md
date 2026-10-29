@@ -644,6 +644,13 @@ The optional parent destructor, real storage pin and saved Exception use the
 existing lifecycle. Materialized layouts, special cells, builtin descendants,
 shutdown release and wider destructor effects remain partial.
 
+[Reference-current CONFIG caches](coverage/semantics/config-iterator-reference-current-review.json)
+keep the cell selected by `current()` through key-time writes and source rebinding,
+then copy its string value before `next()`, Iterator destruction and API entry.
+Temporary and Aggregate inputs retain their real owners through normal or
+supplied-Exception cleanup. Six exact source agreements, two explicit Unsupported
+controls and 505 reached checks preserve the existing field/graph policy.
+
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
 resumes. DATA retains the selected Generator across live input/callee rebinding;
