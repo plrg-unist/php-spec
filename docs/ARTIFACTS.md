@@ -138,6 +138,7 @@ I71 fresh named by-reference Generator THROW evidence is retained uncompressed
 under `../php-spec-evidence-archive/generator-fiber-fresh-reference-throw-71/`.
 Its `manifest.json` identifies seven private reports and the separate peer
 alias/formal-unset originals and streams; I69/I70 cuts are not renewed.
+The additional `joined-strict/report.json` records actual-tail compilation.
 
 I70 fresh by-value method Generator THROW evidence is retained uncompressed under
 `../php-spec-evidence-archive/generator-fiber-fresh-method-throw-70/`.

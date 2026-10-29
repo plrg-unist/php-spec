@@ -21,7 +21,8 @@ the supplied one as `Previous`.
 Three authored and one independent source agree exactly with pinned PHP. Two
 I62/I61 controls retain exact parent outcomes; all three authored originals were
 checked `Unsupported` there. Strict compilation of 424 modules and 313 custom
-checks across three reached fronts pass. Original VM/current/record checks and
+checks across three reached fronts pass. Joined strict compilation over the
+actual tail also passes. Original VM/current/record checks and
 forged-context negatives preserve the existing source-authentication boundary.
 [Method evidence](coverage/semantics/generator-fiber-fresh-method-throw-transfer-review.json)
 keeps its original cuts; I69/I70 are not replayed. Static/scoped/bound/delegated
