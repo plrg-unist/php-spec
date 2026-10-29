@@ -30,7 +30,7 @@ def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDONE 
   -- if $ppsupported_signature(pssignature)
   -- if psparam* = pssignature.PARAMETERS
   -- if P_header = $ppsignature_diagnostics(P, psdiagnostic*)[.RETURNREF = pssignature.BYREF][.RETURNS = pssignature.RETURNS][.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.FOLD = P.FOLD[.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
-  -- if P_body = $ppgenerator_body(P_header, pcpath ++ [PCFIELD 5], statement*)
+  -- if P_body = $ppgenerator_body($ppnodiscard_header(P_header, pcpath, pssignature, "function"), pcpath ++ [PCFIELD 5], statement*)
 def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDEFAULTREQUEST pscontinuation) = $ppdefaults_request(P_outer, $ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath, ptbytes, statement*, metadata, pscontinuation[.DIAGNOSTICS = eps])
   -- if P.COMPLETION = PPCNORMAL
 def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSATTRIBUTETARGETREQUEST pscontinuation phpType14) = $ppsignature_attribute($ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath ++ [PCFIELD 3, PCINDEX (|pscontinuation.SIGNATURE.PARAMETERS|)], pscontinuation, phpType14)

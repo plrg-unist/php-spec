@@ -532,6 +532,7 @@ syntax ptask = ENUM_CASE_INIT porigin | ENUM_CONST_FETCH porigin ptbytes ptbytes
   | EVAL_COMPILE_RESUME pevalcompile | EVAL_COMPILE_END nat | EVAL_COMPILE_EXIT int | EVAL_COMPILE_FORMAT_EXIT int | EVAL_COMPILE_FATAL pevalcompilefatal | EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender
   | TRAIT_DATA_SEED pdeclnoticeitem* | TRAIT_NOTICE_REPLAY porigin nat nat | DECL_NOTICE_SEED porigin pdeclnotice* | DECL_COMPILER_SEED pldiagnostic | DECL_NOTICES pdeclnoticebatch | DECL_NOTICE_RESUME pdeclnoticebatch
   | TYPE_RETURN_THROW nat porigin int
+  | NODISCARD_RESUME pframe | NODISCARD_RECEIVE porigin
   | REF_STRING_FETCH prefstringcv | REF_STRING_THROW prefstringcv
   | REF_CV_STRING_FETCH prefstringcv | REF_CV_STRING_THROW prefstringcv
   | REF_CV_STRING_TEMP prefstringcv | REF_CV_STRING_COPY prefstringcv pvalue
