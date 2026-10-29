@@ -809,8 +809,21 @@ def $gc_ephemeron_maps_valid(S, (HOBJECT n) :: pnode_tail*) = $gc_ephemeron_maps
 def $gc_ephemeron_maps_valid(S, (HCELL n) :: pnode_tail*) = $gc_ephemeron_maps_valid(S, pnode_tail*)
 def $gc_ephemeron_maps_valid(S, (HARRAY n) :: pnode_tail*) = $gc_ephemeron_maps_valid(S, pnode_tail*)
 def $gc_ephemeron_maps_valid(S, pnode*) = false -- otherwise
+def $gc_ephemeron_phase(S) = true
+  -- if S.GC.ACTIVE = eps
+  -- if S.GC.PLAN = eps
+def $gc_ephemeron_phase(S) = true
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if S.GC.PLAN = eps
+  -- if pgccall.PASS = 0
+def $gc_ephemeron_phase(S) = true
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if pgcplan.CALL = pgccall /\ pgccall.PASS = 0 /\ pgcplan.DTORS = eps
+def $gc_ephemeron_phase(S) = false -- otherwise
 def $gc_ephemeron_policy(S) = true
   -- if $weakmap_nonempty(S, S.ALLOCATIONS) /\ $weakmap_gc_map(S, S.ALLOCATIONS) = eps
+  -- if $gc_ephemeron_phase(S)
   -- if $gc_materialized_base_quiet(S)
   -- if S.ACTIVEFIBER = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.ITERATORS = eps
   -- if ~$gc_ephemeron_called_current(S, S.DESTRUCTION.CALLED) /\ $gc_uncalled(S, S.ALLOCATIONS) = eps
