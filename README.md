@@ -5677,6 +5677,10 @@ Dynamic calls through a public user `__invoke` CV also unpack an initialized
 Iterator CV, retaining the selected receiver through callbacks and abrupt
 cleanup. Five exact originals, one independent source and seven reached stages
 are in the [invokable Iterator review](coverage/semantics/invokable-iterator-unpack-review.json).
+These ordinary targets also share checked non-CV Iterator INPUT handling:
+raw object/reference INPUT and Iterator DATA retain separate owners through
+normal and abrupt cleanup. The [owned-INPUT review](coverage/semantics/owned-iterator-unpack-review.json)
+records eight new originals, one promoted boundary and two independent sources.
 Public concrete class-method strings now distinguish
 computed static dispatch from fixed calls using a compatible active receiver.
 Immutable string captures/clone retain selected descriptors, called scope and

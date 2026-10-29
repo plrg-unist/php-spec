@@ -253,7 +253,8 @@ test-semantics: build
 	python3 tests/semantics/method_iterator_unpack_sources.py
 	python3 tests/semantics/method_iterator_unpack_clean_sources.py
 	python3 tests/semantics/method_iterator_unpack_protocol.py
-	python3 tests/semantics/method_iterator_unpack_boundary.py
+	python3 tests/semantics/owned_iterator_unpack_sources.py
+	python3 tests/semantics/owned_iterator_unpack_protocol.py
 	python3 tests/semantics/array_callable_iterator_unpack_sources.py
 	python3 tests/semantics/array_callable_iterator_unpack_protocol.py
 	python3 tests/semantics/closure_iterator_unpack_sources.py

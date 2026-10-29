@@ -57,6 +57,8 @@ def $unpack_prepare(S, punpackcall) = S_read
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $generator_object(S_read, n)
 
+;; Selection does not depend on the operand's emitted class. The input check
+;; below authenticates the source classifier and its borrowed or owned operand.
 def $iterator_unpack_plain(S, punpackcall) = true
   -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if punpackcall.FUNCTION = pfunction.ORIGIN
@@ -64,7 +66,6 @@ def $iterator_unpack_plain(S, punpackcall) = true
   -- if $call_selected_valid(S, punpackcall.FUNCTION, punpackcall.CALLSITE)
 def $iterator_unpack_plain(S, punpackcall) = true
   -- if punpackcall.FUNCTION = METHOD_TARGET n porigin_method
-  -- if $unpack_class(S, punpackcall) = (UNPACK_CV)
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
   -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
@@ -75,7 +76,6 @@ def $iterator_unpack_plain(S, punpackcall) = true
   -- if $call_selected_valid(S, punpackcall.FUNCTION, punpackcall.CALLSITE)
 def $iterator_unpack_plain(S, punpackcall) = true
   -- if punpackcall.FUNCTION = METHOD_TARGET n porigin_method
-  -- if $unpack_class(S, punpackcall) = (UNPACK_CV)
   -- if $object_invoke_method(S, n) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
@@ -86,14 +86,12 @@ def $iterator_unpack_plain(S, punpackcall) = true
   -- if $call_selected_valid(S, punpackcall.FUNCTION, punpackcall.CALLSITE)
 def $iterator_unpack_plain(S, punpackcall) = true
   -- if punpackcall.FUNCTION = ARRAY_METHOD_TARGET (METHOD_TARGET n porigin_method) parrayselection
-  -- if $unpack_class(S, punpackcall) = (UNPACK_CV)
   -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if pfunction.ORIGIN = porigin_method
   -- if punpackcall.CALLSITE = (parrayselection.SITE)
   -- if $call_selected_valid(S, punpackcall.FUNCTION, punpackcall.CALLSITE)
 def $iterator_unpack_plain(S, punpackcall) = true
   -- if punpackcall.FUNCTION = ARRAY_METHOD_TARGET (STATIC_METHOD_TARGET porigin_class porigin_method) parrayselection
-  -- if $unpack_class(S, punpackcall) = (UNPACK_CV)
   -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if pfunction.ORIGIN = porigin_method
   -- if punpackcall.CALLSITE = (parrayselection.SITE)
@@ -118,7 +116,6 @@ def $iterator_unpack_plain(S, punpackcall) = true
   -- if punpackcall.CALLSITE = (porigin_site)
   -- if $dynamic_site(S, (porigin_site))
   -- if $dynamic_fixed_name(S, porigin_site) = eps
-  -- if $unpack_class(S, punpackcall) = (UNPACK_CV)
   -- if $iterator_unpack_closure_origin(S, n) = (porigin)
   -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if pfunction.ORIGIN = porigin
@@ -710,9 +707,6 @@ def $iterator_unpack_abort_plain(S, punpackcall) = true
   -- if $iterator_unpack_plain(S[.ALLOCATIONS = (HOBJECT n) :: S.ALLOCATIONS], punpackcall)
 def $iterator_unpack_abort_plain(S, punpackcall) = true
   -- if punpackcall.FUNCTION = METHOD_TARGET n porigin_method
-  -- if punpackcall.CALLSITE = (porigin_site)
-  -- if $dynamic_site(S, (porigin_site))
-  -- if $dynamic_fixed_name(S, porigin_site) = eps
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if ~((HOBJECT n) <- S.ALLOCATIONS)
@@ -731,7 +725,6 @@ def $iterator_unpack_abort_selected(S, piteratorunpack) = true
   -- if piteratorunpack.CALL.CALLSITE = (porigin_site)
   -- if $dynamic_site(S, (porigin_site))
   -- if $dynamic_fixed_name(S, porigin_site) = eps
-  -- if $unpack_class(S, piteratorunpack.CALL) = (UNPACK_CV)
   -- if $target_function(S, piteratorunpack.CALL.FUNCTION) = (pfunction)
   -- if pfunction.ORIGIN = porigin
 def $iterator_unpack_abort_selected(S, piteratorunpack) = false -- otherwise

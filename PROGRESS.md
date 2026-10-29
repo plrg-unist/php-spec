@@ -497,6 +497,19 @@ target ID carries original selection after retirement; same-class historical
 selection is not reconstructed. Wider callee/operand forms remain partial.
 [CALL121 review](coverage/semantics/invokable-iterator-unpack-review.json).
 
+Existing ordinary method, public array-callable, Closure and `__invoke` CV
+targets now share checked non-CV Iterator INPUT handling. Raw object/reference
+INPUT stays separate from selected DATA, including source-cell retargeting;
+normal teardown precedes target reception, and abrupt cleanup authenticates a
+retired direct receiver or Closure without adding owners. Eight new authored
+originals and the promoted CALL118 boundary match retained native request-profile
+observations; two independent reference-input originals agree under the ordinary
+CLI profile. Strict compilation of 424 modules, six authored reached groups/139
+reported assertions and one independent group/37 assertions pass. The unchanged
+eleven Unsupported baselines earn zero agreement credit. Unsupported producers,
+temporary `__invoke` callees and wider lifecycle forms remain separate.
+[CALL122 review](coverage/semantics/owned-iterator-unpack-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
