@@ -114,6 +114,18 @@ archive and copy a required `raw/enum-*` directory back into ignored `.tools/`;
 recorded commands, tested inputs, runtime/compiler identities and absolute paths
 preserve recovery. See the [string review](../coverage/semantics/enum-string-callable-review.json).
 
+Generated enum string-capture cuts are under
+`../php-spec-evidence-archive/enum-string-capture-117/`. Its `manifest.json`
+(SHA-256 `049171cb6ad89f82ab1467a56a110b37e8151b345adbc8223d7aa6ac4d7c78dd`)
+binds a 613,293-byte archive with seven raw directories. Four exact originals,
+114 state/guard conditions and private strict431 retain their original cuts; the
+initial Unsupported has zero agreement credit. Actual-tail joined strict432
+pins `d52de3fd9` over `0d5e7de23`, with exact `true`, stable inputs and full reap.
+The [capture review](../coverage/semantics/enum-string-capture-review.json) records
+the applicable GC07 copied-target/cache-borrowing seam and the remaining partial
+routes. Extract the archive and restore the selected `raw/enum-string-capture-*`
+directory under ignored `.tools/` to recover recorded commands and tested inputs.
+
 The guarded getter-recursion milestone retains source/native observations,
 focused checks, all fixture failures and diagnostics in
 `../php-spec-evidence-archive/magic-get-recursion-119/manifest.json`.

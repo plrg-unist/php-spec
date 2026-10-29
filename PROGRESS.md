@@ -8,6 +8,14 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Published generated enum method strings now form first-class internal Closures.
+Real call ownership retains the selected target through argument clearing and
+Stringable callbacks, then releases the Closure after invocation. Four new
+originals agree; 114 state/guard conditions, private431 and actual-tail joined432
+pass. Array captures, other string consumers, loading and backing contexts remain
+partial; enum collectability is separately owned by GC08.
+[Capture review](coverage/semantics/enum-string-capture-review.json).
+
 Published enum class-method strings now select generated `cases()`/`from()`/
 `tryFrom()` before arguments, retaining full original bytes through rebinding and
 real named Stringable callbacks. Temporary Stringable inputs retire before lookup;
@@ -262,7 +270,7 @@ reentrant/abrupt raw-owner teardown remain partial.
 | I82 | Rebound method-callable Generator factories; source preparation, unrun. |
 | OB04 | Selected error-handler FINAL handling; active validation. |
 | ATTR06 | Required unused owning explicit-wrapper return staging; read-only preparation. |
-| Enum M3/M4 | Generated string captures are privately accepted: four exact normal originals, 114 state/guard conditions and private strict431 pass. Actual-tail composition is pending. Array captures, wider callable consumers, enum collectability, backing dependencies and the default loader remain partial. |
+| Enum M3/M4 | Generated array-capture preparation; no new validation credit. Other string consumers, backing dependencies and the default loader remain partial; GC08 separately owns enum collectability. |
 | A75 | Temporary direct-call BYREF Generator INPUT/DATA cleanup; native-first source preparation. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
