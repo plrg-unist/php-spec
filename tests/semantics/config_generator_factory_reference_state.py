@@ -94,6 +94,7 @@ def conditions(name, program, path, stdout):
         'S_input.TODO = (THROW_SEARCH n_exception) :: (CONFIG_GENERATOR pconfiggenerator "input-release") :: ptask_input*',
         '$config_generator_valid(S_input,pconfiggenerator,"input-release")',
         '$ordinary_reference_value(S_input,n_value_cell) = (PINT 8)',
+        '$weakref_get(S_input,n_watch) = POBJECT n_generator',
         owners('S_input', 'HOBJECT n_generator', 1),
         owners('S_input', 'HCELL n_value_cell', 1),
         'S_second_popped = S_input[.TODO = (THROW_SEARCH n_exception) :: ptask_input*]',
