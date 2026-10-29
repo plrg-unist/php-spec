@@ -65,10 +65,10 @@ def checks(program, path, name):
             '$entry_lookup(S.ARRAYS[n_cycle].ITEMS,KSTRING $ptascii("self")) = (ALIAS n_cycle_cell)',
             'S.STORE[n_cycle_cell] = DEFINED (PARRAY n_cycle)',
             '$heap_subset([HARRAY n_cycle,HCELL n_cycle_cell],S.ALLOCATIONS)',
-            '$trace_visit_array_effect(S,n_payload_p,n_payload_q,[HARRAY n_payload_p],eps,z) = (S,ORDERRECURSIVE)',
-            '$trace_visit_array_effect(S,n_payload_p,n_payload_p,[HARRAY n_payload_p],eps,z) = (S,ORDER 0)',
+            '$trace_visit_array_effect(S,n_payload_p,n_payload_q,[HARRAY n_payload_p],z) = (S,ORDERRECURSIVE)',
+            '$trace_visit_array_effect(S,n_payload_p,n_payload_p,[HARRAY n_payload_p],z) = (S,ORDER 0)',
             'S_bad = S[.ALLOCATIONS = $tv_without(S.ALLOCATIONS,HARRAY n_payload_p)]',
-            '$trace_visit_array_effect(S_bad,n_payload_p,n_payload_p,eps,eps,z) = (S_bad,ORDERUNSUPPORTED "Throwable property comparison")',
+            '$trace_visit_array_effect(S_bad,n_payload_p,n_payload_p,eps,z) = (S_bad,ORDERUNSUPPORTED "Throwable property comparison")',
             '$throwable_field(S,n_a,"severity") = PINT 1',
             '$throwable_field(S,n_b,"severity") = PINT 9',
         ]
@@ -83,9 +83,9 @@ def checks(program, path, name):
             '$property_slot_at(pobjectprops_shared.SLOTS,$ptascii("self")) = (ppropertyslot_self)',
             'ppropertyslot_self.STATE = PROP_VALUE (DIRECT (POBJECT n_shared))',
             '$object_table_at(S.OBJECTTABLES,n_shared) = eps',
-            '$trace_visit_object_effect(S,n_shared,n_shared,[HOBJECT n_shared],eps,z) = (S,ORDER 0)',
+            '$trace_visit_object_effect(S,n_shared,n_shared,[HOBJECT n_shared],z) = (S,ORDER 0)',
             'S_bad = S[.ALLOCATIONS = $tv_without(S.ALLOCATIONS,HOBJECT n_shared)]',
-            '$trace_visit_object_effect(S_bad,n_shared,n_shared,eps,eps,z) = (S_bad,ORDERUNSUPPORTED "Throwable property comparison")',
+            '$trace_visit_object_effect(S_bad,n_shared,n_shared,eps,z) = (S_bad,ORDERUNSUPPORTED "Throwable property comparison")',
         ]
         rows += raw('S', 0)
         rows += [
@@ -102,10 +102,10 @@ def checks(program, path, name):
             '$float_decode(n_nan) = NOTNUMBER n_nan',
             'S_undefined = S[.STORE[n_nan_cell] = UNDEFINED]',
             '$trace_visit_item_value(S_undefined,ALIAS n_nan_cell) = eps',
-            '$trace_visit_entries_effect(S_undefined,[ENTRY (KINT 0) (ALIAS n_nan_cell)],[ENTRY (KINT 0) (ALIAS n_nan_cell)],eps,eps,z) = (S_undefined,ORDERUNSUPPORTED "Throwable property comparison")',
+            '$trace_visit_entries_effect(S_undefined,[ENTRY (KINT 0) (ALIAS n_nan_cell)],[ENTRY (KINT 0) (ALIAS n_nan_cell)],eps,z) = (S_undefined,ORDERUNSUPPORTED "Throwable property comparison")',
             'S_unallocated = S[.ALLOCATIONS = $tv_without(S.ALLOCATIONS,HCELL n_nan_cell)]',
             '$trace_visit_item_value(S_unallocated,ALIAS n_nan_cell) = eps',
-            '$trace_visit_entries_effect(S_unallocated,[ENTRY (KINT 0) (ALIAS n_nan_cell)],[ENTRY (KINT 0) (ALIAS n_nan_cell)],eps,eps,z) = (S_unallocated,ORDERUNSUPPORTED "Throwable property comparison")',
+            '$trace_visit_entries_effect(S_unallocated,[ENTRY (KINT 0) (ALIAS n_nan_cell)],[ENTRY (KINT 0) (ALIAS n_nan_cell)],eps,z) = (S_unallocated,ORDERUNSUPPORTED "Throwable property comparison")',
         ]
         rows += raw('S', 1)
         rows += finish('S_raw', 'B|01:1:1|')
@@ -122,7 +122,7 @@ def checks(program, path, name):
             '$object_table_at(S.OBJECTTABLES,n_left) = eps',
             '$object_table_at(S.OBJECTTABLES,n_right) = eps',
             'S_unpublished = S[.CLASSNAMES = eps]',
-            '$trace_visit_object_effect(S_unpublished,n_left,n_left,eps,eps,z) = (S_unpublished,ORDERUNSUPPORTED "Throwable property comparison")',
+            '$trace_visit_object_effect(S_unpublished,n_left,n_left,eps,z) = (S_unpublished,ORDERUNSUPPORTED "Throwable property comparison")',
             '$objectprops_record_at(S.OBJECTPROPS,n_left) = (pobjectprops_left)',
             '$property_slot_at(pobjectprops_left.SLOTS,$ptascii("next")) = (ppropertyslot_next)',
             'ppropertyslot_next.STATE = PROP_VALUE (DIRECT (POBJECT n_left))',
@@ -177,7 +177,7 @@ def checks(program, path, name):
                 '$object_table_at(S_effect.OBJECTTABLES,n_other) = (n_table_other)',
                 '$aggregate_table_count(S_effect.ARRAYS[n_table_left].ITEMS) = 1',
                 '$aggregate_table_count(S_effect.ARRAYS[n_table_other].ITEMS) = 2',
-                '$trace_visit_array_effect(S_effect,n_table_left,n_table_other,[HARRAY n_table_left],eps,z) = (S_effect,ORDERRECURSIVE)',
+                '$trace_visit_array_effect(S_effect,n_table_left,n_table_other,[HARRAY n_table_left],z) = (S_effect,ORDERRECURSIVE)',
                 '|S_effect.ARRAYS| = $(|S.ARRAYS| + 3)',
             ]
         else:
