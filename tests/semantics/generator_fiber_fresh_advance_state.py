@@ -24,7 +24,10 @@ PARK_STAGE = (
     '-- if pfiber.STATUS = FIBER_SUSPENDED')
 THROW_STAGE = PARK_STAGE.replace('INTRINSIC_FIBER_RESUME','INTRINSIC_FIBER_THROW')
 def stage(sent):
-    return PARK_STAGE+f' -- if $string_bytes(pfiber.VALUE) = ($ptascii("{sent}"))'
+    return (PARK_STAGE+' -- if pfiber.VM = (pfibervm) '
+            '-- if pfibervm.TODO = (FIBER_CONTINUE pfiberapi) :: ptask_saved* '
+            '-- if pfiberapi.SENT = (pvalue_sent) '
+            f'-- if $string_bytes(pvalue_sent) = ($ptascii("{sent}"))')
 COMMON = checks(r'''
 S.COMPLETION = NORMAL
 S.ACTIVEFIBER = eps
