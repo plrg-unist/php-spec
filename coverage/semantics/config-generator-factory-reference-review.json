@@ -1,6 +1,6 @@
 {
   "milestone": "A76 BYVAL factory returning a BYREF Generator",
-  "status": "privately implemented, independently reviewed and validated; integration queued",
+  "status": "integrated after independent actual-tail review and joined validation",
   "scope": {
     "consumer": "INI_SET unpack of a named zero-argument BYVAL nongenerator factory's actual BYREF Generator result, with at most two copied flat scalar sends, an integer final key and absent or implicit-NULL return.",
     "behavior": "The emitted UNPACK_VAR call authenticates the factory; the returned Generator has a separate authenticated BYREF function. Its actual result supplies INPUT and DATA owners, while a factory-created WeakReference supplies none. Normal completion drops DATA, then final INPUT enters the existing storage pin before API. Quiet terminal throw consumes DATA and INPUT in two discards before catch. The four local-cell witnesses see the weak target die before NULL handler or catch; copied sends and selected callee survive later writes.",
@@ -56,5 +56,12 @@
     "commands": "Run config_generator_factory_reference_models.py with both frozen --native-report paths and one --case per model; run each reached script with its corresponding frozen native --source-report. Makefile includes fresh-source entrypoints for complete future validation.",
     "notes": "Raw sources, streams, exits, fixtures and reports are outside Git; tested revisions and original process identities remain historical."
   },
-  "integration": {"status": "pending actual-tail composition and one full-manifest joined strict check"}
+  "integration": {
+    "status": "actual-tail composition independently cleared; sole joined strict432 passed",
+    "base": "6b9ba9442c8150016b9a2fdbb80b0d1db3633802",
+    "composition": "13ac054f4ed7ee857afc9c6d5d386afa61be55af",
+    "joined_strict": {"report": "joined-13ac054f4/report.json", "sha256": "80145028ffaa69b5f1770425a863c72837b9560c358c58873110996f55cfe461", "revision": "13ac054f4ed7ee857afc9c6d5d386afa61be55af", "modules": 432, "seconds": 11.8819022179},
+    "compatibility": "Runtime423 and source/state fixtures exactly match private A76. Manifest/schema and generic420/355/301 match current parent; GC08 enum roots, ATTR06 unused explicit wrapper return, I82 bound-method capture and COMP158 image routes are source-disjoint. Frozen native4/old Unsupported0, private strict432, source4 and reached353 retain their original cuts; no accepted A75 replay.",
+    "review": "Independent actual-parent semantic seams, docs/inventory union and joined compiler review by config71_recover_review."
+  }
 }
