@@ -215,10 +215,14 @@ reentrant/abrupt raw-owner teardown remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| COMP157 | Inherited ordinary initialized-public images; independent packet frozen, source preparation. |
-| ATTR05 | Explicit captured-Closure `__invoke()` warning phases; five native-first originals frozen, private preparation. |
-| Enum M3/M4 | Published-enum array dispatch is integrated for reviewed class-string and case-object sources, including named Stringable arguments. String callable routes, wider generated dispatch, backing dependency and the default loader remain partial. |
-| A73 | Quiet CLOSED scalar REFCELL retirement from sole Generator DATA; privately validated, integration queued. |
+| CLASS153 | Constructor by-reference parameters and direct sends; active validation. |
+| GC07 | Caller-frame collection, signed counts and WeakReference cleanup; active validation. |
+| I81 | Array and string method Generator factory proof; active validation. |
+| OB04 | Selected error-handler FINAL handling; active validation. |
+| COMP157 | Inherited ordinary initialized-public images; active validation. |
+| ATTR05 | Explicit captured-Closure `__invoke()` warning, trace and owner handling; active validation. |
+| Enum M3/M4 | Generated string dispatch; active validation. Wider backing and loader routes remain partial. |
+| A74 | Outside-alias scalar REFCELL cleanup; isolated preparation. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
