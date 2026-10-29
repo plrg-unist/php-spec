@@ -8,18 +8,19 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-CLASS148 is integrated: successful include/eval units now admit dependent anonymous
-classes at existing no-argument CV-assignment sites. Each unit keeps its own namespace/import context,
-frozen source-entry parent bindings and compiler-derived request-wide RTD cost.
-Ordinary loader callbacks preserve retained loads, same-site retry and genuine
-unit-specific publication causes. Body/default errors remain eager, with first-NEW
-linking before construction. Eight native-first originals agree and strict428 plus
-178 source-reached conditions pass, including independent unit-specific retry/cause
-and frozen-entry no-lookahead checks. The original wrong expected-status row
-remains zero credit, with only that corrected row rerun. Failed/open histories, broader placements/arguments and
-enum/trait co-residence remain partial. Joined strict428 passes on the actual
-enum-acquisition tail; accepted private source/state cuts retain their identities.
-[Dynamic dependency review](coverage/semantics/anonymous-dynamic-dependencies-review.json).
+CLASS149 extends anonymous classes in successful include/eval units to ordinary
+expression/return/nested sites and existing named/static Closure factories. The
+source-ID-generic compiler preserves lexical imports, real class-key order and
+publication before constructor arguments; the existing binder handles up to two
+ordinary positional/named arguments. Compiler-pruned RHS sites consume no key,
+while compiled unvisited sites do. Ten frozen native-first originals agree. Strict compilation of 428 modules and
+339 source-reached checks pass across compiled images, active
+eval/include root-try boundaries, early publication, source causes and constructor
+lexical/called scope. The original validator failure and observer timeouts retain zero credit.
+Failed/open histories, wider factories/captures/argument modes and enum/trait co-residence remain
+partial. [Placement review](coverage/semantics/anonymous-dynamic-placements-review.json).
+The prior [dependency review](coverage/semantics/anonymous-dynamic-dependencies-review.json)
+retains frozen source-entry binding and first-NEW autoload evidence at its own cuts.
 
 GC03's quiet WeakMap registration/proxy-count behavior and its separate tested
 cuts remain in the [GC03 review](coverage/semantics/gc-registration-order-review.json).
@@ -72,6 +73,7 @@ not repeat historical receipt counts or renew their execution credit.
 | A68 | Scalar INI_SET Iterator sends and saved argument lifetimes. |
 | GC04 | Quiet shared-table collection without WeakMap registration. |
 | OB01 | Output-buffering frontier preparation. |
+| CLASS149 | Source10/reached339 accepted; final package/integration pending. |
 | ATTR01 | NoDiscard; compile validation. |
 | I75 | Keyword-forwarded static Generator factories; declaration/called-scope proof. |
 | Enum M3/M4 | Generated-method callable capture/dispatch, backing-initializer dependency modes and wider enum acquisition; private. |

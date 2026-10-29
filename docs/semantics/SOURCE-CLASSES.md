@@ -341,8 +341,8 @@ The [namespace dependency review](../../coverage/semantics/anonymous-namespace-d
 records exact names/counters, ordinary named-header replay and autoload retry/cause
 checks.
 
-Successfully compiled include/eval units also admit dependent anonymous classes at
-the existing direct CV-assignment, no-argument sites. Each unit uses its own
+Successfully compiled include/eval units also admit dependent anonymous classes.
+Each unit uses its own
 namespace/import environment; eval does not inherit caller imports. Ordinary named
 loader callbacks can load dependencies through nested units. First-NEW staging,
 retained loads after a throw, same-site retry and publication before construction
@@ -353,9 +353,28 @@ RTD key. Later loads cannot change that frozen entry view. Local class cost is
 added once to the request seed, independently of runtime visits.
 The [dynamic dependency review](../../coverage/semantics/anonymous-dynamic-dependencies-review.json)
 records these source, entry-view and history checks. Closed successful compilation
-history and absence of pre-name diagnostics remain required; failed/open or
-reentered compilation histories, wider later-unit placements/arguments, and
-co-resident enum/trait key accounting remain Unsupported.
+history and absence of pre-name diagnostics remain required.
+
+The placement extension reuses the same compiler route for later-unit expressions,
+including returns, nested and call-argument NEW, and the existing ordinary named
+and static no-capture Closure factories. Up to two ordinary positional/named
+constructor arguments use the existing binder; body/default and argument-mode
+bounds are unchanged. Factory compilation records class identities before calls;
+first-NEW linking precedes argument effects, and successful publication survives a
+throwing send. Later visits allocate fresh objects of that same class. Ordinary
+named declarations inside admitted factories consume their deferred keys in actual
+compiler order, even when an outside allocation executes first. Site admission is
+structural; the compiler image decides whether an AST site consumed a key. Constant
+skipped `&&`/`||` RHS classes have no descriptor, while a `??` default and a
+variable-guarded unvisited class compile and consume keys. A skipped bad default
+therefore differs from an eager bad default in an unused factory body.
+Root try continuations in a running dynamic unit restore only its actual entered
+caller, with the active eval/include binding, owner depth and end-marker suffix.
+Callable-local and same-unit continuation guards remain intact.
+The [placement review](../../coverage/semantics/anonymous-dynamic-placements-review.json)
+keeps source comparisons and source-reached image/cause checks separate.
+Failed/open/reentered compilation histories, broader factory/capture and constructor
+argument modes, and co-resident enum/trait key accounting remain Unsupported.
 
 Plain anonymous and Base property types use the ordinary normalizer, invariant
 link checks and typed storage. An absent typed default starts uninitialized,

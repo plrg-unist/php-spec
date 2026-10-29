@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous.dynamic-placements",
+  "status": "partial",
+  "scope": "Later successful include/eval units admit existing anonymous bodies at ordinary expression, return, nested/call-argument and named/static no-capture Closure factory sites. Up to two ordinary positional/named constructor arguments use the existing binder. Factory/source ownership and ordinary deferred named-class cost are source-ID generic; no resolver or class-state representation rewrite. Failed/open/reentered histories, wider factories/captures/argument modes and enum/trait accounting remain explicit boundaries. The shared finally checker now authenticates foreign caller restoration only at a dynamic unit root using its actual entered SITE, active RUN binding, owner depth and END suffix; same-unit and callable-local boundaries remain intact.",
+  "engine_routes": [
+    "Zend/zend_compile.c::zend_compile_short_circuiting10350 skips constant-dead &&/|| RHS compilation; zend_compile_coalesce10565 compiles its default even when runtime skips it",
+    "zend_compile_new5410 compiles the class body/name before argument expressions; first DECLARE_ANON_CLASS links before argument effects/construction",
+    "Existing class/factory compiler and inheritance/constructor binder preserve eager own-default checks, linked identity after argument throw, lexical/called scope and real source causes"
+  ],
+  "design": "383 generalizes existing source-path/factory/publication guards to the canonical source ID and frozen per-unit compiler seed, reusing two common anonymous compiler arms. Site admission authenticates exact NEW/class-child shape and existing argument modes. Compiler descriptors, not AST occurrences, charge RTD keys: eight admitted sites can yield six compiled classes. Full compiler projection authenticates the image; an admitted pruned site cannot fabricate a selectable descriptor. Unit0 starts with EXTERNALeps and seed0, preserving existing decisions. No full history projection is introduced into compilation/publication cause validation. A real saved eval TRY_END exposed a pre-existing same-unit-only finally guard.195 adds a disjoint foreign-unit rule anchored to pure declaration_entry_site and lightweight active eval/include context facts, with physical root-scope validation. It invokes no full call/eval/class validator and does not alter runtime stepping or ownership.",
+  "native_and_baseline": {
+    "report": ".tools/class149-review/baseline-summary.json",
+    "sha256": "3966b464f98a53cb9390cc4331ecf8ab84c92be5590c027bffd7b18205504d99",
+    "result": "Frozen initial7 native-first on immutable872e86be2/CPU4,6normal+1terminal eval-default failure. Exactly2 representative unchanged counter/factory probes are genuine Unsupported; other5 old probes unrun. Separate extra frozen deferred-named/factory source has native-only normal result and no old probe.",
+    "extra_native": ".tools/class149-review/later-factory-deferred-named-key.native-first.json",
+    "extra_native_sha256": "6350ef14c33bf3968e3ef0f8314ad89822e80bf31310f207ce38214b591168aa"
+  },
+  "source_outcomes": {
+    "catalogue": "tests/semantics/anonymous_dynamic_site_cases.json",
+    "report": ".tools/class149-artifacts/source8-assessment.json",
+    "sha256": "8570c844c3af2b8ad99cbbb6174b889c294e00d4ecc79e21b984e470960da0ed",
+    "budgets": "Upfront180s model/190s host per source; pinnedCPU4 and fully reaped. No native replay; exact original bytes/streams and finite explicit filename mapping only.",
+    "boundary_extension": {
+      "catalogue": "tests/semantics/anonymous_dynamic_site_cases.json",
+      "report": ".tools/class149-artifacts/method-runtime-6xfv5gep/report.json",
+      "sha256": "4f99d8dfb2510f123ca1591783450b52d45bb8a9d2aaf21004be04890b874b52",
+      "native_report": ".tools/class149-review/include-root-try-factory-boundary.native-first.json",
+      "native_sha256": "753525bfda6c2fd135ee181951349ff2225c3c1c0de5e844f48ecc2f3735d441",
+      "result": "Fresh include top-level try/called factory counterpart, native-first source+payload, normal exact. Adds1 original separately to initial8; no old probe or native replay."
+    },
+    "early_extension": {
+      "report": ".tools/class149-artifacts/method-runtime-4x6lvzjl/report.json",
+      "sha256": "456b813bcb1d76a7010d21d15d96746683f92ce583bde601ba9975d6b884fee8",
+      "native_report": ".tools/class149-review/later-parentless-factory-early-publication.native-first.json",
+      "native_sha256": "dd440df76774d51432bcc8b07fef7201b397caa12c1f97fc7879838498e826eb",
+      "result": "One genuinely new native-first parentless named/static Closure factory positive exercises EARLY publication; normal exact, raw outside2 before calls/named0/Closure1. No new old probe."
+    },
+    "unique_total": 10,
+    "initial_counts": {
+      "normal": 7,
+      "terminal_eval_compile_default_failure": 1
+    },
+    "unique_counts": {
+      "normal": 9,
+      "terminal_eval_compile_default_failure": 1
+    }
+  },
+  "strict_sl": {
+    "report": ".tools/class149-artifacts/first-strict428.json",
+    "sha256": "6a4f9ad18df9d490532353a8af74e20b05e25bd869c4934be7f3d415072c2285",
+    "modules": 428,
+    "result": "true newline/empty stderr; stable inputs/pin4/fullreaped/no timeout/bad affinity/survivors",
+    "root_fenced_retry": {
+      "report": ".tools/class149-artifacts/root-fenced-strict428.json",
+      "sha256": "a3afaae4aba052b826e8743979db987d861c6c1e9ba822d57155f42989d69dda",
+      "result": "Affected strict428 true newline/empty stderr, CPU4/stable/fullreaped at1958871; no source8/counter75 renewal. Earlier corrected strict385ee263 at195df68 remains separate."
+    }
+  },
+  "reached": {
+    "conditions": 339,
+    "groups": [
+      {
+        "name": "actual compiled versus admitted sites",
+        "conditions": 75,
+        "test": "tests/semantics/anonymous_dynamic_placement_protocol.py",
+        "report": ".tools/class149-artifacts/anonymous-dynamic-placement-protocol-wgpsv0gx/report.json",
+        "sha256": "375475e02a7f5d1b32b2e410f299a92d8626bbef4e88fa3e1a69aeb42888d3bc",
+        "supervisor": ".tools/class149-artifacts/authored-compiled-sites75.json",
+        "supervisor_sha256": "a6fe31a3ba1b0c12bd2910a41f331216679cb7050e81e21e3b0cc45399510641",
+        "result": "Real checked eval1 has AST8/image6, exact0/1/3/5 raw names, coalesce/branch compiled-but-unpublished descriptors, no &&/|| descriptors, positive full validity then coherent pruned-source descriptor-forgery refusal; final source/call/declaration/heap validators."
+      },
+      {
+        "name": "include saved try boundary",
+        "conditions": 63,
+        "test": "tests/semantics/anonymous_dynamic_file_boundary_protocol.py",
+        "report": ".tools/class149-artifacts/anonymous-dynamic-file-boundary-q1xzbs2m/report.json",
+        "sha256": "e5367cd8f85b18aefda1dbbe105ffff8d956568b7fbfbbb5c2c601a401d6a466",
+        "supervisor": ".tools/class149-artifacts/authored-file-boundary62.json",
+        "supervisor_sha256": "f74ab79cea7bd406a83d4cdf25ac1173537c9ba10443923e5dd5f8fc7d0137d4",
+        "result": "Actual file-run/open/checked parse ingress, real saved root TRY_END foreign entry/owner boundary, missing-context/wrong-depth/wrong-live-site negatives, link before constructor/allocation and complete native/full validators. Actual63 conditions despite nominal wrapper filename62;493.23s atb542/195df68. Maintained timeout600\u2192900 headroom only, original scriptb3e676 retained externally; no renewed execution. Later2-line root-scope fence preserves this exact genuine namespace-root marker pointwise."
+      },
+      {
+        "name": "parentless factories published before execution",
+        "conditions": 59,
+        "test": "tests/semantics/anonymous_dynamic_early_factory_protocol.py",
+        "report": ".tools/class149-artifacts/anonymous-dynamic-early-factory-kmb0c9wx/report.json",
+        "sha256": "2f51d1a66f5d280f68293bf8f2ce7e4a0ec7bebb022a709c7021572708391d32",
+        "supervisor": ".tools/class149-artifacts/authored-parentless-early59.json",
+        "supervisor_sha256": "8125b76ad336d80991828d9422b5e6a6d04b7772d65e72333a165dc723cfdacb",
+        "result": "Real checked eval_resume has all3 EARLY classes/PDECLASS/name availability before objects or Closure binding; raw3$0/9$1/14$2 and cost3, no runtime PDRCLASS, repeated fresh objects/matching native stdout, unchanged declarations and full validators.257.03s/stable/pin4/fullreaped."
+      },
+      {
+        "name": "independent factory causes, constructor scope and argument retry",
+        "conditions": 142,
+        "test": "tests/semantics/anonymous_dynamic_placement_cause_protocol.py",
+        "report": ".tools/class149-artifacts/anonymous-dynamic-placement-cause-ny1lw1l0/report.json",
+        "sha256": "53ddfca31fd09e40c2467e4de15c24e939a79172c520daa079c986f5074103c6",
+        "supervisor": ".tools/class149-artifacts/independent-factory-cause142-fixed1.json",
+        "supervisor_sha256": "539bfb33ef0d4ab02dbde6143e418b9d4f2d36ecc89de7723d40144370b05db9",
+        "result": "Actual named/static Closure unit1 causes and wrong live-function/unit/callable-scope rejection; source-root eval boundary with missing/wrong context owner and site negatives; exact publication before allocation, unchanged DECLARATIONS through argument throw/retry, real inherited constructor lexical Base/called anonymous frame, both classes published once, final native output/full validators. All142 assertions retained; observer-only source/line seek with terminal/no-progress guard passes904.386s, stable b542/1958871/3839ec4/pin4/fullreaped."
+      }
+    ]
+  },
+  "legacy_helper_promotion": "The old V58 synthetic constant-pruned unit now has admission count1 rather than Unsupported. This helper-only expectation does not claim an RTD key or renewed source/state credit. The new real75 conditions distinguish admission from compilation. No CLASS148 or old254 campaign renewal.",
+  "tested_code": {
+    "production_sha256": "9ec428a321efff61969dd35ba933b385819550141b9a0a45980bbb5d66894388",
+    "qualification": "Initial strict/focused3 tested dirty872 with exact383 bytes committed unchanged as dbf90. Remaining5 and counter75 use dbf90. File source uses dirty dbf90/195df68 and file63 uses b542/195df68. Root-fenced strict, early source59 and final142 use b542/1958871; that two-line root fence was committed unchanged as5125e6086. Every listed report keeps its actual catalogue/test/input cut; metadata-only placement does not renew execution.",
+    "zero_credit": [
+      {
+        "report": ".tools/class149-artifacts/anonymous-dynamic-placement-cause-tkbrk5fk/report.json",
+        "sha256": "380b4e61ea45c9f28ab36607f55917643059e665ed948893f305a03dd897b619",
+        "result": "First independent125 state run stopped at real first named-factory NEW: call_descriptors_valid(S_front) false before publication/arguments. Whole125 group0, raw retained; stable dbf90/pin4/fullreaped/no timeout. Compact diagnosis isolated the real same-unit-only finally guard;195 now authenticates active root caller restoration, and affected file63/final142 pass."
+      },
+      {
+        "result": "Diagnostic-only first wrapper had one blank-line formatting error before main-premise evaluation;0. Fixed compact81 flags isolate finally_state_valid only; following compact saved-frame diagnostic confirms exact foreign eval SITE. Both are diagnosis, not agreement. Raw records preserved external."
+      },
+      {
+        "report": ".tools/class149-artifacts/anonymous-dynamic-placement-cause-b3fl8s_c/report.json",
+        "sha256": "3363ff349ecd098b4bdfd60c75993af2daa4b763acae0bac49ce595ed74d5706",
+        "result": "First strengthened142 attempt reached inner1800s limit; outer fullreaped/stable/no bad/survivors. Whole142 zero, no larger cap; Sequential progress proved execution; cheap source/line seek and terminal/no-progress guards retained all142 assertions and passed without a cap increase. Source10 and75+63+59 keep separate accepted cuts."
+      }
+    ],
+    "finally_module_sha256": "8871071a3c075f463d1328b53842be8efa87fc0568789c76a6e68a6cecdabee2"
+  },
+  "recovery": "Original/native/baseline/process records remain external under .tools/class149-author, .tools/class149-review and .tools/class149-artifacts. Accepted raw source/state directories copied unchanged before cleanup. Existing local prebuilt helpers reused (local-tools.json); no fresh-build/portability claim. All held boundaries, including owned-NUL source release, remain unchanged. .tools/class149-artifacts/local-tools.json retains all reused binary identities; original commands/exits/environment/stability/affinity receipts are in the linked raw supervisors.",
+  "independent_review": "Production383/source-ID contexts,195 active source-root restoration and compiler-visited accounting independently CLEAR. All10 exact sources and339 source-reached conditions accepted at separate unchanged or explicitly qualified cuts. Original125 exposed the repaired production validator gap; it and the first142/diagnostic failures/timeouts remain0. No CLASS148/old254 campaign renewal; actual-tail integration is separate.",
+  "implementation_commits": [
+    "dbf90f691",
+    "b54204481",
+    "5125e6086"
+  ],
+  "maintained_test_commits": [
+    "711df3e7c",
+    "56e137a8d",
+    "e0ca60af1"
+  ],
+  "target": "PHP8.5.10 CLI NTS signed64; tests/semantics/profile.json; project-local oracle b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "source_pin": "vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348"
+}
