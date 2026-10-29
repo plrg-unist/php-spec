@@ -38,6 +38,9 @@ dec $config_iterator_retired_scope(pstate, pconfigiterator) : bool
 dec $config_iterator_retired_methods(pstate, nat, text*) : bool
 dec $config_iterator_start(pstate, pconfigcall, poperand, nat) : bool
 dec $config_iterator_string(pstate, pvalue) : bool
+dec $config_iterator_scalar(pstate, pvalue) : bool
+dec $config_iterator_current_scalar(pstate, pconfigiterator) : bool
+dec $config_iterator_scalar_call(pstate, pconfigcall) : bool
 dec $config_iterator_byref_current(pstate, pconfigiterator) : bool
 dec $config_iterator_current_receipt(pstate, pconfigiterator, poperand) : bool
 dec $config_iterator_current_value(pstate, pconfigiterator, poperand) : pvalue?
@@ -257,6 +260,8 @@ def $config_iterator_aggregate_data(S, pconfigiterator) = ($config_iterator_quie
 def $config_iterator_string(S, PSTRING n*) = $startup_bytes(n*)
 def $config_iterator_string(S, PSTRING_CARRIER pstringidentity n*) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*)
 def $config_iterator_string(S, pvalue) = false -- otherwise
+;; SEND_UNPACK copies the scalar tag/value; intrinsic binding converts later.
+def $config_iterator_scalar(S, pvalue) = $literal_reference_flat_leaf(S, pvalue)
 ;; A raw current CELL stays selected through key(); its current contents are
 ;; checked at acquisition/send, not while authenticating callback/history frames.
 def $config_iterator_byref_current(S, pconfigiterator) = true
@@ -265,11 +270,11 @@ def $config_iterator_byref_current(S, pconfigiterator) = true
   -- if $effective_method(S, porigin_class, $ptascii("current"), |S.CLASSES|) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION.SIGNATURE.BYREF
 def $config_iterator_byref_current(S, pconfigiterator) = false -- otherwise
-def $config_iterator_current_receipt(S, pconfigiterator, KNOWN pvalue) = $config_iterator_string(S, pvalue)
+def $config_iterator_current_receipt(S, pconfigiterator, KNOWN pvalue) = $config_iterator_scalar(S, pvalue)
 def $config_iterator_current_receipt(S, pconfigiterator, REFERENCE n) = $config_iterator_byref_current(S, pconfigiterator)
 def $config_iterator_current_receipt(S, pconfigiterator, poperand) = false -- otherwise
 def $config_iterator_current_value(S, pconfigiterator, KNOWN pvalue) = (pvalue)
-  -- if $config_iterator_string(S, pvalue)
+  -- if $config_iterator_scalar(S, pvalue)
 def $config_iterator_current_value(S, pconfigiterator, REFERENCE n) = (pvalue)
   -- if $config_iterator_byref_current(S, pconfigiterator)
   -- if $config_iterator_reference_value(S, n) = (pvalue)
@@ -279,6 +284,10 @@ def $config_iterator_current_string(S, pconfigiterator) = true
   -- if $config_iterator_current_value(S, pconfigiterator, pconfigiterator.CURRENT) = (pvalue)
   -- if $config_iterator_string(S, pvalue)
 def $config_iterator_current_string(S, pconfigiterator) = false -- otherwise
+def $config_iterator_current_scalar(S, pconfigiterator) = true
+  -- if $config_iterator_current_value(S, pconfigiterator, pconfigiterator.CURRENT) = (pvalue)
+  -- if $config_iterator_scalar(S, pvalue)
+def $config_iterator_current_scalar(S, pconfigiterator) = false -- otherwise
 ;; SEND_UNPACK normalizes the argument key; the Iterator's key() result stays raw.
 def $config_iterator_key(S, PINT z) = (KINT z)
 def $config_iterator_key(S, PSTRING n*) = (KINT z)
@@ -326,9 +335,34 @@ def $config_iterator_fresh_aggregate_primitive_key(S, pconfigiterator, poperand)
   -- if $config_iterator_invalid_primitive_key(poperand)
 def $config_iterator_fresh_aggregate_primitive_key(S, pconfigiterator, poperand) = false -- otherwise
 def $config_iterator_items(S, pconfigiterator, eps) = true
-def $config_iterator_items(S, pconfigiterator, (ENTRY (KINT z) (DIRECT pvalue)) :: pentry_tail*) = ($config_iterator_string(S, pvalue) /\ $config_iterator_items(S, pconfigiterator, pentry_tail*))
-def $config_iterator_items(S, pconfigiterator, (ENTRY (KSTRING n*) (DIRECT pvalue)) :: pentry_tail*) = ($config_iterator_key_input(pconfigiterator, PSTRING n*) /\ $startup_bytes(n*) /\ $string_key(n*) = STRINGKEY /\ $config_iterator_string(S, pvalue) /\ $config_iterator_items(S, pconfigiterator, pentry_tail*))
+def $config_iterator_items(S, pconfigiterator, (ENTRY (KINT z) (DIRECT pvalue)) :: pentry_tail*) = ($config_iterator_scalar(S, pvalue) /\ $config_iterator_items(S, pconfigiterator, pentry_tail*))
+def $config_iterator_items(S, pconfigiterator, (ENTRY (KSTRING n*) (DIRECT pvalue)) :: pentry_tail*) = ($config_iterator_key_input(pconfigiterator, PSTRING n*) /\ $startup_bytes(n*) /\ $string_key(n*) = STRINGKEY /\ $config_iterator_scalar(S, pvalue) /\ $config_iterator_items(S, pconfigiterator, pentry_tail*))
 def $config_iterator_items(S, pconfigiterator, pentry*) = false -- otherwise
+
+;; Completed scalar copies retain source/callee authority after DATA and the
+;; live cursor retire. This receipt also authenticates the diagnostic resume;
+;; it neither re-reads the Iterator nor performs API conversion.
+def $config_iterator_scalar_call(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.INDEX = 1 /\ pconfigcall.PACKS = eps
+  -- if ~$pipe_site(S, pconfigcall.SITE)
+  -- if $config_call_valid(S, pconfigcall)
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (1)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, true, eps, PORIGIN n_source pcpath, z))
+  -- if $code_at(S.CODE, n_source) = (pcode)
+  -- if $source_unit(S.SOURCES, n_source) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath) = (punpackclass)
+  -- if punpackclass = UNPACK_CV \/ punpackclass = UNPACK_VAR
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN pvalue)]
+  -- if $config_iterator_scalar(S, pvalue)
+  -- if ~$config_strict(S, pconfigcall)
+def $config_iterator_scalar_call(S, pconfigcall) = false -- otherwise
+def $config_ini_null_valid(S, pconfigcall) = true
+  -- if $config_iterator_scalar_call(S, pconfigcall)
+def $config_ini_null_finish(S, pconfigcall) = $config_ini_finish(S, pconfigcall, eps, pvalue)
+  -- if $config_iterator_scalar_call(S, pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN pvalue)]
+  -- if ~$config_ini_quiet_value(S, pvalue)
 
 def $config_iterator_history(S, pconfigiterator) = true
   -- if pconfigiterator.CALL.KIND = INTRINSIC_INI_SET
@@ -572,7 +606,7 @@ rule PhpStep/config-iterator-current-result: S ~> S[.TODO = (CONFIG_ITERATOR pco
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "current") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "current")
   -- if $config_iterator_current_value(S, pconfigiterator, S.RESULT) = (pvalue)
-rule PhpStep/config-iterator-current-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "CONFIG Iterator unpack current outside string domain"]
+rule PhpStep/config-iterator-current-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "CONFIG Iterator unpack current outside admitted capture domain"]
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "current") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "current")
   -- if $config_iterator_current_value(S, pconfigiterator, S.RESULT) = eps
@@ -595,7 +629,7 @@ rule PhpStep/config-iterator-key-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "
   -- if ~$config_iterator_fresh_aggregate_primitive_key(S, pconfigiterator, S.RESULT)
 def $config_iterator_send(S, pconfigiterator, ptask_tail*) = $config_iterator_clear(S, pconfigiterator[.ITEMS = pconfigiterator.ITEMS ++ [ENTRY pkey (DIRECT pvalue)]], "next-start", ptask_tail*)
   -- if $config_iterator_current_value(S, pconfigiterator, pconfigiterator.CURRENT) = (pvalue)
-  -- if $config_iterator_string(S, pvalue)
+  -- if $config_iterator_scalar(S, pvalue)
   -- if pconfigiterator.KEY = KNOWN pvalue_key
   -- if $config_iterator_send_key(S, pconfigiterator, pvalue_key) = (pkey)
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall_prefix)
@@ -611,7 +645,7 @@ def $config_iterator_send(S, pconfigiterator, ptask_tail*) = S_checked
   -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
   -- if S_checked = $config_send_check(S, pconfigcall_prefix, preqbytes?, z)
   -- if S_checked.COMPLETION =/= NORMAL
-def $config_iterator_send(S, pconfigiterator, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "CONFIG Iterator unpack current outside string domain"]
+def $config_iterator_send(S, pconfigiterator, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "CONFIG Iterator unpack current outside ordinary scalar send domain"]
   -- if pconfigiterator.KEY = KNOWN pvalue_key
   -- if $config_iterator_send_key(S, pconfigiterator, pvalue_key) = (pkey)
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall_prefix)
@@ -619,7 +653,7 @@ def $config_iterator_send(S, pconfigiterator, ptask_tail*) = S[.COMPLETION = UNS
   -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
   -- if S_checked = $config_send_check(S, pconfigcall_prefix, preqbytes?, z)
   -- if S_checked.COMPLETION = NORMAL
-  -- if ~$config_iterator_current_string(S, pconfigiterator)
+  -- if ~$config_iterator_current_scalar(S, pconfigiterator)
 rule PhpStep/config-iterator-send: S ~> $config_iterator_send(S, pconfigiterator, ptask_tail*)
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "send") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "send")
