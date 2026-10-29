@@ -145,6 +145,8 @@ def $weakmap_write_value_allowed(S, paccess) = true
   -- if paccess.RHS = S.RESULT
   -- if paccess.SELECTED = $rcontainer_selected(S, paccess.RHS)
 def $weakmap_write_value_allowed(S, paccess) = false -- otherwise
+dec $weakmap_shared_registration(pstate, nat, nat, pweakmapvalue) : bool
+dec $weakmap_shared_replacement(pstate, nat, nat, pweakmapvalue) : bool
 dec $weakmap_write_allowed(pstate, paccess) : bool
 def $weakmap_write_allowed(S, paccess) = true
   -- if paccess.MODE = ACCESS_SET /\ ~paccess.LATCH /\ ~paccess.KEYHOLE
@@ -169,13 +171,14 @@ def $weakmap_write_allowed(S, paccess) = true
   -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
   -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
   -- if $node_children(S, HOBJECT n_key) = eps
-  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps \/ $weakmap_shared_registration(S, n_map, n_key, paccess.VALUE)
   -- if $weakmap_write_value_allowed(S, paccess)
 def $weakmap_write_allowed(S, paccess) = false -- otherwise
 dec $weakmap_free_value_allowed(pstate, pvalue) : bool
 dec $weakmap_replace_allowed(pstate, paccess) : bool
 dec $weakmap_second_write_allowed(pstate, paccess) : bool
-def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = WEAKMAP ({KEY n_key, VALUE paccess.VALUE, BEFORE $weakref_find(S, S.ALLOCATIONS, n_key)})], paccess, pvalue_result)
+dec $weakmap_registration_next(pstate, nat) : nat
+def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = WEAKMAP ({KEY n_key, VALUE paccess.VALUE, BEFORE $weakref_find(S, S.ALLOCATIONS, n_key), ORDER $weakmap_registration_next(S, n_key)})], paccess, pvalue_result)
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_at(S, n_map)
   -- if ptbytes = $ptascii("offsetSet") /\ ($weakmap_write_allowed(S, paccess) \/ $weakmap_second_write_allowed(S, paccess))
@@ -519,7 +522,7 @@ def $weakmap_replace_allowed(S, paccess) = true
   -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
   -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
   -- if $node_children(S, HOBJECT n_key) = eps
-  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map] \/ $weakmap_shared_replacement(S, n_map, n_key, paccess.VALUE)
   -- if pvalue = pweakmapentry.VALUE
   -- if $weakmap_free_value_allowed(S, pvalue)
   -- if $weakmap_write_value_allowed(S, paccess)

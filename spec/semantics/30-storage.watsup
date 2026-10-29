@@ -268,7 +268,7 @@ syntax pgcslot = GC_EMPTY | GC_ROOT pnode | GC_RETIRED nat | GC_BARE_ROOT nat | 
 syntax pgcscan = {INDEX nat, END nat}
 syntax pgcpublic
 syntax pgccall = {NONCE nat, CALL pconfigcall, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, PASS nat, TOTAL int, PENDING nat?}
-syntax pgcplan = {CALL pgccall, GRAPH hgraph, TABLES pobjecttable*, CALLED nat*, PROXIES hedge*, COUNTED pnode*, BUFFER pgcslot*, CANDIDATES pnode*, DTORS pnode*, FREESET pnode*, SCAN pgcscan?, INDEX nat, STEPS pgcprogress*, DONE pnode*}
+syntax pgcplan = {CALL pgccall, GRAPH hgraph, TABLES pobjecttable*, CALLED nat*, PROXIES hedge*, WEAK hedge*?, COUNTED pnode*, BUFFER pgcslot*, CANDIDATES pnode*, DTORS pnode*, FREESET pnode*, SCAN pgcscan?, INDEX nat, STEPS pgcprogress*, DONE pnode*}
 syntax pgcguard = {WORKER nat, SOURCE pgccall, INDEX nat, OBJECT nat, PENDING nat?, PUBLIC pgcpublic?}
 syntax pgcworker = {BIRTH pgccall, GUARD pgcguard?}
 syntax pgc = {ENABLED bool, IMMUTABLE nat*, BUFFER pgcslot*, FREE nat*, NEXT nat, ACTIVE pgccall?, PLAN pgcplan?, WORKER nat?, SCAN pgcscan}
@@ -670,7 +670,7 @@ syntax pgeneratorpendingthrow = { SOURCE pgeneratorop, LEAF nat, SITE porigin, V
 syntax pgeneratorinput = { OBJECT nat, SITE porigin, SOURCE pgeneratorop, LIVE bool }
 syntax pgeneratorloopretained = { OBJECT nat, SITE porigin, TASK ptask }
 syntax pweakmapvalue = pvalue | ALIAS nat
-syntax pweakmapentry = { KEY nat, VALUE pweakmapvalue, BEFORE nat? }
+syntax pweakmapentry = { KEY nat, VALUE pweakmapvalue, BEFORE nat?, ORDER nat }
 syntax pobject = ENUMCASE porigin | SENSITIVEUNSET porigin | SENSITIVEVALUE pvalue | WEAKREFERENCE nat? | WEAKMAP pweakmapentry? | WEAKMAPENTRIES pweakmapentry* | WEAKMAPITERATOR nat nat | FIBERGRACEFUL nat nat | FIBER pfiber | FIBERAPICLOSURE pfibercapture | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | FROMCALLABLEFACTORY porigin | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text pgettersource | CTORCLOSURE nat text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
 syntax pdeclautoload = (nat, pautoloadcall, pautoloadentry)
 syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)*, AUTOLOAD pdeclautoload* }
