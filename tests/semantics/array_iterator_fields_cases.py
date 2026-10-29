@@ -99,12 +99,7 @@ unset($e,$first_error,$dest,$escaped,$saved,$pool,$leaf,$other,$marker,$watch,$t
 echo "U:",isset($it),":",isset($escaped),":",isset($first_error),";";
 ''',
     'array-iterator-fields-pooled': POOLED,
-    # The sole source change is current()'s return mode; this remains a boundary.
+    # Historical A64 boundary; A65 now validates this by-value route.
     'array-iterator-fields-byval-boundary': POOLED.replace(
         b'function &current()', b'function current()', 1),
-}
-
-BOUNDARIES = {
-    'array-iterator-fields-byval-boundary':
-        'array Iterator unpack outside initialized Iterator domain',
 }

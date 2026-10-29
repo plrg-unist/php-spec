@@ -55,6 +55,17 @@ echo "U:",isset($it),":",isset($dest),":",isset($saved),";";
         b'public $row;', b'public array $row;', 1),
 }
 
+# This single return-mode change retains the selected property cell until DATA
+# retires, while the builder keeps its copied array value.
+CASES['array-iterator-byref-fields-no-destructor'] = CASES[
+    'array-iterator-byval-fields-no-destructor'].replace(
+        b'function current()', b'function &current()', 1)
+
+EXPECTED = {
+    'array-iterator-byref-fields-no-destructor':
+        b'P:1;W;V0;C;K:33:44:55:1;N;V1;R:55:8:3:8:1:1:;S:77:66:3:66;U:::;',
+}
+
 BOUNDARIES = {
     'array-iterator-byval-fields-typed-boundary':
         'array Iterator unpack outside initialized Iterator domain',
