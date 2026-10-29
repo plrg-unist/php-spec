@@ -8,16 +8,19 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-I80 admits captured ordinary user-method factories made with first-class
-callables or `Closure::fromCallable` when they create scoped Generators. The
-real selected method, source access, lexical/called scope and receiver are
-borrowed after callable retirement; actual Generator resume/close ownership
-and ordinary frame/cache roots remain unchanged. Three new authored, one
-independent and one unchanged named-function control match PHP. Three reached
-fronts pass 174 custom/189 reported checks; private and actual-tail joined
-strict431 pass. The old first-class case was checked Unsupported with zero
-agreement credit. Other callable factory kinds, wider binding, producer and lifecycle contexts
-remain partial. [I80 review](coverage/semantics/generator-captured-factory-review.json).
+I81 carries selected array/string first-class user-method factories through
+scoped Generator creation after source-value mutation and callable retirement.
+A bounded borrowed lookup view reuses the existing source/access/scope proof;
+actual Generator ownership stays separate. Three authored and one independent
+original agree at their recorded cuts; four reached fronts pass 343 custom/363
+reported checks, including private access, real receiver/cache/input owners,
+forged-receipt refusal and budget continuation. Private strict431 passes at its
+recorded cut. The shared identity-receipt predicate normalization fixes the
+initial independent interpreter failure; that earlier cut retains zero credit.
+Broader factory, binding, wrapper/API and lifecycle forms remain partial.
+[I81 review](coverage/semantics/generator-array-string-factory-review.json).
+[I80](coverage/semantics/generator-captured-factory-review.json) retains its
+first-class/fromCallable scope and original tested cuts.
 
 GC06 carries an authenticated claimed count source through canonical materialized
 ordinary destructor callbacks and PASS1, including retired original tables.

@@ -638,6 +638,9 @@ test-semantics: build
 	python3 tests/semantics/generator_closure_method_state.py
 	python3 tests/semantics/generator_captured_factory_sources.py
 	python3 tests/semantics/generator_captured_factory_state.py
+	python3 tests/semantics/generator_array_string_factory_sources.py
+	python3 tests/semantics/generator_array_string_factory_state.py
+	python3 tests/semantics/generator_array_string_factory_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

@@ -414,6 +414,21 @@ combinations remain partial; Zend's implementation of `fromCallable` uses a
 fake Closure internally, a distinct representation choice.
 [Captured factory review](../../coverage/semantics/generator-captured-factory-review.json).
 
+I81 extends ordinary method factories to first-class array and class-method
+string captures. Their immutable normalized target and existing source/access
+certificate retain lexical/called scope and receiver history after original
+array references or strings change. A bounded lookup view authenticates retired
+factory/receiver identities; the actual Generator retains its resume/close
+receipt and physical owners. Three authored and one independent original agree
+at their recorded cuts; four reached fronts pass 343 custom/363 reported checks.
+These distinguish a retired maker from a retained body receiver, actual receipt
+from a fresh sibling, private access/certificate forgeries and parked BYREF cache
+versus SEND-input owners, with budget continuation. Private strict431 passes at
+its recorded cut. The independent original passes after shared identity-receipt
+predicate normalization; its earlier failed cut retains zero agreement credit.
+Wider callable factories, binding/wrapper/API and lifecycle forms remain partial.
+[Array/string factory review](../../coverage/semantics/generator-array-string-factory-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

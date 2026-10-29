@@ -6480,6 +6480,15 @@ independent and one unchanged named-function control match PHP; three reached
 fronts pass 174 custom/189 reported checks. Other callable origins and wider
 producer/lifecycle combinations remain partial.
 [Captured factory review](coverage/semantics/generator-captured-factory-review.json).
+
+I81 extends the selected factory proof to first-class array and string
+user-method callables after source-value mutation and callable retirement.
+Three authored and one independent original agree; four reached fronts pass
+343 custom/363 reported checks, including receiver/cache/input ownership and
+private-access/actual-receipt guards. The original independent failure retains
+zero credit after shared identity-receipt predicate correction. Wider callable
+and lifecycle forms remain partial.
+[Array/string factory review](coverage/semantics/generator-array-string-factory-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
