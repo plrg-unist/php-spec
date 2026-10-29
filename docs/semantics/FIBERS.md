@@ -968,10 +968,26 @@ rules through normal and supplied throws, including both `Previous` orders.
 Four authored and one independent source agree exactly; two no-Fiber controls
 retain their baseline cut. Private strict 424, joined 425 and 522 custom reached
 checks pass at separate cuts; the initial fixture parse stop has zero credit.
-Matched nonstatic/source forgeries and a valid CURRENT resumer check the
-real authority and THROW-only boundary. Keyword-forwarded creation, static
-CURRENT/NEXT/SEND transfer and wider callable/lifecycle forms remain partial.
+At that cut, matched nonstatic/source forgeries and a valid CURRENT resumer
+checked the authority and THROW-only boundary. Keyword-forwarded creation, static
+CURRENT/NEXT/SEND transfer and wider callable/lifecycle forms remained partial.
 [Static THROW review](../../coverage/semantics/generator-fiber-static-throw-transfer-review.json).
+
+Static-method `current()` now transfers before first yield, and existing
+non-ADVANCE `next()`/`send()` phases transfer both value and reference caches.
+The common callee/cache/resumer proof preserves inherited scope without receiver
+roots; parameter aliases, snapshot/live current, COW and argument/local owners
+retain their ordinary behavior. Sole value caches retire at replacement, while
+supplied SEND throws retire Delivered before catch and retain the remaining
+value/reference cache.
+Six authored and one independent exact sources, three selected unchanged-model
+refusals, a named positive, private/joined strict 425 and 522 custom reached checks
+support this scope. I72 is not replayed; its CURRENT compatibility assertion is
+maintained through a new source front. Shared fresh NEXT/SEND pre-yield ADVANCE
+still refuses both native-positive gates with zero agreement; the next generic
+milestone addresses that phase across applicable callees. Keyword-forwarded
+creation and wider helper/delegation/callee/lifecycle behavior remain partial.
+[Static transfer review](../../coverage/semantics/generator-fiber-static-transfer-review.json).
 
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need

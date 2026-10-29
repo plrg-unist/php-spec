@@ -8,6 +8,23 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
+Ordinary static Generator bodies now transfer through Fiber during fresh
+`current()` and the existing non-advancing `next()`/`send()` phases, for by-value
+and by-reference producers. Shared authenticated callee/cache/resumer rules retain
+inherited declaring/called scope without receiver roots. Reference cells survive
+name rebinding, snapshots stay separate from live caches, array COW preserves old
+copies, and SEND keeps its argument buffer distinct from the received local.
+Six authored and one independent source agree exactly with pinned PHP. Three
+representative originals were checked Unsupported; a selected named NEXT control
+stays exact. Strict 425 private/joined and 522 custom checks across four reached
+fronts pass, with no failed attempts. I72 evidence keeps its original cuts; its
+maintained CURRENT assertion is covered by the new compatibility front.
+Native-positive fresh NEXT/SEND before-first-yield ADVANCE gates remain explicit
+Unsupported with zero agreement. Their shared phase admission is the next generic
+milestone; keyword-forwarded creation still needs retained caller scope proof.
+Other callee/cache, helper/delegation and wider lifecycle forms remain partial.
+[Static transfer review](coverage/semantics/generator-fiber-static-transfer-review.json).
+
 Global anonymous classes now admit prior interface lists and inherited contracts,
 with or without the bounded Base. Generated names use the Base or first-interface
 reference; first-`new` linking precedes allocation/arguments, while bodies/defaults
@@ -23,24 +40,6 @@ The ordinary18 aggregate inventory failure was independently reassessed
 without rewriting its raw result; executable inputs were unchanged.
 Forward/autoload, namespace/import, dynamic `implements` and wider anonymous
 contexts remain partial. [Interface review](coverage/semantics/anonymous-interfaces-review.json).
-
-Ordinary static-method `Generator::throw` now transfers through Fiber before
-first yield or with a primed cache, for by-value and by-reference producers.
-Explicit/dynamic nonkeyword class calls authenticate real static methods;
-inherited declaring and called scopes remain distinct without receiver roots.
-Object selectors retire independently of the Generator. Copied formals, shared
-parameter cells, API snapshots and live caches keep their ordinary ownership.
-Normal and supplied throws preserve the original Throwable and distinct pre-yield
-versus pending-finally `Previous` order.
-Four authored and one independent source agree exactly with pinned PHP. Four
-authored originals were genuinely Unsupported; two no-Fiber static controls
-retain their exact baseline outcomes. Private strict 424, joined strict 425 and
-522 custom checks across four reached fronts pass. One fixture-path parse stop
-has zero credit; its corrected pending-only cut passes. Matched descriptor/source
-authentication and a valid CURRENT resumer test the explicit THROW boundary.
-I69–I71 retain their original evidence without replay. Keyword-forwarded creation,
-static CURRENT/NEXT/SEND transfer and wider callee/lifecycle forms remain partial.
-[Static THROW review](coverage/semantics/generator-fiber-static-throw-transfer-review.json).
 
 A fresh sole-DATA CONFIG Iterator now validates its actual declared physical
 fields without fixed names or an edge-count limit. Supported scalars, ordinary
@@ -731,14 +730,17 @@ original cuts. Wider producers, handlers, references and lifetimes remain partia
 | Track | Owner-confirmed current work |
 | --- | --- |
 | Enum core | Full four-group enum core work. |
-| A65 | BYVAL Iterator declared fields. |
-| CALL125 | ARRAY/Generator magic argument packs. |
-| COMP149 | Next: generic captured-graph depth-cap removal; previous-path admission stays separate. |
-| I73 | Static Generator/Fiber CURRENT/NEXT/SEND transfer. |
+| A65 | BYVAL Iterator field states. |
+| CALL126 | Target-neutral Aggregate unpack. |
+| CLASS146 | Anonymous identity/dependency order. |
+| COMP149 | Generic captured-graph depth-cap removal. |
+| GC physical01 | Callback-free materialized cycles. |
+| OP111 | Default-handler RHS objects. |
+| I74 | Generic fresh NEXT/SEND ADVANCE phase; source/static preparation. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
