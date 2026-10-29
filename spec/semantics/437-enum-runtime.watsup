@@ -44,6 +44,8 @@ dec $enum_from_lossy_valid(pstate, pconfigcall, pvalue, int) : bool
 dec $enum_from_null_valid(pstate, pconfigcall) : bool
 dec $enum_from_warning_ready(pstate, pconfigcall, int) : pstate
 dec $enum_implicit_header(pstate, pclassdesc, ptbytes, ptbytes) : pilmethod
+dec $enum_trait_requirement(pstate, pclassdesc, pclassdesc, pmethoddesc) : pmethodissue
+dec $enum_trait_requirement_state(pstate, pclassdesc, pmethodissue) : pstate
 
 ;; User enum descriptors are ordinary nominal declarations with real case
 ;; constants. Singleton objects use the existing permanent constant-cache roots.
@@ -106,6 +108,12 @@ def $pil_implicit_headers(S, pclassdesc) = [$enum_implicit_header(S, pclassdesc,
   -- if $call_sourcefile(S.FILES, pclassdesc.ORIGIN) = (ptbytes_file)
 def $pil_post_interfaces(S, pclassdesc) = $enum_class_verify(S, pclassdesc)
   -- if pclassdesc.KIND = "enum"
+def $enum_trait_requirement(S, pclassdesc_owner, pclassdesc_trait, pmethoddesc) = $pil_header_check(S, pclassdesc_owner, pilmethod_generated, {DECLARATION $pmethod_user(pmethoddesc, pclassdesc_trait, $call_sourcefile(S.FILES, pmethoddesc.FUNCTION.ORIGIN))[.SIGNATURE = $trait_import_signature(pclassdesc_owner, pmethoddesc.FUNCTION.SIGNATURE)], SCOPE $pil_scope(S, pclassdesc_owner), STATIC pmethoddesc.STATIC, VISIBILITY pmethoddesc.VISIBILITY, ABSTRACT true, TENTATIVE false, ORIGIN (pmethoddesc.FUNCTION.ORIGIN)})
+  -- if $pil_header_at($pil_implicit_headers(S, pclassdesc_owner), pmethoddesc.NAME) = (pilmethod_generated)
+def $enum_trait_requirement(S, pclassdesc_owner, pclassdesc_trait, pmethoddesc) = METHOD_UNSUPPORTED "enum generated trait method requirement" -- otherwise
+def $enum_trait_requirement_state(S, pclassdesc_owner, METHOD_OK) = S
+def $enum_trait_requirement_state(S, pclassdesc_owner, pmethodissue) = $pil_issue_state(S, pclassdesc_owner, pmethodissue)
+  -- if pmethodissue =/= METHOD_OK
 def $trait_plan(S, pclassdesc) = $trait_members(pcode, pcpath ++ [PCFIELD 4], 0, statement*, {TRAITS eps, PRECEDENCES eps, ALIASES eps})
   -- if pclassdesc.ORIGIN = PORIGIN n pcpath
   -- if $code_at(S.CODE, n) = (pcode)
@@ -775,7 +783,7 @@ def $trait_copy_original(pclassdesc_owner, pclassdesc_trait, pmethoddesc, ptrait
   -- if ~(($ptlc(pclassdesc_trait.NAME), $ptlc(pmethoddesc.NAME)) <- (ptbytes_trait, ptbytes_method)*)
   -- if $enum_generated(S, pclassdesc_owner.ORIGIN, pmethoddesc.NAME)
   -- if ~pmethoddesc.ABSTRACT
-def $trait_copy_original(pclassdesc_owner, pclassdesc_trait, pmethoddesc, ptraitalias*, (ptbytes_trait, ptbytes_method)*, TRAITCOMPOSE S ptraitmethod* ptraitmethod_required*) = TRAITCOMPOSE S[.COMPLETION = UNSUPPORTED "enum generated trait method requirement"] ptraitmethod* ptraitmethod_required*
+def $trait_copy_original(pclassdesc_owner, pclassdesc_trait, pmethoddesc, ptraitalias*, (ptbytes_trait, ptbytes_method)*, TRAITCOMPOSE S ptraitmethod* ptraitmethod_required*) = TRAITCOMPOSE ($enum_trait_requirement_state(S, pclassdesc_owner, $enum_trait_requirement(S, pclassdesc_owner, pclassdesc_trait, pmethoddesc))) ptraitmethod* ptraitmethod_required*
   -- if ~(($ptlc(pclassdesc_trait.NAME), $ptlc(pmethoddesc.NAME)) <- (ptbytes_trait, ptbytes_method)*)
   -- if $enum_generated(S, pclassdesc_owner.ORIGIN, pmethoddesc.NAME)
   -- if pmethoddesc.ABSTRACT

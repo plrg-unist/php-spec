@@ -110,8 +110,8 @@ def $trait_type_branches((PTBRANCH ptatom_items*) :: ptbranch*, ptbytes, ptbytes
 def $trait_type_parameters(eps, ptbytes, ptbytes_parent?) = eps
 def $trait_type_parameters(psparam :: psparam_tail*, ptbytes, ptbytes_parent?) = psparam[.TYPE = $trait_type_branches(psparam.TYPE, ptbytes, ptbytes_parent?)] :: $trait_type_parameters(psparam_tail*, ptbytes, ptbytes_parent?)
 def $trait_type_signature(pssignature, ptbytes, ptbytes_parent?) = pssignature[.PARAMETERS = $trait_type_parameters(pssignature.PARAMETERS, ptbytes, ptbytes_parent?)][.RETURNS = $trait_type_branches(pssignature.RETURNS, ptbytes, ptbytes_parent?)]
-def $ppmethod_supported_signature(pssignature, "trait") = $ppsupported_signature($trait_type_signature(pssignature, $ptascii("trait"), ($ptascii("parent"))))
-def $ppmethod_supported_signature(pssignature, text_kind) = $ppsupported_signature(pssignature) -- if text_kind =/= "trait"
+def $ppmethod_supported_signature(pssignature, "trait", b_abstract) = ($ppsupported_signature($trait_type_signature(pssignature, $ptascii("trait"), ($ptascii("parent")))) \/ (b_abstract /\ pssignature.RETURNS = ([(PTBRANCH ([PTSTATIC]))]) /\ $ppsupported_signature($trait_type_signature(pssignature[.RETURNS = eps], $ptascii("trait"), ($ptascii("parent"))))))
+def $ppmethod_supported_signature(pssignature, text_kind, b_abstract) = $ppsupported_signature(pssignature) -- if text_kind =/= "trait"
 
 def $pptrait_body_uses(SEQUENCE statement*) = $pptrait_members_use(statement*)
 def $pptrait_body_uses(phpType23) = false -- otherwise

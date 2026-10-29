@@ -1,6 +1,6 @@
 dec $ppmethod_scope_context(pchheader) : ptscope
 dec $ppmethod_flags(int, text) : bool
-dec $ppmethod_supported_signature(pssignature, text) : bool
+dec $ppmethod_supported_signature(pssignature, text, bool) : bool
 ;; Class-owned method descriptors never enter the global function registry.
 syntax ppmembers = PPMEMBERS ppstate ppropertydesc* pmethoddesc*
 dec $ppmethod_members(statement*, bool) : bool
@@ -239,17 +239,17 @@ def $ppmethod_step(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppro
   -- if P.COMPLETION = PPCNORMAL
 def $ppmethod_step(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, PSSDONE (PSOK pssignature psdiagnostic*)) = PPMEMBERS ($ppunsupported($ppsignature_diagnostics(P, psdiagnostic*), "dependent method type")) ppropertydesc* pmethoddesc*
   -- if P.COMPLETION = PPCNORMAL
-  -- if ~$ppmethod_supported_signature(pssignature, pchheader.KIND)
+  -- if ~$ppmethod_supported_signature(pssignature, pchheader.KIND, $ppproperty_flag(flags, 16))
 def $ppmethod_step(P_outer, P, pcpath, flags, ptbytes, (SEQUENCE statement*), metadata, ppropertydesc*, pmethoddesc*, pchheader, PSSDONE (PSOK pssignature psdiagnostic*)) = $ppmethod_finish(P_outer, $ppgoto_finish(P_body), pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader)
   -- if P.COMPLETION = PPCNORMAL
-  -- if $ppmethod_supported_signature(pssignature, pchheader.KIND)
+  -- if $ppmethod_supported_signature(pssignature, pchheader.KIND, $ppproperty_flag(flags, 16))
   -- if pssignature_effective = $ppmethod_returns(ptbytes, pssignature)
   -- if psparam* = pssignature.PARAMETERS
   -- if P_header = $ppsignature_diagnostics(P, psdiagnostic*)[.RETURNREF = pssignature.BYREF][.RETURNS = pssignature_effective.RETURNS][.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.FOLD = P.FOLD[.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
   -- if P_body = $ppgenerator_body(P_header, pcpath ++ [PCFIELD 6], statement*)
 def $ppmethod_step(P_outer, P, pcpath, flags, ptbytes, ABSENT, metadata, ppropertydesc*, pmethoddesc*, pchheader, PSSDONE (PSOK pssignature psdiagnostic*)) = $ppmethod_finish(P_outer, P_header, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader)
   -- if P.COMPLETION = PPCNORMAL
-  -- if $ppmethod_supported_signature(pssignature, pchheader.KIND)
+  -- if $ppmethod_supported_signature(pssignature, pchheader.KIND, $ppproperty_flag(flags, 16))
   -- if pssignature_effective = $ppmethod_returns(ptbytes, pssignature)
   -- if psparam* = pssignature.PARAMETERS
   -- if P_header = $ppsignature_diagnostics(P, psdiagnostic*)[.RETURNREF = pssignature.BYREF][.RETURNS = pssignature_effective.RETURNS][.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.FOLD = P.FOLD[.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
