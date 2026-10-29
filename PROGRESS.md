@@ -185,7 +185,7 @@ and reentrant/abrupt deactivation remain partial.
 | COMP156 | Linked ordinary interface images; native-first packet accepted, state preparation. |
 | ATTR04 | Selected exception-handler Deprecated API entry. |
 | Enum M3/M4 | Published-enum array dispatch is integrated for reviewed class-string and case-object sources, including named Stringable arguments. String callable routes, wider generated dispatch, backing dependency and the default loader remain partial. |
-| A71 | Scalar CONFIG Generator sends. |
+| A72 | Reference-cell CONFIG Generator scalar sends; native-first packet frozen, private preparation. |
 | OB03 | Effectful pending Throwable before output deactivation. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
