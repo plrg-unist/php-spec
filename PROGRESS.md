@@ -73,19 +73,16 @@ their original inputs. Count-ambiguous callbacks, WeakMap callbacks, residual
 tags, workers, hooks, reentry and active contexts remain partial.
 [GC05 review](coverage/semantics/gc-materialized-callback-review.json).
 
-CLASS150 is integrated: anonymous sites can share ordinary traits and enums in
-unit0 and successful include/eval units. Normal header/implicit-interface metadata and
-frozen source-entry bindings determine shared class keys; pruned declarations
-and include-once hits add no compilation cost. Seven original observations agree,
-and 223 reached checks pass across compiler images, trait import, enum cache
-history, real publication causes and argument-throw retry. Joined strict430
-passes; private source/state evidence retains its original cuts. The initial
-list-encoding refusal retains zero credit.
-Failed/open/reentry histories, wider bodies/factories/argument modes and owned-NUL
-release remain outside this milestone.
-[Mixed-kind review](coverage/semantics/anonymous-trait-enum-review.json).
-The prior [placement review](coverage/semantics/anonymous-dynamic-placements-review.json)
-retains CLASS149 source10/state339 and active source-root restoration at its own cuts.
+CLASS151 preserves anonymous class-key history after parser-rejected eval and
+opened-file units. Actual failed-source/site records and an immediate rejected
+exit authenticate zero class-key cost; later accepted units keep their source-ID
+holes and genuine counters. Five original observations agree and 261 reached checks pass across actual file
+rejection/once hits, malformed-history refusal and later publication/retry causes. Failed once
+parses remain retained once hits. Partial/open/reentrant compilation and terminal
+body/default fatals remain separate, with body/argument and held bounds unchanged.
+[Rejected-source review](coverage/semantics/anonymous-rejected-sources-review.json).
+The prior [mixed-kind review](coverage/semantics/anonymous-trait-enum-review.json)
+retains CLASS150 source7/state223 at their original cuts.
 
 GC03's quiet WeakMap registration/proxy-count behavior and its separate tested
 cuts remain in the [GC03 review](coverage/semantics/gc-registration-order-review.json).
@@ -145,6 +142,7 @@ unresolved with zero model credit. [OB01 review](coverage/semantics/output-reque
 | --- | --- |
 | A70 | Temporary INPUT/copy cleanup for CONFIG Iterator sends; native/source preparation. |
 | OB02 | Restored FINAL callback-failure boundary; default fatal reporting and buffer/owner cleanup implementation. |
+| CLASS151 | Rejected-source class-key history; source5/state261 accepted; final package/integration pending. |
 | COMP155 | Method-bearing captured-object comparisons; native/source preparation. |
 | I79 | Rebound Closure method-created Generator scope; native6 and old controls complete, implementation/review active. |
 | GC06 | Materialized destructor GC count/buffer correction; produced-identity/root-order discrepancy under focused diagnosis. |

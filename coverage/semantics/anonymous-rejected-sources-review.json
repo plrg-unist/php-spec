@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous.rejected-source-history",
+  "status": "partial",
+  "scope": "Later successful anonymous units preserve class-key chronology after genuine parser-rejected eval/opened-file units. ParseError and parser-stage CompileError install no accepted source/code/binding and consume no class keys. Accepted partial/open/reentered compilers, terminal body/default fatals, wider bodies/arguments and all held boundaries stay separate.",
+  "engine_routes": [
+    "Zend/zend_language_scanner.l::zend_compile calls zendparse for the whole AST before zend_compile_top_stmt. Rejected textual class/NEW prefixes therefore reach no class compiler.",
+    "Zend/zend_compile.c modifier parsing throws CompileError before ordinary class compilation; body/default E_COMPILE_ERROR remains terminal.",
+    "Ordinary include_once/require_once opened-file tracking is retained after parser rejection; later once hits skip reparsing."
+  ],
+  "design": "383 adds an exact immediate entered-unit\u2192PDEXIT PCSREJECT fold arm. The entry UNIT/SITE matches the existing failed-source contract and an earlier caller source; no accepted source/code/eval/file binding exists. Only the source ID advances; key count remains unchanged. Existing accepted-source PCSCOMPLETE fold and failed unmatched/open histories are unchanged. No full class/call/history validator is added to compiler replay and no parser/name resolver is duplicated.",
+  "native_and_baseline": {
+    "report": ".tools/class151-review/baseline-summary.json",
+    "sha256": "678a46f302407a2b513cfc18440aa78a12d1e2c15d810d55b5992e0b3a895fd2",
+    "result": "Native5 allnormal. Exactly2 selected immutable839 eval/include probes are checked Unsupported at the anonymous compiler-context gate; finite opened-file snapshot supplied for include. Other3 old probes unrun. Native5 and old2 serial pin4/fullreaped; no150 or native/history replay."
+  },
+  "source_outcomes": {
+    "report": ".tools/class151-artifacts/source5-assessment.json",
+    "sha256": "c62f724463af6d1cc8136a15ea69002606f431f8732dfc840b61ba6e9babbc75",
+    "catalogue": "tests/semantics/anonymous_rejected_source_cases.json",
+    "unique_sources": 5,
+    "counts": {
+      "normal": 5
+    },
+    "result": "Five exact original native tuples, explicit main/child filename substitution only. First3 retain7c819 and remaining2 retain1669 test/input cuts; production383 identical. Upfront180/240 model budgets; no source/native renewal."
+  },
+  "strict_sl": {
+    "report": ".tools/class151-artifacts/first-strict430.json",
+    "sha256": "d2b55b7396e8213ac24953ea90ac38f5c9e843c7888dff9b702a222d120af179",
+    "modules": 430,
+    "result": "true newline/empty stderr/exit0; stable7c819 and selected inputs, pin4/fullreaped/no timeout/bad/survivors."
+  },
+  "reached": {
+    "accepted_conditions": 261,
+    "groups": [
+      {
+        "conditions": 96,
+        "test": "tests/semantics/anonymous_rejected_file_protocol.py",
+        "report": ".tools/class151-artifacts/anonymous-rejected-file-state-3t5sntud/report.json",
+        "sha256": "f2b28096c066ec9a78c4b424aa49b44e6d7fe7acc05c2e3a25f54b7118a37fad",
+        "supervisor": ".tools/class151-artifacts/authored-rejected-file96.json",
+        "supervisor_sha256": "a859f250242c5bd74b475e5489e786574e497bdc156e97dbfe27255dd4f62ef0",
+        "result": "Real file-run/open/parser rejection and retained failed once hit; accepted2+once skip/eval3, source-ID hole and native counters, positive class state before removed/ISFILE/cwd/source/code/binding/site forgeries and malformed exit/open-segment refusals; final file/call/class/heap. Stable1669/pin4/134.625s/fullreaped."
+      },
+      {
+        "conditions": 165,
+        "test": "tests/semantics/anonymous_rejected_source_cause_protocol.py",
+        "test_sha256": "4f0f950e57dfa04814b8d91e79f94bdec659c68281407bbbb1cc9e4733b5bb30",
+        "report": ".tools/class151-artifacts/anonymous-rejected-source-cause-kusnd6m0/report.json",
+        "sha256": "21ce1b3591c7fd27b107d87d9270dd34dba188967039f0bdcdda30fd851d7596",
+        "supervisor": ".tools/class151-artifacts/independent-rejected-cause165.json",
+        "supervisor_sha256": "aa3d5300e24932b1948234562f0ca6a9fea3769ad96a3b1827687e3d0e6eec48",
+        "result": "Independent real accepted1\u2192rejected2/3\u2192accepted4/5 ingresses; real failure records and absent source/code/bindings, unchanged seed1, malformed/missing/duplicate/reordered/wrong-exit/site and forged source/code/binding refusals; genuine source cause/wrong live caller, link-only before args/allocation, exact declaration retention through thrown-send retry, inherited ctor scope, tail seed2 and final validators. Stable1669/pin4/571.788s/fullreaped; cheap seek and original1200 cap."
+      }
+    ]
+  },
+  "tested_code": {
+    "implementation_commit": "406718710",
+    "catalogue_commit": "7c819ad43",
+    "maintained_tests_commit": "1669c9fe4",
+    "production_sha256": "6387faab0ca97e269b1eeda18bb4ffa71d71799a72ffdbec3fe7b0117970bf46",
+    "qualification": "All source5/strict430/state261 cuts use the exact18-line production change. First3 source observations retain7c819; remaining2 and both state groups retain1669 with maintained-test placement. Each report retains its actual code/test/input cut; later prose changes do not renew execution."
+  },
+  "limits": [
+    "Only parser/preflight rejection authority with no installed image is admitted; no blanket zero-cost treatment of arbitrary failed/partial histories.",
+    "Unfinished, accepted partial, callback-interrupted and reentrant compilation histories remain Unsupported.",
+    "Existing anonymous body/factory/capture/argument and pre-name diagnostic limits remain.",
+    "Owned-NUL release and every paused/held lane remain unchanged."
+  ],
+  "target": "PHP8.5.10 CLI NTS signed64; tests/semantics/profile.json and sole project-local oracle.",
+  "source_pin": "vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+  "recovery": "Original source/payload manifests, native/baseline and raw process receipts are external under .tools/class151-author, .tools/class151-review and .tools/class151-artifacts. Source5 raw dirs copied unchanged before cleanup. local-tools.json records reused binaries; no fresh build/portability claim. Accepted150 evidence is not renewed.",
+  "independent_review": "Production383, exact source5, separate real file96/cause165 and bounded prose/inventory independently CLEAR. No private validation failures or150/native/historical renewal; actual-tail integration remains separate."
+}

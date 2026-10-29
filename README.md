@@ -4416,7 +4416,11 @@ Anonymous sites may share successful units with ordinary traits and enums.
 Normal compiler headers, implicit interfaces and source-entry bindings determine
 their shared class-key sequence; pruned declarations and include-once hits add no
 compilation cost. [Mixed-kind review](coverage/semantics/anonymous-trait-enum-review.json).
-Failed/open histories and wider bodies/argument modes remain partial.
+Parser-rejected eval and opened-file units retain their real failure/site records
+without advancing class keys; later successful units preserve the sequence.
+A failed include-once or require-once parse remains an ordinary once hit.
+[Rejected-source review](coverage/semantics/anonymous-rejected-sources-review.json).
+Partial/open compilation histories and wider bodies/argument modes remain partial.
 Plain empty named classes can share those units globally and in valid named
 namespace sections, including repeated unbracketed sections and bracketed global
 bodies. Eligible root/actual-block classes consume no RTD key; deferred classes
