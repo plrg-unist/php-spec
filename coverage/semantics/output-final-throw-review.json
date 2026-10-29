@@ -1,6 +1,6 @@
 {
   "milestone": "OB02",
-  "status": "private semantics accepted; actual-tail validation pending",
+  "status": "validated bounded FINAL fatal milestone; core obligation remains partial",
   "target": {
     "version": "8.5.10",
     "sapi": "cli",
@@ -138,7 +138,7 @@
   },
   "summary": {
     "path": "ob02-author-native/accepted-summary.json",
-    "sha256": "2da45ea084ba29a8aedf751fd3adda23448c42e641dfae709d8de40e7295e95e"
+    "sha256": "88b2a34866891975263ced6dc82054431cd33f642ded015d8ab8381cd16d389a"
   },
   "authority": [
     "vendor/php-src/main/main.c::php_request_shutdown",
@@ -180,11 +180,59 @@
       "kind": "whole packet failed on late eval30 timeout; two separately exact rows credited above"
     }
   ],
-  "compatibility": "Guard3dbfc39b5 admits held/fresh destructor-inactive sole Throwables and captured/late retained Throwables. Normal OB01 has no new deactivation task; source4/state131 cuts remain applicable. Actual-tail affected guard checks are separate.",
+  "compatibility": "Guard 3dbfc39b5 admits held/fresh destructor-inactive sole Throwables and captured/late retained Throwables. Normal OB01 has no new deactivation task; source4/state131 cuts remain applicable. Actual-tail affected guard checks are separate. Joined 1262 rechecks sole-inert and retained-owner guards (70+33); other source/state cuts remain applicable without adding assertion or agreement counts.",
   "harness": "Maintained scope.main uses model request90 plus30 seconds parse/outer margin; default30 still yields60. Retained external source comparisons, not metadata-only reruns, establish acceptance.",
   "recovery": "Raw below ../php-spec-evidence-archive/. Git private branch output/request-end-throw-ob02 retains tested a1b/b41 and frozen originals; maintained source/protocol commands regenerate checks. External evidence is not a build input.",
   "integration": {
     "base": "d10c7afea96992b80754b8c963826c7465a00be4",
-    "status": "pending joined431 and affected guard checks"
+    "candidate": "1262bd31b49a612ad99d7d1def760990e0617579",
+    "status": "joined and affected guard checks passed",
+    "strict": {
+      "report": "ob02-author-native/joined-1262bd31b/report.json",
+      "sha256": "4156e1a546e16816dc4382f9ca904ad01b30eea765a81ea0f3b910e64e441561",
+      "module_count": 431,
+      "mode": "SL strict",
+      "stdout": "true\n",
+      "stderr_bytes": 0,
+      "exit": 0,
+      "seconds": 13.583019813522696,
+      "cpu": 2,
+      "parent_pid": 3931162,
+      "child_pid": 3931186,
+      "parent_affinity": [
+        2
+      ],
+      "child_affinity": [
+        2
+      ],
+      "head_stable": true,
+      "inputs_stable": true,
+      "process_group_reaped": true
+    },
+    "affected_guard_groups": [
+      {
+        "report": "ob02-author-native/reached-raw/fiber-state-review-stmtqt7t/report.json",
+        "sha256": "46480836ba531b9585c2eee978f9714ffbc5e38b124074738bed93df6429f1eb",
+        "revision": "1262bd31b49a612ad99d7d1def760990e0617579",
+        "selection": [
+          "restored-final-error-takes-over-and-resumes-fatal"
+        ],
+        "assertions": 70,
+        "outer": "ob02-author-native/joined-author-guard-1262bd31b/process.json",
+        "outer_sha256": "1ad5591413a7f77d92fafdba63fff7f66d47641c63dab7e9cfb2abb1364f12b1"
+      },
+      {
+        "report": "ob02-author-native/reached-raw/fiber-state-review-ylvad656/report.json",
+        "sha256": "0c4e6dd8fefe020bf1844f58c081ea2a14180eaefaa911e916dbbc769dc460a3",
+        "revision": "1262bd31b49a612ad99d7d1def760990e0617579",
+        "selection": [
+          "late-fatal-cache-before-active-off-release"
+        ],
+        "assertions": 33,
+        "outer": "ob02-author-native/joined-peer-initial-1262bd31b/process.json",
+        "outer_sha256": "735b93dfa6dab32ffd503429d85ad407c1e09b5fc7a70fe606e0c93baf319fc5"
+      }
+    ],
+    "composition": "Actual30 union is append-only. 391 keeps sticky OUTPUTBLOCKED, ordinary user boundary, 442 retired-API boundary, then deactivation-only refusal; neutral excludes all three. Canonical395/152/231 changes are inactive for the four by-value/no-selected-handler sources."
   }
 }

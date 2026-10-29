@@ -162,7 +162,8 @@ new tested cuts. [OB01 review](coverage/semantics/output-request-end-review.json
 OB02 admits default fatal takeover from builtin FINAL throws with scalar messages
 and NULL previous. Stored traces and cache mutation precede fatal reporting;
 inactive buffers then release raw owners without lower writes. Four originals
-match PHP and three reached groups pass 131 assertions. A pending-Throwable
+match PHP and three reached groups pass 131 assertions. Actual-tail strict431
+and both affected guard fronts (70+33) pass without native or differential source reruns. A pending-Throwable
 decrement must be nonfinal or destructor-inactive; effectful final pending cleanup
 is the next buffering dependency. Selected exception handlers, wider rendering
 and reentrant/abrupt deactivation remain partial.
@@ -172,7 +173,6 @@ and reentrant/abrupt deactivation remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| OB02 | Private fatal4/state131 accepted; actual-tail composition and joined/affected guard checks. |
 | CLASS151 | Recoverable rejected eval/include histories. |
 | COMP155/156 | Method-bearing comparisons privately complete; interface-bearing preparation. |
 | GC06 | Collector counts and buffer correction. |
