@@ -6136,6 +6136,9 @@ shared globals and handlers, cached callbacks and original C argument buffers.
 Primed method-created by-reference `Generator::throw` transfers also preserve
 the cached cell, receiver and pending exception through Fiber suspension;
 see the [method reference THROW review](coverage/semantics/generator-fiber-method-reference-throw-transfer-review.json).
+Fresh by-reference method THROW also preserves the receiver and temporary
+Throwable before the first yield. Resuming to a yield installs a live cell;
+the API result is a snapshot. See the [fresh method review](coverage/semantics/generator-fiber-fresh-method-reference-throw-transfer-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

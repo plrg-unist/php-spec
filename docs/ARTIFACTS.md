@@ -120,6 +120,12 @@ Commit concise reports and manifests with hashes and locations. Preserve raw
 failures and interrupted runs externally; do not force-add their archives.
 The coverage compression patterns in `.gitignore` guard against reintroduction.
 
+I69 fresh method by-reference Generator THROW evidence is retained uncompressed
+under `../php-spec-evidence-archive/generator-fiber-fresh-method-reference-throw-69/`.
+Its `manifest.json` identifies ten reports and the separate peer originals/streams.
+Initial native-transport and returned-fixture failures remain alongside accepted
+source, parked and corrected returned cuts with their original revision identities.
+
 I68 method by-reference Generator THROW evidence is retained uncompressed under
 `../php-spec-evidence-archive/generator-fiber-method-reference-throw-68/`.
 Its `manifest.json` identifies eleven raw reports, including both failed reached

@@ -43,5 +43,14 @@
     "native_exit": 0,
     "native_stdout": "FRESH|START|CALL|ENTER|1|PARK|1|1|1|1|1|1|RESUME|FIRST|CAUGHT|1|CAPTURE|1|VALUE|1|LIVE|1|1|1|FIBER|1|AFTER-YIELD|CLOSED|1|1|1|B-DROP|B|1|A-DROP|DROP|1|1|1|E",
     "native_stderr": ""
+  },
+  {
+    "id": "i69-fresh-method-byref-self-abort-independent",
+    "purpose": "Independent native-first pre-yield Fiber::throw abort: self item has no cache; receiver retires before catch and the original Given escapes with supplied stop as Previous.",
+    "source": "<?php\nclass Owner69Review {\n    public function __destruct() { echo 'OWNER-DROP|'; }\n    public function &stream(&$item) {\n        try {\n            echo 'ENTER|';\n            Fiber::suspend('before69');\n            echo 'BAD-RESUME|';\n            yield $item;\n        } finally {\n            echo 'FIN|';\n        }\n    }\n}\nfunction Given69Review() {\n    global $weakGiven;\n    $value = new Exception('given69');\n    $weakGiven = WeakReference::create($value);\n    return $value;\n}\nfunction Run69Review() {\n    global $g, $stop, $weakGiven, $weakOwner;\n    echo 'CALL|';\n    try {\n        $g->throw(Given69Review());\n        echo 'BAD-RETURN|';\n    } catch (Throwable $outside) {\n        echo 'OUTSIDE|', (int) ($outside === $weakGiven->get()), '|',\n             (int) ($outside->getPrevious() === $stop), '|',\n             (int) ($outside === $stop), '|',\n             (int) ($weakOwner->get() === null), '|';\n    }\n    return 'fiber69';\n}\n$owner = new Owner69Review();\n$weakOwner = WeakReference::create($owner);\n$slot = $owner;\n$g = $owner->stream($slot);\nunset($owner, $slot);\n$stop = new RuntimeException('stop69');\n$f = new Fiber('Run69Review');\necho 'START|', (int) ($f->start() === 'before69'), '|';\necho 'PARK|', (int) $f->isSuspended(), '|',\n     (int) ($weakOwner->get() !== null), '|',\n     (int) ($weakGiven->get() !== null), '|';\necho 'INJECT|', (int) ($f->throw($stop) === null), '|';\necho 'FIBER|', (int) ($f->getReturn() === 'fiber69'), '|',\n     (int) !$g->valid(), '|';\necho 'CLOSED|', (int) ($weakOwner->get() === null), '|',\n     (int) ($weakGiven->get() === null), '|';\nunset($g, $f, $stop);\necho 'DROP|', (int) ($weakOwner->get() === null), '|';\nunset($weakOwner, $weakGiven);\necho 'E';\n",
+    "source_sha256": "a48250298eb7c4e5d652a2b89f8b92475746f2d7f98b9ac56f5acfe6909bc404",
+    "native_exit": 0,
+    "native_stdout": "START|CALL|ENTER|1|PARK|1|1|1|INJECT|FIN|OWNER-DROP|OUTSIDE|1|1|0|1|1|FIBER|1|1|CLOSED|1|1|DROP|1|E",
+    "native_stderr": ""
   }
 ]
