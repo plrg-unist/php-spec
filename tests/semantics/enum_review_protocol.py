@@ -20,13 +20,14 @@ parser.add_argument('--cpu', type=int, required=True,
                     help='CPU already selected by taskset for this process and its children')
 parser.add_argument('--case', action='append', required=True, choices=(
     'identity-alias', 'deferred-backing-priority', 'identity-alias-duplicate',
-    'weak-parser-order', 'parsed-argument-trace'))
+    'weak-parser-order', 'parsed-argument-trace', 'user-magic-protocols'))
 args = parser.parse_args()
 SOURCES = args.sources.resolve()
 OUT = args.output.resolve()
 SELECTED = args.case
 import enum_core_review_protocol as case_review
 import enum_generated_review_protocol as generated_review
+import enum_magic_review_protocol as magic_review
 from recorded_worker import Worker
 import static_types as types
 
@@ -46,7 +47,7 @@ assert os.sched_getaffinity(0) == {args.cpu}
 OUT.mkdir()
 modules = [ROOT / p for p in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
 changed = subprocess.check_output(['git', 'diff', '--name-only'], cwd=ROOT, text=True).splitlines()
-paths = [Path(__file__), Path(generated_review.__file__), Path(case_review.__file__), ROOT / 'spec/semantics/modules.json',
+paths = [Path(__file__), Path(generated_review.__file__), Path(case_review.__file__), Path(magic_review.__file__), ROOT / 'spec/semantics/modules.json',
          ROOT / 'tests/semantics/recorded_worker.py', ROOT / 'tests/semantics/static_types.py',
          ROOT / 'tests/semantics/profile.json', ROOT / 'frontend/worker.php',
          ROOT / '_build/default/adapter/main.exe', ROOT / '.tools/php/bin/php',
@@ -62,7 +63,7 @@ report = {'revision': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=
           'inputs': before, 'selected': SELECTED, 'records': [], 'result': 'fail'}
 snapshots = OUT / 'tested-inputs'
 snapshots.mkdir()
-for p in [Path(__file__), Path(generated_review.__file__), Path(case_review.__file__), *(ROOT / p for p in changed),
+for p in [Path(__file__), Path(generated_review.__file__), Path(case_review.__file__), Path(magic_review.__file__), *(ROOT / p for p in changed),
           ROOT / 'spec/semantics/436-enum-compiler.watsup', ROOT / 'spec/semantics/437-enum-runtime.watsup']:
     if p.is_file():
         target = snapshots / (p.relative_to(ROOT) if p.is_relative_to(ROOT) else p.name)
@@ -75,6 +76,8 @@ try:
     adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], OUT / 'adapter')
     for name in SELECTED:
         review = generated_review if name in ('weak-parser-order', 'parsed-argument-trace') else case_review
+        if name == 'user-magic-protocols':
+            review = magic_review
         source = folder(name) / 'main.php'
         freeze = json.loads(receipt(name, 'freeze.json').read_text())
         if 'cases' in freeze:
