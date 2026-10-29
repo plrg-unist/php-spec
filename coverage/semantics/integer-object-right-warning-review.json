@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "milestone": "OP106 fractional LEFT conversion before a live stdClass RIGHT",
+  "status": "bounded independently reviewed semantics at the private tested revisions",
+  "target": "PHP 8.5.10 CLI NTS64; project-local oracle and ordinary precision14 profile",
+  "scope": "Ordinary %, <<, >>, &, | and ^ with defined initially nonreference direct CVs, finite fractional LEFT, and empty live STDINSTANCE RIGHT with no property slots or materialized property table. CV8/CV8 does not swap. Wider objects, references and operand producers remain partial.",
+  "tested_revision": {
+    "semantic_and_source": "130ebc694ce4843d31a18e355451bc69039f6aec",
+    "focused_and_independent": "b752949153545c808d1dc302af03c11e0ddf9a8d"
+  },
+  "module_count": 424,
+  "tested_sha256": {
+    "spec/semantics/387-integer-operator-warnings.watsup": "aceaaddc870b7fdfafcebfbfff48c8b220bdf3ce725a59b6fefc1dc62f3acad8",
+    "tests/semantics/integer_object_right_warning_cases.py": "54442cc40d8e40a7db87115301f498c92d2f08b7de6791f3dd3088152d70a15c",
+    "tests/semantics/integer_object_right_warnings.py": "39efcf6b1f6d6e599ad7883d5250564c2ef5db608890f3e15a47f2d9cfe6af94",
+    "tests/semantics/integer_object_right_warning_protocol.py": "a66874e82684f33835a12c491825f60197882da0ada2d6c1b451d7a172196de0",
+    "spec/semantics/modules.json": "de8488abd5ca58bfd455d59011ef41f48449be4699ede06af70e027075dab632"
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c::zend_compile_binary_op and zend_compile_simple_var/zend_try_compile_cv preserve the direct CV8 pair; Zend/zend_vm_gen.php COMMUTATIVE swaps only strictly lower LEFT slot ranks.",
+    "Zend/zend_vm_def.h MOD/SL/SR/BW helpers call the corresponding Zend/zend_operators.c helpers; zendi_try_get_long saves the LEFT dval and long before its diagnostic, then convert_op1_op2_long or bitwise_*_function reads the current RIGHT.",
+    "Zend/zend_object_handlers.c::std_object_handlers has NULL do_operation; zend_std_cast_object_tostring returns FAILURE for IS_LONG without an extra object diagnostic. zend_binop_error uses the current raw operand types."
+  ],
+  "contract": [
+    "LEFT12.5 is saved as integer12 before the line24 Deprecated handler. Handler writes LEFT99.5 and RIGHT5; results are strict integers 2/384/0/4/13/9. Returning false forwards the original default diagnostic.",
+    "Unrepaired empty stdClass RIGHT raises TypeError at line24 after the Deprecated, leaves outer100 untouched, and uses live raw LEFT type. A supplied Exception20 skips RIGHT conversion and reaches the identical catch with no Previous; selected pointers add no object owner.",
+    "Independent controls cover RIGHT numeric string5 with handler return true, object-first TypeError before a fractional notice, and retained stdClass after LEFT becomes integer99. Reviewer cases have no separate unchanged-model baseline and earn no new-gap claim."
+  ],
+  "preparation": {
+    "frozen_cases": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-106/cases.py",
+      "sha256": "54442cc40d8e40a7db87115301f498c92d2f08b7de6791f3dd3088152d70a15c"
+    },
+    "recorder_sha256": "2197785339815f4298ab0e467c3b46b30543a4711efad9619439420ff1701e7e",
+    "native_first": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-106/native-pre/report.json",
+      "sha256": "70aec5e2ffc9f18d3278ef3ffee8cf150a1d30b58091a5128175f92faa9991eb"
+    },
+    "unchanged_baseline": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-106/baseline/report.json",
+      "sha256": "d127124843d112f665a28ab330937eec42be12ff63e41539b6378abcd5e1f973"
+    },
+    "baseline_revision": "1ea80e173ce58d298e01f309f4b58ba9141ad011",
+    "baseline_result": "Ten warning originals accepted/checked but Unsupported at handler ingress with exit1 and zero agreement. The quiet TypeError control already matched normally."
+  },
+  "accepted": {
+    "strict": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-106/strict-130ebc694/report.json",
+      "sha256": "28c14a6f9d955140bc716318721ddabc67e9344df9a4741665c547239df65c25"
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-106/source-130ebc694/report.json",
+      "sha256": "127f1f23c3080c49099c45d8f0c9798c0909dc665e760e5e45399910f6f5efd3"
+    },
+    "author_source_agreements": 11,
+    "formerly_unsupported_warning_sources": 10,
+    "unchanged_quiet_control": 1,
+    "focused": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-106/focused-b75294915/report.json",
+      "sha256": "81873acf3631234f0fbfe60828ce0bc62c7b4220ba9c72238a4aff80fbb883a8"
+    },
+    "focused_launcher": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-106/focused-b75294915/launch.json",
+      "sha256": "ce5d56a86b2444ffbc4647f688460e2c00d9f5c0a7de63b923359b0f0c306942"
+    },
+    "focused_rows": [
+      [
+        "mod-replace",
+        107
+      ],
+      [
+        "and-retain-typeerror",
+        114
+      ],
+      [
+        "xor-handler-throw",
+        93
+      ]
+    ],
+    "focused_conditions": 314,
+    "derived_conditions": 2,
+    "focused_contract": "Three genuine source-reached recipes check snapshots, live CVs, saved warning payload/origin, borrowed object owners, RHS conversion versus failed conversion, no-store cancellation, EOF and zero-budget cuts. Two premises mutate the reached retained-object state to LEFT PINT99 and check its live-type failure; these are derived checks, not another reached source."
+  },
+  "independent_review": {
+    "status": "static runtime/source/fixture CLEAR; all three original comparisons exact, CPU3 fully reaped",
+    "frozen_cases_sha256": "6519935f85323dd5dd61fe588941a68ada0e336ddaf98f561fa5c683e331bcea",
+    "frozen_recorder_sha256": "cfaa9de3bed8f21399d569835976a2ed7f8a7b4fa7f1aef99221fd2399a79636",
+    "frozen_two_native": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-106/review-independent/native-pre/report.json",
+      "sha256": "c095cb7eb04967652b3c6fc28eaf2f1cd5ca94678154900d45ed96eb7a51deb4"
+    },
+    "frozen_two_native_revision": "181f3ba1b",
+    "frozen_two_model": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-106/review-independent/model/report.json",
+      "sha256": "6d5e61c9d0456c6a38a30086ba63071f5fb4fd3039b199064bf543fb5b56652c"
+    },
+    "live_type_source_sha256": "0d6b825995a6ce0e2d164a1f3c7a38f3599e150e4b4851c1ff0e29cca80b7f5d",
+    "live_type_native": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-106/review-independent/live-left-type-native-pre/report.json",
+      "sha256": "741abfd27c6896ab23842f3c2a237c487b93b2c909e1cc161efa3fda4e32b6b8"
+    },
+    "live_type_model": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-106/review-independent/live-left-type-model/report.json",
+      "sha256": "35ba915f1c16915acf8993b534193217b162c782ecfc24db78bc76c714d89c48"
+    },
+    "source_agreements": 3,
+    "result": "Exact checked normal exit0/reasonNone/raw stdout and stderr for numeric-string repair, object-first failure and live int TypeError. No timeouts, model stderr or process residue."
+  },
+  "preserved_zero_credit": [
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-106/focused-e4a4b1627/launch.json",
+      "sha256": "92b7b5ae52e17089695db7d42d7e84070db90869f5026ce74344e8824c51e54c",
+      "revision": "e4a4b1627",
+      "result": "Duplicate pintegerconversion.VALUE=12 preparation assertion failed before semantic execution. Removed only the repeated premise; no runtime fix. Raw launcher/front-end/native preparation remains external."
+    }
+  ],
+  "environment": {
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "php_file_bridge_sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "cpu": "New runs serial on CPU3; launchers/models inherited or sampled affinity[3]. All subprocess groups reaped and lease released. Original native/baseline packet retains its own process records."
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-106",
+    "commands": [
+      "taskset -c 3 python3 tests/semantics/integer_object_right_warnings.py --output <fresh-external-directory>",
+      "taskset -c 3 python3 tests/semantics/integer_object_right_warning_protocol.py --output <fresh-external-directory>"
+    ],
+    "note": "Recreate an isolated worktree at the recorded commit with project-local pinned tools. Frozen recorders retain their original roots and commands; recreate that root or explicitly adapt only its location. Reports bind exact bytes, hashes, profiles, commands, exits and raw streams. Metadata-only later commits add no execution credit."
+  }
+}

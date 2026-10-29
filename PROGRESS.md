@@ -8,6 +8,19 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
+Ordinary `%`, shifts and numeric bitwise operations now admit a fractional
+finite LEFT CV with an empty live `stdClass` RIGHT CV without a materialized
+property table. LEFT's saved `12` survives its handler's write to `99.5`; repaired
+RIGHT `5` supplies results `2`/`384`/`0`/`4`/`13`/`9`. Retaining RIGHT raises
+TypeError after the notice using current raw types, while a supplied throw skips
+RIGHT and preserves the outer value. Ten formerly Unsupported warning originals
+and one unchanged quiet TypeError control agree exactly; three independent
+sources check numeric-string repair, object-first failure and a changed live
+LEFT type. Strict424 and three source-reached fronts/314 checks pass, including
+two derived type-failure checks. The first duplicate-assertion preparation stop
+has zero semantic credit. Wider object, reference and producer forms remain
+partial. [Object-RIGHT review](coverage/semantics/integer-object-right-warning-review.json).
+
 Unit0 global anonymous classes may now extend a previously compiled plain
 parentless Base through an unqualified reference. Inherited and overridden
 constructors see Base property defaults; inherited methods keep Base lexical
@@ -530,13 +543,12 @@ selection is not reconstructed. Wider callee/operand forms remain partial.
 | --- | --- |
 | A62 | Owning-field Iterator lifetime; peer checks pass for throwing-key and pending invalid-key cleanup. |
 | COMP145 | Builtin Throwable previous chains; private implementation. |
-| OP106 | Object RHS integer-conversion Warning; validation. |
 | CALL122 | Non-CV Iterator unpack operands; preparation. |
 | I69 | Fresh method by-reference Generator THROW; unchanged-model baseline work. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117, CALL113, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117, CALL113, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation

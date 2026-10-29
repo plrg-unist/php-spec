@@ -44,9 +44,27 @@ throw cancels the outer store. Nine source cases and 579 reached conditions
 cover this slice. Independent controls confirm the opposite CV8/TMP2 order and
 an ineligible handler mask; see the
 [computed bitwise review](../../coverage/semantics/bitwise-computed-warning-review.json).
-Other bitwise producers and object conversion remain open. Expired
+Other bitwise producers and wider object conversion remain open. Expired
 pointers stay Unsupported; six earlier callback-unset native originals crashed with
 signal11, with no diagnosed engine cause or agreement claim.
+
+With a fractional finite float LEFT and an empty ordinary `stdClass` RIGHT with
+no materialized property table in direct, initially nonreference CVs, `%`, shifts
+and numeric bitwise operations now capture LEFT's integer before its Deprecated
+callback. A returning handler can replace RIGHT with `5`; changing LEFT from
+`12.5` to `99.5` still yields
+`12 % 5 = 2`, shifts `384`/`0`, and bitwise `4`/`13`/`9`. Keeping RIGHT as
+`stdClass` raises TypeError after the notice, using the current raw LEFT type.
+A supplied handler throw skips RIGHT conversion and preserves the outer value.
+Selected pointers add no object owner. This bounds initial admission to the
+standard handler without an integer cast or binary overload; reference-wrapped,
+computed, memberful and user-defined object operands remain partial. See the
+[object-RIGHT review](../../coverage/semantics/integer-object-right-warning-review.json).
+Ten formerly Unsupported warning originals and one unchanged quiet TypeError
+control agree exactly with PHP; three independent sources check numeric-string
+repair, object-first failure and a changed live LEFT type. Three source-reached
+fronts pass 314 checks, including two derived live-type failure premises. The
+initial duplicate-assertion preparation failure has zero semantic credit.
 
 Plain-CV NaN `%` now preserves the remaining precision Deprecated after its
 range Warning handler throws. With mask `2`, the default Deprecated on line 25
