@@ -208,7 +208,7 @@ $generator_creation_object_selected(S, n_generator, pcallcontext_generator)
 S_view = $generator_frame_scope(S, pframe_generator)
 $generator_creation_owner(S_view) = eps
 $generator_creation_selected(S_view, pcallcontext_generator.TARGET, pgeneratorcreation.SITE)
-$call_current_valid(S_view)
+$call_saved_context_valid(S_view, pframe_generator)
 pgeneratorcreation_no_chain = pgeneratorcreation[.ANCESTORS = eps]
 ~$generator_creator_valid(S, pgeneratorcreation_no_chain)
 $call_descriptors_valid(S)
