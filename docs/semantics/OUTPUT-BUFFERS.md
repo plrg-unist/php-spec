@@ -29,8 +29,9 @@ Request completion forces top-to-bottom default-handler flush after shutdown
 callbacks and request destructors, ignoring removal capabilities. Module441 also
 drains admitted user handlers, including lower chunk cascades; normal completion
 and EXIT retain one saved completion across BUDGET. Its bounded FINAL fatal path
-instead deactivates the whole stack before releasing raw handler owners, without
-calling lower handlers or forwarding their bytes. [Output handlers](OUTPUT-HANDLERS.md)
+reports and releases its retained local Throwable while the stack remains
+active/running, then deactivates it before releasing raw handler owners. Lower
+handlers are not called and their bytes are discarded. [Output handlers](OUTPUT-HANDLERS.md)
 state the pending-Throwable and other remaining bounds. Service pauses and
 Unsupported retain their live state. Buffers are global across calls and Fiber
 VM switches; stored bytes add no object/reference roots.

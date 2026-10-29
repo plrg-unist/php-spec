@@ -34,8 +34,13 @@ def $output_drain_handler(poutputbuffer :: poutputbuffer_tail*) = poutputbuffer.
 def $output_drain_handler(poutputbuffer :: poutputbuffer_tail*) = $output_drain_handler(poutputbuffer_tail*) -- if poutputbuffer.HANDLER = eps
 
 def $output_drain_ready(S) = (~S.OUTPUTBLOCKED /\ ~S.COMPILESTOP /\ S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.SOURCEPENDING = eps /\ S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE /\ $output_drain_completion(S.COMPLETION) /\ $output_has_user(S.OUTPUTBUFFERS) /\ ~$shutdown_ready(S) /\ ~$destructor_ready(S) /\ ($display_state_mode(S) =/= 1 \/ ~$output_deferred_stdout(S)))
-def $output_drive_finalize(S, n) = $drive_steps($output_finalize(S), n) -- if $output_drain_ready(S)
-def $output_drive_finalize(S, n) = $output_finalize(S) -- if ~$output_drain_ready(S)
+dec $output_final_throw(pstate, pobinvoke, nat) : pstate
+dec $output_pending_secondary(pstate) : pobdeactivate?
+def $output_drive_finalize(S, n) = $drive_steps($output_final_throw(S, pobdeactivate.CALL, n_throwable), n)
+  -- if $output_pending_secondary(S) = (pobdeactivate)
+  -- if S.COMPLETION = UNCAUGHT n_throwable
+def $output_drive_finalize(S, n) = $drive_steps($output_finalize(S), n) -- if $output_pending_secondary(S) = eps /\ $output_drain_ready(S)
+def $output_drive_finalize(S, n) = $output_finalize(S) -- if $output_pending_secondary(S) = eps /\ ~$output_drain_ready(S)
 
 def $output_request_destructors(S) = (S.DESTRUCTION.PHASE =/= DESTRUCTION_DONE /\ ($destructor_active(S) \/ $output_has_user(S.OUTPUTBUFFERS) /\ S.DESTRUCTION.PHASE = DESTRUCTION_PENDING /\ ~S.COMPILESTOP /\ S.SOURCEPENDING = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ $output_drain_completion(S.COMPLETION) /\ (S.COMPLETION =/= NORMAL \/ S.TODO = eps)))
 ;; Even without a user destructor, Zend retires sole global objects before
@@ -252,11 +257,10 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCT
   -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
 
 ;; With no execute_data or selected exception handler, a FINAL Throwable is
-;; rendered inside zend_call_known_fcc_ex, which bails out before output.c frees
+;; rendered inside zend_call_function, which bails out before output.c frees
 ;; its argv, pops the handler, or forwards any buffered bytes. The later output
 ;; deactivation clears ACTIVE/RUNNING before freeing each raw zoh, top first.
 dec $output_final_throw_ready(pstate, pobinvoke, nat) : bool
-dec $output_final_throw(pstate, pobinvoke, nat) : pstate
 dec $output_deactivate_history(pstate, pobdeactivate) : bool
 dec $output_deactivate_valid(pstate, pobdeactivate) : bool
 dec $output_deactivate_remaining(pobdeactivate) : poutputbuffer*
@@ -268,8 +272,8 @@ dec $output_deactivate_task(ptask) : pobdeactivate?
 dec $output_deactivate_pending_tasks(pstate, ptask*) : bool
 dec $output_deactivate_pending_frames(pstate, pframe*) : bool
 
-;; Native releases the pending Throwable before deactivation. Only nonfinal
-;; or destructor-inactive decrements can share this transfer step.
+;; Reporting precedes the pending Throwable decrement. Its dedicated task keeps
+;; the active/running output stack visible throughout ordinary child release.
 def $output_final_throw_ready(S, pobinvoke, n) = true
   -- if pobinvoke.CALL = OB_FINAL pobdrain
   -- if S.COMPLETION = NORMAL /\ ~S.OUTPUTBLOCKED
@@ -280,8 +284,6 @@ def $output_final_throw_ready(S, pobinvoke, n) = true
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if $throwable_field(S, n, "previous") = PNULL
   -- if $ob_user_scalar($throwable_field(S, n, "message"))
-  -- if n_owners = $heap_owners($heap_graph(S), HOBJECT n)
-  -- if $(n_owners > 1) \/ ~$destructor_operational(S)
   -- if $throwable_terminal_renderable(S, n, eps)
   -- if ~$shutdown_render_ready(S[.COMPLETION = UNCAUGHT n])
   -- if $display_state_mode(S) =/= 1 \/ ~$output_deferred_stdout(S[.COMPLETION = UNCAUGHT n])
@@ -291,7 +293,7 @@ def $ob_user_result_discard(S, pobinvoke) = $output_final_throw(S_proof, pobinvo
   -- if S.TODO = [THROW_SEARCH n, OUTPUT_DRAIN pobdrain]
   -- if S_proof = S[.TODO = [THROW_SEARCH n, OB_USER_RESULT pobinvoke, OUTPUT_DRAIN pobdrain]]
   -- if $output_final_throw_ready(S_proof, pobinvoke, n)
-def $output_final_throw(S, pobinvoke, n) = S_report[.OUTPUTBUFFERS = eps][.TODO = [OUTPUT_FINAL_DEACTIVATE pobdeactivate]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps][.RETIREDOWNERS = eps][.TRACE = eps][.ERRORORIGIN = eps]
+def $output_final_throw(S, pobinvoke, n) = S_report[.TODO = [OUTPUT_FINAL_PENDING pobdeactivate n true]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps][.RETIREDOWNERS = eps][.TRACE = eps][.ERRORORIGIN = eps]
   -- if pobinvoke.CALL = OB_FINAL pobdrain
   -- if S_uncaught = S[.TODO = [OB_USER_RESULT pobinvoke, OUTPUT_DRAIN pobdrain]][.COMPLETION = UNCAUGHT n]
   -- if S_cached = $throwable_string_cache(S_uncaught, n, $throwable_chain_string(S_uncaught, n, [n]))
@@ -387,3 +389,107 @@ def $eager_operation_source_guard(S, pdestructionoperation) = true
   -- if $output_deactivate_active(S, pobdeactivate[.INDEX = $(pobdeactivate.INDEX + 1)])
   -- if pdestructionoperation.CALLER = eps /\ pdestructionoperation.COMPLETION = NORMAL
   -- if pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)
+
+
+;; zend_exception_error has already cleared EG(exception) before rendering.
+;; True retains its local ex zval after reporting; false drops that local owner.
+;; Buffers stay active/running through ordinary child release, retaining output.
+dec $output_pending_cause(pstate, pobdeactivate, nat) : bool
+dec $output_pending_abandoned(pstate, pdestructionoperation, pobdeactivate) : bool
+dec $output_pending_valid(pstate, pobdeactivate) : bool
+dec $output_pending_tasks(ptask*, pobdeactivate) : bool
+dec $output_pending_frames(pframe*, pobdeactivate) : bool
+dec $output_pending_active(pstate, pobdeactivate) : bool
+def $output_pending_cause(S, pobdeactivate, n) = true
+  -- if $throwable_live(S, n)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $throwable_field(S, n, "previous") = PNULL
+  -- if $ob_user_scalar($throwable_field(S, n, "message"))
+  -- if $throwable_field(S, n, "line") = PINT z
+  -- if pobdeactivate.COMPLETION = REQUESTFATAL $object_name(S, n) $echo_value($throwable_field(S, n, "message")) z
+  -- if $throwable_field(S, n, "string") = PSTRING $throwable_chain_string(S, n, [n])
+def $output_pending_cause(S, pobdeactivate, n) = false -- otherwise
+def $output_pending_valid(S, pobdeactivate) = true
+  -- if $output_deactivate_history(S, pobdeactivate)
+  -- if pobdeactivate.INDEX = 0
+  -- if $output_ids(S.OUTPUTBUFFERS) = $output_ids(pobdeactivate.BUFFERS)
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if $ob_user_buffer_live(pobdeactivate.CALL, poutputbuffer)
+  -- if $output_user_buffers_valid(S, S.OUTPUTBUFFERS)
+  -- if pobdeactivate.CALL.CALL = OB_FINAL pobdrain
+  -- if $heap_subset($operand_nodes(pobdrain.VALUE) ++ $base_nodes(pobdrain.BASE), S.ALLOCATIONS)
+def $output_pending_valid(S, pobdeactivate) = false -- otherwise
+def $output_pending_tasks(eps, pobdeactivate) = false
+def $output_pending_tasks((OUTPUT_FINAL_PENDING pobdeactivate n b) :: eps, pobdeactivate) = true
+def $output_pending_tasks(ptask :: ptask_tail*, pobdeactivate) = $output_pending_tasks(ptask_tail*, pobdeactivate)
+  -- if ptask_tail* =/= eps
+def $output_pending_tasks(ptask*, pobdeactivate) = false -- otherwise
+def $output_pending_frames(eps, pobdeactivate) = false
+def $output_pending_frames(pframe :: pframe_tail*, pobdeactivate) = ((pframe.CONTEXT = eps /\ $output_pending_tasks(pframe.TODO, pobdeactivate)) \/ $output_pending_frames(pframe_tail*, pobdeactivate))
+def $output_pending_active(S, pobdeactivate) = ($output_pending_valid(S, pobdeactivate) /\ ((S.CURRENT = eps /\ $output_pending_tasks(S.TODO, pobdeactivate)) \/ $output_pending_frames(S.FRAMES, pobdeactivate)))
+def $output_drain_task(S, OUTPUT_FINAL_PENDING pobdeactivate n b) = $output_pending_active(S, pobdeactivate)
+def $ob_user_active_task(OUTPUT_FINAL_PENDING pobdeactivate n b) = (pobdeactivate.CALL.BUFFER.ID)
+def $task_nodes(OUTPUT_FINAL_PENDING pobdeactivate n true) = [HOBJECT n] ++ $operand_nodes(pobdrain.VALUE) ++ $base_nodes(pobdrain.BASE)
+  -- if pobdeactivate.CALL.CALL = OB_FINAL pobdrain
+def $task_nodes(OUTPUT_FINAL_PENDING pobdeactivate n false) = $operand_nodes(pobdrain.VALUE) ++ $base_nodes(pobdrain.BASE)
+  -- if pobdeactivate.CALL.CALL = OB_FINAL pobdrain
+def $call_task_valid(S, OUTPUT_FINAL_PENDING pobdeactivate n true) = ($output_pending_valid(S, pobdeactivate) /\ S.CURRENT = eps /\ $output_pending_cause(S, pobdeactivate, n) /\ $source_operand_suffix(S.TODO, OUTPUT_FINAL_PENDING pobdeactivate n true, eps))
+def $call_task_valid(S, OUTPUT_FINAL_PENDING pobdeactivate n false) = ($output_pending_valid(S, pobdeactivate) /\ S.CURRENT = eps /\ $source_operand_suffix(S.TODO, OUTPUT_FINAL_PENDING pobdeactivate n false, eps))
+rule PhpStep/output-final-pending-release: S ~> S[.TODO = [OUTPUT_FINAL_PENDING pobdeactivate n false]]
+  -- if S.TODO = (OUTPUT_FINAL_PENDING pobdeactivate n true) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, OUTPUT_FINAL_PENDING pobdeactivate n true)
+rule PhpStep/output-final-pending-deactivate: S ~> S[.OUTPUTBUFFERS = eps][.TODO = [OUTPUT_FINAL_DEACTIVATE pobdeactivate[.BUFFERS = S.OUTPUTBUFFERS]]]
+  -- if S.TODO = (OUTPUT_FINAL_PENDING pobdeactivate n false) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, OUTPUT_FINAL_PENDING pobdeactivate n false)
+  -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
+def $eager_operation_source_guard(S, pdestructionoperation) = (($output_pending_active(S, pobdeactivate) \/ $output_pending_abandoned(S, pdestructionoperation, pobdeactivate)) /\ pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
+  -- if pdestructionoperation.SOURCE = OUTPUT_FINAL_PENDING pobdeactivate n true
+
+
+;; A null-C destructor throw aborts its actual release loop through the existing
+;; eager bailout transfer. Its abandoned receiver counts are live; the saved
+;; output rows below are a lookup view only, never another buffer/root owner.
+dec $output_pending_abandoned_at(pstate, pdestructioncleanup*, pdestructionoperation, pobdeactivate) : bool
+dec $output_pending_abandoned_row(pstate, pdestructioncleanup, pdestructionoperation, pobdeactivate) : bool
+dec $output_pending_history(pstate, pobdeactivate) : pstate
+def $output_pending_history(S, pobdeactivate) = S[.DESTRUCTION.PHASE = DESTRUCTION_DONE][.OUTPUTBUFFERS = pobdeactivate.BUFFERS][.ALLOCATIONS = S.ALLOCATIONS ++ $output_roots(pobdeactivate.BUFFERS) ++ $operand_nodes(pobdrain.VALUE) ++ $base_nodes(pobdrain.BASE)]
+  -- if pobdeactivate.CALL.CALL = OB_FINAL pobdrain
+def $output_pending_abandoned(S, pdestructionoperation, pobdeactivate) = $output_pending_abandoned_at(S, S.DESTRUCTION.ABANDONED, pdestructionoperation, pobdeactivate)
+  -- if S.TODO = [DESTRUCTOR_RESULT pdestructorcall]
+  -- if S.DESTRUCTION.PHASE = DESTRUCTION_STORE
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+def $output_pending_abandoned(S, pdestructionoperation, pobdeactivate) = false -- otherwise
+def $output_pending_abandoned_at(S, eps, pdestructionoperation, pobdeactivate) = false
+def $output_pending_abandoned_at(S, pdestructioncleanup :: pdestructioncleanup_tail*, pdestructionoperation, pobdeactivate) = ($output_pending_abandoned_row(S, pdestructioncleanup, pdestructionoperation, pobdeactivate) \/ $output_pending_abandoned_at(S, pdestructioncleanup_tail*, pdestructionoperation, pobdeactivate))
+def $output_pending_abandoned_row(S, pdestructioncleanup, pdestructionoperation, pobdeactivate) = true
+  -- if pdestructioncleanup.SOURCE = DESTRUCTOR_RESULT pdestructorcall
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps /\ pdestructorcall.PENDING = eps
+  -- if ~pdestructioncleanup.RELEASED
+  -- if pdestructioncleanup.TARGET = $eager_cleanup_target(S, pdestructorcall.TARGET)
+  -- if pdestructioncleanup.CALLER = eps /\ pdestructioncleanup.ORIGIN = eps /\ pdestructioncleanup.CONSTCONTEXT = eps
+  -- if $output_pending_valid($output_pending_history(S, pobdeactivate), pobdeactivate)
+def $output_pending_abandoned_row(S, pdestructioncleanup, pdestructionoperation, pobdeactivate) = false -- otherwise
+
+def $output_pending_secondary(S) = (pobdeactivate)
+  -- if S.COMPLETION = UNCAUGHT n
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.TODO = eps /\ S.EXCEPTIONHANDLER = eps
+  -- if ~S.OUTPUTBLOCKED
+  -- if $(|S.DESTRUCTION.ABANDONED| > 0)
+  -- if n_last = $nabs($(|S.DESTRUCTION.ABANDONED| - 1))
+  -- if pdestructioncleanup = S.DESTRUCTION.ABANDONED[n_last]
+  -- if pdestructioncleanup.SOURCE = DESTRUCTOR_RESULT pdestructorcall
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = OUTPUT_FINAL_PENDING pobdeactivate n_old true
+  -- if $eager_cleanup_valid(S, pdestructioncleanup)
+  -- if $output_pending_valid(S, pobdeactivate)
+  -- if $throwable_live(S, n)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $throwable_field(S, n, "previous") = PNULL
+  -- if $ob_user_scalar($throwable_field(S, n, "message"))
+  -- if $throwable_terminal_renderable(S, n, eps)
+  -- if ~$shutdown_render_ready(S)
+  -- if $display_state_mode(S) =/= 1 \/ ~$output_deferred_stdout(S)
+def $output_pending_secondary(S) = eps -- otherwise

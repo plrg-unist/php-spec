@@ -1042,9 +1042,21 @@ and one unchanged public control match PHP. Four reached fronts pass 229
 reported checks, including `Fiber::throw` interrupting a fresh
 `Generator::current` before first yield with an empty cache. The independent
 BYREF `Generator::send` and later `Fiber::throw` keep the reference cache after
-the callee receiver retires. Named/from/fake/implicit origins and wider
-producer/lifecycle combinations remain partial.
+the callee receiver retires. At that I79 cut, named/from/fake/implicit origins
+and wider producer/lifecycle combinations remained partial.
 [Rebound method review](../../coverage/semantics/generator-closure-method-review.json).
+
+I80 carries the actual selected method and scope of first-class and
+`Closure::fromCallable` factories into scoped Generator creation. The callable
+may retire before `current()` or close; a fresh sibling cannot replace the
+actual close receipt. An inherited protected body retains its real receiver
+through close, while late static selection adds no receiver root. The independent
+by-reference SEND source preserves its temporary argument through two Fiber
+pauses and its reference cache through supplied abort, then releases the cached
+payload when the Generator is dropped. Three new authored, one independent and
+one unchanged named-function source agree; three reached fronts pass 189
+reported checks. Wider callable and lifecycle forms remain partial.
+[Captured factory review](../../coverage/semantics/generator-captured-factory-review.json).
 
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need

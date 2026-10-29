@@ -36,6 +36,9 @@ def main():
                ROOT / 'spec/semantics/30-storage.watsup',
                ROOT / 'spec/semantics/152-throwable-runtime.watsup',
                ROOT / 'spec/semantics/207-error-handler-runtime.watsup',
+               ROOT / 'spec/semantics/222-exception-handlers.watsup',
+               ROOT / 'spec/semantics/247-handler-callable-consumers.watsup',
+               ROOT / 'spec/semantics/270-eager-destructors.watsup',
                ROOT / 'spec/semantics/368-assertions.watsup',
                ROOT / 'spec/semantics/391-output-buffers.watsup',
                ROOT / 'spec/semantics/442-deprecated-api-callbacks.watsup',
@@ -50,7 +53,7 @@ def main():
                          if key.endswith('.tools/php/bin/php')]
         assert binary_hashes == [php_sha256]
         for row in report['rows']:
-            assert row['passed'] and row['native']['exit'] == 0
+            assert row['passed'] and row['native']['exit'] in (0, 255)
             assert not row['native']['timeout'] and not row['native']['group_after']
             source = Path(row['native']['argv'][-1])
             assert source.is_file() and digest(source) == row['source_sha256']
@@ -77,8 +80,9 @@ def main():
         passed = (model['exit'] == 0 and not model['timeout'] and model['interruption'] is None
                   and not model['group_after'] and not (directory / 'model.stderr').read_bytes()
                   and outcome.get('frontend') == 'accepted' and outcome.get('checked') == 'program'
-                  and outcome.get('status') == 'normal' and outcome.get('reason') is None
-                  and outcome.get('exit_status') == 0
+                  and outcome.get('status') == ('php_error' if native_row['native']['exit'] == 255 else 'normal')
+                  and outcome.get('reason') is None
+                  and outcome.get('exit_status') == native_row['native']['exit']
                   and outcome.get('stdout') == native_row['stdout_b64']
                   and outcome.get('stderr') == native_row['stderr_b64'])
         rows.append({'id': native_row['id'], 'native_report': str(report_path),
