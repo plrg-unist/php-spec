@@ -548,9 +548,23 @@ fixtures pass 389 premises/four raw steps; four affected older fixtures add
 346 premises/six raw steps, for 735 premises and ten raw steps across retained cuts. Private strict
 compilation of 424 modules and joined compilation of 425 modules pass. Failed fixture rows and the excluded-count observer
 failure retain zero affected/full-source credit; only affected checks and repaired
-observer originals were rerun. The visited depth limit of 16 and canonical
-previous-path admission remain unchanged; generic depth removal is next.
+observer originals were rerun. At that cut, the visited depth limit of 16 and
+canonical previous-path admission remained unchanged.
 [Recursion Error review](coverage/semantics/throwable-trace-recursion-comparison-review.json).
+
+The visited captured walk now has no fixed depth limit. Fresh active-left
+aggregate guards, one-hop live-cell reads and at most one cached table per
+existing ordinary object bound traversal by the finite heap. Shared DAG siblings
+are compared normally; actual recurrence still raises the same Error before
+count. Six new originals and one promoted retained deep source agree exactly
+with PHP; two wider boundaries remain Unsupported. Four new reached fixtures
+pass 324 premises/five raw steps; three focused older rows add 202/three, for
+526 premises/eight raw steps. Strict compilation of 425 modules passes. The
+original 240-second DAG timeout retains zero agreement; only the pending cases
+were rerun with an adequate watchdog. Earlier accepted COMP148 evidence retains
+its original cuts. Root guards, canonical previous paths and older authenticated
+modes retain their separate bounds; callbacks and wider layouts remain partial.
+[Finite-heap traversal review](coverage/semantics/throwable-trace-unbounded-comparison-review.json).
 
 Fresh, unheld user Iterators returned by a borrowed `IteratorAggregate` getter
 now enter CONFIG unpack with DATA as their sole owner. Two original normal and
@@ -746,13 +760,12 @@ original cuts. Wider producers, handlers, references and lifetimes remain partia
 | A65 | BYVAL Iterator field states. |
 | CALL126 | Target-neutral Aggregate unpack. |
 | CLASS146 | Anonymous identity/dependency order. |
-| COMP149 | Generic captured-graph depth-cap removal. |
 | OP111 | Default-handler RHS objects. |
 | I74 | Generic fresh NEXT/SEND ADVANCE phase; source/static preparation. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64/A65, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64/A65, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148/149 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145 are integrated
 into this branch.
 GC physical01 is integrated on this tail; its private source/state cuts and the
 joined strict gate retain their separate tested identities.
