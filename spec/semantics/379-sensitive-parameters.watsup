@@ -44,7 +44,6 @@ def $sensitive_trace_argument(S, pfunction, pkey, pvalue) = SENSITIVE_TRACE pval
   -- if $sensitive_trace_index(pfunction, pkey) = (n)
   -- if $sensitive_trace_parameter(S, pfunction, n)
 def $sensitive_trace_argument(S, pfunction, pkey, ptracearg) = ptracearg -- otherwise
-dec $sensitive_trace_arguments(pstate, pfunction, (pkey, ptracearg)*) : (pkey, ptracearg)*
 def $sensitive_trace_arguments(S, pfunction, eps) = eps
 def $sensitive_trace_arguments(S, pfunction, (pkey, ptracearg) :: (pkey_tail, ptracearg_tail)*) = (pkey, $sensitive_trace_argument(S, pfunction, pkey, ptracearg)) :: $sensitive_trace_arguments(S, pfunction, (pkey_tail, ptracearg_tail)*)
 dec $sensitive_trace_head(pstate, pcallcontext, ptraceframe*) : ptraceframe*

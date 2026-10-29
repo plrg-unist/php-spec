@@ -124,6 +124,7 @@ dec $generator_context_trace_kind(pstate, pcallcontext) : bool
 dec $generator_trace_scope(pstate, pcallcontext?, pframe*) : pstate
 dec $trace_context(pstate, pbinding*, pcallcontext?) : ptraceframe*
 dec $sensitive_trace_context(pstate, pbinding*, pcallcontext?) : ptraceframe*
+dec $sensitive_trace_arguments(pstate, pfunction, (pkey, ptracearg)*) : (pkey, ptracearg)*
 dec $sensitive_trace_frames(pstate, ptraceframe*) : (pstate, ptraceframe*)
 dec $default_internal_callback_context(pstate, pcallcontext) : bool
 def $default_internal_callback_context(S, pcallcontext) = false -- otherwise
