@@ -904,7 +904,43 @@ def $throwable_builtin_previous_order(S, n_left, n_right, pcompareguard_seen*) =
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
 def $throwable_builtin_previous_order(S, n_left, n_right, pcompareguard_seen*) = ORDERUNSUPPORTED "Throwable property comparison" -- otherwise
-def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S, $throwable_builtin_previous_order(S, n_left, n_right, pcompareguard_seen*))
+;; Reached ordinary captured objects can materialize property tables. Thread
+;; those effects through the remaining slots and previous nodes in order.
+dec $throwable_builtin_previous_trace_pair(pstate, nat, nat) : bool
+def $throwable_builtin_previous_trace_pair(S, n_left, n_right) = (($trace_array_graph(S, n_trace_left) /\ $trace_array_graph(S, n_trace_right)) \/ ($trace_property_ref_graph(S, n_trace_left) /\ $trace_property_ref_graph(S, n_trace_right) /\ $trace_object_graph_pair(S, n_trace_left, n_trace_right)))
+  -- if $throwable_field(S, n_left, "trace") = PARRAY n_trace_left
+  -- if $throwable_field(S, n_right, "trace") = PARRAY n_trace_right
+dec $throwable_builtin_previous_effect(pstate, nat, nat, pcompareguard*, int) : (pstate, porder)
+dec $throwable_builtin_previous_value_effect(pstate, pvalue, pvalue, pcompareguard*, int) : (pstate, porder)
+dec $throwable_builtin_previous_slots_effect(pstate, ppropertyslot*, ppropertyslot*, pcompareguard*, int) : (pstate, porder)
+dec $throwable_builtin_previous_effect_continue(pstate, porder, ppropertyslot*, ppropertyslot*, pcompareguard*, int) : (pstate, porder)
+def $throwable_builtin_previous_value_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = $throwable_builtin_previous_effect(S, n_left, n_right, pcompareguard_seen*, z)
+def $throwable_builtin_previous_value_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z) = $value_order_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z) -- otherwise
+def $throwable_builtin_previous_slots_effect(S, eps, eps, pcompareguard_seen*, z) = (S, ORDER 0)
+def $throwable_builtin_previous_slots_effect(S, ppropertyslot_left :: ppropertyslot_tail_left*, ppropertyslot_right :: ppropertyslot_tail_right*, pcompareguard_seen*, z) = $throwable_builtin_previous_effect_continue(S_next, porder, ppropertyslot_tail_left*, ppropertyslot_tail_right*, pcompareguard_seen*, z)
+  -- if ppropertyslot_left.STATE = PROP_VALUE pitem_left
+  -- if ppropertyslot_right.STATE = PROP_VALUE pitem_right
+  -- if (S_next, porder) = $throwable_builtin_previous_value_effect(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pcompareguard_seen*, z)
+def $throwable_builtin_previous_slots_effect(S, ppropertyslot_left*, ppropertyslot_right*, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
+def $throwable_builtin_previous_effect_continue(S, ORDER 0, ppropertyslot_left*, ppropertyslot_right*, pcompareguard_seen*, z) = $throwable_builtin_previous_slots_effect(S, ppropertyslot_left*, ppropertyslot_right*, pcompareguard_seen*, z)
+  -- if S.COMPLETION = NORMAL
+def $throwable_builtin_previous_effect_continue(S, porder, ppropertyslot_left*, ppropertyslot_right*, pcompareguard_seen*, z) = (S, porder) -- otherwise
+def $throwable_builtin_previous_effect(S, n, n, pcompareguard_seen*, z) = (S, ORDER 0)
+def $throwable_builtin_previous_effect(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDER 1)
+  -- if n_left =/= n_right
+  -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
+  -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
+  -- if pthrowable_left.KIND =/= pthrowable_right.KIND
+def $throwable_builtin_previous_effect(S, n_left, n_right, pcompareguard_seen*, z) = $throwable_builtin_previous_slots_effect(S, ppropertyslot_left*, ppropertyslot_right*, (HOBJECT n_left) :: pcompareguard_seen*, z)
+  -- if n_left =/= n_right
+  -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
+  -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
+  -- if pthrowable_left.KIND = pthrowable_right.KIND
+  -- if $throwable_builtin_previous_trace_pair(S, n_left, n_right)
+  -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
+  -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
+def $throwable_builtin_previous_effect(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = $throwable_builtin_previous_effect(S, n_left, n_right, pcompareguard_seen*, z)
   -- if $throwable_builtin_previous_pair(S, n_left, n_right, pcompareguard_seen*)
 def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S[.COMPLETION = UNSUPPORTED "Throwable property comparison"], ORDER 0)
   -- if n_left =/= n_right
