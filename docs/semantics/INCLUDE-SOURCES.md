@@ -1618,9 +1618,10 @@ At that cut, an Iterator with no destructor and only a finalizable child was
 outside the increment. Wider child graphs and destructor throws or reentry
 remained open.
 
-The [child-only Iterator increment](../../coverage/semantics/config-aggregate-iterator-child-only-review.json)
-also admits a parent with no effective destructor and the same sole declared
-child. Shared instance-storage release marks and logically retires the parent,
+The [child-only Iterator increment](../../coverage/semantics/config-aggregate-iterator-child-only-review.json),
+when the Iterator alone owns its Child, also admits a parent with no effective
+destructor and the same sole declared child. Shared instance-storage release
+marks and logically retires the parent,
 clearing its weak reference while a real `INSTANCE_STORAGE_STEP` still pins
 its allocation. The Child callback sees itself live; physical parent retirement
 follows that callback. A saved key Exception remains in the real operation
@@ -1629,5 +1630,21 @@ validation admits the resulting quiet parent image while retaining the storage
 marker, source, pending-Throwable and cursor checks. Three retained originals
 and one independent saved-Exception/weak-visibility source agree with PHP;
 149 source-reached premises check the pin, ownership refusals, marker necessity
-and budget resumes. Generic destructor/storage rules are unchanged. Additional
-owners/edges, child storage, wider graphs and destructor throws/reentry remain open.
+and budget resumes. Generic destructor/storage rules were unchanged. At that cut,
+additional owners/edges, child storage, wider graphs and destructor throws/reentry
+remained open.
+
+The [retained Child increment](../../coverage/semantics/config-aggregate-iterator-retained-child-review.json)
+admits outside owners while preserving the same single declared `child` edge
+and fieldless Child finalizer guard. Ordinary shared release drops that edge
+without calling the Child while an outside owner remains. The parent, with
+or without its admitted destructor, retires before API entry or catch; the Child
+has one outside owner and is still uncalled. A subsequent real outside `unset`
+runs the Child destructor once, with parent weak null and Child weak live during
+the callback, then clears Child weak visibility. Three original sources and one
+independent parent-destructor saved-Exception source agree with PHP. New reached
+checks pass 156 premises through real storage, pending exit and outside UNSET;
+67+33 affected legacy return-front checks promote only the former extra-owner
+refusals and retain their extra-edge negatives. Historical whole-tail cuts stay
+unchanged. Generic storage/destructor rules are unchanged; wider edges/storage,
+owner forms, shutdown release and destructor throws/reentry remain open.

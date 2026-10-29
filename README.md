@@ -626,11 +626,14 @@ now releases its sole CONFIG DATA after its Aggregate producer has died. Its
 public no-argument `__destruct` runs before INI_SET or error recovery, with
 three exact PHP source agreements and separate reached cleanup checks.
 It may also own [one declared child](coverage/semantics/config-aggregate-iterator-child-review.json):
-the parent destructor sees the child live, then the child's destructor runs
-before API entry or catch. Wider child graphs remain partial.
-A [destructor-free Iterator](coverage/semantics/config-aggregate-iterator-child-only-review.json)
-also finalizes that sole child through ordinary storage release, preserving
+the parent destructor sees the child live; if it owns the child alone, the child's
+destructor follows before API entry or catch. Wider child graphs remain partial.
+When it owns the child alone, a [destructor-free Iterator](coverage/semantics/config-aggregate-iterator-child-only-review.json)
+also finalizes the child through ordinary storage release, preserving
 parent weak death and the saved Exception before catch.
+An [outside Child owner](coverage/semantics/config-aggregate-iterator-retained-child-review.json)
+keeps the Child live after parent retirement and API/catch; an actual outside
+`unset` then runs its destructor once, with the parent already gone.
 
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native

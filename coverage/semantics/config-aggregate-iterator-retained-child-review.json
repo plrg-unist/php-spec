@@ -1,0 +1,46 @@
+{
+  "scope": "CFG118: a fresh sole-DATA Aggregate-returned Iterator with the admitted public destructor or no destructor, one public declared property named child holding a direct live fieldless Child, and an outside CV retaining that Child through API/catch until actual outside unset. The unique outgoing edge and public no-argument by-value nongenerator Child finalizer guards remain.",
+  "implementation_commit": "b707714ea",
+  "target": {
+    "runtime": "PHP 8.5.10 CLI NTS 64-bit",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+    "engine_sources": [
+      "Zend/zend_interfaces.c:zend_user_it_dtor",
+      "Zend/zend_vm_def.h:ZEND_SEND_UNPACK",
+      "Zend/zend_objects_API.c:zend_objects_store_del",
+      "Zend/zend_objects.c:zend_object_std_dtor"
+    ]
+  },
+  "behavior": "The declared child edge requires positive total Child ownership rather than exclusive ownership. Shared 257 release skips a Child call while its real outside owner remains; 359 retires the parent storage and CONFIG preserves saved-Exception operation authority unchanged. Parent weak and physical retirement precede API/catch, while the Child stays live with one outside owner and no CALLED marker. An actual outside UNSET then selects the Child destructor once, with parent weak null/self weak live, and clears Child weak visibility afterward. No generic lifetime rule changes.",
+  "validation": {
+    "native_and_gap": "Three new native-first originals cover normal, invalid bool key and saved key Exception with no parent destructor. All exit 0 with empty stderr and show Child alive/deaths0 after parent retirement and API/catch, then U| before the Child destructor and final weak death/deaths1. The unchanged normal model is explicit Unsupported at Aggregate return after B|G|, with zero agreement; the other two share that gate and were not rerun unchanged.",
+    "source_comparisons": "All three originals agree exactly on source bytes/path/cwd/stdout/stderr/exit at e81f37313 with recorded 420 hash 5b39ec3b, stable inputs/HEAD and no timeout or residue. One independent public-parent-destructor saved-Exception original also agrees exactly: D|CL|HL| observes the same live held Child, catch sees parent dead/Child live, and only actual unset triggers C|PD|CL|. Native/model oracle/profile/source/path/cwd identities match; their input dictionaries differ only by the intentional 420 change.",
+    "strict": "One strict SL run compiles all 424 modules and returns true with exit 0, empty stderr, stable inputs/HEAD and no timeout or residue in 10.622 seconds on CPU 4.",
+    "lifetime_state": "The first prepared new fixture passes 156 premises in 217.652 seconds on CPU 4, with true newline, empty stderr, exit 0, stable inputs/HEAD and no timeout or residue. Genuine return authenticates parent owner1/Child owner2 and the real outside CV. Real NEXT0 storage marks and weakly retires the physically pinned parent; retired key operation exit has parent gone, Child owner1/notCALLED and the exact pending Exception. A real UNSET front precedes Child CURRENT, pending eps, one death and final weak null. Budget resumes pass.",
+    "affected_legacy_checks": "Only four extra-owner predicate refusals in the maintained CONFIG116/117 fixtures were promoted after genuine new source evidence. Two authentic getter-return prefixes pass 67 and 33 premises, including those positive owner checks and unchanged extra-edge refusals. The selected SL fixtures and raw runner are retained; these are prefix/guard checks, not renewed whole-tail 678/149 evidence. No old source replay occurred.",
+    "review": "Independent semantic, fixture, source and raw-result review clears the one-predicate admission change, new lifetime fixture and focused legacy promotions. Every executed source/strict/state/front check passed on its first run."
+  },
+  "limits": "Additional outgoing edges, Child property storage/materialized tables, wider owner/producers, request-shutdown release and destructor throws/reentrancy remain partial. The existing retired Aggregate receipt remains structural and forgeable in constructed states; original-source tests establish provenance for these programs. Historical CONFIG116/117 ledgers keep their original scopes, hashes and cuts.",
+  "recovery": "Raw artifacts live under ../php-spec-evidence-archive. tests/semantics/config_aggregate_iterator_retained_child_sources.py supports native|baseline|model with fresh --output; tests/semantics/config_aggregate_iterator_retained_child_protocol.py supports prepare|check with --sources/--output. The bounded legacy-return-fronts/run.py in the CFG118 raw candidate1 selects only through heap_valid(S_return) for families116/117. Independent retained-child-saved-exception-unset.php and run.py live under config118-review-probes. Reports retain exact commands, cwd/source identity, profiles, streams, tool/input hashes and process reaping; use a root CPU lease and pin launchers/children.",
+  "raw_root": "../php-spec-evidence-archive",
+  "reports_sha256": {
+    "config118-development/source-packet/native-report.json": "085c428500939500a4842bffbff36e8a6f541afecf76e0ac6d48905e58e43252",
+    "config118-development/source-packet/baseline-report.json": "9a4963027f785eb61775d0f85f602e810f0aeb3497f503ffae0260d911573a0c",
+    "config118-development/source-packet/model-report.json": "669f6f634de44cfd9281f66568cb22ca05d8165cef9ab82cc74cbc88bf3fc197",
+    "config118-development/candidate1/strict/report.json": "41fd09fdce7655804c75a981c6d8b3c8b191f596df9b5f0cf38aad59759b9761",
+    "config118-development/candidate1/protocol/check-report.json": "db419acbf1f6760bf4c5438ea2ddfe5c48a75f61a750e51e6e7cc20a9489e2cc",
+    "config118-development/candidate1/legacy-return-fronts/116/check-report.json": "80c58e9131062e2f23604e65798990e019c8d09bcbeb708c09fb48a89f94b08b",
+    "config118-development/candidate1/legacy-return-fronts/117/check-report.json": "4c17429dd90f768886e34306b660e3336bff82bb7f2a4bbac0c91758f57c9a09",
+    "config118-review-probes/packet1/native-report.json": "4b91afdd6528209427ad29c9f29179acabbdb647ad6dfbece292490ad8fab23c",
+    "config118-review-probes/packet1/model-report.json": "07419d6e4189e680c450eb5df7bfa8c85885bcbe91e40a1b39881d45bdcbb9ad"
+  },
+  "tested_input_sha256": {
+    "spec/semantics/420-config-iterator-unpack.watsup": "5b39ec3b2541d1715163dbf612dae37b46ae7d4849bbcedeffc534fd50333b78",
+    "tests/semantics/config_aggregate_iterator_retained_child_sources.py": "4984bc617a8e84d246226a0880142fc5bf8df5996f649e554f53b590c6c7e57d",
+    "tests/semantics/config_aggregate_iterator_retained_child_protocol.py": "9fc31672c9865ce53ef4724006ab6b38bcbde17ef80f6a23b39a34f70eff98aa",
+    "tests/semantics/config_aggregate_iterator_child_protocol.py": "7795f0f98e322bd01b043648e2c2591b7214cad63acfddcf2d6c7c11e63121f2",
+    "tests/semantics/config_aggregate_iterator_child_only_protocol.py": "30401b9c9dda8d959f1da32f4a8293c1e0382dc6adc6f801b6d12f9468a606cb"
+  }
+}

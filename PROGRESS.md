@@ -8,6 +8,17 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
+A fresh sole-DATA CONFIG Iterator may now share its declared Child with an
+outside CV. Parent destruction and storage retirement precede API entry or
+catch; the Child stays live and uncalled until the actual outside `unset`.
+Three originals whose Iterator has no destructor and one independent saved-Exception
+source with a public parent destructor agree exactly with PHP. Strict compilation of 424 modules,
+156 new lifetime premises and two affected return-front groups of 67+33 pass.
+Only four former extra-owner refusals were promoted; extra-edge refusals remain,
+and the old 678/149 whole-tail evidence retains its original cuts.
+[Retained Child review](coverage/semantics/config-aggregate-iterator-retained-child-review.json).
+Wider edges/storage, owner forms, shutdown release and destructor throws/reentry remain partial.
+
 Fresh ordinary public instance-method `Generator::throw` now transfers before
 its first yield with a by-value declaration, including inherited methods.
 Parent lexical scope, Leaf called scope and the real receiver survive Fiber
@@ -41,17 +52,17 @@ substitutions and reference producers remain partial. No new owner/task is added
 Earlier [RIGHT-cell evidence](coverage/semantics/integer-reference-object-right-warning-review.json)
 keeps its original cut without renewal.
 
-A fresh Aggregate-returned CONFIG Iterator may now lack a destructor while
-its sole declared Child finalizes through ordinary instance storage. Parent
-weak visibility ends before the Child callback, while the real storage pin
-keeps the parent allocation until that callback finishes. Three retained
+When the Iterator alone owns its Child, a fresh Aggregate-returned CONFIG
+Iterator may lack a destructor while the Child finalizes through ordinary
+instance storage. Parent weak visibility ends before the Child callback,
+while the real storage pin keeps the parent allocation until that callback finishes. Three retained
 frozen originals and one independent saved-Exception source agree exactly
 with PHP across normal, invalid-key and saved-Exception paths. Strict
 compilation passes on 424 modules; 149 reached premises check the real pin,
 weak visibility, pending identity and rejection without the storage marker.
 Joined strict compilation over the actual tail also passes.
 [Child-only Iterator review](coverage/semantics/config-aggregate-iterator-child-only-review.json).
-Extra child owners/edges, wider graphs and destructor throws/reentry remain partial.
+Extra child edges, wider graphs and destructor throws/reentry remain partial.
 
 An ordinary Iterator spread with by-reference `current()` now admits one inline
 public untyped ARRAY field with a finite DIRECT pooled root, including empty
@@ -98,8 +109,9 @@ autoloaded parents, dynamic units, interfaces and wider inheritance remain parti
 
 A fresh Aggregate-returned CONFIG Iterator with a public destructor may now
 own one declared direct child with a public destructor and no child storage.
-The parent destructor sees the child live; ordinary storage release then runs
-the child destructor before API entry or catch. Three frozen originals agree
+The parent destructor sees the child live; when it owns the Child alone,
+ordinary storage release then runs the child destructor before API entry or catch.
+Three frozen originals agree
 exactly with pinned PHP across normal, invalid-key and saved-Exception paths.
 An independent normal source also agrees and observes parent weak death before
 the child destructor, while the child's own weak reference remains live.
