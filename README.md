@@ -5710,6 +5710,10 @@ These ordinary targets also share checked non-CV Iterator INPUT handling:
 raw object/reference INPUT and Iterator DATA retain separate owners through
 normal and abrupt cleanup. The [owned-INPUT review](coverage/semantics/owned-iterator-unpack-review.json)
 records eight new originals, one promoted boundary and two independent sources.
+Supported computed and temporary public `__invoke` callees now use the same
+ordinary INIT selection and cleanup, consuming their raw callee result before
+Iterator arguments run. [Computed-callee review](coverage/semantics/computed-callee-unpack-review.json)
+records six new/promoted sources, two independent sources and four retained controls.
 Public concrete class-method strings now distinguish
 computed static dispatch from fixed calls using a compatible active receiver.
 Immutable string captures/clone retain selected descriptors, called scope and

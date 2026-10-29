@@ -560,8 +560,9 @@ named and by-reference parameters keep their effective method and declaring-clas
 Warning. Invalid and throwing keys retain authentic retired-receiver cleanup.
 Five authored and one independent frozen source agree byte-for-byte with pinned
 PHP; seven source-reached fixtures pass 146 assertions. Independently reviewed
-actual-tail composition passes strict compilation of 424 modules. A native-positive
-temporary callee remains explicit `Unsupported`. The earlier fixture failures
+actual-tail composition passes strict compilation of 424 modules. At that cut a
+native-positive temporary callee was `Unsupported`; CALL123 promotes it.
+Earlier fixture failures
 and all unchanged Unsupported baselines have zero agreement credit. The saved
 target ID carries original selection after retirement; same-class historical
 selection is not reconstructed. Wider callee/operand forms remain partial.
@@ -577,15 +578,29 @@ observations; two independent reference-input originals agree under the ordinary
 CLI profile. Six authored reached groups/139 reported assertions and one
 independent group/37 assertions pass. Strict compilation of 424 modules passes
 privately and on the independently reviewed actual tail. The unchanged
-eleven Unsupported baselines earn zero agreement credit. Unsupported producers,
-temporary `__invoke` callees and wider lifecycle forms remain separate.
+eleven Unsupported baselines earn zero agreement credit. Unsupported producers
+and wider lifecycle forms remain separate.
 [CALL122 review](coverage/semantics/owned-iterator-unpack-review.json).
+
+Supported computed/temporary public `__invoke` callees now share ordinary INIT
+acquisition and selected-receiver ownership with Iterator unpack. Raw object or
+reference callee results are consumed before arguments; key-time source retargeting
+keeps the selected old receiver. Inherited named/by-reference Warnings preserve
+declaring scope and the outer unpack line; invalid keys and a throwing receiver
+destructor preserve cleanup and original `Previous` order. Five new authored
+originals plus the promoted CALL121 boundary match retained native request-profile
+observations; two independent reference-callee originals agree under ordinary CLI.
+Four exact unchanged-positive controls retain their disjoint baseline cut.
+Strict424, four authored reached groups/120 assertions and one independent
+group/36 assertions pass. The eight unchanged Unsupported baselines earn zero
+agreement credit. Unsupported producers and wider callable/lifecycle forms
+remain partial.
+[CALL123 review](coverage/semantics/computed-callee-unpack-review.json).
 
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CALL122 | Non-CV Iterator unpack operands; preparation. |
 | I69 | Fresh method by-reference Generator THROW; unchanged-model baseline work. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |

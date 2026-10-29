@@ -129,19 +129,28 @@ The [Closure Iterator review](../../coverage/semantics/closure-iterator-unpack-r
 records exact source and reached checks. `bindTo` clones, first-class method
 wrappers and `Closure::call` remain separate.
 
-A dynamic call through an initialized object CV also accepts its selected public
-user `__invoke` method with an initialized direct Iterator operand. The call frame
-retains the selected receiver while key callbacks may replace the original CV.
+Dynamic calls through supported checked expressions accept their selected public
+user `__invoke` method with an initialized direct Iterator operand. INIT validates
+the borrowed or owning callee, consumes non-CV object/reference results before
+argument evaluation, and transfers one selected receiver owner to ordinary call
+tasks. Direct construction, factory returns and conditional values share this
+path. The call retains that receiver while key callbacks may replace the original
+source value, including a reference-return callee's source cell.
 Inherited named parameters bind to the effective method; a Traversable
 by-reference Warning names its declaring class. On invalid or throwing keys,
 the selected receiver can retire before its destructor exits. The cleanup
-receipt checks the saved target against the dynamic CV callsite and effective
+receipt checks the saved target against the dynamic callsite and effective
 `__invoke` using a temporary allocation view, without adding a heap owner.
 The saved target ID carries the original selection: a retired state cannot
-reconstruct which same-class object the mutable CV held earlier. A temporary
-`__invoke` callee remains outside this gate. The
+reconstruct an arbitrary earlier computed result or which same-class object a
+mutable CV held. The
 [invokable Iterator review](../../coverage/semantics/invokable-iterator-unpack-review.json)
-records the exact sources, reached states and this boundary.
+records the earlier CV-callee cut. Six new/promoted computed-callee originals and
+two independent reference-return originals agree with PHP; four already exact
+controls retain their baseline cut. Source-reached checks cover INIT transfer,
+inherited Warning scope and outer unpack line, callback mutation, and retired
+cleanup. The [computed-callee review](../../coverage/semantics/computed-callee-unpack-review.json)
+records the generalization and promotes the earlier temporary-callee boundary.
 
 These existing ordinary targets share checked CV, VAR and VALUE Iterator INPUT
 handling. A CV stays borrowed; a supported non-CV result retains its raw owning
