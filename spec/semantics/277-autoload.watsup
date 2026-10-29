@@ -570,6 +570,33 @@ def $autoload_active_tasks(eps, ptbytes) = false
 def $autoload_active_tasks(ptask :: ptask_tail*, ptbytes) = ($autoload_active_task(ptask, ptbytes) \/ $autoload_active_tasks(ptask_tail*, ptbytes))
 def $autoload_active_frames(eps, ptbytes) = false
 def $autoload_active_frames(pframe :: pframe_tail*, ptbytes) = ($autoload_active_tasks(pframe.TODO, ptbytes) \/ $autoload_active_frames(pframe_tail*, ptbytes))
+dec $autoload_unlinked_origin(ptask) : porigin?
+def $autoload_unlinked_origin(AUTO_PUBLISH porigin) = (porigin)
+def $autoload_unlinked_origin(AUTO_INTERFACE porigin preqbytes) = (porigin)
+def $autoload_unlinked_origin(AUTO_TRAIT porigin preqbytes) = (porigin)
+def $autoload_unlinked_origin(ptask) = eps -- otherwise
+dec $autoload_new_unlinked_call(pstate, pautoloadcall, ptbytes) : bool
+def $autoload_new_unlinked_call(S, pautoloadcall, ptbytes) = true
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if $autoload_unlinked_origin(pautoloadcall.RESUME) = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $ptlc(pclassdesc.NAME) = $ptlc($autoload_lookup_name(ptbytes))
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+def $autoload_new_unlinked_call(S, pautoloadcall, ptbytes) = false -- otherwise
+dec $autoload_new_unlinked_frames(pstate, pframe*, ptbytes) : bool
+dec $autoload_new_unlinked_head(pstate, ptask*, pframe, pframe*, ptbytes) : bool
+dec $autoload_new_unlinked_task(pstate, ptask, pframe, pframe*, ptbytes) : bool
+dec $autoload_new_unlinked_scoped(pstate, pautoloadcall, pautoloadentry, ptbytes) : bool
+def $autoload_new_unlinked_task(S, AUTO_RESULT pautoloadcall pautoloadentry poperand, pframe, pframe_tail*, ptbytes) = $autoload_new_unlinked_scoped($constant_frame_scope(S, pframe, pframe_tail*), pautoloadcall, pautoloadentry, ptbytes)
+def $autoload_new_unlinked_task(S, ptask, pframe, pframe_tail*, ptbytes) = false -- otherwise
+def $autoload_new_unlinked_scoped(S, pautoloadcall, pautoloadentry, ptbytes) = ($autoload_selected_valid(S, pautoloadcall, pautoloadentry) /\ $autoload_new_unlinked_call(S, pautoloadcall, ptbytes))
+def $autoload_new_unlinked_head(S, eps, pframe, pframe_tail*, ptbytes) = false
+def $autoload_new_unlinked_head(S, ptask :: ptask_tail*, pframe, pframe_tail*, ptbytes) = $autoload_new_unlinked_task(S, ptask, pframe, pframe_tail*, ptbytes)
+def $autoload_new_unlinked_frames(S, eps, ptbytes) = false
+def $autoload_new_unlinked_frames(S, pframe :: pframe_tail*, ptbytes) = ($autoload_new_unlinked_head(S, pframe.TODO, pframe, pframe_tail*, ptbytes) \/ $autoload_new_unlinked_frames(S, pframe_tail*, ptbytes))
+def $autoload_new_pending(S, ptbytes) = ($autoload_pending(S, ptbytes) /\ ~$autoload_new_unlinked_frames(S, S.FRAMES, ptbytes))
 def $autoload_pending(S, ptbytes) = true
   -- if ~$dynamic_new_known(S, $autoload_lookup_name(ptbytes))
   -- if $autoload_class_name(ptbytes)
@@ -590,7 +617,7 @@ def $autoload_begin(S, porigin, ptbytes_name, ptbytes_key, z, pautoloadmode, pta
 def $autoload_explicit(S, pconfigcall, ptbytes) = $autoload_begin(S[.TODO = ptask_tail*], pconfigcall.SITE, ptbytes, $ptlc(ptbytes), pconfigcall.LINE, AUTO_EXPLICIT pconfigcall, AUTO_EXPLICIT_DONE pconfigcall)
   -- if S.TODO = ptask :: ptask_tail*
 def $noctor_start(S, ptbytes, phpType7*, z) = $autoload_begin(S, porigin, $autoload_lookup_name(ptbytes), $ptlc($autoload_lookup_name(ptbytes)), z, AUTO_LOOKUP, $autoload_new_resume(S, ptbytes, phpType7*, z))
-  -- if $autoload_pending(S, ptbytes)
+  -- if $autoload_new_pending(S, ptbytes)
   -- if S.ORIGIN = (porigin)
 def $activate_class(S, pclassdesc) = $autoload_begin(S[.ORIGIN = (pclassdesc.ORIGIN)], pclassdesc.ORIGIN, $autoload_lookup_name(ptbytes_parent), $ptlc($autoload_lookup_name(ptbytes_parent)), pclassdesc.LINE, AUTO_LOOKUP, AUTO_PUBLISH pclassdesc.ORIGIN)
   -- if $autoload_parent_pending(S, pclassdesc)
