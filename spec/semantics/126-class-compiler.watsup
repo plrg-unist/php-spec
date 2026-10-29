@@ -199,6 +199,15 @@ def $ppclass_early(pclassdesc :: pclassdesc_tail*, ptbytes) = true
 def $ppclass_early(pclassdesc :: pclassdesc_tail*, ptbytes) = $ppclass_early(pclassdesc_tail*, ptbytes)
   -- if ~(pclassdesc.EARLY /\ $ptlc(pclassdesc.NAME) = $ptlc(ptbytes))
 
+;; Later compilations see only their authenticated source-entry class table.
+;; A descriptor without its live binding does not make a parent available.
+dec $ppclass_external_known(pstate?, ptbytes) : bool
+def $ppclass_external_known((S_external), ptbytes) = true
+  -- if $class_named(S_external.CLASSNAMES, $ptlc(ptbytes)) = (porigin)
+  -- if $class_at(S_external.CLASSES, porigin) = (pclassdesc)
+  -- if $ptlc(pclassdesc.NAME) = $ptlc(ptbytes)
+def $ppclass_external_known(pstate?, ptbytes) = false -- otherwise
+
 dec $ppclass_result(ppstate, pcpath, pchresult) : ppstate
 dec $ppclass_result_body(ppstate, pcpath, pchresult) : ppstate
 dec $ppclass_attribute_name(ppstate, pcpath, pchresult) : ppstate
@@ -210,7 +219,7 @@ def $ppclass_result_body(P, pcpath, PCHERROR pchdiagnostic*) = $ppclass_diagnost
 def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppunsupported($ppclass_diagnostics(P, pchdiagnostic*), "class inheritance, interfaces, attributes, or members")
   -- if pchheader.KIND = "class"
   -- if pchheader.BODY =/= SEQUENCE eps /\ ~$ppproperty_body(pchheader.BODY) /\ ~$ppmethod_body(pchheader.BODY)
-def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_diagnostics(P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, KIND pchheader.KIND, NAME pchheader.NAME, PARENT eps, INTERFACES pchheader.INTERFACES, PROPERTIES eps, METHODS eps, CONSTANTS $ppclass_constants(P.CLASSCONSTANTS, PORIGIN P.FOLD.SOURCE.ID pcpath), ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY (pchheader.INTERFACES = eps /\ P.EARLY = (pcpath) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME)), LINE P.LOCATION.LINE }]], pchdiagnostic*)
+def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_diagnostics(P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, KIND pchheader.KIND, NAME pchheader.NAME, PARENT eps, INTERFACES pchheader.INTERFACES, PROPERTIES eps, METHODS eps, CONSTANTS $ppclass_constants(P.CLASSCONSTANTS, PORIGIN P.FOLD.SOURCE.ID pcpath), ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY (pchheader.INTERFACES = eps /\ P.EARLY = (pcpath) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME) /\ ~$ppclass_external_known(P.FOLD.EXTERNAL, pchheader.NAME)), LINE P.LOCATION.LINE }]], pchdiagnostic*)
   -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ pchheader.INTERFACES = eps /\ pchheader.BODY = SEQUENCE eps
 
 dec $class_keyword_line(metadata, phpType3) : int
