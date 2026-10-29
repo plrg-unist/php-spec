@@ -243,7 +243,6 @@ def $call_aggregate_context(S, pcallcontext) = true
   -- if pcallcontext.CALLSITE = (porigin)
   -- if $call_aggregate_entered(S, S.CURRENT, S.FRAMES, $context_target(pcallcontext), porigin)
 def $call_aggregate_context(S, pcallcontext) = false -- otherwise
-def $call_arguments_valid(S, (porigin), 0, eps, eps, 0) = true -- if $call_aggregate_pending(S, porigin)
 def $call_arity_valid(S, pcallcontext) = true -- if $call_aggregate_context(S, pcallcontext)
 def $call_extent_valid(S, pcallcontext) = true -- if $call_aggregate_context(S, pcallcontext)
 def $named_context_valid(S, pcallcontext) = true -- if $call_aggregate_context(S, pcallcontext)
