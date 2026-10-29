@@ -705,6 +705,13 @@ precede INI_SET conversion, strict errors and NULL deprecation handlers. Live AP
 precision controls float conversion. Reference yields, owning argument buffers and
 wider producer/RETURN-storage lifetimes retain their existing limits.
 
+[Reference-scalar Generator CONFIG sends](coverage/semantics/config-generator-reference-scalar-review.json)
+now copy ordinary live reference-cell scalars from named zero-argument Generator
+CVs. Later cell writes and live aliases stay distinct from saved DIRECT arguments;
+terminal effects and DATA retirement precede reception through the selected setter.
+The Generator keeps an outside owner. Typed/backed cells, owning sends, temporary
+or Aggregate reference producers and last-DATA reference retirement remain partial.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical

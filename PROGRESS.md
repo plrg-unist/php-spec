@@ -46,11 +46,13 @@ while embedded aliases, object identity and API TraceArgs retain ordinary owners
 Owning Iterator aborts release CURRENT, DATA/INPUT, then the copied prefix. Admitted
 last-owner temporary Iterator INPUT finalizers keep live copied arguments protected.
 Typed-source reads and existing producer/key/finite-graph policies stay intact;
-reference-yield Generators, owning Generator arguments, effectful casts and wider
-lifecycles remain partial.
+named direct-CV Generator reference yields now copy scalars from authenticated
+ordinary cells before later writes. Last-DATA reference retirement, typed Generator
+cells, owning Generator arguments, effectful casts and wider lifecycles remain partial.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
+[Generator reference scalars](coverage/semantics/config-generator-reference-scalar-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
@@ -196,7 +198,7 @@ and reentrant/abrupt deactivation remain partial.
 | COMP157 | Inherited ordinary initialized-public images; independent packet frozen, source preparation. |
 | ATTR05 | Explicit captured-Closure `__invoke()` warning phases; five native-first originals frozen, private preparation. |
 | Enum M3/M4 | Published-enum array dispatch is integrated for reviewed class-string and case-object sources, including named Stringable arguments. String callable routes, wider generated dispatch, backing dependency and the default loader remain partial. |
-| A72 | Reference-cell CONFIG Generator scalar sends; native-first packet frozen, private preparation. |
+| A72 | Reference-cell CONFIG Generator scalar sends; privately validated, joined integration under review. |
 | OB03 | Effectful pending Throwable before output deactivation. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |

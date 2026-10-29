@@ -1770,3 +1770,20 @@ yields and owning argument buffers remain separate; the existing owning RETURN
 storage path keeps its string-cache/integer-key history rule. Wider object/effectful
 conversion and all paused boundaries remain outside this increment. The earlier
 Generator reviews retain their original string-only cuts without renewed credit.
+
+The [reference-scalar Generator increment](../../coverage/semantics/config-generator-reference-scalar-review.json)
+admits named zero-argument BYREF Generator CVs with an outside Generator owner.
+A genuine REFCELL cache is read through the ordinary-reference reader, requiring
+live registered nondebt storage without property, coercion or parameter backing.
+The scalar value is copied into a DIRECT send before the next resume; later cell
+writes and live aliases cannot alter earlier argument snapshots. The selected
+INI_SET target, terminal effects, DATA retirement and existing API reception keep
+their ordinary order, including a saved terminal Throwable that cancels reception.
+
+Four originals agree exactly; two source-reached recipes pass 342 physical
+conditions (337 if-premises and five raw transitions), including 15 refusal checks
+over 12 constructed projections. Private strict431 passes after a two-premise DSL
+binding correction; its first compile failure and the original Unsupported retain
+zero credit. Typed/backed/released/debt cells, BYREF VALUE/Notice caches, owning
+sends, temporary or Aggregate reference producers and last-DATA reference cleanup
+remain separate. Earlier accepted cuts and all paused boundaries are unchanged.
