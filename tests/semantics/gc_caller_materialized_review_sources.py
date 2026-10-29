@@ -89,7 +89,7 @@ function collect_resurrect_frame07() {
     echo 'P|', gc_collect_cycles(), '|';
     echo $weakRoot->get() !== null && $weakProxy->get() !== null ? 'saved|' : 'BAD|';
     echo gc_collect_cycles(), '|';
-    unset($saved07);
+    $saved07 = null;
     echo gc_collect_cycles(), '|';
     echo $weakRoot->get() === null && $weakProxy->get() === null ? 'dead|' : 'BAD|';
     echo gc_collect_cycles(), '|END';
@@ -102,7 +102,7 @@ family.BASELINE = ('cached ordinary property-table collection', b'I|')
 family.MODEL_TIMEOUTS = {name: 240 for name in family.CASES}
 EXPECTED_SHA256 = {
     'nested-caller-local-protects-sibling': 'f699e754fe4b76216e0eab1397e455988af2837e120f3b40f5bca8f044712140',
-    'function-caller-mutation-resurrection': '23e44cdf10b1835d5ca66517f6f7e5c93adeece43ada6497ad49cc0591520afd',
+    'function-caller-mutation-resurrection': '54273a2131da0b30e6cf71faa070606ad893b6efb94d715dcb08dc44b2329546',
 }
 assert {name: hashlib.sha256(source).hexdigest() for name, source in family.CASES.items()} == EXPECTED_SHA256
 
