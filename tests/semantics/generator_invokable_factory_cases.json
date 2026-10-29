@@ -25,5 +25,25 @@
     "native_exit": 0,
     "native_stdout": "MAKE|1|1|STEP|1|1|MAKER|FRESH|1|VALUE|BODY|1|1|1|RETURN|1|E",
     "native_stderr": ""
+  },
+  {
+    "id": "i83-implicit-direct-generator",
+    "purpose": "Direct generator-bodied runtime Mid::__invoke is selected through Base::open; the same implicit-target producer retains its actual receiver frame through close and rejects Base fallback selection.",
+    "source": "<?php\nclass Base83D {\n    public function open() { echo 'OPEN|'; return $this(); }\n    public function __invoke() { echo 'BAD-BASE|'; yield 0; }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Mid83D extends Base83D {\n    public function __invoke() {\n        global $weak;\n        echo 'BODY|', __CLASS__ === 'Mid83D', '|', static::class === 'Leaf83D', '|', $this === $weak->get(), '|';\n        try { yield 83; }\n        finally { echo 'FIN|', $weak->get() instanceof Leaf83D, '|'; }\n    }\n}\nclass Leaf83D extends Mid83D {}\n$maker = new Leaf83D();\n$weak = WeakReference::create($maker);\n$g = $maker->open();\nunset($maker);\necho 'FRESH|', $weak->get() instanceof Leaf83D, '|';\necho 'VALUE|', $g->current() === 83, '|';\nunset($g);\necho 'AFTER|', $weak->get() === null, '|E';\n",
+    "source_sha256": "9396a93bb6e9a42495e16dbbf3dd97036ee214295e577e3677a14ca3663e9e60",
+    "native_exit": 0,
+    "native_stdout": "OPEN|FRESH|1|VALUE|BODY|1|1|1|1|FIN|1|MAKER|AFTER|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i83-implicit-inherited-reference-abort-independent",
+    "purpose": "Independent implicit runtime-selected inherited factory creates private static BYREF body; maker retires, SEND input and reference cache survive distinct Fiber-abort phases.",
+    "source": "<?php\nclass Token83R {\n    function __destruct() { echo 'TOKEN|'; }\n}\nclass Input83R {\n    function __construct() {\n        global $weakInput;\n        $weakInput = WeakReference::create($this);\n    }\n    function __destruct() { echo 'INPUT|'; }\n}\nclass Base83R {\n    public function open(&$token) { return $this($token); }\n    public function __invoke(&$token) { echo 'BAD-BASE|'; return []; }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Mid83R extends Base83R {\n    public function __invoke(&$token) {\n        global $weakMaker;\n        echo 'MAKE|', __CLASS__ === 'Mid83R', '|', static::class === 'Leaf83R', '|',\n             $this === $weakMaker->get(), '|';\n        return self::body($token);\n    }\n    private static function &body(&$token) {\n        global $weakToken, $weakInput;\n        echo 'BODY|', __CLASS__ === 'Mid83R', '|', static::class === 'Leaf83R', '|';\n        try {\n            $received = yield $token;\n            echo 'RECEIVED|', $received === $weakInput->get(), '|';\n            unset($received);\n            Fiber::suspend('invoke83');\n            echo 'BAD-RESUME|';\n        } finally {\n            echo 'FIN|', $weakToken->get() instanceof Token83R, '|',\n                 $weakInput->get() instanceof Input83R, '|';\n        }\n    }\n}\nclass Leaf83R extends Mid83R {\n    public static function body(&$token) { echo 'BAD-LEAF|'; yield 0; }\n}\nfunction Run83R() {\n    global $g;\n    echo 'SEND|';\n    $g->send(new Input83R());\n    echo 'BAD-CALLER|';\n}\n$maker = new Leaf83R();\n$weakMaker = WeakReference::create($maker);\n$token = new Token83R();\n$alias =& $token;\n$weakToken = WeakReference::create($token);\n$g = $maker->open($token);\nunset($maker, $token);\n$token = 83;\necho 'FRESH|', $weakMaker->get() === null, '|', $weakToken->get() instanceof Token83R, '|';\necho 'PRIME|';\n$g->current();\n$fiber = new Fiber('Run83R');\n$stop = new Exception('stop83');\necho 'START|';\n$mark = $fiber->start();\nunset($alias);\necho 'PARK|', $mark === 'invoke83', '|', $g->current() === $weakToken->get(), '|',\n     $token === 83, '|', $weakInput->get() instanceof Input83R, '|';\necho 'ABORT|';\ntry { $fiber->throw($stop); }\ncatch (Throwable $e) {\n    echo 'OUT|', $e === $stop, '|', $e->getPrevious() === null, '|',\n         $fiber->isTerminated(), '|', $weakInput->get() === null, '|',\n         $weakToken->get() instanceof Token83R, '|';\n}\necho 'CLOSED|', $g->current() === null, '|', $weakToken->get() instanceof Token83R, '|';\nunset($g, $fiber, $stop, $e);\necho 'DROP|', $weakToken->get() === null, '|E';\n",
+    "source_sha256": "9a2730a72d2f4beb1d4bbdd3dc2db1467bd3db8aa396c4007b162374c7a57004",
+    "native_exit": 0,
+    "native_stdout": "MAKE|1|1|1|MAKER|FRESH|1|1|PRIME|BODY|1|1|START|SEND|RECEIVED|1|PARK|1|1|1|1|ABORT|FIN|1|1|INPUT|OUT|1|1|1|1|1|CLOSED|1|1|TOKEN|DROP|1|E",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
   }
 ]
