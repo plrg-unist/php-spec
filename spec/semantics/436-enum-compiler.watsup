@@ -80,6 +80,12 @@ def $enum_interfaces(text_type) = [$ptascii("UnitEnum"), $ptascii("BackedEnum")]
   -- if text_type <- ["int", "string"]
 def $enum_all_interfaces(ptbytes_explicit*, text_type) = ptbytes_explicit* ++ $enum_interfaces(text_type)
 
+def $anonymous_header_interfaces(NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata, pchheader, pmethoddesc*) = ($enum_all_interfaces(pchheader.INTERFACES, text_type))
+  -- if pchheader.KIND = "enum"
+  -- if text_type = $enum_backing_node(phpType50)
+  -- if text_type <- ["", "int", "string"]
+def $anonymous_header_interfaces(pcnode, pchheader, pmethoddesc*) = eps -- otherwise
+
 def $ppmember_groups(P, pcpath, n, (NStmtEnumCase phpType14 phpType11 phpType5 metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc*, pmethoddesc*, pchheader)
   -- if P.COMPLETION = PPCNORMAL
   -- if pchheader.KIND = "enum"

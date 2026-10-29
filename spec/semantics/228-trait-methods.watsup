@@ -741,7 +741,7 @@ def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_method_fatal(
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if pclassdesc_parent.KIND = "trait"
 
-def $pptrait_add(P, pcpath, pchheader, ppropertydesc*, pmethoddesc*) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, KIND "trait", NAME pchheader.NAME, PARENT eps, INTERFACES eps, PROPERTIES ppropertydesc*, METHODS pmethoddesc*, CONSTANTS $ppclass_constants(P.CLASSCONSTANTS, PORIGIN P.FOLD.SOURCE.ID pcpath), ABSTRACT false, FINAL false, READONLY false, EARLY (P.EARLY = (pcpath) /\ ~$pptrait_body_uses(pchheader.BODY) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME)), LINE P.LOCATION.LINE }]] -- if P.COMPLETION = PPCNORMAL
+def $pptrait_add(P, pcpath, pchheader, ppropertydesc*, pmethoddesc*) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, KIND "trait", NAME pchheader.NAME, PARENT eps, INTERFACES eps, PROPERTIES ppropertydesc*, METHODS pmethoddesc*, CONSTANTS $ppclass_constants(P.CLASSCONSTANTS, PORIGIN P.FOLD.SOURCE.ID pcpath), ABSTRACT false, FINAL false, READONLY false, EARLY (P.EARLY = (pcpath) /\ ~$pptrait_body_uses(pchheader.BODY) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME) /\ ~$ppclass_external_known(P.FOLD.EXTERNAL, pchheader.NAME)), LINE P.LOCATION.LINE }]] -- if P.COMPLETION = PPCNORMAL
 def $pptrait_add(P, pcpath, pchheader, ppropertydesc*, pmethoddesc*) = P -- if P.COMPLETION =/= PPCNORMAL
 def $pptrait_members_supported(eps) = true
 def $pptrait_members_supported((NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata) :: statement*) = $pptrait_members_supported(statement*)
