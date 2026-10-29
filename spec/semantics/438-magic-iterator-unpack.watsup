@@ -2,6 +2,10 @@
 ;; signature. Only the final (name, arguments) pair enters the real handler.
 def $magic_unpack_collecting(MAGIC_METHOD_SEND_TARGET pmagicmethodcall) = true
 def $magic_unpack_collecting(MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) = true
+dec $magic_unpack_argument_name(phpType3) : bool
+def $magic_unpack_argument_name(ABSENT) = true
+def $magic_unpack_argument_name(NIdentifier (BYTES text_name) metadata_name) = true
+def $magic_unpack_argument_name(phpType3) = false -- otherwise
 dec $magic_unpack_source(pstate, porigin, phpType7*, nat) : bool
 def $magic_unpack_source(S, porigin, eps, n) = true
 def $magic_unpack_source(S, porigin, (NArg ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType7_tail*, n) = $magic_unpack_source(S, porigin, phpType7_tail*, $(n + 1))
@@ -10,7 +14,7 @@ def $magic_unpack_source(S, porigin, (NArg ABSENT expression (BOOLEAN false) (BO
   -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
   -- if $ppunpack_class(pcode, pcunit, pcpath) =/= eps
 def $magic_unpack_source(S, porigin, (NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7_tail*, n) = $magic_unpack_source(S, porigin, phpType7_tail*, $(n + 1))
-  -- if phpType3 = ABSENT \/ phpType3 = NIdentifier (BYTES text_name) metadata_name
+  -- if $magic_unpack_argument_name(phpType3)
   -- if $call_argument_origin(S, (porigin), n) = (porigin_argument)
   -- if $magic_method_argument_source(S, porigin_argument, 0, expression)
 def $magic_unpack_source(S, porigin, phpType7*, n) = false -- otherwise
