@@ -1,0 +1,33 @@
+{
+  "milestone": "I76 finite keyword method-factory ancestry for receiver-free static Generators",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "base": "f110c6150",
+  "implementation": ["e976bab7c", "d9872c213"],
+  "state_fixtures": ["ecf616470", "35c1cb4a6"],
+  "scope": "A finite list of actual saved method-factory frames authenticates each receiver-free keyword SCOPED target's source owner, selected method, lexical/called scope and access, ending at an existing nonkeyword invocation. The list has no arbitrary length cap and borrows identities without adding receiver or parameter owners. Active resume/close still selects the real live Generator before checking its certificate. An ordinary instance factory can be the terminal invocation and retire before Generator entry.",
+  "changed_modules": ["spec/semantics/30-storage.watsup", "spec/semantics/280-generators.watsup"],
+  "engine_paths": ["vendor/php-src/Zend/zend_compile.c: zend_compile_static_call, zend_compile_method_call", "vendor/php-src/Zend/zend_vm_def.h: ZEND_GENERATOR_CREATE, INIT_STATIC_METHOD_CALL", "vendor/php-src/Zend/zend_generators.c: zend_generator_resume, zend_generator_close"],
+  "validation": {
+    "native_first": [
+      {"selection": "three authored originals", "report": "../php-spec-evidence-archive/generator-keyword-factory-chain-76/source-packet/native-first/report.json", "sha256": "3472a9d2746ca9a984ea73bc2bd6f97906ae6cf6cc04bead32e8d5bcd1bce822"},
+      {"selection": "independent stopping-boundary peer", "report": "../php-spec-evidence-archive/generator-keyword-factory-chain-76-review/independent/native-first-report.json", "sha256": "50231568a071c2cb5547b742afc3864b62b54751e0c4c0501888d49dd0e6ea84"}
+    ],
+    "unchanged_baseline": {"revision": "f110c6150", "selection": "new two-link source A", "result": "checked Unsupported, exact OUTER|MAKE| prefix, exit 1, zero agreement", "report": "../php-spec-evidence-archive/generator-keyword-factory-chain-76/source-packet/unchanged-baseline-eaawb4m1/report.json", "sha256": "c18b8a54d8911ee9a10501fe17445b9b80a76a825b50f693425790db74ca159a"},
+    "strict_private": {"revision": "d9872c213", "modules": 428, "passed": true, "report": "../php-spec-evidence-archive/generator-keyword-factory-chain-76/strict-private/report.json", "sha256": "31b65f610373979dc3ee6cd8dc99e9a672c8ad368ab7c0bc9b3a9ab1e64754bb"},
+    "strict_joined": {"revision": "df185fc63faa01afbc0af67fbb0140009f611d39", "canonical_parent": "d2f1186b20263cd5ae5758b5c593513f36ec55c6", "modules": 430, "passed": true, "report": "../php-spec-evidence-archive/generator-keyword-factory-chain-76/strict-joined/report.json", "sha256": "6da53e705d69a17ef384bfe0f65fd35e3d8612e3477f064af05dfda4c0f65ba5"},
+    "author_sources": [
+      {"selection": "two-link parent, fresh sibling and real close", "report": "../php-spec-evidence-archive/generator-keyword-factory-chain-76/validated/generator-keyword-chain-source-zydqczxn/report.json", "sha256": "3164fc6a464d805fbeeebf84869c68866035a75909d2b977857ddd10ee04da19"},
+      {"selection": "deeper late-static override and shared formal", "report": "../php-spec-evidence-archive/generator-keyword-factory-chain-76/validated/generator-keyword-chain-source-0irt4t3p/report.json", "sha256": "3f40e16371f27c67133125a781eaa19edd865fec0bf516e7e621e7ffec896510"},
+      {"selection": "retired instance factory", "report": "../php-spec-evidence-archive/generator-keyword-factory-chain-76/validated/generator-keyword-chain-source-c_02zkux/report.json", "sha256": "b973e4a098fcc8dfe01c862c540ccaa80009eb1d4fb09e177102c0d013f1bf36"},
+      {"selection": "retained I75 chain promoted with original native bytes; no native or old replay", "report": "../php-spec-evidence-archive/generator-keyword-factory-chain-76/validated/generator-keyword-chain-source-aem4i63u/report.json", "sha256": "1991f21adb583854f6861cd99b45b72d6cf7e0f3a7b7be4cdb7d4f9933f80a9d"}
+    ],
+    "independent_peer": {"revision": "d9872c213", "result": "checked NORMAL, exact 156-byte native stream, model exit 0, empty stderr, no timeout, 252.025557 seconds under fixed source-local 600/620 limits", "report": "../php-spec-evidence-archive/generator-keyword-factory-chain-76-review/independent/model-review-report.json", "sha256": "98df988b1a4d2ffbe5de7662d90129e17e1e470912b21f26d47876d3af8f47b8"},
+    "reached_states": [
+      {"selection": "actual close owner with same-context fresh sibling", "revision": "ecf616470", "reported": 76, "report": "../php-spec-evidence-archive/generator-keyword-factory-chain-76/validated/fiber-state-review-pynv56pg/report.json", "sha256": "a863225c87d73279deb2a19b36d8249e1fb2f94b191599be15f8095d8a250c42"},
+      {"selection": "three ancestors, primed by-value cache and shared by-reference formal", "revision": "ecf616470", "reported": 55, "report": "../php-spec-evidence-archive/generator-keyword-factory-chain-76/validated/fiber-state-review-gd15en0u/report.json", "sha256": "77002c23fbea9050b86bcc8e3c20698a899e11a415e25cdb5a738d9c081050bc"},
+      {"selection": "fresh Generator after terminal instance maker retirement", "revision": "35c1cb4a6", "reported": 50, "report": "../php-spec-evidence-archive/generator-keyword-factory-chain-76/validated/fiber-state-review-p7blvsqz/report.json", "sha256": "4ea1eb2b8abb7d8db0689b59fb201bcbf40cfaa977fe2986f2bd6d615f521b17"}
+    ]
+  },
+  "counts": {"new_author_normal": 3, "independent_normal": 1, "promoted_retained_normal": 1, "unchanged_unsupported_agreement": 0, "reached_custom": 166, "reached_reported": 181},
+  "remaining": "Receiver-bearing keyword factory links, receiver-bearing keyword Generator bodies, Closure factories, other implicit callback creation, changed/imported caller scopes and wider lifecycle combinations remain partial. The historical I75 Unsupported and I76 unchanged Unsupported stay zero-credit raw cuts; complete core and BOLA verification remain open."
+}

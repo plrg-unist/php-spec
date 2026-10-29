@@ -996,8 +996,17 @@ I75 now admits keyword-forwarded receiver-free static Generator bodies after
 ordinary method factories return. The saved creator scope and actual Generator
 owner authenticate fresh/primed Fiber resumers and real close markers without an extra receiver root.
 Six authored and one independent source match PHP; four reached fronts pass 374
-reported checks. Keyword-invoked factory chains and wider callable/lifecycle
-forms remain partial. [Keyword creation review](../../coverage/semantics/generator-keyword-creation-review.json).
+reported checks. At that I75 cut, keyword-invoked factory chains and wider
+callable/lifecycle forms remained partial.
+[Keyword creation review](../../coverage/semantics/generator-keyword-creation-review.json).
+
+I76 retains authenticated keyword method-factory ancestry for receiver-free
+static Generator bodies. The independent Fiber SEND/abort source and four other
+source agreements preserve actual Generator ownership and borrowed creator
+scope after every forwarding factory returns. Three reached fronts check the
+close owner, shared reference formal and retired maker. Receiver-bearing
+keyword links and wider callable/lifecycle forms remain partial.
+[Chain review](../../coverage/semantics/generator-keyword-chain-review.json).
 
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need

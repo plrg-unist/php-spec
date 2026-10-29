@@ -325,10 +325,23 @@ Six authored and one independent original match PHP exactly. Four source-reached
 fronts pass 374 reported checks for scope, cache/reference ownership, forgeries and
 real close ENTER/DONE. Private strict compilation passes 426 modules. The peer's
 recorder HEAD flag is false after a fixture-only commit during its run; its 18
-actual inputs stayed stable and the raw report is preserved. Keyword-invoked
-factory chains remain explicit Unsupported. See the
+actual inputs stayed stable and the raw report is preserved. At that I75 cut,
+keyword-invoked factory chains remained explicit Unsupported. See the
 [keyword creation review](../../coverage/semantics/generator-keyword-creation-review.json)
 for separate evidence cuts and remaining scope.
+
+I76 retains a finite borrowed chain of real method-factory frames when
+keyword-invoked factories call one another before creating a receiver-free
+static Generator. Every forwarding link checks its source owner, selected target,
+lexical/called scope and access; an ordinary invocation stops the chain. No
+fixed depth or extra owner root is introduced. Three new authored sources, one
+independent source and the retained I75 chain match PHP. Three source-reached
+fronts pass 166 custom/181 reported checks for same-context close ownership,
+deeper scope and cache history, and a retired instance maker. Private strict428
+and actual-tail joined strict430 pass; the peer used a fixed source-local
+600/620-second envelope. The
+[chain review](../../coverage/semantics/generator-keyword-chain-review.json)
+keeps the distinct native, baseline, source and state cuts.
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
@@ -684,8 +697,8 @@ null results and phase-specific error cleanup. Direct Aggregate
 [argument acquisition](SOURCE-CALL-UNPACK.md#direct-aggregate-argument-acquisition)
 now shares the existing Iterator/Generator call sends. Broader reference
 producers, dynamic/nullsafe API calls and named/unpacked API arguments remain
-required. Keyword-invoked factory chains, Closure factories, receiver-bearing
-keyword Generator bodies, other implicit callback creation and creation through
+required. Receiver-bearing keyword factory links and Generator bodies, Closure
+factories, other implicit callback creation and creation through
 changed/imported caller scope remain required.
 [Module303](GENERATOR-FORCE-CLOSE.md) adds ordinary last-owner forced close,
 pending finally execution and ordered input/frame/cache release.

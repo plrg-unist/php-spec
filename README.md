@@ -6345,8 +6345,15 @@ Receiver-free static Generator bodies called through `self`, `parent` and
 `static` now retain real factory scope after return, including a destroyed
 object selector and live close/finally. Six authored and one independent original match PHP; four reached
 fronts check creator/callee scope and actual-owner selection.
-Keyword-invoked factory chains and wider callable/lifecycle forms remain open.
+At that I75 cut, keyword-invoked factory chains and wider callable/lifecycle
+forms remained open.
 [Keyword creation review](coverage/semantics/generator-keyword-creation-review.json).
+Finite keyword method-factory chains now retain borrowed source/target and
+lexical/called scope through each real forwarding frame. Three new authored,
+one independent and the retained I75 original match PHP; three reached fronts
+check actual close ownership, a deeper shared-cell cache and a retired maker.
+Receiver-bearing keyword links and Closure factories remain partial.
+[Chain review](coverage/semantics/generator-keyword-chain-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

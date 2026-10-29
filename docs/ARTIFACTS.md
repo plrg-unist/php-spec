@@ -145,6 +145,14 @@ Commit concise reports and manifests with hashes and locations. Preserve raw
 failures and interrupted runs externally; do not force-add their archives.
 The coverage compression patterns in `.gitignore` guard against reintroduction.
 
+I76 keyword factory-chain evidence retains native, unchanged baseline, strict,
+source and state cuts under
+`../php-spec-evidence-archive/generator-keyword-factory-chain-76/`; the
+independent peer is under
+`../php-spec-evidence-archive/generator-keyword-factory-chain-76-review/`.
+The [chain ledger](../coverage/semantics/generator-keyword-chain-review.json)
+keeps tested revisions, hashes and the retained I75 chain promotion distinct.
+
 I75 keyword Generator creation retains native, strict and original baseline
 records under `../php-spec-evidence-archive/generator-keyword-creation-75/`,
 accepted/failing source and state raw cuts under its `validated/` directory, and
