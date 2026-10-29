@@ -3683,6 +3683,11 @@ strict SL groups pass 330 checks at separate cuts. WeakMap callbacks, worker,
 residual, reentry and wider operand caches remain partial. See the
 [claimed callback review](coverage/semantics/gc-materialized-claimed-callback-review.json).
 
+Identity cleanup also preserves a sole produced right object/array temporary
+when the left operand is borrowed or scalar. Its source predicate agrees in
+AL and SL, retaining real cache and CV owners through release. See the
+[identity receipt review](coverage/semantics/identity-produced-right-review.json).
+
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
 reuse only when destructor preparation leaves the state identical.

@@ -31,6 +31,13 @@ prior histories, worker/residual/reentry paths, hooks, active contexts and wider
 cache lifetimes remain partial.
 [GC06 review](coverage/semantics/gc-materialized-claimed-callback-review.json).
 
+Immediate identity cleanup now validates a sole produced right object/array
+temporary with a borrowed or scalar left operand in both AL and SL. Fourteen
+focused conditions pass in each mode, including strict compilation of the actual
+431-module tail; the affected cached-enum Stringable original matches PHP again.
+Existing owners and collection policy are unchanged.
+[Identity receipt review](coverage/semantics/identity-produced-right-review.json).
+
 Earlier [I75](coverage/semantics/generator-keyword-creation-review.json),
 [I76](coverage/semantics/generator-keyword-chain-review.json),
 [I77](coverage/semantics/generator-keyword-receiver-review.json),
