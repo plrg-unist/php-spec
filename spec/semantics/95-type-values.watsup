@@ -207,7 +207,7 @@ def $typed_conversion_at(S, ptbranch*, pvalue, b) = $typed_conversion(ptbranch*,
 
 dec $typed_given(pstate, pvalue) : ptbytes
 def $typed_given(S, POBJECT n) = $ptascii("Closure") -- if $typed_closure(S, n)
-def $typed_given(S, POBJECT n) = pclassdesc.NAME
+def $typed_given(S, POBJECT n) = $c_string(pclassdesc.NAME)
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
 def $typed_given(S, pvalue) = $ptascii($typed_tag(pvalue)) -- otherwise

@@ -347,10 +347,10 @@ def $property_quiet(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "fre
 def $property_read_key(S, POBJECT n, ptbytes, z) = S[.RESULT = KNOWN pvalue]
   -- if $instance_storage_freeing(S, n)
   -- if $instance_storage_read_value(S, n, ptbytes) = (pvalue)
-def $property_read_key(S, POBJECT n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Typed property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" must not be accessed before initialization"), z)
+def $property_read_key(S, POBJECT n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Typed property ") ++ $property_display_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" must not be accessed before initialization"), z)
   -- if $instance_storage_freeing(S, n)
   -- if $instance_storage_initial_desc(S, n, ptbytes) = (ppropertydesc)
-def $property_read_key(S, POBJECT n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Typed property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" must not be accessed before initialization"), z)
+def $property_read_key(S, POBJECT n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Typed property ") ++ $property_display_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" must not be accessed before initialization"), z)
   -- if $instance_storage_freeing(S, n)
   -- if $instance_storage_unset_desc(S, n, ptbytes) = (ppropertydesc)
 def $property_read_key(S, POBJECT n, ptbytes, z) = $diagnostic(S, "Warning", $ptascii("Undefined property: ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)), z)[.RESULT = KNOWN PNULL]

@@ -32,9 +32,9 @@ dec $ppproperty_type_equal(ptbranch*, ptbranch*) : bool
 def $ppproperty_type_equal(ptbranch_a*, ptbranch_b*) = ($ppproperty_branches_subset(ptbranch_a*, ptbranch_b*) /\ $ppproperty_branches_subset(ptbranch_b*, ptbranch_a*))
 def $ppproperty_override_message(ptbytes_child, ptbytes_property, ptbytes_parent, ptbranch_parent*, ptbranch_child*) = eps
   -- if $ppproperty_type_equal(ptbranch_parent*, ptbranch_child*)
-def $ppproperty_override_message(ptbytes_child, ptbytes_property, ptbytes_parent, eps, ptbranch_child*) = ($ptascii("Type of ") ++ ptbytes_child ++ $ptascii("::$") ++ ptbytes_property ++ $ptascii(" must be omitted to match the parent definition in class ") ++ ptbytes_parent)
+def $ppproperty_override_message(ptbytes_child, ptbytes_property, ptbytes_parent, eps, ptbranch_child*) = ($ptascii("Type of ") ++ $c_string(ptbytes_child) ++ $ptascii("::$") ++ ptbytes_property ++ $ptascii(" must be omitted to match the parent definition in class ") ++ $c_string(ptbytes_parent))
   -- if ptbranch_child* =/= eps
-def $ppproperty_override_message(ptbytes_child, ptbytes_property, ptbytes_parent, ptbranch_parent*, ptbranch_child*) = ($ptascii("Type of ") ++ ptbytes_child ++ $ptascii("::$") ++ ptbytes_property ++ $ptascii(" must be ") ++ $pttypename(ptbranch_parent*) ++ $ptascii(" (as in class ") ++ ptbytes_parent ++ [41])
+def $ppproperty_override_message(ptbytes_child, ptbytes_property, ptbytes_parent, ptbranch_parent*, ptbranch_child*) = ($ptascii("Type of ") ++ $c_string(ptbytes_child) ++ $ptascii("::$") ++ ptbytes_property ++ $ptascii(" must be ") ++ $pttypename(ptbranch_parent*) ++ $ptascii(" (as in class ") ++ $c_string(ptbytes_parent) ++ [41])
   -- if ptbranch_parent* =/= eps /\ ~$ppproperty_type_equal(ptbranch_parent*, ptbranch_child*)
 
 dec $property_default_node_below(pcnode, pcpath, pcpath) : bool
@@ -119,8 +119,8 @@ def $ppproperty_scope(pchheader) = PTTRAIT pchheader.NAME -- if pchheader.KIND =
 def $ppproperty_scope(pchheader) = PTKNOWN pchheader.NAME pchheader.PARENT -- if pchheader.KIND =/= "trait"
 def $ppproperty_diagnostics(P, eps) = P
 def $ppproperty_diagnostics(P, ptdiagnostic :: ptdiagnostic_tail*) = $ppproperty_diagnostics($ppproperty_diagnostic(P, ptdiagnostic), ptdiagnostic_tail*)
-def $ppproperty_diagnostic(P, PTDIAGNOSTIC "fatal" text ptbranch* ptcontext) = $ppconstant_error(P, $ptmessage(PTDIAGNOSTIC "fatal" text ptbranch* ptcontext), ptcontext.LINE)
-def $ppproperty_diagnostic(P, PTDIAGNOSTIC text_level text ptbranch* ptcontext) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC text_level "property-message" ([$ptmessage(PTDIAGNOSTIC text_level text ptbranch* ptcontext)]) (P.LOCATION[.LINE = ptcontext.LINE])]]
+def $ppproperty_diagnostic(P, PTDIAGNOSTIC "fatal" text ptbranch* ptcontext) = $ppconstant_error(P, $ptmessage(PTDIAGNOSTIC "fatal" text ptbranch* ptcontext[.OWNER = $c_string(ptcontext.OWNER)]), ptcontext.LINE)
+def $ppproperty_diagnostic(P, PTDIAGNOSTIC text_level text ptbranch* ptcontext) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC text_level "property-message" ([$ptmessage(PTDIAGNOSTIC text_level text ptbranch* ptcontext[.OWNER = $c_string(ptcontext.OWNER)])]) (P.LOCATION[.LINE = ptcontext.LINE])]]
   -- if text_level =/= "fatal"
 def $plmessage(PLDIAGNOSTIC text "property-message" ([ptbytes]) pllocation) = ptbytes
 
@@ -128,7 +128,7 @@ def $ppproperty_typed(P, pcpath, flags, phpType5, ptbytes, PTUNSUPPORTED text, p
 def $ppproperty_typed(P, pcpath, flags, phpType5, ptbytes, PTERROR ptdiagnostic*, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppproperty_diagnostics(P, ptdiagnostic*)) ppropertydesc*
 def $ppproperty_typed(P, pcpath, flags, phpType5, ptbytes, PTOK ptbranch* ptdiagnostic*, ppropertydesc*, pchheader, z) = $ppproperty_default($ppproperty_diagnostics(P, ptdiagnostic*), pcpath, flags, phpType5, ptbytes, ptbranch*, ppropertydesc*, pchheader, z)
   -- if ~$ppproperty_at(ppropertydesc*, ptbytes)
-def $ppproperty_typed(P, pcpath, flags, phpType5, ptbytes, PTOK ptbranch* ptdiagnostic*, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppconstant_error($ppproperty_diagnostics(P, ptdiagnostic*), $ptascii("Cannot redeclare ") ++ pchheader.NAME ++ $ptascii("::$") ++ ptbytes, $nabs(z))) ppropertydesc*
+def $ppproperty_typed(P, pcpath, flags, phpType5, ptbytes, PTOK ptbranch* ptdiagnostic*, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppconstant_error($ppproperty_diagnostics(P, ptdiagnostic*), $ptascii("Cannot redeclare ") ++ $c_string(pchheader.NAME) ++ $ptascii("::$") ++ ptbytes, $nabs(z))) ppropertydesc*
   -- if $ppproperty_at(ppropertydesc*, ptbytes)
 def $ppproperty_at(eps, ptbytes) = false
 def $ppproperty_at(ppropertydesc :: ppropertydesc_tail*, ptbytes) = true -- if ppropertydesc.NAME = ptbytes
@@ -168,7 +168,7 @@ def $ppproperty_plain_intersection([PTBRANCH (ptatom_a :: ptatom_b :: ptatom_tai
 def $ppproperty_plain_intersection(ptbranch*) = false -- otherwise
 def $ppproperty_default_error(pchheader, ptbytes, ptbranch*, PNULL) = $ptascii("Default value for property of type ") ++ $pttypename(ptbranch*) ++ $ptascii(" may not be null. Use the nullable type ") ++ $pttypename(ptbranch* ++ [(PTBRANCH ([PTBUILTIN "null"]))]) ++ $ptascii(" to allow null default value")
   -- if ~("null" <- $ptmasks(ptbranch*)) /\ ~$ppproperty_plain_intersection(ptbranch*)
-def $ppproperty_default_error(pchheader, ptbytes, ptbranch*, pvalue) = $ptascii("Cannot use ") ++ $ptascii($typed_tag(pvalue)) ++ $ptascii(" as default value for property ") ++ pchheader.NAME ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" of type ") ++ $pttypename(ptbranch*)
+def $ppproperty_default_error(pchheader, ptbytes, ptbranch*, pvalue) = $ptascii("Cannot use ") ++ $ptascii($typed_tag(pvalue)) ++ $ptascii(" as default value for property ") ++ $c_string(pchheader.NAME) ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" of type ") ++ $pttypename(ptbranch*)
   -- if pvalue =/= PNULL \/ $ppproperty_plain_intersection(ptbranch*)
 
 def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppconstant_error(P, $ptascii("Readonly property ") ++ pchheader.NAME ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" must have type"), $nabs(z))) ppropertydesc*

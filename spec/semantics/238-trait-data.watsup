@@ -102,8 +102,8 @@ def $trait_property_source_items(ppropertydesc :: ppropertydesc_tail*, porigin) 
 def $trait_property_source_at(eps, porigin) = eps
 def $trait_property_source_at(pclassdesc :: pclassdesc_tail*, porigin) = (ppropertydesc) -- if $trait_property_source_items(pclassdesc.PROPERTIES, porigin) = (ppropertydesc)
 def $trait_property_source_at(pclassdesc :: pclassdesc_tail*, porigin) = $trait_property_source_at(pclassdesc_tail*, porigin) -- if $trait_property_source_items(pclassdesc.PROPERTIES, porigin) = eps
-def $property_type_name(S, ppropertydesc) = $pttypename($trait_member_display_type(S, porigin, $trait_property_source_type(S, ppropertydesc))) -- if ppropertydesc.ORIGIN = porigin
-def $property_type_name(S, ppropertydesc) = $pttypename(ppropertydesc.TYPE) -- otherwise
+def $property_type_name(S, ppropertydesc) = $c_string($pttypename($trait_member_display_type(S, porigin, $trait_property_source_type(S, ppropertydesc)))) -- if ppropertydesc.ORIGIN = porigin
+def $property_type_name(S, ppropertydesc) = $c_string($pttypename(ppropertydesc.TYPE)) -- otherwise
 def $trait_constant_type_name(S, pclassconstantdesc) = $pttypename($trait_member_display_type(S, pclassconstantdesc.ORIGIN, $trait_constant_source_type(S, pclassconstantdesc)))
 def $trait_property_source_type(S, ppropertydesc) = ppropertydesc_source.TYPE
   -- if ppropertydesc.ORIGIN = porigin
