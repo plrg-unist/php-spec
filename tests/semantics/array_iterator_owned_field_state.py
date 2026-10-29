@@ -224,10 +224,10 @@ def last_data(program, path, stdout):
     ] + builder('S_read', 20) + old_row('S_read') + new_row('S_read', 42) + public('S_read')
     return checks + finish('S_read', stdout, [
         'HOBJECT n_object', 'HOBJECT n_observer', 'HCELL n_outer',
-        'HCELL n_leaf', 'HCELL n_other', 'HARRAY n_old', 'HARRAY n_old_child',
-        'HARRAY n_field', 'HARRAY n_field_child', 'HARRAY n_new', 'HARRAY n_new_child',
+        'HCELL n_leaf', 'HCELL n_other', 'HARRAY n_old',
+        'HARRAY n_field', 'HARRAY n_field_child', 'HARRAY n_new',
         'HARRAY n_target',
-    ])
+    ]) + pooled_children()
 
 
 def retained(program, path, stdout):
@@ -276,10 +276,24 @@ def retained(program, path, stdout):
     ] + builder('S_read', 7) + old_row('S_read') + new_row('S_read', 42) + public('S_read')
     return checks + finish('S_read', stdout, [
         'HOBJECT n_object', 'HOBJECT n_observer', 'HCELL n_outer',
-        'HCELL n_leaf', 'HCELL n_other', 'HARRAY n_old', 'HARRAY n_old_child',
-        'HARRAY n_field', 'HARRAY n_field_child', 'HARRAY n_new', 'HARRAY n_new_child',
+        'HCELL n_leaf', 'HCELL n_other', 'HARRAY n_old',
+        'HARRAY n_field', 'HARRAY n_field_child', 'HARRAY n_new',
         'HARRAY n_target',
-    ])
+    ]) + pooled_children()
+
+
+def pooled_children():
+    return [
+        'S_done.POOLS = S_cache.POOLS',
+        '(HARRAY n_old_child) <- S_done.ALLOCATIONS',
+        '(HARRAY n_new_child) <- S_done.ALLOCATIONS',
+        '$heap_count(HARRAY n_old_child, $pools_nodes(S_done.POOLS)) = 1',
+        '$heap_count(HARRAY n_new_child, $pools_nodes(S_done.POOLS)) = 1',
+        owners('S_done', 'HARRAY n_old_child', 1),
+        owners('S_done', 'HARRAY n_new_child', 1),
+        'S_done.ARRAYS[n_old_child].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 3))]',
+        'S_done.ARRAYS[n_new_child].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 11))]',
+    ]
 
 
 def conditions(name, program, path, stdout):
