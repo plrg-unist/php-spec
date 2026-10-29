@@ -136,9 +136,19 @@ def conditions(name, program, path, stdout):
     ] + public('S_ready') + public('S_api') + seek('S_api', 935, 'S_outside') + [
         '$propref_at(S_outside.PROPREFS, n_fresh) = eps',
     ] + array('S_outside', 'n_fresh', 'fresh_array', 'detached') + public('S_outside')
-    return checks + finish('S_outside', stdout, ['HOBJECT n_object', 'HOBJECT n_aggregate',
-        'HOBJECT n_watch', 'HCELL n_name', 'HCELL n_held', 'HCELL n_fresh',
-        'HARRAY n_name_array', 'HARRAY n_old_array', 'HARRAY n_fresh_array'])
+    checks += finish('S_outside', stdout, ['HOBJECT n_object', 'HOBJECT n_aggregate',
+        'HOBJECT n_watch', 'HCELL n_name', 'HCELL n_held', 'HCELL n_fresh'])
+    checks += ['S_done.POOLS = S_return.POOLS']
+    for name, state in [('name_array', 'S_dtor'), ('old_array', 'S_dtor'),
+                        ('fresh_array', 'S_outside')]:
+        checks += [
+            f'(HARRAY n_{name}) <- S_done.ALLOCATIONS',
+            f'n_{name}_roots = $heap_count(HARRAY n_{name}, $pools_nodes(S_done.POOLS))',
+            f'$(n_{name}_roots > 0)',
+            owners('S_done', f'HARRAY n_{name}', f'n_{name}_roots'),
+            f'S_done.ARRAYS[n_{name}] = {state}.ARRAYS[n_{name}]',
+        ]
+    return checks
 
 
 if __name__ == '__main__':
