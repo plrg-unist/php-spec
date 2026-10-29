@@ -344,6 +344,12 @@ def $constant_value_class_valid(S, POBJECT n, PVENUMCASE n_original porigin) = t
   -- if pclassconstantdesc.ORIGIN = porigin
 def $constant_callable_foldable(PVENUMCASE n porigin) = false
 def $constant_class_tree_valid(PVENUMCASE n porigin) = true
+def $constant_fact_value_valid(pconstantfact) = true
+  -- if pconstantfact.VALUE = eps
+  -- if pconstantfact.CLASS = PVENUMCASE n porigin
+def $constant_fact_truth(pconstantfact) = (true)
+  -- if pconstantfact.VALUE = eps
+  -- if pconstantfact.CLASS = PVENUMCASE n porigin
 def $default_cacheable(PVENUMCASE n porigin) = true
 def $constant_callable_flow_at(S, porigin, porigin_owner, PVENUMCASE n porigin, n_prefix, porigin_seen*) = true
   -- if $enum_case_descriptor(S, porigin) = (pclassconstantdesc)
@@ -1077,7 +1083,8 @@ dec $enum_from_update_context(pstate, pclassconstantcontext, porigin) : pconfigc
 def $enum_from_update_context(S, pclassconstantcontext, porigin_case) = (pconfigcall)
   -- if pclassconstantcontext.DECL = porigin_case
   -- if pclassconstantcontext.SELECTION = CLASS_CONST_UPDATE_SELECT porigin_class
-  -- if $enum_case_descriptor(S, porigin_case) = (pclassconstantdesc)
+  -- if $class_constant_origin(S.CLASSES, porigin_case) = (pclassconstantdesc)
+  -- if ~pclassconstantdesc.FOLDED
   -- if pclassconstantdesc.OWNER = porigin_class
   -- if $enum_from_future(S.TODO) = (pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_ENUM porigin_class ptbytes text_method
@@ -1121,7 +1128,7 @@ def $class_constant_cache_event(S, pclassconstantcontext, porigin_case, porigin_
 def $class_constant_history_fills(S, (CCCACHE_ENUM porigin_case (PORIGIN n_unit pcpath) n_prefix n_nonce) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached* ++ [porigin_case], porigin_filled*, n_prefix)
   -- if $(n_previous <= n_prefix /\ n_prefix <= |S.DECLARATIONS|)
   -- if ~(porigin_case <- porigin_cached*)
-  -- if $enum_case_descriptor(S, porigin_case) = (pclassconstantdesc)
+  -- if $class_constant_origin(S.CLASSES, porigin_case) = (pclassconstantdesc)
   -- if ~pclassconstantdesc.FOLDED
   -- if $class_constant_flag((porigin_flag, b_flag)*, pclassconstantdesc.OWNER) = (b_owner)
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin_case) = (pdefaultcache)
@@ -1130,6 +1137,7 @@ def $class_constant_history_fills(S, (CCCACHE_ENUM porigin_case (PORIGIN n_unit 
   -- if pselectedcall.NONCE = n_nonce /\ pselectedcall.SITE = PORIGIN n_unit pcpath
   -- if pselectedcall.KIND = INTRINSIC_ENUM pclassconstantdesc.OWNER pclassconstantdesc.OWNERNAME text_method
   -- if text_method <- ["cases", "from", "tryFrom"]
+  -- if text_method =/= "cases" \/ $enum_case_origin(S, porigin_case)
   -- if pselectedcall.OWNER = (n_owner)
   -- if $selected_entry_source_valid(S, pselectedcall)
   -- if $class_constant_history_exited(S.DECLARATIONS, n_prefix, n_unit)
