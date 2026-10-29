@@ -85,4 +85,14 @@ $p = child147([&$nan,$left]); $q = child147([&$nan,$right]);
 $a = new RuntimeException('same',7,$p); $b = new RuntimeException('same',7,$q);
 echo 'B|', (int)($a==$b), (int)($a!=$b), ':', $a<=>$b, ':', $b<=>$a, '|';
 ''',
+    'plain-inline-leaf-skips-cycle': br'''<?php
+class Plain147 { public int $first = 0; public $next = null; }
+function child147($x): TypeError { return new TypeError('inner',7); }
+$left = new Plain147; $right = new Plain147; $left->first = 1; $right->first = 2; $left->next = $left; $right->next = $right;
+$p = child147($left); $q = child147($right);
+$a = new ErrorException('same',7,9,'f.php',9,$p); $b = new ErrorException('same',7,1,'f.php',9,$q);
+echo 'B|', $a<=>$b, ':', $b<=>$a, '|';
+$sa = $a->__toString(); $sb = $b->__toString(); echo 'W|', (int)($sa===$sb), ':', $a<=>$b, '|';
+$left->first = 3; echo 'M|', $a<=>$b, ':', $b<=>$a, '|';
+''',
 }
