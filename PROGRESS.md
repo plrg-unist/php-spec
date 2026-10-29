@@ -97,8 +97,8 @@ Throwable. Warning-handler replacement and nested exception reentry preserve
 the original target; Closure call ownership begins at entry and can end before
 readonly result validation. Nine new native-first originals agree, including
 two terminal fatals. Four reached fronts pass 189 checks (184 reached, five
-derived), and private strict431 passes. One measured old API refusal remains
-zero credit. Effectful special callables and the explicit Closure wrapper stay
+derived), and private and actual-tail joined strict431 pass. One measured old
+API refusal remains zero credit. Effectful special callables and the explicit Closure wrapper stay
 partial. [ATTR04 review](coverage/semantics/builtin-deprecated-exception-api-review.json).
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
@@ -194,7 +194,7 @@ and reentrant/abrupt deactivation remain partial.
 | --- | --- |
 | CLASS152 | Ordinary anonymous-constructor binding beyond the two-argument/formal bound; native-first preparation accepted. |
 | COMP156 | Linked ordinary interface images; native-first packet accepted, state preparation. |
-| ATTR04 | Selected exception-handler Deprecated API entry. |
+| ATTR05 | Explicit captured-Closure `__invoke()` warning phases; five native-first originals frozen, private preparation. |
 | Enum M3/M4 | Published-enum array dispatch is integrated for reviewed class-string and case-object sources, including named Stringable arguments. String callable routes, wider generated dispatch, backing dependency and the default loader remain partial. |
 | A72 | Reference-cell CONFIG Generator scalar sends; native-first packet frozen, private preparation. |
 | OB03 | Effectful pending Throwable before output deactivation. |

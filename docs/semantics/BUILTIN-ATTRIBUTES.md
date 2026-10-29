@@ -126,6 +126,7 @@ wrapper boundary remains open.
 The [ATTR04 review](../../coverage/semantics/builtin-deprecated-exception-api-review.json)
 records nine new native-first exception-handler agreements, including one
 unmarked control and two fatal outcomes. Four reached fronts pass 189 conditions
-(184 reached, five derived guards). The measured old boundary remains an
+(184 reached, five derived guards); private and actual-tail joined strict431
+pass at separate cuts. The measured old boundary remains an
 explicit Unsupported result with zero agreement credit. Effectful special API
 callable forms and the explicit Closure wrapper remain partial.
