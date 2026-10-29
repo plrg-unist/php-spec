@@ -281,5 +281,37 @@
     "expected_model": "unsupported",
     "expected_normal_stdout": "READY|CAST|DROP|done|",
     "purpose": "Packed Stringable source origins remain explicit Unsupported before conversion; this refusal control receives zero semantic agreement credit."
+  },
+  {
+    "id": "enum-generated-string-capture-target-retirement",
+    "source": "<?php\nenum ReviewStringCaptureSelected: string { case Exact = \"01\"; case Plain = \"1\"; }\nenum ReviewStringCaptureRebound: string { case Other = \"01\"; }\n$target = \"\\\\rEvIeWsTrInGcApTuReSeLeCtEd::fRoM\";\n$captured = $target(...);\n$weak = WeakReference::create($captured);\n$target = ReviewStringCaptureRebound::class . \"::from\";\nfunction reviewStringCaptureArgument() {\n    global $captured, $weak;\n    $captured = null;\n    echo $weak->get() !== null ? \"held|\" : \"BAD|\";\n    return \"01\";\n}\n$result = $captured(value: reviewStringCaptureArgument());\necho $weak->get() === null ? \"retired|\" : \"BAD|\";\necho $result === ReviewStringCaptureSelected::Exact ? \"selected|\" : \"BAD|\";\necho $target(\"01\") === ReviewStringCaptureRebound::Other ? \"rebound|\" : \"BAD|\";\n",
+    "source_sha256": "02214f9b13bb577e0389fb7520f44cb4eb4672b6ec2868f39af38703f823da7b",
+    "expected_model": "normal",
+    "expected_normal_stdout": "held|retired|selected|rebound|",
+    "purpose": "A computed generated-method string captures its selected enum; argument-side source-variable clearing preserves the real Closure owner until return, then retirement leaves the selected cached case."
+  },
+  {
+    "id": "enum-generated-string-capture-literal-folded",
+    "source": "<?php\nenum DevCaptureUnit { case First; case Second; }\nenum DevCaptureInt: int { case One = 1; }\n$cases = (\"\\\\dEvCaPtUrEuNiT::cAsEs\")(...);\n$all = $cases();\necho $all[0] === DevCaptureUnit::First && $all[1] === DevCaptureUnit::Second ? \"cases|\" : \"BAD|\";\n$try = (\"DevCaptureInt\" . \"::tRyFrOm\")(...);\necho $try(value: \"1\") === DevCaptureInt::One ? \"weak|\" : \"BAD|\";\necho $try(8) === null ? \"miss|\" : \"BAD|\";\n",
+    "source_sha256": "4e545bf36e9be9c5a348dfb1f2c2e5b8651edef88d7ac93c472f96b5eb3c4a47",
+    "expected_model": "normal",
+    "expected_normal_stdout": "cases|weak|miss|",
+    "purpose": "Fixed literal and compiler-folded generated string captures preserve full source identity, cases order, weak integer reception and tryFrom misses."
+  },
+  {
+    "id": "enum-generated-string-capture-stringable-owner",
+    "source": "<?php\nenum DevCaptureSelected: string { case Only = \"01\"; }\nenum DevCaptureRebound: string { case Other = \"01\"; }\nclass DevCaptureText {\n    public function __toString(): string {\n        global $fn, $target;\n        $fn = null;\n        $target = \"DevCaptureRebound::from\";\n        echo \"CAST|\";\n        return \"01\";\n    }\n    public function __destruct() { echo \"DROP|\"; }\n}\n$target = \"\\\\dEvCaPtUrEsElEcTeD::fRoM\";\n$fn = $target(...);\n$weak = WeakReference::create($fn);\necho \"READY|\";\n$result = $fn(\n    value: new DevCaptureText()\n);\necho $weak->get() === null ? \"retired|\" : \"BAD|\";\necho $result === DevCaptureSelected::Only ? \"selected|\" : \"BAD|\";\necho $target(\"01\") === DevCaptureRebound::Other ? \"rebound|\" : \"BAD|\";\n",
+    "source_sha256": "8c161240d5f6a7ce2822b2261c5f412033bee9bd07e3ac97736ab2fef5eec023",
+    "expected_model": "normal",
+    "expected_normal_stdout": "READY|CAST|DROP|retired|selected|rebound|",
+    "purpose": "A captured generated from target retains the real named Stringable child and call-held Closure through callback rebinding, then releases the temporary input before lookup and the Closure after the call."
+  },
+  {
+    "id": "enum-generated-string-capture-strict-reception",
+    "source": "<?php\ndeclare(strict_types=1);\nenum DevCaptureStrict: int { case One = 1; }\n$target = \"DevCaptureStrict::fRoM\";\n$fn = $target(...);\ntry { $fn(value: \"1\"); } catch (TypeError $e) { echo \"type|\"; }\necho $fn(value: 1) === DevCaptureStrict::One ? \"strict|\" : \"BAD|\";\n",
+    "source_sha256": "5d67848f9c6469560bdec1deaf5828f7badfaea0c868262b7e14e0e76b0789ab",
+    "expected_model": "normal",
+    "expected_normal_stdout": "type|strict|",
+    "purpose": "A generated string capture preserves strict integer argument rejection and subsequent valid reception."
   }
 ]
