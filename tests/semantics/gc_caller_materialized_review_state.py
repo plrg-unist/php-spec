@@ -10,6 +10,61 @@ NESTED = sources.family.CASES['nested-caller-local-protects-sibling'].decode()
 RESURRECT = sources.family.CASES['function-caller-mutation-resurrection'].decode()
 
 CASES = {
+    'post-create-identity-temp-metadata': {
+        'source': RESURRECT,
+        'stage': 'S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: '
+        '(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail* '
+        '-- if S.GC.NEXT = 1 -- if S.GC.ACTIVE = eps '
+        '-- if pdestructionoperation.SOURCE = '
+        'BINARY_RIGHT NOTIDENTICAL (KNOWN (POBJECT n_root)) z '
+        '-- if $lookup(S.ENV, $ptascii("saved07")) = (n_saved_cell) '
+        '-- if S.STORE[n_saved_cell] = DEFINED (POBJECT n_root)',
+        'checks': [
+            'pdestructionrelease.JOBS = [DESTRUCTION_TEMP (HOBJECT n_root)]',
+            'pdestructionoperation.NOGC = eps',
+            'pdestructionoperation.NOGCEXTRA = [pgctemporary]',
+            'pgctemporary.OPERAND = KNOWN (POBJECT n_root)',
+            'pgctemporary.PENDING',
+            'pdestructionoperation.VALUE = KNOWN (PBOOL true)',
+            '$gc_binary_source_at(S, pdestructionoperation.ORIGIN, NOTIDENTICAL)',
+            '$gc_extra_source(KNOWN (POBJECT n_root), pdestructionoperation.NOGCEXTRA)',
+            '$gc_extra_bounded(S, pdestructionoperation.NOGCEXTRA)',
+            '$gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), '
+            'pdestructionoperation), pdestructionoperation.NOGCEXTRA)',
+            '$gc_operation_metadata_valid(S, pdestructionoperation)',
+            '$gc_release_metadata_valid(S, pdestructionrelease)',
+            '$call_task_valid(S, DESTRUCTOR_RELEASE pdestructionrelease)',
+            '$heap_owners($heap_graph(S), HOBJECT n_root) = 3',
+            '~((HOBJECT n_root) <- $gc_physical_nodes(S.GC.BUFFER))',
+            '~$gc_operation_metadata_valid(S, pdestructionoperation[.SOURCE = '
+            'BINARY_RIGHT IDENTICAL (KNOWN (POBJECT n_root)) z])',
+            '~$gc_operation_metadata_valid(S[.SOURCES = eps], pdestructionoperation)',
+            '$lookup(S.ENV, $ptascii("weakRoot")) = (n_wrapper_cell)',
+            'S.STORE[n_wrapper_cell] = DEFINED (POBJECT n_wrapper)',
+            '~$gc_operation_metadata_valid(S, pdestructionoperation[.NOGCEXTRA = '
+            '[pgctemporary[.OPERAND = KNOWN (POBJECT n_wrapper)]]])',
+            'S_step = $drive_steps(S, 1)',
+            'S_step.COMPLETION = BUDGET',
+            'pdestructionoperation_consumed = pdestructionoperation[.NOGCEXTRA = '
+            '[pgctemporary[.PENDING = false]]]',
+            'pdestructionrelease_consumed = pdestructionrelease[.JOBS = eps]',
+            'S_step.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_consumed) :: '
+            '(DESTRUCTOR_OPERATION_EXIT pdestructionoperation_consumed) :: ptask_tail*',
+            'pdestructionoperation_consumed <- S_step.DESTRUCTION.OPERATIONS',
+            '$gc_operation_metadata_valid(S_step[.COMPLETION = NORMAL], '
+            'pdestructionoperation_consumed)',
+            '$gc_release_metadata_valid(S_step[.COMPLETION = NORMAL], '
+            'pdestructionrelease_consumed)',
+            '$heap_owners($heap_graph(S_step), HOBJECT n_root) = 2',
+            'S_step.GC.BUFFER = S.GC.BUFFER',
+            'S_done = $drive_steps(S, 3)',
+            'S_done.COMPLETION = BUDGET',
+            'S_done.TODO = ptask_tail*',
+            'S_done.RESULT = KNOWN (PBOOL true)',
+            'S_done.GC.BUFFER = S.GC.BUFFER',
+            '$drive_steps(S_step[.COMPLETION = NORMAL], 2) = S_done',
+        ], 'timeout': 240,
+    },
     'create-copied-argument-no-gc': {
         'source': RESURRECT,
         'stage': 'S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail* '
