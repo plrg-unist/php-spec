@@ -1151,15 +1151,16 @@ compiler slot order. [Direct-CV](coverage/semantics/integer-operator-warning-rev
 and [copied-operand](coverage/semantics/integer-operator-copy-review.json) evidence
 retain separate cuts. Wider producers and object conversion remain open.
 With an empty, unmaterialized `stdClass` RIGHT, a fractional LEFT's Deprecated
-handler can repair the later integer conversion. A shared operand needs a
+handler can repair the later integer conversion. Each shared operand needs a
 surviving outside alias. Shared LEFT keeps its saved integer and supplies its old
 cell's current type for later TypeError despite name rebinding. `%` and shifts
 reread the RIGHT CV; bitwise operations retain a selected RIGHT reference cell.
 A supplied throw cancels delivery. The [plain-CV](coverage/semantics/integer-object-right-warning-review.json),
-[RIGHT-cell](coverage/semantics/integer-reference-object-right-warning-review.json)
-and [LEFT-cell](coverage/semantics/integer-reference-left-object-right-warning-review.json)
-ledgers retain their original cuts. Two wrapped operands and wider owning
-substitutions remain partial.
+[RIGHT-cell](coverage/semantics/integer-reference-object-right-warning-review.json),
+[LEFT-cell](coverage/semantics/integer-reference-left-object-right-warning-review.json)
+and [two-cell](coverage/semantics/integer-both-reference-object-right-warning-review.json)
+ledgers retain their original cuts. Both operands may be shared and rebound;
+wider owning substitutions remain partial.
 Leading-numeric-string `+` now suspends through named warning handlers for two
 direct CVs with preexisting untyped reference cells. Both cells are selected before
 conversion; cached numbers survive handler writes, while the next conversion reads
