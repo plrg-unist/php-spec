@@ -15,6 +15,18 @@ dec $executor_free_zero(pstate, pexecutorfree, pnode) : pexecutorfree
 dec $executor_free_force(pstate, pexecutorfree, nat) : pexecutorfree
 dec $executor_free_walk(pstate, pexecutorfree, nat) : pexecutorfree
 dec $executor_free_result(pstate, pexecutorfree) : pstate
+dec $executor_allocator_fast(prequest?) : bool
+dec $executor_free_endpoint(pstate) : bool
+
+;; getenv takes its first duplicate; ZEND_ATOL reads a signed decimal prefix.
+;; Nonfast shutdown has earlier table/registry releases before the store sweep.
+def $executor_allocator_fast(eps) = true
+def $executor_allocator_fast((Q)) = true
+  -- if $request_env_first(Q.ENV, $ptascii("USE_ZEND_ALLOC")) = eps
+def $executor_allocator_fast((Q)) = (n_value =/= 0)
+  -- if $request_env_first(Q.ENV, $ptascii("USE_ZEND_ALLOC")) = (ptbytes)
+  -- if (n_sign, n_digits*) = $ntsign($nttrim($c_string(ptbytes)))
+  -- if DIGITS n_value n_count n_tail* = $ntdigits(n_digits*, 0, 0)
 
 def $executor_free_weak(S, n) = ($weakref_find(S, S.ALLOCATIONS, n) =/= eps \/ $weakmap_key_maps(S, S.ALLOCATIONS, n) =/= eps)
 def $executor_free_standard(INSTANCE porigin) = true
@@ -112,8 +124,13 @@ def $executor_free_result(S, pexecutorfree) = S[.COMPLETION = UNSUPPORTED "inact
   -- if pexecutorfree.FAILED = eps /\ pexecutorfree.UNKNOWN
 def $executor_free_result(S, pexecutorfree) = S
   -- if pexecutorfree.FAILED = eps /\ ~pexecutorfree.UNKNOWN
-def $output_executor_finish(S) = $executor_free_result(S, $executor_free_walk(S, {HEAP $heap_graph(S), MARKED eps, FAILED eps, UNKNOWN false}, S.DESTRUCTION.NEXT))
+def $executor_free_endpoint(S) = true
   -- if S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.OUTPUTBUFFERS = eps
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE
   -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
   -- if $shutdown_frozen(S.COMPLETION) \/ $output_drain_completion(S.COMPLETION)
+def $executor_free_endpoint(S) = false -- otherwise
+def $output_executor_finish(S) = $executor_free_result(S, $executor_free_walk(S, {HEAP $heap_graph(S), MARKED eps, FAILED eps, UNKNOWN false}, S.DESTRUCTION.NEXT))
+  -- if $executor_free_endpoint(S) /\ $executor_allocator_fast(S.REQUEST)
+def $output_executor_finish(S) = S[.COMPLETION = UNSUPPORTED "nonfast executor table and storage release"]
+  -- if $executor_free_endpoint(S) /\ ~$executor_allocator_fast(S.REQUEST)
