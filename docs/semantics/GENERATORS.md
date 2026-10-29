@@ -407,9 +407,9 @@ owner. Its saved or active frame carries the body receiver when needed; its
 cache retains only the ordinary value or reference owner. Three new authored,
 one independent by-reference SEND/Fiber-abort source
 and one unchanged named-function control agree with PHP. Three reached fronts
-pass 174 custom/189 reported checks; private strict431 passes. The old first-class
-case was checked Unsupported with zero agreement credit. Model `BOUNDFAKECLOSURE` and
-implicit Closure kinds, broader callable sources and producer/lifecycle
+pass 174 custom/189 reported checks; private and actual-tail joined strict431
+pass. The old first-class case was checked Unsupported with zero agreement
+credit. Model `BOUNDFAKECLOSURE` and implicit Closure kinds, broader callable sources and producer/lifecycle
 combinations remain partial; Zend's implementation of `fromCallable` uses a
 fake Closure internally, a distinct representation choice.
 [Captured factory review](../../coverage/semantics/generator-captured-factory-review.json).

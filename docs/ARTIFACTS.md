@@ -207,7 +207,8 @@ The [rebound method ledger](../coverage/semantics/generator-closure-method-revie
 binds tested revisions, hashes and remaining scope.
 
 I80 captured-method Generator factory evidence retains authored native,
-unchanged refusal/control, private strict, source and reached-state cuts under
+unchanged refusal/control, private and CLASS151-tail joined strict, source and
+reached-state cuts under
 `../php-spec-evidence-archive/generator-captured-method-factory-80/`. The
 independent by-reference SEND/Fiber-abort peer is under
 `../php-spec-evidence-archive/generator-captured-method-factory-80-review/`.

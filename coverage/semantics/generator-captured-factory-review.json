@@ -111,7 +111,15 @@
         "report": "../php-spec-evidence-archive/generator-captured-method-factory-80/validated/fiber-state-review-uq23z421/report.json",
         "sha256": "a3eca833165eea55f6c65a128ab3149447e5d0906e7295d5b2f1a7457bf4a178"
       }
-    ]
+    ],
+    "strict_joined": {
+      "revision": "9d58c01c7e757d45bffc26e19abd2686b1c65dc2",
+      "modules": 431,
+      "passed": true,
+      "report": "../php-spec-evidence-archive/generator-captured-method-factory-80/strict-joined-894d/report.json",
+      "sha256": "616f4b3fc0a1e40a55234ee40c0da395f65acd9e8c86f46616ffa0d9020f232f",
+      "result": "SL/cache disabled/determinism enabled; CPU2, LC_ALL=C, TZ=UTC; exit 0, true newline, empty stderr, no timeout, stable watched inputs and HEAD; actors fully reaped."
+    }
   },
   "counts": {
     "new_author_normal": 3,
@@ -121,5 +129,12 @@
     "reached_custom": 174,
     "reached_reported": 189
   },
-  "remaining": "Other model Closure kinds (including BOUNDFAKECLOSURE and implicit), broader captured callable sources, binding, Generator producer/delegation and lifecycle combinations remain partial. Core PHP and BOLA verification remain open."
+  "remaining": "Other model Closure kinds (including BOUNDFAKECLOSURE and implicit), broader captured callable sources, binding, Generator producer/delegation and lifecycle combinations remain partial. Core PHP and BOLA verification remain open.",
+  "composition": {
+    "released_tail": "894d8a59efb75cb5fec5ec94f55b08addb29f54c",
+    "private_package": "c103684fd011eb4df98c3b012ace053194d11f45",
+    "tested_candidate": "9d58c01c7e757d45bffc26e19abd2686b1c65dc2",
+    "review": "Independent actual-tail review clears the original 280-only proof against CLASS151 failed-source accounting and GC06 BASE/NOGC cleanup through weak factory/current/SEND observations. Schema, modules and original I80 tests remain unchanged; canonical checkpoint and held/paused boundaries are preserved.",
+    "execution_credit": "Only joined strict compilation is renewed; accepted native, differential and reached-state cuts retain their original inputs and counts."
+  }
 }

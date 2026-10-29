@@ -14,9 +14,9 @@ real selected method, source access, lexical/called scope and receiver are
 borrowed after callable retirement; actual Generator resume/close ownership
 and ordinary frame/cache roots remain unchanged. Three new authored, one
 independent and one unchanged named-function control match PHP. Three reached
-fronts pass 174 custom/189 reported checks; private strict431 passes. The
-old first-class case was checked Unsupported with zero agreement credit.
-Other callable factory kinds, wider binding, producer and lifecycle contexts
+fronts pass 174 custom/189 reported checks; private and actual-tail joined
+strict431 pass. The old first-class case was checked Unsupported with zero
+agreement credit. Other callable factory kinds, wider binding, producer and lifecycle contexts
 remain partial. [I80 review](coverage/semantics/generator-captured-factory-review.json).
 
 GC06 carries an authenticated claimed count source through canonical materialized
