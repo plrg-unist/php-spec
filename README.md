@@ -3610,7 +3610,8 @@ existing callback/worker/hook fences still bound this cut. See the
 Quiet no-WeakMap ordinary collection now claims later siblings before descending
 the first child. This gives a shared property table its real array count role
 when an earlier object also reaches it as a proxy. Two native-first sources
-agree at count 3, while the unchanged model counted 2; 106 private strict SL
+agree at count 3; the unchanged model counted 2 on the inline author case.
+The 106 private strict SL
 reached checks cover the actual collector consumer, physical owners and plan
 authentication. An unrelated held destructor remains outside the collected
 component. Callback, residual, worker, hook and active-context collection
