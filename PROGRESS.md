@@ -49,7 +49,8 @@ RIGHT cell. Old scalar writes preserve cache and selected error types; supplied
 throws cancel before unfinished RHS conversion. Sixteen fresh authored sources,
 the exact former OP108 boundary and four independent sources agree exactly.
 Strict424, four new reached fronts/508 checks and the affected promoted seed/58
-checks pass. Original boundary29 remains historical; earlier positive suites
+checks pass. Joined strict compilation over the current 424-module tail also
+passes. Original boundary29 remains historical; earlier positive suites
 retain their cuts without replay. No new task/root is added. Sole-owner/expired
 cells, late owning LEFT-object failure and wider owning histories remain partial.
 [Two-cell review](coverage/semantics/integer-both-reference-object-right-warning-review.json).
