@@ -63,7 +63,7 @@ $setter=ini_set(...);$option=17.25;$value=13;$it=new StrictScalarOptionIterator6
 echo "S;";
 try {$result=$setter(...$it);echo "BAD;";}
 catch (TypeError $e) {
-    echo "T:",$e->getMessage()==="ini_set(): Argument #1 ($option) must be of type string, float given",":",$result,":",ini_get("precision"),":",$option,":",$value,";";
+    echo "T:",$e->getMessage()==='ini_set(): Argument #1 ($option) must be of type string, float given',":",$result,":",ini_get("precision"),":",$option,":",$value,";";
 }
 unset($it,$e);$option=17.25;$value=13;$it=new StrictScalarOptionIterator68;$result=99;
 echo "I;";$result=$setter->__invoke(...$it);
