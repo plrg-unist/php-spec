@@ -143,6 +143,27 @@ CASES = {
     ], '$closure->__invoke($token);', [
         'restore_error_handler(); echo "E:", $body === 1, ":", $calls === 2 && $other === 0, ":", $weak_token->get() === null, ":", $weak_value->get() === null, ":", $weak_closure->get() === null, ":", $weak_receiver->get() === null, ";";',
     ]),
+    'invoke-sensitive-raw-wrapper-and-coerced-body-snapshots': at80([
+        'declare(strict_types=1);',
+        '#[\\Deprecated("redact", "17"), \\NoDiscard]',
+        'function redacted(#[\\SensitiveParameter] int $secret) {',
+        '    $GLOBALS["body"]++; $trace = (new Exception("body"))->getTrace();',
+        '    echo "B:", $secret === 7, ":", $trace[0]["function"] === "redacted", ":", $trace[0]["args"][0] instanceof SensitiveParameterValue, ":", $trace[0]["args"][0]->getValue() === 7, ":", $trace[1]["function"] === "__invoke" && $trace[1]["class"] === "Closure", ":", $trace[1]["args"][0] instanceof SensitiveParameterValue, ":", $trace[1]["args"][0]->getValue() === "7", ":", $trace[0]["args"][0] !== $trace[1]["args"][0], ":", !isset($trace[2]), ";"; return 9;',
+        '}',
+        'function notice($level, $message, $file, $line) {',
+        '    $GLOBALS["calls"]++; $trace = (new Exception("phase"))->getTrace();',
+        '    if ($level === 8192) {',
+        '        echo "O:", $message === "Method Closure::__invoke() is deprecated since 17, redact", ":", !isset($trace[1]), ";"; return true;',
+        '    }',
+        '    if ($level === 16384) {',
+        '        echo "I:", $message === "Function redacted() is deprecated since 17, redact", ":", $trace[1]["function"] === "__invoke" && $trace[1]["class"] === "Closure", ":", $trace[1]["args"][0] instanceof SensitiveParameterValue, ":", $trace[1]["args"][0]->getValue() === "7", ":", !isset($trace[2]), ";"; return true;',
+        '    }',
+        '    $GLOBALS["other"]++; echo "BAD-WARNING;"; return true;',
+        '}',
+        '$body = 0; $calls = 0; $other = 0; $closure = redacted(...); set_error_handler("notice");',
+    ], '$closure->__invoke("7");', [
+        'restore_error_handler(); echo "E:", $body === 1, ":", $calls === 2 && $other === 0, ";";',
+    ]),
 }
 
 EXPECTED_STDOUT = {
@@ -152,6 +173,7 @@ EXPECTED_STDOUT = {
     'invoke-body-return-retires-raw-argument-before-outer-receiver': b'O:1:1:1;I:1:1;B:1:1:1;T:1:1:1;R:1:1:1;E:1:1:1:1:1;',
     'invoke-named-unpack-default-hole-stays-raw-through-warnings': b'O:1:1:1;I:1:1:1:1:1;B:1:1:1;E:1:1;',
     'invoke-unused-owning-result-retires-between-raw-argument-and-receiver': b'O:1:1:1;I:1:1;B:1:1:1;T:1:1:1:1;V:1:1:1;R:1:1:1;E:1:1:1:1:1:1;',
+    'invoke-sensitive-raw-wrapper-and-coerced-body-snapshots': b'O:1:1;I:1:1:1:1:1;B:1:1:1:1:1:1:1:1:1;E:1:1;',
 }
 
 EXIT_CODES = {name: 0 for name in CASES}
