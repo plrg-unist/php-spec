@@ -113,6 +113,36 @@ CASES = {
     ], '$closure->__invoke(...["second" => 2]);', [
         'restore_error_handler(); echo "E:", $body === 1, ":", $calls === 2 && $other === 0, ";";',
     ]),
+    'invoke-unused-owning-result-retires-between-raw-argument-and-receiver': at80([
+        'class ResultToken {',
+        '    public function __destruct() { echo "T:", $GLOBALS["body"] === 1, ":", $GLOBALS["weak_value"]->get() !== null, ":", $GLOBALS["weak_closure"]->get() !== null, ":", $GLOBALS["weak_receiver"]->get() !== null, ";"; }',
+        '}',
+        'class ResultValue {',
+        '    public function __destruct() { echo "V:", $GLOBALS["weak_token"]->get() === null, ":", $GLOBALS["weak_closure"]->get() !== null, ":", $GLOBALS["weak_receiver"]->get() !== null, ";"; }',
+        '}',
+        'class ResultCarrier {',
+        '    #[\\Deprecated, \\NoDiscard]',
+        '    public function act($argument) {',
+        '        $GLOBALS["body"]++; $value = new ResultValue(); $GLOBALS["weak_value"] = WeakReference::create($value);',
+        '        echo "B:", $argument === $GLOBALS["weak_token"]->get(), ":", $GLOBALS["weak_closure"]->get() !== null, ":", $GLOBALS["weak_receiver"]->get() === $this, ";"; return $value;',
+        '    }',
+        '    public function __destruct() { echo "R:", $GLOBALS["weak_token"]->get() === null, ":", $GLOBALS["weak_value"]->get() === null, ":", $GLOBALS["weak_closure"]->get() === null, ";"; }',
+        '}',
+        'function notice($level, $message, $file, $line) {',
+        '    $GLOBALS["calls"]++;',
+        '    if ($level === 8192) {',
+        '        $GLOBALS["closure"] = null; $GLOBALS["token"] = null;',
+        '        echo "O:", $message === "Method Closure::__invoke() is deprecated", ":", $GLOBALS["weak_closure"]->get() !== null, ":", $GLOBALS["weak_token"]->get() !== null, ";"; return true;',
+        '    }',
+        '    if ($level === 16384) { echo "I:", $message === "Method ResultCarrier::act() is deprecated", ":", $GLOBALS["weak_closure"]->get() !== null, ";"; return true; }',
+        '    $GLOBALS["other"]++; echo "BAD-WARNING;"; return true;',
+        '}',
+        '$body = 0; $calls = 0; $other = 0; $receiver = new ResultCarrier(); $closure = $receiver->act(...);',
+        '$weak_receiver = WeakReference::create($receiver); $weak_closure = WeakReference::create($closure); $receiver = null;',
+        '$token = new ResultToken(); $weak_token = WeakReference::create($token); set_error_handler("notice");',
+    ], '$closure->__invoke($token);', [
+        'restore_error_handler(); echo "E:", $body === 1, ":", $calls === 2 && $other === 0, ":", $weak_token->get() === null, ":", $weak_value->get() === null, ":", $weak_closure->get() === null, ":", $weak_receiver->get() === null, ";";',
+    ]),
 }
 
 EXPECTED_STDOUT = {
@@ -121,6 +151,7 @@ EXPECTED_STDOUT = {
     'invoke-reference-slot-live-through-both-warnings': b'O:1:1;I:1:1:1:1;B:1:1;E:1:1:1:1:1:1;',
     'invoke-body-return-retires-raw-argument-before-outer-receiver': b'O:1:1:1;I:1:1;B:1:1:1;T:1:1:1;R:1:1:1;E:1:1:1:1:1;',
     'invoke-named-unpack-default-hole-stays-raw-through-warnings': b'O:1:1:1;I:1:1:1:1:1;B:1:1:1;E:1:1;',
+    'invoke-unused-owning-result-retires-between-raw-argument-and-receiver': b'O:1:1:1;I:1:1;B:1:1:1;T:1:1:1:1;V:1:1:1;R:1:1:1;E:1:1:1:1:1:1;',
 }
 
 EXIT_CODES = {name: 0 for name in CASES}
