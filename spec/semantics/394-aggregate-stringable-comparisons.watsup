@@ -948,6 +948,10 @@ def $trace_visit_value_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*,
 ;; Zend table identity precedes active-left recursion, which precedes count.
 def $trace_visit_array_effect(S, n, n, pcompareguard_seen*, pcompareguard_path*, z) = (S, ORDER 0)
   -- if $trace_visit_array_header(S, n)
+def $trace_visit_array_effect(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z) = (S, ORDERRECURSIVE)
+  -- if n_left =/= n_right
+  -- if $trace_visit_array_header(S, n_left) /\ $trace_visit_array_header(S, n_right)
+  -- if (HARRAY n_left) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S))
 def $trace_visit_array_effect(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z) = (S, ORDER $compare_int($aggregate_table_count(S.ARRAYS[n_left].ITEMS), $aggregate_table_count(S.ARRAYS[n_right].ITEMS)))
   -- if n_left =/= n_right
   -- if $trace_visit_array_header(S, n_left) /\ $trace_visit_array_header(S, n_right)
@@ -975,6 +979,10 @@ def $trace_visit_object_effect(S, n_left, n_right, pcompareguard_seen*, pcompare
   -- if $trace_visit_object_image(S, n_left)
   -- if $trace_visit_object_image(S, n_right)
 def $trace_visit_object_effect(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
+def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z) = (S, ORDERRECURSIVE)
+  -- if $trace_visit_inline_pair(S, n_left, n_right)
+  -- if pcompareguard_object = $aggregate_object_guard(S, n_left, n_right)
+  -- if pcompareguard_object <- (pcompareguard_seen* ++ $aggregate_compare_seen(S))
 def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z) = $trace_visit_entries_effect(S, $trace_object_current_entries(S, n_left), $trace_object_current_entries(S, n_right), pcompareguard_object :: pcompareguard_seen*, pcompareguard_object :: pcompareguard_path*, z)
   -- if $trace_visit_inline_pair(S, n_left, n_right)
   -- if pcompareguard_object = $aggregate_object_guard(S, n_left, n_right)
