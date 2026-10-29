@@ -698,6 +698,13 @@ then permits saved-setter recovery. Native3/source3, strict413 and 467 original
 state conditions pass (523 physical, 56 setup), with no retry. The initial
 Unsupported comparison remains zero; wider caches, producers and lifetimes remain partial.
 
+[Scalar Generator CONFIG sends](coverage/semantics/config-generator-scalar-review.json)
+now copy NULL/bool/int/float values through the existing by-value Generator routes.
+Later resumes cannot change earlier sends; terminal effects and DATA/INPUT cleanup
+precede INI_SET conversion, strict errors and NULL deprecation handlers. Live API
+precision controls float conversion. Reference yields, owning argument buffers and
+wider producer/RETURN-storage lifetimes retain their existing limits.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical

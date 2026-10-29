@@ -1755,3 +1755,18 @@ remains Unsupported. Constructed first-key and graph-rejection
 checks do not establish extra native source agreements or broader GC coverage.
 All held boundaries, including low-precision DEFINE-name NaN and owned-NUL release,
 remain untouched. Original A66/A67/A68 cuts retain their scope and identities.
+
+The [scalar Generator increment](../../coverage/semantics/config-generator-scalar-review.json)
+reuses the same flat scalar policy for live VALUE sends and copied-item history on
+the existing non-reference CONFIG Generator routes. NULL, bool, int and float
+snapshots survive later resumes and source/callee rebinding. Terminal effects and
+ordinary DATA/INPUT cleanup still precede INI_SET reception: strict option errors,
+weak NULL deprecation callbacks and value conversion using live precision reuse the
+existing API helpers. Historical scalar-call authority remains valid after the
+Generator retires, including handler return or supplied throw.
+
+Producer, key, initial-state, two-send and owner policies are unchanged. Reference
+yields and owning argument buffers remain separate; the existing owning RETURN
+storage path keeps its string-cache/integer-key history rule. Wider object/effectful
+conversion and all paused boundaries remain outside this increment. The earlier
+Generator reviews retain their original string-only cuts without renewed credit.

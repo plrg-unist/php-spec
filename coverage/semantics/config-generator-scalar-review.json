@@ -1,0 +1,144 @@
+{
+  "milestone": "A71 scalar CONFIG Generator sends",
+  "status": "privately implemented, independently reviewed and validated; integration queued",
+  "scope": {
+    "consumer": "Existing INI_SET non-reference Generator routes; ordinary flat NULL/bool/int/float VALUE caches join the prior checked string/carrier domain.",
+    "behavior": "Each send copies the scalar before later resumes. Terminal effects and ordinary DATA/INPUT cleanup precede API strictness, NULL diagnostics and value conversion using live precision; selected callee and prior snapshots survive input/callee/value rebinding.",
+    "limits": "Producer, key, initial-state, two-send, owner and graph policies are unchanged. REFCELL/reference yields, owning argument buffers and wider object/effectful conversions remain separate. Existing owning RETURN storage keeps its string-cache/integer-key history rule. All held boundaries, including Source47 DEFINE-name NaN and owned-NUL release, remain untouched."
+  },
+  "implementation": {
+    "modules": [
+      "spec/semantics/423-config-generator-unpack.watsup"
+    ],
+    "base": "d10c7afea96992b80754b8c963826c7465a00be4",
+    "source_freeze": "2d2a94eae0b53f5f50e2496e95a89de7d7e829bb",
+    "runtime_revision": "37393ba3d54e411c22e8662958253c4eda7984ba",
+    "runtime_sha256": "efc2d4e669667bde7d96fbfe2f8fd8d554753177fab9442a32e8558fcac1ffa3",
+    "state_freeze": "f00700d5b3052916ce68de083536c768e4711b7f",
+    "change": "Three string-only checks in copied-item history/live send reuse the existing flat-scalar predicate. The residual Unsupported reason and both blocked registries are updated consistently; no API, reference, root, schema or low-level ownership implementation changes.",
+    "engine": "Pinned Zend/zend_vm_def.h ZEND_SEND_UNPACK dereferences and copies each Generator current before move_forward; traversal and iterator/INPUT release precede INI_SET parameter reception.",
+    "reuse": "A68 scalar-call/source/callee receipt authenticates NULL callback return/throw after Generator retirement without a new TODO-specific path or API helper."
+  },
+  "validation": {
+    "target": "PHP 8.5.10 CLI NTS64, project-local .tools/php/bin/php and tests/semantics/profile.json; checked frontend and SL/cache-off/determinism-on model.",
+    "execution": "Serial full-tree affinity: native/old gate CPU3, private strict/source/state CPU2. Inputs and tested HEAD stable, no timeout/interruption/group survivors. Agreement/strict/state models exit0; the original refusal exits1. Source internal240/process270, states300, strict180 seconds.",
+    "native": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-scalars-71/native-source-freeze/report.json",
+      "sha256": "bc9d54a0fdea63910d4d6545639c79a91b7c0c0c85ede22bb44d3a92c66152fc",
+      "revision": "2d2a94eae0b53f5f50e2496e95a89de7d7e829bb",
+      "originals": 5,
+      "agreement_credit": 0,
+      "expected": "Each raw original and stdout independently matches frozen CASES/manual EXPECTED byte-for-byte, stderr empty; native capture alone is zero model agreement."
+    },
+    "old_refusal": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-scalars-71/old-gate-source-freeze/report.json",
+      "sha256": "689649168edd703dff68d1585c444d7e6b7d241ddb86b52cb0f06b8ede6e78c9",
+      "revision": "2d2a94eae0b53f5f50e2496e95a89de7d7e829bb",
+      "executed": 1,
+      "reason": "CONFIG Generator unpack send outside two-string integer-key domain",
+      "prefix": "B;Y0;Y1;",
+      "agreement_credit": 0
+    },
+    "sources": {
+      "agreements": 5,
+      "rows": [
+        {
+          "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-scalars-71/candidate-37393ba3d/config-generator-scalar-float-post-terminal-precision/report.json",
+          "sha256": "8e139c169d40f156c71d4abe733665a6eeeb421517301de5bf6cfe4f3f4b3077",
+          "revision": "37393ba3d54e411c22e8662958253c4eda7984ba",
+          "id": "config-generator-scalar-float-post-terminal-precision",
+          "source_sha256": "0b036e640dc63889e73b8a59ee4712a441cba3822f1173d4ef30709574d8550e",
+          "seconds": 29.259811639785767,
+          "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/config-generator-scalars-71/native-source-freeze/report.json"
+        },
+        {
+          "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-scalars-71/candidate-37393ba3d/config-generator-scalar-null-option-handler-return/report.json",
+          "sha256": "2fd28fca55eb67700872429de5e5203fd9a67518f73bf6edafafcfec778b0bc1",
+          "revision": "37393ba3d54e411c22e8662958253c4eda7984ba",
+          "id": "config-generator-scalar-null-option-handler-return",
+          "source_sha256": "ecbbbd99bbc7c9d95d504d8fe7faea2cf3f20d18c28114982b9330be08ddbf58",
+          "seconds": 48.72434091567993,
+          "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/config-generator-scalars-71/native-source-freeze/report.json"
+        },
+        {
+          "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-scalars-71/candidate-37393ba3d/config-generator-scalar-null-option-handler-throw/report.json",
+          "sha256": "7c67a36354a6a88777c6f061b44200571b88bf1955100cd0f3d4f605e0e44109",
+          "revision": "37393ba3d54e411c22e8662958253c4eda7984ba",
+          "id": "config-generator-scalar-null-option-handler-throw",
+          "source_sha256": "fe8bc2d87b37c754373b9a6d59331ffe9caee73975a9ca65910921cc23c04d25",
+          "seconds": 53.2685809135437,
+          "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/config-generator-scalars-71/native-source-freeze/report.json"
+        },
+        {
+          "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-scalars-71/candidate-37393ba3d/config-generator-scalar-strict-value-matrix/report.json",
+          "sha256": "6a932330a736b81110b73e2d8ea588de80f017e306786dd11b6cd7904790c9f1",
+          "revision": "37393ba3d54e411c22e8662958253c4eda7984ba",
+          "id": "config-generator-scalar-strict-value-matrix",
+          "source_sha256": "f320ee36bf283acb5031d3935d80c17518c221f87704ecf407f70d471aff4817",
+          "seconds": 60.170056104660034,
+          "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/config-generator-scalars-71/native-source-freeze/report.json"
+        },
+        {
+          "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-scalars-71/candidate-37393ba3d/config-generator-scalar-strict-option-and-saved-terminal-throw/report.json",
+          "sha256": "b59f3f8b418bef61eb4934be09d09ea7f3b4107b4f78a0b24e02e6497fe6d140",
+          "revision": "37393ba3d54e411c22e8662958253c4eda7984ba",
+          "id": "config-generator-scalar-strict-option-and-saved-terminal-throw",
+          "source_sha256": "fa1616c034b874c30c77a49ac089366054366c6a69d00faa32ccff968e9e2ea8",
+          "seconds": 34.76785135269165,
+          "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/config-generator-scalars-71/native-source-freeze/report.json"
+        }
+      ]
+    },
+    "new_states": {
+      "conditions": 281,
+      "boolean": 277,
+      "raw_steps": 4,
+      "author": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-scalars-71/state-author-f00700d5b/report.json",
+        "sha256": "3e40c5ee3af07bd18b854a509482783ad922b7a3e1e206a4a4aa95caa50a9744",
+        "revision": "f00700d5b3052916ce68de083536c768e4711b7f",
+        "conditions": 141,
+        "raw_steps": 2,
+        "seconds": 31.84505319595337
+      },
+      "peer": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-scalars-71/state-peer-f00700d5b/report.json",
+        "sha256": "a41bf4408dd6c18940f6840e300c7969a7d1ab597652e70eaba1dc47015f4dfb",
+        "revision": "f00700d5b3052916ce68de083536c768e4711b7f",
+        "conditions": 140,
+        "raw_steps": 2,
+        "seconds": 58.15886425971985
+      },
+      "coverage": "Source-reached float VALUE/copy/terminal/API/held-owner release and NULL VALUE/copy/retired-DATA/handler/resume fronts. REFCELL and missing-code denials are constructed projections, not reached reference yields. Matrix/strict/throwing-handler paths retain source agreement without duplicate reached recipes."
+    },
+    "private_strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-scalars-71/private-strict-37393ba3d/report.json",
+      "sha256": "ddc159ee6fd003fae2840d69968260349e269cd3a1026779693dc682e423bcd2",
+      "revision": "37393ba3d54e411c22e8662958253c4eda7984ba",
+      "modules": 431
+    },
+    "result": "All five source and two reached recipes passed first execution under unchanged budgets; no executed native/model/fixture failures. The original checked Unsupported retains zero agreement. No A70 or older accepted source/state/native replay.",
+    "review": "Independent literal/EXPECTED, exact runtime, focused fixture and raw-result review by array69_fallback_review."
+  },
+  "recovery": {
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-scalars-71",
+    "raw_archive": {
+      "file": "raw.tar",
+      "sha256": "1cfb7e41d7eecc7d4c67843e32110f91a39c477e90f7752808752cebca791c1d",
+      "bytes": 2017280,
+      "files": 107
+    },
+    "manifest_sha256": "b56884edc51eb2323313a86250064e86c3a2307f405d74377cc48c3b7df44f6a",
+    "private_branch": "semantics/config-generator-scalars-71",
+    "commands": [
+      "python3 tests/semantics/config_generator_scalar_sources.py --output OUT/author-source",
+      "python3 tests/semantics/config_generator_scalar_state.py --source-report OUT/author-source/report.json --output OUT/author-state",
+      "python3 tests/semantics/config_generator_scalar_review_sources.py --output OUT/peer-source",
+      "python3 tests/semantics/config_generator_scalar_review_state.py --source-report OUT/peer-source/report.json --output OUT/peer-state"
+    ],
+    "notes": "Raw archive contains originals, streams, reports and generated fixtures; no executables/providers. Extract externally; historical paths/cuts remain original. Public source callers compare native/model raw streams; the native freeze separately verifies manual EXPECTED."
+  },
+  "integration": {
+    "status": "pending actual-tail composition and one full-manifest joined strict check"
+  }
+}

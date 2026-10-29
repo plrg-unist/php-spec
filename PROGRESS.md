@@ -38,23 +38,20 @@ Earlier [I75](coverage/semantics/generator-keyword-creation-review.json),
 [I79](coverage/semantics/generator-closure-method-review.json) reviews retain
 their distinct scope, counts and raw failures.
 
-A69 keeps finite CFG-admitted ARRAY and ordinary non-Stringable INSTANCE arguments
-in real normalized INI_SET call slots through next and DATA/INPUT retirement.
-Array COW preserves table snapshots; embedded aliases and object identity stay
-shared. API TraceArgs may retain values until the final Error or outside owner
-is released. Exact owning key/send Error producers preserve CURRENT, DATA/INPUT,
-then prefix cleanup. Typed sources, scalar binding and held boundaries retain
-their existing contracts; effectful casts, other consumers and wider lifecycle
-contexts remain partial.
-[Owning-argument review](coverage/semantics/config-iterator-argument-review.json),
+CONFIG Iterator sends preserve scalar snapshots and finite CFG-admitted ARRAY or
+ordinary non-Stringable INSTANCE arguments. Existing by-value Generator routes
+also copy flat scalars before later resumes; INI_SET conversion, strict errors and
+NULL handlers follow traversal and DATA/INPUT cleanup. COW protects array tables,
+while embedded aliases, object identity and API TraceArgs retain ordinary owners.
+Owning Iterator aborts release CURRENT, DATA/INPUT, then the copied prefix. Admitted
+last-owner temporary Iterator INPUT finalizers keep live copied arguments protected.
+Typed-source reads and existing producer/key/finite-graph policies stay intact;
+reference-yield Generators, owning Generator arguments, effectful casts and wider
+lifecycles remain partial.
+[Owning arguments](coverage/semantics/config-iterator-argument-review.json),
+[INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
+[Generator scalars](coverage/semantics/config-generator-scalar-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
-
-A70 runs admitted last-owner temporary Iterator INPUT cleanup while normalized
-copied arguments stay protected. DATA retires first; normal API reception follows
-INPUT destruction, and supplied-Throwable cleanup releases the prefix afterward.
-Finite field/finalizer policy, COW, aliases and API TraceArgs retain their ordinary
-rules. Other temporary source/key forms and wider lifecycle contexts remain partial.
-[INPUT cleanup review](coverage/semantics/config-iterator-input-finalizer-review.json).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
 ordinary source-call warnings after sends/named defaults, before reception/body.
