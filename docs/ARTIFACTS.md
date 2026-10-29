@@ -393,6 +393,14 @@ The selective multiple-entry WeakMap ephemeron proof is in
 packets, app0 preflight, immutable author/peer snapshots and the isolated422 patch.
 SHA-256 `fd18be8469986efff7089777ce8f7f9522c01bad623f6c8a7d33f40629fe349a`.
 
+CALL124's original PHP requests, candidate/strict reports, failed fixture cuts
+and eight accepted reached traces are under
+`../php-spec-evidence-archive/call124-author-native/`. The independent sources,
+retained-native comparisons and handler projections are under
+`../php-spec-evidence-archive/call124-review-native/`. The concise
+[review](../coverage/semantics/magic-iterator-unpack-review.json) records tested
+revisions, hashes and the recovery paths.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

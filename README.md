@@ -5570,8 +5570,9 @@ Named-only calls share the argument table with a retained buffer: `unset($argume
 leaves its Payload alive through `A`, then buffer cleanup precedes receiver cleanup
 and cached `7` delivery or the same supplied throw with destination `42` unchanged.
 [Three source agreements and 559 focused premises](coverage/semantics/magic-named-call-review.json)
-bind separate cuts. Static/scoped named, unpacked/reference sends and wider
-argument/ownership forms remain partial.
+bind separate cuts. That non-Iterator named slice leaves static/scoped named
+calls, reference sends and wider argument/ownership forms partial; the selected
+Iterator unpack extension is described below.
 
 External literal missing static calls also invoke inherited public
 `__callStatic(string,array)`, retaining lexical Parent/called Child and early sends
@@ -5748,6 +5749,10 @@ Supported computed and temporary public `__invoke` callees now use the same
 ordinary INIT selection and cleanup, consuming their raw callee result before
 Iterator arguments run. [Computed-callee review](coverage/semantics/computed-callee-unpack-review.json)
 records six new/promoted sources, two independent sources and four retained controls.
+Missing instance and external static methods now collect initialized Iterator
+spreads through the real magic trampoline before invoking `__call` or
+`__callStatic`; the [magic Iterator review](coverage/semantics/magic-iterator-unpack-review.json)
+records named/positional order, copied values and receiver/buffer cleanup.
 Public concrete class-method strings now distinguish
 computed static dispatch from fixed calls using a compatible active receiver.
 Immutable string captures/clone retain selected descriptors, called scope and

@@ -641,49 +641,31 @@ retired cleanup negatives. Earlier failed cuts retain zero credit. `bindTo`
 clones, method wrappers, `Closure::call` and non-CV operands remain open.
 [CALL120 review](coverage/semantics/closure-iterator-unpack-review.json).
 
-Dynamic calls through a public user object `__invoke` CV now accept initialized
-Iterator CV unpack. A selected receiver survives key-time CV rebinding; inherited
-named and by-reference parameters keep their effective method and declaring-class
-Warning. Invalid and throwing keys retain authentic retired-receiver cleanup.
-Five authored and one independent frozen source agree byte-for-byte with pinned
-PHP; seven source-reached fixtures pass 146 assertions. Independently reviewed
-actual-tail composition passes strict compilation of 424 modules. At that cut a
-native-positive temporary callee was `Unsupported`; CALL123 promotes it.
-Earlier fixture failures
-and all unchanged Unsupported baselines have zero agreement credit. The saved
-target ID carries original selection after retirement; same-class historical
-selection is not reconstructed. Wider callee/operand forms remain partial.
-[CALL121 review](coverage/semantics/invokable-iterator-unpack-review.json).
+Iterator unpack covers ordinary method, public array-callable, Closure and
+public `__invoke` targets with checked CV and non-CV INPUT, including supported
+computed/temporary `__invoke` callees. Raw INPUT, selected DATA and selected
+receiver ownership stay distinct through reference retargeting; callback rebinding
+preserves the target and by-reference Warning scope/line. Authentic saved selection
+checks cleanup after a receiver or Closure retires without restoring owners.
+The [CALL121](coverage/semantics/invokable-iterator-unpack-review.json),
+[CALL122](coverage/semantics/owned-iterator-unpack-review.json) and
+[CALL123](coverage/semantics/computed-callee-unpack-review.json) reviews retain
+their separate source/reached cuts, profiles and unchanged controls. Failed and
+Unsupported baselines earn zero agreement credit. Wider callable, producer,
+reference and lifecycle forms remain partial.
 
-Existing ordinary method, public array-callable, Closure and `__invoke` CV
-targets now share checked non-CV Iterator INPUT handling. Raw object/reference
-INPUT stays separate from selected DATA, including source-cell retargeting;
-normal teardown precedes target reception, and abrupt cleanup authenticates a
-retired direct receiver or Closure without adding owners. Eight new authored
-originals and the promoted CALL118 boundary match retained native request-profile
-observations; two independent reference-input originals agree under the ordinary
-CLI profile. Six authored reached groups/139 reported assertions and one
-independent group/37 assertions pass. Strict compilation of 424 modules passes
-privately and on the independently reviewed actual tail. The unchanged
-eleven Unsupported baselines earn zero agreement credit. Unsupported producers
-and wider lifecycle forms remain separate.
-[CALL122 review](coverage/semantics/owned-iterator-unpack-review.json).
-
-Supported computed/temporary public `__invoke` callees now share ordinary INIT
-acquisition and selected-receiver ownership with Iterator unpack. Raw object or
-reference callee results are consumed before arguments; key-time source retargeting
-keeps the selected old receiver. Inherited named/by-reference Warnings preserve
-declaring scope and the outer unpack line; invalid keys and a throwing receiver
-destructor preserve cleanup and original `Previous` order. Five new authored
-originals plus the promoted CALL121 boundary match retained native request-profile
-observations; two independent reference-callee originals agree under ordinary CLI.
-Four exact unchanged-positive controls retain their disjoint baseline cut.
-Private and independently reviewed actual-tail strict compilation of 424 modules
-passes. Four authored reached groups/120 assertions and one independent
-group/36 assertions pass. The eight unchanged Unsupported baselines earn zero
-agreement credit. Unsupported producers and wider callable/lifecycle forms
-remain partial.
-[CALL123 review](coverage/semantics/computed-callee-unpack-review.json).
+CALL124 admits initialized user Iterator spreads into selected missing instance,
+compatible `self::` and external static magic calls through a zero-formal,
+by-value trampoline. It packs positional slots before named keys, enters the
+real public two-formal handler, and retains named-buffer/receiver ownership
+through normal, invalid-key and throwing cleanup. Nine authored and four
+independent original-source gaps now agree exactly with retained pinned PHP;
+two existing positional controls retain their earlier exact cut. Strict425,
+eight authored reached groups/253 reported assertions and two independent
+handler groups/77 assertions pass at separate tested cuts. Baseline Unsupported
+gaps and all failed fixture/transport packets remain zero credit. Wider magic
+producers, signatures, references and lifetimes remain partial.
+[CALL124 review](coverage/semantics/magic-iterator-unpack-review.json).
 
 ## Active and unintegrated work
 
@@ -692,7 +674,7 @@ remain partial.
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
