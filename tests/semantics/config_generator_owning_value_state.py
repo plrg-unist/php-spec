@@ -72,7 +72,11 @@ def conditions(name, program, path, stdout):
         'S_finish.OBJECTS[n_generator] = GENERATOR pgenerator_closed',
         'pgenerator_closed.PHASE = GENERATOR_CLOSED',
         owners('S_finish', 'HOBJECT n_generator', 2),
-        owners('S_finish', 'HARRAY n_option', 1),
+        '$task_nodes(CONFIG_GENERATOR pconfiggenerator_finish "finish") = [HOBJECT n_generator,HARRAY n_option]',
+        '(HARRAY n_option) <- $pools_nodes(S_finish.POOLS)',
+        '$heap_owners($heap_graph(S_finish),HARRAY n_option) = $(1 + $heap_count(HARRAY n_option,$pools_nodes(S_finish.POOLS)))',
+        'S_finish_without_task = S_finish[.TODO = ptask_finish*]',
+        '$heap_owners($heap_graph(S_finish_without_task),HARRAY n_option) = $heap_count(HARRAY n_option,$pools_nodes(S_finish.POOLS))',
         'S_lost = S_finish[.STORE[n_gen_cell] = DEFINED PNULL]',
         '~$config_generator_finish_allowed(S_lost,pconfiggenerator_finish)',
         'S_cycle = S_finish[.ARRAYS[n_option].ITEMS = [ENTRY (KINT 0) (DIRECT (PARRAY n_option))]]',
@@ -92,7 +96,10 @@ def conditions(name, program, path, stdout):
         'pconfigcall.SENT = [NAMED_SENT (KNOWN (PARRAY n_option)),NAMED_SENT (KNOWN (PINT 7))]',
         '$config_nodes(pconfigcall) = [HARRAY n_option]',
         owners('S_invoke', 'HOBJECT n_generator', 1),
-        owners('S_invoke', 'HARRAY n_option', 1),
+        '$task_nodes(CONFIG_GENERATOR pconfiggenerator_invoke "invoke") = [HARRAY n_option]',
+        '$heap_owners($heap_graph(S_invoke),HARRAY n_option) = $(1 + $heap_count(HARRAY n_option,$pools_nodes(S_invoke.POOLS)))',
+        'S_invoke_without_task = S_invoke[.TODO = ptask_invoke*]',
+        '$heap_owners($heap_graph(S_invoke_without_task),HARRAY n_option) = $heap_count(HARRAY n_option,$pools_nodes(S_invoke.POOLS))',
         'PhpStep: S_invoke ~> S_error',
         'S_error.COMPLETION = THROWING n_error',
         '$throwable_field(S_error,n_error,"previous") = PNULL',
@@ -109,12 +116,13 @@ def conditions(name, program, path, stdout):
         '$lookup(S_catch.ENV,$ptascii("error")) = (n_error_cell)',
         'S_catch.STORE[n_error_cell] = DEFINED (POBJECT n_error)',
         'S_catch.ARRAYS[n_option].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 4))]',
-        owners('S_catch', 'HARRAY n_option', 1),
+        '$heap_owners($heap_graph(S_catch),HARRAY n_option) = $(1 + $heap_count(HARRAY n_option,$pools_nodes(S_catch.POOLS)))',
     ] + public('S_catch') + seek('S_catch', 1605, 'S_recovery') + [
         'S_recovery.STORE[n_result_cell] = DEFINED (PINT 99)',
         'S_recovery.PRECISIONINI = $ptascii("14")',
+        '$heap_owners($heap_graph(S_recovery),HARRAY n_option) = $heap_count(HARRAY n_option,$pools_nodes(S_recovery.POOLS))',
     ] + public('S_recovery')
-    return checks + finish('S_recovery', stdout, ['HOBJECT n_generator','HARRAY n_option','HOBJECT n_error'])
+    return checks + finish('S_recovery', stdout, ['HOBJECT n_generator','HOBJECT n_error'])
 
 
 if __name__ == '__main__':
