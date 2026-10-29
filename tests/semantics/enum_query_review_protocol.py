@@ -64,6 +64,8 @@ def reach(label, prior, phase):
 
 
 def assertions(case_id, main_fixture, source_path, expected_bytes):
+    if case_id == 'defined-backing-observer':
+        return observer_assertions(main_fixture, source_path, expected_bytes)
     if case_id not in ('defined-initializer-retry', 'aliased-query-cache'):
         raise ValueError(case_id)
     retry = case_id == 'defined-initializer-retry'
@@ -151,5 +153,32 @@ def assertions(case_id, main_fixture, source_path, expected_bytes):
     return checks + ['S_finish = $drive_steps(S_one,5000)',
         'S_finish.COMPLETION = NORMAL', 'S_finish.EXITSTATUS = 0', 'S_finish.TODO = eps',
         '$enumr_output(S_finish.EVENTS) = ' + term(expected_bytes),
+        '(HOBJECT n_case) <- $class_constant_roots(S_finish.CLASSCONSTANTCACHE)',
+        '$call_descriptors_valid(S_finish)']
+
+
+def observer_assertions(main_fixture, source_path, expected_bytes):
+    return ['S_initial = $php_run(' + main_fixture + ',0,' +
+            json.dumps(base64.b64encode(str(source_path).encode()).decode()) + ')',
+        'S_initial.COMPLETION = BUDGET', *reach('S_success', 'S_initial', 3),
+        '$enumq_marker(S_success.TODO) = ((pconfigcall_query,porigin_case))',
+        '$enum_case_descriptor(S_success,porigin_case) = (pclassconstantdesc_case)',
+        '$default_cache_at(S_success.CLASSCONSTANTCACHE,porigin_case) = eps',
+        'S_after = $enumr_running($drive_steps(S_success,1))',
+        'S_after.TODO = (CONSTANT_OBSERVE porigin_child) :: (ENUM_CASE_INIT porigin_case) :: (CLASS_CONST_BIND porigin_case) :: (ENUM_QUERY_RESULT pconfigcall_query porigin_case) :: ptask_tail*',
+        'porigin_child = $constant_child(porigin_case,[PCFIELD 2])',
+        'S_after.ORIGIN = (porigin_case)',
+        '$call_descriptors_valid(S_after)',
+        '$enum_case_init_future(S_after,porigin_case)',
+        '~$enum_case_init_valid(S_after,porigin_case)',
+        'S_bad_observer = S_after[.TODO = (CONSTANT_OBSERVE pclassconstantdesc_case.OWNER) :: (ENUM_CASE_INIT porigin_case) :: (CLASS_CONST_BIND porigin_case) :: (ENUM_QUERY_RESULT pconfigcall_query porigin_case) :: ptask_tail*]',
+        '~$enum_case_init_future(S_bad_observer,porigin_case)',
+        '~$call_task_valid(S_bad_observer,ENUM_CASE_INIT porigin_case)',
+        'S_zero = $drive_steps(S_after,0)', 'S_zero = S_after[.COMPLETION = BUDGET]',
+        'S_finish = $drive_steps($enumr_running(S_zero),5000)',
+        'S_finish.COMPLETION = NORMAL', 'S_finish.EXITSTATUS = 0', 'S_finish.TODO = eps',
+        '$enumr_output(S_finish.EVENTS) = ' + term(expected_bytes),
+        '$default_cache_at(S_finish.CLASSCONSTANTCACHE,porigin_case) = (pdefaultcache_case)',
+        'pdefaultcache_case.CLASS = PVENUMCASE n_case porigin_case',
         '(HOBJECT n_case) <- $class_constant_roots(S_finish.CLASSCONSTANTCACHE)',
         '$call_descriptors_valid(S_finish)']

@@ -21,8 +21,8 @@ parser.add_argument('--cpu', type=int, required=True,
 parser.add_argument('--case', action='append', required=True, choices=(
     'identity-alias', 'deferred-backing-priority', 'identity-alias-duplicate',
     'weak-parser-order', 'parsed-argument-trace', 'user-magic-protocols',
-    'defined-initializer-retry', 'aliased-query-cache',
-    'enum-weakmap-order'))
+    'defined-initializer-retry', 'aliased-query-cache', 'defined-backing-observer',
+    'enum-weakmap-order', 'enum-type-default-reference'))
 args = parser.parse_args()
 SOURCES = args.sources.resolve()
 OUT = args.output.resolve()
@@ -32,6 +32,7 @@ import enum_generated_review_protocol as generated_review
 import enum_magic_review_protocol as magic_review
 import enum_query_review_protocol as query_review
 import enum_comparison_review_protocol as comparison_review
+import enum_default_review_protocol as default_review
 from recorded_worker import Worker
 import static_types as types
 
@@ -41,6 +42,8 @@ def sha(path):
 def folder(name):
     if name == 'identity-alias-duplicate':
         name = 'identity-alias'
+    if name == 'defined-backing-observer':
+        name = 'defined-initializer-retry'
     return SOURCES / name
 
 def receipt(name, filename):
@@ -51,7 +54,7 @@ assert os.sched_getaffinity(0) == {args.cpu}
 OUT.mkdir()
 modules = [ROOT / p for p in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
 changed = subprocess.check_output(['git', 'diff', '--name-only'], cwd=ROOT, text=True).splitlines()
-paths = [Path(__file__), Path(generated_review.__file__), Path(case_review.__file__), Path(magic_review.__file__), Path(query_review.__file__), Path(comparison_review.__file__), ROOT / 'spec/semantics/modules.json',
+paths = [Path(__file__), Path(generated_review.__file__), Path(case_review.__file__), Path(magic_review.__file__), Path(query_review.__file__), Path(comparison_review.__file__), Path(default_review.__file__), ROOT / 'spec/semantics/modules.json',
          ROOT / 'tests/semantics/recorded_worker.py', ROOT / 'tests/semantics/static_types.py',
          ROOT / 'tests/semantics/profile.json', ROOT / 'frontend/worker.php',
          ROOT / '_build/default/adapter/main.exe', ROOT / '.tools/php/bin/php',
@@ -67,7 +70,7 @@ report = {'revision': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=
           'inputs': before, 'selected': SELECTED, 'records': [], 'result': 'fail'}
 snapshots = OUT / 'tested-inputs'
 snapshots.mkdir()
-for p in [Path(__file__), Path(generated_review.__file__), Path(case_review.__file__), Path(magic_review.__file__), Path(query_review.__file__), Path(comparison_review.__file__), *(ROOT / p for p in changed),
+for p in [Path(__file__), Path(generated_review.__file__), Path(case_review.__file__), Path(magic_review.__file__), Path(query_review.__file__), Path(comparison_review.__file__), Path(default_review.__file__), *(ROOT / p for p in changed),
           ROOT / 'spec/semantics/436-enum-compiler.watsup', ROOT / 'spec/semantics/437-enum-runtime.watsup']:
     if p.is_file():
         target = snapshots / (p.relative_to(ROOT) if p.is_relative_to(ROOT) else p.name)
@@ -82,14 +85,16 @@ try:
         review = generated_review if name in ('weak-parser-order', 'parsed-argument-trace') else case_review
         if name == 'user-magic-protocols':
             review = magic_review
-        if name in ('defined-initializer-retry', 'aliased-query-cache'):
+        if name in ('defined-initializer-retry', 'aliased-query-cache', 'defined-backing-observer'):
             review = query_review
         if name == 'enum-weakmap-order':
             review = comparison_review
+        if name == 'enum-type-default-reference':
+            review = default_review
         source = folder(name) / 'main.php'
         freeze = json.loads(receipt(name, 'freeze.json').read_text())
         if 'cases' in freeze:
-            source_id = 'identity-alias' if name == 'identity-alias-duplicate' else name
+            source_id = folder(name).name
             freeze, = [row for row in freeze['cases'] if row['id'] == source_id]
         assert sha(source) == freeze['source_sha256']
         parsed = frontend.request({'op': 'parse', 'source': base64.b64encode(source.read_bytes()).decode()})
