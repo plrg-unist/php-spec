@@ -68,19 +68,6 @@
       "model_timeout_seconds": 240
     },
     {
-      "id": "anonymous-variadic-eval-default-and-empty-tail",
-      "source": "<?php\n$source154 = 'namespace Ref154Author;\nfunction make154() {\n    return new class(last: 5) {\n        public $sum;\n        public function __construct(int $head = 7, int ...$rest) {\n            $this->sum = $head + $rest[\"last\"];\n        }\n    };\n}';\neval($source154);\n$first154 = Ref154Author\\make154();\n$second154 = Ref154Author\\make154();\n$empty154 = new class {\n    public $size;\n    public function __construct(...$rest) {\n        $this->size = count($rest);\n    }\n};\necho $first154->sum, \"|\", $second154->sum, \"|\", $empty154->size, \"|after\";\n",
-      "source_sha256": "0cdd17cd1a3be39afa527502361719fbd635f9468a489350222ae166949acd88",
-      "stdout_base64": "MTJ8MTJ8MHxhZnRlcg==",
-      "stdout_template_base64": "MTJ8MTJ8MHxhZnRlcg==",
-      "stderr_template_base64": "",
-      "exit_status": 0,
-      "status": "normal",
-      "native_group": ".tools/class154-review/author-eval-default-and-empty-tail.native-first.json",
-      "native_raw_sha256": "84951cac9fa0f37b8dc890509013594ae73c595e5b62b1e7277c666e153f1091",
-      "model_timeout_seconds": 240
-    },
-    {
       "id": "anonymous-variadic-named-required-hole-priority",
       "source": "<?php\nfunction extra154Hole() { echo \"extra|\"; return 9; }\necho \"before|\";\ntry {\n    $object154 = new class(second: 2, last: extra154Hole()) {\n        public function __construct(int $first, int $second, int ...$tail) {\n            echo \"body|\";\n        }\n    };\n} catch (ArgumentCountError $error154) {\n    echo $error154->getMessage(), \"|\";\n}\necho \"after\";\n",
       "source_sha256": "53a6c9c153007c2d5ef4c164cf0814a716baa8910145d0ff8f8691da06efbf3d",
@@ -92,6 +79,42 @@
       "native_group": ".tools/class154-review/author-named-required-hole-priority.native-first.json",
       "native_raw_sha256": "2ead6d0f0f369c8ef47c9e2feb072d9426d582e844d6b529f8f02c7394b3d501",
       "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-variadic-eval-default-and-empty-loop",
+      "source": "<?php\n$source154 = 'namespace Ref154Author;\nfunction make154() {\n    return new class(last: 5) {\n        public $sum;\n        public function __construct(int $head = 7, int ...$rest) {\n            $this->sum = $head + $rest[\"last\"];\n        }\n    };\n}';\neval($source154);\n$first154 = Ref154Author\\make154();\n$second154 = Ref154Author\\make154();\n$empty154 = new class {\n    public $size;\n    public function __construct(...$rest) {\n        $this->size = 0;\n        foreach ($rest as $value) {\n            $this->size += 1;\n        }\n    }\n};\necho $first154->sum, \"|\", $second154->sum, \"|\", $empty154->size, \"|after\";\n",
+      "source_sha256": "bbbbaa1e6fb8b56ad6fe3bb5107045239ec2c49151ab84e1fd9c01486c763da6",
+      "stdout_base64": "MTJ8MTJ8MHxhZnRlcg==",
+      "stdout_template_base64": "MTJ8MTJ8MHxhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class154-review/eval-default-and-empty-loop.native-first.json",
+      "native_raw_sha256": "2671180ae99067bc740fcfe0e15bb32148b2349a672e7cde23c5cf7d7f85e72f",
+      "model_timeout_seconds": 240
+    }
+  ],
+  "excluded_sources": [
+    {
+      "id": "anonymous-variadic-eval-default-and-empty-tail",
+      "source": "<?php\n$source154 = 'namespace Ref154Author;\nfunction make154() {\n    return new class(last: 5) {\n        public $sum;\n        public function __construct(int $head = 7, int ...$rest) {\n            $this->sum = $head + $rest[\"last\"];\n        }\n    };\n}';\neval($source154);\n$first154 = Ref154Author\\make154();\n$second154 = Ref154Author\\make154();\n$empty154 = new class {\n    public $size;\n    public function __construct(...$rest) {\n        $this->size = count($rest);\n    }\n};\necho $first154->sum, \"|\", $second154->sum, \"|\", $empty154->size, \"|after\";\n",
+      "source_sha256": "0cdd17cd1a3be39afa527502361719fbd635f9468a489350222ae166949acd88",
+      "stdout_base64": "MTJ8MTJ8MHxhZnRlcg==",
+      "stdout_template_base64": "MTJ8MTJ8MHxhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class154-review/author-eval-default-and-empty-tail.native-first.json",
+      "native_raw_sha256": "84951cac9fa0f37b8dc890509013594ae73c595e5b62b1e7277c666e153f1091",
+      "model_timeout_seconds": 240,
+      "exclusion": "Excluded count() library observer under CORE.md ordinary-library boundary. The unchanged original/native tuple is retained; this model refusal has zero agreement credit.",
+      "model_boundary": {
+        "status": "unsupported",
+        "reason": "registered builtin call",
+        "agreement_credit": 0,
+        "report": ".tools/class154-artifacts/source-eval-default-and-empty-tail.json",
+        "raw": ".tools/class154-artifacts/method-runtime-p75711mr/report.json"
+      }
     }
   ]
 }
