@@ -892,6 +892,7 @@ def $trace_visit_object_header(S, n) = true
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if ~$instance_storage_freeing(S, n)
   -- if S.OBJECTS[n] = STDINSTANCE
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
 def $trace_visit_object_header(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
@@ -899,6 +900,8 @@ def $trace_visit_object_header(S, n) = true
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc.KIND = "class"
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
 def $trace_visit_object_header(S, n) = false -- otherwise
 def $trace_visit_object_image(S, n) = true
   -- if $trace_object_class(S, n)
