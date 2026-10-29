@@ -151,6 +151,15 @@ Commit concise reports and manifests with hashes and locations. Preserve raw
 failures and interrupted runs externally; do not force-add their archives.
 The coverage compression patterns in `.gitignore` guard against reintroduction.
 
+I77 receiver-bearing scoped Generator evidence retains authored native,
+unchanged baseline, private/joined strict, source and reached-state cuts under
+`../php-spec-evidence-archive/generator-keyword-receiver-77/`. The independent
+peer source, original provisional native expectation mismatch and exact model
+comparison are under
+`../php-spec-evidence-archive/generator-keyword-receiver-77-review/`.
+The [receiver ledger](../coverage/semantics/generator-keyword-receiver-review.json)
+binds the tested revisions, raw flags, hashes and remaining scope.
+
 I76 keyword factory-chain evidence retains native, unchanged baseline, strict,
 source and state cuts under
 `../php-spec-evidence-archive/generator-keyword-factory-chain-76/`; the

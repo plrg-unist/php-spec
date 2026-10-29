@@ -6368,8 +6368,17 @@ Finite keyword method-factory chains now retain borrowed source/target and
 lexical/called scope through each real forwarding frame. Three new authored,
 one independent and the retained I75 original match PHP; three reached fronts
 check actual close ownership, a deeper shared-cell cache and a retired maker.
-Receiver-bearing keyword links and Closure factories remain partial.
+At that I76 cut, receiver-bearing keyword links and Closure factories remained partial.
 [Chain review](coverage/semantics/generator-keyword-chain-review.json).
+Receiver-bearing instance factories and finite same-`$this` scoped chains now
+create nonstatic Generator bodies through `self`, `parent`, `static` and explicit
+class calls. The saved or active execution frame carries a receiver owner;
+borrowed source and target history adds no root. Five authored and one
+independent original match PHP; three reached fronts pass 160 custom/175
+reported checks for close, retirement
+and fresh THROW/Fiber transfer. Closure factories, other receiver bindings and
+wider lifecycle combinations remain partial.
+[Receiver review](coverage/semantics/generator-keyword-receiver-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

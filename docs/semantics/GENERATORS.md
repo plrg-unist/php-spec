@@ -4,9 +4,10 @@ Module280 creates Generator objects after ordinary argument, type and default
 receives. The function body and Closure lexical loads remain deferred until
 initialization. Named functions, ordinary Closures, object method calls and
 static calls through nonkeyword class selectors use the accepted call machinery.
-Authenticated `self`, `parent` and `static` calls from ordinary method factories
-also retain the creation scope of receiver-free static bodies after the factory
-returns; no unaccepted return implementation is required.
+Authenticated scoped calls from real method factories retain creation scope
+after those factories return. Receiver-free static and same-`$this` nonstatic
+Generator bodies use their actual selected target and saved frame receiver;
+finite forwarding chains add borrowed history without another owner root.
 
 [Same-class comparison](../../coverage/semantics/generator-fiber-comparison-review.json)
 now returns order zero for distinct Generators, including fresh, paused and closed
@@ -342,6 +343,21 @@ and actual-tail joined strict430 pass; the peer used a fixed source-local
 600/620-second envelope. The
 [chain review](../../coverage/semantics/generator-keyword-chain-review.json)
 keeps the distinct native, baseline, source and state cuts.
+
+I77 also authenticates receiver-bearing scoped calls from real instance
+factories. Each `self`, `parent`, `static` or explicit class link borrows the
+same actual caller `This`; a nonborrowing invocation ends the chain. Retained
+history checks the original selected target after the maker retires without
+reviving its allocation. The saved or active execution frame carries a body
+receiver owner at close and across fresh THROW/Fiber suspension; borrowed
+history adds no root. Five authored and one independent source agree with PHP;
+three reached fronts pass 160 custom/175 reported checks. Private and joined
+strict430 pass. The independent
+native recorder's provisional `current()` expectation after close was wrong:
+the observed NULL getter coexists with a live reference cache. Its original
+false flag remains; the model matches the observed 134 bytes. Closure factories,
+other receiver bindings and wider lifecycle remain partial. See the
+[receiver review](../../coverage/semantics/generator-keyword-receiver-review.json).
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
@@ -697,8 +713,8 @@ null results and phase-specific error cleanup. Direct Aggregate
 [argument acquisition](SOURCE-CALL-UNPACK.md#direct-aggregate-argument-acquisition)
 now shares the existing Iterator/Generator call sends. Broader reference
 producers, dynamic/nullsafe API calls and named/unpacked API arguments remain
-required. Receiver-bearing keyword factory links and Generator bodies, Closure
-factories, other implicit callback creation and creation through
+required. Closure factories, other receiver bindings, other implicit callback
+creation and creation through
 changed/imported caller scope remain required.
 [Module303](GENERATOR-FORCE-CLOSE.md) adds ordinary last-owner forced close,
 pending finally execution and ordered input/frame/cache release.

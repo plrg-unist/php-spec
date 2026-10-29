@@ -1004,9 +1004,19 @@ I76 retains authenticated keyword method-factory ancestry for receiver-free
 static Generator bodies. The independent Fiber SEND/abort source and four other
 source agreements preserve actual Generator ownership and borrowed creator
 scope after every forwarding factory returns. Three reached fronts check the
-close owner, shared reference formal and retired maker. Receiver-bearing
-keyword links and wider callable/lifecycle forms remain partial.
+close owner, shared reference formal and retired maker. At that I76 cut,
+receiver-bearing keyword links and wider callable/lifecycle forms remained partial.
 [Chain review](../../coverage/semantics/generator-keyword-chain-review.json).
+
+I77 authenticates same-`$this` receiver-bearing scoped Generator calls and
+factory ancestry, including explicit class calls. The saved or active execution
+frame carries a receiver owner through close or Fiber pause; borrowed creator
+history does not extend its lifetime. Fresh THROW and SEND share the real
+receiver target checks while preserving their existing stage and cache guards.
+Five authored
+and one independent source match PHP, and three reached fronts pass 175
+reported checks. Closure factories and other receiver bindings remain partial.
+[Receiver review](../../coverage/semantics/generator-keyword-receiver-review.json).
 
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
