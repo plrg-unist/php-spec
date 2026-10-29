@@ -75,15 +75,14 @@ not repeat historical receipt counts or renew their execution credit.
   coherent producers/consumers and shared invariants without special-casing
   spelling or weakening refusal boundaries.
 
-OB01 adds normal EOF and integer/string EXIT draining for existing user output
-handlers. Real shutdown/global/store retirement precedes FINAL; nested lower
-writes, weak diagnostic receives and callback-local destructors preserve the
-saved terminal state and sole handler owner. Fifteen native-first normal
-originals agree across recorded cuts, strict427 passes, and six reached groups
-pass 238 assertions. The abnormal global-throw model timed out at 90 seconds and
-at reduced fuel/40 seconds before returning a state; the captured-throw model is
-unrun. Both remain unresolved with zero model credit. Actual-tail composition
-and its joined gate remain pending. [OB01 review](coverage/semantics/output-request-end-review.json).
+OB01 integrates normal EOF and integer/string EXIT draining for existing user
+output handlers after real shutdown/global/store retirement. Nested lower writes,
+weak diagnostics and callback-local destructors preserve saved completion and the
+sole handler owner. Fifteen native-first normal originals agree, six reached
+groups pass 238 assertions, private strict427 and joined actual-tail strict429
+pass. The first abnormal model timed out at 90 seconds and at reduced fuel/40
+seconds before returning a state; the captured-throw model is unrun. Both remain
+unresolved with zero model credit. [OB01 review](coverage/semantics/output-request-end-review.json).
 
 ## Active and unintegrated work
 
@@ -91,7 +90,6 @@ and its joined gate remain pending. [OB01 review](coverage/semantics/output-requ
 | --- | --- |
 | A68 | Scalar INI_SET Iterator sends and saved argument lifetimes. |
 | GC04 | Quiet shared-table collection without WeakMap registration. |
-| OB01 | Private normal EOF/EXIT drain validated; actual-tail gate pending. |
 | ATTR01 | NoDiscard; compile validation. |
 | Enum M3/M4 | Generated-method callable capture/dispatch, backing-initializer dependency modes and wider enum acquisition; private. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |

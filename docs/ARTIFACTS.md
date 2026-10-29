@@ -500,7 +500,8 @@ TeamPass database log, so this cleanup does not eliminate every large-file warni
 OB01 request-end output evidence is retained uncompressed under
 `../php-spec-evidence-archive/ob01-author-native/` and `ob01-review-native/`.
 The [review](../coverage/semantics/output-request-end-review.json) binds the
-15 exact normal source cuts, six reached groups/238 assertions and strict427.
+15 exact normal source cuts, six reached groups/238 assertions, private strict427
+and actual-tail joined strict429.
 `accepted-summary.json` maps all nine original state directories to their intact
 external locations. The failed/stopped packets, 90/40-second abnormal timeouts
 and model-unrun captured-throw boundary retain their separate zero-credit status.
