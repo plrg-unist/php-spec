@@ -38,7 +38,7 @@ dec $anonymous_member(statement) : bool
 def $anonymous_member(NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata) = $anonymous_property_items(phpType57*)
   -- if flags <- [0,1]
 def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) (SEQUENCE eps) phpType18 (SEQUENCE statement*) metadata) = true
-  -- if flags <- [0,1]
+  -- if flags <- [0,1,2,4]
   -- if $ptvalidname($base64(text), false)
   -- if $ptlc($base64(text)) =/= $ptascii("__construct")
   -- if ~$ppmethod_magic($base64(text))
@@ -57,6 +57,27 @@ dec $anonymous_base_members(statement*) : bool
 def $anonymous_base_members(eps) = true
 def $anonymous_base_members(statement :: statement_tail*) = ($anonymous_base_member(statement) /\ $anonymous_base_members(statement_tail*))
 
+dec $anonymous_interface_references(name*) : bool
+def $anonymous_interface_references(eps) = true
+def $anonymous_interface_references((NName (BYTES text) metadata) :: name*) = ($ptvalidname($base64(text), false) /\ $anonymous_interface_references(name*))
+def $anonymous_interface_references(name*) = false -- otherwise
+dec $anonymous_interface_parent_node(phpType44) : bool
+def $anonymous_interface_parent_node(ABSENT) = true
+def $anonymous_interface_parent_node(NName (BYTES text) metadata) = $ptvalidname($base64(text), false)
+def $anonymous_interface_parent_node(phpType44) = false -- otherwise
+dec $anonymous_interface_class_node(pcnode) : bool
+def $anonymous_interface_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT phpType44 (SEQUENCE (name :: name_tail*)) (SEQUENCE statement*) metadata) = true
+  -- if $anonymous_interface_parent_node(phpType44)
+  -- if $anonymous_interface_references(name :: name_tail*)
+  -- if $anonymous_members(statement*)
+  -- if $($source_line(metadata) > 0 /\ $source_end_line(metadata) >= $source_line(metadata))
+def $anonymous_interface_class_node(pcnode) = false -- otherwise
+dec $anonymous_interface_node(pcnode) : bool
+def $anonymous_interface_node(NStmtInterface (SEQUENCE eps) (NIdentifier (BYTES text) metadata_name) (SEQUENCE name*) (SEQUENCE statement*) metadata) = true
+  -- if $ptvalidname($base64(text), false) /\ $anonymous_interface_references(name*)
+  -- if $($source_line(metadata) > 0 /\ $source_end_line(metadata) >= $source_line(metadata))
+def $anonymous_interface_node(pcnode) = false -- otherwise
+
 dec $anonymous_class_node(pcnode) : bool
 def $anonymous_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata) = true
   -- if $anonymous_members(statement*)
@@ -69,12 +90,13 @@ def $anonymous_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT (NName (B
   -- if z_line = $source_line(metadata)
   -- if z_end = $source_end_line(metadata)
   -- if $(z_line > 0 /\ z_end >= z_line)
+def $anonymous_class_node(pcnode) = true -- if $anonymous_interface_class_node(pcnode)
 def $anonymous_class_node(pcnode) = false -- otherwise
 dec $anonymous_parentless_class_node(pcnode) : bool
 def $anonymous_parentless_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata) = $anonymous_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata)
 def $anonymous_parentless_class_node(pcnode) = false -- otherwise
 dec $anonymous_parent_node_name(pcnode) : ptbytes?
-def $anonymous_parent_node_name(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT (NName (BYTES text_parent) metadata_parent) (SEQUENCE eps) (SEQUENCE statement*) metadata) = ($base64(text_parent))
+def $anonymous_parent_node_name(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT (NName (BYTES text_parent) metadata_parent) phpType42 (SEQUENCE statement*) metadata) = ($base64(text_parent))
 def $anonymous_parent_node_name(pcnode) = eps -- otherwise
 
 dec $anonymous_named_class_node(pcnode) : bool
@@ -137,7 +159,7 @@ def $anonymous_no_named_classes(eps) = true
 def $anonymous_no_named_classes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ((~$anonymous_class_like(pcnode) \/ $anonymous_class_node(pcnode)) /\ $anonymous_no_named_classes(pcoccurrence*))
 
 dec $anonymous_unit_node(pcnode) : bool
-def $anonymous_unit_node(pcnode) = (($anonymous_class_node(pcnode) \/ $anonymous_named_class_node(pcnode)) /\ $anonymous_no_classes($pcwalk($pcchildren(pcnode, eps))))
+def $anonymous_unit_node(pcnode) = (($anonymous_class_node(pcnode) \/ $anonymous_named_class_node(pcnode) \/ $anonymous_interface_node(pcnode)) /\ $anonymous_no_classes($pcwalk($pcchildren(pcnode, eps))))
   -- if $anonymous_class_like(pcnode)
 def $anonymous_unit_node(pcnode) = $anonymous_no_named_classes($pcwalk($pcchildren(pcnode, eps)))
   -- if ~$anonymous_class_like(pcnode) /\ $anonymous_named_scope(pcnode)
@@ -252,6 +274,27 @@ def $anonymous_named_early(pcunit, pcpath, pclassdesc*, ptbytes) = ($anonymous_t
 dec $anonymous_named_key(bool) : nat
 def $anonymous_named_key(true) = 0
 def $anonymous_named_key(false) = 1
+dec $anonymous_header_context(ptbytes, int) : ptcontext
+def $anonymous_header_context(ptbytes_file, z_line) = { NAMESPACE eps, IMPORTS eps, SCOPE PTGLOBAL, POSITION PTCONSTANT, OWNER eps, MEMBER eps, FILE ptbytes_file, LINE $nabs(z_line) }
+dec $anonymous_prior_dependency(pclassdesc*, ptbytes) : bool
+def $anonymous_prior_dependency(eps, ptbytes) = $class_internal(ptbytes)
+def $anonymous_prior_dependency(pclassdesc :: pclassdesc_tail*, ptbytes) = true
+  -- if $ptlc(pclassdesc.NAME) = $ptlc(ptbytes)
+def $anonymous_prior_dependency(pclassdesc :: pclassdesc_tail*, ptbytes) = $anonymous_prior_dependency(pclassdesc_tail*, ptbytes)
+  -- if $ptlc(pclassdesc.NAME) =/= $ptlc(ptbytes)
+dec $anonymous_prior_dependencies(pclassdesc*, ptbytes*) : bool
+def $anonymous_prior_dependencies(pclassdesc*, eps) = true
+def $anonymous_prior_dependencies(pclassdesc*, ptbytes :: ptbytes_tail*) = ($anonymous_prior_dependency(pclassdesc*, ptbytes) /\ $anonymous_prior_dependencies(pclassdesc*, ptbytes_tail*))
+dec $anonymous_interface_parent(pclassdesc*, ptbytes?) : bool
+def $anonymous_interface_parent(pclassdesc_prior*, eps) = true
+def $anonymous_interface_parent(pclassdesc_prior*, (ptbytes)) = true
+  -- if $ppclass_prior_early(pclassdesc_prior*, ptbytes) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+def $anonymous_interface_parent(pclassdesc_prior*, ptbytes?) = false -- otherwise
+dec $anonymous_interface_prefix(ptbytes?, ptbytes*) : ptbytes?
+def $anonymous_interface_prefix((ptbytes_parent), ptbytes*) = (ptbytes_parent)
+def $anonymous_interface_prefix(eps, ptbytes :: ptbytes_tail*) = (ptbytes)
+def $anonymous_interface_prefix(ptbytes_parent?, ptbytes_interface*) = eps -- otherwise
 dec $anonymous_class_count(pcunit, ptbytes, pclassdesc*, pclassdesc*, nat) : nat?
 def $anonymous_class_count(pcunit, ptbytes_file, eps, pclassdesc_seen*, n_counter) = (n_counter)
 def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*, pclassdesc_seen*, n_counter) = $anonymous_class_count(pcunit, ptbytes_file, pclassdesc_tail*, pclassdesc_seen* ++ [pclassdesc], $(n_counter + 1))
@@ -275,6 +318,34 @@ def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*,
   -- if pclassdesc.LINE = $source_line($pcmetadata(pcnode))
   -- if $anonymous_parent_class_name(ptbytes_parent, ptbytes_file, pclassdesc.LINE, n_counter) = (pclassdesc.NAME)
   -- if pclassdesc.KIND = "class" /\ ~pclassdesc.EARLY /\ pclassdesc.INTERFACES = eps
+  -- if $class_at(pclassdesc_tail*, pclassdesc.ORIGIN) = eps
+def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*, pclassdesc_seen*, n_counter) = $anonymous_class_count(pcunit, ptbytes_file, pclassdesc_tail*, pclassdesc_seen* ++ [pclassdesc], $(n_counter + 1))
+  -- if pclassdesc.ORIGIN = PORIGIN 0 pcpath
+  -- if $origin_node([pcunit], pclassdesc.ORIGIN) = (NStmtClass phpType14 phpType24 phpType3 phpType44 (SEQUENCE name*) phpType23 metadata)
+  -- if $anonymous_interface_class_node(NStmtClass phpType14 phpType24 phpType3 phpType44 (SEQUENCE name*) phpType23 metadata)
+  -- if $anonymous_named_namespace(pcunit, pcpath) = (eps)
+  -- if $pchrefs(name*, "interface name", $anonymous_header_context(ptbytes_file, $source_line(metadata))) = PCHNAMES ptbytes_interface* eps
+  -- if $anonymous_prior_dependencies(pclassdesc_seen*, ptbytes_interface*)
+  -- if $pchparent(phpType44, $anonymous_header_context(ptbytes_file, $source_line(metadata))) = PCHNAMES ptbytes_parent* eps
+  -- if pclassdesc.PARENT = $pchparentoption(ptbytes_parent*)
+  -- if $anonymous_interface_parent(pclassdesc_seen*, pclassdesc.PARENT)
+  -- if pclassdesc.INTERFACES = ptbytes_interface*
+  -- if $anonymous_interface_prefix(pclassdesc.PARENT, ptbytes_interface*) = (ptbytes_prefix)
+  -- if $anonymous_parent_class_name(ptbytes_prefix, ptbytes_file, pclassdesc.LINE, n_counter) = (pclassdesc.NAME)
+  -- if pclassdesc.KIND = "class" /\ ~pclassdesc.EARLY
+  -- if pclassdesc.LINE = $source_line(metadata)
+  -- if $class_at(pclassdesc_tail*, pclassdesc.ORIGIN) = eps
+def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*, pclassdesc_seen*, n_counter) = $anonymous_class_count(pcunit, ptbytes_file, pclassdesc_tail*, pclassdesc_seen* ++ [pclassdesc], $(n_counter + $anonymous_named_key(b_early)))
+  -- if pclassdesc.ORIGIN = PORIGIN 0 pcpath
+  -- if $origin_node([pcunit], pclassdesc.ORIGIN) = (NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata)
+  -- if $anonymous_interface_node(NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata)
+  -- if $anonymous_named_namespace(pcunit, pcpath) = (eps)
+  -- if $pchcompile(NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata, false, $anonymous_header_context(ptbytes_file, $source_line(metadata))) = PCHOK pchheader eps
+  -- if pclassdesc.KIND = "interface" /\ pclassdesc.NAME = pchheader.NAME
+  -- if pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = pchheader.INTERFACES
+  -- if pclassdesc.PROPERTIES = eps /\ pclassdesc.ABSTRACT /\ ~pclassdesc.FINAL /\ ~pclassdesc.READONLY
+  -- if b_early = ($anonymous_named_early(pcunit, pcpath, pclassdesc_seen*, pchheader.NAME) /\ pclassdesc.INTERFACES = eps)
+  -- if pclassdesc.EARLY = b_early /\ pclassdesc.LINE = $source_line(metadata)
   -- if $class_at(pclassdesc_tail*, pclassdesc.ORIGIN) = eps
 def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*, pclassdesc_seen*, n_counter) = $anonymous_class_count(pcunit, ptbytes_file, pclassdesc_tail*, pclassdesc_seen* ++ [pclassdesc], $(n_counter + $anonymous_named_key(b_early)))
   -- if pclassdesc.ORIGIN = PORIGIN 0 pcpath
@@ -349,7 +420,27 @@ def $ppanonymous_class(P, pcpath, statement) = P_next[.EARLY = P.EARLY][.LOCATIO
   -- if P_class = $pplocate(P[.EARLY = (pcpath ++ [PCFIELD 0])], pcpath ++ [PCFIELD 0], z_line)
   -- if P_next = $ppclass_result(P_class, pcpath ++ [PCFIELD 0], PCHOK { KIND "class", NAME ptbytes_name, ABSTRACT false, FINAL false, READONLY false, PARENT eps, INTERFACES eps, BODY pchraw.BODY } eps)
 def $ppanonymous_class(P, pcpath, statement) = P_next[.EARLY = P.EARLY][.LOCATION = P.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]]
+  -- if $anonymous_unit(P.FOLD.SOURCE) /\ $anonymous_interface_class_node(statement)
+  -- if P.ENV.NAMESPACE = eps /\ P.ENV.CLASSES = eps
+  -- if ($ppimage_unit(P) \/ $anonymous_factory_context(P, pcpath)) /\ ~P.FOLD.CONSTANT
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 (pcpath ++ [PCFIELD 0])) = (statement)
+  -- if $class_at(P.CLASSES, PORIGIN 0 (pcpath ++ [PCFIELD 0])) = eps
+  -- if $anonymous_class_count(P.FOLD.SOURCE, P.LOCATION.FILE, P.CLASSES, eps, 0) = (n_counter)
+  -- if $pchlower(statement) = PCHRAW pchraw
+  -- if z_line = $source_line($pcmetadata(statement))
+  -- if P_class = $pplocate(P[.EARLY = eps], pcpath ++ [PCFIELD 0], z_line)
+  -- if $pchparent(pchraw.PARENT, $ppclass_context(P_class)) = PCHNAMES ptbytes_parent* eps
+  -- if ptbytes_parent_option? = $pchparentoption(ptbytes_parent*)
+  -- if $anonymous_interface_parent(P.CLASSES, ptbytes_parent_option?)
+  -- if pchraw.INTERFACES = SEQUENCE name*
+  -- if $pchrefs(name*, "interface name", $ppclass_context(P_class)) = PCHNAMES ptbytes_interface* eps
+  -- if $anonymous_prior_dependencies(P.CLASSES, ptbytes_interface*)
+  -- if $anonymous_interface_prefix(ptbytes_parent_option?, ptbytes_interface*) = (ptbytes_prefix)
+  -- if $anonymous_parent_class_name(ptbytes_prefix, P.LOCATION.FILE, z_line, n_counter) = (ptbytes_name)
+  -- if P_next = $ppclass_result(P_class, pcpath ++ [PCFIELD 0], PCHOK { KIND "class", NAME ptbytes_name, ABSTRACT false, FINAL false, READONLY false, PARENT ptbytes_parent_option?, INTERFACES ptbytes_interface*, BODY pchraw.BODY } eps)
+def $ppanonymous_class(P, pcpath, statement) = P_next[.EARLY = P.EARLY][.LOCATION = P.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]]
   -- if $anonymous_unit(P.FOLD.SOURCE) /\ $anonymous_class_node(statement)
+  -- if ~$anonymous_interface_class_node(statement)
   -- if P.ENV.NAMESPACE = eps
   -- if ($ppimage_unit(P) \/ $anonymous_factory_context(P, pcpath)) /\ ~P.FOLD.CONSTANT
   -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 (pcpath ++ [PCFIELD 0])) = (statement)
@@ -394,6 +485,18 @@ def $anonymous_runtime_item(PDRCLASS porigin pdeclcause, porigin) = true
 def $anonymous_runtime_item(pdeclaration, porigin) = false -- otherwise
 def $anonymous_runtime_declaration(eps, porigin) = false
 def $anonymous_runtime_declaration(pdeclaration :: pdeclaration_tail*, porigin) = ($anonymous_runtime_item(pdeclaration, porigin) \/ $anonymous_runtime_declaration(pdeclaration_tail*, porigin))
+dec $anonymous_interface_dependencies_ready(pstate, pclassdesc) : bool
+def $anonymous_interface_dependencies_ready(S, pclassdesc) = true
+  -- if $pil_fetch(S, pclassdesc.INTERFACES, eps) = PILFETCHED pilref*
+def $anonymous_interface_dependencies_ready(S, pclassdesc) = false -- otherwise
+dec $anonymous_interface_targets_valid(pstate, pclassdesc) : bool
+def $anonymous_interface_targets_valid(S, pclassdesc) = ($pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = eps)
+  -- if pclassdesc.INTERFACES = eps
+def $anonymous_interface_targets_valid(S, pclassdesc) = true
+  -- if pclassdesc.INTERFACES =/= eps
+  -- if $pil_fetch(S, pclassdesc.INTERFACES, eps) = PILFETCHED pilref*
+  -- if $pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = (PILTARGETS pilref*)
+def $anonymous_interface_targets_valid(S, pclassdesc) = false -- otherwise
 dec $anonymous_new_available(pstate, pclassdesc) : bool
 def $anonymous_new_available(S, pclassdesc) = true
   -- if pclassdesc.EARLY
@@ -405,6 +508,13 @@ def $anonymous_new_available(S, pclassdesc) = true
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pclassdesc.ORIGIN)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
+  -- if $anonymous_interface_targets_valid(S, pclassdesc)
+  -- if $anonymous_runtime_declaration(S.DECLARATIONS, pclassdesc.ORIGIN)
+def $anonymous_new_available(S, pclassdesc) = true
+  -- if ~pclassdesc.EARLY /\ pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES =/= eps
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pclassdesc.ORIGIN)
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = eps
+  -- if $anonymous_interface_targets_valid(S, pclassdesc)
   -- if $anonymous_runtime_declaration(S.DECLARATIONS, pclassdesc.ORIGIN)
 def $anonymous_new_available(S, pclassdesc) = false -- otherwise
 dec $anonymous_new_name(pstate, porigin) : ptbytes?
@@ -420,11 +530,21 @@ def $anonymous_new_pending(S, porigin) = (pclassdesc)
   -- if pclassdesc.PARENT = (ptbytes_parent)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
   -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = eps
+  -- if $pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = eps
   -- if ~$anonymous_runtime_declaration(S.DECLARATIONS, pclassdesc.ORIGIN)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if pclassdesc_parent.KIND = "class" /\ pclassdesc_parent.EARLY
   -- if $ptlc(pclassdesc_parent.NAME) = $ptlc(ptbytes_parent)
+  -- if $anonymous_interface_dependencies_ready(S, pclassdesc)
+def $anonymous_new_pending(S, porigin) = (pclassdesc)
+  -- if $anonymous_new_descriptor(S, porigin) = (pclassdesc)
+  -- if ~pclassdesc.EARLY /\ pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES =/= eps
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = eps
+  -- if $pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = eps
+  -- if ~$anonymous_runtime_declaration(S.DECLARATIONS, pclassdesc.ORIGIN)
+  -- if $anonymous_interface_dependencies_ready(S, pclassdesc)
 def $anonymous_new_pending(S, porigin) = eps -- otherwise
 
 ;; Declaration-history replay already supplies compiler-derived prefix classes.
@@ -547,6 +667,18 @@ def $anonymous_rtd_segment(pdeclaration :: pdeclaration_tail*, n) = $anonymous_r
   -- if $anonymous_rtd_enter(pdeclaration) = eps /\ ~$anonymous_rtd_exit(pdeclaration)
 def $anonymous_rtd_segment(pdeclaration*, n) = eps -- otherwise
 
+dec $anonymous_rtd_root_nodes(pcoccurrence*) : bool
+def $anonymous_rtd_root_nodes(eps) = true
+def $anonymous_rtd_root_nodes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = (~$anonymous_rtd_other(pcnode) /\ $anonymous_rtd_root_nodes(pcoccurrence*))
+dec $anonymous_rtd_count(pstate, pcunit) : nat?
+def $anonymous_rtd_count(S, pcunit) = (n_counter)
+  -- if pcunit.ID = 0 /\ $anonymous_unit(pcunit)
+  -- if $anonymous_rtd_root_nodes(pcunit.OCCURRENCES)
+  -- if $compilation_projection(S, pcunit) = (ppinstalled)
+  -- if $anonymous_class_count(pcunit, $call_sourcefile(S.FILES, PORIGIN 0 eps), ppinstalled.CLASSES, eps, 0) = (n_counter)
+def $anonymous_rtd_count(S, pcunit) = $anonymous_rtd_unit(pcunit) -- if $(pcunit.ID > 0)
+def $anonymous_rtd_count(S, pcunit) = eps -- otherwise
+
 dec $anonymous_rtd_history(pstate, pdeclaration*, nat, nat, nat) : nat?
 def $anonymous_rtd_history(S, eps, n, n, n_counter) = (n_counter)
   -- if $(n > 0)
@@ -554,7 +686,7 @@ def $anonymous_rtd_history(S, pdeclaration :: pdeclaration_tail*, n_expected, n_
   -- if $(n_expected < n_target)
   -- if $anonymous_rtd_enter(pdeclaration) = (n_expected)
   -- if $source_unit(S.SOURCES, n_expected) = (pcunit)
-  -- if $anonymous_rtd_unit(pcunit) = (n_count)
+  -- if $anonymous_rtd_count(S, pcunit) = (n_count)
   -- if $anonymous_rtd_segment(pdeclaration_tail*, n_expected) = (pdeclaration_rest*)
 def $anonymous_rtd_history(S, pdeclaration :: pdeclaration_tail*, n_expected, n_target, n_counter) = $anonymous_rtd_history(S, pdeclaration_tail*, n_expected, n_target, n_counter)
   -- if $anonymous_rtd_enter(pdeclaration) = eps /\ ~$anonymous_rtd_exit(pdeclaration)
