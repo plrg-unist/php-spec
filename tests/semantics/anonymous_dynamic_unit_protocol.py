@@ -95,7 +95,7 @@ def shared_first(checks, names, ifline, budget):
         '$anonymous_rtd_unit(pcunit_first[.OCCURRENCES = eps]) = eps',
         'S_new1.TODO = (EVAL expression_new) :: ptask_new*',
         'pcunit_skipped = $pcsource(0,PROGRAM ([(NStmtExpression (NExprBinaryOpBooleanAnd (NExprConstFetch (NName (BYTES "ZmFsc2U=") eps) eps) expression_new eps) eps)]))',
-        '$anonymous_rtd_unit(pcunit_skipped) = eps',
+        '$anonymous_rtd_unit(pcunit_skipped) = (1)',
         'S_wrongname = S_new1[.CLASSES = [pclassdesc_seed,pclassdesc_first[.NAME = $ptascii("wrong")]]]',
         '$anonymous_new_name(S_wrongname,porigin_first) = eps',
     ]

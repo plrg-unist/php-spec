@@ -1,0 +1,162 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-dynamic-site-author-include-return-dependent-named-argument",
+      "source": "<?php\nnamespace Vendor149 {\ninterface Read149 { public function value(): int; }\nclass Base149 {\n public int $n = 0;\n public function __construct(int $seed) { echo 'base', $seed, '|'; $this->n = $seed; }\n public function value(): int { return $this->n; }\n}\n}\nnamespace Caller149 {\n $first = include __DIR__ . '/payload.php';\n $second = include __DIR__ . '/payload.php';\n echo $first::class, '|', $second::class, '|', $first->value(), '/', $second->value(), '|', $first === $second ? 'same' : 'fresh';\n}\n",
+      "source_sha256": "605f3d53b02930dbcc5f1f59877ad27052a26221dbb687ff428fc81dfecefcd4",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class149-frozen-native7",
+      "native_raw_sha256": "2b75477fec39e95aefac0299b7342ca88ed65feabd758e611668083cefe1ddfc",
+      "model_timeout_seconds": 180,
+      "files": [
+        {
+          "name": "payload.php",
+          "source": "<?php\nnamespace Payload149;\nuse Vendor149\\{Base149 as B, Read149 as R};\nreturn new class(seed: '6') extends B implements R {};\n",
+          "source_sha256": "e59772e6f3641488d0ff0fa6a56c5f290cdbe9f73473bc0177a55caaa4cb4f5e"
+        }
+      ],
+      "stdout_template_base64": "YmFzZTZ8YmFzZTZ8VmVuZG9yMTQ5XEJhc2UxNDlAYW5vbnltb3VzAHtGSUxFOnBheWxvYWQucGhwfTo0JDB8VmVuZG9yMTQ5XEJhc2UxNDlAYW5vbnltb3VzAHtGSUxFOnBheWxvYWQucGhwfTo0JDF8Ni82fGZyZXNo",
+      "stdout_base64": ""
+    },
+    {
+      "id": "anonymous-dynamic-site-author-eval-nested-and-call-argument",
+      "source": "<?php\nfunction mark149Nested() { echo 'arg|'; return 1; }\nfunction accept149Nested($o) { echo $o::class, '|'; }\necho 'outer|';\neval('$o = new class(new class { public int $n = 3; }) { public function __construct($inner) { echo $inner::class, \"|\"; } }; echo $o::class, \"|\"; accept149Nested(new class(mark149Nested()) {});');\n",
+      "source_sha256": "c3163ab5af54e8eb83dc2dedf2936b946fbea42d6f44cbcbb82bf9ab71bc5fbc",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class149-frozen-native7",
+      "native_raw_sha256": "cd444b3cad3d360352dd953b78a71d205d9ef6632c928ce70fbc52bdccf8bd81",
+      "model_timeout_seconds": 180,
+      "stdout_template_base64": "b3V0ZXJ8Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSg1KSA6IGV2YWwoKSdkIGNvZGU6MSQxfGNsYXNzQGFub255bW91cwB7RklMRX0oNSkgOiBldmFsKCknZCBjb2RlOjEkMHxhcmd8Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSg1KSA6IGV2YWwoKSdkIGNvZGU6MSQyfA==",
+      "stdout_base64": ""
+    },
+    {
+      "id": "anonymous-dynamic-site-author-eval-conditional-typed-arguments",
+      "source": "<?php\nclass Base149Choice {\n public int $n = 0;\n public function __construct(int $n) { echo 'ctor', $n, '|'; $this->n = $n; }\n}\neval('$choose = true; $o = $choose ? new class(n: \"7\") extends Base149Choice {} : new class(n: 9) extends Base149Choice {}; echo $o::class, \"|\", $o->n, \"|\"; try { $bad = new class(n: \"bad\") extends Base149Choice {}; } catch (TypeError $e) { echo \"type|\"; } $tail = new class {}; echo $tail::class;');\n",
+      "source_sha256": "de85d867a657a789eb6560a7f24d7dddbe81d4b677b9ebdd7b7e196a69f113e1",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class149-frozen-native7",
+      "native_raw_sha256": "5b7b3498119bfbd763b770a26282752cd97e13a862ed4db699a2e051e912e0d1",
+      "model_timeout_seconds": 180,
+      "stdout_template_base64": "Y3Rvcjd8QmFzZTE0OUNob2ljZUBhbm9ueW1vdXMAe0ZJTEV9KDYpIDogZXZhbCgpJ2QgY29kZToxJDB8N3x0eXBlfGNsYXNzQGFub255bW91cwB7RklMRX0oNikgOiBldmFsKCknZCBjb2RlOjEkMw==",
+      "stdout_base64": ""
+    },
+    {
+      "id": "anonymous-dynamic-site-author-eval-missing-parent-before-call-argument",
+      "source": "<?php\nfunction send149Missing($o) { echo 'callee|'; }\nfunction side149Missing() { echo 'arg|'; return 2; }\necho 'root|';\ntry { eval('send149Missing(new class(side149Missing()) extends Missing149Base {});'); }\ncatch (Error $e) { echo $e->getMessage(), '|'; }\neval('$tail = new class {}; echo $tail::class;');\n",
+      "source_sha256": "9f42174d1db9f32fb112322d952d70f4ee7f59c2ece4eed035505fc35049bc70",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class149-frozen-native7",
+      "native_raw_sha256": "dce34e005b243f5c87eb3ad0b1be72e833837d88e10e9f01f62584e03740c458",
+      "model_timeout_seconds": 180,
+      "stdout_template_base64": "cm9vdHxDbGFzcyAiTWlzc2luZzE0OUJhc2UiIG5vdCBmb3VuZHxjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9KDcpIDogZXZhbCgpJ2QgY29kZToxJDE=",
+      "stdout_base64": ""
+    },
+    {
+      "id": "anonymous-dynamic-site-pruned-rhs-versus-unvisited-keys",
+      "source": "<?php\necho \"begin|\";\neval(<<<'PHP'\nnamespace Review149Counter;\necho \"inside|\";\n$and = false && new class extends MissingAnd149 {};\n$one = new class {};\necho $one::class, \"|\";\n$or = true || new class extends MissingOr149 {};\n$two = new class {};\necho $two::class, \"|\";\n$coalesce = 1 ?? new class extends MissingCoalesce149 {};\n$three = new class {};\necho $three::class, \"|\";\n$choose = false;\nif ($choose) {\n    $unvisited = new class extends MissingBranch149 {};\n}\n$four = new class {};\necho $four::class, \"|\";\necho $and ? \"bad|\" : \"and|\", $or ? \"or|\" : \"bad|\", $coalesce, \"|\";\nPHP);\necho \"end\";\n",
+      "source_sha256": "d9134d9aa638c9a2b5e1ddfadc875bbe62ca414420b925a04e607b504e31af4a",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class149-frozen-native7",
+      "native_raw_sha256": "fdb637c0328038439e3c6317e6d1c1200746eb9dac45aa4de3e839b84bca4b55",
+      "model_timeout_seconds": 180,
+      "stdout_template_base64": "YmVnaW58aW5zaWRlfGNsYXNzQGFub255bW91cwB7RklMRX0oNCkgOiBldmFsKCknZCBjb2RlOjQkMHxjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9KDQpIDogZXZhbCgpJ2QgY29kZTo3JDF8Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSg0KSA6IGV2YWwoKSdkIGNvZGU6MTAkM3xjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9KDQpIDogZXZhbCgpJ2QgY29kZToxNiQ1fGFuZHxvcnwxfGVuZA==",
+      "stdout_base64": ""
+    },
+    {
+      "id": "anonymous-dynamic-site-aliased-later-factories-argument-retry",
+      "source": "<?php\nclass Review149Base {\n    public int $number = 0;\n    public function __construct(int $left, int $right) {\n        echo \"ctor|\";\n        $this->number = $left + $right;\n    }\n}\ninterface Review149Read {\n    public function read(): int;\n}\n$attempt149 = 0;\nfunction review149_first() {\n    echo \"first|\";\n    return 4;\n}\nfunction review149_second() {\n    global $attempt149;\n    echo \"second|\";\n    if ($attempt149 === 0) {\n        $attempt149 = 1;\n        throw new Exception(\"argument\");\n    }\n    return 5;\n}\necho \"before|\";\neval(<<<'PHP'\nnamespace Review149Factory;\nuse Review149Base as ParentAlias;\nuse Review149Read as ReadAlias;\nfunction build149() {\n    return new class(\\review149_first(), \\review149_second()) extends ParentAlias implements ReadAlias {\n        public function read(): int { return $this->number; }\n    };\n}\ntry {\n    $unused = build149();\n} catch (\\Exception $e) {\n    echo $e->getMessage(), \"|\";\n}\n$a = build149();\n$b = build149();\necho $a::class, \"|\", $a->read(), \"|\";\necho ($a::class === $b::class) ? \"same|\" : \"wrong|\";\necho ($a !== $b) ? \"fresh|\" : \"wrong|\";\n$factory = static function () {\n    return new class(\\review149_first(), \\review149_second()) extends ParentAlias implements ReadAlias {\n        public function read(): int { return $this->number; }\n    };\n};\n$c = $factory();\n$d = $factory();\necho $c::class, \"|\", $c->read(), \"|\";\necho ($c::class === $d::class) ? \"same|\" : \"wrong|\";\necho ($c !== $d) ? \"fresh|\" : \"wrong|\";\nPHP);\necho \"after\";\n",
+      "source_sha256": "bbc014aaa50a9132efd2f9679eb6b242d782925665afe8466b1cbe9770caa7ce",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class149-frozen-native7",
+      "native_raw_sha256": "83a1342a09a5fb073ac8d2a5280e7401675a5981e9a663a0a2d6dce204500358",
+      "model_timeout_seconds": 180,
+      "stdout_template_base64": "YmVmb3JlfGZpcnN0fHNlY29uZHxhcmd1bWVudHxmaXJzdHxzZWNvbmR8Y3RvcnxmaXJzdHxzZWNvbmR8Y3RvcnxSZXZpZXcxNDlCYXNlQGFub255bW91cwB7RklMRX0oMjgpIDogZXZhbCgpJ2QgY29kZTo1JDB8OXxzYW1lfGZyZXNofGZpcnN0fHNlY29uZHxjdG9yfGZpcnN0fHNlY29uZHxjdG9yfFJldmlldzE0OUJhc2VAYW5vbnltb3VzAHtGSUxFfSgyOCkgOiBldmFsKCknZCBjb2RlOjIwJDF8OXxzYW1lfGZyZXNofGFmdGVy",
+      "stdout_base64": ""
+    },
+    {
+      "id": "anonymous-dynamic-site-pruned-default-then-unused-factory-default",
+      "source": "<?php\necho \"outer|\";\neval('false && new class { public int $n = \"bad\"; }; echo \"pruned|\";');\necho \"middle|\";\neval('echo \"inner|\"; function never149Default() { return new class { public int $n = \"bad\"; }; }');\n",
+      "source_sha256": "25b315ecffcf61d6b8e124f6aa7cf732381fba21bb8b3b43e06aaab9da8a8b9b",
+      "stdout_base64": "b3V0ZXJ8cHJ1bmVkfG1pZGRsZXw=",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIGRlZmF1bHQgdmFsdWUgZm9yIHByb3BlcnR5IGNsYXNzQGFub255bW91czo6JG4gb2YgdHlwZSBpbnQgaW4ge0ZJTEV9KDUpIDogZXZhbCgpJ2QgY29kZSBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "class149-frozen-native7",
+      "native_raw_sha256": "0674443cfe6bbc37f46177feb5ae907f2fddd06c4cc347ade2dcc775a07e5cf5",
+      "model_timeout_seconds": 180
+    },
+    {
+      "id": "anonymous-dynamic-site-later-factory-deferred-named-key",
+      "source": "<?php\neval(<<<'PHP'\nnamespace Review149Mixed;\nfunction make149Mixed() {\n    class Deferred149Mixed {}\n    return new class extends Deferred149Mixed {};\n}\n$outside = new class {};\necho $outside::class, \"|\";\n$inside = make149Mixed();\necho $inside::class, \"|\";\nPHP);\neval('$tail = new class {}; echo $tail::class;');\n",
+      "source_sha256": "265ec86701a547878069fde9c62641b95f69f145311d7390ae293cc47f364e7f",
+      "stdout_base64": "",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSgzKSA6IGV2YWwoKSdkIGNvZGU6NiQyfFJldmlldzE0OU1peGVkXERlZmVycmVkMTQ5TWl4ZWRAYW5vbnltb3VzAHtGSUxFfSgzKSA6IGV2YWwoKSdkIGNvZGU6NCQxfGNsYXNzQGFub255bW91cwB7RklMRX0oMTMpIDogZXZhbCgpJ2QgY29kZToxJDM=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class149-extra-native1",
+      "native_raw_sha256": "6350ef14c33bf3968e3ef0f8314ad89822e80bf31310f207ce38214b591168aa",
+      "model_timeout_seconds": 180
+    },
+    {
+      "id": "anonymous-dynamic-site-include-root-try-factory-boundary",
+      "source": "<?php\nclass Review149FileBase {\n public int $n = 0;\n public function __construct(int $n) { echo 'ctor|'; $this->n = $n; }\n}\necho 'begin|';\n$o = include __DIR__ . '/payload.php';\necho $o::class, '|', $o->n, '|end';\n",
+      "source_sha256": "6d7870336c348f8f048c71b45577bdb72ac936b8c7f97adc733cb89da0695802",
+      "files": [
+        {
+          "name": "payload.php",
+          "source": "<?php\nnamespace Review149FileBoundary;\nuse Review149FileBase as BaseAlias;\nfunction build149FileBoundary() {\n return new class(3) extends BaseAlias {};\n}\ntry { $a = build149FileBoundary(); }\ncatch (\\Exception $e) { echo 'unexpected|'; }\necho $a::class, '|';\nreturn $a;\n",
+          "source_sha256": "a1e81cb353bad04df56f34713ea71ba52f500bf86bab97784cb66f89bfac850a"
+        }
+      ],
+      "stdout_base64": "",
+      "stdout_template_base64": "YmVnaW58Y3RvcnxSZXZpZXcxNDlGaWxlQmFzZUBhbm9ueW1vdXMAe0ZJTEU6cGF5bG9hZC5waHB9OjUkMHxSZXZpZXcxNDlGaWxlQmFzZUBhbm9ueW1vdXMAe0ZJTEU6cGF5bG9hZC5waHB9OjUkMHwzfGVuZA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class149-boundary-native1",
+      "native_raw_sha256": "753525bfda6c2fd135ee181951349ff2225c3c1c0de5e844f48ecc2f3735d441",
+      "model_timeout_seconds": 180
+    },
+    {
+      "id": "anonymous-dynamic-site-later-parentless-factory-early-publication",
+      "source": "<?php\necho \"outer|\";\neval(<<<'PHP'\nnamespace Review149Early;\nfunction make149Early() {\n    return new class {\n        public int $n = 4;\n        public function read(): int { return $this->n; }\n    };\n}\n$factory = static function () {\n    return new class {\n        public int $n = 5;\n        public function read(): int { return $this->n; }\n    };\n};\n$outside = new class {};\necho $outside::class, \"|\";\n$a = make149Early();\n$b = make149Early();\n$c = $factory();\n$d = $factory();\necho $a::class, \"|\", $a->read(), \"|\";\necho ($a::class === $b::class) ? \"same|\" : \"wrong|\";\necho ($a !== $b) ? \"fresh|\" : \"wrong|\";\necho $c::class, \"|\", $c->read(), \"|\";\necho ($c::class === $d::class) ? \"same|\" : \"wrong|\";\necho ($c !== $d) ? \"fresh|\" : \"wrong|\";\nPHP);\necho \"end\";\n",
+      "source_sha256": "920d7762902cb3e878a83a9ee1882309a8bc53e1debcaf0fe17956ba828f121c",
+      "stdout_base64": "",
+      "stdout_template_base64": "b3V0ZXJ8Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSg0KSA6IGV2YWwoKSdkIGNvZGU6MTQkMnxjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9KDQpIDogZXZhbCgpJ2QgY29kZTozJDB8NHxzYW1lfGZyZXNofGNsYXNzQGFub255bW91cwB7RklMRX0oNCkgOiBldmFsKCknZCBjb2RlOjkkMXw1fHNhbWV8ZnJlc2h8ZW5k",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class149-early-native1",
+      "native_raw_sha256": "dd440df76774d51432bcc8b07fef7201b397caa12c1f97fc7879838498e826eb",
+      "model_timeout_seconds": 180
+    }
+  ]
+}
