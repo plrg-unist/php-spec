@@ -8,24 +8,24 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-I78 admits real Closure factories whose bodies create static or nonstatic
-Generators through scoped method calls. The actual live invocation supplies borrowed
-Closure scope, bindTo or temporary Closure::call evidence; a Closure may end a
-finite method-factory chain. The retained evidence authenticates lexical/called
-scope, source, selected target and receiver after the factory and captures retire,
-while the actual Generator frame keeps its ordinary owners. Four authored and
-one independent source match PHP; four reached fronts pass 171 custom/191
-reported checks for retired factories, bound close, temporary call and a Closure
-ancestry stop. Private and actual-tail joined strict430 pass. Named/from/fake/implicit Closure
-factories, ordinary method-call creation through rebound Closures, broader
-binding and wider lifecycle remain partial.
-[I78 review](coverage/semantics/generator-closure-factory-review.json).
+I79 admits ordinary and nullsafe method-created Generators from genuine
+rebound real Closure callers, including object-syntax static methods. The live
+creator frame authenticates private/protected selection; where original source
+scope cannot select and access the exact target, the actual Generator retains
+a borrowed receipt after factory retirement. Factory and callee receivers or
+called classes may differ. A fresh sibling's receipt cannot authorize a broken
+live entry or replace the actual resume/close receipt. Four new authored, one
+independent and one unchanged public source match PHP; four reached fronts pass
+209 custom/229 reported checks. Private strict430 and actual-tail joined
+strict431 pass. Named/from/fake/implicit factory origins and wider binding,
+producer and lifecycle contexts remain partial.
+[I79 review](coverage/semantics/generator-closure-method-review.json).
 
-Earlier I75–I77 cuts cover real method-factory scope, finite forwarding chains
-and same-`$this` receiver-bearing creation. Their distinct counts, raw failures
-and scope limits remain in the [I75](coverage/semantics/generator-keyword-creation-review.json),
-[I76](coverage/semantics/generator-keyword-chain-review.json) and
-[I77](coverage/semantics/generator-keyword-receiver-review.json) reviews.
+Earlier [I75](coverage/semantics/generator-keyword-creation-review.json),
+[I76](coverage/semantics/generator-keyword-chain-review.json),
+[I77](coverage/semantics/generator-keyword-receiver-review.json) and
+[I78](coverage/semantics/generator-closure-factory-review.json) reviews retain
+their distinct scope, counts and raw failures.
 
 A69 keeps finite CFG-admitted ARRAY and ordinary non-Stringable INSTANCE arguments
 in real normalized INI_SET call slots through next and DATA/INPUT retirement.
@@ -120,7 +120,7 @@ not repeat historical receipt counts or renew their execution credit.
 | Calls and callable values | Ordinary, scoped, captured and magic-call routes retain the selected callee/receiver, lexical/called scope, argument origin, positional/named ordering and reference mode across later effects. Closure and pipe consumers preserve their real owners, send diagnostics and abrupt cleanup. Callable producers, signatures and reentry remain partial. Bounded NoDiscard declarations preserve pre-body warning and pending-owner behavior. [Attributes](docs/semantics/BUILTIN-ATTRIBUTES.md), [Calls](docs/semantics/SOURCE-CALLS.md), [Closure::call](docs/semantics/CLOSURE-CALL.md), [first-class callables](docs/semantics/SOURCE-FIRST-CLASS-CALLABLES.md). |
 | Configuration and constants | Supported INI_SET/DEFINE/CONSTANT/DEFINED routes retain their selected callee, option/name and API timing. Iterator and named Generator inputs preserve real DATA/INPUT and Aggregate producer history, copied sends, named-key Error priority and pre-API cleanup. CONFIG typed-current reads reuse property-source validation; structural receipts remain valid after physical cache retirement. Iterator sends retain raw scalar snapshots or real finite ARRAY/ordinary-instance slot roots, then defer INI_SET binding/conversion until after DATA/INPUT cleanup. COW, shared embedded aliases and API TraceArgs keep their ordinary owners. Generator/other consumers, effectful casts and wider lifetimes retain their documented limits. [Include/configuration](docs/semantics/INCLUDE-SOURCES.md), [constants](docs/semantics/SOURCE-USER-CONSTANTS.md). |
 | Classes, properties and enums | Linked declarations preserve receiver identity, slot declaration, visibility, typed-reference sources, readonly/hook policy and diagnostic order. Supported magic getters and reference-get chains preserve alias/copy and rebind timing. Enum declarations lower to cached singleton cases with lazy backing checks, readonly slots, ordered interfaces and generated/user methods. Registered-loader first use for static calls and class-constant fetches preserves selected class/member order and source-authenticated resume; reached dynamic/named/folded/enum cases and forged-target rejection retain separate raw cuts under `.tools/enum-acquisition-review-state-*`. Captured enum `cases(...)` preserves its selected target and singleton cache after closure retirement. Captured scalar `from(...)`/`tryFrom(...)` preserve cold backing tables, ordinary/inherited constant aliases, caller strictness and cached case identity after closure retirement. Captured Stringable arguments preserve their real callback child and line, selected closure lifetime and temporary retirement before lookup. Source-certified direct or negated enum-case conditions in class constants retain selected case identity or scalar results, including a condition from another enum; wider object-valued conditional transfers, array callable routes, the default loader, case attributes, link/type contexts and object lifetimes remain partial. [Classes](docs/semantics/SOURCE-CLASSES.md), [properties](docs/semantics/SOURCE-PROPERTIES.md), [property references](docs/semantics/SOURCE-PROPERTY-REFERENCES.md), [enum evidence](docs/ARTIFACTS.md). |
-| Generators and Fibers | Supported named/method/Closure producers retain actual resumer and callee owners, by-value or reference caches, supplied Throwables and catch/finally continuations across Fiber suspension. Receiver-free static and same-`$this` nonstatic Generator bodies called through finite scoped method chains or real Closure factories retain real scope after return. Delegation and SEND preserve their selected chains and copied/delivered owners. Wider producers, binding/delegation combinations and teardown remain partial. [Generators](docs/semantics/GENERATORS.md), [Fibers](docs/semantics/FIBERS.md), [delegation](docs/semantics/GENERATOR-DELEGATION.md), [reference yields](docs/semantics/GENERATOR-REFERENCE-YIELDS.md). |
+| Generators and Fibers | Supported named/method/Closure producers retain actual resumer and callee owners, by-value or reference caches, supplied Throwables and catch/finally continuations across Fiber suspension. Receiver-free static and same-`$this` nonstatic Generator bodies called through finite scoped chains retain real scope after return; supported real Closure factories also authenticate ordinary and nullsafe method-created bodies when the original source scope differs. Delegation and SEND preserve their selected chains and copied/delivered owners. Wider producers, binding/delegation combinations and teardown remain partial. [Generators](docs/semantics/GENERATORS.md), [Fibers](docs/semantics/FIBERS.md), [delegation](docs/semantics/GENERATOR-DELEGATION.md), [reference yields](docs/semantics/GENERATOR-REFERENCE-YIELDS.md). |
 | Lifetime, weak references and collection | Eager release tracks real ownership, pending results/Throwables, destructor frames and protected storage. WeakMap protocols preserve weak-Key visibility, ordinary Value owners, aliases, selective notification and conditional collection. Physical tracing handles admitted ordinary/materialized graphs; quiet same-Key entries and no-Map ordinary siblings use claimed first-visit counts. Materialized ordinary destructor callbacks reuse the existing retrace when legacy and claimed count images agree. Count-ambiguous callbacks, residual and active collector contexts remain open. Stable retired cell metadata owns nothing; pooled literal arrays remain rooted by compiled constants. [Eager cleanup](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md), [reference returns](docs/semantics/SOURCE-REFERENCE-RETURNS.md), [weak references](docs/semantics/WEAK-REFERENCES.md), [cycle collection](docs/semantics/CYCLE-COLLECTION.md). |
 | Diagnostics, output and environment | Supported handlers retain registration, callback and emitting-frame identity through warnings, throws and cleanup. Echo/print preserve left-to-right effects and flat-array diagnostics; bounded default output buffers retain native callback/output order. Request, clock, stream and startup profiles have explicit contracts rather than ambient host answers. Wider buffering/shutdown/tick behavior remains open. [Handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md), [exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md), [output buffers](docs/semantics/OUTPUT-BUFFERS.md), [request inputs](docs/semantics/REQUEST-INPUTS.md). |
 
@@ -159,7 +159,6 @@ unresolved with zero model credit. [OB01 review](coverage/semantics/output-reque
 | A70 | Temporary INPUT/copy cleanup for CONFIG Iterator sends; native/source preparation. |
 | OB02 | Restored FINAL callback-failure boundary; default fatal reporting and buffer/owner cleanup implementation. |
 | COMP155 | Method-bearing captured-object comparisons; native/source preparation. |
-| I79 | Rebound Closure method-created Generator scope; native6 and old controls complete, implementation/review active. |
 | GC06 | Materialized destructor GC count/buffer correction; produced-identity/root-order discrepancy under focused diagnosis. |
 | Enum M3/M4 | Captured generated calls and direct/negated enum-case conditional transfers are integrated for reviewed sources. Wider conditional sources, generated dispatch, backing dependency and default-loader contexts remain partial. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |

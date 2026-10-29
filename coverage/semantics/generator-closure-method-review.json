@@ -1,0 +1,137 @@
+{
+  "milestone": "I79 rebound real Closure factory method-created Generator scope",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "private_base": "5e5d86645a0109a8a5e2da10c76a1cd102836d40",
+  "private_implementation": [
+    "f6af4fba2e8461b8f45649b85ca0094679c0b840",
+    "38fd2a144b6492b966ffc426437980602095bf51",
+    "984ffb180e7dd01334e8d70ef144ebfbdbb3e502"
+  ],
+  "scope": "A genuine live rebound REALCLOSURE caller may create a Generator through ordinary or nullsafe METHOD_TARGET, or object-syntax STATIC_METHOD_TARGET. Its actual first saved creator frame, source-owned site, selected target, lexical/called class and Closure binding or temporary call evidence authenticate private/protected selection. After factory retirement an actual Generator receipt preserves that proof where needed; a fresh sibling's receipt cannot authorize a broken live entry or replace the actual resume/close receipt. Factory called class and This may differ from the callee called class and target receiver. A borrowed receipt is mandatory only when original source scope cannot independently select and access the exact target; exact original source authority remains sufficient otherwise. Saved/active frames and the Generator cache keep only their existing owner edges.",
+  "changed_modules": [
+    "spec/semantics/142-method-runtime.watsup",
+    "spec/semantics/280-generators.watsup"
+  ],
+  "validation": {
+    "author_native_first": {
+      "result": "five exact normal PHP observations, exit 0, empty stderr",
+      "report": "../php-spec-evidence-archive/generator-closure-method-79/source-packet/native-first/report.json",
+      "sha256": "748ab649e8627ca6a848d3377bea39d847f8ad7be0edacdf646825eec2ba1431"
+    },
+    "independent_native_first": {
+      "source_sha256": "2b655602fa48d9afcb4e6ae134dede2bbea00fff570901a3664253542beff0b6",
+      "stdout_bytes": 136,
+      "report": "../php-spec-evidence-archive/generator-closure-method-79-review/independent/native-first-report.json",
+      "sha256": "39b3c9a01814fc00c2a019e8dc810a27e1523f653083033027af579cb03b4623"
+    },
+    "unchanged_baseline": [
+      {
+        "id": "i79-bound-private-close",
+        "revision": "9d4a4c6fce99fa920e109bb6279632a27db4efe5",
+        "result": "checked Unsupported after exact CALL| prefix; exit 1, zero agreement",
+        "report": "../php-spec-evidence-archive/generator-closure-method-79/source-packet/unchanged-baseline-private/report.json",
+        "sha256": "ab09f9cbc837c4280edc78f2feb71090dba067023200f13a1a6c771eedead7cd"
+      },
+      {
+        "id": "i79-unbound-public-control",
+        "revision": "9d4a4c6fce99fa920e109bb6279632a27db4efe5",
+        "result": "checked NORMAL, exact 40 native bytes, exit 0",
+        "report": "../php-spec-evidence-archive/generator-closure-method-79/source-packet/unchanged-baseline-unbound/report.json",
+        "sha256": "4dd644a2434b14c5776c4c7e843167ef305d8dd6ad1e39d9339b27a780eb6c6a"
+      }
+    ],
+    "strict_private": {
+      "revision": "38fd2a144b6492b966ffc426437980602095bf51",
+      "modules": 430,
+      "passed": true,
+      "report": "../php-spec-evidence-archive/generator-closure-method-79/strict-private-retry/report.json",
+      "sha256": "10f5d08231049ca02a4c6bd6ea7cb5de1fa159de7589cc735ddad2da02069932",
+      "original_declaration_order_stop": "../php-spec-evidence-archive/generator-closure-method-79/strict-private/report.json",
+      "original_sha256": "37575969a4f5ff9866e780ef3a12a1b9c616118c8a009ed19083ef4928f2eb6d"
+    },
+    "author_sources": [
+      {
+        "id": "i79-bound-private-close",
+        "report": "../php-spec-evidence-archive/generator-closure-method-79/validated/generator-closure-method-source-y573v3jj/report.json",
+        "sha256": "43616ebdc310538b4e87a62d948889ad88d7d964960d18b6a64e12655b1f8af0"
+      },
+      {
+        "id": "i79-distinct-receiver",
+        "report": "../php-spec-evidence-archive/generator-closure-method-79/validated/generator-closure-method-source-kr4dhs8q/report.json",
+        "sha256": "a174680d98f9a2b550ea0704846624f83582094aa7c427e9d7fc057adb85b4ab"
+      },
+      {
+        "id": "i79-temporary-call-nullsafe-abort",
+        "report": "../php-spec-evidence-archive/generator-closure-method-79/validated/generator-closure-method-source-2ikwpm4y/report.json",
+        "sha256": "3913267766cb5ae83453c7794d5b804e1471d476645f0ab884442d936b24362c"
+      },
+      {
+        "id": "i79-static-object-selector",
+        "report": "../php-spec-evidence-archive/generator-closure-method-79/validated/generator-closure-method-source-w55ykseq/report.json",
+        "sha256": "84aa94510ec310e3415557c362b75e399666c93218a1c7d9b7725679fdff8180"
+      },
+      {
+        "id": "i79-unbound-public-control",
+        "report": "../php-spec-evidence-archive/generator-closure-method-79/validated/generator-closure-method-source-__wzf_lf/report.json",
+        "sha256": "dad8cc4053c16886fdc129c66bd37d03145ec1d17c35a424fa5f54ebeba4792c"
+      }
+    ],
+    "independent_model": {
+      "revision": "38fd2a144b6492b966ffc426437980602095bf51",
+      "result": "checked NORMAL, exact retained 136-byte native stream, exit 0, empty stderr, no timeout; stable HEAD and 23 watched inputs",
+      "elapsed_seconds": 221.010125,
+      "limits": "source-local 600/620 seconds, 100000 steps",
+      "report": "../php-spec-evidence-archive/generator-closure-method-79-review/independent/model-review-report.json",
+      "sha256": "5e291f9d972d0bfe137aebb35e32b55d4087b05eb22339f7b45c8857a2cadda5"
+    },
+    "reached_states": [
+      {
+        "id": "i79-second-live-creation",
+        "custom": 47,
+        "reported": 52,
+        "report": "../php-spec-evidence-archive/generator-closure-method-79/validated/state-i79-second-live-creation-mw9yoplg/report.json",
+        "sha256": "5f8c886830e90b615a179fd650a3a54b4f277056f361f97bb6a848c6fc9950a2"
+      },
+      {
+        "id": "i79-close-with-fresh-sibling",
+        "custom": 59,
+        "reported": 64,
+        "report": "../php-spec-evidence-archive/generator-closure-method-79/validated/state-i79-close-with-fresh-sibling-jcr6dach/report.json",
+        "sha256": "14f838d5194967162bc6c626532081a0b1d5e4b46dcc9c0b15cea0ddab3d998f"
+      },
+      {
+        "id": "i79-temporary-call-fiber-abort",
+        "custom": 54,
+        "reported": 59,
+        "report": "../php-spec-evidence-archive/generator-closure-method-79/validated/state-i79-temporary-call-fiber-abort-a8i_7cc5/report.json",
+        "sha256": "d6dc612dd65ed4d0ae8202990d6533b9d4ace3b50fcff49442b4ff8d73ebcf9d"
+      },
+      {
+        "id": "i79-retired-static-selector",
+        "custom": 49,
+        "reported": 54,
+        "report": "../php-spec-evidence-archive/generator-closure-method-79/validated/state-i79-retired-static-selector-4ke5vtpd/report.json",
+        "sha256": "e35e590292e2d4e9caef6ee25e725930f945698d036853d476e9d8e9c9b60032"
+      }
+    ],
+    "strict_joined": {
+      "revision": "04126fb2df88fc989af7674ae5d82e329abf8ab3",
+      "canonical_parent": "a66541dde5ecf4f24dd1f90d3432f0d25d6ab08f",
+      "modules": 431,
+      "passed": true,
+      "report": "../php-spec-evidence-archive/generator-closure-method-79/strict-joined/report.json",
+      "sha256": "6f9b175a2fb167600d42cd86889682835e07b900738155214f6a531096f2b314"
+    }
+  },
+  "counts": {
+    "new_author_normal": 4,
+    "independent_normal": 1,
+    "legacy_public_normal": 1,
+    "unchanged_unsupported_agreement": 0,
+    "reached_custom": 209,
+    "reached_reported": 229
+  },
+  "remaining": "Named/from/fake/implicit Closure factory origins, broader binding and invocation forms, other Generator producer and delegation combinations, and wider lifecycle remain partial. Core PHP and BOLA verification remain open.",
+  "actual_parent": "a66541dde5ecf4f24dd1f90d3432f0d25d6ab08f",
+  "actual_composition": "04126fb2df88fc989af7674ae5d82e329abf8ab3"
+}

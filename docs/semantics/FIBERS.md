@@ -1025,10 +1025,26 @@ execution frame carries the live receiver owner; the Generator keeps its value
 or reference cache through Fiber SEND and supplied abort. Archived factory
 evidence adds no owner. Four authored and
 one independent source agree with PHP, and four reached fronts pass 191
-reported checks. Named/from/fake/implicit factory forms, ordinary method-call
-creation through rebound Closures and wider binding or lifecycle combinations
-remain partial.
+reported checks. At that I78 cut, named/from/fake/implicit factory forms,
+ordinary method-call creation through rebound Closures and wider binding or
+lifecycle combinations remained partial.
 [Closure factory review](../../coverage/semantics/generator-closure-factory-review.json).
+
+I79 admits ordinary and nullsafe method-created Generators from authenticated
+rebound real Closure callers, including object-syntax static methods. The
+callee receiver or called class may differ from the factory's. The real live
+creator frame selects private/protected access. Where original source scope
+cannot select and access the same target, the actual Generator retains that
+borrowed decision. Exact original source authority remains sufficient
+otherwise. A fresh sibling's receipt cannot authorize a broken live entry or
+replace the actual resume/close receipt. Four new authored, one independent
+and one unchanged public control match PHP. Four reached fronts pass 229
+reported checks, including `Fiber::throw` interrupting a fresh
+`Generator::current` before first yield with an empty cache. The independent
+BYREF `Generator::send` and later `Fiber::throw` keep the reference cache after
+the callee receiver retires. Named/from/fake/implicit origins and wider
+producer/lifecycle combinations remain partial.
+[Rebound method review](../../coverage/semantics/generator-closure-method-review.json).
 
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need

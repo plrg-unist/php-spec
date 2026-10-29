@@ -6420,10 +6420,20 @@ Supported real Closure factories now retain authenticated scope, binding or
 temporary `Closure::call` evidence when calling scoped Generator methods. A Closure stops a
 method-factory chain without keeping its capture or receiver alive through the
 certificate. Four authored and one independent original match PHP; four reached
-fronts pass 171 custom/191 reported checks. Named/from/fake/implicit Closure
-factories, ordinary method-call creation through rebound Closures and broader
-bindings remain partial.
+fronts pass 171 custom/191 reported checks. At that I78 cut,
+named/from/fake/implicit Closure factories, ordinary method-call creation
+through rebound Closures and broader bindings remained partial.
 [Closure factory review](coverage/semantics/generator-closure-factory-review.json).
+Rebound real Closure factories now create ordinary or nullsafe method Generators,
+including object-syntax static methods, using the actual bound caller's selected
+scope and target. Factory and callee receivers or called classes may differ.
+Changed private/protected selection retains a borrowed receipt after return;
+an exact original source selection remains sufficient. Borrowed history adds
+no owner. Four new authored, one independent and one
+unchanged public source agree with PHP; four reached fronts pass 209 custom/229
+reported checks. Named/from/fake/implicit factory origins and wider bindings
+remain partial.
+[Rebound method review](coverage/semantics/generator-closure-method-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

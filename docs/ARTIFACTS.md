@@ -188,6 +188,14 @@ bound-reference/Fiber peer and its exact native/model comparison are under
 The [Closure factory ledger](../coverage/semantics/generator-closure-factory-review.json)
 binds tested revisions, hashes and remaining scope.
 
+I79 rebound Closure method-creation evidence retains authored native, unchanged
+private/public controls, private strict, source and reached-state cuts under
+`../php-spec-evidence-archive/generator-closure-method-79/`. The independent
+distinct-receiver BYREF/Fiber peer is under
+`../php-spec-evidence-archive/generator-closure-method-79-review/`.
+The [rebound method ledger](../coverage/semantics/generator-closure-method-review.json)
+binds tested revisions, hashes and remaining scope.
+
 I77 receiver-bearing scoped Generator evidence retains authored native,
 unchanged baseline, private/joined strict, source and reached-state cuts under
 `../php-spec-evidence-archive/generator-keyword-receiver-77/`. The independent
