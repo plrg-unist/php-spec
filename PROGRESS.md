@@ -8,6 +8,17 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
+Materialized ordinary property tables now support a callback-free explicit GC
+slice over finite instance/array/cell cycles. GC traces declared slots through
+`INDIRECT` table entries while physical owners stay unchanged; zero-declared
+ordinary casts share eligible tables, and existing pruning detaches collected
+typed-property sources from outside cells. Three authored and one independent
+native-first originals agree exactly. Separate reached AL cuts pass 51+25+10
+checks, and a private typed strict SL cut passes; the initial fixture compile
+stop has zero credit. The actual joined-master strict gate is pending integration.
+Callbacks, ephemerons, hooks, workers, residual buffers and noncanonical
+locators remain outside this slice. [Review](coverage/semantics/gc-materialized-table-review.json).
+
 Ordinary static Generator bodies now transfer through Fiber during fresh
 `current()` and the existing non-advancing `next()`/`send()` phases, for by-value
 and by-reference producers. Shared authenticated callee/cache/resumer rules retain

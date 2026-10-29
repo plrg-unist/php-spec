@@ -1,0 +1,56 @@
+{
+  "scope": "First generic callback-free explicit collection of finite ordinary INSTANCE/ARRAY/CELL cycles with materialized ordinary instance property tables, declared and dynamic fields, repeated edges, outside roots and WeakReference death/count.",
+  "tested_revision": "672750d3363ae13af2f6c73194b071e34be8fbb3 plus the two recorded candidate runtime inputs",
+  "candidate_semantic_diff_sha256": "0a0b6326cd310436173b0f4a4268e5c19aeb5cb364ff47177fa12c3fc522e800",
+  "independent_source_sha256": "34465a20847abbf00553ac178f8752bf3c248fce88b1aa678260f991e86b3f59",
+  "target": {
+    "runtime": "PHP 8.5.10 CLI NTS 64-bit",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "profile": "tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+    "engine_sources": [
+      "Zend/zend_object_handlers.c:zend_std_get_gc",
+      "Zend/zend_gc.c:gc_scan, gc_collect_white",
+      "Zend/zend_operators.c:convert_to_array",
+      "Zend/zend_hash.c:zend_proptable_to_symtable"
+    ]
+  },
+  "behavior": "GC tracing moves a materialized ordinary object's declared edges through its real table's INDIRECT locators; the physical 39 ownership graph and table proxy count remain separate. The actual quiet plan must have no destructor callbacks. Existing object disposal prunes a collected typed-property source from an outside cell. Zero-declared ordinary object casts share a nonnumeric, nonrecursive property table and use ordinary array copy behavior after writes.",
+  "validation": {
+    "native_and_gap": "Three SHA-frozen authored PHP originals were recorded native-first on unchanged clean 672750d33; all exited 0 with empty stderr. A representative unchanged mixed source stopped at the genuine cached-table Unsupported boundary after its B| prefix, with zero agreement credit.",
+    "authored_source_agreement": "Three candidate model runs match the exact native stdout, stderr and exits: mixed components gc count5 then0 and all four weak deaths; zero-declared shared cast first gc0, reference values7/8, then gc2; typed outside cell gc1, weak death, value7 then unconstrained write 'free'. All candidate runs are accepted/checked, stable and fully reaped without timeout.",
+    "independent_source_agreement": "One independent frozen declared/dynamic snapshot-cell original matches native exactly: retained snapshot protects the old Leaf at first gc0, release kills it, second gc2 kills Parent, outside scalar cell survives and accepts 8. Native was recorded before the runtime edits; source bytes, path, cwd, profile and oracle are identical across native and model, with only the intended 261/301 semantic fingerprint change. All processes are reaped.",
+    "reached_state": "Source-reached AL checks pass in separate accepted cuts: mixed physical versus traced duplicate edges, proxy count, real GC_TRACE plan and four admission negatives (51); typed actual GC_FREE, cell owners2-to1, source detachment and budget partition (25); real nonempty destructor plan exclusion (10). The initial full AL run had 82 checks, then the affected typed group was rerun with four added assertions, yielding 86 distinct current assertions. A private --sl run on the typed generated fixture returns true, exit0, empty stderr and no process residue. It is not a joined-master check. The first undeclared-G fixture compile stop retains zero credit."
+  },
+  "limits": "Admission excludes nonempty WeakMaps/ephemerons, property hooks, cached collector workers, marked or residual buffer slots, noncanonical declared locators and nonempty destructor plans. Callback/resurrection/reentry and wider active collection remain later work; 386/422 and physical ownership39 are unchanged. This does not establish complete PHP GC semantics or interaction-tree validation.",
+  "engine_bugs_or_departures": "None identified in this increment.",
+  "raw_root": "../php-spec-evidence-archive",
+  "raw": {
+    "author_native": "gc-materialized-author/accepted-source/native-report.json",
+    "author_baseline": "gc-materialized-author/accepted-source/baseline-report.json",
+    "author_model": "gc-materialized-author/accepted-source/model-report.json",
+    "peer_native": "gc-materialized-review-probes/packet1/native-report.json",
+    "peer_model": "gc-materialized-review-probes/packet1/model-report.json",
+    "first_compile_stop": "gc-materialized-author/state-first-compile-stop/report.json",
+    "state_al": "gc-materialized-author/state-initial-al/report.json",
+    "typed_affected_al": "gc-materialized-author/state-typed-affected-al/report.json",
+    "typed_private_sl": "gc-materialized-author/state-typed-private-sl/typed-sl.exit.json"
+  },
+  "report_sha256": {
+    "author_native": "5a346024309bd84cf3f5acebbfe06a9a0d7ff494803550f858688b5638df1b87",
+    "author_baseline": "06db78fd53916958ab3502d692836ae7f04b51a92583c650f4f1f24fca1f4c95",
+    "author_model": "62fcc5993207cacd9a5adfe4c091b333f0ce71c9dfef1bc5b45fe5f1f19269a8",
+    "peer_native": "30c56565bdee8f18845441e7851046f7621cd3e2ad7f273c6cce31ce92d8f822",
+    "peer_model": "171b2d123b6dcb1babaeb6c900a04aa1476e63f68f95eff63351cce368667602",
+    "first_compile_stop": "10b9c7f8eb5a8f531efcb123d8205480bc99823195364fdd868c38fb9bebb425",
+    "state_al": "e6577b2afab8d6c57edb1b9d75ec944dedd5fe6d12956f10de61e9a9116ae64c",
+    "typed_affected_al": "b22b71387bc4cd1ec121ff5517927003cc8f4720c699fd213ba75f6a7789eaeb",
+    "typed_private_sl": "25a26444d0ac23f28bfc7dc8c9dd8a7009af430b707243e76f1a9434cb796eba"
+  },
+  "candidate_input_sha256": {
+    "spec/semantics/261-object-casts.watsup": "e8d59cf9cf2a89887ec0127a8b53b201cb519ee6ba88ec3179664d3a8752e47a",
+    "spec/semantics/301-cycle-collection.watsup": "9a24169a434c3c40e90e0f0df38dabba31c8a3e47ce002808d57a3eabe15aa4d",
+    "tests/semantics/gc_materialized_table_sources.py": "78eb2ab42ac952a62614451553ddbea817781721c2d3c96392576665a9cfe1e6",
+    "tests/semantics/gc_materialized_table_state.py": "30a8fbaed09960e50bec3e6495898aad93865cc93b1c8d6f3b64cab577566843"
+  },
+  "recovery": "Run gc_materialized_table_sources.py with --phase native|baseline|model and fresh --output paths; the baseline was recorded at clean 672750d33 before candidate edits. Run gc_materialized_table_state.py with --case for a selected reached group. Use a CPU lease. Archived reports retain original commands, source paths, cwd, streams, input dictionaries, status and process-group reaping. The independent PHP source and runner remain in gc-materialized-review-probes. Prior failed candidate reports are retained under gc-materialized-author/prior with zero credit."
+}

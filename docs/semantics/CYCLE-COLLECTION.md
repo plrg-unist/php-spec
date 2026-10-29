@@ -179,6 +179,28 @@ projection. Their ordinary logical ownership remains intact. Mutation makes a
 mutable copy even with one owner; a later emptied mutable array stays eligible.
 Runtime flags are borrowed historical IDs and require the exact empty descriptor.
 
+For a materialized ordinary instance, the collector scans its property table:
+`INDIRECT` buckets trace their current declared slots in table order. Physical
+ownership still has the object-to-table and object-to-declared-slot edges; the
+indirect buckets own nothing. A table reached through its object is a proxy and
+does not add to the collection count, while a separately rooted array table can
+count. Existing object disposal removes a collected owner's typed-property
+source from an outside surviving reference cell. Casting a zero-declared-field
+ordinary instance shares its nonnumeric, nonrecursive table; subsequent writes
+use the usual array copy behavior.
+
+This materialized-table lane starts only from a real explicit GC call with
+canonical declared-slot locators and an empty planned destructor list. Nonempty
+WeakMaps, property hooks, a cached collector worker, marked or residual buffer
+slots, and noncanonical locators remain outside it. Destructor plans remain on
+the existing unsupported boundary; callback, ephemeron and reentry behavior for
+these tables needs later work. Three authored originals and one independent
+original agree with PHP 8.5.10. Source-reached checks cover the physical/trace
+edge distinction, proxy count, actual GC consumers, typed-source detachment and
+admission fences (51 mixed, 25 typed and 10 destructor checks across separate
+AL runs); a private strict SL run passes the typed case. See the
+[materialized-table review](../../coverage/semantics/gc-materialized-table-review.json).
+
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;
 pending exceptions remain owned once. After a destructor returns, its bare guard

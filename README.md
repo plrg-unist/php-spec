@@ -3559,6 +3559,13 @@ shapes remain fenced. [Review](coverage/semantics/weak-map-review.json).
 object/array cycle collection, ordered destructor callbacks and real weak
 retirement. Fiber protection scans reuse one graph within an unchanged state,
 preserving lazy empty/nonobject prefixes, eager node order and helper fallbacks.
+Materialized ordinary property tables now participate in callback-free explicit
+collection of finite instance/array/cell cycles. The collector traces declared
+slots through the table while physical owners remain unchanged; zero-declared
+ordinary casts may share that table. Four native-first originals agree, and
+86 reached AL checks plus one private typed strict SL cut pass at their recorded
+cuts. Callback, ephemeron, hook, worker and residual paths remain partial;
+see the [materialized-table review](coverage/semantics/gc-materialized-table-review.json).
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
 reuse only when destructor preparation leaves the state identical.
