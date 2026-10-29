@@ -25,6 +25,12 @@ back from the mirror after checking its SHA-256; the restored file is ignored.
 This relocation does not upgrade historical or interrupted results to passes.
 The paused agents' unfinished runs remain under the existing ignored `.tools/`.
 
+Source117's fixed-name construction during reentrant class linking is retained
+uncompressed under `../php-spec-evidence-archive/source117-reentrant-unlinked-new/`.
+Its `manifest.json` binds source, strict/reached and preservation reports, raw
+failures and tested inputs; the concise [review](../coverage/semantics/reentrant-unlinked-new-review.json)
+records their hashes and recovery commands.
+
 The guarded getter-recursion milestone retains source/native observations,
 focused checks, all fixture failures and diagnostics in
 `../php-spec-evidence-archive/magic-get-recursion-119/manifest.json`.
@@ -113,6 +119,12 @@ external archive (using new paths for new evidence) or in ignored `.tools/`.
 Commit concise reports and manifests with hashes and locations. Preserve raw
 failures and interrupted runs externally; do not force-add their archives.
 The coverage compression patterns in `.gitignore` guard against reintroduction.
+
+I68 method by-reference Generator THROW evidence is retained uncompressed under
+`../php-spec-evidence-archive/generator-fiber-method-reference-throw-68/`.
+Its `manifest.json` identifies eleven raw reports, including both failed reached
+fixtures, the independent recorder correction and joined strict compilation,
+with SHA-256 hashes.
 
 M106's normal partial-pair cleanup evidence is in
 `../php-spec-evidence-archive/lifecycle-normal-partial-pair-106/manifest.json`.

@@ -207,10 +207,38 @@ close and retire when the Generator is dropped. Three authored exact sources,
 one independent normal-finally source, two unchanged direct/by-value controls
 and 136 custom source-reached checks
 support this bounded path. The reference-capture source first timed out at
-180 seconds with zero credit, then passed a selected 240-second budget. Fresh
-by-reference Closure THROW, method by-reference/fresh, bound/delegated and
-wider lifecycle paths remain partial.
+180 seconds with zero credit, then passed a selected 240-second budget. At
+that cut, fresh by-reference Closure THROW, method by-reference/fresh,
+bound/delegated and wider lifecycle paths remained partial.
 [Closure reference THROW review](../../coverage/semantics/generator-fiber-closure-reference-throw-transfer-review.json).
+
+Fresh unbound Closure-created by-reference Generator::throw now transfers
+while its cache is empty and the saved resumer is advancing toward the first
+yield. Zend initializes to that yield before injecting the original
+Throwable. The yielded CV supplies a live reference cell; throw() returns
+a dereferenced snapshot, so a later cell write changes current() without
+changing the returned value. An external name rebind leaves the old cell
+selected, and copied versus reference Closure captures keep distinct owners.
+Normal catch/finally and independently frozen pre-yield Fiber::throw abort
+sources agree with pinned PHP. Four new exact sources, two unchanged controls,
+and 118 custom source-reached checks cover this bounded transfer. Three
+authored sources were Unsupported on the unchanged parent; one first
+reference-capture timeout remains zero credit. Method by-reference/fresh,
+bound/delegated and wider lifecycle paths remain partial.
+[Fresh Closure reference THROW review](../../coverage/semantics/generator-fiber-fresh-closure-reference-throw-transfer-review.json).
+
+A primed ordinary public method-created by-reference Generator now admits
+`throw` with an authenticated cached cell and receiver. The saved Fiber resumer
+keeps the temporary Throwable, while `current()` reads the old cell after its
+external source name is rebound. `throw()` returns a dereferenced snapshot;
+later writes through the old cell change `current()` without changing that
+snapshot. Normal and supplied `Fiber::throw` paths preserve exception identity
+and `Previous` order. Separate receiver and cached-object lifetimes agree in
+three authored sources and an independent cache-replacement source. Two direct
+BYREF/method BYVAL controls, strict compilation and 129 source-reached checks
+pass. The three authored sources were `Unsupported` before the edit. Fresh
+method, bound/delegated and wider lifetime forms remain partial.
+[Method reference THROW review](../../coverage/semantics/generator-fiber-method-reference-throw-transfer-review.json).
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;

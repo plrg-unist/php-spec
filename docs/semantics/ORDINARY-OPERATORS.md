@@ -36,9 +36,35 @@ remains left to right. This determines callback order, saved integers and the
 TypeError operand order; `%` and shifts retain left-first conversion.
 The [COPY ledger](../../coverage/semantics/integer-operator-copy-review.json)
 binds 37 source cases and 714 reached conditions, preserving the original swap mismatch.
-Wider bitwise producer classes and object conversion remain open. Expired
+Nonfolded `+`, `*` and `/` LEFT results now retain their TMP2 value across
+ordinary `&`, `|` and `^` conversions. A direct RIGHT CV8 is converted first;
+its handler can change the source CVs, but the second notice still converts the
+saved LEFT result. Normal outcomes use the two saved integers; a second-handler
+throw cancels the outer store. Nine source cases and 579 reached conditions
+cover this slice. Independent controls confirm the opposite CV8/TMP2 order and
+an ineligible handler mask; see the
+[computed bitwise review](../../coverage/semantics/bitwise-computed-warning-review.json).
+Other bitwise producers and wider object conversion remain open. Expired
 pointers stay Unsupported; six earlier callback-unset native originals crashed with
 signal11, with no diagnosed engine cause or agreement claim.
+
+With a fractional finite float LEFT and an empty ordinary `stdClass` RIGHT with
+no materialized property table in direct, initially nonreference CVs, `%`, shifts
+and numeric bitwise operations now capture LEFT's integer before its Deprecated
+callback. A returning handler can replace RIGHT with `5`; changing LEFT from
+`12.5` to `99.5` still yields
+`12 % 5 = 2`, shifts `384`/`0`, and bitwise `4`/`13`/`9`. Keeping RIGHT as
+`stdClass` raises TypeError after the notice, using the current raw LEFT type.
+A supplied handler throw skips RIGHT conversion and preserves the outer value.
+Selected pointers add no object owner. This bounds initial admission to the
+standard handler without an integer cast or binary overload; reference-wrapped,
+computed, memberful and user-defined object operands remain partial. See the
+[object-RIGHT review](../../coverage/semantics/integer-object-right-warning-review.json).
+Ten formerly Unsupported warning originals and one unchanged quiet TypeError
+control agree exactly with PHP; three independent sources check numeric-string
+repair, object-first failure and a changed live LEFT type. Three source-reached
+fronts pass 314 checks, including two derived live-type failure premises. The
+initial duplicate-assertion preparation failure has zero semantic credit.
 
 Plain-CV NaN `%` now preserves the remaining precision Deprecated after its
 range Warning handler throws. With mask `2`, the default Deprecated on line 25
@@ -1223,8 +1249,17 @@ source-authenticated short-circuit task with its Boolean result. Five exact
 originals and 511 premises in three checked-source-derived recipes pass in the
 [short-circuit ledger](../../coverage/semantics/short-circuit-nan-warning-review.json).
 Keyword forms have source agreements; focused states cover symbolic skip, enter
-and throw. Opposite-truth/no-rewarning/refusal controls are derived. RIGHT NaN,
-reference operands, other conditional consumers and wider handlers remain partial.
+and throw. Opposite-truth/no-rewarning/refusal controls are derived. Reference
+operands, other conditional consumers and wider handlers remain partial.
+
+Selected RIGHT NaN values in all four short-circuit forms now warn through a
+separate source-authenticated `TRUTH_RESULT` continuation. A named handler can
+change the same float CV before `ZEND_BOOL` reads its truth; a supplied throw
+cancels the outer store, and a skipped RIGHT stays silent. Eight original sources
+and 258 reached-state premises agree with the pinned engine. The bounded
+[RIGHT NaN review](../../coverage/semantics/short-right-nan-warning-review.json)
+also checks unchanged NaN without rewarning and an ineligible handler mask.
+Copied/reference operands and wider handlers remain partial.
 
 Shorthand ternary with an ordinary NaN float CV now reads both live truth and
 the selected value after its named Warning callback. Writing `1.0` delivers a

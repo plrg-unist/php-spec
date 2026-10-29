@@ -6,6 +6,7 @@ dec $clone_same_kind(pobject, pobject) : bool
 dec $clone_thrown(pcompletion) : bool
 dec $clone_method(pstate, nat) : pmethoddesc?
 dec $clone_callback_value(pstate, pvalue) : bool
+dec $object_table_dynamic_history(ppropertyslot*) : bool
 dec $clone_lifecycle_start(pstate, nat, porigin, int, pclonecall?) : pstate
 dec $clone_readonly_updates(pstate, nat) : bool
 ;; Clone property storage before running any update or callback. The copy
@@ -43,6 +44,26 @@ def $clone_plain(S, n_source) = $clone_slots(S_new, n, pobjectprops.SLOTS)
   -- if n = |S.OBJECTS|
   -- if $objectprops_record_at(S.OBJECTPROPS, n_source) = (pobjectprops)
   -- if S_new = S[.OBJECTS = S.OBJECTS ++ [S.OBJECTS[n_source]]][.OBJECTPROPS = S.OBJECTPROPS ++ [{OBJECT n, SLOTS eps, MATERIALIZED pobjectprops.MATERIALIZED}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+;; With no inline properties and no effective callback, Zend keeps the same
+;; dynamic property table. Later FE_FETCH_RW promotion is visible to both.
+dec $clone_dynamic_share_ready(pstate, nat) : bool
+def $clone_dynamic_share_ready(S, n_source) = true
+  -- if $object_table_ordinary(S, n_source)
+  -- if S.OBJECTS[n_source] = INSTANCE porigin
+  -- if $property_layout(S, porigin, |S.CLASSES|) = eps
+  -- if $object_table_at(S.OBJECTTABLES, n_source) = (n_table)
+  -- if $(n_table < |S.ARRAYS|) /\ (HARRAY n_table) <- S.ALLOCATIONS
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_source) = (pobjectprops)
+  -- if pobjectprops.MATERIALIZED /\ $object_table_dynamic_history(pobjectprops.SLOTS)
+  -- if $clone_method(S, n_source) = eps
+  -- if $object_tables_valid(S) /\ S.GC.ACTIVE = eps
+  -- if ~$clone_readonly_updates(S, n_source)
+def $clone_dynamic_share_ready(S, n_source) = false -- otherwise
+def $clone_plain(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [S.OBJECTS[n_source]]][.OBJECTPROPS = S.OBJECTPROPS ++ [{OBJECT n, SLOTS pobjectprops.SLOTS, MATERIALIZED true}]][.OBJECTTABLES = S.OBJECTTABLES ++ [{OBJECT n, TABLE n_table}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+  -- if $clone_dynamic_share_ready(S, n_source)
+  -- if n = |S.OBJECTS|
+  -- if $object_table_at(S.OBJECTTABLES, n_source) = (n_table)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_source) = (pobjectprops)
 dec $clone_cached_ready(pstate, nat) : bool
 def $clone_cached_ready(S, n_source) = true
   -- if $object_table_ordinary(S, n_source)
@@ -120,7 +141,8 @@ def $clone_mixed_ready(S, n_source) = true
   -- if $object_table_at(S.OBJECTTABLES, n_source) = (n_table)
   -- if $(n_table < |S.ARRAYS|) /\ (HARRAY n_table) <- S.ALLOCATIONS
   -- if $objectprops_record_at(S.OBJECTPROPS, n_source) = (pobjectprops)
-  -- if pobjectprops.MATERIALIZED /\ $clone_mixed_dynamic(pobjectprops.SLOTS)
+  -- if S.OBJECTS[n_source] = INSTANCE porigin
+  -- if pobjectprops.MATERIALIZED /\ ($clone_mixed_dynamic(pobjectprops.SLOTS) \/ ($property_layout(S, porigin, |S.CLASSES|) = eps /\ $object_table_dynamic_history(pobjectprops.SLOTS)))
   -- if $object_tables_valid(S) /\ S.GC.ACTIVE = eps
   -- if ~$clone_readonly_updates(S, n_source)
   -- if $clone_mixed_table(S, n_source, |S.OBJECTS|, pobjectprops.SLOTS, S.ARRAYS[n_table].ITEMS, $array_empty()) = (parray)
@@ -128,6 +150,7 @@ def $clone_mixed_ready(S, n_source) = true
 def $clone_mixed_ready(S, n_source) = false -- otherwise
 def $clone_plain(S, n_source) = S_declared[.OBJECTPROPS = $objectprops_set(S_declared.OBJECTPROPS, n, pobjectprops_new.SLOTS ++ ppropertyslot_dynamic*)][.ARRAYS = S_declared.ARRAYS ++ [parray]][.OBJECTTABLES = S_declared.OBJECTTABLES ++ [{OBJECT n, TABLE n_table_new}]][.ALLOCATIONS = S_declared.ALLOCATIONS ++ [HARRAY n_table_new]]
   -- if $clone_mixed_ready(S, n_source)
+  -- if ~$clone_dynamic_share_ready(S, n_source)
   -- if n = |S.OBJECTS|
   -- if n_table_new = |S.ARRAYS|
   -- if $object_table_at(S.OBJECTTABLES, n_source) = (n_table)
@@ -140,7 +163,7 @@ def $clone_plain(S, n_source) = S_declared[.OBJECTPROPS = $objectprops_set(S_dec
 def $clone_plain(S, n_source) = S[.COMPLETION = UNSUPPORTED "cached ordinary property-table cloning"]
   -- if $object_table_ordinary(S, n_source)
   -- if $object_table_at(S.OBJECTTABLES, n_source) = (n_table)
-  -- if ~$clone_cached_ready(S, n_source) /\ ~$clone_mixed_ready(S, n_source)
+  -- if ~$clone_dynamic_share_ready(S, n_source) /\ ~$clone_cached_ready(S, n_source) /\ ~$clone_mixed_ready(S, n_source)
 
 ;; Real closure hash duplication copies singleton static/capture wrappers, but
 ;; retains wrappers also owned by active invocation locals or escaped aliases.

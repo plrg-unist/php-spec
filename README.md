@@ -621,6 +621,14 @@ Three source agreements, strict411 and 513 original state obligations pass
 (558 physical conditions, 45 repeated setup). The original owned-case timeout
 keeps zero credit; wider producers, values and owner-loss lifetimes remain partial.
 
+A [fresh returned Iterator with a destructor](coverage/semantics/config-aggregate-iterator-finalizer-review.json)
+now releases its sole CONFIG DATA after its Aggregate producer has died. Its
+public no-argument `__destruct` runs before INI_SET or error recovery, with
+three exact PHP source agreements and separate reached cleanup checks.
+It may also own [one declared child](coverage/semantics/config-aggregate-iterator-child-review.json):
+the parent destructor sees the child live, then the child's destructor runs
+before API entry or catch. Wider child graphs remain partial.
+
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
 resumes. DATA retains the selected Generator across live input/callee rebinding;
@@ -1136,6 +1144,12 @@ preserve reference cells across rebinding; bitwise conversion follows Zend's
 compiler slot order. [Direct-CV](coverage/semantics/integer-operator-warning-review.json)
 and [copied-operand](coverage/semantics/integer-operator-copy-review.json) evidence
 retain separate cuts. Wider producers and object conversion remain open.
+With an empty, unmaterialized `stdClass` RIGHT CV, a fractional LEFT's Deprecated
+handler can now repair RIGHT before `%`, shifts or numeric bitwise conversion.
+LEFT keeps its saved integer; an unrepaired RIGHT uses the live raw types in
+TypeError, and a supplied throw cancels delivery. The
+[bounded object-RIGHT ledger](coverage/semantics/integer-object-right-warning-review.json)
+retains the original Unsupported baselines and wider object limits.
 Leading-numeric-string `+` now suspends through named warning handlers for two
 direct CVs with preexisting untyped reference cells. Both cells are selected before
 conversion; cached numbers survive handler writes, while the next conversion reads
@@ -4121,6 +4135,13 @@ and paused-state checks. [Generated Throwable objects](docs/semantics/THROWABLES
 now support ordered no-finally try/catch and throw/rethrow, internal constructors,
 getters and structured traces. The distinct `ErrorException` constructor and
 `getSeverity` have a separate [bounded review](coverage/semantics/error-exception-review.json).
+Same-kind comparisons for twelve exact builtin Throwable root kinds now follow
+finite `previous` chains, with `previous` before `ErrorException` severity at
+every node. Warm caches, finite direct trace arrays, shared child identity and
+nested class mismatch preserve physical order. Equal chains continue through
+array tails; nonzero results skip later casters. The
+[comparison review](coverage/semantics/throwable-builtin-previous-comparison-review.json)
+records the bounded scope and validation.
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The
@@ -4179,6 +4200,17 @@ untyped constructors now initialize defaults before the body, ignore automatic
 return values and preserve shared Throwable identity through ordinary unwind.
 [Four further originals](coverage/semantics/anonymous-constructors-review.json)
 also check explicit calls, factory effects and constructor `finally` blocks.
+One or two direct positional/named anonymous `new` arguments now use ordinary
+constructor binding, including required untyped or `int` formals; constructorless
+classes evaluate positional arguments and ignore their values. [The argument
+review](coverage/semantics/anonymous-constructor-arguments-review.json) records
+seven original source agreements, an independent coercion case and reached tasks.
+Unit0 global anonymous classes may also extend a previously compiled plain Base.
+Inherited or overridden constructors see Base property defaults; inherited
+methods preserve lexical and called scopes, and private Base slots remain
+separate from public child shadows. Generated names use the resolved parent
+reference spelling before `@anonymous`. [The parent review](coverage/semantics/anonymous-parent-review.json)
+keeps this bounded inheritance slice and its original naming counterexample.
 Plain empty named classes can share those units globally and in valid named
 namespace sections, including repeated unbracketed sections and bracketed global
 bodies. Eligible root/actual-block classes consume no RTD key; deferred classes
@@ -5670,6 +5702,10 @@ Iterator callbacks; inherited static calls preserve called scope and report
 the declaring class in by-reference warnings. Abrupt key cleanup uses a saved
 selection receipt after its receiver retires. Six exact originals and seven
 reached stages are in the [array-callable Iterator review](coverage/semantics/array-callable-iterator-unpack-review.json).
+Dynamic calls through a public user `__invoke` CV also unpack an initialized
+Iterator CV, retaining the selected receiver through callbacks and abrupt
+cleanup. Five exact originals, one independent source and seven reached stages
+are in the [invokable Iterator review](coverage/semantics/invokable-iterator-unpack-review.json).
 Public concrete class-method strings now distinguish
 computed static dispatch from fixed calls using a compatible active receiver.
 Immutable string captures/clone retain selected descriptors, called scope and
@@ -5952,6 +5988,15 @@ Thirty-six private source agreements and one current global-constant loader
 interaction retain separate cuts. The 263 original finite premises pass with
 seven typing bindings and eight repeated compaction setup premises; the split
 compaction groups use the existing strict SL runner at the unchanged120s cap.
+
+Fixed-name ordinary `new` of a class being linked now raises the missing-class
+Error without calling its loader again during an entered dependency callback.
+After failed linking unwinds, later construction can autoload it normally.
+The [reentrant lookup review](coverage/semantics/reentrant-unlinked-new-review.json)
+records two repaired author sources, one unchanged recursion control, an
+independent interface-loader source and 140 reached checks; dynamic-name `new`
+and wider reentrant histories remain partial.
+
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
 now loads a sole missing user interface before a parentless class or interface is
 linked and published. Two exact originals and 324 SL premises distinguish cached
@@ -6044,6 +6089,16 @@ window. A supplied throw instead destroys the failed copy/Payload before the sam
 catch and unchanged destination `42`. Four originals and 756 focused checks pass.
 Readonly, active collection, zero-declared and wider callback histories remain partial.
 
+The [dynamic-only cached clone review](coverage/semantics/dynamic-only-cached-clone-review.json)
+admits parentless, trait-free `#[AllowDynamicProperties]` classes with no declared
+instance slots and a dynamic property history. With no effective `__clone`, a
+cached source and its clone share one table. A later by-reference foreach fetch
+promotes a bucket for both, while a writable property lookup separates the
+writer's table. An effective callback copies the dynamic table before it runs,
+including the all-unset history case. Source comparisons also cover scalar and
+alias writes, shallow Payload lifetime, callback throw cleanup, array casts and
+empty-table boundaries. Other class shapes and active collection remain partial.
+
 [`get_class` testing support](docs/semantics/GET-CLASS.md) observes finite live
 object names and executing lexical scope through direct and callable invocation.
 [Labels and goto](docs/semantics/SOURCE-GOTO.md) now resolve within each callable,
@@ -6074,6 +6129,9 @@ inherited source object invocation and Stringable SET ownership; broader
 Generator and unfinished callback interactions remain open. Live
 [Fiber transfers](docs/semantics/FIBERS.md) now retain separate VM continuations,
 shared globals and handlers, cached callbacks and original C argument buffers.
+Primed method-created by-reference `Generator::throw` transfers also preserve
+the cached cell, receiver and pending exception through Fiber suspension;
+see the [method reference THROW review](coverage/semantics/generator-fiber-method-reference-throw-transfer-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

@@ -50,12 +50,12 @@ default Warning precedes `NAN`, then used print delivers integer `1`. A handler
 that throws a supplied Exception still permits the cached `NAN` write before
 exception search, while the enclosing assignment stays unchanged. The saved
 bytes model the prepared string; its allocation identity cannot be observed in
-this scalar, initially and finally unbuffered route. If the callback changes
-output buffering, execution explicitly remains Unsupported. Two exact sources
-and 135+120 reached-state premises are recorded in the
+this scalar, initially and finally unbuffered route. The one-default-buffer
+callback route below is separate; other buffer changes remain Unsupported. Two
+exact sources and 135+120 reached-state premises are recorded in the
 [NaN print review](../../coverage/semantics/print-nan-warning-review.json).
-References, computed producers, buffering callbacks and wider output lifetimes
-remain partial.
+References, computed producers, user output-handler callbacks and wider output
+lifetimes remain partial.
 
 A direct nonempty flat primitive array CV now stages its `Array to string
 conversion` Warning through a named handler. `ZEND_ECHO` uses the interned
@@ -65,8 +65,9 @@ still writes `Array` before exception search and leaves the outer assignment
 unchanged. A literal array retains its independent compiled-pool owner after
 source unset. A runtime-built array instead retires before the pending output;
 neither path adds a saved array owner to the print task or rereads the CV.
-Initially empty output buffers are required, and a callback-created buffer is
-explicitly Unsupported. Three exact sources and 137+122+122 reached-state
+Initially empty output buffers are required. The one-default-buffer callback
+route below is admitted; other buffer changes remain Unsupported. Three exact
+sources and 137+122+122 reached-state
 premises are recorded in the
 [array print review](../../coverage/semantics/print-array-warning-review.json).
 Empty/nested arrays, other producers and wider output lifetimes remain partial.
@@ -85,6 +86,18 @@ also agrees, without a source-global owner. This initially unbuffered route is
 limited to the authenticated named function call and flat array. Other
 producers, nested or empty arrays, output-buffer changes and wider lifetimes
 remain partial.
+
+A named Warning handler for a direct array or NaN CV may start exactly one
+default, chunk-zero output buffer after printing its unbuffered handler marker.
+The continuation saves the pre-warning output sequence, checks the new buffer's
+ID and default flags, and keeps the handler's existing bytes. Normal `print`
+appends cached `Array` or `NAN` before delivering integer `1`; a supplied
+handler throw appends the same bytes before catch handling and leaves the outer
+assignment unchanged. `ob_get_clean()` later observes `I;Array` or `I;NAN`
+without duplicate stdout. Five original print/echo sources and 591 reached
+premises also cover echo sibling order; see the
+[buffered warning review](../../coverage/semantics/buffered-output-warning-review.json).
+Nested, reopened, chunked and user output buffers remain outside this route.
 
 Validation is separate by boundary: 20 author source comparisons, ten native
 compiler/lint comparisons with 51 source projections, and 15 independent reviewer

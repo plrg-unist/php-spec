@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "milestone": "OP105 computed arithmetic TMP operands in ordinary bitwise conversion",
+  "status": "bounded independently reviewed semantics; private publication pending",
+  "target": "PHP 8.5.10 CLI NTS64; project-local oracle and ordinary precision14 profile",
+  "scope": "Nonfolded Plus, Mul and Div LEFT expressions yielding a saved scalar TMP2, with a defined ordinary direct RIGHT CV8 in & | ^. The validated warning route uses fractional floats and a named two-call Deprecated handler; wider producers, references, objects and changed operand representations remain partial.",
+  "tested_revision": {
+    "semantic_and_source": "9529798ab4f08ba262fdfc697cb78268ef54665f",
+    "focused_test_only": "6809de40cf35897e0b4333c0e8d05c0cea792183"
+  },
+  "module_count": 424,
+  "tested_sha256": {
+    "spec/semantics/387-integer-operator-warnings.watsup": "b487bffebb4e41242122de5254015c199644f87fb9d4496036a6b01d2c88451b",
+    "tests/semantics/bitwise_computed_warning_cases.py": "c30777728078bace566779db3c82a592cee237b3d17982a754af5abb2a91810f",
+    "tests/semantics/bitwise_computed_warnings.py": "41f55416516ac36eeedb04e4aefbf23799ecf6b4040faa675e562888f5ea2817",
+    "tests/semantics/bitwise_computed_warning_protocol.py": "49f575f9a34f2a17237f6dd7e61fab50176b37a84249f245c0286450fe8b4287",
+    "spec/semantics/modules.json": "de8488abd5ca58bfd455d59011ef41f48449be4699ede06af70e027075dab632"
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c::zend_compile_binary_op emits nonfolded Plus/Mul/Div results with zend_emit_op_tmp.",
+    "Zend/zend_vm_gen.php::zend_vm_set_opcode_handler swaps COMMUTATIVE operands when op1_type < op2_type; TMP2 LEFT/CV8 RIGHT therefore converts physical RIGHT first.",
+    "Zend/zend_operators.c::bitwise_or_function/bitwise_and_function/bitwise_xor_function call zendi_try_get_long in physical operand order; Zend/zend_vm_def.h BW helpers destroy TMP operands after the operation and check the pending Exception."
+  ],
+  "contract": [
+    "The first conversion captures RIGHT 5.5 and warns at expression line24; H1 changes its live CV to 2.5 and the LEFT source to 99. The second conversion uses saved computed LEFT 12.5, then H2 changes RIGHT to 88. Normal results are strict integers 4/13/9 from 12 and 5, with two default Deprecated lines.",
+    "A supplied H2 Exception20 preserves the old outer result100, emits only the first default Deprecated, and reaches the same object catch. The quiet integral-float control has no handler or diagnostic."
+  ],
+  "inputs": {
+    "frozen_cases_path": "/home/user/workspace/php-spec-evidence-archive/operators-105/cases.py",
+    "frozen_cases_sha256": "c30777728078bace566779db3c82a592cee237b3d17982a754af5abb2a91810f",
+    "recorder_sha256": "7e9cd06199b2d7fc5197e906c96f8873e2cd99c22eac7dd63367f847b42c4335",
+    "native_first_report": "/home/user/workspace/php-spec-evidence-archive/operators-105/native-pre/report.json",
+    "native_first_sha256": "2ef1487bb8d6b05d8bc1d60222c93d96eb12404277578b9e35ee9f35382befb9",
+    "unchanged_baseline_report": "/home/user/workspace/php-spec-evidence-archive/operators-105/baseline/report.json",
+    "unchanged_baseline_sha256": "c6fa894486381b67d6f1a50c3dcd1c481f591ea076405765a789426fac0534bc",
+    "baseline_result": "Eight warning originals accepted/checked but Unsupported at handler ingress, model exit1 and no agreement. The quiet control was already exact normal."
+  },
+  "accepted": {
+    "source_report": "/home/user/workspace/php-spec-evidence-archive/operators-105/source-9529798ab/report.json",
+    "source_sha256": "4e97c97b0224ba930b93d15c9cf497b02c3d3d1a1e9ededfac955448fe46eef3",
+    "source_agreements": 9,
+    "new_warning_agreements": 8,
+    "prior_quiet_control": 1,
+    "focused_reports": [
+      [
+        "focused-b1f84ee9d",
+        "56ff12fc026b112e6d57a881380b8287fc9d0405e7c6efda2e17999ec3b64f4b",
+        "Plus-& normal",
+        145
+      ],
+      [
+        "focused-6809de40c-computed-left-xor-second-throw",
+        "59017aba0872134db7e87fde5fdc6cbff0b0c9d5285564b03469eef563ec7527",
+        "Plus-^ H2 throw",
+        144
+      ],
+      [
+        "focused-6809de40c-computed-left-mul-or-default",
+        "8fadda3471e258395388fe514ba4c050a2290c031e7d1a618f8eca6f9d0a28c6",
+        "Mul-| normal",
+        145
+      ],
+      [
+        "focused-6809de40c-computed-left-div-xor-default",
+        "6fda3b1204304ff1d0da7a3e4bd7a4124d040b9bc1b023c1af3f2f8aaecc470f",
+        "Div-^ normal",
+        145
+      ]
+    ],
+    "focused_conditions": 579
+  },
+  "preserved_zero_credit": [
+    [
+      "focused-9529798ab",
+      "63118276dd4400fd6cd5be62374ddacc2dc67c7474252715fffbb7dee54e4694",
+      "Untyped fixture binder failed before state checks."
+    ],
+    [
+      "focused-b1f84ee9d",
+      "56ff12fc026b112e6d57a881380b8287fc9d0405e7c6efda2e17999ec3b64f4b",
+      "H2 throw row reused the entry task tail; that row failed and earns zero credit. The separate Plus-& normal row in this report passed."
+    ]
+  ],
+  "independent_review": {
+    "status": "Two frozen native-first/model exact controls at clean tested 6809de40c; reviewer CPU1 fully reaped and released",
+    "cases_sha256": "bb68b273bac16dc7459e7e73ac387dd9632613418c1d185811db5fa435fecd17",
+    "recorder_sha256": "c829be1adadb7da3ff429039b661c1fc62080485a866f38ef18d8a916395d73e",
+    "source_sha256": {
+      "computed-right-plus-handled-second": "1247e566ee3a30ea9a02ac4da876334148d1849a88e8490d703345f3e9fb60aa",
+      "computed-left-mul-ineligible-mask": "7b3356624ea5c843ba8b7ecfa134bf05dade68bc9dd0fe3c787cae93f4b7d2da"
+    },
+    "native_first_report": "/home/user/workspace/php-spec-evidence-archive/operators-105/review-independent/native-pre/report.json",
+    "native_first_sha256": "103f23d3a3ccd8ae1a5af7b85aa459421e742612acadb4ffd29f3f50a82e587c",
+    "model_report": "/home/user/workspace/php-spec-evidence-archive/operators-105/review-independent/model/report.json",
+    "model_sha256": "fea2fec3365165ff0c5ce0ba504161ebf52d3e32e838a75643a4b4f6aa6593e7",
+    "result": "Computed RIGHT Plus TMP2 with LEFT CV8 does not swap: LEFT12.5 then cached RIGHT5.5 warn; H2 handled true suppresses only its default and strict &4 remains. Computed LEFT Mul under an E_WARNING-only handler invokes no callback, defaults both Deprecated notices and yields strict |13. Both exact checked normal exit0/raw streams, no timeouts or process residue."
+  },
+  "environment": {
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "cpu": "CPU3 native/baseline/source/focused serial; all actors reaped and lease released; reviewer controls on CPU1, fully reaped and released"
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-105",
+    "commands": [
+      "taskset -c 3 python3 /home/user/workspace/php-spec-evidence-archive/operators-105/record.py native-pre",
+      "taskset -c 3 python3 /home/user/workspace/php-spec-evidence-archive/operators-105/record.py baseline",
+      "taskset -c 3 python3 tests/semantics/bitwise_computed_warnings.py --output <fresh-external-dir>",
+      "taskset -c 3 python3 tests/semantics/bitwise_computed_warning_protocol.py --case <selected-case> --output <fresh-external-dir>"
+    ],
+    "note": "Use the recorded clean revision and local pinned tools. Fresh output directories are required; raw streams remain outside Git."
+  }
+}

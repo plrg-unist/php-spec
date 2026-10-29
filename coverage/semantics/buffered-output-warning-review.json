@@ -1,0 +1,178 @@
+{
+  "milestone": "OP103 default output buffer started inside print/echo Warning handler",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle/profile",
+  "status": "independently reviewed bounded semantics",
+  "scope": "Initially empty output stack; named Warning callback may start exactly one default chunk-zero buffer. Direct-CV nonempty flat array used print and first-child multi-expression echo, plus direct-CV NaN used print, keep handler bytes and append cached Array/NAN before normal print1/sibling or same-Exception catch. Buffer ID and sequence are authenticated; other buffer shapes explicitly Unsupported.",
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_print",
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_echo",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_ECHO",
+    "vendor/php-src/Zend/zend_operators.c:__zval_get_string_func",
+    "vendor/php-src/main/output.c:php_output_write"
+  ],
+  "revisions": {
+    "unchanged_base": "6529f689f6656fb99aebab4525492d5e8a361c91",
+    "semantic": "7ff1da15d3a748390eda707835e3a565268c4e11",
+    "tested": "409e9182884a0da349cca29dc0e9e894fba9ac4c"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "cpu_author": 1,
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "modules_sha256": "de8488abd5ca58bfd455d59011ef41f48449be4699ede06af70e027075dab632",
+    "module_count": 424,
+    "private_ignored_links": [
+      ".tools/php -> canonical .tools/php",
+      ".tools/php-file.so -> canonical .tools/php-file.so",
+      "_build -> canonical _build",
+      "tests/semantics/_build -> canonical tests/semantics/_build"
+    ]
+  },
+  "frozen_originals": {
+    "cases": "/home/user/workspace/php-spec-evidence-archive/operators-103/cases.py",
+    "cases_sha256": "4d28e17a97dca8d5747edc35ca00d42fc545d12ac27d54f3eae8acb60dd1d75f",
+    "sources": {
+      "print-array-buffer-false-default": "8894aeb21d8e8a81dc07f5562b2a2c70aafe9166fedab2739fa952e324036bd5",
+      "print-array-buffer-pending-throw": "5da7d169213b405cf4da01756c91ede6b3de2a04f9ec85f19fb804ed07d82d94",
+      "echo-array-buffer-false-default": "6f4e5024270b109385a0767b2369c24cdad4d9c3ac76efbe2397a275559723ae",
+      "echo-array-buffer-pending-throw": "e89755d8ed865ff2bae28ae155209d0ca041379dc05367a25b9a640136737ded",
+      "print-nan-buffer-false-default": "603d4ac3d1d8f6d75cb8b248166d9c1b5d4201f5f3e70ceb3640a83ecaf68ed7"
+    }
+  },
+  "native_pre": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/operators-103/native-pre/report.json",
+    "sha256": "6ede1646160d609efaab1df29c8ba46de2ed1ca6aa40ceeaf7988d6479530faa",
+    "result": "Five pinned native exits0/no timeout/reaped. Handler H precedes ob_start/I; and cached Array/NAN capture; default Warning24 only on false returns, supplied throw catches same Exception20 after output."
+  },
+  "unchanged_baseline": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/operators-103/baseline/report.json",
+    "sha256": "ad47fd974ed73f30c0ef78bef5cbfb1ab8f2f6ad388bcf2fa3b9fa3b0ddb936e",
+    "result": "Five checked/accepted model exits1 Unsupported exactly at each prior buffer-changed continuation after H; no agreements, no timeouts/groups."
+  },
+  "accepted": {
+    "source": {
+      "reports": [
+        {
+          "path": "/home/user/workspace/php-spec-evidence-archive/operators-103/source-gate-7ff/report.json",
+          "sha256": "579daa2bec0ad71c15efc77463b501222637fd9a877c54919055f3c4d138682c"
+        },
+        {
+          "path": "/home/user/workspace/php-spec-evidence-archive/operators-103/source-remaining-7ff/report.json",
+          "sha256": "1ae0d37b58e44e791895881eb260efdde87133c1279bb72a95a0ea3371fab004"
+        }
+      ],
+      "result": "Five byte-identical frozen originals, native/model normal exits0 and raw stdout/stderr exact; one new agreement per original, all groups reaped."
+    },
+    "reached": {
+      "reports": [
+        {
+          "case": "print-array-buffer-false-default",
+          "conditions": 122,
+          "path": "/home/user/workspace/php-spec-evidence-archive/operators-103/focused-gate-409/report.json",
+          "sha256": "9f1be5785fac452ca36691e4437308b2b958ef2e420a79c38f8ec95439b8c57f"
+        },
+        {
+          "case": "print-array-buffer-pending-throw",
+          "conditions": 109,
+          "path": "/home/user/workspace/php-spec-evidence-archive/operators-103/focused-print-pending-409/report.json",
+          "sha256": "274ea718f1379f6f4bd302bf70e5c7ef27c1b991cbef50c2be60ba30c79bf4d4"
+        },
+        {
+          "case": "echo-array-buffer-false-default",
+          "conditions": 127,
+          "path": "/home/user/workspace/php-spec-evidence-archive/operators-103/focused-echo-normal-409/report.json",
+          "sha256": "80ebf3d9a9d25155fae0f8b370c6215db9a7d1fda3867315383d7a6af29a4387"
+        },
+        {
+          "case": "echo-array-buffer-pending-throw",
+          "conditions": 113,
+          "path": "/home/user/workspace/php-spec-evidence-archive/operators-103/focused-echo-pending-409/report.json",
+          "sha256": "206f83f033998dabe8d3aee0463035608ae61d7c8e90febdf89d0eedabef98d2"
+        },
+        {
+          "case": "print-nan-buffer-false-default",
+          "conditions": 120,
+          "path": "/home/user/workspace/php-spec-evidence-archive/operators-103/focused-nan-normal-409/report.json",
+          "sha256": "b4b1e32dd2d72ae4781b555ad078c86ccd296dd29307ea4ff8b71f00d3694c92"
+        }
+      ],
+      "result": "591 true source-reached checks bind stage0 source/buffer sequence, real handler, I; before cached write, I;Array/I;NAN after write before print1/sibling/catch, same pending Exception, nested/reopened/chunk refusals and budget0."
+    },
+    "affected_prior_focused": {
+      "reports": [
+        {
+          "path": "/home/user/workspace/php-spec-evidence-archive/operators-103/legacy-print-nan-409/report.json",
+          "sha256": "9c151905c1af9c56e3508231003b7e41aa81613897ab39276260157453ce7fac"
+        },
+        {
+          "path": "/home/user/workspace/php-spec-evidence-archive/operators-103/legacy-print-array-409/report.json",
+          "sha256": "40cfbb78dd93ae0d0d7fbb7f01b50846feb7f45abae649f3f28ab5218d12ab43"
+        },
+        {
+          "path": "/home/user/workspace/php-spec-evidence-archive/operators-103/legacy-echo-array-409/report.json",
+          "sha256": "d07a2cf2d16522951bdf073728dbf44f639dff9257398cb7b7f48e454db0c8d1"
+        },
+        {
+          "path": "/home/user/workspace/php-spec-evidence-archive/operators-103/legacy-echo-two-array-409/report.json",
+          "sha256": "2476c51ae7e1ccf3acbab6a39149bb83e2b380aeb8750d7caf5634d244f0b9db"
+        }
+      ],
+      "result": "Nine affected prior focused cases pass after CHUNK1 replaces the former newly started default-buffer negative; no new semantic agreement is claimed for these old sources."
+    }
+  },
+  "independent_review": {
+    "cases": "/home/user/workspace/php-spec-evidence-archive/operators-103/review-independent/cases.py",
+    "cases_sha256": "66c07ed4a4ee1af1dfb67c2809e266e2a27624a68704e6933aab2a930aaa8b71",
+    "recorder": "/home/user/workspace/php-spec-evidence-archive/operators-103/review-independent/record.py",
+    "recorder_sha256": "3c8120e8a2714166a5c03f4436d457e8e4f7cf0987af15dc5f8fcb8e06ecdc7d",
+    "native_pre": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-103/review-independent/native-pre/report.json",
+      "sha256": "71ae3765cf19a3ef2e0c25f3e42a0bb0310437925edf4257c347c0f4d6527ca8"
+    },
+    "model": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-103/review-independent/model/report.json",
+      "sha256": "5005de959dc6182704c7c9d94dd8c52aac3cb3dd1c1c52d8db49b32c59696af7"
+    },
+    "sources": {
+      "print-array-buffer-handler-true": "43b00a4ce0ceeeddd4c616c1d842e5b310a7196558c18e71b81fcbb21639daf5",
+      "print-nan-buffer-handler-throw": "f4bb82962f996791847ae02d7d9379ab0a240539551b70b996db26172da3b65a"
+    },
+    "result": "Two frozen native-first exact controls at clean tested cut: handler-true array print captures I;Array and strict1 without default Warning; handler-throw NaN print captures I;NAN before same Exception15 with no outer store. Both checked/accepted normal exits0/raw exact; CPU4 fully reaped."
+  },
+  "failed_attempts": [
+    {
+      "revision": "f99dba3ac9a275e766b51216dbaa5ef632fa1aff",
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-103/source-gate-f99/report.json",
+      "sha256": "dd91a2dee906db732a5c69404d32776dbf4f1faab2bb129176de53c368d9c4a7",
+      "reason": "Pre-semantic parser error from using arithmetic $() around a DSL state conjunction; zero agreement."
+    },
+    {
+      "revision": "7ff1da15d3a748390eda707835e3a565268c4e11",
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-103/focused-gate-7ff/report.json",
+      "sha256": "8c5a12f4116ca3a144ee8b0d3953e6aedd8293ec814ede3063047935541c45fa",
+      "reason": "Focused elaboration rejected untyped descriptor/output-buffer binder names; zero focused credit."
+    },
+    {
+      "revision": "694c77f07",
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-103/focused-gate-694/report.json",
+      "sha256": "58a85a3f6dc703b9cb9c56a92fcd13c5d51d4d3f2e646ab03fdde6db7bace14e",
+      "reason": "Focused elaboration rejected a synthetic nested-buffer cons expression; zero focused credit."
+    }
+  ],
+  "tested_input_sha256": {
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "c362e294b788a6ea4484a3182fde344c54e3915cb71299fc52355c63839c5680",
+    "tests/semantics/buffered_output_warning_cases.py": "6ec66ac18e741ad3bea1700cafe5670eee8c097f41d11197f3350cf298e008fa",
+    "tests/semantics/buffered_output_warnings.py": "d52457b1f2dc5c0d9f951379d9a8972c38268c9a6ed0193c3f26979158c1856d",
+    "tests/semantics/buffered_output_warning_protocol.py": "b838b528998b9a3896894ce530e9097864e4dbb368346695c537b8d1fcbfa5b5",
+    "tests/semantics/print_nan_warning_protocol.py": "ef79582b5e1197b3a970e523a37dfb64d0880643afb29d9762a1ef12d8503e48",
+    "tests/semantics/print_array_warning_protocol.py": "7fd9eef6dd2d77e8ed03b2612f2f0a0c11570ba88d73a02f1f11fdf4bf7c2ac0",
+    "tests/semantics/echo_array_warning_protocol.py": "b235fe36c12e1023a09141762b0d668877e7102d0d77e664a40a2a657d95f9ca",
+    "tests/semantics/echo_two_array_warning_protocol.py": "270a96a80a2a07e622346a82a7f94199462e7ed1b49b41703a3252d8abd443f3"
+  },
+  "remaining": "Only direct CV nonempty flat primitive arrays and direct CV NaN under named Warning callbacks with exactly one newly started default chunk-zero no-handler buffer are claimed. Nested/reopened/chunked/user buffers, acquired print arrays, other echo children/producers and wider output-handler lifetimes remain partial. Derived pending rewind checks supplement genuine reached pending states and raw source agreement."
+}

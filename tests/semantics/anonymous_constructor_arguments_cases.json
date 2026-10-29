@@ -1,0 +1,100 @@
+{
+  "scope": "Anonymous class constructor arguments: positional and named evaluation, by-value reception, missing constructor, errors, and repeated factory use. Sources are frozen before semantic edits.",
+  "packet_sha256": "8d61b491eaa7a6d0f0077df8d18e162e1087d64287fe5c70d659c15e2bade841",
+  "baseline_model_head": "6ef64289430fe4d5f0e285db88570eb86c327f1f",
+  "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-positional-typed",
+      "source": "<?php\nfunction value($tag, $v) { echo $tag; return $v; }\n$o = new class(value('A', 1), value('B', 2)) {\n    public $seen = 5;\n    public function __construct(int $first, int $second) {\n        echo '|C', $this->seen, '/', $first, '/', $second, '|';\n        $this->seen = $first + $second;\n    }\n};\necho 'result:', $o->seen;\n",
+      "source_sha256": "b270481ca2970de983489f7227f7183c87f4b04501ff424760773cde3d34a545",
+      "stdout_base64": "QUJ8QzUvMS8yfHJlc3VsdDoz",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class142-baseline/anonymous-positional-typed/native.json",
+      "native_raw_sha256": "277ecdbd7592cad34e0f599cf19fcba2ce09f3258661a1f91c55a8dbd64d1f95"
+    },
+    {
+      "id": "anonymous-named-reorder",
+      "source": "<?php\nfunction value($tag, $v) { echo $tag; return $v; }\n$o = new class(right: value('R', 4), left: value('L', 3)) {\n    public $seen = 0;\n    public function __construct($left, $right) {\n        echo '|C', $left, '/', $right, '|';\n        $this->seen = $left * 10 + $right;\n    }\n};\necho 'result:', $o->seen;\n",
+      "source_sha256": "cdc88c4dd45aa52c83a3055d600d97cfab7351d7080e1551db45ce69b3046d4d",
+      "stdout_base64": "Ukx8QzMvNHxyZXN1bHQ6MzQ=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class142-baseline/anonymous-named-reorder/native.json",
+      "native_raw_sha256": "07f16eb54d026ff232e2db135ff227a763f2795d54411a6901c59cd6febf7eb8"
+    },
+    {
+      "id": "anonymous-no-constructor-arguments",
+      "source": "<?php\nfunction value($tag, $v) { echo $tag; return $v; }\n$o = new class(value('A', 1), value('B', 2)) { public $seen = 9; };\necho '|result:', $o->seen;\n",
+      "source_sha256": "03454c60d1f0c9b81d36a1a42e55362a6279865410ca794fffe05a785a2143ba",
+      "stdout_base64": "QUJ8cmVzdWx0Ojk=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class142-baseline/anonymous-no-constructor-arguments/native.json",
+      "native_raw_sha256": "ff6a58686c5d4408d556e03144d21d739909afa061044c6405a5ed8cc5958eed"
+    },
+    {
+      "id": "anonymous-type-error-preserves-destination",
+      "source": "<?php\nfunction value($tag, $v) { echo $tag; return $v; }\n$o = 'kept';\ntry {\n    $o = new class(value('A', 'bad')) {\n        public function __construct(int $v) { echo 'BAD'; }\n    };\n} catch (TypeError $e) { echo '|type|'; }\necho 'result:', $o;\n",
+      "source_sha256": "bbdbff7e02d12eb272383cfcb7e84e5a0640fb7a8443357add1f2d24f8b375b6",
+      "stdout_base64": "QXx0eXBlfHJlc3VsdDprZXB0",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class142-baseline/anonymous-type-error-preserves-destination/native.json",
+      "native_raw_sha256": "a32d5484d6590f7271911be02c1112b131a0ef783f3e4258b4b938ab8e20740e"
+    },
+    {
+      "id": "anonymous-unknown-name-after-values",
+      "source": "<?php\nfunction value($tag, $v) { echo $tag; return $v; }\ntry {\n    new class(missing: value('A', 1), expected: value('B', 2)) {\n        public function __construct($expected) { echo 'BAD'; }\n    };\n} catch (Error $e) { echo '|name|'; }\n",
+      "source_sha256": "ed2a1289824b7dbeeb6a11532140f87c58c6bbd0b5897881705bcbb584d41d37",
+      "stdout_base64": "QXxuYW1lfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class142-baseline/anonymous-unknown-name-after-values/native.json",
+      "native_raw_sha256": "d14467e6e0a254b5642e1a043d5797422d21005385f0bc537e52da5683b8b901"
+    },
+    {
+      "id": "anonymous-factory-repeated-arguments",
+      "source": "<?php\nfunction make() {\n    global $input;\n    return new class($input) {\n        public $value = 0;\n        public function __construct($value) { $this->value = $value; }\n    };\n}\n$input = 3; $a = make();\n$input = 4; $b = make();\necho $a !== $b ? 'different|' : 'bad|';\necho $a::class === $b::class ? 'same|' : 'bad|';\necho $a->value, '/', $b->value;\n",
+      "source_sha256": "3a61023de3a0ded5baf254d7d3563659cf1a321b3362381a5263c0368cade710",
+      "stdout_base64": "ZGlmZmVyZW50fHNhbWV8My80",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class142-baseline/anonymous-factory-repeated-arguments/native.json",
+      "native_raw_sha256": "f4c35fc3c01a670e7bbd5236162748d5ba8cee4dd13d595b26412c4dc0927d89"
+    },
+    {
+      "id": "anonymous-zero-argument-control",
+      "source": "<?php\n$o = new class { public $value = 3; public function __construct() { echo 'C|'; } };\necho $o->value;\n",
+      "source_sha256": "56334c1bebb56d10d4b472537d9843903b9e74934777cbc2462a10f87dfd526b",
+      "stdout_base64": "Q3wz",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class142-baseline/anonymous-zero-argument-control/native.json",
+      "native_raw_sha256": "f7488d90c9e81aa8195db51a0b8912d47acb386b8d6f0cf2b1aa517aa6548752"
+    }
+  ]
+}

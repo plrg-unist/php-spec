@@ -263,6 +263,8 @@ test-semantics: build
 	python3 tests/semantics/method_iterator_unpack_boundary.py
 	python3 tests/semantics/array_callable_iterator_unpack_sources.py
 	python3 tests/semantics/array_callable_iterator_unpack_protocol.py
+	python3 tests/semantics/closure_iterator_unpack_sources.py
+	python3 tests/semantics/closure_iterator_unpack_protocol.py
 	python3 tests/semantics/iterator_call_unpack_nan_sources.py
 	python3 tests/semantics/iterator_call_unpack_nan_review.py
 	python3 tests/semantics/iterator_call_unpack_string_sources.py
@@ -548,6 +550,10 @@ test-semantics: build
 	python3 tests/semantics/generator_fiber_fresh_closure_throw_transfer_state.py
 	python3 tests/semantics/generator_fiber_closure_reference_throw_transfer_sources.py
 	python3 tests/semantics/generator_fiber_closure_reference_throw_transfer_state.py
+	python3 tests/semantics/generator_fiber_fresh_closure_reference_throw_transfer_sources.py
+	python3 tests/semantics/generator_fiber_fresh_closure_reference_throw_transfer_state.py
+	python3 tests/semantics/generator_fiber_method_reference_throw_transfer_sources.py
+	python3 tests/semantics/generator_fiber_method_reference_throw_transfer_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -1300,6 +1306,8 @@ test-semantics: build
 	python3 tests/semantics/mixed_cached_clone_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/mixed_cached_clone_callback_cases.json
 	python3 tests/semantics/mixed_cached_clone_callback_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/dynamic_only_cached_clone_sources.py
+	python3 tests/semantics/dynamic_only_cached_clone_state.py
 	python3 tests/semantics/clone_controls.py
 	python3 tests/semantics/get_class_intrinsic.py
 	python3 tests/semantics/get_class_protocol.py

@@ -1,5 +1,5 @@
-;; Parentless ordinary anonymous classes use a compiled identity, not a visit
-;; counter. Empty global named classes contribute only deferred RTD keys.
+;; Ordinary anonymous classes use a compiled identity, not a visit counter.
+;; Early named classes consume no RTD key, including bounded parent sources.
 dec $anonymous_hex(nat) : ptbytes
 def $anonymous_hex(n) = [$(48 + n)] -- if $(n < 10)
 def $anonymous_hex(n) = [$(87 + n)] -- if $(n >= 10 /\ n < 16)
@@ -10,12 +10,27 @@ def $anonymous_class_name(ptbytes_file, z_line, n_counter) = ($ptascii("class@an
   -- if ptbytes_file =/= eps /\ $(z_line > 0 /\ n_counter < 4294967296)
 def $anonymous_class_name(ptbytes_file, z_line, n_counter) = eps -- otherwise
 
+dec $anonymous_parent_class_name(ptbytes, ptbytes, int, nat) : ptbytes?
+def $anonymous_parent_class_name(ptbytes_parent, ptbytes_file, z_line, n_counter) = (ptbytes_parent ++ $ptascii("@anonymous") ++ [0] ++ ptbytes_file ++ [58] ++ $ntunsigned($nabs(z_line)) ++ [36] ++ $anonymous_hex(n_counter))
+  -- if ptbytes_parent =/= eps /\ ptbytes_file =/= eps /\ $(z_line > 0 /\ n_counter < 4294967296)
+def $anonymous_parent_class_name(ptbytes_parent, ptbytes_file, z_line, n_counter) = eps -- otherwise
+
 dec $anonymous_property_items(phpType57*) : bool
 def $anonymous_property_items(eps) = true
 def $anonymous_property_items((NPropertyItem phpType40 ABSENT metadata) :: phpType57*) = $anonymous_property_items(phpType57*)
 def $anonymous_property_items((NPropertyItem phpType40 expression metadata) :: phpType57*) = $anonymous_property_items(phpType57*)
   -- if $parser_literal(expression) =/= eps
 def $anonymous_property_items(phpType57*) = false -- otherwise
+
+dec $anonymous_constructor_parameter(phpType17) : bool
+def $anonymous_constructor_parameter(NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text) metadata_name) ABSENT (SEQUENCE eps) metadata) = $ptvalidname($base64(text), false)
+def $anonymous_constructor_parameter(NParam (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_type) metadata_type) (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text) metadata_name) ABSENT (SEQUENCE eps) metadata) = ($ptlc($base64(text_type)) = $ptascii("int") /\ $ptvalidname($base64(text), false))
+def $anonymous_constructor_parameter(phpType17) = false -- otherwise
+dec $anonymous_constructor_parameters(phpType16) : bool
+def $anonymous_constructor_parameters(SEQUENCE eps) = true
+def $anonymous_constructor_parameters(SEQUENCE ([phpType17])) = $anonymous_constructor_parameter(phpType17)
+def $anonymous_constructor_parameters(SEQUENCE ([phpType17_1, phpType17_2])) = ($anonymous_constructor_parameter(phpType17_1) /\ $anonymous_constructor_parameter(phpType17_2))
+def $anonymous_constructor_parameters(phpType16) = false -- otherwise
 
 dec $anonymous_member(statement) : bool
 def $anonymous_member(NStmtProperty (SEQUENCE eps) (INTEGER flags) ABSENT (SEQUENCE phpType57*) (SEQUENCE eps) metadata) = $anonymous_property_items(phpType57*)
@@ -25,7 +40,7 @@ def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN f
   -- if $ptvalidname($base64(text), false)
   -- if $ptlc($base64(text)) =/= $ptascii("__construct")
   -- if ~$ppmethod_magic($base64(text))
-def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) (SEQUENCE eps) ABSENT (SEQUENCE statement*) metadata) = true
+def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 ABSENT (SEQUENCE statement*) metadata) = $anonymous_constructor_parameters(phpType16)
   -- if flags <- [0,1]
   -- if $ptlc($base64(text)) = $ptascii("__construct")
 def $anonymous_member(statement) = false -- otherwise
@@ -33,13 +48,32 @@ dec $anonymous_members(statement*) : bool
 def $anonymous_members(eps) = true
 def $anonymous_members(statement :: statement_tail*) = ($anonymous_member(statement) /\ $anonymous_members(statement_tail*))
 
+dec $anonymous_base_member(statement) : bool
+def $anonymous_base_member(NStmtProperty (SEQUENCE eps) (INTEGER 4) ABSENT (SEQUENCE phpType57*) (SEQUENCE eps) metadata) = $anonymous_property_items(phpType57*)
+def $anonymous_base_member(statement) = $anonymous_member(statement) -- otherwise
+dec $anonymous_base_members(statement*) : bool
+def $anonymous_base_members(eps) = true
+def $anonymous_base_members(statement :: statement_tail*) = ($anonymous_base_member(statement) /\ $anonymous_base_members(statement_tail*))
+
 dec $anonymous_class_node(pcnode) : bool
 def $anonymous_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata) = true
   -- if $anonymous_members(statement*)
   -- if z_line = $source_line(metadata)
   -- if z_end = $source_end_line(metadata)
   -- if $(z_line > 0 /\ z_end >= z_line)
+def $anonymous_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT (NName (BYTES text_parent) metadata_parent) (SEQUENCE eps) (SEQUENCE statement*) metadata) = true
+  -- if $ptvalidname($base64(text_parent), false)
+  -- if $anonymous_members(statement*)
+  -- if z_line = $source_line(metadata)
+  -- if z_end = $source_end_line(metadata)
+  -- if $(z_line > 0 /\ z_end >= z_line)
 def $anonymous_class_node(pcnode) = false -- otherwise
+dec $anonymous_parentless_class_node(pcnode) : bool
+def $anonymous_parentless_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata) = $anonymous_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata)
+def $anonymous_parentless_class_node(pcnode) = false -- otherwise
+dec $anonymous_parent_node_name(pcnode) : ptbytes?
+def $anonymous_parent_node_name(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT (NName (BYTES text_parent) metadata_parent) (SEQUENCE eps) (SEQUENCE statement*) metadata) = ($base64(text_parent))
+def $anonymous_parent_node_name(pcnode) = eps -- otherwise
 
 dec $anonymous_named_class_node(pcnode) : bool
 def $anonymous_named_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE eps) metadata) = true
@@ -47,7 +81,17 @@ def $anonymous_named_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifi
   -- if z_line = $source_line(metadata)
   -- if z_end = $source_end_line(metadata)
   -- if $(z_line > 0 /\ z_end >= z_line)
+def $anonymous_named_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata) = true
+  -- if statement* =/= eps /\ $anonymous_base_members(statement*)
+  -- if $ptvalidname($base64(text), false)
+  -- if z_line = $source_line(metadata)
+  -- if z_end = $source_end_line(metadata)
+  -- if $(z_line > 0 /\ z_end >= z_line)
 def $anonymous_named_class_node(pcnode) = false -- otherwise
+dec $anonymous_memberful_named_node_name(pcnode) : ptbytes?
+def $anonymous_memberful_named_node_name(NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata) = ($base64(text))
+  -- if statement* =/= eps
+def $anonymous_memberful_named_node_name(pcnode) = eps -- otherwise
 
 dec $anonymous_class_like(pcnode) : bool
 def $anonymous_class_like(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata) = true
@@ -211,10 +255,24 @@ def $anonymous_class_count(pcunit, ptbytes_file, eps, pclassdesc_seen*, n_counte
 def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*, pclassdesc_seen*, n_counter) = $anonymous_class_count(pcunit, ptbytes_file, pclassdesc_tail*, pclassdesc_seen* ++ [pclassdesc], $(n_counter + 1))
   -- if pclassdesc.ORIGIN = PORIGIN 0 pcpath
   -- if $origin_node([pcunit], pclassdesc.ORIGIN) = (pcnode)
-  -- if $anonymous_class_node(pcnode)
+  -- if $anonymous_parentless_class_node(pcnode)
+  -- if pclassdesc.PARENT = eps
   -- if pclassdesc.LINE = $source_line($pcmetadata(pcnode))
   -- if $anonymous_class_name(ptbytes_file, pclassdesc.LINE, n_counter) = (pclassdesc.NAME)
   -- if pclassdesc.KIND = "class" /\ pclassdesc.EARLY
+  -- if $class_at(pclassdesc_tail*, pclassdesc.ORIGIN) = eps
+def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*, pclassdesc_seen*, n_counter) = $anonymous_class_count(pcunit, ptbytes_file, pclassdesc_tail*, pclassdesc_seen* ++ [pclassdesc], $(n_counter + 1))
+  -- if pclassdesc.ORIGIN = PORIGIN 0 pcpath
+  -- if $origin_node([pcunit], pclassdesc.ORIGIN) = (pcnode)
+  -- if $anonymous_class_node(pcnode)
+  -- if $anonymous_parent_node_name(pcnode) = (ptbytes_parent)
+  -- if $anonymous_named_namespace(pcunit, pcpath) = (eps)
+  -- if $ppclass_prior_early(pclassdesc_seen*, ptbytes_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if pclassdesc.LINE = $source_line($pcmetadata(pcnode))
+  -- if $anonymous_parent_class_name(ptbytes_parent, ptbytes_file, pclassdesc.LINE, n_counter) = (pclassdesc.NAME)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.EARLY /\ pclassdesc.INTERFACES = eps
   -- if $class_at(pclassdesc_tail*, pclassdesc.ORIGIN) = eps
 def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*, pclassdesc_seen*, n_counter) = $anonymous_class_count(pcunit, ptbytes_file, pclassdesc_tail*, pclassdesc_seen* ++ [pclassdesc], $(n_counter + $anonymous_named_key(b_early)))
   -- if pclassdesc.ORIGIN = PORIGIN 0 pcpath
@@ -224,6 +282,20 @@ def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*,
   -- if ptbytes_name = $ptjoin(ptbytes_namespace, $base64(text))
   -- if b_early = $anonymous_named_early(pcunit, pcpath, pclassdesc_seen*, ptbytes_name)
   -- if pclassdesc = { ORIGIN PORIGIN 0 pcpath, KIND "class", NAME ptbytes_name, PARENT eps, INTERFACES eps, PROPERTIES eps, METHODS eps, CONSTANTS eps, ABSTRACT false, FINAL false, READONLY false, EARLY b_early, LINE $nabs($source_line(metadata)) }
+  -- if $class_at(pclassdesc_tail*, pclassdesc.ORIGIN) = eps
+def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*, pclassdesc_seen*, n_counter) = $anonymous_class_count(pcunit, ptbytes_file, pclassdesc_tail*, pclassdesc_seen* ++ [pclassdesc], $(n_counter + $anonymous_named_key(b_early)))
+  -- if pclassdesc.ORIGIN = PORIGIN 0 pcpath
+  -- if $origin_node([pcunit], pclassdesc.ORIGIN) = (pcnode)
+  -- if $anonymous_named_class_node(pcnode)
+  -- if $anonymous_memberful_named_node_name(pcnode) = (ptbytes_raw)
+  -- if $anonymous_named_namespace(pcunit, pcpath) = (ptbytes_namespace)
+  -- if ptbytes_name = $ptjoin(ptbytes_namespace, ptbytes_raw)
+  -- if b_early = $anonymous_named_early(pcunit, pcpath, pclassdesc_seen*, ptbytes_name)
+  -- if pclassdesc.ORIGIN = PORIGIN 0 pcpath
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.NAME = ptbytes_name
+  -- if pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = eps /\ pclassdesc.CONSTANTS = eps
+  -- if ~pclassdesc.ABSTRACT /\ ~pclassdesc.FINAL /\ ~pclassdesc.READONLY
+  -- if pclassdesc.EARLY = b_early /\ pclassdesc.LINE = $nabs($source_line($pcmetadata(pcnode)))
   -- if $class_at(pclassdesc_tail*, pclassdesc.ORIGIN) = eps
 def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc*, pclassdesc_seen*, n_counter) = eps -- otherwise
 
@@ -264,6 +336,7 @@ def $ppimage_publication_ready(P, PORIGIN 0 pcpath, PPCLASS) = true
 dec $ppanonymous_class(ppstate, pcpath, statement) : ppstate
 def $ppanonymous_class(P, pcpath, statement) = P_next[.EARLY = P.EARLY][.LOCATION = P.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]]
   -- if $anonymous_unit(P.FOLD.SOURCE) /\ $anonymous_class_node(statement)
+  -- if $anonymous_parentless_class_node(statement)
   -- if ($ppimage_unit(P) \/ $anonymous_factory_context(P, pcpath)) /\ ~P.FOLD.CONSTANT
   -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 (pcpath ++ [PCFIELD 0])) = (statement)
   -- if $class_at(P.CLASSES, PORIGIN 0 (pcpath ++ [PCFIELD 0])) = eps
@@ -273,8 +346,31 @@ def $ppanonymous_class(P, pcpath, statement) = P_next[.EARLY = P.EARLY][.LOCATIO
   -- if $anonymous_class_name(P.LOCATION.FILE, z_line, n_counter) = (ptbytes_name)
   -- if P_class = $pplocate(P[.EARLY = (pcpath ++ [PCFIELD 0])], pcpath ++ [PCFIELD 0], z_line)
   -- if P_next = $ppclass_result(P_class, pcpath ++ [PCFIELD 0], PCHOK { KIND "class", NAME ptbytes_name, ABSTRACT false, FINAL false, READONLY false, PARENT eps, INTERFACES eps, BODY pchraw.BODY } eps)
+def $ppanonymous_class(P, pcpath, statement) = P_next[.EARLY = P.EARLY][.LOCATION = P.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]]
+  -- if $anonymous_unit(P.FOLD.SOURCE) /\ $anonymous_class_node(statement)
+  -- if P.ENV.NAMESPACE = eps
+  -- if ($ppimage_unit(P) \/ $anonymous_factory_context(P, pcpath)) /\ ~P.FOLD.CONSTANT
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 (pcpath ++ [PCFIELD 0])) = (statement)
+  -- if $class_at(P.CLASSES, PORIGIN 0 (pcpath ++ [PCFIELD 0])) = eps
+  -- if $anonymous_class_count(P.FOLD.SOURCE, P.LOCATION.FILE, P.CLASSES, eps, 0) = (n_counter)
+  -- if $pchlower(statement) = PCHRAW pchraw
+  -- if $ptast(pchraw.PARENT) = PTNAME PTPLAIN ptbytes_parent
+  -- if z_line = $source_line($pcmetadata(statement))
+  -- if $anonymous_parent_class_name(ptbytes_parent, P.LOCATION.FILE, z_line, n_counter) = (ptbytes_name)
+  -- if P_class = $pplocate(P[.EARLY = (pcpath ++ [PCFIELD 0])], pcpath ++ [PCFIELD 0], z_line)
+  -- if $pchparent(pchraw.PARENT, $ppclass_context(P_class)) = PCHNAMES ([ptbytes_parent]) eps
+  -- if $ppclass_prior_early(P.CLASSES, ptbytes_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
+  -- if P_next = $ppclass_result(P_class, pcpath ++ [PCFIELD 0], PCHOK { KIND "class", NAME ptbytes_name, ABSTRACT false, FINAL false, READONLY false, PARENT (ptbytes_parent), INTERFACES eps, BODY pchraw.BODY } eps)
 def $ppanonymous_class(P, pcpath, statement) = $ppunsupported(P, "anonymous class RTD, body, or compiler publication context") -- otherwise
 def $ppdispatch(P, pcpath, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata, PPR) = $ppanonymous_class(P, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class)
+dec $anonymous_new_arguments(phpType7*) : bool
+def $anonymous_new_arguments(eps) = true
+def $anonymous_new_arguments((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = $anonymous_new_arguments(phpType7*)
+def $anonymous_new_arguments((NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = ($ptvalidname($base64(text), false) /\ $anonymous_new_arguments(phpType7*))
+def $anonymous_new_arguments(phpType7*) = false -- otherwise
+def $ppdispatch(P, pcpath, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppanonymous_class(P, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class), pcpath ++ [PCFIELD 1], 0, phpType7*, PNUNSUPPORTED "constructor has deferred argument modes")
+  -- if phpType7* =/= eps /\ $(|phpType7*| <= 2) /\ $anonymous_new_arguments(phpType7*)
 
 ;; The live name already exists before the first NEW. Recompute the installed
 ;; source descriptor to authenticate the site, filename, line and counter.
@@ -282,7 +378,8 @@ dec $anonymous_new_name(pstate, porigin) : ptbytes?
 def $anonymous_new_name(S, PORIGIN 0 pcpath) = (pclassdesc.NAME)
   -- if $source_unit(S.SOURCES, 0) = (pcunit)
   -- if $anonymous_unit(pcunit)
-  -- if $origin_node(S.SOURCES, PORIGIN 0 pcpath) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN 0 pcpath) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
+  -- if $(|phpType7*| <= 2) /\ $anonymous_new_arguments(phpType7*)
   -- if $compilation_projection(S, pcunit) = (ppinstalled)
   -- if $class_at(ppinstalled.CLASSES, PORIGIN 0 (pcpath ++ [PCFIELD 0])) = (pclassdesc)
   -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
@@ -296,6 +393,11 @@ def $anonymous_new_name(S, porigin) = eps -- otherwise
 def $new_source_name(S, porigin) = (ptbytes_name)
   -- if $anonymous_new_name(S, porigin) = (ptbytes_name)
   -- if $new_has_ctor(S, ptbytes_name)
+def $new_source_name(S, porigin) = (ptbytes_name)
+  -- if $anonymous_new_name(S, porigin) = (ptbytes_name)
+  -- if ~$new_has_ctor(S, ptbytes_name)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
+  -- if phpType7* =/= eps
 
 rule PhpStep/anonymous-new: S ~> $new_class(S[.TODO = ptask_tail*], ptbytes_name, $runtime_line(S, eps, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata))
   -- if S.TODO = (EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)) :: ptask_tail*
@@ -309,14 +411,35 @@ rule PhpStep/anonymous-new-constructor: S ~> $constructor_start(S[.TODO = ptask_
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)
   -- if $anonymous_new_name(S, porigin) = (ptbytes_name)
   -- if $new_has_ctor(S, ptbytes_name)
+rule PhpStep/anonymous-new-arguments: S ~> $noctor_start(S[.TODO = ptask_tail*], ptbytes_name, phpType7*, $runtime_line(S, eps, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata))
+  -- if S.TODO = (EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if phpType7* =/= eps
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
+  -- if $anonymous_new_name(S, porigin) = (ptbytes_name)
+  -- if ~$new_has_ctor(S, ptbytes_name)
+rule PhpStep/anonymous-new-constructor-arguments: S ~> $constructor_start(S[.TODO = ptask_tail*], ptbytes_name, phpType7*, $runtime_line(S, eps, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata))
+  -- if S.TODO = (EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if phpType7* =/= eps
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
+  -- if $anonymous_new_name(S, porigin) = (ptbytes_name)
+  -- if $new_has_ctor(S, ptbytes_name)
 
 dec $anonymous_new_task_valid(pstate, expression) : bool
 def $anonymous_new_task_valid(S, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata) = true
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)
   -- if $anonymous_new_name(S, porigin) =/= eps
+def $anonymous_new_task_valid(S, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata) = true
+  -- if phpType7* =/= eps
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
+  -- if $anonymous_new_name(S, porigin) =/= eps
 def $anonymous_new_task_valid(S, expression) = false -- otherwise
 def $call_task_valid(S, EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)) = $anonymous_new_task_valid(S, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)
+def $call_task_valid(S, EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)) = $anonymous_new_task_valid(S, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
+  -- if phpType7* =/= eps
 
 ;; Dynamic units continue the request compiler's RTD sequence. Only closed,
 ;; successful compilation history is counted; runtime NEW visits do not count.
@@ -341,7 +464,7 @@ dec $anonymous_rtd_nodes(pcunit, pcoccurrence*) : nat?
 def $anonymous_rtd_nodes(pcunit, eps) = (0)
 def $anonymous_rtd_nodes(pcunit, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($(n + 1))
   -- if $anonymous_class_like(pcnode)
-  -- if $anonymous_class_node(pcnode)
+  -- if $anonymous_parentless_class_node(pcnode)
   -- if $anonymous_no_classes($pcwalk($pcchildren(pcnode, eps)))
   -- if $anonymous_rtd_site(pcunit, pcpath)
   -- if $anonymous_rtd_nodes(pcunit, pcoccurrence*) = (n)
@@ -392,7 +515,8 @@ def $anonymous_dynamic_prefix(pcunit, ptbytes_file, eps, n_counter) = (n_counter
 def $anonymous_dynamic_prefix(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*, n_counter) = $anonymous_dynamic_prefix(pcunit, ptbytes_file, pclassdesc_tail*, $(n_counter + 1))
   -- if pclassdesc.ORIGIN = PORIGIN pcunit.ID pcpath
   -- if $origin_node([pcunit], pclassdesc.ORIGIN) = (pcnode)
-  -- if $anonymous_class_node(pcnode)
+  -- if $anonymous_parentless_class_node(pcnode)
+  -- if pclassdesc.PARENT = eps
   -- if pclassdesc.LINE = $source_line($pcmetadata(pcnode))
   -- if $anonymous_class_name(ptbytes_file, pclassdesc.LINE, n_counter) = (pclassdesc.NAME)
   -- if pclassdesc.KIND = "class" /\ pclassdesc.EARLY
@@ -403,7 +527,7 @@ def $anonymous_dynamic_prefix(pcunit, ptbytes_file, pclassdesc*, n_counter) = ep
 def $ppanonymous_class(P, pcpath, statement) = P_next[.EARLY = P.EARLY][.LOCATION = P.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]]
   -- if $(P.FOLD.SOURCE.ID > 0)
   -- if $anonymous_rtd_unit(P.FOLD.SOURCE) =/= eps
-  -- if $anonymous_class_node(statement)
+  -- if $anonymous_parentless_class_node(statement)
   -- if $ppimage_unit(P) /\ ~P.FOLD.CONSTANT /\ P.EVALCLASS = eps
   -- if P.DIAGNOSTICS = eps
   -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID (pcpath ++ [PCFIELD 0])) = (statement)

@@ -1,0 +1,19 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "baseline_revision": "065ac2df834607204cc60f741f680106168813ea",
+  "scope": "CLASS141 cached zero-declared dynamic table with only unset-slot history at clone: no-callback fast share and callback copy boundary.",
+  "cases": [
+    {
+      "id": "empty-history-clone",
+      "kind": "boundary",
+      "source": "<?php\n#[AllowDynamicProperties]\nclass EmptyHistoryClone141 {}\n$source = new EmptyHistoryClone141;\n$source->alpha = 7;\nforeach ($source as $key => $value) { echo \"first:\", $key, \"=\", $value, \"|\"; }\nunset($key, $value);\nunset($source->alpha);\necho \"empty:\";\nforeach ($source as $key => $value) { echo \"bad-entry|\"; }\n$copy = clone $source;\necho $source !== $copy ? \"fresh|\" : \"bad-identity|\";\n$copy->beta = 11;\n$source->gamma = 13;\necho isset($source->beta) ? \"bad-source-beta|\" : \"source-no-beta|\";\necho isset($copy->gamma) ? \"bad-copy-gamma|\" : \"copy-no-gamma|\";\necho \"source:\";\nforeach ($source as $key => $value) { echo $key, \"=\", $value, \"|\"; }\necho \"copy:\";\nforeach ($copy as $key => $value) { echo $key, \"=\", $value, \"|\"; }\necho \"Z|\";\n",
+      "source_sha256": "e801f62103ae830e786aadb1cb7fd61a2f7a60d3ea1b3a1fe2d172330535033d"
+    },
+    {
+      "id": "empty-history-callback",
+      "kind": "boundary",
+      "source": "<?php\n#[AllowDynamicProperties]\nclass EmptyHistoryCallback141 {\n    public function __clone(): void { echo \"callback|\"; $this->beta = 11; }\n}\n$source = new EmptyHistoryCallback141;\n$source->alpha = 7;\nforeach ($source as $key => $value) { echo \"first:\", $key, \"=\", $value, \"|\"; }\nunset($key, $value);\nunset($source->alpha);\n$copy = clone $source;\n$source->gamma = 13;\necho isset($source->beta) ? \"bad-source-beta|\" : \"source-no-beta|\";\necho isset($copy->gamma) ? \"bad-copy-gamma|\" : \"copy-no-gamma|\";\necho \"source:\";\nforeach ($source as $key => $value) { echo $key, \"=\", $value, \"|\"; }\necho \"copy:\";\nforeach ($copy as $key => $value) { echo $key, \"=\", $value, \"|\"; }\necho \"Z|\";\n",
+      "source_sha256": "37d1aef78f6fe11b55da3f00086c4dc85a37db0276da786b973cfbf1667f7451"
+    }
+  ]
+}

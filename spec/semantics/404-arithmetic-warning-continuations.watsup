@@ -5609,6 +5609,64 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pboolnotnanwarning.LINE
 
+;; ZEND_BOOL converts only a selected short-circuit RIGHT operand. A NaN
+;; Warning runs before its live double is reread; no second conversion warns.
+dec $short_right_nan_source(pstate, pboolnotnanwarning) : bool
+def $short_right_nan_source(S, pboolnotnanwarning) = true
+  -- if S.ORIGIN = (pboolnotnanwarning.SITE)
+  -- if $origin_node(S.SOURCES, pboolnotnanwarning.SITE) = (pcnode)
+  -- if $truth_short_source(pcnode) = ((b_or, expression_left, expression_right))
+  -- if $compiled_redirect(S, pboolnotnanwarning.SITE) = eps
+  -- if pboolnotnanwarning.INPUT = VARIABLE ptbytes z_input
+  -- if $integer_operand_source(S, pboolnotnanwarning.SITE, [PCFIELD 1], pboolnotnanwarning.INPUT)
+  -- if $code_expression_at_source(S, pboolnotnanwarning.SITE, [PCFIELD 1]) = (pboolnotnanwarning.LINE)
+  -- if $(pboolnotnanwarning.CELL < |S.STORE| /\ pboolnotnanwarning.BITS < 18446744073709551616)
+  -- if $fparts_nan($float_decode(pboolnotnanwarning.BITS))
+def $short_right_nan_source(S, pboolnotnanwarning) = false -- otherwise
+
+def $short_right_nan_plan(S) = (pboolnotnanwarning)
+  -- if S.TODO = (TRUTH_RESULT false z_right) :: ptask_tail*
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.RESULT = VARIABLE ptbytes z_input
+  -- if $lookup(S.ENV, ptbytes) = (n_cell)
+  -- if $(n_cell < |S.STORE|)
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if pboolnotnanwarning = {SITE porigin, LINE z_right, INPUT S.RESULT, CELL n_cell, BITS n_bits}
+  -- if $short_right_nan_source(S, pboolnotnanwarning)
+  -- if $boolnot_nan_snapshot(S, pboolnotnanwarning)
+def $short_right_nan_plan(S) = eps -- otherwise
+
+dec $short_right_nan_warning_valid(pstate, pboolnotnanwarning, nat) : bool
+def $short_right_nan_warning_valid(S, pboolnotnanwarning, n) = ($short_right_nan_source(S, pboolnotnanwarning) /\ $(n <= 1) /\ (n = 1 \/ $boolnot_nan_snapshot(S, pboolnotnanwarning)))
+
+rule PhpStep/short-right-nan-begin: S ~> S[.TODO = (SHORT_RIGHT_NAN_WARNING pboolnotnanwarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (TRUTH_RESULT false z) :: ptask_tail*
+  -- if $short_right_nan_plan(S) = (pboolnotnanwarning)
+rule PhpStep/short-right-nan-dispatch: S ~> $error_dispatch(S, 2, $ptascii("unexpected NAN value was coerced to bool"), pboolnotnanwarning.LINE, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to bool")) pboolnotnanwarning.LINE, SHORT_RIGHT_NAN_WARNING pboolnotnanwarning 1)
+  -- if S.TODO = (SHORT_RIGHT_NAN_WARNING pboolnotnanwarning 0) :: ptask_tail*
+  -- if $short_right_nan_warning_valid(S, pboolnotnanwarning, 0)
+rule PhpStep/short-right-nan-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL b)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (SHORT_RIGHT_NAN_WARNING pboolnotnanwarning 1) :: ptask_tail*
+  -- if $short_right_nan_warning_valid(S, pboolnotnanwarning, 1)
+  -- if $boolnot_nan_ready(S, pboolnotnanwarning) = (n_bits)
+  -- if (b, b_warning) = $number_bool(NFLOAT n_bits)
+rule PhpStep/short-right-nan-target-boundary: S ~> S[.COMPLETION = UNSUPPORTED "short-circuit RIGHT NaN changed CV representation"]
+  -- if S.TODO = (SHORT_RIGHT_NAN_WARNING pboolnotnanwarning 1) :: ptask_tail*
+  -- if $short_right_nan_warning_valid(S, pboolnotnanwarning, 1)
+  -- if $boolnot_nan_ready(S, pboolnotnanwarning) = eps
+
+def $task_nodes(SHORT_RIGHT_NAN_WARNING pboolnotnanwarning n) = eps
+def $call_task_valid(S, SHORT_RIGHT_NAN_WARNING pboolnotnanwarning n) = $short_right_nan_warning_valid(S, pboolnotnanwarning, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = SHORT_RIGHT_NAN_WARNING pboolnotnanwarning 1
+  -- if $short_right_nan_warning_valid(S, pboolnotnanwarning, 1)
+  -- if perrorcall.TARGET =/= eps \/ $boolnot_nan_snapshot(S, pboolnotnanwarning)
+  -- if perrorcall.SITE = pboolnotnanwarning.SITE /\ perrorcall.LINE = pboolnotnanwarning.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pboolnotnanwarning.LINE
+
 ;; JMP_SET copies the live selected value after truth conversion and Warning.
 ;; The shorthand true result is the float value, not its normalized Boolean.
 dec $ternary_nan_source(pstate, pboolnotnanwarning, ptask) : bool
@@ -5810,7 +5868,18 @@ def $stringify_consumer_receiver_valid(S, n, CONCAT_RETURNED_RIGHT pconcatreturn
 
 ;; zend_double_to_str formats NaN before warning. ZEND_ECHO writes those saved
 ;; bytes after the callback, even if a supplied exception is already pending.
-syntax pprintnanwarning = { SITE porigin, LINE int, INPUT poperand, BITS nat, TEXT preqbytes }
+;; A handler may start one default buffer. Its ID must be the pre-warning next
+;; ID; the handler's own output bytes are already in that buffer at resume.
+dec $warning_output_buffer(pstate, nat) : bool
+def $warning_output_buffer(S, n) = true
+  -- if S.OUTPUTSEQ = n /\ S.OUTPUTBUFFERS = eps
+def $warning_output_buffer(S, n) = true
+  -- if S.OUTPUTSEQ = $(n + 1)
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: eps
+  -- if poutputbuffer.ID = n /\ poutputbuffer.HANDLER = eps /\ poutputbuffer.CHUNK = 0 /\ poutputbuffer.FLAGS = 112
+  -- if $output_state_valid(S)
+def $warning_output_buffer(S, n) = false -- otherwise
+syntax pprintnanwarning = { SITE porigin, LINE int, INPUT poperand, BITS nat, TEXT preqbytes, BUFFERSEQ nat }
 dec $print_nan_source(pstate, pprintnanwarning) : bool
 def $print_nan_source(S, pprintnanwarning) = true
   -- if $print_task_valid(S, pprintnanwarning.SITE, pprintnanwarning.LINE)
@@ -5837,11 +5906,11 @@ def $print_nan_plan(S) = (pprintnanwarning)
   -- if $integer_pointer_value(S, INTEGER_CV ptbytes) = (PFLOAT n_bits)
   -- if $(n_bits < 18446744073709551616)
   -- if (n_text*, true) = $number_text(NFLOAT n_bits, $precision_value(S))
-  -- if pprintnanwarning = {SITE porigin, LINE z, INPUT S.RESULT, BITS n_bits, TEXT n_text*}
+  -- if pprintnanwarning = {SITE porigin, LINE z, INPUT S.RESULT, BITS n_bits, TEXT n_text*, BUFFERSEQ S.OUTPUTSEQ}
   -- if $print_nan_source(S, pprintnanwarning)
 def $print_nan_plan(S) = eps -- otherwise
 dec $print_nan_valid(pstate, pprintnanwarning, nat) : bool
-def $print_nan_valid(S, pprintnanwarning, n) = ($print_nan_source(S, pprintnanwarning) /\ $(n <= 1) /\ (n = 1 \/ S.OUTPUTBUFFERS = eps) /\ (n = 1 \/ $print_nan_snapshot(S, pprintnanwarning)))
+def $print_nan_valid(S, pprintnanwarning, n) = ($print_nan_source(S, pprintnanwarning) /\ $(n <= 1) /\ (n = 1 \/ (S.OUTPUTBUFFERS = eps /\ S.OUTPUTSEQ = pprintnanwarning.BUFFERSEQ)) /\ (n = 1 \/ $print_nan_snapshot(S, pprintnanwarning)))
 
 rule PhpStep/print-nan-begin: S ~> S[.TODO = (PRINT_NAN_WARNING pprintnanwarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
@@ -5852,25 +5921,25 @@ rule PhpStep/print-nan-dispatch: S ~> $error_dispatch(S, 2, $ptascii("unexpected
 rule PhpStep/print-nan-resume: S ~> S[.TODO = (PRINT_EMIT pprintnanwarning.SITE pprintnanwarning.LINE) :: ptask_tail*][.RESULT = KNOWN (PSTRING pprintnanwarning.TEXT)][.BASE = BASE_VALUE (KNOWN (PSTRING pprintnanwarning.TEXT))]
   -- if S.TODO = (PRINT_NAN_WARNING pprintnanwarning 1) :: ptask_tail*
   -- if $print_nan_valid(S, pprintnanwarning, 1)
-  -- if S.OUTPUTBUFFERS = eps
+  -- if $warning_output_buffer(S, pprintnanwarning.BUFFERSEQ)
 rule PhpStep/print-nan-buffer-boundary: S ~> S[.COMPLETION = UNSUPPORTED "print NaN output buffer changed during Warning"]
   -- if S.TODO = (PRINT_NAN_WARNING pprintnanwarning 1) :: ptask_tail*
   -- if $print_nan_valid(S, pprintnanwarning, 1)
-  -- if S.OUTPUTBUFFERS =/= eps
+  -- if ~$warning_output_buffer(S, pprintnanwarning.BUFFERSEQ)
 
-;; A handler throw is pending in THROW_SEARCH. The unbuffered write precedes
+;; A handler throw is pending in THROW_SEARCH. The cached write precedes
 ;; that search; there is no print result or enclosing assignment on this path.
 def $error_read_discard(S, PRINT_NAN_WARNING pprintnanwarning 1) = $output_write(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pprintnanwarning.TEXT)
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
   -- if $print_nan_valid(S, pprintnanwarning, 1)
-  -- if S.OUTPUTBUFFERS = eps
+  -- if $warning_output_buffer(S, pprintnanwarning.BUFFERSEQ)
   -- if $destructor_pending_valid(S, (n_exception))
 def $error_read_discard(S, PRINT_NAN_WARNING pprintnanwarning 1) = S[.COMPLETION = UNSUPPORTED "print NaN output buffer changed during Warning"]
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
   -- if $print_nan_valid(S, pprintnanwarning, 1)
-  -- if S.OUTPUTBUFFERS =/= eps
+  -- if ~$warning_output_buffer(S, pprintnanwarning.BUFFERSEQ)
 def $task_nodes(PRINT_NAN_WARNING pprintnanwarning n) = eps
 def $call_task_valid(S, PRINT_NAN_WARNING pprintnanwarning n) = $print_nan_valid(S, pprintnanwarning, n)
 def $error_call_valid(S, perrorcall) = true
@@ -5884,7 +5953,7 @@ def $error_call_valid(S, perrorcall) = true
 
 ;; ZEND_ECHO obtains the interned "Array" after the array conversion warning.
 ;; Its direct CV is borrowed: a callback may retire the table before output.
-syntax pprintarraywarning = { SITE porigin, LINE int, INPUT poperand }
+syntax pprintarraywarning = { SITE porigin, LINE int, INPUT poperand, BUFFERSEQ nat }
 dec $print_array_source(pstate, pprintarraywarning) : bool
 def $print_array_source(S, pprintarraywarning) = true
   -- if $print_task_valid(S, pprintarraywarning.SITE, pprintarraywarning.LINE)
@@ -5897,12 +5966,12 @@ def $print_array_plan(S) = (pprintarraywarning)
   -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
   -- if S.TODO = (PRINT_EMIT porigin z) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
-  -- if pprintarraywarning = {SITE porigin, LINE z, INPUT S.RESULT}
+  -- if pprintarraywarning = {SITE porigin, LINE z, INPUT S.RESULT, BUFFERSEQ S.OUTPUTSEQ}
   -- if $print_array_source(S, pprintarraywarning)
   -- if $array_string_cast_snapshot(S, pprintarraywarning.INPUT)
 def $print_array_plan(S) = eps -- otherwise
 dec $print_array_valid(pstate, pprintarraywarning, nat) : bool
-def $print_array_valid(S, pprintarraywarning, n) = ($print_array_source(S, pprintarraywarning) /\ $(n <= 1) /\ (n = 1 \/ S.OUTPUTBUFFERS = eps) /\ (n = 1 \/ $array_string_cast_snapshot(S, pprintarraywarning.INPUT)))
+def $print_array_valid(S, pprintarraywarning, n) = ($print_array_source(S, pprintarraywarning) /\ $(n <= 1) /\ (n = 1 \/ (S.OUTPUTBUFFERS = eps /\ S.OUTPUTSEQ = pprintarraywarning.BUFFERSEQ)) /\ (n = 1 \/ $array_string_cast_snapshot(S, pprintarraywarning.INPUT)))
 
 rule PhpStep/print-array-begin: S ~> S[.TODO = (PRINT_ARRAY_WARNING pprintarraywarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
@@ -5913,25 +5982,25 @@ rule PhpStep/print-array-dispatch: S ~> $error_dispatch(S, 2, $ptascii("Array to
 rule PhpStep/print-array-resume: S ~> S[.TODO = (PRINT_EMIT pprintarraywarning.SITE pprintarraywarning.LINE) :: ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array"))][.BASE = BASE_VALUE (KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array")))]
   -- if S.TODO = (PRINT_ARRAY_WARNING pprintarraywarning 1) :: ptask_tail*
   -- if $print_array_valid(S, pprintarraywarning, 1)
-  -- if S.OUTPUTBUFFERS = eps
+  -- if $warning_output_buffer(S, pprintarraywarning.BUFFERSEQ)
 rule PhpStep/print-array-buffer-boundary: S ~> S[.COMPLETION = UNSUPPORTED "print array output buffer changed during Warning"]
   -- if S.TODO = (PRINT_ARRAY_WARNING pprintarraywarning 1) :: ptask_tail*
   -- if $print_array_valid(S, pprintarraywarning, 1)
-  -- if S.OUTPUTBUFFERS =/= eps
+  -- if ~$warning_output_buffer(S, pprintarraywarning.BUFFERSEQ)
 
-;; A handler throw leaves the same Exception pending. The unbuffered write
+;; A handler throw leaves the same Exception pending. The cached write
 ;; precedes exception search and cancels print's result and outer assignment.
 def $error_read_discard(S, PRINT_ARRAY_WARNING pprintarraywarning 1) = $output_write(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $ptascii("Array"))
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
   -- if $print_array_valid(S, pprintarraywarning, 1)
-  -- if S.OUTPUTBUFFERS = eps
+  -- if $warning_output_buffer(S, pprintarraywarning.BUFFERSEQ)
   -- if $destructor_pending_valid(S, (n_exception))
 def $error_read_discard(S, PRINT_ARRAY_WARNING pprintarraywarning 1) = S[.COMPLETION = UNSUPPORTED "print array output buffer changed during Warning"]
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
   -- if $print_array_valid(S, pprintarraywarning, 1)
-  -- if S.OUTPUTBUFFERS =/= eps
+  -- if ~$warning_output_buffer(S, pprintarraywarning.BUFFERSEQ)
 def $task_nodes(PRINT_ARRAY_WARNING pprintarraywarning n) = eps
 def $call_task_valid(S, PRINT_ARRAY_WARNING pprintarraywarning n) = $print_array_valid(S, pprintarraywarning, n)
 def $error_call_valid(S, perrorcall) = true
@@ -6018,7 +6087,7 @@ def $error_call_valid(S, perrorcall) = true
 
 ;; Each echo child has its own ZEND_ECHO. A warning in either of the first two
 ;; array children writes the fixed interned string before the next child runs.
-syntax pechoarraywarning = { SITE porigin, LINE int, INPUT poperand }
+syntax pechoarraywarning = { SITE porigin, LINE int, INPUT poperand, BUFFERSEQ nat }
 dec $echo_array_source(pstate, pechoarraywarning) : bool
 def $echo_array_source(S, pechoarraywarning) = true
   -- if pechoarraywarning.SITE = PORIGIN n_unit pcpath_site
@@ -6048,12 +6117,12 @@ def $echo_array_plan(S) = (pechoarraywarning)
   -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
   -- if S.TODO = (EMIT z) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
-  -- if pechoarraywarning = {SITE porigin, LINE z, INPUT S.RESULT}
+  -- if pechoarraywarning = {SITE porigin, LINE z, INPUT S.RESULT, BUFFERSEQ S.OUTPUTSEQ}
   -- if $echo_array_source(S, pechoarraywarning)
   -- if $array_string_cast_snapshot(S, pechoarraywarning.INPUT)
 def $echo_array_plan(S) = eps -- otherwise
 dec $echo_array_valid(pstate, pechoarraywarning, nat) : bool
-def $echo_array_valid(S, pechoarraywarning, n) = ($echo_array_source(S, pechoarraywarning) /\ $(n <= 1) /\ (n = 1 \/ S.OUTPUTBUFFERS = eps) /\ (n = 1 \/ $array_string_cast_snapshot(S, pechoarraywarning.INPUT)))
+def $echo_array_valid(S, pechoarraywarning, n) = ($echo_array_source(S, pechoarraywarning) /\ $(n <= 1) /\ (n = 1 \/ (S.OUTPUTBUFFERS = eps /\ S.OUTPUTSEQ = pechoarraywarning.BUFFERSEQ)) /\ (n = 1 \/ $array_string_cast_snapshot(S, pechoarraywarning.INPUT)))
 
 rule PhpStep/echo-array-begin: S ~> S[.TODO = (ECHO_ARRAY_WARNING pechoarraywarning 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
@@ -6064,11 +6133,11 @@ rule PhpStep/echo-array-dispatch: S ~> $error_dispatch(S, 2, $ptascii("Array to 
 rule PhpStep/echo-array-resume: S ~> S[.TODO = (EMIT pechoarraywarning.LINE) :: ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array"))][.BASE = BASE_VALUE (KNOWN (PSTRING_CARRIER INTERNED_STRING $ptascii("Array")))]
   -- if S.TODO = (ECHO_ARRAY_WARNING pechoarraywarning 1) :: ptask_tail*
   -- if $echo_array_valid(S, pechoarraywarning, 1)
-  -- if S.OUTPUTBUFFERS = eps
+  -- if $warning_output_buffer(S, pechoarraywarning.BUFFERSEQ)
 rule PhpStep/echo-array-buffer-boundary: S ~> S[.COMPLETION = UNSUPPORTED "echo array output buffer changed during Warning"]
   -- if S.TODO = (ECHO_ARRAY_WARNING pechoarraywarning 1) :: ptask_tail*
   -- if $echo_array_valid(S, pechoarraywarning, 1)
-  -- if S.OUTPUTBUFFERS =/= eps
+  -- if ~$warning_output_buffer(S, pechoarraywarning.BUFFERSEQ)
 
 ;; Pending throw writes the current child once before searching handlers. It
 ;; never resumes the following EVAL/EMIT pairs.
@@ -6076,13 +6145,13 @@ def $error_read_discard(S, ECHO_ARRAY_WARNING pechoarraywarning 1) = $output_wri
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
   -- if $echo_array_valid(S, pechoarraywarning, 1)
-  -- if S.OUTPUTBUFFERS = eps
+  -- if $warning_output_buffer(S, pechoarraywarning.BUFFERSEQ)
   -- if $destructor_pending_valid(S, (n_exception))
 def $error_read_discard(S, ECHO_ARRAY_WARNING pechoarraywarning 1) = S[.COMPLETION = UNSUPPORTED "echo array output buffer changed during Warning"]
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (THROW_SEARCH n_exception) :: ptask_tail*
   -- if $echo_array_valid(S, pechoarraywarning, 1)
-  -- if S.OUTPUTBUFFERS =/= eps
+  -- if ~$warning_output_buffer(S, pechoarraywarning.BUFFERSEQ)
 def $task_nodes(ECHO_ARRAY_WARNING pechoarraywarning n) = eps
 def $call_task_valid(S, ECHO_ARRAY_WARNING pechoarraywarning n) = $echo_array_valid(S, pechoarraywarning, n)
 def $error_call_valid(S, perrorcall) = true

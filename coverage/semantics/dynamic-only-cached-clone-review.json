@@ -1,0 +1,97 @@
+{
+  "scope": "CLASS141 parentless, trait-free exact #[AllowDynamicProperties] ordinary class with no declared instance properties and dynamic slot history. A materialized valid table is shared by a no-callback clone; an effective __clone uses the separate mixed-copy route. Active collection and wider class layouts remain outside this cut.",
+  "status": "partial; semantic/test independently reviewed",
+  "target": {
+    "php": "8.5.10 CLI NTS signed64",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "baseline_revision": "065ac2df834607204cc60f741f680106168813ea",
+    "environment": "LC_ALL=C; TZ=UTC; serial exclusive CPU leases; 100000 model steps and 75-second source timeout"
+  },
+  "authority": [
+    "Zend/zend_objects.c::zend_objects_clone_members shares the dynamic property HashTable when the class has no default properties and there is no effective __clone; an effective callback takes a copied table before invocation.",
+    "Zend/zend_vm_def.h FE_FETCH_RW promotes the later dynamic bucket in the live foreach. Shared HashTable ownership makes that promotion visible to both objects; a later writable lookup separates the writer's table.",
+    "The source certificate requires exact AllowDynamicProperties, no parent or traits, zero declared instance layout, dynamic slot history and a valid materialized ordinary table. Singleton all-UNSET history remains distinguishable from a never-written empty object."
+  ],
+  "implementation": {
+    "files": {
+      "spec/semantics/150-clone-runtime.watsup": "4944e488aeaff570e92ded6ed27dc361b2259be2b9d268f2184fbcef186cecba",
+      "spec/semantics/261-object-casts.watsup": "ee046c71bf74c8b0061d34f29adfdb52362e11cfcf7e03502e2aa7ed90fa98f5"
+    },
+    "basis": "The ordinary-table gate admits only the source-authenticated zero-layout dynamic-history shape. The no-effective-callback fast branch adds a second object owner of the same table without a new table allocation. Mixed-copy and fallback guards stay disjoint; all-UNSET callback history selects mixed copy. No module30, callback, ownership-root or syntax-schema edit."
+  },
+  "frozen_sources": {
+    "catalogue_sha256": {
+      "tests/semantics/dynamic_only_cached_clone_cases.json": "f66bd14a6ece24beee44b86619faaf6a2efb4cdc914cfe4c6464c750b1044fc6",
+      "tests/semantics/dynamic_only_live_foreach_clone_cases.json": "e514e29e64a1ecabf83bf96d0a3eeef6e4b353ae55152ef8710c5c1f147126ca",
+      "tests/semantics/dynamic_only_table_observation_cases.json": "b20b9ab7fbe31bb75af18f5adc100edb0af887b783b58877a5571458ccdaf4b9",
+      "tests/semantics/dynamic_only_empty_history_clone_cases.json": "1090ccea11fbcd197283ba5857c999706ac4fe1a066ab439117f2d565cf0ab3e"
+    },
+    "expectations_sha256": "4fa0cb74b2430fc9a1c5f453019ca03c53b6643d77734dd7d100d714980f128f",
+    "native_unchanged_report_members": {
+      "author/class141-probes/report.json": "309c72a1dd2f1a1fcedfbdce015b8f0f3a1d9ff5c826d9484d3228ebbd82d20f",
+      "author/class141-live-probes/report.json": "0d7263e56a7448bb25c128519e23ba032306a4240fde2998bc37f8ae2800f013",
+      "author/class141-observation-probes/report.json": "dbbfdcc3afca4b957b50764863305292be8a9b69f631c96da9076470f5320b07",
+      "author/class141-empty-history-probes/report.json": "472fe9359357a7939ca1a5fe41c00c75cfea88a73770db0fc5fa62ea13312d08"
+    },
+    "baseline_result": "All 14 native programs exit 0 with empty stderr and stable inputs. The unchanged checked model agrees with 13; the live zero-declared FE_FETCH_RW case is normal but leaves clone beta=9 where native has beta=19. The declared-plus-dynamic live control retains independent beta=9 on both sides. The initial eight-case packet, two non-clone observations and two all-UNSET controls add no changed source credit."
+  },
+  "first_failures": [
+    {
+      "member": "author/class141-candidate-9hte55o2/report.json",
+      "sha256": "a9adabb4c11502704fd3cb275c0d0302891506521d87390f28a395735a39e7d1",
+      "result": "Global semantic elaboration failed because module150 called the dynamic-history helper before its declaration in module261.",
+      "full_packet_credit": 0
+    },
+    {
+      "member": "author/class141-state-didxfr8i/report.json",
+      "sha256": "9f98c5a08126e89155cadfa1d1af58e29ebf5fab4b72f1480d82fb192023fbdd",
+      "result": "Provisional live state fixture failed to compile because a bound cell variable was used inside the same conjunctive premise.",
+      "full_packet_credit": 0
+    },
+    {
+      "member": "author/class141-state-xlrh2n8s/report.json",
+      "sha256": "5dcf978ffd883d06d0947533f33832a38502a7d697dc8e8dec9a92406761f4c9",
+      "result": "Provisional all-UNSET history fixture used a lookup that skips UNSET dynamic rows; packet stopped incomplete after two passing groups.",
+      "full_packet_credit": 0
+    }
+  ],
+  "affected": {
+    "source_test_sha256": "b0b49c8d39706f63c719c28944e1829a7a87d8ff76f91d716dd5f7aae974c191",
+    "source_report_member": "author/class141-sources-dkd_wr4w/report.json",
+    "source_report_sha256": "fd16eb550b2202de00cd5ee50e36bbbe377eb18827c479b89555c152abf1ed71",
+    "source_result": "14/14 exact native exit/stdout/stderr with accepted/checked normal model results, stable 435 watched input hashes, CPU1 affinity and empty process groups. Only the live zero-declared source changes from a genuine unchanged-model mismatch.",
+    "state_test_sha256": "e319e729ec83e91ddab9a77999bd2e33d46bb8be777cb0cff3397761e55d5ee0",
+    "state_report_member": "author/class141-state-4avv8ad3/report.json",
+    "state_report_sha256": "41323c3b5436bfad9b241a5ffe4ba78d8f671044ebdce8e988d8ecbcfe670e9e",
+    "state_result": "Five strict source-reached fixtures passed: live shared table/beta mirror 67 premises/one raw step, scalar source-driven COW 35/one, non-clone table image 18/zero, all-UNSET no-callback share 31/one and callback mixed copy 36/one. Total 187 premises/four raw steps, stable 438 watched input hashes, CPU1 affinity and empty process groups."
+  },
+  "independent": {
+    "reviewer": "class137_review",
+    "source_member": "reviewer/clone-source-retirement.php",
+    "source_sha256": "b93fd2248bd8252e48ee6f309ba3e8aaea98fcd2bba566934845cb02a2fc9846",
+    "native_report_member": "reviewer/native-first.json",
+    "native_report_sha256": "0ea9939d02ad6becd864754fdbaa6174705290cc1d2e3836fe33c56f7a60d451",
+    "unchanged_report_member": "reviewer/unchanged-baseline.json",
+    "unchanged_report_sha256": "8b05cc0f69bdf6b2d599a5f2bf1449b3cbba677ed78f8e4a9314448d40e39942",
+    "candidate_report_member": "reviewer/candidate.json",
+    "candidate_report_sha256": "07d20f7622aacd6857ed79dcfb8030d7212c16c20693992fc45314f826978e00",
+    "result": "Frozen callback mutation drops the sole source owner during __clone. Native, unchanged baseline and candidate agree exactly on callback and destructor ordering; zero new changed source credit. Candidate run used CPU1 with stable inputs and a fully reaped process group; native was not replayed."
+  },
+  "archive": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/dynamic-only-cached-clone-141/evidence.tar.gz",
+    "sha256": "95fe86ceb44f40903d310e07ae8e6bfadbcff736502248a40c52b9fcb4fcb159",
+    "bytes": 21117430,
+    "members": 525,
+    "manifest_sha256": "9ecc156830efd316e57dfd2bb6c079d94d58a6924c698296f8bf4199ada8e536",
+    "recovery": "author/, reviewer/ and inputs/ retain raw attempts and tested snapshots. The archive and member manifest are outside Git; the archive is not a complete executable build closure."
+  },
+  "review": {
+    "reviewer": "class137_review",
+    "semantic_test_decision": "CLEAR",
+    "package_decision": "CLEAR"
+  },
+  "remaining": "Inherited or trait-composed dynamic-only classes, missing AllowDynamicProperties authority, readonly layouts, copied-declared DIRECT images, active collection and wider callback/foreach/table histories remain partial."
+}

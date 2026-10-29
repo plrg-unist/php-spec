@@ -259,13 +259,49 @@ Explicit constructor calls retain ordinary method return behavior. Throws retain
 the original Throwable, execute ordinary `finally` blocks and leave caller
 assignment untouched. Ordinary ownership retires unescaped failed receivers and
 preserves escaped receivers. Constructor arguments,
-parameters/types, nonpublic constructors and broader lifecycle interactions remain
-required. The [constructor review](../../coverage/semantics/anonymous-constructors-review.json)
+parameters/types, nonpublic constructors and broader lifecycle interactions remained
+required at that cut. The [constructor review](../../coverage/semantics/anonymous-constructors-review.json)
 separates original-source agreement, actual call/unwind states and pure receipt queries.
+
+Unit0 parentless anonymous classes now accept one or two direct positional/named
+`new` arguments. Public by-value constructors may have up to two required
+untyped or `int` parameters; a class without `__construct` evaluates positional
+arguments and ignores their values. Compilation publishes the anonymous class
+before argument expressions, then uses the ordinary method or no-constructor
+send tasks. An unknown named argument stops before the next value expression;
+typed reception errors leave the caller destination unchanged. The
+[argument review](../../coverage/semantics/anonymous-constructor-arguments-review.json)
+records seven native-backed sources, one independent weak int-coercion source,
+and 107 source-reached premises across constructor and no-constructor tasks.
+Dynamic-source anonymous sites with arguments, constructor by-reference/default/
+variadic/promoted or nonpublic forms, unpacking and wider object lifetimes remain
+partial. Three explicit source controls confirm Unsupported for three direct
+arguments, a by-reference constructor formal and an unpacked send.
+
+Unit0 global anonymous classes may now extend an already compiled, parentless
+ordinary named class through an unqualified name. The parent may declare plain
+untyped public/private properties with optional literal defaults, public ordinary
+zero-argument methods and a public required by-value untyped/`int` constructor
+with at most two parameters. The anonymous class keeps the existing bounded
+member and argument grammar. Its compiler name starts with the resolved parent
+reference spelling followed by `@anonymous`, NUL, file, line and RTD counter;
+the early named parent consumes no counter key. The ordinary linker records the
+source parent before allocation. An inherited constructor sees the parent's
+property defaults; an override may call `parent::__construct`. Inherited methods
+keep Base lexical scope and the anonymous called scope, and a private Base slot
+remains distinct from a public child slot of the same name. Repeated factory
+calls allocate distinct objects of one compiled anonymous class.
+The [parent review](../../coverage/semantics/anonymous-parent-review.json)
+retains source comparisons, reached link/constructor states and the initial
+wrong-prefix counterexample. Forward or autoloaded parents, dynamic-source
+parented sites, interfaces, namespaced parents, typed Base properties and wider
+inheritance remain partial or explicit Unsupported in this route.
 
 Raw `getTrace()['class']` retains the entire generated name. The shared trace
 renderer applies `c_string` only to the displayed CLASS bytes, matching Zend's
-`TRACE_APPEND_KEY`; `getTraceAsString()` therefore prints `class@anonymous`.
+`TRACE_APPEND_KEY`; `getTraceAsString()` therefore prints the prefix before NUL:
+`class@anonymous` for parentless classes, or the resolved parent name followed
+by `@anonymous` for this parented slice.
 Stored names and trace arrays remain intact. The
 [anonymous class review](../../coverage/semantics/anonymous-classes-review.json)
 keeps five exact originals and publication/allocation, factory and trace frontiers

@@ -1585,3 +1585,34 @@ The receipt remains structurally forgeable by another retired same-class
 object; reached-source tests establish its genuine provenance only for these
 programs. Effectful producer finalizers, child storage, wider Iterator values
 and other CONFIG consumers are still open.
+
+The [returned Iterator finalizer increment](../../coverage/semantics/config-aggregate-iterator-finalizer-review.json)
+allows that fresh, sole-DATA Iterator to run a public `__destruct`
+after its Aggregate producer has retired. The destructor has no parameters,
+reference return, generator body or child roots in this scope. On normal
+completion it runs after the final `valid()` and before `ini_set` receives the
+arguments. An invalid second bool key or saved second-key Exception instead
+releases DATA and runs the destructor before catch; the saved Exception keeps
+its identity through destructor operation exit. Three frozen originals match
+PHP 8.5.10 byte for byte, including the destructor output, changed stamp,
+WeakReferences, Error line and INI/result state. Separate source-reached
+checks cover 183+169+178 premises, including retired operation-source validity
+after the destructor. The unchanged model rejected all three at Aggregate
+return. Destructor throws/reentrancy, child storage, wider values and the
+structurally forgeable same-class producer receipt remain open.
+
+The [returned Iterator child increment](../../coverage/semantics/config-aggregate-iterator-child-review.json)
+admits one public declared `child` property holding a direct live object, with
+that property as the child's sole owner. Both objects have public no-argument
+by-value nongenerator destructors; the child has no properties or outgoing
+heap edges, and neither object has a materialized property table. The Iterator
+destructor still sees its child live. Ordinary object storage release then
+runs the child destructor before INI_SET entry or catch, changing the stamp
+from 1 to 2. Normal, invalid second bool key and saved second-key Exception
+agree with PHP in three frozen originals; 233+216+229 reached premises check
+the child edge, extra-owner/edge refusals, destructor order, weak death and
+pending Exception identity. The existing object-release machinery is unchanged.
+An independent normal source also agrees, including parent weak death before
+the child destructor and the child's own live weak reference during that call.
+An Iterator with no destructor and only a finalizable child remains outside
+this increment, as do wider child graphs and destructor throws or reentry.

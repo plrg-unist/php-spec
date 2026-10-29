@@ -631,6 +631,84 @@ References, mixed classes, object/scalar Notices, cycles, warm caches, previous
 links and pending comparisons remain outside this bound.
 [Nested object graph review](../../coverage/semantics/throwable-trace-object-graph-comparison-review.json).
 
+Cold canonical `Exception`/`Error` trace graphs also admit live reference cells
+in a reached object property slot, table entry or property array. The paired
+callback-free `stdClass` or methodless plain objects may have an `ALIAS` on one
+side and a direct value on the other: each comparison reads the cell's current
+defined scalar, array or matched object payload. The guard authenticates live
+cells, current slots/tables and all descendants with one path-local object,
+array and cell stack capped at 16 physical nodes; repeated shared cells remain
+valid, while backedges are refused. Direct copied arrays retain COW snapshots.
+Twelve new original sources agree with PHP; three wider class, object/scalar
+Notice and cycle cases remain exact Unsupported controls. Two reached fixtures
+check 236 premises and four raw comparison steps, including scalar-to-array
+retargeting, the same cell in two slots, current tables and budget resumption.
+Warm caches, previous links, pending comparisons and callback-bearing or cyclic
+graphs remain outside this bound. [Property-reference graph review](../../coverage/semantics/throwable-trace-property-alias-comparison-review.json).
+
+Distinct exact builtin `Exception` and `Error` roots compare by their standard
+handler's class mismatch before reading either object's property slots, trace
+arguments or previous link. Under normal nonpending completion, both roots must
+be live canonical unmaterialized images and the comparison guard must be shallower
+than 16 entries. The mismatch yields order `1` in both orientations, so all four
+relational operators are false; strict identity remains separate. Warm caches,
+nonempty traces, previous links and cyclic or callback-capable captured payloads
+are skipped. Six new native/model normal sources agree with PHP; one old same-kind
+cold control still agrees and a same-kind cycle stays Unsupported. A reached
+fixture checks 74 premises and two raw steps: direct mismatch and equal-prefix
+array mismatch both leave physical storage/events unchanged and skip a later
+caster. Deeper comparison stacks, subclass pairs, materialized roots and pending
+states remain outside this bound. [Cross-kind Throwable review](../../coverage/semantics/throwable-cross-kind-comparison-review.json).
+
+The same early class-mismatch order now covers distinct exact source-constructible
+builtin Throwable kinds beyond `Exception`/`Error`, including parent/child and
+sibling classes and `ErrorException` with its extra severity slot. Both roots
+must be live canonical unmaterialized images under normal nonpending completion
+and a comparison guard below 16 entries; generated-only `FiberError` is outside
+this cut. Order `1` in both orientations skips cached strings, previous links,
+captured cyclic objects and later aggregate casters without reading their
+values. Six new normal sources agree with PHP, one earlier cross-kind control
+still agrees, and a same-kind `RuntimeException` pair remains Unsupported. Two
+source-reached fixtures check 125 premises and four raw comparisons, including
+the actual severity slot and a skipped cyclic trace/tail. Materialized roots,
+subclasses, deeper stacks and pending states remain partial.
+[Builtin-kind comparison review](../../coverage/semantics/throwable-builtin-kind-comparison-review.json).
+
+Distinct same-kind exact builtin Throwables beyond `Exception`/`Error` now
+compare all inline physical slots under normal nonpending completion. Both
+roots must be live canonical unmaterialized images with null `previous`, cold
+or warmed `PSTRING` caches and finite allocated `DIRECT` trace graphs containing
+only primitive, valid string-carrier or acyclic array values. The comparison
+guard stays below 16 entries. This covers the 12 source-constructible kinds in
+that bound; `ErrorException` compares its severity after the seven inherited
+slots. Equal formatted strings still descend to severity, and finite TypeError
+trace arrays retain count/key/value order. Seven new normal sources (five main
+author cases, one focused reached source and one independent source), three
+explicit Unsupported controls and an unchanged `Exception` control pass. Two
+reached fixtures check 137 premises and four raw steps, including warm severity
+order and a skipped aggregate caster. Aliased/object/cyclic trace payloads,
+previous links, materialized roots, generated-only `FiberError`, subclasses and
+pending comparisons remain outside this cut.
+[Same-kind builtin review](../../coverage/semantics/throwable-builtin-same-comparison-review.json).
+
+Those twelve same-kind builtin root kinds also compare finite `previous` chains
+under normal nonpending completion and a comparison guard below 16 entries.
+Each path has at most 16 live canonical unmaterialized nodes of exact
+source-constructible builtin kinds, with physical cold or warm `PSTRING` caches.
+The pure scan follows every physical slot: `previous` is seventh, before
+`ErrorException` severity eighth, including at nested nodes. Null sorts below a
+link. Shared child identity compares equal, and different exact child classes
+return order `1` in both orientations before inspecting captured payloads.
+Reached distinct same-kind nodes require finite allocated `DIRECT` trace graphs
+with primitive, validated string-carrier or acyclic array values. Skipped shared
+or mixed-class children may retain object or cyclic trace payloads; their object
+images and finite previous paths still need authentication. Equal chains resume
+array tails, while a nonzero or Unsupported child stops the scan. Materialized
+or freeing nodes, longer or cyclic previous paths, generated-only `FiberError`,
+user subclasses and pending states remain partial. Existing `Exception`/`Error`
+root-chain bounds below retain their separate rules.
+[Builtin previous-chain review](../../coverage/semantics/throwable-builtin-previous-comparison-review.json).
+
 Warm caches and nonempty builtin traces now meet in the same physical slot
 scan. Same-kind canonical `Exception`/`Error` pairs with null previous values
 admit finite `DIRECT` trace graphs containing primitive or valid string-carrier

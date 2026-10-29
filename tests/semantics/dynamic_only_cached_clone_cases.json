@@ -1,0 +1,55 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "baseline_revision": "065ac2df834607204cc60f741f680106168813ea",
+  "scope": "CLASS141 native-first dynamic-only cached unary clone; controls retain zero changed credit unless baseline differs.",
+  "cases": [
+    {
+      "id": "dynamic-scalar",
+      "kind": "candidate",
+      "source": "<?php\n#[AllowDynamicProperties]\nclass DynamicScalar141 {}\n$source = new DynamicScalar141;\n$source->alpha = 7;\n$source->beta = 9;\necho \"S:\";\nforeach ($source as $key => $value) { echo $key, \"=\", $value, \"|\"; }\n$copy = clone $source;\necho \"C:\";\nforeach ($copy as $key => $value) { echo $key, \"=\", $value, \"|\"; }\n$copy->alpha = 11;\nunset($source->beta);\n$copy->gamma = 13;\necho \"A:\", $source->alpha, \"/\", $copy->alpha, \"|\";\necho \"R:\";\nforeach ($source as $key => $value) { echo $key, \"=\", $value, \"|\"; }\necho \"K:\";\nforeach ($copy as $key => $value) { echo $key, \"=\", $value, \"|\"; }\necho \"Z|\";\n",
+      "source_sha256": "a3230ff5685ef5eb0281c15d56135353f7e4727c21e7ad1bf1ffb27025244180"
+    },
+    {
+      "id": "dynamic-reference-cow",
+      "kind": "candidate",
+      "source": "<?php\n#[AllowDynamicProperties]\nclass DynamicAlias141 {}\n$single = new DynamicAlias141;\n$seed = 7;\n$single->value =& $seed;\nunset($seed);\nforeach ($single as $key => $value) { echo \"S:\", $key, \"=\", $value, \"|\"; }\n$singleCopy = clone $single;\n$singleCopy->value = 11;\necho \"single:\", $single->value, \"/\", $singleCopy->value, \"|\";\n$held = new DynamicAlias141;\n$seed2 = 17;\n$held->value =& $seed2;\n$outside =& $seed2;\nforeach ($held as $key => $value) { echo \"H:\", $key, \"=\", $value, \"|\"; }\n$heldCopy = clone $held;\n$heldCopy->value = 19;\necho \"held:\", $held->value, \"/\", $heldCopy->value, \"/\", $outside, \"|Z|\";\n",
+      "source_sha256": "e66545f06a8e6042d8354846d1b7ee75b76f3073977400579ddc78099e8e065e"
+    },
+    {
+      "id": "dynamic-payload",
+      "kind": "candidate",
+      "source": "<?php\nclass Payload141 {\n    public function __destruct() { echo \"P|\"; }\n}\n#[AllowDynamicProperties]\nclass DynamicPayload141 {\n    public function __destruct() { echo \"D|\"; }\n}\n$source = new DynamicPayload141;\n$source->item = new Payload141;\nforeach ($source as $key => $value) { echo \"F:\", $key, \"|\"; }\nunset($key, $value);\n$copy = clone $source;\necho $source !== $copy && $source->item === $copy->item ? \"shared|\" : \"bad|\";\nunset($source);\necho \"middle|\";\nunset($copy);\necho \"Z|\";\n",
+      "source_sha256": "270d8de22eacdb74e743e6066dcdff67785dfd710d165b3f452aeab7c3246f8c"
+    },
+    {
+      "id": "dynamic-callback",
+      "kind": "candidate",
+      "source": "<?php\n#[AllowDynamicProperties]\nclass DynamicCallback141 {\n    public function __clone(): void {\n        echo \"C|\";\n        foreach ($this as $key => $value) { echo \"in:\", $key, \"=\", $value, \"|\"; }\n        $this->alpha = 11;\n        unset($this->beta);\n        $this->gamma = 13;\n    }\n}\n$source = new DynamicCallback141;\n$source->alpha = 7;\n$source->beta = 9;\nforeach ($source as $key => $value) { echo \"pre:\", $key, \"=\", $value, \"|\"; }\n$copy = clone $source;\necho \"source:\";\nforeach ($source as $key => $value) { echo $key, \"=\", $value, \"|\"; }\necho \"copy:\";\nforeach ($copy as $key => $value) { echo $key, \"=\", $value, \"|\"; }\necho \"Z|\";\n",
+      "source_sha256": "faf186d2c08cf0312520a50b3cb1eb1d75ea9db3b260f489298399ff43d247e6"
+    },
+    {
+      "id": "dynamic-callback-throw",
+      "kind": "candidate",
+      "source": "<?php\nclass PayloadThrow141 {\n    public function __destruct() { echo \"P|\"; }\n}\n#[AllowDynamicProperties]\nclass DynamicThrow141 {\n    public function __clone(): void {\n        global $failure;\n        echo \"C|\";\n        throw $failure;\n    }\n    public function __destruct() { echo \"D|\"; }\n}\n$failure = new Exception(\"supplied\");\n$source = new DynamicThrow141;\n$source->item = new PayloadThrow141;\nforeach ($source as $key => $value) { echo \"F:\", $key, \"|\"; }\nunset($key, $value);\ntry { $copy = clone $source; echo \"bad-copy|\"; }\ncatch (Exception $caught) { echo $caught === $failure ? \"same|\" : \"bad-error|\"; }\necho isset($copy) ? \"bad-set|\" : \"no-copy|\";\nunset($source);\necho \"Z|\";\n",
+      "source_sha256": "bc411da9c1f492674194c1e5f8108b36bad60c31c5530cd8ea3a45d42344fd8e"
+    },
+    {
+      "id": "empty-table-control",
+      "kind": "candidate",
+      "source": "<?php\n#[AllowDynamicProperties]\nclass EmptyDynamic141 {}\n$source = new EmptyDynamic141;\nforeach ($source as $key => $value) { echo \"bad-entry|\"; }\n$copy = clone $source;\necho $source !== $copy ? \"fresh|\" : \"bad-identity|\";\nforeach ($copy as $key => $value) { echo \"bad-copy-entry|\"; }\n$copy->later = 7;\necho isset($source->later) ? \"bad-shared|\" : \"independent|\";\necho $copy->later === 7 ? \"copy7|Z|\" : \"bad-copy|\";\n",
+      "source_sha256": "87606160af77ca1d7ca271d4939883b14ad55a1fb4e3baac4e6e4f5d572692ba"
+    },
+    {
+      "id": "no-foreach-control",
+      "kind": "control",
+      "source": "<?php\n#[AllowDynamicProperties]\nclass UncachedDynamic141 {}\n$source = new UncachedDynamic141;\n$source->value = 7;\n$copy = clone $source;\n$copy->value = 11;\necho $source->value === 7 && $copy->value === 11 ? \"separate|Z|\" : \"bad|\";\n",
+      "source_sha256": "7aad9c9482b431f6d054f8e35d0eba64cee71b24787b52cb52b0a76a98e0f535"
+    },
+    {
+      "id": "declared-dynamic-control",
+      "kind": "control",
+      "source": "<?php\n#[AllowDynamicProperties]\nclass DeclaredDynamic141 { public $fixed = 3; }\n$source = new DeclaredDynamic141;\n$source->extra = 7;\nforeach ($source as $key => $value) { echo \"pre:\", $key, \"=\", $value, \"|\"; }\n$copy = clone $source;\n$copy->fixed = 5;\n$copy->extra = 11;\necho $source->fixed, \"/\", $source->extra, \"/\", $copy->fixed, \"/\", $copy->extra, \"|Z|\";\n",
+      "source_sha256": "1d5d2920d210a2f87fac36e5209f40ce3b6ccc23c639ad6726555416741b2a95"
+    }
+  ]
+}

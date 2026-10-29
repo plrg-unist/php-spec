@@ -120,5 +120,25 @@ A wrong-kind trait stops before a later interface loader. A later interface
 failure leaves an earlier eval function callable without publishing the class;
 an included failure retains the child file and line through `include_once`.
 The [mixed-dependency ledger](../../coverage/semantics/mixed-dependency-autoload-review.json)
-records seven exact source agreements and two reached fronts. Multiple traits,
-trait adaptations, longer interface lists and reentrant loaders remain partial.
+records seven exact source agreements and two reached fronts for that sole-trait
+boundary.
+
+Accepted eval class declarations now fetch two distinct direct traits in order
+after resolving the parent and before a direct interface. The second trait's
+saved autoload request remains valid after the first trait publishes; a
+wrong-kind trait prevents later dependency lookup. One tested `insteadof` and
+`as` plan resolves a method conflict after interface loading. The
+[two-trait ledger](../../coverage/semantics/ordered-two-trait-autoload-review.json)
+records five new exact sources, two full reached continuations and one
+structural adaptation front. Two-trait trait declarations, other adaptation
+plans, longer mixed lists and reentrant links remain partial.
+
+Fixed-name ordinary `new` now recognizes an unlinked source class while an
+entered dependency loader is linking it. An authenticated saved `AUTO_RESULT`
+identifies that class in its caller's scope; construction raises the missing-class
+`Error` without a redundant loader call. Dependency fetching keeps its existing
+lookup rules. Once a failed link unwinds, a later `new` can autoload the name
+again. The [reentrant lookup ledger](../../coverage/semantics/reentrant-unlinked-new-review.json)
+records two repaired author sources, one unchanged recursion control, an
+independent interface-loader source and 140 reached premises. Dynamic-name `new`,
+other declaration kinds and wider reentrant histories remain partial.

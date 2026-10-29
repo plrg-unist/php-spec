@@ -570,6 +570,33 @@ def $autoload_active_tasks(eps, ptbytes) = false
 def $autoload_active_tasks(ptask :: ptask_tail*, ptbytes) = ($autoload_active_task(ptask, ptbytes) \/ $autoload_active_tasks(ptask_tail*, ptbytes))
 def $autoload_active_frames(eps, ptbytes) = false
 def $autoload_active_frames(pframe :: pframe_tail*, ptbytes) = ($autoload_active_tasks(pframe.TODO, ptbytes) \/ $autoload_active_frames(pframe_tail*, ptbytes))
+dec $autoload_unlinked_origin(ptask) : porigin?
+def $autoload_unlinked_origin(AUTO_PUBLISH porigin) = (porigin)
+def $autoload_unlinked_origin(AUTO_INTERFACE porigin preqbytes) = (porigin)
+def $autoload_unlinked_origin(AUTO_TRAIT porigin preqbytes) = (porigin)
+def $autoload_unlinked_origin(ptask) = eps -- otherwise
+dec $autoload_new_unlinked_call(pstate, pautoloadcall, ptbytes) : bool
+def $autoload_new_unlinked_call(S, pautoloadcall, ptbytes) = true
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if $autoload_unlinked_origin(pautoloadcall.RESUME) = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $ptlc(pclassdesc.NAME) = $ptlc($autoload_lookup_name(ptbytes))
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+def $autoload_new_unlinked_call(S, pautoloadcall, ptbytes) = false -- otherwise
+dec $autoload_new_unlinked_frames(pstate, pframe*, ptbytes) : bool
+dec $autoload_new_unlinked_head(pstate, ptask*, pframe, pframe*, ptbytes) : bool
+dec $autoload_new_unlinked_task(pstate, ptask, pframe, pframe*, ptbytes) : bool
+dec $autoload_new_unlinked_scoped(pstate, pautoloadcall, pautoloadentry, ptbytes) : bool
+def $autoload_new_unlinked_task(S, AUTO_RESULT pautoloadcall pautoloadentry poperand, pframe, pframe_tail*, ptbytes) = $autoload_new_unlinked_scoped($constant_frame_scope(S, pframe, pframe_tail*), pautoloadcall, pautoloadentry, ptbytes)
+def $autoload_new_unlinked_task(S, ptask, pframe, pframe_tail*, ptbytes) = false -- otherwise
+def $autoload_new_unlinked_scoped(S, pautoloadcall, pautoloadentry, ptbytes) = ($autoload_selected_valid(S, pautoloadcall, pautoloadentry) /\ $autoload_new_unlinked_call(S, pautoloadcall, ptbytes))
+def $autoload_new_unlinked_head(S, eps, pframe, pframe_tail*, ptbytes) = false
+def $autoload_new_unlinked_head(S, ptask :: ptask_tail*, pframe, pframe_tail*, ptbytes) = $autoload_new_unlinked_task(S, ptask, pframe, pframe_tail*, ptbytes)
+def $autoload_new_unlinked_frames(S, eps, ptbytes) = false
+def $autoload_new_unlinked_frames(S, pframe :: pframe_tail*, ptbytes) = ($autoload_new_unlinked_head(S, pframe.TODO, pframe, pframe_tail*, ptbytes) \/ $autoload_new_unlinked_frames(S, pframe_tail*, ptbytes))
+def $autoload_new_pending(S, ptbytes) = ($autoload_pending(S, ptbytes) /\ ~$autoload_new_unlinked_frames(S, S.FRAMES, ptbytes))
 def $autoload_pending(S, ptbytes) = true
   -- if ~$dynamic_new_known(S, $autoload_lookup_name(ptbytes))
   -- if $autoload_class_name(ptbytes)
@@ -590,7 +617,7 @@ def $autoload_begin(S, porigin, ptbytes_name, ptbytes_key, z, pautoloadmode, pta
 def $autoload_explicit(S, pconfigcall, ptbytes) = $autoload_begin(S[.TODO = ptask_tail*], pconfigcall.SITE, ptbytes, $ptlc(ptbytes), pconfigcall.LINE, AUTO_EXPLICIT pconfigcall, AUTO_EXPLICIT_DONE pconfigcall)
   -- if S.TODO = ptask :: ptask_tail*
 def $noctor_start(S, ptbytes, phpType7*, z) = $autoload_begin(S, porigin, $autoload_lookup_name(ptbytes), $ptlc($autoload_lookup_name(ptbytes)), z, AUTO_LOOKUP, $autoload_new_resume(S, ptbytes, phpType7*, z))
-  -- if $autoload_pending(S, ptbytes)
+  -- if $autoload_new_pending(S, ptbytes)
   -- if S.ORIGIN = (porigin)
 def $activate_class(S, pclassdesc) = $autoload_begin(S[.ORIGIN = (pclassdesc.ORIGIN)], pclassdesc.ORIGIN, $autoload_lookup_name(ptbytes_parent), $ptlc($autoload_lookup_name(ptbytes_parent)), pclassdesc.LINE, AUTO_LOOKUP, AUTO_PUBLISH pclassdesc.ORIGIN)
   -- if $autoload_parent_pending(S, pclassdesc)
@@ -1055,6 +1082,8 @@ dec $autoload_interface_missing(pstate, preqbytes*) : preqbytes?
 dec $autoload_interface_kind(pcnode?) : text?
 dec $autoload_interface_prefix_known(pstate, preqbytes*, preqbytes) : bool
 dec $autoload_interface_source(pstate, porigin, preqbytes) : bool
+dec $autoload_two_trait_plan(ptraitplan) : bool
+dec $autoload_two_trait_target(pstate, ptbytes*, preqbytes) : bool
 
 def $autoload_interface_missing(S, eps) = eps
 def $autoload_interface_missing(S, preqbytes :: preqbytes_tail*) = $autoload_interface_missing(S, preqbytes_tail*)
@@ -1073,6 +1102,32 @@ def $autoload_interface_prefix_known(S, preqbytes_first :: preqbytes_tail*, preq
   -- if $dynamic_new_known(S, preqbytes_first)
 def $autoload_interface_prefix_known(S, preqbytes_names*, preqbytes_target) = false -- otherwise
 
+def $autoload_two_trait_plan(ptraitplan) = true
+  -- if ptraitplan.TRAITS = [ptbytes_first_plain, ptbytes_second_plain]
+  -- if $ptlc(ptbytes_first_plain) =/= $ptlc(ptbytes_second_plain)
+  -- if ptraitplan.PRECEDENCES = eps /\ ptraitplan.ALIASES = eps
+def $autoload_two_trait_plan(ptraitplan) = true
+  -- if ptraitplan.TRAITS = [ptbytes_first_adapt, ptbytes_second_adapt]
+  -- if $ptlc(ptbytes_first_adapt) =/= $ptlc(ptbytes_second_adapt)
+  -- if ptraitplan.PRECEDENCES = [ptraitprecedence_adapt]
+  -- if ptraitprecedence_adapt.TRAIT = ptbytes_first_adapt
+  -- if ptraitprecedence_adapt.EXCLUDES = [ptbytes_second_adapt]
+  -- if ptraitplan.ALIASES = [ptraitalias_adapt]
+  -- if ptraitalias_adapt.TRAIT = (ptbytes_second_adapt)
+  -- if ptraitalias_adapt.METHOD = ptraitprecedence_adapt.METHOD
+  -- if ptraitalias_adapt.MODIFIERS = 0
+  -- if ptraitalias_adapt.NAME =/= eps
+def $autoload_two_trait_plan(ptraitplan) = false -- otherwise
+
+def $autoload_two_trait_target(S, ptbytes_names*, preqbytes) = true
+  -- if ptbytes_names* = [ptbytes_first_target, ptbytes_second_target]
+  -- if preqbytes = ptbytes_first_target
+def $autoload_two_trait_target(S, ptbytes_names*, preqbytes) = true
+  -- if ptbytes_names* = [ptbytes_first_later, ptbytes_second_later]
+  -- if preqbytes = ptbytes_second_later
+  -- if $trait_fetch(S, [ptbytes_first_later], eps) = TRAITFETCHED pclassdesc_traits*
+def $autoload_two_trait_target(S, ptbytes_names*, preqbytes) = false -- otherwise
+
 def $autoload_interface_source(S, porigin, preqbytes) = true
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~$class_internal(pclassdesc.NAME)
@@ -1088,6 +1143,15 @@ def $autoload_interface_source(S, porigin, preqbytes) = true
   -- if ptraitplan = $trait_plan(S, pclassdesc)
   -- if ptraitplan.TRAITS = [preqbytes_trait]
   -- if ptraitplan.PRECEDENCES = eps /\ ptraitplan.ALIASES = eps
+  -- if $trait_fetch(S, ptraitplan.TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
+  -- if $autoload_interface_prefix_known(S, pclassdesc.INTERFACES, preqbytes)
+def $autoload_interface_source(S, porigin, preqbytes) = true
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $autoload_interface_kind($origin_node(S.SOURCES, porigin)) = (pclassdesc.KIND)
+  -- if $trait_parent_available(S, pclassdesc)
+  -- if ptraitplan = $trait_plan(S, pclassdesc)
+  -- if $autoload_two_trait_plan(ptraitplan)
   -- if $trait_fetch(S, ptraitplan.TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
   -- if $autoload_interface_prefix_known(S, pclassdesc.INTERFACES, preqbytes)
 def $autoload_interface_source(S, porigin, preqbytes) = false -- otherwise
@@ -1163,6 +1227,15 @@ def $autoload_trait_source(S, porigin, preqbytes) = true
   -- if ptraitplan = $trait_plan(S, pclassdesc)
   -- if ptraitplan.TRAITS = [preqbytes]
   -- if ptraitplan.PRECEDENCES = eps /\ ptraitplan.ALIASES = eps
+def $autoload_trait_source(S, porigin, preqbytes) = true
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $autoload_trait_kind($origin_node(S.SOURCES, porigin)) = (pclassdesc.KIND)
+  -- if $trait_parent_available(S, pclassdesc)
+  -- if ptraitplan = $trait_plan(S, pclassdesc)
+  -- if $autoload_two_trait_plan(ptraitplan)
+  -- if $autoload_two_trait_target(S, ptraitplan.TRAITS, preqbytes)
 
 def $autoload_trait_source(S, porigin, preqbytes) = false -- otherwise
 

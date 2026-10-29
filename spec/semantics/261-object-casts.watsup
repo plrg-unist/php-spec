@@ -60,7 +60,6 @@ def $object_table_item(S, UNINITIALIZED) = UNINITIALIZED
 
 ;; A dynamic slot record keeps mixed-table identity after its value is unset.
 ;; Declared-only nonpublic layouts retain their separate comparison route.
-dec $object_table_dynamic_history(ppropertyslot*) : bool
 def $object_table_dynamic_history(eps) = false
 def $object_table_dynamic_history(ppropertyslot :: ppropertyslot_tail*) = true
   -- if ppropertyslot.DECL = eps
@@ -102,7 +101,7 @@ def $object_table_ordinary(S, n) = true
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~pclassdesc.READONLY
-  -- if $property_layout(S, porigin, |S.CLASSES|) =/= eps
+  -- if $property_layout(S, porigin, |S.CLASSES|) =/= eps \/ ($property_layout(S, porigin, |S.CLASSES|) = eps /\ pclassdesc.PARENT = eps /\ $class_dynamic_attribute(S, porigin) /\ $trait_plan(S, pclassdesc).TRAITS = eps /\ $object_table_dynamic_history($object_table_slots_at(S, n)))
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_rows*)
   -- if $property_unique_names(ppropertyslot_rows*)
   -- if $object_table_ordinary_rows(S, n, ppropertyslot_rows*)
