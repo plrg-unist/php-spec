@@ -22,7 +22,11 @@ parser.add_argument('--case', action='append', required=True, choices=(
     'identity-alias', 'deferred-backing-priority', 'identity-alias-duplicate',
     'weak-parser-order', 'parsed-argument-trace', 'user-magic-protocols',
     'defined-initializer-retry', 'aliased-query-cache', 'defined-backing-observer',
-    'enum-weakmap-order', 'enum-type-default-reference'))
+    'enum-weakmap-order', 'enum-type-default-reference', 'static-loader-cv-order-start',
+    'static-loader-cv-order', 'named-static-computed-method', 'static-first-use',
+    'dynamic-class-computed-constant', 'literal-and-folded-class-method-order',
+    'named-class-computed-constant', 'literal-slash-missing-diagnostics',
+    'compiler-folded-static-keyword-scopes', 'compiled-class-target-negative'))
 args = parser.parse_args()
 SOURCES = args.sources.resolve()
 OUT = args.output.resolve()
@@ -33,6 +37,8 @@ import enum_magic_review_protocol as magic_review
 import enum_query_review_protocol as query_review
 import enum_comparison_review_protocol as comparison_review
 import enum_default_review_protocol as default_review
+import enum_acquisition_review_protocol as acquisition_review
+from reentrant_unlinked_new_protocol import nodes, response
 from recorded_worker import Worker
 import static_types as types
 
@@ -44,6 +50,10 @@ def folder(name):
         name = 'identity-alias'
     if name == 'defined-backing-observer':
         name = 'defined-initializer-retry'
+    if name == 'static-loader-cv-order-start':
+        name = 'static-loader-cv-order'
+    if name == 'compiled-class-target-negative':
+        name = 'literal-and-folded-class-method-order'
     return SOURCES / name
 
 def receipt(name, filename):
@@ -54,8 +64,9 @@ assert os.sched_getaffinity(0) == {args.cpu}
 OUT.mkdir()
 modules = [ROOT / p for p in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
 changed = subprocess.check_output(['git', 'diff', '--name-only'], cwd=ROOT, text=True).splitlines()
-paths = [Path(__file__), Path(generated_review.__file__), Path(case_review.__file__), Path(magic_review.__file__), Path(query_review.__file__), Path(comparison_review.__file__), Path(default_review.__file__), ROOT / 'spec/semantics/modules.json',
+paths = [Path(__file__), Path(generated_review.__file__), Path(case_review.__file__), Path(magic_review.__file__), Path(query_review.__file__), Path(comparison_review.__file__), Path(default_review.__file__), Path(acquisition_review.__file__), ROOT / 'spec/semantics/modules.json',
          ROOT / 'tests/semantics/recorded_worker.py', ROOT / 'tests/semantics/static_types.py',
+         ROOT / 'tests/semantics/reentrant_unlinked_new_protocol.py',
          ROOT / 'tests/semantics/profile.json', ROOT / 'frontend/worker.php',
          ROOT / '_build/default/adapter/main.exe', ROOT / '.tools/php/bin/php',
          ROOT / '.tools/php-file.so', ROOT / 'tests/semantics/_build/default/numeric_runner.exe']
@@ -70,7 +81,7 @@ report = {'revision': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=
           'inputs': before, 'selected': SELECTED, 'records': [], 'result': 'fail'}
 snapshots = OUT / 'tested-inputs'
 snapshots.mkdir()
-for p in [Path(__file__), Path(generated_review.__file__), Path(case_review.__file__), Path(magic_review.__file__), Path(query_review.__file__), Path(comparison_review.__file__), Path(default_review.__file__), *(ROOT / p for p in changed),
+for p in [Path(__file__), Path(generated_review.__file__), Path(case_review.__file__), Path(magic_review.__file__), Path(query_review.__file__), Path(comparison_review.__file__), Path(default_review.__file__), Path(acquisition_review.__file__), *(ROOT / p for p in changed),
           ROOT / 'spec/semantics/436-enum-compiler.watsup', ROOT / 'spec/semantics/437-enum-runtime.watsup']:
     if p.is_file():
         target = snapshots / (p.relative_to(ROOT) if p.is_relative_to(ROOT) else p.name)
@@ -91,6 +102,12 @@ try:
             review = comparison_review
         if name == 'enum-type-default-reference':
             review = default_review
+        if name in ('static-loader-cv-order-start', 'static-loader-cv-order',
+                    'named-static-computed-method', 'static-first-use',
+                    'dynamic-class-computed-constant', 'literal-and-folded-class-method-order',
+                    'named-class-computed-constant', 'literal-slash-missing-diagnostics',
+                    'compiler-folded-static-keyword-scopes', 'compiled-class-target-negative'):
+            review = acquisition_review
         source = folder(name) / 'main.php'
         freeze = json.loads(receipt(name, 'freeze.json').read_text())
         if 'cases' in freeze:
@@ -100,7 +117,21 @@ try:
         parsed = frontend.request({'op': 'parse', 'source': base64.b64encode(source.read_bytes()).decode()})
         assert parsed['accepted']
         checked = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True})
-        checks = (review.duplicate_assertions(checked['fixture'], source, (source.parent / 'native.stdout').read_bytes())
+        if review is acquisition_review and name not in (
+                'static-loader-cv-order-start', 'literal-slash-missing-diagnostics',
+                'compiler-folded-static-keyword-scopes'):
+            codes = [base64.b64decode(node['fields'][0]['fields'][0]['bytes'])
+                     for node in nodes(parsed['ast']) if node['node'] == 'Expr_Eval']
+            checked_evals = [response(frontend, adapter, code, unit)
+                             for unit, code in enumerate(codes, 1)]
+            if name in ('literal-and-folded-class-method-order', 'compiled-class-target-negative'):
+                checked_eval = checked_evals
+            else:
+                checked_eval, = checked_evals
+            checks = review.assertions(name, checked['fixture'], source,
+                                       (source.parent / 'native.stdout').read_bytes(), checked_eval)
+        else:
+            checks = (review.duplicate_assertions(checked['fixture'], source, (source.parent / 'native.stdout').read_bytes())
                   if name == 'identity-alias-duplicate' else
                   review.assertions(name, checked['fixture'], source, (source.parent / 'native.stdout').read_bytes()))
         target = OUT / name
