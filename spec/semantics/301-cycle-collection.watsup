@@ -172,6 +172,9 @@ dec $gc_materialized_quiet(pstate) : bool
 dec $gc_materialized_begin(pstate, pgccall) : pstate
 dec $gc_callback_walk_agrees(pgcplan) : bool
 dec $gc_materialized_callback_context(pstate) : bool
+dec $gc_materialized_caller_target(pstate, pcalltarget, porigin?) : bool
+dec $gc_materialized_caller(pstate, pcallcontext?) : bool
+dec $gc_materialized_caller_frames(pstate, pframe*) : bool
 dec $gc_callback_count_source(pstate, pobjecttable*, pnode*) : pobjecttable?
 dec $gc_callback_count_head(pstate, pobjecttable, pnode*) : bool
 dec $gc_callback_count_origin(pstate) : pgccountsource?
@@ -1514,7 +1517,23 @@ def $gc_callback_walk_agrees(pgcplan) = true
   -- if $gc_count_walk(H, pgcplan.PROXIES, eps, $gc_root_visits(pnode_roots*), pnode_white*) = (pnode_visit*, pnode_counted*)
   -- if $gc_count_walk(H, pgcplan.PROXIES, (eps), $gc_root_visits(pnode_roots*), pnode_white*) = (pnode_visit*, pnode_counted*)
 def $gc_callback_walk_agrees(pgcplan) = false -- otherwise
-def $gc_materialized_callback_context(S) = (S.ACTIVEFIBER = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.ITERATORS = eps /\ $gc_materialized_quiet(S))
+;; Only ordinary source calls grant this lane caller authority. The saved
+;; frame fold checks contexts without recursively validating its GC consumer.
+def $gc_materialized_caller_target(S, porigin_function, (porigin_site)) = $call_selected_valid(S, porigin_function, (porigin_site))
+def $gc_materialized_caller_target(S, METHOD_TARGET n porigin_method, (porigin_site)) = $method_call_selected(S, METHOD_TARGET n porigin_method, (porigin_site))
+def $gc_materialized_caller_target(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_site)) = $method_call_selected(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_site))
+def $gc_materialized_caller_target(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, (porigin_site)) = $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_site)
+def $gc_materialized_caller_target(S, pcalltarget, porigin?) = false -- otherwise
+def $gc_materialized_caller(S, eps) = true
+def $gc_materialized_caller(S, (pcallcontext)) = true
+  -- if $gc_materialized_caller_target(S, pcallcontext.TARGET, pcallcontext.CALLSITE)
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if $call_context_valid(S, pcallcontext, pfunction.CVS)
+def $gc_materialized_caller(S, pcallcontext?) = false -- otherwise
+def $gc_materialized_caller_frames(S, eps) = true
+def $gc_materialized_caller_frames(S, pframe :: pframe_tail*) = ($gc_materialized_caller(S_scope, pframe.CONTEXT) /\ $call_saved_context_valid(S_scope, pframe) /\ $gc_materialized_caller_frames(S, pframe_tail*))
+  -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
+def $gc_materialized_callback_context(S) = (S.ACTIVEFIBER = eps /\ S.ITERATORS = eps /\ $gc_materialized_quiet(S) /\ $call_current_valid(S) /\ $gc_materialized_caller(S, S.CURRENT) /\ $gc_materialized_caller_frames(S, S.FRAMES))
 def $gc_prior_ordinary_table_head(S, pobjecttable, pnode*) = true
   -- if $(pobjecttable.OBJECT < |S.OBJECTS|)
   -- if (HOBJECT pobjecttable.OBJECT) <- pnode*
@@ -1526,7 +1545,8 @@ def $gc_prior_ordinary_table(S, pobjecttable :: pobjecttable_tail*, pnode*) = ($
 ;; user callback has changed CURRENT, fields, or live table locators. Detect
 ;; a coherently erased receipt without reclassifying worker/residual plans.
 def $gc_callback_count_required_plan(S, pgcplan) = true
-  -- if S.GC.WORKER = eps /\ pgcplan.CALL.CALLER = eps /\ pgcplan.SCAN = eps
+  -- if S.GC.WORKER = eps /\ pgcplan.SCAN = eps
+  -- if $gc_materialized_caller(S, pgcplan.CALL.CALLER)
   -- if pgcplan.WEAK = eps
   -- if $gc_callback_plain_slots(pgcplan.BUFFER)
   -- if pgcplan.BUFFER = $gc_unmarked_slots(pgcplan.BUFFER)
