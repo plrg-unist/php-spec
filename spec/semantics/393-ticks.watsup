@@ -620,7 +620,7 @@ def $tick_reference_message(S, ptickdispatch, n) = pfunction.NAME ++ $ptascii("(
   -- if $tick_selected(S, ptickdispatch) = (ptickentry)
   -- if $target_function(S, ptickentry.ENTRY.TARGET) = (pfunction)
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
-rule PhpStep/tick-reference-warning: S ~> $error_dispatch(S[.ORIGIN = (ptickdispatch.SITE)], 2, ptbytes, ptickdispatch.MARKER.LINE, DIAGNOSTIC "Warning" ptbytes ptickdispatch.MARKER.LINE, TICK_REFERENCE ptickdispatch n)
+rule PhpStep/tick-reference-warning: S ~> $deprecated_api_reference(S[.ORIGIN = (ptickdispatch.SITE)], pfunction, ptbytes, ptickdispatch.MARKER.LINE, DIAGNOSTIC "Warning" ptbytes ptickdispatch.MARKER.LINE, TICK_REFERENCE ptickdispatch n)
   -- if S.TODO = (TICK_SEND ptickdispatch n) :: ptask_tail*
   -- if $tick_send_valid(S, ptickdispatch, n)
   -- if $tick_selected(S, ptickdispatch) = (ptickentry)

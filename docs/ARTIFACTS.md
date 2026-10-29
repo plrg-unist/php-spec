@@ -56,6 +56,12 @@ The final joined gate's argv used `taskset -c 1`, the project numeric runner,
 then `raw/enum-joined-strict-428-final/main.watsup`; its `result.json` binds
 the tested tip/base, exit and output. The runner group was fully reaped.
 
+Captured enum `cases(...)` cuts are under
+`../php-spec-evidence-archive/enum-cases-fcc-117/`. Its `manifest.json`
+(SHA-256 `f7028af79cde92e20df542a0e7f1ad3b9a5ef5d9257c9704d4e47c0fc06c0fd3`)
+lists 11 raw directories, including the accepted cache/history checks, joined
+430-module gate, and zero-agreement cold `from(...)` and pipe boundaries.
+
 The guarded getter-recursion milestone retains source/native observations,
 focused checks, all fixture failures and diagnostics in
 `../php-spec-evidence-archive/magic-get-recursion-119/manifest.json`.
@@ -144,6 +150,31 @@ external archive (using new paths for new evidence) or in ignored `.tools/`.
 Commit concise reports and manifests with hashes and locations. Preserve raw
 failures and interrupted runs externally; do not force-add their archives.
 The coverage compression patterns in `.gitignore` guard against reintroduction.
+
+I77 receiver-bearing scoped Generator evidence retains authored native,
+unchanged baseline, private/joined strict, source and reached-state cuts under
+`../php-spec-evidence-archive/generator-keyword-receiver-77/`. The independent
+peer source, original provisional native expectation mismatch and exact model
+comparison are under
+`../php-spec-evidence-archive/generator-keyword-receiver-77-review/`.
+The [receiver ledger](../coverage/semantics/generator-keyword-receiver-review.json)
+binds the tested revisions, raw flags, hashes and remaining scope.
+
+I76 keyword factory-chain evidence retains native, unchanged baseline, strict,
+source and state cuts under
+`../php-spec-evidence-archive/generator-keyword-factory-chain-76/`; the
+independent peer is under
+`../php-spec-evidence-archive/generator-keyword-factory-chain-76-review/`.
+The [chain ledger](../coverage/semantics/generator-keyword-chain-review.json)
+keeps tested revisions, hashes and the retained I75 chain promotion distinct.
+
+I75 keyword Generator creation retains native, strict and original baseline
+records under `../php-spec-evidence-archive/generator-keyword-creation-75/`,
+accepted/failing source and state raw cuts under its `validated/` directory, and
+the independent peer under `../php-spec-evidence-archive/generator-keyword-creation-75-review/`.
+The [review ledger](../coverage/semantics/generator-keyword-creation-review.json)
+identifies hashes and the peer's unchanged-input bridge across a fixture-only
+HEAD change. No source or state cut is renewed by this index.
 
 I74 fresh NEXT/SEND evidence is retained uncompressed under
 `../php-spec-evidence-archive/generator-fiber-fresh-advance-74/`. Its manifest binds
@@ -488,3 +519,12 @@ updated submodule pointer. Existing clones must adopt the rewritten history;
 merging or fetching old refs can bring the removed objects back. Keep the backup
 until that coordination is complete. The pinned corpus still contains a 96 MiB
 TeamPass database log, so this cleanup does not eliminate every large-file warning.
+
+OB01 request-end output evidence is retained uncompressed under
+`../php-spec-evidence-archive/ob01-author-native/` and `ob01-review-native/`.
+The [review](../coverage/semantics/output-request-end-review.json) binds the
+15 exact normal source cuts, six reached groups/238 assertions, private strict427
+and actual-tail joined strict429.
+`accepted-summary.json` maps all nine original state directories to their intact
+external locations. The failed/stopped packets, 90/40-second abnormal timeouts
+and model-unrun captured-throw boundary retain their separate zero-credit status.

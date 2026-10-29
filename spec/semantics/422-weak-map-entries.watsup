@@ -765,7 +765,6 @@ def $weakmap_gc_prepare(S, pgcplan) = S[.OBJECTS[n_map] = $weakmap_entries_pack(
 ;; WeakMap projection. Physical Map->payload owners remain in $heap_graph.
 dec $gc_ephemeron_node_kind(pstate, pnode) : bool
 dec $gc_ephemeron_nodes_valid(pstate, pnode*) : bool
-dec $gc_ephemeron_called_current(pstate, nat*) : bool
 dec $gc_ephemeron_before(pstate, nat, nat, nat) : bool
 dec $gc_ephemeron_key_order_safe(pstate, nat) : bool
 dec $gc_ephemeron_key_records(pstate, nat, pnode*) : pweakmapentry*

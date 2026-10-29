@@ -862,7 +862,7 @@ def $throwable_builtin_previous_pair(S, n_left, n_right, pcompareguard_seen*) = 
   -- if pthrowable_left.KIND =/= "Exception" /\ pthrowable_left.KIND =/= "Error"
   -- if $throwable_builtin_previous_chain_valid(S, n_left, eps)
   -- if $throwable_builtin_previous_chain_valid(S, n_right, eps)
-  -- if $throwable_previous_id(S, n_left) =/= eps \/ $throwable_previous_id(S, n_right) =/= eps
+  -- if $throwable_previous_id(S, n_left) =/= eps \/ $throwable_previous_id(S, n_right) =/= eps \/ ~$throwable_builtin_same_pair(S, n_left, n_right, pcompareguard_seen*)
 def $throwable_builtin_previous_pair(S, n_left, n_right, pcompareguard_seen*) = false -- otherwise
 dec $throwable_builtin_previous_order(pstate, nat, nat, pcompareguard*) : porder
 dec $throwable_builtin_previous_value_order(pstate, pvalue, pvalue, pcompareguard*) : porder
@@ -941,7 +941,22 @@ def $throwable_builtin_previous_effect(S, n_left, n_right, pcompareguard_seen*, 
 def $throwable_builtin_previous_effect(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
 def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = $throwable_builtin_previous_effect(S, n_left, n_right, pcompareguard_seen*, z)
   -- if $throwable_builtin_previous_pair(S, n_left, n_right, pcompareguard_seen*)
-def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S[.COMPLETION = UNSUPPORTED "Throwable property comparison"], ORDER 0)
+;; The final public refusal already excludes every older admitted route.
+;; Authenticate both finite canonical Previous paths before the visited fold.
+dec $throwable_comparison_fallback_effect(pstate, nat, nat, pcompareguard*, int) : (pstate, porder)
+def $throwable_comparison_fallback_effect(S, n_left, n_right, pcompareguard_seen*, z) = $throwable_builtin_previous_effect(S, n_left, n_right, pcompareguard_seen*, z)
+  -- if S.COMPLETION = NORMAL
+  -- if ~$number_compare_exception_pending(S)
+  -- if n_left =/= n_right
+  -- if $throwable_builtin_previous_node_valid(S, n_left)
+  -- if $throwable_builtin_previous_node_valid(S, n_right)
+  -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
+  -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
+  -- if pthrowable_left.KIND = pthrowable_right.KIND
+  -- if $throwable_builtin_previous_chain_valid(S, n_left, eps)
+  -- if $throwable_builtin_previous_chain_valid(S, n_right, eps)
+def $throwable_comparison_fallback_effect(S, n_left, n_right, pcompareguard_seen*, z) = (S[.COMPLETION = UNSUPPORTED "Throwable property comparison"], ORDER 0) -- otherwise
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = $throwable_comparison_fallback_effect(S, n_left, n_right, pcompareguard_seen*, z)
   -- if n_left =/= n_right
   -- if $throwable_object(S, n_left) \/ $throwable_object(S, n_right)
   -- if ~$weakmap_standard_mismatch(S, n_left, n_right)

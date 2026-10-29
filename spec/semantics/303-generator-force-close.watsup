@@ -78,6 +78,17 @@ dec $generator_close_body_tail(ptask*, porigin) : ptask*
 dec $generator_close_terminal_tasks(ptask*) : bool
 dec $generator_close_any_started(pstate, pnode*) : bool
 dec $generator_close_forbidden(pstate, preqbytes, int, pnode*) : pstate
+dec $generator_creation_close_head(ptask*) : nat?
+def $generator_creation_close_head((GENERATOR_CLOSE_ENTER pgenclose) :: ptask*) = (pgenclose.OBJECT)
+def $generator_creation_close_head((GENERATOR_CLOSE_DONE pgenclose) :: ptask*) = (pgenclose.OBJECT)
+def $generator_creation_close_head(ptask*) = eps -- otherwise
+;; Claim the structural owner before checking its current metadata. A bad
+;; current cannot erase the marker and borrow another Generator's authority.
+def $generator_creation_close_owner(S) = (n)
+  -- if $generator_creation_close_head(S.TODO) = (n)
+def $generator_creation_close_owner(S) = $generator_creation_close_head(pframe.TODO)
+  -- if $generator_creation_close_head(S.TODO) = eps
+  -- if S.FRAMES = pframe :: pframe_tail*
 
 dec $generator_close_tail(ptask*) : bool
 dec $generator_close_current(pgeneratorfrom?) : poperand?
@@ -737,6 +748,8 @@ def $generator_close_frame_valid(S, pgenerator, pframe) = true
   -- if pframe.LOCALS = (psymboltable)
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pcallcontext.FUNCTION = pgenerator.FUNCTION /\ pcallcontext.INSTANCE = pgenerator.CLOSURE
+  -- if $generator_creation_record_valid(S, pgenerator)
+  -- if $generator_creation_context_valid(S, pgenerator, pcallcontext)
   -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
   -- if psymboltable.CVS = pfunction.CVS
   -- if S_scope = $generator_close_frame_scope(S, pframe)

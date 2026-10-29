@@ -68,7 +68,7 @@ syntax pclosureevidence
 syntax pdynamicnew
 syntax ptraitcachecause
 syntax pstaticselection = { SITE porigin, ROOT porigin, SCOPE porigin?, CALLED porigin?, CLOSURE pclosureevidence? }
-syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | CCUPDATE porigin porigin porigin nat | CCSTATIC porigin porigin nat | CCSTATICRETIRE porigin porigin nat nat | CCCOMPOUNDENTER pstaticcompound porigin int nat | CCCOMPOUNDRETIRE pstaticcompound nat porigin int nat | CCCOMPOUNDWRITE pstaticcompound porigin int ptbytes nat
+syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | CCUPDATE porigin porigin porigin nat | CCSTATIC porigin porigin nat | CCSTATICRETIRE porigin porigin nat nat | CCCOMPOUNDENTER pstaticcompound porigin int nat | CCCOMPOUNDRETIRE pstaticcompound nat porigin int nat | CCCOMPOUNDWRITE pstaticcompound porigin int ptbytes nat | CCCACHE_ENUM porigin porigin nat nat
   | CCCOMPOUNDSELECT pstaticcompound pstaticselection porigin int nat
   | CCSTATICSELECT porigin pstaticselection nat | CCSTATICRETIRESELECT porigin pstaticselection nat nat | CCUPDATESELECT porigin pstaticselection nat
   | CCINSTANCE porigin porigin porigin porigin pstaticselection? nat
@@ -147,7 +147,7 @@ syntax passertmode = { INPUT pvalue, VALUE int }
 syntax passertiniphase = ASSERTION_CONVERT | ASSERTION_PARSE | ASSERTION_REFUSE int
 syntax ptask
 syntax pshellcontext
-syntax pobnotice, pobinvoke, poboutput, pobrelease, pobcall, pobwrite, pobfinish, pobcaller, pobstringrelease, pobapimode
+syntax poutputbuffer, pobdrain, pobnotice, pobinvoke, poboutput, pobrelease, pobcall, pobwrite, pobfinish, pobcaller, pobstringrelease, pobapimode
 syntax ptickmarker, ptickentry, ptickdispatch
 syntax pintegeroperation
 syntax pintegerphase
@@ -337,7 +337,7 @@ syntax pforeachaggregate = { STATEMENT statement, SITE porigin, LINE int, AGGREG
 syntax pfibertraversal = { CAPTURE nat?, START pfiberstart, OBJECT nat, AGGREGATE nat?, ACQUIRED nat*, INPUT poperand, SITE porigin, LINE int, CURRENT poperand, SENT pnamedargs, ITEMS pentry* }
 syntax pfiberfinish = { OBJECT nat, PENDING nat?, SEQUENCE nat, PROTECTED (nat, nat)? }
 syntax ptask = ENUM_CASE_INIT porigin | ENUM_CONST_FETCH porigin ptbytes ptbytes int | ENUM_CASES pconfigcall porigin* pvalue* | ENUM_CASES_VALUE pconfigcall porigin* pvalue* | ENUM_QUERY_RESULT pconfigcall porigin | ENUM_FROM_CONVERT pconfigcall pvalue | ENUM_FROM_FETCH pconfigcall pvalue | ENUM_FROM_LOSSY pconfigcall pvalue int | ENUM_FROM_NULL pconfigcall | ENUM_FROM_STRING_RESULT pconfigcall nat porigin int int | TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND ptickdispatch nat | TICK_REFERENCE ptickdispatch nat | TICK_ENTER ptickdispatch | TICK_RESULT ptickdispatch | TICK_UNREGISTER_RELEASE pshutdownentry ptickentry
-  | OUTPUT_WRITE pobwrite | OUTPUT_FINISH pobwrite
+  | OUTPUT_WRITE pobwrite | OUTPUT_FINISH pobwrite | OUTPUT_DRAIN pobdrain | OUTPUT_DRAIN_RELEASE pobdrain poutputbuffer
   | OB_USER_FAIL_ARGS pobinvoke nat | OB_USER_FAIL_DONE pobinvoke | OB_USER_FAIL_COMMIT pobinvoke nat | OUTPUT_FAIL_WRITE pobwrite nat | OUTPUT_FAIL_FINISH pobwrite nat
   | OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask* nat | OB_API_FAIL_DONE pobrelease pcallcontext? ptask*
   | OB_USER_NORMAL_RESULT pobinvoke pdestructionframe | OB_USER_NORMAL_PENDING pobinvoke pdestructionframe | OB_USER_NORMAL_COMMIT pobinvoke pdestructionframe poboutput
@@ -532,6 +532,7 @@ syntax ptask = ENUM_CASE_INIT porigin | ENUM_CONST_FETCH porigin ptbytes ptbytes
   | EVAL_COMPILE_RESUME pevalcompile | EVAL_COMPILE_END nat | EVAL_COMPILE_EXIT int | EVAL_COMPILE_FORMAT_EXIT int | EVAL_COMPILE_FATAL pevalcompilefatal | EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender
   | TRAIT_DATA_SEED pdeclnoticeitem* | TRAIT_NOTICE_REPLAY porigin nat nat | DECL_NOTICE_SEED porigin pdeclnotice* | DECL_COMPILER_SEED pldiagnostic | DECL_NOTICES pdeclnoticebatch | DECL_NOTICE_RESUME pdeclnoticebatch
   | TYPE_RETURN_THROW nat porigin int
+  | NODISCARD_RESUME pframe | NODISCARD_RECEIVE porigin | DEPRECATED_RECEIVE porigin
   | REF_STRING_FETCH prefstringcv | REF_STRING_THROW prefstringcv
   | REF_CV_STRING_FETCH prefstringcv | REF_CV_STRING_THROW prefstringcv
   | REF_CV_STRING_TEMP prefstringcv | REF_CV_STRING_COPY prefstringcv pvalue
@@ -662,7 +663,10 @@ syntax pgenrelease = { JOBS pdestructionjob*, VALUE poperand, BASE pbase, PENDIN
 syntax pgenstorage = { OBJECT nat, HANDLE nat, NEXT nat, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, USER bool }
 syntax pgeneratorborrowed = { VALUE poperand?, KEY pvalue? }
 syntax pgeneratoraccess = { TARGET pcalltarget, SITE porigin, LINE int }
-syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FIRST bool, PENDING_INIT bool, PARKED porigin?, INDEX int, VALUE pvalue?, REFCELL nat?, KEY pvalue?, BORROWED pgeneratorborrowed?, RETURN pvalue?, CLOSURE nat?, DELEGATE pgeneratorfrom?, ACCESS pgeneratoraccess? }
+;; Creation evidence borrows source/arena identities without retaining the maker.
+syntax pgenfactorycapture = { CONTEXT pmethodcapture, TARGET pcalltarget }
+syntax pgeneratorcreation = { SITE porigin, CREATOR pmethodcapture, CREATOR_TARGET pcalltarget, CALLEE pcalltarget, ANCESTORS pgenfactorycapture* }
+syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FIRST bool, PENDING_INIT bool, PARKED porigin?, INDEX int, VALUE pvalue?, REFCELL nat?, KEY pvalue?, BORROWED pgeneratorborrowed?, RETURN pvalue?, CLOSURE nat?, DELEGATE pgeneratorfrom?, ACCESS pgeneratoraccess?, CREATION pgeneratorcreation? }
 syntax pgeneratorfrom = { SITE porigin, INPUT pvalue?, POSITION nat, CURRENT poperand?, ACQUISITION pyieldfromreceipt? }
 syntax pgeneratorloop = { ITERATOR nat, STATEMENT statement }
 syntax pgeneratorop = { OBJECT nat, NAME text, SITE porigin, LINE int, LOOP pgeneratorloop?, ADVANCE bool, ARGUMENTS pvalue*, STARTPACK bool, BORROWED bool }
@@ -686,10 +690,11 @@ syntax psourcepending = { OPERAND psourceoperand, UNIT nat, HELPER psourcehelper
 
 syntax poutputhandler = { ENTRY pshutdownentry, VALUES pvalue*, ZOH pvalue, NAME preqbytes }
 syntax poutputbuffer = { ID nat, HANDLER poutputhandler?, CHUNK nat, FLAGS int, SIZE nat, BYTES preqbytes }
-syntax pobcaller = OUTPUT_API pconfigcall | OUTPUT_VM porigin ptask int
-syntax pobfinish = OUTPUT_VM_DONE | OUTPUT_DEFAULT_DONE pconfigcall poutputbuffer pvalue bool | OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput bool | OUTPUT_API_FAILED pobinvoke poutputbuffer pobapimode
+syntax pobdrain = { COMPLETION pcompletion, VALUE poperand, BASE pbase, ORIGIN porigin?, IDS nat*, SOURCE poutputhandler }
+syntax pobcaller = OUTPUT_API pconfigcall | OUTPUT_VM porigin ptask int | OUTPUT_FINAL pobdrain
+syntax pobfinish = OUTPUT_VM_DONE | OUTPUT_DEFAULT_DONE pconfigcall poutputbuffer pvalue bool | OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput bool | OUTPUT_API_FAILED pobinvoke poutputbuffer pobapimode | OUTPUT_FINAL_DONE pobdrain poutputbuffer
 syntax pobwrite = { CALLER pobcaller, CONTEXT pcallcontext?, IDS nat*, INDEX nat, BYTES preqbytes, VALUE poperand, BASE pbase, TAIL ptask*, FINISH pobfinish }
-syntax pobcall = OB_API pconfigcall | OB_WRITE pobwrite | OB_API_FAILED pconfigcall pcallcontext? ptask*
+syntax pobcall = OB_API pconfigcall | OB_WRITE pobwrite | OB_API_FAILED pconfigcall pcallcontext? ptask* | OB_FINAL pobdrain
 syntax pobapimode = OB_API_RETAIN | OB_API_RESTORE | OB_API_RELEASE
 syntax pobinvoke = { CALL pobcall, BUFFER poutputbuffer, VALUE pvalue, INPUT pvalue, PHASE int, SENT poperand* }
 syntax poboutput = { VALUE pvalue, BYTES preqbytes, PRECISION int, FAILED bool }
@@ -705,6 +710,11 @@ syntax pstate = { TICKCOUNT nat, TICKSEQ nat, TICKENTRIES ptickentry*, OUTPUTSEQ
 dec $output_write(pstate, preqbytes) : pstate
 dec $output_display(pstate, pevent*) : pstate
 dec $output_finalize(pstate) : pstate
+dec $output_drive_finalize(pstate, nat) : pstate
+dec $output_drain_ready(pstate) : bool
+dec $output_drain_begin(pstate) : pstate
+dec $output_final_destructors(pstate) : bool
+dec $output_request_destructors(pstate) : bool
 dec $output_guard(pstate) : pstate
 
 dec $parser_literal_origin(pstate, porigin?, expression) : pvalue?
@@ -1525,6 +1535,8 @@ dec $enum_class_verify(pstate, pclassdesc) : pmethodissue
 dec $enum_constant_pending(pstate, pclassdesc) : bool
 dec $enum_backing_issue(pstate, porigin) : pmethodissue
 dec $enum_generated(pstate, porigin, ptbytes) : bool
+dec $enum_autoload_capture_target(pstate, porigin, poperand, ptbytes, int) : pintrinsic?
+dec $enum_closure_valid(pstate, nat, pintrinsic) : bool
 dec $enum_implements_issue(pstate, pclassdesc, ptbytes) : ptbytes?
 ;; Optional magic-trampoline argument collection is defined after ordinary calls.
 dec $magic_unpack_arguments(pstate, porigin, phpType7*) : bool

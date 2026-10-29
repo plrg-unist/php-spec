@@ -728,7 +728,7 @@ Skipped shared or mixed-class Throwable children may retain cyclic trace
 payloads, but their canonical images and finite previous paths still authenticate.
 Equal chains resume array tails; nonzero or Unsupported children stop the scan.
 Actually reached callbacks and object/scalar pairs, materialized/freeing
-Throwable nodes, longer/cyclic previous paths, generated-only `FiberError`, user
+Throwable nodes, cyclic previous paths, generated-only `FiberError`, user
 subclasses and pending states remain partial. Existing `Exception`/`Error`
 root-chain bounds below retain their separate rules.
 [Builtin previous-chain review](../../coverage/semantics/throwable-builtin-previous-comparison-review.json).
@@ -749,14 +749,45 @@ Invalid, cyclic, materialized or freeing previous nodes remain outside these
 routes; this does not add lazy previous admission or previous-cycle comparison.
 [Finite previous-path review](../../coverage/semantics/throwable-previous-finite-comparison-review.json).
 
-Warm caches and nonempty builtin traces now meet in the same physical slot
+Canonical NULL-previous roots of the twelve non-base kinds also use the stateful
+physical-slot fold when the older DIRECT predicate rejects their captured traces.
+Live ordinary objects and reference cells retain current writes and copied
+siblings; authentic captured recursion raises the ordinary Error. Prefix/cache
+decisions still precede reached payload validation, and `ErrorException` severity
+follows trace and null previous. The older DIRECT route stays disjoint; the pure
+previous-order helper still rejects non-DIRECT payloads. Base `Exception`/`Error`
+roots use the fallback below when older admissions reject. Reached method-bearing classes and the
+existing canonical layout, lifetime and pending-state restrictions remain partial.
+[Standalone trace review](../../coverage/semantics/throwable-null-trace-comparison-review.json).
+
+Canonical base `Exception`/`Error` roots now share the visited
+physical-slot fold after every older admission rejects. The fallback requires
+normal completion, no pending numeric exception and distinct objects of the same
+exact kind. Both need current live unmaterialized canonical images. Each finite
+Previous path then authenticates in order before it scans any slots, using the
+existing seen-ID validator without a numeric ceiling. Its default
+preserves the former Unsupported state/order. Warm cells and ordinary captured
+objects retain current writes, copied siblings, early count/key/class decisions
+and real recursion Error/unwind without a new depth bound. Root trace decisions
+precede Previous; nested ErrorException severity follows its Previous slot.
+Mixed child classes and shared child identity skip later captured payloads.
+Reached table effects survive normal equality into deeper links and outer tails,
+and actual Previous fields own children independently of rebinding source CVs.
+Existing DIRECT, paired graph and empty-trace chain routes keep priority. Whole
+path authentication stays eager; invalid/cyclic/materialized/freeing paths,
+reached callbacks or captured-Throwable leaves, subclasses and wider layouts
+remain partial. No Previous-cycle comparison or new walker is added.
+[Base fallback review](../../coverage/semantics/throwable-base-null-comparison-review.json).
+[Linked-base review](../../coverage/semantics/throwable-base-previous-comparison-review.json).
+
+The older fully authenticated warm route puts nonempty traces in the physical slot
 scan. Same-kind canonical `Exception`/`Error` pairs with null previous values
 admit finite `DIRECT` trace graphs containing primitive or valid string-carrier
 leaves and allocated acyclic child arrays. The string cache is compared first;
 one-sided warmth or unequal formatted text can stop there. Two different array
 arguments both format as `Array`, so equal warm caches continue through captured
 trace count, key and value order, including a source COW snapshot. This
-normal, nonpending path excludes object/reference/cyclic trace leaves and
+older normal, nonpending path excludes object/reference/cyclic trace leaves and
 wider [warm trace graphs](../../coverage/semantics/throwable-warm-trace-comparison-review.json).
 
 Cold builtin `Exception`/`Error` pairs also compare finite `previous` chains.

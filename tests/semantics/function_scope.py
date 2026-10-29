@@ -143,7 +143,7 @@ def main(catalogue=CASES, campaign="function-scope", producer=Path(__file__), pu
             (directory / 'state.json').write_text(json.dumps(result))
             actual = q.cli.observe(result['state'], row['context'])
             row['actual'] = actual
-            row['pass'] = actual['status'] in ('normal', 'php_error', 'static_rejection') and all(
+            row['pass'] = actual['status'] in ('normal', 'explicit_exit', 'php_error', 'static_rejection') and all(
                 actual[k] == row['native'][k] for k in ('stdout', 'stderr', 'exit_status'))
             (out / 'results.json').write_text(json.dumps(records, indent=2))
             print(row['id'], row['pass'], actual['status'], flush=True)

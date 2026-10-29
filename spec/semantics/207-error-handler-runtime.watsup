@@ -245,9 +245,11 @@ def $error_handler_target(S, pvalue) = (pcalltarget)
   -- if $error_handler_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
 def $error_handler_target(S, pvalue) = eps -- otherwise
 def $generator_request_render_warning_resume(ptask) = false -- otherwise
+dec $output_drain_warning_resume(ptask) : bool
 def $error_handler_file(S, perrorcall) = $call_sourcefile(S.FILES, porigin)
   -- if ~$iterator_notice_resume(perrorcall.RESUME)
   -- if ~$generator_request_render_warning_resume(perrorcall.RESUME)
+  -- if ~$output_drain_warning_resume(perrorcall.RESUME)
   -- if $class_constant_error_origin(S) = (porigin)
 def $error_handler_file(S, perrorcall) = $call_sourcefile(S.FILES, perrorcall.SITE) -- otherwise
 def $error_callback_line(S, perrorcall) = perrorcall.LINE -- otherwise
@@ -272,10 +274,13 @@ def $error_handler_operands(S, pcalltarget, pvalue :: pvalue_tail*, n, z) = (S_n
   -- if S_cell.RESULT = REFERENCE n_cell
   -- if $error_handler_operands(S_cell, pcalltarget, pvalue_tail*, $(n + 1), z) = (S_next, poperand*)
 def $error_handler_enter(S, perrorcall, pcalltarget, pfunction) = $call_arity($target_after_enter($call_enter(S_args, pfunction, poperand*, (perrorcall.SITE), $error_callback_line(S, perrorcall)), pcalltarget), pfunction, 4, (perrorcall.SITE), $error_callback_line(S, perrorcall))
+  -- if $deprecated_api_allowed(S, pfunction)
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
   -- if perrorcall_entered = perrorcall[.TARGET = (pcalltarget)]
   -- if S_pending = S[.ERRORHANDLER.CALLBACK = eps][.TODO = (ERROR_HANDLER_RESULT perrorcall_entered) :: ptask_tail*]
   -- if $error_handler_operands(S_pending, pcalltarget, $error_handler_values(S, perrorcall), 0, $error_callback_line(S, perrorcall)) = (S_args, poperand*)
+def $error_handler_enter(S, perrorcall, pcalltarget, pfunction) = S[.COMPLETION = UNSUPPORTED "Deprecated internal API timing"]
+  -- if ~$deprecated_api_allowed(S, pfunction)
 def $error_handler_invoke_known(S, perrorcall) = ($error_handler_enter(S, perrorcall, pcalltarget, pfunction))
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
   -- if perrorcall.TARGET = eps

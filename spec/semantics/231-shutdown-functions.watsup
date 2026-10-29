@@ -403,7 +403,7 @@ def $shutdown_reference_warning(S, n_index, n) = pfunction.NAME ++ $ptascii("():
   -- if pshutdownentry = S.SHUTDOWN.ENTRIES[n_index]
   -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
-rule PhpStep/shutdown-send-reference-warning: S ~> $error_dispatch(S[.ORIGIN = (pfunction.ORIGIN)], 2, ptbytes, 0, DIAGNOSTIC_INTERNAL "Warning" ptbytes 0, SHUTDOWN_REFERENCE n_index n poperand*)
+rule PhpStep/shutdown-send-reference-warning: S ~> $deprecated_api_reference(S[.ORIGIN = (pfunction.ORIGIN)], pfunction, ptbytes, 0, DIAGNOSTIC_INTERNAL "Warning" ptbytes 0, SHUTDOWN_REFERENCE n_index n poperand*)
   -- if S.TODO = (SHUTDOWN_SEND n_index n poperand*) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $call_task_valid(S, SHUTDOWN_SEND n_index n poperand*)

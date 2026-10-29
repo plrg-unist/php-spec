@@ -23,9 +23,11 @@ dec $ppsignature_diagnostic(ppstate, psdiagnostic) : ppstate
 dec $ppsignature_issue(ppstate, text, ptbytes, nat) : ppstate
 dec $ppfunction_name(ppstate, ptbytes) : ppstate
 dec $ppfunction_start(ppstate, ptbytes, pssignature) : ppstate
+dec $ppnodiscard_header(ppstate, pcpath, pssignature, text) : ppstate
 dec $ppfunction_code(ppstate) : pcode
 dec $ppclass_method_functions(pclassdesc*) : pfunction*
 dec $ppfunction_finish(ppstate, ppstate, pcpath, ptbytes, pssignature, metadata) : ppstate
+dec $ppfunction_declaration_line(ppstate, pcpath, metadata) : nat
 dec $psendline(metadata) : nat
 dec $ppfunction_early(pfunction*, ptbytes) : pfunction?
 dec $ppfunction_add(ppstate, pfunction) : ppstate
@@ -81,7 +83,7 @@ def $ppfunction_code(P) = { STRICT P.ENV.STRICT, GLOBALS $ppownglobal(P.FUNCTION
 
 def $ppfunction_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = P_body
   -- if P_body.COMPLETION =/= PPCNORMAL
-def $ppfunction_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = $ppimage_publication($ppfunction_add(P_restored, { DEFAULTS $ppfunction_defaults(P_body, pcpath, pssignature.PARAMETERS, 0), ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, SIGNATURE pssignature, CVS P_body.CVS, ENV P.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 5]), EARLY (P.EARLY = (pcpath)), LINE $psline(metadata), ENDLINE $psendline(metadata) }), PORIGIN P.FOLD.SOURCE.ID pcpath, PPFUNCTION, P.EARLY = (pcpath))
+def $ppfunction_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = $ppimage_publication($ppfunction_add(P_restored, { DEFAULTS $ppfunction_defaults(P_body, pcpath, pssignature.PARAMETERS, 0), ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, SIGNATURE pssignature, CVS P_body.CVS, ENV P.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 5]), EARLY (P.EARLY = (pcpath)), LINE $ppfunction_declaration_line(P, pcpath, metadata), ENDLINE $psendline(metadata) }), PORIGIN P.FOLD.SOURCE.ID pcpath, PPFUNCTION, P.EARLY = (pcpath))
   -- if P_body.COMPLETION = PPCNORMAL
   -- if P_restored = P_body[.CLOSURE = P.CLOSURE][.CLASSCONTEXT = P.CLASSCONTEXT][.EVALCLASS = P.EVALCLASS][.RETURNREF = P.RETURNREF][.RETURNS = P.RETURNS][.CVS = P.CVS][.HEADERASSIGNED = P.HEADERASSIGNED][.LOOPS = P.LOOPS][.SWITCHES = P.SWITCHES][.GOTOROOT = P.GOTOROOT][.LABELS = P.LABELS][.GOTOS = P.GOTOS][.EARLY = P.EARLY][.ENV = P_body.ENV][.FOLD = P_body.FOLD[.FUNCTION = P.FOLD.FUNCTION][.CLASSCONTEXT = P.FOLD.CLASSCONTEXT][.CLOSURE = P.FOLD.CLOSURE][.VALUE = eps]][.LOCATION = P.LOCATION[.LINE = $psendline(metadata)]][.EXPRESSIONS = P.EXPRESSIONS ++ P_body.EXPRESSIONS][.ACCESS = P.ACCESS ++ P_body.ACCESS][.NAMES = P.NAMES ++ P_body.NAMES][.REDIRECTS = P.REDIRECTS ++ P_body.REDIRECTS][.WRITES = P.WRITES ++ P_body.WRITES][.GLOBALS = P.GLOBALS ++ P_body.GLOBALS]
 

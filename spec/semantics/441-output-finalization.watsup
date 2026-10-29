@@ -1,0 +1,241 @@
+;; Request shutdown runs registered functions and object destructors before
+;; php_output_end_all. Forced pops keep the handler visible during FINAL, route
+;; into the lower live stack, then release zoh. Only OUTPUT_DRAIN owns the saved
+;; terminal operands; call/write descriptors carry documentary copies.
+dec $output_drain_completion(pcompletion) : bool
+dec $output_drain_handler(poutputbuffer*) : poutputhandler?
+dec $output_drain_next(pobdrain, poutputbuffer*) : pobdrain
+dec $output_drain_ids(nat*, nat) : bool
+dec $output_drain_valid(pstate, pobdrain) : bool
+dec $output_drain_tasks(pstate, ptask*) : bool
+dec $output_drain_frames(pstate, pframe*) : bool
+dec $output_drain_operations(pstate, pdestructionoperation*) : bool
+dec $output_drain_task(pstate, ptask) : bool
+dec $output_drain_phase(int) : int
+dec $output_drain_user(pstate, pobdrain, poutputbuffer) : pstate
+dec $output_drain_route(pstate, pobdrain, poutputbuffer, preqbytes, pobfinish) : pstate
+dec $output_drain_release_valid(pstate, pobdrain, poutputbuffer) : bool
+dec $output_drain_final_call(pobcall) : bool
+dec $output_drain_owned_tasks(ptask*, pobdrain) : bool
+dec $output_drain_owned_frames(pframe*, pobdrain) : bool
+dec $output_drain_owned(pstate, pobdrain) : bool
+dec $output_drain_route_witness(pstate, pobdrain, pobwrite) : bool
+dec $output_drain_route_task(pstate, pobdrain, ptask) : bool
+dec $output_drain_route_tasks(pstate, pobdrain, ptask*) : bool
+dec $output_drain_route_frames(pstate, pobdrain, pframe*) : bool
+dec $output_drain_route_operations(pstate, pobdrain, pdestructionoperation*) : bool
+dec $output_drain_active(pstate, pobdrain) : bool
+
+def $output_drain_completion(NORMAL) = true
+def $output_drain_completion(EXITED z) = true
+def $output_drain_completion(pcompletion) = false -- otherwise
+def $output_drain_handler(eps) = eps
+def $output_drain_handler(poutputbuffer :: poutputbuffer_tail*) = poutputbuffer.HANDLER -- if poutputbuffer.HANDLER =/= eps
+def $output_drain_handler(poutputbuffer :: poutputbuffer_tail*) = $output_drain_handler(poutputbuffer_tail*) -- if poutputbuffer.HANDLER = eps
+
+def $output_drain_ready(S) = (~S.OUTPUTBLOCKED /\ ~S.COMPILESTOP /\ S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.SOURCEPENDING = eps /\ S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE /\ $output_drain_completion(S.COMPLETION) /\ $output_has_user(S.OUTPUTBUFFERS) /\ ~$shutdown_ready(S) /\ ~$destructor_ready(S) /\ ($display_state_mode(S) =/= 1 \/ ~$output_deferred_stdout(S)))
+def $output_drive_finalize(S, n) = $drive_steps($output_finalize(S), n) -- if $output_drain_ready(S)
+def $output_drive_finalize(S, n) = $output_finalize(S) -- if ~$output_drain_ready(S)
+
+def $output_request_destructors(S) = (S.DESTRUCTION.PHASE =/= DESTRUCTION_DONE /\ ($destructor_active(S) \/ $output_has_user(S.OUTPUTBUFFERS) /\ S.DESTRUCTION.PHASE = DESTRUCTION_PENDING /\ ~S.COMPILESTOP /\ S.SOURCEPENDING = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ $output_drain_completion(S.COMPLETION) /\ (S.COMPLETION =/= NORMAL \/ S.TODO = eps)))
+;; Even without a user destructor, Zend retires sole global objects before
+;; FINAL. Reuse the request pass; the drain never fabricates its DONE phase.
+def $output_drain_begin(S) = S[.TODO = [OUTPUT_DRAIN pobdrain]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE
+  -- if $output_drain_handler(S.OUTPUTBUFFERS) = (poutputhandler)
+  -- if pobdrain = {COMPLETION S.COMPLETION, VALUE S.RESULT, BASE S.BASE, ORIGIN S.ORIGIN, IDS $output_ids(S.OUTPUTBUFFERS), SOURCE poutputhandler}
+
+def $output_drain_ids(eps, n) = true
+def $output_drain_ids(n_id :: n_tail*, n) = ($(n_id < n) /\ ~(n_id <- n_tail*) /\ $output_drain_ids(n_tail*, n))
+def $output_drain_valid(S, pobdrain) = ($output_drain_completion(pobdrain.COMPLETION) /\ S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE /\ $output_drain_ids(pobdrain.IDS, S.OUTPUTSEQ) /\ $ob_user_handler_valid(S, pobdrain.SOURCE) /\ $config_slots_valid(S, [NAMED_SENT pobdrain.VALUE]) /\ $heap_subset($base_nodes(pobdrain.BASE), S.ALLOCATIONS))
+def $output_drain_next(pobdrain, poutputbuffer*) = pobdrain[.IDS = $output_ids(poutputbuffer*)][.SOURCE = poutputhandler]
+  -- if $output_drain_handler(poutputbuffer*) = (poutputhandler)
+def $output_drain_next(pobdrain, poutputbuffer*) = pobdrain[.IDS = $output_ids(poutputbuffer*)]
+  -- if $output_drain_handler(poutputbuffer*) = eps
+
+;; A FINAL call must occur under its actual owning drain or the lower route
+;; that replaced exactly one stack entry. Descriptor copies alone grant no scope.
+def $output_drain_owned_tasks(eps, pobdrain) = false
+def $output_drain_owned_tasks((OUTPUT_DRAIN pobdrain) :: eps, pobdrain) = true
+def $output_drain_owned_tasks(ptask :: ptask_tail*, pobdrain) = $output_drain_owned_tasks(ptask_tail*, pobdrain)
+  -- if ptask =/= OUTPUT_DRAIN pobdrain \/ ptask_tail* =/= eps
+def $output_drain_owned_frames(eps, pobdrain) = false
+def $output_drain_owned_frames(pframe :: pframe_tail*, pobdrain) = ((pframe.CONTEXT = eps /\ $output_drain_owned_tasks(pframe.TODO, pobdrain)) \/ $output_drain_owned_frames(pframe_tail*, pobdrain))
+def $output_drain_owned(S, pobdrain) = ((S.CURRENT = eps /\ $output_drain_owned_tasks(S.TODO, pobdrain)) \/ $output_drain_owned_frames(S.FRAMES, pobdrain))
+def $output_drain_route_witness(S, pobdrain, pobwrite) = true
+  -- if pobwrite.CALLER = OUTPUT_FINAL pobdrain
+  -- if pobwrite.CONTEXT = eps /\ pobwrite.IDS = $output_ids(S.OUTPUTBUFFERS)
+  -- if pobdrain.IDS = n_top :: pobwrite.IDS
+  -- if pobdrain_next = $output_drain_next(pobdrain, S.OUTPUTBUFFERS)
+  -- if pobwrite.TAIL = [OUTPUT_DRAIN pobdrain_next]
+  -- if $output_drain_owned(S, pobdrain_next)
+def $output_drain_route_witness(S, pobdrain, pobwrite) = false -- otherwise
+def $output_drain_route_task(S, pobdrain, ptask) = $output_drain_route_witness(S, pobdrain, pobwrite)
+  -- if $output_task_write(ptask) = (pobwrite)
+def $output_drain_route_task(S, pobdrain, ptask) = false -- if $output_task_write(ptask) = eps
+def $output_drain_route_tasks(S, pobdrain, eps) = false
+def $output_drain_route_tasks(S, pobdrain, ptask :: ptask_tail*) = ($output_drain_route_task(S, pobdrain, ptask) \/ $output_drain_route_tasks(S, pobdrain, ptask_tail*))
+def $output_drain_route_frames(S, pobdrain, eps) = false
+def $output_drain_route_frames(S, pobdrain, pframe :: pframe_tail*) = ((pframe.CONTEXT = eps /\ $output_drain_route_tasks(S, pobdrain, pframe.TODO)) \/ $output_drain_route_frames(S, pobdrain, pframe_tail*))
+def $output_drain_route_operations(S, pobdrain, eps) = false
+def $output_drain_route_operations(S, pobdrain, pdestructionoperation :: pdestructionoperation_tail*) = ($output_drain_route_task(S, pobdrain, pdestructionoperation.SOURCE) \/ $output_drain_route_operations(S, pobdrain, pdestructionoperation_tail*))
+def $output_drain_active(S, pobdrain) = ($output_drain_valid(S, pobdrain) /\ ($output_drain_owned(S, pobdrain) \/ S.CURRENT = eps /\ $output_drain_route_tasks(S, pobdrain, S.TODO) \/ $output_drain_route_frames(S, pobdrain, S.FRAMES) \/ $output_drain_route_operations(S, pobdrain, S.DESTRUCTION.OPERATIONS)))
+
+;; The witness survives nested calls and local eager destructor work. This does
+;; not restart request destruction: CALLED retains all preexisting objects.
+def $output_drain_task(S, OUTPUT_DRAIN pobdrain) = $output_drain_active(S, pobdrain)
+def $output_drain_task(S, OUTPUT_DRAIN_RELEASE pobdrain poutputbuffer) = $output_drain_active(S, pobdrain)
+def $output_drain_task(S, OB_USER_RESULT pobinvoke) = $output_drain_active(S, pobdrain) -- if pobinvoke.CALL = OB_FINAL pobdrain
+def $output_drain_task(S, OUTPUT_WRITE pobwrite) = $output_drain_active(S, pobdrain) -- if pobwrite.CALLER = OUTPUT_FINAL pobdrain
+def $output_drain_task(S, OUTPUT_FINISH pobwrite) = $output_drain_active(S, pobdrain) -- if pobwrite.CALLER = OUTPUT_FINAL pobdrain
+def $output_drain_task(S, ptask) = false -- otherwise
+def $output_drain_tasks(S, eps) = false
+def $output_drain_tasks(S, ptask :: ptask_tail*) = ($output_drain_task(S, ptask) \/ $output_drain_tasks(S, ptask_tail*))
+def $output_drain_frames(S, eps) = false
+def $output_drain_frames(S, pframe :: pframe_tail*) = ($output_drain_tasks(S, pframe.TODO) \/ $output_drain_frames(S, pframe_tail*))
+def $output_drain_operations(S, eps) = false
+def $output_drain_operations(S, pdestructionoperation :: pdestructionoperation_tail*) = ($output_drain_task(S, pdestructionoperation.SOURCE) \/ $output_drain_operations(S, pdestructionoperation_tail*))
+def $output_final_destructors(S) = (S.DESTRUCTION.PHASE = DESTRUCTION_DONE /\ ($output_drain_tasks(S, S.TODO) \/ $output_drain_frames(S, S.FRAMES) \/ $output_drain_operations(S, S.DESTRUCTION.OPERATIONS)))
+
+def $task_nodes(OUTPUT_DRAIN pobdrain) = $operand_nodes(pobdrain.VALUE) ++ $base_nodes(pobdrain.BASE)
+def $task_nodes(OUTPUT_DRAIN_RELEASE pobdrain poutputbuffer) = $output_buffer_nodes(poutputbuffer)
+def $call_task_valid(S, OUTPUT_DRAIN pobdrain) = ($output_drain_valid(S, pobdrain) /\ S.CURRENT = eps /\ pobdrain.IDS = $output_ids(S.OUTPUTBUFFERS) /\ ($output_drain_handler(S.OUTPUTBUFFERS) = eps \/ $output_drain_handler(S.OUTPUTBUFFERS) = (pobdrain.SOURCE)) /\ $source_operand_suffix(S.TODO, OUTPUT_DRAIN pobdrain, eps))
+rule PhpStep/output-drain-done: S ~> S[.TODO = eps][.COMPLETION = pobdrain.COMPLETION][.RESULT = pobdrain.VALUE][.BASE = pobdrain.BASE][.ORIGIN = pobdrain.ORIGIN]
+  -- if S.TODO = (OUTPUT_DRAIN pobdrain) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, OUTPUT_DRAIN pobdrain)
+  -- if S.OUTPUTBUFFERS = eps
+  -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
+rule PhpStep/output-drain-user: S ~> $output_drain_user(S, pobdrain, poutputbuffer)
+  -- if S.TODO = (OUTPUT_DRAIN pobdrain) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, OUTPUT_DRAIN pobdrain)
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if poutputbuffer.HANDLER = (pobdrain.SOURCE) /\ ~$ob_user_disabled(poutputbuffer)
+rule PhpStep/output-drain-default: S ~> $output_drain_route(S[.OUTPUTBUFFERS = poutputbuffer_tail*], pobdrain, poutputbuffer, poutputbuffer.BYTES, OUTPUT_FINAL_DONE pobdrain poutputbuffer)
+  -- if S.TODO = (OUTPUT_DRAIN pobdrain) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, OUTPUT_DRAIN pobdrain)
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if poutputbuffer.HANDLER = eps \/ $ob_user_disabled(poutputbuffer)
+
+def $output_drain_phase(i_flags) = 9 -- if $long_and(i_flags, 4096) = 0
+def $output_drain_phase(i_flags) = 8 -- if $long_and(i_flags, 4096) =/= 0
+def $output_drain_user(S, pobdrain, poutputbuffer) = S_input[.TODO = [OB_USER_SEND pobinvoke 0, OUTPUT_DRAIN pobdrain]][.ORIGIN = (pobdrain.SOURCE.ENTRY.CALL.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_input = $string_request(S, poutputbuffer.BYTES)
+  -- if S_input.RESULT = KNOWN pvalue_input
+  -- if pobinvoke = {CALL (OB_FINAL pobdrain), BUFFER poutputbuffer, VALUE (PBOOL true), INPUT pvalue_input, PHASE $output_drain_phase(poutputbuffer.FLAGS), SENT eps}
+def $output_drain_route(S, pobdrain, poutputbuffer, n*, pobfinish) = S[.TODO = [OUTPUT_WRITE pobwrite, OUTPUT_DRAIN pobdrain_next]][.ORIGIN = (pobdrain.SOURCE.ENTRY.CALL.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pobdrain_next = $output_drain_next(pobdrain, S.OUTPUTBUFFERS)
+  -- if pobwrite = {CALLER (OUTPUT_FINAL pobdrain), CONTEXT eps, IDS $output_ids(S.OUTPUTBUFFERS), INDEX 0, BYTES n*, VALUE (KNOWN PNULL), BASE (BASE_VALUE (KNOWN PNULL)), TAIL ([OUTPUT_DRAIN pobdrain_next]), FINISH pobfinish}
+
+def $ob_call_api(OB_FINAL pobdrain) = eps
+def $ob_call_site(OB_FINAL pobdrain) = pobdrain.SOURCE.ENTRY.CALL.SITE
+def $ob_call_line(OB_FINAL pobdrain) = 0
+def $ob_call_entry_site(OB_FINAL pobdrain) = eps
+def $ob_call_entry_line(OB_FINAL pobdrain) = $(-1)
+def $ob_call_docref(OB_FINAL pobdrain) = $ptascii("PHP Request Shutdown")
+def $ob_call_nodes(OB_FINAL pobdrain) = eps
+def $output_call_write(OB_FINAL pobdrain) = eps
+def $output_caller_api(OUTPUT_FINAL pobdrain) = eps
+def $output_caller_site(OUTPUT_FINAL pobdrain) = pobdrain.SOURCE.ENTRY.CALL.SITE
+def $output_caller_line(OUTPUT_FINAL pobdrain) = 0
+def $output_vm_source(OUTPUT_FINAL pobdrain) = false
+def $ob_call_entry_site(OB_WRITE pobwrite) = eps -- if pobwrite.CALLER = OUTPUT_FINAL pobdrain
+def $ob_call_entry_line(OB_WRITE pobwrite) = $(-1) -- if pobwrite.CALLER = OUTPUT_FINAL pobdrain
+def $ob_call_docref(OB_WRITE pobwrite) = $ptascii("PHP Request Shutdown") -- if pobwrite.CALLER = OUTPUT_FINAL pobdrain
+def $output_write_nodes(pobwrite) = $operand_nodes(pobwrite.VALUE) ++ $base_nodes(pobwrite.BASE) ++ $output_finish_nodes(pobwrite.FINISH) -- if pobwrite.CALLER = OUTPUT_FINAL pobdrain
+def $output_finish_nodes(OUTPUT_FINAL_DONE pobdrain poutputbuffer) = $output_buffer_nodes(poutputbuffer)
+def $output_drain_final_call(OB_FINAL pobdrain) = true
+def $output_drain_final_call(OB_WRITE pobwrite) = true -- if pobwrite.CALLER = OUTPUT_FINAL pobdrain
+def $output_drain_final_call(pobcall) = false -- otherwise
+def $ob_call_diagnostic_prefix(pobcall) = $ob_call_docref(pobcall) ++ $ptascii(": ") -- if $output_drain_final_call(pobcall)
+def $ob_call_diagnostic_prefix(pobcall) = $ob_call_docref(pobcall) ++ $ptascii("(): ") -- if ~$output_drain_final_call(pobcall)
+
+def $output_selected(S, pobinvoke) = (poutputbuffer)
+  -- if pobinvoke.CALL = OB_FINAL pobdrain
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if poutputbuffer.ID = pobinvoke.BUFFER.ID
+def $output_source_valid(S, OUTPUT_FINAL pobdrain) = $output_drain_active(S, pobdrain)
+def $ob_user_invoke_valid(S, pobinvoke) = true
+  -- if pobinvoke.CALL = OB_FINAL pobdrain
+  -- if $output_drain_active(S, pobdrain)
+  -- if pobinvoke.BUFFER.HANDLER = (pobdrain.SOURCE)
+  -- if $output_buffer_valid(pobinvoke.BUFFER)
+  -- if pobdrain.IDS = pobinvoke.BUFFER.ID :: n_tail*
+  -- if ~$ob_user_disabled(pobinvoke.BUFFER)
+  -- if pobinvoke.PHASE = $output_drain_phase(pobinvoke.BUFFER.FLAGS)
+  -- if pobinvoke.VALUE = PBOOL true
+  -- if pobinvoke.INPUT = PSTRING_CARRIER (REQUEST_STRING n_input) pobinvoke.BUFFER.BYTES
+  -- if $string_carrier_valid(S, pobinvoke.INPUT)
+def $ob_user_commit(S, pobinvoke, poboutput) = $output_drain_route(S[.OUTPUTBUFFERS = poutputbuffer_tail*], pobdrain, poutputbuffer, $ob_user_routed_bytes(poutputbuffer, poboutput), OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput false)
+  -- if pobinvoke.CALL = OB_FINAL pobdrain
+  -- if S.OUTPUTBUFFERS = poutputbuffer :: poutputbuffer_tail*
+
+def $output_origin_bytes(pobwrite) = (poutputbuffer.BYTES)
+  -- if pobwrite.CALLER = OUTPUT_FINAL pobdrain
+  -- if pobwrite.FINISH = OUTPUT_FINAL_DONE pobdrain poutputbuffer
+def $output_origin_bytes(pobwrite) = ($ob_user_routed_bytes(poutputbuffer, poboutput))
+  -- if pobwrite.CALLER = OUTPUT_FINAL pobdrain
+  -- if pobwrite.FINISH = OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput false
+  -- if pobinvoke.CALL = OB_FINAL pobdrain
+def $output_finish_valid(S, pobwrite) = true
+  -- if pobwrite.CALLER = OUTPUT_FINAL pobdrain
+  -- if pobwrite.FINISH = OUTPUT_FINAL_DONE pobdrain poutputbuffer
+  -- if $output_drain_valid(S, pobdrain) /\ $output_buffer_valid(poutputbuffer)
+  -- if poutputbuffer.HANDLER = eps \/ $ob_user_disabled(poutputbuffer)
+  -- if pobdrain.IDS = poutputbuffer.ID :: pobwrite.IDS
+  -- if pobwrite.CONTEXT = eps /\ pobwrite.VALUE = KNOWN PNULL /\ pobwrite.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if pobwrite.TAIL = [OUTPUT_DRAIN $output_drain_next(pobdrain, S.OUTPUTBUFFERS)]
+def $output_finish_valid(S, pobwrite) = true
+  -- if pobwrite.CALLER = OUTPUT_FINAL pobdrain
+  -- if pobwrite.FINISH = OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput false
+  -- if pobinvoke.CALL = OB_FINAL pobdrain
+  -- if $ob_user_invoke_valid(S, pobinvoke) /\ pobinvoke.SENT = eps /\ $ob_user_output_valid(S, poboutput)
+  -- if $ob_user_buffer_live(pobinvoke, poutputbuffer)
+  -- if $output_buffer_valid(poutputbuffer)
+  -- if pobdrain.IDS = poutputbuffer.ID :: pobwrite.IDS
+  -- if pobwrite.CONTEXT = eps /\ pobwrite.VALUE = KNOWN PNULL /\ pobwrite.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if pobwrite.TAIL = [OUTPUT_DRAIN $output_drain_next(pobdrain, S.OUTPUTBUFFERS)]
+def $output_finish(S, pobwrite) = S[.TODO = (OUTPUT_DRAIN_RELEASE pobdrain_next poutputbuffer) :: pobwrite.TAIL]
+  -- if pobwrite.CALLER = OUTPUT_FINAL pobdrain
+  -- if pobwrite.FINISH = OUTPUT_FINAL_DONE pobdrain poutputbuffer
+  -- if pobdrain_next = $output_drain_next(pobdrain, S.OUTPUTBUFFERS)
+def $output_finish(S, pobwrite) = S[.TODO = (OUTPUT_DRAIN_RELEASE pobdrain_next poutputbuffer) :: pobwrite.TAIL]
+  -- if pobwrite.CALLER = OUTPUT_FINAL pobdrain
+  -- if pobwrite.FINISH = OUTPUT_USER_DONE pobinvoke poutputbuffer poboutput false
+  -- if pobinvoke.CALL = OB_FINAL pobdrain
+  -- if pobdrain_next = $output_drain_next(pobdrain, S.OUTPUTBUFFERS)
+
+def $output_drain_release_valid(S, pobdrain, poutputbuffer) = ($output_drain_valid(S, pobdrain) /\ $output_buffer_valid(poutputbuffer) /\ pobdrain.IDS = $output_ids(S.OUTPUTBUFFERS) /\ ~$ob_user_present(S.OUTPUTBUFFERS, poutputbuffer.ID) /\ $output_buffer_ids(poutputbuffer :: S.OUTPUTBUFFERS, S.OUTPUTSEQ) /\ (poutputbuffer.HANDLER = eps \/ $ob_user_handler_valid(S, poutputhandler)))
+  -- if poutputbuffer.HANDLER = (poutputhandler)
+def $output_drain_release_valid(S, pobdrain, poutputbuffer) = ($output_drain_valid(S, pobdrain) /\ $output_buffer_valid(poutputbuffer) /\ pobdrain.IDS = $output_ids(S.OUTPUTBUFFERS) /\ $output_buffer_ids(poutputbuffer :: S.OUTPUTBUFFERS, S.OUTPUTSEQ))
+  -- if poutputbuffer.HANDLER = eps
+def $call_task_valid(S, OUTPUT_DRAIN_RELEASE pobdrain poutputbuffer) = ($output_drain_release_valid(S, pobdrain, poutputbuffer) /\ S.CURRENT = eps /\ $heap_subset($output_buffer_nodes(poutputbuffer), S.ALLOCATIONS) /\ $source_operand_suffix(S.TODO, OUTPUT_DRAIN_RELEASE pobdrain poutputbuffer, [OUTPUT_DRAIN pobdrain]))
+rule PhpStep/output-drain-release: S ~> S[.TODO = [OUTPUT_DRAIN pobdrain]]
+  -- if S.TODO = (OUTPUT_DRAIN_RELEASE pobdrain poutputbuffer) :: ptask_tail*
+  -- if $call_task_valid(S, OUTPUT_DRAIN_RELEASE pobdrain poutputbuffer)
+def $eager_operation_source_guard(S, pdestructionoperation) = ($output_drain_release_valid(S, pobdrain, poutputbuffer) /\ pdestructionoperation.CALLER = eps /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
+  -- if pdestructionoperation.SOURCE = OUTPUT_DRAIN_RELEASE pobdrain poutputbuffer
+
+;; Native final diagnostics use Unknown:0 while the dispatch descriptor keeps
+;; a real documentary SITE for the existing error-handler continuation.
+def $ob_call_event(pobcall, text, n_message*, z) = DIAGNOSTIC_INTERNAL text n_message* 0 -- if $output_drain_final_call(pobcall)
+def $ob_call_event(pobcall, text, n_message*, z) = DIAGNOSTIC text n_message* z -- if ~$output_drain_final_call(pobcall)
+def $output_drain_warning_resume(OB_USER_REFERENCE pobinvoke n) = $output_drain_final_call(pobinvoke.CALL)
+def $output_drain_warning_resume(OB_USER_DEPRECATED pobinvoke pvalue) = $output_drain_final_call(pobinvoke.CALL)
+def $output_drain_warning_resume(ptask) = false -- otherwise
+def $error_handler_file(S, perrorcall) = $ptascii("Unknown") -- if $output_drain_warning_resume(perrorcall.RESUME)
+
+;; Internal FINAL dispatch has no source callsite or builtin API frame. Reuse
+;; the internal weak-receive hook while nested ordinary calls keep their caller.
+def $error_context_direct_trigger(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $ob_user_context(pcallcontext, S.CURRENT, S.FRAMES) = (pobinvoke)
+  -- if $ob_user_context_valid(S, pcallcontext)
+  -- if $output_drain_final_call(pobinvoke.CALL)
+def $error_context_direct_trigger(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if $output_drain_warning_resume(perrorcall.RESUME)
+  -- if $error_context_valid(S, pcallcontext)

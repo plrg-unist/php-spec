@@ -67,6 +67,9 @@ test-semantics: build
 	python3 tests/semantics/output_reference_warning_review_sources.py
 	python3 tests/semantics/output_reference_warning_state.py --select live-prefix
 	python3 tests/semantics/output_reference_warning_state.py --select retired-prefix
+	python3 tests/semantics/output_request_end_sources.py
+	python3 tests/semantics/output_final_protocol.py
+	python3 tests/semantics/output_final_review_protocol.py
 	python3 tests/semantics/request_provider.py
 	python3 tests/semantics/evidence.py
 	python3 tests/semantics/source_occurrences.py
@@ -150,6 +153,11 @@ test-semantics: build
 		python3 tests/semantics/config_iterator_reference_current_sources.py --case config-reference-current-typed-cell-boundary --output "$$out/promoted-source" && \
 		python3 tests/semantics/config_iterator_typed_current_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
 		python3 tests/semantics/config_iterator_typed_current_state_review.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a68-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_iterator_scalar_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_iterator_scalar_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/config_iterator_scalar_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_iterator_scalar_state_review.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
 	python3 tests/semantics/globals_compiler.py
@@ -604,6 +612,12 @@ test-semantics: build
 	python3 tests/semantics/generator_fiber_static_transfer_state.py
 	python3 tests/semantics/generator_fiber_fresh_advance_sources.py
 	python3 tests/semantics/generator_fiber_fresh_advance_state.py
+	python3 tests/semantics/generator_keyword_creation_sources.py
+	python3 tests/semantics/generator_keyword_creation_state.py
+	python3 tests/semantics/generator_keyword_chain_sources.py
+	python3 tests/semantics/generator_keyword_chain_state.py
+	python3 tests/semantics/generator_keyword_receiver_sources.py
+	python3 tests/semantics/generator_keyword_receiver_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -1015,6 +1029,10 @@ test-semantics: build
 	python3 tests/semantics/constructor_promotion_override_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/parameter_override_cases.json
 	python3 tests/semantics/parameter_override_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/nodiscard_sources.py
+	python3 tests/semantics/nodiscard_protocol.py
+	python3 tests/semantics/deprecated_sources.py
+	python3 tests/semantics/deprecated_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/sensitive_parameter_cases.json
 	python3 tests/semantics/sensitive_parameter_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/constructor_sensitive_promotion_cases.json

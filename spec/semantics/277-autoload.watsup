@@ -783,6 +783,7 @@ rule PhpStep/autoload-scoped-selected-loaded: S ~> $scoped_select(S[.TODO = ptas
   -- if S.TODO = (AUTO_SCOPED_SELECTED porigin poperand_class ptbytes_method z) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $autoload_scoped_selected_site(S, porigin, poperand_class, ptbytes_method, z)
+  -- if $enum_autoload_capture_target(S, porigin, poperand_class, ptbytes_method, z) = eps
   -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
   -- if poperand_class = KNOWN (PSTRING ptbytes_class)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_class))) =/= eps
@@ -860,7 +861,7 @@ rule PhpStep/autoload-next-value: S ~> S[.TODO = (AUTO_ENTER pautoloadcall[.INDE
   -- if S.AUTOLOAD.ENTRIES[n] = (pautoloadentry)
   -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
   -- if ~$call_parameter_reference(S, pcalltarget, 0)
-rule PhpStep/autoload-next-reference-warning: S ~> $error_dispatch(S, 2, ptbytes, $autoload_reference_line(pautoloadcall), $autoload_reference_event(pautoloadcall, ptbytes), AUTO_REFERENCE pautoloadcall[.INDEX = n][.BIRTH = S.AUTOLOAD.BIRTHS[n]] pautoloadentry)
+rule PhpStep/autoload-next-reference-warning: S ~> $deprecated_api_reference(S, pfunction, ptbytes, $autoload_reference_line(pautoloadcall), $autoload_reference_event(pautoloadcall, ptbytes), AUTO_REFERENCE pautoloadcall[.INDEX = n][.BIRTH = S.AUTOLOAD.BIRTHS[n]] pautoloadentry)
   -- if S.TODO = (AUTO_NEXT pautoloadcall) :: ptask_tail*
   -- if pautoloadcall.BIRTH = eps
   -- if $autoload_call_valid(S, pautoloadcall)
@@ -868,6 +869,7 @@ rule PhpStep/autoload-next-reference-warning: S ~> $error_dispatch(S, 2, ptbytes
   -- if S.AUTOLOAD.ENTRIES[n] = (pautoloadentry)
   -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
   -- if $call_parameter_reference(S, pcalltarget, 0)
+  -- if $target_function(S, pcalltarget) = (pfunction)
   -- if ptbytes = $autoload_reference_message(S, pautoloadentry)
 rule PhpStep/autoload-reference-return: S ~> S_cell[.TODO = (AUTO_ENTER pautoloadcall pautoloadentry S_cell.RESULT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (AUTO_REFERENCE pautoloadcall pautoloadentry) :: ptask_tail*

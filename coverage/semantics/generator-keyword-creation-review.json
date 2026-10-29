@@ -1,0 +1,55 @@
+{
+  "milestone": "I75 keyword-forwarded static Generator creation",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "parent": "e14f97901",
+  "implementation": ["4eaae56ce", "f49f1e4f4"],
+  "fixtures": ["088b7c7f3", "1dae72d08"],
+  "scope": "Receiver-free static Generator bodies called through self/parent/static from real ordinary method, static-method and nonkeyword scoped factories retain creator callsite, lexical/called class and selected callee after factory return. A keyword Generator requires that borrowed certificate; actual resume/close markers select a live Generator owner before checking its certificate, so a valid fresh sibling cannot mask a corrupt current owner. The certificate adds no receiver or parameter heap root.",
+  "engine_paths": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_static_call, zend_compile_method_call, zend_compile_class_ref",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_GENERATOR_CREATE, SEND_*, INIT_STATIC_METHOD_CALL",
+    "vendor/php-src/Zend/zend_generators.c: zend_generator_resume, zend_generator_close",
+    "vendor/php-src/Zend/zend_fibers.c: zend_fiber_resume_internal"
+  ],
+  "changed_modules": ["spec/semantics/30-storage.watsup", "spec/semantics/142-method-runtime.watsup", "spec/semantics/280-generators.watsup", "spec/semantics/303-generator-force-close.watsup"],
+  "validation": {
+    "strict_private": {"revision": "f49f1e4f4", "modules": 426, "passed": true, "report": "../php-spec-evidence-archive/generator-keyword-creation-75/strict-private/report.json", "sha256": "48c05e3ee613ec32fb0176dc007140616acbfca06558d62b23e27d3f501760dd"},
+    "strict_joined": {"revision": "45396a01d", "parent": "872e86be2", "modules": 428, "passed": true, "report": "../php-spec-evidence-archive/generator-keyword-creation-75/strict-joined/report.json", "sha256": "114ff8596a690382f5fd6bb6749b7e8c23fe706f92ebe0961a4b0458606b034e"},
+    "native_first": [
+      {"selection": "original authored eight", "report": "../php-spec-evidence-archive/generator-keyword-creation-75/source-packet/native-first/report.json", "sha256": "7119ff83236a62e9736b9f2f54bf0681f9541d061d53001c9ac81e2c27fd9f65"},
+      {"selection": "real close dependency", "report": "../php-spec-evidence-archive/generator-keyword-creation-75/dependencies/native-first/report.json", "sha256": "261a8eae0995c420db6fb825f9fa2371112d01c46859a7748e9b5cd547d07f68"},
+      {"selection": "independent peer", "report": "../php-spec-evidence-archive/generator-keyword-creation-75-review/independent/native-first-report.json", "sha256": "f1703b203d620898baff196e0056da80df49fa993c2b8a4f507f2cfe07e4880b"}
+    ],
+    "author_sources": [
+      {"selection": "one first keyword normal", "report": "../php-spec-evidence-archive/generator-keyword-creation-75/validated/generator-keyword-creation-source-yn6o28am/report.json", "sha256": "115c4079ef99f32fea7e97b0fef2da58876cd9829bf07511de7de3869a97fed2"},
+      {"selection": "four remaining keyword normals", "report": "../php-spec-evidence-archive/generator-keyword-creation-75/validated/generator-keyword-creation-source-6iwz_ena/report.json", "sha256": "a78faabadda5e6972b226fa22c0ab1a223ec0f470b04d9c6a4dd2bf1c4a36c35"},
+      {"selection": "close normal and chained-factory Unsupported", "report": "../php-spec-evidence-archive/generator-keyword-creation-75/validated/generator-keyword-creation-source-_w2knh70/report.json", "sha256": "23446d7f1b3bc2b4767a3ad62ed17a044cf7e7deebdcef95e5cacb0b1e00000f"}
+    ],
+    "reached_states": [
+      {"selection": "private self, actual owner and equal-context sibling", "reported": 138, "report": "../php-spec-evidence-archive/generator-keyword-creation-75/validated/fiber-state-review-tg82_cia/report.json", "sha256": "f6b5956a4276e9cb61da683dc829207886cacc64039aba918a0c0e523c635406"},
+      {"selection": "real close ENTER and DONE; two accepted rows in a mixed report", "reported": 158, "report": "../php-spec-evidence-archive/generator-keyword-creation-75/validated/fiber-state-review-hmvpysp1/report.json", "sha256": "69c3d9ca49592af64b097cb6ac71f517ba31507deae9670a6bfbc63405e8b758"},
+      {"selection": "late-static Leaf override and sole copied-value cache", "reported": 78, "report": "../php-spec-evidence-archive/generator-keyword-creation-75/validated/fiber-state-review-endk2dd9/report.json", "sha256": "2fd2359ab2b38e091be8f7eaa7bc56a821712d3ec7dff2606ff5d791fc7a3907"}
+    ],
+    "independent_peer": {
+      "result": "checked NORMAL, exact 203-byte native stream, model exit 0, empty stderr, no timeout, 180.967741 seconds",
+      "report": "../php-spec-evidence-archive/generator-keyword-creation-75-review/independent/model-review-report.json",
+      "sha256": "f2edecef5adfbdf9e8d2d2334b12761f1be0fa68255a2cc4187adc2cfee4fbe5",
+      "recorded_head_stable": false,
+      "recorded_passed": false,
+      "input_bridge": "The peer snapped 088b7c7f3; HEAD changed during execution to 1dae72d08. The recorder's false flags are preserved. All 18 watched runtime/source inputs stayed byte-identical. The two commits differ only in Makefile and generator_keyword_creation_state.py, neither read by the peer CLI; both have identical spec tree 4729a38d9f48ce1c4e5da96feedf325a933b997c. The raw peer result is accepted by independent review on these actual inputs, without rewriting the report or rerunning semantics."
+    },
+    "unchanged_baseline": {
+      "result": "Two keyword cases were checked Unsupported; explicit protected and public nonkeyword controls were already exact NORMAL. The chained factory remains Unsupported with zero agreement. The initial protected-baseline expected-status mistake is retained with zero aggregate credit.",
+      "reports": [
+        {"path": "../php-spec-evidence-archive/generator-keyword-creation-75/source-packet/unchanged-baseline-iirrqis2/report.json", "sha256": "2981d5c36c152de85b312896bbc5f8c9233f2701ab974bea554b76cccb896649"},
+        {"path": "../php-spec-evidence-archive/generator-keyword-creation-75/source-packet/unchanged-baseline-y7asumjy/report.json", "sha256": "b35a18bacbff7e60faf6dd0ca811aa943c62ef686a0fab3e3dfcf9e7af3831c9"}
+      ]
+    },
+    "failed_fixtures": [
+      {"cause": "Unrecognized pcreation metavariable stopped elaboration before state assertions; zero credit", "report": "../php-spec-evidence-archive/generator-keyword-creation-75/validated/fiber-state-review-o6r8ud4m/report.json", "sha256": "dfa37b63e62b428d5bad732f5668d25c9b3347d265da13ea1821ef2206af2461"},
+      {"cause": "Concrete PSTRING assertion rejected a valid string carrier; the late-static row has zero credit, while its two close rows pass independently", "report": "../php-spec-evidence-archive/generator-keyword-creation-75/validated/fiber-state-review-hmvpysp1/report.json", "sha256": "69c3d9ca49592af64b097cb6ac71f517ba31507deae9670a6bfbc63405e8b758"}
+    ]
+  },
+  "counts": {"new_author_normal": 6, "independent_normal": 1, "unchanged_nonkeyword_controls": 2, "unsupported_chain_agreement": 0, "reached_custom": 354, "reached_reported": 374},
+  "remaining": "Keyword-invoked factory chains, Closure factories, receiver-bearing keyword Generator bodies, wider delegation/callback/close combinations and complete core semantics remain open. No BOLA property is established."
+}

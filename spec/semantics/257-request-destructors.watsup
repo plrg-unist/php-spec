@@ -312,7 +312,7 @@ def $destructor_stop(S) = S_clean[.DESTRUCTION.PHASE = DESTRUCTION_DONE][.DESTRU
 def $drive_steps(S, n) = $drive_steps($output_guard($prune_allocations($destructor_begin(S))), n)
   -- if $destructor_ready(S)
   -- if S.DESTRUCTION.PHASE = DESTRUCTION_PENDING
-def $drive_steps(S, n) = $output_finalize($prune_allocations($destructor_stop(S)))
+def $drive_steps(S, n) = $output_drive_finalize($prune_allocations($destructor_stop(S)), n)
   -- if $destructor_ready(S)
   -- if $destructor_active(S)
 
@@ -717,7 +717,7 @@ def $destruction_state_valid(S) = true
   -- if S.DESTRUCTION.PHASE = DESTRUCTION_PENDING \/ $destructor_startup_order($global_table_view(S))
   -- if S.DESTRUCTION.PHASE =/= DESTRUCTION_STORE \/ S.DESTRUCTION.NOREUSE
   -- if S.DESTRUCTION.PHASE =/= DESTRUCTION_GLOBALS \/ $destructor_pass_valid(S)
-  -- if S.DESTRUCTION.PHASE =/= DESTRUCTION_DONE \/ (S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps)
+  -- if S.DESTRUCTION.PHASE =/= DESTRUCTION_DONE \/ $output_final_destructors(S) \/ (S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps)
   -- if S.DESTRUCTION.COMPLETION = NORMAL \/ $exit_completion(S.DESTRUCTION.COMPLETION) \/ $shutdown_frozen(S.DESTRUCTION.COMPLETION)
   -- if $destructor_releases_valid(S, S.DESTRUCTION.RELEASES)
   -- if $destructor_calls_valid(S, S.DESTRUCTION.CALLS)

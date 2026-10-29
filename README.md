@@ -233,8 +233,12 @@ or callback throws preserve pending cleanup and stack operations before caller
 catch. Defined scalar returns survive callee cleanup throws, with callee-only
 reference wrappers and borrowed method receivers. Explicit API argument-warning
 throws release only the prepared prefix before failed-buffer cleanup.
-Callback exit, wider warning-handler throws, other byte producers,
-request-end dispatch and buffered stdout diagnostics remain dependencies.
+Normal EOF and integer/string exit now drain the existing handlers after real
+request cleanup, including lower chunk cascades, weak diagnostics and callback-local
+destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)
+records the bounded normal cut. Callback exit, wider warning-handler throws,
+other byte producers, abnormal/fatal finalization and buffered stdout diagnostics
+remain dependencies.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -646,15 +650,23 @@ shutdown release and wider destructor effects remain partial.
 
 [Reference-current CONFIG caches](coverage/semantics/config-iterator-reference-current-review.json)
 keep the cell selected by `current()` through key-time writes and source rebinding,
-then copy its string value before `next()`, Iterator destruction and API entry.
+then copy its value before `next()`, Iterator destruction and API entry.
 Temporary and Aggregate inputs retain their real owners through normal or
 supplied-Exception cleanup, preserving the existing field/graph policy.
 
 [Typed-current CONFIG values](coverage/semantics/config-iterator-typed-current-review.json)
 validate live instance/static reference sources without coercion or extra owners.
 Existing writes and retirement detach constraints; the cached cell and copied
-arguments survive source rebinding. Transient/special cells and nonstring sends
-retain their boundaries. Original ordinary-cell cuts remain in their review.
+arguments survive source rebinding. Transient/special cells retain their
+boundaries; original ordinary-cell and typed-current cuts remain in their reviews.
+
+[Scalar CONFIG sends](coverage/semantics/config-iterator-scalar-review.json)
+copy raw NULL/bool/int/float/string values before `next()` and cleanup. INI_SET
+binds its string option afterward: weak coercion/NULL deprecation or strict
+rejection. Its scalar/null value is accepted even strict and converted inside
+the API using live precision. Persistent source/callee receipts validate handler
+return or supplied throw after DATA death. Owning argument buffers and other
+CONFIG consumer/value policies remain partial.
 
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
@@ -3603,6 +3615,26 @@ false value owner. Leaf/methodless insertion, fresh callback-free PASS0 and the
 existing callback/worker/hook fences still bound this cut. See the
 [registration-order GC review](coverage/semantics/gc-registration-order-review.json).
 
+Quiet no-WeakMap ordinary collection now claims later siblings before descending
+the first child. This gives a shared property table its real array count role
+when an earlier object also reaches it as a proxy. Two native-first sources
+agree at count 3; the unchanged model counted 2 on the inline author case.
+The 106 private strict SL
+reached checks cover the actual collector consumer, physical owners and plan
+authentication. An unrelated held destructor remains outside the collected
+component. At that cut, callback, residual, worker, hook and active-context collection
+remain partial. See the [ordinary claim review](coverage/semantics/gc-ordinary-claim-review.json).
+
+Materialized ordinary cycles with public destructors now use the existing
+callback and single-retrace protocol when the legacy and claimed walks agree
+on ordered visits and counted nodes in the actual plan. The agreement is
+rechecked after callbacks and for fresh already-called survivors; a mismatch
+is refused. Two native-first sources agree, including a callback resurrection
+then later count 3, and four strict SL groups pass 151 reached checks. Quiet
+canonical tables, no WeakMap and no active worker/context/residual overlap
+remain required. Count-ambiguous callbacks and wider reentry are still open.
+See the [materialized callback review](coverage/semantics/gc-materialized-callback-review.json).
+
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
 reuse only when destructor preparation leaves the state identical.
@@ -4243,6 +4275,28 @@ Canonical root contexts and previous paths also have no numeric depth ceiling.
 Visited object IDs bound pure path authentication by the finite heap; whole-path
 acyclicity and the existing layout restrictions remain required.
 [Finite previous-path review](coverage/semantics/throwable-previous-finite-comparison-review.json).
+Standalone roots of the same twelve non-base kinds also use the visited trace
+walk when `previous` is null, preserving live cells, copied siblings, cache/trace/
+severity order and real recursion Errors. The old DIRECT route remains separate.
+Canonical base `Exception`/`Error` roots now use the same visited fold through
+finite canonical Previous paths after older admissions, including warm captured
+graphs. Whole-path authentication stays eager; invalid/cyclic paths and reached
+callbacks or captured-Throwable leaves retain their separate limits.
+[Standalone trace review](coverage/semantics/throwable-null-trace-comparison-review.json).
+[Base fallback review](coverage/semantics/throwable-base-null-comparison-review.json).
+[Linked-base review](coverage/semantics/throwable-base-previous-comparison-review.json).
+Builtin `#[NoDiscard]` now validates bounded declarations and warns on unused
+ordinary source calls after sends and named defaults, before reception or body.
+Handlers preserve selected arguments, references, receiver ownership and VM
+cleanup order; used results and raw callback APIs retain their distinct behavior.
+Literal/NULL messages, supported declaration errors and explicit remaining
+boundaries are described in the [attribute contract](docs/semantics/BUILTIN-ATTRIBUTES.md)
+and [review](coverage/semantics/builtin-nodiscard-review.json).
+Bounded `#[Deprecated]` on named user functions and ordinary methods now warns
+on prepared VM calls after sends and named-hole completion, before NoDiscard
+or reception, for used and discarded results. Selected arguments, references
+and receivers survive handlers. Internal callback API
+timing remains explicit Unsupported; see the [Deprecated review](coverage/semantics/builtin-deprecated-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The
@@ -6157,9 +6211,12 @@ its original cuts; wider reentrant histories and enum dependencies remain partia
 Unit and backed enums now link with their implicit interfaces and cached singleton
 cases. Direct `cases()`, `from()`, `tryFrom()`, case slots and constant queries have
 source and state checks. Registered-loader first-use static calls and class-constant
-fetches retain selected class/member order through loader replay. Case attributes,
-generated callable targets, the default loader and wider acquisition remain
-partial; see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
+fetches retain selected class/member order through loader replay. Captured
+`cases(...)` retains the selected enum and singleton cache after its closure
+owner is retired. Captured `from(...)`/`tryFrom(...)` remain Unsupported; other
+generated callable routes, case attributes, the default loader and wider
+acquisition remain partial;
+see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
 now loads a sole missing user interface before a parentless class or interface is
@@ -6307,8 +6364,31 @@ Static-method THROW now preserves inherited scope without receiver owners across
 fresh/primed value/reference caches. [Static review](coverage/semantics/generator-fiber-static-throw-transfer-review.json).
 Fresh NEXT/SEND now share authenticated pre-first-yield Fiber transfer across
 ordinary callees and existing value/reference caches. Argument buffers, captures
-and supplied-throw cleanup retain real owners. Keyword-forwarded static creation
-and wider lifecycles remain partial. [Fresh advance review](coverage/semantics/generator-fiber-fresh-advance-review.json).
+and supplied-throw cleanup retain real owners. At that cut, keyword-forwarded
+static creation and wider lifecycles remained partial.
+[Fresh advance review](coverage/semantics/generator-fiber-fresh-advance-review.json).
+Receiver-free static Generator bodies called through `self`, `parent` and
+`static` now retain real factory scope after return, including a destroyed
+object selector and live close/finally. Six authored and one independent original match PHP; four reached
+fronts check creator/callee scope and actual-owner selection.
+At that I75 cut, keyword-invoked factory chains and wider callable/lifecycle
+forms remained open.
+[Keyword creation review](coverage/semantics/generator-keyword-creation-review.json).
+Finite keyword method-factory chains now retain borrowed source/target and
+lexical/called scope through each real forwarding frame. Three new authored,
+one independent and the retained I75 original match PHP; three reached fronts
+check actual close ownership, a deeper shared-cell cache and a retired maker.
+At that I76 cut, receiver-bearing keyword links and Closure factories remained partial.
+[Chain review](coverage/semantics/generator-keyword-chain-review.json).
+Receiver-bearing instance factories and finite same-`$this` scoped chains now
+create nonstatic Generator bodies through `self`, `parent`, `static` and explicit
+class calls. The saved or active execution frame carries a receiver owner;
+borrowed source and target history adds no root. Five authored and one
+independent original match PHP; three reached fronts pass 160 custom/175
+reported checks for close, retirement
+and fresh THROW/Fiber transfer. Closure factories, other receiver bindings and
+wider lifecycle combinations remain partial.
+[Receiver review](coverage/semantics/generator-keyword-receiver-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "i76-parent-two-link-fresh-sibling-close",
+    "purpose": "Two keyword parent hops from a Leaf static entry select the protected Base Generator; called Leaf scope survives both returned factories. A fresh equal-context sibling remains during actual close finally.",
+    "source": "<?php\nclass Base76A {\n    protected static function body() {\n        echo 'BODY|', (int) (__CLASS__ === 'Base76A'), '|',\n             (int) (static::class === 'Leaf76A'), '|';\n        try {\n            yield 76;\n        } finally {\n            echo 'FIN|';\n        }\n        return static::class;\n    }\n}\nclass Mid76A extends Base76A {\n    public static function make() { echo 'MAKE|'; return parent::body(); }\n}\nclass Leaf76A extends Mid76A {\n    public static function outer() { echo 'OUTER|'; return parent::make(); }\n}\n$g = Leaf76A::outer();\n$other = Leaf76A::outer();\necho 'MADE|';\n$first = $g->current();\necho 'FIRST|', (int) ($first === 76), '|';\nunset($g);\necho 'CLOSED|';\nunset($other, $first);\necho 'E';\n",
+    "source_sha256": "f1808afd970c3bec1fca993ddea87ab5e38f5b2624e0ea3f8bd05dfbdf14dd60",
+    "native_exit": 0,
+    "native_stdout": "OUTER|MAKE|OUTER|MAKE|MADE|BODY|1|1|FIRST|1|FIN|CLOSED|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i76-deep-static-override-reference-cache",
+    "purpose": "Four keyword hops select a Leaf late-static factory override, then Base self Generator; a shared reference parameter, copied first cache and resumed second yield retain called Leaf scope after all factories return.",
+    "source": "<?php\nclass Base76B {\n    protected static function body(&$slot) {\n        echo 'BODY|', (int) (__CLASS__ === 'Base76B'), '|',\n             (int) (static::class === 'Leaf76B'), '|';\n        yield $slot;\n        echo 'AFTER|', (int) ($slot === 11), '|';\n        yield $slot;\n        return static::class;\n    }\n    public static function step(&$slot) { echo 'STEP|'; return self::body($slot); }\n}\nclass Mid76B extends Base76B {\n    public static function middle(&$slot) { echo 'MID|'; return parent::step($slot); }\n}\nclass Leaf76B extends Mid76B {\n    public static function outer(&$slot) { echo 'OUTER|'; return static::middle($slot); }\n    public static function middle(&$slot) { echo 'LEAF|'; return parent::middle($slot); }\n}\n$slot = 5;\n$g = Leaf76B::outer($slot);\n$slot = 8;\necho 'MADE|';\n$first = $g->current();\necho 'FIRST|', (int) ($first === 8), '|';\n$slot = 11;\necho 'CACHE|', (int) ($g->current() === 8), '|';\n$g->next();\necho 'SECOND|', (int) ($g->current() === 11), '|';\n$g->next();\necho 'RETURN|', (int) ($g->getReturn() === 'Leaf76B'), '|';\nunset($g, $slot, $first);\necho 'E';\n",
+    "source_sha256": "bce3f4d9e4299913d8af16277a6cdf9a73fe4ea5a6033b25a2e6ea8861ca72ed",
+    "native_exit": 0,
+    "native_stdout": "OUTER|LEAF|MID|STEP|MADE|BODY|1|1|FIRST|1|CACHE|1|AFTER|1|SECOND|1|RETURN|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i76-retired-instance-root-static-leaf",
+    "purpose": "An ordinary Leaf instance factory enters self static middle then static Leaf Generator. The root maker retires before Generator entry; borrowed chain provenance adds no receiver owner.",
+    "source": "<?php\nclass Maker76C {\n    public function start($item) { echo 'START|'; return self::middle($item); }\n    protected static function middle($item) { echo 'MIDDLE|'; return static::body($item); }\n    protected static function body($item) { echo 'BAD|'; yield $item; }\n    public function __destruct() { echo 'MAKER-DROP|'; }\n}\nclass Leaf76C extends Maker76C {\n    protected static function body($item) {\n        echo 'BODY|', (int) (__CLASS__ === 'Leaf76C'), '|',\n             (int) (static::class === 'Leaf76C'), '|';\n        yield $item;\n        return 76;\n    }\n}\n$maker = new Leaf76C();\n$weakMaker = WeakReference::create($maker);\n$input = 5;\n$g = $maker->start($input);\nunset($maker);\n$input = 9;\necho 'RETIRED|', (int) ($weakMaker->get() === null), '|';\n$value = $g->current();\necho 'VALUE|', (int) ($value === 5), '|', (int) ($input === 9), '|';\n$g->next();\necho 'DONE|', (int) ($g->getReturn() === 76), '|';\nunset($g, $weakMaker, $input, $value);\necho 'E';\n",
+    "source_sha256": "57985b6e0cf51afcf2794b469a33451d47884e202570178262392a2839888272",
+    "native_exit": 0,
+    "native_stdout": "START|MIDDLE|MAKER-DROP|RETIRED|1|BODY|1|1|VALUE|1|1|DONE|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i75-keyword-factory-chain-residual",
+    "purpose": "I75 native-positive/checked Unsupported residual retained as historical evidence; I76 promotes these exact source/native bytes for finite keyword factory chains.",
+    "source": "<?php\nclass Base75Chain {\n    public static function body() { echo 'BODY|'; yield 75; return 75; }\n    public static function make() { echo 'MAKE|'; return self::body(); }\n}\nclass Leaf75Chain extends Base75Chain {\n    public static function outer() { echo 'OUTER|'; return parent::make(); }\n}\necho 'BEGIN|';\n$g = Leaf75Chain::outer();\necho 'MADE|';\necho 'VALUE|', (int) ($g->current() === 75), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 75), '|';\nunset($g);\necho 'E';\n",
+    "source_sha256": "b8ca8310fdc20431c4633e77bdcf9e19e60c3ba8cce447a88c4c9ab5aff43f07",
+    "native_exit": 0,
+    "native_stdout": "BEGIN|OUTER|MAKE|MADE|VALUE|BODY|1|CLOSED|1|E",
+    "native_stderr": ""
+  }
+]

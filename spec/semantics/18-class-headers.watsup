@@ -104,6 +104,7 @@ def $pchallows_dynamic(ptcontext, phpType14) = false -- otherwise
 def $pchattributes(pchraw, pchheader, ptcontext) = PCHUNSUPPORTED "class attributes require attribute compilation"
   -- if pchraw.ATTRIBUTES =/= SEQUENCE eps
   -- if ~$pchallows_dynamic(ptcontext, pchraw.ATTRIBUTES)
+  -- if ~$builtin_callable_groups(ptcontext, pchraw.ATTRIBUTES)
 def $pchattributes(pchraw, pchheader, ptcontext) = $pcherror(ptcontext, "allow-dynamic-target", [$ptascii(pchheader.KIND), pchheader.NAME])
   -- if $pchallows_dynamic(ptcontext, pchraw.ATTRIBUTES)
   -- if pchheader.KIND <- ["trait", "interface"]

@@ -104,6 +104,4 @@ EXPECTED = {
 }
 
 BOUNDARIES = {
-    'config-reference-current-post-key-integer-boundary':
-        'CONFIG Iterator unpack current outside string domain',
 }

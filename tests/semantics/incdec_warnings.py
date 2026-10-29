@@ -47,6 +47,7 @@ def main(model_timeout=60):
         native = recorded([str(ROOT / '.tools/php/bin/php'), '-n', *flags, str(source)], directory / 'native', 30)
         row = {'id': name, 'source_sha256': digest(source), 'native': native, 'agreement_credit': 0}
         boundary = getattr(cases, 'BOUNDARIES', {}).get(name)
+        boundary_stdout = getattr(cases, 'BOUNDARY_STDOUT', {}).get(name)
         exit_code = getattr(cases, 'EXIT_CODES', {}).get(name, 0)
         status = getattr(cases, 'STATUSES', {}).get(name, getattr(cases, 'STATUS', 'normal'))
         if boundary is not None:
@@ -73,7 +74,9 @@ def main(model_timeout=60):
                 and native['interruption'] is None and model['interruption'] is None
                 and not (directory / 'model.stderr').read_bytes() and outcome.get('frontend') == 'accepted'
                 and outcome.get('checked') == 'program' and outcome.get('status') == 'unsupported'
-                and outcome.get('reason') == boundary)
+                and outcome.get('reason') == boundary
+                and (boundary_stdout is None or (base64.b64decode(outcome.get('stdout', '')) == boundary_stdout
+                     and base64.b64decode(outcome.get('stderr', '')) == b'')))
             row['passed'] = ordinary if boundary is None else explicit_boundary
             row['agreement_credit'] = int(row['passed'] and boundary is None)
         rows.append(row)

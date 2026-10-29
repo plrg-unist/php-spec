@@ -240,6 +240,48 @@ remain required; clone, nonleaf insertion/replacement,
 destructor/resurrection/reentry, residual, worker, hook and active
 context cases remain open. See the [registration-order review](../../coverage/semantics/gc-registration-order-review.json).
 
+Fresh callback-free ordinary plans without nonempty WeakMaps now use the same
+claimed white worklist. Zend marks later ordinary siblings before descending
+the first child; an object proxy cannot retrospectively turn a previously
+claimed real array into an uncounted table. Two native-first shared-table
+graphs agree at count 3, through both inline declared fields and a materialized
+table with INDIRECT fields and an ALIAS cell. The unchanged model completed
+normally but counted 2 on the inline graph. Three private strict SL reached
+fronts pass 106 checks: a protected zero-count plan rejects a matching forged
+legacy walk marker, and both white fronts execute GC_FREE with count 3 while
+the old helper derives 2. The materialized front checks physical CELL owner 1,
+shared table owners 2 and nonowning INDIRECT buckets. A held uncalled
+destructor outside the white set survives; actual admitted DTORS is empty.
+Fresh snapshot validation clears borrowed PLAN while recomputing the producer
+image, so its walk choice comes from current heap/phase rather than the saved
+marker. Existing callback and overlap walkers, physical owner extraction in
+module39, and the finite claimed-worklist bound are unchanged. The new lane
+requires canonical ordinary nodes/tables, a quiet unmarked buffer, fresh PASS0,
+no current called target, and no worker, hook or active Fiber/frame/iterator
+context. At that cut, destructors inside the collected component, callback/reentry,
+residual tags and wider contexts remain open. See the
+[ordinary claim review](../../coverage/semantics/gc-ordinary-claim-review.json).
+
+Materialized ordinary cycles can now invoke a public destructor during explicit
+collection. For a fresh no-WeakMap plan with canonical property locators, the
+legacy callback walk and claimed mark-on-push walk must agree on the ordered
+visit and counted nodes of the actual compacted plan. The existing destructor
+return, protected free and single retrace then run unchanged. The collector
+checks that agreement again after callback mutation, and on a fresh collection
+of an already-called survivor; disagreement is explicitly Unsupported. One source
+runs the destructor and frees a shared-table cycle for count 3; an independent
+CELL/ARRAY source resurrects its graph during the callback, returns 0, then
+frees it for count 3 after the outside hold is dropped. Four strict SL groups
+pass 151 reached checks, including actual GC consumers and derived count 2/3
+order-refusal controls. The prior-table selector excludes stdClass-only callback
+plans. This cut needs a quiet unmarked buffer, no cached worker,
+hooks, active Fiber/frame/iterator context or residual overlap. Count-ambiguous
+callback graphs, WeakMap callbacks, worker/reentry histories and wider callback
+effects remain open. Both node-seen walks and the shrinking prior-table fold
+terminate on finite graphs; the pinned collector retraces at most once, while
+callback execution retains the ordinary evaluator fuel. See the
+[materialized callback review](../../coverage/semantics/gc-materialized-callback-review.json).
+
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;
 pending exceptions remain owned once. After a destructor returns, its bare guard

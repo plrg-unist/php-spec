@@ -25,13 +25,13 @@ def $closure_callable(S, n) = true
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
   -- if ~$from_kind(pintrinsic)
-  -- if pintrinsic =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pintrinsic) /\ ~$fiber_kind(pintrinsic)
+  -- if pintrinsic =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pintrinsic) /\ ~$fiber_kind(pintrinsic) /\ ~$enum_kind(pintrinsic)
 def $closure_live_object_valid(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
   -- if ~$from_kind(pintrinsic)
-  -- if pintrinsic =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pintrinsic) /\ ~$fiber_kind(pintrinsic)
+  -- if pintrinsic =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pintrinsic) /\ ~$fiber_kind(pintrinsic) /\ ~$enum_kind(pintrinsic)
 def $class_instanceof(S, POBJECT n, preqbytes) = true
   -- if $ptlc(preqbytes) = $ptascii("closure")
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pintrinsic

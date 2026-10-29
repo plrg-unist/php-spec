@@ -278,7 +278,8 @@ while (($line = fgets(STDIN)) !== false) {
                         if ($classLine === null) throw new RuntimeException('Named class keyword token is missing');
                         $node->setAttribute('classKeywordLine', $classLine);
                     }
-                    if ($node instanceof PhpParser\Node\Stmt\ClassMethod) {
+                    if ($node instanceof PhpParser\Node\Stmt\ClassMethod
+                        || ($node instanceof PhpParser\Node\Stmt\Function_ && $node->attrGroups !== [])) {
                         $methodLine = null;
                         $methodToken = null;
                         for ($index = $node->getStartTokenPos(); $index < $node->name->getStartTokenPos(); ++$index) {
@@ -289,7 +290,8 @@ while (($line = fgets(STDIN)) !== false) {
                         }
                         if ($methodLine === null) throw new RuntimeException('Method keyword token is missing');
                         $node->setAttribute('methodKeywordLine', $methodLine);
-                        if (($node->flags & (PhpParser\Modifiers::READONLY | PhpParser\Modifiers::ABSTRACT | PhpParser\Modifiers::FINAL))
+                        if ($node instanceof PhpParser\Node\Stmt\ClassMethod
+                            && ($node->flags & (PhpParser\Modifiers::READONLY | PhpParser\Modifiers::ABSTRACT | PhpParser\Modifiers::FINAL))
                             === (PhpParser\Modifiers::READONLY | PhpParser\Modifiers::ABSTRACT | PhpParser\Modifiers::FINAL)) {
                             $node->setAttribute('methodKeywordTokenPos', $methodToken);
                             $positions = [T_READONLY => 'methodReadonlyTokenPos', T_ABSTRACT => 'methodAbstractTokenPos', T_FINAL => 'methodFinalTokenPos'];

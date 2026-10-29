@@ -162,8 +162,19 @@ dec $gc_hook_nodes(pstate, pnode*) : bool
 dec $gc_materialized_base_quiet(pstate) : bool
 dec $gc_materialized_quiet(pstate) : bool
 dec $gc_materialized_begin(pstate, pgccall) : pstate
+dec $gc_callback_walk_agrees(pgcplan) : bool
+dec $gc_materialized_callback_context(pstate) : bool
+dec $gc_prior_ordinary_table_head(pstate, pobjecttable, pnode*) : bool
+dec $gc_prior_ordinary_table(pstate, pobjecttable*, pnode*) : bool
+dec $gc_materialized_callback_trace(pstate, pgccall) : bool
+dec $gc_materialized_callback_trace_ok(pstate, pgccall) : bool
+dec $gc_trace_inner(pstate, pgccall) : pstate
+dec $weakmap_nonempty(pstate, pnode*) : bool
 dec $gc_ephemeron_phase(pstate) : bool
 dec $gc_ephemeron_policy(pstate) : bool
+dec $gc_ephemeron_called_current(pstate, nat*) : bool
+dec $gc_quiet_claim_phase(pstate) : bool
+dec $gc_quiet_claim_policy(pstate) : bool
 dec $gc_ephemeron_graph(pstate) : hgraph
 dec $gc_ephemeron_weak_edges(pstate, hgraph) : hedge*
 dec $gc_ephemeron_prepare(pstate, pgcplan) : pstate?
@@ -323,7 +334,7 @@ def $gc_walk(H, hedge_proxy*, (GC_VISIT pnode b) :: pgcvisit*, pnode_white*, pno
   -- if pnode <- pnode_white* /\ ~(pnode <- pnode_seen*)
 ;; zend_gc.c marks weak-entry values black while pushing all of them. Their
 ;; stack is then popped last-first; a proxy table keeps its first claim role.
-;; This walk is used only by quiet ephemeron plans. Legacy callback walks keep
+;; Quiet ephemeron and ordinary plans use it. Legacy callback walks keep
 ;; the preceding traversal and its existing snapshots.
 def $gc_weak_prefix(eps, pnode_child*) = pnode_child*
 def $gc_weak_prefix(pnode :: pnode_weak*, pnode :: pnode_child*) = $gc_weak_prefix(pnode_weak*, pnode_child*)
@@ -900,12 +911,38 @@ def $gc_nested_removed(pgcplan) = $destruction_nodes_delete($gc_nodes(pgcplan.BU
   -- if (pgcslot*, nat_free*, n_debit) = $gc_nested_image(pgcplan)
 def $gc_nested_removed(pgcplan) = eps -- otherwise
 
+;; Fresh callback-free ordinary plans use the same mark-on-push walk as quiet
+;; ephemerons. An installed plan must already carry that walk's marker.
+def $gc_quiet_claim_phase(S) = true
+  -- if S.GC.ACTIVE = eps
+  -- if S.GC.PLAN = eps
+def $gc_quiet_claim_phase(S) = true
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if S.GC.PLAN = eps
+  -- if pgccall.PASS = 0
+def $gc_quiet_claim_phase(S) = true
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if pgcplan.CALL = pgccall /\ pgccall.PASS = 0 /\ pgcplan.DTORS = eps /\ pgcplan.WEAK = (eps)
+def $gc_quiet_claim_phase(S) = false -- otherwise
+def $gc_quiet_claim_policy(S) = true
+  -- if ~$weakmap_nonempty(S, S.ALLOCATIONS) /\ $gc_quiet_claim_phase(S)
+  -- if $gc_materialized_base_quiet(S)
+  -- if S.ACTIVEFIBER = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.ITERATORS = eps
+  -- if ~$gc_ephemeron_called_current(S, S.DESTRUCTION.CALLED)
+  -- if $object_tables_valid(S) /\ $gc_indirect_arrays_valid(S, S.ALLOCATIONS) /\ $gc_materialized_locators(S, S.OBJECTTABLES)
+  -- if $objectprops_valid(S, S.OBJECTPROPS) /\ $gc_ordinary_nodes(S, S.ALLOCATIONS)
+  -- if $heap_valid($heap_graph(S))
+  -- if $gc_uncalled(S, $gc_white($gc_graph(S), $gc_eligible_nodes(S.GC.BUFFER))) = eps
+def $gc_quiet_claim_policy(S) = false -- otherwise
 def $gc_plan(S, pgccall) = $gc_plan_graph(S, pgccall, H, (hedge_weak*))
   -- if $gc_ephemeron_policy(S)
   -- if H = $gc_ephemeron_graph(S)
   -- if hedge_weak* = $gc_ephemeron_weak_edges(S, H)
+def $gc_plan(S, pgccall) = $gc_plan_graph(S, pgccall, $gc_graph(S), (eps))
+  -- if $gc_quiet_claim_policy(S)
 def $gc_plan(S, pgccall) = $gc_plan_graph(S, pgccall, $gc_graph(S), eps)
-  -- if ~$gc_ephemeron_policy(S)
+  -- if ~$gc_ephemeron_policy(S) /\ ~$gc_quiet_claim_policy(S)
 def $gc_plan_graph(S, pgccall, H, hedge_weak*?) = {CALL pgccall, GRAPH H, TABLES S.OBJECTTABLES, CALLED S.DESTRUCTION.CALLED, PROXIES hedge_proxy*, WEAK hedge_weak*?, COUNTED pnode_counted*, BUFFER pgc_white.BUFFER, CANDIDATES pnode_candidates*, DTORS pnode_dtors*, FREESET pnode_free*, SCAN eps, INDEX 0, STEPS eps, DONE eps}
   -- if hedge_proxy* = $gc_proxy_edges(S.OBJECTTABLES, H.NODES)
   -- if pgc_start = $gc_compact(S.GC)
@@ -971,12 +1008,16 @@ def $gc_snapshot_nested(S, pgcplan) = true
   -- if $fiber_record_valid(S, n_caller, pfiber_caller)
   -- if $gc_scope_valid(S, pgcplan.CALL)
 def $gc_snapshot_nested(S, pgcplan) = false -- otherwise
-def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S[.GC.BUFFER = pgcplan.BUFFER][.GC.FREE = eps], pgcplan.CALL))
+def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S[.GC.PLAN = eps][.GC.BUFFER = pgcplan.BUFFER][.GC.FREE = eps], pgcplan.CALL))
   -- if $gc_snapshot_fresh(S, pgcplan) /\ $gc_snapshot_nested(S, pgcplan)
-def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S[.GC.BUFFER = $gc_snapshot_slots(S.GC.BUFFER, pgcplan.DTORS)], pgcplan.CALL))
+def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S[.GC.PLAN = eps][.GC.BUFFER = $gc_snapshot_slots(S.GC.BUFFER, pgcplan.DTORS)], pgcplan.CALL))
   -- if $gc_snapshot_fresh(S, pgcplan) /\ ~$gc_snapshot_nested(S, pgcplan)
 def $gc_snapshot_valid(S, pgcplan) = $gc_tables_valid(S, pgcplan.TABLES, pgcplan.GRAPH.NODES) -- if ~$gc_snapshot_fresh(S, pgcplan)
 def $gc_weak_plan_valid(S, pgcplan) = true -- if pgcplan.WEAK = eps
+def $gc_weak_plan_valid(S, pgcplan) = true
+  -- if pgcplan.WEAK = (eps)
+  -- if pgcplan.CALL.PASS = 0 /\ pgcplan.DTORS = eps
+  -- if $gc_snapshot_fresh(S, pgcplan) /\ $gc_quiet_claim_policy(S)
 def $gc_weak_plan_valid(S, pgcplan) = true
   -- if pgcplan.WEAK = (hedge_weak*)
   -- if pgcplan.CALL.PASS = 0 /\ pgcplan.DTORS = eps
@@ -1101,7 +1142,6 @@ def $gc_receive(S, pconfigcall) = $gc_simple_done(S, PINT 0)
   -- if pconfigcall.KIND = INTRINSIC_GC_COLLECT /\ S.GC.ACTIVE =/= eps
 def $gc_receive(S, pconfigcall) = $gc_begin(S, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_GC_COLLECT /\ S.GC.ACTIVE = eps
-dec $weakmap_nonempty(pstate, pnode*) : bool
 def $gc_begin(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "owning detached Generator return collection"]
   -- if ~$weakmap_nonempty(S, S.ALLOCATIONS) \/ $weakmap_gc_map(S, S.ALLOCATIONS) =/= eps
   -- if $generator_return_waiting_any(S, S.ALLOCATIONS)
@@ -1146,13 +1186,30 @@ def $gc_hook_nodes(S, (HARRAY n) :: pnode_tail*) = $gc_hook_nodes(S, pnode_tail*
 def $gc_hook_nodes(S, (HCELL n) :: pnode_tail*) = $gc_hook_nodes(S, pnode_tail*)
 def $gc_materialized_base_quiet(S) = (~$gc_hook_nodes(S, S.ALLOCATIONS) /\ S.GC.WORKER = eps /\ S.GC.BUFFER = $gc_unmarked_slots(S.GC.BUFFER) /\ $gc_nodes(S.GC.BUFFER) = $gc_physical_nodes(S.GC.BUFFER))
 def $gc_materialized_quiet(S) = (~$weakmap_nonempty(S, S.ALLOCATIONS) /\ $gc_materialized_base_quiet(S))
+;; Callback plans keep the existing legacy snapshot. It is exact only when
+;; mark-on-push and legacy walks agree on the ordered visit and count image.
+def $gc_callback_walk_agrees(pgcplan) = true
+  -- if H = pgcplan.GRAPH
+  -- if pnode_roots* = $gc_eligible_nodes(pgcplan.BUFFER)
+  -- if pnode_white* = $gc_white(H, pnode_roots*)
+  -- if $gc_count_walk(H, pgcplan.PROXIES, eps, $gc_root_visits(pnode_roots*), pnode_white*) = (pnode_visit*, pnode_counted*)
+  -- if $gc_count_walk(H, pgcplan.PROXIES, (eps), $gc_root_visits(pnode_roots*), pnode_white*) = (pnode_visit*, pnode_counted*)
+def $gc_callback_walk_agrees(pgcplan) = false -- otherwise
+def $gc_materialized_callback_context(S) = (S.ACTIVEFIBER = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.ITERATORS = eps /\ $gc_materialized_quiet(S))
+def $gc_prior_ordinary_table_head(S, pobjecttable, pnode*) = true
+  -- if $(pobjecttable.OBJECT < |S.OBJECTS|)
+  -- if (HOBJECT pobjecttable.OBJECT) <- pnode*
+  -- if S.OBJECTS[pobjecttable.OBJECT] = INSTANCE porigin
+def $gc_prior_ordinary_table_head(S, pobjecttable, pnode*) = false -- otherwise
+def $gc_prior_ordinary_table(S, eps, pnode*) = false
+def $gc_prior_ordinary_table(S, pobjecttable :: pobjecttable_tail*, pnode*) = ($gc_prior_ordinary_table_head(S, pobjecttable, pnode*) \/ $gc_prior_ordinary_table(S, pobjecttable_tail*, pnode*))
 def $gc_materialized_begin(S, pgccall) = S_started
   -- if $gc_materialized_quiet(S)
   -- if $object_tables_valid(S) /\ $gc_indirect_arrays_valid(S, S.ALLOCATIONS) /\ $gc_materialized_locators(S, S.OBJECTTABLES)
   -- if S.TODO = ptask :: ptask_tail*
   -- if S_started = S[.GC.NEXT = $(S.GC.NEXT + 1)][.GC.ACTIVE = (pgccall)][.TODO = (GC_TRACE pgccall) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pgcplan = $gc_plan(S_started, pgccall)
-  -- if pgcplan.DTORS = eps
+  -- if (pgcplan.DTORS = eps /\ (~$gc_ephemeron_called_current(S, S.DESTRUCTION.CALLED) \/ ~$gc_materialized_callback_context(S))) \/ ($gc_materialized_callback_context(S) /\ $gc_callback_walk_agrees(pgcplan))
 def $gc_materialized_begin(S, pgccall) = S[.COMPLETION = UNSUPPORTED "cached ordinary property-table collection"]
   -- if ~$gc_materialized_quiet(S) \/ ~$object_tables_valid(S) \/ ~$gc_indirect_arrays_valid(S, S.ALLOCATIONS) \/ ~$gc_materialized_locators(S, S.OBJECTTABLES)
 def $gc_materialized_begin(S, pgccall) = S[.COMPLETION = UNSUPPORTED "cached ordinary property-table collection"]
@@ -1161,7 +1218,7 @@ def $gc_materialized_begin(S, pgccall) = S[.COMPLETION = UNSUPPORTED "cached ord
   -- if S.TODO = ptask :: ptask_tail*
   -- if S_started = S[.GC.NEXT = $(S.GC.NEXT + 1)][.GC.ACTIVE = (pgccall)][.TODO = (GC_TRACE pgccall) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pgcplan = $gc_plan(S_started, pgccall)
-  -- if pgcplan.DTORS =/= eps
+  -- if (pgcplan.DTORS =/= eps \/ ($gc_ephemeron_called_current(S, S.DESTRUCTION.CALLED) /\ $gc_materialized_callback_context(S))) /\ (~$gc_materialized_callback_context(S) \/ ~$gc_callback_walk_agrees(pgcplan))
 def $task_nodes(GC_TRACE pgccall) = $instance_roots(pgccall.CALL.OWNER) ++ $instance_roots(pgccall.PENDING)
 def $task_nodes(GC_DTORS pgcplan) = $instance_roots(pgcplan.CALL.CALL.OWNER) ++ $instance_roots(pgcplan.CALL.PENDING)
 def $task_nodes(GC_DTOR_RETURN pgcplan n) = [HOBJECT n] ++ $instance_roots(pgcplan.CALL.CALL.OWNER) ++ $instance_roots(pgcplan.CALL.PENDING)
@@ -1191,40 +1248,70 @@ def $gc_return_valid(S, pgcplan, n) = false -- otherwise
 def $call_task_valid(S, GC_DTOR_RETURN pgcplan n) = $gc_return_valid(S, pgcplan, n)
 def $gc_replace(S, pgcplan, ptask) = S[.GC.PLAN = (pgcplan)][.GC.ACTIVE = (pgcplan.CALL)][.TODO = ptask :: ptask_tail*]
   -- if S.TODO = ptask_old :: ptask_tail*
-def $gc_trace(S, pgccall) = S[.COMPLETION = UNSUPPORTED "cycle collection of internal lifetime graph"]
+def $gc_materialized_callback_trace(S, pgccall) = true
+  -- if S.GC.PLAN = eps /\ pgccall.PASS = 0
+  -- if $object_table_gc_boundary(S)
+  -- if pgcplan = $gc_plan(S, pgccall)
+  -- if pgcplan.DTORS =/= eps
+def $gc_materialized_callback_trace(S, pgccall) = true
+  -- if S.GC.PLAN = eps /\ pgccall.PASS = 0
+  -- if $object_table_gc_boundary(S) /\ $gc_materialized_callback_context(S)
+  -- if $gc_ephemeron_called_current(S, S.DESTRUCTION.CALLED)
+  -- if pgcplan = $gc_plan(S, pgccall)
+  -- if pgcplan.WEAK = eps /\ pgcplan.DTORS = eps
+def $gc_materialized_callback_trace(S, pgccall) = true
+  -- if S.GC.PLAN = (pgcplan_prior)
+  -- if pgcplan_prior.CALL = pgccall /\ pgccall.PASS = 1
+  -- if pgcplan_prior.DTORS =/= eps
+  -- if $gc_prior_ordinary_table(S, pgcplan_prior.TABLES, pgcplan_prior.GRAPH.NODES)
+def $gc_materialized_callback_trace(S, pgccall) = false -- otherwise
+def $gc_materialized_callback_trace_ok(S, pgccall) = true
+  -- if ~$gc_materialized_callback_trace(S, pgccall)
+def $gc_materialized_callback_trace_ok(S, pgccall) = true
+  -- if $gc_materialized_callback_trace(S, pgccall)
+  -- if $gc_materialized_callback_context(S) /\ ~$gc_residual_overlap(S)
+  -- if $object_tables_valid(S) /\ $gc_indirect_arrays_valid(S, S.ALLOCATIONS) /\ $gc_materialized_locators(S, S.OBJECTTABLES)
+  -- if pgcplan = $gc_plan(S, pgccall)
+  -- if $gc_callback_walk_agrees(pgcplan)
+def $gc_materialized_callback_trace_ok(S, pgccall) = false -- otherwise
+def $gc_trace(S, pgccall) = S[.COMPLETION = UNSUPPORTED "materialized callback trace order"]
+  -- if ~$gc_materialized_callback_trace_ok(S, pgccall)
+def $gc_trace(S, pgccall) = $gc_trace_inner(S, pgccall)
+  -- if $gc_materialized_callback_trace_ok(S, pgccall)
+def $gc_trace_inner(S, pgccall) = S[.COMPLETION = UNSUPPORTED "cycle collection of internal lifetime graph"]
   -- if ~$gc_residual_overlap(S)
   -- if pgcplan = $gc_plan(S, pgccall)
   -- if ~$gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES)) /\ pgcplan.CANDIDATES =/= eps
-def $gc_trace(S, pgccall) = $gc_fiber_trace(S, pgcplan)
+def $gc_trace_inner(S, pgccall) = $gc_fiber_trace(S, pgcplan)
   -- if ~$gc_residual_overlap(S)
   -- if pgcplan = $gc_plan(S, pgccall)
   -- if $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
   -- if S.ACTIVEFIBER =/= eps /\ pgcplan.DTORS =/= eps
-def $gc_trace(S, pgccall) = $gc_replace(S[.GC.BUFFER = $gc_mark_dtors(pgcplan.BUFFER, pgcplan.DTORS)][.GC.FREE = eps], pgcplan, GC_DTORS pgcplan)
+def $gc_trace_inner(S, pgccall) = $gc_replace(S[.GC.BUFFER = $gc_mark_dtors(pgcplan.BUFFER, pgcplan.DTORS)][.GC.FREE = eps], pgcplan, GC_DTORS pgcplan)
   -- if ~$gc_residual_overlap(S)
   -- if pgcplan = $gc_plan(S, pgccall)
   -- if pgcplan.CANDIDATES = eps \/ $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
   -- if S.ACTIVEFIBER = eps \/ pgcplan.DTORS = eps
   -- if pgcplan.DTORS = eps \/ pgcplan.BUFFER = $gc_unmarked_slots(pgcplan.BUFFER)
-def $gc_trace(S, pgccall) = $gc_main_trace(S, pgcplan)
+def $gc_trace_inner(S, pgccall) = $gc_main_trace(S, pgcplan)
   -- if S.ACTIVEFIBER = eps
   -- if ~$gc_residual_overlap(S)
   -- if pgcplan = $gc_plan(S, pgccall)
   -- if $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
   -- if pgcplan.DTORS =/= eps
   -- if pgcplan.BUFFER =/= $gc_unmarked_slots(pgcplan.BUFFER)
-def $gc_trace(S, pgccall) = $gc_main_trace(S, $gc_plan(S, pgccall))
+def $gc_trace_inner(S, pgccall) = $gc_main_trace(S, $gc_plan(S, pgccall))
   -- if $gc_residual_overlap(S)
   -- if $gc_overlap_ready(S, pgccall)
-def $gc_trace(S, pgccall) = $gc_fiber_trace(S, pgcplan)
+def $gc_trace_inner(S, pgccall) = $gc_fiber_trace(S, pgcplan)
   -- if $gc_residual_overlap(S)
   -- if pgcplan = $gc_plan(S, pgccall)
   -- if $gc_worker_overlap_start_ready(S, pgcplan, true)
-def $gc_trace(S, pgccall) = $gc_fiber_trace(S, pgcplan)
+def $gc_trace_inner(S, pgccall) = $gc_fiber_trace(S, pgcplan)
   -- if $gc_residual_overlap(S)
   -- if pgcplan = $gc_plan(S, pgccall)
   -- if $gc_worker_residual_start_ready(S, pgcplan, true)
-def $gc_trace(S, pgccall) = S[.COMPLETION = UNSUPPORTED "residual destructor tag shares an ordinary traced component"]
+def $gc_trace_inner(S, pgccall) = S[.COMPLETION = UNSUPPORTED "residual destructor tag shares an ordinary traced component"]
   -- if $gc_residual_overlap(S)
   -- if ~$gc_overlap_ready(S, pgccall)
   -- if ~$gc_worker_overlap_start_ready(S, $gc_plan(S, pgccall), true)

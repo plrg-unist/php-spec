@@ -988,9 +988,35 @@ four reached fronts pass. Original selector/240-second stops retain zero credit;
 the peer's fixed 600/620 limits apply to that source alone. THROW conditions are unchanged. Earlier
 [static transfer cuts](../../coverage/semantics/generator-fiber-static-transfer-review.json)
 retain their identities; the two phase anchors use retained native bytes.
-Keyword-forwarded creation, bound/changed callees, wider helper/delegation and
-lifecycle forms remain partial.
+At that I74 cut, keyword-forwarded creation, bound/changed callees, wider
+helper/delegation and lifecycle forms remained partial.
 [Fresh advance review](../../coverage/semantics/generator-fiber-fresh-advance-review.json).
+
+I75 now admits keyword-forwarded receiver-free static Generator bodies after
+ordinary method factories return. The saved creator scope and actual Generator
+owner authenticate fresh/primed Fiber resumers and real close markers without an extra receiver root.
+Six authored and one independent source match PHP; four reached fronts pass 374
+reported checks. At that I75 cut, keyword-invoked factory chains and wider
+callable/lifecycle forms remained partial.
+[Keyword creation review](../../coverage/semantics/generator-keyword-creation-review.json).
+
+I76 retains authenticated keyword method-factory ancestry for receiver-free
+static Generator bodies. The independent Fiber SEND/abort source and four other
+source agreements preserve actual Generator ownership and borrowed creator
+scope after every forwarding factory returns. Three reached fronts check the
+close owner, shared reference formal and retired maker. At that I76 cut,
+receiver-bearing keyword links and wider callable/lifecycle forms remained partial.
+[Chain review](../../coverage/semantics/generator-keyword-chain-review.json).
+
+I77 authenticates same-`$this` receiver-bearing scoped Generator calls and
+factory ancestry, including explicit class calls. The saved or active execution
+frame carries a receiver owner through close or Fiber pause; borrowed creator
+history does not extend its lifetime. Fresh THROW and SEND share the real
+receiver target checks while preserving their existing stage and cache guards.
+Five authored
+and one independent source match PHP, and three reached fronts pass 175
+reported checks. Closure factories and other receiver bindings remain partial.
+[Receiver review](../../coverage/semantics/generator-keyword-receiver-review.json).
 
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need

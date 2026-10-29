@@ -1669,7 +1669,7 @@ retains the genuine ordinary reference cell returned by `current()` through
 `key()`. Key-time writes affect the selected cell; rebinding its source name or
 property does not reselect the cache. Acquisition and send-time reads use the
 shared ordinary-cell helper and existing descriptor-backed graph policy.
-Sending copies a string into a DIRECT argument before `next()` or DATA/INPUT
+Sending copies the value into a DIRECT argument before `next()` or DATA/INPUT
 retirement, so later writes and destructors cannot change the API arguments.
 Other Iterator methods retain their by-value contract.
 
@@ -1687,11 +1687,35 @@ including declaration, selected slot, alias identity and stored-value type.
 The same reader validates CURRENT and DATA HCELL nodes. Reads perform no
 conversion and create no owner; normal property/static writes, rebinding and
 retirement attach or detach constraints. Cached cell selection and the DIRECT
-post-key string snapshot remain independent of later source/name changes.
+post-key value snapshot remain independent of later source/name changes.
 
 Five source agreements include one newly promoted original typed control; new
 reached recipes check source rows, nullable capture, rebind/detach, pending throw,
 actual owner transitions and pooled literal retention. Literal-reference debts,
-released cells, active coercion/parameter-backing authorities, nonstring sends
-and wider graph/lifetime contexts retain their existing boundaries. The ordinary
-helper, A65 and scalar invalid-key cleanup remain unchanged.
+released cells, active coercion/parameter-backing authorities and wider
+graph/lifetime contexts retain their existing boundaries. The ordinary helper,
+A65 and scalar invalid-key cleanup remain unchanged.
+
+The [scalar-send increment](../../coverage/semantics/config-iterator-scalar-review.json)
+normalizes raw scalar transport on this existing INI_SET Iterator bridge.
+KNOWN current receipts and copied ITEMS accept ordinary NULL/bool/int/float/string
+values under the shared bounded flat-leaf validator. Genuine reference caches
+retain the existing cell/type-source/graph read; key-time writes select the sent
+value, and source rebinding does not replace the cached cell. Sending stores a
+DIRECT scalar snapshot without coercion, deprecation or another heap owner.
+Named destination errors still precede scalar-domain refusal.
+
+After traversal and DATA/INPUT cleanup, existing INI_SET reception binds the
+string option using caller strictness (explicit Closure::__invoke remains weak).
+Weak NULL deprecates; strict nonstrings reject. The value parameter accepts the
+scalar/null union even strict, then stringifies inside the API using live state.
+A destructor's precision change therefore affects raw-float conversion while
+later cell writes cannot change the copied argument. A completed scalar-call
+receipt authenticates source, selected callee and normalized copied slots through
+the NULL handler/resume even after the Iterator is gone; it does not reread DATA
+or broaden ordinary CONFIG sent-shape validation.
+
+Other CONFIG intrinsic acquisition and Generator value policies remain unchanged.
+ARRAY/object sends require real owning argument buffers and effectful conversion
+or cleanup support. All held boundaries, including low-precision DEFINE-name
+NaN, remain untouched. Original A66/A67 cuts retain their own scope and identities.
