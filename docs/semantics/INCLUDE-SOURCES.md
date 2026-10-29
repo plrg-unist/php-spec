@@ -1614,5 +1614,20 @@ the child edge, extra-owner/edge refusals, destructor order, weak death and
 pending Exception identity. The existing object-release machinery is unchanged.
 An independent normal source also agrees, including parent weak death before
 the child destructor and the child's own live weak reference during that call.
-An Iterator with no destructor and only a finalizable child remains outside
-this increment, as do wider child graphs and destructor throws or reentry.
+At that cut, an Iterator with no destructor and only a finalizable child was
+outside the increment. Wider child graphs and destructor throws or reentry
+remained open.
+
+The [child-only Iterator increment](../../coverage/semantics/config-aggregate-iterator-child-only-review.json)
+also admits a parent with no effective destructor and the same sole declared
+child. Shared instance-storage release marks and logically retires the parent,
+clearing its weak reference while a real `INSTANCE_STORAGE_STEP` still pins
+its allocation. The Child callback sees itself live; physical parent retirement
+follows that callback. A saved key Exception remains in the real operation
+until both allocations retire, then resumes the same catch. Retired CONFIG
+validation admits the resulting quiet parent image while retaining the storage
+marker, source, pending-Throwable and cursor checks. Three retained originals
+and one independent saved-Exception/weak-visibility source agree with PHP;
+149 source-reached premises check the pin, ownership refusals, marker necessity
+and budget resumes. Generic destructor/storage rules are unchanged. Additional
+owners/edges, child storage, wider graphs and destructor throws/reentry remain open.

@@ -8,6 +8,50 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
+Ordinary integer operators now admit an initially shared reference cell holding
+an empty, unmaterialized `stdClass` RIGHT, with a nonreference fractional LEFT CV
+and a surviving outside alias. After handler rebinding, `%`/shifts read the live
+RIGHT CV; bitwise operations read the selected old cell. An old-alias write to
+`2` gives bitwise `0`/`14`/`14`, while modulo/shifts still use rebound `5`; LEFT's
+saved `12` survives its write to `99.5`. Failure uses live LEFT and selected RIGHT types
+in TypeError, and supplied throws cancel delivery. No new owner/task is added.
+Sixteen formerly Unsupported originals, one unchanged plain-CV control and four
+independent originals agree exactly; strict424 and four source-reached
+recipes/470 checks pass. Joined strict compilation over the current 424-module
+tail also passes. Initial sole-owner cells, expired pointers, memberful
+objects and wider reference producers remain partial.
+[Reference-object RIGHT review](coverage/semantics/integer-reference-object-right-warning-review.json).
+
+A fresh Aggregate-returned CONFIG Iterator may now lack a destructor while
+its sole declared Child finalizes through ordinary instance storage. Parent
+weak visibility ends before the Child callback, while the real storage pin
+keeps the parent allocation until that callback finishes. Three retained
+frozen originals and one independent saved-Exception source agree exactly
+with PHP across normal, invalid-key and saved-Exception paths. Strict
+compilation passes on 424 modules; 149 reached premises check the real pin,
+weak visibility, pending identity and rejection without the storage marker.
+Joined strict compilation over the actual tail also passes.
+[Child-only Iterator review](coverage/semantics/config-aggregate-iterator-child-only-review.json).
+Extra child owners/edges, wider graphs and destructor throws/reentry remain partial.
+
+Fresh public method-created by-reference `Generator::throw` now carries its
+advancing resumer, original temporary Throwable and authenticated receiver
+through Fiber suspension before the first yield, with both caches empty.
+Resuming to a yield creates the live reference cache: external name rebinding
+preserves the old cell, and `throw()` returns a snapshot while `current()` follows
+later writes. Catch/finally cleanup separates receiver and cache lifetimes;
+an independent pre-yield abort preserves the original Throwable with the supplied
+one as `Previous`, retiring an uncached self receiver before catch.
+Three authored and one independent source agree exactly with pinned PHP; two
+I68/I67 controls retain their exact parent outcomes. The three new authored
+sources were checked `Unsupported` on the unchanged model. Strict compilation
+of 424 modules and 229 custom checks across two reached cuts pass. Joined strict
+compilation over the actual tail also passes. The first
+native-report transport stop and overstrong returned-string fixture retain
+zero affected credit; the accepted parked cut keeps its original identity.
+Fresh by-value method THROW, bound/delegated and wider lifetimes remain partial.
+[Fresh method reference THROW review](coverage/semantics/generator-fiber-fresh-method-reference-throw-transfer-review.json).
+
 An ordinary Iterator spread with by-reference `current()` now admits one inline
 public untyped ARRAY field with an unpooled runtime root through its real DATA
 destructor.
@@ -64,21 +108,7 @@ premises check ownership, order, weak death and pending identity. Joined strict
 compilation over the actual tail also passes. Earlier
 fixture compiler, timeout and stopped attempts retain zero credit.
 [Returned Iterator child review](coverage/semantics/config-aggregate-iterator-child-review.json).
-Wider child graphs, child-only finalization and destructor throws/reentry remain partial.
-
-Primed public method-created by-reference `Generator::throw` now carries its
-cached reference cell, authenticated receiver and saved Throwable through a
-Fiber catch or pending `finally`. An external name rebind leaves the old cell
-selected; `throw()` returns a snapshot while later `current()` follows cell
-writes. Normal and supplied `Fiber::throw` continuations preserve the original
-exception and `Previous` order, with separate receiver/cache retirement. Three
-authored and one independent source agree exactly with pinned PHP; two I62/I63
-controls remain exact. The three new authored sources were checked
-`Unsupported` on the unchanged model. Strict compilation of 424 modules and
-one reached state with 129 custom checks pass. Joined strict compilation
-over the actual tail also passes. Two overstrong reached-state premises and an independent recorder comparison error retain zero credit.
-Fresh method THROW, bound/delegated resumers and wider lifetimes remain partial.
-[Method reference THROW review](coverage/semantics/generator-fiber-method-reference-throw-transfer-review.json).
+Wider child graphs and destructor throws/reentry remain partial.
 
 Bounded unit0 anonymous `new` now takes one or two direct positional/named
 arguments. Public required by-value untyped/`int` constructor formals use the
@@ -396,12 +426,28 @@ before `ErrorException` severity at every node; warm caches and finite DIRECT
 trace arrays retain their order. Shared child identity and mixed exact child
 classes skip their captured payloads. Ten new original sources (eight author,
 two independent), one newly supported retained control and two unchanged normal
-controls agree with pinned PHP; two reached-payload controls remain Unsupported.
+controls agree with pinned PHP; two reached-payload controls were Unsupported
+at that cut.
 Strict compilation of 424 modules and six source-reached fixtures with 357
 premises/ten raw steps pass. The earlier two missing-worktree-link setup errors
 retain zero credit. [Builtin previous-chain review](coverage/semantics/throwable-builtin-previous-comparison-review.json).
 Base Exception/Error root rules remain separate; materialized, freeing, longer
 or cyclic previous paths, subclasses, FiberError and pending states stay partial.
+
+Captured `stdClass`/plain methodless objects, arrays and live reference cells now
+compare inside those builtin chains through the existing paired graph bound.
+Reached table materialization and current writes preserve cache, trace, previous
+and severity order. Seven new originals (five author, two independent), two
+previously Unsupported originals and three unchanged controls agree exactly;
+four wider controls remain Unsupported. Strict compilation of 424 modules and
+four reached fixtures with 426 premises/eleven raw steps pass, including real
+and derived cycle refusal.
+An eager Boolean guard draft was corrected during independent source review
+before cyclic validation; its strict/one-valid-source passes retain their old cut.
+[Previous graph review](coverage/semantics/throwable-previous-graph-comparison-review.json).
+The additional graph mode retains its own 16-node path and paired class/position
+limits. Wider callbacks, graph cycles, materialized Throwables and pending states
+remain partial.
 
 Fresh, unheld user Iterators returned by a borrowed `IteratorAggregate` getter
 now enter CONFIG unpack with DATA as their sole owner. Two original normal and
@@ -520,19 +566,25 @@ functions and the dynamic Error origin. The [interface](coverage/semantics/multi
 [two-trait](coverage/semantics/ordered-two-trait-autoload-review.json) reviews retain
 their original bounded source, reached and preservation evidence.
 
-Fixed-name ordinary `new` now recognizes an unlinked source class through the
-authenticated saved continuation of its entered dependency loader. It raises
-the missing-class Error without a redundant loader call; after failed linking
-unwinds, a later `new` autoloads normally. Two repaired author originals and
-one independent interface-loader original agree exactly with pinned PHP; one
-unchanged same-name recursion control remains exact. All three repaired-source
-baselines completed normally with wrong output. Strict compilation of 424
-modules and two reached fronts with 67+73 premises pass. Separately, 26 recursion
-assertions and 19 linked class-constant/new predicates pass as preservation.
-Joined strict compilation over the actual tail also passes. Earlier predictions,
-candidate mismatches and fixture elaboration failures keep
-zero credit. Dynamic-name `new`, other declaration kinds and wider reentry
-remain partial. [Reentrant lookup review](coverage/semantics/reentrant-unlinked-new-review.json).
+Ordinary fixed-name and dynamic-string `new` recognize an unlinked source class
+through its authenticated entered dependency-loader continuation. Construction
+raises the missing-class Error without a redundant loader call; after failed
+linking unwinds, a later lookup can autoload the name normally. Dynamic
+selectors retain their selected raw bytes and normalized class across callbacks,
+including alias rebinding, named producers and runtime concat carriers. Missing
+lookup skips arguments and preserves the operand's fetch line and main-file origin.
+Four new authored and two independently frozen originals agree exactly with
+pinned PHP; one unchanged same-name dynamic recursion control remains exact.
+The six repaired baselines were interpreter failures. Strict compilation of
+424 modules and authored reached groups of 67+67+100 premises pass; corrected
+and temporary-carrier independent groups add 117+117 premises at separate cuts.
+Joined strict compilation over the actual tail also passes.
+The original acquisition-fixture Warning and failed plain-string premise keep
+zero credit. String identity is immutable metadata with empty heap roots.
+[Dynamic-name review](coverage/semantics/reentrant-dynamic-new-review.json).
+Earlier [fixed-name evidence](coverage/semantics/reentrant-unlinked-new-review.json)
+retains its own cuts; other declaration kinds and wider reentrant histories
+remain partial.
 
 Ordinary dynamic array callables selected as public user object or class-string
 static methods now accept initialized Iterator CV unpack. Selection survives
@@ -601,11 +653,10 @@ remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| I69 | Fresh method by-reference Generator THROW; unchanged-model baseline work. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117, CALL113, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118, CALL113/122/123, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation

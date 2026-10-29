@@ -66,6 +66,21 @@ repair, object-first failure and a changed live LEFT type. Three source-reached
 fronts pass 314 checks, including two derived live-type failure premises. The
 initial duplicate-assertion preparation failure has zero semantic credit.
 
+An initially reference-wrapped empty `stdClass` RIGHT now follows the same
+conversion protocol when an outside alias keeps its cell alive. Entry requires
+at least two real cell owners; the selected pointer adds none. After the handler
+rebinds RIGHT to `5`, `%` and shifts follow that CV, while bitwise operations
+retain the old cell and fail on its object. Writing `2` through the old alias
+before rebinding instead supplies bitwise results `0`/`14`/`14`, while modulo
+and shifts still use `5`. LEFT retains its saved `12`, and a supplied handler
+throw skips the unfinished operation. Later pointer use accepts the old cell's
+surviving single owner without repeating entry admission. Sixteen formerly
+Unsupported originals, one unchanged plain-CV control and four independent
+originals agree exactly; four source-reached recipes pass 470 checks. Initial
+sole-owner cells, expired pointers, memberful objects and wider reference
+producers remain partial. See the
+[reference-object RIGHT review](../../coverage/semantics/integer-reference-object-right-warning-review.json).
+
 Plain-CV NaN `%` now preserves the remaining precision Deprecated after its
 range Warning handler throws. With mask `2`, the default Deprecated on line 25
 precedes the same supplied Exception from line 20; mask `8194` runs neither a

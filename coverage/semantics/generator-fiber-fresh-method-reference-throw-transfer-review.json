@@ -1,0 +1,114 @@
+{
+  "milestone": "I69 fresh public method by-reference Generator::throw Fiber transfer",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local PHP SHA256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json, LC_ALL=C, TZ=UTC",
+  "parent": "181f3ba1b3261dff00d55b7365b45ed57264e53e",
+  "implementation_commit": "815f5d085",
+  "retirement_state_commit": "9b423575e",
+  "corrected_state_commit": "bf9e1ba10",
+  "scope": "A fresh ordinary METHOD_TARGET by-reference Generator::throw with one valid Throwable, ADVANCE+FIRST and empty VALUE/REFCELL may transfer through a Fiber pause. The matching receiver and empty INSTANCE are required; the existing outer current-callee/owner validators authenticate the actual receiver. The saved resumer owns the original temporary Throwable before first yield; the first yielded CV later creates a live cache. Public method sources cover external source-name rebinding, snapshot versus live-cell reads, normal catch/finally, self-cache lifetime and pre-yield supplied-Throwable abort. Fresh by-value method THROW is not admitted by this new arm.",
+  "engine_paths": [
+    "vendor/php-src/Zend/zend_generators.c::ZEND_METHOD(Generator, throw), zend_generator_ensure_initialized, zend_generator_throw_exception, zend_generator_resume",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_YIELD by-reference CV path",
+    "vendor/php-src/Zend/zend_fibers.c::ZEND_METHOD(Fiber, throw), zend_fiber_resume_internal"
+  ],
+  "implementation": [
+    "spec/semantics/281-fibers.watsup"
+  ],
+  "source_catalog": "tests/semantics/generator_fiber_fresh_method_reference_throw_transfer_cases.json",
+  "sources_sha256": {
+    "i69-fresh-method-byref-catch-rebind": "64cecaee0da6b38907df9e34c79efb7e80e158e643277090f3c11a32f81e6cff",
+    "i69-fresh-method-byref-finally-normal-separate-cache": "5054184b793599fd96a927529bc69a551e3fbb6116a8275be6ab08cfba3e56cd",
+    "i69-fresh-method-byref-finally-abrupt-self-cache": "2b3a2af4cc015d2470f9fa7ae6c65435a29f0d079c7a9779e073a76d381d56d5",
+    "i69-unchanged-cached-method-byref-control": "f005fff624de95be16c0824202cf75ddbf1f83b462fa54cbd998af64c7210001",
+    "i69-unchanged-fresh-closure-byref-control": "b7e47f703a6b179bfed220b5f2da4672678a37f92426f8f950122046c6f56029",
+    "i69-fresh-method-byref-self-abort-independent": "a48250298eb7c4e5d652a2b89f8b92475746f2d7f98b9ac56f5acfe6909bc404"
+  },
+  "validation": {
+    "native_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-reference-throw-69/source-packet/native-first/report.json",
+      "sha256": "d3dc707271ac62428a5c740d0034c4ec211482bc8cee69710e07920c83468da8",
+      "result": "Three authored sources plus byte-identical I68 cached-method/I67 fresh-Closure controls: native exit0, no timeout, empty stderr, stable HEAD/inputs; CPU 1."
+    },
+    "native_transport_projection": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-reference-throw-69/source-packet/native-first/report-for-source-wrapper.json",
+      "sha256": "21e80d609241c0c808fce1d8713cb2e089fe34dd515b2f516e0c9c12c689c514",
+      "result": "Encoding only: actual_stdout/actual_stderr text converted to base64 for the existing wrapper. Independent byte review confirmed all five tuples and process/profile metadata unchanged; no native replay."
+    },
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-reference-throw-69/source-packet/unchanged-baseline/report.json",
+      "sha256": "a35d09f76caf1bedc0efe341db01f866c099752ce1eccc4639d019432ad50ca5",
+      "result": "Three authored sources checked Unsupported at the intended Fiber transfer, both controls exact NORMAL, stable HEAD/inputs, no timeout; CPU 1."
+    },
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-reference-throw-69/strict-private/report.json",
+      "sha256": "acc3993486f6c60467913d42557d0c72e34b3e75404160e24fd66379c8ff35cf",
+      "result": "424 ordered modules compiled through SL elaboration/algorithmic checking/structuring at 815f5d085; exit0, true, empty stderr, stable HEAD/inputs; CPU 5."
+    },
+    "first_wrapper_preexecution_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-reference-throw-69/raw/generator-fiber-fresh-method-reference-throw-transfer-source-w1ilcbmx/report.json",
+      "sha256": "5aecb5be96d0028569fb3486aa818fb879a14f6548e63d59148d6807dc0c820d",
+      "result": "Zero semantic credit: author native receipt used raw text in fields expected to carry base64. Native comparison stopped before model execution; original failure preserved."
+    },
+    "affected_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-reference-throw-69/raw/generator-fiber-fresh-method-reference-throw-transfer-source-0t45dltf/report.json",
+      "sha256": "57906b7bc8dcdb8b337f862f721c0d40c5183067b77a7bc0433ffda6f3bd900d",
+      "result": "Three authored sources exact NORMAL at 9b423575e, unchanged native source paths/bytes reused, exit0/no timeout/empty stderr and stable HEAD/inputs; CPU 5. Controls were not replayed."
+    },
+    "parked_pass_and_first_returned_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-reference-throw-69/raw/fiber-state-review-23068rc7/report.json",
+      "sha256": "85e7ab94d8aeed592832529484e5cc124ee09a862e28665a10052aefa19ae63f",
+      "result": "Parked pre-yield cut at 9b423575e: 146 custom/151 reported checks TRUE. The returned cut failed an overstrong concrete PSTRING assertion and earns zero full-fixture credit; all earlier live-cache/owner premises passed. Stable HEAD/inputs; CPU 5."
+    },
+    "corrected_returned": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-reference-throw-69/raw/fiber-state-review-wh29x9_q/report.json",
+      "sha256": "7503598f778b1ac05294418dbc11318148e5a0ac809ec31c799a78b5e60630a3",
+      "result": "Returned-only cut at bf9e1ba10: 83 custom/88 reported checks TRUE using the byte-string value contract. Stable HEAD/inputs, exit0/no timeout/empty stderr; CPU 4. The accepted parked cut was not rerun."
+    },
+    "independent_native": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-reference-throw-69-review/independent/native-first-report.json",
+      "sha256": "8256cfb2e528c0ca4552889e904ea831258dd3f1dec765cec503a0536b081870",
+      "result": "Frozen self-alias pre-yield abort source at 181f3ba1b, native exit0/no timeout/empty stderr, stable HEAD/4 inputs; CPU 1."
+    },
+    "independent_model": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-reference-throw-69-review/independent/model-review-report.json",
+      "sha256": "335c506c7cbb580b26960fe6f6db9e0442fdb9c17ae267cdadb87707c73dfd6a",
+      "result": "Same frozen 99-byte output exactly matches decoded NORMAL model outcome at bf9e1ba10, exit0/no timeout/empty stderr, stable HEAD/11 inputs; CPU 4."
+    }
+  },
+  "reached_total": {
+    "custom_checks": 229,
+    "reported_assertions": 239,
+    "cuts": 2,
+    "credit": "146 parked at 9b plus 83 corrected returned at bf9; initial failed returned cut is excluded."
+  },
+  "preservation": "The new arm is pointwise disjoint from the I68 cached-method control (nonempty REFCELL) and I67 fresh-Closure control (nonempty CLOSURE). Both original source bytes and exact parent outcomes are retained without replay. No existing helper, body-id, callee or owner gate changed. Matched forged TARGET+RECEIVER passes the local shape helper but fails outer authenticated callee/body admission in the reached test.",
+  "compatibility": "The nine-line 281 change is identical from 815f through 9b/bf9; later edits only strengthened direct final retirement checks and corrected one returned-fixture string representation assertion. The accepted parked clause array is unchanged by the returned-only correction. The sixth independent catalog row was appended byte-identically after direct independent validation; no extra wrapper run is credited.",
+  "remaining": "Fresh by-value method THROW, bound Closure, helper/delegated resumers, request/collection and wider lifecycle behavior remain partial. Full PHP core and BOLA freedom are not established.",
+  "independent_review": "Peer byte-CLEARed authored sources before native, static-CLEARed the nine-line arm, two reached cuts and string-bytes correction; independently inspected authored exact outcomes and froze/validated the self-abort counterexample. Final metadata, catalog, report hashes and documentation were independently CLEARed without execution.",
+  "evidence_directory": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-reference-throw-69",
+    "manifest": "manifest.json",
+    "manifest_sha256": "f52cd35cd30013842598426955e98a9f285abf19d9f48cad355ecc3b2f33554d",
+    "format": "Uncompressed raw reports/streams and frozen sources outside Git; peer independent report paths are in the manifest."
+  },
+  "recovery": "Raw reports retain their original private-worktree paths; copied source/state directories are under raw/. Independent originals and raw streams remain in the peer review directory named by its report paths.",
+  "actual_tail": {
+    "parent": "099f6eca2b2f6d688cdbd30f8d93cf41032a808e",
+    "tested_candidate": "9936f44b327c2550e4fb33422d066e21078a69fd",
+    "composition": "Reviewed 281, catalog, source/state runners and both family docs copied byte-identically from d38ede6ff. Actual-parent A62/CALL122 and prior tail changes remain source-inactive for all six I69 cases. Makefile, PROGRESS, README, ARTIFACTS and inventory preserve actual-parent additions; stale CALL122/I69 handoff rows are removed. Original source/state cuts are not renewed.",
+    "independent_review": "Actual-tail receiver/cache admission, source-inactive routes, owned-file byte identity and shared metadata preservation independently CLEARed on candidate 9936f44b3.",
+    "joined_strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-reference-throw-69/joined-strict/report.json",
+      "sha256": "c1098554186d28da8b4d937ddb6a47689255a033a2ef030e814b30be812623fe",
+      "modules": 424,
+      "exit": 0,
+      "timeout": false,
+      "stderr_bytes": 0,
+      "head_stable": true,
+      "inputs_stable": true,
+      "affinity": [
+        1
+      ]
+    }
+  }
+}

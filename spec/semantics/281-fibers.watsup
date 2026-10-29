@@ -178,6 +178,15 @@ def $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext
   -- if $generator_input_valid(S, pvalue)
   -- if pgeneratorop.ADVANCE /\ pgenerator.FIRST
   -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL = eps
+  -- if $generator_reference_producer(S, pgenerator) /\ pgenerator.CLOSURE = eps
+  -- if pcallcontext.TARGET = METHOD_TARGET n_receiver pgenerator.FUNCTION
+  -- if pcallcontext.RECEIVER = (n_receiver) /\ pcallcontext.INSTANCE = eps
+def $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = true
+  -- if pgeneratorop.NAME = "throw"
+  -- if pgeneratorop.ARGUMENTS = [pvalue]
+  -- if $generator_input_valid(S, pvalue)
+  -- if pgeneratorop.ADVANCE /\ pgenerator.FIRST
+  -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL = eps
   -- if ~$generator_reference_producer(S, pgenerator) /\ pgenerator.CLOSURE = eps
   -- if pcallcontext.TARGET = pgenerator.FUNCTION /\ pcallcontext.INSTANCE = eps
 def $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = true

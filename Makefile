@@ -557,6 +557,8 @@ test-semantics: build
 	python3 tests/semantics/generator_fiber_fresh_closure_reference_throw_transfer_state.py
 	python3 tests/semantics/generator_fiber_method_reference_throw_transfer_sources.py
 	python3 tests/semantics/generator_fiber_method_reference_throw_transfer_state.py
+	python3 tests/semantics/generator_fiber_fresh_method_reference_throw_transfer_sources.py
+	python3 tests/semantics/generator_fiber_fresh_method_reference_throw_transfer_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
