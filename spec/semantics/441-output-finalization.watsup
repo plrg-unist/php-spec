@@ -557,6 +557,7 @@ dec $output_final_exception_carrier_tag(ptask) : bool
 dec $output_final_exception_carrier(pstate, ptask*) : ptask?
 dec $output_final_exception_scope(pstate) : pobinvoke?
 dec $output_final_exception_reportable(pstate, nat) : bool
+dec $output_final_exception_error(pstate) : perrorcall?
 dec $output_final_exception_bailout(pstate) : pstate
 dec $output_final_exception_hold(pstate, pstate, ptask) : pstate
 
@@ -595,7 +596,7 @@ def $output_final_exception_abrupt(S) = true
   -- if S.TODO = (THROW_SEARCH n) :: ptask :: ptask_tail*
   -- if $throwable_live(S, n)
   -- if $output_final_exception_carrier(S, S.TODO) = (ptask_carrier)
-  -- if ptask = ptask_carrier \/ $eager_bailout_source(S) =/= eps
+  -- if ptask = ptask_carrier \/ $eager_bailout_source(S) =/= eps \/ $output_final_exception_error(S) =/= eps
 def $output_final_exception_abrupt(S) = false -- otherwise
 
 ;; Parse/CompileError have a different native non-stringifying report path;
@@ -612,8 +613,13 @@ def $output_final_exception_reportable(S, n) = true
 def $output_final_exception_reportable(S, n) = false -- otherwise
 def $output_final_exception_bailout(S) = $eager_bailout_transfer(S, S, ptask)
   -- if $eager_bailout_source(S) = (ptask)
+def $output_final_exception_bailout(S) = S_clean[.DESTRUCTION.ABANDONED = S_clean.DESTRUCTION.ABANDONED ++ [$eager_cleanup_record(S, ERROR_HANDLER_RESULT perrorcall)]]
+  -- if $eager_bailout_source(S) = eps
+  -- if $output_final_exception_error(S) = (perrorcall)
+  -- if S_clean = $destruction_abort(S, S)
 def $output_final_exception_bailout(S) = $destruction_abort(S, S)
   -- if $eager_bailout_source(S) = eps
+  -- if $output_final_exception_error(S) = eps
 def $output_final_exception_hold(S_source, S, EXCEPTION_HANDLER_RESULT pexceptioncall) = S[.DESTRUCTION.ABANDONED = S.DESTRUCTION.ABANDONED ++ [$eager_cleanup_record(S_source[.ORIGIN = eps], EXCEPTION_HANDLER_RESULT pexceptioncall)]]
 def $output_final_exception_hold(S_source, S, EXCEPTION_HANDLER_CLEAN pexceptioncall b) = S
 

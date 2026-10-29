@@ -387,3 +387,19 @@ def $eager_cleanup_valid(S, pdestructioncleanup) = true
   -- if pdestructioncleanup.TARGET.INTERNAL /\ pdestructioncleanup.TARGET.CLONE = eps
   -- if pdestructioncleanup.CALLER = eps /\ pdestructioncleanup.ORIGIN = (papiargcursor.SITE) /\ pdestructioncleanup.CONSTCONTEXT = eps
   -- if $api_cursor_saved_valid($eager_cleanup_history(S, pdestructioncleanup), papiargcursor)
+
+;; A warning's real C result marker owns its raw error callback and its RESUME
+;; cursor. Fatal dispatch occurs before ordinary error-result cleanup can move
+;; that cursor back to TODO, so authenticate both owners at this live boundary.
+def $output_final_exception_carrier_tag(ERROR_HANDLER_RESULT perrorcall) = true
+  -- if $output_final_exception_cursor(perrorcall.RESUME) =/= eps
+def $output_final_exception_carrier(S, (ERROR_HANDLER_RESULT perrorcall) :: (OUTPUT_FINAL_EXCEPTION pobinvoke true) :: (OUTPUT_DRAIN pobdrain) :: eps) = (perrorcall.RESUME)
+  -- if pobinvoke.CALL = OB_FINAL pobdrain
+  -- if $output_final_exception_cursor(perrorcall.RESUME) = (papiargcursor)
+  -- if $error_entered_call_valid(S, perrorcall)
+  -- if $api_cursor_warning_valid(S[.ORIGIN = (papiargcursor.SITE)], papiargcursor)
+def $output_final_exception_error(S) = (perrorcall)
+  -- if S.TODO = (THROW_SEARCH n) :: (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if $output_final_exception_cursor(perrorcall.RESUME) = (papiargcursor)
+  -- if $error_entered_call_valid(S, perrorcall)
+def $output_final_exception_error(S) = eps -- otherwise
