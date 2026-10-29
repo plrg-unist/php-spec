@@ -1,0 +1,59 @@
+{
+  "milestone": "COMP151",
+  "status": "independently reviewed and accepted within the stated scope",
+  "target": {
+    "php": "8.5.10 CLI NTS signed64",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C; TZ=UTC; -n followed by tests/semantics/profile.json"
+  },
+  "scope": "Standalone same-kind twelve non-base exact builtin Throwable roots with NULL previous values now use the existing visited physical-slot effect fold when the older DIRECT predicate rejects their traces. Canonical/live/unmaterialized, normal/nonpending and existing class/layout requirements remain. Base Exception/Error dispatch and reached method-bearing bodies stay separate; subclasses, freeing/materialized objects and pending states remain partial. No new graph cap or previous-cycle behavior is introduced.",
+  "semantic_review": "Only the final admission condition changes: an actual previous link OR failure of the old builtin_same_pair predicate. NULL+DIRECT remains disjoint on its old route; linked admission is unchanged; NULL+nonDIRECT reaches the existing effect fold. Current nodes/finite paths authenticate first. Eager OR is safe because same_pair checks NULL previous values before its finite DIRECT traversal and mutates nothing. Message/cache/code/file/line still precede trace; NULL previous precedes ErrorException severity. Live-cell/table effects, early identity/class/leaf skips, real recursion Error and owner/unwind behavior reuse reviewed machinery. The private pure nonDIRECT helper remains Unsupported.",
+  "revisions": {
+    "source_only": "c047444a1b12dc9a63b5425c4c30d6d4d07bdbae",
+    "tested_private": "59acf2aa5efc4ab87a5f702446040e3965f64204",
+    "actual_base": "f110c615032a2df88553a329d150d4c47ecf1270",
+    "reviewed_composition": "d5fa6bbd03ae2c53ba627abffde8da795cc1913c"
+  },
+  "counterexamples": "Independent EE roots retain snapshotted severities9/1 while live captured seed fields normalize to0. Opposing trace values, equal warmed text, live writes and nested getTrace COW identity checks distinguish physical order. Distinct captured arrays share one NaN cell: cell identity cannot make NaN equal, and current7 retarget restores equality. Standalone ValueError roots reach ordinary cycles with real Error/file/line/empty trace and saved assignment/finally, then recover through shared-child identity and earlier-leaf decisions.",
+  "independent_originals": [
+    {
+      "name": "standalone-severity-live-cow.php",
+      "path": "/tmp/comp151-review/standalone-severity-live-cow.php",
+      "sha256": "99e694a6218d75d97abadf704936dc31de58a08e50941f0a64531f78819d4334"
+    },
+    {
+      "name": "standalone-shared-cell-cycle.php",
+      "path": "/tmp/comp151-review/standalone-shared-cell-cycle.php",
+      "sha256": "b13b1c6f06f7edb59849cdd90a4f96c6884defab8b18d12d45006910b8a36189"
+    }
+  ],
+  "validation": {
+    "counts": "Six new normal agreements (author4/independent2), two retained144 promotions and one focused unchanged DIRECT agreement. Two reached-method/base-legacy controls remain explicit Unsupported with zero agreement. Four source-reached recipes pass264 conditions:260 Boolean/four raw PhpSteps, binding actual operand values, NULL fields, live cell/direct-snapshot IDs, reached tables/owners and real Error allocation/source/unwind.",
+    "native_reports": {
+      "author_six": "e89389aa1060c1b6fb746730f8caae3faad817fda987e7eb5257363a28d4931b",
+      "independent_two": "0cd2eacfea50c215082a6d1cccfee92fab96977f13521bb0a15da6f20d90191c"
+    },
+    "independent_model_reports": {
+      "severity_live_cow": "a8539e26f8117a62f19b576c7023570e1e20f72c712fa85cacba374809d550fe",
+      "shared_cell_cycle": "2b66fd59171fdb4bd5e8b5d8f298a828ffb00225bfaeec47b6ae550b2d5ce80e"
+    },
+    "retained_promotion_and_direct_report": "b9062efedc9ce6a7c7c844bdcae73ab9aab86b7b29858189f0a9cbbca08b6f4c",
+    "state_reports": {
+      "object64": "354993540425425a5f0cbce589fe2238f12e339bc20dde8b6cb9197227ba1aff",
+      "array53": "6ff03d2441f0be39244e441464326e20319c2fe9e6329e4404742eb402afc27d",
+      "cycle93": "8fe0d264012e6d30e2eff2747a1fea9ca4a3a2c3586fcd281ab6d38df0f71807",
+      "cache54": "4109b4a7bfee372e91f9dc32aa688e40101488cd4375fe9ff3bbc5edc9bcd359"
+    },
+    "strict_reports": {
+      "private428": "e8fefc5a34a248455629397cec42ec54e09225d42a1881888a61916b3d73da3e",
+      "joined428": "ce34ee76c00f64602bb9644ea010d7e79c25385d8d21d140d0985a19824870e0"
+    },
+    "process": "Accepted phases preserve source bytes, stable executed inputs/HEAD, pinned parent/children, empty recorded groups and closed workers. The joined gate exits0 without timeout. Existing source/state evidence retains its private cut; composition supplies no renewed execution credit."
+  },
+  "preserved_setup_and_baseline": "The unchanged peer severity/live/COW source is genuinely frontend-accepted/checked Unsupported(Throwable property comparison), prefix N|1:1|B|, report1bf66dc15f8912df4d47187ce27482c7ace8c4a787c94bdf70a352f78b145d93. One relative-runpy setup stopped before any model process/report; it has zero credit. Absolute invocation corrected that setup with no repository/source/runtime change. Retained144 native source/oracle/profile identities were matched once without native replay.",
+  "actual_tail_review": "CLEAR. All six tested runtime/source/client/protocol/state blobs are byte-identical to59acf. Incoming152/157/163/52/394, manifest and tool inputs are unchanged. I75 scoped-call/creation certificates require scoped/static Generator contexts and GENERATOR records; these direct named functions and builtin Throwable getters have no yield or Generator. The non-ephemeron collector path still selects the legacy walk; no WeakMaps or explicit collection occur. Ordinary table materialization, current aliases and captured Error paths have no concrete shared-rule intersection requiring accepted replay.",
+  "metadata_review": "CLEAR. Concise PROGRESS changes only its comparison family sentence/link and removes completed151 active row; every other incoming checkpoint/family/active/held/paused line is retained. README/family state exact limits and old DIRECT/base separation. Inventory appends paths/review only to still-partial44/70. Complete core is not claimed.",
+  "recovery": "Raw originals, commands, streams, runtime/profile/input/process records and author model-*-report.json files stay outside Git under /home/user/workspace/php-spec-evidence-archive/comp151. Independent sources/launchers remain under /tmp/comp151-review. Lightweight tag evidence/comp151-tested-59acf2aa5 retains tested ancestry. Held COMP88/COMP123 and costly COMP150 originals remain untouched; no push or backup worktree is used."
+}

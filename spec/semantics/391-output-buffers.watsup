@@ -137,7 +137,9 @@ def $output_finalize(S) = S[.OUTPUTBLOCKED = true][.COMPLETION = UNSUPPORTED "st
   -- if S.OUTPUTBUFFERS =/= eps
   -- if $display_state_mode(S) = 1
   -- if $output_deferred_stdout(S)
+def $output_finalize(S) = $output_drain_begin(S) -- if $output_drain_ready(S)
 def $output_finalize(S) = S[.COMPLETION = UNSUPPORTED "request-end user output-handler callback drain"]
+  -- if ~$output_drain_ready(S)
   -- if ~S.OUTPUTBLOCKED
   -- if $shutdown_terminal(S.COMPLETION)
   -- if $output_has_user(S.OUTPUTBUFFERS)

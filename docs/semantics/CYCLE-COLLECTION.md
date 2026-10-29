@@ -240,6 +240,28 @@ remain required; clone, nonleaf insertion/replacement,
 destructor/resurrection/reentry, residual, worker, hook and active
 context cases remain open. See the [registration-order review](../../coverage/semantics/gc-registration-order-review.json).
 
+Fresh callback-free ordinary plans without nonempty WeakMaps now use the same
+claimed white worklist. Zend marks later ordinary siblings before descending
+the first child; an object proxy cannot retrospectively turn a previously
+claimed real array into an uncounted table. Two native-first shared-table
+graphs agree at count 3, through both inline declared fields and a materialized
+table with INDIRECT fields and an ALIAS cell. The unchanged model completed
+normally but counted 2 on the inline graph. Three private strict SL reached
+fronts pass 106 checks: a protected zero-count plan rejects a matching forged
+legacy walk marker, and both white fronts execute GC_FREE with count 3 while
+the old helper derives 2. The materialized front checks physical CELL owner 1,
+shared table owners 2 and nonowning INDIRECT buckets. A held uncalled
+destructor outside the white set survives; actual admitted DTORS is empty.
+Fresh snapshot validation clears borrowed PLAN while recomputing the producer
+image, so its walk choice comes from current heap/phase rather than the saved
+marker. Existing callback and overlap walkers, physical owner extraction in
+module39, and the finite claimed-worklist bound are unchanged. The new lane
+requires canonical ordinary nodes/tables, a quiet unmarked buffer, fresh PASS0,
+no current called target, and no worker, hook or active Fiber/frame/iterator
+context. Destructors inside the collected component, callback/reentry,
+residual tags and wider contexts remain open. See the
+[ordinary claim review](../../coverage/semantics/gc-ordinary-claim-review.json).
+
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;
 pending exceptions remain owned once. After a destructor returns, its bare guard

@@ -728,7 +728,7 @@ Skipped shared or mixed-class Throwable children may retain cyclic trace
 payloads, but their canonical images and finite previous paths still authenticate.
 Equal chains resume array tails; nonzero or Unsupported children stop the scan.
 Actually reached callbacks and object/scalar pairs, materialized/freeing
-Throwable nodes, longer/cyclic previous paths, generated-only `FiberError`, user
+Throwable nodes, cyclic previous paths, generated-only `FiberError`, user
 subclasses and pending states remain partial. Existing `Exception`/`Error`
 root-chain bounds below retain their separate rules.
 [Builtin previous-chain review](../../coverage/semantics/throwable-builtin-previous-comparison-review.json).
@@ -748,6 +748,17 @@ count/key/value order, captured recursion Errors and owners are unchanged.
 Invalid, cyclic, materialized or freeing previous nodes remain outside these
 routes; this does not add lazy previous admission or previous-cycle comparison.
 [Finite previous-path review](../../coverage/semantics/throwable-previous-finite-comparison-review.json).
+
+Canonical NULL-previous roots of the twelve non-base kinds also use the stateful
+physical-slot fold when the older DIRECT predicate rejects their captured traces.
+Live ordinary objects and reference cells retain current writes and copied
+siblings; authentic captured recursion raises the ordinary Error. Prefix/cache
+decisions still precede reached payload validation, and `ErrorException` severity
+follows trace and null previous. The older DIRECT route stays disjoint; the pure
+previous-order helper still rejects non-DIRECT payloads. Base `Exception`/`Error`
+retain their legacy trace dispatch. Reached method-bearing classes and the
+existing canonical layout, lifetime and pending-state restrictions remain partial.
+[Standalone trace review](../../coverage/semantics/throwable-null-trace-comparison-review.json).
 
 Warm caches and nonempty builtin traces now meet in the same physical slot
 scan. Same-kind canonical `Exception`/`Error` pairs with null previous values

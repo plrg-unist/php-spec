@@ -862,7 +862,7 @@ def $throwable_builtin_previous_pair(S, n_left, n_right, pcompareguard_seen*) = 
   -- if pthrowable_left.KIND =/= "Exception" /\ pthrowable_left.KIND =/= "Error"
   -- if $throwable_builtin_previous_chain_valid(S, n_left, eps)
   -- if $throwable_builtin_previous_chain_valid(S, n_right, eps)
-  -- if $throwable_previous_id(S, n_left) =/= eps \/ $throwable_previous_id(S, n_right) =/= eps
+  -- if $throwable_previous_id(S, n_left) =/= eps \/ $throwable_previous_id(S, n_right) =/= eps \/ ~$throwable_builtin_same_pair(S, n_left, n_right, pcompareguard_seen*)
 def $throwable_builtin_previous_pair(S, n_left, n_right, pcompareguard_seen*) = false -- otherwise
 dec $throwable_builtin_previous_order(pstate, nat, nat, pcompareguard*) : porder
 dec $throwable_builtin_previous_value_order(pstate, pvalue, pvalue, pcompareguard*) : porder

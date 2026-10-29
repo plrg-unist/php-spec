@@ -233,8 +233,12 @@ or callback throws preserve pending cleanup and stack operations before caller
 catch. Defined scalar returns survive callee cleanup throws, with callee-only
 reference wrappers and borrowed method receivers. Explicit API argument-warning
 throws release only the prepared prefix before failed-buffer cleanup.
-Callback exit, wider warning-handler throws, other byte producers,
-request-end dispatch and buffered stdout diagnostics remain dependencies.
+Normal EOF and integer/string exit now drain the existing handlers after real
+request cleanup, including lower chunk cascades, weak diagnostics and callback-local
+destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)
+records the bounded normal cut. Callback exit, wider warning-handler throws,
+other byte producers, abnormal/fatal finalization and buffered stdout diagnostics
+remain dependencies.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -646,15 +650,23 @@ shutdown release and wider destructor effects remain partial.
 
 [Reference-current CONFIG caches](coverage/semantics/config-iterator-reference-current-review.json)
 keep the cell selected by `current()` through key-time writes and source rebinding,
-then copy its string value before `next()`, Iterator destruction and API entry.
+then copy its value before `next()`, Iterator destruction and API entry.
 Temporary and Aggregate inputs retain their real owners through normal or
 supplied-Exception cleanup, preserving the existing field/graph policy.
 
 [Typed-current CONFIG values](coverage/semantics/config-iterator-typed-current-review.json)
 validate live instance/static reference sources without coercion or extra owners.
 Existing writes and retirement detach constraints; the cached cell and copied
-arguments survive source rebinding. Transient/special cells and nonstring sends
-retain their boundaries. Original ordinary-cell cuts remain in their review.
+arguments survive source rebinding. Transient/special cells retain their
+boundaries; original ordinary-cell and typed-current cuts remain in their reviews.
+
+[Scalar CONFIG sends](coverage/semantics/config-iterator-scalar-review.json)
+copy raw NULL/bool/int/float/string values before `next()` and cleanup. INI_SET
+binds its string option afterward: weak coercion/NULL deprecation or strict
+rejection. Its scalar/null value is accepted even strict and converted inside
+the API using live precision. Persistent source/callee receipts validate handler
+return or supplied throw after DATA death. Owning argument buffers and other
+CONFIG consumer/value policies remain partial.
 
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
@@ -3603,6 +3615,16 @@ false value owner. Leaf/methodless insertion, fresh callback-free PASS0 and the
 existing callback/worker/hook fences still bound this cut. See the
 [registration-order GC review](coverage/semantics/gc-registration-order-review.json).
 
+Quiet no-WeakMap ordinary collection now claims later siblings before descending
+the first child. This gives a shared property table its real array count role
+when an earlier object also reaches it as a proxy. Two native-first sources
+agree at count 3; the unchanged model counted 2 on the inline author case.
+The 106 private strict SL
+reached checks cover the actual collector consumer, physical owners and plan
+authentication. An unrelated held destructor remains outside the collected
+component. Callback, residual, worker, hook and active-context collection
+remain partial. See the [ordinary claim review](coverage/semantics/gc-ordinary-claim-review.json).
+
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
 reuse only when destructor preparation leaves the state identical.
@@ -4243,6 +4265,18 @@ Canonical root contexts and previous paths also have no numeric depth ceiling.
 Visited object IDs bound pure path authentication by the finite heap; whole-path
 acyclicity and the existing layout restrictions remain required.
 [Finite previous-path review](coverage/semantics/throwable-previous-finite-comparison-review.json).
+Standalone roots of the same twelve non-base kinds also use the visited trace
+walk when `previous` is null, preserving live cells, copied siblings, cache/trace/
+severity order and real recursion Errors. The old DIRECT route remains separate;
+base `Exception`/`Error` retain their earlier trace rules.
+[Standalone trace review](coverage/semantics/throwable-null-trace-comparison-review.json).
+Builtin `#[NoDiscard]` now validates bounded declarations and warns on unused
+ordinary source calls after sends and named defaults, before reception or body.
+Handlers preserve selected arguments, references, receiver ownership and VM
+cleanup order; used results and raw callback APIs retain their distinct behavior.
+Literal/NULL messages, supported declaration errors and explicit remaining
+boundaries are described in the [attribute contract](docs/semantics/BUILTIN-ATTRIBUTES.md)
+and [review](coverage/semantics/builtin-nodiscard-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The

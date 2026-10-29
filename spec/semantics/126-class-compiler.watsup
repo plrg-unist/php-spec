@@ -188,8 +188,9 @@ dec $ppclass_diagnostic(ppstate, pchdiagnostic) : ppstate
 def $ppclass_diagnostics(P, eps) = P
 def $ppclass_diagnostics(P, pchdiagnostic :: pchdiagnostic_tail*) = $ppclass_diagnostics($ppclass_diagnostic(P, pchdiagnostic), pchdiagnostic_tail*)
 def $ppclass_diagnostic(P, PCHDIAGNOSTIC "fatal" text_code ptbytes* ptcontext) = P[.COMPLETION = PPCABRUPT (STATICBYTES $pchmessage(PCHDIAGNOSTIC "fatal" text_code ptbytes* ptcontext) ptcontext.LINE)]
+def $ppclass_diagnostic(P, PCHDIAGNOSTIC "error" text_code ptbytes* ptcontext) = P[.COMPLETION = PPCABRUPT (FATAL $pchmessage(PCHDIAGNOSTIC "error" text_code ptbytes* ptcontext) ptcontext.LINE)]
 def $ppclass_diagnostic(P, PCHDIAGNOSTIC text_level text_code ptbytes* ptcontext) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC text_level "class-message" ([$pchmessage(PCHDIAGNOSTIC text_level text_code ptbytes* ptcontext)]) (P.LOCATION[.LINE = ptcontext.LINE])]]
-  -- if text_level =/= "fatal"
+  -- if ~(text_level <- ["fatal", "error"])
 def $plmessage(PLDIAGNOSTIC text "class-message" ([ptbytes]) pllocation) = ptbytes
 
 dec $ppclass_early(pclassdesc*, ptbytes) : bool

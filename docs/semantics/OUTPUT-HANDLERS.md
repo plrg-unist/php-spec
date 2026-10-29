@@ -53,6 +53,19 @@ never enters, caller assignment is interrupted, and warning-handler output remai
 the live buffer without a failure-path deprecation. Historical cleanup metadata
 does not retain or revive retired reference cells.
 
+Module441 adds normal EOF and integer/string EXIT draining after actual shutdown
+functions and request object retirement, including sole global objects without
+user destructors. FINAL uses START only for an unprocessed handler and ignores
+removability flags. Each pop routes through the live lower stack, so a lower
+positive chunk can run WRITE before its FINAL. The selected top stays visible;
+its raw owner retires after routing, while a previously called destructor does
+not prevent the cached handler from running. Final callbacks and their diagnostic
+handlers receive weak internal arguments, with request-end diagnostics at
+Unknown:0. Callback-local destructors run after request destruction without
+restarting it. Budget pauses preserve one saved terminal completion and its
+operands. [OB01 evidence](../../coverage/semantics/output-request-end-review.json)
+records 15 exact normal originals and six reached groups with 238 assertions.
+
 The handler receives a copied input string and the native START/CLEAN/FLUSH/FINAL
 phase flags. Get-clean/get-flush return a separate frozen copy. The active top
 buffer remains visible through callback getters, even when a lower handler is
@@ -93,7 +106,7 @@ forms remain an explicit dependency.
 Callback exit, automatic pre-entry reference-warning throws,
 throwing produced-output warning handlers, owning warning-handler abrupt cleanup,
 automatic dispatch from other byte
-producers, request-end/fatal callback drains, non-scalar or
+producers, abnormal request-end/fatal callback drains, non-scalar or
 reference-return conversion, typed variadic reception and by-reference variadic
 extra arguments, mutating buffer APIs
 during a handler, capability
@@ -117,3 +130,10 @@ Reached-state checks distinguish borrowed receiver retirement, sole raw callback
 ownership, post-route release, temporary disablement and valid forged getter
 copies. Final acceptance is recorded in the concise author and independent
 ledgers; original failures and raw observations remain external.
+
+Escaping FINAL exceptions remain unimplemented. Two frozen native originals
+distinguish a global Exception retired before FINAL from a Closure-retained
+supplied Exception. The first selected model timed out at 90 seconds and again
+at reduced fuel/40 seconds before returning a state; the second is unrun. These
+observations have zero model credit and make no controlled-Unsupported or
+phase-localization claim.

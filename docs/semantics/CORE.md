@@ -110,7 +110,7 @@ including argument binding, visibility, callbacks and abrupt completion.
 | `gc_collect_cycles`, `gc_enabled`, `gc_enable`, `gc_disable` | Observable collection and destructor timing; `Zend/zend_builtin_functions.c`, `Zend/zend_gc.c` | `lifecycle.collection-control`, `lifecycle.cycles` |
 | `WeakReference::create`, `get`; `WeakMap` and dimension/iterator methods | Reachability observations and language-triggered collection effects; `Zend/zend_weakrefs.{c,stub.php}` | `lifecycle.weak-reference`, `lifecycle.weak-map` |
 | `ob_start`, `ob_flush`, `ob_clean`, `ob_end_flush`, `ob_end_clean`, `ob_get_flush`, `ob_get_clean`, `ob_get_contents`, `ob_get_level`, `ob_get_length`, `ob_list_handlers`, `ob_get_status`, `ob_implicit_flush` | Explicit output buffering and callback/cleanup interactions; `main/output.c`, `ext/standard/basic_functions.stub.php` | `lifecycle.output-buffer-callbacks`, `environment.output-destination` |
-| `Attribute`, `ReturnTypeWillChange`, `AllowDynamicProperties`, `SensitiveParameter`, `SensitiveParameterValue`, `Override`, `Deprecated`, `NoDiscard`, `DelayedTargetValidation` | Builtin declaration checks, deprecations, discarded results and trace redaction; constructors/properties/constants follow `Zend/zend_attributes.{c,stub.php}` | `declarations` obligations with the same names |
+| `Attribute`, `ReturnTypeWillChange`, `AllowDynamicProperties`, `SensitiveParameter`, `SensitiveParameterValue`, `Override`, `Deprecated`, `NoDiscard`, `DelayedTargetValidation` | Builtin declaration checks, deprecations, discarded results and trace redaction; constructors/properties/constants follow `Zend/zend_attributes.{c,stub.php}`. Bounded NoDiscard declarations and ordinary call warnings follow the [attribute contract](BUILTIN-ATTRIBUTES.md); wider messages, targets and wrappers remain required | `declarations` obligations with the same names |
 | `set_include_path`, `get_include_path`, `ini_set`, `ini_get`, `ini_restore`, `chdir` | Explicit include/CWD environment and callback effects; finite `include_path` behavior, with wider directives/OS services partial. `ext/standard/basic_functions.c`, `Zend/zend_ini.c`; [include contract](INCLUDE-SOURCES.md) | `dynamic.include*`, `dynamic.require*`, `environment.config` |
 | Core constants | Literal `true`/`false`/`null`, integer/float limits, PHP version/platform, `E_*`, and constants of admitted classes/APIs; explicit target/configuration values from `Zend/zend_constants.c` and the stubs | `declarations.constants`, `environment.config` |
 
@@ -224,8 +224,12 @@ callee-only reference wrappers, a normal-return certificate and borrowed method
 receivers. Body throws retain the distinct failed-buffer protocol.
 Module401 releases the original prepared reference prefix when an explicit API's
 argument-warning handler throws before callback entry, then uses that protocol.
+Module441 adds normal EOF and saved integer/string EXIT dispatch after real
+shutdown/object retirement, including globals without user destructors. It reuses
+weak callback/diagnostic receives, lower WRITE cascades and sole-owner release;
+callback-local destructors remain operational under authenticated final frames.
 Callback exit, wider warning-handler throws,
-other byte producers, request-end dispatch,
+other byte producers, abnormal request-end/fatal dispatch,
 wider returns/mutation/Fiber switching and buffered stdout diagnostic rendering
 remain dependencies; masking and handler-true cases preserve ordinary execution.
 Wider startup/SAPI output effects remain required.
