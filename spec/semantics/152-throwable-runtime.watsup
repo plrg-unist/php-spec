@@ -907,9 +907,17 @@ def $throwable_builtin_previous_order(S, n_left, n_right, pcompareguard_seen*) =
 ;; Reached ordinary captured objects can materialize property tables. Thread
 ;; those effects through the remaining slots and previous nodes in order.
 dec $throwable_builtin_previous_trace_pair(pstate, nat, nat) : bool
-def $throwable_builtin_previous_trace_pair(S, n_left, n_right) = (($trace_array_graph(S, n_trace_left) /\ $trace_array_graph(S, n_trace_right)) \/ ($trace_property_ref_graph(S, n_trace_left) /\ $trace_property_ref_graph(S, n_trace_right) /\ $trace_object_graph_pair(S, n_trace_left, n_trace_right)))
+def $throwable_builtin_previous_trace_pair(S, n_left, n_right) = true
   -- if $throwable_field(S, n_left, "trace") = PARRAY n_trace_left
   -- if $throwable_field(S, n_right, "trace") = PARRAY n_trace_right
+  -- if $trace_array_graph(S, n_trace_left) /\ $trace_array_graph(S, n_trace_right)
+def $throwable_builtin_previous_trace_pair(S, n_left, n_right) = $trace_object_graph_pair(S, n_trace_left, n_trace_right)
+  -- if $throwable_field(S, n_left, "trace") = PARRAY n_trace_left
+  -- if $throwable_field(S, n_right, "trace") = PARRAY n_trace_right
+  -- if ~($trace_array_graph(S, n_trace_left) /\ $trace_array_graph(S, n_trace_right))
+  -- if $trace_property_ref_graph(S, n_trace_left)
+  -- if $trace_property_ref_graph(S, n_trace_right)
+def $throwable_builtin_previous_trace_pair(S, n_left, n_right) = false -- otherwise
 dec $throwable_builtin_previous_effect(pstate, nat, nat, pcompareguard*, int) : (pstate, porder)
 dec $throwable_builtin_previous_value_effect(pstate, pvalue, pvalue, pcompareguard*, int) : (pstate, porder)
 dec $throwable_builtin_previous_slots_effect(pstate, ppropertyslot*, ppropertyslot*, pcompareguard*, int) : (pstate, porder)
