@@ -149,6 +149,8 @@ def conditions(name, program, path, stdout):
         '~$config_generator_scope(S_retired,pconfiggenerator_retired)',
         '$config_generator_valid(S_retired,pconfiggenerator_retired,"storage-released")',
         '~$config_generator_retired_scope(S_retired[.CODE = eps],pconfiggenerator_retired)',
+        'S_badid = S_retired[.OBJECTS[n_generator] = GENERATOR pgenerator_closed[.REFCELL = (|S_retired.STORE|)]]',
+        '~$config_generator_retired_scope(S_badid,pconfiggenerator_retired)',
     ] + public('S_retired') + seek('S_retired', 1006, 'S_invoke') + [
         'S_invoke.TODO = (CONFIG_GENERATOR pconfiggenerator_invoke "invoke") :: ptask_invoke*',
         'pconfiggenerator_invoke = pconfiggenerator_finish',
