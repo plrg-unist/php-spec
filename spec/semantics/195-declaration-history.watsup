@@ -59,6 +59,8 @@ def $finally_source_outer_boundary(S, n, porigin) = $finally_file_outer_boundary
 def $finally_source_outer_boundary(S, n, porigin) = false -- otherwise
 def $finally_outer_origin_valid(S, PORIGIN n pcpath, (PORIGIN n_outer pcpath_outer)) = true
   -- if $(n > 0 /\ n =/= n_outer)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $ppfinally_scope(pcunit.OCCURRENCES, pcpath) = eps
   -- if $declaration_entry_site(S.DECLARATIONS, n) = (PORIGIN n_outer pcpath_outer)
   -- if $finally_source_outer_boundary(S, n, PORIGIN n_outer pcpath_outer)
 
