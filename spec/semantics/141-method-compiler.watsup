@@ -424,6 +424,7 @@ dec $ppmethod_call_name(ppstate, pcpath, phpType20) : ppstate
 dec $ppscoped_named(phpType19) : bool
 dec $ppscoped_keyword(phpType19) : bool
 dec $ppscoped_class(ppstate, pcpath, phpType19) : ppstate
+dec $ppdynamic_new_checked(ppstate, expression) : ppstate
 def $ppscoped_named(NName phpType33 metadata) = true
 def $ppscoped_named(NNameFullyQualified phpType33 metadata) = true
 def $ppscoped_named(NNameRelative phpType33 metadata) = true
@@ -434,7 +435,7 @@ def $ppscoped_class(P, pcpath, NName (BYTES text) metadata) = $ppclearvalue(P)
   -- if $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
 def $ppscoped_class(P, pcpath, name) = $ppclass_name(P, pcpath, $pnclassresolve(P.ENV, name))
   -- if $ppscoped_named(name) /\ ~$ppscoped_keyword(name)
-def $ppscoped_class(P, pcpath, expression) = $ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
+def $ppscoped_class(P, pcpath, expression) = $ppclearvalue($ppdynamic_new_checked($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), expression))
   -- if ~$ppscoped_named(expression)
 def $ppmethod_call_name(P, pcpath, NIdentifier phpType33 metadata) = $pplocate($ppclearvalue(P), pcpath, $source_line(metadata))
 def $ppmethod_call_name(P, pcpath, expression) = $ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 1], expression, PPR))
