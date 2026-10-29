@@ -150,7 +150,11 @@ def checks(program, path, name):
     else:
         assert name in ('visited-cell-cycle-control', 'active-cycle-before-count-control')
         rows += captured('n_p', 'p', 'POBJECT n_left')
-        rows += captured('n_q', 'q', 'POBJECT n_right')
+        if name == 'active-cycle-before-count-control':
+            rows += trace('S', 'n_q', 'q', 'POBJECT n_right')[:4]
+            rows += ['$trace_property_ref_graph(S,n_trace_q)']
+        else:
+            rows += captured('n_q', 'q', 'POBJECT n_right')
         rows += [
             '$object_table_at(S.OBJECTTABLES,n_left) = eps',
             '$object_table_at(S.OBJECTTABLES,n_right) = eps',
