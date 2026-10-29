@@ -51,7 +51,8 @@ caller body. Successful `WeakReference::create()` argument retirement and unused
 local result-cache transfer preserve native potential-root order. Four new
 native-first originals agree exactly, including resurrection count -1 followed
 by later count 3. Nine reached SL groups pass 392 checks at their recorded
-cuts. Private strict431 and compact AL/SL metadata controls pass. Fiber, worker,
+cuts. Private strict431 and compact AL/SL metadata controls pass; joined
+actual-tail strict432 compilation passes at the integration cut. Fiber, worker,
 residual, reentry, hooks and wider cache/table lifetimes remain partial.
 [GC07 review](coverage/semantics/gc-caller-materialized-review.json).
 
