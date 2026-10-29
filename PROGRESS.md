@@ -8,21 +8,19 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
-Global anonymous classes now admit prior interface lists and inherited contracts,
-with or without the bounded Base. Generated names use the Base or first-interface
-reference; first-`new` linking precedes allocation/arguments, while bodies/defaults
-compile eagerly. Shared interface linking retains all-direct kind/duplicate checks,
-staged real method headers, concrete callback order and visited tentative notices.
-Eighteen anonymous source observations and nine generic ordering/callback cases
-match pinned PHP; 177 reached conditions validate publication, retry, saved constructor
-cause and checked eval composition with an explicit raw unit1 counter. Strict424
-passes. A separate 56-condition cut validates genuine UnitEnum/BackedEnum source
-interface publication after the two-name target-validity correction.
-Joined strict compilation over the actual 425-module tail also passes.
-The ordinary18 aggregate inventory failure was independently reassessed
-without rewriting its raw result; executable inputs were unchanged.
-Forward/autoload, namespace/import, dynamic `implements` and wider anonymous
-contexts remain partial. [Interface review](coverage/semantics/anonymous-interfaces-review.json).
+Unit0 global anonymous identities now compile independently of Base/interface
+availability and source order. Ordinary dependency continuations load the parent
+then interfaces before validation, publication, allocation or arguments. Skipped
+sites do not load dependencies; body/default validation stays eager. A throwing
+loader retains earlier loads for retry of the same descriptor. Ordinary unused
+named magic-method classes retain implicit-interface metadata and RTD costs.
+Eleven native-first originals and the promoted historical OP110 context witness
+match pinned PHP across separate cuts. Strict425 and 162 source-reached conditions
+pass, including exact raw counters and authentic autoload causes; two retained
+counter controls also pass without native replay. The earlier duplicate-branch
+interpreter failure and 45s timeout retain zero affected credit. Namespace/import,
+dynamic-source parent/interface dependencies and wider anonymous bodies remain
+partial. [Dependency review](coverage/semantics/anonymous-dependencies-review.json).
 
 Ordinary static-method `Generator::throw` now transfers through Fiber before
 first yield or with a primed cache, for by-value and by-reference producers.
@@ -733,6 +731,7 @@ producers, signatures, references and lifetimes remain partial.
 | CALL125 | ARRAY/Generator magic argument packs. |
 | COMP149 | Next: generic captured-graph depth-cap removal; previous-path admission stays separate. |
 | I73 | Static Generator/Fiber CURRENT/NEXT/SEND transfer. |
+| CLASS146 | Private source12/reached162/count2/status3 accepted; final package review before actual-tail integration. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
