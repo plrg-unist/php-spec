@@ -13,7 +13,7 @@
     "runtime_revision": "4a73f752c74f5d3ed438d2b77bde2548e4b094f5",
     "validated_revision": "dcdfc87ac09329a958f7983e9923e163815e1973",
     "change": "423 adds a bounded source-authenticated KNOWN direct-BYREF Generator input helper. It checks emitted noarg UNPACK_VAR, named USER target, BYREF Generator signature and the exact returned Generator function descriptor. Existing one-argument direct-CV reference input and BYVAL factory admission stay unchanged. The new helper is used by input, history, scalar read and retired history without reading dead payloads. Generic 420/355, schema and ordered manifest are unchanged.",
-    "engine": "Pinned Zend/zend_vm_def.h copies SEND_UNPACK reference yields before later resumes; Zend/zend_generators.c releases DATA then the temporary INPUT's cached storage at final Generator destruction."
+    "engine": "Zend/zend_vm_def.h ZEND_SEND_UNPACK copies the current reference before move_forward, calls zend_iterator_dtor for DATA, then FREE_OP1 for temporary INPUT. Zend/zend_generators.c zend_generator_free_storage releases cached fields when the final Generator owner drops."
   },
   "validation": {
     "target": "PHP 8.5.10 CLI NTS64, pinned project-local binary, tests/semantics/profile.json, LC_ALL=C/TZ=UTC; checked frontend, SL/cache-off/determinism-on model, serial CPU1–5 actors.",
