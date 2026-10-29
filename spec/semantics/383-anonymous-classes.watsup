@@ -33,7 +33,7 @@ def $anonymous_constructor_parameters(SEQUENCE ([phpType17_1, phpType17_2])) = (
 def $anonymous_constructor_parameters(phpType16) = false -- otherwise
 
 dec $anonymous_member(statement) : bool
-def $anonymous_member(NStmtProperty (SEQUENCE eps) (INTEGER flags) ABSENT (SEQUENCE phpType57*) (SEQUENCE eps) metadata) = $anonymous_property_items(phpType57*)
+def $anonymous_member(NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata) = $anonymous_property_items(phpType57*)
   -- if flags <- [0,1]
 def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) (SEQUENCE eps) phpType18 (SEQUENCE statement*) metadata) = true
   -- if flags <- [0,1]
@@ -49,7 +49,7 @@ def $anonymous_members(eps) = true
 def $anonymous_members(statement :: statement_tail*) = ($anonymous_member(statement) /\ $anonymous_members(statement_tail*))
 
 dec $anonymous_base_member(statement) : bool
-def $anonymous_base_member(NStmtProperty (SEQUENCE eps) (INTEGER 4) ABSENT (SEQUENCE phpType57*) (SEQUENCE eps) metadata) = $anonymous_property_items(phpType57*)
+def $anonymous_base_member(NStmtProperty (SEQUENCE eps) (INTEGER 4) phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata) = $anonymous_property_items(phpType57*)
 def $anonymous_base_member(statement) = $anonymous_member(statement) -- otherwise
 dec $anonymous_base_members(statement*) : bool
 def $anonymous_base_members(eps) = true
@@ -272,7 +272,7 @@ def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*,
   -- if pclassdesc.PARENT = (ptbytes_parent)
   -- if pclassdesc.LINE = $source_line($pcmetadata(pcnode))
   -- if $anonymous_parent_class_name(ptbytes_parent, ptbytes_file, pclassdesc.LINE, n_counter) = (pclassdesc.NAME)
-  -- if pclassdesc.KIND = "class" /\ pclassdesc.EARLY /\ pclassdesc.INTERFACES = eps
+  -- if pclassdesc.KIND = "class" /\ ~pclassdesc.EARLY /\ pclassdesc.INTERFACES = eps
   -- if $class_at(pclassdesc_tail*, pclassdesc.ORIGIN) = eps
 def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*, pclassdesc_seen*, n_counter) = $anonymous_class_count(pcunit, ptbytes_file, pclassdesc_tail*, pclassdesc_seen* ++ [pclassdesc], $(n_counter + $anonymous_named_key(b_early)))
   -- if pclassdesc.ORIGIN = PORIGIN 0 pcpath
@@ -357,7 +357,7 @@ def $ppanonymous_class(P, pcpath, statement) = P_next[.EARLY = P.EARLY][.LOCATIO
   -- if $ptast(pchraw.PARENT) = PTNAME PTPLAIN ptbytes_parent
   -- if z_line = $source_line($pcmetadata(statement))
   -- if $anonymous_parent_class_name(ptbytes_parent, P.LOCATION.FILE, z_line, n_counter) = (ptbytes_name)
-  -- if P_class = $pplocate(P[.EARLY = (pcpath ++ [PCFIELD 0])], pcpath ++ [PCFIELD 0], z_line)
+  -- if P_class = $pplocate(P[.EARLY = eps], pcpath ++ [PCFIELD 0], z_line)
   -- if $pchparent(pchraw.PARENT, $ppclass_context(P_class)) = PCHNAMES ([ptbytes_parent]) eps
   -- if $ppclass_prior_early(P.CLASSES, ptbytes_parent) = (pclassdesc_parent)
   -- if pclassdesc_parent.KIND = "class"
@@ -372,10 +372,10 @@ def $anonymous_new_arguments(phpType7*) = false -- otherwise
 def $ppdispatch(P, pcpath, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppanonymous_class(P, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class), pcpath ++ [PCFIELD 1], 0, phpType7*, PNUNSUPPORTED "constructor has deferred argument modes")
   -- if phpType7* =/= eps /\ $(|phpType7*| <= 2) /\ $anonymous_new_arguments(phpType7*)
 
-;; The live name already exists before the first NEW. Recompute the installed
-;; source descriptor to authenticate the site, filename, line and counter.
-dec $anonymous_new_name(pstate, porigin) : ptbytes?
-def $anonymous_new_name(S, PORIGIN 0 pcpath) = (pclassdesc.NAME)
+;; Compiled identity is independent of publication. A parented anonymous class
+;; links on its first DECLARE_ANON_CLASS, before allocation and argument sends.
+dec $anonymous_new_descriptor(pstate, porigin) : pclassdesc?
+def $anonymous_new_descriptor(S, PORIGIN 0 pcpath) = (pclassdesc)
   -- if $source_unit(S.SOURCES, 0) = (pcunit)
   -- if $anonymous_unit(pcunit)
   -- if $origin_node(S.SOURCES, PORIGIN 0 pcpath) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
@@ -384,9 +384,63 @@ def $anonymous_new_name(S, PORIGIN 0 pcpath) = (pclassdesc.NAME)
   -- if $class_at(ppinstalled.CLASSES, PORIGIN 0 (pcpath ++ [PCFIELD 0])) = (pclassdesc)
   -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
   -- if $anonymous_class_prefix(pcunit, $call_sourcefile(S.FILES, pclassdesc.ORIGIN), ppinstalled.CLASSES, 0)
+def $anonymous_new_descriptor(S, porigin) = eps -- otherwise
+
+dec $anonymous_runtime_declaration(pdeclaration*, porigin) : bool
+dec $anonymous_runtime_item(pdeclaration, porigin) : bool
+def $anonymous_runtime_item(PDRCLASS porigin pdeclcause, porigin) = true
+def $anonymous_runtime_item(pdeclaration, porigin) = false -- otherwise
+def $anonymous_runtime_declaration(eps, porigin) = false
+def $anonymous_runtime_declaration(pdeclaration :: pdeclaration_tail*, porigin) = ($anonymous_runtime_item(pdeclaration, porigin) \/ $anonymous_runtime_declaration(pdeclaration_tail*, porigin))
+dec $anonymous_new_available(pstate, pclassdesc) : bool
+def $anonymous_new_available(S, pclassdesc) = true
+  -- if pclassdesc.EARLY
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pclassdesc.ORIGIN)
   -- if $declaration_early(S.DECLARATIONS, pclassdesc.ORIGIN, PPCLASS)
+def $anonymous_new_available(S, pclassdesc) = true
+  -- if ~pclassdesc.EARLY
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pclassdesc.ORIGIN)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
+  -- if $anonymous_runtime_declaration(S.DECLARATIONS, pclassdesc.ORIGIN)
+def $anonymous_new_available(S, pclassdesc) = false -- otherwise
+dec $anonymous_new_name(pstate, porigin) : ptbytes?
+def $anonymous_new_name(S, porigin) = (pclassdesc.NAME)
+  -- if $anonymous_new_descriptor(S, porigin) = (pclassdesc)
+  -- if $anonymous_new_available(S, pclassdesc)
 def $anonymous_new_name(S, porigin) = eps -- otherwise
+
+dec $anonymous_new_pending(pstate, porigin) : pclassdesc?
+def $anonymous_new_pending(S, porigin) = (pclassdesc)
+  -- if $anonymous_new_descriptor(S, porigin) = (pclassdesc)
+  -- if ~pclassdesc.EARLY
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = eps
+  -- if ~$anonymous_runtime_declaration(S.DECLARATIONS, pclassdesc.ORIGIN)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class" /\ pclassdesc_parent.EARLY
+  -- if $ptlc(pclassdesc_parent.NAME) = $ptlc(ptbytes_parent)
+def $anonymous_new_pending(S, porigin) = eps -- otherwise
+
+;; Declaration-history replay already supplies compiler-derived prefix classes.
+;; Authenticate the exact NEW child without recursively replaying that history.
+def $declaration_new_selection(S, PORIGIN n_unit pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class, porigin_called, pdeclcalls) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
+  -- if porigin_called = PORIGIN n_unit (pcpath ++ [PCFIELD 0])
+  -- if $anonymous_class_node(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class)
+  -- if $class_at(S.CLASSES, porigin_called) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_called)
+
+rule PhpStep/anonymous-parent-link: S ~> S_linked[.ORIGIN = S.ORIGIN]
+  -- if S.TODO = (EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
+  -- if $anonymous_new_pending(S, porigin) = (pclassdesc)
+  -- if S_linked = $activate_class(S[.ORIGIN = (pclassdesc.ORIGIN)], pclassdesc)
 
 ;; Constructor selection and its result marker reuse the ordinary call receipt.
 ;; No-constructor NEW retains the direct allocation path below.
@@ -430,12 +484,12 @@ dec $anonymous_new_task_valid(pstate, expression) : bool
 def $anonymous_new_task_valid(S, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata) = true
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)
-  -- if $anonymous_new_name(S, porigin) =/= eps
+  -- if $anonymous_new_name(S, porigin) =/= eps \/ $anonymous_new_pending(S, porigin) =/= eps
 def $anonymous_new_task_valid(S, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata) = true
   -- if phpType7* =/= eps
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
-  -- if $anonymous_new_name(S, porigin) =/= eps
+  -- if $anonymous_new_name(S, porigin) =/= eps \/ $anonymous_new_pending(S, porigin) =/= eps
 def $anonymous_new_task_valid(S, expression) = false -- otherwise
 def $call_task_valid(S, EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)) = $anonymous_new_task_valid(S, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)
 def $call_task_valid(S, EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)) = $anonymous_new_task_valid(S, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
