@@ -384,8 +384,20 @@ its own compiled descriptors. Trait imports, enum-case caches, anonymous linking
 and argument-throw retry keep their ordinary source and publication authority.
 The [mixed-kind review](../../coverage/semantics/anonymous-trait-enum-review.json)
 records these shared contexts without widening anonymous bodies or factories.
-Failed/open/reentered compilation histories and broader factory/capture and
-constructor argument modes remain Unsupported.
+Rejected parsing reserves a source identity and retains its actual failed-source
+record without installing an accepted source, code image or binding. An exact entered
+unit followed immediately by its rejected exit contributes zero class keys. This
+covers ParseError and parser-stage CompileError; textual class/NEW prefixes in a
+rejected source publish nothing. Later accepted units retain their real source
+IDs and use the unchanged class-key seed. Opened include-once/require-once files
+remain marked after parser rejection, so a later once hit does not parse or
+advance the compilation sequence again. Existing parser services, filenames,
+source-site validation and constructor/publication rules remain authoritative.
+The [rejected-source review](../../coverage/semantics/anonymous-rejected-sources-review.json)
+records recovery without treating an unmatched history segment as zero cost.
+Body/default compilation fatals remain terminal. Accepted partial, open or
+reentered compilers and broader factory/capture/constructor-argument modes remain
+Unsupported.
 
 Plain anonymous and Base property types use the ordinary normalizer, invariant
 link checks and typed storage. An absent typed default starts uninitialized,

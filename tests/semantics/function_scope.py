@@ -119,15 +119,16 @@ def main(catalogue=CASES, campaign="function-scope", producer=Path(__file__), pu
         record = {'id': name, 'source_base64': q.b64(source), 'context': str(path), 'request': request,
                   'native': native(path, payload, directory)}
         records.append(record); (out / 'originals.json').write_text(json.dumps(records, indent=2))
+    deadline = max(60, model_seconds + 30)
     def expired(signum, frame):
-        raise TimeoutError('function scope worker exceeded 60 seconds')
+        raise TimeoutError(f'function scope worker exceeded {deadline} seconds')
     previous = signal.signal(signal.SIGALRM, expired)
     frontend = Worker([str(q.t.PHP), '-n', *q.t.FLAGS, '-d',
                            'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')], out / 'frontend-wire')
     adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], out / 'adapter-wire', seconds=model_seconds)
     try:
         for row in records:
-            directory = out / row['id']; signal.alarm(60)
+            directory = out / row['id']; signal.alarm(deadline)
             parsed = frontend.request({'op': 'parse', 'source': row['source_base64']})
             (directory / 'parsed.json').write_text(json.dumps(parsed)); assert parsed.get('accepted'), parsed
             request = {'op': 'execute', 'ast': parsed['ast'], 'steps': 10000,

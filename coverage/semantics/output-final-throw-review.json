@@ -1,0 +1,238 @@
+{
+  "milestone": "OB02",
+  "status": "validated bounded FINAL fatal milestone; core obligation remains partial",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "zts": false,
+    "int_size": 8,
+    "oracle_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_source_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml_switch": "5.1.0",
+    "semantic_mode": "SL"
+  },
+  "scope": "Default FINAL fatal takeover for a builtin Throwable with scalar message, NULL previous and no selected exception handler. Preserve stored trace, fill builtin string cache, freeze fatal255, deactivate live buffers and release only the unpopped raw-zoh suffix top first. No lower output routing or repeated FINAL. Pending Throwable decrement must be nonfinal or destructor-inactive.",
+  "implementation": [
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/391-output-buffers.watsup",
+    "spec/semantics/441-output-finalization.watsup"
+  ],
+  "source_outcomes": {
+    "total": 4,
+    "exact": 4,
+    "cuts": [
+      {
+        "report": "ob02-author-native/candidate-held-a1b876e3a/report.json",
+        "sha256": "b5b4de26906a9e3077687dcaa649a40910ec6a9557465bd5fc7efc941cf64cb3",
+        "head": "a1b876e3a7282f1cb88602ab9f6252808457e80e",
+        "packet_passed": true,
+        "accepted_cases": [
+          "held_throw"
+        ],
+        "worker_exits": [
+          0,
+          0
+        ],
+        "groups_reaped": [
+          true,
+          true
+        ],
+        "inputs_stable": true,
+        "native_replayed": false
+      },
+      {
+        "report": "ob02-author-native/candidate-pending3-a1b876e3a/report.json",
+        "sha256": "01bc705c54c15a227e5dd438968d128a88f2bf76be870a385177656562ac27da",
+        "head": "a1b876e3a7282f1cb88602ab9f6252808457e80e",
+        "packet_passed": false,
+        "accepted_cases": [
+          "fresh_inside_final",
+          "peer_captured_throw"
+        ],
+        "worker_exits": [
+          0,
+          -9
+        ],
+        "groups_reaped": [
+          true,
+          true
+        ],
+        "inputs_stable": true,
+        "native_replayed": false
+      },
+      {
+        "report": "ob02-author-native/candidate-late75-b41e61e7d/report.json",
+        "sha256": "c69f320bb02ecf37f389ab8c860734dd2ef08d1ecc6d2f36372a553414effcd0",
+        "head": "b41e61e7d5ae099f33e26985464c318d707a1e91",
+        "packet_passed": true,
+        "accepted_cases": [
+          "late_cache_deactivate"
+        ],
+        "worker_exits": [
+          0,
+          0
+        ],
+        "groups_reaped": [
+          true,
+          true
+        ],
+        "inputs_stable": true,
+        "native_replayed": false
+      }
+    ]
+  },
+  "reached": {
+    "groups": 3,
+    "assertions": 131,
+    "cuts": [
+      {
+        "report": "ob02-author-native/reached-raw/fiber-state-review-_3qyoo35/report.json",
+        "sha256": "2da30bae2aced541d0b6dc58735947a622f5d35a555800d5d4fdf12ecc8270d7",
+        "head": "b41e61e7d5ae099f33e26985464c318d707a1e91",
+        "selection": [
+          "late-fatal-cache-before-active-off-release"
+        ],
+        "assertions": 33,
+        "outer": {
+          "report": "ob02-author-native/reached-peer-initial-b41e61e7d/process.json",
+          "sha256": "dd3b75647196e2e393f4b7be2bb5f331fa6478d64162ffa13042a067c76bb9bf",
+          "head": "b41e61e7d5ae099f33e26985464c318d707a1e91"
+        }
+      },
+      {
+        "report": "ob02-author-native/reached-raw/fiber-state-review-pd6fon02/report.json",
+        "sha256": "5192a48ef4ca0679fe67668e0419d219dd293e72cb8006fbf68141cf831ea929",
+        "head": "b41e61e7d5ae099f33e26985464c318d707a1e91",
+        "selection": [
+          "late-fatal-upper-retired-before-lower"
+        ],
+        "assertions": 28,
+        "outer": {
+          "report": "ob02-author-native/reached-peer-postupper-b41e61e7d/process.json",
+          "sha256": "da2cb3967dd0a19d835f252e114af1b9b6343522e34ed91f1159c299987ea42d",
+          "head": "b41e61e7d5ae099f33e26985464c318d707a1e91"
+        }
+      },
+      {
+        "report": "ob02-author-native/reached-raw/fiber-state-review-zhp40wxb/report.json",
+        "sha256": "cdb178f1c9331634434020b3e1ed756c0b6cd886feb395ba4c2396f00372ae70",
+        "head": "b41e61e7d5ae099f33e26985464c318d707a1e91",
+        "selection": [
+          "restored-final-error-takes-over-and-resumes-fatal"
+        ],
+        "assertions": 70,
+        "outer": {
+          "report": "ob02-author-native/reached-author-guard-b41e61e7d/process.json",
+          "sha256": "17e4657aff63c6ee5a2e3b836d733714eb0a836b0ed6ddd1f8386075f3802476",
+          "head": "b41e61e7d5ae099f33e26985464c318d707a1e91"
+        }
+      }
+    ]
+  },
+  "strict": {
+    "report": "ob02-author-native/strict-a1b876e3a/report.json",
+    "sha256": "4639b9df52ffdaca3257851c785206461a97ebd541f631a5e75e8e6c196378fd",
+    "head": "a1b876e3a7282f1cb88602ab9f6252808457e80e",
+    "module_count": 429,
+    "passed": true
+  },
+  "summary": {
+    "path": "ob02-author-native/accepted-summary.json",
+    "sha256": "88b2a34866891975263ced6dc82054431cd33f642ded015d8ab8381cd16d389a"
+  },
+  "authority": [
+    "vendor/php-src/main/main.c::php_request_shutdown",
+    "vendor/php-src/main/output.c::php_output_stack_pop/php_output_deactivate/php_output_handler_dtor",
+    "vendor/php-src/Zend/zend_execute_API.c::zend_call_known_fcc_ex",
+    "vendor/php-src/Zend/zend_exceptions.c::zend_throw_exception_internal/zend_exception_error"
+  ],
+  "remaining": [
+    "Effectful final pending-Throwable release before buffer deactivation (prioritized next).",
+    "Selected exception-handler FINAL continuation.",
+    "Previous chains, source Throwable overrides and effectful/nonscalar rendering.",
+    "Late ob_start or abrupt/destructor-throw deactivation, callback exit and wider warning/fatal producers.",
+    "Existing buffered-stdout diagnostics and all global held boundaries."
+  ],
+  "preserved_failures": [
+    {
+      "report": "ob01-author-native/boundaries-9fa533343/report.json",
+      "credit": 0,
+      "kind": "original90s timeout; captured throw then unrun"
+    },
+    {
+      "report": "ob01-author-native/diagnose-held-reduced-9fa533343/report.json",
+      "credit": 0,
+      "kind": "original40s timeout"
+    },
+    {
+      "report": "ob02-author-native/native-late-d42d2fea7/report.json",
+      "credit": 0,
+      "kind": "illegal destructor return type; compile fatal, no FINAL execution"
+    },
+    {
+      "report": "ob02-author-native/strict-187fb4f42/report.json",
+      "credit": 0,
+      "kind": "slice arithmetic parse rejection"
+    },
+    {
+      "report": "ob02-author-native/candidate-pending3-a1b876e3a/report.json",
+      "credit": 0,
+      "kind": "whole packet failed on late eval30 timeout; two separately exact rows credited above"
+    }
+  ],
+  "compatibility": "Guard 3dbfc39b5 admits held/fresh destructor-inactive sole Throwables and captured/late retained Throwables. Normal OB01 has no new deactivation task; source4/state131 cuts remain applicable. Actual-tail affected guard checks are separate. Joined 1262 rechecks sole-inert and retained-owner guards (70+33); other source/state cuts remain applicable without adding assertion or agreement counts.",
+  "harness": "Maintained scope.main uses model request90 plus30 seconds parse/outer margin; default30 still yields60. Retained external source comparisons, not metadata-only reruns, establish acceptance.",
+  "recovery": "Raw below ../php-spec-evidence-archive/. Git private branch output/request-end-throw-ob02 retains tested a1b/b41 and frozen originals; maintained source/protocol commands regenerate checks. External evidence is not a build input.",
+  "integration": {
+    "base": "d10c7afea96992b80754b8c963826c7465a00be4",
+    "candidate": "1262bd31b49a612ad99d7d1def760990e0617579",
+    "status": "joined and affected guard checks passed",
+    "strict": {
+      "report": "ob02-author-native/joined-1262bd31b/report.json",
+      "sha256": "4156e1a546e16816dc4382f9ca904ad01b30eea765a81ea0f3b910e64e441561",
+      "module_count": 431,
+      "mode": "SL strict",
+      "stdout": "true\n",
+      "stderr_bytes": 0,
+      "exit": 0,
+      "seconds": 13.583019813522696,
+      "cpu": 2,
+      "parent_pid": 3931162,
+      "child_pid": 3931186,
+      "parent_affinity": [
+        2
+      ],
+      "child_affinity": [
+        2
+      ],
+      "head_stable": true,
+      "inputs_stable": true,
+      "process_group_reaped": true
+    },
+    "affected_guard_groups": [
+      {
+        "report": "ob02-author-native/reached-raw/fiber-state-review-stmtqt7t/report.json",
+        "sha256": "46480836ba531b9585c2eee978f9714ffbc5e38b124074738bed93df6429f1eb",
+        "revision": "1262bd31b49a612ad99d7d1def760990e0617579",
+        "selection": [
+          "restored-final-error-takes-over-and-resumes-fatal"
+        ],
+        "assertions": 70,
+        "outer": "ob02-author-native/joined-author-guard-1262bd31b/process.json",
+        "outer_sha256": "1ad5591413a7f77d92fafdba63fff7f66d47641c63dab7e9cfb2abb1364f12b1"
+      },
+      {
+        "report": "ob02-author-native/reached-raw/fiber-state-review-ylvad656/report.json",
+        "sha256": "0c4e6dd8fefe020bf1844f58c081ea2a14180eaefaa911e916dbbc769dc460a3",
+        "revision": "1262bd31b49a612ad99d7d1def760990e0617579",
+        "selection": [
+          "late-fatal-cache-before-active-off-release"
+        ],
+        "assertions": 33,
+        "outer": "ob02-author-native/joined-peer-initial-1262bd31b/process.json",
+        "outer_sha256": "735b93dfa6dab32ffd503429d85ad407c1e09b5fc7a70fe606e0c93baf319fc5"
+      }
+    ],
+    "composition": "Actual30 union is append-only. 391 keeps sticky OUTPUTBLOCKED, ordinary user boundary, 442 retired-API boundary, then deactivation-only refusal; neutral excludes all three. Canonical395/152/231 changes are inactive for the four by-value/no-selected-handler sources."
+  }
+}

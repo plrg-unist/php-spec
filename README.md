@@ -236,9 +236,13 @@ throws release only the prepared prefix before failed-buffer cleanup.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)
-records the bounded normal cut. Callback exit, wider warning-handler throws,
-other byte producers, abnormal/fatal finalization and buffered stdout diagnostics
-remain dependencies.
+records the bounded normal cut. [OB02](coverage/semantics/output-final-throw-review.json)
+adds builtin FINAL throws with scalar messages, NULL previous and no selected
+exception handler: stored traces and the string cache precede fatal reporting,
+then inactive buffers release raw owners
+without forwarding bytes. Effectful final pending-Throwable release, selected
+exception handlers, wider rendering/cleanup throws, other byte producers and
+buffered stdout diagnostics remain dependencies.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -676,6 +680,13 @@ can keep those arguments alive until their final owner disappears. Owning key/se
 Errors release CURRENT, then DATA/INPUT, then the copied prefix; admitted returning or
 throwing callbacks keep the existing cleanup rules. Stringable/effectful casts,
 other callees and wider graph/temporary-finalizer lifetimes remain partial.
+
+[Temporary CONFIG INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json)
+now runs an admitted final INPUT destructor while distinct copied arguments stay
+protected. DATA retires first; API reception follows INPUT cleanup, while a supplied
+Throwable releases the copied prefix afterward. Existing finite field/finalizer,
+array COW and shared-reference rules apply. Other temporary source/key forms and
+finalizers without a live admitted copied root retain their current limits.
 
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
@@ -3634,15 +3645,28 @@ authentication. An unrelated held destructor remains outside the collected
 component. At that cut, callback, residual, worker, hook and active-context collection
 remain partial. See the [ordinary claim review](coverage/semantics/gc-ordinary-claim-review.json).
 
-Materialized ordinary cycles with public destructors now use the existing
-callback and single-retrace protocol when the legacy and claimed walks agree
-on ordered visits and counted nodes in the actual plan. The agreement is
-rechecked after callbacks and for fresh already-called survivors; a mismatch
+The earlier GC05 cut admitted materialized ordinary cycles with public
+destructors through the existing callback and single-retrace protocol when the
+legacy and claimed walks agree on ordered visits and counted nodes in the actual
+plan. The agreement is rechecked after callbacks and for fresh already-called
+survivors; a mismatch
 is refused. Two native-first sources agree, including a callback resurrection
 then later count 3, and four strict SL groups pass 151 reached checks. Quiet
 canonical tables, no WeakMap and no active worker/context/residual overlap
-remain required. Count-ambiguous callbacks and wider reentry are still open.
+remain required. At that cut, count-ambiguous callbacks and wider reentry
+remain open.
 See the [materialized callback review](coverage/semantics/gc-materialized-callback-review.json).
+
+Materialized ordinary destructor collections now retain an authenticated claimed
+count image through destructor return and retrace, including a pruned original
+table. Nested buffer removal distinguishes a destructor root, ordinary child
+and proxy table; its slot order can make the first pass contribute 1 and the
+retrace 3. Immediate source-authenticated `===`/`!==` comparisons also release
+produced object operands without GC buffering and treat a matching `BASE`
+result cache as borrowed. Four native-first sources agree, and 11 reached
+strict SL groups pass 330 checks at separate cuts. WeakMap callbacks, worker,
+residual, reentry and wider operand caches remain partial. See the
+[claimed callback review](coverage/semantics/gc-materialized-claimed-callback-review.json).
 
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
@@ -4298,6 +4322,10 @@ eager; invalid/cyclic paths, reached callbacks and wider layouts remain partial.
 [Base fallback review](coverage/semantics/throwable-base-null-comparison-review.json).
 [Linked-base review](coverage/semantics/throwable-base-previous-comparison-review.json).
 [Captured-Throwable review](coverage/semantics/throwable-captured-comparison-review.json).
+Visited comparison also admits ordinary method declarations on supported
+initialized public field layouts, without invoking those methods. Implicit
+Stringable/interfaces, inheritance, hooks and wider layouts retain their limits.
+[Method-image review](coverage/semantics/throwable-trace-methods-comparison-review.json).
 Builtin `#[NoDiscard]` now validates bounded declarations and warns on unused
 ordinary source calls after sends and named defaults, before reception or body.
 Handlers preserve selected arguments, references, receiver ownership and VM
@@ -4420,7 +4448,11 @@ Anonymous sites may share successful units with ordinary traits and enums.
 Normal compiler headers, implicit interfaces and source-entry bindings determine
 their shared class-key sequence; pruned declarations and include-once hits add no
 compilation cost. [Mixed-kind review](coverage/semantics/anonymous-trait-enum-review.json).
-Failed/open histories and wider bodies/argument modes remain partial.
+Parser-rejected eval and opened-file units retain their real failure/site records
+without advancing class keys; later successful units preserve the sequence.
+A failed include-once or require-once parse remains an ordinary once hit.
+[Rejected-source review](coverage/semantics/anonymous-rejected-sources-review.json).
+Partial/open compilation histories and wider bodies/argument modes remain partial.
 Plain empty named classes can share those units globally and in valid named
 namespace sections, including repeated unbracketed sections and bracketed global
 bodies. Eligible root/actual-block classes consume no RTD key; deferred classes
@@ -6238,10 +6270,15 @@ initialization, scalar parsing and cached cases after their closure owners retir
 ordinary and inherited enum constant aliases retain their declaration owners.
 Stringable arguments to captured lookups use source-bound `__toString()` callbacks
 and release temporary arguments before looking up a case, including `tryFrom()` misses and hits.
+For published enums, class-string array callables invoke generated `cases()`, `from()` and `tryFrom()`;
+a case-object receiver also invokes `from()`. The selected enum is fixed before
+argument evaluation. Array `from()` retains that selection through a Stringable
+callback and retires the temporary argument before lookup.
 Class constants can consume cached enum cases in scalar conditions and select a
 case through a source-certified case or negated-case condition, including a case
 from another enum. Wider object-valued conditional transfers remain Unsupported.
-Other generated callable routes, case attributes, the default loader and wider
+First-class array captures, string and pipe callable routes, `Closure::fromCallable`
+conversion, `is_callable`, case attributes, the default loader and wider
 acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 

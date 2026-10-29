@@ -28,7 +28,8 @@ parser.add_argument('--case', action='append', required=True, choices=(
     'named-class-computed-constant', 'literal-slash-missing-diagnostics',
     'compiler-folded-static-keyword-scopes', 'compiled-class-target-negative',
     'fcc-first-use', 'same-site-retired-owners', 'lazy-table-retired-owners',
-    'ordinary-case-alias', 'inherited-deferred-alias', 'callable-caller-strictness-prefix', 'owned-stringable-multiline', 'enum-case-conditional-choice'))
+    'ordinary-case-alias', 'inherited-deferred-alias', 'callable-caller-strictness-prefix', 'owned-stringable-multiline', 'enum-case-conditional-choice',
+    'array-target-rebound', 'array-stringable-target-rebound'))
 args = parser.parse_args()
 SOURCES = args.sources.resolve()
 OUT = args.output.resolve()
@@ -126,7 +127,8 @@ try:
         if name in ('fcc-first-use', 'same-site-retired-owners'):
             review = callable_review
         if name in ('lazy-table-retired-owners', 'ordinary-case-alias',
-                    'inherited-deferred-alias', 'callable-caller-strictness-prefix', 'owned-stringable-multiline', 'enum-case-conditional-choice'):
+                    'inherited-deferred-alias', 'callable-caller-strictness-prefix', 'owned-stringable-multiline', 'enum-case-conditional-choice',
+                    'array-target-rebound', 'array-stringable-target-rebound'):
             review = lookup_review
         source = folder(name) / 'main.php'
         freeze = json.loads(receipt(name, 'freeze.json').read_text())

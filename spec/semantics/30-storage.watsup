@@ -35,7 +35,8 @@ syntax ppropertyisset = { SITE porigin, NAME ptbytes, LINE int, OBJECT nat, CLAS
 syntax ppropertyempty = { SITE porigin, NAME ptbytes, LINE int, OBJECT nat, CLASS porigin, ISSET porigin, GET porigin, PROPERTY porigin }
 syntax pcalltarget = MAGIC_UNPACK_TARGET pcalltarget nat nat? pnamedargs | MAGIC_METHOD_NAMED_TARGET pmagicmethodcall nat nat pvalue* | PARENT_HOOK_TARGET pparenthookcall | PROPERTY_COALESCE_TARGET ppropertycoalesce bool | MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall | MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall nat pvalue* | MAGIC_METHOD_SEND_TARGET pmagicmethodcall | MAGIC_METHOD_TARGET pmagicmethodcall nat pvalue* | PROPERTY_MAGIC_SET_TARGET ppropertymagicset | PROPERTY_EMPTY_TARGET ppropertyempty bool | PROPERTY_ISSET_TARGET ppropertyisset | PROPERTY_UNSET_TARGET ppropertyunset | PROPERTY_SET_TARGET ppropertyhook | PROPERTY_HOOK_TARGET ppropertyhook | porigin | FIBER_REPORTING_TARGET | FIBER_API_TARGET nat | FIBER_ARRAY_TARGET pfiberrawapi | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | PROPERTY_GET_TARGET nat porigin | AGGREGATE_METHOD_TARGET nat porigin | UNPACK_ITERATOR_TARGET nat porigin | CONFIG_AGGREGATE_GENERATOR_TARGET pconfiggeneratorproducer | AGGREGATE_GENERATOR_TARGET nat porigin nat porigin int | FOREACH_AGGREGATE_GENERATOR_TARGET nat porigin porigin int | YIELD_FROM_AGGREGATE_GENERATOR_TARGET nat porigin nat porigin int | STATIC_METHOD_TARGET porigin porigin | SCOPED_TARGET porigin porigin porigin nat? poperand | ARRAY_METHOD_TARGET pcalltarget parrayselection | STRING_METHOD_TARGET pcalltarget pstringselection | PIPE_OBJECT_TARGET pcalltarget pobjectselection | HANDLER_METHOD_TARGET bool porigin ptbytes pcalltarget | SCOPE_METHOD_TARGET pcalltarget pcallableaccess | API_METHOD_TARGET papiquery porigin ptbytes bool | FIBER_METHOD_TARGET pfibercallable | OUTPUT_BORROWED_TARGET pcalltarget | API_BORROWED_TARGET pshutdownproducer
 syntax parraymode = ARRAY_ADMISSION | ARRAY_DISPATCH
-syntax parrayresolution = ARRAYRESOLVED pcalltarget porigin ptbytes | ARRAYADMITTED | ARRAYINVALID ptbytes | ARRAYUNKNOWN text
+syntax pintrinsic
+syntax parrayresolution = ARRAYRESOLVED pcalltarget porigin ptbytes | ARRAYENUM pintrinsic ptbytes ptbytes | ARRAYADMITTED | ARRAYINVALID ptbytes | ARRAYUNKNOWN text
 syntax pconstant = PCONSTANT pcpath pvalue | PCCLASS pcpath pvalueclass | PCCPRECISION pcpath int | PCCASSERTION pcpath nat*
 syntax ppool = { UNIT nat, CONSTANTS pconstant* }
 syntax pcodeexpr = CODEMATCH_LINE pcpath int | CODEMATCH_TABLE pcpath bool | CODEIMPLICIT pcpath ptbytes int | CODEARROW pcpath int | CODELEXICAL pcpath ptbytes bool int | CODESTATIC pcpath ptbytes int int bool | CODECALL_INIT pcpath int | CODEPIPE_SEND pcpath int | CODESWITCH_COMPARE pcpath int | CODESWITCH_BOOL pcpath bool | CODEGOTO pcpath pcpath | CODEARG pcpath | CODEWRITE pcpath int | CODEEXPR pcpath int bool | CODEEFFECT pcpath
@@ -149,7 +150,7 @@ syntax passertmode = { INPUT pvalue, VALUE int }
 syntax passertiniphase = ASSERTION_CONVERT | ASSERTION_PARSE | ASSERTION_REFUSE int
 syntax ptask
 syntax pshellcontext
-syntax poutputbuffer, pobdrain, pobnotice, pobinvoke, poboutput, pobrelease, pobcall, pobwrite, pobfinish, pobcaller, pobstringrelease, pobapimode
+syntax poutputbuffer, pobdrain, pobdeactivate, pobnotice, pobinvoke, poboutput, pobrelease, pobcall, pobwrite, pobfinish, pobcaller, pobstringrelease, pobapimode
 syntax ptickmarker, ptickentry, ptickdispatch
 syntax pintegeroperation
 syntax pintegerphase
@@ -262,7 +263,7 @@ syntax pconstantargument = {OBJECT nat, INDEX nat, VALUE pvalue, CLASS pvaluecla
 syntax pdestructionhandler = {VALUE pvalue, ARRAY parray?, CELLS (nat, pslot)*}
 syntax pdestructionfatal = {FRAME pframe, FRAMES pframe*, GLOBAL psymboltable, VALUE poperand, BASE pbase, DESTRUCTION pdestruction, SHUTDOWN pshutdown, ERRORHANDLER perrorhandler, ERRORHANDLERS perrorhandler*, EXCEPTIONHANDLER pvalue?, EXCEPTIONHANDLERS pvalue?*, HANDLERS pdestructionhandler*, EVALCONTEXTS pevalcontext*, FILECONTEXTS pfilecontext*, DECLARATIONS pdeclaration*, COMPLETION pcompletion, FROZEN pcompletion, ERRORORIGIN porigin?, TRACE ptraceframe*, ERRORTRACE ptraceframe*, COMPILESTOP bool, REPORTING int}
 syntax pgctemporary = {OPERAND poperand, PENDING bool}
-syntax pdestructionoperation = {VALUE poperand, BASE pbase, CELL nat, KEY pkey, LOCATION plocation, COMPLETION pcompletion, PENDING nat?, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, SOURCE ptask, CLEANUP pdestructioncleanup?, NOGC pgctemporary?}
+syntax pdestructionoperation = {VALUE poperand, BASE pbase, CELL nat, KEY pkey, LOCATION plocation, COMPLETION pcompletion, PENDING nat?, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, SOURCE ptask, CLEANUP pdestructioncleanup?, NOGC pgctemporary?, NOGCEXTRA pgctemporary*}
 syntax pdestructorcall = {OBJECT nat, TARGET pcalltarget, STORE bool, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, USER bool, SITE porigin?, LINE int, RELEASE pdestructionrelease?, FRAME pdestructionframe?, OPERATION pdestructionoperation?, PENDING nat?}
 syntax pdestruction = {HANDLES nat*, FREE nat*, NEXT nat, NOREUSE bool, CALLED nat*, RETIRED (nat, nat)*, PHASE pdestructionphase, NAMES nat**, PASS nat**, COUNT nat, INDEX nat, COMPLETION pcompletion, RELEASES pdestructionrelease*, CALLS pdestructorcall*, FRAMES pdestructionframe*, OPERATIONS pdestructionoperation*, CLEANUPS pdestructioncleanup*, REJECTED pconstantargument*, ABANDONED pdestructioncleanup*, PROPCACHE (porigin, pobject)*}
 syntax hedge
@@ -272,7 +273,8 @@ syntax pgcprogress = GC_CALLED pnode | GC_SKIPPED pnode | GC_DETACHED pnode | GC
 syntax pgcslot = GC_EMPTY | GC_ROOT pnode | GC_RETIRED nat | GC_BARE_ROOT nat | GC_DTOR_ROOT nat
 syntax pgcscan = {INDEX nat, END nat}
 syntax pgcpublic
-syntax pgccall = {NONCE nat, CALL pconfigcall, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, PASS nat, TOTAL int, PENDING nat?}
+syntax pgccountsource = {TABLE pobjecttable, GRAPH hgraph, BUFFER pgcslot*, DTORS pnode*}
+syntax pgccall = {NONCE nat, CALL pconfigcall, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, PASS nat, TOTAL int, PENDING nat?, COUNT_SOURCE pgccountsource?}
 syntax pgcplan = {CALL pgccall, GRAPH hgraph, TABLES pobjecttable*, CALLED nat*, PROXIES hedge*, WEAK hedge*?, COUNTED pnode*, BUFFER pgcslot*, CANDIDATES pnode*, DTORS pnode*, FREESET pnode*, SCAN pgcscan?, INDEX nat, STEPS pgcprogress*, DONE pnode*}
 syntax pgcguard = {WORKER nat, SOURCE pgccall, INDEX nat, OBJECT nat, PENDING nat?, PUBLIC pgcpublic?}
 syntax pgcworker = {BIRTH pgccall, GUARD pgcguard?}
@@ -342,7 +344,7 @@ syntax pforeachaggregate = { STATEMENT statement, SITE porigin, LINE int, AGGREG
 syntax pfibertraversal = { CAPTURE nat?, START pfiberstart, OBJECT nat, AGGREGATE nat?, ACQUIRED nat*, INPUT poperand, SITE porigin, LINE int, CURRENT poperand, SENT pnamedargs, ITEMS pentry* }
 syntax pfiberfinish = { OBJECT nat, PENDING nat?, SEQUENCE nat, PROTECTED (nat, nat)? }
 syntax ptask = ENUM_CASE_INIT porigin | ENUM_CONST_FETCH porigin ptbytes ptbytes int | ENUM_CASES pconfigcall porigin* pvalue* | ENUM_CASES_VALUE pconfigcall porigin* pvalue* | ENUM_QUERY_RESULT pconfigcall porigin | ENUM_FROM_CONVERT pconfigcall pvalue | ENUM_FROM_FETCH pconfigcall pvalue | ENUM_FROM_LOSSY pconfigcall pvalue int | ENUM_FROM_NULL pconfigcall | ENUM_FROM_STRING_RESULT pconfigcall nat porigin int int | TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND ptickdispatch nat | TICK_REFERENCE ptickdispatch nat | TICK_ENTER ptickdispatch | TICK_RESULT ptickdispatch | TICK_UNREGISTER_RELEASE pshutdownentry ptickentry
-  | OUTPUT_WRITE pobwrite | OUTPUT_FINISH pobwrite | OUTPUT_DRAIN pobdrain | OUTPUT_DRAIN_RELEASE pobdrain poutputbuffer
+  | OUTPUT_WRITE pobwrite | OUTPUT_FINISH pobwrite | OUTPUT_DRAIN pobdrain | OUTPUT_DRAIN_RELEASE pobdrain poutputbuffer | OUTPUT_FINAL_DEACTIVATE pobdeactivate
   | OB_USER_FAIL_ARGS pobinvoke nat | OB_USER_FAIL_DONE pobinvoke | OB_USER_FAIL_COMMIT pobinvoke nat | OUTPUT_FAIL_WRITE pobwrite nat | OUTPUT_FAIL_FINISH pobwrite nat
   | OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask* nat | OB_API_FAIL_DONE pobrelease pcallcontext? ptask*
   | OB_USER_NORMAL_RESULT pobinvoke pdestructionframe | OB_USER_NORMAL_PENDING pobinvoke pdestructionframe | OB_USER_NORMAL_COMMIT pobinvoke pdestructionframe poboutput
@@ -702,6 +704,7 @@ syntax pobwrite = { CALLER pobcaller, CONTEXT pcallcontext?, IDS nat*, INDEX nat
 syntax pobcall = OB_API pconfigcall | OB_WRITE pobwrite | OB_API_FAILED pconfigcall pcallcontext? ptask* | OB_FINAL pobdrain
 syntax pobapimode = OB_API_RETAIN | OB_API_RESTORE | OB_API_RELEASE
 syntax pobinvoke = { CALL pobcall, BUFFER poutputbuffer, VALUE pvalue, INPUT pvalue, PHASE int, SENT poperand* }
+syntax pobdeactivate = { CALL pobinvoke, BUFFERS poutputbuffer*, INDEX nat, COMPLETION pcompletion }
 syntax poboutput = { VALUE pvalue, BYTES preqbytes, PRECISION int, FAILED bool }
 syntax pobrelease = { CALL pconfigcall, BUFFER poutputbuffer, VALUE pvalue }
 syntax pobnotice = { CALL pconfigcall, VALUE pvalue, SECOND bool, WRAPPER bool, LEVEL nat?, OWNER nat, TAIL ptask* }

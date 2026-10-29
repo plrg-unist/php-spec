@@ -576,6 +576,12 @@ saved call guards and budget resumption. Wider types, absent/dynamic/protected,
 readonly/hooked slots and general reentry remain partial; private evidence retains
 its earlier cut. [Public unset review](../../coverage/semantics/public-unset-review.json).
 
+Legal `__isset` declarations may also omit the parameter type under the existing
+arity/reference/default/return restrictions. Language-triggered magic consumers
+retain the typed-string source proofs below; declaration acceptance does not
+admit an untyped magic callback. See the
+[method-image review](../../coverage/semantics/throwable-trace-methods-comparison-review.json).
+
 A selected public nonstatic `__isset(string $name): bool` uses the same closed
 physical method-source proof, with a separate terminal-isset call/result protocol.
 Direct CV/literal declared-private tests invoke the inherited method; initialized

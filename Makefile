@@ -70,6 +70,9 @@ test-semantics: build
 	python3 tests/semantics/output_request_end_sources.py
 	python3 tests/semantics/output_final_protocol.py
 	python3 tests/semantics/output_final_review_protocol.py
+	python3 tests/semantics/output_final_throw_sources.py
+	python3 tests/semantics/output_final_throw_protocol.py
+	python3 tests/semantics/output_final_throw_review_protocol.py
 	python3 tests/semantics/request_provider.py
 	python3 tests/semantics/evidence.py
 	python3 tests/semantics/source_occurrences.py
@@ -164,6 +167,11 @@ test-semantics: build
 		python3 tests/semantics/config_iterator_argument_review_sources.py --output "$$out/peer-source" && \
 		python3 tests/semantics/config_iterator_argument_state_review.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state" && \
 		python3 tests/semantics/config_iterator_argument_abort_sources.py --output "$$out/invalid-key-source"
+	@out="$$(mktemp -d .tools/a70-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_iterator_input_finalizer_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_iterator_input_finalizer_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/config_iterator_input_finalizer_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_iterator_input_finalizer_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
 	python3 tests/semantics/globals_compiler.py

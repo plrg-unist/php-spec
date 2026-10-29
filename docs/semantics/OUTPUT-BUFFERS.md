@@ -26,9 +26,13 @@ notice. The no-active get-clean case returns false quietly. The native unsafe
 wrapper frontier with no live handler remains explicitly Unsupported.
 
 Request completion forces top-to-bottom default-handler flush after shutdown
-callbacks and request destructors, ignoring removal capabilities. Remaining user
-handler drains are explicit dependencies. BUDGET, service pauses and
-Unsupported retain the stack. Output buffers are global across calls and Fiber
+callbacks and request destructors, ignoring removal capabilities. Module441 also
+drains admitted user handlers, including lower chunk cascades; normal completion
+and EXIT retain one saved completion across BUDGET. Its bounded FINAL fatal path
+instead deactivates the whole stack before releasing raw handler owners, without
+calling lower handlers or forwarding their bytes. [Output handlers](OUTPUT-HANDLERS.md)
+state the pending-Throwable and other remaining bounds. Service pauses and
+Unsupported retain their live state. Buffers are global across calls and Fiber
 VM switches; stored bytes add no object/reference roots.
 
 Ordinary stderr diagnostics bypass buffering. A selected stdout diagnostic or

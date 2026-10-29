@@ -98,7 +98,7 @@ CASES = {
                  '-- if pconfigcall.KIND = INTRINSIC_GC_COLLECT -- if S.GC.NEXT = 0',
         'checks': [
             '$object_table_gc_boundary(S)', '$gc_materialized_quiet(S)',
-            'pgccall = {NONCE S.GC.NEXT, CALL pconfigcall, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, PASS 0, TOTAL 0, PENDING eps}',
+            'pgccall = {NONCE S.GC.NEXT, CALL pconfigcall, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, PASS 0, TOTAL 0, PENDING eps, COUNT_SOURCE eps}',
             'S_started = S[.GC.NEXT = $(S.GC.NEXT + 1)][.GC.ACTIVE = (pgccall)][.TODO = (GC_TRACE pgccall) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]',
             'pgcplan = $gc_plan(S_started, pgccall)',
             'pgcplan.DTORS =/= eps',

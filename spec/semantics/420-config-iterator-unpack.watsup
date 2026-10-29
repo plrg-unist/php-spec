@@ -18,6 +18,7 @@ dec $config_iterator_input(pstate, pconfigiterator) : bool
 dec $config_iterator_owning_input(pconfigiterator) : bool
 dec $config_iterator_input_nodes(pconfigiterator) : pnode*
 dec $config_iterator_quiet_input(pstate, pconfigiterator) : bool
+dec $config_iterator_effectful_input(pstate, pconfigiterator) : bool
 dec $config_iterator_producer_valid(pstate, pconfigiterator) : bool
 dec $config_iterator_quiet_aggregate_data(pstate, pconfigiterator) : bool
 dec $config_iterator_finalizer(pstate, nat) : bool
@@ -145,6 +146,15 @@ def $config_iterator_quiet_input(S, pconfigiterator) = true
   -- if $destructor_method(S, pconfigiterator.OBJECT) =/= eps \/ $node_children(S, HOBJECT pconfigiterator.OBJECT) =/= eps
   -- if $heap_member(HOBJECT pconfigiterator.OBJECT, $heap_reach($config_iterator_argument_nodes(pconfigiterator), eps, $heap_graph(S).EDGES))
 def $config_iterator_quiet_input(S, pconfigiterator) = false -- otherwise
+;; An admitted copied argument can remain live while the last temporary INPUT
+;; runs the same finite field/finalizer lifecycle used by Iterator DATA.
+def $config_iterator_effectful_input(S, pconfigiterator) = true
+  -- if $config_iterator_owning_input(pconfigiterator)
+  -- if $config_iterator_scope(S, pconfigiterator)
+  -- if $config_iterator_argument_nodes(pconfigiterator) =/= eps
+  -- if $heap_subset($config_iterator_argument_nodes(pconfigiterator), S.ALLOCATIONS)
+  -- if $config_iterator_finalizer(S, pconfigiterator.OBJECT)
+def $config_iterator_effectful_input(S, pconfigiterator) = false -- otherwise
 
 ;; PRODUCER is an identity receipt from the actual Aggregate return. It owns
 ;; neither the Aggregate nor its Iterator and survives INPUT CV rebinding.
@@ -782,10 +792,10 @@ rule PhpStep/config-iterator-finish: S ~> $config_iterator_finish(S, pconfigiter
   -- if $config_iterator_valid(S, pconfigiterator, "finish")
 def $config_iterator_release_input(S, pconfigiterator, ptask_tail*) = $fiber_start_unpack_release(S[.TODO = (CONFIG_ITERATOR pconfigiterator "ready") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $config_iterator_input_nodes(pconfigiterator))
   -- if $config_iterator_owning_input(pconfigiterator)
-  -- if $config_iterator_quiet_input(S, pconfigiterator)
+  -- if $config_iterator_quiet_input(S, pconfigiterator) \/ $config_iterator_effectful_input(S, pconfigiterator)
   -- if $($heap_owners($heap_graph(S), HOBJECT pconfigiterator.OBJECT) > 0)
 def $config_iterator_release_input(S, pconfigiterator, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "CONFIG Iterator unpack last INPUT owner"]
-  -- if ~$config_iterator_owning_input(pconfigiterator) \/ ~$config_iterator_quiet_input(S, pconfigiterator) \/ $($heap_owners($heap_graph(S), HOBJECT pconfigiterator.OBJECT) <= 0)
+  -- if ~$config_iterator_owning_input(pconfigiterator) \/ (~$config_iterator_quiet_input(S, pconfigiterator) /\ ~$config_iterator_effectful_input(S, pconfigiterator)) \/ $($heap_owners($heap_graph(S), HOBJECT pconfigiterator.OBJECT) <= 0)
 rule PhpStep/config-iterator-input-release: S ~> $config_iterator_release_input(S, pconfigiterator, ptask_tail*)
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "input-release") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "input-release")
@@ -832,6 +842,11 @@ def $config_iterator_discard_allowed(S, pconfigiterator) = true
   -- if $config_iterator_scope(S, pconfigiterator)
   -- if $config_iterator_aggregate_data(S, pconfigiterator)
   -- if pconfigiterator.CALL.OWNER = eps
+def $config_iterator_discard_allowed(S, pconfigiterator) = true
+  -- if S_hold = $config_iterator_discard_scope(S, pconfigiterator)
+  -- if pconfigiterator.CALL.OWNER = eps
+  -- if $heap_owners($heap_graph(S_hold), HOBJECT pconfigiterator.OBJECT) = 0
+  -- if $config_iterator_effectful_input(S_hold, pconfigiterator)
 def $config_iterator_discard_allowed(S, pconfigiterator) = false -- otherwise
 ;; Generic throw search has removed the task. Restore its owners at the boundary.
 def $config_iterator_discard_state(S, pconfigiterator, text) = S[.ITERATORS = $iterator_remove(S.ITERATORS, pconfigiterator.ITERATOR)][.ORIGIN = (pconfigiterator.CALL.SITE)][.TODO = (THROW_SEARCH n) :: (CONFIG_ITERATOR pconfigiterator[.CURRENT = KNOWN PNULL][.KEY = KNOWN PNULL] "input-release") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
