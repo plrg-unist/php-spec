@@ -735,7 +735,7 @@ def $trait_final_interfaces(S, pclassdesc, S_required) = $class_static_finish(S,
   -- if pclassdesc_current.INTERFACES =/= eps
 
 ;; New source trait names retain the ordinary wrong-kind class-link errors.
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_method_fatal(S, pclassdesc.ORIGIN, $ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend trait ") ++ pclassdesc_parent.NAME, pclassdesc.LINE)
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_method_fatal(S, pclassdesc.ORIGIN, $ptascii("Class ") ++ $c_string(pclassdesc.NAME) ++ $ptascii(" cannot extend trait ") ++ $c_string(pclassdesc_parent.NAME), pclassdesc.LINE)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if pclassdesc_parent.KIND = "trait"
