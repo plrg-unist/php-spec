@@ -4429,6 +4429,9 @@ seven original source agreements, an independent coercion case and reached tasks
 at its earlier cut. [Finite constructor arity](coverage/semantics/anonymous-constructor-arity-review.json)
 extends root and successful include/eval sites, including inherited calls,
 named-hole reception retry and eager default diagnostics.
+Anonymous constructor reference formals now share ordinary cell acquisition,
+named mapping and reception checks. Sent cells survive later name rebinding;
+omitted defaults stay local. [Reference-constructor review](coverage/semantics/anonymous-constructor-reference-review.json).
 Unit0 anonymous classes may also extend an ordinary Base.
 Inherited or overridden constructors see Base property defaults; inherited
 methods preserve lexical and called scopes, and private Base slots remain

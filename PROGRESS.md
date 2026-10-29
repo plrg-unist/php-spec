@@ -115,18 +115,19 @@ their original inputs. At that cut, count-ambiguous callbacks, WeakMap callbacks
 residual tags, workers, hooks, reentry and active contexts remained partial.
 [GC05 review](coverage/semantics/gc-materialized-callback-review.json).
 
-CLASS152 removes the two-formal/send bound for admitted anonymous constructors.
-Finite direct positional/named sends and public unpromoted by-value signatures
-use ordinary type/default compilation and binding, including inherited calls and
-named-hole completion before typed reception. Full class identities survive
-argument-TypeError whole-name formatting and missing-arity class/member formatting.
-Six originals agree (five normal, one compiler rejection), and 212 conditions pass
-across authored62 and independent150 reached groups. Corrected private and
-actual-tail joined strict431 pass; all cuts retain their actual revisions. The original diagnostic mismatch
-and carrier-fixture refusal retain zero credit. Reference/variadic/promoted,
-nonpublic, unpacked and wider body/factory/lifetime contexts remain partial.
-[Finite-constructor review](coverage/semantics/anonymous-constructor-arity-review.json).
-The prior [rejected-source review](coverage/semantics/anonymous-rejected-sources-review.json)
+CLASS153 admits own public unpromoted reference constructor formals through the
+ordinary saved-target/deferred-send machinery. Positional sends retain an old cell
+through later rebinding; named sends acquire the cell at their actual formal index.
+Reception may coerce a supplied caller cell, while ordinary body writes add no
+persistent property-reference constraint. Missing CVs, fresh omitted scalar
+defaults, VAR reference notices and invalid-TMP priority keep their ordinary rules.
+Six exact normal sources and 217 conditions pass (211 reached, six derived guards),
+with private strict431. Three fixture-only failures retain zero credit; all tested
+cuts stay distinct. Variadic/promotion/unpack/nonpublic and wider source/value/
+callback contexts remain partial. [Reference-constructor review](coverage/semantics/anonymous-constructor-reference-review.json).
+The prior [finite-arity review](coverage/semantics/anonymous-constructor-arity-review.json)
+retains CLASS152 source6/state212 and its argument-TypeError/missing-arity display distinctions.
+The [rejected-source review](coverage/semantics/anonymous-rejected-sources-review.json)
 retains CLASS151 source5/state261 and zero-cost parser-rejection history at its own cuts.
 
 GC03's quiet WeakMap registration/proxy-count behavior and its separate tested
@@ -205,7 +206,6 @@ reentrant/abrupt raw-owner teardown remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS153 | Anonymous constructor reference formals/direct sends; native6 and two old refusals accepted, private implementation. |
 | COMP157 | Inherited ordinary initialized-public images; independent packet frozen, source preparation. |
 | ATTR05 | Explicit captured-Closure `__invoke()` warning phases; five native-first originals frozen, private preparation. |
 | Enum M3/M4 | Published-enum array dispatch is integrated for reviewed class-string and case-object sources, including named Stringable arguments. String callable routes, wider generated dispatch, backing dependency and the default loader remain partial. |
