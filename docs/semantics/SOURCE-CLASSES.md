@@ -455,10 +455,21 @@ origins produce explicit Unsupported before conversion. Caller strictness,
 backing checks, singleton caches and ordinary internal argument errors keep
 their existing rules.
 
+First-class captures authenticate the actual placeholder, init/conversion line
+and full fixed or computed string before creating the existing internal Closure.
+The Closure stores the selected generated operation; it owns no receiver, creator
+or original callee string. Invocation owns the Closure through reception and
+lookup even if an argument or Stringable callback clears its source variable.
+The temporary Stringable input still retires before lookup, and the Closure
+retires after the call when no outside owner remains.
+
 The engine routes are `zend_init_dynamic_call_string` and `ZEND_INIT_DYNAMIC_CALL`,
 the compiler's fixed-call lowering, and the generated handlers registered in
-`Zend/zend_enum.c`. The [string review](../../coverage/semantics/enum-string-callable-review.json)
+`Zend/zend_enum.c`. For captures, `ZEND_CALLABLE_CONVERT` calls
+`zend_closure_from_frame` in `Zend/zend_closures.c`. The [string review](../../coverage/semantics/enum-string-callable-review.json)
 keeps original source comparisons, reached guards and the shared identity-receipt
-normalization at separate cuts. Callable admission, first-class string/array
-captures, pipe and `Closure::fromCallable` consumers, first-use loading, enum
+normalization at separate cuts. The
+[capture review](../../coverage/semantics/enum-string-capture-review.json) keeps
+its new capture sources and owner/ingress checks separate. Callable admission,
+first-class array captures, pipe and `Closure::fromCallable` consumers, first-use loading, enum
 collectability and wider object lifetimes remain partial.
