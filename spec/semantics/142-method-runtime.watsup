@@ -395,38 +395,44 @@ def $scoped_source_method_at(expression_name, ptbytes, z_precision) = true
   -- if ~$scoped_method_literal(expression_name)
 def $scoped_source_method_at(phpType20, ptbytes, z_precision) = false -- otherwise
 dec $scoped_requested_site(pstate, porigin, phpType19, porigin, pcallcontext?) : bool
-def $scoped_requested_site(S, porigin_site, NName (BYTES text) metadata, porigin_requested, pcallcontext_caller?) = true
+dec $scoped_context_called(pcallcontext?) : porigin?
+def $scoped_context_called((pcallcontext)) = pcallcontext.CALLED_CLASS
+def $scoped_context_called(eps) = eps
+dec $scoped_requested_scope(pstate, porigin, phpType19, porigin, porigin?, porigin?) : bool
+def $scoped_requested_site(S, porigin_site, phpType19, porigin_requested, pcallcontext_caller?) = $scoped_requested_scope(S, porigin_site, phpType19, porigin_requested, $method_context_scope(pcallcontext_caller?), $scoped_context_called(pcallcontext_caller?))
+def $scoped_requested_scope(S, porigin_site, NName (BYTES text) metadata, porigin_requested, porigin_scope?, porigin_called?) = true
   -- if $ptlc($base64(text)) = $ptascii("self")
-  -- if $method_context_scope(pcallcontext_caller?) = (porigin_requested)
-def $scoped_requested_site(S, porigin_site, NName (BYTES text) metadata, porigin_requested, (pcallcontext_caller)) = true
+  -- if porigin_scope? = (porigin_requested)
+def $scoped_requested_scope(S, porigin_site, NName (BYTES text) metadata, porigin_requested, (porigin_scope), porigin_called?) = true
   -- if $ptlc($base64(text)) = $ptascii("parent")
-  -- if pcallcontext_caller.LEXICAL_CLASS = (porigin_scope)
   -- if $class_link_at(S.LINKEDPARENTS, porigin_scope) = (SOURCE_PARENT porigin_requested)
-def $scoped_requested_site(S, porigin_site, NName (BYTES text) metadata, porigin_requested, (pcallcontext_caller)) = true
+def $scoped_requested_scope(S, porigin_site, NName (BYTES text) metadata, porigin_requested, porigin_scope?, (porigin_called)) = true
   -- if $ptlc($base64(text)) = $ptascii("static")
-  -- if pcallcontext_caller.CALLED_CLASS = (porigin_requested)
-def $scoped_requested_site(S, PORIGIN n_unit pcpath, phpType19, porigin_requested, pcallcontext_caller?) = true
+  -- if porigin_called = porigin_requested
+def $scoped_requested_scope(S, PORIGIN n_unit pcpath, phpType19, porigin_requested, porigin_scope?, porigin_called?) = true
   -- if $ppscoped_named(phpType19) /\ ~$ppscoped_keyword(phpType19)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_requested)
-def $scoped_requested_site(S, porigin_site, expression_class, porigin_requested, pcallcontext_caller?) = true
+def $scoped_requested_scope(S, porigin_site, expression_class, porigin_requested, porigin_scope?, porigin_called?) = true
   -- if ~$ppscoped_named(expression_class)
-def $scoped_requested_site(S, porigin_site, phpType19, porigin_requested, pcallcontext_caller?) = false -- otherwise
+def $scoped_requested_scope(S, porigin_site, phpType19, porigin_requested, porigin_scope?, porigin_called?) = false -- otherwise
 dec $scoped_called_site(pstate, phpType19, porigin, porigin, pcallcontext?, pmethoddesc, nat?) : bool
-def $scoped_called_site(S, phpType19, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, (n_receiver)) = true
+dec $scoped_called_scope(pstate, phpType19, porigin, porigin, porigin?, pmethoddesc, nat?) : bool
+def $scoped_called_site(S, phpType19, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, n_receiver?) = $scoped_called_scope(S, phpType19, porigin_requested, porigin_called, $scoped_context_called(pcallcontext_caller?), pmethoddesc, n_receiver?)
+def $scoped_called_scope(S, phpType19, porigin_requested, porigin_called, porigin_caller_called?, pmethoddesc, (n_receiver)) = true
   -- if ~pmethoddesc.STATIC
   -- if $(n_receiver < |S.OBJECTS|)
   -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
-def $scoped_called_site(S, phpType19, porigin_requested, porigin_called, (pcallcontext_caller), pmethoddesc, eps) = true
+def $scoped_called_scope(S, phpType19, porigin_requested, porigin_called, (porigin_caller_called), pmethoddesc, eps) = true
   -- if pmethoddesc.STATIC
   -- if $ppscoped_keyword(phpType19)
-  -- if pcallcontext_caller.CALLED_CLASS = (porigin_called)
-def $scoped_called_site(S, phpType19, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, eps) = true
+  -- if porigin_caller_called = porigin_called
+def $scoped_called_scope(S, phpType19, porigin_requested, porigin_called, porigin_caller_called?, pmethoddesc, eps) = true
   -- if pmethoddesc.STATIC
   -- if ~$ppscoped_keyword(phpType19)
   -- if porigin_requested = porigin_called
-def $scoped_called_site(S, phpType19, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, n_receiver?) = false -- otherwise
+def $scoped_called_scope(S, phpType19, porigin_requested, porigin_called, porigin_caller_called?, pmethoddesc, n_receiver?) = false -- otherwise
 dec $scoped_receiver_site(pstate, porigin, pmethoddesc, nat?, pcallcontext?) : bool
 def $scoped_receiver_site(S, porigin_requested, pmethoddesc, eps, pcallcontext_caller?) = true -- if pmethoddesc.STATIC
 def $scoped_receiver_site(S, porigin_requested, pmethoddesc, (n_receiver), (pcallcontext_caller)) = true

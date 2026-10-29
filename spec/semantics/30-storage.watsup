@@ -660,7 +660,9 @@ syntax pgenrelease = { JOBS pdestructionjob*, VALUE poperand, BASE pbase, PENDIN
 syntax pgenstorage = { OBJECT nat, HANDLE nat, NEXT nat, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, USER bool }
 syntax pgeneratorborrowed = { VALUE poperand?, KEY pvalue? }
 syntax pgeneratoraccess = { TARGET pcalltarget, SITE porigin, LINE int }
-syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FIRST bool, PENDING_INIT bool, PARKED porigin?, INDEX int, VALUE pvalue?, REFCELL nat?, KEY pvalue?, BORROWED pgeneratorborrowed?, RETURN pvalue?, CLOSURE nat?, DELEGATE pgeneratorfrom?, ACCESS pgeneratoraccess? }
+;; Creation evidence borrows source/arena identities without retaining the maker.
+syntax pgeneratorcreation = { SITE porigin, CREATOR pmethodcapture, CREATOR_TARGET pcalltarget, CALLEE pcalltarget }
+syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FIRST bool, PENDING_INIT bool, PARKED porigin?, INDEX int, VALUE pvalue?, REFCELL nat?, KEY pvalue?, BORROWED pgeneratorborrowed?, RETURN pvalue?, CLOSURE nat?, DELEGATE pgeneratorfrom?, ACCESS pgeneratoraccess?, CREATION pgeneratorcreation? }
 syntax pgeneratorfrom = { SITE porigin, INPUT pvalue?, POSITION nat, CURRENT poperand?, ACQUISITION pyieldfromreceipt? }
 syntax pgeneratorloop = { ITERATOR nat, STATEMENT statement }
 syntax pgeneratorop = { OBJECT nat, NAME text, SITE porigin, LINE int, LOOP pgeneratorloop?, ADVANCE bool, ARGUMENTS pvalue*, STARTPACK bool, BORROWED bool }
