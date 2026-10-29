@@ -4262,6 +4262,13 @@ walk when `previous` is null, preserving live cells, copied siblings, cache/trac
 severity order and real recursion Errors. The old DIRECT route remains separate;
 base `Exception`/`Error` retain their earlier trace rules.
 [Standalone trace review](coverage/semantics/throwable-null-trace-comparison-review.json).
+Builtin `#[NoDiscard]` now validates bounded declarations and warns on unused
+ordinary source calls after sends and named defaults, before reception or body.
+Handlers preserve selected arguments, references, receiver ownership and VM
+cleanup order; used results and raw callback APIs retain their distinct behavior.
+Literal/NULL messages, supported declaration errors and explicit remaining
+boundaries are described in the [attribute contract](docs/semantics/BUILTIN-ATTRIBUTES.md)
+and [review](coverage/semantics/builtin-nodiscard-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The

@@ -197,3 +197,28 @@ lines += [
 assert lines[79] == '    $receiver->act($a, $b, named: $n);'
 CASES.update({'fixed-extra-named-receiver-throw-release-order': ('\n'.join(lines) + '\n').encode()})
 EXPECTED.update({'fixed-extra-named-receiver-throw-release-order': b'H:1:1:1;K:1:1:1:1;A:1:1;B:1:1;N:1:1;R:1:1:1:1;C:1:1:1:1:1:1;E:1;'})
+
+# New actual-tail NoDiscard/FINAL callback intersection; native-first join control.
+CASES['marked-final-api-versus-inner-source-discard'] = php([
+    'function attr_notice($level, $message, $file, $line) {',
+    '    $GLOBALS["warnings"]++;',
+    '    $GLOBALS["level_ok"] = $level === 512;',
+    '    $GLOBALS["message_ok"] = $message === "The return value of function attr_inner() should either be used or intentionally ignored by casting it as (void)";',
+    '    $GLOBALS["source_ok"] = $file === __FILE__ && $line === 13;',
+    '    return true;',
+    '}',
+    '#[\\NoDiscard]',
+    'function attr_inner() { $GLOBALS["inner"]++; return 7; }',
+    '#[\\NoDiscard]',
+    'function attr_final($bytes, $phase) {',
+    '    attr_inner();',
+    '    (void) attr_inner();',
+    '    $used = attr_inner();',
+    '    return $bytes . ":" . ($phase === 9) . ":" . ($GLOBALS["warnings"] === 1) . ":" . $GLOBALS["level_ok"] . ":" . $GLOBALS["message_ok"] . ":" . $GLOBALS["source_ok"] . ":" . ($GLOBALS["inner"] === 3) . ":" . ($used === 7);',
+    '}',
+    '$warnings = 0; $inner = 0; $level_ok = false; $message_ok = false; $source_ok = false;',
+    'set_error_handler("attr_notice");',
+    'ob_start("attr_final");',
+    'echo "seed";',
+])
+EXPECTED['marked-final-api-versus-inner-source-discard'] = b'seed:1:1:1:1:1:1:1'
