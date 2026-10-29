@@ -448,16 +448,21 @@ def $scoped_access_site(S, pmethoddesc, n_receiver?, porigin_site, pcallcontext_
   -- if ~$scoped_ctor_arm_at(S, porigin_site)
   -- if $method_accessible(S, pmethoddesc, $method_context_scope(pcallcontext_caller?))
 def $scoped_access_site(S, pmethoddesc, n_receiver?, porigin_site, pcallcontext_caller?) = false -- otherwise
-def $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_site) = true
-  -- if $target_function(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector) = (pfunction)
-  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
-  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
-  -- if $scoped_source_method_origin(S, porigin_site, phpType20, pmethoddesc.NAME)
+dec $scoped_call_live_scope(pstate, pcalltarget, porigin, phpType19, pmethoddesc) : bool
+dec $generator_creation_selected(pstate, pcalltarget, porigin) : bool
+def $scoped_call_live_scope(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_site, phpType19, pmethoddesc) = true
   -- if $scoped_site_context(S, porigin_method, porigin_site) = pcallcontext_caller?
   -- if $scoped_requested_site(S, porigin_site, phpType19, porigin_requested, pcallcontext_caller?)
   -- if $scoped_called_site(S, phpType19, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, n_receiver?)
   -- if $scoped_receiver_site(S, porigin_requested, pmethoddesc, n_receiver?, pcallcontext_caller?)
   -- if $scoped_access_site(S, pmethoddesc, n_receiver?, porigin_site, pcallcontext_caller?)
+def $scoped_call_live_scope(S, pcalltarget, porigin_site, phpType19, pmethoddesc) = false -- otherwise
+def $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_site) = true
+  -- if $target_function(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $scoped_source_method_origin(S, porigin_site, phpType20, pmethoddesc.NAME)
+  -- if $scoped_call_live_scope(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_site, phpType19, pmethoddesc) \/ $generator_creation_selected(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_site)
 def $scoped_call_selected(S, pcalltarget, porigin_site) = false -- otherwise
 def $method_call_selected(S, pcalltarget, porigin?) = false -- otherwise
 
