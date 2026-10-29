@@ -46,9 +46,16 @@ CASES = {
             '~$gc_callback_caller_valid(S_foreign, pgccall_foreign)',
             '~$gc_call_live(S_foreign, pgccall_foreign)',
             'pgccall_foreign_erased = pgccall_foreign[.COUNT_SOURCE = eps]',
-            'S_foreign_erased = S[.CURRENT = (pcallcontext_relay)]'
+            'S_relay = $constant_frame_scope(S, pframe_relay, [pframe_outer, pframe_global])',
+            'S_foreign_erased = S_relay[.ORIGIN = pgccall.ORIGIN]'
             '[.GC.ACTIVE = (pgccall_foreign_erased)]'
-            '[.TODO = (GC_TRACE pgccall_foreign_erased) :: ptask_tail*]',
+            '[.TODO = (GC_TRACE pgccall_foreign_erased) :: S_relay.TODO]',
+            '$call_current_valid(S_foreign_erased)',
+            '$gc_materialized_caller(S_foreign_erased, S_foreign_erased.CURRENT)',
+            '$gc_materialized_caller_frames(S_foreign_erased, S_foreign_erased.FRAMES)',
+            '$gc_materialized_quiet(S_foreign_erased)',
+            '~$gc_materialized_caller_site(S_foreign_erased, '
+            'S_foreign_erased.CURRENT, pgccall_foreign_erased.CALL.SITE)',
             '$gc_trace(S_foreign_erased, pgccall_foreign_erased).COMPLETION = '
             'UNSUPPORTED "materialized callback trace order"',
             'S_fresh = $drive_steps(S, 1)[.COMPLETION = NORMAL]',
