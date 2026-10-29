@@ -1716,6 +1716,33 @@ the NULL handler/resume even after the Iterator is gone; it does not reread DATA
 or broaden ordinary CONFIG sent-shape validation.
 
 Other CONFIG intrinsic acquisition and Generator value policies remain unchanged.
-ARRAY/object sends require real owning argument buffers and effectful conversion
-or cleanup support. All held boundaries, including low-precision DEFINE-name
-NaN, remain untouched. Original A66/A67 cuts retain their own scope and identities.
+The [owning-argument increment](../../coverage/semantics/config-iterator-argument-review.json)
+adds finite path-acyclic CFG-admitted ARRAY and ordinary non-Stringable root
+INSTANCE values on this same INI_SET bridge. Live capture/send reuses the existing
+field, reference-source and graph validation. Copied entries become real normalized
+call-slot roots, including repeated roots and named holes. Array COW protects each
+captured table while embedded reference cells and object properties remain shared.
+No PHP ARRAY is invented for the internal buffer.
+
+The copied slots survive `next()` and ordered DATA/INPUT retirement. Owning ready
+calls transfer to ordinary CONFIG_INVOKE reception and argument cleanup; scalar-only
+ready calls retain their earlier path. Existing API errors build real TraceArgs
+owners, so an object can outlive Iterator DATA and die only after its final Error
+or outside argument owner disappears. This includes passing the Iterator itself.
+NULL diagnostics retain source/callee/copied-slot authority after DATA death and
+reuse the existing disjoint API finish cases.
+
+Exact key/send Error producers preserve a live owning cache or copied prefix until
+ordinary THROW_SEARCH performs CURRENT, DATA/INPUT, then prefix release. A retained
+outside cache owner defers its finalizer. Error priority is independent of send-time
+graph admission. Post-retirement records authenticate structural identities and
+stages; they do not recover old reference-cell contents or prove complete producer
+provenance. Later callback retirement keeps a nonempty copied-prefix witness.
+
+Other CONFIG intrinsic acquisition, Stringable/effectful casts, materialized or
+special graphs and wider lifecycle contexts retain their current boundaries.
+In particular, an effectful last temporary INPUT without an admitted surviving
+owner is still explicitly Unsupported. Constructed first-key and graph-rejection
+checks do not establish extra native source agreements or broader GC coverage.
+All held boundaries, including low-precision DEFINE-name NaN and owned-NUL release,
+remain untouched. Original A66/A67/A68 cuts retain their scope and identities.

@@ -665,8 +665,17 @@ copy raw NULL/bool/int/float/string values before `next()` and cleanup. INI_SET
 binds its string option afterward: weak coercion/NULL deprecation or strict
 rejection. Its scalar/null value is accepted even strict and converted inside
 the API using live precision. Persistent source/callee receipts validate handler
-return or supplied throw after DATA death. Owning argument buffers and other
-CONFIG consumer/value policies remain partial.
+return or supplied throw after DATA death. Generator and other CONFIG
+consumer/value policies remain partial.
+
+[Owning CONFIG arguments](coverage/semantics/config-iterator-argument-review.json)
+copy finite CFG-admitted arrays and ordinary non-Stringable root objects into
+normalized call slots. Real roots preserve array COW, embedded aliases and shared
+object identity through `next()` and DATA/INPUT retirement. API TypeError traces
+can keep those arguments alive until their final owner disappears. Owning key/send
+Errors release CURRENT, then DATA/INPUT, then the copied prefix; admitted returning or
+throwing callbacks keep the existing cleanup rules. Stringable/effectful casts,
+other callees and wider graph/temporary-finalizer lifetimes remain partial.
 
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
