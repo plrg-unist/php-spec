@@ -1092,6 +1092,7 @@ def $autoload_interface_missing(S, preqbytes :: preqbytes_tail*) = $autoload_int
 def $autoload_interface_missing(S, preqbytes :: preqbytes_tail*) = (preqbytes)
   -- if ~$dynamic_new_known(S, preqbytes)
 def $autoload_interface_kind((NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)) = ("class")
+def $autoload_interface_kind((NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata)) = ("enum")
 def $autoload_interface_kind((NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata)) = ("interface")
 def $autoload_interface_kind(pcnode?) = eps -- otherwise
 
@@ -1216,6 +1217,7 @@ def $task_nodes(AUTO_INTERFACE porigin preqbytes) = eps
 dec $autoload_trait_source(pstate, porigin, preqbytes) : bool
 
 def $autoload_trait_kind((NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)) = ("class")
+def $autoload_trait_kind((NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata)) = ("enum")
 def $autoload_trait_kind((NStmtTrait phpType14 phpType3 phpType23 metadata)) = ("trait")
 def $autoload_trait_kind(pcnode?) = eps -- otherwise
 
