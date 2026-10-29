@@ -46,8 +46,10 @@ CASES = {
             '~$call_aggregate_receipt(S, piteratorunpack.CALL, piteratorunpack.INPUT, |S.OBJECTS|, S.TODO)',
             '~$call_task_valid(S, UNPACK_AGGREGATE pcallaggregate[.CALL = pcallaggregate.CALL[.CALLSITE = eps]] "leaf")',
             *VALID, *ONE,
-            'S_one.TODO = (ITERATOR_UNPACK piteratorunpack_next "next-start") :: '
+            'S_one.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: '
+            '(ITERATOR_UNPACK piteratorunpack_next "next-start") :: '
             '(UNPACK_AGGREGATE pcallaggregate "leaf") :: ptask_tail*',
+            'pdestructionrelease <- S_one.DESTRUCTION.RELEASES',
             'piteratorunpack_next.CALL.SENT.SLOTS = [NAMED_SENT (KNOWN pvalue_left)]',
             'piteratorunpack_next.CALL.SENT.NAMED = eps',
             '$call_aggregate_iterator_input(S_one, piteratorunpack_next)',
