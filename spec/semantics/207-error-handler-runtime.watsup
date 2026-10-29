@@ -14,7 +14,6 @@ dec $generator_request_render_warning_resume(ptask) : bool
 dec $error_callback_line(pstate, perrorcall) : int
 dec $exception_warning_resume(ptask) : bool
 dec $error_handler_values(pstate, perrorcall) : pvalue*
-dec $error_handler_operands(pstate, pcalltarget, pvalue*, nat, int) : (pstate, poperand*)
 dec $error_handler_enter(pstate, perrorcall, pcalltarget, pfunction) : pstate
 dec $error_handler_invoke_known(pstate, perrorcall) : pstate?
 dec $error_missing_operand(pstate, poperand) : bool
@@ -262,25 +261,8 @@ def $error_handler_values(S, perrorcall) = [PINT perrorcall.LEVEL, PSTRING perro
   -- if $error_handler_file(S, perrorcall) = eps
 dec $error_reference_event(pstate, ptbytes, int) : pevent
 def $error_reference_event(S, ptbytes, z) = DIAGNOSTIC "Warning" ptbytes z -- otherwise
-def $error_handler_operands(S, pcalltarget, eps, n, z) = (S, eps)
-def $error_handler_operands(S, pcalltarget, pvalue :: pvalue_tail*, n, z) = (S_next, (KNOWN pvalue) :: poperand*)
-  -- if ~$call_parameter_reference(S, pcalltarget, n)
-  -- if $error_handler_operands(S, pcalltarget, pvalue_tail*, $(n + 1), z) = (S_next, poperand*)
-def $error_handler_operands(S, pcalltarget, pvalue :: pvalue_tail*, n, z) = (S_next, (REFERENCE n_cell) :: poperand*)
-  -- if $call_parameter_reference(S, pcalltarget, n)
-  -- if $target_function(S, pcalltarget) = (pfunction)
-  -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
-  -- if S_cell = $call_fresh_reference($error_default(S[.ERRORFATALTRACE = eps], $error_reference_event(S, pfunction.NAME ++ $ptascii("(): Argument #") ++ $decimal_integer($(n + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" must be passed by reference, value given"), z), 2), pvalue)
-  -- if S_cell.RESULT = REFERENCE n_cell
-  -- if $error_handler_operands(S_cell, pcalltarget, pvalue_tail*, $(n + 1), z) = (S_next, poperand*)
-def $error_handler_enter(S, perrorcall, pcalltarget, pfunction) = $call_arity($target_after_enter($call_enter(S_args, pfunction, poperand*, (perrorcall.SITE), $error_callback_line(S, perrorcall)), pcalltarget), pfunction, 4, (perrorcall.SITE), $error_callback_line(S, perrorcall))
-  -- if $deprecated_api_allowed(S, pfunction)
+def $error_handler_enter(S, perrorcall, pcalltarget, pfunction) = $api_callback_begin(S[.ERRORHANDLER.CALLBACK = eps], API_ERROR perrorcall, pcalltarget, pfunction, $error_handler_values(S, perrorcall), perrorcall.SITE, $error_callback_line(S, perrorcall))
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
-  -- if perrorcall_entered = perrorcall[.TARGET = (pcalltarget)]
-  -- if S_pending = S[.ERRORHANDLER.CALLBACK = eps][.TODO = (ERROR_HANDLER_RESULT perrorcall_entered) :: ptask_tail*]
-  -- if $error_handler_operands(S_pending, pcalltarget, $error_handler_values(S, perrorcall), 0, $error_callback_line(S, perrorcall)) = (S_args, poperand*)
-def $error_handler_enter(S, perrorcall, pcalltarget, pfunction) = S[.COMPLETION = UNSUPPORTED "Deprecated internal API timing"]
-  -- if ~$deprecated_api_allowed(S, pfunction)
 def $error_handler_invoke_known(S, perrorcall) = ($error_handler_enter(S, perrorcall, pcalltarget, pfunction))
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
   -- if perrorcall.TARGET = eps
@@ -880,6 +862,14 @@ def $error_entered_call_valid(S, perrorcall) = true
   -- if perrorcall.TARGET = (pcalltarget)
   -- if $error_handler_selected(S, perrorcall.CALLBACK, pcalltarget)
   -- if $handler_emitter_valid(S, pcalltarget)
+def $error_entered_call_valid(S, perrorcall) = true
+  -- if $error_call_valid(S, perrorcall)
+  -- if perrorcall.TARGET = (API_BORROWED_TARGET pshutdownproducer)
+  -- if pshutdownproducer.SITE = (perrorcall.SITE) /\ pshutdownproducer.INTERNAL /\ pshutdownproducer.CLONE = eps
+  -- if $consumer_producer_snapshot(pshutdownproducer)
+  -- if S_history = $api_callback_result_scope(S, API_BORROWED_TARGET pshutdownproducer)
+  -- if $error_handler_selected(S_history, perrorcall.CALLBACK, pshutdownproducer.TARGET)
+  -- if $handler_emitter_valid(S_history, pshutdownproducer.TARGET)
 def $error_entered_call_valid(S, perrorcall) = false -- otherwise
 def $call_task_valid(S, ERROR_HANDLER_RESULT perrorcall) = $error_entered_call_valid(S, perrorcall)
 def $error_context_frame_head(pcallcontext, pframe :: pframe_caller :: pframe_tail*) = (perrorcall)
