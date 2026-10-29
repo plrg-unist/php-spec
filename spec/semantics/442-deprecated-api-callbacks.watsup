@@ -357,3 +357,33 @@ def $error_call_valid(S, perrorcall) = true
   -- if S_history = $api_callback_result_scope(S, API_BORROWED_TARGET papiargcursor.PRODUCER)
   -- if perrorcall.MESSAGE = $api_cursor_reference_message(S_history, papiargcursor)
   -- if perrorcall.EVENT = $api_cursor_reference_event(S, papiargcursor, perrorcall.MESSAGE)
+
+
+;; A FINAL-selected handler can fail during this real pre-entry API phase.
+;; Its original old_exception C owner exists before any received argument/frame.
+;; Preserve that cursor and prepared prefix directly, never an invented EHR.
+dec $output_final_exception_cursor(ptask) : papiargcursor?
+def $output_final_exception_cursor(API_CALLBACK_SEND papiargcursor) = (papiargcursor)
+  -- if papiargcursor.CALL = API_EXCEPTION pexceptioncall
+def $output_final_exception_cursor(API_CALLBACK_REF papiargcursor) = (papiargcursor)
+  -- if papiargcursor.CALL = API_EXCEPTION pexceptioncall
+def $output_final_exception_cursor(ptask) = eps -- otherwise
+def $output_final_exception_carrier_tag(ptask) = true
+  -- if $output_final_exception_cursor(ptask) =/= eps
+def $output_final_exception_carrier(S, ptask :: (OUTPUT_FINAL_EXCEPTION pobinvoke true) :: (OUTPUT_DRAIN pobdrain) :: eps) = (ptask)
+  -- if pobinvoke.CALL = OB_FINAL pobdrain
+  -- if $output_final_exception_cursor(ptask) = (papiargcursor)
+  -- if $api_cursor_warning_valid(S[.ORIGIN = (papiargcursor.SITE)], papiargcursor)
+def $output_final_exception_hold(S_source, S, ptask) = S[.DESTRUCTION.ABANDONED = S.DESTRUCTION.ABANDONED ++ [pdestructioncleanup]]
+  -- if $output_final_exception_cursor(ptask) = (papiargcursor)
+  -- if pdestructioncleanup = {SOURCE ptask, TARGET papiargcursor.PRODUCER[.SITE = eps], CALLER eps, ORIGIN (papiargcursor.SITE), CONSTCONTEXT eps, RELEASED false}
+def $eager_abandoned_owner(ptask) = $api_callback_roots(papiargcursor.CALL) ++ $operands_roots(papiargcursor.SENT)
+  -- if $output_final_exception_cursor(ptask) = (papiargcursor)
+def $eager_cleanup_valid(S, pdestructioncleanup) = true
+  -- if $output_final_exception_cursor(pdestructioncleanup.SOURCE) = (papiargcursor)
+  -- if ~pdestructioncleanup.RELEASED
+  -- if pdestructioncleanup.TARGET = papiargcursor.PRODUCER[.SITE = eps]
+  -- if $consumer_producer_snapshot(pdestructioncleanup.TARGET)
+  -- if pdestructioncleanup.TARGET.INTERNAL /\ pdestructioncleanup.TARGET.CLONE = eps
+  -- if pdestructioncleanup.CALLER = eps /\ pdestructioncleanup.ORIGIN = (papiargcursor.SITE) /\ pdestructioncleanup.CONSTCONTEXT = eps
+  -- if $api_cursor_saved_valid($eager_cleanup_history(S, pdestructioncleanup), papiargcursor)

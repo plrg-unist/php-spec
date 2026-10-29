@@ -545,3 +545,83 @@ def $output_final_undefined(S, pobinvoke) = $output_drain_route(S[.OUTPUTBUFFERS
   -- if poutputbuffer_failed = poutputbuffer[.FLAGS = $long_or(poutputbuffer.FLAGS, 12288)]
 def $eager_operation_source_guard(S, pdestructionoperation) = ($output_final_exception_valid(S, pobinvoke[.SENT = eps], false) /\ $ob_user_fci_arguments(pobinvoke) /\ pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
   -- if pdestructionoperation.SOURCE = OUTPUT_FINAL_EXCEPTION pobinvoke true
+
+
+;; Capture a fresh null-C fatal while the actual FINAL tail is still present.
+;; EH_RESULT owns old_exception until handler return; EH_CLEAN records whether
+;; its explicit decrement has started. Internal destructor bailout retains its
+;; own real receiver/release counts through the existing generic transfer.
+dec $output_final_exception_tail(ptask*) : pobinvoke?
+dec $output_final_exception_marker(ptask) : bool
+dec $output_final_exception_carrier_tag(ptask) : bool
+dec $output_final_exception_carrier(pstate, ptask*) : ptask?
+dec $output_final_exception_scope(pstate) : pobinvoke?
+dec $output_final_exception_reportable(pstate, nat) : bool
+dec $output_final_exception_bailout(pstate) : pstate
+dec $output_final_exception_hold(pstate, pstate, ptask) : pstate
+
+def $output_final_exception_marker(OUTPUT_FINAL_EXCEPTION pobinvoke b) = true
+def $output_final_exception_marker(ptask) = false -- otherwise
+def $output_final_exception_tail([OUTPUT_FINAL_EXCEPTION pobinvoke true, OUTPUT_DRAIN pobdrain]) = (pobinvoke)
+  -- if pobinvoke.CALL = OB_FINAL pobdrain
+def $output_final_exception_tail(ptask :: ptask_tail*) = $output_final_exception_tail(ptask_tail*)
+  -- if ~$output_final_exception_marker(ptask)
+def $output_final_exception_tail(ptask*) = eps -- otherwise
+def $output_final_exception_carrier_tag(EXCEPTION_HANDLER_RESULT pexceptioncall) = true
+def $output_final_exception_carrier_tag(EXCEPTION_HANDLER_CLEAN pexceptioncall b) = true
+def $output_final_exception_carrier_tag(OUTPUT_FINAL_EXCEPTION pobinvoke b) = true
+def $output_final_exception_carrier_tag(ptask) = false -- otherwise
+
+def $output_final_exception_carrier(S, (EXCEPTION_HANDLER_RESULT pexceptioncall) :: (OUTPUT_FINAL_EXCEPTION pobinvoke true) :: (OUTPUT_DRAIN pobdrain) :: eps) = (EXCEPTION_HANDLER_RESULT pexceptioncall)
+  -- if pobinvoke.CALL = OB_FINAL pobdrain /\ pexceptioncall.ORIGIN = eps
+  -- if $exception_result_valid(S[.ORIGIN = eps], pexceptioncall)
+def $output_final_exception_carrier(S, (EXCEPTION_HANDLER_CLEAN pexceptioncall b) :: (OUTPUT_FINAL_EXCEPTION pobinvoke true) :: (OUTPUT_DRAIN pobdrain) :: eps) = (EXCEPTION_HANDLER_CLEAN pexceptioncall b)
+  -- if pobinvoke.CALL = OB_FINAL pobdrain /\ pexceptioncall.ORIGIN = eps
+  -- if $eager_cleanup_find(S.DESTRUCTION.CLEANUPS, EXCEPTION_HANDLER_RESULT pexceptioncall) = (pdestructioncleanup)
+  -- if pdestructioncleanup.RELEASED = b
+  -- if $eager_cleanup_valid(S, pdestructioncleanup)
+def $output_final_exception_carrier(S, ptask :: ptask_tail*) = $output_final_exception_carrier(S, ptask_tail*)
+  -- if ~$output_final_exception_carrier_tag(ptask)
+def $output_final_exception_carrier(S, ptask*) = eps -- otherwise
+
+def $output_final_exception_scope(S) = (pobinvoke)
+  -- if S.COMPLETION = NORMAL /\ ~S.OUTPUTBLOCKED
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.EXCEPTIONHANDLER = eps
+  -- if $output_final_exception_tail(S.TODO) = (pobinvoke)
+  -- if $output_final_exception_valid(S[.ORIGIN = eps], pobinvoke, true)
+def $output_final_exception_scope(S) = eps -- otherwise
+def $output_final_exception_abrupt(S) = true
+  -- if $output_final_exception_scope(S) = (pobinvoke)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $output_final_exception_carrier(S, S.TODO) = (ptask_carrier)
+  -- if ptask = ptask_carrier \/ $eager_bailout_source(S) =/= eps
+def $output_final_exception_abrupt(S) = false -- otherwise
+
+;; Parse/CompileError have a different native non-stringifying report path;
+;; retain them at the existing wider-rendering boundary with their owners.
+def $output_final_exception_reportable(S, n) = true
+  -- if $throwable_live(S, n)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if ~(pthrowable.KIND <- ["ParseError", "CompileError"])
+  -- if $throwable_field(S, n, "previous") = PNULL
+  -- if $ob_user_scalar($throwable_field(S, n, "message"))
+  -- if $throwable_terminal_renderable(S, n, eps)
+  -- if ~$shutdown_render_ready(S[.COMPLETION = UNCAUGHT n])
+  -- if $display_state_mode(S) =/= 1 \/ ~$output_deferred_stdout(S[.COMPLETION = UNCAUGHT n])
+def $output_final_exception_reportable(S, n) = false -- otherwise
+def $output_final_exception_bailout(S) = $eager_bailout_transfer(S, S, ptask)
+  -- if $eager_bailout_source(S) = (ptask)
+def $output_final_exception_bailout(S) = $destruction_abort(S, S)
+  -- if $eager_bailout_source(S) = eps
+def $output_final_exception_hold(S_source, S, EXCEPTION_HANDLER_RESULT pexceptioncall) = S[.DESTRUCTION.ABANDONED = S.DESTRUCTION.ABANDONED ++ [$eager_cleanup_record(S_source[.ORIGIN = eps], EXCEPTION_HANDLER_RESULT pexceptioncall)]]
+def $output_final_exception_hold(S_source, S, EXCEPTION_HANDLER_CLEAN pexceptioncall b) = S
+
+def $output_final_exception_abort(S) = $output_final_throw($output_final_exception_hold(S, $output_final_exception_bailout(S), ptask), pobinvoke, n)
+  -- if $output_final_exception_scope(S) = (pobinvoke)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $output_final_exception_carrier(S, S.TODO) = (ptask)
+  -- if $output_final_exception_reportable(S, n)
+def $output_final_exception_abort(S) = S[.COMPLETION = UNSUPPORTED "FINAL selected-handler secondary fatal rendering"]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if ~$output_final_exception_reportable(S, n)
