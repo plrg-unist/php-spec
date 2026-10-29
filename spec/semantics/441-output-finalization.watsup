@@ -391,9 +391,9 @@ def $eager_operation_source_guard(S, pdestructionoperation) = true
   -- if pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)
 
 
-;; The true phase is the sole pending-exception owner after reporting; false
-;; has cleared EG(exception). Buffers remain active and running until the
-;; ordinary release operation has returned, so destructor output stays buffered.
+;; zend_exception_error has already cleared EG(exception) before rendering.
+;; True retains its local ex zval after reporting; false drops that local owner.
+;; Buffers stay active/running through ordinary child release, retaining output.
 dec $output_pending_cause(pstate, pobdeactivate, nat) : bool
 dec $output_pending_abandoned(pstate, pdestructionoperation, pobdeactivate) : bool
 dec $output_pending_valid(pstate, pobdeactivate) : bool

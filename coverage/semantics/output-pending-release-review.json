@@ -1,0 +1,178 @@
+{
+  "milestone": "OB03",
+  "status": "private implementation and runtime validation complete; final union review/integration pending",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "zts": false,
+    "int_size": 8,
+    "oracle_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_source_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml_switch": "5.1.0",
+    "semantic_mode": "SL"
+  },
+  "scope": "Builtin scalar-message/NULL-previous default FINAL fatal: cache/report first, drop the retained local Throwable through ordinary release while buffers stay active/running, then clear the stack and release raw zoh top first. EG(exception) is already cleared before builtin rendering. A child destructor throw uses existing C bailout owners, reports its fresh unchained fatal and resumes the same stages. No lower bytes are forwarded.",
+  "implementation": [
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/441-output-finalization.watsup"
+  ],
+  "source_outcomes": {
+    "total": 4,
+    "exact": 4,
+    "native": {
+      "report": "ob03-author-native/native4-7519712db/report.json",
+      "sha256": "4716fcb071e6f1e0c3c459f6852cab923cdf6cbab29f95dc6208d33d70f4dbc9",
+      "head": "7519712db42e23479276558d0d79d458d6af3a0a"
+    },
+    "model_cuts": [
+      {
+        "report": "ob03-author-native/candidate-sole-cons-fa5b25966/report.json",
+        "sha256": "014a0c4409fe9958cb67b19082725fd7917adf750d95d993552d34bf86f1750d",
+        "head": "fa5b259660817158f149bf88aee57317b253d3c1"
+      },
+      {
+        "report": "ob03-author-native/candidate-remaining-fa5b25966/report.json",
+        "sha256": "210594ea61d9f739d3ac254f42802e7d10e35b03346240b2277d2ccf0d4351e4",
+        "head": "fa5b259660817158f149bf88aee57317b253d3c1"
+      }
+    ],
+    "stdout": {
+      "sole": "A|",
+      "retained": "A|P|",
+      "peer": "A:released|",
+      "throw": "A|"
+    },
+    "throw_fatal_reports": 2,
+    "exit_status": 255,
+    "native_replayed": false
+  },
+  "reached": {
+    "groups": 4,
+    "assertions": 169,
+    "cuts": [
+      {
+        "report": "ob03-author-native/reached-raw/fiber-state-review-202xw_yv/report.json",
+        "sha256": "8073e2dba790702700a167018184d4b25d3cd4fb7ce23266149615d377dd01b2",
+        "head": "92392ff662bde9e46f5369059fcda55cbd44338e",
+        "selection": [
+          "peer-reported-pending-root-still-retains-trace-child"
+        ],
+        "assertions": 51
+      },
+      {
+        "report": "ob03-author-native/reached-raw/fiber-state-review-yh5gd2i1/report.json",
+        "sha256": "d664e7c20b54703ac4b2eaa15f78718cd62a52493fe4f0a7e42157f54d585463",
+        "head": "fa5b259660817158f149bf88aee57317b253d3c1",
+        "selection": [
+          "sole-pending-drop-starts-real-release"
+        ],
+        "assertions": 24
+      },
+      {
+        "report": "ob03-author-native/reached-raw/fiber-state-review-6th8de3t/report.json",
+        "sha256": "edce923db933fbfd2b03c50bf4477116ea141d2c6bb2dfdc020275bf216661dd",
+        "head": "fa5b259660817158f149bf88aee57317b253d3c1",
+        "selection": [
+          "peer-child-cleanup-has-no-pending-exception-and-keeps-output-running"
+        ],
+        "assertions": 47
+      },
+      {
+        "report": "ob03-author-native/reached-raw/fiber-state-review-o4fijczr/report.json",
+        "sha256": "91a51764604325e8feae5a90b5ac539386437fbc813d647002c8cb4062f74d95",
+        "head": "fa5b259660817158f149bf88aee57317b253d3c1",
+        "selection": [
+          "secondary-fatal-is-reported-before-raw-owner-observer"
+        ],
+        "assertions": 47
+      }
+    ]
+  },
+  "affected_FINAL": {
+    "groups": 2,
+    "assertions": 110,
+    "cuts": [
+      {
+        "report": "ob03-author-native/reached-raw/fiber-state-review-n77f_gfq/report.json",
+        "sha256": "ee6078aeb50ac9d86f592f540a2c620507ba6a99b568992f19847f1a93f35e16",
+        "head": "59106dc0a0f93d8fdeda7b447a610b129fcd16a1",
+        "selection": [
+          "restored-final-error-takes-over-and-resumes-fatal"
+        ],
+        "assertions": 77
+      },
+      {
+        "report": "ob03-author-native/reached-raw/fiber-state-review-axl1izd2/report.json",
+        "sha256": "5a0db42cb80bd76a516c05a0d60326cbe76118bb0fbf9bd173aaa7897da6f84e",
+        "head": "59106dc0a0f93d8fdeda7b447a610b129fcd16a1",
+        "selection": [
+          "late-fatal-cache-before-active-off-release"
+        ],
+        "assertions": 33
+      }
+    ],
+    "scope": "Changed FINAL intermediate transfer and late cache/raw-owner seam only; no OB01/02 native/source or unrelated campaign renewal."
+  },
+  "strict": {
+    "report": "ob03-author-native/strict-cons-49d6626ae/report.json",
+    "sha256": "48337bc0c42f0a98ac60f7837b947f626a50f92df5ba93ce2482efd991a6ab2f",
+    "head": "49d6626ae85d409c510188a4a525f4f3561b8b80",
+    "module_count": 431,
+    "passed": true
+  },
+  "process_discipline": "All authoritative actors were serial under whole-tree CPU4 affinity. Original profiles, packets, raw streams, exits, binaries, input hashes and process records remain external; accepted source workers exit0/0 and their groups fully reap. Source model fuel600, cold initialization60s then model75s. Reached runner cap120s; strict cap30s.",
+  "compatibility": "The earlier accepted peer-root51 front reaches the reported local owner before either changed cons/tail task rule runs; its guard code is unchanged. Later source/new/affected cuts use the corrected rules. 59106dc0a changes only the affected fixture variable type. Final package edits after those cuts are prose, test wiring and inventory; the 441 change clarifies local ex versus EG(exception) without changing executable clauses. Joined compilation is recorded separately at integration.",
+  "authority": [
+    "vendor/php-src/Zend/zend_exceptions.c::zend_exception_error",
+    "vendor/php-src/Zend/zend_objects.c::zend_objects_destroy_object",
+    "vendor/php-src/Zend/zend_execute_API.c::zend_call_known_fcc_ex",
+    "vendor/php-src/main/main.c::php_request_shutdown",
+    "vendor/php-src/main/output.c::php_output_deactivate/php_output_handler_dtor"
+  ],
+  "remaining": [
+    "Selected exception-handler FINAL continuations, previous chains/source Throwable overrides and effectful rendering.",
+    "Late ob_start and reentrant/abrupt raw-owner deactivation, callback exit and wider fatal producers.",
+    "Buffered stdout diagnostics and all held boundaries in PROGRESS.md."
+  ],
+  "preserved_zero_credit": [
+    {
+      "report": "ob03-author-native/baseline-sole-7519712db/report.json",
+      "kind": "unchanged sole model Unsupported abrupt user output-handler callback cleanup; no native agreement"
+    },
+    {
+      "report": "ob03-author-native/candidate-sole-a356901d7/report.json",
+      "kind": "initial interpreter failure"
+    },
+    {
+      "report": "ob03-author-native/reached-peer-pending-2f313a8d4/process.json",
+      "kind": "literal-carrier fixture mismatch"
+    },
+    {
+      "reports": [
+        "ob03-author-native/strict-secondary-initial/report.json",
+        "ob03-author-native/strict-secondary-decs/report.json"
+      ],
+      "kind": "initial strict attempts reject dependency/otherwise forms"
+    },
+    {
+      "reports": [
+        "ob03-author-native/reached-peer-child-92392ff66/process.json",
+        "ob03-author-native/reached-sole-drop-initial/process.json",
+        "ob03-author-native/diagnose-step-b2ec9d10e/report.json"
+      ],
+      "kind": "pre-cons task rule failed to derive"
+    },
+    {
+      "report": "ob03-author-native/diagnose-step-cons-49d6626ae/report.json",
+      "kind": "expanded diagnostic exceeded old30s total cap; fully killed/reaped"
+    },
+    {
+      "report": "ob03-author-native/affected-final-author-fa5b25966/process.json",
+      "kind": "affected fixture variable type elaboration failure"
+    },
+    {
+      "kind": "successful entry/transfer/ownership diagnostic probes are retained externally without extra source or distinct reached credit"
+    }
+  ],
+  "recovery": "Raw under ../php-spec-evidence-archive/ob03-author-native; reached-raw retains original source paths inside packets. The frozen originals and maintained source/protocol commands are in Git. External archives are not build inputs."
+}

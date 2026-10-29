@@ -163,11 +163,20 @@ OB02 admits default fatal takeover from builtin FINAL throws with scalar message
 and NULL previous. Stored traces and cache mutation precede fatal reporting;
 inactive buffers then release raw owners without lower writes. Four originals
 match PHP and three reached groups pass 131 assertions. Actual-tail strict431
-and both affected guard fronts (70+33) pass without native or differential source reruns. A pending-Throwable
-decrement must be nonfinal or destructor-inactive; effectful final pending cleanup
-is the next buffering dependency. Selected exception handlers, wider rendering
+and both affected guard fronts (70+33) pass without native or differential source reruns. Its original pending-Throwable
+decrement admission was nonfinal or destructor-inactive; OB03 extends it below. Selected exception handlers, wider rendering
 and reentrant/abrupt deactivation remain partial.
 [OB02 review](coverage/semantics/output-final-throw-review.json).
+
+OB03 releases the retained local FINAL Throwable after cache/reporting while
+buffers remain active/running; child output stays buffered. A child destructor
+throw preserves the first report, emits a fresh unchained fatal and retains the
+existing abandoned C cleanup owners before raw-zoh deactivation. Four originals
+agree exactly, four reached groups pass169 checks, private strict431 and separate
+affected FINAL fronts77+33 pass. The original sole Unsupported and later failed
+attempts retain zero agreement credit. Wider selected-handler/rendering and
+reentrant/abrupt raw-owner teardown remain partial.
+[Pending-release review](coverage/semantics/output-pending-release-review.json).
 
 ## Active and unintegrated work
 

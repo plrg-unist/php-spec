@@ -239,10 +239,11 @@ destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)
 records the bounded normal cut. [OB02](coverage/semantics/output-final-throw-review.json)
 adds builtin FINAL throws with scalar messages, NULL previous and no selected
 exception handler: stored traces and the string cache precede fatal reporting,
-then inactive buffers release raw owners
-without forwarding bytes. Effectful final pending-Throwable release, selected
-exception handlers, wider rendering/cleanup throws, other byte producers and
-buffered stdout diagnostics remain dependencies.
+then [OB03](coverage/semantics/output-pending-release-review.json) releases the
+retained local Throwable while buffers remain active/running. Trace-child cleanup
+and a fresh secondary fatal precede inactive raw-owner release; buffered bytes
+are discarded. Selected exception handlers, wider rendering and deactivation
+cleanup, other byte producers and buffered stdout diagnostics remain dependencies.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
