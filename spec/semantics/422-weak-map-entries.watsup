@@ -215,9 +215,7 @@ def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = $w
   -- if paccess.OFFSET = POBJECT n_key
   -- if pweakmapentry* = $weakmap_entries_contents(S, n_map)
   -- if $weakmap_entries_find(pweakmapentry*, n_key) = eps
-  -- if S_read = $quiet_operand(S, paccess.SELECTED)
-  -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN pvalue_result
+  -- if (S_read, pvalue_result) = $weakmap_insert_result(S, paccess)
 
 ;; Occupied writes replace the stored zval, including an entry reference,
 ;; while preserving registration/order. Escaped old references stay detached.
