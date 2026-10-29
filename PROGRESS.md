@@ -374,6 +374,19 @@ Alias/object/cyclic trace payloads, previous links, materialized roots,
 generated-only `FiberError`, subclasses, deeper guards and pending states remain
 partial.
 
+Those twelve same-kind builtin root kinds now compare finite canonical
+`previous` chains of up to 16 nodes. The full physical scan puts `previous`
+before `ErrorException` severity at every node; warm caches and finite DIRECT
+trace arrays retain their order. Shared child identity and mixed exact child
+classes skip their captured payloads. Ten new original sources (eight author,
+two independent), one newly supported retained control and two unchanged normal
+controls agree with pinned PHP; two reached-payload controls remain Unsupported.
+Strict compilation of 424 modules and six source-reached fixtures with 357
+premises/ten raw steps pass. The earlier two missing-worktree-link setup errors
+retain zero credit. [Builtin previous-chain review](coverage/semantics/throwable-builtin-previous-comparison-review.json).
+Base Exception/Error root rules remain separate; materialized, freeing, longer
+or cyclic previous paths, subclasses, FiberError and pending states stay partial.
+
 Fresh, unheld user Iterators returned by a borrowed `IteratorAggregate` getter
 now enter CONFIG unpack with DATA as their sole owner. Two original normal and
 saved-key-Exception sources agree with PHP; 243 source-reached premises check
@@ -543,13 +556,12 @@ selection is not reconstructed. Wider callee/operand forms remain partial.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | A62 | Owning-field Iterator lifetime; peer checks pass for throwing-key and pending invalid-key cleanup. |
-| COMP145 | Builtin Throwable previous chains; private implementation. |
 | CALL122 | Non-CV Iterator unpack operands; preparation. |
 | I69 | Fresh method by-reference Generator THROW; unchanged-model baseline work. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117, CALL113, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117, CALL113, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation

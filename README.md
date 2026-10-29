@@ -4128,6 +4128,13 @@ and paused-state checks. [Generated Throwable objects](docs/semantics/THROWABLES
 now support ordered no-finally try/catch and throw/rethrow, internal constructors,
 getters and structured traces. The distinct `ErrorException` constructor and
 `getSeverity` have a separate [bounded review](coverage/semantics/error-exception-review.json).
+Same-kind comparisons for twelve exact builtin Throwable root kinds now follow
+finite `previous` chains, with `previous` before `ErrorException` severity at
+every node. Warm caches, finite direct trace arrays, shared child identity and
+nested class mismatch preserve physical order. Equal chains continue through
+array tails; nonzero results skip later casters. The
+[comparison review](coverage/semantics/throwable-builtin-previous-comparison-review.json)
+records the bounded scope and validation.
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The
