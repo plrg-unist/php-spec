@@ -20,11 +20,14 @@ def $ref153_eval_output_item(pevent) = eps -- otherwise
 dec $ref153_eval_output(pevent*) : ptbytes
 def $ref153_eval_output(eps) = eps
 def $ref153_eval_output(pevent :: pevent_tail*) = $ref153_eval_output_item(pevent) ++ $ref153_eval_output(pevent_tail*)
+dec $ref153_eval_is_output(pevent) : bool
+def $ref153_eval_is_output(OUTPUT ptbytes) = true
+def $ref153_eval_is_output(pevent) = false -- otherwise
 dec $ref153_eval_last(pevent*,ptbytes) : ptbytes
 def $ref153_eval_last(eps,ptbytes) = ptbytes
 def $ref153_eval_last((OUTPUT ptbytes) :: pevent_tail*,ptbytes_old) = $ref153_eval_last(pevent_tail*,ptbytes)
 def $ref153_eval_last(pevent :: pevent_tail*,ptbytes) = $ref153_eval_last(pevent_tail*,ptbytes)
-  -- otherwise
+  -- if ~$ref153_eval_is_output(pevent)
 dec $ref153_eval_ctor(pstate,porigin) : bool
 def $ref153_eval_ctor(S,PORIGIN 1 pcpath) = true
   -- if $class_method_origin(S.CLASSES,PORIGIN 1 pcpath) = (pmethoddesc)
