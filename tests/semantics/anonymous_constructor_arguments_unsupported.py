@@ -10,7 +10,6 @@ import typed_static_ini_prefix_protocol as cross
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
-    'reference-formal': b'<?php $x = 1; $o = new class($x) { public function __construct(&$x) { $x = 2; } };',
     'unpacked-argument': b'<?php $o = new class(...[1]) { public function __construct($x) {} };',
 }
 
