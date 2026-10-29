@@ -6315,12 +6315,16 @@ For published enums, class-string array callables invoke generated `cases()`, `f
 a case-object receiver also invokes `from()`. The selected enum is fixed before
 argument evaluation. Array `from()` retains that selection through a Stringable
 callback and retires the temporary argument before lookup.
+Computed, literal and compiler-folded `Class::method` strings also select these
+generated methods before arguments. The original full string and selected enum
+survive later argument or Stringable callback rebinding; temporary Stringable
+arguments retire before lookup. Packed Stringable origins remain Unsupported.
 Class constants can consume cached enum cases in scalar conditions and select a
 case through a source-certified case or negated-case condition, including a case
 from another enum. Wider object-valued conditional transfers remain Unsupported.
-First-class array captures, string and pipe callable routes, `Closure::fromCallable`
-conversion, `is_callable`, case attributes, the default loader and wider
-acquisition remain partial;
+Callable admission, first-class array/string captures, pipe routes,
+`Closure::fromCallable` conversion, `is_callable`, case attributes, enum collection
+policy, the default loader and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)

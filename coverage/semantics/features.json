@@ -28834,6 +28834,7 @@
         "spec/semantics/30-storage.watsup",
         "spec/semantics/172-file-context-intrinsics.watsup",
         "spec/semantics/205-array-callables.watsup",
+        "spec/semantics/210-class-method-strings.watsup",
         "spec/semantics/234-from-callable.watsup",
         "spec/semantics/432-pipe-array-callables.watsup",
         "spec/semantics/437-enum-runtime.watsup"
@@ -28843,12 +28844,17 @@
         "tests/semantics/enum_lookup_review_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/enum_review_protocol.py"
+        "tests/semantics/enum_review_protocol.py",
+        "tests/semantics/class_method_strings.py",
+        "tests/semantics/class_method_strings_cases.json"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_enum.c"
+        "vendor/php-src/Zend/zend_enum.c",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "coverage/semantics/enum-string-callable-review.json"
       ],
-      "review": "Direct cases/from/tryFrom and user magic method calls are source/state checked. Captured cases and scalar from/tryFrom retain the selected enum, cold table and cached singleton history after closure retirement, including ordinary and inherited constant aliases. Captured Stringable arguments preserve callback and receiver lifetimes. For published enums, class-string array callables select cases/from/tryFrom before arguments; a case-object receiver invokes from, and array Stringable arguments preserve the selected target and temporary retirement. Direct/negated cached-case conditional transfers are source checked. Wider object-valued conditionals, first-class array captures, string and pipe callable routes, Closure::fromCallable conversion and is_callable remain partial. See PROGRESS.md for separate exact cuts."
+      "review": "Direct cases/from/tryFrom and user magic method calls are source/state checked. Captured cases and scalar from/tryFrom retain the selected enum, cold table and cached singleton history after closure retirement, including ordinary and inherited constant aliases. Captured Stringable arguments preserve callback and receiver lifetimes. For published enums, class-string array callables select cases/from/tryFrom before arguments; a case-object receiver invokes from, and array Stringable arguments preserve the selected target and temporary retirement. Computed, literal and compiler-folded class-method strings retain their selected generated target, full original bytes and real named Stringable argument child across rebinding and temporary retirement. Packed Stringable origins are explicit Unsupported. Direct/negated cached-case conditional transfers are source checked. Wider object-valued conditionals, callable admission, first-class array/string captures, pipe routes, Closure::fromCallable conversion, is_callable and enum collectability remain partial. See PROGRESS.md for separate exact cuts."
     },
     {
       "id": "declarations.attribute-metadata",
