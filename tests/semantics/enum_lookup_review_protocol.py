@@ -112,6 +112,35 @@ def $ostr_seek(S,n_phase,n) = $ostr_seek($drive_steps($enumr_running(S),1),n_pha
   -- if ~$ostr_front(S,n_phase)
   -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
 ''',
+    'enum-case-conditional-choice': r'''
+dec $cc_front(pstate) : bool
+def $cc_front(S) = true
+  -- if S.TODO = (CLASS_CONST_BIND porigin) :: ptask_tail*
+  -- if ~$enum_case_origin(S,porigin)
+  -- if $class_constant_origin(S.CLASSES,porigin) = (pclassconstantdesc)
+  -- if $class_at(S.CLASSES,pclassconstantdesc.OWNER) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+def $cc_front(S) = false -- otherwise
+dec $cc_seek(pstate,nat) : pstate
+dec $cc_case_event(pclassconstantevent,porigin) : bool
+def $cc_case_event(pclassconstantevent,porigin) = true
+  -- if $constant_callable_cache_event(pclassconstantevent) = ((porigin,n_prefix))
+def $cc_case_event(pclassconstantevent,porigin) = false -- otherwise
+dec $cc_without_cache(pclassconstantevent*,porigin) : pclassconstantevent*
+def $cc_without_cache(eps,porigin) = eps
+def $cc_without_cache(pclassconstantevent :: pclassconstantevent_tail*,porigin) = $cc_without_cache(pclassconstantevent_tail*,porigin)
+  -- if $constant_callable_cache_event(pclassconstantevent) = ((porigin,n_prefix))
+def $cc_without_cache(pclassconstantevent :: pclassconstantevent_tail*,porigin) = pclassconstantevent :: $cc_without_cache(pclassconstantevent_tail*,porigin)
+  -- if ~$cc_case_event(pclassconstantevent,porigin)
+def $cc_seek(S,0) = S
+def $cc_seek(S,n) = S
+  -- if $(n > 0)
+  -- if $cc_front(S) \/ (S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET)
+def $cc_seek(S,n) = $cc_seek($drive_steps($enumr_running(S),1),$nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if ~$cc_front(S)
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+''',
 }
 
 
@@ -125,6 +154,7 @@ def assertions(case_id, main_fixture, source_path, expected_bytes,
         return _strict(main_fixture, source_path, expected_bytes, file_snapshot, factory_fixture)
     return {
         'lazy-table-retired-owners': _table,
+        'enum-case-conditional-choice': _conditional,
         'owned-stringable-multiline': _stringable,
         'ordinary-case-alias': _alias,
         'inherited-deferred-alias': _inherited,
@@ -533,6 +563,92 @@ def _stringable(main_fixture, source_path, expected_bytes):
         '$enumr_output(S_queue.EVENTS) = $ptascii("READY|CAST|DROP|")',
         'S_finish.COMPLETION = NORMAL',
         '$enumr_output(S_finish.EVENTS) = $ptascii("READY|CAST|DROP|V:Only|")',
+        '$call_descriptors_valid(S_finish)',
+        '$class_constant_history_valid(S_finish)',
+    ]
+
+
+def _conditional(main_fixture, source_path, expected_bytes):
+    assert expected_bytes == b'COLD|selected|distinct|'
+    checks = [
+        'S_initial = $php_file_run(' + main_fixture + ',0,' + term(str(source_path).encode()) + ',' + term(str(source_path.parent).encode()) + ')',
+        'S_initial.COMPLETION = BUDGET',
+        'S_found = $cc_seek(S_initial,3000)',
+        'S_found.COMPLETION = NORMAL \\/ S_found.COMPLETION = BUDGET',
+        'S_bind = $enumr_running(S_found)',
+        'S_bind.TODO = (CLASS_CONST_BIND porigin_decl) :: ptask_tail*',
+        '$class_constant_origin(S_bind.CLASSES,porigin_decl) = (pclassconstantdesc)',
+        'S_bind.CONSTCONTEXT = (pconstantcontext)',
+        '$origin_node(S_bind.SOURCES,pclassconstantdesc.INITIALIZER) = (NExprTernary expression_condition expression_true expression_false metadata)',
+        'porigin_condition = $constant_child(pclassconstantdesc.INITIALIZER,[PCFIELD 0])',
+        'porigin_true = $constant_child(pclassconstantdesc.INITIALIZER,[PCFIELD 1])',
+        'porigin_false = $constant_child(pclassconstantdesc.INITIALIZER,[PCFIELD 2])',
+        '$constant_fact_at(pconstantcontext.FACTS,porigin_condition) = (pconstantfact_condition)',
+        'pconstantfact_condition.CLASS = PVENUMCASE n_case porigin_case',
+        '$constant_fact_at(pconstantcontext.FACTS,porigin_true) = (pconstantfact_selected)',
+        'pvalueclass = $constant_class(S_bind,pclassconstantdesc.INITIALIZER)',
+        '$constant_callable_alias(S_bind,porigin_condition,pclassconstantdesc.OWNER,|S_bind.DECLARATIONS|) = (pclassconstantdesc_condition)',
+        '$constant_callable_alias_class(S_bind,pclassconstantdesc_condition) = (pvalueclass_condition)',
+        '$default_cache_at(S_bind.CLASSCONSTANTCACHE,pclassconstantdesc_condition.ORIGIN) = (pdefaultcache_condition)',
+        'n_prefix = |S_bind.DECLARATIONS|',
+        '$constant_callable_alias(S_bind,porigin_true,pclassconstantdesc.OWNER,n_prefix) = (pclassconstantdesc_left)',
+        '$constant_callable_alias_class(S_bind,pclassconstantdesc_left) = (pvalueclass_left)',
+        'pvalueclass_left = pvalueclass',
+        '$constant_callable_alias(S_bind,porigin_false,pclassconstantdesc.OWNER,n_prefix) = (pclassconstantdesc_right)',
+        '$constant_callable_alias_class(S_bind,pclassconstantdesc_right) = (pvalueclass_right)',
+        '$default_cache_at(S_bind.CLASSCONSTANTCACHE,pclassconstantdesc_right.ORIGIN) = (pdefaultcache_right)',
+        '$constant_fact_at(pconstantcontext.FACTS,pclassconstantdesc.INITIALIZER) = (pconstantfact_root)',
+        'S_wrong_class = S_bind[.RESULT = KNOWN pdefaultcache_right.VALUE][.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS,pconstantfact_root[.CLASS = pvalueclass_right])])]',
+        'pconstantfact_false = pconstantfact_condition[.VALUE = (PBOOL false)][.CLASS = PVSCALAR]',
+        'pconstantfact_wrong_arm = pconstantfact_selected[.ORIGIN = porigin_false][.CLASS = pvalueclass_right]',
+        'pconstantfact_wrong_root = pconstantfact_root[.CLASS = pvalueclass_right]',
+        'S_false_facts = S_bind[.RESULT = KNOWN pdefaultcache_right.VALUE][.CONSTCONTEXT = (pconstantcontext[.FACTS = [pconstantfact_false,pconstantfact_wrong_arm,pconstantfact_wrong_root]])]',
+        'S_reject = $drive_steps(S_false_facts,1)',
+        'S_bound_found = $drive_steps(S_bind,1)',
+        'S_bound_found.COMPLETION = BUDGET',
+        'S_bound = $enumr_running(S_bound_found)',
+        '$default_cache_at(S_bound.CLASSCONSTANTCACHE,porigin_decl) = (pdefaultcache_alias)',
+        '$constant_callable_cache_prefix(S_bound.CLASSCONSTANTHISTORY,porigin_case) = (n_case_prefix)',
+        '$(n_case_prefix > 0)',
+        'n_early = $nabs($(n_case_prefix - 1))',
+        'S_no_history = S_bound[.CLASSCONSTANTHISTORY = $cc_without_cache(S_bound.CLASSCONSTANTHISTORY,porigin_case)]',
+        'S_finish = $drive_steps(S_bound,5000)',
+    ]
+    return checks + [
+        '$call_descriptors_valid(S_bind)',
+        'pclassconstantdesc_condition.OWNER =/= pclassconstantdesc.OWNER',
+        '$enum_case_alias_valid(S_bind,porigin_condition,pclassconstantdesc.OWNER,pvalueclass_condition,n_prefix)',
+        '$enum_case_condition_truth(S_bind,porigin_condition,pclassconstantdesc.OWNER,n_prefix) = (true)',
+        '~$constant_callable_foldable(pvalueclass_condition)',
+        '$constant_value_class_valid(S_bind,pdefaultcache_right.VALUE,pvalueclass_right)',
+        '$enum_case_alias_valid(S_bind,porigin_false,pclassconstantdesc.OWNER,pvalueclass_right,n_prefix)',
+        '$constant_callable_flow(S_bind,porigin_false,pclassconstantdesc.OWNER,pvalueclass_right,n_prefix,eps)',
+        'pvalueclass_left =/= pvalueclass_right',
+        '$constant_callable_flow(S_bind,porigin_true,pclassconstantdesc.OWNER,pvalueclass_left,n_prefix,eps)',
+        '$constant_callable_flow(S_bind,pclassconstantdesc.INITIALIZER,pclassconstantdesc.OWNER,pvalueclass_left,n_prefix,eps)',
+        '~$constant_callable_flow(S_bind,pclassconstantdesc.INITIALIZER,pclassconstantdesc.OWNER,pvalueclass_right,n_prefix,eps)',
+        '~$enum_case_alias_valid(S_bind,porigin_condition,pclassconstantdesc.OWNER,pvalueclass_right,n_prefix)',
+        '~$enum_case_alias_valid(S_bind,porigin_false,pclassconstantdesc.OWNER,pvalueclass_left,n_prefix)',
+        '$constant_value_class_valid(S_wrong_class,pdefaultcache_right.VALUE,pvalueclass_right)',
+        '~$constant_callable_cache_valid(S_wrong_class,pclassconstantdesc,pvalueclass_right,n_prefix)',
+        '$constant_context_valid(S_false_facts)',
+        '$constant_value_class_valid(S_false_facts,pdefaultcache_right.VALUE,pvalueclass_right)',
+        '$constant_recorded_truth(S_false_facts,porigin_condition) = (false)',
+        '$enum_case_condition_truth(S_false_facts,porigin_condition,pclassconstantdesc.OWNER,n_prefix) = (true)',
+        '~$constant_callable_cache_valid(S_false_facts,pclassconstantdesc,pvalueclass_right,n_prefix)',
+        'S_reject.COMPLETION = UNSUPPORTED "uncertified class constant Closure transfer"',
+        'S_bound.CONSTCONTEXT = eps',
+        'pdefaultcache_alias.CLASS = pvalueclass_left',
+        '$constant_value_class_valid(S_bound,pdefaultcache_alias.VALUE,pvalueclass_left)',
+        '$constant_callable_cache_valid(S_bound,pclassconstantdesc,pvalueclass_left,n_prefix)',
+        '$enum_case_alias_valid(S_bound,porigin_condition,pclassconstantdesc.OWNER,pvalueclass_condition,n_prefix)',
+        '$call_descriptors_valid(S_bound)',
+        '$class_constant_history_valid(S_bound)',
+        '~$enum_case_alias_valid(S_no_history,porigin_condition,pclassconstantdesc.OWNER,pvalueclass_condition,n_prefix)',
+        '~$constant_callable_cache_valid(S_no_history,pclassconstantdesc,pvalueclass_left,n_prefix)',
+        '~$enum_case_alias_valid(S_bound,porigin_condition,pclassconstantdesc.OWNER,pvalueclass_condition,n_early)',
+        'S_finish.COMPLETION = NORMAL',
+        '$enumr_output(S_finish.EVENTS) = $ptascii("COLD|selected|distinct|")',
         '$call_descriptors_valid(S_finish)',
         '$class_constant_history_valid(S_finish)',
     ]
