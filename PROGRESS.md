@@ -18,7 +18,8 @@ and one unchanged quiet TypeError control agree exactly; three independent
 sources check numeric-string repair, object-first failure and a changed live
 LEFT type. Strict424 and three source-reached fronts/314 checks pass, including
 two derived type-failure checks. The first duplicate-assertion preparation stop
-has zero semantic credit. Wider object, reference and producer forms remain
+has zero semantic credit. Joined strict compilation over the current 424-module
+tail also passes. Wider object, reference and producer forms remain
 partial. [Object-RIGHT review](coverage/semantics/integer-object-right-warning-review.json).
 
 Unit0 global anonymous classes may now extend a previously compiled plain
