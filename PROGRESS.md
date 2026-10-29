@@ -473,13 +473,28 @@ the new walk caps its local left array/object/cell measure at 16 and preserves
 active-left recursion before count. Canonical previous-path admission is unchanged.
 Thirteen new normal originals (eleven author, two independent), one promoted
 class-mismatch control and two unchanged normal controls agree exactly with PHP.
-Three retained boundaries and two independent reached-cycle controls are explicit
-Unsupported, with zero agreement credit. Strict compilation of 424 modules and
+Three retained boundaries and two independent reached-cycle controls were
+Unsupported at that cut, with zero agreement credit. Strict compilation of 424 modules and
 six reached fixtures/385 premises/eight raw steps pass across retained cuts.
 The failed acyclic-right fixture premise retains zero affected credit; only that
-row was corrected and rerun. Reached cycles/callbacks, wider class layouts,
-materialized Throwables and pending states remain partial.
+row was corrected and rerun. That cut left reached cycles/callbacks, wider class
+layouts, materialized Throwables and pending states partial.
 [Visited-trace review](coverage/semantics/throwable-trace-visited-comparison-review.json).
+
+Authentic visited ordinary array/object recursion in those traces now raises
+the existing catchable Error before count or depth. Source file/line, trace
+arguments and Error identity survive catch/finally and temporary-operand cleanup;
+identity/class/earlier-leaf skips and later-slot priority remain intact.
+Six new originals (four author, two independent with core-only observers) and
+three promoted retained cycle controls agree exactly with PHP. Two wider
+object/scalar and callback boundaries remain Unsupported. Four new reached
+fixtures pass 389 premises/four raw steps; four affected older fixtures add
+346 premises/six raw steps, for 735 premises and ten raw steps across retained cuts. Private strict
+compilation of 424 modules and joined compilation of 425 modules pass. Failed fixture rows and the excluded-count observer
+failure retain zero affected/full-source credit; only affected checks and repaired
+observer originals were rerun. The visited depth limit of 16 and canonical
+previous-path admission remain unchanged; generic depth removal is next.
+[Recursion Error review](coverage/semantics/throwable-trace-recursion-comparison-review.json).
 
 Fresh, unheld user Iterators returned by a borrowed `IteratorAggregate` getter
 now enter CONFIG unpack with DATA as their sole owner. Two original normal and
@@ -673,13 +688,13 @@ producers, signatures, references and lifetimes remain partial.
 | A65 | BYVAL Iterator declared fields. |
 | CALL125 | ARRAY/Generator magic argument packs. |
 | CLASS145 | Ordered interfaces and anonymous `implements`. |
-| COMP148 | Recursive Error handling; later depth cap. |
+| COMP149 | Next: generic captured-graph depth-cap removal; previous-path admission stays separate. |
 | CFG119 | Generic Iterator field graphs. |
 | OP110 | Late LEFT-object diagnosis. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation

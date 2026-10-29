@@ -715,16 +715,24 @@ cell dereference. Reached same-class bodies remain `stdClass` or plain parentles
 methodless source instances with initialized public properties and ordinary
 current tables. Reached tables materialize through the usual comparer; only
 normal equality continues with the resulting state.
+An authentic active-left recurrence now produces the existing recursive-dependency
+`Error` at the source comparison, before count or depth can decide. Its live
+identity, file, line and trace pass through ordinary catch/finally and unwind
+cleanup. Temporary aggregate operand arrays release in left/right order while
+the cleanup operation retains the pending Error, then resume exception search.
+Remaining physical slots and aggregate tails are skipped. Identity and class
+decisions still precede recursion, so skipped cycles cause no error.
 Skipped shared or mixed-class Throwable children may retain cyclic trace
 payloads, but their canonical images and finite previous paths still authenticate.
 Equal chains resume array tails; nonzero or Unsupported children stop the scan.
-Actually reached cycles, callbacks and object/scalar pairs, materialized/freeing
+Actually reached callbacks and object/scalar pairs, materialized/freeing
 Throwable nodes, longer/cyclic previous paths, generated-only `FiberError`, user
 subclasses and pending states remain partial. Existing `Exception`/`Error`
 root-chain bounds below retain their separate rules.
 [Builtin previous-chain review](../../coverage/semantics/throwable-builtin-previous-comparison-review.json).
 [Captured graph review](../../coverage/semantics/throwable-previous-graph-comparison-review.json).
 [Visited-trace review](../../coverage/semantics/throwable-trace-visited-comparison-review.json).
+[Recursion Error review](../../coverage/semantics/throwable-trace-recursion-comparison-review.json).
 
 Warm caches and nonempty builtin traces now meet in the same physical slot
 scan. Same-kind canonical `Exception`/`Error` pairs with null previous values

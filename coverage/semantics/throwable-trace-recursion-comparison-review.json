@@ -1,0 +1,50 @@
+{
+  "milestone": "COMP148",
+  "status": "independently reviewed and accepted within the stated bound",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C; TZ=UTC; tests/semantics/profile.json after -n"
+  },
+  "scope": "The COMP147 visited captured-graph walk now reports admitted active-left ordinary array/table or inline-object recursion through the existing catchable Error path. Identity/class skips remain earlier; authenticated active-left recursion precedes count and the local depth check, and missing keys/earlier leaves still skip later payloads. Previous/root admission is unchanged: twelve non-base linked same-kind normal nonpending roots, canonical live nonfreeing unmaterialized builtin previous paths of at most 16 nodes, root guard below 16, excluding FiberError. The captured left traversal bound 16 and same-class/layout restrictions remain explicit. Removing that arbitrary captured bound is the next separate milestone; wider roots, callbacks, object/scalar and previous-path admission remain partial.",
+  "engine_basis": "Zend/zend_hash.c compares table identity before the left recursion flag, protects only the left table and clears protection after comparison. Zend/zend_object_handlers.c checks object identity/class before the ordinary inline recursion flag. Both raise Error with Nesting level too deep - recursive dependency? at the comparison site. The directional array counterexample independently distinguishes left-only recursion from a symmetric cycle rejection.",
+  "implementation": {
+    "tested_revision": "2b7c43e1632f104a1711d9a46d1f4dc3ad5d3398",
+    "reviewed_actual_tail": "70c19bb259496a6f34b5e3bdf79317709a8053fc",
+    "runtime": "spec/semantics/394-aggregate-stringable-comparisons.watsup",
+    "rule": "Eight added lines introduce disjoint active-left ORDERRECURSIVE branches after shallow array headers/identity or the existing validated same-class inline-body caller. Table-backed recursion returns its already materialized state. Existing normal-only continuations propagate the order result into comparison_result/throw_scalar; ordinary Throwable allocation, source/trace capture and unwind are reused. No new recursive traversal or admission widening is introduced. Modules152/157/163/52 and previous-path helpers are unchanged.",
+    "final_fixture_cut": "163171946f3f5215908313746fa51e607d327443"
+  },
+  "native_first": {
+    "author": "Four originals frozen at source-only 874685b58f28bca549c40cfd215a3b044aa60263; native report 5d744643e1996482c1ab3e8610291fb88e2914989135a10c2be5f3b19424fe34. All exit0 with empty stderr.",
+    "independent": "Original catch/trace/finally/temporary-cleanup and directional active-left sources were frozen before outcomes; native/meaningful unchanged report 21888df128f07d7ca6a4a832ca76d0df176e81ec053e0d787b8a3c8f767c3c57. The unchanged first source is accepted/checked Unsupported(Throwable property comparison), prefix B|. Observer-only core variants were separately frozen: catch-trace-finally-cleanup-core.php sha256 670af0f83e107b672ccc6b35ff6c489c47dfadc0fef85ef365e9a3f7841c7524; array-active-before-count-direction-core.php sha256 bf6c85d4c3ec2eba71d316a7476218578c690b1b48cff08c6ebd915ffcb1c385. Native report 5d6c3fcc2c67b2c9b9ebfa59e65ff52af7e00c787362e7a8639823485abcee67 confirms exact singleton/empty trace, Error metadata, argument identity, finally, weak temporary death and directional recovery.",
+    "retained_controls": "Retained COMP147 reached-cycle and active-before-count originals keep native report anchors 019cb6a4232ef88927b9e02841f5ed715b97baf94b6c3e905e666cf61a3ef2fb and 21d62647ec6115e97351d5e884a5b0e14faee8c7493816d6e635da52c1539b00. Retained COMP146 cell-cycle native bytes are also reused; no duplicate old native execution.",
+    "deep_followup": "deep-acyclic-live-object.php sha256 90139db66929b3ee8694aa2f5201bf2a6612672b6584227dccee869ec7a5b8c5 is frozen/native-normal in the same independent report: 24 ordinary links, opposing ErrorException severity, equal warm strings and a live deep write. It receives no first148 changed-model agreement credit and is retained for captured-depth removal."
+  },
+  "validation": {
+    "source": "Six new normal originals (four authored, two repaired independent observers) exactly match PHP. Three formerly Unsupported originals now match normal caught-Error outcomes: retained146 cell-cycle plus retained147 reached-cycle and active-before-count controls. Two object/scalar and callback-class originals remain explicit Unsupported, without agreement credit. Coverage includes all seven operators, cold/warm caches, inline writes and identity recovery, aggregate caster skip, finally/destructor order and same-Error rethrow.",
+    "source_reports": {
+      "author_four_at_2b": "d21c5dfae0ce83a0e970fdaa61de1cbb1f94b6e20db51190a7cce2aec7563081",
+      "independent_repaired_two_and_promoted_two_at_163": "59d664e8b01943d2a44663ab571aa123f20950cce39017adae62eced79b9fa2a",
+      "retained146_promotion_and_two_boundaries_at_163": "e9378d04a0ce335cd816a1c52b83783c17de503b3938c875d5de784979a936a9"
+    },
+    "state": "Eight new/affected recipes pass 96+83+88+122+58+86+90+112 = 735 premises/ten raw PhpSteps. The first three new rows retain a542a5b2834352a4a47d859645e700c9bc1079f6; the aggregate and affected147/146 rows pass at 163. They bind actual capture cells, inline guards, reached STD tables, real Error origin/frame/arguments, sole pending ownership and budget resumption. The aggregate budget parks the same Error during exact ordered OP1/OP2 temporary-array release before exception search; both arrays and the local Guard retire, and later caster execution is skipped.",
+    "fixture_scope": "Two fixture-only corrections preserve zero failed-row credit: state-new-v1 failed SL binding elaboration; an explicit object-index binding fixes the non-invertible concatenation. The next aggregate row wrongly expected immediate THROW_SEARCH, overlooking existing eager operand release; its replacement checks exact release jobs, source, pending Error and final retirement. Only affected/pending rows reran. Native EXPECTED, PREFIX and accepted/unaffected condition lists remain unchanged, bound by the migration and two correction bridges in the archive; no unrelated COMP147 replay.",
+    "strict": "Strict compilation of all 424 modules passes at 2b, report 1827d35b0156b5c6b094921d0f90d6c4c978a385427980f718f30e5b6da132a8. Joined strict compilation of 425 modules passes at 70c19bb259496a6f34b5e3bdf79317709a8053fc, report 7cdb0cc924b7b813cf9f668b6811f382f0fdb9bd3982e411fafe293de11b3151. Author and reviewer phases bind stable executed inputs/HEAD, numbered pinned CPUs and fully reaped groups.",
+    "state_reports": {
+      "three_passed_rows_267_of_overall_failed_state_new_v2": "69eb2a8675a8cd314ca4ab00c00913b4d67e30ad095f051f774967948c2c0d54",
+      "aggregate_122": "3135cdb246740cbaaa148da94d99259df01ca1d4172eccd70c052ef75ca8bb81",
+      "affected147_234": "6c9ae24de2da9a9b9457a8c7acd8aee9581871217263aa2a0cc51f2644d512e6",
+      "affected146_112": "bd36ae6a455a6ef60922c26c976fd4dbcf6149a19431d85c9d5d5d242f6fc225"
+    },
+    "observer_correction": "CORE.md259 excludes count-library execution. The first independent run stopped at count($trace), after exact Error/finally/weak-death/file/line output, report 9eb246c87b3cd3cb810c27292790efe4e3a422d985bbc0ba3f3b50878cefadde. Original d8815510/6148f372 source bytes remain frozen with zero full-source agreement. Separate native-first variants replace only count observations with exact singleton/empty-array equality, retaining all Error/trace and cleanup checks. No count semantics was added."
+  },
+  "independent_review": {
+    "decision": "accept the caught recursion Error slice within its unchanged admission/depth bounds; complete core and captured-depth removal remain partial",
+    "actual_tail": "Composed on master fa6cef60082e2e042bee950c8c2dfe3906a4976d. All ten tested runtime/source/fixture blobs match 163; modules 152/157/163/52 are unchanged. Incoming slot-descriptor/ordinary-reference helper additions are used by Iterator consumers, not this visited walker. OP109 integer, A64 Iterator, CALL124 magic-unpack and I72 static Generator/Fiber selectors do not match the frozen Error cases. The manifest adds module 438 to 425; adapter/frontend/bin/profile remain unchanged. Composition adds no source/state replay credit.",
+    "metadata": "README/family describe admitted catchable recursion, source/trace/unwind, pending Error retention during exact operand release and preserved early skips. Inventory only appends to partial obligations 44/70. PROGRESS distinguishes six new/three promoted/two Unsupported originals, 389 new plus 346 affected premises and 424/425 strict cuts; failed rows and the excluded observer retain zero credit. All incoming active work and held COMP123/V110/paused COMP88 boundaries remain; only own 148 row advances to planned 149. Captured-depth and canonical previous-path limits remain separate pending work. No engine bug or intentional divergence is claimed."
+  },
+  "artifacts": "Originals, raw streams, process/state records and input fingerprints remain outside Git under /home/user/workspace/php-spec-evidence-archive/comp148. Selected old-native anchors remain in comp147 and comp146 archives. External independent originals/launchers remain under /tmp/comp148-review. No previous-cycle/crash probe or held COMP88/COMP123 work is included."
+}

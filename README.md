@@ -4167,9 +4167,11 @@ and [captured-graph](coverage/semantics/throwable-previous-graph-comparison-revi
 reviews record the bounded scope and validation.
 Captured traces also stop on identity, class, count, missing keys or earlier
 leaves before later cyclic or unsupported payloads, with live headers checked
-at visited nodes. Reached cycles and callbacks remain Unsupported; finite
-previous-path authentication is unchanged.
+at visited nodes. Reached ordinary recursion raises a catchable Error with its
+source, trace and normal unwind cleanup. Callback and wider-layout boundaries,
+the visited depth limit and finite previous-path authentication remain separate.
 [Visited-trace review](coverage/semantics/throwable-trace-visited-comparison-review.json).
+[Recursion Error review](coverage/semantics/throwable-trace-recursion-comparison-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The
