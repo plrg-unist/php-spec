@@ -56,6 +56,9 @@ dec $integer_tmp_source(pcnode) : bool
 def $integer_tmp_source(NExprUnaryPlus expression metadata) = true
 def $integer_tmp_source(NExprUnaryMinus expression metadata) = true
 def $integer_tmp_source(NExprTernary expression phpType5 expression_false metadata) = true
+def $integer_tmp_source(NExprBinaryOpPlus expression_left expression_right metadata) = true
+def $integer_tmp_source(NExprBinaryOpMul expression_left expression_right metadata) = true
+def $integer_tmp_source(NExprBinaryOpDiv expression_left expression_right metadata) = true
 def $integer_tmp_source(pcnode) = false -- otherwise
 dec $integer_slot_rank(pstate, porigin, pcpath, poperand) : nat?
 def $integer_slot_rank(S, porigin, pcpath, VARIABLE ptbytes z) = (8)

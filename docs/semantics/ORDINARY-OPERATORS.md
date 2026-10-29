@@ -36,7 +36,15 @@ remains left to right. This determines callback order, saved integers and the
 TypeError operand order; `%` and shifts retain left-first conversion.
 The [COPY ledger](../../coverage/semantics/integer-operator-copy-review.json)
 binds 37 source cases and 714 reached conditions, preserving the original swap mismatch.
-Wider bitwise producer classes and object conversion remain open. Expired
+Nonfolded `+`, `*` and `/` LEFT results now retain their TMP2 value across
+ordinary `&`, `|` and `^` conversions. A direct RIGHT CV8 is converted first;
+its handler can change the source CVs, but the second notice still converts the
+saved LEFT result. Normal outcomes use the two saved integers; a second-handler
+throw cancels the outer store. Nine source cases and 579 reached conditions
+cover this slice. Independent controls confirm the opposite CV8/TMP2 order and
+an ineligible handler mask; see the
+[computed bitwise review](../../coverage/semantics/bitwise-computed-warning-review.json).
+Other bitwise producers and object conversion remain open. Expired
 pointers stay Unsupported; six earlier callback-unset native originals crashed with
 signal11, with no diagnosed engine cause or agreement claim.
 

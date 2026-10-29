@@ -807,6 +807,34 @@ def $throwable_builtin_kind_pair(S, n_left, n_right, pcompareguard_seen*) = true
 def $throwable_builtin_kind_pair(S, n_left, n_right, pcompareguard_seen*) = false -- otherwise
 def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S, ORDER 1)
   -- if $throwable_builtin_kind_pair(S, n_left, n_right, pcompareguard_seen*)
+;; Each admitted same-kind image has its exact inline physical slot layout.
+;; ErrorException appends severity after the inherited seven slots.
+dec $throwable_builtin_same_pair(pstate, nat, nat, pcompareguard*) : bool
+def $throwable_builtin_same_pair(S, n_left, n_right, pcompareguard_seen*) = true
+  -- if S.COMPLETION = NORMAL
+  -- if ~$number_compare_exception_pending(S)
+  -- if $(|pcompareguard_seen*| < 16)
+  -- if n_left =/= n_right
+  -- if $(n_left < |S.OBJECTS|) /\ $(n_right < |S.OBJECTS|)
+  -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
+  -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
+  -- if pthrowable_left.KIND = pthrowable_right.KIND
+  -- if $throwable_kind(pthrowable_left.KIND)
+  -- if pthrowable_left.KIND =/= "Exception" /\ pthrowable_left.KIND =/= "Error" /\ pthrowable_left.KIND =/= "FiberError"
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
+  -- if $throwable_object_image_valid(S, n_left) /\ $throwable_object_image_valid(S, n_right)
+  -- if $throwable_field(S, n_left, "string") = PSTRING preqbytes_left
+  -- if $throwable_field(S, n_right, "string") = PSTRING preqbytes_right
+  -- if $throwable_field(S, n_left, "previous") = PNULL
+  -- if $throwable_field(S, n_right, "previous") = PNULL
+  -- if $throwable_field(S, n_left, "trace") = PARRAY n_trace_left
+  -- if $throwable_field(S, n_right, "trace") = PARRAY n_trace_right
+  -- if $trace_array_graph(S, n_trace_left) /\ $trace_array_graph(S, n_trace_right)
+def $throwable_builtin_same_pair(S, n_left, n_right, pcompareguard_seen*) = false -- otherwise
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S, $property_order(S, ppropertyslot_left*, ppropertyslot_right*, (HOBJECT n_left) :: pcompareguard_seen*))
+  -- if $throwable_builtin_same_pair(S, n_left, n_right, pcompareguard_seen*)
+  -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
+  -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
 def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S[.COMPLETION = UNSUPPORTED "Throwable property comparison"], ORDER 0)
   -- if n_left =/= n_right
   -- if $throwable_object(S, n_left) \/ $throwable_object(S, n_right)
@@ -826,6 +854,7 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*,
   -- if ~$throwable_warm_previous_pair(S, n_left, n_right)
   -- if ~$throwable_cross_kind_pair(S, n_left, n_right, pcompareguard_seen*)
   -- if ~$throwable_builtin_kind_pair(S, n_left, n_right, pcompareguard_seen*)
+  -- if ~$throwable_builtin_same_pair(S, n_left, n_right, pcompareguard_seen*)
 
 def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
   -- if $(n < |S.OBJECTS|)
