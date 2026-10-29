@@ -161,6 +161,14 @@ Commit concise reports and manifests with hashes and locations. Preserve raw
 failures and interrupted runs externally; do not force-add their archives.
 The coverage compression patterns in `.gitignore` guard against reintroduction.
 
+I78 real Closure factory Generator evidence retains frozen authored/dependency
+native, unchanged baseline, private/joined strict, source and reached-state cuts
+under `../php-spec-evidence-archive/generator-closure-factory-78/`. The independent
+bound-reference/Fiber peer and its exact native/model comparison are under
+`../php-spec-evidence-archive/generator-closure-factory-78-review/`.
+The [Closure factory ledger](../coverage/semantics/generator-closure-factory-review.json)
+binds tested revisions, hashes and remaining scope.
+
 I77 receiver-bearing scoped Generator evidence retains authored native,
 unchanged baseline, private/joined strict, source and reached-state cuts under
 `../php-spec-evidence-archive/generator-keyword-receiver-77/`. The independent

@@ -6389,9 +6389,17 @@ class calls. The saved or active execution frame carries a receiver owner;
 borrowed source and target history adds no root. Five authored and one
 independent original match PHP; three reached fronts pass 160 custom/175
 reported checks for close, retirement
-and fresh THROW/Fiber transfer. Closure factories, other receiver bindings and
-wider lifecycle combinations remain partial.
+and fresh THROW/Fiber transfer. At that I77 cut, Closure factories, other
+receiver bindings and wider lifecycle combinations remained partial.
 [Receiver review](coverage/semantics/generator-keyword-receiver-review.json).
+Supported real Closure factories now retain authenticated scope, binding or
+temporary `Closure::call` evidence when calling scoped Generator methods. A Closure stops a
+method-factory chain without keeping its capture or receiver alive through the
+certificate. Four authored and one independent original match PHP; four reached
+fronts pass 171 custom/191 reported checks. Named/from/fake/implicit Closure
+factories, ordinary method-call creation through rebound Closures and broader
+bindings remain partial.
+[Closure factory review](coverage/semantics/generator-closure-factory-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
