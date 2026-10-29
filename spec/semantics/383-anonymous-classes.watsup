@@ -149,30 +149,30 @@ def $anonymous_conditional_factory_path(pcunit, pcpath) = true
   -- if pcpath_if = pcpath[0:$nabs($(|pcpath| - 2))]
   -- if pcpath[$nabs($(|pcpath| - 2)):2] = [(PCFIELD 1),(PCINDEX n_factory)]
   -- if $anonymous_top_path(pcunit, pcpath_if) \/ $anonymous_conditional_factory_path(pcunit, pcpath_if) \/ $anonymous_while_factory_path(pcunit, pcpath_if) \/ $anonymous_do_factory_path(pcunit, pcpath_if)
-  -- if $origin_node([pcunit], PORIGIN 0 pcpath_if) = (NStmtIf expression phpType23 phpType53 phpType55 metadata)
-  -- if $origin_node([pcunit], PORIGIN 0 pcpath) =/= eps
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath_if) = (NStmtIf expression phpType23 phpType53 phpType55 metadata)
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath) =/= eps
 def $anonymous_conditional_factory_path(pcunit, pcpath) = true
   -- if $(|pcpath| >= 5)
   -- if pcpath_if = pcpath[0:$nabs($(|pcpath| - 4))]
   -- if pcpath[$nabs($(|pcpath| - 4)):4] = [(PCFIELD 2),(PCINDEX n_elseif),(PCFIELD 1),(PCINDEX n_factory)]
   -- if $anonymous_top_path(pcunit, pcpath_if) \/ $anonymous_conditional_factory_path(pcunit, pcpath_if) \/ $anonymous_while_factory_path(pcunit, pcpath_if) \/ $anonymous_do_factory_path(pcunit, pcpath_if)
-  -- if $origin_node([pcunit], PORIGIN 0 pcpath_if) = (NStmtIf expression phpType23 phpType53 phpType55 metadata)
-  -- if $origin_node([pcunit], PORIGIN 0 (pcpath_if ++ [(PCFIELD 2),(PCINDEX n_elseif)])) = (NStmtElseIf expression_branch phpType23_branch metadata_branch)
-  -- if $origin_node([pcunit], PORIGIN 0 pcpath) =/= eps
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath_if) = (NStmtIf expression phpType23 phpType53 phpType55 metadata)
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID (pcpath_if ++ [(PCFIELD 2),(PCINDEX n_elseif)])) = (NStmtElseIf expression_branch phpType23_branch metadata_branch)
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath) =/= eps
 def $anonymous_conditional_factory_path(pcunit, pcpath) = true
   -- if $(|pcpath| >= 4)
   -- if pcpath_if = pcpath[0:$nabs($(|pcpath| - 3))]
   -- if pcpath[$nabs($(|pcpath| - 3)):3] = [(PCFIELD 3),(PCFIELD 0),(PCINDEX n_factory)]
   -- if $anonymous_top_path(pcunit, pcpath_if) \/ $anonymous_conditional_factory_path(pcunit, pcpath_if) \/ $anonymous_while_factory_path(pcunit, pcpath_if) \/ $anonymous_do_factory_path(pcunit, pcpath_if)
-  -- if $origin_node([pcunit], PORIGIN 0 pcpath_if) = (NStmtIf expression phpType23 phpType53 phpType55 metadata)
-  -- if $origin_node([pcunit], PORIGIN 0 (pcpath_if ++ [(PCFIELD 3)])) = (NStmtElse phpType23_branch metadata_branch)
-  -- if $origin_node([pcunit], PORIGIN 0 pcpath) =/= eps
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath_if) = (NStmtIf expression phpType23 phpType53 phpType55 metadata)
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID (pcpath_if ++ [(PCFIELD 3)])) = (NStmtElse phpType23_branch metadata_branch)
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath) =/= eps
 def $anonymous_conditional_factory_path(pcunit, pcpath) = true
   -- if $(|pcpath| >= 3)
   -- if pcpath_parent = pcpath[0:$nabs($(|pcpath| - 2))]
   -- if pcpath[$nabs($(|pcpath| - 2)):2] = [(PCFIELD 0),(PCINDEX n_child)]
-  -- if $origin_node([pcunit], PORIGIN 0 pcpath_parent) = (NStmtBlock phpType23 metadata)
-  -- if $origin_node([pcunit], PORIGIN 0 pcpath) =/= eps
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath_parent) = (NStmtBlock phpType23 metadata)
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath) =/= eps
   -- if $anonymous_conditional_factory_path(pcunit, pcpath_parent)
 def $anonymous_conditional_factory_path(pcunit, pcpath) = false -- otherwise
 def $anonymous_while_factory_path(pcunit, pcpath) = true
@@ -180,14 +180,14 @@ def $anonymous_while_factory_path(pcunit, pcpath) = true
   -- if pcpath_while = pcpath[0:$nabs($(|pcpath| - 2))]
   -- if pcpath[$nabs($(|pcpath| - 2)):2] = [(PCFIELD 1),(PCINDEX n_factory)]
   -- if $anonymous_top_path(pcunit, pcpath_while) \/ $anonymous_conditional_factory_path(pcunit, pcpath_while) \/ $anonymous_while_factory_path(pcunit, pcpath_while)
-  -- if $origin_node([pcunit], PORIGIN 0 pcpath_while) = (NStmtWhile expression phpType23 metadata)
-  -- if $origin_node([pcunit], PORIGIN 0 pcpath) =/= eps
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath_while) = (NStmtWhile expression phpType23 metadata)
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath) =/= eps
 def $anonymous_while_factory_path(pcunit, pcpath) = true
   -- if $(|pcpath| >= 3)
   -- if pcpath_parent = pcpath[0:$nabs($(|pcpath| - 2))]
   -- if pcpath[$nabs($(|pcpath| - 2)):2] = [(PCFIELD 0),(PCINDEX n_child)]
-  -- if $origin_node([pcunit], PORIGIN 0 pcpath_parent) = (NStmtBlock phpType23 metadata)
-  -- if $origin_node([pcunit], PORIGIN 0 pcpath) =/= eps
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath_parent) = (NStmtBlock phpType23 metadata)
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath) =/= eps
   -- if $anonymous_while_factory_path(pcunit, pcpath_parent)
 def $anonymous_while_factory_path(pcunit, pcpath) = false -- otherwise
 def $anonymous_do_factory_path(pcunit, pcpath) = true
@@ -195,26 +195,26 @@ def $anonymous_do_factory_path(pcunit, pcpath) = true
   -- if pcpath_do = pcpath[0:$nabs($(|pcpath| - 2))]
   -- if pcpath[$nabs($(|pcpath| - 2)):2] = [(PCFIELD 0),(PCINDEX n_factory)]
   -- if $anonymous_top_path(pcunit, pcpath_do) \/ $anonymous_conditional_factory_path(pcunit, pcpath_do) \/ $anonymous_while_factory_path(pcunit, pcpath_do) \/ $anonymous_do_factory_path(pcunit, pcpath_do)
-  -- if $origin_node([pcunit], PORIGIN 0 pcpath_do) = (NStmtDo phpType23 expression metadata)
-  -- if $origin_node([pcunit], PORIGIN 0 pcpath) =/= eps
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath_do) = (NStmtDo phpType23 expression metadata)
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath) =/= eps
 def $anonymous_do_factory_path(pcunit, pcpath) = true
   -- if $(|pcpath| >= 3)
   -- if pcpath_parent = pcpath[0:$nabs($(|pcpath| - 2))]
   -- if pcpath[$nabs($(|pcpath| - 2)):2] = [(PCFIELD 0),(PCINDEX n_child)]
-  -- if $origin_node([pcunit], PORIGIN 0 pcpath_parent) = (NStmtBlock phpType23 metadata)
-  -- if $origin_node([pcunit], PORIGIN 0 pcpath) =/= eps
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath_parent) = (NStmtBlock phpType23 metadata)
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath) =/= eps
   -- if $anonymous_do_factory_path(pcunit, pcpath_parent)
 def $anonymous_do_factory_path(pcunit, pcpath) = false -- otherwise
 dec $anonymous_named_factory_path(pcunit, pcpath) : bool
 def $anonymous_named_factory_path(pcunit, pcpath) = true
-  -- if $origin_node([pcunit], PORIGIN 0 pcpath) = (pcnode)
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath) = (pcnode)
   -- if $anonymous_named_factory_node(pcnode)
   -- if $anonymous_top_path(pcunit, pcpath) \/ $anonymous_conditional_factory_path(pcunit, pcpath) \/ $anonymous_while_factory_path(pcunit, pcpath) \/ $anonymous_do_factory_path(pcunit, pcpath)
 def $anonymous_named_factory_path(pcunit, pcpath) = true
   -- if $(|pcpath| >= 3)
   -- if pcpath_statement = pcpath[0:$nabs($(|pcpath| - 2))]
   -- if pcpath = pcpath_statement ++ [(PCFIELD 0),(PCFIELD 1)]
-  -- if $origin_node([pcunit], PORIGIN 0 pcpath_statement) = (pcnode)
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath_statement) = (pcnode)
   -- if $anonymous_named_closure_statement(pcnode)
   -- if $anonymous_top_path(pcunit, pcpath_statement) \/ $anonymous_conditional_factory_path(pcunit, pcpath_statement) \/ $anonymous_while_factory_path(pcunit, pcpath_statement) \/ $anonymous_do_factory_path(pcunit, pcpath_statement)
 def $anonymous_named_factory_path(pcunit, pcpath) = false -- otherwise
@@ -317,13 +317,24 @@ def $anonymous_factory_source(P, NExprClosure (SEQUENCE eps) (BOOLEAN true) (BOO
   -- if P.CLOSURE
 def $anonymous_factory_source(P, pcnode) = eps -- otherwise
 
+dec $anonymous_rtd_unit(pcunit) : nat?
+dec $anonymous_dynamic_seed(ppstate) : nat?
+dec $anonymous_compiler_seed(ppstate) : nat?
+def $anonymous_compiler_seed(P) = (0) -- if P.FOLD.SOURCE.ID = 0
+def $anonymous_compiler_seed(P) = $anonymous_dynamic_seed(P) -- if $(P.FOLD.SOURCE.ID > 0)
+
+dec $anonymous_compiler_unit(ppstate) : bool
+def $anonymous_compiler_unit(P) = $anonymous_unit(P.FOLD.SOURCE) -- if P.FOLD.SOURCE.ID = 0
+def $anonymous_compiler_unit(P) = ($anonymous_rtd_unit(P.FOLD.SOURCE) =/= eps /\ P.EVALCLASS = eps /\ P.DIAGNOSTICS = eps)
+  -- if $(P.FOLD.SOURCE.ID > 0)
+
 dec $anonymous_factory_context(ppstate, pcpath) : bool
 def $anonymous_factory_context(P, pcpath) = true
-  -- if $anonymous_unit(P.FOLD.SOURCE)
+  -- if $anonymous_compilation_unit(P.FOLD.SOURCE)
   -- if P.CLASSCONTEXT = eps /\ P.FOLD.CLASSCONTEXT = eps
   -- if P.CLOSURE = P.FOLD.CLOSURE
   -- if ~P.FOLD.CONSTANT /\ ~P.FOLD.DEFAULT
-  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 (P.GOTOROOT)) = (pcnode)
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID (P.GOTOROOT)) = (pcnode)
   -- if $anonymous_factory_source(P, pcnode) = ((ptbytes_name, n_body))
   -- if P.FOLD.FUNCTION = ptbytes_name
   -- if pcpath_body = P.GOTOROOT ++ [PCFIELD n_body]
@@ -331,34 +342,38 @@ def $anonymous_factory_context(P, pcpath) = true
   -- if pcpath[0:|pcpath_body|] = pcpath_body
 def $anonymous_factory_context(P, pcpath) = false -- otherwise
 
-def $ppimage_publication_ready(P, PORIGIN 0 pcpath, PPCLASS) = true
+def $ppimage_publication_ready(P, PORIGIN n_unit pcpath, PPCLASS) = true
+  -- if n_unit = P.FOLD.SOURCE.ID
   -- if ~$ppimage_unit(P) /\ $anonymous_factory_context(P, pcpath)
-  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 pcpath) = (pcnode)
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN n_unit pcpath) = (pcnode)
   -- if $anonymous_class_node(pcnode)
-  -- if $anonymous_class_prefix(P.FOLD.SOURCE, P.LOCATION.FILE, P.CLASSES, 0)
-  -- if $class_at(P.CLASSES, PORIGIN 0 pcpath) = (pclassdesc)
+  -- if $anonymous_compiler_seed(P) = (n_seed)
+  -- if $anonymous_compiled_class_count(P.FOLD.SOURCE, P.LOCATION.FILE, P.CLASSES, eps, P.FOLD.EXTERNAL, n_seed) =/= eps
+  -- if $class_at(P.CLASSES, PORIGIN n_unit pcpath) = (pclassdesc)
   -- if pclassdesc.EARLY
 
 dec $ppanonymous_class(ppstate, pcpath, statement) : ppstate
 def $ppanonymous_class(P, pcpath, statement) = P_next[.EARLY = P.EARLY][.LOCATION = P.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]]
-  -- if $anonymous_unit(P.FOLD.SOURCE) /\ $anonymous_class_node(statement)
+  -- if $anonymous_compiler_unit(P) /\ $anonymous_class_node(statement)
   -- if $anonymous_parentless_class_node(statement)
   -- if ($ppimage_unit(P) \/ $anonymous_factory_context(P, pcpath)) /\ ~P.FOLD.CONSTANT
-  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 (pcpath ++ [PCFIELD 0])) = (statement)
-  -- if $class_at(P.CLASSES, PORIGIN 0 (pcpath ++ [PCFIELD 0])) = eps
-  -- if $anonymous_class_count(P.FOLD.SOURCE, P.LOCATION.FILE, P.CLASSES, eps, 0) = (n_counter)
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID (pcpath ++ [PCFIELD 0])) = (statement)
+  -- if $class_at(P.CLASSES, PORIGIN P.FOLD.SOURCE.ID (pcpath ++ [PCFIELD 0])) = eps
+  -- if $anonymous_compiler_seed(P) = (n_seed)
+  -- if $anonymous_compiled_class_count(P.FOLD.SOURCE, P.LOCATION.FILE, P.CLASSES, eps, P.FOLD.EXTERNAL, n_seed) = (n_counter)
   -- if $pchlower(statement) = PCHRAW pchraw
   -- if z_line = $source_line($pcmetadata(statement))
   -- if $anonymous_class_name(P.LOCATION.FILE, z_line, n_counter) = (ptbytes_name)
   -- if P_class = $pplocate(P[.EARLY = (pcpath ++ [PCFIELD 0])], pcpath ++ [PCFIELD 0], z_line)
   -- if P_next = $ppclass_result(P_class, pcpath ++ [PCFIELD 0], PCHOK { KIND "class", NAME ptbytes_name, ABSTRACT false, FINAL false, READONLY false, PARENT eps, INTERFACES eps, BODY pchraw.BODY } eps)
 def $ppanonymous_class(P, pcpath, statement) = P_next[.EARLY = P.EARLY][.LOCATION = P.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]]
-  -- if $anonymous_unit(P.FOLD.SOURCE) /\ $anonymous_class_node(statement)
+  -- if $anonymous_compiler_unit(P) /\ $anonymous_class_node(statement)
   -- if ~$anonymous_parentless_class_node(statement)
   -- if ($ppimage_unit(P) \/ $anonymous_factory_context(P, pcpath)) /\ ~P.FOLD.CONSTANT
-  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 (pcpath ++ [PCFIELD 0])) = (statement)
-  -- if $class_at(P.CLASSES, PORIGIN 0 (pcpath ++ [PCFIELD 0])) = eps
-  -- if $anonymous_class_count(P.FOLD.SOURCE, P.LOCATION.FILE, P.CLASSES, eps, 0) = (n_counter)
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID (pcpath ++ [PCFIELD 0])) = (statement)
+  -- if $class_at(P.CLASSES, PORIGIN P.FOLD.SOURCE.ID (pcpath ++ [PCFIELD 0])) = eps
+  -- if $anonymous_compiler_seed(P) = (n_seed)
+  -- if $anonymous_compiled_class_count(P.FOLD.SOURCE, P.LOCATION.FILE, P.CLASSES, eps, P.FOLD.EXTERNAL, n_seed) = (n_counter)
   -- if $pchlower(statement) = PCHRAW pchraw
   -- if z_line = $source_line($pcmetadata(statement))
   -- if P_class = $pplocate(P[.EARLY = eps], pcpath ++ [PCFIELD 0], z_line)
@@ -381,7 +396,6 @@ def $ppdispatch(P, pcpath, NExprNew (NStmtClass phpType14 phpType24 phpType3 php
 
 ;; Compiled identity is independent of publication. A parented anonymous class
 ;; links on its first DECLARE_ANON_CLASS, before allocation and argument sends.
-dec $anonymous_rtd_unit(pcunit) : nat?
 dec $anonymous_history_seed(pstate, nat) : nat?
 dec $anonymous_new_descriptor(pstate, porigin) : pclassdesc?
 def $anonymous_new_descriptor(S, PORIGIN 0 pcpath) = (pclassdesc)
@@ -398,7 +412,8 @@ def $anonymous_new_descriptor(S, PORIGIN n pcpath) = (pclassdesc)
   -- if $declaration_unit_complete(S.DECLARATIONS, n)
   -- if $source_unit(S.SOURCES, n) = (pcunit)
   -- if $anonymous_rtd_unit(pcunit) =/= eps
-  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
+  -- if $(|phpType7*| <= 2) /\ $anonymous_new_arguments(phpType7*)
   -- if $compilation_projection(S, pcunit) = (ppinstalled)
   -- if $class_at(ppinstalled.CLASSES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (pclassdesc)
   -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
@@ -567,15 +582,15 @@ def $call_task_valid(S, EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 
 
 ;; Dynamic units continue the request compiler's RTD sequence. Only closed,
 ;; successful compilation history is counted; runtime NEW visits do not count.
-;; Direct CV-assignment statements are compiled once even inside loop bodies.
-;; Expression positions may be skipped by constant short-circuit compilation.
+;; Site admission authenticates NEW/class-child structure and existing args.
+;; Compiled descriptors decide key costs; pruned expressions lack them.
 dec $anonymous_rtd_site(pcunit, pcpath) : bool
 def $anonymous_rtd_site(pcunit, pcpath) = true
-  -- if $(|pcpath| >= 3)
-  -- if pcpath_statement = pcpath[0:$nabs($(|pcpath| - 3))]
-  -- if pcpath = pcpath_statement ++ [(PCFIELD 0),(PCFIELD 1),(PCFIELD 0)]
-  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath_statement) = (NStmtExpression (NExprAssign (NExprVariable (BYTES text) metadata_variable) (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata_new) metadata_assign) metadata)
-  -- if $ptvalidname($base64(text), false)
+  -- if $(|pcpath| > 0)
+  -- if pcpath_new = pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_new ++ [PCFIELD 0]
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath_new) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
+  -- if $(|phpType7*| <= 2) /\ $anonymous_new_arguments(phpType7*)
 def $anonymous_rtd_site(pcunit, pcpath) = false -- otherwise
 
 ;; This admission count counts sites, not RTD keys. Actual key costs below
@@ -637,49 +652,10 @@ def $anonymous_rtd_history(S, pdeclaration :: pdeclaration_tail*, n_expected, n_
   -- if $anonymous_rtd_enter(pdeclaration) = eps /\ ~$anonymous_rtd_exit(pdeclaration)
 def $anonymous_rtd_history(S, pdeclaration*, n_expected, n_target, n_counter) = eps -- otherwise
 
-dec $anonymous_dynamic_seed(ppstate) : nat?
 def $anonymous_dynamic_seed(P) = $anonymous_rtd_history(S_external, S_external.DECLARATIONS, 0, P.FOLD.SOURCE.ID, 0)
   -- if $(P.FOLD.SOURCE.ID > 0)
   -- if P.FOLD.EXTERNAL = (S_external)
 def $anonymous_dynamic_seed(P) = eps -- otherwise
-
-;; The old unit0 compiler and factory arms remain unchanged.
-def $ppanonymous_class(P, pcpath, statement) = P_next[.EARLY = P.EARLY][.LOCATION = P.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]]
-  -- if $(P.FOLD.SOURCE.ID > 0)
-  -- if $anonymous_rtd_unit(P.FOLD.SOURCE) =/= eps
-  -- if $anonymous_parentless_class_node(statement)
-  -- if $ppimage_unit(P) /\ ~P.FOLD.CONSTANT /\ P.EVALCLASS = eps
-  -- if P.DIAGNOSTICS = eps
-  -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID (pcpath ++ [PCFIELD 0])) = (statement)
-  -- if $class_at(P.CLASSES, PORIGIN P.FOLD.SOURCE.ID (pcpath ++ [PCFIELD 0])) = eps
-  -- if $anonymous_dynamic_seed(P) = (n_seed)
-  -- if $anonymous_compiled_class_count(P.FOLD.SOURCE, P.LOCATION.FILE, P.CLASSES, eps, P.FOLD.EXTERNAL, n_seed) = (n_counter)
-  -- if $pchlower(statement) = PCHRAW pchraw
-  -- if z_line = $source_line($pcmetadata(statement))
-  -- if $anonymous_class_name(P.LOCATION.FILE, z_line, n_counter) = (ptbytes_name)
-  -- if P_class = $pplocate(P[.EARLY = (pcpath ++ [PCFIELD 0])], pcpath ++ [PCFIELD 0], z_line)
-  -- if P_next = $ppclass_result(P_class, pcpath ++ [PCFIELD 0], PCHOK { KIND "class", NAME ptbytes_name, ABSTRACT false, FINAL false, READONLY false, PARENT eps, INTERFACES eps, BODY pchraw.BODY } eps)
-
-def $ppanonymous_class(P, pcpath, statement) = P_next[.EARLY = P.EARLY][.LOCATION = P.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]]
-  -- if $(P.FOLD.SOURCE.ID > 0)
-  -- if $anonymous_rtd_unit(P.FOLD.SOURCE) =/= eps
-  -- if $anonymous_class_node(statement) /\ ~$anonymous_parentless_class_node(statement)
-  -- if $ppimage_unit(P) /\ ~P.FOLD.CONSTANT /\ P.EVALCLASS = eps
-  -- if P.DIAGNOSTICS = eps
-  -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID (pcpath ++ [PCFIELD 0])) = (statement)
-  -- if $class_at(P.CLASSES, PORIGIN P.FOLD.SOURCE.ID (pcpath ++ [PCFIELD 0])) = eps
-  -- if $anonymous_dynamic_seed(P) = (n_seed)
-  -- if $anonymous_compiled_class_count(P.FOLD.SOURCE, P.LOCATION.FILE, P.CLASSES, eps, P.FOLD.EXTERNAL, n_seed) = (n_counter)
-  -- if $pchlower(statement) = PCHRAW pchraw
-  -- if z_line = $source_line($pcmetadata(statement))
-  -- if P_class = $pplocate(P[.EARLY = eps], pcpath ++ [PCFIELD 0], z_line)
-  -- if $pchparent(pchraw.PARENT, $ppclass_context(P_class)) = PCHNAMES ptbytes_parent* eps
-  -- if ptbytes_parent_option? = $pchparentoption(ptbytes_parent*)
-  -- if pchraw.INTERFACES = SEQUENCE name*
-  -- if $pchrefs(name*, "interface name", $ppclass_context(P_class)) = PCHNAMES ptbytes_interface* eps
-  -- if $anonymous_interface_prefix(ptbytes_parent_option?, ptbytes_interface*) = (ptbytes_prefix)
-  -- if $anonymous_parent_class_name(ptbytes_prefix, P.LOCATION.FILE, z_line, n_counter) = (ptbytes_name)
-  -- if P_next = $ppclass_result(P_class, pcpath ++ [PCFIELD 0], PCHOK { KIND "class", NAME ptbytes_name, ABSTRACT false, FINAL false, READONLY false, PARENT ptbytes_parent_option?, INTERFACES ptbytes_interface*, BODY pchraw.BODY } eps)
 
 def $anonymous_history_seed(S, n) = $anonymous_rtd_history(S, S.DECLARATIONS[0:n_prefix], 0, n, 0)
   -- if $(n > 0)
