@@ -116,8 +116,8 @@ Field COW and storage preserve repeated roots, shared children, held/sole aliase
 and permanent pools, including no-destructor and Aggregate promotion routes.
 Eight exact originals and one explicit typed-slot Unsupported control retain
 separate source cuts; five reached recipes pass 915 physical premises
-(913 Boolean, two raw steps) on the landed class/cleanup tail.
-[Field/cache review](coverage/semantics/array-iterator-byval-fields-review.json).
+(913 Boolean, two raw steps) on the landed class/cleanup tail. Joined strict425
+also passes. [Field/cache review](coverage/semantics/array-iterator-byval-fields-review.json).
 Tables/hooks, typed/special references, object/cyclic/debt graphs and wider
 lifetimes remain partial; A62/A63/A64 evidence keeps its original cuts.
 
