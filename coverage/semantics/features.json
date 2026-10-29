@@ -28662,7 +28662,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_enum.c"
       ],
-      "review": "Direct and captured scalar from/tryFrom preserve cold backing-table checks, singleton lookup and caller strictness at reviewed source/state cuts in PROGRESS.md; BackedEnum typed parameters remain bounded. Stringable arguments to captured lookups and broader type contexts remain open."
+      "review": "Direct and captured scalar from/tryFrom preserve cold backing-table checks, singleton lookup and caller strictness at reviewed source/state cuts in PROGRESS.md; BackedEnum typed parameters remain bounded. Captured Stringable arguments preserve source-bound callback, temporary retirement and case identity at separate reviewed cuts; broader type contexts remain open."
     },
     {
       "id": "declarations.generated-enum-methods",
@@ -28681,7 +28681,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_enum.c"
       ],
-      "review": "Direct cases/from/tryFrom and user magic method calls are source/state checked. Captured cases and scalar from/tryFrom retain the selected enum, cold table and cached singleton history after closure retirement, including ordinary and inherited constant aliases. Stringable arguments to captured lookups and conditional constant transfer are explicit Unsupported; array callables and Closure::fromCallable remain partial. See PROGRESS.md for separate exact cuts."
+      "review": "Direct cases/from/tryFrom and user magic method calls are source/state checked. Captured cases and scalar from/tryFrom retain the selected enum, cold table and cached singleton history after closure retirement, including ordinary and inherited constant aliases. Captured Stringable arguments to from/tryFrom preserve callback and receiver lifetimes; conditional constant transfer remains explicit Unsupported, while array callables and Closure::fromCallable remain partial. See PROGRESS.md for separate exact cuts."
     },
     {
       "id": "declarations.attribute-metadata",

@@ -6216,9 +6216,10 @@ fetches retain selected class/member order through loader replay. Captured
 owner is retired. Captured `from(...)`/`tryFrom(...)` also preserve cold backing
 initialization, scalar parsing and cached cases after their closure owners retire;
 ordinary and inherited enum constant aliases retain their declaration owners.
-Stringable arguments to captured lookups and conditional constant transfers
-remain Unsupported. Other generated callable routes, case attributes, the
-default loader and wider acquisition remain partial;
+Stringable arguments to captured lookups use source-bound `__toString()` callbacks
+and release temporary arguments before looking up a case, including `tryFrom()` misses and hits.
+Conditional constant transfers remain Unsupported. Other generated callable
+routes, case attributes, the default loader and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
