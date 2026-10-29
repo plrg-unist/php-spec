@@ -31,8 +31,8 @@ def $executor_free_edges(eps, pnode) = eps
 def $executor_free_edges((HEDGE pnode pnode_child) :: hedge_tail*, pnode) = $executor_free_edges(hedge_tail*, pnode)
 def $executor_free_edges((HEDGE pnode_other pnode_child) :: hedge_tail*, pnode) = (HEDGE pnode_other pnode_child) :: $executor_free_edges(hedge_tail*, pnode)
   -- if pnode_other =/= pnode
-def $executor_free_mark(HOBJECT n, pnode*) = (HOBJECT n) :: pnode*
-def $executor_free_mark(pnode, pnode*) = pnode* -- otherwise
+def $executor_free_mark(HOBJECT n, pnode_marked*) = (HOBJECT n) :: pnode_marked*
+def $executor_free_mark(pnode, pnode_marked*) = pnode_marked* -- otherwise
 
 ;; All remaining fields stay owned while earlier fields decrement. Marked std
 ;; headers retain their skipped fields even if a later decrement frees a header.
