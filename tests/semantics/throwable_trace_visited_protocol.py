@@ -4,6 +4,7 @@ import json
 
 from throwable_builtin_previous_protocol import PREFIX as SEEK_PREFIX
 from throwable_previous_graph_protocol import raw, trace
+from throwable_trace_recursion_protocol import error_rows
 
 PREFIX = SEEK_PREFIX + r'''
 dec $tv_without(pnode*, pnode) : pnode*
@@ -64,7 +65,7 @@ def checks(program, path, name):
             '$entry_lookup(S.ARRAYS[n_cycle].ITEMS,KSTRING $ptascii("self")) = (ALIAS n_cycle_cell)',
             'S.STORE[n_cycle_cell] = DEFINED (PARRAY n_cycle)',
             '$heap_subset([HARRAY n_cycle,HCELL n_cycle_cell],S.ALLOCATIONS)',
-            '$trace_visit_array_effect(S,n_payload_p,n_payload_q,[HARRAY n_payload_p],eps,z) = (S,ORDERUNSUPPORTED "Throwable property comparison")',
+            '$trace_visit_array_effect(S,n_payload_p,n_payload_q,[HARRAY n_payload_p],eps,z) = (S,ORDERRECURSIVE)',
             '$trace_visit_array_effect(S,n_payload_p,n_payload_p,[HARRAY n_payload_p],eps,z) = (S,ORDER 0)',
             'S_bad = S[.ALLOCATIONS = $tv_without(S.ALLOCATIONS,HARRAY n_payload_p)]',
             '$trace_visit_array_effect(S_bad,n_payload_p,n_payload_p,eps,eps,z) = (S_bad,ORDERUNSUPPORTED "Throwable property comparison")',
@@ -158,7 +159,7 @@ def checks(program, path, name):
         rows += [
             '$object_table_at(S.OBJECTTABLES,n_left) = eps',
             '$object_table_at(S.OBJECTTABLES,n_right) = eps',
-            '$value_order_effect(S,POBJECT n_a,POBJECT n_b,eps,z) = (S_effect,ORDERUNSUPPORTED "Throwable property comparison")',
+            '$value_order_effect(S,POBJECT n_a,POBJECT n_b,eps,z) = (S_effect,ORDERRECURSIVE)',
             'S_effect.COMPLETION = NORMAL',
             'n_table_left = |S.ARRAYS|',
             'n_table_right = $(n_table_left + 1)',
@@ -176,7 +177,7 @@ def checks(program, path, name):
                 '$object_table_at(S_effect.OBJECTTABLES,n_other) = (n_table_other)',
                 '$aggregate_table_count(S_effect.ARRAYS[n_table_left].ITEMS) = 1',
                 '$aggregate_table_count(S_effect.ARRAYS[n_table_other].ITEMS) = 2',
-                '$trace_visit_array_effect(S_effect,n_table_left,n_table_other,[HARRAY n_table_left],eps,z) = (S_effect,ORDERUNSUPPORTED "Throwable property comparison")',
+                '$trace_visit_array_effect(S_effect,n_table_left,n_table_other,[HARRAY n_table_left],eps,z) = (S_effect,ORDERRECURSIVE)',
                 '|S_effect.ARRAYS| = $(|S.ARRAYS| + 3)',
             ]
         else:
@@ -187,18 +188,7 @@ def checks(program, path, name):
                 'S_effect.STORE[n_live_left] = DEFINED (POBJECT n_left)',
                 'S_effect.STORE[n_live_right] = DEFINED (POBJECT n_right)',
             ]
-        rows += [
-            'PhpStep: S ~> S_raw',
-            'S_raw.COMPLETION = UNSUPPORTED "Throwable property comparison"',
-            r'S_raw.ARRAYS = S_effect.ARRAYS /\ S_raw.OBJECTTABLES = S_effect.OBJECTTABLES',
-            r'S_raw.OBJECTPROPS = S_effect.OBJECTPROPS /\ S_raw.STORE = S_effect.STORE',
-            'S_raw.ALLOCATIONS = S_effect.ALLOCATIONS',
-            'S_raw.EVENTS = S.EVENTS',
-            '$tbp_output(S_raw.EVENTS) = $ptascii("B|")',
-            '$aggregate_compare_seen(S_raw) = eps',
-            '$drive_steps(S,0) = S[.COMPLETION = BUDGET]',
-            'S_one = $drive_steps(S,1)',
-            'S_one.COMPLETION = UNSUPPORTED "Throwable property comparison"',
-            'S_one.OBJECTTABLES = S_effect.OBJECTTABLES',
-        ]
+        rows += error_rows()
+        rows += finish('S_one[.COMPLETION = NORMAL]',
+                       'B|E|Nesting level too deep - recursive dependency?|')
     return rows

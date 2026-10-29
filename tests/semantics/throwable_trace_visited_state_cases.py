@@ -1,4 +1,4 @@
-"""Reached-cycle originals retained as refusal controls, not agreements."""
+"""Ordinary reached-cycle originals shared by the comparison fixtures."""
 from throwable_previous_graph_cases import CASES as PREVIOUS_CASES
 
 CASES = {
