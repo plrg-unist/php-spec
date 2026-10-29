@@ -1,6 +1,6 @@
 {
   "milestone": "OB04",
-  "status": "Private validation and independent runtime review complete; actual-tail integration pending",
+  "status": "Validated and independently reviewed bounded milestone; core remains partial",
   "target": {
     "version": "8.5.10",
     "sapi": "cli",
@@ -268,6 +268,22 @@
   ],
   "recovery": "Raw ../php-spec-evidence-archive/ob04-author-native retains original packets, stdout/stderr, snapshots, binaries/input hashes and commands. Maintained source/protocol files are in Git; the external archive is not a build input.",
   "integration": {
-    "status": "pending exact canonical writer release, actual shared union review and one joined strict compilation"
+    "base": "1013314829265f90147b00640a08936dc16ab4c7",
+    "candidate": "14abf05ecb502403208d12c6f131ddda201f92c4",
+    "status": "Joined strict433 passed; accepted source/state cuts retain their original identities",
+    "strict": {
+      "report": "ob04-author-native/joined-14abf05ec/report.json",
+      "sha256": "63931af6d0a9fbf6d03c1653ed4ab215c11c11725b0ae024a12794f20286cd45",
+      "module_count": 433,
+      "mode": "SL strict",
+      "exit": 0,
+      "stderr_bytes": 0,
+      "seconds": 11.562921861186624,
+      "cpu": 5,
+      "head_stable": true,
+      "inputs_stable": true,
+      "process_group_reaped": true
+    },
+    "composition": "30 is exact canonical plus OUTPUT_FINAL_EXCEPTION. 301 preserves canonical GC08 enum exclusion, NOGC/BASE allocation flags and caller predicates, adding only abandoned destructor tail HANDLE counting. 39/257/270/443 are canonical-identical; 441/444 are private-package-identical. 442 retains the actual shared API cursors; canonical443 explicit wrapper paths are inactive for the internal EH/error callbacks. Sources contain no enums, WeakReferences or active collector calls; the new canonical guards are neutral. Independent actual-union review found no extra affected actor necessary."
   }
 }

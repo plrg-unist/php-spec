@@ -296,12 +296,13 @@ API reception and ordinary ignored-return/original cleanup. Normal handling keep
 UNDEF failure forwarding and real lower callbacks; abrupt cleanup preserves only
 actual C owners before fresh fatal/deactivation. Retained Closure fast-free effects
 after executor inactivity preserve the pinned late diagnostic and CLI0. Eleven
-originals agree, eight reached groups pass 465 checks and private strict compilation of 432 modules
-passes.
+originals agree and eight reached groups pass 465 checks. Private strict432 and
+actual-tail joined strict433 pass.
 The independent 303 checks include retired GC HANDLE authority; author 162 includes
 first-duplicate allocator mode controls. Slow executor teardown, wider internal
-hooks/rendering and reentrant deactivation stay partial. Actual-tail integration is
-pending; failed native forecasts, fixtures and the repaired invariant cut keep zero credit.
+hooks/rendering and reentrant deactivation stay partial. Source/state cuts retain
+their original identities; failed forecasts, fixtures and the repaired invariant
+cut keep zero credit.
 [Selected FINAL review](coverage/semantics/output-final-exception-handler-review.json).
 
 ## Active and unintegrated work
@@ -310,7 +311,6 @@ pending; failed native forecasts, fixtures and the repaired invariant cut keep z
 | --- | --- |
 | GC09 | Coherent fake-Closure allocation flags under implementation. |
 | I83 | Invokable object Generator factories; native-first source preparation, unrun. |
-| OB04 | Selected error-handler FINAL handling; eleven exact sources and reached validation. |
 | ATTR07 | Builtin attributes on real Closure/arrow expressions; separate producer preparation. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
 | Enum M3/M4 | Generated array-capture preparation; no new validation credit. Other string consumers, backing dependencies and the default loader remain partial. |
