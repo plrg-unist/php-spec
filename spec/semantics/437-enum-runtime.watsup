@@ -269,7 +269,38 @@ def $enum_case_init_valid(S, porigin) = true
   -- if pconstantcontext.ORIGIN = porigin
   -- if S.TODO = (ENUM_CASE_INIT porigin) :: (CLASS_CONST_BIND porigin) :: ptask_tail*
 def $enum_case_init_valid(S, porigin) = false -- otherwise
-def $call_task_valid(S, ENUM_CASE_INIT porigin) = $enum_case_init_valid(S, porigin)
+dec $enum_case_init_pair_head(ptask*, porigin) : bool
+def $enum_case_init_pair_head((ENUM_CASE_INIT porigin) :: (CLASS_CONST_BIND porigin) :: ptask_tail*, porigin) = true
+def $enum_case_init_pair_head(ptask*, porigin) = false -- otherwise
+dec $enum_case_init_future_pair(ptask*, porigin) : bool
+def $enum_case_init_future_pair(eps, porigin) = false
+def $enum_case_init_future_pair(ptask :: ptask_tail*, porigin) = true
+  -- if $enum_case_init_pair_head(ptask :: ptask_tail*, porigin)
+def $enum_case_init_future_pair(ptask :: ptask_tail*, porigin) = $enum_case_init_future_pair(ptask_tail*, porigin)
+  -- if ~$enum_case_init_pair_head(ptask :: ptask_tail*, porigin)
+dec $enum_case_init_future_progress(pstate, porigin, expression) : bool
+def $enum_case_init_future_progress(S, porigin, expression) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $constant_child(porigin, [PCFIELD 2]) = porigin_child
+  -- if S.TODO = (AT porigin_child (EVAL expression)) :: (ENUM_CASE_INIT porigin) :: (CLASS_CONST_BIND porigin) :: ptask_tail*
+def $enum_case_init_future_progress(S, PORIGIN n pcpath_case, expression) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath_child)
+  -- if $effect_below(pcpath_case ++ [PCFIELD 2], pcpath_child)
+  -- if $constant_expression_below(S, PORIGIN n pcpath_case, PORIGIN n pcpath_child)
+  -- if ~$enum_case_init_pair_head(S.TODO, PORIGIN n pcpath_case)
+  -- if $enum_case_init_future_pair(S.TODO, PORIGIN n pcpath_case)
+def $enum_case_init_future_progress(S, porigin, expression) = false -- otherwise
+dec $enum_case_init_future(pstate, porigin) : bool
+def $enum_case_init_future(S, porigin) = true
+  -- if $enum_case_origin(S, porigin)
+  -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
+  -- if pclassconstantcontext.DECL = porigin
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = porigin
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtEnumCase phpType14 phpType11 expression metadata)
+  -- if $enum_case_init_future_progress(S, porigin, expression)
+def $enum_case_init_future(S, porigin) = false -- otherwise
+def $call_task_valid(S, ENUM_CASE_INIT porigin) = ($enum_case_init_valid(S, porigin) \/ $enum_case_init_future(S, porigin))
 rule PhpStep/enum-case-unit: S ~> $enum_case_allocate(S[.TODO = ptask_tail*], pclassconstantdesc, eps)
   -- if S.TODO = (ENUM_CASE_INIT porigin) :: ptask_tail*
   -- if $enum_case_init_valid(S, porigin)
@@ -798,10 +829,134 @@ def $enum_cases_marker(S, pconfigcall, porigin, ptask :: ptask_tail*) = $enum_ca
 def $enum_cases_value_task(ENUM_CASES_VALUE pconfigcall porigin* pvalue*) = true
 def $enum_cases_value_task(ptask) = false -- otherwise
 def $enum_cases_marker(S, pconfigcall, porigin, ptask*) = false -- otherwise
+dec $enum_query_api_valid(pstate, pconfigcall) : bool
+def $enum_query_api_valid(S, pconfigcall) = $dynamic_class_constant_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_CONSTANT
+def $enum_query_api_valid(S, pconfigcall) = $dynamic_defined_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED
+def $enum_query_api_valid(S, pconfigcall) = false -- otherwise
+dec $enum_query_call_valid(pstate, pconfigcall, porigin) : bool
+def $enum_query_call_valid(S, pconfigcall, porigin) = true
+  -- if $enum_query_api_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin /\ $class_constant_visible(S, pclassconstantdesc)
+def $enum_query_call_valid(S, pconfigcall, porigin) = false -- otherwise
+dec $enum_query_initializing(pclassconstantcontext*, pconfigcall, porigin) : bool
+def $enum_query_initializing(eps, pconfigcall, porigin) = false
+def $enum_query_initializing(pclassconstantcontext :: pclassconstantcontext_tail*, pconfigcall, porigin) = true
+  -- if pclassconstantcontext.DECL = porigin /\ pclassconstantcontext.SELECTION = CLASS_CONST_CALL pconfigcall
+def $enum_query_initializing(pclassconstantcontext :: pclassconstantcontext_tail*, pconfigcall, porigin) = $enum_query_initializing(pclassconstantcontext_tail*, pconfigcall, porigin)
+  -- if pclassconstantcontext.DECL =/= porigin \/ pclassconstantcontext.SELECTION =/= CLASS_CONST_CALL pconfigcall
+dec $enum_query_cached(pstate, porigin, pvalue) : bool
+def $enum_query_cached(S, porigin, pvalue) = true
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
+  -- if pdefaultcache.VALUE = pvalue
+def $enum_query_cached(S, porigin, pvalue) = true
+  -- if $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
+  -- if pclassconstantdesc.FOLDED
+  -- if $compiled_read(S, pclassconstantdesc.INITIALIZER) = (pvalue)
+def $enum_query_cached(S, porigin, pvalue) = false -- otherwise
+dec $enum_query_result_valid(pstate, pconfigcall, porigin) : bool
+def $enum_query_result_valid(S, pconfigcall, porigin) = true
+  -- if $enum_query_call_valid(S, pconfigcall, porigin)
+  -- if S.TODO = (ENUM_QUERY_RESULT pconfigcall porigin) :: ptask_tail*
+  -- if S.RESULT = KNOWN pvalue
+  -- if $enum_query_cached(S, porigin, pvalue)
+def $enum_query_result_valid(S, pconfigcall, porigin) = false -- otherwise
+dec $enum_query_result_task(ptask) : bool
+def $enum_query_result_task(ENUM_QUERY_RESULT pconfigcall porigin) = true
+def $enum_query_result_task(ptask) = false -- otherwise
+dec $enum_query_marker(pstate, pconfigcall, porigin, ptask*) : bool
+def $enum_query_marker(S, pconfigcall, porigin, (ENUM_QUERY_RESULT pconfigcall porigin) :: ptask_tail*) = $enum_query_call_valid(S, pconfigcall, porigin)
+def $enum_query_marker(S, pconfigcall, porigin, ptask :: ptask_tail*) = $enum_query_marker(S, pconfigcall, porigin, ptask_tail*)
+  -- if ~$enum_query_result_task(ptask)
+def $enum_query_marker(S, pconfigcall, porigin, ptask*) = false -- otherwise
+dec $enum_query_bind_head(ptask*, pconfigcall, porigin) : bool
+def $enum_query_bind_head((CLASS_CONST_BIND porigin) :: (ENUM_QUERY_RESULT pconfigcall porigin) :: ptask_tail*, pconfigcall, porigin) = true
+def $enum_query_bind_head(ptask*, pconfigcall, porigin) = false -- otherwise
+dec $enum_query_bind_pending(ptask*, pconfigcall, porigin) : bool
+def $enum_query_bind_pending(eps, pconfigcall, porigin) = false
+def $enum_query_bind_pending(ptask :: ptask_tail*, pconfigcall, porigin) = true
+  -- if $enum_query_bind_head(ptask :: ptask_tail*, pconfigcall, porigin)
+def $enum_query_bind_pending(ptask :: ptask_tail*, pconfigcall, porigin) = $enum_query_bind_pending(ptask_tail*, pconfigcall, porigin)
+  -- if ~$enum_query_bind_head(ptask :: ptask_tail*, pconfigcall, porigin)
+def $task_nodes(ENUM_QUERY_RESULT pconfigcall porigin) = $config_nodes(pconfigcall)
+def $selected_task_nonce(ENUM_QUERY_RESULT pconfigcall porigin) = pconfigcall.SELECTION
+def $call_task_valid(S, ENUM_QUERY_RESULT pconfigcall porigin) = $enum_query_call_valid(S, pconfigcall, porigin)
+  -- if $enum_query_bind_pending(S.TODO, pconfigcall, porigin)
+def $call_task_valid(S, ENUM_QUERY_RESULT pconfigcall porigin) = $enum_query_result_valid(S, pconfigcall, porigin)
+  -- if ~$enum_query_bind_pending(S.TODO, pconfigcall, porigin)
+rule PhpStep/enum-query-constant-result: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (ENUM_QUERY_RESULT pconfigcall porigin) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_CONSTANT /\ $enum_query_result_valid(S, pconfigcall, porigin)
+rule PhpStep/enum-query-defined-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ENUM_QUERY_RESULT pconfigcall porigin) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED /\ $enum_query_result_valid(S, pconfigcall, porigin)
+dec $enum_query_begin(pstate, pconfigcall, pclassconstantdesc) : pstate
+def $enum_query_begin(S, pconfigcall, pclassconstantdesc) = $class_constant_value(S[.ORIGIN = (pconfigcall.SITE)][.TODO = (ENUM_QUERY_RESULT pconfigcall pclassconstantdesc.ORIGIN) :: ptask_tail*], pclassconstantdesc, CLASS_CONST_CALL pconfigcall, pclassconstantdesc.OWNERNAME, pconfigcall.LINE)
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_defined_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dynamic_defined_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = eps
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_defined_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dynamic_defined_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if ~$class_constant_visible(S, pclassconstantdesc)
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_defined_finish(S, pconfigcall) = $enum_query_begin(S, pconfigcall, pclassconstantdesc)
+  -- if $dynamic_defined_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if $class_constant_visible(S, pclassconstantdesc)
+def $dynamic_class_constant_finish(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "Error", $ptascii("Undefined constant ") ++ preqbytes_class ++ $ptascii("::") ++ preqbytes_member)
+  -- if $dynamic_class_constant_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = eps
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_class_constant_finish(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "Error", $ptascii("Cannot access ") ++ $property_visibility_name(pclassconstantdesc.VISIBILITY) ++ $ptascii(" constant ") ++ preqbytes_class ++ $ptascii("::") ++ preqbytes_member)
+  -- if $dynamic_class_constant_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if ~$class_constant_visible(S, pclassconstantdesc)
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_class_constant_finish(S, pconfigcall) = $enum_query_begin(S, pconfigcall, pclassconstantdesc)
+  -- if $dynamic_class_constant_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if $class_constant_visible(S, pclassconstantdesc)
 def $class_constant_selection_valid(S, pclassconstantcontext) = true
   -- if pclassconstantcontext.SELECTION = CLASS_CONST_CALL pconfigcall
   -- if pclassconstantcontext.ORIGIN = (pconfigcall.SITE)
   -- if $enum_cases_marker(S, pconfigcall, pclassconstantcontext.DECL, S.TODO)
+def $class_constant_selection_valid(S, pclassconstantcontext) = true
+  -- if pclassconstantcontext.SELECTION = CLASS_CONST_CALL pconfigcall
+  -- if pclassconstantcontext.ORIGIN = (pconfigcall.SITE) /\ pclassconstantcontext.LINE = pconfigcall.LINE
+  -- if $enum_query_marker(S, pconfigcall, pclassconstantcontext.DECL, S.TODO)
 def $class_constant_context_site(S, pclassconstantcontext) = true
   -- if pclassconstantcontext.SELECTION = CLASS_CONST_CALL pconfigcall
   -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes "cases"
@@ -814,6 +969,13 @@ def $class_constant_cache_trigger(S, porigin_decl, porigin_trigger, n_prefix) = 
   -- if $class_at(S.CLASSES, pclassconstantdesc.OWNER) = (pclassdesc)
   -- if $enum_call_site(S, porigin_trigger, INTRINSIC_ENUM pclassdesc.ORIGIN pclassdesc.NAME "cases")
   -- if porigin_trigger = PORIGIN n pcpath
+  -- if $class_constant_history_exited(S.DECLARATIONS, n_prefix, n)
+def $class_constant_cache_trigger(S, porigin_decl, PORIGIN n pcpath, n_prefix) = true
+  -- if $class_constant_origin(S.CLASSES, porigin_decl) = (pclassconstantdesc)
+  -- if $class_at(S.CLASSES, pclassconstantdesc.OWNER) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+  -- if $dynamic_class_constant_site(S, PORIGIN n pcpath)
+  -- if $dynamic_class_constant_history_query(S, porigin_decl, $dynamic_define_known(S, PORIGIN n pcpath, 0))
   -- if $class_constant_history_exited(S.DECLARATIONS, n_prefix, n)
 
 def $enum_value_roots(eps) = eps
