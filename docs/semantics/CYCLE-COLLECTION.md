@@ -201,6 +201,23 @@ admission fences (51 mixed, 25 typed and 10 destructor checks across separate
 AL runs); a private strict SL run passes the typed case. See the
 [materialized-table review](../../coverage/semantics/gc-materialized-table-review.json).
 
+A separate quiet finite WeakMap lane computes live ordinary reachability as a
+least fixed point: an entry payload becomes live only after both its Map and Key
+are live. Canonical membership grows only within current GC nodes, bounding
+the number of rounds. White discovery retains Map-side and Key-side entry
+incidences, even when one side was not buffered. Edges keep repeated
+occurrences and materialized table proxy count roles; physical ownership is
+unchanged. GC_FREE removes a
+dead Key's entry from a surviving Map without requiring a shared payload to die.
+Three changed originals and an unchanged repeated-history control agree with
+native PHP. Four source-reached strict SL groups cover the fixed point, actual
+counts, partial entry removal and derived order/incidence controls (127 reported
+checks at separate cuts). The lane requires quiet unmarked collector state,
+canonical ordinary locators and known count-sensitive same-Key registration
+order. Destructors, callbacks, resurrection, reentry, residual tags, cached
+workers, property hooks and active Fiber/frame/iterator contexts remain open.
+See the [generic ephemeron review](../../coverage/semantics/gc-ephemeron-generic-review.json).
+
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;
 pending exceptions remain owned once. After a destructor returns, its bare guard

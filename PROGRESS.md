@@ -35,6 +35,15 @@ passes at the separate integration cut.
 Callbacks, ephemerons, hooks, workers, residual buffers and noncanonical
 locators remain outside this slice. [Review](coverage/semantics/gc-materialized-table-review.json).
 
+A private second GC cut admits quiet finite WeakMap ephemerons across ordinary
+objects, arrays and cells, including materialized tables, multiple Maps,
+conditional transitive reachability and dead-Key removal with a shared live
+payload. Three changed native-first originals agree exactly; a repeated
+ordinary allocation/collection history also agrees on the unchanged path.
+Four source-reached strict SL groups pass 127 checks at separate cuts. Callback,
+residual, worker, hook and uncertain same-Key proxy order paths remain open;
+actual-tail integration is pending. [Review](coverage/semantics/gc-ephemeron-generic-review.json).
+
 Fresh Generator NEXT/SEND now transfer through Fiber before first yield using
 one authenticated phase rule across ordinary named, method, nonkeyword static
 and real unbound Closure callees. Existing cache/callee/resumer authority also

@@ -3577,6 +3577,14 @@ ordinary casts may share that table. Four native-first originals agree, and
 86 reached AL checks plus one private typed strict SL cut pass at their recorded
 cuts. Callback, ephemeron, hook, worker and residual paths remain partial;
 see the [materialized-table review](coverage/semantics/gc-materialized-table-review.json).
+Quiet finite WeakMap ephemerons now use a live fixed point over ordinary
+object/array/cell edges, with separate white discovery and selective dead-Key
+entry removal. Three changed native-first originals agree, alongside a repeated
+ordinary-history control on the unchanged path; four source-reached strict SL
+groups pass 127 checks at private cuts. Callback, residual, worker, hook and
+uncertain same-Key proxy-order paths remain open. The
+[generic ephemeron review](coverage/semantics/gc-ephemeron-generic-review.json)
+records the separate evidence and limits.
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
 reuse only when destructor preparation leaves the state identical.
