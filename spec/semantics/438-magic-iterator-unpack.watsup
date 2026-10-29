@@ -204,16 +204,16 @@ def $magic_unpack_arrays(S, pnamedargs) = (S_arguments, n_arguments, eps)
   -- if pnamedargs.NAMED = eps
   -- if S_arguments = $allocate_array(S, $magic_unpack_slots($array_empty(), pnamedargs.SLOTS, 0))
   -- if S_arguments.RESULT = KNOWN (PARRAY n_arguments)
-def $magic_unpack_arrays(S, pnamedargs) = (S_named, n_named, n_named?)
+def $magic_unpack_arrays(S, pnamedargs) = (S_named, n_named, n_buffer?)
   -- if pnamedargs.NAMED =/= eps /\ pnamedargs.SLOTS = eps
   -- if S_named = $allocate_array(S, $magic_unpack_named($array_empty(), pnamedargs.NAMED))
   -- if S_named.RESULT = KNOWN (PARRAY n_named)
-  -- if n_named? = (n_named)
-def $magic_unpack_arrays(S, pnamedargs) = (S_arguments, n_arguments, n_named?)
+  -- if n_buffer? = (n_named)
+def $magic_unpack_arrays(S, pnamedargs) = (S_arguments, n_arguments, n_buffer?)
   -- if pnamedargs.NAMED =/= eps /\ pnamedargs.SLOTS =/= eps
   -- if S_named = $allocate_array(S, $magic_unpack_named($array_empty(), pnamedargs.NAMED))
   -- if S_named.RESULT = KNOWN (PARRAY n_named)
-  -- if n_named? = (n_named)
+  -- if n_buffer? = (n_named)
   -- if S_arguments = $allocate_array(S_named, $magic_unpack_named($magic_unpack_slots($array_empty(), pnamedargs.SLOTS, 0), pnamedargs.NAMED))
   -- if S_arguments.RESULT = KNOWN (PARRAY n_arguments)
 rule PhpStep/magic-unpack-pack: S ~> S_arguments[.TODO = [(CALL_ARGS pcalltarget_final eps 2 ([KNOWN (PSTRING ($magic_unpack_name(punpackcall.FUNCTION))), KNOWN (PARRAY n_arguments)]) punpackcall.CALLSITE punpackcall.LINE), MAGIC_UNPACK_RESULT pcalltarget_final] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
