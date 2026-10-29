@@ -243,9 +243,7 @@ def $call_aggregate_context(S, pcallcontext) = true
   -- if pcallcontext.CALLSITE = (porigin)
   -- if $call_aggregate_entered(S, S.CURRENT, S.FRAMES, $context_target(pcallcontext), porigin)
 def $call_aggregate_context(S, pcallcontext) = false -- otherwise
-def $call_arity_valid(S, pcallcontext) = true -- if $call_aggregate_context(S, pcallcontext)
-def $call_extent_valid(S, pcallcontext) = true -- if $call_aggregate_context(S, pcallcontext)
-def $named_context_valid(S, pcallcontext) = true -- if $call_aggregate_context(S, pcallcontext)
+def $useriter_context_kind(S, pcallcontext) = true -- if $call_aggregate_context(S, pcallcontext)
 def $useriter_frame(S, pcallcontext, pframe) = true -- if $call_aggregate_frame(S, pcallcontext, pframe)
 def $useriter_marker(pframe) = true -- if pframe.TODO = (UNPACK_AGGREGATE pcallaggregate "getIterator") :: ptask_tail*
 def $reference_callback_used(S, pcallcontext) = true
