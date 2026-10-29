@@ -74,6 +74,10 @@ def $magic_unpack_raw_task(UNPACK_NEXT punpackcall poperand n b, pcalltarget) = 
 def $magic_unpack_raw_task(ITERATOR_UNPACK piteratorunpack text, pcalltarget) = (piteratorunpack.CALL.FUNCTION = pcalltarget)
 def $magic_unpack_raw_task(GENERATOR_UNPACK pgeneratorunpack text, pcalltarget) = (pgeneratorunpack.CALL.FUNCTION = pcalltarget)
 def $magic_unpack_raw_task(ptask, pcalltarget) = false -- otherwise
+;; The producer uses the argument origin; the following METHOD_RESULT belongs
+;; to the selected outer magic call, as with the Iterator continuation.
+def $call_after_origin(S, GENERATOR_UNPACK pgeneratorunpack text) = S[.ORIGIN = pgeneratorunpack.CALL.CALLSITE]
+  -- if $magic_unpack_collecting(pgeneratorunpack.CALL.FUNCTION)
 dec $magic_unpack_suffix(ptask*, pcalltarget) : bool
 def $magic_unpack_suffix(eps, pcalltarget) = false
 def $magic_unpack_suffix(ptask :: ptask_tail*, pcalltarget) = (ptask_tail* = METHOD_RESULT :: $magic_unpack_tail(pcalltarget))
