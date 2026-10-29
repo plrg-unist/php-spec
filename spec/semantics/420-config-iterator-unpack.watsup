@@ -419,7 +419,7 @@ def $config_ini_null_finish(S, pconfigcall) = $config_ini_finish(S, pconfigcall,
 def $config_ini_null_finish(S, pconfigcall) = $config_ini_finish(S, pconfigcall, eps, POBJECT n)
   -- if $config_iterator_copied_call(S, pconfigcall)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN (POBJECT n))]
-;; Completed scalar copies retain source/callee authority after DATA and the
+;; Scalar-only completed copies retain source/callee authority after DATA and the
 ;; live cursor retire. This receipt also authenticates the diagnostic resume;
 ;; it neither re-reads the Iterator nor performs API conversion.
 def $config_iterator_scalar_call(S, pconfigcall) = true
