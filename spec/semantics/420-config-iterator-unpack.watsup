@@ -10,6 +10,7 @@ dec $config_iterator_quiet_input(pstate, pconfigiterator) : bool
 dec $config_iterator_producer_valid(pstate, pconfigiterator) : bool
 dec $config_iterator_quiet_aggregate_data(pstate, pconfigiterator) : bool
 dec $config_iterator_finalizer(pstate, nat) : bool
+dec $config_iterator_owned_child(pstate, nat) : bool
 dec $config_iterator_finalizable_aggregate_data(pstate, pconfigiterator) : bool
 dec $config_iterator_aggregate_data(pstate, pconfigiterator) : bool
 dec $config_iterator_history(pstate, pconfigiterator) : bool
@@ -149,7 +150,38 @@ def $config_iterator_finalizer(S, n) = true
   -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = eps /\ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
   -- if ~$function_generator(S, pmethoddesc.FUNCTION)
   -- if $node_children(S, HOBJECT n) = eps
+def $config_iterator_finalizer(S, n) = true
+  -- if $destructor_method(S, n) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = eps /\ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
+  -- if $config_iterator_owned_child(S, n)
 def $config_iterator_finalizer(S, n) = false -- otherwise
+;; The single declared child stays owned by this Iterator until its final DATA
+;; release. The child's own destructor runs after the parent's free_obj begins.
+def $config_iterator_owned_child(S, n) = true
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin_parent
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_parent.NAME)) = (porigin_parent)
+  -- if $property_desc_at($property_layout(S, porigin_parent, |S.CLASSES|), $ptascii("child")) = (ppropertydesc)
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc.STATIC
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_parent*)
+  -- if $property_slot_at(ppropertyslot_parent*, $ptascii("child")) = (ppropertyslot_child)
+  -- if ppropertyslot_child.DECL = (ppropertydesc.ORIGIN)
+  -- if ppropertyslot_child.STATE = PROP_VALUE (DIRECT (POBJECT n_child))
+  -- if $object_table_at(S.OBJECTTABLES, n) = eps
+  -- if $node_children(S, HOBJECT n) = [HOBJECT n_child]
+  -- if n_child =/= n /\ (HOBJECT n_child) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_child] = INSTANCE porigin_child
+  -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_child.NAME)) = (porigin_child)
+  -- if $objectprops_at(S.OBJECTPROPS, n_child) = (eps)
+  -- if $object_table_at(S.OBJECTTABLES, n_child) = eps
+  -- if $node_children(S, HOBJECT n_child) = eps
+  -- if $config_iterator_finalizer(S, n_child)
+  -- if $heap_owners($heap_graph(S), HOBJECT n_child) = 1
+def $config_iterator_owned_child(S, n) = false -- otherwise
 def $config_iterator_finalizable_aggregate_data(S, pconfigiterator) = true
   -- if pconfigiterator.PRODUCER = (n_aggregate)
   -- if ~$config_iterator_owning_input(pconfigiterator)

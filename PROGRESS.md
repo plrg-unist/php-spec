@@ -22,6 +22,20 @@ runner stops retain zero agreement credit. Typed Base properties, forward or
 autoloaded parents, dynamic units, interfaces and wider inheritance remain partial.
 [Parented anonymous class review](coverage/semantics/anonymous-parent-review.json).
 
+A fresh Aggregate-returned CONFIG Iterator with a public destructor may now
+own one declared direct child with a public destructor and no child storage.
+The parent destructor sees the child live; ordinary storage release then runs
+the child destructor before API entry or catch. Three frozen originals agree
+exactly with pinned PHP across normal, invalid-key and saved-Exception paths.
+An independent normal source also agrees and observes parent weak death before
+the child destructor, while the child's own weak reference remains live.
+Strict compilation passes on 424 modules, and 233+216+229 source-reached
+premises check ownership, order, weak death and pending identity. Joined strict
+compilation over the actual tail also passes. Earlier
+fixture compiler, timeout and stopped attempts retain zero credit.
+[Returned Iterator child review](coverage/semantics/config-aggregate-iterator-child-review.json).
+Wider child graphs, child-only finalization and destructor throws/reentry remain partial.
+
 Primed public method-created by-reference `Generator::throw` now carries its
 cached reference cell, authenticated receiver and saved Throwable through a
 Fiber catch or pending `finally`. An external name rebind leaves the old cell
@@ -453,12 +467,29 @@ method operand remains explicit Unsupported; other callable targets and wider
 argument sources remain partial.
 [Method Iterator review](coverage/semantics/method-iterator-unpack-review.json).
 
-Accepted eval and included class/interface declarations now autoload multiple
-direct interfaces in order before target publication. A later miss preserves
-earlier eval functions and reports the dynamic declaration origin. Five new
-author sources and three independent sources agree with pinned PHP; two
-source-reached fronts pass 262 checks, with 320 retained one-interface checks.
-[Ordered-interface review](coverage/semantics/multi-interface-autoload-review.json).
+Accepted eval/include class and interface declarations fetch ordered direct
+interfaces before publication. Supported mixed class plans resolve the parent,
+then one direct trait or two distinct traits before their interfaces; the
+tested two-trait eval plan also composes one `insteadof`/`as` adaptation.
+Wrong-kind traits stop later lookup, and later failures retain earlier eval
+functions and the dynamic Error origin. The [interface](coverage/semantics/multi-interface-autoload-review.json),
+[mixed-dependency](coverage/semantics/mixed-dependency-autoload-review.json) and
+[two-trait](coverage/semantics/ordered-two-trait-autoload-review.json) reviews retain
+their original bounded source, reached and preservation evidence.
+
+Fixed-name ordinary `new` now recognizes an unlinked source class through the
+authenticated saved continuation of its entered dependency loader. It raises
+the missing-class Error without a redundant loader call; after failed linking
+unwinds, a later `new` autoloads normally. Two repaired author originals and
+one independent interface-loader original agree exactly with pinned PHP; one
+unchanged same-name recursion control remains exact. All three repaired-source
+baselines completed normally with wrong output. Strict compilation of 424
+modules and two reached fronts with 67+73 premises pass. Separately, 26 recursion
+assertions and 19 linked class-constant/new predicates pass as preservation.
+Joined strict compilation over the actual tail also passes. Earlier predictions,
+candidate mismatches and fixture elaboration failures keep
+zero credit. Dynamic-name `new`, other declaration kinds and wider reentry
+remain partial. [Reentrant lookup review](coverage/semantics/reentrant-unlinked-new-review.json).
 
 Ordinary dynamic array callables selected as public user object or class-string
 static methods now accept initialized Iterator CV unpack. Selection survives
@@ -469,24 +500,6 @@ and seven source-reached stages/126 assertions pass on the private tested cut;
 neighboring array and direct-method controls pass. Earlier cleanup failures
 remain zero credit. The [CALL119 review](coverage/semantics/array-callable-iterator-unpack-review.json)
 records the scope and raw evidence. Wider callable and operand forms remain open.
-
-Mixed dynamic class dependencies now fetch a parent, one direct trait, then
-ordered interfaces before publication. A wrong-kind trait prevents later
-interface lookup; later link failure preserves an early eval function and
-child-file Error origin. Seven distinct sources agree with pinned PHP, and two
-source-reached fronts pass 293 checks. Six older V55/V56/Source113 fronts pass
-separately as preservation. Wider trait plans and reentrant links remain
-partial. [Mixed-dependency review](coverage/semantics/mixed-dependency-autoload-review.json).
-
-Accepted eval classes with a resolved parent and two distinct direct traits
-now autoload the traits in order before an interface. Missing/wrong-kind
-second traits stop later loaders; a later interface loader wins before method
-conflict binding, and the tested `insteadof`/`as` plan composes successfully.
-Four new authored and one independent source agree; an older wrong-kind-first
-control stays exact. Three reached fronts pass 428 checks, with the adapted
-front limited to source-plan structure, and two Source114 fronts pass as
-preservation. The first parser gate and a two-trait trait-declaration control
-earn zero agreement. [Two-trait review](coverage/semantics/ordered-two-trait-autoload-review.json).
 
 Ordinary dynamic real, arrow and named user-function first-class Closures now
 accept initialized Iterator CV unpack. The selected Closure survives callback
@@ -515,10 +528,16 @@ selection is not reconstructed. Wider callee/operand forms remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
+| A62 | Owning-field Iterator lifetime; peer checks pass for throwing-key and pending invalid-key cleanup. |
+| CLASS143 | Parented anonymous-class naming fix; affected validation. |
+| COMP145 | Builtin Throwable previous chains; private implementation. |
+| OP106 | Object RHS integer-conversion Warning; validation. |
+| CALL122 | Non-CV Iterator unpack operands; preparation. |
+| I69 | Fresh method by-reference Generator THROW; unchanged-model baseline work. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106, CALL113, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117, CALL113, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation

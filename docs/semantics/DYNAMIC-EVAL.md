@@ -132,3 +132,13 @@ wrong-kind trait prevents later dependency lookup. One tested `insteadof` and
 records five new exact sources, two full reached continuations and one
 structural adaptation front. Two-trait trait declarations, other adaptation
 plans, longer mixed lists and reentrant links remain partial.
+
+Fixed-name ordinary `new` now recognizes an unlinked source class while an
+entered dependency loader is linking it. An authenticated saved `AUTO_RESULT`
+identifies that class in its caller's scope; construction raises the missing-class
+`Error` without a redundant loader call. Dependency fetching keeps its existing
+lookup rules. Once a failed link unwinds, a later `new` can autoload the name
+again. The [reentrant lookup ledger](../../coverage/semantics/reentrant-unlinked-new-review.json)
+records two repaired author sources, one unchanged recursion control, an
+independent interface-loader source and 140 reached premises. Dynamic-name `new`,
+other declaration kinds and wider reentrant histories remain partial.

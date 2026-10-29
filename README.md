@@ -625,6 +625,9 @@ A [fresh returned Iterator with a destructor](coverage/semantics/config-aggregat
 now releases its sole CONFIG DATA after its Aggregate producer has died. Its
 public no-argument `__destruct` runs before INI_SET or error recovery, with
 three exact PHP source agreements and separate reached cleanup checks.
+It may also own [one declared child](coverage/semantics/config-aggregate-iterator-child-review.json):
+the parent destructor sees the child live, then the child's destructor runs
+before API entry or catch. Wider child graphs remain partial.
 
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
@@ -5965,6 +5968,15 @@ Thirty-six private source agreements and one current global-constant loader
 interaction retain separate cuts. The 263 original finite premises pass with
 seven typing bindings and eight repeated compaction setup premises; the split
 compaction groups use the existing strict SL runner at the unchanged120s cap.
+
+Fixed-name ordinary `new` of a class being linked now raises the missing-class
+Error without calling its loader again during an entered dependency callback.
+After failed linking unwinds, later construction can autoload it normally.
+The [reentrant lookup review](coverage/semantics/reentrant-unlinked-new-review.json)
+records two repaired author sources, one unchanged recursion control, an
+independent interface-loader source and 140 reached checks; dynamic-name `new`
+and wider reentrant histories remain partial.
+
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
 now loads a sole missing user interface before a parentless class or interface is
 linked and published. Two exact originals and 324 SL premises distinguish cached

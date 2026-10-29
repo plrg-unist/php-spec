@@ -1600,3 +1600,19 @@ checks cover 183+169+178 premises, including retired operation-source validity
 after the destructor. The unchanged model rejected all three at Aggregate
 return. Destructor throws/reentrancy, child storage, wider values and the
 structurally forgeable same-class producer receipt remain open.
+
+The [returned Iterator child increment](../../coverage/semantics/config-aggregate-iterator-child-review.json)
+admits one public declared `child` property holding a direct live object, with
+that property as the child's sole owner. Both objects have public no-argument
+by-value nongenerator destructors; the child has no properties or outgoing
+heap edges, and neither object has a materialized property table. The Iterator
+destructor still sees its child live. Ordinary object storage release then
+runs the child destructor before INI_SET entry or catch, changing the stamp
+from 1 to 2. Normal, invalid second bool key and saved second-key Exception
+agree with PHP in three frozen originals; 233+216+229 reached premises check
+the child edge, extra-owner/edge refusals, destructor order, weak death and
+pending Exception identity. The existing object-release machinery is unchanged.
+An independent normal source also agrees, including parent weak death before
+the child destructor and the child's own live weak reference during that call.
+An Iterator with no destructor and only a finalizable child remains outside
+this increment, as do wider child graphs and destructor throws or reentry.
