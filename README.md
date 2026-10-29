@@ -6191,9 +6191,12 @@ its original cuts; wider reentrant histories and enum dependencies remain partia
 Unit and backed enums now link with their implicit interfaces and cached singleton
 cases. Direct `cases()`, `from()`, `tryFrom()`, case slots and constant queries have
 source and state checks. Registered-loader first-use static calls and class-constant
-fetches retain selected class/member order through loader replay. Case attributes,
-generated callable targets, the default loader and wider acquisition remain
-partial; see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
+fetches retain selected class/member order through loader replay. Captured
+`cases(...)` retains the selected enum and singleton cache after its closure
+owner is retired. Captured `from(...)`/`tryFrom(...)` remain Unsupported; other
+generated callable routes, case attributes, the default loader and wider
+acquisition remain partial;
+see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
 now loads a sole missing user interface before a parentless class or interface is
