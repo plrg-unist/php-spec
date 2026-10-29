@@ -90,9 +90,9 @@ def checks(program, path, name):
             '~$throwable_builtin_previous_pair(S[.COMPLETION = BUDGET],n_a,n_b,eps)',
             '~$throwable_builtin_previous_pair($objectprops_mark(S,n_p),n_a,n_b,eps)',
             '~$throwable_builtin_previous_chain_valid($throwable_set_previous_id(S,n_p,(n_a)),n_a,eps)',
-            '~$throwable_builtin_previous_pair(S,n_a,n_b,[' + ','.join(['HOBJECT n_a'] * 16) + '])',
-            '$throwable_builtin_previous_chain_valid(S,n_a,[' + ','.join(str(n) for n in range(100000, 100014)) + '])',
-            '~$throwable_builtin_previous_chain_valid(S,n_a,[' + ','.join(str(n) for n in range(100000, 100015)) + '])',
+            '~$throwable_builtin_previous_chain_valid(S,n_a,[n_a])',
+            '~$throwable_builtin_previous_chain_valid(S,n_a,[n_p])',
+            '~$throwable_builtin_previous_chain_valid(S,n_b,[n_q])',
         ]
         conditions += raw('S', 1)
         conditions += [

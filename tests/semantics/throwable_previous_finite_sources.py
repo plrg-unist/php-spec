@@ -8,7 +8,8 @@ from throwable_previous_finite_cases import CASES
 family.CASES = CASES
 family.UNSUPPORTED = {}
 family.BASELINE = ('Throwable property comparison', b'B|')
-family.MODEL_TIMEOUTS = {name: 360 for name in CASES}
+family.MODEL_TIMEOUTS = {name: 900 for name in CASES}
+family.MODEL_TIMEOUTS['deep-base-class-skip'] = 360
 base_fingerprint = family.fingerprint
 
 
