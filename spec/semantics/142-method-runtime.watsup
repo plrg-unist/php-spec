@@ -817,6 +817,14 @@ def $scoped_dynamic_class(S, z) = $throw_scalar(S_read, "Error", $ptascii("Class
   -- if $ptlc($typed_callable_name(n*)) =/= $ptascii("closure")
   -- if $ptlc($typed_callable_name(n*)) =/= $ptascii("weakreference")
   -- if $ptlc($typed_callable_name(n*)) =/= $ptascii("fiber")
+  -- if ~$autoload_new_pending(S_read, $ppcall_literal_name(n*))
+def $scoped_dynamic_class(S, z) = S_read[.COMPLETION = UNSUPPORTED "scoped class autoload"]
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n*)
+  -- if $class_named(S_read.CLASSNAMES, $ptlc(n*)) = eps
+  -- if $autoload_new_pending(S_read, $ppcall_literal_name(n*))
 def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING pclassdesc.NAME)]
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
@@ -980,6 +988,10 @@ def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpTy
   -- if $ptlc(n_class*) =/= $ptascii("closure") \/ $ptlc(ptbytes_method) =/= $ptascii("bind")
   -- if $ptlc(n_class*) =/= $ptascii("closure") \/ $ptlc(ptbytes_method) =/= $ptascii("fromcallable")
   -- if $ptlc(n_class*) =/= $ptascii("closure") \/ $ptlc(ptbytes_method) =/= $ptascii("getcurrent")
+  -- if ~$autoload_new_pending(S, $ppcall_literal_name(n_class*))
+def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "scoped class autoload"]
+  -- if $class_named(S.CLASSNAMES, $ptlc(n_class*)) = eps
+  -- if $autoload_new_pending(S, $ppcall_literal_name(n_class*))
 def $scoped_select(S, phpType19, poperand_selector, ptbytes_method, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "scoped method selection"] -- otherwise
 dec $scoped_name_prepare(pstate, phpType19, poperand, phpType20, phpType7*, int) : pstate
 def $scoped_name_prepare(S, phpType19, poperand_selector, NIdentifier (BYTES text) metadata_name, phpType7*, z) = $scoped_select(S, phpType19, poperand_selector, $base64(text), phpType7*, z)
