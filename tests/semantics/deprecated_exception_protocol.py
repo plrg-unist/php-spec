@@ -224,7 +224,10 @@ def conditions(name, program, source, expected_stdout):
                '$call_descriptors_valid(S_done)', '$heap_valid($heap_graph(S_done))',
                '$eh_test_output(S_done.EVENTS) = [' + ','.join(map(str, expected_stdout)) + ']']
     if name == CASES[3]:
-        checks += ['S_done.COMPLETION = UNCAUGHT n_saved']
+        checks += ['S_done.COMPLETION = REQUESTFATAL ptbytes_class ptbytes_message 12',
+                   'ptbytes_class = $ptascii("Exception")',
+                   'ptbytes_message = $ptascii("preentry")',
+                   'S_done.EXITSTATUS = 255']
     else:
         checks += ['S_done.COMPLETION = NORMAL']
     return checks
