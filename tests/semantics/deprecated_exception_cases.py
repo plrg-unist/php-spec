@@ -81,6 +81,23 @@ set_error_handler('notice');
 set_exception_handler('plain_terminal');
 raise_original();
 '''),
+    'exception-early-warning-throw-fatal': php(r'''
+#[\Deprecated('early', '12')]
+function never_entered(Throwable $error) { $GLOBALS['body']++; echo 'BAD-BODY;'; }
+function notice($level, $message, $file, $line) {
+    echo 'D:', $level === 16384, ':',
+        $message === 'Function never_entered() is deprecated since 12, early', ':',
+        get_exception_handler() === null, ';';
+    throw $GLOBALS['saved'];
+}
+function finish() { echo 'S:', $GLOBALS['body'] === 0, ';'; }
+$body = 0;
+$saved = new Exception('preentry');
+register_shutdown_function('finish');
+set_error_handler('notice');
+set_exception_handler('never_entered');
+throw new Exception('original');
+'''),
 }
 
 
@@ -89,6 +106,7 @@ EXPECTED_STDOUT = {
     'exception-method-default-deprecation': b'B:1:1:1;',
     'exception-marked-body-throw-fatal': b'D:1;B:1:1;',
     'exception-unmarked-fresh-reference-control': b'W:1:1:1;B:1:1;F:1;E:1:1:1:1;',
+    'exception-early-warning-throw-fatal': b'D:1:1:1;S:1;',
 }
 
 EXIT_CODES = {
@@ -96,6 +114,7 @@ EXIT_CODES = {
     'exception-method-default-deprecation': 0,
     'exception-marked-body-throw-fatal': 255,
     'exception-unmarked-fresh-reference-control': 0,
+    'exception-early-warning-throw-fatal': 255,
 }
 
 
@@ -107,4 +126,8 @@ def expected_stderr(name, source):
         return (b'Fatal error: Uncaught Exception: body in ' + filename + b':3\n'
                 b'Stack trace:\n#0 [internal function]: throws_after_entry(Object(Exception))\n'
                 b'#1 {main}\n  thrown in ' + filename + b' on line 3\n')
+    if name == 'exception-early-warning-throw-fatal':
+        filename = bytes(source)
+        return (b'Fatal error: Uncaught Exception: preentry in ' + filename + b':12\n'
+                b'Stack trace:\n#0 {main}\n  thrown in ' + filename + b' on line 12\n')
     return b''
