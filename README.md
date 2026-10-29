@@ -6007,14 +6007,16 @@ interaction retain separate cuts. The 263 original finite premises pass with
 seven typing bindings and eight repeated compaction setup premises; the split
 compaction groups use the existing strict SL runner at the unchanged120s cap.
 
-Ordinary fixed-name and dynamic-string `new` of a class being linked now raise
-the missing-class Error without a redundant loader call during an entered
-dependency callback. Selected string bytes survive alias rebinding; missing
-lookup skips arguments, and lookup resumes normally after failed linking unwinds.
-The [dynamic-name review](coverage/semantics/reentrant-dynamic-new-review.json)
-records six new exact originals, one unchanged control and separately identified
-reached checks. Earlier [fixed-name evidence](coverage/semantics/reentrant-unlinked-new-review.json)
-keeps its original cuts; wider reentrant histories remain partial.
+Ordinary fixed-name and dynamic-string construction now recognizes unlinked
+class, interface and supported trait declarations during entered dependency
+callbacks. Missing-class Errors skip arguments and redundant loaders; published
+interfaces and traits retain their canonical non-instantiability Errors. Later
+lookup can autoload again after failed linking unwinds. The
+[construction lookup review](coverage/semantics/reentrant-nominal-new-review.json)
+records four new exact originals and source-reached publication/retry checks.
+Earlier [fixed-name](coverage/semantics/reentrant-unlinked-new-review.json) and
+[dynamic-name](coverage/semantics/reentrant-dynamic-new-review.json) evidence keeps
+its original cuts; wider reentrant histories and enum dependencies remain partial.
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
 now loads a sole missing user interface before a parentless class or interface is

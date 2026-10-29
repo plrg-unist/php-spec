@@ -150,4 +150,19 @@ String identity is immutable metadata, with no heap owners. The
 [dynamic-name ledger](../../coverage/semantics/reentrant-dynamic-new-review.json)
 records the source, fetch-origin, carrier, alias, budget and malformed-context
 checks; earlier [fixed-name evidence](../../coverage/semantics/reentrant-unlinked-new-review.json)
-keeps its own identity. Other declaration kinds and wider reentry remain partial.
+keeps its own identity. Wider reentry remains partial.
+
+The same constructor guard now recognizes matched interface and trait source
+kinds through the existing dependency-source predicates. An interface extending
+an autoloaded interface, or a trait using one direct autoloaded trait without
+adaptations, stays uninstantiable while its dependency loads: ordinary fixed
+and dynamic `new` raise the raw missing-class Error before arguments and
+without reloading that unpublished name. After publication, the existing
+canonical `Cannot instantiate interface` or `Cannot instantiate trait` Error
+wins. A missing dependency unwinds the entered marker so later construction
+can try autoload again. A saved by-reference helper frame retains the real
+link marker below it; unrelated names still load normally. The
+[construction lookup ledger](../../coverage/semantics/reentrant-nominal-new-review.json)
+records the four exact originals and separate reached cuts. The guard reuses
+existing class/interface and class/trait source maps; enum dependency linking
+and wider trait plans remain outside their current domain.

@@ -38,6 +38,13 @@ separate corrected/temporary-carrier checks and tested inputs. The
 [dynamic-name review](../coverage/semantics/reentrant-dynamic-new-review.json)
 records the exact source and reached cuts without renewing earlier evidence.
 
+Source119's interface/trait construction lookup evidence is retained under
+`../php-spec-evidence-archive/source119-construction-lookup/`. Its manifest
+preserves four frozen native/unchanged/changed originals, authored reached
+rows, the failed budget seeker and its corrected independent cut. The
+[construction lookup review](../coverage/semantics/reentrant-nominal-new-review.json)
+records hashes, tested inputs and recovery commands.
+
 The guarded getter-recursion milestone retains source/native observations,
 focused checks, all fixture failures and diagnostics in
 `../php-spec-evidence-archive/magic-get-recursion-119/manifest.json`.

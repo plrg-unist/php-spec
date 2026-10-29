@@ -565,25 +565,24 @@ functions and the dynamic Error origin. The [interface](coverage/semantics/multi
 [two-trait](coverage/semantics/ordered-two-trait-autoload-review.json) reviews retain
 their original bounded source, reached and preservation evidence.
 
-Ordinary fixed-name and dynamic-string `new` recognize an unlinked source class
-through its authenticated entered dependency-loader continuation. Construction
-raises the missing-class Error without a redundant loader call; after failed
-linking unwinds, a later lookup can autoload the name normally. Dynamic
-selectors retain their selected raw bytes and normalized class across callbacks,
-including alias rebinding, named producers and runtime concat carriers. Missing
-lookup skips arguments and preserves the operand's fetch line and main-file origin.
-Four new authored and two independently frozen originals agree exactly with
-pinned PHP; one unchanged same-name dynamic recursion control remains exact.
-The six repaired baselines were interpreter failures. Strict compilation of
-424 modules and authored reached groups of 67+67+100 premises pass; corrected
-and temporary-carrier independent groups add 117+117 premises at separate cuts.
-Joined strict compilation over the actual tail also passes.
-The original acquisition-fixture Warning and failed plain-string premise keep
-zero credit. String identity is immutable metadata with empty heap roots.
-[Dynamic-name review](coverage/semantics/reentrant-dynamic-new-review.json).
-Earlier [fixed-name evidence](coverage/semantics/reentrant-unlinked-new-review.json)
-retains its own cuts; other declaration kinds and wider reentrant histories
-remain partial.
+Construction lookup for ordinary fixed-name and dynamic-string `new` now
+recognizes unlinked class, interface and supported trait declarations during
+entered dependency callbacks. Prepublication missing-class Errors skip arguments
+and redundant loaders. Once an interface or trait publishes, construction raises
+its canonical non-instantiability Error; failed linking releases the guard so a
+later lookup can autoload again. The shared source-kind check reuses existing
+class/interface and class/trait dependency maps without admitting enum linking.
+Three new authored originals and one independent by-reference-helper original
+agree exactly with pinned PHP. All four unchanged baselines completed normally
+with redundant loader output. Strict compilation of 424 modules and authored
+reached groups of 99+116+99 premises pass; the corrected independent group has
+111 premises at a separate cut. Its initial BUDGET-seeker failure keeps zero
+credit. Dynamic raw spelling, selected values, unrelated lookup, authentic saved
+markers, publication and unwind retry retain their checked boundaries.
+[Construction lookup review](coverage/semantics/reentrant-nominal-new-review.json).
+Earlier [fixed-name](coverage/semantics/reentrant-unlinked-new-review.json) and
+[dynamic-name](coverage/semantics/reentrant-dynamic-new-review.json) evidence keeps
+its original cuts. Wider dependency plans, enums and reentrant histories remain partial.
 
 Ordinary dynamic array callables selected as public user object or class-string
 static methods now accept initialized Iterator CV unpack. Selection survives

@@ -1,0 +1,83 @@
+{
+  "status": "independently_reviewed_private",
+  "milestone": "Source119 construction lookup during interface and trait linking",
+  "scope": "Ordinary fixed and dynamic NEW during dependency linking of already-admitted nominal declarations: class, interface-extends, and trait declarations using one direct trait without adaptations. Interface publication and unwind retry, sole-trait publication, and a by-reference helper are validated. Enum dependency linking is not newly admitted.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "private_base": "01164e2c1312e5356141957c4b16fd8f2464845e",
+  "implementation_commit": "24c028e98",
+  "test_commit": "282684ede",
+  "module_count": 424,
+  "module277_sha256": "52991fbd7fc46b224cc884f7f4a89452cf98b9d7c1307887ab03324fa26ea2ec",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "profile": "tests/semantics/profile.json; every raw source report retains exact profile, command, source/cwd identity and executable fingerprints.",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "behavior": [
+    "The constructor-specific unlinked guard reuses the existing class/interface and class/trait source-kind maps. Matching compiled kind and original node extends the guard without adding dependency protocols or changing generic/explicit lookup. The class/NStmtClass condition remains equivalent to the earlier class-only guard.",
+    "Before publication, fixed and dynamic construction raises a missing-class Error before arguments without calling the unpublished target loader. Dynamic request-carrier bytes preserve case and a leading slash; an unrelated name still loads. An authenticated dependency marker below a by-reference helper frame remains effective.",
+    "After interface or trait publication, existing canonical non-instantiability Errors win. After a missing interface dependency unwinds, cached descriptors alone do not block a later fixed/dynamic actual lookup. Authentic retry continuations preserve the selected string and finish context."
+  ],
+  "accepted": {
+    "new_author_source_agreements": 3,
+    "new_independent_source_agreements": 1,
+    "strict_SL_modules": 424,
+    "authored_reached_premises_at_v1": [
+      99,
+      116,
+      99
+    ],
+    "corrected_independent_premises_at_v2": 111
+  },
+  "zero_credit": [
+    "All four unchanged originals completed normally with redundant loader output, not Unsupported or interpreter failure. All four native predictions matched exactly before semantic edits.",
+    "The first independent seeker resolved BUDGET states while demanding NORMAL, skipped its real fronts and stopped at SOURCE_PENDING. The failed 111-premise attempt has zero credit. Its exact bytes are retained; a one-line completion normalization fixed the seeker without changing any assertion. The v1 report separately retains three passing author rows at 99+116+99."
+  ],
+  "engine_route": "Zend/zend_compile.c::zend_bind_class_in_slot installs the real lookup name before zend_do_link_class loads dependencies; failed linking restores/removes that name. Zend/zend_inheritance.c::zend_do_link_class starts unlinked and fetches direct traits/interfaces before setting LINKED. Zend/zend_execute_API.c::zend_lookup_class_ex returns NULL for an unlinked CE before autoload. Existing object-init checks produce canonical interface/trait instantiation Errors only after lookup succeeds.",
+  "independent_review": "The existing reviewer checked source-kind matching, exact selected resume authority, class preservation, enum exclusion, both constructor routes, raw/canonical diagnostics, skipped arguments, helper-frame/cell authenticity, unrelated lookup and unwind retry. Four source outcomes and authored 314/corrected independent 111 remain separate tested cuts.",
+  "remaining": "Enum dependency linking, wider trait plans, delayed variance and broader reentrant histories remain partial. No engine bug, intentional divergence, full-core closure or foundational equivalence is claimed.",
+  "artifacts": {
+    "author_native": {
+      "path": "raw/source119-discovery/native-report.json",
+      "sha256": "935b1a393ad63844dab380e1fc825f3cd01f7351c4eb0cdb46fd4c4f5ad8ed42"
+    },
+    "author_unchanged": {
+      "path": "raw/source119-discovery/baseline-report.json",
+      "sha256": "2065cecbf5b396a2a28c15c452349fa889c59b8205d941fdf08c6024ca2bf153"
+    },
+    "author_changed": {
+      "path": "raw/source119-discovery/changed-report.json",
+      "sha256": "317ac39ffdd069e1dacc282a7ecaef834aca1eec16c1cf6d827f2988c9ef765b"
+    },
+    "independent_native": {
+      "path": "raw/source119-reviewer-interface-helper-v1/native-report.json",
+      "sha256": "c43f26483d56eb38eee67313e514675776790f8de41bbe486ad2ae4faaee0800"
+    },
+    "independent_unchanged": {
+      "path": "raw/source119-reviewer-interface-helper-v1/baseline-report.json",
+      "sha256": "70e04de61d0c182aed764d0fdf078d424dd03b306c359d94ad0ac3e12db8d1e4"
+    },
+    "independent_changed": {
+      "path": "raw/source119-reviewer-interface-helper-v1/changed-report.json",
+      "sha256": "d8dd2514a8cf1c872a9981f69942943993e06ad6ae4b7e09813b6b1b22a7bb15"
+    },
+    "strict_load": {
+      "path": "raw/source119-load-v1/load-report.json",
+      "sha256": "885b6ad58d4152e5ab7a182d7dc6a2e2b0a43f3ce98346883a3c844e50be2117"
+    },
+    "authored_rows_and_failed_seeker": {
+      "path": "raw/source119-state-v1/check-report.json",
+      "sha256": "2947a37457847f75967df0b09c7cbe9ec1c385bda75c8d15eadd694616fa1fbf"
+    },
+    "corrected_independent": {
+      "path": "raw/source119-state-v2/check-report.json",
+      "sha256": "2e73fba7302f043a8caf63d9beb14c0bd100f16f075ff01faefda0c96adce266"
+    }
+  },
+  "recovery": {
+    "root": "../php-spec-evidence-archive/source119-construction-lookup",
+    "manifest_sha256": "f1a925828216ef0072ca4f980286e1c3168e50cab6fe83b56622140bb2877c15",
+    "replay": "Recover raw/source119-discovery and raw/source119-reviewer-interface-helper-v1 locally. Run tests/semantics/reentrant_nominal_new_protocol.py --phase fixtures --sources DIR --reviewer-sources REVIEW_DIR --output NEW_DIR, then --phase check with the same paths. Select --case independent-helper for the corrected independent cut. Reconstruct unchanged 01164 for baseline replay; raw commands keep their historical absolute paths."
+  }
+}
