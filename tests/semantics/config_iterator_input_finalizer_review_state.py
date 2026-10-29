@@ -90,7 +90,7 @@ def conditions(name, program, path, stdout):
         '$weakref_get(S_input, n_payload_watch) = POBJECT n_payload',
         'PhpStep: S_input ~> S_release',
         'S_release.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_release*',
-        'S_release.DESTRUCTION.RELEASES = pdestructionrelease :: prelease_tail*',
+        'S_release.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*',
     ] + public('S_input') + seek('S_release', 972, 'S_input_dtor') + destructor('S_input_dtor', 'input', 'n_iterator') + [
         '$weakref_get(S_input_dtor, n_payload_watch) = POBJECT n_payload',
         owners('S_input_dtor', 'HOBJECT n_payload', 1),
