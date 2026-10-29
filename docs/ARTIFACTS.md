@@ -31,6 +31,13 @@ Its `manifest.json` binds source, strict/reached and preservation reports, raw
 failures and tested inputs; the concise [review](../coverage/semantics/reentrant-unlinked-new-review.json)
 records their hashes and recovery commands.
 
+Source118's dynamic-name counterpart is retained uncompressed under
+`../php-spec-evidence-archive/source118-reentrant-dynamic-new/`. Its manifest
+preserves the original acquisition Warning and independent fixture failure,
+separate corrected/temporary-carrier checks and tested inputs. The
+[dynamic-name review](../coverage/semantics/reentrant-dynamic-new-review.json)
+records the exact source and reached cuts without renewing earlier evidence.
+
 The guarded getter-recursion milestone retains source/native observations,
 focused checks, all fixture failures and diagnostics in
 `../php-spec-evidence-archive/magic-get-recursion-119/manifest.json`.

@@ -536,19 +536,24 @@ functions and the dynamic Error origin. The [interface](coverage/semantics/multi
 [two-trait](coverage/semantics/ordered-two-trait-autoload-review.json) reviews retain
 their original bounded source, reached and preservation evidence.
 
-Fixed-name ordinary `new` now recognizes an unlinked source class through the
-authenticated saved continuation of its entered dependency loader. It raises
-the missing-class Error without a redundant loader call; after failed linking
-unwinds, a later `new` autoloads normally. Two repaired author originals and
-one independent interface-loader original agree exactly with pinned PHP; one
-unchanged same-name recursion control remains exact. All three repaired-source
-baselines completed normally with wrong output. Strict compilation of 424
-modules and two reached fronts with 67+73 premises pass. Separately, 26 recursion
-assertions and 19 linked class-constant/new predicates pass as preservation.
-Joined strict compilation over the actual tail also passes. Earlier predictions,
-candidate mismatches and fixture elaboration failures keep
-zero credit. Dynamic-name `new`, other declaration kinds and wider reentry
-remain partial. [Reentrant lookup review](coverage/semantics/reentrant-unlinked-new-review.json).
+Ordinary fixed-name and dynamic-string `new` recognize an unlinked source class
+through its authenticated entered dependency-loader continuation. Construction
+raises the missing-class Error without a redundant loader call; after failed
+linking unwinds, a later lookup can autoload the name normally. Dynamic
+selectors retain their selected raw bytes and normalized class across callbacks,
+including alias rebinding, named producers and runtime concat carriers. Missing
+lookup skips arguments and preserves the operand's fetch line and main-file origin.
+Four new authored and two independently frozen originals agree exactly with
+pinned PHP; one unchanged same-name dynamic recursion control remains exact.
+The six repaired baselines were interpreter failures. Strict compilation of
+424 modules and authored reached groups of 67+67+100 premises pass; corrected
+and temporary-carrier independent groups add 117+117 premises at separate cuts.
+The original acquisition-fixture Warning and failed plain-string premise keep
+zero credit. String identity is immutable metadata with empty heap roots.
+[Dynamic-name review](coverage/semantics/reentrant-dynamic-new-review.json).
+Earlier [fixed-name evidence](coverage/semantics/reentrant-unlinked-new-review.json)
+retains its own cuts; other declaration kinds and wider reentrant histories
+remain partial.
 
 Ordinary dynamic array callables selected as public user object or class-string
 static methods now accept initialized Iterator CV unpack. Selection survives
