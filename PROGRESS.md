@@ -8,16 +8,21 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-A67 admits CONFIG Iterator reference cells with live instance and static type
-sources. Reads validate the actual source table without coercing or adding an
-owner. The cached cell survives source rebinding; existing writes and retirement
-attach or detach constraints. Post-key string values become DIRECT argument
-snapshots before next, cleanup and API entry. Ordinary-cell behavior, structural
-callback history, graph guards and scalar invalid-key cleanup retain their prior
-contracts. Nonstring API sends and wider transient/special cells remain open.
-[Typed-current review](coverage/semantics/config-iterator-typed-current-review.json),
-[reference-current review](coverage/semantics/config-iterator-reference-current-review.json),
-[CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
+GC03 records current per-Key WeakMap registration order and models weak-value
+claim-on-push, last-first white collection with materialized property-table
+first-claim count roles. Four native-first originals agree exactly, including
+independent same-graph counts 5 and 4. Four private strict SL reached groups
+pass 184 checks at separate cuts; private strict426 also passes. Discarded
+insertion results no longer copy a false value owner. The first count mismatch
+and representative old refusal retain zero agreement credit. Actual-tail
+joined compilation remains pending. Leaf/methodless insertion, fresh
+callback-free PASS0 and quiet canonical tables remain required; callbacks,
+residual histories, workers, hooks and active contexts remain open.
+[GC03 review](coverage/semantics/gc-registration-order-review.json).
+
+A67 CONFIG Iterator typed-current and reference-current behavior remains in the
+[CONFIG contract](docs/semantics/INCLUDE-SOURCES.md) and
+[typed-current review](coverage/semantics/config-iterator-typed-current-review.json).
 
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
@@ -35,7 +40,7 @@ not repeat historical receipt counts or renew their execution credit.
 | Configuration and constants | Supported INI_SET/DEFINE/CONSTANT/DEFINED routes retain their selected callee, option/name and API timing. Iterator and named Generator inputs preserve real DATA/INPUT and Aggregate producer history, copied sends, named-key Error priority and pre-API cleanup. CONFIG typed-current reads reuse property-source validation; structural receipts remain valid after physical cache retirement. Capture uses the existing finite graph policy and SEND still requires strings. Wider producers, nonstring coercion and effectful lifetimes remain partial. [Include/configuration](docs/semantics/INCLUDE-SOURCES.md), [constants](docs/semantics/SOURCE-USER-CONSTANTS.md). |
 | Classes, properties and enums | Linked declarations preserve receiver identity, slot declaration, visibility, typed-reference sources, readonly/hook policy and diagnostic order. Supported magic getters and reference-get chains preserve alias/copy and rebind timing. Enum declarations lower to cached singleton cases with lazy backing checks, readonly slots, ordered interfaces and generated/user methods. Dynamic first-use acquisition, attributes, wider link/type contexts and object lifetimes remain partial. [Classes](docs/semantics/SOURCE-CLASSES.md), [properties](docs/semantics/SOURCE-PROPERTIES.md), [property references](docs/semantics/SOURCE-PROPERTY-REFERENCES.md), [enum evidence](docs/ARTIFACTS.md). |
 | Generators and Fibers | Supported named/method/Closure producers retain actual resumer and callee owners, by-value or reference caches, supplied Throwables and catch/finally continuations across Fiber suspension. Delegation and SEND preserve their selected chains and copied/delivered owners. Wider producers, binding/delegation combinations and teardown remain partial. [Generators](docs/semantics/GENERATORS.md), [Fibers](docs/semantics/FIBERS.md), [delegation](docs/semantics/GENERATOR-DELEGATION.md), [reference yields](docs/semantics/GENERATOR-REFERENCE-YIELDS.md). |
-| Lifetime, weak references and collection | Eager release tracks real ownership, pending results/Throwables, destructor frames and protected storage. WeakMap protocols preserve weak-Key visibility, ordinary Value owners, aliases, selective notification and conditional collection. Physical tracing handles its admitted ordinary/materialized graphs; WeakMap registration/proxy-count and broader callback/collector contexts remain under active work. Stable retired cell metadata owns nothing; pooled literal arrays remain rooted by compiled constants. [Eager cleanup](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md), [reference returns](docs/semantics/SOURCE-REFERENCE-RETURNS.md), [weak references](docs/semantics/WEAK-REFERENCES.md), [cycle collection](docs/semantics/CYCLE-COLLECTION.md). |
+| Lifetime, weak references and collection | Eager release tracks real ownership, pending results/Throwables, destructor frames and protected storage. WeakMap protocols preserve weak-Key visibility, ordinary Value owners, aliases, selective notification and conditional collection. Physical tracing handles admitted ordinary/materialized graphs; quiet same-Key registration and proxy counts follow current ranks and first claims. Callback, residual and active collector contexts remain open. Stable retired cell metadata owns nothing; pooled literal arrays remain rooted by compiled constants. [Eager cleanup](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md), [reference returns](docs/semantics/SOURCE-REFERENCE-RETURNS.md), [weak references](docs/semantics/WEAK-REFERENCES.md), [cycle collection](docs/semantics/CYCLE-COLLECTION.md). |
 | Diagnostics, output and environment | Supported handlers retain registration, callback and emitting-frame identity through warnings, throws and cleanup. Echo/print preserve left-to-right effects and flat-array diagnostics; bounded default output buffers retain native callback/output order. Request, clock, stream and startup profiles have explicit contracts rather than ambient host answers. Wider buffering/shutdown/tick behavior remains open. [Handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md), [exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md), [output buffers](docs/semantics/OUTPUT-BUFFERS.md), [request inputs](docs/semantics/REQUEST-INPUTS.md). |
 
 ## Decisions that constrain further work
@@ -64,7 +69,7 @@ not repeat historical receipt counts or renew their execution credit.
 | COMP151 | Canonical same-kind non-base builtin Throwable captured graphs without a non-NULL Previous prerequisite; base Exception/Error dispatch stays separate. |
 | OB01 | Output-buffering frontier preparation. |
 | CLASS148 | Dependent anonymous sites in successful include/eval units. |
-| GC03 | Four exact WeakMap order/proxy-count sources; state checks pending. |
+| GC03 | Private source/reached acceptance; actual-tail joined compilation pending. |
 | ATTR01 | NoDiscard; compile validation. |
 | I75 | Keyword-forwarded static Generator factories; declaration/called-scope proof. |
 | Enum M4 | Generic static/FCC/class-constant first-use acquisition; private. |
