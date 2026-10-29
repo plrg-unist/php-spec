@@ -560,6 +560,7 @@ dec $gc_binary_left_cache_prefix(pstate, ptask*, porigin?) : bool
 dec $gc_binary_origin_after(ptask, porigin?) : porigin?
 dec $gc_binary_right_cache_head(pstate, ptask, porigin?, poperand) : bool
 dec $gc_binary_right_cache_scan(pstate, ptask*, porigin?, poperand) : bool
+dec $gc_weakref_write_cache(pstate, ptask*, porigin?) : bool
 dec $gc_temporary_source(pstate, porigin?) : bool
 dec $gc_temporary_expression(expression) : bool
 dec $gc_temporary_bounded(pstate, pnode) : bool
@@ -610,6 +611,21 @@ def $gc_binary_right_cache_head(S, BINARY_RIGHT pbin poperand_left z, porigin?, 
 def $gc_binary_right_cache_head(S, ptask, porigin?, poperand) = false -- otherwise
 def $gc_binary_right_cache_scan(S, eps, porigin?, poperand) = false
 def $gc_binary_right_cache_scan(S, ptask :: ptask_tail*, porigin?, poperand) = ($gc_binary_right_cache_head(S, ptask, porigin?, poperand) \/ $gc_binary_right_cache_scan(S, ptask_tail*, $gc_binary_origin_after(ptask, porigin?), poperand))
+;; An unused CV assignment consumes the produced WeakReference return. Its
+;; matching METHOD_RESULT base is a cache, not another value to decrement.
+def $gc_weakref_write_cache(S, (ORIGIN_RETURN porigin?) :: ptask*, porigin_current?) = $gc_weakref_write_cache(S, ptask*, porigin?)
+def $gc_weakref_write_cache(S, (WRITE_NAME n_name* z) :: ptask*, (PORIGIN n_unit pcpath)) = true
+  -- if $destructor_return_discarded(ptask*)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprAssign (NExprVariable (BYTES text) metadata_variable) expression metadata)
+  -- if n_name* = $base64(text) /\ z = $variable_line(BYTES text, metadata_variable)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit (pcpath ++ [PCFIELD 1])) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata_call)
+  -- if $ppscoped_named(phpType19)
+  -- if $weakref_site(S, PORIGIN n_unit (pcpath ++ [PCFIELD 1]), INTRINSIC_WEAKREF_CREATE)
+def $gc_weakref_write_cache(S, ptask*, porigin?) = false -- otherwise
+def $machine_base_roots(S) = eps
+  -- if S.BASE = BASE_VALUE (KNOWN (POBJECT n)) /\ S.RESULT = KNOWN (POBJECT n)
+  -- if $weakref_at(S, n) =/= eps
+  -- if $gc_weakref_write_cache(S, S.TODO, S.ORIGIN)
 def $machine_base_roots(S) = eps
   -- if S.BASE = BASE_VALUE poperand
   -- if $gc_temporary_node(poperand) =/= eps
@@ -656,6 +672,15 @@ def $gc_operation_temporary_extra(S, S_next, BINARY_RIGHT pbin poperand_left z, 
   -- if S_next.RESULT = KNOWN (PBOOL b)
   -- if pgctemporary_extra* = $gc_binary_temp_receipt(poperand_left) ++ $gc_binary_temp_receipt(S.RESULT)
   -- if pgctemporary_extra* =/= eps /\ $gc_binary_temp_slots(pgctemporary_extra*, pnode_slots*)
+;; DO_ICALL frees its copied parameter with zval_ptr_dtor_nogc. The source
+;; call, successful wrapper and exact lost argument slot authenticate this copy.
+def $gc_operation_temporary_extra(S, S_next, CONFIG_INVOKE pconfigcall, [HOBJECT n_target]) = [{OPERAND KNOWN (POBJECT n_target), PENDING true}]
+  -- if pconfigcall.KIND = INTRINSIC_WEAKREF_CREATE
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_target))]
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if S_next.COMPLETION = NORMAL
+  -- if S_next.RESULT = KNOWN (POBJECT n_wrapper)
+  -- if $weakref_at(S_next, n_wrapper) = (WEAKREFERENCE (n_target))
 def $gc_extra_pending_nodes(eps) = eps
 def $gc_extra_pending_nodes({OPERAND KNOWN (POBJECT n), PENDING true} :: pgctemporary_tail*) = (HOBJECT n) :: $gc_extra_pending_nodes(pgctemporary_tail*)
 def $gc_extra_pending_nodes({OPERAND KNOWN (PARRAY n), PENDING true} :: pgctemporary_tail*) = (HARRAY n) :: $gc_extra_pending_nodes(pgctemporary_tail*)
@@ -757,6 +782,24 @@ def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if $gc_temporary_node(pgctemporary.OPERAND) = (pnode)
   -- if $gc_temporary_bounded(S, pnode)
   -- if $gc_temporary_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), pgctemporary)
+def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.NOGC = eps
+  -- if pdestructionoperation.NOGCEXTRA = [pgctemporary]
+  -- if pdestructionoperation.CLEANUP = eps
+  -- if pdestructionoperation.SOURCE = CONFIG_INVOKE pconfigcall
+  -- if pconfigcall.KIND = INTRINSIC_WEAKREF_CREATE /\ pconfigcall.INDEX = 1
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_target))]
+  -- if pdestructionoperation.ORIGIN = (pconfigcall.SITE)
+  -- if $config_selected_valid(S, pconfigcall) /\ $config_sent_shape(S, pconfigcall)
+  -- if pconfigcall.SITE = PORIGIN n_unit pcpath
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((pconfigcall.LINE, false))
+  -- if pdestructionoperation.VALUE = KNOWN (POBJECT n_wrapper)
+  -- if $weakref_at(S, n_wrapper) = (WEAKREFERENCE n_referent?)
+  -- if pgctemporary.OPERAND = KNOWN (POBJECT n_target)
+  -- if n_referent? = (n_target) \/ (~pgctemporary.PENDING /\ n_referent? = eps)
+  -- if $gc_extra_bounded(S, [pgctemporary])
+  -- if $gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), [pgctemporary])
 def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.NOGC = eps
   -- if pdestructionoperation.NOGCEXTRA = pgctemporary_extra :: pgctemporary_tail*
