@@ -126,7 +126,7 @@
       "stdout_base64": "YmVmb3Jl",
       "stderr_template_base64": "RmF0YWwgZXJyb3I6IFR5cGUgb2YgQmFzZTE0NElAYW5vbnltb3VzOjokdmFsdWUgbXVzdCBiZSBpbnQgKGFzIGluIGNsYXNzIEJhc2UxNDRJKSBpbiB7RklMRX0gb24gbGluZSAzClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
       "exit_status": 255,
-      "status": "static_rejection",
+      "status": "php_error",
       "native_group": "/home/user/workspace/php-spec/.tools/class144-author/incompatible-redeclaration.native-first.json",
       "native_raw_sha256": "2ab3480b95a801db5f636b4c700e54dfd61e04a0f286c8e80c2592eb13958dff",
       "provenance": "Authored original frozen before pinned native-first and unchanged300 model outcomes.",
@@ -248,6 +248,19 @@
       "native_raw_sha256": "7ee1447616a106f6b69e183175370ffb6ea5dd0809339add04e354a9bb6b0b48",
       "provenance": "Independent reviewer original frozen before native-first outcomes.",
       "phase": "compile_default_error"
+    },
+    {
+      "id": "anonymous-typed-dynamic-parentless-composition",
+      "source": "<?php\neval('$dynamic144 = new class { public int $value = 2; };');\n$r =& $dynamic144->value; $r = '5'; echo $dynamic144->value === 5 ? 'int|' : 'bad|';\ntry { $r = []; } catch (TypeError $e) { echo $e->getMessage(); }\n",
+      "source_sha256": "d37f0004b672eabc6102c7150a6f3666aff62932e466b738afd6b32f7fab30c9",
+      "stdout_base64": "aW50fENhbm5vdCBhc3NpZ24gYXJyYXkgdG8gcmVmZXJlbmNlIGhlbGQgYnkgcHJvcGVydHkgY2xhc3NAYW5vbnltb3VzOjokdmFsdWUgb2YgdHlwZSBpbnQ=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class144-review/dynamic-parentless-typed.native-first.json",
+      "native_raw_sha256": "3e24cf90ea79b6cbb17eff99f0716d9ca55342945a625304ccd1ad6fa6174491",
+      "provenance": "New native-first composition of shared typed-property admission with an already admitted parentless eval site; no unchanged-model run claimed.",
+      "phase": "normal"
     }
   ]
 }
