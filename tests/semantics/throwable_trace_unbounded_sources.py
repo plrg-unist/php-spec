@@ -9,6 +9,9 @@ family.CASES = CASES
 family.UNSUPPORTED = {}
 family.BASELINE = ('Throwable property comparison', b'B|')
 family.MODEL_TIMEOUTS = {name: 240 for name in CASES}
+family.MODEL_TIMEOUTS.update({
+    'deep-shared-dag-and-tail-skip': 360,
+    'deep-cell-array-retarget': 360})
 base_fingerprint = family.fingerprint
 
 

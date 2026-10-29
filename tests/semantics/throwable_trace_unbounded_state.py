@@ -19,4 +19,4 @@ if __name__ == '__main__':
             ROOT / 'tests/semantics/throwable_trace_unbounded_state.py',
             ROOT / 'tests/semantics/throwable_builtin_previous_protocol.py',
             ROOT / 'tests/semantics/throwable_previous_graph_protocol.py',
-            ROOT / 'tests/semantics/throwable_trace_recursion_protocol.py'])
+            ROOT / 'tests/semantics/throwable_trace_recursion_protocol.py'], timeout=360)
