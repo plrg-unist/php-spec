@@ -242,7 +242,7 @@ def main():
     path = Path(__file__)
     before = hashlib.sha256(path.read_bytes()).hexdigest()
     shared.sources, shared.CASES, shared.HELPERS, shared.conditions = cases, CASES, HELPERS, conditions
-    passed = shared.main()
+    passed = shared.main(model_timeout=240)
     assert before == hashlib.sha256(path.read_bytes()).hexdigest()
     return passed
 

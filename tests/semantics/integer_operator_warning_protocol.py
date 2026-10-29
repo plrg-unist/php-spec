@@ -128,7 +128,7 @@ def conditions(name, program, path, stdout):
     return checks
 
 
-def main():
+def main(model_timeout=120):
     parser = argparse.ArgumentParser()
     parser.add_argument('--case', choices=CASES)
     parser.add_argument('--prepare-only', action='store_true')
@@ -176,7 +176,7 @@ def main():
         before = {str(path): digest(path) for path in watched}
         report['revision'] = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
         for row in rows:
-            result = recorded([str(runner), '--sl', *map(str, modules), str(out / (row['id'] + '.watsup'))], out / (row['id'] + '-model'), 120)
+            result = recorded([str(runner), '--sl', *map(str, modules), str(out / (row['id'] + '.watsup'))], out / (row['id'] + '-model'), model_timeout)
             row['model'] = result
             row['passed'] = result['exit'] == 0 and not result['timeout'] and (out / (row['id'] + '-model.stdout')).read_text().strip() == 'true' and not (out / (row['id'] + '-model.stderr')).read_bytes()
             print(row['id'], row['passed'], flush=True)
