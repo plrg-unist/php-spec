@@ -193,6 +193,7 @@ and reentrant/abrupt deactivation remain partial.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS152 | Ordinary anonymous-constructor binding beyond the two-argument/formal bound; native-first preparation accepted. |
+| COMP157 | Inherited ordinary initialized-public images; independent packet frozen, source preparation. |
 | ATTR05 | Explicit captured-Closure `__invoke()` warning phases; five native-first originals frozen, private preparation. |
 | Enum M3/M4 | Published-enum array dispatch is integrated for reviewed class-string and case-object sources, including named Stringable arguments. String callable routes, wider generated dispatch, backing dependency and the default loader remain partial. |
 | A72 | Reference-cell CONFIG Generator scalar sends; native-first packet frozen, private preparation. |
