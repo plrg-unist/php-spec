@@ -39,8 +39,23 @@ def captured(node, label, value):
     return trace('S', node, label, value)[:4]
 
 
-def error_rows():
+def error_rows(temporary_arrays=False):
     """S_effect is the reached comparer state before the ordinary consumer."""
+    budget_tail = [
+        'S_one.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*',
+        'pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HARRAY n_operand_left),DESTRUCTION_VALUE (HARRAY n_operand_right)]',
+        '$call_task_valid(S_one[.COMPLETION = NORMAL],DESTRUCTOR_RELEASE pdestructionrelease)',
+        'pdestructionoperation.SOURCE = BINARY_RIGHT pbin poperand z',
+        'pdestructionoperation.PENDING = (n_error)',
+        'pdestructionoperation.COMPLETION = THROWING n_error',
+        'pdestructionoperation.VALUE = KNOWN PNULL',
+        'pdestructionoperation.NOGC = eps',
+        r'pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN',
+        'S_one.DESTRUCTION.OPERATIONS = pdestructionoperation :: S_error.DESTRUCTION.OPERATIONS',
+        'S_one.DESTRUCTION.RELEASES = pdestructionrelease :: S_error.DESTRUCTION.RELEASES',
+    ] if temporary_arrays else [
+        'S_one.TODO = (THROW_SEARCH n_error) :: ptask_tail*',
+    ]
     return [
         'S.TODO = (BINARY_RIGHT pbin poperand z) :: ptask_tail*',
         'S.ERRORORIGIN = eps',
@@ -77,7 +92,7 @@ def error_rows():
         '$drive_steps(S,0) = S[.COMPLETION = BUDGET]',
         'S_one = $drive_steps(S,1)',
         'S_one.COMPLETION = BUDGET',
-        'S_one.TODO = (THROW_SEARCH n_error) :: ptask_tail*',
+        *budget_tail,
         r'S_one.OBJECTS = S_error.OBJECTS /\ S_one.ARRAYS = S_error.ARRAYS',
         'S_one.OBJECTTABLES = S_effect.OBJECTTABLES',
         'S_one.EVENTS = S.EVENTS',
@@ -145,12 +160,21 @@ def checks(program, path, name):
             ]
         if name == 'aggregate-error-finally-cleanup':
             rows += [
+                'poperand = KNOWN (PARRAY n_operand_left)',
+                'S.RESULT = KNOWN (PARRAY n_operand_right)',
+                'n_operand_left =/= n_operand_right',
+                '|S.ARRAYS[n_operand_left].ITEMS| = 2',
+                '|S.ARRAYS[n_operand_right].ITEMS| = 2',
+                '$entry_lookup(S.ARRAYS[n_operand_left].ITEMS,KINT 0) = (DIRECT (POBJECT n_a))',
+                '$entry_lookup(S.ARRAYS[n_operand_right].ITEMS,KINT 0) = (DIRECT (POBJECT n_b))',
+                '$entry_lookup(S.ARRAYS[n_operand_left].ITEMS,KINT 1) = (DIRECT (POBJECT n_tail))',
+                '$object_name(S,n_tail) = $ptascii("Tail148")',
                 '$lookup(S.ENV,$ptascii("guard")) = (n_guardcv)',
                 'S.STORE[n_guardcv] = DEFINED (POBJECT n_guard)',
                 '$object_name(S,n_guard) = $ptascii("Guard148")',
                 '$heap_owners($heap_prune($heap_graph(S)),HOBJECT n_guard) = 1',
             ]
-    rows += error_rows()
+    rows += error_rows(name == 'aggregate-error-finally-cleanup')
     if name in ('array-cycle-operators', 'inline-cycle-recovery'):
         rows += ['S_error.ARRAYS[n_error_trace].ITEMS = eps']
     else:
@@ -168,5 +192,9 @@ def checks(program, path, name):
         '$tbp_output(S_done.EVENTS) = $ptascii(' + json.dumps(EXPECTED[name]) + ')',
     ]
     if name == 'aggregate-error-finally-cleanup':
-        rows += ['~((HOBJECT n_guard) <- S_done.ALLOCATIONS)']
+        rows += [
+            '~((HOBJECT n_guard) <- S_done.ALLOCATIONS)',
+            '~((HARRAY n_operand_left) <- S_done.ALLOCATIONS)',
+            '~((HARRAY n_operand_right) <- S_done.ALLOCATIONS)',
+        ]
     return rows
