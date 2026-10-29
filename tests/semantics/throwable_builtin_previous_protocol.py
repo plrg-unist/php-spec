@@ -23,7 +23,7 @@ def $tbp_output(pevent :: pevent_tail*) = $tbp_event(pevent) ++ $tbp_output(peve
 '''
 
 
-def front(program, path):
+def front(program, path, shared=False):
     encoded = json.dumps(base64.b64encode(str(path).encode()).decode())
     return [
         'S_initial = $php_run(' + program + ',0,' + encoded + ')',
@@ -38,7 +38,7 @@ def front(program, path):
         'S.STORE[n_bcv] = DEFINED (POBJECT n_b)',
         '$throwable_field(S,n_a,"previous") = POBJECT n_p',
         '$throwable_field(S,n_b,"previous") = POBJECT n_q',
-        'n_p =/= n_q',
+        'n_p = n_q' if shared else 'n_p =/= n_q',
         '$throwable_object_image_valid(S,n_a) /\ $throwable_object_image_valid(S,n_b)',
         '$throwable_object_image_valid(S,n_p) /\ $throwable_object_image_valid(S,n_q)',
         '$throwable_builtin_previous_chain_valid(S,n_a,eps)',
@@ -51,8 +51,8 @@ def front(program, path):
         '$objectprops_at(S.OBJECTPROPS,n_b) = (ppropertyslot_b*)',
         '$property_order(S,ppropertyslot_a*[0:6],ppropertyslot_b*[0:6],[HOBJECT n_a]) = ORDER 0',
         '$heap_subset([HOBJECT n_a,HOBJECT n_b,HOBJECT n_p,HOBJECT n_q],S.ALLOCATIONS)',
-        '$heap_owners($heap_prune($heap_graph(S)),HOBJECT n_p) = 2',
-        '$heap_owners($heap_prune($heap_graph(S)),HOBJECT n_q) = 2',
+        '$heap_owners($heap_prune($heap_graph(S)),HOBJECT n_p) = ' + ('3' if shared else '2'),
+        '$heap_owners($heap_prune($heap_graph(S)),HOBJECT n_q) = ' + ('3' if shared else '2'),
     ]
 
 
@@ -78,7 +78,7 @@ def raw(state, result):
 
 
 def checks(program, path, name):
-    conditions = front(program, path)
+    conditions = front(program, path, name == 'shared-previous-all-root-kinds')
     if name == 'previous-before-severity':
         conditions += [
             '|ppropertyslot_a*| = 8 /\ |ppropertyslot_b*| = 8',
@@ -157,8 +157,7 @@ def checks(program, path, name):
                 '$heap_subset([HARRAY n_trace_' + child + ',HARRAY n_frame_' + child + ',HARRAY n_args_' + child + ',HARRAY n_payload_' + child + '],S.ALLOCATIONS)',
             ]
         conditions += raw('S', -1)
-    else:
-        assert name == 'mixed-previous-skips-cyclic-trace'
+    elif name == 'mixed-previous-skips-cyclic-trace':
         conditions += [
             'S.OBJECTS[n_p] = THROWABLE pthrowable_p',
             'S.OBJECTS[n_q] = THROWABLE pthrowable_q',
@@ -174,5 +173,28 @@ def checks(program, path, name):
             'S_done = $drive_steps(S_raw,1000)',
             'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps',
             '$tbp_output(S_done.EVENTS) = $ptascii("B|010000:1:1|A|1|")',
+        ]
+    elif name == 'shared-previous-all-root-kinds':
+        conditions += [
+            '$throwable_field(S,n_p,"trace") = PARRAY n_trace_p',
+            '~$trace_array_graph(S,n_trace_p)',
+            '$throwable_builtin_previous_order(S,n_p,n_q,[HOBJECT n_a]) = ORDER 0',
+        ]
+        conditions += raw('S', 0)
+    else:
+        assert name == 'previous-object-trace-control'
+        conditions += [
+            '$throwable_field(S,n_p,"trace") = PARRAY n_trace_p',
+            '~$trace_array_graph(S,n_trace_p)',
+            '$throwable_builtin_previous_order(S,n_p,n_q,[HOBJECT n_a]) = ORDERUNSUPPORTED "Throwable property comparison"',
+            '$value_order_effect(S,POBJECT n_a,POBJECT n_b,eps,z) = (S,ORDERUNSUPPORTED "Throwable property comparison")',
+            'PhpStep: S ~> S_raw',
+            'S_raw.COMPLETION = UNSUPPORTED "Throwable property comparison"',
+            'S_raw.OBJECTS = S.OBJECTS /\ S_raw.OBJECTPROPS = S.OBJECTPROPS',
+            'S_raw.ARRAYS = S.ARRAYS /\ S_raw.OBJECTTABLES = S.OBJECTTABLES',
+            'S_raw.STORE = S.STORE /\ S_raw.ALLOCATIONS = S.ALLOCATIONS',
+            'S_raw.EVENTS = S.EVENTS',
+            '$tbp_output(S_raw.EVENTS) = $ptascii("B|")',
+            '$aggregate_compare_seen(S_raw) = eps',
         ]
     return conditions

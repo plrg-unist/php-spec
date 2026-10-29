@@ -8,7 +8,8 @@ from throwable_builtin_previous_protocol import PREFIX, checks
 from undefined_spaceship_state import ROOT, run
 
 SELECTED = ('previous-before-severity', 'severity-after-equal-previous',
-            'previous-trace-array', 'mixed-previous-skips-cyclic-trace')
+            'previous-trace-array', 'mixed-previous-skips-cyclic-trace',
+            'shared-previous-all-root-kinds', 'previous-object-trace-control')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
