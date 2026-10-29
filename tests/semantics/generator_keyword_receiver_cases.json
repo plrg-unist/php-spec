@@ -1,0 +1,47 @@
+[
+  {
+    "id": "i77-parent-instance-fresh-sibling-close",
+    "purpose": "Inherited ordinary instance factory calls parent::protected nonstatic Generator body. Two fresh same-class receivers remain distinct; the actual paused Generator closes and releases only its own $this while the sibling stays fresh.",
+    "source": "<?php\nclass Base77A {\n    protected function body() {\n        echo 'BODY|', (int) ($this instanceof Leaf77A), '|',\n             (int) (static::class === 'Leaf77A'), '|';\n        try {\n            yield 77;\n        } finally {\n            echo 'FIN|';\n        }\n    }\n    public function __destruct() { echo 'DROP|'; }\n}\nclass Mid77A extends Base77A {\n    public function make() { echo 'MAKE|'; return parent::body(); }\n}\nclass Leaf77A extends Mid77A {}\n$a = new Leaf77A();\n$b = new Leaf77A();\n$wa = WeakReference::create($a);\n$wb = WeakReference::create($b);\n$g = $a->make();\n$other = $b->make();\nunset($a, $b);\necho 'FRESH|', (int) ($wa->get() !== null), '|', (int) ($wb->get() !== null), '|';\necho 'CURRENT|', (int) ($g->current() === 77), '|';\nunset($g);\necho 'AFTER|', (int) ($wa->get() === null), '|', (int) ($wb->get() !== null), '|';\nunset($other, $wa, $wb);\necho 'E';\n",
+    "source_sha256": "b39adbdbb1ce4354d52a15466bab3f68eda352fab1a6924cd5c487a96449f5b6",
+    "native_exit": 0,
+    "native_stdout": "MAKE|MAKE|FRESH|1|1|CURRENT|BODY|1|1|1|FIN|DROP|AFTER|1|1|DROP|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i77-late-static-instance-chain-complete",
+    "purpose": "Ordinary instance root enters finite static/parent/self/parent keyword chain, all with one real receiver. Leaf override and Base body keep called Leaf after factory return; completed Generator releases its receiver while its return remains queryable.",
+    "source": "<?php\nclass Base77B {\n    protected function body($item) {\n        echo 'BODY|', (int) ($this instanceof Leaf77B), '|',\n             (int) (__CLASS__ === 'Base77B'), '|',\n             (int) (static::class === 'Leaf77B'), '|';\n        yield $item;\n        return 77;\n    }\n    public function __destruct() { echo 'DROP|'; }\n}\nclass Mid77B extends Base77B {\n    public function make($item) { echo 'MAKE|'; return static::middle($item); }\n    protected function middle($item) { echo 'MID|'; return self::step($item); }\n    protected function step($item) { echo 'STEP|'; return parent::body($item); }\n}\nclass Leaf77B extends Mid77B {\n    protected function middle($item) { echo 'LEAF|'; return parent::middle($item); }\n}\n$maker = new Leaf77B();\n$weak = WeakReference::create($maker);\n$input = 5;\n$g = $maker->make($input);\nunset($maker);\n$input = 9;\necho 'FRESH|', (int) ($weak->get() !== null), '|';\n$value = $g->current();\necho 'VALUE|', (int) ($value === 5), '|', (int) ($input === 9), '|';\n$g->next();\necho 'DONE|', (int) ($g->getReturn() === 77), '|',\n     (int) ($weak->get() === null), '|';\nunset($g, $weak, $input, $value);\necho 'E';\n",
+    "source_sha256": "990a03f39709b1863aae8582e2b4b9bdf8bd0e15987f3898f48a2e119ff0aa9f",
+    "native_exit": 0,
+    "native_stdout": "MAKE|LEAF|MID|STEP|FRESH|1|BODY|1|1|1|VALUE|1|1|DROP|DONE|1|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i77-receiver-fresh-throw-fiber",
+    "purpose": "Fresh receiver-bearing keyword Generator THROW suspends before first yield in a Fiber, retains the actual receiver through pause, catches the supplied Exception at the first yield and releases This before outside return.",
+    "source": "<?php\nclass Base77C {\n    protected function body() {\n        echo 'BODY|', (int) ($this instanceof Leaf77C), '|';\n        Fiber::suspend('before77');\n        try {\n            yield 1;\n            echo 'BAD|';\n        } catch (Exception $caught) {\n            echo 'CAUGHT|', (int) ($caught->getMessage() === 'given77'), '|';\n        }\n        return 77;\n    }\n    public function __destruct() { echo 'DROP|'; }\n}\nclass Leaf77C extends Base77C {\n    public function make() { echo 'MAKE|'; return self::body(); }\n}\nfunction Run77C() {\n    global $g;\n    echo 'CALL|';\n    $result = $g->throw(new Exception('given77'));\n    echo 'RETURN|', (int) ($result === null), '|',\n         (int) ($g->getReturn() === 77), '|';\n    return 'fiber77';\n}\n$owner = new Leaf77C();\n$weak = WeakReference::create($owner);\n$g = $owner->make();\nunset($owner);\n$f = new Fiber('Run77C');\necho 'START|', (int) ($f->start() === 'before77'), '|';\necho 'PARK|', (int) $f->isSuspended(), '|',\n     (int) ($weak->get() !== null), '|';\necho 'RESUME|', (int) ($f->resume() === null), '|';\necho 'DONE|', (int) ($f->getReturn() === 'fiber77'), '|',\n     (int) ($weak->get() === null), '|';\nunset($g, $f, $weak);\necho 'E';\n",
+    "source_sha256": "65708247534e8723713f8b2b5fea7623e54e1faf2428cb39a97366b9e83b6eb9",
+    "native_exit": 0,
+    "native_stdout": "MAKE|START|CALL|BODY|1|1|PARK|1|1|RESUME|CAUGHT|1|DROP|RETURN|1|1|1|DONE|1|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i77-receiver-factory-static-generator",
+    "purpose": "An ordinary instance factory enters one receiver-bearing self::bridge, then returns a receiver-free static Generator. The maker retires before body entry, proving creator ancestry cannot demand the ultimate callee receiver.",
+    "source": "<?php\nclass Base77D {\n    protected static function body() { echo 'BODY|'; yield 77; return 77; }\n    protected function bridge() { echo 'BRIDGE|'; return self::body(); }\n    public function make() { echo 'MAKE|'; return self::bridge(); }\n    public function __destruct() { echo 'DROP|'; }\n}\nclass Leaf77D extends Base77D {}\n$maker = new Leaf77D();\n$weak = WeakReference::create($maker);\n$g = $maker->make();\nunset($maker);\necho 'RETIRED|', (int) ($weak->get() === null), '|';\n$value = $g->current();\necho 'VALUE|', (int) ($value === 77), '|';\n$g->next();\necho 'DONE|', (int) ($g->getReturn() === 77), '|';\nunset($g, $weak, $value);\necho 'E';\n",
+    "source_sha256": "6997ac735701b2831aeca24e118d1df4f89478b959356207b754869ffcaa6102",
+    "native_exit": 0,
+    "native_stdout": "MAKE|BRIDGE|DROP|RETIRED|1|BODY|VALUE|1|DONE|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i77-explicit-instance-link-keyword-body",
+    "purpose": "An inherited instance make uses explicit Base::bridge and Base::body calls. Both borrow the same real caller This across returned frames; the Generator owns it through body and releases it on completion.",
+    "source": "<?php\nclass Base77E {\n    protected function body() {\n        echo 'BODY|', (int) (static::class === 'Leaf77E'), '|';\n        yield 77;\n        return 77;\n    }\n    protected function bridge() { echo 'BRIDGE|'; return Base77E::body(); }\n    public function make() { echo 'MAKE|'; return Base77E::bridge(); }\n    public function __destruct() { echo 'DROP|'; }\n}\nclass Leaf77E extends Base77E {}\n$maker = new Leaf77E();\n$weak = WeakReference::create($maker);\n$g = $maker->make();\nunset($maker);\necho 'KEPT|', (int) ($weak->get() !== null), '|';\n$value = $g->current();\necho 'VALUE|', (int) ($value === 77), '|';\n$g->next();\necho 'DONE|', (int) ($g->getReturn() === 77), '|',\n     (int) ($weak->get() === null), '|';\nunset($g, $weak, $value);\necho 'E';\n",
+    "source_sha256": "60c92f66f504789f1712fc27869cfad9e702baf4d84dadc61b06d972ff5d982a",
+    "native_exit": 0,
+    "native_stdout": "MAKE|BRIDGE|KEPT|1|BODY|1|VALUE|1|DROP|DONE|1|1|E",
+    "native_stderr": ""
+  }
+]
