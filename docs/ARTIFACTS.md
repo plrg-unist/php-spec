@@ -82,6 +82,15 @@ binding failures separately from exact one-line, multiline, closure-owner and
 selection, owner roots and argument retirement before the backed table. The
 joined `--sl` gate checks all 430 manifest modules and records its clean result.
 
+Source-certified enum conditional-transfer cuts are under
+`../php-spec-evidence-archive/enum-conditional-transfer-117/`. Its `manifest.json`
+(SHA-256 `752b6bfea7f70ae3bfb65e4206a101f491e70252bb2e4d93376a7625fdfee7c8`)
+lists eight raw directories. Original object and scalar Unsupported results
+remain separate from their exact affected checks; cross-enum and negated-case
+sources, selected-case/history negatives and post-bind cache checks retain
+their individual cuts. The joined `--sl` receipt records the composed 430-module
+candidate, true result and fully reaped process group.
+
 The guarded getter-recursion milestone retains source/native observations,
 focused checks, all fixture failures and diagnostics in
 `../php-spec-evidence-archive/magic-get-recursion-119/manifest.json`.

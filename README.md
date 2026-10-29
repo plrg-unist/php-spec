@@ -6234,8 +6234,11 @@ initialization, scalar parsing and cached cases after their closure owners retir
 ordinary and inherited enum constant aliases retain their declaration owners.
 Stringable arguments to captured lookups use source-bound `__toString()` callbacks
 and release temporary arguments before looking up a case, including `tryFrom()` misses and hits.
-Conditional constant transfers remain Unsupported. Other generated callable
-routes, case attributes, the default loader and wider acquisition remain partial;
+Class constants can consume cached enum cases in scalar conditions and select a
+case through a source-certified case or negated-case condition, including a case
+from another enum. Wider object-valued conditional transfers remain Unsupported.
+Other generated callable routes, case attributes, the default loader and wider
+acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
