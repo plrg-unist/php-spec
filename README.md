@@ -3649,6 +3649,11 @@ shapes remain fenced. [Review](coverage/semantics/weak-map-review.json).
 object/array cycle collection, ordered destructor callbacks and real weak
 retirement. Fiber protection scans reuse one graph within an unchanged state,
 preserving lazy empty/nonobject prefixes, eager node order and helper fallbacks.
+Enum cases carry Zend's `GC_NOT_COLLECTABLE` flag and now skip potential-root
+buffering. Their cached singleton ownership and weak identity remain live;
+ordinary objects retain their physical buffer order and collection behavior.
+The [enum collectability review](coverage/semantics/gc-enum-collectability-review.json)
+records the native and reached-state controls.
 Materialized ordinary property tables now participate in callback-free explicit
 collection of finite instance/array/cell cycles. The collector traces declared
 slots through the table while physical owners remain unchanged; zero-declared

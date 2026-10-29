@@ -343,6 +343,17 @@ potential-root order that permits the signed result. Other APIs and wider cache
 lifetimes remain partial.
 See the [ordinary-caller review](../../coverage/semantics/gc-caller-materialized-review.json).
 
+Enum case allocation sets `GC_NOT_COLLECTABLE`, so a case decrement cannot
+enter the possible-root buffer even before its class-constant cache is bound.
+The rule keys on the actual `ENUMCASE` object tag; it does not change graph
+traversal, class-constant ownership or WeakReference lookup. A native status
+witness has zero roots after releasing a cached case, then two roots and a
+collection count of one after a later ordinary self-cycle. The reached model
+state identifies those slots in order as the live WeakReference wrapper and
+the ordinary `stdClass`; the case remains absent while its cache owner is one.
+Forged case slots fail buffer validity. See the
+[enum collectability review](../../coverage/semantics/gc-enum-collectability-review.json).
+
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;
 pending exceptions remain owned once. After a destructor returns, its bare guard

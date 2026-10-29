@@ -1,0 +1,43 @@
+{
+  "scope": "GC08: enum cases are ineligible for possible-root buffering; ordinary collectable objects retain their slot order and graph behavior.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_enum.c::zend_enum_new sets GC_NOT_COLLECTABLE on each case before publication",
+    "vendor/php-src/Zend/zend_gc.h::GC_MAY_LEAK and gc_check_possible_root skip decrements of GC_NOT_COLLECTABLE objects",
+    "vendor/php-src/Zend/zend_gc.c::gc_mark_grey still traverses collectable child zvals"
+  ],
+  "private_cuts": {
+    "base": "a82639bf46b3961b436d10648f01e78bec5b6ed1",
+    "native_fixtures": "a220f8119261b5f6e15946536a6424762a5970db",
+    "semantic_and_reached_fixture": "55967ef7cee2ed1c1495574711dfdd38aaccf1c6",
+    "module_301_sha256": "6133b77788723468e887965daff7017f8a587c72d2025ed0c85c6732cc3e8ad9",
+    "reached_fixture_sha256": "9785d1be7087288cd5c9d637c136c9ec9a8cf9d30d8f9f78e7dcf303a652233d",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "validation": {
+    "native": "Two original sources exit 0 with empty stderr and stable inputs/HEAD at a220. The model-compatible original prints Z|0|alive|1|same|END. Native-only gc_status prints Z|0|0|0|alive|2|1|0|same|END, showing zero roots after case release and an ordinary collection count of one.",
+    "model": "The unchanged model-compatible original exactly matches retained native stdout, stderr and exit at clean 55967ef7; one source agreement, stable inputs/HEAD.",
+    "pre_edit_baseline": "One strict source-reached group, 14 reported checks, shows the authentic cached enum case incorrectly admitted to GC.BUFFER before the 301 edit. Diagnostic only, zero accepted fix credit.",
+    "reached": "Two strict SL groups pass 18+29=47 reported checks on the edited 301 bytes: authentic enum cache owner count one, live WeakReference identity, empty post-release buffer, enum absent at later collection, physical slots [WeakReference wrapper, ordinary stdClass self-cycle], valid buffer, forged enum slot and malformed tagged case refused. The generated test fixtures and 301 SHA bind the pre-commit dirty reports to the immediate 55967ef7 semantic commit; no code changed between PASS and commit.",
+    "zero_credit": "The first ordinary fixture could not bind an ID through set membership and stopped before state evaluation; the next fixture wrongly assumed slot 0 was stdClass and failed. Both are retained with zero accepted credit. The passed first-group record in the mixed report contributes 18 checks; only the corrected ordinary report contributes 29. No GC07 evidence was replayed."
+  },
+  "source_sha256": {
+    "model_compatible": "7f159522da3832a851378c8be5404cafe331f75e49780fb7bff00101da049399",
+    "native_status": "07a53bc7d171a1b1abd75a5cf9e204db5dce823d92c932c5e3270f7f7f9a131b"
+  },
+  "reports": {
+    "gc-enum-collectability-author/packet1/native-report.json": "1749881a974034831e42b827168e013923e68367c63ce3a904303f7634638e3f",
+    "gc-enum-collectability-author/packet1/model-case-and-ordinary-cycle-report.json": "21dc223e5423a462e6c30925417d16b343bd69532fff50812955fd40d038aed9",
+    "php-spec/.tools/shutdown-state-review-ac_rx93m/report.json": "f8e65b229d79fbfb7d034bf46277bf5fd0364a812ff0fb180a67aa8dee7f0630",
+    "php-spec/.tools/shutdown-state-review-jz2ap61q/report.json": "d44dd1b434624bed1f284c3f2c0a2ecf7ff3332dfab5ea0b7efc9963839fbaf9",
+    "php-spec/.tools/shutdown-state-review-5_816stz/report.json": "935dd1e26871893c61c60d23744529491595bc98a9d8772ee8d1e77691f93331",
+    "php-spec/.tools/shutdown-state-review-3k_l1a8w/report.json": "a1138bcc636d5a8db1d9c748f62d6e16bd92e9736a87d8b6ce33e74b24633540"
+  },
+  "passed_generated_fixture_sha256": {
+    "case_release": "594fac7a0a4d0e06415ad93aa2050939a5a01d365fcad29cfabf540a22fc7972",
+    "ordinary_slots": "8a20e793d6b43cd0cddaab050e6f3f36a8a8c0ba53d931832f76fc838150ff07"
+  },
+  "review": "Independent semantic/test CLEAR from gc07_fallback_review: source-backed flag scope, narrow 301 diff, native bytes, baseline, two passed reached groups, forged-slot refusal and clean-tip exact model comparison. Actual-tail composition remains to be recorded.",
+  "limits": "This fixes enum-case possible-root eligibility only. It does not alter GC graph traversal, object ownership, class-constant caches, WeakReference semantics, other builtin eligibility or wider active collection protocols.",
+  "recovery": "From php-spec, run tests/semantics/gc_enum_collectability_sources.py with --phase native or --phase model --case case-and-ordinary-cycle --output ../php-spec-evidence-archive/gc-enum-collectability-author/packet1; run tests/semantics/gc_enum_collectability_state.py with either --case. Native-only status case has no modeled gc_status intrinsic. Raw reports live in ../php-spec-evidence-archive and php-spec/.tools; no bulky artifacts are in Git."
+}
