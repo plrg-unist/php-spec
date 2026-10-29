@@ -8,23 +8,22 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-I79 admits ordinary and nullsafe method-created Generators from genuine
-rebound real Closure callers, including object-syntax static methods. The live
-creator frame authenticates private/protected selection; where original source
-scope cannot select and access the exact target, the actual Generator retains
-a borrowed receipt after factory retirement. Factory and callee receivers or
-called classes may differ. A fresh sibling's receipt cannot authorize a broken
-live entry or replace the actual resume/close receipt. Four new authored, one
-independent and one unchanged public source match PHP; four reached fronts pass
-209 custom/229 reported checks. Private strict430 and actual-tail joined
-strict431 pass. Named/from/fake/implicit factory origins and wider binding,
-producer and lifecycle contexts remain partial.
-[I79 review](coverage/semantics/generator-closure-method-review.json).
+I80 admits captured ordinary user-method factories made with first-class
+callables or `Closure::fromCallable` when they create scoped Generators. The
+real selected method, source access, lexical/called scope and receiver are
+borrowed after callable retirement; actual Generator resume/close ownership
+and ordinary frame/cache roots remain unchanged. Three new authored, one
+independent and one unchanged named-function control match PHP. Three reached
+fronts pass 174 custom/189 reported checks; private strict431 passes. The
+old first-class case was checked Unsupported with zero agreement credit.
+Other callable factory kinds, wider binding, producer and lifecycle contexts
+remain partial. [I80 review](coverage/semantics/generator-captured-factory-review.json).
 
 Earlier [I75](coverage/semantics/generator-keyword-creation-review.json),
 [I76](coverage/semantics/generator-keyword-chain-review.json),
 [I77](coverage/semantics/generator-keyword-receiver-review.json) and
-[I78](coverage/semantics/generator-closure-factory-review.json) reviews retain
+[I78](coverage/semantics/generator-closure-factory-review.json) and
+[I79](coverage/semantics/generator-closure-method-review.json) reviews retain
 their distinct scope, counts and raw failures.
 
 A69 keeps finite CFG-admitted ARRAY and ordinary non-Stringable INSTANCE arguments

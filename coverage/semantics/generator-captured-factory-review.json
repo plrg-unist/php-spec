@@ -1,0 +1,125 @@
+{
+  "milestone": "I80 captured ordinary user-method Generator factories",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "private_base": "972e8312070ff232bfe92e45a06d9fee1c3e8dd5",
+  "private_implementation": [
+    "ab3edeb92815c1f4ca49cfbd0b20412fbec649c2",
+    "c3e08e247696a19b0dfb9e7796d4c1946fe856e3",
+    "bcb65496a60e000ddfc3606dd03d8fb66e10d9fd",
+    "22f1dcb624cadea5395045c9e2c7554e2ca3be38"
+  ],
+  "scope": "Authentic first-class METHODCLOSURE and Closure::fromCallable FROMCALLABLECLOSURE user-method factories may create scoped Generator methods. A real live callable selects its method/access, lexical and called class, and receiver; the Generator retains borrowed source/target evidence after the callable retires. The actual Generator owns resume/close selection, while saved frames and caches retain only their ordinary owners. Real first-class siblings cannot replace a missing actual receipt. Ordinary named-function fromCallable remains a separate unchanged positive control.",
+  "changed_modules": [
+    "spec/semantics/280-generators.watsup"
+  ],
+  "engine": "vendor/php-src/Zend/zend_closures.c zend_create_closure_from_callable and zend_create_closure_ex select the handler, called scope and receiver; Zend fake-Closure implementation differs from the model BOUNDFAKECLOSURE residual.",
+  "validation": {
+    "author_native_first": {
+      "result": "four exact PHP normal observations, exit 0, empty stderr",
+      "report": "../php-spec-evidence-archive/generator-captured-method-factory-80/source-packet/native-first/report.json",
+      "sha256": "9870cf5db6f65ea46d6fd4444b4711f6cdbb645eec19d695aaa806052c18dae0"
+    },
+    "independent_native_first": {
+      "source_sha256": "43db5c280690fd86e72aaf3d872a7e934b10f188a54370bbffb524fe26ccdf32",
+      "stdout_bytes": 157,
+      "result": "exact PHP normal, exit 0, empty stderr",
+      "report": "../php-spec-evidence-archive/generator-captured-method-factory-80-review/independent/native-first-report.json",
+      "sha256": "33ab340f9f1455b46705f8613507a94c1124efb651007a2de8ec149d3da1598c"
+    },
+    "unchanged_baseline": [
+      {
+        "id": "i80-first-class-static-sibling",
+        "revision": "ab3edeb92815c1f4ca49cfbd0b20412fbec649c2",
+        "result": "initial fixture omitted one real OUTPUT event; checked Unsupported after MAKE|, aggregate false, zero credit",
+        "report": "../php-spec-evidence-archive/generator-captured-method-factory-80/validated/generator-captured-factory-source-v9ku3d3_/report.json",
+        "sha256": "55cdf76616b43e2505d027ee3e9644e186c0dece35f75402c3fff76d35aa3fa2"
+      },
+      {
+        "id": "i80-first-class-static-sibling",
+        "revision": "c3e08e247696a19b0dfb9e7796d4c1946fe856e3",
+        "result": "checked Unsupported after exact MAKE| and OUTPUT event, exit 1, zero agreement",
+        "report": "../php-spec-evidence-archive/generator-captured-method-factory-80/validated/generator-captured-factory-source-k5_iid5f/report.json",
+        "sha256": "a824dad3e7ddb474535c7c5c1458a6db295d8e9f7be23c0cae2413a5a276ea57"
+      },
+      {
+        "id": "i80-named-function-control",
+        "revision": "c3e08e247696a19b0dfb9e7796d4c1946fe856e3",
+        "result": "unchanged checked NORMAL, exact 27 native bytes, exit 0",
+        "report": "../php-spec-evidence-archive/generator-captured-method-factory-80/validated/generator-captured-factory-source-4h1nihi9/report.json",
+        "sha256": "47787428eb076a40b62dc9841a6daeea234fe62f6a14be46003f3395c3b9d921"
+      }
+    ],
+    "strict_private": {
+      "revision": "bcb65496a60e000ddfc3606dd03d8fb66e10d9fd",
+      "modules": 431,
+      "passed": true,
+      "report": "../php-spec-evidence-archive/generator-captured-method-factory-80/strict-private/report.json",
+      "sha256": "6d3d16d9ec6d3a7b9444a587d12fad10614db4edfcb7d38f649f2c3fd803292e"
+    },
+    "author_sources": [
+      {
+        "id": "i80-first-class-static-sibling",
+        "result": "checked NORMAL, exact retained native bytes, exit 0",
+        "report": "../php-spec-evidence-archive/generator-captured-method-factory-80/validated/generator-captured-factory-source-26tiz3y0/report.json",
+        "sha256": "9cc430bb08a8e5a2b44a2cb9251793361cf71dde4d1869065ab9be0432b3723d"
+      },
+      {
+        "id": "i80-from-callable-protected-close",
+        "result": "checked NORMAL, exact retained native bytes, exit 0",
+        "report": "../php-spec-evidence-archive/generator-captured-method-factory-80/validated/generator-captured-factory-source-qnos1mm2/report.json",
+        "sha256": "5d0945315ce4d8e874054117948cc45284788f117ad5b96bca459c1fa6d48ca0"
+      },
+      {
+        "id": "i80-from-callable-late-static",
+        "result": "checked NORMAL, exact retained native bytes, exit 0",
+        "report": "../php-spec-evidence-archive/generator-captured-method-factory-80/validated/generator-captured-factory-source-esvg3706/report.json",
+        "sha256": "7930139c8265f171bddd91389c4c5c60e1f2cef3a0e1d122724b51a5e9a05825"
+      },
+      {
+        "id": "i80-named-function-control",
+        "result": "checked NORMAL, exact retained native bytes, exit 0",
+        "report": "../php-spec-evidence-archive/generator-captured-method-factory-80/validated/generator-captured-factory-source-72z87qg9/report.json",
+        "sha256": "723ab07b3fa55a14dcbcbff54c7c2333cbe08d718e534357f7c4efc46433f63d"
+      }
+    ],
+    "independent_model": {
+      "revision": "bcb65496a60e000ddfc3606dd03d8fb66e10d9fd",
+      "result": "checked NORMAL, exact retained 157-byte native stdout, exit 0, empty stderr, no timeout; stable HEAD and 24 watched inputs",
+      "limits": "source-local 600/620 seconds, 100000 steps",
+      "report": "../php-spec-evidence-archive/generator-captured-method-factory-80-review/independent/model-review-report.json",
+      "sha256": "7517a36ff4aacf28d106290c279bafd4ebb12297fb723e600bc24188cdcd3ab0"
+    },
+    "reached_states": [
+      {
+        "id": "i80-first-class-close-sibling",
+        "custom": 73,
+        "reported": 78,
+        "report": "../php-spec-evidence-archive/generator-captured-method-factory-80/validated/fiber-state-review-snr6zkdk/report.json",
+        "sha256": "1b5465db09faa604b721076b2b00a37f677ff9f06023c7d42f8ca4d73d1bde6b"
+      },
+      {
+        "id": "i80-from-callable-close",
+        "custom": 52,
+        "reported": 57,
+        "report": "../php-spec-evidence-archive/generator-captured-method-factory-80/validated/fiber-state-review-i8bq96hk/report.json",
+        "sha256": "b7399e5953c998dddf7fbc11561d7e167fc7c9f31d4f83c02794ef344363f27d"
+      },
+      {
+        "id": "i80-from-callable-late-static",
+        "custom": 49,
+        "reported": 54,
+        "report": "../php-spec-evidence-archive/generator-captured-method-factory-80/validated/fiber-state-review-uq23z421/report.json",
+        "sha256": "a3eca833165eea55f6c65a128ab3149447e5d0906e7295d5b2f1a7457bf4a178"
+      }
+    ]
+  },
+  "counts": {
+    "new_author_normal": 3,
+    "independent_normal": 1,
+    "legacy_named_normal": 1,
+    "unchanged_unsupported_agreement": 0,
+    "reached_custom": 174,
+    "reached_reported": 189
+  },
+  "remaining": "Other model Closure kinds (including BOUNDFAKECLOSURE and implicit), broader captured callable sources, binding, Generator producer/delegation and lifecycle combinations remain partial. Core PHP and BOLA verification remain open."
+}

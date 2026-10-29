@@ -196,6 +196,14 @@ distinct-receiver BYREF/Fiber peer is under
 The [rebound method ledger](../coverage/semantics/generator-closure-method-review.json)
 binds tested revisions, hashes and remaining scope.
 
+I80 captured-method Generator factory evidence retains authored native,
+unchanged refusal/control, private strict, source and reached-state cuts under
+`../php-spec-evidence-archive/generator-captured-method-factory-80/`. The
+independent by-reference SEND/Fiber-abort peer is under
+`../php-spec-evidence-archive/generator-captured-method-factory-80-review/`.
+The [captured factory ledger](../coverage/semantics/generator-captured-factory-review.json)
+binds revisions, hashes and remaining scope.
+
 I77 receiver-bearing scoped Generator evidence retains authored native,
 unchanged baseline, private/joined strict, source and reached-state cuts under
 `../php-spec-evidence-archive/generator-keyword-receiver-77/`. The independent

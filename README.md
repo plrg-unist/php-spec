@@ -6431,9 +6431,18 @@ Changed private/protected selection retains a borrowed receipt after return;
 an exact original source selection remains sufficient. Borrowed history adds
 no owner. Four new authored, one independent and one
 unchanged public source agree with PHP; four reached fronts pass 209 custom/229
-reported checks. Named/from/fake/implicit factory origins and wider bindings
-remain partial.
+reported checks. At that I79 cut, named/from/fake/implicit factory origins
+and wider bindings remained partial.
 [Rebound method review](coverage/semantics/generator-closure-method-review.json).
+Captured ordinary user-method factories made with first-class callables or
+`Closure::fromCallable` now retain their selected source, access, lexical/called
+scope and receiver identity when creating scoped Generators. The callable may
+retire before the body; the actual Generator still supplies its own resume or
+close receipt and ordinary receiver/cache owners. Three new authored, one
+independent and one unchanged named-function control match PHP; three reached
+fronts pass 174 custom/189 reported checks. Other callable origins and wider
+producer/lifecycle combinations remain partial.
+[Captured factory review](coverage/semantics/generator-captured-factory-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
