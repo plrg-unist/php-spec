@@ -1085,7 +1085,7 @@ def $enum_from_update_context(S, pclassconstantcontext, porigin_case) = (pconfig
   -- if pclassconstantcontext.SELECTION = CLASS_CONST_UPDATE_SELECT porigin_class
   -- if $class_constant_origin(S.CLASSES, porigin_case) = (pclassconstantdesc)
   -- if ~pclassconstantdesc.FOLDED
-  -- if pclassconstantdesc.OWNER = porigin_class
+  -- if pclassconstantdesc <- $class_constant_update_order(S, porigin_class, |S.CLASSES|)
   -- if $enum_from_future(S.TODO) = (pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_ENUM porigin_class ptbytes text_method
   -- if text_method <- ["from", "tryFrom"]
@@ -1135,7 +1135,10 @@ def $class_constant_history_fills(S, (CCCACHE_ENUM porigin_case (PORIGIN n_unit 
   -- if $(n_nonce < |S.SELECTEDCALLS|)
   -- if S.SELECTEDCALLS[n_nonce] = pselectedcall
   -- if pselectedcall.NONCE = n_nonce /\ pselectedcall.SITE = PORIGIN n_unit pcpath
-  -- if pselectedcall.KIND = INTRINSIC_ENUM pclassconstantdesc.OWNER pclassconstantdesc.OWNERNAME text_method
+  -- if pselectedcall.KIND = INTRINSIC_ENUM porigin_class ptbytes_class text_method
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum" /\ pclassdesc.NAME = ptbytes_class
+  -- if pclassconstantdesc <- $class_constant_update_order(S, porigin_class, |S.CLASSES|)
   -- if text_method <- ["cases", "from", "tryFrom"]
   -- if text_method =/= "cases" \/ $enum_case_origin(S, porigin_case)
   -- if pselectedcall.OWNER = (n_owner)
