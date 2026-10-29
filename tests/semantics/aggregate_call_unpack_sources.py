@@ -9,7 +9,8 @@ CASES = {
     name: (HERE / ('aggregate_call_unpack_' + name + '.php')).read_bytes()
     for name in ('ordinary_byref', 'magic_static', 'reference_closure',
                  'nested_generator', 'self_reject', 'self_rebound',
-                 'getter_throw', 'closed_generator', 'empty', 'mixed_duplicate')
+                 'getter_throw', 'closed_generator', 'empty', 'mixed_duplicate',
+                 'closure_cleanup')
 }
 
 
