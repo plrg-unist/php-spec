@@ -6120,6 +6120,11 @@ Earlier [fixed-name](coverage/semantics/reentrant-unlinked-new-review.json) and
 [dynamic-name](coverage/semantics/reentrant-dynamic-new-review.json) evidence keeps
 its original cuts; wider reentrant histories and enum dependencies remain partial.
 
+Unit and backed enums now link with their implicit interfaces and cached singleton
+cases. Direct `cases()`, `from()`, `tryFrom()`, case slots and constant queries have
+source and state checks. Case attributes, generated callable targets and generic
+first-use autoload remain partial; see the [enum checkpoint](PROGRESS.md#current-checkpoint).
+
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
 now loads a sole missing user interface before a parentless class or interface is
 linked and published. Two exact originals and 324 SL premises distinguish cached

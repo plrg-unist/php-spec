@@ -696,7 +696,7 @@ entered dependency callbacks. Prepublication missing-class Errors skip arguments
 and redundant loaders. Once an interface or trait publishes, construction raises
 its canonical non-instantiability Error; failed linking releases the guard so a
 later lookup can autoload again. The shared source-kind check reuses existing
-class/interface and class/trait dependency maps. The private enum slice below
+class/interface and class/trait dependency maps. The enum slice below
 adds authenticated `NStmtEnum` dependency maps; generic first-use static lookup
 remains open.
 Three new authored originals and one independent by-reference-helper original
@@ -792,12 +792,15 @@ The integrated enum core slice lowers unit and backed declarations to real case
 constants and cached singleton objects. It implements direct generated calls,
 lazy backing checks, readonly case slots, ordered interface linking, user magic
 methods, individual `constant()`/`defined()` case queries, and enum/WeakMap
-comparison. The private 426-module and joined 428-module manifests pass strict
-loading on their separate cuts. Independent reached
+comparison. The private 426-module and final joined 428-module manifests pass
+strict loading on their separate cuts. The classified syntax corpus passes all
+30,980 eligible cases on the composed frontend cut, and the attributed-enum
+keyword line passes a checked roundtrip. Independent reached
 checks cover case identity, deferred backing, weak parsing, converted Stringable
 arguments, duplicate-live-case rejection, magic calls, query retry/aliases
-(93+76 checks), and enum/WeakMap ordering (30 checks); exact cuts and raw reports
-remain in `.tools/enum-*`. Later focused cuts validate a compiled backing
+(93+76 checks), and enum/WeakMap ordering (30 checks). Exact raw cuts, including
+failed and partial attempts, are retained through the [external evidence archive](docs/ARTIFACTS.md).
+Later focused cuts validate a compiled backing
 observer (31 checks) and enum default-cache provenance (40 checks). The original
 typed/default/reference source now agrees exactly with pinned PHP after a
 `PVENUMCASE` cacheability repair; its earlier interpreter failure remains saved.
