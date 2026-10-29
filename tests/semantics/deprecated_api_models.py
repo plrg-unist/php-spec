@@ -94,6 +94,9 @@ def main():
         finished = (not model['timeout'] and model['interruption'] is None
                   and not model['group_after'] and not (directory / 'model.stderr').read_bytes()
                   and outcome.get('frontend') == 'accepted' and outcome.get('checked') == 'program')
+        expected_status = native_row.get('expected_model_status',
+            'php_error' if native_row['native']['exit'] == 255 else 'normal')
+        assert expected_status in ('normal', 'php_error', 'static_rejection')
         boundary = BOUNDARIES.get(native_row['id'])
         if boundary:
             reason, prefix = boundary
@@ -103,7 +106,7 @@ def main():
                       and outcome.get('stderr') == '')
         else:
             passed = (finished and model['exit'] == 0
-                      and outcome.get('status') == ('php_error' if native_row['native']['exit'] == 255 else 'normal')
+                      and outcome.get('status') == expected_status
                       and outcome.get('reason') is None
                       and outcome.get('exit_status') == native_row['native']['exit']
                       and outcome.get('stdout') == native_row['stdout_b64']
