@@ -6385,13 +6385,14 @@ Computed, literal and compiler-folded `Class::method` strings also select these
 generated methods before arguments. The original full string and selected enum
 survive later argument or Stringable callback rebinding; temporary Stringable
 arguments retire before lookup. Packed Stringable origins remain Unsupported.
-First-class captures of these strings create internal Closures that retain the
-selected enum. A call keeps its Closure alive when arguments clear the source
-variable and releases it after the call.
+First-class captures of these strings and arrays whose first member is a class
+name or enum case create internal Closures retaining the selected enum. Calls
+keep the Closure alive through argument clearing and release their ownership
+after invocation.
 Class constants can consume cached enum cases in scalar conditions and select a
 case through a source-certified case or negated-case condition, including a case
 from another enum. Wider object-valued conditional transfers remain Unsupported.
-Callable admission, first-class array captures, pipe routes,
+Callable admission, pipe routes,
 `Closure::fromCallable` conversion, `is_callable`, case attributes, enum collection
 policy, the default loader and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).

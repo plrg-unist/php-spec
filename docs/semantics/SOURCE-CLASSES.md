@@ -482,5 +482,26 @@ keeps original source comparisons, reached guards and the shared identity-receip
 normalization at separate cuts. The
 [capture review](../../coverage/semantics/enum-string-capture-review.json) keeps
 its new capture sources and owner/ingress checks separate. Callable admission,
-first-class array captures, pipe and `Closure::fromCallable` consumers, first-use loading, enum
+pipe and `Closure::fromCallable` consumers, first-use loading, enum
 collectability and wider object lifetimes remain partial.
+
+## Generated enum array captures
+
+Published enum class names and enum-case receivers in callable arrays can create
+first-class internal Closures for generated `cases()`, `from()` and `tryFrom()`.
+The engine selects them through `zend_init_dynamic_call_array`, followed by
+`ZEND_CALLABLE_CONVERT` and `zend_closure_from_frame`.
+Creation authenticates the actual live array, its selected class/method pair and
+the first-class source/init/conversion line before allocation. The internal
+Closure retains no array, receiver or creator. Existing call owners preserve it
+through argument-side clearing, Stringable conversion and lazy lookup.
+
+A runtime source array can retire when its last real owner disappears; literal
+arrays may remain rooted by compiled constants. Fetching an enum-case receiver
+warms its backed table before capture, while a class-name receiver can keep that
+table cold until invocation. The
+[array-capture review](../../coverage/semantics/enum-array-capture-review.json)
+keeps these cases and source/owner checks separate. Other callable consumers,
+loading and wider backing contexts remain partial. GC08 covers cached enum-case
+GC candidate exclusion; wider GC interactions and GC09 intrinsic fake-Closure
+birth versus clone policy remain separate.

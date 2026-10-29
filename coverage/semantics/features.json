@@ -28951,7 +28951,9 @@
       "source_tests": [
         "tests/semantics/enum_review_protocol.py",
         "tests/semantics/class_method_strings.py",
-        "tests/semantics/class_method_strings_cases.json"
+        "tests/semantics/class_method_strings_cases.json",
+        "tests/semantics/array_callables.py",
+        "tests/semantics/array_callables_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_enum.c",
@@ -28960,9 +28962,11 @@
         "coverage/semantics/enum-string-callable-review.json",
         "coverage/semantics/enum-string-capture-review.json",
         "vendor/php-src/Zend/zend_closures.c",
-        "coverage/semantics/gc-enum-collectability-review.json"
+        "coverage/semantics/gc-enum-collectability-review.json",
+        "vendor/php-src/Zend/zend_API.c",
+        "coverage/semantics/enum-array-capture-review.json"
       ],
-      "review": "Direct cases/from/tryFrom and user magic method calls are source/state checked. Captured cases and scalar from/tryFrom retain the selected enum, cold table and cached singleton history after closure retirement, including ordinary and inherited constant aliases. Captured Stringable arguments preserve callback and receiver lifetimes. For published enums, class-string array callables select cases/from/tryFrom before arguments; a case-object receiver invokes from, and array Stringable arguments preserve the selected target and temporary retirement. Computed, literal and compiler-folded class-method strings retain their selected generated target, full original bytes and real named Stringable argument child across rebinding and temporary retirement. Packed Stringable origins are explicit Unsupported. First-class captures of these generated string targets create genuine internal Closures; real call ownership retains the selected Closure when arguments or Stringable callbacks clear its source variable, then releases it after invocation. Direct/negated cached-case conditional transfers are source checked. Wider object-valued conditionals, callable admission, first-class array captures, pipe routes, Closure::fromCallable conversion, is_callable and wider enum GC interactions remain partial. Cached enum-case GC candidate exclusion is covered by gc-enum-collectability-review.json. See PROGRESS.md for separate exact cuts."
+      "review": "Direct cases/from/tryFrom and user magic method calls are source/state checked. Captured cases and scalar from/tryFrom retain the selected enum, cold table and cached singleton history after closure retirement, including ordinary and inherited constant aliases. Captured Stringable arguments preserve callback and receiver lifetimes. For published enums, class-string array callables select cases/from/tryFrom before arguments; a case-object receiver invokes from, and array Stringable arguments preserve the selected target and temporary retirement. Computed, literal and compiler-folded class-method strings retain their selected generated target, full original bytes and real named Stringable argument child across rebinding and temporary retirement. Packed Stringable origins are explicit Unsupported. First-class captures of these generated string targets create genuine internal Closures; real call ownership retains the selected Closure when arguments or Stringable callbacks clear its source variable, then releases it after invocation. First-class array captures with published class-name or enum-case receivers use internal Closures after authenticating the actual live array and first-class source; the Closure adds no array or receiver owner. Runtime COW retirement and warm/cold tables are checked separately; literal inputs make no deallocation claim. Direct/negated cached-case conditional transfers are source checked. Wider object-valued conditionals, callable admission, pipe routes, Closure::fromCallable conversion, is_callable and wider enum GC interactions remain partial. Cached enum-case GC candidate exclusion is covered by gc-enum-collectability-review.json. See PROGRESS.md for separate exact cuts."
     },
     {
       "id": "declarations.attribute-metadata",

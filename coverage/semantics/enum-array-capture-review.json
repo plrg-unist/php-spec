@@ -1,0 +1,112 @@
+{
+  "status": "independently reviewed private milestone; actual-tail composition pending",
+  "target": "PHP8.5.10 CLI,NTS,64-bit",
+  "scope": [
+    "Published generated enum methods in arrays with class-name or enum-case receivers create genuine first-class internal Closures.",
+    "Creation requires the actual current live array and same generated candidate tuple, plus authenticated first-class source/init/conversion line.",
+    "The Closure adds no array,receiver or creator edge; existing call ownership, Stringable retirement and cached target rules are reused."
+  ],
+  "implementation": [
+    "spec/semantics/205-array-callables.watsup",
+    "spec/semantics/437-enum-runtime.watsup"
+  ],
+  "inputs": {
+    "spec/semantics/120-first-class-callables.watsup": "fea5a5c49af6b11ce2990fac20eee2a7c218218b723def859c7804c514793b8b",
+    "spec/semantics/148-core-intrinsics.watsup": "083cf52979239a3ac9918ad110110bb8eaa8c84b63fe6be5443368fcedff5d8c",
+    "spec/semantics/172-file-context-intrinsics.watsup": "eb70aa650a7a7a7b8a9d99e4cbccfbf352c100d0be6b4c41d252668ebeaee313",
+    "spec/semantics/205-array-callables.watsup": "8ff48fbc308ffdc049c689dff2da7ba927a60e30aaa2f713e97a914bc31af9ed",
+    "spec/semantics/301-cycle-collection.watsup": "686e2e459bd5ed997a82f35cd17227a6ffdc9362cd8b2cbb90cb2ec52568a559",
+    "spec/semantics/437-enum-runtime.watsup": "737867e5b0d09efd8b01bd29ac44fc0b7547cfb07797abf5203553ac9655eaf6",
+    "spec/semantics/modules.json": "8ae4c2c33901dbf123932b678006735388afa5fb3eb24e090a4fd90d2d703144",
+    "tests/semantics/array_callables_cases.json": "d185a18a1635819d89bc952a0e46c6608ceb26e8de5f4aa1a868f333ce6f96aa",
+    "tests/semantics/user_string.py": "b7b39970298e9e70beea6b9b1947d8ac89a2feafbf02cff92a2dbef6585fa5da"
+  },
+  "source_agreement_count": 4,
+  "source_agreements": [
+    {
+      "id": "array-capture-target-retirement",
+      "revision": "4a783a00cd8166edf89b242165b6d5cdf03bafee",
+      "seconds": 21.757,
+      "report": ".tools/enum-array-capture-selected-review-v1/changed-report.json",
+      "agreement": true
+    },
+    {
+      "id": "literal-case-object-captures",
+      "revision": "4a783a00cd8166edf89b242165b6d5cdf03bafee",
+      "seconds": 16.966,
+      "report": ".tools/enum-array-capture-dev-v1/literal-case-object-captures/changed-report.json",
+      "agreement": true
+    },
+    {
+      "id": "array-stringable-selected-owner-retired",
+      "revision": "4a783a00cd8166edf89b242165b6d5cdf03bafee",
+      "seconds": 21.494,
+      "report": ".tools/enum-array-capture-dev-v1/array-stringable-selected-owner-retired/changed-report.json",
+      "agreement": true
+    },
+    {
+      "id": "strict-int-array-reception",
+      "revision": "4a783a00cd8166edf89b242165b6d5cdf03bafee",
+      "seconds": 14.067,
+      "report": ".tools/enum-array-capture-dev-v1/strict-int-array-reception/changed-report.json",
+      "agreement": true
+    }
+  ],
+  "original_boundary": {
+    "revision": "4a783a00cd8166edf89b242165b6d5cdf03bafee",
+    "id": "array-capture-target-retirement",
+    "reason": "enum generated array callable capture",
+    "seconds": 14.846,
+    "report": ".tools/enum-array-capture-selected-review-v1/baseline-report.json",
+    "agreement": false
+  },
+  "state_checks": {
+    "status": "passed",
+    "checks": 123,
+    "explicitly_derived_controls": 2,
+    "accepted": [
+      {
+        "group": "runtime array capture,COW retirement and selected owner",
+        "checks": 48,
+        "seconds": 41.197,
+        "report": ".tools/enum-array-capture-selected-state-v1/array-capture-target-retirement/process.json"
+      },
+      {
+        "group": "literal/class-name and cached-case capture ingress",
+        "checks": 34,
+        "seconds": 25.325,
+        "report": ".tools/enum-array-capture-literal-state-v1/literal-case-object-captures/process.json"
+      },
+      {
+        "group": "captured Stringable source and owner retirement",
+        "checks": 41,
+        "seconds": 42.637,
+        "report": ".tools/enum-array-capture-stringable-state-v1/array-stringable-selected-owner-retired/process.json"
+      }
+    ]
+  },
+  "strict_compilation": {
+    "mode": "SL",
+    "modules": 432,
+    "result": true,
+    "seconds": 11.81,
+    "report": ".tools/enum-array-capture-strict-432-v1/process-SL.json"
+  },
+  "independent_review": {
+    "reviewer": "enum_string_recover_review",
+    "implementation": "exact205(-1)/437(+6) arm approved",
+    "native_originals": "four fresh frozen sources/native streams approved",
+    "source_comparisons": "all four per-case raw comparisons independently approved",
+    "reached_states": "all three groups and123 conditions independently approved",
+    "final_ledger": "approved after source4/private432 and all123 state/guard conditions"
+  },
+  "lifetime_distinctions": "Runtime COW source-array retirement is checked separately. Literal inputs make no new pool-root or deallocation execution claim; the Closure adds no array/receiver child. Enum-case receiver acquisition warms its backed table before capture, while runtime class-name sources exercise cold lookup.",
+  "compatibility": "Only the ARRAYENUM capture-result branch changes. Ordinary array captures and their creator certificates, string capture, resolver/API/pipe boundaries, internal Closure representation, CFG owners and enum cache authority remain unchanged. Historical accepted cuts are not replayed or renewed.",
+  "remaining": [
+    "Other string/callable API and pipe consumers,first-use/default loading,case attributes,wider backing/link/type/lifetime contexts.",
+    "Enum collectability is separately owned by GC08.",
+    "Intrinsic fake-Closure birth versus clone/identity collectability is separately being reviewed in GC09; it remains open until that package is integrated."
+  ],
+  "accounting": "All four enum declaration obligations remain partial. Unsupported has zero agreement credit. Existing immutable compiler/adapter/oracle binaries are reused with recorded hashes; no rebuild is claimed.",
+  "revision_note": "All source/state/strict results retain4a783a00c plus the exact six-line guarded capture branch and removed Unsupported arm. Each raw cut records its input hashes; later catalogue/docs registration does not renew any run."
+}
