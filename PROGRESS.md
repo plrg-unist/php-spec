@@ -726,13 +726,27 @@ preserves original failures and two genuine baseline refusals. Earlier
 [CALL124 evidence](coverage/semantics/magic-iterator-unpack-review.json) keeps its
 original cuts. Wider producers, handlers, references and lifetimes remain partial.
 
+CALL126 adds direct Aggregate argument acquisition for the existing ordinary and
+magic target set. Public zero-argument by-value, nongenerator getters acquire
+Iterator or Generator DATA through finite recursive acquisition; the original CV,
+temporary or reference INPUT retains its separate ownership. Live original-CV
+self comparison, supplied getter/layer exceptions, empty leaves and retired
+SOURCE checks preserve selected targets. Method unwind releases positional sends,
+This and extra names; Closure ownership retires after extra names.
+Twelve authored and two independent originals agree exactly with pinned PHP.
+Eight reached groups pass 245 reported assertions across reviewed cuts, with
+strict elaboration of all 426 modules; failed attempts retain zero credit.
+The [Aggregate review](coverage/semantics/aggregate-call-unpack-review.json) records
+the accepted source/state bridges. Actual-tail composition and joined strict
+remain pending; generator/reference getters and wider targets/lifetimes stay partial.
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
 | --- | --- |
 | Enum core | Full four-group enum core work. |
 | A65 | BYVAL Iterator declared fields. |
-| CALL125 | ARRAY/Generator magic argument packs. |
+| CALL126 | Reviewed Aggregate argument acquisition; actual-tail integration pending. |
 | COMP149 | Next: generic captured-graph depth-cap removal; previous-path admission stays separate. |
 | I73 | Static Generator/Fiber CURRENT/NEXT/SEND transfer. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |

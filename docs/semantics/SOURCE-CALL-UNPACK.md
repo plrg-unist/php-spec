@@ -730,7 +730,35 @@ real callback exceptions. This follows `zend_user_it_get_new_iterator` and
 `ZEND_YIELD_FROM`; acquisition, cache ownership and close order stay unchanged.
 Queued close authenticates the captured acquired-next marker against the retained
 receipt before excluding its detached input claim from scoped validation.
-Aggregate-returned Generator iterator data, ordinary-call Aggregate operands and
-the earlier by-reference/owning-return/nested-detached limits remain required.
+At that delegation cut, Aggregate-returned Generator iterator data, ordinary-call
+Aggregate operands and the earlier by-reference/owning-return/nested-detached
+limits remained required.
 The [acquired-Iterator review](../../coverage/semantics/generator-call-unpack-acquired-iterator-review.json)
 keeps the promoted prior acquisition control separate from the new evidence.
+
+## Direct Aggregate argument acquisition
+
+Existing ordinary and selected magic targets now acquire argument Iterator or
+Generator DATA through public zero-argument, by-value, nongenerator Aggregate
+getters. Returned layers of finite acquisition chains release inside out before leaf rewind;
+the original borrowed CV or owning temporary/reference INPUT remains separate.
+The first Aggregate self comparison reads the live original CV/reference;
+deeper comparisons use protected return temporaries. Ordinary self return raises
+the real Exception, while an authentic rebound CV can allow another getter.
+Original target selection survives getter and producer mutations.
+
+A nonowning leaf receipt authenticates source cursor, input and acquired DATA.
+Successful finish consumes it before the next argument or real handler entry.
+Abort transfers its history to SOURCE and removes the active receipt, so call and
+heap validation remain sound after input, DATA and selected receiver retirement.
+An intermediate Aggregate destructor throwing a supplied exception releases the
+leaf before the original input and target, without entering leaf callbacks.
+Unfinished method calls retire positional sends, This and extra names; selected
+Closure ownership retires after extra names.
+
+The [Aggregate call review](../../coverage/semantics/aggregate-call-unpack-review.json)
+records 12 authored and two independent exact originals, eight reached groups
+and 245 reported assertions. Generator/reference getters, a recursive Aggregate
+result whose original mutable self comparand is no longer an object, and targets
+outside the existing Iterator/Generator admission remain explicit boundaries.
+Wider reference, delegation and lifecycle forms remain partial.

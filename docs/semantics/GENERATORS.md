@@ -644,8 +644,10 @@ add live cells, value-API snapshots, foreach/destructuring aliases and authentic
 Notice/cleanup readback. Aggregate acquisition has separate START and
 [foreach scopes](ITERATORS.md); Module380 adds bounded nested Aggregate
 [yield-from acquisition](GENERATOR-DELEGATION.md) with generic Generator data,
-null results and phase-specific error cleanup. Aggregate ordinary-call unpack,
-broader reference producers, dynamic/nullsafe API calls, named/unpacked API
+null results and phase-specific error cleanup. Direct Aggregate
+[argument acquisition](SOURCE-CALL-UNPACK.md#direct-aggregate-argument-acquisition)
+now shares the existing Iterator/Generator call sends. Broader reference
+producers, dynamic/nullsafe API calls, named/unpacked API
 arguments, keyword-forwarded static (`self`/`parent`/`static`) and other implicit
 callback creation, and creation through changed/imported caller scope remain
 required.

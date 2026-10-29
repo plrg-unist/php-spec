@@ -417,6 +417,17 @@ records their hashes, tested revisions, limits and recovery.
 The joined actual-tail strict425 report is
 `call125-author-native/joined-09ffc-b37bdd972/report.json` under the same archive.
 
+CALL126 native requests, retained comparisons, strict failures and accepted
+source/state cuts are under
+../php-spec-evidence-archive/call126-author-native/ and call126-review-native/.
+The author accepted-summary.json binds 14 exact original outcomes and eight
+reached groups with 245 reported assertions. All twelve finished state raw
+directories, including four failed attempts, moved intact to the author
+reached-raw/ directory. The
+[Aggregate call review](../coverage/semantics/aggregate-call-unpack-review.json)
+records hashes, tested revisions, compatibility bridges and recovery commands.
+Actual-tail joined strict remains pending.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the
