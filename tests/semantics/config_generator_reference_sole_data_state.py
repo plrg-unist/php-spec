@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sole-DATA reference-cell release preserves a saved terminal Throwable."""
+"""Quiet terminal release preserves a saved Throwable and retires the cell."""
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -21,12 +21,6 @@ def $list_warning_frontier(S, 1010) = true
   -- if S.CURRENT = eps /\ S.FRAMES = eps
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_CLOSED
-def $list_warning_frontier(S, 1011) = true
-  -- if S.TODO = (GENERATOR_STORAGE_STEP pgenstorage) :: ptask*
-  -- if pgenstorage.NEXT = 1
-def $list_warning_frontier(S, 1012) = true
-  -- if S.TODO = (GENERATOR_STORAGE_STEP pgenstorage) :: ptask*
-  -- if pgenstorage.NEXT = 2
 def $list_warning_frontier(S, 1013) = $a73_echo(S, $ptascii("C:"))
 def $list_warning_frontier(S, 1014) = $a73_echo(S, $ptascii("R:"))
 '''
@@ -73,34 +67,31 @@ def conditions(name, program, path, stdout):
         owners('S_popped', 'HOBJECT n_generator', 0),
         '$config_generator_reference_storage(S_popped,pconfiggenerator)',
         '$config_generator_discard_allowed(S_popped,pconfiggenerator)',
+        '~$destructor_operational(S_popped)',
+        '$eager_operation_pending(S_popped) = (n_exception)',
         '$throwable_live(S_popped,n_exception)',
-    ] + public('S_thrown') + budget('S_thrown', 'S_release_budget') + seek(
-        'S_thrown', 1011, 'S_slot1') + [
-        'S_slot1.TODO = (GENERATOR_STORAGE_STEP pgenstorage_slot1) :: ptask_slot1*',
-        'pgenstorage_slot1.OBJECT = n_generator',
-        'pgenstorage_slot1.NEXT = 1',
-        '$generator_storage_valid(S_slot1,pgenstorage_slot1)',
-        'S_slot1.DESTRUCTION.OPERATIONS = pdestructionoperation_slot1 :: pdestructionoperation_tail*',
-        'pdestructionoperation_slot1.PENDING = (n_exception)',
-        'pdestructionoperation_slot1.SOURCE = CONFIG_GENERATOR pconfiggenerator "next"',
-        '$ordinary_reference_value(S_slot1,n_value_cell) = (PINT 8)',
-        '$throwable_live(S_slot1,n_exception)',
-        '$weakref_get(S_slot1,n_watch) = POBJECT n_generator',
-        owners('S_slot1', 'HCELL n_value_cell', 1),
-    ] + public('S_slot1') + seek('S_slot1', 1012, 'S_slot2') + [
-        'S_slot2.TODO = (GENERATOR_STORAGE_STEP pgenstorage_slot2) :: ptask_slot2*',
-        'pgenstorage_slot2.OBJECT = n_generator',
-        'pgenstorage_slot2.NEXT = 2',
-        '$generator_storage_valid(S_slot2,pgenstorage_slot2)',
-        'S_slot2.DESTRUCTION.OPERATIONS = pdestructionoperation_slot2 :: pdestructionoperation_tail2*',
-        'pdestructionoperation_slot2.PENDING = (n_exception)',
-        'pdestructionoperation_slot2.SOURCE = CONFIG_GENERATOR pconfiggenerator "next"',
-        '~((HCELL n_value_cell) <- S_slot2.ALLOCATIONS)',
-        '$ordinary_reference_value(S_slot2,n_value_cell) = eps',
-        '(HOBJECT n_generator) <- S_slot2.ALLOCATIONS',
-        '$throwable_live(S_slot2,n_exception)',
-        '$weakref_get(S_slot2,n_watch) = POBJECT n_generator',
-    ] + public('S_slot2') + seek('S_slot2', 1013, 'S_catch') + [
+        'S_raw = $config_generator_discard(S_popped,pconfiggenerator,"next")',
+        'PhpStep: S_thrown ~> S_raw',
+        'S_raw.TODO = (THROW_SEARCH n_exception) :: ptask_tail*',
+        'S_raw.DESTRUCTION.OPERATIONS = S_popped.DESTRUCTION.OPERATIONS',
+        'S_raw.STORE = S_popped.STORE',
+        'S_raw.EVENTS = S_popped.EVENTS',
+        'S_raw.ALLOCATIONS = S_popped.ALLOCATIONS',
+        '$throwable_live(S_raw,n_exception)',
+    ] + public('S_thrown') + budget('S_thrown', 'S_release_budget') + [
+        'S_disposed = S_release_budget_one[.COMPLETION = NORMAL]',
+        'S_disposed.TODO = (THROW_SEARCH n_exception) :: ptask_tail*',
+        '~((HOBJECT n_generator) <- S_disposed.ALLOCATIONS)',
+        '~((HCELL n_value_cell) <- S_disposed.ALLOCATIONS)',
+        '$weakref_get(S_disposed,n_watch) = PNULL',
+        '$ordinary_reference_value(S_disposed,n_value_cell) = eps',
+        '$config_generator_reference_history(S_disposed,pconfiggenerator)',
+        '$config_generator_retired_scope(S_disposed,pconfiggenerator)',
+        'S_disposed.STORE[n_result_cell] = DEFINED (PINT 99)',
+        'S_disposed.PRECISIONINI = $ptascii("6")',
+        '$throwable_live(S_disposed,n_exception)',
+        '$throwable_field(S_disposed,n_exception,"previous") = PNULL',
+    ] + public('S_disposed') + seek('S_disposed', 1013, 'S_catch') + [
         '~((HOBJECT n_generator) <- S_catch.ALLOCATIONS)',
         '~((HCELL n_value_cell) <- S_catch.ALLOCATIONS)',
         '$weakref_get(S_catch,n_watch) = PNULL',
