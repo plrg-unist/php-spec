@@ -8,6 +8,16 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Published enum class-method strings now select generated `cases()`/`from()`/
+`tryFrom()` before arguments, retaining full original bytes through rebinding and
+real named Stringable callbacks. Temporary Stringable inputs retire before lookup;
+packed source origins remain Unsupported. Six new originals agree exactly and
+159 state/guard conditions pass; private and actual-tail joined strict431 pass.
+The separately reviewed 301 receipt normalization repairs the preserved ordinary
+136/137 identity observer. Wider callable consumers, enum collectability, backing
+dependencies and the default loader remain partial.
+[String-callable review](coverage/semantics/enum-string-callable-review.json).
+
 I81 carries selected array/string first-class user-method factories through
 scoped Generator creation after source-value mutation and callable retirement.
 A bounded borrowed lookup view reuses the existing source/access/scope proof;
@@ -223,7 +233,7 @@ reentrant/abrupt raw-owner teardown remain partial.
 | I82 | Rebound method-callable Generator factories; source preparation, unrun. |
 | OB04 | Selected error-handler FINAL handling; active validation. |
 | ATTR05 | Explicit captured-Closure `__invoke()` warning, trace and owner handling; active validation. |
-| Enum M3/M4 | Generated string dispatch is privately accepted: six exact normal originals, one explicit packed-source Unsupported, 159 state/guard checks and strict431 pass. Full target bytes and real named Stringable children survive rebinding and temporary retirement. The separately integrated 301 receipt normalization repairs the preserved ordinary 136/137 observer failure. Actual-tail composition is pending; callable consumers, enum collectability, backing dependencies and the default loader remain partial. |
+| Enum M3/M4 | Generated string capture preparation; no new validation credit. Wider callable consumers, enum collectability, backing dependencies and the default loader remain partial. |
 | A74 | Outside-alias scalar REFCELL cleanup; isolated preparation. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |

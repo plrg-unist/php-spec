@@ -1,5 +1,5 @@
 {
-  "status": "independently reviewed private milestone; actual-tail composition pending",
+  "status": "independently reviewed; actual-tail composition and joined compilation accepted",
   "target": "PHP 8.5.10 CLI, NTS, 64-bit",
   "scope": [
     "Published computed, literal and compiler-folded class-method strings select generated cases/from/tryFrom before arguments.",
@@ -141,7 +141,10 @@
   "independent_review": {
     "scope_and_implementation": "approved after all six reached-state groups passed",
     "fixture_and_optional_stdout_guard": "approved for all seven catalogue rows",
-    "shared_helper": "separately approved by GC pair"
+    "shared_helper": "separately approved by GC pair",
+    "reviewer": "enum_string_recover_review",
+    "actual_tail": "source, owner, GC and docs seams approved at the composed revision",
+    "joined_gate": "report, input identities, exact output and process reap independently approved"
   },
   "remaining": [
     "First-class array/string captures, pipe, callable admission, Closure::fromCallable and is_callable consumers.",
@@ -160,5 +163,24 @@
       "credit": 0,
       "finding": "The public Unsupported terminal driver clears tasks and drops the temporary input owner. Two fixture assertions wrongly expected the pre-refusal tasks and owner to remain. V2 corrects only these assertions and passes all 11 checks; this carries no PHP lifetime or agreement credit."
     }
-  ]
+  ],
+  "joined_compilation": {
+    "revision": "e09c050101901b5f152a0dbbf111885ccaa2fcc2",
+    "base": "08439f073ad3ab2f5dbbc4ddb7e044b703bd038d",
+    "mode": "SL",
+    "modules": 431,
+    "result": true,
+    "seconds": 12.802,
+    "report": ".tools/enum-string-joined-431-v1/process-SL.json",
+    "process": "CPU1,exit0,exact true newline,empty stderr,no timeout,stable inputs,group and PID fully reaped"
+  },
+  "artifacts": {
+    "manifest": "../php-spec-evidence-archive/enum-string-callable-117/manifest.json",
+    "manifest_sha256": "4729ec1a12e44429a58c83fa29c38d621df7ad32825cd71c40c35c83969d18c3",
+    "archive_bytes": 3782657,
+    "archive_sha256": "f34dd6db0f39bf37ac82d150be8a3de804f565b4ecf1e1dc68489e240d01ef40",
+    "raw_directories": 42,
+    "raw_regular_files": 910,
+    "recovery": "Extract raw.tar.gz and restore the selected raw/enum-* directory under ignored .tools/. Original absolute paths, tested-input snapshots, commands, environment/profile and hashes remain in the raw records. These artifacts are evidence, not maintained-test dependencies."
+  }
 }
