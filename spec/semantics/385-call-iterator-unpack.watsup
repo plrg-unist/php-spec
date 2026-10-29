@@ -761,8 +761,8 @@ def $iterator_unpack_discard_nodes(S, piteratorunpack) = $iterator_unpack_nodes(
 def $iterator_unpack_discard(S, piteratorunpack, text) = $eager_operation_begin(S_clean, S, ITERATOR_UNPACK piteratorunpack text, $iterator_unpack_discard_nodes(S, piteratorunpack))
   -- if $destructor_operational(S)
   -- if $eager_operation_pending(S) =/= eps
-  -- if S_clean = S[.ITERATORS = $iterator_remove(S.ITERATORS, piteratorunpack.ITERATOR)][.ORIGIN = piteratorunpack.CALL.CALLSITE][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-def $iterator_unpack_discard(S, piteratorunpack, text) = $fiber_start_unpack_release(S[.ITERATORS = $iterator_remove(S.ITERATORS, piteratorunpack.ITERATOR)][.ORIGIN = piteratorunpack.CALL.CALLSITE][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $iterator_unpack_discard_nodes(S, piteratorunpack))
+  -- if S_clean = S[.ITERATORS = $iterator_remove(S.ITERATORS, piteratorunpack.ITERATOR)][.ORIGIN = piteratorunpack.CALL.CALLSITE][.TODO = $call_aggregate_abort_tail(piteratorunpack.CALL, piteratorunpack.INPUT, piteratorunpack.OBJECT, S.TODO)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $iterator_unpack_discard(S, piteratorunpack, text) = $fiber_start_unpack_release(S[.ITERATORS = $iterator_remove(S.ITERATORS, piteratorunpack.ITERATOR)][.ORIGIN = piteratorunpack.CALL.CALLSITE][.TODO = $call_aggregate_abort_tail(piteratorunpack.CALL, piteratorunpack.INPUT, piteratorunpack.OBJECT, S.TODO)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $iterator_unpack_discard_nodes(S, piteratorunpack))
   -- if ~$destructor_operational(S) \/ $eager_operation_pending(S) = eps
 def $return_discard(S, ITERATOR_UNPACK piteratorunpack text) = $iterator_unpack_discard(S, piteratorunpack, text)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*

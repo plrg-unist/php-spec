@@ -347,8 +347,8 @@ def $eager_operation_source_valid(S, pdestructionoperation) = true
 def $generator_unpack_discard(S, pgeneratorunpack, text) = $eager_operation_begin(S_clean, S, GENERATOR_UNPACK pgeneratorunpack text, $generator_unpack_nodes(pgeneratorunpack, text) ++ $unpack_call_roots(pgeneratorunpack.CALL))
   -- if $destructor_operational(S)
   -- if $eager_operation_pending(S) =/= eps
-  -- if S_clean = S[.ORIGIN = pgeneratorunpack.CALL.CALLSITE][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-def $generator_unpack_discard(S, pgeneratorunpack, text) = $fiber_start_unpack_release(S[.ORIGIN = pgeneratorunpack.CALL.CALLSITE][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $generator_unpack_nodes(pgeneratorunpack, text) ++ $unpack_call_roots(pgeneratorunpack.CALL))
+  -- if S_clean = S[.ORIGIN = pgeneratorunpack.CALL.CALLSITE][.TODO = $call_aggregate_abort_tail(pgeneratorunpack.CALL, pgeneratorunpack.INPUT, pgeneratorunpack.OBJECT, S.TODO)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $generator_unpack_discard(S, pgeneratorunpack, text) = $fiber_start_unpack_release(S[.ORIGIN = pgeneratorunpack.CALL.CALLSITE][.TODO = $call_aggregate_abort_tail(pgeneratorunpack.CALL, pgeneratorunpack.INPUT, pgeneratorunpack.OBJECT, S.TODO)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $generator_unpack_nodes(pgeneratorunpack, text) ++ $unpack_call_roots(pgeneratorunpack.CALL))
   -- if ~$destructor_operational(S) \/ $eager_operation_pending(S) = eps
 def $return_discard(S, GENERATOR_UNPACK pgeneratorunpack text) = $generator_unpack_discard(S, pgeneratorunpack, text)
   -- if S.TODO = (THROW_SEARCH n) :: ptask*

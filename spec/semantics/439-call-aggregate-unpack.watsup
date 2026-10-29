@@ -270,6 +270,10 @@ def $call_aggregate_generator_input(S, pgeneratorunpack) = ($call_aggregate_rece
 def $call_aggregate_tail(punpackcall, poperand, n, (UNPACK_AGGREGATE pcallaggregate "leaf") :: ptask_tail*) = ptask_tail*
   -- if $call_aggregate_match(pcallaggregate, punpackcall, poperand, n)
 def $call_aggregate_tail(punpackcall, poperand, n, ptask_tail*) = ptask_tail* -- otherwise
+;; Once a producer is discarded, SOURCE carries the history through cleanup.
+;; Its active leaf receipt must not outlive the operation that authenticates it.
+def $call_aggregate_abort_tail(punpackcall, poperand, n, (THROW_SEARCH n_error) :: ptask_tail*) = (THROW_SEARCH n_error) :: $call_aggregate_tail(punpackcall, poperand, n, ptask_tail*)
+def $call_aggregate_abort_tail(punpackcall, poperand, n, ptask_tail*) = $call_aggregate_tail(punpackcall, poperand, n, ptask_tail*) -- otherwise
 def $call_aggregate_leaf_task(ITERATOR_UNPACK piteratorunpack text, pcallaggregate) = $call_aggregate_match(pcallaggregate, piteratorunpack.CALL, piteratorunpack.INPUT, piteratorunpack.OBJECT)
 def $call_aggregate_leaf_task(GENERATOR_UNPACK pgeneratorunpack text, pcallaggregate) = $call_aggregate_match(pcallaggregate, pgeneratorunpack.CALL, pgeneratorunpack.INPUT, pgeneratorunpack.OBJECT)
 def $call_aggregate_leaf_task(ptask, pcallaggregate) = false -- otherwise
