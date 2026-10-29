@@ -752,8 +752,19 @@ authenticated independently; a weak observer adds no strong owner. Four new
 sources agree with PHP. Normal cleanup drops DATA before INPUT and the existing
 storage pin, while quiet throw consumes both owners before catch. The weak
 observer sees the Generator live through the final INPUT stage and null before
-the NULL handler or catch. Owning sends, typed cells and wider factories remain
+the NULL handler or catch. Owning sends follow below; typed cells and wider factories remain
 partial.
+
+[Owning by-value Generator sends](coverage/semantics/config-generator-owning-value-review.json)
+copy finite quiet ARRAY or non-Stringable INSTANCE values from a named zero-argument
+Generator retained by an outside CV. Live acquisition and cleanup reject cycles,
+debt and reachable finalizers; historical sends keep bounded identities. The
+copied option remains rooted after the Generator cache changes to a scalar.
+Normal traversal hands it to INI_SET's TypeError trace; terminal supplied throw
+releases it before catch while the Generator survives. Four new sources agree
+with PHP and two reached recipes check COW, trace and weak-reference lifetimes.
+Temporary/indirect producers, owning reference cells, finalizers and wider
+cleanup remain partial.
 
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.

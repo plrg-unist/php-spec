@@ -117,7 +117,11 @@ A direct temporary zero-argument BYREF Generator call keeps separate INPUT and D
 owners; DATA drops first, then final INPUT/storage cleanup precedes API or catch.
 A distinct BYVAL factory can return that BYREF Generator while publishing only a
 weak observer; its source, owner transitions and weak death have private validation.
-Typed Generator cells, owning copied arguments, effectful casts, wider
+An outside-retained named BYVAL Generator now copies finite quiet owning ARRAY
+or ordinary INSTANCE sends. The copied prefix survives cache replacement until
+INI_SET TypeError trace reception, or retires before a terminal saved catch;
+four new sources agree and 296 reached conditions pass at private cuts.
+Typed Generator cells, effectful finalizers/casts, temporary owning producers, wider
 last-DATA reference graphs and lifecycles remain partial.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
@@ -127,6 +131,7 @@ last-DATA reference graphs and lifecycles remain partial.
 [Surviving-alias cleanup](coverage/semantics/config-generator-reference-outside-alias-review.json),
 [Temporary reference cleanup](coverage/semantics/config-generator-temporary-reference-review.json),
 [Factory reference cleanup](coverage/semantics/config-generator-factory-reference-review.json),
+[Owning Generator sends](coverage/semantics/config-generator-owning-value-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
@@ -323,9 +328,10 @@ cut keep zero credit.
 | GC09 | Coherent fake-Closure allocation flags under implementation. |
 | I84 | Magic-method Generator factories; authored native4 pass in a separate private lane. Independent native and model/state checks unrun. |
 | ATTR07 | Builtin attributes on real Closure/arrow expressions; separate producer preparation. |
+| CLASS155 | Core-only array-unpack constructor witness preparation. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
 | Enum M3/M4 | Published enum string callable-typed reception preparation; frozen independent original is native/model unrun. Other callable APIs, pipe/default-loading and wider backing contexts remain partial; GC09 intrinsic policy is separate. |
-| A77 | Retained Generator owning ARRAY/INSTANCE option sends; four frozen originals and old refusal, implementation preparation. |
+| A77 | Retained Generator owning ARRAY/INSTANCE sends; private source, strict and reached validation complete; integration pending. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
