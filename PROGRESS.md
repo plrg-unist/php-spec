@@ -35,22 +35,22 @@ passes at the separate integration cut.
 Callbacks, ephemerons, hooks, workers, residual buffers and noncanonical
 locators remain outside this slice. [Review](coverage/semantics/gc-materialized-table-review.json).
 
-Ordinary static Generator bodies now transfer through Fiber during fresh
-`current()` and the existing non-advancing `next()`/`send()` phases, for by-value
-and by-reference producers. Shared authenticated callee/cache/resumer rules retain
-inherited declaring/called scope without receiver roots. Reference cells survive
-name rebinding, snapshots stay separate from live caches, array COW preserves old
-copies, and SEND keeps its argument buffer distinct from the received local.
-Six authored and one independent source agree exactly with pinned PHP. Three
-representative originals were checked Unsupported; a selected named NEXT control
-stays exact. Strict 425 private/joined and 522 custom checks across four reached
-fronts pass, with no failed attempts. I72 evidence keeps its original cuts; its
-maintained CURRENT assertion is covered by the new compatibility front.
-Native-positive fresh NEXT/SEND before-first-yield ADVANCE gates remain explicit
-Unsupported with zero agreement. Their shared phase admission is the next generic
-milestone; keyword-forwarded creation still needs retained caller scope proof.
-Other callee/cache, helper/delegation and wider lifecycle forms remain partial.
-[Static transfer review](coverage/semantics/generator-fiber-static-transfer-review.json).
+Fresh Generator NEXT/SEND now transfer through Fiber before first yield using
+one authenticated phase rule across ordinary named, method, nonkeyword static
+and real unbound Closure callees. Existing cache/callee/resumer authority also
+admits primed METHOD/Closure reference caches. SEND retains its argument buffer
+through initialization and the received local separately after delivery; source
+name rebinding, local promotion, snapshots/live cells and supplied aborts preserve
+real ownership. Nine authored, one independent and two promoted I73 anchors agree
+exactly with pinned PHP. Six representative new originals were checked Unsupported.
+Strict compilation of 425 private/426 joined modules and 470 custom checks at
+four reached fronts pass. The original selector failure and independent 240-second
+timeout retain zero credit; the peer passes in 270.09 seconds with fixed 600/620
+limits for that source alone.
+THROW conditions and old I69-I73 cuts keep their identities; retained anchor
+natives/statuses are not replayed. Keyword-forwarded creation still needs actual
+retained caller scope proof. Wider bound/helper/delegation/lifecycle forms remain
+partial. [Fresh advance review](coverage/semantics/generator-fiber-fresh-advance-review.json).
 
 A fresh sole-DATA CONFIG Iterator now validates its actual declared physical
 fields without fixed names or an edge-count limit. Supported scalars, ordinary
@@ -772,12 +772,17 @@ credit. Generator/reference getters and wider targets/lifetimes stay partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| Enum core | Full four-group enum core work. |
-| I74 | Generic fresh NEXT/SEND ADVANCE phase; source/static preparation. |
+| Enum core | Stable core and M4 validation. |
+| A66 | CONFIG reference-current. |
+| Output buffering | Frontier scope preparation. |
+| CLASS147 | Namespace/import preparation. |
+| COMP150 | Finite Previous/root validation. |
+| GC02 | Ephemeron reachability. |
+| ATTR01 | NoDiscard. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64/A65, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110/111, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125/126, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148/149 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145/146 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73/74, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64/A65, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110/111, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125/126, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148/149 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145/146 are integrated
 into this branch.
 GC physical01 is integrated on this tail; its private source/state cuts and the
 joined strict gate retain their separate tested identities.

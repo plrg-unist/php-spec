@@ -134,6 +134,14 @@ Commit concise reports and manifests with hashes and locations. Preserve raw
 failures and interrupted runs externally; do not force-add their archives.
 The coverage compression patterns in `.gitignore` guard against reintroduction.
 
+I74 fresh NEXT/SEND evidence is retained uncompressed under
+`../php-spec-evidence-archive/generator-fiber-fresh-advance-74/`. Its manifest binds
+fifteen reports covering nine native sources, six representative baseline cases,
+disjoint changed 3+8 cuts, four accepted state fronts plus the failed selector,
+peer native/setup/240s stop/600s success, and private 425/joined 426. Original I73
+anchor paths/status cuts remain untouched; only their affected model expectations
+are promoted.
+
 I73 static CURRENT/NEXT/SEND transfer evidence is retained uncompressed under
 `../php-spec-evidence-archive/generator-fiber-static-transfer-73/`. Its manifest
 binds eleven reports, including the representative baseline 5, changed 6 plus two
