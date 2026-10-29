@@ -19,7 +19,8 @@ one as `Previous`, retiring an uncached self receiver before catch.
 Three authored and one independent source agree exactly with pinned PHP; two
 I68/I67 controls retain their exact parent outcomes. The three new authored
 sources were checked `Unsupported` on the unchanged model. Strict compilation
-of 424 modules and 229 custom checks across two reached cuts pass. The first
+of 424 modules and 229 custom checks across two reached cuts pass. Joined strict
+compilation over the actual tail also passes. The first
 native-report transport stop and overstrong returned-string fixture retain
 zero affected credit; the accepted parked cut keeps its original identity.
 Fresh by-value method THROW, bound/delegated and wider lifetimes remain partial.

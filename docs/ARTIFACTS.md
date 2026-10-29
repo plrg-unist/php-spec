@@ -122,7 +122,8 @@ The coverage compression patterns in `.gitignore` guard against reintroduction.
 
 I69 fresh method by-reference Generator THROW evidence is retained uncompressed
 under `../php-spec-evidence-archive/generator-fiber-fresh-method-reference-throw-69/`.
-Its `manifest.json` identifies ten reports and the separate peer originals/streams.
+Its `manifest.json` identifies ten private reports and the separate peer originals/streams.
+The additional `joined-strict/report.json` records actual-tail compilation.
 Initial native-transport and returned-fixture failures remain alongside accepted
 source, parked and corrected returned cuts with their original revision identities.
 
