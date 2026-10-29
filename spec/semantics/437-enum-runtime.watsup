@@ -640,6 +640,16 @@ def $enum_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_
   -- if pconfigcall.LINE = z_call
   -- if $enum_string_child_site(S, porigin_child, z_call)
   -- if $config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+def $enum_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call) = true
+  -- if pconfigcall.OWNER = (n_owner)
+  -- if pconfigcall.SELECTION = (n_nonce)
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if text_method <- ["from", "tryFrom"] /\ $enum_backing(S, porigin) = "string"
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if $enum_from_parse(S, pconfigcall, POBJECT n_object) = TYPEDEPENDENT "user object string conversion"
+  -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
+  -- if pconfigcall.LINE = z_call
+  -- if $config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
 def $enum_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call) = false -- otherwise
 def $exit_callable_arguments(S, porigin_site) = PCALLARGUMENTS phpType7* 2
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
