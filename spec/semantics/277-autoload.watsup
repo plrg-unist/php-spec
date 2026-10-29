@@ -783,6 +783,7 @@ rule PhpStep/autoload-scoped-selected-loaded: S ~> $scoped_select(S[.TODO = ptas
   -- if S.TODO = (AUTO_SCOPED_SELECTED porigin poperand_class ptbytes_method z) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $autoload_scoped_selected_site(S, porigin, poperand_class, ptbytes_method, z)
+  -- if $enum_autoload_capture_target(S, porigin, poperand_class, ptbytes_method, z) = eps
   -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
   -- if poperand_class = KNOWN (PSTRING ptbytes_class)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_class))) =/= eps

@@ -42,6 +42,8 @@ def $class_constant_constructor_marker(S, ptbytes, phpType7*, b_ctor, z) = $clas
 def $class_constant_constructor_selected((pstaticselection), ptbytes, phpType7*, b_ctor, z) = CLASS_CONST_CONSTRUCT_SELECTED pstaticselection phpType7* b_ctor z
 def $class_constant_constructor_selected(eps, ptbytes, phpType7*, b_ctor, z) = CLASS_CONST_CONSTRUCT ptbytes phpType7* b_ctor z
 dec $class_constant_table_event(pstate, porigin, porigin, porigin, nat) : pclassconstantevent
+dec $class_constant_cache_event(pstate, pclassconstantcontext, porigin, porigin, nat) : pclassconstantevent
+dec $enum_owned_cases_cache_context(pstate, pclassconstantcontext, porigin) : bool
 dec $dynamic_new_table_selected(pstate, porigin) : bool
 def $dynamic_new_table_selected(S, porigin) = false -- otherwise
 dec $class_static_ref_continuation_valid(pstate, porigin, ptbytes, int, ptask*) : bool
@@ -299,7 +301,9 @@ rule PhpStep/class-constant-member-abrupt: S ~> S_name[.TODO = ptask_tail*]
 
 dec $class_constant_restore(pstate, pclassconstantcontext, pclassconstantcontext*) : pstate
 def $class_constant_restore(S, pclassconstantcontext, pclassconstantcontext_tail*) = S[.CLASSCONSTANTINIT = pclassconstantcontext_tail*][.CONSTCONTEXT = pclassconstantcontext.PREVIOUS][.ORIGIN = pclassconstantcontext.ORIGIN]
-rule PhpStep/class-constant-bind: S ~> $class_constant_result($class_constant_restore(S_value[.TODO = ptask_tail*][.CLASSCONSTANTCACHE = S_value.CLASSCONSTANTCACHE ++ [{ORIGIN porigin, VALUE pvalue, CLASS pvalueclass}]][.CLASSCONSTANTHISTORY = S_value.CLASSCONSTANTHISTORY ++ [CCCACHE porigin porigin_trigger n_prefix]], pclassconstantcontext, pclassconstantcontext_tail*), pvalue, pvalueclass)
+def $class_constant_cache_event(S, pclassconstantcontext, porigin, porigin_trigger, n_prefix) = CCCACHE porigin porigin_trigger n_prefix
+  -- if ~$enum_owned_cases_cache_context(S, pclassconstantcontext, porigin)
+rule PhpStep/class-constant-bind: S ~> $class_constant_result($class_constant_restore(S_value[.TODO = ptask_tail*][.CLASSCONSTANTCACHE = S_value.CLASSCONSTANTCACHE ++ [{ORIGIN porigin, VALUE pvalue, CLASS pvalueclass}]][.CLASSCONSTANTHISTORY = S_value.CLASSCONSTANTHISTORY ++ [$class_constant_cache_event(S_value, pclassconstantcontext, porigin, porigin_trigger, n_prefix)]], pclassconstantcontext, pclassconstantcontext_tail*), pvalue, pvalueclass)
   -- if S.TODO = (CLASS_CONST_BIND porigin) :: ptask_tail*
   -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
   -- if pclassconstantcontext.ORIGIN = (porigin_trigger)

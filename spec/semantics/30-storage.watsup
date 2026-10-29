@@ -68,7 +68,7 @@ syntax pclosureevidence
 syntax pdynamicnew
 syntax ptraitcachecause
 syntax pstaticselection = { SITE porigin, ROOT porigin, SCOPE porigin?, CALLED porigin?, CLOSURE pclosureevidence? }
-syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | CCUPDATE porigin porigin porigin nat | CCSTATIC porigin porigin nat | CCSTATICRETIRE porigin porigin nat nat | CCCOMPOUNDENTER pstaticcompound porigin int nat | CCCOMPOUNDRETIRE pstaticcompound nat porigin int nat | CCCOMPOUNDWRITE pstaticcompound porigin int ptbytes nat
+syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | CCUPDATE porigin porigin porigin nat | CCSTATIC porigin porigin nat | CCSTATICRETIRE porigin porigin nat nat | CCCOMPOUNDENTER pstaticcompound porigin int nat | CCCOMPOUNDRETIRE pstaticcompound nat porigin int nat | CCCOMPOUNDWRITE pstaticcompound porigin int ptbytes nat | CCCACHE_ENUM porigin porigin nat nat
   | CCCOMPOUNDSELECT pstaticcompound pstaticselection porigin int nat
   | CCSTATICSELECT porigin pstaticselection nat | CCSTATICRETIRESELECT porigin pstaticselection nat nat | CCUPDATESELECT porigin pstaticselection nat
   | CCINSTANCE porigin porigin porigin porigin pstaticselection? nat
@@ -1535,6 +1535,8 @@ dec $enum_class_verify(pstate, pclassdesc) : pmethodissue
 dec $enum_constant_pending(pstate, pclassdesc) : bool
 dec $enum_backing_issue(pstate, porigin) : pmethodissue
 dec $enum_generated(pstate, porigin, ptbytes) : bool
+dec $enum_autoload_capture_target(pstate, porigin, poperand, ptbytes, int) : pintrinsic?
+dec $enum_closure_valid(pstate, nat, pintrinsic) : bool
 dec $enum_implements_issue(pstate, pclassdesc, ptbytes) : ptbytes?
 ;; Optional magic-trampoline argument collection is defined after ordinary calls.
 dec $magic_unpack_arguments(pstate, porigin, phpType7*) : bool

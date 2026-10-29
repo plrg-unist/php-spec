@@ -151,6 +151,15 @@ def $config_prepare(S, INTRINSIC_DEFINE, z, (n_owner), porigin) = S[.SELECTSEQ =
   -- if n_nonce = S.SELECTSEQ
   -- if n_depth = |S.FRAMES|
   -- if pselectedcall = {NONCE n_nonce, SITE porigin, KIND INTRINSIC_DEFINE, OWNER (n_owner), ORIGINAL eps, LOOKUP $intrinsic_name(INTRINSIC_DEFINE), DEPTH n_depth, LINE z}
+def $config_prepare(S, pintrinsic, z, (n_owner), porigin_site) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (CONFIG_ARGS {SITE porigin_site, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER (n_owner), SELECTION (n_nonce), LINE z, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $enum_kind(pintrinsic)
+  -- if S.ORIGIN = (porigin_site)
+  -- if $enum_closure_valid(S, n_owner, pintrinsic)
+  -- if (($exit_fixed(S, porigin_site) = eps /\ $exit_dynamic_site(S, porigin_site)) \/ $exit_method_site(S, porigin_site))
+  -- if $call_line_valid(S, (porigin_site), z)
+  -- if n_nonce = S.SELECTSEQ
+  -- if n_depth = |S.FRAMES|
+  -- if pselectedcall = {NONCE n_nonce, SITE porigin_site, KIND pintrinsic, OWNER (n_owner), ORIGINAL eps, LOOKUP $intrinsic_name(pintrinsic), DEPTH n_depth, LINE z}
 def $config_prepare(S, pintrinsic, z, n_owner?, porigin) = S[.TODO = (CONFIG_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, SELECTION eps, LINE z, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- otherwise
 def $intrinsic_pipe(S, pintrinsic, pvalue, porigin, z, n_owner?) = S[.TODO = (CONFIG_INVOKE {SITE porigin, KIND pintrinsic, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue)]), NAMED false, OWNER n_owner?, SELECTION eps, LINE z, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -1393,7 +1402,7 @@ def $config_selected_valid(S, pconfigcall) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pconfigcall.KIND
-  -- if ~$from_kind(pconfigcall.KIND) /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_BIND
+  -- if ~$from_kind(pconfigcall.KIND) /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_BIND /\ ~$enum_kind(pconfigcall.KIND)
   -- if $exit_fixed(S, pconfigcall.SITE) = eps
   -- if $exit_dynamic_site(S, pconfigcall.SITE)
 def $config_selected_valid(S, pconfigcall) = true
@@ -1403,7 +1412,7 @@ def $config_selected_valid(S, pconfigcall) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pconfigcall.KIND
-  -- if ~$from_kind(pconfigcall.KIND) /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_BIND
+  -- if ~$from_kind(pconfigcall.KIND) /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_BIND /\ ~$enum_kind(pconfigcall.KIND)
   -- if $exit_method_site(S, pconfigcall.SITE)
 def $config_selected_valid(S, pconfigcall) = false -- otherwise
 dec $config_slots_valid(pstate, pnamedslot*) : bool
