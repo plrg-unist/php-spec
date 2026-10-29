@@ -134,7 +134,7 @@ def checks(program, path, name):
         return rows + finish('S_equal_raw', name)
     if name == 'source-interface-alias-tables':
         rows += [
-            'S_wrong = S[.LINKEDINTERFACES = [{OWNER porigin_class, TARGETS [PILBUILTIN $ptascii("Stringable")]}]]',
+            'S_wrong = S[.LINKEDINTERFACES = [{OWNER porigin_class, TARGETS ([PILBUILTIN $ptascii("Stringable")])}]]',
             '~$trace_visit_interfaces(S_wrong,pclassdesc_interface_owner)',
             'S_reordered = S[.CLASSNAMES = [($ptlc(pclassdesc_interface_owner.NAME),porigin_class),($ptlc(pclassdesc_interface.NAME),porigin_interface)]]',
             '$trace_visit_object_header(S_reordered,n_left)',
