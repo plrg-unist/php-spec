@@ -74,6 +74,17 @@ def $iterator_unpack_plain(S, punpackcall) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if $call_selected_valid(S, punpackcall.FUNCTION, punpackcall.CALLSITE)
 def $iterator_unpack_plain(S, punpackcall) = true
+  -- if punpackcall.FUNCTION = METHOD_TARGET n porigin_method
+  -- if $unpack_class(S, punpackcall) = (UNPACK_CV)
+  -- if $object_invoke_method(S, n) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if punpackcall.CALLSITE = (porigin_site)
+  -- if $dynamic_site(S, (porigin_site))
+  -- if $dynamic_fixed_name(S, porigin_site) = eps
+  -- if $dynamic_cv_name(S, porigin_site) = (ptbytes)
+  -- if $call_selected_valid(S, punpackcall.FUNCTION, punpackcall.CALLSITE)
+def $iterator_unpack_plain(S, punpackcall) = true
   -- if punpackcall.FUNCTION = ARRAY_METHOD_TARGET (METHOD_TARGET n porigin_method) parrayselection
   -- if $unpack_class(S, punpackcall) = (UNPACK_CV)
   -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
@@ -695,6 +706,15 @@ def $iterator_unpack_abort_plain(S, punpackcall) = true
   -- if punpackcall.FUNCTION = ARRAY_METHOD_TARGET (METHOD_TARGET n porigin_method) parrayselection
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE parrayselection.REQUESTED
+  -- if ~((HOBJECT n) <- S.ALLOCATIONS)
+  -- if $iterator_unpack_plain(S[.ALLOCATIONS = (HOBJECT n) :: S.ALLOCATIONS], punpackcall)
+def $iterator_unpack_abort_plain(S, punpackcall) = true
+  -- if punpackcall.FUNCTION = METHOD_TARGET n porigin_method
+  -- if punpackcall.CALLSITE = (porigin_site)
+  -- if $dynamic_site(S, (porigin_site))
+  -- if $dynamic_fixed_name(S, porigin_site) = eps
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if ~((HOBJECT n) <- S.ALLOCATIONS)
   -- if $iterator_unpack_plain(S[.ALLOCATIONS = (HOBJECT n) :: S.ALLOCATIONS], punpackcall)
 def $iterator_unpack_abort_plain(S, punpackcall) = false -- otherwise
