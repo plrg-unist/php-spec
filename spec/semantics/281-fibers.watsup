@@ -264,12 +264,11 @@ def $fiber_generator_body_id(S) = (pgeneratorop.OBJECT)
   -- if ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if (((pgeneratorop.NAME <- ["current", "next"] /\ pgeneratorop.ARGUMENTS = eps) \/ (pgeneratorop.NAME = "send" /\ |pgeneratorop.ARGUMENTS| = 1) \/ $fiber_generator_throw_valid(S, pgeneratorop, pgenerator, pcallcontext)) /\ ~pgeneratorop.ADVANCE) \/ $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext)
-  -- if pgenerator.REFCELL = eps \/ pcallcontext.TARGET = pgenerator.FUNCTION \/ pgeneratorop.NAME = "throw"
+  -- if pgenerator.REFCELL = eps \/ pcallcontext.TARGET = pgenerator.FUNCTION \/ $fiber_generator_static_target(pcallcontext.TARGET, pgenerator.FUNCTION) \/ pgeneratorop.NAME = "throw"
   -- if pgenerator.FRAME = eps /\ pgenerator.DELEGATE = eps /\ pgenerator.PARKED = eps
   -- if pgenerator.ACCESS = eps /\ pgenerator.RETURN = eps
   -- if $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) /\ pgenerator.BORROWED = eps /\ ~pgenerator.PENDING_INIT
   -- if $fiber_generator_callee_valid(S, pgenerator, pcallcontext)
-  -- if ~$fiber_generator_static_target(pcallcontext.TARGET, pgenerator.FUNCTION) \/ pgeneratorop.NAME = "throw"
   -- if $generator_resume_ids(S.TODO) = eps
   -- if $generator_saved_ids(S.FRAMES) = [pgeneratorop.OBJECT]
   -- if $generator_resume_pairs(S, S.CURRENT, S.FRAMES)

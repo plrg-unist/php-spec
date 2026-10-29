@@ -1,0 +1,178 @@
+[
+  {
+    "id": "i73-static-current-byval-copied-token",
+    "purpose": "Fresh CURRENT through an inherited object-selected static BYVAL Generator preserves copied local Old after main input replacement; selector has no receiver root, frame/cache retire separately.",
+    "source": "<?php\nclass Parent73CurrentValue {\n    public function __destruct() { echo 'SELECTOR|'; }\n    public static function stream($item) {\n        global $weakOld;\n        echo 'SCOPE|', (int) (__CLASS__ === 'Parent73CurrentValue'), '|',\n             (int) (static::class === 'Leaf73CurrentValue'), '|';\n        try {\n            echo 'ENTER|';\n            $reply = Fiber::suspend('pause73');\n            echo 'REPLY|', (int) ($reply === 'go73'), '|';\n            echo 'FIRST|', (int) ($item === $weakOld->get()), '|';\n            yield $item;\n            echo 'TAIL|';\n        } finally {\n            echo 'FIN|', (int) (__CLASS__ === 'Parent73CurrentValue'), '|',\n                 (int) (static::class === 'Leaf73CurrentValue'), '|';\n        }\n        return 73;\n    }\n}\nclass Leaf73CurrentValue extends Parent73CurrentValue {}\nclass Old73CurrentValue { public function __destruct() { echo 'OLD|'; } }\nclass New73CurrentValue { public function __destruct() { echo 'NEW|'; } }\nfunction Run73CurrentValue() {\n    global $g, $weakOld, $input;\n    echo 'CALL|';\n    $value = $g->current();\n    echo 'VALUE|', (int) ($value === $weakOld->get()), '|',\n         (int) ($input instanceof New73CurrentValue), '|';\n    return 'fiber73';\n}\n$selector = new Leaf73CurrentValue();\n$weakSelector = WeakReference::create($selector);\n$input = new Old73CurrentValue();\n$weakOld = WeakReference::create($input);\n$g = $selector->stream($input);\nunset($selector);\necho 'SELECTED|', (int) ($weakSelector->get() === null), '|';\n$f = new Fiber('Run73CurrentValue');\necho 'START|', (int) ($f->start() === 'pause73'), '|';\n$input = new New73CurrentValue();\n$weakNew = WeakReference::create($input);\necho 'PARK|', (int) $f->isSuspended(), '|',\n     (int) ($weakOld->get() !== null), '|',\n     (int) ($weakSelector->get() === null), '|';\necho 'RESUME|', (int) ($f->resume('go73') === null), '|';\necho 'FIBER|', (int) ($f->getReturn() === 'fiber73'), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 73), '|',\n     (int) ($weakOld->get() !== null), '|';\nunset($g, $f);\necho 'CACHE-DROP|', (int) ($weakOld->get() === null), '|';\nunset($input);\necho 'INPUT-DROP|', (int) ($weakNew->get() === null), '|';\nunset($weakSelector, $weakOld, $weakNew);\necho 'E';\n",
+    "source_sha256": "b650fb31d8fdb0b6cc0ba85e7b8e1c285261f5113b20d0ca3a9f8c4f6b8307f9",
+    "native_exit": 0,
+    "native_stdout": "SELECTOR|SELECTED|1|START|CALL|SCOPE|1|1|ENTER|1|PARK|1|1|1|RESUME|REPLY|1|FIRST|1|VALUE|1|1|1|FIBER|1|TAIL|FIN|1|1|CLOSED|1|1|OLD|CACHE-DROP|1|NEW|INPUT-DROP|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i73-scoped-current-byref-snapshot",
+    "purpose": "Fresh inherited SCOPED CURRENT preserves shared original parameter cell after source-name rebinding; current return snapshot7 remains7 after live cache write11.",
+    "source": "<?php\nclass Parent73CurrentRef {\n    public static function &stream(&$item) {\n        echo 'SCOPE|', (int) (__CLASS__ === 'Parent73CurrentRef'), '|',\n             (int) (static::class === 'Leaf73CurrentRef'), '|';\n        echo 'ENTER|';\n        $reply = Fiber::suspend('pause73');\n        echo 'REPLY|', (int) ($reply === 'go73'), '|';\n        yield $item;\n        echo 'TAIL|';\n        return 73;\n    }\n}\nclass Leaf73CurrentRef extends Parent73CurrentRef {}\nfunction Run73CurrentRef() {\n    global $g, $old;\n    echo 'CALL|';\n    $value = $g->current();\n    echo 'VALUE|', (int) ($value === 7), '|';\n    $old = 11;\n    echo 'LIVE|', (int) ($g->current() === 11), '|', (int) ($value === 7), '|';\n    return 'fiber73';\n}\n$slot = 5;\n$old =& $slot;\n$g = Leaf73CurrentRef::stream($slot);\n$f = new Fiber('Run73CurrentRef');\necho 'START|', (int) ($f->start() === 'pause73'), '|';\n$replacement = 9;\n$slot =& $replacement;\n$old = 7;\necho 'PARK|', (int) $f->isSuspended(), '|',\n     (int) ($slot === 9), '|', (int) ($old === 7), '|';\necho 'RESUME|', (int) ($f->resume('go73') === null), '|';\necho 'FIBER|', (int) ($f->getReturn() === 'fiber73'), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 73), '|';\nunset($g, $f, $slot, $old, $replacement);\necho 'E';\n",
+    "source_sha256": "a19b88641d6cc99987e836af0779f448840eb99c4a63b0aa61c1dcaa146c1e1d",
+    "native_exit": 0,
+    "native_stdout": "START|CALL|SCOPE|1|1|ENTER|1|PARK|1|1|1|RESUME|REPLY|1|VALUE|1|LIVE|1|1|1|FIBER|1|TAIL|CLOSED|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i73-scoped-next-byval-sole-cache",
+    "purpose": "Primed inherited SCOPED NEXT has a sole by-value Token cache while its local is unset; next yield retires Token before API caller continues, retaining ordinary reentry Error.",
+    "source": "<?php\nclass Parent73NextValue {\n    public static function stream() {\n        global $weakCache;\n        $item = new Token73NextValue();\n        $weakCache = WeakReference::create($item);\n        echo 'SCOPE|', (int) (__CLASS__ === 'Parent73NextValue'), '|',\n             (int) (static::class === 'Leaf73NextValue'), '|';\n        yield $item;\n        unset($item);\n        echo 'BODY|';\n        $reply = Fiber::suspend('pause73');\n        echo 'REPLY|', (int) ($reply === 'go73'), '|';\n        yield null;\n        echo 'TAIL|';\n        return 73;\n    }\n}\nclass Leaf73NextValue extends Parent73NextValue {}\nclass Token73NextValue { public function __destruct() { echo 'TOKEN|'; } }\nfunction Run73NextValue() {\n    global $g, $weakCache;\n    echo 'CALL|';\n    $g->next();\n    echo 'AFTER|', (int) ($weakCache->get() === null), '|',\n         (int) ($g->current() === null), '|';\n    return 'fiber73';\n}\n$g = Leaf73NextValue::stream();\n$g->current();\n$f = new Fiber('Run73NextValue');\necho 'START|', (int) ($f->start() === 'pause73'), '|';\necho 'PARK|', (int) $f->isSuspended(), '|',\n     (int) ($g->current() === $weakCache->get()), '|';\ntry {\n    $g->next();\n    echo 'BAD-REENTRY|';\n} catch (Error $error) {\n    echo 'ERROR|', (int) ($error->getMessage() === 'Cannot resume an already running generator'),\n         '|', (int) ($error->getPrevious() === null), '|';\n}\necho 'RESUME|', (int) ($f->resume('go73') === null), '|';\necho 'FIBER|', (int) ($f->getReturn() === 'fiber73'), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 73), '|';\nunset($g, $f, $weakCache, $error);\necho 'E';\n",
+    "source_sha256": "5f2dc5642d1443f9203272f05a093daf18898b2f1a4fc6b07606b5061fbce341",
+    "native_exit": 0,
+    "native_stdout": "SCOPE|1|1|START|CALL|BODY|1|PARK|1|1|ERROR|1|1|RESUME|REPLY|1|TOKEN|AFTER|1|1|1|FIBER|1|TAIL|CLOSED|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i73-static-next-byref-array-copy",
+    "purpose": "Primed object-selected static BYREF NEXT preserves cache/parameter old cell after source-name rebind and array COW, while copied old array keeps Old separate from live Next.",
+    "source": "<?php\nclass Parent73NextRef {\n    public function __destruct() { echo 'SELECTOR|'; }\n    public static function &stream(&$item) {\n        echo 'SCOPE|', (int) (__CLASS__ === 'Parent73NextRef'), '|',\n             (int) (static::class === 'Leaf73NextRef'), '|';\n        echo 'SEED|';\n        yield $item;\n        echo 'BODY|';\n        $reply = Fiber::suspend('pause73');\n        echo 'REPLY|', (int) ($reply === 'go73'), '|';\n        yield $item;\n        echo 'TAIL|';\n        return 73;\n    }\n}\nclass Leaf73NextRef extends Parent73NextRef {}\nclass Old73NextRef { public function __destruct() { echo 'OLD|'; } }\nclass Next73NextRef { public function __destruct() { echo 'NEXT|'; } }\nfunction Run73NextRef() {\n    global $g, $weakNext;\n    echo 'CALL|';\n    $g->next();\n    $value = $g->current();\n    echo 'VALUE|', (int) ($value[0] === $weakNext->get()), '|';\n    return 'fiber73';\n}\n$selector = new Leaf73NextRef();\n$weakSelector = WeakReference::create($selector);\n$slot = [new Old73NextRef()];\n$weakOld = WeakReference::create($slot[0]);\n$old =& $slot;\n$g = $selector->stream($slot);\nunset($selector);\necho 'SELECTED|', (int) ($weakSelector->get() === null), '|';\n$copy = $g->current();\n$f = new Fiber('Run73NextRef');\necho 'START|', (int) ($f->start() === 'pause73'), '|';\n$replacement = 9;\n$slot =& $replacement;\n$old[0] = new Next73NextRef();\n$weakNext = WeakReference::create($old[0]);\necho 'PARK|', (int) $f->isSuspended(), '|',\n     (int) ($g->current()[0] === $weakNext->get()), '|',\n     (int) ($copy[0] === $weakOld->get()), '|', (int) ($slot === 9), '|';\necho 'RESUME|', (int) ($f->resume('go73') === null), '|';\necho 'FIBER|', (int) ($f->getReturn() === 'fiber73'), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 73), '|';\nunset($copy);\necho 'COPY-DROP|', (int) ($weakOld->get() === null), '|',\n     (int) ($weakNext->get() !== null), '|';\nunset($g, $f, $old, $slot, $replacement);\necho 'CACHE-DROP|', (int) ($weakNext->get() === null), '|';\nunset($weakSelector, $weakOld, $weakNext);\necho 'E';\n",
+    "source_sha256": "772e23252b57ac0a1f44b91fbfe0f332a5017105f8a20ed6a17add883c97f47d",
+    "native_exit": 0,
+    "native_stdout": "SELECTOR|SELECTED|1|SCOPE|1|1|SEED|START|CALL|BODY|1|PARK|1|1|1|1|RESUME|REPLY|1|VALUE|1|1|FIBER|1|TAIL|CLOSED|1|OLD|COPY-DROP|1|1|NEXT|CACHE-DROP|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i73-static-send-byval-buffer-abort",
+    "purpose": "Primed static BYVAL SEND keeps temporary Delivered in both argument buffer and received CV while a separate sole Seed value cache survives supplied-Throwable cleanup.",
+    "source": "<?php\nclass Parent73SendValue {\n    public function __destruct() { echo 'SELECTOR|'; }\n    public static function stream() {\n        global $weakCache, $weakDelivered;\n        $seed = new Seed73SendValue();\n        $weakCache = WeakReference::create($seed);\n        echo 'SCOPE|', (int) (__CLASS__ === 'Parent73SendValue'), '|',\n             (int) (static::class === 'Leaf73SendValue'), '|';\n        $received = yield $seed;\n        unset($seed);\n        try {\n            echo 'DELIVERED|', (int) ($received === $weakDelivered->get()), '|';\n            Fiber::suspend('pause73');\n            echo 'BAD-BODY|';\n            yield $received;\n        } finally {\n            echo 'FIN|', (int) ($received === $weakDelivered->get()), '|',\n                 (int) (__CLASS__ === 'Parent73SendValue'), '|',\n                 (int) (static::class === 'Leaf73SendValue'), '|';\n        }\n    }\n}\nclass Leaf73SendValue extends Parent73SendValue {}\nclass Seed73SendValue { public function __destruct() { echo 'SEED-DROP|'; } }\nclass Delivered73SendValue { public function __destruct() { echo 'DELIVERED-DROP|'; } }\nfunction Make73SendValue() {\n    global $weakDelivered;\n    $value = new Delivered73SendValue();\n    $weakDelivered = WeakReference::create($value);\n    return $value;\n}\nfunction Run73SendValue() {\n    global $g, $stop, $weakDelivered;\n    echo 'CALL|';\n    try {\n        $g->send(Make73SendValue());\n        echo 'BAD-RETURN|';\n    } catch (Throwable $outside) {\n        echo 'OUTSIDE|', (int) ($outside === $stop), '|',\n             (int) ($outside->getPrevious() === null), '|',\n             (int) ($weakDelivered->get() === null), '|';\n    }\n    return 'fiber73';\n}\n$selector = new Leaf73SendValue();\n$weakSelector = WeakReference::create($selector);\n$g = $selector->stream();\nunset($selector);\necho 'SELECTED|', (int) ($weakSelector->get() === null), '|';\n$g->current();\n$stop = new RuntimeException('stop73');\n$f = new Fiber('Run73SendValue');\necho 'START|', (int) ($f->start() === 'pause73'), '|';\necho 'PARK|', (int) $f->isSuspended(), '|',\n     (int) ($weakDelivered->get() !== null), '|',\n     (int) ($g->current() === $weakCache->get()), '|';\necho 'INJECT|', (int) ($f->throw($stop) === null), '|';\necho 'FIBER|', (int) ($f->getReturn() === 'fiber73'), '|',\n     (int) !$g->valid(), '|';\necho 'CACHE|', (int) ($weakCache->get() !== null), '|';\nunset($g, $f);\necho 'CACHE-DROP|', (int) ($weakCache->get() === null), '|';\nunset($stop, $weakSelector, $weakDelivered, $weakCache);\necho 'E';\n",
+    "source_sha256": "3db317e9555664f125aa2bf3f2189d5350144af7605099f2c4c8dd6d23b0bef3",
+    "native_exit": 0,
+    "native_stdout": "SELECTOR|SELECTED|1|SCOPE|1|1|START|CALL|DELIVERED|1|1|PARK|1|1|1|INJECT|FIN|1|1|1|DELIVERED-DROP|OUTSIDE|1|1|1|1|FIBER|1|1|CACHE|1|SEED-DROP|CACHE-DROP|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i73-scoped-send-byref-live-snapshot",
+    "purpose": "Primed inherited SCOPED BYREF SEND preserves selected called Leaf after dynamic class-name replacement, delivers scalar13 and returns snapshot7 separately from later live current11.",
+    "source": "<?php\nclass Parent73SendRef {\n    public static function &stream(&$item) {\n        echo 'SCOPE|', (int) (__CLASS__ === 'Parent73SendRef'), '|',\n             (int) (static::class === 'Leaf73SendRef'), '|';\n        $received = yield $item;\n        echo 'DELIVERED|', (int) ($received === 13), '|';\n        $reply = Fiber::suspend('pause73');\n        echo 'REPLY|', (int) ($reply === 'go73'), '|';\n        yield $item;\n        echo 'TAIL|';\n        return 73;\n    }\n}\nclass Leaf73SendRef extends Parent73SendRef {}\nfunction Run73SendRef() {\n    global $g, $old;\n    echo 'CALL|';\n    $value = $g->send(13);\n    echo 'VALUE|', (int) ($value === 7), '|';\n    $old = 11;\n    echo 'LIVE|', (int) ($g->current() === 11), '|', (int) ($value === 7), '|';\n    return 'fiber73';\n}\n$slot = 5;\n$old =& $slot;\n$producer = 'Leaf73SendRef';\n$g = $producer::stream($slot);\n$producer = 'Parent73SendRef';\necho 'PRIME|', (int) ($g->current() === 5), '|';\n$f = new Fiber('Run73SendRef');\necho 'START|', (int) ($f->start() === 'pause73'), '|';\n$replacement = 9;\n$slot =& $replacement;\n$old = 7;\necho 'PARK|', (int) $f->isSuspended(), '|',\n     (int) ($g->current() === 7), '|', (int) ($slot === 9), '|';\necho 'RESUME|', (int) ($f->resume('go73') === null), '|';\necho 'FIBER|', (int) ($f->getReturn() === 'fiber73'), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 73), '|';\nunset($g, $f, $slot, $old, $replacement, $producer);\necho 'E';\n",
+    "source_sha256": "7851b94d09b4e6d836d275f0122e85e124d4034d35534cb812564c03170c2bf3",
+    "native_exit": 0,
+    "native_stdout": "PRIME|SCOPE|1|1|1|START|CALL|DELIVERED|1|1|PARK|1|1|1|RESUME|REPLY|1|VALUE|1|LIVE|1|1|1|FIBER|1|TAIL|CLOSED|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i73-unchanged-named-next-reference-control",
+    "purpose": "Byte-identical existing named operation baseline control; no I72 replay.",
+    "source": "<?php\nfunction &Work59Rebind(&$cell) {\n    echo 'SEED|';\n    yield $cell;\n    echo 'BODY|';\n    $reply = Fiber::suspend('pause59');\n    echo 'REPLY|', (int) ($reply === 'go59'), '|';\n    yield $cell;\n    echo 'END|';\n    return 59;\n}\n$slot = 5;\n$old =& $slot;\n$g = Work59Rebind($slot);\necho 'PRIME|', (int) ($g->current() === 5), '|';\n$f = new Fiber(function () use ($g) {\n    echo 'CALL|';\n    $g->next();\n    echo 'AFTER|';\n    return $g->current();\n});\necho 'START|', (int) ($f->start() === 'pause59'), '|';\n$replacement = 9;\n$slot =& $replacement;\n$old = 7;\necho 'PARK|', (int) $f->isSuspended(), '|';\necho 'CELLS|', (int) ($g->current() === 7), '|', (int) ($slot === 9), '|';\necho 'RESUME|', (int) ($f->resume('go59') === null), '|';\necho 'RESULT|', (int) ($f->getReturn() === 7), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 59), '|';\nunset($f, $g, $slot, $old, $replacement);\necho 'E';\n",
+    "source_sha256": "ace4d9f5bb3a76f9a873ceaebd17731dcbeb29349aacdfe7d303afb24a5d38a5",
+    "native_exit": 0,
+    "native_stdout": "PRIME|SEED|1|START|CALL|BODY|1|PARK|1|CELLS|1|1|RESUME|REPLY|1|AFTER|1|RESULT|1|END|CLOSED|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i73-unchanged-named-send-value-control",
+    "source": "<?php\nclass SendToken56 {\n    public function __destruct() { echo 'D|'; }\n}\nfunction Body56() {\n    $received = yield 'seed';\n    echo 'VALUE|', (int) ($received === $GLOBALS['payload']);\n    unset($GLOBALS['payload']);\n    $reply = Fiber::suspend('pause');\n    echo 'REPLY|', (int) ($reply === 'resume');\n    unset($received);\n    echo 'BUFFER|', (int) ($GLOBALS['weak']->get() !== null);\n    yield 'done';\n    echo 'BODY-END|';\n    return 56;\n}\nfunction Run56() {\n    global $g;\n    echo 'CALL|';\n    $value = $g->send($GLOBALS['payload']);\n    echo 'SEND|', (int) ($value === 'done'), (int) ($GLOBALS['weak']->get() === null);\n    return 'fiber';\n}\n$payload = new SendToken56();\n$weak = WeakReference::create($payload);\n$g = Body56();\necho 'SEED|', (int) ($g->current() === 'seed');\n$f = new Fiber('Run56');\necho 'START|', (int) ($f->start() === 'pause');\necho 'PARKED|', (int) $f->isSuspended(), (int) ($weak->get() !== null);\necho 'RESUME|', (int) ($f->resume('resume') === null);\necho 'FIBER|', (int) ($f->getReturn() === 'fiber');\n$g->next();\necho 'RETURN|', (int) ($g->getReturn() === 56);\nunset($g, $f, $weak);\necho 'E';\n",
+    "source_sha256": "b6d038023cb7c86ff99394d478cfcaa7cab8ae0b61e20c71ff7a9f6df3eb1c81",
+    "native_exit": 0,
+    "native_stderr": "",
+    "native_stdout": "SEED|1START|CALL|VALUE|11PARKED|11RESUME|REPLY|1BUFFER|1D|SEND|111FIBER|1BODY-END|RETURN|1E",
+    "purpose": "Byte-identical existing named operation baseline control; no I72 replay."
+  },
+  {
+    "id": "i73-fresh-static-next-advance-boundary",
+    "purpose": "Explicit shared pre-first-yield ADVANCE gate: native-positive, unchanged and changed Unsupported with zero agreement.",
+    "source": "<?php\nclass Gate73Next {\n    public static function stream() {\n        echo 'ENTER|';\n        $reply = Fiber::suspend('gate73');\n        echo 'REPLY|', (int) ($reply === 'go73'), '|';\n        yield 5;\n        echo 'SECOND|';\n        yield 7;\n        return 73;\n    }\n}\nfunction Run73NextGate() {\n    global $g;\n    echo 'CALL|';\n    $g->next();\n    echo 'VALUE|', (int) ($g->current() === 7), '|';\n    return 'fiber73';\n}\n$g = Gate73Next::stream();\n$f = new Fiber('Run73NextGate');\necho 'START|', (int) ($f->start() === 'gate73'), '|';\necho 'RESUME|', (int) ($f->resume('go73') === null), '|';\necho 'FIBER|', (int) ($f->getReturn() === 'fiber73'), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 73), '|';\nunset($g, $f);\necho 'E';\n",
+    "source_sha256": "589f4fceb5a23d74947362051ea58db707d168b78333e868ec2b2655ee148ca0",
+    "expected_model": "unsupported",
+    "unsupported_reason": "Fiber switch during an initializer, source loader or Generator continuation",
+    "native_exit": 0,
+    "native_stdout": "START|CALL|ENTER|1|RESUME|REPLY|1|SECOND|VALUE|1|1|FIBER|1|CLOSED|1|E",
+    "native_stderr": "",
+    "unsupported_stdout": "START|CALL|ENTER|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "83",
+            "84",
+            "65",
+            "82",
+            "84",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "67",
+            "65",
+            "76",
+            "76",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "69",
+            "78",
+            "84",
+            "69",
+            "82",
+            "124"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "i73-fresh-named-send-advance-boundary",
+    "purpose": "Explicit shared pre-first-yield ADVANCE gate: native-positive, unchanged and changed Unsupported with zero agreement.",
+    "source": "<?php\nfunction Fresh73SendGate() {\n    echo 'ENTER|';\n    $reply = Fiber::suspend('gate73');\n    echo 'REPLY|', (int) ($reply === 'go73'), '|';\n    $received = yield 5;\n    echo 'DELIVERED|', (int) ($received === 13), '|';\n    yield 7;\n    return 73;\n}\nfunction Run73SendGate() {\n    global $g;\n    echo 'CALL|';\n    $value = $g->send(13);\n    echo 'VALUE|', (int) ($value === 7), '|';\n    return 'fiber73';\n}\n$g = Fresh73SendGate();\n$f = new Fiber('Run73SendGate');\necho 'START|', (int) ($f->start() === 'gate73'), '|';\necho 'RESUME|', (int) ($f->resume('go73') === null), '|';\necho 'FIBER|', (int) ($f->getReturn() === 'fiber73'), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 73), '|';\nunset($g, $f);\necho 'E';\n",
+    "source_sha256": "a5c39f8cc4f1da1a5c31f10fbf9df46d8713febd44517b53f4a880e8e0a775e0",
+    "expected_model": "unsupported",
+    "unsupported_reason": "Fiber switch during an initializer, source loader or Generator continuation",
+    "native_exit": 0,
+    "native_stdout": "START|CALL|ENTER|1|RESUME|REPLY|1|DELIVERED|1|VALUE|1|1|FIBER|1|CLOSED|1|E",
+    "native_stderr": "",
+    "unsupported_stdout": "START|CALL|ENTER|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "83",
+            "84",
+            "65",
+            "82",
+            "84",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "67",
+            "65",
+            "76",
+            "76",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "69",
+            "78",
+            "84",
+            "69",
+            "82",
+            "124"
+          ]
+        ]
+      }
+    ]
+  }
+]
