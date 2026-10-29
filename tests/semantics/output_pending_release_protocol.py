@@ -27,6 +27,10 @@ review.CASES = {
             'S_pending.TODO = [OUTPUT_FINAL_PENDING pobdeactivate n true]',
             '$output_pending_active(S_pending, pobdeactivate)',
             '$call_task_valid(S_pending, OUTPUT_FINAL_PENDING pobdeactivate n true)',
+            'S_cross = $literal_reference_debt_step(S, S_pending)',
+            '$call_descriptors_valid(S_cross)',
+            'S_step = $drive_steps(S, 1)',
+            'S_step.COMPLETION = BUDGET',
         ],
     },
     'sole-pending-drop-starts-real-release': {
