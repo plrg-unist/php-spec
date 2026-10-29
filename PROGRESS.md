@@ -574,8 +574,9 @@ normal teardown precedes target reception, and abrupt cleanup authenticates a
 retired direct receiver or Closure without adding owners. Eight new authored
 originals and the promoted CALL118 boundary match retained native request-profile
 observations; two independent reference-input originals agree under the ordinary
-CLI profile. Strict compilation of 424 modules, six authored reached groups/139
-reported assertions and one independent group/37 assertions pass. The unchanged
+CLI profile. Six authored reached groups/139 reported assertions and one
+independent group/37 assertions pass. Strict compilation of 424 modules passes
+privately and on the independently reviewed actual tail. The unchanged
 eleven Unsupported baselines earn zero agreement credit. Unsupported producers,
 temporary `__invoke` callees and wider lifecycle forms remain separate.
 [CALL122 review](coverage/semantics/owned-iterator-unpack-review.json).

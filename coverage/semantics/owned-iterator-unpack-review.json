@@ -12,6 +12,13 @@
     "spec/semantics/385-call-iterator-unpack.watsup": "8cddbb8a74e65f80b4af9c5475ee4f7f9b8769436aedbd373e07d6211a0c388a",
     "spec/semantics/30-storage.watsup": "10e6ba220585ee5d7e4b3d7f256031dfdf283a41fca59912f64b1827aafd2c1b"
   },
+  "actual_tail": {
+    "parent_revision": "32c7d661c91eac49c3a2f181be183d4d474fe925",
+    "composition_revision": "12b4dc01db7cfe987a99ab96e1e23aa2ab856d26",
+    "joined_30_sha256": "55800fc5a53474d1ba441d2bb328a269d8ce0a77851186fdc6c9307435aa74ac",
+    "review": "Independent seam and inventory composition CLEAR. Incoming changes are source-inactive on these original sources/reached states; module30 only adds an autoload helper declaration/default. Module385 and the protocol keep tested bytes. The inventory retains every incoming entry plus exactly the reviewed CALL122 delta. Accepted source/reached cuts retain their identities without replay or renewed execution credit.",
+    "joined_strict": "call122-author-native/joined-strict/report.json sha256:21b0b9c4d467a998d8bc6e5855511e539d423b072b8107130f373cd0fdd6e2a2; SL strict424, CPU1 parent/child, exit0/true, stderr0, inputs/revision stable, fully reaped in10.56s"
+  },
   "implementation": "Target selection no longer requires CV INPUT. The existing iterator_unpack_input/source-classifier/owner checks authenticate borrowed CV, owning object and raw reference operands independently of the selected target. Retired Closure receipts accept the same checked input modes; retired direct-method receivers use the existing virtual-allocation selection check without changing heap owners. No machine fields or cleanup order change.",
   "author_sources": {
     "runner": "tests/semantics/owned_iterator_unpack_sources.py sha256:10b33dac387ce95b230950081f2fb2a7c14c89fec930ba818e54d7d47d1a4eaf",
