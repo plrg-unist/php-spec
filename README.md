@@ -733,8 +733,9 @@ Typed, owning and wider reference sources remain partial.
 [Temporary BYREF Generator unpack](coverage/semantics/config-generator-temporary-reference-review.json)
 admits a direct named zero-argument Generator call with separate INPUT and DATA
 owners. On normal completion DATA drops first, then final INPUT release enters
-the existing storage pin and retires the cached cell and Generator before API.
-Quiet terminal throw prunes both after DATA/INPUT discards and before catch.
+the existing storage pin, drops the cached-cell edge and retires the Generator
+before API. Quiet terminal throw prunes after DATA/INPUT discards and before
+catch. In the four local-cell originals, the cell also dies during cleanup.
 Four new sources agree with PHP, including copied NULL/value arguments and a
 saved terminal throw. Indirect factories, typed/owning cells and wider producers
 remain partial.

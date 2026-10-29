@@ -1835,9 +1835,11 @@ own function; a BYVAL factory returning a BYREF Generator remains excluded.
 The existing flat ordinary scalar reader and final integer-key/return gates
 stay in force. The temporary owns distinct INPUT and DATA edges. On normal
 completion, DATA drops from two Generator owners to one; final INPUT release
-uses the existing355 storage pin to free the cached cell, then the Generator,
-before selected INI_SET reception. Quiet terminal throw consumes DATA and INPUT
-in separate discard steps, preserving the supplied Throwable until catch.
+uses the existing355 storage pin to release the cached-cell edge and retire the
+Generator before selected INI_SET reception. Quiet terminal throw consumes
+DATA and INPUT in separate discard steps, preserving the supplied Throwable
+until catch. The four local-cell originals also retire the cell physically;
+an outside alias could retain it under the accepted A74 gate.
 
 Four frozen PHP originals agree through model-only comparisons; strict431 and
 316 reached conditions (312 premises, four raw transitions) verify source

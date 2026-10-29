@@ -3,7 +3,7 @@
   "status": "privately implemented, independently reviewed and validated; integration queued",
   "scope": {
     "consumer": "Existing INI_SET unpack from a direct named zero-argument BYREF Generator call emitted as UNPACK_VAR, with at most two copied scalar sends, an integer final key and absent or implicit-NULL return.",
-    "behavior": "The temporary Generator has separate INPUT and DATA owners. Normal completion drops DATA from two owners to one, then final INPUT release uses the existing storage pin to free its cached ordinary scalar cell and Generator before API reception. Quiet terminal throw consumes DATA and INPUT in two discards, preserving the same supplied Throwable through catch. Copied NULL/value sends and selected callee remain historical through a later handler.",
+    "behavior": "The temporary Generator has separate INPUT and DATA owners. Normal completion drops DATA from two owners to one, then final INPUT release uses the existing storage pin to release its cached-cell edge and retire the Generator before API reception. Quiet terminal throw consumes DATA and INPUT in two discards, preserving the same supplied Throwable through catch. The four local-cell originals also retire the cell; an outside alias could retain it under the accepted A74 gate. Copied NULL/value sends and selected callee remain historical through a later handler.",
     "limits": "The called function must itself be the returned BYREF Generator's function. Indirect BYVAL factories returning BYREF Generators, Aggregate/Closure/method producers, typed/backed/debt/released or owning cells, owning sends/RETURN, effectful cleanup and wider keys/lifetimes remain separate."
   },
   "implementation": {
