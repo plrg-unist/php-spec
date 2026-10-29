@@ -4280,11 +4280,15 @@ walk when `previous` is null, preserving live cells, copied siblings, cache/trac
 severity order and real recursion Errors. The old DIRECT route remains separate.
 Canonical base `Exception`/`Error` roots now use the same visited fold through
 finite canonical Previous paths after older admissions, including warm captured
-graphs. Whole-path authentication stays eager; invalid/cyclic paths and reached
-callbacks or captured-Throwable leaves retain their separate limits.
+graphs. Captured canonical builtin Throwables share this fold after finite
+Previous-path authentication. Identity and class precede active-left recursion
+checks at every equal-kind object entry, including Previous descent; captures through
+live cells preserve caches, COW and real owners. Whole-path authentication stays
+eager; invalid/cyclic paths, reached callbacks and wider layouts remain partial.
 [Standalone trace review](coverage/semantics/throwable-null-trace-comparison-review.json).
 [Base fallback review](coverage/semantics/throwable-base-null-comparison-review.json).
 [Linked-base review](coverage/semantics/throwable-base-previous-comparison-review.json).
+[Captured-Throwable review](coverage/semantics/throwable-captured-comparison-review.json).
 Builtin `#[NoDiscard]` now validates bounded declarations and warns on unused
 ordinary source calls after sends and named defaults, before reception or body.
 Handlers preserve selected arguments, references, receiver ownership and VM
