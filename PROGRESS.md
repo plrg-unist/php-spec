@@ -67,20 +67,24 @@ Joined strict compilation over the actual tail also passes.
 [Child-only Iterator review](coverage/semantics/config-aggregate-iterator-child-only-review.json).
 Extra child edges, wider graphs and destructor throws/reentry remain partial.
 
-An ordinary Iterator spread with by-reference `current()` now admits one inline
-public untyped ARRAY field with a finite DIRECT pooled root, including empty
-constants, alongside the earlier mutable scalar-reference field route. Key or
-destructor writes preserve the constant snapshot through nested COW; an outside
-Iterator owner delays an empty-field append until after assignment. Runtime
-copies retire while permanent pool owners remain. Three authored originals and
-one independent retained-empty original agree exactly with PHP; all four were
-genuine Unsupported on the unchanged parent. Strict compilation passes 424
-modules, and 584 reached premises (580 Boolean, four raw steps) pass at a separate
-cut. Joined strict compilation over the actual tail also passes. Wider field,
-table, hook, reference and lifetime layouts remain partial.
-[Pooled-field review](coverage/semantics/array-iterator-pooled-field-review.json).
-The earlier [mutable-field cut](coverage/semantics/array-iterator-owned-field-review.json)
-retains its original evidence without renewed credit.
+An ordinary Iterator spread with by-reference `current()` now admits multiple
+initialized inline declared owning fields with supported finite array graphs
+and ordinary scalar/array reference cells. Owning slots remain public, untyped
+and mutable. The actual property cell returned by `current()` stays selected
+through key replacement; repeated roots and shared children retain their physical
+edges. Separate key/destructor writes preserve saved and builder rows through
+COW, while ordinary storage retires the field slots in order. An outside Iterator
+owner delays destruction until after assignment. Four originals, including an
+independent retained-owner case, agree exactly with PHP; all four were genuine
+Unsupported on the unchanged parent. A by-value-current control remains explicit
+Unsupported with zero agreement. Strict compilation passes 424 modules, and
+730 reached premises (728 Boolean, two raw steps) pass at a separate cut.
+Property tables/hooks, typed or special references, object/cyclic/debt graphs
+and wider lifetime forms remain partial.
+[Multiple-field review](coverage/semantics/array-iterator-fields-review.json).
+The earlier [pooled-field](coverage/semantics/array-iterator-pooled-field-review.json)
+and [mutable-field](coverage/semantics/array-iterator-owned-field-review.json)
+cuts retain their original evidence without renewed execution.
 
 Ordinary `%`, shifts and numeric bitwise operations now admit a fractional
 finite LEFT CV with an empty live `stdClass` RIGHT CV without a materialized

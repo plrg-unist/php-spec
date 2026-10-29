@@ -127,6 +127,11 @@ test-semantics: build
 		python3 tests/semantics/array_iterator_pooled_field_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
 		python3 tests/semantics/array_iterator_pooled_field_review_sources.py --output "$$out/peer-source" && \
 		python3 tests/semantics/array_iterator_pooled_field_state_review.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a64-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/array_iterator_fields_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/array_iterator_fields_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/array_iterator_fields_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/array_iterator_fields_state_review.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
 	python3 tests/semantics/globals_compiler.py

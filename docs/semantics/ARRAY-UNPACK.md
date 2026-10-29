@@ -135,8 +135,22 @@ Iterator owner delays an empty-field append until after assignment and tail
 evaluation. Four exact originals, strict compilation of 424 modules and 584
 reached premises (580 Boolean, four raw steps) retain separate tested cuts in the
 [pooled-field review](../../coverage/semantics/array-iterator-pooled-field-review.json).
-Multiple owning fields and special, typed, proxy, object, cyclic or debt-bearing
-descendants, property tables/hooks and wider destructor reentry remain partial.
+Several initialized inline declared fields may now own supported finite arrays
+or ordinary reference cells. Each owning slot is public, untyped and mutable;
+plain DIRECT scalar slots keep their earlier admission. The slot fold preserves
+ordered physical edges, including repeated array roots, and checks each graph
+per path so distinct fields can share descendants. A real property reference
+returned by `current()` remains the selected cell through `key()` replacement;
+spread still inserts a DIRECT row snapshot. Independent field writes preserve
+saved/builder rows through COW, and ordinary object storage releases each slot
+in declaration order. Outside scalar aliases retain their sharing, while pool
+owners keep constants
+after runtime copies retire.
+The [multiple-field review](../../coverage/semantics/array-iterator-fields-review.json)
+records the separate original-source, reached-state and boundary cuts.
+Special/typed/proxy references, object or cyclic/debt-bearing descendants,
+property tables/hooks, by-value current with owning fields and wider destructor
+reentry remain partial.
 
 `427-array-generator-unpack.watsup` adds ordinary named Generator bodies with
 received parameters and reference yields, using real borrowed native resumes.
