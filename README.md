@@ -4347,8 +4347,12 @@ and receivers survive handlers. Selected error-handler and `assert` callbacks
 now warn at the internal API phase before argument copies and by-reference
 warnings. Their borrowed selected target and
 early-throw cleanup are covered by ten native-first originals and four reached
-fronts; wider API consumers remain partial. See the [VM review](coverage/semantics/builtin-deprecated-review.json)
-and [API review](coverage/semantics/builtin-deprecated-api-review.json).
+fronts. Selected exception handlers now use the same early phase with a moved
+registry owner, original Throwable retention, fresh by-reference cells and
+terminal cleanup; nine new native-first originals and four reached fronts cover
+this slice. Wider API consumers remain partial. See the [VM review](coverage/semantics/builtin-deprecated-review.json),
+[error/assert API review](coverage/semantics/builtin-deprecated-api-review.json) and
+[exception API review](coverage/semantics/builtin-deprecated-exception-api-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The

@@ -1,0 +1,36 @@
+{
+  "milestone": "ATTR04",
+  "status": "Independent private semantics, source and focused validation accepted; actual-tail composition pending",
+  "target": "Pinned PHP 8.5.10 CLI NTS 64-bit and project-local SL semantics",
+  "scope": "Selected ordinary exception-handler callbacks use the early internal API cursor, including unmarked callbacks. Deprecated precedes argument copies, by-reference warnings and reception; the moved registry owns the callback and the cursor owns the original Throwable. Warning-handler replacement and nested exception reentry preserve the selected callback. Closure call retention begins at entry and readonly selection history validates a result after real Closure/receiver retirement. Unhandled early warning and post-entry body throws follow terminal fatal cleanup. Effectful special callable forms and explicit captured Closure->__invoke remain partial.",
+  "raw_root": "../php-spec-evidence-archive/builtin-attributes-04",
+  "production": {
+    "base": "a66541dde5ecf4f24dd1f90d3432f0d25d6ab08f",
+    "private_semantic_cut": "678d1351ebb273316488ed1fd9ca08331ea12bb2",
+    "private_fixture_cut": "ee28ed250d8daa01efd78bc2735c278abaef0472",
+    "shared_inputs": ["spec/semantics/30-storage.watsup", "spec/semantics/222-exception-handlers.watsup", "spec/semantics/442-deprecated-api-callbacks.watsup"],
+    "maintained_fixtures": ["tests/semantics/deprecated_exception_cases.py", "tests/semantics/deprecated_exception_review_cases.py", "tests/semantics/deprecated_api_native.py", "tests/semantics/deprecated_api_models.py", "tests/semantics/deprecated_exception_protocol.py"]
+  },
+  "evidence": {
+    "native_author_first": ["native-author-16824de5/report.json", "6362cb424121dc9aff557b1d51a30ffa6ba97cf319cb9f31e8842a716ab25355", 3],
+    "native_peer_first": ["review-independent/native/report.json", "19c654c1e21653b9413d6600aa371947227ef6e784b11574df5168e6ad5b487c", 3],
+    "native_unmarked": ["native-unmarked-9f1ce0925/report.json", "8a5e7c2c39b329fe07a018612263c6f9fdd26b2807abf43ecab5c88146b901ab", 1],
+    "native_early_fatal": ["native-early-fatal-678d1351e/report.json", "9d654196433cccf97e3c5b3f1a738aa688df10c9a9232850aea1fbc1a31287f9", 1],
+    "native_retiring_closure": ["review-independent/retiring-closure/native/report.json", "992de90a28770486f7115de94f0314f4940ed5325c27508871102d04333cab67", 1],
+    "measured_old_boundary": ["old-boundary-9f1ce0925/report.json", "9add5f10ebafc5e07299b6480e439fec3accef2c07654fa41932cdda5453f9c9", "Unsupported Deprecated internal API timing", 0],
+    "strict_431": ["strict-678d1351e/report.json", "718b77acc05845e035fec7ace39e61d613a9d7f9c980ef33c4660bd7680620c5"],
+    "source_9": ["model-678d1351e/report.json", "7dea9ca38d7d0688f529fe78f8b23bc17c773c3a35d020eb671effb5ccf6bcc7", 9],
+    "focused_first_3": ["focused-fe50c8fd5/report.json", "d8c5cae5010824b99702184513478d1efcdf1408e6ce922513f1810a890c0007", [40, 40, 72]],
+    "focused_fatal_retry": ["focused-fatal-ee28ed250/report.json", "643308d5708f92c336717623823b7225402827d05be98e40493e927a62081349", 37],
+    "exact_source_agreements": 9,
+    "focused_conditions": 189,
+    "source_reached_conditions": 184,
+    "derived_guard_assertions": 5
+  },
+  "preserved_failures": {
+    "old_runner_preflight": "old-boundary-16824de5-preflight.txt; runner rejected an unselected fatal native row before any model child, zero credit",
+    "first_focused_fatal": "focused-fe50c8fd5/report.json; the first three rows passed but the fatal row's final UNCAUGHT assertion missed shutdown's REQUESTFATAL freeze, zero credit for that row"
+  },
+  "source": "vendor/php-src/Zend/zend_execute_API.c zend_call_function warning/copy/Closure-retain order; Zend/zend.c exception-handler moved registry, nested dispatch and fatal policy; Zend/zend_API.c callable selection",
+  "recovery": "All nine frozen PHP payloads and expected streams/exits are tracked as five authored and four independent cases. deprecated_api_native.py --group attr04 records a new external native report on one allowed CPU. deprecated_api_models.py consumes the selected native report inputs; deprecated_exception_protocol.py checks four reached fronts. Raw reports bind source and runner identities, fixed profile, commands, exits, affinity and process-group reap. Accepted ATTR02/03 evidence was not replayed."
+}

@@ -90,8 +90,16 @@ warnings and parameter reception. The selected target is borrowed at this point;
 the error-handler registry is disabled during its own call, while an `assert`
 warning may invoke and replace the active handler. A captured Closure gains one
 call owner only at entry. Early `assert` handler throws use the live failure
-policy and release only prepared arguments. Other internal callback consumers
-still refuse this early phase. PHP gives an explicit captured-Closure
+policy and release only prepared arguments. Selected exception handlers use
+the same early phase. Their moved registry owns the callback while the cursor
+holds the original Throwable; the callback may remain selected after a warning
+handler replaces the registry or handles a nested throw. By-reference formals
+receive a fresh cell. A captured Closure adds one owner at entry and may retire
+with its receiver after the body clears the registry; readonly selection
+history then validates the result without restoring a heap owner. An unhandled
+early warning throw or a body throw follows the terminal fatal path. Other
+internal callback consumers still refuse this early phase. PHP gives an
+explicit captured-Closure
 `__invoke()` call an internal wrapper warning before the named function's
 warning; the model refuses that route before either warning, with empty modeled
 stdout/stderr. General message evaluation, other attribute targets and wider
@@ -114,3 +122,10 @@ guards). Private and actual-tail joined strict431 pass. The historical ATTR02
 `assert` API exclusion is now a maintained supported expectation without new
 agreement credit; its original cut remains an exclusion. The explicit Closure
 wrapper boundary remains open.
+
+The [ATTR04 review](../../coverage/semantics/builtin-deprecated-exception-api-review.json)
+records nine new native-first exception-handler agreements, including one
+unmarked control and two fatal outcomes. Four reached fronts pass 189 conditions
+(184 reached, five derived guards). The measured old boundary remains an
+explicit Unsupported result with zero agreement credit. Effectful special API
+callable forms and the explicit Closure wrapper remain partial.

@@ -90,6 +90,17 @@ The maintained ATTR02 `assert` boundary is promoted without replay or new
 agreement credit. Explicit captured-Closure `__invoke()` and wider API consumers
 remain partial. [ATTR03 review](coverage/semantics/builtin-deprecated-api-review.json).
 
+ATTR04 extends that selected API cursor to exception handlers, including
+unmarked callbacks. Deprecated precedes copies and by-reference warnings;
+the moved registry owns the selected callback and the cursor holds the original
+Throwable. Warning-handler replacement and nested exception reentry preserve
+the original target; Closure call ownership begins at entry and can end before
+readonly result validation. Nine new native-first originals agree, including
+two terminal fatals. Four reached fronts pass 189 checks (184 reached, five
+derived), and private strict431 passes. One measured old API refusal remains
+zero credit. Effectful special callables and the explicit Closure wrapper stay
+partial. [ATTR04 review](coverage/semantics/builtin-deprecated-exception-api-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The

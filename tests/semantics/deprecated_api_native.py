@@ -11,11 +11,12 @@ import subprocess
 import deprecated_api_cases as cases
 import deprecated_api_review_cases as reviewed
 import deprecated_exception_cases as exceptions
+import deprecated_exception_review_cases as exception_reviewed
 from error_handler_run import ENV, recorded
 
 
 ROOT = Path(__file__).resolve().parents[2]
-CASES = {**cases.CASES, **reviewed.CASES, **exceptions.CASES}
+CASES = {**cases.CASES, **reviewed.CASES, **exceptions.CASES, **exception_reviewed.CASES}
 
 
 def digest(path):
@@ -33,14 +34,15 @@ def main():
     assert not subprocess.check_output(['git', 'status', '--porcelain=v1'], cwd=ROOT)
     output = args.output.resolve()
     output.mkdir(parents=True)
-    watched = [Path(__file__), Path(cases.__file__), Path(reviewed.__file__), Path(exceptions.__file__), ROOT / '.tools/php/bin/php',
+    watched = [Path(__file__), Path(cases.__file__), Path(reviewed.__file__), Path(exceptions.__file__), Path(exception_reviewed.__file__), ROOT / '.tools/php/bin/php',
                ROOT / 'tests/semantics/profile.json', ROOT / 'tests/semantics/error_handler_run.py']
     inputs = {str(path): digest(path) for path in watched}
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     profile = json.loads((ROOT / 'tests/semantics/profile.json').read_bytes())
     flags = [item for key, value in profile.items() for item in ('-d', key + '=' + value)]
     selected = ((args.case,) if args.case else
-                (tuple(exceptions.CASES) if args.group == 'attr04' else tuple(cases.CASES) + tuple(reviewed.CASES)))
+                (tuple(exceptions.CASES) + tuple(exception_reviewed.CASES) if args.group == 'attr04'
+                 else tuple(cases.CASES) + tuple(reviewed.CASES)))
     rows = []
     for name in selected:
         folder = output / name
@@ -51,7 +53,8 @@ def main():
         stdout = (folder / 'native.stdout').read_bytes()
         stderr = (folder / 'native.stderr').read_bytes()
         expected = (cases if name in cases.CASES else
-                    reviewed if name in reviewed.CASES else exceptions)
+                    reviewed if name in reviewed.CASES else
+                    exceptions if name in exceptions.CASES else exception_reviewed)
         expected_stdout = expected.EXPECTED_STDOUT[name]
         expected_stderr = expected.expected_stderr(name, source)
         passed = (process['exit'] == expected.EXIT_CODES[name] and not process['timeout']
