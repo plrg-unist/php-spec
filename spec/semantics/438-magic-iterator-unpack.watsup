@@ -132,6 +132,9 @@ def $unpack_static_prefix(S, pcalltarget, phpType7*, pnamedargs) = true
   -- if $named_entries_valid(S, pcalltarget, 0, pnamedargs.NAMED, pnamedargs_expected.NAMED)
 def $unpack_call_roots(punpackcall) = $named_slots_roots(punpackcall.SENT.SLOTS) ++ $named_roots(punpackcall.SENT.NAMED) ++ $target_nodes(punpackcall.FUNCTION)
   -- if $magic_unpack_collecting(punpackcall.FUNCTION)
+;; SEND_UNPACK frees its array operand before unwinding sends and selected This.
+def $task_nodes(UNPACK_NEXT punpackcall poperand n b) = $operand_nodes(poperand) ++ $unpack_call_roots(punpackcall)
+  -- if $magic_unpack_collecting(punpackcall.FUNCTION)
 
 ;; Explicit prefixes also copy a reference CV at its own SEND before callbacks.
 rule PhpStep/magic-unpack-explicit-source: S ~> S[.TODO = [$at_task($unpack_origin(S, punpackcall), EVAL expression), UNPACK_SEND punpackcall[.ARGUMENTS = phpType7*]] ++ ptask_tail*]
