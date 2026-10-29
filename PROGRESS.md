@@ -61,7 +61,8 @@ copies retire while permanent pool owners remain. Three authored originals and
 one independent retained-empty original agree exactly with PHP; all four were
 genuine Unsupported on the unchanged parent. Strict compilation passes 424
 modules, and 584 reached premises (580 Boolean, four raw steps) pass at a separate
-cut. Wider field, table, hook, reference and lifetime layouts remain partial.
+cut. Joined strict compilation over the actual tail also passes. Wider field,
+table, hook, reference and lifetime layouts remain partial.
 [Pooled-field review](coverage/semantics/array-iterator-pooled-field-review.json).
 The earlier [mutable-field cut](coverage/semantics/array-iterator-owned-field-review.json)
 retains its original evidence without renewed credit.
