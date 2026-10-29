@@ -126,6 +126,11 @@ def $generator_reference_notice(S, porigin, poperand) = (~$ppsend_var(expression
   -- if $origin_node(S.SOURCES, porigin) = (NExprYield phpType5_key expression metadata)
   -- if ~$ppreturn_call(expression) /\ ~$ppreturn_variable(expression)
 def $generator_reference_message() = $ptascii("Only variable references should be yielded by reference")
+;; Literal pools keep plain bytes; execution uses the source-authenticated
+;; interned carrier supplied by the ordinary compiled-string conversion.
+def $generator_reference_payload_valid(S, (porigin), PSTRING_CARRIER INTERNED_STRING n*) = true
+  -- if $compiled_read(S, porigin) = (PSTRING n*)
+  -- if $compiled_string_value(S, porigin, PSTRING n*) = PSTRING_CARRIER INTERNED_STRING n*
 def $generator_reference_payload_valid(S, (porigin), pvalue) = true
   -- if $compiled_read(S, porigin) = eps \/ $compiled_read(S, porigin) = (pvalue)
   -- if pnode* = $value_nodes(pvalue)

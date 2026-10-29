@@ -223,6 +223,38 @@ CASES['ordinary-reference-demand-keeps-real-formals'] = {
         *POST,
     ],
 }
+CASES['second-reference-yield-authenticates-interned-key'] = {
+    'source': source('generator_copy_named'),
+    'stage': 'S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail* '
+             '-- if pdestructionoperation.SOURCE = GENERATOR_YIELD_DONE porigin poperand_key? '
+             '-- if pdestructionoperation.VALUE = VARIABLE n_name* z '
+             '-- if n_name* = $ptascii("tail")',
+    'checks': [
+        'pdestructionoperation <- S.DESTRUCTION.OPERATIONS',
+        'pdestructionoperation.PENDING = eps',
+        'poperand_key? = (KNOWN (PSTRING_CARRIER INTERNED_STRING ($ptascii("tail"))))',
+        '$origin_child((porigin), [PCFIELD 0]) = (porigin_key)',
+        '$compiled_read(S, porigin_key) = (PSTRING ($ptascii("tail")))',
+        '$compiled_string_value(S, porigin_key, PSTRING ($ptascii("tail"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("tail"))',
+        '$generator_reference_payload_valid(S, (porigin_key), PSTRING_CARRIER INTERNED_STRING ($ptascii("tail")))',
+        '~$generator_reference_payload_valid(S, (porigin_key), PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("tail")))',
+        '~$generator_reference_payload_valid(S, (porigin_key), PSTRING_CARRIER INTERNED_STRING ($ptascii("different")))',
+        '$generator_yield_delayed_value_valid(S, pdestructionoperation)',
+        '~$generator_yield_delayed_value_valid(S, pdestructionoperation[.VALUE = VARIABLE ($ptascii("value")) z])',
+        '$eager_operation_value_valid(S, pdestructionoperation)',
+        '$destructor_operation_valid(S, pdestructionoperation)',
+        '$lookup(S.ENV, $ptascii("tail")) = (n_tail)',
+        'S.STORE[n_tail] = DEFINED (PINT 8)',
+        'ptask_tail* = (GENERATOR_YIELD_STORE porigin poperand_key?) :: ptask_after*',
+        '$generator_state_valid(S)',
+        *VALID, *ONE,
+        'S_one.TODO = ptask_tail*',
+        'S_one.RESULT = VARIABLE n_name* z',
+        'S_one.STORE[n_tail] = DEFINED (PINT 8)',
+        '$generator_state_valid(S_one)',
+        *POST,
+    ],
+}
 
 
 if __name__ == '__main__':
