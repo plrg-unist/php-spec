@@ -1007,7 +1007,7 @@ def $weakmap_gc_prepare(S, pgcplan) = S[.OBJECTS[n_map] = WEAKMAP eps]
   -- if $heap_intersect([HOBJECT n_map, HOBJECT n_value], pnode_live*) = eps
 def $weakmap_gc_prepare(S, pgcplan) = S -- otherwise
 
-def $gc_begin(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "WeakMap ephemeron collection"] -- if $weakmap_nonempty(S, S.ALLOCATIONS) /\ $weakmap_gc_map(S, S.ALLOCATIONS) = eps
+def $gc_begin(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "WeakMap ephemeron collection"] -- if $weakmap_nonempty(S, S.ALLOCATIONS) /\ $weakmap_gc_map(S, S.ALLOCATIONS) = eps /\ ~$gc_ephemeron_policy(S)
 
 dec $weakmap_iterator_at(pstate, nat) : bool
 def $weakmap_iterator_at(S, n) = false -- otherwise
@@ -1347,3 +1347,4 @@ rule PhpStep/weak-map-gc-trace-shape-refused: S ~> S[.COMPLETION = UNSUPPORTED "
   -- if $call_task_valid(S, GC_TRACE pgccall)
   -- if $weakmap_nonempty(S, S.ALLOCATIONS)
   -- if $weakmap_gc_map(S, S.ALLOCATIONS) = eps
+  -- if ~$gc_ephemeron_policy(S)
