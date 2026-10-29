@@ -268,6 +268,13 @@ and new source/state evidence is retained across
 The [bound factory ledger](../coverage/semantics/generator-bound-factory-review.json)
 separates completed cuts from pending checks; raw originals remain external.
 
+I83 invokable-object factory native, unchanged refusal, private strict and new
+source/state evidence is retained across
+`../php-spec-evidence-archive/generator-invokable-factory-83/` and
+`../php-spec-evidence-archive/generator-invokable-factory-83-review/`.
+The [invokable ledger](../coverage/semantics/generator-invokable-factory-review.json)
+keeps native predictions/observations, tested cuts and pending checks separate.
+
 I77 receiver-bearing scoped Generator evidence retains authored native,
 unchanged baseline, private/joined strict, source and reached-state cuts under
 `../php-spec-evidence-archive/generator-keyword-receiver-77/`. The independent

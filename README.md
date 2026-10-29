@@ -6614,6 +6614,14 @@ fronts pass 475 custom/500 reported checks. Private strict431 and actual-tail
 joined strict432 pass at their recorded cuts.
 Broader factory, binding/API/delegation and lifecycle forms remain partial.
 [Bound factory review](coverage/semantics/generator-bound-factory-review.json).
+
+I83 adds implicit invokable-object factories and direct Generator-bodied
+`__invoke` producers. One runtime-selected method/source proof authenticates
+their real target after factory retirement; direct entry still requires the
+actual live receiver. Five originals agree with PHP; five reached fronts pass
+374 custom/399 reported checks. Private strict432 retains its original cut.
+Other implicit/API and lifecycle forms remain partial.
+[Invokable factory review](coverage/semantics/generator-invokable-factory-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

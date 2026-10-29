@@ -681,6 +681,9 @@ test-semantics: build
 	python3 tests/semantics/generator_bound_factory_sources.py
 	python3 tests/semantics/generator_bound_factory_state.py
 	python3 tests/semantics/generator_bound_factory_review_state.py
+	python3 tests/semantics/generator_invokable_factory_sources.py
+	python3 tests/semantics/generator_invokable_factory_state.py
+	python3 tests/semantics/generator_invokable_factory_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
