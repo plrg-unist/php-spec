@@ -60,6 +60,6 @@ catch (Error $e) {
     echo 'E|', $e->getMessage(), '|';
     try { throw $e; } catch (Throwable $again) { echo 'R|', (int)($again === $e), '|'; }
 }
-$right->next = 0; echo 'M|', $a <=> $b, '|';
+$right->next = $left; echo 'M|', $a <=> $b, '|';
 ''',
 }
