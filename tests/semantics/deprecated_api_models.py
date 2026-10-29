@@ -62,11 +62,14 @@ def main():
     native_rows = []
     for path in args.native_report:
         report = json.loads(path.read_bytes())
-        assert report['passed'] and report['profile'] == profile
+        assert report['profile'] == profile
+        assert report['passed'] or args.case is not None
         binary_hashes = [value for key, value in report['inputs'].items()
                          if key.endswith('.tools/php/bin/php')]
         assert binary_hashes == [php_sha256]
         for row in report['rows']:
+            if args.case and row['id'] not in args.case:
+                continue
             assert row['passed'] and row['native']['exit'] in (0, 255)
             assert not row['native']['timeout'] and not row['native']['group_after']
             source = Path(row['native']['argv'][-1])

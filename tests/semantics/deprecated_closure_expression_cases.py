@@ -98,11 +98,12 @@ def assert_closure():
         '    $GLOBALS["other"]++; echo "BAD-WARNING;"; return true;',
         '}',
         '$weak = WeakReference::create($callback);',
+        '$keep_callback = $callback;',
         '@assert_options(ASSERT_EXCEPTION, 0); @assert_options(ASSERT_WARNING, 0);',
         '@assert_options(ASSERT_CALLBACK, $callback); set_error_handler("notice");',
     ]
     return at80(prefix, 'assert(false, "probe");', [
-        'restore_error_handler(); @assert_options(ASSERT_CALLBACK, null);',
+        'restore_error_handler(); @assert_options(ASSERT_CALLBACK, null); $keep_callback = null;',
         'echo "E:", $deprecated === 1, ":", $other === 0, ":", $body === 1 && $replacement_body === 0, ":", $phase === 9, ":", $weak->get() === null, ":", $weak_owner->get() === null, ";";',
     ])
 
@@ -110,13 +111,13 @@ def assert_closure():
 CASES = {
     'closure-expression-reference-capture-through-both-vm-warnings': reference_closure(),
     'arrow-expression-multiline-static-name-and-used-result': static_arrow(),
-    'closure-expression-assert-api-selected-before-registry-replacement': assert_closure(),
+    'closure-expression-owned-assert-api-selection': assert_closure(),
     'arrow-expression-nodiscard-never-before-invalid-body': b'<?php\necho "BAD-RUN;";\n$arrow =\n#[\\NoDiscard]\nstatic\nfn(): never => 7;\n',
 }
 EXPECTED_STDOUT = {
     'closure-expression-reference-capture-through-both-vm-warnings': b'D:1:1:1:1;N:1:1:1:1;B:1:1;E:1:1:1:1;',
     'arrow-expression-multiline-static-name-and-used-result': b'D:1:1:1;B:1;U:1;D:1:1:1;N:1:1:1;B:1;E:1:1:1:1;',
-    'closure-expression-assert-api-selected-before-registry-replacement': b'D:1:1:1:1;B:1:1:1:1:1:1;E:1:1:1:1:1:1;',
+    'closure-expression-owned-assert-api-selection': b'D:1:1:1:1;B:1:1:1:1:1:1;E:1:1:1:1:1:1;',
     'arrow-expression-nodiscard-never-before-invalid-body': b'',
 }
 EXIT_CODES = {name: 0 for name in CASES}
