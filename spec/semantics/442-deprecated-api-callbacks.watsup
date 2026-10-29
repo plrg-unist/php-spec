@@ -187,6 +187,16 @@ def $error_context_trigger(S, pcallcontext) = (passertcall.FAILURE.CALL)
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = API_CALLBACK_REF papiargcursor
   -- if papiargcursor.CALL = API_ASSERT passertcall
+def $error_handler_trace_values(S, pcallcontext, pconfigcall) = $trace_extra(S, $getclass_trace_operands($assertion_trace_call(S, pconfigcall).SENT))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = API_CALLBACK_SEND papiargcursor
+  -- if papiargcursor.CALL = API_ASSERT passertcall
+  -- if pconfigcall = passertcall.FAILURE.CALL
+def $error_handler_trace_values(S, pcallcontext, pconfigcall) = $trace_extra(S, $getclass_trace_operands($assertion_trace_call(S, pconfigcall).SENT))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = API_CALLBACK_REF papiargcursor
+  -- if papiargcursor.CALL = API_ASSERT passertcall
+  -- if pconfigcall = passertcall.FAILURE.CALL
 
 def $api_cursor_reference_message(S, papiargcursor) = pfunction.NAME ++ $ptascii("(): Argument #") ++ $decimal_integer($(papiargcursor.INDEX + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" must be passed by reference, value given")
   -- if $target_function(S, papiargcursor.TARGET) = (pfunction)
