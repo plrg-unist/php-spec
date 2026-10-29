@@ -201,15 +201,16 @@ their original inputs. At that cut, count-ambiguous callbacks, WeakMap callbacks
 residual tags, workers, hooks, reentry and active contexts remained partial.
 [GC05 review](coverage/semantics/gc-materialized-callback-review.json).
 
-CLASS154 privately validates public unpromoted variadic constructors through the
+CLASS154 admits public unpromoted variadic constructors through the
 ordinary positional/named binder. Value tails copy; reference tails retain caller
 cells across later rebinding and typed reception. Fixed defaults precede ordered
 tail collection, including empty arrays; whole-name diagnostics preserve the
 separate ordinary missing-arity display rule. Six eligible originals agree and
-270 conditions pass (263 reached, seven derived guards), with private strict432.
+270 conditions pass (263 reached, seven derived guards), with private and
+actual-tail joined strict432 at separate cuts.
 The original excluded COUNT observer and an authored timing-fixture failure retain
-zero credit; the fresh foreach observer has its own native/source cut. Actual-tail
-integration is pending. Promotion/unpacking/nonpublic and wider contexts remain
+zero credit; the fresh foreach observer has its own native/source cut.
+Promotion/unpacking/nonpublic and wider contexts remain
 partial. [Variadic review](coverage/semantics/anonymous-constructor-variadic-review.json).
 The prior [reference review](coverage/semantics/anonymous-constructor-reference-review.json)
 retains CLASS153 source6/state217 and its own native, strict and fixture cuts.
@@ -298,7 +299,6 @@ reentrant/abrupt raw-owner teardown remain partial.
 | I83 | Invokable object Generator factories; native-first source preparation, unrun. |
 | OB04 | Selected error-handler FINAL handling; eleven exact sources and reached validation. |
 | ATTR07 | Builtin attributes on real Closure/arrow expressions; separate producer preparation. |
-| CLASS154 | Private source6/state270/strict432 complete; actual-tail integration pending. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
 | Enum M3/M4 | Generated array-capture preparation; no new validation credit. Other string consumers, backing dependencies and the default loader remain partial. |
 | A77 | Retained Generator owning ARRAY/INSTANCE option sends; four frozen originals and old refusal, implementation preparation. |
