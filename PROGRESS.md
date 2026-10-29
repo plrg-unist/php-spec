@@ -57,9 +57,9 @@ through `key()` writes and source rebinding. Sending copies a string before
 `next()`, DATA/INPUT retirement and API entry. Real method metadata authenticates
 callback and retired-cache history; a sole cached payload retires before Iterator
 DATA while preserving the supplied Exception. Six exact sources, two Unsupported
-controls and 505 new reached checks (498 Boolean/seven raw) pass; strict425 passes
-at its private cut. CFG119's declared-slot and finite shared-graph policy continues
-to govern DATA retirement. [Reference-current review](coverage/semantics/config-iterator-reference-current-review.json),
+controls and 505 new reached checks (498 Boolean/seven raw) pass. Private
+strict425 and actual-tail joined426 pass. CFG119's declared-slot and finite
+shared-graph policy continues to govern DATA retirement. [Reference-current review](coverage/semantics/config-iterator-reference-current-review.json),
 [descriptor-backed fields](coverage/semantics/config-aggregate-iterator-layout-review.json).
 Dynamic/materialized layouts, special cells, builtin descendants, cycles,
 shutdown and wider destructor effects remain partial.
