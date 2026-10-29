@@ -280,7 +280,7 @@ def $anonymous_named_header(pcnode, ptcontext) = eps -- otherwise
 dec $anonymous_header_interfaces(pcnode, pchheader, pmethoddesc*) : ptbytes*?
 def $anonymous_header_interfaces(pcnode, pchheader, pmethoddesc*) = ($ppclass_interfaces(pchheader.INTERFACES, pmethoddesc*))
   -- if pchheader.KIND <- ["class", "interface"]
-def $anonymous_header_interfaces(pcnode, pchheader, pmethoddesc*) = (eps)
+def $anonymous_header_interfaces(pcnode, pchheader, pmethoddesc*) = (pchheader.INTERFACES)
   -- if pchheader.KIND = "trait"
 
 dec $anonymous_compiled_class_count(pcunit, ptbytes, pclassdesc*, pclassdesc*, pstate?, nat) : nat?
