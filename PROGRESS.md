@@ -33,7 +33,8 @@ callable and old-receiver retirement. Actual Generator frames/cache/input retain
 their ordinary owners. Four new originals agree at their recorded cuts; five
 reached fronts pass 475 custom/500 reported checks for live mint, binding history,
 close/called scope, parked BYREF SEND owners, forgeries and budget continuation.
-Private strict431 passes; actual-tail composition remains pending. Broader
+Private strict431 and actual-tail joined strict432 pass at their recorded cuts.
+Broader
 factory, binding/API/delegation and lifecycle forms remain partial.
 [I82 review](coverage/semantics/generator-bound-factory-review.json).
 [I81](coverage/semantics/generator-array-string-factory-review.json) and
@@ -270,7 +271,7 @@ reentrant/abrupt raw-owner teardown remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| I82 | Private native4/source4/strict431 and five reached475/500 accepted; actual-tail joined check pending. |
+| I83 | Invokable object Generator factories; native-first source preparation, unrun. |
 | OB04 | Selected error-handler FINAL handling; eleven exact sources and reached validation. |
 | ATTR06 | Required unused owning explicit-wrapper return staging; validation active. |
 | CLASS154 | Variadic reference constructor implementation. |

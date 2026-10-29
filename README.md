@@ -6576,7 +6576,8 @@ The entered bound call supplies a local borrowed view of its actual binding;
 the existing finite source/ORIGINAL history authenticates it after retirement.
 Lexical method scope stays fixed, while the compatible receiver or null static
 binding determines called scope. Four originals agree with PHP; five reached
-fronts pass 475 custom/500 reported checks, and private strict431 passes.
+fronts pass 475 custom/500 reported checks. Private strict431 and actual-tail
+joined strict432 pass at their recorded cuts.
 Broader factory, binding/API/delegation and lifecycle forms remain partial.
 [Bound factory review](coverage/semantics/generator-bound-factory-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,

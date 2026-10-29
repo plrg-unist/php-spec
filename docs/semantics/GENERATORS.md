@@ -442,7 +442,8 @@ as called scope. Four originals agree with PHP, including the independent
 repeated private binding/BYREF SEND source. Five reached fronts pass 475 custom/500
 reported checks for live mint, retired history, receiver/close and called-scope
 authority, parked cache/input owners, forged receipts and budget continuation.
-Private strict431 passes. Generic Closure evidence consumers are unchanged;
+Private strict431 and actual-tail joined strict432 pass at their recorded cuts.
+Generic Closure evidence consumers are unchanged;
 implicit factories, broader binding/API/delegation and lifecycle combinations
 remain partial.
 [Bound factory review](../../coverage/semantics/generator-bound-factory-review.json).
