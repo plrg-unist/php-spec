@@ -1168,8 +1168,14 @@ A supplied throw cancels delivery. The [plain-CV](coverage/semantics/integer-obj
 [RIGHT-cell](coverage/semantics/integer-reference-object-right-warning-review.json),
 [LEFT-cell](coverage/semantics/integer-reference-left-object-right-warning-review.json)
 and [two-cell](coverage/semantics/integer-both-reference-object-right-warning-review.json)
-ledgers retain their original cuts. Both operands may be shared and rebound;
-wider owning substitutions remain partial.
+ledgers retain their original cuts. Both operands may be shared and rebound.
+After the first physical integer conversion succeeds, its selected value may
+become an owning object: later failure reports its live class without retrying
+that conversion. This also covers swapped bitwise slots and an original string's
+two notices. Anonymous class identities stay full while binary error text ends
+at NUL. The [late-owning review](coverage/semantics/integer-late-owning-left-warning-review.json)
+records cached success, failure, supplied throws and last-owner retirement.
+Wider object conversions, expired pointers and unsupported producers remain partial.
 Leading-numeric-string `+` now suspends through named warning handlers for two
 direct CVs with preexisting untyped reference cells. Both cells are selected before
 conversion; cached numbers survive handler writes, while the next conversion reads
