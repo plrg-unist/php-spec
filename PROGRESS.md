@@ -16,6 +16,7 @@ frozen originals and one independent saved-Exception source agree exactly
 with PHP across normal, invalid-key and saved-Exception paths. Strict
 compilation passes on 424 modules; 149 reached premises check the real pin,
 weak visibility, pending identity and rejection without the storage marker.
+Joined strict compilation over the actual tail also passes.
 [Child-only Iterator review](coverage/semantics/config-aggregate-iterator-child-only-review.json).
 Extra child owners/edges, wider graphs and destructor throws/reentry remain partial.
 
