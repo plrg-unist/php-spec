@@ -72,6 +72,7 @@ dec $fiber_generator_static_target(pcalltarget, porigin) : bool
 dec $fiber_generator_cached_reference_valid(pstate, pgenerator, pcallcontext) : bool
 dec $fiber_generator_throw_valid(pstate, pgeneratorop, pgenerator, pcallcontext) : bool
 dec $fiber_generator_fresh_throw_valid(pstate, pgeneratorop, pgenerator, pcallcontext) : bool
+dec $fiber_generator_fresh_advance_valid(pstate, pgeneratorop, pgenerator, pcallcontext) : bool
 ;; The five active destruction lists move with the real VM stack.
 def $fiber_transfer_reason(S) = "Fiber switch during an initializer, source loader or Generator continuation" -- otherwise
 def $fiber_transfer_context(S, eps) = true
@@ -253,6 +254,14 @@ def $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext
   -- if pcallcontext.TARGET = CLOSURE_TARGET n_callee
   -- if pcallcontext.INSTANCE = (n_callee) /\ pcallcontext.RECEIVER = eps
 def $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = false -- otherwise
+def $fiber_generator_fresh_advance_valid(S, pgeneratorop, pgenerator, pcallcontext) = true
+  -- if (pgeneratorop.NAME = "next" /\ pgeneratorop.ARGUMENTS = eps) \/ (pgeneratorop.NAME = "send" /\ |pgeneratorop.ARGUMENTS| = 1)
+  -- if pgeneratorop.ADVANCE /\ pgenerator.FIRST
+  -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if $call_current_valid(S)
+  -- if $fiber_generator_callee_valid(S, pgenerator, pcallcontext)
+def $fiber_generator_fresh_advance_valid(S, pgeneratorop, pgenerator, pcallcontext) = false -- otherwise
 ;; A direct Generator body keeps its real resumer in the moved VM.
 ;; This local proof is also used on stored VMs without recursively admitting S.
 def $fiber_generator_body_id(S) = (pgeneratorop.OBJECT)
@@ -263,8 +272,7 @@ def $fiber_generator_body_id(S) = (pgeneratorop.OBJECT)
   -- if pgeneratorop.LOOP = eps
   -- if ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
-  -- if (((pgeneratorop.NAME <- ["current", "next"] /\ pgeneratorop.ARGUMENTS = eps) \/ (pgeneratorop.NAME = "send" /\ |pgeneratorop.ARGUMENTS| = 1) \/ $fiber_generator_throw_valid(S, pgeneratorop, pgenerator, pcallcontext)) /\ ~pgeneratorop.ADVANCE) \/ $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext)
-  -- if pgenerator.REFCELL = eps \/ pcallcontext.TARGET = pgenerator.FUNCTION \/ $fiber_generator_static_target(pcallcontext.TARGET, pgenerator.FUNCTION) \/ pgeneratorop.NAME = "throw"
+  -- if (((pgeneratorop.NAME <- ["current", "next"] /\ pgeneratorop.ARGUMENTS = eps) \/ (pgeneratorop.NAME = "send" /\ |pgeneratorop.ARGUMENTS| = 1) \/ $fiber_generator_throw_valid(S, pgeneratorop, pgenerator, pcallcontext)) /\ ~pgeneratorop.ADVANCE) \/ $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) \/ $fiber_generator_fresh_advance_valid(S, pgeneratorop, pgenerator, pcallcontext)
   -- if pgenerator.FRAME = eps /\ pgenerator.DELEGATE = eps /\ pgenerator.PARKED = eps
   -- if pgenerator.ACCESS = eps /\ pgenerator.RETURN = eps
   -- if $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) /\ pgenerator.BORROWED = eps /\ ~pgenerator.PENDING_INIT
