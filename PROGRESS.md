@@ -91,7 +91,9 @@ ordinary cells before later writes. One local scalar-cell route retires a CLOSED
 Generator from sole DATA through the normal storage pin or quiet terminal cleanup.
 Outside aliases can now retain an ordinary scalar cell after that Generator dies;
 copied sends and retired source history survive later writes to the cell.
-Typed Generator cells, owning Generator arguments, effectful casts, wider
+A direct temporary zero-argument BYREF Generator call keeps separate INPUT and DATA
+owners; DATA drops first, then final INPUT/storage cleanup precedes API or catch.
+Typed Generator cells, owning copied arguments, effectful casts, wider
 last-DATA reference graphs and lifecycles remain partial.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
@@ -99,6 +101,7 @@ last-DATA reference graphs and lifecycles remain partial.
 [Generator reference scalars](coverage/semantics/config-generator-reference-scalar-review.json),
 [Sole-DATA reference cleanup](coverage/semantics/config-generator-reference-sole-data-review.json),
 [Surviving-alias cleanup](coverage/semantics/config-generator-reference-outside-alias-review.json),
+[Temporary reference cleanup](coverage/semantics/config-generator-temporary-reference-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
@@ -271,7 +274,7 @@ reentrant/abrupt raw-owner teardown remain partial.
 | OB04 | Selected error-handler FINAL handling; active validation. |
 | ATTR06 | Required unused owning explicit-wrapper return staging; read-only preparation. |
 | Enum M3/M4 | Generated array-capture preparation; no new validation credit. Other string consumers, backing dependencies and the default loader remain partial; GC08 separately owns enum collectability. |
-| A75 | Temporary direct-call BYREF Generator INPUT/DATA cleanup; native-first source preparation. |
+| A75 | Temporary direct-call BYREF Generator INPUT/DATA cleanup; privately validated, actual integration review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 

@@ -1827,3 +1827,22 @@ and 309 reached conditions (306 premises, three raw transitions) pass on their
 recorded cuts. The old last-DATA Unsupported remains zero credit. Typed/backed,
 debt/released and owning-at-release cells, temporary or Aggregate producers,
 effectful cleanup and wider return/key/lifetime forms remain separate.
+
+The [temporary reference Generator increment](../../coverage/semantics/config-generator-temporary-reference-review.json)
+admits a direct named zero-argument BYREF Generator call as an unpack VAR
+expression. The exact emitted noarg call target must be the returned Generator's
+own function; a BYVAL factory returning a BYREF Generator remains excluded.
+The existing flat ordinary scalar reader and final integer-key/return gates
+stay in force. The temporary owns distinct INPUT and DATA edges. On normal
+completion, DATA drops from two Generator owners to one; final INPUT release
+uses the existing355 storage pin to free the cached cell, then the Generator,
+before selected INI_SET reception. Quiet terminal throw consumes DATA and INPUT
+in separate discard steps, preserving the supplied Throwable until catch.
+
+Four frozen PHP originals agree through model-only comparisons; strict431 and
+316 reached conditions (312 premises, four raw transitions) verify source
+authority, copied sends, physical cleanup and later NULL-handler/API order.
+The old CONFIG Traversable Unsupported at prefix `B;` retains zero credit.
+Indirect factories, typed/backed/debt/released or owning cells, owning sends,
+Aggregate/Closure/method producers and wider key/return/lifetime forms remain
+separate.

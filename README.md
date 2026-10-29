@@ -730,6 +730,14 @@ writes, including an array assignment in a NULL-option handler. Four new sources
 agree with PHP; two reached recipes check normal and saved-throw lifetimes.
 Typed, owning and wider reference sources remain partial.
 
+[Temporary BYREF Generator unpack](coverage/semantics/config-generator-temporary-reference-review.json)
+admits a direct named zero-argument Generator call with separate INPUT and DATA
+owners. DATA drops first; the final INPUT release enters the existing storage
+pin and retires the cached scalar cell and Generator before API entry or catch.
+Four new sources agree with PHP, including copied NULL/value arguments and a
+saved terminal throw. Indirect factories, typed/owning cells and wider producers
+remain partial.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical
