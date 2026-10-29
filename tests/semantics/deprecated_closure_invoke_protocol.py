@@ -16,6 +16,7 @@ CASES = (
     'explicit-wrapper-positional-before-type-reception',
     'explicit-wrapper-outer-throw-releases-raw-owners',
     'explicit-wrapper-required-named-hole-before-error',
+    'invoke-named-unpack-default-hole-stays-raw-through-warnings',
 )
 HELPERS = r'''
 dec $ci_test_front(pstate, nat) : bool
@@ -38,6 +39,12 @@ def $ci_test_front(S, 3) = true
 def $ci_test_front(S, 4) = true
   -- if S.TODO = (THROW_SEARCH n) :: (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
   -- if perrorcall.RESUME = CLOSURE_INVOKE_INNER ptask_source
+def $ci_test_front(S, 5) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.WRAPPER =/= eps /\ pcallcontext.HOLES =/= eps
+  -- if $lookup(S.ENV, $ptascii("first")) = (n_first)
+  -- if S.STORE[n_first] = DEFINED (PINT 5)
 def $ci_test_front(S, n) = false -- otherwise
 dec $ci_test_seek(pstate, nat, nat) : pstate
 def $ci_test_seek(S, n_stage, n) = S -- if $ci_test_front(S, n_stage)
@@ -127,7 +134,7 @@ def conditions(name, program, source, expected_stdout):
             '$throwable_live(S_throw, n_saved)',
         ]
         last = 'S_throw'
-    else:
+    elif name == CASES[2]:
         checks += [
             'pnamedargs_raw.SLOTS = [NAMED_HOLE, NAMED_SENT (KNOWN (PINT 2))]',
             '$lookup(S_outer.ENV, $ptascii("first")) = eps',
@@ -143,14 +150,47 @@ def conditions(name, program, source, expected_stdout):
         reach('S_entered', 'S_inner', 3)
         checks += [
             'S_entered.CURRENT = (pcallcontext)',
-            'pcallcontext.TARGET = CLOSURE_TARGET n_closure',
+            'pcallcontext.TARGET = CLOSURE_INVOKE_PENDING_TARGET n_closure',
+            'pcallcontext.INSTANCE = eps',
             'pcallcontext.WRAPPER = (pnamedargs_raw)',
             'pcallcontext.HOLES = [0]',
             '~$named_defined(S_entered, $ptascii("first"))',
             '$named_defined(S_entered, $ptascii("second"))',
-            '$heap_owners($heap_prune($heap_graph(S_entered)), HOBJECT n_closure) = 3',
+            '$heap_owners($heap_prune($heap_graph(S_entered)), HOBJECT n_closure) = 2',
         ]
         last = 'S_entered'
+    else:
+        checks += ['pnamedargs_raw.SLOTS = [NAMED_HOLE, NAMED_SENT (KNOWN (PINT 2))]']
+        reach('S_inner', 'S_outer', 1)
+        checks += [
+            'S_inner.TODO = (ERROR_HANDLER_INVOKE perrorcall_inner) :: ptask_inner_tail*',
+            'perrorcall_inner.RESUME = CLOSURE_INVOKE_ENTER ptask_source',
+            'S_inner.CURRENT = eps', 'S_inner.FRAMES = eps',
+        ]
+        reach('S_preflight', 'S_inner', 3)
+        checks += [
+            'S_preflight.CURRENT = (pcallcontext_preflight)',
+            'pcallcontext_preflight.TARGET = CLOSURE_INVOKE_PENDING_TARGET n_closure',
+            'pcallcontext_preflight.INSTANCE = eps',
+            'pcallcontext_preflight.WRAPPER = (pnamedargs_raw)',
+            'pcallcontext_preflight.HOLES = [0]',
+            '~$named_defined(S_preflight, $ptascii("first"))',
+            '$named_defined(S_preflight, $ptascii("second"))',
+            '$heap_owners($heap_prune($heap_graph(S_preflight)), HOBJECT n_closure) = 2',
+            '~$call_context_valid(S_preflight, pcallcontext_preflight[.INSTANCE = (n_closure)], S_preflight.CVS)',
+        ]
+        reach('S_body', 'S_preflight', 5)
+        checks += [
+            'S_body.CURRENT = (pcallcontext_body)',
+            'pcallcontext_body.TARGET = CLOSURE_TARGET n_closure',
+            'pcallcontext_body.INSTANCE = (n_closure)',
+            'pcallcontext_body.WRAPPER = (pnamedargs_raw)',
+            'pcallcontext_body.HOLES = [0]',
+            '$lookup(S_body.ENV, $ptascii("first")) = (n_first)',
+            'S_body.STORE[n_first] = DEFINED (PINT 5)',
+            '$heap_owners($heap_prune($heap_graph(S_body)), HOBJECT n_closure) = 3',
+        ]
+        last = 'S_body'
     checks += [f'S_done = $drive_steps({last}, 4000)', 'S_done.COMPLETION = NORMAL',
                'S_done.CURRENT = eps', 'S_done.FRAMES = eps',
                '$call_descriptors_valid(S_done)', '$heap_valid($heap_graph(S_done))',
@@ -242,7 +282,7 @@ def main():
                   and not (out / (name + '-model.stderr')).read_bytes())
         rows.append({'id': name, 'source_sha256': digest(source),
                      'fixture_sha256': digest(fixture), 'conditions': len(checks),
-                     'derived_guard_assertions': {CASES[0]: 3, CASES[1]: 1, CASES[2]: 1}[name],
+                     'derived_guard_assertions': {CASES[0]: 3, CASES[1]: 1, CASES[2]: 1, CASES[3]: 2}[name],
                      'model': process, 'passed': passed})
         print(name, passed, flush=True)
         if not passed:
@@ -254,7 +294,7 @@ def main():
     (out / 'report.json').write_text(json.dumps({'revision': revision, 'profile': profile,
         'inputs': before, 'selection': selected, 'affinity': sorted(os.sched_getaffinity(0)),
         'rows': rows, 'passed': passed,
-        'scope': 'Three reached explicit-wrapper fronts and derived cursor guards; no native execution'}, indent=2) + '\n')
+        'scope': 'Four reached explicit-wrapper fronts and derived cursor guards; no native execution'}, indent=2) + '\n')
     return passed
 
 
