@@ -112,11 +112,14 @@ snapshots for raw outer arguments and coerced inner values.
 Named-hole preflight borrows the inner Closure in its fake context; its call
 owner starts only after holes finish. Historical hole metadata remains available
 after entry. Scalar body returns and abrupt warning cleanup retire raw outer
-arguments before the outer Closure receiver. An unused owning result is an
-explicit Unsupported boundary before any cleanup: PHP must retire raw arguments,
-then the unused return value, then the outer receiver. Implementing that staged
-return release is the next attribute milestone. General message evaluation,
-other targets and wider effectful special callable histories remain partial.
+arguments before the outer Closure receiver. An unused by-value owning result
+now retires between those raw arguments and the outer receiver. Existing release
+jobs preserve each native owner separately, including a result that aliases a
+raw argument. Destructors see the restored caller; a supplied return-value
+destructor throw preserves remaining outer cleanup and reaches the caller catch
+with the same Exception. Used results remain owned through receiver retirement.
+Reference-return paths retain their existing constraints. General message
+evaluation, other targets and wider callback/reentry histories remain partial.
 The model follows `zend_compile.c` attribute and call lowering,
 `zend_vm_def.h` DO_FCALL/BY_NAME warnings, `zend_execute_API.c` callback timing
 and `zend_closures.c` wrapper flags in the pinned engine.
@@ -146,10 +149,18 @@ callable forms remain partial; the explicit Closure wrapper is extended below.
 
 The [ATTR05 review](../../coverage/semantics/builtin-deprecated-closure-invoke-review.json)
 records ten native-first originals: nine exact normal agreements and one
-owning-unused-result boundary with zero agreement credit. Six full reached
+then-unsupported owning-result original with zero agreement credit. Six full reached
 groups pass 337 checks (328 reached, nine derived); a separate bounded
 inner-throw diagnostic passes 53 checks without source agreement credit.
 Private and actual-tail joined strict432 pass at separate cuts. The maintained
 ATTR02 explicit-wrapper expectation
 is promoted without replay or new historical credit; all accepted cuts retain
 their original identities.
+
+The [ATTR06 review](../../coverage/semantics/builtin-deprecated-closure-return-review.json)
+records four normal agreements: the former owning-result boundary reuses its
+retained native bytes, while three new native-first controls cover a used result,
+returned-argument alias and supplied destructor throw with caller traces. Three
+full reached groups pass 186 checks, with no derived guards. Private and
+actual-tail joined strict432 pass at separate cuts. The old ATTR05 exclusion keeps its original zero-credit cut; no accepted
+ATTR05 normal/native/reached evidence is replayed.

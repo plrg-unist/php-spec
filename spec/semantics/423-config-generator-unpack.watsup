@@ -11,6 +11,8 @@ dec $config_generator_discard_state(pstate, pconfiggenerator, text) : pstate
 dec $config_generator_discard_nodes(pconfiggenerator, text) : pnode*
 dec $config_generator_origin(pstate, pconfiggenerator, pgenerator, pfunction) : bool
 dec $config_generator_reference_input(pconfiggenerator) : bool
+dec $config_generator_temporary_reference_input(pstate, pconfiggenerator) : bool
+dec $config_generator_factory_reference_input(pstate, pconfiggenerator) : bool
 dec $config_generator_history(pstate, pconfiggenerator) : bool
 dec $config_generator_quiet_closed(pstate, pconfiggenerator) : bool
 dec $config_generator_return_history(pstate, pconfiggenerator) : bool
@@ -70,6 +72,8 @@ def $config_generator_input(S, pconfiggenerator) = true
   -- if $call_target(S, preqbytes, eps) = (pfunction_call)
   -- if $origin_node(S.SOURCES, pfunction_call.ORIGIN) = (NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata_call)
   -- if pfunction_call.SIGNATURE.PARAMETERS = eps /\ ~pfunction_call.SIGNATURE.BYREF
+def $config_generator_input(S, pconfiggenerator) = true
+  -- if $config_generator_temporary_reference_input(S, pconfiggenerator)
 def $config_generator_input(S, pconfiggenerator) = false -- otherwise
 def $config_generator_start_input(S, VARIABLE ptbytes z, n) = true
   -- if $lookup(S.ENV, ptbytes) = (n_cell)
@@ -97,12 +101,51 @@ def $config_generator_origin(S, pconfiggenerator, pgenerator, pfunction) = true
   -- if $config_aggregate_generator_producer_valid(S, pconfiggeneratorproducer)
   -- if $config_aggregate_generator_capture(S, pconfiggeneratorproducer, pconfiggenerator.OBJECT)
 def $config_generator_origin(S, pconfiggenerator, pgenerator, pfunction) = false -- otherwise
-;; Reference-yield producers initially use a named Generator retained outside
-;; DATA. Temporary INPUT and Aggregate-produced reference Generators stay separate.
+;; Reference yields use a named direct CV, direct BYREF Generator call, or an
+;; actual BYVAL factory result with a separately authenticated BYREF Generator.
 def $config_generator_reference_input(pconfiggenerator) = true
   -- if pconfiggenerator.PRODUCER = eps
   -- if pconfiggenerator.INPUT = VARIABLE ptbytes z
 def $config_generator_reference_input(pconfiggenerator) = false -- otherwise
+def $config_generator_temporary_reference_input(S, pconfiggenerator) = true
+  -- if pconfiggenerator.PRODUCER = eps
+  -- if pconfiggenerator.INPUT = KNOWN (POBJECT pconfiggenerator.OBJECT)
+  -- if $intrinsic_argument(S, pconfiggenerator.CALL.SITE, 0) = ((expression, true, eps, PORIGIN n_source pcpath, z))
+  -- if expression = NExprFuncCall name (SEQUENCE eps) metadata
+  -- if $source_emission_noarg_call(S, n_source, pcpath, expression) = (z_call)
+  -- if $code_at(S.CODE, n_source) = (pcode)
+  -- if $source_unit(S.SOURCES, n_source) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath) = (UNPACK_VAR)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $call_target(S, preqbytes, eps) = (pfunction_call)
+  -- if $origin_node(S.SOURCES, pfunction_call.ORIGIN) = (NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata_call)
+  -- if pfunction_call.SIGNATURE.PARAMETERS = eps /\ pfunction_call.SIGNATURE.BYREF
+  -- if $function_generator(S, pfunction_call)
+  -- if $(pconfiggenerator.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
+  -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction_call)
+def $config_generator_temporary_reference_input(S, pconfiggenerator) = false -- otherwise
+def $config_generator_factory_reference_input(S, pconfiggenerator) = true
+  -- if pconfiggenerator.PRODUCER = eps
+  -- if pconfiggenerator.INPUT = KNOWN (POBJECT pconfiggenerator.OBJECT)
+  -- if $intrinsic_argument(S, pconfiggenerator.CALL.SITE, 0) = ((expression, true, eps, PORIGIN n_source pcpath, z))
+  -- if expression = NExprFuncCall name (SEQUENCE eps) metadata
+  -- if $source_emission_noarg_call(S, n_source, pcpath, expression) = (z_call)
+  -- if $code_at(S.CODE, n_source) = (pcode)
+  -- if $source_unit(S.SOURCES, n_source) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath) = (UNPACK_VAR)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $call_target(S, preqbytes, eps) = (pfunction_factory)
+  -- if $origin_node(S.SOURCES, pfunction_factory.ORIGIN) = (NStmtFunction phpType14_factory phpType4_factory phpType11_factory phpType16_factory phpType18_factory phpType23_factory metadata_factory)
+  -- if pfunction_factory.SIGNATURE.PARAMETERS = eps /\ ~pfunction_factory.SIGNATURE.BYREF
+  -- if ~$function_generator(S, pfunction_factory)
+  -- if $(pconfiggenerator.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
+  -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction_generator)
+  -- if $origin_node(S.SOURCES, pfunction_generator.ORIGIN) = (NStmtFunction phpType14_generator phpType4_generator phpType11_generator phpType16_generator phpType18_generator phpType23_generator metadata_generator)
+  -- if pfunction_generator.SIGNATURE.PARAMETERS = eps /\ pfunction_generator.SIGNATURE.BYREF
+  -- if $function_generator(S, pfunction_generator)
+def $config_generator_factory_reference_input(S, pconfiggenerator) = false -- otherwise
 ;; SEND_UNPACK normalizes a numeric string key for the argument, not the
 ;; Generator's cached key. Other string keys remain named arguments.
 def $config_generator_key(S, PINT z) = (KINT z)
@@ -142,7 +185,7 @@ def $config_generator_history(S, pconfiggenerator) = true
   -- if $config_generator_origin(S, pconfiggenerator, pgenerator, pfunction)
   -- if $function_generator(S, pfunction)
   -- if pfunction.SIGNATURE.PARAMETERS = eps
-  -- if ~pfunction.SIGNATURE.BYREF \/ $config_generator_reference_input(pconfiggenerator)
+  -- if ~pfunction.SIGNATURE.BYREF \/ $config_generator_reference_input(pconfiggenerator) \/ $config_generator_temporary_reference_input(S, pconfiggenerator) \/ $config_generator_factory_reference_input(S, pconfiggenerator)
   -- if $(|pconfiggenerator.ITEMS| <= 2)
   -- if $config_generator_items(S, pconfiggenerator, pconfiggenerator.ITEMS)
   -- if $config_pack_prefix(pconfiggenerator.CALL, pconfiggenerator.ITEMS, false) = (pconfigcall_prefix)
@@ -183,7 +226,7 @@ def $config_generator_return_storage(S, pconfiggenerator) = false -- otherwise
 ;; uses only the saved Generator/source shape after storage releases that cell.
 def $config_generator_reference_history(S, pconfiggenerator) = true
   -- if $config_generator_history(S, pconfiggenerator)
-  -- if $config_generator_reference_input(pconfiggenerator)
+  -- if $config_generator_reference_input(pconfiggenerator) \/ $config_generator_temporary_reference_input(S, pconfiggenerator) \/ $config_generator_factory_reference_input(S, pconfiggenerator)
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.FRAME = eps
   -- if pgenerator.DELEGATE = eps /\ pgenerator.BORROWED = eps
@@ -328,7 +371,7 @@ def $config_generator_value(S, pconfiggenerator) = (pvalue)
   -- if pgenerator.VALUE = (pvalue)
   -- if $config_iterator_scalar(S, pvalue)
 def $config_generator_value(S, pconfiggenerator) = (pvalue)
-  -- if $config_generator_reference_input(pconfiggenerator)
+  -- if $config_generator_reference_input(pconfiggenerator) \/ $config_generator_temporary_reference_input(S, pconfiggenerator) \/ $config_generator_factory_reference_input(S, pconfiggenerator)
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
   -- if $generator_reference_producer(S, pgenerator)
   -- if pgenerator.VALUE = eps

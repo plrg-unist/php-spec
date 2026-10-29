@@ -67,11 +67,19 @@ properties and a dynamic slot history. A clone without an effective `__clone`
 shares the cached table. A later FE_FETCH_RW promotion reaches both objects'
 dynamic mirrors; a writable lookup separates the writer first. If an effective
 `__clone` exists, the copy gets a separate table before the callback, even when
-the source's last dynamic bucket has been unset. The empty never-written class
-keeps its existing no-table route. The source and reached checks also cover
+the source's last dynamic bucket has been unset. Uncached empty instances
+retain their no-table clone route. The source and reached checks also cover
 non-clone foreach/cast observations, alias and Payload ownership, callback
 mutation/throw and actual COW after cloning. Linked parents, trait-composed
 classes, active collection, readonly and wider table layouts remain partial.
+
+An actual empty cache on an object with no property slots now shares with a clone
+when there is no effective `__clone`. Later writes separate the writer while
+array views keep the old table alive. With an effective callback, the empty copy
+starts without a table and existing callback dispatch runs unchanged; a later
+comparison materializes it normally. Source-reached checks distinguish both
+cache identities before comparison, COW and final weak-owner retirement.
+[Empty-cache review](../../coverage/semantics/throwable-trace-empty-layout-comparison-review.json).
 
 Module300 executes genuine `__clone` callbacks with the selected method's
 declaring scope and the copy's called class. Access is checked before allocation;

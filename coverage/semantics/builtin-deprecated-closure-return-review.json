@@ -1,0 +1,81 @@
+{
+  "milestone": "ATTR06",
+  "status": "Independent semantics and private validation accepted; actual-tail joined strict432 passed",
+  "target": "Pinned PHP 8.5.10 CLI NTS 64-bit and project-local SL semantics",
+  "scope": "Unused by-value owning explicit Closure wrapper results retire after raw outer arguments and before the outer Closure receiver. Existing release jobs retain each pending native owner, including returned-argument aliases; no new task pipeline is introduced. Destructors run in restored caller scope, and a supplied value-destructor throw preserves remaining outer cleanup before reaching the caller catch. Used results keep their caller owner through receiver retirement. Reference-return, wider callback/reentry and value histories retain existing partial contracts.",
+  "raw_root": "../php-spec-evidence-archive/builtin-attributes-06",
+  "production": {
+    "parent": "879937d7d4ef287bd114dabb8ed4ae3b3a09d75c",
+    "private_semantic_cut": "2e146ceb33468a5944d97b210976fd0977d066ec",
+    "private_fixture_cut": "ede5dd389854e242e876f49222b150df03d78e0d",
+    "implementation": [
+      "spec/semantics/79-call-frames.watsup",
+      "spec/semantics/443-deprecated-closure-invoke.watsup"
+    ],
+    "protocol": "The unchanged source-unused/normal/by-value guard dispatches to existing DESTRUCTOR_RELEASE plus DESTRUCTOR_FRAME_EXIT. RESULT transfers once into a future release job; frame VALUE=NULL avoids an extra return owner. Original-context inner cleanup preserves bound-receiver borrowing, then raw arguments, result and outer receiver jobs run in order. The obsolete exact Unsupported terminal-stop rules are removed.",
+    "joined_parent": "75d1a1429af9fa4d4d0880cc8e5df42989f3a982",
+    "joined_semantic_cut": "7d9507de3a15592b470c797f20549df4bdaec55d"
+  },
+  "evidence": {
+    "new_native_3": [
+      "native-new-2e146ceb3/report.json",
+      "ea33c9e2c35105732908d7618f0c2e9ff6d8da35dcc7b20c62c3744a337f4f96"
+    ],
+    "retained_native_1": [
+      "../builtin-attributes-05/native-owning-result-54a/report.json",
+      "620ccbf5e682565a28fbfb89b2815965f895e29034440fb36ae731c6bd05db61",
+      "invoke-unused-owning-result-retires-between-raw-argument-and-receiver",
+      "062d1f05a88b6fe234b62e6bda640aaab3ea29b91d3f963d3a1bf3d1f834aaa7"
+    ],
+    "model_first_3": [
+      "model-owning-used-alias-2e146ceb3/report.json",
+      "659514307d24afb460b0616abf6ca412d0da9ec7ef4f56bc71abfb52a01fe9e5",
+      3
+    ],
+    "model_throw": [
+      "model-throw-measured-ede5dd389/report.json",
+      "b4cbd92cde7d2e4bf21d5c280cb2e467432f66a7129804c6820ae9438e952978",
+      1
+    ],
+    "strict_432": [
+      "strict-2e146ceb3/report.json",
+      "402b692076ec1c623aebe0da0a82af4a81a2c67de6caff1e8b187c878d8e5b96"
+    ],
+    "full_reached": [
+      [
+        "reached-distinct-ede5dd389/report.json",
+        "12b5f62905672d18ff9593bfd283abfd922a504aa8edbd22297216ae48fec451",
+        61,
+        0
+      ],
+      [
+        "reached-throw-ede5dd389/report.json",
+        "7fa9ecd4bec53155a2894989a6733304e14262d9ea54dbd700bf16bb4fc0b5fa",
+        68,
+        0
+      ],
+      [
+        "reached-alias-ede5dd389/report.json",
+        "aae5b44a053233c9db316cdbb9f5bcd8cd01a124ce30d1725f44718d3c1da05f",
+        57,
+        0
+      ]
+    ],
+    "new_native_originals": 3,
+    "retained_native_originals": 1,
+    "exact_normal_agreements": 4,
+    "full_reached_groups": 3,
+    "source_reached_conditions": 186,
+    "derived_guard_assertions": 0,
+    "joined_strict_432": [
+      "joined-strict-7d9507de3/report.json",
+      "c5437a731f493650b311e2fb4b0a50c49af3b50a4de74384d60bf858887d4376"
+    ]
+  },
+  "prior_boundary": "ATTR05 model-owning-result-stop/report.json remains an exact Unsupported boundary with agreement0 at11ed. The same unchanged original now agrees normally at2e146; only the affected model check runs again. Its native bytes/profile/binary identity are retained, and accepted ATTR05 nine normal agreements, native10, reached337 and diagnostic53 are not renewed.",
+  "measured_budget": "All new checks pass first try. Distinct/used/alias public sources finish119.38/131.42/123.07s under CLI150. The already-required supplied-throw reached group completes68 checks in227.88s, establishing finite full-path progress before its first CLI270 gate, which passes191.41s.",
+  "review": "Independent runtime review confirms disjoint restore dispatch, result ownership transferring once, original-context receiver borrowing, no alias dedup, genuine caller traces, remaining-job continuation and saved-Throwable identity. Independent alias57, authored distinct61 and throw68 reach real destructor fronts and compare exact final native output; short budget1+1=2 resumption is checked.",
+  "source": "vendor/php-src/Zend/zend_vm_def.h DO_FCALL fcall_end frees raw arguments, then unused retval, then ZEND_CALL_RELEASE_THIS; Zend/zend_execute_API.c zend_call_function retires the inner call; existing257 release/frame/pending-Throwable protocols supply resumable destructor cleanup.",
+  "recovery": "deprecated_api_native.py --group attr06 captures only the three new originals; attr03 remains the default and attr04/05 memberships are unchanged. deprecated_api_models.py consumes that report plus the retained ATTR05 native-owning report, with the old boundary mapping promoted to normal. deprecated_closure_return_protocol.py selects two authored groups and one independent component; it records checked original programs, native/profile/source identities, full commands/exits, CPU affinity and full reap. Raw evidence stays outside Git.",
+  "composition": "Actual-parent review found new WeakReference-copy/cache and receipt predicates disjoint from the return queue; none of the four originals calls the collector. Other constructor, clone, cast, comparison, Generator and enum changes use separate routes. ATTR06 runtime rules and test conditions are unchanged; one trailing string-prefix space in the fixture is removed without altering parsed rules. Current inventory/active/held tracks are preserved, integrated ATTR06 is replaced by separate ATTR07 Closure/arrow producer preparation, and one joined432 compile passes. Private source4, newnative3/retainednative1 and reached186 keep their original cuts without replay."
+}

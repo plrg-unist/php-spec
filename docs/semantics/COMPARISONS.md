@@ -801,8 +801,8 @@ subclasses and generated-only FiberError remain partial. COMP88, COMP123 and
 other held contexts are untouched.
 [Captured-Throwable review](../../coverage/semantics/throwable-captured-comparison-review.json).
 
-The visited ordinary image admits method-bearing source classes with a
-nonempty, initialized public effective layout. Published/live class checks,
+The visited ordinary image admits method-bearing source classes with an
+initialized public effective layout, including no instance slots. Published/live class checks,
 nonreadonly state, no property hooks and exact inline or ordinary
 cached-table authentication remain required. Methods, including magic get/isset
 traps, are not invoked by object/object comparison. Older fully authenticated
@@ -833,6 +833,18 @@ contents, copied arrays and cached INDIRECT fields keep their existing owners.
 Builtin parents and wider layouts/lifetimes remain partial.
 [Inherited-image review](../../coverage/semantics/throwable-trace-inheritance-comparison-review.json).
 
+Two truly inline same-class objects with no instance slots compare equal before
+checking the active-object recursion guard. Static fields and uncalled methods
+add no instance slots. Identity and class decisions still come first; equal
+captured arguments continue to later trace fields, array tails and severity.
+A real table on either side instead selects table identity, recursion, count,
+key and value order, materializing the other side when needed. Empty foreach
+now creates an actual empty ordinary table; a pure inline array cast remains a
+copy without materializing the object. Views, live aliases, COW and last-owner
+retirement use the existing storage rules. Dynamic UNSET images and inherited
+dynamic layouts retain their separate limits.
+[Empty-image review](../../coverage/semantics/throwable-trace-empty-layout-comparison-review.json).
+
 Legal `__isset` declarations may omit the parameter type while keeping the
 existing arity/reference/default/return restrictions. Its language-triggered
 isset/empty source proofs still require their existing typed-string AST, so this
@@ -842,7 +854,7 @@ existing arity/reference/default/return bounds. It preserves the typed signature
 the separate getter callback predicate in modules 380/408 still requires its
 existing untyped parameter. Other legal getter return declarations remain
 Unsupported.
-Private/uninitialized/empty layouts, builtin parents, hooks, readonly and wider
+Private/uninitialized layouts, builtin parents, hooks, readonly and wider
 callback/lifetime contexts remain partial. Held lanes are unchanged.
 [Method-image review](../../coverage/semantics/throwable-trace-methods-comparison-review.json).
 

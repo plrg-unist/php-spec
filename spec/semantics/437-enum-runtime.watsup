@@ -658,6 +658,16 @@ def $string_dynamic(S, ptbytes, porigin_site, z_init, z_call) = $enum_selected_p
   -- if ~$ppfirstclass(phpType7*)
   -- if $string_site_valid(S, {SITE porigin_site, INIT z_init, LINE z_call, REQUESTED porigin_class, ORIGINAL ptbytes_original}, false)
   -- if $enum_string_operand_valid(S, porigin_site, ptbytes_original)
+def $string_firstclass(S, ptbytes, z_init) = $intrinsic_firstclass(S, pintrinsic)
+  -- if S.ORIGIN = (porigin_site)
+  -- if porigin_site = PORIGIN n_unit pcpath
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_convert, b))
+  -- if ptbytes_original = $string_original(S, ptbytes, porigin_site)
+  -- if $string_enum_candidate(S, ptbytes_original) = (pintrinsic)
+  -- if pintrinsic = INTRINSIC_ENUM porigin_class ptbytes_class text_method
+  -- if $string_site_valid(S, {SITE porigin_site, INIT z_init, LINE z_convert, REQUESTED porigin_class, ORIGINAL ptbytes_original}, true)
+  -- if $enum_string_operand_valid(S, porigin_site, ptbytes_original)
 def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes, phpType7*, z) = $enum_start(S, pintrinsic, eps, z, true)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_class)
   -- if $enum_generated_kind(S, porigin_class, ptbytes) = (pintrinsic)

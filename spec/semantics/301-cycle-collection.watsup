@@ -153,6 +153,7 @@ dec $gc_literal_empty_constant(pstate, nat, pconstant, nat) : bool
 dec $gc_literal_empty_constants(pstate, nat, pconstant*, nat) : bool
 dec $gc_literal_empty_pools(pstate, ppool*, nat) : bool
 dec $gc_immutable_array(pstate, nat) : bool
+dec $gc_object_possible_root(pobject) : bool
 dec $gc_possible_root(pstate, pnode) : bool
 dec $gc_immutable_flag_valid(pstate, nat) : bool
 dec $gc_immutable_flags_valid(pstate, nat*) : bool
@@ -427,7 +428,11 @@ def $gc_immutable_array(S, n) = true
   -- if S.ARRAYS[n] = $array_empty()
   -- if n <- S.GC.IMMUTABLE \/ $gc_literal_empty_pools(S, S.POOLS, n)
 def $gc_immutable_array(S, n) = false -- otherwise
-def $gc_possible_root(S, HOBJECT n) = true -- if $(n < |S.OBJECTS|)
+;; zend_enum_new marks every case GC_NOT_COLLECTABLE before publication;
+;; GC_MAY_LEAK therefore skips its decrements, including before cache binding.
+def $gc_object_possible_root(ENUMCASE porigin) = false
+def $gc_object_possible_root(pobject) = true -- otherwise
+def $gc_possible_root(S, HOBJECT n) = $gc_object_possible_root(S.OBJECTS[n]) -- if $(n < |S.OBJECTS|)
 def $gc_possible_root(S, HARRAY n) = (~$gc_immutable_array(S, n)) -- if $(n < |S.ARRAYS|)
 def $gc_possible_root(S, pnode) = false -- otherwise
 def $allocate_immutable_empty(S) = S_next[.GC.IMMUTABLE = S.GC.IMMUTABLE ++ [n]]

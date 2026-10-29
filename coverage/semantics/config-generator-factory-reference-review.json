@@ -1,0 +1,67 @@
+{
+  "milestone": "A76 BYVAL factory returning a BYREF Generator",
+  "status": "integrated after independent actual-tail review and joined validation",
+  "scope": {
+    "consumer": "INI_SET unpack of a named zero-argument BYVAL nongenerator factory's actual BYREF Generator result, with at most two copied flat scalar sends, an integer final key and absent or implicit-NULL return.",
+    "behavior": "The emitted UNPACK_VAR call authenticates the factory; the returned Generator has a separate authenticated BYREF function. Its actual result supplies INPUT and DATA owners, while a factory-created WeakReference supplies none. Normal completion drops DATA, then final INPUT enters the existing storage pin before API. Quiet terminal throw consumes DATA and INPUT in two discards before catch. The four local-cell witnesses see the weak target die before NULL handler or catch; copied sends and selected callee survive later writes.",
+    "limits": "The factory must be named, zero-argument, BYVAL and nongenerator; the returned Generator must be a named BYREF function with no parameters. Existing ordinary scalar cache-cell, producer, key, return and cleanup fences remain. Outside aliases may retain a cache cell; owning sends/RETURN, typed/backed/debt/released cells, Aggregate/Closure/method producers and wider factory forms remain separate."
+  },
+  "implementation": {
+    "module": "spec/semantics/423-config-generator-unpack.watsup",
+    "base": "92fa676d41c477ea637896fc5ee8af3ba9434a50",
+    "source_freeze": "ddc24c3609ad4af88cbc7daf12736010831a4a9d",
+    "runtime_revision": "362232a7e2396cfb6212794eee378b5655d2ead8",
+    "validated_revision": "f60bd32dd2fd010b9b49715e2d68ac45de7cf1cd",
+    "change": "423 adds a separate source-authenticated factory reference helper to history, scalar read and retired history. Existing BYVAL factory input and direct-CV/direct-BYREF helpers remain unchanged; there is no input recursion or live payload read after retirement. The first runtime cut reused AST variables across distinct functions and has zero validation credit; the corrected cut binds independent fields.",
+    "engine": "Zend/zend_vm_def.h ZEND_SEND_UNPACK destroys iterator DATA before FREE_OP1 drops temporary INPUT. Zend/zend_generators.c zend_generator_free_storage releases cached fields on final Generator retirement."
+  },
+  "validation": {
+    "target": "PHP 8.5.10 CLI NTS64 pinned binary and profile; LC_ALL=C/TZ=UTC; checked frontend and SL/cache-off/determinism-on model, serial CPU1-5 actors.",
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-byval-factory-reference-76",
+    "native_first": {
+      "revision": "ddc24c3609ad4af88cbc7daf12736010831a4a9d",
+      "author": {"report": "native-ddc/author/report.json", "sha256": "966a41707c5868c562b1ed00048678ba51689413762ce65f69f8639a3537f299"},
+      "peer": {"report": "native-ddc/peer/report.json", "sha256": "ba7cf9ba744ee360325f3b38bb0b09155e65c0307f1b7f02a5d2c536e3114dec"},
+      "originals": 4,
+      "result": "Four distinct frozen sources match manual EXPECTED stdout, empty stderr, exit0 and clean groups; native-only preparation has zero model-agreement credit."
+    },
+    "old_refusal": {"report": "old-control-ddc/report.json", "sha256": "f19d2ec400de116e5af5a2dcb0ad62d57e39a2eab0f10a7e2d8c0dbe02e94528", "revision": "ddc24c3609ad4af88cbc7daf12736010831a4a9d", "status": "Unsupported", "reason": "CONFIG Traversable unpack outside initialized Iterator domain", "prefix": "B;P;", "agreement_credit": 0},
+    "private_strict": {"report": "candidate-f60/strict-report.json", "sha256": "316e916bcdd4ea934767383d864227c40ca53d82d11ceb47526eb8913c9d780c", "revision": "f60bd32dd2fd010b9b49715e2d68ac45de7cf1cd", "modules": 432, "seconds": 11.8367471695},
+    "source_models": {
+      "revision": "f60bd32dd2fd010b9b49715e2d68ac45de7cf1cd",
+      "agreements": 4,
+      "method": "Validate retained frozen native sources, streams, profile and process records; invoke only bin/php-semantics. No PHP application or accepted A75 replay.",
+      "reports": [
+        {"case": "normal", "path": "candidate-f60/model-author-normal/report.json", "sha256": "89629507422a3227756d077bba6e02f1309f6101420da8f0bb8d38dd9951d574"},
+        {"case": "terminal-throw", "path": "candidate-f60/model-author-throw/report.json", "sha256": "428f1656aa537b72206b9dd10e66567367b0dfc85a2121cf19bb31e87e7a0f1a"},
+        {"case": "null-handler-return", "path": "candidate-f60/model-peer-return/report.json", "sha256": "37c37399fe6994e09e84aa1b370a5b61ea61014357c26287e1700a761cd29862"},
+        {"case": "null-handler-throw", "path": "candidate-f60/model-peer-throw/report.json", "sha256": "35b88858242ca3c8d22688d829bc161ec370ff32590886c2745cfaa84f38694f"}
+      ]
+    },
+    "reached": {
+      "revision": "f60bd32dd2fd010b9b49715e2d68ac45de7cf1cd",
+      "conditions": 353,
+      "if_premises": 349,
+      "raw_steps": 4,
+      "peer": {"report": "candidate-f60/peer-state/report.json", "sha256": "912610a8dd331ffab01f8b306ded4eda19340f81d6276bc98c48fe88bc87784f", "conditions": 213, "raw_steps": 2, "coverage": "Distinct factory/Generator descriptors; real INPUT+DATA two-to-one transition, 355 pin with live weak target, dead cell then weak-null Generator before NULL handler/API."},
+      "author": {"report": "candidate-f60/author-state/report.json", "sha256": "323d861b45a53f4a26a05aeb04a42463cbd0dc1a45673efbc8fc0515e94a3ff7", "conditions": 140, "raw_steps": 2, "coverage": "Quiet DATA discard retains the weak target at INPUT owner one; final INPUT/public pruning kills Generator and local cell before the saved Throwable reaches catch."}
+    },
+    "review": "Independent literals, frozen native records, source provenance, corrected runtime gate, model-only comparator, source4 and reached353 by config71_recover_review. All successful actors exited0 with true strict/state stdout, empty stderr, stable inputs/HEAD, no timeout/interruption/group survivor."
+  },
+  "recovery": {
+    "manifest": "manifest.json",
+    "manifest_sha256": "91e8ca55121c42608773fb35af46ae20f692d5e9bd32bf2610b2200a67be217d",
+    "files": 89,
+    "raw_bytes": 1799792,
+    "commands": "Run config_generator_factory_reference_models.py with both frozen --native-report paths and one --case per model; run each reached script with its corresponding frozen native --source-report. Makefile includes fresh-source entrypoints for complete future validation.",
+    "notes": "Raw sources, streams, exits, fixtures and reports are outside Git; tested revisions and original process identities remain historical."
+  },
+  "integration": {
+    "status": "actual-tail composition independently cleared; sole joined strict432 passed",
+    "base": "6b9ba9442c8150016b9a2fdbb80b0d1db3633802",
+    "composition": "13ac054f4ed7ee857afc9c6d5d386afa61be55af",
+    "joined_strict": {"report": "joined-13ac054f4/report.json", "sha256": "80145028ffaa69b5f1770425a863c72837b9560c358c58873110996f55cfe461", "revision": "13ac054f4ed7ee857afc9c6d5d386afa61be55af", "modules": 432, "seconds": 11.8819022179},
+    "compatibility": "Runtime423 and source/state fixtures exactly match private A76. Manifest/schema and generic420/355/301 match current parent; GC08 enum roots, ATTR06 unused explicit wrapper return, I82 bound-method capture and COMP158 image routes are source-disjoint. Frozen native4/old Unsupported0, private strict432, source4 and reached353 retain their original cuts; no accepted A75 replay.",
+    "review": "Independent actual-parent semantic seams, docs/inventory union and joined compiler review by config71_recover_review."
+  }
+}

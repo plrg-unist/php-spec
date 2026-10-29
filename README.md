@@ -730,6 +730,26 @@ writes, including an array assignment in a NULL-option handler. Four new sources
 agree with PHP; two reached recipes check normal and saved-throw lifetimes.
 Typed, owning and wider reference sources remain partial.
 
+[Temporary BYREF Generator unpack](coverage/semantics/config-generator-temporary-reference-review.json)
+admits a direct named zero-argument Generator call with separate INPUT and DATA
+owners. On normal completion DATA drops first, then final INPUT release enters
+the existing storage pin, drops the cached-cell edge and retires the Generator
+before API. Quiet terminal throw prunes after DATA/INPUT discards and before
+catch. In the four local-cell originals, the cell also dies during cleanup.
+Four new sources agree with PHP, including copied NULL/value arguments and a
+saved terminal throw. The distinct BYVAL factory route follows below;
+typed/owning cells and wider producers remain partial.
+
+[Factory-returned BYREF Generator unpack](coverage/semantics/config-generator-factory-reference-review.json)
+admits a named zero-argument BYVAL factory whose actual result is a separate
+BYREF Generator. The emitted factory call and returned Generator function are
+authenticated independently; a weak observer adds no strong owner. Four new
+sources agree with PHP. Normal cleanup drops DATA before INPUT and the existing
+storage pin, while quiet throw consumes both owners before catch. The weak
+observer sees the Generator live through the final INPUT stage and null before
+the NULL handler or catch. Owning sends, typed cells and wider factories remain
+partial.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical
@@ -3639,6 +3659,11 @@ shapes remain fenced. [Review](coverage/semantics/weak-map-review.json).
 object/array cycle collection, ordered destructor callbacks and real weak
 retirement. Fiber protection scans reuse one graph within an unchanged state,
 preserving lazy empty/nonobject prefixes, eager node order and helper fallbacks.
+Enum cases carry Zend's `GC_NOT_COLLECTABLE` flag and now skip potential-root
+buffering. Their cached singleton ownership and weak identity remain live;
+ordinary objects retain their physical buffer order and collection behavior.
+The [enum collectability review](coverage/semantics/gc-enum-collectability-review.json)
+records the native and reached-state controls.
 Materialized ordinary property tables now participate in callback-free explicit
 collection of finite instance/array/cell cycles. The collector traces declared
 slots through the table while physical owners remain unchanged; zero-declared
@@ -4375,6 +4400,13 @@ hooks, readonly state and wider layouts/lifetimes retain their limits.
 [Method-image review](coverage/semantics/throwable-trace-methods-comparison-review.json).
 [Interface-image review](coverage/semantics/throwable-trace-interfaces-comparison-review.json).
 [Inherited-image review](coverage/semantics/throwable-trace-inheritance-comparison-review.json).
+Empty ordinary layouts also compare through their real storage route: two inline
+objects return zero before the object recursion guard, while actual caches keep
+table identity/count/key/value order. Empty foreach produces a real table; cast
+views and clone sharing preserve COW and last-owner retirement. An effective
+clone callback starts its empty copy without a cache. Existing class, property,
+callback and lifetime limits remain explicit.
+[Empty-image review](coverage/semantics/throwable-trace-empty-layout-comparison-review.json).
 Builtin `#[NoDiscard]` now validates bounded declarations and warns on unused
 ordinary source calls after sends and named defaults, before reception or body.
 Handlers preserve selected arguments, references, receiver ownership and VM
@@ -4394,12 +4426,15 @@ registry owner, original Throwable retention, fresh by-reference cells and
 terminal cleanup; nine new native-first originals and four reached fronts cover
 this slice. Explicit captured-Closure `__invoke()` now stages wrapper (8192) then
 callee (16384) warnings before inner reception, preserving raw arguments, references,
-trace redaction and separate Closure owners. Nine originals agree; one unused
-owning-result path remains an explicit boundary pending ordered return release.
+trace redaction and separate Closure owners. Unused owning results now retire
+between raw arguments and the outer receiver, including a returned argument and
+a supplied destructor throw; used results survive receiver cleanup. Four further
+originals agree, including the former boundary with retained native evidence.
 Wider API consumers remain partial. See the [VM review](coverage/semantics/builtin-deprecated-review.json),
 [error/assert API review](coverage/semantics/builtin-deprecated-api-review.json),
-[exception API review](coverage/semantics/builtin-deprecated-exception-api-review.json) and
-[Closure-wrapper review](coverage/semantics/builtin-deprecated-closure-invoke-review.json).
+[exception API review](coverage/semantics/builtin-deprecated-exception-api-review.json),
+[Closure-wrapper review](coverage/semantics/builtin-deprecated-closure-invoke-review.json) and
+[wrapper-return review](coverage/semantics/builtin-deprecated-closure-return-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The
@@ -6345,10 +6380,13 @@ Computed, literal and compiler-folded `Class::method` strings also select these
 generated methods before arguments. The original full string and selected enum
 survive later argument or Stringable callback rebinding; temporary Stringable
 arguments retire before lookup. Packed Stringable origins remain Unsupported.
+First-class captures of these strings create internal Closures that retain the
+selected enum. A call keeps its Closure alive when arguments clear the source
+variable and releases it after the call.
 Class constants can consume cached enum cases in scalar conditions and select a
 case through a source-certified case or negated-case condition, including a case
 from another enum. Wider object-valued conditional transfers remain Unsupported.
-Callable admission, first-class array/string captures, pipe routes,
+Callable admission, first-class array captures, pipe routes,
 `Closure::fromCallable` conversion, `is_callable`, case attributes, enum collection
 policy, the default loader and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
@@ -6560,6 +6598,16 @@ private-access/actual-receipt guards. The original independent failure retains
 zero credit after shared identity-receipt predicate correction. Wider callable
 and lifecycle forms remain partial.
 [Array/string factory review](coverage/semantics/generator-array-string-factory-review.json).
+
+I82 adds compatible method-Closure bindings as scoped Generator factories.
+The entered bound call supplies a local borrowed view of its actual binding;
+the existing finite source/ORIGINAL history authenticates it after retirement.
+Lexical method scope stays fixed, while the compatible receiver or null static
+binding determines called scope. Four originals agree with PHP; five reached
+fronts pass 475 custom/500 reported checks. Private strict431 and actual-tail
+joined strict432 pass at their recorded cuts.
+Broader factory, binding/API/delegation and lifecycle forms remain partial.
+[Bound factory review](coverage/semantics/generator-bound-factory-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
