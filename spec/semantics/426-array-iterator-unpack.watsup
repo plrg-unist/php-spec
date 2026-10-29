@@ -253,7 +253,7 @@ def $array_iterator_current_value(S, parrayiterator, poperand) = eps -- otherwis
 def $array_iterator_current_away(S, pvalue, n_builder) = ($array_iterator_value_away(S, pvalue, n_builder) \/ $array_iterator_reference_away(S, pvalue, n_builder))
 def $array_iterator_current_builder(S, parrayiterator) = ($array_null_const_items(S, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY]) \/ ((~$array_iterator_destructor(S, parrayiterator.OBJECT) \/ $array_iterator_destructor_byref_current(S, parrayiterator)) /\ $array_iterator_reference_items(S, parrayiterator.ARRAY, S.ARRAYS[parrayiterator.ARRAY].ITEMS, [parrayiterator.ARRAY])))
 
-;; One inline declared field may own a finite scalar-reference array graph.
+;; One inline declared field may own a finite DIRECT or scalar-reference graph.
 ;; Other declared slots own only scalars; materialized tables and hooks are out.
 def $array_iterator_field_plain_slot(S, n_object, ppropertyslot) = true
   -- if S.OBJECTS[n_object] = INSTANCE porigin_class
@@ -285,7 +285,7 @@ def $array_iterator_owned_field(S, parrayiterator) = true
   -- if ~$property_hook_instance(S, parrayiterator.OBJECT)
   -- if $array_iterator_field_slot(S, parrayiterator.OBJECT, pobjectprops.SLOTS) = (n_field)
   -- if $node_children(S, HOBJECT parrayiterator.OBJECT) = [HARRAY n_field]
-  -- if n_field =/= parrayiterator.ARRAY /\ $array_iterator_reference_table(S, n_field)
+  -- if n_field =/= parrayiterator.ARRAY /\ ($array_iterator_table(S, n_field) \/ $array_iterator_reference_table(S, n_field))
   -- if $array_iterator_reference_items(S, n_field, S.ARRAYS[n_field].ITEMS, [n_field, parrayiterator.ARRAY])
 def $array_iterator_owned_field(S, parrayiterator) = false -- otherwise
 def $array_iterator_object_ready(S, parrayiterator) = true
