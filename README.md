@@ -1159,8 +1159,9 @@ preserve reference cells across rebinding; bitwise conversion follows Zend's
 compiler slot order. [Direct-CV](coverage/semantics/integer-operator-warning-review.json)
 and [copied-operand](coverage/semantics/integer-operator-copy-review.json) evidence
 retain separate cuts. Wider producers and object conversion remain open.
-With an empty, unmaterialized `stdClass` RIGHT, a fractional LEFT's Deprecated
-handler can repair the later integer conversion. Each shared operand needs a
+Certified default-handler RIGHT objects include ordinary instances and `stdClass`
+with existing fields or property tables. A fractional LEFT's Deprecated handler
+can repair the later integer conversion. Each shared operand needs a
 surviving outside alias. Shared LEFT keeps its saved integer and supplies its old
 cell's current type for later TypeError despite name rebinding. `%` and shifts
 reread the RIGHT CV; bitwise operations retain a selected RIGHT reference cell.
@@ -1175,7 +1176,10 @@ that conversion. This also covers swapped bitwise slots and an original string's
 two notices. Anonymous class identities stay full while binary error text ends
 at NUL. The [late-owning review](coverage/semantics/integer-late-owning-left-warning-review.json)
 records cached success, failure, supplied throws and last-owner retirement.
-Wider object conversions, expired pointers and unsupported producers remain partial.
+The [standard-handler review](coverage/semantics/integer-standard-handler-right-warning-review.json)
+also checks inherited/anonymous class provenance, skipped numeric `__toString`,
+destructor writes before the later read, and real field/snapshot owners.
+Custom builtin tables, wider producers and expired pointers remain partial.
 Leading-numeric-string `+` now suspends through named warning handlers for two
 direct CVs with preexisting untyped reference cells. Both cells are selected before
 conversion; cached numbers survive handler writes, while the next conversion reads
@@ -1737,13 +1741,15 @@ Finite DIRECT pooled field roots, including empty constants, now follow the same
 route. Field writes retain the pool snapshot while runtime COW copies retire;
 the [pooled-field review](coverage/semantics/array-iterator-pooled-field-review.json)
 records normal, key-throw, invalid-key and delayed-destructor originals.
-Several initialized declared owning fields now preserve repeated roots, shared
-finite descendants and ordinary scalar/array reference cells. The actual
-property cell returned by `current()` stays selected through key replacement;
-COW preserves saved and spread rows while ordinary storage retires field edges
-in declaration order. The [multiple-field review](coverage/semantics/array-iterator-fields-review.json)
-records normal, supplied-key-throw, pooled and retained-owner originals, with
-by-value current kept as an explicit boundary.
+Initialized declared owning fields now use the same validation with either
+current return mode, with a public destructor or without one. A by-value cache
+keeps its row snapshot through key replacement; a by-reference cache follows
+its selected property cell. COW preserves saved/spread rows, shared children and
+held versus sole scalar aliases while ordinary storage retires field edges.
+The [field/cache review](coverage/semantics/array-iterator-byval-fields-review.json)
+records direct and Aggregate sources and reached ownership checks. The earlier
+[multiple-field review](coverage/semantics/array-iterator-fields-review.json)
+keeps its original by-reference cuts.
 Ordinary CVs of named IteratorAggregate classes now invoke a borrowed
 `getIterator()` frame and
 transfer its owned user Iterator or named-Generator return into DATA. Genuine
@@ -3557,6 +3563,13 @@ shapes remain fenced. [Review](coverage/semantics/weak-map-review.json).
 object/array cycle collection, ordered destructor callbacks and real weak
 retirement. Fiber protection scans reuse one graph within an unchanged state,
 preserving lazy empty/nonobject prefixes, eager node order and helper fallbacks.
+Materialized ordinary property tables now participate in callback-free explicit
+collection of finite instance/array/cell cycles. The collector traces declared
+slots through the table while physical owners remain unchanged; zero-declared
+ordinary casts may share that table. Four native-first originals agree, and
+86 reached AL checks plus one private typed strict SL cut pass at their recorded
+cuts. Callback, ephemeron, hook, worker and residual paths remain partial;
+see the [materialized-table review](coverage/semantics/gc-materialized-table-review.json).
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
 reuse only when destructor preparation leaves the state identical.
@@ -4186,10 +4199,13 @@ reviews record the bounded scope and validation.
 Captured traces also stop on identity, class, count, missing keys or earlier
 leaves before later cyclic or unsupported payloads, with live headers checked
 at visited nodes. Reached ordinary recursion raises a catchable Error with its
-source, trace and normal unwind cleanup. Callback and wider-layout boundaries,
-the visited depth limit and finite previous-path authentication remain separate.
+source, trace and normal unwind cleanup. The visited captured walk has no fixed
+depth limit: active-left guards and the finite heap bound traversal while shared
+DAG branches compare normally. Callback and wider-layout boundaries and finite
+previous-path authentication remain separate.
 [Visited-trace review](coverage/semantics/throwable-trace-visited-comparison-review.json).
 [Recursion Error review](coverage/semantics/throwable-trace-recursion-comparison-review.json).
+[Finite-heap traversal review](coverage/semantics/throwable-trace-unbounded-comparison-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The
@@ -5785,10 +5801,11 @@ Supported computed and temporary public `__invoke` callees now use the same
 ordinary INIT selection and cleanup, consuming their raw callee result before
 Iterator arguments run. [Computed-callee review](coverage/semantics/computed-callee-unpack-review.json)
 records six new/promoted sources, two independent sources and four retained controls.
-Missing instance and external static methods now collect initialized Iterator
-spreads through the real magic trampoline before invoking `__call` or
-`__callStatic`; the [magic Iterator review](coverage/semantics/magic-iterator-unpack-review.json)
-records named/positional order, copied values and receiver/buffer cleanup.
+Selected missing instance and static methods collect array, Iterator and Generator
+spreads through the real zero-formal magic trampoline before invoking `__call` or
+`__callStatic`. Shared send mapping preserves copied values, named order and
+producer/receiver cleanup. The [producer review](coverage/semantics/magic-producer-unpack-review.json)
+extends the earlier [Iterator cut](coverage/semantics/magic-iterator-unpack-review.json).
 Public concrete class-method strings now distinguish
 computed static dispatch from fixed calls using a compatible active receiver.
 Immutable string captures/clone retain selected descriptors, called scope and
@@ -6227,6 +6244,8 @@ Fresh named by-reference THROW also transfers before first yield, preserving sha
 parameter cells and promoted local caches. [Named reference review](coverage/semantics/generator-fiber-fresh-reference-throw-transfer-review.json).
 Static-method THROW now preserves inherited scope without receiver owners across
 fresh/primed value/reference caches. [Static review](coverage/semantics/generator-fiber-static-throw-transfer-review.json).
+Static CURRENT/NEXT/SEND also use the shared callee/cache proof in existing phases;
+fresh NEXT/SEND ADVANCE remains partial. [Transfer review](coverage/semantics/generator-fiber-static-transfer-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

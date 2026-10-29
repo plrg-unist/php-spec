@@ -228,7 +228,7 @@ $generator_resume_pairs(S_current, S_current.CURRENT, S_current.FRAMES)
 $call_current_valid(S_current)
 $fiber_generator_callee_valid(S_current, pgenerator, pcallcontext_generator)
 $fiber_generator_cached_reference_valid(S_current, pgenerator, pcallcontext_generator)
-$fiber_generator_body_id(S_current) = eps
+$fiber_generator_body_id(S_current) = (n_generator)
 S_next = S_view[.FRAMES = pframe_generator[.TODO = (GENERATOR_RESUME pgeneratorop[.NAME = "next"][.ARGUMENTS = eps]) :: ptask_generator*] :: pframe_tail*]
 $fiber_generator_body_id(S_next) = eps
 S_send = S_view[.FRAMES = pframe_generator[.TODO = (GENERATOR_RESUME pgeneratorop[.NAME = "send"][.ARGUMENTS = [PINT 3]]) :: ptask_generator*] :: pframe_tail*]

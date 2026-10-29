@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sha = lambda path: hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def run(cases, checks, prefix, output, extra_inputs=()):
+def run(cases, checks, prefix, output, extra_inputs=(), timeout=120):
     recorder.ROOT = ROOT
     output = Path(output).resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -50,7 +50,7 @@ def run(cases, checks, prefix, output, extra_inputs=()):
                 + ''.join('  -- ' + (condition if condition.startswith('PhpStep:') else 'if ' + condition)
                           + '\n' for condition in conditions))
             process = recorder.recorded([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'),
-                '--sl', *map(str, modules), str(fixture)], directory / 'state', 120)
+                '--sl', *map(str, modules), str(fixture)], directory / 'state', timeout)
             passed = (process['exit'] == 0 and not process['timeout']
                 and (directory / 'state.stdout').read_bytes() == b'true\n'
                 and not (directory / 'state.stderr').read_bytes())

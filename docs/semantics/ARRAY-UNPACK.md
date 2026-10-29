@@ -150,8 +150,21 @@ owners keep constants
 after runtime copies retire.
 The [multiple-field review](../../coverage/semantics/array-iterator-fields-review.json)
 records the separate original-source, reached-state and boundary cuts.
-Special/typed/proxy references, object or cyclic/debt-bearing descendants,
-property tables/hooks, by-value current with owning fields and wider destructor
+Declared-field eligibility and builder graphs are independent of the current
+return mode and destructor presence. A KNOWN row remains a copied value while
+key changes its original field. A raw REFERENCE instead follows the selected
+cell; every such cache, including scalar and pure DIRECT payloads, requires
+actual current-BYREF metadata. KNOWN values are also valid for a genuine
+by-reference method's value fallback. No retired current cell is consulted after
+cache clearing: the existing release continuation uses method history.
+Without a destructor, retiring the Iterator drops its field and selected-cell
+edges while the builder retains its copied row. With a retained scalar alias,
+subsequent writes stay shared across distinct copied tables. Removing the outside
+alias instead lets a sole wrapper unwrap during same-table COW.
+The [field/cache review](../../coverage/semantics/array-iterator-byval-fields-review.json)
+keeps eight exact sources, one typed-slot Unsupported control and 915 physical
+reached premises at their separate cuts. Special/typed/proxy references, object
+or cyclic/debt-bearing descendants, property tables/hooks and wider destructor
 reentry remain partial.
 
 `427-array-generator-unpack.watsup` adds ordinary named Generator bodies with

@@ -111,9 +111,9 @@ replayed. No new task/root was added. See the
 After the first physical integer conversion succeeds, its selected CV or surviving
 cell may hold any allocated object whose creation and lifetime are otherwise
 admitted. Failed later conversion diagnoses that object's current class without
-retrying its cast or overload. The unfinished operand must remain nonobject or
-the admitted empty, unmaterialized `stdClass`; wider object conversions stay
-partial. Physical pointers preserve swapped bitwise order, including `[7] & $right`.
+retrying its cast or overload. At that cut, the unfinished object operand was
+limited to an empty, unmaterialized `stdClass`; the standard-handler rule below
+now generalizes it. Physical pointers preserve swapped bitwise order, including `[7] & $right`.
 An original `12.5tail` retains both notices and cached `12` after object replacement.
 Binary TypeError formatting applies Zend's C-string truncation to each type name;
 raw class identity and `get_class` retain the full anonymous name.
@@ -125,6 +125,27 @@ owning-array children also retire normally. Initial admission, source/history
 validation and task roots stay unchanged. Earlier operator cuts retain their
 evidence without replay. See the
 [late-owning review](../../coverage/semantics/integer-late-owning-left-warning-review.json).
+
+RIGHT object admission and unfinished failure now share one default-handler
+certificate. A live intrinsic `STDINSTANCE` qualifies independently of fields or
+tables. A source instance needs authentic declaration history, matching published
+parent receipts, and noninternal ancestry ending at a default root or `stdClass`.
+The recursion bound is the class count, not an object-graph depth cap. Custom
+builtin tables and their descendants require separate evidence; nominal object
+identity alone is insufficient. Numeric cast failure is quiet and skips
+`__toString`, even when that method exists.
+Cached `12` survives callback writes while a parent destructor can rewrite RIGHT
+`5` to `7` before conversion. Old reference cells, materialized property tables,
+array snapshots and outside child owners retain their actual lifetimes. Supplied
+throws cancel unfinished work without adding a receiver or field root.
+Eighteen source outcomes agree exactly, including one unchanged control. Eight
+representative old gaps were executed; nine other authored variants were inspected
+without old-model execution. A genuine WeakMap custom-table refusal remains
+Unsupported with zero agreement credit. Strict425 and four source-reached fronts
+pass 559 checks, including six assertions on four forged class-metadata states.
+Initial finite-fractional LEFT, direct-CV and borrowed-owner bounds stay unchanged.
+The [standard-handler review](../../coverage/semantics/integer-standard-handler-right-warning-review.json)
+retains exact source/state cuts and the deadline-only fixture adjustment.
 
 Plain-CV NaN `%` now preserves the remaining precision Deprecated after its
 range Warning handler throws. With mask `2`, the default Deprecated on line 25

@@ -70,8 +70,14 @@ dec $magic_unpack_raw_task(ptask, pcalltarget) : bool
 def $magic_unpack_raw_task(UNPACK_ARGS punpackcall, pcalltarget) = (punpackcall.FUNCTION = pcalltarget)
 def $magic_unpack_raw_task(UNPACK_SEND punpackcall, pcalltarget) = (punpackcall.FUNCTION = pcalltarget)
 def $magic_unpack_raw_task(UNPACK_PREP punpackcall, pcalltarget) = (punpackcall.FUNCTION = pcalltarget)
+def $magic_unpack_raw_task(UNPACK_NEXT punpackcall poperand n b, pcalltarget) = (punpackcall.FUNCTION = pcalltarget)
 def $magic_unpack_raw_task(ITERATOR_UNPACK piteratorunpack text, pcalltarget) = (piteratorunpack.CALL.FUNCTION = pcalltarget)
+def $magic_unpack_raw_task(GENERATOR_UNPACK pgeneratorunpack text, pcalltarget) = (pgeneratorunpack.CALL.FUNCTION = pcalltarget)
 def $magic_unpack_raw_task(ptask, pcalltarget) = false -- otherwise
+;; The producer uses the argument origin; the following METHOD_RESULT belongs
+;; to the selected outer magic call, as with the Iterator continuation.
+def $call_after_origin(S, GENERATOR_UNPACK pgeneratorunpack text) = S[.ORIGIN = pgeneratorunpack.CALL.CALLSITE]
+  -- if $magic_unpack_collecting(pgeneratorunpack.CALL.FUNCTION)
 dec $magic_unpack_suffix(ptask*, pcalltarget) : bool
 def $magic_unpack_suffix(eps, pcalltarget) = false
 def $magic_unpack_suffix(ptask :: ptask_tail*, pcalltarget) = (ptask_tail* = METHOD_RESULT :: $magic_unpack_tail(pcalltarget))
@@ -102,6 +108,10 @@ def $magic_unpack_sends(S, pcalltarget, pnamedargs) = ($unpack_slots_valid(S, pc
 dec $magic_unpack_key(pkey, nat) : pnamedtarget
 def $magic_unpack_key(KINT z, n) = NAMED_POSITION n
 def $magic_unpack_key(KSTRING preqbytes, n) = NAMED_EXTRA preqbytes
+def $unpack_send_target(S, pcalltarget, pkey, n) = $magic_unpack_key(pkey, n)
+  -- if $magic_unpack_collecting(pcalltarget)
+def $unpack_send_reference(S, pcalltarget, pnamedtarget) = false
+  -- if $magic_unpack_collecting(pcalltarget)
 dec $magic_unpack_argument(phpType7, nat) : pnamedtarget
 def $magic_unpack_argument(NArg ABSENT expression phpType4_ref phpType4_unpack metadata, n) = NAMED_POSITION n
 def $magic_unpack_argument(NArg (NIdentifier (BYTES text) metadata_name) expression phpType4_ref phpType4_unpack metadata, n) = NAMED_EXTRA $base64(text)
@@ -124,7 +134,11 @@ def $unpack_static_prefix(S, pcalltarget, phpType7*, pnamedargs) = true
   -- if pnamedargs_expected = $magic_unpack_shape(phpType7*, {SLOTS eps, NAMED eps})
   -- if $named_slots_valid(S, pcalltarget, 0, pnamedargs.SLOTS, pnamedargs_expected.SLOTS)
   -- if $named_entries_valid(S, pcalltarget, 0, pnamedargs.NAMED, pnamedargs_expected.NAMED)
-def $unpack_call_roots(punpackcall) = $named_slots_roots(punpackcall.SENT.SLOTS) ++ $named_roots(punpackcall.SENT.NAMED) ++ $target_nodes(punpackcall.FUNCTION)
+;; Unfinished calls free positional args, selected This, then extra named args.
+def $unpack_call_roots(punpackcall) = $named_slots_roots(punpackcall.SENT.SLOTS) ++ $target_nodes(punpackcall.FUNCTION) ++ $named_roots(punpackcall.SENT.NAMED)
+  -- if $magic_unpack_collecting(punpackcall.FUNCTION)
+;; SEND_UNPACK frees its array operand before unwinding sends and selected This.
+def $task_nodes(UNPACK_NEXT punpackcall poperand n b) = $operand_nodes(poperand) ++ $unpack_call_roots(punpackcall)
   -- if $magic_unpack_collecting(punpackcall.FUNCTION)
 
 ;; Explicit prefixes also copy a reference CV at its own SEND before callbacks.
@@ -169,7 +183,7 @@ rule PhpStep/magic-unpack-explicit-abrupt: S ~> S_value
 def $iterator_unpack_plain(S, punpackcall) = $magic_unpack_raw_valid(S, punpackcall.FUNCTION)
   -- if $magic_unpack_collecting(punpackcall.FUNCTION)
   -- if punpackcall.CALLSITE = ($magic_unpack_site(punpackcall.FUNCTION))
-def $iterator_unpack_named_target(S, piteratorunpack) = $magic_unpack_key(pkey, |piteratorunpack.CALL.SENT.SLOTS|)
+def $iterator_unpack_named_target(S, piteratorunpack) = $unpack_send_target(S, piteratorunpack.CALL.FUNCTION, pkey, |piteratorunpack.CALL.SENT.SLOTS|)
   -- if $magic_unpack_collecting(piteratorunpack.CALL.FUNCTION)
   -- if piteratorunpack.KEY = KNOWN pvalue
   -- if $fiber_traversal_key(pvalue) = (pkey)
@@ -185,12 +199,14 @@ def $iterator_unpack_send(S, piteratorunpack, ptask_tail*) = $iterator_unpack_st
 def $iterator_unpack_abort_plain(S, punpackcall) = true
   -- if $magic_unpack_caller_history(S, punpackcall.FUNCTION)
   -- if punpackcall.CALLSITE = ($magic_unpack_site(punpackcall.FUNCTION))
-;; Array/Generator producer protocols remain separate explicit boundaries.
-def $unpack_prepare(S, punpackcall) = S_read[.COMPLETION = UNSUPPORTED "magic unpack array operand"]
+;; The zero-formal trampoline has no reference demand. Preserve a writable
+;; returned reference operand without separating its array or promoting items.
+def $unpack_prepare(S, punpackcall) = $unpack_separate(S_read, S.RESULT, $unpack_writable(S, punpackcall), false)
   -- if $magic_unpack_collecting(punpackcall.FUNCTION)
   -- if S_read = $resolve_at($hold_task_inputs(S), S.RESULT, $unpack_line(S, punpackcall))
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (PARRAY n)
+  -- if $unpack_class(S, punpackcall) =/= eps
 
 ;; Pack positional runtime slots before the insertion-ordered extra names.
 dec $magic_unpack_slots(parray, pnamedslot*, nat) : parray

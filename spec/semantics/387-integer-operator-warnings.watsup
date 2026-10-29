@@ -154,6 +154,38 @@ def $integer_plain_stdclass(S, POBJECT n) = true
   -- if $object_table_at(S.OBJECTTABLES, n) = eps
 def $integer_plain_stdclass(S, pvalue) = false -- otherwise
 
+;; Published source ancestry certifies the default table, independently of fields.
+;; Internal/custom handler tables require separate capability evidence.
+dec $integer_standard_class_handlers(pstate, porigin, nat) : bool
+def $integer_standard_class_handlers(S, porigin, n) = true
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = eps \/ $class_link_at(S.LINKEDPARENTS, porigin) = (STDCLASS_PARENT)
+def $integer_standard_class_handlers(S, porigin, n) = $integer_standard_class_handlers(S, porigin_parent, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $integer_standard_class_handlers(S, porigin, n) = false -- otherwise
+
+dec $integer_standard_object_handlers(pstate, pvalue) : bool
+def $integer_standard_object_handlers(S, POBJECT n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = STDINSTANCE
+def $integer_standard_object_handlers(S, POBJECT n) = $integer_standard_class_handlers(S, porigin, |S.CLASSES|)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_links_valid(S)
+  -- if $declaration_history_valid(S)
+def $integer_standard_object_handlers(S, pvalue) = false -- otherwise
+
 ;; A selected CELL borrows an outside owner. Only entry needs two owners;
 ;; after callback rebinding the existing pointer-use check requires one live owner.
 dec $integer_object_right_borrowed(pstate, pintegerpointer) : bool
@@ -168,7 +200,7 @@ def $integer_object_right_initial(S, VARIABLE ptbytes_left z_left, VARIABLE ptby
   -- if $integer_object_right_borrowed(S, pintegerpointer_left)
   -- if $integer_object_right_borrowed(S, pintegerpointer_right)
   -- if $float_long(n_float, true) = (i, [PRECISIONLOSS])
-  -- if $integer_plain_stdclass(S, pvalue_right)
+  -- if $integer_standard_object_handlers(S, pvalue_right)
 def $integer_object_right_initial(S, poperand_left, poperand_right, pvalue_left, pvalue_right, b_swapped) = false -- otherwise
 
 def $integer_operator_plan(S) = (pintegeroperation)
@@ -237,7 +269,7 @@ def $integer_failure(S, pintegeroperation) = $type_failure(S[.TODO = ptask_tail*
   -- if $integer_pointer_value(S, pintegeroperation.LEFTPOINTER) = (pvalue_left)
   -- if ~$cast_object_value(pvalue_left)
   -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (pvalue_right)
-  -- if $integer_plain_stdclass(S, pvalue_right)
+  -- if $integer_standard_object_handlers(S, pvalue_right)
 ;; LEFT is already saved. Its handler replacement is diagnosed without a cast.
 def $integer_failure(S, pintegeroperation) = $type_failure(S[.TODO = ptask_tail*], pintegeroperation.OP, POBJECT n, pvalue_right, pintegeroperation.LINE)
   -- if S.TODO = (INTEGER_OPERATOR_CONVERT pintegeroperation (INTEGER_RIGHT i)) :: ptask_tail*
@@ -245,7 +277,7 @@ def $integer_failure(S, pintegeroperation) = $type_failure(S[.TODO = ptask_tail*
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if $integer_pointer_value(S, $integer_phase_pointer(pintegeroperation, INTEGER_RIGHT 0)) = (pvalue_right)
-  -- if ~$cast_object_value(pvalue_right) \/ $integer_plain_stdclass(S, pvalue_right)
+  -- if ~$cast_object_value(pvalue_right) \/ $integer_standard_object_handlers(S, pvalue_right)
 def $integer_failure(S, pintegeroperation) = S[.COMPLETION = UNSUPPORTED "integer operator object or expired pointer"] -- otherwise
 dec $integer_warning_valid(pstate, pintegeroperation, pintegerphase, pintegerconversion, nat) : bool
 def $integer_warning_valid(S, pintegeroperation, pintegerphase, pintegerconversion, n) = ($integer_operation_valid(S, pintegeroperation) /\ $integer_phase_valid(pintegerphase) /\ $integer_conversion(pintegerconversion.INPUT) = (pintegerconversion) /\ $(n <= |pintegerconversion.NOTICES|))

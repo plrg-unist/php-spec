@@ -22,23 +22,34 @@ interpreter failure and 45s timeout retain zero affected credit. Namespace/impor
 dynamic-source parent/interface dependencies and wider anonymous bodies remain
 partial. [Dependency review](coverage/semantics/anonymous-dependencies-review.json).
 
-Ordinary static-method `Generator::throw` now transfers through Fiber before
-first yield or with a primed cache, for by-value and by-reference producers.
-Explicit/dynamic nonkeyword class calls authenticate real static methods;
-inherited declaring and called scopes remain distinct without receiver roots.
-Object selectors retire independently of the Generator. Copied formals, shared
-parameter cells, API snapshots and live caches keep their ordinary ownership.
-Normal and supplied throws preserve the original Throwable and distinct pre-yield
-versus pending-finally `Previous` order.
-Four authored and one independent source agree exactly with pinned PHP. Four
-authored originals were genuinely Unsupported; two no-Fiber static controls
-retain their exact baseline outcomes. Private strict 424, joined strict 425 and
-522 custom checks across four reached fronts pass. One fixture-path parse stop
-has zero credit; its corrected pending-only cut passes. Matched descriptor/source
-authentication and a valid CURRENT resumer test the explicit THROW boundary.
-I69–I71 retain their original evidence without replay. Keyword-forwarded creation,
-static CURRENT/NEXT/SEND transfer and wider callee/lifecycle forms remain partial.
-[Static THROW review](coverage/semantics/generator-fiber-static-throw-transfer-review.json).
+Materialized ordinary property tables now support a callback-free explicit GC
+slice over finite instance/array/cell cycles. GC traces declared slots through
+`INDIRECT` table entries while physical owners stay unchanged; zero-declared
+ordinary casts share eligible tables, and existing pruning detaches collected
+typed-property sources from outside cells. Three authored and one independent
+native-first originals agree exactly. Separate reached AL cuts pass 51+25+10
+checks, and a private typed strict SL cut passes; the initial fixture compile
+stop has zero credit. Joined strict compilation of the actual 425-module tail
+passes at the separate integration cut.
+Callbacks, ephemerons, hooks, workers, residual buffers and noncanonical
+locators remain outside this slice. [Review](coverage/semantics/gc-materialized-table-review.json).
+
+Ordinary static Generator bodies now transfer through Fiber during fresh
+`current()` and the existing non-advancing `next()`/`send()` phases, for by-value
+and by-reference producers. Shared authenticated callee/cache/resumer rules retain
+inherited declaring/called scope without receiver roots. Reference cells survive
+name rebinding, snapshots stay separate from live caches, array COW preserves old
+copies, and SEND keeps its argument buffer distinct from the received local.
+Six authored and one independent source agree exactly with pinned PHP. Three
+representative originals were checked Unsupported; a selected named NEXT control
+stays exact. Strict 425 private/joined and 522 custom checks across four reached
+fronts pass, with no failed attempts. I72 evidence keeps its original cuts; its
+maintained CURRENT assertion is covered by the new compatibility front.
+Native-positive fresh NEXT/SEND before-first-yield ADVANCE gates remain explicit
+Unsupported with zero agreement. Their shared phase admission is the next generic
+milestone; keyword-forwarded creation still needs retained caller scope proof.
+Other callee/cache, helper/delegation and wider lifecycle forms remain partial.
+[Static transfer review](coverage/semantics/generator-fiber-static-transfer-review.json).
 
 A fresh sole-DATA CONFIG Iterator now validates its actual declared physical
 fields without fixed names or an edge-count limit. Supported scalars, ordinary
@@ -69,23 +80,25 @@ Joined strict compilation over the actual 424-module tail also passes.
 [Retained Child review](coverage/semantics/config-aggregate-iterator-retained-child-review.json).
 Other owner forms, dynamic/materialized storage, shutdown release and destructor throws/reentry remain partial.
 
-Ordinary `%`, shifts and numeric bitwise operators now diagnose late owning
-objects after the first physical integer conversion succeeds. Its saved number
-survives CV/old-cell replacement; later failure uses the selected live class
-without retrying that cast. Swapped bitwise slots and two notices from an original
-numeric string follow the same rule. Binary errors truncate anonymous names at
-NUL while `get_class` retains full identity. Sixteen authored and seven independent
-sources agree exactly: 19 former late-failure gaps and four unchanged controls.
-Strict424 and four source-reached fronts/471 checks pass, including four derived
-helper-state guards. Joined strict compilation over the actual 425-module tail
-also passes. Weak references, last-owner destructors and owning-array children
-preserve real lifetimes. Observation-helper and anonymous producer stops
-retain zero overall credit; only affected fixtures were renewed. Earlier
-[two-cell evidence](coverage/semantics/integer-both-reference-object-right-warning-review.json),
-including the historical OP10829/446 cuts, keeps its revisions without replay.
-Entry admission and task roots stay unchanged. Wider RHS object conversions,
-expired pointers and unsupported producers remain partial.
-[Late-owning review](coverage/semantics/integer-late-owning-left-warning-review.json).
+Ordinary `%`, shifts and numeric bitwise operators now accept certified default-
+handler RIGHT objects, including inherited/anonymous instances and memberful or
+materialized `stdClass`. Source history and published parent receipts authenticate
+the handler table independently of fields. Numeric failure stays quiet and skips
+`__toString`; cached numbers and selected addresses survive callbacks. A parent
+destructor can rewrite RIGHT before the later read, while real field, snapshot
+and outside child owners preserve ordinary teardown and supplied-throw order.
+Eighteen source outcomes agree exactly, including one unchanged control. Eight
+representative old gaps were executed; nine further authored variants were
+inspected without old-model execution. A genuine WeakMap custom-table refusal
+remains Unsupported with zero agreement credit. Strict425 and four source-reached
+fronts/559 checks pass, including six assertions on four forged class-metadata
+states. The fixture deadline adjustment changes no SL conditions or semantics.
+Joined strict compilation also passes over the actual 425-module tail.
+Earlier [late-owning evidence](coverage/semantics/integer-late-owning-left-warning-review.json)
+and other operator cuts retain their revisions without replay. Initial finite-
+fractional LEFT, direct-CV and borrowed-owner bounds remain; custom builtin tables,
+wider producers and expired pointers stay partial.
+[Standard-handler review](coverage/semantics/integer-standard-handler-right-warning-review.json).
 
 When the Iterator alone owns its Child, a fresh Aggregate-returned CONFIG
 Iterator may lack a destructor while the Child finalizes through ordinary
@@ -106,18 +119,19 @@ counterexample now preserves saved values `2`/`55`, replacing the former
 (403 Boolean, seven raw steps) pass at separate cuts. Joined strict425 also
 passes; unaffected evidence keeps its original identity. [Cleanup review](coverage/semantics/array-iterator-invalid-key-cleanup-review.json).
 
-Ordinary Iterator array spread with by-reference `current()` now admits multiple
-initialized inline declared owning fields. Public untyped mutable slots retain
-supported finite array graphs, repeated roots, shared descendants and ordinary
-scalar/array reference cells. The selected property cell survives key replacement;
-COW preserves saved/builder rows, and storage retires field edges in slot order.
-Four originals agree exactly with PHP after genuine parent Unsupported; a
-by-value-current control remains Unsupported with zero agreement. Strict424 and
-730 reached premises (728 Boolean, two raw steps) pass at separate cuts.
-Joined strict compilation over the actual 424-module tail also passes.
-[Multiple-field review](coverage/semantics/array-iterator-fields-review.json).
-Tables/hooks, typed or special references, object/cyclic/debt graphs and wider
-lifetimes remain partial. Earlier A62/A63 evidence keeps its original cuts.
+Ordinary Iterator array spread now validates initialized inline declared fields
+independently of current return mode and destructor presence. Public untyped
+mutable owning slots retain supported finite arrays and ordinary scalar/array
+reference cells. KNOWN current rows remain snapshots through key replacement;
+raw REFERENCE caches keep the selected cell and require genuine BYREF metadata.
+Field COW and storage preserve repeated roots, shared children, held/sole aliases
+and permanent pools, including no-destructor and Aggregate promotion routes.
+Eight exact originals and one explicit typed-slot Unsupported control retain
+separate source cuts; five reached recipes pass 915 physical premises
+(913 Boolean, two raw steps) on the landed class/cleanup tail. Joined strict425
+also passes. [Field/cache review](coverage/semantics/array-iterator-byval-fields-review.json).
+Tables/hooks, typed/special references, object/cyclic/debt graphs and wider
+lifetimes remain partial; A62/A63/A64 evidence keeps its original cuts.
 
 Ordinary `%`, shifts and numeric bitwise operations now admit a fractional
 finite LEFT CV with an empty live `stdClass` RIGHT CV without a materialized
@@ -534,9 +548,23 @@ fixtures pass 389 premises/four raw steps; four affected older fixtures add
 346 premises/six raw steps, for 735 premises and ten raw steps across retained cuts. Private strict
 compilation of 424 modules and joined compilation of 425 modules pass. Failed fixture rows and the excluded-count observer
 failure retain zero affected/full-source credit; only affected checks and repaired
-observer originals were rerun. The visited depth limit of 16 and canonical
-previous-path admission remain unchanged; generic depth removal is next.
+observer originals were rerun. At that cut, the visited depth limit of 16 and
+canonical previous-path admission remained unchanged.
 [Recursion Error review](coverage/semantics/throwable-trace-recursion-comparison-review.json).
+
+The visited captured walk now has no fixed depth limit. Fresh active-left
+aggregate guards, one-hop live-cell reads and at most one cached table per
+existing ordinary object bound traversal by the finite heap. Shared DAG siblings
+are compared normally; actual recurrence still raises the same Error before
+count. Six new originals and one promoted retained deep source agree exactly
+with PHP; two wider boundaries remain Unsupported. Four new reached fixtures
+pass 324 premises/five raw steps; three focused older rows add 202/three, for
+526 premises/eight raw steps. Strict compilation of 425 modules passes. The
+original 240-second DAG timeout retains zero agreement; only the pending cases
+were rerun with an adequate watchdog. Earlier accepted COMP148 evidence retains
+its original cuts. Root guards, canonical previous paths and older authenticated
+modes retain their separate bounds; callbacks and wider layouts remain partial.
+[Finite-heap traversal review](coverage/semantics/throwable-trace-unbounded-comparison-review.json).
 
 Fresh, unheld user Iterators returned by a borrowed `IteratorAggregate` getter
 now enter CONFIG unpack with DATA as their sole owner. Two original normal and
@@ -708,35 +736,38 @@ their separate source/reached cuts, profiles and unchanged controls. Failed and
 Unsupported baselines earn zero agreement credit. Wider callable, producer,
 reference and lifecycle forms remain partial.
 
-CALL124 admits initialized user Iterator spreads into selected missing instance,
-compatible `self::` and external static magic calls through a zero-formal,
-by-value trampoline. It packs positional slots before named keys, enters the
-real public two-formal handler, and retains named-buffer/receiver ownership
-through normal, invalid-key and throwing cleanup. Nine authored and four
-independent original-source gaps now agree exactly with retained pinned PHP;
-two existing positional controls retain their earlier exact cut. Strict425,
-eight authored reached groups/253 reported assertions and two independent
-handler groups/77 assertions pass at separate tested cuts. Independently reviewed
-composition on the actual A64 tail also passes joined strict425. Baseline Unsupported
-gaps and all failed fixture/transport packets remain zero credit. Wider magic
-producers, signatures, references and lifetimes remain partial.
-[CALL124 review](coverage/semantics/magic-iterator-unpack-review.json).
+Selected missing instance, compatible `self::` and external static magic calls
+share zero-formal, by-value sends across arrays, initialized Iterators and admitted
+Generators. Arrays preserve reference-input ownership without reference demand;
+native Generator resumes copy live cache values before later mutations. Per-pack
+named phase and global duplicates feed the real two-formal handler and retained
+named buffer. Array input ownership releases before unfinished positional sends,
+the selected receiver and extra names; normal handler cleanup retains its own buffer order.
+CALL125's twelve authored and three independent originals agree exactly with PHP,
+and one affected Iterator source control agrees. Eleven reached groups pass
+367 reported assertions, including two affected controls. Independently reviewed
+composition on the actual CLASS145 tail passes joined strict425; source/state
+checks retain their separate cuts. The [producer review](coverage/semantics/magic-producer-unpack-review.json)
+preserves original failures and two genuine baseline refusals. Earlier
+[CALL124 evidence](coverage/semantics/magic-iterator-unpack-review.json) keeps its
+original cuts. Wider producers, handlers, references and lifetimes remain partial.
 
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
 | --- | --- |
 | Enum core | Full four-group enum core work. |
-| A65 | BYVAL Iterator declared fields. |
-| CALL125 | ARRAY/Generator magic argument packs. |
-| COMP149 | Next: generic captured-graph depth-cap removal; previous-path admission stays separate. |
-| I73 | Static Generator/Fiber CURRENT/NEXT/SEND transfer. |
-| CLASS146 | Private source12/reached162/count2/status3 accepted; final package review before actual-tail integration. |
+| A65 | BYVAL Iterator field states. |
+| CALL126 | Target-neutral Aggregate unpack. |
+| CLASS146 | Private source12/reached162/count2/status3 accepted; actual-tail integration review. |
+| I74 | Generic fresh NEXT/SEND ADVANCE phase; source/static preparation. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64/A65, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110/111, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148/149 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145 are integrated
 into this branch.
+GC physical01 is integrated on this tail; its private source/state cuts and the
+joined strict gate retain their separate tested identities.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
 for private changes.

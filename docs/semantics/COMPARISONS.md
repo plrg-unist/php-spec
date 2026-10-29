@@ -708,15 +708,19 @@ before captured payload validation.
 Shallow headers check live allocations, unique valid array keys and published
 source classes before use. Reached `ALIAS` entries read current allocated,
 defined reference cells; shared cell identity does not make a NaN equal.
-The added local left traversal measure is capped at 16 array/object/cell entries;
-left `ALIAS` cells contribute depth only. Identity precedes the existing
-aggregate/active-left recursion guard, which precedes count; key lookup precedes
-cell dereference. Reached same-class bodies remain `stdClass` or plain parentless
+The visited walk has no fixed captured-depth limit. Each aggregate descent adds
+a fresh real active-left array, table or inline-object guard; `ALIAS` unwraps one
+current value without a cell-identity shortcut. The initial finite heap plus at
+most one new cached table per existing ordinary object bounds fresh guards;
+admitted comparison invokes no callbacks. Siblings reuse the parent guard, so
+shared DAGs compare normally without memoizing a repeated pair as equal.
+Identity precedes the existing aggregate/active-left recursion guard, which
+precedes count; key lookup precedes cell dereference. Reached same-class bodies remain `stdClass` or plain parentless
 methodless source instances with initialized public properties and ordinary
 current tables. Reached tables materialize through the usual comparer; only
 normal equality continues with the resulting state.
 An authentic active-left recurrence now produces the existing recursive-dependency
-`Error` at the source comparison, before count or depth can decide. Its live
+`Error` at the source comparison, before count can decide. Its live
 identity, file, line and trace pass through ordinary catch/finally and unwind
 cleanup. Temporary aggregate operand arrays release in left/right order while
 the cleanup operation retains the pending Error, then resume exception search.
@@ -733,6 +737,7 @@ root-chain bounds below retain their separate rules.
 [Captured graph review](../../coverage/semantics/throwable-previous-graph-comparison-review.json).
 [Visited-trace review](../../coverage/semantics/throwable-trace-visited-comparison-review.json).
 [Recursion Error review](../../coverage/semantics/throwable-trace-recursion-comparison-review.json).
+[Finite-heap traversal review](../../coverage/semantics/throwable-trace-unbounded-comparison-review.json).
 
 Warm caches and nonempty builtin traces now meet in the same physical slot
 scan. Same-kind canonical `Exception`/`Error` pairs with null previous values

@@ -571,17 +571,20 @@ The [NaN review](../../coverage/semantics/iterator-call-unpack-nan-review.json)
 keeps this increment separate from the original unpack source/state cuts.
 
 
-## Magic method Iterator unpack
+## Magic method argument unpack
 
 Selected missing instance, compatible `self::` and external static methods
-collect initialized user Iterator spreads through the real `__call` or
-`__callStatic` trampoline. The admitted handler is the existing public,
-non-generator, typed two-formal method. The
+collect array, initialized user Iterator and admitted Generator spreads through
+the real `__call` or `__callStatic` trampoline. The admitted handler is the existing
+public, non-generator, typed two-formal method. The
 trampoline has zero fixed formals and sends by value: explicit prefixes copy
-their values before later callbacks, while each Iterator current value is read
-after its key callback. Numeric string keys become positions; other string keys
+their values before later callbacks. Array sends dereference copied members with
+zero reference demand; returned reference operands keep their actual input owner.
+Iterator current values are read after key callbacks, while native Generator
+resumes copy the live yield cache before advancing. Numeric string keys become
+positions; other string keys
 enter an insertion-ordered named buffer. A duplicate name or a positional key
-after a named key fails before the next Iterator callback. A duplicate explicit
+after a named key fails before the next producer advance. A duplicate explicit
 name is rejected before fetching its direct CV value, even if that CV is unset.
 
 The completed send sequence becomes the handler's actual `(name, arguments)`
@@ -589,15 +592,28 @@ call. A named-only pack shares its array with the retained buffer; a mixed pack
 keeps separate arrays. The result marker owns that buffer and the selected
 instance receiver while the real handler borrows the receiver. Normal return,
 invalid keys and handler throws use saved caller/selection receipts to validate
-cleanup after those owners retire. Direct array and Generator spreads through
-these magic trampolines remain explicit `Unsupported` boundaries. The
-[magic Iterator review](../../coverage/semantics/magic-iterator-unpack-review.json)
-records the exact source and reached cuts and their limits.
+cleanup after those owners retire. On an unfinished call, array INPUT ownership
+releases first, then positional sends, selected This and extra named sends.
+Generator unpack releases its DATA/INPUT owners before that call-frame cleanup;
+an outside CV may retain the Generator. Named-only handler buffers
+retain their separate entered-frame lifetime.
+
+Generator validation restores the outer call origin for the following
+`METHOD_RESULT`, while producer execution keeps the argument origin. A literal
+key at reference-yield cache retirement uses the existing compiled-string
+conversion to authenticate its interned carrier; a request carrier or different
+bytes cannot substitute for it. The
+[producer review](../../coverage/semantics/magic-producer-unpack-review.json)
+records twelve authored and three independent sources, reached ownership and
+admission checks, and the original failed cuts. The
+[Iterator review](../../coverage/semantics/magic-iterator-unpack-review.json)
+keeps its historical evidence. Wider producer, handler and lifetime forms remain partial.
 
 ## Direct Generator operands
 
-Module405 expands Generator operands into plain source-function calls using the
-native iterator protocol. Acquisition checks CLOSED before adding a DATA owner.
+Module405 expands admitted Generator operands using the native iterator protocol
+and shared send mapping, including the selected magic targets above. Acquisition
+checks CLOSED before adding a DATA owner.
 The unpack marker owns the original operand, acquired DATA and sent arguments;
 resume borrows DATA through an authenticated source-argument site and real saved
 resumer. Cached values are dereferenced and copied into by-value slots before

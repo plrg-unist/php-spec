@@ -1,0 +1,81 @@
+{
+  "milestone": "A65 initialized declared Iterator fields across current return modes and destructor presence",
+  "target": "PHP 8.5.10 CLI NTS signed64-bit",
+  "scope": "Ordinary CV Iterator array spread and existing Aggregate promotion reuse the initialized declared-slot fold. Owning slots remain public/untyped/mutable with supported finite DIRECT arrays or ordinary scalar/array ALIAS cells. Field/builder eligibility is independent of current return mode and destructor presence. Tables/hooks and wider graphs remain partial.",
+  "implementation": {
+    "file": "spec/semantics/426-array-iterator-unpack.watsup",
+    "policy_revision": "1722fa174983250b792b11ced07e631dc2d973ff",
+    "state_revision": "cfd06bba40ceb556159fa8787ad99b61c2e40227",
+    "private_runtime_sha256": "23c37d7ae933fee49c3935ae0e572928a50688e168880df17919a1f56bfb71af",
+    "change": "KNOWN caches preserve copied rows through key replacement. Every raw REFERENCE shape requires actual current-BYREF metadata; KNOWN also permits a legitimate BYREF value fallback. Existing destructor_byref_current API, source/release-history and slot/COW/storage algorithms remain; no39/257/359 edit.",
+    "dependencies": "Exact shared authentication221cf and the invalid-key CURRENT/DATA/builder correction already landed independently. Their private duplicate commits and the cleanup counter/legacy totals are not added again here."
+  },
+  "engine_routes": [
+    "zend_user_it_get_current_data caches the real method retval; ADD_ARRAY_UNPACK obtains key before dereferencing that same retval and copying a DIRECT value.",
+    "SEPARATE_ARRAY/zend_array_dup preserve held references and unwrap singleton references during COW; ordinary object storage retires declared edges in order."
+  ],
+  "validation": {
+    "native_and_old_gaps": {
+      "native_reports": [
+        ".tools/array-iterator-byval-fields-65/.tools/a65-native-author/report.json",
+        ".tools/array-iterator-byval-fields-65/.tools/a65-native-peer/report.json"
+      ],
+      "native_revisions": [
+        "a088db855",
+        "884653bd9"
+      ],
+      "freeze_report": ".tools/array-iterator-byval-fields-65/.tools/a65-baseline-freeze/report.json",
+      "freeze_sha256": "82b36acbc98ca568cb62ae23520b23df3fbf16eb2366026da388d73584f016ef",
+      "result": "Native8 quiet exit0; old5 genuine Unsupported results distinguish initialized Iterator admission from earlier430 Aggregate return refusal. Three same-gate old models remain explicitly unrun. The original Aggregate expected-reason recorder stop is preserved and adjudicated from stored output without replay; enum priority stopped the remainder after one completed actor. Old gaps give zero source agreement."
+    },
+    "initial_changed": {
+      "revision": "1722fa174983250b792b11ced07e631dc2d973ff",
+      "report": ".tools/array-iterator-byval-fields-65/.tools/a65-candidate/report.json",
+      "sha256": "c56261f924156f56b983e1eeb861e5566a20b902b8516cc939147f8189076a6c",
+      "result": "Strict425 SL/cachefalse/determinismtrue10.652s; seven exact normal originals and typed-slot initialized-domain Unsupported/exit1 control0, all first-pass/quiet and fullyreaped."
+    },
+    "reference_sibling": {
+      "native_revision": "bfdd07191",
+      "native_report": ".tools/array-iterator-byval-fields-65/.tools/a65-native-reference-sibling/report.json",
+      "model_revision": "56c336dc2977e463f7b53ae2f6ad25deacd341e5",
+      "model_report": ".tools/array-iterator-byval-fields-65/.tools/a65-cleanup-candidate/report.json",
+      "model_report_sha256": "52b168124f493680bd4656c6d6b1d2b5c96ef630e2da84bdd5f6a0d29e243b17",
+      "result": "One native-first no-destructor sibling changes only current return mode. Raw property cell retirement leaves copied row55 live; leaf66 stays shared with saved old table. First model exact46.277s. Same packet refreshes the affected new invalid-sole source after the separate cleanup repair82.826s; cleanup counter/legacy rows retain separate accounting."
+    },
+    "reached": {
+      "revision": "cfd06bba40ceb556159fa8787ad99b61c2e40227",
+      "author_report": ".tools/array-iterator-byval-fields-65/.tools/a65-author-state/report.json",
+      "author_sha256": "f1db9bc8f83ce96bee8874e39a5381b691fe155284518b1c5382a77e606a3522",
+      "peer_report": ".tools/array-iterator-byval-fields-65/.tools/a65-peer-state/report.json",
+      "peer_sha256": "408dd6beaf42b82432fc51f1617e08c6127432719fe46e32e478677b66b6661a",
+      "selections": "BYVAL last-DATA259/2raw229.226s; key-throw235/0 252.924s; no-destructor BYVAL123/0 65.092s and BYREF125/0 65.820s; independent invalid-sole173/0 123.997s.",
+      "result": "All five first-pass true/emptyerr/exit0;915 physical premises =913 Boolean+2raw. Genuine initialization exercises landed CLASS145/interface headers and cleanup repair. Source snapshots, shared physical edges, held/sole cells, pool-only owners, actual property-cell retirement, public guards and budget resume are checked. Forged raw-reference projections give no source agreement. Original native paths reused; inputs/HEAD stable, no timeout/interruption/groups."
+    }
+  },
+  "execution": {
+    "profile": "tests/semantics/profile.json; LC_ALL=C,TZ=UTC; project-local PHP only",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "limits": "Serial pinned CPU1 native/old gaps, CPU3 initial changed models, CPU4 sibling/affected/new states;4GiB AS. Source240/process270s; reached300s through existing API. Every actor/child reaped; no accepted source/native/legacy replay solely for helper/dependency joins."
+  },
+  "independent_review": "array62_resume_review independently froze counterexamples, reviewed actual policy/helper and class-header composition, decoded all initial seven agreements/control, accepted the native-first BYREF sibling, and read all five reached raw true/quiet0 outcomes plus stable-input/HEAD closure. No fixture correction or intentional engine divergence.",
+  "credit": "Eight exact A65 originals (initial7 plus BYREF/no-destructor sibling), one typed control0 and five new reached recipes at separate cuts. Earlier A64 BYVAL bytes are promoted but its old Unsupported ledger stays historical. A62/A63/A64 and the separate cleanup dependency retain their identities; the cleanup counter is not an extra A65 agreement.",
+  "remaining": "Full core and array/Iterator families remain partial. Typed/special/proxy cells, materialized tables/hooks, object/cyclic/debt graphs, builder backedges and wider destructor reentry/suspension remain outside this admission.",
+  "archive": {
+    "path": "../php-spec-evidence-archive/array-iterator-byval-fields-65/raw.tar",
+    "sha256": "9ea933f0de4a219479903e3198eac1dd84c95ba22baeb72a76a5fdda17a0e00c",
+    "bytes": 4823040,
+    "files": 202,
+    "manifest": "../php-spec-evidence-archive/array-iterator-byval-fields-65/manifest.json",
+    "manifest_sha256": "380015261278bd996829ae2f140f8617faf3780fabb41bdbec5144d6cc2e297c",
+    "recovery": "Recreate tested private cut a088/884(native/old gaps),1722(initial models),56c(sibling/affected row) orcfd(new states) at .tools/array-iterator-byval-fields-65. Verify/extract raw.tar at project root to restore original source paths. Restore local providers by recorded identities; replay saved commands into fresh outputs. The separate cleanup review/archive preserves its real mismatch and affected legacy checks."
+  },
+  "integration": {
+    "parent": "9be0f9c1807e1e1e33696b5b5adca950b0a27aee",
+    "joined_tested_revision": "dc9ffe358aa1d5507a7c2499ea131540b8300408",
+    "strict_report": "/home/user/workspace/php-spec-evidence-archive/array-iterator-byval-fields-65/joined-strict-dc9ffe358/report.json",
+    "strict_report_sha256": "9fc6814624bb6b466fe9dc4b43c324a15d51cef42bf1c1c11d74c74107251e81",
+    "result": "SL strict425 passes10.772s, CPU4[4], true/quiet exit0, stable inputs/HEAD, no timeout/interruption/process residue; actor/child fully reaped and CPU4 released.",
+    "independent_composition": "array62_resume_review CLEAR: mode-only426 policy and all source/state/A64-promotion blobs equal accepted d38; shared helper and cleanup dependency are not duplicated. Actual CLASS145 initialization bridge is exercised at cfd; later CALL125/I73 changes select magic/Generator/Fiber tasks, disjoint from literal Iterators. Latest parent documentation/inventory and paused boundaries are retained. Final receipt is metadata only; no accepted source/state/legacy replay."
+  }
+}

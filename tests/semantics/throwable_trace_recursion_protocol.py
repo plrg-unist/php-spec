@@ -118,7 +118,7 @@ def checks(program, path, name):
             '$entry_lookup(S.ARRAYS[n_array_q].ITEMS,KSTRING $ptascii("next")) = (ALIAS n_live_q)',
             '$heap_subset([HCELL n_live_p,HCELL n_live_q,HARRAY n_array_p,HARRAY n_array_q],S.ALLOCATIONS)',
             'S_effect = S',
-            '$trace_visit_array_effect(S,n_array_p,n_array_q,[HARRAY n_array_p],eps,z) = (S,ORDERRECURSIVE)',
+            '$trace_visit_array_effect(S,n_array_p,n_array_q,[HARRAY n_array_p],z) = (S,ORDERRECURSIVE)',
         ]
     else:
         assert name in ('std-error-origin-trace', 'inline-cycle-recovery',
@@ -143,7 +143,7 @@ def checks(program, path, name):
                 'S.OBJECTS[n_left] = INSTANCE porigin_plain',
                 'S.OBJECTS[n_right] = INSTANCE porigin_plain',
                 '$aggregate_object_guard(S,n_left,n_right) = HOBJECT n_left',
-                '$trace_visit_object_effect(S,n_left,n_right,[HOBJECT n_left],eps,z) = (S,ORDERRECURSIVE)',
+                '$trace_visit_object_effect(S,n_left,n_right,[HOBJECT n_left],z) = (S,ORDERRECURSIVE)',
                 'S_effect = S',
             ]
         else:

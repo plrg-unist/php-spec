@@ -41,13 +41,12 @@ def $unpack_prepared(S, S_prepared, punpackcall, ptask_tail*) = S_prepared[.ORIG
   -- if $generator_object(S_prepared, n)
   -- if pgeneratorunpack = {CALL punpackcall, OBJECT n, INPUT S.RESULT, COUNT 0, NAMED false}
   -- if $iterator_unpack_plain(S, punpackcall)
-  -- if ~$magic_unpack_collecting(punpackcall.FUNCTION)
   -- if $generator_unpack_input(S_prepared, pgeneratorunpack)
 def $unpack_prepared(S, S_prepared, punpackcall, ptask_tail*) = S_prepared[.COMPLETION = UNSUPPORTED "Generator unpack target or operand ownership"][.HELD = S.HELD]
   -- if S_prepared.RESULT = KNOWN (POBJECT n)
   -- if $generator_object(S_prepared, n)
   -- if pgeneratorunpack = {CALL punpackcall, OBJECT n, INPUT S.RESULT, COUNT 0, NAMED false}
-  -- if ~($iterator_unpack_plain(S, punpackcall) /\ ~$magic_unpack_collecting(punpackcall.FUNCTION) /\ $generator_unpack_input(S_prepared, pgeneratorunpack))
+  -- if ~($iterator_unpack_plain(S, punpackcall) /\ $generator_unpack_input(S_prepared, pgeneratorunpack))
 
 def $generator_unpack_shape(pgeneratorunpack, "acquire") = (pgeneratorunpack.COUNT = 0 /\ ~pgeneratorunpack.NAMED)
 def $generator_unpack_shape(pgeneratorunpack, "rewind") = (pgeneratorunpack.COUNT = 0 /\ ~pgeneratorunpack.NAMED)
@@ -268,24 +267,21 @@ def $generator_unpack_send(S, pgeneratorunpack, ptask*) = $throw_scalar(S, "Erro
   -- if $fiber_traversal_key($generator_cached_value(S, pgeneratorunpack.OBJECT, true)) = eps
 def $generator_unpack_send(S, pgeneratorunpack, ptask*) = S_check
   -- if $fiber_traversal_key($generator_cached_value(S, pgeneratorunpack.OBJECT, true)) = (pkey)
-  -- if $target_function(S, pgeneratorunpack.CALL.FUNCTION) = (pfunction)
-  -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, |pgeneratorunpack.CALL.SENT.SLOTS|)
+  -- if pnamedtarget = $unpack_send_target(S, pgeneratorunpack.CALL.FUNCTION, pkey, |pgeneratorunpack.CALL.SENT.SLOTS|)
   -- if S_check = $unpack_check(S, pgeneratorunpack.CALL.SENT, pnamedtarget, pkey, pgeneratorunpack.NAMED, $unpack_line(S, pgeneratorunpack.CALL))
   -- if S_check.COMPLETION =/= NORMAL
 def $generator_unpack_send(S, pgeneratorunpack, ptask*) = S[.COMPLETION = UNSUPPORTED "Generator unpack by-reference target"]
   -- if $fiber_traversal_key($generator_cached_value(S, pgeneratorunpack.OBJECT, true)) = (pkey)
-  -- if $target_function(S, pgeneratorunpack.CALL.FUNCTION) = (pfunction)
-  -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, |pgeneratorunpack.CALL.SENT.SLOTS|)
+  -- if pnamedtarget = $unpack_send_target(S, pgeneratorunpack.CALL.FUNCTION, pkey, |pgeneratorunpack.CALL.SENT.SLOTS|)
   -- if S_check = $unpack_check(S, pgeneratorunpack.CALL.SENT, pnamedtarget, pkey, pgeneratorunpack.NAMED, $unpack_line(S, pgeneratorunpack.CALL))
   -- if S_check.COMPLETION = NORMAL
-  -- if $named_reference(pfunction, pnamedtarget)
+  -- if $unpack_send_reference(S, pgeneratorunpack.CALL.FUNCTION, pnamedtarget)
 def $generator_unpack_send(S, pgeneratorunpack, ptask*) = S[.TODO = (GENERATOR_UNPACK pgeneratorunpack_next "next") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $fiber_traversal_key($generator_cached_value(S, pgeneratorunpack.OBJECT, true)) = (pkey)
-  -- if $target_function(S, pgeneratorunpack.CALL.FUNCTION) = (pfunction)
-  -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, |pgeneratorunpack.CALL.SENT.SLOTS|)
+  -- if pnamedtarget = $unpack_send_target(S, pgeneratorunpack.CALL.FUNCTION, pkey, |pgeneratorunpack.CALL.SENT.SLOTS|)
   -- if S_check = $unpack_check(S, pgeneratorunpack.CALL.SENT, pnamedtarget, pkey, pgeneratorunpack.NAMED, $unpack_line(S, pgeneratorunpack.CALL))
   -- if S_check.COMPLETION = NORMAL
-  -- if ~$named_reference(pfunction, pnamedtarget)
+  -- if ~$unpack_send_reference(S, pgeneratorunpack.CALL.FUNCTION, pnamedtarget)
   -- if pvalue = $generator_cached_value(S, pgeneratorunpack.OBJECT, false)
   -- if pgeneratorunpack_next = pgeneratorunpack[.CALL = pgeneratorunpack.CALL[.SENT = $named_store(pgeneratorunpack.CALL.SENT, pnamedtarget, KNOWN pvalue)]][.COUNT = $(pgeneratorunpack.COUNT + 1)][.NAMED = (pgeneratorunpack.NAMED \/ $unpack_key_named(pkey))]
 rule PhpStep/generator-unpack-item: S ~> $generator_unpack_send(S, pgeneratorunpack, ptask*)
@@ -336,7 +332,7 @@ def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if pgeneratorunpack.CALL.CALLSITE = (porigin)
   -- if pdestructionoperation.ORIGIN = (porigin)
   -- if S_scope = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = (porigin)][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
-  -- if $iterator_unpack_plain(S_scope, pgeneratorunpack.CALL)
+  -- if (~$magic_unpack_collecting(pgeneratorunpack.CALL.FUNCTION) /\ $iterator_unpack_plain(S_scope, pgeneratorunpack.CALL)) \/ ($magic_unpack_collecting(pgeneratorunpack.CALL.FUNCTION) /\ $iterator_unpack_abort_plain(S_scope, pgeneratorunpack.CALL))
   -- if $call_unpack_site(S_scope, (porigin))
   -- if $call_line_valid(S_scope, (porigin), pgeneratorunpack.CALL.LINE)
   -- if $call_argument_source(S_scope, porigin) = PCALLARGUMENTS phpType7* n_field

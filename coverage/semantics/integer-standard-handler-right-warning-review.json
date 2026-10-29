@@ -1,0 +1,202 @@
+{
+  "version": 1,
+  "milestone": "OP111 certified default RIGHT object handlers",
+  "status": "bounded independently reviewed milestone; actual-tail integration validated",
+  "target": "PHP 8.5.10 CLI NTS64; sole project-local oracle and ordinary precision14 profile",
+  "scope": "Ordinary %, <<, >>, &, | and ^ with a certified full default object-handler table on RIGHT. Existing initial-object bounds remain finite-fractional LEFT and direct CV operands, with outside owners for borrowed cells. Existing nonobject ingress also permits a later standard-object RHS replacement. Already admitted fields/tables/graphs are independent of capability.",
+  "tested_revision": {
+    "strict_and_author_source": "ab98e90b71a2e039ffd9e48baaa0347d62dc67bc",
+    "focused_and_independent_source": "ad4d8f1c1c33b6b707a5a2832725007439ebcf12"
+  },
+  "unchanged_revision": "f61f2f6790190c4b5b814202a31726fdc63fc76a",
+  "module_count": 425,
+  "tested_sha256": {
+    "spec/semantics/387-integer-operator-warnings.watsup": "0aadc4aefe74775df8277c4442dd274eb8bf654b661698c89707045121fe3751",
+    "tests/semantics/integer_standard_handler_right_warning_cases.py": "4f36191e8fd5061ebafe720e5e97bc2d671a7e735f0dd4c478ea3708db0737ac",
+    "tests/semantics/integer_standard_handler_right_warnings.py": "de2b58938908c3482af07303c3dff0865d79d5552052779a4b5035eb289afbc3",
+    "tests/semantics/integer_standard_handler_right_warning_protocol.py": "85b71de36e014cc81a18fa23ce4625a3d59cbab5a375f62bc7dddad073af6de8",
+    "tests/semantics/integer_operator_warning_protocol.py": "eea995098aefefe9e94a663529c4fb6b4fd615a6da8b4a46dbadbadc803155b2",
+    "spec/semantics/modules.json": "b19ba2ed747ff0626b6771d24553d1a1ff8c895c6bb87fabc97db2755d3021c6"
+  },
+  "engine_basis": [
+    "Zend/zend_object_handlers.c::std_object_handlers has do_operation=NULL; zend_std_cast_object_tostring handles string/bool but returns FAILURE for IS_LONG without calling __toString.",
+    "Zend/zend_compile.c initializes default_object_handlers to std. zend_objects.c::_zend_object_std_init copies the class default. zend_inheritance.c inherits both parent default_object_handlers and create_object; ancestry must certify the table, not INSTANCE alone.",
+    "Zend/zend_operators.c::convert_op1_op2_long/bitwise_* retain cached first conversion and physical selected addresses. A callback-triggered receiver destructor can change live RIGHT before its later conversion."
+  ],
+  "contract": [
+    "One public integer_standard_object_handlers predicate serves initial admission and both unfinished-failure branches. Live STDINSTANCE certifies the intrinsic table; live INSTANCE requires matching class/source history and published noninternal ROOT/STDCLASS/SOURCE ancestry. Class count is a structural recursion bound.",
+    "Fields, property-table materialization and field names are absent from capability. Custom builtin tables/descendants remain uncertified even when some numeric slots inherit std. Existing layout/source/lifetime admission, finite-left/address/borrowed-owner bounds and task roots are unchanged.",
+    "Quiet failure skips __toString. Saved12 with destructor-rewritten7 yields5/1536/0/4/15/11; selected old RIGHT cells can still fail after live-name repair. Parent, child, outside alias and table-snapshot owners release at their real last drops, including before a supplied handler throw."
+  ],
+  "author_preparation": {
+    "cases": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/cases.py",
+      "sha256": "4f36191e8fd5061ebafe720e5e97bc2d671a7e735f0dd4c478ea3708db0737ac"
+    },
+    "recorder": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/record.py",
+      "sha256": "ab4d82a285b7ac4f84df30acec23a92793e26c90b6ed1b3d86da34e6d5d450ae"
+    },
+    "native13": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/native-pre/report.json",
+      "sha256": "28d3de9f0d26c70d90f21ad4744465d68e64c4a43b35d957f1ec9087b4c530bf"
+    },
+    "representative_unchanged4": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/baseline/report.json",
+      "sha256": "c49b5b1174bf3378e736a8e55c463dec14f8d4144bef33d988993b4cc6d1b6c3"
+    },
+    "measured_gaps": 3,
+    "unchanged_controls": 1,
+    "unexecuted_old_variants": 9,
+    "selection": [
+      "mod-repair-destructor",
+      "xor-cell-rebind",
+      "mod-materialized-stdclass",
+      "empty-stdclass-control"
+    ],
+    "result": "All13 native predictions exact. Only three named/reference/table representatives were executed as genuine accepted/checked ingress Unsupported; fresh empty stdClass control agrees. The other nine old-model variants were inspected at the same gate but not executed or credited as measured gaps."
+  },
+  "accepted": {
+    "strict425": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/strict-ab98e90b7/report.json",
+      "sha256": "0f9f5f792c454f771a85802970379bae8a00e33a6b2b30072fbd5d61fce56aa9"
+    },
+    "author_source13": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/model/report.json",
+      "sha256": "6cc6b0571e859ec839be216045f6e8f1cec9858fa34c264ffe2a987aa87fc834"
+    },
+    "author_agreements": 13,
+    "author_target_sources": 12,
+    "author_unchanged_controls": 1,
+    "focused": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/focused-ad4d8f1c1/report.json",
+      "sha256": "578a2fb535c55714b4f238b94460957a6ce5b313ad6538b081640d3c47d5f8ce"
+    },
+    "focused_launcher": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/focused-ad4d8f1c1/launch.json",
+      "sha256": "dbeca3a6ac2c277ef4aa255dbfc115d71f2629af72392299fcde0084f87a9b4a"
+    },
+    "front_conditions": {
+      "mod-repair-destructor": 149,
+      "xor-cell-rebind": 151,
+      "mod-materialized-stdclass": 134,
+      "shl-supplied-throw": 125
+    },
+    "total_checks": 559,
+    "forged_class_states": 4,
+    "forged_class_assertions": 6,
+    "derived_scope": "Explicit public-capability tests remove publication, replace/remove parent receipts, or consistently relabel descriptor+link while preserving valid links but invalid source history. These are derived checks, not extra source executions. Genuine WeakReference rejection is checked at a reached source front.",
+    "result": "Strict425/source13 pass at ab98. Four SL fronts pass at ad4 (180.35/196.94/117.87/145.10s), exact true newline/empty stderr/exits0/no timeout/interruption/group residue."
+  },
+  "independent_review": {
+    "reviewer": "/root/op106_resume_review",
+    "status": "Generic capability/runtime/fixtures/source correctness CLEAR; five exact normals plus explicit custom-table exclusion",
+    "cases": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/review-independent/cases.py",
+      "sha256": "c269618f5c5fcfb4b534b8e8f1a5634bd2ef494473705c1a920f54011db4ba8d"
+    },
+    "native_first_recorder": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/review-independent/record-native-first.py",
+      "sha256": "9c49c2b63ed13982e55db727c556c30b02ecaa784c81910bdc54e331d26e8a16"
+    },
+    "candidate_recorder": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/review-independent/record.py",
+      "sha256": "fc79a51b8f1e2f125f5044c556b1efcdaae81af78148bb476390f0b4280db415"
+    },
+    "native6": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/review-independent/native-pre/report.json",
+      "sha256": "6fb8b53c55bdca060418caba8b5d8e7d03ce7efc64e4d82ea560a56bcb67a10e"
+    },
+    "unchanged6": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/review-independent/baseline/report.json",
+      "sha256": "bdaefad96132ab706fb1d882f73a93d3b34aa9d343ba3ef0de7d6b915f5921f5"
+    },
+    "consolidated_models": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/review-independent/model/report.json",
+      "sha256": "e3cbe9a2422e0c9eb9fb6cd1e2c0de2f92cd112f44435a4da395a23681255281"
+    },
+    "per_case_models": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/review-independent/model-mod-materialized-stdclass-snapshot-repair/report.json",
+        "sha256": "681544ec04adbc1fc31299c5b4f536ff547d4b76898327d46ef854459a4089a8"
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/review-independent/model-mod-original-string-late-standard-rhs/report.json",
+        "sha256": "119329b7e769495c79a7b6b4a6f5c52685efb7364adad739e398279927be041b"
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/review-independent/model-or-anonymous-published-standard-rhs/report.json",
+        "sha256": "f58b446acccc895bfd634b4b5e2c405fc956018b6db9ab631f2af93adb8fd060"
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/review-independent/model-shl-standard-old-cell-supplied-throw/report.json",
+        "sha256": "2692a3db44711e84cfeebb9b958103e3806e619789ab620ff55fbde00dac0e2e"
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/review-independent/model-weakmap-custom-table-boundary/report.json",
+        "sha256": "e6ed09c6a7de08a754acabe55bbf0555993d1828ffc40c3cf4a5cf2da709cc21"
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/review-independent/model-xor-inherited-old-cell-and-outside-child/report.json",
+        "sha256": "7e9f043fdd56f969089248c42c0ec76c42c12d446650ef9e862b684020c433be"
+      }
+    ],
+    "source_agreements": 5,
+    "measured_old_gaps": 5,
+    "custom_table_exclusions": 1,
+    "result": "Inherited ROOT ancestry with old RIGHT cell/outside child and late LEFT object; materialized stdClass snapshot repair; original string two notices then late standard RHS failure; held receiver/child through supplied throw; anonymous ROOT source/full identity and RIGHT C-string diagnostic all agree. WeakMap full custom-table source stays exact expected ingress Unsupported/0, not a native custom-operation claim."
+  },
+  "deadline_and_parallel_bridge": {
+    "commit": "ad4d8f1c1c33b6b707a5a2832725007439ebcf12",
+    "result": "After measured 125-129s source models, shared protocol main gains a deadline parameter with unchanged 120-second default; only OP111 calls 240. SL conditions, semantic step budgets, runtime and source bytes do not change. No first focused timeout was induced.",
+    "independent": "Native/baseline recorder9c49 is retained and matched to original native inputs. Candidate recorder changes only model deadline150-to240/outer270 and optional one-case selection with separate outputs; comparisons and exact Unsupported boundary stay unchanged. All six per-case inputs/profile/revision match.",
+    "credit": "Strict425/author13 retain ab98; focused559/peer6 retain ad4. Inputs stayed immutable during parallel CPU3/CPU2 runs, and CPU2 was loaned only at fully reaped case boundaries. No native/baseline or accepted source replay."
+  },
+  "counts": "18 current exact source agreements =12 authored targets+one fresh unchanged control+five independent targets. Eight old source gaps were measured (3+5); nine further authored variants were inspected without old-model execution. One genuine WeakMap custom-table assertion passes as Unsupported with zero semantic agreement credit.",
+  "preserved_failures": [
+    {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/joined-ab439638a/report.json",
+        "sha256": "c123856664c72d4080aa3106a5dd75c84cbbd99d33bae40f5f8fc106f5491b40"
+      },
+      "cause": "The inline joined launcher prepended spec/php.watsup although the manifest already includes it; duplicate statement declaration stopped before validation. Corrected argv uses each manifest module exactly once. Runtime and fixtures unchanged.",
+      "agreement_credit": 0
+    }
+  ],
+  "historical_credit": "OP107-OP110 source/state evidence, including original29/446, retains original cuts without replay. Old empty-shape helper remains a legacy fixture fact; production policy uses only the new capability at all three sites.",
+  "environment": {
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "php_file_bridge_sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "cpu": "Native/representative old gates serial on3; strict/author13 on3; state559 on3 and one-at-a-time peer models on2 with explicit full-reap loans. All actors reaped and lanes released before metadata."
+  },
+  "limits": "Initial LEFT/producer/address and borrowed lifetime bounds are unchanged. Unknown/custom builtin tables, unsupported class ancestry/producers and expired pointers remain partial. No NaN/range admission broadening, class-runtime change, per-field/name policy, new task/root or paused-lane work.",
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-111",
+    "commands": [
+      "taskset -c 3 python3 tests/semantics/integer_standard_handler_right_warnings.py --output <fresh-external-directory>",
+      "taskset -c 3 python3 tests/semantics/integer_standard_handler_right_warning_protocol.py --output <fresh-external-directory>"
+    ],
+    "note": "Recreate recorded private cuts with project-local pinned tools. Frozen recorders preserve original source paths/hash/profile/native streams and process evidence. Representative old selection is explicit; metadata and deadline-only changes add no semantic credit."
+  },
+  "integration": {
+    "actual_parent": "5e90f832bfbd558557497b386888044807d08e76",
+    "semantic_join": "ab439638a5ec34805093baca4728c7308d5bc073",
+    "joined_strict": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-111/joined-ab439638a-corrected/report.json",
+      "sha256": "47ef467becbc833e6cfa345fd201338555178c010c730ac57a08bf6a51c0a2f1"
+    },
+    "module_count": 425,
+    "affinity": [
+      2
+    ],
+    "result": "Strict425 passed: exit0, true newline, empty stderr, no timeout/interruption/group residue; CPU2 fully reaped and handed to COMP150.",
+    "compatibility": "Independent actual class/declaration, call/Iterator, explicit GC and Throwable-comparison seam review CLEAR. Default-handler ancestry, declaration history, ordinary ownership and selected operand pointers are unaffected by current-tail additions.",
+    "credit": "Strict425/author13 retain ab98; focused559/independent6 retain ad4. Joined strict425 alone binds ab439638a over actual5e90; metadata adds no source/state execution credit. No accepted native/source/state replay.",
+    "current_docs": "Actual current PROGRESS retained except this own operator checkpoint, OP111 active-row removal and integrated111; inventory composes only the accepted ten-entry additive delta."
+  }
+}

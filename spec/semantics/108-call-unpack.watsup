@@ -147,6 +147,15 @@ dec $unpack_key_named(pkey) : bool
 def $unpack_key_named(KSTRING preqbytes) = true
 def $unpack_key_named(KINT z) = false
 
+;; Producer loops ask the selected target for a destination and send mode.
+;; A functionless trampoline supplies its zero-formal arms after ordinary calls.
+dec $unpack_send_target(pstate, pcalltarget, pkey, nat) : pnamedtarget
+def $unpack_send_target(S, pcalltarget, pkey, n) = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, n)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+dec $unpack_send_reference(pstate, pcalltarget, pnamedtarget) : bool
+def $unpack_send_reference(S, pcalltarget, pnamedtarget) = $named_reference(pfunction, pnamedtarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+
 dec $unpack_check(pstate, pnamedargs, pnamedtarget, pkey, bool, int) : pstate
 def $unpack_check(S, pnamedargs, pnamedtarget, KINT z_key, true, z) = $throw_scalar(S, "Error", $ptascii("Cannot use positional argument after named argument during unpacking"), z)
 def $unpack_check(S, pnamedargs, NAMED_UNKNOWN preqbytes, KSTRING preqbytes, b, z) = $throw_scalar(S, "Error", $ptascii("Unknown named parameter $") ++ $c_string(preqbytes), z)
@@ -172,15 +181,13 @@ dec $unpack_entry(pstate, punpackcall, poperand, nat, bool) : pstate
 def $unpack_entry(S, punpackcall, poperand, n_cursor, b_named) = S_checked
   -- if n_array = $unpack_array(S, poperand)
   -- if S.ARRAYS[n_array].ITEMS[n_cursor] = ENTRY pkey pitem
-  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
-  -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, |punpackcall.SENT.SLOTS|)
+  -- if pnamedtarget = $unpack_send_target(S, punpackcall.FUNCTION, pkey, |punpackcall.SENT.SLOTS|)
   -- if S_checked = $unpack_check(S, punpackcall.SENT, pnamedtarget, pkey, b_named, $unpack_line(S, punpackcall))
   -- if S_checked.COMPLETION =/= NORMAL
-def $unpack_entry(S, punpackcall, poperand, n_cursor, b_named) = $unpack_item(S_checked, n_array, pkey, $named_reference(pfunction, pnamedtarget), $unpack_writable(S, punpackcall))
+def $unpack_entry(S, punpackcall, poperand, n_cursor, b_named) = $unpack_item(S_checked, n_array, pkey, $unpack_send_reference(S, punpackcall.FUNCTION, pnamedtarget), $unpack_writable(S, punpackcall))
   -- if n_array = $unpack_array(S, poperand)
   -- if S.ARRAYS[n_array].ITEMS[n_cursor] = ENTRY pkey pitem
-  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
-  -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, |punpackcall.SENT.SLOTS|)
+  -- if pnamedtarget = $unpack_send_target(S, punpackcall.FUNCTION, pkey, |punpackcall.SENT.SLOTS|)
   -- if S_checked = $unpack_check(S, punpackcall.SENT, pnamedtarget, pkey, b_named, $unpack_line(S, punpackcall))
   -- if S_checked.COMPLETION = NORMAL
 rule PhpStep/unpack-entry: S ~> S_entry[.TODO = (UNPACK_NEXT punpackcall[.SENT = $named_store(punpackcall.SENT, pnamedtarget, S_entry.RESULT)] poperand $(n_cursor + 1) (b_named \/ $unpack_key_named(pkey))) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -188,8 +195,7 @@ rule PhpStep/unpack-entry: S ~> S_entry[.TODO = (UNPACK_NEXT punpackcall[.SENT =
   -- if n_array = $unpack_array(S, poperand)
   -- if $(n_cursor < |S.ARRAYS[n_array].ITEMS|)
   -- if S.ARRAYS[n_array].ITEMS[n_cursor] = ENTRY pkey pitem
-  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
-  -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, |punpackcall.SENT.SLOTS|)
+  -- if pnamedtarget = $unpack_send_target(S, punpackcall.FUNCTION, pkey, |punpackcall.SENT.SLOTS|)
   -- if S_entry = $unpack_entry(S, punpackcall, poperand, n_cursor, b_named)
   -- if S_entry.COMPLETION = NORMAL
 rule PhpStep/unpack-entry-abrupt: S ~> S_entry
@@ -210,6 +216,7 @@ def $task_nodes(UNPACK_ARGS punpackcall) = $unpack_call_roots(punpackcall)
 def $task_nodes(UNPACK_SEND punpackcall) = $unpack_call_roots(punpackcall)
 def $task_nodes(UNPACK_PREP punpackcall) = $unpack_call_roots(punpackcall)
 def $task_nodes(UNPACK_NEXT punpackcall poperand n b) = $unpack_call_roots(punpackcall) ++ $operand_nodes(poperand)
+  -- if ~$magic_unpack_collecting(punpackcall.FUNCTION)
 
 ;; Expanded contexts retain runtime slots, not a replay of old source containers.
 def $named_call_valid(S, pcalltarget_function, (porigin)) = true -- if ~$stringify_selected(S, pcalltarget_function, porigin) -- if ~$closure_call_target(pcalltarget_function) -- if $call_unpack_site(S, (porigin))
@@ -383,15 +390,15 @@ dec $unpack_sent_count(pnamedslot*) : nat
 def $unpack_sent_count(eps) = 0
 def $unpack_sent_count(NAMED_HOLE :: pnamedslot*) = $unpack_sent_count(pnamedslot*)
 def $unpack_sent_count((NAMED_SENT poperand) :: pnamedslot*) = $(1 + $unpack_sent_count(pnamedslot*))
-dec $unpack_prefix_valid(pfunction, pnamedargs, pentry*, bool, nat) : bool
-def $unpack_prefix_valid(pfunction, pnamedargs, eps, b, n) = $(n <= $unpack_sent_count(pnamedargs.SLOTS))
-def $unpack_prefix_valid(pfunction, pnamedargs, (ENTRY (KINT z) pitem) :: pentry*, false, n) = $unpack_prefix_valid(pfunction, pnamedargs, pentry*, false, $(n + 1))
-def $unpack_prefix_valid(pfunction, pnamedargs, (ENTRY (KSTRING preqbytes) pitem) :: pentry*, b, n) = true
-  -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, KSTRING preqbytes, 0)
+dec $unpack_prefix_valid(pstate, pcalltarget, pnamedargs, pentry*, bool, nat) : bool
+def $unpack_prefix_valid(S, pcalltarget, pnamedargs, eps, b, n) = $(n <= $unpack_sent_count(pnamedargs.SLOTS))
+def $unpack_prefix_valid(S, pcalltarget, pnamedargs, (ENTRY (KINT z) pitem) :: pentry*, false, n) = $unpack_prefix_valid(S, pcalltarget, pnamedargs, pentry*, false, $(n + 1))
+def $unpack_prefix_valid(S, pcalltarget, pnamedargs, (ENTRY (KSTRING preqbytes) pitem) :: pentry*, b, n) = true
+  -- if pnamedtarget = $unpack_send_target(S, pcalltarget, KSTRING preqbytes, 0)
   -- if pnamedtarget =/= NAMED_UNKNOWN preqbytes
   -- if ~$named_can_store(pnamedargs, pnamedtarget)
-  -- if $unpack_prefix_valid(pfunction, pnamedargs, pentry*, true, n)
-def $unpack_prefix_valid(pfunction, pnamedargs, pentry*, b, n) = false -- otherwise
+  -- if $unpack_prefix_valid(S, pcalltarget, pnamedargs, pentry*, true, n)
+def $unpack_prefix_valid(S, pcalltarget, pnamedargs, pentry*, b, n) = false -- otherwise
 dec $unpack_prefix_named(pentry*) : bool
 def $unpack_prefix_named(eps) = false
 def $unpack_prefix_named((ENTRY pkey pitem) :: pentry*) = ($unpack_key_named(pkey) \/ $unpack_prefix_named(pentry*))
@@ -405,8 +412,7 @@ def $unpack_next_valid(S, punpackcall, poperand, n, b) = true
   -- if $(n <= |S.ARRAYS[n_array].ITEMS|)
   -- if pentry* = S.ARRAYS[n_array].ITEMS[0:n]
   -- if b = $unpack_prefix_named(pentry*)
-  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
-  -- if $unpack_prefix_valid(pfunction, punpackcall.SENT, pentry*, false, 0)
+  -- if $unpack_prefix_valid(S, punpackcall.FUNCTION, punpackcall.SENT, pentry*, false, 0)
 def $unpack_next_valid(S, punpackcall, poperand, n, b) = false -- otherwise
 def $call_task_valid(S, UNPACK_NEXT punpackcall poperand n b) = $unpack_next_valid(S, punpackcall, poperand, n, b)
 
