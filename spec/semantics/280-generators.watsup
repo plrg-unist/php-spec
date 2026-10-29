@@ -402,7 +402,8 @@ def $generator_creator_method_site(S, porigin_site, ptbytes) = false -- otherwis
 
 ;; A certificate may outlive its actual receiver. Inspect the archived instance
 ;; and declaration without turning that history into a live object owner.
-def $generator_retained_scoped_target(S, SCOPED_TARGET porigin_requested pmethoddesc.FUNCTION.ORIGIN porigin_called (n_receiver) poperand_selector, pmethoddesc) = true
+def $generator_retained_scoped_target(S, SCOPED_TARGET porigin_requested porigin_method porigin_called (n_receiver) poperand_selector, pmethoddesc) = true
+  -- if porigin_method = pmethoddesc.FUNCTION.ORIGIN
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc_requested)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_requested.NAME)) = (porigin_requested)
   -- if $class_at(S.CLASSES, porigin_called) = (pclassdesc_called)
