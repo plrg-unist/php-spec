@@ -436,10 +436,12 @@ def $task_nodes(OUTPUT_FINAL_PENDING pobdeactivate n false) = $operand_nodes(pob
 def $call_task_valid(S, OUTPUT_FINAL_PENDING pobdeactivate n true) = ($output_pending_valid(S, pobdeactivate) /\ S.CURRENT = eps /\ $output_pending_cause(S, pobdeactivate, n) /\ $source_operand_suffix(S.TODO, OUTPUT_FINAL_PENDING pobdeactivate n true, eps))
 def $call_task_valid(S, OUTPUT_FINAL_PENDING pobdeactivate n false) = ($output_pending_valid(S, pobdeactivate) /\ S.CURRENT = eps /\ $source_operand_suffix(S.TODO, OUTPUT_FINAL_PENDING pobdeactivate n false, eps))
 rule PhpStep/output-final-pending-release: S ~> S[.TODO = [OUTPUT_FINAL_PENDING pobdeactivate n false]]
-  -- if S.TODO = [OUTPUT_FINAL_PENDING pobdeactivate n true]
+  -- if S.TODO = (OUTPUT_FINAL_PENDING pobdeactivate n true) :: ptask_tail*
+  -- if ptask_tail* = eps
   -- if $call_task_valid(S, OUTPUT_FINAL_PENDING pobdeactivate n true)
 rule PhpStep/output-final-pending-deactivate: S ~> S[.OUTPUTBUFFERS = eps][.TODO = [OUTPUT_FINAL_DEACTIVATE pobdeactivate[.BUFFERS = S.OUTPUTBUFFERS]]]
-  -- if S.TODO = [OUTPUT_FINAL_PENDING pobdeactivate n false]
+  -- if S.TODO = (OUTPUT_FINAL_PENDING pobdeactivate n false) :: ptask_tail*
+  -- if ptask_tail* = eps
   -- if $call_task_valid(S, OUTPUT_FINAL_PENDING pobdeactivate n false)
   -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
 def $eager_operation_source_guard(S, pdestructionoperation) = (($output_pending_active(S, pobdeactivate) \/ $output_pending_abandoned(S, pdestructionoperation, pobdeactivate)) /\ pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
