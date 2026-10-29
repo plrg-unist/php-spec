@@ -2,12 +2,12 @@
 ;; then does the trampoline form __call's real (name, packed arguments) pair.
 def $magic_method_needed(S, n, ptbytes) = true
   -- if $(n < |S.OBJECTS|)
-  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $object_class_origin(S, n) = (porigin)
   -- if $effective_method(S, porigin, $ptascii("__call"), |S.CLASSES|) =/= eps
   -- if $method_selected_scope(S, n, ptbytes, $method_current_scope(S)) = eps
 def $magic_method_needed(S, n, ptbytes) = true
   -- if $(n < |S.OBJECTS|)
-  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $object_class_origin(S, n) = (porigin)
   -- if $effective_method(S, porigin, $ptascii("__call"), |S.CLASSES|) =/= eps
   -- if $method_selected_scope(S, n, ptbytes, $method_current_scope(S)) = (pmethoddesc)
   -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
@@ -21,7 +21,7 @@ def $magic_method_scoped(S, porigin) = true
   -- if $effective_method(S, porigin, $ptascii("__call"), |S.CLASSES|) =/= eps
   -- if $scoped_current_receiver(S) = (n)
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n] = INSTANCE porigin_receiver
+  -- if $object_class_origin(S, n) = (porigin_receiver)
   -- if $class_origin_matches(S, porigin_receiver, pclassdesc.NAME, |S.CLASSES|)
   -- if $effective_method(S, porigin_receiver, $ptascii("__call"), |S.CLASSES|) =/= eps
 def $magic_method_scoped(S, porigin) = false -- otherwise
@@ -57,6 +57,8 @@ def $magic_method_source(S, pmethoddesc) = true
   -- if $property_unset_body_source(S.SOURCES, n, pfunction.BODY, statement*, 0)
   -- if pfunction.LINE = $ppmethod_line(metadata) /\ pfunction.ENDLINE = $psendline(metadata)
   -- if ~$generator_statements(statement*)
+def $magic_method_source(S, pmethoddesc) = true
+  -- if $enum_magic_source(S, pmethoddesc, false)
 def $magic_method_source(S, pmethoddesc) = false -- otherwise
 
 dec $magic_method_argument_source(pstate, porigin, nat, expression) : bool
@@ -153,7 +155,7 @@ def $magic_method_descriptor(S, pmagicmethodcall) = true
   -- if $magic_method_call_source(S, pmagicmethodcall)
   -- if (|pmagicmethodcall.ARGUMENTS| <- [1,2] /\ ($magic_method_arguments_source(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, 0) \/ $magic_named_source(S, pmagicmethodcall))) \/ $magic_unpack_arguments(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS)
   -- if $(pmagicmethodcall.OBJECT < |S.OBJECTS|)
-  -- if S.OBJECTS[pmagicmethodcall.OBJECT] = INSTANCE pmagicmethodcall.CLASS
+  -- if $object_class_origin(S, pmagicmethodcall.OBJECT) = (pmagicmethodcall.CLASS)
   -- if $class_at(S.CLASSES, pmagicmethodcall.CLASS) = (pclassdesc)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pmagicmethodcall.CLASS)
   -- if $effective_method(S, pmagicmethodcall.CLASS, pmagicmethodcall.NAME, |S.CLASSES|) = eps
@@ -198,7 +200,7 @@ def $magic_method_plan(S, n, ptbytes, phpType7*, z) = (pmagicmethodcall)
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin_site)
   -- if $(n < |S.OBJECTS|)
-  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $object_class_origin(S, n) = (porigin_class)
   -- if $effective_method(S, porigin_class, $ptascii("__call"), |S.CLASSES|) = (pmethoddesc)
   -- if n_owner = |S.FRAMES|
   -- if pmagicmethodcall = {SITE porigin_site, NAME ptbytes, LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, ARGUMENTS phpType7*, OWNER n_owner, CALLER S.CURRENT, TAIL ptask_tail*}

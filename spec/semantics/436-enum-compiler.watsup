@@ -38,6 +38,13 @@ def $ppenum_get_signature(pssignature) = true
   -- if psparam.TYPE = eps \/ psparam.TYPE = ([(PTBRANCH ([PTBUILTIN "string"]))])
   -- if ~psparam.BYREF /\ ~psparam.VARIADIC /\ psparam.REQUIRED /\ psparam.DEFAULT = PSNONE
 def $ppenum_get_signature(pssignature) = false -- otherwise
+def $ppenum_call_signature(pssignature) = true
+  -- if pssignature.PARAMETERS = [psparam_name, psparam_arguments]
+  -- if psparam_name.TYPE = eps \/ psparam_name.TYPE = ([(PTBRANCH ([PTBUILTIN "string"]))])
+  -- if psparam_arguments.TYPE = eps \/ psparam_arguments.TYPE = ([(PTBRANCH ([PTBUILTIN "array"]))])
+  -- if ~psparam_name.BYREF /\ ~psparam_name.VARIADIC /\ psparam_name.REQUIRED /\ psparam_name.DEFAULT = PSNONE
+  -- if ~psparam_arguments.BYREF /\ ~psparam_arguments.VARIADIC /\ psparam_arguments.REQUIRED /\ psparam_arguments.DEFAULT = PSNONE
+def $ppenum_call_signature(pssignature) = false -- otherwise
 
 def $ppstatement(P, pcpath, NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata) = $ppclass_result(P_line, pcpath, $pchcompile(NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata, P.CLASSCONTEXT =/= eps, $ppclass_context(P_line)))
   -- if P.COMPLETION = PPCNORMAL

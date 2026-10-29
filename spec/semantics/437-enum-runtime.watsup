@@ -164,6 +164,49 @@ def $object_class_origin(S, n) = (pclassconstantdesc.OWNER)
   -- if $enum_case_object(S, n) = (pclassconstantdesc)
 def $object_name(S, n) = pclassconstantdesc.OWNERNAME -- if $enum_case_object(S, n) = (pclassconstantdesc)
 def $class_plain_instance(S, n) = true -- if $enum_case_object(S, n) =/= eps
+dec $enum_magic_source_common(pstate, pmethoddesc, ptbytes, bool) : bool
+def $enum_magic_source(S, pmethoddesc, false) = true
+  -- if $enum_magic_source_common(S, pmethoddesc, $ptascii("__call"), false)
+def $enum_magic_source(S, pmethoddesc, true) = true
+  -- if $enum_magic_source_common(S, pmethoddesc, $ptascii("__callstatic"), true)
+def $enum_magic_source(S, pmethoddesc, b) = false -- otherwise
+dec $enum_magic_flags(int, ptbytes, bool) : bool
+def $enum_magic_flags(flags, ptbytes, false) = $ppmethod_call(flags, ptbytes)
+def $enum_magic_flags(flags, ptbytes, true) = $ppmethod_callstatic(flags, ptbytes)
+dec $enum_magic_parameter(phpType17, psparam, text) : bool
+def $enum_magic_parameter(NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_name) metadata_name) ABSENT (SEQUENCE eps) metadata_param, psparam, text_type) = (psparam.TYPE = eps /\ psparam.NAME = $base64(text_name))
+def $enum_magic_parameter(NParam (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_type) metadata_type) (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_name) metadata_name) ABSENT (SEQUENCE eps) metadata_param, psparam, text_expected) = (psparam.TYPE = [(PTBRANCH ([PTBUILTIN text_expected]))] /\ psparam.NAME = $base64(text_name) /\ $ptlc($base64(text_type)) = $ptascii(text_expected))
+def $enum_magic_parameter(phpType17, psparam, text) = false -- otherwise
+def $enum_magic_source_common(S, pmethoddesc, ptbytes, b) = true
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ pmethoddesc.STATIC = b /\ ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.OWNER = PORIGIN n pcpath_owner
+  -- if pmethoddesc.FUNCTION.ORIGIN = PORIGIN n pcpath
+  -- if $(|pcpath| > 0)
+  -- if PCINDEX n_method = pcpath[$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_owner ++ [PCFIELD 4, PCINDEX n_method]
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_owner)
+  -- if pclassdesc_owner.KIND = "enum" /\ pclassdesc_owner.ORIGIN = pmethoddesc.OWNER
+  -- if $method_origin(pclassdesc_owner.METHODS, pmethoddesc.FUNCTION.ORIGIN) = (pmethoddesc)
+  -- if $origin_node(S.SOURCES, pclassdesc_owner.ORIGIN) = (NStmtEnum phpType14_owner phpType3_owner phpType50_owner phpType42_owner (SEQUENCE statement_owner*) metadata_owner)
+  -- if $(n_method < |statement_owner*|)
+  -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (statement_method)
+  -- if statement_method = NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([phpType17_name, phpType17_arguments])) phpType18_return (SEQUENCE statement*) metadata
+  -- if statement_owner*[n_method] = statement_method
+  -- if $enum_magic_flags(flags, $base64(text_method), b) /\ pmethoddesc.NAME = $base64(text_method) /\ $ptlc(pmethoddesc.NAME) = ptbytes
+  -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = [psparam_name, psparam_arguments]
+  -- if $ppenum_call_signature(pmethoddesc.FUNCTION.SIGNATURE)
+  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if $enum_magic_parameter(phpType17_name, psparam_name, "string") /\ $enum_magic_parameter(phpType17_arguments, psparam_arguments, "array")
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 4, PCINDEX 0])) = (phpType17_name)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 4, PCINDEX 1])) = (phpType17_arguments)
+  -- if $ptype_normalize(phpType18_return, {NAMESPACE pmethoddesc.FUNCTION.ENV.NAMESPACE, IMPORTS pmethoddesc.FUNCTION.ENV.CLASSES, SCOPE PTKNOWN pclassdesc_owner.NAME eps, POSITION PTRETURN, OWNER pclassdesc_owner.NAME, MEMBER pmethoddesc.NAME, FILE $call_sourcefile(S.FILES, pmethoddesc.FUNCTION.ORIGIN), LINE pmethoddesc.FUNCTION.LINE}) = PTOK ptbranch_return* ptdiagnostic*
+  -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = ptbranch_return*
+  -- if pmethoddesc.FUNCTION.NAME = pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME
+  -- if pmethoddesc.FUNCTION.BODY = pcpath ++ [PCFIELD 6] /\ pmethoddesc.FUNCTION.DEFAULTS = eps
+  -- if $property_unset_body_source(S.SOURCES, n, pmethoddesc.FUNCTION.BODY, statement*, 0)
+  -- if pmethoddesc.FUNCTION.LINE = $ppmethod_line(metadata) /\ pmethoddesc.FUNCTION.ENDLINE = $psendline(metadata)
+  -- if ~$generator_statements(statement*)
+def $enum_magic_source_common(S, pmethoddesc, ptbytes, b) = false -- otherwise
 def $property_declaring_name(pclassdesc_all*, ENUM_PROPERTY porigin ptbytes) = pclassdesc_owner.NAME
   -- if $class_at(pclassdesc_all*, porigin) = (pclassdesc_owner)
 def $property_declaring_class(pclassdesc_all*, ENUM_PROPERTY porigin ptbytes) = (porigin)
