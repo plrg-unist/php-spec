@@ -3668,6 +3668,13 @@ strict SL groups pass 330 checks at separate cuts. WeakMap callbacks, worker,
 residual, reentry and wider operand caches remain partial. See the
 [claimed callback review](coverage/semantics/gc-materialized-claimed-callback-review.json).
 
+Canonical materialized destructor collection also preserves ordinary
+named-function locals, saved caller locals and real method receivers as roots.
+The GC site belongs to the authenticated caller's body, and removing borrowed
+count metadata cannot select an older walk. Resurrection preserves the native
+signed result -1 and later release count 3. Other active and reentrant contexts
+remain partial. See the [ordinary-caller review](coverage/semantics/gc-caller-materialized-review.json).
+
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
 reuse only when destructor preparation leaves the state identical.
