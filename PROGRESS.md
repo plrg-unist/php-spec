@@ -643,7 +643,8 @@ destructor preserve cleanup and original `Previous` order. Five new authored
 originals plus the promoted CALL121 boundary match retained native request-profile
 observations; two independent reference-callee originals agree under ordinary CLI.
 Four exact unchanged-positive controls retain their disjoint baseline cut.
-Strict424, four authored reached groups/120 assertions and one independent
+Private and independently reviewed actual-tail strict compilation of 424 modules
+passes. Four authored reached groups/120 assertions and one independent
 group/36 assertions pass. The eight unchanged Unsupported baselines earn zero
 agreement credit. Unsupported producers and wider callable/lifecycle forms
 remain partial.
