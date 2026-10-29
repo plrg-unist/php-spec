@@ -19,7 +19,8 @@ and keeps the original Throwable with the supplied one as `Previous`.
 Three authored and one independent source agree exactly with pinned PHP. Two
 I63/I61 controls retain their exact parent outcomes; all three authored originals
 were checked `Unsupported` on that unchanged parent. Strict compilation of 424
-modules and 307 custom checks across three reached fronts pass. Earlier fresh
+modules and 307 custom checks across three reached fronts pass. Joined strict
+compilation over the actual tail also passes. Earlier fresh
 method BYREF evidence keeps its [original cuts](coverage/semantics/generator-fiber-fresh-method-reference-throw-transfer-review.json);
 its synthetic callee guard is maintained without execution replay.
 Fresh direct named BYREF THROW, static/scoped/bound/delegated and wider lifetime
