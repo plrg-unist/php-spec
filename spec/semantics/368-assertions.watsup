@@ -978,6 +978,7 @@ def $assertion_callback_values(S, passertfailure) = [PSTRING $call_sourcefile(S.
 def $assertion_callback_valid(S, passertcall) = true
   -- if $assertion_failure_valid(S, passertcall.FAILURE)
   -- if passertcall.TARGET = (pcalltarget)
+  -- if ~$api_borrowed_target(pcalltarget)
   -- if $exception_raw_selected(S, passertcall.CALLBACK, passertcall.RAW, pcalltarget)
   -- if $handler_emitter_valid(S, pcalltarget)
   -- if $target_function(S, pcalltarget) = (pfunction)

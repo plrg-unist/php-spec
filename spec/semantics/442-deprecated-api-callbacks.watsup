@@ -23,6 +23,7 @@ dec $api_cursor_deprecated_event(pstate, papiargcursor, ptbytes) : pevent
 dec $api_cursor_enter(pstate, papiargcursor) : pstate
 dec $api_callback_warn(pstate, pfunction, papiargcursor) : pstate
 dec $api_callback_arity(pstate, pfunction, nat, porigin?, int) : pstate
+dec $api_cursor_read_discard(pstate, ptask) : pstate
 
 def $target_nodes(API_BORROWED_TARGET pshutdownproducer) = eps
 def $target_instance(API_BORROWED_TARGET pshutdownproducer) = $target_instance(pshutdownproducer.TARGET)
@@ -36,6 +37,8 @@ def $target_called_class(S, API_BORROWED_TARGET pshutdownproducer) = $target_cal
 ;; argument sends and body reads use S and its live allocation set.
 def $api_callback_result_scope(S, API_BORROWED_TARGET pshutdownproducer) = $consumer_producer_history(S, pshutdownproducer)
 def $target_function(S, API_BORROWED_TARGET pshutdownproducer) = $target_function($api_callback_result_scope(S, API_BORROWED_TARGET pshutdownproducer), pshutdownproducer.TARGET)
+def $api_borrowed_target(API_BORROWED_TARGET pshutdownproducer) = true
+def $api_borrowed_target(pcalltarget) = false -- otherwise
 def $handler_method_tag(API_BORROWED_TARGET pshutdownproducer) = true
 def $error_handler_selected(S, pvalue, API_BORROWED_TARGET pshutdownproducer) = $error_handler_selected(S, pvalue, pshutdownproducer.TARGET)
 def $exception_raw_selected(S, pvalue, (parray), API_BORROWED_TARGET pshutdownproducer) = $exception_raw_selected(S, pvalue, (parray), pshutdownproducer.TARGET)
@@ -156,10 +159,13 @@ def $return_discard(S, API_CALLBACK_SEND papiargcursor) = $api_callback_discard(
 def $return_discard(S, API_CALLBACK_REF papiargcursor) = $api_callback_discard(S, papiargcursor.CALL)
 ;; A throwing diagnostic handler first discards its own RESULT. Transfer the
 ;; saved cursor back under THROW_SEARCH, then discard its prepared prefix once.
-def $error_read_discard(S, API_CALLBACK_SEND papiargcursor) = S[.TODO = (THROW_SEARCH n) :: (API_CALLBACK_SEND papiargcursor) :: ptask_tail*]
+def $error_read_discard(S, API_CALLBACK_SEND papiargcursor) = $api_cursor_read_discard(S, API_CALLBACK_SEND papiargcursor)
+def $error_read_discard(S, API_CALLBACK_REF papiargcursor) = $api_cursor_read_discard(S, API_CALLBACK_REF papiargcursor)
+def $api_cursor_read_discard(S, API_CALLBACK_SEND papiargcursor) = S[.TODO = (THROW_SEARCH n) :: (API_CALLBACK_SEND papiargcursor) :: ptask_tail*]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
-def $error_read_discard(S, API_CALLBACK_REF papiargcursor) = S[.TODO = (THROW_SEARCH n) :: (API_CALLBACK_REF papiargcursor) :: ptask_tail*]
+def $api_cursor_read_discard(S, API_CALLBACK_REF papiargcursor) = S[.TODO = (THROW_SEARCH n) :: (API_CALLBACK_REF papiargcursor) :: ptask_tail*]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+def $api_cursor_read_discard(S, ptask) = S[.COMPLETION = UNSUPPORTED "API callback abrupt handler completion"] -- otherwise
 def $call_after_origin(S, API_CALLBACK_SEND papiargcursor) = S[.ORIGIN = (papiargcursor.SITE)]
 def $call_after_origin(S, API_CALLBACK_REF papiargcursor) = S[.ORIGIN = (papiargcursor.SITE)]
 def $error_context_trigger(S, pcallcontext) = (passertcall.FAILURE.CALL)

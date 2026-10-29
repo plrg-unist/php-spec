@@ -860,6 +860,7 @@ def $call_task_valid(S, ERROR_HANDLER_INVOKE perrorcall) = ($error_call_valid(S,
 def $error_entered_call_valid(S, perrorcall) = true
   -- if $error_call_valid(S, perrorcall)
   -- if perrorcall.TARGET = (pcalltarget)
+  -- if ~$api_borrowed_target(pcalltarget)
   -- if $error_handler_selected(S, perrorcall.CALLBACK, pcalltarget)
   -- if $handler_emitter_valid(S, pcalltarget)
 def $error_entered_call_valid(S, perrorcall) = true
