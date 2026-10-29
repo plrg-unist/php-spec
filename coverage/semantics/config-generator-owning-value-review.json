@@ -1,0 +1,128 @@
+{
+  "milestone": "A77 owning by-value Generator CONFIG sends",
+  "status": "private validation complete; canonical integration pending",
+  "scope": {
+    "consumer": "INI_SET unpack from an outside-retained named zero-argument BYVAL Generator CV, at most two integer-key DIRECT sends of flat scalars or finite quiet owning ARRAY/ordinary non-Stringable INSTANCE values.",
+    "behavior": "Copied owning sends keep task roots after the Generator cache changes; normal reception transfers the prefix into INI_SET TypeError TraceArgs, while terminal saved throw releases it before catch. Source/history, outside Generator owners and live quiet finite graphs are checked at acquisition and cleanup. A compiled literal array retains a separate pool root; a fresh object has none.",
+    "limits": "Effectful finalizers, cycles/debt, typed or owning reference cells, temporary/indirect producers, owning return and broader lifetimes remain separate."
+  },
+  "implementation": {
+    "module": "spec/semantics/423-config-generator-unpack.watsup",
+    "base": "f82ccbb9f536303373e90f5b41de00ced071f5db",
+    "source_freeze": "61cb831599c7c6f01a2ee0dc8eb4a14d1b3286a1",
+    "runtime_revision": "b6f294a146f918363f29009c5e8ab6cee1d87828",
+    "validated_revision": "fd6dd9e87cea591d20c1bc4fef89e3eb02a2f3dd",
+    "change": "Only 423: source-authenticated BYVAL CV owning send, bounded historical receipts, live finite/quiet graph checks, copied-prefix task roots, outside-owner and cleanup rechecks. Generic 420/355, schema and module manifest unchanged.",
+    "engine": "Zend SEND_UNPACK retains copied arguments separately from Generator cache; zend_generators.c stores/releases cached value; INI_SET TypeError keeps trace arguments until Throwable release."
+  },
+  "validation": {
+    "target": "PHP 8.5.10 CLI NTS64 pinned binary/profile; LC_ALL=C, TZ=UTC; checked frontend and SL/cache-off/determinism-on model; serial CPU1-5 actors.",
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-owning-value-77",
+    "native_first": {
+      "revision": "61cb831599c7c6f01a2ee0dc8eb4a14d1b3286a1",
+      "author": {
+        "report": "native-61cb/author/report.json",
+        "sha256": "cb94c6f40ad0e5203a3278d7097b6aa519f14938b999625c569dbc2a813dc2b6"
+      },
+      "peer": {
+        "report": "native-61cb/peer/report.json",
+        "sha256": "f691928e0f3c3117ab93cbb66150a24139075b2dc597297e5b9164020c791806"
+      },
+      "originals": 4,
+      "result": "Four distinct new originals match manually authored stdout, empty stderr and exit0; native-only preparation has zero model credit."
+    },
+    "old_refusal": {
+      "report": "old-control-61cb/report.json",
+      "sha256": "70dc1e32574876dd0ae4bcef1270957295740d2e1ea8afa75ca0da9b38cf5404",
+      "revision": "61cb831599c7c6f01a2ee0dc8eb4a14d1b3286a1",
+      "status": "Unsupported",
+      "reason": "CONFIG Generator unpack send outside scalar/key domain",
+      "prefix": "B;Y0;",
+      "agreement_credit": 0
+    },
+    "private_strict": {
+      "report": "candidate-286/strict/report.json",
+      "sha256": "145726ee294e740f07e9781fc144ca810cd17aac25df57096e0823efc0082131",
+      "revision": "28647541b056696bf3aca616d069074c39783e36",
+      "modules": 432,
+      "seconds": 11.8172073364
+    },
+    "source_models": {
+      "agreements": 4,
+      "method": "Retain frozen source/native/profile/process bytes; run only bin/php-semantics for each new case. No PHP application or accepted A76 replay.",
+      "reports": [
+        {
+          "case": "array-cow",
+          "revision": "28647541b056696bf3aca616d069074c39783e36",
+          "report": "candidate-286/model-author-array/report.json",
+          "sha256": "4c63b29b4605940285775b6925c0f3c9fbf948e059ee3b51d3e7660a26bbf6bd"
+        },
+        {
+          "case": "instance-weak",
+          "revision": "28647541b056696bf3aca616d069074c39783e36",
+          "report": "candidate-286/model-author-instance/report.json",
+          "sha256": "25c7fb280b65c47e287d8ee433c7bd6de5dd2371ec16e8eab382968e2dacdf6d"
+        },
+        {
+          "case": "early-cache-throw",
+          "revision": "fba0411e86c9c39634c32d91acd5528742228751",
+          "report": "candidate-fba/model-peer-early/report.json",
+          "sha256": "52c92945a4ff43ab78f782a1f97fbb5eb2c8feeed6151b76080b2a08974d6058"
+        },
+        {
+          "case": "replaced-cache-throw",
+          "revision": "fba0411e86c9c39634c32d91acd5528742228751",
+          "report": "candidate-fba/model-peer-terminal/report.json",
+          "sha256": "8a17889d4b427ad98347b5aa13f0ddaabda41d6fdef8e38ec06617ecbeb86c1c"
+        }
+      ]
+    },
+    "reached": {
+      "conditions": 296,
+      "if_premises": 292,
+      "raw_steps": 4,
+      "author": {
+        "revision": "ba1111330e1efba9badefd8c14735f13748f3b5d",
+        "conditions": 135,
+        "raw_steps": 1,
+        "report": "candidate-ba1/author-state/report.json",
+        "sha256": "140b9acaaf644a252df4e0793a257d974be14f03c46db14c362fc00fb3e06187",
+        "coverage": "Literal-array COW old4/new5, exact pool plus copied-prefix roots through finish/invoke/TypeError TraceArgs, pool-only after error release, three constructed denial guards."
+      },
+      "peer": {
+        "revision": "fd6dd9e87cea591d20c1bc4fef89e3eb02a2f3dd",
+        "conditions": 161,
+        "raw_steps": 3,
+        "report": "candidate-fd6/peer-state/report.json",
+        "sha256": "092b6008db9d46fccf0309fe6f194fcf381752ce6b61f1f29e07afb36f286ccb",
+        "coverage": "Fresh nonpool object has sole copied-prefix owner after scalar cache replacement; frame/quiet discard/public prune kill payload before saved catch while outside Generator survives; lost-owner and cycle guards."
+      }
+    },
+    "failed_fixtures": {
+      "credit": 0,
+      "cause": "Two author test-only exact owner=1 assertions omitted the compiled literal pool root; corrected fixture proves exact nonpool ownership. No runtime or accepted source renewal.",
+      "reports": [
+        {
+          "report": "candidate-fba/author-state/report.json",
+          "sha256": "de3488669c654a91194c57318e84052775366d9f5f93794e0595483338185a04"
+        },
+        {
+          "report": "candidate-c7b/author-state/report.json",
+          "sha256": "e43ef1ad8939bacebb2c5767054891095af4e5a6b469308b5be33bb068493ac6"
+        }
+      ]
+    },
+    "review": "Independent source literals, frozen native/old boundary, live graph/cleanup fences, model-only comparator, strict432, source4, author and peer reached results by config71_recover_review. Successful process groups fully reaped; inputs and tested HEAD stable."
+  },
+  "recovery": {
+    "manifest": "manifest.json",
+    "manifest_sha256": "555e4b6490fca7dbe6740d7bbf2031aa13385ab833a98630455d3f31aed081c4",
+    "files": 125,
+    "raw_bytes": 2388921,
+    "commands": "For frozen comparisons, run config_generator_owning_value_models.py with both native-61cb --native-report paths and one --case at a time. Run each reached script with its corresponding frozen --source-report. Makefile has fresh-source entrypoints for later full validation.",
+    "notes": "Raw streams, fixture text, exits and report history remain outside Git."
+  },
+  "integration": {
+    "status": "pending canonical writer grant and actual-tail joined check"
+  }
+}
