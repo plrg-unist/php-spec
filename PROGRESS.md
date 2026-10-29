@@ -17,7 +17,8 @@ saved `12` survives its write to `99.5`. Failure uses live LEFT and selected RIG
 in TypeError, and supplied throws cancel delivery. No new owner/task is added.
 Sixteen formerly Unsupported originals, one unchanged plain-CV control and four
 independent originals agree exactly; strict424 and four source-reached
-recipes/470 checks pass. Initial sole-owner cells, expired pointers, memberful
+recipes/470 checks pass. Joined strict compilation over the current 424-module
+tail also passes. Initial sole-owner cells, expired pointers, memberful
 objects and wider reference producers remain partial.
 [Reference-object RIGHT review](coverage/semantics/integer-reference-object-right-warning-review.json).
 
