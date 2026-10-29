@@ -10,7 +10,7 @@ CASES = {
     for name in ('ordinary_byref', 'magic_static', 'reference_closure',
                  'nested_generator', 'self_reject', 'self_rebound',
                  'getter_throw', 'closed_generator', 'empty', 'mixed_duplicate',
-                 'closure_cleanup')
+                 'closure_cleanup', 'layer_destructor_throw')
 }
 
 
