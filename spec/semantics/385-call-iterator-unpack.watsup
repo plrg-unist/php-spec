@@ -40,6 +40,10 @@ dec $iterator_unpack_discard_nodes(pstate, piteratorunpack) : pnode*
 dec $iterator_unpack_discard(pstate, piteratorunpack, text) : pstate
 dec $iterator_unpack_abort_input(pstate, piteratorunpack) : bool
 dec $iterator_unpack_abort_plain(pstate, punpackcall) : bool
+dec $iterator_unpack_abort_selected(pstate, piteratorunpack) : bool
+dec $iterator_unpack_closure_raw_origin(pstate, nat) : porigin?
+dec $iterator_unpack_closure_origin(pstate, nat) : porigin?
+dec $iterator_unpack_closure_source(pstate, punpackcall) : porigin?
 
 def $unpack_iterator_value(S, POBJECT n) = ($useriter_instance(S, n) \/ $generator_object(S, n))
 def $unpack_prepare(S, punpackcall) = S_read
@@ -70,6 +74,17 @@ def $iterator_unpack_plain(S, punpackcall) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if $call_selected_valid(S, punpackcall.FUNCTION, punpackcall.CALLSITE)
 def $iterator_unpack_plain(S, punpackcall) = true
+  -- if punpackcall.FUNCTION = METHOD_TARGET n porigin_method
+  -- if $unpack_class(S, punpackcall) = (UNPACK_CV)
+  -- if $object_invoke_method(S, n) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if punpackcall.CALLSITE = (porigin_site)
+  -- if $dynamic_site(S, (porigin_site))
+  -- if $dynamic_fixed_name(S, porigin_site) = eps
+  -- if $dynamic_cv_name(S, porigin_site) = (ptbytes)
+  -- if $call_selected_valid(S, punpackcall.FUNCTION, punpackcall.CALLSITE)
+def $iterator_unpack_plain(S, punpackcall) = true
   -- if punpackcall.FUNCTION = ARRAY_METHOD_TARGET (METHOD_TARGET n porigin_method) parrayselection
   -- if $unpack_class(S, punpackcall) = (UNPACK_CV)
   -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
@@ -82,6 +97,31 @@ def $iterator_unpack_plain(S, punpackcall) = true
   -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if pfunction.ORIGIN = porigin_method
   -- if punpackcall.CALLSITE = (parrayselection.SITE)
+  -- if $call_selected_valid(S, punpackcall.FUNCTION, punpackcall.CALLSITE)
+def $iterator_unpack_closure_raw_origin(S, n) = (porigin)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+def $iterator_unpack_closure_raw_origin(S, n) = (porigin)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin
+def $iterator_unpack_closure_raw_origin(S, n) = eps -- otherwise
+def $iterator_unpack_closure_origin(S, n) = (porigin)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if $iterator_unpack_closure_raw_origin(S, n) = (porigin)
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+def $iterator_unpack_closure_origin(S, n) = eps -- otherwise
+def $iterator_unpack_closure_source(S, punpackcall) = $iterator_unpack_closure_origin(S, n)
+  -- if punpackcall.FUNCTION = CLOSURE_TARGET n
+def $iterator_unpack_closure_source(S, punpackcall) = eps -- otherwise
+def $iterator_unpack_plain(S, punpackcall) = true
+  -- if punpackcall.FUNCTION = CLOSURE_TARGET n
+  -- if punpackcall.CALLSITE = (porigin_site)
+  -- if $dynamic_site(S, (porigin_site))
+  -- if $dynamic_fixed_name(S, porigin_site) = eps
+  -- if $unpack_class(S, punpackcall) = (UNPACK_CV)
+  -- if $iterator_unpack_closure_origin(S, n) = (porigin)
+  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
+  -- if pfunction.ORIGIN = porigin
   -- if $call_selected_valid(S, punpackcall.FUNCTION, punpackcall.CALLSITE)
 def $iterator_unpack_plain(S, punpackcall) = false -- otherwise
 def $iterator_unpack_input(S, punpackcall, VARIABLE ptbytes z) = true
@@ -104,7 +144,7 @@ def $iterator_unpack_original(piteratorunpack) = (n = piteratorunpack.OBJECT) --
 def $iterator_unpack_original(piteratorunpack) = true -- if piteratorunpack.INPUT = REFERENCE n
 def $iterator_unpack_original(piteratorunpack) = true -- if piteratorunpack.INPUT = VARIABLE ptbytes z
 def $iterator_unpack_original(piteratorunpack) = false -- otherwise
-def $unpack_prepared(S, S_prepared, punpackcall, ptask_tail*) = S_prepared[.ITERATORS = S_prepared.ITERATORS ++ [OBJECTITER n_iterator n 0 false]][.NEXTITER = $(n_iterator + 1)][.ORIGIN = $unpack_origin(S, punpackcall)][.TODO = (ITERATOR_UNPACK {CALL punpackcall, ITERATOR n_iterator, OBJECT n, INPUT S.RESULT, CURRENT (KNOWN PNULL), KEY (KNOWN PNULL), HOLD (KNOWN PNULL), SNAPSHOT eps, NAMED false} "rewind-start") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD]
+def $unpack_prepared(S, S_prepared, punpackcall, ptask_tail*) = S_prepared[.ITERATORS = S_prepared.ITERATORS ++ [OBJECTITER n_iterator n 0 false]][.NEXTITER = $(n_iterator + 1)][.ORIGIN = $unpack_origin(S, punpackcall)][.TODO = (ITERATOR_UNPACK {CALL punpackcall, ITERATOR n_iterator, OBJECT n, INPUT S.RESULT, CURRENT (KNOWN PNULL), KEY (KNOWN PNULL), HOLD (KNOWN PNULL), SNAPSHOT eps, NAMED false, CLOSUREORIGIN $iterator_unpack_closure_source(S, punpackcall)} "rewind-start") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD]
   -- if S_prepared.RESULT = KNOWN (POBJECT n)
   -- if $useriter_instance(S_prepared, n)
   -- if $iterator_unpack_plain(S, punpackcall)
@@ -189,6 +229,7 @@ def $iterator_unpack_hold_live(S, piteratorunpack, text) = false -- otherwise
 def $iterator_unpack_valid(S, piteratorunpack, text) = true
   -- if S.ORIGIN = $unpack_origin(S, piteratorunpack.CALL)
   -- if $iterator_unpack_plain(S, piteratorunpack.CALL)
+  -- if piteratorunpack.CLOSUREORIGIN = $iterator_unpack_closure_source(S, piteratorunpack.CALL)
   -- if $unpack_pending_valid(S[.ORIGIN = piteratorunpack.CALL.CALLSITE], piteratorunpack.CALL, 1)
   -- if $unpack_source_kind(S, piteratorunpack.CALL, true)
   -- if $iterator_unpack_input(S, piteratorunpack.CALL, piteratorunpack.INPUT)
@@ -518,6 +559,17 @@ def $iterator_unpack_warning_target(S, STATIC_METHOD_TARGET porigin_class porigi
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
 def $iterator_unpack_warning_target(S, ARRAY_METHOD_TARGET pcalltarget parrayselection) = $iterator_unpack_warning_target(S, pcalltarget)
+def $iterator_unpack_warning_target(S, CLOSURE_TARGET n) = pclassdesc.NAME ++ $ptascii("::") ++ pfunction.NAME
+  -- if $iterator_unpack_closure_origin(S, n) = (porigin)
+  -- if $target_lexical_class(S, CLOSURE_TARGET n) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+  -- if pfunction.ORIGIN = porigin
+def $iterator_unpack_warning_target(S, CLOSURE_TARGET n) = pfunction.NAME
+  -- if $iterator_unpack_closure_origin(S, n) = (porigin)
+  -- if $target_lexical_class(S, CLOSURE_TARGET n) = eps
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+  -- if pfunction.ORIGIN = porigin
 def $iterator_unpack_warning_target(S, porigin_function) = pfunction.NAME
   -- if $target_function(S, porigin_function) = (pfunction)
   -- if pfunction.ORIGIN = porigin_function
@@ -656,7 +708,33 @@ def $iterator_unpack_abort_plain(S, punpackcall) = true
   -- if S.OBJECTS[n] = INSTANCE parrayselection.REQUESTED
   -- if ~((HOBJECT n) <- S.ALLOCATIONS)
   -- if $iterator_unpack_plain(S[.ALLOCATIONS = (HOBJECT n) :: S.ALLOCATIONS], punpackcall)
+def $iterator_unpack_abort_plain(S, punpackcall) = true
+  -- if punpackcall.FUNCTION = METHOD_TARGET n porigin_method
+  -- if punpackcall.CALLSITE = (porigin_site)
+  -- if $dynamic_site(S, (porigin_site))
+  -- if $dynamic_fixed_name(S, porigin_site) = eps
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if ~((HOBJECT n) <- S.ALLOCATIONS)
+  -- if $iterator_unpack_plain(S[.ALLOCATIONS = (HOBJECT n) :: S.ALLOCATIONS], punpackcall)
 def $iterator_unpack_abort_plain(S, punpackcall) = false -- otherwise
+def $iterator_unpack_abort_selected(S, piteratorunpack) = true
+  -- if piteratorunpack.CLOSUREORIGIN = $iterator_unpack_closure_source(S, piteratorunpack.CALL)
+  -- if $iterator_unpack_abort_plain(S, piteratorunpack.CALL)
+;; PREP records the live unbound selection; captured cells and binding records
+;; can retire before the eager cleanup operation finishes.
+def $iterator_unpack_abort_selected(S, piteratorunpack) = true
+  -- if piteratorunpack.CLOSUREORIGIN = (porigin)
+  -- if piteratorunpack.CALL.FUNCTION = CLOSURE_TARGET n
+  -- if ~((HOBJECT n) <- S.ALLOCATIONS)
+  -- if $iterator_unpack_closure_raw_origin(S, n) = (porigin)
+  -- if piteratorunpack.CALL.CALLSITE = (porigin_site)
+  -- if $dynamic_site(S, (porigin_site))
+  -- if $dynamic_fixed_name(S, porigin_site) = eps
+  -- if $unpack_class(S, piteratorunpack.CALL) = (UNPACK_CV)
+  -- if $target_function(S, piteratorunpack.CALL.FUNCTION) = (pfunction)
+  -- if pfunction.ORIGIN = porigin
+def $iterator_unpack_abort_selected(S, piteratorunpack) = false -- otherwise
 def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.SOURCE = ITERATOR_UNPACK piteratorunpack text
   -- if text <- ["rewind-start", "rewind", "valid-start", "valid", "valid-nan", "current-start", "current", "key-start", "key", "send", "error", "byref", "next-start", "next", "finish"]
@@ -670,7 +748,7 @@ def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.ORIGIN = (porigin)
   -- if S_scope = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = (porigin)][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
   -- if $iterator_unpack_hold_allowed(S_scope, piteratorunpack, text)
-  -- if $iterator_unpack_abort_plain(S_scope, piteratorunpack.CALL)
+  -- if $iterator_unpack_abort_selected(S_scope, piteratorunpack)
   -- if $call_unpack_site(S_scope, (porigin))
   -- if $call_line_valid(S_scope, (porigin), piteratorunpack.CALL.LINE)
   -- if $call_argument_source(S_scope, porigin) = PCALLARGUMENTS phpType7* n_field

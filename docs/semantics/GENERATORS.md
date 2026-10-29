@@ -227,6 +227,19 @@ reference-capture timeout remains zero credit. Method by-reference/fresh,
 bound/delegated and wider lifecycle paths remain partial.
 [Fresh Closure reference THROW review](../../coverage/semantics/generator-fiber-fresh-closure-reference-throw-transfer-review.json).
 
+A primed ordinary public method-created by-reference Generator now admits
+`throw` with an authenticated cached cell and receiver. The saved Fiber resumer
+keeps the temporary Throwable, while `current()` reads the old cell after its
+external source name is rebound. `throw()` returns a dereferenced snapshot;
+later writes through the old cell change `current()` without changing that
+snapshot. Normal and supplied `Fiber::throw` paths preserve exception identity
+and `Previous` order. Separate receiver and cached-object lifetimes agree in
+three authored sources and an independent cache-replacement source. Two direct
+BYREF/method BYVAL controls, strict compilation and 129 source-reached checks
+pass. The three authored sources were `Unsupported` before the edit. Fresh
+method, bound/delegated and wider lifetime forms remain partial.
+[Method reference THROW review](../../coverage/semantics/generator-fiber-method-reference-throw-transfer-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

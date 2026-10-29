@@ -909,6 +909,19 @@ credit, then reached Unsupported at 240 seconds. Method by-reference/fresh,
 bound/delegated and wider lifecycle forms remain partial.
 [Fresh Closure reference THROW review](../../coverage/semantics/generator-fiber-fresh-closure-reference-throw-transfer-review.json).
 
+Primed by-reference `Generator::throw` now also transfers an ordinary public
+method-created Generator through a Fiber pause. The method target retains the
+actual receiver and its cached reference cell remains distinct from a rebound
+external name. The saved resumer keeps the supplied Throwable through catch or
+pending `finally`; normal resume preserves it and `Fiber::throw` makes it the
+replacement's `Previous`. A scalar cache releases the receiver at method-frame
+retirement, while a self cache can retain it until Generator release. Three
+authored and one independently frozen source agree with pinned PHP, alongside
+two unchanged controls and 129 source-reached checks. The three authored
+sources were `Unsupported` on the unchanged model. Fresh method THROW,
+bound/delegated resumers and wider lifetime paths remain partial.
+[Method reference THROW review](../../coverage/semantics/generator-fiber-method-reference-throw-transfer-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

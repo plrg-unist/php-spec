@@ -5673,6 +5673,10 @@ Iterator callbacks; inherited static calls preserve called scope and report
 the declaring class in by-reference warnings. Abrupt key cleanup uses a saved
 selection receipt after its receiver retires. Six exact originals and seven
 reached stages are in the [array-callable Iterator review](coverage/semantics/array-callable-iterator-unpack-review.json).
+Dynamic calls through a public user `__invoke` CV also unpack an initialized
+Iterator CV, retaining the selected receiver through callbacks and abrupt
+cleanup. Five exact originals, one independent source and seven reached stages
+are in the [invokable Iterator review](coverage/semantics/invokable-iterator-unpack-review.json).
 Public concrete class-method strings now distinguish
 computed static dispatch from fixed calls using a compatible active receiver.
 Immutable string captures/clone retain selected descriptors, called scope and
@@ -6087,6 +6091,9 @@ inherited source object invocation and Stringable SET ownership; broader
 Generator and unfinished callback interactions remain open. Live
 [Fiber transfers](docs/semantics/FIBERS.md) now retain separate VM continuations,
 shared globals and handlers, cached callbacks and original C argument buffers.
+Primed method-created by-reference `Generator::throw` transfers also preserve
+the cached cell, receiver and pending exception through Fiber suspension;
+see the [method reference THROW review](coverage/semantics/generator-fiber-method-reference-throw-transfer-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
