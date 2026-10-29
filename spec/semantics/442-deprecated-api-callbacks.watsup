@@ -1,7 +1,6 @@
 ;; zend_call_function selects its callback before the Deprecated warning. The
 ;; selected receiver is borrowed through warning dispatch and argument copying;
 ;; a Closure gains its call owner only when the entered frame is installed.
-dec $api_callback_begin(pstate, papicallback, pcalltarget, pfunction, pvalue*, porigin, int) : pstate
 dec $api_callback_values(pstate, papicallback) : pvalue*
 dec $api_callback_selected(pstate, papicallback, pcalltarget) : bool
 dec $api_callback_roots(papicallback) : pnode*
@@ -22,10 +21,8 @@ dec $api_cursor_reference_message(pstate, papiargcursor) : ptbytes
 dec $api_cursor_reference_event(pstate, papiargcursor, ptbytes) : pevent
 dec $api_cursor_deprecated_event(pstate, papiargcursor, ptbytes) : pevent
 dec $api_cursor_enter(pstate, papiargcursor) : pstate
-dec $api_callback_result_scope(pstate, pcalltarget) : pstate
 dec $api_callback_warn(pstate, pfunction, papiargcursor) : pstate
 dec $api_callback_arity(pstate, pfunction, nat, porigin?, int) : pstate
-dec $api_borrowed_receiver_retired(pstate) : bool
 
 def $target_nodes(API_BORROWED_TARGET pshutdownproducer) = eps
 def $target_instance(API_BORROWED_TARGET pshutdownproducer) = $target_instance(pshutdownproducer.TARGET)
