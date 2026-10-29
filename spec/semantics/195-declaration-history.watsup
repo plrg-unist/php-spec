@@ -41,6 +41,27 @@ def $declaration_entry_site(pdeclaration :: pdeclaration_tail*, n) = porigin?
 def $declaration_entry_site(pdeclaration :: pdeclaration_tail*, n) = $declaration_entry_site(pdeclaration_tail*, n)
   -- if ~$declaration_enter_item(pdeclaration, n)
 
+;; A running dynamic unit restores its entered caller after a root try region.
+;; Only the context's real owner may use that foreign-unit continuation.
+dec $finally_file_outer_boundary(pstate, pfilecontext*, nat, porigin) : bool
+def $finally_file_outer_boundary(S, eps, n, porigin) = false
+def $finally_file_outer_boundary(S, pfilecontext :: pfilecontext_tail*, n, porigin) = (pfilecontext.PHASE = FILE_UNIT_RUN /\ pfilecontext.SITE = porigin /\ pfilecontext.OWNER = |S.FRAMES| /\ $file_context_phase_valid(S, pfilecontext) /\ $($file_marker_count(S.TODO, pfilecontext) + $file_frame_marker_count(S.FRAMES, pfilecontext)) = 1 /\ $file_marker_suffix_valid(S.TODO, pfilecontext))
+  -- if pfilecontext.UNIT = (n)
+def $finally_file_outer_boundary(S, pfilecontext :: pfilecontext_tail*, n, porigin) = $finally_file_outer_boundary(S, pfilecontext_tail*, n, porigin)
+  -- if pfilecontext.UNIT =/= (n)
+dec $finally_source_outer_boundary(pstate, nat, porigin) : bool
+def $finally_source_outer_boundary(S, n, porigin) = (pevalcontext.PHASE = UNIT_RUN /\ pevalcontext.SITE = porigin /\ pevalcontext.OWNER = |S.FRAMES| /\ $eval_context_phase_valid(S, pevalcontext) /\ (EVAL_END n) <- S.TODO /\ $($eval_marker_count(S.TODO, n) + $eval_frame_marker_count(S.FRAMES, n)) = 1 /\ $eval_marker_suffix_valid(S.TODO, n, pevalcontext.TAIL))
+  -- if $eval_context_at(S.EVALCONTEXTS, n) = (pevalcontext)
+  -- if $file_binding_at(S.FILEBINDINGS, n) = eps
+def $finally_source_outer_boundary(S, n, porigin) = $finally_file_outer_boundary(S, S.FILECONTEXTS, n, porigin)
+  -- if $eval_context_at(S.EVALCONTEXTS, n) = eps
+  -- if $eval_binding_at(S.EVALBINDINGS, n) = eps
+def $finally_source_outer_boundary(S, n, porigin) = false -- otherwise
+def $finally_outer_origin_valid(S, PORIGIN n pcpath, (PORIGIN n_outer pcpath_outer)) = true
+  -- if $(n > 0 /\ n =/= n_outer)
+  -- if $declaration_entry_site(S.DECLARATIONS, n) = (PORIGIN n_outer pcpath_outer)
+  -- if $finally_source_outer_boundary(S, n, PORIGIN n_outer pcpath_outer)
+
 dec $declaration_history_seed(pstate) : pstate
 ;; Replay authenticates compiler records without invoking today's error handler.
 def $declaration_history_seed(S) = S[.SOURCEPENDING = eps][.CLASSNAMES = eps][.CALLABLES = eps][.CLASSSTATICS = eps][.LINKEDPARENTS = eps][.LINKEDINTERFACES = eps][.DECLARATIONS = eps][.CLASSCONSTANTHISTORY = eps][.CLASSCONSTANTCACHE = eps][.CLASSCONSTANTINIT = eps][.EVENTS = eps][.COMPLETION = NORMAL][.TODO = eps][.ERRORORIGIN = eps][.RECORDEDCOMPILEERROR = eps][.TRACE = eps][.CURRENT = eps][.FRAMES = eps][.EVALCONTEXTS = eps][.FILECONTEXTS = eps][.SILENCES = eps][.CONSTCONTEXT = eps][.DEFAULTCACHE = eps][.ERRORHANDLER = {CALLBACK eps, LEVELS 0}]
