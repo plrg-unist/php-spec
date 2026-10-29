@@ -194,8 +194,8 @@ OB03 releases the retained local FINAL Throwable after cache/reporting while
 buffers remain active/running; child output stays buffered. A child destructor
 throw preserves the first report, emits a fresh unchained fatal and retains the
 existing abandoned C cleanup owners before raw-zoh deactivation. Four originals
-agree exactly, four reached groups pass 169 checks, private strict431 and separate
-affected FINAL fronts 77+33 pass. The original sole Unsupported and later failed
+agree exactly and four reached groups pass 169 checks. Private and actual-tail
+joined strict431 and separate affected FINAL fronts 77+33 pass. The original sole Unsupported and later failed
 attempts retain zero agreement credit. Wider selected-handler/rendering and
 reentrant/abrupt raw-owner teardown remain partial.
 [Pending-release review](coverage/semantics/output-pending-release-review.json).
