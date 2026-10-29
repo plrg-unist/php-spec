@@ -259,6 +259,7 @@ reentrant/abrupt raw-owner teardown remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
+| CLASS154 | Variadic constructor formals through the ordinary binder; native5+1 and exact old2 retained, changed-model validation pending. |
 | I82 | Rebound method-callable Generator factories; source preparation, unrun. |
 | OB04 | Selected error-handler FINAL handling; active validation. |
 | ATTR06 | Required unused owning explicit-wrapper return staging; read-only preparation. |
