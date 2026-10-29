@@ -304,7 +304,12 @@ two occurrences of the same node. The matching `BASE_VALUE` cache is a borrowed
 view of the real result across the active binary continuation and adds no owner;
 other base views retain their existing ownership. Module39's property/array/cell
 owning edges remain unchanged; the existing base-root hook borrows the duplicate
-view. Four native-first sources and 11 separate strict SL
+view. A borrowed or scalar left operand also admits its sole produced right
+object/array temporary. One nonempty-list source predicate preserves this
+authority through AL and SL structuring; real cache and CV owners stay live.
+The [identity receipt review](../../coverage/semantics/identity-produced-right-review.json)
+records the focused regression and affected original. The earlier GC06 cut's
+four native-first sources and 11 separate strict SL
 reached groups cover count 4, resurrection then count 3, pruned origin then
 count 1, and two produced operands. The first author source retains its earlier
 model cut: its protected collections normalize the buffer before the Root-only

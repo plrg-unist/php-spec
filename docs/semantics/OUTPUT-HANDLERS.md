@@ -131,21 +131,27 @@ ownership, post-route release, temporary disablement and valid forged getter
 copies. Final acceptance is recorded in the concise author and independent
 ledgers; original failures and raw observations remain external.
 
-OB02 handles an escaping builtin FINAL Throwable with a scalar message, NULL
-previous and no selected exception handler. The authentic restored callback tail
-retains the real two arguments and one saved drain owner. Throwable construction
+The bounded FINAL fatal path handles an escaping builtin Throwable with a scalar
+message, NULL previous and no selected exception handler. The restored callback
+tail retains the real two arguments and one saved drain owner. Construction
 records the internal callback frame; rethrow retains an earlier stored trace.
-The builtin string cache is filled before existing fatal reporting freezes status
-255. Deactivation clears the live stack, then retires raw zoh owners top first;
-their destructor writes bypass the discarded lower buffers. No FINAL or normal
-failure forwarding is repeated, and the original NORMAL/EXIT completion is not restored.
+The builtin string cache is filled before fatal reporting freezes status 255.
 
-Native drops the pending Throwable before deactivation. This cut admits that
-decrement only when another owner retains it or the existing destructor capability
-is inactive. Effectful final pending cleanup, selected exception handlers,
-previous chains/effectful rendering, late `ob_start` and abrupt deactivation
-cleanup remain required. [OB02 evidence](../../coverage/semantics/output-final-throw-review.json)
-records four exact originals and three reached groups/131 assertions. The original
-90/40-second failures remain zero credit; warmed stage checks separately located
-cold startup cost and the missing internal trace rule. The late owning case
-finishes in 50.47 seconds after warmup under a justified 75-second evaluation cap.
+OB03 then drops the retained local Throwable through ordinary release while the
+buffers remain active/running. `zend_exception_error` has already cleared
+`EG(exception)` before rendering; trace-child destructors see no pending exception
+and their output stays buffered. A null-C child destructor throw uses the existing
+eager bailout's abandoned receiver/release owners, reports its fresh unchained
+fatal and resumes the same finalization stages. Deactivation then clears the live
+stack and releases raw zoh owners top first; their output bypasses the discarded
+buffers. Abandoned-call lookup views add no owners beyond the recorded C bailout zvals.
+The original NORMAL/EXIT completion is not restored after a fatal.
+
+[OB03 evidence](../../coverage/semantics/output-pending-release-review.json)
+records four exact originals, four reached groups/169 checks and separate affected
+FINAL fronts/110 checks. The older
+[OB02 cut](../../coverage/semantics/output-final-throw-review.json) retains four
+originals and three reached groups/131 checks without renewal. Selected exception
+handlers, previous chains/source overrides or effectful rendering, late `ob_start`
+and reentrant/abrupt raw-owner deactivation remain required. The original timeout,
+Unsupported, fixture and interpreter failures keep zero agreement credit.

@@ -6,8 +6,11 @@ dec $api_callback_selected(pstate, papicallback, pcalltarget) : bool
 dec $api_callback_roots(papicallback) : pnode*
 dec $api_callback_nonce(papicallback) : nat?
 dec $api_callback_discard(pstate, papicallback) : pstate
-dec $api_callback_result(papicallback, pshutdownproducer) : ptask
+dec $api_callback_result(papicallback, pshutdownproducer, poperand*) : ptask
 dec $api_callback_producer(pstate, pcalltarget, porigin) : pshutdownproducer
+dec $api_callback_entry_state(pstate, papicallback) : pstate
+dec $api_callback_callsite(papicallback, papiargcursor) : porigin?
+dec $api_callback_callline(papicallback, papiargcursor) : int
 dec $api_cursor_valid(pstate, papiargcursor) : bool
 dec $api_cursor_saved_valid(pstate, papiargcursor) : bool
 dec $api_cursor_warning_valid(pstate, papiargcursor) : bool
@@ -43,6 +46,18 @@ def $handler_method_tag(API_BORROWED_TARGET pshutdownproducer) = true
 def $error_handler_selected(S, pvalue, API_BORROWED_TARGET pshutdownproducer) = $error_handler_selected(S, pvalue, pshutdownproducer.TARGET)
 def $exception_raw_selected(S, pvalue, (parray), API_BORROWED_TARGET pshutdownproducer) = $exception_raw_selected(S, pvalue, (parray), pshutdownproducer.TARGET)
 def $handler_emitter_valid(S, API_BORROWED_TARGET pshutdownproducer) = $handler_emitter_valid(S, pshutdownproducer.TARGET)
+def $exception_selected_valid(S, pexceptioncall) = true
+  -- if pexceptioncall.TARGET = (API_BORROWED_TARGET pshutdownproducer)
+  -- if $throwable_member(S, pexceptioncall.OBJECT)
+  -- if (HOBJECT pexceptioncall.OBJECT) <- S.ALLOCATIONS
+  -- if pshutdownproducer.INTERNAL /\ pshutdownproducer.CLONE = eps
+  -- if $consumer_producer_snapshot(pshutdownproducer)
+  -- if S_history = $api_callback_result_scope(S, API_BORROWED_TARGET pshutdownproducer)
+  -- if $consumer_exception_object(pshutdownproducer.TARGET, pexceptioncall.OBJECT)
+  -- if $exception_raw_selected(S_history, pexceptioncall.CALLBACK, pexceptioncall.RAW, pshutdownproducer.TARGET)
+  -- if $handler_emitter_valid(S_history[.CURRENT = eps][.FRAMES = eps][.CONSTCONTEXT = eps], pshutdownproducer.TARGET)
+  -- if $target_function(S_history, pshutdownproducer.TARGET) = (pfunction)
+  -- if pshutdownproducer.SITE = (pfunction.ORIGIN)
 def $handler_emitter_valid(S, API_METHOD_TARGET papiquery porigin_method ptbytes b_static) = true
   -- if S.TODO = (API_CALLBACK_SEND papiargcursor) :: ptask_tail*
   -- if papiargcursor.CALL = API_ERROR perrorcall
@@ -80,12 +95,16 @@ def $output_guard(S) = S[.COMPLETION = UNSUPPORTED "access through a retired API
 
 def $api_callback_values(S, API_ERROR perrorcall) = $error_handler_values(S, perrorcall)
 def $api_callback_values(S, API_ASSERT passertcall) = $assertion_callback_values(S, passertcall.FAILURE)
+def $api_callback_values(S, API_EXCEPTION pexceptioncall) = [POBJECT pexceptioncall.OBJECT]
 def $api_callback_selected(S, API_ERROR perrorcall, pcalltarget) = ($error_call_valid(S, perrorcall) /\ perrorcall.TARGET = eps /\ S.ERRORHANDLER.CALLBACK = eps /\ $error_handler_selected(S, perrorcall.CALLBACK, pcalltarget) /\ $handler_emitter_valid(S, pcalltarget))
 def $api_callback_selected(S, API_ASSERT passertcall, pcalltarget) = ($assertion_failure_valid(S, passertcall.FAILURE) /\ passertcall.TARGET = eps /\ $exception_raw_selected(S, passertcall.CALLBACK, passertcall.RAW, pcalltarget) /\ $handler_emitter_valid(S, pcalltarget))
+def $api_callback_selected(S, API_EXCEPTION pexceptioncall, pcalltarget) = (pexceptioncall.TARGET = eps /\ $exception_selected_valid(S, pexceptioncall[.TARGET = (pcalltarget)]))
 def $api_callback_roots(API_ERROR perrorcall) = $value_nodes(perrorcall.CALLBACK) ++ $task_nodes(perrorcall.RESUME)
 def $api_callback_roots(API_ASSERT passertcall) = $config_nodes(passertcall.FAILURE.CALL) ++ $instance_roots(passertcall.FAILURE.PENDING)
+def $api_callback_roots(API_EXCEPTION pexceptioncall) = [HOBJECT pexceptioncall.OBJECT]
 def $api_callback_nonce(API_ERROR perrorcall) = $selected_task_nonce(perrorcall.RESUME)
 def $api_callback_nonce(API_ASSERT passertcall) = passertcall.FAILURE.CALL.SELECTION
+def $api_callback_nonce(API_EXCEPTION pexceptioncall) = eps
 def $api_callback_discard(S, API_ERROR perrorcall) = $error_read_discard($error_handler_restore(S, perrorcall.CALLBACK), perrorcall.RESUME)
 ;; THROW_SEARCH has already removed the cursor, so its prepared cells lose
 ;; their only roots. Reuse assert's live flags and supplied-exception policy.
@@ -93,8 +112,15 @@ def $api_callback_discard(S, API_ASSERT passertcall) = $assertion_callback_error
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $throwable_live(S, n)
 def $api_callback_discard(S, papicallback) = S -- otherwise
-def $api_callback_result(API_ERROR perrorcall, pshutdownproducer) = ERROR_HANDLER_RESULT perrorcall[.TARGET = (API_BORROWED_TARGET pshutdownproducer)]
-def $api_callback_result(API_ASSERT passertcall, pshutdownproducer) = ASSERT_CALLBACK_RESULT passertcall[.TARGET = (API_BORROWED_TARGET pshutdownproducer)]
+def $api_callback_result(API_ERROR perrorcall, pshutdownproducer, poperand*) = ERROR_HANDLER_RESULT perrorcall[.TARGET = (API_BORROWED_TARGET pshutdownproducer)]
+def $api_callback_result(API_ASSERT passertcall, pshutdownproducer, poperand*) = ASSERT_CALLBACK_RESULT passertcall[.TARGET = (API_BORROWED_TARGET pshutdownproducer)]
+def $api_callback_result(API_EXCEPTION pexceptioncall, pshutdownproducer, poperand :: eps) = EXCEPTION_HANDLER_RESULT pexceptioncall[.TARGET = (API_BORROWED_TARGET pshutdownproducer)][.SENT = (poperand)][.RECEIVED = (poperand)]
+def $api_callback_entry_state(S, API_EXCEPTION pexceptioncall) = S[.ORIGIN = eps]
+def $api_callback_entry_state(S, papicallback) = S -- otherwise
+def $api_callback_callsite(API_EXCEPTION pexceptioncall, papiargcursor) = eps
+def $api_callback_callsite(papicallback, papiargcursor) = (papiargcursor.SITE) -- otherwise
+def $api_callback_callline(API_EXCEPTION pexceptioncall, papiargcursor) = $(-1)
+def $api_callback_callline(papicallback, papiargcursor) = papiargcursor.LINE -- otherwise
 
 ;; Save only the selected Closure scope/binding metadata. The producer record
 ;; contributes no owner; its readonly history is used after the call releases.
@@ -118,6 +144,10 @@ def $api_cursor_site_valid(S, papiargcursor) = (papiargcursor.SITE = perrorcall.
   -- if papiargcursor.CALL = API_ERROR perrorcall
 def $api_cursor_site_valid(S, papiargcursor) = (papiargcursor.SITE = passertcall.FAILURE.CALL.SITE /\ papiargcursor.LINE = passertcall.FAILURE.CALL.LINE)
   -- if papiargcursor.CALL = API_ASSERT passertcall
+def $api_cursor_site_valid(S, papiargcursor) = (papiargcursor.SITE = pfunction.ORIGIN /\ papiargcursor.LINE = 0)
+  -- if papiargcursor.CALL = API_EXCEPTION pexceptioncall
+  -- if S_history = $api_callback_result_scope(S, API_BORROWED_TARGET papiargcursor.PRODUCER)
+  -- if $target_function(S_history, papiargcursor.TARGET) = (pfunction)
 def $api_cursor_producer_shape(papiargcursor) = (papiargcursor.PRODUCER.TARGET = papiargcursor.TARGET /\ papiargcursor.PRODUCER.SITE = (papiargcursor.SITE) /\ papiargcursor.PRODUCER.INTERNAL /\ papiargcursor.PRODUCER.CLONE = eps /\ $consumer_producer_snapshot(papiargcursor.PRODUCER))
 def $api_cursor_producer_live(S, papiargcursor) = ($api_cursor_producer_shape(papiargcursor) /\ papiargcursor.PRODUCER.SCOPE = $consumer_producer_scope(S, papiargcursor.TARGET) /\ papiargcursor.PRODUCER.BINDING = $consumer_producer_binding(S, papiargcursor.TARGET))
 def $api_cursor_sent_valid(S, pcalltarget, pvalue*, eps, n) = true
@@ -144,6 +174,17 @@ def $api_cursor_saved_valid(S, papiargcursor) = true
   -- if $api_cursor_site_valid(S, papiargcursor)
   -- if papiargcursor.VALUES = $api_callback_values(S, papiargcursor.CALL)
   -- if |papiargcursor.SENT| = papiargcursor.INDEX /\ $(papiargcursor.INDEX <= |papiargcursor.VALUES|)
+  -- if $api_cursor_sent_valid(S_history, papiargcursor.TARGET, papiargcursor.VALUES, papiargcursor.SENT, 0)
+  -- if S.ORIGIN = (papiargcursor.SITE)
+def $api_cursor_saved_valid(S, papiargcursor) = true
+  -- if papiargcursor.CALL = API_EXCEPTION pexceptioncall
+  -- if pexceptioncall.TARGET = eps
+  -- if $api_cursor_producer_shape(papiargcursor)
+  -- if S_history = $api_callback_result_scope(S, API_BORROWED_TARGET papiargcursor.PRODUCER)
+  -- if $exception_selected_valid(S_history, pexceptioncall[.TARGET = (papiargcursor.TARGET)])
+  -- if $api_cursor_site_valid(S, papiargcursor)
+  -- if papiargcursor.VALUES = [POBJECT pexceptioncall.OBJECT]
+  -- if |papiargcursor.SENT| = papiargcursor.INDEX /\ $(papiargcursor.INDEX <= 1)
   -- if $api_cursor_sent_valid(S_history, papiargcursor.TARGET, papiargcursor.VALUES, papiargcursor.SENT, 0)
   -- if S.ORIGIN = (papiargcursor.SITE)
 def $api_cursor_saved_valid(S, papiargcursor) = false -- otherwise
@@ -179,6 +220,22 @@ def $api_cursor_read_discard(S, API_CALLBACK_REF papiargcursor) = S[.TODO = (THR
 def $api_cursor_read_discard(S, ptask) = S[.COMPLETION = UNSUPPORTED "API callback abrupt handler completion"] -- otherwise
 def $call_after_origin(S, API_CALLBACK_SEND papiargcursor) = S[.ORIGIN = (papiargcursor.SITE)]
 def $call_after_origin(S, API_CALLBACK_REF papiargcursor) = S[.ORIGIN = (papiargcursor.SITE)]
+def $exception_warning_resume(API_CALLBACK_SEND papiargcursor) = true
+  -- if papiargcursor.CALL = API_EXCEPTION pexceptioncall
+def $exception_warning_resume(API_CALLBACK_REF papiargcursor) = true
+  -- if papiargcursor.CALL = API_EXCEPTION pexceptioncall
+def $throwable_marker(API_CALLBACK_SEND papiargcursor) = true
+  -- if papiargcursor.CALL = API_EXCEPTION pexceptioncall
+def $throwable_marker(API_CALLBACK_REF papiargcursor) = true
+  -- if papiargcursor.CALL = API_EXCEPTION pexceptioncall
+def $exception_terminal_tail(S, (API_CALLBACK_SEND papiargcursor) :: ptask_tail*) = $api_cursor_saved_valid(S, papiargcursor)
+  -- if papiargcursor.CALL = API_EXCEPTION pexceptioncall
+def $exception_terminal_tail(S, (API_CALLBACK_REF papiargcursor) :: ptask_tail*) = $api_cursor_saved_valid(S, papiargcursor)
+  -- if papiargcursor.CALL = API_EXCEPTION pexceptioncall
+def $eager_fatal_handler_task(S, API_CALLBACK_SEND papiargcursor) = [$eager_fatal_handler(S, pexceptioncall.CALLBACK)]
+  -- if papiargcursor.CALL = API_EXCEPTION pexceptioncall
+def $eager_fatal_handler_task(S, API_CALLBACK_REF papiargcursor) = [$eager_fatal_handler(S, pexceptioncall.CALLBACK)]
+  -- if papiargcursor.CALL = API_EXCEPTION pexceptioncall
 def $error_context_trigger(S, pcallcontext) = (passertcall.FAILURE.CALL)
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = API_CALLBACK_SEND papiargcursor
@@ -205,11 +262,17 @@ def $api_cursor_reference_event(S, papiargcursor, ptbytes) = DIAGNOSTIC_INTERNAL
   -- if papiargcursor.CALL = API_ERROR perrorcall
   -- if papiargcursor.LINE = 0
   -- if $exception_warning_resume(perrorcall.RESUME)
+def $api_cursor_reference_event(S, papiargcursor, ptbytes) = DIAGNOSTIC_INTERNAL "Warning" ptbytes 0
+  -- if papiargcursor.CALL = API_EXCEPTION pexceptioncall
+  -- if papiargcursor.LINE = 0
 def $api_cursor_reference_event(S, papiargcursor, ptbytes) = $error_reference_event(S, ptbytes, papiargcursor.LINE) -- otherwise
 def $api_cursor_deprecated_event(S, papiargcursor, ptbytes) = DIAGNOSTIC_INTERNAL "Deprecated" ptbytes 0
   -- if papiargcursor.CALL = API_ERROR perrorcall
   -- if papiargcursor.LINE = 0
   -- if $exception_warning_resume(perrorcall.RESUME)
+def $api_cursor_deprecated_event(S, papiargcursor, ptbytes) = DIAGNOSTIC_INTERNAL "Deprecated" ptbytes 0
+  -- if papiargcursor.CALL = API_EXCEPTION pexceptioncall
+  -- if papiargcursor.LINE = 0
 def $api_cursor_deprecated_event(S, papiargcursor, ptbytes) = DIAGNOSTIC "Deprecated" ptbytes papiargcursor.LINE -- otherwise
 rule PhpStep/api-callback-send-value: S ~> S[.TODO = (API_CALLBACK_SEND papiargcursor_next) :: ptask_tail*]
   -- if S.TODO = (API_CALLBACK_SEND papiargcursor) :: ptask_tail*
@@ -231,9 +294,13 @@ rule PhpStep/api-callback-reference-ready: S ~> S_cell[.TODO = (API_CALLBACK_SEN
   -- if S_cell = $call_fresh_reference(S, pvalue)
   -- if S_cell.RESULT = REFERENCE n_cell
   -- if papiargcursor_next = papiargcursor[.SENT = papiargcursor.SENT ++ [REFERENCE n_cell]][.INDEX = $(papiargcursor.INDEX + 1)]
-def $api_cursor_enter(S, papiargcursor) = $api_callback_arity($target_after_enter($call_enter(S[.TODO = $api_callback_result(papiargcursor.CALL, papiargcursor.PRODUCER) :: ptask_tail*], pfunction, papiargcursor.SENT, (papiargcursor.SITE), papiargcursor.LINE), API_BORROWED_TARGET papiargcursor.PRODUCER), pfunction, |papiargcursor.VALUES|, (papiargcursor.SITE), papiargcursor.LINE)
+def $api_cursor_enter(S, papiargcursor) = $api_callback_arity($target_after_enter($call_enter(S_entry[.TODO = ptask_result :: ptask_tail*], pfunction, papiargcursor.SENT, porigin_call?, z_call), API_BORROWED_TARGET papiargcursor.PRODUCER), pfunction, |papiargcursor.VALUES|, porigin_call?, z_call)
   -- if S.TODO = (API_CALLBACK_SEND papiargcursor) :: ptask_tail*
   -- if $target_function(S, papiargcursor.TARGET) = (pfunction)
+  -- if ptask_result = $api_callback_result(papiargcursor.CALL, papiargcursor.PRODUCER, papiargcursor.SENT)
+  -- if S_entry = $api_callback_entry_state(S, papiargcursor.CALL)
+  -- if porigin_call? = $api_callback_callsite(papiargcursor.CALL, papiargcursor)
+  -- if z_call = $api_callback_callline(papiargcursor.CALL, papiargcursor)
 def $api_callback_arity(S, pfunction, n, porigin?, z) = S -- if S.COMPLETION =/= NORMAL
 def $api_callback_arity(S, pfunction, n, porigin?, z) = $call_arity_raw(S, pfunction, n, porigin?, z) -- if S.COMPLETION = NORMAL
 rule PhpStep/api-callback-enter: S ~> $api_cursor_enter(S, papiargcursor)
@@ -245,9 +312,10 @@ def $throwable_continuation(S, S_next) = S_next
   -- if $call_task_valid(S, API_CALLBACK_SEND papiargcursor)
   -- if papiargcursor.INDEX = |papiargcursor.VALUES|
   -- if S_next.FRAMES = pframe :: S.FRAMES
-  -- if ptask_result = $api_callback_result(papiargcursor.CALL, papiargcursor.PRODUCER)
+  -- if ptask_result = $api_callback_result(papiargcursor.CALL, papiargcursor.PRODUCER, papiargcursor.SENT)
+  -- if S_entry = $api_callback_entry_state(S, papiargcursor.CALL)
   -- if pframe.TODO = ptask_result :: ptask_tail*
-  -- if pframe.CONTEXT = S.CURRENT /\ pframe.ORIGIN = S.ORIGIN /\ pframe.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pframe.CONTEXT = S.CURRENT /\ pframe.ORIGIN = S_entry.ORIGIN /\ pframe.CONSTCONTEXT = S.CONSTCONTEXT
   -- if pframe.SILENCES = S.SILENCES /\ pframe.BORROWEDREAD = S.BORROWEDREAD /\ pframe.OBJECTCAST = S.OBJECTCAST
 def $throwable_same_frame_continuation(S, S_next, ptask_old*) = S_next[.TODO = ptask_tail*]
   -- if S.TODO = (THROW_SEARCH n) :: (API_CALLBACK_SEND papiargcursor) :: ptask_tail*
@@ -266,7 +334,7 @@ def $throwable_same_frame_continuation(S, S_next, ptask_old*) = S_next[.TODO = p
   -- if S_next.TODO = (CONFIG_INVOKE passertcall.FAILURE.CALL) :: ptask_tail*
   -- if S_next.COMPLETION = THROWING n_next
 
-;; Only selected error/assert callbacks use this phase. Other API consumers
+;; Selected error/assert/exception callbacks use this phase. Other API consumers
 ;; continue to refuse Deprecated before they claim a VM-style warning order.
 def $error_call_valid(S, perrorcall) = true
   -- if S.ORIGIN = (perrorcall.SITE)

@@ -105,7 +105,8 @@ def $typed_parameter_conversion(S, psparam, pvalue) = $typed_parameter_reference
 def $typed_parameter_value(S, pfunction, n, pvalue) = $typed_parameter_apply(S, ptypeconversion, $default_parameter_line(S, pfunction.ORIGIN, n))
   -- if ptypeconversion = $typed_parameter_conversion(S, pfunction.SIGNATURE.PARAMETERS[n], pvalue)
   -- if ptypeconversion =/= TYPEREJECT
-def $typed_parameter_value(S, pfunction, n, pvalue) = $throw_scalar(S, "TypeError", $call_function_name(S, pfunction) ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ psparam.NAME ++ $ptascii(") must be of type ") ++ $pttypename(psparam.TYPE) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given") ++ $wrapper_called_suffix(S, pcallcontext), $default_parameter_line(S, pfunction.ORIGIN, n))
+;; Argument TypeErrors format the whole callable name through one C string.
+def $typed_parameter_value(S, pfunction, n, pvalue) = $throw_scalar(S, "TypeError", $c_string($call_function_name(S, pfunction)) ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ psparam.NAME ++ $ptascii(") must be of type ") ++ $pttypename(psparam.TYPE) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given") ++ $wrapper_called_suffix(S, pcallcontext), $default_parameter_line(S, pfunction.ORIGIN, n))
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
   -- if $typed_parameter_conversion(S, psparam, pvalue) = TYPEREJECT
   -- if S.CURRENT = (pcallcontext)

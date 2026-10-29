@@ -261,20 +261,26 @@ parameters/types, nonpublic constructors and broader lifecycle interactions rema
 required at that cut. The [constructor review](../../coverage/semantics/anonymous-constructors-review.json)
 separates original-source agreement, actual call/unwind states and pure receipt queries.
 
-Unit0 parentless anonymous classes now accept one or two direct positional/named
-`new` arguments. Public by-value constructors may have up to two required
-untyped or `int` parameters; a class without `__construct` evaluates positional
-arguments and ignores their values. Compilation publishes the anonymous class
+Anonymous classes accept finite sequences of direct positional/named `new`
+arguments and unpromoted by-value constructor parameters. The ordinary signature
+compiler validates their types, defaults and requiredness; the ordinary binder
+completes named holes before typed reception. A class without `__construct`
+evaluates positional arguments and ignores their values. The compiled identity
+precedes execution; a deferred class links and publishes at its first `new`
 before argument expressions, then uses the ordinary method or no-constructor
 send tasks. An unknown named argument stops before the next value expression;
 typed reception errors leave the caller destination unchanged. The
 [argument review](../../coverage/semantics/anonymous-constructor-arguments-review.json)
-records seven native-backed sources, one independent weak int-coercion source,
-and 107 source-reached premises across constructor and no-constructor tasks.
-Dynamic-source anonymous sites with arguments, constructor by-reference/default/
-variadic/promoted or nonpublic forms, unpacking and wider object lifetimes remain
-partial. Three explicit source controls confirm Unsupported for three direct
-arguments, a by-reference constructor formal and an unpacked send.
+retains its seven native-backed sources, independent weak int-coercion source and
+107 source-reached premises at the earlier two-parameter/send cut.
+The [finite-arity review](../../coverage/semantics/anonymous-constructor-arity-review.json)
+records root and successful include/eval sites, inherited constructors, surplus
+positional sends, named-default reception retry and pruned versus eager invalid
+defaults. Constructor by-reference/variadic/promoted or nonpublic forms,
+unpacking and wider object lifetimes remain partial.
+Argument TypeErrors format the whole callable name as one C string; constructor
+missing-arity errors format the lexical declaring class and member separately.
+Stored class names and `::class` values keep their complete bytes.
 
 Unit0 anonymous classes may now extend an ordinary named class through the
 ordinary class-reference forms. Parent declarations follow the normal compiler/linker,
@@ -357,9 +363,9 @@ history and absence of pre-name diagnostics remain required.
 
 The placement extension reuses the same compiler route for later-unit expressions,
 including returns, nested and call-argument NEW, and the existing ordinary named
-and static no-capture Closure factories. Up to two ordinary positional/named
-constructor arguments use the existing binder; body/default and argument-mode
-bounds are unchanged. Factory compilation records class identities before calls;
+and static no-capture Closure factories. Finite direct positional/named
+constructor arguments use the ordinary binder; wider bodies, factories, captures
+and argument modes retain their documented bounds. Factory compilation records class identities before calls;
 first-NEW linking precedes argument effects, and successful publication survives a
 throwing send. Later visits allocate fresh objects of that same class. Ordinary
 named declarations inside admitted factories consume their deferred keys in actual

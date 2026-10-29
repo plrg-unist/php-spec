@@ -1755,3 +1755,58 @@ remains Unsupported. Constructed first-key and graph-rejection
 checks do not establish extra native source agreements or broader GC coverage.
 All held boundaries, including low-precision DEFINE-name NaN and owned-NUL release,
 remain untouched. Original A66/A67/A68 cuts retain their scope and identities.
+
+The [scalar Generator increment](../../coverage/semantics/config-generator-scalar-review.json)
+reuses the same flat scalar policy for live VALUE sends and copied-item history on
+the existing non-reference CONFIG Generator routes. NULL, bool, int and float
+snapshots survive later resumes and source/callee rebinding. Terminal effects and
+ordinary DATA/INPUT cleanup still precede INI_SET reception: strict option errors,
+weak NULL deprecation callbacks and value conversion using live precision reuse the
+existing API helpers. Historical scalar-call authority remains valid after the
+Generator retires, including handler return or supplied throw.
+
+Producer, key, initial-state, two-send and owner policies are unchanged. Reference
+yields and owning argument buffers remain separate; the existing owning RETURN
+storage path keeps its string-cache/integer-key history rule. Wider object/effectful
+conversion and all paused boundaries remain outside this increment. The earlier
+Generator reviews retain their original string-only cuts without renewed credit.
+
+The [reference-scalar Generator increment](../../coverage/semantics/config-generator-reference-scalar-review.json)
+admits named zero-argument BYREF Generator CVs with an outside Generator owner.
+A genuine REFCELL cache is read through the ordinary-reference reader, requiring
+live registered nondebt storage without property, coercion or parameter backing.
+The scalar value is copied into a DIRECT send before the next resume; later cell
+writes and live aliases cannot alter earlier argument snapshots. The selected
+INI_SET target, terminal effects, DATA retirement and existing API reception keep
+their ordinary order, including a saved terminal Throwable that cancels reception.
+
+Four originals agree exactly; two source-reached recipes pass 342 physical
+conditions (337 if-premises and five raw transitions), including 15 refusal checks
+over 12 constructed projections. Private strict431 passes after a two-premise DSL
+binding correction; its first compile failure and the original Unsupported retain
+zero credit. Typed/backed/released/debt cells, BYREF VALUE/Notice caches, owning
+sends, temporary or Aggregate reference producers and last-DATA reference cleanup
+remain separate. Earlier accepted cuts and all paused boundaries are unchanged.
+
+The [sole-DATA reference-cell increment](../../coverage/semantics/config-generator-reference-sole-data-review.json)
+admits a CLOSED named BYREF Generator whose final cached local cell is ordinary,
+live, scalar and its only child. The cell has one Generator owner; a direct CV
+may already have been rebound, leaving Iterator DATA as the final Generator
+owner. Final key is integer and RETURN is absent or implicit NULL. The normal
+release enters the existing355 storage pin: the cell retires while the
+Generator remains pinned, then both are dead before INI_SET reception. A weak
+NULL-option callback sees that death and still uses the copied arguments and
+selected setter. Quiet terminal throw uses the existing nonoperational release
+and driver pruning after the CONFIG marker is popped, retaining the same
+supplied Throwable through catch. Retired CONFIG authority checks source and
+Generator shape with a bounded cell identity; it never rereads a dead cell.
+
+Four originals agree exactly, strict431 passes, and 318 reached conditions
+(315 premises, three raw transitions) check live/retired ownership, source,
+pending cleanup, API and five constructed refusals. The first throw fixture
+wrongly expected a storage pin on a quiet cleanup path and remains zero credit.
+The source wrappers repeated four frozen native originals; those records add no
+coverage. Generic355, schema, manifest and earlier accepted tests are unchanged.
+Typed/backed or owning cells, noninteger final keys, owning RETURN, temporary
+or Aggregate reference producers, effectful cleanup and wider lifetimes remain
+partial.

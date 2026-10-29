@@ -73,6 +73,9 @@ test-semantics: build
 	python3 tests/semantics/output_final_throw_sources.py
 	python3 tests/semantics/output_final_throw_protocol.py
 	python3 tests/semantics/output_final_throw_review_protocol.py
+	python3 tests/semantics/output_pending_release_sources.py
+	python3 tests/semantics/output_pending_release_protocol.py
+	python3 tests/semantics/output_pending_release_review_protocol.py
 	python3 tests/semantics/request_provider.py
 	python3 tests/semantics/evidence.py
 	python3 tests/semantics/source_occurrences.py
@@ -81,6 +84,7 @@ test-semantics: build
 	python3 tests/semantics/truth_expressions.py
 	python3 tests/semantics/comparison_compiler.py
 	python3 tests/semantics/comparison.py
+	python3 tests/semantics/gc_identity_source.py
 	python3 tests/semantics/reference_wrappers.py
 	python3 tests/semantics/write_fetch.py
 	python3 tests/semantics/incdec.py
@@ -172,6 +176,21 @@ test-semantics: build
 		python3 tests/semantics/config_iterator_input_finalizer_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
 		python3 tests/semantics/config_iterator_input_finalizer_review_sources.py --output "$$out/peer-source" && \
 		python3 tests/semantics/config_iterator_input_finalizer_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a71-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_generator_scalar_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_generator_scalar_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/config_generator_scalar_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_generator_scalar_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a72-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_generator_reference_scalar_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_generator_reference_scalar_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/config_generator_reference_scalar_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_generator_reference_scalar_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a73-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_generator_reference_sole_data_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_generator_reference_sole_data_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/config_generator_reference_closed_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_generator_reference_closed_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
 	python3 tests/semantics/globals_compiler.py

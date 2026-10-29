@@ -1111,6 +1111,16 @@ rule PhpStep/scoped-name-type: S ~> $throw_scalar(S_name, "Error", $ptascii("Met
   -- if S_name.RESULT = KNOWN pvalue
   -- if ~$method_string(pvalue)
 
+;; Missing-arity diagnostics format the lexical class and member separately.
+def $missing_argument_function_name(S, pfunction) = $c_string(pclassdesc.NAME) ++ $ptascii("::") ++ pmethoddesc.NAME
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = METHOD_TARGET n pfunction.ORIGIN
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION = pfunction
+  -- if $ptlc(pmethoddesc.NAME) = $ptascii("__construct")
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+
 dec $constructor_start(pstate, preqbytes, phpType7*, int) : pstate
 dec $constructor_start_ready(pstate, preqbytes, phpType7*, int) : pstate
 dec $constructor_failed_object(pstate, nat) : pstate

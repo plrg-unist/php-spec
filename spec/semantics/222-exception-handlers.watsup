@@ -134,6 +134,7 @@ def $exception_selected_valid(S, pexceptioncall) = true
   -- if $throwable_member(S, pexceptioncall.OBJECT)
   -- if (HOBJECT pexceptioncall.OBJECT) <- S.ALLOCATIONS
   -- if pexceptioncall.TARGET = (pcalltarget)
+  -- if ~$api_borrowed_target(pcalltarget)
   -- if $consumer_exception_object(pcalltarget, pexceptioncall.OBJECT)
   -- if $exception_raw_selected(S, pexceptioncall.CALLBACK, pexceptioncall.RAW, pcalltarget)
   -- if $handler_emitter_valid(S[.CURRENT = eps][.FRAMES = eps][.CONSTCONTEXT = eps], pcalltarget)
@@ -211,13 +212,14 @@ def $exception_handler_enter(S, pexceptioncall, poperand) = $call_arity($target_
   -- if S.TODO = ptask :: ptask_tail*
   -- if pexceptioncall.TARGET = (pcalltarget)
   -- if $target_function(S, pcalltarget) = (pfunction)
-rule PhpStep/exception-handler-enter-value: S ~> $exception_handler_enter(S, pexceptioncall[.TARGET = (pcalltarget)], KNOWN (POBJECT pexceptioncall.OBJECT))
+;; The selected callback uses zend_call_function: Deprecated runs before its
+;; argument is copied or wrapped for a by-reference formal.
+rule PhpStep/exception-handler-select: S ~> $api_callback_begin(S[.ORIGIN = (pfunction.ORIGIN)], API_EXCEPTION pexceptioncall, pcalltarget, pfunction, [POBJECT pexceptioncall.OBJECT], pfunction.ORIGIN, 0)
   -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
   -- if $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall)
   -- if ~$exception_deprecated_raw(S, pexceptioncall.CALLBACK)
   -- if $error_handler_target(S, pexceptioncall.CALLBACK) = (pcalltarget)
   -- if $target_function(S, pcalltarget) = (pfunction)
-  -- if ~$call_parameter_reference(S, pcalltarget, 0)
 rule PhpStep/exception-handler-unknown: S ~> S[.COMPLETION = UNSUPPORTED "exception-handler callback outside admitted source callable forms"]
   -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
   -- if $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall)
@@ -249,14 +251,6 @@ def $exception_reference_warning(S, pexceptioncall) = pfunction.NAME ++ $ptascii
   -- if pexceptioncall.TARGET = (pcalltarget)
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, 0) = (psparam)
-rule PhpStep/exception-handler-reference-warning: S ~> $deprecated_api_reference(S[.ORIGIN = (pfunction.ORIGIN)], pfunction, $exception_reference_warning(S, pexceptioncall_entered), 0, DIAGNOSTIC_INTERNAL "Warning" ($exception_reference_warning(S, pexceptioncall_entered)) 0, EXCEPTION_HANDLER_ENTER pexceptioncall_entered)
-  -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
-  -- if $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall)
-  -- if ~$exception_deprecated_raw(S, pexceptioncall.CALLBACK)
-  -- if $error_handler_target(S, pexceptioncall.CALLBACK) = (pcalltarget)
-  -- if $target_function(S, pcalltarget) = (pfunction)
-  -- if $call_parameter_reference(S, pcalltarget, 0)
-  -- if pexceptioncall_entered = pexceptioncall[.TARGET = (pcalltarget)]
 rule PhpStep/exception-handler-enter-reference: S ~> $exception_handler_enter(S_cell, pexceptioncall, S_cell.RESULT)
   -- if S.TODO = (EXCEPTION_HANDLER_ENTER pexceptioncall) :: ptask_tail*
   -- if $exception_enter_valid(S, pexceptioncall)

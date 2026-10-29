@@ -1,0 +1,140 @@
+{
+  "milestone": "A72 scalar CONFIG Generator reference-cell sends",
+  "status": "integrated after independent actual-tail review and joined validation",
+  "scope": {
+    "consumer": "Existing INI_SET unpack from a named zero-argument BYREF Generator in a direct CV with an outside Generator owner.",
+    "behavior": "The genuine live ordinary REFCELL is read without coercion, then copied into a DIRECT scalar argument before the next resume. Live aliases and later cell writes remain distinct from saved sends. Selected callee/input history, terminal effects, DATA retirement, API reception and supplied-Throwable cleanup retain their existing order.",
+    "limits": "Flat NULL/bool/int/float and checked string values only. Typed/property/coercion/parameter-backed, debt or released cells, BYREF VALUE/Notice caches, owning sends, temporary or Aggregate reference producers and last-DATA reference cleanup remain separate. Initial-phase, key, two-send and owner limits remain; no wider Generator or core closure claim."
+  },
+  "implementation": {
+    "modules": [
+      "spec/semantics/423-config-generator-unpack.watsup"
+    ],
+    "base": "18860706d717ed94f9886fe53bff26ca45472268",
+    "source_freeze": "6d57d68668eb97593b7eaf58361d6b0484d24201",
+    "runtime_revision": "6fddaff69003164cae91e963a4b00aa3ed99b26d",
+    "runtime_sha256": "ac187f2d34f1c03268e1293bba1d7f8507ddd651a45f35dfdf66474a0201d170",
+    "state_freeze": "511ecdc0a8a9e08c58c9d7746f2b78b041236560",
+    "change": "Named direct-CV BYREF source admission plus a mutually exclusive VALUE/nonbyref or REFCELL/byref scalar reader. The latter reuses ordinary_reference_value from420; no426 dependency, API/schema/root/owner/discard changes or special-cased source spelling.",
+    "engine": "Pinned PHP8.5.10 Zend/zend_vm_def.h ZEND_YIELD stores the reference cache; ZEND_SEND_UNPACK calls ZVAL_DEREF then copies before move_forward. zend_generators.c zend_generator_iterator_get_data returns that cache; iterator DATA destruction precedes API reception."
+  },
+  "validation": {
+    "target": "PHP8.5.10 CLI NTS64, sole project-local .tools/php/bin/php; tests/semantics/profile.json, LC_ALL=C/TZ=UTC. Checked frontend and SL/cache-off/determinism-on model.",
+    "execution": "Native4 and original old gate serial CPU3; corrected private strict/source/state serial CPU2. Inputs and tested HEAD stable. All successful actors exit0; no timeout/interruption/group survivor. Source internal240/process270, state inner300/outer360, strict180 seconds.",
+    "native": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-scalars-72/native-source-freeze/report.json",
+      "sha256": "d64edbecd19842ba8d0ee408936712ba08cb148616f169d6e1278508e1e523c1",
+      "revision": "6d57d68668eb97593b7eaf58361d6b0484d24201",
+      "originals": 4,
+      "agreement_credit": 0,
+      "result": "Each original equals frozen CASES and independently reviewed EXPECTED bytes; stdout exact, stderr empty, exit0. Frozen bytes/paths/streams are reused without replay."
+    },
+    "old_refusal": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-scalars-72/old-boundary-source-freeze/report.json",
+      "sha256": "e0736329d142cefae2bc5f53bf247b984a30e1f0558d27d2d36fd5fe9fc6a1c8",
+      "revision": "6d57d68668eb97593b7eaf58361d6b0484d24201",
+      "executed": 1,
+      "reason": "CONFIG Traversable unpack outside initialized Iterator domain",
+      "prefix": "B;",
+      "agreement_credit": 0
+    },
+    "original_compile_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-scalars-72/candidate-511ecdc0a/strict/report.json",
+      "sha256": "60adabce52723b28b069f24b87adcfa637cd78f38cbb9cc11943eae4d0a6db67",
+      "revision": "511ecdc0a8a9e08c58c9d7746f2b78b041236560",
+      "agreement_credit": 0,
+      "cause": "SpecTec rejected a pvalue binding inside a conjunction in the new reader before semantic execution. Two ordered-premise splits at6fddaff69 fix the DSL staging; no source/state ran on the failed cut."
+    },
+    "private_strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-scalars-72/candidate-6fddaff69/strict/report.json",
+      "sha256": "86620543d93b977e8831de129bf7d50eff9e3e96ad1db8ab2874e82b3ab9470a",
+      "revision": "6fddaff69003164cae91e963a4b00aa3ed99b26d",
+      "modules": 431,
+      "seconds": 12.7698495388031
+    },
+    "sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-scalars-72/candidate-6fddaff69/source/report.json",
+      "sha256": "0340bbf5f9efa6744922b195d5d021481b156b433a5e54acf5bd8b51def64c04",
+      "revision": "6fddaff69003164cae91e963a4b00aa3ed99b26d",
+      "agreements": 4,
+      "rows": [
+        {
+          "id": "config-generator-reference-scalar-strict-value-matrix",
+          "source_sha256": "3d29ea244d4a4e03240538e767e0046c978da5a3b1fe5df59d4a2bfc346a2008",
+          "seconds": 50.6387882232666
+        },
+        {
+          "id": "config-generator-reference-scalar-float-live-alias-snapshot",
+          "source_sha256": "27d1c67dbf0d0eb0308fd604118142d48b7aa3086a2896fa84ff1d4df413e1b8",
+          "seconds": 31.116185188293457
+        },
+        {
+          "id": "config-generator-reference-scalar-copies-before-later-cell-writes",
+          "source_sha256": "2fddd954e90fb57c4ac2a5eb336d6ace30f7f5c2745b60cd82d068f9280f58ff",
+          "seconds": 31.95961856842041
+        },
+        {
+          "id": "config-generator-reference-scalar-saved-terminal-throw",
+          "source_sha256": "ff2bc7726745e881fadadc0c9805bf6bac7b7231cb98ff9ed5ded498ceb25413",
+          "seconds": 33.193904876708984
+        }
+      ]
+    },
+    "states": {
+      "conditions": 342,
+      "if_premises": 337,
+      "raw_steps": 5,
+      "derived_controls": "15 refusal assertions across12 constructed projections are included in342, with zero additional source agreement credit.",
+      "author": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-scalars-72/candidate-6fddaff69/state-author/report.json",
+        "sha256": "fdb3196999f25dbc0e52a5b3fd3f003f0ff6a1d7376a776b845af73a87ecfedf",
+        "revision": "6fddaff69003164cae91e963a4b00aa3ed99b26d",
+        "conditions": 186,
+        "raw_steps": 3,
+        "seconds": 40.07297873497009
+      },
+      "peer": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-scalars-72/candidate-6fddaff69/state-peer/report.json",
+        "sha256": "beda925d47514e06e31676f361a91f3b8c0f47c6c672294f5210b393e2cfe81c",
+        "revision": "6fddaff69003164cae91e963a4b00aa3ed99b26d",
+        "conditions": 156,
+        "raw_steps": 2,
+        "seconds": 45.65604901313782
+      },
+      "coverage": "Actual first and second REFCELL caches, ordinary source/cell authority, DIRECT copies before later writes, selected callee/input rebinding, live float alias, terminal precision, DATA owner removal before API, outside-holder weak death and budget split. Owning/typed/wider phase and last-DATA reference cases gain no source credit."
+    },
+    "review": "Independent literal/EXPECTED, production, reached-fixture/raw and test-reliability review by config71_recover_review. No accepted A71/A70 source, state or native replay."
+  },
+  "recovery": {
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-scalars-72",
+    "raw_archive": {
+      "file": "raw.tar",
+      "sha256": "f0e41dddc1d19ddda5536ee49219207f9d0daa8cdcc272518399cde74fde4c16",
+      "bytes": 2140160,
+      "files": 107
+    },
+    "manifest_sha256": "4f3e03c03ed940a0c29955df358f4cb3f000e7b1fb14cc9f8b1a4b88cd160079",
+    "private_branch": "semantics/config-generator-reference-scalars-72",
+    "commands": [
+      "python3 tests/semantics/config_generator_reference_scalar_sources.py --output OUT/author-source",
+      "python3 tests/semantics/config_generator_reference_scalar_state.py --source-report OUT/author-source/report.json --output OUT/author-state",
+      "python3 tests/semantics/config_generator_reference_scalar_review_sources.py --output OUT/peer-source",
+      "python3 tests/semantics/config_generator_reference_scalar_review_state.py --source-report OUT/peer-source/report.json --output OUT/peer-state"
+    ],
+    "notes": "Raw archive contains originals, streams, reports, recorded drivers and checked fixtures; no executables/providers. Extract externally; original tested paths/cuts remain historical. Project entrypoints remain self-contained."
+  },
+  "integration": {
+    "status": "actual-tail composition independently cleared; sole joined strict431 passed",
+    "base": "984ef18aad5cec2c6c87b916ce03d14ce741406f",
+    "composition": "149588a8fe56ed31edd675756cc0c7a646f6599c",
+    "joined_strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-scalars-72/joined-149588a8f/report.json",
+      "sha256": "5cefbedd6044f54443ebb1e86455d538fb1a0e8d025984145cabfb09f9ca979f",
+      "revision": "149588a8fe56ed31edd675756cc0c7a646f6599c",
+      "modules": 431,
+      "seconds": 14.807746887207031
+    },
+    "compatibility": "Runtime423 and source/state fixtures match private6fdd; schema, pstate and ordered manifest match current parent. Existing producer/key/typed/owning/last-DATA boundaries remain. Source/native freeze6d57 and state-fixture freeze511 keep their identities; successful private source4/state342/strict431 validations remain at6fdd. The original511 compile failure retains zero credit. No accepted A71/A70 source, state or native replay.",
+    "review": "Independent actual-parent semantic seams, docs/inventory union and joined compiler review by config71_recover_review."
+  }
+}

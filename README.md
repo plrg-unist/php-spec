@@ -239,10 +239,11 @@ destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)
 records the bounded normal cut. [OB02](coverage/semantics/output-final-throw-review.json)
 adds builtin FINAL throws with scalar messages, NULL previous and no selected
 exception handler: stored traces and the string cache precede fatal reporting,
-then inactive buffers release raw owners
-without forwarding bytes. Effectful final pending-Throwable release, selected
-exception handlers, wider rendering/cleanup throws, other byte producers and
-buffered stdout diagnostics remain dependencies.
+then [OB03](coverage/semantics/output-pending-release-review.json) releases the
+retained local Throwable while buffers remain active/running. Trace-child cleanup
+and a fresh secondary fatal precede inactive raw-owner release; buffered bytes
+are discarded. Selected exception handlers, wider rendering and deactivation
+cleanup, other byte producers and buffered stdout diagnostics remain dependencies.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -697,6 +698,29 @@ reception with its genuine producer trace and preserved assignment/identity,
 then permits saved-setter recovery. Native3/source3, strict413 and 467 original
 state conditions pass (523 physical, 56 setup), with no retry. The initial
 Unsupported comparison remains zero; wider caches, producers and lifetimes remain partial.
+
+[Scalar Generator CONFIG sends](coverage/semantics/config-generator-scalar-review.json)
+now copy NULL/bool/int/float values through the existing by-value Generator routes.
+Later resumes cannot change earlier sends; terminal effects and DATA/INPUT cleanup
+precede INI_SET conversion, strict errors and NULL deprecation handlers. Live API
+precision controls float conversion. Reference yields, owning argument buffers and
+wider producer/RETURN-storage lifetimes retain their existing limits.
+
+[Reference-scalar Generator CONFIG sends](coverage/semantics/config-generator-reference-scalar-review.json)
+now copy ordinary live reference-cell scalars from named zero-argument Generator
+CVs. Later cell writes and live aliases stay distinct from saved DIRECT arguments;
+terminal effects and DATA retirement precede reception through the selected setter.
+The Generator keeps an outside owner. Typed/backed cells, owning sends, temporary
+or Aggregate reference producers and wider last-DATA reference retirement remain partial.
+
+[Sole-DATA reference Generator cleanup](coverage/semantics/config-generator-reference-sole-data-review.json)
+now retires a CLOSED Generator whose last cached child is one ordinary scalar
+reference cell from a local yield. Its source CV may be replaced before the
+last DATA release. The existing storage pin drops that cell before INI_SET
+reception; quiet terminal throw prunes it before catch. Four new sources agree
+with PHP, and reached checks cover the physical cell/Generator deaths and the
+later NULL-option handler. Typed/backed or owning cells and wider producers
+remain partial.
 
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
@@ -3668,6 +3692,11 @@ strict SL groups pass 330 checks at separate cuts. WeakMap callbacks, worker,
 residual, reentry and wider operand caches remain partial. See the
 [claimed callback review](coverage/semantics/gc-materialized-claimed-callback-review.json).
 
+Identity cleanup also preserves a sole produced right object/array temporary
+when the left operand is borrowed or scalar. Its source predicate agrees in
+AL and SL, retaining real cache and CV owners through release. See the
+[identity receipt review](coverage/semantics/identity-produced-right-review.json).
+
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
 reuse only when destructor preparation leaves the state identical.
@@ -4323,9 +4352,14 @@ eager; invalid/cyclic paths, reached callbacks and wider layouts remain partial.
 [Linked-base review](coverage/semantics/throwable-base-previous-comparison-review.json).
 [Captured-Throwable review](coverage/semantics/throwable-captured-comparison-review.json).
 Visited comparison also admits ordinary method declarations on supported
-initialized public field layouts, without invoking those methods. Implicit
-Stringable/interfaces, inheritance, hooks and wider layouts retain their limits.
+initialized public field layouts, including locally authenticated source and
+implicit `Stringable` interfaces and finite authenticated parent paths,
+without invoking their methods. Inherited overrides keep physical slot order;
+aliases, COW and cached fields retain their existing owners. Builtin parents,
+hooks, readonly state and wider layouts/lifetimes retain their limits.
 [Method-image review](coverage/semantics/throwable-trace-methods-comparison-review.json).
+[Interface-image review](coverage/semantics/throwable-trace-interfaces-comparison-review.json).
+[Inherited-image review](coverage/semantics/throwable-trace-inheritance-comparison-review.json).
 Builtin `#[NoDiscard]` now validates bounded declarations and warns on unused
 ordinary source calls after sends and named defaults, before reception or body.
 Handlers preserve selected arguments, references, receiver ownership and VM
@@ -4340,8 +4374,12 @@ and receivers survive handlers. Selected error-handler and `assert` callbacks
 now warn at the internal API phase before argument copies and by-reference
 warnings. Their borrowed selected target and
 early-throw cleanup are covered by ten native-first originals and four reached
-fronts; wider API consumers remain partial. See the [VM review](coverage/semantics/builtin-deprecated-review.json)
-and [API review](coverage/semantics/builtin-deprecated-api-review.json).
+fronts. Selected exception handlers now use the same early phase with a moved
+registry owner, original Throwable retention, fresh by-reference cells and
+terminal cleanup; nine new native-first originals and four reached fronts cover
+this slice. Wider API consumers remain partial. See the [VM review](coverage/semantics/builtin-deprecated-review.json),
+[error/assert API review](coverage/semantics/builtin-deprecated-api-review.json) and
+[exception API review](coverage/semantics/builtin-deprecated-exception-api-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The
@@ -4400,11 +4438,14 @@ untyped constructors now initialize defaults before the body, ignore automatic
 return values and preserve shared Throwable identity through ordinary unwind.
 [Four further originals](coverage/semantics/anonymous-constructors-review.json)
 also check explicit calls, factory effects and constructor `finally` blocks.
-One or two direct positional/named anonymous `new` arguments now use ordinary
-constructor binding, including required untyped or `int` formals; constructorless
-classes evaluate positional arguments and ignore their values. [The argument
+Finite direct positional/named anonymous `new` arguments now use ordinary
+constructor signatures and binding, including supported parameter types and
+defaults; constructorless classes evaluate positional arguments and ignore their values. [The argument
 review](coverage/semantics/anonymous-constructor-arguments-review.json) records
-seven original source agreements, an independent coercion case and reached tasks.
+seven original source agreements, an independent coercion case and reached tasks
+at its earlier cut. [Finite constructor arity](coverage/semantics/anonymous-constructor-arity-review.json)
+extends root and successful include/eval sites, including inherited calls,
+named-hole reception retry and eager default diagnostics.
 Unit0 anonymous classes may also extend an ordinary Base.
 Inherited or overridden constructors see Base property defaults; inherited
 methods preserve lexical and called scopes, and private Base slots remain
@@ -4441,7 +4482,7 @@ imports, frozen source-entry parent bindings and compiler-derived request counte
 Ordinary loader callbacks preserve retained loads, retry and unit-specific causes.
 [Dynamic dependency review](coverage/semantics/anonymous-dynamic-dependencies-review.json).
 Later units also support returned/nested/call-argument sites and existing named or
-static Closure factories, with up to two ordinary positional/named constructor
+static Closure factories, with finite direct positional/named constructor
 arguments. Compiler-skipped RHS sites consume no key; compiled unvisited sites do.
 [Placement review](coverage/semantics/anonymous-dynamic-placements-review.json).
 Anonymous sites may share successful units with ordinary traits and enums.

@@ -34,6 +34,13 @@ prior histories, worker/residual/reentry paths, hooks, active contexts and wider
 cache lifetimes remain partial.
 [GC06 review](coverage/semantics/gc-materialized-claimed-callback-review.json).
 
+Immediate identity cleanup now validates a sole produced right object/array
+temporary with a borrowed or scalar left operand in both AL and SL. Fourteen
+focused conditions pass in each mode, including strict compilation of the actual
+431-module tail; the affected cached-enum Stringable original matches PHP again.
+Existing owners and collection policy are unchanged.
+[Identity receipt review](coverage/semantics/identity-produced-right-review.json).
+
 Earlier [I75](coverage/semantics/generator-keyword-creation-review.json),
 [I76](coverage/semantics/generator-keyword-chain-review.json),
 [I77](coverage/semantics/generator-keyword-receiver-review.json),
@@ -41,23 +48,25 @@ Earlier [I75](coverage/semantics/generator-keyword-creation-review.json),
 [I79](coverage/semantics/generator-closure-method-review.json) reviews retain
 their distinct scope, counts and raw failures.
 
-A69 keeps finite CFG-admitted ARRAY and ordinary non-Stringable INSTANCE arguments
-in real normalized INI_SET call slots through next and DATA/INPUT retirement.
-Array COW preserves table snapshots; embedded aliases and object identity stay
-shared. API TraceArgs may retain values until the final Error or outside owner
-is released. Exact owning key/send Error producers preserve CURRENT, DATA/INPUT,
-then prefix cleanup. Typed sources, scalar binding and held boundaries retain
-their existing contracts; effectful casts, other consumers and wider lifecycle
-contexts remain partial.
-[Owning-argument review](coverage/semantics/config-iterator-argument-review.json),
+CONFIG Iterator sends preserve scalar snapshots and finite CFG-admitted ARRAY or
+ordinary non-Stringable INSTANCE arguments. Existing by-value Generator routes
+also copy flat scalars before later resumes; INI_SET conversion, strict errors and
+NULL handlers follow traversal and DATA/INPUT cleanup. COW protects array tables,
+while embedded aliases, object identity and API TraceArgs retain ordinary owners.
+Owning Iterator aborts release CURRENT, DATA/INPUT, then the copied prefix. Admitted
+last-owner temporary Iterator INPUT finalizers keep live copied arguments protected.
+Typed-source reads and existing producer/key/finite-graph policies stay intact;
+named direct-CV Generator reference yields now copy scalars from authenticated
+ordinary cells before later writes. One local scalar-cell route retires a CLOSED
+Generator from sole DATA through the normal storage pin or quiet terminal cleanup.
+Typed Generator cells, owning Generator arguments, effectful casts, wider
+last-DATA reference graphs and lifecycles remain partial.
+[Owning arguments](coverage/semantics/config-iterator-argument-review.json),
+[INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
+[Generator scalars](coverage/semantics/config-generator-scalar-review.json),
+[Generator reference scalars](coverage/semantics/config-generator-reference-scalar-review.json),
+[Sole-DATA reference cleanup](coverage/semantics/config-generator-reference-sole-data-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
-
-A70 runs admitted last-owner temporary Iterator INPUT cleanup while normalized
-copied arguments stay protected. DATA retires first; normal API reception follows
-INPUT destruction, and supplied-Throwable cleanup releases the prefix afterward.
-Finite field/finalizer policy, COW, aliases and API TraceArgs retain their ordinary
-rules. Other temporary source/key forms and wider lifecycle contexts remain partial.
-[INPUT cleanup review](coverage/semantics/config-iterator-input-finalizer-review.json).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
 ordinary source-call warnings after sends/named defaults, before reception/body.
@@ -96,6 +105,17 @@ The maintained ATTR02 `assert` boundary is promoted without replay or new
 agreement credit. Explicit captured-Closure `__invoke()` and wider API consumers
 remain partial. [ATTR03 review](coverage/semantics/builtin-deprecated-api-review.json).
 
+ATTR04 extends that selected API cursor to exception handlers, including
+unmarked callbacks. Deprecated precedes copies and by-reference warnings;
+the moved registry owns the selected callback and the cursor holds the original
+Throwable. Warning-handler replacement and nested exception reentry preserve
+the original target; Closure call ownership begins at entry and can end before
+readonly result validation. Nine new native-first originals agree, including
+two terminal fatals. Four reached fronts pass 189 checks (184 reached, five
+derived), and private and actual-tail joined strict431 pass. One measured old
+API refusal remains zero credit. Effectful special callables and the explicit Closure wrapper stay
+partial. [ATTR04 review](coverage/semantics/builtin-deprecated-exception-api-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The
@@ -108,18 +128,19 @@ their original inputs. At that cut, count-ambiguous callbacks, WeakMap callbacks
 residual tags, workers, hooks, reentry and active contexts remained partial.
 [GC05 review](coverage/semantics/gc-materialized-callback-review.json).
 
-CLASS151 preserves anonymous class-key history after parser-rejected eval and
-opened-file units. Actual failed-source/site records and an immediate rejected
-exit authenticate zero class-key cost; later accepted units keep their source-ID
-holes and genuine counters. Five original observations agree and 261 reached
-checks pass across actual file rejection/once hits, malformed-history refusal and
-later publication/retry causes. Failed once parses remain retained once hits.
-Actual-tail joined strict431 passes; private source/state cuts retain their original
-identities. Partial/open/reentrant compilation and terminal body/default fatals
-remain separate, with body/argument and held bounds unchanged.
-[Rejected-source review](coverage/semantics/anonymous-rejected-sources-review.json).
-The prior [mixed-kind review](coverage/semantics/anonymous-trait-enum-review.json)
-retains CLASS150 source7/state223 at their original cuts.
+CLASS152 removes the two-formal/send bound for admitted anonymous constructors.
+Finite direct positional/named sends and public unpromoted by-value signatures
+use ordinary type/default compilation and binding, including inherited calls and
+named-hole completion before typed reception. Full class identities survive
+argument-TypeError whole-name formatting and missing-arity class/member formatting.
+Six originals agree (five normal, one compiler rejection), and 212 conditions pass
+across authored62 and independent150 reached groups. Corrected private and
+actual-tail joined strict431 pass; all cuts retain their actual revisions. The original diagnostic mismatch
+and carrier-fixture refusal retain zero credit. Reference/variadic/promoted,
+nonpublic, unpacked and wider body/factory/lifetime contexts remain partial.
+[Finite-constructor review](coverage/semantics/anonymous-constructor-arity-review.json).
+The prior [rejected-source review](coverage/semantics/anonymous-rejected-sources-review.json)
+retains CLASS151 source5/state261 and zero-cost parser-rejection history at its own cuts.
 
 GC03's quiet WeakMap registration/proxy-count behavior and its separate tested
 cuts remain in the [GC03 review](coverage/semantics/gc-registration-order-review.json).
@@ -137,7 +158,7 @@ not repeat historical receipt counts or renew their execution credit.
 | Source and compilation | Checked ASTs retain source occurrences, ordered declaration publication, lexical/called scope and emitted-task authority. Include/eval, anonymous classes, traits and linked headers use source-authenticated routes; remaining acquisition and linker contexts stay explicit. [Source context](docs/semantics/SOURCE-CONTEXT.md), [linking](docs/semantics/LINKING-HANDOFF.md), [classes](docs/semantics/SOURCE-CLASSES.md). |
 | Values, operators and warning decisions | Arithmetic and conversions are pure executable SpecTec. Supported warning callbacks preserve saved operands, live delayed reads, source sites, handler changes and pending-Throwable order. Operators, casts, dimensions and undefined-variable routes remain partial across their producers. [Numerics](docs/semantics/NUMERICS.md), [dimensions](docs/semantics/DIMENSIONS.md), [comparisons](docs/semantics/COMPARISONS.md). |
 | Arrays and references | Physical owner edges distinguish DIRECT copies from ALIAS cells, COW table copies, selected lvalues and shared descendants. Iterator spreads retain raw current references through key before copying the value; invalid-key cleanup retires current before DATA while protecting the partial builder. Ordinary initialized declared fields share the reviewed fold across legal return modes. Materialized/special/cyclic graphs and wider callback lifetimes retain their documented limits. [Array unpack](docs/semantics/ARRAY-UNPACK.md), [reference wrappers](docs/semantics/REFERENCE-WRAPPERS.md), [cleanup review](coverage/semantics/array-iterator-invalid-key-cleanup-review.json), [field review](coverage/semantics/array-iterator-byval-fields-review.json). |
-| Comparisons | Reached physical slots, count/key/value order, live reference contents and COW snapshots decide comparisons. Visited captured-graph traversal has no fixed depth limit and reports an authentic active-left recursion Error; earlier identity/class/leaf decisions skip later unsupported payloads. Canonical root admission and acyclic Previous-path validation have no numeric context/length ceiling. Canonical same-kind roots of the admitted builtin kinds share the visited physical-slot fold after older admissions once both finite Previous paths authenticate, preserving cache/trace/previous/severity order and reached table effects. Invalid/cyclic/materialized/freeing Previous nodes, pending states and actually reached callback contexts retain family limits. Captured canonical builtin Throwables share this fold; every distinct equal-kind entry checks active-left recursion before slots, including Previous descent. Supported initialized-public ordinary images admit method declarations without invoking them; parent/interface/hook/readonly and wider layout fences remain. Whole-path authentication stays eager. [Current comparison contract](docs/semantics/COMPARISONS.md), [finite captured graphs](coverage/semantics/throwable-trace-unbounded-comparison-review.json), [finite Previous paths](coverage/semantics/throwable-previous-finite-comparison-review.json), [standalone traces](coverage/semantics/throwable-null-trace-comparison-review.json), [base fallback](coverage/semantics/throwable-base-null-comparison-review.json), [linked base](coverage/semantics/throwable-base-previous-comparison-review.json), [captured Throwables](coverage/semantics/throwable-captured-comparison-review.json), [ordinary methods](coverage/semantics/throwable-trace-methods-comparison-review.json). |
+| Comparisons | Reached physical slots, count/key/value order, live reference contents and COW snapshots decide comparisons. Visited captured-graph traversal has no fixed depth limit and reports an authentic active-left recursion Error; earlier identity/class/leaf decisions skip later unsupported payloads. Canonical root admission and acyclic Previous-path validation have no numeric context/length ceiling. Canonical same-kind roots of the admitted builtin kinds share the visited physical-slot fold after older admissions once both finite Previous paths authenticate, preserving cache/trace/previous/severity order and reached table effects. Invalid/cyclic/materialized/freeing Previous nodes, pending states and actually reached callback contexts retain family limits. Captured canonical builtin Throwables share this fold; every distinct equal-kind entry checks active-left recursion before slots, including Previous descent. Supported initialized-public ordinary images admit uncalled methods, locally authenticated interfaces including implicit Stringable, and finite source-parent paths validated by actual names, links and publication order. Seen origins reject parent cycles before layout expansion; builtin parents/hook/readonly and wider layout fences remain. Whole-path authentication stays eager. [Current comparison contract](docs/semantics/COMPARISONS.md), [finite captured graphs](coverage/semantics/throwable-trace-unbounded-comparison-review.json), [finite Previous paths](coverage/semantics/throwable-previous-finite-comparison-review.json), [standalone traces](coverage/semantics/throwable-null-trace-comparison-review.json), [base fallback](coverage/semantics/throwable-base-null-comparison-review.json), [linked base](coverage/semantics/throwable-base-previous-comparison-review.json), [captured Throwables](coverage/semantics/throwable-captured-comparison-review.json), [ordinary methods](coverage/semantics/throwable-trace-methods-comparison-review.json), [local interfaces](coverage/semantics/throwable-trace-interfaces-comparison-review.json), [inherited images](coverage/semantics/throwable-trace-inheritance-comparison-review.json). |
 | Calls and callable values | Ordinary, scoped, captured and magic-call routes retain the selected callee/receiver, lexical/called scope, argument origin, positional/named ordering and reference mode across later effects. Closure and pipe consumers preserve their real owners, send diagnostics and abrupt cleanup. Callable producers, signatures and reentry remain partial. Bounded NoDiscard declarations preserve pre-body warning and pending-owner behavior. [Attributes](docs/semantics/BUILTIN-ATTRIBUTES.md), [Calls](docs/semantics/SOURCE-CALLS.md), [Closure::call](docs/semantics/CLOSURE-CALL.md), [first-class callables](docs/semantics/SOURCE-FIRST-CLASS-CALLABLES.md). |
 | Configuration and constants | Supported INI_SET/DEFINE/CONSTANT/DEFINED routes retain their selected callee, option/name and API timing. Iterator and named Generator inputs preserve real DATA/INPUT and Aggregate producer history, copied sends, named-key Error priority and pre-API cleanup. CONFIG typed-current reads reuse property-source validation; structural receipts remain valid after physical cache retirement. Iterator sends retain raw scalar snapshots or real finite ARRAY/ordinary-instance slot roots, then defer INI_SET binding/conversion until after DATA/INPUT cleanup. COW, shared embedded aliases and API TraceArgs keep their ordinary owners. Generator/other consumers, effectful casts and wider lifetimes retain their documented limits. [Include/configuration](docs/semantics/INCLUDE-SOURCES.md), [constants](docs/semantics/SOURCE-USER-CONSTANTS.md). |
 | Classes, properties and enums | Linked declarations preserve receiver identity, slot declaration, visibility, typed-reference sources, readonly/hook policy and diagnostic order. Supported magic getters and reference-get chains preserve alias/copy and rebind timing. Enum declarations lower to cached singleton cases with lazy backing checks, readonly slots, ordered interfaces and generated/user methods. Registered-loader first use for static calls and class-constant fetches preserves selected class/member order and source-authenticated resume; reached dynamic/named/folded/enum cases and forged-target rejection retain separate raw cuts under `.tools/enum-acquisition-review-state-*`. Captured enum `cases(...)` preserves its selected target and singleton cache after closure retirement. Captured scalar `from(...)`/`tryFrom(...)` preserve cold backing tables, ordinary/inherited constant aliases, caller strictness and cached case identity after closure retirement. Captured Stringable arguments preserve their real callback child and line, selected closure lifetime and temporary retirement before lookup. For published enums, class-string array callables select generated `cases()`/`from()`/`tryFrom()` before argument evaluation; a case-object receiver also invokes `from()`. Array Stringable conversion preserves the selected enum and temporary retirement. Source-certified direct or negated enum-case conditions in class constants retain selected case identity or scalar results, including a condition from another enum; wider object-valued conditional transfers, other callable routes, the default loader, case attributes, link/type contexts and object lifetimes remain partial. [Classes](docs/semantics/SOURCE-CLASSES.md), [properties](docs/semantics/SOURCE-PROPERTIES.md), [property references](docs/semantics/SOURCE-PROPERTY-REFERENCES.md), [enum evidence](docs/ARTIFACTS.md). |
@@ -177,22 +198,33 @@ OB02 admits default fatal takeover from builtin FINAL throws with scalar message
 and NULL previous. Stored traces and cache mutation precede fatal reporting;
 inactive buffers then release raw owners without lower writes. Four originals
 match PHP and three reached groups pass 131 assertions. Actual-tail strict431
-and both affected guard fronts (70+33) pass without native or differential source reruns. A pending-Throwable
-decrement must be nonfinal or destructor-inactive; effectful final pending cleanup
-is the next buffering dependency. Selected exception handlers, wider rendering
-and reentrant/abrupt deactivation remain partial.
+and both affected guard fronts (70+33) pass without native or differential source
+reruns. Its original pending-Throwable decrement admission was nonfinal or
+destructor-inactive; OB03 extends it below. Selected exception handlers, wider
+rendering and reentrant/abrupt deactivation remain partial.
 [OB02 review](coverage/semantics/output-final-throw-review.json).
+
+OB03 releases the retained local FINAL Throwable after cache/reporting while
+buffers remain active/running; child output stays buffered. A child destructor
+throw preserves the first report, emits a fresh unchained fatal and retains the
+existing abandoned C cleanup owners before raw-zoh deactivation. Four originals
+agree exactly and four reached groups pass 169 checks. Private and actual-tail
+joined strict431 and separate affected FINAL fronts 77+33 pass. The original sole Unsupported and later failed
+attempts retain zero agreement credit. Wider selected-handler/rendering and
+reentrant/abrupt raw-owner teardown remain partial.
+[Pending-release review](coverage/semantics/output-pending-release-review.json).
 
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS152 | Ordinary anonymous-constructor binding beyond the two-argument/formal bound; native-first preparation accepted. |
-| COMP156 | Linked ordinary interface images; native-first packet accepted, state preparation. |
-| ATTR04 | Selected exception-handler Deprecated API entry. |
-| Enum M3/M4 | Published-enum array dispatch is integrated for reviewed class-string and case-object sources, including named Stringable arguments. String callable routes, wider generated dispatch, backing dependency and the default loader remain partial. |
-| A71 | Scalar CONFIG Generator sends. |
-| OB03 | Effectful pending Throwable before output deactivation. |
+| CLASS153 | Constructor by-reference parameters and direct sends; active validation. |
+| GC07 | Caller-frame collection, signed counts and WeakReference cleanup; active validation. |
+| I82 | Rebound method-callable Generator factories; source preparation, unrun. |
+| OB04 | Selected error-handler FINAL handling; active validation. |
+| ATTR05 | Explicit captured-Closure `__invoke()` warning, trace and owner handling; active validation. |
+| Enum M3/M4 | Generated string dispatch; active validation. Wider backing and loader routes remain partial. |
+| A74 | Outside-alias scalar REFCELL cleanup; isolated preparation. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
