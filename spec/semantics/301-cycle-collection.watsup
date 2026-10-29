@@ -623,7 +623,8 @@ def $gc_weakref_write_cache(S, (WRITE_NAME n_name* z) :: ptask*, (PORIGIN n_unit
   -- if $weakref_site(S, PORIGIN n_unit (pcpath ++ [PCFIELD 1]), INTRINSIC_WEAKREF_CREATE)
 def $gc_weakref_write_cache(S, ptask*, porigin?) = false -- otherwise
 def $machine_base_roots(S) = eps
-  -- if S.BASE = BASE_VALUE (KNOWN (POBJECT n)) /\ S.RESULT = KNOWN (POBJECT n)
+  -- if S.BASE = BASE_VALUE (KNOWN (POBJECT n))
+  -- if S.RESULT = KNOWN (POBJECT n)
   -- if $weakref_at(S, n) =/= eps
   -- if $gc_weakref_write_cache(S, S.TODO, S.ORIGIN)
 def $machine_base_roots(S) = eps
