@@ -1,6 +1,6 @@
 {
   "milestone": "ATTR05",
-  "status": "Independent semantic review and private validation accepted; actual-tail integration pending",
+  "status": "Independent semantics and private validation accepted; actual-tail joined strict432 passed",
   "target": "Pinned PHP 8.5.10 CLI NTS 64-bit and project-local SL semantics",
   "scope": "Explicit captured-Closure __invoke emits wrapper E_DEPRECATED (8192) then selected callee E_USER_DEPRECATED (16384) before inner copies, named holes and reception. NoDiscard stays masked. Raw sent values, live reference cells, raw wrapper traces, SensitiveParameter snapshots and separate outer/inner Closure owners survive handlers and abrupt cleanup. Named fake preflight borrows the inner Closure until holes finish. Unused owning wrapper results remain an explicit boundary before cleanup; wider special callable/message/target histories remain partial.",
   "raw_root": "../php-spec-evidence-archive/builtin-attributes-05",
@@ -16,7 +16,9 @@
       "tests/semantics/deprecated_closure_invoke_review_protocol.py",
       "tests/semantics/deprecated_api_native.py",
       "tests/semantics/deprecated_api_models.py"
-    ]
+    ],
+    "joined_parent": "6c8a7dd0336d1c047f2562a5b44556c536411ab1",
+    "joined_semantic_cut": "d164d9a674445938b6860700283011d0876f87cf"
   },
   "evidence": {
     "native_packets": [
@@ -148,7 +150,11 @@
     "full_reached_groups": 6,
     "full_reached_conditions": 337,
     "source_reached_conditions": 328,
-    "derived_guard_assertions": 9
+    "derived_guard_assertions": 9,
+    "joined_strict_432": [
+      "joined-strict-d164d9a67/report.json",
+      "9261e31dcfcf4def7f0d2f861689ac964b643ab5d0216409dba20c171f9ab23d"
+    ]
   },
   "preserved_failures": {
     "old_boundary": "old-boundary-be00227b6/report.json: new positional original checked Unsupported Deprecated internal API timing, zero agreement.",
@@ -160,5 +166,6 @@
   "compatibility": "Nine accepted normal rows keep their actual separate source revisions; aggregate false packets contribute only listed passing rows. The later named-preflight owner correction affects only genuine fixed holes and is validated by required-hole and successful-default reached fronts. Historical HOLES is retained. Read-only trace identity normalization preserves prior formatting without adding owners. Positional reached58, peer125 and bounded diagnostic53 retain their original cuts; no native or accepted normal source renewal occurred. The maintained ATTR02 wrapper expectation is promoted without replay or historical credit.",
   "next_required": "ATTR06 must implement raw outer argument retirement, then unused return-value retirement, then outer Closure receiver retirement, matching zend_vm_def.h DO_FCALL fcall_end. This removes the explicit owning-result fence; skip-only frame cleanup would give the wrong order.",
   "source": "vendor/php-src/Zend/zend_closures.c zend_get_closure_invoke_method and ZEND_METHOD(Closure,__invoke); Zend/zend_execute_API.c zend_call_function warning/copy/UNDEF/GC_ADDREF order; Zend/zend_execute.c zend_handle_undef_args fake frame; Zend/zend_vm_def.h DO_FCALL fcall_end; Zend/zend_builtin_functions.c debug_backtrace_get_args SensitiveParameter handling.",
-  "recovery": "All ten frozen original payloads and expected streams are tracked in three authored plus seven independent cases. deprecated_api_native.py --group attr05 records new native packets without changing the attr03 default. deprecated_api_models.py consumes retained native reports and labels the owning boundary explicit_boundary/agreement0. Authored protocol has four full groups; peer protocol has two full groups plus a separately selected diagnostic-only inner-throw case. Reports retain actual revisions, source/input hashes, profile, commands, streams/exits, single CPU affinity and process-group reap. Raw artifacts remain outside Git."
+  "recovery": "All ten frozen original payloads and expected streams are tracked in three authored plus seven independent cases. deprecated_api_native.py --group attr05 records new native packets without changing the attr03 default. deprecated_api_models.py consumes retained native reports and labels the owning boundary explicit_boundary/agreement0. Authored protocol has four full groups; peer protocol has two full groups plus a separately selected diagnostic-only inner-throw case. Reports retain actual revisions, source/input hashes, profile, commands, streams/exits, single CPU affinity and process-group reap. Raw artifacts remain outside Git.",
+  "composition": "Actual released-parent review found additive storage tags, the parent-only constructor formatting change and A74 CONFIG Generator storage admission disjoint from the Closure cursor/trace/owner changes. Canonical301 retains the already integrated GC31e helper without a duplicate commit. All other inventory entries and current active/held tracks are preserved; only integrated ATTR05 is replaced by distinct read-only ATTR06 preparation. One joined432 compile passes; accepted native10, normal9, full337 and separate diagnostic53 keep their original cuts without replay."
 }

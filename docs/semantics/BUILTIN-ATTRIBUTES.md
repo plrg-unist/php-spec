@@ -149,6 +149,7 @@ records ten native-first originals: nine exact normal agreements and one
 owning-unused-result boundary with zero agreement credit. Six full reached
 groups pass 337 checks (328 reached, nine derived); a separate bounded
 inner-throw diagnostic passes 53 checks without source agreement credit.
-Private strict432 passes. The maintained ATTR02 explicit-wrapper expectation
+Private and actual-tail joined strict432 pass at separate cuts. The maintained
+ATTR02 explicit-wrapper expectation
 is promoted without replay or new historical credit; all accepted cuts retain
 their original identities.

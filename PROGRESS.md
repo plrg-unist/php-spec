@@ -136,7 +136,8 @@ named preflight, while trace redaction keeps raw and coerced snapshots distinct.
 Nine normal originals agree; a tenth native original remains an explicit
 unused-owning-result boundary with zero agreement credit. Six full reached
 groups pass 337 checks (328 reached, nine derived), plus a separate bounded
-53-check inner-throw diagnostic. Private strict432 passes at its actual cut.
+53-check inner-throw diagnostic. Private and actual-tail joined strict432 pass
+at separate cuts.
 The next attribute milestone must stage raw argument, unused return value and
 outer receiver retirement in that order to remove the owning-result fence.
 Wider special callables/messages remain partial.
@@ -248,6 +249,7 @@ reentrant/abrupt raw-owner teardown remain partial.
 | GC07 | Caller-frame collection, signed counts and WeakReference cleanup; active validation. |
 | I82 | Rebound method-callable Generator factories; source preparation, unrun. |
 | OB04 | Selected error-handler FINAL handling; active validation. |
+| ATTR06 | Required unused owning explicit-wrapper return staging; read-only preparation. |
 | Enum M3/M4 | Generated string capture preparation; no new validation credit. Wider callable consumers, enum collectability, backing dependencies and the default loader remain partial. |
 | A75 | Temporary direct-call BYREF Generator INPUT/DATA cleanup; native-first source preparation. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
