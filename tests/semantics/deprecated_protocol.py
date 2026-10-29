@@ -164,7 +164,7 @@ def conditions(name, program, path):
                 '$lookup(S_after.ENV, $ptascii("body")) = (n_body)',
                 'S_after.STORE[n_retired] = DEFINED (PINT 1)',
                 'S_after.STORE[n_body] = DEFINED (PINT 0)',
-                'perrorcall_second.CALLBACK = PSTRING ($ptascii("next_notice"))',
+                '$string_bytes(perrorcall_second.CALLBACK) = ($ptascii("next_notice"))',
                 '$heap_owners($heap_prune($heap_graph(S_second)), HOBJECT n_handler) = 0',
             ]
         if method:
