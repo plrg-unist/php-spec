@@ -38,6 +38,26 @@ CASES = {
             'n_held =/= n_drop',
             '~((HOBJECT n_held) <- $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER)))',
             '(HOBJECT n_drop) <- $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER))',
+            '$gc_materialized_caller(S, (pcallcontext_relay))',
+            '~$gc_materialized_caller_site(S, (pcallcontext_relay), pgccall.CALL.SITE)',
+            'pgccall_foreign = pgccall[.CALLER = (pcallcontext_relay)]',
+            'S_foreign = S[.GC.ACTIVE = (pgccall_foreign)]'
+            '[.TODO = (GC_TRACE pgccall_foreign) :: ptask_tail*]',
+            '~$gc_callback_caller_valid(S_foreign, pgccall_foreign)',
+            '~$gc_call_live(S_foreign, pgccall_foreign)',
+            'pgccall_foreign_erased = pgccall_foreign[.COUNT_SOURCE = eps]',
+            'S_foreign_erased = S[.CURRENT = (pcallcontext_relay)]'
+            '[.GC.ACTIVE = (pgccall_foreign_erased)]'
+            '[.TODO = (GC_TRACE pgccall_foreign_erased) :: ptask_tail*]',
+            '$gc_trace(S_foreign_erased, pgccall_foreign_erased).COMPLETION = '
+            'UNSUPPORTED "materialized callback trace order"',
+            'S_fresh = $drive_steps(S, 1)[.COMPLETION = NORMAL]',
+            'pgcplan_foreign_erased = pgcplan[.CALL = pgccall_foreign_erased][.WEAK = eps]',
+            'S_fresh_erased = S_fresh[.GC.ACTIVE = (pgccall_foreign_erased)]'
+            '[.GC.PLAN = (pgcplan_foreign_erased)]'
+            '[.TODO = (GC_DTORS pgcplan_foreign_erased) :: ptask_tail*]',
+            '$gc_callback_count_required_plan(S_fresh_erased, pgcplan_foreign_erased)',
+            '~$gc_plan_live(S_fresh_erased, pgcplan_foreign_erased)',
             '$task_nodes(GC_TRACE pgccall[.COUNT_SOURCE = eps]) = $task_nodes(GC_TRACE pgccall)',
             '~$call_task_valid(S[.CURRENT = eps], GC_TRACE pgccall)',
             '~$gc_materialized_callback_context(S[.FRAMES = '
@@ -81,6 +101,15 @@ CASES = {
             '~$gc_call_live(S_erased, pgccall_erased)',
             '~$gc_plan_live(S_erased, pgcplan_erased)',
             '~$destructor_context_valid(S_erased, pcallcontext)',
+            'pgccall_foreign_erased = pgccall_erased[.CALLER = (pcallcontext)]',
+            'pgcplan_foreign_erased = pgcplan_erased[.CALL = pgccall_foreign_erased]',
+            'pframe_foreign_erased = pframe_gc[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: '
+            '(GC_DTOR_RETURN pgcplan_foreign_erased n_root) :: ptask_tail*]',
+            'S_foreign_erased = S[.GC.ACTIVE = (pgccall_foreign_erased)]'
+            '[.GC.PLAN = (pgcplan_foreign_erased)]'
+            '[.FRAMES = pframe_foreign_erased :: pframe_tail*]',
+            '$gc_callback_count_required_plan(S_foreign_erased, pgcplan_foreign_erased)',
+            '~$gc_call_live(S_foreign_erased, pgccall_foreign_erased)',
             'S_unconsumed = S[.FRAMES = '
             'pframe_gc[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*] :: pframe_tail*]',
             '~$gc_call_live(S_unconsumed, pgcplan.CALL)',
