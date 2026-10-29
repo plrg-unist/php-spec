@@ -238,6 +238,14 @@ def $integer_failure(S, pintegeroperation) = $type_failure(S[.TODO = ptask_tail*
   -- if ~$cast_object_value(pvalue_left)
   -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (pvalue_right)
   -- if $integer_plain_stdclass(S, pvalue_right)
+;; LEFT is already saved. Its handler replacement is diagnosed without a cast.
+def $integer_failure(S, pintegeroperation) = $type_failure(S[.TODO = ptask_tail*], pintegeroperation.OP, POBJECT n, pvalue_right, pintegeroperation.LINE)
+  -- if S.TODO = (INTEGER_OPERATOR_CONVERT pintegeroperation (INTEGER_RIGHT i)) :: ptask_tail*
+  -- if $integer_pointer_value(S, $integer_phase_pointer(pintegeroperation, INTEGER_LEFT)) = (POBJECT n)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if $integer_pointer_value(S, $integer_phase_pointer(pintegeroperation, INTEGER_RIGHT 0)) = (pvalue_right)
+  -- if ~$cast_object_value(pvalue_right) \/ $integer_plain_stdclass(S, pvalue_right)
 def $integer_failure(S, pintegeroperation) = S[.COMPLETION = UNSUPPORTED "integer operator object or expired pointer"] -- otherwise
 dec $integer_warning_valid(pstate, pintegeroperation, pintegerphase, pintegerconversion, nat) : bool
 def $integer_warning_valid(S, pintegeroperation, pintegerphase, pintegerconversion, n) = ($integer_operation_valid(S, pintegeroperation) /\ $integer_phase_valid(pintegerphase) /\ $integer_conversion(pintegerconversion.INPUT) = (pintegerconversion) /\ $(n <= |pintegerconversion.NOTICES|))

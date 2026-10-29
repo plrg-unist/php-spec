@@ -122,7 +122,6 @@ def $entry_value(S, UNINITIALIZED) = PNULL
 def $entry_value(S, ALIAS n) = pvalue
   -- if S.STORE[n] = DEFINED pvalue
 
-dec $c_string(nat*) : nat*
 dec $missing_key_bytes(pkey) : nat*
 def $missing_key_bytes(KINT i) = $decimal_integer(i)
 def $missing_key_bytes(KSTRING n*) = [34] ++ $c_string(n*) ++ [34]
