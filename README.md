@@ -4385,9 +4385,14 @@ early-throw cleanup are covered by ten native-first originals and four reached
 fronts. Selected exception handlers now use the same early phase with a moved
 registry owner, original Throwable retention, fresh by-reference cells and
 terminal cleanup; nine new native-first originals and four reached fronts cover
-this slice. Wider API consumers remain partial. See the [VM review](coverage/semantics/builtin-deprecated-review.json),
-[error/assert API review](coverage/semantics/builtin-deprecated-api-review.json) and
-[exception API review](coverage/semantics/builtin-deprecated-exception-api-review.json).
+this slice. Explicit captured-Closure `__invoke()` now stages wrapper (8192) then
+callee (16384) warnings before inner reception, preserving raw arguments, references,
+trace redaction and separate Closure owners. Nine originals agree; one unused
+owning-result path remains an explicit boundary pending ordered return release.
+Wider API consumers remain partial. See the [VM review](coverage/semantics/builtin-deprecated-review.json),
+[error/assert API review](coverage/semantics/builtin-deprecated-api-review.json),
+[exception API review](coverage/semantics/builtin-deprecated-exception-api-review.json) and
+[Closure-wrapper review](coverage/semantics/builtin-deprecated-closure-invoke-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The

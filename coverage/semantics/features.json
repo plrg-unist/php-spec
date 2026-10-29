@@ -28972,7 +28972,8 @@
         "spec/semantics/379-sensitive-parameters.watsup",
         "spec/semantics/207-error-handler-runtime.watsup",
         "spec/semantics/141-method-compiler.watsup",
-        "spec/semantics/142-method-runtime.watsup"
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/443-deprecated-closure-invoke.watsup"
       ],
       "helper_tests": [
         "tests/semantics/sensitive_parameter_protocol.py",
@@ -28981,16 +28982,21 @@
       "source_tests": [
         "tests/semantics/sensitive_parameter_cases.json",
         "tests/semantics/method_runtime.py",
-        "tests/semantics/constructor_sensitive_promotion_cases.json"
+        "tests/semantics/constructor_sensitive_promotion_cases.json",
+        "tests/semantics/deprecated_closure_invoke_cases.py",
+        "tests/semantics/deprecated_closure_invoke_review_cases.py",
+        "tests/semantics/deprecated_api_native.py",
+        "tests/semantics/deprecated_api_models.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_attributes.c",
         "coverage/semantics/sensitive-parameter-review.json",
         "vendor/php-src/Zend/zend_builtin_functions.c",
         "coverage/semantics/sensitive-promotion-review.json",
-        "vendor/php-src/Zend/zend_compile.c"
+        "vendor/php-src/Zend/zend_compile.c",
+        "coverage/semantics/builtin-deprecated-closure-invoke-review.json"
       ],
-      "review": "Single zero-argument builtin SensitiveParameter on ordinary FLAGS0 parameters resolves authentic lexical imports and indexed checked source. Owning trace wrappers capture current fixed CVs versus original variadic extras/named operands, preserving omitted defaults, getValue identity and final D|/weak-null. Source10 and strict362 at e27 plus SL112 (derived34/reached78) retain separate cuts in sensitive-parameter-review.json; original Unsupported, false105 and diagnostics remain0. Mixed/repeated/argument attributes, hooks and wider wrapper protocols remain required. Promoted constructor SensitiveParameter preserves ordinary property writes and live-CV trace snapshots without a property Override obligation. Source8 at bf6/688 and strict365/state176 (74 derived,102 reached) at75c retain distinct cuts in sensitive-promotion-review.json; authentic queued suffix admission and all prior failures are preserved. Wider attributes/hooks and wrapper protocols remain partial."
+      "review": "Single zero-argument builtin SensitiveParameter on ordinary FLAGS0 parameters resolves authentic lexical imports and indexed checked source. Owning trace wrappers capture current fixed CVs versus original variadic extras/named operands, preserving omitted defaults, getValue identity and final D|/weak-null. Source10 and strict362 at e27 plus SL112 (derived34/reached78) retain separate cuts in sensitive-parameter-review.json; original Unsupported, false105 and diagnostics remain0. Mixed/repeated/argument attributes, hooks and wider wrapper protocols remain required. Promoted constructor SensitiveParameter preserves ordinary property writes and live-CV trace snapshots without a property Override obligation. Source8 at bf6/688 and strict365/state176 (74 derived,102 reached) at75c retain distinct cuts in sensitive-promotion-review.json; authentic queued suffix admission and all prior failures are preserved. Wider attributes/hooks and wrapper protocols remain partial. ATTR05 reuses selected parameter metadata for distinct raw explicit-Closure wrapper and coerced inner trace snapshots; one dedicated sensitive original is among its nine exact normal agreements. No broader wrapper-scope claim is added; see builtin-deprecated-closure-invoke-review.json."
     },
     {
       "id": "declarations.SensitiveParameterValue",
@@ -29012,7 +29018,8 @@
         "spec/semantics/161-throwable-constructors.watsup",
         "spec/semantics/250-ordinary-throwable-reception.watsup",
         "spec/semantics/174-internal-method-callables.watsup",
-        "spec/semantics/253-closure-current-binding.watsup"
+        "spec/semantics/253-closure-current-binding.watsup",
+        "spec/semantics/443-deprecated-closure-invoke.watsup"
       ],
       "helper_tests": [
         "tests/semantics/sensitive_parameter_protocol.py",
@@ -29027,7 +29034,11 @@
         "tests/semantics/sensitive_value_getter_cases.json",
         "tests/semantics/sensitive_value_constructor_callable_cases.json",
         "tests/semantics/sensitive-value-constructor-callable-heap.php",
-        "tests/semantics/sensitive-value-constructor-callable-args.php"
+        "tests/semantics/sensitive-value-constructor-callable-args.php",
+        "tests/semantics/deprecated_closure_invoke_cases.py",
+        "tests/semantics/deprecated_closure_invoke_review_cases.py",
+        "tests/semantics/deprecated_api_native.py",
+        "tests/semantics/deprecated_api_models.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_attributes.c",
@@ -29036,9 +29047,10 @@
         "coverage/semantics/sensitive-value-constructor-review.json",
         "coverage/semantics/sensitive-value-getter-review.json",
         "vendor/php-src/Zend/zend_closures.c",
-        "coverage/semantics/sensitive-value-constructor-callables-review.json"
+        "coverage/semantics/sensitive-value-constructor-callables-review.json",
+        "coverage/semantics/builtin-deprecated-closure-invoke-review.json"
       ],
-      "review": "Trace-generated SensitiveParameterValue objects strongly own dereferenced snapshots and expose zero-argument getValue; physical trace arrays and trace rendering share wrapper identity. Source10/SL112 at e27 validate actual allocation, getter/exact continuation and last-release D|/weak-null in sensitive-parameter-review.json. Direct construction copies one dereferenced mixed snapshot, with ordered named/positional sends, arity-before-readonly, COW and ordinary getter-copy/last-release ownership. Source7 and strict367/state121 (20 constructed,101 reached) retain a50 inputs in sensitive-value-constructor-review.json. Uninitialized getter, debug/property and wider wrapper protocols remain required. First-class getValue callables retain the initialized wrapper/snapshot through GETTERCLOSURE; five originals and strict367/SL76 (15 derived,61 reached) at db70 validate COW, argument priority, computed alias/clone capture and copy last release. Actual368 composition is recorded in sensitive-value-getter-review.json; prior cuts remain unchanged. First-class initialized constructor captures retain source-certified receivers through ordered SEND/arity/readonly, alias/nullsafe/clone invocation and independent Error argument lifetime. Source5 at420f/9602 and strict368/SL129 (27 derived,102 reached) at a922 retain distinct cuts in sensitive-value-constructor-callables-review.json; original Unsupported, trace mismatch and AL fixture stop remain0. Binding/Closure::call and wider wrapper protocols remain partial; actual strict370 composition is recorded in sensitive-value-constructor-callables-review.json."
+      "review": "Trace-generated SensitiveParameterValue objects strongly own dereferenced snapshots and expose zero-argument getValue; physical trace arrays and trace rendering share wrapper identity. Source10/SL112 at e27 validate actual allocation, getter/exact continuation and last-release D|/weak-null in sensitive-parameter-review.json. Direct construction copies one dereferenced mixed snapshot, with ordered named/positional sends, arity-before-readonly, COW and ordinary getter-copy/last-release ownership. Source7 and strict367/state121 (20 constructed,101 reached) retain a50 inputs in sensitive-value-constructor-review.json. Uninitialized getter, debug/property and wider wrapper protocols remain required. First-class getValue callables retain the initialized wrapper/snapshot through GETTERCLOSURE; five originals and strict367/SL76 (15 derived,61 reached) at db70 validate COW, argument priority, computed alias/clone capture and copy last release. Actual368 composition is recorded in sensitive-value-getter-review.json; prior cuts remain unchanged. First-class initialized constructor captures retain source-certified receivers through ordered SEND/arity/readonly, alias/nullsafe/clone invocation and independent Error argument lifetime. Source5 at420f/9602 and strict368/SL129 (27 derived,102 reached) at a922 retain distinct cuts in sensitive-value-constructor-callables-review.json; original Unsupported, trace mismatch and AL fixture stop remain0. Binding/Closure::call and wider wrapper protocols remain partial; actual strict370 composition is recorded in sensitive-value-constructor-callables-review.json. ATTR05 reuses selected parameter metadata for distinct raw explicit-Closure wrapper and coerced inner trace snapshots; one dedicated sensitive original is among its nine exact normal agreements. No broader wrapper-scope claim is added; see builtin-deprecated-closure-invoke-review.json."
     },
     {
       "id": "declarations.Override",
@@ -29085,12 +29097,18 @@
         "spec/semantics/222-exception-handlers.watsup",
         "spec/semantics/440-builtin-function-attributes.watsup",
         "spec/semantics/80-call-control.watsup",
-        "spec/semantics/442-deprecated-api-callbacks.watsup"
+        "spec/semantics/442-deprecated-api-callbacks.watsup",
+        "spec/semantics/443-deprecated-closure-invoke.watsup",
+        "spec/semantics/105-named-arguments.watsup",
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/379-sensitive-parameters.watsup"
       ],
       "helper_tests": [
         "tests/semantics/deprecated_protocol.py",
         "tests/semantics/deprecated_api_protocol.py",
-        "tests/semantics/deprecated_exception_protocol.py"
+        "tests/semantics/deprecated_exception_protocol.py",
+        "tests/semantics/deprecated_closure_invoke_protocol.py",
+        "tests/semantics/deprecated_closure_invoke_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/deprecated_sources.py",
@@ -29099,7 +29117,9 @@
         "tests/semantics/deprecated_api_review_cases.py",
         "tests/semantics/deprecated_api_native.py",
         "tests/semantics/deprecated_exception_cases.py",
-        "tests/semantics/deprecated_exception_review_cases.py"
+        "tests/semantics/deprecated_exception_review_cases.py",
+        "tests/semantics/deprecated_closure_invoke_cases.py",
+        "tests/semantics/deprecated_closure_invoke_review_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_attributes.c",
@@ -29109,9 +29129,10 @@
         "coverage/semantics/builtin-deprecated-review.json",
         "docs/semantics/BUILTIN-ATTRIBUTES.md",
         "coverage/semantics/builtin-deprecated-api-review.json",
-        "coverage/semantics/builtin-deprecated-exception-api-review.json"
+        "coverage/semantics/builtin-deprecated-exception-api-review.json",
+        "coverage/semantics/builtin-deprecated-closure-invoke-review.json"
       ],
-      "review": "ATTR02 admits literal/NULL message and since on named user functions and ordinary methods. VM calls warn before NoDiscard and reception, retaining selected references, arguments, receiver and abrupt cleanup. Thirteen exact source agreements, two explicit API exclusions, four reached fronts with 314 conditions (278 source-reached checks, 24 derived guards, 12 raw API projections), and private strict430 retain separate cuts in builtin-deprecated-review.json. Other internal callback APIs, wider messages, targets and wrappers remain partial. ATTR03 stages selected error-handler and assert callbacks before copies and by-reference warnings; native-first source10, four reached fronts/179 conditions (172 reached, seven derived), and private and actual-tail joined strict431 pass at separate cuts. The maintained ATTR02 assert API boundary is promoted without historical replay or new agreement credit; explicit captured Closure->__invoke remains excluded. ATTR04 adds selected exception handlers to that early API phase, including unmarked callbacks, moved registry and original Throwable owners, fresh by-reference cells, reentry, Closure retirement before result validation and terminal fatal cleanup. Nine new native-first sources agree, four reached fronts pass 189 checks (184 reached, five derived), and private and actual-tail joined strict431 pass at separate cuts. One old API refusal remains zero credit; effectful special callables and the explicit Closure wrapper remain partial. See builtin-deprecated-exception-api-review.json."
+      "review": "Bounded literal/NULL message and since declarations, VM warning order and selected error/assert/exception-handler early API phases retain accepted ATTR02/03/04 cuts in their linked reviews. ATTR05 stages explicit captured-Closure __invoke wrapper (8192) then callee (16384) before inner copies, named holes and reception, with NoDiscard masked. Raw values/reference cells, virtual wrapper traces, SensitiveParameter snapshots and separate outer/inner Closure owners survive handlers and cleanup; named fake preflight borrows the inner Closure until holes finish. Ten native originals yield nine exact normal agreements and one unused-owning-result Unsupported boundary with zero agreement credit. Six full reached groups pass 337 checks (328 reached, nine derived); diagnostic53 is separate. Private strict432 passes. The old maintained wrapper expectation is promoted without historical replay/credit. Prioritized ATTR06 must stage raw arguments\u2192unused return value\u2192outer receiver release to remove the fence. Wider effectful special callables, messages and targets remain partial; see builtin-deprecated-closure-invoke-review.json."
     },
     {
       "id": "declarations.NoDiscard",
@@ -29129,20 +29150,28 @@
         "spec/semantics/90-parameter-defaults.watsup",
         "spec/semantics/105-named-arguments.watsup",
         "spec/semantics/126-class-compiler.watsup",
-        "spec/semantics/141-method-compiler.watsup"
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/443-deprecated-closure-invoke.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/nodiscard_protocol.py"
+        "tests/semantics/nodiscard_protocol.py",
+        "tests/semantics/deprecated_closure_invoke_protocol.py",
+        "tests/semantics/deprecated_closure_invoke_review_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/nodiscard_sources.py"
+        "tests/semantics/nodiscard_sources.py",
+        "tests/semantics/deprecated_closure_invoke_cases.py",
+        "tests/semantics/deprecated_closure_invoke_review_cases.py",
+        "tests/semantics/deprecated_api_native.py",
+        "tests/semantics/deprecated_api_models.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_attributes.c",
         "coverage/semantics/builtin-nodiscard-review.json",
-        "docs/semantics/BUILTIN-ATTRIBUTES.md"
+        "docs/semantics/BUILTIN-ATTRIBUTES.md",
+        "coverage/semantics/builtin-deprecated-closure-invoke-review.json"
       ],
-      "review": "ATTR01 implements literal/NULL-message named functions and ordinary class methods, result-use/API distinctions, pre-RECV warning continuations and real pending owners.26 exact originals,297 focused checks including24 derived guards, and strict427 retain separate accepted cuts. Only3 old target fences were measured plus1 ordinary control;22 other marked variants were inspected only. Wider metadata, messages, targets and wrappers remain required; see builtin-nodiscard-review.json."
+      "review": "ATTR01 implements literal/NULL-message named functions and ordinary class methods, result-use/API distinctions, pre-RECV warning continuations and real pending owners.26 exact originals,297 focused checks including24 derived guards, and strict427 retain separate accepted cuts. Only3 old target fences were measured plus1 ordinary control;22 other marked variants were inspected only. Wider metadata, messages, targets and wrappers remain required; see builtin-nodiscard-review.json. ATTR05 preserves masked NoDiscard for used/discarded explicit Closure wrappers across the reviewed 8192\u219216384 warning protocol; nine exact normal sources and one owning-result boundary retain separate cuts in builtin-deprecated-closure-invoke-review.json."
     },
     {
       "id": "declarations.DelayedTargetValidation",

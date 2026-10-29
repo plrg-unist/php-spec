@@ -98,12 +98,25 @@ receive a fresh cell. A captured Closure adds one owner at entry and may retire
 with its receiver after the body clears the registry; readonly selection
 history then validates the result without restoring a heap owner. An unhandled
 early warning throw or a body throw follows the terminal fatal path. Other
-internal callback consumers still refuse this early phase. PHP gives an
-explicit captured-Closure
-`__invoke()` call an internal wrapper warning before the named function's
-warning; the model refuses that route before either warning, with empty modeled
-stdout/stderr. General message evaluation, other attribute targets and wider
-owning wrapper histories remain partial.
+internal callback consumers require their own API staging.
+
+An explicit captured-Closure `__invoke()` call now emits the internal wrapper's
+E_DEPRECATED (8192), then the selected declaration's E_USER_DEPRECATED (16384).
+Both precede inner argument copies, named-hole completion and type reception;
+NoDiscard stays masked. The raw outer table and selected Closure remain owned
+through both handlers, including shared reference cells and changed caller
+variables. The inner warning trace contains a raw `Closure::__invoke` frame
+without a premature user callee. Sensitive parameters allocate distinct trace
+snapshots for raw outer arguments and coerced inner values.
+
+Named-hole preflight borrows the inner Closure in its fake context; its call
+owner starts only after holes finish. Historical hole metadata remains available
+after entry. Scalar body returns and abrupt warning cleanup retire raw outer
+arguments before the outer Closure receiver. An unused owning result is an
+explicit Unsupported boundary before any cleanup: PHP must retire raw arguments,
+then the unused return value, then the outer receiver. Implementing that staged
+return release is the next attribute milestone. General message evaluation,
+other targets and wider effectful special callable histories remain partial.
 The model follows `zend_compile.c` attribute and call lowering,
 `zend_vm_def.h` DO_FCALL/BY_NAME warnings, `zend_execute_API.c` callback timing
 and `zend_closures.c` wrapper flags in the pinned engine.
@@ -121,7 +134,7 @@ control, and four reached fronts with 179 conditions (172 reached, seven derived
 guards). Private and actual-tail joined strict431 pass. The historical ATTR02
 `assert` API exclusion is now a maintained supported expectation without new
 agreement credit; its original cut remains an exclusion. The explicit Closure
-wrapper boundary remains open.
+wrapper was still excluded at that cut.
 
 The [ATTR04 review](../../coverage/semantics/builtin-deprecated-exception-api-review.json)
 records nine new native-first exception-handler agreements, including one
@@ -129,4 +142,13 @@ unmarked control and two fatal outcomes. Four reached fronts pass 189 conditions
 (184 reached, five derived guards); private and actual-tail joined strict431
 pass at separate cuts. The measured old boundary remains an
 explicit Unsupported result with zero agreement credit. Effectful special API
-callable forms and the explicit Closure wrapper remain partial.
+callable forms remain partial; the explicit Closure wrapper is extended below.
+
+The [ATTR05 review](../../coverage/semantics/builtin-deprecated-closure-invoke-review.json)
+records ten native-first originals: nine exact normal agreements and one
+owning-unused-result boundary with zero agreement credit. Six full reached
+groups pass 337 checks (328 reached, nine derived); a separate bounded
+inner-throw diagnostic passes 53 checks without source agreement credit.
+Private strict432 passes. The maintained ATTR02 explicit-wrapper expectation
+is promoted without replay or new historical credit; all accepted cuts retain
+their original identities.

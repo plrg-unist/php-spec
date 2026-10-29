@@ -1,0 +1,164 @@
+{
+  "milestone": "ATTR05",
+  "status": "Independent semantic review and private validation accepted; actual-tail integration pending",
+  "target": "Pinned PHP 8.5.10 CLI NTS 64-bit and project-local SL semantics",
+  "scope": "Explicit captured-Closure __invoke emits wrapper E_DEPRECATED (8192) then selected callee E_USER_DEPRECATED (16384) before inner copies, named holes and reception. NoDiscard stays masked. Raw sent values, live reference cells, raw wrapper traces, SensitiveParameter snapshots and separate outer/inner Closure owners survive handlers and abrupt cleanup. Named fake preflight borrows the inner Closure until holes finish. Unused owning wrapper results remain an explicit boundary before cleanup; wider special callable/message/target histories remain partial.",
+  "raw_root": "../php-spec-evidence-archive/builtin-attributes-05",
+  "production": {
+    "parent": "1f6362191d63808bcbe981147783884354d8b944",
+    "private_semantic_cut": "79f9074ea4709d58ad925a118c7f1fcdfb1c0c45",
+    "implementation": "spec/semantics/443-deprecated-closure-invoke.watsup with existing source-call, named-entry, trace and cleanup stages",
+    "shared_identity_helper": "Private 073844a7e is the isolated runtime-only canonical 244d42f96 GC31e normalization; no broader GC import. It makes the SL receipt predicate AL-equivalent for a VARIABLE-left, produced-right identity temporary.",
+    "maintained_fixtures": [
+      "tests/semantics/deprecated_closure_invoke_cases.py",
+      "tests/semantics/deprecated_closure_invoke_review_cases.py",
+      "tests/semantics/deprecated_closure_invoke_protocol.py",
+      "tests/semantics/deprecated_closure_invoke_review_protocol.py",
+      "tests/semantics/deprecated_api_native.py",
+      "tests/semantics/deprecated_api_models.py"
+    ]
+  },
+  "evidence": {
+    "native_packets": [
+      [
+        "native-first-be00227b6/report.json",
+        "19bdd3f0968b8a7f7ee01f8f7647b041d84c4e0a47e49e43e52da177c05cc462",
+        5
+      ],
+      [
+        "native-reference-5bc1b46c0/report.json",
+        "b3834a19cf873bcd3569204fe599c85bfef55c87dcbc28169f2f5697518adb98",
+        1
+      ],
+      [
+        "native-outer-owner-5bc1b46c0/report.json",
+        "268eb809d095ae83cca637a1e16a75e784697dc2c4985473861165c84d3d0e96",
+        1
+      ],
+      [
+        "native-unpack-a28d3ac8e/report.json",
+        "858aabde5649941a135c362c1d6160652534dd5a216f07600ae970ff245d5c00",
+        1
+      ],
+      [
+        "native-owning-result-54a/report.json",
+        "620ccbf5e682565a28fbfb89b2815965f895e29034440fb36ae731c6bd05db61",
+        1
+      ],
+      [
+        "native-sensitive-first/report.json",
+        "73c2ceaecf7a35b42ee69fbb54363242ee1a132d2b4d1cd6e59bd0c10256a873",
+        1
+      ]
+    ],
+    "normal_model_packets": [
+      {
+        "report": [
+          "model-046b20481/report.json",
+          "56d33d8f46871ac0c5d92f950983aea51f991e68ab947b7d115b4317ed04d4d0"
+        ],
+        "accepted_normal_rows": [
+          "explicit-wrapper-positional-before-type-reception",
+          "explicit-wrapper-outer-throw-releases-raw-owners",
+          "explicit-wrapper-required-named-hole-before-error"
+        ]
+      },
+      {
+        "report": [
+          "model-inner-measured-29d73801c/report.json",
+          "3ae146048d4237c02ffc2b75455cb06565555ba354b5f548b9061e7ae963ee70"
+        ],
+        "accepted_normal_rows": [
+          "invoke-inner-warning-throw-keeps-raw-wrapper-owners"
+        ]
+      },
+      {
+        "report": [
+          "model-remaining/report.json",
+          "80ba4df512fbb9df3a3d82ff8a3cfafc612b711d2a6f4881346521cc087c9d8c"
+        ],
+        "accepted_normal_rows": [
+          "invoke-unmarked-nodiscard-weak-reception-control",
+          "invoke-reference-slot-live-through-both-warnings"
+        ]
+      },
+      {
+        "report": [
+          "model-identity-body-and-unrun/report.json",
+          "c496026e6f4c7adb77010c3ba0d14ed6ba7d9cd9f8dc4ba2098a72105b5150de"
+        ],
+        "accepted_normal_rows": [
+          "invoke-body-return-retires-raw-argument-before-outer-receiver",
+          "invoke-named-unpack-default-hole-stays-raw-through-warnings",
+          "invoke-sensitive-raw-wrapper-and-coerced-body-snapshots"
+        ]
+      }
+    ],
+    "explicit_boundary": [
+      [
+        "model-owning-result-stop/report.json",
+        "96ceb42aa055b33f37480d76bc42960076f2af0ee1a04495f6b305d3d38a0ce6"
+      ],
+      "Unsupported unused owning explicit Closure wrapper result; exact O/I/B prefix, no cleanup callbacks, tool exit1, empty stderr, agreement0"
+    ],
+    "strict_432": [
+      "strict-fake-trace-79f9074ea/report.json",
+      "cfdcb59e672f9b835edc9fcc95c80e6c72f3573b443ec1fb2ef187edcc1c2b87"
+    ],
+    "full_reached_packets": [
+      {
+        "report": [
+          "authored-positional-carrier-f541438af/report.json",
+          "f5311e98de676d258b428fdb4ad8998e58db226a32fe4f7bbfb87dee8e8fa9cf"
+        ],
+        "groups": 1,
+        "conditions": 58,
+        "derived_guards": 3
+      },
+      {
+        "report": [
+          "authored-remaining-79f9074ea/report.json",
+          "4333c49c0267f325ee2276055b36e6ba639d292faa2e19d8cfc103393e296eb9"
+        ],
+        "groups": 3,
+        "conditions": 154,
+        "derived_guards": 4
+      },
+      {
+        "report": [
+          "review-focused-11edeca43/report.json",
+          "9f366edf8da93d70be338ea31766847a3ced8df8c9ec7d22d685f0d142d9826b"
+        ],
+        "groups": 2,
+        "conditions": 125,
+        "derived_guards": 2
+      }
+    ],
+    "bounded_inner_throw_diagnostic": [
+      [
+        "focused-inner-diagnostic/report.json",
+        "5eda6f00adfaa67e223106b0701fef1597e45a1cb922beb07bd04d06ec88c7a7"
+      ],
+      53,
+      "diagnostic_only=true; stops after finite handler-throw/cursor cleanup progress, no final source agreement credit"
+    ],
+    "native_originals": 10,
+    "exact_normal_agreements": 9,
+    "explicit_boundary_agreements": 0,
+    "full_reached_groups": 6,
+    "full_reached_conditions": 337,
+    "source_reached_conditions": 328,
+    "derived_guard_assertions": 9
+  },
+  "preserved_failures": {
+    "old_boundary": "old-boundary-be00227b6/report.json: new positional original checked Unsupported Deprecated internal API timing, zero agreement.",
+    "inner_timeout": "model-046b20481/report.json: inner-throw CLI150 timeout after first three normal passes. model-inner-retry-a28d3ac8e was stopped on the focused-first instruction; both zero credit. Existing focused diagnostic 143.09s justified only the unchanged 240s retry, which passed in 120.08s.",
+    "body_receipt": "model-remaining/report.json: body original interpreter failure. review-body-owner-stuck-step2-210ebe889 localized DESTRUCTOR_OPERATION_EXIT SOURCE=BINARY_RIGHT IDENTICAL VARIABLE value with one produced-right Token receipt; isolated GC31e fixed the affected body source/checkpoint. Earlier malformed raw-state reinjection and incomplete local walks are diagnostics with zero credit.",
+    "boundary_cleanup": "model-identity-body-and-unrun/report.json: owning result reason was correct but generic Unsupported unwind ran extra callbacks. Exact-reason terminal stop 11ed preserved paused roots and exact prefix; no accepted normal replay.",
+    "preparation": "strict-5bc1b46c0 binding-origin error, strict-sensitive missing early declaration, and authored-positional-5623a6505 obsolete bare PSTRING fixture all retain zero credit. Narrow corrections have affected passing cuts above."
+  },
+  "compatibility": "Nine accepted normal rows keep their actual separate source revisions; aggregate false packets contribute only listed passing rows. The later named-preflight owner correction affects only genuine fixed holes and is validated by required-hole and successful-default reached fronts. Historical HOLES is retained. Read-only trace identity normalization preserves prior formatting without adding owners. Positional reached58, peer125 and bounded diagnostic53 retain their original cuts; no native or accepted normal source renewal occurred. The maintained ATTR02 wrapper expectation is promoted without replay or historical credit.",
+  "next_required": "ATTR06 must implement raw outer argument retirement, then unused return-value retirement, then outer Closure receiver retirement, matching zend_vm_def.h DO_FCALL fcall_end. This removes the explicit owning-result fence; skip-only frame cleanup would give the wrong order.",
+  "source": "vendor/php-src/Zend/zend_closures.c zend_get_closure_invoke_method and ZEND_METHOD(Closure,__invoke); Zend/zend_execute_API.c zend_call_function warning/copy/UNDEF/GC_ADDREF order; Zend/zend_execute.c zend_handle_undef_args fake frame; Zend/zend_vm_def.h DO_FCALL fcall_end; Zend/zend_builtin_functions.c debug_backtrace_get_args SensitiveParameter handling.",
+  "recovery": "All ten frozen original payloads and expected streams are tracked in three authored plus seven independent cases. deprecated_api_native.py --group attr05 records new native packets without changing the attr03 default. deprecated_api_models.py consumes retained native reports and labels the owning boundary explicit_boundary/agreement0. Authored protocol has four full groups; peer protocol has two full groups plus a separately selected diagnostic-only inner-throw case. Reports retain actual revisions, source/input hashes, profile, commands, streams/exits, single CPU affinity and process-group reap. Raw artifacts remain outside Git."
+}
