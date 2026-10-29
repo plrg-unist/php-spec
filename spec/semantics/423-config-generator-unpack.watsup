@@ -15,6 +15,10 @@ dec $config_generator_history(pstate, pconfiggenerator) : bool
 dec $config_generator_quiet_closed(pstate, pconfiggenerator) : bool
 dec $config_generator_return_history(pstate, pconfiggenerator) : bool
 dec $config_generator_return_storage(pstate, pconfiggenerator) : bool
+dec $config_generator_reference_history(pstate, pconfiggenerator) : bool
+dec $config_generator_reference_storage(pstate, pconfiggenerator) : bool
+dec $config_generator_storage_history(pstate, pconfiggenerator) : bool
+dec $config_generator_storage_child(pstate, pconfiggenerator) : bool
 dec $config_generator_storage_release(pstate, pconfiggenerator, ptask*) : pstate
 dec $config_generator_storage_finish(pstate, pconfiggenerator, ptask*) : pstate
 dec $config_generator_retired_scope(pstate, pconfiggenerator) : bool
@@ -175,7 +179,32 @@ def $config_generator_return_storage(S, pconfiggenerator) = true
   -- if $node_children(S, HOBJECT n_return) = eps
   -- if $node_children(S, HOBJECT pconfiggenerator.OBJECT) = [HOBJECT n_return]
 def $config_generator_return_storage(S, pconfiggenerator) = false -- otherwise
-def $config_generator_retired_scope(S, pconfiggenerator) = (($config_generator_quiet_closed(S, pconfiggenerator) \/ $config_generator_return_history(S, pconfiggenerator)) /\ ~$generator_storage_active(S, pconfiggenerator.OBJECT) /\ ~((HOBJECT pconfiggenerator.OBJECT) <- S.ALLOCATIONS))
+;; The live gate reads the scalar while its cell is allocated. Retired history
+;; uses only the saved Generator/source shape after storage releases that cell.
+def $config_generator_reference_history(S, pconfiggenerator) = true
+  -- if $config_generator_history(S, pconfiggenerator)
+  -- if $config_generator_reference_input(pconfiggenerator)
+  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.FRAME = eps
+  -- if pgenerator.DELEGATE = eps /\ pgenerator.BORROWED = eps
+  -- if pgenerator.VALUE = eps /\ pgenerator.RETURN = eps
+  -- if pgenerator.REFCELL = (n_cell) /\ pgenerator.KEY = (PINT z)
+  -- if $generator_reference_producer(S, pgenerator)
+def $config_generator_reference_history(S, pconfiggenerator) = false -- otherwise
+def $config_generator_reference_storage(S, pconfiggenerator) = true
+  -- if $config_generator_reference_history(S, pconfiggenerator)
+  -- if (HOBJECT pconfiggenerator.OBJECT) <- S.ALLOCATIONS
+  -- if ~$generator_storage_active(S, pconfiggenerator.OBJECT)
+  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.REFCELL = (n_cell)
+  -- if $ordinary_reference_value(S, n_cell) = (pvalue)
+  -- if $config_iterator_scalar(S, pvalue)
+  -- if $node_children(S, HOBJECT pconfiggenerator.OBJECT) = [HCELL n_cell]
+  -- if $heap_owners($heap_graph(S), HCELL n_cell) = 1
+def $config_generator_reference_storage(S, pconfiggenerator) = false -- otherwise
+def $config_generator_storage_history(S, pconfiggenerator) = ($config_generator_return_history(S, pconfiggenerator) \/ $config_generator_reference_history(S, pconfiggenerator))
+def $config_generator_storage_child(S, pconfiggenerator) = ($config_generator_return_storage(S, pconfiggenerator) \/ $config_generator_reference_storage(S, pconfiggenerator))
+def $config_generator_retired_scope(S, pconfiggenerator) = (($config_generator_quiet_closed(S, pconfiggenerator) \/ $config_generator_storage_history(S, pconfiggenerator)) /\ ~$generator_storage_active(S, pconfiggenerator.OBJECT) /\ ~((HOBJECT pconfiggenerator.OBJECT) <- S.ALLOCATIONS))
 def $config_generator_saved_scope(S, pconfiggenerator) = $config_generator_scope(S, pconfiggenerator)
   -- if (HOBJECT pconfiggenerator.OBJECT) <- S.ALLOCATIONS
 def $config_generator_saved_scope(S, pconfiggenerator) = $config_generator_retired_scope(S, pconfiggenerator)
@@ -215,7 +244,7 @@ def $config_generator_stage(S, pconfiggenerator, "input-release") = true
   -- if $config_generator_owning_input(pconfiggenerator)
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_CLOSED
-def $config_generator_stage(S, pconfiggenerator, "storage-released") = $config_generator_return_history(S, pconfiggenerator)
+def $config_generator_stage(S, pconfiggenerator, "storage-released") = $config_generator_storage_history(S, pconfiggenerator)
 def $config_generator_stage(S, pconfiggenerator, text) = false -- otherwise
 def $config_generator_at(CONFIG_GENERATOR pconfiggenerator text, porigin) = (pconfiggenerator.CALL.SITE = porigin)
 def $config_generator_at(ptask, porigin) = false -- otherwise
@@ -359,15 +388,15 @@ def $call_task_valid(S, CONFIG_GENERATOR pconfiggenerator text) = $config_genera
 def $selected_task_nonce(CONFIG_GENERATOR pconfiggenerator text) = pconfiggenerator.CALL.SELECTION
 def $generator_internal_task(CONFIG_GENERATOR pconfiggenerator text) = true
 def $eager_explicit_task(CONFIG_GENERATOR pconfiggenerator text) = true
-def $config_generator_finish_allowed(S, pconfiggenerator) = ($config_generator_callee(S, pconfiggenerator.CALL.OWNER, 1) /\ ($($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1) \/ $config_generator_quiet_closed(S, pconfiggenerator) \/ $config_generator_return_storage(S, pconfiggenerator)))
+def $config_generator_finish_allowed(S, pconfiggenerator) = ($config_generator_callee(S, pconfiggenerator.CALL.OWNER, 1) /\ ($($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1) \/ $config_generator_quiet_closed(S, pconfiggenerator) \/ $config_generator_storage_child(S, pconfiggenerator)))
 def $config_generator_finish(S, pconfiggenerator, ptask*) = $fiber_start_unpack_release(S[.ORIGIN = (pconfiggenerator.CALL.SITE)][.TODO = (CONFIG_GENERATOR pconfiggenerator "invoke") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], [HOBJECT pconfiggenerator.OBJECT])
   -- if $config_generator_finish_allowed(S, pconfiggenerator)
   -- if ~$config_generator_owning_input(pconfiggenerator)
-  -- if ~$config_generator_return_storage(S, pconfiggenerator) \/ $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1)
+  -- if ~$config_generator_storage_child(S, pconfiggenerator) \/ $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1)
 def $config_generator_finish(S, pconfiggenerator, ptask*) = $config_generator_storage_release(S, pconfiggenerator, ptask*)
   -- if $config_generator_finish_allowed(S, pconfiggenerator)
   -- if ~$config_generator_owning_input(pconfiggenerator)
-  -- if $config_generator_return_storage(S, pconfiggenerator)
+  -- if $config_generator_storage_child(S, pconfiggenerator)
   -- if $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 1
 def $config_generator_finish(S, pconfiggenerator, ptask*) = $fiber_start_unpack_release(S[.ORIGIN = (pconfiggenerator.CALL.SITE)][.TODO = (CONFIG_GENERATOR pconfiggenerator "input-release") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], [HOBJECT pconfiggenerator.OBJECT])
   -- if $config_generator_finish_allowed(S, pconfiggenerator)
@@ -380,10 +409,10 @@ rule PhpStep/config-generator-finish: S ~> $config_generator_finish(S, pconfigge
 ;; SEND_UNPACK destroys iterator DATA first, then FREE_OP1 drops INPUT.
 def $config_generator_release_input(S, pconfiggenerator, ptask*) = $fiber_start_unpack_release(S[.ORIGIN = (pconfiggenerator.CALL.SITE)][.TODO = (CONFIG_GENERATOR pconfiggenerator "invoke") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $config_generator_input_nodes(pconfiggenerator))
   -- if $config_generator_finish_allowed(S, pconfiggenerator)
-  -- if ~$config_generator_return_storage(S, pconfiggenerator) \/ $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1)
+  -- if ~$config_generator_storage_child(S, pconfiggenerator) \/ $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1)
 def $config_generator_release_input(S, pconfiggenerator, ptask*) = $config_generator_storage_release(S, pconfiggenerator, ptask*)
   -- if $config_generator_finish_allowed(S, pconfiggenerator)
-  -- if $config_generator_return_storage(S, pconfiggenerator)
+  -- if $config_generator_storage_child(S, pconfiggenerator)
   -- if $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 1
 def $config_generator_release_input(S, pconfiggenerator, ptask*) = S[.COMPLETION = UNSUPPORTED "CONFIG Generator unpack last INPUT or callee owner"]
   -- if ~$config_generator_finish_allowed(S, pconfiggenerator)
@@ -460,7 +489,7 @@ def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if $intrinsic_argument(S, pconfiggenerator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
   -- if pdestructionoperation.ORIGIN = (porigin)
   -- if S_scope = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
-  -- if $config_generator_return_history(S_scope, pconfiggenerator)
+  -- if $config_generator_storage_history(S_scope, pconfiggenerator)
   -- if (HOBJECT pconfiggenerator.OBJECT) <- S_scope.ALLOCATIONS \/ ~$generator_storage_active(S_scope, pconfiggenerator.OBJECT)
 def $return_discard(S, CONFIG_GENERATOR pconfiggenerator text) = $config_generator_discard(S, pconfiggenerator, text)
   -- if S.TODO = (THROW_SEARCH n) :: ptask*
