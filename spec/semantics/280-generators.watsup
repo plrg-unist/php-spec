@@ -334,10 +334,7 @@ rule PhpStep/generator-create-scope-unsupported: S ~> S[.TODO = eps][.COMPLETION
 def $generator_creation_supported(S, pcallcontext) = (~$autoload_context_kind(S, pcallcontext) /\ ($generator_creation_target(S, pcallcontext.TARGET, pcallcontext.CALLSITE) \/ $access_generator_creation(S, pcallcontext)))
 def $generator_creation_target(S, porigin, porigin_site?) = $call_selected_valid(S, porigin, porigin_site?)
 def $generator_creation_target(S, CLOSURE_TARGET n, porigin_site?) = $call_selected_valid(S, CLOSURE_TARGET n, porigin_site?)
-def $generator_creation_target(S, METHOD_TARGET n porigin, (porigin_site)) = true
-  -- if (HOBJECT n) <- S.ALLOCATIONS
-  -- if $generator_implicit_invoke_target(S, METHOD_TARGET n porigin, porigin_site)
-def $generator_creation_target(S, METHOD_TARGET n porigin, (porigin_site)) = ($generator_creation_method(S, porigin, (porigin_site)) \/ ($generator_creation_method_source(S, METHOD_TARGET n porigin, porigin_site) /\ $generator_creation_method_live_capture(S, METHOD_TARGET n porigin, porigin_site) =/= eps) \/ $generator_creation_target_capture(S, METHOD_TARGET n porigin, porigin_site))
+def $generator_creation_target(S, METHOD_TARGET n porigin, (porigin_site)) = ((((HOBJECT n) <- S.ALLOCATIONS) /\ $generator_implicit_invoke_target(S, METHOD_TARGET n porigin, porigin_site)) \/ $generator_creation_method(S, porigin, (porigin_site)) \/ ($generator_creation_method_source(S, METHOD_TARGET n porigin, porigin_site) /\ $generator_creation_method_live_capture(S, METHOD_TARGET n porigin, porigin_site) =/= eps) \/ $generator_creation_target_capture(S, METHOD_TARGET n porigin, porigin_site))
 def $generator_creation_target(S, STATIC_METHOD_TARGET porigin_class porigin, (porigin_site)) = ($generator_creation_method(S, porigin, (porigin_site)) \/ ($generator_creation_method_source(S, STATIC_METHOD_TARGET porigin_class porigin, porigin_site) /\ $generator_creation_method_live_capture(S, STATIC_METHOD_TARGET porigin_class porigin, porigin_site) =/= eps) \/ $generator_creation_target_capture(S, STATIC_METHOD_TARGET porigin_class porigin, porigin_site))
 def $generator_creation_target(S, METHOD_TARGET n porigin, eps) = false
 def $generator_creation_target(S, STATIC_METHOD_TARGET porigin_class porigin, eps) = false
