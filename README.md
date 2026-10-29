@@ -4218,10 +4218,14 @@ at visited nodes. Reached ordinary recursion raises a catchable Error with its
 source, trace and normal unwind cleanup. The visited captured walk has no fixed
 depth limit: active-left guards and the finite heap bound traversal while shared
 DAG branches compare normally. Callback and wider-layout boundaries and finite
-previous-path authentication remain separate.
+acyclic previous-path authentication remain separate.
 [Visited-trace review](coverage/semantics/throwable-trace-visited-comparison-review.json).
 [Recursion Error review](coverage/semantics/throwable-trace-recursion-comparison-review.json).
 [Finite-heap traversal review](coverage/semantics/throwable-trace-unbounded-comparison-review.json).
+Canonical root contexts and previous paths also have no numeric depth ceiling.
+Visited object IDs bound pure path authentication by the finite heap; whole-path
+acyclicity and the existing layout restrictions remain required.
+[Finite previous-path review](coverage/semantics/throwable-previous-finite-comparison-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The

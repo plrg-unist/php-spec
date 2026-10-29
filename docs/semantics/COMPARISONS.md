@@ -649,38 +649,36 @@ graphs remain outside this bound. [Property-reference graph review](../../covera
 Distinct exact builtin `Exception` and `Error` roots compare by their standard
 handler's class mismatch before reading either object's property slots, trace
 arguments or previous link. Under normal nonpending completion, both roots must
-be live canonical unmaterialized images and the comparison guard must be shallower
-than 16 entries. The mismatch yields order `1` in both orientations, so all four
+be live canonical unmaterialized images. The mismatch yields order `1` in both
+orientations, so all four
 relational operators are false; strict identity remains separate. Warm caches,
 nonempty traces, previous links and cyclic or callback-capable captured payloads
 are skipped. Six new native/model normal sources agree with PHP; one old same-kind
 cold control still agrees and a same-kind cycle stays Unsupported. A reached
 fixture checks 74 premises and two raw steps: direct mismatch and equal-prefix
 array mismatch both leave physical storage/events unchanged and skip a later
-caster. Deeper comparison stacks, subclass pairs, materialized roots and pending
-states remain outside this bound. [Cross-kind Throwable review](../../coverage/semantics/throwable-cross-kind-comparison-review.json).
+caster. Subclass pairs, materialized roots and pending states remain outside
+this bound. [Cross-kind Throwable review](../../coverage/semantics/throwable-cross-kind-comparison-review.json).
 
 The same early class-mismatch order now covers distinct exact source-constructible
 builtin Throwable kinds beyond `Exception`/`Error`, including parent/child and
 sibling classes and `ErrorException` with its extra severity slot. Both roots
-must be live canonical unmaterialized images under normal nonpending completion
-and a comparison guard below 16 entries; generated-only `FiberError` is outside
-this cut. Order `1` in both orientations skips cached strings, previous links,
+must be live canonical unmaterialized images under normal nonpending completion;
+generated-only `FiberError` is outside this cut. Order `1` in both orientations skips cached strings, previous links,
 captured cyclic objects and later aggregate casters without reading their
 values. Six new normal sources agree with PHP, one earlier cross-kind control
 still agrees, and a same-kind `RuntimeException` pair remains Unsupported. Two
 source-reached fixtures check 125 premises and four raw comparisons, including
 the actual severity slot and a skipped cyclic trace/tail. Materialized roots,
-subclasses, deeper stacks and pending states remain partial.
+subclasses and pending states remain partial.
 [Builtin-kind comparison review](../../coverage/semantics/throwable-builtin-kind-comparison-review.json).
 
 Distinct same-kind exact builtin Throwables beyond `Exception`/`Error` now
 compare all inline physical slots under normal nonpending completion. Both
 roots must be live canonical unmaterialized images with null `previous`, cold
 or warmed `PSTRING` caches and finite allocated `DIRECT` trace graphs containing
-only primitive, valid string-carrier or acyclic array values. The comparison
-guard stays below 16 entries. This covers the 12 source-constructible kinds in
-that bound; `ErrorException` compares its severity after the seven inherited
+only primitive, valid string-carrier or acyclic array values. This covers the
+12 source-constructible kinds in that bound; `ErrorException` compares its severity after the seven inherited
 slots. Equal formatted strings still descend to severity, and finite TypeError
 trace arrays retain count/key/value order. Seven new normal sources (five main
 author cases, one focused reached source and one independent source), three
@@ -692,9 +690,9 @@ pending comparisons remain outside this cut.
 [Same-kind builtin review](../../coverage/semantics/throwable-builtin-same-comparison-review.json).
 
 Those twelve same-kind builtin root kinds also compare finite `previous` chains
-under normal nonpending completion and a comparison guard below 16 entries.
-Each path has at most 16 live canonical unmaterialized nodes of exact
-source-constructible builtin kinds, with physical cold or warm `PSTRING` caches.
+under normal nonpending completion. Each path has finite, acyclic live canonical
+unmaterialized nodes of exact source-constructible builtin kinds, with physical
+cold or warm `PSTRING` caches.
 The scan follows every physical slot: `previous` is seventh, before
 `ErrorException` severity eighth, including at nested nodes. Null sorts below a
 link. Shared child identity compares equal, and different exact child classes
@@ -739,6 +737,18 @@ root-chain bounds below retain their separate rules.
 [Recursion Error review](../../coverage/semantics/throwable-trace-recursion-comparison-review.json).
 [Finite-heap traversal review](../../coverage/semantics/throwable-trace-unbounded-comparison-review.json).
 
+Canonical root admission has no numeric comparison-context ceiling, and the
+three previous-path validators have no numeric length ceiling. Each pure
+validator checks the current live canonical object and rejects a repeated ID
+before prepending it and following `previous`; the finite `OBJECTS` set bounds
+fresh visits. Complete path authentication still precedes the same-kind linked
+comparison, and warm-cache presence is inspected only after acyclic admission.
+Shared suffixes authenticate independently on each path. Identity, class, slots,
+count/key/value order, captured recursion Errors and owners are unchanged.
+Invalid, cyclic, materialized or freeing previous nodes remain outside these
+routes; this does not add lazy previous admission or previous-cycle comparison.
+[Finite previous-path review](../../coverage/semantics/throwable-previous-finite-comparison-review.json).
+
 Warm caches and nonempty builtin traces now meet in the same physical slot
 scan. Same-kind canonical `Exception`/`Error` pairs with null previous values
 admit finite `DIRECT` trace graphs containing primitive or valid string-carrier
@@ -752,12 +762,12 @@ wider [warm trace graphs](../../coverage/semantics/throwable-warm-trace-comparis
 Cold builtin `Exception`/`Error` pairs also compare finite `previous` chains.
 Every reached node must be a live, unmaterialized object of the same builtin
 kind with a physical empty string cache and allocated empty trace; each chain
-is acyclic and at most 16 nodes. The first six declared slots compare before
+is finite and acyclic. The first six declared slots compare before
 `previous`. Null sorts below a link, shared object identity compares equal,
 and distinct links descend through the same slot order. Equal chains continue
 into later array entries; a nonzero inner result skips later casters. This
-normal, nonpending bound leaves warm or nonempty traces, mixed kinds, longer or
-cyclic chains, materialized tables and pending comparisons Unsupported.
+normal, nonpending bound leaves warm or nonempty traces, mixed kinds, cyclic
+chains, materialized tables and pending comparisons Unsupported.
 [Previous-chain review](../../coverage/semantics/throwable-previous-comparison-review.json).
 
 A physical `string` cache may also be warm at any node of those finite
@@ -767,8 +777,8 @@ a `previous` link and at least one nonempty cache. An unequal root or child
 cache decides before deeper code or links. The builtin formatter omits `code`,
 so equal warmed text can still descend into a different previous node's code.
 Six new source agreements cover root and child warmth, Error, equality operators
-and array tail continuation or skip. This normal, nonpending path retains the
-16-node acyclic cap and leaves nonempty traces, mixed kinds, materialized or
+and array tail continuation or skip. This normal, nonpending path requires
+finite acyclic links and leaves nonempty traces, mixed kinds, materialized or
 pending comparisons Unsupported.
 [Warm previous-chain review](../../coverage/semantics/throwable-warm-previous-comparison-review.json).
 

@@ -569,9 +569,28 @@ pass 324 premises/five raw steps; three focused older rows add 202/three, for
 526 premises/eight raw steps. Strict compilation of 425 modules passes. The
 original 240-second DAG timeout retains zero agreement; only the pending cases
 were rerun with an adequate watchdog. Earlier accepted COMP148 evidence retains
-its original cuts. Root guards, canonical previous paths and older authenticated
-modes retain their separate bounds; callbacks and wider layouts remain partial.
+its original cuts. At that cut, root guards, canonical previous paths and older
+authenticated modes retained their separate bounds; callbacks and wider layouts
+remain partial.
 [Finite-heap traversal review](coverage/semantics/throwable-trace-unbounded-comparison-review.json).
+
+Canonical Throwable comparison now removes numeric root-context and previous-path
+ceilings. Three pure validators track fresh live object IDs; finite `OBJECTS`
+bounds authentication without a replacement cap. Cold/warm base routes, physical
+slot order, early skips, captured Error/unwind and owners remain unchanged.
+Four authored originals and two separately frozen compact-AST independent sources
+agree exactly with PHP. New reached rows pass 328 premises/six raw steps; the
+affected older row adds 76/two, for 404/eight. Private and joined strict
+compilation pass on 425 and 428 modules. The unchanged deep-root gate was genuine
+Unsupported. Two original
+independent programs remain model-unvalidated performance cases after timeouts;
+they retain distinct source identities and zero agreement credit. The bounded
+progress diagnostic also has zero agreement credit. Failed fixture rows keep
+zero affected credit; only corrected pending rows were rerun. Accepted COMP148/149
+and passed source/state cuts retain their evidence. Authentication of the whole
+previous path stays eager; cyclic/invalid or materialized/freeing previous nodes,
+broader layouts and pending states remain partial.
+[Finite previous-path review](coverage/semantics/throwable-previous-finite-comparison-review.json).
 
 Fresh, unheld user Iterators returned by a borrowed `IteratorAggregate` getter
 now enter CONFIG unpack with DATA as their sole owner. Two original normal and
@@ -780,13 +799,13 @@ credit. Generator/reference getters and wider targets/lifetimes stay partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| A67 | Typed instance/static reference-source capture for CONFIG Iterators/shared DATA. |
+| A67 | Typed instance/static reference-source capture; reached-state validation. |
 | OB01 | Output-buffering frontier preparation. |
-| COMP150 | Finite Previous/root validation. |
-| GC03 | WeakMap registration order and proxy-count collection; native-first packet. |
-| ATTR01 | NoDiscard. |
+| CLASS148 | Dependent anonymous sites in successful include/eval units. |
+| GC03 | Four exact WeakMap order/proxy-count sources; state checks pending. |
+| ATTR01 | NoDiscard; compile validation. |
 | I75 | Keyword-forwarded static Generator factories; declaration/called-scope proof. |
-| Enum M4 | Generic static/FCC/class-constant first-use acquisition. |
+| Enum M4 | Generic static/FCC/class-constant first-use acquisition; private. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
@@ -798,7 +817,7 @@ linked from the [artifact index](docs/ARTIFACTS.md). Registered-loader static/FC
 and class-constant acquisition remains Unsupported; true misses retain PHP Errors.
 Case attributes, generated callable targets and wider type/link contexts remain open.
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73/74, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64/A65/A66, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110/111, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125/126, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148/149 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145/146/147 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73/74, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64/A65/A66, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110/111, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125/126, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148/149/150 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145/146/147 are integrated
 into this branch.
 GC physical01 is integrated on this tail; its private source/state cuts and the
 joined strict gate retain their separate tested identities.
