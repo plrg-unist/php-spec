@@ -119,7 +119,7 @@ def $config_string_pending_line_valid(S, METHOD_TARGET n porigin_method, (porigi
 def $config_string_pending_line_valid(S, pcalltarget, porigin?, z) = false -- otherwise
 def $config_string_context_line_valid(S, pcallcontext) = true
   -- if pcallcontext.CALLSITE = (porigin_child)
-  -- if $config_string_child_site(S, porigin_child, pcallcontext.LINE)
+  -- if $config_string_child_site(S, porigin_child, pcallcontext.LINE) \/ $enum_string_child_site(S, porigin_child, pcallcontext.LINE)
   -- if $stringify_context_kind(S, pcallcontext)
 def $config_string_context_line_valid(S, pcallcontext) = false -- otherwise
 def $config_string_trace_context(S, pcallcontext) = true
@@ -370,12 +370,14 @@ def $config_object(POBJECT n) = true
 def $config_object(pvalue) = false -- otherwise
 def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe, ptraceframe_invoke]
   -- if $config_method_receiver(S, pconfigcall)
+  -- if ~$enum_kind(pconfigcall.KIND)
   -- if ~$from_kind(pconfigcall.KIND) /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND) /\ ~$fiber_kind(pconfigcall.KIND) /\ ~$weakref_kind(pconfigcall.KIND)
   -- if pvalue_original* = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $intrinsic_name(pconfigcall.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
   -- if ptraceframe_invoke = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue_original*, 0), HASARGS true}
 def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe]
   -- if ~$config_method_receiver(S, pconfigcall)
+  -- if ~$enum_kind(pconfigcall.KIND)
   -- if ~$fiber_core_config(S, pconfigcall)
   -- if ~$from_kind(pconfigcall.KIND) /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND) /\ ~$fiber_kind(pconfigcall.KIND) /\ ~$weakref_kind(pconfigcall.KIND)
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $intrinsic_name(pconfigcall.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
@@ -1122,6 +1124,7 @@ def $error_trigger_trace_values(S, pconfigcall) = [PNULL]
 rule PhpStep/config-invoke: S ~> $config_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
+  -- if ~$enum_kind(pconfigcall.KIND)
   -- if ~$error_api_kind(pconfigcall.KIND) /\ ~$assertion_kind(pconfigcall.KIND) /\ ~$output_buffer_kind(pconfigcall.KIND) /\ ~$dynamic_constant_kind(pconfigcall.KIND)
   -- if ~$from_kind(pconfigcall.KIND) /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND) /\ ~$fiber_kind(pconfigcall.KIND) /\ ~$weakref_kind(pconfigcall.KIND) /\ ~$gc_kind(pconfigcall.KIND)
   -- if S.FILEINCLUDEPATH =/= eps \/ $config_ini_kind(pconfigcall.KIND)
@@ -1129,6 +1132,7 @@ rule PhpStep/config-invoke: S ~> $config_receive(S, pconfigcall)
 rule PhpStep/config-invoke-no-file: S ~> S[.COMPLETION = UNSUPPORTED "include_path intrinsic requires finite file mode"]
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
+  -- if ~$enum_kind(pconfigcall.KIND)
   -- if ~$error_api_kind(pconfigcall.KIND) /\ ~$assertion_kind(pconfigcall.KIND) /\ ~$output_buffer_kind(pconfigcall.KIND) /\ ~$dynamic_constant_kind(pconfigcall.KIND)
   -- if ~$from_kind(pconfigcall.KIND) /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND) /\ ~$fiber_kind(pconfigcall.KIND) /\ ~$weakref_kind(pconfigcall.KIND) /\ ~$gc_kind(pconfigcall.KIND)
   -- if S.FILEINCLUDEPATH = eps

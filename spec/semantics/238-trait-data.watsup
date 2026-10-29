@@ -399,9 +399,11 @@ def $trait_data_constant_one(S, pclassdesc, pclassdesc_trait, pclassconstantdesc
   -- if $class_constant_desc(pclassdesc.CONSTANTS, pclassconstantdesc.NAME) = eps
 def $trait_data_constant_one(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*) = $trait_data_constant_error(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*)
   -- if $class_constant_desc(pclassdesc.CONSTANTS, pclassconstantdesc.NAME) = (pclassconstantdesc_prior)
+  -- if ~$enum_case_origin(S, pclassconstantdesc_prior.ORIGIN)
   -- if pclassconstantdesc_prior.VISIBILITY =/= pclassconstantdesc.VISIBILITY \/ pclassconstantdesc_prior.FINAL =/= pclassconstantdesc.FINAL
 def $trait_data_constant_one(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*) = $trait_data_constant_checked(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, $trait_data_types(S, pclassdesc, $trait_constant_source_type(S, pclassconstantdesc_prior), pclassdesc_trait, pclassconstantdesc.TYPE, true, false))
   -- if $class_constant_desc(pclassdesc.CONSTANTS, pclassconstantdesc.NAME) = (pclassconstantdesc_prior)
+  -- if ~$enum_case_origin(S, pclassconstantdesc_prior.ORIGIN)
   -- if pclassconstantdesc_prior.VISIBILITY = pclassconstantdesc.VISIBILITY /\ pclassconstantdesc_prior.FINAL = pclassconstantdesc.FINAL
 def $trait_data_constant_checked(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATABAD) = $trait_data_constant_error(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*)
 def $trait_data_constant_checked(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATAUNKNOWN text) = S[.COMPLETION = UNSUPPORTED text]

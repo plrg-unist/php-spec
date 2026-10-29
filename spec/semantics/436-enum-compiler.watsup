@@ -1,0 +1,111 @@
+dec $enum_interfaces(text) : ptbytes*
+dec $enum_all_interfaces(ptbytes*, text) : ptbytes*
+dec $enum_backing_node(phpType50) : text
+dec $ppenum_backing(ppstate, pcpath) : text
+dec $enum_backing_invalid(ppstate, ptresult) : ppstate
+dec $ppenum_start(ppstate, pcpath, pchheader, pchdiagnostic*) : ppstate
+dec $ppenum_members(ppstate, pcpath, pchheader, ppmembers) : ppstate
+dec $ppenum_case(ppstate, pcpath, porigin, phpType14, phpType11, phpType5, pchheader, int) : ppstate
+dec $ppenum_case_value(ppstate, pcpath, porigin, ptbytes, phpType5, pchheader, int) : ppstate
+dec $ppenum_case_add(ppstate, pcpath, porigin, ptbytes, pchheader, int) : ppstate
+dec $enum_implicit_property(porigin, ptbytes, text) : ppropertydesc
+dec $enum_implicit_properties(porigin, text) : ppropertydesc*
+
+;; Zend/zend_compile.c::zend_compile_class_decl/compile_enum_case. Cases stay
+;; deferred object initializers with their real source occurrences as identity.
+def $pchlower(NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata) = PCHRAW {KIND "enum", NAME phpType3, FLAGS 32, PARENT ABSENT, INTERFACES phpType42, ATTRIBUTES phpType14, BODY phpType23}
+def $pchrole("enum") = $ptascii("an enum name")
+def $pchattributes(pchraw, pchheader, ptcontext) = $pcherror(ptcontext, "allow-dynamic-target", [$ptascii("enum"), pchheader.NAME])
+  -- if pchraw.KIND = "enum"
+  -- if $pchallows_dynamic(ptcontext, pchraw.ATTRIBUTES)
+def $ppmember_path(pcpath, pchheader, n) = pcpath ++ [PCFIELD 4, PCINDEX n]
+  -- if pchheader.KIND = "enum"
+def $class_constant_class_node(NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata) = true
+def $constant_node_below(NStmtEnumCase phpType14 phpType11 expression metadata, pcpath_decl, pcpath) = $effect_below(pcpath_decl ++ [PCFIELD 2], pcpath)
+
+def $enum_backing_node(ABSENT) = ""
+def $enum_backing_node(NIdentifier (BYTES text) metadata) = "int" -- if $ptlc($base64(text)) = $ptascii("int")
+def $enum_backing_node(NIdentifier (BYTES text) metadata) = "string" -- if $ptlc($base64(text)) = $ptascii("string")
+def $enum_backing_node(phpType50) = "invalid" -- otherwise
+def $ppenum_backing(P, pcpath) = $enum_backing_node(phpType50)
+  -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath) = (NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata)
+def $enum_implicit_property(porigin, ptbytes, text_type) = {ORIGIN ENUM_PROPERTY porigin ptbytes, NAME ptbytes, KEY ptbytes, VISIBILITY PROPERTY_PUBLIC, SETVISIBILITY (PROPERTY_PROTECTED), FINAL false, STATIC false, READONLY true, TYPE ([(PTBRANCH ([PTBUILTIN text_type]))]), DEFAULT PROP_UNINITIALIZED, LINE 0}
+def $enum_implicit_properties(porigin, "") = [$enum_implicit_property(porigin, $ptascii("name"), "string")]
+def $enum_implicit_properties(porigin, text_type) = [$enum_implicit_property(porigin, $ptascii("name"), "string"), $enum_implicit_property(porigin, $ptascii("value"), text_type)]
+  -- if text_type <- ["int", "string"]
+def $ppenum_get_signature(pssignature) = true
+  -- if pssignature.PARAMETERS = [psparam]
+  -- if psparam.TYPE = eps \/ psparam.TYPE = ([(PTBRANCH ([PTBUILTIN "string"]))])
+  -- if ~psparam.BYREF /\ ~psparam.VARIADIC /\ psparam.REQUIRED /\ psparam.DEFAULT = PSNONE
+def $ppenum_get_signature(pssignature) = false -- otherwise
+
+def $ppstatement(P, pcpath, NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata) = $ppclass_result(P_line, pcpath, $pchcompile(NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata, P.CLASSCONTEXT =/= eps, $ppclass_context(P_line)))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if z = $class_header_line(metadata, phpType3, phpType14)
+  -- if $(z > 0)
+  -- if P_line = $pplocate(P, pcpath, z)
+def $ppstatement(P, pcpath, NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata) = $ppunsupported(P, "missing enum compiler line")
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $class_header_line(metadata, phpType3, phpType14) = 0
+def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppenum_start(P, pcpath, pchheader, pchdiagnostic*)
+  -- if pchheader.KIND = "enum"
+def $ppenum_start(P, pcpath, pchheader, pchdiagnostic*) = $enum_backing_invalid($ppclass_diagnostics(P, pchdiagnostic*), $ptype_normalize(phpType50, ptcontext[.POSITION = PTRETURN]))
+  -- if $ppenum_backing(P, pcpath) = "invalid"
+  -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath) = (NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata)
+  -- if ptcontext = $ppproperty_context(P, pchheader, eps, P.LOCATION.LINE)
+def $enum_backing_invalid(P, PTOK ptbranch* ptdiagnostic*) = $ppconstant_error($ppproperty_diagnostics(P, ptdiagnostic*), $ptascii("Enum backing type must be int or string, ") ++ $pttypename(ptbranch*) ++ $ptascii(" given"), P.LOCATION.LINE)
+def $enum_backing_invalid(P, PTERROR ptdiagnostic*) = $ppproperty_diagnostics(P, ptdiagnostic*)
+def $enum_backing_invalid(P, PTUNSUPPORTED text) = $ppunsupported(P, text)
+def $ppenum_start(P, pcpath, pchheader, pchdiagnostic*) = $ppenum_members(P_header, pcpath, pchheader, PPMEMBERS P_next ppropertydesc* pmethoddesc*)
+  -- if $ppenum_backing(P, pcpath) =/= "invalid"
+  -- if pchheader.BODY = SEQUENCE statement*
+  -- if P_header = $ppclass_diagnostics(P, pchdiagnostic*)
+  -- if PPMEMBERS P_next ppropertydesc* pmethoddesc* = $ppmember_groups(P_header, pcpath, 0, statement*, eps, eps, pchheader)
+def $ppenum_members(P_header, pcpath, pchheader, PPMEMBERS P_next ppropertydesc* pmethoddesc*) = P_next
+  -- if P_next.COMPLETION =/= PPCNORMAL
+def $ppenum_members(P_header, pcpath, pchheader, PPMEMBERS P_next ppropertydesc* pmethoddesc*) = P_next[.LOCATION = P_header.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]][.CLASSES = P_next.CLASSES ++ [{ORIGIN porigin, KIND "enum", NAME pchheader.NAME, PARENT eps, INTERFACES ptbytes_interfaces*, PROPERTIES $enum_implicit_properties(porigin, text_type), METHODS pmethoddesc*, CONSTANTS $ppclass_constants(P_next.CLASSCONSTANTS, porigin), ABSTRACT false, FINAL true, READONLY false, EARLY false, LINE P_header.LOCATION.LINE}]]
+  -- if P_next.COMPLETION = PPCNORMAL
+  -- if porigin = PORIGIN P_next.FOLD.SOURCE.ID pcpath
+  -- if text_type = $ppenum_backing(P_header, pcpath)
+  -- if ptbytes_interfaces* = $enum_all_interfaces(pchheader.INTERFACES, text_type)
+def $enum_interfaces("") = [$ptascii("UnitEnum")]
+def $enum_interfaces(text_type) = [$ptascii("UnitEnum"), $ptascii("BackedEnum")]
+  -- if text_type <- ["int", "string"]
+def $enum_all_interfaces(ptbytes_explicit*, text_type) = ptbytes_explicit* ++ $enum_interfaces(text_type)
+
+def $ppmember_groups(P, pcpath, n, (NStmtEnumCase phpType14 phpType11 phpType5 metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc*, pmethoddesc*, pchheader)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if pchheader.KIND = "enum"
+  -- if pcpath_case = $ppmember_path(pcpath, pchheader, n)
+  -- if $($source_line(metadata) > 0)
+  -- if P_next = $ppenum_case($pplocate(P, pcpath_case, $source_line(metadata)), pcpath_case, PORIGIN P.FOLD.SOURCE.ID pcpath, phpType14, phpType11, phpType5, pchheader, $source_line(metadata))
+def $ppmember_groups(P, pcpath, n, (NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P, $ptascii("Enum ") ++ pchheader.NAME ++ $ptascii(" cannot include properties"), $nabs($source_line(metadata)))) ppropertydesc* pmethoddesc*
+  -- if P.COMPLETION = PPCNORMAL
+  -- if pchheader.KIND = "enum"
+
+def $ppenum_case(P, pcpath, porigin, SEQUENCE eps, NIdentifier (BYTES text) metadata_name, phpType5, pchheader, z) = $ppenum_case_value(P, pcpath, porigin, $base64(text), phpType5, pchheader, z)
+def $ppenum_case(P, pcpath, porigin, phpType14, phpType11, phpType5, pchheader, z) = $ppunsupported(P, "enum case attributes or name") -- otherwise
+def $ppenum_case_value(P, pcpath, PORIGIN n pcpath_owner, ptbytes, phpType5, pchheader, z) = $ppconstant_error(P, $ptascii("Case ") ++ ptbytes ++ $ptascii(" of non-backed enum ") ++ pchheader.NAME ++ $ptascii(" must not have a value"), $nabs(z))
+  -- if $ppenum_backing(P, pcpath_owner) = "" /\ phpType5 =/= ABSENT
+def $ppenum_case_value(P, pcpath, PORIGIN n pcpath_owner, ptbytes, ABSENT, pchheader, z) = $ppconstant_error(P, $ptascii("Case ") ++ ptbytes ++ $ptascii(" of backed enum ") ++ pchheader.NAME ++ $ptascii(" must have a value"), $nabs(z))
+  -- if $ppenum_backing(P, pcpath_owner) =/= ""
+def $ppenum_case_value(P, pcpath, porigin, ptbytes, ABSENT, pchheader, z) = $ppenum_case_add(P, pcpath, porigin, ptbytes, pchheader, z)
+  -- if porigin = PORIGIN n pcpath_owner
+  -- if $ppenum_backing(P, pcpath_owner) = ""
+def $ppenum_case_value(P, pcpath, porigin, ptbytes, expression, pchheader, z) = $ppenum_case_add($ppclass_constant_expression(P, pcpath ++ [PCFIELD 2], expression, pchheader, z), pcpath, porigin, ptbytes, pchheader, z)
+  -- if porigin = PORIGIN n pcpath_owner
+  -- if $ppenum_backing(P, pcpath_owner) =/= ""
+def $ppenum_case_add(P, pcpath, porigin, ptbytes, pchheader, z) = P -- if P.COMPLETION =/= PPCNORMAL
+def $ppenum_case_add(P, pcpath, porigin, ptbytes, pchheader, z) = $ppconstant_error(P, $ptascii("A class constant must not be called 'class'; it is reserved for class name fetching"), $nabs(z))
+  -- if P.COMPLETION = PPCNORMAL /\ $ptlc(ptbytes) = $ptascii("class")
+def $ppenum_case_add(P, pcpath, porigin, ptbytes, pchheader, z) = $ppconstant_error(P, $ptascii("Cannot redefine class constant ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes, $nabs(z))
+  -- if P.COMPLETION = PPCNORMAL /\ $ptlc(ptbytes) =/= $ptascii("class")
+  -- if $class_constant_desc($ppclass_constants(P.CLASSCONSTANTS, porigin), ptbytes) =/= eps
+def $ppenum_case_add(P, pcpath, porigin, ptbytes, pchheader, z) = P[.CLASSCONSTANTS = P.CLASSCONSTANTS ++ [{ORIGIN porigin_case, OWNER porigin, OWNERNAME pchheader.NAME, NAME ptbytes, VISIBILITY PROPERTY_PUBLIC, FINAL false, TYPE eps, INITIALIZER porigin_case, FOLDED false, LINE $nabs(z)}]][.FOLD = P.FOLD[.VALUE = eps]]
+  -- if P.COMPLETION = PPCNORMAL /\ $ptlc(ptbytes) =/= $ptascii("class")
+  -- if $class_constant_desc($ppclass_constants(P.CLASSCONSTANTS, porigin), ptbytes) = eps
+  -- if porigin_case = PORIGIN P.FOLD.SOURCE.ID pcpath
+
+def $ppmethod_checked(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P, $ptascii("Enum method ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii("() must not be abstract"), P.LOCATION.LINE)) ppropertydesc* pmethoddesc*
+  -- if pchheader.KIND = "enum"
+  -- if ~$ppproperty_flag(flags, 64) /\ $ppproperty_flag(flags, 16) /\ ~$ppproperty_flag(flags, 32)

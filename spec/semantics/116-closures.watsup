@@ -565,6 +565,11 @@ def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_comp
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if $enum_case_object(S, n) =/= eps
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
 def $closure_scope_complete(S, pnode*) = false -- otherwise
 
 dec $closure_scope_owners_valid(pstate, pcpath, porigin*) : bool
