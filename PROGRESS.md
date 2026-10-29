@@ -121,8 +121,8 @@ use ordinary type/default compilation and binding, including inherited calls and
 named-hole completion before typed reception. Full class identities survive
 argument-TypeError whole-name formatting and missing-arity class/member formatting.
 Six originals agree (five normal, one compiler rejection), and 212 conditions pass
-across authored62 and independent150 reached groups. Corrected private strict431
-passes; all cuts retain their actual revisions. The original diagnostic mismatch
+across authored62 and independent150 reached groups. Corrected private and
+actual-tail joined strict431 pass; all cuts retain their actual revisions. The original diagnostic mismatch
 and carrier-fixture refusal retain zero credit. Reference/variadic/promoted,
 nonpublic, unpacked and wider body/factory/lifetime contexts remain partial.
 [Finite-constructor review](coverage/semantics/anonymous-constructor-arity-review.json).
