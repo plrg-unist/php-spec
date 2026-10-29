@@ -155,6 +155,7 @@ def conditions(name, program, path, stdout):
     if named:
         checks += seek('S_key', 947, 'S_send') + [
             'S_send.TODO = (CONFIG_ITERATOR pconfigiterator_send "send") :: ptask_send*',
+            'pconfigiterator_send.KEY = KNOWN pvalue_unknown',
             'pconfigiterator_send = pconfigiterator_key[.KEY = KNOWN pvalue_unknown]',
             '$string_bytes(pvalue_unknown) = ($ptascii("unknown69"))',
             '$config_iterator_valid(S_send, pconfigiterator_send, "send")',
