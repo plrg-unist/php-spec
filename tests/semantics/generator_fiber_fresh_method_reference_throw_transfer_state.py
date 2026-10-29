@@ -202,6 +202,8 @@ S_done.ACTIVEFIBER = eps
 S_done.FIBERCALLERS = eps
 S_done.FIBERCLOSERS = eps
 n_receiver <- S_done.DESTRUCTION.CALLED
+~((HOBJECT n_receiver) <- S_done.ALLOCATIONS)
+~((HOBJECT n_given) <- S_done.ALLOCATIONS)
 $weakref_get(S_done, n_weak_owner) = PNULL
 $weakref_get(S_done, n_weak) = PNULL
 $call_descriptors_valid(S_done)
