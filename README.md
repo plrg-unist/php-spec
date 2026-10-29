@@ -3645,15 +3645,28 @@ authentication. An unrelated held destructor remains outside the collected
 component. At that cut, callback, residual, worker, hook and active-context collection
 remain partial. See the [ordinary claim review](coverage/semantics/gc-ordinary-claim-review.json).
 
-Materialized ordinary cycles with public destructors now use the existing
-callback and single-retrace protocol when the legacy and claimed walks agree
-on ordered visits and counted nodes in the actual plan. The agreement is
-rechecked after callbacks and for fresh already-called survivors; a mismatch
+The earlier GC05 cut admitted materialized ordinary cycles with public
+destructors through the existing callback and single-retrace protocol when the
+legacy and claimed walks agree on ordered visits and counted nodes in the actual
+plan. The agreement is rechecked after callbacks and for fresh already-called
+survivors; a mismatch
 is refused. Two native-first sources agree, including a callback resurrection
 then later count 3, and four strict SL groups pass 151 reached checks. Quiet
 canonical tables, no WeakMap and no active worker/context/residual overlap
-remain required. Count-ambiguous callbacks and wider reentry are still open.
+remain required. At that cut, count-ambiguous callbacks and wider reentry
+remain open.
 See the [materialized callback review](coverage/semantics/gc-materialized-callback-review.json).
+
+Materialized ordinary destructor collections now retain an authenticated claimed
+count image through destructor return and retrace, including a pruned original
+table. Nested buffer removal distinguishes a destructor root, ordinary child
+and proxy table; its slot order can make the first pass contribute 1 and the
+retrace 3. Immediate source-authenticated `===`/`!==` comparisons also release
+produced object operands without GC buffering and treat a matching `BASE`
+result cache as borrowed. Four native-first sources agree, and 11 reached
+strict SL groups pass 330 checks at separate cuts. WeakMap callbacks, worker,
+residual, reentry and wider operand caches remain partial. See the
+[claimed callback review](coverage/semantics/gc-materialized-claimed-callback-review.json).
 
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
