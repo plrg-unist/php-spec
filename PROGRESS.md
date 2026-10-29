@@ -75,6 +75,7 @@ COW preserves saved/builder rows, and storage retires field edges in slot order.
 Four originals agree exactly with PHP after genuine parent Unsupported; a
 by-value-current control remains Unsupported with zero agreement. Strict424 and
 730 reached premises (728 Boolean, two raw steps) pass at separate cuts.
+Joined strict compilation over the actual 424-module tail also passes.
 [Multiple-field review](coverage/semantics/array-iterator-fields-review.json).
 Tables/hooks, typed or special references, object/cyclic/debt graphs and wider
 lifetimes remain partial. Earlier A62/A63 evidence keeps its original cuts.
