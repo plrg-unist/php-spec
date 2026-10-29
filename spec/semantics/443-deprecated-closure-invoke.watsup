@@ -9,7 +9,7 @@ dec $closure_invoke_message(pstate, pfunction) : ptbytes
 dec $closure_invoke_begin(pstate, pfunction, ptask) : pstate
 dec $source_call_enter_raw(pstate, pfunction) : pstate
 dec $closure_invoke_discard(pstate, ptask) : pstate
-dec $closure_invoke_result_blocked(pstate) : bool
+dec $closure_invoke_return_nodes(pstate, pcallcontext) : pnode*
 dec $closure_invoke_named_pending(pstate) : pstate
 
 ;; zend_call_function retains the inner Closure at entry, while __invoke still
@@ -51,8 +51,8 @@ def $closure_invoke_named_ready(S) = S[.CURRENT = (pcallcontext[.TARGET = CLOSUR
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = CLOSURE_INVOKE_PENDING_TARGET n
 def $closure_invoke_named_ready(S) = S -- otherwise
-;; The outer unused retval must retire between its raw arguments and Closure
-;; receiver. Keep this combination explicit until that release stage is modeled.
+;; fcall_end releases raw wrapper arguments, the unused retval, then This.
+;; The existing release jobs hold one owner for each pending native decrement.
 def $closure_invoke_owning_discarded(S) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = CLOSURE_TARGET n
@@ -60,12 +60,11 @@ def $closure_invoke_owning_discarded(S) = true
   -- if $wrapper_site(S, pcallcontext.TARGET, pcallcontext.CALLSITE)
   -- if $destructor_unused_return(S)
 def $closure_invoke_owning_discarded(S) = false -- otherwise
-def $closure_invoke_result_blocked(S) = true
-  -- if S.COMPLETION = UNSUPPORTED "unused owning explicit Closure wrapper result"
-  -- if $closure_invoke_owning_discarded(S[.COMPLETION = NORMAL])
-def $closure_invoke_result_blocked(S) = false -- otherwise
-def $generator_close_terminal_pending(S) = true -- if $closure_invoke_result_blocked(S)
-def $drive_steps(S, n) = S -- if $closure_invoke_result_blocked(S)
+def $closure_invoke_return_nodes(S, pcallcontext) = $destructor_local_cells(S.ENV, S.SYMBOLS) ++ $named_roots(pcallcontext.NAMED) ++ $operands_roots(pcallcontext.EXTRA) ++ $instance_roots(pcallcontext.INSTANCE) ++ $call_receiver_roots(pcallcontext) ++ $call_target_extra_roots(pcallcontext) ++ $wrapper_roots(pcallcontext.WRAPPER) ++ $operand_nodes(S.RESULT) ++ $wrapper_receiver_roots(pcallcontext)
+def $closure_invoke_unused_return(S) = $destructor_release_begin($destruction_store_new(S_restored)[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.DESTRUCTION.FRAMES = pdestructionframe :: S_restored.DESTRUCTION.FRAMES][.TODO = (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: S_restored.TODO], $destruction_values($closure_invoke_return_nodes(S, pcallcontext)))
+  -- if S.CURRENT = (pcallcontext)
+  -- if S_restored = $restore_frame_raw(S)
+  -- if pdestructionframe = {PENDING eps, VALUE KNOWN PNULL, CALLER S_restored.CURRENT, FUNCTION pcallcontext.FUNCTION, ORIGIN S_restored.ORIGIN, CONSTCONTEXT S_restored.CONSTCONTEXT}
 
 def $closure_invoke_source(CALL_ARGS pcalltarget eps n poperand* (porigin) z) = ((pcalltarget, {SLOTS (NAMED_SENT poperand)*, NAMED eps}, porigin, z))
 def $closure_invoke_source(NAMED_ARGS pcalltarget eps n pnamedargs (porigin) z) = ((pcalltarget, pnamedargs, porigin, z))

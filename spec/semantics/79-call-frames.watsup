@@ -51,7 +51,8 @@ dec $restore_frame_locals(pstate, pframe, pframe*, psymboltable?) : pstate
 dec $frame_release(pstate, pstate) : pstate
 dec $generator_frame_release(pstate, pstate) : pstate
 dec $closure_invoke_owning_discarded(pstate) : bool
-def $restore_frame(S) = S[.COMPLETION = UNSUPPORTED "unused owning explicit Closure wrapper result"]
+dec $closure_invoke_unused_return(pstate) : pstate
+def $restore_frame(S) = $closure_invoke_unused_return(S)
   -- if $closure_invoke_owning_discarded(S)
 def $restore_frame(S) = $generator_frame_release(S, $frame_release(S, $restore_frame_raw(S)))
   -- if ~$closure_invoke_owning_discarded(S)
