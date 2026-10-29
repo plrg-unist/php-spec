@@ -782,7 +782,8 @@ def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if $gc_temporary_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), pgctemporary)
 def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.NOGC = eps
-  -- if pdestructionoperation.NOGCEXTRA = [pgctemporary]
+  -- if pdestructionoperation.NOGCEXTRA = pgctemporary :: pgctemporary_tail*
+  -- if pgctemporary_tail* = eps
   -- if pdestructionoperation.CLEANUP = eps
   -- if pdestructionoperation.SOURCE = CONFIG_INVOKE pconfigcall
   -- if pconfigcall.KIND = INTRINSIC_WEAKREF_CREATE /\ pconfigcall.INDEX = 1
