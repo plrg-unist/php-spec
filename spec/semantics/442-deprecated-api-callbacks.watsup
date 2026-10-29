@@ -77,7 +77,7 @@ def $api_callback_discard(S, API_ERROR perrorcall) = $error_read_discard($error_
 def $api_callback_discard(S, API_ASSERT passertcall) = $assertion_callback_error(S[.TODO = (CONFIG_INVOKE passertcall.FAILURE.CALL) :: ptask_tail*][.ORIGIN = (passertcall.FAILURE.CALL.SITE)][.COMPLETION = THROWING n], passertcall.FAILURE)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $throwable_live(S, n)
-def $api_callback_discard(S, API_ASSERT passertcall) = S -- otherwise
+def $api_callback_discard(S, papicallback) = S -- otherwise
 def $api_callback_result(API_ERROR perrorcall, pshutdownproducer) = ERROR_HANDLER_RESULT perrorcall[.TARGET = (API_BORROWED_TARGET pshutdownproducer)]
 def $api_callback_result(API_ASSERT passertcall, pshutdownproducer) = ASSERT_CALLBACK_RESULT passertcall[.TARGET = (API_BORROWED_TARGET pshutdownproducer)]
 
