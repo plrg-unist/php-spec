@@ -102,6 +102,15 @@ def $array_enum_candidate(S, n) = ((pintrinsic, pclassdesc.NAME, ptbytes_method)
   -- if $scope_method(S, pclassdesc.ORIGIN, ptbytes_method, true, $method_current_scope(S)) = eps
   -- if $enum_generated_kind(S, pclassdesc.ORIGIN, ptbytes_method) = (pintrinsic)
 def $array_enum_candidate(S, n) = eps -- otherwise
+;; Generated public static methods depend on the published enum, including
+;; while validating a saved call inside lazy constant evaluation.
+def $string_enum_candidate(S, ptbytes) = (pintrinsic)
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if ~($ptlc($typed_callable_name(ptbytes_class)) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")])
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin_class)
+  -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = eps
+  -- if $enum_generated_kind(S, porigin_class, ptbytes_method) = (pintrinsic)
+def $string_enum_candidate(S, ptbytes) = eps -- otherwise
 def $enum_class_prelink(S, pclassdesc) = $enum_prelink_methods(S, pclassdesc, pclassdesc.METHODS)
   -- if pclassdesc.KIND = "enum"
 def $enum_class_prelink(S, pclassdesc) = METHOD_OK -- otherwise
@@ -615,7 +624,13 @@ def $enum_start(S, pintrinsic, n_owner?, z, true) = S_start[.TODO = (CONFIG_ARGS
   -- if S_start.TODO = (CONFIG_ARGS pconfigcall) :: ptask_tail*
 def $enum_start(S, pintrinsic, n_owner?, z, false) = $config_prepare(S, pintrinsic, z, n_owner?, porigin_site)
   -- if S.ORIGIN = (porigin_site)
-def $enum_array_prepare(S, pintrinsic, ptbytes_class, ptbytes_method, porigin_site, z) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (CONFIG_ARGS {SITE porigin_site, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER eps, SELECTION (n_nonce), LINE z, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+dec $enum_selected_prepare(pstate, pintrinsic, ptbytes, ptbytes, porigin, int) : pstate
+def $enum_selected_prepare(S, pintrinsic, ptbytes_original, ptbytes_lookup, porigin_site, z) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (CONFIG_ARGS {SITE porigin_site, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER eps, SELECTION (n_nonce), LINE z, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if n_nonce = S.SELECTSEQ
+  -- if n_depth = |S.FRAMES|
+  -- if pselectedcall = {NONCE n_nonce, SITE porigin_site, KIND pintrinsic, OWNER eps, ORIGINAL ptbytes_original, LOOKUP ptbytes_lookup, DEPTH n_depth, LINE z}
+  -- if $selected_entry_source_valid(S, pselectedcall)
+def $enum_array_prepare(S, pintrinsic, ptbytes_class, ptbytes_method, porigin_site, z) = $enum_selected_prepare(S, pintrinsic, ptbytes_class, ptbytes_method, porigin_site, z)
   -- if S.ORIGIN = (porigin_site)
   -- if S.RESULT = KNOWN (PARRAY n)
   -- if $array_enum_candidate(S, n) = ((pintrinsic, ptbytes_class, ptbytes_method))
@@ -623,9 +638,26 @@ def $enum_array_prepare(S, pintrinsic, ptbytes_class, ptbytes_method, porigin_si
   -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin_class)
   -- if $enum_generated_kind(S, porigin_class, ptbytes_method) = (pintrinsic)
   -- if $call_line_valid(S, (porigin_site), z)
-  -- if n_nonce = S.SELECTSEQ
-  -- if n_depth = |S.FRAMES|
-  -- if pselectedcall = {NONCE n_nonce, SITE porigin_site, KIND pintrinsic, OWNER eps, ORIGINAL ptbytes_class, LOOKUP ptbytes_method, DEPTH n_depth, LINE z}
+dec $enum_string_operand_valid(pstate, porigin, ptbytes) : bool
+def $enum_string_operand_valid(S, porigin_site, ptbytes) = true
+  -- if $dynamic_fixed_name(S, porigin_site) = (ptbytes_lookup)
+  -- if $string_original(S, ptbytes_lookup, porigin_site) = ptbytes
+def $enum_string_operand_valid(S, porigin_site, ptbytes) = true
+  -- if $dynamic_fixed_name(S, porigin_site) = eps
+  -- if S.RESULT = KNOWN pvalue
+  -- if $enum_array_string_valid(S, pvalue)
+  -- if $string_bytes(pvalue) = (ptbytes)
+def $enum_string_operand_valid(S, porigin_site, ptbytes) = false -- otherwise
+def $string_dynamic(S, ptbytes, porigin_site, z_init, z_call) = $enum_selected_prepare(S, pintrinsic, ptbytes_original, ptbytes_method, porigin_site, z_call)
+  -- if S.ORIGIN = (porigin_site)
+  -- if ptbytes_original = $string_original(S, ptbytes, porigin_site)
+  -- if $string_enum_candidate(S, ptbytes_original) = (pintrinsic)
+  -- if pintrinsic = INTRINSIC_ENUM porigin_class ptbytes_class text_method
+  -- if $method_string_parts(ptbytes_original) = ((ptbytes_requested, ptbytes_method))
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $string_site_valid(S, {SITE porigin_site, INIT z_init, LINE z_call, REQUESTED porigin_class, ORIGINAL ptbytes_original}, false)
+  -- if $enum_string_operand_valid(S, porigin_site, ptbytes_original)
 def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes, phpType7*, z) = $enum_start(S, pintrinsic, eps, z, true)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_class)
   -- if $enum_generated_kind(S, porigin_class, ptbytes) = (pintrinsic)
@@ -721,7 +753,8 @@ def $enum_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
   -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 3))]
   -- if $intrinsic_argument(S, PORIGIN n_unit pcpath_parent, 0) = ((expression, false, preqbytes?, PORIGIN n_unit pcpath_child, z_child))
   -- if preqbytes? = eps \/ preqbytes? = ($ptascii("value"))
-  -- if $dynamic_site(S, (PORIGIN n_unit pcpath_parent)) /\ $dynamic_fixed_name(S, PORIGIN n_unit pcpath_parent) = eps
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_parent) = (NExprFuncCall expression_callee (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
   -- if $enum_dynamic_string_selected(S, S.SELECTEDCALLS, PORIGIN n_unit pcpath_parent, z_call)
   -- if $call_line_valid(S, (PORIGIN n_unit pcpath_parent), z_call)
 def $enum_string_child_site(S, porigin, z) = false -- otherwise
@@ -743,8 +776,13 @@ def $enum_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_
   -- if $enum_from_parse(S, pconfigcall, POBJECT n_object) = TYPEDEPENDENT "user object string conversion"
   -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
   -- if pconfigcall.LINE = z_call
+  -- if $enum_string_child_site(S, porigin_child, z_call)
   -- if $config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
 def $enum_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call) = false -- otherwise
+def $config_string_pending_line_valid(S, METHOD_TARGET n porigin_method, (porigin_child), z_call) = true
+  -- if S.TODO = (CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_child) z_call) :: (STRINGIFY_RESULT n porigin_child z_call) :: (ENUM_FROM_STRING_RESULT pconfigcall n porigin_child z_child z_call) :: ptask_tail*
+  -- if $enum_string_site_valid(S, pconfigcall, n, porigin_child, z_child, z_call)
+  -- if $stringify_pending(S, METHOD_TARGET n porigin_method, porigin_child)
 def $exit_callable_arguments(S, porigin_site) = PCALLARGUMENTS phpType7* 2
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
   -- if ~$ppfirstclass(phpType7*)
@@ -774,6 +812,15 @@ def $selected_entry_source_valid(S, pselectedcall) = true
   -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(pselectedcall.ORIGINAL))) = (porigin)
   -- if $enum_generated_kind(S, porigin, pselectedcall.LOOKUP) = (pselectedcall.KIND)
   -- if $dynamic_site(S, (pselectedcall.SITE)) /\ $dynamic_fixed_name(S, pselectedcall.SITE) = eps
+  -- if $call_line_valid(S, (pselectedcall.SITE), pselectedcall.LINE)
+def $selected_entry_source_valid(S, pselectedcall) = true
+  -- if pselectedcall.OWNER = eps
+  -- if pselectedcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if $method_string_parts(pselectedcall.ORIGINAL) = ((ptbytes_class, pselectedcall.LOOKUP))
+  -- if $string_enum_candidate(S, pselectedcall.ORIGINAL) = (pselectedcall.KIND)
+  -- if $origin_node(S.SOURCES, pselectedcall.SITE) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $string_name_site(S, pselectedcall.SITE, pselectedcall.ORIGINAL)
   -- if $call_line_valid(S, (pselectedcall.SITE), pselectedcall.LINE)
 def $selected_entry_source_valid(S, pselectedcall) = true
   -- if pselectedcall.OWNER = (n_owner)
@@ -854,6 +901,11 @@ def $enum_from_convert(S, pconfigcall, POBJECT n_object, TYPEDEPENDENT "user obj
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
   -- if $enum_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, pconfigcall.LINE)
+def $enum_from_convert(S, pconfigcall, POBJECT n_object, TYPEDEPENDENT "user object string conversion") = S[.COMPLETION = UNSUPPORTED "enum generated method Stringable argument source"]
+  -- if $config_string_source(S, pconfigcall) = eps
+def $enum_from_convert(S, pconfigcall, POBJECT n_object, TYPEDEPENDENT "user object string conversion") = S[.COMPLETION = UNSUPPORTED "enum generated method Stringable argument source"]
+  -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
+  -- if ~$enum_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, pconfigcall.LINE)
 def $enum_from_convert(S, pconfigcall, pvalue, TYPEDEPENDENT text) = S[.COMPLETION = UNSUPPORTED "enum generated method dependent argument conversion"]
   -- if text =/= "user object string conversion"
 def $enum_from_convert(S, pconfigcall, pvalue, ptypeconversion) = $typed_apply(S[.TODO = (ENUM_FROM_CONVERT pconfigcall pvalue) :: ptask_tail*], ptypeconversion, pconfigcall.LINE)

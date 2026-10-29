@@ -167,11 +167,13 @@ def $call_selected_valid(S, STRING_METHOD_TARGET pcalltarget pstringselection, (
   -- if $string_receiver_site_valid(S, pcalltarget, porigin_site)
 
 dec $string_dynamic_result(pstate, parrayresolution, porigin, int, int, ptbytes) : pstate
+dec $string_enum_candidate(pstate, ptbytes) : pintrinsic?
 def $string_dynamic_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes_method, porigin_site, z_init, z_call, ptbytes) = S[.TODO = $method_args_task(STRING_METHOD_TARGET ($scope_target_site(S, pcalltarget, porigin_site, false)) {SITE porigin_site, INIT z_init, LINE z_call, REQUESTED porigin_requested, ORIGINAL ptbytes}, $dynamic_arguments(S, porigin_site), (porigin_site), z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 def $string_dynamic_result(S, ARRAYINVALID ptbytes_error, porigin_site, z_init, z_call, ptbytes) = $throw_scalar(S, "Error", ptbytes_error, z_init)
 def $string_dynamic_result(S, ARRAYUNKNOWN text, porigin_site, z_init, z_call, ptbytes) = S[.COMPLETION = UNSUPPORTED text]
 def $string_dynamic(S, ptbytes, porigin_site, z_init, z_call) = $string_dynamic_result(S, $string_resolve(S, ptbytes_original, ARRAY_DISPATCH, $dynamic_fixed_name(S, porigin_site) =/= eps), porigin_site, z_init, z_call, ptbytes_original)
   -- if ptbytes_original = $string_original(S, ptbytes, porigin_site)
+  -- if $string_enum_candidate(S, ptbytes_original) = eps
 
 dec $string_capture_result(pstate, parrayresolution, porigin, int, int, ptbytes) : pstate
 def $string_capture_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes_method, porigin_site, z_init, z_convert, ptbytes) = S[.TODO = (STRING_CONVERT ($scope_target_site(S, pcalltarget, porigin_site, true)) {SITE porigin_site, INIT z_init, LINE z_convert, REQUESTED porigin_requested, ORIGINAL ptbytes}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]

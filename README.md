@@ -711,7 +711,24 @@ now copy ordinary live reference-cell scalars from named zero-argument Generator
 CVs. Later cell writes and live aliases stay distinct from saved DIRECT arguments;
 terminal effects and DATA retirement precede reception through the selected setter.
 The Generator keeps an outside owner. Typed/backed cells, owning sends, temporary
-or Aggregate reference producers and last-DATA reference retirement remain partial.
+or Aggregate reference producers and wider last-DATA reference retirement remain partial.
+
+[Sole-DATA reference Generator cleanup](coverage/semantics/config-generator-reference-sole-data-review.json)
+now retires a CLOSED Generator whose last cached child is one ordinary scalar
+reference cell from a local yield. Its source CV may be replaced before the
+last DATA release. The existing storage pin drops that cell before INI_SET
+reception; quiet terminal throw prunes it before catch. Four new sources agree
+with PHP, and reached checks cover the physical cell/Generator deaths and the
+later NULL-option handler. Typed/backed or owning cells and wider producers
+remain partial.
+
+[Surviving-alias reference cleanup](coverage/semantics/config-generator-reference-outside-alias-review.json)
+also retires that CLOSED Generator when outside global aliases keep its ordinary
+scalar cell alive. The storage pin removes the Generator's edge while the cell
+remains readable; copied sends and retired CONFIG history survive later alias
+writes, including an array assignment in a NULL-option handler. Four new sources
+agree with PHP; two reached recipes check normal and saved-throw lifetimes.
+Typed, owning and wider reference sources remain partial.
 
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
@@ -3683,6 +3700,18 @@ strict SL groups pass 330 checks at separate cuts. WeakMap callbacks, worker,
 residual, reentry and wider operand caches remain partial. See the
 [claimed callback review](coverage/semantics/gc-materialized-claimed-callback-review.json).
 
+Identity cleanup also preserves a sole produced right object/array temporary
+when the left operand is borrowed or scalar. Its source predicate agrees in
+AL and SL, retaining real cache and CV owners through release. See the
+[identity receipt review](coverage/semantics/identity-produced-right-review.json).
+
+Canonical materialized destructor collection also preserves ordinary
+named-function locals, saved caller locals and real method receivers as roots.
+The GC site belongs to the authenticated caller's body, and removing borrowed
+count metadata cannot select an older walk. Resurrection preserves the native
+signed result -1 and later release count 3. Other active and reentrant contexts
+remain partial. See the [ordinary-caller review](coverage/semantics/gc-caller-materialized-review.json).
+
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
 reuse only when destructor preparation leaves the state identical.
@@ -4339,10 +4368,13 @@ eager; invalid/cyclic paths, reached callbacks and wider layouts remain partial.
 [Captured-Throwable review](coverage/semantics/throwable-captured-comparison-review.json).
 Visited comparison also admits ordinary method declarations on supported
 initialized public field layouts, including locally authenticated source and
-implicit `Stringable` interfaces, without invoking their methods. Inheritance,
+implicit `Stringable` interfaces and finite authenticated parent paths,
+without invoking their methods. Inherited overrides keep physical slot order;
+aliases, COW and cached fields retain their existing owners. Builtin parents,
 hooks, readonly state and wider layouts/lifetimes retain their limits.
 [Method-image review](coverage/semantics/throwable-trace-methods-comparison-review.json).
 [Interface-image review](coverage/semantics/throwable-trace-interfaces-comparison-review.json).
+[Inherited-image review](coverage/semantics/throwable-trace-inheritance-comparison-review.json).
 Builtin `#[NoDiscard]` now validates bounded declarations and warns on unused
 ordinary source calls after sends and named defaults, before reception or body.
 Handlers preserve selected arguments, references, receiver ownership and VM
@@ -4360,9 +4392,14 @@ early-throw cleanup are covered by ten native-first originals and four reached
 fronts. Selected exception handlers now use the same early phase with a moved
 registry owner, original Throwable retention, fresh by-reference cells and
 terminal cleanup; nine new native-first originals and four reached fronts cover
-this slice. Wider API consumers remain partial. See the [VM review](coverage/semantics/builtin-deprecated-review.json),
-[error/assert API review](coverage/semantics/builtin-deprecated-api-review.json) and
-[exception API review](coverage/semantics/builtin-deprecated-exception-api-review.json).
+this slice. Explicit captured-Closure `__invoke()` now stages wrapper (8192) then
+callee (16384) warnings before inner reception, preserving raw arguments, references,
+trace redaction and separate Closure owners. Nine originals agree; one unused
+owning-result path remains an explicit boundary pending ordered return release.
+Wider API consumers remain partial. See the [VM review](coverage/semantics/builtin-deprecated-review.json),
+[error/assert API review](coverage/semantics/builtin-deprecated-api-review.json),
+[exception API review](coverage/semantics/builtin-deprecated-exception-api-review.json) and
+[Closure-wrapper review](coverage/semantics/builtin-deprecated-closure-invoke-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The
@@ -6301,12 +6338,16 @@ For published enums, class-string array callables invoke generated `cases()`, `f
 a case-object receiver also invokes `from()`. The selected enum is fixed before
 argument evaluation. Array `from()` retains that selection through a Stringable
 callback and retires the temporary argument before lookup.
+Computed, literal and compiler-folded `Class::method` strings also select these
+generated methods before arguments. The original full string and selected enum
+survive later argument or Stringable callback rebinding; temporary Stringable
+arguments retire before lookup. Packed Stringable origins remain Unsupported.
 Class constants can consume cached enum cases in scalar conditions and select a
 case through a source-certified case or negated-case condition, including a case
 from another enum. Wider object-valued conditional transfers remain Unsupported.
-First-class array captures, string and pipe callable routes, `Closure::fromCallable`
-conversion, `is_callable`, case attributes, the default loader and wider
-acquisition remain partial;
+Callable admission, first-class array/string captures, pipe routes,
+`Closure::fromCallable` conversion, `is_callable`, case attributes, enum collection
+policy, the default loader and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
@@ -6507,6 +6548,15 @@ independent and one unchanged named-function control match PHP; three reached
 fronts pass 174 custom/189 reported checks. Other callable origins and wider
 producer/lifecycle combinations remain partial.
 [Captured factory review](coverage/semantics/generator-captured-factory-review.json).
+
+I81 extends the selected factory proof to first-class array and string
+user-method callables after source-value mutation and callable retirement.
+Three authored and one independent original agree; four reached fronts pass
+343 custom/363 reported checks, including receiver/cache/input ownership and
+private-access/actual-receipt guards. The original independent failure retains
+zero credit after shared identity-receipt predicate correction. Wider callable
+and lifecycle forms remain partial.
+[Array/string factory review](coverage/semantics/generator-array-string-factory-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

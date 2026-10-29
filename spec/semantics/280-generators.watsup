@@ -214,6 +214,7 @@ dec $generator_creator_closure_site(pstate, pmethodcapture, porigin) : bool
 dec $generator_creator_closure_target(pstate, pcalltarget, pmethodcapture, pclosureevidence) : bool
 dec $generator_captured_factory_valid(pstate, pclosurescope, porigin) : bool
 dec $generator_captured_factory_receiver(pstate, pmethoddesc, pclosurescope) : bool
+dec $generator_captured_factory_method(pobject) : pcalltarget?
 dec $generator_creator_receiver(pstate, pcalltarget, pclosureevidence?) : nat?
 dec $generator_creator_target_valid(pstate, pgeneratorcreation, pmethoddesc, porigin) : bool
 dec $generator_retained_scoped_target(pstate, pcalltarget, pmethoddesc) : bool
@@ -490,6 +491,20 @@ def $generator_captured_factory_receiver(S, pmethoddesc, pclosurescope) = true
   -- if $(n_receiver < |S.OBJECTS|)
   -- if S.OBJECTS[n_receiver] = INSTANCE pclosurescope.CALLED
 def $generator_captured_factory_receiver(S, pmethoddesc, pclosurescope) = false -- otherwise
+def $generator_captured_factory_method(ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?) = (pcalltarget)
+def $generator_captured_factory_method(STRINGMETHODCLOSURE pcalltarget pstringselection) = (pcalltarget)
+def $generator_captured_factory_method(pobject) = eps -- otherwise
+;; Borrowed lookup identities preserve the selected-target certificate after
+;; its factory or original receiver retires.
+def $generator_captured_factory_valid(S, pclosurescope, porigin_function) = true
+  -- if n = pclosurescope.OBJECT
+  -- if $(n < |S.OBJECTS|)
+  -- if $generator_captured_factory_method(S.OBJECTS[n]) = (pcalltarget)
+  -- if $class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
+  -- if $generator_captured_factory_receiver(S, pmethoddesc, pclosurescope)
+  -- if S_lookup = S[.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n] ++ $scoped_receiver_nodes(pclosurescope.RECEIVER)]
+  -- if $closure_scope_row_valid(S_lookup, pclosurescope)
+  -- if $target_function(S_lookup, pcalltarget) = (pmethoddesc.FUNCTION)
 def $generator_captured_factory_valid(S, pclosurescope, porigin_function) = true
   -- if n = pclosurescope.OBJECT
   -- if $(n < |S.OBJECTS|)

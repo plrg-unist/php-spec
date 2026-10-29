@@ -437,3 +437,28 @@ Stored names and trace arrays remain intact. The
 keeps five exact originals and publication/allocation, factory and trace frontiers
 at their distinct cuts. Pure formatter/domain/display and compiler-context queries
 are separated from reached states; earlier failures retain zero credit.
+
+## Generated enum method strings
+
+For published enums, computed, literal and compiler-folded `Class::method`
+strings select generated `cases()`, `from()` and `tryFrom()` before evaluating
+arguments. Lookup uses the published class and generated method identity, while
+the selected-call record preserves the full original string, method bytes,
+source occurrence, line and nonce. Later callee rebinding cannot change this
+selected enum. These internal operations reuse ordinary argument sends and enum
+reception without constructing a user method body or an owning receiver.
+
+Named Stringable inputs retain their real argument child and call line through
+`__toString()` and release a temporary input before backing-table lookup. A
+selected call requires the same source child at callback entry; wider packed
+origins produce explicit Unsupported before conversion. Caller strictness,
+backing checks, singleton caches and ordinary internal argument errors keep
+their existing rules.
+
+The engine routes are `zend_init_dynamic_call_string` and `ZEND_INIT_DYNAMIC_CALL`,
+the compiler's fixed-call lowering, and the generated handlers registered in
+`Zend/zend_enum.c`. The [string review](../../coverage/semantics/enum-string-callable-review.json)
+keeps original source comparisons, reached guards and the shared identity-receipt
+normalization at separate cuts. Callable admission, first-class string/array
+captures, pipe and `Closure::fromCallable` consumers, first-use loading, enum
+collectability and wider object lifetimes remain partial.

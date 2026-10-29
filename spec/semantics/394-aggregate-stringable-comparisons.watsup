@@ -866,6 +866,8 @@ dec $trace_visit_entries_header(pentry*) : bool
 dec $trace_visit_array_header(pstate, nat) : bool
 dec $trace_visit_object_header(pstate, nat) : bool
 dec $trace_visit_interfaces(pstate, pclassdesc) : bool
+dec $trace_visit_parent_precedes(pclasslink*, porigin, porigin) : bool
+dec $trace_visit_parent_path(pstate, pclassdesc, porigin*) : bool
 dec $trace_visit_object_class(pstate, nat) : bool
 dec $trace_visit_object_image(pstate, nat) : bool
 dec $trace_visit_captured_same_kind(pstate, nat, nat) : bool
@@ -921,6 +923,31 @@ def $trace_visit_interfaces(S, pclassdesc) = true
   -- if $pil_targets_valid(S, pclassdesc.INTERFACES, pilref*)
   -- if $pil_targets_ordered(S, pclassdesc.ORIGIN, pilref*)
 def $trace_visit_interfaces(S, pclassdesc) = false -- otherwise
+def $trace_visit_parent_precedes((CLASSLINK porigin_parent pclassparent) :: pclasslink_tail*, porigin_parent, porigin_child) = true
+  -- if porigin_parent =/= porigin_child
+def $trace_visit_parent_precedes((CLASSLINK porigin_child pclassparent) :: pclasslink_tail*, porigin_parent, porigin_child) = false
+  -- if porigin_parent =/= porigin_child
+def $trace_visit_parent_precedes((CLASSLINK porigin pclassparent) :: pclasslink_tail*, porigin_parent, porigin_child) = $trace_visit_parent_precedes(pclasslink_tail*, porigin_parent, porigin_child)
+  -- if porigin =/= porigin_parent /\ porigin =/= porigin_child
+def $trace_visit_parent_precedes(pclasslink*, porigin_parent, porigin_child) = false -- otherwise
+def $trace_visit_parent_path(S, pclassdesc, porigin_seen*) = true
+  -- if ~(pclassdesc.ORIGIN <- porigin_seen*)
+  -- if pclassdesc.PARENT = eps
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = eps
+def $trace_visit_parent_path(S, pclassdesc, porigin_seen*) = $trace_visit_parent_path(S, pclassdesc_parent, pclassdesc.ORIGIN :: porigin_seen*)
+  -- if ~(pclassdesc.ORIGIN <- porigin_seen*)
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if ~$class_internal(ptbytes_parent)
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
+  -- if ~(porigin_parent <- (pclassdesc.ORIGIN :: porigin_seen*))
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class" /\ ~pclassdesc_parent.FINAL /\ ~pclassdesc_parent.READONLY
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_parent.NAME)) = (porigin_parent)
+  -- if $pil_precedes(S.CLASSNAMES, porigin_parent, pclassdesc.ORIGIN)
+  -- if pclassdesc_parent.PARENT = eps \/ $trace_visit_parent_precedes(S.LINKEDPARENTS, porigin_parent, pclassdesc.ORIGIN)
+  -- if $trace_visit_interfaces(S, pclassdesc_parent)
+def $trace_visit_parent_path(S, pclassdesc, porigin_seen*) = false -- otherwise
 ;; Ordinary methods do not participate in standard object/object comparison.
 ;; Retain the existing layout and lifecycle bounds without whole-graph admission.
 def $trace_visit_object_class(S, n) = $trace_object_class(S, n)
@@ -931,9 +958,10 @@ def $trace_visit_object_class(S, n) = true
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $trace_visit_object_header(S, n)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps
+  -- if pclassdesc.KIND = "class"
   -- if $trace_visit_interfaces(S, pclassdesc)
   -- if ~pclassdesc.READONLY
+  -- if $trace_visit_parent_path(S, pclassdesc, eps)
   -- if ~$property_hook_instance(S, n)
   -- if $property_layout(S, porigin, |S.CLASSES|) = (ppropertydesc :: ppropertydesc_tail*)
   -- if $trace_instance_public(ppropertydesc :: ppropertydesc_tail*)

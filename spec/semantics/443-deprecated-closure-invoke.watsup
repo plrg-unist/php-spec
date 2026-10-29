@@ -1,0 +1,183 @@
+;; Closure::__invoke preserves the declaration's Deprecated flag but masks
+;; NoDiscard. The internal wrapper warns before its zend_call_function child.
+;; Keep the completed source send as the sole raw wrapper owner until entry.
+dec $closure_invoke_source(ptask) : (pcalltarget, pnamedargs, porigin, int)?
+dec $closure_invoke_marked(pstate, pfunction, ptask) : bool
+dec $closure_invoke_valid(pstate, ptask) : bool
+dec $closure_invoke_nodes(ptask) : pnode*
+dec $closure_invoke_message(pstate, pfunction) : ptbytes
+dec $closure_invoke_begin(pstate, pfunction, ptask) : pstate
+dec $source_call_enter_raw(pstate, pfunction) : pstate
+dec $closure_invoke_discard(pstate, ptask) : pstate
+dec $closure_invoke_result_blocked(pstate) : bool
+dec $closure_invoke_named_pending(pstate) : pstate
+
+;; zend_call_function retains the inner Closure at entry, while __invoke still
+;; owns its receiver. Its selected bound receiver is borrowed from that Closure.
+;; The outer owner retires after the raw wrapper arguments.
+def $wrapper_receiver_roots(pcallcontext) = [HOBJECT n]
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.WRAPPER =/= eps
+def $wrapper_receiver_roots(pcallcontext) = [HOBJECT n]
+  -- if pcallcontext.TARGET = CLOSURE_INVOKE_PENDING_TARGET n
+  -- if pcallcontext.WRAPPER =/= eps
+def $wrapper_receiver_roots(pcallcontext) = eps -- otherwise
+def $call_receiver_roots(pcallcontext) = eps
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.WRAPPER =/= eps
+def $call_receiver_roots(pcallcontext) = eps -- if pcallcontext.TARGET = CLOSURE_INVOKE_PENDING_TARGET n
+;; UNDEF/default handling uses a fake frame before zend_call_function adds its
+;; inner Closure owner. HOLES is permanent source provenance, so the target
+;; records this temporary borrowed phase until named preflight finishes.
+def $target_nodes(CLOSURE_INVOKE_PENDING_TARGET n) = eps
+def $target_instance(CLOSURE_INVOKE_PENDING_TARGET n) = eps
+def $target_function(S, CLOSURE_INVOKE_PENDING_TARGET n) = $target_function(S, CLOSURE_TARGET n)
+def $target_receiver(S, CLOSURE_INVOKE_PENDING_TARGET n) = $target_receiver(S, CLOSURE_TARGET n)
+def $target_lexical_class(S, CLOSURE_INVOKE_PENDING_TARGET n) = $target_lexical_class(S, CLOSURE_TARGET n)
+def $target_called_class(S, CLOSURE_INVOKE_PENDING_TARGET n) = $target_called_class(S, CLOSURE_TARGET n)
+def $call_selected_valid(S, CLOSURE_INVOKE_PENDING_TARGET n, porigin?) = $call_selected_valid(S, CLOSURE_TARGET n, porigin?)
+def $wrapper_site(S, CLOSURE_INVOKE_PENDING_TARGET n, porigin?) = $wrapper_site(S, CLOSURE_TARGET n, porigin?)
+
+;; Fake-frame formatting reads the selected Closure identity without retaining it.
+def $closure_invoke_trace_identity(pcallcontext) = pcallcontext[.TARGET = CLOSURE_TARGET n][.INSTANCE = (n)]
+  -- if pcallcontext.TARGET = CLOSURE_INVOKE_PENDING_TARGET n
+def $closure_invoke_trace_identity(pcallcontext) = pcallcontext -- otherwise
+def $closure_invoke_named_pending(S) = S[.CURRENT = (pcallcontext[.TARGET = CLOSURE_INVOKE_PENDING_TARGET n][.INSTANCE = eps])]
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.WRAPPER =/= eps /\ pcallcontext.HOLES =/= eps
+def $closure_invoke_named_pending(S) = S -- otherwise
+def $closure_invoke_named_ready(S) = S[.CURRENT = (pcallcontext[.TARGET = CLOSURE_TARGET n][.INSTANCE = (n)])]
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_INVOKE_PENDING_TARGET n
+def $closure_invoke_named_ready(S) = S -- otherwise
+;; The outer unused retval must retire between its raw arguments and Closure
+;; receiver. Keep this combination explicit until that release stage is modeled.
+def $closure_invoke_owning_discarded(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.WRAPPER =/= eps
+  -- if $wrapper_site(S, pcallcontext.TARGET, pcallcontext.CALLSITE)
+  -- if $destructor_unused_return(S)
+def $closure_invoke_owning_discarded(S) = false -- otherwise
+def $closure_invoke_result_blocked(S) = true
+  -- if S.COMPLETION = UNSUPPORTED "unused owning explicit Closure wrapper result"
+  -- if $closure_invoke_owning_discarded(S[.COMPLETION = NORMAL])
+def $closure_invoke_result_blocked(S) = false -- otherwise
+def $generator_close_terminal_pending(S) = true -- if $closure_invoke_result_blocked(S)
+def $drive_steps(S, n) = S -- if $closure_invoke_result_blocked(S)
+
+def $closure_invoke_source(CALL_ARGS pcalltarget eps n poperand* (porigin) z) = ((pcalltarget, {SLOTS (NAMED_SENT poperand)*, NAMED eps}, porigin, z))
+def $closure_invoke_source(NAMED_ARGS pcalltarget eps n pnamedargs (porigin) z) = ((pcalltarget, pnamedargs, porigin, z))
+def $closure_invoke_source(UNPACK_ARGS punpackcall) = ((punpackcall.FUNCTION, punpackcall.SENT, porigin, punpackcall.LINE))
+  -- if punpackcall.ARGUMENTS = eps
+  -- if punpackcall.CALLSITE = (porigin)
+def $closure_invoke_source(ptask) = eps -- otherwise
+
+def $closure_invoke_marked(S, pfunction, ptask) = true
+  -- if $closure_invoke_source(ptask) = ((pcalltarget, pnamedargs, porigin, z))
+  -- if $wrapper_site(S, pcalltarget, (porigin))
+  -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+def $closure_invoke_marked(S, pfunction, ptask) = false -- otherwise
+def $closure_invoke_nodes(ptask) = $named_slots_roots(pnamedargs.SLOTS) ++ $named_roots(pnamedargs.NAMED) ++ $target_nodes(pcalltarget)
+  -- if $closure_invoke_source(ptask) = ((pcalltarget, pnamedargs, porigin, z))
+def $closure_invoke_nodes(ptask) = eps -- otherwise
+def $closure_invoke_valid(S, ptask) = true
+  -- if $closure_invoke_source(ptask) = ((pcalltarget, pnamedargs, porigin, z))
+  -- if S.ORIGIN = (porigin)
+  -- if $wrapper_site(S, pcalltarget, (porigin))
+  -- if $call_task_valid(S, ptask)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+  -- if $heap_subset($closure_invoke_nodes(ptask), S.ALLOCATIONS)
+def $closure_invoke_valid(S, ptask) = false -- otherwise
+def $closure_invoke_message(S, pfunction) = $ptascii("Method Closure::__invoke() is deprecated") ++ $deprecated_since_suffix(ptbytes_since) ++ $nodiscard_message_suffix(ptbytes_message)
+  -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+
+def $source_call_enter(S, pfunction) = $closure_invoke_begin(S, pfunction, ptask)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $closure_invoke_marked(S, pfunction, ptask)
+def $source_call_enter(S, pfunction) = $source_call_enter_raw(S, pfunction)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if ~$closure_invoke_marked(S, pfunction, ptask)
+def $source_call_enter_raw(S, pfunction) = $call_entry_ready($wrapper_after_enter($target_after_enter($call_enter(S[.TODO = ptask_tail*], pfunction, poperand*, porigin?, z), pcalltarget), {SLOTS (NAMED_SENT poperand)*, NAMED eps}), pfunction, |poperand*|, porigin?, z)
+  -- if S.TODO = (CALL_ARGS pcalltarget eps n poperand* porigin? z) :: ptask_tail*
+def $source_call_enter_raw(S, pfunction) = $closure_invoke_named_pending($wrapper_after_enter($target_after_enter($named_enter(S[.TODO = ptask_tail*], pfunction, pnamedargs, porigin?, z), pcalltarget), pnamedargs))
+  -- if S.TODO = (NAMED_ARGS pcalltarget eps n pnamedargs porigin? z) :: ptask_tail*
+def $source_call_enter_raw(S, pfunction) = $closure_invoke_named_pending($wrapper_after_enter($target_after_enter($named_enter(S[.TODO = ptask_tail*], pfunction, punpackcall.SENT, punpackcall.CALLSITE, punpackcall.LINE), punpackcall.FUNCTION), punpackcall.SENT))
+  -- if S.TODO = (UNPACK_ARGS punpackcall) :: ptask_tail*
+  -- if punpackcall.ARGUMENTS = eps
+def $closure_invoke_begin(S, pfunction, ptask) = $error_dispatch(S_pending, 8192, ptbytes, z, DIAGNOSTIC "Deprecated" ptbytes z, CLOSURE_INVOKE_INNER ptask)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $closure_invoke_source(ptask) = ((pcalltarget, pnamedargs, porigin, z))
+  -- if ptbytes = $closure_invoke_message(S, pfunction)
+  -- if S_pending = S[.TODO = (CLOSURE_INVOKE_INNER ptask) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+
+rule PhpStep/closure-invoke-inner-warning: S ~> $error_dispatch(S[.TODO = (CLOSURE_INVOKE_ENTER ptask_source) :: ptask_tail*], 16384, ptbytes, z, DIAGNOSTIC "Deprecated" ptbytes z, CLOSURE_INVOKE_ENTER ptask_source)
+  -- if S.TODO = (CLOSURE_INVOKE_INNER ptask_source) :: ptask_tail*
+  -- if $closure_invoke_valid(S, ptask_source)
+  -- if $closure_invoke_source(ptask_source) = ((pcalltarget, pnamedargs, porigin, z))
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+  -- if ptbytes = $deprecated_warning_message(S, pfunction, ptbytes_message, ptbytes_since)
+rule PhpStep/closure-invoke-enter: S ~> $source_call_enter_raw(S[.TODO = ptask_source :: ptask_tail*], pfunction)
+  -- if S.TODO = (CLOSURE_INVOKE_ENTER ptask_source) :: ptask_tail*
+  -- if $closure_invoke_valid(S, ptask_source)
+  -- if $closure_invoke_source(ptask_source) = ((pcalltarget, pnamedargs, porigin, z))
+  -- if $target_function(S, pcalltarget) = (pfunction)
+
+def $closure_invoke_received(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $wrapper_site(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
+  -- if $call_context_valid(S, pcallcontext, S.CVS)
+  -- if $named_receives_ready(S, pfunction)
+def $closure_invoke_received(S, pfunction) = false -- otherwise
+def $task_nodes(CLOSURE_INVOKE_INNER ptask) = $closure_invoke_nodes(ptask)
+def $task_nodes(CLOSURE_INVOKE_ENTER ptask) = $closure_invoke_nodes(ptask)
+def $call_task_valid(S, CLOSURE_INVOKE_INNER ptask) = $closure_invoke_valid(S, ptask)
+def $call_task_valid(S, CLOSURE_INVOKE_ENTER ptask) = $closure_invoke_valid(S, ptask)
+def $call_after_origin(S, CLOSURE_INVOKE_INNER ptask) = S[.ORIGIN = (porigin)]
+  -- if $closure_invoke_source(ptask) = ((pcalltarget, pnamedargs, porigin, z))
+def $call_after_origin(S, CLOSURE_INVOKE_ENTER ptask) = S[.ORIGIN = (porigin)]
+  -- if $closure_invoke_source(ptask) = ((pcalltarget, pnamedargs, porigin, z))
+;; Retain the raw wrapper until the diagnostic handler's own cache is gone.
+;; THROW_SEARCH then releases the raw argument table before its Closure receiver.
+def $error_read_discard(S, CLOSURE_INVOKE_INNER ptask) = $closure_invoke_discard(S, CLOSURE_INVOKE_INNER ptask)
+def $error_read_discard(S, CLOSURE_INVOKE_ENTER ptask) = $closure_invoke_discard(S, CLOSURE_INVOKE_ENTER ptask)
+def $closure_invoke_discard(S, ptask) = S[.TODO = (THROW_SEARCH n) :: ptask :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+def $closure_invoke_discard(S, ptask) = S[.COMPLETION = UNSUPPORTED "explicit Closure wrapper abrupt handler completion"] -- otherwise
+
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = CLOSURE_INVOKE_INNER ptask
+  -- if $closure_invoke_valid(S, ptask)
+  -- if $closure_invoke_source(ptask) = ((pcalltarget, pnamedargs, porigin, z))
+  -- if perrorcall.SITE = porigin /\ perrorcall.LINE = z /\ perrorcall.LEVEL = 8192
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if perrorcall.MESSAGE = $closure_invoke_message(S, pfunction)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE z
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = CLOSURE_INVOKE_ENTER ptask
+  -- if $closure_invoke_valid(S, ptask)
+  -- if $closure_invoke_source(ptask) = ((pcalltarget, pnamedargs, porigin, z))
+  -- if perrorcall.SITE = porigin /\ perrorcall.LINE = z /\ perrorcall.LEVEL = 16384
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+  -- if perrorcall.MESSAGE = $deprecated_warning_message(S, pfunction, ptbytes_message, ptbytes_since)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE z
+
+;; The inner API warning runs inside __invoke, before any user callee frame.
+;; A diagnostic handler's trace therefore includes only the real raw wrapper.
+def $closure_invoke_warning_context(S, pcallcontext) = true
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = CLOSURE_INVOKE_ENTER ptask
+def $closure_invoke_warning_context(S, pcallcontext) = false -- otherwise
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}, {FILE $call_sourcefile(S.FILES, porigin), LINE z, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $sensitive_trace_arguments(S, pfunction_selected, $trace_indexed_args($wrapper_values(S, pnamedargs.SLOTS), 0) ++ $trace_named_args(S, pnamedargs.NAMED)), HASARGS true}]
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = CLOSURE_INVOKE_ENTER ptask
+  -- if $closure_invoke_source(ptask) = ((pcalltarget, pnamedargs, porigin, z))
+  -- if $target_function(S, pcalltarget) = (pfunction_selected)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)

@@ -48,7 +48,7 @@ rule PhpStep/unpack-explicit-abrupt: S ~> S_value[.HELD = S.HELD]
   -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if S_value = $named_send_value(S, punpackcall.FUNCTION, punpackcall.SENT, punpackcall.CALLSITE, punpackcall.INDEX)
   -- if S_value.COMPLETION =/= NORMAL
-rule PhpStep/unpack-enter: S ~> $wrapper_after_enter($target_after_enter($named_enter(S[.TODO = ptask_tail*], pfunction, punpackcall.SENT, punpackcall.CALLSITE, punpackcall.LINE), punpackcall.FUNCTION), punpackcall.SENT)
+rule PhpStep/unpack-enter: S ~> $source_call_enter(S, pfunction)
   -- if S.TODO = (UNPACK_ARGS punpackcall) :: ptask_tail*
   -- if punpackcall.ARGUMENTS = eps
   -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)

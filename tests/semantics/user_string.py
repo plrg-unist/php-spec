@@ -58,6 +58,8 @@ def run(match):
                       base64.b64decode(actual['stdout']) == native.stdout and
                       base64.b64decode(actual['stderr']) == native.stderr and
                       actual['exit_status'] == native.returncode)
+        if 'expected_normal_stdout' in row:
+            passed = passed and native.stdout == row['expected_normal_stdout'].encode()
         results.append({'id': row['id'], 'pass': passed, 'source_sha256': row['source_sha256'],
                         'native_exit': native.returncode, 'model_status': actual.get('status'),
                         'model_reason': actual.get('reason')})

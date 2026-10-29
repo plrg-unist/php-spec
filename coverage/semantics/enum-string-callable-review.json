@@ -1,0 +1,186 @@
+{
+  "status": "independently reviewed; actual-tail composition and joined compilation accepted",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit",
+  "scope": [
+    "Published computed, literal and compiler-folded class-method strings select generated cases/from/tryFrom before arguments.",
+    "Full original string and selected enum survive argument and named Stringable callback rebind; temporary arguments retire before lookup.",
+    "Packed Stringable origins refuse before conversion; other callable consumers retain their existing partial boundaries."
+  ],
+  "implementation": [
+    "spec/semantics/210-class-method-strings.watsup",
+    "spec/semantics/437-enum-runtime.watsup"
+  ],
+  "inputs": {
+    "spec/semantics/210-class-method-strings.watsup": "d68fa6c68a27a825603c73366c4945c15b00e5f42d1a98e950d068a679360614",
+    "spec/semantics/301-cycle-collection.watsup": "e9cf9aa770068e199b9a7e5aa8ad179d0c8b4ba6f399928e0f360417a7e7c272",
+    "spec/semantics/437-enum-runtime.watsup": "d30ecb33b4a9313c2cb2cfc2cfd2caf8a7179976c46f398957fe0852c45525a2",
+    "spec/semantics/modules.json": "824d38d8953a86f3c67c3049c70a6199f47fd9ae6a35bb47eb38aa03a98194c5",
+    "tests/semantics/class_method_strings_cases.json": "2862b8c77a9e8220ce5e7a895d331a509591eb8d7e8244673f31c64d745d3ee8",
+    "tests/semantics/user_string.py": "b7b39970298e9e70beea6b9b1947d8ac89a2feafbf02cff92a2dbef6585fa5da"
+  },
+  "source_agreement_count": 6,
+  "source_agreements": [
+    {
+      "id": "string-target-rebound",
+      "revision": "7dc856b04be17b663969b75a60ecc2db248a1db8",
+      "seconds": 25.833,
+      "report": ".tools/enum-generated-string-selected-review-v1/changed-report.json",
+      "agreement": true
+    },
+    {
+      "id": "literal-and-folded-string-targets",
+      "revision": "7dc856b04be17b663969b75a60ecc2db248a1db8",
+      "seconds": 22.408,
+      "report": ".tools/enum-fixed-string-selected-review-v1/changed-report.json",
+      "agreement": true
+    },
+    {
+      "id": "string-stringable-target-rebound",
+      "revision": "a9824256a5771d16ad9d8d1efd22e33ff97811f4",
+      "seconds": 29.194,
+      "report": ".tools/enum-generated-stringable-selected-review-v1/changed-report.json",
+      "agreement": true
+    },
+    {
+      "id": "fixed-stringable-target-rebound",
+      "revision": "a9824256a5771d16ad9d8d1efd22e33ff97811f4",
+      "seconds": 19.57,
+      "report": ".tools/enum-fixed-stringable-selected-review-v1/changed-report.json",
+      "agreement": true
+    },
+    {
+      "id": "cases-lookup-and-errors",
+      "revision": "a9824256a5771d16ad9d8d1efd22e33ff97811f4",
+      "seconds": 33.059,
+      "report": ".tools/enum-string-methods-dev-v1/changed-report.json",
+      "agreement": true
+    },
+    {
+      "id": "stringable-call-only",
+      "revision": "7dc856b04be17b663969b75a60ecc2db248a1db8",
+      "seconds": 17.18,
+      "report": ".tools/enum-stringable-call-only-dev-v1/changed-report.json",
+      "agreement": true
+    }
+  ],
+  "unsupported_controls": [
+    {
+      "id": "stringable-packed-refusal",
+      "reason": "enum generated method Stringable argument source",
+      "seconds": 22.365,
+      "agreement": false,
+      "report": ".tools/enum-stringable-packed-refusal-review-v1/changed-report.json"
+    }
+  ],
+  "shared_dependency": {
+    "commit": "31e940c109c349a13b9946f65253aa2eae026ffa",
+    "private_cherry_pick": "a9824256a5771d16ad9d8d1efd22e33ff97811f4",
+    "finding": "The overlapping right-produced receipt clauses return false for pending/consumed single-right controls in SL, while AL returns true. Equivalent single-cons normalization makes all eight literal controls true in both modes.",
+    "repaired_counterexample": "Ordinary original succeeds through budget136 and fails at137 before the helper correction; its later identity observer is exact afterward.",
+    "pure_control_reports": [
+      ".tools/enum-gc-extra-source-pure-fixed-v1/process-SL.json",
+      ".tools/enum-gc-extra-source-pure-fixed-v1/process-AL.json"
+    ],
+    "original_failures": [
+      ".tools/enum-string-dev/stringable-first-failure",
+      ".tools/enum-string-dev/stringable-second-failure",
+      ".tools/enum-stringable-budget-diagnostic-v1"
+    ],
+    "enum_collectability": "Separate pending policy: zend_enum_new sets GC_NOT_COLLECTABLE; modeled enum cases can still enter the potential-root buffer."
+  },
+  "state_checks": {
+    "status": "passed",
+    "checks": 159,
+    "derived_common_resolver_controls": 2,
+    "accepted": [
+      {
+        "group": "computed selected target",
+        "checks": 44,
+        "seconds": 34.971,
+        "report": ".tools/enum-string-selected-state-v3/string-target-rebound/process.json"
+      },
+      {
+        "group": "literal and folded selected targets",
+        "checks": 27,
+        "seconds": 20.632,
+        "report": ".tools/enum-fixed-string-state-v2/literal-and-folded-string-targets/process.json"
+      },
+      {
+        "group": "computed Stringable child and retirement",
+        "checks": 31,
+        "seconds": 40.8,
+        "report": ".tools/enum-generated-stringable-state-v1/string-stringable-target-rebound/process.json"
+      },
+      {
+        "group": "fixed Stringable child and retirement",
+        "checks": 31,
+        "seconds": 38.736,
+        "report": ".tools/enum-fixed-stringable-state-v1/fixed-stringable-target-rebound/process.json"
+      },
+      {
+        "group": "ordinary pending callback",
+        "checks": 15,
+        "seconds": 30.263,
+        "report": ".tools/enum-stringable-pending-state-v1/string-stringable-target-rebound/process.json"
+      },
+      {
+        "group": "packed Stringable source refusal",
+        "checks": 11,
+        "seconds": 21.7,
+        "report": ".tools/enum-stringable-packed-refusal-state-v2/stringable-packed-refusal/process.json"
+      }
+    ]
+  },
+  "strict_compilation": {
+    "mode": "SL",
+    "modules": 431,
+    "result": true,
+    "seconds": 26.66,
+    "report": ".tools/enum-string-dev/private-strict/strict-v2/process-SL.json"
+  },
+  "independent_review": {
+    "scope_and_implementation": "approved after all six reached-state groups passed",
+    "fixture_and_optional_stdout_guard": "approved for all seven catalogue rows",
+    "shared_helper": "separately approved by GC pair",
+    "reviewer": "enum_string_recover_review",
+    "actual_tail": "source, owner, GC and docs seams approved at the composed revision",
+    "joined_gate": "report, input identities, exact output and process reap independently approved"
+  },
+  "remaining": [
+    "First-class array/string captures, pipe, callable admission, Closure::fromCallable and is_callable consumers.",
+    "First-use string loading, the default loader, case attributes, wider backing/link/type/lifetime contexts and enum collectability."
+  ],
+  "accounting": "All four enum inventory obligations remain partial. Historical array/captured/scalar evidence retains its original cuts and is not renewed here. Unsupported controls have zero semantic agreement credit.",
+  "compatibility": "Earlier scalar/fixed/call-only observations keep their original cuts and credit. The admitted direct callback children already satisfy the added child predicate; the new refusal arms cover its complement. The separately reviewed GC helper normalization is equivalent in the reference AL rules and independently validated in SL; no earlier scalar or array source agreement is renewed.",
+  "fixture_corrections": [
+    {
+      "report": ".tools/enum-fixed-string-state-v1/literal-and-folded-string-targets/process.json",
+      "credit": 0,
+      "finding": "Two unused nonce bindings in a noninvertible conjunction prevented elaboration. V2 uses the same nonempty-selection condition and passes all 27 checks."
+    },
+    {
+      "report": ".tools/enum-stringable-packed-refusal-state-v1/stringable-packed-refusal/process.json",
+      "credit": 0,
+      "finding": "The public Unsupported terminal driver clears tasks and drops the temporary input owner. Two fixture assertions wrongly expected the pre-refusal tasks and owner to remain. V2 corrects only these assertions and passes all 11 checks; this carries no PHP lifetime or agreement credit."
+    }
+  ],
+  "joined_compilation": {
+    "revision": "e09c050101901b5f152a0dbbf111885ccaa2fcc2",
+    "base": "08439f073ad3ab2f5dbbc4ddb7e044b703bd038d",
+    "mode": "SL",
+    "modules": 431,
+    "result": true,
+    "seconds": 12.802,
+    "report": ".tools/enum-string-joined-431-v1/process-SL.json",
+    "process": "CPU1,exit0,exact true newline,empty stderr,no timeout,stable inputs,group and PID fully reaped"
+  },
+  "artifacts": {
+    "manifest": "../php-spec-evidence-archive/enum-string-callable-117/manifest.json",
+    "manifest_sha256": "4729ec1a12e44429a58c83fa29c38d621df7ad32825cd71c40c35c83969d18c3",
+    "archive_bytes": 3782657,
+    "archive_sha256": "f34dd6db0f39bf37ac82d150be8a3de804f565b4ecf1e1dc68489e240d01ef40",
+    "raw_directories": 42,
+    "raw_regular_files": 910,
+    "recovery": "Extract raw.tar.gz and restore the selected raw/enum-* directory under ignored .tools/. Original absolute paths, tested-input snapshots, commands, environment/profile and hashes remain in the raw records. These artifacts are evidence, not maintained-test dependencies."
+  }
+}

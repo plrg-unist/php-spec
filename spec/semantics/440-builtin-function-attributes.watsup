@@ -464,6 +464,7 @@ dec $deprecated_warning_message(pstate, pfunction, ptbytes, ptbytes) : ptbytes
 dec $deprecated_warning_kind(pstate, pfunction) : ptbytes
 dec $deprecated_frame_capture(pstate, pfunction) : pframe
 dec $deprecated_begin(pstate, pfunction, ptbytes, ptbytes) : pstate
+dec $closure_invoke_received(pstate, pfunction) : bool
 def $deprecated_since_suffix(eps) = eps
 def $deprecated_since_suffix(ptbytes) = $ptascii(" since ") ++ ptbytes -- if ptbytes =/= eps
 def $deprecated_warning_kind(S, pfunction) = $ptascii("Method ")
@@ -489,11 +490,16 @@ def $call_entry_ready(S, pfunction, n, porigin?, z) = $deprecated_begin(S, pfunc
   -- if S.CURRENT = (pcallcontext)
   -- if $nodiscard_dispatch(S, pcallcontext) = NODISCARD_VM
   -- if $nodiscard_prepared_valid(S, pfunction)
+def $call_entry_ready(S, pfunction, n, porigin?, z) = $call_arity_raw(S, pfunction, n, porigin?, z)
+  -- if S.COMPLETION = NORMAL
+  -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+  -- if $closure_invoke_received(S, pfunction)
 def $call_entry_ready(S, pfunction, n, porigin?, z) = S[.COMPLETION = UNSUPPORTED "Deprecated internal API timing"]
   -- if S.COMPLETION = NORMAL
   -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
   -- if S.CURRENT = (pcallcontext)
   -- if $nodiscard_dispatch(S, pcallcontext) = NODISCARD_API
+  -- if ~$closure_invoke_received(S, pfunction)
 def $call_entry_ready(S, pfunction, n, porigin?, z) = S[.COMPLETION = UNSUPPORTED "Deprecated source flags, prepared frame, or attributes"] -- otherwise
 
 ;; Unused source VM calls warn before reception. Raw API callbacks, used

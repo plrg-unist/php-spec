@@ -1,0 +1,169 @@
+{
+  "milestone": "I81 captured array/string user-method Generator factories",
+  "status": "private source/state cuts accepted; actual-tail composition and joined strict accepted",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "private_base": "baaf33b5c9daff48615de8e10dececa4c115ecee",
+  "private_implementation": [
+    "6cf03d71c6aedab96c0051ba633bfc33cb7a60b0",
+    "c34cd6a63b41fcc7dca9321ec421c4c76a4e6319",
+    "2db186e793d747e53f0064a6fa35681be56d42e8",
+    "38d61a540abb17a3dc657e5e9b18793c1f8dba22",
+    "a441849bd5a0157ad04dd5a9bc1729255ea30a2f",
+    "232738ee63fe7fac1c0519f69cee29704cf4bdbe"
+  ],
+  "scope": "First-class array and class-method string factories retain their immutable selected user method, source/access certificate, lexical/called scope and receiver history across source-value mutation and callable retirement. Both constructors use one normalized target proof and the existing source-authenticated scope-row validator in a bounded borrowed lookup view. Actual Generator resume/close selection and physical frame/cache ownership remain separate.",
+  "changed_modules": [
+    "spec/semantics/280-generators.watsup",
+    "spec/semantics/301-cycle-collection.watsup"
+  ],
+  "engine": "ZEND_INIT_DYNAMIC_CALL resolves array/string method targets; ZEND_CALLABLE_CONVERT calls zend_closure_from_frame, which passes the selected handler, lexical/called scope and This to zend_create_fake_closure. Zend fake Closures are distinct from model BOUNDFAKECLOSURE.",
+  "review": "Independent semantic correctness, bounded completeness, counterexample and test-reliability review CLEAR. Four genuine source-reached fronts pass; prior failed source cuts retain zero agreement credit.",
+  "validation": {
+    "author_native_first": {
+      "revision": "6cf03d71c6aedab96c0051ba633bfc33cb7a60b0",
+      "result": "three exact normal observations; exit 0, empty stderr; stable inputs and HEAD; CPU3/full reap",
+      "report": "../php-spec-evidence-archive/generator-array-string-factory-81/source-packet/native-first/report.json",
+      "sha256": "72290073718286e6838aa228d9e346c99eac23692f86cdc3665d8642420851ab"
+    },
+    "independent_native_first": {
+      "revision": "6cf03d71c6aedab96c0051ba633bfc33cb7a60b0",
+      "source_sha256": "06717a49a7bde33c854411d939441e4444a5542c3622ee839f802bfd8f2f0dc0",
+      "result": "exact normal 149 bytes; exit 0, empty stderr; stable inputs and HEAD; CPU3/full reap",
+      "report": "../php-spec-evidence-archive/generator-array-string-factory-81-review/independent/native-first/report.json",
+      "sha256": "443494c9ffbb33f3e7abd7966f54eb57fd42bdcab5b5eba8a64b42d5ebbef66f"
+    },
+    "unchanged_gate": {
+      "revision": "6cf03d71c6aedab96c0051ba633bfc33cb7a60b0",
+      "result": "checked Unsupported after exact MAKE|; exit 1, no timeout, stable inputs and HEAD. Original aggregate false because expected OUTPUT bytes used JSON numbers instead of checked-wire decimal strings; zero agreement. Corrected assertion reprojects the retained raw tuple without execution replay.",
+      "report": "../php-spec-evidence-archive/generator-array-string-factory-81/validated/generator-array-string-factory-oldgate-2hyd6d8s/report.json",
+      "sha256": "f4ddfaa071d0f1470c9f5a9b7201f1dcea3f11d87bd5b0d8d25ee210187a567b",
+      "projection": "../php-spec-evidence-archive/generator-array-string-factory-81/unchanged-gate-projection.json",
+      "projection_sha256": "4b54edaf7eaae7edecdf33845576fb9a2cd8a057bede12f9b10fa8b742dbc11c"
+    },
+    "strict_private": {
+      "revision": "2db186e793d747e53f0064a6fa35681be56d42e8",
+      "modules": 431,
+      "passed": true,
+      "report": "../php-spec-evidence-archive/generator-array-string-factory-81/strict-private/report.json",
+      "sha256": "319aa75dabb0849801605361472bedaa382490df0769c474e4f2929d90e5dfbf"
+    },
+    "author_sources": [
+      {
+        "id": "i81-array-static-sibling",
+        "revision": "38d61a540abb17a3dc657e5e9b18793c1f8dba22",
+        "result": "checked NORMAL; exact retained native bytes; exit 0, empty stderr, no timeout; stable inputs and HEAD; CPU4/full reap",
+        "report": "../php-spec-evidence-archive/generator-array-string-factory-81/validated/generator-array-string-factory-source-thckmg2_/report.json",
+        "sha256": "4da8c39708a81f17e5ec0767d48de8f7a9a2de2898d477ea8c953116cf7a6e7b"
+      },
+      {
+        "id": "i81-array-protected-close",
+        "revision": "38d61a540abb17a3dc657e5e9b18793c1f8dba22",
+        "result": "checked NORMAL; exact retained native bytes; exit 0, empty stderr, no timeout; stable inputs and HEAD; CPU1/full reap",
+        "report": "../php-spec-evidence-archive/generator-array-string-factory-81/validated/generator-array-string-factory-source-yj81gg5j/report.json",
+        "sha256": "b79029bf80d816567dd1e0104c441d2594c2e7e8c5e79b845c8835e04d9d1a8c"
+      },
+      {
+        "id": "i81-string-late-static",
+        "revision": "38d61a540abb17a3dc657e5e9b18793c1f8dba22",
+        "result": "checked NORMAL; exact retained native bytes; exit 0, empty stderr, no timeout; stable inputs and HEAD; CPU2/full reap",
+        "report": "../php-spec-evidence-archive/generator-array-string-factory-81/validated/generator-array-string-factory-source-iuye1_tq/report.json",
+        "sha256": "c24a6a09f0975d477ccd0e58505e0e0c89d414b34aeb758b5ff342147bc54bf2"
+      }
+    ],
+    "independent_model_failure": {
+      "revision": "38d61a540abb17a3dc657e5e9b18793c1f8dba22",
+      "result": "interpreter_failure at the immediate received === weakInput->get() produced-right TEMP release; creation/private selection/Fiber SEND entry succeeded. Exit 1, empty stderr, no timeout, stable inputs and HEAD; zero agreement. Shared predicate structuring correction is tested separately.",
+      "report": "../php-spec-evidence-archive/generator-array-string-factory-81-review/independent/model-failure-5abpr0ja/report.json",
+      "sha256": "3ab9a642fb20cc592ee32eda9a2dd0bcf8dda226a5ee3f7f63eee8633ae834a3",
+      "diagnostic_report": "../php-spec-evidence-archive/generator-array-string-factory-81-review/independent/first-stuck/report.json",
+      "diagnostic_sha256": "74eb3662700bf07d97edb5a55b519efbbb4759e5c8ef8290c6bb397ed69961da"
+    },
+    "independent_model": {
+      "revision": "a441849bd5a0157ad04dd5a9bc1729255ea30a2f",
+      "result": "checked NORMAL; exact retained 149 native bytes; exit 0, empty stderr, no timeout; stable inputs and HEAD; all sampled actors affine CPU5/full reap",
+      "report": "../php-spec-evidence-archive/generator-array-string-factory-81-review/independent/model-reviewed-mxh_hb6_/report.json",
+      "sha256": "a0239184d6ae69ef7381fd8235d10a4186876473aa8a3e7e984d1cccf72eb738",
+      "limits": "source-local model600/process620 seconds; 100000 steps"
+    },
+    "reached_states": [
+      {
+        "id": "i81-array-close",
+        "revision": "a441849bd5a0157ad04dd5a9bc1729255ea30a2f",
+        "custom": 58,
+        "reported": 63,
+        "result": "true newline; exit 0, empty stderr, no timeout; stable inputs and HEAD; sampled actors affineCPU1/full reap",
+        "report": "../php-spec-evidence-archive/generator-array-string-factory-81/validated/fiber-state-review-rw6ffs68/report.json",
+        "sha256": "83f37f4f208f66fe5f3ca21197085723b526d97868738f4fd18398a458007e30"
+      },
+      {
+        "id": "i81-string-late-static",
+        "revision": "a441849bd5a0157ad04dd5a9bc1729255ea30a2f",
+        "custom": 63,
+        "reported": 68,
+        "result": "true newline; exit 0, empty stderr, no timeout; stable inputs and HEAD; sampled actors affineCPU2/full reap",
+        "report": "../php-spec-evidence-archive/generator-array-string-factory-81/validated/fiber-state-review-z48dg7p8/report.json",
+        "sha256": "411f343c15511ea8cb522967c48c8c3982ea1557d0995d8038b9c26cc93d97e2"
+      },
+      {
+        "id": "i81-array-close-sibling",
+        "revision": "232738ee63fe7fac1c0519f69cee29704cf4bdbe",
+        "custom": 91,
+        "reported": 96,
+        "result": "true newline; exit 0, empty stderr, no timeout; stable inputs and HEAD; sampled actors affineCPU2/full reap",
+        "report": "../php-spec-evidence-archive/generator-array-string-factory-81/validated/fiber-state-review-tx5graoi/report.json",
+        "sha256": "5546c22f4ed83bc57003ce0f1d355d00a609bd6d8581b30a390336a3d9225aa0"
+      },
+      {
+        "id": "i81-private-array-parked-send-independent",
+        "revision": "232738ee63fe7fac1c0519f69cee29704cf4bdbe",
+        "custom": 131,
+        "reported": 136,
+        "result": "true newline; exit 0, empty stderr, no timeout; stable independent inputs and HEAD; sampled actors affineCPU2/full reap",
+        "report": "../php-spec-evidence-archive/generator-array-string-factory-81-review/independent/state-reviewed-gu4_9rkc/report.json",
+        "sha256": "11446fb722dded2852fe7abe776252de85ada6ef3c2f74320369dd13b7d19c8c"
+      }
+    ],
+    "strict_joined": {
+      "revision": "578349bc73c70312b4fb950c109ddf72ac0b07b3",
+      "modules": 431,
+      "passed": true,
+      "report": "../php-spec-evidence-archive/generator-array-string-factory-81/strict-joined-b7de/report.json",
+      "sha256": "0b0d7728cb15c7ee9c3f6a5ae25b66e336113f623cc3b8f34fa4e9cbc37d199a",
+      "result": "SL/cache disabled/determinism enabled; CPU4, LC_ALL=C, TZ=UTC; exit 0, true newline, empty stderr, no timeout, stable watched inputs and HEAD; actors fully reaped."
+    }
+  },
+  "counts": {
+    "new_author_native_normal": 3,
+    "independent_native_normal": 1,
+    "author_model_normal": 3,
+    "independent_model_normal": 1,
+    "unchanged_unsupported_agreement": 0,
+    "reached_custom": 343,
+    "reached_reported": 363
+  },
+  "remaining": "BOUNDFAKECLOSURE and implicit callable factories, wider binding, wrapper/API, producer/delegation and lifecycle combinations remain partial. Core PHP and BOLA verification remain open.",
+  "identity_receipt_dependency": {
+    "source_commit": "31e940c109c349a13b9946f65253aa2eae026ffa",
+    "private_copy": "a441849bd5a0157ad04dd5a9bc1729255ea30a2f",
+    "scope": "Only the equivalent gc_extra_source predicate is normalized into one nonempty-list clause. It preserves the intended left-produced and single right-produced identity-TEMP cases through SL structuring; no PHP owner/behavior change.",
+    "review_and_controls": "Independent pointwise review CLEAR; isolated canonical-base e0bdb95e3 over c1a240967 passes AL14 and strict SL14 with stable inputs/HEAD and full reap.",
+    "compatibility": "The 31e import leaves the 15-line Generator proof and all original source/reached fixtures unchanged. The three accepted authored sources and I80 cuts retain their identities without replay; the later peer stage refinement is recorded separately.",
+    "affected_retry": "Exact independent source retried once using retained native bytes; checked NORMAL/exact149 bytes at a441849bd. Original38d failure remains zero credit.",
+    "module": "spec/semantics/301-cycle-collection.watsup"
+  },
+  "reached_fixture_refinement": {
+    "revision": "232738ee63fe7fac1c0519f69cee29704cf4bdbe",
+    "scope": "Before first execution, the peer stage was tightened from alias lookup absence to the actual root CONFIG_INVOKE Fiber::throw with its real receiver, after eager alias release and PARK/ABORT output. All 131 custom assertions are unchanged.",
+    "credit": "No semantic/source changes and no execution replay; original source and two reached cuts retain their identities."
+  },
+  "composition": {
+    "released_tail": "b7de03343209d73536b54d89948e0d651e4f32bc",
+    "private_package": "9e1ed54afb7cf2d105cdb815f0dfae5fa69706d3",
+    "tested_candidate": "578349bc73c70312b4fb950c109ddf72ac0b07b3",
+    "net_spec_delta": [
+      "spec/semantics/280-generators.watsup"
+    ],
+    "review": "The original 15-line Generator delta composes with the exact incoming identity-receipt helper, schema and module list. Existing call-source, selected-method and physical receiver/cache/input owner routes remain intact. New header/constructor/comparison/CONFIG/exception/output routes are not reached by these originals. Current checkpoints, identity-helper note and held/paused union are preserved.",
+    "execution_credit": "Only joined strict compilation is renewed; native, differential and reached cuts retain their recorded inputs and counts."
+  }
+}

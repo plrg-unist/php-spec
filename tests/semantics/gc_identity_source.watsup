@@ -1,0 +1,20 @@
+;; A nonowning left operand authorizes exactly one produced right temporary.
+;; Keep the source predicate equivalent before and after SL structuring.
+dec $identity_receipt(poperand, bool) : pgctemporary
+def $identity_receipt(poperand, b) = {OPERAND poperand, PENDING b}
+dec $main() : bool
+def $main() = true
+  -- if $gc_temporary_node(VARIABLE ($ptascii("result")) 18) = eps
+  -- if $gc_temporary_node(KNOWN (POBJECT 1)) = (HOBJECT 1)
+  -- if pgctemporary = $identity_receipt(KNOWN (POBJECT 1), true)
+  -- if $gc_extra_source(VARIABLE ($ptascii("result")) 18, [pgctemporary])
+  -- if $gc_extra_source(VARIABLE ($ptascii("result")) 18, [pgctemporary[.PENDING = false]])
+  -- if $gc_extra_source(REFERENCE 3, [pgctemporary])
+  -- if $gc_extra_source(KNOWN PNULL, [pgctemporary])
+  -- if $gc_extra_source(VARIABLE ($ptascii("result")) 18, [$identity_receipt(KNOWN (PARRAY 2), true)])
+  -- if $gc_extra_source(KNOWN (POBJECT 1), [pgctemporary])
+  -- if $gc_extra_source(KNOWN (POBJECT 1), [pgctemporary, $identity_receipt(KNOWN (PARRAY 2), true)])
+  -- if ~$gc_extra_source(KNOWN (POBJECT 2), [pgctemporary])
+  -- if ~$gc_extra_source(VARIABLE ($ptascii("result")) 18, [pgctemporary, pgctemporary])
+  -- if ~$gc_extra_source(VARIABLE ($ptascii("result")) 18, [$identity_receipt(KNOWN PNULL, true)])
+  -- if ~$gc_extra_source(VARIABLE ($ptascii("result")) 18, eps)
