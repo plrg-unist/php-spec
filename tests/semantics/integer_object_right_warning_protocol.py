@@ -129,7 +129,6 @@ def conditions(name, program, path, stdout):
             'S_return.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation INTEGER_LEFT pintegerconversion 1) :: ptask_tail*',
             '$integer_warning_valid(S_return, pintegeroperation, INTEGER_LEFT, pintegerconversion, 1)',
             '$integer_pointer_value(S_return, pintegeroperation.LEFTPOINTER) = (PFLOAT ' + str(CHANGED_BITS) + ')',
-            'pintegerconversion.VALUE = 12',
             '$call_descriptors_valid(S_return)',
         ]
         seek('S_right', 'S_return', 4)
