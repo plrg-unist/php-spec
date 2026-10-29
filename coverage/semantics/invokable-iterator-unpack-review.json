@@ -1,0 +1,44 @@
+{
+  "scope": "Ordinary dynamic calls through an initialized user-object CV whose selected public effective __invoke receives initialized user Iterator CV unpack; inherited named/by-reference binding and abrupt selected-receiver cleanup.",
+  "target": "Pinned PHP 8.5.10 CLI NTS 64-bit, -n plus tests/semantics/profile.json, LC_ALL=C, TZ=UTC",
+  "engine_route": "Zend/zend_vm_def.h ZEND_INIT_DYNAMIC_CALL and ZEND_SEND_UNPACK; Zend/zend_execute.c zend_init_dynamic_call_object; Zend/zend_object_handlers.c zend_std_get_closure. INIT retains the selected object in the call frame before Iterator callbacks; SEND_UNPACK names the selected function's declaring scope in by-reference warnings.",
+  "base_revision": "8c17eff631a5de435263236eeb526a609337f7ae",
+  "tested_dirty_semantic_sha256": {
+    "spec/semantics/385-call-iterator-unpack.watsup": "6f792cebc9ddea9a4eeeae1e6705c5814d9f7898c6d1844ce6397c67be9dc0b6",
+    "spec/semantics/30-storage.watsup": "10e6ba220585ee5d7e4b3d7f256031dfdf283a41fca59912f64b1827aafd2c1b"
+  },
+  "implementation": "Module385 admits only a dynamic nonfixed source callee classified as a CV, an Iterator CV operand, and the selected public effective __invoke METHOD_TARGET. An abrupt eager-cleanup receipt may temporarily restore the saved receiver allocation to recheck that source/target after destruction; this adds no heap owner.",
+  "author_sources": {
+    "runner": "taskset -c 5 python3 tests/semantics/invokable_iterator_unpack_sources.py",
+    "runner_sha256": "083c3cd3b555710a1383dfc7c166912c091699f834a6352ace8af495096fc658",
+    "frozen_source_count": 5,
+    "unchanged": "call121-author-native/unchanged/results.json sha256:5633f1716f0e3027059758cdf978213453877b6045b318e2d6c8dab8ae00a0ee; all five native exit 0 and checked model Unsupported, runner exit 1",
+    "candidate": "call121-author-native/candidate/report.json sha256:24afe7fefc1a75fa2bc8bc1781f16caa6f21194973646075e24ca06c4fb57698; runner exit 0, five byte-exact normal agreements"
+  },
+  "reached": {
+    "runner": "taskset -c 5 python3 tests/semantics/invokable_iterator_unpack_protocol.py --case NAME",
+    "runner_sha256": "ece8cbf9280f7acd4e85fcf3ddc82660294ba7407e2a5c7d17d6a82480d82cfe",
+    "result": "Seven separate source-reached fixtures pass 146 assertions, each process exit 0 and true: live selection, key-time rebind, named key, inherited by-reference Warning, invalid-key Error, and two retired receiver finalizer paths. Live and retired negatives replace __invoke with the same class's real __destruct origin; callsite/owner negatives also reject.",
+    "report_sha256": {
+      "selected-before-iterator": "73744bf86c5115f7d16ea1da0d8660cc24547d1043cb14e7d8e4139856e5f7a4",
+      "selected-after-key-rebind": "e5ae5fd1fe2e7648eedd16012ec41ff31ff0580701f09db5c309a007c1391b4f",
+      "inherited-named-key": "b37bb931fc5ab63c2cec280649363b7813ab898fa88d80172a274f52bc4ba8a0",
+      "inherited-reference-warning": "349c4caae5f70324eb3e8264ba6954caea914565654ca9a71328da609bee5823",
+      "invalid-key-before-discard": "9b92555e240c0fafcfc0e534f21576416c2faee5e662a83bd0cc0d175f7314b6",
+      "invalid-key-retired-receiver": "cb9b949902f14185c91a5aed693a5d60697853f2cfb52e0e1daaf82950e94def",
+      "throwing-key-retired-receiver": "65f344dfa39da882d9c8f89a96eaca6ade2dabd41f1718ebb5c2cc845d8b3d67"
+    },
+    "raw": "call121-author-native/reached"
+  },
+  "independent_source": {
+    "source_sha256": "b2b0108527c43344c3420442e1e51d093596296905839e43cb99ec9e0bf2f238",
+    "unchanged": "call121-review-native/pinned-cpu1-final/summary.json sha256:10a9133766d23041ef4e726054d09ec944c157fa24403ad82fc4776b9a713940; native exit 0, unchanged checked model Unsupported",
+    "candidate": "call121-review-native/pinned-cpu5-candidate/summary.json sha256:d174faa334bd534b73aeb7111794e1b130802f601a6e6916b7ca2bc66e60a1ed; pinned parent/child, process 0, native/model stdout and stderr byte-exact"
+  },
+  "independent_review": "Semantic correctness, source/reached test reliability and final private documentation/package review CLEAR by calls121_resume_review. No scope expansion or replay of accepted tests was needed for recovery.",
+  "boundary": "Temporary-callee source sha256:1a9bd4721e82da6986aab285c0c5ac5bfd6233975ae3e81067c3f3ac45fb6a97 is native-positive (exit 0, stdout W|V|C|K|N|V|T|5|A|) but both unchanged and candidate remain Unsupported. Unchanged results sha256:3b14245a0c866012c3eb726a1469f531cdbe4ed2ba95b8f8b827edfb53033885; candidate results sha256:fe100e8e22de7c1bf7f4e76a3c97168cb9034fd17b09b3b49a250e07ec4217a9. It earns zero supported agreement credit.",
+  "failed_attempts": "An initial reached fixture used an untyped pdestructor binder; two named-key fixtures sought a raw PSTRING that the runtime did not store. All three failed and have zero reached credit; raw outputs are under call121-author-native/first-fixture-failure, named-fixture-failure and named-fixture-failure-2. Source/native/model inputs did not change when the fixture was corrected.",
+  "limits": "The saved target ID carries original selection after retirement. A virtual allocation recheck authenticates its class, effective method and source site but cannot reconstruct which same-class object a mutable CV held at INIT. Temporary/non-CV callees, non-CV Iterator operands, internal/magic callable forms and wider lifetimes remain partial.",
+  "runtime_identity": "PHP binary sha256:b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; adapter sha256:e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65; numeric runner sha256:b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0; SpecTec source pin da36ac3c434cd291940293a63da64544307730a3, OCaml switch 5.1.0, SL mode",
+  "raw_recovery": "Paths above are relative to /home/user/workspace/php-spec-evidence-archive/. Source reports include original bytes/path/cwd, request profile, raw streams/status and input hashes; reached reports include tested input and tool hashes. These are evidence for the dirty base plus exact semantic bytes, not a rerun of the eventual integrated revision."
+}

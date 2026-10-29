@@ -129,6 +129,20 @@ The [Closure Iterator review](../../coverage/semantics/closure-iterator-unpack-r
 records exact source and reached checks. `bindTo` clones, first-class method
 wrappers, `Closure::call`, and non-CV Iterator operands remain separate.
 
+A dynamic call through an initialized object CV also accepts its selected public
+user `__invoke` method with an initialized Iterator CV unpack. The call frame
+retains the selected receiver while key callbacks may replace the original CV.
+Inherited named parameters bind to the effective method; a Traversable
+by-reference Warning names its declaring class. On invalid or throwing keys,
+the selected receiver can retire before its destructor exits. The cleanup
+receipt checks the saved target against the dynamic CV callsite and effective
+`__invoke` using a temporary allocation view, without adding a heap owner.
+The saved target ID carries the original selection: a retired state cannot
+reconstruct which same-class object the mutable CV held earlier. A temporary
+callee remains `Unsupported` on a native-positive control. The
+[invokable Iterator review](../../coverage/semantics/invokable-iterator-unpack-review.json)
+records the exact sources, reached states and this boundary.
+
 The unpack marker owns selected Iterator DATA independently of raw
 temporary/reference INPUT; its cursor tracks traversal. A source CV stays borrowed.
 The actual argument origin, emitted line, callee, source remainder and destination

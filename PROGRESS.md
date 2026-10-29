@@ -444,6 +444,18 @@ retired cleanup negatives. Earlier failed cuts retain zero credit. `bindTo`
 clones, method wrappers, `Closure::call` and non-CV operands remain open.
 [CALL120 review](coverage/semantics/closure-iterator-unpack-review.json).
 
+Dynamic calls through a public user object `__invoke` CV now accept initialized
+Iterator CV unpack. A selected receiver survives key-time CV rebinding; inherited
+named and by-reference parameters keep their effective method and declaring-class
+Warning. Invalid and throwing keys retain authentic retired-receiver cleanup.
+Five authored and one independent frozen source agree byte-for-byte with pinned
+PHP; seven source-reached fixtures pass 146 assertions. A native-positive
+temporary callee remains explicit `Unsupported`. The earlier fixture failures
+and all unchanged Unsupported baselines have zero agreement credit. The saved
+target ID carries original selection after retirement; same-class historical
+selection is not reconstructed. Wider callee/operand forms remain partial.
+[CALL121 review](coverage/semantics/invokable-iterator-unpack-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
