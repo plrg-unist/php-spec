@@ -167,17 +167,18 @@ their original inputs. At that cut, count-ambiguous callbacks, WeakMap callbacks
 residual tags, workers, hooks, reentry and active contexts remained partial.
 [GC05 review](coverage/semantics/gc-materialized-callback-review.json).
 
-CLASS153 admits own public unpromoted reference constructor formals through the
-ordinary saved-target/deferred-send machinery. Positional sends retain an old cell
-through later rebinding; named sends acquire the cell at their actual formal index.
-Reception may coerce a supplied caller cell; the parameter type adds no persistent
-constraint, and existing property-reference sources remain authoritative. Missing
-CVs, fresh omitted scalar defaults, VAR reference notices and invalid-TMP priority
-keep their ordinary rules.
-Six exact normal sources and 217 conditions pass (211 reached, six derived guards),
-with private strict431 and actual-tail joined strict432 at separate cuts. Three
-fixture-only failures retain zero credit. Variadic/promotion/unpack/nonpublic and wider source/value/
-callback contexts remain partial. [Reference-constructor review](coverage/semantics/anonymous-constructor-reference-review.json).
+CLASS154 privately validates public unpromoted variadic constructors through the
+ordinary positional/named binder. Value tails copy; reference tails retain caller
+cells across later rebinding and typed reception. Fixed defaults precede ordered
+tail collection, including empty arrays; whole-name diagnostics preserve the
+separate ordinary missing-arity display rule. Six eligible originals agree and
+270 conditions pass (263 reached, seven derived guards), with private strict432.
+The original excluded COUNT observer and an authored timing-fixture failure retain
+zero credit; the fresh foreach observer has its own native/source cut. Actual-tail
+integration is pending. Promotion/unpacking/nonpublic and wider contexts remain
+partial. [Variadic review](coverage/semantics/anonymous-constructor-variadic-review.json).
+The prior [reference review](coverage/semantics/anonymous-constructor-reference-review.json)
+retains CLASS153 source6/state217 and its own native, strict and fixture cuts.
 The prior [finite-arity review](coverage/semantics/anonymous-constructor-arity-review.json)
 retains CLASS152 source6/state212 and its argument-TypeError/missing-arity display distinctions.
 The [rejected-source review](coverage/semantics/anonymous-rejected-sources-review.json)
@@ -259,7 +260,8 @@ reentrant/abrupt raw-owner teardown remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS154 | Variadic constructor formals through the ordinary binder; native5+1 and exact old2 retained, changed-model validation pending. |
+| GC09 | Coherent fake-Closure allocation flags under implementation. |
+| CLASS154 | Private source6/state270/strict432 complete; actual-tail integration pending. |
 | I82 | Rebound method-callable Generator factories; source preparation, unrun. |
 | OB04 | Selected error-handler FINAL handling; active validation. |
 | ATTR06 | Required unused owning explicit-wrapper return staging; read-only preparation. |

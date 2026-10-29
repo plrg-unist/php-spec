@@ -262,22 +262,24 @@ required at that cut. The [constructor review](../../coverage/semantics/anonymou
 separates original-source agreement, actual call/unwind states and pure receipt queries.
 
 Anonymous classes accept finite sequences of direct positional/named `new`
-arguments and unpromoted value or reference constructor parameters. The ordinary signature
-compiler validates their types, defaults and requiredness; the ordinary binder
+arguments and unpromoted value or reference parameters, including a final variadic tail.
+The ordinary signature compiler validates their types, defaults, requiredness and
+final-only variadic placement; the ordinary binder
 completes named holes before typed reception. A class without `__construct`
 evaluates positional arguments and ignores their values. The compiled identity
 precedes execution; a deferred class links and publishes at its first `new`
 before argument expressions, then uses the ordinary method or no-constructor
-send tasks. An unknown named argument stops before the next value expression;
-typed reception errors leave the caller destination unchanged. The
+send tasks. Without a variadic tail, an unknown named argument stops before the
+next value expression; typed reception errors leave the `new` assignment
+destination unchanged. The
 [argument review](../../coverage/semantics/anonymous-constructor-arguments-review.json)
 retains its seven native-backed sources, independent weak int-coercion source and
 107 source-reached premises at the earlier two-parameter/send cut.
 The [finite-arity review](../../coverage/semantics/anonymous-constructor-arity-review.json)
 records root and successful include/eval sites, inherited constructors, surplus
 positional sends, named-default reception retry and pruned versus eager invalid
-defaults. Constructor variadic/promoted or nonpublic forms,
-unpacking and wider object lifetimes remain partial.
+defaults. Promoted or nonpublic constructors, unpacking and wider object lifetimes
+remain partial.
 Reference sends use the saved constructor signature and hold their actual cell
 before later argument effects. Named sends select the formal index when they run;
 rebinding a constructor local does not rebind the caller. Missing variables can
@@ -287,9 +289,18 @@ ordinary unless that cell has a persistent property-reference source. VAR values
 can warn and receive a temporary reference; an invalid TMP stops later sends and
 the body. The [reference-constructor review](../../coverage/semantics/anonymous-constructor-reference-review.json)
 records these source, cell, mode and reception checks.
-Argument TypeErrors and nonreferenceable-send Errors format the whole callable
-name as one C string; constructor
-missing-arity errors format the lexical declaring class and member separately.
+Final variadic formals reuse the ordinary positional and named-tail collectors.
+Positional extras keep integer keys; unknown named extras keep source order and
+string keys. By-value tails copy received values, while reference tails retain
+caller cells and may coerce them at reception. Fixed defaults finish before tail
+collection, and an empty tail still receives an array. All sends precede typed
+tail errors; invalid reference sends stop later sends. The
+[variadic review](../../coverage/semantics/anonymous-constructor-variadic-review.json)
+retains six agreements and the original excluded `count()` observer separately;
+[CORE](CORE.md#environment-and-ordinary-library-boundary) defines that library boundary.
+Argument TypeErrors, missing named fixed arguments and nonreferenceable-send
+Errors format the whole callable name as one C string. Ordinary too-few-argument
+errors format the lexical declaring class and member separately.
 Stored class names and `::class` values keep their complete bytes.
 
 Unit0 anonymous classes may now extend an ordinary named class through the
