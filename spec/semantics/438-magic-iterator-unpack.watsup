@@ -218,6 +218,7 @@ rule PhpStep/magic-unpack-pack: S ~> S_arguments[.TODO = [(CALL_ARGS pcalltarget
   -- if (S_arguments, n_arguments, n_named?) = $magic_unpack_arrays(S, punpackcall.SENT)
   -- if pcalltarget_final = MAGIC_UNPACK_TARGET punpackcall.FUNCTION n_arguments n_named? punpackcall.SENT
 
+dec $magic_unpack_array_ids(pstate, nat, nat?, pnamedargs) : bool
 dec $magic_unpack_history(pstate, pcalltarget) : bool
 def $magic_unpack_history(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) = true
   -- if $magic_unpack_descriptor(S, pcalltarget)
@@ -225,7 +226,6 @@ def $magic_unpack_history(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named
   -- if $(n_arguments < |S.ARRAYS|)
   -- if $magic_unpack_array_ids(S, n_arguments, n_named?, pnamedargs)
 def $magic_unpack_history(S, pcalltarget) = false -- otherwise
-dec $magic_unpack_array_ids(pstate, nat, nat?, pnamedargs) : bool
 def $magic_unpack_array_ids(S, n_arguments, eps, pnamedargs) = (pnamedargs.NAMED = eps)
 def $magic_unpack_array_ids(S, n_arguments, (n_named), pnamedargs) = true
   -- if pnamedargs.NAMED =/= eps
