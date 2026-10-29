@@ -450,6 +450,7 @@ def $eager_operation_source_guard(S, pdestructionoperation) = (($output_pending_
 ;; eager bailout transfer. Its abandoned receiver counts are live; the saved
 ;; output rows below are a lookup view only, never another buffer/root owner.
 dec $output_pending_abandoned_at(pstate, pdestructioncleanup*, pdestructionoperation, pobdeactivate) : bool
+dec $output_pending_abandoned_row(pstate, pdestructioncleanup, pdestructionoperation, pobdeactivate) : bool
 dec $output_pending_history(pstate, pobdeactivate) : pstate
 def $output_pending_history(S, pobdeactivate) = S[.DESTRUCTION.PHASE = DESTRUCTION_DONE][.OUTPUTBUFFERS = pobdeactivate.BUFFERS][.ALLOCATIONS = S.ALLOCATIONS ++ $output_roots(pobdeactivate.BUFFERS) ++ $operand_nodes(pobdrain.VALUE) ++ $base_nodes(pobdrain.BASE)]
   -- if pobdeactivate.CALL.CALL = OB_FINAL pobdrain
@@ -459,7 +460,8 @@ def $output_pending_abandoned(S, pdestructionoperation, pobdeactivate) = $output
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
 def $output_pending_abandoned(S, pdestructionoperation, pobdeactivate) = false -- otherwise
 def $output_pending_abandoned_at(S, eps, pdestructionoperation, pobdeactivate) = false
-def $output_pending_abandoned_at(S, pdestructioncleanup :: pdestructioncleanup_tail*, pdestructionoperation, pobdeactivate) = true
+def $output_pending_abandoned_at(S, pdestructioncleanup :: pdestructioncleanup_tail*, pdestructionoperation, pobdeactivate) = ($output_pending_abandoned_row(S, pdestructioncleanup, pdestructionoperation, pobdeactivate) \/ $output_pending_abandoned_at(S, pdestructioncleanup_tail*, pdestructionoperation, pobdeactivate))
+def $output_pending_abandoned_row(S, pdestructioncleanup, pdestructionoperation, pobdeactivate) = true
   -- if pdestructioncleanup.SOURCE = DESTRUCTOR_RESULT pdestructorcall
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps /\ pdestructorcall.PENDING = eps
@@ -467,7 +469,7 @@ def $output_pending_abandoned_at(S, pdestructioncleanup :: pdestructioncleanup_t
   -- if pdestructioncleanup.TARGET = $eager_cleanup_target(S, pdestructorcall.TARGET)
   -- if pdestructioncleanup.CALLER = eps /\ pdestructioncleanup.ORIGIN = eps /\ pdestructioncleanup.CONSTCONTEXT = eps
   -- if $output_pending_valid($output_pending_history(S, pobdeactivate), pobdeactivate)
-def $output_pending_abandoned_at(S, pdestructioncleanup :: pdestructioncleanup_tail*, pdestructionoperation, pobdeactivate) = $output_pending_abandoned_at(S, pdestructioncleanup_tail*, pdestructionoperation, pobdeactivate) -- otherwise
+def $output_pending_abandoned_row(S, pdestructioncleanup, pdestructionoperation, pobdeactivate) = false -- otherwise
 
 def $output_pending_secondary(S) = (pobdeactivate)
   -- if S.COMPLETION = UNCAUGHT n
