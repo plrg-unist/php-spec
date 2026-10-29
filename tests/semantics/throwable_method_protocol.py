@@ -8,7 +8,7 @@ from throwable_trace_recursion_protocol import error_rows
 
 EXPECTED = {
     'method-fields-before-severity': 'B|-1:1|W|1:-1|C|99:1:-1|M|1:-1|E|1|',
-    'nested-method-alias-tables': 'B|-1:1|M|1:99:3|E|1:0|T|0|R|4:2:1|',
+    'method-foreach-cached-tables': 'B|-1:1|M|1:99:3|E|1:0|T|0|R|4:2:1|',
     'method-cycle-before-earlier-field': 'B|F|hold|Error:Nesting level too deep - recursive dependency?:1:1:1|I|0:1|M|-1:1|W|1:-1|',
     'method-table-count-key-tail': 'C|1:-1|K|1:1|W|1:1|A|1|E|0:-1|',
 }
@@ -74,7 +74,7 @@ def field(state, node, label, item, name='data'):
 
 def checks(program, path, name):
     rows = front(program, path)
-    if name == 'nested-method-alias-tables':
+    if name == 'method-foreach-cached-tables':
         rows += trace('S', 'n_a', 'a', 'POBJECT n_p')[:4]
         rows += trace('S', 'n_b', 'b', 'POBJECT n_q')[:4]
         rows += trace('S', 'n_p', 'p', 'POBJECT n_left')[:4]
@@ -141,7 +141,7 @@ def checks(program, path, name):
                  'S_equal = $tbp_next(S_mutated_reverse)']
         rows += raw('S_equal', 1)
         return rows + finish('S_equal_raw', name)
-    if name == 'nested-method-alias-tables':
+    if name == 'method-foreach-cached-tables':
         rows += field('S', 'n_left', 'data_left', 'ALIAS n_live')
         rows += field('S', 'n_right', 'data_right', 'DIRECT (PARRAY n_right_data)')
         rows += [
@@ -239,10 +239,10 @@ def checks(program, path, name):
         '|S_keys.ARRAYS[n_data_keys].ITEMS| = 2',
         '$entry_lookup(S_keys.ARRAYS[n_data_keys].ITEMS,KSTRING $ptascii("cycle")) = eps',
         '$entry_lookup(S_keys.ARRAYS[n_data_keys].ITEMS,KSTRING $ptascii("other")) = (DIRECT (POBJECT n_right))',
-        '$object_table_at(S_keys.OBJECTTABLES,n_left) = (n_table_left)',
-        '$object_table_at(S_keys.OBJECTTABLES,n_right) = (n_table_right)',
-        '$aggregate_hash_image(S_keys,n_left,n_table_left)',
-        '$aggregate_hash_image(S_keys,n_right,n_table_right)',
+        '$object_table_at(S_keys.OBJECTTABLES,n_left) = eps',
+        '$object_table_at(S_keys.OBJECTTABLES,n_right) = eps',
+        '$trace_visit_inline_pair(S_keys,n_left,n_right)',
+        '$trace_visit_object_image(S_keys,n_left)',
     ]
     rows += raw('S_keys', 1)
     return rows + finish('S_keys_raw', name)

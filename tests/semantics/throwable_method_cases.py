@@ -59,3 +59,9 @@ $left = new Private155(1); $right = new Private155(2); $a = outer155($left); $b 
 echo 'B|', $a <=> $b, '|';
 ''',
 }
+
+# A separately frozen variant: ordinary property iteration creates real cached
+# tables; an array cast alone may use Zend's inline declared-property fast path.
+CASES['method-foreach-cached-tables'] = CASES['nested-method-alias-tables'].replace(
+    b'$viewLeft = (array)$left;',
+    b'foreach ($left as $ignored) {} foreach ($right as $ignored) {}\n$viewLeft = (array)$left;')
