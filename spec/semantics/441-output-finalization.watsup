@@ -592,9 +592,9 @@ def $output_final_exception_scope(S) = (pobinvoke)
   -- if $output_final_exception_valid(S[.ORIGIN = eps], pobinvoke, true)
 def $output_final_exception_scope(S) = eps -- otherwise
 def $output_final_exception_abrupt(S) = true
-  -- if $output_final_exception_scope(S) = (pobinvoke)
   -- if S.TODO = (THROW_SEARCH n) :: ptask :: ptask_tail*
   -- if $throwable_live(S, n)
+  -- if $output_final_exception_scope(S) = (pobinvoke)
   -- if $output_final_exception_carrier(S, S.TODO) = (ptask_carrier)
   -- if ptask = ptask_carrier \/ $eager_bailout_source(S) =/= eps \/ $output_final_exception_error(S) =/= eps
 def $output_final_exception_abrupt(S) = false -- otherwise
