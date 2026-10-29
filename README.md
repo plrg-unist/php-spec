@@ -648,8 +648,13 @@ shutdown release and wider destructor effects remain partial.
 keep the cell selected by `current()` through key-time writes and source rebinding,
 then copy its string value before `next()`, Iterator destruction and API entry.
 Temporary and Aggregate inputs retain their real owners through normal or
-supplied-Exception cleanup. Six exact source agreements, two explicit Unsupported
-controls and 505 reached checks preserve the existing field/graph policy.
+supplied-Exception cleanup, preserving the existing field/graph policy.
+
+[Typed-current CONFIG values](coverage/semantics/config-iterator-typed-current-review.json)
+validate live instance/static reference sources without coercion or extra owners.
+Existing writes and retirement detach constraints; the cached cell and copied
+arguments survive source rebinding. Transient/special cells and nonstring sends
+retain their boundaries. Original ordinary-cell cuts remain in their review.
 
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
