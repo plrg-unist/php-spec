@@ -4399,8 +4399,11 @@ Later units also support returned/nested/call-argument sites and existing named 
 static Closure factories, with up to two ordinary positional/named constructor
 arguments. Compiler-skipped RHS sites consume no key; compiled unvisited sites do.
 [Placement review](coverage/semantics/anonymous-dynamic-placements-review.json).
-Failed/open histories, enum/trait co-residence and wider bodies/argument modes
-remain partial.
+Anonymous sites may share successful units with ordinary traits and enums.
+Normal compiler headers, implicit interfaces and source-entry bindings determine
+their shared class-key sequence; pruned declarations and include-once hits add no
+compilation cost. [Mixed-kind review](coverage/semantics/anonymous-trait-enum-review.json).
+Failed/open histories and wider bodies/argument modes remain partial.
 Plain empty named classes can share those units globally and in valid named
 namespace sections, including repeated unbracketed sections and bracketed global
 bodies. Eligible root/actual-block classes consume no RTD key; deferred classes
