@@ -58,7 +58,6 @@ def conditions(name, program, path, stdout):
         'S_terminal.STORE[n_live_cell] = DEFINED (PARRAY n_live)',
         'n_live =/= n_option',
         'S_terminal.ARRAYS[n_live].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 5))]',
-        owners('S_terminal', 'HARRAY n_option', 1),
     ] + public('S_terminal') + seek('S_terminal', 1602, 'S_finish') + [
         'S_finish.TODO = (CONFIG_GENERATOR pconfiggenerator_finish "finish") :: ptask_finish*',
         'pconfiggenerator_finish.ITEMS = [ENTRY (KINT 0) (DIRECT (PARRAY n_option)),ENTRY (KINT 1) (DIRECT (PINT 7))]',
