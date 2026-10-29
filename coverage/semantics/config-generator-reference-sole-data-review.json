@@ -1,0 +1,105 @@
+{
+  "milestone": "A73 quiet CLOSED Generator scalar reference-cell sole DATA retirement",
+  "status": "privately implemented, independently reviewed and validated; integration queued",
+  "scope": {
+    "consumer": "Existing INI_SET unpack of a named zero-argument BYREF Generator in a direct CV, with at most two copied scalar sends and an integer final key.",
+    "behavior": "A local yielded cell may be the CLOSED Generator's sole cached child after its input CV is rebound. With DATA as the last Generator owner, normal completion uses the existing 355 storage pin to release the scalar cell before API reception. Quiet terminal throw discards the popped CONFIG marker and the driver prunes the same cell and Generator before catch. Copied arguments, selected callee and supplied Throwable remain historical, and a weak NULL-option handler runs after both deaths.",
+    "limits": "Final cell must be ordinary live nondebt scalar storage and the Generator's only child; its sole owner is the Generator. Final RETURN is absent or implicit NULL, final key is integer, and producer is direct-CV BYREF. Typed/backed/owning cells, owning RETURN, noninteger final keys, temporary or Aggregate reference producers, effectful cleanup, delegation and wider lifetimes remain separate."
+  },
+  "implementation": {
+    "module": "spec/semantics/423-config-generator-unpack.watsup",
+    "base": "ba51811e6f1189ca3ec204c373e6d917961d4a2a",
+    "source_freeze": "aabbfb16f81100c65bf1d627a381f6a9cb7c2d76",
+    "runtime_revision": "8491450b313779c400aadb88ff1501cb2a26d0c1",
+    "private_compared_revision": "342abf2a7f22de9168ef16629bd87d046da77778",
+    "author_state_revision": "de879b891674115cac343b6d480f1bd2b4007bc2",
+    "change": "423 adds a live scalar/sole-cell storage gate, structural retired source/Generator history with a bounded cell identity but no dead-cell dereference, and the corresponding existing storage, invoke, eager-source and popped-marker discard admissions. Generic 355, schema, machine and ordered manifest are unchanged.",
+    "engine": "Pinned Zend/zend_vm_def.h ZEND_YIELD caches a reference and ZEND_SEND_UNPACK dereferences/copies it before move_forward; Zend/zend_generators.c iterator_dtor releases DATA, and free_storage releases the cached value after close."
+  },
+  "validation": {
+    "target": "PHP 8.5.10 CLI NTS64, project-local .tools/php/bin/php; tests/semantics/profile.json; LC_ALL=C/TZ=UTC. Checked frontend and SL/cache-off/encountered-determinism-on model.",
+    "native_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-closed-sole-data-73/native-freeze-aabb/report.json",
+      "sha256": "5c0b7cc6bde6484a325d073847aea92f72189004802b761c8885465df74924bd",
+      "revision": "aabbfb16f81100c65bf1d627a381f6a9cb7c2d76",
+      "originals": 4,
+      "result": "Four distinct source bytes equal independently authored EXPECTED stdout, empty stderr and exit0; all processes reaped. Native-only freeze has zero model-agreement credit."
+    },
+    "old_refusal": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-closed-sole-data-73/native-freeze-aabb/report.json",
+      "revision": "ba51811e6f1189ca3ec204c373e6d917961d4a2a",
+      "executed": 1,
+      "status": "Unsupported",
+      "reason": "CONFIG Generator unpack last DATA or callee owner",
+      "prefix": "B;Y0;Y1;T;",
+      "agreement_credit": 0
+    },
+    "private_strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-closed-sole-data-73/candidate-342abf/strict-report.json",
+      "sha256": "78903e2a2d33c446cee9a6c0129f8f932db53dc358d29243ef132bf4d6071226",
+      "revision": "342abf2a7f22de9168ef16629bd87d046da77778",
+      "modules": 431,
+      "seconds": 14.279548645019531
+    },
+    "source_models": {
+      "author_report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-closed-sole-data-73/candidate-342abf/author-source/report.json",
+      "author_sha256": "8f64e40b790c350b55ca6c432986a1ac009ebc050abc22614dc641b9f58e117d",
+      "peer_report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-closed-sole-data-73/candidate-342abf/peer-source/report.json",
+      "peer_sha256": "039acaa1f71b826a99c2e616dabd2d99e04f212130264aec3c65b29f3be14df0",
+      "revision": "342abf2a7f22de9168ef16629bd87d046da77778",
+      "agreements": 4,
+      "cases": [
+        "config-generator-reference-sole-data-normal",
+        "config-generator-reference-sole-data-terminal-throw",
+        "config-generator-reference-closed-null-handler-return",
+        "config-generator-reference-closed-null-handler-throw"
+      ],
+      "repeat_native": "The ordinary source wrappers redundantly reran the same four frozen PHP originals. Their distinct process records/streams are preserved in these reports, with zero additional original or coverage credit; no accepted A72 source/native/state was replayed."
+    },
+    "states": {
+      "conditions": 318,
+      "if_premises": 315,
+      "raw_steps": 3,
+      "peer": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-closed-sole-data-73/candidate-342abf/peer-state/report.json",
+        "sha256": "3750ffea937dc8a422e0292f9886ebad09edc02b31225797e904bc1225854db7",
+        "revision": "342abf2a7f22de9168ef16629bd87d046da77778",
+        "conditions": 207,
+        "raw_steps": 2,
+        "coverage": "Reached local cell and sole-DATA ownership, real 355 NEXT1 live cell to NEXT2 dead cell with live Generator pin, retired structural history, weak death before NULL callback/API, and five constructed refusal guards."
+      },
+      "author": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-closed-sole-data-73/candidate-de879/author-state/report.json",
+        "sha256": "e9d5a070c01d365986346b2f4c6c800e696e48a887c478086a707d3eb46d84dc",
+        "revision": "de879b891674115cac343b6d480f1bd2b4007bc2",
+        "conditions": 111,
+        "raw_steps": 1,
+        "coverage": "Reached saved terminal throw, popped-marker live admission, nonoperational raw release and one public prune, dead Generator/cell before catch, same Exception/result99/precision6 and setter recovery."
+      }
+    },
+    "first_fixture_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-closed-sole-data-73/candidate-db1146/author-state/report.json",
+      "sha256": "a79ded404aeb241583b9cc6339e2088433ec72355faf38b9f662696145805fb4",
+      "revision": "db1146b7b757aa49eaffc08ce8364888bccc1a18",
+      "cause": "The first terminal fixture expected a 355 pin on a quiet nonoperational throw. The authored 374 release returns unchanged state and driver pruning retires the child; only this failed fixture was corrected. No model/source/runtime rule changed.",
+      "agreement_credit": 0
+    },
+    "review": "Independent source literals/EXPECTED, 423 static seams, actual source-model rows and reached peer assertions by config71_recover_review. All successful actors exited0, true stdout for strict/state, empty stderr, stable inputs/revisions, no timeout/interruption/group survivor."
+  },
+  "recovery": {
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-closed-sole-data-73",
+    "manifest_sha256": "08b4c5b1ce35775d5a4438abe38ef4197b7179a65c99338ea77b26c29fc11544",
+    "files": 126,
+    "raw_bytes": 1910914,
+    "commands": [
+      "python3 tests/semantics/config_generator_reference_sole_data_sources.py --output OUT/author-source",
+      "python3 tests/semantics/config_generator_reference_sole_data_state.py --source-report OUT/author-source/report.json --output OUT/author-state",
+      "python3 tests/semantics/config_generator_reference_closed_review_sources.py --output OUT/peer-source",
+      "python3 tests/semantics/config_generator_reference_closed_review_state.py --source-report OUT/peer-source/report.json --output OUT/peer-state"
+    ],
+    "notes": "Raw source paths, streams, process exits, checked fixtures and reports are outside Git; no executables/providers. Historical model cuts remain tied to their recorded revisions."
+  },
+  "integration": {
+    "status": "pending actual-tail composition and one full-manifest joined strict check"
+  }
+}
