@@ -4316,8 +4316,13 @@ including grouped imports, qualified aliases, relative and fully qualified names
 Each source block retains its own imports; class lookup has no global fallback.
 Generated prefixes and declared property types retain the resolved full names.
 [Namespace dependency review](coverage/semantics/anonymous-namespace-dependencies-review.json).
-Dynamic-source parent/interface dependencies remain partial, as do wider anonymous
-members and inheritance contexts.
+Successful include/eval units now admit dependent anonymous classes at existing
+no-argument CV-assignment sites, using each unit's imports, frozen source-entry
+parent bindings and compiler-derived request-wide counters. Ordinary loader
+callbacks preserve retained loads, retry and unit-specific publication causes.
+[Dynamic dependency review](coverage/semantics/anonymous-dynamic-dependencies-review.json).
+Failed/open compilation histories, wider dynamic placements/arguments, enum/trait
+co-residence and wider anonymous members remain partial.
 Plain empty named classes can share those units globally and in valid named
 namespace sections, including repeated unbracketed sections and bracketed global
 bodies. Eligible root/actual-block classes consume no RTD key; deferred classes

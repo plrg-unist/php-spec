@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous.dynamic-dependencies",
+  "status": "partial",
+  "implementation_commits": [
+    "bb484e6c0",
+    "a59d2eef7"
+  ],
+  "scope": "Existing no-argument direct CV-assignment anonymous sites in successfully compiled include/eval units now support ordinary parent/interface dependencies, each unit's namespace/class imports, named loader callbacks, retry and genuine unit-specific publication causes. Compiler-derived RTD accounting includes ordinary named class descendants and root callable contexts; functions/Closures/arrows have no intrinsic class-key cost. Wider dynamic placements/arguments and failed/open/reentry histories remain outside this slice, as does enum/trait co-residence.",
+  "engine_routes": [
+    "Zend/zend_compile.c::zend_compile_class_decl/zend_try_early_bind: already-live parent lookup at compilation entry and normal duplicate/early eligibility",
+    "Zend/zend_compile.c::zend_build_runtime_definition_key/zend_generate_anon_class_name: actual class-key cost and request-wide anonymous identity",
+    "Existing DECLARE_ANON_CLASS and normal declaration/autoload continuations: resolve dependencies and publish before construction; body/default validation remains eager"
+  ],
+  "design": "126/133/135/177 use the existing frozen FOLD.EXTERNAL source-entry view for live parent and own-name checks; descriptors are never merged into the new unit image.383 authenticates each canonical unit's own lexical headers and absolute seed, then subtracts that seed for local history cost. History consumes closed chronological PCSCOMPLETE segments and recurses only into earlier source IDs. Runtime descriptor selection requires its own successful compilation. Source/task equality and prefix-only cause authentication retain the existing class-child staging without full-history recursion inside cause validation.",
+  "native_and_baseline": {
+    "report": ".tools/class148-review/baseline-summary.json",
+    "sha256": "acd1d6664a696eba38be00251513ecf70407d077fbae065d285fcc82b1468392",
+    "result": "All8 originals frozen/native-first on immutable ce797770868f31af92ce450d97e39dbea3635b1f, CPU5 pinned/reaped:6 normal,1 runtime link fatal,1 terminal eval compile-default fatal. Exactly2 materially distinct unchanged gates (external-parent counter and loader-root/history) are Unsupported. Other6 unchanged probes unrun; no native replay."
+  },
+  "source_outcomes": {
+    "catalogue": "tests/semantics/anonymous_dynamic_dependency_cases.json",
+    "report": ".tools/class148-artifacts/source8-assessment.json",
+    "sha256": "5264531001c501582c7e8d8a066d315fe1908bd7d6f6978ccac857c61bf5f80a",
+    "counts": {
+      "normal": 6,
+      "runtime_link_fatal": 1,
+      "eval_compile_default_rejection": 1
+    },
+    "result": "Eight exact stored native stdout/stderr/exit tuples at separately recorded source cuts, with explicit source/child-file path substitution only. Tests/method_runtime stdout child mapping matches its existing stderr mapping. New include payload bytes remain frozen.",
+    "budgets": "Upfront180s model/190s host per source; all pinned CPU2/fullreaped. No failed/open-history continuation claimed by the terminal compile-error source."
+  },
+  "strict_sl": {
+    "report": ".tools/class148-artifacts/first-strict428.json",
+    "sha256": "f51f4e4707d584cb7dfc5ec487688a5b1ee0c40889a0ddd8275b724594a2a5fa",
+    "modules": 428,
+    "result": "true newline/empty stderr, stable inputs, CPU2 pinned/reaped, no timeout/bad affinity/survivors"
+  },
+  "reached": {
+    "conditions": 178,
+    "groups": [
+      {
+        "name": "source-entry binding and RTD accounting",
+        "conditions": 65,
+        "test": "tests/semantics/anonymous_dynamic_dependency_protocol.py",
+        "report": ".tools/class148-artifacts/anonymous-dynamic-dependency-protocol-z9rb6rr4/report.json",
+        "sha256": "74feb22ed1bddb9cef6e1703d84cecd56a2a4d7d568cc7779b6e00aa3d3cc8ed",
+        "supervisor": ".tools/class148-artifacts/authored-entry-counter65.json",
+        "supervisor_sha256": "c3b8f1cf78254c8de5dc6c2788692373351e5acd9cefaa2ea06fae60c2242e00",
+        "result": "Two real checked eval ingresses; live entry Base makes Named early/cost0, exact raw root0/inside1/tail2 identities, local versus absolute counters, hidden entry binding/wrong seed rejection, full source/call/class/heap validators."
+      },
+      {
+        "name": "independent later-unit loader retry and publication cause",
+        "conditions": 113,
+        "test": "tests/semantics/anonymous_dynamic_dependency_cause_protocol.py",
+        "report": ".tools/class148-artifacts/anonymous-dynamic-dependency-cause-xv4hkw54/report.json",
+        "sha256": "de9ce245494ce02cf599d7ad01843f7db990ddf8ffdbb7cbdb7a1140cfac9d22",
+        "supervisor": ".tools/class148-artifacts/independent-dynamic-dependency113.json",
+        "supervisor_sha256": "7f8a74cbbc8f42a5cf98a76108cd78ce464dd1116e97bbd08e3d2f08d6f33bc9",
+        "result": "Real unit1 anonymous class-child, nested Base unit2 and interface unit3 ingress; unit1 entry still omits later-loaded Base, own-open compilation and wrong-unit/site negatives, failed link retains Base without partial anonymous link/publication, same compiled descriptor retries and publishes once before constructor/allocation, final exact output and full validators."
+      }
+    ]
+  },
+  "zero_credit": [
+    "Original invalid-default report expected php_error but observed correct static_rejection. Native outer|/fatal/255 tuple was already exact; original failed report retained in source8 assessment. Only expected row status changed and only that affected source was rerun successfully. No production mutation or renewal of the other7."
+  ],
+  "tested_code": {
+    "revision": "a59d2eef7",
+    "sha256": {
+      "spec/semantics/126-class-compiler.watsup": "f64e9b08cbf09bcfca1e26a92d8536d253a6235ecea4a14e1358728dba5f64f8",
+      "spec/semantics/133-inheritance-compiler.watsup": "ef45c856bd44f959cb8adfae967c98a5c03ddd2d30cb5d37f0a27897db2d2012",
+      "spec/semantics/135-property-compiler.watsup": "848c069f039341b70049f4e6538de8c6162cebcb0d1f823072a7fde566e74a6d",
+      "spec/semantics/177-interface-compiler.watsup": "fd9e1d74ef855865c39c9efc3c459f3f04449b6974a5a204df1da7105600f538",
+      "spec/semantics/383-anonymous-classes.watsup": "0adf58f40e19cd3a88f076df4200d4198abc293e1e4a248f058f4f6eed04d086"
+    },
+    "qualification": "Strict/source cuts ran at dirty ce7977708 with these exact production bytes, subsequently committed unchanged by bb484e6c0/a59d2eef7. Counter/cause fixtures use a59. Source rows retain their actual catalogue/test cuts; status-only correction is isolated above."
+  },
+  "recovery": "Raw sources/native/baseline/process records remain external under .tools/class148-author, .tools/class148-review and .tools/class148-artifacts. Accepted source/state raw directories are copied unchanged before WT cleanup. Existing local tool hardlinks reused; local-tools.json retains binary hashes. No fresh-build or portability claim.",
+  "boundaries": "Closed successful compilation and no pre-name diagnostics required. A runtime dependency miss with successful compilation still consumes its compiled RTD key. Failed/open/reentered compilation histories, broader later-unit expression/factory/argument placements and enum/trait key accounting remain Unsupported. Existing unit0 and earlier parentless evidence keeps its original identities; no CLASS146/147 campaign renewal.",
+  "independent_review": "Production compiler-entry/383 and per-unit history/source-cause design statically CLEAR; exact source8, counter65 and cause113 independently reviewed. Original expected-status failure remains0. No unresolved old-only interaction warrants historical state/source renewal; prior evidence retains original cuts. Actual-tail seam review is separate.",
+  "status_controls": {
+    "report": ".tools/class148-artifacts/anonymous-parent-unsupported-if6e1h_h/report.json",
+    "sha256": "0bbf9deb350ada16eb1762be5b2dd2f01f40f7b12df26b63967cd09430507f5c",
+    "supervisor": ".tools/class148-artifacts/promoted-status3.json",
+    "supervisor_sha256": "df10e3d52bba4cc077ceb8bbc8e58f3f767945bf4e394da8d6a0c9499584d1c8",
+    "result": "Historical forward-parent, dynamic dependent unit and interface sources all normal by explicit frontend/checked/status/empty tuple assertions; status-only controls, zero renewed native agreement."
+  },
+  "maintained_test_commits": [
+    "0a05c515f",
+    "d38157ca7"
+  ]
+}

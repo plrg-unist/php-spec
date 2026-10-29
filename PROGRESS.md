@@ -8,20 +8,17 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
-Unit0 anonymous hierarchy references now use ordinary namespace/class-import
-resolution, including qualified aliases, grouped imports, relative/full names and
-per-block alias isolation. Generated prefixes and property types retain resolved
-full names; ordinary named-header replay shares that lexical view. Body/default
-validation remains eager, and first-`new` dependency staging/publication retains
-its argument order, retry identity and source cause.
-Nine new original sources match pinned PHP. Strict426 and 157 source-reached
-conditions pass, including independent autoload/type/cause checks and coherent
-wrong-import descriptor forgeries. Joined strict428 on the actual enum tail also
-passes. The first module-order strict stop has zero
-credit. Two separate reserved-reference originals are checked-frontend parser
-boundaries with zero semantic agreement. Dynamic-source dependent sites and wider
-anonymous bodies/arguments remain partial.
-[Namespace dependency review](coverage/semantics/anonymous-namespace-dependencies-review.json).
+Successful include/eval units now admit dependent anonymous classes at existing
+no-argument CV-assignment sites. Each unit keeps its own namespace/import context,
+frozen source-entry parent bindings and compiler-derived request-wide RTD cost.
+Ordinary loader callbacks preserve retained loads, same-site retry and genuine
+unit-specific publication causes. Body/default errors remain eager, with first-NEW
+linking before construction. Eight native-first originals agree and strict428 plus
+178 source-reached conditions pass, including independent unit-specific retry/cause
+and frozen-entry no-lookahead checks. The original wrong expected-status row
+remains zero credit, with only that corrected row rerun. Failed/open histories, broader placements/arguments and
+enum/trait co-residence remain partial.
+[Dynamic dependency review](coverage/semantics/anonymous-dynamic-dependencies-review.json).
 
 Materialized ordinary property tables now support a callback-free explicit GC
 slice over finite instance/array/cell cycles. GC traces declared slots through
@@ -782,6 +779,7 @@ credit. Generator/reference getters and wider targets/lifetimes stay partial.
 | --- | --- |
 | A67 | Typed instance/static reference-source capture for CONFIG Iterators/shared DATA. |
 | OB01 | Output-buffering frontier preparation. |
+| CLASS148 | Dynamic dependency source8/reached178 accepted; final package/integration pending. |
 | COMP150 | Finite Previous/root validation. |
 | GC03 | WeakMap registration order and proxy-count collection; native-first packet. |
 | ATTR01 | NoDiscard. |
