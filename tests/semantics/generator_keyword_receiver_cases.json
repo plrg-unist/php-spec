@@ -43,5 +43,16 @@
     "native_exit": 0,
     "native_stdout": "MAKE|BRIDGE|KEPT|1|BODY|1|VALUE|1|DROP|DONE|1|1|E",
     "native_stderr": ""
+  },
+  {
+    "id": "i77-receiver-private-chain-reference-send-abort-independent",
+    "purpose": "Independent inherited instance factory and private self bridge select a protected reference Generator body on the same This. Fresh SEND, supplied Fiber abort and cache replacement preserve actual receiver and payload lifetimes; the native actual CLOSED|0|1 corrects one provisional expected bit.",
+    "source": "<?php\nclass Payload77 { public function __destruct() { echo 'TOKEN|'; } }\nclass Base77 {\n    protected function &body(&$item) {\n        global $weakMaker, $weakPayload;\n        echo 'BODY|', (int) (__CLASS__ === 'Base77'), '|',\n             (int) (static::class === 'Leaf77'), '|',\n             (int) ($this === $weakMaker->get()), '|';\n        try {\n            Fiber::suspend('fresh77');\n            $received = yield $item;\n            Fiber::suspend('cached77');\n            echo 'BAD-RETURN|';\n        } finally {\n            echo 'FIN|', (int) ($this === $weakMaker->get()), '|',\n                 (int) ($received === 13), '|',\n                 (int) ($item === $weakPayload->get()), '|';\n        }\n    }\n}\nclass Mid77 extends Base77 {\n    public function make(&$item) { echo 'MAKE|'; return self::bridge($item); }\n    private function bridge(&$item) { echo 'BRIDGE|'; return parent::body($item); }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Leaf77 extends Mid77 {\n    public function bridge(&$item) { echo 'BAD-LEAF|'; return null; }\n}\nfunction Run77() {\n    global $g, $stop, $weakMaker, $weakPayload;\n    echo 'CALL|';\n    try { $g->send(13); echo 'BAD-SEND|'; }\n    catch (Throwable $caught) {\n        echo 'OUT|', (int) ($caught === $stop), '|',\n             (int) ($caught->getPrevious() === null), '|',\n             (int) ($weakMaker->get() === null), '|',\n             (int) ($weakPayload->get() !== null), '|';\n    }\n    return 'fiber77';\n}\n$item = new Payload77();\n$old =& $item;\n$weakPayload = WeakReference::create($item);\n$maker = new Leaf77();\n$weakMaker = WeakReference::create($maker);\n$g = $maker->make($item);\nunset($maker);\necho 'KEPT|', (int) ($weakMaker->get() !== null), '|';\n$replacement = 9;\n$item =& $replacement;\n$f = new Fiber('Run77');\necho 'FRESH|', (int) ($f->start() === 'fresh77'), '|';\necho 'NEXT|', (int) ($f->resume() === 'cached77'), '|';\necho 'CHANGE|';\n$old = new Payload77();\n$weakPayload = WeakReference::create($old);\nunset($old);\necho 'CACHE|', (int) ($g->current() === $weakPayload->get()), '|',\n     (int) ($item === 9), '|';\n$stop = new Exception('stop77');\necho 'ABORT|', (int) ($f->throw($stop) === null), '|';\necho 'CLOSED|', (int) ($g->current() === $weakPayload->get()), '|',\n     (int) ($f->getReturn() === 'fiber77'), '|';\nunset($g);\necho 'DROP|', (int) ($weakPayload->get() === null), '|E';\n",
+    "source_sha256": "329fd7c401003807897a836ccfa90d12bc2e00e33a9196b5cafa2c065888fd06",
+    "native_exit": 0,
+    "native_stdout": "MAKE|BRIDGE|KEPT|1|FRESH|CALL|BODY|1|1|1|1|NEXT|1|CHANGE|TOKEN|CACHE|1|1|ABORT|FIN|1|1|1|MAKER|OUT|1|1|1|1|1|CLOSED|0|1|TOKEN|DROP|1|E",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
   }
 ]
