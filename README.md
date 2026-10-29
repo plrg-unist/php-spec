@@ -1159,8 +1159,9 @@ preserve reference cells across rebinding; bitwise conversion follows Zend's
 compiler slot order. [Direct-CV](coverage/semantics/integer-operator-warning-review.json)
 and [copied-operand](coverage/semantics/integer-operator-copy-review.json) evidence
 retain separate cuts. Wider producers and object conversion remain open.
-With an empty, unmaterialized `stdClass` RIGHT, a fractional LEFT's Deprecated
-handler can repair the later integer conversion. Each shared operand needs a
+Certified default-handler RIGHT objects include ordinary instances and `stdClass`
+with existing fields or property tables. A fractional LEFT's Deprecated handler
+can repair the later integer conversion. Each shared operand needs a
 surviving outside alias. Shared LEFT keeps its saved integer and supplies its old
 cell's current type for later TypeError despite name rebinding. `%` and shifts
 reread the RIGHT CV; bitwise operations retain a selected RIGHT reference cell.
@@ -1175,7 +1176,10 @@ that conversion. This also covers swapped bitwise slots and an original string's
 two notices. Anonymous class identities stay full while binary error text ends
 at NUL. The [late-owning review](coverage/semantics/integer-late-owning-left-warning-review.json)
 records cached success, failure, supplied throws and last-owner retirement.
-Wider object conversions, expired pointers and unsupported producers remain partial.
+The [standard-handler review](coverage/semantics/integer-standard-handler-right-warning-review.json)
+also checks inherited/anonymous class provenance, skipped numeric `__toString`,
+destructor writes before the later read, and real field/snapshot owners.
+Custom builtin tables, wider producers and expired pointers remain partial.
 Leading-numeric-string `+` now suspends through named warning handlers for two
 direct CVs with preexisting untyped reference cells. Both cells are selected before
 conversion; cached numbers survive handler writes, while the next conversion reads
