@@ -626,8 +626,14 @@ now releases its sole CONFIG DATA after its Aggregate producer has died. Its
 public no-argument `__destruct` runs before INI_SET or error recovery, with
 three exact PHP source agreements and separate reached cleanup checks.
 It may also own [one declared child](coverage/semantics/config-aggregate-iterator-child-review.json):
-the parent destructor sees the child live, then the child's destructor runs
-before API entry or catch. Wider child graphs remain partial.
+the parent destructor sees the child live; if it owns the child alone, the child's
+destructor follows before API entry or catch. Wider child graphs remain partial.
+When it owns the child alone, a [destructor-free Iterator](coverage/semantics/config-aggregate-iterator-child-only-review.json)
+also finalizes the child through ordinary storage release, preserving
+parent weak death and the saved Exception before catch.
+An [outside Child owner](coverage/semantics/config-aggregate-iterator-retained-child-review.json)
+keeps the Child live after parent retirement and API/catch; an actual outside
+`unset` then runs its destructor once, with the parent already gone.
 
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
@@ -1144,6 +1150,16 @@ preserve reference cells across rebinding; bitwise conversion follows Zend's
 compiler slot order. [Direct-CV](coverage/semantics/integer-operator-warning-review.json)
 and [copied-operand](coverage/semantics/integer-operator-copy-review.json) evidence
 retain separate cuts. Wider producers and object conversion remain open.
+With an empty, unmaterialized `stdClass` RIGHT, a fractional LEFT's Deprecated
+handler can repair the later integer conversion. A shared operand needs a
+surviving outside alias. Shared LEFT keeps its saved integer and supplies its old
+cell's current type for later TypeError despite name rebinding. `%` and shifts
+reread the RIGHT CV; bitwise operations retain a selected RIGHT reference cell.
+A supplied throw cancels delivery. The [plain-CV](coverage/semantics/integer-object-right-warning-review.json),
+[RIGHT-cell](coverage/semantics/integer-reference-object-right-warning-review.json)
+and [LEFT-cell](coverage/semantics/integer-reference-left-object-right-warning-review.json)
+ledgers retain their original cuts. Two wrapped operands and wider owning
+substitutions remain partial.
 Leading-numeric-string `+` now suspends through named warning handlers for two
 direct CVs with preexisting untyped reference cells. Both cells are selected before
 conversion; cached numbers survive handler writes, while the next conversion reads
@@ -1691,6 +1707,17 @@ cleaning up the partial builder.
 An Aggregate-returned Iterator has its own source agreement. Four exact sources
 and 670 reached premises for the three direct Iterator sources are recorded in
 the [by-reference destructor review](coverage/semantics/array-iterator-byref-destructor-review.json).
+That destructor route also accepts one plain declared ARRAY field with an
+unpooled runtime root and finite scalar-reference graph. Nested destructor writes
+preserve the field's independent COW snapshot and shared leaf aliases; storage
+retirement releases the field while normal or abrupt spread cleanup keeps its
+own builder lifetime.
+The [owning-field review](coverage/semantics/array-iterator-owned-field-review.json)
+records held and sole reference leaves, nested COW and the separate tested cuts.
+Finite DIRECT pooled field roots, including empty constants, now follow the same
+route. Field writes retain the pool snapshot while runtime COW copies retire;
+the [pooled-field review](coverage/semantics/array-iterator-pooled-field-review.json)
+records normal, key-throw, invalid-key and delayed-destructor originals.
 Ordinary CVs of named IteratorAggregate classes now invoke a borrowed
 `getIterator()` frame and
 transfer its owned user Iterator or named-Generator return into DATA. Genuine
@@ -4122,6 +4149,14 @@ and paused-state checks. [Generated Throwable objects](docs/semantics/THROWABLES
 now support ordered no-finally try/catch and throw/rethrow, internal constructors,
 getters and structured traces. The distinct `ErrorException` constructor and
 `getSeverity` have a separate [bounded review](coverage/semantics/error-exception-review.json).
+Same-kind comparisons for twelve exact builtin Throwable root kinds now follow
+finite `previous` chains, with `previous` before `ErrorException` severity at
+every node. Warm caches, finite captured array/object/reference graphs,
+shared child identity and nested class mismatch preserve physical order.
+Equal chains continue through array tails; nonzero results skip later casters. The
+[previous-chain](coverage/semantics/throwable-builtin-previous-comparison-review.json)
+and [captured-graph](coverage/semantics/throwable-previous-graph-comparison-review.json)
+reviews record the bounded scope and validation.
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The
@@ -5692,6 +5727,14 @@ Dynamic calls through a public user `__invoke` CV also unpack an initialized
 Iterator CV, retaining the selected receiver through callbacks and abrupt
 cleanup. Five exact originals, one independent source and seven reached stages
 are in the [invokable Iterator review](coverage/semantics/invokable-iterator-unpack-review.json).
+These ordinary targets also share checked non-CV Iterator INPUT handling:
+raw object/reference INPUT and Iterator DATA retain separate owners through
+normal and abrupt cleanup. The [owned-INPUT review](coverage/semantics/owned-iterator-unpack-review.json)
+records eight new originals, one promoted boundary and two independent sources.
+Supported computed and temporary public `__invoke` callees now use the same
+ordinary INIT selection and cleanup, consuming their raw callee result before
+Iterator arguments run. [Computed-callee review](coverage/semantics/computed-callee-unpack-review.json)
+records six new/promoted sources, two independent sources and four retained controls.
 Public concrete class-method strings now distinguish
 computed static dispatch from fixed calls using a compatible active receiver.
 Immutable string captures/clone retain selected descriptors, called scope and
@@ -5975,13 +6018,16 @@ interaction retain separate cuts. The 263 original finite premises pass with
 seven typing bindings and eight repeated compaction setup premises; the split
 compaction groups use the existing strict SL runner at the unchanged120s cap.
 
-Fixed-name ordinary `new` of a class being linked now raises the missing-class
-Error without calling its loader again during an entered dependency callback.
-After failed linking unwinds, later construction can autoload it normally.
-The [reentrant lookup review](coverage/semantics/reentrant-unlinked-new-review.json)
-records two repaired author sources, one unchanged recursion control, an
-independent interface-loader source and 140 reached checks; dynamic-name `new`
-and wider reentrant histories remain partial.
+Ordinary fixed-name and dynamic-string construction now recognizes unlinked
+class, interface and supported trait declarations during entered dependency
+callbacks. Missing-class Errors skip arguments and redundant loaders; published
+interfaces and traits retain their canonical non-instantiability Errors. Later
+lookup can autoload again after failed linking unwinds. The
+[construction lookup review](coverage/semantics/reentrant-nominal-new-review.json)
+records four new exact originals and source-reached publication/retry checks.
+Earlier [fixed-name](coverage/semantics/reentrant-unlinked-new-review.json) and
+[dynamic-name](coverage/semantics/reentrant-dynamic-new-review.json) evidence keeps
+its original cuts; wider reentrant histories and enum dependencies remain partial.
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
 now loads a sole missing user interface before a parentless class or interface is
@@ -6118,6 +6164,11 @@ shared globals and handlers, cached callbacks and original C argument buffers.
 Primed method-created by-reference `Generator::throw` transfers also preserve
 the cached cell, receiver and pending exception through Fiber suspension;
 see the [method reference THROW review](coverage/semantics/generator-fiber-method-reference-throw-transfer-review.json).
+Fresh by-reference method THROW also preserves the receiver and temporary
+Throwable before the first yield. Resuming to a yield installs a live cell;
+the API result is a snapshot. See the [fresh method review](coverage/semantics/generator-fiber-fresh-method-reference-throw-transfer-review.json).
+Fresh by-value instance methods now transfer too, including inherited lexical/called
+scopes and separate receiver/value-cache lifetimes. [BYVAL review](coverage/semantics/generator-fiber-fresh-method-throw-transfer-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

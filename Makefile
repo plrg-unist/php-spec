@@ -115,6 +115,18 @@ test-semantics: build
 		python3 tests/semantics/array_iterator_byref_destructor_state.py --source-report "$$out/iterator-source/report.json" --output "$$out/author-state" && \
 		python3 tests/semantics/array_iterator_byref_destructor_state_review.py --source-report "$$out/iterator-source/report.json" --output "$$out/peer-state" && \
 		python3 tests/semantics/array_iterator_byref_destructor_aggregate_sources.py --output "$$out/aggregate-source"
+	@out="$$(mktemp -d .tools/a62-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/array_iterator_owned_field_sources.py --output "$$out/iterator-source" && \
+		python3 tests/semantics/array_iterator_owned_field_state.py --source-report "$$out/iterator-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/array_iterator_owned_field_state_review.py --source-report "$$out/iterator-source/report.json" --output "$$out/peer-state" && \
+		python3 tests/semantics/array_iterator_owned_field_aggregate_sources.py --output "$$out/aggregate-source" && \
+		python3 tests/semantics/array_iterator_owned_field_next_throw_sources.py --output "$$out/next-throw-source" && \
+		python3 tests/semantics/array_iterator_owned_field_independent_sources.py --output "$$out/independent-source"
+	@out="$$(mktemp -d .tools/a63-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/array_iterator_pooled_field_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/array_iterator_pooled_field_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/array_iterator_pooled_field_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/array_iterator_pooled_field_state_review.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
 	python3 tests/semantics/globals_compiler.py
@@ -253,7 +265,10 @@ test-semantics: build
 	python3 tests/semantics/method_iterator_unpack_sources.py
 	python3 tests/semantics/method_iterator_unpack_clean_sources.py
 	python3 tests/semantics/method_iterator_unpack_protocol.py
-	python3 tests/semantics/method_iterator_unpack_boundary.py
+	python3 tests/semantics/owned_iterator_unpack_sources.py
+	python3 tests/semantics/owned_iterator_unpack_protocol.py
+	python3 tests/semantics/computed_callee_unpack_sources.py
+	python3 tests/semantics/computed_callee_unpack_protocol.py
 	python3 tests/semantics/array_callable_iterator_unpack_sources.py
 	python3 tests/semantics/array_callable_iterator_unpack_protocol.py
 	python3 tests/semantics/closure_iterator_unpack_sources.py
@@ -547,6 +562,10 @@ test-semantics: build
 	python3 tests/semantics/generator_fiber_fresh_closure_reference_throw_transfer_state.py
 	python3 tests/semantics/generator_fiber_method_reference_throw_transfer_sources.py
 	python3 tests/semantics/generator_fiber_method_reference_throw_transfer_state.py
+	python3 tests/semantics/generator_fiber_fresh_method_reference_throw_transfer_sources.py
+	python3 tests/semantics/generator_fiber_fresh_method_reference_throw_transfer_state.py
+	python3 tests/semantics/generator_fiber_fresh_method_throw_transfer_sources.py
+	python3 tests/semantics/generator_fiber_fresh_method_throw_transfer_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

@@ -31,6 +31,20 @@ Its `manifest.json` binds source, strict/reached and preservation reports, raw
 failures and tested inputs; the concise [review](../coverage/semantics/reentrant-unlinked-new-review.json)
 records their hashes and recovery commands.
 
+Source118's dynamic-name counterpart is retained uncompressed under
+`../php-spec-evidence-archive/source118-reentrant-dynamic-new/`. Its manifest
+preserves the original acquisition Warning and independent fixture failure,
+separate corrected/temporary-carrier checks and tested inputs. The
+[dynamic-name review](../coverage/semantics/reentrant-dynamic-new-review.json)
+records the exact source and reached cuts without renewing earlier evidence.
+
+Source119's interface/trait construction lookup evidence is retained under
+`../php-spec-evidence-archive/source119-construction-lookup/`. Its manifest
+preserves four frozen native/unchanged/changed originals, authored reached
+rows, the failed budget seeker and its corrected independent cut. The
+[construction lookup review](../coverage/semantics/reentrant-nominal-new-review.json)
+records hashes, tested inputs and recovery commands.
+
 The guarded getter-recursion milestone retains source/native observations,
 focused checks, all fixture failures and diagnostics in
 `../php-spec-evidence-archive/magic-get-recursion-119/manifest.json`.
@@ -119,6 +133,19 @@ external archive (using new paths for new evidence) or in ignored `.tools/`.
 Commit concise reports and manifests with hashes and locations. Preserve raw
 failures and interrupted runs externally; do not force-add their archives.
 The coverage compression patterns in `.gitignore` guard against reintroduction.
+
+I70 fresh by-value method Generator THROW evidence is retained uncompressed under
+`../php-spec-evidence-archive/generator-fiber-fresh-method-throw-70/`.
+Its `manifest.json` identifies seven raw private reports, including the separate
+peer inherited-abort originals and streams; accepted I69 cuts are not renewed.
+The additional `joined-strict/report.json` records actual-tail compilation.
+
+I69 fresh method by-reference Generator THROW evidence is retained uncompressed
+under `../php-spec-evidence-archive/generator-fiber-fresh-method-reference-throw-69/`.
+Its `manifest.json` identifies ten private reports and the separate peer originals/streams.
+The additional `joined-strict/report.json` records actual-tail compilation.
+Initial native-transport and returned-fixture failures remain alongside accepted
+source, parked and corrected returned cuts with their original revision identities.
 
 I68 method by-reference Generator THROW evidence is retained uncompressed under
 `../php-spec-evidence-archive/generator-fiber-method-reference-throw-68/`.

@@ -576,12 +576,13 @@ def $autoload_unlinked_origin(AUTO_INTERFACE porigin preqbytes) = (porigin)
 def $autoload_unlinked_origin(AUTO_TRAIT porigin preqbytes) = (porigin)
 def $autoload_unlinked_origin(ptask) = eps -- otherwise
 dec $autoload_new_unlinked_call(pstate, pautoloadcall, ptbytes) : bool
+dec $autoload_interface_kind(pcnode?) : text?
+dec $autoload_trait_kind(pcnode?) : text?
 def $autoload_new_unlinked_call(S, pautoloadcall, ptbytes) = true
   -- if pautoloadcall.MODE = AUTO_LOOKUP
   -- if $autoload_unlinked_origin(pautoloadcall.RESUME) = (porigin)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-  -- if pclassdesc.KIND = "class"
-  -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $autoload_interface_kind($origin_node(S.SOURCES, porigin)) = (pclassdesc.KIND) \/ $autoload_trait_kind($origin_node(S.SOURCES, porigin)) = (pclassdesc.KIND)
   -- if $ptlc(pclassdesc.NAME) = $ptlc($autoload_lookup_name(ptbytes))
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
 def $autoload_new_unlinked_call(S, pautoloadcall, ptbytes) = false -- otherwise
@@ -628,10 +629,11 @@ rule PhpStep/autoload-dynamic-new: S ~> $autoload_begin(S_read[.TODO = (DYNAMIC_
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew expression (SEQUENCE phpType7*) metadata)
   -- if S_read = $resolve_at(S, S.RESULT, z_fetch)
   -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN (PSTRING ptbytes_raw)
-  -- if $dynamic_new_value_name(S_read, porigin, PSTRING ptbytes_raw) = (ptbytes)
-  -- if $autoload_pending(S_read, ptbytes)
-  -- if pdynamicnew = $dynamic_new_record(S_read, porigin, PSTRING ptbytes_raw, ptbytes, z, z_fetch)
+  -- if S_read.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes_raw)
+  -- if $dynamic_new_value_name(S_read, porigin, pvalue_string) = (ptbytes)
+  -- if $autoload_new_pending(S_read, ptbytes)
+  -- if pdynamicnew = $dynamic_new_record(S_read, porigin, pvalue_string, ptbytes, z, z_fetch)
 
 ;; A completed lookup selects the constructor afresh before any argument demand.
 def $autoload_complete(S, pautoloadcall) = S[.TODO = pautoloadcall.RESUME :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)] -- if S.TODO = ptask :: ptask_tail*
@@ -645,7 +647,7 @@ rule PhpStep/autoload-new-missing: S ~> $throw_scalar(S, "Error", $ptascii("Clas
   -- if S.TODO = (AUTO_NEW ptbytes phpType7* z z_fetch) :: ptask_tail*
   -- if ~$dynamic_new_known(S, ptbytes)
   -- if ptbytes_raw = $autoload_new_diagnostic(S, ptbytes)
-def $autoload_new_diagnostic(S, ptbytes) = ptbytes_raw -- if S.TODO = ptask :: (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail* -- if pdynamicnew.SOURCE = PSTRING ptbytes_raw
+def $autoload_new_diagnostic(S, ptbytes) = ptbytes_raw -- if S.TODO = ptask :: (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail* -- if $string_bytes(pdynamicnew.SOURCE) = (ptbytes_raw)
 def $autoload_new_diagnostic(S, ptbytes) = ptbytes -- otherwise
 rule PhpStep/autoload-publish-resume: S ~> $activate_class(S[.TODO = ptask_tail*], pclassdesc)
   -- if S.TODO = (AUTO_PUBLISH porigin) :: ptask_tail*
@@ -1079,7 +1081,6 @@ def $autoload_snapshot(S, pconfigcall, pcalltarget) = $shutdown_snapshot(S, $err
 ;; lookup independently of the bounded source certificate, never as a fallback
 ;; missing-interface Error for a source shape not yet admitted here.
 dec $autoload_interface_missing(pstate, preqbytes*) : preqbytes?
-dec $autoload_interface_kind(pcnode?) : text?
 dec $autoload_interface_prefix_known(pstate, preqbytes*, preqbytes) : bool
 dec $autoload_interface_source(pstate, porigin, preqbytes) : bool
 dec $autoload_two_trait_plan(ptraitplan) : bool
@@ -1212,7 +1213,6 @@ def $task_nodes(AUTO_INTERFACE porigin preqbytes) = eps
 ;; Trait fetch runs after the parent and before interface lookup. Keep pending
 ;; detection separate from the closed source domain and reuse the pure ordered
 ;; fetch so an earlier wrong-kind trait still wins over later missing names.
-dec $autoload_trait_kind(pcnode?) : text?
 dec $autoload_trait_source(pstate, porigin, preqbytes) : bool
 
 def $autoload_trait_kind((NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)) = ("class")

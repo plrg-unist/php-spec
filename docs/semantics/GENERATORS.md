@@ -236,9 +236,36 @@ snapshot. Normal and supplied `Fiber::throw` paths preserve exception identity
 and `Previous` order. Separate receiver and cached-object lifetimes agree in
 three authored sources and an independent cache-replacement source. Two direct
 BYREF/method BYVAL controls, strict compilation and 129 source-reached checks
-pass. The three authored sources were `Unsupported` before the edit. Fresh
-method, bound/delegated and wider lifetime forms remain partial.
+pass. The three authored sources were `Unsupported` before the edit. At that
+cut, fresh method, bound/delegated and wider lifetime forms remained partial.
 [Method reference THROW review](../../coverage/semantics/generator-fiber-method-reference-throw-transfer-review.json).
+
+A fresh ordinary method-created by-reference `Generator::throw` now also
+transfers before its first yield. Its advancing resumer keeps the original
+temporary Throwable while both caches are empty; the authenticated method
+context keeps the receiver. Rebinding the external parameter name leaves the
+old cell selected, and the first yield creates the reference cache. The returned
+value is a snapshot while later `current()` follows cell writes. Normal cleanup
+separates receiver retirement from a distinct cached object; a self cache keeps
+the receiver after close. Before the first yield, supplied `Fiber::throw` aborts
+without a cache and the original Throwable escapes with the supplied one as
+`Previous`. At that cut, fresh by-value method THROW, bound/delegated and wider
+lifecycle forms remained partial.
+Four new originals agree exactly with PHP; two source-reached cuts check
+229 custom premises for admission, cache ownership and cleanup.
+[Fresh method reference THROW review](../../coverage/semantics/generator-fiber-fresh-method-reference-throw-transfer-review.json).
+
+Fresh ordinary public instance-method by-value `Generator::throw` now uses the
+same authenticated empty-cache transfer. Inherited methods retain Parent lexical
+scope, Leaf called scope and the real receiver; copied parameters remain separate
+from caller writes. Resuming to a yield installs a value cache. Normal and supplied
+throws preserve distinct Token versus self-cache lifetimes and the pre-yield versus
+pending-finally `Previous` order. Four new originals agree exactly with PHP;
+three source-reached fronts check 307 custom premises. Two I63/I61 controls retain
+their parent cuts, and I69 BYREF evidence is not replayed. Fresh direct named
+BYREF THROW, static/scoped method targets, bound/delegated and wider lifecycle
+forms remain partial.
+[Fresh method THROW review](../../coverage/semantics/generator-fiber-fresh-method-throw-transfer-review.json).
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;

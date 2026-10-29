@@ -1,0 +1,95 @@
+{
+  "milestone": "I70 fresh ordinary method by-value Generator::throw Fiber transfer",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local PHP SHA256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json, LC_ALL=C, TZ=UTC",
+  "parent": "4c7a11820d57a28cd0e6d2f6d4389b5d77131ea9",
+  "implementation_commit": "97b276b71dde47a0c69bb27fc0556e9a837c4313",
+  "scope": "Fresh ordinary instance METHOD_TARGET Generator::throw now admits BYVAL declarations as well as the previously admitted BYREF declarations. ADVANCE+FIRST, a single valid Throwable, empty VALUE/REFCELL, absent CLOSURE, matching receiver/empty INSTANCE and existing authenticated current-callee/owner gates are retained. Inherited public methods preserve the declaring lexical class, concrete receiver called class and real receiver. The new BYVAL sources distinguish copied scalar parameters, a distinct Token value cache, self-value-cache lifetime, and pre-yield versus pending-finally supplied-Throwable Previous order.",
+  "engine_paths": [
+    "vendor/php-src/Zend/zend_generators.c::ZEND_METHOD(Generator, throw), zend_generator_ensure_initialized, zend_generator_throw_exception, zend_generator_resume, zend_generator_close",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_GENERATOR_CREATE (func/This retention), ZEND_YIELD (BYVAL versus reference cache formation)",
+    "vendor/php-src/Zend/zend_fibers.c::ZEND_METHOD(Fiber, throw), zend_fiber_resume_internal"
+  ],
+  "implementation": [
+    "spec/semantics/281-fibers.watsup"
+  ],
+  "source_catalog": "tests/semantics/generator_fiber_fresh_method_throw_transfer_cases.json",
+  "sources_sha256": {
+    "i70-fresh-inherited-method-scalar-catch": "14b9dc385640bbeb02d1f40f629fd41c65c4bb3424ebaa0b3ff74f191bd24eb7",
+    "i70-fresh-method-finally-normal-token-cache": "bddcd57ee1ff61d5c4540090d1e6ed12aa5cadde0d5401bf5b35213c77c5599c",
+    "i70-fresh-method-finally-abrupt-self-cache": "ca97b22d3246687eb9f801c155718881e12c92013c9cf4968faab79d70c7e0be",
+    "i70-unchanged-cached-method-byval-control": "15bd4cbc298b895b2971408c35780a460ceeb01c5ae8f2b4ee668c89c694ac74",
+    "i70-unchanged-fresh-named-byval-control": "5dedeaf76d3548cc6d6deb734918bdfcbf4b68ddc33dca02ecf2964d06651c06",
+    "i70-fresh-inherited-method-abort-independent": "25b0d18d39655bea9547636f9a607d2c4defb7eb81671d92b7cac65123fb0230"
+  },
+  "validation": {
+    "native_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-throw-70/source-packet/native-first/report.json",
+      "sha256": "2f1162d8e3d6122c239436ff9fb4bc3d2ecd5401921caae02aa6cae2a4ee6193",
+      "result": "Three authored originals plus byte-identical I63 cached-method/I61 fresh-named controls: pinned native exit0, no timeout, empty stderr, stable HEAD/inputs; CPU 2."
+    },
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-throw-70/source-packet/unchanged-baseline/report.json",
+      "sha256": "95b4f043355569a1d33f9492a601c37662d24190d57e486fa12ee285602a1bbb",
+      "result": "Three authored originals checked Unsupported at the shared Fiber-transfer reason on parent 4c7; both controls exact NORMAL. Stable HEAD/inputs, no timeout; CPU 2."
+    },
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-throw-70/strict-private/report.json",
+      "sha256": "3eb5f5b1d486d146d876e66d82ba30d7aefeca92d59466fa8fa20b94fab7638c",
+      "result": "424 ordered modules pass SL elaboration/algorithmic checking/structuring at 97b276b71; exit0, true, empty stderr, no timeout, stable HEAD/inputs; CPU 2."
+    },
+    "affected_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-throw-70/raw/generator-fiber-fresh-method-throw-transfer-source-diwer2ti/report.json",
+      "sha256": "b57263c39bd98970b4ebf2ad133bdafe0d33cf64b8dde5168ab96f31e3b783c6",
+      "result": "Three authored originals exactly NORMAL at 97b276b71 using frozen native paths/bytes, no timeout/empty stderr/stable HEAD+inputs; CPU 2. Controls were not replayed."
+    },
+    "reached_states": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-throw-70/raw/fiber-state-review-gg0hw5xg/report.json",
+      "sha256": "18a3db014b1e435b067ff3d0b277264edc0161b3899f1b718e87cdcf2f941d2c",
+      "result": "Three new source-reached fronts at 97b276b71 all true, exit0/no timeout/empty stderr/stable HEAD+author inputs. Inherited pre-yield 138 custom/143 reported, pending Token 100/105, closed Token 69/74; total 307 custom/322 reported; CPU 2."
+    },
+    "independent_native": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-throw-70-review/independent/native-first-report.json",
+      "sha256": "123875609af33ca50646908bb10b665ceda78837ba2b4bef887a9bedd52c1aae",
+      "result": "Frozen 1904-byte inherited abort source at 4c7, exact 108-byte native stream, exit0/no timeout/empty stderr/stable HEAD + 4 inputs; CPU 2."
+    },
+    "independent_model": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-throw-70-review/independent/model-review-report.json",
+      "sha256": "b8032dbf219433d6b9dccb25eb3c3f9065cbfc24a919d0ddbb5133a3ce2ec16e",
+      "result": "Same frozen inherited abort source at 97b, accepted checked NORMAL with exact decoded native streams, exit0/no timeout/empty stderr/stable HEAD + 12 inputs; CPU 2."
+    }
+  },
+  "reached_total": {
+    "custom_checks": 307,
+    "reported_assertions": 322,
+    "fronts": 3
+  },
+  "preservation": "The I63 cached-method and I61 fresh-named controls were exact on the unchanged parent; the new METHOD_TARGET empty-cache arm is pointwise disjoint from those active routes, so neither was replayed after the edit. Existing genuine I69 BYREF method states still satisfy the generalized guard. Its synthetic callback-function classification negative was replaced with local-shape acceptance plus authenticated outer callee/body rejection; those same malformed-shape clauses execute in the genuine new I70 BYVAL reached state. No I69 source/state execution credit is renewed. Other fresh-Closure/named shape negatives retain mismatching receiver or CLOSURE guards. The sixth catalog row was appended byte-identically after direct independent validation; no wrapper replay is credited.",
+  "independent_review": "Peer byte-CLEARed authored originals, static-CLEARed the one-line change, maintained I69 guard and three source-reached fronts, independently inspected all authored outcomes/state counts, and froze/validated the inherited-abort counterexample. Final metadata, catalog and hash bindings were independently CLEARed without execution.",
+  "remaining": "Fresh direct named BYREF THROW, static/scoped method targets, bound Closures, helper/delegated resumers, collection and wider lifecycle behavior remain partial. Full PHP core and BOLA freedom are not established.",
+  "evidence_directory": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-throw-70",
+    "manifest": "manifest.json",
+    "manifest_sha256": "3083b9dca9f1f46f7cdd4571433118cf58f0717ebf19fc21d851c6f6e14544eb",
+    "format": "Seven uncompressed private reports and associated streams outside Git; peer independent paths are in the manifest."
+  },
+  "recovery": "Raw source/state directories are under raw/ and retain their original private-worktree paths. Peer independent originals and streams remain beside the independent report paths listed here.",
+  "actual_tail": {
+    "parent": "ffd6ac60f57e81a28dfbdd013d6ff55170f21385",
+    "tested_candidate": "60b205fa18cac100df37e5eeaa49319f21c60923",
+    "composition": "Reviewed 281, maintained I69 guard, I70 catalog/source/state runners and both family docs are byte-identical to 4829ddc80. Actual-parent changes through CALL123 remain source-inactive for all six I70 cases. Shared Makefile, README, ARTIFACTS, inventory and current PROGRESS preserve actual additions, including OP107/CONFIG117 checkpoints and held/paused boundaries. Original source/state/control cuts are not renewed.",
+    "independent_review": "Actual-tail method admission, receiver/value-cache routes, maintained malformed-callee guard, owned-file byte identity and shared metadata preservation independently CLEARed at 60b205fa1.",
+    "joined_strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-method-throw-70/joined-strict/report.json",
+      "sha256": "d03a9507d8eb4a3a5efb1d99b280376c7b489473f81edabc8840259391e339dc",
+      "modules": 424,
+      "exit": 0,
+      "timeout": false,
+      "stderr_bytes": 0,
+      "head_stable": true,
+      "inputs_stable": true,
+      "affinity": [
+        2
+      ]
+    }
+  }
+}

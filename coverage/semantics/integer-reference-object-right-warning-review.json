@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "milestone": "OP107 shared reference-cell object RIGHT in ordinary integer operators",
+  "status": "bounded independently reviewed semantics at the private tested revision",
+  "target": "PHP 8.5.10 CLI NTS64; project-local oracle and ordinary precision14 profile",
+  "scope": "Ordinary %, <<, >>, &, | and ^ with defined direct CVs, initially nonreference finite fractional LEFT, and initially shared RIGHT reference cell containing an empty live stdClass without property slots or materialized table. At least two real CELL owners admit entry; an outside alias survives callback rebinding.",
+  "tested_revision": "aa5097c9c5117f40dc10dc8806f1b42bcd29222e",
+  "unchanged_revision": "1bac4a1d1cd3fad85f970485945d2eed1fefa2cf",
+  "module_count": 424,
+  "tested_sha256": {
+    "spec/semantics/387-integer-operator-warnings.watsup": "f692ccb5b267d01b02f2cb00cca13a1f6ef0b37d6cb09a1f88e50e70d566d41f",
+    "tests/semantics/integer_reference_object_right_warning_cases.py": "f3a3d6dab783ba47815bb729bb3b6a50444b2e1eced577a60ca41a7068a63090",
+    "tests/semantics/integer_reference_object_right_warnings.py": "da405edf4d85b2867650bf9db6fb977a3a42263076b0ac1b3109a881e26d5c24",
+    "tests/semantics/integer_reference_object_right_warning_protocol.py": "703b69fc4ae45ed41039e0758f9d980732e09482ba3e6a8a731acd649004f169",
+    "spec/semantics/modules.json": "de8488abd5ca58bfd455d59011ef41f48449be4699ede06af70e027075dab632"
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c::zend_compile_binary_op and zend_compile_simple_var/zend_try_compile_cv retain CV8/CV8, with no COMMUTATIVE swap in zend_vm_gen.php.",
+    "Zend/zend_operators.c::convert_op1_op2_long dereferences RIGHT after LEFT conversion; bitwise_or_function/bitwise_and_function/bitwise_xor_function dereference both before conversion. zendi_try_get_long saves LEFT12 before its notice but reads the selected RIGHT payload afterward.",
+    "std_object_handlers has NULL do_operation and its IS_LONG cast fails without another diagnostic. zend_binop_error reads the selected raw pointers and returns immediately under an existing Exception."
+  ],
+  "contract": [
+    "A Deprecated handler changes LEFT12.5 to99.5 and rebinds RIGHT to a separate reference cell containing5. MOD/SL/SR read that live CV and yield2/384/0; BW retains the old CELL and raises TypeError on its stdClass after the notice.",
+    "Writing2 through the old alias before rebinding retires its old object and supplies BW results0/14/14; MOD/shifts still use rebound5. Keeping the object without rebinding raises TypeError after the notice. A supplied handler Exception skips the unfinished operation and preserves the outer100.",
+    "Selected pointers add no root or acquisition. Old CELL owners change2 to1 after rebinding; the replacement CELL has2. Later operation validity uses the live outside owner rather than repeating the initial two-owner admission. Expired pointers remain explicit Unsupported and were not probed natively."
+  ],
+  "preparation": {
+    "frozen_cases": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-107/cases.py",
+      "sha256": "f3a3d6dab783ba47815bb729bb3b6a50444b2e1eced577a60ca41a7068a63090"
+    },
+    "recorder_sha256": "ce95ecd962ca339f71857497a1c07dd018b0630e01b6c701d02cb397f5500ab4",
+    "native_first": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-107/native-pre/report.json",
+      "sha256": "d5feed8c90a8c4b66f5903f5adbe8f073f874b0dd52ced4f6838021548302c1f"
+    },
+    "unchanged_baseline": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-107/baseline/report.json",
+      "sha256": "e7f3a2dc7b45cf57c730019a1d1c9a6f3e8526fd74eb5065db83ed32cdc55e75"
+    },
+    "result": "All17 native originals match frozen exact stdout/stderr expectations. Sixteen new warning sources are accepted/checked Unsupported at handler ingress, exit1 and zero agreement; the byte-identical OP106 plain-mod control already matches normally."
+  },
+  "accepted": {
+    "strict": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-107/strict-aa5097c9c/report.json",
+      "sha256": "d9ce7e61e3f86f77ff89fc99eb0cec07c4d3385013d542fb6e65d9142848f07b"
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-107/source-aa5097c9c/report.json",
+      "sha256": "9eccd30800aab952ce30b0d0ce8252471b35102581ff1985ab734c874ada4b61"
+    },
+    "author_source_agreements": 17,
+    "formerly_unsupported_author_sources": 16,
+    "unchanged_plain_cv_control": 1,
+    "focused": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-107/focused-aa5097c9c/report.json",
+      "sha256": "ebc8fb9faace4919c006a539d19282fa4f5a789f280518578cea63bba06191eb"
+    },
+    "focused_launcher": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-107/focused-aa5097c9c/launch.json",
+      "sha256": "0b6b7ebabd2675bb5f4b3a6844672e5c76e5126310e40e9937cdde64e6d70f41"
+    },
+    "focused_rows": [
+      [
+        "mod-rebind",
+        121
+      ],
+      [
+        "and-rebind",
+        123
+      ],
+      [
+        "xor-write-rebind",
+        121
+      ],
+      [
+        "shl-handler-throw",
+        105
+      ]
+    ],
+    "focused_conditions": 470,
+    "focused_contract": "Four genuine source-reached recipes distinguish initial CELL selection from delayed CV, cached LEFT12 from live99.5, old/new CELL2-to1/2 owners, old-object1-to0 retirement only on alias write, raw selected-object TypeError, same supplied Exception/no store, final detached alias writes, valid heaps and zero-budget boundaries."
+  },
+  "independent_review": {
+    "reviewer": "/root/op106_resume_review",
+    "status": "Semantic/runtime/source/protocol ACCEPT; native-first, genuine unchanged gaps and changed models independently recorded",
+    "frozen_cases_sha256": "dee0d97f51d4c50833302c8f3dd0c6bf6ea7e793903570add069a698f0d8b2cd",
+    "recorder_sha256": "3cb84381f13374c6be3ac55fe73378789459da3bf95ac7a9f035aa59bfec6560",
+    "native_first": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-107/review-independent/native-pre/report.json",
+      "sha256": "eb659ab5ed4f866165b1c5096a91d86fad21e698439b4c4bfa97870283a9d274"
+    },
+    "unchanged_baseline": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-107/review-independent/baseline/report.json",
+      "sha256": "27f1fac2046e4e16f3c6b3dbb908fc991ac20fe9f5cd21622ded1a30bf3c273c"
+    },
+    "changed_models": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-107/review-independent/model/report.json",
+      "sha256": "21210aaf2ef706de2993d9b51858e10a69b15f5d0ddefd69ca59213dda524401"
+    },
+    "source_agreements": 4,
+    "formerly_unsupported_sources": 4,
+    "result": "Four true-handler originals check MOD numeric-string5 after rebind, XOR old alias2 against new5, OR live LEFTint99 with old-object TypeError despite live RIGHTint5, and supplied MOD Exception after rebind0. All exact normal/exit_status0/reasonNone, no raw model stderr or process residue."
+  },
+  "preserved_zero_credit": [],
+  "environment": {
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "php_file_bridge_sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "cpu": "All new packets serial on CPU4, affinity[4] inherited or sampled. Every process group reaped; lease released during implementation and after accepted review models."
+  },
+  "limits": "Initial sole-owner CELLs, expired/dead borrowed pointers, nonempty/materialized or user-defined objects, reference-wrapped LEFT and wider operand/reference producers remain partial. No new owner/task or arithmetic algorithm was added; OP12/COMP88 and all other paused lanes are unchanged.",
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-107",
+    "commands": [
+      "taskset -c 4 python3 tests/semantics/integer_reference_object_right_warnings.py --output <fresh-external-directory>",
+      "taskset -c 4 python3 tests/semantics/integer_reference_object_right_warning_protocol.py --output <fresh-external-directory>"
+    ],
+    "note": "Use an isolated worktree at the recorded commit with its project-local pinned tools. Frozen recorders retain original roots/commands; recreate that root or adapt only its location. Reports bind original bytes, identities, profiles, raw streams, exits and strict wrapper/fixture hashes. Metadata-only later commits add no execution credit."
+  },
+  "integration": {
+    "parent": "01164e2c1312e5356141957c4b16fd8f2464845e",
+    "joined_tested_revision": "ed070c6d86969bea8b45bba667ad9c5d28182fa3",
+    "strict_report": "/home/user/workspace/php-spec-evidence-archive/operators-107/joined-strict-ed070c6d8/report.json",
+    "strict_report_sha256": "a0f264a9e7494e0ad7791ff7be6ec4d1358a0c931a2ba7893963161a497d4096",
+    "result": "SL strict424 passes on CPU1 affinity[1], exit0/stdouttrue/stderrempty, no timeout/interruption/process residue. CPU1 released for the next queued gate.",
+    "independent_composition": "CLEAR: actual parent387 equals original1bac base; joined387 and maintained source/fixture inputs equal the accepted private cut. Inventory retains exact current-tail entries plus accepted additions. PROGRESS preserves all current prose, V110/COMP123 and paused boundaries, adding only the OP107 checkpoint/integrated status.",
+    "credit": "Private author17/independent4/focused470 retain aa5097c9c. The disjoint join adds no source/focused execution credit; this final joined-evidence update changes metadata only."
+  }
+}

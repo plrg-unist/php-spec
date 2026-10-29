@@ -44,9 +44,55 @@ throw cancels the outer store. Nine source cases and 579 reached conditions
 cover this slice. Independent controls confirm the opposite CV8/TMP2 order and
 an ineligible handler mask; see the
 [computed bitwise review](../../coverage/semantics/bitwise-computed-warning-review.json).
-Other bitwise producers and object conversion remain open. Expired
+Other bitwise producers and wider object conversion remain open. Expired
 pointers stay Unsupported; six earlier callback-unset native originals crashed with
 signal11, with no diagnosed engine cause or agreement claim.
+
+With a fractional finite float LEFT and an empty ordinary `stdClass` RIGHT with
+no materialized property table in direct, initially nonreference CVs, `%`, shifts
+and numeric bitwise operations now capture LEFT's integer before its Deprecated
+callback. A returning handler can replace RIGHT with `5`; changing LEFT from
+`12.5` to `99.5` still yields
+`12 % 5 = 2`, shifts `384`/`0`, and bitwise `4`/`13`/`9`. Keeping RIGHT as
+`stdClass` raises TypeError after the notice, using the current raw LEFT type.
+A supplied handler throw skips RIGHT conversion and preserves the outer value.
+Selected pointers add no object owner. This bounds initial admission to the
+standard handler without an integer cast or binary overload; reference-wrapped,
+computed, memberful and user-defined object operands remain partial. See the
+[object-RIGHT review](../../coverage/semantics/integer-object-right-warning-review.json).
+Ten formerly Unsupported warning originals and one unchanged quiet TypeError
+control agree exactly with PHP; three independent sources check numeric-string
+repair, object-first failure and a changed live LEFT type. Three source-reached
+fronts pass 314 checks, including two derived live-type failure premises. The
+initial duplicate-assertion preparation failure has zero semantic credit.
+
+An initially reference-wrapped empty `stdClass` RIGHT now follows the same
+conversion protocol when an outside alias keeps its cell alive. Entry requires
+at least two real cell owners; the selected pointer adds none. After the handler
+rebinds RIGHT to `5`, `%` and shifts follow that CV, while bitwise operations
+retain the old cell and fail on its object. Writing `2` through the old alias
+before rebinding instead supplies bitwise results `0`/`14`/`14`, while modulo
+and shifts still use `5`. LEFT retains its saved `12`, and a supplied handler
+throw skips the unfinished operation. Later pointer use accepts the old cell's
+surviving single owner without repeating entry admission. Sixteen formerly
+Unsupported originals, one unchanged plain-CV control and four independent
+originals agree exactly; four source-reached recipes pass 470 checks. Initial
+sole-owner cells, expired pointers, memberful objects and wider reference
+producers remain partial. See the
+[reference-object RIGHT review](../../coverage/semantics/integer-reference-object-right-warning-review.json).
+
+A shared fractional LEFT cell with an outside alias now keeps its saved integer
+across a handler's name rebind, with an initially plain empty `stdClass` RIGHT CV.
+Changing the old LEFT payload to `99` still uses cached `12` after RIGHT repair;
+retaining RIGHT instead reports the old cell's current raw type, not the rebound
+CV's type. Independent old-string and old-null cases preserve that distinction.
+Entry requires two real owners; the old cell remains borrowed with one owner
+after rebinding. Supplied throws skip RIGHT and cancel delivery. Sixteen author
+and four independent new originals agree exactly; four positive reached fronts
+pass 446 checks. A fresh two-CELL source and 29-check reached front stay explicit
+Unsupported with zero agreement. Retained-object failure after an old LEFT
+object substitution is still Unsupported; wider owning substitutions remain
+partial. See the [shared LEFT review](../../coverage/semantics/integer-reference-left-object-right-warning-review.json).
 
 Plain-CV NaN `%` now preserves the remaining precision Deprecated after its
 range Warning handler throws. With mask `2`, the default Deprecated on line 25

@@ -691,6 +691,32 @@ previous links, materialized roots, generated-only `FiberError`, subclasses and
 pending comparisons remain outside this cut.
 [Same-kind builtin review](../../coverage/semantics/throwable-builtin-same-comparison-review.json).
 
+Those twelve same-kind builtin root kinds also compare finite `previous` chains
+under normal nonpending completion and a comparison guard below 16 entries.
+Each path has at most 16 live canonical unmaterialized nodes of exact
+source-constructible builtin kinds, with physical cold or warm `PSTRING` caches.
+The scan follows every physical slot: `previous` is seventh, before
+`ErrorException` severity eighth, including at nested nodes. Null sorts below a
+link. Shared child identity compares equal, and different exact child classes
+return order `1` in both orientations before inspecting captured payloads.
+Reached distinct same-kind nodes admit finite allocated `DIRECT` primitive,
+validated string-carrier and acyclic array traces. They also admit the existing
+callback-free current `stdClass`/plain methodless object, array and live reference
+graph bound: both full graphs authenticate before the paired walk, whose
+class/position restrictions remain unchanged. This mode retains its separate
+16-node physical array/object/cell path cap; DIRECT traces keep their prior depth.
+Reached ordinary object tables materialize through the usual comparer, and the
+remaining slots consume its resulting state. Skipped shared or mixed-class
+Throwable children may retain object or cyclic trace payloads; their canonical
+images and finite previous paths still need authentication. Equal chains resume
+array tails, while a nonzero or Unsupported child stops the scan. Captured graph
+cycles, callback-capable or mismatched positions, materialized/freeing Throwable
+nodes, longer/cyclic previous paths, generated-only `FiberError`, user subclasses
+and pending states remain partial. Existing `Exception`/`Error` root-chain bounds
+below retain their separate rules.
+[Builtin previous-chain review](../../coverage/semantics/throwable-builtin-previous-comparison-review.json).
+[Captured graph review](../../coverage/semantics/throwable-previous-graph-comparison-review.json).
+
 Warm caches and nonempty builtin traces now meet in the same physical slot
 scan. Same-kind canonical `Exception`/`Error` pairs with null previous values
 admit finite `DIRECT` trace graphs containing primitive or valid string-carrier

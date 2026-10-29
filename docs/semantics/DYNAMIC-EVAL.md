@@ -133,12 +133,36 @@ records five new exact sources, two full reached continuations and one
 structural adaptation front. Two-trait trait declarations, other adaptation
 plans, longer mixed lists and reentrant links remain partial.
 
-Fixed-name ordinary `new` now recognizes an unlinked source class while an
-entered dependency loader is linking it. An authenticated saved `AUTO_RESULT`
-identifies that class in its caller's scope; construction raises the missing-class
-`Error` without a redundant loader call. Dependency fetching keeps its existing
-lookup rules. Once a failed link unwinds, a later `new` can autoload the name
-again. The [reentrant lookup ledger](../../coverage/semantics/reentrant-unlinked-new-review.json)
-records two repaired author sources, one unchanged recursion control, an
-independent interface-loader source and 140 reached premises. Dynamic-name `new`,
-other declaration kinds and wider reentrant histories remain partial.
+Ordinary fixed-name and dynamic-string `new` recognize an unlinked source class
+while an entered dependency loader is linking it. An authenticated saved
+`AUTO_RESULT` identifies that class in its caller's scope; construction raises
+the missing-class `Error` without a redundant loader call. Both dynamic lookup
+branches use this constructor guard. Dependency fetching retains its existing
+lookup rules, and a later `new` can autoload again after a failed link unwinds.
+
+Dynamic construction records the actual selected string value, including an
+interned or request carrier, before loader callbacks can rebind its source.
+The normalized class drives lookup; captured raw bytes preserve case and a
+leading backslash in missing-class diagnostics. Arguments remain skipped when
+lookup fails. A suppressed lookup creates no `DYNAMIC_NEW_FINISH`; actual lookup
+retains an authenticated finish certificate through callbacks and completion.
+String identity is immutable metadata, with no heap owners. The
+[dynamic-name ledger](../../coverage/semantics/reentrant-dynamic-new-review.json)
+records the source, fetch-origin, carrier, alias, budget and malformed-context
+checks; earlier [fixed-name evidence](../../coverage/semantics/reentrant-unlinked-new-review.json)
+keeps its own identity. Wider reentry remains partial.
+
+The same constructor guard now recognizes matched interface and trait source
+kinds through the existing dependency-source predicates. An interface extending
+an autoloaded interface, or a trait using one direct autoloaded trait without
+adaptations, stays uninstantiable while its dependency loads: ordinary fixed
+and dynamic `new` raise the raw missing-class Error before arguments and
+without reloading that unpublished name. After publication, the existing
+canonical `Cannot instantiate interface` or `Cannot instantiate trait` Error
+wins. A missing dependency unwinds the entered marker so later construction
+can try autoload again. A saved by-reference helper frame retains the real
+link marker below it; unrelated names still load normally. The
+[construction lookup ledger](../../coverage/semantics/reentrant-nominal-new-review.json)
+records the four exact originals and separate reached cuts. The guard reuses
+existing class/interface and class/trait source maps; enum dependency linking
+and wider trait plans remain outside their current domain.

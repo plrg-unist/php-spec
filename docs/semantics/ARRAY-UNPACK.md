@@ -90,7 +90,7 @@ builder together, then prunes their unowned nodes before catch. Four original
 sources and 528 reached premises (four raw steps) are recorded in the
 [by-reference Iterator cache review](../../coverage/semantics/array-iterator-byref-reference-cache-review.json).
 The destructor-bearing by-reference route below has its own bounded admission;
-owning Iterator fields, special cells and wider graphs remain outside both.
+special cells and wider graphs remain partial.
 
 An ordinary Iterator with `&current()` and a real `__destruct` can return the
 same outer array cell. After `key()` rebinds that cell, the spread entry takes
@@ -107,8 +107,36 @@ can promote the same Iterator. Four exact original source agreements include
 that Aggregate promotion; strict424 and 670 reached premises (664 Boolean and
 six raw steps) cover the three direct Iterator sources in the
 [by-reference destructor review](../../coverage/semantics/array-iterator-byref-destructor-review.json).
-Owning instance fields and special, typed, proxy, object, cyclic or debt-bearing
-descendants remain partial.
+The same destructor route also admits one initialized public, untyped, mutable
+declared ARRAY field with a mutable, unpooled runtime array root. Its other
+declared slots hold only DIRECT scalar values.
+Its finite DIRECT array graph may contain ordinary scalar reference leaves;
+materialized property tables, hooks and paths back to the spread builder remain
+excluded. Rebinding the current cell in `key()` leaves the field and a separately
+saved row on the old graph. A nested field write in `__destruct` separates both
+the field row and its shared child while held scalar aliases remain shared.
+With the outside leaf alias removed, field COW unwraps its sole cell, so a later
+field write leaves the saved row's scalar unchanged.
+Object storage retirement releases those field edges; the spread builder keeps
+its copied current row until normal continuation or abrupt cancellation.
+Folded child arrays retain their separate permanent pool owners after all runtime
+rows retire.
+The [owning-field review](../../coverage/semantics/array-iterator-owned-field-review.json)
+records seven exact originals, strict compilation of 424 modules and 1006
+reached premises (996 Boolean and ten raw steps) at separate cuts; earlier failed
+rows retain zero credit.
+
+Finite DIRECT pooled field roots, including immutable empty constants, now use
+the same route. Pool owners keep the root and its physical child edges after
+the field retires. A key or destructor write separates the field root and any
+written child, preserving the constant snapshot. A private copy made by `key()`
+stays unique through a supplied throw and later destructor writes. An external
+Iterator owner delays an empty-field append until after assignment and tail
+evaluation. Four exact originals, strict compilation of 424 modules and 584
+reached premises (580 Boolean, four raw steps) retain separate tested cuts in the
+[pooled-field review](../../coverage/semantics/array-iterator-pooled-field-review.json).
+Multiple owning fields and special, typed, proxy, object, cyclic or debt-bearing
+descendants, property tables/hooks and wider destructor reentry remain partial.
 
 `427-array-generator-unpack.watsup` adds ordinary named Generator bodies with
 received parameters and reference yields, using real borrowed native resumes.

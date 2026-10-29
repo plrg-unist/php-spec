@@ -14,7 +14,7 @@ import incdec_warning_cases as cases
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def main():
+def main(model_timeout=60):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--case', choices=tuple(cases.CASES))
     parser.add_argument('--exclude', choices=tuple(cases.CASES), action='append', default=[])
@@ -54,7 +54,7 @@ def main():
         if args.native_only:
             row['passed'] = native['exit'] == exit_code and not native['timeout'] and native['interruption'] is None
         else:
-            model = recorded([str(ROOT / 'bin/php-semantics'), str(source), '--steps', '100000', '--timeout', '60'], directory / 'model', 90)
+            model = recorded([str(ROOT / 'bin/php-semantics'), str(source), '--steps', '100000', '--timeout', str(model_timeout)], directory / 'model', model_timeout + 30)
             try:
                 outcome = json.loads((directory / 'model.stdout').read_bytes())
             except ValueError:
