@@ -6,8 +6,7 @@ import global_constant_sources as family
 from throwable_interface_cases import CASES
 
 family.CASES = CASES
-family.UNSUPPORTED = {name: ('Throwable property comparison', b'B|')
-    for name in ('stringable-scalar-control', 'inherited-interface-layout-control')}
+family.UNSUPPORTED = {'stringable-scalar-control': ('Throwable property comparison', b'B|')}
 family.BASELINE = ('Throwable property comparison', b'B|')
 family.MODEL_TIMEOUTS = {name: 480 for name in CASES}
 base_fingerprint = family.fingerprint
