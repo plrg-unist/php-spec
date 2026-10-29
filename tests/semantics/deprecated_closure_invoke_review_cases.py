@@ -96,6 +96,23 @@ CASES = {
     ], '$closure->__invoke($token);', [
         'restore_error_handler(); echo "E:", $body === 1, ":", $calls === 2 && $other === 0, ":", $weak_token->get() === null, ":", $weak_closure->get() === null, ":", $weak_receiver->get() === null, ";";',
     ]),
+    'invoke-named-unpack-default-hole-stays-raw-through-warnings': at80([
+        '#[\\Deprecated("unpack", "16"), \\NoDiscard]',
+        'function raw_defaults($first = 5, $second = 8) { $GLOBALS["body"]++; echo "B:", $first === 5, ":", $second === 2, ":", $GLOBALS["calls"] === 2, ";"; return 7; }',
+        'function notice($level, $message, $file, $line) {',
+        '    $GLOBALS["calls"]++; $trace = (new Exception("phase"))->getTrace();',
+        '    if ($level === 8192) {',
+        '        echo "O:", $message === "Method Closure::__invoke() is deprecated since 16, unpack", ":", $file === __FILE__ && $line === 80, ":", !isset($trace[1]), ";"; return true;',
+        '    }',
+        '    if ($level === 16384) {',
+        '        echo "I:", $message === "Function raw_defaults() is deprecated since 16, unpack", ":", $trace[1]["function"] === "__invoke" && $trace[1]["class"] === "Closure", ":", $trace[1]["args"][0] === null && $trace[1]["args"][1] === 2, ":", !isset($trace[2]), ":", $GLOBALS["body"] === 0, ";"; return true;',
+        '    }',
+        '    $GLOBALS["other"]++; echo "BAD-WARNING;"; return true;',
+        '}',
+        '$body = 0; $calls = 0; $other = 0; $closure = raw_defaults(...); set_error_handler("notice");',
+    ], '$closure->__invoke(...["second" => 2]);', [
+        'restore_error_handler(); echo "E:", $body === 1, ":", $calls === 2 && $other === 0, ";";',
+    ]),
 }
 
 EXPECTED_STDOUT = {
@@ -103,6 +120,7 @@ EXPECTED_STDOUT = {
     'invoke-unmarked-nodiscard-weak-reception-control': b'B:1;B:1;E:1:1:1;',
     'invoke-reference-slot-live-through-both-warnings': b'O:1:1;I:1:1:1:1;B:1:1;E:1:1:1:1:1:1;',
     'invoke-body-return-retires-raw-argument-before-outer-receiver': b'O:1:1:1;I:1:1;B:1:1:1;T:1:1:1;R:1:1:1;E:1:1:1:1:1;',
+    'invoke-named-unpack-default-hole-stays-raw-through-warnings': b'O:1:1:1;I:1:1:1:1:1;B:1:1:1;E:1:1;',
 }
 
 EXIT_CODES = {name: 0 for name in CASES}
