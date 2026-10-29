@@ -86,6 +86,19 @@
       "native_group": "class152-frozen-native5",
       "native_raw_sha256": "40b5bef0fbd9d7fd32a40bdf121a472388b359c5dfeeb17adda4e33c7f1c6221",
       "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-arity-four-required-missing-fourth",
+      "source": "<?php\necho \"before|\";\ntry {\n    $value = new class(1, 2, 3) {\n        public function __construct(int $a, int $b, int $c, int $d) {\n            echo \"body|\";\n        }\n    };\n} catch (ArgumentCountError $error) {\n    echo $error->getMessage(), \"|\";\n}\necho \"after|\";\n",
+      "source_sha256": "51f07e406910dc2ea71246e43f7fde8b624e036e69f48b2812638d3e64fdabd4",
+      "stdout_base64": "",
+      "stdout_template_base64": "YmVmb3JlfFRvbyBmZXcgYXJndW1lbnRzIHRvIGZ1bmN0aW9uIGNsYXNzQGFub255bW91czo6X19jb25zdHJ1Y3QoKSwgMyBwYXNzZWQgaW4ge0ZJTEV9IG9uIGxpbmUgNCBhbmQgZXhhY3RseSA0IGV4cGVjdGVkfGFmdGVyfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class152-missing-arity-native1",
+      "native_raw_sha256": "ee2c896930c77c3d367c847f69e0f32809ea381bf609badb09bc1e3e6d5e7ec5",
+      "model_timeout_seconds": 240
     }
   ]
 }

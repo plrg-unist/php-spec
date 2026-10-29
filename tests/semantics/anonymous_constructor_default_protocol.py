@@ -173,6 +173,12 @@ def assertions(fixture, filename, code, response, stdout):
         'S_type.EVENTS = S_sent.EVENTS', 'S_type.DECLARATIONS = S_link.DECLARATIONS',
         '~$typed_caller_strict(S_type)',
         '$call_task_valid(S_type,TYPE_RECEIVE porigin_ctor 0)',
+        '$call_function_name(S_type,pmethoddesc.FUNCTION) = pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME',
+        '$c_string($call_function_name(S_type,pmethoddesc.FUNCTION)) = $ptascii("Base152Review@anonymous")',
+        '$missing_argument_function_name(S_type,pmethoddesc.FUNCTION) = $ptascii("Base152Review@anonymous::__construct")',
+        '$missing_argument_function_name(S_type[.CURRENT = (pcallcontext[.CALLED_CLASS = (porigin_base)])],pmethoddesc.FUNCTION) = $ptascii("Base152Review@anonymous::__construct")',
+        '$missing_argument_function_name(S_type[.CURRENT = (pcallcontext[.TARGET = METHOD_TARGET n_failed porigin_base])],pmethoddesc.FUNCTION) = pmethoddesc.FUNCTION.NAME',
+        '$missing_argument_function_name(S_type,pmethoddesc.FUNCTION[.NAME = $ptascii("altered")]) = $ptascii("altered")',
         'S_fail_raw = $drive_steps(S_type,1)',
         'S_fail_raw.COMPLETION = BUDGET',
         'S_fail = S_fail_raw[.COMPLETION = NORMAL]',
@@ -264,7 +270,7 @@ def main():
         result = cross.invoke.process([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'),
                                        '--sl', *map(str, modules), str(fixture)], raw / 'numeric', 1500, ROOT)
         assert result.returncode == 0 and result.stdout == b'true\n' and not result.stderr
-        report.update(passed=True, conditions=len(checks), fixture_sha256=sha(fixture))
+        report.update(passed=True, conditions=len(checks), derived_guards=7, fixture_sha256=sha(fixture))
     finally:
         try:
             if adapter:
