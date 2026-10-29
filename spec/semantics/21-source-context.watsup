@@ -279,3 +279,24 @@ def $plresume(plstate, plcompiled) = PLUNSUPPORTED "invalid compiler-work resump
   -- otherwise
 
 def $pltypecontext(plenv, ptscope, ptposition, ptbytes_owner, ptbytes_member, pllocation) = { NAMESPACE plenv.NAMESPACE, IMPORTS plenv.CLASSES, SCOPE ptscope, POSITION ptposition, OWNER ptbytes_owner, MEMBER ptbytes_member, FILE pllocation.FILE, LINE pllocation.LINE }
+
+;; This name-only view reuses lexical namespace/import processing. Ordinary work
+;; can change SEEN, STRICT and diagnostics: full compilation still validates it.
+dec $plclasscontext_contains(pcpath, pcpath) : bool
+def $plclasscontext_contains(pcpath_work, pcpath_target) = true
+  -- if $(|pcpath_work| <= |pcpath_target|)
+  -- if pcpath_target[0:|pcpath_work|] = pcpath_work
+def $plclasscontext_contains(pcpath_work, pcpath_target) = false -- otherwise
+dec $plclasscontext_work(plresult, pcpath, nat) : ptcontext?
+def $plclasscontext_work(PLWORK (PCOCCURRENCE pcpath_work pcnode) plstate pldiagnostic*, pcpath_target, n_line) = ($pltypecontext(plstate.ENV, PTGLOBAL, PTCONSTANT, eps, eps, { UNIT plstate.UNIT.ID, PATH pcpath_target, FILE plstate.FILE, LINE n_line }))
+  -- if $plclasscontext_contains(pcpath_work, pcpath_target)
+def $plclasscontext_work(PLWORK (PCOCCURRENCE pcpath_work pcnode) plstate pldiagnostic*, pcpath_target, n_line) = $plclasscontext_work($pladvance(plstate[.TASKS = pltask_tail*]), pcpath_target, n_line)
+  -- if ~$plclasscontext_contains(pcpath_work, pcpath_target)
+  -- if plstate.TASKS = (PLVERIFY bool pllocation) :: pltask_tail*
+def $plclasscontext_work(plresult, pcpath_target, n_line) = eps -- otherwise
+dec $plclasscontext(pcunit, pcpath, ptbytes, nat) : ptcontext?
+def $plclasscontext(pcunit, pcpath, ptbytes_file, n_line) = $plclasscontext_work($plstart(pcunit.ID, pcunit.AST, ptbytes_file), pcpath, n_line)
+  -- if pcunit = $pcsource(pcunit.ID, pcunit.AST)
+  -- if $occurrence_node(pcunit.OCCURRENCES, pcpath) =/= eps
+  -- if ptbytes_file =/= eps /\ $(n_line > 0)
+def $plclasscontext(pcunit, pcpath, ptbytes_file, n_line) = eps -- otherwise

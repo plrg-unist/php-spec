@@ -16,11 +16,6 @@ dec $at_task(porigin?, ptask) : ptask
 def $at_task(eps, ptask) = ptask
 def $at_task((porigin), ptask) = AT porigin ptask
 
-dec $occurrence_node(pcoccurrence*, pcpath) : pcnode?
-def $occurrence_node(eps, pcpath) = eps
-def $occurrence_node((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*, pcpath) = (pcnode)
-def $occurrence_node((PCOCCURRENCE pcpath_other pcnode) :: pcoccurrence*, pcpath) = $occurrence_node(pcoccurrence*, pcpath)
-  -- if pcpath_other =/= pcpath
 dec $origin_node(pcunit*, porigin) : pcnode?
 def $origin_node(eps, porigin) = eps
 def $origin_node(pcunit :: pcunit_tail*, PORIGIN n pcpath) = $occurrence_node(pcunit.OCCURRENCES, pcpath)

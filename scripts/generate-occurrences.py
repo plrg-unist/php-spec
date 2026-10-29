@@ -62,6 +62,12 @@ def generate(schema):
         'def $pcwalk(eps) = eps',
         'def $pcwalk((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = [(PCOCCURRENCE pcpath pcnode)] ++ $pcwalk($pcchildren(pcnode, pcpath)) ++ $pcwalk(pcoccurrence*)',
         f'def $pcsource(pci, program) = {{ ID pci, AST program, OCCURRENCES $pcwalk($pclist_{statement_list}($pcprogram(program), eps, 0)) }}',
+        '',
+        'dec $occurrence_node(pcoccurrence*, pcpath) : pcnode?',
+        'def $occurrence_node(eps, pcpath) = eps',
+        'def $occurrence_node((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*, pcpath) = (pcnode)',
+        'def $occurrence_node((PCOCCURRENCE pcpath_other pcnode) :: pcoccurrence*, pcpath) = $occurrence_node(pcoccurrence*, pcpath)',
+        '  -- if pcpath_other =/= pcpath',
     ]
     return '\n'.join(lines) + '\n'
 
