@@ -1,6 +1,6 @@
 {
   "milestone": "A74 surviving ordinary scalar aliases after sole Generator DATA retirement",
-  "status": "privately implemented, independently reviewed and validated; integration queued",
+  "status": "integrated after independent actual-tail review and joined validation",
   "scope": {
     "consumer": "Existing INI_SET unpack of a named zero-argument BYREF Generator in a direct CV, with at most two copied scalar sends, an integer final key and absent or implicit-NULL return.",
     "behavior": "A CLOSED Generator has one ordinary scalar REFCELL cached child while its outside global value/alias names keep that cell live. Sole DATA releases the Generator through the existing storage pin, reducing cell owners from three to two. The cell remains readable after Generator death; later scalar or array writes cannot alter copied sends, the selected setter or retired CONFIG history. Quiet saved-Throwable cleanup retains the same exception through catch.",
@@ -71,6 +71,17 @@
     "notes": "Raw sources, streams, exits, checked fixtures and reports are outside Git; no executables/providers. Tested revision and original process identities remain historical."
   },
   "integration": {
-    "status": "pending actual-tail composition and one full-manifest joined strict check"
+    "status": "actual-tail composition independently cleared; sole joined strict431 passed",
+    "base": "435c194a749280ba5fc7dfe7af0071c06f99ccd4",
+    "composition": "5c51ced1355dc6a6c13c0efbec56edb5b2bf478b",
+    "joined_strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-outside-alias-74/joined-5c51ced13/report.json",
+      "sha256": "e7b2e0d1f0ead5772050f0a947a76772d922a84604e83e4941b4070f368a4088",
+      "revision": "5c51ced1355dc6a6c13c0efbec56edb5b2bf478b",
+      "modules": 431,
+      "seconds": 12.4477889538
+    },
+    "compatibility": "Runtime423 and source/state fixtures exactly match private A74. Generic355/301, schema and ordered manifest match current parent; current Enum210/437 additions are KIND-disjoint from INI_SET and I81 captured-method lookup does not widen named direct-CV reference admission. Frozen native4/old Unsupported0, private strict431, source4 and reached309 retain their original cuts. No accepted A73 source, state or native replay.",
+    "review": "Independent actual-parent semantic seams, docs/inventory union and joined compiler review by config71_recover_review."
   }
 }

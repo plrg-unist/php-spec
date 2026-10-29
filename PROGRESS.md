@@ -237,7 +237,7 @@ reentrant/abrupt raw-owner teardown remain partial.
 | OB04 | Selected error-handler FINAL handling; active validation. |
 | ATTR05 | Explicit captured-Closure `__invoke()` warning, trace and owner handling; active validation. |
 | Enum M3/M4 | Generated string capture preparation; no new validation credit. Wider callable consumers, enum collectability, backing dependencies and the default loader remain partial. |
-| A74 | Outside-alias scalar REFCELL cleanup; privately validated, integration queued. |
+| A75 | Temporary direct-call BYREF Generator INPUT/DATA cleanup; native-first source preparation. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
