@@ -26,6 +26,7 @@ dec $call_aggregate_context(pstate, pcallcontext) : bool
 dec $call_aggregate_same(punpackcall, punpackcall) : bool
 dec $call_aggregate_match(pcallaggregate, punpackcall, poperand, nat) : bool
 dec $call_aggregate_receipt(pstate, punpackcall, poperand, nat, ptask*) : bool
+dec $call_aggregate_receipt_at(pstate, punpackcall, poperand, nat, ptask) : bool
 dec $call_aggregate_marker(punpackcall, ptask*) : bool
 dec $call_aggregate_leaf_task(ptask, pcallaggregate) : bool
 dec $call_aggregate_leaf_active(pcallaggregate, ptask*) : bool
@@ -253,10 +254,9 @@ def $call_aggregate_marker(punpackcall, eps) = false
 def $call_aggregate_marker(punpackcall, (UNPACK_AGGREGATE pcallaggregate "leaf") :: ptask_tail*) = true -- if $call_aggregate_same(pcallaggregate.CALL, punpackcall)
 def $call_aggregate_marker(punpackcall, ptask :: ptask_tail*) = $call_aggregate_marker(punpackcall, ptask_tail*) -- otherwise
 def $call_aggregate_receipt(S, punpackcall, poperand, n, eps) = false
-def $call_aggregate_receipt(S, punpackcall, poperand, n, (UNPACK_AGGREGATE pcallaggregate "leaf") :: ptask_tail*) = true
-  -- if $call_aggregate_match(pcallaggregate, punpackcall, poperand, n)
-  -- if $call_aggregate_history(S, pcallaggregate)
-def $call_aggregate_receipt(S, punpackcall, poperand, n, ptask :: ptask_tail*) = $call_aggregate_receipt(S, punpackcall, poperand, n, ptask_tail*) -- otherwise
+def $call_aggregate_receipt(S, punpackcall, poperand, n, ptask :: ptask_tail*) = ($call_aggregate_receipt_at(S, punpackcall, poperand, n, ptask) \/ $call_aggregate_receipt(S, punpackcall, poperand, n, ptask_tail*))
+def $call_aggregate_receipt_at(S, punpackcall, poperand, n, UNPACK_AGGREGATE pcallaggregate "leaf") = ($call_aggregate_match(pcallaggregate, punpackcall, poperand, n) /\ $call_aggregate_history(S, pcallaggregate))
+def $call_aggregate_receipt_at(S, punpackcall, poperand, n, ptask) = false -- otherwise
 def $call_aggregate_iterator_input(S, piteratorunpack) = ($iterator_unpack_input(S, piteratorunpack.CALL, piteratorunpack.INPUT) /\ $iterator_unpack_original(piteratorunpack))
   -- if ~$call_aggregate_marker(piteratorunpack.CALL, S.TODO)
 def $call_aggregate_iterator_input(S, piteratorunpack) = ($call_aggregate_receipt(S, piteratorunpack.CALL, piteratorunpack.INPUT, piteratorunpack.OBJECT, S.TODO) /\ $call_reference_operand_valid(S, piteratorunpack.INPUT)) -- otherwise
