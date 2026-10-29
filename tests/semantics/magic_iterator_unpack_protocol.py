@@ -27,7 +27,8 @@ CASES = {
                  '-- if piteratorunpack.CALL.FUNCTION = MAGIC_METHOD_SEND_TARGET pmagicmethodcall',
         'checks': [
             'piteratorunpack.CURRENT = KNOWN (PINT 7)',
-            'piteratorunpack.KEY = KNOWN (PSTRING ($ptascii("arguments")))',
+            'piteratorunpack.KEY = KNOWN pvalue_key',
+            '$fiber_traversal_key(pvalue_key) = (KSTRING ($ptascii("arguments")))',
             '$lookup(S.ENV, $ptascii("value")) = (n_value)',
             'S.STORE[n_value] = DEFINED (PINT 9)',
             '$lookup(S.ENV, $ptascii("receiver")) = (n_receiver_cv)',
