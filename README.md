@@ -4191,6 +4191,12 @@ methods preserve lexical and called scopes, and private Base slots remain
 separate from public child shadows. Generated names use the resolved parent
 reference spelling before `@anonymous`. [The parent review](coverage/semantics/anonymous-parent-review.json)
 keeps this bounded inheritance slice and its original naming counterexample.
+Plain typed anonymous/Base slots now reuse ordinary type, inheritance and
+reference constraints. Parented classes link on the first reached `new`, before
+arguments; body/default errors still arise during compilation. Same-type
+redeclarations and private shadows keep their physical identities, and error
+messages preserve source `self`/`parent` spelling.
+[Typed-property review](coverage/semantics/anonymous-typed-properties-review.json).
 Plain empty named classes can share those units globally and in valid named
 namespace sections, including repeated unbracketed sections and bracketed global
 bodies. Eligible root/actual-block classes consume no RTD key; deferred classes

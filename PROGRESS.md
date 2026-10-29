@@ -8,19 +8,22 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
-Unit0 global anonymous classes may now extend a previously compiled plain
-parentless Base through an unqualified reference. Inherited and overridden
-constructors see Base property defaults; inherited methods keep Base lexical
-scope and the anonymous called scope, and private Base/public child slots stay
-distinct. Generated names use the resolved parent reference spelling before
-`@anonymous`. Four new author originals and one independent name-visible source
-agree exactly with pinned PHP; one unchanged parentless control stays exact.
-Two source-reached states pass 88 premises, including full generated names, and
-joined strict SL compilation passes all 424 modules. Independent review exposed
-and corrected the initial wrong-prefix candidate; its mismatch and two earlier
-runner stops retain zero agreement credit. Typed Base properties, forward or
-autoloaded parents, dynamic units, interfaces and wider inheritance remain partial.
-[Parented anonymous class review](coverage/semantics/anonymous-parent-review.json).
+Ordinary typed properties in admitted anonymous/Base classes now use the
+existing type normalizer, invariant linker and reference constraints. Compatible
+public redeclarations select the child declaration/default; private Base slots
+remain separate. Class bodies and defaults compile eagerly, while parented
+anonymous classes link at their first reached `new`, before allocation and
+arguments. Successful publication survives a throwing argument and repeated
+visits reuse one class. Logical identities retain full generated names;
+diagnostics truncate at NUL and preserve source `self`/`parent` spelling.
+Nineteen frozen source outcomes agree exactly with pinned PHP: 15 normal,
+one runtime inheritance fatal after earlier output and three compile-default
+rejections with no output. Slot, publication and independent saved-constructor
+cause protocols pass 820 conditions.
+Earlier strict/source stops and independent fixture compiler failures retain
+zero overall credit. Hooks, readonly/asymmetric/static properties, wider defaults
+and parent/autoload/dynamic inheritance contexts remain partial.
+[Anonymous typed-property review](coverage/semantics/anonymous-typed-properties-review.json).
 
 A fresh Aggregate-returned CONFIG Iterator with a public destructor may now
 own one declared direct child with a public destructor and no child storage.
@@ -529,6 +532,7 @@ selection is not reconstructed. Wider callee/operand forms remain partial.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | A62 | Owning-field Iterator lifetime; peer checks pass for throwing-key and pending invalid-key cleanup. |
+| CLASS144 | Typed anonymous/Base properties and first-NEW linking; final packaging. |
 | COMP145 | Builtin Throwable previous chains; private implementation. |
 | OP106 | Object RHS integer-conversion Warning; validation. |
 | CALL122 | Non-CV Iterator unpack operands; preparation. |

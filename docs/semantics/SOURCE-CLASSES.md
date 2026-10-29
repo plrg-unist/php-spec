@@ -280,22 +280,39 @@ arguments, a by-reference constructor formal and an unpacked send.
 
 Unit0 global anonymous classes may now extend an already compiled, parentless
 ordinary named class through an unqualified name. The parent may declare plain
-untyped public/private properties with optional literal defaults, public ordinary
+typed or untyped public/private properties with scalar or null literal defaults, public ordinary
 zero-argument methods and a public required by-value untyped/`int` constructor
 with at most two parameters. The anonymous class keeps the existing bounded
 member and argument grammar. Its compiler name starts with the resolved parent
 reference spelling followed by `@anonymous`, NUL, file, line and RTD counter;
-the early named parent consumes no counter key. The ordinary linker records the
-source parent before allocation. An inherited constructor sees the parent's
+the early named parent consumes no counter key. The body and defaults compile
+eagerly, but the first reached `new` links the parented class before allocation
+and argument evaluation. An incompatible inherited property therefore fails at
+that site, while an invalid own default fails compilation even in a skipped
+branch. A successful link survives a throwing argument and later visits reuse
+the compiled identity. An inherited constructor sees the parent's
 property defaults; an override may call `parent::__construct`. Inherited methods
 keep Base lexical scope and the anonymous called scope, and a private Base slot
 remains distinct from a public child slot of the same name. Repeated factory
 calls allocate distinct objects of one compiled anonymous class.
 The [parent review](../../coverage/semantics/anonymous-parent-review.json)
-retains source comparisons, reached link/constructor states and the initial
-wrong-prefix counterexample. Forward or autoloaded parents, dynamic-source
-parented sites, interfaces, namespaced parents, typed Base properties and wider
-inheritance remain partial or explicit Unsupported in this route.
+retains its historical source comparisons, reached states and wrong-prefix
+counterexample. The [typed-property review](../../coverage/semantics/anonymous-typed-properties-review.json)
+records the corrected first-NEW publication phase and typed extension. Forward
+or autoloaded parents, dynamic-source parented sites, interfaces, namespaced
+parents and wider inheritance remain partial or explicit Unsupported.
+
+Plain anonymous and Base property types use the ordinary normalizer, invariant
+link checks and typed storage. An absent typed default starts uninitialized,
+including nullable declarations; nullable reference fetch can initialize null.
+A compatible public redeclaration selects the child's physical declaration and
+default, while a private Base slot stays separate from a child shadow of another
+type. Live property-reference sources constrain the shared cell until their
+individual slots are unset. Diagnostic names use the prefix before NUL and
+preserve source `self`/`parent` spelling; logical class names, types and source
+origins retain their full identities. Shared admission also covers plain typed
+parentless eval sites under the existing dynamic-unit guards. Hooks, readonly,
+asymmetric/static properties and wider defaults retain their existing boundaries.
 
 Raw `getTrace()['class']` retains the entire generated name. The shared trace
 renderer applies `c_string` only to the displayed CLASS bytes, matching Zend's
