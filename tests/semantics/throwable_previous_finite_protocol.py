@@ -75,8 +75,7 @@ def finish(state, name):
 def deep_root(program, path, name):
     rows = front(program, path)
     rows += [
-        'poperand_S = KNOWN (PARRAY n_outer_left)',
-        'S.RESULT = KNOWN (PARRAY n_outer_right)',
+        '$string_compare_values(S,poperand_S,S.RESULT,z_S) = ((S_read,PARRAY n_outer_left,PARRAY n_outer_right))',
         '(pnode_left*,n_inner_left) = $tpf_arrays(S,n_outer_left,24)',
         '(pnode_right*,n_inner_right) = $tpf_arrays(S,n_outer_right,24)',
         r'|pnode_left*| = 25 /\ |pnode_right*| = 25',
@@ -122,8 +121,7 @@ def deep_root(program, path, name):
 def captured_cycle(program, path, name):
     rows = front(program, path, 'S_first') + paths('S_first')
     rows += [
-        'poperand_S_first = KNOWN (POBJECT n_a)',
-        'S_first.RESULT = KNOWN (POBJECT n_b)',
+        '$string_compare_values(S_first,poperand_S_first,S_first.RESULT,z_S_first) = ((S_first_read,POBJECT n_a,POBJECT n_b))',
         '$throwable_builtin_previous_pair(S_first,n_a,n_b,eps)',
         '~$throwable_builtin_previous_chain_valid(S_first,n_a,[n_leaf_left])',
         '~$throwable_builtin_previous_chain_valid($throwable_set_previous_id(S_first,n_leaf_left,(n_a)),n_a,eps)',
@@ -187,8 +185,7 @@ def checks(program, path, name):
         return captured_cycle(program, path, name)
     rows = front(program, path) + paths('S')
     rows += [
-        'poperand_S = KNOWN (POBJECT n_a)',
-        'S.RESULT = KNOWN (POBJECT n_b)',
+        '$string_compare_values(S,poperand_S,S.RESULT,z_S) = ((S_read,POBJECT n_a,POBJECT n_b))',
     ]
     kind = 'Exception' if name == 'long-cold-exception' else 'Error'
     validator = 'throwable_previous_chain_valid' if kind == 'Exception' else 'throwable_warm_previous_chain_valid'
