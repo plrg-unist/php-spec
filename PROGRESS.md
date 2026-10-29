@@ -34,37 +34,43 @@ passes at the separate integration cut.
 Callbacks, ephemerons, hooks, workers, residual buffers and noncanonical
 locators remain outside this slice. [Review](coverage/semantics/gc-materialized-table-review.json).
 
-Ordinary static Generator bodies now transfer through Fiber during fresh
-`current()` and the existing non-advancing `next()`/`send()` phases, for by-value
-and by-reference producers. Shared authenticated callee/cache/resumer rules retain
-inherited declaring/called scope without receiver roots. Reference cells survive
-name rebinding, snapshots stay separate from live caches, array COW preserves old
-copies, and SEND keeps its argument buffer distinct from the received local.
-Six authored and one independent source agree exactly with pinned PHP. Three
-representative originals were checked Unsupported; a selected named NEXT control
-stays exact. Strict 425 private/joined and 522 custom checks across four reached
-fronts pass, with no failed attempts. I72 evidence keeps its original cuts; its
-maintained CURRENT assertion is covered by the new compatibility front.
-Native-positive fresh NEXT/SEND before-first-yield ADVANCE gates remain explicit
-Unsupported with zero agreement. Their shared phase admission is the next generic
-milestone; keyword-forwarded creation still needs retained caller scope proof.
-Other callee/cache, helper/delegation and wider lifecycle forms remain partial.
-[Static transfer review](coverage/semantics/generator-fiber-static-transfer-review.json).
+A second GC cut admits quiet finite WeakMap ephemerons across ordinary
+objects, arrays and cells, including materialized tables, multiple Maps,
+conditional transitive reachability and dead-Key removal with a shared live
+payload. Three changed native-first originals agree exactly; a repeated
+ordinary allocation/collection history also agrees on the unchanged path.
+Four source-reached strict SL groups pass 136 checks at separate cuts; joined
+strict compilation of the actual 426-module tail passes separately. A phase
+guard limits the new projection to fresh callback-free PASS0 collection. Callback,
+residual, worker, hook and uncertain same-Key proxy order paths remain open.
+[Review](coverage/semantics/gc-ephemeron-generic-review.json).
 
-A fresh sole-DATA CONFIG Iterator now validates its actual declared physical
-fields without fixed names or an edge-count limit. Supported scalars, ordinary
-reference cells, arrays and finite ordinary Child graphs retain repeated edges
-and outside owners. Four originals agree exactly with PHP: one primitive-field
-source and three nested-graph normal/invalid/saved-Exception sources. An independent
-public-parent-destructor saved-Exception source also agrees, including alias
-null/restore through the outside owner. Strict
-compilation of 424 modules, 38+190 new reached premises and 33 checks at the
-affected CONFIG117 return front pass.
-The separate shared authentication extraction preserves A64's policy and has
-landed after joined strict compilation of 425 modules. Historical 678/149/156
-whole-tail cuts are not renewed. The full graph change also passes joined strict
-compilation of 425 modules on the actual tail.
-[Descriptor-backed field review](coverage/semantics/config-aggregate-iterator-layout-review.json).
+Fresh Generator NEXT/SEND now transfer through Fiber before first yield using
+one authenticated phase rule across ordinary named, method, nonkeyword static
+and real unbound Closure callees. Existing cache/callee/resumer authority also
+admits primed METHOD/Closure reference caches. SEND retains its argument buffer
+through initialization and the received local separately after delivery; source
+name rebinding, local promotion, snapshots/live cells and supplied aborts preserve
+real ownership. Nine authored, one independent and two promoted I73 anchors agree
+exactly with pinned PHP. Six representative new originals were checked Unsupported.
+Strict compilation of 425 private/426 joined modules and 470 custom checks at
+four reached fronts pass. The original selector failure and independent 240-second
+timeout retain zero credit; the peer passes in 270.09 seconds with fixed 600/620
+limits for that source alone.
+THROW conditions and old I69-I73 cuts keep their identities; retained anchor
+natives/statuses are not replayed. Keyword-forwarded creation still needs actual
+retained caller scope proof. Wider bound/helper/delegation/lifecycle forms remain
+partial. [Fresh advance review](coverage/semantics/generator-fiber-fresh-advance-review.json).
+
+Ordinary CONFIG Iterator `current()` now retains its selected reference cell
+through `key()` writes and source rebinding. Sending copies a string before
+`next()`, DATA/INPUT retirement and API entry. Real method metadata authenticates
+callback and retired-cache history; a sole cached payload retires before Iterator
+DATA while preserving the supplied Exception. Six exact sources, two Unsupported
+controls and 505 new reached checks (498 Boolean/seven raw) pass. Private
+strict425 and actual-tail joined426 pass. CFG119's declared-slot and finite
+shared-graph policy continues to govern DATA retirement. [Reference-current review](coverage/semantics/config-iterator-reference-current-review.json),
+[descriptor-backed fields](coverage/semantics/config-aggregate-iterator-layout-review.json).
 Dynamic/materialized layouts, special cells, builtin descendants, cycles,
 shutdown and wider destructor effects remain partial.
 
@@ -689,7 +695,9 @@ entered dependency callbacks. Prepublication missing-class Errors skip arguments
 and redundant loaders. Once an interface or trait publishes, construction raises
 its canonical non-instantiability Error; failed linking releases the guard so a
 later lookup can autoload again. The shared source-kind check reuses existing
-class/interface and class/trait dependency maps without admitting enum linking.
+class/interface and class/trait dependency maps. The enum slice below
+adds authenticated `NStmtEnum` dependency maps; generic first-use static lookup
+remains open.
 Three new authored originals and one independent by-reference-helper original
 agree exactly with pinned PHP. All four unchanged baselines completed normally
 with redundant loader output. Strict compilation of 424 modules and authored
@@ -771,13 +779,26 @@ credit. Generator/reference getters and wider targets/lifetimes stay partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| Enum core | Full four-group enum core work. |
-| CLASS147 | Private source9/strict426/reached157 accepted; final package review before actual-tail integration. |
-| I74 | Generic fresh NEXT/SEND ADVANCE phase; source/static preparation. |
+| A67 | Typed instance/static reference-source capture for CONFIG Iterators/shared DATA. |
+| OB01 | Output-buffering frontier preparation. |
+| CLASS147 | Private source9/strict426/reached157 accepted; actual-tail integration review. |
+| COMP150 | Finite Previous/root validation. |
+| GC03 | WeakMap registration order and proxy-count collection; native-first packet. |
+| ATTR01 | NoDiscard. |
+| I75 | Keyword-forwarded static Generator factories; declaration/called-scope proof. |
+| Enum M4 | Generic static/FCC/class-constant first-use acquisition. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64/A65, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110/111, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125/126, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148/149 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145/146 are integrated
+Enum core now lowers unit/backed declarations to cached singleton cases, with
+lazy backing checks, readonly slots, ordered interface linking, generated calls,
+user magic methods, individual qualified case queries and enum/WeakMap comparison.
+Its source/syntax/reached cuts, cache-provenance checks and preserved failures are
+linked from the [artifact index](docs/ARTIFACTS.md). Registered-loader static/FCC
+and class-constant acquisition remains Unsupported; true misses retain PHP Errors.
+Case attributes, generated callable targets and wider type/link contexts remain open.
+
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73/74, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64/A65/A66, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110/111, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125/126, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148/149 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145/146 are integrated
 into this branch.
 GC physical01 is integrated on this tail; its private source/state cuts and the
 joined strict gate retain their separate tested identities.

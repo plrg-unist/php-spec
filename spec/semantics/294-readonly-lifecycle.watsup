@@ -17,7 +17,7 @@ def $property_set_readonly_name(ppropertydesc) = $ptascii("readonly ")
 def $property_set_readonly_name(ppropertydesc) = eps -- otherwise
 
 def $property_readonly_desc(S, n, ptbytes) = (ppropertydesc)
-  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $object_class_origin(S, n) = (porigin)
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
   -- if ppropertydesc.READONLY
 def $property_readonly_desc(S, n, ptbytes) = eps -- otherwise

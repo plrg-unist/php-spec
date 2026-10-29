@@ -20,12 +20,13 @@ dec $activate_class(pstate, pclassdesc) : pstate
 dec $recorded_class_step(pstate, pclassdesc) : pstate
 dec $iterator_notice_publication(pstate, pstate, pclassdesc) : pstate
 dec $activate_class_body(pstate, pclassdesc) : pstate
+dec $activate_class_prelink(pstate, pclassdesc) : pstate
 dec $activate_class_base_body(pstate, pclassdesc) : pstate
 dec $declaration_class_success(pstate, pstate, pclassdesc) : pstate
 dec $class_constant_publish(pstate, pstate, pclassdesc) : pstate
 dec $runtime_class_link_result(pstate, pstate, pclassdesc) : pstate
 def $runtime_class_link_result(S, S_result, pclassdesc) = S_result -- otherwise
-def $activate_class(S, pclassdesc) = $runtime_class_link_result(S, $iterator_notice_publication(S, $class_constant_publish(S, $declaration_class_success(S, $activate_class_body(S, pclassdesc), pclassdesc), pclassdesc), pclassdesc), pclassdesc)
+def $activate_class(S, pclassdesc) = $runtime_class_link_result(S, $iterator_notice_publication(S, $class_constant_publish(S, $declaration_class_success(S, $activate_class_prelink(S, pclassdesc), pclassdesc), pclassdesc), pclassdesc), pclassdesc)
   -- if ~$autoload_parent_pending(S, pclassdesc)
   -- if ~$autoload_interface_pending(S, pclassdesc)
   -- if ~$autoload_trait_pending(S, pclassdesc)
@@ -63,7 +64,7 @@ def $activate_class_base_body(S, pclassdesc) = S_published[.ERRORORIGIN = $compi
   -- if S_published = $class_static_commit(S_parent, pclassstatic*)
 def $activate_class_base_body(S, pclassdesc) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare ") ++ $ptascii(pclassdesc_old.KIND) ++ [32] ++ pclassdesc_old.NAME ++ $ptascii(" (previously declared in ") ++ $call_sourcefile(S.FILES, pclassdesc_old.ORIGIN) ++ [58] ++ $ntunsigned(pclassdesc_old.LINE) ++ [41]) pclassdesc.LINE][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, FATAL eps pclassdesc.LINE, n)][.TRACE = $eval_exception_trace(S)]
   -- if S.COMPLETION = NORMAL
-  -- if pclassdesc.KIND = "class"
+  -- if pclassdesc.KIND = "class" \/ pclassdesc.KIND = "enum"
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc_old)
@@ -427,3 +428,6 @@ def $call_task_valid(S, EVAL (NExprInstanceof expression_left expression_right m
 def $call_task_valid(S, EVAL (NExprInstanceof expression_left expression_right metadata)) = $instanceof_dynamic_site(S, z)
   -- if z = $runtime_line(S, [PCFIELD 0], expression_left)
   -- if $parser_literal(expression_left) = eps
+
+def $object_class_origin(S, n) = (porigin) -- if S.OBJECTS[n] = INSTANCE porigin
+def $object_class_origin(S, n) = eps -- otherwise

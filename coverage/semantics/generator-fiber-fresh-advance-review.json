@@ -1,0 +1,156 @@
+{
+  "milestone": "I74 shared fresh Generator NEXT/SEND Fiber advance",
+  "target": "PHP 8.5.10 CLI NTS signed64; local runtime SHA256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398, source pin 34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json, LC_ALL=C, TZ=UTC",
+  "parent": "9be0f9c1807e1e1e33696b5b5adca950b0a27aee",
+  "implementation_commit": "7c3c2f2279b2b6cdf5d6f70c33b3dece0a9ffc81",
+  "selector_correction_commit": "a95348863c52267bb0e41bd75cc9caae7c91ee26",
+  "reviewed_package": "77e72575a7042ef3eb21d139f2b6594ee3143b97",
+  "scope": "A target-neutral fresh NEXT/SEND helper requires correct argument shape, ADVANCE+FIRST, empty cache, the actual CURRENT and shared call_current/callee authority. The redundant cached-reference target fence is removed: existing producer/cell/operand/callee/resumer rules already authenticate METHOD and real unbound Closure reference caches as well as named/static ones. Both initialization and post-first-yield delivery now transfer without artificial frames, receivers or ownership fields. Creation and THROW conditions are unchanged.",
+  "engine_paths": [
+    "vendor/php-src/Zend/zend_generators.c::Generator::next/send, zend_generator_ensure_initialized, zend_generator_resume (send copies the argument only after initialization)",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_GENERATOR_CREATE, ZEND_YIELD (reference local promotion)",
+    "vendor/php-src/Zend/zend_fibers.c::Fiber::resume/throw, zend_fiber_resume_internal"
+  ],
+  "implementation": [
+    "spec/semantics/281-fibers.watsup"
+  ],
+  "source_catalog": "tests/semantics/generator_fiber_fresh_advance_cases.json",
+  "sources_sha256": {
+    "i74-fresh-named-next-two-stage-cache": "397468bb7043aedac2e49d120b425e978015c1121815acd06f9c656acfb8cfe8",
+    "i74-fresh-named-reference-send-buffer": "648b7fe3308bf0894acf2c5b9ceae2822aa73e12d26ccb86f5de098e2acafa64",
+    "i74-fresh-method-next-pre-yield-abort": "7e8fc1a617e05fc23ee8274d9b636ec3ef83b483282cc8fe3d10fb7abac45a1e",
+    "i74-fresh-method-reference-send-self-abort": "4435d161c1abee3fa1598347887682a2098a54e84c7072b75b6477a5e1f409d1",
+    "i74-fresh-closure-reference-next-two-stage": "42897326e207ea2b4f4b3e0878f50a38035f8694380678feb82b0a7d75472dd6",
+    "i74-fresh-closure-send-copy-buffer": "0d4bde0c4304d83f76c0a83c4008a8d7f3abdb4b5ad1816c0d84c5a417970509",
+    "i74-fresh-static-reference-send-local": "62bd7ff94424bdc22fd4e1dc43732df857b4190e52a39117acfa6d97b90257d9",
+    "i74-primed-method-reference-next": "607fb84da7e4b86046e06337ff9f0a6dfbfe8c43d079519cf75b2cb460321b5b",
+    "i74-primed-closure-reference-send": "3545a32ac1ff15820ab35ee8aef938d6f579173eb1bb304b135b511361d76f9c",
+    "i73-fresh-static-next-advance-boundary": "589f4fceb5a23d74947362051ea58db707d168b78333e868ec2b2655ee148ca0",
+    "i73-fresh-named-send-advance-boundary": "a5c39f8cc4f1da1a5c31f10fbf9df46d8713febd44517b53f4a880e8e0a775e0",
+    "i74-fresh-closure-reference-send-two-stage-abort-independent": "221f217faece814796914a03a11626c2fcb97deb065e7a47030d7e77c288ee28"
+  },
+  "source_counts": {
+    "new_authored": 9,
+    "independent": 1,
+    "promoted_i73": 2,
+    "exact_model_total": 12,
+    "new_selected_checked_gap_baselines": 6
+  },
+  "validation": {
+    "native_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-advance-74/source-packet/native-first/report.json",
+      "sha256": "61107eb31c0122076d8aebbb844080c0383b0873704a49fd18f1da3ef4205b24",
+      "result": "Nine frozen new sources at 9be; exit0, empty stderr, no timeout, stable HEAD/inputs, CPU1. Retained I73 natives are not replayed."
+    },
+    "representative_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-advance-74/source-packet/unchanged-baseline-i_02q17d/report.json",
+      "sha256": "eb883186e0fad9608773b74bfe4729b7c4cce18c5792cffdcb53c3bd8ef27520",
+      "result": "Six selected new originals at 9be are checked Unsupported at the transfer boundary: four fresh callee/ownership contexts and two direct primed METHOD/Closure reference gates. Stable HEAD/inputs, clean processes, CPU5; only these six earn new executed-gap attribution."
+    },
+    "strict_private": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-advance-74/strict-private/report.json",
+      "sha256": "418088a7d4e96e3e2daa92d0a61a9c4eff5f7bb5f96c322962393be7f9bd669d",
+      "result": "425 modules pass SL checking/structuring at 7c3, cache false and determinism checks true; clean/stable, CPU5."
+    },
+    "changed_first_three": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-advance-74/changed-model-0lkwldf1/report.json",
+      "sha256": "abc391decd99e400f84235283e5da4f1b7a230f35b7488f47f761295a645a803",
+      "result": "First three sources exactly checked NORMAL at 7c3. Intentional exit75 at a fully reaped resource boundary leaves the eleven-selection report incomplete/pass false; only its three successful rows receive credit. HEAD/inputs stable, CPU5."
+    },
+    "changed_remaining_eight": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-advance-74/changed-model-dziuqid5/report.json",
+      "sha256": "9f6a935f6e2b9aab2184bf2d2ccd2a5c63dfaacdca0e8ca24afad0491d7cbb98",
+      "result": "Remaining eight exactly checked NORMAL at 7c3, complete/pass true and stable. Includes two promoted I73 anchors on their original native paths; no accepted source or native replay, CPU5."
+    },
+    "failed_state_selector": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-advance-74/raw/fiber-state-review-g3vqhb_o/report.json",
+      "sha256": "d7b10c10acb39d9266ada42488e981f99848e25ec31104bc29e6aa8cc88d997c",
+      "result": "Original first state fixture never reached its stage: suspended payload was incorrectly read from Fiber.VALUE. Seek exhausted; zero reached credit. No semantic edit resulted."
+    },
+    "state_advancing_send": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-advance-74/raw/fiber-state-review-nd9bsgx2/report.json",
+      "sha256": "4a65a8a3d8d26cf06c453baeaa873d7db868375e767bba916d10c58ae3a3808c",
+      "result": "122 custom/127 reported checks pass at a953: ADVANCE/FIRST/empty cache, sole Delivered argument owner, shared parameter cell3/VM2, authentic current/VM and forged-context negatives. Clean/stable, CPU5."
+    },
+    "state_delivered_send": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-advance-74/raw/fiber-state-review-cey0tqym/report.json",
+      "sha256": "fc7858e9d49197ffddfd211006151523d033a26ea611ef0def73e67c2c128a10",
+      "result": "110 custom/115 reported checks pass at a953: non-ADVANCE live reference cache, Delivered argument plus received local2, selected cell4/VM2 and invalid cache/resumer guards. Clean/stable, CPU5."
+    },
+    "state_method_self_abort": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-advance-74/raw/fiber-state-review-o8ko9rb9/report.json",
+      "sha256": "a411f3b4c6461e04ec91099b1cf1c6f168b8ed1b6a0367dd72ba0dbb25ce52e1",
+      "result": "126 custom/131 reported checks pass at a953: authenticated inherited receiver, self cell2/receiver object2, Delivered2, supplied abort and completed allocation retirement. Clean/stable, CPU5."
+    },
+    "state_closure_second_stage": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-advance-74/raw/fiber-state-review-fznm_i_t/report.json",
+      "sha256": "3f5336098a4f837181d178f2abfd43eb14e0c574068a8e2798a470c38d2cbece",
+      "result": "112 custom/117 reported checks pass at a953: real Closure owner1, selected cell5/VM2, reference-cache authentication, capture-layer corruption rejection and completed Closure retirement. Clean/stable, CPU5."
+    },
+    "independent_native": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-advance-74-review/independent/native-first-report.json",
+      "sha256": "02c431b6aad6d2dbb5711faa3afd8e7c12ad54864e9dea49136e4c3c636e0914",
+      "result": "Frozen 3921-byte source at 9be produces the exact provisional 229-byte stream; exit0, empty stderr, stable HEAD/four inputs and full reap, CPU1."
+    },
+    "independent_setup_stop": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-advance-74-review/independent/model-review-setup-failure.json",
+      "sha256": "f74997307ac285bc632724eddf673a603b462fc1f2567940149e6e0ce1ea8471",
+      "result": "Wrong recorder-only 328 basename stopped before model Popen. Corrected without source/semantic/native edits; no actor or execution credit."
+    },
+    "independent_240_deadline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-advance-74-review/independent/model-review-report.json",
+      "sha256": "5df99046d6bb36b7fc7c43b0b65fb1ee8ecb02b76dc3e24b6d026f5c934bf703",
+      "result": "At a953 the adapter request hit its 240-second deadline after parsing; CLI exit1 with only status timeout, no checked/semantic verdict. Outer process did not time out; 245.24 seconds includes close grace. Stable inputs/HEAD, full reap, zero credit."
+    },
+    "independent_extended": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-advance-74-review/independent/model-review-extended-report.json",
+      "sha256": "5c99a8a644d277e11f109e1259674298c08c1bc0aac9f6fce153ac20b4b4558e",
+      "result": "Same source/native/100000 steps/17 inputs at a953 exactly checked NORMAL in 270.088625 seconds under one fixed600/620 envelope; exit0, empty stderr, no timeout, stable HEAD/inputs and full reap, CPU5."
+    },
+    "joined_strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-advance-74/joined-strict/report.json",
+      "sha256": "3c26c6d0e8198a0d194ab2819e41d22493a9664bbc39f989aaa3f6d907e7281f",
+      "result": "Actual 426 modules pass SL checking/structuring at 8ae1c68c over d303d3c2; cache false/determinism checks true, exit0/true, no timeout, stable HEAD/inputs, CPU5. Accepted private cuts are retained without renewal."
+    }
+  },
+  "reached_total": {
+    "custom_checks": 470,
+    "reported_assertions": 490,
+    "fronts": 4,
+    "per_front_custom": [
+      122,
+      110,
+      126,
+      112
+    ],
+    "per_front_reported": [
+      127,
+      115,
+      131,
+      117
+    ]
+  },
+  "authentication": "Reached states establish original current/record/full-VM and resumer validity before negatives. Forged named NAME/RECEIVER/CALLSITE is rejected by the new fully authenticated fresh helper and VM; a nongenerator function fails record authority. Matched forged method receiver and Closure instance, lost reference marking, wrong lines and duplicate resumers fail their existing layers. Corrupting actual Closure captures fails closure-live/full-VM authority without assuming every local shape helper detects it.",
+  "preservation": "Existing fresh THROW helper bytes and all THROW body truth conditions are pointwise unchanged; the new helper excludes THROW and the removed fence was always true for it. Keyword creation and held binding paths are untouched. I69-I73 accepted sources/states are not replayed. The two I73 phase anchors reuse original native paths/tuples; their old checked Unsupported cuts remain historical, while only their maintained expectations are promoted under I74. Row12 was appended byte-identically after direct independent validation, without wrapper replay.",
+  "maintained_runner": "The shared source runner accepts optional per-row model_seconds/process_seconds and records the actual row envelope. All existing family/default budgets stay unchanged; only the independently validated peer row uses600/620. CLI step budget remains100000. Successful direct peer execution validates that envelope; no shared-harness semantic change is made.",
+  "retained_anchors": {
+    "native_report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-static-transfer-73/source-packet/native-first/report.json",
+    "native_sha256": "418b40b42b9356a11db9fe4151e4dd74ab823d2da6a293cc5d360255100c969e",
+    "prior_status_report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-static-transfer-73/changed-model-8moydh_0/report.json",
+    "prior_status_sha256": "098d2d9c0afd1b2e857690b2b028cbdf88caff1dfebbca35ada0dc065d2e8f01"
+  },
+  "actual_tail": {
+    "parent": "d303d3c2abf3f6987407a29f9355adc0241c6506",
+    "tested_candidate": "8ae1c68c730d58b2cbeee7d4deea9499fe4fa862",
+    "composition": "Six owned semantic/test/catalog/runner files exactly match77e725; Makefile adds only two runners and retains parent entries. 280/84/142/328/116 are unchanged from9be. CLASS146 preserves concrete prior named Parent/destructor headers; I74 has no anonymous/interface/magic-implicit-interface sites. CALL126439/108 cleanup changes require Aggregate/UNPACK tasks, absent from actual GENERATOR_RESUME fronts. Cast/operator/non-strict comparison/Iterator paths are inactive; GC tracing equals prior node_children on these property-free objects and has no explicit GC/materialized table/cycle input."
+  },
+  "independent_review": "Source bytes/native packet, representative baseline, semantic/fixture patch, source outcomes and four reached cuts CLEAR; direct extended peer exact CLEAR. Actual-tail interactions/candidate identity CLEAR; joined426 passes. Final metadata review completed CLEAR.",
+  "remaining": "Keyword-forwarded static creation still needs retained caller declaring/called-scope proof. Bound/changed callable forms, wider helper/delegation, force-close/shutdown/GC and broader lifecycle combinations remain partial. Full core and BOLA freedom are not established.",
+  "evidence_directory": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-advance-74",
+    "manifest": "manifest.json",
+    "manifest_sha256": "80474a0ac3fba9e59e1b8d946423d45df8ed7817f920f902c9536b28a9546c2b",
+    "format": "Fifteen report bindings and associated originals/raw streams outside Git; failures retain zero credit."
+  },
+  "recovery": "Native originals/streams and the six-case baseline are in source-packet/. Changed reports preserve a three-row interrupted cut and the disjoint completed eight-row cut. State raw directories are under raw/. Peer setup/240-timeout/600-success files stay separate in the independent directory. Tested source/state catalogs had eleven rows; the twelfth frozen source was appended after direct validation. Runtime copies/worktrees may be removed after integration; branches and external evidence remain."
+}

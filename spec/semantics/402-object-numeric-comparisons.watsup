@@ -149,9 +149,11 @@ def $number_compare_target(PFLOAT n) = (PFLOAT 4607182418800017408)
 def $number_compare_target(pvalue) = eps -- otherwise
 def $number_compare_selection(S, POBJECT n, pvalue) = ((n, true, pvalue_target))
   -- if ($error_handler_eligible(S, 8) /\ $number_compare_receiver(S, n) =/= eps) \/ $number_compare_exception_pending(S)
+  -- if $enum_case_object(S, n) = eps
   -- if $number_compare_target(pvalue) = (pvalue_target)
 def $number_compare_selection(S, pvalue, POBJECT n) = ((n, false, pvalue_target))
   -- if ($error_handler_eligible(S, 8) /\ $number_compare_receiver(S, n) =/= eps) \/ $number_compare_exception_pending(S)
+  -- if $enum_case_object(S, n) = eps
   -- if $number_compare_target(pvalue) = (pvalue_target)
 def $number_compare_selection(S, pvalue_left, pvalue_right) = eps -- otherwise
 

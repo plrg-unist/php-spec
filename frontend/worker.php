@@ -266,11 +266,12 @@ while (($line = fgets(STDIN)) !== false) {
                         $node->setAttribute('statementTerminatorLine', $token->line);
                     }
                     if (($node instanceof PhpParser\Node\Stmt\Class_ && $node->name !== null)
-                        || (($node instanceof PhpParser\Node\Stmt\Trait_ || $node instanceof PhpParser\Node\Stmt\Interface_)
+                        || (($node instanceof PhpParser\Node\Stmt\Trait_ || $node instanceof PhpParser\Node\Stmt\Interface_ || $node instanceof PhpParser\Node\Stmt\Enum_)
                             && $node->attrGroups !== [])) {
                         $classLine = null;
                         $classToken = $node instanceof PhpParser\Node\Stmt\Trait_ ? T_TRAIT
-                            : ($node instanceof PhpParser\Node\Stmt\Interface_ ? T_INTERFACE : T_CLASS);
+                            : ($node instanceof PhpParser\Node\Stmt\Interface_ ? T_INTERFACE
+                                : ($node instanceof PhpParser\Node\Stmt\Enum_ ? T_ENUM : T_CLASS));
                         for ($index = $node->getStartTokenPos(); $index < $node->name->getStartTokenPos(); ++$index) {
                             if ($tokens[$index]->id === $classToken) $classLine = $tokens[$index]->line;
                         }

@@ -189,6 +189,10 @@ def $class_constant_fetch(S, KNOWN (PSTRING ptbytes_class), ptbytes, z) = $class
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
 def $class_constant_fetch(S, KNOWN (PSTRING ptbytes_class), ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Class \"") ++ ptbytes_class ++ $ptascii("\" not found"), z)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = eps
+  -- if ~$autoload_new_pending(S, $ppcall_literal_name(ptbytes_class))
+def $class_constant_fetch(S, KNOWN (PSTRING ptbytes_class), ptbytes, z) = S[.COMPLETION = UNSUPPORTED "class constant autoload"]
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = eps
+  -- if $autoload_new_pending(S, $ppcall_literal_name(ptbytes_class))
 def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Undefined constant ") ++ $class_constant_message_class(S, pclassdesc, ptbytes_class) ++ $ptascii("::") ++ ptbytes, z)
   -- if pclassdesc.KIND =/= "trait"
   -- if $class_constant_lookup(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = eps
@@ -198,6 +202,7 @@ def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $thr
   -- if ~$class_constant_visible(S, pclassconstantdesc)
 def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $class_constant_value(S, pclassconstantdesc, CLASS_CONST_FETCH (KNOWN (PSTRING ptbytes_class)) ptbytes, $class_constant_message_class(S, pclassdesc, ptbytes_class), z)
   -- if pclassdesc.KIND =/= "trait"
+  -- if ~$enum_constant_pending(S, pclassdesc)
   -- if $class_constant_lookup(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = (pclassconstantdesc)
   -- if $class_constant_visible(S, pclassconstantdesc)
 
@@ -249,6 +254,10 @@ def $class_constant_resolve_class(S, KNOWN (PSTRING ptbytes_class), z) = S
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) =/= eps
 def $class_constant_resolve_class(S, KNOWN (PSTRING ptbytes_class), z) = $throw_scalar(S, "Error", $ptascii("Class \"") ++ ptbytes_class ++ $ptascii("\" not found"), z)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = eps /\ ~$class_internal(ptbytes_class)
+  -- if ~$autoload_new_pending(S, $ppcall_literal_name(ptbytes_class))
+def $class_constant_resolve_class(S, KNOWN (PSTRING ptbytes_class), z) = S[.COMPLETION = UNSUPPORTED "class constant autoload"]
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = eps /\ ~$class_internal(ptbytes_class)
+  -- if $autoload_new_pending(S, $ppcall_literal_name(ptbytes_class))
 def $class_constant_resolve_class(S, poperand, z) = S[.COMPLETION = UNSUPPORTED "internal class constant lookup"] -- otherwise
 def $class_constant_member_value(S, poperand_class, KNOWN pvalue, z) = $class_constant_member_typed(S_class, poperand_class, pvalue, z)
   -- if S.CONSTCONTEXT = eps
@@ -1125,6 +1134,7 @@ def $class_constant_history_fills(S, (CCUPDATE porigin porigin_root porigin_trig
   -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
   -- if $class_constant_flag((porigin_flag, b_flag)*, porigin) = (false)
   -- if $class_constant_flag((porigin_flag, b_flag)*, porigin_root) = (b_root)
+  -- if $enum_backing_issue(S, porigin) = METHOD_OK
   -- if $class_constant_values_done($class_constant_layout(S, porigin, |S.CLASSES|), porigin_cached*)
   -- if $static_default_values_done($property_info_layout(S, porigin, |S.CLASSES|), porigin_filled*)
   -- if $instance_default_done_at(S, porigin, S.CLASSCONSTANTHISTORY[0:$nabs($(|S.CLASSCONSTANTHISTORY| - |pclassconstantevent*| - 1))])
@@ -1202,6 +1212,7 @@ def $call_task_valid(S, CLASS_CONST_TABLE_UPDATE porigin z) = $class_constant_ta
 rule PhpStep/class-constant-table-complete: S ~> S[.TODO = ptask_tail*][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [$class_constant_table_event(S, porigin, porigin_root, porigin_trigger, n_prefix)]]
   -- if S.TODO = (CLASS_CONST_TABLE_UPDATE porigin z) :: ptask_tail*
   -- if ~$class_constant_table_done(S, porigin)
+  -- if $enum_backing_issue(S, porigin) = METHOD_OK
   -- if S.ORIGIN = (porigin_trigger)
   -- if $class_constant_update_target(S, ptask_tail*) = (porigin_root)
   -- if $class_constant_update_site(S, porigin_trigger, porigin_root)

@@ -5,14 +5,14 @@ syntax porigin = PORIGIN nat pcpath | TRAIT_ORIGIN porigin porigin ptbytes | TRA
 ;; Retired array identity is non-owning, local to one active or saved call.
 syntax pretiredkind = RET_SWITCH_VAR_ARRAY | RET_SWITCH_CONSUMED_ARRAY | RET_FOREACH_VALUE_ARRAY
 syntax pretiredowner = { OWNER porigin, FIRSTRETURN porigin, FIRSTLINE int, LASTRETURN porigin, LASTLINE int, KIND pretiredkind, ARRAY nat, POSITION nat? }
-syntax ppropertyid = porigin | INTERNAL_PROPERTY text ptbytes
+syntax ppropertyid = porigin | INTERNAL_PROPERTY text ptbytes | ENUM_PROPERTY porigin ptbytes
 syntax pstaticcompound = { CLASS porigin, DECL ppropertyid, CELL nat?, VERIFY bool, ENTRY nat }
 syntax plocation = ROOT nat | ELEMENT nat pkey | PROPERTY nat ptbytes | CLASS_STATIC ppropertyid | STATIC_COMPOUND pstaticcompound | NOWHERE
 syntax poperand = KNOWN pvalue | VARIABLE nat* int | REFERENCE nat | BORROWED plocation
 syntax pbase = BASE_VALUE poperand | BASE_GLOBAL poperand int | BASE_NAME poperand int | BASE_DIM pbase poperand int | BASE_APPEND pbase int | BASE_PLACE porigin plocation | BASE_RETURNED porigin nat | BASE_PROPERTY pvalue ptbytes | BASE_PROPERTY_PENDING pbase poperand int | BASE_CHAIN_PROPERTY pvalue ptbytes int | BASE_CLASS_STATIC porigin ptbytes | BASE_CLASS_STATIC_PENDING poperand poperand | BASE_SHORT
 syntax pnode = HCELL nat | HARRAY nat | HOBJECT nat
 syntax pvstage = PVFOLD | PVEXEC
-syntax pvalueclass = PVSCALAR | PVSTRING bool | PVARRAY bool (pkey, pvalueclass)* | PVCLOSURE nat porigin | PVOBJECT | PVINSTANCE nat porigin | PVSTDCLASS nat porigin
+syntax pvalueclass = PVSCALAR | PVSTRING bool | PVARRAY bool (pkey, pvalueclass)* | PVCLOSURE nat porigin | PVOBJECT | PVINSTANCE nat porigin | PVSTDCLASS nat porigin | PVENUMCASE nat porigin
 syntax parrayselection = { SITE porigin, INIT int, LINE int, REQUESTED porigin, NAME ptbytes }
 syntax pstringselection = { SITE porigin, INIT int, LINE int, REQUESTED porigin, ORIGINAL ptbytes }
 syntax pobjectselection = { SITE porigin, INIT int, LINE int, REQUESTED porigin, METHOD porigin }
@@ -112,7 +112,7 @@ syntax parrayiterator = { SITE porigin, LINE int, ARRAY nat, ITERATOR nat, OBJEC
 syntax parraygenerator = { SITE porigin, LINE int, ARRAY nat, OBJECT nat, FUNCTION porigin, INPUT poperand, TAIL phpType13* }
 syntax parrayaggregate = { SITE porigin, LINE int, ARRAY nat, OBJECT nat, METHOD porigin, INPUT poperand, TAIL phpType13* }
 syntax pgeneratorunpack = { CALL punpackcall, OBJECT nat, INPUT poperand, COUNT nat, NAMED bool }
-syntax pintrinsic = INTRINSIC_DEFINE | INTRINSIC_DEFINED | INTRINSIC_CONSTANT | INTRINSIC_REGISTER_TICK | INTRINSIC_UNREGISTER_TICK | INTRINSIC_ASSERT | INTRINSIC_ASSERT_OPTIONS | INTRINSIC_GC_COLLECT | INTRINSIC_GC_ENABLE | INTRINSIC_GC_DISABLE | INTRINSIC_GC_ENABLED | INTRINSIC_WEAKREF_CREATE | INTRINSIC_WEAKREF_GET | INTRINSIC_WEAKREF_CONSTRUCT | INTRINSIC_FIBER_CONSTRUCT | INTRINSIC_FIBER_START | INTRINSIC_FIBER_RESUME | INTRINSIC_FIBER_THROW | INTRINSIC_FIBER_SUSPEND | INTRINSIC_FIBER_CURRENT | INTRINSIC_FIBER_STARTED | INTRINSIC_FIBER_SUSPENDED | INTRINSIC_FIBER_RUNNING | INTRINSIC_FIBER_TERMINATED | INTRINSIC_FIBER_RETURN | INTRINSIC_REGISTER_SHUTDOWN_FUNCTION | INTRINSIC_AUTO_REGISTER | INTRINSIC_AUTO_UNREGISTER | INTRINSIC_AUTO_FUNCTIONS | INTRINSIC_AUTO_CALL | INTRINSIC_EXIT | INTRINSIC_DIE | INTRINSIC_CLONE | INTRINSIC_GET_CLASS | INTRINSIC_GET_CALLED_CLASS | INTRINSIC_FROM_CALLABLE | INTRINSIC_FROM_CALLABLE_FACTORY | INTRINSIC_CLOSURE_CURRENT | INTRINSIC_CLOSURE_BIND | INTRINSIC_CLOSURE_BINDTO | INTRINSIC_FUNC_NUM_ARGS | INTRINSIC_FUNC_GET_ARG | INTRINSIC_FUNC_GET_ARGS | INTRINSIC_GET_INCLUDE_PATH | INTRINSIC_SET_INCLUDE_PATH | INTRINSIC_INI_GET | INTRINSIC_INI_SET | INTRINSIC_INI_RESTORE | INTRINSIC_CHDIR | INTRINSIC_SHELL_EXEC | INTRINSIC_OB_START | INTRINSIC_OB_FLUSH | INTRINSIC_OB_CLEAN | INTRINSIC_OB_END_FLUSH | INTRINSIC_OB_END_CLEAN | INTRINSIC_OB_GET_FLUSH | INTRINSIC_OB_GET_CLEAN | INTRINSIC_OB_GET_CONTENTS | INTRINSIC_OB_GET_LENGTH | INTRINSIC_OB_GET_LEVEL | INTRINSIC_OB_LIST_HANDLERS | INTRINSIC_OB_GET_STATUS | INTRINSIC_OB_IMPLICIT_FLUSH
+syntax pintrinsic = INTRINSIC_ENUM porigin ptbytes text | INTRINSIC_DEFINE | INTRINSIC_DEFINED | INTRINSIC_CONSTANT | INTRINSIC_REGISTER_TICK | INTRINSIC_UNREGISTER_TICK | INTRINSIC_ASSERT | INTRINSIC_ASSERT_OPTIONS | INTRINSIC_GC_COLLECT | INTRINSIC_GC_ENABLE | INTRINSIC_GC_DISABLE | INTRINSIC_GC_ENABLED | INTRINSIC_WEAKREF_CREATE | INTRINSIC_WEAKREF_GET | INTRINSIC_WEAKREF_CONSTRUCT | INTRINSIC_FIBER_CONSTRUCT | INTRINSIC_FIBER_START | INTRINSIC_FIBER_RESUME | INTRINSIC_FIBER_THROW | INTRINSIC_FIBER_SUSPEND | INTRINSIC_FIBER_CURRENT | INTRINSIC_FIBER_STARTED | INTRINSIC_FIBER_SUSPENDED | INTRINSIC_FIBER_RUNNING | INTRINSIC_FIBER_TERMINATED | INTRINSIC_FIBER_RETURN | INTRINSIC_REGISTER_SHUTDOWN_FUNCTION | INTRINSIC_AUTO_REGISTER | INTRINSIC_AUTO_UNREGISTER | INTRINSIC_AUTO_FUNCTIONS | INTRINSIC_AUTO_CALL | INTRINSIC_EXIT | INTRINSIC_DIE | INTRINSIC_CLONE | INTRINSIC_GET_CLASS | INTRINSIC_GET_CALLED_CLASS | INTRINSIC_FROM_CALLABLE | INTRINSIC_FROM_CALLABLE_FACTORY | INTRINSIC_CLOSURE_CURRENT | INTRINSIC_CLOSURE_BIND | INTRINSIC_CLOSURE_BINDTO | INTRINSIC_FUNC_NUM_ARGS | INTRINSIC_FUNC_GET_ARG | INTRINSIC_FUNC_GET_ARGS | INTRINSIC_GET_INCLUDE_PATH | INTRINSIC_SET_INCLUDE_PATH | INTRINSIC_INI_GET | INTRINSIC_INI_SET | INTRINSIC_INI_RESTORE | INTRINSIC_CHDIR | INTRINSIC_SHELL_EXEC | INTRINSIC_OB_START | INTRINSIC_OB_FLUSH | INTRINSIC_OB_CLEAN | INTRINSIC_OB_END_FLUSH | INTRINSIC_OB_END_CLEAN | INTRINSIC_OB_GET_FLUSH | INTRINSIC_OB_GET_CLEAN | INTRINSIC_OB_GET_CONTENTS | INTRINSIC_OB_GET_LENGTH | INTRINSIC_OB_GET_LEVEL | INTRINSIC_OB_LIST_HANDLERS | INTRINSIC_OB_GET_STATUS | INTRINSIC_OB_IMPLICIT_FLUSH
   | INTRINSIC_ERROR_REPORTING | INTRINSIC_SET_ERROR_HANDLER | INTRINSIC_RESTORE_ERROR_HANDLER | INTRINSIC_GET_ERROR_HANDLER | INTRINSIC_TRIGGER_ERROR | INTRINSIC_USER_ERROR
   | INTRINSIC_SET_EXCEPTION_HANDLER | INTRINSIC_RESTORE_EXCEPTION_HANDLER | INTRINSIC_GET_EXCEPTION_HANDLER
 syntax pexitcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT poperand*, NAMED bool, OWNER nat?, LINE int }
@@ -336,7 +336,7 @@ syntax pyieldfromretained = { PARENT nat, DATA nat, RECEIPT pyieldfromreceipt, I
 syntax pforeachaggregate = { STATEMENT statement, SITE porigin, LINE int, AGGREGATE nat, OBJECT nat, ACQUIRED nat*, INPUT poperand, CURRENT poperand, ITERATOR nat? }
 syntax pfibertraversal = { CAPTURE nat?, START pfiberstart, OBJECT nat, AGGREGATE nat?, ACQUIRED nat*, INPUT poperand, SITE porigin, LINE int, CURRENT poperand, SENT pnamedargs, ITEMS pentry* }
 syntax pfiberfinish = { OBJECT nat, PENDING nat?, SEQUENCE nat, PROTECTED (nat, nat)? }
-syntax ptask = TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND ptickdispatch nat | TICK_REFERENCE ptickdispatch nat | TICK_ENTER ptickdispatch | TICK_RESULT ptickdispatch | TICK_UNREGISTER_RELEASE pshutdownentry ptickentry
+syntax ptask = ENUM_CASE_INIT porigin | ENUM_CONST_FETCH porigin ptbytes ptbytes int | ENUM_CASES pconfigcall porigin* pvalue* | ENUM_CASES_VALUE pconfigcall porigin* pvalue* | ENUM_QUERY_RESULT pconfigcall porigin | ENUM_FROM_CONVERT pconfigcall pvalue | ENUM_FROM_FETCH pconfigcall pvalue | ENUM_FROM_LOSSY pconfigcall pvalue int | ENUM_FROM_NULL pconfigcall | ENUM_FROM_STRING_RESULT pconfigcall nat porigin int int | TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND ptickdispatch nat | TICK_REFERENCE ptickdispatch nat | TICK_ENTER ptickdispatch | TICK_RESULT ptickdispatch | TICK_UNREGISTER_RELEASE pshutdownentry ptickentry
   | OUTPUT_WRITE pobwrite | OUTPUT_FINISH pobwrite
   | OB_USER_FAIL_ARGS pobinvoke nat | OB_USER_FAIL_DONE pobinvoke | OB_USER_FAIL_COMMIT pobinvoke nat | OUTPUT_FAIL_WRITE pobwrite nat | OUTPUT_FAIL_FINISH pobwrite nat
   | OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask* nat | OB_API_FAIL_DONE pobrelease pcallcontext? ptask*
@@ -671,7 +671,7 @@ syntax pgeneratorinput = { OBJECT nat, SITE porigin, SOURCE pgeneratorop, LIVE b
 syntax pgeneratorloopretained = { OBJECT nat, SITE porigin, TASK ptask }
 syntax pweakmapvalue = pvalue | ALIAS nat
 syntax pweakmapentry = { KEY nat, VALUE pweakmapvalue, BEFORE nat? }
-syntax pobject = SENSITIVEUNSET porigin | SENSITIVEVALUE pvalue | WEAKREFERENCE nat? | WEAKMAP pweakmapentry? | WEAKMAPENTRIES pweakmapentry* | WEAKMAPITERATOR nat nat | FIBERGRACEFUL nat nat | FIBER pfiber | FIBERAPICLOSURE pfibercapture | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | FROMCALLABLEFACTORY porigin | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text pgettersource | CTORCLOSURE nat text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
+syntax pobject = ENUMCASE porigin | SENSITIVEUNSET porigin | SENSITIVEVALUE pvalue | WEAKREFERENCE nat? | WEAKMAP pweakmapentry? | WEAKMAPENTRIES pweakmapentry* | WEAKMAPITERATOR nat nat | FIBERGRACEFUL nat nat | FIBER pfiber | FIBERAPICLOSURE pfibercapture | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | FROMCALLABLEFACTORY porigin | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text pgettersource | CTORCLOSURE nat text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
 syntax pdeclautoload = (nat, pautoloadcall, pautoloadentry)
 syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)*, AUTOLOAD pdeclautoload* }
 syntax pcompilestop = PCSREJECT | PCSMAINREJECT program | PCSCOMPLETE | PCSCOMPILER | PCSLINK nat | PCSUNSUPPORTED nat
@@ -1512,9 +1512,18 @@ dec $property_hook_read_needed(pstate, nat, ptbytes) : bool
 dec $property_hook_context_kind(pcallcontext) : bool
 dec $property_hook_link_finish(pstate, pclassdesc, pstate) : pstate
 
-dec $enum_implements_message(text, ptbytes, bool, ptbytes) : ptbytes?
+;; Nominal user objects share source class selection; enum cases retain their
+;; distinct allocation tag and immutable case provenance.
+dec $object_class_origin(pstate, nat) : porigin?
+dec $enum_kind(pintrinsic) : bool
+dec $enum_case_origin(pstate, porigin) : bool
+dec $enum_case_object(pstate, nat) : pclassconstantdesc?
+dec $enum_class_prelink(pstate, pclassdesc) : pmethodissue
+dec $enum_class_verify(pstate, pclassdesc) : pmethodissue
+dec $enum_constant_pending(pstate, pclassdesc) : bool
+dec $enum_backing_issue(pstate, porigin) : pmethodissue
+dec $enum_generated(pstate, porigin, ptbytes) : bool
 dec $enum_implements_issue(pstate, pclassdesc, ptbytes) : ptbytes?
-
 ;; Optional magic-trampoline argument collection is defined after ordinary calls.
 dec $magic_unpack_arguments(pstate, porigin, phpType7*) : bool
 def $magic_unpack_arguments(S, porigin, phpType7*) = false -- otherwise
@@ -1522,3 +1531,10 @@ dec $magic_unpack_raw_valid(pstate, pcalltarget) : bool
 def $magic_unpack_raw_valid(S, pcalltarget) = false -- otherwise
 dec $magic_unpack_collecting(pcalltarget) : bool
 def $magic_unpack_collecting(pcalltarget) = false -- otherwise
+dec $enum_implements_message(text, ptbytes, bool, ptbytes) : ptbytes?
+dec $enum_generated_receiver(pstate, nat, ptbytes) : bool
+dec $enum_string_child_site(pstate, porigin, int) : bool
+dec $enum_string_site_valid(pstate, pconfigcall, nat, porigin, int, int) : bool
+dec $ppenum_get_signature(pssignature) : bool
+dec $ppenum_call_signature(pssignature) : bool
+dec $enum_magic_source(pstate, pmethoddesc, bool) : bool

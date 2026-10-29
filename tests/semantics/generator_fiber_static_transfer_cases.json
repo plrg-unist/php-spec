@@ -73,107 +73,23 @@
   },
   {
     "id": "i73-fresh-static-next-advance-boundary",
-    "purpose": "Explicit shared pre-first-yield ADVANCE gate: native-positive, unchanged and changed Unsupported with zero agreement.",
+    "purpose": "Retained I73 fresh static NEXT ADVANCE source, promoted to normal agreement by shared fresh NEXT/SEND admission.",
     "source": "<?php\nclass Gate73Next {\n    public static function stream() {\n        echo 'ENTER|';\n        $reply = Fiber::suspend('gate73');\n        echo 'REPLY|', (int) ($reply === 'go73'), '|';\n        yield 5;\n        echo 'SECOND|';\n        yield 7;\n        return 73;\n    }\n}\nfunction Run73NextGate() {\n    global $g;\n    echo 'CALL|';\n    $g->next();\n    echo 'VALUE|', (int) ($g->current() === 7), '|';\n    return 'fiber73';\n}\n$g = Gate73Next::stream();\n$f = new Fiber('Run73NextGate');\necho 'START|', (int) ($f->start() === 'gate73'), '|';\necho 'RESUME|', (int) ($f->resume('go73') === null), '|';\necho 'FIBER|', (int) ($f->getReturn() === 'fiber73'), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 73), '|';\nunset($g, $f);\necho 'E';\n",
     "source_sha256": "589f4fceb5a23d74947362051ea58db707d168b78333e868ec2b2655ee148ca0",
-    "expected_model": "unsupported",
-    "unsupported_reason": "Fiber switch during an initializer, source loader or Generator continuation",
     "native_exit": 0,
     "native_stdout": "START|CALL|ENTER|1|RESUME|REPLY|1|SECOND|VALUE|1|1|FIBER|1|CLOSED|1|E",
     "native_stderr": "",
-    "unsupported_stdout": "START|CALL|ENTER|",
-    "unsupported_events": [
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "83",
-            "84",
-            "65",
-            "82",
-            "84",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "67",
-            "65",
-            "76",
-            "76",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "69",
-            "78",
-            "84",
-            "69",
-            "82",
-            "124"
-          ]
-        ]
-      }
-    ]
+    "expected_model": "normal"
   },
   {
     "id": "i73-fresh-named-send-advance-boundary",
-    "purpose": "Explicit shared pre-first-yield ADVANCE gate: native-positive, unchanged and changed Unsupported with zero agreement.",
+    "purpose": "Retained I73 fresh named SEND ADVANCE source, promoted to normal agreement by shared fresh NEXT/SEND admission.",
     "source": "<?php\nfunction Fresh73SendGate() {\n    echo 'ENTER|';\n    $reply = Fiber::suspend('gate73');\n    echo 'REPLY|', (int) ($reply === 'go73'), '|';\n    $received = yield 5;\n    echo 'DELIVERED|', (int) ($received === 13), '|';\n    yield 7;\n    return 73;\n}\nfunction Run73SendGate() {\n    global $g;\n    echo 'CALL|';\n    $value = $g->send(13);\n    echo 'VALUE|', (int) ($value === 7), '|';\n    return 'fiber73';\n}\n$g = Fresh73SendGate();\n$f = new Fiber('Run73SendGate');\necho 'START|', (int) ($f->start() === 'gate73'), '|';\necho 'RESUME|', (int) ($f->resume('go73') === null), '|';\necho 'FIBER|', (int) ($f->getReturn() === 'fiber73'), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 73), '|';\nunset($g, $f);\necho 'E';\n",
     "source_sha256": "a5c39f8cc4f1da1a5c31f10fbf9df46d8713febd44517b53f4a880e8e0a775e0",
-    "expected_model": "unsupported",
-    "unsupported_reason": "Fiber switch during an initializer, source loader or Generator continuation",
     "native_exit": 0,
     "native_stdout": "START|CALL|ENTER|1|RESUME|REPLY|1|DELIVERED|1|VALUE|1|1|FIBER|1|CLOSED|1|E",
     "native_stderr": "",
-    "unsupported_stdout": "START|CALL|ENTER|",
-    "unsupported_events": [
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "83",
-            "84",
-            "65",
-            "82",
-            "84",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "67",
-            "65",
-            "76",
-            "76",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "69",
-            "78",
-            "84",
-            "69",
-            "82",
-            "124"
-          ]
-        ]
-      }
-    ]
+    "expected_model": "normal"
   },
   {
     "id": "i73-scoped-reference-send-abort-independent",

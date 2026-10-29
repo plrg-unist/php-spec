@@ -36,6 +36,8 @@ def $magic_static_method_source(S, pmethoddesc) = true
   -- if $property_unset_body_source(S.SOURCES, n, pfunction.BODY, statement*, 0)
   -- if pfunction.LINE = $ppmethod_line(metadata) /\ pfunction.ENDLINE = $psendline(metadata)
   -- if ~$generator_statements(statement*)
+def $magic_static_method_source(S, pmethoddesc) = true
+  -- if $enum_magic_source(S, pmethoddesc, true)
 def $magic_static_method_source(S, pmethoddesc) = false -- otherwise
 
 ;; Source/class/caller identities are immutable history after selection.

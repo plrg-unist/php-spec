@@ -138,6 +138,12 @@ test-semantics: build
 		python3 tests/semantics/array_iterator_byval_fields_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
 		python3 tests/semantics/array_iterator_byval_fields_review_sources.py --output "$$out/peer-source" && \
 		python3 tests/semantics/array_iterator_byval_fields_state_review.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a66-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_iterator_reference_current_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_iterator_reference_current_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_iterator_reference_current_cleanup_sources.py --output "$$out/cleanup-source" && \
+		python3 tests/semantics/config_iterator_reference_current_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/config_iterator_reference_current_state_review.py --source-report "$$out/peer-source/report.json" --source-report "$$out/cleanup-source/report.json" --output "$$out/peer-state"
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
 	python3 tests/semantics/globals_compiler.py
@@ -590,6 +596,8 @@ test-semantics: build
 	python3 tests/semantics/generator_fiber_static_throw_transfer_state.py
 	python3 tests/semantics/generator_fiber_static_transfer_sources.py
 	python3 tests/semantics/generator_fiber_static_transfer_state.py
+	python3 tests/semantics/generator_fiber_fresh_advance_sources.py
+	python3 tests/semantics/generator_fiber_fresh_advance_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

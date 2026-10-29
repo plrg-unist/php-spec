@@ -4,7 +4,7 @@ def $ppproperty_instance_supported(flags) = (~$ppproperty_flag(flags, 8) /\ $ppp
 
 dec $property_instance_set_desc(pstate, nat, ptbytes) : ppropertydesc?
 def $property_instance_set_desc(S, n, ptbytes) = (ppropertydesc)
-  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $object_class_origin(S, n) = (porigin)
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
   -- if ~ppropertydesc.STATIC
   -- if ppropertydesc.SETVISIBILITY =/= eps \/ ppropertydesc.READONLY

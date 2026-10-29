@@ -110,8 +110,8 @@ def $trait_type_branches((PTBRANCH ptatom_items*) :: ptbranch*, ptbytes, ptbytes
 def $trait_type_parameters(eps, ptbytes, ptbytes_parent?) = eps
 def $trait_type_parameters(psparam :: psparam_tail*, ptbytes, ptbytes_parent?) = psparam[.TYPE = $trait_type_branches(psparam.TYPE, ptbytes, ptbytes_parent?)] :: $trait_type_parameters(psparam_tail*, ptbytes, ptbytes_parent?)
 def $trait_type_signature(pssignature, ptbytes, ptbytes_parent?) = pssignature[.PARAMETERS = $trait_type_parameters(pssignature.PARAMETERS, ptbytes, ptbytes_parent?)][.RETURNS = $trait_type_branches(pssignature.RETURNS, ptbytes, ptbytes_parent?)]
-def $ppmethod_supported_signature(pssignature, "trait") = $ppsupported_signature($trait_type_signature(pssignature, $ptascii("trait"), ($ptascii("parent"))))
-def $ppmethod_supported_signature(pssignature, text_kind) = $ppsupported_signature(pssignature) -- if text_kind =/= "trait"
+def $ppmethod_supported_signature(pssignature, "trait", b_abstract) = ($ppsupported_signature($trait_type_signature(pssignature, $ptascii("trait"), ($ptascii("parent")))) \/ (b_abstract /\ pssignature.RETURNS = ([(PTBRANCH ([PTSTATIC]))]) /\ $ppsupported_signature($trait_type_signature(pssignature[.RETURNS = eps], $ptascii("trait"), ($ptascii("parent"))))))
+def $ppmethod_supported_signature(pssignature, text_kind, b_abstract) = $ppsupported_signature(pssignature) -- if text_kind =/= "trait"
 
 def $pptrait_body_uses(SEQUENCE statement*) = $pptrait_members_use(statement*)
 def $pptrait_body_uses(phpType23) = false -- otherwise
@@ -123,7 +123,7 @@ def $pptrait_member_use(statement) = false -- otherwise
 def $ppmethod_members((NStmtTraitUse phpType42 phpType62 metadata) :: statement*, b) = $ppmethod_members(statement*, true)
 def $ppmember_groups(P, pcpath, n, (NStmtTraitUse (SEQUENCE name*) (SEQUENCE phpType63*) metadata) :: statement*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement*, ppropertydesc*, pmethoddesc*, pchheader)
   -- if P.COMPLETION = PPCNORMAL
-  -- if pchheader.KIND = "class" \/ pchheader.KIND = "trait"
+  -- if pchheader.KIND = "class" \/ pchheader.KIND = "trait" \/ pchheader.KIND = "enum"
   -- if pcpath_use = $ppmember_path(pcpath, pchheader, n)
   -- if P_next = $pptrait_adaptations($pptrait_names(P, pcpath_use ++ [PCFIELD 0], 0, name*), pcpath_use ++ [PCFIELD 1], 0, phpType63*)
 def $pptrait_names(P, pcpath, n, eps) = P
@@ -580,6 +580,7 @@ def $trait_copy_original(pclassdesc_owner, pclassdesc_trait, pmethoddesc, ptrait
   -- if ($ptlc(pclassdesc_trait.NAME), $ptlc(pmethoddesc.NAME)) <- (ptbytes_trait, ptbytes_method)*
 def $trait_copy_original(pclassdesc_owner, pclassdesc_trait, pmethoddesc, ptraitalias*, (ptbytes_trait, ptbytes_method)*, TRAITCOMPOSE S ptraitmethod* ptraitmethod_required*) = $trait_copy(pclassdesc_owner, pclassdesc_trait, pmethoddesc_imported, pmethoddesc, TRAITCOMPOSE ($trait_alias_warning(S, pclassdesc_owner, pmethoddesc, pmethoddesc_adapted)) ptraitmethod* ptraitmethod_required*)
   -- if ~(($ptlc(pclassdesc_trait.NAME), $ptlc(pmethoddesc.NAME)) <- (ptbytes_trait, ptbytes_method)*)
+  -- if ~$enum_generated(S, pclassdesc_owner.ORIGIN, pmethoddesc.NAME)
   -- if pmethoddesc_adapted = $trait_visibility_original(pclassdesc_trait, pmethoddesc, ptraitalias*, pmethoddesc)
   -- if pmethoddesc_imported = $trait_import(pclassdesc_owner, pmethoddesc_adapted, pmethoddesc.NAME)
 def $trait_copy_methods(pclassdesc_owner, pclassdesc_trait, eps, ptraitalias*, (ptbytes_trait, ptbytes_method)*, ptraitcomposition) = ptraitcomposition
@@ -725,12 +726,12 @@ def $trait_final_interfaces(S, pclassdesc, S_required) = $class_static_finish(S,
   -- if $class_at(S_required.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_current)
 def $trait_final_interfaces(S, pclassdesc, S_required) = $class_static_finish(S, pclassdesc_current, $pil_method_publish(S, S_required, pclassdesc_current))
   -- if S_required.COMPLETION = NORMAL
-  -- if pclassdesc.KIND = "class"
+  -- if pclassdesc.KIND = "class" \/ pclassdesc.KIND = "enum"
   -- if $class_at(S_required.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_current)
   -- if pclassdesc_current.INTERFACES = eps
 def $trait_final_interfaces(S, pclassdesc, S_required) = $class_static_finish(S, pclassdesc_current, $pil_activate(S, S_required, pclassdesc_current, $pil_checked(S_required, pclassdesc_current, $pil_fetch(S_required, pclassdesc_current.INTERFACES, eps))))
   -- if S_required.COMPLETION = NORMAL
-  -- if pclassdesc.KIND = "class"
+  -- if pclassdesc.KIND = "class" \/ pclassdesc.KIND = "enum"
   -- if $class_at(S_required.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_current)
   -- if pclassdesc_current.INTERFACES =/= eps
 

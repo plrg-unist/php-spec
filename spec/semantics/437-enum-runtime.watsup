@@ -1,0 +1,1056 @@
+dec $enum_constant_ast(pstate) : bool
+dec $enum_cases_value_task(ptask) : bool
+dec $enum_value_roots(pvalue*) : pnode*
+dec $enum_pending_count(bool) : nat
+dec $enum_backing_key(pvalue) : pvalue
+dec $enum_backing(pstate, porigin) : text
+dec $enum_generated_kind(pstate, porigin, ptbytes) : pintrinsic?
+dec $enum_prelink_methods(pstate, pclassdesc, pmethoddesc*) : pmethodissue
+dec $enum_forbidden(pstate, pclassdesc, ptbytes*) : ptbytes?
+dec $enum_verify_properties(ppropertydesc*) : bool
+dec $enum_case_descriptor(pstate, porigin) : pclassconstantdesc?
+dec $enum_case_slots_valid(pstate, nat, pclassconstantdesc, ppropertyslot*) : bool
+dec $enum_case_values_valid(pstate, porigin*, pvalue*) : bool
+dec $enum_case_origins(pstate, pclassconstantdesc*) : porigin*
+dec $enum_case_slots(pstate, pclassconstantdesc, pvalue?) : ppropertyslot*
+dec $enum_case_allocate(pstate, pclassconstantdesc, pvalue?) : pstate
+dec $enum_case_init_tasks(pstate, porigin, phpType5) : ptask*
+dec $enum_case_init_valid(pstate, porigin) : bool
+dec $enum_backing_scan(pstate, pclassdesc, text, porigin*, (pvalue, ptbytes)*) : pmethodissue
+dec $enum_backing_seen((pvalue, ptbytes)*, pvalue) : ptbytes?
+dec $enum_backing_exact(text, pvalue) : bool
+dec $enum_constant_fetch_valid(pstate, porigin, ptbytes, ptbytes, int) : bool
+dec $enum_cases_call_valid(pstate, pconfigcall) : bool
+dec $enum_cases_progress_valid(pstate, pconfigcall, porigin*, pvalue*, bool) : bool
+dec $enum_start(pstate, pintrinsic, nat?, int, bool) : pstate
+dec $enum_receive(pstate, pconfigcall) : pstate
+dec $enum_cases_array(parray, pvalue*, int) : parray
+dec $enum_forbidden_names() : ptbytes*
+dec $enum_call_site(pstate, porigin, pintrinsic) : bool
+dec $enum_cases_marker(pstate, pconfigcall, porigin, ptask*) : bool
+dec $enum_from_type(pstate, pconfigcall) : ptbranch*
+dec $enum_from_convert(pstate, pconfigcall, pvalue, ptypeconversion) : pstate
+dec $enum_from_conversion_valid(pstate, pconfigcall, pvalue) : bool
+dec $enum_from_fetch_valid(pstate, pconfigcall, pvalue) : bool
+dec $enum_from_lookup(pstate, porigin*, pvalue) : pvalue?
+dec $enum_from_missing(pstate, pconfigcall, pvalue) : pstate
+dec $enum_from_label(pvalue) : ptbytes
+dec $enum_from_convertible(ptypeconversion) : bool
+dec $enum_from_parse(pstate, pconfigcall, pvalue) : ptypeconversion
+dec $enum_from_key(pstate, pconfigcall, pvalue) : pvalue
+dec $enum_from_type_message(pstate, pconfigcall) : ptbytes
+dec $enum_from_null_message(pstate, pconfigcall) : ptbytes
+dec $enum_from_lossy_valid(pstate, pconfigcall, pvalue, int) : bool
+dec $enum_from_null_valid(pstate, pconfigcall) : bool
+dec $enum_from_warning_ready(pstate, pconfigcall, int) : pstate
+dec $enum_implicit_header(pstate, pclassdesc, ptbytes, ptbytes) : pilmethod
+dec $enum_trait_requirement(pstate, pclassdesc, pclassdesc, pmethoddesc) : pmethodissue
+dec $enum_trait_requirement_state(pstate, pclassdesc, pmethodissue) : pstate
+
+;; User enum descriptors are ordinary nominal declarations with real case
+;; constants. Singleton objects use the existing permanent constant-cache roots.
+
+def $enum_backing(S, porigin) = $enum_backing_node(phpType50)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata)
+def $enum_backing(S, porigin) = "" -- otherwise
+def $enum_generated(S, porigin, ptbytes) = ($enum_generated_kind(S, porigin, ptbytes) =/= eps)
+def $enum_generated_kind(S, porigin, ptbytes) = (INTRINSIC_ENUM porigin pclassdesc.NAME "cases")
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum" /\ $ptlc(ptbytes) = $ptascii("cases")
+def $enum_generated_kind(S, porigin, ptbytes) = (INTRINSIC_ENUM porigin pclassdesc.NAME "from")
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum" /\ $enum_backing(S, porigin) =/= "" /\ $ptlc(ptbytes) = $ptascii("from")
+def $enum_generated_kind(S, porigin, ptbytes) = (INTRINSIC_ENUM porigin pclassdesc.NAME "tryFrom")
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum" /\ $enum_backing(S, porigin) =/= "" /\ $ptlc(ptbytes) = $ptascii("tryfrom")
+def $enum_generated_kind(S, porigin, ptbytes) = eps -- otherwise
+def $enum_class_prelink(S, pclassdesc) = $enum_prelink_methods(S, pclassdesc, pclassdesc.METHODS)
+  -- if pclassdesc.KIND = "enum"
+def $enum_class_prelink(S, pclassdesc) = METHOD_OK -- otherwise
+def $enum_prelink_methods(S, pclassdesc, eps) = METHOD_OK
+def $enum_prelink_methods(S, pclassdesc, pmethoddesc :: pmethoddesc_tail*) = METHOD_ISSUE ($ptascii("Cannot redeclare ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("()")) pclassdesc.LINE
+  -- if $enum_generated(S, pclassdesc.ORIGIN, pmethoddesc.NAME)
+def $enum_prelink_methods(S, pclassdesc, pmethoddesc :: pmethoddesc_tail*) = $enum_prelink_methods(S, pclassdesc, pmethoddesc_tail*)
+  -- if ~$enum_generated(S, pclassdesc.ORIGIN, pmethoddesc.NAME)
+def $enum_verify_properties(eps) = true
+def $enum_verify_properties(ppropertydesc :: ppropertydesc_tail*) = $enum_verify_properties(ppropertydesc_tail*)
+  -- if ppropertydesc.ORIGIN = ENUM_PROPERTY porigin ptbytes
+def $enum_verify_properties(ppropertydesc*) = false -- otherwise
+def $enum_forbidden(S, pclassdesc, eps) = eps
+def $enum_forbidden(S, pclassdesc, ptbytes :: ptbytes_tail*) = (ptbytes)
+  -- if $effective_method(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) =/= eps
+def $enum_forbidden(S, pclassdesc, ptbytes :: ptbytes_tail*) = $enum_forbidden(S, pclassdesc, ptbytes_tail*)
+  -- if $effective_method(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = eps
+def $enum_forbidden_names() = [$ptascii("__construct"), $ptascii("__destruct"), $ptascii("__clone"), $ptascii("__get"), $ptascii("__set"), $ptascii("__unset"), $ptascii("__isset"), $ptascii("__toString"), $ptascii("__debugInfo"), $ptascii("__serialize"), $ptascii("__unserialize"), $ptascii("__sleep"), $ptascii("__wakeup"), $ptascii("__set_state")]
+def $enum_class_verify(S, pclassdesc) = METHOD_ISSUE ($ptascii("Enum ") ++ pclassdesc.NAME ++ $ptascii(" cannot include properties")) pclassdesc.LINE
+  -- if pclassdesc.KIND = "enum" /\ ~$enum_verify_properties(pclassdesc.PROPERTIES)
+def $enum_class_verify(S, pclassdesc) = METHOD_ISSUE ($ptascii("Enum ") ++ pclassdesc.NAME ++ $ptascii(" cannot include magic method ") ++ ptbytes) pclassdesc.LINE
+  -- if pclassdesc.KIND = "enum" /\ $enum_verify_properties(pclassdesc.PROPERTIES)
+  -- if $enum_forbidden(S, pclassdesc, $enum_forbidden_names()) = (ptbytes)
+def $enum_class_verify(S, pclassdesc) = METHOD_ISSUE ($ptascii("Enum ") ++ pclassdesc.NAME ++ $ptascii(" cannot implement the Serializable interface")) pclassdesc.LINE
+  -- if pclassdesc.KIND = "enum" /\ $enum_verify_properties(pclassdesc.PROPERTIES)
+  -- if $enum_forbidden(S, pclassdesc, $enum_forbidden_names()) = eps
+  -- if $pil_nominal(S, pclassdesc.ORIGIN, $ptascii("Serializable"), |S.CLASSES|)
+def $enum_class_verify(S, pclassdesc) = METHOD_OK -- otherwise
+
+def $pil_role(pclassdesc) = $ptascii("Enum") -- if pclassdesc.KIND = "enum"
+def $enum_implements_issue(S, pclassdesc, ptbytes) = $enum_implements_message("enum", pclassdesc.NAME, $enum_backing(S, pclassdesc.ORIGIN) =/= "", ptbytes_display)
+  -- if pclassdesc.KIND = "enum"
+  -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes)) = (INTERNAL ptbytes_key ptbytes_display "interface")
+def $enum_implicit_header(S, pclassdesc, ptbytes_name, ptbytes_file) = {DECLARATION $pil_signature_method(pclassdesc.NAME, ptbytes_name, ptbytes_file, $pil_enum_signature(ptbytes_name)), SCOPE $pil_scope(S, pclassdesc), STATIC true, VISIBILITY PROPERTY_PUBLIC, ABSTRACT false, TENTATIVE false, ORIGIN eps}
+def $pil_implicit_headers(S, pclassdesc) = [$enum_implicit_header(S, pclassdesc, $ptascii("cases"), ptbytes_file)]
+  -- if pclassdesc.KIND = "enum" /\ $enum_backing(S, pclassdesc.ORIGIN) = ""
+  -- if $call_sourcefile(S.FILES, pclassdesc.ORIGIN) = (ptbytes_file)
+def $pil_implicit_headers(S, pclassdesc) = [$enum_implicit_header(S, pclassdesc, $ptascii("cases"), ptbytes_file), $enum_implicit_header(S, pclassdesc, $ptascii("from"), ptbytes_file), $enum_implicit_header(S, pclassdesc, $ptascii("tryFrom"), ptbytes_file)]
+  -- if pclassdesc.KIND = "enum" /\ $enum_backing(S, pclassdesc.ORIGIN) =/= ""
+  -- if $call_sourcefile(S.FILES, pclassdesc.ORIGIN) = (ptbytes_file)
+def $pil_post_interfaces(S, pclassdesc) = $enum_class_verify(S, pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+def $enum_trait_requirement(S, pclassdesc_owner, pclassdesc_trait, pmethoddesc) = $pil_header_check(S, pclassdesc_owner, pilmethod_generated, {DECLARATION $pmethod_user(pmethoddesc, pclassdesc_trait, $call_sourcefile(S.FILES, pmethoddesc.FUNCTION.ORIGIN))[.SIGNATURE = $trait_import_signature(pclassdesc_owner, pmethoddesc.FUNCTION.SIGNATURE)], SCOPE $pil_scope(S, pclassdesc_owner), STATIC pmethoddesc.STATIC, VISIBILITY pmethoddesc.VISIBILITY, ABSTRACT true, TENTATIVE false, ORIGIN (pmethoddesc.FUNCTION.ORIGIN)})
+  -- if $pil_header_at($pil_implicit_headers(S, pclassdesc_owner), pmethoddesc.NAME) = (pilmethod_generated)
+def $enum_trait_requirement(S, pclassdesc_owner, pclassdesc_trait, pmethoddesc) = METHOD_UNSUPPORTED "enum generated trait method requirement" -- otherwise
+def $enum_trait_requirement_state(S, pclassdesc_owner, METHOD_OK) = S
+def $enum_trait_requirement_state(S, pclassdesc_owner, pmethodissue) = $pil_issue_state(S, pclassdesc_owner, pmethodissue)
+  -- if pmethodissue =/= METHOD_OK
+def $trait_plan(S, pclassdesc) = $trait_members(pcode, pcpath ++ [PCFIELD 4], 0, statement*, {TRAITS eps, PRECEDENCES eps, ALIASES eps})
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtEnum phpType14 phpType3 phpType50 phpType42 (SEQUENCE statement*) metadata)
+
+rule PhpStep/enum-declaration: S ~> $recorded_class_step(S, pclassdesc)
+  -- if S.TODO = (STMT (NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+def $class_stmt_task_valid(S, NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+def $call_task_valid(S, STMT (NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata)) = $class_stmt_task_valid(S, NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata)
+
+def $enum_case_descriptor(S, porigin) = (pclassconstantdesc)
+  -- if $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtEnumCase phpType14 (NIdentifier (BYTES text) metadata_name) phpType5 metadata)
+  -- if pclassconstantdesc.ORIGIN = pclassconstantdesc.INITIALIZER
+  -- if pclassconstantdesc.NAME = $base64(text)
+  -- if ~pclassconstantdesc.FOLDED /\ pclassconstantdesc.TYPE = eps
+  -- if pclassconstantdesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pclassconstantdesc.FINAL
+  -- if $class_at(S.CLASSES, pclassconstantdesc.OWNER) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum" /\ pclassconstantdesc.OWNERNAME = pclassdesc.NAME
+def $enum_case_descriptor(S, porigin) = eps -- otherwise
+def $enum_case_origin(S, porigin) = ($enum_case_descriptor(S, porigin) =/= eps)
+dec $enum_other_live_case(pstate, porigin, nat, nat) : bool
+def $enum_other_live_case(S, porigin_case, n_case, 0) = false
+def $enum_other_live_case(S, porigin_case, n_case, n_limit) = true
+  -- if $(n_limit > 0)
+  -- if n_other = $nabs($(n_limit - 1))
+  -- if n_other =/= n_case /\ (HOBJECT n_other) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_other] = ENUMCASE porigin_case
+def $enum_other_live_case(S, porigin_case, n_case, n_limit) = $enum_other_live_case(S, porigin_case, n_case, n_other)
+  -- if $(n_limit > 0)
+  -- if n_other = $nabs($(n_limit - 1))
+  -- if n_other = n_case \/ ~((HOBJECT n_other) <- S.ALLOCATIONS) \/ S.OBJECTS[n_other] =/= ENUMCASE porigin_case
+def $enum_case_object(S, n) = (pclassconstantdesc)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = ENUMCASE porigin_case
+  -- if $enum_case_descriptor(S, porigin_case) = (pclassconstantdesc)
+  -- if ~$enum_other_live_case(S, porigin_case, n, |S.OBJECTS|)
+def $enum_case_object(S, n) = eps -- otherwise
+def $object_class_origin(S, n) = (pclassconstantdesc.OWNER)
+  -- if $enum_case_object(S, n) = (pclassconstantdesc)
+def $object_name(S, n) = pclassconstantdesc.OWNERNAME -- if $enum_case_object(S, n) = (pclassconstantdesc)
+def $class_plain_instance(S, n) = true -- if $enum_case_object(S, n) =/= eps
+dec $enum_magic_source_common(pstate, pmethoddesc, ptbytes, bool) : bool
+def $enum_magic_source(S, pmethoddesc, false) = true
+  -- if $enum_magic_source_common(S, pmethoddesc, $ptascii("__call"), false)
+def $enum_magic_source(S, pmethoddesc, true) = true
+  -- if $enum_magic_source_common(S, pmethoddesc, $ptascii("__callstatic"), true)
+def $enum_magic_source(S, pmethoddesc, b) = false -- otherwise
+dec $enum_magic_flags(int, ptbytes, bool) : bool
+def $enum_magic_flags(flags, ptbytes, false) = $ppmethod_call(flags, ptbytes)
+def $enum_magic_flags(flags, ptbytes, true) = $ppmethod_callstatic(flags, ptbytes)
+dec $enum_magic_parameter(phpType17, psparam, text) : bool
+def $enum_magic_parameter(NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_name) metadata_name) ABSENT (SEQUENCE eps) metadata_param, psparam, text_type) = (psparam.TYPE = eps /\ psparam.NAME = $base64(text_name))
+def $enum_magic_parameter(NParam (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_type) metadata_type) (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_name) metadata_name) ABSENT (SEQUENCE eps) metadata_param, psparam, text_expected) = (psparam.TYPE = [(PTBRANCH ([PTBUILTIN text_expected]))] /\ psparam.NAME = $base64(text_name) /\ $ptlc($base64(text_type)) = $ptascii(text_expected))
+def $enum_magic_parameter(phpType17, psparam, text) = false -- otherwise
+def $enum_magic_source_common(S, pmethoddesc, ptbytes, b) = true
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ pmethoddesc.STATIC = b /\ ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.OWNER = PORIGIN n pcpath_owner
+  -- if pmethoddesc.FUNCTION.ORIGIN = PORIGIN n pcpath
+  -- if $(|pcpath| > 0)
+  -- if PCINDEX n_method = pcpath[$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_owner ++ [PCFIELD 4, PCINDEX n_method]
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_owner)
+  -- if pclassdesc_owner.KIND = "enum" /\ pclassdesc_owner.ORIGIN = pmethoddesc.OWNER
+  -- if $method_origin(pclassdesc_owner.METHODS, pmethoddesc.FUNCTION.ORIGIN) = (pmethoddesc)
+  -- if $origin_node(S.SOURCES, pclassdesc_owner.ORIGIN) = (NStmtEnum phpType14_owner phpType3_owner phpType50_owner phpType42_owner (SEQUENCE statement_owner*) metadata_owner)
+  -- if $(n_method < |statement_owner*|)
+  -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (statement_method)
+  -- if statement_method = NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([phpType17_name, phpType17_arguments])) phpType18_return (SEQUENCE statement*) metadata
+  -- if statement_owner*[n_method] = statement_method
+  -- if $enum_magic_flags(flags, $base64(text_method), b) /\ pmethoddesc.NAME = $base64(text_method) /\ $ptlc(pmethoddesc.NAME) = ptbytes
+  -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = [psparam_name, psparam_arguments]
+  -- if $ppenum_call_signature(pmethoddesc.FUNCTION.SIGNATURE)
+  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if $enum_magic_parameter(phpType17_name, psparam_name, "string") /\ $enum_magic_parameter(phpType17_arguments, psparam_arguments, "array")
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 4, PCINDEX 0])) = (phpType17_name)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 4, PCINDEX 1])) = (phpType17_arguments)
+  -- if $ptype_normalize(phpType18_return, {NAMESPACE pmethoddesc.FUNCTION.ENV.NAMESPACE, IMPORTS pmethoddesc.FUNCTION.ENV.CLASSES, SCOPE PTKNOWN pclassdesc_owner.NAME eps, POSITION PTRETURN, OWNER pclassdesc_owner.NAME, MEMBER pmethoddesc.NAME, FILE $call_sourcefile(S.FILES, pmethoddesc.FUNCTION.ORIGIN), LINE pmethoddesc.FUNCTION.LINE}) = PTOK ptbranch_return* ptdiagnostic*
+  -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = ptbranch_return*
+  -- if pmethoddesc.FUNCTION.NAME = pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME
+  -- if pmethoddesc.FUNCTION.BODY = pcpath ++ [PCFIELD 6] /\ pmethoddesc.FUNCTION.DEFAULTS = eps
+  -- if $property_unset_body_source(S.SOURCES, n, pmethoddesc.FUNCTION.BODY, statement*, 0)
+  -- if pmethoddesc.FUNCTION.LINE = $ppmethod_line(metadata) /\ pmethoddesc.FUNCTION.ENDLINE = $psendline(metadata)
+  -- if ~$generator_statements(statement*)
+def $enum_magic_source_common(S, pmethoddesc, ptbytes, b) = false -- otherwise
+def $property_declaring_name(pclassdesc_all*, ENUM_PROPERTY porigin ptbytes) = pclassdesc_owner.NAME
+  -- if $class_at(pclassdesc_all*, porigin) = (pclassdesc_owner)
+def $property_declaring_class(pclassdesc_all*, ENUM_PROPERTY porigin ptbytes) = (porigin)
+  -- if $class_at(pclassdesc_all*, porigin) = (pclassdesc_owner)
+  -- if pclassdesc_owner.KIND = "enum"
+def $enum_case_slots(S, pclassconstantdesc, eps) = [{DECL (ENUM_PROPERTY pclassconstantdesc.OWNER $ptascii("name")), NAME $ptascii("name"), STATE PROP_VALUE (DIRECT (PSTRING pclassconstantdesc.NAME))}]
+def $enum_case_slots(S, pclassconstantdesc, (pvalue)) = $enum_case_slots(S, pclassconstantdesc, eps) ++ [{DECL (ENUM_PROPERTY pclassconstantdesc.OWNER $ptascii("value")), NAME $ptascii("value"), STATE PROP_VALUE (DIRECT pvalue)}]
+def $enum_case_slots_valid(S, n, pclassconstantdesc, ppropertyslot*) = (ppropertyslot* = $enum_case_slots(S, pclassconstantdesc, eps))
+  -- if $enum_backing(S, pclassconstantdesc.OWNER) = ""
+def $enum_case_slots_valid(S, n, pclassconstantdesc, ppropertyslot*) = true
+  -- if $enum_backing(S, pclassconstantdesc.OWNER) =/= ""
+  -- if ppropertyslot* = [ppropertyslot_name, {DECL (ENUM_PROPERTY porigin ptbytes), NAME ptbytes_key, STATE PROP_VALUE (DIRECT pvalue)}]
+  -- if [ppropertyslot_name] = $enum_case_slots(S, pclassconstantdesc, eps)
+  -- if porigin = pclassconstantdesc.OWNER /\ ptbytes = $ptascii("value") /\ ptbytes_key = ptbytes
+  -- if $heap_subset($value_nodes(pvalue), S.ALLOCATIONS)
+def $enum_case_slots_valid(S, n, pclassconstantdesc, ppropertyslot*) = false -- otherwise
+def $objectprops_valid(S, pobjectprops :: pobjectprops_tail*) = $objectprops_valid(S, pobjectprops_tail*)
+  -- if $enum_case_object(S, pobjectprops.OBJECT) = (pclassconstantdesc)
+  -- if $objectprops_at(pobjectprops_tail*, pobjectprops.OBJECT) = eps
+  -- if $enum_case_slots_valid(S, pobjectprops.OBJECT, pclassconstantdesc, pobjectprops.SLOTS)
+def $closure_live_object_valid(S, n) = true
+  -- if $enum_case_object(S, n) = (pclassconstantdesc)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassconstantdesc.OWNERNAME)) = (pclassconstantdesc.OWNER)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+  -- if $enum_case_slots_valid(S, n, pclassconstantdesc, ppropertyslot*)
+def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
+  -- if $enum_case_object(S, n) =/= eps
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+def $node_children(S, HOBJECT n) = $instance_table_nodes(S, n, ppropertyslot*)
+  -- if $enum_case_object(S, n) =/= eps
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+def $class_instanceof(S, POBJECT n, ptbytes) = $class_origin_matches(S, pclassconstantdesc.OWNER, ptbytes, |S.CLASSES|)
+  -- if $enum_case_object(S, n) = (pclassconstantdesc)
+def $getclass_live_object(S, n) = true -- if $enum_case_object(S, n) =/= eps
+def $clone_value(S, POBJECT n, z) = $throw_scalar(S, "Error", $ptascii("Trying to clone an uncloneable object of class ") ++ pclassconstantdesc.OWNERNAME, z)
+  -- if $enum_case_object(S, n) = (pclassconstantdesc)
+def $new_class(S, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot instantiate enum ") ++ pclassdesc.NAME, z)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+
+;; CONST_ENUM_INIT constructs one real object. A backing expression is evaluated
+;; without an early scalar-type check; zend_enum_build_backed_enum_table performs
+;; that check only when the whole backed table is demanded.
+def $enum_case_allocate(S, pclassconstantdesc, pvalue?) = S[.OBJECTS = S.OBJECTS ++ [ENUMCASE pclassconstantdesc.ORIGIN]][.OBJECTPROPS = S.OBJECTPROPS ++ [{OBJECT n, SLOTS $enum_case_slots(S, pclassconstantdesc, pvalue?), MATERIALIZED false}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if n = |S.OBJECTS|
+def $enum_case_init_tasks(S, porigin, ABSENT) = [ENUM_CASE_INIT porigin]
+def $enum_case_init_tasks(S, porigin, expression) = [AT $constant_child(porigin, [PCFIELD 2]) (EVAL expression), ENUM_CASE_INIT porigin]
+def $class_constant_begin(S, pclassconstantdesc, pclassconstantselection, ptbytes_requested, z) = S[.CLASSCONSTANTINIT = {DECL pclassconstantdesc.ORIGIN, SELECTION pclassconstantselection, PREVIOUS S.CONSTCONTEXT, ORIGIN S.ORIGIN, LINE z} :: S.CLASSCONSTANTINIT][.CONSTCONTEXT = ({ORIGIN pclassconstantdesc.ORIGIN, LINE z, FACTS eps})][.TODO = $enum_case_init_tasks(S, pclassconstantdesc.ORIGIN, phpType5) ++ [CLASS_CONST_BIND pclassconstantdesc.ORIGIN] ++ S.TODO][.ORIGIN = (pclassconstantdesc.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~($class_constant_protected(pclassconstantselection, S.CONSTCONTEXT) /\ $class_constant_visited(S.CLASSCONSTANTINIT, pclassconstantdesc.ORIGIN))
+  -- if $enum_case_descriptor(S, pclassconstantdesc.ORIGIN) = (pclassconstantdesc)
+  -- if $origin_node(S.SOURCES, pclassconstantdesc.ORIGIN) = (NStmtEnumCase phpType14 phpType11 phpType5 metadata)
+def $enum_case_init_valid(S, porigin) = true
+  -- if $enum_case_origin(S, porigin)
+  -- if S.ORIGIN = (porigin)
+  -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
+  -- if pclassconstantcontext.DECL = porigin
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = porigin
+  -- if S.TODO = (ENUM_CASE_INIT porigin) :: (CLASS_CONST_BIND porigin) :: ptask_tail*
+def $enum_case_init_valid(S, porigin) = false -- otherwise
+dec $enum_case_init_pair_head(ptask*, porigin) : bool
+def $enum_case_init_pair_head((ENUM_CASE_INIT porigin) :: (CLASS_CONST_BIND porigin) :: ptask_tail*, porigin) = true
+def $enum_case_init_pair_head(ptask*, porigin) = false -- otherwise
+dec $enum_case_init_future_pair(ptask*, porigin) : bool
+def $enum_case_init_future_pair(eps, porigin) = false
+def $enum_case_init_future_pair(ptask :: ptask_tail*, porigin) = true
+  -- if $enum_case_init_pair_head(ptask :: ptask_tail*, porigin)
+def $enum_case_init_future_pair(ptask :: ptask_tail*, porigin) = $enum_case_init_future_pair(ptask_tail*, porigin)
+  -- if ~$enum_case_init_pair_head(ptask :: ptask_tail*, porigin)
+dec $enum_case_init_future_progress(pstate, porigin, expression) : bool
+def $enum_case_init_future_progress(S, porigin, expression) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $constant_child(porigin, [PCFIELD 2]) = porigin_child
+  -- if S.TODO = (AT porigin_child (EVAL expression)) :: (ENUM_CASE_INIT porigin) :: (CLASS_CONST_BIND porigin) :: ptask_tail*
+def $enum_case_init_future_progress(S, porigin, expression) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $constant_child(porigin, [PCFIELD 2]) = porigin_child
+  -- if S.TODO = (CONSTANT_OBSERVE porigin_child) :: (ENUM_CASE_INIT porigin) :: (CLASS_CONST_BIND porigin) :: ptask_tail*
+def $enum_case_init_future_progress(S, PORIGIN n pcpath_case, expression) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath_child)
+  -- if $effect_below(pcpath_case ++ [PCFIELD 2], pcpath_child)
+  -- if $constant_expression_below(S, PORIGIN n pcpath_case, PORIGIN n pcpath_child)
+  -- if ~$enum_case_init_pair_head(S.TODO, PORIGIN n pcpath_case)
+  -- if $enum_case_init_future_pair(S.TODO, PORIGIN n pcpath_case)
+def $enum_case_init_future_progress(S, porigin, expression) = false -- otherwise
+dec $enum_case_init_future(pstate, porigin) : bool
+def $enum_case_init_future(S, porigin) = true
+  -- if $enum_case_origin(S, porigin)
+  -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
+  -- if pclassconstantcontext.DECL = porigin
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = porigin
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtEnumCase phpType14 phpType11 expression metadata)
+  -- if $enum_case_init_future_progress(S, porigin, expression)
+def $enum_case_init_future(S, porigin) = false -- otherwise
+def $call_task_valid(S, ENUM_CASE_INIT porigin) = ($enum_case_init_valid(S, porigin) \/ $enum_case_init_future(S, porigin))
+rule PhpStep/enum-case-unit: S ~> $enum_case_allocate(S[.TODO = ptask_tail*], pclassconstantdesc, eps)
+  -- if S.TODO = (ENUM_CASE_INIT porigin) :: ptask_tail*
+  -- if $enum_case_init_valid(S, porigin)
+  -- if $enum_case_descriptor(S, porigin) = (pclassconstantdesc)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtEnumCase phpType14 phpType11 ABSENT metadata)
+rule PhpStep/enum-case-backed: S ~> $enum_case_allocate(S_value[.TODO = ptask_tail*], pclassconstantdesc, (pvalue))
+  -- if S.TODO = (ENUM_CASE_INIT porigin) :: ptask_tail*
+  -- if $enum_case_init_valid(S, porigin)
+  -- if $enum_case_descriptor(S, porigin) = (pclassconstantdesc)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtEnumCase phpType14 phpType11 expression metadata)
+  -- if S_value = $resolve_at(S, S.RESULT, $expression_line(expression))
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+rule PhpStep/enum-case-backed-abrupt: S ~> S_value
+  -- if S.TODO = (ENUM_CASE_INIT porigin) :: ptask_tail*
+  -- if $enum_case_init_valid(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtEnumCase phpType14 phpType11 expression metadata)
+  -- if S_value = $resolve_at(S, S.RESULT, $expression_line(expression))
+  -- if S_value.COMPLETION =/= NORMAL
+def $constant_result_class(S, porigin) = PVENUMCASE n porigin
+  -- if $enum_case_origin(S, porigin)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = ENUMCASE porigin
+def $constant_value_class_valid(S, POBJECT n, PVENUMCASE n_original porigin) = true
+  -- if n = n_original /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if $enum_case_object(S, n) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin
+def $constant_callable_foldable(PVENUMCASE n porigin) = false
+def $constant_class_tree_valid(PVENUMCASE n porigin) = true
+def $default_cacheable(PVENUMCASE n porigin) = true
+def $constant_callable_flow_at(S, porigin, porigin_owner, PVENUMCASE n porigin, n_prefix, porigin_seen*) = true
+  -- if $enum_case_descriptor(S, porigin) = (pclassconstantdesc)
+  -- if pclassconstantdesc.OWNER = porigin_owner
+  -- if $enum_case_object(S, n) = (pclassconstantdesc)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+
+def $enum_case_origins(S, eps) = eps
+def $enum_case_origins(S, pclassconstantdesc :: pclassconstantdesc_tail*) = pclassconstantdesc.ORIGIN :: $enum_case_origins(S, pclassconstantdesc_tail*)
+  -- if $enum_case_origin(S, pclassconstantdesc.ORIGIN)
+def $enum_case_origins(S, pclassconstantdesc :: pclassconstantdesc_tail*) = $enum_case_origins(S, pclassconstantdesc_tail*)
+  -- if ~$enum_case_origin(S, pclassconstantdesc.ORIGIN)
+def $enum_backing_exact("int", PINT i) = true
+def $enum_backing_exact("string", pvalue) = ($string_bytes(pvalue) =/= eps)
+def $enum_backing_exact(text, pvalue) = false -- otherwise
+def $enum_backing_seen(eps, pvalue) = eps
+def $enum_backing_seen((pvalue, ptbytes) :: (pvalue_tail, ptbytes_tail)*, pvalue) = (ptbytes)
+def $enum_backing_seen((pvalue_other, ptbytes) :: (pvalue_tail, ptbytes_tail)*, pvalue) = $enum_backing_seen((pvalue_tail, ptbytes_tail)*, pvalue)
+  -- if pvalue_other =/= pvalue
+def $enum_backing_scan(S, pclassdesc, text, eps, (pvalue, ptbytes)*) = METHOD_OK
+def $enum_backing_scan(S, pclassdesc, text_type, porigin :: porigin_tail*, (pvalue, ptbytes)*) = METHOD_FILEISSUE ($ptascii("Enum case type ") ++ $ptascii($typed_tag(pvalue_backing)) ++ $ptascii(" does not match enum backing type ") ++ $ptascii(text_type)) pclassconstantdesc.LINE porigin
+  -- if $enum_case_descriptor(S, porigin) = (pclassconstantdesc)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
+  -- if pdefaultcache.VALUE = POBJECT n
+  -- if $location_slot(S, PROPERTY n $ptascii("value")) = DEFINED pvalue_backing
+  -- if ~$enum_backing_exact(text_type, pvalue_backing)
+def $enum_backing_scan(S, pclassdesc, text_type, porigin :: porigin_tail*, (pvalue, ptbytes)*) = METHOD_RUNTIMEISSUE ($ptascii("Duplicate value in enum ") ++ pclassdesc.NAME ++ $ptascii(" for cases ") ++ ptbytes_previous ++ $ptascii(" and ") ++ pclassconstantdesc.NAME) pclassconstantdesc.LINE
+  -- if $enum_case_descriptor(S, porigin) = (pclassconstantdesc)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
+  -- if pdefaultcache.VALUE = POBJECT n
+  -- if $location_slot(S, PROPERTY n $ptascii("value")) = DEFINED pvalue_backing
+  -- if $enum_backing_exact(text_type, pvalue_backing)
+  -- if $enum_backing_seen((pvalue, ptbytes)*, $enum_backing_key(pvalue_backing)) = (ptbytes_previous)
+def $enum_backing_key(pvalue) = PSTRING ptbytes -- if $string_bytes(pvalue) = (ptbytes)
+def $enum_backing_key(pvalue) = pvalue -- otherwise
+def $enum_backing_scan(S, pclassdesc, text_type, porigin :: porigin_tail*, (pvalue, ptbytes)*) = $enum_backing_scan(S, pclassdesc, text_type, porigin_tail*, (pvalue, ptbytes)* ++ [($enum_backing_key(pvalue_backing), pclassconstantdesc.NAME)])
+  -- if $enum_case_descriptor(S, porigin) = (pclassconstantdesc)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
+  -- if pdefaultcache.VALUE = POBJECT n
+  -- if $location_slot(S, PROPERTY n $ptascii("value")) = DEFINED pvalue_backing
+  -- if $enum_backing_exact(text_type, pvalue_backing)
+  -- if $enum_backing_seen((pvalue, ptbytes)*, $enum_backing_key(pvalue_backing)) = eps
+def $enum_backing_scan(S, pclassdesc, text_type, porigin*, (pvalue, ptbytes)*) = METHOD_UNSUPPORTED "unfinished enum case cache" -- otherwise
+def $enum_backing_issue(S, porigin) = $enum_backing_scan(S, pclassdesc, text_type, $enum_case_origins(S, pclassdesc.CONSTANTS), eps)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+  -- if text_type = $enum_backing(S, porigin)
+  -- if text_type =/= ""
+def $enum_backing_issue(S, porigin) = METHOD_OK -- otherwise
+def $enum_constant_pending(S, pclassdesc) = (pclassdesc.KIND = "enum" /\ $enum_backing(S, pclassdesc.ORIGIN) =/= "" /\ ~$enum_constant_ast(S) /\ ~$class_constant_table_done(S, pclassdesc.ORIGIN))
+def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = S[.TODO = $class_constant_table_tasks(S, pclassdesc.ORIGIN, z, |S.CLASSES|) ++ [ENUM_CONST_FETCH pclassdesc.ORIGIN ptbytes_class ptbytes z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $enum_constant_pending(S, pclassdesc)
+  -- if $class_constant_lookup(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = (pclassconstantdesc)
+  -- if $class_constant_visible(S, pclassconstantdesc)
+def $enum_constant_fetch_valid(S, porigin, ptbytes_class, ptbytes, z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprClassConstFetch phpType19 phpType20 metadata)
+  -- if $class_constant_selected_valid(S, phpType19, KNOWN (PSTRING ptbytes_class))
+  -- if $class_constant_member_selected(S, phpType20, ptbytes)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum" /\ $enum_backing(S, porigin) =/= ""
+  -- if z = $runtime_line(S, eps, NExprClassConstFetch phpType19 phpType20 metadata)
+def $enum_constant_fetch_valid(S, porigin, ptbytes_class, ptbytes, z) = false -- otherwise
+def $call_task_valid(S, ENUM_CONST_FETCH porigin ptbytes_class ptbytes z) = $enum_constant_fetch_valid(S, porigin, ptbytes_class, ptbytes, z)
+rule PhpStep/enum-constant-fetch: S ~> $class_constant_fetch(S[.TODO = ptask_tail*], KNOWN (PSTRING ptbytes_class), ptbytes, z)
+  -- if S.TODO = (ENUM_CONST_FETCH porigin ptbytes_class ptbytes z) :: ptask_tail*
+  -- if $enum_constant_fetch_valid(S, porigin, ptbytes_class, ptbytes, z)
+  -- if $class_constant_table_done(S, porigin)
+dec $enum_from_table_tail(ptask*) : bool
+def $enum_from_table_tail((ENUM_FROM_FETCH pconfigcall pvalue_key) :: ptask_tail*) = true
+def $enum_from_table_tail(ptask*) = false -- otherwise
+rule PhpStep/enum-from-backing-type-error: S ~> $config_error(S[.TODO = (ENUM_FROM_FETCH pconfigcall pvalue_key) :: ptask_tail*], pconfigcall, "TypeError", ptbytes)
+  -- if S.TODO = (CLASS_CONST_TABLE_UPDATE porigin z) :: (ENUM_FROM_FETCH pconfigcall pvalue_key) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes_class text_method
+  -- if $class_constant_table_task(S, porigin, z, S.TODO)
+  -- if $enum_backing_issue(S, porigin) = METHOD_FILEISSUE ptbytes z_case porigin_case
+rule PhpStep/enum-backing-type-error: S ~> $throw_scalar(S[.TODO = ptask_tail*], "TypeError", ptbytes, z)
+  -- if S.TODO = (CLASS_CONST_TABLE_UPDATE porigin z) :: ptask_tail*
+  -- if ~$enum_from_table_tail(ptask_tail*)
+  -- if $class_constant_table_task(S, porigin, z, S.TODO)
+  -- if $enum_backing_issue(S, porigin) = METHOD_FILEISSUE ptbytes z_case porigin_case
+rule PhpStep/enum-from-backing-duplicate-error: S ~> $config_error(S[.TODO = (ENUM_FROM_FETCH pconfigcall pvalue_key) :: ptask_tail*], pconfigcall, "Error", ptbytes)
+  -- if S.TODO = (CLASS_CONST_TABLE_UPDATE porigin z) :: (ENUM_FROM_FETCH pconfigcall pvalue_key) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes_class text_method
+  -- if $class_constant_table_task(S, porigin, z, S.TODO)
+  -- if $enum_backing_issue(S, porigin) = METHOD_RUNTIMEISSUE ptbytes z_case
+rule PhpStep/enum-backing-duplicate-error: S ~> $throw_scalar(S[.TODO = ptask_tail*], "Error", ptbytes, z)
+  -- if S.TODO = (CLASS_CONST_TABLE_UPDATE porigin z) :: ptask_tail*
+  -- if ~$enum_from_table_tail(ptask_tail*)
+  -- if $class_constant_table_task(S, porigin, z, S.TODO)
+  -- if $enum_backing_issue(S, porigin) = METHOD_RUNTIMEISSUE ptbytes z_case
+def $class_constant_update_continuation(ENUM_CONST_FETCH porigin ptbytes_class ptbytes z) = true
+def $class_constant_update_target(S, (ENUM_CONST_FETCH porigin ptbytes_class ptbytes z) :: ptask_tail*) = (porigin)
+def $class_constant_update_task(S, porigin_case, z, (ENUM_CONST_FETCH porigin_class ptbytes_class ptbytes z) :: ptask_tail*) = true
+  -- if $enum_constant_fetch_valid(S, porigin_class, ptbytes_class, ptbytes, z)
+  -- if $class_constant_origin(S.CLASSES, porigin_case) = (pclassconstantdesc)
+  -- if pclassconstantdesc <- $class_constant_update_order(S, porigin_class, |S.CLASSES|)
+  -- if ~pclassconstantdesc.FOLDED
+def $static_default_blocks(S, (ENUM_CONST_FETCH porigin_class ptbytes_class ptbytes z) :: ptask_tail*, porigin_acc*) = true
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum" /\ pclassdesc.NAME = ptbytes_class
+  -- if $static_default_sequence(S, porigin_class, porigin_acc*)
+  -- if $static_default_blocks(S, ptask_tail*, eps)
+def $static_default_phases((ENUM_CONST_FETCH porigin_class ptbytes_class ptbytes z) :: ptask_tail*, b_property) = $static_default_phases(ptask_tail*, false)
+def $class_constant_update_continuation(ENUM_FROM_FETCH pconfigcall pvalue) = true
+def $class_constant_update_target(S, (ENUM_FROM_FETCH pconfigcall pvalue) :: ptask_tail*) = (porigin)
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+def $class_constant_update_task(S, porigin_case, z, (ENUM_FROM_FETCH pconfigcall pvalue_key) :: ptask_tail*) = true
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin_class ptbytes text_method
+  -- if z = pconfigcall.LINE
+  -- if $enum_from_fetch_valid(S, pconfigcall, pvalue_key)
+  -- if $class_constant_origin(S.CLASSES, porigin_case) = (pclassconstantdesc)
+  -- if pclassconstantdesc <- $class_constant_update_order(S, porigin_class, |S.CLASSES|)
+  -- if ~pclassconstantdesc.FOLDED
+def $static_default_blocks(S, (ENUM_FROM_FETCH pconfigcall pvalue_key) :: ptask_tail*, porigin_acc*) = true
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin_class ptbytes text_method
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum" /\ pclassdesc.NAME = ptbytes /\ $enum_backing(S, porigin_class) =/= ""
+  -- if $static_default_sequence(S, porigin_class, porigin_acc*)
+  -- if $static_default_blocks(S, ptask_tail*, eps)
+def $static_default_phases((ENUM_FROM_FETCH pconfigcall pvalue_key) :: ptask_tail*, b_property) = $static_default_phases(ptask_tail*, false)
+def $class_constant_update_site(S, porigin_site, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprClassConstFetch phpType19 phpType20 metadata)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum" /\ $enum_backing(S, porigin) =/= ""
+  -- if $class_constant_selected_valid(S[.ORIGIN = (porigin_site)], phpType19, KNOWN (PSTRING pclassdesc.NAME))
+def $class_constant_table_task(S, porigin, z, (ENUM_CONST_FETCH porigin ptbytes_class ptbytes z) :: ptask_tail*) = $enum_constant_fetch_valid(S, porigin, ptbytes_class, ptbytes, z)
+def $class_constant_table_task(S, porigin, z, (ENUM_FROM_FETCH pconfigcall pvalue) :: ptask_tail*) = true
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if text_method <- ["from", "tryFrom"]
+  -- if z = pconfigcall.LINE
+  -- if S.ORIGIN = (pconfigcall.SITE)
+  -- if $enum_from_fetch_valid(S, pconfigcall, pvalue)
+  -- if $class_constant_update_site(S, pconfigcall.SITE, porigin)
+def $class_constant_update_blocks(S, (ENUM_CONST_FETCH porigin ptbytes_class ptbytes z) :: ptask_tail*, porigin_acc*) = ($class_constant_update_sequence(S, porigin, porigin_acc*) /\ $class_constant_update_blocks(S, ptask_tail*, eps))
+def $class_constant_table_blocks(S, (ENUM_CONST_FETCH porigin ptbytes_class ptbytes z) :: ptask_tail*, porigin_acc*) = ($class_constant_table_sequence(S, porigin, porigin_acc*) /\ $class_constant_table_blocks(S, ptask_tail*, eps))
+def $class_constant_update_blocks(S, (ENUM_FROM_FETCH pconfigcall pvalue) :: ptask_tail*, porigin_acc*) = ($class_constant_update_sequence(S, porigin, porigin_acc*) /\ $class_constant_update_blocks(S, ptask_tail*, eps))
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+def $class_constant_table_blocks(S, (ENUM_FROM_FETCH pconfigcall pvalue) :: ptask_tail*, porigin_acc*) = ($class_constant_table_sequence(S, porigin, porigin_acc*) /\ $class_constant_table_blocks(S, ptask_tail*, eps))
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+def $class_constant_update_site(S, porigin_site, porigin) = true
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum" /\ $enum_backing(S, porigin) =/= ""
+  -- if $enum_call_site(S, porigin_site, INTRINSIC_ENUM porigin pclassdesc.NAME "from") \/ $enum_call_site(S, porigin_site, INTRINSIC_ENUM porigin pclassdesc.NAME "tryFrom")
+def $class_constant_history_trigger(S, PORIGIN n pcpath, n_prefix) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $class_constant_history_exited(S.DECLARATIONS, n_prefix, n)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes_requested, eps))
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_requested)) = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_constant_update_site(S, PORIGIN n pcpath, porigin)
+
+;; Generated methods have real internal reception. The source-selected enum is
+;; carried in the intrinsic target; there is no fabricated user method body.
+def $enum_kind(INTRINSIC_ENUM porigin ptbytes text) = (text <- ["cases", "from", "tryFrom"])
+def $enum_kind(pintrinsic) = false -- otherwise
+def $config_kind(INTRINSIC_ENUM porigin ptbytes text) = true
+def $intrinsic_name(INTRINSIC_ENUM porigin ptbytes text) = ptbytes ++ $ptascii("::") ++ $ptascii(text)
+def $config_required(INTRINSIC_ENUM porigin ptbytes "cases") = 0
+def $config_required(INTRINSIC_ENUM porigin ptbytes text) = 1 -- if text <- ["from", "tryFrom"]
+def $config_parameter(INTRINSIC_ENUM porigin ptbytes text, ptbytes_name) = (0)
+  -- if text <- ["from", "tryFrom"] /\ ptbytes_name = $ptascii("value")
+def $config_parameter_name(INTRINSIC_ENUM porigin ptbytes text, 0) = $ptascii("value")
+  -- if text <- ["from", "tryFrom"]
+def $enum_start(S, pintrinsic, n_owner?, z, true) = S_start[.TODO = (CONFIG_ARGS pconfigcall) :: ptask_tail*]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if S_start = $config_prepare(S[.TODO = ptask_tail*], pintrinsic, z, n_owner?, porigin_site)
+  -- if S_start.TODO = (CONFIG_ARGS pconfigcall) :: ptask_tail*
+def $enum_start(S, pintrinsic, n_owner?, z, false) = $config_prepare(S, pintrinsic, z, n_owner?, porigin_site)
+  -- if S.ORIGIN = (porigin_site)
+def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes, phpType7*, z) = $enum_start(S, pintrinsic, eps, z, true)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_class)
+  -- if $enum_generated_kind(S, porigin_class, ptbytes) = (pintrinsic)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if S.ORIGIN = (porigin_site)
+  -- if $enum_call_site(S, porigin_site, pintrinsic)
+def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "enum generated method target or reception"]
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_class)
+  -- if $enum_generated_kind(S, porigin_class, ptbytes) = (pintrinsic)
+  -- if S.ORIGIN = (porigin_site)
+  -- if $ppfirstclass(phpType7*) \/ ~$enum_call_site(S, porigin_site, pintrinsic)
+def $enum_call_site(S, PORIGIN n pcpath, INTRINSIC_ENUM porigin_class ptbytes_class text_method) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprStaticCall phpType19 (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes_requested, eps))
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_requested)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum" /\ pclassdesc.NAME = ptbytes_class
+  -- if $enum_generated_kind(S, porigin_class, $base64(text)) = (INTRINSIC_ENUM porigin_class ptbytes_class text_method)
+def $enum_call_site(S, porigin, pintrinsic) = false -- otherwise
+def $enum_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
+  -- if $(|pcpath_child| >= 3)
+  -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 3))]
+  -- if $intrinsic_argument(S, PORIGIN n_unit pcpath_parent, 0) = ((expression, false, preqbytes?, PORIGIN n_unit pcpath_child, z_child))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_parent) = (NExprStaticCall phpType19 (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath_parent) = ((ptbytes_requested, eps))
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_requested)) = (porigin_class)
+  -- if $enum_generated_kind(S, porigin_class, $base64(text_name)) = (pintrinsic)
+  -- if pintrinsic = INTRINSIC_ENUM porigin_class ptbytes_class text_method
+  -- if text_method <- ["from", "tryFrom"] /\ $enum_backing(S, porigin_class) = "string"
+  -- if $enum_call_site(S, PORIGIN n_unit pcpath_parent, pintrinsic)
+  -- if $call_line_valid(S, (PORIGIN n_unit pcpath_parent), z_call)
+def $enum_string_child_site(S, porigin, z) = false -- otherwise
+def $enum_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call) = true
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if text_method <- ["from", "tryFrom"] /\ $enum_backing(S, porigin) = "string"
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if $enum_from_parse(S, pconfigcall, POBJECT n_object) = TYPEDEPENDENT "user object string conversion"
+  -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
+  -- if pconfigcall.LINE = z_call
+  -- if $enum_string_child_site(S, porigin_child, z_call)
+  -- if $config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+def $enum_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call) = false -- otherwise
+def $exit_callable_arguments(S, porigin_site) = PCALLARGUMENTS phpType7* 2
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if porigin_site = PORIGIN n pcpath
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes_requested, eps))
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_requested)) = (porigin_class)
+  -- if $enum_generated_kind(S, porigin_class, $base64(text)) = (pintrinsic)
+def $config_selected_valid(S, pconfigcall) = true
+  -- if $enum_kind(pconfigcall.KIND)
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.SELECTION = eps
+  -- if $enum_call_site(S, pconfigcall.SITE, pconfigcall.KIND)
+def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $ptascii(text_method), CLASS (ptbytes_class), TYPE ($ptascii("::")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes_class text_method
+rule PhpStep/enum-config-invoke: S ~> $enum_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $enum_kind(pconfigcall.KIND) /\ $config_invoke_valid(S, pconfigcall)
+def $config_receive(S, pconfigcall) = $enum_receive(S, pconfigcall) -- if $enum_kind(pconfigcall.KIND)
+def $enum_receive(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("() expects exactly 0 arguments, ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given"))
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes "cases"
+  -- if pconfigcall.SENT =/= eps
+def $enum_receive(S, pconfigcall) = S[.TODO = (ENUM_CASES pconfigcall $enum_case_origins(S, pclassdesc.CONSTANTS) eps) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes "cases"
+  -- if pconfigcall.SENT = eps
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $enum_receive(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("() expects exactly 1 argument, ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given"))
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if text_method <- ["from", "tryFrom"]
+  -- if |pconfigcall.SENT| =/= 1
+def $enum_receive(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #1 ($value) not passed"))
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if text_method <- ["from", "tryFrom"]
+  -- if pconfigcall.SENT = [NAMED_HOLE]
+def $enum_receive(S, pconfigcall) = $enum_from_convert(S, pconfigcall, pvalue, $enum_from_parse(S, pconfigcall, pvalue))
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if text_method <- ["from", "tryFrom"]
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+def $enum_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "backed enum generated method reception"] -- otherwise
+
+def $enum_from_type(S, pconfigcall) = [(PTBRANCH ([PTBUILTIN text_type]))]
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if text_method <- ["from", "tryFrom"]
+  -- if text_type = $enum_backing(S, porigin)
+  -- if text_type <- ["int", "string"]
+def $enum_from_type(S, pconfigcall) = eps -- otherwise
+def $enum_from_parse(S, pconfigcall, PNULL) = TYPEINTEGER PNULL
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if $enum_backing(S, porigin) = "string"
+  -- if ~$config_strict(S, pconfigcall)
+def $enum_from_parse(S, pconfigcall, pvalue) = $typed_conversion_at(S, [(PTBRANCH ([PTBUILTIN "string"])), (PTBRANCH ([PTBUILTIN "int"]))], pvalue, false)
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if $enum_backing(S, porigin) = "string"
+  -- if ~$config_strict(S, pconfigcall)
+  -- if pvalue =/= PNULL
+def $enum_from_parse(S, pconfigcall, pvalue) = $typed_conversion_at(S, $enum_from_type(S, pconfigcall), pvalue, $config_strict(S, pconfigcall)) -- otherwise
+def $enum_from_type_message(S, pconfigcall) = $ptascii("string|int")
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if $enum_backing(S, porigin) = "string"
+  -- if ~$config_strict(S, pconfigcall)
+def $enum_from_type_message(S, pconfigcall) = $ptascii($enum_backing(S, porigin))
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if ~($enum_backing(S, porigin) = "string" /\ ~$config_strict(S, pconfigcall))
+def $enum_from_null_message(S, pconfigcall) = $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Passing null to parameter #1 ($value) of type ") ++ $enum_from_type_message(S, pconfigcall) ++ $ptascii(" is deprecated")
+def $enum_from_key(S, pconfigcall, PINT i) = PSTRING $decimal_integer(i)
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if $enum_backing(S, porigin) = "string"
+def $enum_from_key(S, pconfigcall, pvalue) = pvalue -- otherwise
+def $enum_from_convert(S, pconfigcall, pvalue, TYPEREJECT) = $config_error(S, pconfigcall, "TypeError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #1 ($value) must be of type ") ++ $enum_from_type_message(S, pconfigcall) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+def $enum_from_convert(S, pconfigcall, PNULL, TYPEINTEGER PNULL) = $error_dispatch(S, 8192, ptbytes_message, pconfigcall.LINE, DIAGNOSTIC "Deprecated" ptbytes_message pconfigcall.LINE, ENUM_FROM_NULL pconfigcall)
+  -- if ~$config_strict(S, pconfigcall)
+  -- if ptbytes_message = $enum_from_null_message(S, pconfigcall)
+def $enum_from_convert(S, pconfigcall, pvalue, TYPEINTEGER pvalue) = $error_dispatch(S, 8192, ptbytes_message, pconfigcall.LINE, DIAGNOSTIC "Deprecated" ptbytes_message pconfigcall.LINE, ENUM_FROM_LOSSY pconfigcall pvalue i)
+  -- if $reporting_lossy_value(pvalue) = ((i, ptbytes_message))
+def $enum_from_convert(S, pconfigcall, POBJECT n_object, TYPEDEPENDENT "user object string conversion") = $user_string_begin(S[.ORIGIN = (porigin_child)], n_object, porigin_child, pconfigcall.LINE, ENUM_FROM_STRING_RESULT pconfigcall n_object porigin_child z_child pconfigcall.LINE, ptask_tail*)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
+  -- if $enum_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, pconfigcall.LINE)
+def $enum_from_convert(S, pconfigcall, pvalue, TYPEDEPENDENT text) = S[.COMPLETION = UNSUPPORTED "enum generated method dependent argument conversion"]
+  -- if text =/= "user object string conversion"
+def $enum_from_convert(S, pconfigcall, pvalue, ptypeconversion) = $typed_apply(S[.TODO = (ENUM_FROM_CONVERT pconfigcall pvalue) :: ptask_tail*], ptypeconversion, pconfigcall.LINE)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $enum_from_convertible(ptypeconversion)
+  -- if ~(pvalue = PNULL /\ ptypeconversion = TYPEINTEGER PNULL /\ ~$config_strict(S, pconfigcall))
+  -- if ~(ptypeconversion = TYPEINTEGER pvalue /\ $reporting_lossy_value(pvalue) =/= eps)
+def $enum_from_convertible(TYPEVALUE pvalue) = true
+def $enum_from_convertible(TYPEINTEGER pvalue) = true
+def $enum_from_convertible(TYPESTRING pvalue) = true
+def $enum_from_convertible(TYPEBOOL pvalue) = true
+def $enum_from_convertible(ptypeconversion) = false -- otherwise
+def $enum_from_conversion_valid(S, pconfigcall, pvalue) = true
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if text_method <- ["from", "tryFrom"]
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if $config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+  -- if $enum_from_convertible($enum_from_parse(S, pconfigcall, pvalue))
+def $enum_from_conversion_valid(S, pconfigcall, pvalue) = false -- otherwise
+def $task_nodes(ENUM_FROM_CONVERT pconfigcall pvalue) = $config_nodes(pconfigcall) ++ $value_nodes(pvalue)
+def $task_nodes(ENUM_FROM_FETCH pconfigcall pvalue) = $config_nodes(pconfigcall) ++ $value_nodes(pvalue)
+def $task_nodes(ENUM_FROM_LOSSY pconfigcall pvalue i) = $config_nodes(pconfigcall) ++ $value_nodes(pvalue)
+def $task_nodes(ENUM_FROM_NULL pconfigcall) = $config_nodes(pconfigcall)
+def $task_nodes(ENUM_FROM_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) = [HOBJECT n_object] ++ $config_nodes(pconfigcall)
+def $call_task_valid(S, ENUM_FROM_CONVERT pconfigcall pvalue) = $enum_from_conversion_valid(S, pconfigcall, pvalue)
+def $call_task_valid(S, ENUM_FROM_FETCH pconfigcall pvalue) = $enum_from_fetch_valid(S, pconfigcall, pvalue)
+def $enum_from_lossy_valid(S, pconfigcall, pvalue, i) = true
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if $enum_from_conversion_valid(S, pconfigcall, pvalue)
+  -- if $enum_from_parse(S, pconfigcall, pvalue) = TYPEINTEGER pvalue
+  -- if $reporting_lossy_value(pvalue) = ((i, ptbytes_message))
+def $enum_from_lossy_valid(S, pconfigcall, pvalue, i) = false -- otherwise
+def $enum_from_null_valid(S, pconfigcall) = true
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL)]
+  -- if $enum_from_conversion_valid(S, pconfigcall, PNULL)
+  -- if ~$config_strict(S, pconfigcall)
+  -- if $enum_from_parse(S, pconfigcall, PNULL) = TYPEINTEGER PNULL
+def $enum_from_null_valid(S, pconfigcall) = false -- otherwise
+def $call_task_valid(S, ENUM_FROM_LOSSY pconfigcall pvalue i) = $enum_from_lossy_valid(S, pconfigcall, pvalue, i)
+def $call_task_valid(S, ENUM_FROM_NULL pconfigcall) = $enum_from_null_valid(S, pconfigcall)
+def $call_task_valid(S, ENUM_FROM_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) = $enum_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
+def $enum_from_warning_ready(S, pconfigcall, i) = S[.TODO = $class_constant_table_tasks(S, porigin, pconfigcall.LINE, |S.CLASSES|) ++ [ENUM_FROM_FETCH pconfigcall ($enum_from_key(S, pconfigcall, PINT i))] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+rule PhpStep/enum-from-lossy: S ~> $enum_from_warning_ready(S, pconfigcall, i)
+  -- if S.TODO = (ENUM_FROM_LOSSY pconfigcall pvalue i) :: ptask_tail*
+  -- if $enum_from_lossy_valid(S, pconfigcall, pvalue, i)
+rule PhpStep/enum-from-null: S ~> $enum_from_warning_ready(S, pconfigcall, 0)
+  -- if S.TODO = (ENUM_FROM_NULL pconfigcall) :: ptask_tail*
+  -- if $enum_from_null_valid(S, pconfigcall)
+def $selected_task_nonce(ENUM_FROM_LOSSY pconfigcall pvalue i) = pconfigcall.SELECTION
+def $selected_task_nonce(ENUM_FROM_NULL pconfigcall) = pconfigcall.SELECTION
+def $selected_task_nonce(ENUM_FROM_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) = pconfigcall.SELECTION
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ENUM_FROM_LOSSY pconfigcall pvalue i
+  -- if $enum_from_lossy_valid(S, pconfigcall, pvalue, i)
+  -- if $reporting_lossy_value(pvalue) = ((i, perrorcall.MESSAGE))
+  -- if perrorcall.SITE = pconfigcall.SITE
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ENUM_FROM_NULL pconfigcall
+  -- if $enum_from_null_valid(S, pconfigcall)
+  -- if perrorcall.MESSAGE = $enum_from_null_message(S, pconfigcall)
+  -- if perrorcall.SITE = pconfigcall.SITE
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = ENUM_FROM_LOSSY pconfigcall pvalue i
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = ENUM_FROM_NULL pconfigcall
+def $error_handler_trace_values(S, pcallcontext, pconfigcall) = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = ENUM_FROM_LOSSY pconfigcall pvalue i
+def $error_handler_trace_values(S, pcallcontext, pconfigcall) = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = ENUM_FROM_NULL pconfigcall
+rule PhpStep/enum-from-converted: S ~> S[.TODO = $class_constant_table_tasks(S, porigin, pconfigcall.LINE, |S.CLASSES|) ++ [ENUM_FROM_FETCH pconfigcall pvalue_key] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ENUM_FROM_CONVERT pconfigcall pvalue_raw) :: ptask_tail*
+  -- if $enum_from_conversion_valid(S, pconfigcall, pvalue_raw)
+  -- if S.RESULT = KNOWN pvalue_converted
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if pvalue_key = $enum_from_key(S, pconfigcall, pvalue_converted)
+  -- if $enum_backing_exact($enum_backing(S, porigin), pvalue_key)
+rule PhpStep/enum-from-string-result: S ~> S[.ORIGIN = (pconfigcall.SITE)][.TODO = $class_constant_table_tasks(S, porigin, pconfigcall.LINE, |S.CLASSES|) ++ [ENUM_FROM_FETCH pconfigcall_parsed pvalue_text] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ENUM_FROM_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+  -- if $enum_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
+  -- if S.ORIGIN = (porigin_child)
+  -- if S.RESULT = KNOWN pvalue_text
+  -- if $string_bytes(pvalue_text) = (ptbytes_text)
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes_class text_method
+  -- if pconfigcall_parsed = pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue_text)]]
+def $enum_from_fetch_valid(S, pconfigcall, pvalue_key) = true
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if text_method <- ["from", "tryFrom"]
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_raw)]
+  -- if $enum_from_conversion_valid(S, pconfigcall, pvalue_raw)
+  -- if $enum_backing_exact($enum_backing(S, porigin), pvalue_key)
+  -- if ptypeconversion = $enum_from_parse(S, pconfigcall, pvalue_raw)
+  -- if S_expected = $typed_apply(S, ptypeconversion, pconfigcall.LINE)
+  -- if S_expected.RESULT = KNOWN pvalue_expected
+  -- if $enum_backing_key($enum_from_key(S, pconfigcall, pvalue_expected)) = $enum_backing_key(pvalue_key)
+def $enum_from_fetch_valid(S, pconfigcall, pvalue_key) = false -- otherwise
+def $enum_from_lookup(S, eps, pvalue_key) = eps
+def $enum_from_lookup(S, porigin :: porigin_tail*, pvalue_key) = (POBJECT n)
+  -- if $enum_case_descriptor(S, porigin) = (pclassconstantdesc)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
+  -- if pdefaultcache.VALUE = POBJECT n
+  -- if $location_slot(S, PROPERTY n $ptascii("value")) = DEFINED pvalue_backing
+  -- if $enum_backing_key(pvalue_backing) = $enum_backing_key(pvalue_key)
+def $enum_from_lookup(S, porigin :: porigin_tail*, pvalue_key) = $enum_from_lookup(S, porigin_tail*, pvalue_key)
+  -- if $enum_case_descriptor(S, porigin) = (pclassconstantdesc)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
+  -- if pdefaultcache.VALUE = POBJECT n
+  -- if $location_slot(S, PROPERTY n $ptascii("value")) = DEFINED pvalue_backing
+  -- if $enum_backing_key(pvalue_backing) =/= $enum_backing_key(pvalue_key)
+def $enum_from_lookup(S, porigin*, pvalue_key) = eps -- otherwise
+def $enum_from_label(PINT i) = $decimal_integer(i)
+def $enum_from_label(pvalue) = [34] ++ $c_string(ptbytes) ++ [34]
+  -- if $string_bytes(pvalue) = (ptbytes)
+def $enum_from_missing(S, pconfigcall, pvalue_key) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes "tryFrom"
+  -- if S.TODO = (ENUM_FROM_FETCH pconfigcall pvalue_key) :: ptask_tail*
+def $enum_from_missing(S, pconfigcall, pvalue_key) = $config_error(S, pconfigcall, "ValueError", $enum_from_label(pvalue_key) ++ $ptascii(" is not a valid backing value for enum ") ++ ptbytes)
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes "from"
+rule PhpStep/enum-from-found: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue_case][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ENUM_FROM_FETCH pconfigcall pvalue_key) :: ptask_tail*
+  -- if $enum_from_fetch_valid(S, pconfigcall, pvalue_key)
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if $class_constant_table_done(S, porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $enum_from_lookup(S, $enum_case_origins(S, pclassdesc.CONSTANTS), pvalue_key) = (pvalue_case)
+rule PhpStep/enum-from-missing: S ~> $enum_from_missing(S, pconfigcall, pvalue_key)
+  -- if S.TODO = (ENUM_FROM_FETCH pconfigcall pvalue_key) :: ptask_tail*
+  -- if $enum_from_fetch_valid(S, pconfigcall, pvalue_key)
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if $class_constant_table_done(S, porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $enum_from_lookup(S, $enum_case_origins(S, pclassdesc.CONSTANTS), pvalue_key) = eps
+
+def $enum_cases_call_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes "cases"
+  -- if pconfigcall.SENT = eps
+  -- if $config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+def $enum_cases_call_valid(S, pconfigcall) = false -- otherwise
+def $enum_case_values_valid(S, eps, eps) = true
+def $enum_case_values_valid(S, porigin :: porigin_tail*, pvalue :: pvalue_tail*) = $enum_case_values_valid(S, porigin_tail*, pvalue_tail*)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
+  -- if pdefaultcache.VALUE = pvalue
+  -- if pvalue = POBJECT n
+  -- if $constant_value_class_valid(S, pvalue, PVENUMCASE n porigin)
+def $enum_case_values_valid(S, porigin*, pvalue*) = false -- otherwise
+def $enum_cases_progress_valid(S, pconfigcall, porigin_remaining*, pvalue*, b_pending) = true
+  -- if $enum_cases_call_valid(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes "cases"
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if porigin_all* = $enum_case_origins(S, pclassdesc.CONSTANTS)
+  -- if n_done = |pvalue*|
+  -- if n_pending = $enum_pending_count(b_pending)
+  -- if n_used = $(n_done + n_pending)
+  -- if $(n_used <= |porigin_all*|)
+  -- if n_left = $nabs($(|porigin_all*| - n_used))
+  -- if porigin_remaining* = porigin_all*[n_used:n_left]
+  -- if $enum_case_values_valid(S, porigin_all*[0:n_done], pvalue*)
+def $enum_cases_progress_valid(S, pconfigcall, porigin*, pvalue*, b_pending) = false -- otherwise
+def $enum_pending_count(false) = 0
+def $enum_pending_count(true) = 1
+def $task_nodes(ENUM_CASES pconfigcall porigin* pvalue*) = $task_nodes(CONFIG_INVOKE pconfigcall) ++ $enum_value_roots(pvalue*)
+def $task_nodes(ENUM_CASES_VALUE pconfigcall porigin* pvalue*) = $task_nodes(CONFIG_INVOKE pconfigcall) ++ $enum_value_roots(pvalue*)
+def $call_task_valid(S, ENUM_CASES pconfigcall porigin* pvalue*) = $enum_cases_progress_valid(S, pconfigcall, porigin*, pvalue*, false)
+def $call_task_valid(S, ENUM_CASES_VALUE pconfigcall porigin* pvalue*) = $enum_cases_progress_valid(S, pconfigcall, porigin*, pvalue*, true)
+rule PhpStep/enum-cases-next: S ~> $class_constant_value(S[.TODO = (ENUM_CASES_VALUE pconfigcall porigin_tail* pvalue*) :: ptask_tail*], pclassconstantdesc, CLASS_CONST_CALL pconfigcall, pclassconstantdesc.OWNERNAME, pconfigcall.LINE)
+  -- if S.TODO = (ENUM_CASES pconfigcall (porigin :: porigin_tail*) pvalue*) :: ptask_tail*
+  -- if $enum_cases_progress_valid(S, pconfigcall, porigin :: porigin_tail*, pvalue*, false)
+  -- if $enum_case_descriptor(S, porigin) = (pclassconstantdesc)
+rule PhpStep/enum-cases-value: S ~> S[.TODO = (ENUM_CASES pconfigcall porigin_remaining* (pvalue_done* ++ [pvalue_current])) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ENUM_CASES_VALUE pconfigcall porigin_remaining* pvalue_done*) :: ptask_tail*
+  -- if $enum_cases_progress_valid(S, pconfigcall, porigin_remaining*, pvalue_done*, true)
+  -- if S.RESULT = KNOWN pvalue_current
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin_class ptbytes "cases"
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if porigin_all* = $enum_case_origins(S, pclassdesc.CONSTANTS)
+  -- if porigin_current = porigin_all*[|pvalue_done*|]
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin_current) = (pdefaultcache)
+  -- if pdefaultcache.VALUE = pvalue_current
+def $enum_cases_array(parray, eps, z) = parray
+def $enum_cases_array(parray, pvalue :: pvalue_tail*, z) = $enum_cases_array($array_insert(parray, KINT z, DIRECT pvalue), pvalue_tail*, $(z + 1))
+rule PhpStep/enum-cases-complete: S ~> $allocate_array(S[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)], $enum_cases_array($array_empty(), pvalue*, 0))
+  -- if S.TODO = (ENUM_CASES pconfigcall eps pvalue*) :: ptask_tail*
+  -- if $enum_cases_progress_valid(S, pconfigcall, eps, pvalue*, false)
+def $enum_cases_marker(S, pconfigcall, porigin, (ENUM_CASES_VALUE pconfigcall porigin_remaining* pvalue*) :: ptask_tail*) = true
+  -- if $enum_cases_progress_valid(S, pconfigcall, porigin_remaining*, pvalue*, true)
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin_class ptbytes "cases"
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if porigin_all* = $enum_case_origins(S, pclassdesc.CONSTANTS)
+  -- if porigin_all*[|pvalue*|] = porigin
+def $enum_cases_marker(S, pconfigcall, porigin, ptask :: ptask_tail*) = $enum_cases_marker(S, pconfigcall, porigin, ptask_tail*)
+  -- if ~$enum_cases_value_task(ptask)
+def $enum_cases_value_task(ENUM_CASES_VALUE pconfigcall porigin* pvalue*) = true
+def $enum_cases_value_task(ptask) = false -- otherwise
+def $enum_cases_marker(S, pconfigcall, porigin, ptask*) = false -- otherwise
+dec $enum_query_api_valid(pstate, pconfigcall) : bool
+def $enum_query_api_valid(S, pconfigcall) = $dynamic_class_constant_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_CONSTANT
+def $enum_query_api_valid(S, pconfigcall) = $dynamic_defined_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED
+def $enum_query_api_valid(S, pconfigcall) = false -- otherwise
+dec $enum_query_call_valid(pstate, pconfigcall, porigin) : bool
+def $enum_query_call_valid(S, pconfigcall, porigin) = true
+  -- if $enum_query_api_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin /\ $class_constant_visible(S, pclassconstantdesc)
+def $enum_query_call_valid(S, pconfigcall, porigin) = false -- otherwise
+dec $enum_query_initializing(pclassconstantcontext*, pconfigcall, porigin) : bool
+def $enum_query_initializing(eps, pconfigcall, porigin) = false
+def $enum_query_initializing(pclassconstantcontext :: pclassconstantcontext_tail*, pconfigcall, porigin) = true
+  -- if pclassconstantcontext.DECL = porigin /\ pclassconstantcontext.SELECTION = CLASS_CONST_CALL pconfigcall
+def $enum_query_initializing(pclassconstantcontext :: pclassconstantcontext_tail*, pconfigcall, porigin) = $enum_query_initializing(pclassconstantcontext_tail*, pconfigcall, porigin)
+  -- if pclassconstantcontext.DECL =/= porigin \/ pclassconstantcontext.SELECTION =/= CLASS_CONST_CALL pconfigcall
+dec $enum_query_cached(pstate, porigin, pvalue) : bool
+def $enum_query_cached(S, porigin, pvalue) = true
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
+  -- if pdefaultcache.VALUE = pvalue
+def $enum_query_cached(S, porigin, pvalue) = true
+  -- if $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
+  -- if pclassconstantdesc.FOLDED
+  -- if $compiled_read(S, pclassconstantdesc.INITIALIZER) = (pvalue)
+def $enum_query_cached(S, porigin, pvalue) = false -- otherwise
+dec $enum_query_result_valid(pstate, pconfigcall, porigin) : bool
+def $enum_query_result_valid(S, pconfigcall, porigin) = true
+  -- if $enum_query_call_valid(S, pconfigcall, porigin)
+  -- if S.TODO = (ENUM_QUERY_RESULT pconfigcall porigin) :: ptask_tail*
+  -- if S.RESULT = KNOWN pvalue
+  -- if $enum_query_cached(S, porigin, pvalue)
+def $enum_query_result_valid(S, pconfigcall, porigin) = false -- otherwise
+dec $enum_query_result_task(ptask) : bool
+def $enum_query_result_task(ENUM_QUERY_RESULT pconfigcall porigin) = true
+def $enum_query_result_task(ptask) = false -- otherwise
+dec $enum_query_marker(pstate, pconfigcall, porigin, ptask*) : bool
+def $enum_query_marker(S, pconfigcall, porigin, (ENUM_QUERY_RESULT pconfigcall porigin) :: ptask_tail*) = $enum_query_call_valid(S, pconfigcall, porigin)
+def $enum_query_marker(S, pconfigcall, porigin, ptask :: ptask_tail*) = $enum_query_marker(S, pconfigcall, porigin, ptask_tail*)
+  -- if ~$enum_query_result_task(ptask)
+def $enum_query_marker(S, pconfigcall, porigin, ptask*) = false -- otherwise
+dec $enum_query_bind_head(ptask*, pconfigcall, porigin) : bool
+def $enum_query_bind_head((CLASS_CONST_BIND porigin) :: (ENUM_QUERY_RESULT pconfigcall porigin) :: ptask_tail*, pconfigcall, porigin) = true
+def $enum_query_bind_head(ptask*, pconfigcall, porigin) = false -- otherwise
+dec $enum_query_bind_pending(ptask*, pconfigcall, porigin) : bool
+def $enum_query_bind_pending(eps, pconfigcall, porigin) = false
+def $enum_query_bind_pending(ptask :: ptask_tail*, pconfigcall, porigin) = true
+  -- if $enum_query_bind_head(ptask :: ptask_tail*, pconfigcall, porigin)
+def $enum_query_bind_pending(ptask :: ptask_tail*, pconfigcall, porigin) = $enum_query_bind_pending(ptask_tail*, pconfigcall, porigin)
+  -- if ~$enum_query_bind_head(ptask :: ptask_tail*, pconfigcall, porigin)
+def $task_nodes(ENUM_QUERY_RESULT pconfigcall porigin) = $config_nodes(pconfigcall)
+def $selected_task_nonce(ENUM_QUERY_RESULT pconfigcall porigin) = pconfigcall.SELECTION
+def $call_task_valid(S, ENUM_QUERY_RESULT pconfigcall porigin) = $enum_query_call_valid(S, pconfigcall, porigin)
+  -- if $enum_query_bind_pending(S.TODO, pconfigcall, porigin)
+def $call_task_valid(S, ENUM_QUERY_RESULT pconfigcall porigin) = $enum_query_result_valid(S, pconfigcall, porigin)
+  -- if ~$enum_query_bind_pending(S.TODO, pconfigcall, porigin)
+rule PhpStep/enum-query-constant-result: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (ENUM_QUERY_RESULT pconfigcall porigin) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_CONSTANT /\ $enum_query_result_valid(S, pconfigcall, porigin)
+rule PhpStep/enum-query-defined-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ENUM_QUERY_RESULT pconfigcall porigin) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_DEFINED /\ $enum_query_result_valid(S, pconfigcall, porigin)
+dec $enum_query_begin(pstate, pconfigcall, pclassconstantdesc) : pstate
+def $enum_query_begin(S, pconfigcall, pclassconstantdesc) = $class_constant_value(S[.ORIGIN = (pconfigcall.SITE)][.TODO = (ENUM_QUERY_RESULT pconfigcall pclassconstantdesc.ORIGIN) :: ptask_tail*], pclassconstantdesc, CLASS_CONST_CALL pconfigcall, pclassconstantdesc.OWNERNAME, pconfigcall.LINE)
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_defined_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dynamic_defined_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = eps
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_defined_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $dynamic_defined_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if ~$class_constant_visible(S, pclassconstantdesc)
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_defined_finish(S, pconfigcall) = $enum_query_begin(S, pconfigcall, pclassconstantdesc)
+  -- if $dynamic_defined_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if $class_constant_visible(S, pclassconstantdesc)
+def $dynamic_class_constant_finish(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "Error", $ptascii("Undefined constant ") ++ preqbytes_class ++ $ptascii("::") ++ preqbytes_member)
+  -- if $dynamic_class_constant_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = eps
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_class_constant_finish(S, pconfigcall) = $config_error(S[.TODO = ptask_tail*], pconfigcall, "Error", $ptascii("Cannot access ") ++ $property_visibility_name(pclassconstantdesc.VISIBILITY) ++ $ptascii(" constant ") ++ preqbytes_class ++ $ptascii("::") ++ preqbytes_member)
+  -- if $dynamic_class_constant_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if ~$class_constant_visible(S, pclassconstantdesc)
+  -- if S.TODO = ptask :: ptask_tail*
+def $dynamic_class_constant_finish(S, pconfigcall) = $enum_query_begin(S, pconfigcall, pclassconstantdesc)
+  -- if $dynamic_class_constant_valid(S, pconfigcall)
+  -- if $dynamic_defined_query(pconfigcall) = ((preqbytes_class, preqbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+  -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if $class_constant_visible(S, pclassconstantdesc)
+def $class_constant_selection_valid(S, pclassconstantcontext) = true
+  -- if pclassconstantcontext.SELECTION = CLASS_CONST_CALL pconfigcall
+  -- if pclassconstantcontext.ORIGIN = (pconfigcall.SITE)
+  -- if $enum_cases_marker(S, pconfigcall, pclassconstantcontext.DECL, S.TODO)
+def $class_constant_selection_valid(S, pclassconstantcontext) = true
+  -- if pclassconstantcontext.SELECTION = CLASS_CONST_CALL pconfigcall
+  -- if pclassconstantcontext.ORIGIN = (pconfigcall.SITE) /\ pclassconstantcontext.LINE = pconfigcall.LINE
+  -- if $enum_query_marker(S, pconfigcall, pclassconstantcontext.DECL, S.TODO)
+def $class_constant_context_site(S, pclassconstantcontext) = true
+  -- if pclassconstantcontext.SELECTION = CLASS_CONST_CALL pconfigcall
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes "cases"
+  -- if pclassconstantcontext.ORIGIN = (pconfigcall.SITE)
+  -- if pclassconstantcontext.LINE = pconfigcall.LINE
+  -- if $enum_call_site(S, pconfigcall.SITE, pconfigcall.KIND)
+  -- if $class_constant_selection_valid(S, pclassconstantcontext)
+def $class_constant_cache_trigger(S, porigin_decl, porigin_trigger, n_prefix) = true
+  -- if $enum_case_descriptor(S, porigin_decl) = (pclassconstantdesc)
+  -- if $class_at(S.CLASSES, pclassconstantdesc.OWNER) = (pclassdesc)
+  -- if $enum_call_site(S, porigin_trigger, INTRINSIC_ENUM pclassdesc.ORIGIN pclassdesc.NAME "cases")
+  -- if porigin_trigger = PORIGIN n pcpath
+  -- if $class_constant_history_exited(S.DECLARATIONS, n_prefix, n)
+def $class_constant_cache_trigger(S, porigin_decl, PORIGIN n pcpath, n_prefix) = true
+  -- if $class_constant_origin(S.CLASSES, porigin_decl) = (pclassconstantdesc)
+  -- if $class_at(S.CLASSES, pclassconstantdesc.OWNER) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+  -- if $dynamic_class_constant_site(S, PORIGIN n pcpath)
+  -- if $dynamic_class_constant_history_query(S, porigin_decl, $dynamic_define_known(S, PORIGIN n pcpath, 0))
+  -- if $class_constant_history_exited(S.DECLARATIONS, n_prefix, n)
+
+def $enum_value_roots(eps) = eps
+def $enum_value_roots(pvalue :: pvalue_tail*) = $value_nodes(pvalue) ++ $enum_value_roots(pvalue_tail*)
+
+
+def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited_all*) = METHOD_OK
+  -- if $ptlc(ptbytes) <- [$ptascii("unitenum"), $ptascii("backedenum")]
+def $trait_copy_original(pclassdesc_owner, pclassdesc_trait, pmethoddesc, ptraitalias*, (ptbytes_trait, ptbytes_method)*, TRAITCOMPOSE S ptraitmethod* ptraitmethod_required*) = TRAITCOMPOSE S ptraitmethod* ptraitmethod_required*
+  -- if ~(($ptlc(pclassdesc_trait.NAME), $ptlc(pmethoddesc.NAME)) <- (ptbytes_trait, ptbytes_method)*)
+  -- if $enum_generated(S, pclassdesc_owner.ORIGIN, pmethoddesc.NAME)
+  -- if ~pmethoddesc.ABSTRACT
+def $trait_copy_original(pclassdesc_owner, pclassdesc_trait, pmethoddesc, ptraitalias*, (ptbytes_trait, ptbytes_method)*, TRAITCOMPOSE S ptraitmethod* ptraitmethod_required*) = TRAITCOMPOSE ($enum_trait_requirement_state(S, pclassdesc_owner, $enum_trait_requirement(S, pclassdesc_owner, pclassdesc_trait, pmethoddesc))) ptraitmethod* ptraitmethod_required*
+  -- if ~(($ptlc(pclassdesc_trait.NAME), $ptlc(pmethoddesc.NAME)) <- (ptbytes_trait, ptbytes_method)*)
+  -- if $enum_generated(S, pclassdesc_owner.ORIGIN, pmethoddesc.NAME)
+  -- if pmethoddesc.ABSTRACT
+def $trait_data_constant_one(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*) = $trait_data_fatal(S, pclassdesc, $ptascii("Cannot use trait ") ++ pclassdesc_trait.NAME ++ $ptascii(", because ") ++ pclassdesc_trait.NAME ++ $ptascii("::") ++ pclassconstantdesc.NAME ++ $ptascii(" conflicts with enum case ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pclassconstantdesc.NAME)
+  -- if $class_constant_desc(pclassdesc.CONSTANTS, pclassconstantdesc.NAME) = (pclassconstantdesc_prior)
+  -- if $enum_case_origin(S, pclassconstantdesc_prior.ORIGIN)
+def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = $throw_scalar(S, "Error", $ptascii("Cannot create dynamic property ") ++ pclassconstantdesc.OWNERNAME ++ $ptascii("::$") ++ $c_string(ptbytes), z)
+  -- if $enum_case_object(S, n) = (pclassconstantdesc)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+  -- if $property_slot_at(ppropertyslot*, ptbytes) = eps
+
+def $constant_expression_root(S, porigin) = (porigin)
+  -- if $enum_case_origin(S, porigin)
+def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDER 1
+  -- if n_left =/= n_right
+  -- if $enum_case_object(S, n_left) =/= eps \/ $enum_case_object(S, n_right) =/= eps
+def $value_order(S, POBJECT n, pvalue, pcompareguard_seen*) = ORDER 1
+  -- if $enum_case_object(S, n) =/= eps
+  -- if $type_bytes(pvalue) <- [$ptascii("int"), $ptascii("float"), $ptascii("string"), $ptascii("array")]
+def $value_order(S, pvalue, POBJECT n, pcompareguard_seen*) = ORDER 1
+  -- if $enum_case_object(S, n) =/= eps
+  -- if $type_bytes(pvalue) <- [$ptascii("int"), $ptascii("float"), $ptascii("string"), $ptascii("array")]
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = (S, ORDER 1)
+  -- if n_left =/= n_right
+  -- if $enum_case_object(S, n_left) =/= eps \/ $enum_case_object(S, n_right) =/= eps
+def $value_order_effect(S, POBJECT n, pvalue, pcompareguard_seen*, z) = (S, ORDER 1)
+  -- if $enum_case_object(S, n) =/= eps
+  -- if $type_bytes(pvalue) <- [$ptascii("int"), $ptascii("float"), $ptascii("string"), $ptascii("array")]
+def $value_order_effect(S, pvalue, POBJECT n, pcompareguard_seen*, z) = (S, ORDER 1)
+  -- if $enum_case_object(S, n) =/= eps
+  -- if $type_bytes(pvalue) <- [$ptascii("int"), $ptascii("float"), $ptascii("string"), $ptascii("array")]
+
+def $activate_class_prelink(S, pclassdesc) = $activate_class_body(S, pclassdesc)
+  -- if $enum_class_prelink(S, pclassdesc) = METHOD_OK
+def $activate_class_prelink(S, pclassdesc) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes, z)
+  -- if $enum_class_prelink(S, pclassdesc) = METHOD_ISSUE ptbytes z
+
+def $enum_generated_receiver(S, n, ptbytes) = $enum_generated(S, porigin, ptbytes)
+  -- if $object_class_origin(S, n) = (porigin)
+def $enum_generated_receiver(S, n, ptbytes) = false -- otherwise
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.COMPLETION = UNSUPPORTED "generated enum method receiver target"]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $enum_generated_receiver(S_read, n, ptbytes)
+
+def $enum_constant_ast(S) = true
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if S.ORIGIN = (porigin)
+  -- if $constant_expression_below(S, pconstantcontext.ORIGIN, porigin)
+def $enum_constant_ast(S) = false -- otherwise
+
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_method_fatal(S, pclassdesc.ORIGIN, $ptascii("Class ") ++ $c_string(pclassdesc.NAME) ++ $ptascii(" cannot extend enum ") ++ pclassdesc_parent.NAME, pclassdesc.LINE)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "enum"
+
+def $pil_order_rooted(S, pclassdesc, METHOD_OK) = METHOD_RUNTIMEISSUE ($ptascii("Enum ") ++ pclassdesc.NAME ++ $ptascii(" cannot implement interface Throwable")) pclassdesc.LINE
+  -- if pclassdesc.KIND = "enum"
+def $class_constant_kind(pclassdesc) = $ptascii("Enum") -- if pclassdesc.KIND = "enum"
