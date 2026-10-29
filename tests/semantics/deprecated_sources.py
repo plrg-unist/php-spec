@@ -13,6 +13,7 @@ def main():
     before = {p: hashlib.sha256(p.read_bytes()).hexdigest() for p in watched}
     cases.CASES = {**cases.CASES, **reviewed.CASES}
     cases.BOUNDARIES = reviewed.BOUNDARIES
+    cases.BOUNDARY_STDOUT = reviewed.BOUNDARY_STDOUT
     runner.cases = cases
     passed = runner.main(model_timeout=150)
     assert before == {p: hashlib.sha256(p.read_bytes()).hexdigest() for p in watched}

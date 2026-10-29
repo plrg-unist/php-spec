@@ -118,8 +118,9 @@ def conditions(name, program, path):
             ]
         else:
             checks += [
-                'S_dispatch.STORE[n_sent] = DEFINED (PSTRING ($ptascii("bad")))',
-                'S_dispatch.STORE[n_arg] = DEFINED (PSTRING ($ptascii("bad")))',
+                'S_dispatch.STORE[n_sent] = DEFINED pvalue_sent',
+                'S_dispatch.STORE[n_arg] = DEFINED pvalue_sent',
+                '$string_bytes(pvalue_sent) = ($ptascii("bad"))',
             ]
 
     seek('S_after', 'S_dispatch', 2 if throws else 1)
@@ -176,7 +177,7 @@ def conditions(name, program, path):
             ]
         elif not replacement:
             checks += [
-                'S_second.STORE[n_sent] = DEFINED (PSTRING ($ptascii("bad")))',
+                'S_second.STORE[n_sent] = DEFINED pvalue_sent',
                 'S_second.STORE[n_arg] = DEFINED (PINT 7)',
             ]
         seek('S_final_warning', 'S_second', 4)
