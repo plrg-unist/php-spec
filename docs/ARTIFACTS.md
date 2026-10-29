@@ -399,7 +399,8 @@ and eight accepted reached traces are under
 retained-native comparisons and handler projections are under
 `../php-spec-evidence-archive/call124-review-native/`. The concise
 [review](../coverage/semantics/magic-iterator-unpack-review.json) records tested
-revisions, hashes and the recovery paths.
+revisions, hashes and the recovery paths. The joined A64 strict425 report is
+`call124-author-native/joined-a64-9742d77b0/report.json` under the same archive.
 
 ## Commit provenance and recovery
 

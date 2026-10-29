@@ -662,7 +662,8 @@ through normal, invalid-key and throwing cleanup. Nine authored and four
 independent original-source gaps now agree exactly with retained pinned PHP;
 two existing positional controls retain their earlier exact cut. Strict425,
 eight authored reached groups/253 reported assertions and two independent
-handler groups/77 assertions pass at separate tested cuts. Baseline Unsupported
+handler groups/77 assertions pass at separate tested cuts. Independently reviewed
+composition on the actual A64 tail also passes joined strict425. Baseline Unsupported
 gaps and all failed fixture/transport packets remain zero credit. Wider magic
 producers, signatures, references and lifetimes remain partial.
 [CALL124 review](coverage/semantics/magic-iterator-unpack-review.json).
