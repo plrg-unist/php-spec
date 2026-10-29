@@ -21,7 +21,14 @@ dec $config_iterator_quiet_input(pstate, pconfigiterator) : bool
 dec $config_iterator_producer_valid(pstate, pconfigiterator) : bool
 dec $config_iterator_quiet_aggregate_data(pstate, pconfigiterator) : bool
 dec $config_iterator_finalizer(pstate, nat) : bool
-dec $config_iterator_owned_child(pstate, nat) : bool
+dec $config_iterator_destructor(pstate, nat) : bool
+dec $config_iterator_owned_fields(pstate, nat) : bool
+dec $config_iterator_data_node(pstate, pnode, pnode*) : bool
+dec $config_iterator_data_value(pstate, pvalue, pnode*) : bool
+dec $config_iterator_data_item(pstate, pitem, pnode*) : bool
+dec $config_iterator_data_items(pstate, pentry*, pnode*) : bool
+dec $config_iterator_data_state(pstate, ppropstate, pnode*) : bool
+dec $config_iterator_data_slots(pstate, nat, ppropertyslot*, pnode*) : bool
 dec $config_iterator_finalizable_aggregate_data(pstate, pconfigiterator) : bool
 dec $config_iterator_aggregate_data(pstate, pconfigiterator) : bool
 dec $config_iterator_history(pstate, pconfigiterator) : bool
@@ -155,48 +162,71 @@ def $config_iterator_quiet_aggregate_data(S, pconfigiterator) = true
   -- if $destructor_method(S, pconfigiterator.OBJECT) = eps
   -- if $node_children(S, HOBJECT pconfigiterator.OBJECT) = eps
 def $config_iterator_quiet_aggregate_data(S, pconfigiterator) = false -- otherwise
-;; Release may run a finalizer on this object or on its sole declared child.
-def $config_iterator_finalizer(S, n) = true
+;; Physical field graphs use the shared storage lifecycle. Outside owners may
+;; defer a descendant's finalizer beyond DATA retirement.
+def $config_iterator_destructor(S, n) = true
+  -- if $destructor_method(S, n) = eps
+def $config_iterator_destructor(S, n) = true
   -- if $destructor_method(S, n) = (pmethoddesc)
   -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
   -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = eps /\ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
   -- if ~$function_generator(S, pmethoddesc.FUNCTION)
+def $config_iterator_destructor(S, n) = false -- otherwise
+;; Preserve the retired fieldless image; live owning layouts are checked below.
+def $config_iterator_finalizer(S, n) = true
+  -- if $destructor_method(S, n) = (pmethoddesc)
+  -- if $config_iterator_destructor(S, n)
   -- if $node_children(S, HOBJECT n) = eps
 def $config_iterator_finalizer(S, n) = true
-  -- if $destructor_method(S, n) = (pmethoddesc)
-  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
-  -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = eps /\ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
-  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
-  -- if $config_iterator_owned_child(S, n)
-def $config_iterator_finalizer(S, n) = true
-  -- if $destructor_method(S, n) = eps
-  -- if $config_iterator_owned_child(S, n)
+  -- if $node_children(S, HOBJECT n) =/= eps
+  -- if $config_iterator_owned_fields(S, n)
 def $config_iterator_finalizer(S, n) = false -- otherwise
-;; The Iterator owns one declared child edge until its storage release. Other
-;; owners keep the child live after that edge retires.
-def $config_iterator_owned_child(S, n) = true
-  -- if (HOBJECT n) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n] = INSTANCE porigin_parent
-  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
-  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_parent.NAME)) = (porigin_parent)
-  -- if $property_desc_at($property_layout(S, porigin_parent, |S.CLASSES|), $ptascii("child")) = (ppropertydesc)
-  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc.STATIC
-  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_parent*)
-  -- if $property_slot_at(ppropertyslot_parent*, $ptascii("child")) = (ppropertyslot_child)
-  -- if ppropertyslot_child.DECL = (ppropertydesc.ORIGIN)
-  -- if ppropertyslot_child.STATE = PROP_VALUE (DIRECT (POBJECT n_child))
-  -- if $object_table_at(S.OBJECTTABLES, n) = eps
-  -- if $node_children(S, HOBJECT n) = [HOBJECT n_child]
-  -- if n_child =/= n /\ (HOBJECT n_child) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n_child] = INSTANCE porigin_child
-  -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
-  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_child.NAME)) = (porigin_child)
-  -- if $objectprops_at(S.OBJECTPROPS, n_child) = (eps)
-  -- if $object_table_at(S.OBJECTTABLES, n_child) = eps
-  -- if $node_children(S, HOBJECT n_child) = eps
-  -- if $config_iterator_finalizer(S, n_child)
-  -- if $($heap_owners($heap_graph(S), HOBJECT n_child) > 0)
-def $config_iterator_owned_child(S, n) = false -- otherwise
+
+def $config_iterator_owned_fields(S, n) = $config_iterator_data_node(S, HOBJECT n, eps)
+def $config_iterator_data_node(S, HOBJECT n, pnode_seen*) = true
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if ~$heap_member(HOBJECT n, pnode_seen*)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
+  -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) = eps
+  -- if $config_iterator_destructor(S, n)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if ~pobjectprops.MATERIALIZED /\ $object_table_at(S.OBJECTTABLES, n) = eps
+  -- if $property_slots_valid(S, $property_layout(S, porigin_class, |S.CLASSES|), pobjectprops.SLOTS)
+  -- if $config_iterator_data_slots(S, n, pobjectprops.SLOTS, (HOBJECT n) :: pnode_seen*)
+  -- if $property_slot_nodes(pobjectprops.SLOTS) = $node_children(S, HOBJECT n)
+def $config_iterator_data_node(S, HARRAY n, pnode_seen*) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if ~$heap_member(HARRAY n, pnode_seen*) /\ ~(n <- S.LITERALARRAYDEBTS)
+  -- if $config_iterator_data_items(S, S.ARRAYS[n].ITEMS, (HARRAY n) :: pnode_seen*)
+def $config_iterator_data_node(S, HCELL n, pnode_seen*) = true
+  -- if ~$heap_member(HCELL n, pnode_seen*)
+  -- if $ordinary_reference_value(S, n) = (pvalue)
+  -- if $config_iterator_data_value(S, pvalue, (HCELL n) :: pnode_seen*)
+def $config_iterator_data_node(S, pnode, pnode_seen*) = false -- otherwise
+;; Each sibling follows its own ancestry, so repeated edges and DAG sharing
+;; retain their ordinary ownership counts while genuine backedges are refused.
+def $config_iterator_data_value(S, PARRAY n, pnode_seen*) = $config_iterator_data_node(S, HARRAY n, pnode_seen*)
+def $config_iterator_data_value(S, POBJECT n, pnode_seen*) = $config_iterator_data_node(S, HOBJECT n, pnode_seen*)
+def $config_iterator_data_value(S, pvalue, pnode_seen*) = $literal_reference_flat_leaf(S, pvalue) -- otherwise
+def $config_iterator_data_item(S, DIRECT pvalue, pnode_seen*) = $config_iterator_data_value(S, pvalue, pnode_seen*)
+def $config_iterator_data_item(S, ALIAS n, pnode_seen*) = $config_iterator_data_node(S, HCELL n, pnode_seen*)
+def $config_iterator_data_item(S, pitem, pnode_seen*) = false -- otherwise
+def $config_iterator_data_items(S, eps, pnode_seen*) = true
+def $config_iterator_data_items(S, (ENTRY pkey pitem) :: pentry_tail*, pnode_seen*) = ($config_iterator_data_item(S, pitem, pnode_seen*) /\ $config_iterator_data_items(S, pentry_tail*, pnode_seen*))
+def $config_iterator_data_state(S, PROP_INITIAL, pnode_seen*) = true
+def $config_iterator_data_state(S, PROP_UNSET, pnode_seen*) = true
+def $config_iterator_data_state(S, PROP_VALUE pitem, pnode_seen*) = $config_iterator_data_item(S, pitem, pnode_seen*)
+def $config_iterator_data_state(S, ppropstate, pnode_seen*) = false -- otherwise
+def $config_iterator_data_slots(S, n, eps, pnode_seen*) = true
+def $config_iterator_data_slots(S, n, ppropertyslot :: ppropertyslot_tail*, pnode_seen*) = true
+  -- if $property_slot_descriptor(S, n, ppropertyslot) = (ppropertydesc)
+  -- if $property_slot_valid(S, ppropertydesc, ppropertyslot)
+  -- if $config_iterator_data_state(S, ppropertyslot.STATE, pnode_seen*)
+  -- if $config_iterator_data_slots(S, n, ppropertyslot_tail*, pnode_seen*)
+def $config_iterator_data_slots(S, n, ppropertyslot*, pnode_seen*) = false -- otherwise
 def $config_iterator_finalizable_aggregate_data(S, pconfigiterator) = true
   -- if pconfigiterator.PRODUCER = (n_aggregate)
   -- if ~$config_iterator_owning_input(pconfigiterator)
