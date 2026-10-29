@@ -27,6 +27,13 @@ error-handler cleanup continuations authenticate their source, payload, line and
 single Generator owner. Handler throws preserve the cached result and use the
 actual child resumer for delegated exception reinjection.
 
+Old-cache cleanup also authenticates an explicit literal string key in its runtime
+interned form. The compiled pool keeps plain bytes; the existing compiled-string
+conversion proves that this source origin emits the matching interned carrier.
+Request carriers, different bytes and a substituted delayed value CV are rejected.
+The [magic producer review](../../coverage/semantics/magic-producer-unpack-review.json)
+records the original failure, source agreement and reached cleanup/resumption checks.
+
 A genuine direct-global request release can retire a paused, nondelegating frame
 with no active finally. Its cache cell remains owned until ordered object release.
 Module340 now executes the identical active-finally request source as `C|7|F`;

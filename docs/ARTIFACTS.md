@@ -407,6 +407,14 @@ retained-native comparisons and handler projections are under
 revisions, hashes and the recovery paths. The joined A64 strict425 report is
 `call124-author-native/joined-a64-9742d77b0/report.json` under the same archive.
 
+CALL125's frozen original requests, candidate/strict reports, failures and
+diagnostics are under `../php-spec-evidence-archive/call125-author-native/`;
+`accepted-summary.json` binds individual complete source observations and eleven
+reached groups, whose raw directories moved intact to `reached-raw/`.
+Independent native/model probes are under `call125-review-native/` in the same
+archive. The [producer review](../coverage/semantics/magic-producer-unpack-review.json)
+records their hashes, tested revisions, limits and recovery.
+
 ## Commit provenance and recovery
 
 [The commit map](history-commit-map.tsv) maps all 428 pre-cleanup commits to the

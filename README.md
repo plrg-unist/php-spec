@@ -5778,10 +5778,11 @@ Supported computed and temporary public `__invoke` callees now use the same
 ordinary INIT selection and cleanup, consuming their raw callee result before
 Iterator arguments run. [Computed-callee review](coverage/semantics/computed-callee-unpack-review.json)
 records six new/promoted sources, two independent sources and four retained controls.
-Missing instance and external static methods now collect initialized Iterator
-spreads through the real magic trampoline before invoking `__call` or
-`__callStatic`; the [magic Iterator review](coverage/semantics/magic-iterator-unpack-review.json)
-records named/positional order, copied values and receiver/buffer cleanup.
+Selected missing instance and static methods collect array, Iterator and Generator
+spreads through the real zero-formal magic trampoline before invoking `__call` or
+`__callStatic`. Shared send mapping preserves copied values, named order and
+producer/receiver cleanup. The [producer review](coverage/semantics/magic-producer-unpack-review.json)
+extends the earlier [Iterator cut](coverage/semantics/magic-iterator-unpack-review.json).
 Public concrete class-method strings now distinguish
 computed static dispatch from fixed calls using a compatible active receiver.
 Immutable string captures/clone retain selected descriptors, called scope and

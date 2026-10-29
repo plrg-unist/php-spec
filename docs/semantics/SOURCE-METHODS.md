@@ -84,12 +84,14 @@ source factoring is statically compatible without renewing its tests. Child-owne
 magic overrides, other scoped names, callable APIs and wider lifetimes remain open.
 
 Selected missing instance, compatible `self::` and external static calls now
-collect initialized user Iterator spreads through a zero-formal magic trampoline
+collect array, initialized user Iterator and admitted Generator spreads through
+a zero-formal magic trampoline
 before entering their existing public typed two-formal, nongenerator handler.
-The [Iterator unpack contract](SOURCE-CALL-UNPACK.md#magic-method-iterator-unpack)
+The [unpack contract](SOURCE-CALL-UNPACK.md#magic-method-argument-unpack)
 records by-value sends, named buffering, real handler dispatch and cleanup;
-the [focused review](../../coverage/semantics/magic-iterator-unpack-review.json)
-keeps these source/reached cuts separate from the earlier positional evidence.
+the [producer review](../../coverage/semantics/magic-producer-unpack-review.json)
+keeps the shared array/Generator source and reached cuts separate from the earlier
+[Iterator evidence](../../coverage/semantics/magic-iterator-unpack-review.json).
 
 ## Descriptors and dispatch
 

@@ -710,19 +710,20 @@ their separate source/reached cuts, profiles and unchanged controls. Failed and
 Unsupported baselines earn zero agreement credit. Wider callable, producer,
 reference and lifecycle forms remain partial.
 
-CALL124 admits initialized user Iterator spreads into selected missing instance,
-compatible `self::` and external static magic calls through a zero-formal,
-by-value trampoline. It packs positional slots before named keys, enters the
-real public two-formal handler, and retains named-buffer/receiver ownership
-through normal, invalid-key and throwing cleanup. Nine authored and four
-independent original-source gaps now agree exactly with retained pinned PHP;
-two existing positional controls retain their earlier exact cut. Strict425,
-eight authored reached groups/253 reported assertions and two independent
-handler groups/77 assertions pass at separate tested cuts. Independently reviewed
-composition on the actual A64 tail also passes joined strict425. Baseline Unsupported
-gaps and all failed fixture/transport packets remain zero credit. Wider magic
-producers, signatures, references and lifetimes remain partial.
-[CALL124 review](coverage/semantics/magic-iterator-unpack-review.json).
+Selected missing instance, compatible `self::` and external static magic calls
+share zero-formal, by-value sends across arrays, initialized Iterators and admitted
+Generators. Arrays preserve reference-input ownership without reference demand;
+native Generator resumes copy live cache values before later mutations. Per-pack
+named phase and global duplicates feed the real two-formal handler and retained
+named buffer. Array input ownership releases before unfinished positional sends,
+the selected receiver and extra names; normal handler cleanup retains its own buffer order.
+CALL125's twelve authored and three independent originals agree exactly with PHP,
+and one affected Iterator source control agrees. Eleven reached groups pass
+367 reported assertions, including two affected controls; SL425 checks retain
+their separate tested cuts. The [producer review](coverage/semantics/magic-producer-unpack-review.json)
+preserves original failures and two genuine baseline refusals. Earlier
+[CALL124 evidence](coverage/semantics/magic-iterator-unpack-review.json) keeps its
+original cuts. Wider producers, handlers, references and lifetimes remain partial.
 
 ## Active and unintegrated work
 
@@ -735,6 +736,7 @@ producers, signatures, references and lifetimes remain partial.
 | I73 | Static Generator/Fiber CURRENT/NEXT/SEND transfer. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
+| CALL125 | Private source/state acceptance complete; actual-tail review and joined strict pending. |
 
 Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145 are integrated
 into this branch.
