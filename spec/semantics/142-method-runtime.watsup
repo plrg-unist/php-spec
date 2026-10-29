@@ -151,7 +151,7 @@ def $target_called_class(S, pcalltarget) = eps -- otherwise
 dec $method_target_eligible(pstate, porigin, pmethoddesc) : bool
 dec $scoped_selector_class(pstate, poperand) : porigin?
 dec $scoped_receiver_valid(pstate, porigin, pmethoddesc, nat?) : bool
-def $scoped_selector_class(S, KNOWN pvalue_string) = $class_named(S.CLASSNAMES, $ptlc(n*))
+def $scoped_selector_class(S, KNOWN pvalue_string) = $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(n*)))
   -- if $string_bytes(pvalue_string) = (n*)
 def $scoped_selector_class(S, poperand) = eps -- otherwise
 def $scoped_receiver_valid(S, porigin_class, pmethoddesc, eps) = true -- if pmethoddesc.STATIC
@@ -395,6 +395,8 @@ def $scoped_source_method_at(expression_name, ptbytes, z_precision) = true
   -- if ~$scoped_method_literal(expression_name)
 def $scoped_source_method_at(phpType20, ptbytes, z_precision) = false -- otherwise
 dec $scoped_requested_site(pstate, porigin, phpType19, porigin, pcallcontext?) : bool
+dec $scoped_compiled_keyword(pstate, phpType19) : name?
+dec $scoped_class_literal(pstate, phpType19) : bool
 def $scoped_requested_site(S, porigin_site, NName (BYTES text) metadata, porigin_requested, pcallcontext_caller?) = true
   -- if $ptlc($base64(text)) = $ptascii("self")
   -- if $method_context_scope(pcallcontext_caller?) = (porigin_requested)
@@ -410,23 +412,37 @@ def $scoped_requested_site(S, PORIGIN n_unit pcpath, phpType19, porigin_requeste
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_requested)
+def $scoped_requested_site(S, porigin_site, expression_class, porigin_requested, pcallcontext_caller?) = $scoped_requested_site(S, porigin_site, name, porigin_requested, pcallcontext_caller?)
+  -- if ~$ppscoped_named(expression_class)
+  -- if $scoped_compiled_keyword(S[.ORIGIN = (porigin_site)], expression_class) = (name)
 def $scoped_requested_site(S, porigin_site, expression_class, porigin_requested, pcallcontext_caller?) = true
   -- if ~$ppscoped_named(expression_class)
+  -- if $scoped_compiled_keyword(S[.ORIGIN = (porigin_site)], expression_class) = eps
+  -- if $scoped_class_literal(S[.ORIGIN = (porigin_site)], expression_class)
+  -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_class)
+  -- if $compiled_read(S, porigin_class) = (PSTRING ptbytes_raw)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
+def $scoped_requested_site(S, porigin_site, expression_class, porigin_requested, pcallcontext_caller?) = true
+  -- if ~$scoped_class_literal(S[.ORIGIN = (porigin_site)], expression_class)
 def $scoped_requested_site(S, porigin_site, phpType19, porigin_requested, pcallcontext_caller?) = false -- otherwise
-dec $scoped_called_site(pstate, phpType19, porigin, porigin, pcallcontext?, pmethoddesc, nat?) : bool
-def $scoped_called_site(S, phpType19, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, (n_receiver)) = true
+dec $scoped_called_site(pstate, porigin, phpType19, porigin, porigin, pcallcontext?, pmethoddesc, nat?) : bool
+def $scoped_called_site(S, porigin_site, phpType19, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, (n_receiver)) = true
   -- if ~pmethoddesc.STATIC
   -- if $(n_receiver < |S.OBJECTS|)
   -- if $object_class_origin(S, n_receiver) = (porigin_called)
-def $scoped_called_site(S, phpType19, porigin_requested, porigin_called, (pcallcontext_caller), pmethoddesc, eps) = true
+def $scoped_called_site(S, porigin_site, phpType19, porigin_requested, porigin_called, (pcallcontext_caller), pmethoddesc, eps) = true
   -- if pmethoddesc.STATIC
   -- if $ppscoped_keyword(phpType19)
   -- if pcallcontext_caller.CALLED_CLASS = (porigin_called)
-def $scoped_called_site(S, phpType19, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, eps) = true
+def $scoped_called_site(S, porigin_site, expression_class, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, eps) = $scoped_called_site(S, porigin_site, name, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, eps)
+  -- if pmethoddesc.STATIC
+  -- if $scoped_compiled_keyword(S[.ORIGIN = (porigin_site)], expression_class) = (name)
+def $scoped_called_site(S, porigin_site, phpType19, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, eps) = true
   -- if pmethoddesc.STATIC
   -- if ~$ppscoped_keyword(phpType19)
+  -- if $scoped_compiled_keyword(S[.ORIGIN = (porigin_site)], phpType19) = eps
   -- if porigin_requested = porigin_called
-def $scoped_called_site(S, phpType19, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, n_receiver?) = false -- otherwise
+def $scoped_called_site(S, porigin_site, phpType19, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, n_receiver?) = false -- otherwise
 dec $scoped_receiver_site(pstate, porigin, pmethoddesc, nat?, pcallcontext?) : bool
 def $scoped_receiver_site(S, porigin_requested, pmethoddesc, eps, pcallcontext_caller?) = true -- if pmethoddesc.STATIC
 def $scoped_receiver_site(S, porigin_requested, pmethoddesc, (n_receiver), (pcallcontext_caller)) = true
@@ -449,7 +465,7 @@ def $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method pori
   -- if $scoped_source_method_origin(S, porigin_site, phpType20, pmethoddesc.NAME)
   -- if $scoped_site_context(S, porigin_method, porigin_site) = pcallcontext_caller?
   -- if $scoped_requested_site(S, porigin_site, phpType19, porigin_requested, pcallcontext_caller?)
-  -- if $scoped_called_site(S, phpType19, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, n_receiver?)
+  -- if $scoped_called_site(S, porigin_site, phpType19, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, n_receiver?)
   -- if $scoped_receiver_site(S, porigin_requested, pmethoddesc, n_receiver?, pcallcontext_caller?)
   -- if $scoped_access_site(S, pmethoddesc, n_receiver?, porigin_site, pcallcontext_caller?)
 def $scoped_call_selected(S, pcalltarget, porigin_site) = false -- otherwise
@@ -801,19 +817,20 @@ def $scoped_source_name(S, phpType19) = (preqbytes)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
 def $scoped_source_name(S, phpType19) = eps -- otherwise
 dec $scoped_dynamic_class(pstate, int) : pstate
+dec $autoload_scoped_class_pending(pstate, phpType19, int) : bool
 def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING pclassdesc.NAME)]
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue_string
   -- if $string_bytes(pvalue_string) = (n*)
-  -- if $class_named(S_read.CLASSNAMES, $ptlc(n*)) = (porigin_class)
+  -- if $class_named(S_read.CLASSNAMES, $ptlc($ppcall_literal_name(n*))) = (porigin_class)
   -- if $class_at(S_read.CLASSES, porigin_class) = (pclassdesc)
 def $scoped_dynamic_class(S, z) = $throw_scalar(S_read, "Error", $ptascii("Class \"") ++ n* ++ $ptascii("\" not found"), z)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue_string
   -- if $string_bytes(pvalue_string) = (n*)
-  -- if $class_named(S_read.CLASSNAMES, $ptlc(n*)) = eps
+  -- if $class_named(S_read.CLASSNAMES, $ptlc($ppcall_literal_name(n*))) = eps
   -- if $ptlc($typed_callable_name(n*)) =/= $ptascii("closure")
   -- if $ptlc($typed_callable_name(n*)) =/= $ptascii("weakreference")
   -- if $ptlc($typed_callable_name(n*)) =/= $ptascii("fiber")
@@ -823,7 +840,7 @@ def $scoped_dynamic_class(S, z) = S_read[.COMPLETION = UNSUPPORTED "scoped class
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue_string
   -- if $string_bytes(pvalue_string) = (n*)
-  -- if $class_named(S_read.CLASSNAMES, $ptlc(n*)) = eps
+  -- if $class_named(S_read.CLASSNAMES, $ptlc($ppcall_literal_name(n*))) = eps
   -- if $autoload_new_pending(S_read, $ppcall_literal_name(n*))
 def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING pclassdesc.NAME)]
   -- if S_read = $resolve_at(S, S.RESULT, z)
@@ -842,24 +859,63 @@ def $scoped_dynamic_class(S, z) = $throw_scalar(S_read, "Error", $ptascii("Class
 def $scoped_dynamic_class(S, z) = S_read -- if S_read = $resolve_at(S, S.RESULT, z) -- if S_read.COMPLETION =/= NORMAL
 def $scoped_dynamic_class(S, z) = S[.COMPLETION = UNSUPPORTED "internal object class expression"] -- otherwise
 
+def $scoped_class_literal(S, phpType19) = true -- if $ppscoped_named(phpType19)
+def $scoped_class_literal(S, phpType19) = true
+  -- if ~$ppscoped_named(phpType19)
+  -- if $origin_child(S.ORIGIN, [PCFIELD 0]) = (porigin_child)
+  -- if $compiled_read(S, porigin_child) = (PSTRING ptbytes)
+def $scoped_class_literal(S, phpType19) = false -- otherwise
+def $scoped_compiled_keyword(S, expression) = (NName (BYTES "c2VsZg==") metadata)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall expression phpType20 phpType6 metadata)
+  -- if $parser_literal(expression) = eps
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $compiled_read(S, porigin_child) = (PSTRING ptbytes)
+  -- if $ptlc(ptbytes) = $ptascii("self")
+def $scoped_compiled_keyword(S, expression) = (NName (BYTES "cGFyZW50") metadata)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall expression phpType20 phpType6 metadata)
+  -- if $parser_literal(expression) = eps
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $compiled_read(S, porigin_child) = (PSTRING ptbytes)
+  -- if $ptlc(ptbytes) = $ptascii("parent")
+def $scoped_compiled_keyword(S, expression) = (NName (BYTES "c3RhdGlj") metadata)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall expression phpType20 phpType6 metadata)
+  -- if $parser_literal(expression) = eps
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $compiled_read(S, porigin_child) = (PSTRING ptbytes)
+  -- if $ptlc(ptbytes) = $ptascii("static")
+def $scoped_compiled_keyword(S, phpType19) = eps -- otherwise
 dec $scoped_class_prepare(pstate, phpType19, int) : pstate
 def $scoped_class_prepare(S, phpType19, z) = S[.RESULT = KNOWN (PSTRING preqbytes)]
   -- if $ppscoped_named(phpType19)
   -- if $scoped_source_name(S, phpType19) = (preqbytes)
+def $scoped_class_prepare(S, phpType19, z) = $scoped_class_prepare(S, name, z)
+  -- if ~$ppscoped_named(phpType19)
+  -- if $scoped_compiled_keyword(S, phpType19) = (name)
+def $scoped_class_prepare(S, phpType19, z) = S[.RESULT = KNOWN (PSTRING ptbytes)]
+  -- if ~$ppscoped_named(phpType19)
+  -- if $scoped_compiled_keyword(S, phpType19) = eps
+  -- if $origin_child(S.ORIGIN, [PCFIELD 0]) = (porigin_child)
+  -- if $compiled_read(S, porigin_child) = (PSTRING ptbytes_raw)
+  -- if ptbytes = $ppcall_literal_name(ptbytes_raw)
 def $scoped_class_prepare(S, phpType19, z) = $throw_scalar(S, "Error", $ptascii("Cannot access \"") ++ $ptlc($base64(text)) ++ $ptascii("\" when no class scope is active"), z)
   -- if phpType19 = NName (BYTES text) metadata
   -- if $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("static")]
   -- if $scoped_source_name(S, phpType19) = eps
 def $scoped_class_prepare(S, phpType19, z) = $scoped_dynamic_class(S, z)
-  -- if ~$ppscoped_named(phpType19)
+  -- if ~$scoped_class_literal(S, phpType19)
 def $scoped_class_prepare(S, phpType19, z) = S[.COMPLETION = UNSUPPORTED "scoped class reference"] -- otherwise
 
 dec $scoped_called_class(pstate, phpType19, porigin) : porigin?
 def $scoped_called_class(S, phpType19, porigin_requested) = pcallcontext.CALLED_CLASS
   -- if $ppscoped_keyword(phpType19)
   -- if S.CURRENT = (pcallcontext)
+def $scoped_called_class(S, phpType19, porigin_requested) = $scoped_called_class(S, name, porigin_requested)
+  -- if $scoped_compiled_keyword(S, phpType19) = (name)
 def $scoped_called_class(S, phpType19, porigin_requested) = (porigin_requested)
-  -- if ~$ppscoped_keyword(phpType19)
+  -- if ~$ppscoped_keyword(phpType19) /\ $scoped_compiled_keyword(S, phpType19) = eps
 def $scoped_called_class(S, phpType19, porigin_requested) = eps -- otherwise
 dec $scoped_missing(pstate, phpType19, ptbytes, ptbytes, int) : pstate
 dec $scoped_ctor_arm(pstate) : bool
@@ -946,6 +1002,7 @@ def $scoped_select_found_base(S, phpType19, porigin_requested, pmethoddesc, pope
   -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
   -- if ~$magic_static_method_needed(S, porigin_requested)
 dec $scoped_select(pstate, phpType19, poperand, ptbytes, phpType7*, int) : pstate
+dec $autoload_scoped_selected_start(pstate, phpType19, poperand, ptbytes, phpType7*, int) : pstate
 def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpType7*, z) = $ctor_method_start(S, n_receiver, z)
   -- if $ptlc(ptbytes_method) = $ptascii("__construct")
   -- if $scoped_internal_ctor_kind(S, phpType19, n_class*) = (text_kind)
@@ -973,7 +1030,7 @@ def $scoped_select(S, phpType19, poperand_selector, ptbytes_method, phpType7*, z
   -- if $effective_method(S, porigin_requested, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
   -- if ~$enum_generated(S, porigin_requested, ptbytes_method)
 def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpType7*, z) = $scoped_missing(S, phpType19, pclassdesc.NAME, ptbytes_method, z)
-  -- if $class_named(S.CLASSNAMES, $ptlc(n_class*)) = (porigin_requested)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(n_class*))) = (porigin_requested)
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
   -- if $effective_method(S, porigin_requested, ptbytes_method, |S.CLASSES|) = eps
   -- if ~$enum_generated(S, porigin_requested, ptbytes_method)
@@ -982,15 +1039,15 @@ def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpTy
 def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Class \"") ++ n_class* ++ $ptascii("\" not found"), z)[.TODO = eps]
   -- if $ptlc($typed_callable_name(n_class*)) =/= $ptascii("fiber")
   -- if $ptlc($typed_callable_name(n_class*)) =/= $ptascii("weakreference")
-  -- if $class_named(S.CLASSNAMES, $ptlc(n_class*)) = eps
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(n_class*))) = eps
   -- if ($ptlc(ptbytes_method) =/= $ptascii("__construct") \/ $scoped_internal_ctor_kind(S, phpType19, n_class*) = eps)
   -- if ($ptlc(ptbytes_method) =/= $ptascii("__tostring") \/ $scoped_internal_method_kind(S, phpType19, n_class*, ptbytes_method) = eps)
   -- if $ptlc(n_class*) =/= $ptascii("closure") \/ $ptlc(ptbytes_method) =/= $ptascii("bind")
   -- if $ptlc(n_class*) =/= $ptascii("closure") \/ $ptlc(ptbytes_method) =/= $ptascii("fromcallable")
   -- if $ptlc(n_class*) =/= $ptascii("closure") \/ $ptlc(ptbytes_method) =/= $ptascii("getcurrent")
   -- if ~$autoload_new_pending(S, $ppcall_literal_name(n_class*))
-def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "scoped class autoload"]
-  -- if $class_named(S.CLASSNAMES, $ptlc(n_class*)) = eps
+def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpType7*, z) = $autoload_scoped_selected_start(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpType7*, z)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(n_class*))) = eps
   -- if $autoload_new_pending(S, $ppcall_literal_name(n_class*))
 def $scoped_select(S, phpType19, poperand_selector, ptbytes_method, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "scoped method selection"] -- otherwise
 dec $scoped_name_prepare(pstate, phpType19, poperand, phpType20, phpType7*, int) : pstate
@@ -1004,13 +1061,13 @@ def $trait_fcc_retained_call_scope(S, porigin) = eps -- otherwise
 
 rule PhpStep/scoped-call-named: S ~> S[.TODO = (SCOPED_CLASS phpType19 phpType20 phpType7* $runtime_line(S, eps, NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)) :: ptask_tail*]
   -- if S.TODO = (EVAL (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)) :: ptask_tail*
-  -- if $ppscoped_named(phpType19)
+  -- if $scoped_class_literal(S, phpType19)
   -- if S.ORIGIN = (porigin)
   -- if ~$constant_callable_active(S, porigin)
   -- if $trait_fcc_retained_call_scope(S, porigin) = eps
 rule PhpStep/scoped-call-dynamic: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_class), SCOPED_CLASS expression_class phpType20 phpType7* $runtime_line(S, eps, NExprStaticCall expression_class phpType20 (SEQUENCE phpType7*) metadata)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprStaticCall expression_class phpType20 (SEQUENCE phpType7*) metadata)) :: ptask_tail*
-  -- if ~$ppscoped_named(expression_class)
+  -- if ~$scoped_class_literal(S, expression_class)
   -- if ~$parent_hook_syntax(NExprStaticCall expression_class phpType20 (SEQUENCE phpType7*) metadata)
   -- if S.ORIGIN = (porigin)
   -- if ~$constant_callable_active(S, porigin)
@@ -1023,6 +1080,7 @@ rule PhpStep/scoped-class-abrupt: S ~> S_class[.TODO = eps]
   -- if S.TODO = (SCOPED_CLASS phpType19 phpType20 phpType7* z) :: ptask_tail*
   -- if S_class = $scoped_class_prepare(S, phpType19, z)
   -- if S_class.COMPLETION =/= NORMAL
+  -- if ~$autoload_scoped_class_pending(S, phpType19, z)
 rule PhpStep/scoped-name: S ~> $scoped_select(S_name, phpType19, poperand_selector, n_name*, phpType7*, z)
   -- if S.TODO = (SCOPED_NAME phpType19 poperand_selector phpType7* z) :: ptask_tail*
   -- if S_name = $resolve_at(S, S.RESULT, z)
@@ -1155,7 +1213,31 @@ def $scoped_name_task(S, phpType19, KNOWN (PSTRING n_class*), phpType7*, z) = tr
   -- if $scoped_class_task(S, phpType19, expression_name, phpType7*, z)
   -- if $property_computed_name(expression_name)
   -- if ~$ppscoped_named(phpType19)
-  -- if $class_named(S.CLASSNAMES, $ptlc(n_class*)) = (porigin_class)
+  -- if $scoped_compiled_keyword(S, phpType19) = (name)
+  -- if $scoped_source_name(S, name) = (n_class*)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (PORIGIN n_unit pcpath)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_name, b))
+def $scoped_name_task(S, phpType19, KNOWN (PSTRING n_class*), phpType7*, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 expression_name (SEQUENCE phpType7*) metadata)
+  -- if $scoped_class_task(S, phpType19, expression_name, phpType7*, z)
+  -- if $property_computed_name(expression_name)
+  -- if ~$ppscoped_named(phpType19)
+  -- if $scoped_compiled_keyword(S, phpType19) = eps
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_class)
+  -- if $compiled_read(S, porigin_class) = (PSTRING ptbytes_raw)
+  -- if n_class* = $ppcall_literal_name(ptbytes_raw)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (PORIGIN n_unit pcpath)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_name, b))
+def $scoped_name_task(S, phpType19, KNOWN (PSTRING n_class*), phpType7*, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 expression_name (SEQUENCE phpType7*) metadata)
+  -- if $scoped_class_task(S, phpType19, expression_name, phpType7*, z)
+  -- if $property_computed_name(expression_name)
+  -- if ~$scoped_class_literal(S, phpType19)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(n_class*))) = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if pclassdesc.NAME = n_class*
   -- if $origin_child((porigin), [PCFIELD 1]) = (PORIGIN n_unit pcpath)
