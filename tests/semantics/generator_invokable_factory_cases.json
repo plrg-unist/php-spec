@@ -1,0 +1,29 @@
+[
+  {
+    "id": "i83-implicit-static",
+    "purpose": "Implicit inherited __invoke creates the exact private static Generator; maker retires before body, with lexical Base/called Child and private-target refusal.",
+    "source": "<?php\nclass Base83 {\n    public function __invoke() {\n        echo 'MAKE|', __CLASS__ === 'Base83', '|', static::class === 'Child83', '|';\n        return self::body();\n    }\n    private static function body() {\n        echo 'BODY|', __CLASS__ === 'Base83', '|', static::class === 'Child83', '|';\n        try { yield 83; }\n        finally { echo 'FIN|'; }\n    }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Child83 extends Base83 {\n    public static function body() { echo 'BAD-TARGET|'; yield 0; }\n}\n$maker = new Child83();\n$weak = WeakReference::create($maker);\n$g = $maker();\nunset($maker);\necho 'FRESH|', $weak->get() === null, '|';\necho 'VALUE|', $g->current() === 83, '|';\nunset($g, $weak);\necho 'E';\n",
+    "source_sha256": "c38d4fc0175ebdc4bba30ea3d03dadca9e699b87b035989bea17bda949f6bd75",
+    "native_exit": 0,
+    "native_stdout": "MAKE|1|1|MAKER|FRESH|1|VALUE|BODY|1|1|1|FIN|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i83-implicit-protected-close",
+    "purpose": "Implicit inherited __invoke selects parent protected receiver body despite a Child override; actual body receiver survives through close and retires afterward.",
+    "source": "<?php\nclass Base83B {\n    protected function body() {\n        global $weak;\n        echo 'BODY|', __CLASS__ === 'Base83B', '|', static::class === 'Child83B', '|', $this === $weak->get(), '|';\n        try { yield 83; }\n        finally { echo 'FIN|', $weak->get() instanceof Child83B, '|'; }\n    }\n}\nclass Mid83B extends Base83B {\n    public function __invoke() {\n        echo 'MAKE|', __CLASS__ === 'Mid83B', '|', static::class === 'Child83B', '|';\n        return parent::body();\n    }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Child83B extends Mid83B {\n    public function body() { echo 'BAD-TARGET|'; yield 0; }\n}\n$maker = new Child83B();\n$weak = WeakReference::create($maker);\n$g = $maker();\nunset($maker);\necho 'FRESH|', $weak->get() instanceof Child83B, '|';\necho 'VALUE|', $g->current() === 83, '|';\nunset($g);\necho 'AFTER|', $weak->get() === null, '|E';\n",
+    "source_sha256": "379d676c3433533938460ff39900f986a995a9df2c4fa57b62e7535ee3026f24",
+    "native_exit": 0,
+    "native_stdout": "MAKE|1|1|FRESH|1|VALUE|BODY|1|1|1|1|FIN|1|MAKER|AFTER|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i83-implicit-forward-chain",
+    "purpose": "Implicit inherited __invoke forwards through a private static self link to parent static Generator while preserving lexical/called scopes and83yield/84return after maker retirement.",
+    "source": "<?php\nclass Base83C {\n    protected static function body() {\n        echo 'BODY|', __CLASS__ === 'Base83C', '|', static::class === 'Child83C', '|';\n        yield 83;\n        return 84;\n    }\n}\nclass Mid83C extends Base83C {\n    public function __invoke() {\n        echo 'MAKE|', __CLASS__ === 'Mid83C', '|', static::class === 'Child83C', '|';\n        return self::forward();\n    }\n    private static function forward() {\n        echo 'STEP|', __CLASS__ === 'Mid83C', '|', static::class === 'Child83C', '|';\n        return parent::body();\n    }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Child83C extends Mid83C {\n    public static function forward() { echo 'BAD-FORWARD|'; return []; }\n    protected static function body() { echo 'BAD-TARGET|'; yield 0; }\n}\n$maker = new Child83C();\n$weak = WeakReference::create($maker);\n$g = $maker();\nunset($maker);\necho 'FRESH|', $weak->get() === null, '|';\necho 'VALUE|', $g->current() === 83, '|';\n$g->next();\necho 'RETURN|', $g->getReturn() === 84, '|';\nunset($g, $weak);\necho 'E';\n",
+    "source_sha256": "315e95587b22850cab0c8156d95dd40cc3c3ce24880d53135c21d2084e6cf752",
+    "native_exit": 0,
+    "native_stdout": "MAKE|1|1|STEP|1|1|MAKER|FRESH|1|VALUE|BODY|1|1|1|RETURN|1|E",
+    "native_stderr": ""
+  }
+]
