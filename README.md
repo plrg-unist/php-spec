@@ -1683,6 +1683,13 @@ cleaning up the partial builder.
 An Aggregate-returned Iterator has its own source agreement. Four exact sources
 and 670 reached premises for the three direct Iterator sources are recorded in
 the [by-reference destructor review](coverage/semantics/array-iterator-byref-destructor-review.json).
+That destructor route also accepts one plain declared ARRAY field with an
+unpooled runtime root and finite scalar-reference graph. Nested destructor writes
+preserve the field's independent COW snapshot and shared leaf aliases; storage
+retirement releases the field while normal or abrupt spread cleanup keeps its
+own builder lifetime.
+The [owning-field review](coverage/semantics/array-iterator-owned-field-review.json)
+records held and sole reference leaves, nested COW and the separate tested cuts.
 Ordinary CVs of named IteratorAggregate classes now invoke a borrowed
 `getIterator()` frame and
 transfer its owned user Iterator or named-Generator return into DATA. Genuine

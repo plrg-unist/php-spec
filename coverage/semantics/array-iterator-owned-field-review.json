@@ -1,0 +1,113 @@
+{
+  "milestone": "A62 by-reference Iterator spread with one owning declared ARRAY field",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+  "scope": "An initialized ordinary CV Iterator has a public real destructor, genuine by-reference current ARRAY cell and exactly one inline public untyped mutable declared ARRAY field with a mutable, unpooled runtime array root (DIRECT children may be pooled). Other declared slots are DIRECT scalars. Finite direct array descendants may hold ordinary scalar reference leaves. Current-cell rebinding in key leaves the field and saved row on the old graph; destructor writes preserve nested COW and shared-versus-singleton leaf behavior. Spread entries remain DIRECT copies. Normal last-DATA, retained external owner, supplied key throw, invalid key, post-insert next throw and one Aggregate-returned Iterator preserve their distinct cleanup order.",
+  "implementation": {
+    "runtime_revision": "95612d22cd7ec0c92326509c60245c8a83fb95fb",
+    "runtime_file": "spec/semantics/426-array-iterator-unpack.watsup",
+    "runtime_sha256": "433ce0cef15ada5631db93446d6af222b0079967be953d35a1c915d8d2c164a0",
+    "author_fixture_revision": "62f26ebfa57f4429ecbd3345f260f1061a40756d",
+    "public_budget_revision": "d907bbf3e5d1894069d98562946db68d907d46f4",
+    "peer_fixture_revision": "106cd69dd7b97cb8be9d8ceb748b64a6e14c6af6",
+    "boundary": "Only ready-object admission changes: validate declared slot identity, one owning field with a mutable unpooled runtime array root, no property table/hooks, existing finite ordinary scalar-reference graph and no builder backedge. Existing 257/359 eager destruction and storage release perform actual cleanup; schema, module order and ownership algorithms stay unchanged."
+  },
+  "engine_routes": [
+    "Zend/zend_interfaces.c zend_user_it_get_current_data, zend_user_it_get_current_key, zend_user_it_invalidate_current, zend_user_it_dtor: raw current survives key, then current invalidates before DATA object retirement.",
+    "Zend/zend_vm_def.h ZEND_ADD_ARRAY_UNPACK: current, key validation, dereference/addref/insertion, next, iterator destruction; unfinished builder live-range cleanup stays separate.",
+    "Zend/zend_objects.c zend_objects_destroy_object and zend_object_std_dtor: real destructor precedes weak notification and declared-property storage retirement.",
+    "Zend/zend_hash.c zend_array_dup_value: held scalar references remain shared, sole references unwrap in copied tables; nested array writes separate the child independently."
+  ],
+  "validation": {
+    "native_direct4": {
+      "path": ".tools/array-iterator-owned-field-62/.tools/a62-native4/report.json",
+      "sha256": "f1ba66cfea47316a3685254019c95a48051eef64ef30f3067ab7ec4c5c921245",
+      "revision": "d9e3878470c88fc98ca0732006ef83d3e5f5438e"
+    },
+    "native_aggregate1": {
+      "path": ".tools/array-iterator-owned-field-62/.tools/a62-aggregate-native1/report.json",
+      "sha256": "71aa145f1b0bcc68ad63ce77cabc0ab5d5b5919a1aff8742765d2deebca694c3",
+      "revision": "d9e3878470c88fc98ca0732006ef83d3e5f5438e"
+    },
+    "unchanged_model5": {
+      "path": ".tools/array-iterator-owned-field-62/.tools/a62-baseline5/report.json",
+      "sha256": "6906c1a4da99d8f0fd4559ab8c6963e123939c7d9dfc26547acdc33005b249ec",
+      "revision": "d9e3878470c88fc98ca0732006ef83d3e5f5438e",
+      "result": "Five genuine Unsupported originals; zero agreement credit."
+    },
+    "strict424": {
+      "path": ".tools/array-iterator-owned-field-62/.tools/a62-strict/report.json",
+      "sha256": "9719431801bb29ee3e4671c419ff49c486f6379ed46f1712f685d42909c2ae15",
+      "revision": "95612d22cd7ec0c92326509c60245c8a83fb95fb",
+      "result": "SL elaboration/algorithmic/structuring PASS, caches disabled, encountered determinism checks, quiet exit0."
+    },
+    "source5": {
+      "path": ".tools/array-iterator-owned-field-62/.tools/a62-source5-retry/report.json",
+      "sha256": "fbb1dda13865c44143ca15b8b0c412522a80504c68103ac05773cca0a0112f09",
+      "revision": "95612d22cd7ec0c92326509c60245c8a83fb95fb",
+      "result": "Five exact normal original-source agreements on the existing native paths, model120s/process150s; no native replay."
+    },
+    "source_next_throw1": {
+      "path": ".tools/array-iterator-owned-field-62/.tools/a62-next-source1/report.json",
+      "sha256": "4aa67e82304a6c6aac26de111b17160b05d48c42589879456ef09e70c3043194",
+      "revision": "211e370efc7ca8b433add3bd5924b14ecadf6657",
+      "result": "One exact post-insert next-throw original, separate source-only cut; no new strict or baseline credit."
+    },
+    "peer_key_throw": {
+      "path": ".tools/array-iterator-owned-field-peer-62/.tools/a62-peer-state-model-v8-mem4/report.json",
+      "sha256": "819c6614bfa250128154d603859f676ffaf0f83f721e1a79cbdc9db4e489efc0",
+      "revision": "95612d22cd7ec0c92326509c60245c8a83fb95fb",
+      "result": "Accepted key-throw row only:230 total premises including3 raw PhpStep. The invalid-key row failed and has zero credit at this cut."
+    },
+    "peer_invalid_key": {
+      "path": ".tools/array-iterator-owned-field-peer-62/.tools/a62-peer-state-model-v9-mem4/report.json",
+      "sha256": "c3ec2fff6833609bc35f40e6a0f16d245f213b238c17cc5c6307850b2b84f96d",
+      "revision": "95612d22cd7ec0c92326509c60245c8a83fb95fb",
+      "result": "Affected invalid-key row only:217 total premises including3 raw PhpStep, quiet true/exit0. The key-throw fixture is byte-identical and was not rerun."
+    },
+    "independent_singleton_source": {
+      "path": ".tools/array-iterator-owned-field-peer-62/.tools/a62-peer-independent/report.json",
+      "sha256": "d1edc76b6830dcd357509be63c5877c5cc9f797561bdb848fd094afaf3c0dba6",
+      "revision": "95612d22cd7ec0c92326509c60245c8a83fb95fb",
+      "result": "One native-first exact normal source: outside leaf unset, field COW unwraps its sole alias; field17 leaves saved2. Native0.004s/model45.947s, quiet exit0."
+    },
+    "author_focused": {
+      "path": ".tools/array-iterator-owned-field-62/.tools/a62-author-state-model-v3-mem4/report.json",
+      "sha256": "62255a2b41fd23b1b5af0e985837bbd0468d705af2039142ce9f90d2f2dc3a3e",
+      "revision": "d907bbf3e5d1894069d98562946db68d907d46f4",
+      "result": "Last-DATA293/3 raw and retained-owner266/1 raw:559 total premises including4 raw PhpStep, quiet true/exit0,135.891s/129.386s. No timeout/interruption; parent and numeric groups empty. Both remain within the public180s state budget.",
+      "prepare_report": ".tools/array-iterator-owned-field-62/.tools/a62-author-state-prepare-v3/report.json",
+      "prepare_sha256": "ad7ff136112e88cf03c048c3338269295f4a057b666677c62dcf8d2cc711c850"
+    }
+  },
+  "independent_review": "array62_resume_review cleared runtime guard semantics against the pinned engine, six authored sources and one independent singleton-leaf source,447 abrupt/invalid reached premises across separate v8/v9 cuts,559 author normal/retained premises at d907bbf3e, exact generated fixtures, raw streams/exits/groups and public caller budgets. Final documentation and artifact recovery are reviewed separately; no integrated-tail execution credit is inferred.",
+  "preserved_failures": "The first authored source run hit its internal semantic timeout and has zero agreement credit. All earlier peer frontier/owner/stack/pool fixture failures, including the2GiB address-space stop and v8 invalid-key binder collision, remain raw with zero failed-row credit. Corrections change fixtures or execution budget, not semantic answers; successful rows keep their original cuts.",
+  "execution": {
+    "profile": "tests/semantics/profile.json; -n, opcache CLI/JIT disabled, precision14, serialize_precision-1, UTC, error_reporting30719, zend.assertions1; LC_ALL=C,TZ=UTC",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "focused_limits": "Leased single CPU, parent and descendants pinned; numeric300s each,4GiB AS, serial fail-first and full parent/numeric group checks. Exact commands, pids, exits and peaks are in archived actor/outer reports.",
+    "public_source_budget": "Default incdec main remains60s/90s. Three A62 author callers use120s/150s, matching the already accepted retries; static independent review adds no renewed execution credit."
+  },
+  "remaining": "Complete array spread, Iterator/Traversable lifetimes and PHP core semantics remain partial. Pooled field roots, multiple owning fields, materialized tables/hooks, special/typed/proxy/object/cyclic/debt descendants, builder backedges, broader destructor reentry and other operands remain outside this admission. No engine bug or intentional divergence was identified.",
+  "accepted_results": {
+    "original_source_agreements": 7,
+    "authored_originals": 6,
+    "independent_originals": 1,
+    "strict_modules": 424,
+    "reached_total_premises": 1006,
+    "reached_boolean_premises": 996,
+    "raw_steps": 10,
+    "note": "Distinct tested cuts retain their original identities; focused states add no PHP source agreement credit."
+  },
+  "archive": {
+    "location": "../php-spec-evidence-archive/array-iterator-owned-field-62/raw.tar",
+    "sha256": "1c08ff8c57c9d68198d7add4e374d33fdd945f74123dc75f94bd74e8006f0962",
+    "bytes": 17438720,
+    "members": 741,
+    "regular_files": 671,
+    "manifest": "../php-spec-evidence-archive/array-iterator-owned-field-62/manifest.json",
+    "manifest_sha256": "3cdc078b62f55fe2fcc610d5b1c09d99baf254e09da57077f0f9e273f413b5e4",
+    "recovery": "Recreate a selected worktree at its report revision, verify raw.tar SHA-256 and extract that worktree prefix beneath php-spec/.tools. Restore pinned local provider binaries from report identities. Original source contexts retain their saved absolute cwd/path; use report argv with a fresh output path to replay exact saved fixtures. Native/strict/source/state evidence keeps its original tested cut, not the final documentation revision."
+  }
+}

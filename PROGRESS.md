@@ -8,6 +8,22 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
+An ordinary Iterator spread with by-reference `current()` now admits one inline
+public untyped ARRAY field with an unpooled runtime root through its real DATA
+destructor.
+Current-cell rebinding leaves the field's old graph intact; nested destructor
+writes preserve child COW and distinct behavior for held and sole scalar aliases.
+Normal completion, retained owners, key/next throws, invalid keys and Aggregate
+originals preserve their distinct cleanup order.
+Six authored sources and one independent singleton-leaf source agree exactly
+with PHP; strict compilation of 424 modules and 1006 reached premises (996
+Boolean, ten raw steps) pass at separate cuts. Five unchanged baselines remain
+genuine Unsupported with zero agreement credit. Earlier timeouts and fixture
+failures remain preserved with zero failed-row credit. Multiple owning fields
+and wider table, hook, reference
+and lifecycle layouts remain partial.
+[Owning-field review](coverage/semantics/array-iterator-owned-field-review.json).
+
 Primed plain unbound Closure-created by-reference `Generator::throw` now
 transfers an authenticated cached cell and real Closure through Fiber catch or
 pending `finally`. Source-name rebinding preserves the old cache; copied and
