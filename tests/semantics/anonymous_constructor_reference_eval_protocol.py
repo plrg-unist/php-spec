@@ -44,7 +44,7 @@ def $ref153_eval_stage(S,1) = true
   -- if $ref153_eval_ctor(S,porigin)
 def $ref153_eval_stage(S,2) = true
   -- if S.CURRENT = eps /\ S.EVALCONTEXTS = eps
-  -- if $ref153_eval_last(S.EVENTS,eps) = $ptascii("after")
+  -- if $ref153_eval_last(S.EVENTS,eps) = $ptascii("|after")
 def $ref153_eval_stage(S,n) = false -- otherwise
 dec $ref153_eval_seek(pstate,nat,nat) : pstate
 def $ref153_eval_seek(S,n_mode,n) = S -- if $ref153_eval_stage(S,n_mode)
