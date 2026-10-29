@@ -28,9 +28,12 @@ dec $call_aggregate_match(pcallaggregate, punpackcall, poperand, nat) : bool
 dec $call_aggregate_receipt(pstate, punpackcall, poperand, nat, ptask*) : bool
 dec $call_aggregate_receipt_at(pstate, punpackcall, poperand, nat, ptask) : bool
 dec $call_aggregate_marker(punpackcall, ptask*) : bool
+dec $call_aggregate_marker_at(punpackcall, ptask) : bool
 dec $call_aggregate_leaf_task(ptask, pcallaggregate) : bool
 dec $call_aggregate_leaf_active(pcallaggregate, ptask*) : bool
+dec $call_aggregate_leaf_head(pcallaggregate, ptask, ptask*) : bool
 dec $call_aggregate_leaf_saved(pcallaggregate, pdestructionoperation*) : bool
+dec $call_aggregate_leaf_source(pcallaggregate, ptask) : bool
 dec $call_aggregate_source_task(ptask, pcallaggregate) : bool
 
 ;; This increment uses ordinary public, zero-argument, by-value getters. A
@@ -251,8 +254,9 @@ def $reference_callback_used(S, pcallcontext) = true
 def $call_aggregate_same(punpackcall, punpackcall_other) = (punpackcall.FUNCTION = punpackcall_other.FUNCTION /\ punpackcall.ARGUMENTS = punpackcall_other.ARGUMENTS /\ punpackcall.INDEX = punpackcall_other.INDEX /\ punpackcall.CALLSITE = punpackcall_other.CALLSITE /\ punpackcall.LINE = punpackcall_other.LINE)
 def $call_aggregate_match(pcallaggregate, punpackcall, poperand, n) = ($call_aggregate_same(pcallaggregate.CALL, punpackcall) /\ pcallaggregate.INPUT = poperand /\ pcallaggregate.OBJECT = n /\ pcallaggregate.CURRENT = KNOWN PNULL)
 def $call_aggregate_marker(punpackcall, eps) = false
-def $call_aggregate_marker(punpackcall, (UNPACK_AGGREGATE pcallaggregate "leaf") :: ptask_tail*) = true -- if $call_aggregate_same(pcallaggregate.CALL, punpackcall)
-def $call_aggregate_marker(punpackcall, ptask :: ptask_tail*) = $call_aggregate_marker(punpackcall, ptask_tail*) -- otherwise
+def $call_aggregate_marker(punpackcall, ptask :: ptask_tail*) = ($call_aggregate_marker_at(punpackcall, ptask) \/ $call_aggregate_marker(punpackcall, ptask_tail*))
+def $call_aggregate_marker_at(punpackcall, UNPACK_AGGREGATE pcallaggregate "leaf") = $call_aggregate_same(pcallaggregate.CALL, punpackcall)
+def $call_aggregate_marker_at(punpackcall, ptask) = false -- otherwise
 def $call_aggregate_receipt(S, punpackcall, poperand, n, eps) = false
 def $call_aggregate_receipt(S, punpackcall, poperand, n, ptask :: ptask_tail*) = ($call_aggregate_receipt_at(S, punpackcall, poperand, n, ptask) \/ $call_aggregate_receipt(S, punpackcall, poperand, n, ptask_tail*))
 def $call_aggregate_receipt_at(S, punpackcall, poperand, n, UNPACK_AGGREGATE pcallaggregate "leaf") = ($call_aggregate_match(pcallaggregate, punpackcall, poperand, n) /\ $call_aggregate_history(S, pcallaggregate))
@@ -270,14 +274,13 @@ def $call_aggregate_leaf_task(ITERATOR_UNPACK piteratorunpack text, pcallaggrega
 def $call_aggregate_leaf_task(GENERATOR_UNPACK pgeneratorunpack text, pcallaggregate) = $call_aggregate_match(pcallaggregate, pgeneratorunpack.CALL, pgeneratorunpack.INPUT, pgeneratorunpack.OBJECT)
 def $call_aggregate_leaf_task(ptask, pcallaggregate) = false -- otherwise
 def $call_aggregate_leaf_active(pcallaggregate, eps) = false
-def $call_aggregate_leaf_active(pcallaggregate, ptask :: (UNPACK_AGGREGATE pcallaggregate "leaf") :: ptask_tail*) = true
-  -- if $call_aggregate_leaf_task(ptask, pcallaggregate)
-def $call_aggregate_leaf_active(pcallaggregate, ptask :: ptask_tail*) = $call_aggregate_leaf_active(pcallaggregate, ptask_tail*) -- otherwise
+def $call_aggregate_leaf_active(pcallaggregate, ptask :: ptask_tail*) = ($call_aggregate_leaf_head(pcallaggregate, ptask, ptask_tail*) \/ $call_aggregate_leaf_active(pcallaggregate, ptask_tail*))
+def $call_aggregate_leaf_head(pcallaggregate, ptask, (UNPACK_AGGREGATE pcallaggregate_other "leaf") :: ptask_tail*) = (pcallaggregate = pcallaggregate_other /\ $call_aggregate_leaf_task(ptask, pcallaggregate))
+def $call_aggregate_leaf_head(pcallaggregate, ptask, ptask_tail*) = false -- otherwise
 def $call_aggregate_leaf_saved(pcallaggregate, eps) = false
-def $call_aggregate_leaf_saved(pcallaggregate, pdestructionoperation :: pdestructionoperation_tail*) = true
-  -- if pdestructionoperation.SOURCE = UNPACK_AGGREGATE_SOURCE pcallaggregate ptask
-  -- if $call_aggregate_leaf_task(ptask, pcallaggregate)
-def $call_aggregate_leaf_saved(pcallaggregate, pdestructionoperation :: pdestructionoperation_tail*) = $call_aggregate_leaf_saved(pcallaggregate, pdestructionoperation_tail*) -- otherwise
+def $call_aggregate_leaf_saved(pcallaggregate, pdestructionoperation :: pdestructionoperation_tail*) = ($call_aggregate_leaf_source(pcallaggregate, pdestructionoperation.SOURCE) \/ $call_aggregate_leaf_saved(pcallaggregate, pdestructionoperation_tail*))
+def $call_aggregate_leaf_source(pcallaggregate, UNPACK_AGGREGATE_SOURCE pcallaggregate_other ptask) = (pcallaggregate = pcallaggregate_other /\ $call_aggregate_leaf_task(ptask, pcallaggregate))
+def $call_aggregate_leaf_source(pcallaggregate, ptask) = false -- otherwise
 def $magic_unpack_raw_task(UNPACK_AGGREGATE pcallaggregate text, pcalltarget) = (pcallaggregate.CALL.FUNCTION = pcalltarget) -- if text =/= "leaf"
 def $call_aggregate_magic_suffix(ptask, (UNPACK_AGGREGATE pcallaggregate "leaf") :: ptask_tail*, pcalltarget) = true
   -- if $call_aggregate_leaf_task(ptask, pcallaggregate)
