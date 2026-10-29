@@ -4278,11 +4278,13 @@ acyclicity and the existing layout restrictions remain required.
 Standalone roots of the same twelve non-base kinds also use the visited trace
 walk when `previous` is null, preserving live cells, copied siblings, cache/trace/
 severity order and real recursion Errors. The old DIRECT route remains separate.
-Canonical base `Exception`/`Error` roots with null previous values now use the
-same visited fold after older admissions, including warm captured graphs;
-linked base traces and reached callbacks retain their separate limits.
+Canonical base `Exception`/`Error` roots now use the same visited fold through
+finite canonical Previous paths after older admissions, including warm captured
+graphs. Whole-path authentication stays eager; invalid/cyclic paths and reached
+callbacks or captured-Throwable leaves retain their separate limits.
 [Standalone trace review](coverage/semantics/throwable-null-trace-comparison-review.json).
 [Base fallback review](coverage/semantics/throwable-base-null-comparison-review.json).
+[Linked-base review](coverage/semantics/throwable-base-previous-comparison-review.json).
 Builtin `#[NoDiscard]` now validates bounded declarations and warns on unused
 ordinary source calls after sends and named defaults, before reception or body.
 Handlers preserve selected arguments, references, receiver ownership and VM
