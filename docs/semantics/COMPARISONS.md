@@ -756,18 +756,31 @@ siblings; authentic captured recursion raises the ordinary Error. Prefix/cache
 decisions still precede reached payload validation, and `ErrorException` severity
 follows trace and null previous. The older DIRECT route stays disjoint; the pure
 previous-order helper still rejects non-DIRECT payloads. Base `Exception`/`Error`
-retain their legacy trace dispatch. Reached method-bearing classes and the
+NULL roots use the fallback below; linked base traces retain their legacy
+dispatch. Reached method-bearing classes and the
 existing canonical layout, lifetime and pending-state restrictions remain partial.
 [Standalone trace review](../../coverage/semantics/throwable-null-trace-comparison-review.json).
 
-Warm caches and nonempty builtin traces now meet in the same physical slot
+Canonical base `Exception`/`Error` NULL-previous roots now share the visited
+physical-slot fold after every older admission rejects. The fallback requires
+normal completion, no pending numeric exception and distinct objects of the same
+exact kind. Both need current live unmaterialized canonical images and null
+previous values before it scans their slots. Its default
+preserves the former Unsupported state/order. Warm cells and ordinary captured
+objects retain current writes, copied siblings, early count/key/class decisions
+and real recursion Error/unwind without a new depth bound. Existing DIRECT and
+paired graph routes keep priority; wider linked-base traces, reached callbacks,
+subclasses and noncanonical layouts/lifetimes remain partial.
+[Base fallback review](../../coverage/semantics/throwable-base-null-comparison-review.json).
+
+The older fully authenticated warm route puts nonempty traces in the physical slot
 scan. Same-kind canonical `Exception`/`Error` pairs with null previous values
 admit finite `DIRECT` trace graphs containing primitive or valid string-carrier
 leaves and allocated acyclic child arrays. The string cache is compared first;
 one-sided warmth or unequal formatted text can stop there. Two different array
 arguments both format as `Array`, so equal warm caches continue through captured
 trace count, key and value order, including a source COW snapshot. This
-normal, nonpending path excludes object/reference/cyclic trace leaves and
+older normal, nonpending path excludes object/reference/cyclic trace leaves and
 wider [warm trace graphs](../../coverage/semantics/throwable-warm-trace-comparison-review.json).
 
 Cold builtin `Exception`/`Error` pairs also compare finite `previous` chains.
