@@ -205,6 +205,7 @@ reentrant/abrupt raw-owner teardown remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
+| CLASS153 | Anonymous constructor reference formals/direct sends; native6 and two old refusals accepted, private implementation. |
 | COMP157 | Inherited ordinary initialized-public images; independent packet frozen, source preparation. |
 | ATTR05 | Explicit captured-Closure `__invoke()` warning phases; five native-first originals frozen, private preparation. |
 | Enum M3/M4 | Published-enum array dispatch is integrated for reviewed class-string and case-object sources, including named Stringable arguments. String callable routes, wider generated dispatch, backing dependency and the default loader remain partial. |
