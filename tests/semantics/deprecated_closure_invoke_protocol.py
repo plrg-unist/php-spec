@@ -179,6 +179,7 @@ def main():
                *[ROOT / ('spec/semantics/' + name) for name in (
                    '79-call-frames.watsup', '80-call-control.watsup', '83-call-traces.watsup',
                    '105-named-arguments.watsup', '108-call-unpack.watsup',
+                   '142-method-runtime.watsup', '379-sensitive-parameters.watsup',
                    '257-request-destructors.watsup', '440-builtin-function-attributes.watsup',
                    '443-deprecated-closure-invoke.watsup')],
                ROOT / 'spec/semantics/442-deprecated-api-callbacks.watsup',
