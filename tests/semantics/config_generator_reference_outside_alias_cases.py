@@ -2,13 +2,13 @@
 
 NORMAL = b'''<?php
 function &outsideReferenceNormal74() {
-    global $input,$value,$alias;
+    global $input,$value;
     $option="precision";echo "Y0;";yield 0=>$option;
     $input=17;
-    $value=7;$alias=&$value;echo "Y1;";yield 1=>$value;
+    $value=7;echo "Y1;";yield 1=>$value;
     $value=8;echo "T;";
 }
-ini_set("precision","14");$value=2;$alias=0;
+ini_set("precision","14");$value=2;$alias=&$value;
 $input=outsideReferenceNormal74();$watch=WeakReference::create($input);
 $result=99;echo "B;";$result=ini_set(...$input);
 echo "A:",$result,":",ini_get("precision"),":",
@@ -19,13 +19,13 @@ unset($input,$watch,$result,$alias,$value);
 
 TERMINAL_THROW = b'''<?php
 function &outsideReferenceThrow74() {
-    global $input,$value,$alias,$saved;
+    global $input,$value,$saved;
     $option="precision";echo "Y0;";yield 0=>$option;
     $input=17;
-    $value=7;$alias=&$value;echo "Y1;";yield 1=>$value;
+    $value=7;echo "Y1;";yield 1=>$value;
     $value=8;ini_set("precision","6");echo "T;";throw $saved;
 }
-ini_set("precision","14");$value=2;$alias=0;
+ini_set("precision","14");$value=2;$alias=&$value;
 $saved=new Exception("outside-reference-stop74");
 $input=outsideReferenceThrow74();$watch=WeakReference::create($input);
 $result=99;echo "B;";
