@@ -157,15 +157,24 @@ ATTR05 stages explicit captured-Closure `__invoke()` wrapper (8192) then callee
 (16384) warnings before inner copies, named holes and reception. Raw arguments and live
 references survive both handlers; inner Closure ownership begins after fake
 named preflight, while trace redaction keeps raw and coerced snapshots distinct.
-Nine normal originals agree; a tenth native original remains an explicit
-unused-owning-result boundary with zero agreement credit. Six full reached
+Nine normal originals agree; a tenth native original was an explicit
+unused-owning-result boundary with zero agreement credit at that cut. Six full reached
 groups pass 337 checks (328 reached, nine derived), plus a separate bounded
 53-check inner-throw diagnostic. Private and actual-tail joined strict432 pass
 at separate cuts.
-The next attribute milestone must stage raw argument, unused return value and
-outer receiver retirement in that order to remove the owning-result fence.
 Wider special callables/messages remain partial.
 [Wrapper review](coverage/semantics/builtin-deprecated-closure-invoke-review.json).
+
+ATTR06 removes that owning-result fence: existing release jobs retire raw outer
+arguments, then the unused by-value return, then the outer Closure receiver.
+Each pending owner stays distinct through aliases; destructor callbacks use the
+real caller and preserve supplied throws through remaining outer retirement.
+Four originals agree: one former boundary uses retained native bytes, and three
+new native-first controls cover used results, returned-argument aliases and a
+throwing value destructor with caller traces. Three full reached groups pass
+186 checks (no derived guards), and private strict432 passes. Wider callback,
+reference-return and reentry histories remain partial.
+[Return review](coverage/semantics/builtin-deprecated-closure-return-review.json).
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
@@ -273,7 +282,6 @@ reentrant/abrupt raw-owner teardown remain partial.
 | --- | --- |
 | I83 | Invokable object Generator factories; native-first source preparation, unrun. |
 | OB04 | Selected error-handler FINAL handling; eleven exact sources and reached validation. |
-| ATTR06 | Required unused owning explicit-wrapper return staging; validation active. |
 | CLASS154 | Variadic reference constructor implementation. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
 | GC08 | Enum possible-root admission fix. |

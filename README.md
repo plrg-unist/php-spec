@@ -4411,12 +4411,15 @@ registry owner, original Throwable retention, fresh by-reference cells and
 terminal cleanup; nine new native-first originals and four reached fronts cover
 this slice. Explicit captured-Closure `__invoke()` now stages wrapper (8192) then
 callee (16384) warnings before inner reception, preserving raw arguments, references,
-trace redaction and separate Closure owners. Nine originals agree; one unused
-owning-result path remains an explicit boundary pending ordered return release.
+trace redaction and separate Closure owners. Unused owning results now retire
+between raw arguments and the outer receiver, including a returned argument and
+a supplied destructor throw; used results survive receiver cleanup. Four further
+originals agree, including the former boundary with retained native evidence.
 Wider API consumers remain partial. See the [VM review](coverage/semantics/builtin-deprecated-review.json),
 [error/assert API review](coverage/semantics/builtin-deprecated-api-review.json),
-[exception API review](coverage/semantics/builtin-deprecated-exception-api-review.json) and
-[Closure-wrapper review](coverage/semantics/builtin-deprecated-closure-invoke-review.json).
+[exception API review](coverage/semantics/builtin-deprecated-exception-api-review.json),
+[Closure-wrapper review](coverage/semantics/builtin-deprecated-closure-invoke-review.json) and
+[wrapper-return review](coverage/semantics/builtin-deprecated-closure-return-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The
