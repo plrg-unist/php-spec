@@ -4290,6 +4290,11 @@ cleanup order; used results and raw callback APIs retain their distinct behavior
 Literal/NULL messages, supported declaration errors and explicit remaining
 boundaries are described in the [attribute contract](docs/semantics/BUILTIN-ATTRIBUTES.md)
 and [review](coverage/semantics/builtin-nodiscard-review.json).
+Bounded `#[Deprecated]` on named user functions and ordinary methods now warns
+on prepared VM calls after sends and named-hole completion, before NoDiscard
+or reception, for used and discarded results. Selected arguments, references
+and receivers survive handlers. Internal callback API
+timing remains explicit Unsupported; see the [Deprecated review](coverage/semantics/builtin-deprecated-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The

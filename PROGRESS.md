@@ -55,6 +55,19 @@ remain partial.
 [Attribute contract](docs/semantics/BUILTIN-ATTRIBUTES.md),
 [review](coverage/semantics/builtin-nodiscard-review.json).
 
+ATTR02 adds literal/NULL-message and since Deprecated declarations for named
+functions and ordinary methods. Prepared VM calls warn after sends and named-hole
+completion, before NoDiscard and reception, for used and discarded results.
+Selected arguments, references and receivers survive handlers and abrupt cleanup.
+Thirteen originals agree exactly (nine authored, four independent);
+two internal API cases remain explicit Unsupported with zero agreement credit.
+Four reached fronts pass 314 conditions: 278 source-reached checks, 24 derived
+guards and 12 raw API projections. Private and actual-tail joined strict430
+pass; earlier failed fixtures retain zero credit. Wider messages, targets,
+wrappers and internal API timing remain partial.
+[Attribute contract](docs/semantics/BUILTIN-ATTRIBUTES.md),
+[ATTR02 review](coverage/semantics/builtin-deprecated-review.json).
+
 GC05 admits public destructors on quiet, canonical materialized ordinary cycles
 when the legacy callback walk and claimed walk agree on ordered visits and
 counted nodes in the actual collector plan. The collector rechecks after callback
@@ -151,7 +164,6 @@ unresolved with zero model credit. [OB01 review](coverage/semantics/output-reque
 | OB02 | Shutdown FINAL fatal/bailout; cutoff49 investigation. |
 | CLASS149 | Expression/factory placement and eval/include return-origin repair. |
 | COMP153 | Linked base Exception/Error captured graphs through the existing finite Previous-path fallback. |
-| ATTR02 | Deprecated VM calls and API timing boundary. |
 | Enum M3/M4 | Captured `cases(...)` is integrated; captured `from(...)`/`tryFrom(...)` remain Unsupported while wider generated-callable dispatch, backing-initializer dependency modes and enum acquisition stay active. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |

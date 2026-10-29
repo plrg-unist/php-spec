@@ -1,6 +1,6 @@
 {
   "milestone": "ATTR02",
-  "status": "Independently reviewed private implementation; actual-tail integration pending",
+  "status": "Independently reviewed implementation with passing actual-tail joined validation",
   "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle and SL semantics",
   "scope": "Literal/NULL Deprecated message and since on named user functions and ordinary source methods; VM warning before NoDiscard and receive, selected call owners, declaration errors and explicit early internal-API timing refusal. Wider attributes and API timing remain partial.",
   "raw_root": "../php-spec-evidence-archive/builtin-attributes-02",
@@ -9,6 +9,7 @@
     "semantic_change": "4154ba668dbf062c1a3118cc38e26daf261d7fe0",
     "binder_fix": "ca0d768dbd4aefcbb99dd4d4724cd440ac374d31",
     "private_tip": "3c396eab2d7d84b75f7a646d6c35deb44b573d27",
+    "metadata_tip": "c633e97e88556d8c18268593b089176a4194d682",
     "later_changes": "00ce559cb, 4094469d5 and 3c396eab2 change tests or observers only"
   },
   "evidence": {
@@ -78,5 +79,17 @@
   },
   "source": "vendor/php-src Zend/zend_compile.c attribute/call lowering; Zend/zend_attributes.c Deprecated validation; Zend/zend_vm_def.h DO_FCALL and BY_NAME warnings; Zend/zend_execute_API.c zend_call_function; Zend/zend_closures.c wrapper flags",
   "recovery": "Raw reports record input hashes, binary/profile, commands, exits, affinity and reaped groups. Focused commands: python3 tests/semantics/deprecated_sources.py --output OUT; python3 tests/semantics/deprecated_protocol.py --output OUT. No accepted source, strict, state or original native packet was replayed for this metadata.",
-  "integration": "Pending actual-tail composition and joined validation; private results do not establish canonical compatibility."
+  "integration": {
+    "actual_parent": "cb07e86ddd891e96e104d3b9eaa8ef9e8762f89c",
+    "joined_revision": "3884362f7923d2f956d8a4e5c786d51b8f236cb2",
+    "joined_strict": {
+      "path": "joined-strict-3884362f/report.json",
+      "sha256": "19249d7611b2ba55364460e498154e686e26385bbe68fbf525128fbe2bd675ba",
+      "modules": 430,
+      "passed": true,
+      "affinity": [2],
+      "process_reaped": true
+    },
+    "credit": "The joined compiler gate tests the actual current tail. Private source13, API exclusions2 and focused314 retain their original tested revisions; no native/source/focused replay for metadata."
+  }
 }

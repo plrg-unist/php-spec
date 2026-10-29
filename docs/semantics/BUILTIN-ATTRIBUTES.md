@@ -98,6 +98,6 @@ and `zend_closures.c` wrapper flags in the pinned engine.
 The [ATTR02 review](../../coverage/semantics/builtin-deprecated-review.json)
 records 13 exact original-source agreements, two explicit API exclusions and
 four reached fronts with 314 conditions: 278 source-reached checks, 24 derived
-guards and 12 raw API projections. Its accepted
-private strict cut compiles 430 modules. Earlier failed fixtures and their
+guards and 12 raw API projections. Its accepted private and actual-tail joined
+strict cuts each compile 430 modules. Earlier failed fixtures and their
 corrections retain separate identities; broader PHP core remains partial.
