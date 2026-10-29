@@ -988,9 +988,16 @@ four reached fronts pass. Original selector/240-second stops retain zero credit;
 the peer's fixed 600/620 limits apply to that source alone. THROW conditions are unchanged. Earlier
 [static transfer cuts](../../coverage/semantics/generator-fiber-static-transfer-review.json)
 retain their identities; the two phase anchors use retained native bytes.
-Keyword-forwarded creation, bound/changed callees, wider helper/delegation and
-lifecycle forms remain partial.
+At that I74 cut, keyword-forwarded creation, bound/changed callees, wider
+helper/delegation and lifecycle forms remained partial.
 [Fresh advance review](../../coverage/semantics/generator-fiber-fresh-advance-review.json).
+
+I75 now admits keyword-forwarded receiver-free static Generator bodies after
+ordinary method factories return. The saved creator scope and actual Generator
+owner authenticate fresh/primed Fiber resumers and real close markers without an extra receiver root.
+Six authored and one independent source match PHP; four reached fronts pass 374
+reported checks. Keyword-invoked factory chains and wider callable/lifecycle
+forms remain partial. [Keyword creation review](../../coverage/semantics/generator-keyword-creation-review.json).
 
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need

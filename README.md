@@ -6304,8 +6304,15 @@ Static-method THROW now preserves inherited scope without receiver owners across
 fresh/primed value/reference caches. [Static review](coverage/semantics/generator-fiber-static-throw-transfer-review.json).
 Fresh NEXT/SEND now share authenticated pre-first-yield Fiber transfer across
 ordinary callees and existing value/reference caches. Argument buffers, captures
-and supplied-throw cleanup retain real owners. Keyword-forwarded static creation
-and wider lifecycles remain partial. [Fresh advance review](coverage/semantics/generator-fiber-fresh-advance-review.json).
+and supplied-throw cleanup retain real owners. At that cut, keyword-forwarded
+static creation and wider lifecycles remained partial.
+[Fresh advance review](coverage/semantics/generator-fiber-fresh-advance-review.json).
+Receiver-free static Generator bodies called through `self`, `parent` and
+`static` now retain real factory scope after return, including a destroyed
+object selector and live close/finally. Six authored and one independent original match PHP; four reached
+fronts check creator/callee scope and actual-owner selection.
+Keyword-invoked factory chains and wider callable/lifecycle forms remain open.
+[Keyword creation review](coverage/semantics/generator-keyword-creation-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

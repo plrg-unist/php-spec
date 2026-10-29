@@ -3,8 +3,10 @@
 Module280 creates Generator objects after ordinary argument, type and default
 receives. The function body and Closure lexical loads remain deferred until
 initialization. Named functions, ordinary Closures, object method calls and
-static calls through nonkeyword class selectors use the accepted call machinery;
-no unaccepted return implementation is required.
+static calls through nonkeyword class selectors use the accepted call machinery.
+Authenticated `self`, `parent` and `static` calls from ordinary method factories
+also retain the creation scope of receiver-free static bodies after the factory
+returns; no unaccepted return implementation is required.
 
 [Same-class comparison](../../coverage/semantics/generator-fiber-comparison-review.json)
 now returns order zero for distinct Generators, including fresh, paused and closed
@@ -309,9 +311,24 @@ four reached fronts pass. Original selector/240-second stops retain zero credit;
 the peer's fixed 600/620 limits apply to that source alone. THROW conditions are unchanged. Earlier
 [static transfer cuts](../../coverage/semantics/generator-fiber-static-transfer-review.json)
 retain their identities; the two phase anchors use retained native bytes.
-Keyword-forwarded creation, bound/changed callees, wider helper/delegation and
-lifecycle forms remain partial.
+At that I74 cut, keyword-forwarded creation, bound/changed callees, wider
+helper/delegation and lifecycle forms remained partial.
 [Fresh advance review](../../coverage/semantics/generator-fiber-fresh-advance-review.json).
+
+Keyword-forwarded receiver-free static Generator bodies now keep the real
+factory's callsite, lexical and called classes, selected target and body target
+in a nonowning creation certificate. This admits `self`, `parent` and `static` after the factory returns,
+including inherited factories selecting private/protected bodies and late static
+overrides. An active resume or close uses its actual live Generator object
+before checking the retained certificate; a fresh sibling cannot supply a missing or corrupt certificate.
+Six authored and one independent original match PHP exactly. Four source-reached
+fronts pass 374 reported checks for scope, cache/reference ownership, forgeries and
+real close ENTER/DONE. Private strict compilation passes 426 modules. The peer's
+recorder HEAD flag is false after a fixture-only commit during its run; its 18
+actual inputs stayed stable and the raw report is preserved. Keyword-invoked
+factory chains remain explicit Unsupported. See the
+[keyword creation review](../../coverage/semantics/generator-keyword-creation-review.json)
+for separate evidence cuts and remaining scope.
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
@@ -666,10 +683,10 @@ Notice/cleanup readback. Aggregate acquisition has separate START and
 null results and phase-specific error cleanup. Direct Aggregate
 [argument acquisition](SOURCE-CALL-UNPACK.md#direct-aggregate-argument-acquisition)
 now shares the existing Iterator/Generator call sends. Broader reference
-producers, dynamic/nullsafe API calls, named/unpacked API
-arguments, keyword-forwarded static (`self`/`parent`/`static`) and other implicit
-callback creation, and creation through changed/imported caller scope remain
-required.
+producers, dynamic/nullsafe API calls and named/unpacked API arguments remain
+required. Keyword-invoked factory chains, Closure factories, receiver-bearing
+keyword Generator bodies, other implicit callback creation and creation through
+changed/imported caller scope remain required.
 [Module303](GENERATOR-FORCE-CLOSE.md) adds ordinary last-owner forced close,
 pending finally execution and ordered input/frame/cache release.
 [Module310](GENERATOR-FIBER-CLOSE.md) extends ordinary paused-Generator release

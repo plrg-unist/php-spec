@@ -145,6 +145,14 @@ Commit concise reports and manifests with hashes and locations. Preserve raw
 failures and interrupted runs externally; do not force-add their archives.
 The coverage compression patterns in `.gitignore` guard against reintroduction.
 
+I75 keyword Generator creation retains native, strict and original baseline
+records under `../php-spec-evidence-archive/generator-keyword-creation-75/`,
+accepted/failing source and state raw cuts under its `validated/` directory, and
+the independent peer under `../php-spec-evidence-archive/generator-keyword-creation-75-review/`.
+The [review ledger](../coverage/semantics/generator-keyword-creation-review.json)
+identifies hashes and the peer's unchanged-input bridge across a fixture-only
+HEAD change. No source or state cut is renewed by this index.
+
 I74 fresh NEXT/SEND evidence is retained uncompressed under
 `../php-spec-evidence-archive/generator-fiber-fresh-advance-74/`. Its manifest binds
 fifteen reports covering nine native sources, six representative baseline cases,
