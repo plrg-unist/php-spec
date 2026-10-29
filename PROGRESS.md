@@ -171,11 +171,12 @@ CLASS153 admits own public unpromoted reference constructor formals through the
 ordinary saved-target/deferred-send machinery. Positional sends retain an old cell
 through later rebinding; named sends acquire the cell at their actual formal index.
 Reception may coerce a supplied caller cell; the parameter type adds no persistent
-constraint, and existing property-reference sources remain authoritative. Missing CVs, fresh omitted scalar
-defaults, VAR reference notices and invalid-TMP priority keep their ordinary rules.
+constraint, and existing property-reference sources remain authoritative. Missing
+CVs, fresh omitted scalar defaults, VAR reference notices and invalid-TMP priority
+keep their ordinary rules.
 Six exact normal sources and 217 conditions pass (211 reached, six derived guards),
-with private strict431. Three fixture-only failures retain zero credit; all tested
-cuts stay distinct. Variadic/promotion/unpack/nonpublic and wider source/value/
+with private strict431 and actual-tail joined strict432 at separate cuts. Three
+fixture-only failures retain zero credit. Variadic/promotion/unpack/nonpublic and wider source/value/
 callback contexts remain partial. [Reference-constructor review](coverage/semantics/anonymous-constructor-reference-review.json).
 The prior [finite-arity review](coverage/semantics/anonymous-constructor-arity-review.json)
 retains CLASS152 source6/state212 and its argument-TypeError/missing-arity display distinctions.
@@ -258,7 +259,6 @@ reentrant/abrupt raw-owner teardown remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS153 | Constructor by-reference parameters and direct sends; active validation. |
 | I82 | Rebound method-callable Generator factories; source preparation, unrun. |
 | OB04 | Selected error-handler FINAL handling; active validation. |
 | ATTR06 | Required unused owning explicit-wrapper return staging; read-only preparation. |
