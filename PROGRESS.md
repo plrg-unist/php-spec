@@ -73,12 +73,14 @@ their original inputs. Count-ambiguous callbacks, WeakMap callbacks, residual
 tags, workers, hooks, reentry and active contexts remain partial.
 [GC05 review](coverage/semantics/gc-materialized-callback-review.json).
 
-CLASS150 admits anonymous sites beside ordinary traits and enums in unit0 and
-successful include/eval units. Normal header/implicit-interface metadata and
+CLASS150 is integrated: anonymous sites can share ordinary traits and enums in
+unit0 and successful include/eval units. Normal header/implicit-interface metadata and
 frozen source-entry bindings determine shared class keys; pruned declarations
 and include-once hits add no compilation cost. Seven original observations agree,
 and 223 reached checks pass across compiler images, trait import, enum cache
-history, real publication causes and argument-throw retry. The initial list-encoding refusal retains zero credit.
+history, real publication causes and argument-throw retry. Joined strict430
+passes; private source/state evidence retains its original cuts. The initial
+list-encoding refusal retains zero credit.
 Failed/open/reentry histories, wider bodies/factories/argument modes and owned-NUL
 release remain outside this milestone.
 [Mixed-kind review](coverage/semantics/anonymous-trait-enum-review.json).
@@ -143,7 +145,6 @@ unresolved with zero model credit. [OB01 review](coverage/semantics/output-reque
 | --- | --- |
 | A70 | Temporary INPUT/copy cleanup for CONFIG Iterator sends; native/source preparation. |
 | OB02 | Restored FINAL callback-failure boundary; default fatal reporting and buffer/owner cleanup implementation. |
-| CLASS150 | Trait/enum co-residence with compiler-derived keys and successful source history; private validation. |
 | COMP155 | Method-bearing captured-object comparisons; native/source preparation. |
 | I79 | Rebound Closure method-created Generator scope; native6 and old controls complete, implementation/review active. |
 | GC06 | Materialized destructor GC count/buffer correction; produced-identity/root-order discrepancy under focused diagnosis. |
