@@ -17,11 +17,11 @@ Normal completion, retained owners, key/next throws, invalid keys and Aggregate
 originals preserve their distinct cleanup order.
 Six authored sources and one independent singleton-leaf source agree exactly
 with PHP; strict compilation of 424 modules and 1006 reached premises (996
-Boolean, ten raw steps) pass at separate cuts. Five unchanged baselines remain
-genuine Unsupported with zero agreement credit. Earlier timeouts and fixture
-failures remain preserved with zero failed-row credit. Multiple owning fields
-and wider table, hook, reference
-and lifecycle layouts remain partial.
+Boolean, ten raw steps) pass at separate cuts. Joined strict compilation over
+the actual tail also passes. Five unchanged baselines remain genuine Unsupported
+with zero agreement credit. Earlier timeouts and fixture failures remain preserved
+with zero failed-row credit. Multiple owning fields and wider table, hook,
+reference and lifecycle layouts remain partial.
 [Owning-field review](coverage/semantics/array-iterator-owned-field-review.json).
 
 Ordinary `%`, shifts and numeric bitwise operations now admit a fractional
