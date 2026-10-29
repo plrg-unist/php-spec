@@ -34,6 +34,7 @@ def $output_drain_handler(poutputbuffer :: poutputbuffer_tail*) = poutputbuffer.
 def $output_drain_handler(poutputbuffer :: poutputbuffer_tail*) = $output_drain_handler(poutputbuffer_tail*) -- if poutputbuffer.HANDLER = eps
 
 def $output_drain_ready(S) = (~S.OUTPUTBLOCKED /\ ~S.COMPILESTOP /\ S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.SOURCEPENDING = eps /\ S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE /\ $output_drain_completion(S.COMPLETION) /\ $output_has_user(S.OUTPUTBUFFERS) /\ ~$shutdown_ready(S) /\ ~$destructor_ready(S) /\ ($display_state_mode(S) =/= 1 \/ ~$output_deferred_stdout(S)))
+dec $output_final_throw(pstate, pobinvoke, nat) : pstate
 dec $output_pending_secondary(pstate) : pobdeactivate?
 def $output_drive_finalize(S, n) = $drive_steps($output_final_throw(S, pobdeactivate.CALL, n_throwable), n)
   -- if $output_pending_secondary(S) = (pobdeactivate)
@@ -260,7 +261,6 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCT
 ;; its argv, pops the handler, or forwards any buffered bytes. The later output
 ;; deactivation clears ACTIVE/RUNNING before freeing each raw zoh, top first.
 dec $output_final_throw_ready(pstate, pobinvoke, nat) : bool
-dec $output_final_throw(pstate, pobinvoke, nat) : pstate
 dec $output_deactivate_history(pstate, pobdeactivate) : bool
 dec $output_deactivate_valid(pstate, pobdeactivate) : bool
 dec $output_deactivate_remaining(pobdeactivate) : poutputbuffer*
@@ -395,6 +395,7 @@ def $eager_operation_source_guard(S, pdestructionoperation) = true
 ;; has cleared EG(exception). Buffers remain active and running until the
 ;; ordinary release operation has returned, so destructor output stays buffered.
 dec $output_pending_cause(pstate, pobdeactivate, nat) : bool
+dec $output_pending_abandoned(pstate, pdestructionoperation, pobdeactivate) : bool
 dec $output_pending_valid(pstate, pobdeactivate) : bool
 dec $output_pending_tasks(ptask*, pobdeactivate) : bool
 dec $output_pending_frames(pframe*, pobdeactivate) : bool
@@ -448,7 +449,6 @@ def $eager_operation_source_guard(S, pdestructionoperation) = (($output_pending_
 ;; A null-C destructor throw aborts its actual release loop through the existing
 ;; eager bailout transfer. Its abandoned receiver counts are live; the saved
 ;; output rows below are a lookup view only, never another buffer/root owner.
-dec $output_pending_abandoned(pstate, pdestructionoperation, pobdeactivate) : bool
 dec $output_pending_abandoned_at(pstate, pdestructioncleanup*, pdestructionoperation, pobdeactivate) : bool
 dec $output_pending_history(pstate, pobdeactivate) : pstate
 def $output_pending_history(S, pobdeactivate) = S[.DESTRUCTION.PHASE = DESTRUCTION_DONE][.OUTPUTBUFFERS = pobdeactivate.BUFFERS][.ALLOCATIONS = S.ALLOCATIONS ++ $output_roots(pobdeactivate.BUFFERS) ++ $operand_nodes(pobdrain.VALUE) ++ $base_nodes(pobdrain.BASE)]
