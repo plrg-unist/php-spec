@@ -24,7 +24,8 @@ def $call_receiver_roots(pcallcontext) = eps
 def $closure_invoke_source(CALL_ARGS pcalltarget eps n poperand* (porigin) z) = ((pcalltarget, {SLOTS (NAMED_SENT poperand)*, NAMED eps}, porigin, z))
 def $closure_invoke_source(NAMED_ARGS pcalltarget eps n pnamedargs (porigin) z) = ((pcalltarget, pnamedargs, porigin, z))
 def $closure_invoke_source(UNPACK_ARGS punpackcall) = ((punpackcall.FUNCTION, punpackcall.SENT, porigin, punpackcall.LINE))
-  -- if punpackcall.ARGUMENTS = eps /\ punpackcall.CALLSITE = (porigin)
+  -- if punpackcall.ARGUMENTS = eps
+  -- if punpackcall.CALLSITE = (porigin)
 def $closure_invoke_source(ptask) = eps -- otherwise
 
 def $closure_invoke_marked(S, pfunction, ptask) = true
