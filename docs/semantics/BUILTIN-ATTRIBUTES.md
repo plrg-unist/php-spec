@@ -1,4 +1,4 @@
-# NoDiscard declarations and calls
+# Builtin callable attributes
 
 The NoDiscard consumer admits ordinary named functions and source class methods
 marked with builtin `#[NoDiscard]`. Attribute names use the actual
@@ -63,3 +63,41 @@ fences were measured, plus one exact ordinary control; the other 22 marked
 variants were inspected but not executed on that old cut. Native preparation,
 source/state cuts and retained failures are recorded in the
 [review](../../coverage/semantics/builtin-nodiscard-review.json).
+
+## Deprecated functions and methods
+
+`#[Deprecated]` now admits ordinary named functions and source class methods
+with literal string or NULL `message` and `since` arguments. Attribute names
+use the same authenticated lexical resolver as NoDiscard. Function and method
+attribute target/repeat checks precede signature and body compilation;
+parameter-target errors retain existing parameter/default staging. A class
+target produces its header Fatal before member errors. The selected declaration
+supplies the runtime flag and message, including inherited methods and captured
+named Closures.
+
+An ordinary VM call emits E_USER_DEPRECATED (16384) after sends and named-hole
+completion, for both used and discarded results. This warning precedes
+NoDiscard, positional arity and parameter reception. A handler throw cancels
+the later warning and receive. A successful handler resumes the same selected
+callee, copied argument values, reference cells and receiver. Pending-call
+ownership and cleanup follow the NoDiscard frame above; suppression still
+invokes a registered handler. Literal `since` precedes `message` in the
+diagnostic even when arguments are named in the opposite order.
+
+Internal callback APIs warn at a different point, before argument copying and
+retention. Calls to marked functions through these APIs explicitly return
+`Unsupported "Deprecated internal API timing"`; this boundary has no source
+agreement credit. PHP gives an explicit captured-Closure `__invoke()` call an
+internal wrapper warning before the named function's warning. The model refuses
+that route before either warning, with empty modeled stdout/stderr. General message
+evaluation, other attribute targets and owning wrapper histories remain partial.
+The model follows `zend_compile.c` attribute and call lowering,
+`zend_vm_def.h` DO_FCALL/BY_NAME warnings, `zend_execute_API.c` callback timing
+and `zend_closures.c` wrapper flags in the pinned engine.
+
+The [ATTR02 review](../../coverage/semantics/builtin-deprecated-review.json)
+records 13 exact original-source agreements, two explicit API exclusions and
+four reached fronts with 314 conditions: 278 source-reached checks, 24 derived
+guards and 12 raw API projections. Its accepted
+private strict cut compiles 430 modules. Earlier failed fixtures and their
+corrections retain separate identities; broader PHP core remains partial.
