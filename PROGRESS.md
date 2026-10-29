@@ -8,6 +8,17 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
+A fresh Aggregate-returned CONFIG Iterator may now lack a destructor while
+its sole declared Child finalizes through ordinary instance storage. Parent
+weak visibility ends before the Child callback, while the real storage pin
+keeps the parent allocation until that callback finishes. Three retained
+frozen originals and one independent saved-Exception source agree exactly
+with PHP across normal, invalid-key and saved-Exception paths. Strict
+compilation passes on 424 modules; 149 reached premises check the real pin,
+weak visibility, pending identity and rejection without the storage marker.
+[Child-only Iterator review](coverage/semantics/config-aggregate-iterator-child-only-review.json).
+Extra child owners/edges, wider graphs and destructor throws/reentry remain partial.
+
 Fresh public method-created by-reference `Generator::throw` now carries its
 advancing resumer, original temporary Throwable and authenticated receiver
 through Fiber suspension before the first yield, with both caches empty.
@@ -82,7 +93,7 @@ premises check ownership, order, weak death and pending identity. Joined strict
 compilation over the actual tail also passes. Earlier
 fixture compiler, timeout and stopped attempts retain zero credit.
 [Returned Iterator child review](coverage/semantics/config-aggregate-iterator-child-review.json).
-Wider child graphs, child-only finalization and destructor throws/reentry remain partial.
+Wider child graphs and destructor throws/reentry remain partial.
 
 Bounded unit0 anonymous `new` now takes one or two direct positional/named
 arguments. Public required by-value untyped/`int` constructor formals use the

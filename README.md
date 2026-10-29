@@ -628,6 +628,9 @@ three exact PHP source agreements and separate reached cleanup checks.
 It may also own [one declared child](coverage/semantics/config-aggregate-iterator-child-review.json):
 the parent destructor sees the child live, then the child's destructor runs
 before API entry or catch. Wider child graphs remain partial.
+A [destructor-free Iterator](coverage/semantics/config-aggregate-iterator-child-only-review.json)
+also finalizes that sole child through ordinary storage release, preserving
+parent weak death and the saved Exception before catch.
 
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
