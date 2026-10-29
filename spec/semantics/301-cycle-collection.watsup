@@ -162,8 +162,12 @@ dec $gc_hook_nodes(pstate, pnode*) : bool
 dec $gc_materialized_base_quiet(pstate) : bool
 dec $gc_materialized_quiet(pstate) : bool
 dec $gc_materialized_begin(pstate, pgccall) : pstate
+dec $weakmap_nonempty(pstate, pnode*) : bool
 dec $gc_ephemeron_phase(pstate) : bool
 dec $gc_ephemeron_policy(pstate) : bool
+dec $gc_ephemeron_called_current(pstate, nat*) : bool
+dec $gc_quiet_claim_phase(pstate) : bool
+dec $gc_quiet_claim_policy(pstate) : bool
 dec $gc_ephemeron_graph(pstate) : hgraph
 dec $gc_ephemeron_weak_edges(pstate, hgraph) : hedge*
 dec $gc_ephemeron_prepare(pstate, pgcplan) : pstate?
@@ -323,7 +327,7 @@ def $gc_walk(H, hedge_proxy*, (GC_VISIT pnode b) :: pgcvisit*, pnode_white*, pno
   -- if pnode <- pnode_white* /\ ~(pnode <- pnode_seen*)
 ;; zend_gc.c marks weak-entry values black while pushing all of them. Their
 ;; stack is then popped last-first; a proxy table keeps its first claim role.
-;; This walk is used only by quiet ephemeron plans. Legacy callback walks keep
+;; Quiet ephemeron and ordinary plans use it. Legacy callback walks keep
 ;; the preceding traversal and its existing snapshots.
 def $gc_weak_prefix(eps, pnode_child*) = pnode_child*
 def $gc_weak_prefix(pnode :: pnode_weak*, pnode :: pnode_child*) = $gc_weak_prefix(pnode_weak*, pnode_child*)
@@ -900,12 +904,38 @@ def $gc_nested_removed(pgcplan) = $destruction_nodes_delete($gc_nodes(pgcplan.BU
   -- if (pgcslot*, nat_free*, n_debit) = $gc_nested_image(pgcplan)
 def $gc_nested_removed(pgcplan) = eps -- otherwise
 
+;; Fresh callback-free ordinary plans use the same mark-on-push walk as quiet
+;; ephemerons. An installed plan must already carry that walk's marker.
+def $gc_quiet_claim_phase(S) = true
+  -- if S.GC.ACTIVE = eps
+  -- if S.GC.PLAN = eps
+def $gc_quiet_claim_phase(S) = true
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if S.GC.PLAN = eps
+  -- if pgccall.PASS = 0
+def $gc_quiet_claim_phase(S) = true
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if pgcplan.CALL = pgccall /\ pgccall.PASS = 0 /\ pgcplan.DTORS = eps /\ pgcplan.WEAK = (eps)
+def $gc_quiet_claim_phase(S) = false -- otherwise
+def $gc_quiet_claim_policy(S) = true
+  -- if ~$weakmap_nonempty(S, S.ALLOCATIONS) /\ $gc_quiet_claim_phase(S)
+  -- if $gc_materialized_base_quiet(S)
+  -- if S.ACTIVEFIBER = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.ITERATORS = eps
+  -- if ~$gc_ephemeron_called_current(S, S.DESTRUCTION.CALLED)
+  -- if $object_tables_valid(S) /\ $gc_indirect_arrays_valid(S, S.ALLOCATIONS) /\ $gc_materialized_locators(S, S.OBJECTTABLES)
+  -- if $objectprops_valid(S, S.OBJECTPROPS) /\ $gc_ordinary_nodes(S, S.ALLOCATIONS)
+  -- if $heap_valid($heap_graph(S))
+  -- if $gc_uncalled(S, $gc_white($gc_graph(S), $gc_eligible_nodes(S.GC.BUFFER))) = eps
+def $gc_quiet_claim_policy(S) = false -- otherwise
 def $gc_plan(S, pgccall) = $gc_plan_graph(S, pgccall, H, (hedge_weak*))
   -- if $gc_ephemeron_policy(S)
   -- if H = $gc_ephemeron_graph(S)
   -- if hedge_weak* = $gc_ephemeron_weak_edges(S, H)
+def $gc_plan(S, pgccall) = $gc_plan_graph(S, pgccall, $gc_graph(S), (eps))
+  -- if $gc_quiet_claim_policy(S)
 def $gc_plan(S, pgccall) = $gc_plan_graph(S, pgccall, $gc_graph(S), eps)
-  -- if ~$gc_ephemeron_policy(S)
+  -- if ~$gc_ephemeron_policy(S) /\ ~$gc_quiet_claim_policy(S)
 def $gc_plan_graph(S, pgccall, H, hedge_weak*?) = {CALL pgccall, GRAPH H, TABLES S.OBJECTTABLES, CALLED S.DESTRUCTION.CALLED, PROXIES hedge_proxy*, WEAK hedge_weak*?, COUNTED pnode_counted*, BUFFER pgc_white.BUFFER, CANDIDATES pnode_candidates*, DTORS pnode_dtors*, FREESET pnode_free*, SCAN eps, INDEX 0, STEPS eps, DONE eps}
   -- if hedge_proxy* = $gc_proxy_edges(S.OBJECTTABLES, H.NODES)
   -- if pgc_start = $gc_compact(S.GC)
@@ -971,12 +1001,16 @@ def $gc_snapshot_nested(S, pgcplan) = true
   -- if $fiber_record_valid(S, n_caller, pfiber_caller)
   -- if $gc_scope_valid(S, pgcplan.CALL)
 def $gc_snapshot_nested(S, pgcplan) = false -- otherwise
-def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S[.GC.BUFFER = pgcplan.BUFFER][.GC.FREE = eps], pgcplan.CALL))
+def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S[.GC.PLAN = eps][.GC.BUFFER = pgcplan.BUFFER][.GC.FREE = eps], pgcplan.CALL))
   -- if $gc_snapshot_fresh(S, pgcplan) /\ $gc_snapshot_nested(S, pgcplan)
-def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S[.GC.BUFFER = $gc_snapshot_slots(S.GC.BUFFER, pgcplan.DTORS)], pgcplan.CALL))
+def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S[.GC.PLAN = eps][.GC.BUFFER = $gc_snapshot_slots(S.GC.BUFFER, pgcplan.DTORS)], pgcplan.CALL))
   -- if $gc_snapshot_fresh(S, pgcplan) /\ ~$gc_snapshot_nested(S, pgcplan)
 def $gc_snapshot_valid(S, pgcplan) = $gc_tables_valid(S, pgcplan.TABLES, pgcplan.GRAPH.NODES) -- if ~$gc_snapshot_fresh(S, pgcplan)
 def $gc_weak_plan_valid(S, pgcplan) = true -- if pgcplan.WEAK = eps
+def $gc_weak_plan_valid(S, pgcplan) = true
+  -- if pgcplan.WEAK = (eps)
+  -- if pgcplan.CALL.PASS = 0 /\ pgcplan.DTORS = eps
+  -- if $gc_snapshot_fresh(S, pgcplan) /\ $gc_quiet_claim_policy(S)
 def $gc_weak_plan_valid(S, pgcplan) = true
   -- if pgcplan.WEAK = (hedge_weak*)
   -- if pgcplan.CALL.PASS = 0 /\ pgcplan.DTORS = eps
@@ -1101,7 +1135,6 @@ def $gc_receive(S, pconfigcall) = $gc_simple_done(S, PINT 0)
   -- if pconfigcall.KIND = INTRINSIC_GC_COLLECT /\ S.GC.ACTIVE =/= eps
 def $gc_receive(S, pconfigcall) = $gc_begin(S, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_GC_COLLECT /\ S.GC.ACTIVE = eps
-dec $weakmap_nonempty(pstate, pnode*) : bool
 def $gc_begin(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "owning detached Generator return collection"]
   -- if ~$weakmap_nonempty(S, S.ALLOCATIONS) \/ $weakmap_gc_map(S, S.ALLOCATIONS) =/= eps
   -- if $generator_return_waiting_any(S, S.ALLOCATIONS)
