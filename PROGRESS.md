@@ -32,7 +32,8 @@ The saved `12` survives old-cell writes and name rebinding; a later TypeError
 uses the selected old cell's current type, separately from the rebound CV.
 RIGHT repair and supplied throws preserve result/cancellation order. Sixteen
 new authored and four new independent originals agree exactly; strict424 and
-four positive reached fronts/446 checks pass. A fresh both-CELL source and
+four positive reached fronts/446 checks pass. Joined strict compilation over
+the current 424-module tail also passes. A fresh both-CELL source and
 29-check reached boundary remain Unsupported with zero agreement. Failure after
 a late object substitution in old LEFT remains Unsupported; wider owning
 substitutions and reference producers remain partial. No new owner/task is added.
