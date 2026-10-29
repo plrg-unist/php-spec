@@ -69,7 +69,6 @@ CASES = {
     'xor-handler-throw': source('xor', 'throw'),
     'both-shared-boundary': source('mod', 'write-repair', True),
 }
-BOUNDARIES = {'both-shared-boundary': 'error-handler ingress requires a producer continuation'}
 EXPECTED_STDOUT = {
     name: b'H:1:1:1:1:1:1:1;' +
           (b'C:1:1:1:1:1:1:1:1;' if ('retain' in name or 'handler-throw' in name) else b'R:1:1:1:1:1;') +

@@ -1,0 +1,163 @@
+{
+  "version": 1,
+  "milestone": "OP109 both borrowed cells in ordinary integer conversion",
+  "status": "bounded independently reviewed semantics at the private tested revisions",
+  "target": "PHP 8.5.10 CLI NTS64; project-local oracle and ordinary precision14 profile",
+  "scope": "Ordinary %, <<, >>, &, | and ^ with both direct CVs initially selecting real shared cells: finite fractional LEFT and empty live stdClass RIGHT without property slots/materialized table. Each cell starts with at least two real owners and keeps an outside alias after both source names rebind. Tested old LEFT substitutions remain scalar.",
+  "tested_revision": {
+    "semantic_and_source": "e35b6c847ca4b773730cb41a893afc0a1f931956",
+    "affected_promotion_and_reached_and_independent": "43e597ece823a327217930604b3eadea2cd028a7"
+  },
+  "unchanged_revision": "62568dcc3526a51500c09f7eaec0a04cd1323437",
+  "module_count": 424,
+  "tested_sha256": {
+    "spec/semantics/387-integer-operator-warnings.watsup": "e37bb86fad77089cce4785967122bb6a7327244b051fdeddae9aad2c9116f6c2",
+    "tests/semantics/integer_both_reference_object_right_warning_cases.py": "46291ac8d3e6abdc043ec3214f519f5119ea424b637e1d838e5f82a9ee4e9d59",
+    "tests/semantics/integer_both_reference_object_right_warnings.py": "3c5350ae5190a01d51be2c1583be3c42145ffbd2e7be36a5cd32bcf0fed85bcc",
+    "tests/semantics/integer_both_reference_object_right_warning_protocol.py": "74f74b95686425f5b732237133069b90788e9a704012fecc1c89dde866e3434e",
+    "tests/semantics/integer_reference_left_object_right_warning_cases.py": "a3db84367878d6cf9af2ab251b31f9c07539af9ca23f29fbfe3972a0c34cafb9",
+    "tests/semantics/integer_reference_left_object_right_warning_protocol.py": "ba5a7803491c2d1ff60e4d1cdd138540a8e572f3f4998a01edc01fcae7adbad1",
+    "spec/semantics/modules.json": "de8488abd5ca58bfd455d59011ef41f48449be4699ede06af70e027075dab632"
+  },
+  "engine_basis": [
+    "Direct variable operands stay CV8/CV8 in zend_compile_binary_op/CV lowering; COMMUTATIVE does not swap equal slot ranks.",
+    "Zend/zend_operators.c::convert_op1_op2_long dereferences RIGHT after LEFT callback, whereas bitwise_*_function dereferences both before conversion. zendi_try_get_long saves the LEFT double/long before the Deprecated; subsequent RHS conversion still reads its selected live payload.",
+    "Failed RIGHT conversion reports selected old LEFT/RIGHT types through zend_binop_error/zend_zval_type_name, including old NULL/string writes after both names rebind. An existing Exception skips unfinished conversion; no new binary object overload is introduced."
+  ],
+  "contract": [
+    "Both names rebind to new bool/int or numeric-string targets while old cells stay alive through distinct aliases. MOD/shifts read new RIGHT5 and use saved LEFT12; BW reads old RIGHT object or2, yielding selected-object TypeError or strict0/14/14. Old LEFT writes never replace the cached long.",
+    "Two old string payloads after the callback retain the initial numeric dispatch. Failed RHS conversion labels the selected old LEFT scalar type rather than the new CV. Supplied throw skips oldRIGHT5.5/new0 or a negative new count and preserves the original Exception/outer100.",
+    "Only the one-CV admission restriction is removed. Both preexisting real-owner checks, source/history validity, conversion/failure bodies and task roots remain unchanged. Both old CELL owners2-to1 and new CELL owners2 stay distinct after name rebinding."
+  ],
+  "preparation": {
+    "frozen_cases": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-109/cases.py",
+      "sha256": "46291ac8d3e6abdc043ec3214f519f5119ea424b637e1d838e5f82a9ee4e9d59"
+    },
+    "recorder_sha256": "9689c5c02bc7c3c6b60125fbd67235751fd502c2bcce0241d5713aa04bf8259c",
+    "native_first": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-109/native-pre/report.json",
+      "sha256": "89fb255c9840d1bf337ab14c01f6c6315653d490b96b363ef32126573fec4ae9"
+    },
+    "unchanged_baseline": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-109/baseline/report.json",
+      "sha256": "dbac6b825ebe445350f08bfd8adcef87e019a53553288451d80ab93fa41739f1"
+    },
+    "result": "All17 native predictions exact. Sixteen fresh originals plus the byte-identical OP108 seed were all accepted/checked Unsupported at producer ingress, exit1/credit0 on unchanged625."
+  },
+  "accepted": {
+    "strict": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-109/strict-e35b6c847/report.json",
+      "sha256": "2c36db393b2643b97b44e9706f5dac3076ac0068b08d658fb9ee4268fbfe709b"
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-109/source-e35b6c847/report.json",
+      "sha256": "586dfeab6940272ca43c14cd487aef66a651cab224c6fa9d0885334a75805e9b"
+    },
+    "author_source_agreements": 17,
+    "fresh_author_sources": 16,
+    "promoted_seed_sources": 1,
+    "source_boundaries_remaining": 0,
+    "new_reached": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-109/focused-43e597ece/report.json",
+      "sha256": "854cc4cd9f1c997dc6f40dd33c90c6f79023a976b4327b58d6d8cf9a46bccebc"
+    },
+    "new_launcher": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-109/focused-43e597ece/launch.json",
+      "sha256": "e364c79dcf2602a9c577ea368c6cd154b3fa4119059c847a4a8fbebf6d90c146"
+    },
+    "new_rows": [
+      [
+        "mod-rebind",
+        131
+      ],
+      [
+        "xor-write-both",
+        131
+      ],
+      [
+        "and-left-int-typeerror",
+        133
+      ],
+      [
+        "xor-handler-throw",
+        113
+      ]
+    ],
+    "new_conditions": 508,
+    "affected_seed_reached": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-109/promoted-seed-43e597ece/report.json",
+      "sha256": "7365f31fbab63dafd3f08c4a0fe3fb5ea4a704b58f9be568abda6df390a06cae"
+    },
+    "affected_seed_launcher": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-109/promoted-seed-43e597ece/launch.json",
+      "sha256": "0831d9459e17dfa20532bc573ef15f4a13057cd190020838112e0437abad2462"
+    },
+    "affected_seed_conditions": 58,
+    "total_reached_conditions": 566
+  },
+  "promotion": {
+    "source_id": "promoted-op108-both-cell / original both-shared-boundary",
+    "source_sha256": "7a9797c5067fea31d53779132c89a2498684d1c0cea679abb663727ee97e6875",
+    "original_report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-108/focused-a0f922ba8/report.json",
+      "sha256": "a9121f277d7d1582fbe91bb95a67dd6900bdb203abfd94db5750f552862a581e"
+    },
+    "original_boundary_conditions": 29,
+    "order": "Strict/source17 agreement at e35 preceded commit43 updating only the legacy BOUNDARIES entry and affected seed function/docstring/dispatch. Runtime stayed byte-identical.",
+    "input_bridge": "After the policy update all17 current source payloads were checked byte-identical to the accepted source files. AST comparison preserved the old positive-condition body; only the seed front was executed.",
+    "affected_behavior": "The promoted seed rebinds LEFT but writes the existing RIGHT cell5; RIGHT retains two owners, unlike the new both-name-rebind matrix. Its positive58 front checks admission, captured12, LEFT2-to1/RIGHT2, object retirement, int2 and exact original stdout.",
+    "credit": "The original29 refusal remains historical Unsupported/no agreement. Old positive446 and OP107 source/state campaigns were not replayed or renewed."
+  },
+  "independent_review": {
+    "reviewer": "/root/op106_resume_review",
+    "status": "Exact runtime/new508/legacy58/source CLEAR; independent native-first, genuine gaps and candidate4 accepted",
+    "frozen_cases_sha256": "dfb598a035ddcab7e79f797ba374d1ee7360a5c0becc1035e8b3614a76f8da1a",
+    "recorder_sha256": "64fe269382f923b1c5136193b822273ef632ede0dd436626feebd3e87c41ca92",
+    "native_first": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-109/review-independent/native-pre/report.json",
+      "sha256": "b9b5dde328663d0f9455e5cd59fbfb2b49dc618d1d3faa0697178ef9f5122ee1"
+    },
+    "unchanged_baseline": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-109/review-independent/baseline/report.json",
+      "sha256": "69ef7727720b8fd39253249ca27826ad2283f420e69d703ac06dec1e9af630d2"
+    },
+    "changed_models": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-109/review-independent/model/report.json",
+      "sha256": "c679598a0414b18f917066e3544a7c1910019dc66a2b131053b30e4919d3bf39"
+    },
+    "source_agreements": 4,
+    "formerly_unsupported_sources": 4,
+    "result": "True-handler MOD live new numeric-string5, XOR both old strings numeric14, oldNULL/stdClass error versus new99/5, and original SHL throw before a negative live count all agree exactly. Normal/exit_status0/reasonNone, exit0/no raw stderr/no timeout/interruption/group residue."
+  },
+  "preserved_zero_credit": [],
+  "environment": {
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "php_file_bridge_sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "cpu": "All new packets serial on CPU2, inherited or sampled affinity[2]. All process groups reaped; lease released during implementation and after independent models."
+  },
+  "limits": "Initial sole-owner/expired pointers, memberful/materialized RIGHT objects and wider owning/reference producers remain partial. Late old-LEFT object substitution when RIGHT conversion fails remains refused by the existing failure guard; no extra owning-object probe is claimed. No new task/root, per-fixture bypass or paused lane was introduced.",
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-109",
+    "commands": [
+      "taskset -c 2 python3 tests/semantics/integer_both_reference_object_right_warnings.py --output <fresh-external-directory>",
+      "taskset -c 2 python3 tests/semantics/integer_both_reference_object_right_warning_protocol.py --output <fresh-external-directory>",
+      "taskset -c 2 python3 tests/semantics/integer_reference_left_object_right_warning_protocol.py --case both-shared-boundary --output <fresh-external-directory>"
+    ],
+    "note": "Recreate an isolated recorded revision with project-local pinned tools. Frozen recorders preserve original roots/commands; recreate that root or adapt only its location. Raw bytes, profiles, exits, streams and wrapper/fixture hashes remain external. Metadata-only later changes add no execution credit."
+  },
+  "integration": {
+    "parent": "8f7f9428f3dbd5b1bcc8a86b573ed703aa70148a",
+    "joined_tested_revision": "32e4906ef75cd72cd244d8174b2c17c7840a3157",
+    "strict_report": "/home/user/workspace/php-spec-evidence-archive/operators-109/joined-strict-32e4906ef/report.json",
+    "strict_report_sha256": "a8549d53255efaca8ea576238576dc9b3b1a60748bc0c6a8d335c81bcad0e259",
+    "result": "SL strict424 passes on CPU3 affinity[3], exit0/stdouttrue/stderrempty, no timeout/interruption/process residue. CPU3 released after full reap.",
+    "independent_composition": "CLEAR: actual parent387/source-history31/32/33/46 equal original625; joined runtime, new tests, affected legacy files and ledger match accepted716/43. Inventory preserves exact actual-tail entries plus accepted additions. PROGRESS changes only own OP108 checkpoint to OP109/integrated109 while preserving I71 and all other current/active/paused text.",
+    "credit": "Author source17 retain e35; independent4/new508/affected seed58 retain43. Original29 and old positive446 remain historical without replay. The disjoint join adds no source/state credit, and final joined-evidence changes are metadata only."
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "milestone": "COMP147",
+  "status": "independently reviewed and accepted within the stated bound",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C; TZ=UTC; tests/semantics/profile.json after -n"
+  },
+  "scope": "COMP145/146 root and previous-path admission is unchanged: twelve non-base same-kind normal nonpending linked roots, comparison guard below 16, at most 16 canonical live nonfreeing unmaterialized exact builtin nodes per path, excluding FiberError. At reached captured traces, prior authenticated DIRECT/ref graph modes retain their bounds. A visited fallback authenticates live headers and follows identity, ordinary class, active-left recursion, count, left-order keys and values. Its local left array/object/cell measure is capped at 16; left ALIAS cells add depth without identity or recursion shortcuts. Reached same-class bodies remain stdClass or plain parentless methodless instances with initialized public properties/current ordinary tables. Reached cycles, callbacks, object/scalar and wider layouts remain Unsupported. Wider Throwable roots/states and lazy previous-path admission remain partial.",
+  "engine_basis": "Zend/zend_object_handlers.c compares object identity then class before ordinary bodies. Zend/zend_operators.c and Zend/zend_hash.c compare table identity before active-left recursion, recursion before count, then missing keys before deindirection/value comparison. Throwable physical cache/prefix slots precede trace, previous and ErrorException severity. The visited walk preserves these early decisions without consulting later captured payloads; shared reference-cell NaN still compares by value.",
+  "implementation": {
+    "tested_runtime_and_sources": "e8fe87dd26a637e42ddb7e87948d9d4521b4be8a",
+    "corrected_fixture_and_independent_cut": "d89812e7ba414d069ecd9bfe05c9141edd9a538e",
+    "reviewed_actual_tail": "1d03e4ec181f18dd8283b12e02c5cf28f8046c68",
+    "rule": "152 removes only the pre-slot captured-graph gate and delegates reached trace arrays to 394. Old fully authenticated modes remain compatibility paths; the fallback shares an ordered entry/value walker across arrays and ordinary properties. Shallow headers bind allocations, keys, property records and published source classes before identity/class skips. Defined allocated cells are read at the reached key. Tables use ordinary materialization, inline slots remain inline, and only ORDER0 with NORMAL continues using the resulting state. Global/aggregate active-left guards remain authoritative. Pure COMP145 and base Exception/Error routes are unchanged.",
+    "runtime_files": [
+      "spec/semantics/152-throwable-runtime.watsup",
+      "spec/semantics/394-aggregate-stringable-comparisons.watsup"
+    ]
+  },
+  "native_first": {
+    "author": "Ten originals frozen at 62a780be6; native report 5419812f70cb8db6ba295b7d420b0048a0e86ae3dd4d31c38a08c7c76a85fc2a. Extra plain-inline source frozen at befbbf208ea641ff66f43c5f1140f8651693653a; native report f84cb25a696622acb10fdb9a9d0de7a8527a644ecbaec9251260003133260f63. Selected unchanged array-count source is genuine Unsupported, prefix B|, report 2e7a0dbc6bc03531088d9b487172fc55d59700cf17c4ceb291e289ab3c915fb9.",
+    "independent_sources": {
+      "earlier-scalar-skips-cycle.php": "877dfbccd7e0e97c03cd899ff1158ad188396d8e23de63db0dd0db2682f67712",
+      "count-key-skip-cycle.php": "4b900c1a224737782aee7ec40784caa5bd2cb911ce17b5d28986ffbac363ea0b",
+      "reached-cycle-control.php": "c67077400d31fdec1d16fc0a149cd25b6550ce606a29c8234ccf3ac0936a8599",
+      "active-cycle-before-count-control.php": "8d556aa6ffc326cbee8dc2c3492a339a8f3720be472cf1b8e81ab8ab05931031"
+    },
+    "independent": "All four froze before native outcomes. First three native originals and meaningful unchanged scalar-skip baseline are retained in reviewer-native-baseline-v1/report.json, sha256 019cb6a4232ef88927b9e02841f5ed715b97baf94b6c3e905e666cf61a3ef2fb. Fourth native-only report 21d62647ec6115e97351d5e884a5b0e14faee8c7493816d6e635da52c1539b00. Both reached-cycle originals catch PHP's recursive-dependency Error; model Unsupported controls receive no agreement credit. No previous-cycle/crash probe was used."
+  },
+  "validation": {
+    "sources": "Thirteen new normal originals agree exactly: eleven author and two independent. One retained different-class control is promoted; two old COW/live-cell compatibility originals remain exact. Three retained object/scalar, callback-class and visited-cell-cycle boundaries plus two independent reached-cycle controls remain accepted/checked Unsupported with prefix B|, zero agreement credit. Cases cover cache/prefix skips, identity/class/count/key/earlier-leaf decisions, current ALIAS writes, shared NaN, plain inline versus tables and cold/warm aggregate continuation.",
+    "source_reports": {
+      "author_five": "db70b8f49e83701dfb8d474bfa8ba85448d605650ff3d8d576b1a7d22e57201b",
+      "author_other_five": "78620025337aec0edc5b0c4e76d0e3aeeffcd026835179fb3f567a33623694ea",
+      "author_inline": "e9ebc9cc880ad0ecbe76f5ba3c10b88d933fbcd01b3dcd76c5659dbd1f7bceff",
+      "independent_two_and_two_boundaries": "41ca8ba978614e3fce4520857e4c59c82a3acc0a09a3ef8a86bc05528c5d2f2a",
+      "retained_promotion_and_three_boundaries": "4d91db667d3dcfeefc331767baaed389cecae89589cba3126091b16eb5af21d9",
+      "compatibility_two": "65b751b67bae5e2bf038b283cb5e94704dab7f6eb25c9f0193f7080b907ef104"
+    },
+    "state": "Six source-reached recipes pass 58+55+56+106+53+57=385 premises/eight raw PhpSteps across e8 and d898. They bind actual trace/args/cell/object/table identities, unchanged or reached materialization, inline publication, missing owner/allocation and undefined-cell refusal, same-ID-before-guard, NaN nonidentity, two-table cycle refusal and third-table recursion-before-unequal-count. state-count-v1/report.json fd5c8dd3a9c6bf82e28e5d31b2f4c5b69b923652b5a2da97eca222359ea51159; four passing rows of state-rest-v1/report.json efa94916f7bff622e365c5263d3dbe5763367ec926554ec911e6f79066c7b527; corrected state-active-v2/report.json98bc96773ac9915cc3b070112939a4cf80a74e9b36093032d09d9a636cd00efd.",
+    "fixture_correction": "The first active-count row wrongly required an invalid right graph, but R-to-T-to-scalars is acyclic. Its failed row has zero credit. d898 removes only that negation in generated premise 25; PREFIX/other five recipes are byte-identical. Bridge sha256 52fadd73e7cedeafdd4a907a62ade20ed13da91d5518532d6de288c517993739. Only the affected 57 row was rerun; accepted strict/source/other-state results retain e8 identity.",
+    "strict": "Strict compilation of 424 modules passes at e8, report af76ee3f37ad938754229dc015d27deffbcd46db1acda26a5c48bdfec1fdd067. Joined strict424 passes at actual-tail 1d03e4ec181f18dd8283b12e02c5cf28f8046c68, report 50aff43e8c5a75b1f912c6fcfcbd4ac4d524d1fdae2aff8bbef110ba103a8c2c. Reports bind stable executed inputs/HEAD, numbered pinned CPUs and fully reaped process groups."
+  },
+  "independent_review": {
+    "decision": "accept the visited captured-graph extension within the stated dependency bound; complete core remains partial",
+    "actual_tail": "Composed on master d21fc93fe34306a41a8a49de2a248c5874095acd. Eight tested runtime/source/fixture blobs remain byte-identical to d898. Incoming property diagnostic/type-display and anonymous-publication helpers, plus autoload/Fiber/Iterator/integer-warning selectors, do not overlap these frozen untyped nonanonymous trace cases. Modules152/157/163/52/394, manifest and adapter/frontend/bin/profile are unchanged by the incoming tail. Current PROGRESS retains all incoming integrated and active work, held/paused rows, and adds only this milestone. Composition adds no source/state replay credit.",
+    "metadata": "README/family distinguish preserved authenticated paths from the visited left-depth bound and unchanged canonical previous paths. Inventory only appends to partial obligations 44/70. PROGRESS counts new/promoted/unchanged/Unsupported separately, retains failed-row disposition and preserves incoming active work, held COMP123/V110 and paused COMP88. No engine bug or intentional divergence is claimed."
+  },
+  "artifacts": "Raw streams, originals, process/state records and fingerprints remain outside Git under /home/user/workspace/php-spec-evidence-archive/comp147. Selected retained-control and compatibility reports remain in comp146/author-v1 under their case-selection names, binding d898. Independent original.php copies accompany reports; launchers remain under /tmp/comp147-review. Tracked state-case source embeds the exact frozen active-cycle original."
+}

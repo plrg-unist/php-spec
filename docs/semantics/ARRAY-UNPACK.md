@@ -55,10 +55,12 @@ globals or throw before the next literal item. A key callback's supplied
 exception likewise retains the builder through DATA destruction; a destructor
 exception replaces it with the original as `previous`. For an invalid bool key,
 the insert step instead produces a raw Error. Same-frame throwable continuation
-removes that producer, and generic eager cleanup releases the partial builder
-before DATA and the cached current array. The cached array remains owned during
-the destructor; there is no intervening `THROW_SEARCH`/Iterator task cut on that
-route. The [DATA destructor review](../../coverage/semantics/array-iterator-data-destructor-review.json)
+preserves the authenticated Iterator producer through Error materialization.
+Ordinary `THROW_SEARCH` then releases CURRENT before DATA, while the partial
+builder remains protected until the destructor and instance storage finish.
+This preserves sole versus held scalar references during field COW; the
+[cleanup correction](../../coverage/semantics/array-iterator-invalid-key-cleanup-review.json)
+records the scalar-only counterexample and affected source/state checks. The [DATA destructor review](../../coverage/semantics/array-iterator-data-destructor-review.json)
 records the distinct source and reached-state checks. Owning instance children,
 other operand modes and broader destructor reentry remain partial.
 
@@ -135,8 +137,22 @@ Iterator owner delays an empty-field append until after assignment and tail
 evaluation. Four exact originals, strict compilation of 424 modules and 584
 reached premises (580 Boolean, four raw steps) retain separate tested cuts in the
 [pooled-field review](../../coverage/semantics/array-iterator-pooled-field-review.json).
-Multiple owning fields and special, typed, proxy, object, cyclic or debt-bearing
-descendants, property tables/hooks and wider destructor reentry remain partial.
+Several initialized inline declared fields may now own supported finite arrays
+or ordinary reference cells. Each owning slot is public, untyped and mutable;
+plain DIRECT scalar slots keep their earlier admission. The slot fold preserves
+ordered physical edges, including repeated array roots, and checks each graph
+per path so distinct fields can share descendants. A real property reference
+returned by `current()` remains the selected cell through `key()` replacement;
+spread still inserts a DIRECT row snapshot. Independent field writes preserve
+saved/builder rows through COW, and ordinary object storage releases each slot
+in declaration order. Outside scalar aliases retain their sharing, while pool
+owners keep constants
+after runtime copies retire.
+The [multiple-field review](../../coverage/semantics/array-iterator-fields-review.json)
+records the separate original-source, reached-state and boundary cuts.
+Special/typed/proxy references, object or cyclic/debt-bearing descendants,
+property tables/hooks, by-value current with owning fields and wider destructor
+reentry remain partial.
 
 `427-array-generator-unpack.watsup` adds ordinary named Generator bodies with
 received parameters and reference yields, using real borrowed native resumes.

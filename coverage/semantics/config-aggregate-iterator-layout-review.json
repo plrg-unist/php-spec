@@ -1,0 +1,60 @@
+{
+  "scope": "CFG119: descriptor-backed physical declared fields for the admitted fresh sole-DATA Aggregate-returned CONFIG Iterator, without literal field names or a single-field/edge limit. Supported scalars, ordinary reference cells, ARRAY DAGs and ordinary-instance Child DAGs may repeat edges and retain outside owners. The parent and descendants may lack destructors or use the admitted public no-argument by-value nongenerator destructor.",
+  "shared_helper_commit": "221cf7028",
+  "target": {
+    "runtime": "PHP 8.5.10 CLI NTS 64-bit",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+    "engine_sources": [
+      "Zend/zend_interfaces.c:zend_user_it_dtor",
+      "Zend/zend_vm_def.h:ZEND_SEND_UNPACK",
+      "Zend/zend_objects.c:zend_object_std_dtor and zend_object_dtor_property",
+      "Zend/zend_variables.h:i_zval_ptr_dtor",
+      "Zend/zend_hash.c:zend_array_destroy"
+    ]
+  },
+  "behavior": "Complete property_layout/property_slots_valid checks and shared per-slot descriptor authentication preserve actual declaration, key, origin and type policy. Physical DIRECT typed/private/readonly fields and valid initial/unset slots retain existing property validity; ordinary ALIAS cells exclude released/debt/type-source/coercion/backing metadata. Per-path ancestry accepts repeated siblings/DAG sharing and rejects ARRAY/CELL/object backedges. Actual property_slot_nodes and existing heap rules retain duplicate ownership edges. Quiet fields use existing pruning. When callbacks are needed, the unchanged 257/359 lifecycle marks and weakly retires the parent, pins it during nested descendant callbacks and preserves the saved key Exception through real retired operation exit. Outside owners defer descendants until actual release. The shared-helper extraction leaves A64's separate flags, builder and value policy premise-equivalent.",
+  "limits": "Dynamic/materialized layouts, builtin object descendants, special/typed reference cells, cycles, wider producer/owner routes, shutdown release and destructor throws/reentry remain partial. This packet tests selected no-parent-destructor consumers and an independent public-parent-destructor saved-Exception case, not their full cross-product. The older retained-parent return arm remains separate from last-DATA graph admission. Historical CONFIG116/117/CFG118 whole-tail evidence keeps its original scope and cut. Existing structural retired-receipt checks are unchanged; these original-source tests establish provenance for their programs.",
+  "engine_bugs_or_departures": "None identified in this increment.",
+  "raw_root": "../php-spec-evidence-archive",
+  "landed_helper_commit": "fa6cef60082e2e042bee950c8c2dfe3906a4976d",
+  "validation": {
+    "native_and_gap": "Four authored originals and independent e0ca were recorded native-first at clean unchanged ebc241a7d. Every native exits 0 with empty stderr and expected field/COW/destruction observations. Representative primitive-layout and graph-throw unchanged models are accepted/checked Unsupported at Aggregate return after B|G|, with zero agreement. The other graph modes share that gate and were not replayed unchanged.",
+    "authored_sources": "Four exact source/stdout/stderr/exit comparisons pass at HEAD 221cf7028 with recorded working 420 hash cb993a00: primitive 60.155s, graph-normal 193.990s, graph-throw 197.406s and graph-invalid 193.267s. Native/model source bytes/path/private cwd/oracle/profile identities match; input dictionaries differ only 136/138/420/426 for landed A64, the identical auth lift and this generic graph policy. All inputs and HEAD are stable and all process groups are reaped without timeout.",
+    "new_state": "Two first-prepared source-reached fixtures pass 38 and 190 premises in 43.471s and 350.704s on CPU 5, true newline/empty stderr/exit 0/stable inputs and HEAD/no timeout or residue. Primitive authenticates the typed private slot, ordinary scalar alias and shared ARRAY layout with no operational destructor. Graph authenticates sole parent owner 1, Branch 2/Leaf 3/CELL 2, complete descriptors, meaningful type/missing-slot/builtin/debt/cycle refusals and shared-DAG admission. A real parent pin owns it once while Branch runs with parent weak dead; retired key operation has parent and Branch gone, Leaf/CELL owner 1 and the same pending Exception. Real outside UNSET precedes one Leaf call and final weak death; budget resumes and missing-CALLED rejection pass.",
+    "affected_legacy": "Only CONFIG117 two extra-edge refusals are promoted after the new genuine multi-edge source evidence. Its authentic getter-return prefix passes 33 premises in 51.987s on CPU 5, including positive duplicate Child edges; CONFIG116 builtin-Throwable refusal stays negative. Earlier fixtures otherwise only adapt the owned_child helper name to owned_fields. Old 678/149/156 whole tails are not renewed; no old native or whole-source differential was rerun.",
+    "strict_and_helpers": "Private strict SL compiles 424 modules and returns true in 11.028s on CPU 3. The shared descriptor/ordinary-cell extraction is independently premise-equivalent for A64 and landed separately as fa6cef600 over 703ce9689 after joined strict 425 in 11.086s on CPU 5. All strict runs return true newline/empty stderr/exit 0 with stable inputs and HEAD and no timeout/residue. No A64 source/state renewal occurred.",
+    "independent_source": "One new public-parent-destructor saved-Exception original agrees exactly in 133.568 seconds on CPU 5, first attempt. Duplicate ARRAY/direct Child paths keep the Child live while the destructor writes ALIAS=null and restores it; the outside held CV observes both writes. Catch retains the exact saved Exception after parent retirement, and only actual outside unset runs the Child destructor once. Model/native source/path/canonical cwd/profile/oracle identities match; only intended 136/138/420/426 inputs differ. HEAD and inputs are stable, no timeout/residue, and all actors are reaped.",
+    "review": "Independent runtime, fixture and raw-result review clears five exact sources, 228 new reached premises and 33 affected legacy return-front premises. A64 separately clears the premise-equivalent shared authentication lift. Every executed native, model and SL check passed on its first attempt; no old native or whole-source differential was rerun, and historical whole-tail evidence was not renewed.",
+    "integration": "Reviewed remaining source/graph/docs composition over actual master bbc0dd8bd gives 87cf78e76; already-landed helper fa6cef is not duplicated. Independent interaction and PROGRESS/inventory union review clears the join. One joined strict SL run compiles all 425 modules on CPU 5 and returns true newline, empty stderr and exit 0 in 10.635 seconds, with stable inputs/HEAD, clean tracked files and no timeout/residue. Five source agreements, 228 new reached premises and the affected 33-premise return front retain their accepted cuts without replay."
+  },
+  "recovery": "Raw artifacts are under ../php-spec-evidence-archive/config119-development and config119-review-probes. tests/semantics/config_aggregate_iterator_layout_sources.py supports --phase native|baseline|model and optional --case. Native creates a fresh --output; later phases retain its original source paths/cwd and use fresh reports. Source-packet baseline reports are named baseline-{primitive-layout,graph-throw}-report.json after each serial run. tests/semantics/config_aggregate_iterator_layout_protocol.py supports --phase prepare|check with --sources/--output and optional --case; current groups use candidate1/protocol-primitive and protocol-graph. candidate1/legacy117/run.py prepare|check selects only the authentic maintained return prefix. Independent multifield-cell-saved-exception-unset.php and run.py live under config119-review-probes. Reports retain exact commands, streams, statuses, input/tool hashes and reaping; use a root CPU lease and pin launchers/children.",
+  "reports_sha256": {
+    "config119-development/source-packet/native-report.json": "a61d677f800bfd57e4ad06b9304275e94a97099f4bb86515f2df4202f399d05c",
+    "config119-development/source-packet/baseline-primitive-layout-report.json": "2adcc055e76921d1f362c6d7acffb1bce983ed55f8ffe14ac0f6c7b6631cf266",
+    "config119-development/source-packet/baseline-graph-throw-report.json": "05393969942e9641ace8b37fd44e0841427800db225b76db44ef399385091b89",
+    "config119-development/source-packet/model-primitive-layout-report.json": "279648d234b42eced7f9f60fecde9cf7156203217440bbf6f17baa403f7b08e3",
+    "config119-development/source-packet/model-graph-normal-report.json": "23d55102a3205c4dd47fa0593768861a93f4bc5d0f376a08e09860ae45a05771",
+    "config119-development/source-packet/model-graph-throw-report.json": "fb59475779e7851243c11ed24653fcc09fadee8c549b9e2a40042d2a46a454a6",
+    "config119-development/source-packet/model-graph-invalid-report.json": "20116bff060dec595ef392deb90b25a1259318eb15aff65b246f0a45a2445392",
+    "config119-development/candidate1/strict/report.json": "d7913d9f5a3042d74c33fc6e6c572f601beb2c7313eb63f9b8a27398f62597b7",
+    "config119-development/candidate1/protocol-primitive/check-report.json": "d432ba699e09343fce8c6f8a825d6a90328a3ba9bf93de81a859c713b7bbb777",
+    "config119-development/candidate1/protocol-graph/check-report.json": "ab638bbdb1ed0a5c5706cf4bddfbbb59eb1142456e29f689c0ae595bb37a96d6",
+    "config119-development/candidate1/legacy117/check-report.json": "b24c02488271b33e9f434937357c29c042d9576ce4125dd5dd9d9412f9fdec0f",
+    "config119-development/helper-joined703ce-strict/report.json": "d9be6f67a7ce92165b67c2efa54e8317fd8723eaebbc8860b2bf4a065537852d",
+    "config119-review-probes/packet1/native-report.json": "e2de0ff5bd40a827d1338688261e9d8e98d0f4866cb6622439a1c9069a7772c1",
+    "config119-review-probes/packet1/model-report.json": "36c7b09d9e24d064e3f01b9d152485a1c4762948c70b39de3631812a102598c7",
+    "config119-development/joinedbbc0-strict/report.json": "95f71379ff1de3f2b86fc394459e2322839ee9be1b2e6290b7bacd6abfb51afa"
+  },
+  "tested_input_sha256": {
+    "spec/semantics/136-property-runtime.watsup": "264cc482bdc929d103bd4b854390833718ce6b5a31177087dd02e9dc27258dc5",
+    "spec/semantics/138-property-references.watsup": "7d43be2f0ede14471c3ecf1a375aa232c9cff906b4ef1935777330b704217f0a",
+    "spec/semantics/420-config-iterator-unpack.watsup": "cb993a007ce8921b5717d49f6162f8f3de3bf01856c705f1181ee3fae50feb35",
+    "spec/semantics/426-array-iterator-unpack.watsup": "287003f08942da44e3faf272ff5bb01ecbec8500431ea45620773590c2f61aa4",
+    "tests/semantics/config_aggregate_iterator_layout_sources.py": "268491c111b3625017158581b5703cf3f56d33b7cd1e22bcf3fff0f94c66f731",
+    "tests/semantics/config_aggregate_iterator_layout_protocol.py": "d8fd090116f3d5a859127cb45c97e0a7391395d7aea9b1651bf66237681d28b9",
+    "tests/semantics/config_aggregate_iterator_child_only_protocol.py": "2cd87965e0a2ae1a908f121b50ee7e866c7d9502ded682e20b4c631f657aa9d1"
+  },
+  "implementation_commit": "a92436cf7"
+}

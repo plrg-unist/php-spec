@@ -134,6 +134,17 @@ Commit concise reports and manifests with hashes and locations. Preserve raw
 failures and interrupted runs externally; do not force-add their archives.
 The coverage compression patterns in `.gitignore` guard against reintroduction.
 
+I72 static-method Generator THROW evidence is retained uncompressed under
+`../php-spec-evidence-archive/generator-fiber-static-throw-72/`. Its `manifest.json`
+binds nine reports, including the failed pending fixture and corrected-only cut,
+the peer scoped-copy abort originals/streams, and joined 425; old cuts are retained.
+
+I71 fresh named by-reference Generator THROW evidence is retained uncompressed
+under `../php-spec-evidence-archive/generator-fiber-fresh-reference-throw-71/`.
+Its `manifest.json` identifies seven private reports and the separate peer
+alias/formal-unset originals and streams; I69/I70 cuts are not renewed.
+The additional `joined-strict/report.json` records actual-tail compilation.
+
 I70 fresh by-value method Generator THROW evidence is retained uncompressed under
 `../php-spec-evidence-archive/generator-fiber-fresh-method-throw-70/`.
 Its `manifest.json` identifies seven raw private reports, including the separate
@@ -386,6 +397,15 @@ The selective multiple-entry WeakMap ephemeron proof is in
 483,023 bytes/123 members under `.tools/m145/`, six complete reports, original2
 packets, app0 preflight, immutable author/peer snapshots and the isolated422 patch.
 SHA-256 `fd18be8469986efff7089777ce8f7f9522c01bad623f6c8a7d33f40629fe349a`.
+
+CALL124's original PHP requests, candidate/strict reports, failed fixture cuts
+and eight accepted reached traces are under
+`../php-spec-evidence-archive/call124-author-native/`. The independent sources,
+retained-native comparisons and handler projections are under
+`../php-spec-evidence-archive/call124-review-native/`. The concise
+[review](../coverage/semantics/magic-iterator-unpack-review.json) records tested
+revisions, hashes and the recovery paths. The joined A64 strict425 report is
+`call124-author-native/joined-a64-9742d77b0/report.json` under the same archive.
 
 ## Commit provenance and recovery
 

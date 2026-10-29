@@ -5,13 +5,10 @@ import subprocess
 import static_types as types
 
 
-def expired(signum, frame):
-    raise TimeoutError("checked worker exceeded 30 seconds")
-
-
 class Worker:
-    def __init__(self, command, output):
+    def __init__(self, command, output, *, seconds=30):
         self.output = output
+        self.seconds = seconds
         output.mkdir()
         (output / 'command.json').write_text(json.dumps(command) + '\n')
         self.stderr = (output / 'stderr').open('xb')
@@ -19,14 +16,17 @@ class Worker:
                                   stderr=self.stderr, env=types.ENV)
         self.sequence = 0
 
+    def expired(self, signum, frame):
+        raise TimeoutError(f"checked worker exceeded {self.seconds} seconds")
+
     def request(self, request):
         stem = self.output / str(self.sequence)
         self.sequence += 1
         packet = (types.wire.dumps(request) + '\n').encode('utf-8')
         with stem.with_suffix('.request').open('xb') as raw:
             raw.write(packet)
-        previous = signal.signal(signal.SIGALRM, expired)
-        signal.setitimer(signal.ITIMER_REAL, 30)
+        previous = signal.signal(signal.SIGALRM, self.expired)
+        signal.setitimer(signal.ITIMER_REAL, self.seconds)
         try:
             self.p.stdin.write(packet)
             self.p.stdin.flush()

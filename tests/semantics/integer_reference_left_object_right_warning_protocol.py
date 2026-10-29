@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Source-reached saved LEFT conversion versus its rebound CV and old CELL."""
+"""Source-reached saved LEFT conversion and the promoted both-CELL seed."""
 import base64
 import hashlib
 import json
@@ -38,7 +38,8 @@ def $left_object_seek_boundary(S, n) = $left_object_seek_boundary($drive_steps(S
 '''
 
 
-def boundary_conditions(program, path):
+def promoted_conditions(program, path, stdout):
+    # The original29-check Unsupported cut is retained in OP108 evidence.
     return [
         'S_initial = $php_run(' + program + ', 0, ' + json.dumps(base64.b64encode(bytes(path)).decode()) + ')',
         'S_initial.COMPLETION = BUDGET',
@@ -51,6 +52,7 @@ def boundary_conditions(program, path):
         '$lookup(S_entry.ENV, $ptascii("alias")) = (n_left)',
         '$lookup(S_entry.ENV, $ptascii("right")) = (n_right)',
         '$lookup(S_entry.ENV, $ptascii("rightAlias")) = (n_right)',
+        '$lookup(S_entry.ENV, $ptascii("replacement")) = (n_new)',
         '$lookup(S_entry.ENV, $ptascii("v")) = (n_v)',
         'n_left <- S_entry.REFCELLS', 'n_right <- S_entry.REFCELLS',
         'S_entry.STORE[n_left] = DEFINED (PFLOAT ' + str(LEFT_BITS) + ')',
@@ -59,19 +61,43 @@ def boundary_conditions(program, path):
         '$heap_owners($heap_prune($heap_graph(S_entry)), HCELL n_right) = 2',
         '$integer_object_right_borrowed(S_entry, INTEGER_CELL n_left)',
         '$integer_object_right_borrowed(S_entry, INTEGER_CELL n_right)',
-        '~$integer_object_right_initial(S_entry, poperand_left, S_entry.RESULT, PFLOAT ' + str(LEFT_BITS) + ', POBJECT n_object, false)',
-        '$integer_operator_plan(S_entry) = eps',
+        '$integer_object_right_initial(S_entry, poperand_left, S_entry.RESULT, PFLOAT ' + str(LEFT_BITS) + ', POBJECT n_object, false)',
+        '$integer_operator_plan(S_entry) = (pintegeroperation)',
+        'pintegeroperation.LEFTPOINTER = INTEGER_CELL n_left',
+        'pintegeroperation.RIGHTPOINTER = INTEGER_CV ($ptascii("right"))',
+        '$integer_operation_valid(S_entry, pintegeroperation)',
         '$call_descriptors_valid(S_entry)', '$heap_valid($heap_graph(S_entry))',
-        'S_done = $drive_steps(S_entry, 2200)',
-        'S_done.COMPLETION = UNSUPPORTED "error-handler ingress requires a producer continuation"',
-        'S_done.STORE[n_v] = DEFINED (PINT 100)',
-        '$integer_outputs(S_done.EVENTS) = eps',
+        'S_capture_found = $integer_seek(S_entry, 1, 2200)',
+        'S_capture_found.COMPLETION = NORMAL \\/ S_capture_found.COMPLETION = BUDGET',
+        'S_capture = S_capture_found[.COMPLETION = NORMAL]',
+        '$integer_frontier(S_capture, 1)',
+        'S_capture.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation INTEGER_LEFT pintegerconversion 0) :: ptask_tail*',
+        'pintegerconversion.INPUT = PFLOAT ' + str(LEFT_BITS), 'pintegerconversion.VALUE = 12',
+        'S_return_found = $integer_seek(S_capture, 3, 2200)',
+        'S_return_found.COMPLETION = NORMAL \\/ S_return_found.COMPLETION = BUDGET',
+        'S_return = S_return_found[.COMPLETION = NORMAL]',
+        '$integer_frontier(S_return, 3)',
+        '$integer_warning_valid(S_return, pintegeroperation, INTEGER_LEFT, pintegerconversion, 1)',
+        '$lookup(S_return.ENV, $ptascii("left")) = (n_new)',
+        '$lookup(S_return.ENV, $ptascii("right")) = (n_right)',
+        'S_return.STORE[n_left] = DEFINED (PINT 99)',
+        'S_return.STORE[n_right] = DEFINED (PINT 5)',
+        '$heap_owners($heap_prune($heap_graph(S_return)), HCELL n_left) = 1',
+        '$heap_owners($heap_prune($heap_graph(S_return)), HCELL n_right) = 2',
+        '$heap_owners($heap_prune($heap_graph(S_return)), HOBJECT n_object) = 0',
+        'S_done = $drive_steps(S_return, 2200)',
+        'S_done.COMPLETION = NORMAL', 'S_done.EXITSTATUS = 0',
+        'S_done.STORE[n_v] = DEFINED (PINT 2)',
+        'S_done.STORE[n_left] = DEFINED (PINT 7)',
+        'S_done.STORE[n_right] = DEFINED (PINT 5)',
+        '$integer_outputs(S_done.EVENTS) = ([' + ','.join(map(str, stdout)) + '])',
+        '$call_descriptors_valid(S_done)', '$heap_valid($heap_graph(S_done))',
+        '$drive_steps(S_capture, 0) = S_capture[.COMPLETION = BUDGET]',
     ]
-
 
 def conditions(name, program, path, stdout):
     if name == 'both-shared-boundary':
-        return boundary_conditions(program, path)
+        return promoted_conditions(program, path, stdout)
     stem = name.split('-')[0]
     op, result = OPS[stem]
     writes = '-write-' in name or 'retain-int' in name or name.endswith('handler-throw')

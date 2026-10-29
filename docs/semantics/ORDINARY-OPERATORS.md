@@ -89,10 +89,42 @@ CV's type. Independent old-string and old-null cases preserve that distinction.
 Entry requires two real owners; the old cell remains borrowed with one owner
 after rebinding. Supplied throws skip RIGHT and cancel delivery. Sixteen author
 and four independent new originals agree exactly; four positive reached fronts
-pass 446 checks. A fresh two-CELL source and 29-check reached front stay explicit
-Unsupported with zero agreement. Retained-object failure after an old LEFT
-object substitution is still Unsupported; wider owning substitutions remain
-partial. See the [shared LEFT review](../../coverage/semantics/integer-reference-left-object-right-warning-review.json).
+pass 446 checks. The original two-CELL source and 29-check reached front were
+Unsupported at that cut; the two-cell slice below now promotes that source.
+At that cut, retained-object failure after an old LEFT object substitution was
+Unsupported; the late-owning route below now handles it. See the
+[shared LEFT review](../../coverage/semantics/integer-reference-left-object-right-warning-review.json).
+
+Both operands may now select borrowed reference cells, each kept alive by an
+outside alias. Rebinding both names preserves LEFT's cached `12`; modulo and
+shifts read the new RIGHT CV, while bitwise operators use the old RIGHT cell.
+Writing old RIGHT `2` supplies `0`/`14`/`14`, even after an old LEFT write.
+Retained-object errors use the selected old LEFT type, not either new target;
+old scalar string/null changes preserve numeric dispatch and cached conversion.
+Supplied throws cancel before a later RHS notice or shift error. Sixteen new
+author sources, the exact promoted seed and four independent sources agree;
+four new reached fronts pass 508 checks and the affected seed passes 58.
+The earlier 29-check cut remains historical; old positive suites were not
+replayed. No new task/root was added. See the
+[two-cell review](../../coverage/semantics/integer-both-reference-object-right-warning-review.json).
+
+After the first physical integer conversion succeeds, its selected CV or surviving
+cell may hold any allocated object whose creation and lifetime are otherwise
+admitted. Failed later conversion diagnoses that object's current class without
+retrying its cast or overload. The unfinished operand must remain nonobject or
+the admitted empty, unmaterialized `stdClass`; wider object conversions stay
+partial. Physical pointers preserve swapped bitwise order, including `[7] & $right`.
+An original `12.5tail` retains both notices and cached `12` after object replacement.
+Binary TypeError formatting applies Zend's C-string truncation to each type name;
+raw class identity and `get_class` retain the full anonymous name.
+Sixteen authored and seven independent sources agree exactly: 19 prior late-failure
+gaps and four unchanged controls. Four source-reached fronts pass 471 checks,
+including four labeled derived helper-state guards. Real owners preserve the
+replacement through error/throw and release it at the explicit last CV/alias drop;
+owning-array children also retire normally. Initial admission, source/history
+validation and task roots stay unchanged. Earlier operator cuts retain their
+evidence without replay. See the
+[late-owning review](../../coverage/semantics/integer-late-owning-left-warning-review.json).
 
 Plain-CV NaN `%` now preserves the remaining precision Deprecated after its
 range Warning handler throws. With mask `2`, the default Deprecated on line 25

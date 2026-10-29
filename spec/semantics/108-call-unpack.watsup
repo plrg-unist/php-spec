@@ -205,6 +205,7 @@ rule PhpStep/unpack-container-done: S ~> S[.TODO = (UNPACK_ARGS $unpack_advance(
 
 dec $unpack_call_roots(punpackcall) : pnode*
 def $unpack_call_roots(punpackcall) = $target_nodes(punpackcall.FUNCTION) ++ $named_slots_roots(punpackcall.SENT.SLOTS) ++ $named_roots(punpackcall.SENT.NAMED)
+  -- if ~$magic_unpack_collecting(punpackcall.FUNCTION)
 def $task_nodes(UNPACK_ARGS punpackcall) = $unpack_call_roots(punpackcall)
 def $task_nodes(UNPACK_SEND punpackcall) = $unpack_call_roots(punpackcall)
 def $task_nodes(UNPACK_PREP punpackcall) = $unpack_call_roots(punpackcall)
@@ -356,7 +357,6 @@ def $unpack_before_valid(S, punpackcall, n) = true
   -- if $unpack_pending_valid(S, punpackcall, n)
   -- if punpackcall.CALLSITE = (porigin)
   -- if $call_argument_source(S, porigin) = PCALLARGUMENTS phpType7* n_field
-  -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)
   -- if phpType7_prefix* = phpType7*[0:punpackcall.INDEX]
   -- if $call_unpack_present(phpType7_prefix*) \/ $unpack_static_prefix(S, punpackcall.FUNCTION, phpType7_prefix*, punpackcall.SENT)
 def $unpack_before_valid(S, punpackcall, n) = false -- otherwise

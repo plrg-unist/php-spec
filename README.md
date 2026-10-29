@@ -627,13 +627,22 @@ public no-argument `__destruct` runs before INI_SET or error recovery, with
 three exact PHP source agreements and separate reached cleanup checks.
 It may also own [one declared child](coverage/semantics/config-aggregate-iterator-child-review.json):
 the parent destructor sees the child live; if it owns the child alone, the child's
-destructor follows before API entry or catch. Wider child graphs remain partial.
+destructor follows before API entry or catch. Wider child graphs were outside that cut.
 When it owns the child alone, a [destructor-free Iterator](coverage/semantics/config-aggregate-iterator-child-only-review.json)
 also finalizes the child through ordinary storage release, preserving
 parent weak death and the saved Exception before catch.
 An [outside Child owner](coverage/semantics/config-aggregate-iterator-retained-child-review.json)
 keeps the Child live after parent retirement and API/catch; an actual outside
 `unset` then runs its destructor once, with the parent already gone.
+
+[Descriptor-backed CONFIG fields](coverage/semantics/config-aggregate-iterator-layout-review.json)
+now derive the complete physical layout without fixed field names or counts.
+Scalars, ordinary reference cells, arrays and finite ordinary Child graphs retain
+duplicate edges and outside owners. Typed/private direct slots keep their existing
+validation; path ancestry rejects cycles while allowing shared descendants.
+The optional parent destructor, real storage pin and saved Exception use the
+existing lifecycle. Materialized layouts, special cells, builtin descendants,
+shutdown release and wider destructor effects remain partial.
 
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
@@ -1151,15 +1160,22 @@ compiler slot order. [Direct-CV](coverage/semantics/integer-operator-warning-rev
 and [copied-operand](coverage/semantics/integer-operator-copy-review.json) evidence
 retain separate cuts. Wider producers and object conversion remain open.
 With an empty, unmaterialized `stdClass` RIGHT, a fractional LEFT's Deprecated
-handler can repair the later integer conversion. A shared operand needs a
+handler can repair the later integer conversion. Each shared operand needs a
 surviving outside alias. Shared LEFT keeps its saved integer and supplies its old
 cell's current type for later TypeError despite name rebinding. `%` and shifts
 reread the RIGHT CV; bitwise operations retain a selected RIGHT reference cell.
 A supplied throw cancels delivery. The [plain-CV](coverage/semantics/integer-object-right-warning-review.json),
-[RIGHT-cell](coverage/semantics/integer-reference-object-right-warning-review.json)
-and [LEFT-cell](coverage/semantics/integer-reference-left-object-right-warning-review.json)
-ledgers retain their original cuts. Two wrapped operands and wider owning
-substitutions remain partial.
+[RIGHT-cell](coverage/semantics/integer-reference-object-right-warning-review.json),
+[LEFT-cell](coverage/semantics/integer-reference-left-object-right-warning-review.json)
+and [two-cell](coverage/semantics/integer-both-reference-object-right-warning-review.json)
+ledgers retain their original cuts. Both operands may be shared and rebound.
+After the first physical integer conversion succeeds, its selected value may
+become an owning object: later failure reports its live class without retrying
+that conversion. This also covers swapped bitwise slots and an original string's
+two notices. Anonymous class identities stay full while binary error text ends
+at NUL. The [late-owning review](coverage/semantics/integer-late-owning-left-warning-review.json)
+records cached success, failure, supplied throws and last-owner retirement.
+Wider object conversions, expired pointers and unsupported producers remain partial.
 Leading-numeric-string `+` now suspends through named warning handlers for two
 direct CVs with preexisting untyped reference cells. Both cells are selected before
 conversion; cached numbers survive handler writes, while the next conversion reads
@@ -1653,7 +1669,10 @@ destructor. Cache values now include finite acyclic DIRECT ARRAY graphs with
 shared descendants; each physical child edge is counted once across root owners.
 The [DATA destructor review](coverage/semantics/array-iterator-data-destructor-review.json)
 adds bounded ordinary-CV Iterators with real `__destruct`, covering last-DATA
-normal and abrupt cleanup, exception replacement, and invalid-key eager release.
+normal and abrupt cleanup and exception replacement. The
+[invalid-key correction](coverage/semantics/array-iterator-invalid-key-cleanup-review.json)
+releases the raw current before DATA and protects the builder through its
+destructor, preserving sole and held scalar-reference COW.
 Ordinary named Generators now spread through real native resumes, including
 received parameters and reference yields, CV and owning call operands. Their
 cache edges persist through resumed code/CLOSED; DATA then opcode INPUT retire
@@ -1718,6 +1737,13 @@ Finite DIRECT pooled field roots, including empty constants, now follow the same
 route. Field writes retain the pool snapshot while runtime COW copies retire;
 the [pooled-field review](coverage/semantics/array-iterator-pooled-field-review.json)
 records normal, key-throw, invalid-key and delayed-destructor originals.
+Several initialized declared owning fields now preserve repeated roots, shared
+finite descendants and ordinary scalar/array reference cells. The actual
+property cell returned by `current()` stays selected through key replacement;
+COW preserves saved and spread rows while ordinary storage retires field edges
+in declaration order. The [multiple-field review](coverage/semantics/array-iterator-fields-review.json)
+records normal, supplied-key-throw, pooled and retained-owner originals, with
+by-value current kept as an explicit boundary.
 Ordinary CVs of named IteratorAggregate classes now invoke a borrowed
 `getIterator()` frame and
 transfer its owned user Iterator or named-Generator return into DATA. Genuine
@@ -4157,6 +4183,13 @@ Equal chains continue through array tails; nonzero results skip later casters. T
 [previous-chain](coverage/semantics/throwable-builtin-previous-comparison-review.json)
 and [captured-graph](coverage/semantics/throwable-previous-graph-comparison-review.json)
 reviews record the bounded scope and validation.
+Captured traces also stop on identity, class, count, missing keys or earlier
+leaves before later cyclic or unsupported payloads, with live headers checked
+at visited nodes. Reached ordinary recursion raises a catchable Error with its
+source, trace and normal unwind cleanup. Callback and wider-layout boundaries,
+the visited depth limit and finite previous-path authentication remain separate.
+[Visited-trace review](coverage/semantics/throwable-trace-visited-comparison-review.json).
+[Recursion Error review](coverage/semantics/throwable-trace-recursion-comparison-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The
@@ -5566,8 +5599,9 @@ Named-only calls share the argument table with a retained buffer: `unset($argume
 leaves its Payload alive through `A`, then buffer cleanup precedes receiver cleanup
 and cached `7` delivery or the same supplied throw with destination `42` unchanged.
 [Three source agreements and 559 focused premises](coverage/semantics/magic-named-call-review.json)
-bind separate cuts. Static/scoped named, unpacked/reference sends and wider
-argument/ownership forms remain partial.
+bind separate cuts. That non-Iterator named slice leaves static/scoped named
+calls, reference sends and wider argument/ownership forms partial; the selected
+Iterator unpack extension is described below.
 
 External literal missing static calls also invoke inherited public
 `__callStatic(string,array)`, retaining lexical Parent/called Child and early sends
@@ -5744,6 +5778,10 @@ Supported computed and temporary public `__invoke` callees now use the same
 ordinary INIT selection and cleanup, consuming their raw callee result before
 Iterator arguments run. [Computed-callee review](coverage/semantics/computed-callee-unpack-review.json)
 records six new/promoted sources, two independent sources and four retained controls.
+Missing instance and external static methods now collect initialized Iterator
+spreads through the real magic trampoline before invoking `__call` or
+`__callStatic`; the [magic Iterator review](coverage/semantics/magic-iterator-unpack-review.json)
+records named/positional order, copied values and receiver/buffer cleanup.
 Public concrete class-method strings now distinguish
 computed static dispatch from fixed calls using a compatible active receiver.
 Immutable string captures/clone retain selected descriptors, called scope and
@@ -6178,6 +6216,10 @@ Throwable before the first yield. Resuming to a yield installs a live cell;
 the API result is a snapshot. See the [fresh method review](coverage/semantics/generator-fiber-fresh-method-reference-throw-transfer-review.json).
 Fresh by-value instance methods now transfer too, including inherited lexical/called
 scopes and separate receiver/value-cache lifetimes. [BYVAL review](coverage/semantics/generator-fiber-fresh-method-throw-transfer-review.json).
+Fresh named by-reference THROW also transfers before first yield, preserving shared
+parameter cells and promoted local caches. [Named reference review](coverage/semantics/generator-fiber-fresh-reference-throw-transfer-review.json).
+Static-method THROW now preserves inherited scope without receiver owners across
+fresh/primed value/reference caches. [Static review](coverage/semantics/generator-fiber-static-throw-transfer-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

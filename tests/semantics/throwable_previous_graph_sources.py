@@ -7,8 +7,7 @@ from throwable_previous_graph_cases import CASES
 
 family.CASES = CASES
 family.UNSUPPORTED = {name: ('Throwable property comparison', b'B|')
-    for name in ('different-captured-classes-control', 'object-scalar-control',
-                 'callback-class-control', 'cell-cycle-control')}
+    for name in ('object-scalar-control', 'callback-class-control')}
 family.BASELINE = ('Throwable property comparison', b'B|')
 family.MODEL_TIMEOUTS = {name: 120 for name in CASES}
 base_fingerprint = family.fingerprint

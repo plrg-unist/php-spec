@@ -307,6 +307,13 @@ def $generator_creation_target(S, porigin, porigin_site?) = $call_selected_valid
 def $generator_creation_target(S, CLOSURE_TARGET n, porigin_site?) = $call_selected_valid(S, CLOSURE_TARGET n, porigin_site?)
 def $generator_creation_target(S, METHOD_TARGET n porigin, porigin_site?) = $generator_creation_method(S, porigin, porigin_site?)
 def $generator_creation_target(S, STATIC_METHOD_TARGET porigin_class porigin, porigin_site?) = $generator_creation_method(S, porigin, porigin_site?)
+def $generator_creation_target(S, SCOPED_TARGET porigin_requested porigin porigin_called eps poperand_selector, (porigin_site)) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19_class phpType20_method (SEQUENCE phpType7*) metadata)
+  -- if ~$ppscoped_keyword(phpType19_class)
+  -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
+  -- if pmethoddesc.STATIC
+  -- if $target_function(S, SCOPED_TARGET porigin_requested porigin porigin_called eps poperand_selector) = (pmethoddesc.FUNCTION)
+  -- if $call_selected_valid(S, SCOPED_TARGET porigin_requested porigin porigin_called eps poperand_selector, (porigin_site))
 def $generator_creation_target(S, pcalltarget, porigin_site?) = false -- otherwise
 def $generator_creation_method(S, porigin, (porigin_site)) = ($generator_creation_method_site($origin_node(S.SOURCES, porigin_site)) /\ $method_target_caller(S.CURRENT, S.FRAMES, porigin, porigin_site) = $closure_source_class(S, porigin_site))
 def $generator_creation_method(S, porigin, eps) = false

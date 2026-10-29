@@ -98,7 +98,7 @@ def checks(program, path, name):
             '$(n_cell_owners >= 2)',
             'S_cycle = S[.STORE[n_cell] = DEFINED (PARRAY n_payload_p)]',
             '~$trace_property_ref_graph(S_cycle,n_trace_p)',
-            '$value_order_effect(S_cycle,POBJECT n_a,POBJECT n_b,eps,1) = (S_cycle,ORDERUNSUPPORTED "Throwable property comparison")',
+            '$value_order_effect(S_cycle,POBJECT n_a,POBJECT n_b,eps,1) = (S_cycle,ORDERRECURSIVE)',
         ]
         rows += raw('S', -1)
         rows += [

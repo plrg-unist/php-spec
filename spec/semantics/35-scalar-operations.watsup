@@ -51,10 +51,12 @@ def $throw_scalar(S, text, n_message*, z) = S[.COMPLETION = UNSUPPORTED "missing
   -- if $(z <= 0)
 def $throw_scalar(S, text, n_message*, z) = S -- if S.COMPLETION =/= NORMAL
 
+;; zend_binop_error formats each raw type name with %s.
+dec $c_string(nat*) : nat*
 dec $type_failure(pstate, pbin, pvalue, pvalue, int) : pstate
 def $type_failure(S, pbin, pvalue_1, pvalue_2, z) = S[.COMPLETION = UNSUPPORTED "raw undefined arithmetic"]
   -- if pvalue_1 = PUNDEFINED \/ pvalue_2 = PUNDEFINED
-def $type_failure(S, pbin, pvalue_1, pvalue_2, z) = $throw_scalar(S, "TypeError", ([85,110,115,117,112,112,111,114,116,101,100,32,111,112,101,114,97,110,100,32,116,121,112,101,115,58,32] ++ $value_type_bytes_at(S, pvalue_1) ++ [32] ++ $operator_bytes(pbin) ++ [32] ++ $value_type_bytes_at(S, pvalue_2)), z)
+def $type_failure(S, pbin, pvalue_1, pvalue_2, z) = $throw_scalar(S, "TypeError", ([85,110,115,117,112,112,111,114,116,101,100,32,111,112,101,114,97,110,100,32,116,121,112,101,115,58,32] ++ $c_string($value_type_bytes_at(S, pvalue_1)) ++ [32] ++ $operator_bytes(pbin) ++ [32] ++ $c_string($value_type_bytes_at(S, pvalue_2))), z)
   -- if pvalue_1 =/= PUNDEFINED
   -- if pvalue_2 =/= PUNDEFINED
 

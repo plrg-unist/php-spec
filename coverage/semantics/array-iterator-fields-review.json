@@ -1,0 +1,75 @@
+{
+  "milestone": "A64 multiple declared owning fields in ordinary Iterator array spread",
+  "target": "PHP 8.5.10 CLI NTS signed 64-bit",
+  "scope": "The ordinary CV Iterator route with genuine by-reference current() and a public real destructor admits any finite initialized inline declared layout of already-supported fields. Owning slots are public, untyped and mutable, holding DIRECT finite arrays or ordinary scalar/array ALIAS cells; node-free DIRECT scalar slots retain their prior admission. Array descendants are DIRECT with optional ordinary scalar reference leaves in mutable unpooled parents. Pooled DIRECT roots remain allowed; spread inserts DIRECT values.",
+  "implementation": {
+    "runtime_file": "spec/semantics/426-array-iterator-unpack.watsup",
+    "runtime_revision": "53998385529d5eebb92719df386aca345fa8b920",
+    "runtime_sha256": "2c6f3777582d388ccd13fe5b7a504efbd0212f59728501d60dfddcc44da44f71",
+    "source_revision": "8f676eb5935b8b7b8879a535dcbfc1f13e27766b",
+    "change": "Replace the sole ARRAY field search with an authenticated declared-slot fold. Reuse ordinary reference-cell and per-path current-graph validators; compare nonempty property_slot_nodes to the exact ordered object children, preserving duplicate edges and DAG sharing. Keep owned_field API, BYREF/destructor/table/hook guards and existing 39/257/359 ownership/COW/storage algorithms unchanged.",
+    "fixture_revision": "fd2acf6e8d4be8a39f5b0b9ee4bd810f35389469"
+  },
+  "behavior": "An owning field can become the actual raw current cell; key replacement selects its new row while an escaped alias survives receiver retirement. Independent field writes preserve saved and builder rows through nested COW, scalar ALIAS writes remain shared, and supplied key throw runs the real destructor before catch without assigning the destination. An outside Iterator owner delays destruction until after assignment. Repeated field roots each own an edge while each physical table contributes only its own child edges; ordinary storage retires cloned first/second/row graphs in slot order, then saved66 leaves the builder child unique for an in-place77 write.",
+  "engine_routes": [
+    "Zend/zend_vm_def.h ZEND_ADD_ARRAY_UNPACK obtains current data before key and dereferences that same zval only afterward, then performs DIRECT value insertion and Iterator retirement.",
+    "Zend/zend_interfaces.c zend_user_it_get_current_data/get_current_key/invalidate_current preserve real by-reference current reception and callback replacement.",
+    "Zend/zend_types.h SEPARATE_ARRAY and Zend/zend_hash.c zend_array_dup preserve shared/pooled snapshots and ordinary scalar references across nested COW.",
+    "Zend/zend_objects.c zend_object_std_dtor notifies weak observers before looping through declared properties; generic property zval release preserves duplicate and shared edges."
+  ],
+  "validation": {
+    "initial": {
+      "path": ".tools/array-iterator-fields-64/.tools/a64-initial/report.json",
+      "sha256": "6e9af1cf95bb326640d588fecd080614cbf033e7a545c8c05586e3312281b830",
+      "revision": "8f676eb5935b8b7b8879a535dcbfc1f13e27766b",
+      "result": "Five frozen native quiet exit-0 expectations pass; all five unchanged-model originals are frontend accepted/checked program Unsupported with the initialized-Iterator-domain reason. Zero agreement credit; 208.54s, all parent/native/model groups empty."
+    },
+    "candidate": {
+      "path": ".tools/array-iterator-fields-64/.tools/a64-candidate/report.json",
+      "sha256": "2121d29336a8e99ebeb373a5fe4aff52431777f78b06b52cf4225dcfe6d61558",
+      "revision": "53998385529d5eebb92719df386aca345fa8b920",
+      "result": "Strict compilation of 424 modules in SL with caches disabled and determinism checks passes in 10.665s. Four model-only positives exactly match retained native streams in 117.035/142.505/108.678/96.510s. The BYVAL control stays explicit initialized-domain Unsupported at 37.204s, with zero agreement. Four source agreements; no native replay, timeout or interruption, and all parent/numeric/model groups empty."
+    },
+    "focused": {
+      "path": ".tools/array-iterator-fields-64/.tools/a64-focused/report.json",
+      "sha256": "cba3d7c78f2eb7a3624d5e2ffde293cbe0b9a7561112e82a6835d8ce7f4aa574",
+      "revision": "fd2acf6e8d4be8a39f5b0b9ee4bd810f35389469",
+      "result": "Three source-reached recipes pass: normal 268 premises/2 raw at 213.572s, supplied key throw 244/0 at 234.398s, independent retained owner 218/0 at 213.759s. Total 730 = 728 Boolean + 2 raw steps, all true/quiet exit 0 on their first run. No timeout/interruption; all six parent/outer/numeric groups empty. No extra PHP source agreement credit.",
+      "author_report_sha256": "68da7e6fb36f4d025a663061323fb1db23a6e4914f8eaff8649eec6480208a11",
+      "peer_report_sha256": "0de6be51da8153232ec52095da4b3d6cda339e14e78c433943c97449c3e804e6"
+    }
+  },
+  "controls": "The sole source edit in the BYVAL boundary removes current return-by-reference; native remains valid while model stays explicit Unsupported with zero source agreement. Reached helper-only controls reject a pooled ALIAS, an isolated field cycle and a builder backedge, and accept an ordinary scalar ALIAS payload. These projections give no PHP source agreement credit.",
+  "execution": {
+    "profile": "tests/semantics/profile.json; -n, opcache CLI/JIT disabled, precision=14, serialize_precision=-1, UTC, error_reporting=30719, zend.assertions=1; LC_ALL=C,TZ=UTC",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "limits": "Serial CPU5 parents/children, 4 GiB AS. Native30s; models240s/process270s; strict180s. A64 reached numeric300s via a new default-preserving shared.run(model_timeout=180) option; other callers retain180s. Original native file paths and all process commands/streams/exits/groups remain raw.",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "commands": [
+      "taskset -c 5 timeout -s INT -k 3s 1600s prlimit --as=4294967296 -- python3 -B .tools/a64-initial.py",
+      "taskset -c 5 timeout -s INT -k 3s 1600s prlimit --as=4294967296 -- python3 -B .tools/a64-candidate.py 5",
+      "taskset -c 5 timeout -s INT -k 3s 1100s prlimit --as=4294967296 -- python3 -B .tools/a64-focused.py"
+    ]
+  },
+  "independent_review": "array62_resume_review cleared the generic fold, frozen native expectations including its retained-owner shared-child original, genuine unchanged baseline, source/strict outcomes, source-reached owner formulas, and all 730 reached premises. It independently confirmed streams, exits, budgets and process closure. No semantic defect or intentional engine divergence was found.",
+  "remaining": "Full PHP core, array spread and Iterator lifetimes remain partial. Owning-field BYVAL current, property tables/hooks, typed/special/backed reference cells, ARRAY-valued ALIAS descendants, object/cyclic/debt graphs, builder backedges and wider destructor reentry remain outside this admission. Earlier A62/A63 evidence retains its original cuts without execution renewal.",
+  "archive": {
+    "location": "../php-spec-evidence-archive/array-iterator-fields-64/raw.tar",
+    "sha256": "395c810e1aa224b39d972a67a720a25acf766eb742bc486f83adc70002914d97",
+    "bytes": 3143680,
+    "members": 155,
+    "manifest": "../php-spec-evidence-archive/array-iterator-fields-64/manifest.json",
+    "manifest_sha256": "ff482cce1244b65824f4436dc954a38e89cb0604ba762f9148d66e6fe3def8c2",
+    "recovery": "Recreate the selected tested revision at php-spec/.tools/array-iterator-fields-64. Verify archive SHA and extract into php-spec/.tools, retaining the prefix and original absolute source paths. Restore project-local PHP/extension/adapter/numeric providers by identities recorded in reports; no provider or full worktree backup is included. Replay saved commands with fresh outputs. Native/baseline, strict/source and reached cuts remain distinct."
+  },
+  "integration": {
+    "parent": "6d85b48e5d05555506a186eb96c756dcdd2b055c",
+    "joined_tested_revision": "9c6558de20d3d103da232ff5b92816dd6461dc11",
+    "strict_report": "/home/user/workspace/php-spec-evidence-archive/array-iterator-fields-64/joined-strict-9c6558de2/report.json",
+    "strict_report_sha256": "f2a88725246ec72ffe71a613b6dd986ec183a97624c86238eebdd2637a346d71",
+    "result": "SL strict424 passes in10.686s on CPU3 affinity[3], exit0/stdouttrue/stderrempty, no timeout/interruption/process residue. Actor and child reaped; CPU3 released.",
+    "independent_composition": "array62_resume_review CLEAR: runtime426, all A64 tests and shared.run match accepted eed76d2e3. Shared30/136/138/359 changes project class labels without altering slot/reference/storage algorithms; other joined changes are outside the admitted named initialized fields. Current README/PROGRESS and all four partial inventory obligations preserve the actual parent additions and paused boundaries.",
+    "credit": "Private four source agreements, BYVAL Unsupported0 and730 reached premises retain their separate original cuts. The join adds strict compilation only; final receipt changes are metadata only."
+  }
+}

@@ -45,13 +45,13 @@ def $magic_static_method_descriptor(S, pmagicstaticmethodcall) = true
   -- if pmagicstaticmethodcall.SITE = PORIGIN n_unit pcpath
   -- if $origin_node(S.SOURCES, pmagicstaticmethodcall.SITE) = (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
   -- if pmagicstaticmethodcall.NAME = $base64(text_name) /\ pmagicstaticmethodcall.ARGUMENTS = phpType7*
-  -- if |phpType7*| <- [1,2]
+  -- if |phpType7*| <- [1,2] \/ $magic_unpack_arguments(S, pmagicstaticmethodcall.SITE, phpType7*)
   -- if ~$ppscoped_keyword(NName (BYTES text_class) metadata_class)
   -- if pmagicstaticmethodcall.CALLER = eps /\ pmagicstaticmethodcall.OWNER = 0
   -- if $closure_source_class(S, pmagicstaticmethodcall.SITE) = eps
   -- if $scoped_requested_site(S, pmagicstaticmethodcall.SITE, NName (BYTES text_class) metadata_class, pmagicstaticmethodcall.CLASS, eps)
   -- if pmagicstaticmethodcall.LINE = $runtime_line(S[.ORIGIN = (pmagicstaticmethodcall.SITE)], eps, NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
-  -- if $magic_method_arguments_source(S, pmagicstaticmethodcall.SITE, phpType7*, 0)
+  -- if $magic_method_arguments_source(S, pmagicstaticmethodcall.SITE, phpType7*, 0) \/ $magic_unpack_arguments(S, pmagicstaticmethodcall.SITE, phpType7*)
   -- if $class_at(S.CLASSES, pmagicstaticmethodcall.CLASS) = (pclassdesc)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pmagicstaticmethodcall.CLASS)
   -- if $effective_method(S, pmagicstaticmethodcall.CLASS, pmagicstaticmethodcall.NAME, |S.CLASSES|) = eps
@@ -68,7 +68,7 @@ def $magic_static_method_caller(S, pmagicstaticmethodcall) = false -- otherwise
 dec $magic_static_method_capture(pstate, pmagicstaticmethodcall) : bool
 def $magic_static_method_capture(S, pmagicstaticmethodcall) = true
   -- if $magic_static_method_caller(S, pmagicstaticmethodcall)
-  -- if $magic_method_argument_capture(S, pmagicstaticmethodcall.ARGUMENTS[0])
+  -- if $magic_method_argument_capture(S, pmagicstaticmethodcall.ARGUMENTS[0]) \/ $magic_unpack_arguments(S, pmagicstaticmethodcall.SITE, pmagicstaticmethodcall.ARGUMENTS)
 def $magic_static_method_capture(S, pmagicstaticmethodcall) = false -- otherwise
 
 dec $magic_static_method_plan(pstate, porigin, ptbytes, phpType7*, int) : pmagicstaticmethodcall?
@@ -82,8 +82,11 @@ def $magic_static_method_plan(S, porigin_class, ptbytes, phpType7*, z) = (pmagic
   -- if pmagicstaticmethodcall = {SITE porigin_site, NAME ptbytes, LINE z, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, ARGUMENTS phpType7*, OWNER n_owner, CALLER S.CURRENT, TAIL ptask_tail*}
   -- if $magic_static_method_capture(S, pmagicstaticmethodcall)
 def $magic_static_method_plan(S, porigin_class, ptbytes, phpType7*, z) = eps -- otherwise
+dec $magic_static_method_first_task(pmagicstaticmethodcall) : ptask
+def $magic_static_method_first_task(pmagicstaticmethodcall) = CALL_ARGS (MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) pmagicstaticmethodcall.ARGUMENTS 0 eps (pmagicstaticmethodcall.SITE) pmagicstaticmethodcall.LINE
+  -- if ~$call_unpack_present(pmagicstaticmethodcall.ARGUMENTS)
 dec $magic_static_method_start(pstate, porigin, ptbytes, phpType7*, int) : pstate
-def $magic_static_method_start(S, porigin_class, ptbytes, phpType7*, z) = S[.TODO = (CALL_ARGS (MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) phpType7* 0 eps (pmagicstaticmethodcall.SITE) z) :: METHOD_RESULT :: pmagicstaticmethodcall.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $magic_static_method_start(S, porigin_class, ptbytes, phpType7*, z) = S[.TODO = $magic_static_method_first_task(pmagicstaticmethodcall) :: METHOD_RESULT :: pmagicstaticmethodcall.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $magic_static_method_plan(S, porigin_class, ptbytes, phpType7*, z) = (pmagicstaticmethodcall)
 def $magic_static_method_start(S, porigin_class, ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "magic static method source or argument mode"]
   -- if $magic_static_method_plan(S, porigin_class, ptbytes, phpType7*, z) = eps
@@ -121,7 +124,7 @@ def $magic_static_method_raw_suffix(ptask :: ptask_tail*, pmagicstaticmethodcall
 def $magic_static_method_raw_suffix(ptask :: ptask_tail*, pmagicstaticmethodcall) = $magic_static_method_raw_suffix(ptask_tail*, pmagicstaticmethodcall)
   -- if ~$magic_static_method_raw_task(ptask, pmagicstaticmethodcall)
 dec $magic_static_method_raw_valid(pstate, pmagicstaticmethodcall) : bool
-def $magic_static_method_raw_valid(S, pmagicstaticmethodcall) = ($magic_static_method_caller(S, pmagicstaticmethodcall) /\ $magic_static_method_raw_suffix(S.TODO, pmagicstaticmethodcall))
+def $magic_static_method_raw_valid(S, pmagicstaticmethodcall) = (($magic_static_method_caller(S, pmagicstaticmethodcall) /\ $magic_static_method_raw_suffix(S.TODO, pmagicstaticmethodcall)) \/ $magic_unpack_raw_valid(S, MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall))
 
 dec $magic_static_method_pack(pstate, pmagicstaticmethodcall, nat, poperand*, porigin?, int, ptask*) : pstate
 def $magic_static_method_pack(S, pmagicstaticmethodcall, n, poperand*, porigin?, z, ptask_tail*) = S_array[.TODO = (CALL_ARGS (MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n_array pvalue*) eps 2 ([KNOWN (PSTRING pmagicstaticmethodcall.NAME), KNOWN (PARRAY n_array)]) porigin? z) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]

@@ -2,9 +2,9 @@
 
 Module280 creates Generator objects after ordinary argument, type and default
 receives. The function body and Closure lexical loads remain deferred until
-initialization. Named functions, ordinary Closures and ordinary object method
-calls use the accepted call machinery; no unaccepted return implementation is
-required.
+initialization. Named functions, ordinary Closures, object method calls and
+static calls through nonkeyword class selectors use the accepted call machinery;
+no unaccepted return implementation is required.
 
 [Same-class comparison](../../coverage/semantics/generator-fiber-comparison-review.json)
 now returns order zero for distinct Generators, including fresh, paused and closed
@@ -262,10 +262,37 @@ from caller writes. Resuming to a yield installs a value cache. Normal and suppl
 throws preserve distinct Token versus self-cache lifetimes and the pre-yield versus
 pending-finally `Previous` order. Four new originals agree exactly with PHP;
 three source-reached fronts check 307 custom premises. Two I63/I61 controls retain
-their parent cuts, and I69 BYREF evidence is not replayed. Fresh direct named
-BYREF THROW, static/scoped method targets, bound/delegated and wider lifecycle
-forms remain partial.
+their parent cuts, and I69 BYREF evidence is not replayed. At that cut, fresh direct
+named BYREF THROW and static/scoped/bound/delegated or wider lifecycle forms
+remained partial.
 [Fresh method THROW review](../../coverage/semantics/generator-fiber-fresh-method-throw-transfer-review.json).
+
+Fresh ordinary named by-reference `Generator::throw` now transfers before its
+first yield with a saved original Throwable and empty caches. Shared parameter
+cells survive source-name rebinding; the API returns a snapshot while `current()`
+follows cell writes. Checked dynamic selection retains the original registered
+function, and a copied by-value formal becomes a reference cache only at yield.
+Normal and supplied throws retain local/cache ownership and the distinct pre-yield
+versus pending-finally `Previous` order. Four new originals agree exactly; three
+source-reached fronts check 313 custom premises, including full-VM forged-context
+rejection. I62/I61 controls retain their parent cuts without I69/I70 replay.
+At that cut, static/scoped method targets, bound/delegated and wider lifecycle
+forms remained partial. [Fresh reference THROW review](../../coverage/semantics/generator-fiber-fresh-reference-throw-transfer-review.json).
+
+Ordinary static-method `Generator::throw` now transfers before first yield or
+with a primed value/reference cache. Nonkeyword explicit and dynamic class
+selectors use the real static descriptor and source call; object-selected static
+methods retain called class without a receiver owner. Inherited declaring/called
+scopes stay distinct after selector retirement or rebinding. Copied formals,
+shared parameter cells, snapshots and cached cells retain their existing lifetime
+rules through normal and supplied throws, including both `Previous` orders.
+Four authored and one independent source agree exactly; two no-Fiber controls
+retain their baseline cut. Private strict 424, joined 425 and 522 custom reached
+checks pass at separate cuts; the initial fixture parse stop has zero credit.
+Matched nonstatic/source forgeries and a valid CURRENT resumer check the
+real authority and THROW-only boundary. Keyword-forwarded creation, static
+CURRENT/NEXT/SEND transfer and wider callable/lifecycle forms remain partial.
+[Static THROW review](../../coverage/semantics/generator-fiber-static-throw-transfer-review.json).
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
@@ -619,8 +646,9 @@ Notice/cleanup readback. Aggregate acquisition has separate START and
 [yield-from acquisition](GENERATOR-DELEGATION.md) with generic Generator data,
 null results and phase-specific error cleanup. Aggregate ordinary-call unpack,
 broader reference producers, dynamic/nullsafe API calls, named/unpacked API
-arguments, scoped static and other implicit callback creation, and creation
-through changed/imported caller scope remain required.
+arguments, keyword-forwarded static (`self`/`parent`/`static`) and other implicit
+callback creation, and creation through changed/imported caller scope remain
+required.
 [Module303](GENERATOR-FORCE-CLOSE.md) adds ordinary last-owner forced close,
 pending finally execution and ordered input/frame/cache release.
 [Module310](GENERATOR-FIBER-CLOSE.md) extends ordinary paused-Generator release

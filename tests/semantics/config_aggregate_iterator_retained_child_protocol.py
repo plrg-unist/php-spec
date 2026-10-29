@@ -73,7 +73,7 @@ def checks(program, path, name):
         'S_return.OBJECTS[n_child_watch] = WEAKREFERENCE (n_child)',
         '$node_children(S_return,HOBJECT n_parent) = [HOBJECT n_child]',
         '$heap_owners($heap_graph(S_return),HOBJECT n_child) = 2',
-        '$config_iterator_owned_child(S_return,n_parent)',
+        '$config_iterator_owned_fields(S_return,n_parent)',
         '$config_iterator_finalizer(S_return,n_parent)',
         '$config_aggregate_return_allowed(S_return,pconfigaggregate)',
         *driver.common.public('S_return'),

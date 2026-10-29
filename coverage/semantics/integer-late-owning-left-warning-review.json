@@ -1,0 +1,205 @@
+{
+  "version": 1,
+  "milestone": "OP110 late owning values after saved integer conversion",
+  "status": "bounded independently reviewed semantics at the private tested revision",
+  "target": "PHP 8.5.10 CLI NTS64; sole project-local oracle, ordinary precision14 profile",
+  "scope": "Ordinary %, <<, >>, &, | and ^ after their first physical integer conversion succeeds. The selected CV or surviving borrowed CELL may then contain any allocated object whose creation/graph/lifetime is otherwise admitted; failed later conversion reads its raw type without retrying the first cast. Unfinished object conversion remains bounded to the existing empty live stdClass without slots/materialized table.",
+  "tested_revision": "708f41f2cad94751b1454d1321815bf74bd58175",
+  "unchanged_revision": "6d85b48e5d05555506a186eb96c756dcdd2b055c",
+  "module_count": 424,
+  "tested_sha256": {
+    "spec/semantics/35-scalar-operations.watsup": "a2fdd9569ab3e04ffe00becff85a733e37b7e0552bc2a1b0c15fabe0fd99f56e",
+    "spec/semantics/36-arrays.watsup": "0d744939315ac54a9ecb48414f636d7cd5f172aa97b34a1ddab6d4572ba58f7c",
+    "spec/semantics/387-integer-operator-warnings.watsup": "1e8ebae98a1ecd287d7beb3015ac3441acd3294809fbe1625f9cd947f4d4c171",
+    "tests/semantics/integer_late_owning_left_warning_cases.py": "d7840df93aebf1d8f1b8be3e3c124302b1bde4354a56a38669e645e59fe7e297",
+    "tests/semantics/integer_late_owning_left_warnings.py": "f06f028d8284ea29c52e1583d4b0127c967c2fb4d54b749c863f586ece580034",
+    "tests/semantics/integer_late_owning_left_warning_protocol.py": "812183812aad27e70cead7e727484661d3335b414f1a5c8e6515104e028cd4fa",
+    "spec/semantics/modules.json": "de8488abd5ca58bfd455d59011ef41f48449be4699ede06af70e027075dab632"
+  },
+  "engine_basis": [
+    "Zend/zend_operators.c::zendi_try_get_long saves the converted number/original string before diagnostics. convert_op1_op2_long and bitwise_*_function then convert the later physical operand without retrying the first cast/overload.",
+    "zend_binop_error reads both current selected raw types, preserves an existing exception, and formats each zend_zval_type_name through %s. Zend/zend_API.c returns the complete CE name; C formatting truncates anonymous names at NUL.",
+    "Compiler CONST1/CV8 COMMUTATIVE ordering makes [7] & $right convert source-RIGHT first. Existing integer_phase_pointer/source authority preserves that physical order."
+  ],
+  "contract": [
+    "One generic INTEGER_RIGHT-only rule admits a live allocated first-operand object for diagnostic naming. Existing entry, pointer lifetime, source/history checks, first-phase object guards and task roots are unchanged.",
+    "Original float12.5 and string12.5tail keep cached12 and original notices after an owning replacement; failed string/array/stdClass RHS uses the selected class, including old cells after both names rebind. Cached success and supplied-throw cancellation preserve ordinary stores and the supplied exception.",
+    "Binary type_failure formats each type name through existing c_string. Its declaration moves unchanged from36 to35; raw object_name/value_type_bytes_at/get_class remain unchanged. Weak references, explicit last-owner destructors and owning-array children confirm actual lifetime."
+  ],
+  "author_preparation": {
+    "frozen_cases": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/cases.py",
+      "sha256": "d7840df93aebf1d8f1b8be3e3c124302b1bde4354a56a38669e645e59fe7e297"
+    },
+    "recorder": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/record.py",
+      "sha256": "3d0a7489394856194361f992b682a154ca3247173b0c7324e51586870f7fb9ec"
+    },
+    "native_first": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/native-pre/report.json",
+      "sha256": "c3c3858954ca121cec17dd9cd4a9e772d394a4f85bcc01619575ba62f4aedd15"
+    },
+    "unchanged_baseline": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/baseline/report.json",
+      "sha256": "74417674b9d069bd35bb9f1cb162fd3fac1ae7484061a38acdb5b1bf3d8c2209"
+    },
+    "result": "All16 native predictions exact;14 accepted/checked Unsupported at the exact late-failure reason after the handler, plus2 unchanged exact normal controls."
+  },
+  "accepted": {
+    "strict": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/strict-708f41f2c/report.json",
+      "sha256": "8603b492542b947535f10e4ba91e9079a0c801a5c1d4900c835aec308d50fc34"
+    },
+    "author_source": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/model/report.json",
+      "sha256": "62e9a08b35dd58b05d417be2644f4b29a4365f210c8f7bc9afbd64fe1be8a62d"
+    },
+    "author_sources": 16,
+    "author_former_late_failure_gaps": 14,
+    "author_unchanged_controls": 2,
+    "focused": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/focused-708f41f2c/report.json",
+      "sha256": "ecc551e93e10122898b4bc6a1b5c103e79cca28091e7e920630170f800c56b6c"
+    },
+    "focused_launcher": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/focused-708f41f2c/launch.json",
+      "sha256": "5c2ee4217b4329414529f33aed34fa8febecbd7bed69d0115161ed59ecede1d2"
+    },
+    "front_conditions": {
+      "xor-both-object-error": 135,
+      "mod-cell-array-error": 125,
+      "shl-cv-repair-control": 109,
+      "mod-cell-handler-throw": 102
+    },
+    "total_checks": 471,
+    "derived_helper_guard_assertions": 4,
+    "derived_scope": "Two error fronts each separately reject a first-phase helper state and missing allocation; these are derived guards, not extra reached sources.",
+    "result": "Strict424, source16 exact and four SL source-reached fronts pass onCPU4; exits0, true newline for fixtures, empty raw model stderr, no timeout/interruption/group residue."
+  },
+  "independent_review": {
+    "reviewer": "/root/op106_resume_review",
+    "status": "Generic runtime/source/fixture correctness CLEAR; current7 candidate models exact",
+    "current_models": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/review-independent/model/report.json",
+      "sha256": "c40368b73363c0044d1adaebb179b3603a41669f4ced7fdfb416c78b28a10aee"
+    },
+    "current_cases": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/review-independent/corrected_cases.py",
+      "sha256": "1aa4a45ec55999e6ab9144ca5f31e591f5f13154017210f73e47094d0de6a5d3"
+    },
+    "recorder": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/review-independent/repair_run.py",
+      "sha256": "f35b1be89c07f03d98c2e425a879969fa37bdb6a00b4862e05019a4c2b13bbcb"
+    },
+    "source_agreements": 7,
+    "former_late_failure_gaps": 5,
+    "unchanged_controls": 2,
+    "native_bridge": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/review-independent/native-pre/report.json",
+        "sha256": "15678ccafdc94d256d88aecdda8bd4a20d8a62420cf034793ed4144fc65938fb",
+        "selected_sources": [
+          "xor-selected-stringable-object-error",
+          "shl-owning-object-supplied-throw",
+          "mod-original-string-two-warnings",
+          "and-swapped-constant-array-object-error"
+        ]
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/review-independent/native-corrected/report.json",
+        "sha256": "4afc1ea07f183ee47bf4dbfd933e786b2d01cb05f68ade5ee8d338773ce3c4b5",
+        "selected_sources": [
+          "mod-live-object-owned-array-error",
+          "shr-owning-array-cached-success"
+        ]
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/review-independent/native-anonymous-unit/report.json",
+        "sha256": "e0dc6ab7b4c0408809d67176b718e7d94f4c5e8cc35917a3f6cc4d0b05007083",
+        "selected_sources": [
+          "mod-anonymous-left-object-type-name"
+        ]
+      }
+    ],
+    "unchanged_bridge": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/review-independent/baseline/report.json",
+        "sha256": "d8b217f0fbe04d9319a5ebfbcba5f2e7c9b32d79360e57be81567380c390293b",
+        "selected_sources": [
+          "xor-selected-stringable-object-error"
+        ]
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/review-independent/baseline-remainder/report.json",
+        "sha256": "7fbd0e32173b85eac81495f4024dc252751dbc950e146c6157dcc013c43a3c1b",
+        "selected_sources": [
+          "mod-live-object-owned-array-error",
+          "shr-owning-array-cached-success",
+          "shl-owning-object-supplied-throw",
+          "mod-original-string-two-warnings"
+        ]
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/review-independent/baseline-final/report.json",
+        "sha256": "37c5aad1c40646f65cd8cc4f875742cf9f640f0e9c441707ee76f47c67d942e8",
+        "selected_sources": [
+          "mod-anonymous-left-object-type-name",
+          "and-swapped-constant-array-object-error"
+        ]
+      }
+    ],
+    "result": "Named Stringable diagnosis, owning-array RHS child retirement, old owning-array cached success, supplied throw, original string two-notice history, anonymous truncated error/full get_class and physical swapped slots all agree exactly. Current paths/source hashes are recorded explicitly; controls are separate from new gaps."
+  },
+  "preserved_zero_overall_credit": [
+    {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/review-independent/baseline/report.json",
+        "sha256": "d8b217f0fbe04d9319a5ebfbcba5f2e7c9b32d79360e57be81567380c390293b"
+      },
+      "stop": "Cached-result control reached correct prefix then registered builtin is_array Unsupported; changed only post-operation observation helpers, native3/affected baselines renewed."
+    },
+    {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/review-independent/baseline-remainder/report.json",
+        "sha256": "7fbd0e32173b85eac81495f4024dc252751dbc950e146c6157dcc013c43a3c1b"
+      },
+      "stop": "Anonymous allocation inside named handler was refused by its existing producer context; unrelated passed sources selected explicitly above."
+    },
+    {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/operators-110/review-independent/baseline-tail/report.json",
+        "sha256": "e7165280fb9a12a86044e3f3584f2655fd5462afefbdade88507ed2db73cc6b3"
+      },
+      "stop": "Unit0 anonymous source still contained unused named magic classes rejected by anonymous_unit. Only those unused declarations were blanked; final anonymous native1/baseline2 renewed."
+    }
+  ],
+  "credit": "23 current exact sources =19 formerly Unsupported late-failure gaps+4 unchanged controls. Failed overall packets have zero overall credit; only explicitly selected unaffected passed rows supply the unchanged source bridge. Earlier OP107/OP108/OP109 sources and states, including29/446, retain historical cuts without replay.",
+  "environment": {
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "php_file_bridge_sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "cpu": "Native/baseline preparation serial onCPU5 thenCPU4 after targeted fixture repairs; all candidate strict/source/state/independent checks serial onCPU4. All actors reaped; CPU released during fixes and after final models."
+  },
+  "limits": "Initial object admission/casts, wider producers and expired pointers remain partial. No builtin body or anonymous-class runtime was implemented: is_array remains registered-only Unsupported in the preserved fixture, with count/is_object observation dependencies removed. No new task/root or paused-lane change.",
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/operators-110",
+    "commands": [
+      "taskset -c 4 python3 tests/semantics/integer_late_owning_left_warnings.py --output <fresh-external-directory>",
+      "taskset -c 4 python3 tests/semantics/integer_late_owning_left_warning_protocol.py --output <fresh-external-directory>"
+    ],
+    "note": "Recreate the recorded revision with project-local pinned tools. Frozen recorders preserve commands, profiles, process exits, raw streams and exact source paths/hashes. Metadata-only later changes add no semantic credit."
+  },
+  "integration": {
+    "parent": "1c83adbf43041a81eee368c55370c5b265046531",
+    "joined_tested_revision": "bd9376b70e3f7238ddc305ebd24e14f55d77c769",
+    "strict_report": "/home/user/workspace/php-spec-evidence-archive/operators-110/joined-strict-bd9376b70/report.json",
+    "strict_report_sha256": "5a72a70b2b310b69bb75c673d5834760f1c4327b53eee2f1dab4ba0b4e477bcc",
+    "result": "SL strict425 passes onCPU4 affinity[4], exit0/exact true newline/empty stderr,10.595s,no timeout/interruption/group residue. CPU4 returned after full reap.",
+    "independent_composition": "CLEAR: actual35/36/387,source-history31/32/33/46 and39/40 match private base6d85. Joined runtime3/tests3/private ledger match accepted2ee/708. New CFG data-graph/reference descriptor and MAGIC_UNPACK helpers are disjoint;394 recursion guards preserve flat/identity cases. Inventory equals exact accepted additions overactual; PROGRESS replaces only ownOP109 checkpoint, removes ownOP110 active row andadds integrated110 while preserving COMP149/I73/V110/COMP123 and all other current/paused prose.",
+    "credit": "All23 source agreements and focused471 retain708;19 former gaps/4 controls and4 derived guards remain distinct. Join adds strict425 compilation only, with no source/state replay. Final joined metadata changes add no semantic credit."
+  }
+}

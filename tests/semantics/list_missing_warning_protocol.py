@@ -204,7 +204,7 @@ def conditions(name, program, path, stdout):
     ]
 
 
-def run(source_cases, make_conditions, helpers=HELPERS, expected_stderr=None, extra_inputs=()):
+def run(source_cases, make_conditions, helpers=HELPERS, expected_stderr=None, extra_inputs=(), model_timeout=180):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source-report', type=Path, action='append', required=True)
     parser.add_argument('--case', choices=tuple(source_cases.CASES))
@@ -265,7 +265,7 @@ def run(source_cases, make_conditions, helpers=HELPERS, expected_stderr=None, ex
     if not args.prepare_only:
         for row in rows:
             result = recorded([str(runner), '--sl', *map(str, modules), str(out / (row['id'] + '.watsup'))],
-                              out / (row['id'] + '-model'), 180)
+                              out / (row['id'] + '-model'), model_timeout)
             row['model'] = result
             row['passed'] = (result['exit'] == 0 and not result['timeout'] and result['interruption'] is None
                 and result['group_after'] == [] and (out / (row['id'] + '-model.stdout')).read_bytes() == b'true\n'

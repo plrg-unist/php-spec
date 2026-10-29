@@ -42,8 +42,9 @@ release and cached result or same-error catch with destination `42`.
 [Three source agreements and 559 focused premises](../../coverage/semantics/magic-named-call-review.json)
 retain separate cuts and original recorder/fixture failures. The positional,
 static and scoped helper paths remain compatible by inspection; no old application
-credit is renewed. Static/scoped named calls, references/unpacking, wider producers
-and exported-array lifetimes remain partial.
+credit is renewed. At this non-Iterator cut, static/scoped named calls,
+references/unpacking, wider producers and exported-array lifetimes remained
+partial; the selected Iterator extension is described below.
 
 External literal `Child::missing(...)` now also invokes inherited public static
 `__callStatic(string,array)` without a return declaration. Module415 reuses the
@@ -57,16 +58,18 @@ cleanup to the same catch; public static methods bypass magic.
 [Four source agreements and 341 focused premises](../../coverage/semantics/magic-static-call-review.json)
 bind separate tested cuts. The actual context has no receiver roots; the priority
 counterexample is a structural predicate control only. Constructor-special and
-compatible-current-This `__call` priority retain their routes. Other forwarding
-`parent`/`static`/explicit-class forms, inaccessible/dynamic/first-class/API magic positives,
-reference/named/unpacked sends, exported arrays and wider lifetimes remain open.
+compatible-current-This `__call` priority retain their routes. At this earlier
+positional cut, other forwarding `parent`/`static`/explicit-class forms,
+inaccessible/dynamic/first-class/API magic positives, reference/named/unpacked
+sends, exported arrays and wider lifetimes remained open.
 
 Selected literal `self::missing(...)` inside an ordinary `METHOD_TARGET` instance
 caller now uses compatible current This and its inherited `__call` before static
 magic fallback. The stored caller/site certificate resolves lexical self to Parent
 and keeps runtime Child; argument callbacks never recapture a global receiver CV.
-The existing parentless magic-owner source/signature and positional argument
-bounds remain. Entry performs ordinary name/packed-array type reception.
+The parentless magic-owner source/signature and positional argument bounds were
+the admitted scope of that cut. Entry performs ordinary name/packed-array type
+reception.
 
 The receiver remains owned by the outer method through the following statement.
 Its inner call caches scalar 7 before argument-array/payload cleanup changes the
@@ -79,6 +82,14 @@ agreement; three scoped fallbacks were genuinely Unsupported. One early cleanup
 stage fixture failure and two zero-credit diagnostics are preserved. Direct99
 source factoring is statically compatible without renewing its tests. Child-owned
 magic overrides, other scoped names, callable APIs and wider lifetimes remain open.
+
+Selected missing instance, compatible `self::` and external static calls now
+collect initialized user Iterator spreads through a zero-formal magic trampoline
+before entering their existing public typed two-formal, nongenerator handler.
+The [Iterator unpack contract](SOURCE-CALL-UNPACK.md#magic-method-iterator-unpack)
+records by-value sends, named buffering, real handler dispatch and cleanup;
+the [focused review](../../coverage/semantics/magic-iterator-unpack-review.json)
+keeps these source/reached cuts separate from the earlier positional evidence.
 
 ## Descriptors and dispatch
 
