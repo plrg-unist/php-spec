@@ -1,5 +1,5 @@
 {
-  "status": "independently_reviewed_private",
+  "status": "independently_reviewed_integrated",
   "milestone": "Source119 construction lookup during interface and trait linking",
   "scope": "Ordinary fixed and dynamic NEW during dependency linking of already-admitted nominal declarations: class, interface-extends, and trait declarations using one direct trait without adaptations. Interface publication and unwind retry, sole-trait publication, and a by-reference helper are validated. Enum dependency linking is not newly admitted.",
   "target": "PHP 8.5.10 CLI NTS 64-bit",
@@ -79,5 +79,24 @@
     "root": "../php-spec-evidence-archive/source119-construction-lookup",
     "manifest_sha256": "f1a925828216ef0072ca4f980286e1c3168e50cab6fe83b56622140bb2877c15",
     "replay": "Recover raw/source119-discovery and raw/source119-reviewer-interface-helper-v1 locally. Run tests/semantics/reentrant_nominal_new_protocol.py --phase fixtures --sources DIR --reviewer-sources REVIEW_DIR --output NEW_DIR, then --phase check with the same paths. Select --case independent-helper for the corrected independent cut. Reconstruct unchanged 01164 for baseline replay; raw commands keep their historical absolute paths."
+  },
+  "integration": {
+    "base": "8ffad27b40feac564c5abda3c82a054c192acaea",
+    "code_commit": "c51f9e895",
+    "test_commit": "b7c47a5f8",
+    "tested_candidate": "e36a78dd75b34b7fe2a495a427f065f42b0dfc16",
+    "joined_strict_SL_modules": 424,
+    "result": "pass",
+    "affinity": [
+      3
+    ],
+    "stable_inputs": true,
+    "group_alive_after": false,
+    "report": {
+      "path": "raw/source119-joined/load-report.json",
+      "sha256": "0200c07688e73b3f182fe524d1aaf19b7f204c1dbee472ec0dbfb97cb6358255"
+    },
+    "review": "The composed 277 delta is the accepted source-kind union and two declaration moves. Inspected storage/frame, constructor/interface/trait and related source dependencies plus module order are unchanged since the private base. Current PROGRESS preserves newer checkpoints and held/paused boundaries.",
+    "credit": "The joined check adds compilation credit only; four source agreements and authored 314/corrected independent 111 reached premises retain their original separate cuts without replay."
   }
 }
