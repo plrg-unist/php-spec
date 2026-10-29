@@ -16,7 +16,8 @@ exactly with pinned PHP across normal, invalid-key and saved-Exception paths.
 An independent normal source also agrees and observes parent weak death before
 the child destructor, while the child's own weak reference remains live.
 Strict compilation passes on 424 modules, and 233+216+229 source-reached
-premises check ownership, order, weak death and pending identity. Earlier
+premises check ownership, order, weak death and pending identity. Joined strict
+compilation over the actual tail also passes. Earlier
 fixture compiler, timeout and stopped attempts retain zero credit.
 [Returned Iterator child review](coverage/semantics/config-aggregate-iterator-child-review.json).
 Wider child graphs, child-only finalization and destructor throws/reentry remain partial.
@@ -515,7 +516,6 @@ selection is not reconstructed. Wider callee/operand forms remain partial.
 | --- | --- |
 | A62 | Owning-field Iterator lifetime; peer checks pass for throwing-key and pending invalid-key cleanup. |
 | CLASS143 | Parented anonymous-class naming fix; affected validation. |
-| CONFIG116 | Returned Iterator child lifetime; independently reviewed and ready. |
 | COMP145 | Builtin Throwable previous chains; private implementation. |
 | OP106 | Object RHS integer-conversion Warning; validation. |
 | CALL122 | Non-CV Iterator unpack operands; preparation. |
