@@ -414,6 +414,8 @@ reached groups, whose raw directories moved intact to `reached-raw/`.
 Independent native/model probes are under `call125-review-native/` in the same
 archive. The [producer review](../coverage/semantics/magic-producer-unpack-review.json)
 records their hashes, tested revisions, limits and recovery.
+The joined actual-tail strict425 report is
+`call125-author-native/joined-09ffc-b37bdd972/report.json` under the same archive.
 
 ## Commit provenance and recovery
 

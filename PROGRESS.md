@@ -719,8 +719,9 @@ named buffer. Array input ownership releases before unfinished positional sends,
 the selected receiver and extra names; normal handler cleanup retains its own buffer order.
 CALL125's twelve authored and three independent originals agree exactly with PHP,
 and one affected Iterator source control agrees. Eleven reached groups pass
-367 reported assertions, including two affected controls; SL425 checks retain
-their separate tested cuts. The [producer review](coverage/semantics/magic-producer-unpack-review.json)
+367 reported assertions, including two affected controls. Independently reviewed
+composition on the actual CLASS145 tail passes joined strict425; source/state
+checks retain their separate cuts. The [producer review](coverage/semantics/magic-producer-unpack-review.json)
 preserves original failures and two genuine baseline refusals. Earlier
 [CALL124 evidence](coverage/semantics/magic-iterator-unpack-review.json) keeps its
 original cuts. Wider producers, handlers, references and lifetimes remain partial.
@@ -736,9 +737,8 @@ original cuts. Wider producers, handlers, references and lifetimes remain partia
 | I73 | Static Generator/Fiber CURRENT/NEXT/SEND transfer. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
-| CALL125 | Private source/state acceptance complete; actual-tail review and joined strict pending. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
