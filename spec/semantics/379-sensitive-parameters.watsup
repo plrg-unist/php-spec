@@ -49,7 +49,7 @@ def $sensitive_trace_arguments(S, pfunction, (pkey, ptracearg) :: (pkey_tail, pt
 dec $sensitive_trace_head(pstate, pcallcontext, ptraceframe*) : ptraceframe*
 def $sensitive_trace_head(S, pcallcontext, ptraceframe :: ptraceframe_tail*) = ptraceframe[.ARGS = $sensitive_trace_arguments(S, pfunction, ptraceframe.ARGS)] :: ptraceframe_tail*
   -- if ptraceframe.HASARGS
-  -- if ptraceframe.FUNCTION = $trace_context_function(S, pcallcontext)
+  -- if ptraceframe.FUNCTION = $trace_context_function(S, $closure_invoke_trace_identity(pcallcontext))
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
 def $sensitive_trace_head(S, pcallcontext, ptraceframe*) = ptraceframe* -- otherwise
 def $sensitive_trace_context(S, pbinding*, eps) = eps

@@ -39,12 +39,9 @@ def $call_selected_valid(S, CLOSURE_INVOKE_PENDING_TARGET n, porigin?) = $call_s
 def $wrapper_site(S, CLOSURE_INVOKE_PENDING_TARGET n, porigin?) = $wrapper_site(S, CLOSURE_TARGET n, porigin?)
 
 ;; Fake-frame formatting reads the selected Closure identity without retaining it.
-def $trace_context_function(S, pcallcontext) = $trace_context_function(S, pcallcontext[.TARGET = CLOSURE_TARGET n][.INSTANCE = (n)])
+def $closure_invoke_trace_identity(pcallcontext) = pcallcontext[.TARGET = CLOSURE_TARGET n][.INSTANCE = (n)]
   -- if pcallcontext.TARGET = CLOSURE_INVOKE_PENDING_TARGET n
-def $trace_context_class(S, pcallcontext) = $trace_context_class(S, pcallcontext[.TARGET = CLOSURE_TARGET n][.INSTANCE = (n)])
-  -- if pcallcontext.TARGET = CLOSURE_INVOKE_PENDING_TARGET n
-def $trace_context_type(S, pcallcontext) = $trace_context_type(S, pcallcontext[.TARGET = CLOSURE_TARGET n][.INSTANCE = (n)])
-  -- if pcallcontext.TARGET = CLOSURE_INVOKE_PENDING_TARGET n
+def $closure_invoke_trace_identity(pcallcontext) = pcallcontext -- otherwise
 def $closure_invoke_named_pending(S) = S[.CURRENT = (pcallcontext[.TARGET = CLOSURE_INVOKE_PENDING_TARGET n][.INSTANCE = eps])]
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = CLOSURE_TARGET n
