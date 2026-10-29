@@ -270,11 +270,14 @@ reentrant/abrupt raw-owner teardown remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| I82 | Rebound method-callable Generator factories; source preparation, unrun. |
-| OB04 | Selected error-handler FINAL handling; active validation. |
-| ATTR06 | Required unused owning explicit-wrapper return staging; read-only preparation. |
-| Enum M3/M4 | Generated array-capture preparation; no new validation credit. Other string consumers, backing dependencies and the default loader remain partial; GC08 separately owns enum collectability. |
-| A75 | Temporary direct-call BYREF Generator INPUT/DATA cleanup; privately validated, actual integration review. |
+| I82 | Rebound method-callable Generator factories; four exact sources and new reached validation. |
+| OB04 | Selected error-handler FINAL handling; eleven exact sources and reached validation. |
+| ATTR06 | Required unused owning explicit-wrapper return staging; validation active. |
+| CLASS154 | Variadic reference constructor implementation. |
+| COMP158 | Empty declared-layout validation. |
+| GC08 | Enum possible-root admission fix. |
+| Enum M3/M4 | Generated array-capture preparation; no new validation credit. Other string consumers, backing dependencies and the default loader remain partial. |
+| A76 | BYVAL factory returning a BYREF Generator; frozen new-source preparation. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
