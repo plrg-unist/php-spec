@@ -5,7 +5,7 @@ from types import SimpleNamespace
 
 import config_generator_temporary_reference_cases as cases
 import list_missing_warning_protocol as shared
-from array_generator_unpack_state_review import finish, initial, owners, public, seek
+from array_generator_unpack_state_review import budget, finish, initial, owners, public, seek
 
 
 NAME = 'config-generator-temporary-reference-terminal-throw'
@@ -72,6 +72,7 @@ def conditions(name, program, path, stdout):
         'S_reintroduced = $config_generator_discard_state(S_popped,pconfiggenerator,"next")',
         'S_reintroduced.TODO = (THROW_SEARCH n_exception) :: (CONFIG_GENERATOR pconfiggenerator "input-release") :: ptask_tail*',
         'S_first_raw = $config_generator_discard(S_popped,pconfiggenerator,"next")',
+        'S_first_raw = S_reintroduced',
         'PhpStep: S_thrown ~> S_first_raw',
     ] + public('S_thrown') + seek('S_thrown', 1311, 'S_input') + [
         'S_input.TODO = (THROW_SEARCH n_exception) :: (CONFIG_GENERATOR pconfiggenerator "input-release") :: ptask_input*',
@@ -83,8 +84,22 @@ def conditions(name, program, path, stdout):
         owners('S_second_popped', 'HOBJECT n_generator', 0),
         '$config_generator_discard_allowed(S_second_popped,pconfiggenerator)',
         'S_second_raw = $config_generator_discard(S_second_popped,pconfiggenerator,"input-release")',
+        'S_second_raw.TODO = (THROW_SEARCH n_exception) :: ptask_input*',
+        'S_second_raw.STORE = S_second_popped.STORE',
+        'S_second_raw.EVENTS = S_second_popped.EVENTS',
+        'S_second_raw.ALLOCATIONS = S_second_popped.ALLOCATIONS',
+        '$throwable_live(S_second_raw,n_exception)',
         'PhpStep: S_input ~> S_second_raw',
-    ] + public('S_input') + seek('S_input', 1313, 'S_catch') + [
+    ] + public('S_input') + budget('S_input', 'S_release_budget') + [
+        'S_disposed = S_release_budget_one[.COMPLETION = NORMAL]',
+        'S_disposed.TODO = (THROW_SEARCH n_exception) :: ptask_input*',
+        '~((HOBJECT n_generator) <- S_disposed.ALLOCATIONS)',
+        '~((HCELL n_value_cell) <- S_disposed.ALLOCATIONS)',
+        '$config_generator_retired_scope(S_disposed,pconfiggenerator)',
+        'S_disposed.STORE[n_result_cell] = DEFINED (PINT 99)',
+        'S_disposed.PRECISIONINI = $ptascii("6")',
+        '$throwable_live(S_disposed,n_exception)',
+    ] + public('S_disposed') + seek('S_disposed', 1313, 'S_catch') + [
         '~((HOBJECT n_generator) <- S_catch.ALLOCATIONS)',
         '~((HCELL n_value_cell) <- S_catch.ALLOCATIONS)',
         '$ordinary_reference_value(S_catch,n_value_cell) = eps',
