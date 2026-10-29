@@ -211,6 +211,11 @@ def $call_aggregate_pending(S, porigin) = true
   -- if $call_aggregate_target(S, pcallaggregate, pcalltarget)
   -- if $call_aggregate_valid(S, pcallaggregate, "getIterator")
 def $call_aggregate_pending(S, porigin) = false -- otherwise
+;; The implicit getter's argument site may itself be a zero-argument NEW/call.
+;; Classify it before the ordinary source-argument rule can also claim that site.
+def $useriter_pending(S, pcalltarget, porigin) = true
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 0 eps (porigin) z) :: (UNPACK_AGGREGATE pcallaggregate "getIterator") :: ptask_tail*
+  -- if $call_aggregate_pending(S, porigin)
 def $call_aggregate_frame(S, pcallcontext, pframe) = true
   -- if pframe.TODO = (UNPACK_AGGREGATE pcallaggregate "getIterator") :: ptask_tail*
   -- if pframe.ORIGIN = $unpack_origin(S, pcallaggregate.CALL)
