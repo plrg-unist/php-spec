@@ -161,6 +161,6 @@ The [ATTR06 review](../../coverage/semantics/builtin-deprecated-closure-return-r
 records four normal agreements: the former owning-result boundary reuses its
 retained native bytes, while three new native-first controls cover a used result,
 returned-argument alias and supplied destructor throw with caller traces. Three
-full reached groups pass 186 checks, with no derived guards. Private strict432
-passes. The old ATTR05 exclusion keeps its original zero-credit cut; no accepted
+full reached groups pass 186 checks, with no derived guards. Private and
+actual-tail joined strict432 pass at separate cuts. The old ATTR05 exclusion keeps its original zero-credit cut; no accepted
 ATTR05 normal/native/reached evidence is replayed.

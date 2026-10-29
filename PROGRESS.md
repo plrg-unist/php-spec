@@ -172,8 +172,8 @@ real caller and preserve supplied throws through remaining outer retirement.
 Four originals agree: one former boundary uses retained native bytes, and three
 new native-first controls cover used results, returned-argument aliases and a
 throwing value destructor with caller traces. Three full reached groups pass
-186 checks (no derived guards), and private strict432 passes. Wider callback,
-reference-return and reentry histories remain partial.
+186 checks (no derived guards); private and actual-tail joined strict432 pass
+at separate cuts. Wider callback, reference-return and reentry histories remain partial.
 [Return review](coverage/semantics/builtin-deprecated-closure-return-review.json).
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
@@ -282,6 +282,7 @@ reentrant/abrupt raw-owner teardown remain partial.
 | --- | --- |
 | I83 | Invokable object Generator factories; native-first source preparation, unrun. |
 | OB04 | Selected error-handler FINAL handling; eleven exact sources and reached validation. |
+| ATTR07 | Builtin attributes on real Closure/arrow expressions; separate producer preparation. |
 | CLASS154 | Variadic reference constructor implementation. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
 | GC08 | Enum possible-root admission fix. |
