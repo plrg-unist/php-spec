@@ -1,0 +1,97 @@
+{
+  "milestone": "I72 ordinary static-method Generator THROW/Fiber transfer",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local runtime SHA256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json, LC_ALL=C, TZ=UTC",
+  "parent": "8f7f9428f3dbd5b1bcc8a86b573ed703aa70148a",
+  "implementation_commit": "63de822865e54ae8a127251af629a13a8796d9b2",
+  "fixture_correction": "cc7256be926a40891a1e0193f07b57d1f6b5097d: parenthesize the literal CURRENT source path, with no semantic edit.",
+  "scope": "Fresh and primed ordinary static-method Generator::throw admits BYVAL and BYREF producers through authenticated STATIC_METHOD_TARGET and receiver-free SCOPED_TARGET. Nonkeyword explicit/dynamic class creation requires an actual STATIC descriptor/function and shared call_selected_valid. Saved declaring/called scopes remain distinct without receiver roots. Original Throwable, copied formals, shared parameter cells, value caches and reference-cell snapshots/lifetimes reuse existing protocols. Transfer remains THROW-only.",
+  "engine_paths": [
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_INIT_METHOD_CALL static called_scope conversion, ZEND_INIT_STATIC_METHOD_CALL, ZEND_GENERATOR_CREATE, ZEND_YIELD",
+    "vendor/php-src/Zend/zend_generators.c::Generator::throw, zend_generator_ensure_initialized, zend_generator_throw_exception, zend_generator_close",
+    "vendor/php-src/Zend/zend_fibers.c::Fiber::throw, zend_fiber_resume_internal",
+    "vendor/php-src/Zend/tests/generators/generator_static_method.phpt"
+  ],
+  "implementation": [
+    "spec/semantics/280-generators.watsup",
+    "spec/semantics/281-fibers.watsup"
+  ],
+  "source_catalog": "tests/semantics/generator_fiber_static_throw_transfer_cases.json",
+  "sources_sha256": {
+    "i72-fresh-scoped-byval-inherited-catch": "87d055dbd9025eca1ac846cf25676723b6dc3e62b44c2ab8c9158992f6655f2c",
+    "i72-primed-static-byval-token-finally": "588a98ff72e666f7a62790f3249b914f9ab35685cb8b1cb50329f2f51dbbf79c",
+    "i72-fresh-static-byref-parameter-catch": "c01a689277f04ab42968ee3a218c4fea8a97a58793c9e5162a6bcbcb9638a811",
+    "i72-primed-scoped-byref-local-abrupt": "4767494d123b21db7f2d230192d5d5bdd9be95f06b034644a76d372b743fa66a",
+    "i72-static-byval-no-fiber-control": "d7129998632618de4366d9e9318a513a8a19ae3b9e4f37e60239a109cb3e8d2e",
+    "i72-static-byref-no-fiber-control": "c62ec06a3380de1b533da2448fce14a8855565b74cdb5fb9a81927a61c88735d",
+    "i72-fresh-scoped-reference-copy-abort-independent": "1d58f3267fa94ceb85cbe870edf21e8e13b88dd6c4782eea26f3974334a57c31"
+  },
+  "validation": {
+    "native_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-static-throw-72/source-packet/native-first/report.json",
+      "sha256": "afc45936727b82f758e2cd5ff6d911883d6be89b69b0876cceb94403e7c98d0f",
+      "result": "Six frozen sources at 8f7f9428f: four authored plus two no-Fiber static controls; all native exit0/no timeout/empty stderr/stable HEAD+inputs, affinity [2]."
+    },
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-static-throw-72/source-packet/unchanged-baseline/report.json",
+      "sha256": "cd5d6e493d1af3d2a04258fde433eac1d0cc7ea0903361e334b0eeff95357615",
+      "result": "Four authored checked Unsupported at 8f7: two SCOPED creation refusals and two STATIC_METHOD Fiber-transfer refusals. Two no-Fiber static controls exact NORMAL. No timeout/stable HEAD+inputs, affinity [2]. Only four authored earn genuine-gap attribution."
+    },
+    "strict_private": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-static-throw-72/strict-private/report.json",
+      "sha256": "d1626aa36d6e82fdc0c68322ef021a15b7ebd72cb7d9d8800e369ca5d3d955d4",
+      "result": "424 ordered modules pass SL elaboration/algorithmic checking/structuring at 63de82286; exit0/true/no timeout/empty stderr/stable HEAD+inputs, affinity [4]."
+    },
+    "affected_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-static-throw-72/raw/generator-fiber-static-throw-transfer-source-hudemp87/report.json",
+      "sha256": "a19cf4741929d48c0883c7bbb046ed79a73fda612183f3f546311e69bb08bd38",
+      "result": "Four authored exactly NORMAL at 63de using retained native paths/bytes; no timeout/empty stderr/stable HEAD+inputs, affinity [4]. No native/control replay."
+    },
+    "reached_initial": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-static-throw-72/raw/fiber-state-review-c30k6_jy/report.json",
+      "sha256": "f509fdb1f0fc68ef4cef38e006763cdbac2dda29fd005d53555aeaff741952c7",
+      "result": "At63de, accepted fresh SCOPED 155 custom/160reported, shared STATIC 142/147, closed SCOPED 67/72. Pending STATIC 158/163 declaration stopped on literal-path syntax before execution and has zero credit; overall report remains failed. All inputs/HEAD stable; affinity [4]."
+    },
+    "reached_pending_corrected": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-static-throw-72/raw/fiber-state-review-rmjri6uf/report.json",
+      "sha256": "2a6d9a58f56b4aea3c2bd88f9fd7fc818eced8beb65220fab77445fd8da2c8c8",
+      "result": "Only pending STATIC front rerun at cc7256be9 after one-clause path syntax correction; 158 custom/163 reported true/exit0/no timeout/empty stderr/stable HEAD+author inputs, affinity [4]. Semantic modules unchanged."
+    },
+    "independent_native": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-static-method-throw-72-review/independent/native-first-report.json",
+      "sha256": "9c0e217b8e80a27f4c290f3620c783140012e5af10cfbd57d777dd4db224ac16",
+      "result": "Frozen2360-byte source at 8f7; exact 116-byte native output, no timeout/empty stderr/stable HEAD+ 4 inputs, affinity [2]."
+    },
+    "independent_model": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-static-method-throw-72-review/independent/model-review-report.json",
+      "sha256": "3a9fe8e2566bc0f602ca8ee54c91e38ae289dd9f18975294dfb94d18d331b6c1",
+      "result": "Same frozen source at cc7 checked NORMAL with exact 116-byte decoded native output, exit0/no timeout/empty stderr/stable HEAD+ 15 inputs, affinity [4]."
+    },
+    "joined_strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-static-throw-72/joined-strict/report.json",
+      "sha256": "ce69ae717d41d8fd94ef40d494290a994ff0a254ce2dd9913dc914e6d468381a",
+      "result": "425 actual ordered modules pass SL elaboration/algorithmic checking/structuring at 743a8dd506 over 4f6248dfd; exit0/true/no timeout/empty stderr/stable HEAD+inputs, affinity [4]. No accepted source/state/control cut renewed."
+    }
+  },
+  "reached_total": {
+    "custom_checks": 522,
+    "reported_assertions": 542,
+    "fronts": 4,
+    "cuts": "Three accepted original fronts plus one corrected pending-only front; original pending parse failure has zero credit."
+  },
+  "authentication": "Static target shape alone is not authority. Existing target_function/call_current/full-VM checks authenticate real method descriptors, receiver absence and declaring/called fields. A matched nonstatic destructor target fails descriptor authority; a matched Parent requested/called/selector target resolves the real method yet fails the literal Leaf source site. A valid CURRENT source site/resumer pair passes original callee/cache checks but fails the explicit THROW boundary. Object-selected STATIC validation preserves the eligible stored class/method and consistent fields; it does not reconstruct the historical retired operand class.",
+  "preservation": "No runtime ownership field or fake body/receiver is added. Existing named/instance-method/Closure routes keep their conditions pointwise; I69\u2013I71 execution is not replayed. Both no-Fiber controls retain their baseline cut. Independent seventh catalog row is appended byte-identically after direct validation without wrapper replay.",
+  "actual_tail": {
+    "parent": "4f6248dfd87c691333f4ba38965c219d82b27956",
+    "tested_candidate": "743a8dd50602bb99aef143c62ef9ce28f50042c6",
+    "composition": "Reviewed DSL/test files match cc7; Makefile adds two runners. A64 admission needs array-Iterator fields; OP109 needs borrowed fractional/stdClass arithmetic; CALL124 needs MAGIC_UNPACK_TARGET/MAGIC_UNPACK_RESULT or missing-method fallback. All are inactive for I72 sources with existing methods and no unpack, Iterator fields or arithmetic notices. Actual-parent metadata is retained; only current I71 checkpoint is replaced and root-confirmed active rows are refreshed."
+  },
+  "independent_review": "Peer source bytes/static code/state fixtures, all outcomes, actual-tail interactions and candidate identity CLEAR. Final metadata review completed CLEAR.",
+  "remaining": "Keyword-forwarded self/parent/static Generator creation, static CURRENT/NEXT/SEND Fiber transfer, bound/helper/delegated and broader argument/reference/lifecycle forms remain partial. Full PHP core and BOLA freedom are not established.",
+  "evidence_directory": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-static-throw-72",
+    "manifest": "manifest.json",
+    "manifest_sha256": "5a426d6d8a919c78d8c9c6e93a4e112a08fbb5558905aef25f9edc0edec373e9",
+    "format": "Nine concise reports plus associated originals/raw streams outside Git; peer paths are in the manifest."
+  },
+  "recovery": "Source/state raw directories are under raw/ and retain original private-worktree paths. Native source paths remain in source-packet/native-first/. Peer source/streams remain beside its reports. Initial six-row catalog is in commit 63de82286; final seventh row was appended byte-identically after direct independent validation, with no wrapper replay."
+}

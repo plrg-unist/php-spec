@@ -8,26 +8,23 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
-Fresh ordinary named by-reference `Generator::throw` now transfers before its
-first yield, including existing checked dynamic function selection. The original
-temporary Throwable stays in the advancing resumer while caches are empty.
-External source-name rebinding preserves a shared parameter cell; the returned
-value is a snapshot while later `current()` follows that cell. A copied by-value
-formal instead starts as an ordinary local cell and is promoted by the first
-reference yield; its closed cache retains one cell and one Token store edge.
-An independent alias/formal-unset abort retains the cell’s replacement object through
-`finally`, then retires it before catch; the original Throwable escapes with
-the supplied one as `Previous`.
-Three authored and one independent source agree exactly with pinned PHP. Two
-I62/I61 controls retain exact parent outcomes; all three authored originals were
-checked `Unsupported` there. Strict compilation of 424 modules and 313 custom
-checks across three reached fronts pass. Joined strict compilation over the
-actual tail also passes. Original VM/current/record checks and
-forged-context negatives preserve the existing source-authentication boundary.
-[Method evidence](coverage/semantics/generator-fiber-fresh-method-throw-transfer-review.json)
-keeps its original cuts; I69/I70 are not replayed. Static/scoped/bound/delegated
-and wider lifecycle forms remain partial.
-[Fresh reference THROW review](coverage/semantics/generator-fiber-fresh-reference-throw-transfer-review.json).
+Ordinary static-method `Generator::throw` now transfers through Fiber before
+first yield or with a primed cache, for by-value and by-reference producers.
+Explicit/dynamic nonkeyword class calls authenticate real static methods;
+inherited declaring and called scopes remain distinct without receiver roots.
+Object selectors retire independently of the Generator. Copied formals, shared
+parameter cells, API snapshots and live caches keep their ordinary ownership.
+Normal and supplied throws preserve the original Throwable and distinct pre-yield
+versus pending-finally `Previous` order.
+Four authored and one independent source agree exactly with pinned PHP. Four
+authored originals were genuinely Unsupported; two no-Fiber static controls
+retain their exact baseline outcomes. Private strict 424, joined strict 425 and
+522 custom checks across four reached fronts pass. One fixture-path parse stop
+has zero credit; its corrected pending-only cut passes. Matched descriptor/source
+authentication and a valid CURRENT resumer test the explicit THROW boundary.
+I69–I71 retain their original evidence without replay. Keyword-forwarded creation,
+static CURRENT/NEXT/SEND transfer and wider callee/lifecycle forms remain partial.
+[Static THROW review](coverage/semantics/generator-fiber-static-throw-transfer-review.json).
 
 A fresh sole-DATA CONFIG Iterator may now share its declared Child with an
 outside CV. Parent destruction and storage retirement precede API entry or
@@ -672,10 +669,17 @@ producers, signatures, references and lifetimes remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
+| Enum core | Full four-group enum core work. |
+| A65 | BYVAL Iterator declared fields. |
+| CALL125 | ARRAY/Generator magic argument packs. |
+| CLASS145 | Ordered interfaces and anonymous `implements`. |
+| COMP148 | Recursive Error handling; later depth cap. |
+| CFG119 | Generic Iterator field graphs. |
+| OP110 | Late LEFT-object diagnosis. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation

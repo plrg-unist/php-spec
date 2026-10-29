@@ -6189,6 +6189,8 @@ Fresh by-value instance methods now transfer too, including inherited lexical/ca
 scopes and separate receiver/value-cache lifetimes. [BYVAL review](coverage/semantics/generator-fiber-fresh-method-throw-transfer-review.json).
 Fresh named by-reference THROW also transfers before first yield, preserving shared
 parameter cells and promoted local caches. [Named reference review](coverage/semantics/generator-fiber-fresh-reference-throw-transfer-review.json).
+Static-method THROW now preserves inherited scope without receiver owners across
+fresh/primed value/reference caches. [Static review](coverage/semantics/generator-fiber-static-throw-transfer-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
