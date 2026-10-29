@@ -1331,6 +1331,7 @@ dec $selected_entry_source_valid(pstate, pselectedcall) : bool
 def $selected_entry_source_valid(S, pselectedcall) = true
   -- if pselectedcall.OWNER = eps
   -- if $config_kind(pselectedcall.KIND)
+  -- if ~$enum_kind(pselectedcall.KIND)
   -- if pselectedcall.LOOKUP = $dynamic_lookup_name(pselectedcall.ORIGINAL)
   -- if $intrinsic_lookup(pselectedcall.LOOKUP, eps) = (pselectedcall.KIND)
   -- if $call_line_valid(S, (pselectedcall.SITE), pselectedcall.LINE)

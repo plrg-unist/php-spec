@@ -57,6 +57,7 @@ dec $array_magic(pstate, porigin) : bool
 def $array_magic(S, porigin_class) = ($effective_method(S, porigin_class, $ptascii("__call"), |S.CLASSES|) =/= eps \/ $effective_method(S, porigin_class, $ptascii("__callStatic"), |S.CLASSES|) =/= eps)
 dec $array_method(pstate, porigin, nat?, ptbytes, parraymode) : parrayresolution
 def $array_method(S, porigin_class, n_receiver?, ptbytes, parraymode) = $scope_array_method(S, porigin_class, n_receiver?, ptbytes, parraymode)
+dec $array_enum_candidate(pstate, nat) : (pintrinsic, ptbytes, ptbytes)?
 
 dec $array_receiver(pstate, pvalue, ptbytes, parraymode) : parrayresolution
 def $array_receiver(S, POBJECT n, ptbytes, parraymode) = ARRAYINVALID ($ptascii("Call to undefined method stdClass::") ++ $c_string(ptbytes) ++ $ptascii("()"))
@@ -79,8 +80,13 @@ def $array_receiver(S, pvalue, ptbytes, parraymode) = ARRAYUNKNOWN "array callab
 
 def $array_resolve(S, n, parraymode) = ARRAYINVALID ptbytes
   -- if $array_shape_error(S, n) = (ptbytes)
+def $array_resolve(S, n, ARRAY_ADMISSION) = ARRAYADMITTED
+  -- if $array_enum_candidate(S, n) = ((pintrinsic, ptbytes_class, ptbytes_method))
+def $array_resolve(S, n, ARRAY_DISPATCH) = ARRAYENUM pintrinsic ptbytes_class ptbytes_method
+  -- if $array_enum_candidate(S, n) = ((pintrinsic, ptbytes_class, ptbytes_method))
 def $array_resolve(S, n, parraymode) = $array_receiver(S, $entry_value(S, pitem_receiver), ptbytes, parraymode)
   -- if $typed_callback_array(S, n)
+  -- if $array_enum_candidate(S, n) = eps
   -- if S.ARRAYS[n] = parray
   -- if $entry_lookup(parray.ITEMS, KINT 0) = (pitem_receiver)
   -- if $entry_lookup(parray.ITEMS, KINT 1) = (pitem_method)
@@ -151,8 +157,10 @@ def $call_selected_valid(S, ARRAY_METHOD_TARGET pcalltarget parrayselection, (po
   -- if $array_target_identity(S, pcalltarget, parrayselection)
 
 dec $array_dynamic_result(pstate, parrayresolution, porigin, int, int) : pstate
+dec $enum_array_prepare(pstate, pintrinsic, ptbytes, ptbytes, porigin, int) : pstate
 dec $fiber_array_candidate(pstate, nat) : bool
 def $array_dynamic_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, porigin_site, z_init, z_call) = S[.TODO = $method_args_task(ARRAY_METHOD_TARGET ($scope_target_site(S, pcalltarget, porigin_site, false)) {SITE porigin_site, INIT z_init, LINE z_call, REQUESTED porigin_requested, NAME ptbytes}, $dynamic_arguments(S, porigin_site), (porigin_site), z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $array_dynamic_result(S, ARRAYENUM pintrinsic ptbytes_class ptbytes_method, porigin_site, z_init, z_call) = $enum_array_prepare(S, pintrinsic, ptbytes_class, ptbytes_method, porigin_site, z_call)
 def $array_dynamic_result(S, ARRAYINVALID ptbytes, porigin_site, z_init, z_call) = $throw_scalar(S, "Error", ptbytes, z_init)
 def $array_dynamic_result(S, ARRAYUNKNOWN text, porigin_site, z_init, z_call) = S[.COMPLETION = UNSUPPORTED text]
 def $array_dynamic(S, n, porigin_site, z_init, z_call) = $array_dynamic_result(S, $array_resolve(S, n, ARRAY_DISPATCH), porigin_site, z_init, z_call)
@@ -160,6 +168,7 @@ def $array_dynamic(S, n, porigin_site, z_init, z_call) = $array_dynamic_result(S
 
 dec $array_capture_result(pstate, parrayresolution, porigin, int, int) : pstate
 def $array_capture_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, porigin_site, z_init, z_convert) = S[.TODO = (ARRAY_CONVERT ($scope_target_site(S, pcalltarget, porigin_site, true)) {SITE porigin_site, INIT z_init, LINE z_convert, REQUESTED porigin_requested, NAME ptbytes}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $array_capture_result(S, ARRAYENUM pintrinsic ptbytes_class ptbytes_method, porigin_site, z_init, z_convert) = S[.COMPLETION = UNSUPPORTED "enum generated array callable capture"]
 def $array_capture_result(S, ARRAYINVALID ptbytes, porigin_site, z_init, z_convert) = $throw_scalar(S, "Error", ptbytes, z_init)
 def $array_capture_result(S, ARRAYUNKNOWN text, porigin_site, z_init, z_convert) = S[.COMPLETION = UNSUPPORTED text]
 def $array_firstclass_value(S, n, PORIGIN n_unit pcpath, z_init) = $array_capture_result(S, $array_resolve(S, n, ARRAY_DISPATCH), PORIGIN n_unit pcpath, z_init, z_convert)

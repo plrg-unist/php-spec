@@ -231,8 +231,12 @@ def $from_receive(S, pconfigcall, PARRAY n) = $api_begin(S, CONFIG_INVOKE pconfi
   -- if ~$fiber_factory_candidate(S, PARRAY n)
   -- if $from_identity(S, PARRAY n) = eps
   -- if $typed_callback_array(S, n)
+  -- if $array_enum_candidate(S, n) = eps
   -- if $error_handler_array_invalid(S, n) = eps
   -- if $from_getter(S, n) = eps
+def $from_receive(S, pconfigcall, PARRAY n) = S[.COMPLETION = UNSUPPORTED "enum generated array callable conversion"]
+  -- if $from_kind(pconfigcall.KIND)
+  -- if $array_enum_candidate(S, n) = ((pintrinsic, ptbytes_class, ptbytes_method))
 def $from_receive(S, pconfigcall, PARRAY n_array) = $from_done(S[.OBJECTS = S.OBJECTS ++ [GETTERCLOSURE n_receiver pgettermethod text_base pconfigcall.SITE]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
   -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
   -- if $from_getter(S, n_array) = ((n_receiver, pgettermethod, text_base))
