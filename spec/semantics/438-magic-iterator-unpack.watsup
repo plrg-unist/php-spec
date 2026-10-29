@@ -134,7 +134,8 @@ def $unpack_static_prefix(S, pcalltarget, phpType7*, pnamedargs) = true
   -- if pnamedargs_expected = $magic_unpack_shape(phpType7*, {SLOTS eps, NAMED eps})
   -- if $named_slots_valid(S, pcalltarget, 0, pnamedargs.SLOTS, pnamedargs_expected.SLOTS)
   -- if $named_entries_valid(S, pcalltarget, 0, pnamedargs.NAMED, pnamedargs_expected.NAMED)
-def $unpack_call_roots(punpackcall) = $named_slots_roots(punpackcall.SENT.SLOTS) ++ $named_roots(punpackcall.SENT.NAMED) ++ $target_nodes(punpackcall.FUNCTION)
+;; Unfinished calls free positional args, selected This, then extra named args.
+def $unpack_call_roots(punpackcall) = $named_slots_roots(punpackcall.SENT.SLOTS) ++ $target_nodes(punpackcall.FUNCTION) ++ $named_roots(punpackcall.SENT.NAMED)
   -- if $magic_unpack_collecting(punpackcall.FUNCTION)
 ;; SEND_UNPACK frees its array operand before unwinding sends and selected This.
 def $task_nodes(UNPACK_NEXT punpackcall poperand n b) = $operand_nodes(poperand) ++ $unpack_call_roots(punpackcall)
