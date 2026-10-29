@@ -112,8 +112,8 @@ def $config_generator_key_input(pconfiggenerator, PSTRING n*) = $config_generato
 def $config_generator_key_input(pconfiggenerator, PSTRING_CARRIER pstringidentity n*) = $config_generator_string_key_input(pconfiggenerator)
 def $config_generator_key_input(pconfiggenerator, pvalue) = false -- otherwise
 def $config_generator_items(S, pconfiggenerator, eps) = true
-def $config_generator_items(S, pconfiggenerator, (ENTRY (KINT z) (DIRECT pvalue)) :: pentry*) = ($config_iterator_string(S, pvalue) /\ $config_generator_items(S, pconfiggenerator, pentry*))
-def $config_generator_items(S, pconfiggenerator, (ENTRY (KSTRING n*) (DIRECT pvalue)) :: pentry*) = ($config_generator_string_key_input(pconfiggenerator) /\ $string_key(n*) = STRINGKEY /\ $config_iterator_string(S, pvalue) /\ $config_generator_items(S, pconfiggenerator, pentry*))
+def $config_generator_items(S, pconfiggenerator, (ENTRY (KINT z) (DIRECT pvalue)) :: pentry*) = ($config_iterator_scalar(S, pvalue) /\ $config_generator_items(S, pconfiggenerator, pentry*))
+def $config_generator_items(S, pconfiggenerator, (ENTRY (KSTRING n*) (DIRECT pvalue)) :: pentry*) = ($config_generator_string_key_input(pconfiggenerator) /\ $string_key(n*) = STRINGKEY /\ $config_iterator_scalar(S, pvalue) /\ $config_generator_items(S, pconfiggenerator, pentry*))
 def $config_generator_items(S, pconfiggenerator, pentry*) = false -- otherwise
 def $config_generator_history(S, pconfiggenerator) = true
   -- if pconfiggenerator.CALL.KIND = INTRINSIC_INI_SET
@@ -287,7 +287,7 @@ def $config_generator_send_allowed(S, pconfiggenerator) = true
   -- if pgenerator.KEY = (pvalue_key)
   -- if $config_generator_key_input(pconfiggenerator, pvalue_key)
   -- if $config_generator_key(S, pvalue_key) = (pkey)
-  -- if $config_iterator_string(S, pvalue)
+  -- if $config_iterator_scalar(S, pvalue)
   -- if $(|pconfiggenerator.ITEMS| < 2)
 def $config_generator_send_allowed(S, pconfiggenerator) = false -- otherwise
 def $config_generator_send(S, pconfiggenerator, ptask*) = S[.TODO = (CONFIG_GENERATOR pconfiggenerator[.ITEMS = pconfiggenerator.ITEMS ++ [ENTRY pkey (DIRECT pvalue)]] "next") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -311,7 +311,7 @@ def $config_generator_send(S, pconfiggenerator, ptask*) = S_checked
   -- if $intrinsic_argument(S, pconfiggenerator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
   -- if S_checked = $config_send_check(S, pconfigcall_prefix, preqbytes?, z)
   -- if S_checked.COMPLETION =/= NORMAL
-def $config_generator_send(S, pconfiggenerator, ptask*) = S[.COMPLETION = UNSUPPORTED "CONFIG Generator unpack send outside two-string integer-key domain"]
+def $config_generator_send(S, pconfiggenerator, ptask*) = S[.COMPLETION = UNSUPPORTED "CONFIG Generator unpack send outside scalar/key domain"]
   -- if ~$config_generator_send_allowed(S, pconfiggenerator)
 rule PhpStep/config-generator-item: S ~> $config_generator_send(S, pconfiggenerator, ptask*)
   -- if S.TODO = (CONFIG_GENERATOR pconfiggenerator "ready") :: ptask*
@@ -448,12 +448,12 @@ def $throwable_same_frame_continuation(S, S_next, ptask*) = S_next
   -- if $throwable_pending(S_next.COMPLETION)
 def $config_generator_blocked(S) = true
   -- if S.COMPLETION = UNSUPPORTED text_reason
-  -- if text_reason <- ["CONFIG Generator unpack producer outside direct domain", "CONFIG Generator unpack send outside two-string integer-key domain", "CONFIG Generator unpack last DATA or callee owner", "CONFIG Generator unpack last INPUT or callee owner", "CONFIG Generator unpack last storage callee owner", "CONFIG Generator unpack argument prefix outside domain", "CONFIG Generator unpack last cleanup owner"]
+  -- if text_reason <- ["CONFIG Generator unpack producer outside direct domain", "CONFIG Generator unpack send outside scalar/key domain", "CONFIG Generator unpack last DATA or callee owner", "CONFIG Generator unpack last INPUT or callee owner", "CONFIG Generator unpack last storage callee owner", "CONFIG Generator unpack argument prefix outside domain", "CONFIG Generator unpack last cleanup owner"]
   -- if S.TODO = (CONFIG_GENERATOR pconfiggenerator text) :: ptask*
   -- if $config_generator_valid(S, pconfiggenerator, text)
 def $config_generator_blocked(S) = true
   -- if S.COMPLETION = UNSUPPORTED text_reason
-  -- if text_reason <- ["CONFIG Generator unpack producer outside direct domain", "CONFIG Generator unpack send outside two-string integer-key domain", "CONFIG Generator unpack last DATA or callee owner", "CONFIG Generator unpack last INPUT or callee owner", "CONFIG Generator unpack last storage callee owner", "CONFIG Generator unpack argument prefix outside domain", "CONFIG Generator unpack last cleanup owner"]
+  -- if text_reason <- ["CONFIG Generator unpack producer outside direct domain", "CONFIG Generator unpack send outside scalar/key domain", "CONFIG Generator unpack last DATA or callee owner", "CONFIG Generator unpack last INPUT or callee owner", "CONFIG Generator unpack last storage callee owner", "CONFIG Generator unpack argument prefix outside domain", "CONFIG Generator unpack last cleanup owner"]
   -- if S.TODO = (THROW_SEARCH n) :: (CONFIG_GENERATOR pconfiggenerator text) :: ptask*
   -- if $config_generator_valid(S, pconfiggenerator, text)
 def $config_generator_blocked(S) = false -- otherwise
