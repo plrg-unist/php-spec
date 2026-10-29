@@ -18,7 +18,7 @@ CASES = (
     'invoke-unused-result-destructor-throw-keeps-outer-owner-and-caller-trace',
     *reviewed.CASES,
 )
-AUTHOR_HELPERS = r''' 
+AUTHOR_HELPERS = r'''
 dec $cr_test_front(pstate, ptbytes) : bool
 def $cr_test_front(S, ptbytes) = true
   -- if S.CURRENT = (pcallcontext)
