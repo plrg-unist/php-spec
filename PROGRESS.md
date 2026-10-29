@@ -100,8 +100,9 @@ exit authenticate zero class-key cost; later accepted units keep their source-ID
 holes and genuine counters. Five original observations agree and 261 reached
 checks pass across actual file rejection/once hits, malformed-history refusal and
 later publication/retry causes. Failed once parses remain retained once hits.
-Partial/open/reentrant compilation and terminal
-body/default fatals remain separate, with body/argument and held bounds unchanged.
+Actual-tail joined strict431 passes; private source/state cuts retain their original
+identities. Partial/open/reentrant compilation and terminal body/default fatals
+remain separate, with body/argument and held bounds unchanged.
 [Rejected-source review](coverage/semantics/anonymous-rejected-sources-review.json).
 The prior [mixed-kind review](coverage/semantics/anonymous-trait-enum-review.json)
 retains CLASS150 source7/state223 at their original cuts.
