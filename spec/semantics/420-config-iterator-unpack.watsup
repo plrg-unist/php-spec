@@ -144,6 +144,7 @@ def $config_iterator_quiet_aggregate_data(S, pconfigiterator) = true
   -- if $destructor_method(S, pconfigiterator.OBJECT) = eps
   -- if $node_children(S, HOBJECT pconfigiterator.OBJECT) = eps
 def $config_iterator_quiet_aggregate_data(S, pconfigiterator) = false -- otherwise
+;; Release may run a finalizer on this object or on its sole declared child.
 def $config_iterator_finalizer(S, n) = true
   -- if $destructor_method(S, n) = (pmethoddesc)
   -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
@@ -155,6 +156,9 @@ def $config_iterator_finalizer(S, n) = true
   -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
   -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = eps /\ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
   -- if ~$function_generator(S, pmethoddesc.FUNCTION)
+  -- if $config_iterator_owned_child(S, n)
+def $config_iterator_finalizer(S, n) = true
+  -- if $destructor_method(S, n) = eps
   -- if $config_iterator_owned_child(S, n)
 def $config_iterator_finalizer(S, n) = false -- otherwise
 ;; The single declared child stays owned by this Iterator until its final DATA
@@ -617,7 +621,7 @@ def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if $config_iterator_scope(S_scope, pconfigiterator)
   -- if $config_iterator_stage(S_scope, pconfigiterator, text)
 ;; Abrupt final DATA retirement leaves the original Exception in the operation
-;; while the Iterator's own destructor runs and its allocation then disappears.
+;; while object/child finalization runs and its allocation then disappears.
 def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.SOURCE = CONFIG_ITERATOR pconfigiterator "key"
   -- if pdestructionoperation.CLEANUP = eps /\ pdestructionoperation.NOGC = eps
@@ -628,7 +632,7 @@ def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if S_scope = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
   -- if $throwable_live(S_scope, n_pending)
   -- if pconfigiterator.OBJECT <- S_scope.DESTRUCTION.CALLED
-  -- if $config_iterator_finalizable_aggregate_data(S_scope, pconfigiterator)
+  -- if $config_iterator_aggregate_data(S_scope, pconfigiterator)
   -- if $config_iterator_retired_scope(S_scope, pconfigiterator)
   -- if $useriter_cursor_count(S_scope.ITERATORS, pconfigiterator.ITERATOR) = 0
   -- if $config_iterator_stage(S_scope, pconfigiterator, "key")
