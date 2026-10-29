@@ -93,11 +93,13 @@ candidate, true result and fully reaped process group.
 
 Generated enum array callable cuts are under
 `../php-spec-evidence-archive/enum-array-callable-117/`. Its `manifest.json`
-(SHA-256 `98cbacfb9a82de4ccd442a3220e931f102e05cf75d7878239fe392fbadbd1ee2`)
-lists 12 raw directories. The original Unsupported and Stringable failure remain
+(SHA-256 `7237a68b42022feefdcf203d8c450676b66e434755f2a260433b9991db39eb6a`)
+lists 14 raw directories. The original Unsupported and Stringable failure remain
 separate from exact source results. The target-state v5 packet has 40 substantive
 true checks; v6 confirms its two manually resolved intermediate states were
-fixture errors. The ownerless Stringable reached packet passes 31 checks.
+fixture errors. The ownerless Stringable reached packet passes 31 checks. The
+joined v1 duplicated the manifest's first module and has zero semantic credit;
+v2 records `--sl` over all 431 modules, `true`, and a fully reaped CPU 1 group.
 
 The guarded getter-recursion milestone retains source/native observations,
 focused checks, all fixture failures and diagnostics in
