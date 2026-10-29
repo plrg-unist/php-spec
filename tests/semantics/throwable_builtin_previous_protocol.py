@@ -39,8 +39,8 @@ def front(program, path, shared=False):
         '$throwable_field(S,n_a,"previous") = POBJECT n_p',
         '$throwable_field(S,n_b,"previous") = POBJECT n_q',
         'n_p = n_q' if shared else 'n_p =/= n_q',
-        '$throwable_object_image_valid(S,n_a) /\ $throwable_object_image_valid(S,n_b)',
-        '$throwable_object_image_valid(S,n_p) /\ $throwable_object_image_valid(S,n_q)',
+        '$throwable_object_image_valid(S,n_a) /\\ $throwable_object_image_valid(S,n_b)',
+        '$throwable_object_image_valid(S,n_p) /\\ $throwable_object_image_valid(S,n_q)',
         '$throwable_builtin_previous_chain_valid(S,n_a,eps)',
         '$throwable_builtin_previous_chain_valid(S,n_b,eps)',
         '$throwable_builtin_previous_pair(S,n_a,n_b,eps)',
@@ -64,15 +64,15 @@ def raw(state, result):
         'PhpStep: ' + state + ' ~> ' + state + '_raw',
         state + '_raw.RESULT = KNOWN (PINT ' + value + ')',
         state + '_raw.TODO = ptask_' + state + '*',
-        state + '_raw.OBJECTS = ' + state + '.OBJECTS /\ ' + state + '_raw.OBJECTPROPS = ' + state + '.OBJECTPROPS',
-        state + '_raw.ARRAYS = ' + state + '.ARRAYS /\ ' + state + '_raw.OBJECTTABLES = ' + state + '.OBJECTTABLES',
-        state + '_raw.STORE = ' + state + '.STORE /\ ' + state + '_raw.ALLOCATIONS = ' + state + '.ALLOCATIONS',
+        state + '_raw.OBJECTS = ' + state + '.OBJECTS /\\ ' + state + '_raw.OBJECTPROPS = ' + state + '.OBJECTPROPS',
+        state + '_raw.ARRAYS = ' + state + '.ARRAYS /\\ ' + state + '_raw.OBJECTTABLES = ' + state + '.OBJECTTABLES',
+        state + '_raw.STORE = ' + state + '.STORE /\\ ' + state + '_raw.ALLOCATIONS = ' + state + '.ALLOCATIONS',
         state + '_raw.EVENTS = ' + state + '.EVENTS',
         '$aggregate_compare_seen(' + state + '_raw) = eps',
         '$drive_steps(' + state + ',0) = ' + state + '[.COMPLETION = BUDGET]',
         state + '_budget = $drive_steps(' + state + ',1)',
         state + '_budget.COMPLETION = BUDGET',
-        state + '_budget.RESULT = ' + state + '_raw.RESULT /\ ' + state + '_budget.TODO = ' + state + '_raw.TODO',
+        state + '_budget.RESULT = ' + state + '_raw.RESULT /\\ ' + state + '_budget.TODO = ' + state + '_raw.TODO',
         state + '_budget.EVENTS = ' + state + '_raw.EVENTS',
     ]
 
@@ -81,7 +81,7 @@ def checks(program, path, name):
     conditions = front(program, path, name == 'shared-previous-all-root-kinds')
     if name == 'previous-before-severity':
         conditions += [
-            '|ppropertyslot_a*| = 8 /\ |ppropertyslot_b*| = 8',
+            '|ppropertyslot_a*| = 8 /\\ |ppropertyslot_b*| = 8',
             '$throwable_field(S,n_a,"severity") = PINT 3',
             '$throwable_field(S,n_b,"severity") = PINT 4',
             '$throwable_field(S,n_p,"code") = PINT 9',
@@ -107,7 +107,7 @@ def checks(program, path, name):
         conditions += raw('S_warm', 1)
     elif name == 'severity-after-equal-previous':
         conditions += [
-            '|ppropertyslot_a*| = 8 /\ |ppropertyslot_b*| = 8',
+            '|ppropertyslot_a*| = 8 /\\ |ppropertyslot_b*| = 8',
             '$throwable_field(S,n_a,"severity") = PINT 3',
             '$throwable_field(S,n_b,"severity") = PINT 4',
             '$throwable_builtin_previous_order(S,n_p,n_q,[HOBJECT n_a]) = ORDER 0',
@@ -142,7 +142,7 @@ def checks(program, path, name):
             'S_skip_raw.EVENTS = S_skip.EVENTS',
             '$aggregate_compare_seen(S_skip_raw) = eps',
             'S_done = $drive_steps(S_skip_raw,1000)',
-            'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps',
+            'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps',
             '$tbp_output(S_done.EVENTS) = $ptascii("B|-1:1:0|W|1:1:-1:0|A|-1:-1|")',
         ]
     elif name == 'previous-trace-array':
@@ -161,17 +161,17 @@ def checks(program, path, name):
         conditions += [
             'S.OBJECTS[n_p] = THROWABLE pthrowable_p',
             'S.OBJECTS[n_q] = THROWABLE pthrowable_q',
-            'pthrowable_p.KIND = "TypeError" /\ pthrowable_q.KIND = "ValueError"',
+            'pthrowable_p.KIND = "TypeError" /\\ pthrowable_q.KIND = "ValueError"',
             '$throwable_field(S,n_p,"trace") = PARRAY n_trace_p',
             '$throwable_field(S,n_q,"trace") = PARRAY n_trace_q',
-            '~$trace_array_graph(S,n_trace_p) /\ ~$trace_array_graph(S,n_trace_q)',
+            '~$trace_array_graph(S,n_trace_p) /\\ ~$trace_array_graph(S,n_trace_q)',
             '$throwable_builtin_previous_order(S,n_p,n_q,[HOBJECT n_a]) = ORDER 1',
             '$throwable_builtin_previous_order(S,n_q,n_p,[HOBJECT n_b]) = ORDER 1',
         ]
         conditions += raw('S', 1)
         conditions += [
             'S_done = $drive_steps(S_raw,1000)',
-            'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps',
+            'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps',
             '$tbp_output(S_done.EVENTS) = $ptascii("B|010000:1:1|A|1|")',
         ]
     elif name == 'shared-previous-all-root-kinds':
@@ -190,9 +190,9 @@ def checks(program, path, name):
             '$value_order_effect(S,POBJECT n_a,POBJECT n_b,eps,z) = (S,ORDERUNSUPPORTED "Throwable property comparison")',
             'PhpStep: S ~> S_raw',
             'S_raw.COMPLETION = UNSUPPORTED "Throwable property comparison"',
-            'S_raw.OBJECTS = S.OBJECTS /\ S_raw.OBJECTPROPS = S.OBJECTPROPS',
-            'S_raw.ARRAYS = S.ARRAYS /\ S_raw.OBJECTTABLES = S.OBJECTTABLES',
-            'S_raw.STORE = S.STORE /\ S_raw.ALLOCATIONS = S.ALLOCATIONS',
+            'S_raw.OBJECTS = S.OBJECTS /\\ S_raw.OBJECTPROPS = S.OBJECTPROPS',
+            'S_raw.ARRAYS = S.ARRAYS /\\ S_raw.OBJECTTABLES = S.OBJECTTABLES',
+            'S_raw.STORE = S.STORE /\\ S_raw.ALLOCATIONS = S.ALLOCATIONS',
             'S_raw.EVENTS = S.EVENTS',
             '$tbp_output(S_raw.EVENTS) = $ptascii("B|")',
             '$aggregate_compare_seen(S_raw) = eps',
