@@ -203,7 +203,6 @@ def $config_generator_reference_storage(S, pconfiggenerator) = true
   -- if $ordinary_reference_value(S, n_cell) = (pvalue)
   -- if $config_iterator_scalar(S, pvalue)
   -- if $node_children(S, HOBJECT pconfiggenerator.OBJECT) = [HCELL n_cell]
-  -- if $heap_owners($heap_graph(S), HCELL n_cell) = 1
 def $config_generator_reference_storage(S, pconfiggenerator) = false -- otherwise
 def $config_generator_storage_history(S, pconfiggenerator) = ($config_generator_return_history(S, pconfiggenerator) \/ $config_generator_reference_history(S, pconfiggenerator))
 def $config_generator_storage_child(S, pconfiggenerator) = ($config_generator_return_storage(S, pconfiggenerator) \/ $config_generator_reference_storage(S, pconfiggenerator))
