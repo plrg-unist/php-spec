@@ -8,20 +8,19 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
-Unit0 global anonymous identities now compile independently of Base/interface
-availability and source order. Ordinary dependency continuations load the parent
-then interfaces before validation, publication, allocation or arguments. Skipped
-sites do not load dependencies; body/default validation stays eager. A throwing
-loader retains earlier loads for retry of the same descriptor. Ordinary unused
-named magic-method classes retain implicit-interface metadata and RTD costs.
-Eleven native-first originals and the promoted historical OP110 context witness
-match pinned PHP across separate cuts. Strict425 and 162 source-reached conditions
-pass, including exact raw counters and authentic autoload causes; two retained
-counter controls also pass without native replay. Joined strict425 on the actual
-tail passes. The earlier duplicate-branch
-interpreter failure and 45s timeout retain zero affected credit. Namespace/import,
-dynamic-source parent/interface dependencies and wider anonymous bodies remain
-partial. [Dependency review](coverage/semantics/anonymous-dependencies-review.json).
+Unit0 anonymous hierarchy references now use ordinary namespace/class-import
+resolution, including qualified aliases, grouped imports, relative/full names and
+per-block alias isolation. Generated prefixes and property types retain resolved
+full names; ordinary named-header replay shares that lexical view. Body/default
+validation remains eager, and first-`new` dependency staging/publication retains
+its argument order, retry identity and source cause.
+Nine new original sources match pinned PHP. Strict426 and 157 source-reached
+conditions pass, including independent autoload/type/cause checks and coherent
+wrong-import descriptor forgeries. The first module-order strict stop has zero
+credit. Two separate reserved-reference originals are checked-frontend parser
+boundaries with zero semantic agreement. Dynamic-source dependent sites and wider
+anonymous bodies/arguments remain partial.
+[Namespace dependency review](coverage/semantics/anonymous-namespace-dependencies-review.json).
 
 Materialized ordinary property tables now support a callback-free explicit GC
 slice over finite instance/array/cell cycles. GC traces declared slots through
@@ -773,6 +772,7 @@ credit. Generator/reference getters and wider targets/lifetimes stay partial.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | Enum core | Full four-group enum core work. |
+| CLASS147 | Private source9/strict426/reached157 accepted; final package review before actual-tail integration. |
 | I74 | Generic fresh NEXT/SEND ADVANCE phase; source/static preparation. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |

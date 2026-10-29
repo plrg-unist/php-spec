@@ -4269,7 +4269,7 @@ constructor binding, including required untyped or `int` formals; constructorles
 classes evaluate positional arguments and ignore their values. [The argument
 review](coverage/semantics/anonymous-constructor-arguments-review.json) records
 seven original source agreements, an independent coercion case and reached tasks.
-Unit0 global anonymous classes may also extend an ordinary Base.
+Unit0 anonymous classes may also extend an ordinary Base.
 Inherited or overridden constructors see Base property defaults; inherited
 methods preserve lexical and called scopes, and private Base slots remain
 separate from public child shadows. Generated names use the resolved parent
@@ -4281,7 +4281,7 @@ arguments; body/default errors still arise during compilation. Same-type
 redeclarations and private shadows keep their physical identities, and error
 messages preserve source `self`/`parent` spelling.
 [Typed-property review](coverage/semantics/anonymous-typed-properties-review.json).
-Unit0 global anonymous classes may implement interfaces,
+Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
 Base. First-`new` linking precedes arguments; kind/duplicate checks, method
 compatibility and implementation callbacks retain native order and tentative-notice
@@ -4295,8 +4295,13 @@ A throwing loader preserves successful earlier loads for retry; skipped sites ke
 their compiled identity without loading anything. Ordinary unused named classes,
 including magic-method helpers, share the authenticated compiler counter.
 [Dependency review](coverage/semantics/anonymous-dependencies-review.json).
-Namespace/import and dynamic-source parent/interface dependencies remain partial,
-as do wider anonymous members and inheritance contexts.
+Namespaces and class imports now use the ordinary resolver for those dependencies,
+including grouped imports, qualified aliases, relative and fully qualified names.
+Each source block retains its own imports; class lookup has no global fallback.
+Generated prefixes and declared property types retain the resolved full names.
+[Namespace dependency review](coverage/semantics/anonymous-namespace-dependencies-review.json).
+Dynamic-source parent/interface dependencies remain partial, as do wider anonymous
+members and inheritance contexts.
 Plain empty named classes can share those units globally and in valid named
 namespace sections, including repeated unbracketed sections and bracketed global
 bodies. Eligible root/actual-block classes consume no RTD key; deferred classes

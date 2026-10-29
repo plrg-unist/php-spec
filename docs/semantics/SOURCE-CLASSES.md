@@ -278,8 +278,8 @@ variadic/promoted or nonpublic forms, unpacking and wider object lifetimes remai
 partial. Three explicit source controls confirm Unsupported for three direct
 arguments, a by-reference constructor formal and an unpacked send.
 
-Unit0 global anonymous classes may now extend an ordinary named class through an
-unqualified name. Parent declarations follow the existing normal compiler/linker,
+Unit0 anonymous classes may now extend an ordinary named class through the
+ordinary class-reference forms. Parent declarations follow the normal compiler/linker,
 including its supported ancestor and member forms. The anonymous class keeps the
 existing bounded member and argument grammar. Its compiler name starts with the resolved parent
 reference spelling followed by `@anonymous`, NUL, file, line and RTD counter;
@@ -297,10 +297,10 @@ The [parent review](../../coverage/semantics/anonymous-parent-review.json)
 retains its historical source comparisons, reached states and wrong-prefix
 counterexample. The [typed-property review](../../coverage/semantics/anonymous-typed-properties-review.json)
 records the corrected first-NEW publication phase and typed extension.
-Dynamic-source parented sites, namespaced parents and wider inheritance remain
+Dynamic-source parented sites and wider inheritance remain
 partial or explicit Unsupported.
 
-Unit0 global anonymous classes may implement a finite list of
+Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
 Base. The generated prefix uses the Base reference when present, otherwise the
 first resolved interface reference, preserving its spelling. Ordinary interface
@@ -315,8 +315,8 @@ visits reuse the published identity. Interface identity, type checks, inherited
 constructors and typed slots use the shared machinery. Ordinary private helpers
 also compose with existing parentless eval assignment sites. The
 [interface review](../../coverage/semantics/anonymous-interfaces-review.json)
-records these source and publication checks. Namespace/import interface
-dependencies, dynamic-source `implements`, traits and wider member forms
+records these source and publication checks. Dynamic-source `implements`, traits
+and wider member forms
 remain partial or Unsupported.
 
 Compiled anonymous identity is independent of dependency availability and source
@@ -332,6 +332,17 @@ in the shared counter walk, including implicit Stringable on an unused `__toStri
 helper. This permits unrelated magic-method classes without broadening anonymous
 bodies. The [dependency review](../../coverage/semantics/anonymous-dependencies-review.json)
 records the native-first sources and reached compilation/autoload states.
+
+Namespace and import contexts now use the same dependency route. Ordinary class
+resolution handles plain, qualified, namespace-relative and fully qualified names,
+including grouped imports and alias prefixes. Class references consult class
+imports independently of function/constant imports and have no global fallback.
+Each namespace block and factory keeps the imports visible at its source position;
+repeated namespace names do not merge their import tables. Generated prefixes,
+dependency links and declared property types keep resolved full byte names.
+The [namespace dependency review](../../coverage/semantics/anonymous-namespace-dependencies-review.json)
+records exact names/counters, ordinary named-header replay and autoload retry/cause
+checks. Dynamic-source dependent sites remain outside this extension.
 
 Plain anonymous and Base property types use the ordinary normalizer, invariant
 link checks and typed storage. An absent typed default starts uninitialized,
