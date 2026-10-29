@@ -9,20 +9,18 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 ## Current checkpoint
 
 An ordinary Iterator spread with by-reference `current()` now admits one inline
-public untyped ARRAY field with an unpooled runtime root through its real DATA
-destructor.
-Current-cell rebinding leaves the field's old graph intact; nested destructor
-writes preserve child COW and distinct behavior for held and sole scalar aliases.
-Normal completion, retained owners, key/next throws, invalid keys and Aggregate
-originals preserve their distinct cleanup order.
-Six authored sources and one independent singleton-leaf source agree exactly
-with PHP; strict compilation of 424 modules and 1006 reached premises (996
-Boolean, ten raw steps) pass at separate cuts. Joined strict compilation over
-the actual tail also passes. Five unchanged baselines remain genuine Unsupported
-with zero agreement credit. Earlier timeouts and fixture failures remain preserved
-with zero failed-row credit. Multiple owning fields and wider table, hook,
-reference and lifecycle layouts remain partial.
-[Owning-field review](coverage/semantics/array-iterator-owned-field-review.json).
+public untyped ARRAY field with a finite DIRECT pooled root, including empty
+constants, alongside the earlier mutable scalar-reference field route. Key or
+destructor writes preserve the constant snapshot through nested COW; an outside
+Iterator owner delays an empty-field append until after assignment. Runtime
+copies retire while permanent pool owners remain. Three authored originals and
+one independent retained-empty original agree exactly with PHP; all four were
+genuine Unsupported on the unchanged parent. Strict compilation passes 424
+modules, and 584 reached premises (580 Boolean, four raw steps) pass at a separate
+cut. Wider field, table, hook, reference and lifetime layouts remain partial.
+[Pooled-field review](coverage/semantics/array-iterator-pooled-field-review.json).
+The earlier [mutable-field cut](coverage/semantics/array-iterator-owned-field-review.json)
+retains its original evidence without renewed credit.
 
 Ordinary `%`, shifts and numeric bitwise operations now admit a fractional
 finite LEFT CV with an empty live `stdClass` RIGHT CV without a materialized

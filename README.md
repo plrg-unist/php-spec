@@ -1704,6 +1704,10 @@ retirement releases the field while normal or abrupt spread cleanup keeps its
 own builder lifetime.
 The [owning-field review](coverage/semantics/array-iterator-owned-field-review.json)
 records held and sole reference leaves, nested COW and the separate tested cuts.
+Finite DIRECT pooled field roots, including empty constants, now follow the same
+route. Field writes retain the pool snapshot while runtime COW copies retire;
+the [pooled-field review](coverage/semantics/array-iterator-pooled-field-review.json)
+records normal, key-throw, invalid-key and delayed-destructor originals.
 Ordinary CVs of named IteratorAggregate classes now invoke a borrowed
 `getIterator()` frame and
 transfer its owned user Iterator or named-Generator return into DATA. Genuine

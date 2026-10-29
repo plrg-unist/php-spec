@@ -1,0 +1,63 @@
+{
+  "milestone": "A63 pooled DIRECT owning-field roots in Iterator array spread",
+  "target": "PHP 8.5.10 CLI NTS signed 64-bit; project-local vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+  "scope": "The existing ordinary Iterator CV route with genuine by-reference current() and a public real destructor now admits one inline public untyped mutable ARRAY field whose root is a finite DIRECT constant/pooled table, including an immutable empty table. Scalar-reference field graphs retain the prior mutable/unpooled admission. Entries copied by spread remain DIRECT.",
+  "implementation": {
+    "runtime_file": "spec/semantics/426-array-iterator-unpack.watsup",
+    "runtime_revision": "4c3d671cf1ba21d36a799a85ba285c46638076fa",
+    "runtime_sha256": "e5905c6cecde52573d4135e684689b946353092f4b82aaaad11a39312b1adae7",
+    "fixture_revision": "e9e1c881c892160c8ee7f2f8f0e9fbaeec71a9a8",
+    "change": "The field-root check reuses array_iterator_table or the existing array_iterator_reference_table. All declared-slot, no-table/no-hook, ordinary destructor/BYREF-current, debt, cycle and builder-backedge guards remain. No ownership/COW/destruction algorithm, schema or module order changes."
+  },
+  "behavior": "A nested field write separates root and child while the old constant snapshot remains unchanged. A key callback may first create a unique runtime field, then a supplied throw runs the real destructor, which updates those same unique IDs before catch. Invalid-key eager cleanup remains ordered. An external Iterator owner delays an empty-field append until after assignment/tail evaluation. Permanent pool roots remain after runtime clones retire; a physical child edge is counted once regardless of parent root owners.",
+  "engine_routes": [
+    "Zend/zend_compile.c zend_compile_array and zend_try_ct_eval_array select constant arrays, including empty literals.",
+    "Zend/zend_types.h SEPARATE_ARRAY and Zend/zend_hash.c zend_array_dup preserve constant/shared tables when a field root or nested child is written.",
+    "Zend/zend_interfaces.c zend_user_it_get_current_data/get_current_key/invalidate_current/dtor and Zend/zend_vm_def.h ZEND_ADD_ARRAY_UNPACK preserve the raw reference through key before DIRECT insertion and ordered release.",
+    "Zend/zend_objects.c zend_objects_destroy_object/zend_object_std_dtor and existing model257/359 preserve destructor execution, weak death and declared-field storage retirement."
+  ],
+  "validation": {
+    "initial": {
+      "path": ".tools/array-iterator-pooled-field-63/.tools/a63-initial/report.json",
+      "sha256": "8d03c77e7b33bd070cbad09ec6a36d8d82cfae144e59327654f26f7c9e3dd35a",
+      "revision": "30be687527217a554a6963488ce96bb93d881ad3",
+      "result": "Four exact native quiet exit-0 expectations, followed by four genuine unchanged-model Unsupported outcomes with the initialized-Iterator-domain reason. Baseline/source agreement credit 0; 107.25s total, all 11 parent/native/model groups empty."
+    },
+    "candidate": {
+      "path": ".tools/array-iterator-pooled-field-63/.tools/a63-candidate/report.json",
+      "sha256": "eaa1dfa15558214f4ad5d55b400696b4b146581736f7e4abf6d71917742a1056",
+      "revision": "4c3d671cf1ba21d36a799a85ba285c46638076fa",
+      "result": "Strict compilation of 424 modules in SL with caches disabled and determinism checks passes in 10.60s; four model-only normal originals exactly match the retained native paths in 59.02/74.76/53.77/51.01s. Only 426 changed from the baseline fingerprint. Source agreement 4, no native replay; all six groups empty."
+    },
+    "focused": {
+      "path": ".tools/array-iterator-pooled-field-63/.tools/a63-focused/report.json",
+      "sha256": "7a25c77bc4b468aa6c7195020c2211922ecf9c5a922396458ce83720c8ddb794",
+      "revision": "e9e1c881c892160c8ee7f2f8f0e9fbaeec71a9a8",
+      "result": "Three reached groups: 207 premises/2 raw last-DATA, 193/0 key-time COW+throw, 184/2 independent retained empty field. All true/quiet exit 0 at 101.63/126.32/109.68s; total 584 = 580 Boolean + 4 raw, all six groups empty. No extra PHP source agreement credit."
+    }
+  },
+  "controls": "At an authentic reached cache, constructed pooled-ALIAS and builder-descendant projections are refused. These helper controls add no PHP source agreement. Budget checks compare split/full steps; final states check exact native bytes, pool-only ownership and retirement of runtime objects/arrays/cells.",
+  "execution": {
+    "profile": "tests/semantics/profile.json; -n, opcache CLI/JIT disabled, precision=14, serialize_precision=-1, UTC, error_reporting=30719, zend.assertions=1; LC_ALL=C,TZ=UTC",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "commands": [
+      "taskset -c 2 timeout -s INT -k 3s 800s prlimit --as=2147483648 -- python3 -B .tools/a63-initial.py",
+      "taskset -c 1 timeout -s INT -k 3s 820s prlimit --as=2147483648 -- python3 -B .tools/a63-candidate.py 1",
+      "taskset -c 1 timeout -s INT -k 3s 730s python3 -B .tools/a63-focused.py"
+    ],
+    "limits": "Parents/children pinned and serial. Source models 120s/process 150s, strict 180s, initial/candidate 2 GiB AS. Reached public numeric 180s under author 430s/peer 240s outer and 4 GiB AS. Every process exit/stream/group and exact original path is retained raw."
+  },
+  "independent_review": "array62_resume_review cleared the one-line helper union, four frozen original expectations including the independently authored retained-empty case, genuine baseline cut, changed source/strict cut, executable fixture bindings/physical owner formulas and all 584 reached premises. No semantic defect or intentional engine divergence found.",
+  "remaining": "Full PHP core, Iterator/Traversable lifetimes and array spread remain partial. Multiple owning fields, property tables/hooks, special or typed reference cells, object/cyclic/debt graphs, builder backedges, wider destructor reentry and other operand/protocol forms remain outside this admission.",
+  "archive": {
+    "location": "../php-spec-evidence-archive/array-iterator-pooled-field-63/raw.tar",
+    "sha256": "320916a31ddf40e9280181fd7d008aee041c821c5e45a849c303d96ed06ff166",
+    "bytes": 2631680,
+    "members": 152,
+    "manifest": "../php-spec-evidence-archive/array-iterator-pooled-field-63/manifest.json",
+    "manifest_sha256": "4867ab85f32084b3580d580bab7a2fadc9d8af38464f5cf6e5e508c250ca90c5",
+    "recovery": "Recreate the private worktree at the selected report revision, verify raw.tar SHA-256 and extract its prefix beneath php-spec/.tools. Restore pinned project-local providers by the recorded identities. Original cwd/file paths remain literal; replay the saved command with fresh outputs. Native/baseline30be68752, strict/source4c3d671cf and focused e9e1c881c retain distinct cuts; final documentation gives no renewed execution credit."
+  }
+}

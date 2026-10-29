@@ -120,12 +120,23 @@ field write leaves the saved row's scalar unchanged.
 Object storage retirement releases those field edges; the spread builder keeps
 its copied current row until normal continuation or abrupt cancellation.
 Folded child arrays retain their separate permanent pool owners after all runtime
-rows retire. Pooled field roots, multiple owning fields and special, typed,
-proxy, object, cyclic or debt-bearing descendants remain partial.
+rows retire.
 The [owning-field review](../../coverage/semantics/array-iterator-owned-field-review.json)
 records seven exact originals, strict compilation of 424 modules and 1006
 reached premises (996 Boolean and ten raw steps) at separate cuts; earlier failed
 rows retain zero credit.
+
+Finite DIRECT pooled field roots, including immutable empty constants, now use
+the same route. Pool owners keep the root and its physical child edges after
+the field retires. A key or destructor write separates the field root and any
+written child, preserving the constant snapshot. A private copy made by `key()`
+stays unique through a supplied throw and later destructor writes. An external
+Iterator owner delays an empty-field append until after assignment and tail
+evaluation. Four exact originals, strict compilation of 424 modules and 584
+reached premises (580 Boolean, four raw steps) retain separate tested cuts in the
+[pooled-field review](../../coverage/semantics/array-iterator-pooled-field-review.json).
+Multiple owning fields and special, typed, proxy, object, cyclic or debt-bearing
+descendants, property tables/hooks and wider destructor reentry remain partial.
 
 `427-array-generator-unpack.watsup` adds ordinary named Generator bodies with
 received parameters and reference yields, using real borrowed native resumes.
