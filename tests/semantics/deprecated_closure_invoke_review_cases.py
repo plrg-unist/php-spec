@@ -49,11 +49,60 @@ CASES = {
     ], '$closure->__invoke("7"); $expected = 8; $result = $closure->__invoke("8");', [
         'restore_error_handler(); echo "E:", $body === 2, ":", $warnings === 0, ":", $result === 9, ";";',
     ]),
+    'invoke-reference-slot-live-through-both-warnings': at80([
+        '#[\\Deprecated("alias", "15"), \\NoDiscard]',
+        'function through(&$value, $tail) { $GLOBALS["body"]++; echo "B:", $value === 23, ":", $tail === "raw", ";"; $value = 31; return 9; }',
+        'function decoy(&$value, $tail) { echo "BAD-DECOY;"; return 0; }',
+        'function notice($level, $message, $file, $line) {',
+        '    $GLOBALS["calls"]++;',
+        '    if ($level === 8192) {',
+        '        $GLOBALS["closure"] = $GLOBALS["replacement"]; $GLOBALS["value"] = 17;',
+        '        echo "O:", $message === "Method Closure::__invoke() is deprecated since 15, alias", ":", $GLOBALS["weak_closure"]->get() !== null, ";"; return true;',
+        '    }',
+        '    if ($level === 16384) {',
+        '        $GLOBALS["value"] = 23; $trace = (new Exception("phase"))->getTrace();',
+        '        $GLOBALS["snapshot"] = $trace[1]["args"][0];',
+        '        echo "I:", $message === "Function through() is deprecated since 15, alias", ":", $trace[1]["function"] === "__invoke", ":", $trace[1]["args"][0] === 23 && $trace[1]["args"][1] === "raw", ":", $GLOBALS["body"] === 0, ";"; return true;',
+        '    }',
+        '    $GLOBALS["other"]++; echo "BAD-WARNING;"; return true;',
+        '}',
+        '$body = 0; $calls = 0; $other = 0; $value = 7; $alias =& $value; $snapshot = null;',
+        '$closure = through(...); $weak_closure = WeakReference::create($closure); $replacement = decoy(...);',
+        'set_error_handler("notice");',
+    ], '$closure->__invoke($alias, "raw");', [
+        'restore_error_handler(); echo "E:", $body === 1, ":", $calls === 2 && $other === 0, ":", $value === 31 && $alias === 31, ":", $snapshot === 23, ":", $weak_closure->get() === null, ":", $closure === $replacement, ";";',
+    ]),
+    'invoke-body-return-retires-raw-argument-before-outer-receiver': at80([
+        'class ReturnToken {',
+        '    public function __destruct() { echo "T:", $GLOBALS["body"] === 1, ":", $GLOBALS["weak_closure"]->get() !== null, ":", $GLOBALS["weak_receiver"]->get() !== null, ";"; }',
+        '}',
+        'class ReturnCarrier {',
+        '    #[\\Deprecated, \\NoDiscard]',
+        '    public function act($value) { $GLOBALS["body"]++; echo "B:", $GLOBALS["weak_closure"]->get() !== null, ":", $GLOBALS["weak_receiver"]->get() === $this, ":", $value === $GLOBALS["weak_token"]->get(), ";"; return 7; }',
+        '    public function __destruct() { echo "R:", $GLOBALS["body"] === 1, ":", $GLOBALS["weak_token"]->get() === null, ":", $GLOBALS["weak_closure"]->get() === null, ";"; }',
+        '}',
+        'function notice($level, $message, $file, $line) {',
+        '    $GLOBALS["calls"]++;',
+        '    if ($level === 8192) {',
+        '        $GLOBALS["closure"] = null; $GLOBALS["token"] = null;',
+        '        echo "O:", $message === "Method Closure::__invoke() is deprecated", ":", $GLOBALS["weak_closure"]->get() !== null, ":", $GLOBALS["weak_token"]->get() !== null, ";"; return true;',
+        '    }',
+        '    if ($level === 16384) { echo "I:", $message === "Method ReturnCarrier::act() is deprecated", ":", $GLOBALS["weak_closure"]->get() !== null, ";"; return true; }',
+        '    $GLOBALS["other"]++; echo "BAD-WARNING;"; return true;',
+        '}',
+        '$body = 0; $calls = 0; $other = 0; $receiver = new ReturnCarrier(); $closure = $receiver->act(...);',
+        '$weak_receiver = WeakReference::create($receiver); $weak_closure = WeakReference::create($closure); $receiver = null;',
+        '$token = new ReturnToken(); $weak_token = WeakReference::create($token); set_error_handler("notice");',
+    ], '$closure->__invoke($token);', [
+        'restore_error_handler(); echo "E:", $body === 1, ":", $calls === 2 && $other === 0, ":", $weak_token->get() === null, ":", $weak_closure->get() === null, ":", $weak_receiver->get() === null, ";";',
+    ]),
 }
 
 EXPECTED_STDOUT = {
     'invoke-inner-warning-throw-keeps-raw-wrapper-owners': b'O:1:1;I:1:1:1:1:1:1:1;C:1:1:1:1:1:1:1;',
     'invoke-unmarked-nodiscard-weak-reception-control': b'B:1;B:1;E:1:1:1;',
+    'invoke-reference-slot-live-through-both-warnings': b'O:1:1;I:1:1:1:1;B:1:1;E:1:1:1:1:1:1;',
+    'invoke-body-return-retires-raw-argument-before-outer-receiver': b'O:1:1:1;I:1:1;B:1:1:1;T:1:1:1;R:1:1:1;E:1:1:1:1:1;',
 }
 
 EXIT_CODES = {name: 0 for name in CASES}
