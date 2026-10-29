@@ -63,8 +63,9 @@ numeric string follow the same rule. Binary errors truncate anonymous names at
 NUL while `get_class` retains full identity. Sixteen authored and seven independent
 sources agree exactly: 19 former late-failure gaps and four unchanged controls.
 Strict424 and four source-reached fronts/471 checks pass, including four derived
-helper-state guards. Weak references, last-owner destructors and owning-array
-children preserve real lifetimes. Observation-helper and anonymous producer stops
+helper-state guards. Joined strict compilation over the actual 425-module tail
+also passes. Weak references, last-owner destructors and owning-array children
+preserve real lifetimes. Observation-helper and anonymous producer stops
 retain zero overall credit; only affected fixtures were renewed. Earlier
 [two-cell evidence](coverage/semantics/integer-both-reference-object-right-warning-review.json),
 including the historical OP10829/446 cuts, keeps its revisions without replay.
