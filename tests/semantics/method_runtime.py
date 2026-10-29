@@ -130,8 +130,11 @@ def run(match, catalogue=DEFAULT_CASES):
                                     os.fsencode(directory / child['name']))
         expected_stdout = row['stdout_base64']
         if 'stdout_template_base64' in row:
-            expected_stdout = base64.b64encode(base64.b64decode(row['stdout_template_base64']).replace(
-                b'{FILE}', os.fsencode(source))).decode()
+            stdout = base64.b64decode(row['stdout_template_base64']).replace(b'{FILE}', os.fsencode(source))
+            for child in row.get('files', []):
+                stdout = stdout.replace(b'{FILE:' + child['name'].encode() + b'}',
+                                        os.fsencode(directory / child['name']))
+            expected_stdout = base64.b64encode(stdout).decode()
         passed = passed and actual.get('stdout') == expected_stdout
         passed = passed and actual.get('stderr') == base64.b64encode(stderr).decode()
         native_profile = row.get('native_profile', shared_profile or {})

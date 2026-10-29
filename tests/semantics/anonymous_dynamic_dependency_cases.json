@@ -1,0 +1,128 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-dynamic-dependency-eval-import-reset-and-own-context",
+      "source": "<?php\nnamespace Review148Model {\n    class Base {\n        public int $number = 5;\n        public function __construct() { echo \"ctor|\"; }\n    }\n    interface Read {}\n}\nnamespace Review148Caller {\n    use Review148Model\\Base as CallerBase;\n    echo \"before|\";\n    try { eval('$bad = new class extends CallerBase {};'); }\n    catch (\\Error $e) { echo $e->getMessage(), \"|\"; }\n    eval('namespace Review148Eval; use Review148Model\\Base as LocalBase; use Review148Model\\Read as LocalRead; $good = new class extends LocalBase implements LocalRead { public ?LocalBase $ref = null; };');\n    $good->ref = $good;\n    echo $good::class, \"|\", $good->number, \"|\", ($good->ref === $good ? \"typed\" : \"bad\");\n}\n",
+      "source_sha256": "038042b73466a5ad473112fbfc87006e1417666562117dcdec74bf4d6a76e360",
+      "stdout_base64": "YmVmb3JlfENsYXNzICJDYWxsZXJCYXNlIiBub3QgZm91bmR8Y3RvcnxSZXZpZXcxNDhNb2RlbFxCYXNlQGFub255bW91cwAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY2xhc3MxNDgtcmV2aWV3L2V2YWwtaW1wb3J0LXJlc2V0LWFuZC1vd24tY29udGV4dC5waHAoMTQpIDogZXZhbCgpJ2QgY29kZToxJDF8NXx0eXBlZA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class148-frozen-native8",
+      "native_raw_sha256": "5486b770d456f87f0017d2413fb092e575c62c52f7e2107f8e163b11399e2fd7",
+      "model_timeout_seconds": 180,
+      "stdout_template_base64": "YmVmb3JlfENsYXNzICJDYWxsZXJCYXNlIiBub3QgZm91bmR8Y3RvcnxSZXZpZXcxNDhNb2RlbFxCYXNlQGFub255bW91cwB7RklMRX0oMTQpIDogZXZhbCgpJ2QgY29kZToxJDF8NXx0eXBlZA=="
+    },
+    {
+      "id": "anonymous-dynamic-dependency-later-named-external-base-counter",
+      "source": "<?php\nclass Review148RootBase {}\n$seed = new class {};\necho $seed::class, \"|\";\neval('namespace Review148Counter; use Review148RootBase as ExternalBase; class Named extends ExternalBase {} $inside = new class extends Named {}; echo $inside::class, \"|\";');\neval('$tail = new class {}; echo $tail::class;');\n",
+      "source_sha256": "05f8c5101d71eed694d97d8d913eed33152c3caa70e750547203b27a68426ec8",
+      "stdout_base64": "Y2xhc3NAYW5vbnltb3VzAC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE0OC1yZXZpZXcvbGF0ZXItbmFtZWQtZXh0ZXJuYWwtYmFzZS1jb3VudGVyLnBocDozJDB8UmV2aWV3MTQ4Q291bnRlclxOYW1lZEBhbm9ueW1vdXMAL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTQ4LXJldmlldy9sYXRlci1uYW1lZC1leHRlcm5hbC1iYXNlLWNvdW50ZXIucGhwKDUpIDogZXZhbCgpJ2QgY29kZToxJDF8Y2xhc3NAYW5vbnltb3VzAC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE0OC1yZXZpZXcvbGF0ZXItbmFtZWQtZXh0ZXJuYWwtYmFzZS1jb3VudGVyLnBocCg2KSA6IGV2YWwoKSdkIGNvZGU6MSQy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class148-frozen-native8",
+      "native_raw_sha256": "8802ccc4241f4e4b0745122ac133e35ff33a1613dd96feee93cbaa36090c5e23",
+      "model_timeout_seconds": 180,
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDB8UmV2aWV3MTQ4Q291bnRlclxOYW1lZEBhbm9ueW1vdXMAe0ZJTEV9KDUpIDogZXZhbCgpJ2QgY29kZToxJDF8Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSg2KSA6IGV2YWwoKSdkIGNvZGU6MSQy"
+    },
+    {
+      "id": "anonymous-dynamic-dependency-eval-loader-same-site-retry",
+      "source": "<?php\n$attempt148 = 0;\nfunction review148Load($name) {\n    global $attempt148;\n    echo \"load:\", $name, \"|\";\n    if ($name === 'Review148Loaded\\Base') {\n        eval('namespace Review148Loaded; class Base { public function __construct() { echo \"ctor|\"; } }');\n    } elseif ($name === 'Review148Loaded\\Read') {\n        $attempt148++;\n        if ($attempt148 === 1) { throw new Exception(\"pause\"); }\n        eval('namespace Review148Loaded; interface Read {}');\n    }\n}\nspl_autoload_register('review148Load');\neval('namespace Review148Retry; use Review148Loaded\\Base as ParentAlias; use Review148Loaded\\Read as InterfaceAlias; $round = 0; $previous = null; while ($round < 3) { $round++; try { $current = new class extends ParentAlias implements InterfaceAlias { public int $number = 9; }; echo $current::class, \"|\", $current->number, \"|\"; if ($previous !== null) { echo $previous::class === $current::class ? \"same|\" : \"bad|\"; echo $previous !== $current ? \"fresh|\" : \"bad|\"; } $previous = $current; } catch (\\Exception $e) { echo $e->getMessage(), \"|\"; } }');\n",
+      "source_sha256": "a1939b9f19d5e89be1ccbaa49d40b9ad19a1f67bc9dc9a4894e31475989bf5a5",
+      "stdout_base64": "bG9hZDpSZXZpZXcxNDhMb2FkZWRcQmFzZXxsb2FkOlJldmlldzE0OExvYWRlZFxSZWFkfHBhdXNlfGxvYWQ6UmV2aWV3MTQ4TG9hZGVkXFJlYWR8Y3RvcnxSZXZpZXcxNDhMb2FkZWRcQmFzZUBhbm9ueW1vdXMAL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTQ4LXJldmlldy9ldmFsLWxvYWRlci1zYW1lLXNpdGUtcmV0cnkucGhwKDE1KSA6IGV2YWwoKSdkIGNvZGU6MSQwfDl8Y3RvcnxSZXZpZXcxNDhMb2FkZWRcQmFzZUBhbm9ueW1vdXMAL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTQ4LXJldmlldy9ldmFsLWxvYWRlci1zYW1lLXNpdGUtcmV0cnkucGhwKDE1KSA6IGV2YWwoKSdkIGNvZGU6MSQwfDl8c2FtZXxmcmVzaHw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class148-frozen-native8",
+      "native_raw_sha256": "0a7c917053112012af8ef53f5d42577bf678beee68a7a4ffc58152a8921be5ec",
+      "model_timeout_seconds": 180,
+      "stdout_template_base64": "bG9hZDpSZXZpZXcxNDhMb2FkZWRcQmFzZXxsb2FkOlJldmlldzE0OExvYWRlZFxSZWFkfHBhdXNlfGxvYWQ6UmV2aWV3MTQ4TG9hZGVkXFJlYWR8Y3RvcnxSZXZpZXcxNDhMb2FkZWRcQmFzZUBhbm9ueW1vdXMAe0ZJTEV9KDE1KSA6IGV2YWwoKSdkIGNvZGU6MSQwfDl8Y3RvcnxSZXZpZXcxNDhMb2FkZWRcQmFzZUBhbm9ueW1vdXMAe0ZJTEV9KDE1KSA6IGV2YWwoKSdkIGNvZGU6MSQwfDl8c2FtZXxmcmVzaHw="
+    },
+    {
+      "id": "anonymous-dynamic-dependency-author-root-callables-later-hierarchy",
+      "source": "<?php\ninterface Read148Root { public function value(): int; }\nclass Base148Root { public int $number = 6; public function value(): int { return $this->number; } }\nfunction unused148($value) { return $value; }\n$closure148 = static function($value) { return $value; };\n$arrow148 = static fn($value) => $value;\n$first148 = new class {};\neval('$next148 = new class extends Base148Root implements Read148Root {};');\necho $first148::class, '|', $next148::class, '|', $next148->value(), '|', $next148 instanceof Read148Root ? 'read' : 'bad';\n",
+      "source_sha256": "7e6a5fe374727aa02573e618bafcd2994f86a6957416ecda65e35aa8223e49c2",
+      "stdout_base64": "Y2xhc3NAYW5vbnltb3VzAC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE0OC1hdXRob3Ivcm9vdC1jYWxsYWJsZXMtbGF0ZXItaGllcmFyY2h5L3NvdXJjZS5waHA6NyQwfEJhc2UxNDhSb290QGFub255bW91cwAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY2xhc3MxNDgtYXV0aG9yL3Jvb3QtY2FsbGFibGVzLWxhdGVyLWhpZXJhcmNoeS9zb3VyY2UucGhwKDgpIDogZXZhbCgpJ2QgY29kZToxJDF8NnxyZWFk",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class148-frozen-native8",
+      "native_raw_sha256": "82492d54ca3ce065ae5abc99d9eff668e70a8b57ce69d04b265e65d665127391",
+      "model_timeout_seconds": 180,
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo3JDB8QmFzZTE0OFJvb3RAYW5vbnltb3VzAHtGSUxFfSg4KSA6IGV2YWwoKSdkIGNvZGU6MSQxfDZ8cmVhZA=="
+    },
+    {
+      "id": "anonymous-dynamic-dependency-author-include-once-dependent-reuse",
+      "source": "<?php\nnamespace Vendor148Include {\n    interface Read { public function value(): int; }\n    class Base { public int $number = 5; public function value(): int { return $this->number; } }\n}\nnamespace Caller148Include {\n    use Wrong148\\Space as ParentAlias;\n    include __DIR__ . '/payload.php';\n    include_once __DIR__ . '/payload.php';\n    echo '|once';\n}\n",
+      "source_sha256": "5a8e31248c9879253eaf28200e4e40830def3e002c96742ed2fa8da18bdc563a",
+      "stdout_base64": "ZnJlc2h8c2FtZXw1fFZlbmRvcjE0OEluY2x1ZGVcQmFzZUBhbm9ueW1vdXMAL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTQ4LWF1dGhvci9pbmNsdWRlLW9uY2UtZGVwZW5kZW50LXJldXNlL3BheWxvYWQucGhwOjYkMHxvbmNl",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class148-frozen-native8",
+      "native_raw_sha256": "2248ca2141e741c12a10872b433df4d421037cc45c167a7fe2a7ab8484aaf142",
+      "model_timeout_seconds": 180,
+      "stdout_template_base64": "ZnJlc2h8c2FtZXw1fFZlbmRvcjE0OEluY2x1ZGVcQmFzZUBhbm9ueW1vdXMAe0ZJTEU6cGF5bG9hZC5waHB9OjYkMHxvbmNl",
+      "files": [
+        {
+          "name": "payload.php",
+          "source": "<?php\nnamespace File148Include;\nuse Vendor148Include\\{Base as ParentAlias, Read as Contract};\n$i148 = 0;\nwhile ($i148 < 2) {\n    $x148 = new class extends ParentAlias implements Contract {};\n    if ($i148 === 0) { $first148 = $x148; }\n    else { echo $first148 !== $x148 ? 'fresh' : 'bad', '|', $first148::class === $x148::class ? 'same' : 'bad', '|', $x148->value(), '|', $x148::class; }\n    $i148++;\n}\n",
+          "source_sha256": "e504642acd9b88bdc0578f8ca15994d33c02025d53b278ddadb7a50611f1f70b"
+        }
+      ]
+    },
+    {
+      "id": "anonymous-dynamic-dependency-author-skipped-later-dependency-then-fresh-unit",
+      "source": "<?php\neval('if (false) { $skipped148 = new class extends Missing148Base implements Missing148Read { public parent $slot; public int $number = 1; }; }');\necho 'before|';\neval('$later148 = new class {};');\necho $later148::class, '|', isset($skipped148) ? 'bad' : 'skipped';\n",
+      "source_sha256": "14e9aa4ce2e1d313ca7e824c78c8ec29989840d536a2b9aceb38dc546cfef9c3",
+      "stdout_base64": "YmVmb3JlfGNsYXNzQGFub255bW91cwAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY2xhc3MxNDgtYXV0aG9yL3NraXBwZWQtbGF0ZXItZGVwZW5kZW5jeS10aGVuLWZyZXNoLXVuaXQvc291cmNlLnBocCg0KSA6IGV2YWwoKSdkIGNvZGU6MSQxfHNraXBwZWQ=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class148-frozen-native8",
+      "native_raw_sha256": "30275c26e196439dc888fcd9d97910662980970d13f1707117a825b748f3f7b0",
+      "model_timeout_seconds": 180,
+      "stdout_template_base64": "YmVmb3JlfGNsYXNzQGFub255bW91cwB7RklMRX0oNCkgOiBldmFsKCknZCBjb2RlOjEkMXxza2lwcGVk"
+    },
+    {
+      "id": "anonymous-dynamic-dependency-author-later-incompatible-property-link",
+      "source": "<?php\nclass Base148Typed { public int $value = 1; }\necho 'outer|';\neval('echo \"inner|\"; $o148 = new class extends Base148Typed { public string $value = \"bad\"; };');\n",
+      "source_sha256": "9340375153b8779175da55f3a3b9edd74ab142d0fd81dc023627863b899f02de",
+      "stdout_base64": "b3V0ZXJ8aW5uZXJ8",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFR5cGUgb2YgQmFzZTE0OFR5cGVkQGFub255bW91czo6JHZhbHVlIG11c3QgYmUgaW50IChhcyBpbiBjbGFzcyBCYXNlMTQ4VHlwZWQpIGluIHtGSUxFfSg0KSA6IGV2YWwoKSdkIGNvZGUgb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7RklMRX0oNCk6IGV2YWwoKQojMSB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "class148-frozen-native8",
+      "native_raw_sha256": "6dcb21b0abf2365c048957456ad95e190eb7b90098a94ff58e34ef9738ce4332",
+      "model_timeout_seconds": 180
+    },
+    {
+      "id": "anonymous-dynamic-dependency-author-later-skipped-invalid-default",
+      "source": "<?php\necho 'outer|';\neval('echo \"inner|\"; if (false) { $o148 = new class extends Missing148DefaultBase { public int $value = \"bad\"; }; }');\n",
+      "source_sha256": "3d2334010f11228d1eb3c37caa16d24d54e2f3e4da93093209ff966e4a4c4aea",
+      "stdout_base64": "b3V0ZXJ8",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIGRlZmF1bHQgdmFsdWUgZm9yIHByb3BlcnR5IE1pc3NpbmcxNDhEZWZhdWx0QmFzZUBhbm9ueW1vdXM6OiR2YWx1ZSBvZiB0eXBlIGludCBpbiB7RklMRX0oMykgOiBldmFsKCknZCBjb2RlIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "class148-frozen-native8",
+      "native_raw_sha256": "6232750cc36d26b40e67c8b6ca19229a8b78e5c3cf00450c8aff5c5bc46a9073",
+      "model_timeout_seconds": 180
+    }
+  ]
+}
