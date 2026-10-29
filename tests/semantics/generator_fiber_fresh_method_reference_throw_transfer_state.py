@@ -175,7 +175,7 @@ $heap_owners($heap_graph(S), HOBJECT n_given) = 1
 pfiber.VM = eps
 pfiber.RETURNED
 ~pfiber.FAILED
-pfiber.VALUE = PSTRING $ptascii("fiber69")
+$string_bytes(pfiber.VALUE) = ($ptascii("fiber69"))
 $generator_reference_producer(S, pgenerator)
 $generator_reference_valid(S, GENERATOR pgenerator)
 $generator_frame_valid(S, pgenerator, pframe_generator)
