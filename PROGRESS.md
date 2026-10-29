@@ -15,7 +15,8 @@ ordinary casts share eligible tables, and existing pruning detaches collected
 typed-property sources from outside cells. Three authored and one independent
 native-first originals agree exactly. Separate reached AL cuts pass 51+25+10
 checks, and a private typed strict SL cut passes; the initial fixture compile
-stop has zero credit. The actual joined-master strict gate is pending integration.
+stop has zero credit. Joined strict compilation of the actual 425-module tail
+passes at the separate integration cut.
 Callbacks, ephemerons, hooks, workers, residual buffers and noncanonical
 locators remain outside this slice. [Review](coverage/semantics/gc-materialized-table-review.json).
 
@@ -746,7 +747,6 @@ original cuts. Wider producers, handlers, references and lifetimes remain partia
 | CALL126 | Target-neutral Aggregate unpack. |
 | CLASS146 | Anonymous identity/dependency order. |
 | COMP149 | Generic captured-graph depth-cap removal. |
-| GC physical01 | Callback-free materialized cycles. |
 | OP111 | Default-handler RHS objects. |
 | I74 | Generic fresh NEXT/SEND ADVANCE phase; source/static preparation. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
@@ -754,6 +754,8 @@ original cuts. Wider producers, handlers, references and lifetimes remain partia
 
 Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64/A65, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145 are integrated
 into this branch.
+GC physical01 is integrated on this tail; its private source/state cuts and the
+joined strict gate retain their separate tested identities.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
 for private changes.
