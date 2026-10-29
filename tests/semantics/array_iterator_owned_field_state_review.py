@@ -251,14 +251,15 @@ def invalid(program, path, stdout):
         'S_raw.COMPLETION = THROWN "Error" ($ptascii("Keys must be of type int|string during array unpacking")) parrayiterator_insert.LINE',
         'S_queued = $drive_steps(S_insert, 1)',
         'S_queued.COMPLETION = BUDGET',
-        'S_queued.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_invalid) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*',
-        'pdestructionoperation.SOURCE = ARRAY_ITERATOR parrayiterator_insert "insert"',
-        'pdestructionoperation.PENDING = (n_original)',
-        'pdestructionrelease_invalid.JOBS = [DESTRUCTION_VALUE (HARRAY n_target),DESTRUCTION_VALUE (HOBJECT n_object),DESTRUCTION_VALUE (HCELL n_outer)]',
+        'S_queued.TODO = (THROW_SEARCH n_original) :: (ARRAY_ITERATOR parrayiterator_insert "insert") :: ptask_tail*',
+        'S_queued.DESTRUCTION.RELEASES = S_insert.DESTRUCTION.RELEASES',
+        'S_queued.DESTRUCTION.OPERATIONS = S_insert.DESTRUCTION.OPERATIONS',
+        '$throwable_field(S_queued, n_original, "previous") = PNULL',
+        'parrayiterator_release = parrayiterator_insert[.CURRENT = KNOWN PNULL][.KEY = KNOWN PNULL]',
         owners('S_queued', 'HARRAY n_target', 1),
         owners('S_queued', 'HARRAY n_old', 2),
     ] + field('S_insert', 'n_old', 'n_old_child', 3) + public('S_insert') + public('S_queued')
-    return checks + after_destructor('S_queued', stdout, False)
+    return checks + after_destructor('S_queued', stdout, True)
 
 
 def conditions(name, program, path, stdout):
