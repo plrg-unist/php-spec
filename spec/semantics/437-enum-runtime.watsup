@@ -485,6 +485,36 @@ def $class_constant_update_blocks(S, (ENUM_FROM_FETCH pconfigcall pvalue) :: pta
   -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
 def $class_constant_table_blocks(S, (ENUM_FROM_FETCH pconfigcall pvalue) :: ptask_tail*, porigin_acc*) = ($class_constant_table_sequence(S, porigin, porigin_acc*) /\ $class_constant_table_blocks(S, ptask_tail*, eps))
   -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+dec $enum_from_fetch_marker(ptask) : bool
+def $enum_from_fetch_marker(ENUM_FROM_FETCH pconfigcall pvalue) = true
+def $enum_from_fetch_marker(ptask) = false -- otherwise
+dec $enum_from_future(ptask*) : pconfigcall?
+def $enum_from_future(eps) = eps
+def $enum_from_future((ENUM_FROM_FETCH pconfigcall pvalue) :: ptask_tail*) = (pconfigcall)
+def $enum_from_future(ptask :: ptask_tail*) = $enum_from_future(ptask_tail*)
+  -- if ~$enum_from_fetch_marker(ptask)
+def $class_constant_update_site(S, porigin_site, porigin) = true
+  -- if $enum_from_future(S.TODO) = (pconfigcall)
+  -- if pconfigcall.SITE = porigin_site
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if text_method <- ["from", "tryFrom"]
+  -- if pconfigcall.OWNER = (n_owner)
+  -- if pconfigcall.SELECTION = (n_nonce)
+  -- if $config_invoke_valid(S[.ORIGIN = (porigin_site)], pconfigcall)
+def $enum_owned_from_table_context(S, porigin, porigin_root, porigin_trigger) = (pconfigcall)
+  -- if porigin = porigin_root
+  -- if S.TODO = (CLASS_CONST_TABLE_UPDATE porigin z) :: (ENUM_FROM_FETCH pconfigcall pvalue_key) :: ptask_tail*
+  -- if pconfigcall.SITE = porigin_trigger
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if text_method <- ["from", "tryFrom"]
+  -- if pconfigcall.OWNER = (n_owner)
+  -- if pconfigcall.SELECTION = (n_nonce)
+  -- if $enum_from_fetch_valid(S, pconfigcall, pvalue_key)
+  -- if $config_invoke_valid(S[.ORIGIN = (porigin_trigger)], pconfigcall)
+def $enum_owned_from_table_context(S, porigin, porigin_root, porigin_trigger) = eps -- otherwise
+def $class_constant_table_event(S, porigin, porigin_root, porigin_trigger, n_prefix) = CCUPDATE_ENUM porigin porigin_root porigin_trigger n_prefix n_nonce
+  -- if $enum_owned_from_table_context(S, porigin, porigin_root, porigin_trigger) = (pconfigcall)
+  -- if pconfigcall.SELECTION = (n_nonce)
 def $class_constant_update_site(S, porigin_site, porigin) = true
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc.KIND = "enum" /\ $enum_backing(S, porigin) =/= ""
@@ -1043,6 +1073,27 @@ def $class_constant_selection_valid(S, pclassconstantcontext) = true
   -- if pclassconstantcontext.SELECTION = CLASS_CONST_CALL pconfigcall
   -- if pclassconstantcontext.ORIGIN = (pconfigcall.SITE) /\ pclassconstantcontext.LINE = pconfigcall.LINE
   -- if $enum_query_marker(S, pconfigcall, pclassconstantcontext.DECL, S.TODO)
+dec $enum_from_update_context(pstate, pclassconstantcontext, porigin) : pconfigcall?
+def $enum_from_update_context(S, pclassconstantcontext, porigin_case) = (pconfigcall)
+  -- if pclassconstantcontext.DECL = porigin_case
+  -- if pclassconstantcontext.SELECTION = CLASS_CONST_UPDATE_SELECT porigin_class
+  -- if $enum_case_descriptor(S, porigin_case) = (pclassconstantdesc)
+  -- if pclassconstantdesc.OWNER = porigin_class
+  -- if $enum_from_future(S.TODO) = (pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin_class ptbytes text_method
+  -- if text_method <- ["from", "tryFrom"]
+  -- if pclassconstantcontext.ORIGIN = (pconfigcall.SITE)
+  -- if pclassconstantcontext.LINE = pconfigcall.LINE
+  -- if $class_constant_selection_valid(S, pclassconstantcontext)
+  -- if $config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+def $enum_from_update_context(S, pclassconstantcontext, porigin_case) = eps -- otherwise
+def $enum_owned_from_context(S, pclassconstantcontext, porigin_case) = (pconfigcall)
+  -- if $enum_from_update_context(S, pclassconstantcontext, porigin_case) = (pconfigcall)
+  -- if pconfigcall.OWNER = (n_owner)
+  -- if pconfigcall.SELECTION = (n_nonce)
+def $enum_owned_from_context(S, pclassconstantcontext, porigin_case) = eps -- otherwise
+def $class_constant_context_site(S, pclassconstantcontext) = true
+  -- if $enum_from_update_context(S, pclassconstantcontext, pclassconstantcontext.DECL) = (pconfigcall)
 def $class_constant_context_site(S, pclassconstantcontext) = true
   -- if pclassconstantcontext.SELECTION = CLASS_CONST_CALL pconfigcall
   -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes "cases"
@@ -1063,6 +1114,10 @@ def $class_constant_cache_event(S, pclassconstantcontext, porigin_case, porigin_
   -- if pclassconstantcontext.ORIGIN = (porigin_trigger) /\ pconfigcall.SITE = porigin_trigger
   -- if pconfigcall.SELECTION = (n_nonce)
   -- if $config_invoke_valid(S[.ORIGIN = (porigin_trigger)], pconfigcall)
+def $class_constant_cache_event(S, pclassconstantcontext, porigin_case, porigin_trigger, n_prefix) = CCCACHE_ENUM porigin_case porigin_trigger n_prefix n_nonce
+  -- if $enum_owned_from_context(S, pclassconstantcontext, porigin_case) = (pconfigcall)
+  -- if pclassconstantcontext.ORIGIN = (porigin_trigger)
+  -- if pconfigcall.SELECTION = (n_nonce)
 def $class_constant_history_fills(S, (CCCACHE_ENUM porigin_case (PORIGIN n_unit pcpath) n_prefix n_nonce) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached* ++ [porigin_case], porigin_filled*, n_prefix)
   -- if $(n_previous <= n_prefix /\ n_prefix <= |S.DECLARATIONS|)
   -- if ~(porigin_case <- porigin_cached*)
@@ -1073,7 +1128,27 @@ def $class_constant_history_fills(S, (CCCACHE_ENUM porigin_case (PORIGIN n_unit 
   -- if $(n_nonce < |S.SELECTEDCALLS|)
   -- if S.SELECTEDCALLS[n_nonce] = pselectedcall
   -- if pselectedcall.NONCE = n_nonce /\ pselectedcall.SITE = PORIGIN n_unit pcpath
-  -- if pselectedcall.KIND = INTRINSIC_ENUM pclassconstantdesc.OWNER pclassconstantdesc.OWNERNAME "cases"
+  -- if pselectedcall.KIND = INTRINSIC_ENUM pclassconstantdesc.OWNER pclassconstantdesc.OWNERNAME text_method
+  -- if text_method <- ["cases", "from", "tryFrom"]
+  -- if pselectedcall.OWNER = (n_owner)
+  -- if $selected_entry_source_valid(S, pselectedcall)
+  -- if $class_constant_history_exited(S.DECLARATIONS, n_prefix, n_unit)
+def $class_constant_history_fills(S, (CCUPDATE_ENUM porigin porigin_root (PORIGIN n_unit pcpath) n_prefix n_nonce) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, $class_constant_flag_done((porigin_flag, b_flag)*, porigin), porigin_cached*, porigin_filled*, n_prefix)
+  -- if $(n_previous <= n_prefix /\ n_prefix <= |S.DECLARATIONS|)
+  -- if porigin = porigin_root
+  -- if $class_constant_flag((porigin_flag, b_flag)*, porigin) = (false)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum" /\ $enum_backing(S, porigin) =/= ""
+  -- if $enum_backing_issue(S, porigin) = METHOD_OK
+  -- if $class_constant_values_done($class_constant_layout(S, porigin, |S.CLASSES|), porigin_cached*)
+  -- if $static_default_values_done($property_info_layout(S, porigin, |S.CLASSES|), porigin_filled*)
+  -- if $instance_default_done_at(S, porigin, S.CLASSCONSTANTHISTORY[0:$nabs($(|S.CLASSCONSTANTHISTORY| - |pclassconstantevent*| - 1))])
+  -- if $class_constant_parent_done(S, porigin, (porigin_flag, b_flag)*)
+  -- if $(n_nonce < |S.SELECTEDCALLS|)
+  -- if S.SELECTEDCALLS[n_nonce] = pselectedcall
+  -- if pselectedcall.NONCE = n_nonce /\ pselectedcall.SITE = PORIGIN n_unit pcpath
+  -- if pselectedcall.KIND = INTRINSIC_ENUM porigin pclassdesc.NAME text_method
+  -- if text_method <- ["from", "tryFrom"]
   -- if pselectedcall.OWNER = (n_owner)
   -- if $selected_entry_source_valid(S, pselectedcall)
   -- if $class_constant_history_exited(S.DECLARATIONS, n_prefix, n_unit)
@@ -1082,6 +1157,11 @@ def $class_constant_cache_trigger(S, porigin_decl, porigin_trigger, n_prefix) = 
   -- if $class_at(S.CLASSES, pclassconstantdesc.OWNER) = (pclassdesc)
   -- if $enum_call_site(S, porigin_trigger, INTRINSIC_ENUM pclassdesc.ORIGIN pclassdesc.NAME "cases")
   -- if porigin_trigger = PORIGIN n pcpath
+  -- if $class_constant_history_exited(S.DECLARATIONS, n_prefix, n)
+def $class_constant_cache_trigger(S, porigin_decl, PORIGIN n pcpath, n_prefix) = true
+  -- if $enum_case_descriptor(S, porigin_decl) = (pclassconstantdesc)
+  -- if $class_at(S.CLASSES, pclassconstantdesc.OWNER) = (pclassdesc)
+  -- if $enum_call_site(S, PORIGIN n pcpath, INTRINSIC_ENUM pclassdesc.ORIGIN pclassdesc.NAME "from") \/ $enum_call_site(S, PORIGIN n pcpath, INTRINSIC_ENUM pclassdesc.ORIGIN pclassdesc.NAME "tryFrom")
   -- if $class_constant_history_exited(S.DECLARATIONS, n_prefix, n)
 def $class_constant_cache_trigger(S, porigin_decl, PORIGIN n pcpath, n_prefix) = true
   -- if $class_constant_origin(S.CLASSES, porigin_decl) = (pclassconstantdesc)

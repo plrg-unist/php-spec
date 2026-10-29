@@ -76,6 +76,7 @@ syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | 
   | CCSTATICNEW porigin pdynamicnew nat | CCSTATICRETIRENEW porigin pdynamicnew nat nat
   | CCTRAITCACHE porigin ptraitcachecause
   | CCTRAITBIRTH nat porigin ptraitcachecause
+  | CCUPDATE_ENUM porigin porigin porigin nat nat
 syntax pclassconstantflags = CCFLAGS (porigin, bool)* porigin* | CCBAD
 syntax pclassconstantdesc = { ORIGIN porigin, OWNER porigin, OWNERNAME ptbytes, NAME ptbytes, VISIBILITY ppropertyvisibility, FINAL bool, TYPE ptbranch*, INITIALIZER porigin, FOLDED bool, LINE nat }
 syntax ptraitcachecause = { CLASS porigin, ROOT porigin, TABLE pclassconstantdesc*, LOOKUPS porigin*, PREFIX nat, USERPREFIX nat }
