@@ -13,7 +13,9 @@ ordinary source-call warnings after sends/named defaults, before reception/body.
 Selected references, real argument/receiver owners and caller-only traces survive
 handlers and supplied throws; used results and callback APIs remain distinct.
 Twenty-six originals agree, and four reached fronts pass 297 checks including 24
-derived guards. Wider messages, targets, hooks and wrappers remain partial.
+derived guards. Joined strict430 and the new FINAL callback control pass;
+accepted private cuts are unchanged. Wider messages, targets, hooks and wrappers
+remain partial.
 [Attribute contract](docs/semantics/BUILTIN-ATTRIBUTES.md),
 [review](coverage/semantics/builtin-nodiscard-review.json).
 

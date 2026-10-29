@@ -49,14 +49,16 @@ frame gate. Other builtin attributes keep their existing implementations and
 remaining inventory obligations.
 
 Implementation is in module440 with the existing signature/class/method and
-call-entry stages. `nodiscard_sources.py` recovers the frozen 19 authored and
-seven independent originals plus the dedicated FINAL-callback join control; `nodiscard_protocol.py` checks four reached frames
-and release paths. The review ledger records measured unchanged gates separately
+call-entry stages. `nodiscard_sources.py` recovers 19 authored and eight
+independent originals; the eighth is the FINAL-callback join control.
+`nodiscard_protocol.py` checks four reached frames and release paths. The review ledger records measured unchanged gates separately
 from source shapes that were inspected but not executed on the old model, and
 keeps failed preparation/model packets at zero credit.
 
-Twenty-six originals agree with PHP; four source-reached fronts pass 297 checks,
-including 24 labeled derived guard assertions. Three distinct unchanged-model
+Twenty-six private originals agree with PHP. The additional FINAL-callback join
+control confirms API versus inner-source behavior on the actual output tail.
+Four source-reached fronts pass 297 checks, including 24 labeled derived guard
+assertions. Three distinct unchanged-model
 fences were measured, plus one exact ordinary control; the other 22 marked
 variants were inspected but not executed on that old cut. Native preparation,
 source/state cuts and retained failures are recorded in the
