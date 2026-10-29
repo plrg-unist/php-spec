@@ -576,12 +576,13 @@ def $autoload_unlinked_origin(AUTO_INTERFACE porigin preqbytes) = (porigin)
 def $autoload_unlinked_origin(AUTO_TRAIT porigin preqbytes) = (porigin)
 def $autoload_unlinked_origin(ptask) = eps -- otherwise
 dec $autoload_new_unlinked_call(pstate, pautoloadcall, ptbytes) : bool
+dec $autoload_interface_kind(pcnode?) : text?
+dec $autoload_trait_kind(pcnode?) : text?
 def $autoload_new_unlinked_call(S, pautoloadcall, ptbytes) = true
   -- if pautoloadcall.MODE = AUTO_LOOKUP
   -- if $autoload_unlinked_origin(pautoloadcall.RESUME) = (porigin)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-  -- if pclassdesc.KIND = "class"
-  -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $autoload_interface_kind($origin_node(S.SOURCES, porigin)) = (pclassdesc.KIND) \/ $autoload_trait_kind($origin_node(S.SOURCES, porigin)) = (pclassdesc.KIND)
   -- if $ptlc(pclassdesc.NAME) = $ptlc($autoload_lookup_name(ptbytes))
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
 def $autoload_new_unlinked_call(S, pautoloadcall, ptbytes) = false -- otherwise
@@ -1080,7 +1081,6 @@ def $autoload_snapshot(S, pconfigcall, pcalltarget) = $shutdown_snapshot(S, $err
 ;; lookup independently of the bounded source certificate, never as a fallback
 ;; missing-interface Error for a source shape not yet admitted here.
 dec $autoload_interface_missing(pstate, preqbytes*) : preqbytes?
-dec $autoload_interface_kind(pcnode?) : text?
 dec $autoload_interface_prefix_known(pstate, preqbytes*, preqbytes) : bool
 dec $autoload_interface_source(pstate, porigin, preqbytes) : bool
 dec $autoload_two_trait_plan(ptraitplan) : bool
@@ -1213,7 +1213,6 @@ def $task_nodes(AUTO_INTERFACE porigin preqbytes) = eps
 ;; Trait fetch runs after the parent and before interface lookup. Keep pending
 ;; detection separate from the closed source domain and reuse the pure ordered
 ;; fetch so an earlier wrong-kind trait still wins over later missing names.
-dec $autoload_trait_kind(pcnode?) : text?
 dec $autoload_trait_source(pstate, porigin, preqbytes) : bool
 
 def $autoload_trait_kind((NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)) = ("class")
