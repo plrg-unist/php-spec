@@ -1540,11 +1540,12 @@ def $wrapper_values(S, eps) = eps
 def $wrapper_values(S, NAMED_HOLE :: pnamedslot*) = PNULL :: $wrapper_values(S, pnamedslot*)
 def $wrapper_values(S, (NAMED_SENT poperand) :: pnamedslot*) = $variadic_operand_value(S, poperand) :: $wrapper_values(S, pnamedslot*)
 def $wrapper_trace(S, pcallcontext) = eps -- if pcallcontext.WRAPPER = eps
-def $wrapper_trace(S, pcallcontext) = [{FILE $call_sourcefile(S.FILES, porigin), LINE pcallcontext.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS ($trace_indexed_args(pvalue*, 0) ++ $trace_named_args(S, pnamedargs.NAMED)), HASARGS true}]
+def $wrapper_trace(S, pcallcontext) = [{FILE $call_sourcefile(S.FILES, porigin), LINE pcallcontext.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $sensitive_trace_arguments(S, pfunction, $trace_indexed_args(pvalue*, 0) ++ $trace_named_args(S, pnamedargs.NAMED)), HASARGS true}]
   -- if pcallcontext.WRAPPER = (pnamedargs)
   -- if ~$closure_call_target($context_target(pcallcontext))
   -- if pcallcontext.CALLSITE = (porigin)
   -- if pvalue* = $wrapper_values(S, pnamedargs.SLOTS)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
 def $wrapper_context_valid(S, pcallcontext) = true
   -- if ~$wrapper_site(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
   -- if ~$closure_call_target($context_target(pcallcontext))

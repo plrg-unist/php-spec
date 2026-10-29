@@ -42,6 +42,8 @@ def main():
                ROOT / 'spec/semantics/83-call-traces.watsup',
                ROOT / 'spec/semantics/105-named-arguments.watsup',
                ROOT / 'spec/semantics/108-call-unpack.watsup',
+               ROOT / 'spec/semantics/142-method-runtime.watsup',
+               ROOT / 'spec/semantics/379-sensitive-parameters.watsup',
                ROOT / 'spec/semantics/152-throwable-runtime.watsup',
                ROOT / 'spec/semantics/207-error-handler-runtime.watsup',
                ROOT / 'spec/semantics/222-exception-handlers.watsup',
