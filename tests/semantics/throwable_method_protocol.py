@@ -193,6 +193,14 @@ def checks(program, path, name):
         rows += raw('S_retarget', 1)
         return rows + finish('S_retarget_raw', name)
     if name == 'method-cycle-before-earlier-field':
+        rows += [
+            '$effective_method(S,porigin_class,$ptascii("__isset"),|S.CLASSES|) = (pmethoddesc_isset)',
+            'pmethoddesc_isset.FUNCTION.SIGNATURE.PARAMETERS = [psparam_isset]',
+            'psparam_isset.TYPE = eps',
+            '$ppmethod_isset_signature(pmethoddesc_isset.FUNCTION.SIGNATURE)',
+            '~$property_magic_method_source(S,pmethoddesc_isset,"__isset")',
+            '~$property_empty_isset_source(S,pmethoddesc_isset)',
+        ]
         rows += field('S', 'n_left', 'value_left', 'DIRECT (PINT 0)', 'value')
         rows += field('S', 'n_right', 'value_right', 'DIRECT (PINT 0)', 'value')
         rows += field('S', 'n_left', 'next_left', 'DIRECT (POBJECT n_left)', 'next')
