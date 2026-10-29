@@ -5959,6 +5959,15 @@ Thirty-six private source agreements and one current global-constant loader
 interaction retain separate cuts. The 263 original finite premises pass with
 seven typing bindings and eight repeated compaction setup premises; the split
 compaction groups use the existing strict SL runner at the unchanged120s cap.
+
+Fixed-name ordinary `new` of a class being linked now raises the missing-class
+Error without calling its loader again during an entered dependency callback.
+After failed linking unwinds, later construction can autoload it normally.
+The [reentrant lookup review](coverage/semantics/reentrant-unlinked-new-review.json)
+records two repaired author sources, one unchanged recursion control, an
+independent interface-loader source and 140 reached checks; dynamic-name `new`
+and wider reentrant histories remain partial.
+
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
 now loads a sole missing user interface before a parentless class or interface is
 linked and published. Two exact originals and 324 SL premises distinguish cached

@@ -1,0 +1,108 @@
+{
+  "status": "independently_reviewed_private",
+  "milestone": "Source117 fixed ordinary NEW during reentrant unlinked class autoload",
+  "scope": "Fixed-name ordinary NEW of a named source class while an entered dependency loader is linking that unpublished class. Parent dependency and interface dependency examples are validated; wider reentry remains partial.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "private_base": "b05b1ce8740a6d2d53859468f7bb20d328ed9ff5",
+  "module_count": 424,
+  "reviewed_cuts": {
+    "spec/semantics/30-storage.watsup": "1ea5d3fa857b495a83498e65cc9edcac9eb3ec17a73a38dfe799df24c2ee72d8",
+    "spec/semantics/184-class-constants.watsup": "d674ff449284e4c90d81d672bc6a112f1b8e76438e9e00f5affec3ef049f87b6",
+    "spec/semantics/277-autoload.watsup": "70670fbcbe8cf619d18b2acd927f20308864125aa5f239b935760001e37345f8"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json (SHA-256 9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94); each raw source report retains exact arguments, source/cwd identity and stream hashes.",
+  "behavior": [
+    "An authenticated entered AUTO_RESULT in a saved frame identifies the source class being linked through AUTO_PUBLISH, AUTO_TRAIT or AUTO_INTERFACE. Validation restores the real caller scope before checking the selected loader and source-backed unpublished class.",
+    "Only ordinary fixed-name construction uses the new pending predicate. It raises the ordinary missing-class Error without invoking that class loader while the link is active; dependency fetching retains its existing pending predicate.",
+    "After failed linking unwinds, the saved marker is absent and a later ordinary NEW autoloads the name normally. An earlier eval function remains callable."
+  ],
+  "accepted": {
+    "new_author_source_agreements": 2,
+    "new_independent_source_agreements": 1,
+    "unchanged_same_name_recursion_control": 1,
+    "strict_SL_modules": 424,
+    "new_reached_fronts": 2,
+    "new_reached_premises": [
+      67,
+      73
+    ],
+    "new_reached_raw_PhpStep_checks": [
+      1,
+      2
+    ],
+    "preservation_recursion_AL_assertions": 26,
+    "preservation_linked_constant_new_strict_SL_predicates": 19
+  },
+  "zero_credit": [
+    "The two repaired author originals and independent interface original completed normally with wrong output on the unchanged model; they were not Unsupported. The same-name recursion original was already exact.",
+    "The frozen author predictions for the two new cases incorrectly included C-LOADER output. Native raw streams remain the oracle; repaired candidate exact flags compare those unchanged bytes. The source wrapper exit alone indicates stable inputs, so agreement is based on each row, status and raw comparison.",
+    "The earlier source117-changed-v3 candidate retained both mismatches. Initial load gates v1/v2 and reached fixtures v1/v2 failed elaboration before evaluating their assertions. Diagnostic stages and previews add no source agreement."
+  ],
+  "engine_route": "Zend/zend_execute_API.c::zend_lookup_class_ex first checks the class table. An unlinked CE without ALLOW_UNLINKED or applicable ALLOW_NEARLY_LINKED flags returns NULL before the autoload path. zend_do_link_class in Zend/zend_inheritance.c exposes the dependency-link interval; ordinary ZEND_NEW in Zend/zend_vm_def.h reports the missing class.",
+  "independent_review": "Source117 resume reviewer examined semantic guards, restored caller scope, source/registration authority, unwind/retry, explicit lookup separation, constructed negatives, source recorder exact flags and actual-tail overlap. The independent interface source was frozen separately and changes from a normal mismatch to exact normal.",
+  "remaining": "Dynamic-name NEW, other declaration kinds, broader callback and reentrant dependency histories remain partial. This is no full-core or equivalence claim and introduces no intentional engine divergence.",
+  "artifacts": {
+    "author_freeze": {
+      "path": "raw/source117-discovery/freeze.json",
+      "sha256": "0c822798c38d061177253e0d0b7ed3318a6c667530547eca14ae65a58585cc00"
+    },
+    "author_native": {
+      "path": "raw/source117-discovery/native-report.json",
+      "sha256": "309df0a175a43c2eef18eafe729954074df33a84057bed3d437a1eb3ef98cdd7"
+    },
+    "author_unchanged": {
+      "path": "raw/source117-discovery/baseline-report.json",
+      "sha256": "250f0426c0e5881c2e5a76e6d8a620b4eb429f9e20947dc3f39cc605dd523300"
+    },
+    "author_changed": {
+      "path": "raw/source117-discovery/changed-report.json",
+      "sha256": "b6821c0c21d7a4c007b456b35430ee3e54a8872df0101edc5e5334a608c466e0"
+    },
+    "independent_freeze": {
+      "path": "raw/source117-reviewer-interface-v1/freeze.json",
+      "sha256": "658771ef9030559a5b4bb590fddb18c0ef12134dbef85ac2a283c95a1f0ee078"
+    },
+    "independent_native": {
+      "path": "raw/source117-reviewer-interface-v1/native-report.json",
+      "sha256": "85811cbc44b362fd81aacb3bc93e9f5085d37ab50759fe7ef364ab3965313c57"
+    },
+    "independent_unchanged": {
+      "path": "raw/source117-reviewer-interface-v1/baseline-v2-report.json",
+      "sha256": "dee0f9113de14fcce20ee79b8dc338e387236c0c8e175f4f385dc4ed41690c5e"
+    },
+    "independent_changed": {
+      "path": "raw/source117-reviewer-interface-v1/changed-report.json",
+      "sha256": "fbe32116daa2b27464b851b7e12d7198be141bdda2f41de2c3cda5e22403edaa"
+    },
+    "strict_load": {
+      "path": "raw/source117-load-v4/load-report.json",
+      "sha256": "dec30bf2194227d09f5981c07c877063e19e9dcbaf07698e9e428a1b62970332"
+    },
+    "reached_fixtures": {
+      "path": "raw/source117-state-v3/fixtures-report.json",
+      "sha256": "4f099946738b6d7ed9d34630aed68f07e3dd26a81aad12d3a4ef275e55c09b90"
+    },
+    "reached_checks": {
+      "path": "raw/source117-state-v3/check-report.json",
+      "sha256": "039e0627805eeb6cbb454c5851f54237dca1a21181e3b3d87827532ba6e4394b"
+    },
+    "preservation": {
+      "path": "raw/source117-preservation/report.json",
+      "sha256": "2fd3b0a4612ca84f6682b15d1f03fd2ce8542f6fb2ebbed3a63520bca958b32a"
+    }
+  },
+  "recovery": {
+    "root": "../php-spec-evidence-archive/source117-reentrant-unlinked-new",
+    "manifest_sha256": "000312a9eee7025671fa7a8f236860df8eb7285dcbd9a0c31957a7cc99be108d",
+    "tested_fixture_script_sha256": "0a457115da3f3eca384330acc1f2d3c23c5550b533f167bcd75b7897e600d254",
+    "maintained_fixture_script_sha256": "cc78d9f47811e53abde842d9791147f78414283bbdf24e9071f713115355087f",
+    "fixture_interface_change": "The maintained script only replaces the private-layout source constant with required --sources plumbing. PREFIX and assertions are byte-identical to the tested script; accepted semantic results retain their original hash and are not renewed.",
+    "replay": "Recover raw/source117-discovery locally, then run tests/semantics/reentrant_unlinked_new_protocol.py --phase fixtures --sources DIR --output NEW_DIR followed by --phase check with the same paths. Tested inputs and original failing outputs are preserved; old commands retain historical absolute paths."
+  },
+  "implementation_commit": "396d666a2"
+}
