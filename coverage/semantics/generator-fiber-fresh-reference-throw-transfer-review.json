@@ -1,0 +1,77 @@
+{
+  "milestone": "I71 fresh ordinary named by-reference Generator::throw Fiber transfer",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local PHP SHA256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json, LC_ALL=C, TZ=UTC",
+  "parent": "d253163ffef3118d8396a505e5238f68c92d63f5",
+  "implementation_commit": "22fedb5565f9a3877efb6695545cd99e7e318ef5",
+  "scope": "Fresh ordinary named FUNCTION Generator::throw now admits BYREF declarations as well as BYVAL. Single valid Throwable, ADVANCE+FIRST, empty VALUE/REFCELL, absent CLOSURE, matching origin target/empty INSTANCE and existing full-state validators are retained. Direct parameter aliases preserve the old cell through external source-name rebinding; the API returns a snapshot while current follows later writes. Registered dynamic function selection keeps its chosen Generator after selector replacement; a copied BYVAL formal starts as an ordinary local cell and its first BYREF yield promotes that cell. Normal and supplied throws preserve local/cache/Throwable ownership and both Previous orders.",
+  "engine_paths": [
+    "vendor/php-src/Zend/zend_generators.c::ZEND_METHOD(Generator, throw), zend_generator_ensure_initialized, zend_generator_throw_exception, zend_generator_resume",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_GENERATOR_CREATE, ZEND_YIELD by-reference CV/reference path",
+    "vendor/php-src/Zend/zend_fibers.c::ZEND_METHOD(Fiber, throw), zend_fiber_resume_internal"
+  ],
+  "implementation": [
+    "spec/semantics/281-fibers.watsup"
+  ],
+  "source_catalog": "tests/semantics/generator_fiber_fresh_reference_throw_transfer_cases.json",
+  "sources_sha256": {
+    "i71-fresh-named-reference-parameter-catch": "524d23b9f9e58e78a0102b0816aa570106565a271bae2be0ef6a760abcfd15b5",
+    "i71-fresh-dynamic-named-local-copy-finally": "09b7e0d36e0c7122d7dcef1f18877d18bede4db84b87f55fcb234911e78114ef",
+    "i71-fresh-named-local-reference-abrupt": "3bf5c244c5b33a93d750cb538cd33ca341c02bda0e1de4c500fa6d5f6ed3b3cc",
+    "i71-unchanged-cached-named-byref-control": "50f4c93d8a601c6d09694d30a808eb446e4f660a50560e581ed00f29ab70a54d",
+    "i71-unchanged-fresh-named-byval-control": "5dedeaf76d3548cc6d6deb734918bdfcbf4b68ddc33dca02ecf2964d06651c06",
+    "i71-fresh-named-selected-cell-abort-independent": "cd12e15b61bfdc4b0450fb0b818a399649789b3651da1330604c4e607aa1ed46"
+  },
+  "validation": {
+    "native_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-reference-throw-71/source-packet/native-first/report.json",
+      "sha256": "a782a9e6f1c7c7d498c188d5bd188a70b3f231fb7750da6f3798c560983b1c86",
+      "result": "Three authored originals plus byte-identical I62 cached named BYREF/I61 fresh named BYVAL controls: pinned native exit0/no timeout/empty stderr/stable HEAD+inputs; CPU 1."
+    },
+    "unchanged_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-reference-throw-71/source-packet/unchanged-baseline/report.json",
+      "sha256": "fee9d8a6bf2f4ed0b930b6923299348e9bf3a87506d14df0196996d835e6d79d",
+      "result": "All three authored originals checked Unsupported at the intended shared Fiber transfer on parent d253; both controls exact NORMAL. No timeout, stable HEAD/inputs; CPU 1."
+    },
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-reference-throw-71/strict-private/report.json",
+      "sha256": "bb4085235fac62e6bfbd351d6be7dfc32109627d62ac1249a5b210214f870476",
+      "result": "424 ordered modules pass SL elaboration/algorithmic checking/structuring at 22fedb556; exit0/true/no timeout/empty stderr/stable HEAD+inputs; CPU 1."
+    },
+    "affected_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-reference-throw-71/raw/generator-fiber-fresh-reference-throw-transfer-source-v8a5oryj/report.json",
+      "sha256": "b7fd49a773305643c92625a89235d709bfd60b9faf6c238f638d59801f7afde4",
+      "result": "Three authored originals exactly NORMAL at 22fedb556 using retained native source paths/bytes, no timeout/empty stderr/stable HEAD+inputs; CPU 1. No control/native replay."
+    },
+    "reached_states": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-reference-throw-71/raw/fiber-state-review-o04y7dfd/report.json",
+      "sha256": "639f185188f8f6d37bbf7bf25029733f1fef553a54d6545c2f73170c475d7b1c",
+      "result": "Three new source-reached fronts at 22fedb556 all true/exit0/no timeout/empty stderr/stable HEAD+author inputs: parameter/full-VM authentication 131 custom/136 reported, dynamic local 109/114, closed sole cell 73/78; total 313 custom/328 reported; CPU 1."
+    },
+    "independent_native": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-reference-throw-71-review/independent/native-first-report.json",
+      "sha256": "ec8c9ef75c1ba0bc34a3e129ea97a314c64817a1a368c1efd9434e7c5f5bcae1",
+      "result": "Frozen 2011-byte alias/formal-unset abort source at d253; exact 110-byte native stream, exit0/no timeout/empty stderr/stable HEAD + 4 inputs; CPU 1."
+    },
+    "independent_model": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-reference-throw-71-review/independent/model-review-report.json",
+      "sha256": "c05768e2531d8903883268bc1f6942ea2c8ecda7a78cd8a51778eddf170b0106",
+      "result": "Same frozen abort source at 22fed; accepted checked NORMAL with exact decoded native streams, exit0/no timeout/empty stderr/stable HEAD + 13 inputs; CPU 1."
+    }
+  },
+  "reached_total": {
+    "custom_checks": 313,
+    "reported_assertions": 328,
+    "fronts": 3
+  },
+  "authentication": "Named fresh/callee/body helpers establish structural shape, not complete source authority. Original generator_record_valid, call_current_valid and fiber_vm_valid pass on the reached source. Forged NAME, RECEIVER and CALLSITE are rejected by current/full saved-VM validation; a matched rewrite to the ordinary nongenerator caller fails generator_record_valid. Resumer line mismatch and duplicate saved IDs fail body admission. No additional fixture-specific runtime guard is introduced.",
+  "preservation": "I62 cached-reference control remains outside the fresh empty-cache route. I61 fresh BYVAL named control already satisfied the removed classification predicate, so its truth value is unchanged. Both exact parent outcomes are retained without replay. I69/I70 method routes and their evidence are unchanged; no old tests were edited. The independent sixth row was appended byte-identically after direct validation, with no wrapper replay.",
+  "independent_review": "Peer byte-CLEARed authored originals, static-CLEARed the one-line change and three fronts, independently inspected all source/state outcomes and full-VM guard evidence, and froze/validated the alias/formal-unset counterexample. Final metadata, catalog and hash bindings were independently CLEARed without execution.",
+  "remaining": "Static/scoped method targets, bound Closures, helper/delegated resumers, broader argument/reference constraints, collection and wider lifecycle behavior remain partial. Full PHP core and BOLA freedom are not established.",
+  "evidence_directory": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/generator-fiber-fresh-reference-throw-71",
+    "manifest": "manifest.json",
+    "manifest_sha256": "7f67cfbbf9fab74ae10cc785128445946a9cc477e43ab36eddda70c4a5089101",
+    "format": "Seven private reports and associated streams outside Git; separate peer independent paths are in the manifest."
+  },
+  "recovery": "Source/state raw directories are under raw/ and retain original private-worktree paths. Peer independent source/streams remain beside its report paths listed here."
+}

@@ -134,6 +134,11 @@ Commit concise reports and manifests with hashes and locations. Preserve raw
 failures and interrupted runs externally; do not force-add their archives.
 The coverage compression patterns in `.gitignore` guard against reintroduction.
 
+I71 fresh named by-reference Generator THROW evidence is retained uncompressed
+under `../php-spec-evidence-archive/generator-fiber-fresh-reference-throw-71/`.
+Its `manifest.json` identifies seven private reports and the separate peer
+alias/formal-unset originals and streams; I69/I70 cuts are not renewed.
+
 I70 fresh by-value method Generator THROW evidence is retained uncompressed under
 `../php-spec-evidence-archive/generator-fiber-fresh-method-throw-70/`.
 Its `manifest.json` identifies seven raw private reports, including the separate

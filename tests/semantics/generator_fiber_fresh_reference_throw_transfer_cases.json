@@ -43,5 +43,14 @@
     "native_exit": 0,
     "native_stdout": "START|CALL|ENTER|1|PARK|1|1|RESUME|FIRST|CAUGHT|1|VALUE|1|1|FIBER|1|AFTER-YIELD|FIN|CLOSED|1|1|E",
     "native_stderr": ""
+  },
+  {
+    "id": "i71-fresh-named-selected-cell-abort-independent",
+    "purpose": "Independent named BYREF pre-yield abort: alias survives formal-name unset, caller name rebinding and old-cell object retarget; uncached Next retires before catch and original Given gains supplied stop as Previous.",
+    "source": "<?php\nclass First71Review {\n    public function __destruct() { echo 'FIRST-DROP|'; }\n}\nclass Next71Review {\n    public function __destruct() { echo 'NEXT-DROP|'; }\n}\nfunction &Work71Review(&$item) {\n    $selected =& $item;\n    unset($item);\n    try {\n        echo 'ENTER|';\n        Fiber::suspend('before71');\n        echo 'BAD-RESUME|';\n        yield $selected;\n    } finally {\n        echo 'FIN|', (int) ($selected instanceof Next71Review), '|';\n    }\n}\nfunction Given71Review() {\n    global $weakGiven;\n    $value = new Exception('given71');\n    $weakGiven = WeakReference::create($value);\n    return $value;\n}\nfunction Run71Review() {\n    global $g, $stop, $weakGiven, $weakNext;\n    echo 'CALL|';\n    try {\n        $g->throw(Given71Review());\n        echo 'BAD-RETURN|';\n    } catch (Throwable $outside) {\n        echo 'OUTSIDE|', (int) ($outside === $weakGiven->get()), '|',\n             (int) ($outside->getPrevious() === $stop), '|',\n             (int) ($outside === $stop), '|',\n             (int) ($weakNext->get() === null), '|';\n    }\n    return 'fiber71';\n}\n$slot = new First71Review();\n$weakFirst = WeakReference::create($slot);\n$old =& $slot;\n$g = Work71Review($slot);\n$stop = new RuntimeException('stop71');\n$f = new Fiber('Run71Review');\necho 'START|', (int) ($f->start() === 'before71'), '|';\n$replacement = 9;\n$slot =& $replacement;\n$old = new Next71Review();\n$weakNext = WeakReference::create($old);\nunset($old);\necho 'PARK|', (int) $f->isSuspended(), '|',\n     (int) ($slot === 9), '|',\n     (int) ($weakFirst->get() === null), '|',\n     (int) ($weakNext->get() !== null), '|',\n     (int) ($weakGiven->get() !== null), '|';\necho 'INJECT|', (int) ($f->throw($stop) === null), '|';\necho 'FIBER|', (int) ($f->getReturn() === 'fiber71'), '|',\n     (int) !$g->valid(), '|';\necho 'CLOSED|', (int) ($weakGiven->get() === null), '|',\n     (int) ($weakNext->get() === null), '|',\n     (int) ($slot === 9), '|';\nunset($g, $f, $stop, $slot, $replacement, $weakFirst, $weakNext, $weakGiven);\necho 'E';\n",
+    "source_sha256": "cd12e15b61bfdc4b0450fb0b818a399649789b3651da1330604c4e607aa1ed46",
+    "native_exit": 0,
+    "native_stdout": "START|CALL|ENTER|1|FIRST-DROP|PARK|1|1|1|1|1|INJECT|FIN|1|NEXT-DROP|OUTSIDE|1|1|0|1|1|FIBER|1|1|CLOSED|1|1|1|E",
+    "native_stderr": ""
   }
 ]
