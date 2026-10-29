@@ -86,6 +86,32 @@ def $strict_seek(S,n_unit,ptbytes_expected,n) = $strict_seek($drive_steps($enumr
   -- if ~$strict_front(S,n_unit,ptbytes_expected)
   -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET \/ $throwable_pending(S.COMPLETION)
 ''',
+    'owned-stringable-multiline': r'''
+dec $ostr_front(pstate,nat) : bool
+def $ostr_front(S,0) = true
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_ENUM porigin ptbytes "from"
+  -- if pconfigcall.OWNER = (n_owner)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+def $ostr_front(S,1) = true
+  -- if S.TODO = (ENUM_FROM_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+def $ostr_front(S,2) = true
+  -- if S.TODO = (CLASS_CONST_UPDATE porigin z) :: ptask_tail*
+  -- if $enumr_output(S.EVENTS) = $ptascii("READY|CAST|DROP|")
+def $ostr_front(S,3) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $stringify_context_kind(S,pcallcontext)
+def $ostr_front(S,n_phase) = false -- otherwise
+dec $ostr_seek(pstate,nat,nat) : pstate
+def $ostr_seek(S,n_phase,0) = S
+def $ostr_seek(S,n_phase,n) = S
+  -- if $(n > 0)
+  -- if $ostr_front(S,n_phase) \/ (S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET)
+def $ostr_seek(S,n_phase,n) = $ostr_seek($drive_steps($enumr_running(S),1),n_phase,$nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if ~$ostr_front(S,n_phase)
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+''',
 }
 
 
@@ -99,6 +125,7 @@ def assertions(case_id, main_fixture, source_path, expected_bytes,
         return _strict(main_fixture, source_path, expected_bytes, file_snapshot, factory_fixture)
     return {
         'lazy-table-retired-owners': _table,
+        'owned-stringable-multiline': _stringable,
         'ordinary-case-alias': _alias,
         'inherited-deferred-alias': _inherited,
     }[case_id](main_fixture, source_path, expected_bytes)
@@ -425,4 +452,87 @@ def _strict(main_fixture, source_path, expected_bytes, file_snapshot, factory_fi
         '$class_constant_state_valid(S_prefix)',
         '$class_constant_history_valid(S_prefix)',
         '$enumr_output(S_prefix.EVENTS) = $base64("VzpPbmV8UzpSZXZpZXdDYWxsYWJsZUVudW06OmZyb20oKTogQXJndW1lbnQgIzEgKCR2YWx1ZSkgbXVzdCBiZSBvZiB0eXBlIHN0cmluZywgaW50IGdpdmVufA==")',
+    ]
+
+
+def _stringable(main_fixture, source_path, expected_bytes):
+    assert expected_bytes == b'READY|CAST|DROP|V:Only|'
+    checks = [
+        'S_initial = $php_file_run(' + main_fixture + ',0,' + term(str(source_path).encode()) + ',' + term(str(source_path.parent).encode()) + ')',
+        'S_initial.COMPLETION = BUDGET',
+        'S_config_found = $ostr_seek(S_initial,0,3000)',
+        'S_config_found.COMPLETION = NORMAL \\/ S_config_found.COMPLETION = BUDGET',
+        'S_config = $enumr_running(S_config_found)',
+        'S_config.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*',
+        'pconfigcall.KIND = INTRINSIC_ENUM porigin_enum ($ptascii("ReviewOwnedTextLookup")) "from"',
+        'pconfigcall.OWNER = (n_closure)',
+        'pconfigcall.SELECTION = (n_nonce)',
+        'pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_text))]',
+        '$config_string_source(S_config,pconfigcall) = ((porigin_child,z_child))',
+        'z_call = pconfigcall.LINE',
+        'S_dead = S_config[.ALLOCATIONS = $destruction_node_delete(S_config.ALLOCATIONS,HOBJECT n_text)]',
+        'S_dead_owner = S_config[.ALLOCATIONS = $destruction_node_delete(S_config.ALLOCATIONS,HOBJECT n_closure)]',
+        'n_absent = |S_config.SELECTEDCALLS|',
+        'S_cast_found = $ostr_seek(S_config,3,3000)',
+        'S_cast_found.COMPLETION = NORMAL \\/ S_cast_found.COMPLETION = BUDGET',
+        'S_cast = $enumr_running(S_cast_found)',
+        'S_cast.CURRENT = (pcallcontext)',
+        'pcallcontext.RECEIVER = (n_text)',
+        'S_result_found = $ostr_seek(S_cast,1,3000)',
+        'S_result_found.COMPLETION = NORMAL \\/ S_result_found.COMPLETION = BUDGET',
+        'S_result = $enumr_running(S_result_found)',
+        'S_result.TODO = (ENUM_FROM_STRING_RESULT pconfigcall n_text porigin_child z_child z_call) :: ptask_result*',
+        'S_result.RESULT = KNOWN pvalue_text',
+        '$string_bytes(pvalue_text) = ($ptascii("1"))',
+        'S_zero = $drive_steps(S_result,0)',
+        'S_retire_found = $drive_steps(S_result,1)',
+        'S_retire_found.COMPLETION = BUDGET',
+        'S_retire = $enumr_running(S_retire_found)',
+        'S_queue_found = $ostr_seek(S_retire,2,3000)',
+        'S_queue_found.COMPLETION = NORMAL \\/ S_queue_found.COMPLETION = BUDGET',
+        'S_queue = $enumr_running(S_queue_found)',
+        '$enum_from_future(S_queue.TODO) = (pconfigcall_parsed)',
+        'pconfigcall_parsed = pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue_text)]]',
+        'S_finish = $drive_steps(S_queue,5000)',
+        'z_child =/= z_call',
+    ]
+    return checks + [
+        '$call_descriptors_valid(S_config)',
+        '$config_selected_valid(S_config,pconfigcall)',
+        '$enum_string_site_valid(S_config,pconfigcall,n_text,porigin_child,z_child,z_call)',
+        '~$enum_string_site_valid(S_config,pconfigcall,n_text,pconfigcall.SITE,z_child,z_call)',
+        '~$enum_string_site_valid(S_config,pconfigcall,n_text,porigin_child,$(z_child + 1),z_call)',
+        '~$enum_string_site_valid(S_config,pconfigcall,n_text,porigin_child,z_child,$(z_call + 1))',
+        '~$enum_string_site_valid(S_config,pconfigcall,n_closure,porigin_child,z_child,z_call)',
+        '~$enum_string_site_valid(S_config,pconfigcall[.SELECTION = (n_absent)],n_text,porigin_child,z_child,z_call)',
+        '~$enum_string_site_valid(S_config,pconfigcall[.KIND = INTRINSIC_ENUM porigin_enum ($ptascii("ReviewOwnedTextLookup")) "tryFrom"],n_text,porigin_child,z_child,z_call)',
+        '~$enum_string_site_valid(S_dead,pconfigcall,n_text,porigin_child,z_child,z_call)',
+        '~$enum_string_site_valid(S_dead_owner,pconfigcall,n_text,porigin_child,z_child,z_call)',
+        '$call_descriptors_valid(S_cast)',
+        '$call_frames_valid(S_cast,S_cast.FRAMES)',
+        '$call_current_valid(S_cast)',
+        '(HOBJECT n_text) <- S_cast.ALLOCATIONS',
+        '(HOBJECT n_closure) <- S_cast.ALLOCATIONS',
+        '$call_descriptors_valid(S_result)',
+        '$enum_string_site_valid(S_result,pconfigcall,n_text,porigin_child,z_child,z_call)',
+        '(HOBJECT n_text) <- S_result.ALLOCATIONS',
+        '(HOBJECT n_closure) <- S_result.ALLOCATIONS',
+        '(HOBJECT n_text) <- $task_nodes(ENUM_FROM_STRING_RESULT pconfigcall n_text porigin_child z_child z_call)',
+        '(HOBJECT n_closure) <- $task_nodes(ENUM_FROM_STRING_RESULT pconfigcall n_text porigin_child z_child z_call)',
+        '$method_string(pvalue_text)',
+        '$enumr_output(S_result.EVENTS) = $ptascii("READY|CAST|")',
+        'S_result.CLASSCONSTANTCACHE = eps',
+        'S_zero = S_result[.COMPLETION = BUDGET]',
+        '$enumr_running(S_zero) = S_result',
+        '$call_descriptors_valid(S_queue)',
+        '~((HOBJECT n_text) <- S_queue.ALLOCATIONS)',
+        '(HOBJECT n_closure) <- S_queue.ALLOCATIONS',
+        'S_queue.CLASSCONSTANTCACHE = eps',
+        'pconfigcall_parsed.SELECTION = (n_nonce)',
+        '$enum_from_fetch_valid(S_queue,pconfigcall_parsed,pvalue_text)',
+        '$enumr_output(S_queue.EVENTS) = $ptascii("READY|CAST|DROP|")',
+        'S_finish.COMPLETION = NORMAL',
+        '$enumr_output(S_finish.EVENTS) = $ptascii("READY|CAST|DROP|V:Only|")',
+        '$call_descriptors_valid(S_finish)',
+        '$class_constant_history_valid(S_finish)',
     ]

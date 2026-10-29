@@ -28,7 +28,7 @@ parser.add_argument('--case', action='append', required=True, choices=(
     'named-class-computed-constant', 'literal-slash-missing-diagnostics',
     'compiler-folded-static-keyword-scopes', 'compiled-class-target-negative',
     'fcc-first-use', 'same-site-retired-owners', 'lazy-table-retired-owners',
-    'ordinary-case-alias', 'inherited-deferred-alias', 'callable-caller-strictness-prefix'))
+    'ordinary-case-alias', 'inherited-deferred-alias', 'callable-caller-strictness-prefix', 'owned-stringable-multiline'))
 args = parser.parse_args()
 SOURCES = args.sources.resolve()
 OUT = args.output.resolve()
@@ -59,6 +59,8 @@ def folder(name):
         name = 'static-loader-cv-order'
     if name == 'compiled-class-target-negative':
         name = 'literal-and-folded-class-method-order'
+    if name == 'owned-stringable-multiline':
+        name = 'owned-stringable'
     if name == 'callable-caller-strictness-prefix':
         name = 'callable-caller-strictness'
     return SOURCES / name
@@ -122,7 +124,7 @@ try:
         if name in ('fcc-first-use', 'same-site-retired-owners'):
             review = callable_review
         if name in ('lazy-table-retired-owners', 'ordinary-case-alias',
-                    'inherited-deferred-alias', 'callable-caller-strictness-prefix'):
+                    'inherited-deferred-alias', 'callable-caller-strictness-prefix', 'owned-stringable-multiline'):
             review = lookup_review
         source = folder(name) / 'main.php'
         freeze = json.loads(receipt(name, 'freeze.json').read_text())
