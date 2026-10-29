@@ -459,7 +459,7 @@ compare inside those builtin chains through the existing paired graph bound.
 Reached table materialization and current writes preserve cache, trace, previous
 and severity order. Seven new originals (five author, two independent), two
 previously Unsupported originals and three unchanged controls agree exactly;
-four wider controls remain Unsupported. Strict compilation of 424 modules and
+four wider controls were Unsupported at that cut. Strict compilation of 424 modules and
 four reached fixtures with 426 premises/eleven raw steps pass, including real
 and derived cycle refusal.
 An eager Boolean guard draft was corrected during independent source review
@@ -468,6 +468,24 @@ before cyclic validation; its strict/one-valid-source passes retain their old cu
 The additional graph mode retains its own 16-node path and paired class/position
 limits. Wider callbacks, graph cycles, materialized Throwables and pending states
 remain partial.
+
+Captured traces in those builtin previous chains now authenticate visited nodes
+instead of rejecting every later unsupported payload. Identity, ordinary class,
+count, key and earlier-leaf decisions skip later cyclic/callback values while
+preserving physical cache, trace, previous and severity order. Current ALIAS
+values still compare, including a shared NaN; reached table effects thread into
+normal equality only. The old fully authenticated modes retain their bounds;
+the new walk caps its local left array/object/cell measure at 16 and preserves
+active-left recursion before count. Canonical previous-path admission is unchanged.
+Thirteen new normal originals (eleven author, two independent), one promoted
+class-mismatch control and two unchanged normal controls agree exactly with PHP.
+Three retained boundaries and two independent reached-cycle controls are explicit
+Unsupported, with zero agreement credit. Strict compilation of 424 modules and
+six reached fixtures/385 premises/eight raw steps pass across retained cuts.
+The failed acyclic-right fixture premise retains zero affected credit; only that
+row was corrected and rerun. Reached cycles/callbacks, wider class layouts,
+materialized Throwables and pending states remain partial.
+[Visited-trace review](coverage/semantics/throwable-trace-visited-comparison-review.json).
 
 Fresh, unheld user Iterators returned by a borrowed `IteratorAggregate` getter
 now enter CONFIG unpack with DATA as their sole owner. Two original normal and
@@ -677,7 +695,7 @@ remain partial.
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
