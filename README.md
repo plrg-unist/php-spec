@@ -4385,6 +4385,13 @@ hooks, readonly state and wider layouts/lifetimes retain their limits.
 [Method-image review](coverage/semantics/throwable-trace-methods-comparison-review.json).
 [Interface-image review](coverage/semantics/throwable-trace-interfaces-comparison-review.json).
 [Inherited-image review](coverage/semantics/throwable-trace-inheritance-comparison-review.json).
+Empty ordinary layouts also compare through their real storage route: two inline
+objects return zero before the object recursion guard, while actual caches keep
+table identity/count/key/value order. Empty foreach produces a real table; cast
+views and clone sharing preserve COW and last-owner retirement. An effective
+clone callback starts its empty copy without a cache. Existing class, property,
+callback and lifetime limits remain explicit.
+[Empty-image review](coverage/semantics/throwable-trace-empty-layout-comparison-review.json).
 Builtin `#[NoDiscard]` now validates bounded declarations and warns on unused
 ordinary source calls after sends and named defaults, before reception or body.
 Handlers preserve selected arguments, references, receiver ownership and VM
