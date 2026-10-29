@@ -94,18 +94,19 @@ their original inputs. At that cut, count-ambiguous callbacks, WeakMap callbacks
 residual tags, workers, hooks, reentry and active contexts remained partial.
 [GC05 review](coverage/semantics/gc-materialized-callback-review.json).
 
-CLASS151 preserves anonymous class-key history after parser-rejected eval and
-opened-file units. Actual failed-source/site records and an immediate rejected
-exit authenticate zero class-key cost; later accepted units keep their source-ID
-holes and genuine counters. Five original observations agree and 261 reached
-checks pass across actual file rejection/once hits, malformed-history refusal and
-later publication/retry causes. Failed once parses remain retained once hits.
-Actual-tail joined strict431 passes; private source/state cuts retain their original
-identities. Partial/open/reentrant compilation and terminal body/default fatals
-remain separate, with body/argument and held bounds unchanged.
-[Rejected-source review](coverage/semantics/anonymous-rejected-sources-review.json).
-The prior [mixed-kind review](coverage/semantics/anonymous-trait-enum-review.json)
-retains CLASS150 source7/state223 at their original cuts.
+CLASS152 removes the two-formal/send bound for admitted anonymous constructors.
+Finite direct positional/named sends and public unpromoted by-value signatures
+use ordinary type/default compilation and binding, including inherited calls and
+named-hole completion before typed reception. Full class identities survive
+argument-TypeError whole-name formatting and missing-arity class/member formatting.
+Six originals agree (five normal, one compiler rejection), and 212 conditions pass
+across authored62 and independent150 reached groups. Corrected private strict431
+passes; all cuts retain their actual revisions. The original diagnostic mismatch
+and carrier-fixture refusal retain zero credit. Reference/variadic/promoted,
+nonpublic, unpacked and wider body/factory/lifetime contexts remain partial.
+[Finite-constructor review](coverage/semantics/anonymous-constructor-arity-review.json).
+The prior [rejected-source review](coverage/semantics/anonymous-rejected-sources-review.json)
+retains CLASS151 source5/state261 and zero-cost parser-rejection history at its own cuts.
 
 GC03's quiet WeakMap registration/proxy-count behavior and its separate tested
 cuts remain in the [GC03 review](coverage/semantics/gc-registration-order-review.json).
@@ -173,7 +174,6 @@ and reentrant/abrupt deactivation remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS152 | Ordinary anonymous-constructor binding beyond the two-argument/formal bound; native-first preparation accepted. |
 | COMP156 | Linked ordinary interface images; native-first packet accepted, state preparation. |
 | ATTR04 | Selected exception-handler Deprecated API entry. |
 | I80 | Captured ordinary-method Generator factories. |

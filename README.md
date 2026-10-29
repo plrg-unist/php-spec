@@ -4400,11 +4400,14 @@ untyped constructors now initialize defaults before the body, ignore automatic
 return values and preserve shared Throwable identity through ordinary unwind.
 [Four further originals](coverage/semantics/anonymous-constructors-review.json)
 also check explicit calls, factory effects and constructor `finally` blocks.
-One or two direct positional/named anonymous `new` arguments now use ordinary
-constructor binding, including required untyped or `int` formals; constructorless
-classes evaluate positional arguments and ignore their values. [The argument
+Finite direct positional/named anonymous `new` arguments now use ordinary
+constructor signatures and binding, including supported parameter types and
+defaults; constructorless classes evaluate positional arguments and ignore their values. [The argument
 review](coverage/semantics/anonymous-constructor-arguments-review.json) records
-seven original source agreements, an independent coercion case and reached tasks.
+seven original source agreements, an independent coercion case and reached tasks
+at its earlier cut. [Finite constructor arity](coverage/semantics/anonymous-constructor-arity-review.json)
+extends root and successful include/eval sites, including inherited calls,
+named-hole reception retry and eager default diagnostics.
 Unit0 anonymous classes may also extend an ordinary Base.
 Inherited or overridden constructors see Base property defaults; inherited
 methods preserve lexical and called scopes, and private Base slots remain
@@ -4441,7 +4444,7 @@ imports, frozen source-entry parent bindings and compiler-derived request counte
 Ordinary loader callbacks preserve retained loads, retry and unit-specific causes.
 [Dynamic dependency review](coverage/semantics/anonymous-dynamic-dependencies-review.json).
 Later units also support returned/nested/call-argument sites and existing named or
-static Closure factories, with up to two ordinary positional/named constructor
+static Closure factories, with finite direct positional/named constructor
 arguments. Compiler-skipped RHS sites consume no key; compiled unvisited sites do.
 [Placement review](coverage/semantics/anonymous-dynamic-placements-review.json).
 Anonymous sites may share successful units with ordinary traits and enums.

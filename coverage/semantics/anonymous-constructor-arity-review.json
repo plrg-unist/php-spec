@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous.finite-constructor-signatures",
+  "status": "partial",
+  "scope": "Finite direct positional/named anonymous constructor sends and public unpromoted by-value formals share ordinary signature/default/type/binding rules in admitted root and successful include/eval contexts. Surplus positional arguments, inherited selection, named holes, type-error retry, eager invalid defaults and missing-required errors retain ordinary behavior. Reference/variadic/promoted/nonpublic, unpacked and wider contexts remain partial.",
+  "engine_routes": [
+    "Zend/zend_compile.c::zend_compile_new compiles the anonymous declaration before zend_compile_call_common; ordinary parameter/default compilation has no two-formal/send cap.",
+    "Zend/zend_vm_def.h::ZEND_NEW selects the constructor or dummy pass call before sends. Zend/zend_execute.c::zend_handle_named_arg retains provided-slot order and holes.",
+    "Zend/zend_execute.c::zend_verify_arg_error -> Zend/zend_API.c::zend_argument_error_variadic formats one whole callable C string; get_function_or_method_name constructs the full length-aware class::member first, so an anonymous-name NUL precedes the member.",
+    "Zend/zend_execute.c::zend_missing_arg_error formats class, separator and member separately and selects the declaration owner, preserving ::__construct after anonymous-class C-string truncation. Return and Closure views remain separate."
+  ],
+  "design": "383 removes only the two-argument/site checks and recursively admits finite unpromoted by-value parameter shapes, leaving types/defaults to141/17 and execution to ordinary constructor/no-ctor105/95/142 machinery.95 truncates only the argument-TypeError whole-name consumer.91 delegates missing-arity display to an exact selected METHOD_TARGET constructor override in142, whose owner class and member are formatted separately. Descriptor and ::class bytes stay complete; no new binder or native semantic fallback.",
+  "native_and_baseline": {
+    "report": ".tools/class152-artifacts/frozen-native5-baseline2.json",
+    "sha256": "b8cba3621165a294d9782f536de6c4ec9c752af6e9e9a4b4f6d9b60ade27f708",
+    "summary": ".tools/class152-review/baseline-summary.json",
+    "result": "Original native5 and exactly2 old Unsupported probes retain01415fac/pin2/fullreaped; other3 old probes remain unrun. No151/150/native replay."
+  },
+  "new_missing_arity_native": {
+    "report": ".tools/class152-artifacts/native-missing-arity1.json",
+    "sha256": "0b1edcbda02748721c71d4a42ccf236e62f6dc6369ff62ce99fb8137bb3d01ee",
+    "native_report": ".tools/class152-review/four-required-missing-fourth.native-first.json",
+    "native_sha256": "ee2c896930c77c3d367c847f69e0f32809ea381bf609badb09bc1e3e6d5e7ec5",
+    "result": "New independent frozen four-required/three-send source, normal exact formatting discriminant; pin5/0.215s/fullreaped. No prior native renewed."
+  },
+  "source_outcomes": {
+    "report": ".tools/class152-artifacts/source6-assessment.json",
+    "sha256": "7633299e8c8310ea5d8b73a812fc660342e8cfa2528292fe8ad7afd261a3709d",
+    "catalogue": "tests/semantics/anonymous_constructor_arity_cases.json",
+    "unique_sources": 6,
+    "counts": {
+      "normal": 5,
+      "static_rejection": 1
+    },
+    "result": "Four original exact cuts retain00e35. Corrected named-hole and new missing-arity cuts retainaf9; explicit source/child filename substitutions only. All native tuples retain their original source/profile inputs."
+  },
+  "strict_sl": {
+    "report": ".tools/class152-artifacts/corrected-strict431.json",
+    "sha256": "3a6dcb5f014a101cce14f31c0627c4f73f71cea88af791979dfcfddcdbfb5071",
+    "modules": 431,
+    "result": "true newline/empty stderr/exit0; stableaf9, pin2/17.391s/fullreaped. First pre-formatting strictbb70 remains its historical compilation cut."
+  },
+  "reached": {
+    "accepted_conditions": 212,
+    "groups": [
+      {
+        "report": ".tools/class152-artifacts/authored-arity-state.json",
+        "sha256": "25d8a38f4512eebcad519c7abf0c32503dfc14defc6f01014046351e13ae0560",
+        "conditions": 62,
+        "test": "tests/semantics/anonymous_constructor_arity_protocol.py",
+        "state_report": ".tools/class152-artifacts/anonymous-constructor-arity-anonymous-arity-root-required-four-extra-send-d1t9ec4a/report.json",
+        "state_sha256": "ac2f5484ab3b34bd4184350706383591d1ef407c0a6bace36e85366ff214fb27",
+        "result": "Real four-formal/five-send source front, exact public selected ctor/allocation/call tasks, dropped-send and wrong-site refusal, original output and final class/call/declaration/heap checks. StrictSL/af9/pin2/27.478s/fullreaped."
+      },
+      {
+        "report": ".tools/class152-artifacts/independent-default150.json",
+        "sha256": "65991ef96702724784db591569a7c4a25e22dc56b3dc434a037e3b638cc109cd",
+        "conditions": 150,
+        "reached_conditions": 143,
+        "derived_guards": 7,
+        "test": "tests/semantics/anonymous_constructor_default_protocol.py",
+        "state_report": ".tools/class152-artifacts/anonymous-constructor-default-b3e6iztl/report.json",
+        "state_sha256": "fb2287f3591dce92b5b5807d76fda1e2bd40a1b11c6e195cffa4b3202ff0bfaf",
+        "result": "Real unit1 ingress; link-before-sends, raw interned bad argument/hole/3/4, ARGC4/HOLES1, stored default before typed rejection, exact descriptor/whole-name/segmented displays, retained publication and fresh retry; final output/validators. StrictSL/8bfd/pin2/56.256s/fullreaped."
+      }
+    ]
+  },
+  "preserved_failures": [
+    {
+      "report": ".tools/class152-artifacts/method-runtime-3p493t92/report.json",
+      "agreement_credit": 0,
+      "classification": "Model argument-TypeError name formatting mismatch; corrected only at its producer and affected source rerun. Native tuple unchanged."
+    },
+    {
+      "report": ".tools/class152-artifacts/anonymous-constructor-default-77t7bmwo/report.json",
+      "agreement_credit": 0,
+      "classification": "Independent149 fixture assumed plain PSTRING for an actual interned runtime carrier; retained-prefix query confirmed it. Fixture alone now carries the authenticated actual sent value. Production unchanged; affected150 group rerun only."
+    }
+  ],
+  "tested_code": {
+    "admission_commit": "d78fae9c9",
+    "argument_name_commit": "fc3e33e91",
+    "arity_name_commit": "af9adda12",
+    "maintained_fixture_commit": "8bfd985dc",
+    "production_sha256": {
+      "spec/semantics/383-anonymous-classes.watsup": "bd888609bee60bfc6b1c7eb73f17677bbca6182e850a23c4b0b7912fb9fd1377",
+      "spec/semantics/91-default-parameters.watsup": "af99ea3ab1f46e77938ee47ca088e7bcb70fbc85a1a34b338d231586b9c9452c",
+      "spec/semantics/95-typed-calls.watsup": "ab089179bccf6464895185ad0d36dea04fa468a850e899857d87b5a80aaface0",
+      "spec/semantics/142-method-runtime.watsup": "df0126b87d308630b496d1b2d354d69de0079c670f481e401a86d92ebf7faca3"
+    },
+    "qualification": "The four earlier source cuts never reach the changed argument-TypeError or missing-arity producer. Their source bytes/native tuples remain identical; corrected sources and reached groups retain their own actual revisions. Metadata and carrier-fixture edits renew no unrelated execution credit."
+  },
+  "limits": [
+    "Existing anonymous body/factory/capture and compiler/source-history admission limits remain.",
+    "Own constructor reference/variadic/promoted/nonpublic/attribute forms and unpacked sends remain partial.",
+    "Other return/Closure diagnostic views and wider owning/callback lifetimes retain their separate family limits.",
+    "Every paused/held boundary, including owned-NUL release, V110 and COMP123, stays unchanged."
+  ],
+  "target": "PHP8.5.10 CLI NTS signed64; tests/semantics/profile.json; sole project-local oracle.",
+  "source_pin": "vendor/php-src34308a6666b2d489c509541ea9befea9e2b42348",
+  "recovery": "Raw originals/native/baseline/source/failure/state/query receipts stay outsideGit under .tools/class152-author, class152-review and class152-artifacts. Raw model/state directories are copied unchanged before finished worktree removal; internal paths retain their actual tested locations. local-tools.json records reused binaries; no fresh build or portability claim.",
+  "independent_review": "Production admission, diagnostic consumers, exact source outcomes and reached protocols independently CLEAR. Final prose/inventory and actual-tail integration remain separate."
+}
