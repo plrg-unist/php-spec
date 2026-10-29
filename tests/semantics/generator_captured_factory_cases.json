@@ -34,5 +34,16 @@
     "native_exit": 0,
     "native_stdout": "MAKE|FRESH|1|VALUE|BODY|1|E",
     "native_stderr": ""
+  },
+  {
+    "id": "i80-private-from-reference-abort-independent",
+    "purpose": "A captured private Mid fromCallable method on Host selects its own private static Generator body, then the callable and Host retire. Fresh BYREF SEND keeps Delivered temporarily, supplied Fiber abort releases it, while the reference cache owns Item until Generator drop.",
+    "source": "<?php\nclass Item80 { function __destruct() { echo 'TOKEN|'; } }\nclass Delivered80 {\n    function __construct() { global $wd; $wd = WeakReference::create($this); }\n    function __destruct() { echo 'DELIVERED|'; }\n}\nclass Mid80 {\n    public function capture() { return Closure::fromCallable([$this, 'make']); }\n    private function make(&$item) {\n        global $wh;\n        echo 'MAKE|', __CLASS__ === 'Mid80', '|', static::class === 'Host80', '|', $this === $wh->get(), '|';\n        return Mid80::body($item);\n    }\n    private static function &body(&$item) {\n        global $wp, $wd;\n        echo 'BODY|', __CLASS__ === 'Mid80', '|', static::class === 'Mid80', '|';\n        try {\n            Fiber::suspend('fresh80');\n            $received = yield $item;\n            echo 'RECEIVE|', $received === $wd->get(), '|';\n            Fiber::suspend('cached80');\n        } finally {\n            echo 'FIN|', $wp->get() instanceof Item80, '|', $wd->get() instanceof Delivered80, '|';\n        }\n    }\n    function __destruct() { echo 'HOST|'; }\n}\nclass Host80 extends Mid80 {\n    public function make(&$item) { echo 'BAD|'; return []; }\n}\nfunction Run80() { global $g; echo 'CALL|'; $g->send(new Delivered80()); echo 'BAD|'; }\n$item = new Item80(); $old =& $item; $wp = WeakReference::create($item);\n$host = new Host80(); $wh = WeakReference::create($host);\n$factory = $host->capture(); $wf = WeakReference::create($factory);\n$g = $factory($item);\nunset($factory, $host, $item); $item = 9;\necho 'FRESH|', $wf->get() === null, '|', $wh->get() === null, '|', $wp->get() instanceof Item80, '|';\n$f = new Fiber('Run80'); $stop = new Exception('stop80');\necho 'START|'; $first = $f->start();\necho 'FRESH-ARG|', $first === 'fresh80', '|', $wd->get() instanceof Delivered80, '|';\necho 'RESUME|'; $second = $f->resume('go80'); unset($old);\necho 'CACHED|', $second === 'cached80', '|', $g->current() === $wp->get(), '|', $item === 9, '|', $wd->get() instanceof Delivered80, '|';\necho 'ABORT|';\ntry { $f->throw($stop); }\ncatch (Throwable $e) {\n    echo 'OUT|', $e === $stop, '|', $e->getPrevious() === null, '|', $f->isTerminated(), '|', $wd->get() === null, '|', $wp->get() instanceof Item80, '|';\n}\necho 'CLOSED|', $g->current() === null, '|', $wp->get() instanceof Item80, '|';\nunset($g, $f, $stop, $e);\necho 'DROP|', $wp->get() === null, '|E';\n",
+    "source_sha256": "43db5c280690fd86e72aaf3d872a7e934b10f188a54370bbffb524fe26ccdf32",
+    "native_exit": 0,
+    "native_stdout": "MAKE|1|1|1|HOST|FRESH|1|1|1|START|CALL|BODY|1|1|FRESH-ARG|1|1|RESUME|RECEIVE|1|CACHED|1|1|1|1|ABORT|FIN|1|1|DELIVERED|OUT|1|1|1|1|1|CLOSED|1|1|TOKEN|DROP|1|E",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
   }
 ]
