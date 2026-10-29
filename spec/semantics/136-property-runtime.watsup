@@ -247,6 +247,15 @@ def $property_next(S, n_object, ppropertyslot :: ppropertyslot_tail*, n, n_absol
   -- if $(n > 0)
   -- if $object_table_at(S.OBJECTTABLES, n_object) = eps
 
+;; Authenticate a physical declared slot without imposing a consumer's policy.
+dec $property_slot_descriptor(pstate, nat, ppropertyslot) : ppropertydesc?
+def $property_slot_descriptor(S, n_object, ppropertyslot) = (ppropertydesc)
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_class
+  -- if ppropertyslot.DECL = (ppropertyid)
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid /\ ppropertydesc.KEY = ppropertyslot.NAME /\ ~ppropertydesc.STATIC
+def $property_slot_descriptor(S, n_object, ppropertyslot) = eps -- otherwise
+
 dec $property_slot_valid(pstate, ppropertydesc, ppropertyslot) : bool
 def $property_slot_valid(S, ppropertydesc, ppropertyslot) = true
   -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN)
