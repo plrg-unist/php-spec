@@ -35,15 +35,16 @@ passes at the separate integration cut.
 Callbacks, ephemerons, hooks, workers, residual buffers and noncanonical
 locators remain outside this slice. [Review](coverage/semantics/gc-materialized-table-review.json).
 
-A private second GC cut admits quiet finite WeakMap ephemerons across ordinary
+A second GC cut admits quiet finite WeakMap ephemerons across ordinary
 objects, arrays and cells, including materialized tables, multiple Maps,
 conditional transitive reachability and dead-Key removal with a shared live
 payload. Three changed native-first originals agree exactly; a repeated
 ordinary allocation/collection history also agrees on the unchanged path.
-Four source-reached strict SL groups pass 136 checks at separate cuts. A phase
+Four source-reached strict SL groups pass 136 checks at separate cuts; joined
+strict compilation of the actual 426-module tail passes separately. A phase
 guard limits the new projection to fresh callback-free PASS0 collection. Callback,
-residual, worker, hook and uncertain same-Key proxy order paths remain open;
-actual-tail integration is pending. [Review](coverage/semantics/gc-ephemeron-generic-review.json).
+residual, worker, hook and uncertain same-Key proxy order paths remain open.
+[Review](coverage/semantics/gc-ephemeron-generic-review.json).
 
 Fresh Generator NEXT/SEND now transfer through Fiber before first yield using
 one authenticated phase rule across ordinary named, method, nonkeyword static
@@ -781,7 +782,6 @@ credit. Generator/reference getters and wider targets/lifetimes stay partial.
 | Output buffering | Frontier scope preparation. |
 | CLASS147 | Namespace/import preparation. |
 | COMP150 | Finite Previous/root validation. |
-| GC02 | Ephemeron reachability. |
 | ATTR01 | NoDiscard. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
