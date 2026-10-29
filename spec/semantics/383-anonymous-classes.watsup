@@ -50,13 +50,6 @@ dec $anonymous_members(statement*) : bool
 def $anonymous_members(eps) = true
 def $anonymous_members(statement :: statement_tail*) = ($anonymous_member(statement) /\ $anonymous_members(statement_tail*))
 
-dec $anonymous_base_member(statement) : bool
-def $anonymous_base_member(NStmtProperty (SEQUENCE eps) (INTEGER 4) phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata) = $anonymous_property_items(phpType57*)
-def $anonymous_base_member(statement) = $anonymous_member(statement) -- otherwise
-dec $anonymous_base_members(statement*) : bool
-def $anonymous_base_members(eps) = true
-def $anonymous_base_members(statement :: statement_tail*) = ($anonymous_base_member(statement) /\ $anonymous_base_members(statement_tail*))
-
 dec $anonymous_interface_references(name*) : bool
 def $anonymous_interface_references(eps) = true
 def $anonymous_interface_references((NName (BYTES text) metadata) :: name*) = ($ptvalidname($base64(text), false) /\ $anonymous_interface_references(name*))
@@ -100,22 +93,8 @@ def $anonymous_parent_node_name(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT (NN
 def $anonymous_parent_node_name(pcnode) = eps -- otherwise
 
 dec $anonymous_named_class_node(pcnode) : bool
-def $anonymous_named_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE eps) metadata) = true
-  -- if $ptvalidname($base64(text), false)
-  -- if z_line = $source_line(metadata)
-  -- if z_end = $source_end_line(metadata)
-  -- if $(z_line > 0 /\ z_end >= z_line)
-def $anonymous_named_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata) = true
-  -- if statement* =/= eps /\ $anonymous_base_members(statement*)
-  -- if $ptvalidname($base64(text), false)
-  -- if z_line = $source_line(metadata)
-  -- if z_end = $source_end_line(metadata)
-  -- if $(z_line > 0 /\ z_end >= z_line)
+def $anonymous_named_class_node(NStmtClass phpType14 phpType24 (NIdentifier (BYTES text) metadata_name) phpType44 phpType42 phpType23 metadata) = $ptvalidname($base64(text), false)
 def $anonymous_named_class_node(pcnode) = false -- otherwise
-dec $anonymous_memberful_named_node_name(pcnode) : ptbytes?
-def $anonymous_memberful_named_node_name(NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata) = ($base64(text))
-  -- if statement* =/= eps
-def $anonymous_memberful_named_node_name(pcnode) = eps -- otherwise
 
 dec $anonymous_class_like(pcnode) : bool
 def $anonymous_class_like(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata) = true
@@ -276,25 +255,23 @@ def $anonymous_named_key(true) = 0
 def $anonymous_named_key(false) = 1
 dec $anonymous_header_context(ptbytes, int) : ptcontext
 def $anonymous_header_context(ptbytes_file, z_line) = { NAMESPACE eps, IMPORTS eps, SCOPE PTGLOBAL, POSITION PTCONSTANT, OWNER eps, MEMBER eps, FILE ptbytes_file, LINE $nabs(z_line) }
-dec $anonymous_prior_dependency(pclassdesc*, ptbytes) : bool
-def $anonymous_prior_dependency(eps, ptbytes) = $class_internal(ptbytes)
-def $anonymous_prior_dependency(pclassdesc :: pclassdesc_tail*, ptbytes) = true
-  -- if $ptlc(pclassdesc.NAME) = $ptlc(ptbytes)
-def $anonymous_prior_dependency(pclassdesc :: pclassdesc_tail*, ptbytes) = $anonymous_prior_dependency(pclassdesc_tail*, ptbytes)
-  -- if $ptlc(pclassdesc.NAME) =/= $ptlc(ptbytes)
-dec $anonymous_prior_dependencies(pclassdesc*, ptbytes*) : bool
-def $anonymous_prior_dependencies(pclassdesc*, eps) = true
-def $anonymous_prior_dependencies(pclassdesc*, ptbytes :: ptbytes_tail*) = ($anonymous_prior_dependency(pclassdesc*, ptbytes) /\ $anonymous_prior_dependencies(pclassdesc*, ptbytes_tail*))
-dec $anonymous_interface_parent(pclassdesc*, ptbytes?) : bool
-def $anonymous_interface_parent(pclassdesc_prior*, eps) = true
-def $anonymous_interface_parent(pclassdesc_prior*, (ptbytes)) = true
-  -- if $ppclass_prior_early(pclassdesc_prior*, ptbytes) = (pclassdesc)
-  -- if pclassdesc.KIND = "class"
-def $anonymous_interface_parent(pclassdesc_prior*, ptbytes?) = false -- otherwise
 dec $anonymous_interface_prefix(ptbytes?, ptbytes*) : ptbytes?
 def $anonymous_interface_prefix((ptbytes_parent), ptbytes*) = (ptbytes_parent)
 def $anonymous_interface_prefix(eps, ptbytes :: ptbytes_tail*) = (ptbytes)
 def $anonymous_interface_prefix(ptbytes_parent?, ptbytes_interface*) = eps -- otherwise
+;; This header view delegates declaration rules to the ordinary compiler.
+;; The caller's prefix descriptors already contain its normalized own methods.
+dec $anonymous_named_header(pcnode, ptbytes, ptbytes) : (pchheader, int)?
+def $anonymous_named_header(NStmtClass phpType14 phpType24 (NIdentifier (BYTES text) metadata_name) phpType44 phpType42 phpType23 metadata, ptbytes_namespace, ptbytes_file) = ((pchheader, z_line))
+  -- if $class_header_line(metadata, NIdentifier (BYTES text) metadata_name, phpType14) = z_line
+  -- if $(z_line > 0)
+  -- if $pchcompile(NStmtClass phpType14 phpType24 (NIdentifier (BYTES text) metadata_name) phpType44 phpType42 phpType23 metadata, false, $anonymous_header_context(ptbytes_file, z_line)[.NAMESPACE = ptbytes_namespace]) = PCHOK pchheader pchdiagnostic*
+def $anonymous_named_header(NStmtInterface phpType14 (NIdentifier (BYTES text) metadata_name) phpType42 phpType23 metadata, ptbytes_namespace, ptbytes_file) = ((pchheader, z_line))
+  -- if $class_header_line(metadata, NIdentifier (BYTES text) metadata_name, phpType14) = z_line
+  -- if $(z_line > 0)
+  -- if $pchcompile(NStmtInterface phpType14 (NIdentifier (BYTES text) metadata_name) phpType42 phpType23 metadata, false, $anonymous_header_context(ptbytes_file, z_line)[.NAMESPACE = ptbytes_namespace]) = PCHOK pchheader pchdiagnostic*
+def $anonymous_named_header(pcnode, ptbytes_namespace, ptbytes_file) = eps -- otherwise
+
 dec $anonymous_class_count(pcunit, ptbytes, pclassdesc*, pclassdesc*, nat) : nat?
 def $anonymous_class_count(pcunit, ptbytes_file, eps, pclassdesc_seen*, n_counter) = (n_counter)
 def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*, pclassdesc_seen*, n_counter) = $anonymous_class_count(pcunit, ptbytes_file, pclassdesc_tail*, pclassdesc_seen* ++ [pclassdesc], $(n_counter + 1))
@@ -312,8 +289,6 @@ def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*,
   -- if $anonymous_class_node(pcnode)
   -- if $anonymous_parent_node_name(pcnode) = (ptbytes_parent)
   -- if $anonymous_named_namespace(pcunit, pcpath) = (eps)
-  -- if $ppclass_prior_early(pclassdesc_seen*, ptbytes_parent) = (pclassdesc_parent)
-  -- if pclassdesc_parent.KIND = "class"
   -- if pclassdesc.PARENT = (ptbytes_parent)
   -- if pclassdesc.LINE = $source_line($pcmetadata(pcnode))
   -- if $anonymous_parent_class_name(ptbytes_parent, ptbytes_file, pclassdesc.LINE, n_counter) = (pclassdesc.NAME)
@@ -325,10 +300,8 @@ def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*,
   -- if $anonymous_interface_class_node(NStmtClass phpType14 phpType24 phpType3 phpType44 (SEQUENCE name*) phpType23 metadata)
   -- if $anonymous_named_namespace(pcunit, pcpath) = (eps)
   -- if $pchrefs(name*, "interface name", $anonymous_header_context(ptbytes_file, $source_line(metadata))) = PCHNAMES ptbytes_interface* eps
-  -- if $anonymous_prior_dependencies(pclassdesc_seen*, ptbytes_interface*)
   -- if $pchparent(phpType44, $anonymous_header_context(ptbytes_file, $source_line(metadata))) = PCHNAMES ptbytes_parent* eps
   -- if pclassdesc.PARENT = $pchparentoption(ptbytes_parent*)
-  -- if $anonymous_interface_parent(pclassdesc_seen*, pclassdesc.PARENT)
   -- if pclassdesc.INTERFACES = ptbytes_interface*
   -- if $anonymous_interface_prefix(pclassdesc.PARENT, ptbytes_interface*) = (ptbytes_prefix)
   -- if $anonymous_parent_class_name(ptbytes_prefix, ptbytes_file, pclassdesc.LINE, n_counter) = (pclassdesc.NAME)
@@ -337,38 +310,15 @@ def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*,
   -- if $class_at(pclassdesc_tail*, pclassdesc.ORIGIN) = eps
 def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*, pclassdesc_seen*, n_counter) = $anonymous_class_count(pcunit, ptbytes_file, pclassdesc_tail*, pclassdesc_seen* ++ [pclassdesc], $(n_counter + $anonymous_named_key(b_early)))
   -- if pclassdesc.ORIGIN = PORIGIN 0 pcpath
-  -- if $origin_node([pcunit], pclassdesc.ORIGIN) = (NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata)
-  -- if $anonymous_interface_node(NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata)
-  -- if $anonymous_named_namespace(pcunit, pcpath) = (eps)
-  -- if $pchcompile(NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata, false, $anonymous_header_context(ptbytes_file, $source_line(metadata))) = PCHOK pchheader eps
-  -- if pclassdesc.KIND = "interface" /\ pclassdesc.NAME = pchheader.NAME
-  -- if pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = pchheader.INTERFACES
-  -- if pclassdesc.PROPERTIES = eps /\ pclassdesc.ABSTRACT /\ ~pclassdesc.FINAL /\ ~pclassdesc.READONLY
-  -- if b_early = ($anonymous_named_early(pcunit, pcpath, pclassdesc_seen*, pchheader.NAME) /\ pclassdesc.INTERFACES = eps)
-  -- if pclassdesc.EARLY = b_early /\ pclassdesc.LINE = $source_line(metadata)
-  -- if $class_at(pclassdesc_tail*, pclassdesc.ORIGIN) = eps
-def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*, pclassdesc_seen*, n_counter) = $anonymous_class_count(pcunit, ptbytes_file, pclassdesc_tail*, pclassdesc_seen* ++ [pclassdesc], $(n_counter + $anonymous_named_key(b_early)))
-  -- if pclassdesc.ORIGIN = PORIGIN 0 pcpath
-  -- if $origin_node([pcunit], pclassdesc.ORIGIN) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE eps) metadata)
-  -- if $anonymous_named_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE eps) metadata)
-  -- if $anonymous_named_namespace(pcunit, pcpath) = (ptbytes_namespace)
-  -- if ptbytes_name = $ptjoin(ptbytes_namespace, $base64(text))
-  -- if b_early = $anonymous_named_early(pcunit, pcpath, pclassdesc_seen*, ptbytes_name)
-  -- if pclassdesc = { ORIGIN PORIGIN 0 pcpath, KIND "class", NAME ptbytes_name, PARENT eps, INTERFACES eps, PROPERTIES eps, METHODS eps, CONSTANTS eps, ABSTRACT false, FINAL false, READONLY false, EARLY b_early, LINE $nabs($source_line(metadata)) }
-  -- if $class_at(pclassdesc_tail*, pclassdesc.ORIGIN) = eps
-def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*, pclassdesc_seen*, n_counter) = $anonymous_class_count(pcunit, ptbytes_file, pclassdesc_tail*, pclassdesc_seen* ++ [pclassdesc], $(n_counter + $anonymous_named_key(b_early)))
-  -- if pclassdesc.ORIGIN = PORIGIN 0 pcpath
   -- if $origin_node([pcunit], pclassdesc.ORIGIN) = (pcnode)
-  -- if $anonymous_named_class_node(pcnode)
-  -- if $anonymous_memberful_named_node_name(pcnode) = (ptbytes_raw)
   -- if $anonymous_named_namespace(pcunit, pcpath) = (ptbytes_namespace)
-  -- if ptbytes_name = $ptjoin(ptbytes_namespace, ptbytes_raw)
-  -- if b_early = $anonymous_named_early(pcunit, pcpath, pclassdesc_seen*, ptbytes_name)
-  -- if pclassdesc.ORIGIN = PORIGIN 0 pcpath
-  -- if pclassdesc.KIND = "class" /\ pclassdesc.NAME = ptbytes_name
-  -- if pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = eps /\ pclassdesc.CONSTANTS = eps
-  -- if ~pclassdesc.ABSTRACT /\ ~pclassdesc.FINAL /\ ~pclassdesc.READONLY
-  -- if pclassdesc.EARLY = b_early /\ pclassdesc.LINE = $nabs($source_line($pcmetadata(pcnode)))
+  -- if $anonymous_named_header(pcnode, ptbytes_namespace, ptbytes_file) = ((pchheader, z_line))
+  -- if pclassdesc.KIND = pchheader.KIND /\ pclassdesc.NAME = pchheader.NAME
+  -- if pclassdesc.PARENT = pchheader.PARENT
+  -- if pclassdesc.INTERFACES = $ppclass_interfaces(pchheader.INTERFACES, pclassdesc.METHODS)
+  -- if pclassdesc.ABSTRACT = pchheader.ABSTRACT /\ pclassdesc.FINAL = pchheader.FINAL /\ pclassdesc.READONLY = pchheader.READONLY
+  -- if b_early = ($anonymous_named_early(pcunit, pcpath, pclassdesc_seen*, pchheader.NAME) /\ $ppclass_parent_known(pclassdesc_seen*, pchheader.PARENT) /\ pclassdesc.INTERFACES = eps /\ ~$pptrait_body_uses(pchheader.BODY))
+  -- if pclassdesc.EARLY = b_early /\ pclassdesc.LINE = $nabs(z_line)
   -- if $class_at(pclassdesc_tail*, pclassdesc.ORIGIN) = eps
 def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc*, pclassdesc_seen*, n_counter) = eps -- otherwise
 
@@ -431,10 +381,8 @@ def $ppanonymous_class(P, pcpath, statement) = P_next[.EARLY = P.EARLY][.LOCATIO
   -- if P_class = $pplocate(P[.EARLY = eps], pcpath ++ [PCFIELD 0], z_line)
   -- if $pchparent(pchraw.PARENT, $ppclass_context(P_class)) = PCHNAMES ptbytes_parent* eps
   -- if ptbytes_parent_option? = $pchparentoption(ptbytes_parent*)
-  -- if $anonymous_interface_parent(P.CLASSES, ptbytes_parent_option?)
   -- if pchraw.INTERFACES = SEQUENCE name*
   -- if $pchrefs(name*, "interface name", $ppclass_context(P_class)) = PCHNAMES ptbytes_interface* eps
-  -- if $anonymous_prior_dependencies(P.CLASSES, ptbytes_interface*)
   -- if $anonymous_interface_prefix(ptbytes_parent_option?, ptbytes_interface*) = (ptbytes_prefix)
   -- if $anonymous_parent_class_name(ptbytes_prefix, P.LOCATION.FILE, z_line, n_counter) = (ptbytes_name)
   -- if P_next = $ppclass_result(P_class, pcpath ++ [PCFIELD 0], PCHOK { KIND "class", NAME ptbytes_name, ABSTRACT false, FINAL false, READONLY false, PARENT ptbytes_parent_option?, INTERFACES ptbytes_interface*, BODY pchraw.BODY } eps)
@@ -452,8 +400,6 @@ def $ppanonymous_class(P, pcpath, statement) = P_next[.EARLY = P.EARLY][.LOCATIO
   -- if $anonymous_parent_class_name(ptbytes_parent, P.LOCATION.FILE, z_line, n_counter) = (ptbytes_name)
   -- if P_class = $pplocate(P[.EARLY = eps], pcpath ++ [PCFIELD 0], z_line)
   -- if $pchparent(pchraw.PARENT, $ppclass_context(P_class)) = PCHNAMES ([ptbytes_parent]) eps
-  -- if $ppclass_prior_early(P.CLASSES, ptbytes_parent) = (pclassdesc_parent)
-  -- if pclassdesc_parent.KIND = "class"
   -- if P_next = $ppclass_result(P_class, pcpath ++ [PCFIELD 0], PCHOK { KIND "class", NAME ptbytes_name, ABSTRACT false, FINAL false, READONLY false, PARENT (ptbytes_parent), INTERFACES eps, BODY pchraw.BODY } eps)
 def $ppanonymous_class(P, pcpath, statement) = $ppunsupported(P, "anonymous class RTD, body, or compiler publication context") -- otherwise
 def $ppdispatch(P, pcpath, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata, PPR) = $ppanonymous_class(P, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class)
@@ -497,6 +443,30 @@ def $anonymous_interface_targets_valid(S, pclassdesc) = true
   -- if $pil_fetch(S, pclassdesc.INTERFACES, eps) = PILFETCHED pilref*
   -- if $pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = (PILTARGETS pilref*)
 def $anonymous_interface_targets_valid(S, pclassdesc) = false -- otherwise
+dec $anonymous_parent_ready(pstate, ptbytes?) : bool
+def $anonymous_parent_ready(S, eps) = true
+def $anonymous_parent_ready(S, (ptbytes)) = $dynamic_new_known(S, ptbytes)
+dec $anonymous_dependencies_ready(pstate, pclassdesc) : bool
+def $anonymous_dependencies_ready(S, pclassdesc) = ($anonymous_parent_ready(S, pclassdesc.PARENT) /\ $anonymous_interface_dependencies_ready(S, pclassdesc))
+
+;; Use the same source/internal parent facts as ordinary inheritance.
+dec $anonymous_parent_linked(pstate, pclassdesc) : bool
+def $anonymous_parent_linked(S, pclassdesc) = true
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
+def $anonymous_parent_linked(S, pclassdesc) = true
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $ptlc(ptbytes_parent) = $ptascii("stdclass")
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (STDCLASS_PARENT)
+def $anonymous_parent_linked(S, pclassdesc) = true
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $throwable_link_kind(ptbytes_parent) = (text_kind)
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (INTERNAL_THROWABLE_PARENT text_kind)
+def $anonymous_parent_linked(S, pclassdesc) = false -- otherwise
+
 dec $anonymous_new_available(pstate, pclassdesc) : bool
 def $anonymous_new_available(S, pclassdesc) = true
   -- if pclassdesc.EARLY
@@ -504,10 +474,9 @@ def $anonymous_new_available(S, pclassdesc) = true
   -- if $declaration_early(S.DECLARATIONS, pclassdesc.ORIGIN, PPCLASS)
 def $anonymous_new_available(S, pclassdesc) = true
   -- if ~pclassdesc.EARLY
-  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if pclassdesc.PARENT =/= eps
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pclassdesc.ORIGIN)
-  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
-  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
+  -- if $anonymous_parent_linked(S, pclassdesc)
   -- if $anonymous_interface_targets_valid(S, pclassdesc)
   -- if $anonymous_runtime_declaration(S.DECLARATIONS, pclassdesc.ORIGIN)
 def $anonymous_new_available(S, pclassdesc) = true
@@ -527,24 +496,11 @@ dec $anonymous_new_pending(pstate, porigin) : pclassdesc?
 def $anonymous_new_pending(S, porigin) = (pclassdesc)
   -- if $anonymous_new_descriptor(S, porigin) = (pclassdesc)
   -- if ~pclassdesc.EARLY
-  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if pclassdesc.PARENT =/= eps \/ pclassdesc.INTERFACES =/= eps
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
   -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = eps
   -- if $pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = eps
   -- if ~$anonymous_runtime_declaration(S.DECLARATIONS, pclassdesc.ORIGIN)
-  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
-  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
-  -- if pclassdesc_parent.KIND = "class" /\ pclassdesc_parent.EARLY
-  -- if $ptlc(pclassdesc_parent.NAME) = $ptlc(ptbytes_parent)
-  -- if $anonymous_interface_dependencies_ready(S, pclassdesc)
-def $anonymous_new_pending(S, porigin) = (pclassdesc)
-  -- if $anonymous_new_descriptor(S, porigin) = (pclassdesc)
-  -- if ~pclassdesc.EARLY /\ pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES =/= eps
-  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
-  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = eps
-  -- if $pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = eps
-  -- if ~$anonymous_runtime_declaration(S.DECLARATIONS, pclassdesc.ORIGIN)
-  -- if $anonymous_interface_dependencies_ready(S, pclassdesc)
 def $anonymous_new_pending(S, porigin) = eps -- otherwise
 
 ;; Declaration-history replay already supplies compiler-derived prefix classes.
@@ -562,7 +518,17 @@ rule PhpStep/anonymous-parent-link: S ~> S_linked[.ORIGIN = S.ORIGIN]
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
   -- if $anonymous_new_pending(S, porigin) = (pclassdesc)
+  -- if $anonymous_dependencies_ready(S, pclassdesc)
   -- if S_linked = $activate_class(S[.ORIGIN = (pclassdesc.ORIGIN)], pclassdesc)
+
+;; A missing dependency enters its genuine declaration child. Existing source
+;; autoload continuations finish there; AT restores the original NEW before args.
+rule PhpStep/anonymous-dependency-stage: S ~> S[.TODO = (AT pclassdesc.ORIGIN (STMT (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class))) :: S.TODO]
+  -- if S.TODO = (EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
+  -- if $anonymous_new_pending(S, porigin) = (pclassdesc)
+  -- if ~$anonymous_dependencies_ready(S, pclassdesc)
 
 ;; Constructor selection and its result marker reuse the ordinary call receipt.
 ;; No-constructor NEW retains the direct allocation path below.
