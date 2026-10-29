@@ -978,19 +978,24 @@ def $assertion_callback_values(S, passertfailure) = [PSTRING $call_sourcefile(S.
 def $assertion_callback_valid(S, passertcall) = true
   -- if $assertion_failure_valid(S, passertcall.FAILURE)
   -- if passertcall.TARGET = (pcalltarget)
+  -- if ~$api_borrowed_target(pcalltarget)
   -- if $exception_raw_selected(S, passertcall.CALLBACK, passertcall.RAW, pcalltarget)
   -- if $handler_emitter_valid(S, pcalltarget)
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if ~pfunction.SIGNATURE.BYREF
+def $assertion_callback_valid(S, passertcall) = true
+  -- if $assertion_failure_valid(S, passertcall.FAILURE)
+  -- if passertcall.TARGET = (API_BORROWED_TARGET pshutdownproducer)
+  -- if pshutdownproducer.SITE = (passertcall.FAILURE.CALL.SITE) /\ pshutdownproducer.INTERNAL /\ pshutdownproducer.CLONE = eps
+  -- if $consumer_producer_snapshot(pshutdownproducer)
+  -- if S_history = $api_callback_result_scope(S, API_BORROWED_TARGET pshutdownproducer)
+  -- if $exception_raw_selected(S_history, passertcall.CALLBACK, passertcall.RAW, pshutdownproducer.TARGET)
+  -- if $handler_emitter_valid(S_history, pshutdownproducer.TARGET)
+  -- if $target_function(S_history, pshutdownproducer.TARGET) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF
 def $assertion_callback_valid(S, passertcall) = false -- otherwise
-def $assertion_callback_enter(S, passertcall, pcalltarget, pfunction) = $call_arity($target_after_enter($call_enter(S_args, pfunction, poperand*, (passertcall.FAILURE.CALL.SITE), passertcall.FAILURE.CALL.LINE), pcalltarget), pfunction, |pvalue*|, (passertcall.FAILURE.CALL.SITE), passertcall.FAILURE.CALL.LINE)
-  -- if $deprecated_api_allowed(S, pfunction)
+def $assertion_callback_enter(S, passertcall, pcalltarget, pfunction) = $api_callback_begin(S, API_ASSERT passertcall, pcalltarget, pfunction, $assertion_callback_values(S, passertcall.FAILURE), passertcall.FAILURE.CALL.SITE, passertcall.FAILURE.CALL.LINE)
   -- if S.TODO = (ASSERT_CALLBACK_INVOKE passertcall) :: ptask_tail*
-  -- if pvalue* = $assertion_callback_values(S, passertcall.FAILURE)
-  -- if S_pending = S[.TODO = (ASSERT_CALLBACK_RESULT passertcall[.TARGET = (pcalltarget)]) :: ptask_tail*]
-  -- if $error_handler_operands(S_pending, pcalltarget, pvalue*, 0, passertcall.FAILURE.CALL.LINE) = (S_args, poperand*)
-def $assertion_callback_enter(S, passertcall, pcalltarget, pfunction) = S[.COMPLETION = UNSUPPORTED "Deprecated internal API timing"]
-  -- if ~$deprecated_api_allowed(S, pfunction)
 rule PhpStep/assert-callback-enter: S ~> $assertion_callback_enter(S, passertcall, pcalltarget, pfunction)
   -- if S.TODO = (ASSERT_CALLBACK_INVOKE passertcall) :: ptask_tail*
   -- if $call_task_valid(S, ASSERT_CALLBACK_INVOKE passertcall)
@@ -1233,15 +1238,6 @@ def $throwable_same_frame_continuation(S, S_next, ptask_old*) = S_next[.TODO = p
   -- if $throwable_live(S, n)
   -- if S_next.TODO = (CONFIG_INVOKE passertcall.FAILURE.CALL) :: ptask_tail*
   -- if S_next.COMPLETION = THROWING n_next
-def $throwable_continuation(S, S_next) = S_next
-  -- if S.TODO = (ASSERT_CALLBACK_INVOKE passertcall) :: ptask_tail*
-  -- if $call_task_valid(S, ASSERT_CALLBACK_INVOKE passertcall)
-  -- if $error_handler_target(S, passertcall.CALLBACK) = (pcalltarget)
-  -- if S_next.FRAMES = pframe :: S.FRAMES
-  -- if pframe.TODO = (ASSERT_CALLBACK_RESULT passertcall[.TARGET = (pcalltarget)]) :: ptask_tail*
-  -- if pframe.CONTEXT = S.CURRENT /\ pframe.ORIGIN = S.ORIGIN /\ pframe.CONSTCONTEXT = S.CONSTCONTEXT
-  -- if pframe.SILENCES = S.SILENCES /\ pframe.BORROWEDREAD = S.BORROWEDREAD /\ pframe.OBJECTCAST = S.OBJECTCAST
-
 ;; Stringable flag setters retain their own exact source and native frame.
 def $config_string_trace_context(S, pcallcontext) = true
   -- if S.CURRENT = (pcallcontext)

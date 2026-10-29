@@ -7,7 +7,7 @@ from throwable_base_previous_cases import CASES
 
 family.CASES = CASES
 family.UNSUPPORTED = {name: ('Throwable property comparison', b'B|')
-    for name in ('reached-child-method-control', 'captured-throwable-control')}
+    for name in ('reached-child-method-control',)}
 family.BASELINE = ('Throwable property comparison', b'L|0:1|B|')
 family.MODEL_TIMEOUTS = {name: 480 for name in CASES}
 base_fingerprint = family.fingerprint

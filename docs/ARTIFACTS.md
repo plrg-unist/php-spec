@@ -67,10 +67,29 @@ Captured enum `from(...)`/`tryFrom(...)` cold-table cuts are under
 (SHA-256 `934643b994b69bad3f50f472f70fa81c97333d2ac51da8db127dafa26622656d`)
 lists 31 raw directories. Keep the original failed/timeout cuts separate from
 the accepted queue, bind, table, Alias, inherited-owner and cross-file strictness
-checks. Captured Stringable lookup and conditional constant-transfer results are explicit
-Unsupported, with no agreement credit. The joined `--sl` gate used CPU 1 and all
-430 manifest modules; `raw/enum-cold-joined-430-v1/result.json` records its
+checks. Its earlier captured Stringable lookup and conditional constant-transfer
+results are explicit Unsupported, with no agreement credit. The joined `--sl`
+gate used CPU 1 and all 430 manifest modules;
+`raw/enum-cold-joined-430-v1/result.json` records its
 tested revision, command and output. The runner process group was fully reaped.
+
+Captured Stringable lookup cuts are under
+`../php-spec-evidence-archive/enum-captured-stringable-117/`. Its `manifest.json`
+(SHA-256 `c821fb4ff827854fbca193fa62eedb050afb57b5502f701b037df6e52ec5189a`)
+lists eight raw directories, preserving the earlier Unsupported and strict
+binding failures separately from exact one-line, multiline, closure-owner and
+`tryFrom()` results. The reached multiline check authenticates callback source,
+selection, owner roots and argument retirement before the backed table. The
+joined `--sl` gate checks all 430 manifest modules and records its clean result.
+
+Source-certified enum conditional-transfer cuts are under
+`../php-spec-evidence-archive/enum-conditional-transfer-117/`. Its `manifest.json`
+(SHA-256 `752b6bfea7f70ae3bfb65e4206a101f491e70252bb2e4d93376a7625fdfee7c8`)
+lists eight raw directories. Original object and scalar Unsupported results
+remain separate from their exact affected checks; cross-enum and negated-case
+sources, selected-case/history negatives and post-bind cache checks retain
+their individual cuts. The joined `--sl` receipt records the composed 430-module
+candidate, true result and fully reaped process group.
 
 The guarded getter-recursion milestone retains source/native observations,
 focused checks, all fixture failures and diagnostics in

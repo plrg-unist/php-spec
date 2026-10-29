@@ -1,0 +1,117 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-trait-enum-mixed-root-conditional-class-keys",
+      "source": "<?php\ntrait Plain150Review {\n    public function value() { return 7; }\n}\n$first = new class {};\necho $first::class, \"|\";\nif (false) {\n    trait Dormant150Review {}\n}\nenum Unit150Review { case Ready; }\nenum Backed150Review: int { case Ready = 6; }\nclass Uses150Review { use Plain150Review; }\n$named = new Uses150Review;\necho $named->value(), \"|\", Unit150Review::Ready->name, \"|\", Backed150Review::Ready->value, \"|\";\n$second = new class {};\necho $second::class, \"|\";\neval('$tail = new class {}; echo $tail::class, \"|\";');\n",
+      "source_sha256": "6f33c59cb892e43fef0ac001e2f69979d2ec842bd5cb8e3d8011a319c5e5f638",
+      "stdout_base64": "",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo1JDB8N3xSZWFkeXw2fGNsYXNzQGFub255bW91cwB7RklMRX06MTUkNXxjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9KDE3KSA6IGV2YWwoKSdkIGNvZGU6MSQ2fA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class150-frozen-native7",
+      "native_raw_sha256": "cb78beee471a149f7d45219c58a51b48ee75e2806bde4f4a23611de1d87d413f",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-trait-enum-later-alias-enum-trait-factory-retry",
+      "source": "<?php\nnamespace Root150Review;\nclass Base150Review {\n    public int $n;\n    public function __construct($n) { echo \"ctor|\"; $this->n = $n; }\n}\neval(<<<'PHP'\nnamespace Later150Review;\nuse Root150Review\\Base150Review as B;\ntrait Mix150Review {\n    public function read() { return $this->n; }\n}\nenum Choice150Review: int { case Ready = 11; }\nuse Later150Review\\Mix150Review as M;\nuse Later150Review\\Choice150Review as E;\nclass Parent150Review extends B { use M; }\nfunction argument150Review() {\n    static $first = true;\n    echo \"arg|\";\n    if ($first) { $first = false; throw new \\Exception(\"first\"); }\n    return E::Ready->value;\n}\nfunction make150Review() {\n    return new class(argument150Review()) extends Parent150Review {};\n}\ntry { make150Review(); } catch (\\Exception $e) { echo \"caught|\"; }\n$a = make150Review();\n$b = make150Review();\necho $a::class, \"|\", $a->read(), \"|\", ($a::class === $b::class), \"|\", ($a !== $b), \"|\";\nPHP);\neval('$tail = new class {}; echo $tail::class, \"|\";');\n",
+      "source_sha256": "98de477d00301e43d6a161a74cb441588f242d48723a5054d72906e6891a64b1",
+      "stdout_base64": "",
+      "stdout_template_base64": "YXJnfGNhdWdodHxhcmd8Y3Rvcnxhcmd8Y3RvcnxMYXRlcjE1MFJldmlld1xQYXJlbnQxNTBSZXZpZXdAYW5vbnltb3VzAHtGSUxFfSg4KSA6IGV2YWwoKSdkIGNvZGU6MTckMnwxMXwxfDF8Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSgzMSkgOiBldmFsKCknZCBjb2RlOjEkM3w=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class150-frozen-native7",
+      "native_raw_sha256": "ac750d4cb5be23fff4c07dde5214351e1f2e19433817a32f2849c4722574e8c6",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-trait-enum-author-pruned-and-unvisited-kind-cost",
+      "source": "<?php\neval(<<<'CODE'\nfalse && ($dead = static function () { trait DeadAnd150 {} enum DeadAndEnum150 { case A; } });\necho (new class {})::class, '|';\ntrue || ($dead = static function () { trait DeadOr150 {} enum DeadOrEnum150 { case A; } });\necho (new class {})::class, '|';\n1 ?? ($unused = static function () { trait UnvisitedCoalesce150 {} enum UnvisitedEnum150: int { case A = 3; } });\necho (new class {})::class, '|';\n$enter = false;\nif ($enter) { trait UnvisitedBranch150 {} enum BranchEnum150 { case A; } }\necho (new class {})::class, '|';\nCODE);\neval('echo (new class {})::class;');\n",
+      "source_sha256": "717beff3423b9c45dc5db156709345065dc54aaa1a37d79f034875c13f554994",
+      "stdout_base64": "",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSgzKSA6IGV2YWwoKSdkIGNvZGU6MiQwfGNsYXNzQGFub255bW91cwB7RklMRX0oMykgOiBldmFsKCknZCBjb2RlOjQkMXxjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9KDMpIDogZXZhbCgpJ2QgY29kZTo2JDR8Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSgzKSA6IGV2YWwoKSdkIGNvZGU6OSQ3fGNsYXNzQGFub255bW91cwB7RklMRX0oMTMpIDogZXZhbCgpJ2QgY29kZToxJDg=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class150-frozen-native7",
+      "native_raw_sha256": "67d3f3ede92a103ffe19994116fe6057e62e1fb5681da509e59599c74724f093",
+      "model_timeout_seconds": 180
+    },
+    {
+      "id": "anonymous-trait-enum-author-include-once-and-recompiled-kind-history",
+      "source": "<?php\ninterface ReadInclude150 { public function value(): int; }\n$declare150 = true;\n$first = include __DIR__ . '/payload.php';\n$once = include_once __DIR__ . '/payload.php';\n$declare150 = false;\n$second = include __DIR__ . '/payload.php';\necho $first::class, '|', $second::class, '|', $once ? 'once' : 'miss', '|';\necho $first->value(), '/', $second->value(), '|', Payload150\\Mode150::Ready->value, '|';\necho $first === $second ? 'same' : 'fresh';\n",
+      "source_sha256": "34e332860990fb8776fcef1f4882bc2320c70178173d8fefc982a11d32ec44d8",
+      "stdout_base64": "",
+      "stdout_template_base64": "UmVhZEluY2x1ZGUxNTBAYW5vbnltb3VzAHtGSUxFOnBheWxvYWQucGhwfTo4JDJ8UmVhZEluY2x1ZGUxNTBAYW5vbnltb3VzAHtGSUxFOnBheWxvYWQucGhwfTo4JDV8b25jZXw3Lzd8cmVhZHl8ZnJlc2g=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class150-frozen-native7",
+      "native_raw_sha256": "a402542fbbe19923eeab75edf3dc715e625b18857cb9a0c8cf0702bfe30769d3",
+      "model_timeout_seconds": 240,
+      "files": [
+        {
+          "name": "payload.php",
+          "source": "<?php\nnamespace Payload150;\nuse ReadInclude150 as Read;\nif ($declare150) {\n trait Value150 { public function traitValue(): int { return 6; } }\n enum Mode150: string { case Ready = 'ready'; }\n}\nreturn new class implements Read { public function value(): int { return 7; } };\n",
+          "source_sha256": "066da50285d2afd6eb5778f02e609df732cc3bceda5aa504adc719a862d10d27"
+        }
+      ]
+    },
+    {
+      "id": "anonymous-trait-enum-author-unused-trait-default-is-eager",
+      "source": "<?php\necho 'outer|';\neval(<<<'CODE'\necho 'inner|';\ntrait PlainPhase150 {}\nenum Phase150 { case Ready; }\nfunction unusedPhase150() { trait InvalidPhase150 { public int $count = 'bad'; } }\n$object = new class {};\nCODE);\necho 'after|';\n",
+      "source_sha256": "5a456a67d48d5b29a49d92a5b7f9c1bc145d191ca642e054e9c9f402ab96b366",
+      "stdout_base64": "",
+      "stdout_template_base64": "b3V0ZXJ8",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIGRlZmF1bHQgdmFsdWUgZm9yIHByb3BlcnR5IEludmFsaWRQaGFzZTE1MDo6JGNvdW50IG9mIHR5cGUgaW50IGluIHtGSUxFfSg0KSA6IGV2YWwoKSdkIGNvZGUgb24gbGluZSA0ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "class150-frozen-native7",
+      "native_raw_sha256": "c7f1b8c12e9409634d711a4560d39b08c71b2c28d69b904c5e4ed9541dfa0de2",
+      "model_timeout_seconds": 180
+    },
+    {
+      "id": "anonymous-trait-enum-author-external-trait-collision-skipped-after-return",
+      "source": "<?php\ntrait ExistingEntry150 { public function existing(): int { return 4; } }\neval(<<<'CODE'\necho (new class {})::class, '|';\nreturn;\ntrait ExistingEntry150 { public function replacement(): int { return 8; } }\nCODE);\neval('echo (new class {})::class, \"|\";');\n$object = new class { public function value(): int { return 5; } };\necho $object->value();\n",
+      "source_sha256": "3041fd5763afb484c822b976e25afe64dd6e093bcd86ffeb654e0d0be8ae5aec",
+      "stdout_base64": "",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSg0KSA6IGV2YWwoKSdkIGNvZGU6MSQxfGNsYXNzQGFub255bW91cwB7RklMRX0oOCkgOiBldmFsKCknZCBjb2RlOjEkM3w1",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class150-frozen-native7",
+      "native_raw_sha256": "bdb6444794887b0b639991a00e03a34f95bc32bc143914bb29f12c66e0b1e6e0",
+      "model_timeout_seconds": 180
+    },
+    {
+      "id": "anonymous-trait-enum-composed-trait-key-and-method",
+      "source": "<?php\ntrait Seed150Review {\n    public function value() { return 2; }\n}\ntrait Composed150Review { use Seed150Review; }\nclass User150Review { use Composed150Review; }\n$object = new class {};\necho $object::class, \"|\";\n$user = new User150Review;\necho $user->value(), \"|\";\neval('$tail = new class {}; echo $tail::class, \"|\";');\n",
+      "source_sha256": "95594070cee1a6d8379e383a6f4b14699795f2813060a0c87ed0ef45741d7006",
+      "stdout_base64": "",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo3JDJ8MnxjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9KDExKSA6IGV2YWwoKSdkIGNvZGU6MSQzfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class150-frozen-native7",
+      "native_raw_sha256": "37d318e18f4a2f7f8ab261acc5236d95bbd80ff37907618073f4498b06ce8533",
+      "model_timeout_seconds": 180
+    }
+  ]
+}

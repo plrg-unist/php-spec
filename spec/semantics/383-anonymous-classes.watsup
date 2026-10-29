@@ -94,6 +94,11 @@ dec $anonymous_named_class_node(pcnode) : bool
 def $anonymous_named_class_node(NStmtClass phpType14 phpType24 (NIdentifier (BYTES text) metadata_name) phpType44 phpType42 phpType23 metadata) = $ptvalidname($base64(text), false)
 def $anonymous_named_class_node(pcnode) = false -- otherwise
 
+dec $anonymous_co_resident_node(pcnode) : bool
+def $anonymous_co_resident_node(NStmtTrait phpType14 (NIdentifier (BYTES text) metadata_name) phpType23 metadata) = $ptvalidname($base64(text), false)
+def $anonymous_co_resident_node(NStmtEnum phpType14 (NIdentifier (BYTES text) metadata_name) phpType50 phpType42 phpType23 metadata) = $ptvalidname($base64(text), false)
+def $anonymous_co_resident_node(pcnode) = false -- otherwise
+
 dec $anonymous_class_like(pcnode) : bool
 def $anonymous_class_like(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata) = true
 def $anonymous_class_like(NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata) = true
@@ -125,10 +130,10 @@ def $anonymous_named_scope(NExprClosure phpType14 phpType4_static phpType4_byref
 def $anonymous_named_scope(pcnode) = false -- otherwise
 dec $anonymous_no_named_classes(pcoccurrence*) : bool
 def $anonymous_no_named_classes(eps) = true
-def $anonymous_no_named_classes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ((~$anonymous_class_like(pcnode) \/ $anonymous_class_node(pcnode)) /\ $anonymous_no_named_classes(pcoccurrence*))
+def $anonymous_no_named_classes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ((~$anonymous_class_like(pcnode) \/ $anonymous_class_node(pcnode) \/ $anonymous_co_resident_node(pcnode)) /\ $anonymous_no_named_classes(pcoccurrence*))
 
 dec $anonymous_unit_node(pcnode) : bool
-def $anonymous_unit_node(pcnode) = (($anonymous_class_node(pcnode) \/ $anonymous_named_class_node(pcnode) \/ $anonymous_interface_node(pcnode)) /\ $anonymous_no_classes($pcwalk($pcchildren(pcnode, eps))))
+def $anonymous_unit_node(pcnode) = (($anonymous_class_node(pcnode) \/ $anonymous_named_class_node(pcnode) \/ $anonymous_interface_node(pcnode) \/ $anonymous_co_resident_node(pcnode)) /\ $anonymous_no_classes($pcwalk($pcchildren(pcnode, eps))))
   -- if $anonymous_class_like(pcnode)
 def $anonymous_unit_node(pcnode) = $anonymous_no_named_classes($pcwalk($pcchildren(pcnode, eps)))
   -- if ~$anonymous_class_like(pcnode) /\ $anonymous_named_scope(pcnode)
@@ -260,7 +265,23 @@ def $anonymous_named_header(NStmtInterface phpType14 (NIdentifier (BYTES text) m
   -- if $class_header_line(metadata, NIdentifier (BYTES text) metadata_name, phpType14) = z_line
   -- if $(z_line > 0)
   -- if $pchcompile(NStmtInterface phpType14 (NIdentifier (BYTES text) metadata_name) phpType42 phpType23 metadata, false, ptcontext[.LINE = $nabs(z_line)]) = PCHOK pchheader pchdiagnostic*
+def $anonymous_named_header(NStmtTrait phpType14 (NIdentifier (BYTES text) metadata_name) phpType23 metadata, ptcontext) = ((pchheader, z_line))
+  -- if $class_header_line(metadata, NIdentifier (BYTES text) metadata_name, phpType14) = z_line
+  -- if $(z_line > 0)
+  -- if $pchcompile(NStmtTrait phpType14 (NIdentifier (BYTES text) metadata_name) phpType23 metadata, false, ptcontext[.LINE = $nabs(z_line)]) = PCHOK pchheader pchdiagnostic*
+def $anonymous_named_header(NStmtEnum phpType14 (NIdentifier (BYTES text) metadata_name) phpType50 phpType42 phpType23 metadata, ptcontext) = ((pchheader, z_line))
+  -- if $class_header_line(metadata, NIdentifier (BYTES text) metadata_name, phpType14) = z_line
+  -- if $(z_line > 0)
+  -- if $pchcompile(NStmtEnum phpType14 (NIdentifier (BYTES text) metadata_name) phpType50 phpType42 phpType23 metadata, false, ptcontext[.LINE = $nabs(z_line)]) = PCHOK pchheader pchdiagnostic*
 def $anonymous_named_header(pcnode, ptcontext) = eps -- otherwise
+
+;; Kind-specific implicit interfaces come from the ordinary compiler helpers.
+;; The enum clause and final refusal live with that compiler in436.
+dec $anonymous_header_interfaces(pcnode, pchheader, pmethoddesc*) : ptbytes*?
+def $anonymous_header_interfaces(pcnode, pchheader, pmethoddesc*) = ($ppclass_interfaces(pchheader.INTERFACES, pmethoddesc*))
+  -- if pchheader.KIND <- ["class", "interface"]
+def $anonymous_header_interfaces(pcnode, pchheader, pmethoddesc*) = (pchheader.INTERFACES)
+  -- if pchheader.KIND = "trait"
 
 dec $anonymous_compiled_class_count(pcunit, ptbytes, pclassdesc*, pclassdesc*, pstate?, nat) : nat?
 def $anonymous_compiled_class_count(pcunit, ptbytes_file, eps, pclassdesc_seen*, pstate_external?, n_counter) = (n_counter)
@@ -295,7 +316,7 @@ def $anonymous_compiled_class_count(pcunit, ptbytes_file, pclassdesc :: pclassde
   -- if $anonymous_named_header(pcnode, ptcontext) = ((pchheader, z_line))
   -- if pclassdesc.KIND = pchheader.KIND /\ pclassdesc.NAME = pchheader.NAME
   -- if pclassdesc.PARENT = pchheader.PARENT
-  -- if pclassdesc.INTERFACES = $ppclass_interfaces(pchheader.INTERFACES, pclassdesc.METHODS)
+  -- if $anonymous_header_interfaces(pcnode, pchheader, pclassdesc.METHODS) = (pclassdesc.INTERFACES)
   -- if pclassdesc.ABSTRACT = pchheader.ABSTRACT /\ pclassdesc.FINAL = pchheader.FINAL /\ pclassdesc.READONLY = pchheader.READONLY
   -- if b_early = ($anonymous_named_early(pcunit, pcpath, pclassdesc_seen*, pchheader.NAME) /\ ~$ppclass_external_known(pstate_external?, pchheader.NAME) /\ $ppclass_parent_available(pclassdesc_seen*, pstate_external?, pchheader.PARENT) /\ pclassdesc.INTERFACES = eps /\ ~$pptrait_body_uses(pchheader.BODY))
   -- if pclassdesc.EARLY = b_early /\ pclassdesc.LINE = $nabs(z_line)
@@ -602,7 +623,7 @@ def $anonymous_rtd_nodes(pcunit, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) 
   -- if $anonymous_rtd_site(pcunit, pcpath)
   -- if $anonymous_rtd_nodes(pcunit, pcoccurrence*) = (n)
 def $anonymous_rtd_nodes(pcunit, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $anonymous_rtd_nodes(pcunit, pcoccurrence*)
-  -- if $anonymous_named_class_node(pcnode) \/ $anonymous_interface_node(pcnode)
+  -- if $anonymous_named_class_node(pcnode) \/ $anonymous_interface_node(pcnode) \/ $anonymous_co_resident_node(pcnode)
 def $anonymous_rtd_nodes(pcunit, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $anonymous_rtd_nodes(pcunit, pcoccurrence*)
   -- if ~$anonymous_class_like(pcnode)
 def $anonymous_rtd_nodes(pcunit, pcoccurrence*) = eps -- otherwise

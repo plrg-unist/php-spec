@@ -1,0 +1,467 @@
+{
+  "milestone": "A69 CONFIG Iterator owning argument buffers",
+  "status": "implemented, independently reviewed and validated",
+  "scope": {
+    "consumer": "Existing single-unpack INI_SET Iterator bridge; ordinary CV and admitted emitted temporary routes retain their current source/owner guards.",
+    "values": "A68 scalars plus finite path-acyclic CFG-admitted ARRAY and ordinary non-Stringable root INSTANCE values, from KNOWN current or genuine BYREF cells. Existing A67 instance/static type-source checks are unchanged.",
+    "ownership": "Normalized config_pack_prefix/config_nodes call slots own copied values once. Array COW preserves table snapshots; embedded aliases and object properties stay shared. Slots survive next and DATA/INPUT retirement, then use ordinary CONFIG_INVOKE/API and argument cleanup. API TypeError TraceArgs may retain the arguments, including the Iterator itself.",
+    "abrupt": "Exact owning send-check and admitted primitive-key Error producers keep their task for THROW_SEARCH. CURRENT releases before DATA/INPUT, then the copied prefix; outside cache owners defer destruction. Live ownership checks are disjoint and require allocated roots.",
+    "history": "ITEMS and retired CURRENT records carry bounded structural identities, not live recursive graph checks. Authenticated key/send retirement cannot reconstruct old BYREF contents. Other retired callback stages retain a nonempty copied-prefix witness. This is structural history, not a provenance-complete reachability certificate.",
+    "limits": [
+      "Stringable/effectful conversion and other CONFIG/Generator value consumers remain separate.",
+      "Normal capture/send retains existing finite graph, materialized/special-cell and transient authority restrictions; constructed cycle Error checks do not claim normal cyclic sends or wider GC coverage.",
+      "Existing last-owner/temporary INPUT finalizer predicates still apply; an unadmitted effectful last INPUT remains Unsupported.",
+      "All held boundaries remain unchanged, including Source47 low-precision DEFINE-name NaN and owned-NUL release."
+    ]
+  },
+  "implementation": {
+    "modules": [
+      "spec/semantics/172-file-context-intrinsics.watsup",
+      "spec/semantics/420-config-iterator-unpack.watsup"
+    ],
+    "reuse": "Ordinary copy/COW/reference, normalized slot roots, API reception/TraceArgs and generic argument/destructor release; no 39/257/359/schema/module-manifest rewrite.",
+    "source_freeze": "54d117b1714202bbe2ee181db72cc1bd758d6c4e",
+    "owning_policy": "8882e1e8233044c59a7c00af7c859a7cb6e0edbc",
+    "supplemental_invalid_key_freeze": "478a1e4348842578d1813fc6ade83ada95d2deb8",
+    "abort_fix": "a33e6c5afb65caa87bb823df434cfbe0d6cf1768",
+    "disjoint_fix": "9806c2c4797270188771a5428d677e9cca92270b",
+    "fixture_corrections": [
+      "93a718207f3dd69dc976bfcf4e02c06266a71b48",
+      "1ca40ac735a9a891c498c49f52e57f2936e5c059"
+    ],
+    "compatibility": "Five accepted8882 sources do not enter the new direct Error hooks/NULL finish and use borrowed Aggregate INPUT. Their code paths remain equal after the scoped hook/disjointness fixes.9806 source results and93a reached checks retain separate identities; only a scalar-branch comment changed in runtime after9806."
+  },
+  "validation": {
+    "target": "Pinned project PHP8.5.10 CLI NTS64 and recorded profile.json; C locale/UTC, serial full-tree affinity, reaped process groups and stable watched inputs/HEAD.",
+    "oracle_policy": "Manual EXPECTED bytes were frozen before native capture. Native recorders and private model comparisons check them exactly. Public incdec_warnings callers retain raw native/model comparison, with no EXPECTED-based implementation oracle.",
+    "execution": "Native6 and old refusals2 usedCPU3; private strict430 and first2 sources CPU1; later sources/states CPU5. Source model timeout240/process270; reached numeric SL timeout300, cache disabled/determinism checks retained.",
+    "native": {
+      "count": 7,
+      "receipts": [
+        {
+          "report": "native-source-freeze/report.json",
+          "sha256": "e2f10a06146ebb47f89cb5a63bb75e8ca398bc974b30cbcc42a02bf7fd6be336",
+          "revision": "54d117b1714202bbe2ee181db72cc1bd758d6c4e",
+          "rows": [
+            {
+              "id": "config-owning-argument-byval-array-api-trace",
+              "passed": true,
+              "agreement_credit": 0
+            },
+            {
+              "id": "config-owning-argument-byref-array-api-trace",
+              "passed": true,
+              "agreement_credit": 0
+            },
+            {
+              "id": "config-owning-argument-self-object-api-trace",
+              "passed": true,
+              "agreement_credit": 0
+            },
+            {
+              "id": "config-argument-review-prefix-cow-key-throw",
+              "passed": true,
+              "agreement_credit": 0
+            },
+            {
+              "id": "config-argument-review-prefix-cow-retained-cache",
+              "passed": true,
+              "agreement_credit": 0
+            },
+            {
+              "id": "config-argument-review-prefix-cow-unknown-name",
+              "passed": true,
+              "agreement_credit": 0
+            }
+          ],
+          "seconds": [
+            0.005040168762207031,
+            0.003931999206542969,
+            0.002722501754760742,
+            0.0026552677154541016,
+            0.0036945343017578125,
+            0.002610921859741211
+          ]
+        },
+        {
+          "report": "native-invalid-key-freeze/report.json",
+          "sha256": "538f806936355998b29d63c0f9780b429ff3bbd1f3b79ae3afb81b3b7b3f9fc6",
+          "revision": "478a1e4348842578d1813fc6ade83ada95d2deb8",
+          "rows": [
+            {
+              "id": "config-argument-review-prefix-cow-invalid-key",
+              "passed": true,
+              "agreement_credit": 0
+            }
+          ],
+          "seconds": [
+            0.005540132522583008
+          ]
+        }
+      ]
+    },
+    "old_refusals": {
+      "count": 2,
+      "agreement_credit": 0,
+      "receipt": {
+        "report": "old-gates-source-freeze/report.json",
+        "sha256": "dca2950494dfbdea3ae63ebf0fd9fb0ed5b99ba8e159ae66f6e7f35f2e0c3f3d",
+        "revision": "54d117b1714202bbe2ee181db72cc1bd758d6c4e",
+        "rows": [
+          {
+            "id": "config-owning-argument-byval-array-api-trace",
+            "passed": true,
+            "agreement_credit": 0
+          },
+          {
+            "id": "config-argument-review-prefix-cow-key-throw",
+            "passed": true,
+            "agreement_credit": 0
+          }
+        ],
+        "seconds": [
+          45.37126302719116,
+          57.33353352546692
+        ]
+      }
+    },
+    "sources": {
+      "agreements": 7,
+      "receipts": [
+        {
+          "report": "candidate-8882e1e82/config-owning-argument-byval-array-api-trace/report.json",
+          "sha256": "c66bfc6a06653bd93a378bd0a0e2c373c2d42b2f2e9671cd67448e78c3f704d8",
+          "revision": "8882e1e8233044c59a7c00af7c859a7cb6e0edbc",
+          "rows": [
+            {
+              "id": "config-owning-argument-byval-array-api-trace",
+              "passed": true,
+              "agreement_credit": 1
+            }
+          ],
+          "seconds": [
+            87.24182534217834
+          ]
+        },
+        {
+          "report": "candidate-8882e1e82/config-owning-argument-byref-array-api-trace/report.json",
+          "sha256": "df69682fe738bd7aa72c7fc147fb5c87dadc0ea9d2306ee0b7db7388fd1a9d13",
+          "revision": "8882e1e8233044c59a7c00af7c859a7cb6e0edbc",
+          "rows": [
+            {
+              "id": "config-owning-argument-byref-array-api-trace",
+              "passed": true,
+              "agreement_credit": 1
+            }
+          ],
+          "seconds": [
+            124.42880821228027
+          ]
+        },
+        {
+          "report": "candidate-8882e1e82/config-owning-argument-self-object-api-trace/report.json",
+          "sha256": "abec0b9b716c437a2b6c052d70ffe56215e06da663ab2cf481fb17e63dfa736d",
+          "revision": "8882e1e8233044c59a7c00af7c859a7cb6e0edbc",
+          "rows": [
+            {
+              "id": "config-owning-argument-self-object-api-trace",
+              "passed": true,
+              "agreement_credit": 1
+            }
+          ],
+          "seconds": [
+            65.16606092453003
+          ]
+        },
+        {
+          "report": "candidate-8882e1e82/config-argument-review-prefix-cow-key-throw/report.json",
+          "sha256": "66c37bb906d40654e8d12a10621bd20acd800663590f7f409cf8c12e061013bc",
+          "revision": "8882e1e8233044c59a7c00af7c859a7cb6e0edbc",
+          "rows": [
+            {
+              "id": "config-argument-review-prefix-cow-key-throw",
+              "passed": true,
+              "agreement_credit": 1
+            }
+          ],
+          "seconds": [
+            134.52245354652405
+          ]
+        },
+        {
+          "report": "candidate-8882e1e82/config-argument-review-prefix-cow-retained-cache/report.json",
+          "sha256": "d0ef05cef4c437f13bbff7f789314d02eaef470c59e9412ae0402fea1b2e5411",
+          "revision": "8882e1e8233044c59a7c00af7c859a7cb6e0edbc",
+          "rows": [
+            {
+              "id": "config-argument-review-prefix-cow-retained-cache",
+              "passed": true,
+              "agreement_credit": 1
+            }
+          ],
+          "seconds": [
+            122.74385643005371
+          ]
+        },
+        {
+          "report": "candidate-9806c2c47/config-argument-review-prefix-cow-unknown-name/report.json",
+          "sha256": "bd427fd6ccd50f5ff20179c0830030d8f45e73508c69606ceb9e045350d1fe0a",
+          "revision": "9806c2c4797270188771a5428d677e9cca92270b",
+          "rows": [
+            {
+              "id": "config-argument-review-prefix-cow-unknown-name",
+              "passed": true,
+              "agreement_credit": 1
+            }
+          ],
+          "seconds": [
+            133.4879014492035
+          ]
+        },
+        {
+          "report": "candidate-9806c2c47/config-argument-review-prefix-cow-invalid-key/report.json",
+          "sha256": "97608e8815ef91fdc9ea38867e31712deb5ae464c733f4c61d2c01153ad6855e",
+          "revision": "9806c2c4797270188771a5428d677e9cca92270b",
+          "rows": [
+            {
+              "id": "config-argument-review-prefix-cow-invalid-key",
+              "passed": true,
+              "agreement_credit": 1
+            }
+          ],
+          "seconds": [
+            132.618723154068
+          ]
+        }
+      ]
+    },
+    "new_states": {
+      "physical_premises": 763,
+      "boolean_premises": 749,
+      "raw_steps": 14,
+      "recipes": 4,
+      "coverage": "Main acquisition/cache/DATA/TraceArgs/COW/final-owner fronts are source-reached. NULL dispatch and first-key KNOWN/ref/graph-rejected, forged/dead/scalar and empty-prefix operations are constructed projections from genuine checked fronts, with no extra native agreement credit.",
+      "receipts": [
+        {
+          "report": "state-author-93a718207/config-owning-argument-byref-array-api-trace/report.json",
+          "sha256": "228cd955ba44b6b74856408920952d9c89f2a2a4630b19a26e3c5fa1f7215cd6",
+          "revision": "93a718207f3dd69dc976bfcf4e02c06266a71b48",
+          "rows": [
+            {
+              "id": "config-owning-argument-byref-array-api-trace",
+              "passed": true,
+              "conditions": 196,
+              "raw_steps": 3
+            }
+          ],
+          "seconds": [
+            176.5058343410492
+          ]
+        },
+        {
+          "report": "state-author-93a718207/config-owning-argument-self-object-api-trace/report.json",
+          "sha256": "460d332de6321b5838bb3654a32a8d78e3263cb297ae969fa2075530a9a33f28",
+          "revision": "93a718207f3dd69dc976bfcf4e02c06266a71b48",
+          "rows": [
+            {
+              "id": "config-owning-argument-self-object-api-trace",
+              "passed": true,
+              "conditions": 114,
+              "raw_steps": 3
+            }
+          ],
+          "seconds": [
+            114.6632628440857
+          ]
+        },
+        {
+          "report": "state-peer-93a718207/config-argument-review-prefix-cow-key-throw/report.json",
+          "sha256": "5cf80b8a69cd25c4bd43a5f9dbc3ff0be0549d0d160fd33a62c2362acbcd670a",
+          "revision": "93a718207f3dd69dc976bfcf4e02c06266a71b48",
+          "rows": [
+            {
+              "id": "config-argument-review-prefix-cow-key-throw",
+              "passed": true,
+              "conditions": 195,
+              "raw_steps": 1
+            }
+          ],
+          "seconds": [
+            221.85278916358948
+          ]
+        },
+        {
+          "report": "state-peer-1ca40ac73/config-argument-review-prefix-cow-unknown-name/report.json",
+          "sha256": "55e0dbf047e0a1949be6baf78e30464180f60ac56f40d103d9835439c54881d8",
+          "revision": "1ca40ac735a9a891c498c49f52e57f2936e5c059",
+          "rows": [
+            {
+              "id": "config-argument-review-prefix-cow-unknown-name",
+              "passed": true,
+              "conditions": 258,
+              "raw_steps": 7
+            }
+          ],
+          "seconds": [
+            224.51690411567688
+          ]
+        }
+      ]
+    },
+    "affected_legacy": {
+      "recipe": "A68 config_iterator_scalar_state.py",
+      "physical_premises": 190,
+      "raw_steps": 4,
+      "change": "Only the former live ordinary-object send refusal becomes a copied owning slot; scalar behavior and raw unknown-name priority assertions remain.",
+      "receipt": {
+        "report": "state-affected-1ca40ac73/config-scalar-current-float-api-after-data-destructor/report.json",
+        "sha256": "f615ca5166697107347b7a32411a0f09578fed1f0e4086160cd48701dad451bd",
+        "revision": "1ca40ac735a9a891c498c49f52e57f2936e5c059",
+        "rows": [
+          {
+            "id": "config-scalar-current-float-api-after-data-destructor",
+            "passed": true,
+            "conditions": 190,
+            "raw_steps": 4
+          }
+        ],
+        "seconds": [
+          137.6371831893921
+        ]
+      }
+    },
+    "private_strict": {
+      "report": "private-strict-8882e1e82/report.json",
+      "sha256": "772c58708f815ec520653df40c1518607a872c6b63f6323cfc93ba44a7be2c38",
+      "revision": "8882e1e8233044c59a7c00af7c859a7cb6e0edbc",
+      "passed": true,
+      "seconds": 13.74231767654419,
+      "modules": 430
+    },
+    "preserved_failures": [
+      {
+        "kind": "normal mismatch",
+        "agreement_credit": 0,
+        "receipt": {
+          "report": "candidate-8882e1e82/config-argument-review-prefix-cow-unknown-name/report.json",
+          "sha256": "c6f4aae79ec585fb3ef99ee0ed070ee6071c188d41893369581e494ef85f0c37",
+          "revision": "8882e1e8233044c59a7c00af7c859a7cb6e0edbc",
+          "rows": [
+            {
+              "id": "config-argument-review-prefix-cow-unknown-name",
+              "passed": false,
+              "agreement_credit": 0
+            }
+          ],
+          "seconds": [
+            120.5878517627716
+          ]
+        },
+        "cause": "Default same-frame Throwable continuation dropped the Iterator task and its prefix before cache/DATA release; native order C/D/P differed from model P/C/D."
+      },
+      {
+        "kind": "interpreter failure",
+        "agreement_credit": 0,
+        "receipt": {
+          "report": "candidate-a33e6c5af/config-argument-review-prefix-cow-unknown-name/report.json",
+          "sha256": "bb7bbf2575162bf82a1690c9b65d09fb6a83b1c2ce080678179f95191a196186",
+          "revision": "a33e6c5afb65caa87bb823df434cfbe0d6cf1768",
+          "rows": [
+            {
+              "id": "config-argument-review-prefix-cow-unknown-name",
+              "passed": false,
+              "agreement_credit": 0
+            }
+          ],
+          "seconds": [
+            79.63633632659912
+          ]
+        },
+        "cause": "Overlapping equal-true ownership helper cases; repaired with disjoint guards, plus matching quiet-input/NULL finish dispatch exclusions."
+      },
+      {
+        "kind": "fixture binding error before runtime",
+        "agreement_credit": 0,
+        "receipt": {
+          "report": "state-author-979bb5a47/config-owning-argument-byref-array-api-trace/report.json",
+          "sha256": "7f228d38a56288ff2c91c94fefbb5952781883b0056dd3afc1a357c06d39075f",
+          "revision": "979bb5a47bd048143b7638a398febe2433793eb9",
+          "rows": [
+            {
+              "id": "config-owning-argument-byref-array-api-trace",
+              "passed": false,
+              "conditions": 196,
+              "raw_steps": 3
+            }
+          ],
+          "seconds": [
+            11.243725538253784
+          ]
+        },
+        "cause": "Non-invertible set membership could not bind trace args ID; two bindings replaced by the existing trace_array_field reader."
+      },
+      {
+        "kind": "fixture binding error before runtime",
+        "agreement_credit": 0,
+        "receipt": {
+          "report": "state-peer-93a718207/config-argument-review-prefix-cow-unknown-name/report.json",
+          "sha256": "2d5ae193fbf79f77bca3897e548d16ee005a44c612ccf631515313b55c1225f3",
+          "revision": "93a718207f3dd69dc976bfcf4e02c06266a71b48",
+          "rows": [
+            {
+              "id": "config-argument-review-prefix-cow-unknown-name",
+              "passed": false,
+              "conditions": 257,
+              "raw_steps": 7
+            }
+          ],
+          "seconds": [
+            9.805949211120605
+          ]
+        },
+        "cause": "The actual send key needed binding before equality with its record update; added one field binding, preserving the original equality."
+      },
+      {
+        "kind": "prelaunch wrapper assertion",
+        "agreement_credit": 0,
+        "cause": "First strict command passed a short revision to an exact full-revision assertion; it stopped before spawning an execution actor, then full identity was used."
+      }
+    ]
+  },
+  "recovery": {
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-iterator-arguments-69",
+    "raw_archive": {
+      "path": "raw.tar",
+      "sha256": "9cd85ef381b09b8a47d5cb37698fe8ac5a243b5bd95853eb4dbc24e1bfb955a9",
+      "bytes": 6144000,
+      "regular_files": 238
+    },
+    "manifest": {
+      "path": "manifest.json",
+      "sha256": "2ab81292514b78587c76f6b3c9c37801a2755f00e5a5bd586c83310776be02fe"
+    },
+    "private_branch": "semantics/config-iterator-arguments-69",
+    "commands": "Tracked source/state callers register in Makefile. Raw reports retain exact argv, native paths, original source bytes, profiles, exits, timings and watched hashes. Restore archived paths and recreate a worktree at the named cut; no native or accepted older milestone replay is required merely for integration."
+  },
+  "integration": {
+    "status": "joined430 passed",
+    "base": "4942c4b99026355b57347d3011ff63986b41c43e",
+    "tested_revision": "305b00b95ba8531d3c3564b695b815bf1ea41fee",
+    "modules": 430,
+    "compiler": {
+      "mode": "SL",
+      "cache": false,
+      "determinism_checks": true
+    },
+    "affinity": [
+      5
+    ],
+    "seconds": 13.308499813079834,
+    "cap_seconds": 180,
+    "report": "joined-strict-305b00b95/report.json",
+    "report_sha256": "3c931c37e7a98a31cc149b36cdcf1d2a703bc35e1f71e73083e3666e1674eaf6",
+    "inputs_and_heads_stable": true,
+    "all_processes_reaped": true,
+    "scope": "Actual COMP154/I78/class/enum/GC tail with only A69 code/tests/docs additions; complete current manifest and current/held rows preserved. Private accepted cuts are not renewed. Raw archive covers private validation; the final joined folder is retained separately under the same archive root."
+  }
+}

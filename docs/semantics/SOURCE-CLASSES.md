@@ -373,8 +373,19 @@ caller, with the active eval/include binding, owner depth and end-marker suffix.
 Callable-local and same-unit continuation guards remain intact.
 The [placement review](../../coverage/semantics/anonymous-dynamic-placements-review.json)
 keeps source comparisons and source-reached image/cause checks separate.
-Failed/open/reentered compilation histories, broader factory/capture and constructor
-argument modes, and co-resident enum/trait key accounting remain Unsupported.
+Ordinary traits and enums can share the same successful units with anonymous
+sites. Named header replay authenticates their actual kind, flags and implicit
+interfaces through the existing compilers. The usual source position, trait uses,
+prefix declarations and frozen entry bindings determine early eligibility; an
+already-live trait spelling cannot acquire a fresh early binding in a later unit.
+Class-key costs come from compiler-visited descriptors. Pruned declarations
+contribute none, while compiled unvisited declarations retain their normal cost. Include-once hits do not compile again; a fresh include contributes
+its own compiled descriptors. Trait imports, enum-case caches, anonymous linking
+and argument-throw retry keep their ordinary source and publication authority.
+The [mixed-kind review](../../coverage/semantics/anonymous-trait-enum-review.json)
+records these shared contexts without widening anonymous bodies or factories.
+Failed/open/reentered compilation histories and broader factory/capture and
+constructor argument modes remain Unsupported.
 
 Plain anonymous and Base property types use the ordinary normalizer, invariant
 link checks and typed storage. An absent typed default starts uninitialized,

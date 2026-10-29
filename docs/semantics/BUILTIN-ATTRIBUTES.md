@@ -84,13 +84,18 @@ ownership and cleanup follow the NoDiscard frame above; suppression still
 invokes a registered handler. Literal `since` precedes `message` in the
 diagnostic even when arguments are named in the opposite order.
 
-Internal callback APIs warn at a different point, before argument copying and
-retention. Calls to marked functions through these APIs explicitly return
-`Unsupported "Deprecated internal API timing"`; this boundary has no source
-agreement credit. PHP gives an explicit captured-Closure `__invoke()` call an
-internal wrapper warning before the named function's warning. The model refuses
-that route before either warning, with empty modeled stdout/stderr. General message
-evaluation, other attribute targets and owning wrapper histories remain partial.
+Selected error-handler and `assert` callbacks use the internal API phase:
+Deprecated warns after target selection but before argument copies, by-reference
+warnings and parameter reception. The selected target is borrowed at this point;
+the error-handler registry is disabled during its own call, while an `assert`
+warning may invoke and replace the active handler. A captured Closure gains one
+call owner only at entry. Early `assert` handler throws use the live failure
+policy and release only prepared arguments. Other internal callback consumers
+still refuse this early phase. PHP gives an explicit captured-Closure
+`__invoke()` call an internal wrapper warning before the named function's
+warning; the model refuses that route before either warning, with empty modeled
+stdout/stderr. General message evaluation, other attribute targets and wider
+owning wrapper histories remain partial.
 The model follows `zend_compile.c` attribute and call lowering,
 `zend_vm_def.h` DO_FCALL/BY_NAME warnings, `zend_execute_API.c` callback timing
 and `zend_closures.c` wrapper flags in the pinned engine.
@@ -101,3 +106,11 @@ four reached fronts with 314 conditions: 278 source-reached checks, 24 derived
 guards and 12 raw API projections. Its accepted private and actual-tail joined
 strict cuts each compile 430 modules. Earlier failed fixtures and their
 corrections retain separate identities; broader PHP core remains partial.
+
+The [ATTR03 review](../../coverage/semantics/builtin-deprecated-api-review.json)
+records ten new original-source agreements, including an unmarked `assert`
+control, and four reached fronts with 179 conditions (172 reached, seven derived
+guards). Private and actual-tail joined strict431 pass. The historical ATTR02
+`assert` API exclusion is now a maintained supported expectation without new
+agreement credit; its original cut remains an exclusion. The explicit Closure
+wrapper boundary remains open.

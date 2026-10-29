@@ -40,6 +40,7 @@ def $config_kind(INTRINSIC_INI_RESTORE) = true
 def $config_kind(INTRINSIC_CHDIR) = true
 def $config_kind(pintrinsic) = false -- otherwise
 dec $config_invoke_valid(pstate, pconfigcall) : bool
+dec $config_iterator_copied_call(pstate, pconfigcall) : bool
 dec $config_strict(pstate, pconfigcall) : bool
 dec $config_destination(pintrinsic, preqbytes?, nat) : nat?
 dec $config_string_source(pstate, pconfigcall) : (porigin, int)?
@@ -1562,7 +1563,7 @@ def $config_pending_valid(S, pconfigcall, b) = false -- otherwise
 def $call_task_valid(S, CONFIG_ARGS pconfigcall) = ($config_call_valid(S, pconfigcall) /\ $config_sent_shape(S, pconfigcall))
 def $call_task_valid(S, CONFIG_SEND pconfigcall) = $config_pending_valid(S, pconfigcall, false)
 def $call_task_valid(S, CONFIG_UNPACK_PREP pconfigcall) = $config_pending_valid(S, pconfigcall, true)
-def $config_invoke_valid(S, pconfigcall) = (($config_call_valid(S, pconfigcall) /\ $config_sent_shape(S, pconfigcall) /\ $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX)) \/ $fiber_core_config_valid(S, pconfigcall))
+def $config_invoke_valid(S, pconfigcall) = (($config_call_valid(S, pconfigcall) /\ $config_sent_shape(S, pconfigcall) /\ $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX)) \/ $fiber_core_config_valid(S, pconfigcall) \/ $config_iterator_copied_call(S, pconfigcall))
 def $call_task_valid(S, CONFIG_INVOKE pconfigcall) = $config_invoke_valid(S, pconfigcall)
 def $call_task_valid(S, CONFIG_INI_NULL_RESULT pconfigcall) = $config_ini_null_valid(S, pconfigcall)
 def $call_task_valid(S, CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) = $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)

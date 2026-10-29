@@ -665,8 +665,17 @@ copy raw NULL/bool/int/float/string values before `next()` and cleanup. INI_SET
 binds its string option afterward: weak coercion/NULL deprecation or strict
 rejection. Its scalar/null value is accepted even strict and converted inside
 the API using live precision. Persistent source/callee receipts validate handler
-return or supplied throw after DATA death. Owning argument buffers and other
-CONFIG consumer/value policies remain partial.
+return or supplied throw after DATA death. Generator and other CONFIG
+consumer/value policies remain partial.
+
+[Owning CONFIG arguments](coverage/semantics/config-iterator-argument-review.json)
+copy finite CFG-admitted arrays and ordinary non-Stringable root objects into
+normalized call slots. Real roots preserve array COW, embedded aliases and shared
+object identity through `next()` and DATA/INPUT retirement. API TypeError traces
+can keep those arguments alive until their final owner disappears. Owning key/send
+Errors release CURRENT, then DATA/INPUT, then the copied prefix; admitted returning or
+throwing callbacks keep the existing cleanup rules. Stringable/effectful casts,
+other callees and wider graph/temporary-finalizer lifetimes remain partial.
 
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
@@ -4280,11 +4289,15 @@ walk when `previous` is null, preserving live cells, copied siblings, cache/trac
 severity order and real recursion Errors. The old DIRECT route remains separate.
 Canonical base `Exception`/`Error` roots now use the same visited fold through
 finite canonical Previous paths after older admissions, including warm captured
-graphs. Whole-path authentication stays eager; invalid/cyclic paths and reached
-callbacks or captured-Throwable leaves retain their separate limits.
+graphs. Captured canonical builtin Throwables share this fold after finite
+Previous-path authentication. Identity and class precede active-left recursion
+checks at every equal-kind object entry, including Previous descent; captures through
+live cells preserve caches, COW and real owners. Whole-path authentication stays
+eager; invalid/cyclic paths, reached callbacks and wider layouts remain partial.
 [Standalone trace review](coverage/semantics/throwable-null-trace-comparison-review.json).
 [Base fallback review](coverage/semantics/throwable-base-null-comparison-review.json).
 [Linked-base review](coverage/semantics/throwable-base-previous-comparison-review.json).
+[Captured-Throwable review](coverage/semantics/throwable-captured-comparison-review.json).
 Builtin `#[NoDiscard]` now validates bounded declarations and warns on unused
 ordinary source calls after sends and named defaults, before reception or body.
 Handlers preserve selected arguments, references, receiver ownership and VM
@@ -4295,8 +4308,12 @@ and [review](coverage/semantics/builtin-nodiscard-review.json).
 Bounded `#[Deprecated]` on named user functions and ordinary methods now warns
 on prepared VM calls after sends and named-hole completion, before NoDiscard
 or reception, for used and discarded results. Selected arguments, references
-and receivers survive handlers. Internal callback API
-timing remains explicit Unsupported; see the [Deprecated review](coverage/semantics/builtin-deprecated-review.json).
+and receivers survive handlers. Selected error-handler and `assert` callbacks
+now warn at the internal API phase before argument copies and by-reference
+warnings. Their borrowed selected target and
+early-throw cleanup are covered by ten native-first originals and four reached
+fronts; wider API consumers remain partial. See the [VM review](coverage/semantics/builtin-deprecated-review.json)
+and [API review](coverage/semantics/builtin-deprecated-api-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The
@@ -4399,8 +4416,11 @@ Later units also support returned/nested/call-argument sites and existing named 
 static Closure factories, with up to two ordinary positional/named constructor
 arguments. Compiler-skipped RHS sites consume no key; compiled unvisited sites do.
 [Placement review](coverage/semantics/anonymous-dynamic-placements-review.json).
-Failed/open histories, enum/trait co-residence and wider bodies/argument modes
-remain partial.
+Anonymous sites may share successful units with ordinary traits and enums.
+Normal compiler headers, implicit interfaces and source-entry bindings determine
+their shared class-key sequence; pruned declarations and include-once hits add no
+compilation cost. [Mixed-kind review](coverage/semantics/anonymous-trait-enum-review.json).
+Failed/open histories and wider bodies/argument modes remain partial.
 Plain empty named classes can share those units globally and in valid named
 namespace sections, including repeated unbracketed sections and bracketed global
 bodies. Eligible root/actual-block classes consume no RTD key; deferred classes
@@ -6216,9 +6236,13 @@ fetches retain selected class/member order through loader replay. Captured
 owner is retired. Captured `from(...)`/`tryFrom(...)` also preserve cold backing
 initialization, scalar parsing and cached cases after their closure owners retire;
 ordinary and inherited enum constant aliases retain their declaration owners.
-Stringable arguments to captured lookups and conditional constant transfers
-remain Unsupported. Other generated callable routes, case attributes, the
-default loader and wider acquisition remain partial;
+Stringable arguments to captured lookups use source-bound `__toString()` callbacks
+and release temporary arguments before looking up a case, including `tryFrom()` misses and hits.
+Class constants can consume cached enum cases in scalar conditions and select a
+case through a source-certified case or negated-case condition, including a case
+from another enum. Wider object-valued conditional transfers remain Unsupported.
+Other generated callable routes, case attributes, the default loader and wider
+acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)

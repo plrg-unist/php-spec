@@ -28,11 +28,12 @@ syntax pmagicmethodcall
 syntax pmagicstaticmethodcall
 syntax pconfiggeneratorproducer
 syntax pnamedargs
+syntax pshutdownproducer
 syntax ppropertyhook = { SITE porigin, OBJECT nat, PROPERTY porigin, HOOK porigin, LINE int }
 syntax ppropertyunset = { SITE porigin, NAME ptbytes, LINE int, OBJECT nat, CLASS porigin, METHOD porigin, PROPERTY porigin }
 syntax ppropertyisset = { SITE porigin, NAME ptbytes, LINE int, OBJECT nat, CLASS porigin, METHOD porigin, PROPERTY porigin }
 syntax ppropertyempty = { SITE porigin, NAME ptbytes, LINE int, OBJECT nat, CLASS porigin, ISSET porigin, GET porigin, PROPERTY porigin }
-syntax pcalltarget = MAGIC_UNPACK_TARGET pcalltarget nat nat? pnamedargs | MAGIC_METHOD_NAMED_TARGET pmagicmethodcall nat nat pvalue* | PARENT_HOOK_TARGET pparenthookcall | PROPERTY_COALESCE_TARGET ppropertycoalesce bool | MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall | MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall nat pvalue* | MAGIC_METHOD_SEND_TARGET pmagicmethodcall | MAGIC_METHOD_TARGET pmagicmethodcall nat pvalue* | PROPERTY_MAGIC_SET_TARGET ppropertymagicset | PROPERTY_EMPTY_TARGET ppropertyempty bool | PROPERTY_ISSET_TARGET ppropertyisset | PROPERTY_UNSET_TARGET ppropertyunset | PROPERTY_SET_TARGET ppropertyhook | PROPERTY_HOOK_TARGET ppropertyhook | porigin | FIBER_REPORTING_TARGET | FIBER_API_TARGET nat | FIBER_ARRAY_TARGET pfiberrawapi | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | PROPERTY_GET_TARGET nat porigin | AGGREGATE_METHOD_TARGET nat porigin | UNPACK_ITERATOR_TARGET nat porigin | CONFIG_AGGREGATE_GENERATOR_TARGET pconfiggeneratorproducer | AGGREGATE_GENERATOR_TARGET nat porigin nat porigin int | FOREACH_AGGREGATE_GENERATOR_TARGET nat porigin porigin int | YIELD_FROM_AGGREGATE_GENERATOR_TARGET nat porigin nat porigin int | STATIC_METHOD_TARGET porigin porigin | SCOPED_TARGET porigin porigin porigin nat? poperand | ARRAY_METHOD_TARGET pcalltarget parrayselection | STRING_METHOD_TARGET pcalltarget pstringselection | PIPE_OBJECT_TARGET pcalltarget pobjectselection | HANDLER_METHOD_TARGET bool porigin ptbytes pcalltarget | SCOPE_METHOD_TARGET pcalltarget pcallableaccess | API_METHOD_TARGET papiquery porigin ptbytes bool | FIBER_METHOD_TARGET pfibercallable | OUTPUT_BORROWED_TARGET pcalltarget
+syntax pcalltarget = MAGIC_UNPACK_TARGET pcalltarget nat nat? pnamedargs | MAGIC_METHOD_NAMED_TARGET pmagicmethodcall nat nat pvalue* | PARENT_HOOK_TARGET pparenthookcall | PROPERTY_COALESCE_TARGET ppropertycoalesce bool | MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall | MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall nat pvalue* | MAGIC_METHOD_SEND_TARGET pmagicmethodcall | MAGIC_METHOD_TARGET pmagicmethodcall nat pvalue* | PROPERTY_MAGIC_SET_TARGET ppropertymagicset | PROPERTY_EMPTY_TARGET ppropertyempty bool | PROPERTY_ISSET_TARGET ppropertyisset | PROPERTY_UNSET_TARGET ppropertyunset | PROPERTY_SET_TARGET ppropertyhook | PROPERTY_HOOK_TARGET ppropertyhook | porigin | FIBER_REPORTING_TARGET | FIBER_API_TARGET nat | FIBER_ARRAY_TARGET pfiberrawapi | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | PROPERTY_GET_TARGET nat porigin | AGGREGATE_METHOD_TARGET nat porigin | UNPACK_ITERATOR_TARGET nat porigin | CONFIG_AGGREGATE_GENERATOR_TARGET pconfiggeneratorproducer | AGGREGATE_GENERATOR_TARGET nat porigin nat porigin int | FOREACH_AGGREGATE_GENERATOR_TARGET nat porigin porigin int | YIELD_FROM_AGGREGATE_GENERATOR_TARGET nat porigin nat porigin int | STATIC_METHOD_TARGET porigin porigin | SCOPED_TARGET porigin porigin porigin nat? poperand | ARRAY_METHOD_TARGET pcalltarget parrayselection | STRING_METHOD_TARGET pcalltarget pstringselection | PIPE_OBJECT_TARGET pcalltarget pobjectselection | HANDLER_METHOD_TARGET bool porigin ptbytes pcalltarget | SCOPE_METHOD_TARGET pcalltarget pcallableaccess | API_METHOD_TARGET papiquery porigin ptbytes bool | FIBER_METHOD_TARGET pfibercallable | OUTPUT_BORROWED_TARGET pcalltarget | API_BORROWED_TARGET pshutdownproducer
 syntax parraymode = ARRAY_ADMISSION | ARRAY_DISPATCH
 syntax parrayresolution = ARRAYRESOLVED pcalltarget porigin ptbytes | ARRAYADMITTED | ARRAYINVALID ptbytes | ARRAYUNKNOWN text
 syntax pconstant = PCONSTANT pcpath pvalue | PCCLASS pcpath pvalueclass | PCCPRECISION pcpath int | PCCASSERTION pcpath nat*
@@ -179,6 +180,9 @@ syntax passertini = { ID nat, CALL pconfigcall, CONVERSION passertiniconversion?
 syntax passertoption = { ID nat, CALL pconfigcall, OPTION int, OLD bool }
 syntax passertfailure = { CALL pconfigcall, DESCRIPTION pvalue, PRECISION int, PENDING nat? }
 syntax passertcall = { FAILURE passertfailure, CALLBACK pvalue, RAW parray?, TARGET pcalltarget? }
+syntax perrorcall
+syntax papicallback = API_ERROR perrorcall | API_ASSERT passertcall
+syntax papiargcursor = { CALL papicallback, TARGET pcalltarget, PRODUCER pshutdownproducer, VALUES pvalue*, SENT poperand*, INDEX nat, SITE porigin, LINE int }
 syntax phandlerresolution = HANDLERRESOLVED pcalltarget | HANDLERINVALID ptbytes | HANDLERUNKNOWN text
 syntax pgeneratorop, pgeneratorloop, pgenerator, pgeneratorphase, pgeneratorfrom, pgeneratoraccess, pgeneratorpendingthrow
 syntax pgenclosestage, pgenclose, pgenrelease, pgenstorage
@@ -186,7 +190,7 @@ syntax prefowner = REPLAY_TRY porigin | REPLAY_CATCH porigin
 syntax prefreturncursor = { OWNER porigin, SOURCE porigin, LINE int, OUTER porigin? }
 syntax prefstringcv = { SOURCE porigin, LINE int, CELL nat, OBJECT nat }
 syntax prefreturnnotice = REF_NOTICE_VALUE | REF_NOTICE_NULL
-syntax pdircontext, perrorread, perrorcall, pdeclnoticebatch, pevalcompile, pevalcompileplan, pevalcompilefatal, pbindwarning
+syntax pdircontext, perrorread, pdeclnoticebatch, pevalcompile, pevalcompileplan, pevalcompilefatal, pbindwarning
 syntax pgenfatal
 syntax papiclass = { REQUESTED porigin, CALLED porigin, RECEIVER nat?, STRICT bool }
 syntax papiclassresult = API_CLASS papiclass | API_CLASS_INVALID ptbytes | API_CLASS_UNKNOWN text
@@ -390,7 +394,7 @@ syntax ptask = ENUM_CASE_INIT porigin | ENUM_CONST_FETCH porigin ptbytes ptbytes
   | ORDINARY_CTOR_RECEIVE pordinaryinternal | ORDINARY_CTOR_WARNING pordinaryinternal pvalue | ORDINARY_CTOR_STRING pordinaryinternal
   | OBJECT_CLASS_NAME int
   | EXCEPTION_HANDLER_INVOKE pexceptioncall | EXCEPTION_HANDLER_ENTER pexceptioncall | EXCEPTION_HANDLER_RESULT pexceptioncall
-  | ERROR_HANDLER_INVOKE perrorcall | ERROR_HANDLER_RESULT perrorcall | ERROR_READ_RESULT perrorread | ERROR_TRIGGER_PHASE pconfigcall nat | CONFIG_INI_NULL_RESULT pconfigcall | ASSERTION_INI_RESULT passertini | ASSERT_OPTIONS_READY pconfigcall | ASSERT_OPTIONS_ARRAY passertoption | ASSERT_OPTIONS_STRING passertoption nat porigin int | ASSERT_DESCRIPTION_STRING pconfigcall nat porigin int | ASSERT_CALLBACK_INVOKE passertcall | ASSERT_CALLBACK_RESULT passertcall | ASSERT_CALLBACK_CLEAN passertcall | ASSERT_FAILURE_WARNING passertfailure | CHDIR_WARNING_RESULT pdircontext nat* nat | ERROR_IDENTITY_RESULT pidentityread
+  | ERROR_HANDLER_INVOKE perrorcall | ERROR_HANDLER_RESULT perrorcall | ERROR_READ_RESULT perrorread | ERROR_TRIGGER_PHASE pconfigcall nat | CONFIG_INI_NULL_RESULT pconfigcall | ASSERTION_INI_RESULT passertini | ASSERT_OPTIONS_READY pconfigcall | ASSERT_OPTIONS_ARRAY passertoption | ASSERT_OPTIONS_STRING passertoption nat porigin int | ASSERT_DESCRIPTION_STRING pconfigcall nat porigin int | ASSERT_CALLBACK_INVOKE passertcall | ASSERT_CALLBACK_RESULT passertcall | ASSERT_CALLBACK_CLEAN passertcall | ASSERT_FAILURE_WARNING passertfailure | API_CALLBACK_SEND papiargcursor | API_CALLBACK_REF papiargcursor | CHDIR_WARNING_RESULT pdircontext nat* nat | ERROR_IDENTITY_RESULT pidentityread
   | GLOBAL_READ_RESULT pglobalread | NAME_READ_RESULT pnameread | NAME_CV_READ_RESULT pnameread | NAME_ARRAY_RESULT pnameread | PROPERTY_NULL_RESULT pnameread | PROPERTY_UNDEFINED_RESULT ppropertywarning | PROPERTY_GET_RESULT ppropertyget | PROPERTY_GET_NAN ppropertynan | PROPERTY_GET_BOOL_NAN ppropertyboolnan | PROPERTY_GET_STRING_RESULT ppropertygetstring | PROPERTY_GET_STRING_READY ppropertygetstring pvalue | PROPERTY_GET_STRING_COPY ppropertygetstring pvalue | PROPERTY_GET_LONG ppropertylong | PROPERTY_GET_STRING_LONG ppropertystringlong | PROPERTY_GET_COPY ppropertyget poperand | PROPERTY_GET_DROP ppropertyget pvalue | PROPERTY_GET_BASE ppropertyget | PROPERTY_GET_INPUT ppropertyget nat
   | PROPERTY_PUBLIC_NAN ppropertypublicnan
   | NAME_STRING_RESULT pnamestring | NAME_STRING_READY pnamestring preqbytes | NAME_STRING_PENDING pnamestring preqbytes nat
@@ -1553,3 +1557,8 @@ dec $enum_string_site_valid(pstate, pconfigcall, nat, porigin, int, int) : bool
 dec $ppenum_get_signature(pssignature) : bool
 dec $ppenum_call_signature(pssignature) : bool
 dec $enum_magic_source(pstate, pmethoddesc, bool) : bool
+dec $api_callback_begin(pstate, papicallback, pcalltarget, pfunction, pvalue*, porigin, int) : pstate
+dec $api_callback_result_scope(pstate, pcalltarget) : pstate
+dec $api_borrowed_receiver_retired(pstate) : bool
+dec $api_borrowed_target(pcalltarget) : bool
+dec $consumer_producer_snapshot(pshutdownproducer) : bool

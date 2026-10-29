@@ -156,19 +156,6 @@ def $throwable_continuation(S, S_next) = S_next
   -- if pframe.BORROWEDREAD = S.BORROWEDREAD
   -- if pframe.OBJECTCAST = S.OBJECTCAST
   -- if pframe.CONSTCONTEXT = S.CONSTCONTEXT
-def $throwable_continuation(S, S_next) = S_next
-  -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
-  -- if $error_call_valid(S, perrorcall)
-  -- if S_next.FRAMES = pframe :: S.FRAMES
-  -- if pframe.CONTEXT = S.CURRENT
-  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall_entered) :: ptask_tail*
-  -- if $error_handler_target(S, perrorcall.CALLBACK) = (pcalltarget)
-  -- if perrorcall_entered = perrorcall[.TARGET = (pcalltarget)]
-  -- if pframe.ORIGIN = S.ORIGIN
-  -- if pframe.SILENCES = S.SILENCES
-  -- if pframe.BORROWEDREAD = S.BORROWEDREAD
-  -- if pframe.OBJECTCAST = S.OBJECTCAST
-  -- if pframe.CONSTCONTEXT = S.CONSTCONTEXT
 def $throwable_continuation(S, S_next) = S_next[.TODO = eps][.COMPLETION = UNSUPPORTED "unaudited Throwable frame transition"] -- otherwise
 def $throwable_transition(S, S_next) = $throwable_materialize($throwable_continuation(S, S_next))
   -- if $throwable_pending(S_next.COMPLETION)
@@ -931,11 +918,19 @@ def $throwable_builtin_previous_effect(S, n_left, n_right, pcompareguard_seen*, 
   -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
   -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
   -- if pthrowable_left.KIND =/= pthrowable_right.KIND
+;; Identity and exact class precede the inline object's active-left guard.
+def $throwable_builtin_previous_effect(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDERRECURSIVE)
+  -- if n_left =/= n_right
+  -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
+  -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
+  -- if pthrowable_left.KIND = pthrowable_right.KIND
+  -- if (HOBJECT n_left) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S))
 def $throwable_builtin_previous_effect(S, n_left, n_right, pcompareguard_seen*, z) = $throwable_builtin_previous_slots_effect(S, ppropertyslot_left*, ppropertyslot_right*, (HOBJECT n_left) :: pcompareguard_seen*, z)
   -- if n_left =/= n_right
   -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
   -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
   -- if pthrowable_left.KIND = pthrowable_right.KIND
+  -- if ~((HOBJECT n_left) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
 def $throwable_builtin_previous_effect(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
