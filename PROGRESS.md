@@ -16,6 +16,7 @@ source with a public parent destructor agree exactly with PHP. Strict compilatio
 156 new lifetime premises and two affected return-front groups of 67+33 pass.
 Only four former extra-owner refusals were promoted; extra-edge refusals remain,
 and the old 678/149 whole-tail evidence retains its original cuts.
+Joined strict compilation over the actual 424-module tail also passes.
 [Retained Child review](coverage/semantics/config-aggregate-iterator-retained-child-review.json).
 Wider edges/storage, owner forms, shutdown release and destructor throws/reentry remain partial.
 
