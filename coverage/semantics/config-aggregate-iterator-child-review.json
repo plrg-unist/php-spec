@@ -1,0 +1,59 @@
+{
+  "scope": "Source116: one declared public direct child of a fresh Aggregate-returned sole-DATA CONFIG Iterator after the producer retires. Parent and child have public no-argument by-value nongenerator destructors; the child has no properties, materialized table or outgoing heap edges and has one owner.",
+  "implementation_commit": "d412c929c",
+  "target": {
+    "runtime": "PHP 8.5.10 CLI NTS 64-bit",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+    "engine_sources": [
+      "Zend/zend_interfaces.c:zend_user_it_get_new_iterator/zend_user_it_dtor",
+      "Zend/zend_vm_def.h:ZEND_SEND_UNPACK",
+      "Zend/zend_objects_API.c:zend_objects_store_del",
+      "Zend/zend_objects.c:zend_objects_destroy_object/zend_object_std_dtor"
+    ]
+  },
+  "behavior": "The sole declared child edge remains live while the parent destructor observes it. Ordinary object storage release then destroys the child before INI_SET reception or invalid-key/saved-Exception catch. The stamp changes from 1 to 2, all three weak targets are dead at the continuation, and a saved key Exception retains its identity. Only the CONFIG finalizer admission guard changes; object release and retired operation exit remain unchanged.",
+  "frozen_php_sha256": {
+    "normal": "0fcdb875b39447335576cc474a354d710cdc63011814d4fdfabfed9e782e34e6",
+    "invalid": "07b3d979623963ced73dfa532cea962f991150a938d9889c51b09b17d491b8c9",
+    "throw": "55ce1cf9637d9f58766f68a10559c9163f2fd55be9c0a4fb2fc9dc3b59c6f148"
+  },
+  "validation": {
+    "unchanged_baseline": "At unchanged semantic inputs on 9c05557e7, all three originals exit 1 with explicit Unsupported at Aggregate return after B|G|; zero agreements. Separate per-case reports record stable inputs/HEAD, no timeout and no process-group residue.",
+    "authored_sources": "With the recorded 420 hash on 9c05557e7, all three frozen native/model originals agree exactly on stdout/stderr/exit, with normal model completion, stable inputs/HEAD, no timeout or group residue. The native-first originals retain their bd5ad5a76 identity.",
+    "strict": "Candidate2 strict SL compiles 424 modules and returns true with exit 0 and empty stderr. This uses the current 420 hash.",
+    "reached": "Candidate4 checks normal233, invalid216 and saved-Exception229 premises, all true with exit 0, empty stderr, stable inputs/HEAD, no timeout and empty process groups. The corrected fixture continues from its already-reached child-destructor state. Guards reject an extra child owner and an extra outgoing edge; reached states authenticate the original getter, child allocation, DATA promotion, producer death, parent-live-child observation, child retirement, weak death and pending Exception operation exit.",
+    "review": "Independent review clears the guard and 678-premise reached fixture. One new native-first normal original agrees exactly and distinguishes parent seeing Child live from Child seeing parent weakref null/self weakref live before API. A child-only normal source remains explicit Unsupported at Aggregate return (zero agreement); the other two native child-only modes share that gate and were not rerun."
+  },
+  "independent_positive": {
+    "source": "config116-review-probes/review2/child-notification-order.php",
+    "sha256": "6cbe8150755df4cf0db71296d7184d68164b170ddbb607168dd820344aa4f7ad",
+    "bytes": 2188,
+    "unpack_line": 46,
+    "model_seconds": 92.234
+  },
+  "failed_cuts": "Candidate1 strict compilation stopped on an empty-iteration binding error. Candidate2 reached normal timed out at 240 seconds; candidate3's 360-second-cap attempt was stopped after 14.79 seconds. All retain zero credit. Their raw artifacts remain beside the corrected candidate4 results.",
+  "limits": "Child-only finalization without an Iterator destructor, additional child owners/edges, child storage or materialized property tables, wider graphs, destructor throws/reentrancy, wider current/key effects and other CONFIG consumers remain partial. The existing retired Aggregate receipt validates structural history and remains forgeable by a same-class object in constructed states.",
+  "recovery": "Raw artifacts live under ../php-spec-evidence-archive. Run tests/semantics/config_aggregate_iterator_child_sources.py --phase native|baseline|model --output PATH, then config_aggregate_iterator_child_protocol.py --phase prepare|check --sources PATH --output PATH. Independent sources and self-contained run.py are in config116-review-probes/review2; phases native-positive|exclusion|positive require fresh output paths and the frozen source/cwd/path. Use a root CPU lease and pin the launcher and descendants. Reports preserve commands, original bytes/path/cwd, exact processes, compiler/runtime and input hashes.",
+  "raw_root": "../php-spec-evidence-archive",
+  "reports_sha256": {
+    "config116-probe/source-driver/native-report.json": "33228620e11dccc1d7ed23f49e221677363b47146b2a35dcab659349bafcd6c9",
+    "config116-probe/source-driver/model-report.json": "8c27ee5b33b100a3a2938eac70f2d3f5ede0fd98b5da328a9eb13c5fb799f1ad",
+    "config116-probe/baseline-normal/baseline-report.json": "2ae16a53b90f0e9a55acaeb26a27ff14520a092c1d9722cd5fe9c9239ba2a0b8",
+    "config116-probe/baseline-invalid/baseline-report.json": "5ec138da78a9f6c2c8d0e04de5b61f9c038086b7d1a7f4f883ee97ee06e24bfe",
+    "config116-probe/baseline-throw/baseline-report.json": "e44bbb8a1fd54dfd15782238b1bd066fba02468e12166a59b1f05ce7169cf324",
+    "config116-development/candidate2/strict/report.json": "0441778a938d8da5e670d89342a0681b7814c2f4bb19165953883e490c2ae417",
+    "config116-development/candidate4/protocol/check-report.json": "827f289dc771b3e6a88438f447bb44601626f32e0962b54f579f3884375b2850",
+    "config116-review-probes/review2/native-positive-report.json": "cf4539db9b1f26eead9aa7783e3b40d2f15d34d325ee7f9a318c80cb8c8d070d",
+    "config116-review-probes/review2/positive-report.json": "16ea3fac1ecb322c018f3847d19e0eef38d67d2e92c50b460808b9dd69b731f2",
+    "config116-review-probes/review2/exclusion-report.json": "a3c18d17b9bf2b2189f19a772390687755962fd8b0d06234cf50aca695a0d384",
+    "config116-review-probes/review2/review-summary.json": "d3b5f84c05d7e461600fd1af935358f9dbe725295aaf60be6979d524339b729f"
+  },
+  "tested_input_sha256": {
+    "spec/semantics/420-config-iterator-unpack.watsup": "3ff4636dfdd3647ace5895db098a9e7eaf55c08f49d691e07a5f1a0d9aa18c8b",
+    "tests/semantics/config_aggregate_iterator_child_sources.py": "0df5a62901388cb2982b59434d437de8187a822e5d6416bc1c343c0b82bb898a",
+    "tests/semantics/config_aggregate_iterator_child_protocol.py": "db6232c298573690734258f3f348c77f357ab89acaa36a392ad32e4951b70f9d",
+    "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  }
+}

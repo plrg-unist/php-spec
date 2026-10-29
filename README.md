@@ -625,6 +625,9 @@ A [fresh returned Iterator with a destructor](coverage/semantics/config-aggregat
 now releases its sole CONFIG DATA after its Aggregate producer has died. Its
 public no-argument `__destruct` runs before INI_SET or error recovery, with
 three exact PHP source agreements and separate reached cleanup checks.
+It may also own [one declared child](coverage/semantics/config-aggregate-iterator-child-review.json):
+the parent destructor sees the child live, then the child's destructor runs
+before API entry or catch. Wider child graphs remain partial.
 
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native

@@ -8,6 +8,19 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
+A fresh Aggregate-returned CONFIG Iterator with a public destructor may now
+own one declared direct child with a public destructor and no child storage.
+The parent destructor sees the child live; ordinary storage release then runs
+the child destructor before API entry or catch. Three frozen originals agree
+exactly with pinned PHP across normal, invalid-key and saved-Exception paths.
+An independent normal source also agrees and observes parent weak death before
+the child destructor, while the child's own weak reference remains live.
+Strict compilation passes on 424 modules, and 233+216+229 source-reached
+premises check ownership, order, weak death and pending identity. Earlier
+fixture compiler, timeout and stopped attempts retain zero credit.
+[Returned Iterator child review](coverage/semantics/config-aggregate-iterator-child-review.json).
+Wider child graphs, child-only finalization and destructor throws/reentry remain partial.
+
 Primed public method-created by-reference `Generator::throw` now carries its
 cached reference cell, authenticated receiver and saved Throwable through a
 Fiber catch or pending `finally`. An external name rebind leaves the old cell
