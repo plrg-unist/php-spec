@@ -12,9 +12,11 @@ try {$result=ini_set(...$gen);echo "BAD;";}
 catch (TypeError $error) {
     echo "C:A:",(int)($error->getPrevious()===null),":",$result,":",
         ini_get("precision"),";";
+    $trace=$error->getTrace();echo "P:A:",$trace[0]["args"][0][0],";";
+    unset($trace,$error);
 }
 echo "R:",ini_set("precision",9),":",ini_get("precision"),";";
-unset($gen,$error,$result);
+unset($gen,$result);
 '''
 
 INSTANCE_WEAK = b'''<?php
@@ -34,8 +36,11 @@ try {$result=ini_set(...$gen);echo "BAD;";}
 catch (TypeError $error) {
     echo "C:O:",(int)($error->getPrevious()===null),":",$result,":",
         ini_get("precision"),":",(int)($watch->get()!==null),";";
+    $trace=$error->getTrace();$arg=$trace[0]["args"][0];
+    echo "P:O:",(int)($arg===$watch->get()),":",$arg->value,";";
+    unset($arg,$trace,$error);
 }
-unset($error);echo "U:",(int)($watch->get()===null),";";
+echo "U:",(int)($watch->get()===null),";";
 echo "R:",ini_set("precision",9),":",ini_get("precision"),";";
 unset($gen,$watch,$result);
 '''
@@ -46,6 +51,6 @@ CASES = {
 }
 
 EXPECTED = {
-    'config-generator-owning-array-cow': b'B;Y0;T:A:5;Y1;F;C:A:1:99:14;R:14:9;',
-    'config-generator-owning-instance-weak': b'B;Y0;T:O:1;Y1;F:O:1;C:O:1:99:14:1;U:1;R:14:9;',
+    'config-generator-owning-array-cow': b'B;Y0;T:A:5;Y1;F;C:A:1:99:14;P:A:4;R:14:9;',
+    'config-generator-owning-instance-weak': b'B;Y0;T:O:1;Y1;F:O:1;C:O:1:99:14:1;P:O:1:5;U:1;R:14:9;',
 }
