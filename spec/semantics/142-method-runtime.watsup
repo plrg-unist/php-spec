@@ -332,6 +332,8 @@ def $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
   -- if $closure_callable(S, n)
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
 
+dec $generator_creation_method_live_capture(pstate, pcalltarget, porigin) : pgeneratorcreation?
+dec $generator_creation_method_retained(pstate, pcalltarget, porigin) : bool
 def $method_call_selected(S, METHOD_TARGET n porigin_method, (porigin_site)) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
   -- if $ppcall_dynamic(expression)
@@ -466,8 +468,6 @@ def $scoped_access_site(S, pmethoddesc, n_receiver?, porigin_site, pcallcontext_
 def $scoped_access_site(S, pmethoddesc, n_receiver?, porigin_site, pcallcontext_caller?) = false -- otherwise
 dec $scoped_call_live_scope(pstate, pcalltarget, porigin, phpType19, pmethoddesc) : bool
 dec $generator_creation_selected(pstate, pcalltarget, porigin) : bool
-dec $generator_creation_method_live_capture(pstate, pcalltarget, porigin) : pgeneratorcreation?
-dec $generator_creation_method_retained(pstate, pcalltarget, porigin) : bool
 def $scoped_call_live_scope(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_site, phpType19, pmethoddesc) = true
   -- if $scoped_site_context(S, porigin_method, porigin_site) = pcallcontext_caller?
   -- if $scoped_requested_site(S, porigin_site, phpType19, porigin_requested, pcallcontext_caller?)
