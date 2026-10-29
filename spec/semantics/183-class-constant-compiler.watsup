@@ -316,6 +316,14 @@ def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_mem
   -- if $pfclass_import(S_external, F.MEMORY, pvalue, $(|S_external.ARRAYS| + 1)) = ((S_imported, pvalue_imported))
 def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = F[.VALUE = eps] -- otherwise
 
+def $pfclass_constant_checked(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = F
+  -- if F.MEMORY.COMPLETION =/= NORMAL
+def $pfclass_constant_checked(F, pcpath, expression, (PSTRING ptbytes_raw), phpType20, pvalue_member?, z) = F[.MEMORY = F.MEMORY[.COMPLETION = STATICBYTES ($ptascii("'\\") ++ ptbytes ++ $ptascii("' is an invalid class name")) z]][.VALUE = eps]
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if ptbytes = $pfclassname_strip(ptbytes_raw)
+  -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $pfclass_constant_checked(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) -- otherwise
+
 dec $ppclass_constant_fetch(ppstate, pcpath, phpType19, phpType20, metadata) : ppstate
 dec $ppclass_constant_member(ppstate, pcpath, phpType20) : ppstate
 def $ppdispatch(P, pcpath, NExprClassConstFetch phpType19 phpType20 metadata, PPR) = $ppclass_constant_fetch(P, pcpath, phpType19, phpType20, metadata)

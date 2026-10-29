@@ -23,6 +23,7 @@ dec $config_iterator_quiet_aggregate_data(pstate, pconfigiterator) : bool
 dec $config_iterator_finalizer(pstate, nat) : bool
 dec $config_iterator_destructor(pstate, nat) : bool
 dec $config_iterator_owned_fields(pstate, nat) : bool
+dec $config_iterator_reference_value(pstate, nat) : pvalue?
 dec $config_iterator_data_node(pstate, pnode, pnode*) : bool
 dec $config_iterator_data_value(pstate, pvalue, pnode*) : bool
 dec $config_iterator_data_item(pstate, pitem, pnode*) : bool
@@ -186,6 +187,21 @@ def $config_iterator_finalizer(S, n) = true
 def $config_iterator_finalizer(S, n) = false -- otherwise
 
 def $config_iterator_owned_fields(S, n) = $config_iterator_data_node(S, HOBJECT n, eps)
+;; Live typed sources constrain writes. Reading validates their actual source
+;; table and returns the stored value without conversion or another owner.
+def $config_iterator_reference_value(S, n) = (pvalue)
+  -- if $ordinary_reference_value(S, n) = (pvalue)
+def $config_iterator_reference_value(S, n) = (pvalue)
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if ~(n <- S.LITERALREFDEBTS)
+  -- if ~$foreach_released_cell(S, n) /\ ~$typed_cv_string_released_cell(S, n) /\ ~$update_released_cell(S, n)
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if $propref_at(S.PROPREFS, n) =/= eps
+  -- if $proprefs_valid(S)
+  -- if S.STORE[n] = DEFINED pvalue
+def $config_iterator_reference_value(S, n) = eps -- otherwise
+
 def $config_iterator_data_node(S, HOBJECT n, pnode_seen*) = true
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
   -- if ~$heap_member(HOBJECT n, pnode_seen*)
@@ -206,7 +222,7 @@ def $config_iterator_data_node(S, HARRAY n, pnode_seen*) = true
   -- if $config_iterator_data_items(S, S.ARRAYS[n].ITEMS, (HARRAY n) :: pnode_seen*)
 def $config_iterator_data_node(S, HCELL n, pnode_seen*) = true
   -- if ~$heap_member(HCELL n, pnode_seen*)
-  -- if $ordinary_reference_value(S, n) = (pvalue)
+  -- if $config_iterator_reference_value(S, n) = (pvalue)
   -- if $config_iterator_data_value(S, pvalue, (HCELL n) :: pnode_seen*)
 def $config_iterator_data_node(S, pnode, pnode_seen*) = false -- otherwise
 ;; Each sibling follows its own ancestry, so repeated edges and DAG sharing
@@ -256,7 +272,7 @@ def $config_iterator_current_value(S, pconfigiterator, KNOWN pvalue) = (pvalue)
   -- if $config_iterator_string(S, pvalue)
 def $config_iterator_current_value(S, pconfigiterator, REFERENCE n) = (pvalue)
   -- if $config_iterator_byref_current(S, pconfigiterator)
-  -- if $ordinary_reference_value(S, n) = (pvalue)
+  -- if $config_iterator_reference_value(S, n) = (pvalue)
   -- if $config_iterator_data_value(S, pvalue, [HCELL n])
 def $config_iterator_current_value(S, pconfigiterator, poperand) = eps -- otherwise
 def $config_iterator_current_string(S, pconfigiterator) = true

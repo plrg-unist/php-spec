@@ -648,8 +648,13 @@ shutdown release and wider destructor effects remain partial.
 keep the cell selected by `current()` through key-time writes and source rebinding,
 then copy its string value before `next()`, Iterator destruction and API entry.
 Temporary and Aggregate inputs retain their real owners through normal or
-supplied-Exception cleanup. Six exact source agreements, two explicit Unsupported
-controls and 505 reached checks preserve the existing field/graph policy.
+supplied-Exception cleanup, preserving the existing field/graph policy.
+
+[Typed-current CONFIG values](coverage/semantics/config-iterator-typed-current-review.json)
+validate live instance/static reference sources without coercion or extra owners.
+Existing writes and retirement detach constraints; the cached cell and copied
+arguments survive source rebinding. Transient/special cells and nonstring sends
+retain their boundaries. Original ordinary-cell cuts remain in their review.
 
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
@@ -3582,10 +3587,22 @@ object/array/cell edges, with separate white discovery and selective dead-Key
 entry removal. Three changed native-first originals agree, alongside a repeated
 ordinary-history control on the unchanged path; four source-reached strict SL
 groups pass 136 checks at private cuts. A phase guard confines this projection
-to fresh callback-free PASS0 collection. Callback, residual, worker, hook and
-uncertain same-Key proxy-order paths remain open. The
+to fresh callback-free PASS0 collection. That second cut left callback,
+residual, worker, hook and uncertain same-Key proxy order paths open. The
 [generic ephemeron review](coverage/semantics/gc-ephemeron-generic-review.json)
 records the separate evidence and limits.
+
+The next quiet WeakMap GC cut records the current registration order for every
+Key: replacement keeps its place, removal retires it, and reinsertion appends.
+White collection marks all eligible entry values when pushed, then processes
+that stack last-first, keeping a shared property table's first claim count
+role. Four native-first originals agree, including two independent permutations
+that count 5 and 4; 184 private strict SL reached checks cover the actual
+consumer and invalid metadata. Discarded insertion results no longer copy a
+false value owner. Leaf/methodless insertion, fresh callback-free PASS0 and the
+existing callback/worker/hook fences still bound this cut. See the
+[registration-order GC review](coverage/semantics/gc-registration-order-review.json).
+
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
 reuse only when destructor preparation leaves the state identical.
@@ -4218,10 +4235,14 @@ at visited nodes. Reached ordinary recursion raises a catchable Error with its
 source, trace and normal unwind cleanup. The visited captured walk has no fixed
 depth limit: active-left guards and the finite heap bound traversal while shared
 DAG branches compare normally. Callback and wider-layout boundaries and finite
-previous-path authentication remain separate.
+acyclic previous-path authentication remain separate.
 [Visited-trace review](coverage/semantics/throwable-trace-visited-comparison-review.json).
 [Recursion Error review](coverage/semantics/throwable-trace-recursion-comparison-review.json).
 [Finite-heap traversal review](coverage/semantics/throwable-trace-unbounded-comparison-review.json).
+Canonical root contexts and previous paths also have no numeric depth ceiling.
+Visited object IDs bound pure path authentication by the finite heap; whole-path
+acyclicity and the existing layout restrictions remain required.
+[Finite previous-path review](coverage/semantics/throwable-previous-finite-comparison-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The
@@ -6132,8 +6153,10 @@ its original cuts; wider reentrant histories and enum dependencies remain partia
 
 Unit and backed enums now link with their implicit interfaces and cached singleton
 cases. Direct `cases()`, `from()`, `tryFrom()`, case slots and constant queries have
-source and state checks. Case attributes, generated callable targets and generic
-first-use autoload remain partial; see the [enum checkpoint](PROGRESS.md#current-checkpoint).
+source and state checks. Registered-loader first-use static calls and class-constant
+fetches retain selected class/member order through loader replay. Case attributes,
+generated callable targets, the default loader and wider acquisition remain
+partial; see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
 now loads a sole missing user interface before a parentless class or interface is

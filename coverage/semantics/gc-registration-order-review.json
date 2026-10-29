@@ -1,0 +1,63 @@
+{
+  "scope": "Quiet callback-free finite WeakMap ephemeron collection with actual per-Key association order, weak-value worklist order and materialized-table first-claim counting.",
+  "target": "PHP 8.5.10 CLI NTS signed 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "engine_basis": ["Zend/zend_weakrefs.c:zend_weakref_register,zend_weakmap_write_dimension,zend_weakmap_unset_dimension,zend_weakmap_get_gc,zend_weakmap_get_key_entry_gc,zend_weakmap_get_object_entry_gc", "Zend/zend_gc.c:gc_collect_white", "Zend/zend_execute.c:zend_assign_to_object_dim"],
+  "behavior": "Current same-Key associations carry unique relative ranks. A new registration follows surviving associations; replacement retains its rank and unset retires it. Quiet white collection marks all eligible weak values at push time and processes them last-first; ordinary children retain first-child descent. A shared ordinary property table keeps its count role from its first claim. Every white child is claimed and enqueued once, every node is processed at most once, and finite roots/current nodes and shrinking rank folds bound the walk without a depth cap. Discarded dimension assignment results do not copy a false value owner. Physical owner extraction in module39 and the older callback/WeakReference BEFORE policies are unchanged.",
+  "private_cuts": "Source-only 72eff149c; runtime a7cdd0fd7 plus discarded-result repair b89ed9a0b. Reached checks ran at 7f29a22fa with exact untracked fixture SHA b6d5f03b8a3f0bba06590862c604498e8db0fe5e3672f1d0d99e1e12c73017ae; that fixture was then committed as a62193070 without byte changes.",
+  "validation": {
+    "source": "Four frozen native-first originals agree exactly: authored reverse-two-proxy B|4|dead|0|0|END and interleaved-two-keys B|4|split|4|dead|0|END; independent C/B/A reinsertion P|0|live|0|5|dead|0|END and A/B/C reinsertion P|0|live|0|4|dead|0|END. The second independent native ran with in-progress spec edits, recorded separately; PHP source/profile/oracle remained fixed. All accepted model actors finished normal, exit0, empty stderr, stable inputs, no timeout or surviving process group.",
+    "reached": "Four source-reached explicit --sl groups pass at separate private cuts: 26 discarded insertion, 35 independent per-Key ranks, 69 C/B/A actual GC_FREE, 54 A/B/C actual GC_FREE, total 184 reported (172 custom). The peer fronts check actual BUFFER-root worklist order, count/proxy roles, real consumer and budget partition. Derived used-result, malformed-rank, forged WEAK-plan and phase controls add no PHP source agreement.",
+    "compiler": "Private 426-module explicit --sl compilation passes true newline, empty stderr, exit0 and no timeout at b89ed9a0b. The separately reviewed actual-tail 428-module joined --sl compilation also passes.",
+    "preserved_zero": "The representative source-only old gate returns genuine Unsupported before agreement. The first changed reverse-two model counted 3 instead of native 4 because a discarded insertion result falsely rooted Proxy; that failed run remains zero credit. A derived reached diagnostic identified the early buffer root; only the affected source was retried after the producer fix. No accepted GC01/GC02 source, native or state campaign was replayed."
+  },
+  "actual_tail_join": "Six private commits were composed over exact clean canonical 12ebecbea0619fb1e57c36c89f5fb1d40bf4d33b. Independent review cleared the actual enum, A67, GC and docs union at clean 7cdaf75603f321ad5daefb671155a7c5fc2df768. Module30 and 386 preserve the actual enum/source additions alongside the GC changes; 301/422/source/state bytes match the accepted private cut. One pinned CPU2 explicit --sl compilation of the actual 428-module manifest passes there: true newline, empty stderr, exit0, stable inputs/HEAD, no timeout or process residue. This adds compilation credit only; earlier native/source/reached cuts retain their original identities.",
+  "limits": "New traversal requires fresh callback-free PASS0, quiet unmarked buffer, canonical ordinary tables, methodless leaf insertion/replacement, valid current registration ranks and no active freeing contexts. WeakMap clone, nonleaf insertion/replacement, callbacks, destructor/resurrection/reentry, residual tags, cached workers, property hooks, active Fiber/frame/iterator contexts and wider read/mutation protocols remain partial. This does not establish full PHP GC or interaction-tree semantics.",
+  "raw_root": "../php-spec-evidence-archive",
+  "raw": {
+    "author_native": "gc-registration-author/packet1/native-report.json",
+    "author_old_gate": "gc-registration-author/packet1/baseline-report.json",
+    "author_first_failure": "gc-registration-author/packet1/model-reverse-two-proxy-report.json",
+    "author_interleaved_model": "gc-registration-author/packet1/model-interleaved-two-keys-report.json",
+    "author_reverse_retry": "gc-registration-author/packet3/reverse-retry-report.json",
+    "private_strict": "gc-registration-author/packet3/strict-report.json",
+    "peer_cba_native": "gc-registration-review-probes/packet1/native-report.json",
+    "peer_cba_model": "gc-registration-review-probes/packet1/model-report.json",
+    "peer_abc_native": "gc-registration-review-probes/proxy-last-packet1/native-report.json",
+    "peer_abc_model": "gc-registration-review-probes/proxy-last-packet1/model-report.json",
+    "state_discarded": "gc-registration-author/state-four/shutdown-state-review-niskv3ki/report.json",
+    "state_two_key": "gc-registration-author/state-four/shutdown-state-review-jcd5s6t3/report.json",
+    "state_cba": "gc-registration-author/state-four/shutdown-state-review-tk0fgnk7/report.json",
+    "state_abc": "gc-registration-author/state-four/shutdown-state-review-16d6h28u/report.json",
+    "joined_actual_sl": "gc-registration-author/joined-actual-tail/joined-strict-report.json"
+  },
+  "report_sha256": {
+    "author_native": "c13aea162376e40c579319ce5a1302acbd4ceb9d95ca551ee0521129f6e5c974",
+    "author_old_gate": "a6a8e477499ef3ad572a24ffdc413efc5485fe40fa306bd0395847effc054fba",
+    "author_first_failure": "b3bb0e4781c4c6c02aa1e8edd6d5c679b46be2187b56fff5b2d068e5f77d60f1",
+    "author_interleaved_model": "135c2c8a4d91145688b0cf623976d8a87cbd755caa5447357caca23a61062d11",
+    "author_reverse_retry": "0e64dafb41422fe7375593f0b0821c69777b01e7511c6248405616e10bea91d7",
+    "private_strict": "b865b9e6da5b69d33c9eb8f19ab319ed6a13d8ecd362746118b7fdf04caf5960",
+    "peer_cba_native": "5041661f614c55ec7b2ec5e83b80195c4b3f65f933477787b2aacc2c7fd3aba3",
+    "peer_cba_model": "e49bf811202be0197db327818c29896cb42771411b07438466c8bae500c97478",
+    "peer_abc_native": "2ab88d571f88f238a49f00c70df1a78f05266c8c997911f7cccfee2c90b20c8b",
+    "peer_abc_model": "739bd070d2837d13a5f6162ab054f3dfbc6cb1be11439b76a0693cfeb0edda6c",
+    "state_discarded": "90186b14933794292270a6d81dfe7d6edc1e23ea4135647a3274b4b552ed254f",
+    "state_two_key": "acaa4af0e12e4360b80b9cb191c59804ee8e947181b103c76f17470d88511684",
+    "state_cba": "6fe8650f15efc86251efa15555537b8eee023197972ce1cd0c0e943385a02938",
+    "state_abc": "3cb01373a9251513ed692095b592c86449c258d4af928455dc5a3f95dc6e2157",
+    "joined_actual_sl": "946e4c6b0dc84414f677f77017bfa1fdc73dcdfaba33479aabc9ce4e2c0bdb8c"
+  },
+  "private_input_sha256": {
+    "spec/semantics/30-storage.watsup": "a6eb720288698bdf511a2d4166eb50e085bacec84d0d1a0f294ca2779f64b486",
+    "spec/semantics/301-cycle-collection.watsup": "4432be52c46d34714a18004af22f1e6f30771a5d7003a390a86bb3617831dc12",
+    "spec/semantics/386-weak-map-lifetime.watsup": "81743567b4d1e33ff2f27c02c7350b97e596b1129ddc610e0444a27146fe3b99",
+    "spec/semantics/422-weak-map-entries.watsup": "9a64e26a4b9cd6db5e23e5b638f5115a0d7c8a591a23b1cdb68a03daf3c7d16a",
+    "tests/semantics/gc_registration_order_sources.py": "0d8c34c2d60c89776a194edd1bb1daffd994538f42c0e69bece10c9fb5c3473f",
+    "tests/semantics/gc_registration_order_state.py": "b6d5f03b8a3f0bba06590862c604498e8db0fe5e3672f1d0d99e1e12c73017ae"
+  },
+  "actual_tail_shared_sha256": {
+    "spec/semantics/30-storage.watsup": "f81c257ae60b841459e54698e182ae5deebc846c6c06f07b382f283ad7f4ded8",
+    "spec/semantics/386-weak-map-lifetime.watsup": "b6fd770be07d46070912270cab5e277a6d8870a5fe35656f2ab6bbccd7dd6055"
+  },
+  "recovery": "Run gc_registration_order_sources.py with --phase native|baseline|model, --case and a fresh --output; keep each native report at its original recorded path/cwd. Independent run.py and run_proxy_last.py under gc-registration-review-probes take native|model --cpu N --output PATH --root WT. Run gc_registration_order_state.py --case for explicit --sl reached checks. Use one exclusive pinned CPU lane, serialize actors and fully reap them. Raw reports retain commands, source bytes/path, profile, streams, exits and process-group status."
+}

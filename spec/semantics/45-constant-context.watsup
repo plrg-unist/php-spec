@@ -608,7 +608,8 @@ def $pfmember_known(NIdentifier phpType33 metadata, pvalue?) = true
 def $pfmember_known(phpType20, (PSTRING n*)) = true
 def $pfmember_known(phpType20, pvalue?) = false -- otherwise
 dec $pfclass_constant(pfstate, pcpath, phpType19, pvalue?, phpType20, pvalue?, int) : pfstate
-def $pfdispatch(F, pcpath, PFCLASSCONST phpType19 phpType20, z) = $pfclass_constant(F_member, pcpath, phpType19, F_class.VALUE, phpType20, F_member.VALUE, z)
+dec $pfclass_constant_checked(pfstate, pcpath, phpType19, pvalue?, phpType20, pvalue?, int) : pfstate
+def $pfdispatch(F, pcpath, PFCLASSCONST phpType19 phpType20, z) = $pfclass_constant_checked(F_member, pcpath, phpType19, F_class.VALUE, phpType20, F_member.VALUE, z)
   -- if F_class = $pfclasspart(F, pcpath ++ [PCFIELD 0], phpType19, z)
   -- if F_member = $pfmemberkey(F_class, pcpath ++ [PCFIELD 1], phpType20, z)
 dec $pfclassdynamic(phpType19) : bool
