@@ -426,12 +426,28 @@ before `ErrorException` severity at every node; warm caches and finite DIRECT
 trace arrays retain their order. Shared child identity and mixed exact child
 classes skip their captured payloads. Ten new original sources (eight author,
 two independent), one newly supported retained control and two unchanged normal
-controls agree with pinned PHP; two reached-payload controls remain Unsupported.
+controls agree with pinned PHP; two reached-payload controls were Unsupported
+at that cut.
 Strict compilation of 424 modules and six source-reached fixtures with 357
 premises/ten raw steps pass. The earlier two missing-worktree-link setup errors
 retain zero credit. [Builtin previous-chain review](coverage/semantics/throwable-builtin-previous-comparison-review.json).
 Base Exception/Error root rules remain separate; materialized, freeing, longer
 or cyclic previous paths, subclasses, FiberError and pending states stay partial.
+
+Captured `stdClass`/plain methodless objects, arrays and live reference cells now
+compare inside those builtin chains through the existing paired graph bound.
+Reached table materialization and current writes preserve cache, trace, previous
+and severity order. Seven new originals (five author, two independent), two
+previously Unsupported originals and three unchanged controls agree exactly;
+four wider controls remain Unsupported. Strict compilation of 424 modules and
+four reached fixtures with 426 premises/eleven raw steps pass, including real
+and derived cycle refusal.
+An eager Boolean guard draft was corrected during independent source review
+before cyclic validation; its strict/one-valid-source passes retain their old cut.
+[Previous graph review](coverage/semantics/throwable-previous-graph-comparison-review.json).
+The additional graph mode retains its own 16-node path and paired class/position
+limits. Wider callbacks, graph cycles, materialized Throwables and pending states
+remain partial.
 
 Fresh, unheld user Iterators returned by a borrowed `IteratorAggregate` getter
 now enter CONFIG unpack with DATA as their sole owner. Two original normal and
@@ -624,7 +640,7 @@ temporary `__invoke` callees and wider lifecycle forms remain separate.
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118, CALL113/122, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118, CALL113/122, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
