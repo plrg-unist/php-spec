@@ -1,0 +1,49 @@
+[
+  {
+    "id": "i80-first-class-static-sibling",
+    "purpose": "Two first-class captures of one inherited instance method create equivalent fresh private-static Generators; both callable closures and maker retire before the selected body and close finally.",
+    "source": "<?php\nclass Mid80A {\n    private static function body() {\n        echo 'BODY|', (int) (__CLASS__ === 'Mid80A'), '|',\n             (int) (static::class === 'Leaf80A'), '|';\n        try {\n            yield 80;\n        } finally {\n            echo 'FIN|';\n        }\n    }\n    public function make() {\n        echo 'MAKE|';\n        return self::body();\n    }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Leaf80A extends Mid80A {\n    public static function body() { echo 'BAD-BODY|'; yield 0; }\n}\n$maker = new Leaf80A();\n$weakMaker = WeakReference::create($maker);\n$first = $maker->make(...);\n$second = $maker->make(...);\n$weakFirst = WeakReference::create($first);\n$weakSecond = WeakReference::create($second);\n$g = $first();\n$other = $second();\nunset($first, $second, $maker);\necho 'FRESH|', (int) ($weakFirst->get() === null), '|',\n     (int) ($weakSecond->get() === null), '|',\n     (int) ($weakMaker->get() === null), '|';\necho 'VALUE|', (int) ($g->current() === 80), '|';\nunset($g);\necho 'AFTER|', (int) ($other instanceof Generator), '|';\nunset($other, $weakMaker, $weakFirst, $weakSecond);\necho 'E';\n",
+    "source_sha256": "d68b2b53690ac316e182b139471b31635f95e177de7d08b2d9c0905ed7aae78a",
+    "native_exit": 0,
+    "native_stdout": "MAKE|MAKE|MAKER|FRESH|1|1|1|VALUE|BODY|1|1|1|FIN|AFTER|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i80-from-callable-protected-close",
+    "purpose": "A captured inherited instance factory calls parent protected nonstatic Generator; the callable retires but the real saved frame keeps the receiver through close finally.",
+    "source": "<?php\nclass Base80B {\n    protected function body() {\n        global $weakMaker;\n        echo 'BODY|', (int) ($this === $weakMaker->get()), '|';\n        try {\n            yield 80;\n        } finally {\n            echo 'FIN|', (int) ($this === $weakMaker->get()), '|';\n        }\n    }\n}\nclass Mid80B extends Base80B {\n    public function make() {\n        echo 'MAKE|';\n        return parent::body();\n    }\n}\nclass Leaf80B extends Mid80B {\n    public function body() { echo 'BAD-BODY|'; yield 0; }\n    public function __destruct() { echo 'MAKER|'; }\n}\n$maker = new Leaf80B();\n$weakMaker = WeakReference::create($maker);\n$factory = Closure::fromCallable([$maker, 'make']);\n$weakFactory = WeakReference::create($factory);\n$g = $factory();\nunset($factory, $maker);\necho 'FRESH|', (int) ($weakFactory->get() === null), '|',\n     (int) ($weakMaker->get() instanceof Leaf80B), '|';\necho 'VALUE|', (int) ($g->current() === 80), '|';\nunset($g);\necho 'AFTER|', (int) ($weakMaker->get() === null), '|';\nunset($weakFactory, $weakMaker);\necho 'E';\n",
+    "source_sha256": "177a5c33684cf6afde59f7e3307ff5ed586084a5c347e609f134f94ba2a83178",
+    "native_exit": 0,
+    "native_stdout": "MAKE|FRESH|1|1|VALUE|BODY|1|1|FIN|1|MAKER|AFTER|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i80-from-callable-late-static",
+    "purpose": "A captured inherited static factory forwards its real Leaf called scope to the Leaf protected override after the callable retires.",
+    "source": "<?php\nclass Mid80C {\n    public static function make() {\n        echo 'MAKE|';\n        return static::body();\n    }\n    protected static function body() { echo 'BAD-MID|'; yield 0; }\n}\nclass Leaf80C extends Mid80C {\n    protected static function body() {\n        echo 'BODY|', (int) (__CLASS__ === 'Leaf80C'), '|',\n             (int) (static::class === 'Leaf80C'), '|';\n        yield 80;\n        return 81;\n    }\n}\n$factory = Closure::fromCallable([Leaf80C::class, 'make']);\n$weakFactory = WeakReference::create($factory);\n$g = $factory();\nunset($factory);\necho 'FRESH|', (int) ($weakFactory->get() === null), '|';\necho 'VALUE|', (int) ($g->current() === 80), '|';\n$g->next();\necho 'RETURN|', (int) ($g->getReturn() === 81), '|';\nunset($g, $weakFactory);\necho 'E';\n",
+    "source_sha256": "29fbadc9ae47653c9ce47430905b0832e164deba7307d94c9f04b69121cc1bf9",
+    "native_exit": 0,
+    "native_stdout": "MAKE|FRESH|1|VALUE|BODY|1|1|1|RETURN|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i80-named-function-control",
+    "purpose": "A named free-function Closure::fromCallable factory creating a named Generator is an unchanged positive control without method scope authority.",
+    "source": "<?php\nfunction body80D() {\n    echo 'BODY|';\n    yield 80;\n}\nfunction make80D() {\n    echo 'MAKE|';\n    return body80D();\n}\n$factory = Closure::fromCallable('make80D');\n$weakFactory = WeakReference::create($factory);\n$g = $factory();\nunset($factory);\necho 'FRESH|', (int) ($weakFactory->get() === null), '|';\necho 'VALUE|', (int) ($g->current() === 80), '|';\nunset($g, $weakFactory);\necho 'E';\n",
+    "source_sha256": "d48e23600c02c60c57ebe24c010f24cb3e4db3081491530d3f97d81512051a3c",
+    "native_exit": 0,
+    "native_stdout": "MAKE|FRESH|1|VALUE|BODY|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i80-private-from-reference-abort-independent",
+    "purpose": "A captured private Mid fromCallable method on Host selects its own private static Generator body, then the callable and Host retire. Fresh BYREF SEND keeps Delivered temporarily, supplied Fiber abort releases it, while the reference cache owns Item until Generator drop.",
+    "source": "<?php\nclass Item80 { function __destruct() { echo 'TOKEN|'; } }\nclass Delivered80 {\n    function __construct() { global $wd; $wd = WeakReference::create($this); }\n    function __destruct() { echo 'DELIVERED|'; }\n}\nclass Mid80 {\n    public function capture() { return Closure::fromCallable([$this, 'make']); }\n    private function make(&$item) {\n        global $wh;\n        echo 'MAKE|', __CLASS__ === 'Mid80', '|', static::class === 'Host80', '|', $this === $wh->get(), '|';\n        return Mid80::body($item);\n    }\n    private static function &body(&$item) {\n        global $wp, $wd;\n        echo 'BODY|', __CLASS__ === 'Mid80', '|', static::class === 'Mid80', '|';\n        try {\n            Fiber::suspend('fresh80');\n            $received = yield $item;\n            echo 'RECEIVE|', $received === $wd->get(), '|';\n            Fiber::suspend('cached80');\n        } finally {\n            echo 'FIN|', $wp->get() instanceof Item80, '|', $wd->get() instanceof Delivered80, '|';\n        }\n    }\n    function __destruct() { echo 'HOST|'; }\n}\nclass Host80 extends Mid80 {\n    public function make(&$item) { echo 'BAD|'; return []; }\n}\nfunction Run80() { global $g; echo 'CALL|'; $g->send(new Delivered80()); echo 'BAD|'; }\n$item = new Item80(); $old =& $item; $wp = WeakReference::create($item);\n$host = new Host80(); $wh = WeakReference::create($host);\n$factory = $host->capture(); $wf = WeakReference::create($factory);\n$g = $factory($item);\nunset($factory, $host, $item); $item = 9;\necho 'FRESH|', $wf->get() === null, '|', $wh->get() === null, '|', $wp->get() instanceof Item80, '|';\n$f = new Fiber('Run80'); $stop = new Exception('stop80');\necho 'START|'; $first = $f->start();\necho 'FRESH-ARG|', $first === 'fresh80', '|', $wd->get() instanceof Delivered80, '|';\necho 'RESUME|'; $second = $f->resume('go80'); unset($old);\necho 'CACHED|', $second === 'cached80', '|', $g->current() === $wp->get(), '|', $item === 9, '|', $wd->get() instanceof Delivered80, '|';\necho 'ABORT|';\ntry { $f->throw($stop); }\ncatch (Throwable $e) {\n    echo 'OUT|', $e === $stop, '|', $e->getPrevious() === null, '|', $f->isTerminated(), '|', $wd->get() === null, '|', $wp->get() instanceof Item80, '|';\n}\necho 'CLOSED|', $g->current() === null, '|', $wp->get() instanceof Item80, '|';\nunset($g, $f, $stop, $e);\necho 'DROP|', $wp->get() === null, '|E';\n",
+    "source_sha256": "43db5c280690fd86e72aaf3d872a7e934b10f188a54370bbffb524fe26ccdf32",
+    "native_exit": 0,
+    "native_stdout": "MAKE|1|1|1|HOST|FRESH|1|1|1|START|CALL|BODY|1|1|FRESH-ARG|1|1|RESUME|RECEIVE|1|CACHED|1|1|1|1|ABORT|FIN|1|1|DELIVERED|OUT|1|1|1|1|1|CLOSED|1|1|TOKEN|DROP|1|E",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
+  }
+]

@@ -392,9 +392,27 @@ root. Four new authored, one independent and one unchanged public control
 agree with PHP. Four reached
 fronts pass 209 custom/229 reported checks; private strict430 and actual-tail
 joined strict431 pass.
-Named/from/fake/implicit factory origins and wider binding, producer and
-lifecycle contexts remain partial.
+At that I79 cut, named/from/fake/implicit factory origins and wider binding,
+producer and lifecycle contexts remained partial.
 [Rebound method review](../../coverage/semantics/generator-closure-method-review.json).
+
+I80 authenticates captured ordinary user-method factories from first-class
+callables and `Closure::fromCallable` when they create scoped Generator methods.
+The real selected method, source permission, lexical/called class and receiver
+are retained as borrowed history after the callable retires. A first-class
+factory can select a private static body while an equivalent sibling stays
+fresh; a `fromCallable` factory can select an inherited protected receiver body
+or forward a late static call. The actual Generator remains the resume/close
+owner. Its saved or active frame carries the body receiver when needed; its
+cache retains only the ordinary value or reference owner. Three new authored,
+one independent by-reference SEND/Fiber-abort source
+and one unchanged named-function control agree with PHP. Three reached fronts
+pass 174 custom/189 reported checks; private and actual-tail joined strict431
+pass. The old first-class case was checked Unsupported with zero agreement
+credit. Model `BOUNDFAKECLOSURE` and implicit Closure kinds, broader callable sources and producer/lifecycle
+combinations remain partial; Zend's implementation of `fromCallable` uses a
+fake Closure internally, a distinct representation choice.
+[Captured factory review](../../coverage/semantics/generator-captured-factory-review.json).
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
@@ -750,9 +768,9 @@ null results and phase-specific error cleanup. Direct Aggregate
 [argument acquisition](SOURCE-CALL-UNPACK.md#direct-aggregate-argument-acquisition)
 now shares the existing Iterator/Generator call sends. Broader reference
 producers, dynamic/nullsafe API calls and named/unpacked API arguments remain
-required. Other Closure factory kinds, ordinary method-call creation through
-rebound Closures, receiver bindings, implicit callback creation and creation through
-changed/imported caller scope remain required.
+required. Other callable factory kinds, wider receiver bindings, implicit
+callback creation and remaining changed/imported caller-scope combinations
+remain required.
 [Module303](GENERATOR-FORCE-CLOSE.md) adds ordinary last-owner forced close,
 pending finally execution and ordered input/frame/cache release.
 [Module310](GENERATOR-FIBER-CLOSE.md) extends ordinary paused-Generator release

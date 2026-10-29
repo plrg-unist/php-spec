@@ -660,9 +660,27 @@ def $anonymous_rtd_count(S, pcunit) = ($nabs($(n_after - n_seed)))
   -- if $(n_after >= n_seed)
 def $anonymous_rtd_count(S, pcunit) = eps -- otherwise
 
+;; Parser rejection reserves a source ID but reaches no class compiler.
+;; The existing failure record authenticates its actual service and filename.
+dec $anonymous_parser_rejected(pstate, pdeclaration, nat) : bool
+def $anonymous_parser_rejected(S, pdeclaration, n) = true
+  -- if $(n > 0)
+  -- if $declaration_entry_input(pdeclaration, n) = ((porigin_site?, z_reporting, z_precision))
+  -- if porigin_site? = (PORIGIN n_site pcpath)
+  -- if $(n_site < n)
+  -- if $failed_source_at(S.FAILEDSOURCES, n) = (pfailedsource)
+  -- if pfailedsource.SITE = PORIGIN n_site pcpath
+  -- if $failed_source_record_valid(S, pfailedsource)
+  -- if $source_unit(S.SOURCES, n) = eps /\ $code_at(S.CODE, n) = eps
+  -- if $eval_binding_at(S.EVALBINDINGS, n) = eps /\ $file_binding_at(S.FILEBINDINGS, n) = eps
+def $anonymous_parser_rejected(S, pdeclaration, n) = false -- otherwise
+
 dec $anonymous_rtd_history(pstate, pdeclaration*, nat, nat, nat) : nat?
 def $anonymous_rtd_history(S, eps, n, n, n_counter) = (n_counter)
   -- if $(n > 0)
+def $anonymous_rtd_history(S, pdeclaration_entry :: (PDEXIT n_expected PCSREJECT) :: pdeclaration_tail*, n_expected, n_target, n_counter) = $anonymous_rtd_history(S, pdeclaration_tail*, $(n_expected + 1), n_target, n_counter)
+  -- if $(n_expected < n_target)
+  -- if $anonymous_parser_rejected(S, pdeclaration_entry, n_expected)
 def $anonymous_rtd_history(S, pdeclaration :: pdeclaration_tail*, n_expected, n_target, n_counter) = $anonymous_rtd_history(S, pdeclaration_rest*, $(n_expected + 1), n_target, $(n_counter + n_count))
   -- if $(n_expected < n_target)
   -- if $anonymous_rtd_enter(pdeclaration) = (n_expected)

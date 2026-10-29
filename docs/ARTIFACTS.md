@@ -91,6 +91,16 @@ sources, selected-case/history negatives and post-bind cache checks retain
 their individual cuts. The joined `--sl` receipt records the composed 430-module
 candidate, true result and fully reaped process group.
 
+Generated enum array callable cuts are under
+`../php-spec-evidence-archive/enum-array-callable-117/`. Its `manifest.json`
+(SHA-256 `7237a68b42022feefdcf203d8c450676b66e434755f2a260433b9991db39eb6a`)
+lists 14 raw directories. The original Unsupported and Stringable failure remain
+separate from exact source results. The target-state v5 packet has 40 substantive
+true checks; v6 confirms its two manually resolved intermediate states were
+fixture errors. The ownerless Stringable reached packet passes 31 checks. The
+joined v1 duplicated the manifest's first module and has zero semantic credit;
+v2 records `--sl` over all 431 modules, `true`, and a fully reaped CPU 1 group.
+
 The guarded getter-recursion milestone retains source/native observations,
 focused checks, all fixture failures and diagnostics in
 `../php-spec-evidence-archive/magic-get-recursion-119/manifest.json`.
@@ -195,6 +205,15 @@ distinct-receiver BYREF/Fiber peer is under
 `../php-spec-evidence-archive/generator-closure-method-79-review/`.
 The [rebound method ledger](../coverage/semantics/generator-closure-method-review.json)
 binds tested revisions, hashes and remaining scope.
+
+I80 captured-method Generator factory evidence retains authored native,
+unchanged refusal/control, private and CLASS151-tail joined strict, source and
+reached-state cuts under
+`../php-spec-evidence-archive/generator-captured-method-factory-80/`. The
+independent by-reference SEND/Fiber-abort peer is under
+`../php-spec-evidence-archive/generator-captured-method-factory-80-review/`.
+The [captured factory ledger](../coverage/semantics/generator-captured-factory-review.json)
+binds revisions, hashes and remaining scope.
 
 I77 receiver-bearing scoped Generator evidence retains authored native,
 unchanged baseline, private/joined strict, source and reached-state cuts under

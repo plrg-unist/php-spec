@@ -699,6 +699,20 @@ then permits saved-setter recovery. Native3/source3, strict413 and 467 original
 state conditions pass (523 physical, 56 setup), with no retry. The initial
 Unsupported comparison remains zero; wider caches, producers and lifetimes remain partial.
 
+[Scalar Generator CONFIG sends](coverage/semantics/config-generator-scalar-review.json)
+now copy NULL/bool/int/float values through the existing by-value Generator routes.
+Later resumes cannot change earlier sends; terminal effects and DATA/INPUT cleanup
+precede INI_SET conversion, strict errors and NULL deprecation handlers. Live API
+precision controls float conversion. Reference yields, owning argument buffers and
+wider producer/RETURN-storage lifetimes retain their existing limits.
+
+[Reference-scalar Generator CONFIG sends](coverage/semantics/config-generator-reference-scalar-review.json)
+now copy ordinary live reference-cell scalars from named zero-argument Generator
+CVs. Later cell writes and live aliases stay distinct from saved DIRECT arguments;
+terminal effects and DATA retirement precede reception through the selected setter.
+The Generator keeps an outside owner. Typed/backed cells, owning sends, temporary
+or Aggregate reference producers and last-DATA reference retirement remain partial.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical
@@ -3646,15 +3660,28 @@ authentication. An unrelated held destructor remains outside the collected
 component. At that cut, callback, residual, worker, hook and active-context collection
 remain partial. See the [ordinary claim review](coverage/semantics/gc-ordinary-claim-review.json).
 
-Materialized ordinary cycles with public destructors now use the existing
-callback and single-retrace protocol when the legacy and claimed walks agree
-on ordered visits and counted nodes in the actual plan. The agreement is
-rechecked after callbacks and for fresh already-called survivors; a mismatch
+The earlier GC05 cut admitted materialized ordinary cycles with public
+destructors through the existing callback and single-retrace protocol when the
+legacy and claimed walks agree on ordered visits and counted nodes in the actual
+plan. The agreement is rechecked after callbacks and for fresh already-called
+survivors; a mismatch
 is refused. Two native-first sources agree, including a callback resurrection
 then later count 3, and four strict SL groups pass 151 reached checks. Quiet
 canonical tables, no WeakMap and no active worker/context/residual overlap
-remain required. Count-ambiguous callbacks and wider reentry are still open.
+remain required. At that cut, count-ambiguous callbacks and wider reentry
+remain open.
 See the [materialized callback review](coverage/semantics/gc-materialized-callback-review.json).
+
+Materialized ordinary destructor collections now retain an authenticated claimed
+count image through destructor return and retrace, including a pruned original
+table. Nested buffer removal distinguishes a destructor root, ordinary child
+and proxy table; its slot order can make the first pass contribute 1 and the
+retrace 3. Immediate source-authenticated `===`/`!==` comparisons also release
+produced object operands without GC buffering and treat a matching `BASE`
+result cache as borrowed. Four native-first sources agree, and 11 reached
+strict SL groups pass 330 checks at separate cuts. WeakMap callbacks, worker,
+residual, reentry and wider operand caches remain partial. See the
+[claimed callback review](coverage/semantics/gc-materialized-claimed-callback-review.json).
 
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
@@ -4310,6 +4337,12 @@ eager; invalid/cyclic paths, reached callbacks and wider layouts remain partial.
 [Base fallback review](coverage/semantics/throwable-base-null-comparison-review.json).
 [Linked-base review](coverage/semantics/throwable-base-previous-comparison-review.json).
 [Captured-Throwable review](coverage/semantics/throwable-captured-comparison-review.json).
+Visited comparison also admits ordinary method declarations on supported
+initialized public field layouts, including locally authenticated source and
+implicit `Stringable` interfaces, without invoking their methods. Inheritance,
+hooks, readonly state and wider layouts/lifetimes retain their limits.
+[Method-image review](coverage/semantics/throwable-trace-methods-comparison-review.json).
+[Interface-image review](coverage/semantics/throwable-trace-interfaces-comparison-review.json).
 Builtin `#[NoDiscard]` now validates bounded declarations and warns on unused
 ordinary source calls after sends and named defaults, before reception or body.
 Handlers preserve selected arguments, references, receiver ownership and VM
@@ -4324,8 +4357,12 @@ and receivers survive handlers. Selected error-handler and `assert` callbacks
 now warn at the internal API phase before argument copies and by-reference
 warnings. Their borrowed selected target and
 early-throw cleanup are covered by ten native-first originals and four reached
-fronts; wider API consumers remain partial. See the [VM review](coverage/semantics/builtin-deprecated-review.json)
-and [API review](coverage/semantics/builtin-deprecated-api-review.json).
+fronts. Selected exception handlers now use the same early phase with a moved
+registry owner, original Throwable retention, fresh by-reference cells and
+terminal cleanup; nine new native-first originals and four reached fronts cover
+this slice. Wider API consumers remain partial. See the [VM review](coverage/semantics/builtin-deprecated-review.json),
+[error/assert API review](coverage/semantics/builtin-deprecated-api-review.json) and
+[exception API review](coverage/semantics/builtin-deprecated-exception-api-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The
@@ -4432,7 +4469,11 @@ Anonymous sites may share successful units with ordinary traits and enums.
 Normal compiler headers, implicit interfaces and source-entry bindings determine
 their shared class-key sequence; pruned declarations and include-once hits add no
 compilation cost. [Mixed-kind review](coverage/semantics/anonymous-trait-enum-review.json).
-Failed/open histories and wider bodies/argument modes remain partial.
+Parser-rejected eval and opened-file units retain their real failure/site records
+without advancing class keys; later successful units preserve the sequence.
+A failed include-once or require-once parse remains an ordinary once hit.
+[Rejected-source review](coverage/semantics/anonymous-rejected-sources-review.json).
+Partial/open compilation histories and wider bodies/argument modes remain partial.
 Plain empty named classes can share those units globally and in valid named
 namespace sections, including repeated unbracketed sections and bracketed global
 bodies. Eligible root/actual-block classes consume no RTD key; deferred classes
@@ -6250,10 +6291,15 @@ initialization, scalar parsing and cached cases after their closure owners retir
 ordinary and inherited enum constant aliases retain their declaration owners.
 Stringable arguments to captured lookups use source-bound `__toString()` callbacks
 and release temporary arguments before looking up a case, including `tryFrom()` misses and hits.
+For published enums, class-string array callables invoke generated `cases()`, `from()` and `tryFrom()`;
+a case-object receiver also invokes `from()`. The selected enum is fixed before
+argument evaluation. Array `from()` retains that selection through a Stringable
+callback and retires the temporary argument before lookup.
 Class constants can consume cached enum cases in scalar conditions and select a
 case through a source-certified case or negated-case condition, including a case
 from another enum. Wider object-valued conditional transfers remain Unsupported.
-Other generated callable routes, case attributes, the default loader and wider
+First-class array captures, string and pipe callable routes, `Closure::fromCallable`
+conversion, `is_callable`, case attributes, the default loader and wider
 acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
@@ -6443,9 +6489,18 @@ Changed private/protected selection retains a borrowed receipt after return;
 an exact original source selection remains sufficient. Borrowed history adds
 no owner. Four new authored, one independent and one
 unchanged public source agree with PHP; four reached fronts pass 209 custom/229
-reported checks. Named/from/fake/implicit factory origins and wider bindings
-remain partial.
+reported checks. At that I79 cut, named/from/fake/implicit factory origins
+and wider bindings remained partial.
 [Rebound method review](coverage/semantics/generator-closure-method-review.json).
+Captured ordinary user-method factories made with first-class callables or
+`Closure::fromCallable` now retain their selected source, access, lexical/called
+scope and receiver identity when creating scoped Generators. The callable may
+retire before the body; the actual Generator still supplies its own resume or
+close receipt and ordinary receiver/cache owners. Three new authored, one
+independent and one unchanged named-function control match PHP; three reached
+fronts pass 174 custom/189 reported checks. Other callable origins and wider
+producer/lifecycle combinations remain partial.
+[Captured factory review](coverage/semantics/generator-captured-factory-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

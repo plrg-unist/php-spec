@@ -262,9 +262,10 @@ context. At that cut, destructors inside the collected component, callback/reent
 residual tags and wider contexts remain open. See the
 [ordinary claim review](../../coverage/semantics/gc-ordinary-claim-review.json).
 
-Materialized ordinary cycles can now invoke a public destructor during explicit
-collection. For a fresh no-WeakMap plan with canonical property locators, the
-legacy callback walk and claimed mark-on-push walk must agree on the ordered
+The earlier GC05 cut admitted a public destructor during explicit collection
+of materialized ordinary cycles. For a fresh no-WeakMap plan with canonical
+property locators, the legacy callback walk and claimed mark-on-push walk must
+agree on the ordered
 visit and counted nodes of the actual compacted plan. The existing destructor
 return, protected free and single retrace then run unchanged. The collector
 checks that agreement again after callback mutation, and on a fresh collection
@@ -275,12 +276,48 @@ frees it for count 3 after the outside hold is dropped. Four strict SL groups
 pass 151 reached checks, including actual GC consumers and derived count 2/3
 order-refusal controls. The prior-table selector excludes stdClass-only callback
 plans. This cut needs a quiet unmarked buffer, no cached worker,
-hooks, active Fiber/frame/iterator context or residual overlap. Count-ambiguous
-callback graphs, WeakMap callbacks, worker/reentry histories and wider callback
-effects remain open. Both node-seen walks and the shrinking prior-table fold
+hooks, active Fiber/frame/iterator context or residual overlap. At that cut,
+count-ambiguous callback graphs, WeakMap callbacks, worker/reentry histories
+and wider callback effects remain open. Both node-seen walks and the shrinking
+prior-table fold
 terminate on finite graphs; the pinned collector retraces at most once, while
 callback execution retains the ordinary evaluator fuel. See the
 [materialized callback review](../../coverage/semantics/gc-materialized-callback-review.json).
+
+For canonical materialized ordinary callback plans, the collector now records
+the original table, graph, compacted buffer and destructor list as a nonowning
+count source. A fresh plan derives this image independently; actual destructor
+progress carries it through callback mutation and retrace. A later fresh
+collection of an already-called survivor derives its own count source. The
+claimed walk gives each first visited node its count role. Nested buffer
+removal separately walks the physical slot image:
+the destructor root is charged, a buffered black child is removed and charged,
+and a proxy property table is removed without charge while its buckets are
+scanned. This preserves the real free-slot order. A proxy-first first pass can
+therefore return 1 after a count-3 white walk and debit 2, then retrace for 3,
+giving 4 in total. A callback can also prune that original proxy and table;
+the carried source remains a structural continuation witness after retirement.
+
+Successful immediate source-authenticated `===`/`!==` comparisons release
+produced object/array operands as temporary jobs with no GC buffering, including
+two occurrences of the same node. The matching `BASE_VALUE` cache is a borrowed
+view of the real result across the active binary continuation and adds no owner;
+other base views retain their existing ownership. Module39's property/array/cell
+owning edges remain unchanged; the existing base-root hook borrows the duplicate
+view. Four native-first sources and 11 separate strict SL
+reached groups cover count 4, resurrection then count 3, pruned origin then
+count 1, and two produced operands. The first author source retains its earlier
+model cut: its protected collections normalize the buffer before the Root-only
+white seed, which current reached checks confirm. Source and state cuts are
+recorded separately in the [claimed callback review](../../coverage/semantics/gc-materialized-claimed-callback-review.json).
+
+Fresh count sources come from finite graph and buffer folds. Nested removal
+consumes finite buffered slots and scans finite proxy buckets; the existing
+collector retraces at most once. Callback execution retains ordinary evaluator
+fuel. The continuation check proves structural origin and consumer consistency;
+it does not authenticate wholly rewritten prior history. Skipped destructors,
+WeakMap callbacks, worker/residual/reentry paths, hooks, active contexts and
+other operator or reference-result cache lifetimes remain partial.
 
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;

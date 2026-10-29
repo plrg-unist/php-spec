@@ -147,7 +147,7 @@ def $ppmethod_unset_signature(pssignature) = false -- otherwise
 def $ppmethod_isset(flags, ptbytes) = (flags <- [0,1] /\ $ptlc(ptbytes) = $ptascii("__isset"))
 def $ppmethod_isset_signature(pssignature) = true
   -- if pssignature.PARAMETERS = [psparam]
-  -- if psparam.TYPE = [(PTBRANCH ([PTBUILTIN "string"]))] /\ ~psparam.BYREF /\ ~psparam.VARIADIC /\ psparam.REQUIRED /\ psparam.DEFAULT = PSNONE
+  -- if (psparam.TYPE = eps \/ psparam.TYPE = [(PTBRANCH ([PTBUILTIN "string"]))]) /\ ~psparam.BYREF /\ ~psparam.VARIADIC /\ psparam.REQUIRED /\ psparam.DEFAULT = PSNONE
   -- if (pssignature.RETURNS = eps \/ pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN "bool"]))]) /\ ~pssignature.BYREF
 def $ppmethod_isset_signature(pssignature) = false -- otherwise
 def $ppmethod_tostring(ptbytes) = ($ptlc(ptbytes) = $ptascii("__tostring"))

@@ -175,6 +175,16 @@ test-semantics: build
 		python3 tests/semantics/config_iterator_input_finalizer_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
 		python3 tests/semantics/config_iterator_input_finalizer_review_sources.py --output "$$out/peer-source" && \
 		python3 tests/semantics/config_iterator_input_finalizer_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a71-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_generator_scalar_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_generator_scalar_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/config_generator_scalar_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_generator_scalar_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a72-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_generator_reference_scalar_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_generator_reference_scalar_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/config_generator_reference_scalar_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_generator_reference_scalar_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
 	python3 tests/semantics/globals_compiler.py
@@ -639,6 +649,8 @@ test-semantics: build
 	python3 tests/semantics/generator_closure_factory_state.py
 	python3 tests/semantics/generator_closure_method_sources.py
 	python3 tests/semantics/generator_closure_method_state.py
+	python3 tests/semantics/generator_captured_factory_sources.py
+	python3 tests/semantics/generator_captured_factory_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

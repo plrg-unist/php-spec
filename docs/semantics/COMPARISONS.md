@@ -713,9 +713,11 @@ most one new cached table per existing ordinary object bounds fresh guards;
 admitted comparison invokes no callbacks. Siblings reuse the parent guard, so
 shared DAGs compare normally without memoizing a repeated pair as equal.
 Identity precedes the existing aggregate/active-left recursion guard, which
-precedes count; key lookup precedes cell dereference. Reached same-class bodies remain `stdClass` or plain parentless
-methodless source instances with initialized public properties and ordinary
-current tables. Reached tables materialize through the usual comparer; only
+precedes count; key lookup precedes cell dereference. Reached same-class bodies
+include `stdClass` and parentless source instances with initialized public
+properties, locally authenticated interfaces, no hooks/readonly state, and
+ordinary current tables.
+Their methods are not invoked by comparison. Reached tables materialize through the usual comparer; only
 normal equality continues with the resulting state.
 An authentic active-left recurrence now produces the existing recursive-dependency
 `Error` at the source comparison, before count can decide. Its live
@@ -756,8 +758,8 @@ siblings; authentic captured recursion raises the ordinary Error. Prefix/cache
 decisions still precede reached payload validation, and `ErrorException` severity
 follows trace and null previous. The older DIRECT route stays disjoint; the pure
 previous-order helper still rejects non-DIRECT payloads. Base `Exception`/`Error`
-roots use the fallback below when older admissions reject. Reached method-bearing classes and the
-existing canonical layout, lifetime and pending-state restrictions remain partial.
+roots use the fallback below when older admissions reject. Existing canonical
+layout, lifetime and pending-state restrictions remain partial.
 [Standalone trace review](../../coverage/semantics/throwable-null-trace-comparison-review.json).
 
 Canonical base `Exception`/`Error` roots now share the visited
@@ -797,6 +799,32 @@ Captured object/scalar conversion, actually reached callbacks, wider layouts,
 subclasses and generated-only FiberError remain partial. COMP88, COMP123 and
 other held contexts are untouched.
 [Captured-Throwable review](../../coverage/semantics/throwable-captured-comparison-review.json).
+
+The visited ordinary image admits method-bearing source classes with the same
+nonempty, initialized public layout. Published/live class checks, no parent,
+nonreadonly state, no property hooks and exact inline or ordinary
+cached-table authentication remain required. Methods, including magic get/isset
+traps, are not invoked by object/object comparison. Older fully authenticated
+walkers stay methodless; only the visited image changes. Current ALIAS contents,
+DIRECT copies, table locators, early count/key decisions and real active-left
+recursion Error retain the existing fold and ownership rules.
+
+Nonempty interface lists require unique names, matching builtin or published
+source-interface targets, and the existing publication order in local
+`LINKEDINTERFACES` metadata. This admits implicit `Stringable` and declared source
+interfaces without invoking their methods. Missing, mismatched or reordered
+local authority refuses a reached image; earlier identity and class decisions
+still skip later image validation. Current cells, copied siblings, physical
+tables and recursion use the same visited fold.
+[Interface-image review](../../coverage/semantics/throwable-trace-interfaces-comparison-review.json).
+
+Legal `__isset` declarations may omit the parameter type while keeping the
+existing arity/reference/default/return restrictions. The language-triggered
+magic consumers still require their existing typed-string source AST, so this
+declaration dependency does not admit an untyped magic callback.
+Private/uninitialized/empty layouts, inheritance, hooks, readonly and wider
+callback/lifetime contexts remain partial. Held lanes are unchanged.
+[Method-image review](../../coverage/semantics/throwable-trace-methods-comparison-review.json).
 
 The older fully authenticated warm route puts nonempty traces in the physical slot
 scan. Same-kind canonical `Exception`/`Error` pairs with null previous values

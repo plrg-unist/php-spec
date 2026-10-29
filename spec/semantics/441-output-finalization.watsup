@@ -257,7 +257,7 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCT
   -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
 
 ;; With no execute_data or selected exception handler, a FINAL Throwable is
-;; rendered inside zend_call_known_fcc_ex, which bails out before output.c frees
+;; rendered inside zend_call_function, which bails out before output.c frees
 ;; its argv, pops the handler, or forwards any buffered bytes. The later output
 ;; deactivation clears ACTIVE/RUNNING before freeing each raw zoh, top first.
 dec $output_final_throw_ready(pstate, pobinvoke, nat) : bool

@@ -1,0 +1,108 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-rejected-rejected-prefix-no-publication",
+      "source": "<?php\n$root = new class {};\necho $root::class, \"|\";\ntry {\n    eval(<<<'BAD'\nclass Ghost151Review {}\n$would = new class {};\necho 'never|';\nfunction broken151Review(\nBAD);\n} catch (\\ParseError $e) { echo \"rejected|\"; }\ntry {\n    $ghost = new Ghost151Review;\n    echo \"published|\";\n} catch (\\Error $e) { echo \"absent|\"; }\n$after = new class {};\necho $after::class, \"|\";\neval('$tail = new class {}; echo $tail::class, \"|\";');\n",
+      "source_sha256": "0144ef1d2589496c5cdfe62758337ed280b53e5234bcc966dc74b1bb7a7da487",
+      "stdout_base64": "",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDB8cmVqZWN0ZWR8YWJzZW50fGNsYXNzQGFub255bW91cwB7RklMRX06MTYkMXxjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9KDE4KSA6IGV2YWwoKSdkIGNvZGU6MSQyfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class151-frozen-native5",
+      "native_raw_sha256": "5f852ac42df48e648f427e2b75888f73cb159b0415a8eed58417f55f88d869c3",
+      "model_timeout_seconds": 180
+    },
+    {
+      "id": "anonymous-rejected-repeated-rejections-aliased-factory-retry",
+      "source": "<?php\nclass Base151Review {\n    public int $n;\n    public function __construct($n) { echo \"ctor|\"; $this->n = $n; }\n}\nfunction reject151Review($code) {\n    try { eval($code); } catch (\\ParseError $e) { echo \"reject|\"; }\n}\neval('$first = new class {}; echo $first::class, \"|\";');\nreject151Review('$would = new class {}; if (');\nreject151Review('class Never151Review {} function broken151Review(');\neval(<<<'CODE'\nnamespace Later151Review;\nuse Base151Review as B;\nfunction argument151Review() {\n    static $first = true;\n    echo \"arg|\";\n    if ($first) { $first = false; throw new \\Exception(\"first\"); }\n    return 9;\n}\nfunction make151Review() {\n    return new class(argument151Review()) extends B {};\n}\ntry { make151Review(); } catch (\\Exception $e) { echo \"caught|\"; }\n$a = make151Review();\n$b = make151Review();\necho $a::class, \"|\", $a->n, \"|\", ($a::class === $b::class), \"|\", ($a !== $b), \"|\";\nCODE);\neval('$tail = new class {}; echo $tail::class, \"|\";');\n",
+      "source_sha256": "fb0f9decd468517a1905602763dfb3b9b1cbca277e6e096f37b41144620996ae",
+      "stdout_base64": "",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSg5KSA6IGV2YWwoKSdkIGNvZGU6MSQwfHJlamVjdHxyZWplY3R8YXJnfGNhdWdodHxhcmd8Y3Rvcnxhcmd8Y3RvcnxCYXNlMTUxUmV2aWV3QGFub255bW91cwB7RklMRX0oMTMpIDogZXZhbCgpJ2QgY29kZToxMCQxfDl8MXwxfGNsYXNzQGFub255bW91cwB7RklMRX0oMjkpIDogZXZhbCgpJ2QgY29kZToxJDJ8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class151-frozen-native5",
+      "native_raw_sha256": "4d51e5eabb309552fe994d16ac6081cfc1339a805ea4ae582f506e9952be5eaa",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-rejected-author-eval-parser-compileerror-zero-keys",
+      "source": "<?php\n$before = eval('return new class {};');\necho $before::class, '|';\ntry { eval('class GhostCompile151 {} $unused = new class {}; class Invalid151 { final abstract private function bad(); }'); }\ncatch (CompileError $error) { echo $error->getMessage(), '|'; }\ntry { $ghost = new GhostCompile151; echo 'published|'; }\ncatch (Error $error) { echo 'unpublished|'; }\n$after = eval('return new class {};');\necho $after::class, '|', $before === $after ? 'same' : 'fresh';\n",
+      "source_sha256": "5ed4ab9860896183199379cf391c3992c38a87202233dcb10faae02d949c3ced",
+      "stdout_base64": "",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSgyKSA6IGV2YWwoKSdkIGNvZGU6MSQwfENhbm5vdCB1c2UgdGhlIGZpbmFsIG1vZGlmaWVyIG9uIGFuIGFic3RyYWN0IG1ldGhvZHx1bnB1Ymxpc2hlZHxjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9KDgpIDogZXZhbCgpJ2QgY29kZToxJDF8ZnJlc2g=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class151-frozen-native5",
+      "native_raw_sha256": "7a65db7998b0e1da8b1a323862404d4d8bcc26d1f0a2d93f0d8e0bed69fe165e",
+      "model_timeout_seconds": 180
+    },
+    {
+      "id": "anonymous-rejected-author-include-once-parse-reject-then-success",
+      "source": "<?php\nclass Root151Base {\n public int $number = 0;\n public function __construct(int $number) { $this->number = $number; echo 'ctor|'; }\n}\ntry { $first = include_once __DIR__ . '/bad.php'; echo 'first-return|'; }\ncatch (ParseError $error) { echo 'first-parse|', $error->getFile(), ':', $error->getLine(), '|'; }\ntry { $second = include_once __DIR__ . '/bad.php'; echo 'second-return|'; }\ncatch (ParseError $error) { echo 'second-parse|', $error->getFile(), ':', $error->getLine(), '|'; }\n$good = include __DIR__ . '/good.php';\n$hit = include_once __DIR__ . '/good.php';\necho $good::class, '|', $good->number, '|', $hit ? 'once|' : 'miss|';\neval('echo (new class {})::class;');\n",
+      "source_sha256": "02ccd5f840e45a9df1698fd594d888588fed0b285054c44b24cb4c489d13f098",
+      "stdout_base64": "",
+      "stdout_template_base64": "Zmlyc3QtcGFyc2V8e0ZJTEU6YmFkLnBocH06NXxzZWNvbmQtcmV0dXJufGN0b3J8Um9vdDE1MUJhc2VAYW5vbnltb3VzAHtGSUxFOmdvb2QucGhwfTo0JDB8NnxvbmNlfGNsYXNzQGFub255bW91cwB7RklMRX0oMTMpIDogZXZhbCgpJ2QgY29kZToxJDE=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class151-frozen-native5",
+      "native_raw_sha256": "9a25f16f0d8e3e698a617fd36e23576d7db33940cd7455d38423bd5f23765be5",
+      "model_timeout_seconds": 240,
+      "files": [
+        {
+          "name": "bad.php",
+          "source": "<?php\nclass GhostFile151 {}\n$unused = new class {};\nif (\n",
+          "source_sha256": "5247ac9a12f28fe5012f5a726ff8f0a852a3a74d08e5ae65ae87ac960b78a5ad"
+        },
+        {
+          "name": "good.php",
+          "source": "<?php\nnamespace Include151;\nuse Root151Base as Base;\nreturn new class('6') extends Base {};\n",
+          "source_sha256": "37aba96ff2025625b3d92f41c25a79bcbc0c4b569ee8fc32e36d6d6defbad20b"
+        }
+      ]
+    },
+    {
+      "id": "anonymous-rejected-author-require-compile-reject-then-success",
+      "source": "<?php\ntry { $first = require_once __DIR__ . '/bad.php'; echo 'first-return|'; }\ncatch (CompileError $error) { echo $error instanceof ParseError ? 'parse|' : 'compile|'; echo $error->getFile(), ':', $error->getLine(), '|'; }\ntry { $second = require_once __DIR__ . '/bad.php'; echo 'second-return|'; }\ncatch (CompileError $error) { echo $error instanceof ParseError ? 'parse2|' : 'compile2|'; }\n$good = require __DIR__ . '/good.php';\necho $good::class, '|', $good->value(), '|';\neval('echo (new class {})::class;');\n",
+      "source_sha256": "69e85124a627d999cec9e01391d4067c56dd14234f286085cc288a208b203162",
+      "stdout_base64": "",
+      "stdout_template_base64": "Y29tcGlsZXx7RklMRTpiYWQucGhwfTo0fHNlY29uZC1yZXR1cm58Y2xhc3NAYW5vbnltb3VzAHtGSUxFOmdvb2QucGhwfToyJDB8OXxjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9KDgpIDogZXZhbCgpJ2QgY29kZToxJDE=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class151-frozen-native5",
+      "native_raw_sha256": "fa0d609734ed8fd16e2e6477022b048e261734bd7f0370786e540d64125d2fe6",
+      "model_timeout_seconds": 180,
+      "files": [
+        {
+          "name": "bad.php",
+          "source": "<?php\ntrait GhostRequire151 {}\n$unused = new class {};\nclass InvalidRequire151 { final abstract private function bad(); }\n",
+          "source_sha256": "b1f2987d62747e45d59e8ed3305319d3794b12a6703fa06c6cd8ad0204ba6a92"
+        },
+        {
+          "name": "good.php",
+          "source": "<?php\nreturn new class { public function value(): int { return 9; } };\n",
+          "source_sha256": "c1e9d8a8eb9e91e5acdb9fbeb29274ab55f785a733b2ee04b1a10b0695dc62c2"
+        }
+      ]
+    }
+  ]
+}

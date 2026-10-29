@@ -212,6 +212,8 @@ dec $generator_creation_ancestors(pstate) : pgenfactorycapture*
 dec $generator_creator_method_site(pstate, porigin, ptbytes) : bool
 dec $generator_creator_closure_site(pstate, pmethodcapture, porigin) : bool
 dec $generator_creator_closure_target(pstate, pcalltarget, pmethodcapture, pclosureevidence) : bool
+dec $generator_captured_factory_valid(pstate, pclosurescope, porigin) : bool
+dec $generator_captured_factory_receiver(pstate, pmethoddesc, pclosurescope) : bool
 dec $generator_creator_receiver(pstate, pcalltarget, pclosureevidence?) : nat?
 dec $generator_creator_target_valid(pstate, pgeneratorcreation, pmethoddesc, porigin) : bool
 dec $generator_retained_scoped_target(pstate, pcalltarget, pmethoddesc) : bool
@@ -477,11 +479,47 @@ def $generator_creator_closure_site(S, pmethodcapture, porigin_site) = true
   -- if $pipe_fixed_name(S, porigin_site) = eps
   -- if $method_capture_literal_valid(S, pmethodcapture, $pipe_rhs_origin(porigin_site), false)
 def $generator_creator_closure_site(S, pmethodcapture, porigin_site) = false -- otherwise
+;; Borrowed callable history authenticates a selected method without keeping
+;; its Closure or captured receiver allocated after the factory returns.
+def $generator_captured_factory_receiver(S, pmethoddesc, pclosurescope) = true
+  -- if pmethoddesc.STATIC
+  -- if pclosurescope.RECEIVER = eps
+def $generator_captured_factory_receiver(S, pmethoddesc, pclosurescope) = true
+  -- if ~pmethoddesc.STATIC
+  -- if pclosurescope.RECEIVER = (n_receiver)
+  -- if $(n_receiver < |S.OBJECTS|)
+  -- if S.OBJECTS[n_receiver] = INSTANCE pclosurescope.CALLED
+def $generator_captured_factory_receiver(S, pmethoddesc, pclosurescope) = false -- otherwise
+def $generator_captured_factory_valid(S, pclosurescope, porigin_function) = true
+  -- if n = pclosurescope.OBJECT
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_function porigin_capture_site porigin_requested pmethodcapture?
+  -- if pclosurescope.CREATION = eps
+  -- if $class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
+  -- if $method_capture_authorized(S, pmethoddesc, porigin_capture_site, porigin_requested, pclosurescope, pmethodcapture?)
+  -- if pclosurescope.LEXICAL = pmethoddesc.OWNER
+  -- if $method_capture_class_valid(S, (pclosurescope.LEXICAL))
+  -- if $method_capture_class_valid(S, (pclosurescope.CALLED))
+  -- if $generator_captured_factory_receiver(S, pmethoddesc, pclosurescope)
+def $generator_captured_factory_valid(S, pclosurescope, porigin_function) = true
+  -- if n = pclosurescope.OBJECT
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
+  -- if pfrommethod.FUNCTION = porigin_function
+  -- if $class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
+  -- if $closure_evidence_valid(S, CLOSURE_SCOPE pclosurescope)
+def $generator_captured_factory_valid(S, pclosurescope, porigin_function) = false -- otherwise
 def $generator_creator_closure_target(S, CLOSURE_TARGET n, pmethodcapture, pclosureevidence) = true
   -- if $generator_creator_direct_closure(pclosureevidence)
   -- if $closure_evidence_object(pclosureevidence) = n
   -- if $closure_evidence_valid(S, pclosureevidence)
   -- if $closure_evidence_body(S, n) = (pmethodcapture.FUNCTION)
+  -- if pmethodcapture.CALLSITE = (porigin_site)
+  -- if $generator_creator_closure_site(S, pmethodcapture, porigin_site)
+def $generator_creator_closure_target(S, CLOSURE_TARGET n, pmethodcapture, CLOSURE_SCOPE pclosurescope) = true
+  -- if pclosurescope.OBJECT = n
+  -- if ~$closure_evidence_valid(S, CLOSURE_SCOPE pclosurescope)
+  -- if $generator_captured_factory_valid(S, pclosurescope, pmethodcapture.FUNCTION)
   -- if pmethodcapture.CALLSITE = (porigin_site)
   -- if $generator_creator_closure_site(S, pmethodcapture, porigin_site)
 def $generator_creator_closure_target(S, CLOSURE_CALL_TARGET n_source n_receiver, pmethodcapture, CLOSURE_CALL porigin_site n_source n_receiver porigin_class) = true
@@ -635,6 +673,18 @@ def $generator_creator_valid(S, pgeneratorcreation) = true
   -- if pgeneratorcreation.CREATOR.LEXICAL_CLASS = $closure_evidence_lexical(pclosureevidence)
   -- if pgeneratorcreation.CREATOR.CALLED_CLASS = $closure_evidence_called(pclosureevidence)
   -- if $generator_creator_closure_target(S, pgeneratorcreation.CREATOR_TARGET, pgeneratorcreation.CREATOR, pclosureevidence)
+def $generator_creator_valid(S, pgeneratorcreation) = true
+  -- if pgeneratorcreation.CLOSURE = (CLOSURE_SCOPE pclosurescope)
+  -- if pgeneratorcreation.ANCESTORS = eps
+  -- if pgeneratorcreation.SITE = PORIGIN n pcpath
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction_source)
+  -- if $function_at($all_functions(S), pgeneratorcreation.CREATOR.FUNCTION) = (pfunction_creator)
+  -- if $trait_source_same(pfunction_source, pfunction_creator)
+  -- if $class_method_origin(S.CLASSES, pfunction_creator.ORIGIN) = (pmethoddesc)
+  -- if $generator_captured_factory_valid(S, pclosurescope, pfunction_creator.ORIGIN)
+  -- if pgeneratorcreation.CREATOR.LEXICAL_CLASS = (pclosurescope.LEXICAL)
+  -- if pgeneratorcreation.CREATOR.CALLED_CLASS = (pclosurescope.CALLED)
+  -- if $generator_creator_closure_target(S, pgeneratorcreation.CREATOR_TARGET, pgeneratorcreation.CREATOR, CLOSURE_SCOPE pclosurescope)
 def $generator_creator_valid(S, pgeneratorcreation) = false -- otherwise
 
 def $generator_creation_scope_valid(S, pgeneratorcreation) = true
