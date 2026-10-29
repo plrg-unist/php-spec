@@ -16,4 +16,4 @@ CASES['static-positional-control'] = (HERE / 'magic-static-call-snapshot.php').r
 
 if __name__ == '__main__':
     raise SystemExit(0 if scope.main(CASES, 'magic-iterator-unpack',
-                                     Path(__file__), publish=False) else 1)
+                                     Path(__file__), publish=False, model_seconds=90) else 1)

@@ -90,7 +90,7 @@ def native(path, payload, output):
             'exit_status': result.returncode, 'command': command}
 
 
-def main(catalogue=CASES, campaign="function-scope", producer=Path(__file__), publish=True):
+def main(catalogue=CASES, campaign="function-scope", producer=Path(__file__), publish=True, model_seconds=30):
     parser = argparse.ArgumentParser(); parser.add_argument('--match', default=''); args = parser.parse_args()
     cases = {k: v for k, v in catalogue.items() if args.match in k}
     assert cases, 'no source controls selected'
@@ -124,7 +124,7 @@ def main(catalogue=CASES, campaign="function-scope", producer=Path(__file__), pu
     previous = signal.signal(signal.SIGALRM, expired)
     frontend = Worker([str(q.t.PHP), '-n', *q.t.FLAGS, '-d',
                            'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')], out / 'frontend-wire')
-    adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], out / 'adapter-wire')
+    adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], out / 'adapter-wire', seconds=model_seconds)
     try:
         for row in records:
             directory = out / row['id']; signal.alarm(60)
@@ -157,7 +157,8 @@ def main(catalogue=CASES, campaign="function-scope", producer=Path(__file__), pu
     assert all(hashlib.sha256((ROOT / p).read_bytes()).hexdigest() == h for p, h in hashes.items())
     report = {'result': 'pass' if all(r['pass'] for r in records) else 'fail', 'selection': args.match,
               'catalogue_cases': len(catalogue), 'selected_cases': len(cases), 'fingerprint': before,
-              'direct_inputs': hashes, 'raw': str(out), 'records': records}
+              'direct_inputs': hashes, 'model_request_seconds': model_seconds,
+              'raw': str(out), 'records': records}
     (out / 'report.json').write_text(json.dumps(report, indent=2))
     if publish and report['result'] == 'pass' and not args.match:
         (ROOT / 'coverage/semantics' / (campaign+'.json')).write_text(json.dumps(report, indent=2))
