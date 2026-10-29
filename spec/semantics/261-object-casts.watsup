@@ -59,7 +59,7 @@ def $object_table_item(S, ALIAS n) = ALIAS n
 def $object_table_item(S, UNINITIALIZED) = UNINITIALIZED
 
 ;; A dynamic slot record keeps mixed-table identity after its value is unset.
-;; Declared-only nonpublic layouts retain their separate comparison route.
+;; Nonpublic declared UNSET rows retain their separate table-admission policy.
 def $object_table_dynamic_history(eps) = false
 def $object_table_dynamic_history(ppropertyslot :: ppropertyslot_tail*) = true
   -- if ppropertyslot.DECL = eps
