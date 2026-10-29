@@ -63,4 +63,42 @@ echo 'B|', $a<=>$b, '|';
 $a = new TypeError('same', 7); $b = new TypeError('same', 7);
 echo 'B|', $a<=>$b, '|';
 ''',
+    'mixed-previous-skips-cyclic-trace': br'''<?php
+class TailMixed145 { public function __toString(): string { echo 'BAD|'; return 'x'; } }
+function type_child145($x): TypeError { return new TypeError('inner', 7); }
+function value_child145($x): ValueError { return new ValueError('inner', 7); }
+$x = new stdClass; $y = new stdClass; $x->self = $x; $y->self = $y;
+$p = type_child145($x); $q = value_child145($y);
+$a = new RuntimeException('same', 7, $p); $b = new RuntimeException('same', 7, $q);
+echo 'B|', (int)($a==$b), (int)($a!=$b), (int)($a<$b), (int)($a<=$b), (int)($a>$b), (int)($a>=$b), ':', $a<=>$b, ':', $b<=>$a, '|';
+echo 'A|', [0,$a,new TailMixed145]<=>[0,$b,'x'], '|';
+''',
+    'shared-previous-all-root-kinds': br'''<?php
+function shared_child145($x): TypeError { return new TypeError('inner', 7); }
+$p = shared_child145(new stdClass);
+$a = new RuntimeException('same', 7, $p); $b = new RuntimeException('same', 7, $p);
+echo 'B|', $a<=>$b, ':';
+$a = new ErrorException('same', 7, 3, 'f.php', 9, $p); $b = new ErrorException('same', 7, 3, 'f.php', 9, $p);
+echo $a<=>$b, ':';
+$a = new ClosedGeneratorException('same', 7, $p); $b = new ClosedGeneratorException('same', 7, $p);
+echo $a<=>$b, ':';
+$a = new CompileError('same', 7, $p); $b = new CompileError('same', 7, $p);
+echo $a<=>$b, ':';
+$a = new ParseError('same', 7, $p); $b = new ParseError('same', 7, $p);
+echo $a<=>$b, ':';
+$a = new TypeError('same', 7, $p); $b = new TypeError('same', 7, $p);
+echo $a<=>$b, ':';
+$a = new ArgumentCountError('same', 7, $p); $b = new ArgumentCountError('same', 7, $p);
+echo $a<=>$b, ':';
+$a = new ValueError('same', 7, $p); $b = new ValueError('same', 7, $p);
+echo $a<=>$b, ':';
+$a = new ArithmeticError('same', 7, $p); $b = new ArithmeticError('same', 7, $p);
+echo $a<=>$b, ':';
+$a = new DivisionByZeroError('same', 7, $p); $b = new DivisionByZeroError('same', 7, $p);
+echo $a<=>$b, ':';
+$a = new UnhandledMatchError('same', 7, $p); $b = new UnhandledMatchError('same', 7, $p);
+echo $a<=>$b, ':';
+$a = new AssertionError('same', 7, $p); $b = new AssertionError('same', 7, $p);
+echo $a<=>$b, '|';
+''',
 }
