@@ -141,6 +141,8 @@ def $config_iterator_quiet_input(S, pconfigiterator) = true
   -- if $node_children(S, HOBJECT pconfigiterator.OBJECT) = eps
 def $config_iterator_quiet_input(S, pconfigiterator) = true
   -- if $config_iterator_owning_input(pconfigiterator)
+  -- if $heap_owners($heap_graph(S), HOBJECT pconfigiterator.OBJECT) = 1
+  -- if $destructor_method(S, pconfigiterator.OBJECT) =/= eps \/ $node_children(S, HOBJECT pconfigiterator.OBJECT) =/= eps
   -- if $heap_member(HOBJECT pconfigiterator.OBJECT, $heap_reach($config_iterator_argument_nodes(pconfigiterator), eps, $heap_graph(S).EDGES))
 def $config_iterator_quiet_input(S, pconfigiterator) = false -- otherwise
 
@@ -322,10 +324,12 @@ def $config_iterator_owning_release(S, pconfigiterator) = true
   -- if $config_iterator_argument_nodes(pconfigiterator) =/= eps
   -- if $heap_subset($config_iterator_argument_nodes(pconfigiterator), S.ALLOCATIONS)
 def $config_iterator_owning_release(S, pconfigiterator) = true
+  -- if $config_iterator_argument_nodes(pconfigiterator) = eps
   -- if pconfigiterator.CURRENT = KNOWN pvalue
   -- if $value_nodes(pvalue) =/= eps
   -- if $heap_subset($value_nodes(pvalue), S.ALLOCATIONS)
 def $config_iterator_owning_release(S, pconfigiterator) = true
+  -- if $config_iterator_argument_nodes(pconfigiterator) = eps
   -- if pconfigiterator.CURRENT = REFERENCE n
   -- if $config_iterator_reference_value(S, n) = (pvalue)
   -- if $value_nodes(pvalue) =/= eps
@@ -408,9 +412,13 @@ def $config_ini_null_valid(S, pconfigcall) = true
   -- if $config_iterator_copied_call(S, pconfigcall)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN pvalue)]
   -- if ~$config_strict(S, pconfigcall)
-def $config_ini_null_finish(S, pconfigcall) = $config_ini_finish(S, pconfigcall, eps, pvalue)
+def $config_ini_null_finish(S, pconfigcall) = $config_ini_finish(S, pconfigcall, eps, PARRAY n)
   -- if $config_iterator_copied_call(S, pconfigcall)
-  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN pvalue)]
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN (PARRAY n))]
+  -- if ~$config_ini_rejected_array(S, n) /\ ~$config_ini_rejected_alias_array(S, n)
+def $config_ini_null_finish(S, pconfigcall) = $config_ini_finish(S, pconfigcall, eps, POBJECT n)
+  -- if $config_iterator_copied_call(S, pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN (POBJECT n))]
 ;; Completed scalar copies retain source/callee authority after DATA and the
 ;; live cursor retire. This receipt also authenticates the diagnostic resume;
 ;; it neither re-reads the Iterator nor performs API conversion.
