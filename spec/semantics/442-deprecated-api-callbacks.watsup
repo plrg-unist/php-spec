@@ -44,6 +44,20 @@ def $error_handler_selected(S, pvalue, API_BORROWED_TARGET pshutdownproducer) = 
 def $exception_raw_selected(S, pvalue, (parray), API_BORROWED_TARGET pshutdownproducer) = $exception_raw_selected(S, pvalue, (parray), pshutdownproducer.TARGET)
 def $handler_emitter_valid(S, API_BORROWED_TARGET pshutdownproducer) = $handler_emitter_valid(S, pshutdownproducer.TARGET)
 def $handler_emitter_valid(S, API_METHOD_TARGET papiquery porigin_method ptbytes b_static) = true
+  -- if S.TODO = (API_CALLBACK_SEND papiargcursor) :: ptask_tail*
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+  -- if papiargcursor.TARGET = API_METHOD_TARGET papiquery porigin_method ptbytes b_static
+  -- if papiquery.SOURCE = ERROR_HANDLER_INVOKE perrorcall
+  -- if $api_carrier_valid(S, papiquery, porigin_method, ptbytes, b_static)
+  -- if $api_source_valid(S, papiquery)
+  -- if papiquery.SCOPE = $api_frame_scope(S)
+  -- if papiquery.CALLED = $api_frame_called(S)
+  -- if papiquery.THIS = $api_frame_this(S)
+  -- if papiquery.LINE = $api_source_line(S, papiquery.SOURCE)
+def $handler_emitter_valid(S, API_METHOD_TARGET papiquery porigin_method ptbytes b_static) = true
+  -- if S.TODO = (API_CALLBACK_REF papiargcursor) :: ptask_tail*
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+  -- if papiargcursor.TARGET = API_METHOD_TARGET papiquery porigin_method ptbytes b_static
   -- if papiquery.SOURCE = ERROR_HANDLER_INVOKE perrorcall
   -- if $api_carrier_valid(S, papiquery, porigin_method, ptbytes, b_static)
   -- if $api_source_valid(S, papiquery)
