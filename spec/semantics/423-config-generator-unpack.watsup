@@ -45,6 +45,7 @@ dec $config_generator_string_key_input(pconfiggenerator) : bool
 dec $config_generator_key_input(pconfiggenerator, pvalue) : bool
 dec $config_generator_items(pstate, pconfiggenerator, pentry*) : bool
 dec $config_generator_argument_nodes(pconfiggenerator) : pnode*
+dec $config_generator_owning_items_live(pstate, pentry*) : bool
 dec $config_generator_nodes(pconfiggenerator, text) : pnode*
 dec $config_generator_finish(pstate, pconfiggenerator, ptask*) : pstate
 dec $config_generator_invoke(pstate, pconfiggenerator) : pstate
@@ -451,6 +452,9 @@ rule PhpStep/config-generator-closed: S ~> S[.TODO = (CONFIG_GENERATOR pconfigge
 def $config_generator_argument_nodes(pconfiggenerator) = $named_slots_roots(pconfigcall.SENT)
   -- if $config_pack_prefix(pconfiggenerator.CALL, pconfiggenerator.ITEMS, false) = (pconfigcall)
 def $config_generator_argument_nodes(pconfiggenerator) = eps -- otherwise
+def $config_generator_owning_items_live(S, eps) = true
+def $config_generator_owning_items_live(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*) = (($value_nodes(pvalue) = eps \/ ($config_iterator_argument(S, pvalue) /\ ~$destructor_waiting(S, $heap_reach($value_nodes(pvalue), eps, $heap_graph(S).EDGES)))) /\ $config_generator_owning_items_live(S, pentry*))
+def $config_generator_owning_items_live(S, pentry*) = false -- otherwise
 def $config_generator_nodes(pconfiggenerator, text) = $config_generator_argument_nodes(pconfiggenerator) ++ $config_nodes(pconfiggenerator.CALL)
   -- if text <- ["invoke", "storage-released"]
 def $config_generator_nodes(pconfiggenerator, "input-release") = $config_generator_input_nodes(pconfiggenerator) ++ $config_generator_argument_nodes(pconfiggenerator) ++ $config_nodes(pconfiggenerator.CALL)
@@ -461,7 +465,7 @@ def $call_task_valid(S, CONFIG_GENERATOR pconfiggenerator text) = $config_genera
 def $selected_task_nonce(CONFIG_GENERATOR pconfiggenerator text) = pconfiggenerator.CALL.SELECTION
 def $generator_internal_task(CONFIG_GENERATOR pconfiggenerator text) = true
 def $eager_explicit_task(CONFIG_GENERATOR pconfiggenerator text) = true
-def $config_generator_finish_allowed(S, pconfiggenerator) = ($config_generator_callee(S, pconfiggenerator.CALL.OWNER, 1) /\ ($($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1) \/ $config_generator_quiet_closed(S, pconfiggenerator) \/ $config_generator_storage_child(S, pconfiggenerator)) /\ ($config_generator_argument_nodes(pconfiggenerator) = eps \/ $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1)))
+def $config_generator_finish_allowed(S, pconfiggenerator) = ($config_generator_callee(S, pconfiggenerator.CALL.OWNER, 1) /\ ($($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1) \/ $config_generator_quiet_closed(S, pconfiggenerator) \/ $config_generator_storage_child(S, pconfiggenerator)) /\ ($config_generator_argument_nodes(pconfiggenerator) = eps \/ $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1)) /\ $config_generator_owning_items_live(S, pconfiggenerator.ITEMS))
 def $config_generator_finish(S, pconfiggenerator, ptask*) = $fiber_start_unpack_release(S[.ORIGIN = (pconfiggenerator.CALL.SITE)][.TODO = (CONFIG_GENERATOR pconfiggenerator "invoke") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], [HOBJECT pconfiggenerator.OBJECT])
   -- if $config_generator_finish_allowed(S, pconfiggenerator)
   -- if ~$config_generator_owning_input(pconfiggenerator)
@@ -533,7 +537,7 @@ def $config_generator_discard_nodes(pconfiggenerator, text) = [HOBJECT pconfigge
   -- if ~(text <- ["input-release", "invoke", "storage-released"])
 def $config_generator_discard_nodes(pconfiggenerator, text) = $config_generator_nodes(pconfiggenerator, text)
   -- if ~$config_generator_owning_input(pconfiggenerator) \/ (text <- ["input-release", "invoke", "storage-released"])
-def $config_generator_discard_allowed(S, pconfiggenerator) = (($($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 0) \/ $config_generator_quiet_closed(S, pconfiggenerator) \/ $config_generator_reference_storage(S, pconfiggenerator) \/ $config_generator_retired_scope(S, pconfiggenerator)) /\ $config_generator_callee(S, pconfiggenerator.CALL.OWNER, 0) /\ ($config_generator_argument_nodes(pconfiggenerator) = eps \/ $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 0)))
+def $config_generator_discard_allowed(S, pconfiggenerator) = (($($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 0) \/ $config_generator_quiet_closed(S, pconfiggenerator) \/ $config_generator_reference_storage(S, pconfiggenerator) \/ $config_generator_retired_scope(S, pconfiggenerator)) /\ $config_generator_callee(S, pconfiggenerator.CALL.OWNER, 0) /\ ($config_generator_argument_nodes(pconfiggenerator) = eps \/ $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 0)) /\ $config_generator_owning_items_live(S, pconfiggenerator.ITEMS))
 def $config_generator_discard(S, pconfiggenerator, text) = S[.TODO = (THROW_SEARCH n) :: (CONFIG_GENERATOR pconfiggenerator text) :: ptask*][.COMPLETION = UNSUPPORTED "CONFIG Generator unpack last cleanup owner"]
   -- if ~$config_generator_discard_allowed(S, pconfiggenerator)
   -- if S.TODO = (THROW_SEARCH n) :: ptask*
