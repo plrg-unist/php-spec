@@ -777,6 +777,18 @@ credit. Generator/reference getters and wider targets/lifetimes stay partial.
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
+The private enum core slice lowers unit and backed declarations to real case
+constants and cached singleton objects. It implements direct generated calls,
+lazy backing checks, readonly case slots, ordered interface linking, user magic
+methods, individual `constant()`/`defined()` case queries, and enum/WeakMap
+comparison. Combined strict loading passes 426 modules. Independent reached
+checks cover case identity, deferred backing, weak parsing, converted Stringable
+arguments, duplicate-live-case rejection, magic calls, query retry/aliases
+(93+76 checks), and enum/WeakMap ordering (30 checks); exact cuts and raw reports
+remain in `.tools/enum-*`. Enum case attributes, generated callable targets,
+generic first-use static/class-constant autoload, and wider type/link interactions
+remain open across M1–M4.
+
 Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64/A65, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110/111, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125/126, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148/149 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145/146 are integrated
 into this branch.
 GC physical01 is integrated on this tail; its private source/state cuts and the
