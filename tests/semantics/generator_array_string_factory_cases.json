@@ -1,0 +1,29 @@
+[
+  {
+    "id": "i81-array-static-sibling",
+    "purpose": "Array first-class captures freeze an inherited instance factory despite later referenced receiver/method writes; the original array, both closures and maker retire before the private-static Generator runs, while its equivalent sibling stays fresh.",
+    "source": "<?php\nclass Mid81A {\n    private static function body() {\n        echo 'BODY|', (int) (__CLASS__ === 'Mid81A'), '|',\n             (int) (static::class === 'Leaf81A'), '|';\n        try {\n            yield 81;\n        } finally {\n            echo 'FIN|';\n        }\n    }\n    public function make() {\n        echo 'MAKE|';\n        return self::body();\n    }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Leaf81A extends Mid81A {\n    public static function body() { echo 'BAD-BODY|'; yield 0; }\n}\n$maker = new Leaf81A();\n$weakMaker = WeakReference::create($maker);\n$receiver = $maker;\n$method = 'make';\n$callback = [&$receiver, &$method];\n$first = $callback(...);\n$second = $callback(...);\n$receiver = null;\n$method = 'body';\nunset($callback, $receiver, $method);\n$weakFirst = WeakReference::create($first);\n$weakSecond = WeakReference::create($second);\n$g = $first();\n$other = $second();\nunset($first, $second, $maker);\necho 'FRESH|', (int) ($weakFirst->get() === null), '|',\n     (int) ($weakSecond->get() === null), '|',\n     (int) ($weakMaker->get() === null), '|';\necho 'VALUE|', (int) ($g->current() === 81), '|';\nunset($g);\necho 'AFTER|', (int) ($other instanceof Generator), '|';\nunset($other, $weakMaker, $weakFirst, $weakSecond);\necho 'E';\n",
+    "source_sha256": "88db7c2baa9fceede6de1c928f161cbacb87a4d90a287080aa2321b8fa5f5c09",
+    "native_exit": 0,
+    "native_stdout": "MAKE|MAKE|MAKER|FRESH|1|1|1|VALUE|BODY|1|1|1|FIN|AFTER|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i81-array-protected-close",
+    "purpose": "A first-class array capture freezes the inherited factory when the source array method changes, then the callable retires while the saved protected Generator frame keeps the actual receiver through close.",
+    "source": "<?php\nclass Base81B {\n    protected function body() {\n        global $weakMaker;\n        echo 'BODY|', (int) ($this === $weakMaker->get()), '|';\n        try {\n            yield 81;\n        } finally {\n            echo 'FIN|', (int) ($this === $weakMaker->get()), '|';\n        }\n    }\n}\nclass Mid81B extends Base81B {\n    public function make() {\n        echo 'MAKE|';\n        return parent::body();\n    }\n}\nclass Leaf81B extends Mid81B {\n    public function body() { echo 'BAD-BODY|'; yield 0; }\n    public function __destruct() { echo 'MAKER|'; }\n}\n$maker = new Leaf81B();\n$weakMaker = WeakReference::create($maker);\n$callback = [$maker, 'make'];\n$factory = $callback(...);\n$callback[1] = 'body';\nunset($callback);\n$weakFactory = WeakReference::create($factory);\n$g = $factory();\nunset($factory, $maker);\necho 'FRESH|', (int) ($weakFactory->get() === null), '|',\n     (int) ($weakMaker->get() instanceof Leaf81B), '|';\necho 'VALUE|', (int) ($g->current() === 81), '|';\nunset($g);\necho 'AFTER|', (int) ($weakMaker->get() === null), '|';\nunset($weakFactory, $weakMaker);\necho 'E';\n",
+    "source_sha256": "4b8666b72a1d612a2640b8c48b475e97ce56de001ce360dd7fd61d7a648ca46f",
+    "native_exit": 0,
+    "native_stdout": "MAKE|FRESH|1|1|VALUE|BODY|1|1|FIN|1|MAKER|AFTER|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i81-string-late-static",
+    "purpose": "A first-class class-method string freezes its Leaf called scope before the original string variable selects Mid; the retired callable still authorizes the Leaf protected override and stored return.",
+    "source": "<?php\nclass Mid81C {\n    public static function make() {\n        echo 'MAKE|';\n        return static::body();\n    }\n    protected static function body() { echo 'BAD-MID|'; yield 0; }\n}\nclass Leaf81C extends Mid81C {\n    protected static function body() {\n        echo 'BODY|', (int) (__CLASS__ === 'Leaf81C'), '|',\n             (int) (static::class === 'Leaf81C'), '|';\n        yield 81;\n        return 82;\n    }\n}\n$name = 'Leaf81C::make';\n$factory = $name(...);\n$name = 'Mid81C::make';\nunset($name);\n$weakFactory = WeakReference::create($factory);\n$g = $factory();\nunset($factory);\necho 'FRESH|', (int) ($weakFactory->get() === null), '|';\necho 'VALUE|', (int) ($g->current() === 81), '|';\n$g->next();\necho 'RETURN|', (int) ($g->getReturn() === 82), '|';\nunset($g, $weakFactory);\necho 'E';\n",
+    "source_sha256": "2015c0a88fbf871bb059349346c2f3e2476e331e809cd3ca9948bb18962530d2",
+    "native_exit": 0,
+    "native_stdout": "MAKE|FRESH|1|VALUE|BODY|1|1|1|RETURN|1|E",
+    "native_stderr": ""
+  }
+]
