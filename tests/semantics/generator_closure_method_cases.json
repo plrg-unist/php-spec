@@ -1,0 +1,47 @@
+[
+  {
+    "id": "i79-bound-private-close",
+    "purpose": "Two same-template bound factories on the same Leaf receiver create equivalent fresh Generators at one private Mid method site. The selected Generator closes while its sibling stays fresh; both borrowed factories and their Capture retire first, then Maker retires after the final fresh sibling.",
+    "source": "<?php\nclass Capture79A {\n    public function __destruct() { echo 'CAPTURE|'; }\n}\nclass Base79A {\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Mid79A extends Base79A {\n    private function body() {\n        global $weakMaker;\n        echo 'BODY|', (int) ($this === $weakMaker->get()), '|',\n             (int) (__CLASS__ === 'Mid79A'), '|',\n             (int) (static::class === 'Leaf79A'), '|';\n        try {\n            yield 79;\n        } finally {\n            echo 'FIN|';\n        }\n    }\n}\nclass Leaf79A extends Mid79A {\n    public function body() { echo 'BAD-BODY|'; yield 0; }\n}\n$maker = new Leaf79A();\n$capture = new Capture79A();\n$weakMaker = WeakReference::create($maker);\n$weakCapture = WeakReference::create($capture);\n$template = function () use ($capture) {\n    echo 'CALL|';\n    return $this->body();\n};\n$factory = $template->bindTo($maker, Mid79A::class);\n$sibling = $template->bindTo($maker, Mid79A::class);\n$weakFactory = WeakReference::create($factory);\n$weakSibling = WeakReference::create($sibling);\nunset($template, $capture);\n$g = $factory();\n$other = $sibling();\nunset($factory, $sibling, $maker);\necho 'FRESH|', (int) ($weakFactory->get() === null), '|',\n     (int) ($weakSibling->get() === null), '|',\n     (int) ($weakCapture->get() === null), '|',\n     (int) ($weakMaker->get() instanceof Leaf79A), '|';\necho 'VALUE|', (int) ($g->current() === 79), '|';\nunset($g);\necho 'AFTER-A|', (int) ($weakMaker->get() instanceof Leaf79A), '|';\nunset($other);\necho 'AFTER-B|', (int) ($weakMaker->get() === null), '|';\nunset($weakMaker, $weakCapture, $weakFactory, $weakSibling);\necho 'E';\n",
+    "source_sha256": "6d6679a157be41a1af020b84b4cc547eb25fc9aacb5804e71041856f7282f939",
+    "native_exit": 0,
+    "native_stdout": "CALL|CALL|CAPTURE|FRESH|1|1|1|1|VALUE|BODY|1|1|1|1|FIN|AFTER-A|1|MAKER|AFTER-B|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i79-distinct-receiver",
+    "purpose": "Bound Closure This retires while a separate object receiver remains in the public method Generator frame; target receiver is not constrained to factory This.",
+    "source": "<?php\nclass Base79B {\n    public function body() {\n        global $weakFactoryThis, $weakTarget;\n        echo 'BODY|', (int) ($this === $weakTarget->get()), '|',\n             (int) ($this !== $weakFactoryThis->get()), '|',\n             (int) (__CLASS__ === 'Base79B'), '|',\n             (int) (static::class === 'Leaf79B'), '|';\n        yield 79;\n        return 80;\n    }\n}\nclass Leaf79B extends Base79B {}\n$factoryThis = new Leaf79B();\n$target = new Leaf79B();\n$weakFactoryThis = WeakReference::create($factoryThis);\n$weakTarget = WeakReference::create($target);\n$template = function ($other) {\n    echo 'CALL|';\n    return $other->body();\n};\n$factory = $template->bindTo($factoryThis, Base79B::class);\n$g = $factory($target);\nunset($template, $factory, $factoryThis, $target);\necho 'FRESH|', (int) ($weakFactoryThis->get() === null), '|',\n     (int) ($weakTarget->get() instanceof Leaf79B), '|';\necho 'VALUE|', (int) ($g->current() === 79), '|';\n$g->next();\necho 'RETURN|', (int) ($g->getReturn() === 80), '|',\n     (int) ($weakTarget->get() === null), '|';\nunset($g, $weakFactoryThis, $weakTarget);\necho 'E';\n",
+    "source_sha256": "3cc09439898a3fae34efac2b5afa6ada466815ed230e74f83bcd756bfad84e4f",
+    "native_exit": 0,
+    "native_stdout": "CALL|FRESH|1|1|VALUE|BODY|1|1|1|1|1|RETURN|1|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i79-temporary-call-nullsafe-abort",
+    "purpose": "Temporary Closure::call invokes nullsafe protected METHOD Generator; fresh Fiber abort runs finally and releases its real receiver.",
+    "source": "<?php\nclass Base79C {\n    protected function body() {\n        global $weakMaker;\n        echo 'BODY|', (int) ($this === $weakMaker->get()), '|';\n        try {\n            Fiber::suspend('park79');\n            yield 79;\n            echo 'BAD-BODY|';\n        } finally {\n            echo 'FIN|';\n        }\n    }\n}\nclass Leaf79C extends Base79C {}\n$maker = new Leaf79C();\n$weakMaker = WeakReference::create($maker);\n$factory = function () {\n    echo 'CALL|';\n    return $this?->body();\n};\n$g = $factory->call($maker);\nunset($factory, $maker);\necho 'FRESH|', (int) ($weakMaker->get() instanceof Leaf79C), '|';\n$stop = null;\n$f = new Fiber(function () use (&$g, &$stop) {\n    try {\n        $g->current();\n        echo 'BAD-RETURN|';\n    } catch (Exception $e) {\n        echo 'CAUGHT|', (int) ($e === $stop), '|';\n    }\n});\necho 'START|', (int) ($f->start() === 'park79'), '|';\n$stop = new Exception('stop79');\necho 'THROW|';\n$f->throw($stop);\necho 'CLOSED|', (int) ($g->current() === null), '|',\n     (int) ($weakMaker->get() === null), '|';\nunset($g, $f, $stop, $weakMaker);\necho 'E';\n",
+    "source_sha256": "6aa47cd2fe08a57f78c0a2eda395528f7a7e37d0ea173d2d650e7917fa3e3777",
+    "native_exit": 0,
+    "native_stdout": "CALL|FRESH|1|START|BODY|1|1|THROW|FIN|CAUGHT|1|CLOSED|1|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i79-static-object-selector",
+    "purpose": "Rebound Mid lexical scope selects private static Generator method from object syntax over Leaf public namesake; no receiver root survives factory retirement.",
+    "source": "<?php\nclass Capture79D {\n    public function __destruct() { echo 'CAPTURE|'; }\n}\nclass Mid79D {\n    private static function body() {\n        echo 'BODY|', (int) (__CLASS__ === 'Mid79D'), '|',\n             (int) (static::class === 'Leaf79D'), '|';\n        yield 79;\n        return 80;\n    }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Leaf79D extends Mid79D {\n    public static function body() { echo 'BAD-BODY|'; yield 0; }\n}\n$maker = new Leaf79D();\n$capture = new Capture79D();\n$weakMaker = WeakReference::create($maker);\n$weakCapture = WeakReference::create($capture);\n$template = function () use ($capture) {\n    echo 'CALL|';\n    return $this->body();\n};\n$factory = $template->bindTo($maker, Mid79D::class);\nunset($template, $capture);\n$g = $factory();\nunset($factory, $maker);\necho 'FRESH|', (int) ($weakMaker->get() === null), '|',\n     (int) ($weakCapture->get() === null), '|';\necho 'VALUE|', (int) ($g->current() === 79), '|';\n$g->next();\necho 'RETURN|', (int) ($g->getReturn() === 80), '|';\nunset($g, $weakMaker, $weakCapture);\necho 'E';\n",
+    "source_sha256": "95e6dee25c02cfc08f6e847889c0723b7f1c53e55ac140e905531c13d3700ded",
+    "native_exit": 0,
+    "native_stdout": "CALL|CAPTURE|MAKER|FRESH|1|1|VALUE|BODY|1|1|1|RETURN|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i79-unbound-public-control",
+    "purpose": "Existing unbound global real Closure invoking a public Generator method remains exact after its factory retires.",
+    "source": "<?php\nclass Public79E {\n    public function body() {\n        global $weakMaker;\n        echo 'BODY|', (int) ($this === $weakMaker->get()), '|';\n        yield 79;\n        return 80;\n    }\n}\n$maker = new Public79E();\n$weakMaker = WeakReference::create($maker);\n$factory = function () use ($maker) {\n    echo 'CALL|';\n    return $maker->body();\n};\n$g = $factory();\nunset($factory, $maker);\necho 'FRESH|', (int) ($weakMaker->get() instanceof Public79E), '|';\necho 'VALUE|', (int) ($g->current() === 79), '|';\n$g->next();\necho 'RETURN|', (int) ($g->getReturn() === 80), '|',\n     (int) ($weakMaker->get() === null), '|';\nunset($g, $weakMaker);\necho 'E';\n",
+    "source_sha256": "b3bc1d75b737be104688ccaa932cd61aacfcce419cf43d6a3c01841c76948c1d",
+    "native_exit": 0,
+    "native_stdout": "CALL|FRESH|1|VALUE|BODY|1|1|RETURN|1|1|E",
+    "native_stderr": ""
+  }
+]
