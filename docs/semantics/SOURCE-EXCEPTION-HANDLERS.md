@@ -56,8 +56,14 @@ callbacks may mutate referenced methods, restore or replace handlers, throw or
 exit; the original selected continuation and Throwable remain authenticated.
 Module270 releases returned values and the original Throwable before restoring
 the old handler, preserving genuine callback state during destructor effects.
-Wider magic/autoload/internal callbacks and GC/output/free request phases remain
-open. Ordered shutdown callback entry is implemented by module231. Shared207 error-handler reference-return bodies and temporary-value
+The shared FINAL extension in modules 441/442 preserves that null caller and original
+argument through output-handler failure. Normal handling resumes the original
+undefined return; body, ignored-return/original-cleanup and pre-entry warning
+throws retain their actual C owners before default fatal takeover. The
+[output contract](OUTPUT-HANDLERS.md) and
+[OB04 ledger](../../coverage/semantics/output-final-exception-handler-review.json)
+record bounded output and late fast-executor free effects. Wider magic/autoload/
+internal callbacks and GC, nonfast or reentrant free request phases remain open. Ordered shutdown callback entry is implemented by module231. Shared207 error-handler reference-return bodies and temporary-value
 reference returns retain their existing Unsupported boundaries; accepted local
 variable reference returns are ignored correctly by this exception callback.
 This milestone does not close complete core.

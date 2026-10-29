@@ -118,7 +118,7 @@ def $executor_free_result(S, pexecutorfree) = S_report[.EXITSTATUS = 0][.DESTRUC
   -- if pexecutorfree.FAILED = (n)
   -- if $destructor_method(S, n) = (pmethoddesc)
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
-  -- if ptbytes_message = $ptascii("Couldn't execute method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME
+  -- if ptbytes_message = $ptascii("Couldn't execute method ") ++ $c_string(pclassdesc.NAME) ++ $ptascii("::") ++ pmethoddesc.NAME
   -- if S_report = $shutdown_reported(S, $ptascii("Error"), ptbytes_message, 0, $ptascii("Fatal error: ") ++ ptbytes_message ++ $ptascii(" in Unknown on line 0") ++ $shutdown_fatal_suffix(S[.TRACE = eps], true), true)
 def $executor_free_result(S, pexecutorfree) = S[.COMPLETION = UNSUPPORTED "inactive executor storage hook or destructor visibility"]
   -- if pexecutorfree.FAILED = eps /\ pexecutorfree.UNKNOWN

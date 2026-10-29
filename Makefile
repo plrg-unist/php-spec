@@ -76,6 +76,9 @@ test-semantics: build
 	python3 tests/semantics/output_pending_release_sources.py
 	python3 tests/semantics/output_pending_release_protocol.py
 	python3 tests/semantics/output_pending_release_review_protocol.py
+	python3 tests/semantics/output_final_exception_sources.py
+	python3 tests/semantics/output_final_exception_protocol.py
+	python3 tests/semantics/output_final_exception_review_protocol.py
 	python3 tests/semantics/request_provider.py
 	python3 tests/semantics/evidence.py
 	python3 tests/semantics/source_occurrences.py

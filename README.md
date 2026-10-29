@@ -242,8 +242,13 @@ exception handler: stored traces and the string cache precede fatal reporting,
 then [OB03](coverage/semantics/output-pending-release-review.json) releases the
 retained local Throwable while buffers remain active/running. Trace-child cleanup
 and a fresh secondary fatal precede inactive raw-owner release; buffered bytes
-are discarded. Selected exception handlers, wider rendering and deactivation
-cleanup, other byte producers and buffered stdout diagnostics remain dependencies.
+are discarded. [OB04](coverage/semantics/output-final-exception-handler-review.json)
+adds selected FINAL exception handlers, ignored-return/original cleanup, pre-entry
+warning throws and their real abandoned C owners. Normal handling forwards live
+bytes through genuine lower callbacks; retained Closure free effects after executor
+inactivity preserve the pinned late fatal and CLI status. Wider rendering, nonfast
+executor teardown, reentrant deactivation, other byte producers and buffered stdout
+diagnostics remain dependencies.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback

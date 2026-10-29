@@ -200,6 +200,19 @@ attempts retain zero agreement credit. Wider selected-handler/rendering and
 reentrant/abrupt raw-owner teardown remain partial.
 [Pending-release review](coverage/semantics/output-pending-release-review.json).
 
+OB04 selects existing exception handlers for FINAL throws through authenticated
+API reception and ordinary ignored-return/original cleanup. Normal handling keeps
+UNDEF failure forwarding and real lower callbacks; abrupt cleanup preserves only
+actual C owners before fresh fatal/deactivation. Retained Closure fast-free effects
+after executor inactivity preserve the pinned late diagnostic and CLI0. Eleven
+originals agree, eight reached groups pass 465 checks and private strict compilation of 432 modules
+passes.
+The independent 303 checks include retired GC HANDLE authority; author 162 includes
+first-duplicate allocator mode controls. Slow executor teardown, wider internal
+hooks/rendering and reentrant deactivation stay partial. Actual-tail integration is
+pending; failed native forecasts, fixtures and the repaired invariant cut keep zero credit.
+[Selected FINAL review](coverage/semantics/output-final-exception-handler-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
