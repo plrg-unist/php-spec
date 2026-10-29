@@ -129,6 +129,7 @@ dec $default_internal_callback_context(pstate, pcallcontext) : bool
 def $default_internal_callback_context(S, pcallcontext) = false -- otherwise
 dec $ordinary_internal_callback_context(pstate, pcallcontext) : bool
 def $ordinary_internal_callback_context(S, pcallcontext) = false -- otherwise
+dec $closure_invoke_warning_context(pstate, pcallcontext) : bool
 dec $clone_update_string_context(pstate, pcallcontext) : bool
 def $clone_update_string_context(S, pcallcontext) = false -- otherwise
 def $trace_context(S, pbinding*, eps) = eps
@@ -148,6 +149,7 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FIL
   -- if ~$default_internal_callback_context(S, pcallcontext) /\ ~$ordinary_internal_callback_context(S, pcallcontext)
   -- if ~$clone_update_string_context(S, pcallcontext)
   -- if $error_context_trigger(S, pcallcontext) = eps
+  -- if ~$closure_invoke_warning_context(S, pcallcontext)
   -- if ~$exception_warning_context(S, pcallcontext)
   -- if ~$destructor_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)

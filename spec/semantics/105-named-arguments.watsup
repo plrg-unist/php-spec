@@ -170,7 +170,7 @@ def $named_enter(S, pfunction, pnamedargs, porigin?, z) = S_bound[.CURRENT = ({T
   -- if n_extra = $(n_args - n_received)
   -- if S_entered = $save_frame(S)
   -- if S_bound = $named_bind(S_entered[.CVS = pfunction.CVS][.SYMBOLS = pfunction.CVS], psparam_fixed*, pnamedargs.SLOTS)
-rule PhpStep/named-enter: S ~> $wrapper_after_enter($target_after_enter($named_enter(S[.TODO = ptask_tail*], pfunction, pnamedargs, porigin?, z), pcalltarget_function), pnamedargs)
+rule PhpStep/named-enter: S ~> $source_call_enter(S, pfunction)
   -- if S.TODO = (NAMED_ARGS pcalltarget_function eps n pnamedargs porigin? z) :: ptask_tail*
   -- if $target_function(S, pcalltarget_function) = (pfunction)
 
