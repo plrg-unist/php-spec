@@ -132,7 +132,8 @@ def selected(program, path, stdout):
         'S_pruned_pause.COMPLETION = BUDGET',
         'S_pruned = S_pruned_pause[.COMPLETION = NORMAL]',
         '~((HCELL n_held) <- S_pruned.ALLOCATIONS)',
-        '~(n_held <- S_pruned.REFCELLS)',
+        'n_held <- S_pruned.REFCELLS',
+        '$ordinary_reference_value(S_pruned, n_held) = eps',
         '$config_iterator_current_receipt(S_pruned, pconfigiterator_send1, REFERENCE n_held)',
         '$config_iterator_current_value(S_pruned, pconfigiterator_send1, REFERENCE n_held) = eps',
     ] + public('S_last') + public('S_pruned') + budget('S_send1', 'S_send_budget') + seek('S_send1', 965, 'S_ready') + [
