@@ -25,5 +25,14 @@
     "native_exit": 0,
     "native_stdout": "START|MIDDLE|MAKER-DROP|RETIRED|1|BODY|1|1|VALUE|1|1|DONE|1|E",
     "native_stderr": ""
+  },
+  {
+    "id": "i75-keyword-factory-chain-residual",
+    "purpose": "I75 native-positive/checked Unsupported residual retained as historical evidence; I76 promotes these exact source/native bytes for finite keyword factory chains.",
+    "source": "<?php\nclass Base75Chain {\n    public static function body() { echo 'BODY|'; yield 75; return 75; }\n    public static function make() { echo 'MAKE|'; return self::body(); }\n}\nclass Leaf75Chain extends Base75Chain {\n    public static function outer() { echo 'OUTER|'; return parent::make(); }\n}\necho 'BEGIN|';\n$g = Leaf75Chain::outer();\necho 'MADE|';\necho 'VALUE|', (int) ($g->current() === 75), '|';\n$g->next();\necho 'CLOSED|', (int) ($g->getReturn() === 75), '|';\nunset($g);\necho 'E';\n",
+    "source_sha256": "b8ca8310fdc20431c4633e77bdcf9e19e60c3ba8cce447a88c4c9ab5aff43f07",
+    "native_exit": 0,
+    "native_stdout": "BEGIN|OUTER|MAKE|MADE|VALUE|BODY|1|CLOSED|1|E",
+    "native_stderr": ""
   }
 ]
