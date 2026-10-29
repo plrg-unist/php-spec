@@ -94,7 +94,9 @@ def conditions(name, program, source, expected_stdout):
     if name == CASES[0]:
         checks += [
             'ptask_source = CALL_ARGS pcalltarget eps n_sent poperand* (porigin_site) z_line',
-            'poperand* = [KNOWN (PSTRING ($ptascii("bad")))]',
+            'poperand* = [KNOWN pvalue_raw]',
+            '$type_bytes(pvalue_raw) = $ptascii("string")',
+            '$echo_value(pvalue_raw) = $ptascii("bad")',
             '~$closure_invoke_valid(S_outer, CALL_ARGS pcalltarget eps n_sent poperand* (porigin_site) $(z_line + 1))',
         ]
         reach('S_inner', 'S_outer', 1)
@@ -105,7 +107,7 @@ def conditions(name, program, source, expected_stdout):
             '$closure_invoke_valid(S_inner, ptask_source)',
             '$lookup(S_inner.ENV, $ptascii("arg")) = (n_arg)',
             'S_inner.STORE[n_arg] = DEFINED (PINT 8)',
-            'poperand* = [KNOWN (PSTRING ($ptascii("bad")))]',
+            'poperand* = [KNOWN pvalue_raw]',
         ]
         reach('S_entered', 'S_inner', 2)
         checks += [
@@ -115,7 +117,7 @@ def conditions(name, program, source, expected_stdout):
             'pcallcontext.WRAPPER = (pnamedargs_raw)',
             '$heap_owners($heap_prune($heap_graph(S_entered)), HOBJECT n_closure) = 3',
             '$lookup(S_entered.ENV, $ptascii("value")) = (n_value)',
-            'S_entered.STORE[n_value] = DEFINED (PSTRING ($ptascii("bad")))',
+            'S_entered.STORE[n_value] = DEFINED pvalue_raw',
             '$target_function(S_entered, pcallcontext.TARGET) = (pfunction)',
             '$closure_invoke_received(S_entered, pfunction)',
             '~$closure_invoke_received(S_entered[.CURRENT = (pcallcontext[.WRAPPER = eps])], pfunction)',
