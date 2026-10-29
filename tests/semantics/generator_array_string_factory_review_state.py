@@ -15,7 +15,10 @@ ROW = next(row for row in json.loads(INPUT_BYTES[CATALOG])
 assert hashlib.sha256(ROW['source'].encode()).hexdigest() == ROW['source_sha256']
 
 stage = (
-    'S.ACTIVEFIBER = eps '
+    'S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail* '
+    '-- if pconfigcall.KIND = INTRINSIC_FIBER_THROW '
+    '-- if pconfigcall.OWNER = (n_fiber) '
+    '-- if S.ACTIVEFIBER = eps '
     '-- if $lookup(S.ENV, $ptascii("fiber")) = (n_fiber_cell) '
     '-- if S.STORE[n_fiber_cell] = DEFINED (POBJECT n_fiber) '
     '-- if S.OBJECTS[n_fiber] = FIBER pfiber '
