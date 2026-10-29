@@ -116,4 +116,4 @@ def $output_executor_finish(S) = $executor_free_result(S, $executor_free_walk(S,
   -- if S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.OUTPUTBUFFERS = eps
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE
   -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
-  -- if $shutdown_frozen(S.COMPLETION)
+  -- if $shutdown_frozen(S.COMPLETION) \/ $output_drain_completion(S.COMPLETION)

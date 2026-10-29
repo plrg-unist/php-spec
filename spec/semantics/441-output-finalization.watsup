@@ -25,6 +25,8 @@ dec $output_drain_route_tasks(pstate, pobdrain, ptask*) : bool
 dec $output_drain_route_frames(pstate, pobdrain, pframe*) : bool
 dec $output_drain_route_operations(pstate, pobdrain, pdestructionoperation*) : bool
 dec $output_drain_active(pstate, pobdrain) : bool
+dec $output_executor_finish(pstate) : pstate
+def $output_executor_finish(S) = S -- otherwise
 
 def $output_drain_completion(NORMAL) = true
 def $output_drain_completion(EXITED z) = true
@@ -105,7 +107,7 @@ def $output_final_destructors(S) = (S.DESTRUCTION.PHASE = DESTRUCTION_DONE /\ ($
 def $task_nodes(OUTPUT_DRAIN pobdrain) = $operand_nodes(pobdrain.VALUE) ++ $base_nodes(pobdrain.BASE)
 def $task_nodes(OUTPUT_DRAIN_RELEASE pobdrain poutputbuffer) = $output_buffer_nodes(poutputbuffer)
 def $call_task_valid(S, OUTPUT_DRAIN pobdrain) = ($output_drain_valid(S, pobdrain) /\ S.CURRENT = eps /\ pobdrain.IDS = $output_ids(S.OUTPUTBUFFERS) /\ ($output_drain_handler(S.OUTPUTBUFFERS) = eps \/ $output_drain_handler(S.OUTPUTBUFFERS) = (pobdrain.SOURCE)) /\ $source_operand_suffix(S.TODO, OUTPUT_DRAIN pobdrain, eps))
-rule PhpStep/output-drain-done: S ~> S[.TODO = eps][.COMPLETION = pobdrain.COMPLETION][.RESULT = pobdrain.VALUE][.BASE = pobdrain.BASE][.ORIGIN = pobdrain.ORIGIN]
+rule PhpStep/output-drain-done: S ~> $output_executor_finish(S[.TODO = eps][.COMPLETION = pobdrain.COMPLETION][.RESULT = pobdrain.VALUE][.BASE = pobdrain.BASE][.ORIGIN = pobdrain.ORIGIN])
   -- if S.TODO = (OUTPUT_DRAIN pobdrain) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $call_task_valid(S, OUTPUT_DRAIN pobdrain)
@@ -271,8 +273,6 @@ dec $output_deactivate_pending(pstate) : bool
 dec $output_deactivate_task(ptask) : pobdeactivate?
 dec $output_deactivate_pending_tasks(pstate, ptask*) : bool
 dec $output_deactivate_pending_frames(pstate, pframe*) : bool
-dec $output_executor_finish(pstate) : pstate
-def $output_executor_finish(S) = S -- otherwise
 
 ;; Reporting precedes the pending Throwable decrement. Its dedicated task keeps
 ;; the active/running output stack visible throughout ordinary child release.
