@@ -1739,10 +1739,19 @@ graph admission. Post-retirement records authenticate structural identities and
 stages; they do not recover old reference-cell contents or prove complete producer
 provenance. Later callback retirement keeps a nonempty copied-prefix witness.
 
-Other CONFIG intrinsic acquisition, Stringable/effectful casts, materialized or
-special graphs and wider lifecycle contexts retain their current boundaries.
-In particular, an effectful last temporary INPUT without an admitted surviving
-owner is still explicitly Unsupported. Constructed first-key and graph-rejection
+The [final temporary INPUT increment](../../coverage/semantics/config-iterator-input-finalizer-review.json)
+admits last-owner cleanup for the existing no-argument named-call temporary when
+normalized copied arguments have live heap roots and the Iterator satisfies the
+existing finite field/finalizer policy. Copied arguments remain protected while
+DATA and then INPUT retire. Normal reception follows the INPUT destructor, so its
+configuration writes affect API validation; a supplied Throwable instead releases
+the copied prefix after INPUT and keeps the original pending identity. Array COW,
+embedded aliases and API TraceArgs retain their ordinary ownership behavior.
+
+Other CONFIG intrinsic acquisition, temporary source/key forms, Stringable/effectful
+casts, materialized or special graphs and wider lifecycle contexts retain their
+current boundaries. An effectful last INPUT without an admitted live copied root
+remains Unsupported. Constructed first-key and graph-rejection
 checks do not establish extra native source agreements or broader GC coverage.
 All held boundaries, including low-precision DEFINE-name NaN and owned-NUL release,
 remain untouched. Original A66/A67/A68 cuts retain their scope and identities.

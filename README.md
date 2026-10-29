@@ -677,6 +677,13 @@ Errors release CURRENT, then DATA/INPUT, then the copied prefix; admitted return
 throwing callbacks keep the existing cleanup rules. Stringable/effectful casts,
 other callees and wider graph/temporary-finalizer lifetimes remain partial.
 
+[Temporary CONFIG INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json)
+now runs an admitted final INPUT destructor while distinct copied arguments stay
+protected. DATA retires first; API reception follows INPUT cleanup, while a supplied
+Throwable releases the copied prefix afterward. Existing finite field/finalizer,
+array COW and shared-reference rules apply. Other temporary source/key forms and
+finalizers without a live admitted copied root retain their current limits.
+
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
 resumes. DATA retains the selected Generator across live input/callee rebinding;

@@ -38,6 +38,13 @@ contexts remain partial.
 [Owning-argument review](coverage/semantics/config-iterator-argument-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
+A70 runs admitted last-owner temporary Iterator INPUT cleanup while normalized
+copied arguments stay protected. DATA retires first; normal API reception follows
+INPUT destruction, and supplied-Throwable cleanup releases the prefix afterward.
+Finite field/finalizer policy, COW, aliases and API TraceArgs retain their ordinary
+rules. Other temporary source/key forms and wider lifecycle contexts remain partial.
+[INPUT cleanup review](coverage/semantics/config-iterator-input-finalizer-review.json).
+
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
 ordinary source-call warnings after sends/named defaults, before reception/body.
 Selected references, real argument/receiver owners and caller-only traces survive
@@ -156,7 +163,6 @@ unresolved with zero model credit. [OB01 review](coverage/semantics/output-reque
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| A70 | Temporary INPUT/copy cleanup for CONFIG Iterator sends; native/source preparation. |
 | OB02 | Restored FINAL callback-failure boundary; default fatal reporting and buffer/owner cleanup implementation. |
 | COMP155 | Method-bearing captured-object comparisons; native/source preparation. |
 | GC06 | Materialized destructor GC count/buffer correction; produced-identity/root-order discrepancy under focused diagnosis. |
