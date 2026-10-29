@@ -34,9 +34,10 @@
       ["../php-spec-evidence-archive/gc-materialized-callback-author/state/peer-retrace/report.json", "3a8c669c8d25deec4a72f5bd4d53a4be24927e1c536b5034658c589c1858b86e"],
       ["../php-spec-evidence-archive/gc-materialized-callback-author/state/peer-called-free/report.json", "2b1a74966607125710fb205b3d55d210f6c95d8e18e5a92eb791a7012f86749a"],
       ["../php-spec-evidence-archive/gc-materialized-callback-author/state/derived-mismatch/report.json", "107efff6cf824dc730f9f378c8c64979fb2aacaccc6d931ddc9c5b49fe76a1fc"]
-    ]
+    ],
+    "joined_actual_sl": ["../php-spec-evidence-archive/gc-materialized-callback-author/joined-actual-tail/strict-report.json", "30234cc0f65fceaca4c41b9857b3240676e20911f0d906f35190e2f25bcb0c13"]
   },
   "limits": "Count-ambiguous callback graphs need persistent authenticated first-claim order across callback mutation. WeakMap callbacks, cached-worker/residual/overlap and callback reentry paths, hooks, active Fiber/frame/iterator contexts, wider postcallback rooting and arbitrary callback-created tables remain partial. This milestone does not close core GC.",
-  "actual_tail_join": "Pending canonical composition and one joined strict compilation; private source and reached cuts retain their original identities.",
+  "actual_tail_join": "Four reviewed GC05 commits compose without conflict over exact clean enum head 6c75083bf6fc5d1672a1f9b0a4efb2c5a31b9d7c at dcf2bdfb5949ecd044f8cdd2e40fc58c6d5d7ca8. Independent review cleared current enum/NoDiscard/CONFIG/task-root and inventory seams; module301/source/state retain private byte identities. One pinned CPU2 explicit --sl compilation of the actual 430-module manifest passes: true newline, empty stderr, exit0, stable HEAD/inputs, no timeout or group residue. This adds compilation credit only; private source/reached cuts retain their original identities. The original joined fixture argv path is preserved as a symlink to the external raw bundle.",
   "recovery": "Author: tests/semantics/gc_materialized_destructor_sources.py --phase native|baseline|model --case materialized-shared-table-dtor --output ARCHIVE/packet1. Independent peer: gc-materialized-callback-review-probes/run.py native|model --cpu N --output ARCHIVE/packet1 --root WORKTREE. Reached: taskset -c N python3 tests/semantics/gc_materialized_destructor_state.py --case NAME. Raw process reports preserve exact argv, cwd, profile, exits and source paths."
 }

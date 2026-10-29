@@ -39,17 +39,16 @@ remain partial.
 [Attribute contract](docs/semantics/BUILTIN-ATTRIBUTES.md),
 [review](coverage/semantics/builtin-nodiscard-review.json).
 
-GC04 uses Zend's ordinary-sibling mark-on-push order for fresh quiet
-no-WeakMap collection. A shared zero-declared property table counts as a real
-array when claimed from a later field before the first object's proxy visit.
-Two native-first inline/materialized originals agree at count 3; the old
-model completed normally but counted 2 on the inline case. Three private
-strict SL reached fronts pass 106 checks, including a protected forged-plan
-rejection and real GC_FREE consumers. Private strict428 and actual-tail joined
-strict429 compilation pass; source/reached cuts retain their original inputs.
-The plan remains callback-free, PASS0, canonical and unmarked; current
-callbacks, residual tags, workers, hooks and active contexts remain open.
-[GC04 review](coverage/semantics/gc-ordinary-claim-review.json).
+GC05 admits public destructors on quiet, canonical materialized ordinary cycles
+when the legacy callback walk and claimed walk agree on ordered visits and
+counted nodes in the actual collector plan. The collector rechecks after callback
+mutation and before fresh collection of already-called survivors, refusing an
+order mismatch. Two native-first sources agree, including resurrection followed
+by later count 3; four strict SL reached groups pass 151 checks. Private strict429
+and actual-tail joined strict430 compilation pass; source and reached cuts retain
+their original inputs. Count-ambiguous callbacks, WeakMap callbacks, residual
+tags, workers, hooks, reentry and active contexts remain partial.
+[GC05 review](coverage/semantics/gc-materialized-callback-review.json).
 
 I75 is integrated: receiver-free static Generator bodies called through `self`,
 `parent` or `static` retain the real factory's scope after return. Actual live
@@ -97,7 +96,7 @@ not repeat historical receipt counts or renew their execution credit.
 | Configuration and constants | Supported INI_SET/DEFINE/CONSTANT/DEFINED routes retain their selected callee, option/name and API timing. Iterator and named Generator inputs preserve real DATA/INPUT and Aggregate producer history, copied sends, named-key Error priority and pre-API cleanup. CONFIG typed-current reads reuse property-source validation; structural receipts remain valid after physical cache retirement. Iterator sends copy ordinary scalars and defer INI_SET binding/conversion until after cleanup; existing finite graph policy remains. Generator/other consumers and owning/effectful argument lifetimes retain their documented limits. [Include/configuration](docs/semantics/INCLUDE-SOURCES.md), [constants](docs/semantics/SOURCE-USER-CONSTANTS.md). |
 | Classes, properties and enums | Linked declarations preserve receiver identity, slot declaration, visibility, typed-reference sources, readonly/hook policy and diagnostic order. Supported magic getters and reference-get chains preserve alias/copy and rebind timing. Enum declarations lower to cached singleton cases with lazy backing checks, readonly slots, ordered interfaces and generated/user methods. Registered-loader first use for static calls and class-constant fetches preserves selected class/member order and source-authenticated resume; reached dynamic/named/folded/enum cases and forged-target rejection retain separate raw cuts under `.tools/enum-acquisition-review-state-*`. Captured enum `cases(...)` preserves its selected target and singleton cache after closure retirement. Captured `from(...)`/`tryFrom(...)` remain Unsupported; other generated callable routes, the default loader, case attributes, wider link/type contexts and object lifetimes remain partial. [Classes](docs/semantics/SOURCE-CLASSES.md), [properties](docs/semantics/SOURCE-PROPERTIES.md), [property references](docs/semantics/SOURCE-PROPERTY-REFERENCES.md), [enum evidence](docs/ARTIFACTS.md). |
 | Generators and Fibers | Supported named/method/Closure producers retain actual resumer and callee owners, by-value or reference caches, supplied Throwables and catch/finally continuations across Fiber suspension. Receiver-free static Generator bodies called through finite `self`/`parent`/`static` factory chains retain real scope after return. Delegation and SEND preserve their selected chains and copied/delivered owners. Wider producers, binding/delegation combinations and teardown remain partial. [Generators](docs/semantics/GENERATORS.md), [Fibers](docs/semantics/FIBERS.md), [delegation](docs/semantics/GENERATOR-DELEGATION.md), [reference yields](docs/semantics/GENERATOR-REFERENCE-YIELDS.md). |
-| Lifetime, weak references and collection | Eager release tracks real ownership, pending results/Throwables, destructor frames and protected storage. WeakMap protocols preserve weak-Key visibility, ordinary Value owners, aliases, selective notification and conditional collection. Physical tracing handles admitted ordinary/materialized graphs; quiet same-Key entries and no-Map ordinary siblings use claimed first-visit counts. Callback, residual and active collector contexts remain open. Stable retired cell metadata owns nothing; pooled literal arrays remain rooted by compiled constants. [Eager cleanup](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md), [reference returns](docs/semantics/SOURCE-REFERENCE-RETURNS.md), [weak references](docs/semantics/WEAK-REFERENCES.md), [cycle collection](docs/semantics/CYCLE-COLLECTION.md). |
+| Lifetime, weak references and collection | Eager release tracks real ownership, pending results/Throwables, destructor frames and protected storage. WeakMap protocols preserve weak-Key visibility, ordinary Value owners, aliases, selective notification and conditional collection. Physical tracing handles admitted ordinary/materialized graphs; quiet same-Key entries and no-Map ordinary siblings use claimed first-visit counts. Materialized ordinary destructor callbacks reuse the existing retrace when legacy and claimed count images agree. Count-ambiguous callbacks, residual and active collector contexts remain open. Stable retired cell metadata owns nothing; pooled literal arrays remain rooted by compiled constants. [Eager cleanup](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md), [reference returns](docs/semantics/SOURCE-REFERENCE-RETURNS.md), [weak references](docs/semantics/WEAK-REFERENCES.md), [cycle collection](docs/semantics/CYCLE-COLLECTION.md). |
 | Diagnostics, output and environment | Supported handlers retain registration, callback and emitting-frame identity through warnings, throws and cleanup. Echo/print preserve left-to-right effects and flat-array diagnostics; bounded default output buffers retain native callback/output order. Request, clock, stream and startup profiles have explicit contracts rather than ambient host answers. Wider buffering/shutdown/tick behavior remains open. [Handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md), [exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md), [output buffers](docs/semantics/OUTPUT-BUFFERS.md), [request inputs](docs/semantics/REQUEST-INPUTS.md). |
 
 ## Decisions that constrain further work
@@ -136,7 +135,6 @@ unresolved with zero model credit. [OB01 review](coverage/semantics/output-reque
 | OB02 | Shutdown FINAL fatal/bailout; cutoff49 investigation. |
 | CLASS149 | Expression/factory placement and eval/include return-origin repair. |
 | COMP153 | Linked base Exception/Error captured graphs through the existing finite Previous-path fallback. |
-| GC05 | Materialized destructor/resurrection; state checks pending. |
 | ATTR02 | Deprecated VM calls and API timing boundary. |
 | I77 | Receiver-bearing keyword Generator links; preparation. |
 | Enum M3/M4 | Captured `cases(...)` is integrated; captured `from(...)`/`tryFrom(...)` remain Unsupported while wider generated-callable dispatch, backing-initializer dependency modes and enum acquisition stay active. |
