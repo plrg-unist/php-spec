@@ -1255,6 +1255,7 @@ def $value_order(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*) = ORDE
   -- if n_left =/= n_right
   -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if $weakmap_at(S, n_left) =/= $weakmap_at(S, n_right)
+  -- if $enum_case_object(S, n_left) = eps /\ $enum_case_object(S, n_right) = eps
   -- if ~$weakmap_standard_mismatch(S, n_left, n_right)
 
 ;; A retired wrapper is harmless borrowed history; a live GET additionally
