@@ -25,8 +25,8 @@ def $anonymous_property_items((NPropertyItem phpType40 (NExprConstFetch (NName (
 def $anonymous_property_items(phpType57*) = false -- otherwise
 
 dec $anonymous_constructor_parameter(phpType17) : bool
-;; Ordinary signature compilation owns parameter types and default validation.
-def $anonymous_constructor_parameter(NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN b) (BOOLEAN false) (NExprVariable (BYTES text) metadata_name) phpType5 (SEQUENCE eps) metadata) = $ptvalidname($base64(text), false)
+;; Ordinary signature compilation owns types, defaults and final-only variadics.
+def $anonymous_constructor_parameter(NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN b) (BOOLEAN b_var) (NExprVariable (BYTES text) metadata_name) phpType5 (SEQUENCE eps) metadata) = $ptvalidname($base64(text), false)
 def $anonymous_constructor_parameter(phpType17) = false -- otherwise
 dec $anonymous_constructor_parameters(phpType16) : bool
 def $anonymous_constructor_parameters(SEQUENCE eps) = true
