@@ -161,8 +161,8 @@ def $config_iterator_finalizer(S, n) = true
   -- if $destructor_method(S, n) = eps
   -- if $config_iterator_owned_child(S, n)
 def $config_iterator_finalizer(S, n) = false -- otherwise
-;; The single declared child stays owned by this Iterator until its final DATA
-;; release. The child's own destructor runs after the parent's free_obj begins.
+;; The Iterator owns one declared child edge until its storage release. Other
+;; owners keep the child live after that edge retires.
 def $config_iterator_owned_child(S, n) = true
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INSTANCE porigin_parent
@@ -184,7 +184,7 @@ def $config_iterator_owned_child(S, n) = true
   -- if $object_table_at(S.OBJECTTABLES, n_child) = eps
   -- if $node_children(S, HOBJECT n_child) = eps
   -- if $config_iterator_finalizer(S, n_child)
-  -- if $heap_owners($heap_graph(S), HOBJECT n_child) = 1
+  -- if $($heap_owners($heap_graph(S), HOBJECT n_child) > 0)
 def $config_iterator_owned_child(S, n) = false -- otherwise
 def $config_iterator_finalizable_aggregate_data(S, pconfigiterator) = true
   -- if pconfigiterator.PRODUCER = (n_aggregate)
