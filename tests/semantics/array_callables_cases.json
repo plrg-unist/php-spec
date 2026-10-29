@@ -240,5 +240,37 @@
     "expected_model": "normal",
     "expected_normal_stdout": "Owner/Child:1:x|o0zE|1:x|K",
     "profile": "file"
+  },
+  {
+    "id": "enum-generated-array-capture-target-retirement",
+    "source": "<?php\nenum ReviewArrayCaptureSelected: string { case Padded = \"07\"; case Plain = \"7\"; }\nenum ReviewArrayCaptureRebound: string { case Only = \"07\"; }\n$selectedClass = \"\\\\rEvIeWaRrAyCaPtUrEsElEcTeD\";\n$method = \"fRoM\";\n$target = [$selectedClass, $method];\n$captured = $target(...);\n$weak = WeakReference::create($captured);\n$prior = $target;\n$target[0] = ReviewArrayCaptureRebound::class;\n$prior = null;\n$rebound = $target;\nfunction reviewArrayCaptureArgument() {\n    global $captured, $target, $weak;\n    $captured = null;\n    $target = null;\n    echo $weak->get() !== null ? \"held|\" : \"BAD|\";\n    return \"07\";\n}\n$result = $captured(value: reviewArrayCaptureArgument());\necho $result === ReviewArrayCaptureSelected::Padded ? \"selected|\" : \"BAD|\";\necho $weak->get() === null ? \"retired|\" : \"BAD|\";\necho $rebound(\"07\") === ReviewArrayCaptureRebound::Only ? \"rebound|\" : \"BAD|\";\necho $result === ReviewArrayCaptureSelected::Padded ? \"cached|\" : \"BAD|\";\n",
+    "source_sha256": "c678ed6789339703b0bba7b068aa5188b5b436f1c5dedc14a393bd5969e52422",
+    "expected_model": "normal",
+    "expected_normal_stdout": "held|selected|retired|rebound|cached|",
+    "purpose": "A runtime callable array captures its selected enum through COW mutation and original-table retirement; invocation retains the Closure after source-variable clearing and preserves cached singleton identity."
+  },
+  {
+    "id": "enum-generated-array-capture-literal-case-object",
+    "source": "<?php\nenum DevArrayCaptureUnit { case First; case Second; }\nenum DevArrayCaptureInt: int { case One = 1; case Two = 2; }\n$cases = ([DevArrayCaptureUnit::class, \"cAsEs\"])(...);\n$all = $cases();\necho $all[0] === DevArrayCaptureUnit::First && $all[1] === DevArrayCaptureUnit::Second ? \"cases|\" : \"BAD|\";\n$from = ([DevArrayCaptureInt::One, \"fRoM\"])(...);\necho $from(value: \"2\") === DevArrayCaptureInt::Two ? \"case-object|\" : \"BAD|\";\n$try = ([DevArrayCaptureInt::class, \"tRyFrOm\"])(...);\necho $try(8) === null ? \"miss|\" : \"BAD|\";\n",
+    "source_sha256": "7c112985da21680886b60fd373bb6f87827e718512c68ae8346429adf4b2e7ba",
+    "expected_model": "normal",
+    "expected_normal_stdout": "cases|case-object|miss|",
+    "purpose": "Literal class-name arrays and enum-case receivers capture generated static handlers without receiver or array ownership, preserving cases order, weak integer reception and tryFrom misses."
+  },
+  {
+    "id": "enum-generated-array-capture-stringable-owner",
+    "source": "<?php\nenum DevArrayCaptureSelected: string { case Only = \"01\"; }\nenum DevArrayCaptureRebound: string { case Other = \"01\"; }\nclass DevArrayCaptureText {\n    public function __toString(): string {\n        global $fn, $target;\n        $fn = null;\n        $target = [DevArrayCaptureRebound::class, \"from\"];\n        echo \"CAST|\";\n        return \"01\";\n    }\n    public function __destruct() { echo \"DROP|\"; }\n}\n$className = \"\\\\dEvArRaYcApTuReSeLeCtEd\";\n$methodName = \"fRoM\";\n$target = [$className, $methodName];\n$fn = $target(...);\n$weak = WeakReference::create($fn);\necho \"READY|\";\n$result = $fn(\n    value: new DevArrayCaptureText()\n);\necho $weak->get() === null ? \"retired|\" : \"BAD|\";\necho $result === DevArrayCaptureSelected::Only ? \"selected|\" : \"BAD|\";\necho $target(\"01\") === DevArrayCaptureRebound::Other ? \"rebound|\" : \"BAD|\";\n",
+    "source_sha256": "c0361677bca8e37b4aad93a68269eb36fe36ab61bb76bf81f48d8af4b8f0e6e1",
+    "expected_model": "normal",
+    "expected_normal_stdout": "READY|CAST|DROP|retired|selected|rebound|",
+    "purpose": "A captured array target retains the real named Stringable child and call-held Closure through target rebinding; the temporary input retires before lookup and the Closure after invocation."
+  },
+  {
+    "id": "enum-generated-array-capture-strict-reception",
+    "source": "<?php\ndeclare(strict_types=1);\nenum DevArrayCaptureStrict: int { case One = 1; }\n$target = [DevArrayCaptureStrict::class, \"fRoM\"];\n$fn = $target(...);\ntry { $fn(value: \"1\"); } catch (TypeError $e) { echo \"type|\"; }\necho $fn(value: 1) === DevArrayCaptureStrict::One ? \"strict|\" : \"BAD|\";\n",
+    "source_sha256": "0d17c895aabb5f45112b6c0524c4058c028f5145843d2e95898e8af6e94e3c9d",
+    "expected_model": "normal",
+    "expected_normal_stdout": "type|strict|",
+    "purpose": "A generated array capture preserves strict integer argument rejection followed by valid reception."
   }
 ]
