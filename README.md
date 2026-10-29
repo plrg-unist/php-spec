@@ -1147,12 +1147,14 @@ preserve reference cells across rebinding; bitwise conversion follows Zend's
 compiler slot order. [Direct-CV](coverage/semantics/integer-operator-warning-review.json)
 and [copied-operand](coverage/semantics/integer-operator-copy-review.json) evidence
 retain separate cuts. Wider producers and object conversion remain open.
-With an empty, unmaterialized `stdClass` RIGHT CV, a fractional LEFT's Deprecated
-handler can now repair RIGHT before `%`, shifts or numeric bitwise conversion.
-LEFT keeps its saved integer; an unrepaired RIGHT uses the live raw types in
-TypeError, and a supplied throw cancels delivery. The
-[bounded object-RIGHT ledger](coverage/semantics/integer-object-right-warning-review.json)
-retains the original Unsupported baselines and wider object limits.
+With an empty, unmaterialized `stdClass` RIGHT, a fractional LEFT's Deprecated
+handler can repair the later integer conversion. LEFT keeps its saved integer.
+For an initially shared RIGHT reference cell with a surviving outside alias,
+`%` and shifts reread the live CV after rebinding; bitwise operations still read
+the selected old cell. TypeError uses the live LEFT and selected RIGHT types;
+a supplied throw cancels delivery. The [plain-CV](coverage/semantics/integer-object-right-warning-review.json)
+and [reference-cell](coverage/semantics/integer-reference-object-right-warning-review.json)
+ledgers retain the original Unsupported baselines and wider object limits.
 Leading-numeric-string `+` now suspends through named warning handlers for two
 direct CVs with preexisting untyped reference cells. Both cells are selected before
 conversion; cached numbers survive handler writes, while the next conversion reads

@@ -8,6 +8,19 @@ or BOLA freedom. [CORE](docs/semantics/CORE.md) defines the intrinsic boundary.
 
 ## Current checkpoint
 
+Ordinary integer operators now admit an initially shared reference cell holding
+an empty, unmaterialized `stdClass` RIGHT, with a nonreference fractional LEFT CV
+and a surviving outside alias. After handler rebinding, `%`/shifts read the live
+RIGHT CV; bitwise operations read the selected old cell. An old-alias write to
+`2` gives bitwise `0`/`14`/`14`, while modulo/shifts still use rebound `5`; LEFT's
+saved `12` survives its write to `99.5`. Failure uses live LEFT and selected RIGHT types
+in TypeError, and supplied throws cancel delivery. No new owner/task is added.
+Sixteen formerly Unsupported originals, one unchanged plain-CV control and four
+independent originals agree exactly; strict424 and four source-reached
+recipes/470 checks pass. Initial sole-owner cells, expired pointers, memberful
+objects and wider reference producers remain partial.
+[Reference-object RIGHT review](coverage/semantics/integer-reference-object-right-warning-review.json).
+
 A fresh Aggregate-returned CONFIG Iterator may now lack a destructor while
 its sole declared Child finalizes through ordinary instance storage. Parent
 weak visibility ends before the Child callback, while the real storage pin
@@ -610,7 +623,7 @@ temporary `__invoke` callees and wider lifecycle forms remain separate.
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118, CALL113/122, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118, CALL113/122, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation
