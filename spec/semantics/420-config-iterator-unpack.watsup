@@ -43,6 +43,7 @@ dec $config_iterator_current_scalar(pstate, pconfigiterator) : bool
 dec $config_iterator_value_receipt(pstate, pvalue) : bool
 dec $config_iterator_argument(pstate, pvalue) : bool
 dec $config_iterator_current_argument(pstate, pconfigiterator) : bool
+dec $config_iterator_owning_release(pstate, pconfigiterator) : bool
 dec $config_iterator_copied_slots(pstate, pnamedslot*) : bool
 dec $config_iterator_call_nodes(pconfigiterator) : pnode*
 dec $config_iterator_argument_nodes(pconfigiterator) : pnode*
@@ -315,6 +316,21 @@ def $config_iterator_current_argument(S, pconfigiterator) = true
   -- if $config_iterator_current_value(S, pconfigiterator, pconfigiterator.CURRENT) = (pvalue)
   -- if $config_iterator_argument(S, pvalue)
 def $config_iterator_current_argument(S, pconfigiterator) = false -- otherwise
+;; This is a live producer check, not send-time graph admission or history.
+;; A key may have replaced the referenced payload with another owning value.
+def $config_iterator_owning_release(S, pconfigiterator) = true
+  -- if $config_iterator_argument_nodes(pconfigiterator) =/= eps
+  -- if $heap_subset($config_iterator_argument_nodes(pconfigiterator), S.ALLOCATIONS)
+def $config_iterator_owning_release(S, pconfigiterator) = true
+  -- if pconfigiterator.CURRENT = KNOWN pvalue
+  -- if $value_nodes(pvalue) =/= eps
+  -- if $heap_subset($value_nodes(pvalue), S.ALLOCATIONS)
+def $config_iterator_owning_release(S, pconfigiterator) = true
+  -- if pconfigiterator.CURRENT = REFERENCE n
+  -- if $config_iterator_reference_value(S, n) = (pvalue)
+  -- if $value_nodes(pvalue) =/= eps
+  -- if $heap_subset($value_nodes(pvalue), S.ALLOCATIONS)
+def $config_iterator_owning_release(S, pconfigiterator) = false -- otherwise
 ;; SEND_UNPACK normalizes the argument key; the Iterator's key() result stays raw.
 def $config_iterator_key(S, PINT z) = (KINT z)
 def $config_iterator_key(S, PSTRING n*) = (KINT z)
@@ -689,6 +705,25 @@ rule PhpStep/config-iterator-key-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "
   -- if ~$config_iterator_live_cv_primitive_key(S, pconfigiterator, S.RESULT)
   -- if ~$config_iterator_temp_primitive_key(S, pconfigiterator, S.RESULT)
   -- if ~$config_iterator_fresh_aggregate_primitive_key(S, pconfigiterator, S.RESULT)
+;; Preserve exact owning Error producers until THROW_SEARCH can release the
+;; current cache, DATA/INPUT and copied call slots in their ordinary order.
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "send") :: ptask_tail*
+  -- if $config_iterator_valid(S, pconfigiterator, "send")
+  -- if $config_iterator_owning_release(S, pconfigiterator)
+  -- if S_next.COMPLETION = THROWN "Error" preqbytes z
+  -- if S_next = $config_iterator_send(S, pconfigiterator, ptask_tail*)
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "key") :: ptask_tail*
+  -- if $config_iterator_valid(S, pconfigiterator, "key")
+  -- if $config_iterator_owning_release(S, pconfigiterator)
+  -- if $config_iterator_live_cv_primitive_key(S, pconfigiterator, S.RESULT) \/ $config_iterator_temp_primitive_key(S, pconfigiterator, S.RESULT) \/ $config_iterator_fresh_aggregate_primitive_key(S, pconfigiterator, S.RESULT)
+  -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if S_next.COMPLETION = THROWN "Error" ($ptascii("Keys must be of type int|string during argument unpacking")) z
+  -- if S_next = $throw_scalar(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], "Error", $ptascii("Keys must be of type int|string during argument unpacking"), z)
+
 def $config_iterator_send(S, pconfigiterator, ptask_tail*) = $config_iterator_clear(S, pconfigiterator[.ITEMS = pconfigiterator.ITEMS ++ [ENTRY pkey (DIRECT pvalue)]], "next-start", ptask_tail*)
   -- if $config_iterator_current_value(S, pconfigiterator, pconfigiterator.CURRENT) = (pvalue)
   -- if $config_iterator_argument(S, pvalue)
@@ -856,6 +891,7 @@ def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if $config_iterator_retired_scope(S_scope, pconfigiterator)
   -- if $useriter_cursor_count(S_scope.ITERATORS, pconfigiterator.ITERATOR) = 0
   -- if ~(text <- ["ready", "input-release"])
+  -- if text = "key" \/ text = "send" \/ $config_iterator_argument_nodes(pconfigiterator) =/= eps
   -- if $config_iterator_stage(S_scope, pconfigiterator, text)
 def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.SOURCE = CONFIG_ITERATOR pconfigiterator "input-release"
