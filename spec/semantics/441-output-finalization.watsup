@@ -522,6 +522,10 @@ def $output_drain_task(S, OUTPUT_FINAL_EXCEPTION pobinvoke b) = $output_drain_ac
 def $output_final_exception_valid(S, pobinvoke, b) = true
   -- if pobinvoke.CALL = OB_FINAL pobdrain
   -- if $ob_user_live(S, pobinvoke)
+  -- if pobinvoke.VALUE = PBOOL true
+  -- if pobinvoke.PHASE = $output_drain_phase(pobinvoke.BUFFER.FLAGS)
+  -- if pobinvoke.INPUT = PSTRING_CARRIER (REQUEST_STRING n_input) pobinvoke.BUFFER.BYTES
+  -- if $string_carrier_valid(S, pobinvoke.INPUT)
   -- if (b /\ $ob_user_fci_arguments(pobinvoke)) \/ (~b /\ pobinvoke.SENT = eps)
   -- if S.CURRENT = eps /\ S.ORIGIN = eps
   -- if $source_operand_suffix(S.TODO, OUTPUT_FINAL_EXCEPTION pobinvoke b, [OUTPUT_DRAIN pobdrain])
