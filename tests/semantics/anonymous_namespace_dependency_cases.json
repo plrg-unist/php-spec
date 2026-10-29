@@ -1,0 +1,127 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-namespace-dependency-mixed-namespace-alias-identities",
+      "source": "<?php\nnamespace Review147Vendor {\n    interface First147 {}\n    interface Second147 {}\n    class Base147 {}\n}\nnamespace Review147Use {\n    use Review147Vendor\\First147 as Contract147;\n    class Deferred147 implements Contract147 {}\n    function make147() {\n        $o = new class implements cONtract147 { public int $number = 4; };\n        return $o;\n    }\n    $a = make147();\n    echo $a::class, \"|\", $a->number, \"|\";\n}\nnamespace Review147Use {\n    use Review147Vendor\\Base147 as Contract147;\n    $b = new class extends CONTRACT147 { public int $number = 7; };\n    echo $b::class, \"|\", $b->number, \"|\";\n}\nnamespace {\n    use Review147Vendor\\Second147 as Contract147;\n    $c = new class implements Contract147 {};\n    echo $c::class;\n}\n",
+      "source_sha256": "c13fac11e8eb7eafff70d4097d6e379e9da34452bfb57809ea91340a5fe377d6",
+      "stdout_base64": "UmV2aWV3MTQ3VmVuZG9yXEZpcnN0MTQ3QGFub255bW91cwAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY2xhc3MxNDctcmV2aWV3L21peGVkLW5hbWVzcGFjZS1hbGlhcy1pZGVudGl0aWVzLnBocDoxMSQxfDR8UmV2aWV3MTQ3VmVuZG9yXEJhc2UxNDdAYW5vbnltb3VzAC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE0Ny1yZXZpZXcvbWl4ZWQtbmFtZXNwYWNlLWFsaWFzLWlkZW50aXRpZXMucGhwOjE5JDJ8N3xSZXZpZXcxNDdWZW5kb3JcU2Vjb25kMTQ3QGFub255bW91cwAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY2xhc3MxNDctcmV2aWV3L21peGVkLW5hbWVzcGFjZS1hbGlhcy1pZGVudGl0aWVzLnBocDoyNCQz",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class147-frozen-native9",
+      "native_raw_sha256": "7df24254a8effe2462ddfeac4439392026d1db7ee0d0712c5e7d066153db17b7",
+      "stdout_template_base64": "UmV2aWV3MTQ3VmVuZG9yXEZpcnN0MTQ3QGFub255bW91cwB7RklMRX06MTEkMXw0fFJldmlldzE0N1ZlbmRvclxCYXNlMTQ3QGFub255bW91cwB7RklMRX06MTkkMnw3fFJldmlldzE0N1ZlbmRvclxTZWNvbmQxNDdAYW5vbnltb3VzAHtGSUxFfToyNCQz",
+      "model_timeout_seconds": 120
+    },
+    {
+      "id": "anonymous-namespace-dependency-qualified-relative-and-full-names",
+      "source": "<?php\nnamespace Review147Actual\\Parts {\n    class Base {}\n    interface Read {}\n}\nnamespace Review147Relative\\Local147 {\n    class Base {}\n    interface Read {}\n}\nnamespace Review147Relative {\n    use Review147Actual as Kit147;\n    $a = new class extends kIT147\\Parts\\Base implements \\Review147Actual\\Parts\\Read {};\n    echo $a::class, \"|\", ($a instanceof \\Review147Actual\\Parts\\Read ? \"full\" : \"bad\"), \"|\";\n}\nnamespace Review147Relative {\n    use Review147Actual\\Parts\\Base as Local147;\n    $b = new class extends namespace\\Local147\\Base implements namespace\\Local147\\Read {};\n    echo $b::class, \"|\", ($b instanceof \\Review147Relative\\Local147\\Base ? \"relative\" : \"bad\");\n}\n",
+      "source_sha256": "d6d5bf60639cf4e03678b30866c9d7f31f86763b07c39ddff2865dff7f6b8e06",
+      "stdout_base64": "UmV2aWV3MTQ3QWN0dWFsXFBhcnRzXEJhc2VAYW5vbnltb3VzAC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE0Ny1yZXZpZXcvcXVhbGlmaWVkLXJlbGF0aXZlLWFuZC1mdWxsLW5hbWVzLnBocDoxMiQwfGZ1bGx8UmV2aWV3MTQ3UmVsYXRpdmVcTG9jYWwxNDdcQmFzZUBhbm9ueW1vdXMAL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTQ3LXJldmlldy9xdWFsaWZpZWQtcmVsYXRpdmUtYW5kLWZ1bGwtbmFtZXMucGhwOjE3JDF8cmVsYXRpdmU=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class147-frozen-native9",
+      "native_raw_sha256": "ab7c615ffecca56a583907ca8044318c07450bb9db7a05af129743faa2c61389",
+      "stdout_template_base64": "UmV2aWV3MTQ3QWN0dWFsXFBhcnRzXEJhc2VAYW5vbnltb3VzAHtGSUxFfToxMiQwfGZ1bGx8UmV2aWV3MTQ3UmVsYXRpdmVcTG9jYWwxNDdcQmFzZUBhbm9ueW1vdXMAe0ZJTEV9OjE3JDF8cmVsYXRpdmU="
+    },
+    {
+      "id": "anonymous-namespace-dependency-aliased-parent-relative-interface-retry",
+      "source": "<?php\nnamespace {\n    $attempt147 = 0;\n    function review147Load($name) {\n        global $attempt147;\n        echo \"load:\", $name, \"|\";\n        if ($name === 'Review147Remote\\Base') {\n            eval('namespace Review147Remote; class Base {}');\n        } elseif ($name === 'Review147Local\\Read') {\n            $attempt147++;\n            if ($attempt147 === 1) { throw new Exception(\"pause\"); }\n            eval('namespace Review147Local; interface Read {}');\n        }\n    }\n    spl_autoload_register('review147Load');\n}\nnamespace Review147Local {\n    use Review147Remote as Routed;\n    use Review147Wrong as Read;\n    function arg147() { echo \"arg|\"; return 7; }\n    function make147() {\n        $o = new class(arg147()) extends rOUTed\\Base implements namespace\\Read {\n            public int $number = 0;\n            public ?rOUTed\\Base $ref = null;\n            public function __construct($n) { echo \"ctor|\"; $this->number = $n; }\n        };\n        return $o;\n    }\n    try { make147(); } catch (\\Exception $e) { echo $e->getMessage(), \"|\"; }\n    $a = make147();\n    $b = make147();\n    $a->ref = $a;\n    echo $a::class, \"|\", ($a::class === $b::class ? \"same\" : \"bad\"), \"|\", ($a !== $b ? \"fresh\" : \"bad\"), \"|\", ($a->ref === $a ? \"typed\" : \"bad\"), \"|\", $a->number;\n}\n",
+      "source_sha256": "00700b1804f7128762cab37f00f4d3dcc3385bd47ba20446c9b0c87e5a49642f",
+      "stdout_base64": "bG9hZDpSZXZpZXcxNDdSZW1vdGVcQmFzZXxsb2FkOlJldmlldzE0N0xvY2FsXFJlYWR8cGF1c2V8bG9hZDpSZXZpZXcxNDdMb2NhbFxSZWFkfGFyZ3xjdG9yfGFyZ3xjdG9yfFJldmlldzE0N1JlbW90ZVxCYXNlQGFub255bW91cwAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY2xhc3MxNDctcmV2aWV3L2FsaWFzZWQtcGFyZW50LXJlbGF0aXZlLWludGVyZmFjZS1yZXRyeS5waHA6MjIkMHxzYW1lfGZyZXNofHR5cGVkfDc=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class147-frozen-native9",
+      "native_raw_sha256": "5763d4b6483738b0a126810d9876d4f96636f163466e0f8b6ecfe33892499684",
+      "stdout_template_base64": "bG9hZDpSZXZpZXcxNDdSZW1vdGVcQmFzZXxsb2FkOlJldmlldzE0N0xvY2FsXFJlYWR8cGF1c2V8bG9hZDpSZXZpZXcxNDdMb2NhbFxSZWFkfGFyZ3xjdG9yfGFyZ3xjdG9yfFJldmlldzE0N1JlbW90ZVxCYXNlQGFub255bW91cwB7RklMRX06MjIkMHxzYW1lfGZyZXNofHR5cGVkfDc=",
+      "model_timeout_seconds": 120
+    },
+    {
+      "id": "anonymous-namespace-dependency-skipped-import-invalid-default",
+      "source": "<?php\nnamespace Review147Bad {\n    use Review147Absent\\Base as ParentAlias;\n    use Review147Absent\\Read as InterfaceAlias;\n    echo \"before|\";\n    if (false) {\n        $o = new class extends ParentAlias implements InterfaceAlias {\n            public ?ParentAlias $missing = 1;\n        };\n    }\n    echo \"after\";\n}\n",
+      "source_sha256": "f1fdf15fe2321cbbd8f0648efd452ee69ee593c9b2b740289e543c310098495c",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgaW50IGFzIGRlZmF1bHQgdmFsdWUgZm9yIHByb3BlcnR5IFJldmlldzE0N0Fic2VudFxCYXNlQGFub255bW91czo6JG1pc3Npbmcgb2YgdHlwZSA/UmV2aWV3MTQ3QWJzZW50XEJhc2UgaW4ge0ZJTEV9IG9uIGxpbmUgOApTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "class147-frozen-native9",
+      "native_raw_sha256": "f501d1e8422cf42f061f4e18b1e37114b9ae978559e093dbb805953b45ca405a"
+    },
+    {
+      "id": "anonymous-namespace-dependency-no-global-class-fallback-before-arguments",
+      "source": "<?php\nnamespace {\n    class Present147 {}\n    interface Read147 {}\n}\nnamespace Review147NoFallback {\n    function arg147() { echo \"arg|\"; return 1; }\n    try { $o = new class(arg147()) extends Present147 {}; }\n    catch (\\Error $e) { echo $e->getMessage(), \"|\"; }\n    try { $o = new class(arg147()) implements Read147 {}; }\n    catch (\\Error $e) { echo $e->getMessage(), \"|\"; }\n    echo \"done\";\n}\n",
+      "source_sha256": "b106ee96378dea93123dcc583c9c9916a3d6193410bb40b60038c3b1b68886b6",
+      "stdout_base64": "Q2xhc3MgIlJldmlldzE0N05vRmFsbGJhY2tcUHJlc2VudDE0NyIgbm90IGZvdW5kfEludGVyZmFjZSAiUmV2aWV3MTQ3Tm9GYWxsYmFja1xSZWFkMTQ3IiBub3QgZm91bmR8ZG9uZQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class147-frozen-native9",
+      "native_raw_sha256": "35d6822dd3a10acf830fc944ad4f5976dabd2f3f06db88d562776649f21ab6d6"
+    },
+    {
+      "id": "anonymous-namespace-dependency-author-fully-qualified-base-factory",
+      "source": "<?php\nnamespace Model147FQ {\n    class Base {\n        public int $value = 2;\n        public function __construct(int $value) { $this->value = $value; }\n    }\n}\nnamespace Client147FQ {\n    function make() { return new class(7) extends \\Model147FQ\\Base {}; }\n    $a = make();\n    $b = make();\n    echo $a::class, '|', $a->value, '/', $b->value, '|', $a !== $b ? 'fresh' : 'bad', '|', $a::class === $b::class ? 'same' : 'bad', '|', $a instanceof \\Model147FQ\\Base ? 'base' : 'bad';\n}\n",
+      "source_sha256": "2eafb87167dd0eb00daa5507588e2710349ec0aa4fdaef6ce3a12af1c5eca45a",
+      "stdout_base64": "TW9kZWwxNDdGUVxCYXNlQGFub255bW91cwAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY2xhc3MxNDctYXV0aG9yL2Z1bGx5LXF1YWxpZmllZC1iYXNlLWZhY3RvcnkucGhwOjkkMHw3Lzd8ZnJlc2h8c2FtZXxiYXNl",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class147-frozen-native9",
+      "native_raw_sha256": "e406738d2af49e8b5f52f68e1733d7cf0de02169e20137915cdf21c31e38f708",
+      "stdout_template_base64": "TW9kZWwxNDdGUVxCYXNlQGFub255bW91cwB7RklMRX06OSQwfDcvN3xmcmVzaHxzYW1lfGJhc2U="
+    },
+    {
+      "id": "anonymous-namespace-dependency-author-group-imports-named-and-anonymous",
+      "source": "<?php\nnamespace Defs147Group {\n    interface Read { public function value(): int; }\n    interface Tag {}\n    class Base { public function value(): int { return 8; } }\n}\nnamespace Client147Group {\n    use Defs147Group\\{Base as ParentAlias, Read as ReadAlias, Tag};\n    class NamedPeer extends ParentAlias implements ReadAlias, Tag {}\n    $peer = new class extends NamedPeer {};\n    $direct = new class extends ParentAlias implements ReadAlias, Tag {};\n    function consume(ReadAlias $item): int { return $item->value(); }\n    echo $peer::class, '|', $direct::class, '|', consume($peer), '/', consume($direct), '|', $peer instanceof Tag ? 'tag' : 'bad', '|', $direct instanceof ParentAlias ? 'base' : 'bad';\n}\n",
+      "source_sha256": "36352f17e3d8ae5bce366498500fb6a3f8a10811ba0ecebb4846df06d2e979b9",
+      "stdout_base64": "Q2xpZW50MTQ3R3JvdXBcTmFtZWRQZWVyQGFub255bW91cwAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY2xhc3MxNDctYXV0aG9yL2dyb3VwLWltcG9ydHMtbmFtZWQtYW5kLWFub255bW91cy5waHA6MTAkMXxEZWZzMTQ3R3JvdXBcQmFzZUBhbm9ueW1vdXMAL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTQ3LWF1dGhvci9ncm91cC1pbXBvcnRzLW5hbWVkLWFuZC1hbm9ueW1vdXMucGhwOjExJDJ8OC84fHRhZ3xiYXNl",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class147-frozen-native9",
+      "native_raw_sha256": "8db6049c1588365ede2cfd91628f63ee18ffeaff94b5e7be95def0cb7ac4621b",
+      "stdout_template_base64": "Q2xpZW50MTQ3R3JvdXBcTmFtZWRQZWVyQGFub255bW91cwB7RklMRX06MTAkMXxEZWZzMTQ3R3JvdXBcQmFzZUBhbm9ueW1vdXMAe0ZJTEV9OjExJDJ8OC84fHRhZ3xiYXNl",
+      "model_timeout_seconds": 120
+    },
+    {
+      "id": "anonymous-namespace-dependency-author-aliased-duplicate-before-argument",
+      "source": "<?php\nnamespace Target147Duplicate { interface Read {} }\nnamespace Client147Duplicate {\n    use Target147Duplicate\\Read as One;\n    use Target147Duplicate\\Read as Two;\n    function argument() { echo 'arg|'; return 1; }\n    echo 'before|';\n    $o = new class(argument()) implements One, Two {};\n    echo 'after';\n}\n",
+      "source_sha256": "7087a06d1ec4dc46410bcc631faef06ab72bde1f9bdd7d5518ee502ca9f29a41",
+      "stdout_base64": "YmVmb3JlfA==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENsYXNzIFRhcmdldDE0N0R1cGxpY2F0ZVxSZWFkQGFub255bW91cyBjYW5ub3QgaW1wbGVtZW50IHByZXZpb3VzbHkgaW1wbGVtZW50ZWQgaW50ZXJmYWNlIFRhcmdldDE0N0R1cGxpY2F0ZVxSZWFkIGluIHtGSUxFfSBvbiBsaW5lIDgKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "class147-frozen-native9",
+      "native_raw_sha256": "442b2705df5be4f2cb65ee749abed0103f11b4475c4281b0cee04acbe74ea55d"
+    },
+    {
+      "id": "anonymous-namespace-dependency-author-import-kind-separation",
+      "source": "<?php\nnamespace Client147Kinds;\nuse function Other147Kinds\\Base as Base;\nuse const Other147Kinds\\Read as Read;\nclass Base {}\ninterface Read {}\n$o = new class extends Base implements Read {};\necho $o::class, '|', $o instanceof Base ? 'base' : 'bad', '|', $o instanceof Read ? 'read' : 'bad';\n",
+      "source_sha256": "4c6aa0301133902fa49523307a72cc54296320027a2e187c4e96756fe5d789b1",
+      "stdout_base64": "Q2xpZW50MTQ3S2luZHNcQmFzZUBhbm9ueW1vdXMAL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTQ3LWF1dGhvci9pbXBvcnQta2luZC1zZXBhcmF0aW9uLnBocDo3JDB8YmFzZXxyZWFk",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class147-frozen-native9",
+      "native_raw_sha256": "f5fac7369756cf08ea23b280c1957e5d5cb78131ef9d7fc1465af15bd3e57e46",
+      "stdout_template_base64": "Q2xpZW50MTQ3S2luZHNcQmFzZUBhbm9ueW1vdXMAe0ZJTEV9OjckMHxiYXNlfHJlYWQ="
+    }
+  ]
+}
