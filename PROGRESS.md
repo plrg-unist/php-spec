@@ -8,8 +8,8 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-Successful include/eval units now admit dependent anonymous classes at existing
-no-argument CV-assignment sites. Each unit keeps its own namespace/import context,
+CLASS148 is integrated: successful include/eval units now admit dependent anonymous
+classes at existing no-argument CV-assignment sites. Each unit keeps its own namespace/import context,
 frozen source-entry parent bindings and compiler-derived request-wide RTD cost.
 Ordinary loader callbacks preserve retained loads, same-site retry and genuine
 unit-specific publication causes. Body/default errors remain eager, with first-NEW
@@ -17,7 +17,8 @@ linking before construction. Eight native-first originals agree and strict428 pl
 178 source-reached conditions pass, including independent unit-specific retry/cause
 and frozen-entry no-lookahead checks. The original wrong expected-status row
 remains zero credit, with only that corrected row rerun. Failed/open histories, broader placements/arguments and
-enum/trait co-residence remain partial.
+enum/trait co-residence remain partial. Joined strict428 passes on the actual
+enum-acquisition tail; accepted private source/state cuts retain their identities.
 [Dynamic dependency review](coverage/semantics/anonymous-dynamic-dependencies-review.json).
 
 GC03's quiet WeakMap registration/proxy-count behavior and its separate tested
@@ -71,7 +72,6 @@ not repeat historical receipt counts or renew their execution credit.
 | A68 | Scalar INI_SET Iterator sends and saved argument lifetimes. |
 | GC04 | Quiet shared-table collection without WeakMap registration. |
 | OB01 | Output-buffering frontier preparation. |
-| CLASS148 | Dynamic dependency source8/reached178 accepted; actual-tail integration pending. |
 | ATTR01 | NoDiscard; compile validation. |
 | I75 | Keyword-forwarded static Generator factories; declaration/called-scope proof. |
 | Enum M3/M4 | Generated-method callable capture/dispatch, backing-initializer dependency modes and wider enum acquisition; private. |
