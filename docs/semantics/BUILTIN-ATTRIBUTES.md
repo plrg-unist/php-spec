@@ -110,6 +110,7 @@ corrections retain separate identities; broader PHP core remains partial.
 The [ATTR03 review](../../coverage/semantics/builtin-deprecated-api-review.json)
 records ten new original-source agreements, including an unmarked `assert`
 control, and four reached fronts with 179 conditions (172 reached, seven derived
-guards). Strict431 passes. The historical ATTR02 `assert` API exclusion is now a
-maintained supported expectation without new agreement credit; its original cut
-remains an exclusion. The explicit Closure wrapper boundary remains open.
+guards). Private and actual-tail joined strict431 pass. The historical ATTR02
+`assert` API exclusion is now a maintained supported expectation without new
+agreement credit; its original cut remains an exclusion. The explicit Closure
+wrapper boundary remains open.

@@ -69,7 +69,8 @@ handlers run with their registry disabled; `assert` warnings retain the active
 handler, saved target and live failure policy. Captured Closure targets stay
 borrowed until one call owner starts at entry. Ten new native-first originals
 agree exactly, including one unmarked control; four reached fronts pass 179
-conditions (172 reached, seven derived guards), and private strict431 passes.
+conditions (172 reached, seven derived guards), and private and actual-tail
+joined strict431 pass.
 The maintained ATTR02 `assert` boundary is promoted without replay or new
 agreement credit. Explicit captured-Closure `__invoke()` and wider API consumers
 remain partial. [ATTR03 review](coverage/semantics/builtin-deprecated-api-review.json).
@@ -160,7 +161,6 @@ unresolved with zero model credit. [OB01 review](coverage/semantics/output-reque
 | COMP155 | Method-bearing captured-object comparisons; native/source preparation. |
 | I79 | Rebound Closure method-created Generator scope; native6 and old controls complete, implementation/review active. |
 | GC06 | Materialized destructor GC count/buffer correction; produced-identity/root-order discrepancy under focused diagnosis. |
-| ATTR03 | Selected error/assert API Deprecated phase; native/source/strict checks and focused private validation, wider APIs partial. |
 | Enum M3/M4 | Captured generated calls and direct/negated enum-case conditional transfers are integrated for reviewed sources. Wider conditional sources, generated dispatch, backing dependency and default-loader contexts remain partial. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |

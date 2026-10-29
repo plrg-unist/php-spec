@@ -1,6 +1,6 @@
 {
   "milestone": "ATTR03",
-  "status": "Independently reviewed private semantics and source/state validation; actual-tail joined gate pending",
+  "status": "Independently reviewed private semantics and source/state validation; actual-tail joined strict431 passed",
   "target": "Pinned PHP 8.5.10 CLI NTS 64-bit and project-local SL semantics",
   "scope": "Selected error-handler and assert callbacks stage Deprecated before argument copies, by-reference warnings and reception. Error callback registry disabled; assert warning handler active. Selected FCC target borrowed until call entry; Closure gains one call owner at entry. Unmarked callbacks use the same preparation cursor. Wider internal API consumers and explicit captured Closure->__invoke wrapper remain partial.",
   "raw_root": "../php-spec-evidence-archive/builtin-attributes-03",
@@ -8,6 +8,8 @@
     "base": "0d33c8ee2048da8d052574fd95882b289c84dd33",
     "private_semantic_cut": "92b82f43707e7b51bcca342d548d040d0e04624e",
     "private_fixture_cut": "fe8c37db7a4ffef4c55cae004b4491caf039430b",
+    "actual_base": "2c51c959974363d32154ae50009d8aa9691589f8",
+    "actual_composition_cut": "29a2e979c65e061faaea7f9b7a3f5b78917b2de3",
     "maintained_fixtures": ["tests/semantics/deprecated_api_cases.py", "tests/semantics/deprecated_api_review_cases.py", "tests/semantics/deprecated_api_native.py"],
     "module": "spec/semantics/442-deprecated-api-callbacks.watsup",
     "shared_inputs": ["spec/semantics/30-storage.watsup", "spec/semantics/152-throwable-runtime.watsup", "spec/semantics/207-error-handler-runtime.watsup", "spec/semantics/247-handler-callable-consumers.watsup", "spec/semantics/368-assertions.watsup", "spec/semantics/391-output-buffers.watsup"]
@@ -22,6 +24,7 @@
     ],
     "measured_old_boundary": ["old-boundary-cafc6d60/report.json", "637f3bfea348892c8e18f35ef15f05bb726beb24d6c12823045a7a053d54418d", "Unsupported Deprecated internal API timing", 0],
     "strict_431": ["strict-92b82f4370/report.json", "1ff0a12271f20fbf1605b0c68aac5dfc8a650cd097d491f6f712a71ac5208744"],
+    "joined_strict_431": ["joined-strict-29a2e979c6/report.json", "b4d6befd653f83886b1e56cf2fe0b081f545f724e07188326702abcba9a93779"],
     "source_first": ["model-e54b70519-first/report.json", "53332c8df770e1c2c3f48b36a4a7d90ee385bee84f0c3c1eeaacdf5c6d10b665", 1],
     "source_author_remainder": ["model-4a6d95fc-rest/report.json", "66836b3a93b031a15774408b23502135c373e88ae7319e7575b77c27b640df9d", 3, "packet overall false because following peer case failed; these three rows passed"],
     "source_peer_first": ["model-92b82f437-peer1/report.json", "a0ac9a154ea10bc63c69bf78d34a9111277df3729be32566ce0b55369b13114c", 1],
