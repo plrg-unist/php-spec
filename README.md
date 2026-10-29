@@ -4243,6 +4243,11 @@ Canonical root contexts and previous paths also have no numeric depth ceiling.
 Visited object IDs bound pure path authentication by the finite heap; whole-path
 acyclicity and the existing layout restrictions remain required.
 [Finite previous-path review](coverage/semantics/throwable-previous-finite-comparison-review.json).
+Standalone roots of the same twelve non-base kinds also use the visited trace
+walk when `previous` is null, preserving live cells, copied siblings, cache/trace/
+severity order and real recursion Errors. The old DIRECT route remains separate;
+base `Exception`/`Error` retain their earlier trace rules.
+[Standalone trace review](coverage/semantics/throwable-null-trace-comparison-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The
