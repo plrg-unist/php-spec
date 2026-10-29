@@ -28662,7 +28662,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_enum.c"
       ],
-      "review": "Direct from/tryFrom parsing, backing-table checks, singleton lookup and BackedEnum typed parameters have bounded exact source/state evidence in PROGRESS.md. Generated callable and broader type contexts remain open."
+      "review": "Direct and captured scalar from/tryFrom preserve cold backing-table checks, singleton lookup and caller strictness at reviewed source/state cuts in PROGRESS.md; BackedEnum typed parameters remain bounded. Stringable reception and broader type contexts remain open."
     },
     {
       "id": "declarations.generated-enum-methods",
@@ -28681,7 +28681,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_enum.c"
       ],
-      "review": "Direct cases/from/tryFrom and user magic method calls are source/state checked. Captured cases retains its selected enum and cached singleton history; captured from/tryFrom and wider generated callable routes remain Unsupported pending M3. See PROGRESS.md for exact cuts."
+      "review": "Direct cases/from/tryFrom and user magic method calls are source/state checked. Captured cases and scalar from/tryFrom retain the selected enum, cold table and cached singleton history after closure retirement, including ordinary and inherited constant aliases. Stringable reception and conditional constant transfer are explicit Unsupported; array callables and Closure::fromCallable remain partial. See PROGRESS.md for separate exact cuts."
     },
     {
       "id": "declarations.attribute-metadata",

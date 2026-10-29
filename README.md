@@ -6213,8 +6213,11 @@ cases. Direct `cases()`, `from()`, `tryFrom()`, case slots and constant queries 
 source and state checks. Registered-loader first-use static calls and class-constant
 fetches retain selected class/member order through loader replay. Captured
 `cases(...)` retains the selected enum and singleton cache after its closure
-owner is retired. Captured `from(...)`/`tryFrom(...)` remain Unsupported; other
-generated callable routes, case attributes, the default loader and wider
+owner is retired. Captured `from(...)`/`tryFrom(...)` also preserve cold backing
+initialization, scalar parsing and cached cases after their closure owners retire;
+ordinary and inherited enum constant aliases retain their declaration owners.
+Stringable reception and conditional constant transfers remain Unsupported;
+other generated callable routes, case attributes, the default loader and wider
 acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 

@@ -62,6 +62,16 @@ Captured enum `cases(...)` cuts are under
 lists 11 raw directories, including the accepted cache/history checks, joined
 430-module gate, and zero-agreement cold `from(...)` and pipe boundaries.
 
+Captured enum `from(...)`/`tryFrom(...)` cold-table cuts are under
+`../php-spec-evidence-archive/enum-cold-from-117/`. Its `manifest.json`
+(SHA-256 `934643b994b69bad3f50f472f70fa81c97333d2ac51da8db127dafa26622656d`)
+lists 31 raw directories. Keep the original failed/timeout cuts separate from
+the accepted queue, bind, table, Alias, inherited-owner and cross-file strictness
+checks. Stringable and conditional constant-transfer results are explicit
+Unsupported, with no agreement credit. The joined `--sl` gate used CPU 1 and all
+430 manifest modules; `raw/enum-cold-joined-430-v1/result.json` records its
+tested revision, command and output. The runner process group was fully reaped.
+
 The guarded getter-recursion milestone retains source/native observations,
 focused checks, all fixture failures and diagnostics in
 `../php-spec-evidence-archive/magic-get-recursion-119/manifest.json`.
