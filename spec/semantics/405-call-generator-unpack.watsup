@@ -173,7 +173,7 @@ def $generator_unpack_valid(S, pgeneratorunpack, text) = true
   -- if $iterator_unpack_plain(S, pgeneratorunpack.CALL)
   -- if $unpack_pending_valid(S[.ORIGIN = pgeneratorunpack.CALL.CALLSITE], pgeneratorunpack.CALL, 1)
   -- if $unpack_source_kind(S, pgeneratorunpack.CALL, true)
-  -- if $generator_unpack_input(S, pgeneratorunpack)
+  -- if $call_aggregate_generator_input(S, pgeneratorunpack)
   -- if $generator_object(S, pgeneratorunpack.OBJECT)
   -- if (HOBJECT pgeneratorunpack.OBJECT) <- S.ALLOCATIONS
   -- if $(pgeneratorunpack.COUNT <= $unpack_sent_count(pgeneratorunpack.CALL.SENT.SLOTS) + |pgeneratorunpack.CALL.SENT.NAMED|)
@@ -290,7 +290,7 @@ rule PhpStep/generator-unpack-item: S ~> $generator_unpack_send(S, pgeneratorunp
   -- if pgenerator.PHASE =/= GENERATOR_CLOSED
 def $generator_unpack_nodes(pgeneratorunpack, "acquire") = $operand_nodes(pgeneratorunpack.INPUT)
 def $generator_unpack_nodes(pgeneratorunpack, text) = [HOBJECT pgeneratorunpack.OBJECT] ++ $operand_nodes(pgeneratorunpack.INPUT) -- otherwise
-def $generator_unpack_finish(S, pgeneratorunpack, ptask*) = $fiber_start_unpack_release(S[.ORIGIN = pgeneratorunpack.CALL.CALLSITE][.TODO = (UNPACK_ARGS $unpack_advance(pgeneratorunpack.CALL, pgeneratorunpack.CALL.SENT)) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $generator_unpack_nodes(pgeneratorunpack, "ready"))
+def $generator_unpack_finish(S, pgeneratorunpack, ptask*) = $fiber_start_unpack_release(S[.ORIGIN = pgeneratorunpack.CALL.CALLSITE][.TODO = (UNPACK_ARGS $unpack_advance(pgeneratorunpack.CALL, pgeneratorunpack.CALL.SENT)) :: $call_aggregate_tail(pgeneratorunpack.CALL, pgeneratorunpack.INPUT, pgeneratorunpack.OBJECT, ptask*)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $generator_unpack_nodes(pgeneratorunpack, "ready"))
 rule PhpStep/generator-unpack-finish: S ~> $generator_unpack_finish(S, pgeneratorunpack, ptask*)
   -- if S.TODO = (GENERATOR_UNPACK pgeneratorunpack "ready") :: ptask*
   -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator

@@ -80,7 +80,7 @@ def $call_after_origin(S, GENERATOR_UNPACK pgeneratorunpack text) = S[.ORIGIN = 
   -- if $magic_unpack_collecting(pgeneratorunpack.CALL.FUNCTION)
 dec $magic_unpack_suffix(ptask*, pcalltarget) : bool
 def $magic_unpack_suffix(eps, pcalltarget) = false
-def $magic_unpack_suffix(ptask :: ptask_tail*, pcalltarget) = (ptask_tail* = METHOD_RESULT :: $magic_unpack_tail(pcalltarget))
+def $magic_unpack_suffix(ptask :: ptask_tail*, pcalltarget) = ((ptask_tail* = METHOD_RESULT :: $magic_unpack_tail(pcalltarget)) \/ $call_aggregate_magic_suffix(ptask, ptask_tail*, pcalltarget))
   -- if $magic_unpack_raw_task(ptask, pcalltarget)
 def $magic_unpack_suffix(ptask :: ptask_tail*, pcalltarget) = $magic_unpack_suffix(ptask_tail*, pcalltarget)
   -- if ~$magic_unpack_raw_task(ptask, pcalltarget)
