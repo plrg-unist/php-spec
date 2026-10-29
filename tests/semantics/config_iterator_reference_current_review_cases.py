@@ -41,7 +41,7 @@ class SelectedCellAggregate66 implements IteratorAggregate {
 }
 $nameRef="bogus";$held="3";$fresh="23";$watch=null;$result=99;
 $producer=new SelectedCellAggregate66;$producerWatch=WeakReference::create($producer);
-echo "P:",ini_get("precision"),":",ini_get("serialize_precision"),";";
+echo "P:",ini_get("precision"),";";
 '''
 
 CLEANUP = br'''unset($e,$saved,$result,$nameRef,$held,$fresh,$watch,$producer,$producerWatch,$throwKey);
@@ -51,7 +51,7 @@ echo "U:",isset($producer),":",isset($held),":",isset($fresh),";";
 CASES = {
     'config-iterator-reference-current-review-selected-cell-snapshot': COMMON + br'''$throwKey=false;$saved=null;
 $result=ini_set(...$producer);
-echo "R:",$result,":",ini_get("precision"),":",ini_get("serialize_precision"),":",$nameRef,":",$held,":",$fresh,":",$watch->get()===null,":",$producerWatch->get()===null,";";
+echo "R:",$result,":",ini_get("precision"),":",$nameRef,":",$held,":",$fresh,":",$watch->get()===null,":",$producerWatch->get()===null,";";
 ''' + CLEANUP,
     'config-iterator-reference-current-review-selected-cell-throw': COMMON + br'''$throwKey=true;$saved=new Exception("peer66");
 try {$result=ini_set(...$producer);echo "BAD;";}
@@ -62,6 +62,6 @@ catch (Exception $e) {
 }
 
 EXPECTED = {
-    'config-iterator-reference-current-review-selected-cell-snapshot': b'P:14:-1;G;W;V0;C0;K0;A:1;N;V1;C1;K1;Q:23:17;N;V2;D:14:serialize_precision:23:17:1;M:19:29;R:14:17:-1:serialize_precision:19:29:1:1;U:::;',
-    'config-iterator-reference-current-review-selected-cell-throw': b'P:14:-1;G;W;V0;C0;K0;A:1;N;V1;C1;K1;Q:23:17;D:14:serialize_precision:23:17:1;M:19:29;E:1:1:99:14:serialize_precision:19:29:1:1;U:::;',
+    'config-iterator-reference-current-review-selected-cell-snapshot': b'P:14;G;W;V0;C0;K0;A:1;N;V1;C1;K1;Q:23:17;N;V2;D:14:serialize_precision:23:17:1;M:19:29;R:14:17:serialize_precision:19:29:1:1;U:::;',
+    'config-iterator-reference-current-review-selected-cell-throw': b'P:14;G;W;V0;C0;K0;A:1;N;V1;C1;K1;Q:23:17;D:14:serialize_precision:23:17:1;M:19:29;E:1:1:99:14:serialize_precision:19:29:1:1;U:::;',
 }

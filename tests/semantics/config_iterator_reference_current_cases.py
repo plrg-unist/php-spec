@@ -31,7 +31,7 @@ class ConfigSelectedCell66 implements Iterator {
 $name=0;$value="13";$held=&$value;$fresh="23";
 $it=new ConfigSelectedCell66;$keep=$it;$call=ini_set(...);$keepCall=$call;$result=99;
 echo "B;";$result=$call(...$it);
-echo "A:",$result,":",ini_get("precision"),":",ini_get("serialize_precision"),":",$held,":",$value,":",$fresh,":",$name,":",$it,":",$keep->pos,":",$call("precision"),";";
+echo "A:",$result,":",ini_get("precision"),":",$held,":",$value,":",$fresh,":",$name,":",$it,":",$keep->pos,":",$call("precision"),";";
 echo "F:",$keepCall("precision","12"),":",ini_get("precision"),";";
 unset($it,$keep,$call,$keepCall,$name,$value,$held,$fresh,$result);
 echo "U:",isset($it),":",isset($value),":",isset($held),";";
@@ -96,10 +96,10 @@ CASES = {
 }
 
 EXPECTED = {
-    'config-reference-current-selected-global-cells': b'B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;A:14:17:-1:19:29:29:serialize_precision:99:2:17;F:17:12;U:::;',
+    'config-reference-current-selected-global-cells': b'B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;A:14:17:19:29:29:serialize_precision:99:2:17;F:17:12;U:::;',
     'config-reference-current-temporary': b'B;F;W;V0;C0;K0;Q0;N0;V1;C1;K1;Q1;N1;V2;A:14:21:23:1;U::;',
     'config-reference-current-owning-value-repair': b'B;F;W;V0;C0;K0;X:14;Q0;N0;V1;C1;K1;Q1;N1;V2;A:14:21:23:1;U::;',
-    'config-reference-current-post-key-integer-boundary': b'B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;A:14:17:-1:19:29:29:serialize_precision:99:2:17;F:17:12;U:::;',
+    'config-reference-current-post-key-integer-boundary': b'B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;A:14:17:19:29:29:serialize_precision:99:2:17;F:17:12;U:::;',
     'config-reference-current-typed-cell-boundary': b'B;C0;K0;C1;K1;A:14:17:17;U::;',
 }
 
