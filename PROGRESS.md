@@ -107,18 +107,19 @@ counterexample now preserves saved values `2`/`55`, replacing the former
 (403 Boolean, seven raw steps) pass at separate cuts. Joined strict425 also
 passes; unaffected evidence keeps its original identity. [Cleanup review](coverage/semantics/array-iterator-invalid-key-cleanup-review.json).
 
-Ordinary Iterator array spread with by-reference `current()` now admits multiple
-initialized inline declared owning fields. Public untyped mutable slots retain
-supported finite array graphs, repeated roots, shared descendants and ordinary
-scalar/array reference cells. The selected property cell survives key replacement;
-COW preserves saved/builder rows, and storage retires field edges in slot order.
-Four originals agree exactly with PHP after genuine parent Unsupported; a
-by-value-current control remains Unsupported with zero agreement. Strict424 and
-730 reached premises (728 Boolean, two raw steps) pass at separate cuts.
-Joined strict compilation over the actual 424-module tail also passes.
-[Multiple-field review](coverage/semantics/array-iterator-fields-review.json).
-Tables/hooks, typed or special references, object/cyclic/debt graphs and wider
-lifetimes remain partial. Earlier A62/A63 evidence keeps its original cuts.
+Ordinary Iterator array spread now validates initialized inline declared fields
+independently of current return mode and destructor presence. Public untyped
+mutable owning slots retain supported finite arrays and ordinary scalar/array
+reference cells. KNOWN current rows remain snapshots through key replacement;
+raw REFERENCE caches keep the selected cell and require genuine BYREF metadata.
+Field COW and storage preserve repeated roots, shared children, held/sole aliases
+and permanent pools, including no-destructor and Aggregate promotion routes.
+Eight exact originals and one explicit typed-slot Unsupported control retain
+separate source cuts; five reached recipes pass 915 physical premises
+(913 Boolean, two raw steps) on the landed class/cleanup tail.
+[Field/cache review](coverage/semantics/array-iterator-byval-fields-review.json).
+Tables/hooks, typed/special references, object/cyclic/debt graphs and wider
+lifetimes remain partial; A62/A63/A64 evidence keeps its original cuts.
 
 Ordinary `%`, shifts and numeric bitwise operations now admit a fractional
 finite LEFT CV with an empty live `stdClass` RIGHT CV without a materialized
@@ -740,7 +741,7 @@ original cuts. Wider producers, handlers, references and lifetimes remain partia
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64/A65, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145 are integrated
 into this branch.
 Their accepted evidence keeps its original cuts; integration adds no new execution
 credit. The active table is a handoff snapshot, not a claim of current validation

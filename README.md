@@ -1737,13 +1737,15 @@ Finite DIRECT pooled field roots, including empty constants, now follow the same
 route. Field writes retain the pool snapshot while runtime COW copies retire;
 the [pooled-field review](coverage/semantics/array-iterator-pooled-field-review.json)
 records normal, key-throw, invalid-key and delayed-destructor originals.
-Several initialized declared owning fields now preserve repeated roots, shared
-finite descendants and ordinary scalar/array reference cells. The actual
-property cell returned by `current()` stays selected through key replacement;
-COW preserves saved and spread rows while ordinary storage retires field edges
-in declaration order. The [multiple-field review](coverage/semantics/array-iterator-fields-review.json)
-records normal, supplied-key-throw, pooled and retained-owner originals, with
-by-value current kept as an explicit boundary.
+Initialized declared owning fields now use the same validation with either
+current return mode, with a public destructor or without one. A by-value cache
+keeps its row snapshot through key replacement; a by-reference cache follows
+its selected property cell. COW preserves saved/spread rows, shared children and
+held versus sole scalar aliases while ordinary storage retires field edges.
+The [field/cache review](coverage/semantics/array-iterator-byval-fields-review.json)
+records direct and Aggregate sources and reached ownership checks. The earlier
+[multiple-field review](coverage/semantics/array-iterator-fields-review.json)
+keeps its original by-reference cuts.
 Ordinary CVs of named IteratorAggregate classes now invoke a borrowed
 `getIterator()` frame and
 transfer its owned user Iterator or named-Generator return into DATA. Genuine
