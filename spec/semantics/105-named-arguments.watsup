@@ -2,6 +2,7 @@ dec $call_unpack_present(phpType7*) : bool
 dec $call_unpack_site(pstate, porigin?) : bool
 dec $unpack_current_site(pstate) : porigin?
 dec $unpack_start(pfunction, phpType7*, porigin?, int) : ptask
+dec $closure_invoke_named_ready(pstate) : pstate
 ;; Source-order sends bind an independent positional extent and ordered names.
 syntax pnamedtarget = NAMED_POSITION nat | NAMED_EXTRA preqbytes | NAMED_UNKNOWN preqbytes
 
@@ -190,7 +191,7 @@ def $named_defined(S, preqbytes) = true
 def $named_defined(S, preqbytes) = false -- otherwise
 dec $named_hole_store(pstate, pfunction, nat, pvalue) : pstate
 def $named_hole_store(S, pfunction, n, pvalue) = $write_name(S, pfunction.SIGNATURE.PARAMETERS[n].NAME, pvalue)[.TODO = [NAMED_PREFLIGHT pfunction.ORIGIN $(n + 1)]][.ORIGIN = (pfunction.ORIGIN)][.CONSTCONTEXT = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-rule PhpStep/named-preflight-done: S ~> $call_entry_ready(S, pfunction, pcallcontext.ARGC, pcallcontext.CALLSITE, pcallcontext.LINE)
+rule PhpStep/named-preflight-done: S ~> $call_entry_ready($closure_invoke_named_ready(S), pfunction, pcallcontext.ARGC, pcallcontext.CALLSITE, pcallcontext.LINE)
   -- if S.TODO = (NAMED_PREFLIGHT porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
