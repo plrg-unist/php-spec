@@ -673,10 +673,7 @@ def $gc_extra_consumed(pgctemporary :: pgctemporary_tail*, pnode) = $gc_extra_co
   -- if pgctemporary.PENDING \/ $gc_temporary_node(pgctemporary.OPERAND) =/= (pnode)
 def $gc_extra_pending((pdestructionrelease), pgctemporary*) = ($gc_temporary_nodes(pdestructionrelease.JOBS) = $gc_extra_pending_nodes(pgctemporary*))
 def $gc_extra_pending(eps, pgctemporary*) = ($gc_extra_pending_nodes(pgctemporary*) = eps)
-def $gc_extra_source(poperand_left, pgctemporary :: pgctemporary_tail*) = (pgctemporary.OPERAND = poperand_left)
-  -- if $gc_temporary_node(poperand_left) =/= eps
-def $gc_extra_source(poperand_left, [pgctemporary]) = ($gc_temporary_node(pgctemporary.OPERAND) =/= eps)
-  -- if $gc_temporary_node(poperand_left) = eps
+def $gc_extra_source(poperand_left, pgctemporary :: pgctemporary_tail*) = (($gc_temporary_node(poperand_left) =/= eps /\ pgctemporary.OPERAND = poperand_left) \/ ($gc_temporary_node(poperand_left) = eps /\ pgctemporary_tail* = eps /\ $gc_temporary_node(pgctemporary.OPERAND) =/= eps))
 def $gc_extra_source(poperand_left, pgctemporary*) = false -- otherwise
 def $gc_multi_temporary_jobs(eps, pnode*) = eps
 def $gc_multi_temporary_jobs(pnode :: pnode_tail*, pnode_temp*) = (DESTRUCTION_TEMP pnode) :: $gc_multi_temporary_jobs(pnode_tail*, $destruction_node_delete(pnode_temp*, pnode))
