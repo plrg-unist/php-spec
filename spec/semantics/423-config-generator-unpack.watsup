@@ -293,13 +293,15 @@ def $fiber_traversal_complete(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "CO
 def $config_generator_value(S, pconfiggenerator) = (pvalue)
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
   -- if ~$generator_reference_producer(S, pgenerator)
-  -- if pgenerator.REFCELL = eps /\ pgenerator.VALUE = (pvalue)
+  -- if pgenerator.REFCELL = eps
+  -- if pgenerator.VALUE = (pvalue)
   -- if $config_iterator_scalar(S, pvalue)
 def $config_generator_value(S, pconfiggenerator) = (pvalue)
   -- if $config_generator_reference_input(pconfiggenerator)
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
   -- if $generator_reference_producer(S, pgenerator)
-  -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL = (n_cell)
+  -- if pgenerator.VALUE = eps
+  -- if pgenerator.REFCELL = (n_cell)
   -- if $ordinary_reference_value(S, n_cell) = (pvalue)
   -- if $config_iterator_scalar(S, pvalue)
 def $config_generator_value(S, pconfiggenerator) = eps -- otherwise
