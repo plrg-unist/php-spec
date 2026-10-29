@@ -129,8 +129,7 @@ def expected_stderr(name, path):
     return b''
 
 
-# Separate native-first API-preparation refusal; zero agreement credit.
+# Maintained API-preparation recovery; its ATTR02 cut remains zero credit.
 CASES.update({'assert-api-byref-throw-priority-boundary': b'<?php\n#[\\Deprecated]\nfunction retired_assert(&$file, $line, $code, $description = null) { $GLOBALS["body"]++; echo "BODY;"; }\nfunction notice($level, $message, $file, $line) {\n    if ($level === 8192) { return true; }\n    if ($level === 16384) {\n        $GLOBALS["deprecated"]++; echo "D:", $message === "Function retired_assert() is deprecated", ";"; return true;\n    }\n    if ($level === 2) {\n        echo "W:", $message === "retired_assert(): Argument #1 (\\$file) must be passed by reference, value given", ";";\n        throw $GLOBALS["saved"];\n    }\n    return false;\n}\n$body = 0; $deprecated = 0; $saved = new Exception("supplied"); set_error_handler("notice");\nassert_options(ASSERT_EXCEPTION, 0); assert_options(ASSERT_WARNING, 0);\nassert_options(ASSERT_CALLBACK, "retired_assert");\necho "B|";\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntry { assert(false); } catch (Exception $caught) { echo "C:", $caught === $saved, ":", $body === 0, ":", $deprecated === 1, ";"; }\nrestore_error_handler();\n'})
 EXPECTED_STDOUT.update({'assert-api-byref-throw-priority-boundary': b'B|D:1;W:1;C:1:1:1;'})
-BOUNDARIES.update({'assert-api-byref-throw-priority-boundary': 'Deprecated internal API timing'})
-BOUNDARY_STDOUT = {'explicit-closure-invoke-internal-then-api-boundary': b'', 'assert-api-byref-throw-priority-boundary': b'B|'}
+BOUNDARY_STDOUT = {'explicit-closure-invoke-internal-then-api-boundary': b''}

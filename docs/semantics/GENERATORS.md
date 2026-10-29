@@ -9,6 +9,10 @@ retain creation scope after those factories return. Receiver-free static and
 same-`$this` nonstatic Generator bodies use their actual selected target and
 saved frame receiver; finite forwarding chains add borrowed history without
 another owner root.
+Rebound real Closure factories also authenticate ordinary or nullsafe method
+creation from their actual caller scope, including object-syntax static targets.
+The selected method receiver and called class may differ from the factory's
+bound receiver and called class.
 
 [Same-class comparison](../../coverage/semantics/generator-fiber-comparison-review.json)
 now returns order zero for distinct Generators, including fresh, paused and closed
@@ -370,10 +374,27 @@ Four authored sources, including a Closure-to-private-method bridge, and one
 independent bound-reference/Fiber SEND-abort source agree with PHP. Four reached
 fronts pass 171 custom/191 reported checks for scope forgeries, exact target
 identity, close ownership, temporary binding and the ancestry stop. Private and
-actual-tail joined strict430 pass. Named/from/fake/implicit Closure factories,
-ordinary method-call creation through rebound Closures, broader bindings and
-wider lifecycle remain partial. See the
-[Closure factory review](../../coverage/semantics/generator-closure-factory-review.json).
+actual-tail joined strict430 pass. At that I78 cut,
+named/from/fake/implicit Closure factories, ordinary method-call creation
+through rebound Closures, broader bindings and wider lifecycle remained partial.
+See the [Closure factory review](../../coverage/semantics/generator-closure-factory-review.json).
+
+I79 extends that borrowed proof to ordinary and nullsafe method calls, including
+object-syntax static methods, from real rebound Closure factories. A genuine
+live creator frame authorizes private/protected selection before creation.
+When original source scope cannot select and access that exact target, the
+actual Generator retains a borrowed receipt after return; an exact original
+source selection remains sufficient otherwise. A fresh sibling's receipt
+cannot authorize a broken live entry or replace the actual resume/close
+receipt. Factory and callee called classes or receivers may differ. The callee
+receiver keeps its ordinary frame owner, while static targets add no receiver
+root. Four new authored, one independent and one unchanged public control
+agree with PHP. Four reached
+fronts pass 209 custom/229 reported checks; private strict430 and actual-tail
+joined strict431 pass.
+Named/from/fake/implicit factory origins and wider binding, producer and
+lifecycle contexts remain partial.
+[Rebound method review](../../coverage/semantics/generator-closure-method-review.json).
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;

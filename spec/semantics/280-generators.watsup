@@ -203,6 +203,8 @@ dec $generator_creation_supported(pstate, pcallcontext) : bool
 dec $generator_creation_target(pstate, pcalltarget, porigin?) : bool
 dec $generator_creation_method(pstate, porigin, porigin?) : bool
 dec $generator_creation_method_site(pcnode?) : bool
+dec $generator_creation_object_method_target(pcalltarget) : bool
+dec $generator_creation_method_source(pstate, pcalltarget, porigin) : bool
 dec $generator_creation_required(pstate, pcallcontext) : bool
 dec $generator_factory_keyword(pstate, porigin, phpType19) : bool
 dec $generator_factory_requires_parent(pstate, pcallcontext) : bool
@@ -327,8 +329,10 @@ rule PhpStep/generator-create-scope-unsupported: S ~> S[.TODO = eps][.COMPLETION
 def $generator_creation_supported(S, pcallcontext) = (~$autoload_context_kind(S, pcallcontext) /\ ($generator_creation_target(S, pcallcontext.TARGET, pcallcontext.CALLSITE) \/ $access_generator_creation(S, pcallcontext)))
 def $generator_creation_target(S, porigin, porigin_site?) = $call_selected_valid(S, porigin, porigin_site?)
 def $generator_creation_target(S, CLOSURE_TARGET n, porigin_site?) = $call_selected_valid(S, CLOSURE_TARGET n, porigin_site?)
-def $generator_creation_target(S, METHOD_TARGET n porigin, porigin_site?) = $generator_creation_method(S, porigin, porigin_site?)
-def $generator_creation_target(S, STATIC_METHOD_TARGET porigin_class porigin, porigin_site?) = $generator_creation_method(S, porigin, porigin_site?)
+def $generator_creation_target(S, METHOD_TARGET n porigin, (porigin_site)) = ($generator_creation_method(S, porigin, (porigin_site)) \/ ($generator_creation_method_source(S, METHOD_TARGET n porigin, porigin_site) /\ $generator_creation_method_live_capture(S, METHOD_TARGET n porigin, porigin_site) =/= eps) \/ $generator_creation_target_capture(S, METHOD_TARGET n porigin, porigin_site))
+def $generator_creation_target(S, STATIC_METHOD_TARGET porigin_class porigin, (porigin_site)) = ($generator_creation_method(S, porigin, (porigin_site)) \/ ($generator_creation_method_source(S, STATIC_METHOD_TARGET porigin_class porigin, porigin_site) /\ $generator_creation_method_live_capture(S, STATIC_METHOD_TARGET porigin_class porigin, porigin_site) =/= eps) \/ $generator_creation_target_capture(S, STATIC_METHOD_TARGET porigin_class porigin, porigin_site))
+def $generator_creation_target(S, METHOD_TARGET n porigin, eps) = false
+def $generator_creation_target(S, STATIC_METHOD_TARGET porigin_class porigin, eps) = false
 def $generator_creation_target(S, SCOPED_TARGET porigin_requested porigin porigin_called eps poperand_selector, (porigin_site)) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19_class phpType20_method (SEQUENCE phpType7*) metadata)
   -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
@@ -349,6 +353,9 @@ def $generator_creation_method(S, porigin, eps) = false
 def $generator_creation_method_site((NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)) = true
 def $generator_creation_method_site((NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)) = true
 def $generator_creation_method_site(pcnode?) = false -- otherwise
+def $generator_creation_object_method_target(METHOD_TARGET n porigin) = true
+def $generator_creation_object_method_target(STATIC_METHOD_TARGET porigin_class porigin) = true
+def $generator_creation_object_method_target(pcalltarget) = false -- otherwise
 ;; A creation certificate is minted from the real caller frame. Its targets
 ;; are immutable selection evidence and add no receiver or argument owners.
 def $generator_creation_required(S, pcallcontext) = true
@@ -364,6 +371,18 @@ def $generator_creation_required(S, pcallcontext) = true
   -- if $class_method_origin(S.CLASSES, pcallcontext.FUNCTION) = (pmethoddesc)
   -- if ~pmethoddesc.STATIC
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 phpType20 phpType6 metadata)
+def $generator_creation_required(S, pcallcontext) = true
+  -- if pcallcontext.TARGET = METHOD_TARGET n pcallcontext.FUNCTION
+  -- if pcallcontext.CALLSITE = (PORIGIN n_unit pcpath)
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction_source)
+  -- if $function_at(S.CLOSURETEMPLATES, pfunction_source.ORIGIN) = (pfunction_source)
+  -- if ~$generator_creation_method_source(S, pcallcontext.TARGET, PORIGIN n_unit pcpath)
+def $generator_creation_required(S, pcallcontext) = true
+  -- if pcallcontext.TARGET = STATIC_METHOD_TARGET porigin_class pcallcontext.FUNCTION
+  -- if pcallcontext.CALLSITE = (PORIGIN n_unit pcpath)
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction_source)
+  -- if $function_at(S.CLOSURETEMPLATES, pfunction_source.ORIGIN) = (pfunction_source)
+  -- if ~$generator_creation_method_source(S, pcallcontext.TARGET, PORIGIN n_unit pcpath)
 def $generator_creation_required(S, pcallcontext) = false -- otherwise
 
 ;; A forwarding factory inherits its caller's lexical/called scope. A
@@ -402,6 +421,32 @@ def $generator_creator_method_site(S, porigin_site, ptbytes) = true
   -- if ~$ppfirstclass(phpType7*)
   -- if $method_source_name(phpType20, ptbytes)
 def $generator_creator_method_site(S, porigin_site, ptbytes) = false -- otherwise
+
+;; The old source scope is sufficient only when it selects this exact method.
+;; Object history remains inspectable after its live allocation retires.
+def $generator_creation_method_source(S, METHOD_TARGET n porigin_method, porigin_site) = true
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC
+  -- if $generator_creator_method_site(S, porigin_site, pmethoddesc.NAME)
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_class_origin(S, n) = (porigin_called)
+  -- if $class_at(S.CLASSES, porigin_called) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_called)
+  -- if $class_links_valid(S)
+  -- if porigin_scope? = $closure_source_class(S, porigin_site)
+  -- if $method_selected_scope(S, n, pmethoddesc.NAME, porigin_scope?) = (pmethoddesc)
+  -- if $method_accessible(S, pmethoddesc, porigin_scope?)
+def $generator_creation_method_source(S, STATIC_METHOD_TARGET porigin_called porigin_method, porigin_site) = true
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if pmethoddesc.STATIC
+  -- if $generator_creator_method_site(S, porigin_site, pmethoddesc.NAME)
+  -- if $class_at(S.CLASSES, porigin_called) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_called)
+  -- if $class_links_valid(S)
+  -- if porigin_scope? = $closure_source_class(S, porigin_site)
+  -- if $method_class_selected(S, porigin_called, pmethoddesc.NAME, porigin_scope?) = (pmethoddesc)
+  -- if $method_accessible(S, pmethoddesc, porigin_scope?)
+def $generator_creation_method_source(S, pcalltarget, porigin_site) = false -- otherwise
 
 ;; The factory's actual Closure invocation supplies a borrowed scope after its
 ;; live scope/binding rows disappear. The selected Closure and its callsite stay
@@ -452,6 +497,36 @@ def $generator_creator_receiver(S, CLOSURE_TARGET n, (pclosureevidence)) = $clos
   -- if $closure_evidence_object(pclosureevidence) = n
 def $generator_creator_receiver(S, CLOSURE_CALL_TARGET n_source n_receiver, (CLOSURE_CALL porigin_site n_source n_receiver porigin_class)) = (n_receiver)
 def $generator_creator_receiver(S, pcalltarget, pclosureevidence?) = eps -- otherwise
+
+;; A live entered method uses its actual immediately saved Closure caller,
+;; including when an equivalent fresh Generator already exists at this site.
+;; This helper does not validate the current Generator or consult a sibling.
+def $generator_creation_method_live_capture(S, pcalltarget, porigin_site) = (pgeneratorcreation)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $generator_creation_owner(S) = eps
+  -- if $generator_creation_object_method_target(pcalltarget)
+  -- if pcallcontext.TARGET = pcalltarget /\ pcallcontext.CALLSITE = (porigin_site)
+  -- if pcallcontext.INSTANCE = eps
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if pcallcontext.RECEIVER = $target_receiver(S, pcalltarget)
+  -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, pcalltarget)
+  -- if pcallcontext.CALLED_CLASS = $target_called_class(S, pcalltarget)
+  -- if S.FRAMES = pframe_creator :: pframe_tail*
+  -- if pframe_creator.ORIGIN = (porigin_site)
+  -- if pframe_creator.CONTEXT = (pcallcontext_creator)
+  -- if S_creator = $constant_frame_scope(S, pframe_creator, pframe_tail*)
+  -- if $call_current_valid(S_creator)
+  -- if $closure_evidence_current(S_creator) = (pclosureevidence)
+  -- if pgeneratorcreation = {SITE porigin_site, CREATOR {FUNCTION pcallcontext_creator.FUNCTION, CALLSITE pcallcontext_creator.CALLSITE, LEXICAL_CLASS pcallcontext_creator.LEXICAL_CLASS, CALLED_CLASS pcallcontext_creator.CALLED_CLASS}, CREATOR_TARGET pcallcontext_creator.TARGET, CALLEE pcalltarget, ANCESTORS eps, CLOSURE (pclosureevidence)}
+  -- if $generator_creation_scope_valid(S, pgeneratorcreation)
+def $generator_creation_method_live_capture(S, pcalltarget, porigin_site) = eps -- otherwise
+
+;; Saved frame views have no caller frames; active operations use their own
+;; structural owner. A new live call cannot borrow a fresh sibling's receipt.
+def $generator_creation_method_retained(S, pcalltarget, porigin_site) = $generator_creation_selected(S, pcalltarget, porigin_site)
+  -- if S.FRAMES = eps \/ $generator_creation_owner(S) =/= eps
+def $generator_creation_method_retained(S, pcalltarget, porigin_site) = false -- otherwise
 
 ;; A certificate may outlive its actual receiver. Inspect the archived instance
 ;; and declaration without turning that history into a live object owner.
@@ -592,6 +667,38 @@ def $generator_creation_scope_valid(S, pgeneratorcreation) = true
   -- if $scoped_requested_scope(S, pgeneratorcreation.SITE, phpType19, porigin_requested, pgeneratorcreation.CREATOR.LEXICAL_CLASS, pgeneratorcreation.CREATOR.CALLED_CLASS)
   -- if $scoped_called_scope(S, pgeneratorcreation.SITE, phpType19, porigin_requested, porigin_called, pgeneratorcreation.CREATOR.CALLED_CLASS, pmethoddesc, (n_receiver))
   -- if $method_accessible(S, pmethoddesc, pgeneratorcreation.CREATOR.LEXICAL_CLASS)
+def $generator_creation_scope_valid(S, pgeneratorcreation) = true
+  -- if pgeneratorcreation.CLOSURE = (pclosureevidence)
+  -- if pgeneratorcreation.ANCESTORS = eps
+  -- if $generator_creator_valid(S, pgeneratorcreation)
+  -- if pgeneratorcreation.CALLEE = METHOD_TARGET n porigin_function
+  -- if $function_at($all_functions(S), porigin_function) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION = pfunction /\ ~pmethoddesc.STATIC
+  -- if $function_generator(S, pfunction)
+  -- if $generator_creator_method_site(S, pgeneratorcreation.SITE, pmethoddesc.NAME)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_called
+  -- if $class_at(S.CLASSES, porigin_called) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_called)
+  -- if $class_links_valid(S)
+  -- if $method_selected_scope(S, n, pmethoddesc.NAME, pgeneratorcreation.CREATOR.LEXICAL_CLASS) = (pmethoddesc)
+  -- if $method_accessible(S, pmethoddesc, pgeneratorcreation.CREATOR.LEXICAL_CLASS)
+def $generator_creation_scope_valid(S, pgeneratorcreation) = true
+  -- if pgeneratorcreation.CLOSURE = (pclosureevidence)
+  -- if pgeneratorcreation.ANCESTORS = eps
+  -- if $generator_creator_valid(S, pgeneratorcreation)
+  -- if pgeneratorcreation.CALLEE = STATIC_METHOD_TARGET porigin_called porigin_function
+  -- if $function_at($all_functions(S), porigin_function) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION = pfunction /\ pmethoddesc.STATIC
+  -- if $function_generator(S, pfunction)
+  -- if $generator_creator_method_site(S, pgeneratorcreation.SITE, pmethoddesc.NAME)
+  -- if $class_at(S.CLASSES, porigin_called) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_called)
+  -- if $class_links_valid(S)
+  -- if $method_class_selected(S, porigin_called, pmethoddesc.NAME, pgeneratorcreation.CREATOR.LEXICAL_CLASS) = (pmethoddesc)
+  -- if $method_accessible(S, pmethoddesc, pgeneratorcreation.CREATOR.LEXICAL_CLASS)
 def $generator_creation_scope_valid(S, pgeneratorcreation) = false -- otherwise
 
 def $generator_creation_capture(S, pcallcontext) = (pgeneratorcreation)
@@ -613,6 +720,12 @@ def $generator_creation_capture(S, pcallcontext) = (pgeneratorcreation)
   -- if pgenfactorycapture* = $generator_creation_ancestors(S_creator)
   -- if pgeneratorcreation = {SITE porigin_site, CREATOR {FUNCTION pcallcontext_creator.FUNCTION, CALLSITE pcallcontext_creator.CALLSITE, LEXICAL_CLASS pcallcontext_creator.LEXICAL_CLASS, CALLED_CLASS pcallcontext_creator.CALLED_CLASS}, CREATOR_TARGET pcallcontext_creator.TARGET, CALLEE pcallcontext.TARGET, ANCESTORS pgenfactorycapture*, CLOSURE $closure_evidence_current(S_creator)}
   -- if $generator_creation_scope_valid(S, pgeneratorcreation)
+def $generator_creation_capture(S, pcallcontext) = (pgeneratorcreation)
+  -- if $generator_creation_required(S, pcallcontext)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $generator_creation_method_live_capture(S, pcallcontext.TARGET, porigin_site) = (pgeneratorcreation)
+  -- if $call_current_valid(S)
 def $generator_creation_capture(S, pcallcontext) = eps -- otherwise
 
 def $generator_creation_target_capture(S, pcalltarget, porigin_site) = true
@@ -631,6 +744,16 @@ def $generator_creation_record_valid(S, pgenerator) = true
   -- if pgenerator.CREATION = (pgeneratorcreation)
   -- if pgenerator.CLOSURE = eps
   -- if pgeneratorcreation.CALLEE = SCOPED_TARGET porigin_requested pgenerator.FUNCTION porigin_called (n_receiver) poperand_selector
+  -- if $generator_creation_scope_valid(S, pgeneratorcreation)
+def $generator_creation_record_valid(S, pgenerator) = true
+  -- if pgenerator.CREATION = (pgeneratorcreation)
+  -- if pgenerator.CLOSURE = eps
+  -- if pgeneratorcreation.CALLEE = METHOD_TARGET n pgenerator.FUNCTION
+  -- if $generator_creation_scope_valid(S, pgeneratorcreation)
+def $generator_creation_record_valid(S, pgenerator) = true
+  -- if pgenerator.CREATION = (pgeneratorcreation)
+  -- if pgenerator.CLOSURE = eps
+  -- if pgeneratorcreation.CALLEE = STATIC_METHOD_TARGET porigin_called pgenerator.FUNCTION
   -- if $generator_creation_scope_valid(S, pgeneratorcreation)
 def $generator_creation_record_valid(S, pgenerator) = false -- otherwise
 

@@ -11,6 +11,7 @@ def $pipe_array_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, p
   -- if parrayselection = {SITE porigin_site, INIT z_lookup, LINE z_call, REQUESTED porigin_requested, NAME ptbytes}
 def $pipe_array_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED "scoped pipe array callable"]
   -- if ~$pipe_array_plain(pcalltarget)
+def $pipe_array_result(S, ARRAYENUM pintrinsic ptbytes_class ptbytes_method, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED "enum generated pipe array callable"]
 def $pipe_array_result(S, ARRAYINVALID ptbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.TODO = (PIPE_ARRAY_INVALID pvalue_left porigin_site ptbytes z_lookup) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 def $pipe_array_result(S, ARRAYUNKNOWN text, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED text]
 def $pipe_array_value(S, n, pvalue_left, porigin, z_send, z_lookup, z_call) = $pipe_array_result(S, $array_resolve(S, n, ARRAY_DISPATCH), pvalue_left, porigin, z_send, z_lookup, z_call)

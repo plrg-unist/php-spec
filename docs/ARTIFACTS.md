@@ -82,6 +82,25 @@ binding failures separately from exact one-line, multiline, closure-owner and
 selection, owner roots and argument retirement before the backed table. The
 joined `--sl` gate checks all 430 manifest modules and records its clean result.
 
+Source-certified enum conditional-transfer cuts are under
+`../php-spec-evidence-archive/enum-conditional-transfer-117/`. Its `manifest.json`
+(SHA-256 `752b6bfea7f70ae3bfb65e4206a101f491e70252bb2e4d93376a7625fdfee7c8`)
+lists eight raw directories. Original object and scalar Unsupported results
+remain separate from their exact affected checks; cross-enum and negated-case
+sources, selected-case/history negatives and post-bind cache checks retain
+their individual cuts. The joined `--sl` receipt records the composed 430-module
+candidate, true result and fully reaped process group.
+
+Generated enum array callable cuts are under
+`../php-spec-evidence-archive/enum-array-callable-117/`. Its `manifest.json`
+(SHA-256 `7237a68b42022feefdcf203d8c450676b66e434755f2a260433b9991db39eb6a`)
+lists 14 raw directories. The original Unsupported and Stringable failure remain
+separate from exact source results. The target-state v5 packet has 40 substantive
+true checks; v6 confirms its two manually resolved intermediate states were
+fixture errors. The ownerless Stringable reached packet passes 31 checks. The
+joined v1 duplicated the manifest's first module and has zero semantic credit;
+v2 records `--sl` over all 431 modules, `true`, and a fully reaped CPU 1 group.
+
 The guarded getter-recursion milestone retains source/native observations,
 focused checks, all fixture failures and diagnostics in
 `../php-spec-evidence-archive/magic-get-recursion-119/manifest.json`.
@@ -177,6 +196,14 @@ under `../php-spec-evidence-archive/generator-closure-factory-78/`. The independ
 bound-reference/Fiber peer and its exact native/model comparison are under
 `../php-spec-evidence-archive/generator-closure-factory-78-review/`.
 The [Closure factory ledger](../coverage/semantics/generator-closure-factory-review.json)
+binds tested revisions, hashes and remaining scope.
+
+I79 rebound Closure method-creation evidence retains authored native, unchanged
+private/public controls, private strict, source and reached-state cuts under
+`../php-spec-evidence-archive/generator-closure-method-79/`. The independent
+distinct-receiver BYREF/Fiber peer is under
+`../php-spec-evidence-archive/generator-closure-method-79-review/`.
+The [rebound method ledger](../coverage/semantics/generator-closure-method-review.json)
 binds tested revisions, hashes and remaining scope.
 
 I77 receiver-bearing scoped Generator evidence retains authored native,
@@ -556,3 +583,14 @@ and actual-tail joined strict429.
 `accepted-summary.json` maps all nine original state directories to their intact
 external locations. The failed/stopped packets, 90/40-second abnormal timeouts
 and model-unrun captured-throw boundary retain their separate zero-credit status.
+
+OB02 evidence is under `../php-spec-evidence-archive/ob02-author-native/` and
+`ob02-review-native/`. The [review](../coverage/semantics/output-final-throw-review.json)
+links four exact fatal sources, three reached groups/131 assertions and the
+original failed packets. `accepted-summary.json` maps the three intact state
+directories and both affected actual-tail guard cuts under `reached-raw/`.
+The joined431 record pins candidate `1262bd31b`; no native or differential source reruns were needed.
+Earlier stage/timing probes are diagnostic-only;
+the late full-source timeout retains zero credit alongside its later justified
+75-second exact comparison. Maintained sources/protocols regenerate the behavior;
+external archives are evidence, not build inputs.

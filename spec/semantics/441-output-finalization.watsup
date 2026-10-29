@@ -239,3 +239,151 @@ def $error_context_direct_trigger(S) = true
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if $output_drain_warning_resume(perrorcall.RESUME)
   -- if $error_context_valid(S, pcallcontext)
+
+;; FINAL is called with no executing source caller. Throwable construction
+;; captures the actual callback frame and received values, without an API frame.
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
+  -- if $ob_user_context(pcallcontext, S.CURRENT, S.FRAMES) = (pobinvoke)
+  -- if pobinvoke.CALL = OB_FINAL pobdrain
+  -- if $ob_user_context_valid(S, pcallcontext)
+  -- if pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1) /\ pcallcontext.ARGC = 2
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
+
+;; With no execute_data or selected exception handler, a FINAL Throwable is
+;; rendered inside zend_call_known_fcc_ex, which bails out before output.c frees
+;; its argv, pops the handler, or forwards any buffered bytes. The later output
+;; deactivation clears ACTIVE/RUNNING before freeing each raw zoh, top first.
+dec $output_final_throw_ready(pstate, pobinvoke, nat) : bool
+dec $output_final_throw(pstate, pobinvoke, nat) : pstate
+dec $output_deactivate_history(pstate, pobdeactivate) : bool
+dec $output_deactivate_valid(pstate, pobdeactivate) : bool
+dec $output_deactivate_remaining(pobdeactivate) : poutputbuffer*
+dec $output_deactivate_tasks(ptask*, pobdeactivate) : bool
+dec $output_deactivate_frames(pframe*, pobdeactivate) : bool
+dec $output_deactivate_active(pstate, pobdeactivate) : bool
+dec $output_deactivate_pending(pstate) : bool
+dec $output_deactivate_task(ptask) : pobdeactivate?
+dec $output_deactivate_pending_tasks(pstate, ptask*) : bool
+dec $output_deactivate_pending_frames(pstate, pframe*) : bool
+
+;; Native releases the pending Throwable before deactivation. Only nonfinal
+;; or destructor-inactive decrements can share this transfer step.
+def $output_final_throw_ready(S, pobinvoke, n) = true
+  -- if pobinvoke.CALL = OB_FINAL pobdrain
+  -- if S.COMPLETION = NORMAL /\ ~S.OUTPUTBLOCKED
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.EXCEPTIONHANDLER = eps
+  -- if S.TODO = [THROW_SEARCH n, OB_USER_RESULT pobinvoke, OUTPUT_DRAIN pobdrain]
+  -- if $call_task_valid(S, OB_USER_RESULT pobinvoke)
+  -- if $throwable_live(S, n)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $throwable_field(S, n, "previous") = PNULL
+  -- if $ob_user_scalar($throwable_field(S, n, "message"))
+  -- if n_owners = $heap_owners($heap_graph(S), HOBJECT n)
+  -- if $(n_owners > 1) \/ ~$destructor_operational(S)
+  -- if $throwable_terminal_renderable(S, n, eps)
+  -- if ~$shutdown_render_ready(S[.COMPLETION = UNCAUGHT n])
+  -- if $display_state_mode(S) =/= 1 \/ ~$output_deferred_stdout(S[.COMPLETION = UNCAUGHT n])
+def $output_final_throw_ready(S, pobinvoke, n) = false -- otherwise
+def $ob_user_result_discard(S, pobinvoke) = $output_final_throw(S_proof, pobinvoke, n)
+  -- if pobinvoke.CALL = OB_FINAL pobdrain
+  -- if S.TODO = [THROW_SEARCH n, OUTPUT_DRAIN pobdrain]
+  -- if S_proof = S[.TODO = [THROW_SEARCH n, OB_USER_RESULT pobinvoke, OUTPUT_DRAIN pobdrain]]
+  -- if $output_final_throw_ready(S_proof, pobinvoke, n)
+def $output_final_throw(S, pobinvoke, n) = S_report[.OUTPUTBUFFERS = eps][.TODO = [OUTPUT_FINAL_DEACTIVATE pobdeactivate]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps][.RETIREDOWNERS = eps][.TRACE = eps][.ERRORORIGIN = eps]
+  -- if pobinvoke.CALL = OB_FINAL pobdrain
+  -- if S_uncaught = S[.TODO = [OB_USER_RESULT pobinvoke, OUTPUT_DRAIN pobdrain]][.COMPLETION = UNCAUGHT n]
+  -- if S_cached = $throwable_string_cache(S_uncaught, n, $throwable_chain_string(S_uncaught, n, [n]))
+  -- if S_report = $shutdown_freeze_marked(S_cached)
+  -- if $shutdown_frozen(S_report.COMPLETION)
+  -- if pobdeactivate = {CALL pobinvoke, BUFFERS S.OUTPUTBUFFERS, INDEX 0, COMPLETION S_report.COMPLETION}
+
+;; BUFFERS is an immutable documentary snapshot. Only its INDEX suffix owns
+;; raw zoh; a popped prefix is never reactivated or treated as a live buffer.
+def $output_deactivate_history(S, pobdeactivate) = true
+  -- if pobinvoke = pobdeactivate.CALL
+  -- if pobinvoke.CALL = OB_FINAL pobdrain
+  -- if pobdeactivate.BUFFERS = poutputbuffer :: poutputbuffer_tail*
+  -- if $output_buffers_valid(pobdeactivate.BUFFERS) /\ $output_buffer_ids(pobdeactivate.BUFFERS, S.OUTPUTSEQ)
+  -- if pobdrain.IDS = $output_ids(pobdeactivate.BUFFERS)
+  -- if $ob_user_buffer_live(pobinvoke, poutputbuffer)
+  -- if $output_drain_completion(pobdrain.COMPLETION)
+  -- if $ob_user_fci_arguments(pobinvoke)
+  -- if pobinvoke.BUFFER.HANDLER = (pobdrain.SOURCE)
+  -- if pobinvoke.VALUE = PBOOL true /\ pobinvoke.PHASE = $output_drain_phase(pobinvoke.BUFFER.FLAGS)
+  -- if pobinvoke.INPUT = PSTRING_CARRIER (REQUEST_STRING n_input) pobinvoke.BUFFER.BYTES
+  -- if $string_carrier_valid(S, pobinvoke.INPUT)
+  -- if $config_invoke_valid($ob_user_history(S, pobdrain.SOURCE), pobdrain.SOURCE.ENTRY.CALL)
+  -- if $exception_raw_selected($ob_user_history(S, pobdrain.SOURCE), pobdrain.SOURCE.ZOH, pobdrain.SOURCE.ENTRY.RAW, pobdrain.SOURCE.ENTRY.TARGET)
+  -- if $shutdown_selection_scope($ob_user_history(S, pobdrain.SOURCE), pobdrain.SOURCE.ENTRY)
+  -- if pobdrain.SOURCE.ENTRY.CALL.KIND = INTRINSIC_OB_START
+  -- if pobdrain.SOURCE.VALUES = [pobdrain.SOURCE.ZOH, PINT i_chunk, PINT i_flags]
+  -- if pobdrain.SOURCE.ENTRY.BIRTH = eps /\ pobdrain.SOURCE.ENTRY.PRODUCER = eps /\ pobdrain.SOURCE.ENTRY.ARGS = eps
+  -- if $(pobdeactivate.INDEX <= |pobdeactivate.BUFFERS|)
+  -- if $shutdown_frozen(pobdeactivate.COMPLETION)
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE /\ S.EXITSTATUS = 255
+def $output_deactivate_history(S, pobdeactivate) = false -- otherwise
+def $output_deactivate_remaining(pobdeactivate) = pobdeactivate.BUFFERS[pobdeactivate.INDEX:n_left]
+  -- if n_count = |pobdeactivate.BUFFERS|
+  -- if n_left = $nabs($(n_count - pobdeactivate.INDEX))
+def $output_deactivate_valid(S, pobdeactivate) = true
+  -- if $output_deactivate_history(S, pobdeactivate)
+  -- if pobinvoke = pobdeactivate.CALL
+  -- if pobinvoke.CALL = OB_FINAL pobdrain
+  -- if poutputbuffer* = $output_deactivate_remaining(pobdeactivate)
+  -- if $output_user_buffers_valid(S, poutputbuffer*)
+  -- if $heap_subset($output_roots(poutputbuffer*) ++ $operand_nodes(pobdrain.VALUE) ++ $base_nodes(pobdrain.BASE), S.ALLOCATIONS)
+  -- if S.OUTPUTBUFFERS = eps
+def $output_deactivate_valid(S, pobdeactivate) = false -- otherwise
+def $output_deactivate_tasks(eps, pobdeactivate) = false
+def $output_deactivate_tasks((OUTPUT_FINAL_DEACTIVATE pobdeactivate) :: eps, pobdeactivate) = true
+def $output_deactivate_tasks(ptask :: ptask_tail*, pobdeactivate) = $output_deactivate_tasks(ptask_tail*, pobdeactivate)
+  -- if ptask =/= OUTPUT_FINAL_DEACTIVATE pobdeactivate \/ ptask_tail* =/= eps
+def $output_deactivate_frames(eps, pobdeactivate) = false
+def $output_deactivate_frames(pframe :: pframe_tail*, pobdeactivate) = ((pframe.CONTEXT = eps /\ $output_deactivate_tasks(pframe.TODO, pobdeactivate)) \/ $output_deactivate_frames(pframe_tail*, pobdeactivate))
+def $output_deactivate_active(S, pobdeactivate) = ($output_deactivate_valid(S, pobdeactivate) /\ ((S.CURRENT = eps /\ $output_deactivate_tasks(S.TODO, pobdeactivate)) \/ $output_deactivate_frames(S.FRAMES, pobdeactivate)))
+def $output_drain_task(S, OUTPUT_FINAL_DEACTIVATE pobdeactivate) = $output_deactivate_active(S, pobdeactivate)
+def $output_deactivate_pending(S) = ($output_deactivate_pending_tasks(S, S.TODO) \/ $output_deactivate_pending_frames(S, S.FRAMES))
+def $output_deactivate_task(OUTPUT_FINAL_DEACTIVATE pobdeactivate) = (pobdeactivate)
+def $output_deactivate_task(ptask) = eps -- otherwise
+def $output_deactivate_pending_tasks(S, eps) = false
+def $output_deactivate_pending_tasks(S, ptask :: ptask_tail*) = $output_deactivate_active(S, pobdeactivate) -- if $output_deactivate_task(ptask) = (pobdeactivate)
+def $output_deactivate_pending_tasks(S, ptask :: ptask_tail*) = $output_deactivate_pending_tasks(S, ptask_tail*) -- if $output_deactivate_task(ptask) = eps
+def $output_deactivate_pending_frames(S, eps) = false
+def $output_deactivate_pending_frames(S, pframe :: pframe_tail*) = ($output_deactivate_pending_tasks(S, pframe.TODO) \/ $output_deactivate_pending_frames(S, pframe_tail*))
+def $output_deactivate_boundary(S) = true
+  -- if $output_deactivate_pending(S)
+  -- if S.COMPLETION <- [NORMAL, BUDGET, SOURCE_PENDING]
+  -- if $ob_user_control_pending(S)
+def $output_deactivate_boundary(S) = true
+  -- if $output_deactivate_pending(S)
+  -- if S.COMPLETION <- [NORMAL, BUDGET, SOURCE_PENDING]
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*
+  -- if pconfigcall.KIND = INTRINSIC_OB_START
+def $output_deactivate_boundary(S) = true
+  -- if $output_deactivate_pending(S)
+  -- if ~(S.COMPLETION <- [NORMAL, BUDGET, SOURCE_PENDING])
+def $output_deactivate_boundary(S) = false -- otherwise
+
+def $task_nodes(OUTPUT_FINAL_DEACTIVATE pobdeactivate) = $operand_nodes(pobdrain.VALUE) ++ $base_nodes(pobdrain.BASE) ++ $output_roots($output_deactivate_remaining(pobdeactivate))
+  -- if pobdeactivate.CALL.CALL = OB_FINAL pobdrain
+def $call_task_valid(S, OUTPUT_FINAL_DEACTIVATE pobdeactivate) = ($output_deactivate_valid(S, pobdeactivate) /\ S.CURRENT = eps /\ $source_operand_suffix(S.TODO, OUTPUT_FINAL_DEACTIVATE pobdeactivate, eps))
+rule PhpStep/output-final-deactivate-pop: S ~> S[.TODO = [OUTPUT_FINAL_DEACTIVATE pobdeactivate[.INDEX = $(pobdeactivate.INDEX + 1)]]]
+  -- if S.TODO = (OUTPUT_FINAL_DEACTIVATE pobdeactivate) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, OUTPUT_FINAL_DEACTIVATE pobdeactivate)
+  -- if $(pobdeactivate.INDEX < |pobdeactivate.BUFFERS|)
+rule PhpStep/output-final-deactivate-done: S ~> S[.TODO = eps][.COMPLETION = pobdeactivate.COMPLETION]
+  -- if S.TODO = (OUTPUT_FINAL_DEACTIVATE pobdeactivate) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, OUTPUT_FINAL_DEACTIVATE pobdeactivate)
+  -- if pobdeactivate.INDEX = |pobdeactivate.BUFFERS|
+  -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
+def $eager_operation_source_guard(S, pdestructionoperation) = true
+  -- if pdestructionoperation.SOURCE = OUTPUT_FINAL_DEACTIVATE pobdeactivate
+  -- if $output_deactivate_history(S, pobdeactivate)
+  -- if $(pobdeactivate.INDEX < |pobdeactivate.BUFFERS|)
+  -- if $output_deactivate_active(S, pobdeactivate[.INDEX = $(pobdeactivate.INDEX + 1)])
+  -- if pdestructionoperation.CALLER = eps /\ pdestructionoperation.COMPLETION = NORMAL
+  -- if pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)

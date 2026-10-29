@@ -332,6 +332,8 @@ def $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
   -- if $closure_callable(S, n)
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
 
+dec $generator_creation_method_live_capture(pstate, pcalltarget, porigin) : pgeneratorcreation?
+dec $generator_creation_method_retained(pstate, pcalltarget, porigin) : bool
 def $method_call_selected(S, METHOD_TARGET n porigin_method, (porigin_site)) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
   -- if $ppcall_dynamic(expression)
@@ -345,26 +347,26 @@ def $method_call_selected(S, METHOD_TARGET n porigin_method, (porigin_site)) = t
   -- if ~pmethoddesc.STATIC
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if $method_source_name(phpType20, pmethoddesc.NAME)
-  -- if $method_call_origin_valid(S, n, pmethoddesc, porigin_site)
+  -- if $method_call_origin_valid(S, n, pmethoddesc, porigin_site) \/ $generator_creation_method_live_capture(S, METHOD_TARGET n porigin_method, porigin_site) =/= eps \/ $generator_creation_method_retained(S, METHOD_TARGET n porigin_method, porigin_site)
 def $method_call_selected(S, METHOD_TARGET n porigin_method, (porigin_site)) = true
   -- if $target_function(S, METHOD_TARGET n porigin_method) = (pfunction)
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
   -- if ~pmethoddesc.STATIC
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if $method_source_name(phpType20, pmethoddesc.NAME)
-  -- if $method_call_origin_valid(S, n, pmethoddesc, porigin_site)
+  -- if $method_call_origin_valid(S, n, pmethoddesc, porigin_site) \/ $generator_creation_method_live_capture(S, METHOD_TARGET n porigin_method, porigin_site) =/= eps \/ $generator_creation_method_retained(S, METHOD_TARGET n porigin_method, porigin_site)
 def $method_call_selected(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_site)) = true
   -- if $target_function(S, STATIC_METHOD_TARGET porigin_class porigin_method) = (pfunction)
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if $method_source_name(phpType20, pmethoddesc.NAME)
-  -- if $static_method_call_origin_valid(S, porigin_class, pmethoddesc, porigin_site)
+  -- if $static_method_call_origin_valid(S, porigin_class, pmethoddesc, porigin_site) \/ $generator_creation_method_live_capture(S, STATIC_METHOD_TARGET porigin_class porigin_method, porigin_site) =/= eps \/ $generator_creation_method_retained(S, STATIC_METHOD_TARGET porigin_class porigin_method, porigin_site)
 def $method_call_selected(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_site)) = true
   -- if $target_function(S, STATIC_METHOD_TARGET porigin_class porigin_method) = (pfunction)
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if $method_source_name(phpType20, pmethoddesc.NAME)
-  -- if $static_method_call_origin_valid(S, porigin_class, pmethoddesc, porigin_site)
+  -- if $static_method_call_origin_valid(S, porigin_class, pmethoddesc, porigin_site) \/ $generator_creation_method_live_capture(S, STATIC_METHOD_TARGET porigin_class porigin_method, porigin_site) =/= eps \/ $generator_creation_method_retained(S, STATIC_METHOD_TARGET porigin_class porigin_method, porigin_site)
 def $method_call_selected(S, METHOD_TARGET n porigin_method, (PORIGIN n_unit pcpath)) = true
   -- if $target_function(S, METHOD_TARGET n porigin_method) = (pfunction)
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)

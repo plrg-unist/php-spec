@@ -106,7 +106,7 @@ forms remain an explicit dependency.
 Callback exit, automatic pre-entry reference-warning throws,
 throwing produced-output warning handlers, owning warning-handler abrupt cleanup,
 automatic dispatch from other byte
-producers, abnormal request-end/fatal callback drains, non-scalar or
+producers, wider request-end/fatal callback paths, non-scalar or
 reference-return conversion, typed variadic reception and by-reference variadic
 extra arguments, mutating buffer APIs
 during a handler, capability
@@ -131,9 +131,21 @@ ownership, post-route release, temporary disablement and valid forged getter
 copies. Final acceptance is recorded in the concise author and independent
 ledgers; original failures and raw observations remain external.
 
-Escaping FINAL exceptions remain unimplemented. Two frozen native originals
-distinguish a global Exception retired before FINAL from a Closure-retained
-supplied Exception. The first selected model timed out at 90 seconds and again
-at reduced fuel/40 seconds before returning a state; the second is unrun. These
-observations have zero model credit and make no controlled-Unsupported or
-phase-localization claim.
+OB02 handles an escaping builtin FINAL Throwable with a scalar message, NULL
+previous and no selected exception handler. The authentic restored callback tail
+retains the real two arguments and one saved drain owner. Throwable construction
+records the internal callback frame; rethrow retains an earlier stored trace.
+The builtin string cache is filled before existing fatal reporting freezes status
+255. Deactivation clears the live stack, then retires raw zoh owners top first;
+their destructor writes bypass the discarded lower buffers. No FINAL or normal
+failure forwarding is repeated, and the original NORMAL/EXIT completion is not restored.
+
+Native drops the pending Throwable before deactivation. This cut admits that
+decrement only when another owner retains it or the existing destructor capability
+is inactive. Effectful final pending cleanup, selected exception handlers,
+previous chains/effectful rendering, late `ob_start` and abrupt deactivation
+cleanup remain required. [OB02 evidence](../../coverage/semantics/output-final-throw-review.json)
+records four exact originals and three reached groups/131 assertions. The original
+90/40-second failures remain zero credit; warmed stage checks separately located
+cold startup cost and the missing internal trace rule. The late owning case
+finishes in 50.47 seconds after warmup under a justified 75-second evaluation cap.

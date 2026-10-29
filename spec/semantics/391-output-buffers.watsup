@@ -109,8 +109,10 @@ def $output_display(S, [DISPLAY_STDOUT pevent]) = S[.OUTPUTBLOCKED = true][.COMP
   -- if S.OUTPUTBUFFERS =/= eps
 def $output_display(S, pevent*) = S[.EVENTS = S.EVENTS ++ pevent*] -- otherwise
 def $output_guard(S) = S[.COMPLETION = UNSUPPORTED "stdout diagnostic rendering inside an output buffer"] -- if S.OUTPUTBLOCKED
+dec $output_deactivate_boundary(pstate) : bool
 def $output_guard(S) = S[.COMPLETION = UNSUPPORTED $ob_user_boundary_reason(S)] -- if ~S.OUTPUTBLOCKED /\ $ob_user_boundary(S)
-def $output_guard(S) = S -- if ~S.OUTPUTBLOCKED /\ ~$ob_user_boundary(S)
+def $output_guard(S) = S[.COMPLETION = UNSUPPORTED "reentrant or abrupt output deactivation cleanup"] -- if ~S.OUTPUTBLOCKED /\ ~$ob_user_boundary(S) /\ ~$api_borrowed_receiver_retired(S) /\ $output_deactivate_boundary(S)
+def $output_guard(S) = S -- if ~S.OUTPUTBLOCKED /\ ~$ob_user_boundary(S) /\ ~$api_borrowed_receiver_retired(S) /\ ~$output_deactivate_boundary(S)
 
 def $output_deferred_stdout(S) = ($long_and(S.REPORTING, 1) =/= 0) -- if S.COMPLETION = FATAL n* z
 def $output_deferred_stdout(S) = ($long_and(S.REPORTING, 64) =/= 0) -- if S.COMPLETION = STATICERROR text z
