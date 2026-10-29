@@ -1,0 +1,318 @@
+;; A call-via-trampoline collects by-value runtime sends without a user
+;; signature. Only the final (name, arguments) pair enters the real handler.
+def $magic_unpack_collecting(MAGIC_METHOD_SEND_TARGET pmagicmethodcall) = true
+def $magic_unpack_collecting(MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) = true
+dec $magic_unpack_source(pstate, porigin, phpType7*, nat) : bool
+def $magic_unpack_source(S, porigin, eps, n) = true
+def $magic_unpack_source(S, porigin, (NArg ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType7_tail*, n) = $magic_unpack_source(S, porigin, phpType7_tail*, $(n + 1))
+  -- if $call_argument_origin(S, (porigin), n) = (PORIGIN n_unit pcpath)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath) =/= eps
+def $magic_unpack_source(S, porigin, (NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7_tail*, n) = $magic_unpack_source(S, porigin, phpType7_tail*, $(n + 1))
+  -- if phpType3 = ABSENT \/ phpType3 = NIdentifier (BYTES text_name) metadata_name
+  -- if $call_argument_origin(S, (porigin), n) = (porigin_argument)
+  -- if $magic_method_argument_source(S, porigin_argument, 0, expression)
+def $magic_unpack_source(S, porigin, phpType7*, n) = false -- otherwise
+def $magic_unpack_arguments(S, porigin, phpType7*) = ($call_unpack_present(phpType7*) /\ $magic_unpack_source(S, porigin, phpType7*, 0))
+
+dec $magic_unpack_site(pcalltarget) : porigin
+dec $magic_unpack_line(pcalltarget) : int
+dec $magic_unpack_owner(pcalltarget) : nat
+dec $magic_unpack_saved_caller(pcalltarget) : pcallcontext?
+dec $magic_unpack_name(pcalltarget) : ptbytes
+dec $magic_unpack_tail(pcalltarget) : ptask*
+dec $magic_unpack_handler(pcalltarget) : pcalltarget
+dec $magic_unpack_arguments_source(pcalltarget) : phpType7*
+def $magic_unpack_site(MAGIC_METHOD_SEND_TARGET pmagicmethodcall) = pmagicmethodcall.SITE
+def $magic_unpack_site(MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) = pmagicstaticmethodcall.SITE
+def $magic_unpack_line(MAGIC_METHOD_SEND_TARGET pmagicmethodcall) = pmagicmethodcall.LINE
+def $magic_unpack_line(MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) = pmagicstaticmethodcall.LINE
+def $magic_unpack_owner(MAGIC_METHOD_SEND_TARGET pmagicmethodcall) = pmagicmethodcall.OWNER
+def $magic_unpack_owner(MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) = pmagicstaticmethodcall.OWNER
+def $magic_unpack_saved_caller(MAGIC_METHOD_SEND_TARGET pmagicmethodcall) = pmagicmethodcall.CALLER
+def $magic_unpack_saved_caller(MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) = pmagicstaticmethodcall.CALLER
+def $magic_unpack_name(MAGIC_METHOD_SEND_TARGET pmagicmethodcall) = pmagicmethodcall.NAME
+def $magic_unpack_name(MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) = pmagicstaticmethodcall.NAME
+def $magic_unpack_tail(MAGIC_METHOD_SEND_TARGET pmagicmethodcall) = pmagicmethodcall.TAIL
+def $magic_unpack_tail(MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) = pmagicstaticmethodcall.TAIL
+def $magic_unpack_handler(MAGIC_METHOD_SEND_TARGET pmagicmethodcall) = METHOD_TARGET pmagicmethodcall.OBJECT pmagicmethodcall.METHOD
+def $magic_unpack_handler(MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) = STATIC_METHOD_TARGET pmagicstaticmethodcall.CLASS pmagicstaticmethodcall.METHOD
+def $magic_unpack_arguments_source(MAGIC_METHOD_SEND_TARGET pmagicmethodcall) = pmagicmethodcall.ARGUMENTS
+def $magic_unpack_arguments_source(MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) = pmagicstaticmethodcall.ARGUMENTS
+dec $magic_unpack_descriptor(pstate, pcalltarget) : bool
+def $magic_unpack_descriptor(S, MAGIC_METHOD_SEND_TARGET pmagicmethodcall) = ($magic_method_descriptor(S, pmagicmethodcall) /\ $magic_unpack_arguments(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS))
+def $magic_unpack_descriptor(S, MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) = ($magic_static_method_descriptor(S, pmagicstaticmethodcall) /\ $magic_unpack_arguments(S, pmagicstaticmethodcall.SITE, pmagicstaticmethodcall.ARGUMENTS))
+def $magic_unpack_descriptor(S, pcalltarget) = false -- otherwise
+
+;; Callbacks retain the actual caller frame. Reconstruct that scope rather
+;; than substituting the descriptor's saved caller into the current state.
+dec $magic_unpack_scope(pstate, nat) : pstate?
+def $magic_unpack_scope(S, n) = (S) -- if |S.FRAMES| = n
+def $magic_unpack_scope(S, n) = $magic_unpack_scope($constant_frame_view(S, pframe, pframe_tail*), n)
+  -- if $(|S.FRAMES| > n)
+  -- if S.FRAMES = pframe :: pframe_tail*
+def $magic_unpack_scope(S, n) = eps -- otherwise
+dec $magic_unpack_caller(pstate, pcalltarget) : bool
+def $magic_unpack_caller(S, MAGIC_METHOD_SEND_TARGET pmagicmethodcall) = $magic_method_caller(S, pmagicmethodcall)
+def $magic_unpack_caller(S, MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) = $magic_static_method_caller(S, pmagicstaticmethodcall)
+dec $magic_unpack_caller_history(pstate, pcalltarget) : bool
+def $magic_unpack_caller_history(S, pcalltarget) = true
+  -- if $magic_unpack_descriptor(S, pcalltarget)
+  -- if $magic_unpack_scope(S, $magic_unpack_owner(pcalltarget)) = (S_scope)
+  -- if S_scope.CURRENT = $magic_unpack_saved_caller(pcalltarget)
+def $magic_unpack_caller_history(S, pcalltarget) = false -- otherwise
+dec $magic_unpack_raw_task(ptask, pcalltarget) : bool
+def $magic_unpack_raw_task(UNPACK_ARGS punpackcall, pcalltarget) = (punpackcall.FUNCTION = pcalltarget)
+def $magic_unpack_raw_task(UNPACK_SEND punpackcall, pcalltarget) = (punpackcall.FUNCTION = pcalltarget)
+def $magic_unpack_raw_task(UNPACK_PREP punpackcall, pcalltarget) = (punpackcall.FUNCTION = pcalltarget)
+def $magic_unpack_raw_task(ITERATOR_UNPACK piteratorunpack text, pcalltarget) = (piteratorunpack.CALL.FUNCTION = pcalltarget)
+def $magic_unpack_raw_task(ptask, pcalltarget) = false -- otherwise
+dec $magic_unpack_suffix(ptask*, pcalltarget) : bool
+def $magic_unpack_suffix(eps, pcalltarget) = false
+def $magic_unpack_suffix(ptask :: ptask_tail*, pcalltarget) = (ptask_tail* = METHOD_RESULT :: $magic_unpack_tail(pcalltarget))
+  -- if $magic_unpack_raw_task(ptask, pcalltarget)
+def $magic_unpack_suffix(ptask :: ptask_tail*, pcalltarget) = $magic_unpack_suffix(ptask_tail*, pcalltarget)
+  -- if ~$magic_unpack_raw_task(ptask, pcalltarget)
+def $magic_unpack_raw_valid(S, pcalltarget) = true
+  -- if $magic_unpack_descriptor(S, pcalltarget)
+  -- if $magic_unpack_scope(S, $magic_unpack_owner(pcalltarget)) = (S_scope)
+  -- if $magic_unpack_caller(S_scope[.ORIGIN = ($magic_unpack_site(pcalltarget))], pcalltarget)
+  -- if $magic_unpack_suffix(S_scope.TODO, pcalltarget)
+dec $magic_unpack_start(pcalltarget) : ptask
+def $magic_unpack_start(pcalltarget) = UNPACK_ARGS {FUNCTION pcalltarget, ARGUMENTS $magic_unpack_arguments_source(pcalltarget), INDEX 0, SENT {SLOTS eps, NAMED eps}, CALLSITE ($magic_unpack_site(pcalltarget)), LINE $magic_unpack_line(pcalltarget)}
+def $magic_method_first_task(pmagicmethodcall) = $magic_unpack_start(MAGIC_METHOD_SEND_TARGET pmagicmethodcall)
+  -- if $call_unpack_present(pmagicmethodcall.ARGUMENTS)
+def $magic_static_method_first_task(pmagicstaticmethodcall) = $magic_unpack_start(MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall)
+  -- if $call_unpack_present(pmagicstaticmethodcall.ARGUMENTS)
+
+;; The trampoline has no fixed formal names and no reference sends. Historical
+;; sends are checked as dense slots plus unique named keys, without replaying
+;; source values or requiring values that handler cleanup has already retired.
+dec $magic_unpack_names(pstate, pcalltarget, (preqbytes, poperand)*) : bool
+def $magic_unpack_names(S, pcalltarget, eps) = true
+def $magic_unpack_names(S, pcalltarget, (preqbytes, KNOWN pvalue) :: (preqbytes_tail, poperand_tail)*) = (~$named_has((preqbytes_tail, poperand_tail)*, preqbytes) /\ $magic_unpack_names(S, pcalltarget, (preqbytes_tail, poperand_tail)*))
+def $magic_unpack_names(S, pcalltarget, (preqbytes, poperand)*) = false -- otherwise
+dec $magic_unpack_sends(pstate, pcalltarget, pnamedargs) : bool
+def $magic_unpack_sends(S, pcalltarget, pnamedargs) = ($unpack_slots_valid(S, pcalltarget, 0, pnamedargs.SLOTS) /\ $magic_unpack_names(S, pcalltarget, pnamedargs.NAMED))
+dec $magic_unpack_key(pkey, nat) : pnamedtarget
+def $magic_unpack_key(KINT z, n) = NAMED_POSITION n
+def $magic_unpack_key(KSTRING preqbytes, n) = NAMED_EXTRA preqbytes
+dec $magic_unpack_argument(phpType7, nat) : pnamedtarget
+def $magic_unpack_argument(NArg ABSENT expression phpType4_ref phpType4_unpack metadata, n) = NAMED_POSITION n
+def $magic_unpack_argument(NArg (NIdentifier (BYTES text) metadata_name) expression phpType4_ref phpType4_unpack metadata, n) = NAMED_EXTRA $base64(text)
+def $unpack_pending_valid(S, punpackcall, n_sent) = true
+  -- if $magic_unpack_raw_valid(S, punpackcall.FUNCTION)
+  -- if punpackcall.CALLSITE = ($magic_unpack_site(punpackcall.FUNCTION))
+  -- if S.ORIGIN = punpackcall.CALLSITE
+  -- if punpackcall.LINE = $magic_unpack_line(punpackcall.FUNCTION)
+  -- if phpType7* = $magic_unpack_arguments_source(punpackcall.FUNCTION)
+  -- if n_offset = $(punpackcall.INDEX + n_sent)
+  -- if $(n_offset <= |phpType7*|)
+  -- if n_remaining = $(|phpType7*| - n_offset)
+  -- if punpackcall.ARGUMENTS = phpType7*[n_offset:n_remaining]
+  -- if $magic_unpack_sends(S, punpackcall.FUNCTION, punpackcall.SENT)
+dec $magic_unpack_shape(phpType7*, pnamedargs) : pnamedargs
+def $magic_unpack_shape(eps, pnamedargs) = pnamedargs
+def $magic_unpack_shape(phpType7 :: phpType7_tail*, pnamedargs) = $magic_unpack_shape(phpType7_tail*, $named_store(pnamedargs, $magic_unpack_argument(phpType7, |pnamedargs.SLOTS|), KNOWN PNULL))
+def $unpack_static_prefix(S, pcalltarget, phpType7*, pnamedargs) = true
+  -- if $magic_unpack_collecting(pcalltarget)
+  -- if pnamedargs_expected = $magic_unpack_shape(phpType7*, {SLOTS eps, NAMED eps})
+  -- if $named_slots_valid(S, pcalltarget, 0, pnamedargs.SLOTS, pnamedargs_expected.SLOTS)
+  -- if $named_entries_valid(S, pcalltarget, 0, pnamedargs.NAMED, pnamedargs_expected.NAMED)
+def $unpack_call_roots(punpackcall) = $named_slots_roots(punpackcall.SENT.SLOTS) ++ $named_roots(punpackcall.SENT.NAMED) ++ $target_nodes(punpackcall.FUNCTION)
+  -- if $magic_unpack_collecting(punpackcall.FUNCTION)
+
+;; Explicit prefixes also copy a reference CV at its own SEND before callbacks.
+rule PhpStep/magic-unpack-explicit-source: S ~> S[.TODO = [$at_task($unpack_origin(S, punpackcall), EVAL expression), UNPACK_SEND punpackcall[.ARGUMENTS = phpType7*]] ++ ptask_tail*]
+  -- if S.TODO = (UNPACK_ARGS punpackcall) :: ptask_tail*
+  -- if $magic_unpack_collecting(punpackcall.FUNCTION)
+  -- if punpackcall.ARGUMENTS = (NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*
+dec $magic_unpack_explicit(pstate, punpackcall) : pstate
+dec $magic_unpack_fetch(pstate, punpackcall) : pstate
+def $magic_unpack_fetch(S, punpackcall) = $resolve_at(S, S.RESULT, $named_line(S, punpackcall.CALLSITE, punpackcall.INDEX))
+  -- if ~$named_cv($named_expression($named_source(S, punpackcall.CALLSITE, punpackcall.INDEX)))
+def $magic_unpack_fetch(S, punpackcall) = S -- otherwise
+def $magic_unpack_explicit(S, punpackcall) = S_read
+  -- if S_read = $magic_unpack_fetch(S, punpackcall)
+  -- if S_read.COMPLETION =/= NORMAL
+def $magic_unpack_explicit(S, punpackcall) = S_checked
+  -- if S_read = $magic_unpack_fetch(S, punpackcall)
+  -- if S_read.COMPLETION = NORMAL
+  -- if phpType7 = $named_source(S, punpackcall.CALLSITE, punpackcall.INDEX)
+  -- if S_checked = $named_check(S_read, punpackcall.SENT, $magic_unpack_argument(phpType7, |punpackcall.SENT.SLOTS|), phpType7, $named_line(S, punpackcall.CALLSITE, punpackcall.INDEX))
+  -- if S_checked.COMPLETION =/= NORMAL
+def $magic_unpack_explicit(S, punpackcall) = $resolve_at(S_checked, S_checked.RESULT, $named_line(S, punpackcall.CALLSITE, punpackcall.INDEX))
+  -- if S_read = $magic_unpack_fetch(S, punpackcall)
+  -- if S_read.COMPLETION = NORMAL
+  -- if phpType7 = $named_source(S, punpackcall.CALLSITE, punpackcall.INDEX)
+  -- if S_checked = $named_check(S_read, punpackcall.SENT, $magic_unpack_argument(phpType7, |punpackcall.SENT.SLOTS|), phpType7, $named_line(S, punpackcall.CALLSITE, punpackcall.INDEX))
+  -- if S_checked.COMPLETION = NORMAL
+rule PhpStep/magic-unpack-explicit-send: S ~> S_value[.TODO = (UNPACK_ARGS $unpack_advance(punpackcall, $named_store(punpackcall.SENT, $magic_unpack_argument(phpType7, |punpackcall.SENT.SLOTS|), S_value.RESULT))) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (UNPACK_SEND punpackcall) :: ptask_tail*
+  -- if $magic_unpack_collecting(punpackcall.FUNCTION)
+  -- if phpType7 = $named_source(S, punpackcall.CALLSITE, punpackcall.INDEX)
+  -- if S_value = $magic_unpack_explicit(S, punpackcall)
+  -- if S_value.COMPLETION = NORMAL
+rule PhpStep/magic-unpack-explicit-abrupt: S ~> S_value
+  -- if S.TODO = (UNPACK_SEND punpackcall) :: ptask_tail*
+  -- if $magic_unpack_collecting(punpackcall.FUNCTION)
+  -- if S_value = $magic_unpack_explicit(S, punpackcall)
+  -- if S_value.COMPLETION =/= NORMAL
+
+;; Reuse the real Iterator protocol, with by-value mapping instead of a formal
+;; signature. key() runs before this dereferenced copy of current().
+def $iterator_unpack_plain(S, punpackcall) = $magic_unpack_raw_valid(S, punpackcall.FUNCTION)
+  -- if $magic_unpack_collecting(punpackcall.FUNCTION)
+  -- if punpackcall.CALLSITE = ($magic_unpack_site(punpackcall.FUNCTION))
+def $iterator_unpack_named_target(S, piteratorunpack) = $magic_unpack_key(pkey, |piteratorunpack.CALL.SENT.SLOTS|)
+  -- if $magic_unpack_collecting(piteratorunpack.CALL.FUNCTION)
+  -- if piteratorunpack.KEY = KNOWN pvalue
+  -- if $fiber_traversal_key(pvalue) = (pkey)
+def $iterator_unpack_send(S, piteratorunpack, ptask_tail*) = $iterator_unpack_store(S_read, piteratorunpack, S_read.RESULT, ptask_tail*)
+  -- if $magic_unpack_collecting(piteratorunpack.CALL.FUNCTION)
+  -- if piteratorunpack.KEY = KNOWN pvalue
+  -- if $fiber_traversal_key(pvalue) = (pkey)
+  -- if pnamedtarget = $iterator_unpack_named_target(S, piteratorunpack)
+  -- if S_check = $unpack_check(S, piteratorunpack.CALL.SENT, pnamedtarget, pkey, piteratorunpack.NAMED, $unpack_line(S, piteratorunpack.CALL))
+  -- if S_check.COMPLETION = NORMAL
+  -- if S_read = $resolve_at(S_check, piteratorunpack.CURRENT, $unpack_line(S, piteratorunpack.CALL))
+  -- if S_read.COMPLETION = NORMAL
+def $iterator_unpack_abort_plain(S, punpackcall) = true
+  -- if $magic_unpack_caller_history(S, punpackcall.FUNCTION)
+  -- if punpackcall.CALLSITE = ($magic_unpack_site(punpackcall.FUNCTION))
+;; Array/Generator producer protocols remain separate explicit boundaries.
+def $unpack_prepare(S, punpackcall) = S_read[.COMPLETION = UNSUPPORTED "magic unpack array operand"]
+  -- if $magic_unpack_collecting(punpackcall.FUNCTION)
+  -- if S_read = $resolve_at($hold_task_inputs(S), S.RESULT, $unpack_line(S, punpackcall))
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (PARRAY n)
+
+;; Pack positional runtime slots before the insertion-ordered extra names.
+dec $magic_unpack_slots(parray, pnamedslot*, nat) : parray
+def $magic_unpack_slots(parray, eps, n) = parray
+def $magic_unpack_slots(parray, (NAMED_SENT (KNOWN pvalue)) :: pnamedslot_tail*, n) = $magic_unpack_slots($array_insert(parray, KINT n, DIRECT pvalue), pnamedslot_tail*, $(n + 1))
+dec $magic_unpack_named(parray, (preqbytes, poperand)*) : parray
+def $magic_unpack_named(parray, eps) = parray
+def $magic_unpack_named(parray, (preqbytes, KNOWN pvalue) :: (preqbytes_tail, poperand_tail)*) = $magic_unpack_named($array_insert(parray, KSTRING preqbytes, DIRECT pvalue), (preqbytes_tail, poperand_tail)*)
+dec $magic_unpack_arrays(pstate, pnamedargs) : (pstate, nat, nat?)
+def $magic_unpack_arrays(S, pnamedargs) = (S_arguments, n_arguments, eps)
+  -- if pnamedargs.NAMED = eps
+  -- if S_arguments = $allocate_array(S, $magic_unpack_slots($array_empty(), pnamedargs.SLOTS, 0))
+  -- if S_arguments.RESULT = KNOWN (PARRAY n_arguments)
+def $magic_unpack_arrays(S, pnamedargs) = (S_named, n_named, (n_named))
+  -- if pnamedargs.NAMED =/= eps /\ pnamedargs.SLOTS = eps
+  -- if S_named = $allocate_array(S, $magic_unpack_named($array_empty(), pnamedargs.NAMED))
+  -- if S_named.RESULT = KNOWN (PARRAY n_named)
+def $magic_unpack_arrays(S, pnamedargs) = (S_arguments, n_arguments, (n_named))
+  -- if pnamedargs.NAMED =/= eps /\ pnamedargs.SLOTS =/= eps
+  -- if S_named = $allocate_array(S, $magic_unpack_named($array_empty(), pnamedargs.NAMED))
+  -- if S_named.RESULT = KNOWN (PARRAY n_named)
+  -- if S_arguments = $allocate_array(S_named, $magic_unpack_named($magic_unpack_slots($array_empty(), pnamedargs.SLOTS, 0), pnamedargs.NAMED))
+  -- if S_arguments.RESULT = KNOWN (PARRAY n_arguments)
+rule PhpStep/magic-unpack-pack: S ~> S_arguments[.TODO = [(CALL_ARGS pcalltarget_final eps 2 ([KNOWN (PSTRING ($magic_unpack_name(punpackcall.FUNCTION))), KNOWN (PARRAY n_arguments)]) punpackcall.CALLSITE punpackcall.LINE), MAGIC_UNPACK_RESULT pcalltarget_final] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (UNPACK_ARGS punpackcall) :: ptask_tail*
+  -- if punpackcall.ARGUMENTS = eps
+  -- if $magic_unpack_raw_valid(S, punpackcall.FUNCTION)
+  -- if $unpack_before_valid(S, punpackcall, 0)
+  -- if (S_arguments, n_arguments, n_named?) = $magic_unpack_arrays(S, punpackcall.SENT)
+  -- if pcalltarget_final = MAGIC_UNPACK_TARGET punpackcall.FUNCTION n_arguments n_named? punpackcall.SENT
+
+dec $magic_unpack_history(pstate, pcalltarget) : bool
+def $magic_unpack_history(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) = true
+  -- if $magic_unpack_descriptor(S, pcalltarget)
+  -- if $magic_unpack_sends(S, pcalltarget, pnamedargs)
+  -- if $(n_arguments < |S.ARRAYS|)
+  -- if $magic_unpack_array_ids(S, n_arguments, n_named?, pnamedargs)
+def $magic_unpack_history(S, pcalltarget) = false -- otherwise
+dec $magic_unpack_array_ids(pstate, nat, nat?, pnamedargs) : bool
+def $magic_unpack_array_ids(S, n_arguments, eps, pnamedargs) = (pnamedargs.NAMED = eps)
+def $magic_unpack_array_ids(S, n_arguments, (n_named), pnamedargs) = true
+  -- if pnamedargs.NAMED =/= eps
+  -- if $(n_named < |S.ARRAYS|)
+  -- if (pnamedargs.SLOTS = eps /\ n_arguments = n_named) \/ (pnamedargs.SLOTS =/= eps /\ n_arguments = $(n_named + 1))
+def $magic_unpack_array_ids(S, n_arguments, n_named?, pnamedargs) = false -- otherwise
+dec $magic_unpack_buffer(pstate, pcalltarget) : bool
+def $magic_unpack_buffer(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments eps pnamedargs) = $magic_unpack_history(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments eps pnamedargs)
+def $magic_unpack_buffer(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments (n_named) pnamedargs) = true
+  -- if $magic_unpack_history(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments (n_named) pnamedargs)
+  -- if (HARRAY n_named) <- S.ALLOCATIONS
+  -- if S.ARRAYS[n_named] = $magic_unpack_named($array_empty(), pnamedargs.NAMED)
+def $magic_unpack_buffer(S, pcalltarget) = false -- otherwise
+dec $magic_unpack_pending(pstate, pcalltarget) : bool
+def $magic_unpack_pending(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) = true
+  -- if $magic_unpack_caller(S, pcalltarget)
+  -- if $magic_unpack_buffer(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs)
+  -- if S.TODO = (CALL_ARGS (MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) eps 2 ([KNOWN (PSTRING ($magic_unpack_name(pcalltarget))), KNOWN (PARRAY n_arguments)]) ($magic_unpack_site(pcalltarget)) ($magic_unpack_line(pcalltarget))) :: (MAGIC_UNPACK_RESULT (MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs)) :: METHOD_RESULT :: $magic_unpack_tail(pcalltarget)
+  -- if (HARRAY n_arguments) <- S.ALLOCATIONS
+  -- if S.ARRAYS[n_arguments] = $magic_unpack_named($magic_unpack_slots($array_empty(), pnamedargs.SLOTS, 0), pnamedargs.NAMED)
+def $magic_unpack_pending(S, pcalltarget) = false -- otherwise
+dec $magic_unpack_frame(pstate, pcallcontext, pframe, pframe*, pcalltarget) : bool
+def $magic_unpack_frame(S, pcallcontext, pframe, pframe_tail*, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) = true
+  -- if pcallcontext.TARGET = MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs
+  -- if $magic_unpack_history(S, pcallcontext.TARGET)
+  -- if $target_function(S, $magic_unpack_handler(pcalltarget)) = (pfunction)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.INSTANCE = eps
+  -- if pcallcontext.RECEIVER = $target_receiver(S, $magic_unpack_handler(pcalltarget))
+  -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, $magic_unpack_handler(pcalltarget))
+  -- if pcallcontext.CALLED_CLASS = $target_called_class(S, $magic_unpack_handler(pcalltarget))
+  -- if pcallcontext.CALLSITE = ($magic_unpack_site(pcalltarget)) /\ pcallcontext.LINE = $magic_unpack_line(pcalltarget)
+  -- if pcallcontext.ARGC = 2 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
+  -- if pframe.ORIGIN = ($magic_unpack_site(pcalltarget))
+  -- if $source_operand_suffix(pframe.TODO, MAGIC_UNPACK_RESULT pcallcontext.TARGET, METHOD_RESULT :: $magic_unpack_tail(pcalltarget))
+  -- if $magic_unpack_caller($constant_frame_view(S, pframe, pframe_tail*), pcalltarget)
+def $magic_unpack_frame(S, pcallcontext, pframe, pframe_tail*, pcalltarget) = false -- otherwise
+dec $magic_unpack_entered(pstate, pcallcontext?, pframe*, pcalltarget) : bool
+def $magic_unpack_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget) = $magic_unpack_frame(S, pcallcontext, pframe, pframe_tail*, pcalltarget)
+  -- if pcallcontext.TARGET = pcalltarget
+def $magic_unpack_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget) = $magic_unpack_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget)
+  -- if pcallcontext.TARGET =/= pcalltarget
+def $magic_unpack_entered(S, eps, pframe :: pframe_tail*, pcalltarget) = $magic_unpack_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget)
+def $magic_unpack_entered(S, pcallcontext?, eps, pcalltarget) = false
+
+;; The result marker owns the original extra_named_params and selected This
+;; through compiled locals. The real entered handler borrows that receiver.
+def $target_nodes(MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) = eps
+def $target_instance(MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) = eps
+def $target_receiver(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) = $target_receiver(S, $magic_unpack_handler(pcalltarget))
+def $target_lexical_class(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) = $target_lexical_class(S, $magic_unpack_handler(pcalltarget))
+def $target_called_class(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) = $target_called_class(S, $magic_unpack_handler(pcalltarget))
+def $call_receiver_roots(pcallcontext) = eps -- if pcallcontext.TARGET = MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs
+def $target_function(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) = $target_function(S, $magic_unpack_handler(pcalltarget))
+  -- if $magic_unpack_pending(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) \/ $magic_unpack_entered(S, S.CURRENT, S.FRAMES, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs)
+def $call_selected_valid(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs, (porigin)) = (porigin = $magic_unpack_site(pcalltarget) /\ ($magic_unpack_pending(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) \/ $magic_unpack_entered(S, S.CURRENT, S.FRAMES, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs)))
+def $magic_method_target(MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) = true
+def $magic_method_pending_site(S, porigin) = true
+  -- if S.TODO = (CALL_ARGS (MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) eps 2 poperand* (porigin) z) :: ptask_tail*
+def $call_arguments_valid(S, (porigin), 2, eps, poperand_name :: poperand_array :: eps, 0) = true
+  -- if S.TODO = (CALL_ARGS (MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) eps 2 (poperand_name :: poperand_array :: eps) (porigin) z) :: ptask_tail*
+  -- if poperand_name = KNOWN (PSTRING ($magic_unpack_name(pcalltarget))) /\ poperand_array = KNOWN (PARRAY n_arguments)
+  -- if $magic_unpack_pending(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs)
+def $named_call_shape(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs, (porigin)) = {SLOTS ([NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN PNULL)]), NAMED eps}
+  -- if porigin = $magic_unpack_site(pcalltarget)
+  -- if $magic_unpack_pending(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) \/ $magic_unpack_entered(S, S.CURRENT, S.FRAMES, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs)
+dec $magic_unpack_result_valid(pstate, pcalltarget) : bool
+def $magic_unpack_result_valid(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) = ($magic_unpack_caller(S, pcalltarget) /\ $magic_unpack_buffer(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) /\ $source_operand_suffix(S.TODO, MAGIC_UNPACK_RESULT (MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs), METHOD_RESULT :: $magic_unpack_tail(pcalltarget)))
+def $magic_unpack_result_valid(S, pcalltarget) = false -- otherwise
+rule PhpStep/magic-unpack-result: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (MAGIC_UNPACK_RESULT pcalltarget) :: ptask_tail*
+  -- if $magic_unpack_result_valid(S, pcalltarget)
+def $task_nodes(MAGIC_UNPACK_RESULT (MAGIC_UNPACK_TARGET pcalltarget n_arguments eps pnamedargs)) = $target_nodes(pcalltarget)
+def $task_nodes(MAGIC_UNPACK_RESULT (MAGIC_UNPACK_TARGET pcalltarget n_arguments (n_named) pnamedargs)) = [HARRAY n_named] ++ $target_nodes(pcalltarget)
+def $call_task_valid(S, MAGIC_UNPACK_RESULT pcalltarget) = $magic_unpack_result_valid(S, pcalltarget)
+def $destructor_return_discarded((MAGIC_UNPACK_RESULT pcalltarget) :: ptask_tail*) = $destructor_return_discarded(ptask_tail*)
+;; After marker retirement the buffer/receiver may already be dead. Its eager
+;; SOURCE authenticates saved selection and caller history, without owners.
+def $eager_operation_source(S, THROW_SEARCH n) = MAGIC_UNPACK_RESULT pcalltarget
+  -- if S.TODO = (THROW_SEARCH n) :: (MAGIC_UNPACK_RESULT pcalltarget) :: ptask_tail*
+dec $magic_unpack_retired_source(pstate, pdestructionoperation, pcalltarget) : bool
+def $magic_unpack_retired_source(S, pdestructionoperation, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) = true
+  -- if $magic_unpack_history(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs)
+  -- if $magic_unpack_caller_history(S, pcalltarget)
+  -- if pdestructionoperation.ORIGIN = ($magic_unpack_site(pcalltarget))
+  -- if pdestructionoperation.CALLER = $magic_unpack_saved_caller(pcalltarget)
+  -- if $magic_unpack_scope(S, $magic_unpack_owner(pcalltarget)) = (S_scope)
+  -- if $source_operand_suffix(S_scope.TODO, DESTRUCTOR_OPERATION_EXIT pdestructionoperation, METHOD_RESULT :: $magic_unpack_tail(pcalltarget))
+def $magic_unpack_retired_source(S, pdestructionoperation, pcalltarget) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = $magic_unpack_retired_source(S, pdestructionoperation, pcalltarget)
+  -- if pdestructionoperation.SOURCE = MAGIC_UNPACK_RESULT pcalltarget

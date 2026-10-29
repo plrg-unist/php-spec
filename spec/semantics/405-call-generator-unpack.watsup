@@ -41,12 +41,13 @@ def $unpack_prepared(S, S_prepared, punpackcall, ptask_tail*) = S_prepared[.ORIG
   -- if $generator_object(S_prepared, n)
   -- if pgeneratorunpack = {CALL punpackcall, OBJECT n, INPUT S.RESULT, COUNT 0, NAMED false}
   -- if $iterator_unpack_plain(S, punpackcall)
+  -- if ~$magic_unpack_collecting(punpackcall.FUNCTION)
   -- if $generator_unpack_input(S_prepared, pgeneratorunpack)
 def $unpack_prepared(S, S_prepared, punpackcall, ptask_tail*) = S_prepared[.COMPLETION = UNSUPPORTED "Generator unpack target or operand ownership"][.HELD = S.HELD]
   -- if S_prepared.RESULT = KNOWN (POBJECT n)
   -- if $generator_object(S_prepared, n)
   -- if pgeneratorunpack = {CALL punpackcall, OBJECT n, INPUT S.RESULT, COUNT 0, NAMED false}
-  -- if ~($iterator_unpack_plain(S, punpackcall) /\ $generator_unpack_input(S_prepared, pgeneratorunpack))
+  -- if ~($iterator_unpack_plain(S, punpackcall) /\ ~$magic_unpack_collecting(punpackcall.FUNCTION) /\ $generator_unpack_input(S_prepared, pgeneratorunpack))
 
 def $generator_unpack_shape(pgeneratorunpack, "acquire") = (pgeneratorunpack.COUNT = 0 /\ ~pgeneratorunpack.NAMED)
 def $generator_unpack_shape(pgeneratorunpack, "rewind") = (pgeneratorunpack.COUNT = 0 /\ ~pgeneratorunpack.NAMED)
