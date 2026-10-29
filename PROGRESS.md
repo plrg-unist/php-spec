@@ -16,7 +16,8 @@ validation remains eager, and first-`new` dependency staging/publication retains
 its argument order, retry identity and source cause.
 Nine new original sources match pinned PHP. Strict426 and 157 source-reached
 conditions pass, including independent autoload/type/cause checks and coherent
-wrong-import descriptor forgeries. The first module-order strict stop has zero
+wrong-import descriptor forgeries. Joined strict428 on the actual enum tail also
+passes. The first module-order strict stop has zero
 credit. Two separate reserved-reference originals are checked-frontend parser
 boundaries with zero semantic agreement. Dynamic-source dependent sites and wider
 anonymous bodies/arguments remain partial.
@@ -781,7 +782,6 @@ credit. Generator/reference getters and wider targets/lifetimes stay partial.
 | --- | --- |
 | A67 | Typed instance/static reference-source capture for CONFIG Iterators/shared DATA. |
 | OB01 | Output-buffering frontier preparation. |
-| CLASS147 | Private source9/strict426/reached157 accepted; actual-tail integration review. |
 | COMP150 | Finite Previous/root validation. |
 | GC03 | WeakMap registration order and proxy-count collection; native-first packet. |
 | ATTR01 | NoDiscard. |
@@ -798,7 +798,7 @@ linked from the [artifact index](docs/ARTIFACTS.md). Registered-loader static/FC
 and class-constant acquisition remains Unsupported; true misses retain PHP Errors.
 Case attributes, generated callable targets and wider type/link contexts remain open.
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73/74, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64/A65/A66, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110/111, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125/126, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148/149 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145/146 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73/74, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64/A65/A66, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110/111, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125/126, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148/149 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145/146/147 are integrated
 into this branch.
 GC physical01 is integrated on this tail; its private source/state cuts and the
 joined strict gate retain their separate tested identities.
