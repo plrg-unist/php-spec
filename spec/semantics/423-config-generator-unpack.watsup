@@ -10,6 +10,7 @@ dec $config_generator_release_input(pstate, pconfiggenerator, ptask*) : pstate
 dec $config_generator_discard_state(pstate, pconfiggenerator, text) : pstate
 dec $config_generator_discard_nodes(pconfiggenerator, text) : pnode*
 dec $config_generator_origin(pstate, pconfiggenerator, pgenerator, pfunction) : bool
+dec $config_generator_reference_input(pconfiggenerator) : bool
 dec $config_generator_history(pstate, pconfiggenerator) : bool
 dec $config_generator_quiet_closed(pstate, pconfiggenerator) : bool
 dec $config_generator_return_history(pstate, pconfiggenerator) : bool
@@ -30,6 +31,7 @@ dec $config_generator_operation_tasks(pstate, pgeneratorop, ptask*) : bool
 dec $config_generator_operation_frames(pstate, pgeneratorop, pframe*) : bool
 dec $config_generator_run(pstate, pconfiggenerator, text, ptask*) : pstate
 dec $config_generator_send_allowed(pstate, pconfiggenerator) : bool
+dec $config_generator_value(pstate, pconfiggenerator) : pvalue?
 dec $config_generator_send(pstate, pconfiggenerator, ptask*) : pstate
 dec $config_generator_key(pstate, pvalue) : pkey?
 dec $config_generator_string_key_input(pconfiggenerator) : bool
@@ -91,6 +93,12 @@ def $config_generator_origin(S, pconfiggenerator, pgenerator, pfunction) = true
   -- if $config_aggregate_generator_producer_valid(S, pconfiggeneratorproducer)
   -- if $config_aggregate_generator_capture(S, pconfiggeneratorproducer, pconfiggenerator.OBJECT)
 def $config_generator_origin(S, pconfiggenerator, pgenerator, pfunction) = false -- otherwise
+;; Reference-yield producers initially use a named Generator retained outside
+;; DATA. Temporary INPUT and Aggregate-produced reference Generators stay separate.
+def $config_generator_reference_input(pconfiggenerator) = true
+  -- if pconfiggenerator.PRODUCER = eps
+  -- if pconfiggenerator.INPUT = VARIABLE ptbytes z
+def $config_generator_reference_input(pconfiggenerator) = false -- otherwise
 ;; SEND_UNPACK normalizes a numeric string key for the argument, not the
 ;; Generator's cached key. Other string keys remain named arguments.
 def $config_generator_key(S, PINT z) = (KINT z)
@@ -129,7 +137,8 @@ def $config_generator_history(S, pconfiggenerator) = true
   -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
   -- if $config_generator_origin(S, pconfiggenerator, pgenerator, pfunction)
   -- if $function_generator(S, pfunction)
-  -- if pfunction.SIGNATURE.PARAMETERS = eps /\ ~pfunction.SIGNATURE.BYREF
+  -- if pfunction.SIGNATURE.PARAMETERS = eps
+  -- if ~pfunction.SIGNATURE.BYREF \/ $config_generator_reference_input(pconfiggenerator)
   -- if $(|pconfiggenerator.ITEMS| <= 2)
   -- if $config_generator_items(S, pconfiggenerator, pconfiggenerator.ITEMS)
   -- if $config_pack_prefix(pconfiggenerator.CALL, pconfiggenerator.ITEMS, false) = (pconfigcall_prefix)
@@ -279,21 +288,35 @@ def $fiber_traversal_complete(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "CO
   -- if $config_generator_valid(S, pconfiggenerator, text)
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
   -- if ~(pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_CLOSED])
+;; SEND_UNPACK copies the current dereferenced scalar, leaving the Generator's
+;; real cache cell and all earlier DIRECT sends distinct through later writes.
+def $config_generator_value(S, pconfiggenerator) = (pvalue)
+  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
+  -- if ~$generator_reference_producer(S, pgenerator)
+  -- if pgenerator.REFCELL = eps /\ pgenerator.VALUE = (pvalue)
+  -- if $config_iterator_scalar(S, pvalue)
+def $config_generator_value(S, pconfiggenerator) = (pvalue)
+  -- if $config_generator_reference_input(pconfiggenerator)
+  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
+  -- if $generator_reference_producer(S, pgenerator)
+  -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL = (n_cell)
+  -- if $ordinary_reference_value(S, n_cell) = (pvalue)
+  -- if $config_iterator_scalar(S, pvalue)
+def $config_generator_value(S, pconfiggenerator) = eps -- otherwise
 def $config_generator_send_allowed(S, pconfiggenerator) = true
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_PAUSED /\ pgenerator.DELEGATE = eps
-  -- if pgenerator.BORROWED = eps /\ pgenerator.REFCELL = eps
-  -- if pgenerator.VALUE = (pvalue)
+  -- if pgenerator.BORROWED = eps
+  -- if $config_generator_value(S, pconfiggenerator) = (pvalue)
   -- if pgenerator.KEY = (pvalue_key)
   -- if $config_generator_key_input(pconfiggenerator, pvalue_key)
   -- if $config_generator_key(S, pvalue_key) = (pkey)
-  -- if $config_iterator_scalar(S, pvalue)
   -- if $(|pconfiggenerator.ITEMS| < 2)
 def $config_generator_send_allowed(S, pconfiggenerator) = false -- otherwise
 def $config_generator_send(S, pconfiggenerator, ptask*) = S[.TODO = (CONFIG_GENERATOR pconfiggenerator[.ITEMS = pconfiggenerator.ITEMS ++ [ENTRY pkey (DIRECT pvalue)]] "next") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_generator_send_allowed(S, pconfiggenerator)
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
-  -- if pgenerator.VALUE = (pvalue)
+  -- if $config_generator_value(S, pconfiggenerator) = (pvalue)
   -- if pgenerator.KEY = (pvalue_key)
   -- if $config_generator_key(S, pvalue_key) = (pkey)
   -- if $config_pack_prefix(pconfiggenerator.CALL, pconfiggenerator.ITEMS, false) = (pconfigcall_prefix)
