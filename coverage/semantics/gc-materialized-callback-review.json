@@ -1,0 +1,43 @@
+{
+  "scope": "GC05: finite canonical materialized ordinary cycles with real public destructor callbacks and one collector retrace, when legacy and claimed ordered count images agree",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned php-spec/vendor/php-src",
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_gc.c::{gc_collect_white,gc_remove_nested_data_from_buffer,gc_call_destructors,zend_gc_collect_cycles}",
+    "vendor/php-src/Zend/zend_object_handlers.c::zend_std_get_gc"
+  ],
+  "behavior": "The candidate plan's actual compacted BUFFER, GRAPH and PROXIES determine both ordered (VISIT, COUNTED) walks. A materialized nonempty-DTORS plan is admitted only when those images agree. An installed materialized callback plan rechecks after callback mutation on PASS1; a quiet fresh already-CALLED materialized plan also rechecks before using the legacy walk. Unequal images refuse explicitly. The existing callback snapshot, destructor return, protected free, single PASS1 retrace, physical owner extraction and quiet claimed walk remain unchanged. The historical selector requires an ordinary INSTANCE table in the prior graph, excluding stdClass-only callback/worker plans.",
+  "private_inputs": {
+    "source_only_head": "0d0d49d1ead780cd91b2e8d8b4b7568be75efa25",
+    "runtime301_sha256": "aec6df25f8e96a0fcb81b2f6c0ceb9a3c979b463beb614784173eb8b21bdde4a",
+    "author_source_sha256": "48eb73995b462093f734026cd4a2e24f6ca3f67a6e8de96658ccd906c7160a2e",
+    "peer_source_sha256": "b21221a41606cfd93d4c33e17c46866677c6d75f1de4cfa84ebcc8a7e65da17d",
+    "state_fixture_sha256": "84e9cfbe34382025716b475ec4b9474d21332b12c4cd0abe35fa885918832149",
+    "first_three_state_fixture_sha256": "3c7519cec0d1b98988e29ac1198c763c74ebf88f0224439fc498de3f79bb1c3a",
+    "cut_modes": "Native author+peer and unchanged author baseline ran at clean source-only head 0d0d49d1e before the module301 edit. Changed models, private strict and state groups ran at the same HEAD with dirty module301 SHA aec6df25; the state fixture was then untracked at the recorded first-three/final hashes and committed afterward."
+  },
+  "validation": {
+    "source": "Two frozen native-first originals match changed models exactly. Author P|D|3|dead|0|END; independent peer B|D|self|child|0|saved|U|3|dead|0|END. The peer source agreement proves weak self/child visibility inside the callback. Both normal/exit0/empty stderr; old author model stops Unsupported after P| and earns no agreement.",
+    "private_strict": "429 modules, explicit --sl, true newline/empty stderr/exit0, stable inputs and fully reaped; compilation credit only.",
+    "reached": "Four separate explicit --sl source-reached groups pass 22+38+36+55=151 reported (139 custom) conditions. Genuine first destructor/PASS1 and later already-CALLED GC_FREE consumers, physical Root2/CELL1/Leaf3 edges, budget partition and retirement are checked. A derived slot swap preserves INDIRECT locators, changes old2 versus claimed3 proxy count roles, and refuses both fresh and completed PASS1 traces; derived controls add no PHP source agreement.",
+    "failures": "The first private strict stopped at a recursive otherwise DSL rule and has zero credit; only that rule form and affected strict compilation were repaired. The unchanged author baseline is a genuine Unsupported refusal, not a normal count match."
+  },
+  "raw": {
+    "author_native": ["../php-spec-evidence-archive/gc-materialized-callback-author/packet1/native-report.json", "c17ca665daee437873213ef807acaf61024ca1001a47e48bd69c394f839f41f8"],
+    "author_baseline": ["../php-spec-evidence-archive/gc-materialized-callback-author/packet1/baseline-report.json", "025135ae58128a9c0780804abb96f2bfa14e4bda52c2dd454f21b63003f488d2"],
+    "author_model": ["../php-spec-evidence-archive/gc-materialized-callback-author/packet1/model-materialized-shared-table-dtor-report.json", "2fc75c6037cffda3fde5e6fb708a7b40920c6ff63c1c96cf0c364a6490c9f04b"],
+    "peer_native": ["../php-spec-evidence-archive/gc-materialized-callback-review-probes/packet1/native-report.json", "2f64dc59898bac8256f00667f9b5f5045a7758c0fc65c34ecbbdd8b9df948572"],
+    "peer_model": ["../php-spec-evidence-archive/gc-materialized-callback-review-probes/packet1/model-report.json", "2d94c87d5f55eb064a94e18b6adf3f982421951cad0ca35045094bfb4fb2626f"],
+    "failed_strict": ["../php-spec-evidence-archive/gc-materialized-callback-author/packet2/strict-report.json", "fe0e2133b51056bd4da356f423bf293987eb83ba8bf363b0a28199db66e74f96"],
+    "private_strict": ["../php-spec-evidence-archive/gc-materialized-callback-author/packet3/strict-report.json", "bfea58e186766a39dd2f778c41e6efb8cf4bcbe336866cf7ef7f0feee818bcc8"],
+    "reached": [
+      ["../php-spec-evidence-archive/gc-materialized-callback-author/state/author-initial/report.json", "329e7cc2d2f349ddb2304d7031657c7850ff70535179d8aa346860141ebaa9d0"],
+      ["../php-spec-evidence-archive/gc-materialized-callback-author/state/peer-retrace/report.json", "3a8c669c8d25deec4a72f5bd4d53a4be24927e1c536b5034658c589c1858b86e"],
+      ["../php-spec-evidence-archive/gc-materialized-callback-author/state/peer-called-free/report.json", "2b1a74966607125710fb205b3d55d210f6c95d8e18e5a92eb791a7012f86749a"],
+      ["../php-spec-evidence-archive/gc-materialized-callback-author/state/derived-mismatch/report.json", "107efff6cf824dc730f9f378c8c64979fb2aacaccc6d931ddc9c5b49fe76a1fc"]
+    ],
+    "joined_actual_sl": ["../php-spec-evidence-archive/gc-materialized-callback-author/joined-actual-tail/strict-report.json", "30234cc0f65fceaca4c41b9857b3240676e20911f0d906f35190e2f25bcb0c13"]
+  },
+  "limits": "Count-ambiguous callback graphs need persistent authenticated first-claim order across callback mutation. WeakMap callbacks, cached-worker/residual/overlap and callback reentry paths, hooks, active Fiber/frame/iterator contexts, wider postcallback rooting and arbitrary callback-created tables remain partial. This milestone does not close core GC.",
+  "actual_tail_join": "Four reviewed GC05 commits compose without conflict over exact clean enum head 6c75083bf6fc5d1672a1f9b0a4efb2c5a31b9d7c at dcf2bdfb5949ecd044f8cdd2e40fc58c6d5d7ca8. Independent review cleared current enum/NoDiscard/CONFIG/task-root and inventory seams; module301/source/state retain private byte identities. One pinned CPU2 explicit --sl compilation of the actual 430-module manifest passes: true newline, empty stderr, exit0, stable HEAD/inputs, no timeout or group residue. This adds compilation credit only; private source/reached cuts retain their original identities. The original joined fixture argv path is preserved as a symlink to the external raw bundle.",
+  "recovery": "Author: tests/semantics/gc_materialized_destructor_sources.py --phase native|baseline|model --case materialized-shared-table-dtor --output ARCHIVE/packet1. Independent peer: gc-materialized-callback-review-probes/run.py native|model --cpu N --output ARCHIVE/packet1 --root WORKTREE. Reached: taskset -c N python3 tests/semantics/gc_materialized_destructor_state.py --case NAME. Raw process reports preserve exact argv, cwd, profile, exits and source paths."
+}

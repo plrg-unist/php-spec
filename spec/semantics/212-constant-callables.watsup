@@ -448,6 +448,7 @@ dec $trait_cache_dim_flow(pstate, porigin, porigin, pvalueclass, nat, porigin*) 
 
 def $constant_callable_cache_prefix(eps, porigin) = eps
 def $constant_callable_cache_event(CCCACHE porigin porigin_trigger n) = ((porigin, n))
+def $constant_callable_cache_event(CCCACHE_ENUM porigin porigin_trigger n n_nonce) = ((porigin, n))
 def $constant_callable_cache_event(pclassconstantevent) = eps -- otherwise
 def $constant_callable_cache_prefix(pclassconstantevent :: pclassconstantevent_tail*, porigin) = (n)
   -- if $constant_callable_cache_event(pclassconstantevent) = ((porigin, n))

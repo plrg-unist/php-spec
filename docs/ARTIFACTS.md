@@ -56,6 +56,12 @@ The final joined gate's argv used `taskset -c 1`, the project numeric runner,
 then `raw/enum-joined-strict-428-final/main.watsup`; its `result.json` binds
 the tested tip/base, exit and output. The runner group was fully reaped.
 
+Captured enum `cases(...)` cuts are under
+`../php-spec-evidence-archive/enum-cases-fcc-117/`. Its `manifest.json`
+(SHA-256 `f7028af79cde92e20df542a0e7f1ad3b9a5ef5d9257c9704d4e47c0fc06c0fd3`)
+lists 11 raw directories, including the accepted cache/history checks, joined
+430-module gate, and zero-agreement cold `from(...)` and pipe boundaries.
+
 The guarded getter-recursion milestone retains source/native observations,
 focused checks, all fixture failures and diagnostics in
 `../php-spec-evidence-archive/magic-get-recursion-119/manifest.json`.

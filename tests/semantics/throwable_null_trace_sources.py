@@ -7,7 +7,7 @@ from throwable_null_trace_cases import CASES
 
 family.CASES = CASES
 family.UNSUPPORTED = {name: ('Throwable property comparison', b'B|')
-    for name in ('reached-callback-control', 'base-legacy-control')}
+    for name in ('reached-callback-control',)}
 family.BASELINE = ('Throwable property comparison', b'B|')
 family.MODEL_TIMEOUTS = {name: 240 for name in CASES}
 base_fingerprint = family.fingerprint

@@ -3622,8 +3622,18 @@ agree at count 3; the unchanged model counted 2 on the inline author case.
 The 106 private strict SL
 reached checks cover the actual collector consumer, physical owners and plan
 authentication. An unrelated held destructor remains outside the collected
-component. Callback, residual, worker, hook and active-context collection
+component. At that cut, callback, residual, worker, hook and active-context collection
 remain partial. See the [ordinary claim review](coverage/semantics/gc-ordinary-claim-review.json).
+
+Materialized ordinary cycles with public destructors now use the existing
+callback and single-retrace protocol when the legacy and claimed walks agree
+on ordered visits and counted nodes in the actual plan. The agreement is
+rechecked after callbacks and for fresh already-called survivors; a mismatch
+is refused. Two native-first sources agree, including a callback resurrection
+then later count 3, and four strict SL groups pass 151 reached checks. Quiet
+canonical tables, no WeakMap and no active worker/context/residual overlap
+remain required. Count-ambiguous callbacks and wider reentry are still open.
+See the [materialized callback review](coverage/semantics/gc-materialized-callback-review.json).
 
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
@@ -4267,9 +4277,12 @@ acyclicity and the existing layout restrictions remain required.
 [Finite previous-path review](coverage/semantics/throwable-previous-finite-comparison-review.json).
 Standalone roots of the same twelve non-base kinds also use the visited trace
 walk when `previous` is null, preserving live cells, copied siblings, cache/trace/
-severity order and real recursion Errors. The old DIRECT route remains separate;
-base `Exception`/`Error` retain their earlier trace rules.
+severity order and real recursion Errors. The old DIRECT route remains separate.
+Canonical base `Exception`/`Error` roots with null previous values now use the
+same visited fold after older admissions, including warm captured graphs;
+linked base traces and reached callbacks retain their separate limits.
 [Standalone trace review](coverage/semantics/throwable-null-trace-comparison-review.json).
+[Base fallback review](coverage/semantics/throwable-base-null-comparison-review.json).
 Builtin `#[NoDiscard]` now validates bounded declarations and warns on unused
 ordinary source calls after sends and named defaults, before reception or body.
 Handlers preserve selected arguments, references, receiver ownership and VM
@@ -6188,9 +6201,12 @@ its original cuts; wider reentrant histories and enum dependencies remain partia
 Unit and backed enums now link with their implicit interfaces and cached singleton
 cases. Direct `cases()`, `from()`, `tryFrom()`, case slots and constant queries have
 source and state checks. Registered-loader first-use static calls and class-constant
-fetches retain selected class/member order through loader replay. Case attributes,
-generated callable targets, the default loader and wider acquisition remain
-partial; see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
+fetches retain selected class/member order through loader replay. Captured
+`cases(...)` retains the selected enum and singleton cache after its closure
+owner is retired. Captured `from(...)`/`tryFrom(...)` remain Unsupported; other
+generated callable routes, case attributes, the default loader and wider
+acquisition remain partial;
+see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
 now loads a sole missing user interface before a parentless class or interface is

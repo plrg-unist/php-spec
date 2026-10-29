@@ -205,6 +205,9 @@ dec $trait_notice_cache_item(pstate, pclassconstantevent, nat) : pdefaultcache*
 def $trait_notice_cache_item(S, CCCACHE porigin porigin_trigger n, n_prefix) = [pdefaultcache]
   -- if $(n <= n_prefix)
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
+def $trait_notice_cache_item(S, CCCACHE_ENUM porigin porigin_trigger n n_nonce, n_prefix) = [pdefaultcache]
+  -- if $(n <= n_prefix)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
 def $trait_notice_cache_item(S, pclassconstantevent, n_prefix) = eps -- otherwise
 dec $trait_notice_cache_prefix(pstate, pclassconstantevent*, nat) : pdefaultcache*
 dec $trait_cache_notice_prefix(pstate, pclassconstantevent*, porigin, nat) : pdefaultcache*
