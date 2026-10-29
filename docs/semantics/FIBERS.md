@@ -1015,8 +1015,20 @@ history does not extend its lifetime. Fresh THROW and SEND share the real
 receiver target checks while preserving their existing stage and cache guards.
 Five authored
 and one independent source match PHP, and three reached fronts pass 175
-reported checks. Closure factories and other receiver bindings remain partial.
+reported checks. At that I77 cut, Closure factories and other receiver bindings
+remained partial.
 [Receiver review](../../coverage/semantics/generator-keyword-receiver-review.json).
+
+I78 retains scope from supported real Closure factories that call scoped
+Generator methods, including bound receivers and temporary `Closure::call`. The
+execution frame carries the live receiver owner; the Generator keeps its value
+or reference cache through Fiber SEND and supplied abort. Archived factory
+evidence adds no owner. Four authored and
+one independent source agree with PHP, and four reached fronts pass 191
+reported checks. Named/from/fake/implicit factory forms, ordinary method-call
+creation through rebound Closures and wider binding or lifecycle combinations
+remain partial.
+[Closure factory review](../../coverage/semantics/generator-closure-factory-review.json).
 
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need

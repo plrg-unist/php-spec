@@ -208,6 +208,9 @@ dec $generator_factory_keyword(pstate, porigin, phpType19) : bool
 dec $generator_factory_requires_parent(pstate, pcallcontext) : bool
 dec $generator_creation_ancestors(pstate) : pgenfactorycapture*
 dec $generator_creator_method_site(pstate, porigin, ptbytes) : bool
+dec $generator_creator_closure_site(pstate, pmethodcapture, porigin) : bool
+dec $generator_creator_closure_target(pstate, pcalltarget, pmethodcapture, pclosureevidence) : bool
+dec $generator_creator_receiver(pstate, pcalltarget, pclosureevidence?) : nat?
 dec $generator_creator_target_valid(pstate, pgeneratorcreation, pmethoddesc, porigin) : bool
 dec $generator_retained_scoped_target(pstate, pcalltarget, pmethoddesc) : bool
 dec $generator_creator_valid(pstate, pgeneratorcreation) : bool
@@ -386,7 +389,7 @@ def $generator_creation_ancestors(S) = pgenfactorycapture :: pgenfactorycapture_
   -- if pframe.CONTEXT = (pcallcontext_parent)
   -- if S_parent = $constant_frame_scope(S, pframe, pframe_tail*)
   -- if $call_current_valid(S_parent)
-  -- if pgenfactorycapture = {CONTEXT {FUNCTION pcallcontext_parent.FUNCTION, CALLSITE pcallcontext_parent.CALLSITE, LEXICAL_CLASS pcallcontext_parent.LEXICAL_CLASS, CALLED_CLASS pcallcontext_parent.CALLED_CLASS}, TARGET pcallcontext_parent.TARGET}
+  -- if pgenfactorycapture = {CONTEXT {FUNCTION pcallcontext_parent.FUNCTION, CALLSITE pcallcontext_parent.CALLSITE, LEXICAL_CLASS pcallcontext_parent.LEXICAL_CLASS, CALLED_CLASS pcallcontext_parent.CALLED_CLASS}, TARGET pcallcontext_parent.TARGET, CLOSURE $closure_evidence_current(S_parent)}
   -- if pgenfactorycapture_tail* = $generator_creation_ancestors(S_parent)
 def $generator_creation_ancestors(S) = eps -- otherwise
 
@@ -399,6 +402,56 @@ def $generator_creator_method_site(S, porigin_site, ptbytes) = true
   -- if ~$ppfirstclass(phpType7*)
   -- if $method_source_name(phpType20, ptbytes)
 def $generator_creator_method_site(S, porigin_site, ptbytes) = false -- otherwise
+
+;; The factory's actual Closure invocation supplies a borrowed scope after its
+;; live scope/binding rows disappear. The selected Closure and its callsite stay
+;; tied to the real template; this history owns no capture or receiver.
+dec $generator_creator_direct_closure(pclosureevidence) : bool
+def $generator_creator_direct_closure(CLOSURE_SCOPE pclosurescope) = true
+def $generator_creator_direct_closure(CLOSURE_BINDING pclosurebinding) = true
+def $generator_creator_direct_closure(pclosureevidence) = false -- otherwise
+def $generator_creator_closure_site(S, pmethodcapture, porigin_site) = true
+  -- if $dynamic_site(S, (porigin_site))
+  -- if $dynamic_fixed_name(S, porigin_site) = eps
+  -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_expression)
+  -- if $method_capture_literal_valid(S, pmethodcapture, porigin_expression, false)
+def $generator_creator_closure_site(S, pmethodcapture, porigin_site) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $method_capture_source_name_origin(S, porigin_site, phpType20, $ptascii("__invoke"))
+  -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_expression)
+  -- if $method_capture_literal_valid(S, pmethodcapture, porigin_expression, false)
+def $generator_creator_closure_site(S, pmethodcapture, porigin_site) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $method_capture_source_name_origin(S, porigin_site, phpType20, $ptascii("__invoke"))
+  -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_expression)
+  -- if $method_capture_literal_valid(S, pmethodcapture, porigin_expression, false)
+def $generator_creator_closure_site(S, pmethodcapture, porigin_site) = true
+  -- if $pipe_site(S, porigin_site)
+  -- if $pipe_fixed_name(S, porigin_site) = eps
+  -- if $method_capture_literal_valid(S, pmethodcapture, $pipe_rhs_origin(porigin_site), false)
+def $generator_creator_closure_site(S, pmethodcapture, porigin_site) = false -- otherwise
+def $generator_creator_closure_target(S, CLOSURE_TARGET n, pmethodcapture, pclosureevidence) = true
+  -- if $generator_creator_direct_closure(pclosureevidence)
+  -- if $closure_evidence_object(pclosureevidence) = n
+  -- if $closure_evidence_valid(S, pclosureevidence)
+  -- if $closure_evidence_body(S, n) = (pmethodcapture.FUNCTION)
+  -- if pmethodcapture.CALLSITE = (porigin_site)
+  -- if $generator_creator_closure_site(S, pmethodcapture, porigin_site)
+def $generator_creator_closure_target(S, CLOSURE_CALL_TARGET n_source n_receiver, pmethodcapture, CLOSURE_CALL porigin_site n_source n_receiver porigin_class) = true
+  -- if pmethodcapture.CALLSITE = (porigin_site)
+  -- if $closure_evidence_valid(S, CLOSURE_CALL porigin_site n_source n_receiver porigin_class)
+  -- if $closure_evidence_body(S, n_source) = (pmethodcapture.FUNCTION)
+  -- if $method_capture_invocation_valid(S, pmethodcapture, porigin_site)
+def $generator_creator_closure_target(S, pcalltarget, pmethodcapture, pclosureevidence) = false -- otherwise
+
+def $generator_creator_receiver(S, pcalltarget, eps) = $target_receiver(S, pcalltarget)
+def $generator_creator_receiver(S, CLOSURE_TARGET n, (pclosureevidence)) = $closure_evidence_receiver(pclosureevidence)
+  -- if $generator_creator_direct_closure(pclosureevidence)
+  -- if $closure_evidence_object(pclosureevidence) = n
+def $generator_creator_receiver(S, CLOSURE_CALL_TARGET n_source n_receiver, (CLOSURE_CALL porigin_site n_source n_receiver porigin_class)) = (n_receiver)
+def $generator_creator_receiver(S, pcalltarget, pclosureevidence?) = eps -- otherwise
 
 ;; A certificate may outlive its actual receiver. Inspect the archived instance
 ;; and declaration without turning that history into a live object owner.
@@ -464,12 +517,12 @@ def $generator_creator_target_valid(S, pgeneratorcreation, pmethoddesc, porigin_
   -- if $scoped_requested_scope(S, porigin_site, phpType19, porigin_requested, pgenfactorycapture.CONTEXT.LEXICAL_CLASS, pgenfactorycapture.CONTEXT.CALLED_CLASS)
   -- if $scoped_called_scope(S, porigin_site, phpType19, porigin_requested, porigin_called, pgenfactorycapture.CONTEXT.CALLED_CLASS, pmethoddesc, eps)
   -- if $method_accessible(S, pmethoddesc, pgenfactorycapture.CONTEXT.LEXICAL_CLASS)
-  -- if pgeneratorcreation_parent = pgeneratorcreation[.SITE = porigin_site][.CREATOR = pgenfactorycapture.CONTEXT][.CREATOR_TARGET = pgenfactorycapture.TARGET][.ANCESTORS = pgenfactorycapture_tail*]
+  -- if pgeneratorcreation_parent = pgeneratorcreation[.SITE = porigin_site][.CREATOR = pgenfactorycapture.CONTEXT][.CREATOR_TARGET = pgenfactorycapture.TARGET][.ANCESTORS = pgenfactorycapture_tail*][.CLOSURE = pgenfactorycapture.CLOSURE]
   -- if $generator_creator_valid(S, pgeneratorcreation_parent)
 def $generator_creator_target_valid(S, pgeneratorcreation, pmethoddesc, porigin_site) = true
   -- if pgeneratorcreation.ANCESTORS = pgenfactorycapture :: pgenfactorycapture_tail*
   -- if pgeneratorcreation.CREATOR_TARGET = SCOPED_TARGET porigin_requested pmethoddesc.FUNCTION.ORIGIN porigin_called (n_receiver) poperand_selector
-  -- if $target_receiver(S, pgenfactorycapture.TARGET) = (n_receiver)
+  -- if $generator_creator_receiver(S, pgenfactorycapture.TARGET, pgenfactorycapture.CLOSURE) = (n_receiver)
   -- if $generator_retained_scoped_target(S, pgeneratorcreation.CREATOR_TARGET, pmethoddesc)
   -- if pgeneratorcreation.CREATOR.CALLED_CLASS = (porigin_called)
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
@@ -478,11 +531,12 @@ def $generator_creator_target_valid(S, pgeneratorcreation, pmethoddesc, porigin_
   -- if $scoped_requested_scope(S, porigin_site, phpType19, porigin_requested, pgenfactorycapture.CONTEXT.LEXICAL_CLASS, pgenfactorycapture.CONTEXT.CALLED_CLASS)
   -- if $scoped_called_scope(S, porigin_site, phpType19, porigin_requested, porigin_called, pgenfactorycapture.CONTEXT.CALLED_CLASS, pmethoddesc, (n_receiver))
   -- if $method_accessible(S, pmethoddesc, pgenfactorycapture.CONTEXT.LEXICAL_CLASS)
-  -- if pgeneratorcreation_parent = pgeneratorcreation[.SITE = porigin_site][.CREATOR = pgenfactorycapture.CONTEXT][.CREATOR_TARGET = pgenfactorycapture.TARGET][.ANCESTORS = pgenfactorycapture_tail*]
+  -- if pgeneratorcreation_parent = pgeneratorcreation[.SITE = porigin_site][.CREATOR = pgenfactorycapture.CONTEXT][.CREATOR_TARGET = pgenfactorycapture.TARGET][.ANCESTORS = pgenfactorycapture_tail*][.CLOSURE = pgenfactorycapture.CLOSURE]
   -- if $generator_creator_valid(S, pgeneratorcreation_parent)
 def $generator_creator_target_valid(S, pgeneratorcreation, pmethoddesc, porigin_site) = false -- otherwise
 
 def $generator_creator_valid(S, pgeneratorcreation) = true
+  -- if pgeneratorcreation.CLOSURE = eps
   -- if pgeneratorcreation.SITE = PORIGIN n pcpath
   -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction_source)
   -- if $function_at($all_functions(S), pgeneratorcreation.CREATOR.FUNCTION) = (pfunction_creator)
@@ -495,6 +549,17 @@ def $generator_creator_valid(S, pgeneratorcreation) = true
   -- if $class_links_valid(S)
   -- if pgeneratorcreation.CREATOR.CALLSITE = (porigin_creator_site)
   -- if $generator_creator_target_valid(S, pgeneratorcreation, pmethoddesc, porigin_creator_site)
+def $generator_creator_valid(S, pgeneratorcreation) = true
+  -- if pgeneratorcreation.CLOSURE = (pclosureevidence)
+  -- if pgeneratorcreation.ANCESTORS = eps
+  -- if pgeneratorcreation.SITE = PORIGIN n pcpath
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction_source)
+  -- if $function_at(S.CLOSURETEMPLATES, pgeneratorcreation.CREATOR.FUNCTION) = (pfunction_creator)
+  -- if $trait_source_same(pfunction_source, pfunction_creator)
+  -- if $closure_evidence_body(S, $closure_evidence_object(pclosureevidence)) = (pfunction_creator.ORIGIN)
+  -- if pgeneratorcreation.CREATOR.LEXICAL_CLASS = $closure_evidence_lexical(pclosureevidence)
+  -- if pgeneratorcreation.CREATOR.CALLED_CLASS = $closure_evidence_called(pclosureevidence)
+  -- if $generator_creator_closure_target(S, pgeneratorcreation.CREATOR_TARGET, pgeneratorcreation.CREATOR, pclosureevidence)
 def $generator_creator_valid(S, pgeneratorcreation) = false -- otherwise
 
 def $generator_creation_scope_valid(S, pgeneratorcreation) = true
@@ -515,7 +580,7 @@ def $generator_creation_scope_valid(S, pgeneratorcreation) = true
 def $generator_creation_scope_valid(S, pgeneratorcreation) = true
   -- if $generator_creator_valid(S, pgeneratorcreation)
   -- if pgeneratorcreation.CALLEE = SCOPED_TARGET porigin_requested porigin_function porigin_called (n_receiver) poperand_selector
-  -- if $target_receiver(S, pgeneratorcreation.CREATOR_TARGET) = (n_receiver)
+  -- if $generator_creator_receiver(S, pgeneratorcreation.CREATOR_TARGET, pgeneratorcreation.CLOSURE) = (n_receiver)
   -- if $function_at($all_functions(S), porigin_function) = (pfunction)
   -- if $class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION = pfunction
@@ -546,7 +611,7 @@ def $generator_creation_capture(S, pcallcontext) = (pgeneratorcreation)
   -- if S_creator = $constant_frame_scope(S, pframe_creator, pframe_tail*)
   -- if $call_current_valid(S_creator)
   -- if pgenfactorycapture* = $generator_creation_ancestors(S_creator)
-  -- if pgeneratorcreation = {SITE porigin_site, CREATOR {FUNCTION pcallcontext_creator.FUNCTION, CALLSITE pcallcontext_creator.CALLSITE, LEXICAL_CLASS pcallcontext_creator.LEXICAL_CLASS, CALLED_CLASS pcallcontext_creator.CALLED_CLASS}, CREATOR_TARGET pcallcontext_creator.TARGET, CALLEE pcallcontext.TARGET, ANCESTORS pgenfactorycapture*}
+  -- if pgeneratorcreation = {SITE porigin_site, CREATOR {FUNCTION pcallcontext_creator.FUNCTION, CALLSITE pcallcontext_creator.CALLSITE, LEXICAL_CLASS pcallcontext_creator.LEXICAL_CLASS, CALLED_CLASS pcallcontext_creator.CALLED_CLASS}, CREATOR_TARGET pcallcontext_creator.TARGET, CALLEE pcallcontext.TARGET, ANCESTORS pgenfactorycapture*, CLOSURE $closure_evidence_current(S_creator)}
   -- if $generator_creation_scope_valid(S, pgeneratorcreation)
 def $generator_creation_capture(S, pcallcontext) = eps -- otherwise
 

@@ -775,10 +775,28 @@ Reached table effects survive normal equality into deeper links and outer tails,
 and actual Previous fields own children independently of rebinding source CVs.
 Existing DIRECT, paired graph and empty-trace chain routes keep priority. Whole
 path authentication stays eager; invalid/cyclic/materialized/freeing paths,
-reached callbacks or captured-Throwable leaves, subclasses and wider layouts
-remain partial. No Previous-cycle comparison or new walker is added.
+reached callbacks, subclasses and wider layouts remain partial. No Previous-cycle
+comparison or new walker is added.
 [Base fallback review](../../coverage/semantics/throwable-base-null-comparison-review.json).
 [Linked-base review](../../coverage/semantics/throwable-base-previous-comparison-review.json).
+
+Reached captured canonical builtin Throwables also use this visited fold. Their
+finite canonical Previous paths authenticate before identity or class decisions;
+this header check does not traverse captured values. Distinct equal-kind entries
+check the active left HOBJECT before any physical slot, including recursive
+Previous entries. Thus a trace alias to a child whose Previous points to an
+active ancestor raises the real Error before a differing earlier field can win.
+Identity and class mismatch still skip that guard and later payloads. Ordinary
+class dispatch and older fully authenticated graph walkers are unchanged.
+
+Cache/trace/Previous/severity order, live cells, copied siblings, table effects
+and normal-only continuation use the existing machinery. Fresh left guards are
+bounded by the initial finite heap plus at most one cached table per ordinary
+object; no pair is memoized as equality and no replacement depth cap is added.
+Captured object/scalar conversion, actually reached callbacks, wider layouts,
+subclasses and generated-only FiberError remain partial. COMP88, COMP123 and
+other held contexts are untouched.
+[Captured-Throwable review](../../coverage/semantics/throwable-captured-comparison-review.json).
 
 The older fully authenticated warm route puts nonempty traces in the physical slot
 scan. Same-kind canonical `Exception`/`Error` pairs with null previous values

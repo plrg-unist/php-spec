@@ -62,6 +62,26 @@ Captured enum `cases(...)` cuts are under
 lists 11 raw directories, including the accepted cache/history checks, joined
 430-module gate, and zero-agreement cold `from(...)` and pipe boundaries.
 
+Captured enum `from(...)`/`tryFrom(...)` cold-table cuts are under
+`../php-spec-evidence-archive/enum-cold-from-117/`. Its `manifest.json`
+(SHA-256 `934643b994b69bad3f50f472f70fa81c97333d2ac51da8db127dafa26622656d`)
+lists 31 raw directories. Keep the original failed/timeout cuts separate from
+the accepted queue, bind, table, Alias, inherited-owner and cross-file strictness
+checks. Its earlier captured Stringable lookup and conditional constant-transfer
+results are explicit Unsupported, with no agreement credit. The joined `--sl`
+gate used CPU 1 and all 430 manifest modules;
+`raw/enum-cold-joined-430-v1/result.json` records its
+tested revision, command and output. The runner process group was fully reaped.
+
+Captured Stringable lookup cuts are under
+`../php-spec-evidence-archive/enum-captured-stringable-117/`. Its `manifest.json`
+(SHA-256 `c821fb4ff827854fbca193fa62eedb050afb57b5502f701b037df6e52ec5189a`)
+lists eight raw directories, preserving the earlier Unsupported and strict
+binding failures separately from exact one-line, multiline, closure-owner and
+`tryFrom()` results. The reached multiline check authenticates callback source,
+selection, owner roots and argument retirement before the backed table. The
+joined `--sl` gate checks all 430 manifest modules and records its clean result.
+
 The guarded getter-recursion milestone retains source/native observations,
 focused checks, all fixture failures and diagnostics in
 `../php-spec-evidence-archive/magic-get-recursion-119/manifest.json`.
@@ -150,6 +170,14 @@ external archive (using new paths for new evidence) or in ignored `.tools/`.
 Commit concise reports and manifests with hashes and locations. Preserve raw
 failures and interrupted runs externally; do not force-add their archives.
 The coverage compression patterns in `.gitignore` guard against reintroduction.
+
+I78 real Closure factory Generator evidence retains frozen authored/dependency
+native, unchanged baseline, private/joined strict, source and reached-state cuts
+under `../php-spec-evidence-archive/generator-closure-factory-78/`. The independent
+bound-reference/Fiber peer and its exact native/model comparison are under
+`../php-spec-evidence-archive/generator-closure-factory-78-review/`.
+The [Closure factory ledger](../coverage/semantics/generator-closure-factory-review.json)
+binds tested revisions, hashes and remaining scope.
 
 I77 receiver-bearing scoped Generator evidence retains authored native,
 unchanged baseline, private/joined strict, source and reached-state cuts under

@@ -931,11 +931,19 @@ def $throwable_builtin_previous_effect(S, n_left, n_right, pcompareguard_seen*, 
   -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
   -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
   -- if pthrowable_left.KIND =/= pthrowable_right.KIND
+;; Identity and exact class precede the inline object's active-left guard.
+def $throwable_builtin_previous_effect(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDERRECURSIVE)
+  -- if n_left =/= n_right
+  -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
+  -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
+  -- if pthrowable_left.KIND = pthrowable_right.KIND
+  -- if (HOBJECT n_left) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S))
 def $throwable_builtin_previous_effect(S, n_left, n_right, pcompareguard_seen*, z) = $throwable_builtin_previous_slots_effect(S, ppropertyslot_left*, ppropertyslot_right*, (HOBJECT n_left) :: pcompareguard_seen*, z)
   -- if n_left =/= n_right
   -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
   -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
   -- if pthrowable_left.KIND = pthrowable_right.KIND
+  -- if ~((HOBJECT n_left) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
 def $throwable_builtin_previous_effect(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise

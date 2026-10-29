@@ -1,0 +1,122 @@
+{
+  "milestone": "I78 real Closure factory provenance for scoped Generator creation",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "private_base": "cb07e86ddd891e96e104d3b9eaa8ef9e8762f89c",
+  "private_implementation": [
+    "201ab8022047962bb1bf2bf45ab53dab11f4d925",
+    "36dc017c62ff742052dc228d8019dc1b25c3b9d1"
+  ],
+  "actual_parent": "ad6d387c5bd5dedc124475a7bf99a203ac8b4475",
+  "actual_composition": "691b5c6c463a3106b4a72b38270896ef6283cfcd",
+  "scope": "Real REALCLOSURE factory invocations with authenticated CLOSURE_SCOPE, CLOSURE_BINDING or temporary CLOSURE_CALL evidence may create receiver-free static or same-This nonstatic Generator bodies through scoped method calls. A Closure is a nonforwarding stop for finite real method-factory ancestry; each earlier method link remains source/target/scope authenticated. Borrowed evidence keeps source, selected factory, lexical/called class and receiver identity after factory retirement without owning the Closure, its captures or receiver. Actual Generator frames and operation owners retain their existing roots and resume/close policy.",
+  "changed_modules": [
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/280-generators.watsup"
+  ],
+  "harness": "tests/semantics/fiber_static_api_sources.py accepts the frozen native-first author report without replay; native-only behavior is unchanged",
+  "validation": {
+    "author_native_first": {
+      "report": "../php-spec-evidence-archive/generator-closure-factory-78/source-packet/native-first/report.json",
+      "sha256": "7139dfaf8f3101cabf1f861c159500c3f1fb8604959e46a2cf2afc120c3998a4"
+    },
+    "ancestry_native_first": {
+      "report": "../php-spec-evidence-archive/generator-closure-factory-78/dependencies/native-first/report.json",
+      "sha256": "1ebf3eb3f4d5c6428f47d0ca749340dcfcbdc6fc6614c22b8c1d1d356ce27db5"
+    },
+    "independent_native_first": {
+      "source_sha256": "26044d44f1d8dd652583ad1c6e9ca66b77b7946fe94b62ae49bfc7ee768ccb02",
+      "stdout_bytes": 147,
+      "report": "../php-spec-evidence-archive/generator-closure-factory-78-review/independent/native-first-report.json",
+      "sha256": "ff14d57550cc4eaa082458846a278fd5e2b8e5ea81daf07cb0ce5902fe3241b8"
+    },
+    "unchanged_baseline": {
+      "revision": "cb07e86ddd891e96e104d3b9eaa8ef9e8762f89c",
+      "result": "checked Unsupported after exact MAKE|CALL| prefix; exit 1, zero agreement",
+      "report": "../php-spec-evidence-archive/generator-closure-factory-78/source-packet/unchanged-baseline-lexical-static/report.json",
+      "sha256": "535fa450b074c779aae8e5818d99122e68d02ecde6580de37cd64f62ee56bb86"
+    },
+    "strict_private": {
+      "revision": "36dc017c62ff742052dc228d8019dc1b25c3b9d1",
+      "modules": 430,
+      "passed": true,
+      "report": "../php-spec-evidence-archive/generator-closure-factory-78/strict-private/report.json",
+      "sha256": "bb4c6cd1a4befc19f3751dfeb1e404c65bd5db8b3d4616520e9836972cfda1c8"
+    },
+    "author_sources": [
+      {
+        "id": "i78-lexical-static-closure-factory",
+        "report": "../php-spec-evidence-archive/generator-closure-factory-78/validated/generator-closure-factory-source-e7s498yb/report.json",
+        "sha256": "3434d0eaf63c23f8e164c499507755468593e5240a96917661fcfe76f2eaae77"
+      },
+      {
+        "id": "i78-bound-instance-closure-factory",
+        "report": "../php-spec-evidence-archive/generator-closure-factory-78/validated/generator-closure-factory-source-eay03z3k/report.json",
+        "sha256": "7b0997daea683690ebcdf4111e40ec0c63f709f0170cf0fd02f946f67fa796f1"
+      },
+      {
+        "id": "i78-temporary-call-closure-factory",
+        "report": "../php-spec-evidence-archive/generator-closure-factory-78/validated/generator-closure-factory-source-9gcjohr6/report.json",
+        "sha256": "3328c02e5ef5bff93c3d60d361cf6b633c0dce5db2dc6d7d4d137dabc3431c8b"
+      },
+      {
+        "id": "i78-closure-method-bridge-dependency",
+        "report": "../php-spec-evidence-archive/generator-closure-factory-78/validated/generator-closure-factory-source-g6yv5yhg/report.json",
+        "sha256": "168c77da852b88fec37fb9f859ce2282ffef209c29d85e17cd36158798c0242b"
+      }
+    ],
+    "independent_model": {
+      "revision": "36dc017c62ff742052dc228d8019dc1b25c3b9d1",
+      "result": "checked NORMAL, exact retained 147-byte native stream, exit 0, empty stderr, no timeout; stable HEAD and 22 watched inputs",
+      "elapsed_seconds": 270.070985,
+      "limits": "source-local 600/620 seconds, 100000 steps",
+      "report": "../php-spec-evidence-archive/generator-closure-factory-78-review/independent/model-review-report.json",
+      "sha256": "652f1c6cbf95a08ba81796a906bfc814ae6b52d737af79015b6ea7c51a8529f0"
+    },
+    "reached_states": [
+      {
+        "id": "i78-retired-static-closure-scope",
+        "custom": 50,
+        "reported": 55,
+        "report": "../php-spec-evidence-archive/generator-closure-factory-78/validated/fiber-state-review-q8fujkpu/report.json",
+        "sha256": "62218d28ab0bc62f84f06b825afa0b3a1f18b5e5f112635b60965e04067a6084"
+      },
+      {
+        "id": "i78-bound-close-receiver",
+        "custom": 47,
+        "reported": 52,
+        "report": "../php-spec-evidence-archive/generator-closure-factory-78/validated/fiber-state-review-iftpv1vv/report.json",
+        "sha256": "475839952b0fe6173591ce45be25ab21768b86ee38f38a1be8c15d40e77c1948"
+      },
+      {
+        "id": "i78-retired-temporary-call",
+        "custom": 28,
+        "reported": 33,
+        "report": "../php-spec-evidence-archive/generator-closure-factory-78/validated/fiber-state-review-_4rqadyx/report.json",
+        "sha256": "4400bfa13ec60a4dd37d05666d0ffdf0784118762b6b311dfba88b60848032f7"
+      },
+      {
+        "id": "i78-closure-ancestor-stop",
+        "custom": 46,
+        "reported": 51,
+        "report": "../php-spec-evidence-archive/generator-closure-factory-78/validated/fiber-state-review-kczxrwky/report.json",
+        "sha256": "f3bdf29feec2829d2dd9ee6b24179f8c63c5e4f2e317605180ed93b891121a2e"
+      }
+    ],
+    "strict_joined": {
+      "revision": "691b5c6c463a3106b4a72b38270896ef6283cfcd",
+      "canonical_parent": "ad6d387c5bd5dedc124475a7bf99a203ac8b4475",
+      "modules": 430,
+      "passed": true,
+      "report": "../php-spec-evidence-archive/generator-closure-factory-78/strict-joined/report.json",
+      "sha256": "051f55572175970d26f3dba8c73b949aec82f2beddcf1f8045bf85c7b373c90d"
+    }
+  },
+  "counts": {
+    "new_author_normal": 4,
+    "independent_normal": 1,
+    "unchanged_unsupported_agreement": 0,
+    "reached_custom": 171,
+    "reached_reported": 191
+  },
+  "remaining": "Named/from/fake/implicit Closure factories, ordinary method-call Generator creation through rebound Closures, broader receiver bindings and invocation forms, and wider lifecycle combinations remain partial. Complete PHP core and BOLA verification remain open."
+}

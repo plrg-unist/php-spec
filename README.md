@@ -665,8 +665,17 @@ copy raw NULL/bool/int/float/string values before `next()` and cleanup. INI_SET
 binds its string option afterward: weak coercion/NULL deprecation or strict
 rejection. Its scalar/null value is accepted even strict and converted inside
 the API using live precision. Persistent source/callee receipts validate handler
-return or supplied throw after DATA death. Owning argument buffers and other
-CONFIG consumer/value policies remain partial.
+return or supplied throw after DATA death. Generator and other CONFIG
+consumer/value policies remain partial.
+
+[Owning CONFIG arguments](coverage/semantics/config-iterator-argument-review.json)
+copy finite CFG-admitted arrays and ordinary non-Stringable root objects into
+normalized call slots. Real roots preserve array COW, embedded aliases and shared
+object identity through `next()` and DATA/INPUT retirement. API TypeError traces
+can keep those arguments alive until their final owner disappears. Owning key/send
+Errors release CURRENT, then DATA/INPUT, then the copied prefix; admitted returning or
+throwing callbacks keep the existing cleanup rules. Stringable/effectful casts,
+other callees and wider graph/temporary-finalizer lifetimes remain partial.
 
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
@@ -3284,7 +3293,7 @@ class, autoload, precision and Fiber checks retain separate cuts in the
 [author ledger](coverage/semantics/eager-destructors-review.json).
 The actual Array operand warning/cleanup interaction now matches the original
 lifetime stream and rejects a forged source-marker suffix in reached states.
-Active automatic-destruction Fiber transfer, compound Stringable reception, GC,
+Active automatic-destruction Fiber transfer, compound Stringable arguments to captured lookups, GC,
 output buffers and later request cleanup remain required.
 Full core and a fresh combined offline rebuild remain required.
 
@@ -4280,11 +4289,15 @@ walk when `previous` is null, preserving live cells, copied siblings, cache/trac
 severity order and real recursion Errors. The old DIRECT route remains separate.
 Canonical base `Exception`/`Error` roots now use the same visited fold through
 finite canonical Previous paths after older admissions, including warm captured
-graphs. Whole-path authentication stays eager; invalid/cyclic paths and reached
-callbacks or captured-Throwable leaves retain their separate limits.
+graphs. Captured canonical builtin Throwables share this fold after finite
+Previous-path authentication. Identity and class precede active-left recursion
+checks at every equal-kind object entry, including Previous descent; captures through
+live cells preserve caches, COW and real owners. Whole-path authentication stays
+eager; invalid/cyclic paths, reached callbacks and wider layouts remain partial.
 [Standalone trace review](coverage/semantics/throwable-null-trace-comparison-review.json).
 [Base fallback review](coverage/semantics/throwable-base-null-comparison-review.json).
 [Linked-base review](coverage/semantics/throwable-base-previous-comparison-review.json).
+[Captured-Throwable review](coverage/semantics/throwable-captured-comparison-review.json).
 Builtin `#[NoDiscard]` now validates bounded declarations and warns on unused
 ordinary source calls after sends and named defaults, before reception or body.
 Handlers preserve selected arguments, references, receiver ownership and VM
@@ -5690,7 +5703,7 @@ retire that method receiver with the original caller-site error.
 retain419 cuts. Computed/suspended producers and wider reference sources remain partial.
 
 Reference Get now also accepts valid historical parameter-backing receipts from
-weak Stringable reception. Exact reads preserve the receipt and real property
+weak Stringable arguments to captured lookups. Exact reads preserve the receipt and real property
 sources; conflicting conversion raises the first-source TypeError without writes.
 After the real property source is detached, conversion updates the actual cell
 and clears the receipt without attaching the requested type.
@@ -6216,9 +6229,13 @@ cases. Direct `cases()`, `from()`, `tryFrom()`, case slots and constant queries 
 source and state checks. Registered-loader first-use static calls and class-constant
 fetches retain selected class/member order through loader replay. Captured
 `cases(...)` retains the selected enum and singleton cache after its closure
-owner is retired. Captured `from(...)`/`tryFrom(...)` remain Unsupported; other
-generated callable routes, case attributes, the default loader and wider
-acquisition remain partial;
+owner is retired. Captured `from(...)`/`tryFrom(...)` also preserve cold backing
+initialization, scalar parsing and cached cases after their closure owners retire;
+ordinary and inherited enum constant aliases retain their declaration owners.
+Stringable arguments to captured lookups use source-bound `__toString()` callbacks
+and release temporary arguments before looking up a case, including `tryFrom()` misses and hits.
+Conditional constant transfers remain Unsupported. Other generated callable
+routes, case attributes, the default loader and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
@@ -6389,9 +6406,17 @@ class calls. The saved or active execution frame carries a receiver owner;
 borrowed source and target history adds no root. Five authored and one
 independent original match PHP; three reached fronts pass 160 custom/175
 reported checks for close, retirement
-and fresh THROW/Fiber transfer. Closure factories, other receiver bindings and
-wider lifecycle combinations remain partial.
+and fresh THROW/Fiber transfer. At that I77 cut, Closure factories, other
+receiver bindings and wider lifecycle combinations remained partial.
 [Receiver review](coverage/semantics/generator-keyword-receiver-review.json).
+Supported real Closure factories now retain authenticated scope, binding or
+temporary `Closure::call` evidence when calling scoped Generator methods. A Closure stops a
+method-factory chain without keeping its capture or receiver alive through the
+certificate. Four authored and one independent original match PHP; four reached
+fronts pass 171 custom/191 reported checks. Named/from/fake/implicit Closure
+factories, ordinary method-call creation through rebound Closures and broader
+bindings remain partial.
+[Closure factory review](coverage/semantics/generator-closure-factory-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

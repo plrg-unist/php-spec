@@ -866,6 +866,7 @@ dec $trace_visit_entries_header(pentry*) : bool
 dec $trace_visit_array_header(pstate, nat) : bool
 dec $trace_visit_object_header(pstate, nat) : bool
 dec $trace_visit_object_image(pstate, nat) : bool
+dec $trace_visit_captured_same_kind(pstate, nat, nat) : bool
 dec $trace_visit_inline_pair(pstate, nat, nat) : bool
 dec $trace_visit_item_value(pstate, pitem) : pvalue?
 dec $trace_visit_array_effect(pstate, nat, nat, pcompareguard*, int) : (pstate, porder)
@@ -901,7 +902,14 @@ def $trace_visit_object_header(S, n) = true
   -- if pclassdesc.KIND = "class"
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+def $trace_visit_object_header(S, n) = true
+  -- if $throwable_builtin_previous_chain_valid(S, n, eps)
 def $trace_visit_object_header(S, n) = false -- otherwise
+def $trace_visit_captured_same_kind(S, n_left, n_right) = true
+  -- if S.OBJECTS[n_left] = THROWABLE pthrowable_left
+  -- if S.OBJECTS[n_right] = THROWABLE pthrowable_right
+  -- if pthrowable_left.KIND = pthrowable_right.KIND
+def $trace_visit_captured_same_kind(S, n_left, n_right) = false -- otherwise
 def $trace_visit_object_image(S, n) = true
   -- if $trace_object_class(S, n)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
@@ -967,6 +975,11 @@ def $trace_visit_object_effect(S, n_left, n_right, pcompareguard_seen*, z) = (S,
   -- if n_left =/= n_right
   -- if $trace_visit_object_header(S, n_left) /\ $trace_visit_object_header(S, n_right)
   -- if ~$trace_object_same_class(S, n_left, n_right)
+  -- if ~$trace_visit_captured_same_kind(S, n_left, n_right)
+def $trace_visit_object_effect(S, n_left, n_right, pcompareguard_seen*, z) = $throwable_builtin_previous_effect(S, n_left, n_right, pcompareguard_seen*, z)
+  -- if n_left =/= n_right
+  -- if $trace_visit_object_header(S, n_left) /\ $trace_visit_object_header(S, n_right)
+  -- if $trace_visit_captured_same_kind(S, n_left, n_right)
 def $trace_visit_object_effect(S, n_left, n_right, pcompareguard_seen*, z) = $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, z)
   -- if n_left =/= n_right
   -- if $trace_visit_object_header(S, n_left) /\ $trace_visit_object_header(S, n_right)

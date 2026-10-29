@@ -76,6 +76,7 @@ syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | 
   | CCSTATICNEW porigin pdynamicnew nat | CCSTATICRETIRENEW porigin pdynamicnew nat nat
   | CCTRAITCACHE porigin ptraitcachecause
   | CCTRAITBIRTH nat porigin ptraitcachecause
+  | CCUPDATE_ENUM porigin porigin porigin nat nat
 syntax pclassconstantflags = CCFLAGS (porigin, bool)* porigin* | CCBAD
 syntax pclassconstantdesc = { ORIGIN porigin, OWNER porigin, OWNERNAME ptbytes, NAME ptbytes, VISIBILITY ppropertyvisibility, FINAL bool, TYPE ptbranch*, INITIALIZER porigin, FOLDED bool, LINE nat }
 syntax ptraitcachecause = { CLASS porigin, ROOT porigin, TABLE pclassconstantdesc*, LOOKUPS porigin*, PREFIX nat, USERPREFIX nat }
@@ -664,8 +665,8 @@ syntax pgenstorage = { OBJECT nat, HANDLE nat, NEXT nat, CALLER pcallcontext?, O
 syntax pgeneratorborrowed = { VALUE poperand?, KEY pvalue? }
 syntax pgeneratoraccess = { TARGET pcalltarget, SITE porigin, LINE int }
 ;; Creation evidence borrows source/arena identities without retaining the maker.
-syntax pgenfactorycapture = { CONTEXT pmethodcapture, TARGET pcalltarget }
-syntax pgeneratorcreation = { SITE porigin, CREATOR pmethodcapture, CREATOR_TARGET pcalltarget, CALLEE pcalltarget, ANCESTORS pgenfactorycapture* }
+syntax pgenfactorycapture = { CONTEXT pmethodcapture, TARGET pcalltarget, CLOSURE pclosureevidence? }
+syntax pgeneratorcreation = { SITE porigin, CREATOR pmethodcapture, CREATOR_TARGET pcalltarget, CALLEE pcalltarget, ANCESTORS pgenfactorycapture*, CLOSURE pclosureevidence? }
 syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FIRST bool, PENDING_INIT bool, PARKED porigin?, INDEX int, VALUE pvalue?, REFCELL nat?, KEY pvalue?, BORROWED pgeneratorborrowed?, RETURN pvalue?, CLOSURE nat?, DELEGATE pgeneratorfrom?, ACCESS pgeneratoraccess?, CREATION pgeneratorcreation? }
 syntax pgeneratorfrom = { SITE porigin, INPUT pvalue?, POSITION nat, CURRENT poperand?, ACQUISITION pyieldfromreceipt? }
 syntax pgeneratorloop = { ITERATOR nat, STATEMENT statement }

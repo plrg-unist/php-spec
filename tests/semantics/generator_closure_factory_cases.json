@@ -1,0 +1,49 @@
+[
+  {
+    "id": "i78-lexical-static-closure-factory",
+    "purpose": "A real static Closure created in an inherited static method returns static::protected Generator. The factory Closure owns a captured Token that retires before first body entry, while lexical Base and called Leaf remain distinct.",
+    "source": "<?php\nclass Token78A {\n    public function __destruct() { echo 'TOKEN|'; }\n}\nclass Base78A {\n    protected static function body() {\n        echo 'BODY|', (int) (__CLASS__ === 'Base78A'), '|',\n             (int) (static::class === 'Leaf78A'), '|';\n        yield 78;\n        return 79;\n    }\n    public static function make($token) {\n        echo 'MAKE|';\n        return static function () use ($token) {\n            echo 'CALL|';\n            return static::body();\n        };\n    }\n}\nclass Leaf78A extends Base78A {}\n$token = new Token78A();\n$weak = WeakReference::create($token);\n$factory = Leaf78A::make($token);\nunset($token);\n$g = $factory();\nunset($factory);\necho 'FRESH|', (int) ($weak->get() === null), '|';\necho 'VALUE|', (int) ($g->current() === 78), '|';\n$g->next();\necho 'RETURN|', (int) ($g->getReturn() === 79), '|';\nunset($g, $weak);\necho 'E';\n",
+    "source_sha256": "d1b7509d2b393292e7e6a28e5d7ec8bad1336c36d25be0de32b5101e17780454",
+    "native_exit": 0,
+    "native_stdout": "MAKE|CALL|TOKEN|FRESH|1|VALUE|BODY|1|1|1|RETURN|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i78-bound-instance-closure-factory",
+    "purpose": "A global real Closure boundTo a Leaf receiver with Base lexical scope calls self::protected nonstatic Generator body. The bound factory retires while the saved Generator frame retains This through a real finally close.",
+    "source": "<?php\nclass Base78B {\n    protected function body() {\n        global $weak;\n        echo 'BODY|', (int) ($this === $weak->get()), '|',\n             (int) (__CLASS__ === 'Base78B'), '|',\n             (int) (static::class === 'Leaf78B'), '|';\n        try {\n            yield 78;\n        } finally {\n            echo 'FIN|';\n        }\n    }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Leaf78B extends Base78B {}\n$maker = new Leaf78B();\n$weak = WeakReference::create($maker);\n$template = function () { echo 'CALL|'; return self::body(); };\n$bound = $template->bindTo($maker, Base78B::class);\nunset($template);\n$g = $bound();\nunset($bound, $maker);\necho 'KEPT|', (int) ($weak->get() !== null), '|';\necho 'VALUE|', (int) ($g->current() === 78), '|';\nunset($g);\necho 'AFTER|', (int) ($weak->get() === null), '|';\nunset($weak);\necho 'E';\n",
+    "source_sha256": "8664b31a31b3976b0ba2f914a6ce0724e80686b51fffa56537edfa3c11a812fc",
+    "native_exit": 0,
+    "native_stdout": "CALL|KEPT|1|VALUE|BODY|1|1|1|1|FIN|MAKER|AFTER|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i78-temporary-call-closure-factory",
+    "purpose": "A real Closure::call temporarily binds a Leaf receiver, then returns self::protected nonstatic Generator body. The factory retires after call; the Generator preserves This until completion.",
+    "source": "<?php\nclass Base78C {\n    protected function body() {\n        global $weak;\n        echo 'BODY|', (int) ($this === $weak->get()), '|',\n             (int) (__CLASS__ === 'Base78C'), '|',\n             (int) (static::class === 'Leaf78C'), '|';\n        yield 78;\n        return 79;\n    }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Leaf78C extends Base78C {}\n$maker = new Leaf78C();\n$weak = WeakReference::create($maker);\n$factory = function () { echo 'CALL|'; return self::body(); };\n$g = $factory->call($maker);\nunset($factory, $maker);\necho 'KEPT|', (int) ($weak->get() !== null), '|';\necho 'VALUE|', (int) ($g->current() === 78), '|';\n$g->next();\necho 'DONE|', (int) ($g->getReturn() === 79), '|',\n     (int) ($weak->get() === null), '|';\nunset($g, $weak);\necho 'E';\n",
+    "source_sha256": "0bce34a707d58dc4117b586a953b56aa0b2ef1af57145a6f0aefc585ee22e6e9",
+    "native_exit": 0,
+    "native_stdout": "CALL|KEPT|1|VALUE|BODY|1|1|1|1|MAKER|DONE|1|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i78-closure-method-bridge-dependency",
+    "purpose": "A real static Closure factory enters private self::bridge before protected parent::body. The Closure stops borrowed ancestry, retires before Generator body entry, and transfers lexical Mid/called Leaf through the bridge.",
+    "source": "<?php\nclass Token78D { public function __destruct() { echo 'TOKEN|'; } }\nclass Base78D {\n    protected static function body() {\n        echo 'BODY|', (int) (__CLASS__ === 'Base78D'), '|',\n             (int) (static::class === 'Leaf78D'), '|';\n        yield 78;\n        return 79;\n    }\n}\nclass Mid78D extends Base78D {\n    private static function bridge() { echo 'BRIDGE|'; return parent::body(); }\n    public static function make($token) {\n        echo 'MAKE|';\n        return static function () use ($token) {\n            echo 'CALL|';\n            return self::bridge();\n        };\n    }\n}\nclass Leaf78D extends Mid78D {}\n$token = new Token78D();\n$weak = WeakReference::create($token);\n$factory = Leaf78D::make($token);\nunset($token);\n$g = $factory();\nunset($factory);\necho 'FRESH|', (int) ($weak->get() === null), '|';\necho 'VALUE|', (int) ($g->current() === 78), '|';\n$g->next();\necho 'DONE|', (int) ($g->getReturn() === 79), '|';\nunset($g, $weak);\necho 'E';\n",
+    "source_sha256": "cea3984263155b5528e7b9eaeb4dd6580d69d74e559c1f1a287faa9c73a11df3",
+    "native_exit": 0,
+    "native_stdout": "MAKE|CALL|BRIDGE|TOKEN|FRESH|1|VALUE|BODY|1|1|1|DONE|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i78-bound-parent-reference-send-abort-independent",
+    "purpose": "A rebound real Closure factory preserves effective lexical Mid/called Leaf and exact This after its own allocation retires; a same-template sibling owns the final captured Token until it retires before Generator resumption. The real Generator frame owns This through fresh SEND and supplied Fiber abort, while its reference cache alone retains Payload after closed current becomes NULL.",
+    "source": "<?php\nclass Capture78 {}\nclass Payload78 { function __destruct() { echo 'TOKEN|'; } }\nclass Base78 {\n    protected function &body(&$item) {\n        global $weakMaker, $weakPayload;\n        echo 'BODY|', (int)(__CLASS__ === 'Base78'), '|',\n            (int)(static::class === 'Leaf78'), '|', (int)($this === $weakMaker->get()), '|';\n        try {\n            Fiber::suspend('fresh78');\n            $received = yield $item;\n            Fiber::suspend('cached78');\n            echo 'BAD-BODY|';\n        } finally {\n            echo 'FIN|', (int)($this === $weakMaker->get()), '|',\n                (int)($received === 13), '|', (int)($item === $weakPayload->get()), '|';\n        }\n    }\n    function __destruct() { echo 'MAKER|'; }\n}\nclass Mid78 extends Base78 {\n    protected function &body(&$item) { echo 'BAD-MID|'; yield $item; }\n}\nclass Leaf78 extends Mid78 {}\nfunction Run78() {\n    global $g, $stop, $weakMaker, $weakPayload;\n    try { echo 'CALL|'; $g->send(13); echo 'BAD-RETURN|'; }\n    catch (Exception $e) {\n        echo 'OUT|', (int)($e === $stop), '|', (int)($e->getPrevious() === null), '|',\n            (int)($weakMaker->get() === null), '|', (int)($weakPayload->get() instanceof Payload78), '|';\n    }\n    return 'fiber78';\n}\n$item = new Payload78();\n$old =& $item;\n$weakPayload = WeakReference::create($item);\n$capture = new Capture78();\n$weakCapture = WeakReference::create($capture);\n$base = function (&$argument) use ($capture) {\n    global $weakMaker;\n    echo 'FACTORY|', (int)(get_called_class() === 'Leaf78'), '|',\n        (int)($this === $weakMaker->get()), '|';\n    return parent::body($argument);\n};\n$one = new Leaf78();\n$two = new Leaf78();\n$weakMaker = WeakReference::create($one);\n$weakOther = WeakReference::create($two);\n$first = $base->bindTo($one, 'Mid78');\n$second = $base->bindTo($two, 'Mid78');\n$weakFactory = WeakReference::create($first);\n$g = $first($item);\nunset($capture, $base, $first, $one, $two, $item);\n$item = 9;\necho 'FRESH|', (int)($weakFactory->get() === null), '|',\n    (int)($weakMaker->get() instanceof Leaf78), '|', (int)($weakCapture->get() instanceof Capture78), '|';\n$f = new Fiber('Run78');\necho 'START|', (int)($f->start() === 'fresh78'), '|';\necho 'DROP-SIB|';\nunset($second);\necho (int)($weakOther->get() === null), '|', (int)($weakCapture->get() === null), '|';\nunset($old);\necho 'RESUME|', (int)($f->resume() === 'cached78'), '|';\necho 'CACHE|', (int)($g->current() === $weakPayload->get()), '|', (int)($item === 9), '|';\n$stop = new Exception('stop78');\necho 'ABORT|';\n$f->throw($stop);\necho 'CLOSED|', (int)($g->current() === null), '|',\n    (int)($weakPayload->get() instanceof Payload78), '|', (int)($f->getReturn() === 'fiber78'), '|';\nunset($g);\necho 'DROP|', (int)($weakPayload->get() === null), '|E';\n",
+    "source_sha256": "26044d44f1d8dd652583ad1c6e9ca66b77b7946fe94b62ae49bfc7ee768ccb02",
+    "native_exit": 0,
+    "native_stdout": "FACTORY|1|1|FRESH|1|1|1|START|CALL|BODY|1|1|1|1|DROP-SIB|MAKER|1|1|RESUME|1|CACHE|1|1|ABORT|FIN|1|1|1|MAKER|OUT|1|1|1|1|CLOSED|1|1|1|TOKEN|DROP|1|E",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
+  }
+]

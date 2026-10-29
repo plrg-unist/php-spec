@@ -4,10 +4,11 @@ Module280 creates Generator objects after ordinary argument, type and default
 receives. The function body and Closure lexical loads remain deferred until
 initialization. Named functions, ordinary Closures, object method calls and
 static calls through nonkeyword class selectors use the accepted call machinery.
-Authenticated scoped calls from real method factories retain creation scope
-after those factories return. Receiver-free static and same-`$this` nonstatic
-Generator bodies use their actual selected target and saved frame receiver;
-finite forwarding chains add borrowed history without another owner root.
+Authenticated scoped calls from real method and supported real Closure factories
+retain creation scope after those factories return. Receiver-free static and
+same-`$this` nonstatic Generator bodies use their actual selected target and
+saved frame receiver; finite forwarding chains add borrowed history without
+another owner root.
 
 [Same-class comparison](../../coverage/semantics/generator-fiber-comparison-review.json)
 now returns order zero for distinct Generators, including fresh, paused and closed
@@ -355,9 +356,24 @@ three reached fronts pass 160 custom/175 reported checks. Private and joined
 strict430 pass. The independent
 native recorder's provisional `current()` expectation after close was wrong:
 the observed NULL getter coexists with a live reference cache. Its original
-false flag remains; the model matches the observed 134 bytes. Closure factories,
-other receiver bindings and wider lifecycle remain partial. See the
+false flag remains; the model matches the observed 134 bytes. At that I77 cut,
+Closure factories, other receiver bindings and wider lifecycle remained partial. See the
 [receiver review](../../coverage/semantics/generator-keyword-receiver-review.json).
+
+I78 captures an actual real Closure factory's authenticated scope, binding or
+temporary `Closure::call` evidence when its body calls a scoped Generator method. The
+factory Closure is a nonforwarding stop for any preceding method-factory chain;
+each method link still checks its real source and selected target. Archived
+lexical/called/receiver facts remain valid after Closure and capture retirement,
+while the saved or active Generator frame keeps the actual body receiver owner.
+Four authored sources, including a Closure-to-private-method bridge, and one
+independent bound-reference/Fiber SEND-abort source agree with PHP. Four reached
+fronts pass 171 custom/191 reported checks for scope forgeries, exact target
+identity, close ownership, temporary binding and the ancestry stop. Private and
+actual-tail joined strict430 pass. Named/from/fake/implicit Closure factories,
+ordinary method-call creation through rebound Closures, broader bindings and
+wider lifecycle remain partial. See the
+[Closure factory review](../../coverage/semantics/generator-closure-factory-review.json).
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
@@ -713,8 +729,8 @@ null results and phase-specific error cleanup. Direct Aggregate
 [argument acquisition](SOURCE-CALL-UNPACK.md#direct-aggregate-argument-acquisition)
 now shares the existing Iterator/Generator call sends. Broader reference
 producers, dynamic/nullsafe API calls and named/unpacked API arguments remain
-required. Closure factories, other receiver bindings, other implicit callback
-creation and creation through
+required. Other Closure factory kinds, ordinary method-call creation through
+rebound Closures, receiver bindings, implicit callback creation and creation through
 changed/imported caller scope remain required.
 [Module303](GENERATOR-FORCE-CLOSE.md) adds ordinary last-owner forced close,
 pending finally execution and ordered input/frame/cache release.

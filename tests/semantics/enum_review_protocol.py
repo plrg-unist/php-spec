@@ -27,7 +27,8 @@ parser.add_argument('--case', action='append', required=True, choices=(
     'dynamic-class-computed-constant', 'literal-and-folded-class-method-order',
     'named-class-computed-constant', 'literal-slash-missing-diagnostics',
     'compiler-folded-static-keyword-scopes', 'compiled-class-target-negative',
-    'fcc-first-use', 'same-site-retired-owners'))
+    'fcc-first-use', 'same-site-retired-owners', 'lazy-table-retired-owners',
+    'ordinary-case-alias', 'inherited-deferred-alias', 'callable-caller-strictness-prefix', 'owned-stringable-multiline'))
 args = parser.parse_args()
 SOURCES = args.sources.resolve()
 OUT = args.output.resolve()
@@ -40,6 +41,8 @@ import enum_comparison_review_protocol as comparison_review
 import enum_default_review_protocol as default_review
 import enum_acquisition_review_protocol as acquisition_review
 import enum_callable_review_protocol as callable_review
+import enum_lookup_review_protocol as lookup_review
+from include_saved_protocol import file_fixture
 from reentrant_unlinked_new_protocol import nodes, response
 from recorded_worker import Worker
 import static_types as types
@@ -56,6 +59,10 @@ def folder(name):
         name = 'static-loader-cv-order'
     if name == 'compiled-class-target-negative':
         name = 'literal-and-folded-class-method-order'
+    if name == 'owned-stringable-multiline':
+        name = 'owned-stringable'
+    if name == 'callable-caller-strictness-prefix':
+        name = 'callable-caller-strictness'
     return SOURCES / name
 
 def receipt(name, filename):
@@ -66,7 +73,7 @@ assert os.sched_getaffinity(0) == {args.cpu}
 OUT.mkdir()
 modules = [ROOT / p for p in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
 changed = subprocess.check_output(['git', 'diff', '--name-only'], cwd=ROOT, text=True).splitlines()
-paths = [Path(__file__), Path(generated_review.__file__), Path(case_review.__file__), Path(magic_review.__file__), Path(query_review.__file__), Path(comparison_review.__file__), Path(default_review.__file__), Path(acquisition_review.__file__), Path(callable_review.__file__), ROOT / 'spec/semantics/modules.json',
+paths = [Path(__file__), Path(generated_review.__file__), Path(case_review.__file__), Path(magic_review.__file__), Path(query_review.__file__), Path(comparison_review.__file__), Path(default_review.__file__), Path(acquisition_review.__file__), Path(callable_review.__file__), Path(lookup_review.__file__), ROOT / 'spec/semantics/modules.json',
          ROOT / 'tests/semantics/recorded_worker.py', ROOT / 'tests/semantics/static_types.py',
          ROOT / 'tests/semantics/reentrant_unlinked_new_protocol.py',
          ROOT / 'tests/semantics/profile.json', ROOT / 'frontend/worker.php',
@@ -76,6 +83,10 @@ paths += [ROOT / p for p in changed if (ROOT / p).is_file()]
 paths += [ROOT / 'spec/semantics/436-enum-compiler.watsup', ROOT / 'spec/semantics/437-enum-runtime.watsup']
 paths += [folder(name) / p for name in SELECTED for p in ('main.php', 'native.stdout')]
 paths += [receipt(name, p) for name in SELECTED for p in ('freeze.json', 'native-report.json')]
+if 'callable-caller-strictness-prefix' in SELECTED:
+    paths += [folder('callable-caller-strictness-prefix') / p
+              for p in ('factory-strict.php', 'file-snapshot.json')]
+    paths += [ROOT / 'tests/semantics/include_saved_protocol.py']
 before = {str(p): sha(p) for p in paths}
 report = {'revision': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
           'sources': str(SOURCES),
@@ -83,7 +94,7 @@ report = {'revision': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=
           'inputs': before, 'selected': SELECTED, 'records': [], 'result': 'fail'}
 snapshots = OUT / 'tested-inputs'
 snapshots.mkdir()
-for p in [Path(__file__), Path(generated_review.__file__), Path(case_review.__file__), Path(magic_review.__file__), Path(query_review.__file__), Path(comparison_review.__file__), Path(default_review.__file__), Path(acquisition_review.__file__), Path(callable_review.__file__), *(ROOT / p for p in changed),
+for p in [Path(__file__), Path(generated_review.__file__), Path(case_review.__file__), Path(magic_review.__file__), Path(query_review.__file__), Path(comparison_review.__file__), Path(default_review.__file__), Path(acquisition_review.__file__), Path(callable_review.__file__), Path(lookup_review.__file__), *(ROOT / p for p in changed),
           ROOT / 'spec/semantics/436-enum-compiler.watsup', ROOT / 'spec/semantics/437-enum-runtime.watsup']:
     if p.is_file():
         target = snapshots / (p.relative_to(ROOT) if p.is_relative_to(ROOT) else p.name)
@@ -112,6 +123,9 @@ try:
             review = acquisition_review
         if name in ('fcc-first-use', 'same-site-retired-owners'):
             review = callable_review
+        if name in ('lazy-table-retired-owners', 'ordinary-case-alias',
+                    'inherited-deferred-alias', 'callable-caller-strictness-prefix', 'owned-stringable-multiline'):
+            review = lookup_review
         source = folder(name) / 'main.php'
         freeze = json.loads(receipt(name, 'freeze.json').read_text())
         if 'cases' in freeze:
@@ -121,7 +135,17 @@ try:
         parsed = frontend.request({'op': 'parse', 'source': base64.b64encode(source.read_bytes()).decode()})
         assert parsed['accepted']
         checked = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True})
-        if review in (acquisition_review, callable_review) and name not in (
+        if review is lookup_review and name == 'callable-caller-strictness-prefix':
+            snapshot = json.loads((source.parent / 'file-snapshot.json').read_text())
+            entry, = snapshot['entries']
+            factory = source.parent / 'factory-strict.php'
+            assert base64.b64decode(snapshot['main']) == str(source).encode()
+            assert base64.b64decode(entry['source']) == factory.read_bytes()
+            checked_factory = file_fixture(frontend, adapter, factory.read_bytes(),
+                base64.b64decode(entry['requested']), base64.b64decode(entry['opened']), 0)
+            checks = review.assertions(name, checked['fixture'], source,
+                (source.parent / 'native.stdout').read_bytes(), snapshot, checked_factory)
+        elif review in (acquisition_review, callable_review) and name not in (
                 'static-loader-cv-order-start', 'literal-slash-missing-diagnostics',
                 'compiler-folded-static-keyword-scopes'):
             codes = [base64.b64decode(node['fields'][0]['fields'][0]['bytes'])
@@ -145,7 +169,7 @@ try:
         target = OUT / name
         target.mkdir()
         (target / 'assertions.json').write_text(json.dumps(checks, indent=2) + '\n')
-        (target / 'protocol.watsup').write_text(review.PREFIX + '\ndec $main() : bool\ndef $main() = true\n' +
+        (target / 'protocol.watsup').write_text((review.prefix(name) if review is lookup_review else review.PREFIX) + '\ndec $main() : bool\ndef $main() = true\n' +
             ''.join(('  -- ' if x.startswith('PhpStep:') else '  -- if ') + x + '\n' for x in checks))
     adapter.close(); adapter = None
     frontend.close(); frontend = None
