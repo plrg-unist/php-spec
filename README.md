@@ -3705,6 +3705,13 @@ when the left operand is borrowed or scalar. Its source predicate agrees in
 AL and SL, retaining real cache and CV owners through release. See the
 [identity receipt review](coverage/semantics/identity-produced-right-review.json).
 
+Canonical materialized destructor collection also preserves ordinary
+named-function locals, saved caller locals and real method receivers as roots.
+The GC site belongs to the authenticated caller's body, and removing borrowed
+count metadata cannot select an older walk. Resurrection preserves the native
+signed result -1 and later release count 3. Other active and reentrant contexts
+remain partial. See the [ordinary-caller review](coverage/semantics/gc-caller-materialized-review.json).
+
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
 reuse only when destructor preparation leaves the state identical.

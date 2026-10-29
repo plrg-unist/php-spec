@@ -1,0 +1,68 @@
+{
+  "scope": "GC07: canonical materialized destructor collection from authenticated ordinary named-function and method caller frames, with WeakReference::create copied-argument and unused-result ownership",
+  "target": "Pinned PHP 8.5.10 CLI, NTS, 64-bit; LC_ALL=C; TZ=UTC; source profile from tests/semantics/profile.json; explicit numeric_runner --sl for reached checks",
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_gc.c::{gc_collect_white,gc_remove_nested_data_from_buffer,gc_call_destructors,zend_gc_collect_cycles}",
+    "vendor/php-src/Zend/zend_execute.h::zend_vm_stack_free_args",
+    "vendor/php-src/Zend/zend_vm_def.h::{ZEND_DO_ICALL,ZEND_ASSIGN,ZEND_FREE}",
+    "vendor/php-src/Zend/zend_weakrefs.c::ZEND_METHOD(WeakReference, create)"
+  ],
+  "behavior": "A canonical materialized destructor plan admits a source-authenticated ordinary function or method caller. Current and saved local cells and a real method receiver keep their existing machine roots. The GC site must belong to that caller body; required claimed-count detection cannot be bypassed by coherently erasing the carried source and walk marker. Successful source-selected WeakReference::create releases its copied object parameter as a no-GC temporary. An unused simple-local assignment borrows the matching WeakReference result/base cache until transfer while still releasing the variable's actual old value. Module39 owning edges, the claimed walk, physical nested removal and signed count algorithm are unchanged.",
+  "private_cuts": {
+    "base": "4420f5668",
+    "implementation": "6de4296e7fa0e349d19c8534e355ea786971c703",
+    "fixture_binding": "17dc232a691354ad8a55c2615840325e4ccab0dc",
+    "301_sha256": "686e2e459bd5ed997a82f35cd17227a6ffdc9362cd8b2cbb90cb2ec52568a559",
+    "30_sha256": "282b125f4777a7c718b3c5fc527ca311bc3249d03dc13f07c3c01cc2a542e314",
+    "39_sha256": "0760cea35008d07696da16cba29ff942fbcce8ffc33cc0d4b17f9f3955d0690b",
+    "oracle_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_binary_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "original_source_sha256": {
+    "function-local-protects-sibling": "e3b63662a7f979589535f46f3f619f15d06732570fcac69e1df2651fe97bc826",
+    "method-receiver-protects-sibling": "275f23f83a356c55b47f83eafafc7f282998b2e3587a0231439185ede2e73dad",
+    "nested-caller-local-protects-sibling": "f699e754fe4b76216e0eab1397e455988af2837e120f3b40f5bca8f044712140",
+    "function-caller-mutation-resurrection": "54273a2131da0b30e6cf71faa070606ad893b6efb94d715dcb08dc44b2329546"
+  },
+  "validation": {
+    "originals": "Four source bytes match normal PHP output, empty stderr and exit 0 at the 6de4296e7 implementation cut. Function local and method receiver each print P|0|D|3|split|0|H|3|dead|0|END. Nested saved caller prints I|D|3|protected|0|R|returned|H|3|dead|0|END. The corrected resurrection original prints P|D|-1|saved|0|3|dead|0|END; -1 is the native signed nested debit and is not classified as an engine defect.",
+    "reached": "Nine accepted strict SL case groups pass 392 reported checks (64+69+37+38+21+39+53+37+34) at separate private cuts. They cover current/saved local and receiver roots, actual caller-body selection, erased-marker and forged-context refusals, copied argument no-GC release, borrowed result/base transfer, identity metadata, signed PASS1 and later release, and budget continuation. The first combined method fixture assertion failed before its receiver property-list/slot binding was corrected at 17dc; that failed row has zero credit, while its subsequent 69-check row passes.",
+    "compiler_and_metadata": "A private strict 431-module compilation passed at d9184b1695. At the later 17dc fixture cut, compact AL and SL metadata controls each ran the full 431-module manifest and returned true newline, empty stderr, exit 0, stable inputs and no remaining process group. These controls do not renew the four source cuts.",
+    "zero_credit": "The initial resurrection native output contained BAD and was corrected in the source before the final native run. Three subsequent model mismatch reports and three failed AL metadata diagnostics are preserved without agreement credit. The earlier combined method fixture failure is likewise preserved. No old GC06 source/state result was rerun or renewed."
+  },
+  "raw_root": "../php-spec-evidence-archive",
+  "raw_reports_sha256": {
+    "gc-caller-materialized-author/packet1/native-report.json": "bd2db5836f25dd2e0f601816222eef141a4e85103be881b98db84d12c401642d",
+    "gc-caller-materialized-author/packet1/model-final-no-gc-report.json": "4655df1ce78606a7b989b36ec2c5a2791ddbf252c8acaf3f9c8ab465f11c7ee0",
+    "gc-caller-materialized-author/packet1/model-final-method-no-gc-report.json": "d774610a0528450ca604de1d8b566c8e134bb978690662371ab537c87bd6de5d",
+    "gc-caller-materialized-review/packet1/native-report.json": "6ceaed4a40d219af44c88841b1fac09ae1c147ab75b9db001b66ae62c6eb2f9a",
+    "gc-caller-materialized-review/packet1/model-final-nested-no-gc-report.json": "ddd94b86a3f305fa2113d20946fbf774dd99453f686bd624cb170e726948c61d",
+    "gc-caller-materialized-review/corrected-release-packet1/native-report.json": "23971c2c80f6ac5abc77ea04299dcafab78dc68aee857b5a9472e7bbf6680334",
+    "gc-caller-materialized-review/corrected-release-packet1/model-metadata-cons-fix-report.json": "9f77072bac204065cdb8d959d8351aff791d4f9f30b20f7dbf33526a82cf2101",
+    "gc-caller-materialized-author/strict5/report.json": "e00709d3af3563d5a97301ef365f0eec9726d4584dfb0ee9bc52c365e3f21e35",
+    "gc-caller-materialized-review/metadata-composition-al4/report.json": "743bd0d78aaa75a26c8aa84412970c853d17ebab9f76fb291d59f2b05e41b5c8",
+    "gc-caller-materialized-review/metadata-composition-sl4/report.json": "d1ca467cefc8449a194d24ff3a5014638717965fad4241a47a8d65bf642e05b6"
+  },
+  "reached_reports_root": "php-spec/.tools",
+  "reached_reports": {
+    "shutdown-state-review-fskh00t9/report.json": "function-local-roots-and-fresh-erasure: 64 pass; initial method 69 failed, zero credit",
+    "shutdown-state-review-5fjxwg5j/report.json": "method-receiver-root-and-fresh-erasure: 69 pass at 17dc",
+    "shutdown-state-review-mso89ma3/report.json": "callback-caller-erasure: 37 pass",
+    "shutdown-state-review-6y_pvf3t/report.json": "create-copied-argument-no-gc: 38 pass",
+    "shutdown-state-review-rb521_a0/report.json": "weakref-unused-cv-borrowed-base: 21 pass",
+    "shutdown-state-review-aa4_11gu/report.json": "post-create-identity-temp-metadata: 39 pass; repeated create 38 is corroboration, not added to 392",
+    "shutdown-state-review-vszwxku2/report.json": "saved-caller-local-root: 53 pass; resurrection-signed-pass1: 37 pass; resurrected-caller-later-release: 34 pass at 17dc"
+  },
+  "reached_report_sha256": {
+    "shutdown-state-review-fskh00t9/report.json": "8f404fae9ef41d82e7659341b9957daba342c1252149c587bb1b55844cecaae6",
+    "shutdown-state-review-5fjxwg5j/report.json": "309991c9a515013be4728207f2fc9e4c828323ae80e8a8a845d661ee1f2c9e26",
+    "shutdown-state-review-mso89ma3/report.json": "c9bfbeeabb5764388dd477e6d3c4dc1325e4b22129f317780fd4d6ed89e6b16f",
+    "shutdown-state-review-6y_pvf3t/report.json": "65b846ca0e6aced51a18f782c8c32ab6e17992a1bb60d97a437b96c098b9f680",
+    "shutdown-state-review-rb521_a0/report.json": "4fe819c3d913e28abd4f88d45ded8365698e39de010475627b8ec49e2e54850d",
+    "shutdown-state-review-aa4_11gu/report.json": "18d43414572d60a079f2ecc285da788dedb0cee70831956584a61dab0d83bc39",
+    "shutdown-state-review-vszwxku2/report.json": "41a6b26282c71ca835de23e03ee6b02501b2696889d0bc34b9e9f644d4324214"
+  },
+  "limits": "This is a bounded ordinary caller, canonical materialized callback lane. Fiber, worker, residual, reentry, iterator, hooks, WeakMap callbacks, uncertain prior histories, wider callback-created tables and other cache/API lifetimes remain partial. Enum object collectability remains a separate known omission. The source differential and reached checks do not establish complete PHP core or BOLA freedom.",
+  "recovery": "From php-spec, use tests/semantics/gc_caller_materialized_sources.py and gc_caller_materialized_review_sources.py with native/model phases; run a chosen tests/semantics/gc_caller_materialized_state.py or gc_caller_materialized_review_state.py --case NAME for a reached control. Existing reports contain exact argv, cwd, profile, binary/input hashes, exits and outcomes. For the four credited originals select the final model variants listed above and their corresponding native reports, not the earlier diagnostic variants. Preserve the failed cuts; do not infer renewed agreement from this metadata file."
+}

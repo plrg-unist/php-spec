@@ -324,6 +324,25 @@ it does not authenticate wholly rewritten prior history. Skipped destructors,
 WeakMap callbacks, worker/residual/reentry paths, hooks, active contexts and
 other operator or reference-result cache lifetimes remain partial.
 
+Canonical materialized ordinary callbacks also run from authenticated ordinary
+named-function and method callers. Current locals, saved caller locals and the
+real method receiver retain their existing machine roots; saved count images
+add no owners. Caller headers and saved contexts authenticate separately from
+the GC site's containing function. Required claimed-count detection remains
+independent of a supplied caller, so coherently erasing the count source and
+walk marker cannot select the older walk. Nested removal and signed counting
+are unchanged: resurrection can retain a first result of -1, followed by 3
+after the real outside owner is released. Fiber/worker/residual/reentry,
+iterator, hook and wider callback-created-table cases retain their fences.
+Successful source-selected `WeakReference::create()` releases its copied object
+argument through an authenticated no-GC temporary, matching internal argument
+cleanup. For an unused simple local assignment, the matching result and base
+cache stay borrowed until the result moves into the variable; replacing the
+variable still decrements its actual old value. These rules preserve the native
+potential-root order that permits the signed result. Other APIs and wider cache
+lifetimes remain partial.
+See the [ordinary-caller review](../../coverage/semantics/gc-caller-materialized-review.json).
+
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;
 pending exceptions remain owned once. After a destructor returns, its bare guard
