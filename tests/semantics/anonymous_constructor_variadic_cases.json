@@ -1,0 +1,120 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-variadic-named-reference-tail-rebinding",
+      "source": "<?php\n$slot = \"5\";\n$old_alias =& $slot;\n$other = 20;\n$object = new class(first: $slot, ignored: ($slot =& $other), second: $slot) {\n    public function __construct($ignored, int &...$values) {\n        foreach ($values as $key => $value) {\n            echo $key, \":\", $value, \"|\";\n            $values[$key] = $value + 1;\n        }\n        echo \"fixed|\", $ignored, \"|\";\n    }\n};\necho $slot, \"|\", $old_alias, \"|\", $other, \"|\";\necho $old_alias === 6 ? \"old-int|\" : \"wrong|\";\n",
+      "source_sha256": "6b0836c51a8acd2a923d5dca572f49fb54dbb910f9a7b6496f157489aaf92939",
+      "stdout_base64": "Zmlyc3Q6NXxzZWNvbmQ6MjB8Zml4ZWR8MjB8MjF8NnwyMXxvbGQtaW50fA==",
+      "stdout_template_base64": "Zmlyc3Q6NXxzZWNvbmQ6MjB8Zml4ZWR8MjB8MjF8NnwyMXxvbGQtaW50fA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class154-review/named-reference-tail-rebinding.native-first.json",
+      "native_raw_sha256": "695a745fa2baae7d9e25fba1acdb7aa7b6475cea303c5d9a4ea2ed4b1e825d57",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-variadic-typed-tail-and-invalid-send-priority",
+      "source": "<?php\nfunction head154Review() { echo \"head|\"; return 1; }\nfunction good154Review() { echo \"good|\"; return 2; }\nfunction bad154Review() { echo \"bad|\"; return \"bad\"; }\nfunction late154Review() { echo \"late|\"; return 4; }\ntry {\n    $typed = new class(head154Review(), good154Review(), bad154Review(), late154Review()) {\n        public function __construct($head, int ...$tail) { echo \"typed-body|\"; }\n    };\n} catch (TypeError $error) {\n    echo $error->getMessage(), \"|\";\n}\necho \"after-type|\";\ntry {\n    $reference = new class(1, late154Review()) {\n        public function __construct(&...$refs) { echo \"reference-body|\"; }\n    };\n} catch (Error $error) {\n    echo $error instanceof TypeError ? \"type|\" : \"send|\";\n    echo $error->getMessage(), \"|\";\n}\necho \"after|\";\n",
+      "source_sha256": "f82c89a92a8eee680bdaeebe680c13c5818179e5d4d53eaafbe1d52745261a86",
+      "stdout_base64": "aGVhZHxnb29kfGJhZHxsYXRlfGNsYXNzQGFub255bW91cygpOiBBcmd1bWVudCAjMyBtdXN0IGJlIG9mIHR5cGUgaW50LCBzdHJpbmcgZ2l2ZW4sIGNhbGxlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY2xhc3MxNTQtcmV2aWV3L29yaWdpbmFscy90eXBlZC10YWlsLWFuZC1pbnZhbGlkLXNlbmQtcHJpb3JpdHkucGhwIG9uIGxpbmUgN3xhZnRlci10eXBlfHNlbmR8Y2xhc3NAYW5vbnltb3VzKCk6IEFyZ3VtZW50ICMxIGNvdWxkIG5vdCBiZSBwYXNzZWQgYnkgcmVmZXJlbmNlfGFmdGVyfA==",
+      "stdout_template_base64": "aGVhZHxnb29kfGJhZHxsYXRlfGNsYXNzQGFub255bW91cygpOiBBcmd1bWVudCAjMyBtdXN0IGJlIG9mIHR5cGUgaW50LCBzdHJpbmcgZ2l2ZW4sIGNhbGxlZCBpbiB7RklMRX0gb24gbGluZSA3fGFmdGVyLXR5cGV8c2VuZHxjbGFzc0Bhbm9ueW1vdXMoKTogQXJndW1lbnQgIzEgY291bGQgbm90IGJlIHBhc3NlZCBieSByZWZlcmVuY2V8YWZ0ZXJ8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class154-review/typed-tail-and-invalid-send-priority.native-first.json",
+      "native_raw_sha256": "12d8cb217749703220ee03dfab14657f1befa554c78105ef9e56ebd1217a5fb8",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-variadic-positional-typed-value-tail",
+      "source": "<?php\n$tail154 = \"2\";\necho \"before|\";\n$object154 = new class(1, $tail154, 3, 4) {\n    public $sum;\n    public $typed;\n    public function __construct(int $head, int ...$rest) {\n        $this->typed = $rest[0] === 2;\n        $this->sum = $head + $rest[0] + $rest[1] + $rest[2];\n    }\n};\necho $object154->typed, \"|\", $object154->sum, \"|\", $tail154;\necho $tail154 === \"2\" ? \"|caller-string|\" : \"|changed|\";\necho \"after\";\n",
+      "source_sha256": "557c38c2507370158fa13dc38a0adb3e553826749440fa8e5c4a2437e0ee9fc1",
+      "stdout_base64": "YmVmb3JlfDF8MTB8MnxjYWxsZXItc3RyaW5nfGFmdGVy",
+      "stdout_template_base64": "YmVmb3JlfDF8MTB8MnxjYWxsZXItc3RyaW5nfGFmdGVy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class154-review/author-positional-typed-value-tail.native-first.json",
+      "native_raw_sha256": "13b89e5c18004740d543e7c396713b92bfce1be0d1a61a178cd673192fc6a7cc",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-variadic-mixed-typed-reference-tail",
+      "source": "<?php\n$first154 = \"2\";\n$last154 = \"3\";\n$alias154 =& $first154;\necho \"before|\";\n$object154 = new class(1, $first154, later: $last154) {\n    public $sum;\n    public function __construct(int $head, int &...$rest) {\n        echo $rest[0] === 2 ? \"first-int|\" : \"bad-first|\";\n        echo $rest[\"later\"] === 3 ? \"last-int|\" : \"bad-last|\";\n        $rest[0] += 10;\n        $rest[\"later\"] += 20;\n        $this->sum = $head + $rest[0] + $rest[\"later\"];\n    }\n};\necho $object154->sum, \"|\", $first154, \"|\", $alias154, \"|\", $last154, \"|after\";\n",
+      "source_sha256": "5dd5ecdaf566b3ae0ca652c2dacacb66be435346fea20feaa372ea988c39f39d",
+      "stdout_base64": "YmVmb3JlfGZpcnN0LWludHxsYXN0LWludHwzNnwxMnwxMnwyM3xhZnRlcg==",
+      "stdout_template_base64": "YmVmb3JlfGZpcnN0LWludHxsYXN0LWludHwzNnwxMnwxMnwyM3xhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class154-review/author-mixed-typed-reference-tail.native-first.json",
+      "native_raw_sha256": "970d383b03dd22fb7c80c4c679eed76ade58e8b9a6e62e4031deba29c9b02e87",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-variadic-named-required-hole-priority",
+      "source": "<?php\nfunction extra154Hole() { echo \"extra|\"; return 9; }\necho \"before|\";\ntry {\n    $object154 = new class(second: 2, last: extra154Hole()) {\n        public function __construct(int $first, int $second, int ...$tail) {\n            echo \"body|\";\n        }\n    };\n} catch (ArgumentCountError $error154) {\n    echo $error154->getMessage(), \"|\";\n}\necho \"after\";\n",
+      "source_sha256": "53a6c9c153007c2d5ef4c164cf0814a716baa8910145d0ff8f8691da06efbf3d",
+      "stdout_base64": "YmVmb3JlfGV4dHJhfGNsYXNzQGFub255bW91cygpOiBBcmd1bWVudCAjMSAoJGZpcnN0KSBub3QgcGFzc2VkfGFmdGVy",
+      "stdout_template_base64": "YmVmb3JlfGV4dHJhfGNsYXNzQGFub255bW91cygpOiBBcmd1bWVudCAjMSAoJGZpcnN0KSBub3QgcGFzc2VkfGFmdGVy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class154-review/author-named-required-hole-priority.native-first.json",
+      "native_raw_sha256": "2ead6d0f0f369c8ef47c9e2feb072d9426d582e844d6b529f8f02c7394b3d501",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-variadic-eval-default-and-empty-loop",
+      "source": "<?php\n$source154 = 'namespace Ref154Author;\nfunction make154() {\n    return new class(last: 5) {\n        public $sum;\n        public function __construct(int $head = 7, int ...$rest) {\n            $this->sum = $head + $rest[\"last\"];\n        }\n    };\n}';\neval($source154);\n$first154 = Ref154Author\\make154();\n$second154 = Ref154Author\\make154();\n$empty154 = new class {\n    public $size;\n    public function __construct(...$rest) {\n        $this->size = 0;\n        foreach ($rest as $value) {\n            $this->size += 1;\n        }\n    }\n};\necho $first154->sum, \"|\", $second154->sum, \"|\", $empty154->size, \"|after\";\n",
+      "source_sha256": "bbbbaa1e6fb8b56ad6fe3bb5107045239ec2c49151ab84e1fd9c01486c763da6",
+      "stdout_base64": "MTJ8MTJ8MHxhZnRlcg==",
+      "stdout_template_base64": "MTJ8MTJ8MHxhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class154-review/eval-default-and-empty-loop.native-first.json",
+      "native_raw_sha256": "2671180ae99067bc740fcfe0e15bb32148b2349a672e7cde23c5cf7d7f85e72f",
+      "model_timeout_seconds": 240
+    }
+  ],
+  "excluded_sources": [
+    {
+      "id": "anonymous-variadic-eval-default-and-empty-tail",
+      "source": "<?php\n$source154 = 'namespace Ref154Author;\nfunction make154() {\n    return new class(last: 5) {\n        public $sum;\n        public function __construct(int $head = 7, int ...$rest) {\n            $this->sum = $head + $rest[\"last\"];\n        }\n    };\n}';\neval($source154);\n$first154 = Ref154Author\\make154();\n$second154 = Ref154Author\\make154();\n$empty154 = new class {\n    public $size;\n    public function __construct(...$rest) {\n        $this->size = count($rest);\n    }\n};\necho $first154->sum, \"|\", $second154->sum, \"|\", $empty154->size, \"|after\";\n",
+      "source_sha256": "0cdd17cd1a3be39afa527502361719fbd635f9468a489350222ae166949acd88",
+      "stdout_base64": "MTJ8MTJ8MHxhZnRlcg==",
+      "stdout_template_base64": "MTJ8MTJ8MHxhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class154-review/author-eval-default-and-empty-tail.native-first.json",
+      "native_raw_sha256": "84951cac9fa0f37b8dc890509013594ae73c595e5b62b1e7277c666e153f1091",
+      "model_timeout_seconds": 240,
+      "exclusion": "Excluded count() library observer under CORE.md ordinary-library boundary. The unchanged original/native tuple is retained; this model refusal has zero agreement credit.",
+      "model_boundary": {
+        "status": "unsupported",
+        "reason": "registered builtin call",
+        "agreement_credit": 0,
+        "report": ".tools/class154-artifacts/source-eval-default-and-empty-tail.json",
+        "raw": ".tools/class154-artifacts/method-runtime-p75711mr/report.json"
+      }
+    }
+  ]
+}

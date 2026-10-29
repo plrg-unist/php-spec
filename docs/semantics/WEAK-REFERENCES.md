@@ -14,6 +14,11 @@ no ownership edge. `create` returns the same allocated wrapper for a target,
 or allocates a fresh wrapper after its predecessor retires. `get` copies a live
 target into the ordinary result owner. Discarding or saving that result uses the
 existing ordered release machinery.
+Successful source-selected `create` retires its copied argument without GC
+buffering. An authenticated unused simple local assignment also borrows the
+matching result/base cache until transfer into the variable; its actual old
+value still releases normally. The [caller collection review](../../coverage/semantics/gc-caller-materialized-review.json)
+records the resulting potential-root order and signed collection count.
 
 Wrappers satisfy nominal `WeakReference` argument and property types independently
 of referent lifetime; rejected receives name the actual internal class.

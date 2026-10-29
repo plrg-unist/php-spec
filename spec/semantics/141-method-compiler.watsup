@@ -16,6 +16,7 @@ dec $ppmethod_magic(ptbytes) : bool
 dec $ppmethod_tostring(ptbytes) : bool
 dec $ppmethod_get(int, ptbytes) : bool
 dec $ppmethod_get_signature(pssignature) : bool
+dec $ppmethod_get_declaration_signature(pssignature) : bool
 dec $ppmethod_call(int, ptbytes) : bool
 dec $ppmethod_callstatic(int, ptbytes) : bool
 dec $ppmethod_call_signature(pssignature) : bool
@@ -123,6 +124,10 @@ def $ppmethod_get_signature(pssignature) = true
   -- if psparam.TYPE = eps /\ ~psparam.BYREF /\ ~psparam.VARIADIC /\ psparam.REQUIRED /\ psparam.DEFAULT = PSNONE
   -- if pssignature.RETURNS = eps
 def $ppmethod_get_signature(pssignature) = false -- otherwise
+def $ppmethod_get_declaration_signature(pssignature) = $ppmethod_get_signature(pssignature[.PARAMETERS = [psparam[.TYPE = eps]]])
+  -- if pssignature.PARAMETERS = [psparam]
+  -- if psparam.TYPE = eps \/ psparam.TYPE = [(PTBRANCH ([PTBUILTIN "string"]))]
+def $ppmethod_get_declaration_signature(pssignature) = false -- otherwise
 def $ppmethod_call(flags, ptbytes) = (flags <- [0,1] /\ $ptlc(ptbytes) = $ptascii("__call"))
 def $ppmethod_callstatic(flags, ptbytes) = (flags <- [8,9] /\ $ptlc(ptbytes) = $ptascii("__callstatic"))
 def $ppmethod_call_signature(pssignature) = true
@@ -347,14 +352,14 @@ def $ppmethod_finish_raw(P_outer, P_body, pcpath, flags, ptbytes, pssignature, m
   -- if $ppmethod_isset(flags, ptbytes) /\ ~$ppmethod_isset_signature(pssignature)
 def $ppmethod_finish_raw(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppunsupported(P_body, "magic getter signature")) ppropertydesc* pmethoddesc*
   -- if P_body.COMPLETION = PPCNORMAL
-  -- if $ppmethod_get(flags, ptbytes) /\ ~$ppmethod_get_signature(pssignature) /\ ~(pchheader.KIND = "enum" /\ $ppenum_get_signature(pssignature))
+  -- if $ppmethod_get(flags, ptbytes) /\ ~$ppmethod_get_declaration_signature(pssignature) /\ ~(pchheader.KIND = "enum" /\ $ppenum_get_signature(pssignature))
 def $ppmethod_finish_raw(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS P_restored ppropertydesc* (pmethoddesc* ++ [{ NAME ptbytes, FUNCTION { DEFAULTS $ppmethod_defaults(P_body, pcpath, pssignature.PARAMETERS, 0), ORIGIN PORIGIN P_outer.FOLD.SOURCE.ID pcpath, NAME (pchheader.NAME ++ $ptascii("::") ++ ptbytes), SIGNATURE pssignature_effective, CVS P_body.CVS, ENV P_outer.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 6]), EARLY false, LINE $ppmethod_line(metadata), ENDLINE $psendline(metadata) }, OWNER PORIGIN P_outer.FOLD.SOURCE.ID pcpath[0:$nabs($( |pcpath| - 2))], VISIBILITY $ppmethod_visibility(flags), STATIC $ppproperty_flag(flags, 8), FINAL $ppproperty_flag(flags, 32), ABSTRACT $ppproperty_flag(flags, 16) }])
   -- if P_body.COMPLETION = PPCNORMAL
   -- if ~($ptlc(ptbytes) = $ptascii("__invoke") /\ $ppproperty_flag(flags, 8))
   -- if ~($ptlc(ptbytes) = $ptascii("__construct") /\ pssignature.RETURNS =/= eps) /\ (~($ptlc(ptbytes) <- [$ptascii("__wakeup"), $ptascii("__clone")]) \/ ($ppmethod_wakeup_args_valid(pssignature.PARAMETERS) /\ ~$ppproperty_flag(flags, 8) /\ $ppmethod_wakeup_return_valid(pssignature.RETURNS)))
   -- if $ptlc(ptbytes) =/= $ptascii("__destruct") \/ ($ppmethod_wakeup_args_valid(pssignature.PARAMETERS) /\ ~$ppproperty_flag(flags, 8) /\ pssignature.RETURNS = eps)
   -- if ~$ppmethod_tostring(ptbytes) \/ (pssignature.PARAMETERS = eps /\ ~$ppproperty_flag(flags, 8) /\ $ppmethod_visibility(flags) = PROPERTY_PUBLIC /\ $ppmethod_return_valid(pssignature.RETURNS))
-  -- if ~$ppmethod_get(flags, ptbytes) \/ $ppmethod_get_signature(pssignature) \/ (pchheader.KIND = "enum" /\ $ppenum_get_signature(pssignature))
+  -- if ~$ppmethod_get(flags, ptbytes) \/ $ppmethod_get_declaration_signature(pssignature) \/ (pchheader.KIND = "enum" /\ $ppenum_get_signature(pssignature))
   -- if ~($ppmethod_call(flags, ptbytes) \/ $ppmethod_callstatic(flags, ptbytes)) \/ $ppmethod_call_signature(pssignature) \/ (pchheader.KIND = "enum" /\ $ppenum_call_signature(pssignature))
   -- if ~$ppmethod_set(flags, ptbytes) \/ $ppmethod_set_signature(pssignature)
   -- if ~$ppmethod_unset(flags, ptbytes) \/ $ppmethod_unset_signature(pssignature)

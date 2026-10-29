@@ -25,13 +25,12 @@ def $anonymous_property_items((NPropertyItem phpType40 (NExprConstFetch (NName (
 def $anonymous_property_items(phpType57*) = false -- otherwise
 
 dec $anonymous_constructor_parameter(phpType17) : bool
-def $anonymous_constructor_parameter(NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text) metadata_name) ABSENT (SEQUENCE eps) metadata) = $ptvalidname($base64(text), false)
-def $anonymous_constructor_parameter(NParam (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_type) metadata_type) (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text) metadata_name) ABSENT (SEQUENCE eps) metadata) = ($ptlc($base64(text_type)) = $ptascii("int") /\ $ptvalidname($base64(text), false))
+;; Ordinary signature compilation owns types, defaults and final-only variadics.
+def $anonymous_constructor_parameter(NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN b) (BOOLEAN b_var) (NExprVariable (BYTES text) metadata_name) phpType5 (SEQUENCE eps) metadata) = $ptvalidname($base64(text), false)
 def $anonymous_constructor_parameter(phpType17) = false -- otherwise
 dec $anonymous_constructor_parameters(phpType16) : bool
 def $anonymous_constructor_parameters(SEQUENCE eps) = true
-def $anonymous_constructor_parameters(SEQUENCE ([phpType17])) = $anonymous_constructor_parameter(phpType17)
-def $anonymous_constructor_parameters(SEQUENCE ([phpType17_1, phpType17_2])) = ($anonymous_constructor_parameter(phpType17_1) /\ $anonymous_constructor_parameter(phpType17_2))
+def $anonymous_constructor_parameters(SEQUENCE (phpType17 :: phpType17_tail*)) = ($anonymous_constructor_parameter(phpType17) /\ $anonymous_constructor_parameters(SEQUENCE phpType17_tail*))
 def $anonymous_constructor_parameters(phpType16) = false -- otherwise
 
 dec $anonymous_member(statement) : bool
@@ -413,7 +412,7 @@ def $anonymous_new_arguments((NArg ABSENT expression (BOOLEAN false) (BOOLEAN fa
 def $anonymous_new_arguments((NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = ($ptvalidname($base64(text), false) /\ $anonymous_new_arguments(phpType7*))
 def $anonymous_new_arguments(phpType7*) = false -- otherwise
 def $ppdispatch(P, pcpath, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppanonymous_class(P, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class), pcpath ++ [PCFIELD 1], 0, phpType7*, PNUNSUPPORTED "constructor has deferred argument modes")
-  -- if phpType7* =/= eps /\ $(|phpType7*| <= 2) /\ $anonymous_new_arguments(phpType7*)
+  -- if phpType7* =/= eps /\ $anonymous_new_arguments(phpType7*)
 
 ;; Compiled identity is independent of publication. A parented anonymous class
 ;; links on its first DECLARE_ANON_CLASS, before allocation and argument sends.
@@ -423,7 +422,7 @@ def $anonymous_new_descriptor(S, PORIGIN 0 pcpath) = (pclassdesc)
   -- if $source_unit(S.SOURCES, 0) = (pcunit)
   -- if $anonymous_unit(pcunit)
   -- if $origin_node(S.SOURCES, PORIGIN 0 pcpath) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
-  -- if $(|phpType7*| <= 2) /\ $anonymous_new_arguments(phpType7*)
+  -- if $anonymous_new_arguments(phpType7*)
   -- if $compilation_projection(S, pcunit) = (ppinstalled)
   -- if $class_at(ppinstalled.CLASSES, PORIGIN 0 (pcpath ++ [PCFIELD 0])) = (pclassdesc)
   -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
@@ -434,7 +433,7 @@ def $anonymous_new_descriptor(S, PORIGIN n pcpath) = (pclassdesc)
   -- if $source_unit(S.SOURCES, n) = (pcunit)
   -- if $anonymous_rtd_unit(pcunit) =/= eps
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
-  -- if $(|phpType7*| <= 2) /\ $anonymous_new_arguments(phpType7*)
+  -- if $anonymous_new_arguments(phpType7*)
   -- if $compilation_projection(S, pcunit) = (ppinstalled)
   -- if $class_at(ppinstalled.CLASSES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (pclassdesc)
   -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
@@ -611,7 +610,7 @@ def $anonymous_rtd_site(pcunit, pcpath) = true
   -- if pcpath_new = pcpath[0:$nabs($(|pcpath| - 1))]
   -- if pcpath = pcpath_new ++ [PCFIELD 0]
   -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath_new) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
-  -- if $(|phpType7*| <= 2) /\ $anonymous_new_arguments(phpType7*)
+  -- if $anonymous_new_arguments(phpType7*)
 def $anonymous_rtd_site(pcunit, pcpath) = false -- otherwise
 
 ;; This admission count counts sites, not RTD keys. Actual key costs below

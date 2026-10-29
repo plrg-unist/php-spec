@@ -409,10 +409,44 @@ one independent by-reference SEND/Fiber-abort source
 and one unchanged named-function control agree with PHP. Three reached fronts
 pass 174 custom/189 reported checks; private and actual-tail joined strict431
 pass. The old first-class case was checked Unsupported with zero agreement
-credit. Model `BOUNDFAKECLOSURE` and implicit Closure kinds, broader callable sources and producer/lifecycle
+credit. At that I80 cut, model `BOUNDFAKECLOSURE` and implicit Closure kinds,
+broader callable sources and producer/lifecycle
 combinations remain partial; Zend's implementation of `fromCallable` uses a
 fake Closure internally, a distinct representation choice.
 [Captured factory review](../../coverage/semantics/generator-captured-factory-review.json).
+
+I81 extends ordinary method factories to first-class array and class-method
+string captures. Their immutable normalized target and existing source/access
+certificate retain lexical/called scope and receiver history after original
+array references or strings change. A bounded lookup view authenticates retired
+factory/receiver identities; the actual Generator retains its resume/close
+receipt and physical owners. Three authored and one independent original agree
+at their recorded cuts; four reached fronts pass 343 custom/363 reported checks.
+These distinguish a retired maker from a retained body receiver, actual receipt
+from a fresh sibling, private access/certificate forgeries and parked BYREF cache
+versus SEND-input owners, with budget continuation. Private and actual-tail
+joined strict431 pass at their recorded cuts. The independent original passes after shared identity-receipt
+predicate normalization; its earlier failed cut retains zero agreement credit.
+Wider callable factories, binding/wrapper/API and lifecycle forms remain partial.
+[Array/string factory review](../../coverage/semantics/generator-array-string-factory-review.json).
+
+I82 admits compatible ordinary method-Closure bindings as scoped Generator
+factories. Only the real entered bound call can copy a Generator-local scope
+view. The existing `BOUNDFAKECLOSURE` record binds the unchanged lexical method
+scope, actual called class and receiver to its finite source/`ORIGINAL` history.
+A bounded lookup view reuses that authentic history after the callables and old
+receivers retire; it creates no scope table row or owner. A static body releases
+the factory receiver before body entry; a nonstatic body keeps its actual frame
+receiver through close. Null binding of a static method uses its lexical class
+as called scope. Four originals agree with PHP, including the independent
+repeated private binding/BYREF SEND source. Five reached fronts pass 475 custom/500
+reported checks for live mint, retired history, receiver/close and called-scope
+authority, parked cache/input owners, forged receipts and budget continuation.
+Private strict431 and actual-tail joined strict432 pass at their recorded cuts.
+Generic Closure evidence consumers are unchanged;
+implicit factories, broader binding/API/delegation and lifecycle combinations
+remain partial.
+[Bound factory review](../../coverage/semantics/generator-bound-factory-review.json).
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;

@@ -714,7 +714,8 @@ admitted comparison invokes no callbacks. Siblings reuse the parent guard, so
 shared DAGs compare normally without memoizing a repeated pair as equal.
 Identity precedes the existing aggregate/active-left recursion guard, which
 precedes count; key lookup precedes cell dereference. Reached same-class bodies
-include `stdClass` and parentless source instances with initialized public
+include `stdClass` and source instances with authenticated finite parent paths
+and initialized public
 properties, locally authenticated interfaces, no hooks/readonly state, and
 ordinary current tables.
 Their methods are not invoked by comparison. Reached tables materialize through the usual comparer; only
@@ -800,8 +801,8 @@ subclasses and generated-only FiberError remain partial. COMP88, COMP123 and
 other held contexts are untouched.
 [Captured-Throwable review](../../coverage/semantics/throwable-captured-comparison-review.json).
 
-The visited ordinary image admits method-bearing source classes with the same
-nonempty, initialized public layout. Published/live class checks, no parent,
+The visited ordinary image admits method-bearing source classes with an
+initialized public effective layout, including no instance slots. Published/live class checks,
 nonreadonly state, no property hooks and exact inline or ordinary
 cached-table authentication remain required. Methods, including magic get/isset
 traps, are not invoked by object/object comparison. Older fully authenticated
@@ -818,11 +819,42 @@ still skip later image validation. Current cells, copied siblings, physical
 tables and recursion use the same visited fold.
 [Interface-image review](../../coverage/semantics/throwable-trace-interfaces-comparison-review.json).
 
+Each parent path through source classes authenticates before effective layout
+expansion. Every
+step matches the descriptor's parent name to its actual `SOURCE_PARENT`, checks
+published names and parent-before-child publication/link order, and admits only
+nonfinal, nonreadonly parents declared in PHP with locally authenticated
+interfaces.
+The root must have no parent name or link. A seen-origin list rejects repeats
+before order checks or descent; the finite class table bounds fresh origins
+without a numeric depth ceiling. Authentication stays local to this path.
+Inherited public overrides retain their physical slot position; current ALIAS
+contents, copied arrays and cached INDIRECT fields keep their existing owners.
+Builtin parents and wider layouts/lifetimes remain partial.
+[Inherited-image review](../../coverage/semantics/throwable-trace-inheritance-comparison-review.json).
+
+Two truly inline same-class objects with no instance slots compare equal before
+checking the active-object recursion guard. Static fields and uncalled methods
+add no instance slots. Identity and class decisions still come first; equal
+captured arguments continue to later trace fields, array tails and severity.
+A real table on either side instead selects table identity, recursion, count,
+key and value order, materializing the other side when needed. Empty foreach
+now creates an actual empty ordinary table; a pure inline array cast remains a
+copy without materializing the object. Views, live aliases, COW and last-owner
+retirement use the existing storage rules. Dynamic UNSET images and inherited
+dynamic layouts retain their separate limits.
+[Empty-image review](../../coverage/semantics/throwable-trace-empty-layout-comparison-review.json).
+
 Legal `__isset` declarations may omit the parameter type while keeping the
-existing arity/reference/default/return restrictions. The language-triggered
-magic consumers still require their existing typed-string source AST, so this
+existing arity/reference/default/return restrictions. Its language-triggered
+isset/empty source proofs still require their existing typed-string AST, so this
 declaration dependency does not admit an untyped magic callback.
-Private/uninitialized/empty layouts, inheritance, hooks, readonly and wider
+The compiler also admits unused `__get(string $name)` declarations under the
+existing arity/reference/default/return bounds. It preserves the typed signature;
+the separate getter callback predicate in modules 380/408 still requires its
+existing untyped parameter. Other legal getter return declarations remain
+Unsupported.
+Private/uninitialized layouts, builtin parents, hooks, readonly and wider
 callback/lifetime contexts remain partial. Held lanes are unchanged.
 [Method-image review](../../coverage/semantics/throwable-trace-methods-comparison-review.json).
 

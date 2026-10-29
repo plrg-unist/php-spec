@@ -138,6 +138,7 @@ dec $call_arity_raw(pstate, pfunction, nat, porigin?, int) : pstate
 dec $deprecated_api_allowed(pstate, pfunction) : bool
 dec $deprecated_api_reference(pstate, pfunction, ptbytes, int, pevent, ptask) : pstate
 dec $call_entry_ready(pstate, pfunction, nat, porigin?, int) : pstate
+dec $source_call_enter(pstate, pfunction) : pstate
 def $call_arity(S, pfunction, n_args, porigin?, z) = S -- if S.COMPLETION =/= NORMAL
 def $call_arity(S, pfunction, n_args, porigin?, z) = $call_arity_raw(S, pfunction, n_args, porigin?, z)
   -- if S.COMPLETION = NORMAL /\ $deprecated_api_allowed(S, pfunction)
@@ -167,7 +168,7 @@ def $call_enter(S, pfunction, poperand*, porigin?, z) = S_bound[.CURRENT = ({TAR
   -- if S_bound = $bind_parameters(S_entered[.CVS = pfunction.CVS][.SYMBOLS = pfunction.CVS], psparam_fixed*, poperand*)
 def $call_enter(S, pfunction, poperand*, porigin?, z) = S[.COMPLETION = UNSUPPORTED "unconnected function signature"]
   -- otherwise
-rule PhpStep/call-enter: S ~> $call_entry_ready($wrapper_after_enter($target_after_enter($call_enter(S[.TODO = ptask_tail*], pfunction, poperand*, porigin?, z), pcalltarget_function), {SLOTS (NAMED_SENT poperand)*, NAMED eps}), pfunction, |poperand*|, porigin?, z)
+rule PhpStep/call-enter: S ~> $source_call_enter(S, pfunction)
   -- if S.TODO = (CALL_ARGS pcalltarget_function eps n poperand* porigin? z) :: ptask_tail*
   -- if $target_function(S, pcalltarget_function) = (pfunction)
 

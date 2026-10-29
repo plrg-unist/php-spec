@@ -1,0 +1,88 @@
+{
+  "milestone": "A75 direct temporary BYREF Generator INPUT and DATA cleanup",
+  "status": "integrated after independent actual-tail review and joined validation",
+  "scope": {
+    "consumer": "Existing INI_SET unpack from a direct named zero-argument BYREF Generator call emitted as UNPACK_VAR, with at most two copied scalar sends, an integer final key and absent or implicit-NULL return.",
+    "behavior": "The temporary Generator has separate INPUT and DATA owners. Normal completion drops DATA from two owners to one, then final INPUT release uses the existing storage pin to release its cached-cell edge and retire the Generator before API reception. Quiet terminal throw consumes DATA and INPUT in two discards, preserving the same supplied Throwable through catch. The four local-cell originals also retire the cell; an outside alias could retain it under the accepted A74 gate. Copied NULL/value sends and selected callee remain historical through a later handler.",
+    "limits": "The called function must itself be the returned BYREF Generator's function. Indirect BYVAL factories returning BYREF Generators, Aggregate/Closure/method producers, typed/backed/debt/released or owning cells, owning sends/RETURN, effectful cleanup and wider keys/lifetimes remain separate."
+  },
+  "implementation": {
+    "module": "spec/semantics/423-config-generator-unpack.watsup",
+    "base": "6c8a7dd0336d1c047f2562a5b44556c536411ab1",
+    "source_freeze": "2d3e565b1ebaa4d70a3ce8f8f1febed51a09c3e6",
+    "runtime_revision": "4a73f752c74f5d3ed438d2b77bde2548e4b094f5",
+    "validated_revision": "dcdfc87ac09329a958f7983e9923e163815e1973",
+    "change": "423 adds a bounded source-authenticated KNOWN direct-BYREF Generator input helper. It checks emitted noarg UNPACK_VAR, named USER target, BYREF Generator signature and the exact returned Generator function descriptor. Existing one-argument direct-CV reference input and BYVAL factory admission stay unchanged. The new helper is used by input, history, scalar read and retired history without reading dead payloads. Generic 420/355, schema and ordered manifest are unchanged.",
+    "engine": "Zend/zend_vm_def.h ZEND_SEND_UNPACK copies the current reference before move_forward, calls zend_iterator_dtor for DATA, then FREE_OP1 for temporary INPUT. Zend/zend_generators.c zend_generator_free_storage releases cached fields when the final Generator owner drops."
+  },
+  "validation": {
+    "target": "PHP 8.5.10 CLI NTS64, pinned project-local binary, tests/semantics/profile.json, LC_ALL=C/TZ=UTC; checked frontend, SL/cache-off/determinism-on model, serial CPU1–5 actors.",
+    "native_first": {
+      "revision": "2d3e565b1ebaa4d70a3ce8f8f1febed51a09c3e6",
+      "author_report": "/home/user/workspace/php-spec-evidence-archive/config-generator-temporary-reference-75/native-freeze-2d3/author/report.json",
+      "author_sha256": "5e9cabbc6304c7a6044bbc799b8833773fc747ea93d20ae61d5f0d487dbdb62f",
+      "peer_report": "/home/user/workspace/php-spec-evidence-archive/config-generator-temporary-reference-75/native-freeze-2d3/peer/report.json",
+      "peer_sha256": "309ff48d6f9627b063f98117ad5623c897944185b646d8ab75e5d464ce8dd14a",
+      "originals": 4,
+      "result": "Four distinct frozen sources match independently authored EXPECTED stdout exactly, empty stderr, exit0 and clean process groups. Native preparation has zero model-agreement credit."
+    },
+    "old_refusal": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-temporary-reference-75/old-control-2d3/report.json",
+      "sha256": "b4026c06fb5dcdfacb18aa27efbb0765970ab7dee8ca28bb46e1a681f5b9a38b",
+      "revision": "2d3e565b1ebaa4d70a3ce8f8f1febed51a09c3e6",
+      "status": "Unsupported",
+      "reason": "CONFIG Traversable unpack outside initialized Iterator domain",
+      "prefix": "B;",
+      "agreement_credit": 0
+    },
+    "private_strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-temporary-reference-75/candidate-dcdf/strict-report.json",
+      "sha256": "5776814bce5c4b287940aa3b12db4749903da2fe4e9767c60f4ec53b33da714c",
+      "revision": "dcdfc87ac09329a958f7983e9923e163815e1973",
+      "modules": 431,
+      "seconds": 14.226042032241821
+    },
+    "source_models": {
+      "revision": "dcdfc87ac09329a958f7983e9923e163815e1973",
+      "agreements": 4,
+      "method": "Validate retained frozen source, streams, profile and native process records; invoke only bin/php-semantics for each selected case. No original PHP or accepted A74 source/state replay.",
+      "reports": [
+        {"case": "normal", "path": "/home/user/workspace/php-spec-evidence-archive/config-generator-temporary-reference-75/candidate-dcdf/author-normal/report.json", "sha256": "1eeab212af85a0e3a2814b7b5accf91a40d5e3daabdf8fbd1e8de8d2cda8ccd8"},
+        {"case": "terminal-throw", "path": "/home/user/workspace/php-spec-evidence-archive/config-generator-temporary-reference-75/candidate-dcdf/author-throw/report.json", "sha256": "d865a55e276be62c5b8bd9d6d4d09cd08993ebffbd5ebaf1496cc8a2ff979cb8"},
+        {"case": "null-handler-return", "path": "/home/user/workspace/php-spec-evidence-archive/config-generator-temporary-reference-75/candidate-dcdf/peer-return/report.json", "sha256": "fed6f2eb452bf7e947887c14efd7361073a29ca55cdbdea04bd42b5397b98673"},
+        {"case": "null-handler-throw", "path": "/home/user/workspace/php-spec-evidence-archive/config-generator-temporary-reference-75/candidate-dcdf/peer-throw/report.json", "sha256": "f8317786bc8f8cafa9ecb6246cf1256055b1f8cc840f3066f2a73e59bb517af7"}
+      ]
+    },
+    "reached": {
+      "revision": "dcdfc87ac09329a958f7983e9923e163815e1973",
+      "conditions": 316,
+      "if_premises": 312,
+      "raw_steps": 4,
+      "peer": {"report": "/home/user/workspace/php-spec-evidence-archive/config-generator-temporary-reference-75/candidate-dcdf/peer-state/report.json", "sha256": "1d8e990b23d7f9dd32f1fcbff5b4aefc57a3ff0ae73ce210f4ccddce99d29d27", "conditions": 196, "raw_steps": 2, "coverage": "Actual emitted direct call and exact returned Generator function; INPUT+DATA owner two at sends/finish, DATA drop to INPUT owner one, real 355 pin frees cell before final Generator death and selected NULL-handler/API. Constructed source/owning/debt refusals have no extra source credit."},
+      "author": {"report": "/home/user/workspace/php-spec-evidence-archive/config-generator-temporary-reference-75/candidate-dcdf/author-state/report.json", "sha256": "663b1fc87438724efcc9ea631acd5ce910b6d77f0ad020260d19afd0280bc6f0", "conditions": 120, "raw_steps": 2, "coverage": "Two quiet throw discards consume DATA then INPUT, with one public step proving physical Generator/cell death, retired authority and same pending Throwable before catch and recovery."}
+    },
+    "review": "Independent source literals, frozen native streams, exact-function runtime gate, model-only comparator, all four source agreements and both reached records by config71_recover_review. All successful actors exited0, true stdout for strict/state, empty stderr, stable inputs/revisions, no timeout/interruption/group survivor."
+  },
+  "recovery": {
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-temporary-reference-75",
+    "manifest_sha256": "bddcbe73df66b28c0ddc1cbbfc879d10e607338e41165d7aea32b8d9f5c6effe",
+    "files": 90,
+    "raw_bytes": 1674549,
+    "commands": "Use tests/semantics/config_generator_temporary_reference_models.py with both --native-report paths and one --case per model; run each state script with its corresponding frozen native --source-report. Makefile includes full fresh-source entrypoints for future complete validation.",
+    "notes": "Raw sources, streams, exits, checked fixtures and reports are outside Git; no executables/providers. Tested revision and original process identities remain historical."
+  },
+  "integration": {
+    "status": "actual-tail composition independently cleared; sole joined strict432 passed",
+    "base": "4a783a00cd8166edf89b242165b6d5cdf03bafee",
+    "composition": "d991a90a03e5c135b59accd65906a464b5cb4767",
+    "joined_strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-temporary-reference-75/joined-d991a90a0/report.json",
+      "sha256": "0954058256a879c771715e6957d4dafec48850a0fc755b8bd5d9256ee4f693e2",
+      "revision": "d991a90a03e5c135b59accd65906a464b5cb4767",
+      "modules": 432,
+      "seconds": 13.2313346863
+    },
+    "compatibility": "Runtime423 and source/state fixtures exactly match private A75. Generic355/301, schema and ordered manifest match the current parent; enum string-capture selection is KIND-disjoint from INI_SET. GC07, CLASS153 and ATTR05 additions preserve the named Generator/INI/selected-callee paths. Frozen native4/old Unsupported0, private strict431, source4 and reached316 retain their original cuts; no accepted A74 replay.",
+    "review": "Independent actual-parent semantic seams, docs/inventory union and joined compiler review by config71_recover_review."
+  }
+}

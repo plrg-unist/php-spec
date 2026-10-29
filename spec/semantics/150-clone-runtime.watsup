@@ -26,7 +26,7 @@ def $clone_slots(S, n, ppropertyslot :: ppropertyslot_tail*) = $clone_slots($clo
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if S_copied = S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, n, pobjectprops.SLOTS ++ [ppropertyslot_new])]
 
-;; A declared-only cache borrows its slots. Cloning builds a fresh table whose
+;; A nonempty declared-only cache borrows its slots. Cloning builds a fresh table whose
 ;; locators address the new object; the ordinary slot copier owns the values.
 dec $clone_cached_slots(ppropertyslot*) : bool
 def $clone_cached_slots(eps) = true
@@ -54,7 +54,7 @@ def $clone_dynamic_share_ready(S, n_source) = true
   -- if $object_table_at(S.OBJECTTABLES, n_source) = (n_table)
   -- if $(n_table < |S.ARRAYS|) /\ (HARRAY n_table) <- S.ALLOCATIONS
   -- if $objectprops_record_at(S.OBJECTPROPS, n_source) = (pobjectprops)
-  -- if pobjectprops.MATERIALIZED /\ $object_table_dynamic_history(pobjectprops.SLOTS)
+  -- if pobjectprops.MATERIALIZED /\ (pobjectprops.SLOTS = eps \/ $object_table_dynamic_history(pobjectprops.SLOTS))
   -- if $clone_method(S, n_source) = eps
   -- if $object_tables_valid(S) /\ S.GC.ACTIVE = eps
   -- if ~$clone_readonly_updates(S, n_source)
@@ -64,6 +64,24 @@ def $clone_plain(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [S.OBJECTS[n_source]]]
   -- if n = |S.OBJECTS|
   -- if $object_table_at(S.OBJECTTABLES, n_source) = (n_table)
   -- if $objectprops_record_at(S.OBJECTPROPS, n_source) = (pobjectprops)
+;; With an effective callback, a zero-default empty cache is not copied.
+dec $clone_empty_callback_ready(pstate, nat) : bool
+def $clone_empty_callback_ready(S, n_source) = true
+  -- if $object_table_ordinary(S, n_source)
+  -- if S.OBJECTS[n_source] = INSTANCE porigin
+  -- if $property_layout(S, porigin, |S.CLASSES|) = eps
+  -- if $object_table_at(S.OBJECTTABLES, n_source) = (n_table)
+  -- if $(n_table < |S.ARRAYS|) /\ (HARRAY n_table) <- S.ALLOCATIONS
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_source) = (pobjectprops)
+  -- if pobjectprops.MATERIALIZED /\ pobjectprops.SLOTS = eps
+  -- if S.ARRAYS[n_table].ITEMS = eps
+  -- if $clone_method(S, n_source) =/= eps
+  -- if $object_tables_valid(S) /\ S.GC.ACTIVE = eps
+  -- if ~$clone_readonly_updates(S, n_source)
+def $clone_empty_callback_ready(S, n_source) = false -- otherwise
+def $clone_plain(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [S.OBJECTS[n_source]]][.OBJECTPROPS = S.OBJECTPROPS ++ [{OBJECT n, SLOTS eps, MATERIALIZED false}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+  -- if $clone_empty_callback_ready(S, n_source)
+  -- if n = |S.OBJECTS|
 dec $clone_cached_ready(pstate, nat) : bool
 def $clone_cached_ready(S, n_source) = true
   -- if $object_table_ordinary(S, n_source)
@@ -72,6 +90,7 @@ def $clone_cached_ready(S, n_source) = true
   -- if (HARRAY n_table) <- S.ALLOCATIONS
   -- if $objectprops_record_at(S.OBJECTPROPS, n_source) = (pobjectprops)
   -- if pobjectprops.MATERIALIZED /\ $clone_cached_slots(pobjectprops.SLOTS)
+  -- if ~$clone_dynamic_share_ready(S, n_source) /\ ~$clone_empty_callback_ready(S, n_source)
   -- if $object_tables_valid(S)
   -- if S.GC.ACTIVE = eps
   -- if ~$clone_readonly_updates(S, n_source)
@@ -163,7 +182,7 @@ def $clone_plain(S, n_source) = S_declared[.OBJECTPROPS = $objectprops_set(S_dec
 def $clone_plain(S, n_source) = S[.COMPLETION = UNSUPPORTED "cached ordinary property-table cloning"]
   -- if $object_table_ordinary(S, n_source)
   -- if $object_table_at(S.OBJECTTABLES, n_source) = (n_table)
-  -- if ~$clone_dynamic_share_ready(S, n_source) /\ ~$clone_cached_ready(S, n_source) /\ ~$clone_mixed_ready(S, n_source)
+  -- if ~$clone_dynamic_share_ready(S, n_source) /\ ~$clone_empty_callback_ready(S, n_source) /\ ~$clone_cached_ready(S, n_source) /\ ~$clone_mixed_ready(S, n_source)
 
 ;; Real closure hash duplication copies singleton static/capture wrappers, but
 ;; retains wrappers also owned by active invocation locals or escaped aliases.

@@ -1058,6 +1058,24 @@ one unchanged named-function source agree; three reached fronts pass 189
 reported checks. Wider callable and lifecycle forms remain partial.
 [Captured factory review](../../coverage/semantics/generator-captured-factory-review.json).
 
+I81 uses the same retained selected-method proof for array and string factory
+captures. Real close frames retain their body receiver after factory retirement.
+The independent private-array BYREF source keeps its SEND argument after
+received-CV unset until supplied abort, while the cache survives until Generator
+drop. Four originals agree and four reached fronts pass 363 reported checks,
+including parked owners, private-access/actual-receipt forgeries and budget
+continuation. Wider factory/lifecycle forms stay partial.
+[Array/string factory review](../../coverage/semantics/generator-array-string-factory-review.json).
+
+I82 carries a method factory's actual compatible binding and finite retired
+source history into scoped Generator creation. This borrowed proof adds no
+factory or old-receiver owner; the body retains its ordinary frame/cache/input
+owners. Four originals agree with PHP. The repeated private binding BYREF source
+keeps the SEND input after received-CV unset until supplied abort, while its cache
+keeps the token until Generator drop. Five reached fronts pass 500 reported
+checks, including authentic history, parked owners and budget continuation.
+[Bound factory review](../../coverage/semantics/generator-bound-factory-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

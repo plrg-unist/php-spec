@@ -1,0 +1,104 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-arity-root-required-four-extra-send",
+      "source": "<?php\nfunction first152() { echo \"first|\"; return 1; }\nfunction second152() { echo \"second|\"; return 2; }\nfunction third152() { echo \"third|\"; return 3; }\nfunction fourth152() { echo \"fourth|\"; return 4; }\nfunction extra152() { echo \"extra|\"; return 9; }\necho \"before|\";\n$one = new class(first152(), second152(), third152(), fourth152(), extra152()) {\n    public $value;\n    public function __construct(int $a, $b, int $c, int $d) {\n        echo \"ctor|\";\n        $this->value = $a + $b + $c + $d;\n    }\n};\necho $one::class, \"|\", $one->value, \"|after\";\n",
+      "source_sha256": "88d7c05f1cbd76f39618dae494e692b9e1c77ca040d796a626c35f6e2cc61f4e",
+      "stdout_base64": "",
+      "stdout_template_base64": "YmVmb3JlfGZpcnN0fHNlY29uZHx0aGlyZHxmb3VydGh8ZXh0cmF8Y3RvcnxjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjgkMHwxMHxhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class152-frozen-native5",
+      "native_raw_sha256": "94e3902ccb266ac8fc043013da86c274efdb1315df142b8f4815d7f7727968a8",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-arity-include-inherited-four-named-sends",
+      "source": "<?php\nclass Parent152 {\n    public $value;\n    public function __construct(int $a, int $b, int $c, int $d) {\n        echo \"ctor|\";\n        $this->value = $a + $b + $c + $d;\n    }\n}\nfunction first152() { echo \"first|\"; return 1; }\nfunction second152() { echo \"second|\"; return 2; }\nfunction third152() { echo \"third|\"; return 3; }\nfunction fourth152() { echo \"fourth|\"; return 4; }\necho \"before|\";\n$one = include __DIR__ . \"/payload.php\";\n$two = include __DIR__ . \"/payload.php\";\necho $one::class, \"|\", $two::class, \"|\", $one->value, \"|\", $two->value, \"|\", (int) ($one !== $two), \"|after\";\n",
+      "source_sha256": "bcf47f629c7d2a32cab87e0c567f992688f4986e2daa00ad7d4aec6f163077c1",
+      "stdout_base64": "",
+      "stdout_template_base64": "YmVmb3JlfGZvdXJ0aHxzZWNvbmR8Zmlyc3R8dGhpcmR8Y3Rvcnxmb3VydGh8c2Vjb25kfGZpcnN0fHRoaXJkfGN0b3J8UGFyZW50MTUyQGFub255bW91cwB7RklMRTpwYXlsb2FkLnBocH06NCQwfFBhcmVudDE1MkBhbm9ueW1vdXMAe0ZJTEU6cGF5bG9hZC5waHB9OjQkMXwxMHwxMHwxfGFmdGVy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class152-frozen-native5",
+      "native_raw_sha256": "b4674c6d8fbffa3383bdd2866d92eecd5aed8c47b652bc33b2fc7be39eee18d4",
+      "model_timeout_seconds": 240,
+      "files": [
+        {
+          "name": "payload.php",
+          "source": "<?php\nnamespace Author152Include;\nuse Parent152 as Base;\nreturn new class(d: \\fourth152(), b: \\second152(), a: \\first152(), c: \\third152()) extends Base {};\n",
+          "source_sha256": "9fd98ad6bb553e5f2e35bb8d52b4f548ea4680e76434c76e7acf8be2581af969"
+        }
+      ]
+    },
+    {
+      "id": "anonymous-arity-no-constructor-many-sends-and-named-stop",
+      "source": "<?php\nfunction first152() { echo \"first|\"; return 1; }\nfunction second152() { echo \"second|\"; return 2; }\nfunction third152() { echo \"third|\"; return 3; }\nfunction fourth152() { echo \"fourth|\"; return 4; }\nfunction extra152() { echo \"extra|\"; return 5; }\nfunction later152() { echo \"later|\"; return 6; }\necho \"before|\";\n$one = new class(first152(), second152(), third152(), fourth152()) {};\necho $one::class, \"|\";\ntry {\n    $two = new class(first152(), second152(), third152(), fourth152(), extra: extra152(), later: later152()) {};\n} catch (Error $e) {\n    echo \"caught|\", $e->getMessage(), \"|\";\n}\n$tail = new class {};\necho $tail::class, \"|after\";\n",
+      "source_sha256": "94256bf1645cb1dcf8eeba060d932655f1d279acf1f696cf08778c4e9ce3c516",
+      "stdout_base64": "",
+      "stdout_template_base64": "YmVmb3JlfGZpcnN0fHNlY29uZHx0aGlyZHxmb3VydGh8Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo5JDB8Zmlyc3R8c2Vjb25kfHRoaXJkfGZvdXJ0aHxleHRyYXxjYXVnaHR8VW5rbm93biBuYW1lZCBwYXJhbWV0ZXIgJGV4dHJhfGNsYXNzQGFub255bW91cwB7RklMRX06MTYkMnxhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class152-frozen-native5",
+      "native_raw_sha256": "24bb883e6b094aecf0adae76211a3a5ccda82b616666d82483dfa478300566c7",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-arity-named-holes-type-reception-retry",
+      "source": "<?php\nclass Base152Review { public int $sum = 0; }\neval(<<<'CODE'\nnamespace Later152Review;\nuse Base152Review as B;\nfunction first152Review() {\n    static $bad = true;\n    echo \"first|\";\n    if ($bad) { $bad = false; return \"bad\"; }\n    return 1;\n}\nfunction fourth152Review() { echo \"fourth|\"; return 4; }\nfunction third152Review() { echo \"third|\"; return 3; }\nfunction make152Review() {\n    return new class(fourth: fourth152Review(), first: first152Review(), third: third152Review()) extends B {\n        public function __construct(int $first, string $second = \"default\", int $third = 30, int $fourth = 40) {\n            echo \"ctor|\", $second, \"|\";\n            $this->sum = $first + $third + $fourth;\n        }\n    };\n}\ntry { make152Review(); } catch (\\TypeError $error) { echo $error->getMessage(), \"|\"; }\n$a = make152Review();\n$b = make152Review();\necho $a::class, \"|\", $a->sum, \"|\", ($a::class === $b::class), \"|\", ($a !== $b), \"|\";\nCODE);\n",
+      "source_sha256": "c60ee6b229f8394a89ab2dcd365bacc987ed3aa29f4c97a58741b32177b0ffa4",
+      "stdout_base64": "",
+      "stdout_template_base64": "Zm91cnRofGZpcnN0fHRoaXJkfEJhc2UxNTJSZXZpZXdAYW5vbnltb3VzKCk6IEFyZ3VtZW50ICMxICgkZmlyc3QpIG11c3QgYmUgb2YgdHlwZSBpbnQsIHN0cmluZyBnaXZlbiwgY2FsbGVkIGluIHtGSUxFfSg0KSA6IGV2YWwoKSdkIGNvZGUgb24gbGluZSAxMnxmb3VydGh8Zmlyc3R8dGhpcmR8Y3RvcnxkZWZhdWx0fGZvdXJ0aHxmaXJzdHx0aGlyZHxjdG9yfGRlZmF1bHR8QmFzZTE1MlJldmlld0Bhbm9ueW1vdXMAe0ZJTEV9KDQpIDogZXZhbCgpJ2QgY29kZToxMiQwfDh8MXwxfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class152-frozen-native5",
+      "native_raw_sha256": "8f7d7ddb8c2ba3b6249d6acc64ba799dad6cd0dc9a3bcc8e87db8c809107147f",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-arity-pruned-default-versus-eager-fourth-default",
+      "source": "<?php\necho \"outer|\";\neval(<<<'CODE'\nfalse && (new class {\n    public function __construct(int $first = 'bad', string $second = 's', int $third = 3, int $fourth = 4) {}\n});\necho 'pruned|';\nCODE);\necho \"middle|\";\neval(<<<'CODE'\nfunction unused152Review() {\n    return new class {\n        public function __construct(int $first = 1, string $second = 's', int $third = 3, int $fourth = 'bad') {}\n    };\n}\necho 'never|';\nCODE);\necho \"after|\";\n",
+      "source_sha256": "7e021b2a32c4119cc236daadeca5f11ae7d97855d96e4e2266de32404884b747",
+      "stdout_base64": "",
+      "stdout_template_base64": "b3V0ZXJ8cHJ1bmVkfG1pZGRsZXw=",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIGRlZmF1bHQgdmFsdWUgZm9yIHBhcmFtZXRlciAkZm91cnRoIG9mIHR5cGUgaW50IGluIHtGSUxFfSgxMSkgOiBldmFsKCknZCBjb2RlIG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "class152-frozen-native5",
+      "native_raw_sha256": "40b5bef0fbd9d7fd32a40bdf121a472388b359c5dfeeb17adda4e33c7f1c6221",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-arity-four-required-missing-fourth",
+      "source": "<?php\necho \"before|\";\ntry {\n    $value = new class(1, 2, 3) {\n        public function __construct(int $a, int $b, int $c, int $d) {\n            echo \"body|\";\n        }\n    };\n} catch (ArgumentCountError $error) {\n    echo $error->getMessage(), \"|\";\n}\necho \"after|\";\n",
+      "source_sha256": "51f07e406910dc2ea71246e43f7fde8b624e036e69f48b2812638d3e64fdabd4",
+      "stdout_base64": "",
+      "stdout_template_base64": "YmVmb3JlfFRvbyBmZXcgYXJndW1lbnRzIHRvIGZ1bmN0aW9uIGNsYXNzQGFub255bW91czo6X19jb25zdHJ1Y3QoKSwgMyBwYXNzZWQgaW4ge0ZJTEV9IG9uIGxpbmUgNCBhbmQgZXhhY3RseSA0IGV4cGVjdGVkfGFmdGVyfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class152-missing-arity-native1",
+      "native_raw_sha256": "ee2c896930c77c3d367c847f69e0f32809ea381bf609badb09bc1e3e6d5e7ec5",
+      "model_timeout_seconds": 240
+    }
+  ]
+}

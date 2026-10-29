@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous.constructor-references",
+  "status": "partial",
+  "scope": "Own public unpromoted nonvariadic reference constructor formals use ordinary direct positional/named sends, alias binding, typed reception and supported defaults in existing anonymous root/eval placements. Variadic/promotion/unpacking/nonpublic/attribute forms and wider callback/owning contexts remain partial.",
+  "engine_routes": [
+    "Zend/zend_compile.c::zend_compile_new always calls zend_compile_call_common with a NULL function pointer, retaining deferred fetch modes even when an anonymous declaration has just compiled.",
+    "Zend/zend_vm_def.h::ZEND_SEND_VAR_EX consults the selected function and actual named-argument index, then retains/promotes the reference before later sends. Ordinary receive/type rules apply after argument binding.",
+    "Zend/zend_execute.c::zend_cannot_pass_by_reference formats get_function_or_method_name through one whole-name %s; an anonymous-name NUL therefore precedes ::__construct. VAR value sends warn and acquire a temporary reference.",
+    "Zend named/default receive paths supply a fresh callee local for omitted reference defaults; by-reference parameter typing is a reception check, separate from persistent typed-property reference sources."
+  ],
+  "design": "383 changes only the parameter BYREF field from false to a checked Boolean while preserving existing shape/context fences.78/86/95/105/142 keep their saved-target, deferred mode, cell acquisition, named mapping, reception and ownership machinery.86 truncates only the nonreferenceable-send Error whole-name consumer, preserving full descriptor/class bytes and the distinct152 type/arity consumers. No binder redesign, new state field or native semantic fallback.",
+  "native_and_baseline": {
+    "report": ".tools/class153-artifacts/frozen-native5-baseline2.json",
+    "sha256": "568a2ed461ea0a9ac0f1ce93f41f98742c449b608e2eaa2f105c37031ca5c832",
+    "summary": ".tools/class153-review/baseline-summary.json",
+    "result": "Initial five new originals allnormal, including exact VAR Notice. Exactly authored basic plus independent invalid-literal old probes are checked Unsupported at unchangedc1; original remaining3 old probes unrun. Stable31.676s/pin2/fullreaped; no152/151/native replay."
+  },
+  "additional_optional_default": {
+    "report": ".tools/class153-artifacts/native-optional-reference-default1.json",
+    "sha256": "fbcf2921b3e77444edb006f211d13b988694d2aee18160313fe188cd75c2cb9a",
+    "frozen": ".tools/class153-author/optional-reference-default-frozen.json",
+    "native_report": ".tools/class153-review/optional-reference-default.native-first.json",
+    "native_sha256": "3ce3df70b7a994ecadd4d40c5d9709358c5715ce0accfb344016d9ceb6c15115",
+    "result": "Separate new frozen optional-reference/named-hole scalar-default freshness witness:13|13|after, exit0/empty stderr, stablec1/pin2/0.149s/fullreaped. Its old probe is unrun; original manifests unchanged."
+  },
+  "source_outcomes": {
+    "report": ".tools/class153-artifacts/source6-assessment.json",
+    "sha256": "f87dae4ca749a2e3b3c8e2e51036afbcb9fd4a7d60c2f23eb03149a9be41e265",
+    "catalogue": "tests/semantics/anonymous_constructor_reference_cases.json",
+    "unique_sources": 6,
+    "counts": {
+      "normal": 6
+    },
+    "result": "Six model-only comparisons at unchangedd8e7 reuse their original native5+1 tuples/profile. Exact stdout/stderr/status with explicit main filename substitution only; one exact Notice stream. No source failure or native replay."
+  },
+  "strict_sl": {
+    "report": ".tools/class153-artifacts/first-strict431.json",
+    "sha256": "d0cbcb796df1b132774d2fa9202e23bc096327a14b5695f449b9d673e848bed9",
+    "modules": 431,
+    "result": "true newline/empty stderr/exit0; stabled8e7, pin5/14.843s/fullreaped, no timeout/bad affinity/survivors."
+  },
+  "reached": {
+    "accepted_conditions": 217,
+    "source_reached_conditions": 211,
+    "derived_guards": 6,
+    "groups": [
+      {
+        "report": ".tools/class153-artifacts/authored-reference-eval91-final-token.json",
+        "sha256": "402fb93a4ddeb0d32ea66fc41b228753957ef0c1af04d48e3473babc1f7bdc43",
+        "conditions": 91,
+        "reached_conditions": 89,
+        "derived_guards": 2,
+        "test": "tests/semantics/anonymous_constructor_reference_eval_protocol.py",
+        "state_report": ".tools/class153-artifacts/anonymous-constructor-reference-eval-gfh61iti/report.json",
+        "state_sha256": "2b7d4cb493875f53637e8f35b479acfd1bd948e4372c5a7c9fe032d6aa9de790",
+        "result": "Actual unit1 ingress and saved ctor/fourth formal; real sent reference/caller-global aliases, weak reception updates the same cell before body output, no PROPREF source, later shared string write, source/mode refusals and final class/call/declaration/heap checks. StrictSL/44bcb3/pin2/27.353s/fullreaped."
+      },
+      {
+        "report": ".tools/class153-artifacts/independent-reference-binding126-corrected.json",
+        "sha256": "d0ea54af37ece24815d3763aff7be3659fa27124145d55de42ff58d042a89c76",
+        "conditions": 126,
+        "reached_conditions": 122,
+        "derived_guards": 4,
+        "test": "tests/semantics/anonymous_constructor_reference_binding_protocol.py",
+        "state_report": ".tools/class153-artifacts/anonymous-constructor-reference-binding-el1h6xcf/report.json",
+        "state_sha256": "9d843d023031c071e596f7d7e5bd458b2d6dd5c5f61bef0f62bafda8eb9fd35f",
+        "result": "Real positional old-cell retention versus reversed-named new-cell acquisition; raw strings before reception, in-place int coercion and old aliases/body writes; ignored by-value formals use distinct cells even after reference-assignment expressions. Source/mode forgeries and final scalar/class/call/declaration/heap controls. StrictSL/7fdcc14/pin2/28.887s/fullreaped."
+      }
+    ]
+  },
+  "representation_projection": {
+    "sha256": "317493b856b8583c520a40937606d6f94f70341890647679c27c239b6d1f1645",
+    "agreement_credit": 0,
+    "result": "Short authentic-cell projection before final fixture assertions: positional REFERENCE old0/interned7 versus live1/30; named REFERENCE live5/40 versus old4/interned8. Stable d8e7/pin2/18.923s/fullreaped. Observation only, no additional native/source credit.",
+    "state_report": ".tools/class153-review/reference-binding-projection-ea52bkmq/report.json",
+    "state_sha256": "29afefb05b7f702807e77d785f936dcd746abfd37aa1a5b06343a6de093515c7",
+    "report": ".tools/class153-artifacts/independent-binding-projection.json"
+  },
+  "preserved_fixture_failures": [
+    {
+      "report": ".tools/class153-artifacts/anonymous-constructor-reference-eval-bkrqlfd4/report.json",
+      "agreement_credit": 0,
+      "classification": "Recursive otherwise fixture helper rejected during structuring, before execution. Explicit output-kind guard corrected only the fixture."
+    },
+    {
+      "report": ".tools/class153-artifacts/anonymous-constructor-reference-eval-altvawfp/report.json",
+      "agreement_credit": 0,
+      "classification": "Reached sends/reception, then fixture sought after instead of the actual final literal |after. One observation token corrected; affected91 group only rerun."
+    },
+    {
+      "report": ".tools/class153-artifacts/anonymous-constructor-reference-binding-63i_rfka/report.json",
+      "agreement_credit": 0,
+      "classification": "Negative-control literal vector after numeric CALL_ARGS index parsed as indexing; grouped vector only, before execution. Affected126 group only rerun."
+    }
+  ],
+  "tested_code": {
+    "implementation_commit": "abdfa97d1",
+    "source_catalogue_commit": "99e479618",
+    "source_and_strict_cut": "d8e7ccae4",
+    "authored_fixture_cut": "44bcb3a02",
+    "independent_fixture_cut": "7fdcc14b5",
+    "production_sha256": {
+      "spec/semantics/383-anonymous-classes.watsup": "f8d26f9cba273174acb0220a71f781fb589d6646a341214d8d98490bf1765c25",
+      "spec/semantics/86-reference-arguments.watsup": "ca3bd313db2093352f2e9b399f26aa5604cc3d6bedb0c28129fecf330b185508"
+    },
+    "qualification": "All six source observations and reached/projection cuts use the same two-file production change. Later fixture/grouping/metadata edits renew no accepted source/native/strict execution; every report retains its actual revision/input map."
+  },
+  "limits": [
+    "Existing anonymous body/factory/source-history admission fences remain; no new linker/acquisition or descriptor/schema authority is introduced.",
+    "Variadic/promoted/nonpublic/attribute forms, unpacked sends and reference returns remain separate.",
+    "Typed-property reference constraints remain authoritative; owning values, callbacks and wider lifetimes retain ordinary family limits.",
+    "All paused/held boundaries, including owned-NUL release, V110 and COMP123, remain unchanged."
+  ],
+  "target": "PHP8.5.10 CLI NTS signed64; tests/semantics/profile.json; sole project-local oracle.",
+  "source_pin": "vendor/php-src @ 34308a6666b2d489c509541ea9befea9e2b42348",
+  "recovery": "Native originals/profile/probes and all raw source/state/projection/failures remain outsideGit under .tools/class153-author, class153-review and class153-artifacts. Raw source/state directories are copied unchanged before finished-worktree removal; internal report paths keep their actual tested locations. local-tools.json records reused binaries; no fresh build/portability claim.",
+  "independent_review": "Admission and consumer-specific formatting, frozen observations, authentic-cell projection, final 217 conditions and private prose/inventory independently CLEAR. Actual-tail 383/86/signature/reference-cell/binder/GC/new443, schema and doc/inventory union review CLEAR at ff6bc9f5; parent foreign tracks and holds preserved.",
+  "joined_strict_sl": {
+    "actual_parent": "a82639bf46b3961b436d10648f01e78bec5b6ed1",
+    "reviewed_tree": "ff6bc9f553b5f07f3d3d4a691e5f29a4122a6194",
+    "report": ".tools/class153-artifacts/joined-strict432.json",
+    "sha256": "c1fdd807ba68357989297af1562479d16b44592fc1b707a15d0362e9096dbdd0",
+    "modules": 432,
+    "result": "Ordered full manifest, numeric runner --sl; exact Strict SL modules: 432 and true newlines, empty stderr, exit 0. Stable reviewed tree/input maps, CPU 2, 16.154 seconds, no timeout/bad affinity/survivors; all sampled PIDs absent. Only joined compilation is new credit; native/source/state/private strict cuts remain unchanged."
+  }
+}

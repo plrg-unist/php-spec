@@ -209,11 +209,13 @@ dec $generator_creation_required(pstate, pcallcontext) : bool
 dec $generator_factory_keyword(pstate, porigin, phpType19) : bool
 dec $generator_factory_requires_parent(pstate, pcallcontext) : bool
 dec $generator_creation_ancestors(pstate) : pgenfactorycapture*
+dec $generator_factory_evidence_current(pstate) : pclosureevidence?
 dec $generator_creator_method_site(pstate, porigin, ptbytes) : bool
 dec $generator_creator_closure_site(pstate, pmethodcapture, porigin) : bool
 dec $generator_creator_closure_target(pstate, pcalltarget, pmethodcapture, pclosureevidence) : bool
 dec $generator_captured_factory_valid(pstate, pclosurescope, porigin) : bool
 dec $generator_captured_factory_receiver(pstate, pmethoddesc, pclosurescope) : bool
+dec $generator_captured_factory_method(pobject) : pcalltarget?
 dec $generator_creator_receiver(pstate, pcalltarget, pclosureevidence?) : nat?
 dec $generator_creator_target_valid(pstate, pgeneratorcreation, pmethoddesc, porigin) : bool
 dec $generator_retained_scoped_target(pstate, pcalltarget, pmethoddesc) : bool
@@ -401,6 +403,23 @@ def $generator_factory_requires_parent(S, pcallcontext) = true
   -- if pcallcontext.CALLSITE = (porigin_site)
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 phpType20 phpType6 metadata)
 def $generator_factory_requires_parent(S, pcallcontext) = false -- otherwise
+;; A bound method keeps its real binding/source record instead of a generic
+;; Closure scope row. Only its live entered call can copy this borrowed view.
+def $generator_factory_evidence_current(S) = (CLOSURE_SCOPE pclosurescope)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $context_target(pcallcontext) = CLOSURE_TARGET n
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if $call_current_valid(S)
+  -- if pboundfake.SCOPE = BIND_CLASS porigin_lexical
+  -- if pboundfake.CALLED = BIND_CLASS porigin_called
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_lexical)
+  -- if pcallcontext.CALLED_CLASS = (porigin_called)
+  -- if pcallcontext.RECEIVER = pboundfake.RECEIVER
+  -- if pclosurescope = {OBJECT n, LEXICAL porigin_lexical, CALLED porigin_called, RECEIVER pboundfake.RECEIVER, CREATION eps}
+  -- if $generator_captured_factory_valid(S, pclosurescope, pcallcontext.FUNCTION)
+def $generator_factory_evidence_current(S) = $closure_evidence_current(S) -- otherwise
 def $generator_creation_ancestors(S) = pgenfactorycapture :: pgenfactorycapture_tail*
   -- if S.CURRENT = (pcallcontext)
   -- if $generator_factory_requires_parent(S, pcallcontext)
@@ -410,7 +429,7 @@ def $generator_creation_ancestors(S) = pgenfactorycapture :: pgenfactorycapture_
   -- if pframe.CONTEXT = (pcallcontext_parent)
   -- if S_parent = $constant_frame_scope(S, pframe, pframe_tail*)
   -- if $call_current_valid(S_parent)
-  -- if pgenfactorycapture = {CONTEXT {FUNCTION pcallcontext_parent.FUNCTION, CALLSITE pcallcontext_parent.CALLSITE, LEXICAL_CLASS pcallcontext_parent.LEXICAL_CLASS, CALLED_CLASS pcallcontext_parent.CALLED_CLASS}, TARGET pcallcontext_parent.TARGET, CLOSURE $closure_evidence_current(S_parent)}
+  -- if pgenfactorycapture = {CONTEXT {FUNCTION pcallcontext_parent.FUNCTION, CALLSITE pcallcontext_parent.CALLSITE, LEXICAL_CLASS pcallcontext_parent.LEXICAL_CLASS, CALLED_CLASS pcallcontext_parent.CALLED_CLASS}, TARGET pcallcontext_parent.TARGET, CLOSURE $generator_factory_evidence_current(S_parent)}
   -- if pgenfactorycapture_tail* = $generator_creation_ancestors(S_parent)
 def $generator_creation_ancestors(S) = eps -- otherwise
 
@@ -490,6 +509,34 @@ def $generator_captured_factory_receiver(S, pmethoddesc, pclosurescope) = true
   -- if $(n_receiver < |S.OBJECTS|)
   -- if S.OBJECTS[n_receiver] = INSTANCE pclosurescope.CALLED
 def $generator_captured_factory_receiver(S, pmethoddesc, pclosurescope) = false -- otherwise
+def $generator_captured_factory_method(ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?) = (pcalltarget)
+def $generator_captured_factory_method(STRINGMETHODCLOSURE pcalltarget pstringselection) = (pcalltarget)
+def $generator_captured_factory_method(pobject) = eps -- otherwise
+def $generator_captured_factory_valid(S, pclosurescope, porigin_function) = true
+  -- if n = pclosurescope.OBJECT
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if pclosurescope.CREATION = eps
+  -- if pboundfake.SCOPE = BIND_CLASS pclosurescope.LEXICAL
+  -- if pboundfake.CALLED = BIND_CLASS pclosurescope.CALLED
+  -- if pboundfake.RECEIVER = pclosurescope.RECEIVER
+  -- if $class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
+  -- if pmethoddesc.OWNER = pclosurescope.LEXICAL
+  -- if $generator_captured_factory_receiver(S, pmethoddesc, pclosurescope)
+  -- if S_lookup = S[.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n] ++ $scoped_receiver_nodes(pclosurescope.RECEIVER)]
+  -- if $bound_fake_valid(S_lookup, n)
+  -- if $target_function(S_lookup, CLOSURE_TARGET n) = (pmethoddesc.FUNCTION)
+;; Borrowed lookup identities preserve the selected-target certificate after
+;; its factory or original receiver retires.
+def $generator_captured_factory_valid(S, pclosurescope, porigin_function) = true
+  -- if n = pclosurescope.OBJECT
+  -- if $(n < |S.OBJECTS|)
+  -- if $generator_captured_factory_method(S.OBJECTS[n]) = (pcalltarget)
+  -- if $class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
+  -- if $generator_captured_factory_receiver(S, pmethoddesc, pclosurescope)
+  -- if S_lookup = S[.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n] ++ $scoped_receiver_nodes(pclosurescope.RECEIVER)]
+  -- if $closure_scope_row_valid(S_lookup, pclosurescope)
+  -- if $target_function(S_lookup, pcalltarget) = (pmethoddesc.FUNCTION)
 def $generator_captured_factory_valid(S, pclosurescope, porigin_function) = true
   -- if n = pclosurescope.OBJECT
   -- if $(n < |S.OBJECTS|)
@@ -555,7 +602,7 @@ def $generator_creation_method_live_capture(S, pcalltarget, porigin_site) = (pge
   -- if pframe_creator.CONTEXT = (pcallcontext_creator)
   -- if S_creator = $constant_frame_scope(S, pframe_creator, pframe_tail*)
   -- if $call_current_valid(S_creator)
-  -- if $closure_evidence_current(S_creator) = (pclosureevidence)
+  -- if $generator_factory_evidence_current(S_creator) = (pclosureevidence)
   -- if pgeneratorcreation = {SITE porigin_site, CREATOR {FUNCTION pcallcontext_creator.FUNCTION, CALLSITE pcallcontext_creator.CALLSITE, LEXICAL_CLASS pcallcontext_creator.LEXICAL_CLASS, CALLED_CLASS pcallcontext_creator.CALLED_CLASS}, CREATOR_TARGET pcallcontext_creator.TARGET, CALLEE pcalltarget, ANCESTORS eps, CLOSURE (pclosureevidence)}
   -- if $generator_creation_scope_valid(S, pgeneratorcreation)
 def $generator_creation_method_live_capture(S, pcalltarget, porigin_site) = eps -- otherwise
@@ -768,7 +815,7 @@ def $generator_creation_capture(S, pcallcontext) = (pgeneratorcreation)
   -- if S_creator = $constant_frame_scope(S, pframe_creator, pframe_tail*)
   -- if $call_current_valid(S_creator)
   -- if pgenfactorycapture* = $generator_creation_ancestors(S_creator)
-  -- if pgeneratorcreation = {SITE porigin_site, CREATOR {FUNCTION pcallcontext_creator.FUNCTION, CALLSITE pcallcontext_creator.CALLSITE, LEXICAL_CLASS pcallcontext_creator.LEXICAL_CLASS, CALLED_CLASS pcallcontext_creator.CALLED_CLASS}, CREATOR_TARGET pcallcontext_creator.TARGET, CALLEE pcallcontext.TARGET, ANCESTORS pgenfactorycapture*, CLOSURE $closure_evidence_current(S_creator)}
+  -- if pgeneratorcreation = {SITE porigin_site, CREATOR {FUNCTION pcallcontext_creator.FUNCTION, CALLSITE pcallcontext_creator.CALLSITE, LEXICAL_CLASS pcallcontext_creator.LEXICAL_CLASS, CALLED_CLASS pcallcontext_creator.CALLED_CLASS}, CREATOR_TARGET pcallcontext_creator.TARGET, CALLEE pcallcontext.TARGET, ANCESTORS pgenfactorycapture*, CLOSURE $generator_factory_evidence_current(S_creator)}
   -- if $generator_creation_scope_valid(S, pgeneratorcreation)
 def $generator_creation_capture(S, pcallcontext) = (pgeneratorcreation)
   -- if $generator_creation_required(S, pcallcontext)

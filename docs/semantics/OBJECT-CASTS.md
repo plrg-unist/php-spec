@@ -13,6 +13,13 @@ Fast stdClass clones share the table. Array round trips convert canonical numeri
 names back to integer keys and preserve append history. Materialization and copies
 retain live object-foreach cursor positions across unset tombstones.
 
+Ordinary instances with an empty effective layout and no slots can also create
+an honest empty property table through foreach or reached comparison. A pure
+inline array cast still leaves the object without a table; a cast of an actual
+empty cache shares that table until COW. This narrow admission leaves the
+existing dynamic-history, hook, UNSET and active-collection policies in place.
+[Empty-table comparison and clone review](../../coverage/semantics/throwable-trace-empty-layout-comparison-review.json).
+
 [Ordinary mixed tables](../../coverage/semantics/mixed-property-stringable-comparison-review.json)
 now cache nonowning INDIRECT locators for public declared slots alongside owning
 dynamic buckets. The instance owns inline declared values and its current table;

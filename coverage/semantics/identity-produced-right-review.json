@@ -1,0 +1,33 @@
+{
+  "scope": "Produced-right identity temporary source authority in the existing AL and strict SL execution paths",
+  "behavior": "The single nonempty-list equation preserves the authored alternatives: a produced left operand must match the first receipt; a nonowning left operand admits exactly one produced right receipt. Empty lists, a mismatched produced left, two receipts without a produced left, and a scalar right receipt remain refused. Source authority remains independent of pending/consumed progress, which the existing release validators check separately. Ownership, release jobs, collector walks and framework sources are unchanged.",
+  "review": "Independent review checked the two cases of the optional left temporary and the empty/nonempty receipt list. The Boolean equation preserves both prior AL alternatives without the overlapping cons/singleton equations that disagreed after SL structuring. This is an authored normalization, not a general framework equivalence claim.",
+  "tested_cut": {
+    "base": "c1a240967db652b9eb019289ec904b2fb803c17e",
+    "candidate": "e0bdb95e3a813497e8b73ef212abfa02fc21e74e",
+    "module301_sha256": "e9cf9aa770068e199b9a7e5aa8ad179d0c8b4ba6f399928e0f360417a7e7c272",
+    "changes": "Only the gc_extra_source equation, a tracked AL/SL regression fixture and runner, and its Makefile invocation. Later review/documentation changes do not renew execution credit."
+  },
+  "validation": {
+    "original_failure": "At the unchanged enum private cut, ordinary budget136 returned a real paired TEMP/EXIT continuation; budget137 failed. Exact reached guards isolated gc_extra_source=false while source shape, bounds, pending progress, consumption and shared owners were valid. The original failure retains zero agreement credit.",
+    "pure_before": "With identical helper/runtime inputs, AL accepted all eight literal conditions. SL rejected only the VARIABLE-left singleton produced-right pending and consumed conditions; six other conditions agreed. Both processes exited0 with empty stderr, stable inputs and full reap. Printed false conditions are failures, not passes.",
+    "pure_after_and_join": "The tracked 14-condition fixture passes in both AL and strict SL at the candidate cut. It covers object/array right temporaries, VARIABLE/REFERENCE/scalar left operands, pending/consumed receipts, known-left matching and refusal controls. Each run loads the actual 431-module canonical-tail manifest; the SL execution is also the joined elaboration/algorithmic/structuring check. Both return true newline, empty stderr, exit0, stable inputs/HEAD and fully reaped process groups. No redundant compilation or old source replay is claimed.",
+    "affected_source": "The exact previously failing enum Stringable original now agrees with its retained native bytes: READY|CAST|DROP|selected|rebound|, normal exit0 and empty stderr. It ran once at private enum cut a9824256a5771d16ad9d8d1efd22e33ff97811f4 with the same module301 bytes as the canonical candidate; the private enum dispatch files remained unchanged. Inputs were stable and the process group fully reaped. This is one private affected-source agreement, not integration of that enum dispatch implementation."
+  },
+  "raw_root": ".tools/",
+  "raw": {
+    "ordinary_failure": "enum-stringable-budget-diagnostic-v1/{report.json,last-state.json,first-failure.json}",
+    "reached_isolation": "enum-stringable-ordinary-temp-guards-v1/string-stringable-target-rebound/",
+    "pure_before": "enum-gc-extra-source-pure-v2/",
+    "pure_before_al_process_sha256": "427592100c94cbd3996be6ba957914f2454bbe03f63fc3867222016d5dc13002",
+    "pure_before_sl_process_sha256": "f4f92c16f7a2f0dca47e6dbc233acfee51f2bf660e9acbe35d14edeb0c311c15",
+    "pure_before_sl_stdout_sha256": "d0f235cdeb052b46a4f5a4576b4b84586bfc2ecce1d57f8a13486bc66a6da145",
+    "candidate_report": "gc-identity-source-oilk796i/report.json",
+    "candidate_report_sha256": "10b82e9c33abff753a76e6b2cbb8ea134d8d5ac8350ab52009d5bb40228de997",
+    "affected_source": "enum-generated-stringable-selected-review-v1/changed-report.json",
+    "affected_source_report_sha256": "bb26ec3d0a7ef5547b4e686779f01c3db5093d324966badf91efd91232d5db17",
+    "affected_source_sha256": "f12819432f619a5d0974ad5e6f0731380a5e311337a61a7eadb599385b57be27"
+  },
+  "limits": "This does not integrate GC07 ordinary-caller or WeakReference cleanup work, enum noncollectability changes, or the separate enum string-callable implementation. Their original source cuts and failures remain separate. Complete core GC and framework equivalence remain unfinished.",
+  "recovery": "Run taskset -c N python3 tests/semantics/gc_identity_source.py with one fully pinned actor. The tracked fixture exercises both modes; raw reports retain exact argv, compiler identity, input hashes, exits and process-group cleanup."
+}

@@ -866,10 +866,13 @@ dec $trace_visit_entries_header(pentry*) : bool
 dec $trace_visit_array_header(pstate, nat) : bool
 dec $trace_visit_object_header(pstate, nat) : bool
 dec $trace_visit_interfaces(pstate, pclassdesc) : bool
+dec $trace_visit_parent_precedes(pclasslink*, porigin, porigin) : bool
+dec $trace_visit_parent_path(pstate, pclassdesc, porigin*) : bool
 dec $trace_visit_object_class(pstate, nat) : bool
 dec $trace_visit_object_image(pstate, nat) : bool
 dec $trace_visit_captured_same_kind(pstate, nat, nat) : bool
 dec $trace_visit_inline_pair(pstate, nat, nat) : bool
+dec $trace_visit_inline_empty_pair(pstate, nat, nat) : bool
 dec $trace_visit_item_value(pstate, pitem) : pvalue?
 dec $trace_visit_array_effect(pstate, nat, nat, pcompareguard*, int) : (pstate, porder)
 dec $trace_visit_object_effect(pstate, nat, nat, pcompareguard*, int) : (pstate, porder)
@@ -921,6 +924,31 @@ def $trace_visit_interfaces(S, pclassdesc) = true
   -- if $pil_targets_valid(S, pclassdesc.INTERFACES, pilref*)
   -- if $pil_targets_ordered(S, pclassdesc.ORIGIN, pilref*)
 def $trace_visit_interfaces(S, pclassdesc) = false -- otherwise
+def $trace_visit_parent_precedes((CLASSLINK porigin_parent pclassparent) :: pclasslink_tail*, porigin_parent, porigin_child) = true
+  -- if porigin_parent =/= porigin_child
+def $trace_visit_parent_precedes((CLASSLINK porigin_child pclassparent) :: pclasslink_tail*, porigin_parent, porigin_child) = false
+  -- if porigin_parent =/= porigin_child
+def $trace_visit_parent_precedes((CLASSLINK porigin pclassparent) :: pclasslink_tail*, porigin_parent, porigin_child) = $trace_visit_parent_precedes(pclasslink_tail*, porigin_parent, porigin_child)
+  -- if porigin =/= porigin_parent /\ porigin =/= porigin_child
+def $trace_visit_parent_precedes(pclasslink*, porigin_parent, porigin_child) = false -- otherwise
+def $trace_visit_parent_path(S, pclassdesc, porigin_seen*) = true
+  -- if ~(pclassdesc.ORIGIN <- porigin_seen*)
+  -- if pclassdesc.PARENT = eps
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = eps
+def $trace_visit_parent_path(S, pclassdesc, porigin_seen*) = $trace_visit_parent_path(S, pclassdesc_parent, pclassdesc.ORIGIN :: porigin_seen*)
+  -- if ~(pclassdesc.ORIGIN <- porigin_seen*)
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if ~$class_internal(ptbytes_parent)
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
+  -- if ~(porigin_parent <- (pclassdesc.ORIGIN :: porigin_seen*))
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class" /\ ~pclassdesc_parent.FINAL /\ ~pclassdesc_parent.READONLY
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_parent.NAME)) = (porigin_parent)
+  -- if $pil_precedes(S.CLASSNAMES, porigin_parent, pclassdesc.ORIGIN)
+  -- if pclassdesc_parent.PARENT = eps \/ $trace_visit_parent_precedes(S.LINKEDPARENTS, porigin_parent, pclassdesc.ORIGIN)
+  -- if $trace_visit_interfaces(S, pclassdesc_parent)
+def $trace_visit_parent_path(S, pclassdesc, porigin_seen*) = false -- otherwise
 ;; Ordinary methods do not participate in standard object/object comparison.
 ;; Retain the existing layout and lifecycle bounds without whole-graph admission.
 def $trace_visit_object_class(S, n) = $trace_object_class(S, n)
@@ -931,14 +959,15 @@ def $trace_visit_object_class(S, n) = true
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $trace_visit_object_header(S, n)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps
+  -- if pclassdesc.KIND = "class"
   -- if $trace_visit_interfaces(S, pclassdesc)
   -- if ~pclassdesc.READONLY
+  -- if $trace_visit_parent_path(S, pclassdesc, eps)
   -- if ~$property_hook_instance(S, n)
-  -- if $property_layout(S, porigin, |S.CLASSES|) = (ppropertydesc :: ppropertydesc_tail*)
-  -- if $trace_instance_public(ppropertydesc :: ppropertydesc_tail*)
+  -- if $property_layout(S, porigin, |S.CLASSES|) = (ppropertydesc*)
+  -- if $trace_instance_public(ppropertydesc*)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
-  -- if $property_slots_valid(S, ppropertydesc :: ppropertydesc_tail*, pobjectprops.SLOTS)
+  -- if $property_slots_valid(S, ppropertydesc*, pobjectprops.SLOTS)
   -- if $property_unique_names(pobjectprops.SLOTS)
 def $trace_visit_object_class(S, n) = false -- otherwise
 def $trace_visit_object_image(S, n) = true
@@ -961,6 +990,12 @@ def $trace_visit_inline_pair(S, n_left, n_right) = true
   -- if $object_table_at(S.OBJECTTABLES, n_left) = eps
   -- if $object_table_at(S.OBJECTTABLES, n_right) = eps
 def $trace_visit_inline_pair(S, n_left, n_right) = false -- otherwise
+def $trace_visit_inline_empty_pair(S, n_left, n_right) = true
+  -- if $trace_visit_inline_pair(S, n_left, n_right)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_left) = (pobjectprops_left)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_right) = (pobjectprops_right)
+  -- if pobjectprops_left.SLOTS = eps /\ pobjectprops_right.SLOTS = eps
+def $trace_visit_inline_empty_pair(S, n_left, n_right) = false -- otherwise
 def $trace_visit_item_value(S, DIRECT pvalue) = (pvalue)
 def $trace_visit_item_value(S, ALIAS n) = (pvalue)
   -- if $(n < |S.STORE|)
@@ -1018,12 +1053,16 @@ def $trace_visit_object_effect(S, n_left, n_right, pcompareguard_seen*, z) = $tr
   -- if $trace_visit_object_image(S, n_left)
   -- if $trace_visit_object_image(S, n_right)
 def $trace_visit_object_effect(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
+def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDER 0)
+  -- if $trace_visit_inline_empty_pair(S, n_left, n_right)
 def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDERRECURSIVE)
   -- if $trace_visit_inline_pair(S, n_left, n_right)
+  -- if ~$trace_visit_inline_empty_pair(S, n_left, n_right)
   -- if pcompareguard_object = $aggregate_object_guard(S, n_left, n_right)
   -- if pcompareguard_object <- (pcompareguard_seen* ++ $aggregate_compare_seen(S))
 def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, z) = $trace_visit_entries_effect(S, $trace_object_current_entries(S, n_left), $trace_object_current_entries(S, n_right), pcompareguard_object :: pcompareguard_seen*, z)
   -- if $trace_visit_inline_pair(S, n_left, n_right)
+  -- if ~$trace_visit_inline_empty_pair(S, n_left, n_right)
   -- if pcompareguard_object = $aggregate_object_guard(S, n_left, n_right)
   -- if ~(pcompareguard_object <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
 def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, z) = $trace_visit_array_effect(S_tables, n_table_left, n_table_right, pcompareguard_seen*, z)

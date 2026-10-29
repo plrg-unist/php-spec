@@ -101,6 +101,31 @@ fixture errors. The ownerless Stringable reached packet passes 31 checks. The
 joined v1 duplicated the manifest's first module and has zero semantic credit;
 v2 records `--sl` over all 431 modules, `true`, and a fully reaped CPU 1 group.
 
+Generated enum string-callable cuts are under
+`../php-spec-evidence-archive/enum-string-callable-117/`. Its `manifest.json`
+(SHA-256 `4729ec1a12e44429a58c83fa29c38d621df7ad32825cd71c40c35c83969d18c3`)
+binds a 3,782,657-byte archive containing 42 raw directories. Six normal originals,
+one zero-agreement packed-source refusal and 159 state/guard conditions retain
+their separate cuts. Original 136/137 failures and fixture corrections remain
+distinct from the separately reviewed 301 normalization and affected acceptance.
+The actual-tail joined strict431 result pins `e09c05010` over `08439f073`,
+with exact `true` output, stable inputs and a fully reaped CPU1 group. Extract the
+archive and copy a required `raw/enum-*` directory back into ignored `.tools/`;
+recorded commands, tested inputs, runtime/compiler identities and absolute paths
+preserve recovery. See the [string review](../coverage/semantics/enum-string-callable-review.json).
+
+Generated enum string-capture cuts are under
+`../php-spec-evidence-archive/enum-string-capture-117/`. Its `manifest.json`
+(SHA-256 `049171cb6ad89f82ab1467a56a110b37e8151b345adbc8223d7aa6ac4d7c78dd`)
+binds a 613,293-byte archive with seven raw directories. Four exact originals,
+114 state/guard conditions and private strict431 retain their original cuts; the
+initial Unsupported has zero agreement credit. Actual-tail joined strict432
+pins `d52de3fd9` over `0d5e7de23`, with exact `true`, stable inputs and full reap.
+The [capture review](../coverage/semantics/enum-string-capture-review.json) records
+the applicable GC07 copied-target/cache-borrowing seam and the remaining partial
+routes. Extract the archive and restore the selected `raw/enum-string-capture-*`
+directory under ignored `.tools/` to recover recorded commands and tested inputs.
+
 The guarded getter-recursion milestone retains source/native observations,
 focused checks, all fixture failures and diagnostics in
 `../php-spec-evidence-archive/magic-get-recursion-119/manifest.json`.
@@ -214,6 +239,22 @@ independent by-reference SEND/Fiber-abort peer is under
 `../php-spec-evidence-archive/generator-captured-method-factory-80-review/`.
 The [captured factory ledger](../coverage/semantics/generator-captured-factory-review.json)
 binds revisions, hashes and remaining scope.
+
+I81 array/string factory native, unchanged gate/projection, private/actual-tail
+joined strict and new-only model/state evidence is under
+`../php-spec-evidence-archive/generator-array-string-factory-81/`; the independent
+private-array BYREF SEND peer is under
+`../php-spec-evidence-archive/generator-array-string-factory-81-review/`.
+The [array/string ledger](../coverage/semantics/generator-array-string-factory-review.json)
+separates accepted observations from pending checks and preserves the original
+wire-byte assertion failure with zero agreement credit.
+
+I82 compatible bound-method factory native, unchanged refusal, private strict
+and new source/state evidence is retained across
+`../php-spec-evidence-archive/generator-bound-method-factory-82/` and
+`../php-spec-evidence-archive/generator-bound-method-factory-82-review/`.
+The [bound factory ledger](../coverage/semantics/generator-bound-factory-review.json)
+separates completed cuts from pending checks; raw originals remain external.
 
 I77 receiver-bearing scoped Generator evidence retains authored native,
 unchanged baseline, private/joined strict, source and reached-state cuts under

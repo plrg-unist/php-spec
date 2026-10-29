@@ -334,8 +334,8 @@ def $throwable_same_frame_continuation(S, S_next, ptask_old*) = S_next[.TODO = p
   -- if S_next.TODO = (CONFIG_INVOKE passertcall.FAILURE.CALL) :: ptask_tail*
   -- if S_next.COMPLETION = THROWING n_next
 
-;; Selected error/assert/exception callbacks use this phase. Other API consumers
-;; continue to refuse Deprecated before they claim a VM-style warning order.
+;; Selected error/assert/exception callbacks use this phase. Other consumers
+;; need their own API staging; explicit Closure wrappers use module443.
 def $error_call_valid(S, perrorcall) = true
   -- if S.ORIGIN = (perrorcall.SITE)
   -- if perrorcall.RESUME = API_CALLBACK_SEND papiargcursor

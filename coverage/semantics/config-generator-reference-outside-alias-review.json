@@ -1,0 +1,87 @@
+{
+  "milestone": "A74 surviving ordinary scalar aliases after sole Generator DATA retirement",
+  "status": "integrated after independent actual-tail review and joined validation",
+  "scope": {
+    "consumer": "Existing INI_SET unpack of a named zero-argument BYREF Generator in a direct CV, with at most two copied scalar sends, an integer final key and absent or implicit-NULL return.",
+    "behavior": "A CLOSED Generator has one ordinary scalar REFCELL cached child while its outside global value/alias names keep that cell live. Sole DATA releases the Generator through the existing storage pin, reducing cell owners from three to two. The cell remains readable after Generator death; later scalar or array writes cannot alter copied sends, the selected setter or retired CONFIG history. Quiet saved-Throwable cleanup retains the same exception through catch.",
+    "limits": "The last cached cell must be ordinary, live, nondebt and flat scalar at release, and the Generator's only child. Typed/backed, released, parameter-backed and owning-at-release cells, owning RETURN or sends, temporary/Aggregate producers, effectful cleanup and wider key/lifetime forms remain separate."
+  },
+  "implementation": {
+    "module": "spec/semantics/423-config-generator-unpack.watsup",
+    "base": "293e24bf7581d389d08b918c86e8bacac5293510",
+    "source_freeze": "36c4bcc32ec98645b97cb537879e6f81632e2ec0",
+    "runtime_revision": "3b21f9f42c9cad29b39dd0e2ff9894f94f8688a9",
+    "compared_revision": "1eefd1db8af0f9b0a0dd11cf998bbbc2325fb848",
+    "reached_revision": "beefebd727df8f5c1d15252959cc53e8b88c3731",
+    "change": "Remove only the HCELL sole-owner premise from 423's live ordinary scalar storage gate. Existing scalar reader, sole Generator child, producer/key/return, retired structural history, generic 355 storage release, schema and ordered manifest remain unchanged.",
+    "engine": "Pinned Zend/zend_vm_def.h yields a reference cache and copies unpack sends before move_forward; Zend/zend_generators.c releases cached storage when DATA drops. Outside aliases retain the reference container after that Generator release."
+  },
+  "validation": {
+    "target": "PHP 8.5.10 CLI NTS64, pinned project-local binary, tests/semantics/profile.json, LC_ALL=C/TZ=UTC; checked frontend, SL/cache-off/determinism-on model, CPU4 serial actors.",
+    "native_first": {
+      "revision": "36c4bcc32ec98645b97cb537879e6f81632e2ec0",
+      "author_report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-outside-alias-74/native-freeze-36c4/author/report.json",
+      "author_sha256": "5a601aa2a3a07826d31adabd106124eb7854b69c374b76347c77f775f5ce200e",
+      "peer_report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-outside-alias-74/native-freeze-36c4/peer/report.json",
+      "peer_sha256": "16d6f954d761ed2b1f273e0b10991e679112d5c1243a1256d30d06fad930fbab",
+      "originals": 4,
+      "result": "Four distinct frozen sources match independently authored EXPECTED stdout exactly, empty stderr, exit0 and clean process groups. Native preparation has zero model-agreement credit."
+    },
+    "old_refusal": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-outside-alias-74/old-control-36c4/report.json",
+      "sha256": "615b888595016ea36a18aaaa2dbf83faa2a47f7cc3abe0205520db524c928868",
+      "revision": "36c4bcc32ec98645b97cb537879e6f81632e2ec0",
+      "status": "Unsupported",
+      "reason": "CONFIG Generator unpack last DATA or callee owner",
+      "prefix": "B;Y0;Y1;T;",
+      "agreement_credit": 0
+    },
+    "private_strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-outside-alias-74/candidate-1eefd/strict-report.json",
+      "sha256": "af3ebf4cea51195063d0cd715db83c6cf95b09ab9624e356642e05c399c92d8e",
+      "revision": "1eefd1db8af0f9b0a0dd11cf998bbbc2325fb848",
+      "modules": 431,
+      "seconds": 12.347780227661133
+    },
+    "source_models": {
+      "agreements": 4,
+      "method": "Read and verify retained frozen native source/streams/profile; run only bin/php-semantics. No native original or accepted A73 source/state replay.",
+      "reports": [
+        {"case": "normal", "revision": "1eefd1db8af0f9b0a0dd11cf998bbbc2325fb848", "path": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-outside-alias-74/candidate-1eefd/author-normal/report.json", "sha256": "1f7dfb2862da84b28f0ce89668367f1624e76602ce957796a1c90d0b3e6fb92c"},
+        {"case": "terminal-throw", "revision": "beefebd727df8f5c1d15252959cc53e8b88c3731", "path": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-outside-alias-74/candidate-beefebd/author-throw/report.json", "sha256": "22a302b945a7ba34e9b5c5b90128b68fa8921f035d62668cf7c74d2e26eb605e"},
+        {"case": "null-handler-return", "revision": "beefebd727df8f5c1d15252959cc53e8b88c3731", "path": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-outside-alias-74/candidate-beefebd/peer-return/report.json", "sha256": "585b9369778d6e6d28aa6974b2e1c21d68848e0d118f5400dda316f641160d50"},
+        {"case": "null-handler-throw", "revision": "beefebd727df8f5c1d15252959cc53e8b88c3731", "path": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-outside-alias-74/candidate-beefebd/peer-throw/report.json", "sha256": "c503af83a712d8b3d30b9a4e593982bbc52ed58bf6f6740603581d35d81279ad"}
+      ]
+    },
+    "reached": {
+      "conditions": 309,
+      "if_premises": 306,
+      "raw_steps": 3,
+      "peer": {"report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-outside-alias-74/candidate-beefebd/peer-state/report.json", "sha256": "77d7f3faa6f478cb357be3fb55e5c8be9b30ad3796c1624eb5d9c0178fad5590", "conditions": 188, "raw_steps": 2, "coverage": "Real 355 slot1 to slot2 cell owners three to two with live Generator pin, then dead Generator/live ordinary cell, copied NULL/13, later ARRAY41 and preserved retired/API authority. Two constructed refusal controls have no separate source credit."},
+      "author": {"report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-outside-alias-74/candidate-beefebd/author-state/report.json", "sha256": "36842e5723e61aca5234900820e16b5bd10c2effcec99802a68cef8ec308c23f", "conditions": 121, "raw_steps": 1, "coverage": "Quiet popped-marker raw discard and public pruning kill Generator but retain cell owners two, pending saved-Throwable catch, alias12 write and final explicit cell cleanup. Popped-task projection has no separate source credit."}
+    },
+    "review": "Independent author/peer source literals, native streams, one-line runtime seam, frozen-native-only comparator, four source agreements and both reached records by config71_recover_review. Successful actors exited0, true stdout for strict/state, empty stderr, stable inputs/revisions, no timeout/interruption/group survivor."
+  },
+  "recovery": {
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-outside-alias-74",
+    "manifest_sha256": "edbee1cc768213ca8d0be2626611f79158e757cacf28409895a8a21bdd40afb2",
+    "files": 90,
+    "raw_bytes": 1855839,
+    "commands": "Use tests/semantics/config_generator_reference_outside_alias_models.py with both --native-report paths and one --case per model; run each state script with its corresponding frozen native --source-report. Makefile includes full fresh-source entrypoints for future complete validation.",
+    "notes": "Raw sources, streams, exits, checked fixtures and reports are outside Git; no executables/providers. Tested revision and original process identities remain historical."
+  },
+  "integration": {
+    "status": "actual-tail composition independently cleared; sole joined strict431 passed",
+    "base": "435c194a749280ba5fc7dfe7af0071c06f99ccd4",
+    "composition": "5c51ced1355dc6a6c13c0efbec56edb5b2bf478b",
+    "joined_strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-outside-alias-74/joined-5c51ced13/report.json",
+      "sha256": "e7b2e0d1f0ead5772050f0a947a76772d922a84604e83e4941b4070f368a4088",
+      "revision": "5c51ced1355dc6a6c13c0efbec56edb5b2bf478b",
+      "modules": 431,
+      "seconds": 12.4477889538
+    },
+    "compatibility": "Runtime423 and source/state fixtures exactly match private A74. Generic355/301, schema and ordered manifest match current parent; current Enum210/437 additions are KIND-disjoint from INI_SET and I81 captured-method lookup does not widen named direct-CV reference admission. Frozen native4/old Unsupported0, private strict431, source4 and reached309 retain their original cuts. No accepted A73 source, state or native replay.",
+    "review": "Independent actual-parent semantic seams, docs/inventory union and joined compiler review by config71_recover_review."
+  }
+}

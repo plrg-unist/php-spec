@@ -2,6 +2,7 @@ dec $call_unpack_present(phpType7*) : bool
 dec $call_unpack_site(pstate, porigin?) : bool
 dec $unpack_current_site(pstate) : porigin?
 dec $unpack_start(pfunction, phpType7*, porigin?, int) : ptask
+dec $closure_invoke_named_ready(pstate) : pstate
 ;; Source-order sends bind an independent positional extent and ordered names.
 syntax pnamedtarget = NAMED_POSITION nat | NAMED_EXTRA preqbytes | NAMED_UNKNOWN preqbytes
 
@@ -170,7 +171,7 @@ def $named_enter(S, pfunction, pnamedargs, porigin?, z) = S_bound[.CURRENT = ({T
   -- if n_extra = $(n_args - n_received)
   -- if S_entered = $save_frame(S)
   -- if S_bound = $named_bind(S_entered[.CVS = pfunction.CVS][.SYMBOLS = pfunction.CVS], psparam_fixed*, pnamedargs.SLOTS)
-rule PhpStep/named-enter: S ~> $wrapper_after_enter($target_after_enter($named_enter(S[.TODO = ptask_tail*], pfunction, pnamedargs, porigin?, z), pcalltarget_function), pnamedargs)
+rule PhpStep/named-enter: S ~> $source_call_enter(S, pfunction)
   -- if S.TODO = (NAMED_ARGS pcalltarget_function eps n pnamedargs porigin? z) :: ptask_tail*
   -- if $target_function(S, pcalltarget_function) = (pfunction)
 
@@ -190,7 +191,7 @@ def $named_defined(S, preqbytes) = true
 def $named_defined(S, preqbytes) = false -- otherwise
 dec $named_hole_store(pstate, pfunction, nat, pvalue) : pstate
 def $named_hole_store(S, pfunction, n, pvalue) = $write_name(S, pfunction.SIGNATURE.PARAMETERS[n].NAME, pvalue)[.TODO = [NAMED_PREFLIGHT pfunction.ORIGIN $(n + 1)]][.ORIGIN = (pfunction.ORIGIN)][.CONSTCONTEXT = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-rule PhpStep/named-preflight-done: S ~> $call_entry_ready(S, pfunction, pcallcontext.ARGC, pcallcontext.CALLSITE, pcallcontext.LINE)
+rule PhpStep/named-preflight-done: S ~> $call_entry_ready($closure_invoke_named_ready(S), pfunction, pcallcontext.ARGC, pcallcontext.CALLSITE, pcallcontext.LINE)
   -- if S.TODO = (NAMED_PREFLIGHT porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
@@ -203,7 +204,7 @@ rule PhpStep/named-preflight-supplied: S ~> S[.TODO = [NAMED_PREFLIGHT porigin $
   -- if $receiving_function(S, porigin) = (pfunction)
   -- if $(n < pcallcontext.ARGC) /\ $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if $named_defined(S, pfunction.SIGNATURE.PARAMETERS[n].NAME)
-rule PhpStep/named-preflight-required: S ~> $throw_scalar(S, "ArgumentCountError", $call_function_name(S, pfunction) ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ pfunction.SIGNATURE.PARAMETERS[n].NAME ++ $ptascii(") not passed"), $default_parameter_line(S, porigin, n))
+rule PhpStep/named-preflight-required: S ~> $throw_scalar(S, "ArgumentCountError", $c_string($call_function_name(S, pfunction)) ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ pfunction.SIGNATURE.PARAMETERS[n].NAME ++ $ptascii(") not passed"), $default_parameter_line(S, porigin, n))
   -- if S.TODO = (NAMED_PREFLIGHT porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)

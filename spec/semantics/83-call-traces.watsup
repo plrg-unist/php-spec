@@ -54,6 +54,7 @@ def $trace_extra(S, eps) = eps
 def $trace_extra(S, (KNOWN pvalue) :: poperand*) = pvalue :: $trace_extra(S, poperand*)
 def $trace_extra(S, (REFERENCE n) :: poperand*) = pvalue :: $trace_extra(S, poperand*)
   -- if S.STORE[n] = DEFINED pvalue
+dec $closure_invoke_trace_identity(pcallcontext) : pcallcontext
 dec $trace_context_function(pstate, pcallcontext) : preqbytes
 def $trace_context_function(S, pcallcontext) = pmethoddesc.NAME
   -- if pcallcontext.INSTANCE = eps
@@ -124,11 +125,13 @@ dec $generator_context_trace_kind(pstate, pcallcontext) : bool
 dec $generator_trace_scope(pstate, pcallcontext?, pframe*) : pstate
 dec $trace_context(pstate, pbinding*, pcallcontext?) : ptraceframe*
 dec $sensitive_trace_context(pstate, pbinding*, pcallcontext?) : ptraceframe*
+dec $sensitive_trace_arguments(pstate, pfunction, (pkey, ptracearg)*) : (pkey, ptracearg)*
 dec $sensitive_trace_frames(pstate, ptraceframe*) : (pstate, ptraceframe*)
 dec $default_internal_callback_context(pstate, pcallcontext) : bool
 def $default_internal_callback_context(S, pcallcontext) = false -- otherwise
 dec $ordinary_internal_callback_context(pstate, pcallcontext) : bool
 def $ordinary_internal_callback_context(S, pcallcontext) = false -- otherwise
+dec $closure_invoke_warning_context(pstate, pcallcontext) : bool
 dec $clone_update_string_context(pstate, pcallcontext) : bool
 def $clone_update_string_context(S, pcallcontext) = false -- otherwise
 def $trace_context(S, pbinding*, eps) = eps
@@ -140,7 +143,8 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCT
   -- if $config_string_trace_context(S, pcallcontext)
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.TODO = (STRINGIFY_RESULT n porigin_child z_call) :: (CONFIG_STRING_RESULT pconfigcall n porigin_child z_child z_call) :: ptask_tail*
-def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FILES, porigin_trace), LINE z_trace, FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS ($trace_indexed_args(pvalue*, 0) ++ $trace_named_args(S, pcallcontext.NAMED)), HASARGS true}] ++ $wrapper_trace(S, pcallcontext)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FILES, porigin_trace), LINE z_trace, FUNCTION $trace_context_function(S, pcallcontext_identity), CLASS $trace_context_class(S, pcallcontext_identity), TYPE $trace_context_type(S, pcallcontext_identity), ARGS ($trace_indexed_args(pvalue*, 0) ++ $trace_named_args(S, pcallcontext.NAMED)), HASARGS true}] ++ $wrapper_trace(S, pcallcontext)
+  -- if pcallcontext_identity = $closure_invoke_trace_identity(pcallcontext)
   -- if ~$terminal_string_context(S, pcallcontext)
   -- if ~$closure_call_target($context_target(pcallcontext))
   -- if ~$config_string_trace_context(S, pcallcontext)
@@ -148,6 +152,7 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FIL
   -- if ~$default_internal_callback_context(S, pcallcontext) /\ ~$ordinary_internal_callback_context(S, pcallcontext)
   -- if ~$clone_update_string_context(S, pcallcontext)
   -- if $error_context_trigger(S, pcallcontext) = eps
+  -- if ~$closure_invoke_warning_context(S, pcallcontext)
   -- if ~$exception_warning_context(S, pcallcontext)
   -- if ~$destructor_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)

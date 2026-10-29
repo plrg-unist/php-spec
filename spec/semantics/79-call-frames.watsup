@@ -3,6 +3,7 @@ dec $named_slots_roots(pnamedslot*) : pnode*
 def $instance_roots(eps) = eps
 def $instance_roots((n)) = [HOBJECT n]
 dec $wrapper_roots(pnamedargs?) : pnode*
+dec $wrapper_receiver_roots(pcallcontext) : pnode*
 def $wrapper_roots(eps) = eps
 def $wrapper_roots((pnamedargs)) = $named_slots_roots(pnamedargs.SLOTS) ++ $named_roots(pnamedargs.NAMED)
 ;; An active symbol table is moved, never copied, across the main/function edge.
@@ -30,7 +31,7 @@ def $call_receiver_roots(pcallcontext) = eps
   -- if pcallcontext.TARGET = AGGREGATE_METHOD_TARGET n porigin
 def $call_receiver_roots(pcallcontext) = $instance_roots(pcallcontext.RECEIVER) -- otherwise
 def $call_context_roots(eps) = eps
-def $call_context_roots((pcallcontext)) = $instance_roots(pcallcontext.INSTANCE) ++ $call_receiver_roots(pcallcontext) ++ $call_target_extra_roots(pcallcontext) ++ $operands_roots(pcallcontext.EXTRA) ++ $named_roots(pcallcontext.NAMED) ++ $wrapper_roots(pcallcontext.WRAPPER)
+def $call_context_roots((pcallcontext)) = $instance_roots(pcallcontext.INSTANCE) ++ $call_receiver_roots(pcallcontext) ++ $call_target_extra_roots(pcallcontext) ++ $operands_roots(pcallcontext.EXTRA) ++ $named_roots(pcallcontext.NAMED) ++ $wrapper_roots(pcallcontext.WRAPPER) ++ $wrapper_receiver_roots(pcallcontext)
 def $frames_roots(eps) = eps
 def $frames_roots(pframe :: pframe_tail*) = $table_roots(pframe.LOCALS) ++ $tasks_nodes(pframe.TODO) ++ pframe.HELD ++ $call_context_roots(pframe.CONTEXT) ++ $frames_roots(pframe_tail*)
 
@@ -49,7 +50,12 @@ dec $parameter_receive_restored(pstate, pstate) : pstate
 dec $restore_frame_locals(pstate, pframe, pframe*, psymboltable?) : pstate
 dec $frame_release(pstate, pstate) : pstate
 dec $generator_frame_release(pstate, pstate) : pstate
+dec $closure_invoke_owning_discarded(pstate) : bool
+dec $closure_invoke_unused_return(pstate) : pstate
+def $restore_frame(S) = $closure_invoke_unused_return(S)
+  -- if $closure_invoke_owning_discarded(S)
 def $restore_frame(S) = $generator_frame_release(S, $frame_release(S, $restore_frame_raw(S)))
+  -- if ~$closure_invoke_owning_discarded(S)
 def $restore_frame_raw(S) = $parameter_receive_restored(S, $restore_frame_locals(S, pframe, pframe_tail*, pframe.LOCALS))
   -- if S.FRAMES = pframe :: pframe_tail*
 def $restore_frame_locals(S, pframe, eps, eps) = $set_active_table(S[.GLOBALTABLE = eps][.FRAMES = eps][.SILENCES = pframe.SILENCES][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.CURRENT = pframe.CONTEXT][.RETIREDOWNERS = pframe.RETIREDOWNERS][.BORROWEDREAD = pframe.BORROWEDREAD][.OBJECTCAST = pframe.OBJECTCAST][.CONSTCONTEXT = pframe.CONSTCONTEXT][.BASE = BASE_VALUE (KNOWN PNULL)], psymboltable)

@@ -261,20 +261,47 @@ parameters/types, nonpublic constructors and broader lifecycle interactions rema
 required at that cut. The [constructor review](../../coverage/semantics/anonymous-constructors-review.json)
 separates original-source agreement, actual call/unwind states and pure receipt queries.
 
-Unit0 parentless anonymous classes now accept one or two direct positional/named
-`new` arguments. Public by-value constructors may have up to two required
-untyped or `int` parameters; a class without `__construct` evaluates positional
-arguments and ignores their values. Compilation publishes the anonymous class
+Anonymous classes accept finite sequences of direct positional/named `new`
+arguments and unpromoted value or reference parameters, including a final variadic tail.
+The ordinary signature compiler validates their types, defaults, requiredness and
+final-only variadic placement; the ordinary binder
+completes named holes before typed reception. A class without `__construct`
+evaluates positional arguments and ignores their values. The compiled identity
+precedes execution; a deferred class links and publishes at its first `new`
 before argument expressions, then uses the ordinary method or no-constructor
-send tasks. An unknown named argument stops before the next value expression;
-typed reception errors leave the caller destination unchanged. The
+send tasks. Without a variadic tail, an unknown named argument stops before the
+next value expression; typed reception errors leave the `new` assignment
+destination unchanged. The
 [argument review](../../coverage/semantics/anonymous-constructor-arguments-review.json)
-records seven native-backed sources, one independent weak int-coercion source,
-and 107 source-reached premises across constructor and no-constructor tasks.
-Dynamic-source anonymous sites with arguments, constructor by-reference/default/
-variadic/promoted or nonpublic forms, unpacking and wider object lifetimes remain
-partial. Three explicit source controls confirm Unsupported for three direct
-arguments, a by-reference constructor formal and an unpacked send.
+retains its seven native-backed sources, independent weak int-coercion source and
+107 source-reached premises at the earlier two-parameter/send cut.
+The [finite-arity review](../../coverage/semantics/anonymous-constructor-arity-review.json)
+records root and successful include/eval sites, inherited constructors, surplus
+positional sends, named-default reception retry and pruned versus eager invalid
+defaults. Promoted or nonpublic constructors, unpacking and wider object lifetimes
+remain partial.
+Reference sends use the saved constructor signature and hold their actual cell
+before later argument effects. Named sends select the formal index when they run;
+rebinding a constructor local does not rebind the caller. Missing variables can
+be initialized quietly, and omitted reference defaults get fresh callee locals.
+Weak type reception may update a supplied caller cell; later body writes remain
+ordinary unless that cell has a persistent property-reference source. VAR values
+can warn and receive a temporary reference; an invalid TMP stops later sends and
+the body. The [reference-constructor review](../../coverage/semantics/anonymous-constructor-reference-review.json)
+records these source, cell, mode and reception checks.
+Final variadic formals reuse the ordinary positional and named-tail collectors.
+Positional extras keep integer keys; unknown named extras keep source order and
+string keys. By-value tails copy received values, while reference tails retain
+caller cells and may coerce them at reception. Fixed defaults finish before tail
+collection, and an empty tail still receives an array. All sends precede typed
+tail errors; invalid reference sends stop later sends. The
+[variadic review](../../coverage/semantics/anonymous-constructor-variadic-review.json)
+retains six agreements and the original excluded `count()` observer separately;
+[CORE](CORE.md#environment-and-ordinary-library-boundary) defines that library boundary.
+Argument TypeErrors, missing named fixed arguments and nonreferenceable-send
+Errors format the whole callable name as one C string. Ordinary too-few-argument
+errors format the lexical declaring class and member separately.
+Stored class names and `::class` values keep their complete bytes.
 
 Unit0 anonymous classes may now extend an ordinary named class through the
 ordinary class-reference forms. Parent declarations follow the normal compiler/linker,
@@ -357,9 +384,9 @@ history and absence of pre-name diagnostics remain required.
 
 The placement extension reuses the same compiler route for later-unit expressions,
 including returns, nested and call-argument NEW, and the existing ordinary named
-and static no-capture Closure factories. Up to two ordinary positional/named
-constructor arguments use the existing binder; body/default and argument-mode
-bounds are unchanged. Factory compilation records class identities before calls;
+and static no-capture Closure factories. Finite direct positional/named
+constructor arguments use the ordinary binder; wider bodies, factories, captures
+and argument modes retain their documented bounds. Factory compilation records class identities before calls;
 first-NEW linking precedes argument effects, and successful publication survives a
 throwing send. Later visits allocate fresh objects of that same class. Ordinary
 named declarations inside admitted factories consume their deferred keys in actual
@@ -421,3 +448,39 @@ Stored names and trace arrays remain intact. The
 keeps five exact originals and publication/allocation, factory and trace frontiers
 at their distinct cuts. Pure formatter/domain/display and compiler-context queries
 are separated from reached states; earlier failures retain zero credit.
+
+## Generated enum method strings
+
+For published enums, computed, literal and compiler-folded `Class::method`
+strings select generated `cases()`, `from()` and `tryFrom()` before evaluating
+arguments. Lookup uses the published class and generated method identity, while
+the selected-call record preserves the full original string, method bytes,
+source occurrence, line and nonce. Later callee rebinding cannot change this
+selected enum. These internal operations reuse ordinary argument sends and enum
+reception without constructing a user method body or an owning receiver.
+
+Named Stringable inputs retain their real argument child and call line through
+`__toString()` and release a temporary input before backing-table lookup. A
+selected call requires the same source child at callback entry; wider packed
+origins produce explicit Unsupported before conversion. Caller strictness,
+backing checks, singleton caches and ordinary internal argument errors keep
+their existing rules.
+
+First-class captures authenticate the actual placeholder, init/conversion line
+and full fixed or computed string before creating the existing internal Closure.
+The Closure stores the selected generated operation; it owns no receiver, creator
+or original callee string. Invocation owns the Closure through reception and
+lookup even if an argument or Stringable callback clears its source variable.
+The temporary Stringable input still retires before lookup, and the Closure
+retires after the call when no outside owner remains.
+
+The engine routes are `zend_init_dynamic_call_string` and `ZEND_INIT_DYNAMIC_CALL`,
+the compiler's fixed-call lowering, and the generated handlers registered in
+`Zend/zend_enum.c`. For captures, `ZEND_CALLABLE_CONVERT` calls
+`zend_closure_from_frame` in `Zend/zend_closures.c`. The [string review](../../coverage/semantics/enum-string-callable-review.json)
+keeps original source comparisons, reached guards and the shared identity-receipt
+normalization at separate cuts. The
+[capture review](../../coverage/semantics/enum-string-capture-review.json) keeps
+its new capture sources and owner/ingress checks separate. Callable admission,
+first-class array captures, pipe and `Closure::fromCallable` consumers, first-use loading, enum
+collectability and wider object lifetimes remain partial.

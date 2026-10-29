@@ -112,7 +112,8 @@ def $call_send_parameter(S, pcalltarget_function, n, expression, porigin?, porig
   -- if S.RESULT = REFERENCE n_cell
   -- if ~$arginfo_nullsafe_origin(S, porigin_arg?)
   -- if $call_reference_variable(expression) \/ ($ppsend_var(expression) /\ ~$arginfo_tmp_origin(S, porigin_arg?))
-def $call_send_parameter(S, pcalltarget_function, n, expression, porigin?, porigin_arg?, z) = $throw_scalar(S, "Error", $wrapper_send_name(S, pcalltarget_function, porigin?, pfunction.NAME) ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" could not be passed by reference"), z)
+;; The nonreferenceable-send Error formats the whole callable name as one C string.
+def $call_send_parameter(S, pcalltarget_function, n, expression, porigin?, porigin_arg?, z) = $throw_scalar(S, "Error", $c_string($wrapper_send_name(S, pcalltarget_function, porigin?, pfunction.NAME)) ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" could not be passed by reference"), z)
   -- if $call_parameter_reference(S, pcalltarget_function, n)
   -- if ~$call_reference_variable(expression) \/ $arginfo_nullsafe_origin(S, porigin_arg?)
   -- if ~$ppsend_var(expression) \/ $arginfo_tmp_origin(S, porigin_arg?) \/ $arginfo_nullsafe_origin(S, porigin_arg?)

@@ -1787,3 +1787,80 @@ binding correction; its first compile failure and the original Unsupported retai
 zero credit. Typed/backed/released/debt cells, BYREF VALUE/Notice caches, owning
 sends, temporary or Aggregate reference producers and last-DATA reference cleanup
 remain separate. Earlier accepted cuts and all paused boundaries are unchanged.
+
+The [sole-DATA reference-cell increment](../../coverage/semantics/config-generator-reference-sole-data-review.json)
+admits a CLOSED named BYREF Generator whose final cached local cell is ordinary,
+live, scalar and its only child. The cell has one Generator owner; a direct CV
+may already have been rebound, leaving Iterator DATA as the final Generator
+owner. Final key is integer and RETURN is absent or implicit NULL. The normal
+release enters the existing355 storage pin: the cell retires while the
+Generator remains pinned, then both are dead before INI_SET reception. A weak
+NULL-option callback sees that death and still uses the copied arguments and
+selected setter. Quiet terminal throw uses the existing nonoperational release
+and driver pruning after the CONFIG marker is popped, retaining the same
+supplied Throwable through catch. Retired CONFIG authority checks source and
+Generator shape with a bounded cell identity; it never rereads a dead cell.
+
+Four originals agree exactly, strict431 passes, and 318 reached conditions
+(315 premises, three raw transitions) check live/retired ownership, source,
+pending cleanup, API and five constructed refusals. The first throw fixture
+wrongly expected a storage pin on a quiet cleanup path and remains zero credit.
+The source wrappers repeated four frozen native originals; those records add no
+coverage. Generic355, schema, manifest and earlier accepted tests are unchanged.
+Typed/backed or owning cells, noninteger final keys, owning RETURN, temporary
+or Aggregate reference producers, effectful cleanup and wider lifetimes remain
+partial.
+
+The [outside-alias reference-cell increment](../../coverage/semantics/config-generator-reference-outside-alias-review.json)
+keeps the A73 ordinary scalar reader, direct-CV BYREF producer, single cached
+child, integer key and absent/implicit-NULL return. It drops only the cache-cell
+sole-owner restriction. Two outside global aliases can retain the cell while
+sole Iterator DATA releases the CLOSED Generator. The existing355 storage pin
+removes the Generator edge (cell owners three to two) before the weak observer
+reports its death. The live scalar remains readable through catch or INI_SET;
+later alias writes cannot change copied sends or the retired source receipt.
+A NULL-option handler may replace the surviving scalar with an array while
+the selected setter and copied NULL/13 remain authoritative.
+
+Four frozen originals agree with PHP through model-only comparisons; strict431
+and 309 reached conditions (306 premises, three raw transitions) pass on their
+recorded cuts. The old last-DATA Unsupported remains zero credit. Typed/backed,
+debt/released and owning-at-release cells, temporary or Aggregate producers,
+effectful cleanup and wider return/key/lifetime forms remain separate.
+
+The [temporary reference Generator increment](../../coverage/semantics/config-generator-temporary-reference-review.json)
+admits a direct named zero-argument BYREF Generator call as an unpack VAR
+expression. The exact emitted noarg call target must be the returned Generator's
+own function; the distinct BYVAL factory route follows below.
+The existing flat ordinary scalar reader and final integer-key/return gates
+stay in force. The temporary owns distinct INPUT and DATA edges. On normal
+completion, DATA drops from two Generator owners to one; final INPUT release
+uses the existing355 storage pin to release the cached-cell edge and retire the
+Generator before selected INI_SET reception. Quiet terminal throw consumes
+DATA and INPUT in separate discard steps, preserving the supplied Throwable
+until catch. The four local-cell originals also retire the cell physically;
+an outside alias could retain it under the accepted A74 gate.
+
+Four frozen PHP originals agree through model-only comparisons; strict431 and
+316 reached conditions (312 premises, four raw transitions) verify source
+authority, copied sends, physical cleanup and later NULL-handler/API order.
+The old CONFIG Traversable Unsupported at prefix `B;` retains zero credit.
+Other factories, typed/backed/debt/released or owning cells, owning sends,
+Aggregate/Closure/method producers and wider key/return/lifetime forms remain
+separate.
+
+The [BYVAL factory reference increment](../../coverage/semantics/config-generator-factory-reference-review.json)
+admits an actual named zero-argument BYVAL factory result that is a distinct
+named BYREF Generator. The source call must emit `UNPACK_VAR`; its resolved
+factory descriptor and the returned Generator's descriptor are checked
+separately. The real result supplies both INPUT and DATA owners, while the
+factory's `WeakReference` supplies no strong owner. Normal completion drops
+DATA from two owners to one, then the existing355 pin releases the cached-cell
+edge and Generator before INI_SET. Quiet terminal throw discards DATA and INPUT
+separately, retaining the saved Throwable until catch. Four frozen originals
+agree through model-only comparisons; strict432 and 353 reached conditions
+(349 premises, four raw transitions) verify copied sends, weak visibility,
+retired source history and handler order. The old `B;P;` Unsupported remains
+zero credit. Typed/backed/debt/released or owning cells, owning sends/RETURN,
+Aggregate/Closure/method producers and wider factories/keys/lifetimes remain
+separate.

@@ -225,5 +225,93 @@
     "source_sha256": "16207ca9aed45a807225ad057c6c22774c463b1de1d24cd6a86f9e42dae024cb",
     "expected_model": "normal",
     "purpose": "Inherited computed class-method string keeps Owner/Child and ARG1/7 through a raw named four-argument handler that throws; original trace-as-string bytes and restoration are compared strictly. The finite companion uses explicit file state."
+  },
+  {
+    "id": "enum-generated-string-selected-before-argument",
+    "source": "<?php\nenum ReviewSelectedStringEnum: string { case One = \"1\"; case ZeroOne = \"01\"; }\nenum ReviewReboundStringEnum: string { case Other = \"01\"; }\n$target = \"\\\\rEvIeWsElEcTeDsTrInGeNuM::fRoM\";\nfunction reviewStringCallableArgument() {\n    global $target;\n    $target = ReviewReboundStringEnum::class . \"::from\";\n    echo \"ARG|\";\n    return \"01\";\n}\n$first = $target(value: reviewStringCallableArgument());\necho $first === ReviewSelectedStringEnum::ZeroOne ? \"selected|\" : \"BAD|\";\n$second = $target(\"01\");\necho $second === ReviewReboundStringEnum::Other ? \"rebound|\" : \"BAD|\";\n",
+    "source_sha256": "47430ce86c428437823bea942342f6ef6f499f8c49da2d7d8cb2bb15065d1329",
+    "expected_model": "normal",
+    "expected_normal_stdout": "ARG|selected|rebound|",
+    "purpose": "Selection retains the original generated enum method after a named argument replaces the computed full class-method string."
+  },
+  {
+    "id": "enum-generated-string-literal-and-folded",
+    "source": "<?php\nenum ReviewFixedStringCallable: int { case Only = 7; }\nfunction reviewFixedStringArgument() { echo \"ARG|\"; return 7; }\n$first = (\"\\\\rEvIeWfIxEdStRiNgCaLlAbLe::fRoM\")(value: reviewFixedStringArgument());\necho $first === ReviewFixedStringCallable::Only ? \"literal|\" : \"BAD|\";\n$second = (\"ReviewFixed\" . \"StringCallable::tryFrom\")(7);\necho $second === ReviewFixedStringCallable::Only ? \"folded|\" : \"BAD|\";\n",
+    "source_sha256": "29952b2a645763a3d5caf80a22c6113b7c22fb35a69c5723272b5d43dbe57496",
+    "expected_model": "normal",
+    "expected_normal_stdout": "ARG|literal|folded|",
+    "purpose": "Initial literal and compiler-folded class-method strings retain full source spelling and generated from/tryFrom targets."
+  },
+  {
+    "id": "enum-generated-stringable-selected-before-callback-rebind",
+    "source": "<?php\nenum ReviewStringCallableSelected: string { case Only = \"01\"; }\nenum ReviewStringCallableRebound: string { case Other = \"01\"; }\nclass ReviewStringCallableArgument {\n    public function __toString(): string {\n        global $target;\n        $target = ReviewStringCallableRebound::class . \"::from\";\n        echo \"CAST|\";\n        return \"01\";\n    }\n    public function __destruct() { echo \"DROP|\"; }\n}\n$target = \"\\\\rEvIeWsTrInGcAlLaBlEsElEcTeD::fRoM\";\necho \"READY|\";\n$result = $target(\n    value: new ReviewStringCallableArgument()\n);\necho $result === ReviewStringCallableSelected::Only ? \"selected|\" : \"BAD|\";\necho $target(\"01\") === ReviewStringCallableRebound::Other ? \"rebound|\" : \"BAD|\";\n",
+    "source_sha256": "f12819432f619a5d0974ad5e6f0731380a5e311337a61a7eadb599385b57be27",
+    "expected_model": "normal",
+    "expected_normal_stdout": "READY|CAST|DROP|selected|rebound|",
+    "purpose": "A multiline named Stringable argument preserves the selected generated string target and retires before lookup; identity observations also exercise shared GC temporary release."
+  },
+  {
+    "id": "enum-generated-fixed-stringable-selected-before-callback-rebind",
+    "source": "<?php\nenum ReviewStringCallableSelected: string { case Only = \"01\"; }\nenum ReviewStringCallableRebound: string { case Other = \"01\"; }\nclass ReviewStringCallableArgument {\n    public function __toString(): string {\n        global $target;\n        $target = ReviewStringCallableRebound::class . \"::from\";\n        echo \"CAST|\";\n        return \"01\";\n    }\n    public function __destruct() { echo \"DROP|\"; }\n}\n$target = \"\\\\rEvIeWsTrInGcAlLaBlEsElEcTeD::fRoM\";\necho \"READY|\";\n$result = (\"\\\\rEvIeWsTrInGcAlLaBlEsElEcTeD::fRoM\")(\n    value: new ReviewStringCallableArgument()\n);\necho $result === ReviewStringCallableSelected::Only ? \"selected|\" : \"BAD|\";\necho $target(\"01\") === ReviewStringCallableRebound::Other ? \"rebound|\" : \"BAD|\";\n",
+    "source_sha256": "6ca72a7ad36350bfd5f4ed61b1e55e8703f0068ac160c2b36e6b846a1267286d",
+    "expected_model": "normal",
+    "expected_normal_stdout": "READY|CAST|DROP|selected|rebound|",
+    "purpose": "A fixed full class-method string authenticates the real multiline Stringable source child and keeps its target through callback rebind and retirement."
+  },
+  {
+    "id": "enum-generated-string-cases-lookup-errors",
+    "source": "<?php\nenum DevStringUnit { case First; case Second; }\nenum DevStringInt: int { case Minus = -1; case Two = 2; }\n$cases = \"DevStringUnit::cAsEs\";\n$all = $cases();\necho $all[0] === DevStringUnit::First && $all[1] === DevStringUnit::Second ? \"cases|\" : \"BAD|\";\n$from = \"DevStringInt::fRoM\";\necho $from(value: \"2\") === DevStringInt::Two ? \"weak|\" : \"BAD|\";\n$try = \"DevStringInt::tRyFrOm\";\necho $try(value: -1) === DevStringInt::Minus ? \"hit|\" : \"BAD|\";\necho $try(8) === null ? \"miss|\" : \"BAD|\";\ntry { $cases(1); } catch (ArgumentCountError $e) { echo \"argc|\"; }\ntry { $from(8); } catch (ValueError $e) { echo \"value|\"; }\ntry { $from(wrong: 2); } catch (Error $e) { echo \"named|\"; }\n",
+    "source_sha256": "ced9fae4432ba6686abf01eb26ca39124146f119270017283f4cbecf87b3c192",
+    "expected_model": "normal",
+    "expected_normal_stdout": "cases|weak|hit|miss|argc|value|named|",
+    "purpose": "Computed generated strings preserve cases order, weak integer reception, tryFrom hits and misses, and ordinary internal count/value/named errors."
+  },
+  {
+    "id": "enum-generated-stringable-call-only",
+    "source": "<?php\nenum ReviewStringCallableSelected: string { case Only = \"01\"; }\nenum ReviewStringCallableRebound: string { case Other = \"01\"; }\nclass ReviewStringCallableArgument {\n    public function __toString(): string {\n        global $target;\n        $target = ReviewStringCallableRebound::class . \"::from\";\n        echo \"CAST|\";\n        return \"01\";\n    }\n    public function __destruct() { echo \"DROP|\"; }\n}\n$target = \"\\\\rEvIeWsTrInGcAlLaBlEsElEcTeD::fRoM\";\necho \"READY|\";\n$result = $target(\n    value: new ReviewStringCallableArgument()\n);\necho \"done|\";\n",
+    "source_sha256": "92a53a80a5ef855cf09f3917f8d1fcd31fc5dd65360140726e815da782e7e4b4",
+    "expected_model": "normal",
+    "expected_normal_stdout": "READY|CAST|DROP|done|",
+    "purpose": "The selected Stringable invocation and temporary cleanup complete independently of later case-identity observation."
+  },
+  {
+    "id": "enum-generated-packed-stringable-source-unsupported",
+    "source": "<?php\nenum ReviewStringCallableSelected: string { case Only = \"01\"; }\nenum ReviewStringCallableRebound: string { case Other = \"01\"; }\nclass ReviewStringCallableArgument {\n    public function __toString(): string {\n        global $target;\n        $target = ReviewStringCallableRebound::class . \"::from\";\n        echo \"CAST|\";\n        return \"01\";\n    }\n    public function __destruct() { echo \"DROP|\"; }\n}\n$target = \"\\\\rEvIeWsTrInGcAlLaBlEsElEcTeD::fRoM\";\necho \"READY|\";\n$result = $target(\n    ...[new ReviewStringCallableArgument()]\n);\necho \"done|\";\n",
+    "source_sha256": "820b39d0e25da3b50853c55c97717d2afd2a810bae3b9916a844199b7ec2406b",
+    "expected_model": "unsupported",
+    "expected_normal_stdout": "READY|CAST|DROP|done|",
+    "purpose": "Packed Stringable source origins remain explicit Unsupported before conversion; this refusal control receives zero semantic agreement credit."
+  },
+  {
+    "id": "enum-generated-string-capture-target-retirement",
+    "source": "<?php\nenum ReviewStringCaptureSelected: string { case Exact = \"01\"; case Plain = \"1\"; }\nenum ReviewStringCaptureRebound: string { case Other = \"01\"; }\n$target = \"\\\\rEvIeWsTrInGcApTuReSeLeCtEd::fRoM\";\n$captured = $target(...);\n$weak = WeakReference::create($captured);\n$target = ReviewStringCaptureRebound::class . \"::from\";\nfunction reviewStringCaptureArgument() {\n    global $captured, $weak;\n    $captured = null;\n    echo $weak->get() !== null ? \"held|\" : \"BAD|\";\n    return \"01\";\n}\n$result = $captured(value: reviewStringCaptureArgument());\necho $weak->get() === null ? \"retired|\" : \"BAD|\";\necho $result === ReviewStringCaptureSelected::Exact ? \"selected|\" : \"BAD|\";\necho $target(\"01\") === ReviewStringCaptureRebound::Other ? \"rebound|\" : \"BAD|\";\n",
+    "source_sha256": "02214f9b13bb577e0389fb7520f44cb4eb4672b6ec2868f39af38703f823da7b",
+    "expected_model": "normal",
+    "expected_normal_stdout": "held|retired|selected|rebound|",
+    "purpose": "A computed generated-method string captures its selected enum; argument-side source-variable clearing preserves the real Closure owner until return, then retirement leaves the selected cached case."
+  },
+  {
+    "id": "enum-generated-string-capture-literal-folded",
+    "source": "<?php\nenum DevCaptureUnit { case First; case Second; }\nenum DevCaptureInt: int { case One = 1; }\n$cases = (\"\\\\dEvCaPtUrEuNiT::cAsEs\")(...);\n$all = $cases();\necho $all[0] === DevCaptureUnit::First && $all[1] === DevCaptureUnit::Second ? \"cases|\" : \"BAD|\";\n$try = (\"DevCaptureInt\" . \"::tRyFrOm\")(...);\necho $try(value: \"1\") === DevCaptureInt::One ? \"weak|\" : \"BAD|\";\necho $try(8) === null ? \"miss|\" : \"BAD|\";\n",
+    "source_sha256": "4e545bf36e9be9c5a348dfb1f2c2e5b8651edef88d7ac93c472f96b5eb3c4a47",
+    "expected_model": "normal",
+    "expected_normal_stdout": "cases|weak|miss|",
+    "purpose": "Fixed literal and compiler-folded generated string captures preserve full source identity, cases order, weak integer reception and tryFrom misses."
+  },
+  {
+    "id": "enum-generated-string-capture-stringable-owner",
+    "source": "<?php\nenum DevCaptureSelected: string { case Only = \"01\"; }\nenum DevCaptureRebound: string { case Other = \"01\"; }\nclass DevCaptureText {\n    public function __toString(): string {\n        global $fn, $target;\n        $fn = null;\n        $target = \"DevCaptureRebound::from\";\n        echo \"CAST|\";\n        return \"01\";\n    }\n    public function __destruct() { echo \"DROP|\"; }\n}\n$target = \"\\\\dEvCaPtUrEsElEcTeD::fRoM\";\n$fn = $target(...);\n$weak = WeakReference::create($fn);\necho \"READY|\";\n$result = $fn(\n    value: new DevCaptureText()\n);\necho $weak->get() === null ? \"retired|\" : \"BAD|\";\necho $result === DevCaptureSelected::Only ? \"selected|\" : \"BAD|\";\necho $target(\"01\") === DevCaptureRebound::Other ? \"rebound|\" : \"BAD|\";\n",
+    "source_sha256": "8c161240d5f6a7ce2822b2261c5f412033bee9bd07e3ac97736ab2fef5eec023",
+    "expected_model": "normal",
+    "expected_normal_stdout": "READY|CAST|DROP|retired|selected|rebound|",
+    "purpose": "A captured generated from target retains the real named Stringable child and call-held Closure through callback rebinding, then releases the temporary input before lookup and the Closure after the call."
+  },
+  {
+    "id": "enum-generated-string-capture-strict-reception",
+    "source": "<?php\ndeclare(strict_types=1);\nenum DevCaptureStrict: int { case One = 1; }\n$target = \"DevCaptureStrict::fRoM\";\n$fn = $target(...);\ntry { $fn(value: \"1\"); } catch (TypeError $e) { echo \"type|\"; }\necho $fn(value: 1) === DevCaptureStrict::One ? \"strict|\" : \"BAD|\";\n",
+    "source_sha256": "5d67848f9c6469560bdec1deaf5828f7badfaea0c868262b7e14e0e76b0789ab",
+    "expected_model": "normal",
+    "expected_normal_stdout": "type|strict|",
+    "purpose": "A generated string capture preserves strict integer argument rejection and subsequent valid reception."
   }
 ]

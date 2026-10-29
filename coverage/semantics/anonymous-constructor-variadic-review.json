@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous.constructor-variadics",
+  "status": "partial",
+  "scope": "Own public unpromoted final value/reference variadic constructor formals use ordinary direct positional/named sends, fixed/default reception and ordered tail collection in existing admitted root/eval placements. Promotion/unpacking/nonpublic and wider body/factory/lifetime contexts remain partial.",
+  "engine_routes": [
+    "Zend/zend_vm_def.h::ZEND_RECV_VARIADIC checks positional extras then extra named values after sends; supplied references stay shared in the collected array.",
+    "Zend/zend_execute.c::zend_verify_variadic_arg_type delegates to zend_verify_arg_error; zend_handle_undef_args uses zend_argument_error for missing named fixed arguments. Both format the whole callable name through one C string, distinct from segmented ordinary too-few diagnostics."
+  ],
+  "design": "383 admits only the checked VARIADIC Boolean in the existing public/unpromoted/noattribute/nohook shape.17/102 retain final-only/default/type checks;103/105/86 retain saved-target argument modes, real cells, fixed copies, positional/named collectors and ownership.103/105 truncate only their whole-name diagnostic consumers. No new binder, state field, schema or native semantic fallback.",
+  "native_groups": [
+    {
+      "report": ".tools/class154-artifacts/native-initial5.json",
+      "sha256": "749d5e2c6a029d3a684575a20998f320713edcd2d8466dc136694b1751450f33",
+      "revision": "0d5e7de23457106d126d7853bd5460008618b9d7",
+      "cpu": [
+        3
+      ],
+      "seconds": 0.778
+    },
+    {
+      "report": ".tools/class154-artifacts/native-required-hole1.json",
+      "sha256": "44613354b56dd570e7e58f3a8a30ebcb19c61a9adfb56212b0ea9a40611aa6ce",
+      "revision": "0d5e7de23457106d126d7853bd5460008618b9d7",
+      "cpu": [
+        1
+      ],
+      "seconds": 0.23
+    },
+    {
+      "report": ".tools/class154-artifacts/native-empty-loop1.json",
+      "sha256": "9ed630ee9cfb10126415c71091578da8ad5386658eaa3a5bc01e818ef150207e",
+      "revision": "210fee8cfefbd094adf311352045465160028e82",
+      "cpu": [
+        1
+      ],
+      "seconds": 0.192
+    }
+  ],
+  "native_counts": "Seven distinct originals: initial five, separate required-hole one, then separately frozen core-foreach observer one. Original manifests/sources/native tuples remain unchanged; no accepted replay. local-tools.json records the reused sole oracle/adapter/numeric binaries.",
+  "unchanged_baseline": {
+    "report": ".tools/class154-artifacts/unchanged-baseline2.json",
+    "sha256": "81bfc2d1424ee0f4cbb4cfbcb62bb2d7d1cd90b3f2c77fe26111f07095a4bb9f",
+    "revision": "0d5e7de23457106d126d7853bd5460008618b9d7",
+    "cpu": [
+      1
+    ],
+    "seconds": 25.013,
+    "result": "Exactly positional typed value-tail and independent named reference-tail probes are frontend accepted/program checked Unsupported at unchanged0d5; all other old probes unrun, zero agreement credit."
+  },
+  "source_outcomes": {
+    "report": ".tools/class154-artifacts/source6-assessment.json",
+    "sha256": "90bc8e7a6a5c3ca62ae91abb01c25d9d688afd75f3bbbcc6b084bbb3bf2ce836",
+    "agreements": 6,
+    "counts": {
+      "normal": 6
+    },
+    "excluded_originals": 1,
+    "result": "Five eligible originals agree at210fee8cf; fresh foreach observer agrees at40556b549. Exact stdout/stderr/exit with explicit main FILE substitution, unchanged method_runtime assertions and model-only execution. Full raw copied externally; no native renewal."
+  },
+  "strict_sl": {
+    "report": ".tools/class154-artifacts/first-strict432.json",
+    "sha256": "a7f67765eb85ee45cdea77d4f3762fd578f7548108f1368bbc13e99118c75324",
+    "revision": "210fee8cfefbd094adf311352045465160028e82",
+    "cpu": [
+      1
+    ],
+    "seconds": 11.909,
+    "modules": 432,
+    "result": "Ordered full manifest --sl, exact count432/true newlines, empty stderr/exit0, stable inputs and full reap. Later source/fixture/metadata edits renew no accepted strict credit."
+  },
+  "reached": {
+    "accepted_conditions": 270,
+    "source_reached_conditions": 263,
+    "derived_guards": 7,
+    "groups": [
+      {
+        "report": ".tools/class154-artifacts/authored-variadic-receive139.json",
+        "sha256": "1aa105011542cc51de26b158c836d69779db5ff5f6890b5ccd697e33dcbe488b",
+        "revision": "cba64df89a071aef52707629de0a2d4ac0465856",
+        "cpu": [
+          1
+        ],
+        "seconds": 36.862,
+        "conditions": 139,
+        "reached_conditions": 136,
+        "derived_guards": 3,
+        "test": "tests/semantics/anonymous_constructor_variadic_receive_protocol.py",
+        "state_report": ".tools/class154-artifacts/anonymous-constructor-variadic-receive-ax7ylf3j/report.json",
+        "state_sha256": "031f1d06aa7c341425d88ede5cc946178ab961f4a50fac55472bef8c0fda1fd7",
+        "result": "Real unit1 source ingress, omitted fixed argument dispatch before compiled default7, positional empty collector then named DIRECT5 insertion, root empty tail and final source/class/call/declaration/heap validation."
+      },
+      {
+        "report": ".tools/class154-artifacts/independent-variadic-binding131.json",
+        "sha256": "b88737dc7ec7cfef0d7806ca5e515382ba1e9a32ab0e70946a5b2ff135c68829",
+        "revision": "cc943897927af07d9f62c2f9feff8326827f8aa7",
+        "cpu": [
+          1
+        ],
+        "seconds": 20.292,
+        "conditions": 131,
+        "reached_conditions": 127,
+        "derived_guards": 4,
+        "test": "tests/semantics/anonymous_constructor_variadic_binding_protocol.py",
+        "state_report": ".tools/class154-artifacts/anonymous-constructor-variadic-binding-417qsxn4/report.json",
+        "state_sha256": "4f7c524b4222c64bd80467ffd0f3c45411e4de13a1b21f3fd12849c05ed121d2",
+        "result": "Real fixed copy versus named-tail old/new cells, raw string before weak reception, incremental ordered ALIAS collection, retained caller cells/body writes and source/count/mode/order/rewind refusals; final validators."
+      }
+    ]
+  },
+  "representation_projection": {
+    "report": ".tools/class154-artifacts/independent-variadic-binding-projection.json",
+    "sha256": "b0305614373b93ddb076cfad590423a2524478bf813edc4db19672b521878b97",
+    "revision": "40556b54923cd256924801b5d79589e2d1a852fd",
+    "cpu": [
+      1
+    ],
+    "seconds": 16.047,
+    "agreement_credit": 0,
+    "state_report": ".tools/class154-review/variadic-binding-projection-svy27n19/report.json",
+    "state_sha256": "3bca7ee66565fc10d6242251c6e2da2b5ac9e66b6c14c1fcfa109acd1a4419f1",
+    "result": "Authentic named slots KNOWN20, extras first/second reference actual old/live cells; old interned string5, distinct fixed copy20, empty then ordered ALIAS table, received5 and final old6/live21. Observation only, no agreement credit."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": ".tools/class154-artifacts/source-eval-default-and-empty-tail.json",
+      "raw": ".tools/class154-artifacts/method-runtime-p75711mr/report.json",
+      "classification": "Original count($rest) observer is frontend accepted/program checked Unsupported registered builtin call. CORE.md explicitly excludes count library execution; original source/native tuple stays in excluded_sources. The fresh foreach observer is a separately frozen and natively tested source, not agreement for the old one.",
+      "agreement_credit": 0
+    },
+    {
+      "report": ".tools/class154-artifacts/authored-variadic-receive132.json",
+      "raw": ".tools/class154-artifacts/anonymous-constructor-variadic-receive-0w4psfz5/report.json",
+      "classification": "Reached TYPE_RECEIVE0 still has no head local; fixture incorrectly expected default7 before missing-argument dispatch. Only fixture observations changed to authentic TYPE_RECEIVE\u2192DEFAULT_RECEIVE\u2192bound7 before tail collection; affected139 rerun only.",
+      "agreement_credit": 0
+    },
+    {
+      "report": ".tools/class154-artifacts/native-initial5-recorder-preflight.json",
+      "classification": "Recorder external-path fingerprint-key error before any child/native actor; corrected before initial5 execution.",
+      "agreement_credit": 0
+    }
+  ],
+  "tested_code": {
+    "implementation_commit": "d9dd70a3292c433889dce6d965c9b62d302ae712",
+    "original_source_and_strict_cut": "210fee8cfefbd094adf311352045465160028e82",
+    "core_observer_cut": "40556b54923cd256924801b5d79589e2d1a852fd",
+    "independent_fixture_cut": "cc943897927af07d9f62c2f9feff8326827f8aa7",
+    "authored_fixture_cut": "cba64df89a071aef52707629de0a2d4ac0465856",
+    "production_sha256": {
+      "spec/semantics/383-anonymous-classes.watsup": "120c3b6a8e109fcd998b0438fc88e2f9fe1f91de12b57ef93df5f2abd2dd4026",
+      "spec/semantics/103-positional-variadics.watsup": "8be2fc338168e622311464aa515bb5d57a1391b2b02fb9b1b9fee370f49cbc28",
+      "spec/semantics/105-named-arguments.watsup": "83c43d3eee3b52ec4c000251768ed95a9b725e3fe32b4d0d50cce9169c923242"
+    },
+    "qualification": "All model/state/projection cuts share the same three producer blobs. Observer/fixture/metadata edits renew no accepted source/native/strict execution."
+  },
+  "limits": [
+    "Existing source-history, factory/body and dependency-linking fences remain; no new source/cache authority.",
+    "Promotion, unpacking, nonpublic/attribute forms and wider callbacks/owning values/lifetimes remain separate.",
+    "Existing property-reference type sources remain authoritative; parameter reception alone creates no persistent source.",
+    "All paused/held boundaries, including owned-NUL release, V110 and COMP123, remain unchanged."
+  ],
+  "target": "PHP8.5.10 CLI NTS signed64; tests/semantics/profile.json; sole local oracle.",
+  "source_pin": "vendor/php-src @34308a6666b2d489c509541ea9befea9e2b42348",
+  "recovery": "Frozen sources/native records and raw model/state/projection/failures stay outside Git under .tools/class154-author, class154-review and class154-artifacts. local-tools.json records reused binaries, without a fresh build/portability claim. Internal report paths retain their actual tested locations.",
+  "independent_review": "Private package CLEAR at1414cd31c. Actual three-producer/schema/manifest and79/443 release, enum/GC, Generator/CONFIG, clone/comparison and doc/inventory union review CLEAR atfc9e378ad from exactf82; ordinary constructor/factory targets are disjoint from incoming specialized producers. All foreign tracks/holds and root-requested GC09 row preserved.",
+  "joined_strict_sl": {
+    "actual_parent": "f82ccbb9f536303373e90f5b41de00ced071f5db",
+    "reviewed_tree": "fc9e378ad9ff7cdad8bd3197822bcf487987400b",
+    "report": ".tools/class154-artifacts/joined-strict432.json",
+    "sha256": "7cfc40c2ab334c581e181ff9e132e3b1dfc3cbe1ac52f02cd83d002058020a04",
+    "modules": 432,
+    "result": "Ordered full manifest --sl; exact Strict SL modules: 432 and true newlines, empty stderr/exit0. Stable reviewed tree/input maps, CPU1/11.806s, no timeout/bad affinity/survivors; all sampled PIDs absent. Only actual joined compilation is new credit; earlier private/native/source/state cuts remain distinct."
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-reference-basic-reference-locations",
+      "source": "<?php\necho \"before|\";\n$x = 1;\n$alias =& $x;\n$one = new class($x) {\n    public $value;\n    public function __construct(&$ref) {\n        $ref += 10;\n        $local = 2;\n        $ref =& $local;\n        $ref = 77;\n        $this->value = $ref;\n    }\n};\necho $x, \"|\", $alias, \"|\", $one->value, \"|\";\n$two = new class($missing153) {\n    public function __construct(&$ref) { $ref = 13; }\n};\necho $missing153, \"|after\";\n",
+      "source_sha256": "9d6b6afe92903a9a6a0892fa4d463e81dbe3617450cf9d63667c7d39befb6078",
+      "stdout_base64": "",
+      "stdout_template_base64": "YmVmb3JlfDExfDExfDc3fDEzfGFmdGVy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class153-frozen-native5",
+      "native_raw_sha256": "a3a80bf50d02faddfde11a56737c7ef62b7526287d18e590c0b7cdece3d8b4f5",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-reference-eval-fourth-typed-reference",
+      "source": "<?php\n$x153 = \"4\";\n$outside153 =& $x153;\neval(<<<'CODE'\nnamespace Ref153Author;\nfunction make153Author() {\n    global $x153;\n    return new class(a: 1, b: 2, c: 3, last: $x153) {\n        public $seen;\n        public function __construct($a, $b, $c, int &$last) {\n            echo (int) ($last === 4), \"|\";\n            $last += $a + $b + $c;\n            $this->seen = $last;\n            $last = \"changed\";\n        }\n    };\n}\n$one153 = make153Author();\necho $one153->seen, \"|\";\nCODE);\necho $x153, \"|\", $outside153, \"|after\";\n",
+      "source_sha256": "0d9d7e78c012372fae1b49b1e4c0bd7f73b57f39c89631f5ee12df6b45c3c542",
+      "stdout_base64": "",
+      "stdout_template_base64": "MXwxMHxjaGFuZ2VkfGNoYW5nZWR8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class153-frozen-native5",
+      "native_raw_sha256": "2c9180d5fad6dda99c1b61434edc13ea56f8257bc8f5362665c45ceab2e38585",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-reference-value-return-notice-reference",
+      "source": "<?php\nfunction value153Author() { echo \"value|\"; return 3; }\nfunction later153Author() { echo \"later|\"; return 0; }\necho \"before|\";\n$one = new class(value153Author(), later153Author()) {\n    public $seen;\n    public function __construct(&$first, $later) {\n        echo \"ctor|\";\n        $first += 2;\n        $this->seen = $first;\n    }\n};\necho $one->seen, \"|after\";\n",
+      "source_sha256": "8d621a4a83f43613e623544412cdda1349aeacf27f335d29b1825d75a391c831",
+      "stdout_base64": "",
+      "stdout_template_base64": "YmVmb3JlfHZhbHVlfGxhdGVyfGN0b3J8NXxhZnRlcg==",
+      "stderr_template_base64": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgcGFzc2VkIGJ5IHJlZmVyZW5jZSBpbiB7RklMRX0gb24gbGluZSA1Cg==",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class153-frozen-native5",
+      "native_raw_sha256": "86a4721a7dd9acdd5736f279f6709890c7670c522d7bd13a3116da782594ef39",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-reference-reference-demand-rebinding",
+      "source": "<?php\n$pos = \"7\";\n$pos_alias =& $pos;\n$pos_other = 30;\n$one = new class($pos, ($pos =& $pos_other)) {\n    public function __construct(int &$value, $ignored) {\n        echo \"pos|\", $value, \"|\";\n        echo $value === 7 ? \"coerced|\" : \"raw|\";\n        $value = 9;\n    }\n};\necho $pos, \"|\", $pos_alias, \"|\", $pos_other, \"|\";\necho $pos_alias === 9 ? \"old-cell|\" : \"wrong-cell|\";\n$named = \"8\";\n$named_alias =& $named;\n$named_other = 40;\n$two = new class(ignored: ($named =& $named_other), value: $named) {\n    public function __construct(int &$value, $ignored) {\n        echo \"named|\", $value, \"|\";\n        $value = 11;\n    }\n};\necho $named, \"|\", $named_alias, \"|\", $named_other, \"|\";\necho $named_alias === \"8\" ? \"old-string|\" : \"changed|\";\n",
+      "source_sha256": "65f2ad6dabc0935f288005161bc0cd5ed7ee52eb651ff3b67a225a9d07674ae6",
+      "stdout_base64": "",
+      "stdout_template_base64": "cG9zfDd8Y29lcmNlZHwzMHw5fDMwfG9sZC1jZWxsfG5hbWVkfDQwfDExfDh8MTF8b2xkLXN0cmluZ3w=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class153-frozen-native5",
+      "native_raw_sha256": "96d30ea7c499f4a6be582eb72e21f2661f4c65487da644c4d4c1370791b086de",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-reference-nonreferenceable-send-priority",
+      "source": "<?php\nfunction later153Review() { echo \"later|\"; return 2; }\necho \"before|\";\ntry {\n    $value = new class(1, later153Review()) {\n        public function __construct(&$value, $ignored) {\n            echo \"ctor|\";\n        }\n    };\n} catch (Error $error) {\n    echo $error->getMessage(), \"|\";\n}\necho \"after|\";\n",
+      "source_sha256": "ca7561bea0ec9bd0306038334e767058215f742ec54b4d493c49203f1fd1e0b0",
+      "stdout_base64": "",
+      "stdout_template_base64": "YmVmb3JlfGNsYXNzQGFub255bW91cygpOiBBcmd1bWVudCAjMSAoJHZhbHVlKSBjb3VsZCBub3QgYmUgcGFzc2VkIGJ5IHJlZmVyZW5jZXxhZnRlcnw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class153-frozen-native5",
+      "native_raw_sha256": "5bccc05d8cf591c158c03b072936d0ee6f14a29aef812278291969784f2f5481",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-reference-optional-reference-default",
+      "source": "<?php\nfunction make153Default() {\n    return new class(tail: 9) {\n        public $seen;\n        public function __construct(int &$head = 3, $tail = 0) {\n            $head += 1;\n            $this->seen = $head + $tail;\n        }\n    };\n}\n$one = make153Default();\n$two = make153Default();\necho $one->seen, \"|\", $two->seen, \"|after\";\n",
+      "source_sha256": "c1ade93817d7e016f2316a636b8fdaf0fc869028ef3746f8e3be0245bdfd5cfe",
+      "stdout_base64": "",
+      "stdout_template_base64": "MTN8MTN8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "class153-optional-default-native1",
+      "native_raw_sha256": "3ce3df70b7a994ecadd4d40c5d9709358c5715ce0accfb344016d9ceb6c15115",
+      "model_timeout_seconds": 240
+    }
+  ]
+}
