@@ -851,7 +851,7 @@ rule PhpStep/aggregate-compare-redispatch-invalid: S ~> S[.TODO = eps][.COMPLETI
 
 ;; Keep the established fully authenticated paths. Other captured traces check
 ;; only reached values, so an early decision need not inspect a later payload.
-dec $trace_visit_value_effect(pstate, pvalue, pvalue, pcompareguard*, pcompareguard*, int) : (pstate, porder)
+dec $trace_visit_value_effect(pstate, pvalue, pvalue, pcompareguard*, int) : (pstate, porder)
 def $trace_visited_order(S, n_left, n_right, pcompareguard_seen*, z) = $value_order_effect(S, PARRAY n_left, PARRAY n_right, pcompareguard_seen*, z)
   -- if $trace_array_graph(S, n_left) /\ $trace_array_graph(S, n_right)
 def $trace_visited_order(S, n_left, n_right, pcompareguard_seen*, z) = $value_order_effect(S, PARRAY n_left, PARRAY n_right, pcompareguard_seen*, z)
@@ -859,7 +859,7 @@ def $trace_visited_order(S, n_left, n_right, pcompareguard_seen*, z) = $value_or
   -- if $trace_property_ref_graph(S, n_left)
   -- if $trace_property_ref_graph(S, n_right)
   -- if $trace_object_graph_pair(S, n_left, n_right)
-def $trace_visited_order(S, n_left, n_right, pcompareguard_seen*, z) = $trace_visit_value_effect(S, PARRAY n_left, PARRAY n_right, pcompareguard_seen*, eps, z) -- otherwise
+def $trace_visited_order(S, n_left, n_right, pcompareguard_seen*, z) = $trace_visit_value_effect(S, PARRAY n_left, PARRAY n_right, pcompareguard_seen*, z) -- otherwise
 
 dec $trace_visit_key(pkey) : bool
 dec $trace_visit_entries_header(pentry*) : bool
@@ -868,12 +868,11 @@ dec $trace_visit_object_header(pstate, nat) : bool
 dec $trace_visit_object_image(pstate, nat) : bool
 dec $trace_visit_inline_pair(pstate, nat, nat) : bool
 dec $trace_visit_item_value(pstate, pitem) : pvalue?
-dec $trace_visit_item_path(pitem, pcompareguard*) : pcompareguard*
-dec $trace_visit_array_effect(pstate, nat, nat, pcompareguard*, pcompareguard*, int) : (pstate, porder)
-dec $trace_visit_object_effect(pstate, nat, nat, pcompareguard*, pcompareguard*, int) : (pstate, porder)
-dec $trace_visit_object_contents(pstate, nat, nat, pcompareguard*, pcompareguard*, int) : (pstate, porder)
-dec $trace_visit_entries_effect(pstate, pentry*, pentry*, pcompareguard*, pcompareguard*, int) : (pstate, porder)
-dec $trace_visit_entries_continue(pstate, porder, pentry*, pentry*, pcompareguard*, pcompareguard*, int) : (pstate, porder)
+dec $trace_visit_array_effect(pstate, nat, nat, pcompareguard*, int) : (pstate, porder)
+dec $trace_visit_object_effect(pstate, nat, nat, pcompareguard*, int) : (pstate, porder)
+dec $trace_visit_object_contents(pstate, nat, nat, pcompareguard*, int) : (pstate, porder)
+dec $trace_visit_entries_effect(pstate, pentry*, pentry*, pcompareguard*, int) : (pstate, porder)
+dec $trace_visit_entries_continue(pstate, porder, pentry*, pentry*, pcompareguard*, int) : (pstate, porder)
 
 def $trace_visit_key(KINT z) = $long_range(z)
 def $trace_visit_key(KSTRING ptbytes) = $startup_bytes(ptbytes)
@@ -930,65 +929,60 @@ def $trace_visit_item_value(S, ALIAS n) = (pvalue)
   -- if n <- S.REFCELLS
   -- if S.STORE[n] = DEFINED pvalue
 def $trace_visit_item_value(S, pitem) = eps -- otherwise
-def $trace_visit_item_path(ALIAS n, pcompareguard_path*) = (HCELL n) :: pcompareguard_path*
-def $trace_visit_item_path(pitem, pcompareguard_path*) = pcompareguard_path* -- otherwise
 
-def $trace_visit_value_effect(S, PARRAY n_left, PARRAY n_right, pcompareguard_seen*, pcompareguard_path*, z) = $trace_visit_array_effect(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z)
-def $trace_visit_value_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, pcompareguard_path*, z) = $trace_visit_object_effect(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z)
-def $trace_visit_value_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, pcompareguard_path*, z) = $value_order_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z)
+def $trace_visit_value_effect(S, PARRAY n_left, PARRAY n_right, pcompareguard_seen*, z) = $trace_visit_array_effect(S, n_left, n_right, pcompareguard_seen*, z)
+def $trace_visit_value_effect(S, POBJECT n_left, POBJECT n_right, pcompareguard_seen*, z) = $trace_visit_object_effect(S, n_left, n_right, pcompareguard_seen*, z)
+def $trace_visit_value_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z) = $value_order_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z)
   -- if $trace_compare_scalar(S, pvalue_left) /\ $trace_compare_scalar(S, pvalue_right)
-def $trace_visit_value_effect(S, PARRAY n, pvalue, pcompareguard_seen*, pcompareguard_path*, z) = $value_order_effect(S, PARRAY n, pvalue, pcompareguard_seen*, z)
+def $trace_visit_value_effect(S, PARRAY n, pvalue, pcompareguard_seen*, z) = $value_order_effect(S, PARRAY n, pvalue, pcompareguard_seen*, z)
   -- if $trace_visit_array_header(S, n)
   -- if $trace_compare_scalar(S, pvalue)
-def $trace_visit_value_effect(S, pvalue, PARRAY n, pcompareguard_seen*, pcompareguard_path*, z) = $value_order_effect(S, pvalue, PARRAY n, pcompareguard_seen*, z)
+def $trace_visit_value_effect(S, pvalue, PARRAY n, pcompareguard_seen*, z) = $value_order_effect(S, pvalue, PARRAY n, pcompareguard_seen*, z)
   -- if $trace_compare_scalar(S, pvalue)
   -- if $trace_visit_array_header(S, n)
-def $trace_visit_value_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, pcompareguard_path*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
+def $trace_visit_value_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
 
 ;; Zend table identity precedes active-left recursion, which precedes count.
-def $trace_visit_array_effect(S, n, n, pcompareguard_seen*, pcompareguard_path*, z) = (S, ORDER 0)
+def $trace_visit_array_effect(S, n, n, pcompareguard_seen*, z) = (S, ORDER 0)
   -- if $trace_visit_array_header(S, n)
-def $trace_visit_array_effect(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z) = (S, ORDERRECURSIVE)
+def $trace_visit_array_effect(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDERRECURSIVE)
   -- if n_left =/= n_right
   -- if $trace_visit_array_header(S, n_left) /\ $trace_visit_array_header(S, n_right)
   -- if (HARRAY n_left) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S))
-def $trace_visit_array_effect(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z) = (S, ORDER $compare_int($aggregate_table_count(S.ARRAYS[n_left].ITEMS), $aggregate_table_count(S.ARRAYS[n_right].ITEMS)))
+def $trace_visit_array_effect(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDER $compare_int($aggregate_table_count(S.ARRAYS[n_left].ITEMS), $aggregate_table_count(S.ARRAYS[n_right].ITEMS)))
   -- if n_left =/= n_right
   -- if $trace_visit_array_header(S, n_left) /\ $trace_visit_array_header(S, n_right)
   -- if ~((HARRAY n_left) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
-  -- if $(|pcompareguard_path*| < 16)
   -- if $aggregate_table_count(S.ARRAYS[n_left].ITEMS) =/= $aggregate_table_count(S.ARRAYS[n_right].ITEMS)
-def $trace_visit_array_effect(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z) = $trace_visit_entries_effect(S, S.ARRAYS[n_left].ITEMS, S.ARRAYS[n_right].ITEMS, (HARRAY n_left) :: pcompareguard_seen*, (HARRAY n_left) :: pcompareguard_path*, z)
+def $trace_visit_array_effect(S, n_left, n_right, pcompareguard_seen*, z) = $trace_visit_entries_effect(S, S.ARRAYS[n_left].ITEMS, S.ARRAYS[n_right].ITEMS, (HARRAY n_left) :: pcompareguard_seen*, z)
   -- if n_left =/= n_right
   -- if $trace_visit_array_header(S, n_left) /\ $trace_visit_array_header(S, n_right)
   -- if ~((HARRAY n_left) <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
-  -- if $(|pcompareguard_path*| < 16)
   -- if $aggregate_table_count(S.ARRAYS[n_left].ITEMS) = $aggregate_table_count(S.ARRAYS[n_right].ITEMS)
-def $trace_visit_array_effect(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
+def $trace_visit_array_effect(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
 
-def $trace_visit_object_effect(S, n, n, pcompareguard_seen*, pcompareguard_path*, z) = (S, ORDER 0)
+def $trace_visit_object_effect(S, n, n, pcompareguard_seen*, z) = (S, ORDER 0)
   -- if $trace_visit_object_header(S, n)
-def $trace_visit_object_effect(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z) = (S, ORDER 1)
+def $trace_visit_object_effect(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDER 1)
   -- if n_left =/= n_right
   -- if $trace_visit_object_header(S, n_left) /\ $trace_visit_object_header(S, n_right)
   -- if ~$trace_object_same_class(S, n_left, n_right)
-def $trace_visit_object_effect(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z) = $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z)
+def $trace_visit_object_effect(S, n_left, n_right, pcompareguard_seen*, z) = $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, z)
   -- if n_left =/= n_right
   -- if $trace_visit_object_header(S, n_left) /\ $trace_visit_object_header(S, n_right)
   -- if $trace_object_same_class(S, n_left, n_right)
   -- if $trace_visit_object_image(S, n_left)
   -- if $trace_visit_object_image(S, n_right)
-def $trace_visit_object_effect(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
-def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z) = (S, ORDERRECURSIVE)
+def $trace_visit_object_effect(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
+def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDERRECURSIVE)
   -- if $trace_visit_inline_pair(S, n_left, n_right)
   -- if pcompareguard_object = $aggregate_object_guard(S, n_left, n_right)
   -- if pcompareguard_object <- (pcompareguard_seen* ++ $aggregate_compare_seen(S))
-def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z) = $trace_visit_entries_effect(S, $trace_object_current_entries(S, n_left), $trace_object_current_entries(S, n_right), pcompareguard_object :: pcompareguard_seen*, pcompareguard_object :: pcompareguard_path*, z)
+def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, z) = $trace_visit_entries_effect(S, $trace_object_current_entries(S, n_left), $trace_object_current_entries(S, n_right), pcompareguard_object :: pcompareguard_seen*, z)
   -- if $trace_visit_inline_pair(S, n_left, n_right)
   -- if pcompareguard_object = $aggregate_object_guard(S, n_left, n_right)
   -- if ~(pcompareguard_object <- (pcompareguard_seen* ++ $aggregate_compare_seen(S)))
-  -- if $(|pcompareguard_path*| < 16)
-def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z) = $trace_visit_array_effect(S_tables, n_table_left, n_table_right, pcompareguard_seen*, (HOBJECT n_left) :: pcompareguard_path*, z)
+def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, z) = $trace_visit_array_effect(S_tables, n_table_left, n_table_right, pcompareguard_seen*, z)
   -- if ~$trace_visit_inline_pair(S, n_left, n_right)
   -- if S_left = $object_table_materialize(S, n_left)
   -- if S_left.COMPLETION = NORMAL
@@ -996,24 +990,24 @@ def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, pcompa
   -- if S_tables.COMPLETION = NORMAL
   -- if $object_table_at(S_tables.OBJECTTABLES, n_left) = (n_table_left)
   -- if $object_table_at(S_tables.OBJECTTABLES, n_right) = (n_table_right)
-def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z) = (S_left, ORDERUNSUPPORTED text)
+def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, z) = (S_left, ORDERUNSUPPORTED text)
   -- if ~$trace_visit_inline_pair(S, n_left, n_right)
   -- if S_left = $object_table_materialize(S, n_left)
   -- if S_left.COMPLETION = UNSUPPORTED text
-def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z) = (S_tables, ORDERUNSUPPORTED text)
+def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, z) = (S_tables, ORDERUNSUPPORTED text)
   -- if ~$trace_visit_inline_pair(S, n_left, n_right)
   -- if S_left = $object_table_materialize(S, n_left)
   -- if S_left.COMPLETION = NORMAL
   -- if S_tables = $object_table_materialize(S_left, n_right)
   -- if S_tables.COMPLETION = UNSUPPORTED text
-def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, pcompareguard_path*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
+def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
 
-def $trace_visit_entries_effect(S, eps, pentry_right*, pcompareguard_seen*, pcompareguard_path*, z) = (S, ORDER 0)
-def $trace_visit_entries_effect(S, (ENTRY pkey UNINITIALIZED) :: pentry_tail*, pentry_right*, pcompareguard_seen*, pcompareguard_path*, z) = $trace_visit_entries_effect(S, pentry_tail*, pentry_right*, pcompareguard_seen*, pcompareguard_path*, z)
-def $trace_visit_entries_effect(S, (ENTRY pkey pitem_left) :: pentry_tail*, pentry_right*, pcompareguard_seen*, pcompareguard_path*, z) = (S, ORDER 1)
+def $trace_visit_entries_effect(S, eps, pentry_right*, pcompareguard_seen*, z) = (S, ORDER 0)
+def $trace_visit_entries_effect(S, (ENTRY pkey UNINITIALIZED) :: pentry_tail*, pentry_right*, pcompareguard_seen*, z) = $trace_visit_entries_effect(S, pentry_tail*, pentry_right*, pcompareguard_seen*, z)
+def $trace_visit_entries_effect(S, (ENTRY pkey pitem_left) :: pentry_tail*, pentry_right*, pcompareguard_seen*, z) = (S, ORDER 1)
   -- if pitem_left =/= UNINITIALIZED
   -- if $entry_lookup(pentry_right*, pkey) = eps \/ $entry_lookup(pentry_right*, pkey) = (UNINITIALIZED)
-def $trace_visit_entries_effect(S, (ENTRY pkey pitem_rawleft) :: pentry_tail*, pentry_right*, pcompareguard_seen*, pcompareguard_path*, z) = $trace_visit_entries_continue(S_next, porder, pentry_tail*, pentry_right*, pcompareguard_seen*, pcompareguard_path*, z)
+def $trace_visit_entries_effect(S, (ENTRY pkey pitem_rawleft) :: pentry_tail*, pentry_right*, pcompareguard_seen*, z) = $trace_visit_entries_continue(S_next, porder, pentry_tail*, pentry_right*, pcompareguard_seen*, z)
   -- if pitem_rawleft =/= UNINITIALIZED
   -- if $entry_lookup(pentry_right*, pkey) = (pitem_rawright)
   -- if pitem_rawright =/= UNINITIALIZED
@@ -1021,8 +1015,8 @@ def $trace_visit_entries_effect(S, (ENTRY pkey pitem_rawleft) :: pentry_tail*, p
   -- if pitem_right = $object_table_item(S, pitem_rawright)
   -- if $trace_visit_item_value(S, pitem_left) = (pvalue_left)
   -- if $trace_visit_item_value(S, pitem_right) = (pvalue_right)
-  -- if (S_next, porder) = $trace_visit_value_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, $trace_visit_item_path(pitem_left, pcompareguard_path*), z)
-def $trace_visit_entries_effect(S, pentry_left*, pentry_right*, pcompareguard_seen*, pcompareguard_path*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
-def $trace_visit_entries_continue(S, ORDER 0, pentry_left*, pentry_right*, pcompareguard_seen*, pcompareguard_path*, z) = $trace_visit_entries_effect(S, pentry_left*, pentry_right*, pcompareguard_seen*, pcompareguard_path*, z)
+  -- if (S_next, porder) = $trace_visit_value_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z)
+def $trace_visit_entries_effect(S, pentry_left*, pentry_right*, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
+def $trace_visit_entries_continue(S, ORDER 0, pentry_left*, pentry_right*, pcompareguard_seen*, z) = $trace_visit_entries_effect(S, pentry_left*, pentry_right*, pcompareguard_seen*, z)
   -- if S.COMPLETION = NORMAL
-def $trace_visit_entries_continue(S, porder, pentry_left*, pentry_right*, pcompareguard_seen*, pcompareguard_path*, z) = (S, porder) -- otherwise
+def $trace_visit_entries_continue(S, porder, pentry_left*, pentry_right*, pcompareguard_seen*, z) = (S, porder) -- otherwise
