@@ -222,6 +222,7 @@ def main():
         '30-storage.watsup', '79-call-frames.watsup', '80-call-control.watsup',
         '83-call-traces.watsup', '105-named-arguments.watsup', '108-call-unpack.watsup',
         '142-method-runtime.watsup', '379-sensitive-parameters.watsup',
+        '301-cycle-collection.watsup',
         '257-request-destructors.watsup', '440-builtin-function-attributes.watsup',
         '443-deprecated-closure-invoke.watsup')]
     modules = [ROOT / p for p in json.loads((ROOT / 'spec/semantics/modules.json').read_bytes())]
