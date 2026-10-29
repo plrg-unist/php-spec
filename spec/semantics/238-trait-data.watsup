@@ -57,7 +57,6 @@ dec $trait_property_source_fast_equal(pstate, ppropertydesc, ppropertydesc) : bo
 dec $trait_property_keyword_spelling(pstate, ppropertydesc) : ptbytes?
 dec $trait_member_type_input(pstate, porigin) : ptinput?
 dec $trait_member_display_type(pstate, porigin, ptbranch*) : ptbranch*
-dec $trait_type_display(ptbranch*, ptinput) : ptbranch*
 dec $trait_type_display_branch(ptbranch, ptinput) : ptbranch
 dec $trait_type_display_atom(ptatom, ptinput) : ptatom
 dec $trait_type_keyword_named(ptinput, ptbytes) : ptbytes?
@@ -102,7 +101,26 @@ def $trait_property_source_items(ppropertydesc :: ppropertydesc_tail*, porigin) 
 def $trait_property_source_at(eps, porigin) = eps
 def $trait_property_source_at(pclassdesc :: pclassdesc_tail*, porigin) = (ppropertydesc) -- if $trait_property_source_items(pclassdesc.PROPERTIES, porigin) = (ppropertydesc)
 def $trait_property_source_at(pclassdesc :: pclassdesc_tail*, porigin) = $trait_property_source_at(pclassdesc_tail*, porigin) -- if $trait_property_source_items(pclassdesc.PROPERTIES, porigin) = eps
-def $property_type_name(S, ppropertydesc) = $c_string($pttypename($trait_member_display_type(S, porigin, $trait_property_source_type(S, ppropertydesc)))) -- if ppropertydesc.ORIGIN = porigin
+dec $property_keyword_type(pstate, ppropertydesc, ptbranch*) : ptbranch*
+dec $property_keyword_branch(pstate, ppropertydesc, ptbranch) : ptbranch
+dec $property_keyword_atom(pstate, ppropertydesc, ptatom) : ptatom
+def $property_keyword_type(S, ppropertydesc, ptbranch*) = ($property_keyword_branch(S, ppropertydesc, ptbranch))*
+def $property_keyword_branch(S, ppropertydesc, PTBRANCH ptatom*) = PTBRANCH ($property_keyword_atom(S, ppropertydesc, ptatom))*
+def $property_keyword_atom(S, ppropertydesc, PTCLASS ptbytes) = PTCLASS ptbytes_keyword
+  -- if ppropertydesc.ORIGIN = porigin
+  -- if $trait_member_type_input(S, porigin) = (ptinput)
+  -- if $trait_type_keyword_named(ptinput, $ptascii("self")) = (ptbytes_keyword)
+  -- if $ptlc($property_declaring_name(S.CLASSES, porigin)) = $ptlc(ptbytes)
+def $property_keyword_atom(S, ppropertydesc, PTCLASS ptbytes) = PTCLASS ptbytes_keyword
+  -- if ppropertydesc.ORIGIN = porigin
+  -- if $trait_member_type_input(S, porigin) = (ptinput)
+  -- if $trait_type_keyword_named(ptinput, $ptascii("parent")) = (ptbytes_keyword)
+  -- if $class_named(S.CLASSNAMES, $ptlc($property_declaring_name(S.CLASSES, porigin))) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $ptlc(ptbytes_parent) = $ptlc(ptbytes)
+def $property_keyword_atom(S, ppropertydesc, ptatom) = ptatom -- otherwise
+def $property_type_name(S, ppropertydesc) = $c_string($pttypename($property_keyword_type(S, ppropertydesc, $trait_member_display_type(S, porigin, $trait_property_source_type(S, ppropertydesc))))) -- if ppropertydesc.ORIGIN = porigin
 def $property_type_name(S, ppropertydesc) = $c_string($pttypename(ppropertydesc.TYPE)) -- otherwise
 def $trait_constant_type_name(S, pclassconstantdesc) = $pttypename($trait_member_display_type(S, pclassconstantdesc.ORIGIN, $trait_constant_source_type(S, pclassconstantdesc)))
 def $trait_property_source_type(S, ppropertydesc) = ppropertydesc_source.TYPE

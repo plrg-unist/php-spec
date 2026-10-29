@@ -66,6 +66,8 @@ dec $ppproperty_context(ppstate, pchheader, ptbytes, int) : ptcontext
 dec $ppproperty_scope(pchheader) : ptscope
 dec $ppproperty_value_valid(ptbranch*, pvalue) : bool
 dec $ppproperty_default_error(pchheader, ptbytes, ptbranch*, pvalue) : ptbytes
+dec $ppproperty_display_type(ppstate, pcpath, pchheader, ptbytes, int, ptbranch*) : ptbranch*
+dec $trait_type_display(ptbranch*, ptinput) : ptbranch*
 dec $ppproperty_plain_intersection(ptbranch*) : bool
 dec $ppproperty_flag(int, int) : bool
 dec $ppproperty_explicit(ppropdefault) : bool
@@ -145,7 +147,7 @@ def $ppproperty_default(P, pcpath, flags, expression, ptbytes, ptbranch*, pprope
   -- if P_default.FOLD.VALUE = (pvalue)
   -- if $ppproperty_value_valid(ptbranch*, pvalue)
   -- if $ppdefault_descriptor(P_default, pcpath ++ [PCFIELD 1]) = PDSTORED
-def $ppproperty_default(P, pcpath, flags, expression, ptbytes, ptbranch*, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppconstant_error(P_default, $ppproperty_default_error(pchheader, ptbytes, ptbranch*, pvalue), $nabs(z))) ppropertydesc*
+def $ppproperty_default(P, pcpath, flags, expression, ptbytes, ptbranch*, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppconstant_error(P_default, $ppproperty_default_error(pchheader, ptbytes, $ppproperty_display_type(P_default, pcpath, pchheader, ptbytes, z, ptbranch*), pvalue), $nabs(z))) ppropertydesc*
   -- if P_default = $ppproperty_default_prepare(P, pcpath ++ [PCFIELD 1], expression, pchheader, ptbytes, z)
   -- if P_default.COMPLETION = PPCNORMAL
   -- if P_default.FOLD.VALUE = (pvalue)
@@ -166,6 +168,14 @@ def $ppproperty_value_valid(ptbranch*, PINT i) = true -- if ptbranch* =/= eps /\
 def $ppproperty_value_valid(ptbranch*, pvalue) = false -- otherwise
 def $ppproperty_plain_intersection([PTBRANCH (ptatom_a :: ptatom_b :: ptatom_tail*)]) = true
 def $ppproperty_plain_intersection(ptbranch*) = false -- otherwise
+;; Keep source self/parent keywords in the diagnostic; the stored type above
+;; remains normalized against the real declaring class and parent identities.
+def $ppproperty_display_type(P, pcpath, pchheader, ptbytes, z, ptbranch*) = $trait_type_display(ptbranch_display*, $ptast(phpType18))
+  -- if $(|pcpath| >= 2)
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID pcpath[0:$nabs($(|pcpath| - 2))]) = (NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata)
+  -- if ptcontext = $ppproperty_context(P, pchheader, ptbytes, z)
+  -- if $ptype_normalize(phpType18, ptcontext[.SCOPE = PTTRAIT pchheader.NAME]) = PTOK ptbranch_display* ptdiagnostic*
+def $ppproperty_display_type(P, pcpath, pchheader, ptbytes, z, ptbranch*) = ptbranch* -- otherwise
 def $ppproperty_default_error(pchheader, ptbytes, ptbranch*, PNULL) = $ptascii("Default value for property of type ") ++ $pttypename(ptbranch*) ++ $ptascii(" may not be null. Use the nullable type ") ++ $pttypename(ptbranch* ++ [(PTBRANCH ([PTBUILTIN "null"]))]) ++ $ptascii(" to allow null default value")
   -- if ~("null" <- $ptmasks(ptbranch*)) /\ ~$ppproperty_plain_intersection(ptbranch*)
 def $ppproperty_default_error(pchheader, ptbytes, ptbranch*, pvalue) = $ptascii("Cannot use ") ++ $ptascii($typed_tag(pvalue)) ++ $ptascii(" as default value for property ") ++ $c_string(pchheader.NAME) ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" of type ") ++ $pttypename(ptbranch*)
