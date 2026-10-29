@@ -432,7 +432,8 @@ directories, including four failed attempts, moved intact to the author
 reached-raw/ directory. The
 [Aggregate call review](../coverage/semantics/aggregate-call-unpack-review.json)
 records hashes, tested revisions, compatibility bridges and recovery commands.
-Actual-tail joined strict remains pending.
+The actual CLASS146-tail joined strict426 report is
+call126-author-native/joined-class146-3e6ab7fc8/report.json under the same archive.
 
 ## Commit provenance and recovery
 
