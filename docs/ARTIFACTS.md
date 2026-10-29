@@ -249,6 +249,13 @@ The [array/string ledger](../coverage/semantics/generator-array-string-factory-r
 separates accepted observations from pending checks and preserves the original
 wire-byte assertion failure with zero agreement credit.
 
+I82 compatible bound-method factory native, unchanged refusal, private strict
+and new source/state evidence is retained across
+`../php-spec-evidence-archive/generator-bound-method-factory-82/` and
+`../php-spec-evidence-archive/generator-bound-method-factory-82-review/`.
+The [bound factory ledger](../coverage/semantics/generator-bound-factory-review.json)
+separates completed cuts from pending checks; raw originals remain external.
+
 I77 receiver-bearing scoped Generator evidence retains authored native,
 unchanged baseline, private/joined strict, source and reached-state cuts under
 `../php-spec-evidence-archive/generator-keyword-receiver-77/`. The independent

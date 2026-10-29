@@ -6570,6 +6570,15 @@ private-access/actual-receipt guards. The original independent failure retains
 zero credit after shared identity-receipt predicate correction. Wider callable
 and lifecycle forms remain partial.
 [Array/string factory review](coverage/semantics/generator-array-string-factory-review.json).
+
+I82 adds compatible method-Closure bindings as scoped Generator factories.
+The entered bound call supplies a local borrowed view of its actual binding;
+the existing finite source/ORIGINAL history authenticates it after retirement.
+Lexical method scope stays fixed, while the compatible receiver or null static
+binding determines called scope. Four originals agree with PHP; five reached
+fronts pass 475 custom/500 reported checks, and private strict431 passes.
+Broader factory, binding/API/delegation and lifecycle forms remain partial.
+[Bound factory review](coverage/semantics/generator-bound-factory-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
