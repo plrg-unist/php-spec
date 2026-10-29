@@ -118,8 +118,8 @@ residual tags, workers, hooks, reentry and active contexts remained partial.
 CLASS153 admits own public unpromoted reference constructor formals through the
 ordinary saved-target/deferred-send machinery. Positional sends retain an old cell
 through later rebinding; named sends acquire the cell at their actual formal index.
-Reception may coerce a supplied caller cell, while ordinary body writes add no
-persistent property-reference constraint. Missing CVs, fresh omitted scalar
+Reception may coerce a supplied caller cell; the parameter type adds no persistent
+constraint, and existing property-reference sources remain authoritative. Missing CVs, fresh omitted scalar
 defaults, VAR reference notices and invalid-TMP priority keep their ordinary rules.
 Six exact normal sources and 217 conditions pass (211 reached, six derived guards),
 with private strict431. Three fixture-only failures retain zero credit; all tested
