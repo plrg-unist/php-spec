@@ -6266,10 +6266,15 @@ initialization, scalar parsing and cached cases after their closure owners retir
 ordinary and inherited enum constant aliases retain their declaration owners.
 Stringable arguments to captured lookups use source-bound `__toString()` callbacks
 and release temporary arguments before looking up a case, including `tryFrom()` misses and hits.
+For published enums, class-string array callables invoke generated `cases()`, `from()` and `tryFrom()`;
+a case-object receiver also invokes `from()`. The selected enum is fixed before
+argument evaluation. Array `from()` retains that selection through a Stringable
+callback and retires the temporary argument before lookup.
 Class constants can consume cached enum cases in scalar conditions and select a
 case through a source-certified case or negated-case condition, including a case
 from another enum. Wider object-valued conditional transfers remain Unsupported.
-Other generated callable routes, case attributes, the default loader and wider
+First-class array captures, string and pipe callable routes, `Closure::fromCallable`
+conversion, `is_callable`, case attributes, the default loader and wider
 acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 

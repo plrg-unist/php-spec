@@ -28767,10 +28767,16 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/172-file-context-intrinsics.watsup",
+        "spec/semantics/205-array-callables.watsup",
+        "spec/semantics/234-from-callable.watsup",
+        "spec/semantics/432-pipe-array-callables.watsup",
         "spec/semantics/437-enum-runtime.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/enum_generated_review_protocol.py"
+        "tests/semantics/enum_generated_review_protocol.py",
+        "tests/semantics/enum_lookup_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/enum_review_protocol.py"
@@ -28778,7 +28784,7 @@
       "evidence": [
         "vendor/php-src/Zend/zend_enum.c"
       ],
-      "review": "Direct cases/from/tryFrom and user magic method calls are source/state checked. Captured cases and scalar from/tryFrom retain the selected enum, cold table and cached singleton history after closure retirement, including ordinary and inherited constant aliases. Captured Stringable arguments to from/tryFrom preserve callback and receiver lifetimes; direct/negated cached-case conditional transfers are source checked, while wider object-valued conditionals, array callables and Closure::fromCallable remain partial. See PROGRESS.md for separate exact cuts."
+      "review": "Direct cases/from/tryFrom and user magic method calls are source/state checked. Captured cases and scalar from/tryFrom retain the selected enum, cold table and cached singleton history after closure retirement, including ordinary and inherited constant aliases. Captured Stringable arguments preserve callback and receiver lifetimes. For published enums, class-string array callables select cases/from/tryFrom before arguments; a case-object receiver invokes from, and array Stringable arguments preserve the selected target and temporary retirement. Direct/negated cached-case conditional transfers are source checked. Wider object-valued conditionals, first-class array captures, string and pipe callable routes, Closure::fromCallable conversion and is_callable remain partial. See PROGRESS.md for separate exact cuts."
     },
     {
       "id": "declarations.attribute-metadata",
