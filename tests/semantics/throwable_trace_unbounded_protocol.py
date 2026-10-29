@@ -50,7 +50,9 @@ def finish(state, name):
 
 
 def checks(program, path, name):
-    rows = front(program, path)
+    rows = [row.replace('$tbp_seek(S_initial[.COMPLETION = NORMAL],1000)',
+                        '$tbp_seek(S_initial[.COMPLETION = NORMAL],6000)')
+            for row in front(program, path)]
     rows += ['S.TODO = (BINARY_RIGHT SPACESHIP poperand z) :: ptask_tail*']
     if name == 'deep-cell-array-retarget':
         rows += captured('n_p', 'p', 'PARRAY n_payload_p')
