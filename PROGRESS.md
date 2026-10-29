@@ -91,15 +91,18 @@ At that I75 cut, keyword-invoked factory chains remained partial; Closure
 factories and receiver-bearing keyword bodies still do.
 [I75 review](coverage/semantics/generator-keyword-creation-review.json).
 
-CLASS149 extends anonymous classes in successful include/eval units to ordinary
-expression/return/nested sites and existing named/static Closure factories. The
+CLASS149 is integrated: successful include/eval units support anonymous classes
+at ordinary expression/return/nested sites and existing named/static Closure
+factories. The
 source-ID-generic compiler preserves lexical imports, real class-key order and
 publication before constructor arguments; the existing binder handles up to two
 ordinary positional/named arguments. Compiler-pruned RHS sites consume no key,
-while compiled unvisited sites do. Ten frozen native-first originals agree. Strict compilation of 428 modules and
+while compiled unvisited sites do. Ten frozen native-first originals agree. Private strict428 and
 339 source-reached checks pass across compiled images, active
 eval/include root-try boundaries, early publication, source causes and constructor
-lexical/called scope. The original validator failure and observer timeouts retain zero credit.
+lexical/called scope. The actual-tail joined430 strict check passes; private
+evidence retains its original cuts. The validator failure and observer timeouts
+retain zero credit.
 Failed/open histories, wider factories/captures/argument modes and enum/trait co-residence remain
 partial. [Placement review](coverage/semantics/anonymous-dynamic-placements-review.json).
 The prior [dependency review](coverage/semantics/anonymous-dynamic-dependencies-review.json)
@@ -163,7 +166,6 @@ unresolved with zero model credit. [OB01 review](coverage/semantics/output-reque
 | --- | --- |
 | A69 | Owning CONFIG buffers. |
 | OB02 | Shutdown FINAL fatal/bailout; cutoff49 investigation. |
-| CLASS149 | Source10/reached339 accepted; final package/integration pending. |
 | COMP153 | Linked base Exception/Error captured graphs through the existing finite Previous-path fallback. |
 | Enum M3/M4 | Captured `cases(...)` is integrated; captured `from(...)`/`tryFrom(...)` remain Unsupported while wider generated-callable dispatch, backing-initializer dependency modes and enum acquisition stay active. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
