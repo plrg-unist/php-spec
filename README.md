@@ -3607,6 +3607,15 @@ false value owner. Leaf/methodless insertion, fresh callback-free PASS0 and the
 existing callback/worker/hook fences still bound this cut. See the
 [registration-order GC review](coverage/semantics/gc-registration-order-review.json).
 
+Quiet no-WeakMap ordinary collection now claims later siblings before descending
+the first child. This gives a shared property table its real array count role
+when an earlier object also reaches it as a proxy. Two native-first sources
+agree at count 3, while the unchanged model counted 2; 106 private strict SL
+reached checks cover the actual collector consumer, physical owners and plan
+authentication. An unrelated held destructor remains outside the collected
+component. Callback, residual, worker, hook and active-context collection
+remain partial. See the [ordinary claim review](coverage/semantics/gc-ordinary-claim-review.json).
+
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
 reuse only when destructor preparation leaves the state identical.
