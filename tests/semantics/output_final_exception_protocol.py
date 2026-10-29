@@ -65,7 +65,7 @@ review.CASES = {
             '$executor_free_endpoint(S_done)',
             'preqbytes_file = $call_sourcefile(S.FILES, PORIGIN 0 eps)',
             'preqbytes_allocator = $ptascii("USE_ZEND_ALLOC")',
-            'Q = {ENV eps, ARGV [preqbytes_file], FILE preqbytes_file, SECONDS 0, MICROSECONDS 0, VARIABLES $ptascii("EGPCS"), JIT true, CWD eps}',
+            'Q = {ENV eps, ARGV ([preqbytes_file]), FILE preqbytes_file, SECONDS 0, MICROSECONDS 0, VARIABLES $ptascii("EGPCS"), JIT true, CWD eps}',
             '$request_valid(Q)',
             '$executor_allocator_fast((Q))',
             'Q_one = Q[.ENV = [(preqbytes_allocator, $ptascii("1"))]]',
