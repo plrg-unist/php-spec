@@ -180,6 +180,7 @@ syntax passertini = { ID nat, CALL pconfigcall, CONVERSION passertiniconversion?
 syntax passertoption = { ID nat, CALL pconfigcall, OPTION int, OLD bool }
 syntax passertfailure = { CALL pconfigcall, DESCRIPTION pvalue, PRECISION int, PENDING nat? }
 syntax passertcall = { FAILURE passertfailure, CALLBACK pvalue, RAW parray?, TARGET pcalltarget? }
+syntax perrorcall
 syntax papicallback = API_ERROR perrorcall | API_ASSERT passertcall
 syntax papiargcursor = { CALL papicallback, TARGET pcalltarget, PRODUCER pshutdownproducer, VALUES pvalue*, SENT poperand*, INDEX nat, SITE porigin, LINE int }
 syntax phandlerresolution = HANDLERRESOLVED pcalltarget | HANDLERINVALID ptbytes | HANDLERUNKNOWN text
