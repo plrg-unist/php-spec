@@ -141,6 +141,16 @@ dec $gc_immutable_flags_valid(pstate, nat*) : bool
 dec $gc_graph_node(pstate, pnode) : bool
 dec $gc_graph_nodes(pstate, pnode*) : pnode*
 dec $gc_graph(pstate) : hgraph
+dec $gc_trace_entries(pstate, pentry*) : pnode*
+dec $gc_trace_children(pstate, pnode) : pnode*
+dec $gc_trace_edges(pstate, pnode*) : hedge*
+dec $gc_indirect_entries_valid(pstate, pentry*) : bool
+dec $gc_indirect_arrays_valid(pstate, pnode*) : bool
+dec $gc_declared_locators(pstate, nat, nat, ppropertyslot*) : bool
+dec $gc_materialized_locators(pstate, pobjecttable*) : bool
+dec $gc_hook_nodes(pstate, pnode*) : bool
+dec $gc_materialized_quiet(pstate) : bool
+dec $gc_materialized_begin(pstate, pgccall) : pstate
 dec $gc_finally_ref_task(ptask) : pnode*
 dec $gc_finally_ref_tasks(ptask*) : pnode*
 dec $gc_finally_ref_frames(pframe*) : pnode*
@@ -361,7 +371,45 @@ def $gc_finally_ref_fiber(S, HOBJECT n) = $gc_finally_ref_tasks(pfibervm.TODO) +
 def $gc_finally_ref_fiber(S, pnode) = eps -- otherwise
 def $gc_finally_ref_fibers(S, eps) = eps
 def $gc_finally_ref_fibers(S, pnode :: pnode_tail*) = $gc_finally_ref_fiber(S, pnode) ++ $gc_finally_ref_fibers(S, pnode_tail*)
-def $gc_graph(S) = H[.NODES = pnode*][.ROOTS = pnode_roots*][.EDGES = $weakmap_gc_edges(S, $heap_live_edges(H.EDGES, pnode*), pnode_roots*)]
+;; get_gc scans a materialized ordinary object's table. Its INDIRECT buckets
+;; borrow declared slots; the physical ownership edges remain in $heap_graph.
+def $gc_trace_entries(S, eps) = eps
+def $gc_trace_entries(S, (ENTRY pkey (INDIRECT n ptbytes)) :: pentry_tail*) = $item_nodes($object_table_item(S, INDIRECT n ptbytes)) ++ $gc_trace_entries(S, pentry_tail*)
+def $gc_trace_entries(S, (ENTRY pkey pitem) :: pentry_tail*) = $item_nodes(pitem) ++ $gc_trace_entries(S, pentry_tail*)
+  -- if ~$indirect_item(pitem)
+def $gc_trace_children(S, HOBJECT n) = [HARRAY n_table]
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
+  -- if $object_table_ordinary(S, n)
+def $gc_trace_children(S, HOBJECT n) = $node_children(S, HOBJECT n)
+  -- if ~$object_table_ordinary(S, n) \/ $object_table_at(S.OBJECTTABLES, n) = eps
+def $gc_trace_children(S, HARRAY n) = $gc_trace_entries(S, S.ARRAYS[n].ITEMS)
+  -- if $object_table_indirect_entries(S.ARRAYS[n].ITEMS)
+def $gc_trace_children(S, HARRAY n) = $node_children(S, HARRAY n)
+  -- if ~$object_table_indirect_entries(S.ARRAYS[n].ITEMS)
+def $gc_trace_children(S, HCELL n) = $node_children(S, HCELL n)
+def $gc_trace_edges(S, eps) = eps
+def $gc_trace_edges(S, pnode :: pnode_tail*) = $node_edges(pnode, $gc_trace_children(S, pnode)) ++ $gc_trace_edges(S, pnode_tail*)
+def $gc_indirect_entries_valid(S, eps) = true
+def $gc_indirect_entries_valid(S, (ENTRY (KSTRING ptbytes) (INDIRECT n ptbytes)) :: pentry_tail*) = ((HOBJECT n) <- S.ALLOCATIONS /\ $object_table_image_item(S, n, ptbytes, INDIRECT n ptbytes) /\ $gc_indirect_entries_valid(S, pentry_tail*))
+def $gc_indirect_entries_valid(S, (ENTRY pkey pitem) :: pentry_tail*) = $gc_indirect_entries_valid(S, pentry_tail*)
+  -- if ~$indirect_item(pitem)
+def $gc_indirect_entries_valid(S, pentry*) = false -- otherwise
+def $gc_indirect_arrays_valid(S, eps) = true
+def $gc_indirect_arrays_valid(S, (HARRAY n) :: pnode_tail*) = ($gc_indirect_entries_valid(S, S.ARRAYS[n].ITEMS) /\ $gc_indirect_arrays_valid(S, pnode_tail*))
+def $gc_indirect_arrays_valid(S, (HOBJECT n) :: pnode_tail*) = $gc_indirect_arrays_valid(S, pnode_tail*)
+def $gc_indirect_arrays_valid(S, (HCELL n) :: pnode_tail*) = $gc_indirect_arrays_valid(S, pnode_tail*)
+def $gc_declared_locators(S, n, n_table, eps) = true
+def $gc_declared_locators(S, n, n_table, ppropertyslot :: ppropertyslot_tail*) = ($entry_lookup(S.ARRAYS[n_table].ITEMS, KSTRING ppropertyslot.NAME) = (INDIRECT n ppropertyslot.NAME) /\ $gc_declared_locators(S, n, n_table, ppropertyslot_tail*))
+  -- if ppropertyslot.DECL =/= eps
+def $gc_declared_locators(S, n, n_table, ppropertyslot :: ppropertyslot_tail*) = $gc_declared_locators(S, n, n_table, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = eps
+def $gc_materialized_locators(S, eps) = true
+def $gc_materialized_locators(S, pobjecttable :: pobjecttable_tail*) = ($gc_declared_locators(S, pobjecttable.OBJECT, pobjecttable.TABLE, ppropertyslot*) /\ $gc_materialized_locators(S, pobjecttable_tail*))
+  -- if $objectprops_at(S.OBJECTPROPS, pobjecttable.OBJECT) = (ppropertyslot*)
+def $gc_materialized_locators(S, pobjecttable :: pobjecttable_tail*) = false
+  -- if $objectprops_at(S.OBJECTPROPS, pobjecttable.OBJECT) = eps
+def $gc_graph(S) = H[.NODES = pnode*][.ROOTS = pnode_roots*][.EDGES = $weakmap_gc_edges(S, $heap_live_edges($gc_trace_edges(S, H.NODES), pnode*), pnode_roots*)]
   -- if H = $heap_graph(S)
   -- if pnode* = $gc_graph_nodes(S, H.NODES)
   -- if pnode_roots* = $heap_intersect(H.ROOTS ++ $gc_finally_ref_fibers(S, S.ALLOCATIONS), pnode*)
@@ -994,12 +1042,36 @@ def $gc_begin(S, pconfigcall) = S[.GC.NEXT = $(S.GC.NEXT + 1)][.GC.ACTIVE = (pgc
   -- if ~$generator_return_waiting_any(S, S.ALLOCATIONS)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*
   -- if pgccall = {NONCE S.GC.NEXT, CALL pconfigcall, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, PASS 0, TOTAL 0, PENDING eps}
-def $gc_begin(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "cached ordinary property-table collection"]
+def $gc_begin(S, pconfigcall) = $gc_materialized_begin(S, pgccall)
   -- if ~$weakmap_nonempty(S, S.ALLOCATIONS) \/ $weakmap_gc_map(S, S.ALLOCATIONS) =/= eps
   -- if $object_table_gc_boundary(S)
   -- if ~$generator_parked_foreach_any(S, S.ALLOCATIONS)
   -- if ~$generator_return_waiting_any(S, S.ALLOCATIONS)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*
+  -- if pgccall = {NONCE S.GC.NEXT, CALL pconfigcall, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, PASS 0, TOTAL 0, PENDING eps}
+;; Residual destructor tags, a cached worker, and ephemerons retain their
+;; existing routes until the materialized-table callback protocol is modeled.
+def $gc_hook_nodes(S, eps) = false
+def $gc_hook_nodes(S, (HOBJECT n) :: pnode_tail*) = ($property_hook_instance(S, n) \/ $gc_hook_nodes(S, pnode_tail*))
+def $gc_hook_nodes(S, (HARRAY n) :: pnode_tail*) = $gc_hook_nodes(S, pnode_tail*)
+def $gc_hook_nodes(S, (HCELL n) :: pnode_tail*) = $gc_hook_nodes(S, pnode_tail*)
+def $gc_materialized_quiet(S) = (~$weakmap_nonempty(S, S.ALLOCATIONS) /\ ~$gc_hook_nodes(S, S.ALLOCATIONS) /\ S.GC.WORKER = eps /\ S.GC.BUFFER = $gc_unmarked_slots(S.GC.BUFFER) /\ $gc_nodes(S.GC.BUFFER) = $gc_physical_nodes(S.GC.BUFFER))
+def $gc_materialized_begin(S, pgccall) = S_started
+  -- if $gc_materialized_quiet(S)
+  -- if $object_tables_valid(S) /\ $gc_indirect_arrays_valid(S, S.ALLOCATIONS) /\ $gc_materialized_locators(S, S.OBJECTTABLES)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_started = S[.GC.NEXT = $(S.GC.NEXT + 1)][.GC.ACTIVE = (pgccall)][.TODO = (GC_TRACE pgccall) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pgcplan = $gc_plan(S_started, pgccall)
+  -- if pgcplan.DTORS = eps
+def $gc_materialized_begin(S, pgccall) = S[.COMPLETION = UNSUPPORTED "cached ordinary property-table collection"]
+  -- if ~$gc_materialized_quiet(S) \/ ~$object_tables_valid(S) \/ ~$gc_indirect_arrays_valid(S, S.ALLOCATIONS) \/ ~$gc_materialized_locators(S, S.OBJECTTABLES)
+def $gc_materialized_begin(S, pgccall) = S[.COMPLETION = UNSUPPORTED "cached ordinary property-table collection"]
+  -- if $gc_materialized_quiet(S)
+  -- if $object_tables_valid(S) /\ $gc_indirect_arrays_valid(S, S.ALLOCATIONS) /\ $gc_materialized_locators(S, S.OBJECTTABLES)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_started = S[.GC.NEXT = $(S.GC.NEXT + 1)][.GC.ACTIVE = (pgccall)][.TODO = (GC_TRACE pgccall) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pgcplan = $gc_plan(S_started, pgccall)
+  -- if pgcplan.DTORS =/= eps
 def $task_nodes(GC_TRACE pgccall) = $instance_roots(pgccall.CALL.OWNER) ++ $instance_roots(pgccall.PENDING)
 def $task_nodes(GC_DTORS pgcplan) = $instance_roots(pgcplan.CALL.CALL.OWNER) ++ $instance_roots(pgcplan.CALL.PENDING)
 def $task_nodes(GC_DTOR_RETURN pgcplan n) = [HOBJECT n] ++ $instance_roots(pgcplan.CALL.CALL.OWNER) ++ $instance_roots(pgcplan.CALL.PENDING)

@@ -363,8 +363,16 @@ def $object_table_to_array(S, n_source, (ENTRY (KSTRING ptbytes) pitem) :: pentr
   -- if $string_key(ptbytes) = STRINGKEY
 def $object_table_to_array(S, n_source, (ENTRY (KSTRING ptbytes) (INDIRECT n ptbytes_slot)) :: pentry_tail*, parray) = $object_table_to_array(S, n_source, (ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*, parray)
   -- if pitem = $object_table_item(S, INDIRECT n ptbytes_slot)
+def $object_table_cast_ordinary(S, n) = S[.RESULT = KNOWN (PARRAY n_table)]
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_layout(S, porigin, |S.CLASSES|) = eps
+  -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
+  -- if ~$object_table_numeric_keys(S.ARRAYS[n_table].ITEMS)
+  -- if ~((HARRAY n_table) <- $aggregate_compare_seen(S))
 def $object_table_cast_ordinary(S, n) = $allocate_array(S, $object_table_to_array(S, n_table, S.ARRAYS[n_table].ITEMS, $array_empty()))
   -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_layout(S, porigin, |S.CLASSES|) =/= eps \/ $object_table_numeric_keys(S.ARRAYS[n_table].ITEMS) \/ (HARRAY n_table) <- $aggregate_compare_seen(S)
 def $stdclass_cast_array(S, n) = S_table[.RESULT = KNOWN (PARRAY n_table)]
   -- if S_table = $object_table_materialize(S, n)
   -- if $object_table_at(S_table.OBJECTTABLES, n) = (n_table)
