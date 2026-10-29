@@ -442,6 +442,7 @@ dec $constant_callable_alias_visible(pstate, pclassconstantdesc, porigin) : bool
 dec $constant_callable_array_flow(pstate, porigin, porigin, nat, phpType13*, (pkey, pvalueclass)*, int, nat, porigin*) : bool
 dec $constant_callable_flow_key(pstate, porigin, phpType5, int) : pkey?
 dec $constant_callable_array_flow_key(pstate, porigin, phpType5, int, porigin, nat) : pkey?
+dec $enum_case_alias_valid(pstate, porigin, porigin, pvalueclass, nat) : bool
 dec $trait_cache_flow_context(pstate, porigin, porigin, nat) : (pclassconstantdesc, ptraitcachecause)?
 dec $trait_cache_dim_active(pstate, porigin, porigin, pvalueclass, nat) : bool
 dec $trait_cache_dim_flow(pstate, porigin, porigin, pvalueclass, nat, porigin*) : bool
@@ -521,7 +522,7 @@ def $constant_callable_scalar_nodes(S, porigin_root, porigin_owner, n_prefix, po
 def $constant_callable_scalar_node(S, porigin, porigin_owner, n_prefix, porigin_seen*) = false
   -- if $origin_node(S.SOURCES, porigin) = (pcnode)
   -- if $constant_callable_form(pcnode)
-def $constant_callable_scalar_node(S, porigin, porigin_owner, n_prefix, porigin_seen*) = ($constant_callable_foldable(pvalueclass) /\ $constant_callable_alias_flow(S, pclassconstantdesc, pvalueclass, n_prefix, porigin_seen*))
+def $constant_callable_scalar_node(S, porigin, porigin_owner, n_prefix, porigin_seen*) = (($constant_callable_foldable(pvalueclass) /\ $constant_callable_alias_flow(S, pclassconstantdesc, pvalueclass, n_prefix, porigin_seen*)) \/ $enum_case_alias_valid(S, porigin, porigin_owner, pvalueclass, n_prefix))
   -- if $constant_callable_alias(S, porigin, porigin_owner, n_prefix) = (pclassconstantdesc)
   -- if $constant_callable_alias_class(S, pclassconstantdesc) = (pvalueclass)
 def $constant_callable_scalar_node(S, porigin, porigin_owner, n_prefix, porigin_seen*) = false

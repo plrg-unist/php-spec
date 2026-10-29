@@ -351,6 +351,35 @@ def $constant_fact_truth(pconstantfact) = (true)
   -- if pconstantfact.VALUE = eps
   -- if pconstantfact.CLASS = PVENUMCASE n porigin
 def $default_cacheable(PVENUMCASE n porigin) = true
+def $enum_case_alias_valid(S, porigin, porigin_owner, PVENUMCASE n porigin_case, n_prefix) = true
+  -- if $constant_callable_alias(S, porigin, porigin_owner, n_prefix) = (pclassconstantdesc)
+  -- if $constant_callable_alias_class(S, pclassconstantdesc) = (PVENUMCASE n porigin_case)
+  -- if $enum_case_descriptor(S, porigin_case) = (pclassconstantdesc)
+  -- if $enum_case_object(S, n) = (pclassconstantdesc)
+  -- if $constant_callable_cache_prefix(S.CLASSCONSTANTHISTORY, porigin_case) = (n_case_prefix)
+  -- if $(n_case_prefix <= n_prefix) /\ $(n_prefix <= |S.DECLARATIONS|)
+def $enum_case_alias_valid(S, porigin, porigin_owner, pvalueclass, n_prefix) = false -- otherwise
+
+dec $enum_case_condition_truth(pstate, porigin, porigin, nat) : bool?
+def $enum_case_condition_truth(S, porigin, porigin_owner, n_prefix) = (true)
+  -- if $constant_callable_alias(S, porigin, porigin_owner, n_prefix) = (pclassconstantdesc)
+  -- if $constant_callable_alias_class(S, pclassconstantdesc) = (PVENUMCASE n porigin_case)
+  -- if $enum_case_alias_valid(S, porigin, porigin_owner, PVENUMCASE n porigin_case, n_prefix)
+def $enum_case_condition_truth(S, porigin, porigin_owner, n_prefix) = (false)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBooleanNot expression metadata)
+  -- if $enum_case_condition_truth(S, $constant_child(porigin, [PCFIELD 0]), porigin_owner, n_prefix) = (true)
+def $enum_case_condition_truth(S, porigin, porigin_owner, n_prefix) = eps -- otherwise
+
+def $constant_callable_flow_at(S, porigin, porigin_owner, PVENUMCASE n porigin_case, n_prefix, porigin_seen*) = ($constant_callable_scalar_source(S, porigin, porigin_owner, n_prefix, porigin_seen*) /\ $enum_case_alias_valid(S, $constant_child(porigin, [PCFIELD 1]), porigin_owner, PVENUMCASE n porigin_case, n_prefix))
+  -- if $compiled_redirect(S, porigin) = eps
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary expression_condition expression_true expression_false metadata)
+  -- if $enum_case_condition_truth(S, $constant_child(porigin, [PCFIELD 0]), porigin_owner, n_prefix) = (true)
+  -- if $constant_recorded_truth(S, $constant_child(porigin, [PCFIELD 0])) = eps \/ $constant_recorded_truth(S, $constant_child(porigin, [PCFIELD 0])) = (true)
+def $constant_callable_flow_at(S, porigin, porigin_owner, PVENUMCASE n porigin_case, n_prefix, porigin_seen*) = ($constant_callable_scalar_source(S, porigin, porigin_owner, n_prefix, porigin_seen*) /\ $enum_case_alias_valid(S, $constant_child(porigin, [PCFIELD 2]), porigin_owner, PVENUMCASE n porigin_case, n_prefix))
+  -- if $compiled_redirect(S, porigin) = eps
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary expression_condition phpType5 expression_false metadata)
+  -- if $enum_case_condition_truth(S, $constant_child(porigin, [PCFIELD 0]), porigin_owner, n_prefix) = (false)
+  -- if $constant_recorded_truth(S, $constant_child(porigin, [PCFIELD 0])) = eps \/ $constant_recorded_truth(S, $constant_child(porigin, [PCFIELD 0])) = (false)
 def $constant_callable_flow_at(S, porigin, porigin_owner, PVENUMCASE n porigin, n_prefix, porigin_seen*) = true
   -- if $enum_case_descriptor(S, porigin) = (pclassconstantdesc)
   -- if pclassconstantdesc.OWNER = porigin_owner
