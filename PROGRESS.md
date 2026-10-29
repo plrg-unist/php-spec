@@ -85,6 +85,13 @@ Joined strict compilation over the actual tail also passes.
 [Child-only Iterator review](coverage/semantics/config-aggregate-iterator-child-only-review.json).
 Cyclic/materialized storage and destructor throws/reentry remain partial.
 
+Invalid Iterator spread keys now release CURRENT before DATA and keep the
+partial builder through the destructor and instance storage. A scalar-only
+counterexample now preserves saved values `2`/`55`, replacing the former
+`44`/`3` mismatch. Two affected legacy sources and 410 reached premises
+(403 Boolean, seven raw steps) pass at separate cuts; unaffected evidence keeps
+its original identity. [Cleanup review](coverage/semantics/array-iterator-invalid-key-cleanup-review.json).
+
 Ordinary Iterator array spread with by-reference `current()` now admits multiple
 initialized inline declared owning fields. Public untyped mutable slots retain
 supported finite array graphs, repeated roots, shared descendants and ordinary

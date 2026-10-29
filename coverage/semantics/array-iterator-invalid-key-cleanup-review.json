@@ -1,0 +1,79 @@
+{
+  "milestone": "Invalid-key ordinary Iterator CURRENT/DATA/builder cleanup correction",
+  "target": "PHP 8.5.10 CLI NTS signed 64-bit",
+  "scope": "Preserve a genuine invalid-key ARRAY_ITERATOR insert producer through Error materialization. Existing THROW_SEARCH/discard retires raw CURRENT before Iterator DATA, keeping the partial builder through the real destructor and instance storage. No generic ownership algorithm or current-return-mode admission change.",
+  "implementation": {
+    "runtime": "spec/semantics/426-array-iterator-unpack.watsup",
+    "private_fix_revision": "56c336dc2977e463f7b53ae2f6ad25deacd341e5",
+    "dependency_parent": "f61f2f6790190c4b5b814202a31726fdc63fc76a",
+    "change": "Eleven-line authenticated same-frame Error continuation: NORMAL valid/ready insert, invalid key, exact Error/message/compiler line and full actual insert-result equality. Existing release/cleanup/storage machinery is reused; 39/257/359 are unchanged.",
+    "dependency_runtime_sha256": "e8e82b7439bd0d1361261fb0ec63a45f7e041de398354ebd363b1abba495e2ac"
+  },
+  "engine": [
+    "Zend/zend_vm_def.h ZEND_ADD_ARRAY_UNPACK obtains val=&iter->value before key validity; Z_TRY_ADDREF executes only after a valid key.",
+    "Zend/zend_iterators.c zend_iterator_dtor and iter_wrapper_free call zend_user_it_dtor; Zend/zend_interfaces.c invalidates CURRENT before DATA ptr_dtor. The partial result_ht remains live until later exception unwind."
+  ],
+  "counterexample": "A genuine by-reference scalar current cell and an ALIAS partial-builder entry affect distinct saved field arrays. Key shares the cache parent only after reference acquisition and removes the outside prefix CV. Native CURRENT-first/DATA/builder ordering yields savedCache2/savedPrefix55; the former builder-first/DATA/CURRENT model yields44/3. All payloads remain admitted finite scalar/array graphs.",
+  "validation": {
+    "native_first": {
+      "revision": "bfdd07191",
+      "path": ".tools/array-iterator-byval-fields-65/.tools/a65-native-cleanup/report.json",
+      "result": "Frozen manually expected counter bytes match quiet native exit0; no timeout/interruption/process residue."
+    },
+    "original_mismatch": {
+      "revision": "bfdd07191",
+      "path": ".tools/array-iterator-byval-fields-65/.tools/a65-cleanup-baseline/report.json",
+      "sha256": "0f95c3026e3a0fc8c8505ff2ffdfea16bd4493388299784ca4f295c65b73e246",
+      "result": "Reliable checked normal model/quiet exit0 reproduces44/3 versus native2/55 in45.344s. Zero agreement credit; original streams retained."
+    },
+    "fixed_sources": {
+      "revision": "56c336dc2977e463f7b53ae2f6ad25deacd341e5",
+      "path": ".tools/array-iterator-byval-fields-65/.tools/a65-cleanup-candidate/report.json",
+      "sha256": "52b168124f493680bd4656c6d6b1d2b5c96ef630e2da84bdd5f6a0d29e243b17",
+      "selection": [
+        "array-iterator-fields-invalid-scalar-cleanup-order",
+        "array-iterator-data-destructor-review-invalid-key",
+        "array-iterator-owned-field-invalid-key"
+      ],
+      "result": "Strict425 SL/cachefalse/determinismtrue passes10.883s; counter45.206s and affected legacy originals36.005/54.659s match native exactly. Other two rows belong to the separate A65 extension and are not this dependency scope."
+    },
+    "affected_states": {
+      "revision": "10a604b91686f5015b2dd002d836ce7d17242b0f",
+      "rows": [
+        {
+          "path": ".tools/array-iterator-byval-fields-65/.tools/a65-state-a51-invalid/report.json",
+          "sha256": "42b401842120ba0683faf16ce710d72993cb19b79bc92d0b46ad2b01912bcc1c",
+          "premises": 179,
+          "raw_steps": 4,
+          "seconds": 86.943
+        },
+        {
+          "path": ".tools/array-iterator-byval-fields-65/.tools/a65-state-a62-invalid/report.json",
+          "sha256": "e22e56209673aead5509adbd8712943889c7040e549f7bf4b2be661322305b3b",
+          "premises": 231,
+          "raw_steps": 3,
+          "seconds": 129.329
+        }
+      ],
+      "result": "Both reached recipes true/quiet exit0 on first run, with authenticated/forged Error-source controls, pending identity, current-before-DATA jobs, protected builder, physical field storage and budget resume. 410 physical premises include403 Boolean and7 raw steps; pre-existing common duplicate assertions are not claimed unique."
+    }
+  },
+  "execution": {
+    "profile": "tests/semantics/profile.json; LC_ALL=C,TZ=UTC; project-local PHP only",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "limits": "Serial pinned CPU1 native2/original mismatch, then CPU4 fixed/affected models and reached recipes; 4GiB AS. Models240/process270s; reached300s via existing API. All actor groups empty and parents reaped; inputs/HEAD stable. One clean-status wrapper preparation stop ran no strict/model and retains zero credit."
+  },
+  "independent_review": "array62_resume_review independently traced Zend, froze the scalar-only counterexample, cleared the exact hook and two surgical invalid-key fixture changes, and confirmed both numeric raw true/quiet0 outcomes. The earlier209-frontier stop remains a real failure whose THROW_SEARCH expectation was engine-correct; this is a semantic repair, not merely a fixture correction.",
+  "compatibility_bridge": "The private tests include the separate BYVAL extension, but these BYREF+real-destructor field cases satisfy every old mode guard; the no-field A51 direct graph uses the same existing value branch. The dependency-only composition excludes BYVAL37, its sibling/new state files and the duplicate shared helper. Unaffected accepted source/state cuts are retained without replay.",
+  "remaining": "The full core and wider object/cyclic/special-reference graphs remain partial. This correction changes no class/property layout or Iterator current return-mode admission and claims no engine divergence.",
+  "archive": {
+    "path": "../php-spec-evidence-archive/array-iterator-invalid-key-cleanup/raw.tar",
+    "sha256": "7833f39c1f4cbcbf77bffb402907b786f19b1cfd0710e850630bde9aef5ef698",
+    "bytes": 2037760,
+    "files": 108,
+    "manifest": "../php-spec-evidence-archive/array-iterator-invalid-key-cleanup/manifest.json",
+    "manifest_sha256": "2ab6d82af4b35f349db5c1496d71f7a7725d6f9a36c239abe40f9d62c818d574",
+    "recovery": "Recreate tested private revision bfdd07191 (mismatch),56c336dc2 (fixed sources) or10a604b91 (affected states) at .tools/array-iterator-byval-fields-65. Verify/extract raw.tar at project root to restore original source paths. Restore project-local providers by report identities and replay saved commands with fresh outputs. This archive is the dependency selection, not full A65 recovery."
+  }
+}

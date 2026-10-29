@@ -4,7 +4,7 @@
   "runtime": {
     "accepted_revision": "d6f278e674b216e133012c391bfae59aa92a4f25",
     "426_sha256": "17af123913c422dd7c9fd9abfc4685a2d6ff5d8560d61da5e120470a05c62e78",
-    "scope": "Ordinary CV of a named user Iterator with a real public non-generator __destruct and no owning instance children. Normal last-DATA release and supplied key throw retain the partial builder through the destructor. Invalid bool-key insert instead enters generic eager cleanup: builder, DATA, then current cache are released in that order; the builder is gone before the destructor while the cache remains owned."
+    "scope": "Ordinary CV of a named user Iterator with a real public non-generator __destruct and no owning instance children. Normal last-DATA release and supplied key throw retain the partial builder through the destructor. At this historical cut invalid bool-key insertion used generic eager cleanup (builder, DATA, then current), which the later scalar-reference counterexample disproves. This ordering claim is superseded by coverage/semantics/array-iterator-invalid-key-cleanup-review.json; the earlier counts and failure cuts below retain their original identities."
   },
   "engine": "Project-pinned Zend/zend_vm_def.h::ZEND_ADD_ARRAY_UNPACK and Zend/zend_interfaces.c::zend_user_it_dtor/invalidate_current; the external archive contains source specimens and records, not the engine tree.",
   "validation": {

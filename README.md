@@ -1669,7 +1669,10 @@ destructor. Cache values now include finite acyclic DIRECT ARRAY graphs with
 shared descendants; each physical child edge is counted once across root owners.
 The [DATA destructor review](coverage/semantics/array-iterator-data-destructor-review.json)
 adds bounded ordinary-CV Iterators with real `__destruct`, covering last-DATA
-normal and abrupt cleanup, exception replacement, and invalid-key eager release.
+normal and abrupt cleanup and exception replacement. The
+[invalid-key correction](coverage/semantics/array-iterator-invalid-key-cleanup-review.json)
+releases the raw current before DATA and protects the builder through its
+destructor, preserving sole and held scalar-reference COW.
 Ordinary named Generators now spread through real native resumes, including
 received parameters and reference yields, CV and owning call operands. Their
 cache edges persist through resumed code/CLOSED; DATA then opcode INPUT retire
