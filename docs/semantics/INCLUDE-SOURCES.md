@@ -1810,3 +1810,20 @@ coverage. Generic355, schema, manifest and earlier accepted tests are unchanged.
 Typed/backed or owning cells, noninteger final keys, owning RETURN, temporary
 or Aggregate reference producers, effectful cleanup and wider lifetimes remain
 partial.
+
+The [outside-alias reference-cell increment](../../coverage/semantics/config-generator-reference-outside-alias-review.json)
+keeps the A73 ordinary scalar reader, direct-CV BYREF producer, single cached
+child, integer key and absent/implicit-NULL return. It drops only the cache-cell
+sole-owner restriction. Two outside global aliases can retain the cell while
+sole Iterator DATA releases the CLOSED Generator. The existing355 storage pin
+removes the Generator edge (cell owners three to two) before the weak observer
+reports its death. The live scalar remains readable through catch or INI_SET;
+later alias writes cannot change copied sends or the retired source receipt.
+A NULL-option handler may replace the surviving scalar with an array while
+the selected setter and copied NULL/13 remain authoritative.
+
+Four frozen originals agree with PHP through model-only comparisons; strict431
+and 309 reached conditions (306 premises, three raw transitions) pass on their
+recorded cuts. The old last-DATA Unsupported remains zero credit. Typed/backed,
+debt/released and owning-at-release cells, temporary or Aggregate producers,
+effectful cleanup and wider return/key/lifetime forms remain separate.

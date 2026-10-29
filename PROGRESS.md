@@ -69,6 +69,8 @@ Typed-source reads and existing producer/key/finite-graph policies stay intact;
 named direct-CV Generator reference yields now copy scalars from authenticated
 ordinary cells before later writes. One local scalar-cell route retires a CLOSED
 Generator from sole DATA through the normal storage pin or quiet terminal cleanup.
+Outside aliases can now retain an ordinary scalar cell after that Generator dies;
+copied sends and retired source history survive later writes to the cell.
 Typed Generator cells, owning Generator arguments, effectful casts, wider
 last-DATA reference graphs and lifecycles remain partial.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
@@ -76,6 +78,7 @@ last-DATA reference graphs and lifecycles remain partial.
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
 [Generator reference scalars](coverage/semantics/config-generator-reference-scalar-review.json),
 [Sole-DATA reference cleanup](coverage/semantics/config-generator-reference-sole-data-review.json),
+[Surviving-alias cleanup](coverage/semantics/config-generator-reference-outside-alias-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
@@ -234,7 +237,7 @@ reentrant/abrupt raw-owner teardown remain partial.
 | OB04 | Selected error-handler FINAL handling; active validation. |
 | ATTR05 | Explicit captured-Closure `__invoke()` warning, trace and owner handling; active validation. |
 | Enum M3/M4 | Generated string capture preparation; no new validation credit. Wider callable consumers, enum collectability, backing dependencies and the default loader remain partial. |
-| A74 | Outside-alias scalar REFCELL cleanup; isolated preparation. |
+| A74 | Outside-alias scalar REFCELL cleanup; privately validated, integration queued. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 

@@ -722,6 +722,14 @@ with PHP, and reached checks cover the physical cell/Generator deaths and the
 later NULL-option handler. Typed/backed or owning cells and wider producers
 remain partial.
 
+[Surviving-alias reference cleanup](coverage/semantics/config-generator-reference-outside-alias-review.json)
+also retires that CLOSED Generator when outside global aliases keep its ordinary
+scalar cell alive. The storage pin removes the Generator's edge while the cell
+remains readable; copied sends and retired CONFIG history survive later alias
+writes, including an array assignment in a NULL-option handler. Four new sources
+agree with PHP; two reached recipes check normal and saved-throw lifetimes.
+Typed, owning and wider reference sources remain partial.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical
