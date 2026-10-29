@@ -89,7 +89,9 @@ def main():
                   and nout == row['native_stdout'].encode() and nerr == expected_stderr)
         record = {'id': row['id'], 'source_sha256': row['source_sha256'], 'native': native, 'passed': False}
         if passed:
-            model = recorded([str(ROOT / 'bin/php-semantics'), str(source), '--steps', '100000', '--timeout', str(MODEL_SECONDS)], directory, 'model', env, PROCESS_SECONDS)
+            model_seconds = row.get('model_seconds', MODEL_SECONDS)
+            process_seconds = row.get('process_seconds', PROCESS_SECONDS)
+            model = recorded([str(ROOT / 'bin/php-semantics'), str(source), '--steps', '100000', '--timeout', str(model_seconds)], directory, 'model', env, process_seconds)
             try:
                 outcome = json.loads((directory / 'model.stdout').read_bytes())
             except ValueError:
@@ -110,7 +112,9 @@ def main():
                           and outcome.get('stderr') == base64.b64encode(nerr).decode())
                 if row.get('expected_model') == 'php_error':
                     passed = passed and row['native_exit'] == 255 and outcome.get('diagnostic') is not None
-            record.update(model=model, outcome=outcome)
+            record.update(model=model, outcome=outcome,
+                          budgets={'steps': 100000, 'model_seconds': model_seconds,
+                                   'process_seconds': process_seconds})
         record['passed'] = passed
         records.append(record)
         print(row['id'], passed, record.get('outcome', {}).get('status'), flush=True)
