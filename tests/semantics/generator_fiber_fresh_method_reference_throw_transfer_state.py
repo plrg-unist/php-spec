@@ -121,11 +121,13 @@ $generator_owners_valid(S)
 ~$fiber_generator_fresh_throw_valid(S_view, pgeneratorop, pgenerator, pcallcontext_generator[.RECEIVER = (n_fiber)])
 ~$fiber_generator_fresh_throw_valid(S_view, pgeneratorop, pgenerator, pcallcontext_generator[.TARGET = METHOD_TARGET n_fiber pgenerator.FUNCTION])
 ~$fiber_generator_fresh_throw_valid(S_view, pgeneratorop, pgenerator, pcallcontext_generator[.INSTANCE = (n_receiver)])
-pgenerator_nonbyref = pgenerator[.FUNCTION = pcallcontext_callback.FUNCTION]
-pcallcontext_nonbyref = pcallcontext_generator[.FUNCTION = pcallcontext_callback.FUNCTION][.TARGET = METHOD_TARGET n_receiver pcallcontext_callback.FUNCTION]
-S_nonbyref = $generator_set(S_view, n_generator, pgenerator_nonbyref)
-~$generator_reference_producer(S_nonbyref, pgenerator_nonbyref)
-~$fiber_generator_fresh_throw_valid(S_nonbyref, pgeneratorop, pgenerator_nonbyref, pcallcontext_nonbyref)
+pgenerator_bogus = pgenerator[.FUNCTION = pcallcontext_callback.FUNCTION]
+pcallcontext_bogus = pcallcontext_generator[.FUNCTION = pcallcontext_callback.FUNCTION][.TARGET = METHOD_TARGET n_receiver pcallcontext_callback.FUNCTION]
+S_bogus = $generator_set(S_view, n_generator, pgenerator_bogus)[.CURRENT = (pcallcontext_bogus)]
+~$generator_reference_producer(S_bogus, pgenerator_bogus)
+$fiber_generator_fresh_throw_valid(S_bogus, pgeneratorop, pgenerator_bogus, pcallcontext_bogus)
+~$fiber_generator_callee_valid(S_bogus, pgenerator_bogus, pcallcontext_bogus)
+$fiber_generator_body_id(S_bogus) = eps
 S_noarg = S_view[.FRAMES = pframe_generator[.TODO = (GENERATOR_RESUME pgeneratorop[.ARGUMENTS = eps]) :: ptask_generator*] :: pframe_tail*]
 $fiber_generator_body_id(S_noarg) = eps
 S_noadvance = S_view[.FRAMES = pframe_generator[.TODO = (GENERATOR_RESUME pgeneratorop[.ADVANCE = false]) :: ptask_generator*] :: pframe_tail*]
