@@ -20,6 +20,8 @@ def $anonymous_property_items(eps) = true
 def $anonymous_property_items((NPropertyItem phpType40 ABSENT metadata) :: phpType57*) = $anonymous_property_items(phpType57*)
 def $anonymous_property_items((NPropertyItem phpType40 expression metadata) :: phpType57*) = $anonymous_property_items(phpType57*)
   -- if $parser_literal(expression) =/= eps
+def $anonymous_property_items((NPropertyItem phpType40 (NExprConstFetch (NName (BYTES text) metadata_name) metadata_constant) metadata) :: phpType57*) = $anonymous_property_items(phpType57*)
+  -- if $ptlc($base64(text)) <- [$ptascii("null"), $ptascii("true"), $ptascii("false")]
 def $anonymous_property_items(phpType57*) = false -- otherwise
 
 dec $anonymous_constructor_parameter(phpType17) : bool
