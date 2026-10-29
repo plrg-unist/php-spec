@@ -35,6 +35,17 @@ passes at the separate integration cut.
 Callbacks, ephemerons, hooks, workers, residual buffers and noncanonical
 locators remain outside this slice. [Review](coverage/semantics/gc-materialized-table-review.json).
 
+A second GC cut admits quiet finite WeakMap ephemerons across ordinary
+objects, arrays and cells, including materialized tables, multiple Maps,
+conditional transitive reachability and dead-Key removal with a shared live
+payload. Three changed native-first originals agree exactly; a repeated
+ordinary allocation/collection history also agrees on the unchanged path.
+Four source-reached strict SL groups pass 136 checks at separate cuts; joined
+strict compilation of the actual 426-module tail passes separately. A phase
+guard limits the new projection to fresh callback-free PASS0 collection. Callback,
+residual, worker, hook and uncertain same-Key proxy order paths remain open.
+[Review](coverage/semantics/gc-ephemeron-generic-review.json).
+
 Fresh Generator NEXT/SEND now transfer through Fiber before first yield using
 one authenticated phase rule across ordinary named, method, nonkeyword static
 and real unbound Closure callees. Existing cache/callee/resumer authority also
@@ -52,20 +63,15 @@ natives/statuses are not replayed. Keyword-forwarded creation still needs actual
 retained caller scope proof. Wider bound/helper/delegation/lifecycle forms remain
 partial. [Fresh advance review](coverage/semantics/generator-fiber-fresh-advance-review.json).
 
-A fresh sole-DATA CONFIG Iterator now validates its actual declared physical
-fields without fixed names or an edge-count limit. Supported scalars, ordinary
-reference cells, arrays and finite ordinary Child graphs retain repeated edges
-and outside owners. Four originals agree exactly with PHP: one primitive-field
-source and three nested-graph normal/invalid/saved-Exception sources. An independent
-public-parent-destructor saved-Exception source also agrees, including alias
-null/restore through the outside owner. Strict
-compilation of 424 modules, 38+190 new reached premises and 33 checks at the
-affected CONFIG117 return front pass.
-The separate shared authentication extraction preserves A64's policy and has
-landed after joined strict compilation of 425 modules. Historical 678/149/156
-whole-tail cuts are not renewed. The full graph change also passes joined strict
-compilation of 425 modules on the actual tail.
-[Descriptor-backed field review](coverage/semantics/config-aggregate-iterator-layout-review.json).
+Ordinary CONFIG Iterator `current()` now retains its selected reference cell
+through `key()` writes and source rebinding. Sending copies a string before
+`next()`, DATA/INPUT retirement and API entry. Real method metadata authenticates
+callback and retired-cache history; a sole cached payload retires before Iterator
+DATA while preserving the supplied Exception. Six exact sources, two Unsupported
+controls and 505 new reached checks (498 Boolean/seven raw) pass. Private
+strict425 and actual-tail joined426 pass. CFG119's declared-slot and finite
+shared-graph policy continues to govern DATA retirement. [Reference-current review](coverage/semantics/config-iterator-reference-current-review.json),
+[descriptor-backed fields](coverage/semantics/config-aggregate-iterator-layout-review.json).
 Dynamic/materialized layouts, special cells, builtin descendants, cycles,
 shutdown and wider destructor effects remain partial.
 
@@ -775,21 +781,19 @@ credit. Generator/reference getters and wider targets/lifetimes stay partial.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | Enum core | Stable core and M4 validation. |
-| A66 | CONFIG reference-current. |
 | Output buffering | Frontier scope preparation. |
 | CLASS147 | Namespace/import preparation. |
 | COMP150 | Finite Previous/root validation. |
-| GC02 | Ephemeron reachability. |
 | ATTR01 | NoDiscard. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
-The private enum core slice lowers unit and backed declarations to real case
+The integrated enum core slice lowers unit and backed declarations to real case
 constants and cached singleton objects. It implements direct generated calls,
 lazy backing checks, readonly case slots, ordered interface linking, user magic
 methods, individual `constant()`/`defined()` case queries, and enum/WeakMap
-comparison. The private 426-module manifest passes strict loading; the composed
-428-module manifest awaits its joined gate. Independent reached
+comparison. The private 426-module and joined 428-module manifests pass strict
+loading on their separate cuts. Independent reached
 checks cover case identity, deferred backing, weak parsing, converted Stringable
 arguments, duplicate-live-case rejection, magic calls, query retry/aliases
 (93+76 checks), and enum/WeakMap ordering (30 checks); exact cuts and raw reports
@@ -803,7 +807,7 @@ lookups retain PHP Errors. Enum case attributes, generated callable targets,
 generic first-use autoload, and wider type/link interactions remain open
 across M1–M4.
 
-Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73/74, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64/A65, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110/111, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125/126, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148/149 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145/146 are integrated
+Iterator49/50/51/52/53/54/55/56/57/58/59/60/61/62/63/64/65/66/67/68/69/70/71/72/73/74, V99/V100/V101/V102/V103/V104/V105/V106/V107/V108/V109, M132–M157, A46/A47/A48/A49/A50/A51/A52/A53/A54/A55/A56/A57/A58/A59/A60/A61/A62/A63/A64/A65/A66, OP79/80/81/82/83/84/85/86/87/88/89/90/91/92/93/94/95/96/97/98/99/100/101/102/103/104/105/106/107/108/109/110/111, Source86/87/88/89/90/91/92/93/94/95/96/97/98/99/101/102/104/106/113/114/116/117/118/119, CALL113/122/123/124/125/126, COMP118/119/120/121/122/124/125/126/127/128/129/130/131/132/133/134/135/136/137/138/139/140/141/142/143/144/145/146/147/148/149 and CLASS119/120/121/122/123/124/125/126/127/128/129/130/131/132/133/134/135/136/143/144/145/146 are integrated
 into this branch.
 GC physical01 is integrated on this tail; its private source/state cuts and the
 joined strict gate retain their separate tested identities.

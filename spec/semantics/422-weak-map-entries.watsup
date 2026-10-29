@@ -720,3 +720,215 @@ def $weakmap_gc_prepare(S, pgcplan) = S[.OBJECTS[n_map] = $weakmap_entries_pack(
   -- if ~((HOBJECT n_map) <- pgcplan.FREESET)
   -- if H = $gc_graph(S)
   -- if $weakmap_entries_gc_free_valid(pweakmapentry_all*, pgcplan.FREESET, $heap_reach(H.ROOTS, eps, H.EDGES))
+
+;; A quiet finite ephemeron graph is separate from the older shape-specific
+;; WeakMap projection. Physical Map->payload owners remain in $heap_graph.
+dec $gc_ephemeron_node_kind(pstate, pnode) : bool
+dec $gc_ephemeron_nodes_valid(pstate, pnode*) : bool
+dec $gc_ephemeron_called_current(pstate, nat*) : bool
+dec $gc_ephemeron_before(pstate, nat, nat, nat) : bool
+dec $gc_ephemeron_two_order_known(pstate, nat) : bool
+dec $gc_ephemeron_key_order_safe(pstate, nat) : bool
+dec $gc_ephemeron_entries_valid(pstate, nat, pweakmapentry*) : bool
+dec $gc_ephemeron_maps_valid(pstate, pnode*) : bool
+dec $gc_ephemeron_base_edges(pstate, hedge*) : hedge*
+dec $gc_ephemeron_base(pstate) : hgraph
+dec $gc_ephemeron_exposed_entries(pweakmapentry*, pnode*) : pnode*
+dec $gc_ephemeron_exposed(pstate, pnode*, pnode*) : pnode*
+dec $gc_ephemeron_live_step(pstate, hgraph, pnode*) : pnode*
+dec $gc_ephemeron_live_fix(pstate, hgraph, pnode*) : pnode*
+dec $gc_ephemeron_key_entries(pweakmapentry*, nat) : pnode*
+dec $gc_ephemeron_key_payloads_alloc(pstate, nat, pnode*) : pnode*
+dec $gc_ephemeron_key_payloads(pstate, pnode, pnode*, pnode*) : pnode*
+dec $gc_ephemeron_map_entries(pweakmapentry*, pnode*, bool) : pnode*
+dec $gc_ephemeron_map_payloads(pstate, pnode, pnode*) : pnode*
+dec $gc_ephemeron_collect_edges(pstate, hgraph, pnode*, pnode*) : hedge*
+dec $gc_ephemeron_prepare_maps(pstate, pnode*, pnode*) : pstate
+
+def $gc_ephemeron_node_kind(S, HCELL n) = true -- if $(n < |S.STORE|)
+def $gc_ephemeron_node_kind(S, HARRAY n) = true -- if $(n < |S.ARRAYS|)
+def $gc_ephemeron_node_kind(S, HOBJECT n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+def $gc_ephemeron_node_kind(S, HOBJECT n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = STDINSTANCE \/ $weakref_object(S.OBJECTS[n]) \/ $weakmap_at(S, n)
+def $gc_ephemeron_node_kind(S, pnode) = false -- otherwise
+def $gc_ephemeron_nodes_valid(S, eps) = true
+def $gc_ephemeron_nodes_valid(S, pnode :: pnode_tail*) = ($gc_ephemeron_node_kind(S, pnode) /\ $gc_ephemeron_nodes_valid(S, pnode_tail*))
+def $gc_ephemeron_called_current(S, eps) = false
+def $gc_ephemeron_called_current(S, n :: nat_tail*) = true -- if (HOBJECT n) <- S.ALLOCATIONS
+def $gc_ephemeron_called_current(S, n :: nat_tail*) = $gc_ephemeron_called_current(S, nat_tail*) -- if ~((HOBJECT n) <- S.ALLOCATIONS)
+;; Two registrations of one Key carry their source order in the saved wrapper
+;; identity. Current producers require a distinct later wrapper for the second.
+def $gc_ephemeron_before(S, n_first, n_second, n_key) = true
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_first), n_key) = (pweakmapentry_first)
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_second), n_key) = (pweakmapentry_second)
+  -- if pweakmapentry_first.BEFORE = eps
+  -- if pweakmapentry_second.BEFORE = (n_wrapper)
+def $gc_ephemeron_before(S, n_first, n_second, n_key) = true
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_first), n_key) = (pweakmapentry_first)
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_second), n_key) = (pweakmapentry_second)
+  -- if pweakmapentry_first.BEFORE = (n_before)
+  -- if pweakmapentry_second.BEFORE = (n_after)
+  -- if $(n_before < n_after)
+def $gc_ephemeron_before(S, n_first, n_second, n_key) = false -- otherwise
+def $gc_ephemeron_two_order_known(S, n_key) = true
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_left, n_right]
+  -- if $gc_ephemeron_before(S, n_left, n_right, n_key) \/ $gc_ephemeron_before(S, n_right, n_left, n_key)
+def $gc_ephemeron_two_order_known(S, n_key) = false -- otherwise
+def $gc_ephemeron_key_order_safe(S, n_key) = true -- if S.OBJECTTABLES = eps
+def $gc_ephemeron_key_order_safe(S, n_key) = true
+  -- if S.OBJECTTABLES =/= eps
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
+def $gc_ephemeron_key_order_safe(S, n_key) = true
+  -- if S.OBJECTTABLES =/= eps /\ $gc_ephemeron_two_order_known(S, n_key)
+def $gc_ephemeron_key_order_safe(S, n_key) = false -- otherwise
+def $gc_ephemeron_entries_valid(S, n_map, eps) = true
+def $gc_ephemeron_entries_valid(S, n_map, pweakmapentry :: pweakmapentry_tail*) = true
+  -- if n_key = pweakmapentry.KEY
+  -- if $weakmap_entries_find(pweakmapentry_tail*, n_key) = eps
+  -- if (HOBJECT n_key) <- S.ALLOCATIONS /\ $gc_ephemeron_node_kind(S, HOBJECT n_key)
+  -- if ~$instance_storage_freeing(S, n_key)
+  -- if n_map <- $weakmap_key_maps(S, S.ALLOCATIONS, n_key)
+  -- if $gc_ephemeron_key_order_safe(S, n_key)
+  -- if $weakmap_before_valid(S, pweakmapentry)
+  -- if $heap_subset($weakmap_value_nodes(pweakmapentry.VALUE), S.ALLOCATIONS)
+  -- if $gc_ephemeron_entries_valid(S, n_map, pweakmapentry_tail*)
+def $gc_ephemeron_entries_valid(S, n_map, pweakmapentry*) = false -- otherwise
+def $gc_ephemeron_maps_valid(S, eps) = true
+def $gc_ephemeron_maps_valid(S, (HOBJECT n) :: pnode_tail*) = $gc_ephemeron_maps_valid(S, pnode_tail*)
+  -- if ~$weakmap_nonempty_node(S, HOBJECT n)
+def $gc_ephemeron_maps_valid(S, (HOBJECT n) :: pnode_tail*) = $gc_ephemeron_maps_valid(S, pnode_tail*)
+  -- if $weakmap_nonempty_node(S, HOBJECT n)
+  -- if $weakmap_at(S, n) /\ ~$instance_storage_freeing(S, n)
+  -- if pweakmapentry* = $weakmap_entries_contents(S, n)
+  -- if pweakmapentry* =/= eps
+  -- if $objectprops_at(S.OBJECTPROPS, n) = eps /\ $object_table_at(S.OBJECTTABLES, n) = eps
+  -- if $gc_ephemeron_entries_valid(S, n, pweakmapentry*)
+def $gc_ephemeron_maps_valid(S, (HCELL n) :: pnode_tail*) = $gc_ephemeron_maps_valid(S, pnode_tail*)
+def $gc_ephemeron_maps_valid(S, (HARRAY n) :: pnode_tail*) = $gc_ephemeron_maps_valid(S, pnode_tail*)
+def $gc_ephemeron_maps_valid(S, pnode*) = false -- otherwise
+def $gc_ephemeron_phase(S) = true
+  -- if S.GC.ACTIVE = eps
+  -- if S.GC.PLAN = eps
+def $gc_ephemeron_phase(S) = true
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if S.GC.PLAN = eps
+  -- if pgccall.PASS = 0
+def $gc_ephemeron_phase(S) = true
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if pgcplan.CALL = pgccall /\ pgccall.PASS = 0 /\ pgcplan.DTORS = eps
+def $gc_ephemeron_phase(S) = false -- otherwise
+def $gc_ephemeron_policy(S) = true
+  -- if $weakmap_nonempty(S, S.ALLOCATIONS) /\ $weakmap_gc_map(S, S.ALLOCATIONS) = eps
+  -- if $gc_ephemeron_phase(S)
+  -- if $gc_materialized_base_quiet(S)
+  -- if S.ACTIVEFIBER = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.ITERATORS = eps
+  -- if ~$gc_ephemeron_called_current(S, S.DESTRUCTION.CALLED) /\ $gc_uncalled(S, S.ALLOCATIONS) = eps
+  -- if $object_tables_valid(S) /\ $gc_indirect_arrays_valid(S, S.ALLOCATIONS) /\ $gc_materialized_locators(S, S.OBJECTTABLES)
+  -- if $objectprops_valid(S, S.OBJECTPROPS)
+  -- if $gc_ephemeron_nodes_valid(S, S.ALLOCATIONS) /\ $gc_ephemeron_maps_valid(S, S.ALLOCATIONS)
+  -- if $heap_valid($heap_graph(S))
+def $gc_ephemeron_policy(S) = false -- otherwise
+def $gc_ordinary_node(S, HOBJECT n) = true
+  -- if $weakmap_at(S, n) /\ $gc_ephemeron_policy(S)
+
+;; Strip all conditional owners, then expose a payload only after both its
+;; Map and Key are in the live closure. Allocation order canonically represents
+;; the growing set; every nonterminal round adds a current heap node.
+def $gc_ephemeron_base_edges(S, eps) = eps
+def $gc_ephemeron_base_edges(S, (HEDGE (HOBJECT n) pnode_to) :: hedge_tail*) = $gc_ephemeron_base_edges(S, hedge_tail*)
+  -- if $weakmap_nonempty_node(S, HOBJECT n)
+def $gc_ephemeron_base_edges(S, (HEDGE (HOBJECT n) pnode_to) :: hedge_tail*) = (HEDGE (HOBJECT n) pnode_to) :: $gc_ephemeron_base_edges(S, hedge_tail*)
+  -- if ~$weakmap_nonempty_node(S, HOBJECT n)
+def $gc_ephemeron_base_edges(S, (HEDGE (HCELL n) pnode_to) :: hedge_tail*) = (HEDGE (HCELL n) pnode_to) :: $gc_ephemeron_base_edges(S, hedge_tail*)
+def $gc_ephemeron_base_edges(S, (HEDGE (HARRAY n) pnode_to) :: hedge_tail*) = (HEDGE (HARRAY n) pnode_to) :: $gc_ephemeron_base_edges(S, hedge_tail*)
+def $gc_ephemeron_base(S) = H[.NODES = pnode*][.ROOTS = pnode_roots*][.EDGES = $gc_ephemeron_base_edges(S, $heap_live_edges($gc_trace_edges(S, H.NODES), pnode*))]
+  -- if H = $heap_graph(S)
+  -- if pnode* = $gc_graph_nodes(S, H.NODES)
+  -- if pnode_roots* = $heap_intersect(H.ROOTS ++ $gc_finally_ref_fibers(S, S.ALLOCATIONS), pnode*)
+def $gc_ephemeron_exposed_entries(eps, pnode_live*) = eps
+def $gc_ephemeron_exposed_entries(pweakmapentry :: pweakmapentry_tail*, pnode_live*) = $weakmap_value_nodes(pweakmapentry.VALUE) ++ $gc_ephemeron_exposed_entries(pweakmapentry_tail*, pnode_live*)
+  -- if (HOBJECT pweakmapentry.KEY) <- pnode_live*
+def $gc_ephemeron_exposed_entries(pweakmapentry :: pweakmapentry_tail*, pnode_live*) = $gc_ephemeron_exposed_entries(pweakmapentry_tail*, pnode_live*)
+  -- if ~((HOBJECT pweakmapentry.KEY) <- pnode_live*)
+def $gc_ephemeron_exposed(S, eps, pnode_live*) = eps
+def $gc_ephemeron_exposed(S, (HOBJECT n) :: pnode_tail*, pnode_live*) = $gc_ephemeron_exposed_entries($weakmap_entries_contents(S, n), pnode_live*) ++ $gc_ephemeron_exposed(S, pnode_tail*, pnode_live*)
+  -- if $weakmap_nonempty_node(S, HOBJECT n) /\ (HOBJECT n) <- pnode_live*
+def $gc_ephemeron_exposed(S, (HOBJECT n) :: pnode_tail*, pnode_live*) = $gc_ephemeron_exposed(S, pnode_tail*, pnode_live*)
+  -- if ~$weakmap_nonempty_node(S, HOBJECT n) \/ ~((HOBJECT n) <- pnode_live*)
+def $gc_ephemeron_exposed(S, (HCELL n) :: pnode_tail*, pnode_live*) = $gc_ephemeron_exposed(S, pnode_tail*, pnode_live*)
+def $gc_ephemeron_exposed(S, (HARRAY n) :: pnode_tail*, pnode_live*) = $gc_ephemeron_exposed(S, pnode_tail*, pnode_live*)
+def $gc_ephemeron_live_step(S, H, pnode_live*) = $heap_intersect(H.NODES, $heap_reach(pnode_live* ++ $gc_ephemeron_exposed(S, H.NODES, pnode_live*), eps, H.EDGES))
+def $gc_ephemeron_live_fix(S, H, pnode_live*) = pnode_live*
+  -- if pnode_next* = $gc_ephemeron_live_step(S, H, pnode_live*)
+  -- if pnode_next* = pnode_live*
+def $gc_ephemeron_live_fix(S, H, pnode_live*) = $gc_ephemeron_live_fix(S, H, pnode_next*)
+  -- if pnode_next* = $gc_ephemeron_live_step(S, H, pnode_live*)
+  -- if pnode_next* =/= pnode_live* /\ $(|pnode_next*| > |pnode_live*|) /\ $(|pnode_next*| <= |H.NODES|)
+
+;; A white Key must reveal its entry even if the white Map is not buffered,
+;; and conversely. Key-side incidences precede that Key's ordinary children.
+def $gc_ephemeron_key_entries(eps, n_key) = eps
+def $gc_ephemeron_key_entries(pweakmapentry :: pweakmapentry_tail*, n_key) = $weakmap_value_nodes(pweakmapentry.VALUE) ++ $gc_ephemeron_key_entries(pweakmapentry_tail*, n_key)
+  -- if pweakmapentry.KEY = n_key
+def $gc_ephemeron_key_entries(pweakmapentry :: pweakmapentry_tail*, n_key) = $gc_ephemeron_key_entries(pweakmapentry_tail*, n_key)
+  -- if pweakmapentry.KEY =/= n_key
+def $gc_ephemeron_key_payloads_alloc(S, n_key, eps) = eps
+def $gc_ephemeron_key_payloads_alloc(S, n_key, (HOBJECT n_map) :: pnode_tail*) = $gc_ephemeron_key_entries($weakmap_entries_contents(S, n_map), n_key) ++ $gc_ephemeron_key_payloads_alloc(S, n_key, pnode_tail*)
+  -- if $weakmap_nonempty_node(S, HOBJECT n_map)
+def $gc_ephemeron_key_payloads_alloc(S, n_key, (HOBJECT n_map) :: pnode_tail*) = $gc_ephemeron_key_payloads_alloc(S, n_key, pnode_tail*)
+  -- if ~$weakmap_nonempty_node(S, HOBJECT n_map)
+def $gc_ephemeron_key_payloads_alloc(S, n_key, (HCELL n) :: pnode_tail*) = $gc_ephemeron_key_payloads_alloc(S, n_key, pnode_tail*)
+def $gc_ephemeron_key_payloads_alloc(S, n_key, (HARRAY n) :: pnode_tail*) = $gc_ephemeron_key_payloads_alloc(S, n_key, pnode_tail*)
+def $gc_ephemeron_key_payloads(S, HOBJECT n_key, pnode_live*, pnode*) = eps
+  -- if (HOBJECT n_key) <- pnode_live*
+def $gc_ephemeron_key_payloads(S, HOBJECT n_key, pnode_live*, pnode*) = $gc_ephemeron_key_entries($weakmap_entries_contents(S, n_left), n_key) ++ $gc_ephemeron_key_entries($weakmap_entries_contents(S, n_right), n_key)
+  -- if ~((HOBJECT n_key) <- pnode_live*)
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_left, n_right]
+  -- if $gc_ephemeron_before(S, n_left, n_right, n_key)
+def $gc_ephemeron_key_payloads(S, HOBJECT n_key, pnode_live*, pnode*) = $gc_ephemeron_key_entries($weakmap_entries_contents(S, n_right), n_key) ++ $gc_ephemeron_key_entries($weakmap_entries_contents(S, n_left), n_key)
+  -- if ~((HOBJECT n_key) <- pnode_live*)
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_left, n_right]
+  -- if $gc_ephemeron_before(S, n_right, n_left, n_key)
+def $gc_ephemeron_key_payloads(S, HOBJECT n_key, pnode_live*, pnode*) = $gc_ephemeron_key_payloads_alloc(S, n_key, pnode*)
+  -- if ~((HOBJECT n_key) <- pnode_live*) /\ ~$gc_ephemeron_two_order_known(S, n_key)
+def $gc_ephemeron_key_payloads(S, HCELL n, pnode_live*, pnode*) = eps
+def $gc_ephemeron_key_payloads(S, HARRAY n, pnode_live*, pnode*) = eps
+def $gc_ephemeron_map_entries(eps, pnode_live*, b_map_live) = eps
+def $gc_ephemeron_map_entries(pweakmapentry :: pweakmapentry_tail*, pnode_live*, b_map_live) = $weakmap_value_nodes(pweakmapentry.VALUE) ++ $gc_ephemeron_map_entries(pweakmapentry_tail*, pnode_live*, b_map_live)
+  -- if ~b_map_live \/ (HOBJECT pweakmapentry.KEY) <- pnode_live*
+def $gc_ephemeron_map_entries(pweakmapentry :: pweakmapentry_tail*, pnode_live*, b_map_live) = $gc_ephemeron_map_entries(pweakmapentry_tail*, pnode_live*, b_map_live)
+  -- if b_map_live /\ ~((HOBJECT pweakmapentry.KEY) <- pnode_live*)
+def $gc_ephemeron_map_payloads(S, HOBJECT n_map, pnode_live*) = $gc_ephemeron_map_entries($weakmap_entries_contents(S, n_map), pnode_live*, (HOBJECT n_map) <- pnode_live*)
+  -- if $weakmap_nonempty_node(S, HOBJECT n_map)
+def $gc_ephemeron_map_payloads(S, HOBJECT n, pnode_live*) = eps -- if ~$weakmap_nonempty_node(S, HOBJECT n)
+def $gc_ephemeron_map_payloads(S, HCELL n, pnode_live*) = eps
+def $gc_ephemeron_map_payloads(S, HARRAY n, pnode_live*) = eps
+def $gc_ephemeron_collect_edges(S, H, pnode_live*, eps) = eps
+def $gc_ephemeron_collect_edges(S, H, pnode_live*, pnode :: pnode_tail*) = $node_edges(pnode, $gc_ephemeron_key_payloads(S, pnode, pnode_live*, H.NODES) ++ $heap_children(pnode, H.EDGES) ++ $gc_ephemeron_map_payloads(S, pnode, pnode_live*)) ++ $gc_ephemeron_collect_edges(S, H, pnode_live*, pnode_tail*)
+def $gc_ephemeron_graph(S) = H[.EDGES = hedge_collect*]
+  -- if $gc_ephemeron_policy(S)
+  -- if H = $gc_ephemeron_base(S)
+  -- if pnode_start* = $heap_intersect(H.NODES, $heap_reach(H.ROOTS, eps, H.EDGES))
+  -- if pnode_live* = $gc_ephemeron_live_fix(S, H, pnode_start*)
+  -- if hedge_collect* = $heap_live_edges($gc_ephemeron_collect_edges(S, H, pnode_live*, H.NODES), H.NODES)
+  -- if $heap_intersect(H.NODES, $heap_reach(H.ROOTS, eps, hedge_collect*)) = pnode_live*
+
+def $gc_ephemeron_prepare_maps(S, eps, pnode_free*) = S
+def $gc_ephemeron_prepare_maps(S, (HOBJECT n_map) :: pnode_tail*, pnode_free*) = $gc_ephemeron_prepare_maps(S[.OBJECTS[n_map] = WEAKMAP eps], pnode_tail*, pnode_free*)
+  -- if $weakmap_nonempty_node(S, HOBJECT n_map) /\ (HOBJECT n_map) <- pnode_free*
+def $gc_ephemeron_prepare_maps(S, (HOBJECT n_map) :: pnode_tail*, pnode_free*) = $gc_ephemeron_prepare_maps(S[.OBJECTS[n_map] = $weakmap_entries_pack($weakmap_entries_gc_retain($weakmap_entries_contents(S, n_map), pnode_free*))], pnode_tail*, pnode_free*)
+  -- if $weakmap_nonempty_node(S, HOBJECT n_map) /\ ~((HOBJECT n_map) <- pnode_free*)
+def $gc_ephemeron_prepare_maps(S, (HOBJECT n) :: pnode_tail*, pnode_free*) = $gc_ephemeron_prepare_maps(S, pnode_tail*, pnode_free*)
+  -- if ~$weakmap_nonempty_node(S, HOBJECT n)
+def $gc_ephemeron_prepare_maps(S, (HCELL n) :: pnode_tail*, pnode_free*) = $gc_ephemeron_prepare_maps(S, pnode_tail*, pnode_free*)
+def $gc_ephemeron_prepare_maps(S, (HARRAY n) :: pnode_tail*, pnode_free*) = $gc_ephemeron_prepare_maps(S, pnode_tail*, pnode_free*)
+def $gc_ephemeron_prepare(S, pgcplan) = ($gc_ephemeron_prepare_maps(S, S.ALLOCATIONS, pgcplan.FREESET))
+  -- if $gc_ephemeron_policy(S)
+  -- if S.TODO = (GC_FREE pgcplan) :: ptask_tail*
+  -- if $call_task_valid(S, GC_FREE pgcplan)
+  -- if pgcplan.DTORS = eps
+def $gc_ephemeron_prepare(S, pgcplan) = eps -- otherwise

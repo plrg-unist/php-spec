@@ -58,6 +58,7 @@ dec $gc_white(hgraph, pnode*) : pnode*
 dec $gc_collectable(pstate, pnode*, pnode*) : pnode*
 dec $gc_uncalled(pstate, pnode*) : pnode*
 dec $gc_plan(pstate, pgccall) : pgcplan
+dec $gc_plan_graph(pstate, pgccall, hgraph) : pgcplan
 dec $gc_call_scope(pstate, pgccall) : pstate
 dec $gc_call_live(pstate, pgccall) : bool
 dec $gc_trace_valid(pstate, pgccall) : bool
@@ -149,8 +150,13 @@ dec $gc_indirect_arrays_valid(pstate, pnode*) : bool
 dec $gc_declared_locators(pstate, nat, nat, ppropertyslot*) : bool
 dec $gc_materialized_locators(pstate, pobjecttable*) : bool
 dec $gc_hook_nodes(pstate, pnode*) : bool
+dec $gc_materialized_base_quiet(pstate) : bool
 dec $gc_materialized_quiet(pstate) : bool
 dec $gc_materialized_begin(pstate, pgccall) : pstate
+dec $gc_ephemeron_phase(pstate) : bool
+dec $gc_ephemeron_policy(pstate) : bool
+dec $gc_ephemeron_graph(pstate) : hgraph
+dec $gc_ephemeron_prepare(pstate, pgcplan) : pstate?
 dec $gc_finally_ref_task(ptask) : pnode*
 dec $gc_finally_ref_tasks(ptask*) : pnode*
 dec $gc_finally_ref_frames(pframe*) : pnode*
@@ -839,8 +845,11 @@ def $gc_nested_removed(pgcplan) = $destruction_nodes_delete($gc_nodes(pgcplan.BU
   -- if (pgcslot*, nat_free*, n_debit) = $gc_nested_image(pgcplan)
 def $gc_nested_removed(pgcplan) = eps -- otherwise
 
-def $gc_plan(S, pgccall) = {CALL pgccall, GRAPH H, TABLES S.OBJECTTABLES, CALLED S.DESTRUCTION.CALLED, PROXIES hedge_proxy*, COUNTED pnode_counted*, BUFFER pgc_white.BUFFER, CANDIDATES pnode_candidates*, DTORS pnode_dtors*, FREESET pnode_free*, SCAN eps, INDEX 0, STEPS eps, DONE eps}
-  -- if H = $gc_graph(S)
+def $gc_plan(S, pgccall) = $gc_plan_graph(S, pgccall, $gc_ephemeron_graph(S))
+  -- if $gc_ephemeron_policy(S)
+def $gc_plan(S, pgccall) = $gc_plan_graph(S, pgccall, $gc_graph(S))
+  -- if ~$gc_ephemeron_policy(S)
+def $gc_plan_graph(S, pgccall, H) = {CALL pgccall, GRAPH H, TABLES S.OBJECTTABLES, CALLED S.DESTRUCTION.CALLED, PROXIES hedge_proxy*, COUNTED pnode_counted*, BUFFER pgc_white.BUFFER, CANDIDATES pnode_candidates*, DTORS pnode_dtors*, FREESET pnode_free*, SCAN eps, INDEX 0, STEPS eps, DONE eps}
   -- if hedge_proxy* = $gc_proxy_edges(S.OBJECTTABLES, H.NODES)
   -- if pgc_start = $gc_compact(S.GC)
   -- if pnode_white* = $gc_white(H, $gc_eligible_nodes(pgc_start.BUFFER))
@@ -1042,6 +1051,20 @@ def $gc_begin(S, pconfigcall) = S[.GC.NEXT = $(S.GC.NEXT + 1)][.GC.ACTIVE = (pgc
   -- if ~$generator_return_waiting_any(S, S.ALLOCATIONS)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*
   -- if pgccall = {NONCE S.GC.NEXT, CALL pconfigcall, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, PASS 0, TOTAL 0, PENDING eps}
+def $gc_begin(S, pconfigcall) = S_started
+  -- if $gc_ephemeron_policy(S)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pgccall = {NONCE S.GC.NEXT, CALL pconfigcall, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, PASS 0, TOTAL 0, PENDING eps}
+  -- if S_started = S[.GC.NEXT = $(S.GC.NEXT + 1)][.GC.ACTIVE = (pgccall)][.TODO = (GC_TRACE pgccall) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $gc_ephemeron_policy(S_started)
+  -- if pgcplan = $gc_plan(S_started, pgccall)
+  -- if pgcplan.DTORS = eps
+def $gc_begin(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "WeakMap ephemeron collection"]
+  -- if $gc_ephemeron_policy(S)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pgccall = {NONCE S.GC.NEXT, CALL pconfigcall, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, PASS 0, TOTAL 0, PENDING eps}
+  -- if S_started = S[.GC.NEXT = $(S.GC.NEXT + 1)][.GC.ACTIVE = (pgccall)][.TODO = (GC_TRACE pgccall) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~$gc_ephemeron_policy(S_started)
 def $gc_begin(S, pconfigcall) = $gc_materialized_begin(S, pgccall)
   -- if ~$weakmap_nonempty(S, S.ALLOCATIONS) \/ $weakmap_gc_map(S, S.ALLOCATIONS) =/= eps
   -- if $object_table_gc_boundary(S)
@@ -1055,7 +1078,8 @@ def $gc_hook_nodes(S, eps) = false
 def $gc_hook_nodes(S, (HOBJECT n) :: pnode_tail*) = ($property_hook_instance(S, n) \/ $gc_hook_nodes(S, pnode_tail*))
 def $gc_hook_nodes(S, (HARRAY n) :: pnode_tail*) = $gc_hook_nodes(S, pnode_tail*)
 def $gc_hook_nodes(S, (HCELL n) :: pnode_tail*) = $gc_hook_nodes(S, pnode_tail*)
-def $gc_materialized_quiet(S) = (~$weakmap_nonempty(S, S.ALLOCATIONS) /\ ~$gc_hook_nodes(S, S.ALLOCATIONS) /\ S.GC.WORKER = eps /\ S.GC.BUFFER = $gc_unmarked_slots(S.GC.BUFFER) /\ $gc_nodes(S.GC.BUFFER) = $gc_physical_nodes(S.GC.BUFFER))
+def $gc_materialized_base_quiet(S) = (~$gc_hook_nodes(S, S.ALLOCATIONS) /\ S.GC.WORKER = eps /\ S.GC.BUFFER = $gc_unmarked_slots(S.GC.BUFFER) /\ $gc_nodes(S.GC.BUFFER) = $gc_physical_nodes(S.GC.BUFFER))
+def $gc_materialized_quiet(S) = (~$weakmap_nonempty(S, S.ALLOCATIONS) /\ $gc_materialized_base_quiet(S))
 def $gc_materialized_begin(S, pgccall) = S_started
   -- if $gc_materialized_quiet(S)
   -- if $object_tables_valid(S) /\ $gc_indirect_arrays_valid(S, S.ALLOCATIONS) /\ $gc_materialized_locators(S, S.OBJECTTABLES)
@@ -1142,7 +1166,7 @@ def $gc_trace(S, pgccall) = S[.COMPLETION = UNSUPPORTED "residual destructor tag
 rule PhpStep/gc-trace: S ~> $gc_trace(S, pgccall)
   -- if S.TODO = (GC_TRACE pgccall) :: ptask*
   -- if $call_task_valid(S, GC_TRACE pgccall)
-  -- if ~$weakmap_nonempty(S, S.ALLOCATIONS) \/ $weakmap_gc_map(S, S.ALLOCATIONS) =/= eps
+  -- if ~$weakmap_nonempty(S, S.ALLOCATIONS) \/ $weakmap_gc_map(S, S.ALLOCATIONS) =/= eps \/ $gc_ephemeron_policy(S)
 rule PhpStep/gc-dtors-done: S ~> S[.TODO = (GC_FREE pgcplan) :: ptask*]
   -- if S.TODO = (GC_DTORS pgcplan) :: ptask*
   -- if $gc_plan_valid(S, pgcplan) /\ pgcplan.INDEX = |pgcplan.DTORS|
@@ -1185,6 +1209,11 @@ def $gc_terminal_park(S, pgcplan) = (pgcplan.CALL.PASS = 1 /\ $destruction_zero(
 def $gc_terminal_prepare(S, pgcplan) = (S) -- if ~$gc_terminal_park(S, pgcplan)
 def $gc_terminal_prepare(S, pgcplan) = eps -- otherwise
 def $gc_free_prepare(S, pgcplan) = (S_prepared)
+  -- if $gc_ephemeron_policy(S)
+  -- if $gc_ephemeron_prepare(S, pgcplan) = (S_prepared)
+  -- if ~$gc_nested_boundary(S_prepared, pgcplan)
+def $gc_free_prepare(S, pgcplan) = (S_prepared)
+  -- if ~$gc_ephemeron_policy(S)
   -- if S_prepared = $weakmap_gc_prepare(S, pgcplan)
   -- if ~$gc_nested_boundary(S_prepared, pgcplan)
 def $gc_free_prepare(S, pgcplan) = eps -- otherwise

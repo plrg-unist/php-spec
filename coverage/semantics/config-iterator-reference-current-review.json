@@ -1,0 +1,228 @@
+{
+  "milestone": "A66 ordinary CONFIG Iterator reference-current caches",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "scope": "Existing direct/captured INI_SET, borrowed CV, named noarg temporary and Aggregate-returned Iterator consumers. Genuine current-BYREF ordinary cells stay selected through key mutation/rebinding. Send-time strings become DIRECT argument snapshots before next, DATA/INPUT retirement and API entry.",
+  "implementation": {
+    "file": "spec/semantics/420-config-iterator-unpack.watsup",
+    "source_freeze": "fbd028d0c9f1b2590a0c1b64358a835da15a445c",
+    "policy_revision": "3af1a26faf96d022ade3961c78aadbb50c38b773",
+    "source_validation_revision": "633b4eb620925c7839a10db9350db1c86b49df2d",
+    "state_revision": "cf47c5f4f60fdc59da2133376b93f40cb60813f1",
+    "runtime_sha256": "a394d87adec10596f620adb2b1b66efaed1c75dcf5361024a1dde12eaceb57cb",
+    "change": "Only current may return BYREF. Structural raw-cache/method receipts authenticate key frames and retired cleanup history; live capture/send reads use ordinary_reference_value and the existing CFG descriptor/DAG policy. Send errors precede dereference/value refusal. A65, scalar cleanup, storage and graph algorithms are unchanged."
+  },
+  "engine_routes": [
+    {
+      "file": "vendor/php-src/Zend/zend_vm_def.h",
+      "symbol": "ZEND_SEND_UNPACK",
+      "contract": "Acquire raw current before key; resolve named destination before ZVAL_DEREF; copy argument before move_forward; destroy iterator before FREE_OP1/API."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_interfaces.c",
+      "symbols": [
+        "zend_user_it_get_current_data",
+        "zend_user_it_get_current_key",
+        "zend_user_it_move_forward",
+        "zend_user_it_invalidate_current",
+        "zend_user_it_dtor"
+      ],
+      "contract": "Current cache owns its actual reference until invalidation; invalidation precedes next and DATA retirement."
+    }
+  ],
+  "validation": {
+    "native": {
+      "initial": {
+        "path": "native-source-freeze/report.json",
+        "sha256": "40bd089e6c2c9c92a500c93c0eec2cbae1caaa0d6954cd60cded5a208718be32"
+      },
+      "affected_and_cache_only": {
+        "path": "native-followup-source-freeze/report.json",
+        "sha256": "9f5dc08c73a9b6313c07c36d5ed9de75c8d2a5ca3b4855a608c4268ab056d714"
+      },
+      "result": "Initial7 and affected5 captures are native-only, not twelve agreements. Four affected originals had incidental serialize_precision queries removed after their earlier API-domain stop; unchanged temp/payload/typed originals retain their initial paths. Final distinct family is six positives plus two controls."
+    },
+    "old_gates": {
+      "initial": {
+        "path": "old-gates-7da279083/report.json",
+        "sha256": "fc86e7fa7f4510fc7d0b0d4c66e0e7900d2838d82b5781417eb89a50959bff69"
+      },
+      "corrected_aggregate": {
+        "path": "old-gate-aggregate-fbd028d0c/report.json",
+        "sha256": "ff81f41e71237db653468c52c78a3d7ce2f34af54be499b29696fec309c21ea1"
+      },
+      "result": "Two genuine Unsupported0 gates: original direct CV at7da18.093s and corrected Aggregate atfbd32.745s. Original Aggregate pre-gate ini_get refusal25.897s stays failed/zero. Direct correction only removes a later unreachable observer; pre-gate method/source bytes are unchanged."
+    },
+    "sources": [
+      {
+        "path": "candidate-633b4eb62/config-iterator-reference-current-review-selected-cell-snapshot/report.json",
+        "sha256": "8342ca7f6f84f4d8e798be9177e504d0d4f0b56f3e90b7032d3fb75ca58b4087",
+        "id": "config-iterator-reference-current-review-selected-cell-snapshot",
+        "source_sha256": "776f7c2e88ef8b9a7d954daa0116d8926abe72e2c947c4ce01d98c0b5b1eab38",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 83.35608267784119
+      },
+      {
+        "path": "candidate-633b4eb62/config-iterator-reference-current-review-selected-cell-throw/report.json",
+        "sha256": "e715c739e9ff788d5f0ebc7589777fe9f1cb36f0171bc1b41a5e0ed5f2612c8a",
+        "id": "config-iterator-reference-current-review-selected-cell-throw",
+        "source_sha256": "ee45cee7f6d47b265c8e7a5dd85d9981f294af5366d72ecb883e371445c3150c",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 91.80899095535278
+      },
+      {
+        "path": "candidate-633b4eb62/config-reference-current-cache-only-throw/report.json",
+        "sha256": "b6694abbfcb195c26886fe9c6c8220256daba412dbe56694f102127c62c44da3",
+        "id": "config-reference-current-cache-only-throw",
+        "source_sha256": "a9a1c04f64c678ee34475a4e7a04bb550d76464216c759b4fb0e508885abdab8",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 37.60625147819519
+      },
+      {
+        "path": "candidate-633b4eb62/config-reference-current-owning-value-repair/report.json",
+        "sha256": "46cd8038cc39b24953d2a5c3114b35c5e9f694b8b07caed6f7c530afeaf19e4a",
+        "id": "config-reference-current-owning-value-repair",
+        "source_sha256": "ebf198c0ddbd6d12303788db632f067d383b1abfc0eec5f3e550cbf0f3a7621b",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 36.10415697097778
+      },
+      {
+        "path": "candidate-633b4eb62/config-reference-current-post-key-integer-boundary/report.json",
+        "sha256": "3e1866af3ec7b4dc982c6575731fd84531d4298647f6c3c41f5c5b428e3be1a9",
+        "id": "config-reference-current-post-key-integer-boundary",
+        "source_sha256": "52a25d47bc2f8bbb6d42da1daad7f0f17b8ee52638f5e0193c0b269f7553efcf",
+        "status": "unsupported",
+        "agreement_credit": 0,
+        "seconds": 31.165969133377075
+      },
+      {
+        "path": "candidate-633b4eb62/config-reference-current-selected-global-cells/report.json",
+        "sha256": "f150ad2c3076e779757f12accb5df24a99a0ea7b632344747cc118b1c1f34b63",
+        "id": "config-reference-current-selected-global-cells",
+        "source_sha256": "da694ef05469c12095d0996070bc4d79d854e157d5b406ad9f052dd39ced02a7",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 40.5820677280426
+      },
+      {
+        "path": "candidate-633b4eb62/config-reference-current-temporary/report.json",
+        "sha256": "88054aff7452f10fd25d956ed5845f19adc7b4f3ce65c8328ce5ca600bc00bab",
+        "id": "config-reference-current-temporary",
+        "source_sha256": "31f84e1ece0f4e3c2a8dd01e3f1e31def104dd26d239e041f36883f20fc4a73b",
+        "status": "normal",
+        "agreement_credit": 1,
+        "seconds": 30.297664880752563
+      },
+      {
+        "path": "candidate-633b4eb62/config-reference-current-typed-cell-boundary/report.json",
+        "sha256": "1b699f9b7ac5ca91c1911702f3634dafba274b50875bc3dd2f9452ecbd373db7",
+        "id": "config-reference-current-typed-cell-boundary",
+        "source_sha256": "28aae67e70e7b808d7d280e1a7a09673a94f1e6e52bae8cd70136c6579c20e53",
+        "status": "unsupported",
+        "agreement_credit": 0,
+        "seconds": 19.821534633636475
+      }
+    ],
+    "states": [
+      {
+        "path": "state-author-cf47c5f4f/config-reference-current-owning-value-repair/report.json",
+        "sha256": "55cd0b88051f005442314a28e4c1e1168ed16b435ad69b9c3c72df90aab620a7",
+        "id": "config-reference-current-owning-value-repair",
+        "conditions": 98,
+        "raw_steps": 2,
+        "seconds": 56.037277698516846
+      },
+      {
+        "path": "state-author-cf47c5f4f/config-reference-current-selected-global-cells/report.json",
+        "sha256": "8bde2185cfaeecd5bc17eb0324d1076dff2ce57e54dbcf84ad8ef3491b0220d5",
+        "id": "config-reference-current-selected-global-cells",
+        "conditions": 175,
+        "raw_steps": 5,
+        "seconds": 82.0047357082367
+      },
+      {
+        "path": "state-peer-cf47c5f4f/config-iterator-reference-current-review-selected-cell-snapshot/report.json",
+        "sha256": "7489eafc88ac6f5fe17e990f5c99a3a6d4dd27e3a26af52419e7701459a17e1b",
+        "id": "config-iterator-reference-current-review-selected-cell-snapshot",
+        "conditions": 144,
+        "raw_steps": 0,
+        "seconds": 135.92659425735474
+      },
+      {
+        "path": "state-peer-cf47c5f4f/config-reference-current-cache-only-throw/report.json",
+        "sha256": "721ab68fc5f0cfab60a85335ee4a4813c337ba2275fe333c4bbc2547e0702bca",
+        "id": "config-reference-current-cache-only-throw",
+        "conditions": 88,
+        "raw_steps": 0,
+        "seconds": 61.68949580192566
+      }
+    ],
+    "private_strict": {
+      "path": "private-strict-633b4eb62/report.json",
+      "sha256": "9ba1f9f8dd569f3cec4994a2e2bfc17ed61534b0b62072e7191c40058c5d4f10",
+      "modules": 425,
+      "seconds": 10.94460391998291
+    },
+    "fixture_corrections": [
+      {
+        "report": {
+          "path": "state-author-633b4eb62/config-reference-current-selected-global-cells/report.json",
+          "sha256": "1bf74e8b0c34979a180f62f444c66de40b01e7bb2c35e9589f24b379f3d527ca"
+        },
+        "reason": "Wrong fixture nonce for a captured intrinsic Closure. 172 config_prepare/config_selected_valid authenticate OWNER plus SELECTIONeps; corrected recipe proves actual Closure types and callee roots3\u21922."
+      },
+      {
+        "report": {
+          "path": "state-author-0a7a4b573/config-reference-current-selected-global-cells/report.json",
+          "sha256": "4492f377cf17e5a3eb874586019ba21ee44fecb43ad8179754e0d4d443c999ca"
+        },
+        "reason": "Wrong fixture deletion of stable REFCELLS metadata. 30 reference_cell,39 prune_live and REFERENCE-WRAPPERS specify inert historical markers; corrected check preserves physical retirement and denies ordinary live-cell authentication."
+      }
+    ]
+  },
+  "execution": "Serial pinned actors/children; native onCPU1, old gates onCPU2/5, private strict/first2 sources onCPU1, remaining6 sources and4 states onCPU4. Source internal timeout240/process cap270, reached cap300, private strict cap180; reports retain exact commands/environment/paths, stable inputs/HEAD and full group reaps. No accepted A65 or unrelated legacy replay.",
+  "independent_review": "array62_resume_review independently froze peer sources, reviewed exact runtime/current receipt policy and both fixture corrections, then accepted all raw source/control/state/strict outcomes. No semantic correction was needed during candidate validation.",
+  "credit": {
+    "source_agreements": 6,
+    "unsupported_controls": 2,
+    "unsupported_agreement_credit": 0,
+    "physical_state_checks": 505,
+    "boolean_state_checks": 498,
+    "raw_steps": 7,
+    "failed_fixture_attempt_credit": 0,
+    "full_core_claim": false
+  },
+  "retirement_adjudication": "Capture and send are consumer policies. After a key throw, existing generic release retires the selected wrapper by actual ownership/destructor dispatch; heap_prune retains shared/cyclic edges rather than freeing by reachability. Structural operation history must survive HCELL retirement. No speculative extra value/graph guard or39/257/359 rewrite is justified; ordinary generic lifecycle limits remain.",
+  "remaining": "Only current-BYREF ordinary-cell acquisition is added; other methods retain their existing by-value/signature contract. Typed/special-cell capture/send, nonstring sends, wider producers/consumers, materialized/cyclic DATA graphs, builtin descendants and wider destructor/lifecycle effects remain partial under the existing policies.",
+  "archive": {
+    "directory": "/home/user/workspace/php-spec-evidence-archive/config-iterator-reference-current-66",
+    "file": "raw.tar",
+    "sha256": "edb85b00227e49afaf3c9e2ce4a8afc3a1ee8e1efc913500dacb0a1a9272dd68",
+    "bytes": 4874240,
+    "files": 257,
+    "manifest": "manifest.json",
+    "manifest_sha256": "730e2feaa6b25e911235d3f8ea794a800a3a41fcc0f3f94e1394518f30ab4575",
+    "recovery": "Extract raw.tar under this directory. Reports preserve exact source paths/commands and tested revisions. Recover the private cuts from Git before replay; source/native/state/failed-control cuts remain distinct."
+  },
+  "integration": {
+    "base": "e14f979010dc01028b72431b7e86b4a16c261303",
+    "candidate": "762c8d4ac6e91f3b80c76e4ace95f4b70d143f5d",
+    "strict_report": "/home/user/workspace/php-spec-evidence-archive/config-iterator-reference-current-66/joined-strict-762c8d4ac/report.json",
+    "strict_report_sha256": "275ceb256bec096f73ca80a588d55ff25bc23dc9a2aed5aea408833e8ad0e2e9",
+    "modules": 426,
+    "seconds": 10.79696798324585,
+    "cpu": [
+      4
+    ],
+    "result": "Actual-tail strict426 SL/cachefalse/determinismtrue is true/quiet0, with stable inputs/HEAD/canonical base and fully reaped groups. All nine A66 module/test blobs equal the accepted private cut; source633/statecf47 results retain their original identities.",
+    "review": "Independent concrete-tail review confirms CFG inline storage edges and CONFIG callback frames are preserved across the named-header, GC and CALL126 changes. Latest PROGRESS/inventory union retained; completed A66 active row removed."
+  }
+}

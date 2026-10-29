@@ -644,6 +644,13 @@ The optional parent destructor, real storage pin and saved Exception use the
 existing lifecycle. Materialized layouts, special cells, builtin descendants,
 shutdown release and wider destructor effects remain partial.
 
+[Reference-current CONFIG caches](coverage/semantics/config-iterator-reference-current-review.json)
+keep the cell selected by `current()` through key-time writes and source rebinding,
+then copy its string value before `next()`, Iterator destruction and API entry.
+Temporary and Aggregate inputs retain their real owners through normal or
+supplied-Exception cleanup. Six exact source agreements, two explicit Unsupported
+controls and 505 reached checks preserve the existing field/graph policy.
+
 [Generator CONFIG unpacking](coverage/semantics/config-generator-unpack-review.json)
 now streams fresh named zero-argument Generators into INI_SET through real native
 resumes. DATA retains the selected Generator across live input/callee rebinding;
@@ -3570,6 +3577,15 @@ ordinary casts may share that table. Four native-first originals agree, and
 86 reached AL checks plus one private typed strict SL cut pass at their recorded
 cuts. Callback, ephemeron, hook, worker and residual paths remain partial;
 see the [materialized-table review](coverage/semantics/gc-materialized-table-review.json).
+Quiet finite WeakMap ephemerons now use a live fixed point over ordinary
+object/array/cell edges, with separate white discovery and selective dead-Key
+entry removal. Three changed native-first originals agree, alongside a repeated
+ordinary-history control on the unchanged path; four source-reached strict SL
+groups pass 136 checks at private cuts. A phase guard confines this projection
+to fresh callback-free PASS0 collection. Callback, residual, worker, hook and
+uncertain same-Key proxy-order paths remain open. The
+[generic ephemeron review](coverage/semantics/gc-ephemeron-generic-review.json)
+records the separate evidence and limits.
 An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
 reuse only when destructor preparation leaves the state identical.
