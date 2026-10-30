@@ -245,6 +245,9 @@ def $getclass_live_object(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = STRINGMETHODCLOSURE pcalltarget pstringselection
+def $class_instanceof(S, POBJECT n, preqbytes) = true
+  -- if $ptlc(preqbytes) = $ptascii("closure")
+  -- if S.OBJECTS[n] = STRINGMETHODCLOSURE pcalltarget pstringselection
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) (DIRECT (POBJECT n))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
   -- if S.OBJECTS[n] = STRINGMETHODCLOSURE pcalltarget pstringselection
 def $clone_object(S, n_source) = $clone_scope(S[.OBJECTS = S.OBJECTS ++ [STRINGMETHODCLOSURE pcalltarget pstringselection]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)], n_source, n)
